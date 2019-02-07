@@ -9,8 +9,10 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="FeedbackWindowController">
             <connections>
-                <outlet property="contentTextView" destination="ELz-XL-Qzo" id="JLl-Q8-xY3"/>
-                <outlet property="selectedImageTextField" destination="x76-9l-cFh" id="1ad-jC-hGo"/>
+                <outlet property="contentTextView" destination="ELz-XL-Qzo" id="mJ8-0w-x0h"/>
+                <outlet property="errorLabel" destination="F8Z-u0-ZgF" id="ykR-l0-rTa"/>
+                <outlet property="selectedImageBox" destination="cwt-Qf-BA4" id="B6b-4l-GQ6"/>
+                <outlet property="selectedImageTextField" destination="lSb-Rs-jzn" id="Zvr-cW-ghp"/>
                 <outlet property="sendButton" destination="NiB-Hs-GGA" id="9CK-k7-OAY"/>
                 <outlet property="topicComboBox" destination="dbV-zH-aRj" id="nzR-gp-tIx"/>
                 <outlet property="uploadImageButton" destination="NR5-ST-87O" id="TN5-xK-BoH"/>
@@ -137,7 +139,7 @@
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="x76-9l-cFh">
                         <rect key="frame" x="147" y="181" width="134" height="16"/>
                         <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" placeholderString="Maximum file size 5MB" id="uDw-EN-KEh">
-                            <font key="font" metaFont="system" size="12"/>
+                            <font key="font" metaFont="cellTitle"/>
                             <color key="textColor" name="grey-text-color"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
@@ -158,6 +160,9 @@
                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                         <font key="font" metaFont="system"/>
                                     </buttonCell>
+                                    <connections>
+                                        <action selector="closeFileOnTap:" target="-2" id="v5U-X1-xWh"/>
+                                    </connections>
                                 </button>
                                 <textField horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="lSb-Rs-jzn">
                                     <rect key="frame" x="36" y="14" width="68" height="18"/>
@@ -186,7 +191,7 @@
                     <textField hidden="YES" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="F8Z-u0-ZgF">
                         <rect key="frame" x="19" y="56" width="262" height="32"/>
                         <textFieldCell key="cell" selectable="YES" title="Feedback not sent – please type in your feedback" id="kco-ln-AqF">
-                            <font key="font" metaFont="system" size="12"/>
+                            <font key="font" metaFont="cellTitle"/>
                             <color key="textColor" name="error-title-color"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>

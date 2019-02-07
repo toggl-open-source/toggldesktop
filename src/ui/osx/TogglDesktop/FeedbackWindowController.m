@@ -9,6 +9,32 @@
 #import "FeedbackWindowController.h"
 #import "toggl_api.h"
 #import "NSAlert+Utils.h"
+#import "TogglDesktop-Swift.h"
+
+static NSInteger const kMaxFileSize = 5000000;
+
+typedef enum : NSUInteger
+{
+	FeedbackErrorMissingTopic,
+	FeedbackErrorMissingContent,
+	FeedbackErrorFileIsLarge,
+	FeedbackErrorInvalidFile,
+	FeedbackErrorNone
+} FeedbackError;
+
+@interface FeedbackWindowController ()
+@property (weak) IBOutlet NSComboBox *topicComboBox;
+@property (unsafe_unretained) IBOutlet NSTextView *contentTextView;
+@property (weak) IBOutlet NSButton *uploadImageButton;
+@property (weak) IBOutlet FlatButton *sendButton;
+@property (weak) IBOutlet NSTextField *errorLabel;
+@property (weak) IBOutlet NSTextField *selectedImageTextField;
+@property (weak) IBOutlet NSBox *selectedImageBox;
+@property (copy, nonatomic) NSString *selectedFile;
+
+- (IBAction)uploadImageClick:(id)sender;
+- (IBAction)sendClick:(id)sender;
+@end
 
 @implementation FeedbackWindowController
 
@@ -18,13 +44,28 @@ extern void *ctx;
 {
 	NSOpenPanel *panel = [NSOpenPanel openPanel];
 
+	panel.allowsMultipleSelection = NO;
+	panel.canChooseDirectories = NO;
+	panel.canChooseFiles = YES;
+	panel.allowedFileTypes = @[@"jpg", @"png", @"pdf", @"bmp", @"tiff"];
+	__weak typeof(self) weakSelf = self;
 	[panel beginWithCompletionHandler:^(NSInteger result) {
 		 if (result == NSFileHandlingPanelOKButton)
 		 {
 			 NSURL *url = [[panel URLs] objectAtIndex:0];
-			 self.selectedImageTextField.toolTip = [url path];
-			 [self.selectedImageTextField setStringValue:[url lastPathComponent]];
-			 [self.selectedImageTextField setHidden:NO];
+			 FeedbackError error = [weakSelf validateFileSelectionWithURL:url];
+
+	         // Set selected file
+			 NSString *filePath = error == FeedbackErrorNone ? url.path : nil;
+			 weakSelf.selectedFile = filePath;
+
+	         // Show selected file
+			 weakSelf.selectedImageBox.hidden = NO;
+			 weakSelf.selectedImageTextField.stringValue = url.lastPathComponent;
+			 weakSelf.selectedImageTextField.toolTip = filePath;
+
+	         // Show error label
+			 [weakSelf showAlertTitleWithError:error];
 		 }
 	 }];
 }
@@ -36,6 +77,7 @@ extern void *ctx;
 	{
 		[[NSAlert alertWithMessageText:@"Feedback not sent!"
 			 informativeTextWithFormat:@"Please choose a topic before sending feedback."] runModal];
+
 		[self.topicComboBox.window makeFirstResponder:self.topicComboBox];
 		return;
 	}
@@ -65,6 +107,77 @@ extern void *ctx;
 
 	[[NSAlert alertWithMessageText:@"Thank you!"
 		 informativeTextWithFormat:@"Your feedback was sent successfully."] runModal];
+}
+
+- (NSString *)titleForError:(FeedbackError)feedbackError {
+	switch (feedbackError)
+	{
+		case FeedbackErrorMissingTopic :
+			return @"Feedback not sent – please choose a topic";
+
+		case FeedbackErrorMissingContent :
+			return @"Feedback not sent – please type in your feedback";
+
+		case FeedbackErrorFileIsLarge :
+			return @"Feedback not sent – please check that file you are sending is not larger than 5MB";
+
+		case FeedbackErrorInvalidFile :
+			return @"Feedback not sent – image file is invalid - please choose different file";
+
+		case FeedbackErrorNone :
+			return @"";
+	}
+}
+
+- (FeedbackError)validateUserFeedback {
+	if (self.topicComboBox.stringValue == nil
+		|| [self.topicComboBox.stringValue isEqualToString:@""])
+	{
+		return FeedbackErrorMissingTopic;
+	}
+
+	if (self.contentTextView.string == nil
+		|| [self.contentTextView.string isEqualToString:@""])
+	{
+		return FeedbackErrorMissingContent;
+	}
+}
+
+- (FeedbackError)validateFileSelectionWithURL:(NSURL *)url {
+	if (url == nil)
+	{
+		return FeedbackErrorInvalidFile;
+	}
+
+	NSError *err;
+	NSFileManager *fileManager = [NSFileManager defaultManager];
+	NSDictionary *attributesDict = [fileManager attributesOfItemAtPath:url.path error:&err];
+	NSInteger fileSize = [attributesDict fileSize];
+
+	NSLog(@"%ld", fileSize);
+
+	if (err)
+	{
+		return FeedbackErrorInvalidFile;
+	}
+
+	if (fileSize > kMaxFileSize)
+	{
+		return FeedbackErrorFileIsLarge;
+	}
+
+	return FeedbackErrorNone;
+}
+
+- (void)showAlertTitleWithError:(FeedbackError)error {
+	self.errorLabel.hidden = error == FeedbackErrorNone;
+	self.errorLabel.stringValue = [self titleForError:error];
+}
+
+- (IBAction)closeFileOnTap:(id)sender {
+	self.errorLabel.hidden = YES;
+	self.selectedImageBox.hidden = YES;
+	self.selectedFile = nil;
 }
 
 @end
