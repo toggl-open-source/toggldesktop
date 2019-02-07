@@ -699,6 +699,10 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				DEVELOPMENT_TEAM = B227VTMZ94;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"TOGGL_ALLOW_UPDATE_CHECK=1",
+					"TOGGL_PRODUCTION_BUILD=1",
+				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
