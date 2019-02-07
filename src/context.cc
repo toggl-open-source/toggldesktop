@@ -2722,7 +2722,7 @@ TimeEntry *Context::Continue(
     }
 
     if (GUID.empty()) {
-        displayError("Missing GUID");
+        displayError(std::string(__FUNCTION__) + ": Missing GUID");
         return nullptr;
     }
 
@@ -2768,7 +2768,7 @@ error Context::DeleteTimeEntryByGUID(const std::string GUID) {
     }
 
     if (GUID.empty()) {
-        return displayError("Missing GUID");
+        return displayError(std::string(__FUNCTION__) + ": Missing GUID");
     }
 
     TimeEntry *te = nullptr;
@@ -2810,7 +2810,7 @@ error Context::SetTimeEntryDuration(
     const std::string GUID,
     const std::string duration) {
     if (GUID.empty()) {
-        return displayError("Missing GUID");
+        return displayError(std::string(__FUNCTION__) + ": Missing GUID");
     }
 
     Poco::Mutex::ScopedLock lock(user_m_);
@@ -2839,7 +2839,7 @@ error Context::SetTimeEntryProject(
     const std::string project_guid) {
     try {
         if (GUID.empty()) {
-            return displayError("Missing GUID");
+            return displayError(std::string(__FUNCTION__) + ": Missing GUID");
         }
 
         Poco::Mutex::ScopedLock lock(user_m_);
@@ -2903,7 +2903,7 @@ error Context::SetTimeEntryDate(
     const Poco::Int64 unix_timestamp) {
 
     if (GUID.empty()) {
-        return displayError("Missing GUID");
+        return displayError(std::string(__FUNCTION__) + ": Missing GUID");
     }
 
     TimeEntry *te;
@@ -2957,7 +2957,7 @@ error Context::SetTimeEntryStart(
     const std::string GUID,
     const std::string value) {
     if (GUID.empty()) {
-        return displayError("Missing GUID");
+        return displayError(std::string(__FUNCTION__) + ": Missing GUID");
     }
     Poco::LocalDateTime now;
 
@@ -3011,7 +3011,7 @@ error Context::SetTimeEntryStop(
     const std::string GUID,
     const std::string value) {
     if (GUID.empty()) {
-        return displayError("Missing GUID");
+        return displayError(std::string(__FUNCTION__) + ": Missing GUID");
     }
 
     TimeEntry *te = nullptr;
@@ -3074,7 +3074,7 @@ error Context::SetTimeEntryTags(
     const std::string GUID,
     const std::string value) {
     if (GUID.empty()) {
-        return displayError("Missing GUID");
+        return displayError(std::string(__FUNCTION__) + ": Missing GUID");
     }
 
     TimeEntry *te = nullptr;
@@ -3111,7 +3111,7 @@ error Context::SetTimeEntryBillable(
     const std::string GUID,
     const bool value) {
     if (GUID.empty()) {
-        return displayError("Missing GUID");
+        return displayError(std::string(__FUNCTION__) + ": Missing GUID");
     }
 
     TimeEntry *te = nullptr;
@@ -3148,7 +3148,7 @@ error Context::SetTimeEntryDescription(
     const std::string GUID,
     const std::string value) {
     if (GUID.empty()) {
-        return displayError("Missing GUID");
+        return displayError(std::string(__FUNCTION__) + ": Missing GUID");
     }
 
     TimeEntry *te = nullptr;
