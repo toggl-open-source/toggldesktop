@@ -84,7 +84,9 @@ install(FILES icons/64x64/toggldesktop.png DESTINATION share/icons/hicolor/64x64
 install(FILES icons/96x96/toggldesktop.png DESTINATION share/icons/hicolor/96x96/apps)
 install(FILES icons/128x128/toggldesktop.png DESTINATION share/icons/hicolor/128x128/apps)
 install(FILES icons/256x256/toggldesktop.png DESTINATION share/icons/hicolor/256x256/apps)
-install(FILES icons/1024x1024/toggldesktop.png DESTINATION share/icons/hicolor/1024x1024/apps)
+if(INSTALL_HIRES_ICONS)
+    install(FILES icons/1024x1024/toggldesktop.png DESTINATION share/icons/hicolor/1024x1024/apps)
+endif()
 install(FILES dist/toggldesktop.desktop DESTINATION share/applications)
 install(FILES dist/toggldesktop.appdata.xml DESTINATION share/appdata)
 
