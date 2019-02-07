@@ -72,36 +72,43 @@ extern void *ctx;
 
 - (IBAction)sendClick:(id)sender
 {
-	if (self.topicComboBox.stringValue == nil
-		|| [self.topicComboBox.stringValue isEqualToString:@""])
-	{
-		[[NSAlert alertWithMessageText:@"Feedback not sent!"
-			 informativeTextWithFormat:@"Please choose a topic before sending feedback."] runModal];
+	FeedbackError err = [self validateUserFeedback];
 
-		[self.topicComboBox.window makeFirstResponder:self.topicComboBox];
+	// Show alert
+	[self showAlertTitleWithError:err];
+
+	// Focus
+	switch (err)
+	{
+		case FeedbackErrorMissingTopic :
+			[self.topicComboBox.window makeFirstResponder:self.topicComboBox];
+			break;
+		case FeedbackErrorMissingContent :
+			[self.contentTextView.window makeFirstResponder:self.contentTextView];
+			break;
+		default :
+			break;
+	}
+
+	// Early exit if it's error
+	if (err != FeedbackErrorNone)
+	{
 		return;
 	}
-	if (self.contentTextView.string == nil
-		|| [self.contentTextView.string isEqualToString:@""])
-	{
-		[[NSAlert alertWithMessageText:@"Feedback not sent!"
-			 informativeTextWithFormat:@"Please type in your feedback before sending."] runModal];
-		[self.contentTextView.window makeFirstResponder:self.contentTextView];
-		return;
-	}
 
+	// Send feedback
 	if (!toggl_feedback_send(ctx,
 							 [self.topicComboBox.stringValue UTF8String],
 							 [self.contentTextView.string UTF8String],
-							 [self.selectedImageTextField.toolTip UTF8String]))
+							 [self.selectedFile UTF8String]))
 	{
-		[[NSAlert alertWithMessageText:@"Feedback not sent!"
-			 informativeTextWithFormat:@"Please check that file you are sending is not larger than 5MB."] runModal];
+		[self showAlertTitleWithError:FeedbackErrorFileIsLarge];
 		return;
 	}
 
+	// Finalize
 	[self.window close];
-	[self.selectedImageTextField setStringValue:@""];
+	self.selectedImageBox.hidden = YES;
 	[self.contentTextView setString:@""];
 	[self.topicComboBox setStringValue:@""];
 
@@ -141,6 +148,8 @@ extern void *ctx;
 	{
 		return FeedbackErrorMissingContent;
 	}
+
+	return FeedbackErrorNone;
 }
 
 - (FeedbackError)validateFileSelectionWithURL:(NSURL *)url {
