@@ -32,12 +32,12 @@ public static partial class Toggl
     public static string ScriptPath;
     public static string DatabasePath;
     public static string LogPath;
-#if INVS
-    public static string Env = "development";
-#else
-    public static string Env = "production";
-#endif
 
+#if TOGGL_PRODUCTION_BUILD
+    public static string Env = "production";
+#else
+    public static string Env = "development";
+#endif
 
     #endregion
 
@@ -1082,7 +1082,7 @@ public static partial class Toggl
 
         updatePath = Path.Combine(path, "updates");
 
-#if !INVS
+#if TOGGL_ALLOW_UPDATE_CHECK
         installPendingUpdates();
 #endif
 
