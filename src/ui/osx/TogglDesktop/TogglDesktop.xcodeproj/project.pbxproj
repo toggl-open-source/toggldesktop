@@ -39,7 +39,6 @@
 		3C7B4EB3190FB57A00627DC3 /* NSSecureTextFieldVerticallyAligned.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C7B4EB2190FB57A00627DC3 /* NSSecureTextFieldVerticallyAligned.m */; };
 		3C8979B71920B7B7007061E0 /* continue.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 3C8979B61920B7B7007061E0 /* continue.pdf */; };
 		3C8979CA19235EA2007061E0 /* NSTextFieldClickablePointer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C8979C919235EA2007061E0 /* NSTextFieldClickablePointer.m */; };
-		3C9D53AD1A1CD99D00966170 /* app_icon_pdf.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 3C9D53AC1A1CD99D00966170 /* app_icon_pdf.pdf */; };
 		3CA14529192DE32300414620 /* NSViewEscapable.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CA14528192DE32300414620 /* NSViewEscapable.m */; };
 		3CA1453C192DF0DE00414620 /* trash_can.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 3CA1453B192DF0DE00414620 /* trash_can.pdf */; };
 		3CAFDFF51AA713830022CD40 /* icon-google.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 3CAFDFF41AA713830022CD40 /* icon-google.pdf */; };
@@ -127,7 +126,6 @@
 		74F1070118993FFE00E93BD5 /* FeedbackWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74F106FF18993FFE00E93BD5 /* FeedbackWindowController.m */; };
 		74F1070218993FFE00E93BD5 /* FeedbackWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74F1070018993FFE00E93BD5 /* FeedbackWindowController.xib */; };
 		74F8FBA318313FA6000F09EE /* NSTextFieldClickable.m in Sources */ = {isa = PBXBuildFile; fileRef = 74F8FBA218313FA6000F09EE /* NSTextFieldClickable.m */; };
-		74FE0D3C18E25E8400ECFED2 /* app_inactive.icns in Resources */ = {isa = PBXBuildFile; fileRef = 74FE0D3B18E25E8400ECFED2 /* app_inactive.icns */; };
 		95C0707718CDB67300A34D0D /* NSCustomComboBoxCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 95C0707618CDB67300A34D0D /* NSCustomComboBoxCell.m */; };
 		95C0707A18CDB91500A34D0D /* NSCustomComboBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 95C0707918CDB91500A34D0D /* NSCustomComboBox.m */; };
 		95DBF8CC18BF7A910021FB41 /* offline_off.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 95DBF8CA18BF7A910021FB41 /* offline_off.pdf */; };
@@ -143,13 +141,12 @@
 		BA0CEC6521BE590200F1BF01 /* NSTableView+Diff.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0CEC6421BE590200F1BF01 /* NSTableView+Diff.swift */; };
 		BA13E05C21C7BA6000835EC1 /* UserNotificationCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = BA13E05921C7B9D900835EC1 /* UserNotificationCenter.m */; };
 		BA229D1021EDEDC400DEB4B9 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA229D0F21EDEDC400DEB4B9 /* Theme.swift */; };
+		BA2DA0C621A542E30027B7A5 /* NSTextField+Ext.m in Sources */ = {isa = PBXBuildFile; fileRef = BA2DA0C521A542E30027B7A5 /* NSTextField+Ext.m */; };
 		BA2DA12021A691FF0027B7A5 /* TrackingService.m in Sources */ = {isa = PBXBuildFile; fileRef = BA2DA11F21A691FF0027B7A5 /* TrackingService.m */; };
 		BA6E873521DDC1E2005E2451 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA6E86B621DDB331005E2451 /* Sparkle.framework */; };
 		BA6E873621DDC1E2005E2451 /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA6E86B621DDB331005E2451 /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BA6F1B1A21EEE258009265E4 /* NSColor+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6F1B1921EEE258009265E4 /* NSColor+Utils.swift */; };
 		BA6F1B3821EEE998009265E4 /* Theme+Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6F1B3721EEE998009265E4 /* Theme+Notification.swift */; };
-		BA7B4BCB21C0EF8800B75B14 /* NSAlert+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = BA7B4BCA21C0EF8800B75B14 /* NSAlert+Utils.m */; };
-		BA712EC221BF907200A2D8DD /* UndoStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA712EC121BF907200A2D8DD /* UndoStorage.swift */; };
 		BA712EC221BF907200A2D8DD /* UndoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA712EC121BF907200A2D8DD /* UndoManager.swift */; };
 		BA712EC621BF913800A2D8DD /* TimeEntrySnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA712EC521BF913800A2D8DD /* TimeEntrySnapshot.swift */; };
 		BA712EC821BF9F1200A2D8DD /* UndoStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA712EC721BF9F1200A2D8DD /* UndoStack.swift */; };
@@ -169,12 +166,10 @@
 		BAD2342621D612DF0039C742 /* libPocoUtil.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BAD2341D21D612DF0039C742 /* libPocoUtil.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		BAD2342721D612DF0039C742 /* libPocoFoundation.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BAD2341E21D612DF0039C742 /* libPocoFoundation.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		BAE007DE21FAF00D00404379 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BAE007DD21FAF00D00404379 /* Media.xcassets */; };
-		BAF6319C21E6F868002DD6AB /* NotificationCenter+MainThread.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAF6319B21E6F868002DD6AB /* NotificationCenter+MainThread.swift */; };
-		BAF87DED21A3E1F600624EBE /* NSTextField+Ext.m in Sources */ = {isa = PBXBuildFile; fileRef = BAF87DEC21A3E1F600624EBE /* NSTextField+Ext.m */; };
-		BAFBFCC821CD1D3C004B443F /* SystemService.m in Sources */ = {isa = PBXBuildFile; fileRef = BAFBFCC721CD1D3C004B443F /* SystemService.m */; };
-		BA2DA0C621A542E30027B7A5 /* NSTextField+Ext.m in Sources */ = {isa = PBXBuildFile; fileRef = BA2DA0C521A542E30027B7A5 /* NSTextField+Ext.m */; };
 		BAF50DE521A29FED0090BA95 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BAF50DE421A29FED0090BA95 /* Images.xcassets */; };
 		BAF50DF821A2A18D0090BA95 /* AppIconFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = BAF50DF721A2A18D0090BA95 /* AppIconFactory.m */; };
+		BAF6319C21E6F868002DD6AB /* NotificationCenter+MainThread.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAF6319B21E6F868002DD6AB /* NotificationCenter+MainThread.swift */; };
+		BAFBFCC821CD1D3C004B443F /* SystemService.m in Sources */ = {isa = PBXBuildFile; fileRef = BAFBFCC721CD1D3C004B443F /* SystemService.m */; };
 		C5CB7F0417F43EE100A2AEB1 /* TimeEntryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C5CB7F0317F43EE100A2AEB1 /* TimeEntryCell.m */; };
 		C5DA1FBF17F1B08A001C4565 /* MainWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5DA1FBD17F1B08A001C4565 /* MainWindowController.m */; };
 		C5DA1FC017F1B08A001C4565 /* MainWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5DA1FBE17F1B08A001C4565 /* MainWindowController.xib */; };
@@ -515,7 +510,6 @@
 		3C8979B61920B7B7007061E0 /* continue.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = continue.pdf; sourceTree = "<group>"; };
 		3C8979C819235EA2007061E0 /* NSTextFieldClickablePointer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSTextFieldClickablePointer.h; sourceTree = "<group>"; };
 		3C8979C919235EA2007061E0 /* NSTextFieldClickablePointer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSTextFieldClickablePointer.m; sourceTree = "<group>"; };
-		3C9D53AC1A1CD99D00966170 /* app_icon_pdf.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = app_icon_pdf.pdf; sourceTree = "<group>"; };
 		3CA14527192DE32300414620 /* NSViewEscapable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSViewEscapable.h; sourceTree = "<group>"; };
 		3CA14528192DE32300414620 /* NSViewEscapable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSViewEscapable.m; sourceTree = "<group>"; };
 		3CA1453B192DF0DE00414620 /* trash_can.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = trash_can.pdf; sourceTree = "<group>"; };
@@ -666,7 +660,6 @@
 		74F8FBA218313FA6000F09EE /* NSTextFieldClickable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSTextFieldClickable.m; sourceTree = "<group>"; };
 		74FD8CD718A8EEE200F7DB80 /* TFDatePicker.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TFDatePicker.xcodeproj; path = ../../../../third_party/TFDatePicker/TFDatePicker/TFDatePicker.xcodeproj; sourceTree = "<group>"; };
 		74FD8CDF18A8EF8300F7DB80 /* TFDatePicker.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TFDatePicker.framework; path = ../../../../third_party/TFDatePicker/TFDatePicker/build/Release/TFDatePicker.framework; sourceTree = "<group>"; };
-		74FE0D3B18E25E8400ECFED2 /* app_inactive.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = app_inactive.icns; sourceTree = "<group>"; };
 		95C0707518CDB67300A34D0D /* NSCustomComboBoxCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSCustomComboBoxCell.h; sourceTree = "<group>"; };
 		95C0707618CDB67300A34D0D /* NSCustomComboBoxCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSCustomComboBoxCell.m; sourceTree = "<group>"; };
 		95C0707818CDB91500A34D0D /* NSCustomComboBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSCustomComboBox.h; sourceTree = "<group>"; };
@@ -685,14 +678,13 @@
 		BA13E05921C7B9D900835EC1 /* UserNotificationCenter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = UserNotificationCenter.m; path = test2/UserNotificationCenter.m; sourceTree = SOURCE_ROOT; };
 		BA13E05A21C7B9D900835EC1 /* UserNotificationCenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = UserNotificationCenter.h; path = test2/UserNotificationCenter.h; sourceTree = SOURCE_ROOT; };
 		BA229D0F21EDEDC400DEB4B9 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		BA2DA0C421A542E20027B7A5 /* NSTextField+Ext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSTextField+Ext.h"; sourceTree = "<group>"; };
+		BA2DA0C521A542E30027B7A5 /* NSTextField+Ext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSTextField+Ext.m"; sourceTree = "<group>"; };
 		BA2DA11E21A691FF0027B7A5 /* TrackingService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TrackingService.h; sourceTree = "<group>"; };
 		BA2DA11F21A691FF0027B7A5 /* TrackingService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TrackingService.m; sourceTree = "<group>"; };
 		BA6E86A521DDB331005E2451 /* Sparkle.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Sparkle.xcodeproj; path = ../../../../third_party/Sparkle/Sparkle.xcodeproj; sourceTree = "<group>"; };
 		BA6F1B1921EEE258009265E4 /* NSColor+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSColor+Utils.swift"; sourceTree = "<group>"; };
 		BA6F1B3721EEE998009265E4 /* Theme+Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Theme+Notification.swift"; sourceTree = "<group>"; };
-		BA7B4BC921C0EF8800B75B14 /* NSAlert+Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSAlert+Utils.h"; sourceTree = "<group>"; };
-		BA7B4BCA21C0EF8800B75B14 /* NSAlert+Utils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSAlert+Utils.m"; sourceTree = "<group>"; };
-		BA712EC121BF907200A2D8DD /* UndoStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UndoStorage.swift; sourceTree = "<group>"; };
 		BA712EC121BF907200A2D8DD /* UndoManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UndoManager.swift; sourceTree = "<group>"; };
 		BA712EC521BF913800A2D8DD /* TimeEntrySnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeEntrySnapshot.swift; sourceTree = "<group>"; };
 		BA712EC721BF9F1200A2D8DD /* UndoStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UndoStack.swift; sourceTree = "<group>"; };
@@ -713,16 +705,14 @@
 		BAD2341D21D612DF0039C742 /* libPocoUtil.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoUtil.60.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoUtil.60.dylib; sourceTree = "<group>"; };
 		BAD2341E21D612DF0039C742 /* libPocoFoundation.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoFoundation.60.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoFoundation.60.dylib; sourceTree = "<group>"; };
 		BAE007DD21FAF00D00404379 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
+		BAF50DE421A29FED0090BA95 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = TogglDesktop/Images.xcassets; sourceTree = "<group>"; };
+		BAF50DF621A2A18D0090BA95 /* AppIconFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppIconFactory.h; sourceTree = "<group>"; };
+		BAF50DF721A2A18D0090BA95 /* AppIconFactory.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppIconFactory.m; sourceTree = "<group>"; };
 		BAF6319B21E6F868002DD6AB /* NotificationCenter+MainThread.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationCenter+MainThread.swift"; sourceTree = "<group>"; };
 		BAF87DEB21A3E1F600624EBE /* NSTextField+Ext.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSTextField+Ext.h"; sourceTree = "<group>"; };
 		BAF87DEC21A3E1F600624EBE /* NSTextField+Ext.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSTextField+Ext.m"; sourceTree = "<group>"; };
 		BAFBFCC621CD1D3C004B443F /* SystemService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SystemService.h; sourceTree = "<group>"; };
 		BAFBFCC721CD1D3C004B443F /* SystemService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SystemService.m; sourceTree = "<group>"; };
-		BA2DA0C421A542E20027B7A5 /* NSTextField+Ext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSTextField+Ext.h"; sourceTree = "<group>"; };
-		BA2DA0C521A542E30027B7A5 /* NSTextField+Ext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSTextField+Ext.m"; sourceTree = "<group>"; };
-		BAF50DE421A29FED0090BA95 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = TogglDesktop/Images.xcassets; sourceTree = "<group>"; };
-		BAF50DF621A2A18D0090BA95 /* AppIconFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppIconFactory.h; sourceTree = "<group>"; };
-		BAF50DF721A2A18D0090BA95 /* AppIconFactory.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppIconFactory.m; sourceTree = "<group>"; };
 		C5CB7F0217F43EE100A2AEB1 /* TimeEntryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeEntryCell.h; sourceTree = "<group>"; };
 		C5CB7F0317F43EE100A2AEB1 /* TimeEntryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimeEntryCell.m; sourceTree = "<group>"; };
 		C5DA1FB817F19647001C4565 /* Kopsik.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = Kopsik.dylib; path = ../../../lib/osx/build/Kopsik.dylib; sourceTree = "<group>"; };
@@ -1068,7 +1058,6 @@
 				3C4237161A9F612E00643059 /* toggl-desktop-bg.png */,
 				3C2645A41A2F2AE0007DC17F /* start_button.pdf */,
 				3C2645A51A2F2AE0007DC17F /* stop_button.pdf */,
-				3C9D53AC1A1CD99D00966170 /* app_icon_pdf.pdf */,
 				74664DAF18AA860800AAD282 /* on.pdf */,
 				74664DB018AA860800AAD282 /* off.pdf */,
 				3C7B4E9D190FA7F900627DC3 /* logo-white@2x.png */,
@@ -1206,6 +1195,15 @@
 			name = UserNotification;
 			sourceTree = "<unknown>";
 		};
+		BA229D0E21EDEDBA00DEB4B9 /* Theme */ = {
+			isa = PBXGroup;
+			children = (
+				BA229D0F21EDEDC400DEB4B9 /* Theme.swift */,
+				BA6F1B3721EEE998009265E4 /* Theme+Notification.swift */,
+			);
+			name = Theme;
+			sourceTree = "<group>";
+		};
 		BA6E86A621DDB331005E2451 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -1242,15 +1240,6 @@
 			path = Undo;
 			sourceTree = "<group>";
 		};
-		BA229D0E21EDEDBA00DEB4B9 /* Theme */ = {
-			isa = PBXGroup;
-			children = (
-				BA229D0F21EDEDC400DEB4B9 /* Theme.swift */,
-				BA6F1B3721EEE998009265E4 /* Theme+Notification.swift */,
-			);
-			name = Theme;
-			sourceTree = "<group>";
-		};
 		BA7DB6BC21F9C7660059239B /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -1259,6 +1248,15 @@
 				BA7DB6D621F9C7660059239B /* Demo.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		BAF50DF521A2A16D0090BA95 /* Icon */ = {
+			isa = PBXGroup;
+			children = (
+				BAF50DF621A2A18D0090BA95 /* AppIconFactory.h */,
+				BAF50DF721A2A18D0090BA95 /* AppIconFactory.m */,
+			);
+			name = Icon;
 			sourceTree = "<group>";
 		};
 		BAF87DDB21A3E1E700624EBE /* Extension */ = {
@@ -1273,15 +1271,6 @@
 				BA03729C21FED85700FC277B /* NSView+Xib.swift */,
 			);
 			name = Extension;
-			sourceTree = "<group>";
-		};
-		BAF50DF521A2A16D0090BA95 /* Icon */ = {
-			isa = PBXGroup;
-			children = (
-				BAF50DF621A2A18D0090BA95 /* AppIconFactory.h */,
-				BAF50DF721A2A18D0090BA95 /* AppIconFactory.m */,
-			);
-			name = Icon;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1646,7 +1635,6 @@
 				C5DA1FC517F1B38B001C4565 /* LoginViewController.xib in Resources */,
 				74664DB118AA860800AAD282 /* on.pdf in Resources */,
 				69FC180517E6534400B96425 /* Credits.rtf in Resources */,
-				3C9D53AD1A1CD99D00966170 /* app_icon_pdf.pdf in Resources */,
 				3C7B4E9E190FA7F900627DC3 /* logo-white@2x.png in Resources */,
 				74F1070218993FFE00E93BD5 /* FeedbackWindowController.xib in Resources */,
 				3C4237171A9F612E00643059 /* toggl-logo-white.pdf in Resources */,
@@ -1771,7 +1759,6 @@
 				69FC180117E6534400B96425 /* main.m in Sources */,
 				74F1070118993FFE00E93BD5 /* FeedbackWindowController.m in Sources */,
 				BA03725521FE9FD400FC277B /* FlatButton.swift in Sources */,
-				74FE0D6018E260A000ECFED2 /* MASShortcutView.m in Sources */,
 				69FC180817E6534400B96425 /* AppDelegate.m in Sources */,
 				3C6B24A4203FC8200063FC08 /* LiteAutoCompleteDataSource.m in Sources */,
 				3C068C6A1C22F25000874B9A /* MKColorWellCustom.m in Sources */,
@@ -1797,7 +1784,6 @@
 				BAF6319C21E6F868002DD6AB /* NotificationCenter+MainThread.swift in Sources */,
 				74AA9471180909F50000539F /* GTMHTTPFetcher.m in Sources */,
 				BAFBFCC821CD1D3C004B443F /* SystemService.m in Sources */,
-				74FE0D5D18E260A000ECFED2 /* MASShortcut+UserDefaults.m in Sources */,
 				BAF50DF821A2A18D0090BA95 /* AppIconFactory.m in Sources */,
 				74A7346A18297DD100525BBC /* ConvertHexColor.m in Sources */,
 				74BAAA0B17F37B140079386F /* TimeEntryViewItem.m in Sources */,
