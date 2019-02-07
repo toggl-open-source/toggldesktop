@@ -298,7 +298,7 @@ bool TimeEntryEditorWidget::applyNewProject() {
 
 bool TimeEntryEditorWidget::eventFilter(QObject *object, QEvent *event) {
     if (event->type() == QEvent::FocusOut) {
-        if (object == ui->description) {
+        if (object == ui->description && !guid.isEmpty()) {
             TogglApi::instance->setTimeEntryDescription(guid,
                     ui->description->currentText());
         }
