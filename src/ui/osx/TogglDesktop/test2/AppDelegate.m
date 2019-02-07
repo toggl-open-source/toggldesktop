@@ -1209,8 +1209,13 @@ const NSString *appName = @"osx_native_app";
 {
 	self = [super init];
 
+	#ifdef DEBUG
+	self.environment = @"development";
+	#else
+	self.environment = @"production";
+	#endif
+
 	NSDictionary *infoDict = [[NSBundle mainBundle] infoDictionary];
-	self.environment = infoDict[@"KopsikEnvironment"];
 	self.version = infoDict[@"CFBundleShortVersionString"];
 
 	// Disallow duplicate instances in production

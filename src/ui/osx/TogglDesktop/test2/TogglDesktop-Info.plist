@@ -46,8 +46,6 @@
 	<string>10B61</string>
 	<key>KopsikCheckForUpdates</key>
 	<false/>
-	<key>KopsikEnvironment</key>
-	<string>development</string>
 	<key>KopsikLogUserInterfaceToFile</key>
 	<false/>
 	<key>LSApplicationCategoryType</key>
