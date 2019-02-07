@@ -1,6 +1,24 @@
 {
     "versions": [
         {
+            "version": "7.4.345",
+            "rows": [
+                "Send more log info with in-app feedback",
+                "Do all syncing in background for non-freezing UI",
+                "Added proper 'No workspaces' scenario overlay",
+                "Added 'Total today' text to tray icon tooltip",
+                "Add project, client and task label into tray icon tooltip",
+                "Improved client id setting when creating new project",
+                "Improved Idle detection when Locking/Unlocking session",
+                "Fixed issue with tracking reminder triggering when editing reminder settings",
+                "Improve user data handling to avoid crashes",
+                "Added 'Stop timer on shutdown' functionality",
+                "Updated Google login framework"
+            ],
+            "date": "February 7th 2019",
+            "beta": "true"
+        },
+        {
             "version": "7.4.252",
             "rows": [
                 "Fixed 'no project' filtering issues",
