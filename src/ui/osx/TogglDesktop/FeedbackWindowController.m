@@ -10,6 +10,7 @@
 #import "toggl_api.h"
 #import "NSAlert+Utils.h"
 #import "TogglDesktop-Swift.h"
+#import "ConvertHexColor.h"
 
 static NSInteger const kMaxFileSize = 5000000;
 
@@ -25,7 +26,7 @@ typedef enum : NSUInteger
 @interface FeedbackWindowController ()
 @property (weak) IBOutlet NSComboBox *topicComboBox;
 @property (unsafe_unretained) IBOutlet NSTextView *contentTextView;
-@property (weak) IBOutlet NSButton *uploadImageButton;
+@property (weak) IBOutlet FlatButton *uploadImageButton;
 @property (weak) IBOutlet FlatButton *sendButton;
 @property (weak) IBOutlet NSTextField *errorLabel;
 @property (weak) IBOutlet NSTextField *selectedImageTextField;
@@ -39,6 +40,26 @@ typedef enum : NSUInteger
 @implementation FeedbackWindowController
 
 extern void *ctx;
+
+- (void)awakeFromNib
+{
+	[super awakeFromNib];
+
+	self.uploadImageButton.wantsLayer = YES;
+	self.uploadImageButton.layer.borderWidth = 1;
+	if (@available(macOS 10.13, *))
+	{
+		self.uploadImageButton.layer.borderColor = [NSColor colorNamed:@"upload-border-color"].CGColor;
+		self.uploadImageButton.bgColor = [NSColor colorNamed:@"upload-background-color"];
+		self.contentTextView.backgroundColor = [NSColor colorNamed:@"upload-background-color"];
+	}
+	else
+	{
+		self.uploadImageButton.layer.borderColor = [ConvertHexColor hexCodeToNSColor:@"#acacac"].CGColor;
+		self.uploadImageButton.bgColor = NSColor.whiteColor;
+		self.contentTextView.backgroundColor = NSColor.whiteColor;
+	}
+}
 
 - (IBAction)uploadImageClick:(id)sender
 {

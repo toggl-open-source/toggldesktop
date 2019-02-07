@@ -87,13 +87,13 @@
                             <constraint firstAttribute="height" constant="26" id="5Dc-Gv-7ba"/>
                             <constraint firstAttribute="width" constant="113" id="KMw-7Z-WIa"/>
                         </constraints>
-                        <buttonCell key="cell" type="bevel" title="Choose image" bezelStyle="regularSquare" alignment="center" imageScaling="proportionallyDown" inset="2" id="4zy-CO-iA4">
+                        <buttonCell key="cell" type="squareTextured" title="Choose image" bezelStyle="texturedSquare" alignment="center" imageScaling="proportionallyDown" inset="2" id="4zy-CO-iA4">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                            <font key="font" metaFont="system" size="14"/>
+                            <font key="font" metaFont="system"/>
                         </buttonCell>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="color" keyPath="textColor">
-                                <color key="value" name="grey-text-color"/>
+                                <color key="value" name="black-text-color"/>
                             </userDefinedRuntimeAttribute>
                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                                 <real key="value" value="8"/>
