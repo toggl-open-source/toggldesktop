@@ -80,7 +80,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="412" height="540"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <box autoresizesSubviews="NO" boxType="custom" borderType="none" borderWidth="0.0" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="KYJ-q7-LnW">
+                                        <box autoresizesSubviews="NO" boxType="custom" borderType="none" borderWidth="0.0" cornerRadius="4" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="KYJ-q7-LnW">
                                             <rect key="frame" x="15" y="322" width="382" height="208"/>
                                             <view key="contentView" id="a3O-tS-arC">
                                                 <rect key="frame" x="0.0" y="0.0" width="382" height="208"/>
@@ -273,7 +273,7 @@
                                             </constraints>
                                             <color key="fillColor" name="preference-box-background-color"/>
                                         </box>
-                                        <box autoresizesSubviews="NO" boxType="custom" borderType="none" borderWidth="0.0" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="brM-0V-2IH">
+                                        <box autoresizesSubviews="NO" boxType="custom" borderType="none" borderWidth="0.0" cornerRadius="4" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="brM-0V-2IH">
                                             <rect key="frame" x="15" y="182" width="382" height="130"/>
                                             <view key="contentView" id="vnT-py-ejH">
                                                 <rect key="frame" x="0.0" y="0.0" width="382" height="130"/>
@@ -352,7 +352,7 @@
                                             </constraints>
                                             <color key="fillColor" name="preference-box-background-color"/>
                                         </box>
-                                        <box autoresizesSubviews="NO" boxType="custom" borderType="none" borderWidth="0.0" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="zQS-pF-1EQ">
+                                        <box autoresizesSubviews="NO" boxType="custom" borderType="none" borderWidth="0.0" cornerRadius="4" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="zQS-pF-1EQ">
                                             <rect key="frame" x="15" y="114" width="382" height="58"/>
                                             <view key="contentView" id="Kte-rl-Tae">
                                                 <rect key="frame" x="0.0" y="0.0" width="382" height="58"/>
@@ -393,7 +393,7 @@
                                             </constraints>
                                             <color key="fillColor" name="preference-box-background-color"/>
                                         </box>
-                                        <box autoresizesSubviews="NO" boxType="custom" borderType="none" borderWidth="0.0" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="zez-BU-pHz">
+                                        <box autoresizesSubviews="NO" boxType="custom" borderType="none" borderWidth="0.0" cornerRadius="4" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="zez-BU-pHz">
                                             <rect key="frame" x="15" y="58" width="382" height="46"/>
                                             <view key="contentView" id="PaI-l4-AmI">
                                                 <rect key="frame" x="0.0" y="0.0" width="382" height="46"/>
@@ -436,7 +436,7 @@
                                             </constraints>
                                             <color key="fillColor" name="preference-box-background-color"/>
                                         </box>
-                                        <box autoresizesSubviews="NO" boxType="custom" borderType="none" borderWidth="0.0" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="4OJ-cM-plX">
+                                        <box autoresizesSubviews="NO" boxType="custom" borderType="none" borderWidth="0.0" cornerRadius="4" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="4OJ-cM-plX">
                                             <rect key="frame" x="15" y="10" width="382" height="38"/>
                                             <view key="contentView" id="l4g-U3-2Pc">
                                                 <rect key="frame" x="0.0" y="0.0" width="382" height="38"/>
@@ -1080,13 +1080,21 @@
                             </tabViewItem>
                         </tabViewItems>
                     </tabView>
+                    <box boxType="custom" borderType="none" borderWidth="0.0" cornerRadius="4" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="x8k-FT-alL">
+                        <rect key="frame" x="32" y="518" width="348" height="20"/>
+                        <view key="contentView" id="6PL-X1-TWK">
+                            <rect key="frame" x="0.0" y="0.0" width="348" height="20"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        </view>
+                        <color key="fillColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </box>
                     <segmentedControl verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="2zJ-7y-OAc">
                         <rect key="frame" x="30" y="515" width="352" height="24"/>
                         <segmentedCell key="cell" borderStyle="border" alignment="left" style="rounded" trackingMode="selectOne" id="V97-Jh-edB">
                             <font key="font" metaFont="system"/>
                             <segments>
-                                <segment label="General" width="87"/>
-                                <segment label="Proxy" width="87" selected="YES" tag="1"/>
+                                <segment label="General" width="87" selected="YES"/>
+                                <segment label="Proxy" width="87" tag="1"/>
                                 <segment label="Autotracker" width="87"/>
                                 <segment label="Reminder"/>
                             </segments>
@@ -1094,16 +1102,20 @@
                     </segmentedControl>
                 </subviews>
                 <constraints>
+                    <constraint firstItem="x8k-FT-alL" firstAttribute="bottom" secondItem="2zJ-7y-OAc" secondAttribute="bottom" constant="-1" id="0Hf-5C-Pbx"/>
                     <constraint firstAttribute="bottom" secondItem="qdc-hR-YLw" secondAttribute="bottom" id="29P-NV-P25"/>
                     <constraint firstAttribute="bottom" secondItem="ZDX-gA-MBn" secondAttribute="bottom" id="DNp-0Y-O1l"/>
                     <constraint firstItem="qdc-hR-YLw" firstAttribute="top" secondItem="2" secondAttribute="top" id="LiI-gw-JZ7"/>
+                    <constraint firstItem="x8k-FT-alL" firstAttribute="trailing" secondItem="2zJ-7y-OAc" secondAttribute="trailing" id="Ntq-hO-Nbx"/>
                     <constraint firstAttribute="trailing" secondItem="qdc-hR-YLw" secondAttribute="trailing" id="PRc-AI-CTu"/>
                     <constraint firstItem="qdc-hR-YLw" firstAttribute="leading" secondItem="2" secondAttribute="leading" id="UvL-jc-rqF"/>
                     <constraint firstItem="ZDX-gA-MBn" firstAttribute="top" secondItem="2" secondAttribute="top" constant="8" id="YTv-tE-7LO"/>
                     <constraint firstAttribute="trailing" secondItem="ZDX-gA-MBn" secondAttribute="trailing" id="aY5-FM-nM7"/>
                     <constraint firstItem="2zJ-7y-OAc" firstAttribute="top" secondItem="2" secondAttribute="top" constant="10" id="ilc-xa-Ab5"/>
                     <constraint firstItem="2zJ-7y-OAc" firstAttribute="leading" secondItem="2" secondAttribute="leading" constant="32" id="o12-og-FN9"/>
+                    <constraint firstItem="x8k-FT-alL" firstAttribute="leading" secondItem="2zJ-7y-OAc" secondAttribute="leading" id="pyJ-9S-oSl"/>
                     <constraint firstAttribute="trailing" secondItem="2zJ-7y-OAc" secondAttribute="trailing" constant="32" id="qJ9-gc-eqg"/>
+                    <constraint firstItem="x8k-FT-alL" firstAttribute="top" secondItem="2zJ-7y-OAc" secondAttribute="top" id="yG8-b5-3j7"/>
                     <constraint firstItem="ZDX-gA-MBn" firstAttribute="leading" secondItem="2" secondAttribute="leading" id="ySy-pW-Lwg"/>
                 </constraints>
             </view>
