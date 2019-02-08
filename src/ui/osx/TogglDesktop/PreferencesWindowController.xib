@@ -44,6 +44,8 @@
                 <outlet property="showHideShortcutView" destination="DLB-Fw-7tX" id="T2o-mF-KXG"/>
                 <outlet property="startStopShortcutView" destination="Ft4-tk-xRA" id="5tb-G5-s2R"/>
                 <outlet property="stopOnShutdownCheckbox" destination="n3k-Br-KIY" id="guw-6w-Kef"/>
+                <outlet property="tabSegment" destination="2zJ-7y-OAc" id="qpb-67-EOV"/>
+                <outlet property="tabView" destination="ZDX-gA-MBn" id="nm1-wR-kSc"/>
                 <outlet property="useIdleDetectionButton" destination="Lgk-gZ-8Ha" id="Erp-FO-vcw"/>
                 <outlet property="usePomodoroBreakButton" destination="BzK-d8-1HF" id="nWi-xj-Mxm"/>
                 <outlet property="usePomodoroButton" destination="Rmf-uW-sZP" id="fZa-h4-WjK"/>
@@ -487,20 +489,20 @@
                             </tabViewItem>
                             <tabViewItem label="Proxy" identifier="2" id="adI-Zg-JOo">
                                 <view key="view" id="Leo-bI-fp3">
-                                    <rect key="frame" x="10" y="33" width="444" height="421"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="412" height="540"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <box autoresizesSubviews="NO" borderType="line" title="Proxy Settings" translatesAutoresizingMaskIntoConstraints="NO" id="hoK-7e-akc">
-                                            <rect key="frame" x="13" y="207" width="418" height="138"/>
+                                            <rect key="frame" x="13" y="326" width="386" height="138"/>
                                             <view key="contentView" id="XhL-bq-2bj">
-                                                <rect key="frame" x="3" y="3" width="412" height="120"/>
+                                                <rect key="frame" x="3" y="3" width="380" height="120"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <stackView distribution="equalSpacing" orientation="vertical" alignment="leading" spacing="3" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PzD-mm-klI">
-                                                        <rect key="frame" x="16" y="8" width="380" height="104"/>
+                                                        <rect key="frame" x="16" y="8" width="348" height="104"/>
                                                         <subviews>
                                                             <stackView distribution="fill" orientation="horizontal" alignment="centerY" spacing="1" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DlD-dh-sFA">
-                                                                <rect key="frame" x="0.0" y="82" width="379" height="22"/>
+                                                                <rect key="frame" x="0.0" y="82" width="348" height="22"/>
                                                                 <subviews>
                                                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="tTy-26-HVI">
                                                                         <rect key="frame" x="-2" y="3" width="88" height="17"/>
@@ -514,7 +516,7 @@
                                                                         </textFieldCell>
                                                                     </textField>
                                                                     <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="eSt-Rf-LI2">
-                                                                        <rect key="frame" x="85" y="0.0" width="294" height="22"/>
+                                                                        <rect key="frame" x="85" y="0.0" width="263" height="22"/>
                                                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" enabled="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="QLq-5g-6i8">
                                                                             <font key="font" metaFont="system"/>
                                                                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -536,7 +538,7 @@
                                                                 </customSpacing>
                                                             </stackView>
                                                             <stackView distribution="fill" orientation="horizontal" alignment="centerY" spacing="1" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1be-dp-20I">
-                                                                <rect key="frame" x="0.0" y="55" width="379" height="22"/>
+                                                                <rect key="frame" x="0.0" y="55" width="348" height="22"/>
                                                                 <subviews>
                                                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="mT9-N4-nJS">
                                                                         <rect key="frame" x="-2" y="2" width="88" height="17"/>
@@ -550,7 +552,7 @@
                                                                         </textFieldCell>
                                                                     </textField>
                                                                     <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="0tH-DP-xDu">
-                                                                        <rect key="frame" x="85" y="0.0" width="294" height="22"/>
+                                                                        <rect key="frame" x="85" y="0.0" width="263" height="22"/>
                                                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" enabled="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="jfs-4a-yrp">
                                                                             <font key="font" metaFont="system"/>
                                                                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -572,7 +574,7 @@
                                                                 </customSpacing>
                                                             </stackView>
                                                             <stackView distribution="fill" orientation="horizontal" alignment="centerY" spacing="1" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UxD-at-fjg">
-                                                                <rect key="frame" x="0.0" y="27" width="379" height="22"/>
+                                                                <rect key="frame" x="0.0" y="27" width="348" height="22"/>
                                                                 <subviews>
                                                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="580-sq-qzQ">
                                                                         <rect key="frame" x="-2" y="3" width="88" height="17"/>
@@ -586,7 +588,7 @@
                                                                         </textFieldCell>
                                                                     </textField>
                                                                     <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="hml-tw-LUI">
-                                                                        <rect key="frame" x="85" y="0.0" width="294" height="22"/>
+                                                                        <rect key="frame" x="85" y="0.0" width="263" height="22"/>
                                                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" enabled="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="vKb-gX-cME">
                                                                             <font key="font" metaFont="system"/>
                                                                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -608,7 +610,7 @@
                                                                 </customSpacing>
                                                             </stackView>
                                                             <stackView distribution="fill" orientation="horizontal" alignment="centerY" spacing="1" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JTp-GI-RpK">
-                                                                <rect key="frame" x="0.0" y="0.0" width="379" height="22"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="348" height="22"/>
                                                                 <subviews>
                                                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="mDj-Eq-8xq">
                                                                         <rect key="frame" x="-2" y="3" width="88" height="17"/>
@@ -622,7 +624,7 @@
                                                                         </textFieldCell>
                                                                     </textField>
                                                                     <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="bcT-3P-lAf" customClass="NSSecureTextField">
-                                                                        <rect key="frame" x="85" y="0.0" width="294" height="22"/>
+                                                                        <rect key="frame" x="85" y="0.0" width="263" height="22"/>
                                                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" enabled="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="9oG-9p-TqV">
                                                                             <font key="font" metaFont="system"/>
                                                                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -673,9 +675,9 @@
                                             </connections>
                                         </box>
                                         <matrix verticalHuggingPriority="750" allowsEmptySelection="NO" autorecalculatesCellSize="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CE1-H6-4lx">
-                                            <rect key="frame" x="16" y="355" width="412" height="62"/>
+                                            <rect key="frame" x="16" y="474" width="380" height="62"/>
                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                            <size key="cellSize" width="412" height="18"/>
+                                            <size key="cellSize" width="380" height="18"/>
                                             <size key="intercellSpacing" width="4" height="4"/>
                                             <buttonCell key="prototype" type="radio" title="Radio" imagePosition="left" alignment="left" inset="2" id="xKr-dM-ivN">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -1099,6 +1101,9 @@
                                 <segment label="Reminder"/>
                             </segments>
                         </segmentedCell>
+                        <connections>
+                            <action selector="tabSegmentOnChange:" target="-2" id="cy2-tb-zaj"/>
+                        </connections>
                     </segmentedControl>
                 </subviews>
                 <constraints>

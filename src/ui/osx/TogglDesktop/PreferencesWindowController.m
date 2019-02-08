@@ -19,12 +19,90 @@
 NSString *const kPreferenceGlobalShortcutShowHide = @"TogglDesktopGlobalShortcutShowHide";
 NSString *const kPreferenceGlobalShortcutStartStop = @"TogglDesktopGlobalShortcutStartStop";
 
+typedef enum : NSUInteger
+{
+	TabIndexGeneral,
+	TabIndexProxy,
+	TabIndexAutotracker,
+	TabIndexReminder
+} TabIndex;
+
 @interface PreferencesWindowController ()
 @property NSMutableArray *rules;
 @property AutocompleteDataSource *autotrackerProjectAutocompleteDataSource;
 @property AutocompleteDataSource *defaultProjectAutocompleteDataSource;
 @property NSMutableArray *termAutocompleteItems;
+@property (assign, nonatomic) TabIndex currentTab;
 @property (weak) IBOutlet NSButton *stopOnShutdownCheckbox;
+@property (weak) IBOutlet NSTextField *hostTextField;
+@property (weak) IBOutlet NSTextField *portTextField;
+@property (weak) IBOutlet NSTextField *usernameTextField;
+@property (weak) IBOutlet NSTextField *passwordTextField;
+@property (weak) IBOutlet NSButton *useIdleDetectionButton;
+@property (weak) IBOutlet NSButton *usePomodoroButton;
+@property (weak) IBOutlet NSButton *usePomodoroBreakButton;
+@property (weak) IBOutlet NSButton *recordTimelineCheckbox;
+@property (weak) IBOutlet NSButton *menubarTimerCheckbox;
+@property (weak) IBOutlet NSButton *menubarProjectCheckbox;
+@property (weak) IBOutlet NSButton *dockIconCheckbox;
+@property (weak) IBOutlet NSButton *ontopCheckbox;
+@property (weak) IBOutlet NSButton *reminderCheckbox;
+@property (weak) IBOutlet MASShortcutView *showHideShortcutView;
+@property (weak) IBOutlet MASShortcutView *startStopShortcutView;
+@property (weak) IBOutlet NSTextField *idleMinutesTextField;
+@property (weak) IBOutlet NSTextField *pomodoroMinutesTextField;
+@property (weak) IBOutlet NSTextField *pomodoroBreakMinutesTextField;
+@property (weak) IBOutlet NSButton *focusOnShortcutCheckbox;
+@property (weak) IBOutlet NSTextField *reminderMinutesTextField;
+@property (weak) IBOutlet NSComboBox *autotrackerTerm;
+@property (weak) IBOutlet NSCustomComboBox *autotrackerProject;
+@property (weak) IBOutlet NSCustomComboBox *defaultProject;
+@property (weak) IBOutlet NSTableView *autotrackerRulesTableView;
+@property (weak) IBOutlet NSButton *remindMon;
+@property (weak) IBOutlet NSButton *remindTue;
+@property (weak) IBOutlet NSButton *remindWed;
+@property (weak) IBOutlet NSButton *remindThu;
+@property (weak) IBOutlet NSButton *remindFri;
+@property (weak) IBOutlet NSButton *remindSat;
+@property (weak) IBOutlet NSButton *remindSun;
+@property (weak) IBOutlet NSTextField *remindStarts;
+@property (weak) IBOutlet NSTextField *remindEnds;
+@property (weak) IBOutlet NSButton *autotrack;
+@property (weak) IBOutlet NSButton *openEditorOnShortcut;
+@property (weak) IBOutlet NSButton *renderTimeline;
+@property (weak) IBOutlet NSMatrix *proxyRadio;
+@property (weak) IBOutlet NSButton *addAutotrackerRuleButton;
+@property (weak) IBOutlet NSButton *changeDurationButton;
+@property (weak) IBOutlet NSSegmentedControl *tabSegment;
+@property (weak) IBOutlet NSTabView *tabView;
+
+- (IBAction)idleMinutesChange:(id)sender;
+- (IBAction)pomodoroMinutesChange:(id)sender;
+- (IBAction)pomodoroBreakMinutesChange:(id)sender;
+- (IBAction)proxyRadioChanged:(id)sender;
+- (IBAction)hostTextFieldChanged:(id)sender;
+- (IBAction)portTextFieldChanged:(id)sender;
+- (IBAction)usernameTextFieldChanged:(id)sender;
+- (IBAction)passwordTextFieldChanged:(id)sender;
+- (IBAction)useIdleDetectionButtonChanged:(id)sender;
+- (IBAction)usePomodoroButtonChanged:(id)sender;
+- (IBAction)usePomodoroBreakButtonChanged:(id)sender;
+- (IBAction)recordTimelineCheckboxChanged:(id)sender;
+- (IBAction)menubarTimerCheckboxChanged:(id)sender;
+- (IBAction)menubarProjectCheckboxChanged:(id)sender;
+- (IBAction)dockIconCheckboxChanged:(id)sender;
+- (IBAction)ontopCheckboxChanged:(id)sender;
+- (IBAction)reminderCheckboxChanged:(id)sender;
+- (IBAction)focusOnShortcutCheckboxChanged:(id)sender;
+- (IBAction)reminderMinutesChanged:(id)sender;
+- (IBAction)addAutotrackerRule:(id)sender;
+- (IBAction)remindWeekChanged:(id)sender;
+- (IBAction)deleteAutotrackerRule:(id)sender;
+- (IBAction)remindTimesChanged:(id)sender;
+- (IBAction)autotrackChanged:(id)sender;
+- (IBAction)openEditorOnShortcut:(id)sender;
+- (IBAction)defaultProjectSelected:(id)sender;
+- (IBAction)changeDurationButtonChanged:(id)sender;
 
 @end
 
@@ -54,6 +132,7 @@ extern void *ctx;
 {
 	[super windowDidLoad];
 
+	self.currentTab = TabIndexGeneral;
 	self.autotrackerProjectAutocompleteDataSource.combobox = self.autotrackerProject;
 	self.autotrackerProjectAutocompleteDataSource.combobox.dataSource = self.autotrackerProjectAutocompleteDataSource;
 	[self.autotrackerProjectAutocompleteDataSource setFilter:@""];
@@ -612,6 +691,11 @@ const int kUseProxyToConnectToToggl = 2;
 	{
 		[super keyDown:event];
 	}
+}
+
+- (IBAction)tabSegmentOnChange:(id)sender
+{
+	[self.tabView selectTabViewItemAtIndex:self.tabSegment.selectedSegment];
 }
 
 @end
