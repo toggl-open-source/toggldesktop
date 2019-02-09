@@ -28,6 +28,9 @@
                 <outlet property="pomodoroBreakMinutesTextField" destination="rmD-4u-Dda" id="a9h-nS-WAI"/>
                 <outlet property="pomodoroMinutesTextField" destination="bCE-Cp-Ipc" id="AdG-PZ-xvz"/>
                 <outlet property="portTextField" destination="0tH-DP-xDu" id="Opz-2O-YYS"/>
+                <outlet property="proxyDoNot" destination="0Qt-eg-0Ut" id="bfh-uj-NOz"/>
+                <outlet property="proxySystem" destination="oWn-9e-NL5" id="OSv-Tk-q5n"/>
+                <outlet property="proxyToggl" destination="bge-rT-TdE" id="dd0-ne-6yt"/>
                 <outlet property="recordTimelineCheckbox" destination="V28-KN-5Vi" id="76u-Eg-Kf1"/>
                 <outlet property="remindEnds" destination="4pc-oy-DHZ" id="quq-ky-ubO"/>
                 <outlet property="remindFri" destination="5ab-YA-eHT" id="IcA-xD-aZo"/>
@@ -60,8 +63,8 @@
             <rect key="contentRect" x="196" y="240" width="400" height="548"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
             <value key="minSize" type="size" width="400" height="548"/>
-            <view key="contentView" id="2">
-                <rect key="frame" x="0.0" y="0.0" width="412" height="548"/>
+            <view key="contentView" misplaced="YES" id="2">
+                <rect key="frame" x="0.0" y="0.0" width="400" height="548"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <box boxType="custom" borderType="none" borderWidth="0.0" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="qdc-hR-YLw">
@@ -506,20 +509,29 @@
                                                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                                     <font key="font" metaFont="system" size="14"/>
                                                                 </buttonCell>
+                                                                <connections>
+                                                                    <action selector="proxyRadioChanged:" target="-2" id="100-a0-vxR"/>
+                                                                </connections>
                                                             </button>
-                                                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="oWn-9e-NL5">
+                                                            <button verticalHuggingPriority="750" tag="1" translatesAutoresizingMaskIntoConstraints="NO" id="oWn-9e-NL5">
                                                                 <rect key="frame" x="-1" y="25" width="193" height="18"/>
                                                                 <buttonCell key="cell" type="radio" title="Use system proxy settings" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="stR-3q-Tle">
                                                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                                     <font key="font" metaFont="system" size="14"/>
                                                                 </buttonCell>
+                                                                <connections>
+                                                                    <action selector="proxyRadioChanged:" target="-2" id="LdV-JM-DUN"/>
+                                                                </connections>
                                                             </button>
-                                                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="bge-rT-TdE">
+                                                            <button verticalHuggingPriority="750" tag="2" translatesAutoresizingMaskIntoConstraints="NO" id="bge-rT-TdE">
                                                                 <rect key="frame" x="-1" y="-1" width="216" height="18"/>
                                                                 <buttonCell key="cell" type="radio" title="Use proxy to connect to Toggl" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="rMJ-3G-3dl">
                                                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                                     <font key="font" metaFont="system" size="14"/>
                                                                 </buttonCell>
+                                                                <connections>
+                                                                    <action selector="proxyRadioChanged:" target="-2" id="Xd4-te-d0g"/>
+                                                                </connections>
                                                             </button>
                                                         </subviews>
                                                         <visibilityPriorities>

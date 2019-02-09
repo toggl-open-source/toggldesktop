@@ -70,7 +70,10 @@ typedef enum : NSUInteger
 @property (weak) IBOutlet NSButton *autotrack;
 @property (weak) IBOutlet NSButton *openEditorOnShortcut;
 @property (weak) IBOutlet NSButton *renderTimeline;
-@property (weak) IBOutlet NSMatrix *proxyRadio;
+@property (weak) IBOutlet NSButton *proxyDoNot;
+@property (weak) IBOutlet NSButton *proxySystem;
+@property (weak) IBOutlet NSButton *proxyToggl;
+@property (assign, nonatomic) NSInteger selectedProxyIndex;
 @property (weak) IBOutlet NSButton *addAutotrackerRuleButton;
 @property (weak) IBOutlet NSButton *changeDurationButton;
 @property (weak) IBOutlet NSSegmentedControl *tabSegment;
@@ -198,10 +201,14 @@ extern void *ctx;
 
 - (IBAction)proxyRadioChanged:(id)sender
 {
+	NSButton *radioBtn = (NSButton *)sender;
+
+	self.selectedProxyIndex = radioBtn.tag;
+
 	[self saveProxySettings];
 
 	toggl_set_settings_autodetect_proxy(ctx,
-										(kUseSystemProxySettings == self.proxyRadio.selectedTag));
+										(kUseSystemProxySettings == self.selectedProxyIndex));
 }
 
 - (IBAction)defaultProjectSelected:(id)sender
@@ -292,7 +299,7 @@ const int kUseProxyToConnectToToggl = 2;
 	NSString *password = [self.passwordTextField stringValue];
 
 	toggl_set_proxy_settings(ctx,
-							 (kUseProxyToConnectToToggl == self.proxyRadio.selectedTag),
+							 (kUseProxyToConnectToToggl == self.selectedProxyIndex),
 							 [host UTF8String],
 							 (unsigned int)port,
 							 [username UTF8String],
@@ -420,12 +427,12 @@ const int kUseProxyToConnectToToggl = 2;
 
 	if (!settings.use_proxy && !settings.autodetect_proxy)
 	{
-		[self.proxyRadio selectCellWithTag:kUseNoProxy];
+		[self selectProxyRadioWithTag:kUseNoProxy];
 	}
 
 	if (settings.use_proxy)
 	{
-		[self.proxyRadio selectCellWithTag:kUseProxyToConnectToToggl];
+		[self selectProxyRadioWithTag:kUseProxyToConnectToToggl];
 	}
 	[self.hostTextField setStringValue:settings.proxy_host];
 	[self.portTextField setIntegerValue:settings.proxy_port];
@@ -451,7 +458,7 @@ const int kUseProxyToConnectToToggl = 2;
 
 	if (settings.autodetect_proxy)
 	{
-		[self.proxyRadio selectCellWithTag:kUseSystemProxySettings];
+		[self selectProxyRadioWithTag:kUseSystemProxySettings];
 	}
 
 	[self.remindMon setState:[Utils boolToState:settings.remind_mon]];
@@ -481,6 +488,28 @@ const int kUseProxyToConnectToToggl = 2;
 	free(default_project_name);
 
 	[self.changeDurationButton setState:[Utils boolToState:toggl_get_keep_end_time_fixed(ctx)]];
+}
+
+- (void)selectProxyRadioWithTag:(NSInteger)tag
+{
+	self.proxyDoNot.state = NSControlStateValueOff;
+	self.proxyToggl.state = NSControlStateValueOff;
+	self.proxySystem.state = NSControlStateValueOff;
+
+	switch (tag)
+	{
+		case kUseNoProxy :
+			self.proxyDoNot.state = NSControlStateValueOn;
+			break;
+		case kUseSystemProxySettings :
+			self.proxySystem.state = NSControlStateValueOn;
+			break;
+		case kUseProxyToConnectToToggl :
+			self.proxyToggl.state = NSControlStateValueOn;
+			break;
+		default :
+			break;
+	}
 }
 
 - (IBAction)idleMinutesChange:(id)sender
