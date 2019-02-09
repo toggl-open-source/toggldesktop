@@ -494,43 +494,46 @@
                                     <rect key="frame" x="0.0" y="0.0" width="412" height="540"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <box autoresizesSubviews="NO" borderType="line" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="qEc-dB-aZv">
-                                            <rect key="frame" x="12" y="425" width="388" height="104"/>
+                                        <box autoresizesSubviews="NO" boxType="custom" borderType="none" borderWidth="0.0" cornerRadius="4" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="qEc-dB-aZv">
+                                            <rect key="frame" x="15" y="429" width="382" height="98"/>
                                             <view key="contentView" id="Vcc-fQ-nPv">
-                                                <rect key="frame" x="3" y="3" width="382" height="98"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="382" height="98"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <stackView distribution="equalSpacing" orientation="vertical" alignment="leading" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5X7-ip-Vgo">
                                                         <rect key="frame" x="10" y="10" width="362" height="68"/>
                                                         <subviews>
-                                                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="0Qt-eg-0Ut">
+                                                            <button focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="0Qt-eg-0Ut">
                                                                 <rect key="frame" x="-1" y="51" width="132" height="18"/>
-                                                                <buttonCell key="cell" type="radio" title="Do not use proxy" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="bgX-qw-oyR">
+                                                                <buttonCell key="cell" type="radio" title="Do not use proxy" bezelStyle="regularSquare" imagePosition="left" alignment="left" focusRingType="none" inset="2" id="bgX-qw-oyR">
                                                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                                     <font key="font" metaFont="system" size="14"/>
                                                                 </buttonCell>
                                                                 <connections>
                                                                     <action selector="proxyRadioChanged:" target="-2" id="100-a0-vxR"/>
+                                                                    <outlet property="nextKeyView" destination="oWn-9e-NL5" id="vWO-jI-GMc"/>
                                                                 </connections>
                                                             </button>
-                                                            <button verticalHuggingPriority="750" tag="1" translatesAutoresizingMaskIntoConstraints="NO" id="oWn-9e-NL5">
+                                                            <button focusRingType="none" verticalHuggingPriority="750" tag="1" translatesAutoresizingMaskIntoConstraints="NO" id="oWn-9e-NL5">
                                                                 <rect key="frame" x="-1" y="25" width="193" height="18"/>
-                                                                <buttonCell key="cell" type="radio" title="Use system proxy settings" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="stR-3q-Tle">
+                                                                <buttonCell key="cell" type="radio" title="Use system proxy settings" bezelStyle="regularSquare" imagePosition="left" alignment="left" focusRingType="none" inset="2" id="stR-3q-Tle">
                                                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                                     <font key="font" metaFont="system" size="14"/>
                                                                 </buttonCell>
                                                                 <connections>
                                                                     <action selector="proxyRadioChanged:" target="-2" id="LdV-JM-DUN"/>
+                                                                    <outlet property="nextKeyView" destination="bge-rT-TdE" id="2lP-A1-eQ7"/>
                                                                 </connections>
                                                             </button>
-                                                            <button verticalHuggingPriority="750" tag="2" translatesAutoresizingMaskIntoConstraints="NO" id="bge-rT-TdE">
+                                                            <button focusRingType="none" verticalHuggingPriority="750" tag="2" translatesAutoresizingMaskIntoConstraints="NO" id="bge-rT-TdE">
                                                                 <rect key="frame" x="-1" y="-1" width="216" height="18"/>
-                                                                <buttonCell key="cell" type="radio" title="Use proxy to connect to Toggl" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="rMJ-3G-3dl">
+                                                                <buttonCell key="cell" type="radio" title="Use proxy to connect to Toggl" bezelStyle="regularSquare" imagePosition="left" alignment="left" focusRingType="none" inset="2" id="rMJ-3G-3dl">
                                                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                                     <font key="font" metaFont="system" size="14"/>
                                                                 </buttonCell>
                                                                 <connections>
                                                                     <action selector="proxyRadioChanged:" target="-2" id="Xd4-te-d0g"/>
+                                                                    <outlet property="nextKeyView" destination="eSt-Rf-LI2" id="C2j-ES-UZF"/>
                                                                 </connections>
                                                             </button>
                                                         </subviews>
@@ -555,11 +558,12 @@
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="98" id="HYM-P5-o4r"/>
                                             </constraints>
+                                            <color key="fillColor" name="preference-box-background-color"/>
                                         </box>
-                                        <box autoresizesSubviews="NO" borderType="line" title="Proxy Settings" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="hoK-7e-akc">
-                                            <rect key="frame" x="12" y="236" width="388" height="151"/>
+                                        <box autoresizesSubviews="NO" boxType="custom" borderType="none" borderWidth="0.0" cornerRadius="4" title="Proxy Settings" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="hoK-7e-akc">
+                                            <rect key="frame" x="15" y="240" width="382" height="145"/>
                                             <view key="contentView" id="XhL-bq-2bj">
-                                                <rect key="frame" x="3" y="3" width="382" height="145"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="382" height="145"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <stackView distribution="equalSpacing" orientation="vertical" alignment="leading" spacing="12" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PzD-mm-klI">
@@ -582,7 +586,7 @@
                                                                     <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="eSt-Rf-LI2">
                                                                         <rect key="frame" x="99" y="0.0" width="263" height="22"/>
                                                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" enabled="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" bezelStyle="round" id="QLq-5g-6i8">
-                                                                            <font key="font" metaFont="system"/>
+                                                                            <font key="font" metaFont="system" size="14"/>
                                                                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                         </textFieldCell>
@@ -618,7 +622,7 @@
                                                                     <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="0tH-DP-xDu">
                                                                         <rect key="frame" x="99" y="0.0" width="263" height="22"/>
                                                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" enabled="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" bezelStyle="round" id="jfs-4a-yrp">
-                                                                            <font key="font" metaFont="system"/>
+                                                                            <font key="font" metaFont="system" size="14"/>
                                                                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                         </textFieldCell>
@@ -654,7 +658,7 @@
                                                                     <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="hml-tw-LUI">
                                                                         <rect key="frame" x="99" y="0.0" width="263" height="22"/>
                                                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" enabled="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" bezelStyle="round" id="vKb-gX-cME">
-                                                                            <font key="font" metaFont="system"/>
+                                                                            <font key="font" metaFont="system" size="14"/>
                                                                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                         </textFieldCell>
@@ -690,13 +694,13 @@
                                                                     <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="bcT-3P-lAf" customClass="NSSecureTextField">
                                                                         <rect key="frame" x="99" y="0.0" width="263" height="22"/>
                                                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" enabled="NO" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" bezelStyle="round" id="9oG-9p-TqV">
-                                                                            <font key="font" metaFont="system"/>
+                                                                            <font key="font" metaFont="system" size="14"/>
                                                                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                         </textFieldCell>
                                                                         <connections>
                                                                             <action selector="passwordTextFieldChanged:" target="-2" id="tMg-BU-ClT"/>
-                                                                            <outlet property="nextKeyView" destination="Lgk-gZ-8Ha" id="M2a-dL-a0O"/>
+                                                                            <outlet property="nextKeyView" destination="0Qt-eg-0Ut" id="Iu6-tQ-ZKQ"/>
                                                                         </connections>
                                                                     </textField>
                                                                 </subviews>
@@ -733,6 +737,7 @@
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="145" id="d3O-5X-cgP"/>
                                             </constraints>
+                                            <color key="fillColor" name="preference-box-background-color"/>
                                             <font key="titleFont" metaFont="systemMedium" size="14"/>
                                         </box>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="q6d-hl-jcC">
