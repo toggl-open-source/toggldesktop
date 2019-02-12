@@ -84,6 +84,7 @@ obj
 src/ui/windows/TogglDesktop/TogglDesktop/bin
 src/ui/windows/TogglDesktop/Release
 src/lib/windows/TogglDesktopDLL/Release
+src/ui/windows/TogglDesktop/TogglDesktopUpdater/bin
 
 *.dSYM
 
