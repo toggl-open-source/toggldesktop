@@ -323,19 +323,13 @@ error Context::save(const bool push_changes) {
         updateUI(render);
 
         if (push_changes) {
-            next_push_changes_at_ =
-                postpone(kRequestThrottleSeconds * kOneSecondInMicros / 100);
-            Poco::Util::TimerTask::Ptr ptask =
-                new Poco::Util::TimerTaskAdapter<Context>(
-                    *this, &Context::onPushChanges);
+            logger().debug("onPushChanges executing");
 
-            Poco::Mutex::ScopedLock lock(timer_m_);
-            timer_.schedule(ptask, next_push_changes_at_);
-
-            std::stringstream ss;
-            ss << "Next push at "
-               << Formatter::Format8601(next_push_changes_at_);
-            logger().debug(ss.str());
+            // Always sync asyncronously with syncerActivity
+            trigger_push_ = true;
+            if (!syncer_.isRunning()) {
+                syncer_.start();
+            }
         }
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
@@ -1037,37 +1031,19 @@ void Context::FullSync() {
 void Context::Sync() {
     logger().debug("Sync");
 
-    Poco::Timestamp::TimeDiff delay = 0;
-    if (next_sync_at_ > 0) {
-        delay = kRequestThrottleSeconds * kOneSecondInMicros;
-    }
-
-    next_sync_at_ = postpone(delay);
-    Poco::Util::TimerTask::Ptr ptask =
-        new Poco::Util::TimerTaskAdapter<Context>(*this, &Context::onSync);
-
-    Poco::Mutex::ScopedLock lock(timer_m_);
-    timer_.schedule(ptask, next_sync_at_);
-
-    std::stringstream ss;
-    ss << "Next sync at "
-       << Formatter::Format8601(next_sync_at_);
-    logger().debug(ss.str());
-}
-
-void Context::onSync(Poco::Util::TimerTask& task) {  // NOLINT
-    if (isPostponed(next_sync_at_,
-                    kRequestThrottleSeconds * kOneSecondInMicros)) {
-        logger().debug("onSync postponed");
-        return;
-    }
-    logger().debug("onFullSync executing");
-
     if (!user_) {
         return;
     }
 
     overlay_visible_ = false;
+
+    Poco::Int64 elapsed_seconds = Poco::Int64(time(0)) - last_sync_started_;
+
+    // 2 seconds backoff to avoid too many sync requests
+    if (elapsed_seconds < kRequestThrottleSeconds) {
+        return;
+    }
+
     last_sync_started_ = time(0);
 
     // Always sync asyncronously with syncerActivity
@@ -1113,26 +1089,6 @@ void Context::setOnline(const std::string reason) {
     UI()->DisplayOnlineState(kOnlineStateOnline);
 
     scheduleSync();
-}
-
-void Context::onPushChanges(Poco::Util::TimerTask& task) {  // NOLINT
-    if (isPostponed(next_push_changes_at_,
-                    kRequestThrottleSeconds * kOneSecondInMicros)) {
-        logger().debug("onPushChanges postponed");
-        return;
-    }
-
-    if (!user_) {
-        logger().debug("onPushChanges cancelled, user not logged in");
-        return;
-    }
-    logger().debug("onPushChanges executing");
-
-    // Always sync asyncronously with syncerActivity
-    trigger_push_ = true;
-    if (!syncer_.isRunning()) {
-        syncer_.start();
-    }
 }
 
 void Context::switchWebSocketOff() {
@@ -3994,21 +3950,7 @@ void Context::onWake(Poco::Util::TimerTask& task) {  // NOLINT
 
 void Context::SetOnline() {
     logger().debug("SetOnline");
-
-    // Schedule a sync, a but a bit later
-    // For example, on Windows we're not yet online although
-    // we're told we are. So wait a bit
-    next_sync_at_ = postpone(2 * kRequestThrottleSeconds * kOneSecondInMicros);
-    Poco::Util::TimerTask::Ptr ptask =
-        new Poco::Util::TimerTaskAdapter<Context>(*this, &Context::onSync);
-
-    Poco::Mutex::ScopedLock lock(timer_m_);
-    timer_.schedule(ptask, next_sync_at_);
-
-    std::stringstream ss;
-    ss << "Next sync at "
-       << Formatter::Format8601(next_sync_at_);
-    logger().debug(ss.str());
+    Sync();
 }
 
 void Context::osShutdown() {
