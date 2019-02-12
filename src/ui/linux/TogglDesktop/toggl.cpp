@@ -610,6 +610,10 @@ void TogglApi::editPreferences() {
     toggl_edit_preferences(ctx);
 }
 
+void TogglApi::setOnline() {
+    toggl_set_online(ctx);
+}
+
 void TogglApi::toggleEntriesGroup(const QString groupName) {
     toggl_toggle_entries_group(ctx, groupName.toStdString().c_str());
 }

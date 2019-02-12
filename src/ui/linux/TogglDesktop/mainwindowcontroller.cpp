@@ -56,6 +56,7 @@ MainWindowController::MainWindowController(
   pomodoro(false),
   script(scriptPath),
   powerManagement(new PowerManagement(this)),
+  networkManagement(new NetworkManagement(this)),
   ui_started(false) {
     TogglApi::instance->setEnvironment(APP_ENVIRONMENT);
 
@@ -119,6 +120,10 @@ MainWindowController::MainWindowController(
 
     connect(trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
             this, SLOT(toggleWindow(QSystemTrayIcon::ActivationReason)));
+
+    connect(networkManagement, &NetworkManagement::onlineStateChanged,
+            this, &MainWindowController::onOnlineStateChanged);
+    onOnlineStateChanged();
 }
 
 MainWindowController::~MainWindowController() {
@@ -282,7 +287,13 @@ void MainWindowController::updateShowHideShortcut() {
 
 void MainWindowController::updateContinueStopShortcut() {
     continueStop->setShortcut(
-        QKeySequence(TogglApi::instance->getContinueStopKey()));
+                QKeySequence(TogglApi::instance->getContinueStopKey()));
+}
+
+void MainWindowController::onOnlineStateChanged() {
+    if (networkManagement->isOnline()) {
+        TogglApi::instance->setOnline();
+    }
 }
 
 void MainWindowController::setShortcuts() {

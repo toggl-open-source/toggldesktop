@@ -19,6 +19,7 @@
 #include "./qxtglobalshortcut.h"
 #include "./systemtray.h"
 #include "./powermanagement.h"
+#include "./networkmanagement.h"
 
 namespace Ui {
 class MainWindowController;
@@ -89,6 +90,8 @@ class MainWindowController : public QMainWindow {
     void updateShowHideShortcut();
     void updateContinueStopShortcut();
 
+    void onOnlineStateChanged();
+
  private:
     Ui::MainWindowController *ui;
 
@@ -124,6 +127,7 @@ class MainWindowController : public QMainWindow {
     QString script;
 
     PowerManagement *powerManagement;
+    NetworkManagement *networkManagement;
 
     void readSettings();
     void writeSettings();

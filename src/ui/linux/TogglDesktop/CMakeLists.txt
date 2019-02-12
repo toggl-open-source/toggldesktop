@@ -42,6 +42,7 @@ set(BINARY_SOURCE_FILES
     loginwidget.cpp
     main.cpp
     mainwindowcontroller.cpp
+    networkmanagement.cpp
     overlaywidget.cpp
     powermanagement.cpp
     preferencesdialog.cpp

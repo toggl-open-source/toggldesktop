@@ -84,6 +84,8 @@ class TogglApi : public QObject {
 
     void editPreferences();
 
+    void setOnline();
+
     void toggleEntriesGroup(const QString groupName);
 
     void editTimeEntry(const QString guid,
