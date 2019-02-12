@@ -66,10 +66,10 @@ static class Program
 
             bugsnag = new Bugsnag.Clients.BaseClient("aa13053a88d5133b688db0f25ec103b7");
 
-#if INVS
-            bugsnag.Config.ReleaseStage = "development";
-#else
+#if TOGGL_PRODUCTION_BUILD
             bugsnag.Config.ReleaseStage = "production";
+#else
+            bugsnag.Config.ReleaseStage = "development";
 #endif
 
             Toggl.OnLogin += delegate(bool open, UInt64 user_id)

@@ -45,11 +45,19 @@ ifeq ($(uname), Darwin)
 xcodebuild_command=xcodebuild \
 				  -scheme TogglDesktop \
 				  -project src/ui/osx/TogglDesktop/TogglDesktop.xcodeproj  \
+				  -configuration Debug
+xcodebuild_command_release=xcodebuild \
+				  -scheme TogglDesktop \
+				  -project src/ui/osx/TogglDesktop/TogglDesktop.xcodeproj  \
 				  -configuration Release
 executable=$(shell $(xcodebuild_command) \
 			 -showBuildSettings \
  			| grep -w 'BUILT_PRODUCTS_DIR' \
  			| cut -d'=' -f 2)/TogglDesktop.app/Contents/MacOS/TogglDesktop
+executable_release=$(shell $(xcodebuild_command_release) \
+			 -showBuildSettings \
+			| grep -w 'BUILT_PRODUCTS_DIR' \
+			| cut -d'=' -f 2)/TogglDesktop.app/Contents/MacOS/TogglDesktop
 pocolib=$(pocodir)/lib/Darwin/x86_64/
 osname=mac
 endif	
@@ -236,9 +244,13 @@ fmt: fmt_lib fmt_ui
 
 app: lib ui
 
+app_release: lib_release ui_release
+
 ifeq ($(osname), mac)
 lib:
-	xcodebuild -project src/lib/osx/TogglDesktopLibrary.xcodeproj
+	xcodebuild -project src/lib/osx/TogglDesktopLibrary.xcodeproj -configuration Debug
+lib_release:
+	xcodebuild -project src/lib/osx/TogglDesktopLibrary.xcodeproj -configuration Release build
 endif
 
 ifeq ($(osname), linux)
@@ -265,6 +277,8 @@ endif
 ifeq ($(osname), mac)
 ui:
 	$(xcodebuild_command)
+ui_release:
+	$(xcodebuild_command_release)
 endif
 
 ifeq ($(osname), linux)
@@ -288,6 +302,9 @@ bugsnag-qt: clean-bugsnag-qt
 
 run: app
 	$(executable)
+
+run_release: app_release
+	$(executable_release)
 
 clean_deps:
 	cd $(pocodir) && (make clean || true)

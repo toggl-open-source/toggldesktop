@@ -367,10 +367,13 @@ BOOL onTop = NO;
 	{
 		return NO;
 	}
+#ifdef DEBUG
+	return NO;
 
-	NSDictionary *infoDict = [[NSBundle mainBundle] infoDictionary];
+#else
+	return YES;
 
-	return [infoDict[@"KopsikCheckForUpdates"] boolValue];
+#endif
 }
 
 - (BOOL)userNotificationCenter:(NSUserNotificationCenter *)center
@@ -1209,8 +1212,16 @@ const NSString *appName = @"osx_native_app";
 {
 	self = [super init];
 
+	BOOL logUIToFile;
+#ifdef DEBUG
+	self.environment = @"development";
+	logUIToFile = NO;
+#else
+	self.environment = @"production";
+	logUIToFile = YES;
+#endif
+
 	NSDictionary *infoDict = [[NSBundle mainBundle] infoDictionary];
-	self.environment = infoDict[@"KopsikEnvironment"];
 	self.version = infoDict[@"CFBundleShortVersionString"];
 
 	// Disallow duplicate instances in production
@@ -1291,8 +1302,7 @@ const NSString *appName = @"osx_native_app";
 		return nil;
 	}
 
-	id logToFile = infoDict[@"KopsikLogUserInterfaceToFile"];
-	if ([logToFile boolValue])
+	if (logUIToFile)
 	{
 		NSLog(@"Redirecting UI log to file");
 		NSString *logPath =

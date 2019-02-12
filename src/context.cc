@@ -72,11 +72,11 @@ Context::Context(const std::string app_name, const std::string app_version)
 , next_update_timeline_settings_at_(0)
 , next_wake_at_(0)
 , time_entry_editor_guid_("")
-, environment_("production")
+, environment_(APP_ENVIRONMENT)
 , idle_(&ui_)
 , last_sync_started_(0)
 , sync_interval_seconds_(0)
-, update_check_disabled_(false)
+, update_check_disabled_(UPDATE_CHECK_DISABLED)
 , trigger_sync_(false)
 , trigger_push_(false)
 , quit_(false)
@@ -92,8 +92,10 @@ Context::Context(const std::string app_name, const std::string app_version)
         Poco::Net::HTTPSStreamFactory::registerFactory();
     }
 
+#ifndef TOGGL_PRODUCTION_BUILD
     urls::SetUseStagingAsBackend(
         app_version.find("7.0.0") != std::string::npos);
+#endif
 
     Poco::ErrorHandler::set(&error_handler_);
     Poco::Net::initializeSSL();
