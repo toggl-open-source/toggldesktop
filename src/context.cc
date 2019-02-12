@@ -1036,6 +1036,14 @@ void Context::Sync() {
     }
 
     overlay_visible_ = false;
+
+    Poco::Int64 elapsed_seconds = Poco::Int64(time(0)) - last_sync_started_;
+
+    // 2 seconds backoff to avoid too many sync requests
+    if (elapsed_seconds < kRequestThrottleSeconds) {
+        return;
+    }
+
     last_sync_started_ = time(0);
 
     // Always sync asyncronously with syncerActivity
