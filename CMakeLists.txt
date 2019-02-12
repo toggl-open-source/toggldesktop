@@ -13,6 +13,7 @@ option(TOGGL_VERSION "TogglDesktop version string" "7.0.0")
 option(TOGGL_PRODUCTION_BUILD "Use production servers in the app" OFF)
 option(TOGGL_ALLOW_UPDATE_CHECK "Allow the app to check for updates" OFF)
 option(USE_BUNDLED_LIBRARIES "Prefer bundled libraries to bundled ones" OFF)
+option(INSTALL_HIRES_ICONS "Do not install icons over 512x512" OFF)
 
 # Use PkgConfig to look for packages without native CMake support
 include(FindPkgConfig)
