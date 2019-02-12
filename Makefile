@@ -103,7 +103,13 @@ libs=-framework Carbon \
 
 cxx=g++ -fprofile-arcs -ftest-coverage -std=gnu++0x
 
+UNAME_S := $(shell uname -s)
+ifeq ($(UNAME_S),Darwin)
 default: fmt app
+else
+default:
+	$(error this platform is not supported by Makefile.)
+endif
 
 csapi: generate_cs_api fmt
 
