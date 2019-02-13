@@ -4,7 +4,7 @@
     <project_license>BSD-3-Clause</project_license>
     <metadata_license>BSD-3_Clause</metadata_license>
     <name>Toggl Desktop</name>
-    <summary>Free Time Tracking Software</summary>
+    <summary>Simple and Intuitive Time Tracking Software</summary>
     <description>
         <p>Toggl Desktop is a desktop app for leading time tracking tool Toggl. The Desktop app is a great companion for time tracking and productivity as it has advanced features like:</p>
         <ul>
@@ -12,17 +12,17 @@
             <li>Tracking reminder</li>
             <li>Pomodoro timer</li>
             <li>Timeline</li>
-            <li>Autotracker</li>
         </ul>
     </description>
     <keywords>
-        <keyword>toggl</keyword>
-        <keyword>time</keyword>
-        <keyword>tracking</keyword>
         <keyword>productivity</keyword>
-        <keyword>some</keyword>
-        <keyword>other</keyword>
-        <keyword>tags</keyword>
+        <keyword>employee time tracking</keyword>
+        <keyword>work hours</keyword>
+        <keyword>time tracking</keyword>
+        <keyword>timer</keyword>
+        <keyword>work log</keyword>
+        <keyword>timesheet</keyword>
+        <keyword>hours tracker</keyword>
     </keywords>
     <url type="homepage">https://toggl.com</url>
     <!-- <screenshots> -->
