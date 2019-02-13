@@ -108,7 +108,6 @@ MainWindowController::MainWindowController(
     connect(TogglApi::instance, SIGNAL(updateContinueStopShortcut()),  // NOLINT
             this, SLOT(updateContinueStopShortcut()));  // NOLINT
 
-
     setWindowIcon(icon);
     trayIcon = new SystemTray(this, icon);
     preferencesDialog->setRemindersEnabled(trayIcon->notificationsAvailable());
@@ -119,6 +118,8 @@ MainWindowController::MainWindowController(
 
     connect(trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
             this, SLOT(toggleWindow(QSystemTrayIcon::ActivationReason)));
+
+    restoreLastWindowsFrame();
 }
 
 MainWindowController::~MainWindowController() {
@@ -435,6 +436,13 @@ void MainWindowController::writeSettings() {
 }
 
 void MainWindowController::closeEvent(QCloseEvent *event) {
+
+    // Save current windows frame
+    TogglApi::instance->setWindowsFrameSetting(QRect(pos().x(),
+                                                     pos().y(),
+                                                     size().width(),
+                                                     size().height()));
+
     if (trayIcon->isVisible()) {
         event->ignore();
         hide();
@@ -502,4 +510,10 @@ void MainWindowController::runScript() {
     if (TogglApi::instance->runScriptFile(script)) {
         quitApp();
     }
+}
+
+void MainWindowController::restoreLastWindowsFrame() {
+    const QRect frame = TogglApi::instance->getWindowsFrameSetting();
+    move(frame.x(), frame.y());
+    resize(frame.width(), frame.height());
 }
