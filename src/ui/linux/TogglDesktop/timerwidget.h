@@ -58,6 +58,8 @@ class TimerWidget : public QFrame {
     void clearProject();
     void clearTask();
 
+    void updateCoverLabel(const QString &text);
+
  private:
     Ui::TimerWidget *ui;
 
