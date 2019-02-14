@@ -5,26 +5,30 @@ set(CMAKE_CXX_STANDARD 11)
 
 # Set up automatic resource generation to make Qt development easier
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
-set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTOUIC ON)
-set(CMAKE_AUTORCC ON)
 
 set(TOGGL_VERSION "7.0.0" CACHE STRING "TogglDesktop version string")
 option(TOGGL_PRODUCTION_BUILD "Use production servers in the app" OFF)
 option(TOGGL_ALLOW_UPDATE_CHECK "Allow the app to check for updates" OFF)
-option(USE_BUNDLED_LIBRARIES "Prefer bundled libraries to bundled ones" OFF)
 option(INSTALL_HIRES_ICONS "Do not install icons over 512x512" OFF)
+option(USE_BUNDLED_LIBRARIES "Prefer bundled libraries to system ones" OFF)
+option(FORCE_QT_APP "Build the Qt (Linux by default) app regardless of the platform" OFF)
 
 # Use PkgConfig to look for packages without native CMake support
 include(FindPkgConfig)
 
 # Look for Qt
-if(LINUX)
+if((UNIX AND NOT APPLE) OR FORCE_QT_APP)
+    set(CMAKE_AUTOMOC ON)
+    set(CMAKE_AUTOUIC ON)
+    set(CMAKE_AUTORCC ON)
+
     find_package(Qt5Widgets CONFIG REQUIRED)
     find_package(Qt5Network CONFIG REQUIRED)
     find_package(Qt5WebEngine CONFIG REQUIRED)
     find_package(Qt5WebEngineWidgets CONFIG REQUIRED)
-    find_package(Qt5X11Extras CONFIG REQUIRED)
+    if(UNIX AND NOT APPLE)
+        find_package(Qt5X11Extras CONFIG REQUIRED)
+    endif()
     # We need to include private headers manually
     include_directories( ${Qt5Widgets_PRIVATE_INCLUDE_DIRS} )
 endif()
@@ -59,8 +63,8 @@ set(TOGGLDESKTOP_BUILDROOT
 
 add_subdirectory(third_party)
 add_subdirectory(src)
-if(LINUX)
-add_subdirectory(src/ui/linux/TogglDesktop)
-elif(WIN32)
+if((UNIX AND NOT APPLE) OR FORCE_QT_APP)
+    add_subdirectory(src/ui/linux/TogglDesktop)
+elseif(WIN32)
 
 endif()

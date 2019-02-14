@@ -14,7 +14,7 @@ include_directories(
     bugsnag-qt
 )
 
-if(LINUX)
+if((UNIX AND NOT APPLE) OR FORCE_QT_APP)
     # OAuth has to be bundled
     set(OAUTH2_SOURCE_FILES
         qt-oauth-lib/logindialog.cpp
@@ -136,17 +136,30 @@ if(NOT jsoncpp_FOUND)
     install(TARGETS jsoncpp DESTINATION lib)
 endif()
 
-if(LINUX)
+if((UNIX AND NOT APPLE) OR FORCE_QT_APP)
     if(NOT QXT_CORE_FOUND)
         set(QXT_SOURCE_FILES
-            #qxtglobalshortcut5/gui/qxtglobalshortcut_mac.cpp
-            #qxtglobalshortcut5/gui/qxtwindowsystem_mac.cpp
             qxtglobalshortcut5/gui/qxtwindowsystem.cpp
             qxtglobalshortcut5/gui/qxtglobalshortcut.cpp
             qxtglobalshortcut5/core/qxtglobal.cpp
-            qxtglobalshortcut5/gui/qxtglobalshortcut_win.cpp
-            qxtglobalshortcut5/gui/qxtwindowsystem_win.cpp
         )
+        if (UNIX AND NOT APPLE)
+            set(QXT_SOURCE_FILES ${QXT_SOURCE_FILES}
+                qxtglobalshortcut5/gui/qxtglobalshortcut_x11.cpp
+                qxtglobalshortcut5/gui/qxtwindowsystem_x11.cpp
+                qxtglobalshortcut5/gui/x11info.cpp
+            )
+        elseif(WIN32)
+            set(QXT_SOURCE_FILES ${QXT_SOURCE_FILES}
+                qxtglobalshortcut5/gui/qxtglobalshortcut_win.cpp
+                qxtglobalshortcut5/gui/qxtwindowsystem_win.cpp
+            )
+        else()
+            set(QXT_SOURCE_FILES ${QXT_SOURCE_FILES}
+                qxtglobalshortcut5/gui/qxtglobalshortcut_mac.cpp
+                qxtglobalshortcut5/gui/qxtwindowsystem_mac.cpp
+            )
+        endif()
         set(QXT_INCLUDE_DIRS
             ${CMAKE_CURRENT_SOURCE_DIR}/qxtglobalshortcut5/gui
             ${CMAKE_CURRENT_SOURCE_DIR}/qxtglobalshortcut5/core
@@ -156,26 +169,18 @@ if(LINUX)
         target_link_libraries(Qxt
             Qt5::Widgets
         )
-        if(LINUX)
-            set(QXT_SOURCE_FILES
-                ${QXT_SOURCE_FILES}
-                qxtglobalshortcut5/gui/qxtglobalshortcut_x11.cpp
-                qxtglobalshortcut5/gui/qxtwindowsystem_x11.cpp
-                qxtglobalshortcut5/gui/x11info.cpp
-            )
+        if (UNIX AND NOT APPLE)
             target_link_libraries(Qxt
                 Qt5::X11Extras
             )
         else()
-            add_definitions(-DBUILD_QXT_GUI -DBUILD_QXT_CORE)
-            set(QXT_SOURCE_FILES
-                qxtglobalshortcut5/gui/qxtwindowsystem.cpp
-                qxtglobalshortcut5/gui/qxtglobalshortcut.cpp
-                qxtglobalshortcut5/core/qxtglobal.cpp
-                qxtglobalshortcut5/gui/qxtglobalshortcut_win.cpp
-                qxtglobalshortcut5/gui/qxtwindowsystem_win.cpp
+            target_link_libraries(Qxt
+                "-framework Foundation"
+                "-framework AppKit"
+                "-framework Carbon"
             )
         endif()
+        add_definitions(-DBUILD_QXT_GUI -DBUILD_QXT_CORE)
         target_include_directories(Qxt PRIVATE
             qxtglobalshortcut5/gui
             qxtglobalshortcut5/core
