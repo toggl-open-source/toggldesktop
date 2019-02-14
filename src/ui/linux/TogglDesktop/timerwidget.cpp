@@ -45,6 +45,9 @@ selectedProjectId(0) {
             this, SLOT(descriptionBillableChanged(bool)));
     connect(ui->description, SIGNAL(tagsChanged(QString)),
             this, SLOT(descriptionTagsChanged(QString)));
+    connect(ui->description, &QComboBox::editTextChanged,
+            this, &TimerWidget::updateCoverLabel);
+
 
     connect(ui->deleteProject, &QPushButton::clicked, this, &TimerWidget::clearProject);
     connect(ui->deleteTask, &QPushButton::clicked, this, &TimerWidget::clearTask);
@@ -118,6 +121,14 @@ void TimerWidget::clearTask() {
     }
 }
 
+void TimerWidget::updateCoverLabel(const QString &text) {
+    QFont font;
+    font.setPointSize(14);
+    QFontMetrics metrics(font);
+
+    ui->descriptionCover->setText(metrics.elidedText(text, Qt::ElideRight, ui->descriptionCover->width() - 2));
+}
+
 void TimerWidget::focusChanged(QWidget *old, QWidget *now) {
     if (old == ui->description) {
         if (ui->description->currentText().length() == 0) {
@@ -139,6 +150,9 @@ void TimerWidget::displayRunningTimerState(
     selectedTaskId = te->TID;
     selectedProjectId = te->PID;
 
+    ui->description->setVisible(false);
+    ui->descriptionCover->setVisible(true);
+
     ui->start->setText("Stop");
     ui->start->setStyleSheet(
         "background-color: #e20000; color:'white'; font-weight: bold;");
@@ -146,6 +160,7 @@ void TimerWidget::displayRunningTimerState(
     QString description = (te->Description.length() > 0) ?
                           te->Description : "(no description)";
 
+    updateCoverLabel(description);
     ui->description->setEditText(description);
     ui->description->setEnabled(false);
 
@@ -206,6 +221,9 @@ void TimerWidget::displayStoppedTimerState() {
     guid = QString();
     selectedTaskId = 0;
     selectedProjectId = 0;
+
+    ui->descriptionCover->setVisible(false);
+    ui->description->setVisible(true);
 
     ui->start->setText("Start");
     ui->start->setStyleSheet(
