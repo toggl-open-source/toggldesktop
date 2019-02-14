@@ -96,8 +96,6 @@ add_library(TogglDesktopLibrary SHARED ${LIBRARY_SOURCE_FILES})
 
 # And list the dependencies between them (and system libraries)
 target_link_libraries(TogglDesktopLibrary PRIVATE
-    "-framework Foundation"
-    "-framework CFNetwork"
     ${ADDITIONAL_LIBRARIES}
     jsoncpp
     ${LUA_LIBRARIES}

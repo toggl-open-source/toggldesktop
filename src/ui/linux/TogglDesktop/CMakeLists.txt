@@ -59,7 +59,7 @@ target_link_libraries(TogglDesktop PRIVATE
     ${QXT_LIBRARIES}
     Bugsnag
 )
-if(LINUX)
+if(UNIX AND NOT APPLE)
     target_link_libraries(TogglDesktop PRIVATE
         -lX11 -lXss
     )
