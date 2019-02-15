@@ -41,7 +41,7 @@
                     </box>
                     <comboBox verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="dbV-zH-aRj">
                         <rect key="frame" x="20" y="328" width="263" height="26"/>
-                        <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="- Please specify the topic -" drawsBackground="YES" completes="NO" numberOfVisibleItems="5" id="EdL-4a-0rc">
+                        <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="Please specify the topic" drawsBackground="YES" completes="NO" numberOfVisibleItems="5" id="EdL-4a-0rc">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
