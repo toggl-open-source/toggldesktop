@@ -1,6 +1,18 @@
 set(CMAKE_CXX_FLAGS
     -Wall
 )
+if(TOGGL_PRODUCTION_BUILD)
+    add_definitions(
+        -DAPP_ENVIRONMENT="\\\"production\\\""
+        -DTOGGL_PRODUCTION_BUILD=1
+    )
+else()
+    add_definitions(-DAPP_ENVIRONMENT="\\\"development\\\"")
+endif()
+
+if(TOGGL_ALLOW_UPDATE_CHECK)
+    add_definitions(-DTOGGL_ALLOW_UPDATE_CHECK=1)
+endif()
 
 set(TOGGLDESKTOPLIBRARY_INCLUDE_DIR
     ${CMAKE_CURRENT_SOURCE_DIR}
