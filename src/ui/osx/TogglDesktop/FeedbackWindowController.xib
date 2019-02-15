@@ -55,15 +55,15 @@
                     <scrollView borderType="line" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TG8-w0-r91">
                         <rect key="frame" x="20" y="212" width="260" height="100"/>
                         <clipView key="contentView" drawsBackground="NO" id="Ina-OJ-HA6">
-                            <rect key="frame" x="1" y="1" width="258" height="98"/>
+                            <rect key="frame" x="1" y="1" width="243" height="98"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <textView importsGraphics="NO" verticallyResizable="YES" usesFontPanel="YES" findStyle="panel" continuousSpellChecking="YES" allowsUndo="YES" usesRuler="YES" allowsNonContiguousLayout="YES" quoteSubstitution="YES" dashSubstitution="YES" smartInsertDelete="YES" id="ELz-XL-Qzo">
-                                    <rect key="frame" x="0.0" y="0.0" width="258" height="98"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="243" height="98"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                    <size key="minSize" width="258" height="98"/>
+                                    <size key="minSize" width="243" height="98"/>
                                     <size key="maxSize" width="463" height="10000000"/>
                                     <color key="insertionPointColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                 </textView>
@@ -77,7 +77,7 @@
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
                         <scroller key="verticalScroller" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="CVO-3Q-PTv">
-                            <rect key="frame" x="243" y="1" width="16" height="98"/>
+                            <rect key="frame" x="244" y="1" width="15" height="98"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
                     </scrollView>
@@ -137,7 +137,7 @@
                         </textFieldCell>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="x76-9l-cFh">
-                        <rect key="frame" x="147" y="181" width="134" height="16"/>
+                        <rect key="frame" x="148" y="181" width="134" height="16"/>
                         <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" placeholderString="Maximum file size 5MB" id="uDw-EN-KEh">
                             <font key="font" metaFont="cellTitle"/>
                             <color key="textColor" name="grey-text-color"/>
@@ -145,9 +145,9 @@
                         </textFieldCell>
                     </textField>
                     <box hidden="YES" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" boxType="custom" borderType="line" title="Box" translatesAutoresizingMaskIntoConstraints="NO" id="cwt-Qf-BA4">
-                        <rect key="frame" x="21" y="119" width="258" height="47"/>
+                        <rect key="frame" x="21" y="119" width="259" height="47"/>
                         <view key="contentView" id="f8w-Ty-Nzy">
-                            <rect key="frame" x="1" y="1" width="256" height="45"/>
+                            <rect key="frame" x="1" y="1" width="257" height="45"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Wzg-52-ZgF">
@@ -155,7 +155,7 @@
                                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="feedback-image" id="lbf-fF-Amc"/>
                                 </imageView>
                                 <button horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="uOR-Th-fr2">
-                                    <rect key="frame" x="239" y="19" width="7" height="7"/>
+                                    <rect key="frame" x="240" y="19" width="7" height="7"/>
                                     <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="close-button" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="zW7-7H-Bjc">
                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                         <font key="font" metaFont="system"/>
@@ -189,7 +189,7 @@
                         <color key="borderColor" name="lighter-grey-text"/>
                     </box>
                     <textField hidden="YES" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="F8Z-u0-ZgF">
-                        <rect key="frame" x="19" y="56" width="262" height="32"/>
+                        <rect key="frame" x="19" y="56" width="263" height="32"/>
                         <textFieldCell key="cell" selectable="YES" title="Feedback not sent – please type in your feedback" id="kco-ln-AqF">
                             <font key="font" metaFont="cellTitle"/>
                             <color key="textColor" name="error-title-color"/>
@@ -199,7 +199,6 @@
                 </subviews>
                 <constraints>
                     <constraint firstItem="TG8-w0-r91" firstAttribute="top" secondItem="dbV-zH-aRj" secondAttribute="bottom" constant="20" id="4RN-Ap-c6A"/>
-                    <constraint firstItem="cwt-Qf-BA4" firstAttribute="trailing" secondItem="ELz-XL-Qzo" secondAttribute="trailing" id="ITM-eb-giw"/>
                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="NiB-Hs-GGA" secondAttribute="trailing" constant="20" id="Ic2-0r-CeZ"/>
                     <constraint firstItem="NR5-ST-87O" firstAttribute="leading" secondItem="ELz-XL-Qzo" secondAttribute="leading" id="L3b-OI-qZ7"/>
                     <constraint firstItem="F8Z-u0-ZgF" firstAttribute="top" relation="greaterThanOrEqual" secondItem="cwt-Qf-BA4" secondAttribute="bottom" constant="10" id="LOC-Ax-vmU"/>
@@ -208,18 +207,19 @@
                     <constraint firstAttribute="trailing" secondItem="dbV-zH-aRj" secondAttribute="trailing" constant="20" id="OzP-pY-8of"/>
                     <constraint firstItem="Zfu-dT-QNC" firstAttribute="top" secondItem="2" secondAttribute="top" id="Qna-Qu-9Gv"/>
                     <constraint firstItem="dhE-W6-jv7" firstAttribute="leading" secondItem="2" secondAttribute="leading" constant="20" id="Qyr-q0-P9b"/>
+                    <constraint firstItem="F8Z-u0-ZgF" firstAttribute="trailing" secondItem="TG8-w0-r91" secondAttribute="trailing" id="Ss5-DD-BAi"/>
                     <constraint firstItem="dhE-W6-jv7" firstAttribute="top" secondItem="2" secondAttribute="top" constant="20" id="VsN-h0-MP7"/>
                     <constraint firstItem="Zfu-dT-QNC" firstAttribute="leading" secondItem="2" secondAttribute="leading" id="Y3j-cE-oNv"/>
-                    <constraint firstItem="F8Z-u0-ZgF" firstAttribute="trailing" secondItem="ELz-XL-Qzo" secondAttribute="trailing" id="aAY-NV-xk9"/>
                     <constraint firstItem="F8Z-u0-ZgF" firstAttribute="leading" secondItem="ELz-XL-Qzo" secondAttribute="leading" id="cVV-nO-iiQ"/>
                     <constraint firstItem="dbV-zH-aRj" firstAttribute="top" secondItem="dhE-W6-jv7" secondAttribute="bottom" constant="10" id="cXa-bh-JMO"/>
                     <constraint firstItem="NiB-Hs-GGA" firstAttribute="centerX" secondItem="2" secondAttribute="centerX" id="d6j-zP-yDJ"/>
                     <constraint firstItem="NiB-Hs-GGA" firstAttribute="top" secondItem="F8Z-u0-ZgF" secondAttribute="bottom" constant="10" id="dgU-3J-X3h"/>
                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="dhE-W6-jv7" secondAttribute="trailing" constant="20" id="fDP-Gr-tF0"/>
-                    <constraint firstItem="x76-9l-cFh" firstAttribute="trailing" secondItem="ELz-XL-Qzo" secondAttribute="trailing" id="j1E-Du-4UF"/>
                     <constraint firstItem="NiB-Hs-GGA" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="2" secondAttribute="leading" constant="20" id="jU9-dl-IL4"/>
                     <constraint firstAttribute="trailing" secondItem="TG8-w0-r91" secondAttribute="trailing" constant="20" id="mCE-Ch-9AJ"/>
+                    <constraint firstItem="cwt-Qf-BA4" firstAttribute="trailing" secondItem="TG8-w0-r91" secondAttribute="trailing" id="ons-Vy-Fiq"/>
                     <constraint firstAttribute="trailing" secondItem="Zfu-dT-QNC" secondAttribute="trailing" id="p3U-VM-sPw"/>
+                    <constraint firstItem="x76-9l-cFh" firstAttribute="trailing" secondItem="TG8-w0-r91" secondAttribute="trailing" id="qA5-pP-aIJ"/>
                     <constraint firstItem="TG8-w0-r91" firstAttribute="leading" secondItem="2" secondAttribute="leading" constant="20" id="rgA-CB-ENO"/>
                     <constraint firstItem="cwt-Qf-BA4" firstAttribute="leading" secondItem="ELz-XL-Qzo" secondAttribute="leading" id="rik-HK-Avt"/>
                     <constraint firstAttribute="bottom" secondItem="Zfu-dT-QNC" secondAttribute="bottom" id="sI7-KH-mro"/>
