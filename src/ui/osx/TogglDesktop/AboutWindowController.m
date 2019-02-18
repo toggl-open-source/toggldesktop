@@ -87,7 +87,7 @@ extern void *ctx;
 	self.boxView.layer.shadowOffset = CGSizeMake(0, -2);
 	self.boxView.layer.shadowRadius = 6;
 
-	[self renderRestartButton];
+	self.downloadState = DownloadStateNone;
 }
 
 - (BOOL)updateCheckEnabled
