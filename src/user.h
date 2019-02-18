@@ -218,9 +218,9 @@ class User : public BaseModel {
         }
 
         // Try to set first WID available
-        std::vector<Workspace *>::const_iterator it =
-            related.Workspaces.begin();
-        if (it != related.Workspaces.end()) {
+        auto WSs = related.GetWorkspaces();
+        std::vector<Workspace *>::const_iterator it = WSs.second->begin();
+        if (it != WSs.second->end()) {
             Workspace *ws = *it;
             model->SetWID(ws->ID());
         }

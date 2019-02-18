@@ -809,10 +809,8 @@ void Context::updateUI(const UIElements &what) {
         if (what.display_autotracker_rules && user_) {
             if (UI()->CanDisplayAutotrackerRules()) {
                 // Collect rules
-                for (std::vector<toggl::AutotrackerRule *>::const_iterator
-                        it = user_->related.AutotrackerRules.begin();
-                        it != user_->related.AutotrackerRules.end();
-                        it++) {
+                auto ATRs = user_->related.GetAutotrackerRules();
+                for (auto it = ATRs.second->begin(); it != ATRs.second->end(); it++) {
                     AutotrackerRule *model = *it;
                     Project *p = user_->related.ProjectByID(model->PID());
                     Task *t = user_->related.TaskByID(model->TID());
@@ -3546,7 +3544,8 @@ error Context::AddAutotrackerRule(
             rule->SetPID(p->ID());
         }
         rule->SetUID(user_->ID());
-        user_->related.AutotrackerRules.push_back(rule);
+        auto ATRs = user_->related.GetAutotrackerRules();
+        ATRs.second->push_back(rule);
     }
 
     error err = save();
@@ -3616,9 +3615,8 @@ Project *Context::CreateProject(
             logger().warning("Cannot add project, user logged out");
             return nullptr;
         }
-        for (std::vector<Project *>::iterator it =
-            user_->related.Projects.begin();
-                it != user_->related.Projects.end(); it++) {
+        auto Ps = user_->related.GetProjects();
+        for (auto it = Ps.second->begin(); it != Ps.second->end(); it++) {
             Project *p = *it;
 
             bool clientIsSame = false;
@@ -3635,6 +3633,8 @@ Project *Context::CreateProject(
                 return nullptr;
             }
         }
+        Ps.first.unlock();
+
         // Check if projects are billable by default
         Workspace *ws = nullptr;
         bool billable = false;
@@ -3717,7 +3717,8 @@ error Context::AddObmAction(
         action->SetUID(user_->ID());
         action->SetKey(trimmed_key);
         action->SetValue(trimmed_value);
-        user_->related.ObmActions.push_back(action);
+        auto OAs = user_->related.GetObmActions();
+        OAs.second->push_back(action);
     }
     return displayError(save());
 }
@@ -3750,9 +3751,8 @@ Client *Context::CreateClient(
             logger().warning("Cannot create a client, user logged out");
             return nullptr;
         }
-        for (std::vector<Client *>::iterator it =
-            user_->related.Clients.begin();
-                it != user_->related.Clients.end(); it++) {
+        auto Cs = user_->related.GetClients();
+        for (auto it = Cs.second->begin(); it != Cs.second->end(); it++) {
             Client *c = *it;
             if (c->WID() == workspace_id && c->Name() == trimmed_client_name) {
                 displayError(kClientNameAlreadyExists);
@@ -3909,9 +3909,8 @@ error Context::runObmExperiments() {
                 logger().warning("User logged out, cannot OBM experiment");
                 return noError;
             }
-            for (std::vector<ObmExperiment *>::const_iterator it =
-                user_->related.ObmExperiments.begin();
-                    it != user_->related.ObmExperiments.end();
+            auto OEs = user_->related.GetObmExperiments();
+            for (auto it = OEs.second->begin(); it != OEs.second->end();
                     it++) {
                 ObmExperiment *model = *it;
                 if (!model->DeletedAt()) {
@@ -4280,7 +4279,8 @@ error Context::StartTimelineEvent(TimelineEvent *event) {
 
         if (user_ && user_->RecordTimeline()) {
             event->SetUID(static_cast<unsigned int>(user_->ID()));
-            user_->related.TimelineEvents.push_back(event);
+            auto TEs = user_->related.GetTimelineEvents();
+            TEs.second->push_back(event);
             return displayError(save(false));
         }
     } catch(const Poco::Exception& exc) {
@@ -4685,18 +4685,15 @@ error Context::pushChanges(
                 return error("cannot push changes without API token");
             }
 
-            collectPushableModels(
-                user_->related.TimeEntries,
-                &time_entries,
-                &models);
-            collectPushableModels(
-                user_->related.Projects,
-                &projects,
-                &models);
-            collectPushableModels(
-                user_->related.Clients,
-                &clients,
-                &models);
+            auto TEs = user_->related.GetTimeEntries();
+            collectPushableModels(*TEs.second, &time_entries, &models);
+            TEs.first.unlock();
+            auto Ps = user_->related.GetProjects();
+            collectPushableModels(*Ps.second, &projects, &models);
+            Ps.first.unlock();
+            auto Cs = user_->related.GetClients();
+            collectPushableModels(*Cs.second, &clients, &models);
+            Cs.first.unlock();
             if (time_entries.empty()
                     && projects.empty()
                     && clients.empty()) {
@@ -5078,7 +5075,8 @@ error Context::pushObmAction() {
                 return noError;
             }
 
-            if (user_->related.ObmActions.empty()) {
+            auto OAs = user_->related.GetObmActions();
+            if (OAs.second->empty()) {
                 return noError;
             }
 
@@ -5088,10 +5086,7 @@ error Context::pushObmAction() {
             }
 
             // find action that has not been uploaded yet
-            for (std::vector<ObmAction *>::iterator it =
-                user_->related.ObmActions.begin();
-                    it != user_->related.ObmActions.end();
-                    it++) {
+            for (auto it = OAs.second->begin(); it != OAs.second->end(); it++) {
                 ObmAction *model = *it;
                 if (!model->IsMarkedAsDeletedOnServer()) {
                     for_upload = model;

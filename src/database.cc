@@ -1109,55 +1109,75 @@ error Database::LoadUserByEmail(
 }
 
 error Database::loadUsersRelatedData(User *user) {
-    error err = loadWorkspaces(user->ID(), &user->related.Workspaces);
+    auto Workspaces = user->related.GetWorkspaces();
+    error err = loadWorkspaces(user->ID(), Workspaces.second);
     if (err != noError) {
         return err;
     }
+    Workspaces.first.unlock();
 
-    err = loadClients(user->ID(), &user->related.Clients);
+    auto Clients = user->related.GetClients();
+    err = loadClients(user->ID(), Clients.second);
     if (err != noError) {
         return err;
     }
+    Clients.first.unlock();
 
-    err = loadProjects(user->ID(), &user->related.Projects);
+    auto Projects = user->related.GetProjects();
+    err = loadProjects(user->ID(), Projects.second);
     if (err != noError) {
         return err;
     }
+    Projects.first.unlock();
 
-    err = loadTasks(user->ID(), &user->related.Tasks);
+    auto Tasks = user->related.GetTasks();
+    err = loadTasks(user->ID(), Tasks.second);
     if (err != noError) {
         return err;
     }
+    Tasks.first.unlock();
 
-    err = loadTags(user->ID(), &user->related.Tags);
+    auto Tags = user->related.GetTags();
+    err = loadTags(user->ID(), Tags.second);
     if (err != noError) {
         return err;
     }
+    Tags.first.unlock();
 
-    err = loadTimeEntries(user->ID(), &user->related.TimeEntries);
+    auto TimeEntries = user->related.GetTimeEntries();
+    err = loadTimeEntries(user->ID(), TimeEntries.second);
     if (err != noError) {
         return err;
     }
+    TimeEntries.first.unlock();
 
-    err = loadAutotrackerRules(user->ID(), &user->related.AutotrackerRules);
+    auto AutotrackerRules = user->related.GetAutotrackerRules();
+    err = loadAutotrackerRules(user->ID(), AutotrackerRules.second);
     if (err != noError) {
         return err;
     }
+    AutotrackerRules.first.unlock();
 
-    err = loadTimelineEvents(user->ID(), &user->related.TimelineEvents);
+    auto TimelineEvents = user->related.GetTimelineEvents();
+    err = loadTimelineEvents(user->ID(), TimelineEvents.second);
     if (err != noError) {
         return err;
     }
+    TimelineEvents.first.unlock();
 
-    err = loadObmActions(user->ID(), &user->related.ObmActions);
+    auto ObmActions = user->related.GetObmActions();
+    err = loadObmActions(user->ID(), ObmActions.second);
     if (err != noError) {
         return err;
     }
+    ObmActions.first.unlock();
 
-    err = loadObmExperiments(user->ID(), &user->related.ObmExperiments);
+    auto ObmExperiments = user->related.GetObmExperiments();
+    err = loadObmExperiments(user->ID(), ObmExperiments.second);
     if (err != noError) {
         return err;
     }
+    ObmExperiments.first.unlock();
 
     return noError;
 }
@@ -3419,10 +3439,12 @@ error Database::SaveUser(
     if (with_related_data) {
         // Workspaces
         std::vector<ModelChange> workspace_changes;
+        auto Workspaces = user->related.GetWorkspaces();
         error err = saveRelatedModels(user->ID(),
                                       "workspaces",
-                                      &user->related.Workspaces,
+                                      Workspaces.second,
                                       &workspace_changes);
+        Workspaces.first.unlock();
         if (err != noError) {
             session_->rollback();
             return err;
@@ -3440,10 +3462,12 @@ error Database::SaveUser(
 
         // Clients
         std::vector<ModelChange> client_changes;
+        auto Clients = user->related.GetClients();
         err = saveRelatedModels(user->ID(),
                                 "clients",
-                                &user->related.Clients,
+                                Clients.second,
                                 &client_changes);
+        Clients.first.unlock();
         if (err != noError) {
             session_->rollback();
             return err;
@@ -3461,10 +3485,12 @@ error Database::SaveUser(
 
         // Projects
         std::vector<ModelChange> project_changes;
+        auto Projects = user->related.GetProjects();
         err = saveRelatedModels(user->ID(),
                                 "projects",
-                                &user->related.Projects,
+                                Projects.second,
                                 &project_changes);
+        Projects.first.unlock();
         if (err != noError) {
             session_->rollback();
             return err;
@@ -3482,10 +3508,12 @@ error Database::SaveUser(
 
         // Tasks
         std::vector<ModelChange> task_changes;
+        auto Tasks = user->related.GetTasks();
         err = saveRelatedModels(user->ID(),
                                 "tasks",
-                                &user->related.Tasks,
+                                Tasks.second,
                                 &task_changes);
+        Tasks.first.unlock();
         if (err != noError) {
             session_->rollback();
             return err;
@@ -3502,60 +3530,72 @@ error Database::SaveUser(
         }
 
         // Tags
+        auto Tags = user->related.GetTags();
         err = saveRelatedModels(user->ID(),
                                 "tags",
-                                &user->related.Tags,
+                                Tags.second,
                                 changes);
+        Tags.first.unlock();
         if (err != noError) {
             session_->rollback();
             return err;
         }
 
         // Time entries
+        auto TimeEntries = user->related.GetTimeEntries();
         err = saveRelatedModels(user->ID(),
                                 "time_entries",
-                                &user->related.TimeEntries,
+                                TimeEntries.second,
                                 changes);
+        TimeEntries.first.unlock();
         if (err != noError) {
             session_->rollback();
             return err;
         }
 
         // Autotracker rules
+        auto AutotrackerRules = user->related.GetAutotrackerRules();
         err = saveRelatedModels(user->ID(),
                                 "autotracker_settings",
-                                &user->related.AutotrackerRules,
+                                AutotrackerRules.second,
                                 changes);
+        AutotrackerRules.first.unlock();
         if (err != noError) {
             session_->rollback();
             return err;
         }
 
         // OBM actions
+        auto ObmActions = user->related.GetObmActions();
         err = saveRelatedModels(user->ID(),
                                 "obm_actions",
-                                &user->related.ObmActions,
+                                ObmActions.second,
                                 changes);
+        ObmActions.first.unlock();
         if (err != noError) {
             session_->rollback();
             return err;
         }
 
         // OBM experiments
+        auto ObmExperiments = user->related.GetObmExperiments();
         err = saveRelatedModels(user->ID(),
                                 "obm_experiments",
-                                &user->related.ObmExperiments,
+                                ObmExperiments.second,
                                 changes);
+        ObmExperiments.first.unlock();
         if (err != noError) {
             session_->rollback();
             return err;
         }
 
         // Timeline events
+        auto TimelineEvents = user->related.GetTimelineEvents();
         err = saveRelatedModels(user->ID(),
                                 "timeline_events",
-                                &user->related.TimelineEvents,
+                                TimelineEvents.second,
                                 changes);
+        TimelineEvents.first.unlock();
         if (err != noError) {
             session_->rollback();
             return err;

@@ -75,9 +75,8 @@ void User::AddProjectToList(Project *p) {
 
     // We should push the project to correct alphabetical position
     // (since we try to avoid sorting the large list)
-    for (std::vector<Project *>::iterator it =
-        related.Projects.begin();
-            it != related.Projects.end(); it++) {
+    auto Ps = related.GetProjects();
+    for (auto it = Ps.second->begin(); it != Ps.second->end(); it++) {
         Project *pr = *it;
         if (p->WID() == pr->WID()) {
             WIDMatch = true;
@@ -85,35 +84,35 @@ void User::AddProjectToList(Project *p) {
                 // Handle adding project without client
                 CIDMatch = true;
                 if (Poco::UTF8::icompare(p->Name(), pr->Name()) < 0) {
-                    related.Projects.insert(it, p);
+                    Ps.second->insert(it, p);
                     return;
                 }
             } else if (Poco::UTF8::icompare(p->ClientName(), pr->ClientName()) == 0) {
                 // Handle adding project with client
                 CIDMatch = true;
                 if (Poco::UTF8::icompare(p->FullName(), pr->FullName()) < 0) {
-                    related.Projects.insert(it,p);
+                    Ps.second->insert(it,p);
                     return;
                 }
             } else if (CIDMatch) {
                 // in case new project is last in client list
-                related.Projects.insert(it,p);
+                Ps.second->insert(it,p);
                 return;
             } else if ((p->CID() != 0 || !p->ClientGUID().empty()) && pr->CID() != 0) {
                 if (Poco::UTF8::icompare(p->FullName(), pr->FullName()) < 0) {
-                    related.Projects.insert(it,p);
+                    Ps.second->insert(it,p);
                     return;
                 }
             }
         } else if (WIDMatch) {
             //In case new project is last in workspace list
-            related.Projects.insert(it,p);
+            Ps.second->insert(it,p);
             return;
         }
     }
 
     // if projects vector is empty or project should be added to the end
-    related.Projects.push_back(p);
+    Ps.second->push_back(p);
 }
 
 Client *User::CreateClient(
@@ -134,24 +133,23 @@ void User::AddClientToList(Client *c) {
 
     // We should push the project to correct alphabetical position
     // (since we try to avoid sorting the large list)
-    for (std::vector<Client *>::iterator it =
-        related.Clients.begin();
-            it != related.Clients.end(); it++) {
+    auto Cs = related.GetClients();
+    for (auto it = Cs.second->begin(); it != Cs.second->end(); it++) {
         Client *cl = *it;
         if (c->WID() == cl->WID()) {
             foundMatch = true;
             if (Poco::UTF8::icompare(c->Name(), cl->Name()) < 0) {
-                related.Clients.insert(it,c);
+                Cs.second->insert(it,c);
                 return;
             }
         } else if (foundMatch) {
-            related.Clients.insert(it,c);
+            Cs.second->insert(it,c);
             return;
         }
     }
 
     // if clients vector is empty or client should be added to the end
-    related.Clients.push_back(c);
+    Cs.second->push_back(c);
 }
 
 // Start a time entry, mark it as dirty and add to user time entry collection.
@@ -264,10 +262,8 @@ TimeEntry *User::Continue(
 std::string User::DateDuration(TimeEntry * const te) const {
     Poco::Int64 date_duration(0);
     std::string date_header = Formatter::FormatDateHeader(te->Start());
-    for (std::vector<TimeEntry *>::const_iterator it =
-        related.TimeEntries.begin();
-            it != related.TimeEntries.end();
-            it++) {
+    auto TEs = related.GetTimeEntries();
+    for (auto it = TEs.second->begin(); it != TEs.second->end(); it++) {
         TimeEntry *n = *it;
         if (Formatter::FormatDateHeader(n->Start()) == date_header) {
             Poco::Int64 duration = n->DurationInSeconds();
@@ -280,10 +276,8 @@ std::string User::DateDuration(TimeEntry * const te) const {
 }
 
 bool User::HasPremiumWorkspaces() const {
-    for (std::vector<Workspace *>::const_iterator it =
-        related.Workspaces.begin();
-            it != related.Workspaces.end();
-            it++) {
+    auto WSs = related.GetWorkspaces();
+    for (auto it = WSs.second->begin(); it != WSs.second->end(); it++) {
         Workspace *model = *it;
         if (model->Premium()) {
             return true;
@@ -293,10 +287,8 @@ bool User::HasPremiumWorkspaces() const {
 }
 
 bool User::CanAddProjects() const {
-    for (std::vector<Workspace *>::const_iterator it =
-        related.Workspaces.begin();
-            it != related.Workspaces.end();
-            it++) {
+    auto WSs = related.GetWorkspaces();
+    for (auto it = WSs.second->begin(); it != WSs.second->end(); it++) {
         Workspace *model = *it;
         if (model->OnlyAdminsMayCreateProjects()) {
             return false;
@@ -446,10 +438,8 @@ TimeEntry *User::DiscardTimeAt(
 }
 
 TimeEntry *User::RunningTimeEntry() const {
-    for (std::vector<TimeEntry *>::const_iterator it =
-        related.TimeEntries.begin();
-            it != related.TimeEntries.end();
-            it++) {
+    auto TEs = related.GetTimeEntries();
+    for (auto it = TEs.second->begin(); it != TEs.second->end(); it++) {
         if ((*it)->DurationInSeconds() < 0) {
             return *it;
         }
@@ -486,16 +476,26 @@ std::string User::String() const {
 }
 
 void User::DeleteRelatedModelsWithWorkspace(const Poco::UInt64 wid) {
-    deleteRelatedModelsWithWorkspace(wid, &related.Clients);
-    deleteRelatedModelsWithWorkspace(wid, &related.Projects);
-    deleteRelatedModelsWithWorkspace(wid, &related.Tasks);
-    deleteRelatedModelsWithWorkspace(wid, &related.TimeEntries);
-    deleteRelatedModelsWithWorkspace(wid, &related.Tags);
+    auto Clients = related.GetClients();
+    deleteRelatedModelsWithWorkspace(wid, Clients.second);
+    Clients.first.unlock();
+    auto Projects = related.GetClients();
+    deleteRelatedModelsWithWorkspace(wid, Projects.second);
+    Projects.first.unlock();
+    auto Tasks = related.GetClients();
+    deleteRelatedModelsWithWorkspace(wid, Tasks.second);
+    Tasks.first.unlock();
+    auto TimeEntries = related.GetClients();
+    deleteRelatedModelsWithWorkspace(wid, TimeEntries.second);
+    TimeEntries.first.unlock();
+    auto Tags = related.GetClients();
+    deleteRelatedModelsWithWorkspace(wid, Tags.second);
+    Tags.first.unlock();
 }
 
 void User::RemoveClientFromRelatedModels(const Poco::UInt64 cid) {
-    for (std::vector<Project *>::iterator it = related.Projects.begin();
-            it != related.Projects.end(); it++) {
+    auto Ps = related.GetProjects();
+    for (auto it = Ps.second->begin(); it != Ps.second->end(); it++) {
         Project *model = *it;
         if (model->CID() == cid) {
             model->SetCID(0);
@@ -504,8 +504,12 @@ void User::RemoveClientFromRelatedModels(const Poco::UInt64 cid) {
 }
 
 void User::RemoveProjectFromRelatedModels(const Poco::UInt64 pid) {
-    removeProjectFromRelatedModels(pid, &related.Tasks);
-    removeProjectFromRelatedModels(pid, &related.TimeEntries);
+    auto Tasks = related.GetTasks();
+    removeProjectFromRelatedModels(pid, Tasks.second);
+    Tasks.first.unlock();
+    auto TimeEntries = related.GetTimeEntries();
+    removeProjectFromRelatedModels(pid, TimeEntries.second);
+    TimeEntries.first.unlock();
 }
 
 void User::RemoveTaskFromRelatedModels(const Poco::UInt64 tid) {
@@ -543,7 +547,8 @@ void User::loadUserTagFromJSON(
 
     if (!model) {
         model = new Tag();
-        related.Tags.push_back(model);
+        auto Tags = related.GetTags();
+        Tags.second->push_back(model);
     }
     if (alive) {
         alive->insert(id);
@@ -577,7 +582,8 @@ void User::loadUserTaskFromJSON(
 
     if (!model) {
         model = new Task();
-        related.Tasks.push_back(model);
+        auto Tasks = related.GetTasks();
+        Tasks.second->push_back(model);
     }
 
     if (alive) {
@@ -661,7 +667,8 @@ void User::loadUserWorkspaceFromJSON(
 
     if (!model) {
         model = new Workspace();
-        related.Workspaces.push_back(model);
+        auto Workspaces = related.GetWorkspaces();
+        Workspaces.second->push_back(model);
     }
     if (alive) {
         alive->insert(id);
@@ -741,7 +748,8 @@ error User::LoadTimeEntriesFromJSONString(const std::string& json) {
         loadUserTimeEntryFromJSON(root[i], &alive);
     }
 
-    deleteZombies(related.TimeEntries, alive);
+    auto TEs = related.GetTimeEntries();
+    deleteZombies(*TEs.second, alive);
 
     return noError;
 }
@@ -762,10 +770,8 @@ void User::loadObmExperimentFromJson(Json::Value const &obm) {
         return;
     }
     ObmExperiment *model = nullptr;
-    for (std::vector<ObmExperiment *>::const_iterator it =
-        related.ObmExperiments.begin();
-            it != related.ObmExperiments.end();
-            it++) {
+    auto OEs = related.GetObmExperiments();
+    for (auto it = OEs.second->begin(); it != OEs.second->end(); it++) {
         ObmExperiment *existing = *it;
         if (existing->Nr() == nr) {
             model = existing;
@@ -776,7 +782,7 @@ void User::loadObmExperimentFromJson(Json::Value const &obm) {
         model = new ObmExperiment();
         model->SetUID(ID());
         model->SetNr(nr);
-        related.ObmExperiments.push_back(model);
+        OEs.second->push_back(model);
     }
     model->SetIncluded(obm["included"].asBool());
     model->SetActions(obm["actions"].asString());
@@ -813,7 +819,8 @@ void User::loadUserAndRelatedDataFromJSON(
         }
 
         if (including_related_data) {
-            deleteZombies(related.Workspaces, alive);
+            auto Workspaces = related.GetWorkspaces();
+            deleteZombies(*Workspaces.second, alive);
         }
     }
 
@@ -829,7 +836,8 @@ void User::loadUserAndRelatedDataFromJSON(
         }
 
         if (including_related_data) {
-            deleteZombies(related.Clients, alive);
+            auto Clients = related.GetClients();
+            deleteZombies(*Clients.second, alive);
         }
     }
 
@@ -845,7 +853,8 @@ void User::loadUserAndRelatedDataFromJSON(
         }
 
         if (including_related_data) {
-            deleteZombies(related.Projects, alive);
+            auto Projects = related.GetProjects();
+            deleteZombies(*Projects.second, alive);
         }
     }
 
@@ -861,7 +870,8 @@ void User::loadUserAndRelatedDataFromJSON(
         }
 
         if (including_related_data) {
-            deleteZombies(related.Tasks, alive);
+            auto Tasks = related.GetTasks();
+            deleteZombies(*Tasks.second, alive);
         }
     }
 
@@ -877,7 +887,8 @@ void User::loadUserAndRelatedDataFromJSON(
         }
 
         if (including_related_data) {
-            deleteZombies(related.Tags, alive);
+            auto Tags = related.GetTags();
+            deleteZombies(*Tags.second, alive);
         }
     }
 
@@ -893,7 +904,8 @@ void User::loadUserAndRelatedDataFromJSON(
         }
 
         if (including_related_data) {
-            deleteZombies(related.TimeEntries, alive);
+            auto TimeEntries = related.GetTimeEntries();
+            deleteZombies(*TimeEntries.second, alive);
         }
     }
 }
@@ -962,7 +974,8 @@ void User::loadUserClientFromJSON(
 
     if (!model) {
         model = new Client();
-        related.Clients.push_back(model);
+        auto Clients = related.GetClients();
+        Clients.second->push_back(model);
     }
     if (alive) {
         alive->insert(id);
@@ -1042,7 +1055,8 @@ void User::loadUserProjectFromJSON(
 
     if (!model) {
         model = new Project();
-        related.Projects.push_back(model);
+        auto Projects = related.GetProjects();
+        Projects.second->push_back(model);
     }
     if (alive) {
         alive->insert(id);
@@ -1313,6 +1327,7 @@ void User::CompressTimeline() {
     Poco::UInt64 chunk_up_to =
         (time(0) / kTimelineChunkSeconds) * kTimelineChunkSeconds;
 
+    auto TLEs = related.GetTimelineEvents();
 
     time_t start = time(0);
 
@@ -1321,15 +1336,12 @@ void User::CompressTimeline() {
         ss << "CompressTimeline "
            << " user_id=" << ID()
            << " chunk_up_to=" << chunk_up_to
-           << " number of events=" << related.TimelineEvents.size();
+           << " number of events=" << TLEs.second->size();
 
         logger().debug(ss.str());
     }
 
-    for (std::vector<TimelineEvent *>::iterator i =
-        related.TimelineEvents.begin();
-            i != related.TimelineEvents.end();
-            ++i) {
+    for (auto i = TLEs.second->begin(); i != TLEs.second->end(); ++i) {
         TimelineEvent *event = *i;
 
         poco_check_ptr(event);
@@ -1401,7 +1413,7 @@ void User::CompressTimeline() {
         std::stringstream ss;
         ss << "CompressTimeline done in " << (time(0) - start)
            << " seconds, "
-           << related.TimelineEvents.size()
+           << TLEs.second->size()
            << " compressed into "
            << compressed.size()
            << " chunks";
@@ -1411,9 +1423,8 @@ void User::CompressTimeline() {
 
 std::vector<TimelineEvent> User::CompressedTimeline() const {
     std::vector<TimelineEvent> list;
-    for (std::vector<TimelineEvent *>::const_iterator i =
-        related.TimelineEvents.begin();
-            i != related.TimelineEvents.end();
+    auto TLEs = related.GetTimelineEvents();
+    for (auto i = TLEs.second->begin(); i != TLEs.second->end();
             ++i) {
         TimelineEvent *event = *i;
         poco_check_ptr(event);

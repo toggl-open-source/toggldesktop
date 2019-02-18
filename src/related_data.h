@@ -8,6 +8,7 @@
 #include <string>
 #include <map>
 #include <functional>
+#include <mutex>
 
 #include "./timeline_event.h"
 #include "./types.h"
@@ -37,18 +38,40 @@ T *modelByID(const Poco::UInt64 id, std::vector<T *> const *list);
 template <typename T>
 T *modelByGUID(const guid GUID, std::vector<T *> const *list);
 
+template <typename T> using protected_vector = std::pair<std::unique_lock<std::mutex>, std::vector<T>*>;
+template <typename T> using protected_const_vector = std::pair<std::unique_lock<std::mutex>, const std::vector<T>*>;
+
 class RelatedData {
  public:
-    std::vector<Workspace *> Workspaces;
-    std::vector<Client *> Clients;
-    std::vector<Project *> Projects;
-    std::vector<Task *> Tasks;
-    std::vector<Tag *> Tags;
-    std::vector<TimeEntry *> TimeEntries;
-    std::vector<AutotrackerRule *> AutotrackerRules;
-    std::vector<TimelineEvent *> TimelineEvents;
-    std::vector<ObmAction *> ObmActions;
-    std::vector<ObmExperiment *> ObmExperiments;
+    // ========================= BEWARE ============================
+    // when using these methods, the result HAS TO be stored:
+    // USE THIS: auto WSs = GetWorkspaces(); WS.second->...
+    // NOT THIS: GetWorkspaces().second;
+    // the latter will unlock the mutex immediately
+    //
+    // If not unlocked explicitely (by calling WSs.first.unlock()),
+    // it will get unlocked when the surrounding scope ends
+    protected_vector<Workspace *> GetWorkspaces();
+    protected_vector<Client *> GetClients();
+    protected_vector<Project *> GetProjects();
+    protected_vector<Task *> GetTasks();
+    protected_vector<Tag *> GetTags();
+    protected_vector<TimeEntry *> GetTimeEntries();
+    protected_vector<AutotrackerRule *> GetAutotrackerRules();
+    protected_vector<TimelineEvent *> GetTimelineEvents();
+    protected_vector<ObmAction *> GetObmActions();
+    protected_vector<ObmExperiment *> GetObmExperiments();
+
+    protected_const_vector<Workspace *> GetWorkspaces() const;
+    protected_const_vector<Client *> GetClients() const;
+    protected_const_vector<Project *> GetProjects() const;
+    protected_const_vector<Task *> GetTasks() const;
+    protected_const_vector<Tag *> GetTags() const ;
+    protected_const_vector<TimeEntry *> GetTimeEntries() const;
+    protected_const_vector<AutotrackerRule *> GetAutotrackerRules() const;
+    protected_const_vector<TimelineEvent *> GetTimelineEvents() const;
+    protected_const_vector<ObmAction *> GetObmActions() const;
+    protected_const_vector<ObmExperiment *> GetObmExperiments() const;
 
     void Clear();
 
@@ -135,6 +158,27 @@ class RelatedData {
     void mergeGroupedAutocompleteItems(
         std::vector<view::Autocomplete> *result,
         std::map<std::string, std::vector<view::Autocomplete> > *items) const;
+
+    std::vector<Workspace *> _Workspaces;
+    mutable std::mutex _WorkspacesMutex;
+    std::vector<Client *> _Clients;
+    mutable std::mutex _ClientsMutex;
+    std::vector<Project *> _Projects;
+    mutable std::mutex _ProjectsMutex;
+    std::vector<Task *> _Tasks;
+    mutable std::mutex _TasksMutex;
+    std::vector<Tag *> _Tags;
+    mutable std::mutex _TagsMutex;
+    std::vector<TimeEntry *> _TimeEntries;
+    mutable std::mutex _TimeEntriesMutex;
+    std::vector<AutotrackerRule *> _AutotrackerRules;
+    mutable std::mutex _AutotrackerRulesMutex;
+    std::vector<TimelineEvent *> _TimelineEvents;
+    mutable std::mutex _TimelineEventsMutex;
+    std::vector<ObmAction *> _ObmActions;
+    mutable std::mutex _ObmActionsMutex;
+    std::vector<ObmExperiment *> _ObmExperiments;
+    mutable std::mutex _ObmExperimentsMutex;
 };
 
 template<typename T>
