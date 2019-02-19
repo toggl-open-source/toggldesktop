@@ -38,8 +38,6 @@ class TogglApi : public QObject {
         const QString message,
         const QString context);
 
-    u_int64_t countryID;
-
     bool shutdown;
 
     bool startEvents();
@@ -50,7 +48,8 @@ class TogglApi : public QObject {
 
     void login(const QString email, const QString password);
 
-    void signup(const QString email, const QString password);
+    void signup(const QString email, const QString password,
+        const uint64_t countryID);
 
     void googleLogin(const QString accessToken);
 
