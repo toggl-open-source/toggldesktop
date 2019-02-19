@@ -43,7 +43,11 @@ void LoginWidget::display() {
 
 void LoginWidget::keyPressEvent(QKeyEvent* event) {
     if (event->key() == Qt::Key_Enter || event->key() == Qt::Key_Return) {
-        on_login_clicked();
+        if (signupVisible) {
+            on_signup_clicked();
+        } else {
+            on_login_clicked();
+        }
     }
 }
 
