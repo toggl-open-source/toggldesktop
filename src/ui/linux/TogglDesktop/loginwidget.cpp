@@ -28,7 +28,7 @@ oauth2(new OAuth2(this)) {
     countriesLoaded = false;
     selectedCountryId = UINT64_MAX;
 
-    on_viewchangelabel_linkActivated("");;
+    on_viewchangelabel_linkActivated("");
 }
 
 LoginWidget::~LoginWidget() {
@@ -36,6 +36,8 @@ LoginWidget::~LoginWidget() {
 }
 
 void LoginWidget::display() {
+    signupVisible = true;
+    on_viewchangelabel_linkActivated("");
     qobject_cast<QStackedWidget*>(parent())->setCurrentWidget(this);
 }
 
