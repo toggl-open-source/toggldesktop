@@ -123,7 +123,7 @@ void TimerWidget::clearTask() {
 
 void TimerWidget::updateCoverLabel(const QString &text) {
     QFont font;
-    font.setPointSize(14);
+    font.setPixelSize(14);
     QFontMetrics metrics(font);
 
     ui->descriptionCover->setText(metrics.elidedText(text, Qt::ElideRight, ui->descriptionCover->width() - 2));
@@ -339,6 +339,7 @@ void TimerWidget::resizeEvent(QResizeEvent* event)
 
 void TimerWidget::setEllipsisTextToLabel(QLabel *label, QString text)
 {
+    updateCoverLabel(ui->description->currentText());
     QFontMetrics metrix(label->font());
     int width = label->width() - 4;
     QString clippedText = metrix.elidedText(text, Qt::ElideRight, width);

@@ -24,12 +24,14 @@ class TimerWidget : public QFrame {
     explicit TimerWidget(QWidget *parent = 0);
     ~TimerWidget();
 
+private:
+
  signals:
     void buttonClicked();
 
  protected:
     void mousePressEvent(QMouseEvent *event);
-    virtual void resizeEvent(QResizeEvent *);
+    void resizeEvent(QResizeEvent *) override;
 
  private slots:  // NOLINT
     void displayStoppedTimerState();
