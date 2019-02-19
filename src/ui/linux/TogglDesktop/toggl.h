@@ -49,7 +49,7 @@ class TogglApi : public QObject {
     void login(const QString email, const QString password);
 
     void signup(const QString email, const QString password,
-        const uint64_t countryID);
+                const uint64_t countryID);
 
     void googleLogin(const QString accessToken);
 

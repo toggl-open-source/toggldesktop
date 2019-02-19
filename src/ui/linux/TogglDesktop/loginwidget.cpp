@@ -116,7 +116,7 @@ void LoginWidget::on_signup_clicked() {
         return;
     }
     TogglApi::instance->signup(ui->email->text(), ui->password->text(),
-        selectedCountryId);
+                               selectedCountryId);
 }
 
 void LoginWidget::setCountries(

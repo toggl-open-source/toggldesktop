@@ -313,7 +313,7 @@ void TogglApi::login(const QString email, const QString password) {
 }
 
 void TogglApi::signup(const QString email, const QString password,
-    const uint64_t countryID) {
+                      const uint64_t countryID) {
     toggl_signup(ctx,
                  email.toStdString().c_str(),
                  password.toStdString().c_str(),
