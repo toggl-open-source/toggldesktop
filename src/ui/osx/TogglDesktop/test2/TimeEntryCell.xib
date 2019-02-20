@@ -41,7 +41,7 @@
                                 <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="time-entry-dot" id="vYQ-WX-2jd"/>
                             </imageView>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" preferredMaxLayoutWidth="98" translatesAutoresizingMaskIntoConstraints="NO" id="deS-e6-3Ui" customClass="NSTextFieldWithBackground">
-                                <rect key="frame" x="10" y="16" width="88" height="16"/>
+                                <rect key="frame" x="13" y="16" width="85" height="16"/>
                                 <textFieldCell key="cell" lineBreakMode="truncatingTail" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" alignment="left" title="NEW - TOGGL - project" id="apI-Za-Hk2">
                                     <font key="font" metaFont="system" size="12"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -54,7 +54,7 @@
                             <constraint firstAttribute="trailing" secondItem="CwR-d5-aWs" secondAttribute="trailing" id="9sc-DP-rM5"/>
                             <constraint firstItem="deS-e6-3Ui" firstAttribute="top" secondItem="CwR-d5-aWs" secondAttribute="bottom" id="B56-To-9dw"/>
                             <constraint firstAttribute="trailing" secondItem="deS-e6-3Ui" secondAttribute="trailing" id="C5N-h2-qzH"/>
-                            <constraint firstItem="deS-e6-3Ui" firstAttribute="leading" secondItem="4Gn-rS-ham" secondAttribute="trailing" constant="4" id="K6U-Qu-VA1"/>
+                            <constraint firstItem="deS-e6-3Ui" firstAttribute="leading" secondItem="4Gn-rS-ham" secondAttribute="trailing" constant="7" id="K6U-Qu-VA1"/>
                             <constraint firstItem="4Gn-rS-ham" firstAttribute="leading" secondItem="0ZQ-rn-Eji" secondAttribute="leading" id="fAq-xo-Tif"/>
                             <constraint firstItem="CwR-d5-aWs" firstAttribute="leading" secondItem="0ZQ-rn-Eji" secondAttribute="leading" id="iCw-Nm-jAT"/>
                             <constraint firstItem="CwR-d5-aWs" firstAttribute="top" secondItem="0ZQ-rn-Eji" secondAttribute="top" constant="16" id="tuA-G3-GTW"/>

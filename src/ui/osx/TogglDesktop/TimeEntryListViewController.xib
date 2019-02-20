@@ -10,6 +10,7 @@
             <connections>
                 <outlet property="emptyLabel" destination="6qy-lU-tSK" id="gDu-GF-iBp"/>
                 <outlet property="headerView" destination="OXo-Tz-Vbz" id="vDf-yG-fnR"/>
+                <outlet property="timeEntriesTableView" destination="40I-3O-uRB" id="JBb-Jo-Ilu"/>
                 <outlet property="timeEntryPopupEditView" destination="ozl-58-bBU" id="Tv3-fj-eCx"/>
                 <outlet property="timeEntrypopover" destination="dIa-oe-UAP" id="CwJ-50-ejV"/>
                 <outlet property="timeEntrypopoverViewController" destination="U32-F3-bea" id="AQr-DI-TYB"/>
@@ -95,6 +96,7 @@
                 <constraint firstAttribute="centerX" secondItem="6qy-lU-tSK" secondAttribute="centerX" id="oe5-9e-iNd"/>
                 <constraint firstItem="OXo-Tz-Vbz" firstAttribute="leading" secondItem="3" secondAttribute="leading" constant="-1" id="twv-Me-Ne4"/>
             </constraints>
+            <point key="canvasLocation" x="258" y="183"/>
         </customView>
     </objects>
 </document>

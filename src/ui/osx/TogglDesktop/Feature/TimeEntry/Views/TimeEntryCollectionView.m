@@ -1,32 +1,26 @@
 //
-//  NSUnstripedTableView.m
-//  Toggl Desktop on the Mac
+//  TimeEntryCollectionView.m
+//  TogglDesktop
 //
-//  Created by Tanel Lebedev on 04/02/2014.
-//  Copyright (c) 2014 TogglDesktop developers. All rights reserved.
+//  Created by Nghia Tran on 2/20/19.
+//  Copyright © 2019 Alari. All rights reserved.
 //
 
-#import "NSUnstripedTableView.h"
-#include <Carbon/Carbon.h>
+#import "TimeEntryCollectionView.h"
 #import "TimeEntryCell.h"
 #import "UIEvents.h"
 #import "TogglDesktop-Swift.h"
+#include <Carbon/Carbon.h>
 
-@implementation NSUnstripedTableView
+@interface TimeEntryCollectionView ()
+@property (assign, nonatomic) NSIndexPath *latestSelectedIndexPath;
+@end
+
+@implementation TimeEntryCollectionView
 
 extern void *ctx;
 
-- (void)drawGridInClipRect:(NSRect)clipRect
-{
-	NSRect lastRowRect = [self rectOfRow:[self numberOfRows] - 1];
-	NSRect myClipRect = NSMakeRect(0, 0, lastRowRect.size.width, NSMaxY(lastRowRect));
-	NSRect finalClipRect = NSIntersectionRect(clipRect, myClipRect);
-
-	[super drawGridInClipRect:finalClipRect];
-}
-
-- (void)keyDown:(NSEvent *)event
-{
+- (void)keyDown:(NSEvent *)event {
 	if ((event.keyCode == kVK_Return) || (event.keyCode == kVK_ANSI_KeypadEnter))
 	{
 		TimeEntryCell *cell = [self getSelectedEntryCell];
@@ -69,19 +63,16 @@ extern void *ctx;
 
 - (TimeEntryCell *)getSelectedEntryCell
 {
-	if (self.selectedRow != -1)
+	if (self.selectionIndexPaths.count == 0)
 	{
-		self.latestSelectedRow = self.selectedRow;
+		return nil;
 	}
-	NSView *latestView = [self rowViewAtRow:[self latestSelectedRow]
-							makeIfNecessary  :NO];
+	self.latestSelectedIndexPath = [[self.selectionIndexPaths allObjects] firstObject];
 
-	for (NSView *subview in [latestView subviews])
+	id view = [self itemAtIndexPath:self.latestSelectedIndexPath];
+	if ([view isKindOfClass:[TimeEntryCell class]])
 	{
-		if ([subview isKindOfClass:[TimeEntryCell class]])
-		{
-			return (TimeEntryCell *)subview;
-		}
+		return (TimeEntryCell *)view;
 	}
 	return nil;
 }
@@ -97,7 +88,7 @@ extern void *ctx;
 		{
 			if (toggl_delete_time_entry(ctx, [cell.GUID UTF8String]))
 			{
-				[self removeRowsAtIndexes:[NSIndexSet indexSetWithIndex:self.selectedRow] withAnimation:NSTableViewAnimationSlideUp];
+				[self deleteItemsAtIndexPaths:[[NSSet alloc] initWithArray:@[self.latestSelectedIndexPath]]];
 				[self setFirstRowAsSelected];
 			}
 			return;
@@ -119,7 +110,7 @@ extern void *ctx;
 
 		if (toggl_delete_time_entry(ctx, [cell.GUID UTF8String]))
 		{
-			[self removeRowsAtIndexes:[NSIndexSet indexSetWithIndex:self.selectedRow] withAnimation:NSTableViewAnimationSlideUp];
+			[self deleteItemsAtIndexPaths:[[NSSet alloc] initWithArray:@[self.latestSelectedIndexPath]]];
 			[self setFirstRowAsSelected];
 		}
 	}
@@ -127,20 +118,6 @@ extern void *ctx;
 
 - (void)setFirstRowAsSelected
 {
-	[self deselectAll:nil];
-	if (self.latestSelectedRow > 0)
-	{
-		self.latestSelectedRow -= 1;
-	}
-
-	NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:self.latestSelectedRow];
-	[self selectRowIndexes:indexSet byExtendingSelection:NO];
-
-	TimeEntryCell *cell = [self getSelectedEntryCell];
-	if (cell != nil)
-	{
-		[cell setFocused];
-	}
 }
 
 @end
