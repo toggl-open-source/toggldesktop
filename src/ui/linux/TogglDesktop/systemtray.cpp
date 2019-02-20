@@ -21,9 +21,10 @@ SystemTray::SystemTray(MainWindowController *parent, QIcon defaultIcon) :
             this, SLOT(displayReminder(QString,QString)));  // NOLINT
 
     notifications = new QDBusInterface("org.freedesktop.Notifications", "/org/freedesktop/Notifications", "org.freedesktop.Notifications", QDBusConnection::sessionBus(), this);
+    notificationsPresent = notifications->isValid();
 
-    notificationsPresent = notificationsPresent && connect(notifications, SIGNAL(NotificationClosed(uint,uint)), this, SLOT(notificationClosed(uint,uint)));
-    notificationsPresent = notificationsPresent && connect(notifications, SIGNAL(ActionInvoked(uint,QString)), this, SLOT(notificationActionInvoked(uint,QString)));
+    connect(notifications, SIGNAL(NotificationClosed(uint,uint)), this, SLOT(notificationClosed(uint,uint)));
+    connect(notifications, SIGNAL(ActionInvoked(uint,QString)), this, SLOT(notificationActionInvoked(uint,QString)));
 
     auto pendingCall = notifications->asyncCall("GetCapabilities");
     auto watcher = new QDBusPendingCallWatcher(pendingCall, this);
