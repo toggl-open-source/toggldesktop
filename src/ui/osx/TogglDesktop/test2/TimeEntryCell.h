@@ -10,7 +10,7 @@
 #import "TimeEntryViewItem.h"
 #import "NSHoverButton.h"
 
-@interface TimeEntryCell : NSTableCellView
+@interface TimeEntryCell : NSCollectionViewItem
 @property (nonatomic, strong) IBOutlet NSTextField *descriptionTextField;
 @property (nonatomic, strong) IBOutlet NSTextField *projectTextField;
 @property (nonatomic, strong) IBOutlet NSImageView *billableFlag;

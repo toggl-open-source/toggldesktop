@@ -217,32 +217,32 @@ extern void *ctx;
 
 - (void)focusFieldName
 {
-	NSPoint globalLocation = [ NSEvent mouseLocation ];
-	NSRect rect = [[self window] convertRectFromScreen:NSMakeRect(globalLocation.x, globalLocation.y, 0, 0)];
-	NSPoint windowLocation = rect.origin;
-	NSPoint mouseLocation = [ self convertPoint:windowLocation fromView:nil ];
-
-	[self setFocused];
-
-	if (NSPointInRect(mouseLocation, self.projectTextField.frame))
-	{
-		toggl_edit(ctx, [self.GUID UTF8String], false, kFocusedFieldNameProject);
-		return;
-	}
-
-	if (NSPointInRect(mouseLocation, self.descriptionTextField.frame))
-	{
-		toggl_edit(ctx, [self.GUID UTF8String], false, kFocusedFieldNameDescription);
-		return;
-	}
-
-	if (NSPointInRect(mouseLocation, self.durationBox.frame))
-	{
-		toggl_edit(ctx, [self.GUID UTF8String], false, kFocusedFieldNameDuration);
-		return;
-	}
-
-	toggl_edit(ctx, [self.GUID UTF8String], false, "");
+//    NSPoint globalLocation = [ NSEvent mouseLocation ];
+//    NSRect rect = [[self window] convertRectFromScreen:NSMakeRect(globalLocation.x, globalLocation.y, 0, 0)];
+//    NSPoint windowLocation = rect.origin;
+//    NSPoint mouseLocation = [ self convertPoint:windowLocation fromView:nil ];
+//
+//    [self setFocused];
+//
+//    if (NSPointInRect(mouseLocation, self.projectTextField.frame))
+//    {
+//        toggl_edit(ctx, [self.GUID UTF8String], false, kFocusedFieldNameProject);
+//        return;
+//    }
+//
+//    if (NSPointInRect(mouseLocation, self.descriptionTextField.frame))
+//    {
+//        toggl_edit(ctx, [self.GUID UTF8String], false, kFocusedFieldNameDescription);
+//        return;
+//    }
+//
+//    if (NSPointInRect(mouseLocation, self.durationBox.frame))
+//    {
+//        toggl_edit(ctx, [self.GUID UTF8String], false, kFocusedFieldNameDuration);
+//        return;
+//    }
+//
+//    toggl_edit(ctx, [self.GUID UTF8String], false, "");
 }
 
 - (void)setFocused

@@ -144,6 +144,8 @@
 		BA2DA12021A691FF0027B7A5 /* TrackingService.m in Sources */ = {isa = PBXBuildFile; fileRef = BA2DA11F21A691FF0027B7A5 /* TrackingService.m */; };
 		BA2E3F2C22375E640035D034 /* NSView+Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2E3F2B22375E640035D034 /* NSView+Appearance.swift */; };
 		BA2E5FB1223787C300EB866E /* EditorPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2E5FB0223787C300EB866E /* EditorPopover.swift */; };
+		BA4059AF221D215A002969B8 /* TimeHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4059AE221D215A002969B8 /* TimeHeaderView.swift */; };
+		BA4059B1221D2186002969B8 /* TimeHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA4059B0221D2186002969B8 /* TimeHeaderView.xib */; };
 		BA6E873521DDC1E2005E2451 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA6E86B621DDB331005E2451 /* Sparkle.framework */; };
 		BA6E873621DDC1E2005E2451 /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA6E86B621DDB331005E2451 /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BA6F1B1A21EEE258009265E4 /* NSColor+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6F1B1921EEE258009265E4 /* NSColor+Utils.swift */; };
@@ -684,6 +686,8 @@
 		BA2DA11F21A691FF0027B7A5 /* TrackingService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TrackingService.m; sourceTree = "<group>"; };
 		BA2E3F2B22375E640035D034 /* NSView+Appearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSView+Appearance.swift"; sourceTree = "<group>"; };
 		BA2E5FB0223787C300EB866E /* EditorPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorPopover.swift; sourceTree = "<group>"; };
+		BA4059AE221D215A002969B8 /* TimeHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeHeaderView.swift; sourceTree = "<group>"; };
+		BA4059B0221D2186002969B8 /* TimeHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimeHeaderView.xib; sourceTree = "<group>"; };
 		BA6E86A521DDB331005E2451 /* Sparkle.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Sparkle.xcodeproj; path = ../../../../third_party/Sparkle/Sparkle.xcodeproj; sourceTree = "<group>"; };
 		BA6F1B1921EEE258009265E4 /* NSColor+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSColor+Utils.swift"; sourceTree = "<group>"; };
 		BA6F1B3721EEE998009265E4 /* Theme+Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Theme+Notification.swift"; sourceTree = "<group>"; };
@@ -1207,6 +1211,15 @@
 			name = Theme;
 			sourceTree = "<group>";
 		};
+		BA4059AD221D2147002969B8 /* CollectionView */ = {
+			isa = PBXGroup;
+			children = (
+				BA4059AE221D215A002969B8 /* TimeHeaderView.swift */,
+				BA4059B0221D2186002969B8 /* TimeHeaderView.xib */,
+			);
+			path = CollectionView;
+			sourceTree = "<group>";
+		};
 		BA6E86A621DDB331005E2451 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -1227,6 +1240,7 @@
 		BA712EAF21BF904E00A2D8DD /* Feature */ = {
 			isa = PBXGroup;
 			children = (
+				BA4059AD221D2147002969B8 /* CollectionView */,
 				BA712EC021BF905B00A2D8DD /* Undo */,
 			);
 			path = Feature;
@@ -1628,6 +1642,7 @@
 				3CD30F441F58B02C006FAA0D /* OverlayViewController.xib in Resources */,
 				74664DB218AA860800AAD282 /* off.pdf in Resources */,
 				7430750518204EFB009019CB /* AboutWindowController.xib in Resources */,
+				BA4059B1221D2186002969B8 /* TimeHeaderView.xib in Resources */,
 				749CB8CD18167D6E00814841 /* PreferencesWindowController.xib in Resources */,
 				69FC17FF17E6534400B96425 /* InfoPlist.strings in Resources */,
 				3CDA2C5C1913B61000A94967 /* icon-tags@2x.png in Resources */,
@@ -1770,6 +1785,7 @@
 				3CD30F431F58B02C006FAA0D /* OverlayViewController.m in Sources */,
 				74D1D25617EB713F00E709B0 /* TimeEntryListViewController.m in Sources */,
 				BA6F1B1A21EEE258009265E4 /* NSColor+Utils.swift in Sources */,
+				BA4059AF221D215A002969B8 /* TimeHeaderView.swift in Sources */,
 				74AA9476180909F50000539F /* GTMOAuth2WindowController.m in Sources */,
 				BA03729D21FED85700FC277B /* NSView+Xib.swift in Sources */,
 				74D1D25D17EB71C100E709B0 /* TimeEntryEditViewController.m in Sources */,

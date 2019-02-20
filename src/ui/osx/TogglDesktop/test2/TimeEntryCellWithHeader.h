@@ -8,7 +8,7 @@
 
 #import "TimeEntryCell.h"
 
-@interface TimeEntryCellWithHeader : TimeEntryCell
+@interface TimeEntryCellWithHeader : NSCollectionViewItem
 @property (nonatomic, strong) IBOutlet NSTextField *formattedDateTextField;
 @property (nonatomic, strong) IBOutlet NSTextField *dateDurationTextField;
 @end

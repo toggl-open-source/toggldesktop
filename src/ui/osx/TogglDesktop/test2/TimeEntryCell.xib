@@ -7,82 +7,72 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <customObject id="-2" userLabel="File's Owner"/>
+        <customObject id="-2" userLabel="File's Owner" customClass="TimeEntryCell">
+            <connections>
+                <outlet property="view" destination="jHy-af-Yta" id="okX-bA-OnE"/>
+            </connections>
+        </customObject>
+        <collectionViewItem identifier="TimeEntryCell" id="TVu-sQ-Sng" customClass="TimeEntryCell">
+            <connections>
+                <outlet property="view" destination="jHy-af-Yta" id="KQw-AJ-qHS"/>
+            </connections>
+        </collectionViewItem>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
-        <customView identifier="TimeEntryCell" id="jHy-af-Yta" customClass="TimeEntryCell">
-            <rect key="frame" x="0.0" y="0.0" width="252" height="51"/>
+        <customView id="jHy-af-Yta">
+            <rect key="frame" x="0.0" y="0.0" width="280" height="64"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <box autoresizesSubviews="NO" boxType="custom" borderType="line" borderWidth="0.0" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="ar8-w3-mLZ">
-                    <rect key="frame" x="0.0" y="1" width="252" height="50"/>
+                <box autoresizesSubviews="NO" fixedFrame="YES" boxType="custom" borderType="line" borderWidth="0.0" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="ar8-w3-mLZ">
+                    <rect key="frame" x="0.0" y="1" width="280" height="63"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <view key="contentView" id="Bfr-Wf-nKU">
-                        <rect key="frame" x="0.0" y="0.0" width="252" height="50"/>
+                        <rect key="frame" x="0.0" y="0.0" width="280" height="63"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <box autoresizesSubviews="NO" boxType="custom" borderType="line" borderWidth="0.0" title="Box" titlePosition="noTitle" transparent="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dt4-Zf-56t" userLabel="DescriptionProject Box">
-                                <rect key="frame" x="0.0" y="0.0" width="112" height="50"/>
+                            <box autoresizesSubviews="NO" fixedFrame="YES" boxType="custom" borderType="line" borderWidth="0.0" title="Box" titlePosition="noTitle" transparent="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dt4-Zf-56t" userLabel="DescriptionProject Box">
+                                <rect key="frame" x="0.0" y="0.0" width="140" height="63"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <view key="contentView" id="0ZQ-rn-Eji">
-                                    <rect key="frame" x="0.0" y="0.0" width="112" height="50"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="140" height="63"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" preferredMaxLayoutWidth="98" translatesAutoresizingMaskIntoConstraints="NO" id="CwR-d5-aWs">
-                                            <rect key="frame" x="12" y="31" width="102" height="17"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="17" id="QDn-DF-0mF"/>
-                                            </constraints>
+                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" preferredMaxLayoutWidth="98" translatesAutoresizingMaskIntoConstraints="NO" id="CwR-d5-aWs">
+                                            <rect key="frame" x="12" y="31" width="130" height="17"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <textFieldCell key="cell" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" alignment="left" title="Blogpost about ne..." id="KGe-cR-NlL">
                                                 <font key="font" metaFont="system"/>
                                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>
                                         </textField>
-                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" preferredMaxLayoutWidth="98" translatesAutoresizingMaskIntoConstraints="NO" id="deS-e6-3Ui" customClass="NSTextFieldWithBackground">
-                                            <rect key="frame" x="12" y="11" width="102" height="17"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="17" id="ffb-Ge-3EA"/>
-                                            </constraints>
+                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" preferredMaxLayoutWidth="98" translatesAutoresizingMaskIntoConstraints="NO" id="deS-e6-3Ui" customClass="NSTextFieldWithBackground">
+                                            <rect key="frame" x="12" y="11" width="130" height="17"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <textFieldCell key="cell" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" alignment="left" title="NEW - TOGGL" id="apI-Za-Hk2">
                                                 <font key="font" metaFont="systemBold"/>
                                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>
                                         </textField>
-                                        <imageView hidden="YES" toolTip="Time Entry has not been synced to the server" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Kef-8A-XnH" userLabel="Unsynced_icon">
+                                        <imageView hidden="YES" toolTip="Time Entry has not been synced to the server" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Kef-8A-XnH" userLabel="Unsynced_icon">
                                             <rect key="frame" x="1" y="19" width="12" height="12"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="12" id="3QB-4M-PwS"/>
-                                                <constraint firstAttribute="height" constant="12" id="DX5-O5-3fw"/>
-                                            </constraints>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="warning-icon" id="1cv-nG-4ev"/>
                                         </imageView>
                                     </subviews>
-                                    <constraints>
-                                        <constraint firstItem="Kef-8A-XnH" firstAttribute="leading" secondItem="0ZQ-rn-Eji" secondAttribute="leading" constant="1" id="g1W-Lf-0ua"/>
-                                    </constraints>
                                 </view>
-                                <constraints>
-                                    <constraint firstAttribute="bottom" secondItem="deS-e6-3Ui" secondAttribute="bottom" constant="11" id="Bot-1h-oQG"/>
-                                    <constraint firstItem="deS-e6-3Ui" firstAttribute="top" secondItem="CwR-d5-aWs" secondAttribute="bottom" constant="3" id="Gdl-La-aQc"/>
-                                    <constraint firstAttribute="trailing" secondItem="deS-e6-3Ui" secondAttribute="trailing" id="XjM-uX-kBC"/>
-                                    <constraint firstItem="CwR-d5-aWs" firstAttribute="leading" secondItem="dt4-Zf-56t" secondAttribute="leading" constant="14" id="YwC-fp-sV6"/>
-                                    <constraint firstItem="deS-e6-3Ui" firstAttribute="leading" secondItem="dt4-Zf-56t" secondAttribute="leading" constant="14" id="gUv-Kl-a5i"/>
-                                    <constraint firstItem="Kef-8A-XnH" firstAttribute="top" secondItem="CwR-d5-aWs" secondAttribute="bottom" id="hxV-rw-GA2"/>
-                                    <constraint firstAttribute="trailing" secondItem="CwR-d5-aWs" secondAttribute="trailing" id="nSQ-Fz-0X7"/>
-                                </constraints>
                             </box>
-                            <box autoresizesSubviews="NO" boxType="custom" borderType="line" borderWidth="0.0" title="ContinueBox" titlePosition="noTitle" transparent="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7lc-zN-Cm5" userLabel="GroupBox">
-                                <rect key="frame" x="88" y="13" width="24" height="24"/>
+                            <box autoresizesSubviews="NO" fixedFrame="YES" boxType="custom" borderType="line" borderWidth="0.0" title="ContinueBox" titlePosition="noTitle" transparent="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7lc-zN-Cm5" userLabel="GroupBox">
+                                <rect key="frame" x="116" y="20" width="24" height="24"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <view key="contentView" id="CDR-O1-RXk">
                                     <rect key="frame" x="0.0" y="0.0" width="24" height="24"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <button hidden="YES" toolTip="Continue with this time entry" horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="yV9-eP-fCj" customClass="NSHoverButton">
+                                        <button hidden="YES" toolTip="Continue with this time entry" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yV9-eP-fCj" customClass="NSHoverButton">
                                             <rect key="frame" x="0.0" y="0.0" width="24" height="24"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="24" id="eLk-IC-Day"/>
-                                                <constraint firstAttribute="width" constant="24" id="yQN-Bj-uEa"/>
-                                            </constraints>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <buttonCell key="cell" type="bevel" title="3" bezelStyle="regularSquare" image="group_icon_closed" imagePosition="overlaps" alignment="center" refusesFirstResponder="YES" imageScaling="proportionallyDown" inset="2" id="pfD-5t-Pma">
                                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                 <font key="font" metaFont="smallSystem"/>
@@ -93,40 +83,22 @@
                                         </button>
                                     </subviews>
                                 </view>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="24" id="38I-d0-HVN"/>
-                                    <constraint firstItem="yV9-eP-fCj" firstAttribute="top" secondItem="7lc-zN-Cm5" secondAttribute="top" id="4VD-5L-mcv"/>
-                                    <constraint firstItem="yV9-eP-fCj" firstAttribute="leading" secondItem="7lc-zN-Cm5" secondAttribute="leading" id="H0q-II-jla"/>
-                                    <constraint firstAttribute="width" constant="24" id="g2X-HK-drE"/>
-                                </constraints>
                             </box>
                         </subviews>
-                        <constraints>
-                            <constraint firstItem="7lc-zN-Cm5" firstAttribute="centerY" secondItem="Bfr-Wf-nKU" secondAttribute="centerY" id="YsI-Rz-cHp"/>
-                        </constraints>
                     </view>
-                    <constraints>
-                        <constraint firstItem="dt4-Zf-56t" firstAttribute="leading" secondItem="ar8-w3-mLZ" secondAttribute="leading" id="D3d-Sd-Wn3"/>
-                        <constraint firstAttribute="trailing" secondItem="7lc-zN-Cm5" secondAttribute="trailing" constant="140" id="OGc-Vk-SiU"/>
-                        <constraint firstAttribute="trailing" secondItem="dt4-Zf-56t" secondAttribute="trailing" constant="140" id="bZ1-VC-IKA"/>
-                        <constraint firstItem="dt4-Zf-56t" firstAttribute="top" secondItem="ar8-w3-mLZ" secondAttribute="top" id="ewN-Z0-chU"/>
-                        <constraint firstAttribute="bottom" secondItem="dt4-Zf-56t" secondAttribute="bottom" id="wpH-TW-gRX"/>
-                    </constraints>
                     <color key="fillColor" name="unemphasizedSelectedContentBackgroundColor" catalog="System" colorSpace="catalog"/>
                 </box>
-                <box autoresizesSubviews="NO" boxType="custom" borderType="line" borderWidth="0.0" title="ContinueBox" titlePosition="noTitle" transparent="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pUA-1d-pGg">
-                    <rect key="frame" x="151" y="12" width="24" height="24"/>
+                <box autoresizesSubviews="NO" fixedFrame="YES" boxType="custom" borderType="line" borderWidth="0.0" title="ContinueBox" titlePosition="noTitle" transparent="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pUA-1d-pGg">
+                    <rect key="frame" x="179" y="25" width="24" height="24"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <view key="contentView" id="17f-6c-91x">
                         <rect key="frame" x="0.0" y="0.0" width="24" height="24"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button toolTip="Continue with this time entry" horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Gcj-ki-Hus" customClass="NSHoverButton">
-                                <rect key="frame" x="0.0" y="0.0" width="24" height="24"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="24" id="FfV-9g-8jU"/>
-                                    <constraint firstAttribute="width" constant="24" id="pmZ-g5-uge"/>
-                                </constraints>
-                                <buttonCell key="cell" type="bevel" bezelStyle="regularSquare" image="continue_regular" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="RwR-fM-rUm">
+                            <button toolTip="Continue with this time entry" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Gcj-ki-Hus" customClass="NSHoverButton">
+                                <rect key="frame" x="0.0" y="10" width="14" height="14"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="bevel" bezelStyle="regularSquare" image="continue-timer-button" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="RwR-fM-rUm">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
@@ -136,61 +108,40 @@
                             </button>
                         </subviews>
                     </view>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="24" id="8mX-xG-Cqd"/>
-                        <constraint firstItem="Gcj-ki-Hus" firstAttribute="top" secondItem="pUA-1d-pGg" secondAttribute="top" id="SSx-9O-irK"/>
-                        <constraint firstItem="Gcj-ki-Hus" firstAttribute="leading" secondItem="pUA-1d-pGg" secondAttribute="leading" id="dOT-4w-73G"/>
-                        <constraint firstAttribute="width" constant="24" id="zEn-2B-XRB"/>
-                    </constraints>
                 </box>
-                <box autoresizesSubviews="NO" boxType="custom" borderType="line" borderWidth="0.0" title="TagBox" titlePosition="noTitle" transparent="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6v5-Qq-QVS">
-                    <rect key="frame" x="119" y="18" width="13" height="11"/>
+                <box autoresizesSubviews="NO" fixedFrame="YES" boxType="custom" borderType="line" borderWidth="0.0" title="TagBox" titlePosition="noTitle" transparent="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6v5-Qq-QVS">
+                    <rect key="frame" x="147" y="31" width="13" height="11"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <view key="contentView" id="hJ3-JI-lhi">
                         <rect key="frame" x="0.0" y="0.0" width="13" height="11"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView translatesAutoresizingMaskIntoConstraints="NO" id="29c-rg-nft">
+                            <imageView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="29c-rg-nft">
                                 <rect key="frame" x="0.0" y="0.0" width="13" height="11"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="11" id="YY5-Sx-e5g"/>
-                                    <constraint firstAttribute="width" constant="13" id="lfJ-Eg-GOT"/>
-                                </constraints>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="icon-tags" id="gwR-Vc-IFY"/>
                             </imageView>
                         </subviews>
                     </view>
-                    <constraints>
-                        <constraint firstItem="29c-rg-nft" firstAttribute="centerX" secondItem="6v5-Qq-QVS" secondAttribute="centerX" id="G6g-mb-Lwb"/>
-                        <constraint firstAttribute="height" constant="11" id="Heb-aD-eHG"/>
-                        <constraint firstItem="29c-rg-nft" firstAttribute="centerY" secondItem="6v5-Qq-QVS" secondAttribute="centerY" id="X25-jH-9YZ"/>
-                        <constraint firstAttribute="width" constant="13" id="rQy-J7-ueT"/>
-                    </constraints>
                 </box>
-                <box autoresizesSubviews="NO" boxType="custom" borderType="line" borderWidth="0.0" title="BillableBox" titlePosition="noTitle" transparent="YES" translatesAutoresizingMaskIntoConstraints="NO" id="A8h-uh-nk3">
-                    <rect key="frame" x="139" y="17" width="7" height="13"/>
+                <box autoresizesSubviews="NO" fixedFrame="YES" boxType="custom" borderType="line" borderWidth="0.0" title="BillableBox" titlePosition="noTitle" transparent="YES" translatesAutoresizingMaskIntoConstraints="NO" id="A8h-uh-nk3">
+                    <rect key="frame" x="167" y="30" width="7" height="13"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <view key="contentView" id="pey-6L-z8y">
                         <rect key="frame" x="0.0" y="0.0" width="7" height="13"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView translatesAutoresizingMaskIntoConstraints="NO" id="QS9-7g-WQN">
+                            <imageView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QS9-7g-WQN">
                                 <rect key="frame" x="0.0" y="0.0" width="7" height="13"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="7" id="21i-pO-LrG"/>
-                                    <constraint firstAttribute="height" constant="13" id="hp4-bJ-sJJ"/>
-                                </constraints>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="icon-billable" id="sn7-iN-p3j"/>
                             </imageView>
                         </subviews>
                     </view>
-                    <constraints>
-                        <constraint firstItem="QS9-7g-WQN" firstAttribute="centerX" secondItem="A8h-uh-nk3" secondAttribute="centerX" id="37x-ld-gGF"/>
-                        <constraint firstItem="QS9-7g-WQN" firstAttribute="centerY" secondItem="A8h-uh-nk3" secondAttribute="centerY" id="9kZ-6l-1Sw"/>
-                        <constraint firstAttribute="height" constant="13" id="9nA-ZA-Dcx"/>
-                        <constraint firstAttribute="width" constant="7" id="bXb-gf-AYb"/>
-                    </constraints>
                 </box>
-                <box autoresizesSubviews="NO" boxType="custom" borderType="line" borderWidth="0.0" title="DurationBox" titlePosition="noTitle" transparent="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lUV-Fj-IYJ">
-                    <rect key="frame" x="177" y="16" width="63" height="16"/>
+                <box autoresizesSubviews="NO" fixedFrame="YES" boxType="custom" borderType="line" borderWidth="0.0" title="DurationBox" titlePosition="noTitle" transparent="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lUV-Fj-IYJ">
+                    <rect key="frame" x="205" y="29" width="63" height="16"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <view key="contentView" id="NS5-UN-naD">
                         <rect key="frame" x="0.0" y="0.0" width="63" height="16"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -206,33 +157,13 @@
                             </textField>
                         </subviews>
                     </view>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="16" id="Nob-mi-BiS"/>
-                        <constraint firstAttribute="width" constant="63" id="iL1-tt-qe0"/>
-                    </constraints>
                 </box>
             </subviews>
-            <constraints>
-                <constraint firstItem="ar8-w3-mLZ" firstAttribute="leading" secondItem="jHy-af-Yta" secondAttribute="leading" id="1aX-SP-Ibf"/>
-                <constraint firstAttribute="bottom" secondItem="ar8-w3-mLZ" secondAttribute="bottom" constant="1" id="50P-cL-fjI"/>
-                <constraint firstItem="ar8-w3-mLZ" firstAttribute="top" secondItem="jHy-af-Yta" secondAttribute="top" id="BO9-BK-fhw"/>
-                <constraint firstItem="lUV-Fj-IYJ" firstAttribute="top" secondItem="jHy-af-Yta" secondAttribute="top" constant="19" id="ExC-NY-ev5"/>
-                <constraint firstItem="A8h-uh-nk3" firstAttribute="centerY" secondItem="6v5-Qq-QVS" secondAttribute="centerY" id="PXQ-QR-ZJY"/>
-                <constraint firstAttribute="trailing" secondItem="lUV-Fj-IYJ" secondAttribute="trailing" constant="12" id="XlK-29-Fjr"/>
-                <constraint firstItem="pUA-1d-pGg" firstAttribute="top" secondItem="jHy-af-Yta" secondAttribute="top" constant="15" id="Z4p-5J-fs2"/>
-                <constraint firstAttribute="trailing" secondItem="ar8-w3-mLZ" secondAttribute="trailing" id="fix-Va-WqO"/>
-                <constraint firstAttribute="trailing" secondItem="pUA-1d-pGg" secondAttribute="trailing" constant="77" id="hEJ-0H-grM"/>
-                <constraint firstItem="A8h-uh-nk3" firstAttribute="top" secondItem="jHy-af-Yta" secondAttribute="top" constant="21" id="jAE-sv-qpm"/>
-                <constraint firstAttribute="trailing" secondItem="A8h-uh-nk3" secondAttribute="trailing" constant="106" id="r47-BP-46W"/>
-                <constraint firstAttribute="trailing" secondItem="6v5-Qq-QVS" secondAttribute="trailing" constant="120" id="tlo-sU-7ao"/>
-            </constraints>
             <connections>
                 <outlet property="DescriptionProjectBox" destination="dt4-Zf-56t" id="Bor-QJ-kLd"/>
                 <outlet property="backgroundBox" destination="ar8-w3-mLZ" id="zbJ-rM-sF4"/>
                 <outlet property="billableFlag" destination="QS9-7g-WQN" id="ftI-OL-nFL"/>
                 <outlet property="continueButton" destination="Gcj-ki-Hus" id="VjD-9r-ZQS"/>
-                <outlet property="descriptionBoxLead" destination="D3d-Sd-Wn3" id="2Wt-Ea-foZ"/>
-                <outlet property="descriptionBoxTrail" destination="bZ1-VC-IKA" id="olX-d9-qAA"/>
                 <outlet property="descriptionTextField" destination="CwR-d5-aWs" id="Wip-cq-Mwm"/>
                 <outlet property="durationBox" destination="lUV-Fj-IYJ" id="Dc1-m5-YCs"/>
                 <outlet property="durationTextField" destination="xwb-FG-Z4X" id="utn-4y-DUw"/>
@@ -241,10 +172,11 @@
                 <outlet property="tagFlag" destination="29c-rg-nft" id="LV9-V1-NQ1"/>
                 <outlet property="unsyncedIcon" destination="Kef-8A-XnH" id="giG-pJ-b11"/>
             </connections>
+            <point key="canvasLocation" x="64" y="-33"/>
         </customView>
     </objects>
     <resources>
-        <image name="continue_regular" width="23" height="23"/>
+        <image name="continue-timer-button" width="10" height="10"/>
         <image name="group_icon_closed" width="23" height="23"/>
         <image name="icon-billable" width="6.5" height="12.5"/>
         <image name="icon-tags" width="13" height="10.5"/>

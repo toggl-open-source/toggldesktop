@@ -25,10 +25,40 @@
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
-        <customView appearanceType="aqua" id="M2u-7B-WCs">
+        <customView id="M2u-7B-WCs">
             <rect key="frame" x="0.0" y="0.0" width="300" height="64"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
+                <box hidden="YES" autoresizesSubviews="NO" boxType="custom" borderWidth="0.0" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="NZl-PW-g8z" userLabel="manualBox" customClass="NSBoxClickable">
+                    <rect key="frame" x="0.0" y="0.0" width="300" height="64"/>
+                    <view key="contentView" id="Ott-qi-Egp">
+                        <rect key="frame" x="0.0" y="0.0" width="300" height="64"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" preferredMaxLayoutWidth="138" translatesAutoresizingMaskIntoConstraints="NO" id="Pm5-UM-PRp" customClass="NSTextFieldClickable">
+                                <rect key="frame" x="88" y="23" width="125" height="18"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="18" id="jI3-Oy-ic9"/>
+                                </constraints>
+                                <textFieldCell key="cell" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" title="+ Add time entry" placeholderString="" id="6je-P7-19t">
+                                    <font key="font" metaFont="system" size="16"/>
+                                    <color key="textColor" red="0.38823529411764707" green="0.38823529411764707" blue="0.38823529411764707" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                                <connections>
+                                    <outlet property="delegate" destination="-2" id="iNe-M6-RCx"/>
+                                </connections>
+                            </textField>
+                        </subviews>
+                    </view>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="64" id="NCs-Q0-C8n"/>
+                        <constraint firstAttribute="centerX" secondItem="Pm5-UM-PRp" secondAttribute="centerX" id="lFR-Hn-gDL"/>
+                        <constraint firstAttribute="centerY" secondItem="Pm5-UM-PRp" secondAttribute="centerY" id="s3s-yp-Oh3"/>
+                    </constraints>
+                    <color key="borderColor" red="0.0" green="0.0" blue="0.0" alpha="0.17999999999999999" colorSpace="calibratedRGB"/>
+                    <color key="fillColor" red="0.1764705882" green="0.1764705882" blue="0.1764705882" alpha="1" colorSpace="calibratedRGB"/>
+                </box>
                 <box autoresizesSubviews="NO" boxType="custom" borderWidth="0.0" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="Fga-BR-x8G" userLabel="timerBox" customClass="NSBoxClickable">
                     <rect key="frame" x="0.0" y="0.0" width="300" height="64"/>
                     <view key="contentView" id="gK5-Lo-ktx">
@@ -71,12 +101,12 @@ DQ
                                 <color key="fillColor" red="0.35686275360000003" green="0.75294125079999996" blue="0.023529414089999999" alpha="1" colorSpace="deviceRGB"/>
                             </box>
                             <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="9TE-qD-76l" customClass="AutoCompleteInput">
-                                <rect key="frame" x="12" y="21" width="227" height="22"/>
+                                <rect key="frame" x="8" y="17" width="244" height="30"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="22" id="4AP-Cj-GWb"/>
+                                    <constraint firstAttribute="height" constant="30" id="fcD-Qg-dsR"/>
                                 </constraints>
                                 <textFieldCell key="cell" lineBreakMode="truncatingTail" truncatesLastVisibleLine="YES" selectable="YES" editable="YES" continuous="YES" sendsActionOnEndEditing="YES" state="on" placeholderString="What are you doing?" usesSingleLineMode="YES" id="i4n-Pi-FPE">
-                                    <font key="font" metaFont="system"/>
+                                    <font key="font" metaFont="system" size="14"/>
                                     <color key="textColor" red="0.78431372549019607" green="0.78431372549019607" blue="0.78431372549019607" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="backgroundColor" red="0.1764705882352941" green="0.1764705882352941" blue="0.1764705882352941" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </textFieldCell>
@@ -97,15 +127,15 @@ DQ
                                 </constraints>
                                 <color key="fillColor" red="0.1764705882352941" green="0.1764705882352941" blue="0.1764705882352941" alpha="1" colorSpace="calibratedRGB"/>
                             </box>
-                            <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" preferredMaxLayoutWidth="138" translatesAutoresizingMaskIntoConstraints="NO" id="Fiv-ao-qiA" customClass="NSTextFieldClickable">
-                                <rect key="frame" x="12" y="30" width="148" height="18"/>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" preferredMaxLayoutWidth="138" translatesAutoresizingMaskIntoConstraints="NO" id="Fiv-ao-qiA" customClass="NSTextFieldClickable">
+                                <rect key="frame" x="23" y="30" width="137" height="18"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="18" id="6EN-7v-jSX"/>
                                 </constraints>
-                                <textFieldCell key="cell" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" title="Label" placeholderString="What are you working on?" id="V5P-6k-9NM">
-                                    <font key="font" metaFont="system"/>
-                                    <color key="textColor" red="0.81568627450980391" green="0.81568627450980391" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                <textFieldCell key="cell" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" alignment="left" title="Label" placeholderString="What are you working on?" id="V5P-6k-9NM">
+                                    <font key="font" metaFont="system" size="12"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                                 <connections>
                                     <outlet property="delegate" destination="-2" id="oWZ-rz-Xcn"/>
@@ -161,7 +191,7 @@ DQ
                                 <color key="borderColor" name="secondarySelectedControlColor" catalog="System" colorSpace="catalog"/>
                                 <color key="fillColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
                             </box>
-                            <textField hidden="YES" toolTip="Duration" focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="oie-Un-asQ" customClass="NSTextFieldDuration">
+                            <textField toolTip="Duration" focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="oie-Un-asQ" customClass="NSTextFieldDuration">
                                 <rect key="frame" x="185" y="9" width="65" height="37"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="65" id="x2K-5w-zfF"/>
@@ -177,7 +207,7 @@ DQ
                                     <outlet property="nextKeyView" destination="2Fx-4L-YGZ" id="5Y3-fg-tJL"/>
                                 </connections>
                             </textField>
-                            <textField hidden="YES" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" preferredMaxLayoutWidth="196" translatesAutoresizingMaskIntoConstraints="NO" id="tVc-ms-0hr" customClass="NSTextFieldClickable">
+                            <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" preferredMaxLayoutWidth="196" translatesAutoresizingMaskIntoConstraints="NO" id="tVc-ms-0hr" customClass="NSTextFieldClickable">
                                 <rect key="frame" x="12" y="6" width="145" height="17"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="17" id="wqt-c9-CBt"/>
@@ -193,10 +223,10 @@ DQ
                             </textField>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="nFI-HH-zd7" firstAttribute="leading" secondItem="9TE-qD-76l" secondAttribute="trailing" constant="5" id="S3h-2W-mYh"/>
+                            <constraint firstItem="2Fx-4L-YGZ" firstAttribute="leading" secondItem="9TE-qD-76l" secondAttribute="trailing" constant="10" id="IZe-Ps-CYR"/>
                             <constraint firstItem="oie-Un-asQ" firstAttribute="top" secondItem="ow2-8J-rMh" secondAttribute="bottom" constant="-20" id="bar-Ou-Cs3"/>
-                            <constraint firstItem="9TE-qD-76l" firstAttribute="leading" secondItem="gK5-Lo-ktx" secondAttribute="leading" constant="14" id="rG6-hZ-JD5"/>
-                            <constraint firstItem="9TE-qD-76l" firstAttribute="centerY" secondItem="gK5-Lo-ktx" secondAttribute="centerY" priority="750" id="xd2-Tj-GYo"/>
+                            <constraint firstItem="9TE-qD-76l" firstAttribute="centerY" secondItem="gK5-Lo-ktx" secondAttribute="centerY" id="lA8-ib-tB2"/>
+                            <constraint firstItem="9TE-qD-76l" firstAttribute="leading" secondItem="gK5-Lo-ktx" secondAttribute="leading" constant="10" id="uvg-bf-wR3"/>
                         </constraints>
                     </view>
                     <constraints>
@@ -210,48 +240,18 @@ DQ
                         <constraint firstItem="oie-Un-asQ" firstAttribute="leading" secondItem="Fiv-ao-qiA" secondAttribute="trailing" constant="27" id="LOf-kf-ljr"/>
                         <constraint firstAttribute="bottom" secondItem="tVc-ms-0hr" secondAttribute="bottom" constant="6" id="QSu-p4-uqB"/>
                         <constraint firstItem="nFI-HH-zd7" firstAttribute="top" secondItem="Fga-BR-x8G" secondAttribute="top" constant="-1" id="Qdt-Xf-dun"/>
-                        <constraint firstItem="Fiv-ao-qiA" firstAttribute="leading" secondItem="Fga-BR-x8G" secondAttribute="leading" constant="14" id="SRK-n5-IbR"/>
+                        <constraint firstItem="Fiv-ao-qiA" firstAttribute="leading" secondItem="Fga-BR-x8G" secondAttribute="leading" constant="25" id="SRK-n5-IbR"/>
                         <constraint firstItem="tVc-ms-0hr" firstAttribute="leading" secondItem="Fga-BR-x8G" secondAttribute="leading" constant="14" id="SmU-O3-Nps"/>
                         <constraint firstAttribute="height" constant="64" id="TMi-SF-hdC"/>
                         <constraint firstItem="H0e-5U-BSu" firstAttribute="top" secondItem="Fga-BR-x8G" secondAttribute="top" constant="20" id="X4h-hO-KhM"/>
                         <constraint firstAttribute="bottom" secondItem="oie-Un-asQ" secondAttribute="bottom" constant="9" id="bW9-mQ-DLy"/>
-                        <constraint firstItem="Fiv-ao-qiA" firstAttribute="top" secondItem="Fga-BR-x8G" secondAttribute="top" priority="750" constant="16" id="eeT-Vs-QTo"/>
+                        <constraint firstItem="Fiv-ao-qiA" firstAttribute="top" secondItem="Fga-BR-x8G" secondAttribute="top" constant="16" id="eeT-Vs-QTo"/>
                         <constraint firstAttribute="bottom" secondItem="nFI-HH-zd7" secondAttribute="bottom" constant="-1" id="lYl-3T-lth"/>
                         <constraint firstItem="H0e-5U-BSu" firstAttribute="leading" secondItem="aty-o7-z5X" secondAttribute="trailing" constant="2" id="pd9-wy-P12"/>
                         <constraint firstItem="nFI-HH-zd7" firstAttribute="leading" secondItem="tVc-ms-0hr" secondAttribute="trailing" constant="87" id="s0Y-rg-dqD"/>
                     </constraints>
                     <color key="borderColor" red="0.0" green="0.0" blue="0.0" alpha="0.17999999999999999" colorSpace="calibratedRGB"/>
                     <color key="fillColor" red="0.1764705882352941" green="0.1764705882352941" blue="0.1764705882352941" alpha="1" colorSpace="calibratedRGB"/>
-                </box>
-                <box hidden="YES" autoresizesSubviews="NO" boxType="custom" borderWidth="0.0" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="NZl-PW-g8z" userLabel="manualBox" customClass="NSBoxClickable">
-                    <rect key="frame" x="0.0" y="0.0" width="300" height="64"/>
-                    <view key="contentView" id="Ott-qi-Egp">
-                        <rect key="frame" x="0.0" y="0.0" width="300" height="64"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" preferredMaxLayoutWidth="138" translatesAutoresizingMaskIntoConstraints="NO" id="Pm5-UM-PRp" customClass="NSTextFieldClickable">
-                                <rect key="frame" x="88" y="23" width="125" height="18"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="18" id="jI3-Oy-ic9"/>
-                                </constraints>
-                                <textFieldCell key="cell" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" title="+ Add time entry" placeholderString="" id="6je-P7-19t">
-                                    <font key="font" metaFont="system" size="16"/>
-                                    <color key="textColor" red="0.38823529411764707" green="0.38823529411764707" blue="0.38823529411764707" alpha="1" colorSpace="calibratedRGB"/>
-                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                </textFieldCell>
-                                <connections>
-                                    <outlet property="delegate" destination="-2" id="iNe-M6-RCx"/>
-                                </connections>
-                            </textField>
-                        </subviews>
-                    </view>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="64" id="NCs-Q0-C8n"/>
-                        <constraint firstAttribute="centerX" secondItem="Pm5-UM-PRp" secondAttribute="centerX" id="lFR-Hn-gDL"/>
-                        <constraint firstAttribute="centerY" secondItem="Pm5-UM-PRp" secondAttribute="centerY" id="s3s-yp-Oh3"/>
-                    </constraints>
-                    <color key="borderColor" red="0.0" green="0.0" blue="0.0" alpha="0.17999999999999999" colorSpace="calibratedRGB"/>
-                    <color key="fillColor" red="0.1764705882" green="0.1764705882" blue="0.1764705882" alpha="1" colorSpace="calibratedRGB"/>
                 </box>
             </subviews>
             <constraints>
