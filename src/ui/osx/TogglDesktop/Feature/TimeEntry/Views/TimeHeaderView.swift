@@ -9,5 +9,8 @@
 import Cocoa
 
 class TimeHeaderView: NSView {
-    
+
+    func config(_ header: TimeEntryHeader) {
+        
+    }
 }

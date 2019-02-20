@@ -22,6 +22,7 @@
 
 @interface TimeEntryListViewController () <NSCollectionViewDataSource, NSCollectionViewDelegateFlowLayout>
 @property (nonatomic, strong) IBOutlet TimerEditViewController *timerEditViewController;
+@property (nonatomic, strong) TimeEntryDatasource *dataSource;
 @property NSNib *nibTimeEntryCell;
 @property NSNib *nibTimeEntryEditViewController;
 @property NSNib *nibLoadMoreCell;
@@ -123,6 +124,7 @@ extern void *ctx;
 	[self.timeEntriesTableView registerNib:[[NSNib alloc] initWithNibNamed:@"TimeHeaderView" bundle:nil]
 				forSupplementaryViewOfKind:NSCollectionElementKindSectionHeader
 							withIdentifier:@"TimeHeaderView"];
+	self.dataSource = [[TimeEntryDatasource alloc] initWithCollectionView:self.timeEntriesTableView];;
 
 //    [self.timeEntriesTableView registerNib:self.nibLoadMoreCell
 //                             forIdentifier :@"LoadMoreCell"];
@@ -144,8 +146,8 @@ extern void *ctx;
 	[self.timeEntriesTableView setDraggingSourceOperationMask:NSDragOperationLink forLocal:NO];
 	[self.timeEntriesTableView setDraggingSourceOperationMask:NSDragOperationMove forLocal:YES];
 	[self.timeEntriesTableView registerForDraggedTypes:[NSArray arrayWithObject:NSStringPboardType]];
-	self.timeEntriesTableView.delegate = self;
-	self.timeEntriesTableView.dataSource = self;
+	self.timeEntriesTableView.delegate = self.dataSource;
+	self.timeEntriesTableView.dataSource = self.dataSource;
 }
 
 - (void)setupEmptyLabel
@@ -209,9 +211,13 @@ extern void *ctx;
 	NSIndexPath *selectedIndexpath = [[[self.timeEntriesTableView selectionIndexPaths] allObjects] firstObject];
 
     // Diff and reload
-	self.viewitems = [newTimeEntries copy];
-	[self.timeEntriesTableView reloadData];
+//    self.viewitems = [newTimeEntries copy];
     // [self.timeEntriesTableView diffReloadWith:oldTimeEntries new:[newTimeEntries copy]];
+
+
+    // reload
+	[self.dataSource process:newTimeEntries];
+	[self.timeEntriesTableView reloadData];
 
 	if (cmd.open)
 	{
