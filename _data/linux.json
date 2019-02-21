@@ -1,6 +1,45 @@
 {
   "versions": [
     {
+        "version": "7.4.358",
+        "rows": [
+          "Added confirmless delete for all items shorter than 15 seconds",
+          "Added handling for 'no workspace' scenario",
+          "Added overlay view logic and font fixes",
+          "Added tooltip for tags icon in timer",
+          "Added ToS Accept view",
+          "Added error messages and filesize restriction to feedback form",
+          "Added new custom autocomplete with grouping and colors",
+          "Added tabs to Preferences view",
+          "Added tracking reminder settings to Preferences",
+          "Added support for system native notifications",
+          "Added window size and position saving",
+          "Added setting 'Stop timer on shutdown'",
+          "Added a button to delete the selected project from timer",
+          "Trim leading and trailing whitespace in Description of TimeEntry",
+          "Instant sync after time entry stop",
+          "Updated signup form to comply with GDPR",
+          "Updated build framework to Qt 5.12.0",
+          "Improved idle detection with screen lock/unlock",
+          "Improved login view logic and field validation",
+          "Improved app shutdown speed",
+          "Improved the speed of data sorting",
+          "Improved duplicate project name check",
+          "Improved showing/hiding logic for different views",
+          "Improved log file sending logic",
+          "Improved syncing logic by moving all sync to background for non-freezing UI",
+          "Fixes for different data handling issue that caused crashes",
+          "Fixed multilevel tray icon menu issue",
+          "Fixed pomodoro mode stopping entry with incorrect duration",
+          "Fixed time entry editor tab order",
+          "Fixed issue with reminder being show right after coming from Idle mode",
+          "Fixed project create issues with certain scenarios",
+          "Fixed issues with 'missing GUID'"
+        ],
+        "date": "February 21st 2019",
+        "beta": "true"
+    },
+    {
         "version": "7.4.122",
         "rows": [
           "Fixed wrong error message issue when backend is down",
