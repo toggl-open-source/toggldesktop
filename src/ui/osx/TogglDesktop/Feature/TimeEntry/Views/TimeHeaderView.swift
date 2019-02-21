@@ -8,9 +8,17 @@
 
 import Cocoa
 
-class TimeHeaderView: NSView {
+final class TimeHeaderView: NSView {
 
+    // MARK: Varibles
+
+    @IBOutlet weak var dateLbl: NSTextField!
+    @IBOutlet weak var totalDurationLbl: NSTextField!
+
+    // MARK: Public
+    
     func config(_ header: TimeEntryHeader) {
-        
+        dateLbl.stringValue = header.date
+        totalDurationLbl.stringValue = header.totalTime
     }
 }

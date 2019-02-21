@@ -40,7 +40,7 @@ class TimeEntrySection {
 }
 
 @objcMembers
-class TimeEntryDatasource: NSObject {
+class TimeEntryDatasource: NSObject, NSCollectionViewDataSource, NSCollectionViewDelegate, NSCollectionViewDelegateFlowLayout {
 
     // MARK: Variable
 
@@ -67,6 +67,8 @@ class TimeEntryDatasource: NSObject {
                                 withIdentifier: NSUserInterfaceItemIdentifier("TimeHeaderView"))
         self.collectionView = collectionView
         super.init()
+        collectionView.delegate = self
+        collectionView.dataSource = self
     }
 
     func process(_ timeEntries: [TimeEntryViewItem], showLoadMore: Bool) {
@@ -82,7 +84,7 @@ class TimeEntryDatasource: NSObject {
         }
 
         self.sections = sections
-
+        self.collectionView.reloadData()
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
             self.collectionView.reloadData()
         }
@@ -91,7 +93,7 @@ class TimeEntryDatasource: NSObject {
     }
 }
 
-extension TimeEntryDatasource: NSCollectionViewDataSource, NSCollectionViewDelegate, NSCollectionViewDelegateFlowLayout {
+extension TimeEntryDatasource {
 
     func numberOfSections(in collectionView: NSCollectionView) -> Int {
         return sections.count
@@ -109,7 +111,7 @@ extension TimeEntryDatasource: NSCollectionViewDataSource, NSCollectionViewDeleg
         }
         let section = sections[indexPath.section]
         let item = section.entries[indexPath.item]
-        //cell.config(item)
+        cell.render(item)
 
         return cell
     }

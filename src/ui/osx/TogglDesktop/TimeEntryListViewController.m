@@ -142,8 +142,6 @@ extern void *ctx;
 //    [self.collectionView setDraggingSourceOperationMask:NSDragOperationLink forLocal:NO];
 //    [self.collectionView setDraggingSourceOperationMask:NSDragOperationMove forLocal:YES];
 //    [self.collectionView registerForDraggedTypes:[NSArray arrayWithObject:NSStringPboardType]];
-	self.collectionView.delegate = self.dataSource;
-	self.collectionView.dataSource = self.dataSource;
 }
 
 - (void)setupEmptyLabel

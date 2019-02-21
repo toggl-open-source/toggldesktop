@@ -36,6 +36,10 @@
                 <constraint firstItem="OH1-ok-yWk" firstAttribute="centerY" secondItem="c22-O7-iKe" secondAttribute="centerY" id="MD6-mJ-fOB"/>
                 <constraint firstAttribute="trailing" secondItem="wP5-KR-14h" secondAttribute="trailing" constant="40" id="W1p-tq-cst"/>
             </constraints>
+            <connections>
+                <outlet property="dateLbl" destination="OH1-ok-yWk" id="PGe-KH-qAd"/>
+                <outlet property="totalDurationLbl" destination="wP5-KR-14h" id="kgY-Ff-bRF"/>
+            </connections>
         </customView>
     </objects>
 </document>
