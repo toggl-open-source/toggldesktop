@@ -229,7 +229,7 @@ void TimeEntryEditorWidget::displayTimeEntryEditor(
     ui->lastUpdate->setVisible(view->UpdatedAt);
     ui->lastUpdate->setText(view->lastUpdate());
 
-    ui->billable->setVisible(view->CanSeeBillable);
+    ui->billableFrame->setVisible(view->CanSeeBillable);
     if (!view->CanAddProjects) {
         ui->newProject->setVisible(false);
         ui->addNewProject->setVisible(false);
