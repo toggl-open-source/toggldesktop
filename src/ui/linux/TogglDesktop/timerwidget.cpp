@@ -5,6 +5,7 @@
 
 #include <QApplication>  // NOLINT
 #include <QCompleter>  // NOLINT
+#include <QKeyEvent>  // NOLINT
 
 #include "./autocompletelistmodel.h"
 #include "./autocompleteview.h"
@@ -22,6 +23,8 @@ descriptionModel(new AutocompleteListModel(this)),
 selectedTaskId(0),
 selectedProjectId(0) {
     ui->setupUi(this);
+
+    ui->start->installEventFilter(this);
 
     connect(TogglApi::instance, SIGNAL(displayStoppedTimerState()),
             this, SLOT(displayStoppedTimerState()));
@@ -335,6 +338,25 @@ void TimerWidget::resizeEvent(QResizeEvent* event)
 {
     setEllipsisTextToLabel(ui->project, project);
     QWidget::resizeEvent(event);
+}
+
+bool TimerWidget::eventFilter(QObject *obj, QEvent *event) {
+    if (obj == ui->start && event->type() == QEvent::KeyPress) {
+        auto keyEvent = static_cast<QKeyEvent*>(event);
+        switch (keyEvent->key()) {
+        case Qt::Key_Return:
+        case Qt::Key_Enter:
+        case Qt::Key_Space:
+            if (keyEvent->modifiers() & (Qt::CTRL)) {
+                TogglApi::instance->editRunningTimeEntry("");
+                return true;
+            }
+            return false;
+        default:
+            return QFrame::eventFilter(obj, event);
+        }
+    }
+    return QFrame::eventFilter(obj, event);
 }
 
 void TimerWidget::setEllipsisTextToLabel(QLabel *label, QString text)
