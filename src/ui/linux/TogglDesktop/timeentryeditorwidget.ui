@@ -7,14 +7,14 @@
     <x>0</x>
     <y>0</y>
     <width>346</width>
-    <height>595</height>
+    <height>677</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">color:rgb(85, 85, 85);font-size:13px;</string>
+   <string notr="true">font-size:13px;</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="leftMargin">
@@ -212,14 +212,14 @@
          <item row="0" column="0">
           <widget class="QLabel" name="newProjectWorkspaceLabel">
            <property name="text">
-            <string>Workspace:</string>
+            <string>Wor&amp;kspace:</string>
            </property>
           </widget>
          </item>
          <item row="1" column="0">
           <widget class="QLabel" name="newProjectClientLabel">
            <property name="text">
-            <string>Client:</string>
+            <string>C&amp;lient:</string>
            </property>
           </widget>
          </item>
@@ -484,7 +484,7 @@
             </size>
            </property>
            <property name="text">
-            <string>Date:</string>
+            <string>&amp;Date:</string>
            </property>
           </widget>
          </item>
@@ -540,7 +540,7 @@
             </size>
            </property>
            <property name="text">
-            <string>Duration:</string>
+            <string>D&amp;uration:</string>
            </property>
           </widget>
          </item>
@@ -561,41 +561,96 @@
     </widget>
    </item>
    <item>
-    <widget class="QWidget" name="tagsWidget" native="true">
-     <layout class="QHBoxLayout" name="horizontalLayout_2">
+    <widget class="QGroupBox" name="tagsWidget">
+     <property name="title">
+      <string>Tags</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_3" stretch="1,0,0">
       <property name="spacing">
-       <number>15</number>
+       <number>0</number>
       </property>
       <property name="leftMargin">
-       <number>0</number>
+       <number>3</number>
       </property>
       <property name="topMargin">
-       <number>0</number>
+       <number>3</number>
       </property>
       <property name="rightMargin">
-       <number>0</number>
+       <number>3</number>
       </property>
       <property name="bottomMargin">
-       <number>0</number>
+       <number>3</number>
       </property>
-      <item>
-       <widget class="QLabel" name="label_3">
-        <property name="minimumSize">
-         <size>
-          <width>116</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>Tags:</string>
-        </property>
-       </widget>
-      </item>
       <item>
        <widget class="QListWidget" name="tags">
         <property name="styleSheet">
          <string notr="true">background-color:#ffffff;</string>
         </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QFrame" name="newTagFrame">
+        <layout class="QHBoxLayout" name="newTagLayout">
+         <item>
+          <widget class="QLineEdit" name="newTag">
+           <property name="styleSheet">
+            <string notr="true">background-color:palette(base);</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="newTagButton">
+           <property name="text">
+            <string>Add</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QFrame" name="addNewTagFrame">
+        <layout class="QHBoxLayout" name="addNewTagLayout">
+         <item>
+          <spacer name="horizontalSpacer">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="addNewTagButton">
+           <property name="styleSheet">
+            <string notr="true">padding:1px;text-align:right;color:palette(link);text-decoration:underline</string>
+           </property>
+           <property name="text">
+            <string>Add new tag</string>
+           </property>
+           <property name="flat">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="cancelNewTagButton">
+           <property name="styleSheet">
+            <string notr="true">padding:1px;text-align:right;color:palette(link);text-decoration:underline</string>
+           </property>
+           <property name="text">
+            <string>Cancel</string>
+           </property>
+           <property name="flat">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </widget>
       </item>
      </layout>
@@ -755,7 +810,7 @@
          </font>
         </property>
         <property name="text">
-         <string>Last update: 2014.06.19 at 21:12:34</string>
+         <string>Last update: &amp;2014.06.19 at 21:12:34</string>
         </property>
        </widget>
       </item>

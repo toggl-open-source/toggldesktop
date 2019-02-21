@@ -113,6 +113,11 @@ class TimeEntryEditorWidget : public QWidget {
     void on_addClientButton_clicked();
     void on_cancelNewClient_clicked();
     void on_colorButton_clicked();
+    void on_addNewTagButton_clicked();
+    void on_cancelNewTagButton_clicked();
+    void on_newTag_returnPressed();
+    void on_newTagButton_clicked();
 };
+
 
 #endif  // SRC_UI_LINUX_TOGGLDESKTOP_TIMEENTRYEDITORWIDGET_H_

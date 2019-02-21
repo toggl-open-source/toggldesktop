@@ -191,6 +191,8 @@ void TimeEntryEditorWidget::displayTimeEntryEditor(
         ui->publicProject->setChecked(false);
         ui->newProjectWorkspace->setCurrentIndex(-1);
         ui->newProjectClient->setCurrentIndex(-1);
+        ui->newTagFrame->setVisible(false);
+        ui->cancelNewTagButton->setVisible(false);
 
         // Reset adding new client
         toggleNewClientMode(false);
@@ -514,6 +516,42 @@ void TimeEntryEditorWidget::on_colorButton_clicked()
 
     colorPicker->move(newX, newY);
     colorPicker->show();
+}
+
+void TimeEntryEditorWidget::on_addNewTagButton_clicked() {
+    ui->newTagFrame->setVisible(true);
+    ui->cancelNewTagButton->setVisible(true);
+    ui->addNewTagButton->setVisible(false);
+    ui->newTag->setFocus();
+}
+
+void TimeEntryEditorWidget::on_cancelNewTagButton_clicked() {
+    ui->addNewTagButton->setVisible(true);
+    ui->cancelNewTagButton->setVisible(false);
+    ui->newTagFrame->setVisible(false);
+}
+
+void TimeEntryEditorWidget::on_newTag_returnPressed() {
+    on_newTagButton_clicked();
+}
+
+void TimeEntryEditorWidget::on_newTagButton_clicked() {
+    QStringList tags;
+    for (int i = 0; i < ui->tags->count(); i++) {
+        QListWidgetItem *widgetItem = ui->tags->item(i);
+        if (widgetItem->checkState() == Qt::Checked) {
+            tags.push_back(widgetItem->text());
+        }
+    }
+    if (!tags.contains(ui->newTag->text()))
+        tags << ui->newTag->text();
+    tags.sort();
+    QString list = tags.join("\t");
+    if (previousTagList != list) {
+        TogglApi::instance->setTimeEntryTags(guid, list);
+    }
+    ui->newTag->clear();
+    on_cancelNewTagButton_clicked();
 }
 
 void TimeEntryEditorWidget::setProjectColors(QVector<char *> list) {
