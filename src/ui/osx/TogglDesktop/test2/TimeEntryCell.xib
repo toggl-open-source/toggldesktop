@@ -50,7 +50,7 @@
                             </textFieldCell>
                         </textField>
                         <imageView horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="4Gn-rS-ham">
-                            <rect key="frame" x="0.0" y="20" width="8" height="8"/>
+                            <rect key="frame" x="1" y="19" width="8" height="8"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="8" id="6qL-Rv-KSh"/>
                                 <constraint firstAttribute="height" constant="8" id="KsB-HW-geh"/>
@@ -58,7 +58,7 @@
                             <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="time-entry-dot" id="vYQ-WX-2jd"/>
                         </imageView>
                         <textField horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="deS-e6-3Ui" customClass="NSTextFieldWithBackground">
-                            <rect key="frame" x="13" y="16" width="238" height="16"/>
+                            <rect key="frame" x="14" y="14" width="237" height="18"/>
                             <textFieldCell key="cell" lineBreakMode="truncatingTail" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" alignment="left" title="NEW - TOGGL - project NEW - TOGGL - project NEW - TOGGL - project NEW - TOGGL - project" id="apI-Za-Hk2">
                                 <font key="font" metaFont="cellTitle"/>
                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -67,13 +67,13 @@
                         </textField>
                     </subviews>
                     <constraints>
-                        <constraint firstItem="4Gn-rS-ham" firstAttribute="leading" secondItem="Uu2-26-kM4" secondAttribute="leading" id="B7Y-fJ-gVm"/>
+                        <constraint firstItem="4Gn-rS-ham" firstAttribute="leading" secondItem="Uu2-26-kM4" secondAttribute="leading" constant="1" id="B7Y-fJ-gVm"/>
                         <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="CwR-d5-aWs" secondAttribute="trailing" id="Fh8-VB-Tui"/>
                         <constraint firstItem="CwR-d5-aWs" firstAttribute="leading" secondItem="Uu2-26-kM4" secondAttribute="leading" id="SWH-SV-SCw"/>
                         <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="deS-e6-3Ui" secondAttribute="trailing" id="WlF-7m-Nhh"/>
                         <constraint firstItem="deS-e6-3Ui" firstAttribute="top" secondItem="CwR-d5-aWs" secondAttribute="bottom" id="YCG-LB-ufm"/>
                         <constraint firstItem="deS-e6-3Ui" firstAttribute="centerY" secondItem="4Gn-rS-ham" secondAttribute="centerY" id="Yji-cw-PuA"/>
-                        <constraint firstItem="4Gn-rS-ham" firstAttribute="top" secondItem="CwR-d5-aWs" secondAttribute="bottom" constant="4" id="iar-9z-U4N"/>
+                        <constraint firstItem="4Gn-rS-ham" firstAttribute="top" secondItem="CwR-d5-aWs" secondAttribute="bottom" constant="5" id="iar-9z-U4N"/>
                         <constraint firstItem="CwR-d5-aWs" firstAttribute="top" secondItem="Uu2-26-kM4" secondAttribute="top" constant="16" id="meS-eh-0Ic"/>
                         <constraint firstItem="deS-e6-3Ui" firstAttribute="leading" secondItem="4Gn-rS-ham" secondAttribute="trailing" constant="7" id="p2w-Le-29J"/>
                     </constraints>
@@ -95,7 +95,7 @@
                         <constraint firstAttribute="width" constant="14" id="So6-zJ-3fL"/>
                         <constraint firstAttribute="height" constant="14" id="a1q-cQ-frr"/>
                     </constraints>
-                    <buttonCell key="cell" type="bevel" bezelStyle="regularSquare" image="continue-timer-button" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="RwR-fM-rUm">
+                    <buttonCell key="cell" type="bevel" bezelStyle="regularSquare" image="continue-timer-button" imagePosition="only" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="RwR-fM-rUm">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>

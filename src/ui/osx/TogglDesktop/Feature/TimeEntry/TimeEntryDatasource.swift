@@ -145,10 +145,13 @@ extension TimeEntryDatasource: NSCollectionViewDataSource, NSCollectionViewDeleg
         }
 
         // Or normal
-        let header = collectionView.makeSupplementaryView(ofKind: NSCollectionView.elementKindSectionHeader,
+        guard let header = collectionView.makeSupplementaryView(ofKind: NSCollectionView.elementKindSectionHeader,
                                                           withIdentifier: NSUserInterfaceItemIdentifier("TimeHeaderView"),
-                                                          for: indexPath) as! TimeHeaderView
+                                                          for: indexPath) as? TimeHeaderView else {
+                                                            fatalError("Can't cast to TimeHeaderView")
+        }
         header.config(section.header)
+        header.drawShadow(with: .top)
         return header
     }
 
@@ -190,15 +193,8 @@ extension TimeEntryDatasource: NSCollectionViewDataSource, NSCollectionViewDeleg
         cell.render(item)
 
         // Get shadow mode by index
-        let mode: TimeEntryCell.ShadowMode
-        if indexPath.item == 0 {
-            mode = .top
-        } else if indexPath.item == (section.entries.count - 1) {
-            mode = .bottom
-        } else {
-            mode = .middle
-        }
-        cell.drawShadow(with: mode)
+        cell.view.drawShadow(at: indexPath.item,
+                             count: section.entries.count)
 
         return cell
     }

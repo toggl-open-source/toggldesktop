@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -13,8 +14,16 @@
             <rect key="frame" x="0.0" y="0.0" width="280" height="36"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
+                <box horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" boxType="custom" borderType="none" borderWidth="0.0" title="Box" translatesAutoresizingMaskIntoConstraints="NO" id="ex9-FR-Gwg">
+                    <rect key="frame" x="10" y="0.0" width="260" height="36"/>
+                    <view key="contentView" id="h0Y-0G-6qw">
+                        <rect key="frame" x="0.0" y="0.0" width="260" height="36"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    </view>
+                    <color key="fillColor" name="white-background-color"/>
+                </box>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="OH1-ok-yWk">
-                    <rect key="frame" x="13" y="10" width="39" height="16"/>
+                    <rect key="frame" x="23" y="10" width="39" height="16"/>
                     <textFieldCell key="cell" lineBreakMode="clipping" alignment="left" title="Today" id="SyR-E3-SwT">
                         <font key="font" metaFont="systemMedium" size="12"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -22,7 +31,7 @@
                     </textFieldCell>
                 </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="wP5-KR-14h">
-                    <rect key="frame" x="197" y="10" width="45" height="16"/>
+                    <rect key="frame" x="188" y="10" width="45" height="16"/>
                     <textFieldCell key="cell" lineBreakMode="clipping" alignment="left" title="17.25 h" id="6Jp-3Y-ENG">
                         <font key="font" metaFont="systemMedium" size="12"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -32,9 +41,13 @@
             </subviews>
             <constraints>
                 <constraint firstItem="wP5-KR-14h" firstAttribute="centerY" secondItem="c22-O7-iKe" secondAttribute="centerY" id="BlH-n4-VzW"/>
-                <constraint firstItem="OH1-ok-yWk" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="15" id="Gga-yW-Ort"/>
+                <constraint firstItem="OH1-ok-yWk" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="25" id="Gga-yW-Ort"/>
+                <constraint firstAttribute="trailing" secondItem="ex9-FR-Gwg" secondAttribute="trailing" constant="10" id="JTZ-7v-qm4"/>
                 <constraint firstItem="OH1-ok-yWk" firstAttribute="centerY" secondItem="c22-O7-iKe" secondAttribute="centerY" id="MD6-mJ-fOB"/>
-                <constraint firstAttribute="trailing" secondItem="wP5-KR-14h" secondAttribute="trailing" constant="40" id="W1p-tq-cst"/>
+                <constraint firstAttribute="bottom" secondItem="ex9-FR-Gwg" secondAttribute="bottom" id="MNd-E3-icu"/>
+                <constraint firstAttribute="trailing" secondItem="wP5-KR-14h" secondAttribute="trailing" constant="49" id="W1p-tq-cst"/>
+                <constraint firstItem="ex9-FR-Gwg" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="10" id="YV2-tK-Tte"/>
+                <constraint firstItem="ex9-FR-Gwg" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" id="tb1-dM-E2K"/>
             </constraints>
             <connections>
                 <outlet property="dateLbl" destination="OH1-ok-yWk" id="PGe-KH-qAd"/>
@@ -42,4 +55,9 @@
             </connections>
         </customView>
     </objects>
+    <resources>
+        <namedColor name="white-background-color">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
 </document>
