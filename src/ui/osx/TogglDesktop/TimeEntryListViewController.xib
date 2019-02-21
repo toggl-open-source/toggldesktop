@@ -58,14 +58,14 @@
                         <outlet property="delegate" destination="-2" id="la5-2j-euY"/>
                     </connections>
                 </textField>
-                <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7TM-hH-4yE">
+                <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7TM-hH-4yE">
                     <rect key="frame" x="0.0" y="0.0" width="252" height="197"/>
                     <clipView key="contentView" copiesOnScroll="NO" id="x95-7N-Tpm">
                         <rect key="frame" x="0.0" y="0.0" width="252" height="197"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView id="96l-2I-0G5">
-                                <rect key="frame" x="0.0" y="0.0" width="252" height="158"/>
+                                <rect key="frame" x="0.0" y="0.0" width="252" height="197"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumInteritemSpacing="10" minimumLineSpacing="10" id="wqE-DF-86P">
                                     <size key="itemSize" width="50" height="50"/>
@@ -74,12 +74,13 @@
                             </collectionView>
                         </subviews>
                     </clipView>
+                    <edgeInsets key="contentInsets" left="0.0" right="0.0" top="10" bottom="0.0"/>
                     <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="3ns-IM-k4B">
-                        <rect key="frame" x="1" y="144" width="233" height="15"/>
+                        <rect key="frame" x="-100" y="-100" width="233" height="15"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
-                    <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="xHG-vx-Jmn">
-                        <rect key="frame" x="234" y="1" width="15" height="143"/>
+                    <scroller key="verticalScroller" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="xHG-vx-Jmn">
+                        <rect key="frame" x="236" y="10" width="16" height="187"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                 </scrollView>

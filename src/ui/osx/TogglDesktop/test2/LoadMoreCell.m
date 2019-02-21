@@ -8,11 +8,18 @@
 
 #import "LoadMoreCell.h"
 
+@interface LoadMoreCell ()
+@property (weak) IBOutlet NSProgressIndicator *loader;
+@property (weak) IBOutlet NSButton *loadButton;
+- (IBAction)loadMoreClicked:(id)sender;
+@end
+
 @implementation LoadMoreCell
 extern void *ctx;
 
-- (void)initCell
-{
+- (void)awakeFromNib {
+	[super awakeFromNib];
+
 	[self.loader stopAnimation:nil];
 	[self.loader setHidden:YES];
 }

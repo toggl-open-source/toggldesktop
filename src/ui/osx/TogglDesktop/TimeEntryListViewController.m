@@ -376,67 +376,11 @@ extern void *ctx;
 	[self displayTimeEntryEditor:notification.object];
 }
 
-- (int)numberOfRowsInTableView:(NSTableView *)tv
-{
-	int result = 0;
-
-	@synchronized(self.viewitems)
-	{
-		result = (int)[self.viewitems count];
-	}
-	return result;
-}
-
 - (BOOL)  tableView:(NSTableView *)aTableView
 	shouldSelectRow:(NSInteger)rowIndex
 {
 	[self clearLastSelectedEntry];
 	self.lastSelectedRowIndex = rowIndex;
-}
-
-- (NSView *) tableView:(NSTableView *)tableView
-	viewForTableColumn:(NSTableColumn *)tableColumn
-				   row:(NSInteger)row
-{
-	TimeEntryViewItem *item = nil;
-
-	@synchronized(self.viewitems)
-	{
-		item = [self.viewitems objectAtIndex:row];
-	}
-	NSAssert(item != nil, @"view item from viewitems array is nil");
-
-	if (item.loadMore == YES)
-	{
-		LoadMoreCell *cell = [tableView makeViewWithIdentifier:@"LoadMoreCell"
-														 owner:self];
-		[cell initCell];
-		return cell;
-	}
-
-	TimeEntryCell *cell = [tableView makeViewWithIdentifier:@"TimeEntryCell"
-													  owner:self];
-	[cell render:item];
-	return cell;
-}
-
-- (CGFloat)tableView:(NSTableView *)tableView
-		 heightOfRow:(NSInteger)row
-{
-	TimeEntryViewItem *item = nil;
-
-	@synchronized(self.viewitems)
-	{
-		if (row < self.viewitems.count)
-		{
-			item = self.viewitems[row];
-		}
-	}
-	if (item && item.isHeader.boolValue)
-	{
-		return 102;
-	}
-	return 56;
 }
 
 - (IBAction)performClick:(id)sender

@@ -33,19 +33,28 @@ class TimeEntrySection {
 
     class func loadMoreSection() -> TimeEntrySection {
         return TimeEntrySection(header: TimeEntryHeader(date: "", totalTime: ""),
-                                entries: [],
+                                entries: [TimeEntryViewItem()],
                                 isLoadMore: true)
     }
 
 }
 
 @objcMembers
-class TimeEntryDatasource: NSObject, NSCollectionViewDataSource, NSCollectionViewDelegate, NSCollectionViewDelegateFlowLayout {
+class TimeEntryDatasource: NSObject {
 
     // MARK: Variable
 
     private(set) var sections: [TimeEntrySection]
     private let collectionView: NSCollectionView
+    fileprivate var cellSize: NSSize {
+        return CGSize(width: collectionView.frame.size.width - 20.0, height: 64)
+    }
+    fileprivate var headerSize: NSSize {
+        return CGSize(width: collectionView.frame.size.width - 20.0, height: 36)
+    }
+    fileprivate var loaderMoreSize: NSSize {
+        return CGSize(width: collectionView.frame.size.width - 20.0, height: 44)
+    }
 
     // MARK: Init
 
@@ -54,7 +63,7 @@ class TimeEntryDatasource: NSObject, NSCollectionViewDataSource, NSCollectionVie
 
         let flowLayout = NSCollectionViewFlowLayout()
         flowLayout.itemSize = NSSize(width: 280, height: 64)
-        flowLayout.sectionInset = NSEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        flowLayout.sectionInset = NSEdgeInsets(top: 0, left: 10, bottom: 10, right: 10)
         flowLayout.minimumInteritemSpacing = 0
         flowLayout.minimumLineSpacing = 0
         flowLayout.scrollDirection = .vertical
@@ -62,6 +71,8 @@ class TimeEntryDatasource: NSObject, NSCollectionViewDataSource, NSCollectionVie
         collectionView.collectionViewLayout = flowLayout
         collectionView.register(NSNib(nibNamed: NSNib.Name("TimeEntryCell"), bundle: nil),
                                 forItemWithIdentifier: NSUserInterfaceItemIdentifier("TimeEntryCell"))
+        collectionView.register(NSNib(nibNamed: NSNib.Name("LoadMoreCell"), bundle: nil),
+                                forItemWithIdentifier: NSUserInterfaceItemIdentifier("LoadMoreCell"))
         collectionView.register(NSNib(nibNamed: NSNib.Name("TimeHeaderView"), bundle: nil),
                                 forSupplementaryViewOfKind: NSCollectionView.elementKindSectionHeader,
                                 withIdentifier: NSUserInterfaceItemIdentifier("TimeHeaderView"))
@@ -70,7 +81,7 @@ class TimeEntryDatasource: NSObject, NSCollectionViewDataSource, NSCollectionVie
         if #available(OSX 10.13, *) {
             collectionView.backgroundColors = [NSColor(named: NSColor.Name("collectionview-background-color"))!]
         } else {
-            // Fallback on earlier versions
+            collectionView.backgroundColors = [NSColor.init(white: 0.95, alpha: 1.0)]
         }
         super.init()
         collectionView.delegate = self
@@ -78,42 +89,99 @@ class TimeEntryDatasource: NSObject, NSCollectionViewDataSource, NSCollectionVie
     }
 
     func process(_ timeEntries: [TimeEntryViewItem], showLoadMore: Bool) {
-        print("======= Render count \(timeEntries.count)")
-        print(timeEntries)
-        print("")
 
+        // Catogrize into group by date
         let groups = timeEntries.groupSort(ascending: false, byDate: { $0.started })
-        let sections = groups.compactMap { group -> TimeEntrySection? in
+        var sections = groups.compactMap { group -> TimeEntrySection? in
             guard let firstEntry = group.first else { return nil }
             let header = TimeEntryHeader(date: firstEntry.formattedDate, totalTime: firstEntry.duration)
             return TimeEntrySection(header: header, entries: group)
         }
 
+        if showLoadMore {
+            sections.append(TimeEntrySection.loadMoreSection())
+        }
+
+        // Reload
         self.sections = sections
-        self.collectionView.reloadData()
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
             self.collectionView.reloadData()
         }
-
-        print("Reload section \(sections.count)")
     }
 }
 
-extension TimeEntryDatasource {
+extension TimeEntryDatasource: NSCollectionViewDataSource, NSCollectionViewDelegate, NSCollectionViewDelegateFlowLayout {
 
     func numberOfSections(in collectionView: NSCollectionView) -> Int {
         return sections.count
     }
 
-    func collectionView(_ collectionView: NSCollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: NSCollectionView,
+                        numberOfItemsInSection section: Int) -> Int {
         let sectionItem = sections[section]
         return sectionItem.entries.count
     }
 
-    func collectionView(_ collectionView: NSCollectionView, itemForRepresentedObjectAt indexPath: IndexPath) -> NSCollectionViewItem {
+    func collectionView(_ collectionView: NSCollectionView,
+                        itemForRepresentedObjectAt indexPath: IndexPath) -> NSCollectionViewItem {
+
+        let section = sections[indexPath.section]
+
+        if section.isLoadMore {
+            return makeLoadMoreCell(with: collectionView, indexPath: indexPath)
+        }
+
+        return makeTimeEntryCell(with: collectionView, indexPath: indexPath)
+    }
+
+    func collectionView(_ collectionView: NSCollectionView,
+                        viewForSupplementaryElementOfKind kind: NSCollectionView.SupplementaryElementKind,
+                        at indexPath: IndexPath) -> NSView {
+        let section = sections[indexPath.section]
+
+        // Return empty view
+        if section.isLoadMore {
+            return NSView()
+        }
+
+        // Or normal
+        let header = collectionView.makeSupplementaryView(ofKind: NSCollectionView.elementKindSectionHeader,
+                                                          withIdentifier: NSUserInterfaceItemIdentifier("TimeHeaderView"),
+                                                          for: indexPath) as! TimeHeaderView
+        header.config(section.header)
+        return header
+    }
+
+    func collectionView(_ collectionView: NSCollectionView,
+                        layout collectionViewLayout: NSCollectionViewLayout,
+                        referenceSizeForHeaderInSection section: Int) -> NSSize {
+        let sectionData = sections[section]
+
+        // We don't need header for load more cell
+        // but we don't have choice to opt-out, so we return zero size
+        if sectionData.isLoadMore {
+            return CGSize.zero
+        }
+
+        // Actual size of header
+        return headerSize
+    }
+
+    func collectionView(_ collectionView: NSCollectionView,
+                        layout collectionViewLayout: NSCollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath) -> NSSize {
+        let section = sections[indexPath.section]
+        if section.isLoadMore {
+            return loaderMoreSize
+        }
+        return cellSize
+    }
+
+    private func makeTimeEntryCell(with collectionView: NSCollectionView,
+                                  indexPath: IndexPath) -> NSCollectionViewItem {
         guard let cell = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier("TimeEntryCell"),
                                                  for: indexPath) as? TimeEntryCell else {
-            fatalError()
+                                                    fatalError()
         }
         let section = sections[indexPath.section]
         let item = section.entries[indexPath.item]
@@ -130,53 +198,17 @@ extension TimeEntryDatasource {
         } else {
             mode = .middle
         }
-
         cell.drawShadow(with: mode)
 
         return cell
     }
 
-    func collectionView(_ collectionView: NSCollectionView, viewForSupplementaryElementOfKind kind: NSCollectionView.SupplementaryElementKind, at indexPath: IndexPath) -> NSView {
-        let header = collectionView.makeSupplementaryView(ofKind: NSCollectionView.elementKindSectionHeader,
-                                                          withIdentifier: NSUserInterfaceItemIdentifier("TimeHeaderView"),
-                                                          for: indexPath) as! TimeHeaderView
-
-        let section = sections[indexPath.section]
-        header.config(section.header)
-        return header
-    }
-
-    func collectionView(_ collectionView: NSCollectionView, layout collectionViewLayout: NSCollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> NSSize {
-
-        return CGSize(width: collectionView.frame.size.width - 20.0, height: 36)
-    }
-
-    func collectionView(_ collectionView: NSCollectionView, layout collectionViewLayout: NSCollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> NSSize {
-        return CGSize(width: collectionView.frame.size.width - 20.0, height: 64)
-    }
-}
-
-extension Sequence {
-
-    func groupSort(ascending: Bool = true, byDate dateKey: (Iterator.Element) -> Date) -> [[Iterator.Element]] {
-        var categories: [[Iterator.Element]] = []
-        for element in self {
-            let key = dateKey(element)
-            guard let dayIndex = categories.index(where: { $0.contains(where: { Calendar.current.isDate(dateKey($0), inSameDayAs: key) }) }) else {
-                guard let nextIndex = categories.index(where: { $0.contains(where: { dateKey($0).compare(key) == (ascending ? .orderedDescending : .orderedAscending) }) }) else {
-                    categories.append([element])
-                    continue
-                }
-                categories.insert([element], at: nextIndex)
-                continue
-            }
-
-            guard let nextIndex = categories[dayIndex].index(where: { dateKey($0).compare(key) == (ascending ? .orderedDescending : .orderedAscending) }) else {
-                categories[dayIndex].append(element)
-                continue
-            }
-            categories[dayIndex].insert(element, at: nextIndex)
+    private func makeLoadMoreCell(with collectionView: NSCollectionView,
+                                  indexPath: IndexPath) -> NSCollectionViewItem {
+        guard let cell = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier("LoadMoreCell"),
+                                                 for: indexPath) as? LoadMoreCell else {
+                                                    fatalError()
         }
-        return categories
+        return cell
     }
 }
