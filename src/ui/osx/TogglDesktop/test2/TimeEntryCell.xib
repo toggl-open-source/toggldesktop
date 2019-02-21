@@ -19,19 +19,19 @@
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customView id="jHy-af-Yta">
-            <rect key="frame" x="0.0" y="0.0" width="280" height="64"/>
+            <rect key="frame" x="0.0" y="0.0" width="532" height="64"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <box autoresizesSubviews="NO" boxType="custom" borderType="line" borderWidth="0.0" title="Box" titlePosition="noTitle" transparent="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dt4-Zf-56t" userLabel="DescriptionProject Box">
-                    <rect key="frame" x="46" y="0.0" width="96" height="64"/>
+                    <rect key="frame" x="15" y="0.0" width="379" height="64"/>
                     <view key="contentView" id="0ZQ-rn-Eji">
-                        <rect key="frame" x="0.0" y="0.0" width="96" height="64"/>
+                        <rect key="frame" x="0.0" y="0.0" width="379" height="64"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" preferredMaxLayoutWidth="98" translatesAutoresizingMaskIntoConstraints="NO" id="CwR-d5-aWs">
-                                <rect key="frame" x="-2" y="32" width="100" height="16"/>
-                                <textFieldCell key="cell" lineBreakMode="truncatingTail" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" alignment="left" title="Blogpost about ne..." id="KGe-cR-NlL">
-                                    <font key="font" metaFont="system" size="12"/>
+                                <rect key="frame" x="-2" y="32" width="383" height="16"/>
+                                <textFieldCell key="cell" lineBreakMode="truncatingTail" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" alignment="left" title="Blogpost about nefdsffdsf" id="KGe-cR-NlL">
+                                    <font key="font" metaFont="cellTitle"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
@@ -41,9 +41,9 @@
                                 <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="time-entry-dot" id="vYQ-WX-2jd"/>
                             </imageView>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" preferredMaxLayoutWidth="98" translatesAutoresizingMaskIntoConstraints="NO" id="deS-e6-3Ui" customClass="NSTextFieldWithBackground">
-                                <rect key="frame" x="13" y="16" width="85" height="16"/>
+                                <rect key="frame" x="13" y="16" width="368" height="16"/>
                                 <textFieldCell key="cell" lineBreakMode="truncatingTail" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" alignment="left" title="NEW - TOGGL - project" id="apI-Za-Hk2">
-                                    <font key="font" metaFont="system" size="12"/>
+                                    <font key="font" metaFont="cellTitle"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
@@ -76,7 +76,7 @@
                     </connections>
                 </button>
                 <button toolTip="Continue with this time entry" horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Gcj-ki-Hus" customClass="NSHoverButton">
-                    <rect key="frame" x="251" y="25" width="14" height="14"/>
+                    <rect key="frame" x="503" y="25" width="14" height="14"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="14" id="So6-zJ-3fL"/>
                         <constraint firstAttribute="height" constant="14" id="a1q-cQ-frr"/>
@@ -90,7 +90,7 @@
                     </connections>
                 </button>
                 <stackView distribution="equalSpacing" orientation="horizontal" alignment="top" spacing="5" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rE8-8i-mr7">
-                    <rect key="frame" x="144" y="24" width="39" height="17"/>
+                    <rect key="frame" x="396" y="24" width="39" height="17"/>
                     <subviews>
                         <imageView translatesAutoresizingMaskIntoConstraints="NO" id="29c-rg-nft">
                             <rect key="frame" x="0.0" y="0.0" width="17" height="17"/>
@@ -119,7 +119,7 @@
                     </customSpacing>
                 </stackView>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="xwb-FG-Z4X">
-                    <rect key="frame" x="186" y="24" width="57" height="16"/>
+                    <rect key="frame" x="438" y="24" width="57" height="16"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="53" id="Jlj-SX-18w"/>
                     </constraints>
@@ -138,7 +138,7 @@
                 <constraint firstItem="yV9-eP-fCj" firstAttribute="leading" secondItem="jHy-af-Yta" secondAttribute="leading" constant="10" id="APL-F7-XK9"/>
                 <constraint firstItem="Gcj-ki-Hus" firstAttribute="centerY" secondItem="jHy-af-Yta" secondAttribute="centerY" id="Bn0-Rz-zD4"/>
                 <constraint firstItem="yV9-eP-fCj" firstAttribute="centerY" secondItem="jHy-af-Yta" secondAttribute="centerY" id="Hp8-mM-Mwf"/>
-                <constraint firstItem="dt4-Zf-56t" firstAttribute="leading" secondItem="jHy-af-Yta" secondAttribute="leading" constant="46" id="NuX-cP-iyN"/>
+                <constraint firstItem="dt4-Zf-56t" firstAttribute="leading" secondItem="jHy-af-Yta" secondAttribute="leading" constant="15" id="NuX-cP-iyN"/>
                 <constraint firstItem="rE8-8i-mr7" firstAttribute="leading" secondItem="dt4-Zf-56t" secondAttribute="trailing" constant="2" id="QoR-Sb-oUO"/>
                 <constraint firstItem="xwb-FG-Z4X" firstAttribute="leading" secondItem="rE8-8i-mr7" secondAttribute="trailing" constant="5" id="dyZ-rK-VoT"/>
                 <constraint firstItem="Gcj-ki-Hus" firstAttribute="leading" secondItem="xwb-FG-Z4X" secondAttribute="trailing" constant="10" id="gWS-c5-fSx"/>
@@ -154,7 +154,7 @@
                 <outlet property="projectTextField" destination="deS-e6-3Ui" id="pIu-QV-GCm"/>
                 <outlet property="tagFlag" destination="29c-rg-nft" id="LV9-V1-NQ1"/>
             </connections>
-            <point key="canvasLocation" x="64" y="-33"/>
+            <point key="canvasLocation" x="-62" y="-33"/>
         </customView>
     </objects>
     <resources>

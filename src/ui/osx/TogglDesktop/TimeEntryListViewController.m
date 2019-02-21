@@ -19,6 +19,7 @@
 #import "ConvertHexColor.h"
 #include <Carbon/Carbon.h>
 #import "TogglDesktop-Swift.h"
+#import "TimeEntryCollectionView.h"
 
 @interface TimeEntryListViewController () <NSCollectionViewDataSource, NSCollectionViewDelegateFlowLayout>
 @property (nonatomic, strong) IBOutlet TimerEditViewController *timerEditViewController;
@@ -36,7 +37,8 @@
 @property (copy, nonatomic) NSString *lastSelectedGUID;
 @property (nonatomic, strong) IBOutlet TimeEntryEditViewController *timeEntryEditViewController;
 @property (nonatomic, strong) NSArray<TimeEntryViewItem *> *viewitems;
-@property (weak) IBOutlet NSCollectionView *timeEntriesTableView;
+@property (weak) IBOutlet NSCollectionView *collectionView;
+
 @end
 
 @implementation TimeEntryListViewController
@@ -117,17 +119,11 @@ extern void *ctx;
 	return self;
 }
 
-- (void)loadView
+- (void)viewDidLoad
 {
-	[super loadView];
-	[self.timeEntriesTableView registerNib:[[NSNib alloc] initWithNibNamed:@"TimeEntryCell" bundle:nil] forItemWithIdentifier:@"TimeEntryCell"];
-	[self.timeEntriesTableView registerNib:[[NSNib alloc] initWithNibNamed:@"TimeHeaderView" bundle:nil]
-				forSupplementaryViewOfKind:NSCollectionElementKindSectionHeader
-							withIdentifier:@"TimeHeaderView"];
-	self.dataSource = [[TimeEntryDatasource alloc] initWithCollectionView:self.timeEntriesTableView];;
+	[super viewDidLoad];
 
-//    [self.timeEntriesTableView registerNib:self.nibLoadMoreCell
-//                             forIdentifier :@"LoadMoreCell"];
+	self.dataSource = [[TimeEntryDatasource alloc] initWithCollectionView:self.collectionView];
 
 	[self.headerView addSubview:self.timerEditViewController.view];
 	[self.timerEditViewController.view setFrame:self.headerView.bounds];
@@ -143,11 +139,11 @@ extern void *ctx;
 	[self setupEmptyLabel];
 
 	// Drag and drop
-	[self.timeEntriesTableView setDraggingSourceOperationMask:NSDragOperationLink forLocal:NO];
-	[self.timeEntriesTableView setDraggingSourceOperationMask:NSDragOperationMove forLocal:YES];
-	[self.timeEntriesTableView registerForDraggedTypes:[NSArray arrayWithObject:NSStringPboardType]];
-	self.timeEntriesTableView.delegate = self.dataSource;
-	self.timeEntriesTableView.dataSource = self.dataSource;
+//    [self.collectionView setDraggingSourceOperationMask:NSDragOperationLink forLocal:NO];
+//    [self.collectionView setDraggingSourceOperationMask:NSDragOperationMove forLocal:YES];
+//    [self.collectionView registerForDraggedTypes:[NSArray arrayWithObject:NSStringPboardType]];
+	self.collectionView.delegate = self.dataSource;
+	self.collectionView.dataSource = self.dataSource;
 }
 
 - (void)setupEmptyLabel
@@ -185,34 +181,33 @@ extern void *ctx;
     // Save the current scroll position of entries list
 	NSPoint scrollOrigin;
 	BOOL adjustScroll = NO;
-	if (self.timeEntriesTableView.numberOfSections > 0)
+	if (self.collectionView.numberOfSections > 0)
 	{
-		NSRect rowRect = [self.timeEntriesTableView layoutAttributesForItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]].frame;
-		adjustScroll = !NSEqualRects(rowRect, NSZeroRect) && !NSContainsRect(self.timeEntriesTableView.visibleRect, rowRect);
+		NSRect rowRect = [self.collectionView layoutAttributesForItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]].frame;
+		adjustScroll = !NSEqualRects(rowRect, NSZeroRect) && !NSContainsRect(self.collectionView.visibleRect, rowRect);
 		if (adjustScroll)
 		{
             // get scroll position from the bottom: get bottom left of the visible part of the table view
-			scrollOrigin = self.timeEntriesTableView.visibleRect.origin;
-			if (self.timeEntriesTableView.isFlipped)
+			scrollOrigin = self.collectionView.visibleRect.origin;
+			if (self.collectionView.isFlipped)
 			{
             // scrollOrigin is top left, calculate unflipped coordinates
-				scrollOrigin.y = self.timeEntriesTableView.bounds.size.height - scrollOrigin.y;
+				scrollOrigin.y = self.collectionView.bounds.size.height - scrollOrigin.y;
 			}
 		}
 	}
 
 	NSMutableArray<TimeEntryViewItem *> *newTimeEntries = [cmd.timeEntries mutableCopy];
 	NSArray<TimeEntryViewItem *> *oldTimeEntries = self.viewitems;
-	NSIndexPath *selectedIndexpath = [[[self.timeEntriesTableView selectionIndexPaths] allObjects] firstObject];
+	NSIndexPath *selectedIndexpath = [[[self.collectionView selectionIndexPaths] allObjects] firstObject];
 
     // Diff and reload
 //    self.viewitems = [newTimeEntries copy];
-    // [self.timeEntriesTableView diffReloadWith:oldTimeEntries new:[newTimeEntries copy]];
+    // [self.collectionView diffReloadWith:oldTimeEntries new:[newTimeEntries copy]];
 
 
     // reload
 	[self.dataSource process:newTimeEntries showLoadMore:cmd.show_load_more];
-	[self.timeEntriesTableView reloadData];
 
 	if (cmd.open)
 	{
@@ -228,7 +223,7 @@ extern void *ctx;
 		}
 	}
 
-	BOOL noItems = self.timeEntriesTableView.numberOfSections == 0;
+	BOOL noItems = self.collectionView.numberOfSections == 0;
 	[self.emptyLabel setEnabled:noItems];
 	[self.timeEntryListScrollView setHidden:noItems];
     // This seems to work for hiding the list when there are no items
@@ -241,19 +236,19 @@ extern void *ctx;
 	if (adjustScroll)
 	{
         // restore scroll position from the bottom
-		if (self.timeEntriesTableView.isFlipped)
+		if (self.collectionView.isFlipped)
 		{
         // calculate new flipped coordinates, height includes the new row
-			scrollOrigin.y = self.timeEntriesTableView.bounds.size.height - scrollOrigin.y;
+			scrollOrigin.y = self.collectionView.bounds.size.height - scrollOrigin.y;
 		}
-		[self.timeEntriesTableView scrollPoint:scrollOrigin];
+		[self.collectionView scrollPoint:scrollOrigin];
 	}
 
     // If row was focused before reload we restore that state
 	if (selectedIndexpath)
 	{
 		NSSet *indexSet = [NSSet setWithCollectionViewIndexPath:selectedIndexpath];
-		[self.timeEntriesTableView selectItemsAtIndexPaths:indexSet scrollPosition:NSCollectionViewScrollPositionTop];
+		[self.collectionView selectItemsAtIndexPaths:indexSet scrollPosition:NSCollectionViewScrollPositionTop];
 
 		TimeEntryCell *cell = [self getSelectedEntryCellWithIndexPath:selectedIndexpath];
 		if (cell != nil)
@@ -303,10 +298,10 @@ extern void *ctx;
 //    self.timeEntrypopover.positioningRect = positionRect;
 //
 //    // Scroll to visible selected row
-//    if (!NSContainsRect(self.timeEntriesTableView.visibleRect, positionRect))
+//    if (!NSContainsRect(self.collectionView.visibleRect, positionRect))
 //    {
-//        self.timeEntriesTableView scroolt
-//        [self.timeEntriesTableView scrollRowToVisible:newSelectedRow];
+//        self.collectionView scroolt
+//        [self.collectionView scrollRowToVisible:newSelectedRow];
 //    }
 //
 //    // Hightlight selected cell
@@ -352,7 +347,7 @@ extern void *ctx;
 		else if (self.selectedEntryCell && [self.selectedEntryCell isKindOfClass:[TimeEntryCell class]])
 		{
 			self.lastSelectedGUID = ((TimeEntryCell *)self.selectedEntryCell).GUID;
-			ofView = self.timeEntriesTableView;
+			ofView = self.collectionView;
 		}
 
         // Show popover
@@ -372,7 +367,7 @@ extern void *ctx;
 //
 //    if (selectedView)
 //    {
-//        positionRect = [self.timeEntriesTableView convertRect:selectedView.bounds
+//        positionRect = [self.collectionView convertRect:selectedView.bounds
 //                                                     fromView:selectedView];
 //    }
 //    return positionRect;
@@ -449,7 +444,7 @@ extern void *ctx;
 - (IBAction)performClick:(id)sender
 {
 //    [self clearLastSelectedEntry];
-//    NSInteger row = [self.timeEntriesTableView clickedRow];
+//    NSInteger row = [self.collectionView clickedRow];
 //
 //    if (row < 0)
 //    {
@@ -486,14 +481,14 @@ extern void *ctx;
 
 - (TimeEntryCell *)getSelectedEntryCellWithIndexPath:(NSIndexPath *)indexPath
 {
-	if (indexPath.section < 0 ||  indexPath.section >= self.timeEntriesTableView.numberOfSections)
+	if (indexPath.section < 0 ||  indexPath.section >= self.collectionView.numberOfSections)
 	{
 		return nil;
 	}
 
 	self.selectedEntryCell = nil;
 
-	id item = [self.timeEntriesTableView itemAtIndexPath:indexPath];
+	id item = [self.collectionView itemAtIndexPath:indexPath];
 	if ([item isKindOfClass:[TimeEntryCell class]])
 	{
 		self.selectedEntryCell = (TimeEntryCell *)item;
@@ -621,7 +616,7 @@ extern void *ctx;
 
 - (void)focusListing:(NSNotification *)notification
 {
-//    if (self.timeEntriesTableView.numberOfRows == 0)
+//    if (self.collectionView.numberOfRows == 0)
 //    {
 //        return;
 //    }
@@ -633,15 +628,15 @@ extern void *ctx;
 //        self.lastSelectedRowIndex = 0;
 //    }
 //
-//    if ([self.timeEntriesTableView numberOfRows] < self.lastSelectedRowIndex)
+//    if ([self.collectionView numberOfRows] < self.lastSelectedRowIndex)
 //    {
 //        return;
 //    }
 //
 //    NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:self.lastSelectedRowIndex];
 //
-//    [[self.timeEntriesTableView window] makeFirstResponder:self.timeEntriesTableView];
-//    [self.timeEntriesTableView selectRowIndexes:indexSet byExtendingSelection:NO];
+//    [[self.collectionView window] makeFirstResponder:self.collectionView];
+//    [self.collectionView selectRowIndexes:indexSet byExtendingSelection:NO];
 //
 //    TimeEntryCell *cell = [self getSelectedEntryCell:self.lastSelectedRowIndex];
 //    if (cell != nil)
@@ -662,7 +657,7 @@ extern void *ctx;
 																object:nil];
 	[self clearLastSelectedEntry];
 	self.lastSelectedRowIndex = -1;
-	[self.timeEntriesTableView deselectAll:nil];
+	[self.collectionView deselectAll:nil];
 	self.selectedEntryCell = nil;
 }
 
@@ -672,7 +667,7 @@ extern void *ctx;
 	writeRowsWithIndexes:(NSIndexSet *)rowIndexes
 			toPasteboard:(NSPasteboard *)pboard
 {
-	if (aTableView == self.timeEntriesTableView)
+	if (aTableView == self.collectionView)
 	{
         // Disable drag and drop for load more and group row
 		TimeEntryViewItem *model = [self.viewitems objectAtIndex:[rowIndexes firstIndex]];
@@ -711,7 +706,7 @@ extern void *ctx;
 	NSInteger dragRow = [rowIndexes firstIndex];
 	int dateIndex = (int)row - 1;
 
-	if (([info draggingSource] == self.timeEntriesTableView) & (tv == self.timeEntriesTableView) && row != dragRow)
+	if (([info draggingSource] == self.collectionView) & (tv == self.collectionView) && row != dragRow)
 	{
 		if (row == 0)
 		{
@@ -749,7 +744,7 @@ extern void *ctx;
 
 - (void)tableView:(NSTableView *)tableView draggingSession:(NSDraggingSession *)session willBeginAtPoint:(NSPoint)screenPoint forRowIndexes:(NSIndexSet *)rowIndexes
 {
-//    TimeEntryCell *cellView = [self.timeEntriesTableView viewAtColumn:0 row:rowIndexes.firstIndex makeIfNecessary:NO];
+//    TimeEntryCell *cellView = [self.collectionView viewAtColumn:0 row:rowIndexes.firstIndex makeIfNecessary:NO];
 //
 //    if (cellView)
 //    {
@@ -822,7 +817,7 @@ extern void *ctx;
 
 - (void)effectiveAppearanceChangedNotification {
     // Re-draw hard-code color sheme for all cells in tableview
-	[self.timeEntriesTableView reloadData];
+	[self.collectionView reloadData];
 }
 
 - (NSInteger)collectionView:(nonnull NSCollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {

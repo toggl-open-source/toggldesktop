@@ -45,6 +45,7 @@ class TimeEntryDatasource: NSObject {
     // MARK: Variable
 
     private(set) var sections: [TimeEntrySection]
+    private let collectionView: NSCollectionView
 
     // MARK: Init
 
@@ -54,11 +55,17 @@ class TimeEntryDatasource: NSObject {
         let flowLayout = NSCollectionViewFlowLayout()
         flowLayout.itemSize = NSSize(width: 280, height: 64)
         flowLayout.sectionInset = NSEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-        flowLayout.minimumInteritemSpacing = 1000
-        flowLayout.minimumLineSpacing = 1000
+        flowLayout.minimumInteritemSpacing = 10
+        flowLayout.minimumLineSpacing = 10
         flowLayout.scrollDirection = .vertical
+        flowLayout.headerReferenceSize = CGSize(width: 280, height: 36)
         collectionView.collectionViewLayout = flowLayout
-
+        collectionView.register(NSNib(nibNamed: NSNib.Name("TimeEntryCell"), bundle: nil),
+                                forItemWithIdentifier: NSUserInterfaceItemIdentifier("TimeEntryCell"))
+        collectionView.register(NSNib(nibNamed: NSNib.Name("TimeHeaderView"), bundle: nil),
+                                forSupplementaryViewOfKind: NSCollectionView.elementKindSectionHeader,
+                                withIdentifier: NSUserInterfaceItemIdentifier("TimeHeaderView"))
+        self.collectionView = collectionView
         super.init()
     }
 
@@ -75,6 +82,12 @@ class TimeEntryDatasource: NSObject {
         }
 
         self.sections = sections
+
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
+            self.collectionView.reloadData()
+        }
+
+        print("Reload section \(sections.count)")
     }
 }
 
@@ -103,13 +116,21 @@ extension TimeEntryDatasource: NSCollectionViewDataSource, NSCollectionViewDeleg
 
     func collectionView(_ collectionView: NSCollectionView, viewForSupplementaryElementOfKind kind: NSCollectionView.SupplementaryElementKind, at indexPath: IndexPath) -> NSView {
         let header = collectionView.makeSupplementaryView(ofKind: NSCollectionView.elementKindSectionHeader,
-                                                          withIdentifier: NSUserInterfaceItemIdentifier("HeaderView"),
+                                                          withIdentifier: NSUserInterfaceItemIdentifier("TimeHeaderView"),
                                                           for: indexPath) as! TimeHeaderView
 
         let section = sections[indexPath.section]
         header.config(section.header)
-
         return header
+    }
+
+    func collectionView(_ collectionView: NSCollectionView, layout collectionViewLayout: NSCollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> NSSize {
+
+        return CGSize(width: collectionView.frame.size.width - 20.0, height: 36)
+    }
+
+    func collectionView(_ collectionView: NSCollectionView, layout collectionViewLayout: NSCollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> NSSize {
+        return CGSize(width: collectionView.frame.size.width - 20.0, height: 64)
     }
 }
 
