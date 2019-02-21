@@ -184,30 +184,25 @@ extern void *ctx;
 
     // Save the current scroll position of entries list
 	NSPoint scrollOrigin;
-
-	NSRect rowRect = [self.timeEntriesTableView layoutAttributesForItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]].frame;
-	BOOL adjustScroll = !NSEqualRects(rowRect, NSZeroRect) && !NSContainsRect(self.timeEntriesTableView.visibleRect, rowRect);
-	if (adjustScroll)
+	BOOL adjustScroll = NO;
+	if (self.timeEntriesTableView.numberOfSections > 0)
 	{
-        // get scroll position from the bottom: get bottom left of the visible part of the table view
-		scrollOrigin = self.timeEntriesTableView.visibleRect.origin;
-		if (self.timeEntriesTableView.isFlipped)
+		NSRect rowRect = [self.timeEntriesTableView layoutAttributesForItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]].frame;
+		adjustScroll = !NSEqualRects(rowRect, NSZeroRect) && !NSContainsRect(self.timeEntriesTableView.visibleRect, rowRect);
+		if (adjustScroll)
 		{
-        // scrollOrigin is top left, calculate unflipped coordinates
-			scrollOrigin.y = self.timeEntriesTableView.bounds.size.height - scrollOrigin.y;
+            // get scroll position from the bottom: get bottom left of the visible part of the table view
+			scrollOrigin = self.timeEntriesTableView.visibleRect.origin;
+			if (self.timeEntriesTableView.isFlipped)
+			{
+            // scrollOrigin is top left, calculate unflipped coordinates
+				scrollOrigin.y = self.timeEntriesTableView.bounds.size.height - scrollOrigin.y;
+			}
 		}
 	}
 
 	NSMutableArray<TimeEntryViewItem *> *newTimeEntries = [cmd.timeEntries mutableCopy];
 	NSArray<TimeEntryViewItem *> *oldTimeEntries = self.viewitems;
-
-	if (cmd.show_load_more)
-	{
-		TimeEntryViewItem *it = [TimeEntryViewItem alloc];
-		[it setLoadMore:YES];
-		[newTimeEntries addObject:it];
-	}
-
 	NSIndexPath *selectedIndexpath = [[[self.timeEntriesTableView selectionIndexPaths] allObjects] firstObject];
 
     // Diff and reload
@@ -216,7 +211,7 @@ extern void *ctx;
 
 
     // reload
-	[self.dataSource process:newTimeEntries];
+	[self.dataSource process:newTimeEntries showLoadMore:cmd.show_load_more];
 	[self.timeEntriesTableView reloadData];
 
 	if (cmd.open)
@@ -255,14 +250,17 @@ extern void *ctx;
 	}
 
     // If row was focused before reload we restore that state
-	NSSet *indexSet = [NSSet setWithCollectionViewIndexPath:selectedIndexpath];
-	[self.timeEntriesTableView selectItemsAtIndexPaths:indexSet scrollPosition:NSCollectionViewScrollPositionTop];
-
-	TimeEntryCell *cell = [self getSelectedEntryCellWithIndexPath:selectedIndexpath];
-	if (cell != nil)
+	if (selectedIndexpath)
 	{
-		[self clearLastSelectedEntry];
-		[cell setFocused];
+		NSSet *indexSet = [NSSet setWithCollectionViewIndexPath:selectedIndexpath];
+		[self.timeEntriesTableView selectItemsAtIndexPaths:indexSet scrollPosition:NSCollectionViewScrollPositionTop];
+
+		TimeEntryCell *cell = [self getSelectedEntryCellWithIndexPath:selectedIndexpath];
+		if (cell != nil)
+		{
+			[self clearLastSelectedEntry];
+			[cell setFocused];
+		}
 	}
 
     // Adjust the position of arrow of Popover
