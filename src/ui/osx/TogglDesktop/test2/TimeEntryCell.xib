@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -29,6 +30,14 @@
             <rect key="frame" x="0.0" y="0.0" width="400" height="64"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
+                <box horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" boxType="custom" borderType="none" borderWidth="0.0" title="Box" translatesAutoresizingMaskIntoConstraints="NO" id="wve-Qj-t8r">
+                    <rect key="frame" x="0.0" y="0.0" width="400" height="64"/>
+                    <view key="contentView" id="WeZ-ft-ZWq">
+                        <rect key="frame" x="0.0" y="0.0" width="400" height="64"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    </view>
+                    <color key="fillColor" name="white-background-color"/>
+                </box>
                 <customView horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="Uu2-26-kM4">
                     <rect key="frame" x="15" y="0.0" width="249" height="64"/>
                     <subviews>
@@ -137,17 +146,21 @@
                 <constraint firstAttribute="trailing" secondItem="Gcj-ki-Hus" secondAttribute="trailing" constant="15" id="4cj-kh-iQ7"/>
                 <constraint firstItem="rE8-8i-mr7" firstAttribute="centerY" secondItem="jHy-af-Yta" secondAttribute="centerY" id="4xh-lx-h9r"/>
                 <constraint firstItem="yV9-eP-fCj" firstAttribute="leading" secondItem="jHy-af-Yta" secondAttribute="leading" constant="10" id="APL-F7-XK9"/>
+                <constraint firstAttribute="trailing" secondItem="wve-Qj-t8r" secondAttribute="trailing" id="B02-AG-IS3"/>
                 <constraint firstItem="Gcj-ki-Hus" firstAttribute="centerY" secondItem="jHy-af-Yta" secondAttribute="centerY" id="Bn0-Rz-zD4"/>
+                <constraint firstAttribute="bottom" secondItem="wve-Qj-t8r" secondAttribute="bottom" id="GvR-Y7-M9D"/>
                 <constraint firstItem="yV9-eP-fCj" firstAttribute="centerY" secondItem="jHy-af-Yta" secondAttribute="centerY" id="Hp8-mM-Mwf"/>
                 <constraint firstItem="Uu2-26-kM4" firstAttribute="leading" secondItem="jHy-af-Yta" secondAttribute="leading" constant="15" id="R7O-XO-Nkp"/>
+                <constraint firstItem="wve-Qj-t8r" firstAttribute="leading" secondItem="jHy-af-Yta" secondAttribute="leading" id="Udo-lz-meQ"/>
                 <constraint firstItem="rE8-8i-mr7" firstAttribute="leading" secondItem="Uu2-26-kM4" secondAttribute="trailing" priority="750" id="a58-CX-Mfu"/>
                 <constraint firstItem="xwb-FG-Z4X" firstAttribute="leading" secondItem="rE8-8i-mr7" secondAttribute="trailing" constant="5" id="dyZ-rK-VoT"/>
                 <constraint firstItem="Uu2-26-kM4" firstAttribute="top" secondItem="jHy-af-Yta" secondAttribute="top" id="e3F-wU-zDY"/>
                 <constraint firstItem="Gcj-ki-Hus" firstAttribute="leading" secondItem="xwb-FG-Z4X" secondAttribute="trailing" constant="10" id="gWS-c5-fSx"/>
                 <constraint firstItem="Uu2-26-kM4" firstAttribute="centerY" secondItem="jHy-af-Yta" secondAttribute="centerY" id="kif-Wu-VlX"/>
                 <constraint firstAttribute="bottom" secondItem="Uu2-26-kM4" secondAttribute="bottom" id="py3-hW-vJF"/>
+                <constraint firstItem="wve-Qj-t8r" firstAttribute="top" secondItem="jHy-af-Yta" secondAttribute="top" id="r1L-ap-upU"/>
             </constraints>
-            <point key="canvasLocation" x="59" y="-33"/>
+            <point key="canvasLocation" x="-160" y="-381"/>
         </customView>
     </objects>
     <resources>
@@ -155,5 +168,8 @@
         <image name="time-entry-billable" width="17" height="17"/>
         <image name="time-entry-dot" width="8" height="8"/>
         <image name="time-entry-tag" width="17" height="17"/>
+        <namedColor name="white-background-color">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
     </resources>
 </document>

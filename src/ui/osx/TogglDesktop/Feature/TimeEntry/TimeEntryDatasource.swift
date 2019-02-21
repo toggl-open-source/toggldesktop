@@ -55,8 +55,8 @@ class TimeEntryDatasource: NSObject, NSCollectionViewDataSource, NSCollectionVie
         let flowLayout = NSCollectionViewFlowLayout()
         flowLayout.itemSize = NSSize(width: 280, height: 64)
         flowLayout.sectionInset = NSEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-        flowLayout.minimumInteritemSpacing = 10
-        flowLayout.minimumLineSpacing = 10
+        flowLayout.minimumInteritemSpacing = 0
+        flowLayout.minimumLineSpacing = 0
         flowLayout.scrollDirection = .vertical
         flowLayout.headerReferenceSize = CGSize(width: 280, height: 36)
         collectionView.collectionViewLayout = flowLayout
@@ -66,6 +66,12 @@ class TimeEntryDatasource: NSObject, NSCollectionViewDataSource, NSCollectionVie
                                 forSupplementaryViewOfKind: NSCollectionView.elementKindSectionHeader,
                                 withIdentifier: NSUserInterfaceItemIdentifier("TimeHeaderView"))
         self.collectionView = collectionView
+        collectionView.wantsLayer = true
+        if #available(OSX 10.13, *) {
+            collectionView.backgroundColors = [NSColor(named: NSColor.Name("collectionview-background-color"))!]
+        } else {
+            // Fallback on earlier versions
+        }
         super.init()
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -111,7 +117,21 @@ extension TimeEntryDatasource {
         }
         let section = sections[indexPath.section]
         let item = section.entries[indexPath.item]
+
+        // Render data
         cell.render(item)
+
+        // Get shadow mode by index
+        let mode: TimeEntryCell.ShadowMode
+        if indexPath.item == 0 {
+            mode = .top
+        } else if indexPath.item == (section.entries.count - 1) {
+            mode = .bottom
+        } else {
+            mode = .middle
+        }
+
+        cell.drawShadow(with: mode)
 
         return cell
     }

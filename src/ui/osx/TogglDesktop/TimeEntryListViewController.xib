@@ -32,7 +32,7 @@
         <customView id="ozl-58-bBU" customClass="NSViewEscapable">
             <rect key="frame" x="0.0" y="0.0" width="346" height="356"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-            <point key="canvasLocation" x="26" y="512"/>
+            <point key="canvasLocation" x="87" y="560"/>
         </customView>
         <customView id="3">
             <rect key="frame" x="0.0" y="0.0" width="252" height="260"/>
@@ -60,7 +60,7 @@
                 </textField>
                 <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7TM-hH-4yE">
                     <rect key="frame" x="0.0" y="0.0" width="252" height="197"/>
-                    <clipView key="contentView" id="x95-7N-Tpm">
+                    <clipView key="contentView" copiesOnScroll="NO" id="x95-7N-Tpm">
                         <rect key="frame" x="0.0" y="0.0" width="252" height="197"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
