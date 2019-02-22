@@ -87,7 +87,7 @@ extern void *ctx;
 	self.boxView.layer.shadowOffset = CGSizeMake(0, -2);
 	self.boxView.layer.shadowRadius = 6;
 
-	self.downloadState = DownloadStateNone;
+	[self setDownloadState:self.downloadState];
 }
 
 - (BOOL)updateCheckEnabled
@@ -124,7 +124,7 @@ extern void *ctx;
 		 item.displayVersionString];
 
 	[self displayUpdateStatus];
-	self.downloadState = DownloadStateRestart;
+	[self setDownloadState:DownloadStateRestart];
 }
 
 - (void)updater:(SUUpdater *)updater didFindValidUpdate:(SUAppcastItem *)update
@@ -135,7 +135,7 @@ extern void *ctx;
 		[NSString stringWithFormat:@"Update found: %@",
 		 update.displayVersionString];
 
-	self.downloadState = DownloadStateNone;
+	[self setDownloadState:DownloadStateDownloading];
 	[self displayUpdateStatus];
 	[Utils runClearCommand];
 }
@@ -199,7 +199,7 @@ extern void *ctx;
 - (void)updater:(SUUpdater *)updater willDownloadUpdate:(SUAppcastItem *)item withRequest:(NSMutableURLRequest *)request
 {
 	NSLog(@"willDownloadUpdate %@", item);
-	self.downloadState = DownloadStateDownloading;
+	[self setDownloadState:DownloadStateDownloading];
 }
 
 - (void)textFieldClicked:(id)sender
@@ -214,8 +214,10 @@ extern void *ctx;
 - (void)setDownloadState:(DownloadState)downloadState
 {
 	_downloadState = downloadState;
-
-	[self renderRestartButton];
+	if ([self updateCheckEnabled])
+	{
+		[self renderRestartButton];
+	}
 }
 
 - (void)renderRestartButton {

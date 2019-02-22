@@ -108,7 +108,7 @@
                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
                                 </textField>
-                                <button focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Brr-F9-HyT" customClass="FlatButton" customModule="TogglDesktop" customModuleProvider="target">
+                                <button hidden="YES" focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Brr-F9-HyT" customClass="FlatButton" customModule="TogglDesktop" customModuleProvider="target">
                                     <rect key="frame" x="54" y="71" width="120" height="24"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="120" id="eka-c1-zrN"/>
