@@ -29,7 +29,9 @@ timer(new QTimer(this)),
 duration(0),
 previousTagList(""),
 descriptionModel(new AutocompleteListModel(this, QVector<AutocompleteView*>())),
-projectModel(new AutocompleteListModel(this, QVector<AutocompleteView*>(), AC_PROJECT)) {
+projectModel(new AutocompleteListModel(this, QVector<AutocompleteView*>(), AC_PROJECT)),
+shortcutDelete(new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Delete), this))
+{
     ui->setupUi(this);
 
     ui->description->setModel(descriptionModel);
@@ -74,6 +76,8 @@ projectModel(new AutocompleteListModel(this, QVector<AutocompleteView*>(), AC_PR
             this, SLOT(setProjectColors(QVector<char*>)));  // NOLINT
 
     connect(timer, SIGNAL(timeout()), this, SLOT(timeout()));
+
+    connect(shortcutDelete, &QShortcut::activated, this, &TimeEntryEditorWidget::onShortcutDelete);
 
     TogglApi::instance->getProjectColors();
 }
@@ -347,13 +351,7 @@ void TimeEntryEditorWidget::keyPressEvent(QKeyEvent *event) {
 }
 
 void TimeEntryEditorWidget::on_deleteButton_clicked() {
-    if (timeEntry->confirmlessDelete() || QMessageBox::Ok == QMessageBox(
-        QMessageBox::Question,
-        "Delete this time entry?",
-        "Deleted time entries cannot be restored.",
-        QMessageBox::Ok|QMessageBox::Cancel).exec()) {
-        TogglApi::instance->deleteTimeEntry(guid);
-    }
+    onShortcutDelete();
 }
 
 void TimeEntryEditorWidget::on_addNewProject_clicked() {
@@ -457,6 +455,16 @@ void TimeEntryEditorWidget::timeout() {
             !ui->duration->hasFocus()) {
         ui->duration->setText(
             TogglApi::formatDurationInSecondsHHMMSS(duration));
+    }
+}
+
+void TimeEntryEditorWidget::onShortcutDelete() {
+    if (timeEntry->confirmlessDelete() || QMessageBox::Ok == QMessageBox(
+        QMessageBox::Question,
+        "Delete this time entry?",
+        "Deleted time entries cannot be restored.",
+        QMessageBox::Ok|QMessageBox::Cancel).exec()) {
+        TogglApi::instance->deleteTimeEntry(guid);
     }
 }
 

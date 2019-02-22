@@ -8,6 +8,7 @@
 #include <QTimer>
 #include <QListWidgetItem>
 #include <QStackedWidget>
+#include <QShortcut>
 
 #include <stdint.h>
 #include "./colorpicker.h"
@@ -61,6 +62,8 @@ class TimeEntryEditorWidget : public QWidget {
     AutocompleteListModel *descriptionModel;
     AutocompleteListModel *projectModel;
 
+    QShortcut *shortcutDelete;
+
     bool applyNewProject();
     bool eventFilter(QObject *object, QEvent *event);
     void keyPressEvent(QKeyEvent *event);
@@ -96,6 +99,8 @@ class TimeEntryEditorWidget : public QWidget {
     void setProjectColors(QVector<char *> list);
 
     void timeout();
+
+    void onShortcutDelete();
 
     void on_doneButton_clicked();
     void on_deleteButton_clicked();

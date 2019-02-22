@@ -6,6 +6,7 @@
 #include <QApplication>  // NOLINT
 #include <QCompleter>  // NOLINT
 #include <QKeyEvent>  // NOLINT
+#include <QMessageBox>  // NOLINT
 
 #include "./autocompletelistmodel.h"
 #include "./autocompleteview.h"
@@ -20,8 +21,10 @@ project(""),
 tagsHolder(""),
 timeEntryAutocompleteNeedsUpdate(false),
 descriptionModel(new AutocompleteListModel(this)),
+timeEntry(nullptr),
 selectedTaskId(0),
-selectedProjectId(0) {
+selectedProjectId(0),
+shortcutDelete(new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Delete), this)) {
     ui->setupUi(this);
 
     ui->start->installEventFilter(this);
@@ -51,9 +54,10 @@ selectedProjectId(0) {
     connect(ui->description, &QComboBox::editTextChanged,
             this, &TimerWidget::updateCoverLabel);
 
-
     connect(ui->deleteProject, &QPushButton::clicked, this, &TimerWidget::clearProject);
     connect(ui->deleteTask, &QPushButton::clicked, this, &TimerWidget::clearTask);
+
+    connect(shortcutDelete, &QShortcut::activated, this, &TimerWidget::onShortcutDelete);
 
     ui->description->setModel(descriptionModel);
     ui->taskFrame->setVisible(false);
@@ -124,6 +128,19 @@ void TimerWidget::clearTask() {
     }
 }
 
+void TimerWidget::onShortcutDelete() {
+    if (guid.isEmpty())
+        return;
+
+    if (timeEntry->confirmlessDelete() || QMessageBox::Ok == QMessageBox(
+        QMessageBox::Question,
+        "Delete this time entry?",
+        "Deleted time entries cannot be restored.",
+        QMessageBox::Ok|QMessageBox::Cancel).exec()) {
+        TogglApi::instance->deleteTimeEntry(guid);
+    }
+}
+
 void TimerWidget::updateCoverLabel(const QString &text) {
     QFont font;
     font.setPixelSize(14);
@@ -150,6 +167,7 @@ void TimerWidget::focusChanged(QWidget *old, QWidget *now) {
 void TimerWidget::displayRunningTimerState(
     TimeEntryView *te) {
     guid = te->GUID;
+    timeEntry = te;
     selectedTaskId = te->TID;
     selectedProjectId = te->PID;
 
