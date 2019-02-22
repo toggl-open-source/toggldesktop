@@ -15,18 +15,81 @@
 @interface TimeEntryCell ()
 
 @property (weak) IBOutlet NSLayoutConstraint *descriptionLblLeading;
-@property (nonatomic, weak) IBOutlet NSTextField *projectTextField;
-@property (nonatomic, weak) IBOutlet NSImageView *billableFlag;
-@property (nonatomic, weak) IBOutlet NSImageView *tagFlag;
-@property (nonatomic, weak) IBOutlet NSTextField *durationTextField;
+@property (weak) IBOutlet NSTextField *projectTextField;
+@property (weak) IBOutlet NSImageView *billableFlag;
+@property (weak) IBOutlet NSImageView *tagFlag;
+@property (weak) IBOutlet NSTextField *durationTextField;
 @property (weak) IBOutlet NSImageView *unsyncedIcon;
-@property (weak) IBOutlet NSHoverButton *groupToggleButton;
+@property (weak) IBOutlet NSBox *groupBox;
 @property (weak) IBOutlet NSHoverButton *continueButton;
+@property (weak) IBOutlet NSBox *backgroundBox;
+
 @end
 
 @implementation TimeEntryCell
 
 extern void *ctx;
+
+- (void)awakeFromNib {
+	[super awakeFromNib];
+
+	self.continueButton.hidden = YES;
+
+	NSRect bounds = self.view.bounds;
+
+	// Hack
+	// We don't need to remove TrackingArea and create with new size after cell's size change
+	bounds.size.width = NSScreen.mainScreen.frame.size.width;
+	NSTrackingArea *tracking = [[NSTrackingArea alloc]initWithRect:bounds
+														   options:(NSTrackingMouseEnteredAndExited | NSTrackingActiveInKeyWindow)
+															 owner:self
+														  userInfo:nil];
+	[self.view addTrackingArea:tracking];
+}
+
+- (void)prepareForReuse {
+	[super prepareForReuse];
+	self.continueButton.hidden = YES;
+}
+
+- (void)mouseEntered:(NSEvent *)event
+{
+	[super mouseEntered:event];
+	[self updateHoverState:YES];
+}
+
+- (void)mouseExited:(NSEvent *)event
+{
+	[super mouseExited:event];
+	[self updateHoverState:NO];
+}
+
+- (void)updateHoverState:(BOOL)isHover {
+	self.continueButton.hidden = !isHover;
+
+	if (isHover)
+	{
+		if (@available(macOS 10.13, *))
+		{
+			self.backgroundBox.fillColor = [NSColor colorNamed:@"white-background-hover-color"];
+		}
+		else
+		{
+			self.backgroundBox.fillColor = [ConvertHexColor hexCodeToNSColor:@"#f9f9f9"];
+		}
+	}
+	else
+	{
+		if (@available(macOS 10.13, *))
+		{
+			self.backgroundBox.fillColor = [NSColor colorNamed:@"white-background-color"];
+		}
+		else
+		{
+			self.backgroundBox.fillColor = NSColor.whiteColor;
+		}
+	}
+}
 
 - (IBAction)continueTimeEntry:(id)sender
 {
@@ -151,14 +214,8 @@ extern void *ctx;
 }
 
 - (void)setupGroupMode {
-	if (self.Group)
-	{
-		self.descriptionLblLeading.constant = 46.0;
-	}
-	else
-	{
-		self.descriptionLblLeading.constant = 15.0;
-	}
+	self.groupBox.hidden = !self.Group;
+	self.descriptionLblLeading.constant = self.Group ? 46.0 : 15.0;
 }
 
 - (void)focusFieldName
