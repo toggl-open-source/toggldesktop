@@ -11,12 +11,11 @@
                 "Improved client id setting when creating new project",
                 "Improved Idle detection when Locking/Unlocking session",
                 "Fixed issue with tracking reminder triggering when editing reminder settings",
-                "Improve user data handling to avoid crashes",
+                "Improved user data handling to avoid crashes",
                 "Added 'Stop timer on shutdown' functionality",
                 "Updated Google login framework"
             ],
-            "date": "February 7th 2019",
-            "beta": "true"
+            "date": "February 22nd 2019"
         },
         {
             "version": "7.4.252",
