@@ -25,10 +25,10 @@
         <keyword>hours tracker</keyword>
     </keywords>
     <url type="homepage">https://toggl.com</url>
-    <!-- <screenshots> -->
-        <!-- <screenshot type="default">https://something.png</screenshot> --> 
-        <!-- <screenshot>https://somethingelse.png</screenshot> -->
-    <!-- </screenshots> -->
+    <screenshots>
+        <screenshot type="default">https://toggl.github.io/toggldesktop/assets/images/linux_ui_main.png</screenshot>
+        <screenshot>https://toggl.github.io/toggldesktop/assets/images/linux_ui_edit.png</screenshot>
+    </screenshots>
     <update_contact>martin@toggl.com</update_contact>
 </application>
 
