@@ -10,18 +10,10 @@
 #import <Sparkle/Sparkle.h>
 
 @interface AboutWindowController : NSWindowController <SUUpdaterDelegate>
-@property IBOutlet NSTextField *appnameTextField;
-@property IBOutlet NSTextField *versionTextField;
-@property IBOutlet NSTextView *creditsTextView;
-@property IBOutlet NSTextField *updateStatusTextField;
-@property IBOutlet NSComboBox *updateChannelComboBox;
-@property BOOL windowHasLoad;
-@property BOOL restart;
-@property NSString *updateStatus;
-@property IBOutlet NSTextField *updateChannelLabel;
-@property (strong) IBOutlet NSButton *restartButton;
-- (IBAction)updateChannelSelected:(id)sender;
+@property (assign, nonatomic) BOOL windowHasLoad;
+@property (assign, nonatomic) BOOL restart;
+@property (copy, nonatomic) NSString *updateStatus;
+
 - (BOOL)isVisible;
 - (void)checkForUpdates;
-- (IBAction)clickRestartButton:(id)sender;
 @end
