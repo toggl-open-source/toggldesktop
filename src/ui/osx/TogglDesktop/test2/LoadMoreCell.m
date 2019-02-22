@@ -13,26 +13,8 @@ extern void *ctx;
 
 - (void)initCell
 {
-	[self setupLoadMoreText];
 	[self.loader stopAnimation:nil];
 	[self.loader setHidden:YES];
-}
-
-- (void)setupLoadMoreText
-{
-	NSMutableParagraphStyle *paragrapStyle = NSMutableParagraphStyle.new;
-
-	paragrapStyle.alignment = kCTTextAlignmentCenter;
-
-	NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:@"Load More"];
-	[string setAttributes:
-	 @{
-		 NSFontAttributeName : [NSFont systemFontOfSize:13],
-		 NSForegroundColorAttributeName:[ConvertHexColor hexCodeToNSColor:@"#000000"],
-		 NSParagraphStyleAttributeName:paragrapStyle
-	 }
-					range:NSMakeRange(0, [string length])];
-	self.loadButton.attributedTitle = string;
 }
 
 - (IBAction)loadMoreClicked:(id)sender
