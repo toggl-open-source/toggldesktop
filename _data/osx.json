@@ -1,6 +1,26 @@
 {
     "versions": [
         {
+            "version": "7.4.365",
+            "rows": [
+                "Added 'Stop timer on shutdown' functionality",
+                "Added Dark mode support",
+                "Added Undo logic for time entry edit view",
+                "Improved user data handling to avoid crashes",
+                "Improved time entry list reloading speed",
+                "New design for Login screen",
+                "New design for Feedback screen",
+                "New design for Preferences screen",
+                "New design for About screen",
+                "New design for App Icon",
+                "Fixed issue with timer not starting in some cases",
+                "Fixed issues with global shortcut keys not being saved",
+                "Fixed issue with tracking reminder triggering when editing reminder settings"
+            ],
+            "date": "February 22nd 2019",
+            "beta": "true"
+        },
+        {
             "version": "7.4.330",
             "rows": [
                 "Remove all old notifications when new one is triggered",
