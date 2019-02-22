@@ -1151,6 +1151,20 @@
                         "name": "TogglDesktopEnterpriseInstaller-7.4.252.exe"
                     }
                 ]
+            },
+            {
+                "version": "7.4.345",
+                "timestamp": "22-02-2019",
+                "filename": [
+                    {
+                        "type": "windows",
+                        "name": "TogglDesktopInstaller-7.4.345.exe"
+                    },
+                    {
+                        "type": "windows_enterprise",
+                        "name": "TogglDesktopEnterpriseInstaller-7.4.345.exe"
+                    }
+                ]
             }
         ]
     },
@@ -2135,20 +2149,6 @@
     "linux": {
         "dev": [
             {
-                "version": "7.4.350",
-                "timestamp": "13-02-2019",
-                "filename": [
-                    {
-                        "type": "linux_tar.gz",
-                        "name": "toggldesktop_linux_x86_64-7_4_350.tar.gz"
-                    },
-                    {
-                        "type": "linux_deb64",
-                        "name": "toggldesktop_7.4.350_amd64.deb"
-                    }
-                ]
-            },
-            {
                 "version": "7.4.351",
                 "timestamp": "19-02-2019",
                 "filename": [
@@ -2271,6 +2271,20 @@
                     {
                         "type": "linux_deb64",
                         "name": "toggldesktop_7.4.363_amd64.deb"
+                    }
+                ]
+            },
+            {
+                "version": "7.4.364",
+                "timestamp": "22-02-2019",
+                "filename": [
+                    {
+                        "type": "linux_tar.gz",
+                        "name": "toggldesktop_linux_x86_64-7_4_364.tar.gz"
+                    },
+                    {
+                        "type": "linux_deb64",
+                        "name": "toggldesktop_7.4.364_amd64.deb"
                     }
                 ]
             }
