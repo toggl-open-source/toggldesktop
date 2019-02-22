@@ -20,9 +20,9 @@ static NSString *const kTogglDesktopGithubURL = @"https://github.com/toggl/toggl
 
 typedef enum : NSUInteger
 {
-	DownloadStateRestart,
+	DownloadStateNone,
 	DownloadStateDownloading,
-	DownloadStateNone
+	DownloadStateRestart
 } DownloadState;
 
 @interface AboutWindowController () <NSTextFieldDelegate>
