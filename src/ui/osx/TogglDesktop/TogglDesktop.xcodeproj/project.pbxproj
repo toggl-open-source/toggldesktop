@@ -42,6 +42,7 @@
 		3CA14529192DE32300414620 /* NSViewEscapable.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CA14528192DE32300414620 /* NSViewEscapable.m */; };
 		3CA1453C192DF0DE00414620 /* trash_can.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 3CA1453B192DF0DE00414620 /* trash_can.pdf */; };
 		3CAFDFF51AA713830022CD40 /* icon-google.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 3CAFDFF41AA713830022CD40 /* icon-google.pdf */; };
+		3CB7CFF82222033B00A9C806 /* DFRFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CB7CFD92222033B00A9C806 /* DFRFoundation.framework */; };
 		3CC450E91A31ED540012440B /* NSTextFieldDuration.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CC450E81A31ED540012440B /* NSTextFieldDuration.m */; };
 		3CD30F431F58B02C006FAA0D /* OverlayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CD30F411F58B02C006FAA0D /* OverlayViewController.m */; };
 		3CD30F441F58B02C006FAA0D /* OverlayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3CD30F421F58B02C006FAA0D /* OverlayViewController.xib */; };
@@ -514,6 +515,8 @@
 		3CA14528192DE32300414620 /* NSViewEscapable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSViewEscapable.m; sourceTree = "<group>"; };
 		3CA1453B192DF0DE00414620 /* trash_can.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = trash_can.pdf; sourceTree = "<group>"; };
 		3CAFDFF41AA713830022CD40 /* icon-google.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "icon-google.pdf"; sourceTree = "<group>"; };
+		3CB7CFD92222033B00A9C806 /* DFRFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DFRFoundation.framework; path = ../../../../../../../../System/Library/PrivateFrameworks/DFRFoundation.framework; sourceTree = "<group>"; };
+		3CB7CFF92222047C00A9C806 /* TouchBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TouchBar.h; sourceTree = "<group>"; };
 		3CC450E71A31ED540012440B /* NSTextFieldDuration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSTextFieldDuration.h; sourceTree = "<group>"; };
 		3CC450E81A31ED540012440B /* NSTextFieldDuration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSTextFieldDuration.m; sourceTree = "<group>"; };
 		3CD30F401F58B02C006FAA0D /* OverlayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OverlayViewController.h; sourceTree = "<group>"; };
@@ -730,6 +733,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3CB7CFF82222033B00A9C806 /* DFRFoundation.framework in Frameworks */,
 				74456B9D1A774BAE002A6338 /* TogglDesktopLibrary.dylib in Frameworks */,
 				743D94281827929C000E6F70 /* Carbon.framework in Frameworks */,
 				743D942618279290000E6F70 /* IOKit.framework in Frameworks */,
@@ -838,6 +842,7 @@
 		69FC17F317E6534400B96425 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3CB7CFD92222033B00A9C806 /* DFRFoundation.framework */,
 				74FD8CDF18A8EF8300F7DB80 /* TFDatePicker.framework */,
 				743D94271827929C000E6F70 /* Carbon.framework */,
 				743D942518279290000E6F70 /* IOKit.framework */,
@@ -992,6 +997,7 @@
 				BA03725421FE9FD400FC277B /* FlatButton.swift */,
 				BA03727C21FEB46500FC277B /* FloatingErrorView.swift */,
 				BA03729A21FEB48900FC277B /* FloatingErrorView.xib */,
+				3CB7CFF92222047C00A9C806 /* TouchBar.h */,
 			);
 			name = ui;
 			path = test2;
@@ -1997,6 +2003,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "Diff/TogglDesktop-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.2;
+				SYSTEM_FRAMEWORK_SEARCH_PATHS = "$(inherited) $(SYSTEM_LIBRARY_DIR)/PrivateFrameworks";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -2045,6 +2052,7 @@
 				STRIP_INSTALLED_PRODUCT = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "Diff/TogglDesktop-Bridging-Header.h";
 				SWIFT_VERSION = 4.2;
+				SYSTEM_FRAMEWORK_SEARCH_PATHS = "$(inherited) $(SYSTEM_LIBRARY_DIR)/PrivateFrameworks";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

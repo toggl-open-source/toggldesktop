@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "TouchBar.h"
 
 #import "AboutWindowController.h"
 #import "AutocompleteItem.h"
@@ -37,6 +38,8 @@
 #import "AppIconFactory.h"
 #import <MASShortcut/Shortcut.h>
 
+static const NSTouchBarItemIdentifier touchIdentifier = @"toggl.touchbar";
+
 @interface AppDelegate ()
 @property (nonatomic, strong) IBOutlet MainWindowController *mainWindowController;
 @property (nonatomic, strong) IBOutlet PreferencesWindowController *preferencesWindowController;
@@ -44,6 +47,11 @@
 @property (nonatomic, strong) IBOutlet IdleNotificationWindowController *idleNotificationWindowController;
 @property (nonatomic, strong) IBOutlet FeedbackWindowController *feedbackWindowController;
 @property (nonatomic, strong) IBOutlet ConsoleViewController *consoleWindowController;
+
+// Touch Bar items
+@property NSCustomTouchBarItem *touchItem;
+@property NSButton *touchBarButton;
+@property NSImage *iconImage;
 
 // Remember some app state
 @property TimeEntryViewItem *lastKnownRunningTimeEntry;
@@ -164,6 +172,7 @@ BOOL onTop = NO;
 									 initWithWindowNibName:@"FeedbackWindowController"];
 
 	[self createStatusItem];
+	[self setupTouchBar];
 
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(startDisplayIdleNotification:)
@@ -845,8 +854,8 @@ BOOL onTop = NO;
 			key = @"offline_off";
 		}
 	}
-	NSImage *image = [self.statusImages objectForKey:key];
-	NSAssert(image, @"status image not found!");
+	self.iconImage = [self.statusImages objectForKey:key];
+	NSAssert(self.iconImage, @"status image not found!");
 
 	if (![title isEqualToString:self.statusItem.title])
 	{
@@ -858,9 +867,13 @@ BOOL onTop = NO;
 		[self.statusItem setTitle:title];
 	}
 
-	if (image != self.statusItem.image)
+	if (self.iconImage != self.statusItem.image)
 	{
-		[self.statusItem setImage:image];
+		[self.statusItem setImage:self.iconImage];
+
+		// This forces the icon to redraw
+		[self.touchBarButton setImage:self.iconImage];
+		self.touchBarButton.imagePosition = NSImageOnly;
 	}
 }
 
@@ -923,6 +936,16 @@ BOOL onTop = NO;
 	[self updateStatusItem];
 
 	[self.runningTimeEntryMenuItem setTitle:@"Timer is not tracking"];
+}
+
+- (void)setupTouchBar
+{
+	self.touchItem = [[NSCustomTouchBarItem alloc] initWithIdentifier:touchIdentifier];
+	self.touchBarButton = [NSButton buttonWithImage:self.iconImage target:nil action:nil];
+	self.touchItem.view = self.touchBarButton;
+
+	[NSTouchBarItem addSystemTrayItem:self.touchItem];
+	DFRElementSetControlStripPresenceForIdentifier(touchIdentifier, YES);
 }
 
 - (void)createStatusItem
