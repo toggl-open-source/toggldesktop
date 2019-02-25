@@ -15,6 +15,7 @@
                 <outlet property="continueButton" destination="Gcj-ki-Hus" id="5Hq-z8-gbu"/>
                 <outlet property="descriptionLblLeading" destination="R7O-XO-Nkp" id="8TD-nZ-dZM"/>
                 <outlet property="descriptionTextField" destination="CwR-d5-aWs" id="hgE-Xa-icI"/>
+                <outlet property="dotView" destination="4Gn-rS-ham" id="itC-ET-45w"/>
                 <outlet property="durationTextField" destination="xwb-FG-Z4X" id="zdA-d0-xCT"/>
                 <outlet property="groupBox" destination="dmW-8k-lRI" id="vgX-xs-f5a"/>
                 <outlet property="groupButton" destination="yV9-eP-fCj" id="PKX-Rb-eud"/>
@@ -48,13 +49,13 @@
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                         </textField>
-                        <imageView horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="4Gn-rS-ham">
+                        <imageView horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="4Gn-rS-ham" customClass="DotImageView" customModule="TogglDesktop" customModuleProvider="target">
                             <rect key="frame" x="1" y="19" width="8" height="8"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="8" id="6qL-Rv-KSh"/>
                                 <constraint firstAttribute="height" constant="8" id="KsB-HW-geh"/>
                             </constraints>
-                            <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="time-entry-dot" id="vYQ-WX-2jd"/>
+                            <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" image="time-entry-dot" id="vYQ-WX-2jd"/>
                         </imageView>
                         <textField horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="deS-e6-3Ui" customClass="NSTextFieldWithBackground">
                             <rect key="frame" x="14" y="14" width="237" height="18"/>

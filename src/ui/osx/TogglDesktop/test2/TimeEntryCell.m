@@ -24,6 +24,7 @@
 @property (weak) IBOutlet NSButton *groupButton;
 @property (weak) IBOutlet NSButton *continueButton;
 @property (weak) IBOutlet NSBox *backgroundBox;
+@property (weak) IBOutlet DotImageView *dotView;
 
 @end
 
@@ -165,11 +166,13 @@ extern void *ctx;
 	// Time entry has a project
 	if (view_item.ProjectAndTaskLabel && [view_item.ProjectAndTaskLabel length] > 0)
 	{
+		NSColor *projectColor = [ConvertHexColor hexCodeToNSColor:view_item.ProjectColor];
+		self.dotView.hidden = NO;
+		[self.dotView fillWith:projectColor];
 		[self.projectTextField setAttributedStringValue:[self setProjectClientLabel:view_item]];
 		[self.projectTextField setHidden:NO];
 		self.projectTextField.toolTip = view_item.ProjectAndTaskLabel;
-		self.projectTextField.textColor =
-			[ConvertHexColor hexCodeToNSColor:view_item.ProjectColor];
+		self.projectTextField.textColor = projectColor;
 		return;
 	}
 
@@ -177,16 +180,18 @@ extern void *ctx;
 	self.projectTextField.stringValue = @"";
 	[self.projectTextField setHidden:YES];
 	self.projectTextField.toolTip = nil;
+	self.dotView.hidden = YES;
 }
 
 - (NSMutableAttributedString *)setProjectClientLabel:(TimeEntryViewItem *)view_item
 {
-	NSMutableAttributedString *clientName = [[NSMutableAttributedString alloc] initWithString:view_item.ClientLabel];
+	NSString *clientTitle = [NSString stringWithFormat:@"• %@", view_item.ClientLabel];
+	NSMutableAttributedString *clientName = [[NSMutableAttributedString alloc] initWithString:clientTitle];
 
 	[clientName setAttributes:
 	 @{
 		 NSFontAttributeName : [NSFont systemFontOfSize:12],
-		 NSForegroundColorAttributeName:[NSColor disabledControlTextColor]
+		 NSForegroundColorAttributeName:[self clientTextColor]
 	 }
 						range:NSMakeRange(0, [clientName length])];
 	NSMutableAttributedString *string;
@@ -296,6 +301,17 @@ extern void *ctx;
 	if (self.GUID != nil)
 	{
 		toggl_edit(ctx, [self.GUID UTF8String], false, "");
+	}
+}
+
+- (NSColor *)clientTextColor {
+	if (@available(macOS 10.13, *))
+	{
+		return [NSColor colorNamed:@"grey-text-color"];
+	}
+	else
+	{
+		return [ConvertHexColor hexCodeToNSColor:@"#555555"];
 	}
 }
 
