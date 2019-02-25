@@ -24,6 +24,7 @@ final class TimeEntrySection {
     let header: TimeEntryHeader
     let entries: [TimeEntryViewItem]
     let isLoadMore: Bool
+    private(set) var isOpen = true
 
     init(header: TimeEntryHeader, entries: [TimeEntryViewItem], isLoadMore: Bool = false) {
         self.header = header
@@ -35,6 +36,10 @@ final class TimeEntrySection {
         return TimeEntrySection(header: TimeEntryHeader(date: "", totalTime: ""),
                                 entries: [TimeEntryViewItem()],
                                 isLoadMore: true)
+    }
+
+    func togglSection() {
+        isOpen.toggle()
     }
 
 }
@@ -123,7 +128,10 @@ extension TimeEntryDatasource: NSCollectionViewDataSource, NSCollectionViewDeleg
     func collectionView(_ collectionView: NSCollectionView,
                         numberOfItemsInSection section: Int) -> Int {
         let sectionItem = sections[section]
-        return sectionItem.entries.count
+        if sectionItem.isOpen {
+            return sectionItem.entries.count
+        }
+        return 0
     }
 
     func collectionView(_ collectionView: NSCollectionView,
@@ -154,7 +162,9 @@ extension TimeEntryDatasource: NSCollectionViewDataSource, NSCollectionViewDeleg
                                                           for: indexPath) as? TimeHeaderView else {
                                                             fatalError("Can't cast to TimeHeaderView")
         }
-        header.config(section.header)
+        header.config(section.header,
+                      section: indexPath.section)
+        header.delegate = self
         return header
     }
 
@@ -227,10 +237,24 @@ extension TimeEntryDatasource: NSCollectionViewDataSource, NSCollectionViewDeleg
     }
 }
 
+// MARK: VertificalTimeEntryFlowLayoutDelegate
+
 extension TimeEntryDatasource: VertificalTimeEntryFlowLayoutDelegate {
 
     func isLoadMoreItem(at section: Int) -> Bool {
         let section = sections[section]
         return section.isLoadMore
+    }
+}
+
+// MARK: TimeHeaderViewDelegate
+
+extension TimeEntryDatasource: TimeHeaderViewDelegate {
+
+    func togglSection(at section: Int) {
+        print("Toggl section \(section)")
+        let section = sections[section]
+        section.togglSection()
+        collectionView.reloadData()
     }
 }
