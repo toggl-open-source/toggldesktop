@@ -37,7 +37,7 @@
 @property (copy, nonatomic) NSString *lastSelectedGUID;
 @property (nonatomic, strong) IBOutlet TimeEntryEditViewController *timeEntryEditViewController;
 @property (nonatomic, strong) NSArray<TimeEntryViewItem *> *viewitems;
-@property (weak) IBOutlet NSCollectionView *collectionView;
+@property (weak) IBOutlet TimeEntryCollectionView *collectionView;
 
 @end
 
@@ -381,44 +381,6 @@ extern void *ctx;
 {
 	[self clearLastSelectedEntry];
 	self.lastSelectedRowIndex = rowIndex;
-}
-
-- (IBAction)performClick:(id)sender
-{
-//    [self clearLastSelectedEntry];
-//    NSInteger row = [self.collectionView clickedRow];
-//
-//    if (row < 0)
-//    {
-//        return;
-//    }
-//
-//    TimeEntryViewItem *item = 0;
-//    @synchronized(self.viewitems)
-//    {
-//        item = self.viewitems[row];
-//    }
-//
-//    TimeEntryCell *cell = [self getSelectedEntryCell:row];
-//
-//    // Group header clicked, toggle group open/closed
-//    if (cell.Group)
-//    {
-//        [[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kToggleGroup
-//                                                                    object:cell.GroupName];
-//        return;
-//    }
-//
-//    // Load more cell clicked
-//    if ([cell isKindOfClass:[LoadMoreCell class]])
-//    {
-//        return;
-//    }
-//
-//    if (cell != nil)
-//    {
-//        [cell focusFieldName];
-//    }
 }
 
 - (TimeEntryCell *)getSelectedEntryCellWithIndexPath:(NSIndexPath *)indexPath

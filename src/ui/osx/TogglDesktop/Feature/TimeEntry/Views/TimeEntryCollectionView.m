@@ -20,6 +20,10 @@
 
 extern void *ctx;
 
+- (void)awakeFromNib {
+	[super awakeFromNib];
+}
+
 - (void)keyDown:(NSEvent *)event {
 	if ((event.keyCode == kVK_Return) || (event.keyCode == kVK_ANSI_KeypadEnter))
 	{

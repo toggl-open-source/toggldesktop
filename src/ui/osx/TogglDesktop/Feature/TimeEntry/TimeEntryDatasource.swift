@@ -207,4 +207,18 @@ extension TimeEntryDatasource: NSCollectionViewDataSource, NSCollectionViewDeleg
         }
         return cell
     }
+
+    func collectionView(_ collectionView: NSCollectionView, didSelectItemsAt indexPaths: Set<IndexPath>) {
+        guard let selectedIndex = collectionView.selectionIndexPaths.first,
+            let timeEntryCell = collectionView.item(at: selectedIndex) as? TimeEntryCell else {
+            return
+        }
+
+        if timeEntryCell.group {
+            NotificationCenter.default.postNotificationOnMainThread(NSNotification.Name(kToggleGroup),
+                                                                    object: timeEntryCell.groupName)
+            return
+        }
+        timeEntryCell.focusFieldName()
+    }
 }

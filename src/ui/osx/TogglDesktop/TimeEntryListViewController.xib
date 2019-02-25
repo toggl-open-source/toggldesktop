@@ -8,7 +8,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="TimeEntryListViewController">
             <connections>
-                <outlet property="collectionView" destination="96l-2I-0G5" id="QBv-3k-NVz"/>
+                <outlet property="collectionView" destination="96l-2I-0G5" id="P59-lk-PQF"/>
                 <outlet property="emptyLabel" destination="6qy-lU-tSK" id="gDu-GF-iBp"/>
                 <outlet property="headerView" destination="OXo-Tz-Vbz" id="vDf-yG-fnR"/>
                 <outlet property="timeEntryPopupEditView" destination="ozl-58-bBU" id="Tv3-fj-eCx"/>
@@ -64,7 +64,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="252" height="197"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <collectionView id="96l-2I-0G5">
+                            <collectionView id="96l-2I-0G5" customClass="TimeEntryCollectionView">
                                 <rect key="frame" x="0.0" y="0.0" width="252" height="197"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumInteritemSpacing="10" minimumLineSpacing="10" id="wqE-DF-86P">
