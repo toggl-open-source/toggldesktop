@@ -114,6 +114,11 @@ extern void *ctx;
 												 selector:@selector(effectiveAppearanceChangedNotification)
 													 name:NSNotification.EffectiveAppearanceChanged
 												   object:nil];
+
+		[[NSNotificationCenter defaultCenter] addObserver:self
+												 selector:@selector(windowSizeDidChange)
+													 name:NSWindowDidResizeNotification
+												   object:nil];
 	}
 	return self;
 }
@@ -739,6 +744,10 @@ extern void *ctx;
 
 - (NSSize)collectionView:(NSCollectionView *)collectionView layout:(NSCollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
 	return CGSizeMake(280.0, 36.0);
+}
+
+- (void)windowSizeDidChange {
+	[self.collectionView.collectionViewLayout invalidateLayout];
 }
 
 @end

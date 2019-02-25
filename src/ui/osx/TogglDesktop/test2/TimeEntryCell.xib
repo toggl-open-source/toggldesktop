@@ -164,6 +164,9 @@
                     <color key="borderColor" name="upload-border-color"/>
                     <color key="fillColor" name="upload-background-color"/>
                 </box>
+                <box verticalHuggingPriority="750" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="eSk-jb-AGA">
+                    <rect key="frame" x="0.0" y="-2" width="400" height="5"/>
+                </box>
             </subviews>
             <constraints>
                 <constraint firstItem="xwb-FG-Z4X" firstAttribute="centerY" secondItem="jHy-af-Yta" secondAttribute="centerY" id="0wK-iR-SBw"/>
@@ -173,6 +176,8 @@
                 <constraint firstItem="Gcj-ki-Hus" firstAttribute="centerY" secondItem="jHy-af-Yta" secondAttribute="centerY" id="Bn0-Rz-zD4"/>
                 <constraint firstAttribute="bottom" secondItem="wve-Qj-t8r" secondAttribute="bottom" id="GvR-Y7-M9D"/>
                 <constraint firstItem="Uu2-26-kM4" firstAttribute="leading" secondItem="jHy-af-Yta" secondAttribute="leading" constant="15" id="R7O-XO-Nkp"/>
+                <constraint firstAttribute="trailing" secondItem="eSk-jb-AGA" secondAttribute="trailing" id="RdF-Na-23X"/>
+                <constraint firstAttribute="bottom" secondItem="eSk-jb-AGA" secondAttribute="bottom" id="UEm-uc-Z8G"/>
                 <constraint firstItem="wve-Qj-t8r" firstAttribute="leading" secondItem="jHy-af-Yta" secondAttribute="leading" id="Udo-lz-meQ"/>
                 <constraint firstItem="rE8-8i-mr7" firstAttribute="leading" secondItem="Uu2-26-kM4" secondAttribute="trailing" priority="750" id="a58-CX-Mfu"/>
                 <constraint firstItem="xwb-FG-Z4X" firstAttribute="leading" secondItem="rE8-8i-mr7" secondAttribute="trailing" constant="5" id="dyZ-rK-VoT"/>
@@ -182,6 +187,7 @@
                 <constraint firstItem="Uu2-26-kM4" firstAttribute="centerY" secondItem="jHy-af-Yta" secondAttribute="centerY" id="kif-Wu-VlX"/>
                 <constraint firstAttribute="bottom" secondItem="Uu2-26-kM4" secondAttribute="bottom" id="py3-hW-vJF"/>
                 <constraint firstItem="wve-Qj-t8r" firstAttribute="top" secondItem="jHy-af-Yta" secondAttribute="top" id="r1L-ap-upU"/>
+                <constraint firstItem="eSk-jb-AGA" firstAttribute="leading" secondItem="jHy-af-Yta" secondAttribute="leading" id="sIn-Ff-2i4"/>
                 <constraint firstItem="dmW-8k-lRI" firstAttribute="leading" secondItem="jHy-af-Yta" secondAttribute="leading" constant="10" id="wER-3A-oI4"/>
             </constraints>
             <point key="canvasLocation" x="-160" y="-381"/>
