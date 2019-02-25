@@ -24,6 +24,10 @@ extern void *ctx;
 	[super awakeFromNib];
 }
 
+- (BOOL)isFlipped {
+	return YES;
+}
+
 - (void)keyDown:(NSEvent *)event {
 	if ((event.keyCode == kVK_Return) || (event.keyCode == kVK_ANSI_KeypadEnter))
 	{

@@ -67,7 +67,7 @@
                             <collectionView selectable="YES" id="96l-2I-0G5" customClass="TimeEntryCollectionView">
                                 <rect key="frame" x="0.0" y="0.0" width="252" height="197"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
-                                <collectionViewFlowLayout key="collectionViewLayout" minimumInteritemSpacing="10" minimumLineSpacing="10" id="wqE-DF-86P">
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumInteritemSpacing="10" minimumLineSpacing="10" id="wqE-DF-86P" customClass="VertificalTimeEntryFlowLayout" customModule="TogglDesktop" customModuleProvider="target">
                                     <size key="itemSize" width="50" height="50"/>
                                 </collectionViewFlowLayout>
                                 <color key="primaryBackgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>

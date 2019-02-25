@@ -61,13 +61,9 @@ class TimeEntryDatasource: NSObject {
     init(collectionView: NSCollectionView) {
         self.sections = []
 
-        let flowLayout = NSCollectionViewFlowLayout()
-        flowLayout.itemSize = NSSize(width: 280, height: 64)
-        flowLayout.sectionInset = NSEdgeInsets(top: 0, left: 10, bottom: 10, right: 10)
-        flowLayout.minimumInteritemSpacing = 0
-        flowLayout.minimumLineSpacing = 0
-        flowLayout.scrollDirection = .vertical
-        flowLayout.headerReferenceSize = CGSize(width: 280, height: 36)
+        let flowLayout = VertificalTimeEntryFlowLayout()
+        flowLayout.register(NSNib(nibNamed: NSNib.Name("TimeDecoratorView"), bundle: nil),
+                            forDecorationViewOfKind: "TimeDecoratorView")
         collectionView.collectionViewLayout = flowLayout
         collectionView.register(NSNib(nibNamed: NSNib.Name("TimeEntryCell"), bundle: nil),
                                 forItemWithIdentifier: NSUserInterfaceItemIdentifier("TimeEntryCell"))
@@ -76,6 +72,7 @@ class TimeEntryDatasource: NSObject {
         collectionView.register(NSNib(nibNamed: NSNib.Name("TimeHeaderView"), bundle: nil),
                                 forSupplementaryViewOfKind: NSCollectionView.elementKindSectionHeader,
                                 withIdentifier: NSUserInterfaceItemIdentifier("TimeHeaderView"))
+
         self.collectionView = collectionView
         collectionView.wantsLayer = true
         if #available(OSX 10.13, *) {
@@ -156,7 +153,6 @@ extension TimeEntryDatasource: NSCollectionViewDataSource, NSCollectionViewDeleg
                                                             fatalError("Can't cast to TimeHeaderView")
         }
         header.config(section.header)
-        header.drawShadow(with: .top)
         return header
     }
 
@@ -196,10 +192,6 @@ extension TimeEntryDatasource: NSCollectionViewDataSource, NSCollectionViewDeleg
 
         // Render data
         cell.render(item)
-
-        // Get shadow mode by index
-        cell.view.drawShadow(at: indexPath.item,
-                             count: section.entries.count)
 
         return cell
     }

@@ -158,10 +158,12 @@
 		BA7B4C7C21C293E700B75B14 /* String+Optional.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7B4C7B21C293E700B75B14 /* String+Optional.swift */; };
 		BA7DB6E321F9C77A0059239B /* MASShortcut.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA7DB6D221F9C7660059239B /* MASShortcut.framework */; };
 		BA7DB6E421F9C77A0059239B /* MASShortcut.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA7DB6D221F9C7660059239B /* MASShortcut.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		BA80BE92221EAA9E00BDFD35 /* NSView+Shadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA80BE91221EAA9E00BDFD35 /* NSView+Shadow.swift */; };
 		BA80BEB2221EAE6F00BDFD35 /* Array+ByGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA80BEB1221EAE6F00BDFD35 /* Array+ByGroup.swift */; };
 		BAAF567E2223CAC5003D0D73 /* NSButton+TextColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAAF567D2223CAC5003D0D73 /* NSButton+TextColor.swift */; };
 		BAAF569E2223D4C7003D0D73 /* DotImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAAF569D2223D4C7003D0D73 /* DotImageView.swift */; };
+		BAAF56A02223DF9A003D0D73 /* VertificalTimeEntryFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAAF569F2223DF9A003D0D73 /* VertificalTimeEntryFlowLayout.swift */; };
+		BAAF56A22223E18B003D0D73 /* TimeDecoratorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAAF56A12223E18B003D0D73 /* TimeDecoratorView.swift */; };
+		BAAF56A42223E19C003D0D73 /* TimeDecoratorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BAAF56A32223E19C003D0D73 /* TimeDecoratorView.xib */; };
 		BAB8D49421BE742D00D63DA5 /* NSTableView+TimeEntryDiff.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB8D49321BE742D00D63DA5 /* NSTableView+TimeEntryDiff.swift */; };
 		BAD2341F21D612DF0039C742 /* libPocoDataSQLite.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BAD2341621D612DE0039C742 /* libPocoDataSQLite.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		BAD2342021D612DF0039C742 /* libPocoNetSSL.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BAD2341721D612DE0039C742 /* libPocoNetSSL.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
@@ -704,10 +706,12 @@
 		BA7B4C3621C24B9D00B75B14 /* UndoTextField.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UndoTextField.m; sourceTree = "<group>"; };
 		BA7B4C7B21C293E700B75B14 /* String+Optional.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Optional.swift"; sourceTree = "<group>"; };
 		BA7DB6BB21F9C7660059239B /* MASShortcut.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MASShortcut.xcodeproj; path = ../../../../third_party/MASShortcut/MASShortcut.xcodeproj; sourceTree = "<group>"; };
-		BA80BE91221EAA9E00BDFD35 /* NSView+Shadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSView+Shadow.swift"; sourceTree = "<group>"; };
 		BA80BEB1221EAE6F00BDFD35 /* Array+ByGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+ByGroup.swift"; sourceTree = "<group>"; };
 		BAAF567D2223CAC5003D0D73 /* NSButton+TextColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSButton+TextColor.swift"; sourceTree = "<group>"; };
 		BAAF569D2223D4C7003D0D73 /* DotImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotImageView.swift; sourceTree = "<group>"; };
+		BAAF569F2223DF9A003D0D73 /* VertificalTimeEntryFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VertificalTimeEntryFlowLayout.swift; sourceTree = "<group>"; };
+		BAAF56A12223E18B003D0D73 /* TimeDecoratorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeDecoratorView.swift; sourceTree = "<group>"; };
+		BAAF56A32223E19C003D0D73 /* TimeDecoratorView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimeDecoratorView.xib; sourceTree = "<group>"; };
 		BAB8D49321BE742D00D63DA5 /* NSTableView+TimeEntryDiff.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSTableView+TimeEntryDiff.swift"; sourceTree = "<group>"; };
 		BAD2341621D612DE0039C742 /* libPocoDataSQLite.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoDataSQLite.60.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoDataSQLite.60.dylib; sourceTree = "<group>"; };
 		BAD2341721D612DE0039C742 /* libPocoNetSSL.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoNetSSL.60.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoNetSSL.60.dylib; sourceTree = "<group>"; };
@@ -1230,12 +1234,14 @@
 			children = (
 				BA4059AE221D215A002969B8 /* TimeHeaderView.swift */,
 				BA4059B0221D2186002969B8 /* TimeHeaderView.xib */,
+				BAAF56A12223E18B003D0D73 /* TimeDecoratorView.swift */,
+				BAAF56A32223E19C003D0D73 /* TimeDecoratorView.xib */,
 				BA4059B5221D46F4002969B8 /* TimeEntryCollectionView.h */,
 				BA4059B6221D46F4002969B8 /* TimeEntryCollectionView.m */,
-				BA80BE91221EAA9E00BDFD35 /* NSView+Shadow.swift */,
 				BA80BEB1221EAE6F00BDFD35 /* Array+ByGroup.swift */,
 				BAAF567D2223CAC5003D0D73 /* NSButton+TextColor.swift */,
 				BAAF569D2223D4C7003D0D73 /* DotImageView.swift */,
+				BAAF569F2223DF9A003D0D73 /* VertificalTimeEntryFlowLayout.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1673,6 +1679,8 @@
 				C5DA1FC517F1B38B001C4565 /* LoginViewController.xib in Resources */,
 				74664DB118AA860800AAD282 /* on.pdf in Resources */,
 				69FC180517E6534400B96425 /* Credits.rtf in Resources */,
+				3C9D53AD1A1CD99D00966170 /* app_icon_pdf.pdf in Resources */,
+				BAAF56A42223E19C003D0D73 /* TimeDecoratorView.xib in Resources */,
 				3C7B4E9E190FA7F900627DC3 /* logo-white@2x.png in Resources */,
 				74F1070218993FFE00E93BD5 /* FeedbackWindowController.xib in Resources */,
 				3C4237171A9F612E00643059 /* toggl-logo-white.pdf in Resources */,
@@ -1762,6 +1770,7 @@
 				95C0707A18CDB91500A34D0D /* NSCustomComboBox.m in Sources */,
 				3CC450E91A31ED540012440B /* NSTextFieldDuration.m in Sources */,
 				7424949E17F1E3D20030121C /* UIEvents.m in Sources */,
+				BAAF56A02223DF9A003D0D73 /* VertificalTimeEntryFlowLayout.swift in Sources */,
 				C5CB7F0417F43EE100A2AEB1 /* TimeEntryCell.m in Sources */,
 				74762BA118A139D4004433A9 /* NSUnstripedTableView.m in Sources */,
 				C5DA1FBF17F1B08A001C4565 /* MainWindowController.m in Sources */,
@@ -1776,7 +1785,6 @@
 				74E3CDC617FBABE400C3ADD3 /* Bugsnag.m in Sources */,
 				745126B619A28AA600390F47 /* Reachability.m in Sources */,
 				74C1579B183BA5DA00550613 /* AutocompleteDataSource.m in Sources */,
-				BA80BE92221EAA9E00BDFD35 /* NSView+Shadow.swift in Sources */,
 				74BA5FCF18B6E770009DAA2D /* NSHoverButton.m in Sources */,
 				BAB8D49421BE742D00D63DA5 /* NSTableView+TimeEntryDiff.swift in Sources */,
 				3C8979CA19235EA2007061E0 /* NSTextFieldClickablePointer.m in Sources */,
@@ -1804,6 +1812,7 @@
 				3C0A571B1C22E12E00301D77 /* MKColorSwatchCell.m in Sources */,
 				3CD30F431F58B02C006FAA0D /* OverlayViewController.m in Sources */,
 				74D1D25617EB713F00E709B0 /* TimeEntryListViewController.m in Sources */,
+				BAAF56A22223E18B003D0D73 /* TimeDecoratorView.swift in Sources */,
 				BA6F1B1A21EEE258009265E4 /* NSColor+Utils.swift in Sources */,
 				BA4059B7221D46F4002969B8 /* TimeEntryCollectionView.m in Sources */,
 				BA4059AF221D215A002969B8 /* TimeHeaderView.swift in Sources */,
