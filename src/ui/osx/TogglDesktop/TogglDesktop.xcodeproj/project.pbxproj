@@ -160,6 +160,7 @@
 		BA7DB6E421F9C77A0059239B /* MASShortcut.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA7DB6D221F9C7660059239B /* MASShortcut.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BA80BE92221EAA9E00BDFD35 /* NSView+Shadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA80BE91221EAA9E00BDFD35 /* NSView+Shadow.swift */; };
 		BA80BEB2221EAE6F00BDFD35 /* Array+ByGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA80BEB1221EAE6F00BDFD35 /* Array+ByGroup.swift */; };
+		BAAF567E2223CAC5003D0D73 /* NSButton+TextColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAAF567D2223CAC5003D0D73 /* NSButton+TextColor.swift */; };
 		BAB8D49421BE742D00D63DA5 /* NSTableView+TimeEntryDiff.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB8D49321BE742D00D63DA5 /* NSTableView+TimeEntryDiff.swift */; };
 		BAD2341F21D612DF0039C742 /* libPocoDataSQLite.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BAD2341621D612DE0039C742 /* libPocoDataSQLite.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		BAD2342021D612DF0039C742 /* libPocoNetSSL.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BAD2341721D612DE0039C742 /* libPocoNetSSL.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
@@ -704,6 +705,7 @@
 		BA7DB6BB21F9C7660059239B /* MASShortcut.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MASShortcut.xcodeproj; path = ../../../../third_party/MASShortcut/MASShortcut.xcodeproj; sourceTree = "<group>"; };
 		BA80BE91221EAA9E00BDFD35 /* NSView+Shadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSView+Shadow.swift"; sourceTree = "<group>"; };
 		BA80BEB1221EAE6F00BDFD35 /* Array+ByGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+ByGroup.swift"; sourceTree = "<group>"; };
+		BAAF567D2223CAC5003D0D73 /* NSButton+TextColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSButton+TextColor.swift"; sourceTree = "<group>"; };
 		BAB8D49321BE742D00D63DA5 /* NSTableView+TimeEntryDiff.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSTableView+TimeEntryDiff.swift"; sourceTree = "<group>"; };
 		BAD2341621D612DE0039C742 /* libPocoDataSQLite.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoDataSQLite.60.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoDataSQLite.60.dylib; sourceTree = "<group>"; };
 		BAD2341721D612DE0039C742 /* libPocoNetSSL.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoNetSSL.60.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoNetSSL.60.dylib; sourceTree = "<group>"; };
@@ -1230,6 +1232,7 @@
 				BA4059B6221D46F4002969B8 /* TimeEntryCollectionView.m */,
 				BA80BE91221EAA9E00BDFD35 /* NSView+Shadow.swift */,
 				BA80BEB1221EAE6F00BDFD35 /* Array+ByGroup.swift */,
+				BAAF567D2223CAC5003D0D73 /* NSButton+TextColor.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1766,6 +1769,7 @@
 				BA0CEC5321BE528900F1BF01 /* TableViewDiffer.swift in Sources */,
 				3C6B2488203E01D90063FC08 /* AutoCompleteTable.m in Sources */,
 				74AA9472180909F50000539F /* GTMHTTPFetchHistory.m in Sources */,
+				BAAF567E2223CAC5003D0D73 /* NSButton+TextColor.swift in Sources */,
 				74E3CDC617FBABE400C3ADD3 /* Bugsnag.m in Sources */,
 				745126B619A28AA600390F47 /* Reachability.m in Sources */,
 				74C1579B183BA5DA00550613 /* AutocompleteDataSource.m in Sources */,

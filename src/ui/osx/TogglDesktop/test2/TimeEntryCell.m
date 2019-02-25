@@ -21,7 +21,8 @@
 @property (weak) IBOutlet NSTextField *durationTextField;
 @property (weak) IBOutlet NSImageView *unsyncedIcon;
 @property (weak) IBOutlet NSBox *groupBox;
-@property (weak) IBOutlet NSHoverButton *continueButton;
+@property (weak) IBOutlet NSButton *groupButton;
+@property (weak) IBOutlet NSButton *continueButton;
 @property (weak) IBOutlet NSBox *backgroundBox;
 
 @end
@@ -216,6 +217,41 @@ extern void *ctx;
 - (void)setupGroupMode {
 	self.groupBox.hidden = !self.Group;
 	self.descriptionLblLeading.constant = self.Group || self.GroupOpen ? 46.0 : 15.0;
+
+	// Title
+	NSString *toggleGroupText = [NSString stringWithFormat:@"%lld", self.GroupItemCount];
+	self.groupButton.title = toggleGroupText;
+
+	// Color
+	if (self.Group && self.GroupOpen)
+	{
+		if (@available(macOS 10.13, *))
+		{
+			[self.groupButton setTextColor:[NSColor colorNamed:@"green-color"]];
+			self.groupBox.fillColor = [NSColor colorNamed:@"group-box-background-color"];
+		}
+		else
+		{
+			[self.groupButton setTextColor:[ConvertHexColor hexCodeToNSColor:@"#28cd41"]];
+			self.groupBox.fillColor = [NSColor colorWithRed:40.0 / 255.0 green:205.0 / 255.0 blue:65.0 / 255.0 alpha:0.12];
+		}
+		self.groupBox.borderColor = [NSColor clearColor];
+	}
+	else
+	{
+		if (@available(macOS 10.13, *))
+		{
+			[self.groupButton setTextColor:[NSColor colorNamed:@"grey-text-color"]];
+			self.groupBox.fillColor = [NSColor colorNamed:@"upload-background-color"];
+			self.groupBox.borderColor = [NSColor colorNamed:@"upload-border-color"];
+		}
+		else
+		{
+			[self.groupButton setTextColor:[ConvertHexColor hexCodeToNSColor:@"#555555"]];
+			self.groupBox.fillColor = [NSColor whiteColor];
+			self.groupBox.borderColor = [NSColor lightGrayColor];
+		}
+	}
 }
 
 - (void)focusFieldName

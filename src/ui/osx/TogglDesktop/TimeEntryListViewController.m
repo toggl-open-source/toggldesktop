@@ -213,7 +213,7 @@ extern void *ctx;
 		}
 	}
 
-	BOOL noItems = self.collectionView.numberOfSections == 0;
+	BOOL noItems = [self.collectionView.dataSource numberOfSectionsInCollectionView:self.collectionView] == 0;
 	[self.emptyLabel setEnabled:noItems];
 	[self.timeEntryListScrollView setHidden:noItems];
     // This seems to work for hiding the list when there are no items

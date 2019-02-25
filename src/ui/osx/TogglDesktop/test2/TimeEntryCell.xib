@@ -7,11 +7,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <customObject id="-2" userLabel="File's Owner" customClass="TimeEntryCell">
-            <connections>
-                <outlet property="view" destination="jHy-af-Yta" id="okX-bA-OnE"/>
-            </connections>
-        </customObject>
+        <customObject id="-2" userLabel="File's Owner"/>
         <collectionViewItem identifier="TimeEntryCell" id="TVu-sQ-Sng" customClass="TimeEntryCell">
             <connections>
                 <outlet property="backgroundBox" destination="wve-Qj-t8r" id="bQV-tM-pFc"/>
@@ -21,6 +17,7 @@
                 <outlet property="descriptionTextField" destination="CwR-d5-aWs" id="hgE-Xa-icI"/>
                 <outlet property="durationTextField" destination="xwb-FG-Z4X" id="zdA-d0-xCT"/>
                 <outlet property="groupBox" destination="dmW-8k-lRI" id="vgX-xs-f5a"/>
+                <outlet property="groupButton" destination="yV9-eP-fCj" id="PKX-Rb-eud"/>
                 <outlet property="projectTextField" destination="deS-e6-3Ui" id="Sf3-ak-4sT"/>
                 <outlet property="tagFlag" destination="29c-rg-nft" id="L4L-QD-0Hm"/>
                 <outlet property="view" destination="jHy-af-Yta" id="6gy-F6-vUJ"/>
@@ -80,7 +77,7 @@
                         <constraint firstItem="deS-e6-3Ui" firstAttribute="leading" secondItem="4Gn-rS-ham" secondAttribute="trailing" constant="7" id="p2w-Le-29J"/>
                     </constraints>
                 </customView>
-                <button toolTip="Continue with this time entry" horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Gcj-ki-Hus" customClass="NSHoverButton">
+                <button toolTip="Continue with this time entry" horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Gcj-ki-Hus">
                     <rect key="frame" x="371" y="25" width="14" height="14"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="14" id="So6-zJ-3fL"/>
@@ -90,6 +87,9 @@
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
+                    <connections>
+                        <action selector="continueTimeEntry:" target="TVu-sQ-Sng" id="xd0-F0-KSJ"/>
+                    </connections>
                 </button>
                 <stackView distribution="equalSpacing" orientation="horizontal" alignment="centerY" spacing="5" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rE8-8i-mr7">
                     <rect key="frame" x="264" y="24" width="39" height="17"/>
@@ -137,21 +137,22 @@
                         <rect key="frame" x="1" y="1" width="23" height="23"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button toolTip="Continue with this time entry" horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="yV9-eP-fCj" customClass="NSHoverButton">
-                                <rect key="frame" x="-1" y="-1" width="25" height="25"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="25" id="bkb-gq-Uh7"/>
-                                    <constraint firstAttribute="height" constant="25" id="yCI-Yk-VOP"/>
-                                </constraints>
+                            <button toolTip="Continue with this time entry" horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="yV9-eP-fCj">
+                                <rect key="frame" x="0.0" y="0.0" width="23" height="23"/>
                                 <buttonCell key="cell" type="bevel" title="3" bezelStyle="rounded" alignment="center" refusesFirstResponder="YES" imageScaling="proportionallyDown" inset="2" id="pfD-5t-Pma">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
+                                <connections>
+                                    <action selector="toggleGroup:" target="TVu-sQ-Sng" id="PZw-8c-GmV"/>
+                                </connections>
                             </button>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="yV9-eP-fCj" firstAttribute="centerX" secondItem="wvI-BE-4Z2" secondAttribute="centerX" id="5hS-Y4-rsk"/>
-                            <constraint firstItem="yV9-eP-fCj" firstAttribute="centerY" secondItem="wvI-BE-4Z2" secondAttribute="centerY" id="RDv-nK-aZh"/>
+                            <constraint firstAttribute="trailing" secondItem="yV9-eP-fCj" secondAttribute="trailing" id="4x8-31-EBK"/>
+                            <constraint firstItem="yV9-eP-fCj" firstAttribute="leading" secondItem="wvI-BE-4Z2" secondAttribute="leading" id="EKm-Xd-o0E"/>
+                            <constraint firstItem="yV9-eP-fCj" firstAttribute="top" secondItem="wvI-BE-4Z2" secondAttribute="top" id="PT4-tI-9yb"/>
+                            <constraint firstAttribute="bottom" secondItem="yV9-eP-fCj" secondAttribute="bottom" id="lo5-VH-JMt"/>
                         </constraints>
                     </view>
                     <constraints>
