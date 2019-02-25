@@ -8,7 +8,7 @@
 
 import Cocoa
 
-class TimeEntryHeader {
+final class TimeEntryHeader {
 
     let date: String
     let totalTime: String
@@ -19,7 +19,7 @@ class TimeEntryHeader {
     }
 }
 
-class TimeEntrySection {
+final class TimeEntrySection {
 
     let header: TimeEntryHeader
     let entries: [TimeEntryViewItem]
@@ -83,6 +83,7 @@ class TimeEntryDatasource: NSObject {
         super.init()
         collectionView.delegate = self
         collectionView.dataSource = self
+        flowLayout.delegate = self
     }
 
     func process(_ timeEntries: [TimeEntryViewItem], showLoadMore: Bool) {
@@ -95,6 +96,7 @@ class TimeEntryDatasource: NSObject {
             return TimeEntrySection(header: header, entries: group)
         }
 
+        // Add load more cell if need
         if showLoadMore {
             sections.append(TimeEntrySection.loadMoreSection())
         }
@@ -193,6 +195,10 @@ extension TimeEntryDatasource: NSCollectionViewDataSource, NSCollectionViewDeleg
         // Render data
         cell.render(item)
 
+        // Show / Hide the line
+        let show = indexPath.item != (section.entries.count - 1)
+        cell.showHorizontalLine(show)
+
         return cell
     }
 
@@ -218,5 +224,13 @@ extension TimeEntryDatasource: NSCollectionViewDataSource, NSCollectionViewDeleg
             return
         }
         timeEntryCell.focusFieldName()
+    }
+}
+
+extension TimeEntryDatasource: VertificalTimeEntryFlowLayoutDelegate {
+
+    func isLoadMoreItem(at section: Int) -> Bool {
+        let section = sections[section]
+        return section.isLoadMore
     }
 }

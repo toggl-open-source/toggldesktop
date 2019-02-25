@@ -8,10 +8,15 @@
 
 import Cocoa
 
+protocol VertificalTimeEntryFlowLayoutDelegate: class {
+
+    func isLoadMoreItem(at section: Int) -> Bool
+}
+
 final class VertificalTimeEntryFlowLayout: NSCollectionViewFlowLayout {
 
     // MARK: Variables
-
+    weak var delegate: VertificalTimeEntryFlowLayoutDelegate?
     private var decoratorAttributes: [NSCollectionViewLayoutAttributes] = []
 
     // MARK: Init
@@ -41,7 +46,8 @@ final class VertificalTimeEntryFlowLayout: NSCollectionViewFlowLayout {
         super.prepare()
         guard let collectionView = self.collectionView,
             let dataSource = collectionView.dataSource,
-            let delegate = collectionView.delegate as? NSCollectionViewDelegateFlowLayout else { return }
+            let delegate = collectionView.delegate as? NSCollectionViewDelegateFlowLayout,
+            let flowDelegate = self.delegate else { return }
 
         decoratorAttributes = []
 
@@ -54,6 +60,11 @@ final class VertificalTimeEntryFlowLayout: NSCollectionViewFlowLayout {
             // Calculate the size of decorator vuew
             var lastY: CGFloat = 0
             for i in 0..<numberOfSection {
+
+                // We don't add Decorator view for loadMore
+                guard !flowDelegate.isLoadMoreItem(at: i) else { continue }
+
+                // Get the size
                 let numberOfItems = dataSource.collectionView(collectionView, numberOfItemsInSection: i)
                 let height = CGFloat(numberOfItems) * cellSize.height + headerSize.height
 

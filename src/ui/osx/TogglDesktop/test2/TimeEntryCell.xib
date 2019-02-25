@@ -19,6 +19,7 @@
                 <outlet property="durationTextField" destination="xwb-FG-Z4X" id="zdA-d0-xCT"/>
                 <outlet property="groupBox" destination="dmW-8k-lRI" id="vgX-xs-f5a"/>
                 <outlet property="groupButton" destination="yV9-eP-fCj" id="PKX-Rb-eud"/>
+                <outlet property="horizontalLine" destination="eSk-jb-AGA" id="UCH-33-CfN"/>
                 <outlet property="projectConstrainLeading" destination="w0I-0b-kLQ" id="P64-Sr-P59"/>
                 <outlet property="projectTextField" destination="deS-e6-3Ui" id="Sf3-ak-4sT"/>
                 <outlet property="tagFlag" destination="29c-rg-nft" id="L4L-QD-0Hm"/>

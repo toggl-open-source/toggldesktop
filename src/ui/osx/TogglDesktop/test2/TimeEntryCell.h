@@ -24,5 +24,6 @@
 - (void)setFocused;
 - (void)openEdit;
 - (void)setupGroupMode;
+- (void)showHorizontalLine:(BOOL)show;
 @end
 

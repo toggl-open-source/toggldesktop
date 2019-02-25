@@ -26,6 +26,7 @@
 @property (weak) IBOutlet NSBox *backgroundBox;
 @property (weak) IBOutlet DotImageView *dotView;
 @property (weak) IBOutlet NSLayoutConstraint *projectConstrainLeading;
+@property (weak) IBOutlet NSBox *horizontalLine;
 
 @end
 
@@ -297,6 +298,7 @@ extern void *ctx;
 	NSColor *fillColor = self.isDarkMode ? [NSColor controlColor] : [ConvertHexColor hexCodeToNSColor:@"#E8E8E8"];
 
 	[self.backgroundBox setFillColor:fillColor];
+	[self updateHoverState:YES];
 }
 
 - (void)openEdit
@@ -307,7 +309,8 @@ extern void *ctx;
 	}
 }
 
-- (NSColor *)clientTextColor {
+- (NSColor *)clientTextColor
+{
 	if (@available(macOS 10.13, *))
 	{
 		return [NSColor colorNamed:@"grey-text-color"];
@@ -316,6 +319,11 @@ extern void *ctx;
 	{
 		return [ConvertHexColor hexCodeToNSColor:@"#555555"];
 	}
+}
+
+- (void)showHorizontalLine:(BOOL)show
+{
+	self.horizontalLine.hidden = !show;
 }
 
 @end
