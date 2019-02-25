@@ -31,7 +31,6 @@
 @property NSInteger defaultPopupWidth;
 @property NSInteger addedHeight;
 @property NSInteger minimumEditFormWidth;
-@property NSInteger lastSelectedRowIndex;
 @property BOOL runningEdit;
 @property TimeEntryCell *selectedEntryCell;
 @property (copy, nonatomic) NSString *lastSelectedGUID;
@@ -132,7 +131,6 @@ extern void *ctx;
 	[self.timeEntryEditViewController.view setFrame:self.timeEntryPopupEditView.bounds];
 	self.defaultPopupHeight = self.timeEntryPopupEditView.bounds.size.height;
 	self.addedHeight = 0;
-	self.lastSelectedRowIndex = 0;
 	self.minimumEditFormWidth = self.timeEntryPopupEditView.bounds.size.width;
 	self.runningEdit = NO;
 
@@ -196,13 +194,7 @@ extern void *ctx;
 	}
 
 	NSMutableArray<TimeEntryViewItem *> *newTimeEntries = [cmd.timeEntries mutableCopy];
-	NSArray<TimeEntryViewItem *> *oldTimeEntries = self.viewitems;
 	NSIndexPath *selectedIndexpath = [[[self.collectionView selectionIndexPaths] allObjects] firstObject];
-
-    // Diff and reload
-//    self.viewitems = [newTimeEntries copy];
-    // [self.collectionView diffReloadWith:oldTimeEntries new:[newTimeEntries copy]];
-
 
     // reload
 	[self.dataSource process:newTimeEntries showLoadMore:cmd.show_load_more];
@@ -328,13 +320,21 @@ extern void *ctx;
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
 	NSLog(@"TimeEntryListViewController displayTimeEntryEditor, thread %@", [NSThread currentThread]);
+
+    // Get selected index
+	NSIndexPath *selectedIndexpath = [self.collectionView.selectionIndexPaths.allObjects firstObject];
+	if (selectedIndexpath == nil)
+	{
+		return;
+	}
+
 	if (cmd.open)
 	{
 		self.timeEntrypopover.contentViewController = self.timeEntrypopoverViewController;
 		self.runningEdit = (cmd.timeEntry.duration_in_seconds < 0);
 
 		NSView *ofView = self.view;
-		CGRect positionRect = [self positionRectOfSelectedRowAtIndex:self.lastSelectedRowIndex];
+		CGRect positionRect = [self positionRectOfSelectedRowAtIndexPath:selectedIndexpath];
 
 		if (self.runningEdit)
 		{
@@ -358,17 +358,16 @@ extern void *ctx;
 	}
 }
 
-- (CGRect)positionRectOfSelectedRowAtIndex:(NSInteger)index {
-	return CGRectZero;
-//    NSView *selectedView = [self getSelectedEntryCell:index];
-//    NSRect positionRect = self.view.bounds;
-//
-//    if (selectedView)
-//    {
-//        positionRect = [self.collectionView convertRect:selectedView.bounds
-//                                                     fromView:selectedView];
-//    }
-//    return positionRect;
+- (CGRect)positionRectOfSelectedRowAtIndexPath:(NSIndexPath *)indexPath {
+	TimeEntryCell *selectedCell = [self getSelectedEntryCellWithIndexPath:indexPath];
+	NSRect positionRect = self.view.bounds;
+
+	if (selectedCell)
+	{
+		positionRect = [self.collectionView convertRect:selectedCell.view.bounds
+											   fromView:selectedCell.view];
+	}
+	return positionRect;
 }
 
 - (void)startDisplayTimeEntryEditor:(NSNotification *)notification
@@ -380,7 +379,7 @@ extern void *ctx;
 	shouldSelectRow:(NSInteger)rowIndex
 {
 	[self clearLastSelectedEntry];
-	self.lastSelectedRowIndex = rowIndex;
+	return YES;
 }
 
 - (TimeEntryCell *)getSelectedEntryCellWithIndexPath:(NSIndexPath *)indexPath
@@ -520,34 +519,33 @@ extern void *ctx;
 
 - (void)focusListing:(NSNotification *)notification
 {
-//    if (self.collectionView.numberOfRows == 0)
-//    {
-//        return;
-//    }
-//
-//    // If list is focused with keyboard shortcut
-//    if (notification != nil && !self.timeEntrypopover.shown)
-//    {
-//        [self clearLastSelectedEntry];
-//        self.lastSelectedRowIndex = 0;
-//    }
-//
-//    if ([self.collectionView numberOfRows] < self.lastSelectedRowIndex)
-//    {
-//        return;
-//    }
-//
-//    NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:self.lastSelectedRowIndex];
-//
-//    [[self.collectionView window] makeFirstResponder:self.collectionView];
-//    [self.collectionView selectRowIndexes:indexSet byExtendingSelection:NO];
-//
-//    TimeEntryCell *cell = [self getSelectedEntryCell:self.lastSelectedRowIndex];
-//    if (cell != nil)
-//    {
-//        [self clearLastSelectedEntry];
-//        [cell setFocused];
-//    }
+	if (self.collectionView.numberOfSections == 0)
+	{
+		return;
+	}
+
+	NSIndexPath *selectedIndexpath = [self.collectionView.selectionIndexPaths.allObjects firstObject];
+    // If list is focused with keyboard shortcut
+	if (notification != nil && !self.timeEntrypopover.shown)
+	{
+		[self clearLastSelectedEntry];
+		selectedIndexpath = [NSIndexPath indexPathForItem:0 inSection:0];
+	}
+
+	if (selectedIndexpath == nil)
+	{
+		return;
+	}
+
+	[[self.collectionView window] makeFirstResponder:self.collectionView];
+	[self.collectionView selectItemsAtIndexPaths:[NSSet setWithObject:selectedIndexpath] scrollPosition:NSCollectionViewScrollPositionTop];
+
+	TimeEntryCell *cell = [self getSelectedEntryCellWithIndexPath:selectedIndexpath];
+	if (cell != nil)
+	{
+		[self clearLastSelectedEntry];
+		[cell setFocused];
+	}
 }
 
 - (void)escapeListing:(NSNotification *)notification
@@ -560,7 +558,6 @@ extern void *ctx;
 	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kFocusTimer
 																object:nil];
 	[self clearLastSelectedEntry];
-	self.lastSelectedRowIndex = -1;
 	[self.collectionView deselectAll:nil];
 	self.selectedEntryCell = nil;
 }

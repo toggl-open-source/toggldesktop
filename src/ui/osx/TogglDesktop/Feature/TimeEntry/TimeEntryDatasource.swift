@@ -43,7 +43,7 @@ class TimeEntrySection {
 class TimeEntryDatasource: NSObject {
 
     // MARK: Variable
-
+    private var firstTime = true
     private(set) var sections: [TimeEntrySection]
     private let collectionView: NSCollectionView
     fileprivate var cellSize: NSSize {
@@ -104,8 +104,13 @@ class TimeEntryDatasource: NSObject {
 
         // Reload
         self.sections = sections
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            self.collectionView.reloadData()
+        if firstTime {
+            firstTime = false
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
+                self.collectionView.reloadData()
+            }
+        } else {
+            collectionView.reloadData()
         }
     }
 }
@@ -217,6 +222,7 @@ extension TimeEntryDatasource: NSCollectionViewDataSource, NSCollectionViewDeleg
         if timeEntryCell.group {
             NotificationCenter.default.postNotificationOnMainThread(NSNotification.Name(kToggleGroup),
                                                                     object: timeEntryCell.groupName)
+            collectionView.deselectItems(at: indexPaths)
             return
         }
         timeEntryCell.focusFieldName()
