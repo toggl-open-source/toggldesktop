@@ -25,6 +25,7 @@
 @property (weak) IBOutlet NSButton *continueButton;
 @property (weak) IBOutlet NSBox *backgroundBox;
 @property (weak) IBOutlet DotImageView *dotView;
+@property (weak) IBOutlet NSLayoutConstraint *projectConstrainLeading;
 
 @end
 
@@ -130,7 +131,8 @@ extern void *ctx;
 	}
 	else
 	{
-		self.descriptionTextField.stringValue = @"(no description)";
+		self.descriptionTextField.stringValue = @"";
+		self.descriptionTextField.placeholderString = @"+ Add description";
 		self.descriptionTextField.toolTip = nil;
 	}
 
@@ -170,17 +172,18 @@ extern void *ctx;
 		self.dotView.hidden = NO;
 		[self.dotView fillWith:projectColor];
 		[self.projectTextField setAttributedStringValue:[self setProjectClientLabel:view_item]];
-		[self.projectTextField setHidden:NO];
 		self.projectTextField.toolTip = view_item.ProjectAndTaskLabel;
 		self.projectTextField.textColor = projectColor;
+		self.projectConstrainLeading.constant = 16;
 		return;
 	}
 
 	// Time entry has no project
 	self.projectTextField.stringValue = @"";
-	[self.projectTextField setHidden:YES];
+	self.projectTextField.placeholderString = @"+ Add project";
 	self.projectTextField.toolTip = nil;
 	self.dotView.hidden = YES;
+	self.projectConstrainLeading.constant = 0;
 }
 
 - (NSMutableAttributedString *)setProjectClientLabel:(TimeEntryViewItem *)view_item

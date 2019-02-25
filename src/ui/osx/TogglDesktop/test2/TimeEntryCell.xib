@@ -19,6 +19,7 @@
                 <outlet property="durationTextField" destination="xwb-FG-Z4X" id="zdA-d0-xCT"/>
                 <outlet property="groupBox" destination="dmW-8k-lRI" id="vgX-xs-f5a"/>
                 <outlet property="groupButton" destination="yV9-eP-fCj" id="PKX-Rb-eud"/>
+                <outlet property="projectConstrainLeading" destination="w0I-0b-kLQ" id="P64-Sr-P59"/>
                 <outlet property="projectTextField" destination="deS-e6-3Ui" id="Sf3-ak-4sT"/>
                 <outlet property="tagFlag" destination="29c-rg-nft" id="L4L-QD-0Hm"/>
                 <outlet property="view" destination="jHy-af-Yta" id="6gy-F6-vUJ"/>
@@ -43,7 +44,7 @@
                     <subviews>
                         <textField horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="CwR-d5-aWs">
                             <rect key="frame" x="-2" y="32" width="253" height="16"/>
-                            <textFieldCell key="cell" lineBreakMode="truncatingTail" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" alignment="left" title="Blogpost about nefdsffdsf Blogpost about nefdsffdsf Blogpost about nefdsffdsf" id="KGe-cR-NlL">
+                            <textFieldCell key="cell" lineBreakMode="truncatingTail" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" alignment="left" title="Blogpost about nefdsffdsf Blogpost about nefdsffdsf Blogpost about nefdsffdsf" placeholderString="+ Add description" id="KGe-cR-NlL">
                                 <font key="font" metaFont="cellTitle"/>
                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -59,7 +60,7 @@
                         </imageView>
                         <textField horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="deS-e6-3Ui" customClass="NSTextFieldWithBackground">
                             <rect key="frame" x="14" y="14" width="237" height="18"/>
-                            <textFieldCell key="cell" lineBreakMode="truncatingTail" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" alignment="left" title="NEW - TOGGL - project NEW - TOGGL - project NEW - TOGGL - project NEW - TOGGL - project" id="apI-Za-Hk2">
+                            <textFieldCell key="cell" lineBreakMode="truncatingTail" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" alignment="left" title="NEW - TOGGL - project NEW - TOGGL - project NEW - TOGGL - project NEW - TOGGL - project" placeholderString="+ Add project" id="apI-Za-Hk2">
                                 <font key="font" metaFont="cellTitle"/>
                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -75,7 +76,7 @@
                         <constraint firstItem="deS-e6-3Ui" firstAttribute="centerY" secondItem="4Gn-rS-ham" secondAttribute="centerY" id="Yji-cw-PuA"/>
                         <constraint firstItem="4Gn-rS-ham" firstAttribute="top" secondItem="CwR-d5-aWs" secondAttribute="bottom" constant="5" id="iar-9z-U4N"/>
                         <constraint firstItem="CwR-d5-aWs" firstAttribute="top" secondItem="Uu2-26-kM4" secondAttribute="top" constant="16" id="meS-eh-0Ic"/>
-                        <constraint firstItem="deS-e6-3Ui" firstAttribute="leading" secondItem="4Gn-rS-ham" secondAttribute="trailing" constant="7" id="p2w-Le-29J"/>
+                        <constraint firstItem="deS-e6-3Ui" firstAttribute="leading" secondItem="Uu2-26-kM4" secondAttribute="leading" constant="16" id="w0I-0b-kLQ"/>
                     </constraints>
                 </customView>
                 <button toolTip="Continue with this time entry" horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Gcj-ki-Hus">
