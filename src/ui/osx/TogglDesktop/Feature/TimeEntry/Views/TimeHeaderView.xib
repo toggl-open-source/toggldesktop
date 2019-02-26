@@ -43,9 +43,6 @@
                         <behavior key="behavior" pushIn="YES" changeContents="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
-                    <connections>
-                        <action selector="openSectionOnTap:" target="c22-O7-iKe" id="5s1-H5-XJi"/>
-                    </connections>
                 </button>
             </subviews>
             <constraints>
@@ -61,7 +58,7 @@
                 <constraint firstItem="ex9-FR-Gwg" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" id="tb1-dM-E2K"/>
             </constraints>
             <connections>
-                <outlet property="arrowBtn" destination="hWd-K0-FfC" id="P73-rr-Fkd"/>
+                <outlet property="arrowBtn" destination="hWd-K0-FfC" id="PfD-W3-tOl"/>
                 <outlet property="dateLbl" destination="OH1-ok-yWk" id="PGe-KH-qAd"/>
                 <outlet property="totalDurationLbl" destination="wP5-KR-14h" id="kgY-Ff-bRF"/>
             </connections>
