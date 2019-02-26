@@ -193,34 +193,14 @@ extern void *ctx;
 - (void)displayTimeEntryList:(DisplayCommand *)cmd
 {
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
-
 	NSLog(@"TimeEntryListViewController displayTimeEntryList, thread %@", [NSThread currentThread]);
 
-    // Save the current scroll position of entries list
-	NSPoint scrollOrigin;
-	BOOL adjustScroll = NO;
-	if (self.collectionView.numberOfSections > 0)
-	{
-		NSRect rowRect = [self.collectionView layoutAttributesForItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]].frame;
-		adjustScroll = !NSEqualRects(rowRect, NSZeroRect) && !NSContainsRect(self.collectionView.visibleRect, rowRect);
-		if (adjustScroll)
-		{
-            // get scroll position from the bottom: get bottom left of the visible part of the table view
-			scrollOrigin = self.collectionView.visibleRect.origin;
-			if (self.collectionView.isFlipped)
-			{
-            // scrollOrigin is top left, calculate unflipped coordinates
-				scrollOrigin.y = self.collectionView.bounds.size.height - scrollOrigin.y;
-			}
-		}
-	}
-
-	NSMutableArray<TimeEntryViewItem *> *newTimeEntries = [cmd.timeEntries mutableCopy];
-	NSIndexPath *selectedIndexpath = [[[self.collectionView selectionIndexPaths] allObjects] firstObject];
+	NSArray<TimeEntryViewItem *> *newTimeEntries = [cmd.timeEntries copy];
 
     // reload
 	[self.dataSource process:newTimeEntries showLoadMore:cmd.show_load_more];
 
+    // Handle Popover
 	if (cmd.open)
 	{
 		if (self.timeEntrypopover.shown)
@@ -235,92 +215,10 @@ extern void *ctx;
 		}
 	}
 
-	BOOL noItems = [self.collectionView.dataSource numberOfSectionsInCollectionView:self.collectionView] == 0;
+    // Show Empty view if need
+	BOOL noItems = newTimeEntries.count == 0;
 	[self.emptyLabel setEnabled:noItems];
 	[self.timeEntryListScrollView setHidden:noItems];
-    // This seems to work for hiding the list when there are no items
-	if (noItems)
-	{
-		[self.timeEntryListScrollView setHidden:noItems];
-	}
-
-    // Restore scroll position after list reload
-	if (adjustScroll)
-	{
-        // restore scroll position from the bottom
-		if (self.collectionView.isFlipped)
-		{
-        // calculate new flipped coordinates, height includes the new row
-			scrollOrigin.y = self.collectionView.bounds.size.height - scrollOrigin.y;
-		}
-		[self.collectionView scrollPoint:scrollOrigin];
-	}
-
-    // If row was focused before reload we restore that state
-	if (selectedIndexpath)
-	{
-		NSSet *indexSet = [NSSet setWithCollectionViewIndexPath:selectedIndexpath];
-		[self.collectionView selectItemsAtIndexPaths:indexSet scrollPosition:NSCollectionViewScrollPositionTop];
-
-		TimeEntryCell *cell = [self getSelectedEntryCellWithIndexPath:selectedIndexpath];
-		if (cell != nil)
-		{
-			[self clearLastSelectedEntry];
-			[cell setFocused];
-		}
-	}
-
-    // Adjust the position of arrow of Popover
-	[self adjustPositionOfPopover];
-}
-
-- (void)adjustPositionOfPopover {
-//    if (!self.timeEntrypopover.shown)
-//    {
-//        return;
-//    }
-//    if (self.lastSelectedGUID == nil)
-//    {
-//        return;
-//    }
-//
-//    // Get new selected index depend on last GUID
-//    NSInteger newSelectedRow = -1;
-//    for (NSInteger i = 0; i < self.viewitems.count; i++)
-//    {
-//        id item = self.viewitems[i];
-//        if ([item isKindOfClass:[TimeEntryViewItem class]])
-//        {
-//            TimeEntryViewItem *viewItem = (TimeEntryViewItem *)item;
-//            if ([viewItem.GUID isEqualToString:self.lastSelectedGUID])
-//            {
-//                newSelectedRow = i;
-//                break;
-//            }
-//        }
-//    }
-//
-//    if (newSelectedRow < 0)
-//    {
-//        return;
-//    }
-//
-//    // Adjus the position of arrow
-//    NSRect positionRect = [self positionRectOfSelectedRowAtIndex:newSelectedRow];
-//    self.timeEntrypopover.positioningRect = positionRect;
-//
-//    // Scroll to visible selected row
-//    if (!NSContainsRect(self.collectionView.visibleRect, positionRect))
-//    {
-//        self.collectionView scroolt
-//        [self.collectionView scrollRowToVisible:newSelectedRow];
-//    }
-//
-//    // Hightlight selected cell
-//    if (self.selectedEntryCell)
-//    {
-//        [self.selectedEntryCell setFocused];
-//    }
 }
 
 - (void)resetEditPopover:(NSNotification *)notification

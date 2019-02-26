@@ -20,8 +20,14 @@
 
 extern void *ctx;
 
-- (void)awakeFromNib {
+- (void)awakeFromNib
+{
 	[super awakeFromNib];
+}
+
+- (BOOL)isFlipped
+{
+	return YES;
 }
 
 - (void)keyDown:(NSEvent *)event {
