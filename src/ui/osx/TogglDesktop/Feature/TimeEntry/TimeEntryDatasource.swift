@@ -224,6 +224,9 @@ extension TimeEntryDatasource: NSCollectionViewDataSource, NSCollectionViewDeleg
 
         // Render data
         cell.render(item)
+        if indexPath.item == section.entries.count - 1 {
+            cell.applyMaskForBottomCorner()
+        }
 
         // Show / Hide the line
         let show = indexPath.item != (section.entries.count - 1)

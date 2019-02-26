@@ -11,6 +11,7 @@
 #import "ConvertHexColor.h"
 #import "toggl_api.h"
 #import "TogglDesktop-Swift.h"
+#import <QuartzCore/CAShapeLayer.h>
 
 @interface TimeEntryCell ()
 
@@ -54,6 +55,7 @@ extern void *ctx;
 - (void)prepareForReuse {
 	[super prepareForReuse];
 	self.continueButton.hidden = YES;
+	[self resetMask];
 }
 
 - (void)mouseEntered:(NSEvent *)event
@@ -73,6 +75,7 @@ extern void *ctx;
 
 	if (isHover)
 	{
+		self.backgroundBox.transparent = NO;
 		if (@available(macOS 10.13, *))
 		{
 			self.backgroundBox.fillColor = [NSColor colorNamed:@"white-background-hover-color"];
@@ -84,14 +87,7 @@ extern void *ctx;
 	}
 	else
 	{
-		if (@available(macOS 10.13, *))
-		{
-			self.backgroundBox.fillColor = [NSColor colorNamed:@"white-background-color"];
-		}
-		else
-		{
-			self.backgroundBox.fillColor = NSColor.whiteColor;
-		}
+		self.backgroundBox.transparent = YES;
 	}
 }
 
@@ -324,6 +320,16 @@ extern void *ctx;
 - (void)showHorizontalLine:(BOOL)show
 {
 	self.horizontalLine.hidden = !show;
+}
+
+- (void)applyMaskForBottomCorner {
+	self.backgroundBox.wantsLayer = YES;
+	self.backgroundBox.layer.mask = [self maskFor:PositionBottom rect:self.view.bounds cornerRadius:4.0];
+}
+
+- (void)resetMask {
+	self.backgroundBox.layer.mask = nil;
+	self.backgroundBox.wantsLayer = NO;
 }
 
 @end

@@ -25,5 +25,7 @@
 - (void)openEdit;
 - (void)setupGroupMode;
 - (void)showHorizontalLine:(BOOL)show;
+- (void)applyMaskForBottomCorner;
+
 @end
 

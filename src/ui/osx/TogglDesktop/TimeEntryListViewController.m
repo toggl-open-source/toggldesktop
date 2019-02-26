@@ -662,7 +662,7 @@ extern void *ctx;
 }
 
 - (void)windowSizeDidChange {
-	[self.collectionView.collectionViewLayout invalidateLayout];
+	[self.collectionView reloadData];
 }
 
 @end

@@ -10,7 +10,7 @@
         <customObject id="-2" userLabel="File's Owner"/>
         <collectionViewItem identifier="TimeEntryCell" id="TVu-sQ-Sng" customClass="TimeEntryCell">
             <connections>
-                <outlet property="backgroundBox" destination="wve-Qj-t8r" id="bQV-tM-pFc"/>
+                <outlet property="backgroundBox" destination="wve-Qj-t8r" id="dr4-Jo-vuX"/>
                 <outlet property="billableFlag" destination="29c-rg-nft" id="jur-Kl-eKk"/>
                 <outlet property="continueButton" destination="Gcj-ki-Hus" id="5Hq-z8-gbu"/>
                 <outlet property="descriptionLblLeading" destination="R7O-XO-Nkp" id="8TD-nZ-dZM"/>
@@ -32,13 +32,13 @@
             <rect key="frame" x="0.0" y="0.0" width="400" height="64"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <box horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" boxType="custom" borderType="none" borderWidth="0.0" title="Box" translatesAutoresizingMaskIntoConstraints="NO" id="wve-Qj-t8r">
+                <box horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" boxType="custom" borderType="none" borderWidth="0.0" title="Box" transparent="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wve-Qj-t8r">
                     <rect key="frame" x="0.0" y="0.0" width="400" height="64"/>
                     <view key="contentView" id="WeZ-ft-ZWq">
                         <rect key="frame" x="0.0" y="0.0" width="400" height="64"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     </view>
-                    <color key="fillColor" name="white-background-color"/>
+                    <color key="fillColor" red="1" green="1" blue="1" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                 </box>
                 <customView horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="Uu2-26-kM4">
                     <rect key="frame" x="15" y="0.0" width="249" height="64"/>
@@ -204,9 +204,6 @@
         </namedColor>
         <namedColor name="upload-border-color">
             <color red="0.67450980392156867" green="0.67450980392156867" blue="0.67450980392156867" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="white-background-color">
-            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>
