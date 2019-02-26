@@ -662,6 +662,10 @@ extern void *ctx;
 }
 
 - (void)windowSizeDidChange {
+    // We have to reload entire collection rather than calling [self.collectionView.collectionViewLayout invalidateLayout];
+    // Because it's difficult to re-draw the mask for highlight state of TimeEntryCell
+    // -invalidateLayout is more better in term of performance
+    // User is rarely to resize the app, so I believe it's reasonable.
 	[self.collectionView reloadData];
 }
 

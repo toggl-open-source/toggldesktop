@@ -56,23 +56,38 @@ extern void *ctx;
 	[super prepareForReuse];
 	self.continueButton.hidden = YES;
 	[self resetMask];
+	[self updateHoverState:NO];
 }
 
 - (void)mouseEntered:(NSEvent *)event
 {
 	[super mouseEntered:event];
-	[self updateHoverState:YES];
+
+	// Only pply hover color if it's not sub-items
+	if (self.cellType != CellTypeSubItemInGroup)
+	{
+		[self updateHoverState:YES];
+	}
+
+	// Continue
+	self.continueButton.hidden = NO;
 }
 
 - (void)mouseExited:(NSEvent *)event
 {
 	[super mouseExited:event];
-	[self updateHoverState:NO];
+
+	// Only pply hover color if it's not sub-items
+	if (self.cellType != CellTypeSubItemInGroup)
+	{
+		[self updateHoverState:NO];
+	}
+
+	// Continue
+	self.continueButton.hidden = YES;
 }
 
 - (void)updateHoverState:(BOOL)isHover {
-	self.continueButton.hidden = !isHover;
-
 	if (isHover)
 	{
 		self.backgroundBox.transparent = NO;
@@ -119,6 +134,20 @@ extern void *ctx;
 	self.GroupOpen = view_item.GroupOpen;
 	self.GroupItemCount = view_item.GroupItemCount;
 	self.durationTextField.toolTip = [NSString stringWithFormat:@"%@ - %@", view_item.startTimeString, view_item.endTimeString];
+
+	// Cell type
+	if (self.Group)
+	{
+		self.cellType = CellTypeGroup;
+	}
+	else if (!self.Group && self.GroupOpen)
+	{
+		self.cellType = CellTypeSubItemInGroup;
+	}
+	else
+	{
+		self.cellType = CellTypeNormal;
+	}
 
 	// Time entry has a description
 	if (view_item.Description && [view_item.Description length] > 0)
@@ -256,6 +285,11 @@ extern void *ctx;
 			self.groupBox.fillColor = [NSColor whiteColor];
 			self.groupBox.borderColor = [NSColor lightGrayColor];
 		}
+	}
+
+	if (self.cellType == CellTypeSubItemInGroup)
+	{
+		[self updateHoverState:YES];
 	}
 }
 

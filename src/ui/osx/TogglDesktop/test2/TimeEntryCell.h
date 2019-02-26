@@ -10,12 +10,21 @@
 #import "TimeEntryViewItem.h"
 #import "NSHoverButton.h"
 
+typedef NS_ENUM (NSUInteger, CellType)
+{
+	CellTypeNormal,
+	CellTypeGroup,
+	CellTypeSubItemInGroup,
+};
+
 @interface TimeEntryCell : NSCollectionViewItem
 @property (nonatomic, weak) IBOutlet NSTextField *descriptionTextField;
 @property (nonatomic, copy) NSString *GUID;
-@property (strong) NSString *GroupName;
-@property BOOL Group;
-@property BOOL GroupOpen;
+@property (copy) NSString *GroupName;
+@property (assign, nonatomic) CellType cellType;
+@property (assign, nonatomic) BOOL Group;
+@property (assign, nonatomic) BOOL GroupOpen;
+
 @property long long GroupItemCount;
 @property BOOL confirmless_delete;
 

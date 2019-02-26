@@ -254,7 +254,7 @@ extension TimeEntryDatasource: NSCollectionViewDataSource, NSCollectionViewDeleg
             collectionView.deselectItems(at: indexPaths)
         }
 
-        if timeEntryCell.group {
+        if timeEntryCell.cellType == .group {
             NotificationCenter.default.postNotificationOnMainThread(NSNotification.Name(kToggleGroup),
                                                                     object: timeEntryCell.groupName)
             return
