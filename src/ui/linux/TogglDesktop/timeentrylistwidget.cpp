@@ -88,6 +88,8 @@ void TimeEntryListWidget::displayTimeEntryList(
     ui->list->setVisible(!list.isEmpty());
     ui->blankView->setVisible(list.isEmpty());
 
+    ui->timer->setFocus();
+
     render_m_.unlock();
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 }

@@ -154,6 +154,43 @@ void User::AddClientToList(Client *c) {
     related.Clients.push_back(c);
 }
 
+Tag *User::CreateTag(
+    const Poco::UInt64 workspace_id,
+    const std::string tag_name) {
+    Tag *t = new Tag();
+    t->SetWID(workspace_id);
+    t->SetName(tag_name);
+
+    AddTagToList(t);
+
+    return t;
+}
+
+void User::AddTagToList(Tag *t) {
+    bool foundMatch = false;
+
+    // We should push the tag to correct alphabetical position
+    // (since we try to avoid sorting the large list)
+    for (std::vector<Tag *>::iterator it =
+        related.Tags.begin();
+            it != related.Tags.end(); it++) {
+        Tag *tag = *it;
+        if (t->WID() == tag->WID()) {
+            foundMatch = true;
+            if (Poco::UTF8::icompare(t->Name(), tag->Name()) < 0) {
+                related.Tags.insert(it,t);
+                return;
+            }
+        } else if (foundMatch) {
+            related.Tags.insert(it,t);
+            return;
+        }
+    }
+
+    // if tags vector is empty or client should be added to the end
+    related.Tags.push_back(t);
+}
+
 // Start a time entry, mark it as dirty and add to user time entry collection.
 // Do not save here, dirtyness will be handled outside of this module.
 TimeEntry *User::Start(

@@ -95,6 +95,12 @@ class User : public BaseModel {
 
     void AddClientToList(Client *c);
 
+    Tag *CreateTag(
+        const Poco::UInt64 workspace_id,
+        const std::string tag_name);
+
+    void AddTagToList(Tag *t);
+
     std::string DateDuration(TimeEntry *te) const;
 
     const std::string &APIToken() const {

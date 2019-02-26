@@ -825,6 +825,11 @@ extern "C" {
         const uint64_t workspace_id,
         const char_t *client_name);
 
+    TOGGL_EXPORT char_t *toggl_create_tag(
+        void *context,
+        const uint64_t workspace_id,
+        const char_t *tag_name);
+
     TOGGL_EXPORT bool_t toggl_add_obm_action(
         void *context,
         const uint64_t experiment_id,

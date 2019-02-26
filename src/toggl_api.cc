@@ -18,6 +18,7 @@
 #include "./https_client.h"
 #include "./project.h"
 #include "./proxy.h"
+#include "./tag.h"
 #include "./time_entry.h"
 #include "./timeline_uploader.h"
 #include "./toggl_api_private.h"
@@ -486,6 +487,28 @@ char_t *toggl_create_client(
     poco_assert(!c->GUID().empty());
 
     return copy_string(c->GUID());
+}
+
+char_t *toggl_create_tag(
+    void *context,
+    const uint64_t workspace_id,
+    const char *tag_name) {
+
+    toggl::Tag *t = app(context)->CreateTag(
+        workspace_id,
+        to_string(tag_name));
+
+    if (!t) {
+        return nullptr;
+    }
+
+    poco_check_ptr(t);
+
+    logger().debug("Created tag " + t->Name());
+
+    poco_assert(!t->GUID().empty());
+
+    return copy_string(t->GUID());
 }
 
 char_t *toggl_add_project(

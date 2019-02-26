@@ -23,6 +23,7 @@
 #include "./obm_action.h"
 #include "./project.h"
 #include "./settings.h"
+#include "./tag.h"
 #include "./task.h"
 #include "./time_entry.h"
 #include "./timeline_uploader.h"
@@ -3727,6 +3728,46 @@ Client *Context::CreateClient(
     }
 
     return result;
+}
+
+Tag *Context::CreateTag(
+    const Poco::UInt64 workspace_id,
+    const std::string tag_name) {
+    if (!workspace_id) {
+        displayError(kPleaseSelectAWorkspace);
+        return nullptr;
+    }
+
+    std::string trimmed_tag_name("");
+    error err = db_->Trim(tag_name, &trimmed_tag_name);
+    if (err != noError) {
+        displayError(err);
+        return nullptr;
+    }
+    if (trimmed_tag_name.empty()) {
+        displayError(kTagNameMustNotBeEmpty);
+        return nullptr;
+    }
+
+    Tag *result = nullptr;
+
+    {
+        Poco::Mutex::ScopedLock lock(user_m_);
+        if (!user_) {
+            logger().warning("Cannot create a client, user logged out");
+            return nullptr;
+        }
+        for (std::vector<Tag *>::iterator it =
+            user_->related.Tags.begin();
+                it != user_->related.Tags.end(); it++) {
+            Tag *t = *it;
+            if (t->WID() == workspace_id && t->Name() == trimmed_tag_name) {
+                displayError(kTagNameAlreadyExists);
+                return nullptr;
+            }
+        }
+        result = user_->CreateTag(workspace_id, trimmed_tag_name);
+    }
 }
 
 void Context::SetSleep() {

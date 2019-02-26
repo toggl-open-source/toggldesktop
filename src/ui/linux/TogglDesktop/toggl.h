@@ -142,6 +142,10 @@ class TogglApi : public QObject {
         const uint64_t wid,
         const QString name);
 
+    QString createTag(
+        const uint64_t wid,
+        const QString name);
+
     // returns false if error
     bool setSettingsAutodetectProxy(const bool value);
 

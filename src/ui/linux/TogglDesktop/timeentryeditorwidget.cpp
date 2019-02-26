@@ -536,6 +536,13 @@ void TimeEntryEditorWidget::on_newTag_returnPressed() {
 }
 
 void TimeEntryEditorWidget::on_newTagButton_clicked() {
+    QVariant workspace = ui->newProjectWorkspace->currentData();
+    if (!workspace.canConvert<GenericView *>()) {
+        ui->newProjectWorkspace->setFocus();
+        return;
+    }
+    uint64_t wid = workspace.value<GenericView *>()->ID;
+    TogglApi::instance->createTag(wid, ui->newTag->text());
     QStringList tags;
     for (int i = 0; i < ui->tags->count(); i++) {
         QListWidgetItem *widgetItem = ui->tags->item(i);

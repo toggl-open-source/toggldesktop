@@ -706,6 +706,20 @@ QString TogglApi::createClient(
     return res;
 }
 
+QString TogglApi::createTag(
+    const uint64_t wid,
+    const QString name) {
+    char *guid = toggl_create_tag(ctx,
+                                     wid,
+                                     name.toStdString().c_str());
+    QString res("");
+    if (guid) {
+        res = QString(guid);
+        free(guid);
+    }
+    return res;
+}
+
 void TogglApi::viewTimeEntryList() {
     toggl_view_time_entry_list(ctx);
 }
