@@ -47,7 +47,19 @@ final class TimeEntrySection {
 @objcMembers
 class TimeEntryDatasource: NSObject {
 
+    struct Constants {
+        static let TimeEntryCellNibName = NSNib.Name("TimeEntryCell")
+        static let TimeEntryCellID = NSUserInterfaceItemIdentifier("TimeEntryCell")
+        static let LoadMoreCellNibName = NSNib.Name("LoadMoreCell")
+        static let LoadMoreCellID = NSUserInterfaceItemIdentifier("LoadMoreCell")
+        static let TimeHeaderNibName = NSNib.Name("TimeHeaderView")
+        static let TimeHeaderID = NSUserInterfaceItemIdentifier("TimeHeaderView")
+        static let DecoratorViewNibName = NSNib.Name("TimeDecoratorView")
+        static let DecoratorViewKind = "TimeDecoratorView"
+    }
+
     // MARK: Variable
+    
     private var firstTime = true
     private(set) var sections: [TimeEntrySection]
     private let collectionView: NSCollectionView
@@ -65,31 +77,15 @@ class TimeEntryDatasource: NSObject {
 
     init(collectionView: NSCollectionView) {
         self.sections = []
-
-        let flowLayout = VertificalTimeEntryFlowLayout()
-        flowLayout.register(NSNib(nibNamed: NSNib.Name("TimeDecoratorView"), bundle: nil),
-                            forDecorationViewOfKind: "TimeDecoratorView")
-        collectionView.collectionViewLayout = flowLayout
-        collectionView.register(NSNib(nibNamed: NSNib.Name("TimeEntryCell"), bundle: nil),
-                                forItemWithIdentifier: NSUserInterfaceItemIdentifier("TimeEntryCell"))
-        collectionView.register(NSNib(nibNamed: NSNib.Name("LoadMoreCell"), bundle: nil),
-                                forItemWithIdentifier: NSUserInterfaceItemIdentifier("LoadMoreCell"))
-        collectionView.register(NSNib(nibNamed: NSNib.Name("TimeHeaderView"), bundle: nil),
-                                forSupplementaryViewOfKind: NSCollectionView.elementKindSectionHeader,
-                                withIdentifier: NSUserInterfaceItemIdentifier("TimeHeaderView"))
-
         self.collectionView = collectionView
-        collectionView.wantsLayer = true
-        if #available(OSX 10.13, *) {
-            collectionView.backgroundColors = [NSColor(named: NSColor.Name("collectionview-background-color"))!]
-        } else {
-            collectionView.backgroundColors = [NSColor.init(white: 0.95, alpha: 1.0)]
-        }
         super.init()
         collectionView.delegate = self
         collectionView.dataSource = self
-        flowLayout.delegate = self
+        registerAllCells()
+        initCommon()
     }
+
+    // MARK: Public
 
     func process(_ timeEntries: [TimeEntryViewItem], showLoadMore: Bool) {
 
@@ -108,16 +104,40 @@ class TimeEntryDatasource: NSObject {
 
         // Reload
         self.sections = sections
-        if firstTime {
-            firstTime = false
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-                self.collectionView.reloadData()
-            }
-        } else {
-            collectionView.reloadData()
-        }
+        collectionView.reloadData()
     }
 }
+
+// MARK: Private
+
+extension TimeEntryDatasource {
+
+    fileprivate func initCommon() {
+
+        // Background
+        collectionView.wantsLayer = true
+        if #available(OSX 10.13, *) {
+            collectionView.backgroundColors = [NSColor(named: NSColor.Name("collectionview-background-color"))!]
+        } else {
+            collectionView.backgroundColors = [NSColor.init(white: 0.95, alpha: 1.0)]
+        }
+
+        // Flow
+        let flowLayout = VertificalTimeEntryFlowLayout()
+        flowLayout.delegate = self
+        collectionView.collectionViewLayout = flowLayout
+    }
+
+    fileprivate func registerAllCells() {
+        collectionView.register(NSNib(nibNamed: Constants.TimeEntryCellNibName, bundle: nil), forItemWithIdentifier: Constants.TimeEntryCellID)
+        collectionView.register(NSNib(nibNamed: Constants.LoadMoreCellNibName, bundle: nil), forItemWithIdentifier: Constants.LoadMoreCellID)
+        collectionView.register(NSNib(nibNamed: Constants.TimeHeaderNibName, bundle: nil),
+                                forSupplementaryViewOfKind:NSCollectionView.elementKindSectionHeader,
+                                withIdentifier: Constants.TimeHeaderID)
+    }
+}
+
+// MARK: NSCollectionViewDataSource
 
 extension TimeEntryDatasource: NSCollectionViewDataSource, NSCollectionViewDelegate, NSCollectionViewDelegateFlowLayout {
 
@@ -227,10 +247,13 @@ extension TimeEntryDatasource: NSCollectionViewDataSource, NSCollectionViewDeleg
             return
         }
 
+        defer {
+            collectionView.deselectItems(at: indexPaths)
+        }
+
         if timeEntryCell.group {
             NotificationCenter.default.postNotificationOnMainThread(NSNotification.Name(kToggleGroup),
                                                                     object: timeEntryCell.groupName)
-            collectionView.deselectItems(at: indexPaths)
             return
         }
         timeEntryCell.focusFieldName()

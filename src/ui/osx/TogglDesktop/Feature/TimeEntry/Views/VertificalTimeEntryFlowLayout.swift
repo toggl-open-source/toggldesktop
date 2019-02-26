@@ -15,6 +15,11 @@ protocol VertificalTimeEntryFlowLayoutDelegate: class {
 
 final class VertificalTimeEntryFlowLayout: NSCollectionViewFlowLayout {
 
+    struct Constants {
+        static let DecoratorViewNibName = NSNib.Name("TimeDecoratorView")
+        static let DecoratorViewKind = "TimeDecoratorView"
+    }
+
     // MARK: Variables
     weak var delegate: VertificalTimeEntryFlowLayoutDelegate?
     private var decoratorAttributes: [NSCollectionViewLayoutAttributes] = []
@@ -32,12 +37,18 @@ final class VertificalTimeEntryFlowLayout: NSCollectionViewFlowLayout {
     }
 
     private func initCommon() {
+
+        // Default size
         itemSize = NSSize(width: 280, height: 64)
         sectionInset = NSEdgeInsets(top: 0, left: 10, bottom: 10, right: 10)
         minimumInteritemSpacing = 0
         minimumLineSpacing = 0
         scrollDirection = .vertical
         headerReferenceSize = CGSize(width: 280, height: 36)
+
+        // Decorator
+        register(NSNib(nibNamed: Constants.DecoratorViewNibName, bundle: nil),
+                 forDecorationViewOfKind: Constants.DecoratorViewKind)
     }
 
     // MARK: Override

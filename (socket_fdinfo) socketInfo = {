@@ -1,0 +1,243 @@
+(socket_fdinfo) socketInfo = {
+  pfi = (fi_openflags = 7, fi_status = 0, fi_offset = 0, fi_type = 2, fi_guardflags = 0)
+  psi = {
+    soi_stat = {
+      vst_dev = 0
+      vst_mode = 0
+      vst_nlink = 0
+      vst_ino = 0
+      vst_uid = 0
+      vst_gid = 0
+      vst_atime = 0
+      vst_atimensec = 0
+      vst_mtime = 0
+      vst_mtimensec = 0
+      vst_ctime = 0
+      vst_ctimensec = 0
+      vst_birthtime = 0
+      vst_birthtimensec = 0
+      vst_size = 0
+      vst_blocks = 0
+      vst_blksize = 0
+      vst_flags = 0
+      vst_gen = 0
+      vst_rdev = 0
+      vst_qspare = ([0] = 0, [1] = 0)
+    }
+    soi_so = 5570585796324577423
+    soi_pcb = 5570585796395164495
+    soi_type = 2
+    soi_protocol = 2
+    soi_family = 32
+    soi_options = 0
+    soi_linger = 0
+    soi_state = 258
+    soi_qlen = 0
+    soi_incqlen = 0
+    soi_qlimit = 0
+    soi_timeo = 0
+    soi_error = 0
+    soi_oobmark = 0
+    soi_rcv = {
+      sbi_cc = 0
+      sbi_hiwat = 131072
+      sbi_mbcnt = 0
+      sbi_mbmax = 1048576
+      sbi_lowat = 1
+      sbi_flags = 516
+      sbi_timeo = 0
+    }
+    soi_snd = {
+      sbi_cc = 0
+      sbi_hiwat = 2048
+      sbi_mbcnt = 0
+      sbi_mbmax = 16384
+      sbi_lowat = 2048
+      sbi_flags = 0
+      sbi_timeo = 0
+    }
+    soi_kind = 6
+    rfu_1 = 0
+    soi_proto = {
+      pri_in = {
+        insi_fport = 8
+        insi_lport = -1
+        insi_gencnt = 35184372088832
+        insi_flags = 2048
+        insi_flow = 34
+        insi_vflag = 'c'
+        insi_ip_ttl = 'o'
+        rfu_1 = 1819308129
+        insi_faddr = {
+          ina_46 = {
+            i46a_pad32 = ([0] = 1701719653, [1] = 1668445044, [2] = 0)
+            i46a_addr4 = (s_addr = 0)
+          }
+          ina_6 = {
+            __u6_addr = {
+              __u6_addr8 = {
+                [0] = 'e'
+                [1] = '.'
+                [2] = 'n'
+                [3] = 'e'
+                [4] = 't'
+                [5] = 's'
+                [6] = 'r'
+                [7] = 'c'
+                [8] = '\0'
+                [9] = '\0'
+                [10] = '\0'
+                [11] = '\0'
+                [12] = '\0'
+                [13] = '\0'
+                [14] = '\0'
+                [15] = '\0'
+              }
+              __u6_addr16 = ([0] = 11877, [1] = 25966, [2] = 29556, [3] = 25458, [4] = 0, [5] = 0, [6] = 0, [7] = 0)
+              __u6_addr32 = ([0] = 1701719653, [1] = 1668445044, [2] = 0, [3] = 0)
+            }
+          }
+        }
+        insi_laddr = {
+          ina_46 = {
+            i46a_pad32 = ([0] = 0, [1] = 0, [2] = 0)
+            i46a_addr4 = (s_addr = 0)
+          }
+          ina_6 = {
+            __u6_addr = {
+              __u6_addr8 = {
+                [0] = '\0'
+                [1] = '\0'
+                [2] = '\0'
+                [3] = '\0'
+                [4] = '\0'
+                [5] = '\0'
+                [6] = '\0'
+                [7] = '\0'
+                [8] = '\0'
+                [9] = '\0'
+                [10] = '\0'
+                [11] = '\0'
+                [12] = '\0'
+                [13] = '\0'
+                [14] = '\0'
+                [15] = '\0'
+              }
+              __u6_addr16 = ([0] = 0, [1] = 0, [2] = 0, [3] = 0, [4] = 0, [5] = 0, [6] = 0, [7] = 0)
+              __u6_addr32 = ([0] = 0, [1] = 0, [2] = 0, [3] = 0)
+            }
+          }
+        }
+        insi_v4 = (in4_tos = '\0')
+        insi_v6 = (in6_hlim = '\0', in6_cksum = 0, in6_ifindex = 0, in6_hops = 0)
+      }
+      pri_tcp = {
+        tcpsi_ini = {
+          insi_fport = 8
+          insi_lport = -1
+          insi_gencnt = 35184372088832
+          insi_flags = 2048
+          insi_flow = 34
+          insi_vflag = 'c'
+          insi_ip_ttl = 'o'
+          rfu_1 = 1819308129
+          insi_faddr = {
+            ina_46 = {
+              i46a_pad32 = ([0] = 1701719653, [1] = 1668445044, [2] = 0)
+              i46a_addr4 = (s_addr = 0)
+            }
+            ina_6 = {
+              __u6_addr = {
+                __u6_addr8 = {
+                  [0] = 'e'
+                  [1] = '.'
+                  [2] = 'n'
+                  [3] = 'e'
+                  [4] = 't'
+                  [5] = 's'
+                  [6] = 'r'
+                  [7] = 'c'
+                  [8] = '\0'
+                  [9] = '\0'
+                  [10] = '\0'
+                  [11] = '\0'
+                  [12] = '\0'
+                  [13] = '\0'
+                  [14] = '\0'
+                  [15] = '\0'
+                }
+                __u6_addr16 = ([0] = 11877, [1] = 25966, [2] = 29556, [3] = 25458, [4] = 0, [5] = 0, [6] = 0, [7] = 0)
+                __u6_addr32 = ([0] = 1701719653, [1] = 1668445044, [2] = 0, [3] = 0)
+              }
+            }
+          }
+          insi_laddr = {
+            ina_46 = {
+              i46a_pad32 = ([0] = 0, [1] = 0, [2] = 0)
+              i46a_addr4 = (s_addr = 0)
+            }
+            ina_6 = {
+              __u6_addr = {
+                __u6_addr8 = {
+                  [0] = '\0'
+                  [1] = '\0'
+                  [2] = '\0'
+                  [3] = '\0'
+                  [4] = '\0'
+                  [5] = '\0'
+                  [6] = '\0'
+                  [7] = '\0'
+                  [8] = '\0'
+                  [9] = '\0'
+                  [10] = '\0'
+                  [11] = '\0'
+                  [12] = '\0'
+                  [13] = '\0'
+                  [14] = '\0'
+                  [15] = '\0'
+                }
+                __u6_addr16 = ([0] = 0, [1] = 0, [2] = 0, [3] = 0, [4] = 0, [5] = 0, [6] = 0, [7] = 0)
+                __u6_addr32 = ([0] = 0, [1] = 0, [2] = 0, [3] = 0)
+              }
+            }
+          }
+          insi_v4 = (in4_tos = '\0')
+          insi_v6 = (in6_hlim = '\0', in6_cksum = 0, in6_ifindex = 0, in6_hops = 0)
+        }
+        tcpsi_state = 0
+        tcpsi_timer = ([0] = 0, [1] = 0, [2] = 0, [3] = 0)
+        tcpsi_mss = 0
+        tcpsi_flags = 0
+        rfu_1 = 0
+        tcpsi_tp = 0
+      }
+      pri_un = {
+        unsi_conn_so = 18446744069414584328
+        unsi_conn_pcb = 35184372088832
+        unsi_addr = {
+          ua_sun = (sun_len = '\0', sun_family = '\b', sun_path = "")
+          ua_dummy = ""
+        }
+        unsi_caddr = {
+          ua_sun = (sun_len = '\0', sun_family = '\0', sun_path = "")
+          ua_dummy = ""
+        }
+      }
+      pri_ndrv = (ndrvsi_if_family = 8, ndrvsi_if_unit = 4294967295, ndrvsi_if_name = "")
+      pri_kern_event = {
+        kesi_vendor_code_filter = 8
+        kesi_class_filter = 4294967295
+        kesi_subclass_filter = 0
+      }
+      pri_kern_ctl = {
+        kcsi_id = 8
+        kcsi_reg_unit = 4294967295
+        kcsi_flags = 0
+        kcsi_recvbufsize = 8192
+        kcsi_sendbufsize = 2048
+        kcsi_unit = 34
+        kcsi_name = "com.apple.netsrc"
+      }
+    }
+  }
+}

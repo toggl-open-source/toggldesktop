@@ -64,61 +64,6 @@ extern void *ctx;
 																	   bundle:nil];
 		self.nibLoadMoreCell = [[NSNib alloc] initWithNibNamed:@"LoadMoreCell"
 														bundle:nil];
-
-		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(startDisplayTimeEntryList:)
-													 name:kDisplayTimeEntryList
-												   object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(startDisplayTimeEntryEditor:)
-													 name:kDisplayTimeEntryEditor
-												   object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(startDisplayLogin:)
-													 name:kDisplayLogin
-												   object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(closeEditPopup:)
-													 name:kForceCloseEditPopover
-												   object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(resizeEditPopupHeight:)
-													 name:kResizeEditForm
-												   object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(resizeEditPopupWidth:)
-													 name:kResizeEditFormWidth
-												   object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(resetEditPopover:)
-													 name:NSPopoverDidCloseNotification
-												   object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(closeEditPopup:)
-													 name:kCommandStop
-												   object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(resetEditPopoverSize:)
-													 name:kResetEditPopoverSize
-												   object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(focusListing:)
-													 name:kFocusListing
-												   object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(escapeListing:)
-													 name:kEscapeListing
-												   object:nil];
-
-		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(effectiveAppearanceChangedNotification)
-													 name:NSNotification.EffectiveAppearanceChanged
-												   object:nil];
-
-		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(windowSizeDidChange)
-													 name:NSWindowDidResizeNotification
-												   object:nil];
 	}
 	return self;
 }
@@ -127,8 +72,19 @@ extern void *ctx;
 {
 	[super viewDidLoad];
 
-	self.dataSource = [[TimeEntryDatasource alloc] initWithCollectionView:self.collectionView];
+	[self initCommon];
+	[self initCollectionView];
+	[self setupEmptyLabel];
+	[self initNotifications];
+}
 
+- (void)viewDidAppear
+{
+	[super viewDidAppear];
+	[self.collectionView reloadData];
+}
+
+- (void)initCommon {
 	[self.headerView addSubview:self.timerEditViewController.view];
 	[self.timerEditViewController.view setFrame:self.headerView.bounds];
 
@@ -138,13 +94,74 @@ extern void *ctx;
 	self.addedHeight = 0;
 	self.minimumEditFormWidth = self.timeEntryPopupEditView.bounds.size.width;
 	self.runningEdit = NO;
+}
 
-	[self setupEmptyLabel];
+- (void)initNotifications
+{
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(startDisplayTimeEntryList:)
+												 name:kDisplayTimeEntryList
+											   object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(startDisplayTimeEntryEditor:)
+												 name:kDisplayTimeEntryEditor
+											   object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(startDisplayLogin:)
+												 name:kDisplayLogin
+											   object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(closeEditPopup:)
+												 name:kForceCloseEditPopover
+											   object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(resizeEditPopupHeight:)
+												 name:kResizeEditForm
+											   object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(resizeEditPopupWidth:)
+												 name:kResizeEditFormWidth
+											   object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(resetEditPopover:)
+												 name:NSPopoverDidCloseNotification
+											   object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(closeEditPopup:)
+												 name:kCommandStop
+											   object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(resetEditPopoverSize:)
+												 name:kResetEditPopoverSize
+											   object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(focusListing:)
+												 name:kFocusListing
+											   object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(escapeListing:)
+												 name:kEscapeListing
+											   object:nil];
+
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(effectiveAppearanceChangedNotification)
+												 name:NSNotification.EffectiveAppearanceChanged
+											   object:nil];
+
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(windowSizeDidChange)
+												 name:NSWindowDidResizeNotification
+											   object:nil];
+}
+
+- (void)initCollectionView
+{
+	self.dataSource = [[TimeEntryDatasource alloc] initWithCollectionView:self.collectionView];
 
 	// Drag and drop
-//    [self.collectionView setDraggingSourceOperationMask:NSDragOperationLink forLocal:NO];
-//    [self.collectionView setDraggingSourceOperationMask:NSDragOperationMove forLocal:YES];
-//    [self.collectionView registerForDraggedTypes:[NSArray arrayWithObject:NSStringPboardType]];
+	//    [self.collectionView setDraggingSourceOperationMask:NSDragOperationLink forLocal:NO];
+	//    [self.collectionView setDraggingSourceOperationMask:NSDragOperationMove forLocal:YES];
+	//    [self.collectionView registerForDraggedTypes:[NSArray arrayWithObject:NSStringPboardType]];
 }
 
 - (void)setupEmptyLabel
