@@ -23,11 +23,8 @@ extension Sequence {
                 continue
             }
 
-            guard let nextIndex = categories[dayIndex].index(where: { dateKey($0).compare(key) == (ascending ? .orderedDescending : .orderedAscending) }) else {
-                categories[dayIndex].append(element)
-                continue
-            }
-            categories[dayIndex].insert(element, at: nextIndex)
+            // Add the rest element to list without sorting
+            categories[dayIndex].append(element)
         }
         return categories
     }
