@@ -501,12 +501,12 @@ extern void *ctx;
 	NSData *rowData = [pboard dataForType:NSStringPboardType];
 	NSIndexPath *moveIndexPath = [NSKeyedUnarchiver unarchiveObjectWithData:rowData];
 
-	if (YES)
-	{
-        // Updating the dropped item date
-		TimeEntryViewItem *dateModel = [self.dataSource objectAt:indexPath];
-		TimeEntryViewItem *currentModel = [self.dataSource objectAt:moveIndexPath];
+    // Updating the dropped item date
+	TimeEntryViewItem *dateModel = [self.dataSource objectAt:indexPath];
+	TimeEntryViewItem *currentModel = [self.dataSource objectAt:moveIndexPath];
 
+	if (dateModel != nil && currentModel != nil && !dateModel.loadMore && !currentModel.loadMore)
+	{
 		NSCalendar *calendar = [NSCalendar currentCalendar];
 		NSDateComponents *components = [calendar components:(NSCalendarUnitHour | NSCalendarUnitMinute) fromDate:currentModel.started];
 		NSInteger hours = [components hour];
