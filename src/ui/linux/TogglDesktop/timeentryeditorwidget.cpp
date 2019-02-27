@@ -19,6 +19,7 @@
 
 TimeEntryEditorWidget::TimeEntryEditorWidget(QStackedWidget *parent) : QWidget(parent),
 ui(new Ui::TimeEntryEditorWidget),
+currentEntry(nullptr),
 guid(""),
 timeEntryAutocompleteNeedsUpdate(false),
 projectAutocompleteNeedsUpdate(false),
@@ -156,6 +157,7 @@ void TimeEntryEditorWidget::displayLogin(
     const bool open,
     const uint64_t user_id) {
     if (open || !user_id) {
+        currentEntry = nullptr;
         timer->stop();
     }
 }
@@ -168,6 +170,7 @@ void TimeEntryEditorWidget::displayTimeEntryEditor(
     const bool open,
     TimeEntryView *view,
     const QString focused_field_name) {
+    currentEntry = view;
 
     if (!ui->description->hasFocus()) {
         ui->description->setEditText(view->Description);
@@ -536,13 +539,11 @@ void TimeEntryEditorWidget::on_newTag_returnPressed() {
 }
 
 void TimeEntryEditorWidget::on_newTagButton_clicked() {
-    QVariant workspace = ui->newProjectWorkspace->currentData();
-    if (!workspace.canConvert<GenericView *>()) {
-        ui->newProjectWorkspace->setFocus();
+    if (!currentEntry)
         return;
-    }
-    uint64_t wid = workspace.value<GenericView *>()->ID;
-    TogglApi::instance->createTag(wid, ui->newTag->text());
+
+    qCritical() << "CREATING TAG:" << TogglApi::instance->createTag(currentEntry->WID, ui->newTag->text());
+    return;
     QStringList tags;
     for (int i = 0; i < ui->tags->count(); i++) {
         QListWidgetItem *widgetItem = ui->tags->item(i);
@@ -554,9 +555,7 @@ void TimeEntryEditorWidget::on_newTagButton_clicked() {
         tags << ui->newTag->text();
     tags.sort();
     QString list = tags.join("\t");
-    if (previousTagList != list) {
-        TogglApi::instance->setTimeEntryTags(guid, list);
-    }
+    TogglApi::instance->setTimeEntryTags(guid, list);
     ui->newTag->clear();
     on_cancelNewTagButton_clicked();
 }

@@ -160,6 +160,7 @@ Tag *User::CreateTag(
     Tag *t = new Tag();
     t->SetWID(workspace_id);
     t->SetName(tag_name);
+    t->SetUID(ID());
 
     AddTagToList(t);
 

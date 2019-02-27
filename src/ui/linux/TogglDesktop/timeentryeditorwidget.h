@@ -34,6 +34,7 @@ class TimeEntryEditorWidget : public QWidget {
  private:
     Ui::TimeEntryEditorWidget *ui;
 
+    TimeEntryView *currentEntry;
     QString guid;
 
     QVector<AutocompleteView *> timeEntryAutocompleteUpdate;

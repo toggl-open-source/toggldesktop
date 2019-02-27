@@ -710,8 +710,8 @@ QString TogglApi::createTag(
     const uint64_t wid,
     const QString name) {
     char *guid = toggl_create_tag(ctx,
-                                     wid,
-                                     name.toStdString().c_str());
+                                  wid,
+                                  name.toStdString().c_str());
     QString res("");
     if (guid) {
         res = QString(guid);

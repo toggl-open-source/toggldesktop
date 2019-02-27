@@ -571,6 +571,8 @@ void Context::updateUI(const UIElements &what) {
                 // because tags are filtered by TE WID
                 std::vector<std::string> tags;
                 user_->related.TagList(&tags, editor_time_entry->WID());
+                std::cerr << __FILE__ << ":" << __LINE__ << " - " << __PRETTY_FUNCTION__ << "\n";
+
                 for (std::vector<std::string>::const_iterator
                         it = tags.begin();
                         it != tags.end();
@@ -844,6 +846,7 @@ void Context::updateUI(const UIElements &what) {
         if (what.open_time_entry_editor) {
             UI()->DisplayApp();
         }
+        std::cerr << __FILE__ << ":" << __LINE__ << " - " << __PRETTY_FUNCTION__ << "\n";
         UI()->DisplayTags(tag_views);
         UI()->DisplayTimeEntryEditor(
             what.open_time_entry_editor,
@@ -3737,6 +3740,7 @@ Tag *Context::CreateTag(
         displayError(kPleaseSelectAWorkspace);
         return nullptr;
     }
+    std::cerr << "CALLED" << __PRETTY_FUNCTION__ ;
 
     std::string trimmed_tag_name("");
     error err = db_->Trim(tag_name, &trimmed_tag_name);
@@ -3768,6 +3772,8 @@ Tag *Context::CreateTag(
         }
         result = user_->CreateTag(workspace_id, trimmed_tag_name);
     }
+
+    return result;
 }
 
 void Context::SetSleep() {
