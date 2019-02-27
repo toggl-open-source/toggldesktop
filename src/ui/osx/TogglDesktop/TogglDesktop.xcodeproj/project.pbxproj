@@ -148,7 +148,6 @@
 		BA4059B1221D2186002969B8 /* TimeHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA4059B0221D2186002969B8 /* TimeHeaderView.xib */; };
 		BA4059B7221D46F4002969B8 /* TimeEntryCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = BA4059B6221D46F4002969B8 /* TimeEntryCollectionView.m */; };
 		BA4059B9221D53E7002969B8 /* TimeEntryDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4059B8221D53E7002969B8 /* TimeEntryDatasource.swift */; };
-		BA46E09D22266D3A00C25763 /* TimeEntryListViewController+Drag.m in Sources */ = {isa = PBXBuildFile; fileRef = BA46E09C22266D3A00C25763 /* TimeEntryListViewController+Drag.m */; };
 		BA46E09F2226707F00C25763 /* Collection+Safe.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA46E09E2226707F00C25763 /* Collection+Safe.swift */; };
 		BA6E873521DDC1E2005E2451 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA6E86B621DDB331005E2451 /* Sparkle.framework */; };
 		BA6E873621DDC1E2005E2451 /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA6E86B621DDB331005E2451 /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -700,8 +699,6 @@
 		BA4059B5221D46F4002969B8 /* TimeEntryCollectionView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TimeEntryCollectionView.h; sourceTree = "<group>"; };
 		BA4059B6221D46F4002969B8 /* TimeEntryCollectionView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TimeEntryCollectionView.m; sourceTree = "<group>"; };
 		BA4059B8221D53E7002969B8 /* TimeEntryDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeEntryDatasource.swift; sourceTree = "<group>"; };
-		BA46E09B22266D3A00C25763 /* TimeEntryListViewController+Drag.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TimeEntryListViewController+Drag.h"; sourceTree = "<group>"; };
-		BA46E09C22266D3A00C25763 /* TimeEntryListViewController+Drag.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "TimeEntryListViewController+Drag.m"; sourceTree = "<group>"; };
 		BA46E09E2226707F00C25763 /* Collection+Safe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collection+Safe.swift"; sourceTree = "<group>"; };
 		BA6E86A521DDB331005E2451 /* Sparkle.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Sparkle.xcodeproj; path = ../../../../third_party/Sparkle/Sparkle.xcodeproj; sourceTree = "<group>"; };
 		BA6F1B1921EEE258009265E4 /* NSColor+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSColor+Utils.swift"; sourceTree = "<group>"; };
@@ -1863,7 +1860,6 @@
 				741104BF18C7682700BC7A49 /* NSTextFieldWithBackground.m in Sources */,
 				BA80BEB2221EAE6F00BDFD35 /* Array+ByGroup.swift in Sources */,
 				74E3CDCE17FBABE400C3ADD3 /* BugsnagNotifier.m in Sources */,
-				BA46E09D22266D3A00C25763 /* TimeEntryListViewController+Drag.m in Sources */,
 				74F8FBA318313FA6000F09EE /* NSTextFieldClickable.m in Sources */,
 				BA7B4BCB21C0EF8800B75B14 /* NSAlert+Utils.m in Sources */,
 				95C0707718CDB67300A34D0D /* NSCustomComboBoxCell.m in Sources */,

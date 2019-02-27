@@ -33,8 +33,10 @@ final class TimeEntrySection {
     }
 
     class func loadMoreSection() -> TimeEntrySection {
+        let item = TimeEntryViewItem()
+        item.loadMore = true
         return TimeEntrySection(header: TimeEntryHeader(date: "", totalTime: ""),
-                                entries: [TimeEntryViewItem()],
+                                entries: [item],
                                 isLoadMore: true)
     }
 
@@ -42,6 +44,13 @@ final class TimeEntrySection {
         isOpen.toggle()
     }
 
+}
+
+@objc protocol TimeEntryDatasourceDraggingDelegate {
+
+    func collectionView(_ collectionView: NSCollectionView, acceptDrop draggingInfo: NSDraggingInfo, indexPath: IndexPath, dropOperation: NSCollectionView.DropOperation) -> Bool
+
+    func collectionView(_ collectionView: NSCollectionView, draggingSession session: NSDraggingSession, willBeginAt screenPoint: NSPoint, forItemsAt indexPaths: Set<IndexPath>)
 }
 
 @objcMembers
@@ -59,7 +68,7 @@ class TimeEntryDatasource: NSObject {
     }
 
     // MARK: Variable
-    
+    weak var delegate: TimeEntryDatasourceDraggingDelegate?
     private var firstTime = true
     private(set) var sections: [TimeEntrySection]
     private let collectionView: NSCollectionView
@@ -83,6 +92,16 @@ class TimeEntryDatasource: NSObject {
         collectionView.dataSource = self
         registerAllCells()
         initCommon()
+
+        if #available(OSX 10.13, *) {
+            collectionView.registerForDraggedTypes([NSPasteboard.PasteboardType.string])
+        } else {
+            // Fallback on earlier versions
+        }
+        // 2
+        collectionView.setDraggingSourceOperationMask(NSDragOperation.move, forLocal: true)
+        // 3
+        collectionView.setDraggingSourceOperationMask(NSDragOperation.link, forLocal: false)
     }
 
     // MARK: Public
@@ -272,20 +291,54 @@ extension TimeEntryDatasource: NSCollectionViewDataSource, NSCollectionViewDeleg
 
 extension TimeEntryDatasource {
 
-    func collectionView(_ collectionView: NSCollectionView, writeItemsAt indexes: IndexSet, to pasteboard: NSPasteboard) -> Bool {
-        return false
+    func collectionView(_ collectionView: NSCollectionView,
+                        acceptDrop draggingInfo: NSDraggingInfo,
+                        index: Int,
+                        dropOperation: NSCollectionView.DropOperation) -> Bool {
+        return true
     }
 
-    func collectionView(_ collectionView: NSCollectionView, validateDrop draggingInfo: NSDraggingInfo, proposedIndex proposedDropIndex: UnsafeMutablePointer<Int>, dropOperation proposedDropOperation: UnsafeMutablePointer<NSCollectionView.DropOperation>) -> NSDragOperation {
-        return NSDragOperation.move
+    func collectionView(_ collectionView: NSCollectionView,
+                        validateDrop draggingInfo: NSDraggingInfo,
+                        proposedIndexPath proposedDropIndexPath: AutoreleasingUnsafeMutablePointer<NSIndexPath>,
+                        dropOperation proposedDropOperation: UnsafeMutablePointer<NSCollectionView.DropOperation>) -> NSDragOperation {
+         return .move
     }
 
     func collectionView(_ collectionView: NSCollectionView, acceptDrop draggingInfo: NSDraggingInfo, indexPath: IndexPath, dropOperation: NSCollectionView.DropOperation) -> Bool {
-        return false
+        guard let delegate = delegate else { return
+            false
+        }
+        let result =  delegate.collectionView(collectionView,
+                                acceptDrop: draggingInfo,
+                                indexPath: indexPath,
+                                dropOperation: dropOperation)
+        return result
     }
 
     func collectionView(_ collectionView: NSCollectionView, draggingSession session: NSDraggingSession, willBeginAt screenPoint: NSPoint, forItemsAt indexPaths: Set<IndexPath>) {
+        guard let delegate = delegate else {
+            return
+        }
+        delegate.collectionView(collectionView,
+                                draggingSession: session,
+                                willBeginAt: screenPoint,
+                                forItemsAt: indexPaths)
+    }
 
+    func collectionView(_ collectionView: NSCollectionView, canDragItemsAt indexPaths: Set<IndexPath>, with event: NSEvent) -> Bool {
+        return true
+    }
+
+    func collectionView(_ collectionView: NSCollectionView, pasteboardWriterForItemAt indexPath: IndexPath) -> NSPasteboardWriting? {
+        guard let item = object(at: indexPath) else { return nil }
+        guard !item.loadMore else { return nil }
+
+        // Save indexpath
+        let data = NSKeyedArchiver.archivedData(withRootObject: indexPath)
+        let pbItem = NSPasteboardItem()
+        pbItem.setData(data, forType: NSPasteboard.PasteboardType.string)
+        return pbItem
     }
 }
 
