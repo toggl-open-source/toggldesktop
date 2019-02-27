@@ -106,6 +106,11 @@ class TimeEntryDatasource: NSObject {
         self.sections = sections
         collectionView.reloadData()
     }
+
+    @objc func object(at indexPath: IndexPath) -> TimeEntryViewItem? {
+        guard let section = sections[safe: indexPath.section] else { return nil }
+        return section.entries[safe: indexPath.item]
+    }
 }
 
 // MARK: Private
@@ -260,6 +265,27 @@ extension TimeEntryDatasource: NSCollectionViewDataSource, NSCollectionViewDeleg
             return
         }
         timeEntryCell.focusFieldName()
+    }
+}
+
+// MARK: Dragging
+
+extension TimeEntryDatasource {
+
+    func collectionView(_ collectionView: NSCollectionView, writeItemsAt indexes: IndexSet, to pasteboard: NSPasteboard) -> Bool {
+        return false
+    }
+
+    func collectionView(_ collectionView: NSCollectionView, validateDrop draggingInfo: NSDraggingInfo, proposedIndex proposedDropIndex: UnsafeMutablePointer<Int>, dropOperation proposedDropOperation: UnsafeMutablePointer<NSCollectionView.DropOperation>) -> NSDragOperation {
+        return NSDragOperation.move
+    }
+
+    func collectionView(_ collectionView: NSCollectionView, acceptDrop draggingInfo: NSDraggingInfo, indexPath: IndexPath, dropOperation: NSCollectionView.DropOperation) -> Bool {
+        return false
+    }
+
+    func collectionView(_ collectionView: NSCollectionView, draggingSession session: NSDraggingSession, willBeginAt screenPoint: NSPoint, forItemsAt indexPaths: Set<IndexPath>) {
+
     }
 }
 
