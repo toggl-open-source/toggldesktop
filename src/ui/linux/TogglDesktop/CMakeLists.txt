@@ -43,8 +43,24 @@ set(BINARY_SOURCE_FILES
     timerwidget.cpp
     toggl.cpp
 
-    # Resources have to be listed, .ui files don't
+    # Resources have to be listed
     Resources.qrc
+
+    # it's better to list UI files
+    aboutdialog.ui
+    colorpicker.ui
+    errorviewcontroller.ui
+    feedbackdialog.ui
+    idlenotificationwidget.ui
+    loginwidget.ui
+    mainwindowcontroller.ui
+    overlaywidget.ui
+    preferencesdialog.ui
+    timeentrycellwidget.ui
+    timeentryeditorwidget.ui
+    timeentrylistwidget.ui
+    timerwidget.ui
+
 )
 
 # Set up compilation targets

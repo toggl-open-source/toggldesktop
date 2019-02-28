@@ -6,6 +6,7 @@
 #include <QMainWindow>
 #include <QSystemTrayIcon>
 #include <QMessageBox>  // NOLINT
+#include <QShortcut>
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -95,6 +96,8 @@ class MainWindowController : public QMainWindow {
 
     void onOnlineStateChanged();
 
+    void onShortcutDelete();
+
  private:
     Ui::MainWindowController *ui;
 
@@ -121,6 +124,8 @@ class MainWindowController : public QMainWindow {
 
     PowerManagement *powerManagement;
     NetworkManagement *networkManagement;
+
+    QShortcut shortcutDelete;
 
     void readSettings();
     void writeSettings();

@@ -16,6 +16,8 @@ namespace Ui {
 class TimeEntryListWidget;
 }
 
+class TimerWidget;
+
 class TimeEntryListWidget : public QWidget {
     Q_OBJECT
 
@@ -24,6 +26,8 @@ class TimeEntryListWidget : public QWidget {
     ~TimeEntryListWidget();
 
     void display();
+
+    TimerWidget *timer();
 
  private slots:  // NOLINT
 

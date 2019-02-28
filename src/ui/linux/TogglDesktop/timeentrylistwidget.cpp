@@ -29,6 +29,10 @@ void TimeEntryListWidget::display() {
     qobject_cast<QStackedWidget*>(parent())->setCurrentWidget(this);
 }
 
+TimerWidget *TimeEntryListWidget::timer() {
+    return ui->timer;
+}
+
 void TimeEntryListWidget::displayLogin(
     const bool open,
     const uint64_t user_id) {

@@ -21,6 +21,9 @@
 #include <QPushButton>  // NOLINT
 
 #include "./toggl.h"
+#include "./timeentryeditorwidget.h"
+#include "./timeentrylistwidget.h"
+#include "./timerwidget.h"
 #include "./errorviewcontroller.h"
 
 MainWindowController::MainWindowController(
@@ -43,6 +46,7 @@ MainWindowController::MainWindowController(
   script(scriptPath),
   powerManagement(new PowerManagement(this)),
   networkManagement(new NetworkManagement(this)),
+  shortcutDelete(QKeySequence(Qt::CTRL + Qt::Key_Delete), this),
   ui_started(false) {
     ui->setupUi(this);
 
@@ -266,6 +270,15 @@ void MainWindowController::onOnlineStateChanged() {
     }
 }
 
+void MainWindowController::onShortcutDelete() {
+    if (ui->stackedWidget->currentWidget() == ui->timeEntryListWidget) {
+        ui->timeEntryListWidget->timer()->deleteTimeEntry();
+    }
+    else if (ui->stackedWidget->currentWidget() == ui->timeEntryEditorWidget) {
+        ui->timeEntryEditorWidget->deleteTimeEntry();
+    }
+}
+
 void MainWindowController::setShortcuts() {
     showHide = new QxtGlobalShortcut(this);
     connect(showHide, SIGNAL(activated()),
@@ -278,6 +291,9 @@ void MainWindowController::setShortcuts() {
             this, SLOT(continueStopHotkeyPressed()));
 
     updateContinueStopShortcut();
+
+    connect(&shortcutDelete, &QShortcut::activated,
+            this, &MainWindowController::onShortcutDelete);
 }
 
 void MainWindowController::connectMenuActions() {
