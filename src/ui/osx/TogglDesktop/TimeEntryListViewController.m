@@ -559,22 +559,28 @@ extern void *ctx;
 
              // define a shadow
 			 NSShadow *shadow = [NSShadow new];
-			 shadow.shadowColor = [[NSColor lightGrayColor] colorWithAlphaComponent:0.2];
+			 shadow.shadowColor = [[NSColor lightGrayColor] colorWithAlphaComponent:0.1];
 			 shadow.shadowOffset = NSMakeSize(imageOffset, -imageOffset);
-			 shadow.shadowBlurRadius = 3;
+			 shadow.shadowBlurRadius = 8;
 			 [shadow set];
 
              // define content frame
 			 NSRect contentFrame = NSMakeRect(0, imageOffset, contentSize.width, contentSize.height);
 			 NSBezierPath *contentPath = [NSBezierPath bezierPathWithRect:contentFrame];
-
-             // draw content border and shadow
-			 [[[NSColor lightGrayColor] colorWithAlphaComponent:0.6] set];
-			 [contentPath stroke];
 			 [theContext restoreGraphicsState];
 
+			 NSColor *backgroundColor;
+			 if (@available(macOS 10.13, *))
+			 {
+				 backgroundColor = [NSColor colorNamed:@"white-background-hover-color"];
+			 }
+			 else
+			 {
+				 backgroundColor = [ConvertHexColor hexCodeToNSColor:@"#f9f9f9"];
+			 }
+
              // fill content
-			 [[NSColor whiteColor] set];
+			 [backgroundColor set];
 			 contentPath = [NSBezierPath bezierPathWithRect:NSInsetRect(contentFrame, 1, 1)];
 			 [contentPath fill];
 
@@ -603,4 +609,5 @@ extern void *ctx;
 		 }];
 	}
 }
+
 @end
