@@ -22,11 +22,6 @@
 
 #include "./toggl.h"
 #include "./errorviewcontroller.h"
-#include "./overlaywidget.h"
-#include "./loginwidget.h"
-#include "./timeentrylistwidget.h"
-#include "./timeentryeditorwidget.h"
-#include "./idlenotificationwidget.h"
 
 MainWindowController::MainWindowController(
     QWidget *parent,
@@ -52,19 +47,6 @@ MainWindowController::MainWindowController(
     ui->setupUi(this);
 
     ui->menuBar->setVisible(true);
-
-    QStackedWidget *stacked = new QStackedWidget;
-    stacked->addWidget(new OverlayWidget(stacked));
-    stacked->addWidget(new LoginWidget(stacked));
-    stacked->addWidget(new TimeEntryEditorWidget(stacked));
-    stacked->addWidget(new TimeEntryListWidget(stacked));
-    stacked->addWidget(new IdleNotificationWidget(stacked));
-    QVBoxLayout *verticalLayout = new QVBoxLayout;
-    verticalLayout->setContentsMargins(0, 0, 0, 0);
-    verticalLayout->setSpacing(0);
-    verticalLayout->addWidget(new ErrorViewController());
-    verticalLayout->addWidget(stacked);
-    centralWidget()->setLayout(verticalLayout);
 
     readSettings();
 

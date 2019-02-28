@@ -29,6 +29,35 @@
    <property name="styleSheet">
     <string notr="true">background-color:#f2f1f0;</string>
    </property>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <property name="spacing">
+     <number>0</number>
+    </property>
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
+    <item>
+     <widget class="ErrorViewController" name="widget" native="true"/>
+    </item>
+    <item>
+     <widget class="QStackedWidget" name="stackedWidget">
+      <widget class="OverlayWidget" name="overlayWidget"/>
+      <widget class="LoginWidget" name="loginWidget"/>
+      <widget class="TimeEntryEditorWidget" name="timeEntryEditorWidget"/>
+      <widget class="TimeEntryListWidget" name="timeEntryListWidget"/>
+      <widget class="IdleNotificationWidget" name="idleNotificationWidget"/>
+     </widget>
+    </item>
+   </layout>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
@@ -36,7 +65,7 @@
      <x>0</x>
      <y>0</y>
      <width>350</width>
-     <height>25</height>
+     <height>29</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -157,6 +186,39 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>ErrorViewController</class>
+   <extends>QWidget</extends>
+   <header>errorviewcontroller.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>OverlayWidget</class>
+   <extends>QWidget</extends>
+   <header>overlaywidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>LoginWidget</class>
+   <extends>QWidget</extends>
+   <header>loginwidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>TimeEntryEditorWidget</class>
+   <extends>QWidget</extends>
+   <header>timeentryeditorwidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>TimeEntryListWidget</class>
+   <extends>QWidget</extends>
+   <header>timeentrylistwidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>IdleNotificationWidget</class>
+   <extends>QWidget</extends>
+   <header>idlenotificationwidget.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
