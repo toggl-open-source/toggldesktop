@@ -92,16 +92,6 @@ class TimeEntryDatasource: NSObject {
         collectionView.dataSource = self
         registerAllCells()
         initCommon()
-
-        if #available(OSX 10.13, *) {
-            collectionView.registerForDraggedTypes([NSPasteboard.PasteboardType.string])
-        } else {
-            // Fallback on earlier versions
-        }
-        // 2
-        collectionView.setDraggingSourceOperationMask(NSDragOperation.move, forLocal: true)
-        // 3
-        collectionView.setDraggingSourceOperationMask(NSDragOperation.link, forLocal: false)
     }
 
     // MARK: Public
@@ -122,7 +112,7 @@ class TimeEntryDatasource: NSObject {
         }
 
         // Reload
-        reloadAndReselect(with: sections)
+        reload(with: sections)
     }
 
     @objc func object(at indexPath: IndexPath) -> TimeEntryViewItem? {
@@ -130,30 +120,10 @@ class TimeEntryDatasource: NSObject {
         return section.entries[safe: indexPath.item]
     }
 
-    private func reloadAndReselect(with sections: [TimeEntrySection]) {
-
-        // Find the selected guid
-        var guid: String?
-        if let indexPath = collectionView.selectionIndexPaths.first,
-            let item = collectionView.item(at: indexPath) as? TimeEntryCell {
-            guid = item.guid
-        }
-
+    private func reload(with sections: [TimeEntrySection]) {
         // Reload
         self.sections = sections
         collectionView.reloadData()
-
-        // Reselect
-        if let guid = guid {
-            for (sectionIndex, section) in sections.enumerated() {
-                for (rowIndex, entry) in section.entries.enumerated() {
-                    if entry.guid == guid {
-                        let indexPath = IndexPath(item: rowIndex, section: sectionIndex)
-                        collectionView.selectionIndexPaths = Set<IndexPath>([indexPath])
-                    }
-                }
-            }
-        }
     }
 }
 
@@ -175,6 +145,11 @@ extension TimeEntryDatasource {
         let flowLayout = VertificalTimeEntryFlowLayout()
         flowLayout.delegate = self
         collectionView.collectionViewLayout = flowLayout
+
+        // Dragging
+        collectionView.registerForDraggedTypes([NSPasteboard.PasteboardType.string])
+        collectionView.setDraggingSourceOperationMask(NSDragOperation.move, forLocal: true)
+        collectionView.setDraggingSourceOperationMask(NSDragOperation.link, forLocal: false)
     }
 
     fileprivate func registerAllCells() {

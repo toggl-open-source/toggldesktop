@@ -76,6 +76,39 @@ extern void *ctx;
 	[self updateHoverState:NO];
 }
 
+- (void)mouseEntered:(NSEvent *)event
+{
+	[super mouseEntered:event];
+
+	// Only pply hover color if it's not sub-items
+	if (self.cellType != CellTypeSubItemInGroup)
+	{
+		[self updateHoverState:YES];
+	}
+
+	// Continue
+	self.continueButton.hidden = NO;
+}
+
+- (void)mouseExited:(NSEvent *)event
+{
+	[super mouseExited:event];
+
+	if (self.isSelected)
+	{
+		return;
+	}
+
+	// Only pply hover color if it's not sub-items
+	if (self.cellType != CellTypeSubItemInGroup)
+	{
+		[self updateHoverState:NO];
+	}
+
+	// Continue
+	self.continueButton.hidden = YES;
+}
+
 - (void)updateHoverState:(BOOL)isHover {
 	if (isHover)
 	{
