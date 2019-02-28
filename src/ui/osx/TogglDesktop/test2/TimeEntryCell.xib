@@ -80,20 +80,6 @@
                         <constraint firstItem="deS-e6-3Ui" firstAttribute="leading" secondItem="Uu2-26-kM4" secondAttribute="leading" constant="16" id="w0I-0b-kLQ"/>
                     </constraints>
                 </customView>
-                <button toolTip="Continue with this time entry" horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Gcj-ki-Hus">
-                    <rect key="frame" x="371" y="25" width="14" height="14"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="14" id="So6-zJ-3fL"/>
-                        <constraint firstAttribute="height" constant="14" id="a1q-cQ-frr"/>
-                    </constraints>
-                    <buttonCell key="cell" type="bevel" bezelStyle="regularSquare" image="continue-timer-button" imagePosition="only" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="RwR-fM-rUm">
-                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="system"/>
-                    </buttonCell>
-                    <connections>
-                        <action selector="continueTimeEntry:" target="TVu-sQ-Sng" id="xd0-F0-KSJ"/>
-                    </connections>
-                </button>
                 <stackView distribution="equalSpacing" orientation="horizontal" alignment="centerY" spacing="5" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rE8-8i-mr7">
                     <rect key="frame" x="264" y="24" width="39" height="17"/>
                     <subviews>
@@ -168,6 +154,20 @@
                 <box verticalHuggingPriority="750" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="eSk-jb-AGA">
                     <rect key="frame" x="0.0" y="-2" width="400" height="5"/>
                 </box>
+                <button toolTip="Continue with this time entry" horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Gcj-ki-Hus">
+                    <rect key="frame" x="371" y="25" width="14" height="14"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="14" id="So6-zJ-3fL"/>
+                        <constraint firstAttribute="height" constant="14" id="a1q-cQ-frr"/>
+                    </constraints>
+                    <buttonCell key="cell" type="bevel" bezelStyle="regularSquare" image="continue-timer-button" imagePosition="only" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="RwR-fM-rUm">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="continueTimeEntry:" target="TVu-sQ-Sng" id="xd0-F0-KSJ"/>
+                    </connections>
+                </button>
             </subviews>
             <constraints>
                 <constraint firstItem="xwb-FG-Z4X" firstAttribute="centerY" secondItem="jHy-af-Yta" secondAttribute="centerY" id="0wK-iR-SBw"/>
@@ -191,7 +191,7 @@
                 <constraint firstItem="eSk-jb-AGA" firstAttribute="leading" secondItem="jHy-af-Yta" secondAttribute="leading" id="sIn-Ff-2i4"/>
                 <constraint firstItem="dmW-8k-lRI" firstAttribute="leading" secondItem="jHy-af-Yta" secondAttribute="leading" constant="10" id="wER-3A-oI4"/>
             </constraints>
-            <point key="canvasLocation" x="-160" y="-381"/>
+            <point key="canvasLocation" x="-160" y="-359.5"/>
         </customView>
     </objects>
     <resources>

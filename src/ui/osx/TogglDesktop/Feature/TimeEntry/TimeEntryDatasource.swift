@@ -122,13 +122,38 @@ class TimeEntryDatasource: NSObject {
         }
 
         // Reload
-        self.sections = sections
-        collectionView.reloadData()
+        reloadAndReselect(with: sections)
     }
 
     @objc func object(at indexPath: IndexPath) -> TimeEntryViewItem? {
         guard let section = sections[safe: indexPath.section] else { return nil }
         return section.entries[safe: indexPath.item]
+    }
+
+    private func reloadAndReselect(with sections: [TimeEntrySection]) {
+
+        // Find the selected guid
+        var guid: String?
+        if let indexPath = collectionView.selectionIndexPaths.first,
+            let item = collectionView.item(at: indexPath) as? TimeEntryCell {
+            guid = item.guid
+        }
+
+        // Reload
+        self.sections = sections
+        collectionView.reloadData()
+
+        // Reselect
+        if let guid = guid {
+            for (sectionIndex, section) in sections.enumerated() {
+                for (rowIndex, entry) in section.entries.enumerated() {
+                    if entry.guid == guid {
+                        let indexPath = IndexPath(item: rowIndex, section: sectionIndex)
+                        collectionView.selectionIndexPaths = Set<IndexPath>([indexPath])
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -266,24 +291,6 @@ extension TimeEntryDatasource: NSCollectionViewDataSource, NSCollectionViewDeleg
                                                     fatalError()
         }
         return cell
-    }
-
-    func collectionView(_ collectionView: NSCollectionView, didSelectItemsAt indexPaths: Set<IndexPath>) {
-        guard let selectedIndex = collectionView.selectionIndexPaths.first,
-            let timeEntryCell = collectionView.item(at: selectedIndex) as? TimeEntryCell else {
-            return
-        }
-
-        defer {
-            collectionView.deselectItems(at: indexPaths)
-        }
-
-        if timeEntryCell.cellType == .group {
-            NotificationCenter.default.postNotificationOnMainThread(NSNotification.Name(kToggleGroup),
-                                                                    object: timeEntryCell.groupName)
-            return
-        }
-        timeEntryCell.focusFieldName()
     }
 }
 

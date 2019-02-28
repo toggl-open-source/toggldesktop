@@ -366,4 +366,29 @@ extern void *ctx;
 	self.backgroundBox.wantsLayer = NO;
 }
 
+// - (void)mouseDown:(NSEvent *)event {
+//    [super mouseDown:event];
+// }
+//
+// - (IBAction)performClick:(id)sender {
+//    NSLog(@"performClick");
+////    if timeEntryCell.cellType == .group {
+////        NotificationCenter.default.postNotificationOnMainThread(NSNotification.Name(kToggleGroup),
+////                                                                object: timeEntryCell.groupName)
+////        return
+////    }
+////    timeEntryCell.focusFieldName()
+//
+//    if (self.cellType == CellTypeGroup)
+//    {
+//        [[NSNotificationCenter defaultCenter] postNotificationName:kToggleGroup object:self.GroupName];
+//    }
+//    else
+//    {
+//        [self focusFieldName];
+//    }
+//
+//
+// }
+
 @end
