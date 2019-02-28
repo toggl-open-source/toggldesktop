@@ -24,7 +24,6 @@ typedef NS_ENUM (NSUInteger, CellType)
 @property (assign, nonatomic) CellType cellType;
 @property (assign, nonatomic) BOOL Group;
 @property (assign, nonatomic) BOOL GroupOpen;
-@property (nonatomic, weak) NSCollectionView *collectionView;
 
 @property long long GroupItemCount;
 @property BOOL confirmless_delete;

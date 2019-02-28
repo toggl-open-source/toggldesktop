@@ -191,7 +191,7 @@
                 <constraint firstItem="eSk-jb-AGA" firstAttribute="leading" secondItem="jHy-af-Yta" secondAttribute="leading" id="sIn-Ff-2i4"/>
                 <constraint firstItem="dmW-8k-lRI" firstAttribute="leading" secondItem="jHy-af-Yta" secondAttribute="leading" constant="10" id="wER-3A-oI4"/>
             </constraints>
-            <point key="canvasLocation" x="-160" y="-359.5"/>
+            <point key="canvasLocation" x="-560" y="-711"/>
         </customView>
     </objects>
     <resources>

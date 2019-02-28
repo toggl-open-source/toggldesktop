@@ -35,6 +35,23 @@
 
 extern void *ctx;
 
+- (void)setSelected:(BOOL)selected {
+	[super setSelected:selected];
+	self.continueButton.hidden = !selected;
+	if (self.cellType == CellTypeSubItemInGroup)
+	{
+		return;
+	}
+	if (selected)
+	{
+		[self setFocused];
+	}
+	else
+	{
+		[self setUnfocus];
+	}
+}
+
 - (void)awakeFromNib {
 	[super awakeFromNib];
 
@@ -57,34 +74,6 @@ extern void *ctx;
 	self.continueButton.hidden = YES;
 	[self resetMask];
 	[self updateHoverState:NO];
-}
-
-- (void)mouseEntered:(NSEvent *)event
-{
-	[super mouseEntered:event];
-
-	// Only pply hover color if it's not sub-items
-	if (self.cellType != CellTypeSubItemInGroup)
-	{
-		[self updateHoverState:YES];
-	}
-
-	// Continue
-	self.continueButton.hidden = NO;
-}
-
-- (void)mouseExited:(NSEvent *)event
-{
-	[super mouseExited:event];
-
-	// Only pply hover color if it's not sub-items
-	if (self.cellType != CellTypeSubItemInGroup)
-	{
-		[self updateHoverState:NO];
-	}
-
-	// Continue
-	self.continueButton.hidden = YES;
 }
 
 - (void)updateHoverState:(BOOL)isHover {
@@ -331,6 +320,10 @@ extern void *ctx;
 	[self updateHoverState:YES];
 }
 
+- (void)setUnfocus {
+	[self updateHoverState:NO];
+}
+
 - (void)openEdit
 {
 	if (self.GUID != nil)
@@ -365,30 +358,5 @@ extern void *ctx;
 	self.backgroundBox.layer.mask = nil;
 	self.backgroundBox.wantsLayer = NO;
 }
-
-// - (void)mouseDown:(NSEvent *)event {
-//    [super mouseDown:event];
-// }
-//
-// - (IBAction)performClick:(id)sender {
-//    NSLog(@"performClick");
-////    if timeEntryCell.cellType == .group {
-////        NotificationCenter.default.postNotificationOnMainThread(NSNotification.Name(kToggleGroup),
-////                                                                object: timeEntryCell.groupName)
-////        return
-////    }
-////    timeEntryCell.focusFieldName()
-//
-//    if (self.cellType == CellTypeGroup)
-//    {
-//        [[NSNotificationCenter defaultCenter] postNotificationName:kToggleGroup object:self.GroupName];
-//    }
-//    else
-//    {
-//        [self focusFieldName];
-//    }
-//
-//
-// }
 
 @end

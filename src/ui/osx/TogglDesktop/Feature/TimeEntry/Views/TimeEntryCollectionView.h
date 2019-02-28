@@ -12,6 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface TimeEntryCollectionView : NSCollectionView
 
+@property (strong, nonatomic) NSIndexPath *clickedIndexPath;
+
 @end
 
 NS_ASSUME_NONNULL_END

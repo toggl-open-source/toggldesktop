@@ -24,7 +24,7 @@ class TimerWidget : public QFrame {
     explicit TimerWidget(QWidget *parent = 0);
     ~TimerWidget();
 
-private:
+ private:
 
  signals:
     void buttonClicked();

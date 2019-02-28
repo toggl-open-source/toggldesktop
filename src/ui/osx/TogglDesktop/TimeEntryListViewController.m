@@ -241,8 +241,8 @@ extern void *ctx;
 	NSLog(@"TimeEntryListViewController displayTimeEntryEditor, thread %@", [NSThread currentThread]);
 
     // Get selected index
-	NSIndexPath *selectedIndexpath = [self.collectionView.selectionIndexPaths.allObjects firstObject];
-	if (selectedIndexpath == nil)
+	NSIndexPath *clickedIndexPath = self.collectionView.clickedIndexPath;
+	if (clickedIndexPath == nil)
 	{
 		return;
 	}
@@ -253,7 +253,7 @@ extern void *ctx;
 		self.runningEdit = (cmd.timeEntry.duration_in_seconds < 0);
 
 		NSView *ofView = self.view;
-		CGRect positionRect = [self positionRectOfSelectedRowAtIndexPath:selectedIndexpath];
+		CGRect positionRect = [self positionRectOfSelectedRowAtIndexPath:clickedIndexPath];
 
 		if (self.runningEdit)
 		{
@@ -292,13 +292,6 @@ extern void *ctx;
 - (void)startDisplayTimeEntryEditor:(NSNotification *)notification
 {
 	[self displayTimeEntryEditor:notification.object];
-}
-
-- (BOOL)  tableView:(NSTableView *)aTableView
-	shouldSelectRow:(NSInteger)rowIndex
-{
-	[self clearLastSelectedEntry];
-	return YES;
 }
 
 - (TimeEntryCell *)getSelectedEntryCellWithIndexPath:(NSIndexPath *)indexPath
@@ -610,5 +603,4 @@ extern void *ctx;
 		 }];
 	}
 }
-
 @end
