@@ -79,21 +79,15 @@ final class FloatingErrorView: NSView {
         delegate?.floatingErrorShouldHide()
     }
 
-    @objc func registerToSystemMessage() {
-        SystemMessage.shared.register(for: self)
-    }
-}
-
-extension FloatingErrorView: SystemMessagePresentable {
-
-    func present(_ message: SystemMessage.Message) {
+    func present(_ payload: SystemMessage.Payload) {
 
         // Present
         delegate?.floatingErrorShouldPresent()
 
         // Apply text and text color
-        switch message {
+        switch payload.content {
         case .error(let title, let subtitle):
+
             // Title
             subtitleLabel.isHidden = subtitle == nil
             subtitleLabel.stringValue = subtitle ?? ""

@@ -10,14 +10,26 @@ import Foundation
 
 protocol SystemMessagePresentable {
 
-    func present(_ message: SystemMessage.Message)
+    func present(_ payload: SystemMessage.Payload)
 }
 
 @objc final class SystemMessage: NSObject {
 
-    enum Message {
+    enum Mode {
+        case offline
+        case syncing
+        case error
+    }
+
+    enum Content {
         case error(String, String?) // Title + subtitle
         case informative(String)
+    }
+
+    struct Payload {
+
+        let mode: Mode
+        let content: Content
     }
 
     // MARK: Variable
@@ -27,13 +39,8 @@ protocol SystemMessagePresentable {
 
     // Public
 
-    func present(_ message: Message) {
-        presenter?.present(message)
-    }
-
-    @objc func present(_ title: String, subtitle: String?) {
-        let message = Message.error(title, subtitle)
-        present(message)
+    func present(_ payload: SystemMessage.Payload) {
+        presenter?.present(payload)
     }
 
     func register(for presenter: SystemMessagePresentable) {

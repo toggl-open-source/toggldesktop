@@ -28,22 +28,26 @@
                 <subviews>
                     <customView translatesAutoresizingMaskIntoConstraints="NO" id="av5-A6-9S5" userLabel="ContentView">
                         <rect key="frame" x="0.0" y="0.0" width="300" height="398"/>
-                    </customView>
-                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="qhD-lQ-1ny">
-                        <rect key="frame" x="30" y="10" width="240" height="38"/>
+                        <subviews>
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="qhD-lQ-1ny">
+                                <rect key="frame" x="30" y="10" width="240" height="38"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="240" id="ONR-eI-wsr"/>
+                                    <constraint firstAttribute="height" priority="250" constant="38" id="jjn-Bd-SaA"/>
+                                </constraints>
+                            </customView>
+                        </subviews>
                         <constraints>
-                            <constraint firstAttribute="width" constant="240" id="ONR-eI-wsr"/>
-                            <constraint firstAttribute="height" priority="250" constant="38" id="jjn-Bd-SaA"/>
+                            <constraint firstAttribute="trailing" secondItem="qhD-lQ-1ny" secondAttribute="trailing" constant="30" id="UwN-Dz-AYB"/>
+                            <constraint firstAttribute="bottom" secondItem="qhD-lQ-1ny" secondAttribute="bottom" constant="10" id="XBL-rN-iVj"/>
+                            <constraint firstItem="qhD-lQ-1ny" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="av5-A6-9S5" secondAttribute="leading" constant="30" id="exI-vJ-UcM"/>
                         </constraints>
                     </customView>
                 </subviews>
                 <constraints>
                     <constraint firstItem="av5-A6-9S5" firstAttribute="leading" secondItem="2" secondAttribute="leading" id="P13-nu-UZ0"/>
-                    <constraint firstAttribute="trailing" secondItem="qhD-lQ-1ny" secondAttribute="trailing" constant="30" id="d2y-I7-wuc"/>
-                    <constraint firstAttribute="bottom" secondItem="qhD-lQ-1ny" secondAttribute="bottom" constant="10" id="dUa-4s-nD8"/>
                     <constraint firstAttribute="bottom" secondItem="av5-A6-9S5" secondAttribute="bottom" priority="750" id="dey-uV-HtZ"/>
                     <constraint firstItem="av5-A6-9S5" firstAttribute="top" secondItem="2" secondAttribute="top" id="fQ4-vy-qkk"/>
-                    <constraint firstItem="qhD-lQ-1ny" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="2" secondAttribute="leading" constant="30" id="ok8-Lh-vQj"/>
                     <constraint firstAttribute="trailing" secondItem="av5-A6-9S5" secondAttribute="trailing" id="vIk-4N-Ddi"/>
                 </constraints>
             </view>
