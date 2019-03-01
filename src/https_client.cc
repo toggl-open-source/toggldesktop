@@ -490,6 +490,16 @@ HTTPSResponse HTTPSClient::makeHttpRequest(
         }
 
         resp.err = statusCodeToError(resp.status_code);
+
+        // Parse human-readable error message from response if Content Type JSON
+        if (resp.err != noError &&
+                response.getContentType().find(kContentTypeApplicationJSON) != std::string::npos) {
+            Json::Value root;
+            Json::Reader reader;
+            if (reader.parse(resp.body, root)) {
+                resp.body = root["error_message"].asString();
+            }
+        }
     } catch(const Poco::Exception& exc) {
         resp.err = exc.displayText();
         return resp;

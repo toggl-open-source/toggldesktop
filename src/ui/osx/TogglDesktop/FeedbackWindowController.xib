@@ -3,13 +3,16 @@
     <dependencies>
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="FeedbackWindowController">
             <connections>
-                <outlet property="contentTextView" destination="ELz-XL-Qzo" id="JLl-Q8-xY3"/>
-                <outlet property="selectedImageTextField" destination="x76-9l-cFh" id="1ad-jC-hGo"/>
+                <outlet property="contentTextView" destination="ELz-XL-Qzo" id="mJ8-0w-x0h"/>
+                <outlet property="errorLabel" destination="F8Z-u0-ZgF" id="ykR-l0-rTa"/>
+                <outlet property="selectedImageBox" destination="cwt-Qf-BA4" id="B6b-4l-GQ6"/>
+                <outlet property="selectedImageTextField" destination="lSb-Rs-jzn" id="Zvr-cW-ghp"/>
                 <outlet property="sendButton" destination="NiB-Hs-GGA" id="9CK-k7-OAY"/>
                 <outlet property="topicComboBox" destination="dbV-zH-aRj" id="nzR-gp-tIx"/>
                 <outlet property="uploadImageButton" destination="NR5-ST-87O" id="TN5-xK-BoH"/>
@@ -20,18 +23,25 @@
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <window title="Send Feedback" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" animationBehavior="default" id="1">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
-            <rect key="contentRect" x="196" y="240" width="353" height="305"/>
+            <rect key="contentRect" x="196" y="240" width="300" height="400"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
-            <value key="minSize" type="size" width="353" height="305"/>
-            <value key="maxSize" type="size" width="353" height="305"/>
+            <value key="minSize" type="size" width="300" height="400"/>
+            <value key="maxSize" type="size" width="500" height="700"/>
             <view key="contentView" id="2">
-                <rect key="frame" x="0.0" y="0.0" width="353" height="305"/>
+                <rect key="frame" x="0.0" y="0.0" width="300" height="400"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <comboBox verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dbV-zH-aRj">
-                        <rect key="frame" x="20" y="236" width="316" height="26"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="- Please specify the topic -" drawsBackground="YES" completes="NO" numberOfVisibleItems="5" id="EdL-4a-0rc">
+                    <box boxType="custom" borderType="none" borderWidth="0.0" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="Zfu-dT-QNC">
+                        <rect key="frame" x="0.0" y="0.0" width="300" height="400"/>
+                        <view key="contentView" id="0n9-kQ-v9n">
+                            <rect key="frame" x="0.0" y="0.0" width="300" height="400"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        </view>
+                        <color key="fillColor" name="feedback-background-color"/>
+                    </box>
+                    <comboBox verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="dbV-zH-aRj">
+                        <rect key="frame" x="20" y="328" width="263" height="26"/>
+                        <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="Please specify the topic" drawsBackground="YES" completes="NO" numberOfVisibleItems="5" id="EdL-4a-0rc">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -42,78 +52,207 @@
                             </objectValues>
                         </comboBoxCell>
                     </comboBox>
-                    <scrollView fixedFrame="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TG8-w0-r91">
-                        <rect key="frame" x="20" y="90" width="313" height="135"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                        <clipView key="contentView" ambiguous="YES" drawsBackground="NO" id="Ina-OJ-HA6">
-                            <rect key="frame" x="1" y="1" width="311" height="133"/>
+                    <scrollView borderType="line" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TG8-w0-r91">
+                        <rect key="frame" x="20" y="212" width="260" height="100"/>
+                        <clipView key="contentView" drawsBackground="NO" id="Ina-OJ-HA6">
+                            <rect key="frame" x="1" y="1" width="243" height="98"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
-                                <textView ambiguous="YES" importsGraphics="NO" verticallyResizable="YES" usesFontPanel="YES" findStyle="panel" continuousSpellChecking="YES" allowsUndo="YES" usesRuler="YES" allowsNonContiguousLayout="YES" quoteSubstitution="YES" dashSubstitution="YES" smartInsertDelete="YES" id="ELz-XL-Qzo">
-                                    <rect key="frame" x="0.0" y="0.0" width="311" height="133"/>
+                                <textView importsGraphics="NO" verticallyResizable="YES" usesFontPanel="YES" findStyle="panel" continuousSpellChecking="YES" allowsUndo="YES" usesRuler="YES" allowsNonContiguousLayout="YES" quoteSubstitution="YES" dashSubstitution="YES" smartInsertDelete="YES" id="ELz-XL-Qzo">
+                                    <rect key="frame" x="0.0" y="0.0" width="243" height="98"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                    <size key="minSize" width="311" height="133"/>
+                                    <size key="minSize" width="243" height="98"/>
                                     <size key="maxSize" width="463" height="10000000"/>
                                     <color key="insertionPointColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                 </textView>
                             </subviews>
                         </clipView>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="100" id="rxd-aj-3xM"/>
+                        </constraints>
                         <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="YES" id="eYU-yC-MZ2">
                             <rect key="frame" x="-100" y="-100" width="87" height="18"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
                         <scroller key="verticalScroller" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="CVO-3Q-PTv">
-                            <rect key="frame" x="296" y="1" width="16" height="133"/>
+                            <rect key="frame" x="244" y="1" width="15" height="98"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
                     </scrollView>
-                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NR5-ST-87O">
-                        <rect key="frame" x="212" y="45" width="127" height="32"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <buttonCell key="cell" type="push" title="Upload image" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="4zy-CO-iA4">
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="NR5-ST-87O" customClass="FlatButton" customModule="TogglDesktop" customModuleProvider="target">
+                        <rect key="frame" x="21" y="176" width="113" height="26"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="26" id="5Dc-Gv-7ba"/>
+                            <constraint firstAttribute="width" constant="113" id="KMw-7Z-WIa"/>
+                        </constraints>
+                        <buttonCell key="cell" type="squareTextured" title="Choose image" bezelStyle="texturedSquare" alignment="center" imageScaling="proportionallyDown" inset="2" id="4zy-CO-iA4">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="color" keyPath="textColor">
+                                <color key="value" name="black-text-color"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                <real key="value" value="8"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
                         <connections>
                             <action selector="uploadImageClick:" target="-2" id="8gY-Hc-7Ko"/>
                         </connections>
                     </button>
-                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NiB-Hs-GGA">
-                        <rect key="frame" x="212" y="12" width="127" height="32"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <buttonCell key="cell" type="push" title="Send" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Dfz-lx-Scr">
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="NiB-Hs-GGA" customClass="FlatButton" customModule="TogglDesktop" customModuleProvider="target">
+                        <rect key="frame" x="20" y="20" width="260" height="26"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="26" id="1fq-oC-Oyv"/>
+                            <constraint firstAttribute="width" constant="260" id="B4z-cJ-Oaf"/>
+                        </constraints>
+                        <buttonCell key="cell" type="bevel" title="Send" bezelStyle="regularSquare" alignment="center" imageScaling="proportionallyDown" inset="2" id="Dfz-lx-Scr">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="color" keyPath="bgColor">
+                                <color key="value" name="green-color"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="color" keyPath="textColor">
+                                <color key="value" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                <real key="value" value="8"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
                         <connections>
                             <action selector="sendClick:" target="-2" id="SiE-yx-83h"/>
                         </connections>
                     </button>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dhE-W6-jv7">
-                        <rect key="frame" x="20" y="268" width="315" height="17"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Send us your feedback and questions" id="Pxe-7D-PlN">
-                            <font key="font" metaFont="system"/>
-                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="dhE-W6-jv7">
+                        <rect key="frame" x="18" y="362" width="247" height="18"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="left" title="Send us your feedback and questions" id="Pxe-7D-PlN">
+                            <font key="font" metaFont="system" size="14"/>
+                            <color key="textColor" name="black-text-color"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="x76-9l-cFh">
-                        <rect key="frame" x="20" y="54" width="192" height="17"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" placeholderString="(maximum image size 5MB)" id="uDw-EN-KEh">
-                            <font key="font" metaFont="system"/>
-                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="x76-9l-cFh">
+                        <rect key="frame" x="148" y="181" width="134" height="16"/>
+                        <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" placeholderString="Maximum file size 5MB" id="uDw-EN-KEh">
+                            <font key="font" metaFont="cellTitle"/>
+                            <color key="textColor" name="grey-text-color"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <box hidden="YES" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" boxType="custom" borderType="line" title="Box" translatesAutoresizingMaskIntoConstraints="NO" id="cwt-Qf-BA4">
+                        <rect key="frame" x="21" y="119" width="259" height="47"/>
+                        <view key="contentView" id="f8w-Ty-Nzy">
+                            <rect key="frame" x="1" y="1" width="257" height="45"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <subviews>
+                                <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Wzg-52-ZgF">
+                                    <rect key="frame" x="10" y="12" width="18" height="21"/>
+                                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="feedback-image" id="lbf-fF-Amc"/>
+                                </imageView>
+                                <button horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="uOR-Th-fr2">
+                                    <rect key="frame" x="240" y="19" width="7" height="7"/>
+                                    <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="close-button" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="zW7-7H-Bjc">
+                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <action selector="closeFileOnTap:" target="-2" id="v5U-X1-xWh"/>
+                                    </connections>
+                                </button>
+                                <textField horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="lSb-Rs-jzn">
+                                    <rect key="frame" x="36" y="14" width="68" height="18"/>
+                                    <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" alignment="left" title="Image.jpg" usesSingleLineMode="YES" id="nuF-Lj-IlR">
+                                        <font key="font" metaFont="system" size="14"/>
+                                        <color key="textColor" name="black-text-color"/>
+                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                </textField>
+                            </subviews>
+                            <constraints>
+                                <constraint firstAttribute="trailing" secondItem="uOR-Th-fr2" secondAttribute="trailing" constant="10" id="S7V-nO-xEm"/>
+                                <constraint firstItem="uOR-Th-fr2" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="lSb-Rs-jzn" secondAttribute="trailing" priority="750" constant="10" id="Vqu-Rq-LjO"/>
+                                <constraint firstItem="uOR-Th-fr2" firstAttribute="centerY" secondItem="f8w-Ty-Nzy" secondAttribute="centerY" id="c2r-PW-LP6"/>
+                                <constraint firstItem="Wzg-52-ZgF" firstAttribute="centerY" secondItem="f8w-Ty-Nzy" secondAttribute="centerY" id="ggx-YU-AWW"/>
+                                <constraint firstItem="Wzg-52-ZgF" firstAttribute="leading" secondItem="f8w-Ty-Nzy" secondAttribute="leading" constant="10" id="l4i-zM-wMB"/>
+                                <constraint firstItem="lSb-Rs-jzn" firstAttribute="leading" secondItem="Wzg-52-ZgF" secondAttribute="trailing" constant="10" id="oeA-vh-F81"/>
+                                <constraint firstItem="lSb-Rs-jzn" firstAttribute="centerY" secondItem="f8w-Ty-Nzy" secondAttribute="centerY" id="prC-Dh-3xJ"/>
+                            </constraints>
+                        </view>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="47" id="vVy-ui-1mK"/>
+                        </constraints>
+                        <color key="borderColor" name="lighter-grey-text"/>
+                    </box>
+                    <textField hidden="YES" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="F8Z-u0-ZgF">
+                        <rect key="frame" x="19" y="56" width="263" height="32"/>
+                        <textFieldCell key="cell" selectable="YES" title="Feedback not sent – please type in your feedback" id="kco-ln-AqF">
+                            <font key="font" metaFont="cellTitle"/>
+                            <color key="textColor" name="error-title-color"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
                 </subviews>
+                <constraints>
+                    <constraint firstItem="TG8-w0-r91" firstAttribute="top" secondItem="dbV-zH-aRj" secondAttribute="bottom" constant="20" id="4RN-Ap-c6A"/>
+                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="NiB-Hs-GGA" secondAttribute="trailing" constant="20" id="Ic2-0r-CeZ"/>
+                    <constraint firstItem="NR5-ST-87O" firstAttribute="leading" secondItem="ELz-XL-Qzo" secondAttribute="leading" id="L3b-OI-qZ7"/>
+                    <constraint firstItem="F8Z-u0-ZgF" firstAttribute="top" relation="greaterThanOrEqual" secondItem="cwt-Qf-BA4" secondAttribute="bottom" constant="10" id="LOC-Ax-vmU"/>
+                    <constraint firstItem="NR5-ST-87O" firstAttribute="top" secondItem="TG8-w0-r91" secondAttribute="bottom" constant="10" id="Lxo-VX-8bU"/>
+                    <constraint firstItem="cwt-Qf-BA4" firstAttribute="top" secondItem="NR5-ST-87O" secondAttribute="bottom" constant="10" id="NTE-c2-9yN"/>
+                    <constraint firstAttribute="trailing" secondItem="dbV-zH-aRj" secondAttribute="trailing" constant="20" id="OzP-pY-8of"/>
+                    <constraint firstItem="Zfu-dT-QNC" firstAttribute="top" secondItem="2" secondAttribute="top" id="Qna-Qu-9Gv"/>
+                    <constraint firstItem="dhE-W6-jv7" firstAttribute="leading" secondItem="2" secondAttribute="leading" constant="20" id="Qyr-q0-P9b"/>
+                    <constraint firstItem="F8Z-u0-ZgF" firstAttribute="trailing" secondItem="TG8-w0-r91" secondAttribute="trailing" id="Ss5-DD-BAi"/>
+                    <constraint firstItem="dhE-W6-jv7" firstAttribute="top" secondItem="2" secondAttribute="top" constant="20" id="VsN-h0-MP7"/>
+                    <constraint firstItem="Zfu-dT-QNC" firstAttribute="leading" secondItem="2" secondAttribute="leading" id="Y3j-cE-oNv"/>
+                    <constraint firstItem="F8Z-u0-ZgF" firstAttribute="leading" secondItem="ELz-XL-Qzo" secondAttribute="leading" id="cVV-nO-iiQ"/>
+                    <constraint firstItem="dbV-zH-aRj" firstAttribute="top" secondItem="dhE-W6-jv7" secondAttribute="bottom" constant="10" id="cXa-bh-JMO"/>
+                    <constraint firstItem="NiB-Hs-GGA" firstAttribute="centerX" secondItem="2" secondAttribute="centerX" id="d6j-zP-yDJ"/>
+                    <constraint firstItem="NiB-Hs-GGA" firstAttribute="top" secondItem="F8Z-u0-ZgF" secondAttribute="bottom" constant="10" id="dgU-3J-X3h"/>
+                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="dhE-W6-jv7" secondAttribute="trailing" constant="20" id="fDP-Gr-tF0"/>
+                    <constraint firstItem="NiB-Hs-GGA" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="2" secondAttribute="leading" constant="20" id="jU9-dl-IL4"/>
+                    <constraint firstAttribute="trailing" secondItem="TG8-w0-r91" secondAttribute="trailing" constant="20" id="mCE-Ch-9AJ"/>
+                    <constraint firstItem="cwt-Qf-BA4" firstAttribute="trailing" secondItem="TG8-w0-r91" secondAttribute="trailing" id="ons-Vy-Fiq"/>
+                    <constraint firstAttribute="trailing" secondItem="Zfu-dT-QNC" secondAttribute="trailing" id="p3U-VM-sPw"/>
+                    <constraint firstItem="x76-9l-cFh" firstAttribute="trailing" secondItem="TG8-w0-r91" secondAttribute="trailing" id="qA5-pP-aIJ"/>
+                    <constraint firstItem="TG8-w0-r91" firstAttribute="leading" secondItem="2" secondAttribute="leading" constant="20" id="rgA-CB-ENO"/>
+                    <constraint firstItem="cwt-Qf-BA4" firstAttribute="leading" secondItem="ELz-XL-Qzo" secondAttribute="leading" id="rik-HK-Avt"/>
+                    <constraint firstAttribute="bottom" secondItem="Zfu-dT-QNC" secondAttribute="bottom" id="sI7-KH-mro"/>
+                    <constraint firstItem="dbV-zH-aRj" firstAttribute="leading" secondItem="dhE-W6-jv7" secondAttribute="leading" id="upR-l0-J2g"/>
+                    <constraint firstItem="x76-9l-cFh" firstAttribute="centerY" secondItem="NR5-ST-87O" secondAttribute="centerY" id="y93-hp-Svf"/>
+                    <constraint firstAttribute="bottom" secondItem="NiB-Hs-GGA" secondAttribute="bottom" constant="20" id="yMY-pR-7fD"/>
+                </constraints>
             </view>
             <connections>
                 <outlet property="delegate" destination="-2" id="4"/>
             </connections>
         </window>
     </objects>
+    <resources>
+        <image name="close-button" width="7" height="7"/>
+        <image name="feedback-image" width="18" height="21"/>
+        <namedColor name="black-text-color">
+            <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="error-title-color">
+            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="feedback-background-color">
+            <color red="0.98039215686274506" green="0.98431372549019602" blue="0.9882352941176471" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="green-color">
+            <color red="0.15686274509803921" green="0.80392156862745101" blue="0.25490196078431371" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="grey-text-color">
+            <color red="0.33333333333333331" green="0.33333333333333331" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="lighter-grey-text">
+            <color red="0.67450980392156867" green="0.67450980392156867" blue="0.67450980392156867" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
 </document>

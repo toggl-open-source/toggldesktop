@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>356</width>
+    <width>284</width>
     <height>59</height>
    </rect>
   </property>
@@ -53,7 +53,7 @@
    <item>
     <widget class="QFrame" name="DecrProjFrame">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
@@ -68,6 +68,25 @@
       <property name="bottomMargin">
        <number>3</number>
       </property>
+      <item>
+       <widget class="QLabel" name="descriptionCover">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgba(45, 45, 45, 255);
+color: rgb(200, 200, 200);
+combobox-popup: 0;
+font-size: 14px;</string>
+        </property>
+        <property name="text">
+         <string>TextLabel</string>
+        </property>
+       </widget>
+      </item>
       <item>
        <widget class="AutocompleteComboBox" name="description">
         <property name="sizePolicy">

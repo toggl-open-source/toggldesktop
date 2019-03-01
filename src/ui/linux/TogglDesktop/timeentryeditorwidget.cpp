@@ -185,6 +185,7 @@ void TimeEntryEditorWidget::displayTimeEntryEditor(
 
         // Reset adding new project
         ui->newProject->setVisible(false);
+        ui->project->setVisible(true);
         ui->addNewProject->setVisible(true);
         ui->newProjectName->setText("");
         ui->publicProject->setChecked(false);
@@ -231,6 +232,7 @@ void TimeEntryEditorWidget::displayTimeEntryEditor(
     ui->billable->setVisible(view->CanSeeBillable);
     if (!view->CanAddProjects) {
         ui->newProject->setVisible(false);
+        ui->addNewProject->setVisible(false);
     }
 
     QStringList tags = view->Tags.split("\t", QString::SkipEmptyParts);
@@ -288,12 +290,15 @@ bool TimeEntryEditorWidget::applyNewProject() {
                           ui->newProjectName->text(),
                           !ui->publicProject->isChecked(),
                           colorCode);
+
+    ui->project->setVisible(true);
+
     return !projectGUID.isEmpty();
 }
 
 bool TimeEntryEditorWidget::eventFilter(QObject *object, QEvent *event) {
     if (event->type() == QEvent::FocusOut) {
-        if (object == ui->description) {
+        if (object == ui->description && !guid.isEmpty()) {
             TogglApi::instance->setTimeEntryDescription(guid,
                     ui->description->currentText());
         }
@@ -337,6 +342,7 @@ void TimeEntryEditorWidget::on_addNewProject_clicked() {
 
     ui->newProject->setVisible(true);
     ui->addNewProject->setVisible(false);
+    ui->project->setVisible(false);
 
     if (!hasMultipleWorkspaces) {
         ui->newProjectWorkspace->setCurrentIndex(0);

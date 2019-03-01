@@ -104,16 +104,6 @@ class MainWindowController : public QMainWindow {
     QxtGlobalShortcut* showHide;
     QxtGlobalShortcut* continueStop;
 
-    QAction *actionEmail;
-    QAction *actionNew;
-    QAction *actionContinue;
-    QAction *actionStop;
-    QAction *actionSync;
-    QAction *actionLogout;
-    QAction *actionClear_Cache;
-    QAction *actionSend_Feedback;
-    QAction *actionReports;
-
     PreferencesDialog *preferencesDialog;
     AboutDialog *aboutDialog;
     FeedbackDialog *feedbackDialog;
@@ -133,10 +123,11 @@ class MainWindowController : public QMainWindow {
     void writeSettings();
 
     void connectMenuActions();
-    void connectMenuAction(QAction *action);
     void enableMenuActions();
 
     bool ui_started;
+
+    void restoreLastWindowsFrame();
 };
 
 #endif  // SRC_UI_LINUX_TOGGLDESKTOP_MAINWINDOWCONTROLLER_H_

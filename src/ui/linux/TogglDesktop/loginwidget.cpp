@@ -28,7 +28,7 @@ oauth2(new OAuth2(this)) {
     countriesLoaded = false;
     selectedCountryId = UINT64_MAX;
 
-    on_viewchangelabel_linkActivated("");;
+    on_viewchangelabel_linkActivated("");
 }
 
 LoginWidget::~LoginWidget() {
@@ -36,12 +36,18 @@ LoginWidget::~LoginWidget() {
 }
 
 void LoginWidget::display() {
+    signupVisible = true;
+    on_viewchangelabel_linkActivated("");
     qobject_cast<QStackedWidget*>(parent())->setCurrentWidget(this);
 }
 
 void LoginWidget::keyPressEvent(QKeyEvent* event) {
     if (event->key() == Qt::Key_Enter || event->key() == Qt::Key_Return) {
-        on_login_clicked();
+        if (signupVisible) {
+            on_signup_clicked();
+        } else {
+            on_login_clicked();
+        }
     }
 }
 
@@ -109,7 +115,8 @@ void LoginWidget::on_signup_clicked() {
     if (!validateFields(true)) {
         return;
     }
-    TogglApi::instance->signup(ui->email->text(), ui->password->text());
+    TogglApi::instance->signup(ui->email->text(), ui->password->text(),
+                               selectedCountryId);
 }
 
 void LoginWidget::setCountries(

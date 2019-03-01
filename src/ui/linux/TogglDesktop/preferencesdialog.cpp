@@ -307,13 +307,8 @@ bool PreferencesDialog::setProxySettings() {
             ui->proxyPassword->text());
 }
 
-void PreferencesDialog::resizeEvent(QResizeEvent *event) {
-    QDialog::resizeEvent(event);
-    ui->reminderWarning->setGeometry(ui->tab_reminder->geometry());
-}
-
-void PreferencesDialog::showEvent(QShowEvent *event) {
-    QDialog::showEvent(event);
+void PreferencesDialog::paintEvent(QPaintEvent *event) {
+    QDialog::paintEvent(event);
     ui->reminderWarning->setGeometry(ui->tab_reminder->geometry());
 }
 

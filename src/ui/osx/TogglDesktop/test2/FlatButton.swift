@@ -21,6 +21,23 @@ final class FlatButton: NSButton {
     }
 
     override func awakeFromNib() {
+        super.awakeFromNib()
+
+        drawTextColor()
+    }
+
+    override func draw(_ dirtyRect: NSRect) {
+        if let bgColor = bgColor {
+            bgColor.setFill()
+            __NSRectFill(dirtyRect)
+        }
+
+        drawTextColor()
+
+        super.draw(dirtyRect)
+    }
+
+    private func drawTextColor() {
         if let textColor = textColor, let font = font {
             let style = NSMutableParagraphStyle()
             style.alignment = .center
@@ -31,14 +48,5 @@ final class FlatButton: NSButton {
             let attributedTitle = NSAttributedString(string: title, attributes: attributes)
             self.attributedTitle = attributedTitle
         }
-    }
-
-    override func draw(_ dirtyRect: NSRect) {
-        if let bgColor = bgColor {
-            bgColor.setFill()
-            __NSRectFill(dirtyRect)
-        }
-
-        super.draw(dirtyRect)
     }
 }

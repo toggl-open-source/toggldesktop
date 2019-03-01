@@ -33,16 +33,11 @@ source_dirs=src/*.cc src/*.h src/test/*.cc src/test/*.h \
 	src/ui/linux/TogglDesktop/timerwidget.h src/ui/linux/TogglDesktop/timerwidget.cpp \
 	src/ui/linux/TogglDesktop/toggl.h src/ui/linux/TogglDesktop/toggl.cpp
 
-ifndef QMAKE
-QMAKE=qmake
-endif
-
-ifndef MSBUILD
-MSBUILD=/cygdrive/c/Program\ Files/MSBuild/12.0/Bin/MSBuild.exe
-endif
-
-ifeq ($(uname), Darwin)
 xcodebuild_command=xcodebuild \
+				  -scheme TogglDesktop \
+				  -project src/ui/osx/TogglDesktop/TogglDesktop.xcodeproj  \
+				  -configuration Debug
+xcodebuild_command_release=xcodebuild \
 				  -scheme TogglDesktop \
 				  -project src/ui/osx/TogglDesktop/TogglDesktop.xcodeproj  \
 				  -configuration Release
@@ -50,21 +45,12 @@ executable=$(shell $(xcodebuild_command) \
 			 -showBuildSettings \
  			| grep -w 'BUILT_PRODUCTS_DIR' \
  			| cut -d'=' -f 2)/TogglDesktop.app/Contents/MacOS/TogglDesktop
+executable_release=$(shell $(xcodebuild_command_release) \
+			 -showBuildSettings \
+			| grep -w 'BUILT_PRODUCTS_DIR' \
+			| cut -d'=' -f 2)/TogglDesktop.app/Contents/MacOS/TogglDesktop
 pocolib=$(pocodir)/lib/Darwin/x86_64/
 osname=mac
-endif	
-
-ifeq ($(uname), Linux)
-executable=./src/ui/linux/TogglDesktop/build/release/TogglDesktop
-pocolib=$(pocodir)/lib/Linux/$(architecture)
-osname=linux
-endif
-
-ifneq (, $(findstring CYGWIN, $(uname) ))
-executable=./src/ui/windows/TogglDesktop/TogglDesktop/bin/Release_VS/TogglDesktop.exe
-pocolib=$(pocodir)/lib/CYGWIN/i686
-osname=windows
-endif
 
 pococflags = \
 	-I$(pocodir)/Foundation/include \
@@ -77,11 +63,7 @@ pococflags = \
 
 pocolibs = -L$(pocolib)
 
-ifeq ($(osname), windows)
-pococonfigure = --sqlite-thread-safe=0
-else
 pococonfigure = --cflags=-fPIC --sqlite-thread-safe=1
-endif
 
 pocolibs += \
 	-lPocoDataSQLite \
@@ -94,17 +76,12 @@ pocolibs += \
 	-lPocoJSON \
 	-lPocoFoundation
 
-ifeq ($(osname), windows)
-opensslincdirname = inc32
-else
 opensslincdirname = include
-endif
 
 opensslcflags = -I$(openssldir)/$(opensslincdirname)
 openssllibs = -L$(openssldir)
 opensslconfigure = --include-path=$(pwd)/$(openssldir)/$(opensslincdirname) --library-path=$(pwd)/$(openssldir)
 
-ifeq ($(osname), mac)
 cflags=-g -Wall -Wextra -Wno-deprecated -Wno-unused-parameter -Wunreachable-code -DLUA_USE_MACOSX \
 	-mmacosx-version-min=10.11 \
 	$(pococflags) $(opensslcflags) \
@@ -113,31 +90,7 @@ cflags=-g -Wall -Wextra -Wno-deprecated -Wno-unused-parameter -Wunreachable-code
 	-I$(jsoncppdir) \
 	-Ithird_party/lua/install/include \
 	-DNDEBUG
-endif
 
-ifeq ($(osname), linux)
-cflags=-g -Wall -Wextra -Wno-deprecated -Wno-unused-parameter -static \
-	$(opensslcflags) \
-	-I$(GTEST_ROOT)/include \
-	-I$(GTEST_ROOT) \
-	$(pococflags) \
-	-I$(jsoncppdir) \
-	-Ithird_party/lua/install/include \
-	-DNDEBUG
-endif
-
-ifeq ($(osname), windows)
-cflags=-g -Wall -Wextra -Wno-deprecated -Wno-unused-parameter -static \
-	$(opensslcflags) \
-	-I$(GTEST_ROOT)/include \
-	-I$(GTEST_ROOT) \
-	$(pococflags) \
-	-I$(jsoncppdir) \
-	-Ithird_party/lua/install/include \
-	-DNDEBUG
-endif
-
-ifeq ($(osname), mac)
 libs=-framework Carbon \
 	$(pocolibs) \
 	-lpthread \
@@ -147,38 +100,16 @@ libs=-framework Carbon \
   -Lthird_party/lua/install/lib \
 	-llua \
 	-ldl
-endif
-
-ifeq ($(osname), linux)
-libs=-lX11 \
-	$(pocolibs) \
-	-lpthread \
-	$(openssllibs) \
-	-lssl \
-	-lcrypto \
-	-lrt \
-  -Lthird_party/lua/install/lib \
-	-llua \
-	-ldl
-endif
-
-ifeq ($(osname), windows)
-libs= $(pocolibs) \
-	-lpthread \
-	$(openssllibs) \
-	-lrt \
-	-lpsapi \
-  -Lthird_party/lua/install/lib \
-	-llua
-endif
 
 cxx=g++ -fprofile-arcs -ftest-coverage -std=gnu++0x
 
-ifeq ($(osname), windows)
+UNAME_S := $(shell uname -s)
+ifeq ($(UNAME_S),Darwin)
 default: fmt app
+else
+default:
+	$(error this platform is not supported by Makefile.)
 endif
-
-default: fmt app
 
 csapi: generate_cs_api fmt
 
@@ -188,37 +119,11 @@ generate_cs_api:
 clean: clean_ui clean_lib clean_test
 	rm -rf build coverage
 
-ifeq ($(osname), linux)
-clean_lib:
-	rm -rf src/lib/linux/TogglDesktopLibrary/build && \
-	(cd src/lib/linux/TogglDesktopLibrary && $(QMAKE) && make clean)
-endif
-
-ifeq ($(osname), mac)
 clean_lib:
 	rm -rf src/lib/osx/build
-endif
 
-ifeq ($(osname), windows)
-clean_lib:
-	$(MSBUILD) src/lib/windows/TogglDesktopDLL/TogglDesktopDLL.vcxproj /p:Configuration=Release /target:Clean
-endif
-
-ifeq ($(osname), linux)
-clean_ui: clean-bugsnag-qt
-	(cd src/ui/linux/TogglDesktop && $(QMAKE) && make clean) && \
-	rm -rf src/ui/linux/TogglDesktop/build
-endif
-
-ifeq ($(osname), mac)
 clean_ui:
 	rm -rf src/ui/osx/TogglDesktop/build third_party/TFDatePicker/TFDatePicker/build TogglDesktop*.dmg TogglDesktop*.tar.gz
-endif
-
-ifeq ($(osname), windows)
-clean_ui:
-	$(MSBUILD) src/ui/windows/TogglDesktop/TogglDesktop.sln /p:Configuration=Release /t:TogglDesktop:Clean
-endif
 
 clean_test:
 	rm -rf test/*
@@ -236,48 +141,17 @@ fmt: fmt_lib fmt_ui
 
 app: lib ui
 
-ifeq ($(osname), mac)
-lib:
-	xcodebuild -project src/lib/osx/TogglDesktopLibrary.xcodeproj
-endif
+app_release: lib_release ui_release
 
-ifeq ($(osname), linux)
 lib:
-	cd src/lib/linux/TogglDesktopLibrary && $(QMAKE) && make && \
-	cd ../../../../ && \
-	cp $(openssldir)/*so* src/lib/linux/TogglDesktopLibrary/build/release
-	cp $(pocodir)/lib/Linux/$(architecture)/libPocoCrypto.so.$(pocoversion) src/lib/linux/TogglDesktopLibrary/build/release
-	cp $(pocodir)/lib/Linux/$(architecture)/libPocoData.so.$(pocoversion) src/lib/linux/TogglDesktopLibrary/build/release
-	cp $(pocodir)/lib/Linux/$(architecture)/libPocoDataSQLite.so.$(pocoversion) src/lib/linux/TogglDesktopLibrary/build/release
-	cp $(pocodir)/lib/Linux/$(architecture)/libPocoFoundation.so.$(pocoversion) src/lib/linux/TogglDesktopLibrary/build/release
-	cp $(pocodir)/lib/Linux/$(architecture)/libPocoNet.so.$(pocoversion) src/lib/linux/TogglDesktopLibrary/build/release
-	cp $(pocodir)/lib/Linux/$(architecture)/libPocoNetSSL.so.$(pocoversion) src/lib/linux/TogglDesktopLibrary/build/release
-	cp $(pocodir)/lib/Linux/$(architecture)/libPocoUtil.so.$(pocoversion) src/lib/linux/TogglDesktopLibrary/build/release
-	cp $(pocodir)/lib/Linux/$(architecture)/libPocoXML.so.$(pocoversion) src/lib/linux/TogglDesktopLibrary/build/release
-	cp $(pocodir)/lib/Linux/$(architecture)/libPocoJSON.so.$(pocoversion) src/lib/linux/TogglDesktopLibrary/build/release
-endif
+	xcodebuild -project src/lib/osx/TogglDesktopLibrary.xcodeproj -configuration Debug
+lib_release:
+	xcodebuild -project src/lib/osx/TogglDesktopLibrary.xcodeproj -configuration Release build
 
-ifeq ($(osname), windows)
-lib:
-	$(MSBUILD) src/ui/windows/TogglDesktop/TogglDesktop.sln /p:Configuration=Release /t:TogglDesktopDLL
-endif
-
-ifeq ($(osname), mac)
 ui:
 	$(xcodebuild_command)
-endif
-
-ifeq ($(osname), linux)
-ui: bugsnag-qt
-	cd src/ui/linux/TogglDesktop && $(QMAKE) && make && \
-	cd ../../../../ && \
-	cp src/ssl/cacert.pem src/ui/linux/TogglDesktop/build/release
-endif
-
-ifeq ($(osname), windows)
-ui:
-	$(MSBUILD) src/ui/windows/TogglDesktop/TogglDesktop.sln /p:Configuration=Release
-endif
+ui_release:
+	$(xcodebuild_command_release)
 
 clean-bugsnag-qt:
 	rm -rf third_party/bugsnag-qt/build && \
@@ -288,6 +162,9 @@ bugsnag-qt: clean-bugsnag-qt
 
 run: app
 	$(executable)
+
+run_release: app_release
+	$(executable_release)
 
 clean_deps:
 	cd $(pocodir) && (make clean || true)
@@ -300,31 +177,11 @@ deps: clean_deps init_submodule openssl poco lua copy_libs
 init_submodule:
 	cd $(rootdir) && git submodule update --init --recursive
 
-ifeq ($(osname), linux)
-lua:
-	cd third_party/lua && make linux && make local
-endif
-
-ifeq ($(osname), mac)
 lua:
 	cd third_party/lua && make  $(LEGACYMACOSSDK) macosx && make $(LEGACYMACOSSDK) local
-endif
-
-ifeq ($(osname), windows)
-lua:
-	cd third_party/lua && make generic && make local
-endif
 
 openssl:
-ifeq ($(osname), mac)
 	cd $(openssldir) && ./config -fPIC no-shared no-dso && ./Configure darwin64-x86_64-cc && make $(LEGACYMACOSSDK)
-endif
-ifeq ($(osname), linux)
-	cd $(openssldir) && ./config -fPIC shared no-dso && make clean && make
-endif
-ifeq ($(osname), windows)
-	cd $(openssldir) && ./config shared no-dso && ./Configure Cygwin && make
-endif
 
 poco:
 	cd $(pocodir) && \
@@ -336,7 +193,6 @@ poco:
 	make $(LEGACYMACOSSDK)
 
 copy_libs:
-ifeq ($(osname), mac)
 	cp $(pocodir)/lib/Darwin/x86_64/libPocoCrypto.$(pocoversion).dylib /usr/local/lib/
 	cp $(pocodir)/lib/Darwin/x86_64/libPocoData.$(pocoversion).dylib /usr/local/lib/
 	cp $(pocodir)/lib/Darwin/x86_64/libPocoDataSQLite.$(pocoversion).dylib /usr/local/lib/
@@ -348,7 +204,6 @@ ifeq ($(osname), mac)
 	cp $(pocodir)/lib/Darwin/x86_64/libPocoJSON.$(pocoversion).dylib /usr/local/lib/
 	cp $(openssldir)/libssl.1.1.dylib /usr/local/lib/ 2>/dev/null || :
 	cp $(openssldir)/libcrypto.1.1.dylib /usr/local/lib/ 2>/dev/null || :
-endif
 
 third_party/google-astyle/build/google-astyle:
 	cd third_party/google-astyle && mkdir -p build && g++ *.cpp -o build/google-astyle
@@ -525,18 +380,10 @@ test_objects: build/test/gtest-all.o \
 	build/test/toggl_api_test.o
 
 uitest: clean_test
-ifeq ($(osname), windows)
-	$(executable) \
-		--script-path src/test/uitest.lua \
-		--log-path test/uitest.log \
-		--db-path test/uitest.db \
-		--environment test
-else
 	$(executable) \
 		--script-path $(pwd)/src/test/uitest.lua \
 		--log-path $(pwd)/test/uitest.log \
 		--db-path $(pwd)/test/uitest.db
-endif
 
 toggl_test: clean_test objects test_objects
 	mkdir -p test
@@ -544,12 +391,6 @@ toggl_test: clean_test objects test_objects
 
 test_lib: lua toggl_test
 	cp src/ssl/cacert.pem test/.
-ifeq ($(osname), linux)
-	cp -r $(pocodir)/lib/Linux/$(architecture)/* test/.
-	cp -r $(openssldir)/*so* test/.
-	cd test && LD_LIBRARY_PATH=.:$LD_LIBRARY_PATH ./toggl_test --gtest_shuffle
-endif
-ifeq ($(osname), mac)
 	cp -r $(pocolib)/* test/.
 	install_name_tool -change /usr/local/lib/libPocoCrypto.$(pocoversion).dylib @loader_path/libPocoCrypto.$(pocoversion).dylib test/libPocoNetSSL.$(pocoversion).dylib
 	install_name_tool -change /usr/local/lib/libPocoCrypto.$(pocoversion).dylib @loader_path/libPocoCrypto.$(pocoversion).dylib test/toggl_test
@@ -576,11 +417,6 @@ ifeq ($(osname), mac)
 	install_name_tool -change /usr/local/lib/libPocoXML.$(pocoversion).dylib @loader_path/libPocoXML.$(pocoversion).dylib test/libPocoUtil.$(pocoversion).dylib
 	install_name_tool -change /usr/local/lib/libPocoJSON.$(pocoversion).dylib @loader_path/libPocoJSON.$(pocoversion).dylib test/libPocoUtil.$(pocoversion).dylib
 	cd test && ./toggl_test --gtest_shuffle
-endif
-ifeq ($(osname), windows)
-	cp -r $(pocolib)/* test/.
-	cd test && ./toggl_test --gtest_shuffle
-endif
 
 test: test_lib
 
@@ -592,9 +428,7 @@ coverage: lcov
 	@echo "open coverage/index.html to view coverage report"
 
 loco:
-ifeq ($(osname), mac)
 	xcodebuild -exportLocalizations -localizationPath src/ui/osx/localization -project src/ui/osx/TogglDesktop/TogglDesktop.xcodeproj -exportLanguage et
-endif
 
 package:
 	./src/ui/linux/package.sh

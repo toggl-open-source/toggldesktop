@@ -38,15 +38,6 @@ MainWindowController::MainWindowController(
   togglApi(new TogglApi(nullptr, logPathOverride, dbPathOverride)),
   tracking(false),
   loggedIn(false),
-  actionEmail(nullptr),
-  actionNew(nullptr),
-  actionContinue(nullptr),
-  actionStop(nullptr),
-  actionSync(nullptr),
-  actionLogout(nullptr),
-  actionClear_Cache(nullptr),
-  actionSend_Feedback(nullptr),
-  actionReports(nullptr),
   preferencesDialog(new PreferencesDialog(this)),
   aboutDialog(new AboutDialog(this)),
   feedbackDialog(new FeedbackDialog(this)),
@@ -58,8 +49,6 @@ MainWindowController::MainWindowController(
   powerManagement(new PowerManagement(this)),
   networkManagement(new NetworkManagement(this)),
   ui_started(false) {
-    TogglApi::instance->setEnvironment(APP_ENVIRONMENT);
-
     ui->setupUi(this);
 
     ui->menuBar->setVisible(true);
@@ -109,7 +98,6 @@ MainWindowController::MainWindowController(
     connect(TogglApi::instance, SIGNAL(updateContinueStopShortcut()),  // NOLINT
             this, SLOT(updateContinueStopShortcut()));  // NOLINT
 
-
     setWindowIcon(icon);
     trayIcon = new SystemTray(this, icon);
     preferencesDialog->setRemindersEnabled(trayIcon->notificationsAvailable());
@@ -120,10 +108,10 @@ MainWindowController::MainWindowController(
 
     connect(trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
             this, SLOT(toggleWindow(QSystemTrayIcon::ActivationReason)));
-
     connect(networkManagement, &NetworkManagement::onlineStateChanged,
             this, &MainWindowController::onOnlineStateChanged);
     onOnlineStateChanged();
+    restoreLastWindowsFrame();
 }
 
 MainWindowController::~MainWindowController() {
@@ -241,15 +229,15 @@ void MainWindowController::displayStoppedTimerState() {
 }
 
 void MainWindowController::enableMenuActions() {
-    actionNew->setEnabled(loggedIn);
-    actionContinue->setEnabled(loggedIn && !tracking);
-    actionStop->setEnabled(loggedIn && tracking);
-    actionSync->setEnabled(loggedIn);
-    actionLogout->setEnabled(loggedIn);
-    actionClear_Cache->setEnabled(loggedIn);
-    actionSend_Feedback->setEnabled(loggedIn);
-    actionReports->setEnabled(loggedIn);
-    actionEmail->setText(TogglApi::instance->userEmail());
+    ui->actionNew->setEnabled(loggedIn);
+    ui->actionContinue->setEnabled(loggedIn && !tracking);
+    ui->actionStop->setEnabled(loggedIn && tracking);
+    ui->actionSync->setEnabled(loggedIn);
+    ui->actionLogout->setEnabled(loggedIn);
+    ui->actionClear_Cache->setEnabled(loggedIn);
+    ui->actionSend_Feedback->setEnabled(loggedIn);
+    ui->actionReports->setEnabled(loggedIn);
+    ui->actionEmail->setText(TogglApi::instance->userEmail());
     if (tracking) {
         setWindowIcon(icon);
         trayIcon->setIcon(icon);
@@ -311,56 +299,26 @@ void MainWindowController::setShortcuts() {
 }
 
 void MainWindowController::connectMenuActions() {
-    foreach(QMenu *menu, ui->menuBar->findChildren<QMenu *>()) {
-        if (trayIcon) {
-            trayIcon->setContextMenu(menu);
-        }
-        foreach(QAction *action, menu->actions()) {
-            connectMenuAction(action);
-        }
-    }
-}
+    connect(ui->actionNew, &QAction::triggered, this, &MainWindowController::onActionNew);
+    connect(ui->actionContinue,  &QAction::triggered, this, &MainWindowController::onActionContinue);
+    connect(ui->actionStop,  &QAction::triggered, this, &MainWindowController::onActionStop);
+    connect(ui->actionSync,  &QAction::triggered, this, &MainWindowController::onActionSync);
+    connect(ui->actionLogout,  &QAction::triggered, this, &MainWindowController::onActionLogout);
+    connect(ui->actionClear_Cache,  &QAction::triggered, this, &MainWindowController::onActionClear_Cache);
+    connect(ui->actionSend_Feedback,  &QAction::triggered, this, &MainWindowController::onActionSend_Feedback);
+    connect(ui->actionReports,  &QAction::triggered, this, &MainWindowController::onActionReports);
+    connect(ui->actionShow,  &QAction::triggered, this, &MainWindowController::onActionShow);
+    connect(ui->actionPreferences,  &QAction::triggered, this, &MainWindowController::onActionPreferences);
+    connect(ui->actionAbout,  &QAction::triggered, this, &MainWindowController::onActionAbout);
+    connect(ui->actionQuit,  &QAction::triggered, this, &MainWindowController::onActionQuit);
+    connect(ui->actionHelp,  &QAction::triggered, this, &MainWindowController::onActionHelp);
 
-void MainWindowController::connectMenuAction(
-    QAction *action) {
-    if ("actionEmail" == action->objectName()) {
-        actionEmail = action;
-    } else if ("actionNew" == action->objectName()) {
-        actionNew = action;
-        connect(action, SIGNAL(triggered()), this, SLOT(onActionNew()));
-    } else if ("actionContinue" == action->objectName()) {
-        actionContinue = action;
-        connect(action, SIGNAL(triggered()), this, SLOT(onActionContinue()));
-    } else if ("actionStop" == action->objectName()) {
-        actionStop = action;
-        connect(action, SIGNAL(triggered()), this, SLOT(onActionStop()));
-    } else if ("actionSync" == action->objectName()) {
-        actionSync = action;
-        connect(action, SIGNAL(triggered()), this, SLOT(onActionSync()));
-    } else if ("actionLogout" == action->objectName()) {
-        actionLogout = action;
-        connect(action, SIGNAL(triggered()), this, SLOT(onActionLogout()));
-    } else if ("actionClear_Cache" == action->objectName()) {
-        actionClear_Cache = action;
-        connect(action, SIGNAL(triggered()), this, SLOT(onActionClear_Cache()));
-    } else if ("actionSend_Feedback" == action->objectName()) {
-        actionSend_Feedback = action;
-        connect(action, SIGNAL(triggered()),
-                this, SLOT(onActionSend_Feedback()));
-    } else if ("actionReports" == action->objectName()) {
-        actionReports = action;
-        connect(action, SIGNAL(triggered()), this, SLOT(onActionReports()));
-    } else if ("actionShow" == action->objectName()) {
-        connect(action, SIGNAL(triggered()), this, SLOT(onActionShow()));
-    } else if ("actionPreferences" == action->objectName()) {
-        connect(action, SIGNAL(triggered()), this, SLOT(onActionPreferences()));
-    } else if ("actionAbout" == action->objectName()) {
-        connect(action, SIGNAL(triggered()), this, SLOT(onActionAbout()));
-    } else if ("actionQuit" == action->objectName()) {
-        connect(action, SIGNAL(triggered()), this, SLOT(onActionQuit()));
-    } else if ("actionHelp" == action->objectName()) {
-        connect(action, SIGNAL(triggered()), this, SLOT(onActionHelp()));
+    QMenu *trayMenu = new QMenu(this);
+for (auto act : ui->menuToggl_Desktop->actions()) {
+        trayMenu->addAction(act);
     }
+
+    trayIcon->setContextMenu(trayMenu);
 }
 
 void MainWindowController::onActionNew() {
@@ -446,6 +404,13 @@ void MainWindowController::writeSettings() {
 }
 
 void MainWindowController::closeEvent(QCloseEvent *event) {
+
+    // Save current windows frame
+    TogglApi::instance->setWindowsFrameSetting(QRect(pos().x(),
+            pos().y(),
+            size().width(),
+            size().height()));
+
     if (trayIcon->isVisible()) {
         event->ignore();
         hide();
@@ -513,4 +478,10 @@ void MainWindowController::runScript() {
     if (TogglApi::instance->runScriptFile(script)) {
         quitApp();
     }
+}
+
+void MainWindowController::restoreLastWindowsFrame() {
+    const QRect frame = TogglApi::instance->getWindowsFrameSetting();
+    move(frame.x(), frame.y());
+    resize(frame.width(), frame.height());
 }
