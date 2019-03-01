@@ -22,7 +22,6 @@
 @property (nonatomic, strong) IBOutlet LoginViewController *loginViewController;
 @property (nonatomic, strong) IBOutlet TimeEntryListViewController *timeEntryListViewController;
 @property (nonatomic, strong) IBOutlet OverlayViewController *overlayViewController;
-@property (nonatomic, strong) NSLayoutConstraint *contentViewBottom;
 @property double troubleBoxDefaultHeight;
 @property (nonatomic, strong) FloatingErrorView *errorView;
 @property (weak) IBOutlet NSView *errorContainerView;
@@ -189,9 +188,8 @@ extern void *ctx;
 {
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
-	self.errorContainerView.hidden = NO;
 	NSString *errorMessage = msg == nil ? @"Error" : msg;
-	[self.errorView updateWithError:errorMessage];
+	[[SystemMessage shared] present:errorMessage subtitle:nil];
 }
 
 - (void)startDisplayOnlineState:(NSNotification *)notification
@@ -203,40 +201,17 @@ extern void *ctx;
 {
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
-	[self setContentViewBottomConstraint];
-
 	switch ([status intValue])
 	{
 		case 1 :
-			[self.onlineStatusTextField setHidden:NO];
-			[self.onlineStatusTextField setStringValue:@"Status: Offline, no network"];
-			self.contentViewBottom.constant = -20;
+			[[SystemMessage shared] present:@"Error" subtitle:@"Offline, no network"];
 			break;
 		case 2 :
-			[self.onlineStatusTextField setHidden:NO];
-			[self.onlineStatusTextField setStringValue:@"Status: Offline, Toggl not responding"];
-			self.contentViewBottom.constant = -20;
+			[[SystemMessage shared] present:@"Error" subtitle:@"Offline, Toggl not responding"];
 			break;
 		default :
-			[self.onlineStatusTextField setHidden:YES];
-			[self.onlineStatusTextField setStringValue:@"Status: Online"];
-			self.contentViewBottom.constant = 0;
+			[self closeError];
 			break;
-	}
-}
-
-- (void)setContentViewBottomConstraint
-{
-	if (!self.contentViewBottom)
-	{
-		self.contentViewBottom = [NSLayoutConstraint constraintWithItem:self.contentView
-															  attribute:NSLayoutAttributeBottom
-															  relatedBy:NSLayoutRelationEqual
-																 toItem:self.mainView
-															  attribute:NSLayoutAttributeBottom
-															 multiplier:1
-															   constant:0];
-		[self.mainView addConstraint:self.contentViewBottom];
 	}
 }
 
@@ -291,8 +266,14 @@ extern void *ctx;
 	}
 }
 
-- (void)floatingErrorShouldHide {
+- (void)floatingErrorShouldHide
+{
 	[self closeError];
+}
+
+- (void)floatingErrorShouldPresent
+{
+	self.errorContainerView.hidden = NO;
 }
 
 @end

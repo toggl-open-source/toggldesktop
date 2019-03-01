@@ -13,7 +13,7 @@ protocol SystemMessagePresentable {
     func present(_ message: SystemMessage.Message)
 }
 
-final class SystemMessage {
+@objc final class SystemMessage: NSObject {
 
     enum Message {
         case error(String, String?) // Title + subtitle
@@ -22,13 +22,18 @@ final class SystemMessage {
 
     // MARK: Variable
 
-    static let shared = SystemMessage()
+    @objc static let shared = SystemMessage()
     private var presenter: SystemMessagePresentable?
 
     // Public
 
     func present(_ message: Message) {
         presenter?.present(message)
+    }
+
+    @objc func present(_ title: String, subtitle: String?) {
+        let message = Message.error(title, subtitle)
+        present(message)
     }
 
     func register(for presenter: SystemMessagePresentable) {

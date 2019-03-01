@@ -11,6 +11,7 @@ import Cocoa
 @objc protocol FloatingErrorViewDelegate: class {
 
     func floatingErrorShouldHide()
+    func floatingErrorShouldPresent()
 }
 
 final class FloatingErrorView: NSView {
@@ -74,11 +75,6 @@ final class FloatingErrorView: NSView {
     }
     // MARK: Func
 
-    @objc func update(error: String) {
-        let message = SystemMessage.Message.error(error, nil)
-        present(message)
-    }
-
     @IBAction private func closeOnTap(_ sender: Any) {
         delegate?.floatingErrorShouldHide()
     }
@@ -91,6 +87,11 @@ final class FloatingErrorView: NSView {
 extension FloatingErrorView: SystemMessagePresentable {
 
     func present(_ message: SystemMessage.Message) {
+
+        // Present
+        delegate?.floatingErrorShouldPresent()
+
+        // Apply text and text color
         switch message {
         case .error(let title, let subtitle):
             // Title
