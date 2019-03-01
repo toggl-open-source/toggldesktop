@@ -24,6 +24,7 @@
                 <outlet property="projectTextField" destination="deS-e6-3Ui" id="Sf3-ak-4sT"/>
                 <outlet property="tagFlag" destination="29c-rg-nft" id="L4L-QD-0Hm"/>
                 <outlet property="unsyncedIcon" destination="hAM-bF-f9l" id="2a5-i6-TT8"/>
+                <outlet property="unsyncedIconBottom" destination="fAq-dh-yEK" id="ehL-tW-m5f"/>
                 <outlet property="view" destination="jHy-af-Yta" id="6gy-F6-vUJ"/>
             </connections>
         </collectionViewItem>

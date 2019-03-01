@@ -10,15 +10,32 @@ import Foundation
 
 extension TimeEntryCell {
 
-    @objc enum Position: Int{
+    @objc enum Position: Int {
         case top
-        case middle
+        case all
         case bottom
+        case bottomRight
+
+        var roundedCorners: Corners {
+            switch self {
+            case .top:
+                return [.topLeft, .topRight]
+            case .bottom:
+                return [.bottomLeft, .bottomRight]
+            case .all:
+                return [.topLeft, .topRight, .bottomLeft, .bottomRight]
+            case .bottomRight:
+                return .bottomRight
+            }
+        }
     }
 
     @objc func mask(for position: Position, rect: NSRect, cornerRadius: CGFloat) -> CALayer {
         let mask = CAShapeLayer()
-        mask.path = NSBezierPath(rect: rect, roundedCorners: [.bottomLeft, .bottomRight], cornerRadius: cornerRadius).cgPath
+        let corners = position.roundedCorners
+        mask.path = NSBezierPath(rect: rect,
+                                 roundedCorners: corners,
+                                 cornerRadius: cornerRadius).cgPath
         return mask
     }
 }
