@@ -23,6 +23,7 @@
                 <outlet property="projectConstrainLeading" destination="w0I-0b-kLQ" id="P64-Sr-P59"/>
                 <outlet property="projectTextField" destination="deS-e6-3Ui" id="Sf3-ak-4sT"/>
                 <outlet property="tagFlag" destination="29c-rg-nft" id="L4L-QD-0Hm"/>
+                <outlet property="unsyncedIcon" destination="hAM-bF-f9l" id="2a5-i6-TT8"/>
                 <outlet property="view" destination="jHy-af-Yta" id="6gy-F6-vUJ"/>
             </connections>
         </collectionViewItem>
@@ -120,6 +121,14 @@
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
+                <imageView hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="hAM-bF-f9l">
+                    <rect key="frame" x="381" y="1" width="19" height="20"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="19" id="0oR-Tx-Xy9"/>
+                        <constraint firstAttribute="height" constant="20" id="cak-th-1wb"/>
+                    </constraints>
+                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="syncing-error" id="nBg-vV-T1h"/>
+                </imageView>
                 <box hidden="YES" autoresizesSubviews="NO" boxType="custom" borderType="line" cornerRadius="8" title="Box" translatesAutoresizingMaskIntoConstraints="NO" id="dmW-8k-lRI">
                     <rect key="frame" x="10" y="20" width="25" height="25"/>
                     <view key="contentView" id="wvI-BE-4Z2">
@@ -171,6 +180,7 @@
             </subviews>
             <constraints>
                 <constraint firstItem="xwb-FG-Z4X" firstAttribute="centerY" secondItem="jHy-af-Yta" secondAttribute="centerY" id="0wK-iR-SBw"/>
+                <constraint firstAttribute="trailing" secondItem="hAM-bF-f9l" secondAttribute="trailing" id="4MR-Oy-fsh"/>
                 <constraint firstAttribute="trailing" secondItem="Gcj-ki-Hus" secondAttribute="trailing" constant="15" id="4cj-kh-iQ7"/>
                 <constraint firstItem="rE8-8i-mr7" firstAttribute="centerY" secondItem="jHy-af-Yta" secondAttribute="centerY" id="4xh-lx-h9r"/>
                 <constraint firstAttribute="trailing" secondItem="wve-Qj-t8r" secondAttribute="trailing" id="B02-AG-IS3"/>
@@ -183,6 +193,7 @@
                 <constraint firstItem="rE8-8i-mr7" firstAttribute="leading" secondItem="Uu2-26-kM4" secondAttribute="trailing" priority="750" id="a58-CX-Mfu"/>
                 <constraint firstItem="xwb-FG-Z4X" firstAttribute="leading" secondItem="rE8-8i-mr7" secondAttribute="trailing" constant="5" id="dyZ-rK-VoT"/>
                 <constraint firstItem="Uu2-26-kM4" firstAttribute="top" secondItem="jHy-af-Yta" secondAttribute="top" id="e3F-wU-zDY"/>
+                <constraint firstItem="eSk-jb-AGA" firstAttribute="top" secondItem="hAM-bF-f9l" secondAttribute="bottom" id="fAq-dh-yEK"/>
                 <constraint firstItem="Gcj-ki-Hus" firstAttribute="leading" secondItem="xwb-FG-Z4X" secondAttribute="trailing" constant="10" id="gWS-c5-fSx"/>
                 <constraint firstItem="dmW-8k-lRI" firstAttribute="centerY" secondItem="jHy-af-Yta" secondAttribute="centerY" id="ifn-MJ-L9a"/>
                 <constraint firstItem="Uu2-26-kM4" firstAttribute="centerY" secondItem="jHy-af-Yta" secondAttribute="centerY" id="kif-Wu-VlX"/>
@@ -196,6 +207,7 @@
     </objects>
     <resources>
         <image name="continue-timer-button" width="10" height="10"/>
+        <image name="syncing-error" width="19" height="20"/>
         <image name="time-entry-billable" width="17" height="17"/>
         <image name="time-entry-dot" width="8" height="8"/>
         <image name="time-entry-tag" width="17" height="17"/>

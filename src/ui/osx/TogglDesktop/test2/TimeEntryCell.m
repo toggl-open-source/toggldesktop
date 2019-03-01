@@ -81,6 +81,7 @@ extern void *ctx;
 	[super prepareForReuse];
 	self.continueButton.hidden = YES;
 	self.backgroundBox.transparent = YES;
+	self.unsyncedIcon.hidden = YES;
 	[self resetMask];
 }
 
