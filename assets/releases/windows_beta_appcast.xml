@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" xmlns:dc="http://purl.org/dc/elements/1.1/">
+    <channel>
+        <title>TogglDesktop Changelog</title>
+        <link>windows_beta_appcast.xml</link>
+        <description>Most recent changes.</description>
+        <language>en</language>
+        <item>
+            <title>Version 7.4.345</title>
+            <pubDate>2019-02-06-16-32-06</pubDate>
+            <enclosure url="https://github.com/toggl/toggldesktop/releases/download/v7.4.345/TogglDesktopInstaller-7.4.345.exe" sparkle:version="7.4.345" length="8400216" type="application/octet-stream" sparkle:dsaSignature="MCwCFBzQsnNKhpQ2OKfl45oZgkqBaGsfAhQH1bmfBDYo0WCsCRapbHZDXSeQHg==" />
+            <description>
+                <![CDATA[
+                    <ul>
+                    </ul>
+                ]]>
+            </description>
+        </item>
+    </channel>
+</rss>
