@@ -66,4 +66,15 @@ final class FloatingErrorView: NSView {
     @IBAction private func closeOnTap(_ sender: Any) {
         delegate?.floatingErrorShouldHide()
     }
+
+    @objc func registerToSystemMessage() {
+        SystemMessage.shared.register(for: self)
+    }
+}
+
+extension FloatingErrorView: SystemMessagePresentable {
+
+    func present(_ message: SystemMessage.Message) {
+
+    }
 }

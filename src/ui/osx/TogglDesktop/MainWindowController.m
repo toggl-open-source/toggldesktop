@@ -107,6 +107,9 @@ extern void *ctx;
 
 	// Hidden by default
 	self.errorContainerView.hidden = YES;
+
+	// Register
+	[self.errorView registerToSystemMessage];
 }
 
 - (void)startDisplayLogin:(NSNotification *)notification
