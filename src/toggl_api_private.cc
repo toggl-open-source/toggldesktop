@@ -316,6 +316,16 @@ TogglTimeEntryView *time_entry_view_item_init(
     view_item->CanSeeBillable = te.CanSeeBillable;
     view_item->DefaultWID = te.DefaultWID;
 
+    // negative means running time entry
+    if (view_item->DurationInSeconds < 0) {
+        // however we have to add current time to know the exact duration
+        int64_t actual_duration = view_item->DurationInSeconds + time(nullptr);
+        view_item->ConfirmlessDelete = actual_duration < 15;
+    }
+    else {
+        view_item->ConfirmlessDelete = view_item->DurationInSeconds < 15;
+    }
+
     view_item->Unsynced = te.Unsynced;
     view_item->Locked = te.Locked;
 

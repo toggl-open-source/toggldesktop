@@ -74,6 +74,8 @@ extern "C" {
         // If syncing a time entry ended with an error,
         // the error is attached to the time entry
         char_t *Error;
+        // Short time entries can be deleted without user confirmation
+        bool_t ConfirmlessDelete;
         bool_t Locked;
         // Indicates if time entry is not synced to server
         bool_t Unsynced;

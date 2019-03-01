@@ -136,7 +136,7 @@
 		self.Error = nil;
 	}
 	// If duration is less than 15 seconds delete without confirmation
-	self.confirmlessDelete = (self.duration_in_seconds < 15);
+	self.confirmlessDelete = te->ConfirmlessDelete;
 
 	// Grouped mode
 

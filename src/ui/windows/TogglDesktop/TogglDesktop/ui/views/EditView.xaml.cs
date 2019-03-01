@@ -102,7 +102,7 @@ namespace TogglDesktop
 
                 this.timeEntry = timeEntry;
 
-                this.confirmlessDelete = (timeEntry.DurationInSeconds < 15);
+                this.confirmlessDelete = timeEntry.ConfirmlessDelete;
 
                 var isCurrentlyRunning = timeEntry.DurationInSeconds < 0;
 
