@@ -8,12 +8,6 @@
 
 import Cocoa
 
-@objc protocol FloatingErrorViewDelegate: class {
-
-    func floatingErrorShouldHide()
-    func floatingErrorShouldPresent()
-}
-
 final class FloatingErrorView: NSView {
 
     // MARK: Outlet
@@ -22,8 +16,7 @@ final class FloatingErrorView: NSView {
     @IBOutlet private weak var subtitleLabel: NSTextField!
 
     // MARK: Variables
-
-    @objc weak var delegate: FloatingErrorViewDelegate?
+    var onClose: (() -> Void)?
     fileprivate lazy var errorColor: NSColor = {
         if #available(OSX 10.13, *) {
             return NSColor(named: NSColor.Name("error-title-color"))!
@@ -41,7 +34,7 @@ final class FloatingErrorView: NSView {
 
     // MARK: Init
 
-    @objc class func initFromXib() -> FloatingErrorView {
+    class func initFromXib() -> FloatingErrorView {
         return FloatingErrorView.xibView()
     }
 
@@ -76,13 +69,10 @@ final class FloatingErrorView: NSView {
     // MARK: Func
 
     @IBAction private func closeOnTap(_ sender: Any) {
-        delegate?.floatingErrorShouldHide()
+        onClose?()
     }
 
     func present(_ payload: SystemMessage.Payload) {
-
-        // Present
-        delegate?.floatingErrorShouldPresent()
 
         // Apply text and text color
         switch payload.content {

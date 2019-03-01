@@ -9,7 +9,6 @@
         <customObject id="-2" userLabel="File's Owner" customClass="MainWindowController">
             <connections>
                 <outlet property="contentView" destination="av5-A6-9S5" id="g24-fx-drT"/>
-                <outlet property="errorContainerView" destination="qhD-lQ-1ny" id="Amb-8Z-BZO"/>
                 <outlet property="mainView" destination="2" id="tVF-qk-gqj"/>
                 <outlet property="window" destination="1" id="3"/>
             </connections>

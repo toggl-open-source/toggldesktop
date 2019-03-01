@@ -17,11 +17,23 @@ final class SystemMessageView: NSView {
         return FloatingErrorView.xibView()
     }()
 
+    // MARK: Variables
+    fileprivate var payload: SystemMessage.Payload?
+
     // MARK: Init
 
     required init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
         initFloatingView()
+
+        floatingView.onClose = {[weak self] in
+            guard let strongSelf = self else { return }
+            strongSelf.handleClosing()
+        }
+    }
+
+    @objc class func initFromXib() -> SystemMessageView {
+        return SystemMessageView.xibView()
     }
 
     // MARK: Public
@@ -38,7 +50,17 @@ final class SystemMessageView: NSView {
 extension SystemMessageView: SystemMessagePresentable {
 
     func present(_ payload: SystemMessage.Payload) {
-        
+        self.payload = payload
+    }
+
+    func dismiss(_ payload: SystemMessage.Payload) {
+        guard let currentPayload = self.payload else { return }
+
+        // Only dismiss if the payload is matched with the current
+        // It presents to dismiss by accidently
+        guard currentPayload.mode == payload.mode else { return }
+
+        isHidden = true
     }
 }
 
@@ -75,5 +97,20 @@ extension SystemMessageView {
             , multiplier: 1.0, constant: 0)
 
         addConstraints([top, left, right, bottom])
+    }
+
+    fileprivate func handleClosing() {
+        guard let payload = payload else { return }
+        switch payload.mode {
+        case .information:
+            // Hide all, because we don't have circle icon for information
+            isHidden = true
+
+        case .error, .offline, .syncing:
+            // Hide floating view
+            // Then presenting the icon btn
+            floatingView.isHidden = true
+            iconBtn.isHidden = false
+        }
     }
 }

@@ -10,6 +10,7 @@ import Foundation
 
 protocol SystemMessagePresentable {
 
+    func dismiss(_ payload: SystemMessage.Payload)
     func present(_ payload: SystemMessage.Payload)
 }
 
@@ -19,6 +20,7 @@ protocol SystemMessagePresentable {
         case offline
         case syncing
         case error
+        case information
     }
 
     enum Content {
@@ -45,5 +47,35 @@ protocol SystemMessagePresentable {
 
     func register(for presenter: SystemMessagePresentable) {
         self.presenter = presenter
+    }
+}
+
+// MARK: Objc extension
+// We don't need to expose Payload and Mode struct/enum to objc
+
+extension SystemMessage {
+
+    @objc func presentError(_ title: String, subTitle: String?) {
+        let payload = Payload(mode: .error,
+                              content: .error(title, subTitle))
+        presenter?.present(payload)
+    }
+
+    @objc func presentOffline(_ title: String, subTitle: String?) {
+        let payload = Payload(mode: .offline,
+                              content: .error(title, subTitle))
+        presenter?.present(payload)
+    }
+
+    @objc func presentSyncing() {
+        let payload = Payload(mode: .syncing,
+                              content: .informative("Syncing..."))
+        presenter?.present(payload)
+    }
+
+    @objc func dismissSyncing() {
+        let payload = Payload(mode: .syncing,
+                              content: .informative("Syncing..."))
+        presenter?.dismiss(payload)
     }
 }
