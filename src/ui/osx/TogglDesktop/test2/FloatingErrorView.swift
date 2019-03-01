@@ -17,11 +17,26 @@ final class FloatingErrorView: NSView {
 
     // MARK: Outlet
 
-    @IBOutlet private weak var errorLabel: NSTextField!
+    @IBOutlet private weak var titleLabel: NSTextField!
+    @IBOutlet private weak var subtitleLabel: NSTextField!
 
     // MARK: Variables
 
     @objc weak var delegate: FloatingErrorViewDelegate?
+    fileprivate lazy var errorColor: NSColor = {
+        if #available(OSX 10.13, *) {
+            return NSColor(named: NSColor.Name("error-title-color"))!
+        } else {
+            return ConvertHexColor.hexCode(toNSColor: "#FF3B30")
+        }
+    }()
+    fileprivate lazy var informativeColor: NSColor = {
+        if #available(OSX 10.13, *) {
+            return NSColor(named: NSColor.Name("green-color"))!
+        } else {
+            return ConvertHexColor.hexCode(toNSColor: "#28cd41")
+        }
+    }()
 
     // MARK: Init
 
@@ -60,7 +75,8 @@ final class FloatingErrorView: NSView {
     // MARK: Func
 
     @objc func update(error: String) {
-        errorLabel.stringValue = error
+        let message = SystemMessage.Message.error(error, nil)
+        present(message)
     }
 
     @IBAction private func closeOnTap(_ sender: Any) {
@@ -75,6 +91,24 @@ final class FloatingErrorView: NSView {
 extension FloatingErrorView: SystemMessagePresentable {
 
     func present(_ message: SystemMessage.Message) {
+        switch message {
+        case .error(let title, let subtitle):
+            // Title
+            subtitleLabel.isHidden = subtitle == nil
+            subtitleLabel.stringValue = subtitle ?? ""
+            titleLabel.stringValue = title
 
+            // color
+            titleLabel.textColor = errorColor
+
+        case .informative(let info):
+
+            // Title
+            subtitleLabel.isHidden = true
+            titleLabel.stringValue = info
+
+            // Color
+            titleLabel.textColor = informativeColor
+        }
     }
 }

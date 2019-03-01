@@ -16,7 +16,7 @@ protocol SystemMessagePresentable {
 final class SystemMessage {
 
     enum Message {
-        case error(String, String) // Title + subtitle
+        case error(String, String?) // Title + subtitle
         case informative(String)
     }
 
