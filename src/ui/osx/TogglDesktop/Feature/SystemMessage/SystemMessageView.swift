@@ -43,9 +43,12 @@ final class SystemMessageView: NSView {
     }
 
     @IBAction func iconOnTap(_ sender: Any) {
-        
+        floatingView.isHidden = false
+        iconContainerView.isHidden = true
     }
 }
+
+// MARK: SystemMessagePresentable
 
 extension SystemMessageView: SystemMessagePresentable {
 
@@ -53,6 +56,21 @@ extension SystemMessageView: SystemMessagePresentable {
         self.payload = payload
         isHidden = false
         floatingView.isHidden = false
+        iconContainerView.isHidden = true
+        self.superview?.bringSubviewToFront(self)
+
+        // handle icon
+        switch payload.mode {
+        case .syncing:
+            iconBtn.image = NSImage(named: NSImage.Name("spinner-icon"))
+        case .error,
+             .information:
+            iconBtn.image = nil
+        case .offline:
+            iconBtn.image = NSImage(named: NSImage.Name("offline-icon"))
+        }
+
+        // Floating view
         floatingView.present(payload)
     }
 
@@ -105,15 +123,36 @@ extension SystemMessageView {
     fileprivate func handleClosing() {
         guard let payload = payload else { return }
         switch payload.mode {
-        case .information:
+        case .error,
+             .information:
             // Hide all, because we don't have circle icon for information
             isHidden = true
 
-        case .error, .offline, .syncing:
+        case .offline, .syncing:
             // Hide floating view
             // Then presenting the icon btn
             floatingView.isHidden = true
-            iconBtn.isHidden = false
+            iconContainerView.isHidden = false
         }
     }
+}
+
+extension NSView {
+
+    func bringSubviewToFront(_ view: NSView) {
+        var theView = view
+        self.sortSubviews({(viewA,viewB,rawPointer) in
+            let view = rawPointer?.load(as: NSView.self)
+
+            switch view {
+            case viewA:
+                return ComparisonResult.orderedDescending
+            case viewB:
+                return ComparisonResult.orderedAscending
+            default:
+                return ComparisonResult.orderedSame
+            }
+        }, context: &theView)
+    }
+
 }
