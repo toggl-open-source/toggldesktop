@@ -92,21 +92,20 @@ extern void *ctx;
 	self.messageView.translatesAutoresizingMaskIntoConstraints = NO;
 	[self.contentView addSubview:self.messageView];
 
-	[self.messageView addConstraint:[NSLayoutConstraint constraintWithItem:self.messageView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:240.0]];
+	[self.messageView addConstraint:[NSLayoutConstraint constraintWithItem:self.messageView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:270.0]];
 	NSLayoutConstraint *height = [NSLayoutConstraint constraintWithItem:self.messageView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:38.0];
+	// Message View should be expandable depend on the length of text
 	height.priority = NSLayoutPriorityDefaultLow;
 	[self.messageView addConstraint:height];
-
-	[self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationGreaterThanOrEqual toItem:self.messageView attribute:NSLayoutAttributeLeading multiplier:1.0 constant:30.0]];
-	[self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.messageView attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:30.0]];
-	[self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.messageView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:10.0]];
+	[self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.messageView attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0]];
+	[self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.messageView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0]];
 
 	// Able to draw shadow
-	self.messageView.wantsLayer = YES;
-	self.messageView.layer.masksToBounds = NO;
-//
-//    // Hidden by default
-//    self.errorContainerView.hidden = YES;
+	self.contentView.wantsLayer = YES;
+	self.contentView.layer.masksToBounds = NO;
+
+	// Hidden by default
+	self.messageView.hidden = YES;
 
 	// Register
 	[self.messageView registerToSystemMessage];

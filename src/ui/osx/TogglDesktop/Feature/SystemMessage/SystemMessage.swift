@@ -45,6 +45,10 @@ protocol SystemMessagePresentable {
         presenter?.present(payload)
     }
 
+    func dismiss(_ payload: SystemMessage.Payload) {
+        presenter?.dismiss(payload)
+    }
+
     func register(for presenter: SystemMessagePresentable) {
         self.presenter = presenter
     }
@@ -58,24 +62,24 @@ extension SystemMessage {
     @objc func presentError(_ title: String, subTitle: String?) {
         let payload = Payload(mode: .error,
                               content: .error(title, subTitle))
-        presenter?.present(payload)
+        present(payload)
     }
 
     @objc func presentOffline(_ title: String, subTitle: String?) {
         let payload = Payload(mode: .offline,
                               content: .error(title, subTitle))
-        presenter?.present(payload)
+        present(payload)
     }
 
     @objc func presentSyncing() {
         let payload = Payload(mode: .syncing,
                               content: .informative("Syncing..."))
-        presenter?.present(payload)
+        present(payload)
     }
 
     @objc func dismissSyncing() {
         let payload = Payload(mode: .syncing,
                               content: .informative("Syncing..."))
-        presenter?.dismiss(payload)
+        dismiss(payload)
     }
 }

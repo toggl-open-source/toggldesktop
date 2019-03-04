@@ -51,6 +51,9 @@ extension SystemMessageView: SystemMessagePresentable {
 
     func present(_ payload: SystemMessage.Payload) {
         self.payload = payload
+        isHidden = false
+        floatingView.isHidden = false
+        floatingView.present(payload)
     }
 
     func dismiss(_ payload: SystemMessage.Payload) {
@@ -94,7 +97,7 @@ extension SystemMessageView {
                                         relatedBy: .equal,
                                         toItem: floatingView,
                                         attribute: .bottom
-            , multiplier: 1.0, constant: 0)
+            , multiplier: 1.0, constant: 10)
 
         addConstraints([top, left, right, bottom])
     }

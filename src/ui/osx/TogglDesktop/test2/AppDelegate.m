@@ -774,11 +774,11 @@ BOOL onTop = NO;
 
 	if ([state intValue])
 	{
-		[[SystemMessage shared] presentSyncing];
+		// [[SystemMessage shared] presentSyncing];
 	}
 	else
 	{
-		[[SystemMessage shared] dismissSyncing];
+		// [[SystemMessage shared] dismissSyncing];
 	}
 }
 
