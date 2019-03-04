@@ -20,7 +20,7 @@
 @property (weak) IBOutlet NSImageView *billableFlag;
 @property (weak) IBOutlet NSImageView *tagFlag;
 @property (weak) IBOutlet NSTextField *durationTextField;
-@property (weak) IBOutlet NSImageView *unsyncedIcon;
+@property (weak) IBOutlet NSButton *unsyncedIcon;
 @property (weak) IBOutlet NSLayoutConstraint *unsyncedIconBottom;
 @property (weak) IBOutlet NSBox *groupBox;
 @property (weak) IBOutlet NSButton *groupButton;

@@ -61,6 +61,11 @@ final class SystemMessageView: NSView {
 extension SystemMessageView: SystemMessagePresentable {
 
     func present(_ payload: SystemMessage.Payload) {
+
+        // Skipp if they're same
+        // Ex: Syncing can be called manytime -> Prevent it
+        guard self.payload?.mode != payload.mode else { return }
+
         self.payload = payload
         isHidden = false
         floatingView.isHidden = false
@@ -108,9 +113,9 @@ extension SystemMessageView {
 
     fileprivate func initCommon() {
         wantsLayer = true
+        layer?.masksToBounds = false
         iconContainerView.applyShadow()
         iconContainerView.applyBorder(cornerRadius: 13)
-//        iconContainerView.cornerRadius = 24
     }
 
     fileprivate func initFloatingView() {
