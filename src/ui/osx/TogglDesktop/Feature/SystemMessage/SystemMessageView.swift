@@ -59,9 +59,13 @@ extension SystemMessageView: SystemMessagePresentable {
         iconContainerView.isHidden = true
         self.superview?.bringSubviewToFront(self)
 
+        // Stop all animation
+        stopAllAnimations()
+
         // handle icon
         switch payload.mode {
         case .syncing:
+            iconContainerView.spinClockwise(timeToRotate: 1.0)
             iconBtn.image = NSImage(named: NSImage.Name("spinner-icon"))
         case .error,
              .information:
@@ -81,7 +85,12 @@ extension SystemMessageView: SystemMessagePresentable {
         // It presents to dismiss by accidently
         guard currentPayload.mode == payload.mode else { return }
 
+        stopAllAnimations()
         isHidden = true
+    }
+
+    private func stopAllAnimations() {
+        iconContainerView.stopAnimations()
     }
 }
 
@@ -135,24 +144,4 @@ extension SystemMessageView {
             iconContainerView.isHidden = false
         }
     }
-}
-
-extension NSView {
-
-    func bringSubviewToFront(_ view: NSView) {
-        var theView = view
-        self.sortSubviews({(viewA,viewB,rawPointer) in
-            let view = rawPointer?.load(as: NSView.self)
-
-            switch view {
-            case viewA:
-                return ComparisonResult.orderedDescending
-            case viewB:
-                return ComparisonResult.orderedAscending
-            default:
-                return ComparisonResult.orderedSame
-            }
-        }, context: &theView)
-    }
-
 }
