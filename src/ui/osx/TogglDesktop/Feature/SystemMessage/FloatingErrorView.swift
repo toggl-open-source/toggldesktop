@@ -44,15 +44,8 @@ final class FloatingErrorView: NSView {
     }
 
     private func initCommon() {
-        wantsLayer = true
-        shadow = NSShadow()
-        layer?.cornerRadius = 8
-        layer?.borderWidth = 1;
-        layer?.borderColor = NSColor(white: 0.0, alpha: 0.1).cgColor
-        layer?.shadowOpacity = 0.13
-        layer?.shadowColor = NSColor.black.cgColor
-        layer?.shadowOffset = NSMakeSize(0, -2)
-        layer?.shadowRadius = 6
+        applyShadow()
+        applyBorder()
     }
 
     override func updateLayer() {

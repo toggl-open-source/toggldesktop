@@ -11,6 +11,7 @@ import Cocoa
 final class SystemMessageView: NSView {
 
     // MARK: OUTLET
+    
     @IBOutlet weak var iconContainerView: NSBox!
     @IBOutlet weak var iconBtn: NSButton!
     private lazy var floatingView: FloatingErrorView = {
@@ -18,18 +19,25 @@ final class SystemMessageView: NSView {
     }()
 
     // MARK: Variables
+
     fileprivate var payload: SystemMessage.Payload?
 
     // MARK: Init
 
     required init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
-        initFloatingView()
 
+        initFloatingView()
         floatingView.onClose = {[weak self] in
             guard let strongSelf = self else { return }
             strongSelf.handleClosing()
         }
+    }
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+
+        initCommon()
     }
 
     @objc class func initFromXib() -> SystemMessageView {
@@ -97,6 +105,13 @@ extension SystemMessageView: SystemMessagePresentable {
 // MARK: Private
 
 extension SystemMessageView {
+
+    fileprivate func initCommon() {
+        wantsLayer = true
+        iconContainerView.applyShadow()
+        iconContainerView.applyBorder(cornerRadius: 13)
+//        iconContainerView.cornerRadius = 24
+    }
 
     fileprivate func initFloatingView() {
         self.addSubview(floatingView)

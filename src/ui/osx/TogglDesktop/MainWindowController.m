@@ -100,10 +100,6 @@ extern void *ctx;
 	[self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.messageView attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0]];
 	[self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.messageView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0]];
 
-	// Able to draw shadow
-	self.contentView.wantsLayer = YES;
-	self.contentView.layer.masksToBounds = NO;
-
 	// Hidden by default
 	self.messageView.hidden = YES;
 
