@@ -112,7 +112,7 @@
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="xwb-FG-Z4X">
                     <rect key="frame" x="306" y="24" width="57" height="16"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="53" id="Jlj-SX-18w"/>
+                        <constraint firstAttribute="width" constant="54" id="Jlj-SX-18w"/>
                     </constraints>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="1.25 h" id="Ten-lK-6RR">
                         <font key="font" metaFont="cellTitle"/>
