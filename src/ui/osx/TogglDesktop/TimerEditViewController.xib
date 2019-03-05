@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment identifier="macosx"/>
+        <deployment version="101400" identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -9,12 +9,16 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="TimerEditViewController">
             <connections>
+                <outlet property="addEntryBtn" destination="N9s-9L-g89" id="syP-67-SnD"/>
+                <outlet property="autoCompleteInput" destination="8Fy-tG-odG" id="lyr-Zg-zFK"/>
+                <outlet property="autocompleteContainerView" destination="Cg4-tk-Y3a" id="0n7-hi-GLA"/>
                 <outlet property="billableFlag" destination="ppU-KI-YsG" id="fTv-LB-K8L"/>
-                <outlet property="descriptionLabel" destination="oaA-Wf-zkO" id="dec-XV-QER"/>
+                <outlet property="contentContainerView" destination="UVu-2D-59K" id="Ng2-3h-cZv"/>
+                <outlet property="descriptionLabel" destination="oaA-Wf-zkO" id="M12-Yr-8Nn"/>
                 <outlet property="durationTextField" destination="Rt4-7t-bwl" id="gFc-yh-Etr"/>
                 <outlet property="mainBox" destination="Fga-BR-x8G" id="PWb-gS-hxU"/>
                 <outlet property="manualBox" destination="NZl-PW-g8z" id="YwT-hG-JqV"/>
-                <outlet property="projectTextField" destination="Cqy-Vf-bE1" id="F1v-tI-IaI"/>
+                <outlet property="projectTextField" destination="Cqy-Vf-bE1" id="59M-S0-LIx"/>
                 <outlet property="startButton" destination="pBI-7b-vVj" id="Zdt-WG-7LG"/>
                 <outlet property="tagFlag" destination="5nL-Cd-iWe" id="80M-g6-WAT"/>
                 <outlet property="view" destination="M2u-7B-WCs" id="bD3-yq-26j"/>
@@ -45,6 +49,9 @@
                                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                 <font key="font" metaFont="system" size="14"/>
                                             </buttonCell>
+                                            <connections>
+                                                <action selector="addEntryBtnOnTap:" target="-2" id="SC5-gB-8kG"/>
+                                            </connections>
                                         </button>
                                         <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="QTq-12-ukt">
                                             <rect key="frame" x="80" y="8" width="12" height="12"/>
@@ -104,7 +111,7 @@
                                                 </constraints>
                                                 <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" image="time-entry-dot" id="R7r-TA-kJS"/>
                                             </imageView>
-                                            <textField horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="Cqy-Vf-bE1">
+                                            <textField horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="Cqy-Vf-bE1" customClass="ProjectTextField">
                                                 <rect key="frame" x="14" y="14" width="227" height="18"/>
                                                 <textFieldCell key="cell" lineBreakMode="truncatingTail" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" alignment="left" title="NEW - TOGGL NEW - TOGGL NEW - TOGGL NEW - TOGGL" placeholderString="+ Add project" id="BuW-NB-Qnm">
                                                     <font key="font" metaFont="cellTitle"/>
@@ -201,19 +208,22 @@
                                     <rect key="frame" x="0.0" y="0.0" width="351" height="30"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="MYB-NO-fcq">
+                                        <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="8Fy-tG-odG" customClass="AutoCompleteInput">
                                             <rect key="frame" x="13" y="6" width="325" height="18"/>
-                                            <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" alignment="left" placeholderString="What are you working on?" id="WfZ-R7-35C">
+                                            <textFieldCell key="cell" lineBreakMode="truncatingTail" truncatesLastVisibleLine="YES" selectable="YES" editable="YES" continuous="YES" sendsActionOnEndEditing="YES" state="on" alignment="left" placeholderString="What are you doing?" usesSingleLineMode="YES" id="GDj-uR-Arc">
                                                 <font key="font" metaFont="system" size="14"/>
                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>
+                                            <connections>
+                                                <action selector="autoCompleteChanged:" target="-2" id="Ows-V1-ZOT"/>
+                                            </connections>
                                         </textField>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstAttribute="trailing" secondItem="MYB-NO-fcq" secondAttribute="trailing" constant="15" id="GhE-K4-ZoX"/>
-                                        <constraint firstItem="MYB-NO-fcq" firstAttribute="centerY" secondItem="WHR-Ck-cjy" secondAttribute="centerY" id="Szd-0f-Mq2"/>
-                                        <constraint firstItem="MYB-NO-fcq" firstAttribute="leading" secondItem="WHR-Ck-cjy" secondAttribute="leading" constant="15" id="Zoz-Vy-TwB"/>
+                                        <constraint firstItem="8Fy-tG-odG" firstAttribute="centerY" secondItem="WHR-Ck-cjy" secondAttribute="centerY" id="BQj-OF-cYC"/>
+                                        <constraint firstItem="8Fy-tG-odG" firstAttribute="leading" secondItem="WHR-Ck-cjy" secondAttribute="leading" constant="15" id="EhO-5v-5TP"/>
+                                        <constraint firstAttribute="trailing" secondItem="8Fy-tG-odG" secondAttribute="trailing" constant="15" id="HCM-iV-iJg"/>
                                     </constraints>
                                 </view>
                                 <constraints>
@@ -242,7 +252,7 @@
                 <constraint firstItem="Fga-BR-x8G" firstAttribute="top" secondItem="M2u-7B-WCs" secondAttribute="top" id="s0O-bN-wX6"/>
                 <constraint firstItem="Fga-BR-x8G" firstAttribute="leading" secondItem="M2u-7B-WCs" secondAttribute="leading" id="wJK-xr-4eQ"/>
             </constraints>
-            <point key="canvasLocation" x="-142.5" y="-23"/>
+            <point key="canvasLocation" x="-403" y="-172"/>
         </customView>
     </objects>
     <resources>
