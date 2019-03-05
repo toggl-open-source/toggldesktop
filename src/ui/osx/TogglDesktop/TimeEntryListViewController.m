@@ -25,7 +25,7 @@ static void *XXContext = &XXContext;
 static NSString *kFrameKey = @"frame";
 
 @interface TimeEntryListViewController () <TimeEntryDatasourceDraggingDelegate>
-@property (nonatomic, strong) IBOutlet TimerEditViewController *timerEditViewController;
+@property (nonatomic, strong) TimerEditViewController *timerEditViewController;
 @property NSNib *nibTimeEntryCell;
 @property NSNib *nibTimeEntryEditViewController;
 @property NSNib *nibLoadMoreCell;
@@ -52,7 +52,6 @@ extern void *ctx;
 										initWithNibName:@"TimerEditViewController" bundle:nil];
 		self.timeEntryEditViewController = [[TimeEntryEditViewController alloc]
 											initWithNibName:@"TimeEntryEditViewController" bundle:nil];
-		[self.timerEditViewController.view setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
 		[self.timeEntryEditViewController.view setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
 
 		self.nibTimeEntryCell = [[NSNib alloc] initWithNibNamed:@"TimeEntryCell"
@@ -88,7 +87,7 @@ extern void *ctx;
 
 - (void)initCommon {
 	[self.headerView addSubview:self.timerEditViewController.view];
-	[self.timerEditViewController.view setFrame:self.headerView.bounds];
+	[self.timerEditViewController.view edgesToSuperView];
 
 	[self.timeEntryPopupEditView addSubview:self.timeEntryEditViewController.view];
 	[self.timeEntryEditViewController.view setFrame:self.timeEntryPopupEditView.bounds];
