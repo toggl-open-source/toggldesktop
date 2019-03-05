@@ -10,10 +10,11 @@ import Foundation
 
 extension NSView {
 
-    func applyShadow(color: NSColor = NSColor.black,
+    @objc func applyShadow(color: NSColor = NSColor.black,
                      opacity: Float = 0.13,
                      radius: CGFloat = 6.0) {
         wantsLayer = true
+        layer?.masksToBounds = false
         shadow = NSShadow()
         layer?.shadowOpacity = opacity
         layer?.shadowColor = color.cgColor

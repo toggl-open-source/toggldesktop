@@ -12,11 +12,12 @@
 #import "toggl_api.h"
 #import "TogglDesktop-Swift.h"
 #import <QuartzCore/CAShapeLayer.h>
+#import "ProjectTextField.h"
 
 @interface TimeEntryCell ()
 
 @property (weak) IBOutlet NSLayoutConstraint *descriptionLblLeading;
-@property (weak) IBOutlet NSTextField *projectTextField;
+@property (weak) IBOutlet ProjectTextField *projectTextField;
 @property (weak) IBOutlet NSImageView *billableFlag;
 @property (weak) IBOutlet NSImageView *tagFlag;
 @property (weak) IBOutlet NSTextField *durationTextField;
@@ -236,9 +237,8 @@ extern void *ctx;
 		NSColor *projectColor = [ConvertHexColor hexCodeToNSColor:view_item.ProjectColor];
 		self.dotView.hidden = NO;
 		[self.dotView fillWith:projectColor];
-		[self.projectTextField setAttributedStringValue:[self setProjectClientLabel:view_item]];
+		[self.projectTextField setTitleWithTimeEntry:view_item];
 		self.projectTextField.toolTip = view_item.ProjectAndTaskLabel;
-		self.projectTextField.textColor = projectColor;
 		self.projectConstrainLeading.constant = 16;
 		return;
 	}
@@ -249,46 +249,6 @@ extern void *ctx;
 	self.projectTextField.toolTip = nil;
 	self.dotView.hidden = YES;
 	self.projectConstrainLeading.constant = 0;
-}
-
-- (NSMutableAttributedString *)setProjectClientLabel:(TimeEntryViewItem *)view_item
-{
-	NSMutableAttributedString *string;
-
-	if (view_item.TaskID != 0)
-	{
-		string = [[NSMutableAttributedString alloc] initWithString:[view_item.TaskLabel stringByAppendingString:@". "]];
-
-		[string setAttributes:
-		 @{
-			 NSFontAttributeName : [NSFont systemFontOfSize:12],
-			 NSForegroundColorAttributeName:[NSColor controlTextColor]
-		 }
-						range:NSMakeRange(0, [string length])];
-
-		NSMutableAttributedString *projectName = [[NSMutableAttributedString alloc] initWithString:[view_item.ProjectLabel stringByAppendingString:@" "]];
-
-		[string appendAttributedString:projectName];
-	}
-	else
-	{
-		string = [[NSMutableAttributedString alloc] initWithString:[view_item.ProjectLabel stringByAppendingString:@" "]];
-	}
-
-	if ([view_item.ClientLabel length] > 0)
-	{
-		NSString *clientTitle = [NSString stringWithFormat:@"• %@", view_item.ClientLabel];
-		NSMutableAttributedString *clientName = [[NSMutableAttributedString alloc] initWithString:clientTitle];
-
-		[clientName setAttributes:
-		 @{
-			 NSFontAttributeName : [NSFont systemFontOfSize:12],
-			 NSForegroundColorAttributeName:[self clientTextColor]
-		 }
-							range:NSMakeRange(0, [clientName length])];
-		[string appendAttributedString:clientName];
-	}
-	return string;
 }
 
 - (void)setupGroupMode {
@@ -378,18 +338,6 @@ extern void *ctx;
 	if (self.GUID != nil)
 	{
 		toggl_edit(ctx, [self.GUID UTF8String], false, "");
-	}
-}
-
-- (NSColor *)clientTextColor
-{
-	if (@available(macOS 10.13, *))
-	{
-		return [NSColor colorNamed:@"grey-text-color"];
-	}
-	else
-	{
-		return [ConvertHexColor hexCodeToNSColor:@"#555555"];
 	}
 }
 

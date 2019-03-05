@@ -95,6 +95,9 @@ extern void *ctx;
 	self.addedHeight = 0;
 	self.minimumEditFormWidth = self.timeEntryPopupEditView.bounds.size.width;
 	self.runningEdit = NO;
+
+	// Shadow for Header
+	[self.headerView applyShadowWithColor:[NSColor blackColor] opacity:0.1 radius:6.0];
 }
 
 - (void)initNotifications
