@@ -18,8 +18,6 @@
 		3C0A571E1C22E12E00301D77 /* MKColorWell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C0A57171C22E12E00301D77 /* MKColorWell.m */; };
 		3C1C09C51C298ABA00BF9B6C /* warning-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C1C09C41C298ABA00BF9B6C /* warning-icon.png */; };
 		3C1E013F19D2DAE300DBF9A5 /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = 3C1E013E19D2DAE300DBF9A5 /* dsa_pub.pem */; };
-		3C2645A61A2F2AE0007DC17F /* start_button.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 3C2645A41A2F2AE0007DC17F /* start_button.pdf */; };
-		3C2645A71A2F2AE0007DC17F /* stop_button.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 3C2645A51A2F2AE0007DC17F /* stop_button.pdf */; };
 		3C2F239D21A7B43400CBE6BC /* UnsupportedNotice.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C2F239C21A7B43300CBE6BC /* UnsupportedNotice.m */; };
 		3C3AF64E20ACC6280088A3A6 /* CountryViewItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C3AF64D20ACC6280088A3A6 /* CountryViewItem.m */; };
 		3C4237171A9F612E00643059 /* toggl-logo-white.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 3C4237151A9F612E00643059 /* toggl-logo-white.pdf */; };
@@ -500,8 +498,6 @@
 		3C0A57181C22E12E00301D77 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		3C1C09C41C298ABA00BF9B6C /* warning-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "warning-icon.png"; path = "../../windows/TogglDesktop/TogglDesktop/Resources/warning-icon.png"; sourceTree = "<group>"; };
 		3C1E013E19D2DAE300DBF9A5 /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dsa_pub.pem; sourceTree = "<group>"; };
-		3C2645A41A2F2AE0007DC17F /* start_button.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = start_button.pdf; sourceTree = "<group>"; };
-		3C2645A51A2F2AE0007DC17F /* stop_button.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = stop_button.pdf; sourceTree = "<group>"; };
 		3C2F239B21A7B43300CBE6BC /* UnsupportedNotice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UnsupportedNotice.h; sourceTree = "<group>"; };
 		3C2F239C21A7B43300CBE6BC /* UnsupportedNotice.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UnsupportedNotice.m; sourceTree = "<group>"; };
 		3C3AF64C20ACC6280088A3A6 /* CountryViewItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CountryViewItem.h; sourceTree = "<group>"; };
@@ -1090,8 +1086,6 @@
 				3CAFDFF41AA713830022CD40 /* icon-google.pdf */,
 				3C4237151A9F612E00643059 /* toggl-logo-white.pdf */,
 				3C4237161A9F612E00643059 /* toggl-desktop-bg.png */,
-				3C2645A41A2F2AE0007DC17F /* start_button.pdf */,
-				3C2645A51A2F2AE0007DC17F /* stop_button.pdf */,
 				74664DAF18AA860800AAD282 /* on.pdf */,
 				74664DB018AA860800AAD282 /* off.pdf */,
 				3C7B4E9D190FA7F900627DC3 /* logo-white@2x.png */,
@@ -1694,8 +1688,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3C2645A71A2F2AE0007DC17F /* stop_button.pdf in Resources */,
-				BA276A152240F5B500810C51 /* FloatingErrorView.xib in Resources */,
+				BA03729B21FEB48900FC277B /* FloatingErrorView.xib in Resources */,
 				3C65A7E51DE5757A005586B4 /* continue_regular.pdf in Resources */,
 				BAF50DE521A29FED0090BA95 /* Images.xcassets in Resources */,
 				3C65A7D41DE574E7005586B4 /* group_icon_open.pdf in Resources */,
@@ -1742,7 +1735,6 @@
 				3C4237181A9F612E00643059 /* toggl-desktop-bg.png in Resources */,
 				74D1D27417EB72D900E709B0 /* TimerEditViewController.xib in Resources */,
 				74AA9475180909F50000539F /* GTMOAuth2Window.xib in Resources */,
-				3C2645A61A2F2AE0007DC17F /* start_button.pdf in Resources */,
 				3C1E013F19D2DAE300DBF9A5 /* dsa_pub.pem in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
