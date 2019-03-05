@@ -21,11 +21,27 @@
 #import "TogglDesktop-Swift.h"
 
 @interface TimerEditViewController ()
-@property LiteAutoCompleteDataSource *liteAutocompleteDataSource;
-@property TimeEntryViewItem *time_entry;
-@property NSTimer *timer;
-@property BOOL constraintsAdded;
-@property BOOL disableChange;
+@property (weak) IBOutlet NSBoxClickable *manualBox;
+@property (weak) IBOutlet NSBoxClickable *mainBox;
+@property (weak) IBOutlet NSTextFieldDuration *durationTextField;
+@property (weak) IBOutlet NSHoverButton *startButton;
+@property (weak) IBOutlet NSTextField *projectTextField;
+@property (weak) IBOutlet NSTextFieldClickable *descriptionLabel;
+@property (weak) IBOutlet NSImageView *billableFlag;
+@property (weak) IBOutlet NSImageView *tagFlag;
+@property (weak) IBOutlet NSTextFieldClickable *addEntryLabel;
+
+- (IBAction)startButtonClicked:(id)sender;
+- (IBAction)durationFieldChanged:(id)sender;
+- (IBAction)autoCompleteChanged:(id)sender;
+
+@property (strong, nonatomic) LiteAutoCompleteDataSource *liteAutocompleteDataSource;
+@property (strong, nonatomic) TimeEntryViewItem *time_entry;
+@property (strong, nonatomic) NSTimer *timer;
+@property (assign, nonatomic) BOOL constraintsAdded;
+@property (assign, nonatomic) BOOL disableChange;
+@property (assign, nonatomic) BOOL focusNotSet;
+
 @end
 
 @implementation TimerEditViewController
@@ -113,14 +129,6 @@ NSString *kInactiveTimerColor = @"#999999";
 
 	[self.startButton setHoverAlpha:0.75];
 
-	int osxMode = [[[NSUserDefaults standardUserDefaults] stringForKey:@"AppleAquaColorVariant"] intValue];
-	int trail = 40;
-	if (osxMode == 6)
-	{
-		trail = 60;
-	}
-	self.descriptionTrailing.constant = trail;
-
 	[self.autoCompleteInput.autocompleteTableView setTarget:self];
 	[self.autoCompleteInput.autocompleteTableView setAction:@selector(performClick:)];
 }
@@ -187,7 +195,7 @@ NSString *kInactiveTimerColor = @"#999999";
 		// Start/stop button title and color depend on
 		// whether time entry is running
 		self.startButton.toolTip = @"Stop";
-		[self.startButton setImage:[NSImage imageNamed:@"stop_button.pdf"]];
+		self.startButton.state = NSOnState;
 		toggl_set_settings_manual_mode(ctx, NO);
 
 		[self.durationTextField setDelegate:self];
@@ -306,7 +314,7 @@ NSString *kInactiveTimerColor = @"#999999";
 	// Start/stop button title and color depend on
 	// whether time entry is running
 	self.startButton.toolTip = @"Start";
-	[self.startButton setImage:[NSImage imageNamed:@"start_button.pdf"]];
+	self.startButton.state = NSOffState;
 	if ([self.autoCompleteInput currentEditor] == nil)
 	{
 		self.autoCompleteInput.stringValue = @"";
