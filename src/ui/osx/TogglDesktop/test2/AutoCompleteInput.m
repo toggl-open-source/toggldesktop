@@ -208,4 +208,14 @@ NSString *upArrow = @"\u25B2";
 	[self.actionButton setTitle:downArrow];
 }
 
+- (void)textDidBeginEditing:(NSNotification *)notification
+{
+	[self.responderDelegate didBecomeFirstResponder:self];
+}
+
+- (void)textDidEndEditing:(NSNotification *)notification
+{
+	[self.responderDelegate didResignFirstResponder:self];
+}
+
 @end
