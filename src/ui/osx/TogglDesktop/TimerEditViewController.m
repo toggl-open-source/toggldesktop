@@ -40,6 +40,8 @@ typedef enum : NSUInteger
 @property (weak) IBOutlet NSButton *addEntryBtn;
 @property (weak) IBOutlet NSView *contentContainerView;
 @property (weak) IBOutlet NSBox *autocompleteContainerView;
+@property (weak) IBOutlet DotImageView *dotImageView;
+@property (weak) IBOutlet NSLayoutConstraint *projectTextFieldLeading;
 
 - (IBAction)startButtonClicked:(id)sender;
 - (IBAction)durationFieldChanged:(id)sender;
@@ -194,6 +196,7 @@ NSString *kInactiveTimerColor = @"#999999";
 		}
 		else
 		{
+			self.descriptionLabel.stringValue = @"";
 			self.descriptionLabel.toolTip = @"(no description)";
 		}
 		[self.autoCompleteInput hide];
@@ -221,16 +224,7 @@ NSString *kInactiveTimerColor = @"#999999";
 	}
 
 	// Display project name
-	if (self.time_entry.ProjectAndTaskLabel != nil)
-	{
-		[self.projectTextField setTitleWithTimeEntry:self.time_entry];
-		self.projectTextField.toolTip = self.time_entry.ProjectAndTaskLabel;
-	}
-	else
-	{
-		self.projectTextField.stringValue = @"";
-		self.projectTextField.toolTip = nil;
-	}
+	[self renderProjectLabelWithViewItem:self.time_entry];
 
 	// Display duration
 	if (self.time_entry.duration != nil)
@@ -390,16 +384,9 @@ NSString *kInactiveTimerColor = @"#999999";
 	}
 
 	self.autoCompleteInput.stringValue = self.time_entry.Description;
-	if (item.ProjectID > 0)
-	{
-		[self.projectTextField setTitleWithTimeEntry:self.time_entry];
-		self.projectTextField.toolTip = self.time_entry.ProjectAndTaskLabel;
-	}
-	else
-	{
-		self.projectTextField.stringValue = @"";
-		self.projectTextField.toolTip = nil;
-	}
+
+	// Display project name
+	[self renderProjectLabelWithViewItem:self.time_entry];
 
 	self.time_entry.billable = item.Billable;
 }
@@ -612,6 +599,27 @@ NSString *kInactiveTimerColor = @"#999999";
 			self.autocompleteContainerView.hidden = NO;
 			self.autoCompleteInput.hidden = NO;
 			break;
+	}
+}
+
+- (void)renderProjectLabelWithViewItem:(TimeEntryViewItem *)item
+{
+	NSString *text = self.time_entry.ProjectAndTaskLabel;
+
+	if (text != nil && text.length > 0)
+	{
+		self.dotImageView.hidden = NO;
+		[self.projectTextField setTitleWithTimeEntry:item];
+		self.projectTextField.toolTip = text;
+		self.projectTextFieldLeading.constant = 16.0;
+	}
+	else
+	{
+		self.dotImageView.hidden = YES;
+		self.projectTextField.stringValue = @"";
+		self.projectTextField.toolTip = nil;
+		self.projectTextField.placeholderString = @"+ Add project";
+		self.projectTextFieldLeading.constant = 0;
 	}
 }
 

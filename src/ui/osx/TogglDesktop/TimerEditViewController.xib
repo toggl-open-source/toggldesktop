@@ -15,10 +15,12 @@
                 <outlet property="billableFlag" destination="ppU-KI-YsG" id="fTv-LB-K8L"/>
                 <outlet property="contentContainerView" destination="UVu-2D-59K" id="Ng2-3h-cZv"/>
                 <outlet property="descriptionLabel" destination="oaA-Wf-zkO" id="M12-Yr-8Nn"/>
+                <outlet property="dotImageView" destination="fQn-ym-gNM" id="3Kn-NT-GcJ"/>
                 <outlet property="durationTextField" destination="Rt4-7t-bwl" id="gFc-yh-Etr"/>
                 <outlet property="mainBox" destination="Fga-BR-x8G" id="PWb-gS-hxU"/>
                 <outlet property="manualBox" destination="NZl-PW-g8z" id="YwT-hG-JqV"/>
                 <outlet property="projectTextField" destination="Cqy-Vf-bE1" id="59M-S0-LIx"/>
+                <outlet property="projectTextFieldLeading" destination="cCm-h6-BDV" id="UZp-TG-tMF"/>
                 <outlet property="startButton" destination="pBI-7b-vVj" id="Zdt-WG-7LG"/>
                 <outlet property="tagFlag" destination="5nL-Cd-iWe" id="80M-g6-WAT"/>
                 <outlet property="view" destination="M2u-7B-WCs" id="bD3-yq-26j"/>
@@ -30,21 +32,20 @@
             <rect key="frame" x="0.0" y="0.0" width="411" height="64"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <box hidden="YES" autoresizesSubviews="NO" fixedFrame="YES" boxType="custom" borderType="none" borderWidth="0.0" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="NZl-PW-g8z" userLabel="manualBox" customClass="NSBoxClickable">
-                    <rect key="frame" x="55" y="0.0" width="300" height="64"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                <box hidden="YES" autoresizesSubviews="NO" boxType="custom" borderType="none" borderWidth="0.0" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="NZl-PW-g8z" userLabel="manualBox" customClass="NSBoxClickable">
+                    <rect key="frame" x="0.0" y="0.0" width="411" height="64"/>
                     <view key="contentView" id="Ott-qi-Egp">
-                        <rect key="frame" x="0.0" y="0.0" width="300" height="64"/>
+                        <rect key="frame" x="0.0" y="0.0" width="411" height="64"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <box autoresizesSubviews="NO" boxType="custom" cornerRadius="8" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="Noa-Sc-kzT">
-                                <rect key="frame" x="10" y="17" width="280" height="30"/>
+                                <rect key="frame" x="10" y="17" width="391" height="30"/>
                                 <view key="contentView" id="2bC-QJ-uuN">
-                                    <rect key="frame" x="1" y="1" width="278" height="28"/>
+                                    <rect key="frame" x="1" y="1" width="389" height="28"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="N9s-9L-g89">
-                                            <rect key="frame" x="0.0" y="0.0" width="278" height="28"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="389" height="28"/>
                                             <buttonCell key="cell" type="bevel" title="       Add Time Entry" bezelStyle="rounded" imagePosition="leading" alignment="center" imageScaling="proportionallyDown" inset="2" id="jdE-Ae-hRg">
                                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                 <font key="font" metaFont="system" size="14"/>
@@ -96,8 +97,8 @@
                                         <rect key="frame" x="0.0" y="0.0" width="236" height="64"/>
                                         <subviews>
                                             <textField horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="oaA-Wf-zkO" customClass="NSTextFieldClickable">
-                                                <rect key="frame" x="-2" y="32" width="240" height="16"/>
-                                                <textFieldCell key="cell" lineBreakMode="truncatingTail" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" alignment="left" title="Blogpost about Blogpost about  Blogpost about  Blogpost about " placeholderString="+ Add description" id="qf8-8Y-Po8">
+                                                <rect key="frame" x="-2" y="32" width="105" height="16"/>
+                                                <textFieldCell key="cell" lineBreakMode="truncatingTail" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" alignment="left" placeholderString="+ Add description" id="qf8-8Y-Po8">
                                                     <font key="font" metaFont="cellTitle"/>
                                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -115,8 +116,8 @@
                                                 <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" image="time-entry-dot" id="R7r-TA-kJS"/>
                                             </imageView>
                                             <textField horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="Cqy-Vf-bE1" customClass="ProjectTextField">
-                                                <rect key="frame" x="14" y="14" width="224" height="18"/>
-                                                <textFieldCell key="cell" lineBreakMode="truncatingTail" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" alignment="left" title="NEW - TOGGL NEW - TOGGL NEW - TOGGL NEW - TOGGL" placeholderString="+ Add project" id="BuW-NB-Qnm">
+                                                <rect key="frame" x="14" y="14" width="81" height="18"/>
+                                                <textFieldCell key="cell" lineBreakMode="truncatingTail" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" alignment="left" placeholderString="+ Add project" id="BuW-NB-Qnm">
                                                     <font key="font" metaFont="cellTitle"/>
                                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -255,10 +256,14 @@
                 </box>
             </subviews>
             <constraints>
+                <constraint firstAttribute="bottom" secondItem="NZl-PW-g8z" secondAttribute="bottom" id="5za-ld-w1k"/>
                 <constraint firstAttribute="trailing" secondItem="Fga-BR-x8G" secondAttribute="trailing" id="6oC-eJ-dBs"/>
                 <constraint firstAttribute="bottom" secondItem="Fga-BR-x8G" secondAttribute="bottom" id="Cub-Lx-DNo"/>
+                <constraint firstItem="NZl-PW-g8z" firstAttribute="leading" secondItem="M2u-7B-WCs" secondAttribute="leading" id="hf4-yQ-qL5"/>
+                <constraint firstAttribute="trailing" secondItem="NZl-PW-g8z" secondAttribute="trailing" id="po2-OJ-DBk"/>
                 <constraint firstItem="Fga-BR-x8G" firstAttribute="top" secondItem="M2u-7B-WCs" secondAttribute="top" id="s0O-bN-wX6"/>
                 <constraint firstItem="Fga-BR-x8G" firstAttribute="leading" secondItem="M2u-7B-WCs" secondAttribute="leading" id="wJK-xr-4eQ"/>
+                <constraint firstItem="NZl-PW-g8z" firstAttribute="top" secondItem="M2u-7B-WCs" secondAttribute="top" id="y6G-Gi-ezO"/>
             </constraints>
             <point key="canvasLocation" x="-403" y="-172"/>
         </customView>
