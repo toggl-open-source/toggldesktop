@@ -189,10 +189,10 @@ NSString *kInactiveTimerColor = @"#999999";
 
 		[self.durationTextField setDelegate:self];
 		// Time entry has a description
-		if (self.time_entry.Description && [self.time_entry.Description length] > 0)
+		if (self.time_entry.descriptionName && [self.time_entry.descriptionName length] > 0)
 		{
-			self.descriptionLabel.stringValue = self.time_entry.Description;
-			self.descriptionLabel.toolTip = self.time_entry.Description;
+			self.descriptionLabel.stringValue = self.time_entry.descriptionName;
+			self.descriptionLabel.toolTip = self.time_entry.descriptionName;
 		}
 		else
 		{
