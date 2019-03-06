@@ -192,7 +192,14 @@ NSString *upArrow = @"\u25B2";
 			[textField setInsertionPointColor:[self textColor]];
 		}
 	}
+	[self.responderDelegate didBecomeFirstResponder:self];
 	return success;
+}
+
+- (BOOL)resignFirstResponder
+{
+	[self.responderDelegate didResignFirstResponder:self];
+	return [super resignFirstResponder];
 }
 
 - (void)setButton:(NSButton *)button

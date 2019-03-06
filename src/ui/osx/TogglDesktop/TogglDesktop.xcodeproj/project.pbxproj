@@ -184,6 +184,7 @@
 		BAD2342621D612DF0039C742 /* libPocoUtil.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BAD2341D21D612DF0039C742 /* libPocoUtil.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		BAD2342721D612DF0039C742 /* libPocoFoundation.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BAD2341E21D612DF0039C742 /* libPocoFoundation.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		BAE007DE21FAF00D00404379 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BAE007DD21FAF00D00404379 /* Media.xcassets */; };
+		BAE49CAE222FC1C900773814 /* TimerContainerBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAE49CAD222FC1C900773814 /* TimerContainerBox.swift */; };
 		BAF50DE521A29FED0090BA95 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BAF50DE421A29FED0090BA95 /* Images.xcassets */; };
 		BAF50DF821A2A18D0090BA95 /* AppIconFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = BAF50DF721A2A18D0090BA95 /* AppIconFactory.m */; };
 		BAF6319C21E6F868002DD6AB /* NotificationCenter+MainThread.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAF6319B21E6F868002DD6AB /* NotificationCenter+MainThread.swift */; };
@@ -742,6 +743,7 @@
 		BAD2341D21D612DF0039C742 /* libPocoUtil.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoUtil.60.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoUtil.60.dylib; sourceTree = "<group>"; };
 		BAD2341E21D612DF0039C742 /* libPocoFoundation.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoFoundation.60.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoFoundation.60.dylib; sourceTree = "<group>"; };
 		BAE007DD21FAF00D00404379 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
+		BAE49CAD222FC1C900773814 /* TimerContainerBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerContainerBox.swift; sourceTree = "<group>"; };
 		BAF50DE421A29FED0090BA95 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = TogglDesktop/Images.xcassets; sourceTree = "<group>"; };
 		BAF50DF621A2A18D0090BA95 /* AppIconFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppIconFactory.h; sourceTree = "<group>"; };
 		BAF50DF721A2A18D0090BA95 /* AppIconFactory.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppIconFactory.m; sourceTree = "<group>"; };
@@ -1027,6 +1029,7 @@
 				BA2E5FB0223787C300EB866E /* EditorPopover.swift */,
 				BA08E085222E709C0075F68E /* ProjectTextField.h */,
 				BA08E086222E709C0075F68E /* ProjectTextField.m */,
+				BAE49CAD222FC1C900773814 /* TimerContainerBox.swift */,
 			);
 			name = ui;
 			path = test2;
@@ -1867,6 +1870,7 @@
 				BA08E087222E709C0075F68E /* ProjectTextField.m in Sources */,
 				BA0CEC6521BE590200F1BF01 /* NSTableView+Diff.swift in Sources */,
 				BA2E5FB1223787C300EB866E /* EditorPopover.swift in Sources */,
+				BAE49CAE222FC1C900773814 /* TimerContainerBox.swift in Sources */,
 				74AA9474180909F50000539F /* GTMOAuth2SignIn.m in Sources */,
 				3C07B75A193C88AE00ED6E6F /* NSCustomTimerComboBox.m in Sources */,
 				74BAD31E18BD7D83002FD4CF /* ViewItem.m in Sources */,

@@ -39,7 +39,7 @@ typedef enum : NSUInteger
 @property (weak) IBOutlet NSImageView *tagFlag;
 @property (weak) IBOutlet NSButton *addEntryBtn;
 @property (weak) IBOutlet NSView *contentContainerView;
-@property (weak) IBOutlet NSBox *autocompleteContainerView;
+@property (weak) IBOutlet TimerContainerBox *autocompleteContainerView;
 @property (weak) IBOutlet DotImageView *dotImageView;
 @property (weak) IBOutlet NSLayoutConstraint *projectTextFieldLeading;
 
@@ -129,6 +129,7 @@ NSString *kInactiveTimerColor = @"#999999";
 
 	[self.autoCompleteInput.autocompleteTableView setTarget:self];
 	[self.autoCompleteInput.autocompleteTableView setAction:@selector(performClick:)];
+	self.autoCompleteInput.responderDelegate = self.autocompleteContainerView;
 }
 
 - (void)viewDidAppear
