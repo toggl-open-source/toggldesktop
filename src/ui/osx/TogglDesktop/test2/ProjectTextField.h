@@ -7,12 +7,13 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "NSTextFieldClickable.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @class TimeEntryViewItem;
 
-@interface ProjectTextField : NSTextField
+@interface ProjectTextField : NSTextFieldClickable
 
 - (void)setTitleWithTimeEntry:(TimeEntryViewItem *)item;
 
