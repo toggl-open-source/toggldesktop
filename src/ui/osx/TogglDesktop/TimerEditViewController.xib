@@ -46,7 +46,7 @@
                                     <subviews>
                                         <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="N9s-9L-g89">
                                             <rect key="frame" x="0.0" y="0.0" width="389" height="28"/>
-                                            <buttonCell key="cell" type="bevel" title="       Add Time Entry" bezelStyle="rounded" imagePosition="leading" alignment="center" imageScaling="proportionallyDown" inset="2" id="jdE-Ae-hRg">
+                                            <buttonCell key="cell" type="bevel" title="Add Time Entry" bezelStyle="rounded" imagePosition="leading" alignment="center" imageScaling="proportionallyDown" inset="2" id="jdE-Ae-hRg">
                                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                 <font key="font" metaFont="system" size="14"/>
                                             </buttonCell>
@@ -55,17 +55,17 @@
                                             </connections>
                                         </button>
                                         <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="QTq-12-ukt">
-                                            <rect key="frame" x="80" y="8" width="12" height="12"/>
+                                            <rect key="frame" x="124" y="8" width="12" height="12"/>
                                             <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="add-icon" id="TgE-Dp-MPa"/>
                                         </imageView>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="N9s-9L-g89" firstAttribute="top" secondItem="2bC-QJ-uuN" secondAttribute="top" id="Ab5-TM-Qy6"/>
-                                        <constraint firstItem="QTq-12-ukt" firstAttribute="leading" secondItem="2bC-QJ-uuN" secondAttribute="leading" constant="80" id="EDj-Yh-Vah"/>
                                         <constraint firstItem="QTq-12-ukt" firstAttribute="centerY" secondItem="2bC-QJ-uuN" secondAttribute="centerY" id="FWM-RJ-1Em"/>
                                         <constraint firstAttribute="trailing" secondItem="N9s-9L-g89" secondAttribute="trailing" id="dxQ-zo-vpz"/>
                                         <constraint firstItem="N9s-9L-g89" firstAttribute="leading" secondItem="2bC-QJ-uuN" secondAttribute="leading" id="ePh-3a-89X"/>
                                         <constraint firstAttribute="bottom" secondItem="N9s-9L-g89" secondAttribute="bottom" id="erv-8v-86d"/>
+                                        <constraint firstItem="QTq-12-ukt" firstAttribute="centerX" secondItem="2bC-QJ-uuN" secondAttribute="centerX" constant="-65" id="peI-Jb-enZ"/>
                                     </constraints>
                                 </view>
                                 <constraints>
