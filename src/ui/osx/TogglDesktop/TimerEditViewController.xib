@@ -93,15 +93,18 @@
                                 <rect key="frame" x="25" y="0.0" width="336" height="64"/>
                                 <subviews>
                                     <customView horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="8Om-Ck-d1h">
-                                        <rect key="frame" x="0.0" y="0.0" width="239" height="64"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="236" height="64"/>
                                         <subviews>
                                             <textField horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="oaA-Wf-zkO" customClass="NSTextFieldClickable">
-                                                <rect key="frame" x="-2" y="32" width="243" height="16"/>
+                                                <rect key="frame" x="-2" y="32" width="240" height="16"/>
                                                 <textFieldCell key="cell" lineBreakMode="truncatingTail" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" alignment="left" title="Blogpost about Blogpost about  Blogpost about  Blogpost about " placeholderString="+ Add description" id="qf8-8Y-Po8">
                                                     <font key="font" metaFont="cellTitle"/>
                                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                 </textFieldCell>
+                                                <connections>
+                                                    <outlet property="delegate" destination="-2" id="7kX-oH-plq"/>
+                                                </connections>
                                             </textField>
                                             <imageView horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="fQn-ym-gNM" customClass="DotImageView" customModule="TogglDesktop" customModuleProvider="target">
                                                 <rect key="frame" x="1" y="19" width="8" height="8"/>
@@ -112,12 +115,15 @@
                                                 <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" image="time-entry-dot" id="R7r-TA-kJS"/>
                                             </imageView>
                                             <textField horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="Cqy-Vf-bE1" customClass="ProjectTextField">
-                                                <rect key="frame" x="14" y="14" width="227" height="18"/>
+                                                <rect key="frame" x="14" y="14" width="224" height="18"/>
                                                 <textFieldCell key="cell" lineBreakMode="truncatingTail" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" alignment="left" title="NEW - TOGGL NEW - TOGGL NEW - TOGGL NEW - TOGGL" placeholderString="+ Add project" id="BuW-NB-Qnm">
                                                     <font key="font" metaFont="cellTitle"/>
                                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                 </textFieldCell>
+                                                <connections>
+                                                    <outlet property="delegate" destination="-2" id="n6B-NG-c9Z"/>
+                                                </connections>
                                             </textField>
                                         </subviews>
                                         <constraints>
@@ -133,7 +139,7 @@
                                         </constraints>
                                     </customView>
                                     <stackView distribution="equalSpacing" orientation="horizontal" alignment="centerY" spacing="5" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IPz-wJ-rvs">
-                                        <rect key="frame" x="239" y="24" width="39" height="17"/>
+                                        <rect key="frame" x="236" y="24" width="39" height="17"/>
                                         <subviews>
                                             <imageView translatesAutoresizingMaskIntoConstraints="NO" id="5nL-Cd-iWe">
                                                 <rect key="frame" x="0.0" y="0.0" width="17" height="17"/>
@@ -162,9 +168,9 @@
                                         </customSpacing>
                                     </stackView>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Rt4-7t-bwl" customClass="NSTextFieldDuration">
-                                        <rect key="frame" x="281" y="24" width="57" height="16"/>
+                                        <rect key="frame" x="278" y="24" width="60" height="16"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="53" id="Qcm-6z-Cf8"/>
+                                            <constraint firstAttribute="width" constant="56" id="Qcm-6z-Cf8"/>
                                         </constraints>
                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="1.25 h" id="AtD-uY-SAZ">
                                             <font key="font" metaFont="cellTitle"/>
@@ -173,6 +179,7 @@
                                         </textFieldCell>
                                         <connections>
                                             <action selector="durationFieldChanged:" target="-2" id="5hq-aM-u0F"/>
+                                            <outlet property="delegate" destination="-2" id="e2I-Rc-Mhe"/>
                                         </connections>
                                     </textField>
                                 </subviews>
@@ -217,6 +224,7 @@
                                             </textFieldCell>
                                             <connections>
                                                 <action selector="autoCompleteChanged:" target="-2" id="Ows-V1-ZOT"/>
+                                                <outlet property="delegate" destination="-2" id="2Hi-fr-hnJ"/>
                                             </connections>
                                         </textField>
                                     </subviews>
