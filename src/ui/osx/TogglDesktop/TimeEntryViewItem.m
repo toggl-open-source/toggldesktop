@@ -18,10 +18,12 @@
 	if (te->Description)
 	{
 		self.Description = [NSString stringWithUTF8String:te->Description];
+		self.descriptionName = [NSString stringWithUTF8String:te->Description];
 	}
 	else
 	{
 		self.Description = @"";
+		self.descriptionName = @"";
 	}
 	if (te->ProjectAndTaskLabel)
 	{
