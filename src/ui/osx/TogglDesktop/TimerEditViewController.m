@@ -269,11 +269,6 @@ NSString *kInactiveTimerColor = @"#999999";
 
 - (void)textFieldClicked:(id)sender
 {
-	if (self.time_entry.GUID == nil)
-	{
-		return;
-	}
-
 	[self.autoCompleteInput.window makeFirstResponder:self.autoCompleteInput];
 
 	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kResetEditPopoverSize
