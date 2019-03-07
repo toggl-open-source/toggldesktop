@@ -13,13 +13,6 @@
 NSString *downArrow = @"\u25BC";
 NSString *upArrow = @"\u25B2";
 
-- (void)drawRect:(NSRect)dirtyRect
-{
-	[super drawRect:dirtyRect];
-
-	// Drawing code here.
-}
-
 - (id)initWithCoder:(NSCoder *)coder
 {
 	self = [super initWithCoder:coder];
@@ -30,6 +23,8 @@ NSString *upArrow = @"\u25B2";
 		self.maxVisibleItems = 6;
 		self.constraintsActive = NO;
 		[self createAutocomplete];
+		self.wantsLayer = YES;
+		self.layer.masksToBounds = NO;
 	}
 	return self;
 }
@@ -216,6 +211,12 @@ NSString *upArrow = @"\u25B2";
 - (void)textDidEndEditing:(NSNotification *)notification
 {
 	[self.responderDelegate didResignFirstResponder:self];
+}
+
+- (void)mouseDown:(NSEvent *)event
+{
+	[super mouseDown:event];
+	[self.responderDelegate didBecomeFirstResponder:self];
 }
 
 @end

@@ -25,11 +25,7 @@ final class TimerContainerBox: NSBox, TextFieldResponderDelegate {
     private var state = State.inactive
 
     private var activeBorderColor: NSColor {
-        if #available(OSX 10.13, *) {
-            return NSColor(named: NSColor.Name("upload-border-color"))!
-        } else {
-            return ConvertHexColor.hexCode(toNSColor: "#acacac")!
-        }
+        return NSColor.clear
     }
 
     private var inactiveBorderColor: NSColor {

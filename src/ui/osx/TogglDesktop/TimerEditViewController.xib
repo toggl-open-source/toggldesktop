@@ -216,15 +216,15 @@
                                     <rect key="frame" x="1" y="1" width="349" height="28"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <textField focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="8Fy-tG-odG" customClass="AutoCompleteInput">
+                                        <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="8Fy-tG-odG" customClass="BetterFocusAutoCompleteInput">
                                             <rect key="frame" x="13" y="5" width="323" height="18"/>
-                                            <textFieldCell key="cell" lineBreakMode="truncatingTail" truncatesLastVisibleLine="YES" selectable="YES" editable="YES" continuous="YES" sendsActionOnEndEditing="YES" state="on" focusRingType="none" alignment="left" placeholderString="What are you doing?" usesSingleLineMode="YES" id="GDj-uR-Arc">
+                                            <textFieldCell key="cell" lineBreakMode="truncatingTail" truncatesLastVisibleLine="YES" selectable="YES" editable="YES" continuous="YES" sendsActionOnEndEditing="YES" state="on" alignment="left" placeholderString="What are you doing?" usesSingleLineMode="YES" id="GDj-uR-Arc" customClass="FocusCell">
                                                 <font key="font" metaFont="system" size="14"/>
                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>
                                             <connections>
-                                                <action selector="autoCompleteChanged:" target="-2" id="Ows-V1-ZOT"/>
+                                                <action selector="performClick:" target="-2" id="jjh-4H-rCa"/>
                                                 <outlet property="delegate" destination="-2" id="2Hi-fr-hnJ"/>
                                             </connections>
                                         </textField>
