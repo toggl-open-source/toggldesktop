@@ -224,7 +224,7 @@
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>
                                             <connections>
-                                                <action selector="performClick:" target="-2" id="jjh-4H-rCa"/>
+                                                <action selector="autoCompleteChanged:" target="-2" id="JAu-qR-UCk"/>
                                                 <outlet property="delegate" destination="-2" id="2Hi-fr-hnJ"/>
                                             </connections>
                                         </textField>
