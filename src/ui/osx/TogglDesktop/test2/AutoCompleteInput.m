@@ -187,36 +187,13 @@ NSString *upArrow = @"\u25B2";
 			[textField setInsertionPointColor:[self textColor]];
 		}
 	}
-	[self.responderDelegate didBecomeFirstResponder:self];
 	return success;
-}
-
-- (BOOL)resignFirstResponder
-{
-	[self.responderDelegate didResignFirstResponder:self];
-	return [super resignFirstResponder];
 }
 
 - (void)setButton:(NSButton *)button
 {
 	self.actionButton = button;
 	[self.actionButton setTitle:downArrow];
-}
-
-- (void)textDidBeginEditing:(NSNotification *)notification
-{
-	[self.responderDelegate didBecomeFirstResponder:self];
-}
-
-- (void)textDidEndEditing:(NSNotification *)notification
-{
-	[self.responderDelegate didResignFirstResponder:self];
-}
-
-- (void)mouseDown:(NSEvent *)event
-{
-	[super mouseDown:event];
-	[self.responderDelegate didBecomeFirstResponder:self];
 }
 
 @end

@@ -21,4 +21,34 @@
 	return [FocusCell frameFocusRingFromFrame:self.bounds];
 }
 
+- (BOOL)becomeFirstResponder
+{
+	[self.responderDelegate didBecomeFirstResponder:self];
+	return [super becomeFirstResponder];
+}
+
+- (BOOL)resignFirstResponder
+{
+	[self.responderDelegate didResignFirstResponder:self];
+	return [super resignFirstResponder];
+}
+
+- (void)mouseDown:(NSEvent *)event
+{
+	[super mouseDown:event];
+	[self.responderDelegate didBecomeFirstResponder:self];
+}
+
+- (void)textDidBeginEditing:(NSNotification *)notification
+{
+	[super textDidBeginEditing:notification];
+	[self.responderDelegate didBecomeFirstResponder:self];
+}
+
+- (void)textDidEndEditing:(NSNotification *)notification
+{
+	[super textDidEndEditing:notification];
+	[self.responderDelegate didResignFirstResponder:self];
+}
+
 @end

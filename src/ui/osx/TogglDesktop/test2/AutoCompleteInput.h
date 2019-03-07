@@ -12,7 +12,6 @@
 #import "AutoCompleteTableCell.h"
 #import "AutoCompleteTableContainer.h"
 #import "UndoTextField.h"
-#import "TogglDesktop-Swift.h"
 
 @interface AutoCompleteInput : UndoTextField <NSTableViewDelegate, NSTableViewDataSource, NSTextFieldDelegate>
 @property NSNib *nibAutoCompleteTableCell;
@@ -28,7 +27,6 @@
 @property NSLayoutConstraint *topConstraint;
 @property BOOL constraintsActive;
 @property NSButton *actionButton;
-@property (weak, nonatomic) id<TextFieldResponderDelegate> responderDelegate;
 - (void)toggleTableView:(int)itemCount;
 - (void)setPos:(int)posy;
 - (void)hide;
