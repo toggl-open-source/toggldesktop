@@ -13,10 +13,11 @@
 #import "NSHoverButton.h"
 #import "NSBoxClickable.h"
 #import "AutoCompleteInput.h"
+#import "BetterFocusAutoCompleteInput.h"
 
 @interface TimerEditViewController : NSViewController <NSComboBoxDataSource, NSTextFieldDelegate, NSTableViewDelegate>
 
-@property (weak) IBOutlet AutoCompleteInput *autoCompleteInput;
+@property (weak) IBOutlet BetterFocusAutoCompleteInput *autoCompleteInput;
 @property (strong, nonatomic) NSArray *projectComboConstraint;
 @property (strong, nonatomic) NSArray *projectLabelConstraint;
 
