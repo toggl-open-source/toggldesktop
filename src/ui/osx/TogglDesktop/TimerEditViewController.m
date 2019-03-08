@@ -528,7 +528,12 @@ NSString *kInactiveTimerColor = @"#999999";
 - (CGFloat)tableView:(NSTableView *)tableView
 		 heightOfRow:(NSInteger)row
 {
-	AutocompleteItem *item = [self.liteAutocompleteDataSource.filteredOrderedKeys objectAtIndex:row];
+	AutocompleteItem *item = nil;
+
+	@synchronized(self)
+	{
+		item = [self.liteAutocompleteDataSource.filteredOrderedKeys objectAtIndex:row];
+	}
 	AutoCompleteCellType cellType = [AutoCompleteTableCell cellTypeFrom:item];
 
 	// Big workspace
