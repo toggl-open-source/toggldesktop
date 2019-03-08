@@ -11,7 +11,8 @@
 @interface AutoCompleteInput ()
 
 @property (assign, nonatomic) BOOL constraintsActive;
-
+@property (strong, nonatomic) NSView *backgroundView;
+@property (strong, nonatomic) NSLayoutConstraint *heightConstraint;
 @end
 
 @implementation AutoCompleteInput
@@ -29,9 +30,18 @@ NSString *upArrow = @"\u25B2";
 		[self createAutocomplete];
 		self.wantsLayer = YES;
 		self.layer.masksToBounds = NO;
-		self.expandToMainWindow = NO;
+		self.displayMode = AutoCompleteDisplayModeCompact;
+		[self initBackgroundView];
 	}
 	return self;
+}
+
+- (void)initBackgroundView
+{
+	self.backgroundView = [[NSView alloc] initWithFrame:CGRectZero];
+	self.backgroundView.translatesAutoresizingMaskIntoConstraints = NO;
+	self.backgroundView.wantsLayer = YES;
+	self.backgroundView.layer.backgroundColor = [NSColor colorWithWhite:0 alpha:0.5f].CGColor;
 }
 
 - (void)createAutocomplete
@@ -52,23 +62,58 @@ NSString *upArrow = @"\u25B2";
 	self.autocompleteTableContainer.translatesAutoresizingMaskIntoConstraints = NO;
 }
 
-- (void)setupAutocompleteConstraints
+- (void)addBackgroundViewIfNeed
 {
-	NSView *view = self;
-
-	if (self.expandToMainWindow)
+	if (self.backgroundView.superview != nil)
 	{
-		view = self.window.contentView;
+		return;
+	}
+
+	if (self.displayMode == AutoCompleteDisplayModeFullscreen)
+	{
+		[self.window.contentView addSubview:self.backgroundView positioned:NSWindowBelow relativeTo:self.autocompleteTableContainer];
+
+		NSLayoutConstraint *left = [NSLayoutConstraint constraintWithItem:self.backgroundView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.window.contentView attribute:NSLayoutAttributeLeft multiplier:1 constant:0];
+		NSLayoutConstraint *right = [NSLayoutConstraint constraintWithItem:self.backgroundView attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self.window.contentView attribute:NSLayoutAttributeRight multiplier:1 constant:0];
+		NSLayoutConstraint *top = [NSLayoutConstraint constraintWithItem:self.backgroundView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeBottom multiplier:1 constant:1];
+		NSLayoutConstraint *bottom = [NSLayoutConstraint constraintWithItem:self.backgroundView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.window.contentView attribute:NSLayoutAttributeBottom multiplier:1 constant:0];
+
+		[self.window.contentView addConstraints:@[left, right, top, bottom]];
+	}
+}
+
+- (void)addAutocompleteContainerIfNeed
+{
+	if (self.autocompleteTableContainer.superview != nil)
+	{
+		return;
+	}
+
+	// Add view
+	[self.window.contentView addSubview:self.autocompleteTableContainer positioned:NSWindowAbove relativeTo:nil];
+
+	// Get view for leading/trailing
+	NSView *view = self;
+	switch (self.displayMode)
+	{
+		case AutoCompleteDisplayModeCompact :
+			view = self;
+			break;
+		case AutoCompleteDisplayModeFullscreen :
+			view = self.window.contentView;
+		default :
+			break;
 	}
 
 	// Set constraints to input field so autocomplete size is always connected to input
-	self.leftConstraint = [NSLayoutConstraint constraintWithItem:self.autocompleteTableContainer attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:view attribute:NSLayoutAttributeLeft multiplier:1 constant:0];
+	NSLayoutConstraint *left = [NSLayoutConstraint constraintWithItem:self.autocompleteTableContainer attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:view attribute:NSLayoutAttributeLeft multiplier:1 constant:0];
 
-	self.rightConstraint =  [NSLayoutConstraint constraintWithItem:self.autocompleteTableContainer attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:view attribute:NSLayoutAttributeRight multiplier:1 constant:0];
+	NSLayoutConstraint *right =  [NSLayoutConstraint constraintWithItem:self.autocompleteTableContainer attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:view attribute:NSLayoutAttributeRight multiplier:1 constant:0];
 
-	self.topConstraint = [NSLayoutConstraint constraintWithItem:self.autocompleteTableContainer attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeBottom multiplier:1 constant:18];
+	NSLayoutConstraint *top = [NSLayoutConstraint constraintWithItem:self.autocompleteTableContainer attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeBottom multiplier:1 constant:1];
 
 	self.heightConstraint = [NSLayoutConstraint constraintWithItem:self.autocompleteTableContainer attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:0];
+	[self.window.contentView addConstraints:@[left, right, top, self.heightConstraint]];
 }
 
 - (void)setPos:(int)posy
@@ -82,11 +127,8 @@ NSString *upArrow = @"\u25B2";
 	{
 		if (self.autocompleteTableContainer.hidden)
 		{
-			if (self.autocompleteTableContainer.superview == nil)
-			{
-				[self.window.contentView addSubview:self.autocompleteTableContainer positioned:NSWindowAbove relativeTo:nil];
-				[self setupAutocompleteConstraints];
-			}
+			[self addAutocompleteContainerIfNeed];
+			[self addBackgroundViewIfNeed];
 			[self showAutoComplete:YES];
 		}
 	}
@@ -153,11 +195,8 @@ NSString *upArrow = @"\u25B2";
 {
 	if (show)
 	{
-		if (!self.constraintsActive)
-		{
-			[self.window.contentView addConstraints:[NSArray arrayWithObjects:self.leftConstraint, self.rightConstraint, self.heightConstraint, self.topConstraint, nil]];
-			self.constraintsActive = YES;
-		}
+		self.autocompleteTableContainer.hidden = NO;
+		self.backgroundView.hidden = NO;
 		[[self currentEditor] setSelectedRange:NSMakeRange(0, 0)];
 		[[self currentEditor] moveToEndOfLine:nil];
 		if (self.actionButton != nil)
@@ -167,11 +206,8 @@ NSString *upArrow = @"\u25B2";
 	}
 	else
 	{
-		if (self.constraintsActive)
-		{
-			[self.window.contentView removeConstraints:[NSArray arrayWithObjects:self.leftConstraint, self.rightConstraint, self.heightConstraint, self.topConstraint, nil]];
-			self.constraintsActive = NO;
-		}
+		self.autocompleteTableContainer.hidden = YES;
+		self.backgroundView.hidden = YES;
 		if (self.actionButton != nil)
 		{
 			[self.actionButton setTitle:downArrow];
