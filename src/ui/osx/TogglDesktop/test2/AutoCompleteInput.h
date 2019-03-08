@@ -22,8 +22,8 @@
 @property NSLayoutConstraint *leftConstraint;
 @property NSLayoutConstraint *rightConstraint;
 @property NSLayoutConstraint *topConstraint;
-@property BOOL constraintsActive;
 @property NSButton *actionButton;
+@property (assign, nonatomic) BOOL expandToMainWindow;
 - (void)toggleTableViewWithNumberOfItem:(NSInteger)numberOfItem;
 - (void)updateDropdownWithHeight:(CGFloat)height;
 - (void)setPos:(int)posy;

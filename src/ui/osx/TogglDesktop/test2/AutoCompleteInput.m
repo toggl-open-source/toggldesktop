@@ -8,6 +8,12 @@
 
 #import "AutoCompleteInput.h"
 
+@interface AutoCompleteInput ()
+
+@property (assign, nonatomic) BOOL constraintsActive;
+
+@end
+
 @implementation AutoCompleteInput
 
 NSString *downArrow = @"\u25BC";
@@ -23,14 +29,14 @@ NSString *upArrow = @"\u25B2";
 		[self createAutocomplete];
 		self.wantsLayer = YES;
 		self.layer.masksToBounds = NO;
-		[self setupAutocompleteConstraints];
+		self.expandToMainWindow = NO;
 	}
 	return self;
 }
 
 - (void)createAutocomplete
 {
-	self.autocompleteTableContainer = [[AutoCompleteTableContainer alloc] initWithFrame:NSMakeRect(0, 0, 0, 0)];
+	self.autocompleteTableContainer = [[AutoCompleteTableContainer alloc] initWithFrame:CGRectZero];
 	self.nibAutoCompleteTableCell = [[NSNib alloc] initWithNibNamed:@"AutoCompleteTableCell" bundle:nil];
 	self.autocompleteTableView = [[AutoCompleteTable alloc] initWithFrame:NSMakeRect(0, 0, 0, 0)];
 	[self.autocompleteTableView registerNib:self.nibAutoCompleteTableCell
@@ -48,10 +54,17 @@ NSString *upArrow = @"\u25B2";
 
 - (void)setupAutocompleteConstraints
 {
-	// Set constraints to input field so autocomplete size is always connected to input
-	self.leftConstraint = [NSLayoutConstraint constraintWithItem:self.autocompleteTableContainer attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeft multiplier:1 constant:0];
+	NSView *view = self;
 
-	self.rightConstraint =  [NSLayoutConstraint constraintWithItem:self.autocompleteTableContainer attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeRight multiplier:1 constant:0];
+	if (self.expandToMainWindow)
+	{
+		view = self.window.contentView;
+	}
+
+	// Set constraints to input field so autocomplete size is always connected to input
+	self.leftConstraint = [NSLayoutConstraint constraintWithItem:self.autocompleteTableContainer attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:view attribute:NSLayoutAttributeLeft multiplier:1 constant:0];
+
+	self.rightConstraint =  [NSLayoutConstraint constraintWithItem:self.autocompleteTableContainer attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:view attribute:NSLayoutAttributeRight multiplier:1 constant:0];
 
 	self.topConstraint = [NSLayoutConstraint constraintWithItem:self.autocompleteTableContainer attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeBottom multiplier:1 constant:18];
 
@@ -72,6 +85,7 @@ NSString *upArrow = @"\u25B2";
 			if (self.autocompleteTableContainer.superview == nil)
 			{
 				[self.window.contentView addSubview:self.autocompleteTableContainer positioned:NSWindowAbove relativeTo:nil];
+				[self setupAutocompleteConstraints];
 			}
 			[self showAutoComplete:YES];
 		}
