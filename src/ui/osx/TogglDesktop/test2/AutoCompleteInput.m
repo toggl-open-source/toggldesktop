@@ -8,11 +8,6 @@
 
 #import "AutoCompleteInput.h"
 
-@interface AutoCompleteInput ()
-@property (assign, nonatomic) CGFloat itemHeight;
-@property (assign, nonatomic) CGFloat worksapceItemHeight;
-@end
-
 @implementation AutoCompleteInput
 
 NSString *downArrow = @"\u25BC";
@@ -24,12 +19,11 @@ NSString *upArrow = @"\u25B2";
 	if (self)
 	{
 		self.posY = 0;
-		self.itemHeight = 30.0;
-		self.worksapceItemHeight = 40.0;
 		self.constraintsActive = NO;
 		[self createAutocomplete];
 		self.wantsLayer = YES;
 		self.layer.masksToBounds = NO;
+		[self setupAutocompleteConstraints];
 	}
 	return self;
 }
@@ -61,7 +55,7 @@ NSString *upArrow = @"\u25B2";
 
 	self.topConstraint = [NSLayoutConstraint constraintWithItem:self.autocompleteTableContainer attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeBottom multiplier:1 constant:18];
 
-	self.heightConstraint = [NSLayoutConstraint constraintWithItem:self.autocompleteTableContainer attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:self.itemHeight];
+	self.heightConstraint = [NSLayoutConstraint constraintWithItem:self.autocompleteTableContainer attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:0];
 }
 
 - (void)setPos:(int)posy
@@ -69,35 +63,28 @@ NSString *upArrow = @"\u25B2";
 	self.posY = posy;
 }
 
-- (void)toggleTableView:(int)itemCount
+- (void)toggleTableViewWithNumberOfItem:(NSInteger)numberOfItem
 {
-	// NSLog(@"// ** Toggle table (items: %d)  ** //", itemCount);
-	if (itemCount > 0 || (itemCount == 0 && self.lastItemCount > 0))
+	if (numberOfItem > 0)
 	{
 		if (self.autocompleteTableContainer.hidden)
 		{
-			if (self.heightConstraint == nil)
+			if (self.autocompleteTableContainer.superview == nil)
 			{
 				[self.window.contentView addSubview:self.autocompleteTableContainer positioned:NSWindowAbove relativeTo:nil];
-				[self setupAutocompleteConstraints];
 			}
 			[self showAutoComplete:YES];
 		}
-		[self updateDropdownHeight:itemCount];
 	}
 	else if (self.autocompleteTableContainer != nil)
 	{
 		[self showAutoComplete:NO];
 	}
-	self.lastItemCount = itemCount;
 }
 
-- (void)updateDropdownHeight:(int)count
+- (void)updateDropdownWithHeight:(CGFloat)height
 {
-	int h = MIN((count * self.itemHeight), self.posY - 50);
-
-	self.heightConstraint.constant = h;
-	// NSLog(@"Update table position | H: %d, POSY: %d", h, self.posY);
+	self.heightConstraint.constant = height;
 }
 
 - (void)keyUp:(NSEvent *)event
@@ -112,7 +99,7 @@ NSString *upArrow = @"\u25B2";
 		}
 		if (self.autocompleteTableContainer.isHidden)
 		{
-			[self toggleTableView:(int)self.autocompleteTableView.numberOfRows];
+			[self toggleTableViewWithNumberOfItem:self.autocompleteTableView.numberOfRows];
 			return;
 		}
 	}

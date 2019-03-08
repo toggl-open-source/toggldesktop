@@ -7,6 +7,14 @@
 //
 
 #import "LiteAutoCompleteDataSource.h"
+#import "AutoCompleteTableCell.h"
+#import "TogglDesktop-Swift.h"
+
+@interface LiteAutoCompleteDataSource ()
+@property (assign, nonatomic) CGFloat itemHeight;
+@property (assign, nonatomic) CGFloat worksapceItemHeight;
+@end
+
 
 @implementation LiteAutoCompleteDataSource
 
@@ -20,6 +28,8 @@ extern void *ctx;
 	self.filteredOrderedKeys = [[NSMutableArray alloc] init];
 	self.lastType = -1;
 	self.lastWID = -1;
+	self.itemHeight = 30.0;
+	self.worksapceItemHeight = 40.0;
 	self.lastClientLabel = nil;
 	self.types = [NSArray arrayWithObjects:@"TIME ENTRIES", @"TASKS", @"PROJECTS", @"WORKSPACES", nil];
 
@@ -149,8 +159,11 @@ extern void *ctx;
 {
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
-	[self.input toggleTableView:(int)[self.filteredOrderedKeys count]];
+	CGFloat totalHeight = [self calculateTotalHeightFromArray:self.filteredOrderedKeys];
+	NSInteger count = self.filteredOrderedKeys.count;
 	[self.input.autocompleteTableView reloadData];
+	[self.input updateDropdownWithHeight:totalHeight];
+	[self.input toggleTableViewWithNumberOfItem:count];
 }
 
 - (void)findFilter:(NSString *)filter
@@ -376,9 +389,28 @@ extern void *ctx;
 		result = [self.filteredOrderedKeys count];
 	}
 
-	// NSLog(@"----- ROWS: %lu", (unsigned long)result);
+	NSLog(@"----- ROWS: %lu", (unsigned long)result);
 
 	return result;
+}
+
+- (CGFloat)calculateTotalHeightFromArray:(NSArray<AutocompleteItem *> *)array
+{
+	CGFloat height = 0;
+
+	for (AutocompleteItem *item in array)
+	{
+		AutoCompleteCellType cellType = [AutoCompleteTableCell cellTypeFrom:item];
+		if (cellType == AutoCompleteCellTypeWorkspace)
+		{
+			height += self.worksapceItemHeight;
+		}
+		else
+		{
+			height += self.itemHeight;
+		}
+	}
+	return height;
 }
 
 @end
