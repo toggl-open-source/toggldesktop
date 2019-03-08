@@ -19,8 +19,8 @@
 @property AutoCompleteTable *autocompleteTableView;
 @property int posY;
 @property int lastItemCount;
-@property int maxVisibleItems;
-@property int itemHeight;
+@property (assign, nonatomic, readonly) CGFloat itemHeight;
+@property (assign, nonatomic, readonly) CGFloat worksapceItemHeight;
 @property NSLayoutConstraint *heightConstraint;
 @property NSLayoutConstraint *leftConstraint;
 @property NSLayoutConstraint *rightConstraint;

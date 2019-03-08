@@ -9,5 +9,5 @@
 #import <Cocoa/Cocoa.h>
 
 @interface AutoCompleteTableContainer : NSScrollView
-@property NSShadow *dropShadow;
+
 @end

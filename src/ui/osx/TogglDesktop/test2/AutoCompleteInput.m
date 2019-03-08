@@ -8,6 +8,11 @@
 
 #import "AutoCompleteInput.h"
 
+@interface AutoCompleteInput ()
+@property (assign, nonatomic) CGFloat itemHeight;
+@property (assign, nonatomic) CGFloat worksapceItemHeight;
+@end
+
 @implementation AutoCompleteInput
 
 NSString *downArrow = @"\u25BC";
@@ -19,8 +24,8 @@ NSString *upArrow = @"\u25B2";
 	if (self)
 	{
 		self.posY = 0;
-		self.itemHeight = 25;
-		self.maxVisibleItems = 6;
+		self.itemHeight = 30.0;
+		self.worksapceItemHeight = 40.0;
 		self.constraintsActive = NO;
 		[self createAutocomplete];
 		self.wantsLayer = YES;

@@ -528,7 +528,17 @@ NSString *kInactiveTimerColor = @"#999999";
 - (CGFloat)tableView:(NSTableView *)tableView
 		 heightOfRow:(NSInteger)row
 {
-	return 25;
+	AutocompleteItem *item = [self.liteAutocompleteDataSource.filteredOrderedKeys objectAtIndex:row];
+	AutoCompleteCellType cellType = [AutoCompleteTableCell cellTypeFrom:item];
+
+	// Big workspace
+	if (cellType == AutoCompleteCellTypeWorkspace)
+	{
+		return self.autoCompleteInput.worksapceItemHeight;
+	}
+
+	// Other cells
+	return self.autoCompleteInput.itemHeight;
 }
 
 - (IBAction)performClick:(id)sender

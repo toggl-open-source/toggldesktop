@@ -38,7 +38,7 @@
 	// Format is: Description - TaskName · ProjectName - ClientName
 	NSMutableAttributedString *string;
 
-	AutoCompleteCellType cellType = [self cellTypeFrom:view_item];
+	AutoCompleteCellType cellType = [AutoCompleteTableCell cellTypeFrom:view_item];
 
 	// Category row
 	if (cellType == AutoCompleteCellTypeCategory)
