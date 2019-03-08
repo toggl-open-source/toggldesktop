@@ -322,10 +322,12 @@ extern void *ctx;
 				}
 			}
 			// NSLog(@" FILTERED: %@", [filtered count]);
-			self.filteredOrderedKeys = filtered;
 			dispatch_sync(dispatch_get_main_queue(), ^{
 				// This will be called on the main thread,
 				// when async calls finish
+
+				// We should set the key in main thread to prevent crash
+				self.filteredOrderedKeys = filtered;
 				[self reload];
 			});
 		});
