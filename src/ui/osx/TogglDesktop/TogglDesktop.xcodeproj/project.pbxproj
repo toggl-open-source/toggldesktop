@@ -131,6 +131,8 @@
 		BA03729D21FED85700FC277B /* NSView+Xib.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA03729C21FED85700FC277B /* NSView+Xib.swift */; };
 		BA08E012222E32C90075F68E /* NSView+LayoutConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA08E011222E32C90075F68E /* NSView+LayoutConstraint.swift */; };
 		BA08E087222E709C0075F68E /* ProjectTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = BA08E086222E709C0075F68E /* ProjectTextField.m */; };
+		BA0C3A65223219470081C6DE /* AutoCompleteCellType.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0C3A64223219470081C6DE /* AutoCompleteCellType.swift */; };
+		BA0C3A6722321FBC0081C6DE /* AutoCompleteTableCell+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0C3A6622321FBC0081C6DE /* AutoCompleteTableCell+Ext.swift */; };
 		BA0CEC4821BE4D4600F1BF01 /* DeepDiff.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA0CEBC121BA851700F1BF01 /* DeepDiff.framework */; };
 		BA0CEC4921BE4D4600F1BF01 /* DeepDiff.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA0CEBC121BA851700F1BF01 /* DeepDiff.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BA0CEC5321BE528900F1BF01 /* TableViewDiffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0CEC5221BE528900F1BF01 /* TableViewDiffer.swift */; };
@@ -688,6 +690,8 @@
 		BA08E011222E32C90075F68E /* NSView+LayoutConstraint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSView+LayoutConstraint.swift"; sourceTree = "<group>"; };
 		BA08E085222E709C0075F68E /* ProjectTextField.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProjectTextField.h; sourceTree = "<group>"; };
 		BA08E086222E709C0075F68E /* ProjectTextField.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProjectTextField.m; sourceTree = "<group>"; };
+		BA0C3A64223219470081C6DE /* AutoCompleteCellType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoCompleteCellType.swift; sourceTree = "<group>"; };
+		BA0C3A6622321FBC0081C6DE /* AutoCompleteTableCell+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AutoCompleteTableCell+Ext.swift"; sourceTree = "<group>"; };
 		BA0CEBA321BA851700F1BF01 /* DeepDiff.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = DeepDiff.xcodeproj; path = ../../../../third_party/DeepDiff/DeepDiff.xcodeproj; sourceTree = "<group>"; };
 		BA0CEC5121BE528900F1BF01 /* TogglDesktop-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TogglDesktop-Bridging-Header.h"; sourceTree = "<group>"; };
 		BA0CEC5221BE528900F1BF01 /* TableViewDiffer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewDiffer.swift; sourceTree = "<group>"; };
@@ -1210,6 +1214,15 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		BA0C3A45223219330081C6DE /* AutoComplete */ = {
+			isa = PBXGroup;
+			children = (
+				BA0C3A64223219470081C6DE /* AutoCompleteCellType.swift */,
+				BA0C3A6622321FBC0081C6DE /* AutoCompleteTableCell+Ext.swift */,
+			);
+			path = AutoComplete;
+			sourceTree = "<group>";
+		};
 		BA0CEBA421BA851700F1BF01 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -1308,6 +1321,7 @@
 		BA712EAF21BF904E00A2D8DD /* Feature */ = {
 			isa = PBXGroup;
 			children = (
+				BA0C3A45223219330081C6DE /* AutoComplete */,
 				BA3E75B422291C9D009AD291 /* SystemMessage */,
 				BA4059AD221D2147002969B8 /* TimeEntry */,
 				BA712EC021BF905B00A2D8DD /* Undo */,
@@ -1859,6 +1873,7 @@
 				74F1070118993FFE00E93BD5 /* FeedbackWindowController.m in Sources */,
 				BA03725521FE9FD400FC277B /* FlatButton.swift in Sources */,
 				69FC180817E6534400B96425 /* AppDelegate.m in Sources */,
+				BA0C3A6722321FBC0081C6DE /* AutoCompleteTableCell+Ext.swift in Sources */,
 				3C6B24A4203FC8200063FC08 /* LiteAutoCompleteDataSource.m in Sources */,
 				3C068C6A1C22F25000874B9A /* MKColorWellCustom.m in Sources */,
 				3CA14529192DE32300414620 /* NSViewEscapable.m in Sources */,
@@ -1917,6 +1932,7 @@
 				BA2DA12021A691FF0027B7A5 /* TrackingService.m in Sources */,
 				3C6B2486203E01D90063FC08 /* AutoCompleteTableCell.m in Sources */,
 				3CE30E022052BD8B00AF2E2A /* AutoCompleteTableContainer.m in Sources */,
+				BA0C3A65223219470081C6DE /* AutoCompleteCellType.swift in Sources */,
 				3C0A571D1C22E12E00301D77 /* MKColorWell+Bindings.m in Sources */,
 				BA7B4C3721C24B9D00B75B14 /* UndoTextField.m in Sources */,
 				BA276A142240F5B500810C51 /* FloatingErrorView.swift in Sources */,
