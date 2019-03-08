@@ -123,6 +123,7 @@ NSString *kInactiveTimerColor = @"#999999";
 	self.displayMode = DisplayModeManual;
 	self.projectTextField.isInTimerBar = YES;
 	self.autoCompleteInput.expandToMainWindow = YES;
+	self.autoCompleteInput.displayMode = AutoCompleteDisplayModeFullscreen;
 	self.liteAutocompleteDataSource.input = self.autoCompleteInput;
 	[self.liteAutocompleteDataSource setFilter:@""];
 

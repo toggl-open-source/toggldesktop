@@ -13,17 +13,20 @@
 #import "AutoCompleteTableContainer.h"
 #import "UndoTextField.h"
 
+typedef NS_ENUM (NSUInteger, AutoCompleteDisplayMode)
+{
+	AutoCompleteDisplayModeCompact,
+	AutoCompleteDisplayModeFullscreen,
+};
+
 @interface AutoCompleteInput : UndoTextField <NSTableViewDelegate, NSTableViewDataSource, NSTextFieldDelegate>
 @property NSNib *nibAutoCompleteTableCell;
 @property AutoCompleteTableContainer *autocompleteTableContainer;
 @property AutoCompleteTable *autocompleteTableView;
 @property int posY;
-@property NSLayoutConstraint *heightConstraint;
-@property NSLayoutConstraint *leftConstraint;
-@property NSLayoutConstraint *rightConstraint;
-@property NSLayoutConstraint *topConstraint;
 @property NSButton *actionButton;
-@property (assign, nonatomic) BOOL expandToMainWindow;
+@property (assign, nonatomic) AutoCompleteDisplayMode displayMode;
+
 - (void)toggleTableViewWithNumberOfItem:(NSInteger)numberOfItem;
 - (void)updateDropdownWithHeight:(CGFloat)height;
 - (void)setPos:(int)posy;
