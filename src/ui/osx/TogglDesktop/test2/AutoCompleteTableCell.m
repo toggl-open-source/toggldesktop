@@ -7,15 +7,9 @@
 //
 
 #import "AutoCompleteTableCell.h"
+#import "TogglDesktop-Swift.h"
 
 @implementation AutoCompleteTableCell
-
-- (void)drawRect:(NSRect)dirtyRect
-{
-	[super drawRect:dirtyRect];
-
-	// Drawing code here.
-}
 
 - (void)render:(AutocompleteItem *)view_item selected:(BOOL)selected
 {
@@ -44,8 +38,10 @@
 	// Format is: Description - TaskName · ProjectName - ClientName
 	NSMutableAttributedString *string;
 
+	AutoCompleteCellType cellType = [self cellTypeFrom:view_item];
+
 	// Category row
-	if (view_item.Type == -1)
+	if (cellType == AutoCompleteCellTypeCategory)
 	{
 		string = [[NSMutableAttributedString alloc] initWithString:view_item.Text];
 
@@ -59,7 +55,7 @@
 	}
 
 	// Client row / No project row
-	if (view_item.Type == -2 || (view_item.Type == 2 && view_item.ProjectID == 0))
+	if (cellType == AutoCompleteCellTypeClient || cellType == AutoCompleteCellTypeNoProject)
 	{
 		string = [[NSMutableAttributedString alloc] initWithString:view_item.Text];
 
@@ -77,7 +73,7 @@
 	}
 
 	// Workspace row
-	if (view_item.Type == -3)
+	if (cellType == AutoCompleteCellTypeWorkspace)
 	{
 		NSMutableParagraphStyle *paragrapStyle = NSMutableParagraphStyle.new;
 		paragrapStyle.alignment = kCTTextAlignmentCenter;
@@ -163,7 +159,7 @@
 		}
 	}
 
-	if (view_item.Type == 2)
+	if (cellType == AutoCompleteCellTypeTimeEntryWithProject)
 	{
 		// Add more padding to the front of project items
 		NSMutableAttributedString *result = [[NSMutableAttributedString alloc] initWithString:@"      "];
@@ -173,7 +169,7 @@
 	}
 
 	// For time entries show all params: description, task, project, client
-	if (view_item.Type == 0)
+	if (cellType == AutoCompleteCellTypeTimeEntryFullData)
 	{
 		NSMutableAttributedString *clientName = [[NSMutableAttributedString alloc] initWithString:view_item.ClientLabel];
 
