@@ -18,16 +18,14 @@
 @property AutoCompleteTableContainer *autocompleteTableContainer;
 @property AutoCompleteTable *autocompleteTableView;
 @property int posY;
-@property int lastItemCount;
-@property (assign, nonatomic, readonly) CGFloat itemHeight;
-@property (assign, nonatomic, readonly) CGFloat worksapceItemHeight;
 @property NSLayoutConstraint *heightConstraint;
 @property NSLayoutConstraint *leftConstraint;
 @property NSLayoutConstraint *rightConstraint;
 @property NSLayoutConstraint *topConstraint;
 @property BOOL constraintsActive;
 @property NSButton *actionButton;
-- (void)toggleTableView:(int)itemCount;
+- (void)toggleTableViewWithNumberOfItem:(NSInteger)numberOfItem;
+- (void)updateDropdownWithHeight:(CGFloat)height;
 - (void)setPos:(int)posy;
 - (void)hide;
 - (void)resetTable;
