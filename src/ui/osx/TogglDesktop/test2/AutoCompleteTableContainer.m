@@ -8,6 +8,10 @@
 
 #import "AutoCompleteTableContainer.h"
 
+@interface AutoCompleteTableContainer ()
+@property (strong, nonatomic) NSShadow *dropShadow;
+@end
+
 @implementation AutoCompleteTableContainer
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -18,10 +22,10 @@
 		[self setWantsLayer:YES];
 		self.layer.masksToBounds = YES;
 		self.dropShadow = [[NSShadow alloc] init];
-		[self.dropShadow setShadowColor:[[NSColor grayColor]
-										 colorWithAlphaComponent:0.7f]];
-		[self.dropShadow setShadowOffset:NSMakeSize(0, 5.0)];
-		[self.dropShadow setShadowBlurRadius:5.0];
+		[self.dropShadow setShadowColor:[[NSColor blackColor]
+										 colorWithAlphaComponent:0.13f]];
+		[self.dropShadow setShadowOffset:NSMakeSize(0, -2)];
+		[self.dropShadow setShadowBlurRadius:6.0];
 	}
 	return self;
 }

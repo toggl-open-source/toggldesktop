@@ -10,7 +10,7 @@ import Foundation
 
 extension AutoCompleteTableCell {
 
-    @objc func cellType(from item: AutocompleteItem) -> AutoCompleteCellType {
+    @objc class func cellType(from item: AutocompleteItem) -> AutoCompleteCellType {
         return AutoCompleteCellType(item: item)
     }
 }
