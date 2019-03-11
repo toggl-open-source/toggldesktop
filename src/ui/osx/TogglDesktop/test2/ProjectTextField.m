@@ -9,6 +9,7 @@
 #import "ProjectTextField.h"
 #import "TimeEntryViewItem.h"
 #import "ConvertHexColor.h"
+#import "AutocompleteItem.h"
 
 @implementation ProjectTextField
 
@@ -28,6 +29,10 @@
 {
 	self.textColor = [ConvertHexColor hexCodeToNSColor:item.ProjectColor];
 	self.attributedStringValue = [self attributeStringWithItem:item];
+}
+
+- (void)setTitleWithAutoCompleteItem:(AutocompleteItem *)item
+{
 }
 
 - (NSMutableAttributedString *)attributeStringWithItem:(TimeEntryViewItem *)view_item
