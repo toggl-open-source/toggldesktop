@@ -14,6 +14,8 @@
 
 @property (weak) IBOutlet DotImageView *dotView;
 @property (weak) IBOutlet ProjectTextField *projectLbl;
+@property (weak) IBOutlet NSTextField *centerLabel;
+@property (weak) IBOutlet NSStackView *contentStackView;
 
 @end
 
@@ -24,9 +26,11 @@
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
 	[self setFocused:selected];
+	self.centerLabel.hidden = YES;
 	self.dotView.hidden = YES;
 	self.projectLbl.hidden = YES;
 	self.cellDescription.hidden = YES;
+	self.contentStackView.hidden = YES;
 	self.cellDescription.toolTip = view_item.Text;
 	self.isSelectable = view_item.Type > -1;
 	[self.bottomLine setHidden:(view_item.Type != -3)];
@@ -71,12 +75,14 @@
 		return;
 	}
 
+	// Project
 	if (cellType == AutoCompleteCellTypeProject)
 	{
 		[self renderTitleForProjectCellWithViewItem:view_item];
 		return;
 	}
 
+	// Item
 	[self renderTitleForTimeEntryCellWithViewItem:view_item];
 }
 
@@ -87,6 +93,7 @@
 	};
 
 	self.cellDescription.hidden = NO;
+	self.contentStackView.hidden = NO;
 	self.cellDescription.attributedStringValue = [[NSAttributedString alloc] initWithString:viewItem.Text attributes:attribute];
 }
 
@@ -100,6 +107,7 @@
 	};
 
 	self.cellDescription.hidden = NO;
+	self.contentStackView.hidden = NO;
 	self.cellDescription.attributedStringValue = [[NSAttributedString alloc] initWithString:text attributes:attribute];
 }
 
@@ -114,14 +122,17 @@
 			NSParagraphStyleAttributeName:paragrapStyle
 	};
 
-	self.cellDescription.hidden = NO;
-	self.cellDescription.attributedStringValue = [[NSAttributedString alloc] initWithString:viewItem.Text attributes:attribute];
+	self.centerLabel.hidden = NO;
+	self.centerLabel.attributedStringValue = [[NSAttributedString alloc] initWithString:viewItem.Text attributes:attribute];
 }
 
 - (void)renderTitleForProjectCellWithViewItem:(AutocompleteItem *)viewItem
 {
 	self.dotView.hidden = NO;
 	self.projectLbl.hidden = NO;
+	self.contentStackView.hidden = NO;
+
+	[self.dotView fillWith:[ConvertHexColor hexCodeToNSColor:viewItem.ProjectColor]];
 	[self.projectLbl setTitleWithAutoCompleteItem:viewItem];
 }
 
@@ -130,9 +141,10 @@
 	self.cellDescription.hidden = NO;
 	self.dotView.hidden = NO;
 	self.projectLbl.hidden = NO;
+	self.contentStackView.hidden = NO;
 
 	if (viewItem.ClientLabel == nil || viewItem.ClientLabel.length == 0 ||
-        viewItem.ProjectLabel == nil || viewItem.ProjectLabel.length == 0)
+		viewItem.ProjectLabel == nil || viewItem.ProjectLabel.length == 0)
 	{
 		self.dotView.hidden = YES;
 		self.projectLbl.hidden = YES;
@@ -144,6 +156,7 @@
 	};
 	self.cellDescription.attributedStringValue = [[NSAttributedString alloc] initWithString:viewItem.Text attributes:attribute];
 	[self.projectLbl setTitleWithAutoCompleteItem:viewItem];
+	[self.dotView fillWith:[ConvertHexColor hexCodeToNSColor:viewItem.ProjectColor]];
 }
 
 - (NSColor *)categoryLabelColor
