@@ -162,8 +162,8 @@ extern void *ctx;
 	CGFloat totalHeight = [self calculateTotalHeightFromArray:self.filteredOrderedKeys];
 	NSInteger count = self.filteredOrderedKeys.count;
 	[self.input.autocompleteTableView reloadData];
-	[self.input updateDropdownWithHeight:totalHeight];
 	[self.input toggleTableViewWithNumberOfItem:count];
+	[self.input updateDropdownWithHeight:totalHeight];
 }
 
 - (void)findFilter:(NSString *)filter
