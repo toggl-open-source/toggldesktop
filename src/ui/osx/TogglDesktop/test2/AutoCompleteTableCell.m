@@ -47,8 +47,8 @@
 
 		[string setAttributes:
 		 @{
-			 NSFontAttributeName : [NSFont systemFontOfSize:11],
-			 NSForegroundColorAttributeName:[NSColor disabledControlTextColor]
+			 NSFontAttributeName : [NSFont systemFontOfSize:11 weight:NSFontWeightMedium],
+			 NSForegroundColorAttributeName:[self categoryLabelColor]
 		 }
 						range:NSMakeRange(0, [string length])];
 		return string;
@@ -61,8 +61,8 @@
 
 		[string setAttributes:
 		 @{
-			 NSFontAttributeName : [NSFont systemFontOfSize:[NSFont systemFontSize]],
-			 NSForegroundColorAttributeName:[NSColor disabledControlTextColor]
+			 NSFontAttributeName : [NSFont systemFontOfSize:12],
+			 NSForegroundColorAttributeName:[NSColor labelColor]
 		 }
 						range:NSMakeRange(0, [string length])];
 
@@ -82,8 +82,8 @@
 
 		[string setAttributes:
 		 @{
-			 NSFontAttributeName : [NSFont boldSystemFontOfSize:12],
-			 NSForegroundColorAttributeName:[NSColor disabledControlTextColor],
+			 NSFontAttributeName : [NSFont systemFontOfSize:14],
+			 NSForegroundColorAttributeName:[NSColor labelColor],
 			 NSParagraphStyleAttributeName:paragrapStyle
 		 }
 						range:NSMakeRange(0, [string length])];
@@ -95,8 +95,8 @@
 
 	[string setAttributes:
 	 @{
-		 NSFontAttributeName : [NSFont systemFontOfSize:[NSFont systemFontSize]],
-		 NSForegroundColorAttributeName:[NSColor controlTextColor]
+		 NSFontAttributeName : [NSFont systemFontOfSize:12],
+		 NSForegroundColorAttributeName:[NSColor labelColor]
 	 }
 					range:NSMakeRange(0, [string length])];
 
@@ -119,8 +119,8 @@
 
 			[task setAttributes:
 			 @{
-				 NSFontAttributeName : [NSFont systemFontOfSize:[NSFont systemFontSize]],
-				 NSForegroundColorAttributeName:[NSColor controlTextColor]
+				 NSFontAttributeName : [NSFont systemFontOfSize:12],
+				 NSForegroundColorAttributeName:[NSColor labelColor]
 			 }
 						  range:NSMakeRange(0, [task length])];
 			[string appendAttributedString:task];
@@ -140,7 +140,7 @@
 
 			[projectDot setAttributes:
 			 @{
-				 NSFontAttributeName : [NSFont systemFontOfSize:[NSFont systemFontSize]],
+				 NSFontAttributeName : [NSFont systemFontOfSize:12],
 				 NSForegroundColorAttributeName:[ConvertHexColor hexCodeToNSColor:view_item.ProjectColor]
 			 }
 								range:NSMakeRange(0, [projectDot length])];
@@ -150,7 +150,7 @@
 
 			[projectName setAttributes:
 			 @{
-				 NSFontAttributeName : [NSFont systemFontOfSize:[NSFont systemFontSize]],
+				 NSFontAttributeName : [NSFont systemFontOfSize:12],
 				 NSForegroundColorAttributeName:[ConvertHexColor hexCodeToNSColor:view_item.ProjectColor]
 			 }
 								 range:NSMakeRange(0, [projectName length])];
@@ -175,8 +175,8 @@
 
 		[clientName setAttributes:
 		 @{
-			 NSFontAttributeName : [NSFont systemFontOfSize:[NSFont systemFontSize]],
-			 NSForegroundColorAttributeName:[NSColor disabledControlTextColor]
+			 NSFontAttributeName : [NSFont systemFontOfSize:12],
+			 NSForegroundColorAttributeName:[NSColor labelColor]
 		 }
 							range:NSMakeRange(0, [clientName length])];
 
@@ -190,6 +190,18 @@
 	[result appendAttributedString:string];
 
 	return result;
+}
+
+- (NSColor *)categoryLabelColor
+{
+	if (@available(macOS 10.13, *))
+	{
+		return [NSColor colorNamed:@"grey-text-color"];
+	}
+	else
+	{
+		return [ConvertHexColor hexCodeToNSColor:@"#555555"];
+	}
 }
 
 @end
