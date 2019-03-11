@@ -35,7 +35,7 @@
                     <subviews>
                         <textField horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="Esa-Pm-mxj">
                             <rect key="frame" x="-2" y="0.0" width="69" height="16"/>
-                            <textFieldCell key="cell" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" title="Description" id="49S-o0-eD9">
+                            <textFieldCell key="cell" lineBreakMode="truncatingTail" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" title="Description" usesSingleLineMode="YES" id="49S-o0-eD9">
                                 <font key="font" metaFont="system" size="12"/>
                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -49,9 +49,9 @@
                             </constraints>
                             <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" image="time-entry-dot" id="Ly9-k7-vCG"/>
                         </imageView>
-                        <textField horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="56B-rZ-EBN" customClass="ProjectTextField">
+                        <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="56B-rZ-EBN" customClass="ProjectTextField">
                             <rect key="frame" x="87" y="0.0" width="105" height="16"/>
-                            <textFieldCell key="cell" lineBreakMode="truncatingTail" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" alignment="left" title="Project and Client" id="Z9P-Ne-8Ft">
+                            <textFieldCell key="cell" lineBreakMode="truncatingTail" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" alignment="left" title="Project and Client" usesSingleLineMode="YES" id="Z9P-Ne-8Ft">
                                 <font key="font" metaFont="system" size="12"/>
                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>

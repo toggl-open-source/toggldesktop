@@ -127,6 +127,23 @@
 
 - (void)renderTitleForTimeEntryCellWithViewItem:(AutocompleteItem *)viewItem
 {
+	self.cellDescription.hidden = NO;
+	self.dotView.hidden = NO;
+	self.projectLbl.hidden = NO;
+
+	if (viewItem.ClientLabel == nil || viewItem.ClientLabel.length == 0 ||
+        viewItem.ProjectLabel == nil || viewItem.ProjectLabel.length == 0)
+	{
+		self.dotView.hidden = YES;
+		self.projectLbl.hidden = YES;
+	}
+
+	NSDictionary *attribute = @{
+			NSFontAttributeName : [NSFont systemFontOfSize:12],
+			NSForegroundColorAttributeName:[NSColor labelColor]
+	};
+	self.cellDescription.attributedStringValue = [[NSAttributedString alloc] initWithString:viewItem.Text attributes:attribute];
+	[self.projectLbl setTitleWithAutoCompleteItem:viewItem];
 }
 
 - (NSColor *)categoryLabelColor
