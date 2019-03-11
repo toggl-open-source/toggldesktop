@@ -30,6 +30,14 @@
                         </constraints>
                     </view>
                 </box>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="0WA-5M-aXU">
+                    <rect key="frame" x="150" y="4" width="41" height="17"/>
+                    <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="Label" id="Yra-bp-jtI">
+                        <font key="font" usesAppearanceFont="YES"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
                 <stackView distribution="equalSpacing" orientation="horizontal" alignment="centerY" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bpQ-Ja-kip">
                     <rect key="frame" x="15" y="5" width="190" height="16"/>
                     <subviews>
@@ -73,8 +81,10 @@
             <constraints>
                 <constraint firstItem="bpQ-Ja-kip" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="15" id="57b-VT-zHd"/>
                 <constraint firstItem="bpQ-Ja-kip" firstAttribute="centerY" secondItem="c22-O7-iKe" secondAttribute="centerY" id="Aln-9Q-AEs"/>
+                <constraint firstItem="0WA-5M-aXU" firstAttribute="centerY" secondItem="c22-O7-iKe" secondAttribute="centerY" id="CKa-Is-Xpr"/>
                 <constraint firstAttribute="bottom" secondItem="rVw-1o-wWS" secondAttribute="bottom" id="DMc-XV-e1Z"/>
                 <constraint firstAttribute="trailing" secondItem="rVw-1o-wWS" secondAttribute="trailing" id="O64-4s-P1q"/>
+                <constraint firstItem="0WA-5M-aXU" firstAttribute="centerX" secondItem="c22-O7-iKe" secondAttribute="centerX" id="bpp-2L-eNQ"/>
                 <constraint firstItem="rVw-1o-wWS" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" id="cwr-nl-t6F"/>
                 <constraint firstItem="rVw-1o-wWS" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" id="jBP-Pc-heq"/>
                 <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="bpQ-Ja-kip" secondAttribute="trailing" constant="10" id="rhS-q2-lRA"/>
@@ -83,6 +93,8 @@
                 <outlet property="backgroundBox" destination="rVw-1o-wWS" id="788-C8-zTo"/>
                 <outlet property="bottomLine" destination="8t3-Aw-a0W" id="9Tj-xo-iWJ"/>
                 <outlet property="cellDescription" destination="Esa-Pm-mxj" id="96O-aS-tkX"/>
+                <outlet property="centerLabel" destination="0WA-5M-aXU" id="CcQ-LK-ry2"/>
+                <outlet property="contentStackView" destination="bpQ-Ja-kip" id="rlx-sT-7UF"/>
                 <outlet property="dotView" destination="fCA-Mo-w0s" id="i3t-4q-Pba"/>
                 <outlet property="projectLbl" destination="56B-rZ-EBN" id="def-58-lg1"/>
             </connections>
