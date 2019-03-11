@@ -11,12 +11,14 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @class TimeEntryViewItem;
+@class AutocompleteItem;
 
 @interface ProjectTextField : NSTextField
 
 @property (assign, nonatomic) BOOL isInTimerBar;
 
 - (void)setTitleWithTimeEntry:(TimeEntryViewItem *)item;
+- (void)setTitleWithAutoCompleteItem:(AutocompleteItem *)item;
 
 @end
 
