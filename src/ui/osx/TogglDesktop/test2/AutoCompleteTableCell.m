@@ -32,7 +32,7 @@
 	[self.backgroundBox setFillColor:color];
 }
 
-- (NSMutableAttributedString *)setFormatedText:(AutocompleteItem *)view_item
+- (NSAttributedString *)setFormatedText:(AutocompleteItem *)view_item
 {
 	[self.bottomLine setHidden:(view_item.Type != -3)];
 	// Format is: Description - TaskName · ProjectName - ClientName
@@ -43,51 +43,19 @@
 	// Category row
 	if (cellType == AutoCompleteCellTypeCategory)
 	{
-		string = [[NSMutableAttributedString alloc] initWithString:view_item.Text];
-
-		[string setAttributes:
-		 @{
-			 NSFontAttributeName : [NSFont systemFontOfSize:11 weight:NSFontWeightMedium],
-			 NSForegroundColorAttributeName:[self categoryLabelColor]
-		 }
-						range:NSMakeRange(0, [string length])];
-		return string;
+		return [self textForCategoryCellWithViewItem:view_item];
 	}
 
 	// Client row / No project row
 	if (cellType == AutoCompleteCellTypeClient || cellType == AutoCompleteCellTypeNoProject)
 	{
-		string = [[NSMutableAttributedString alloc] initWithString:view_item.Text];
-
-		[string setAttributes:
-		 @{
-			 NSFontAttributeName : [NSFont systemFontOfSize:12],
-			 NSForegroundColorAttributeName:[NSColor labelColor]
-		 }
-						range:NSMakeRange(0, [string length])];
-
-		NSMutableAttributedString *result = [[NSMutableAttributedString alloc] initWithString:@"  "];
-		[result appendAttributedString:string];
-
-		return result;
+		return [self textForClientCellWithViewItem:view_item];
 	}
 
 	// Workspace row
 	if (cellType == AutoCompleteCellTypeWorkspace)
 	{
-		NSMutableParagraphStyle *paragrapStyle = NSMutableParagraphStyle.new;
-		paragrapStyle.alignment = kCTTextAlignmentCenter;
-
-		string = [[NSMutableAttributedString alloc] initWithString:view_item.Text];
-
-		[string setAttributes:
-		 @{
-			 NSFontAttributeName : [NSFont systemFontOfSize:14],
-			 NSForegroundColorAttributeName:[NSColor labelColor],
-			 NSParagraphStyleAttributeName:paragrapStyle
-		 }
-						range:NSMakeRange(0, [string length])];
-		return string;
+		return [self textForWorkspaceCellWithViewItem:view_item];
 	}
 
 	// Item rows
@@ -159,7 +127,7 @@
 		}
 	}
 
-	if (cellType == AutoCompleteCellTypeTimeEntryWithProject)
+	if (cellType == AutoCompleteCellTypeProject)
 	{
 		// Add more padding to the front of project items
 		NSMutableAttributedString *result = [[NSMutableAttributedString alloc] initWithString:@"      "];
@@ -190,6 +158,41 @@
 	[result appendAttributedString:string];
 
 	return result;
+}
+
+- (NSAttributedString *)textForCategoryCellWithViewItem:(AutocompleteItem *)viewItem {
+	NSDictionary *attribute =      @{
+			NSFontAttributeName : [NSFont systemFontOfSize:11 weight:NSFontWeightMedium],
+			NSForegroundColorAttributeName:[self categoryLabelColor]
+	};
+
+	return [[NSAttributedString alloc] initWithString:viewItem.Text attributes:attribute];
+}
+
+- (NSAttributedString *)textForClientCellWithViewItem:(AutocompleteItem *)viewItem
+{
+	NSString *spacing = @"  ";
+	NSString *text = [NSString stringWithFormat:@"%@%@", spacing, viewItem.Text];
+	NSDictionary *attribute = @{
+			NSFontAttributeName : [NSFont systemFontOfSize:12],
+			NSForegroundColorAttributeName:[NSColor labelColor]
+	};
+
+	return [[NSAttributedString alloc] initWithString:text attributes:attribute];
+}
+
+- (NSAttributedString *)textForWorkspaceCellWithViewItem:(AutocompleteItem *)viewItem
+{
+	NSMutableParagraphStyle *paragrapStyle = NSMutableParagraphStyle.new;
+
+	paragrapStyle.alignment = kCTTextAlignmentCenter;
+	NSDictionary *attribute =  @{
+			NSFontAttributeName : [NSFont systemFontOfSize:14],
+			NSForegroundColorAttributeName:[NSColor labelColor],
+			NSParagraphStyleAttributeName:paragrapStyle
+	};
+
+	return [[NSAttributedString alloc] initWithString:viewItem.Text attributes:attribute];
 }
 
 - (NSColor *)categoryLabelColor

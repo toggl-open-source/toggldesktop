@@ -14,7 +14,7 @@ import Foundation
     case client
     case noProject
     case workspace
-    case timeEntryWithProject
+    case project
     case timeEntryFullData
     case unknown
 
@@ -37,7 +37,7 @@ import Foundation
             return
         }
         if type == 2 {
-            self = .timeEntryWithProject
+            self = .project
             return
         }
         if type == 0 {
