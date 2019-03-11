@@ -17,5 +17,4 @@
 @property (strong) IBOutlet NSBox *bottomLine;
 - (void)render:(AutocompleteItem *)view_item selected:(BOOL)selected;
 - (void)setFocused:(BOOL)focus;
-- (NSMutableAttributedString *)setFormatedText:(AutocompleteItem *)view_item;
 @end
