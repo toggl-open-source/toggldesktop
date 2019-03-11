@@ -75,7 +75,7 @@ NSString *upArrow = @"\u25B2";
 
 		NSLayoutConstraint *left = [NSLayoutConstraint constraintWithItem:self.backgroundView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.window.contentView attribute:NSLayoutAttributeLeft multiplier:1 constant:0];
 		NSLayoutConstraint *right = [NSLayoutConstraint constraintWithItem:self.backgroundView attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self.window.contentView attribute:NSLayoutAttributeRight multiplier:1 constant:0];
-		NSLayoutConstraint *top = [NSLayoutConstraint constraintWithItem:self.backgroundView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeBottom multiplier:1 constant:0];
+		NSLayoutConstraint *top = [NSLayoutConstraint constraintWithItem:self.backgroundView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeBottom multiplier:1 constant:[self topPaddingForContainer]];
 		NSLayoutConstraint *bottom = [NSLayoutConstraint constraintWithItem:self.backgroundView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.window.contentView attribute:NSLayoutAttributeBottom multiplier:1 constant:0];
 
 		[self.window.contentView addConstraints:@[left, right, top, bottom]];
@@ -110,7 +110,7 @@ NSString *upArrow = @"\u25B2";
 
 	NSLayoutConstraint *right =  [NSLayoutConstraint constraintWithItem:self.autocompleteTableContainer attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:view attribute:NSLayoutAttributeRight multiplier:1 constant:0];
 
-	NSLayoutConstraint *top = [NSLayoutConstraint constraintWithItem:self.autocompleteTableContainer attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeBottom multiplier:1 constant:0];
+	NSLayoutConstraint *top = [NSLayoutConstraint constraintWithItem:self.autocompleteTableContainer attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeBottom multiplier:1 constant:[self topPaddingForContainer]];
 
 	self.heightConstraint = [NSLayoutConstraint constraintWithItem:self.autocompleteTableContainer attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:0];
 	[self.window.contentView addConstraints:@[left, right, top, self.heightConstraint]];
@@ -238,6 +238,18 @@ NSString *upArrow = @"\u25B2";
 {
 	self.actionButton = button;
 	[self.actionButton setTitle:downArrow];
+}
+
+- (CGFloat)topPaddingForContainer
+{
+	switch (self.displayMode)
+	{
+		case AutoCompleteDisplayModeCompact :
+			return 0;
+
+		case AutoCompleteDisplayModeFullscreen :
+			return 23;
+	}
 }
 
 @end
