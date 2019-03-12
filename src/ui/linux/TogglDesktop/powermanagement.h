@@ -13,6 +13,7 @@ public:
     explicit PowerManagement(QObject *parent = nullptr);
 
     bool isAvailable() const;
+    bool aboutToShutdown() const;
 
 signals:
 
@@ -29,6 +30,7 @@ private:
     QDBusInterface *login1;
     bool available;
     QDBusUnixFileDescriptor inhibit;
+    bool commitDataRequested;
 };
 
 #endif // POWERMANAGEMENT_H

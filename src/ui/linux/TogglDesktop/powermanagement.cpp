@@ -4,10 +4,18 @@
 
 #include "./toggl.h"
 
+#include <QGuiApplication>
+
 PowerManagement::PowerManagement(QObject *parent)
     : QObject(parent)
     , available(true)
+    , commitDataRequested(false)
 {
+    connect(qApp, &QGuiApplication::commitDataRequest, [this](QSessionManager &manager){
+        Q_UNUSED(manager);
+        commitDataRequested = true;
+    });
+
     login1 = new QDBusInterface("org.freedesktop.login1", "/org/freedesktop/login1", "org.freedesktop.login1.Manager", QDBusConnection::systemBus(), this);
 
     getInhibitor();
@@ -18,6 +26,10 @@ PowerManagement::PowerManagement(QObject *parent)
 
 bool PowerManagement::isAvailable() const {
     return available;
+}
+
+bool PowerManagement::aboutToShutdown() const {
+    return commitDataRequested;
 }
 
 void PowerManagement::onPrepareForShutdown(bool shuttingDown) {
