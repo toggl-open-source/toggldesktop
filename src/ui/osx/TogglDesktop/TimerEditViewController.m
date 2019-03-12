@@ -26,7 +26,6 @@
 @property NSTimer *timer;
 @property BOOL constraintsAdded;
 @property BOOL disableChange;
-@property BOOL focusNotSet;
 @end
 
 @implementation TimerEditViewController
@@ -41,16 +40,11 @@ NSString *kInactiveTimerColor = @"#999999";
 	self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
 	if (self)
 	{
-		self.focusNotSet = YES;
 		self.liteAutocompleteDataSource = [[LiteAutoCompleteDataSource alloc] initWithNotificationName:kDisplayMinitimerAutocomplete];
 
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(startDisplayTimerState:)
 													 name:kDisplayTimerState
-												   object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(startDisplayTimeEntryList:)
-													 name:kDisplayTimeEntryList
 												   object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(startDisplayTimeEntryEditor:)
@@ -164,23 +158,6 @@ NSString *kInactiveTimerColor = @"#999999";
 	else
 	{
 		[self.autoCompleteInput.window makeFirstResponder:self.autoCompleteInput];
-	}
-}
-
-- (void)startDisplayTimeEntryList:(NSNotification *)notification
-{
-	[self displayTimeEntryList:notification.object];
-}
-
-- (void)displayTimeEntryList:(DisplayCommand *)cmd
-{
-	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
-
-	if (cmd.open && self.time_entry && self.time_entry.duration_in_seconds >= 0
-		&& self.focusNotSet)
-	{
-		[self.autoCompleteInput.window makeFirstResponder:self.autoCompleteInput];
-		self.focusNotSet = NO;
 	}
 }
 
