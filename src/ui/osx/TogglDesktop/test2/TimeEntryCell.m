@@ -138,16 +138,13 @@ extern void *ctx;
 	return string;
 }
 
-- (NSColor *)adaptedBackgroundColor {
-	BOOL isDarkTheme = [ThemeUtils isDarkTheme];
-
-	NSColor *primaryColor = isDarkTheme ? [NSColor safeUnemphasizedSelectedContentBackgroundColor] : [ConvertHexColor hexCodeToNSColor:@"#FAFAFA"];
-
+- (NSColor *)adaptedBackgroundColor
+{
 	if (self.GroupItemCount && self.GroupOpen && !self.Group)
 	{
-		primaryColor = isDarkTheme ? [NSColor controlColor] : [ConvertHexColor hexCodeToNSColor:@"#f0f0f0"];
+		return self.isDarkMode ? [NSColor controlColor] : [ConvertHexColor hexCodeToNSColor:@"#f0f0f0"];
 	}
-	return primaryColor;
+	return self.isDarkMode ? [NSColor safeUnemphasizedSelectedContentBackgroundColor] : [ConvertHexColor hexCodeToNSColor:@"#FAFAFA"];
 }
 
 - (void)setupGroupMode
@@ -158,14 +155,13 @@ extern void *ctx;
 	NSString *continueIcon = @"continue_light.pdf";
 	NSString *toggleGroupIcon = @"group_icon_closed.pdf";
 	NSString *toggleGroupText = [NSString stringWithFormat:@"%lld", self.GroupItemCount];
-	BOOL isDarkTheme = [ThemeUtils isDarkTheme];
 
 	// Grouped mode background update
 	if (self.GroupItemCount && self.GroupOpen && !self.Group)
 	{
 		lead = 10;
 
-		NSColor *textColor = isDarkTheme ? [NSColor secondaryLabelColor] : [ConvertHexColor hexCodeToNSColor:@"#696969"];
+		NSColor *textColor = self.isDarkMode ? [NSColor secondaryLabelColor] : [ConvertHexColor hexCodeToNSColor:@"#696969"];
 
 		// Gray color for subitem
 		NSMutableAttributedString *description = [[NSMutableAttributedString alloc] initWithString:self.descriptionTextField.stringValue];
@@ -189,7 +185,7 @@ extern void *ctx;
 		}
 		else
 		{
-			NSColor *textColor = isDarkTheme ? [NSColor labelColor] : [ConvertHexColor hexCodeToNSColor:@"#a4a4a4"];
+			NSColor *textColor = self.isDarkMode ? [NSColor labelColor] : [ConvertHexColor hexCodeToNSColor:@"#a4a4a4"];
 
 			// Gray color to grouped button text
 			NSMutableParagraphStyle *paragrapStyle = NSMutableParagraphStyle.new;
@@ -251,8 +247,7 @@ extern void *ctx;
 
 - (void)setFocused
 {
-	BOOL isDarkTheme = [ThemeUtils isDarkTheme];
-	NSColor *fillColor = isDarkTheme ? [NSColor controlColor] : [ConvertHexColor hexCodeToNSColor:@"#E8E8E8"];
+	NSColor *fillColor = self.isDarkMode ? [NSColor controlColor] : [ConvertHexColor hexCodeToNSColor:@"#E8E8E8"];
 
 	[self.backgroundBox setFillColor:fillColor];
 }

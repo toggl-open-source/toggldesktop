@@ -140,9 +140,9 @@
 		BA0CEC5321BE528900F1BF01 /* TableViewDiffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0CEC5221BE528900F1BF01 /* TableViewDiffer.swift */; };
 		BA0CEC6521BE590200F1BF01 /* NSTableView+Diff.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0CEC6421BE590200F1BF01 /* NSTableView+Diff.swift */; };
 		BA13E05C21C7BA6000835EC1 /* UserNotificationCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = BA13E05921C7B9D900835EC1 /* UserNotificationCenter.m */; };
-		BA229D1021EDEDC400DEB4B9 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA229D0F21EDEDC400DEB4B9 /* Theme.swift */; };
 		BA2DA0C621A542E30027B7A5 /* NSTextField+Ext.m in Sources */ = {isa = PBXBuildFile; fileRef = BA2DA0C521A542E30027B7A5 /* NSTextField+Ext.m */; };
 		BA2DA12021A691FF0027B7A5 /* TrackingService.m in Sources */ = {isa = PBXBuildFile; fileRef = BA2DA11F21A691FF0027B7A5 /* TrackingService.m */; };
+		BA2E3F2C22375E640035D034 /* NSView+Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2E3F2B22375E640035D034 /* NSView+Appearance.swift */; };
 		BA6E873521DDC1E2005E2451 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA6E86B621DDB331005E2451 /* Sparkle.framework */; };
 		BA6E873621DDC1E2005E2451 /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA6E86B621DDB331005E2451 /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BA6F1B1A21EEE258009265E4 /* NSColor+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6F1B1921EEE258009265E4 /* NSColor+Utils.swift */; };
@@ -677,11 +677,11 @@
 		BA0CEC6421BE590200F1BF01 /* NSTableView+Diff.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSTableView+Diff.swift"; sourceTree = "<group>"; };
 		BA13E05921C7B9D900835EC1 /* UserNotificationCenter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = UserNotificationCenter.m; path = test2/UserNotificationCenter.m; sourceTree = SOURCE_ROOT; };
 		BA13E05A21C7B9D900835EC1 /* UserNotificationCenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = UserNotificationCenter.h; path = test2/UserNotificationCenter.h; sourceTree = SOURCE_ROOT; };
-		BA229D0F21EDEDC400DEB4B9 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		BA2DA0C421A542E20027B7A5 /* NSTextField+Ext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSTextField+Ext.h"; sourceTree = "<group>"; };
 		BA2DA0C521A542E30027B7A5 /* NSTextField+Ext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSTextField+Ext.m"; sourceTree = "<group>"; };
 		BA2DA11E21A691FF0027B7A5 /* TrackingService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TrackingService.h; sourceTree = "<group>"; };
 		BA2DA11F21A691FF0027B7A5 /* TrackingService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TrackingService.m; sourceTree = "<group>"; };
+		BA2E3F2B22375E640035D034 /* NSView+Appearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSView+Appearance.swift"; sourceTree = "<group>"; };
 		BA6E86A521DDB331005E2451 /* Sparkle.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Sparkle.xcodeproj; path = ../../../../third_party/Sparkle/Sparkle.xcodeproj; sourceTree = "<group>"; };
 		BA6F1B1921EEE258009265E4 /* NSColor+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSColor+Utils.swift"; sourceTree = "<group>"; };
 		BA6F1B3721EEE998009265E4 /* Theme+Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Theme+Notification.swift"; sourceTree = "<group>"; };
@@ -1198,8 +1198,8 @@
 		BA229D0E21EDEDBA00DEB4B9 /* Theme */ = {
 			isa = PBXGroup;
 			children = (
-				BA229D0F21EDEDC400DEB4B9 /* Theme.swift */,
 				BA6F1B3721EEE998009265E4 /* Theme+Notification.swift */,
+				BA2E3F2B22375E640035D034 /* NSView+Appearance.swift */,
 			);
 			name = Theme;
 			sourceTree = "<group>";
@@ -1798,13 +1798,13 @@
 				BA7B4BCB21C0EF8800B75B14 /* NSAlert+Utils.m in Sources */,
 				95C0707718CDB67300A34D0D /* NSCustomComboBoxCell.m in Sources */,
 				3C0A571A1C22E12E00301D77 /* MKColorPickerView.m in Sources */,
+				BA2E3F2C22375E640035D034 /* NSView+Appearance.swift in Sources */,
 				74E3CDC817FBABE400C3ADD3 /* BugsnagConfiguration.m in Sources */,
 				743D782A182791FA00978BCC /* idler.c in Sources */,
 				74AA9473180909F50000539F /* GTMOAuth2Authentication.m in Sources */,
 				BA7B4C7C21C293E700B75B14 /* String+Optional.swift in Sources */,
 				BA2DA12021A691FF0027B7A5 /* TrackingService.m in Sources */,
 				3C6B2486203E01D90063FC08 /* AutoCompleteTableCell.m in Sources */,
-				BA229D1021EDEDC400DEB4B9 /* Theme.swift in Sources */,
 				3CE30E022052BD8B00AF2E2A /* AutoCompleteTableContainer.m in Sources */,
 				3C0A571D1C22E12E00301D77 /* MKColorWell+Bindings.m in Sources */,
 				BA7B4C3721C24B9D00B75B14 /* UndoTextField.m in Sources */,
