@@ -25,7 +25,7 @@
                 <outlet property="view" destination="ozl-58-bBU" id="kIv-R4-Xca"/>
             </connections>
         </viewController>
-        <popover id="dIa-oe-UAP">
+        <popover id="dIa-oe-UAP" customClass="EditorPopover" customModule="TogglDesktop" customModuleProvider="target">
             <connections>
                 <outlet property="delegate" destination="-2" id="Za9-G4-27V"/>
             </connections>
@@ -63,7 +63,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="252" height="205"/>
                     <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="TQQ-db-grk">
                         <rect key="frame" x="0.0" y="0.0" width="252" height="205"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" id="kSc-tv-Cw1" customClass="NSUnstripedTableView">
                                 <rect key="frame" x="0.0" y="0.0" width="252" height="205"/>
