@@ -1103,6 +1103,8 @@ BOOL onTop = NO;
 - (IBAction)onShowMenuItem:(id)sender
 {
 	[self.mainWindowController showWindow:self];
+	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kFocusTimer
+																object:nil];
 	[NSApp activateIgnoringOtherApps:YES];
 }
 
