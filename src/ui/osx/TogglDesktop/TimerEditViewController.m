@@ -321,7 +321,6 @@ NSString *kInactiveTimerColor = @"#999999";
 	[self.durationTextField setTextColor:[ConvertHexColor hexCodeToNSColor:kInactiveTimerColor]];
 	[self.tagFlag setHidden:YES];
 	[self.billableFlag setHidden:YES];
-	[self.view.window makeFirstResponder:self.autoCompleteInput];
 
 	self.time_entry = [[TimeEntryViewItem alloc] init];
 }
@@ -428,6 +427,7 @@ NSString *kInactiveTimerColor = @"#999999";
 	{
 		[self clear];
 		[self showDefaultTimer];
+		[self.autoCompleteInput.window makeFirstResponder:self.autoCompleteInput];
 		[self.projectTextField setHidden:YES];
 		if (self.constraintsAdded)
 		{
@@ -560,7 +560,7 @@ NSString *kInactiveTimerColor = @"#999999";
 {
 	[self.manualBox setHidden:NO];
 	[self.mainBox setHidden:YES];
-	[self.view.window makeFirstResponder:self.startButton];
+	[self.view.window makeFirstResponder:self.autoCompleteInput];
 }
 
 - (void)addButtonClicked
