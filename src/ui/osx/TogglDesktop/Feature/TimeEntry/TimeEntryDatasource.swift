@@ -124,6 +124,28 @@ class TimeEntryDatasource: NSObject {
         return section.entries[safe: indexPath.item]
     }
 
+    @objc func indexPath(for viewItem: TimeEntryViewItem) -> IndexPath? {
+        for (sectionIndex, section) in sections.enumerated() {
+            for (rowIndex, entry) in section.entries.enumerated() {
+                if entry.guid == viewItem.guid {
+                    return IndexPath(item: rowIndex, section: sectionIndex)
+                }
+            }
+        }
+        return nil
+    }
+
+    @objc func object(with guid: String) -> TimeEntryViewItem? {
+        for section in sections {
+            for entry in section.entries {
+                if entry.guid == guid {
+                    return entry
+                }
+            }
+        }
+        return nil
+    }
+
     private func reload(with sections: [TimeEntrySection]) {
         // Reload
         self.sections = sections

@@ -34,7 +34,6 @@
 @property TimeEntryCell *selectedEntryCell;
 @property (copy, nonatomic) NSString *lastSelectedGUID;
 @property (nonatomic, strong) IBOutlet TimeEntryEditViewController *timeEntryEditViewController;
-@property (nonatomic, strong) NSArray<TimeEntryViewItem *> *viewitems;
 @property (weak) IBOutlet TimeEntryCollectionView *collectionView;
 @end
 
@@ -53,8 +52,6 @@ extern void *ctx;
 											initWithNibName:@"TimeEntryEditViewController" bundle:nil];
 		[self.timerEditViewController.view setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
 		[self.timeEntryEditViewController.view setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
-
-		self.viewitems = [[NSArray<TimeEntryViewItem *> alloc] init];
 
 		self.nibTimeEntryCell = [[NSNib alloc] initWithNibNamed:@"TimeEntryCell"
 														 bundle:nil];
@@ -156,11 +153,6 @@ extern void *ctx;
 {
 	self.dataSource = [[TimeEntryDatasource alloc] initWithCollectionView:self.collectionView];
 	self.dataSource.delegate = self;
-
-	// Drag and drop
-//    [self.collectionView setDraggingSourceOperationMask:NSDragOperationLink forLocal:NO];
-//    [self.collectionView setDraggingSourceOperationMask:NSDragOperationMove forLocal:YES];
-//    [self.collectionView registerForDraggedTypes:[NSArray arrayWithObject:NSStringPboardType]];
 }
 
 - (void)setupEmptyLabel
@@ -214,10 +206,54 @@ extern void *ctx;
 		}
 	}
 
+    // Adjust the popover position if we change the date
+	[self adjustPositionOfPopover];
+
     // Show Empty view if need
 	BOOL noItems = newTimeEntries.count == 0;
 	[self.emptyLabel setEnabled:noItems];
 	[self.timeEntryListScrollView setHidden:noItems];
+}
+
+- (void)adjustPositionOfPopover {
+	if (!self.timeEntrypopover.shown)
+	{
+		return;
+	}
+
+	if (self.lastSelectedGUID == nil)
+	{
+		return;
+	}
+
+    // Get Selecte Item from last GUID
+	TimeEntryViewItem *item = [self.dataSource objectWith:self.lastSelectedGUID];
+	if (item == nil)
+	{
+		return;
+	}
+	NSIndexPath *indexPath = [self.dataSource indexPathFor:item];
+	if (indexPath == nil)
+	{
+		return;
+	}
+
+    // Adjus the position of arrow
+	NSRect positionRect = [self positionRectOfSelectedRowAtIndexPath:indexPath];
+	self.timeEntrypopover.positioningRect = positionRect;
+
+    // Scroll to visible selected row
+	if (!NSContainsRect(self.collectionView.visibleRect, positionRect))
+	{
+		[self.collectionView scrollToItemsAtIndexPaths:[NSSet setWithCollectionViewIndexPath:indexPath]
+										scrollPosition:NSCollectionViewScrollPositionBottom];
+	}
+
+    // Hightlight selected cell
+	if (self.selectedEntryCell)
+	{
+		[self.selectedEntryCell setFocused];
+	}
 }
 
 - (void)resetEditPopover:(NSNotification *)notification
@@ -296,7 +332,7 @@ extern void *ctx;
 
 - (TimeEntryCell *)getSelectedEntryCellWithIndexPath:(NSIndexPath *)indexPath
 {
-	if (indexPath.section < 0 ||  indexPath.section >= self.collectionView.numberOfSections)
+	if (indexPath.section < 0 ||  indexPath.section >= self.dataSource.count)
 	{
 		return nil;
 	}
