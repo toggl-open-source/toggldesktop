@@ -275,7 +275,7 @@ void MainWindowController::updateShowHideShortcut() {
 
 void MainWindowController::updateContinueStopShortcut() {
     continueStop->setShortcut(
-                QKeySequence(TogglApi::instance->getContinueStopKey()));
+        QKeySequence(TogglApi::instance->getContinueStopKey()));
 }
 
 void MainWindowController::onOnlineStateChanged() {

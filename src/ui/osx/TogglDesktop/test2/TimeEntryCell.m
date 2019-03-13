@@ -351,9 +351,6 @@ extern void *ctx;
 
 - (void)setFocused
 {
-	NSColor *fillColor = self.isDarkMode ? [NSColor controlColor] : [ConvertHexColor hexCodeToNSColor:@"#E8E8E8"];
-
-	[self.backgroundBox setFillColor:fillColor];
 	[self updateHoverState:YES];
 }
 

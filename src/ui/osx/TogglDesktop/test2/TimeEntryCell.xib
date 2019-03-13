@@ -11,7 +11,7 @@
         <collectionViewItem identifier="TimeEntryCell" id="TVu-sQ-Sng" customClass="TimeEntryCell">
             <connections>
                 <outlet property="backgroundBox" destination="wve-Qj-t8r" id="dr4-Jo-vuX"/>
-                <outlet property="billableFlag" destination="29c-rg-nft" id="jur-Kl-eKk"/>
+                <outlet property="billableFlag" destination="QS9-7g-WQN" id="vQd-Ty-fvU"/>
                 <outlet property="continueButton" destination="Gcj-ki-Hus" id="5Hq-z8-gbu"/>
                 <outlet property="descriptionLblLeading" destination="R7O-XO-Nkp" id="8TD-nZ-dZM"/>
                 <outlet property="descriptionTextField" destination="CwR-d5-aWs" id="hgE-Xa-icI"/>
@@ -41,10 +41,10 @@
                     <color key="fillColor" red="1" green="1" blue="1" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                 </box>
                 <customView horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="Uu2-26-kM4">
-                    <rect key="frame" x="15" y="0.0" width="249" height="64"/>
+                    <rect key="frame" x="15" y="0.0" width="248" height="64"/>
                     <subviews>
                         <textField horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="CwR-d5-aWs">
-                            <rect key="frame" x="-2" y="32" width="253" height="16"/>
+                            <rect key="frame" x="-2" y="32" width="252" height="16"/>
                             <textFieldCell key="cell" lineBreakMode="truncatingTail" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" alignment="left" title="Blogpost about nefdsffdsf Blogpost about nefdsffdsf Blogpost about nefdsffdsf" placeholderString="+ Add description" id="KGe-cR-NlL">
                                 <font key="font" metaFont="cellTitle"/>
                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -60,7 +60,7 @@
                             <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" image="time-entry-dot" id="vYQ-WX-2jd"/>
                         </imageView>
                         <textField horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="deS-e6-3Ui" customClass="NSTextFieldWithBackground">
-                            <rect key="frame" x="14" y="14" width="237" height="18"/>
+                            <rect key="frame" x="14" y="14" width="236" height="18"/>
                             <textFieldCell key="cell" lineBreakMode="truncatingTail" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" alignment="left" title="NEW - TOGGL - project NEW - TOGGL - project NEW - TOGGL - project NEW - TOGGL - project" placeholderString="+ Add project" id="apI-Za-Hk2">
                                 <font key="font" metaFont="cellTitle"/>
                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -81,7 +81,7 @@
                     </constraints>
                 </customView>
                 <stackView distribution="equalSpacing" orientation="horizontal" alignment="centerY" spacing="5" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rE8-8i-mr7">
-                    <rect key="frame" x="264" y="24" width="39" height="17"/>
+                    <rect key="frame" x="263" y="24" width="39" height="17"/>
                     <subviews>
                         <imageView translatesAutoresizingMaskIntoConstraints="NO" id="29c-rg-nft">
                             <rect key="frame" x="0.0" y="0.0" width="17" height="17"/>
@@ -110,7 +110,7 @@
                     </customSpacing>
                 </stackView>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="xwb-FG-Z4X">
-                    <rect key="frame" x="306" y="24" width="57" height="16"/>
+                    <rect key="frame" x="305" y="24" width="58" height="16"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="54" id="Jlj-SX-18w"/>
                     </constraints>
