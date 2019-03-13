@@ -82,6 +82,10 @@ class TimeEntryDatasource: NSObject {
         return CGSize(width: collectionView.frame.size.width - 20.0, height: 44)
     }
 
+    var count: Int {
+        return sections.count
+    }
+    
     // MARK: Init
 
     init(collectionView: NSCollectionView) {

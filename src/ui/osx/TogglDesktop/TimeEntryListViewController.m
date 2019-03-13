@@ -431,7 +431,7 @@ extern void *ctx;
 
 - (void)focusListing:(NSNotification *)notification
 {
-	if (self.collectionView.numberOfSections == 0)
+	if (self.dataSource.count == 0)
 	{
 		return;
 	}
