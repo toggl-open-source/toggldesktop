@@ -70,8 +70,9 @@ class TimeEntryDatasource: NSObject {
     // MARK: Variable
     weak var delegate: TimeEntryDatasourceDraggingDelegate?
     private var firstTime = true
-    private(set) var sections: [TimeEntrySection]
+    private var sections: [TimeEntrySection]
     private let collectionView: NSCollectionView
+    private let queue = DispatchQueue(label: "com.toggl.toggldesktop.TogglDesktop.timeentryqueue", attributes: .concurrent)
     fileprivate var cellSize: NSSize {
         return CGSize(width: collectionView.frame.size.width - 20.0, height: 64)
     }
@@ -120,36 +121,54 @@ class TimeEntryDatasource: NSObject {
     }
 
     @objc func object(at indexPath: IndexPath) -> TimeEntryViewItem? {
-        guard let section = sections[safe: indexPath.section] else { return nil }
-        return section.entries[safe: indexPath.item]
+        return queue.sync(flags: .barrier) {
+            guard let section = sections[safe: indexPath.section] else { return nil }
+            return section.entries[safe: indexPath.item]
+        }
     }
 
     @objc func indexPath(for viewItem: TimeEntryViewItem) -> IndexPath? {
-        for (sectionIndex, section) in sections.enumerated() {
-            for (rowIndex, entry) in section.entries.enumerated() {
-                if entry.guid == viewItem.guid {
-                    return IndexPath(item: rowIndex, section: sectionIndex)
+        return queue.sync(flags: .barrier) {
+            for (sectionIndex, section) in sections.enumerated() {
+                for (rowIndex, entry) in section.entries.enumerated() {
+                    if entry.guid == viewItem.guid {
+                        return IndexPath(item: rowIndex, section: sectionIndex)
+                    }
                 }
             }
+            return nil
         }
-        return nil
     }
 
     @objc func object(with guid: String) -> TimeEntryViewItem? {
-        for section in sections {
-            for entry in section.entries {
-                if entry.guid == guid {
-                    return entry
+        return queue.sync(flags: .barrier) {
+            for section in sections {
+                for entry in section.entries {
+                    if entry.guid == guid {
+                        return entry
+                    }
                 }
             }
+            return nil
         }
-        return nil
     }
 
     private func reload(with sections: [TimeEntrySection]) {
-        // Reload
-        self.sections = sections
-        collectionView.reloadData()
+        return queue.async(flags: .barrier) {[weak self] in
+            guard let strongSelf = self else { return }
+
+            // Reload
+            strongSelf.sections = sections
+            runOnMainThreadIfNeed {
+                strongSelf.collectionView.reloadData()
+            }
+        }
+    }
+
+    fileprivate func sectionItem(at section: Int) -> TimeEntrySection {
+        return queue.sync(flags: .barrier) {
+            return sections[section]
+        }
     }
 }
 
@@ -197,7 +216,7 @@ extension TimeEntryDatasource: NSCollectionViewDataSource, NSCollectionViewDeleg
 
     func collectionView(_ collectionView: NSCollectionView,
                         numberOfItemsInSection section: Int) -> Int {
-        let sectionItem = sections[section]
+        let sectionItem = self.sectionItem(at: section)
         if sectionItem.isOpen {
             return sectionItem.entries.count
         }
@@ -207,7 +226,7 @@ extension TimeEntryDatasource: NSCollectionViewDataSource, NSCollectionViewDeleg
     func collectionView(_ collectionView: NSCollectionView,
                         itemForRepresentedObjectAt indexPath: IndexPath) -> NSCollectionViewItem {
 
-        let section = sections[indexPath.section]
+        let section = sectionItem(at: indexPath.section)
 
         if section.isLoadMore {
             return makeLoadMoreCell(with: collectionView, indexPath: indexPath)
@@ -219,7 +238,7 @@ extension TimeEntryDatasource: NSCollectionViewDataSource, NSCollectionViewDeleg
     func collectionView(_ collectionView: NSCollectionView,
                         viewForSupplementaryElementOfKind kind: NSCollectionView.SupplementaryElementKind,
                         at indexPath: IndexPath) -> NSView {
-        let section = sections[indexPath.section]
+        let section = sectionItem(at: indexPath.section)
 
         // Return empty view
         if section.isLoadMore {
@@ -241,7 +260,7 @@ extension TimeEntryDatasource: NSCollectionViewDataSource, NSCollectionViewDeleg
     func collectionView(_ collectionView: NSCollectionView,
                         layout collectionViewLayout: NSCollectionViewLayout,
                         referenceSizeForHeaderInSection section: Int) -> NSSize {
-        let sectionData = sections[section]
+        let sectionData = sectionItem(at: section)
 
         // We don't need header for load more cell
         // but we don't have choice to opt-out, so we return zero size
@@ -256,7 +275,7 @@ extension TimeEntryDatasource: NSCollectionViewDataSource, NSCollectionViewDeleg
     func collectionView(_ collectionView: NSCollectionView,
                         layout collectionViewLayout: NSCollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> NSSize {
-        let section = sections[indexPath.section]
+        let section = sectionItem(at: indexPath.section)
         if section.isLoadMore {
             return loaderMoreSize
         }
@@ -269,7 +288,7 @@ extension TimeEntryDatasource: NSCollectionViewDataSource, NSCollectionViewDeleg
                                                  for: indexPath) as? TimeEntryCell else {
                                                     fatalError()
         }
-        let section = sections[indexPath.section]
+        let section = sectionItem(at: indexPath.section)
         let item = section.entries[indexPath.item]
 
         // Render data
@@ -355,7 +374,7 @@ extension TimeEntryDatasource {
 extension TimeEntryDatasource: VertificalTimeEntryFlowLayoutDelegate {
 
     func isLoadMoreItem(at section: Int) -> Bool {
-        let section = sections[section]
+        let section = sectionItem(at: section)
         return section.isLoadMore
     }
 }
@@ -366,7 +385,7 @@ extension TimeEntryDatasource: TimeHeaderViewDelegate {
 
     func togglSection(at section: Int) {
         print("Toggl section \(section)")
-        let section = sections[section]
+        let section = sectionItem(at: section)
         section.togglSection()
         collectionView.reloadData()
     }
