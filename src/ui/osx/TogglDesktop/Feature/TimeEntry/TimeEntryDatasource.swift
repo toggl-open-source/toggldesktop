@@ -24,7 +24,6 @@ final class TimeEntrySection {
     let header: TimeEntryHeader
     let entries: [TimeEntryViewItem]
     let isLoadMore: Bool
-    private(set) var isOpen = true
 
     init(header: TimeEntryHeader, entries: [TimeEntryViewItem], isLoadMore: Bool = false) {
         self.header = header
@@ -39,11 +38,6 @@ final class TimeEntrySection {
                                 entries: [item],
                                 isLoadMore: true)
     }
-
-    func togglSection() {
-        isOpen.toggle()
-    }
-
 }
 
 @objc protocol TimeEntryDatasourceDraggingDelegate {
@@ -72,7 +66,7 @@ class TimeEntryDatasource: NSObject {
     private var firstTime = true
     private var sections: [TimeEntrySection]
     private let collectionView: NSCollectionView
-    private let queue = DispatchQueue(label: "com.toggl.toggldesktop.TogglDesktop.timeentryqueue", attributes: .concurrent)
+    private let queue = DispatchQueue(label: "com.toggl.toggldesktop.TogglDesktop.timeentryqueue")
     fileprivate var cellSize: NSSize {
         return CGSize(width: collectionView.frame.size.width - 20.0, height: 64)
     }
@@ -154,15 +148,9 @@ class TimeEntryDatasource: NSObject {
     }
 
     private func reload(with sections: [TimeEntrySection]) {
-        return queue.async(flags: .barrier) {[weak self] in
-            guard let strongSelf = self else { return }
-
-            // Reload
-            strongSelf.sections = sections
-            runOnMainThreadIfNeed {
-                strongSelf.collectionView.reloadData()
-            }
-        }
+        self.sections.removeAll()
+        self.sections.append(contentsOf: sections)
+        collectionView.reloadData()
     }
 
     fileprivate func sectionItem(at section: Int) -> TimeEntrySection {
@@ -217,10 +205,7 @@ extension TimeEntryDatasource: NSCollectionViewDataSource, NSCollectionViewDeleg
     func collectionView(_ collectionView: NSCollectionView,
                         numberOfItemsInSection section: Int) -> Int {
         let sectionItem = self.sectionItem(at: section)
-        if sectionItem.isOpen {
-            return sectionItem.entries.count
-        }
-        return 0
+        return sectionItem.entries.count
     }
 
     func collectionView(_ collectionView: NSCollectionView,
@@ -383,9 +368,6 @@ extension TimeEntryDatasource: VertificalTimeEntryFlowLayoutDelegate {
 extension TimeEntryDatasource: TimeHeaderViewDelegate {
 
     func togglSection(at section: Int) {
-        print("Toggl section \(section)")
-        let section = sectionItem(at: section)
-        section.togglSection()
-        collectionView.reloadData()
+        // For expanding group logic in future
     }
 }
