@@ -278,10 +278,6 @@ extern void *ctx;
 
     // Get selected index
 	NSIndexPath *clickedIndexPath = self.collectionView.clickedIndexPath;
-	if (clickedIndexPath == nil)
-	{
-		return;
-	}
 
 	if (cmd.open)
 	{

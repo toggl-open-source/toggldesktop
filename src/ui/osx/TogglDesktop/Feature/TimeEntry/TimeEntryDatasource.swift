@@ -289,10 +289,9 @@ extension TimeEntryDatasource: NSCollectionViewDataSource, NSCollectionViewDeleg
                                                     fatalError()
         }
         let section = sectionItem(at: indexPath.section)
-        let item = section.entries[indexPath.item]
-
-        // Render data
-        cell.render(item)
+        if let item = section.entries[safe: indexPath.item] {
+            cell.render(item)
+        }
         if indexPath.item == section.entries.count - 1 {
             cell.applyMaskForBottomCorner()
         }
