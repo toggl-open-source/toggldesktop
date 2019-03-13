@@ -59,14 +59,14 @@
                         <outlet property="delegate" destination="-2" id="la5-2j-euY"/>
                     </connections>
                 </textField>
-                <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7TM-hH-4yE">
+                <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" horizontalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="7TM-hH-4yE">
                     <rect key="frame" x="0.0" y="0.0" width="252" height="197"/>
                     <clipView key="contentView" copiesOnScroll="NO" id="x95-7N-Tpm">
-                        <rect key="frame" x="0.0" y="0.0" width="252" height="197"/>
+                        <rect key="frame" x="0.0" y="0.0" width="237" height="197"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView selectable="YES" id="96l-2I-0G5" customClass="TimeEntryCollectionView">
-                                <rect key="frame" x="0.0" y="0.0" width="252" height="197"/>
+                                <rect key="frame" x="0.0" y="0.0" width="237" height="197"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumInteritemSpacing="10" minimumLineSpacing="10" id="wqE-DF-86P" customClass="VertificalTimeEntryFlowLayout" customModule="TogglDesktop" customModuleProvider="target">
                                     <size key="itemSize" width="50" height="50"/>
@@ -81,7 +81,7 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                     <scroller key="verticalScroller" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="xHG-vx-Jmn">
-                        <rect key="frame" x="236" y="10" width="16" height="187"/>
+                        <rect key="frame" x="237" y="10" width="15" height="187"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                 </scrollView>
