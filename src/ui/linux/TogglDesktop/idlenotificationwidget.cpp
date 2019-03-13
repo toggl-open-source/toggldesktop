@@ -13,6 +13,7 @@ IdleNotificationWidget::IdleNotificationWidget(QStackedWidget *parent)
   ui(new Ui::IdleNotificationWidget),
   idleStarted(0),
   dbusApiAvailable(true),
+  screenLocked(false),
   timeEntryGUID(""),
   idleHintTimer(new QTimer(this)) {
     ui->setupUi(this);
@@ -33,6 +34,8 @@ IdleNotificationWidget::IdleNotificationWidget(QStackedWidget *parent)
 
     connect(TogglApi::instance, SIGNAL(displayLogin(bool,uint64_t)),  // NOLINT
             this, SLOT(displayLogin(bool,uint64_t)));  // NOLINT
+
+    connect(screensaver, SIGNAL(ActiveChanged(bool)), this, SLOT(onScreensaverActiveChanged(bool)));
 
     connect(idleHintTimer, &QTimer::timeout, this, &IdleNotificationWidget::requestIdleHint);
     idleHintTimer->setInterval(5000);
@@ -81,6 +84,10 @@ void IdleNotificationWidget::idleHintReceived(QDBusPendingCallWatcher *watcher) 
     watcher->deleteLater();
 }
 
+void IdleNotificationWidget::onScreensaverActiveChanged(bool active) {
+    screenLocked = active;
+}
+
 void IdleNotificationWidget::display() {
     auto sw = qobject_cast<QStackedWidget*>(parent());
     if (sw->currentIndex() >= 0)
@@ -95,6 +102,10 @@ void IdleNotificationWidget::hide() {
         qobject_cast<QStackedWidget*>(parent())->setCurrentWidget(previousView);
         previousView = nullptr;
     }
+}
+
+bool IdleNotificationWidget::isScreenLocked() const {
+    return screenLocked;
 }
 
 IdleNotificationWidget::~IdleNotificationWidget() {
