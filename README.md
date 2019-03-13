@@ -13,7 +13,7 @@ Table of Contents
       * [Build the app](#build-the-app)
   * [Downloads](#downloads)
     * [macOS](#macos)
-    * [Windows (64 bit only)](#windows-64-bit-only)
+    * [Windows](#windows)
     * [Linux (64 bit only)](#linux-64-bit-only)
   * [Change log](#change-log)
   * [Documentation](#documentation)
@@ -52,7 +52,9 @@ make uitest
 
 ## Linux
 
-You'll need these Qt (at version 5.6 or higher) modules: QtWidgets (with private headers), QtWebEngine, QtWebEngineWidgets, QtNetwork, QtDBus, QtX11Extras
+### Dependencies
+
+You'll need these Qt (at version 5.12 or higher) modules: QtWidgets (with private headers), QtWebEngine, QtWebEngineWidgets, QtNetwork, QtDBus, QtX11Extras
 
 If Qt is not installed from your distribution's package manager, you will need to set the `CMAKE_PREFIX_PATH` environment variable to point to the `lib/cmake` folder in the Qt version you wish to use.
 
@@ -75,9 +77,21 @@ These libraries will be bundled regardless of your system:
  * bugsnag-qt
  * qt-oauth-lib
 
+### Build the app
+
+*in the toggldesktop source tree root*
+```
+mkdir -p build && pushd build             # Create build directory
+cmake ..                                  # Setup cmake configs
+make -j8                                  # Build the app. The number defines the count of parallel jobs (number of your CPU cores is a good value for that)
+./src/ui/linux/TogglDesktop/TogglDesktop  # Run the built app
+```
+
 ## Windows
 
-### Install dev tools
+### Dependencies
+
+#### Install dev tools
 
 We're building the Windows app using Visual Studio Community - it's a [free download](https://www.visualstudio.com/en-us/products/visual-studio-community-vs.aspx)
 
@@ -85,7 +99,7 @@ You'll need to [install ActivePerl](http://www.activestate.com/activeperl/downlo
 
 If you plan to run tests then you might want to install [Cygwin](https://www.cygwin.com/).
 
-### Build OpenSSL
+#### Build OpenSSL
 
 Use pre-built OpenSSL binaries (recommended)
 
@@ -121,7 +135,7 @@ If you have Cygwin installed, you can also build the app from from Cygwin termin
 
 ## macOS
 
-Toggl built and signed app for macOS is [available for download](https://www.toggl.com/api/v8/installer?platform=darwin&app=td&channel=stable). Officially MacOs 10.11 and newer stable MacOS versions are supported.
+Toggl built and signed app for macOS is [available for download](https://www.toggl.com/api/v8/installer?platform=darwin&app=td&channel=stable). Officially macOS 10.11 and newer stable macOS versions are supported.
 
 ## Windows
 
@@ -131,8 +145,8 @@ Toggl Desktop Windows app has not been tested on Surface type touchscreen enviro
 
 ## Linux (64 bit only)
 
+* [flatpak(recommended)](https://flathub.org/apps/details/com.toggl.TogglDesktop)
 * [tarball](https://www.toggl.com/api/v8/installer?app=td&platform=linux&channel=stable)
-* [deb](https://www.toggl.com/api/v8/installer?app=td&platform=deb64&channel=stable)
 
 
 # Change log
