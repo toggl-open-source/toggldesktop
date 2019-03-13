@@ -107,6 +107,8 @@ public static partial class Toggl
         public         UInt64 GroupItemCount;
         // Next in list
         public         IntPtr Next;
+        [MarshalAs(UnmanagedType.I1)]
+        public          bool ConfirmlessDelete;
 
         public override string ToString()
         {
