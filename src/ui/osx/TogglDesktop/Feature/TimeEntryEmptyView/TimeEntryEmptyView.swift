@@ -32,6 +32,9 @@ final class TimeEntryEmptyView: NSView {
     // MARK: OUTLET
 
     @IBOutlet weak var iconImageView: NSImageView!
+    @IBOutlet weak var iconImageViewTop: NSLayoutConstraint!
+    @IBOutlet weak var iconImageViewHeight: NSLayoutConstraint!
+    @IBOutlet weak var iconImageViewWidth: NSLayoutConstraint!
     @IBOutlet weak var titleLabel: NSTextField!
     @IBOutlet weak var subTitleLabel: NSTextField!
     @IBOutlet weak var loadMoreBtn: NSButton!
@@ -58,10 +61,19 @@ extension TimeEntryEmptyView {
             iconImageView.image = NSImage(named: Constants.stopwatchImage)
             titleLabel.stringValue = "Welcome to Toggl"
             titleLabel.stringValue = "Time each activity you do and see where your hours go"
+
+            iconImageViewWidth.constant = 200
+            iconImageViewHeight.constant = 150
+            iconImageViewTop.constant = 20
+
         case .noEntry:
             iconImageView.image = NSImage(named: Constants.spiderImage)
             titleLabel.stringValue = "No recent entries"
             titleLabel.stringValue = "It’s been a long time since you’ve tracked your tasks!"
+
+            iconImageViewWidth.constant = 132
+            iconImageViewHeight.constant = 170
+            iconImageViewTop.constant = 0
         }
     }
 }
