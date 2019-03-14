@@ -26,13 +26,11 @@ set(BINARY_SOURCE_FILES
     errorviewcontroller.cpp
     feedbackdialog.cpp
     genericview.cpp
-    idlenotificationwidget.cpp
     loginwidget.cpp
     main.cpp
     mainwindowcontroller.cpp
     networkmanagement.cpp
     overlaywidget.cpp
-    powermanagement.cpp
     preferencesdialog.cpp
     settingsview.cpp
     singleapplication.cpp
@@ -47,18 +45,35 @@ set(BINARY_SOURCE_FILES
     # Resources have to be listed, .ui files don't
     Resources.qrc
 )
+if(UNIX AND NOT APPLE)
+    set(BINARY_SOURCE_FILES
+        ${BINARY_SOURCE_FILES}
+        idlenotificationwidget.cpp
+        powermanagement.cpp
+    )
+endif()
 
 # Set up compilation targets
 add_executable(TogglDesktop ${BINARY_SOURCE_FILES})
 
 # And list the dependencies between them (and system libraries)
+if(UNIX AND NOT APPLE)
+    set(QT_LIBRARIES
+        Qt5::Widgets Qt5::DBus Qt5::WebEngine
+    )
+else()
+    set(QT_LIBRARIES
+        Qt5::Widgets Qt5::WebEngine
+    )
+endif()
 target_link_libraries(TogglDesktop PRIVATE
     TogglDesktopLibrary
-    Qt5::Widgets Qt5::DBus Qt5::WebEngine
+    ${QT_LIBRARIES}
     OAuth2
     ${QXT_LIBRARIES}
     Bugsnag
 )
+
 if(UNIX AND NOT APPLE)
     target_link_libraries(TogglDesktop PRIVATE
         -lX11 -lXss

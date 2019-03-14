@@ -21,11 +21,6 @@ public:
     bool notificationsAvailable();
 
 protected slots:
-    void notificationCapabilitiesReceived(QDBusPendingCallWatcher *watcher);
-    uint requestNotification(uint previous, const QString &title, const QString &description);
-    void notificationClosed(uint id, uint reason);
-    void notificationActionInvoked(uint id, const QString &action);
-
     void displayIdleNotification(
         const QString guid,
         const QString since,
@@ -35,9 +30,19 @@ protected slots:
 
     void displayReminder(QString title, QString description);
 
+    uint requestNotification(uint previous, const QString &title, const QString &description);
+
+#ifdef __linux
+    void notificationCapabilitiesReceived(QDBusPendingCallWatcher *watcher);
+    void notificationClosed(uint id, uint reason);
+    void notificationActionInvoked(uint id, const QString &action);
+
+private:
+    QDBusInterface *notifications;
+
+#endif // __linux
 private:
     QTimer *idleHintTimer;
-    QDBusInterface *notifications;
 
     uint lastIdleNotification { 0 };
     uint lastReminder { 0 };

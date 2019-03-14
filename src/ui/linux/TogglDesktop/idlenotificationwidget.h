@@ -2,6 +2,7 @@
 
 #ifndef SRC_UI_LINUX_TOGGLDESKTOP_IDLENOTIFICATIONWIDGET_H_
 #define SRC_UI_LINUX_TOGGLDESKTOP_IDLENOTIFICATIONWIDGET_H_
+#ifdef __linux
 
 #include <QDialog>
 #include <QTimer>
@@ -66,4 +67,5 @@ class IdleNotificationWidget : public QWidget {
     QTimer *idleHintTimer;
 };
 
+#endif // __linux
 #endif  // SRC_UI_LINUX_TOGGLDESKTOP_IDLENOTIFICATIONWIDGET_H_

@@ -46,7 +46,6 @@ MainWindowController::MainWindowController(
   trayIcon(nullptr),
   pomodoro(false),
   script(scriptPath),
-  powerManagement(new PowerManagement(this)),
   networkManagement(new NetworkManagement(this)),
   ui_started(false) {
     ui->setupUi(this);
@@ -58,7 +57,11 @@ MainWindowController::MainWindowController(
     stacked->addWidget(new LoginWidget(stacked));
     stacked->addWidget(new TimeEntryEditorWidget(stacked));
     stacked->addWidget(new TimeEntryListWidget(stacked));
+#ifdef __linux
     stacked->addWidget(new IdleNotificationWidget(stacked));
+
+    powerManagement = new PowerManagement(this);
+#endif // __linux
     QVBoxLayout *verticalLayout = new QVBoxLayout;
     verticalLayout->setContentsMargins(0, 0, 0, 0);
     verticalLayout->setSpacing(0);

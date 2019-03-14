@@ -16,6 +16,8 @@ option(FORCE_QT_APP "Build the Qt (Linux by default) app regardless of the platf
 # Use PkgConfig to look for packages without native CMake support
 include(FindPkgConfig)
 
+set(ENV{OPENSSL_ROOT_DIR} ${OPENSSL_ROOT_DIR})
+
 # Look for Qt
 if((UNIX AND NOT APPLE) OR FORCE_QT_APP)
     set(CMAKE_AUTOMOC ON)
