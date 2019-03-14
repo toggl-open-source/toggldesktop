@@ -37,6 +37,8 @@ static NSString *kFrameKey = @"frame";
 @property (copy, nonatomic) NSString *lastSelectedGUID;
 @property (nonatomic, strong) IBOutlet TimeEntryEditViewController *timeEntryEditViewController;
 @property (weak) IBOutlet TimeEntryCollectionView *collectionView;
+@property (strong, nonatomic) TimeEntryEmptyView *emptyView;
+
 @end
 
 @implementation TimeEntryListViewController
@@ -75,7 +77,6 @@ extern void *ctx;
 
 	[self initCommon];
 	[self initCollectionView];
-	[self setupEmptyLabel];
 	[self initNotifications];
 }
 
@@ -195,25 +196,12 @@ extern void *ctx;
 	}
 }
 
-- (void)setupEmptyLabel
+-(void) initEmptyView
 {
-	NSMutableParagraphStyle *paragrapStyle = NSMutableParagraphStyle.new;
-
-	paragrapStyle.alignment = kCTTextAlignmentCenter;
-
-	NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:@" reports"];
-
-	[string setAttributes:
-	 @{
-		 NSFontAttributeName : [NSFont systemFontOfSize:[NSFont systemFontSize]],
-		 NSForegroundColorAttributeName:[NSColor alternateSelectedControlColor]
-	 }
-					range:NSMakeRange(0, [string length])];
-	NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithString:@"Welcome back! Your previous entries are available in the web under" attributes:
-									   @{ NSParagraphStyleAttributeName:paragrapStyle }];
-	[text appendAttributedString:string];
-	[self.emptyLabel setAttributedStringValue:text];
-	[self.emptyLabel setAlignment:NSCenterTextAlignment];
+    self.emptyView = [TimeEntryEmptyView viewFromXIB];
+    self.emptyView.hidden = YES;
+    [self.view addSubview:self.emptyView positioned:NSWindowBelow relativeTo:self.collectionView];
+    [self.emptyView edgesToSuperView];
 }
 
 - (void)startDisplayTimeEntryList:(NSNotification *)notification
@@ -228,10 +216,10 @@ extern void *ctx;
 
 	NSArray<TimeEntryViewItem *> *newTimeEntries = [cmd.timeEntries copy];
 
-    // reload
+	// reload
 	[self.dataSource process:newTimeEntries showLoadMore:cmd.show_load_more];
 
-    // Handle Popover
+	// Handle Popover
 	if (cmd.open)
 	{
 		if (self.timeEntrypopover.shown)
@@ -239,7 +227,7 @@ extern void *ctx;
 			[self.timeEntrypopover closeWithFocusTimer:YES];
 			[self setDefaultPopupSize];
 		}
-        // when timer not focused
+		// when timer not focused
 		if ([self.timerEditViewController.autoCompleteInput currentEditor] == nil)
 		{
 			[self focusListing:nil];
@@ -249,10 +237,7 @@ extern void *ctx;
     // Adjust the popover position if we change the date
 	[self adjustPositionOfPopover];
 
-    // Show Empty view if need
-	BOOL noItems = newTimeEntries.count == 0;
-	[self.emptyLabel setEnabled:noItems];
-	[self.timeEntryListScrollView setHidden:noItems];
+    [self handleEmptyView];
 }
 
 - (void)adjustPositionOfPopover {
@@ -347,7 +332,7 @@ extern void *ctx;
 			}
 		}
 
-        // Show popover
+		// Show popover
 		[self.timeEntrypopover showRelativeToRect:positionRect
 										   ofView:ofView
 									preferredEdge:NSMaxXEdge];
@@ -495,14 +480,6 @@ extern void *ctx;
 	}
 }
 
-- (void)textFieldClicked:(id)sender
-{
-	if (sender == self.emptyLabel && [self.emptyLabel isEnabled])
-	{
-		toggl_open_in_browser(ctx);
-	}
-}
-
 - (void)focusListing:(NSNotification *)notification
 {
 	if (self.dataSource.count == 0)
@@ -511,7 +488,7 @@ extern void *ctx;
 	}
 
 	NSIndexPath *selectedIndexpath = [self.collectionView.selectionIndexPaths.allObjects firstObject];
-    // If list is focused with keyboard shortcut
+	// If list is focused with keyboard shortcut
 	if (notification != nil && !self.timeEntrypopover.shown)
 	{
 		[self clearLastSelectedEntry];
@@ -550,15 +527,15 @@ extern void *ctx;
 #pragma mark Drag & Drop Delegates
 
 - (void)effectiveAppearanceChangedNotification {
-    // Re-draw hard-code color sheme for all cells in tableview
+	// Re-draw hard-code color sheme for all cells in tableview
 	[self.collectionView reloadData];
 }
 
 - (void)windowSizeDidChange {
-    // We have to reload entire collection rather than calling [self.collectionView.collectionViewLayout invalidateLayout];
-    // Because it's difficult to re-draw the mask for highlight state of TimeEntryCell
-    // -invalidateLayout is more better in term of performance
-    // User is rarely to resize the app, so I believe it's reasonable.
+	// We have to reload entire collection rather than calling [self.collectionView.collectionViewLayout invalidateLayout];
+	// Because it's difficult to re-draw the mask for highlight state of TimeEntryCell
+	// -invalidateLayout is more better in term of performance
+	// User is rarely to resize the app, so I believe it's reasonable.
 	[self.collectionView reloadData];
 }
 
@@ -567,7 +544,7 @@ extern void *ctx;
 	NSData *rowData = [pboard dataForType:NSStringPboardType];
 	NSIndexPath *moveIndexPath = [NSKeyedUnarchiver unarchiveObjectWithData:rowData];
 
-    // Updating the dropped item date
+	// Updating the dropped item date
 	TimeEntryViewItem *dateModel = [self.dataSource objectAt:indexPath];
 	TimeEntryViewItem *currentModel = [self.dataSource objectAt:moveIndexPath];
 
@@ -616,28 +593,28 @@ extern void *ctx;
 									 searchOptions:@{}
 										usingBlock:^(NSDraggingItem *_Nonnull draggingItem, NSInteger idx, BOOL *_Nonnull stop)
 		 {
-             // prepare context
+		     // prepare context
 			 NSGraphicsContext *theContext = [NSGraphicsContext currentContext];
 			 [theContext saveGraphicsState];
 
-             // drag image needs to be larger than the content in order to encapsulate the drop shadow
+		     // drag image needs to be larger than the content in order to encapsulate the drop shadow
 			 CGFloat imageOffset = 5;
 
-             // supply a drag background image
+		     // supply a drag background image
 			 NSSize contentSize = draggingItem.draggingFrame.size;
 			 contentSize.height = 56;
 			 NSSize imageSize = NSMakeSize(contentSize.width + imageOffset, contentSize.height + imageOffset);
 			 NSImage *image = [[NSImage alloc] initWithSize:imageSize];
 			 [image lockFocus];
 
-             // define a shadow
+		     // define a shadow
 			 NSShadow *shadow = [NSShadow new];
 			 shadow.shadowColor = [[NSColor lightGrayColor] colorWithAlphaComponent:0.1];
 			 shadow.shadowOffset = NSMakeSize(imageOffset, -imageOffset);
 			 shadow.shadowBlurRadius = 8;
 			 [shadow set];
 
-             // define content frame
+		     // define content frame
 			 NSRect contentFrame = NSMakeRect(0, imageOffset, contentSize.width, contentSize.height);
 			 NSBezierPath *contentPath = [NSBezierPath bezierPathWithRect:contentFrame];
 			 [theContext restoreGraphicsState];
@@ -652,23 +629,23 @@ extern void *ctx;
 				 backgroundColor = [ConvertHexColor hexCodeToNSColor:@"#f9f9f9"];
 			 }
 
-             // fill content
+		     // fill content
 			 [backgroundColor set];
 			 contentPath = [NSBezierPath bezierPathWithRect:NSInsetRect(contentFrame, 1, 1)];
 			 [contentPath fill];
 
 			 [image unlockFocus];
 
-             // update the dragging item frame to accomodate larger image
+		     // update the dragging item frame to accomodate larger image
 			 draggingItem.draggingFrame = NSMakeRect(draggingItem.draggingFrame.origin.x, draggingItem.draggingFrame.origin.y, imageSize.width, imageSize.height);
 
-             // define additional image component for drag
+		     // define additional image component for drag
 			 NSDraggingImageComponent *backgroundImageComponent = [NSDraggingImageComponent draggingImageComponentWithKey:@"background"];
 			 backgroundImageComponent.contents = image;
 			 backgroundImageComponent.frame = NSMakeRect(0, 0, imageSize.width, imageSize.height);
 
-             // we can provide custom content by overridding NSTableViewCell -draggingImageComponents
-             // which defaults to only including the image and text fields
+		     // we can provide custom content by overridding NSTableViewCell -draggingImageComponents
+		     // which defaults to only including the image and text fields
 			 draggingItem.imageComponentsProvider = ^NSArray *(void) {
 				 NSMutableArray *components = [NSMutableArray arrayWithArray:@[backgroundImageComponent]];
 				 NSArray *cellViewComponents = cellView.draggingImageComponents;
@@ -681,6 +658,13 @@ extern void *ctx;
 			 };
 		 }];
 	}
+}
+
+-(void) handleEmptyView
+{
+    BOOL isEmpty = self.dataSource.count == 0;
+    self.emptyView.hidden = isEmpty;
+    self.collectionView.hidden = !isEmpty;
 }
 
 @end

@@ -21,6 +21,5 @@
 @property (strong) IBOutlet NSViewController *timeEntrypopoverViewController;
 @property (strong) IBOutlet NSViewEscapable *timeEntryPopupEditView;
 @property (strong) IBOutlet NSScrollView *timeEntryListScrollView;
-@property (strong) IBOutlet NSTextFieldClickable *emptyLabel;
 @property (nonatomic, strong) TimeEntryDatasource *dataSource;
 @end

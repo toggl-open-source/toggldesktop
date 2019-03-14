@@ -42,6 +42,10 @@ final class TimeEntryEmptyView: NSView {
 
     // MARK: Public
 
+    @objc class func viewFromXIB() -> TimeEntryEmptyView {
+        return TimeEntryEmptyView.xibView()
+    }
+    
     func setDisplayMode(_ mode: DisplayMode) {
         displayMode = mode
     }
