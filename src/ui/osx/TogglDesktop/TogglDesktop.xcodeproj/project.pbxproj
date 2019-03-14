@@ -177,6 +177,8 @@
 		BAAF56A22223E18B003D0D73 /* TimeDecoratorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAAF56A12223E18B003D0D73 /* TimeDecoratorView.swift */; };
 		BAAF56A42223E19C003D0D73 /* TimeDecoratorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BAAF56A32223E19C003D0D73 /* TimeDecoratorView.xib */; };
 		BAB8D49421BE742D00D63DA5 /* NSTableView+TimeEntryDiff.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB8D49321BE742D00D63DA5 /* NSTableView+TimeEntryDiff.swift */; };
+		BAD15FFC223A52D600A8CCC9 /* TimeEntryEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD15FFB223A52D600A8CCC9 /* TimeEntryEmptyView.swift */; };
+		BAD15FFE223A530600A8CCC9 /* TimeEntryEmptyView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BAD15FFD223A530600A8CCC9 /* TimeEntryEmptyView.xib */; };
 		BAD2341F21D612DF0039C742 /* libPocoDataSQLite.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BAD2341621D612DE0039C742 /* libPocoDataSQLite.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		BAD2342021D612DF0039C742 /* libPocoNetSSL.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BAD2341721D612DE0039C742 /* libPocoNetSSL.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		BAD2342121D612DF0039C742 /* libPocoNet.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BAD2341821D612DE0039C742 /* libPocoNet.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
@@ -742,6 +744,8 @@
 		BAAF56A12223E18B003D0D73 /* TimeDecoratorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeDecoratorView.swift; sourceTree = "<group>"; };
 		BAAF56A32223E19C003D0D73 /* TimeDecoratorView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimeDecoratorView.xib; sourceTree = "<group>"; };
 		BAB8D49321BE742D00D63DA5 /* NSTableView+TimeEntryDiff.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSTableView+TimeEntryDiff.swift"; sourceTree = "<group>"; };
+		BAD15FFB223A52D600A8CCC9 /* TimeEntryEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeEntryEmptyView.swift; sourceTree = "<group>"; };
+		BAD15FFD223A530600A8CCC9 /* TimeEntryEmptyView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimeEntryEmptyView.xib; sourceTree = "<group>"; };
 		BAD2341621D612DE0039C742 /* libPocoDataSQLite.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoDataSQLite.60.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoDataSQLite.60.dylib; sourceTree = "<group>"; };
 		BAD2341721D612DE0039C742 /* libPocoNetSSL.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoNetSSL.60.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoNetSSL.60.dylib; sourceTree = "<group>"; };
 		BAD2341821D612DE0039C742 /* libPocoNet.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoNet.60.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoNet.60.dylib; sourceTree = "<group>"; };
@@ -1321,6 +1325,7 @@
 		BA712EAF21BF904E00A2D8DD /* Feature */ = {
 			isa = PBXGroup;
 			children = (
+				BAD15FDC223A521900A8CCC9 /* TimeEntryEmptyView */,
 				BA0C3A45223219330081C6DE /* AutoComplete */,
 				BA3E75B422291C9D009AD291 /* SystemMessage */,
 				BA4059AD221D2147002969B8 /* TimeEntry */,
@@ -1348,6 +1353,15 @@
 				BA7DB6D621F9C7660059239B /* Demo.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		BAD15FDC223A521900A8CCC9 /* TimeEntryEmptyView */ = {
+			isa = PBXGroup;
+			children = (
+				BAD15FFB223A52D600A8CCC9 /* TimeEntryEmptyView.swift */,
+				BAD15FFD223A530600A8CCC9 /* TimeEntryEmptyView.xib */,
+			);
+			path = TimeEntryEmptyView;
 			sourceTree = "<group>";
 		};
 		BAF50DF521A2A16D0090BA95 /* Icon */ = {
@@ -1725,6 +1739,7 @@
 				3C6B2489203E01D90063FC08 /* AutoCompleteTableCell.xib in Resources */,
 				BA3E75D822293576009AD291 /* SystemMessageView.xib in Resources */,
 				95DBF8D718C48B300021FB41 /* logo.png in Resources */,
+				BAD15FFE223A530600A8CCC9 /* TimeEntryEmptyView.xib in Resources */,
 				3CDA2C5B1913B61000A94967 /* icon-billable@2x.png in Resources */,
 				3CD30F441F58B02C006FAA0D /* OverlayViewController.xib in Resources */,
 				74664DB218AA860800AAD282 /* off.pdf in Resources */,
@@ -1881,6 +1896,7 @@
 				3CD30F431F58B02C006FAA0D /* OverlayViewController.m in Sources */,
 				74D1D25617EB713F00E709B0 /* TimeEntryListViewController.m in Sources */,
 				BAAF56A22223E18B003D0D73 /* TimeDecoratorView.swift in Sources */,
+				BAD15FFC223A52D600A8CCC9 /* TimeEntryEmptyView.swift in Sources */,
 				BA6F1B1A21EEE258009265E4 /* NSColor+Utils.swift in Sources */,
 				BA4059B7221D46F4002969B8 /* TimeEntryCollectionView.m in Sources */,
 				BA4059AF221D215A002969B8 /* TimeHeaderView.swift in Sources */,
