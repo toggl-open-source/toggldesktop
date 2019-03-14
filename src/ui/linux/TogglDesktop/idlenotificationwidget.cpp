@@ -64,7 +64,7 @@ void IdleNotificationWidget::requestIdleHint() {
         XScreenSaverInfo *info = XScreenSaverAllocInfo();
         if (XScreenSaverQueryInfo(display, DefaultRootWindow(display), info)) {
             uint64_t idleSeconds = info->idle / 1000;
-            TogglApi::instance->setIdleSeconds(idleSeconds);
+            storeIdlePeriod(idleSeconds);
         }
         XFree(info);
         XCloseDisplay(display);
@@ -79,7 +79,8 @@ void IdleNotificationWidget::idleHintReceived(QDBusPendingCallWatcher *watcher) 
     }
     else {
         qulonglong value = reply.argumentAt<0>();
-        TogglApi::instance->setIdleSeconds(value / 1000);
+        uint64_t idleSeconds = value / 1000;
+        storeIdlePeriod(idleSeconds);
     }
     watcher->deleteLater();
 }
@@ -106,6 +107,17 @@ void IdleNotificationWidget::hide() {
 
 bool IdleNotificationWidget::isScreenLocked() const {
     return screenLocked;
+}
+
+void IdleNotificationWidget::storeIdlePeriod(uint64_t period) {
+    if (isScreenLocked()) {
+        TogglApi::instance->setIdleSeconds(static_cast<uint64_t>(time(nullptr)) - lastActiveTime);
+    }
+    else {
+        lastActiveTime = static_cast<uint64_t>(time(nullptr)) - period;
+        TogglApi::instance->setIdleSeconds(period);
+    }
+    qCritical() << "Setting period to" << period << "and screen is locked:" << isScreenLocked() << "; last active time is:" << lastActiveTime << "and that makes the period" << static_cast<uint64_t>(time(nullptr)) - lastActiveTime;
 }
 
 IdleNotificationWidget::~IdleNotificationWidget() {

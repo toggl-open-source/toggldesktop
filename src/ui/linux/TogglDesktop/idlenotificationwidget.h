@@ -28,6 +28,9 @@ class IdleNotificationWidget : public QWidget {
 
     bool isScreenLocked() const;
 
+private:
+    void storeIdlePeriod(uint64_t period);
+
  private slots:  // NOLINT
     void requestIdleHint();
     void idleHintReceived(QDBusPendingCallWatcher *watcher);
@@ -65,7 +68,7 @@ class IdleNotificationWidget : public QWidget {
     QDBusInterface *screensaver;
     bool dbusApiAvailable;
     bool screenLocked;
-    uint64_t lastIdleTime;
+    uint64_t lastActiveTime;
 
     QString timeEntryGUID;
 
