@@ -97,7 +97,7 @@
                 <constraint firstItem="OXo-Tz-Vbz" firstAttribute="leading" secondItem="3" secondAttribute="leading" constant="-1" id="twv-Me-Ne4"/>
                 <constraint firstItem="7TM-hH-4yE" firstAttribute="top" secondItem="OXo-Tz-Vbz" secondAttribute="bottom" id="usm-Rv-BiW"/>
             </constraints>
-            <point key="canvasLocation" x="258" y="183"/>
+            <point key="canvasLocation" x="-40" y="2"/>
         </customView>
     </objects>
 </document>
