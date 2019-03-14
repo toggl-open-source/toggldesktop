@@ -474,7 +474,6 @@ extern void *ctx;
 	{
 		[self clearLastSelectedEntry];
 		selectedIndexpath = [NSIndexPath indexPathForItem:0 inSection:0];
-		[self.collectionView becomeFirstResponder];
 	}
 
 	if (selectedIndexpath == nil)
