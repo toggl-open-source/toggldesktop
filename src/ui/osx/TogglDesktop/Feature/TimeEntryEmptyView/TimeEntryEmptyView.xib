@@ -46,6 +46,9 @@
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="cellTitle"/>
                     </buttonCell>
+                    <connections>
+                        <action selector="loadMoreOnTap:" target="c22-O7-iKe" id="pZd-9w-RPX"/>
+                    </connections>
                 </button>
             </subviews>
             <constraints>
@@ -60,6 +63,12 @@
                 <constraint firstItem="x4o-Lg-p64" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" id="jcE-80-JGg"/>
                 <constraint firstItem="XGb-Wk-M8a" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="c22-O7-iKe" secondAttribute="leading" constant="30" id="zQz-DI-7Zc"/>
             </constraints>
+            <connections>
+                <outlet property="iconImageView" destination="x4o-Lg-p64" id="Mgv-7A-3mm"/>
+                <outlet property="loadMoreBtn" destination="QwC-lM-eNH" id="uY9-NX-6h4"/>
+                <outlet property="subTitleLabel" destination="XGb-Wk-M8a" id="6cx-Yy-Dfb"/>
+                <outlet property="titleLabel" destination="zdz-T1-upG" id="H9S-rq-0eA"/>
+            </connections>
             <point key="canvasLocation" x="85" y="94.5"/>
         </customView>
     </objects>
