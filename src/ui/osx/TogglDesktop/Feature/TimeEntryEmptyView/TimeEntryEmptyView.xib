@@ -22,10 +22,10 @@
                     </textFieldCell>
                 </textField>
                 <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="x4o-Lg-p64">
-                    <rect key="frame" x="51" y="275" width="200" height="150"/>
+                    <rect key="frame" x="51" y="255" width="200" height="150"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="200" id="H6l-Hq-GgY"/>
-                        <constraint firstAttribute="height" constant="150" id="Xs1-hq-zSt"/>
+                        <constraint firstAttribute="height" constant="150" id="8Hf-yf-qT2"/>
+                        <constraint firstAttribute="width" constant="200" id="x5V-dR-zix"/>
                     </constraints>
                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="stopwatch" id="5yn-eB-N27"/>
                 </imageView>
@@ -60,11 +60,14 @@
                 <constraint firstItem="XGb-Wk-M8a" firstAttribute="centerX" secondItem="c22-O7-iKe" secondAttribute="centerX" id="GSh-zr-S8d"/>
                 <constraint firstItem="XGb-Wk-M8a" firstAttribute="top" secondItem="zdz-T1-upG" secondAttribute="bottom" constant="10" id="IV5-kc-6E8"/>
                 <constraint firstItem="QwC-lM-eNH" firstAttribute="centerX" secondItem="c22-O7-iKe" secondAttribute="centerX" id="Wn6-ex-hVe"/>
-                <constraint firstItem="x4o-Lg-p64" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" id="jcE-80-JGg"/>
+                <constraint firstItem="x4o-Lg-p64" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" constant="20" id="jcE-80-JGg"/>
                 <constraint firstItem="XGb-Wk-M8a" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="c22-O7-iKe" secondAttribute="leading" constant="30" id="zQz-DI-7Zc"/>
             </constraints>
             <connections>
                 <outlet property="iconImageView" destination="x4o-Lg-p64" id="Mgv-7A-3mm"/>
+                <outlet property="iconImageViewHeight" destination="8Hf-yf-qT2" id="T6F-pD-fbv"/>
+                <outlet property="iconImageViewTop" destination="jcE-80-JGg" id="d1j-1x-IGO"/>
+                <outlet property="iconImageViewWidth" destination="x5V-dR-zix" id="Ls4-iP-eCC"/>
                 <outlet property="loadMoreBtn" destination="QwC-lM-eNH" id="uY9-NX-6h4"/>
                 <outlet property="subTitleLabel" destination="XGb-Wk-M8a" id="6cx-Yy-Dfb"/>
                 <outlet property="titleLabel" destination="zdz-T1-upG" id="H9S-rq-0eA"/>
