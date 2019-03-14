@@ -9,7 +9,6 @@
         <customObject id="-2" userLabel="File's Owner" customClass="TimeEntryListViewController">
             <connections>
                 <outlet property="collectionView" destination="96l-2I-0G5" id="P59-lk-PQF"/>
-                <outlet property="emptyLabel" destination="6qy-lU-tSK" id="gDu-GF-iBp"/>
                 <outlet property="headerView" destination="OXo-Tz-Vbz" id="vDf-yG-fnR"/>
                 <outlet property="timeEntryListScrollView" destination="7TM-hH-4yE" id="MrY-aB-U9C"/>
                 <outlet property="timeEntryPopupEditView" destination="ozl-58-bBU" id="Tv3-fj-eCx"/>
@@ -87,13 +86,11 @@
                 </customView>
             </subviews>
             <constraints>
-                <constraint firstItem="6qy-lU-tSK" firstAttribute="top" secondItem="OXo-Tz-Vbz" secondAttribute="bottom" constant="25" id="1aS-BJ-Gna"/>
                 <constraint firstAttribute="bottom" secondItem="7TM-hH-4yE" secondAttribute="bottom" id="Eef-ul-UqD"/>
                 <constraint firstItem="7TM-hH-4yE" firstAttribute="leading" secondItem="3" secondAttribute="leading" id="Wo4-Tl-2Dg"/>
                 <constraint firstAttribute="trailing" secondItem="7TM-hH-4yE" secondAttribute="trailing" id="a57-rF-7Ww"/>
                 <constraint firstItem="OXo-Tz-Vbz" firstAttribute="top" secondItem="3" secondAttribute="top" constant="-1" id="cFn-Dr-igO"/>
                 <constraint firstAttribute="trailing" secondItem="OXo-Tz-Vbz" secondAttribute="trailing" constant="-1" id="dob-uI-NdT"/>
-                <constraint firstAttribute="centerX" secondItem="6qy-lU-tSK" secondAttribute="centerX" id="oe5-9e-iNd"/>
                 <constraint firstItem="OXo-Tz-Vbz" firstAttribute="leading" secondItem="3" secondAttribute="leading" constant="-1" id="twv-Me-Ne4"/>
                 <constraint firstItem="7TM-hH-4yE" firstAttribute="top" secondItem="OXo-Tz-Vbz" secondAttribute="bottom" id="usm-Rv-BiW"/>
             </constraints>

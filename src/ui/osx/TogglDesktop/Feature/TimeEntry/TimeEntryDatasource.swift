@@ -94,6 +94,10 @@ class TimeEntryDatasource: NSObject {
         initCommon()
     }
 
+    var count: Int {
+        return sections.count
+    }
+    
     // MARK: Public
 
     func process(_ timeEntries: [TimeEntryViewItem], showLoadMore: Bool) {
