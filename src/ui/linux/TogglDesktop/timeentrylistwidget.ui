@@ -72,6 +72,9 @@
    </item>
    <item>
     <widget class="QListWidget" name="list">
+     <property name="focusPolicy">
+      <enum>Qt::NoFocus</enum>
+     </property>
      <property name="horizontalScrollBarPolicy">
       <enum>Qt::ScrollBarAsNeeded</enum>
      </property>

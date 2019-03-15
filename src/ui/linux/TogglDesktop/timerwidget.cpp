@@ -173,7 +173,7 @@ void TimerWidget::displayRunningTimerState(
 
     ui->start->setText("Stop");
     ui->start->setStyleSheet(
-        "background-color: #e20000; color:'white'; font-weight: bold;");
+        "background-color: #e20000; color:'white'; font-weight: bold; outline:1px dashed white; outline-radius:2px; padding:1px");
 
     QString description = (te->Description.length() > 0) ?
                           te->Description : "(no description)";
@@ -245,7 +245,7 @@ void TimerWidget::displayStoppedTimerState() {
 
     ui->start->setText("Start");
     ui->start->setStyleSheet(
-        "background-color: #47bc00; color:'white'; font-weight: bold;");
+        "background-color: #47bc00; color:'white'; font-weight: bold; outline:1px dashed white; outline-radius:2px; padding:1px");
 
     if (!ui->description->hasFocus()) {
         ui->description->setEditText(descriptionPlaceholder);
