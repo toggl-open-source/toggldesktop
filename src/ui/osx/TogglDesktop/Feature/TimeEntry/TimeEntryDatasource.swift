@@ -165,11 +165,16 @@ class TimeEntryDatasource: NSObject {
     }
 
     private func reload(with sections: [TimeEntrySection]) {
+        let selection = collectionView.selectionIndexPaths
+
         self.sections.removeAll()
         self.sections.append(contentsOf: sections)
         collectionView.reloadData()
-    }
 
+        // Reselect cell with no animation
+        collectionView.selectItems(at: selection, scrollPosition: [])
+    }
+    
     fileprivate func sectionItem(at section: Int) -> TimeEntrySection {
         return queue.sync(flags: .barrier) {
             return sections[section]
