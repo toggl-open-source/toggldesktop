@@ -97,6 +97,14 @@ extern void *ctx;
 			toggl_toggle_entries_group(ctx, [cell.GroupName UTF8String]);
 		}
 	}
+	else if (event.keyCode == kVK_Space)
+	{
+		TimeEntryCell *cell = [self getSelectedEntryCell];
+		if (cell != nil)
+		{
+			toggl_continue(ctx, [cell.GUID UTF8String]);
+		}
+	}
 	else
 	{
 		[super keyDown:event];
