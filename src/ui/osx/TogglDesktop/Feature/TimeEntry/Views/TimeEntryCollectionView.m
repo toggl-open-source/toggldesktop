@@ -105,6 +105,14 @@ extern void *ctx;
 			toggl_continue(ctx, [cell.GUID UTF8String]);
 		}
 	}
+	else if (event.keyCode == kVK_UpArrow)
+	{
+		NSIndexPath *index = [self.selectionIndexPaths.allObjects firstObject];
+		if (index != nil)
+		{
+			[self selectPreviousRowFromIndexPath:index];
+		}
+	}
 	else
 	{
 		[super keyDown:event];
@@ -138,7 +146,7 @@ extern void *ctx;
 		{
 			if (toggl_delete_time_entry(ctx, [cell.GUID UTF8String]))
 			{
-				[self selectPreviousRow];
+				[self selectPreviousRowFromIndexPath:self.latestSelectedIndexPath];
 			}
 			return;
 		}
@@ -159,14 +167,14 @@ extern void *ctx;
 
 		if (toggl_delete_time_entry(ctx, [cell.GUID UTF8String]))
 		{
-			[self selectPreviousRow];
+			[self selectPreviousRowFromIndexPath:self.latestSelectedIndexPath];
 		}
 	}
 }
 
-- (void)selectPreviousRow
+- (void)selectPreviousRowFromIndexPath:(NSIndexPath *)indexPath
 {
-	if (self.latestSelectedIndexPath == nil)
+	if (indexPath == nil)
 	{
 		return;
 	}
@@ -178,9 +186,10 @@ extern void *ctx;
 	TimeEntryDatasource *datasource = (TimeEntryDatasource *)self.dataSource;
 
 	// Select previous cell
-	NSIndexPath *previousIndexPath = [datasource previousIndexPathFrom:self.latestSelectedIndexPath];
+	NSIndexPath *previousIndexPath = [datasource previousIndexPathFrom:indexPath];
 	if (previousIndexPath != nil)
 	{
+		[self deselectAll:self];
 		[self selectItemsAtIndexPaths:[NSSet setWithCollectionViewIndexPath:previousIndexPath]
 					   scrollPosition:NSCollectionViewScrollPositionNone];
 	}

@@ -214,26 +214,6 @@ extension TimeEntryDatasource {
 // MARK: NSCollectionViewDataSource
 
 extension TimeEntryDatasource: NSCollectionViewDataSource, NSCollectionViewDelegate, NSCollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: NSCollectionView,
-                        shouldSelectItemsAt indexPaths: Set<IndexPath>) -> Set<IndexPath> {
-        guard let newIndexPath = indexPaths.first
-            else { return indexPaths }
-
-        if currentIndexPath.section > newIndexPath.section {
-            let sectionItem = self.sectionItem(at: newIndexPath.section)
-            return [IndexPath(item: sectionItem.entries.count-1, section: newIndexPath.section)]
-        }
-        return indexPaths;
-    }
-
-    func collectionView(_ collectionView: NSCollectionView,
-                        didSelectItemsAt indexPaths: Set<IndexPath>) {
-        guard let first = indexPaths.first
-            else { return }
-
-        self.currentIndexPath = first
-    }
-
     func numberOfSections(in collectionView: NSCollectionView) -> Int {
         return sections.count
     }
