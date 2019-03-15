@@ -24,7 +24,7 @@
 static void *XXContext = &XXContext;
 static NSString *kFrameKey = @"frame";
 
-@interface TimeEntryListViewController () <TimeEntryDatasourceDraggingDelegate>
+@interface TimeEntryListViewController () <TimeEntryDatasourceDraggingDelegate, TimeEntryEmptyViewDelegate>
 @property (nonatomic, strong) TimerEditViewController *timerEditViewController;
 @property NSNib *nibTimeEntryCell;
 @property NSNib *nibTimeEntryEditViewController;
@@ -200,7 +200,8 @@ extern void *ctx;
 
 - (void)initEmptyView
 {
-	self.emptyView = [TimeEntryEmptyView viewFromXIB]; \
+	self.emptyView = [TimeEntryEmptyView viewFromXIB];
+	self.emptyView.delegate = self;
 	[self.emptyViewContainerView addSubview:self.emptyView];
 	[self.emptyView edgesToSuperView];
 	self.emptyViewContainerView.hidden = YES;
@@ -664,10 +665,29 @@ extern void *ctx;
 
 - (void)handleEmptyView
 {
-	BOOL isEmpty = self.dataSource.count == 0;
+	if (self.dataSource.count == 1 && self.dataSource.isShowLoadMore)
+	{
+		self.emptyViewContainerView.hidden = NO;
+		self.timeEntryListScrollView.hidden = YES;
+		[self.emptyView setLayoutType:EmptyLayoutTypeNoEntry];
+	}
+	else if (self.dataSource.count == 0)
+	{
+		self.emptyViewContainerView.hidden = NO;
+		self.timeEntryListScrollView.hidden = YES;
+		[self.emptyView setLayoutType:EmptyLayoutTypeWelcome];
+	}
+	else
+	{
+		self.emptyViewContainerView.hidden = YES;
+		self.timeEntryListScrollView.hidden = NO;
+		return;
+	}
+}
 
-	self.emptyViewContainerView.hidden = !isEmpty;
-	self.collectionView.hidden = isEmpty;
+- (void)emptyViewDidTapOnLoadMore
+{
+	toggl_load_more(ctx);
 }
 
 @end
