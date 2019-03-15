@@ -3,6 +3,8 @@
 #include "./timeentrycellwidget.h"
 #include "./ui_timeentrycellwidget.h"
 
+#include <QMessageBox>
+
 #include "./toggl.h"
 
 TimeEntryCellWidget::TimeEntryCellWidget() : QWidget(nullptr),
@@ -11,7 +13,8 @@ description(""),
 project(""),
 guid(""),
 group(false),
-groupName("") {
+groupName(""),
+confirmlessDelete(false) {
     ui->setupUi(this);
     setStyleSheet(
         "* { font-size: 13px }"
@@ -30,6 +33,7 @@ void TimeEntryCellWidget::display(TimeEntryView *view) {
     setLoadMore(false);
     guid = view->GUID;
     groupName = view->GroupName;
+    confirmlessDelete = view->ConfirmlessDelete;
     description =
         (view->Description.length() > 0) ?
         view->Description : "(no description)";
@@ -85,6 +89,19 @@ void TimeEntryCellWidget::setLoadMore(bool load_more) {
     ui->dataFrame->setFocusPolicy(load_more ? Qt::NoFocus : Qt::StrongFocus);
     if (load_more) {
         ui->unsyncedicon->setVisible(false);
+    }
+}
+
+void TimeEntryCellWidget::deleteTimeEntry() {
+    if (guid.isEmpty())
+        return;
+
+    if (confirmlessDelete || QMessageBox::Ok == QMessageBox(
+        QMessageBox::Question,
+        "Delete this time entry?",
+        "Deleted time entries cannot be restored.",
+        QMessageBox::Ok|QMessageBox::Cancel).exec()) {
+        TogglApi::instance->deleteTimeEntry(guid);
     }
 }
 

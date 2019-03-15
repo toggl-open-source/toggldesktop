@@ -24,6 +24,9 @@ class TimeEntryCellWidget : public QWidget {
     void labelClicked(QString field_name);
     void setLoadMore(bool load_more);
 
+ public slots:
+    void deleteTimeEntry();
+
  protected:
     virtual void resizeEvent(QResizeEvent *);
 
@@ -41,6 +44,7 @@ class TimeEntryCellWidget : public QWidget {
     QString guid;
     bool group;
     QString groupName;
+    bool confirmlessDelete;
     QString getProjectColor(QString color);
 
     void setupGroupedMode(TimeEntryView *view);

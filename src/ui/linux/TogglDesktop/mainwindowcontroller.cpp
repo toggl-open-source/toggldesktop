@@ -25,6 +25,7 @@
 #include "./timeentrylistwidget.h"
 #include "./timerwidget.h"
 #include "./errorviewcontroller.h"
+#include "./timeentrycellwidget.h"
 
 MainWindowController::MainWindowController(
     QWidget *parent,
@@ -272,7 +273,14 @@ void MainWindowController::onOnlineStateChanged() {
 
 void MainWindowController::onShortcutDelete() {
     if (ui->stackedWidget->currentWidget() == ui->timeEntryListWidget) {
-        ui->timeEntryListWidget->timer()->deleteTimeEntry();
+        if (ui->timeEntryListWidget->focusWidget() &&
+            ui->timeEntryListWidget->focusWidget()->parentWidget() &&
+            qobject_cast<TimeEntryCellWidget*>(ui->timeEntryListWidget->focusWidget()->parentWidget())) {
+            qobject_cast<TimeEntryCellWidget*>(ui->timeEntryListWidget->focusWidget()->parentWidget())->deleteTimeEntry();
+        }
+        else {
+            ui->timeEntryListWidget->timer()->deleteTimeEntry();
+        }
     }
     else if (ui->stackedWidget->currentWidget() == ui->timeEntryEditorWidget) {
         ui->timeEntryEditorWidget->deleteTimeEntry();
