@@ -62,8 +62,9 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release_VS|AnyCPU'">
     <OutputPath>bin\Release_VS\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
     <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
