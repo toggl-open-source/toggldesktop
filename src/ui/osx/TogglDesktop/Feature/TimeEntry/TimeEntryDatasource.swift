@@ -65,6 +65,7 @@ class TimeEntryDatasource: NSObject {
     weak var delegate: TimeEntryDatasourceDraggingDelegate?
     private var firstTime = true
     private var sections: [TimeEntrySection]
+    private var currentIndexPath = IndexPath(item: 0, section: 0)
     private let collectionView: NSCollectionView
     private let queue = DispatchQueue(label: "com.toggl.toggldesktop.TogglDesktop.timeentryqueue")
     fileprivate var cellSize: NSSize {
@@ -197,6 +198,25 @@ extension TimeEntryDatasource {
 // MARK: NSCollectionViewDataSource
 
 extension TimeEntryDatasource: NSCollectionViewDataSource, NSCollectionViewDelegate, NSCollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: NSCollectionView,
+                        shouldSelectItemsAt indexPaths: Set<IndexPath>) -> Set<IndexPath> {
+        guard let newIndexPath = indexPaths.first
+            else { return indexPaths }
+
+        if currentIndexPath.section > newIndexPath.section {
+            let sectionItem = self.sectionItem(at: newIndexPath.section)
+            return [IndexPath(item: sectionItem.entries.count-1, section: newIndexPath.section)]
+        }
+        return indexPaths;
+    }
+
+    func collectionView(_ collectionView: NSCollectionView,
+                        didSelectItemsAt indexPaths: Set<IndexPath>) {
+        guard let first = indexPaths.first
+            else { return }
+
+        self.currentIndexPath = first
+    }
 
     func numberOfSections(in collectionView: NSCollectionView) -> Int {
         return sections.count
