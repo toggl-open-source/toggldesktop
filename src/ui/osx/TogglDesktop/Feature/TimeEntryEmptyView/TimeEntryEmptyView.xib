@@ -32,7 +32,7 @@
                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="XGb-Wk-M8a">
                     <rect key="frame" x="28" y="181" width="246" height="32"/>
                     <textFieldCell key="cell" selectable="YES" alignment="center" title="Time each activity you do and see where your hours go" id="uJ3-yH-TMy">
-                        <font key="font" metaFont="system" size="12"/>
+                        <font key="font" metaFont="cellTitle"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
@@ -50,15 +50,20 @@
                         <action selector="loadMoreOnTap:" target="c22-O7-iKe" id="pZd-9w-RPX"/>
                     </connections>
                 </button>
+                <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="Jcf-zj-8BX">
+                    <rect key="frame" x="143" y="152" width="16" height="16"/>
+                </progressIndicator>
             </subviews>
             <constraints>
                 <constraint firstItem="zdz-T1-upG" firstAttribute="centerX" secondItem="c22-O7-iKe" secondAttribute="centerX" id="1af-CM-xSs"/>
                 <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="XGb-Wk-M8a" secondAttribute="trailing" constant="30" id="3vm-7j-RCz"/>
                 <constraint firstItem="QwC-lM-eNH" firstAttribute="top" secondItem="XGb-Wk-M8a" secondAttribute="bottom" constant="10" id="5oN-p4-mhx"/>
                 <constraint firstItem="x4o-Lg-p64" firstAttribute="centerX" secondItem="c22-O7-iKe" secondAttribute="centerX" id="7XQ-4L-MRz"/>
+                <constraint firstItem="Jcf-zj-8BX" firstAttribute="centerX" secondItem="QwC-lM-eNH" secondAttribute="centerX" id="8DG-ff-bXM"/>
                 <constraint firstItem="zdz-T1-upG" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" constant="180" id="Arh-fw-FDE"/>
                 <constraint firstItem="XGb-Wk-M8a" firstAttribute="centerX" secondItem="c22-O7-iKe" secondAttribute="centerX" id="GSh-zr-S8d"/>
                 <constraint firstItem="XGb-Wk-M8a" firstAttribute="top" secondItem="zdz-T1-upG" secondAttribute="bottom" constant="10" id="IV5-kc-6E8"/>
+                <constraint firstItem="Jcf-zj-8BX" firstAttribute="centerY" secondItem="QwC-lM-eNH" secondAttribute="centerY" id="U64-yC-KXg"/>
                 <constraint firstItem="QwC-lM-eNH" firstAttribute="centerX" secondItem="c22-O7-iKe" secondAttribute="centerX" id="Wn6-ex-hVe"/>
                 <constraint firstItem="x4o-Lg-p64" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" constant="20" id="jcE-80-JGg"/>
                 <constraint firstItem="XGb-Wk-M8a" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="c22-O7-iKe" secondAttribute="leading" constant="30" id="zQz-DI-7Zc"/>
@@ -69,6 +74,7 @@
                 <outlet property="iconImageViewTop" destination="jcE-80-JGg" id="d1j-1x-IGO"/>
                 <outlet property="iconImageViewWidth" destination="x5V-dR-zix" id="Ls4-iP-eCC"/>
                 <outlet property="loadMoreBtn" destination="QwC-lM-eNH" id="uY9-NX-6h4"/>
+                <outlet property="spinerView" destination="Jcf-zj-8BX" id="ZQh-AS-tTs"/>
                 <outlet property="subTitleLabel" destination="XGb-Wk-M8a" id="6cx-Yy-Dfb"/>
                 <outlet property="titleLabel" destination="zdz-T1-upG" id="H9S-rq-0eA"/>
             </connections>

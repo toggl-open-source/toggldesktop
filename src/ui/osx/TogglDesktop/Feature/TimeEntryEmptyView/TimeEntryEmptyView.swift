@@ -8,22 +8,28 @@
 
 import Cocoa
 
+@objc protocol TimeEntryEmptyViewDelegate: class {
+
+    func emptyViewDidTapOnLoadMore()
+}
+
 final class TimeEntryEmptyView: NSView {
 
     fileprivate struct Constants {
 
-        static let stopwatchImage = NSImage.Name("")
-        static let spiderImage = NSImage.Name("")
+        static let stopwatchImage = NSImage.Name("stopwatch")
+        static let spiderImage = NSImage.Name("spider")
     }
 
-    enum DisplayMode {
+    @objc enum EmptyLayoutType: Int {
         case welcome
         case noEntry
     }
 
     // MARK: Variables
 
-    private var displayMode = DisplayMode.welcome {
+    @objc weak var delegate: TimeEntryEmptyViewDelegate?
+    private var layoutType = EmptyLayoutType.welcome {
         didSet {
             layoutView()
         }
@@ -38,20 +44,29 @@ final class TimeEntryEmptyView: NSView {
     @IBOutlet weak var titleLabel: NSTextField!
     @IBOutlet weak var subTitleLabel: NSTextField!
     @IBOutlet weak var loadMoreBtn: NSButton!
-
-
+    @IBOutlet weak var spinerView: NSProgressIndicator!
+    
     // MARK: Public
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+
+        layoutType = .welcome
+    }
 
     @objc class func viewFromXIB() -> TimeEntryEmptyView {
         return TimeEntryEmptyView.xibView()
     }
     
-    func setDisplayMode(_ mode: DisplayMode) {
-        displayMode = mode
+    @objc func setLayoutType(_ layoutType: EmptyLayoutType) {
+        self.layoutType = layoutType
     }
 
     @IBAction func loadMoreOnTap(_ sender: Any) {
-
+        loadMoreBtn.title = ""
+        spinerView.startAnimation(nil)
+        spinerView.isHidden = false
+        delegate?.emptyViewDidTapOnLoadMore()
     }
 }
 
@@ -60,12 +75,15 @@ final class TimeEntryEmptyView: NSView {
 extension TimeEntryEmptyView {
 
     fileprivate func layoutView() {
-        switch displayMode {
+        switch layoutType {
         case .welcome:
             iconImageView.image = NSImage(named: Constants.stopwatchImage)
             titleLabel.stringValue = "Welcome to Toggl"
-            titleLabel.stringValue = "Time each activity you do and see where your hours go"
-
+            subTitleLabel.stringValue = "Time each activity you do and see where your hours go"
+            loadMoreBtn.isHidden = true
+            spinerView.stopAnimation(nil)
+            spinerView.isHidden = true
+            
             iconImageViewWidth.constant = 200
             iconImageViewHeight.constant = 150
             iconImageViewTop.constant = 20
@@ -73,7 +91,11 @@ extension TimeEntryEmptyView {
         case .noEntry:
             iconImageView.image = NSImage(named: Constants.spiderImage)
             titleLabel.stringValue = "No recent entries"
-            titleLabel.stringValue = "It’s been a long time since you’ve tracked your tasks!"
+            subTitleLabel.stringValue = "It’s been a long time since you’ve tracked your tasks!"
+            loadMoreBtn.isHidden = false
+            loadMoreBtn.title = "Load More"
+            spinerView.stopAnimation(nil)
+            spinerView.isHidden = true
 
             iconImageViewWidth.constant = 132
             iconImageViewHeight.constant = 170

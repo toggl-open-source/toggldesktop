@@ -82,6 +82,8 @@ class TimeEntryDatasource: NSObject {
         return sections.count
     }
     
+    private(set) var isShowLoadMore = false
+
     // MARK: Init
 
     init(collectionView: NSCollectionView) {
@@ -101,6 +103,7 @@ class TimeEntryDatasource: NSObject {
     // MARK: Public
 
     func process(_ timeEntries: [TimeEntryViewItem], showLoadMore: Bool) {
+        isShowLoadMore = showLoadMore
 
         // Catogrize into group by date
         let groups = timeEntries.groupSort(ascending: false, byDate: { $0.started })
