@@ -53,6 +53,7 @@ extern NSString *const kSetProjectColors;
 extern NSString *const kToggleGroup;
 extern NSString *const kDisplayCountries;
 extern NSString *const kUpdateIconTooltip;
+extern NSString *const kUserHasBeenSignup;
 
 const char *kFocusedFieldNameDuration;
 const char *kFocusedFieldNameDescription;
