@@ -38,7 +38,7 @@
             <rect key="frame" x="0.0" y="0.0" width="252" height="260"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6qy-lU-tSK" customClass="NSTextFieldClickable">
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6qy-lU-tSK" customClass="NSTextFieldClickable">
                     <rect key="frame" x="-1" y="115" width="254" height="57"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="250" id="XeO-lf-n0a"/>
@@ -55,11 +55,11 @@
                 <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" horizontalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="7TM-hH-4yE">
                     <rect key="frame" x="0.0" y="0.0" width="252" height="197"/>
                     <clipView key="contentView" copiesOnScroll="NO" id="x95-7N-Tpm">
-                        <rect key="frame" x="0.0" y="0.0" width="237" height="197"/>
+                        <rect key="frame" x="0.0" y="0.0" width="252" height="197"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView selectable="YES" id="96l-2I-0G5" customClass="TimeEntryCollectionView">
-                                <rect key="frame" x="0.0" y="0.0" width="237" height="197"/>
+                                <rect key="frame" x="0.0" y="0.0" width="252" height="197"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumInteritemSpacing="10" minimumLineSpacing="10" id="wqE-DF-86P" customClass="VertificalTimeEntryFlowLayout" customModule="TogglDesktop" customModuleProvider="target">
                                     <size key="itemSize" width="50" height="50"/>
@@ -74,7 +74,7 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                     <scroller key="verticalScroller" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="xHG-vx-Jmn">
-                        <rect key="frame" x="237" y="10" width="15" height="187"/>
+                        <rect key="frame" x="236" y="10" width="16" height="187"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                 </scrollView>
@@ -87,6 +87,8 @@
             </subviews>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="7TM-hH-4yE" secondAttribute="bottom" id="Eef-ul-UqD"/>
+                <constraint firstAttribute="leading" secondItem="3" secondAttribute="leading" id="NIC-HL-0iQ"/>
+                <constraint firstAttribute="top" secondItem="OXo-Tz-Vbz" secondAttribute="bottom" id="Qjo-ju-Jie"/>
                 <constraint firstItem="7TM-hH-4yE" firstAttribute="leading" secondItem="3" secondAttribute="leading" id="Wo4-Tl-2Dg"/>
                 <constraint firstAttribute="trailing" secondItem="7TM-hH-4yE" secondAttribute="trailing" id="a57-rF-7Ww"/>
                 <constraint firstItem="OXo-Tz-Vbz" firstAttribute="top" secondItem="3" secondAttribute="top" constant="-1" id="cFn-Dr-igO"/>
