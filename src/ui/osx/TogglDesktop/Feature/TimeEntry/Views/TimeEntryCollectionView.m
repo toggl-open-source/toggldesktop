@@ -138,8 +138,7 @@ extern void *ctx;
 		{
 			if (toggl_delete_time_entry(ctx, [cell.GUID UTF8String]))
 			{
-				[self deleteItemsAtIndexPaths:[[NSSet alloc] initWithArray:@[self.latestSelectedIndexPath]]];
-				[self setFirstRowAsSelected];
+				[self selectPreviousRow];
 			}
 			return;
 		}
@@ -160,14 +159,31 @@ extern void *ctx;
 
 		if (toggl_delete_time_entry(ctx, [cell.GUID UTF8String]))
 		{
-			[self deleteItemsAtIndexPaths:[[NSSet alloc] initWithArray:@[self.latestSelectedIndexPath]]];
-			[self setFirstRowAsSelected];
+			[self selectPreviousRow];
 		}
 	}
 }
 
-- (void)setFirstRowAsSelected
+- (void)selectPreviousRow
 {
+	if (self.latestSelectedIndexPath == nil)
+	{
+		return;
+	}
+
+	if (![self.dataSource isKindOfClass:[TimeEntryDatasource class]])
+	{
+		return;
+	}
+	TimeEntryDatasource *datasource = (TimeEntryDatasource *)self.dataSource;
+
+	// Select previous cell
+	NSIndexPath *previousIndexPath = [datasource previousIndexPathFrom:self.latestSelectedIndexPath];
+	if (previousIndexPath != nil)
+	{
+		[self selectItemsAtIndexPaths:[NSSet setWithCollectionViewIndexPath:previousIndexPath]
+					   scrollPosition:NSCollectionViewScrollPositionNone];
+	}
 }
 
 @end

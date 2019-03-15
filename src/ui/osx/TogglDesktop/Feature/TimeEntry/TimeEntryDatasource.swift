@@ -148,6 +148,22 @@ class TimeEntryDatasource: NSObject {
         }
     }
 
+    @objc func previousIndexPath(from indexPath: IndexPath) -> IndexPath? {
+
+        // It means previous row must be last cell in previous section
+        if indexPath.item == 0 {
+            let previousSectionIndex = indexPath.section - 1
+            guard previousSectionIndex >= 0 && previousSectionIndex < self.count else {
+                return nil
+            }
+            let previousSection = sectionItem(at: previousSectionIndex)
+            let lastRowIndex = previousSection.entries.count - 1
+            return IndexPath(item: lastRowIndex, section: previousSectionIndex)
+        }
+
+        return IndexPath(item: indexPath.item - 1, section: indexPath.section)
+    }
+
     private func reload(with sections: [TimeEntrySection]) {
         self.sections.removeAll()
         self.sections.append(contentsOf: sections)

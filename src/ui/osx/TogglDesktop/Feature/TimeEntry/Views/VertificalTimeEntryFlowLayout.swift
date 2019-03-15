@@ -54,7 +54,6 @@ final class VertificalTimeEntryFlowLayout: NSCollectionViewFlowLayout {
     // MARK: Override
 
     override func prepare() {
-        super.prepare()
         guard let collectionView = self.collectionView,
             let dataSource = collectionView.dataSource,
             let delegate = collectionView.delegate as? NSCollectionViewDelegateFlowLayout,
