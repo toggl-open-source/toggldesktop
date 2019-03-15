@@ -38,6 +38,7 @@ static NSString *kFrameKey = @"frame";
 @property (nonatomic, strong) IBOutlet TimeEntryEditViewController *timeEntryEditViewController;
 @property (weak) IBOutlet TimeEntryCollectionView *collectionView;
 @property (strong, nonatomic) TimeEntryEmptyView *emptyView;
+@property (weak) IBOutlet NSBox *emptyViewContainerView;
 
 @end
 
@@ -77,6 +78,7 @@ extern void *ctx;
 
 	[self initCommon];
 	[self initCollectionView];
+	[self initEmptyView];
 	[self initNotifications];
 }
 
@@ -196,12 +198,12 @@ extern void *ctx;
 	}
 }
 
--(void) initEmptyView
+- (void)initEmptyView
 {
-    self.emptyView = [TimeEntryEmptyView viewFromXIB];
-    self.emptyView.hidden = YES;
-    [self.view addSubview:self.emptyView positioned:NSWindowBelow relativeTo:self.collectionView];
-    [self.emptyView edgesToSuperView];
+	self.emptyView = [TimeEntryEmptyView viewFromXIB]; \
+	[self.emptyViewContainerView addSubview:self.emptyView];
+	[self.emptyView edgesToSuperView];
+	self.emptyViewContainerView.hidden = YES;
 }
 
 - (void)startDisplayTimeEntryList:(NSNotification *)notification
@@ -660,11 +662,12 @@ extern void *ctx;
 	}
 }
 
--(void) handleEmptyView
+- (void)handleEmptyView
 {
-    BOOL isEmpty = self.dataSource.count == 0;
-    self.emptyView.hidden = isEmpty;
-    self.collectionView.hidden = !isEmpty;
+	BOOL isEmpty = self.dataSource.count == 0;
+
+	self.emptyViewContainerView.hidden = !isEmpty;
+	self.collectionView.hidden = isEmpty;
 }
 
 @end
