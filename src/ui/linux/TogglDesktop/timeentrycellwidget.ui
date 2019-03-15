@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>300</width>
+    <width>372</width>
     <height>138</height>
    </rect>
   </property>
@@ -26,7 +26,7 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">color:rgb(85, 85, 85);font-size:13px;</string>
+   <string notr="true"/>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <property name="spacing">
@@ -45,18 +45,9 @@
     <number>0</number>
    </property>
    <item>
-    <widget class="QFrame" name="headerFrame">
+    <widget class="QWidget" name="headerFrame" native="true">
      <property name="styleSheet">
-      <string notr="true">background-color: rgb(235, 235, 235);</string>
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::NoFrame</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
-     <property name="lineWidth">
-      <number>0</number>
+      <string notr="true"/>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
@@ -93,7 +84,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QFrame" name="dataFrame">
+    <widget class="QPushButton" name="dataFrame">
      <property name="minimumSize">
       <size>
        <width>0</width>
@@ -107,13 +98,10 @@
       </size>
      </property>
      <property name="styleSheet">
-      <string notr="true">background-color: rgb(250, 250, 250);border-bottom:1px solid #cacaca;</string>
+      <string notr="true"/>
      </property>
-     <property name="frameShape">
-      <enum>QFrame::Box</enum>
-     </property>
-     <property name="lineWidth">
-      <number>0</number>
+     <property name="flat">
+      <bool>false</bool>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <property name="spacing">
@@ -152,7 +140,7 @@
          <string>Time Entry has not been synced to the server</string>
         </property>
         <property name="styleSheet">
-         <string notr="true">border:none;</string>
+         <string notr="true"/>
         </property>
         <property name="text">
          <string/>
@@ -205,13 +193,7 @@
          </size>
         </property>
         <property name="styleSheet">
-         <string notr="true">border:none;background-color:transparent;</string>
-        </property>
-        <property name="frameShape">
-         <enum>QFrame::NoFrame</enum>
-        </property>
-        <property name="lineWidth">
-         <number>2</number>
+         <string notr="true"/>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout">
          <property name="sizeConstraint">
@@ -223,7 +205,7 @@
          <item>
           <widget class="ClickableLabel" name="description">
            <property name="styleSheet">
-            <string notr="true">border:none;</string>
+            <string notr="true"/>
            </property>
            <property name="text">
             <string>Blogpost about this</string>
@@ -236,7 +218,7 @@
          <item>
           <widget class="ClickableLabel" name="project">
            <property name="styleSheet">
-            <string notr="true">border:none;</string>
+            <string notr="true"/>
            </property>
            <property name="text">
             <string>NEW - TOGGL</string>
@@ -264,13 +246,7 @@
          </size>
         </property>
         <property name="styleSheet">
-         <string notr="true">border:none;</string>
-        </property>
-        <property name="frameShape">
-         <enum>QFrame::NoFrame</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Raised</enum>
+         <string notr="true"/>
         </property>
         <layout class="QHBoxLayout" name="horizontalLayout_4">
          <property name="spacing">
@@ -308,8 +284,11 @@
              <height>32</height>
             </size>
            </property>
+           <property name="focusPolicy">
+            <enum>Qt::NoFocus</enum>
+           </property>
            <property name="styleSheet">
-            <string notr="true">border:none; background: url(:/images/group_icon_closed.svg) no-repeat;</string>
+            <string notr="true"/>
            </property>
            <property name="text">
             <string/>
@@ -319,6 +298,12 @@
              <width>32</width>
              <height>32</height>
             </size>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
+           </property>
+           <property name="flat">
+            <bool>true</bool>
            </property>
           </widget>
          </item>
@@ -340,13 +325,7 @@
          </size>
         </property>
         <property name="styleSheet">
-         <string notr="true">border:none</string>
-        </property>
-        <property name="frameShape">
-         <enum>QFrame::StyledPanel</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Raised</enum>
+         <string notr="true"/>
         </property>
         <layout class="QHBoxLayout" name="horizontalLayout_3">
          <property name="spacing">
@@ -376,13 +355,13 @@
             </size>
            </property>
            <property name="styleSheet">
-            <string notr="true">border:none;</string>
+            <string notr="true"/>
            </property>
            <property name="text">
             <string/>
            </property>
            <property name="pixmap">
-            <pixmap>:/images/icon-tags.png</pixmap>
+            <pixmap resource="Resources.qrc">:/images/icon-tags.png</pixmap>
            </property>
           </widget>
          </item>
@@ -401,13 +380,13 @@
             </size>
            </property>
            <property name="styleSheet">
-            <string notr="true">border:none;</string>
+            <string notr="true"/>
            </property>
            <property name="text">
             <string/>
            </property>
            <property name="pixmap">
-            <pixmap>:/images/icon-billable.png</pixmap>
+            <pixmap resource="Resources.qrc">:/images/icon-billable.png</pixmap>
            </property>
           </widget>
          </item>
@@ -425,14 +404,17 @@
              <height>32</height>
             </size>
            </property>
+           <property name="focusPolicy">
+            <enum>Qt::NoFocus</enum>
+           </property>
            <property name="styleSheet">
-            <string notr="true">border:none;outline:none;</string>
+            <string notr="true"/>
            </property>
            <property name="text">
             <string/>
            </property>
            <property name="icon">
-            <iconset>
+            <iconset resource="Resources.qrc">
              <normaloff>:/images/continue_regular.svg</normaloff>:/images/continue_regular.svg</iconset>
            </property>
            <property name="iconSize">
@@ -440,6 +422,9 @@
              <width>32</width>
              <height>32</height>
             </size>
+           </property>
+           <property name="flat">
+            <bool>true</bool>
            </property>
           </widget>
          </item>
@@ -458,7 +443,7 @@
             </size>
            </property>
            <property name="styleSheet">
-            <string notr="true">border:none;margin:0;</string>
+            <string notr="true"/>
            </property>
            <property name="text">
             <string>00:00:00</string>
@@ -486,6 +471,8 @@
    <header>clickablelabel.h</header>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="Resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

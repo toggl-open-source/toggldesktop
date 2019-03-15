@@ -25,13 +25,13 @@ class TimeEntryCellWidget : public QWidget {
     void setLoadMore(bool load_more);
 
  protected:
-    virtual void mousePressEvent(QMouseEvent *event);
     virtual void resizeEvent(QResizeEvent *);
 
  private slots:  // NOLINT
     void on_continueButton_clicked();
     void on_groupButton_clicked();
     void on_loadMoreButton_clicked();
+    void on_dataFrame_clicked();
 
  private:
     Ui::TimeEntryCellWidget *ui;
