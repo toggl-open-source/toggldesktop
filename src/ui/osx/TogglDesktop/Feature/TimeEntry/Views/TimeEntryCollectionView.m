@@ -192,6 +192,14 @@ extern void *ctx;
 		[self deselectAll:self];
 		[self selectItemsAtIndexPaths:[NSSet setWithCollectionViewIndexPath:previousIndexPath]
 					   scrollPosition:NSCollectionViewScrollPositionNone];
+
+		// Scroll to visible selected row
+		NSCollectionViewLayoutAttributes *attribute = [self layoutAttributesForItemAtIndexPath:previousIndexPath];
+		if (!NSContainsRect(self.visibleRect, attribute.frame))
+		{
+			[self scrollToItemsAtIndexPaths:[NSSet setWithCollectionViewIndexPath:previousIndexPath]
+							 scrollPosition:NSCollectionViewScrollPositionTop];
+		}
 	}
 }
 
