@@ -135,6 +135,9 @@ extern void *ctx;
 
 	[self.password setStringValue:@""];
 
+	// for empty State
+	[self setUserSignUp:NO];
+
 	if (!toggl_login(ctx, [email UTF8String], [pass UTF8String]))
 	{
 		return;
@@ -342,6 +345,9 @@ extern void *ctx;
 
 	[self.password setStringValue:@""];
 
+	// for empty State
+	[self setUserSignUp:YES];
+
 	if (!toggl_signup(ctx, [email UTF8String], [pass UTF8String], self.selectedCountryID))
 	{
 		return;
@@ -403,7 +409,15 @@ extern void *ctx;
 }
 
 - (IBAction)loginGoogleOnTap:(id)sender {
+	// for empty State
+	[self setUserSignUp:NO];
 	[self startGoogleLogin];
+}
+
+- (void)setUserSignUp:(BOOL)isSignUp
+{
+	[[NSUserDefaults standardUserDefaults] setBool:isSignUp forKey:kUserHasBeenSignup];
+	[[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 @end

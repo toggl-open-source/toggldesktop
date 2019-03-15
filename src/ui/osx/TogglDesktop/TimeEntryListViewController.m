@@ -667,21 +667,45 @@ extern void *ctx;
 {
 	if (self.dataSource.count == 1 && self.dataSource.isShowLoadMore)
 	{
-		self.emptyViewContainerView.hidden = NO;
-		self.timeEntryListScrollView.hidden = YES;
-		[self.emptyView setLayoutType:EmptyLayoutTypeNoEntry];
+		BOOL isSignUp = [[NSUserDefaults standardUserDefaults] boolForKey:kUserHasBeenSignup];
+		if (isSignUp)
+		{
+			// show welcome
+			[self layoutEmptyViewWithLayoutType:EmptyLayoutTypeWelcome];
+		}
+		else
+		{
+			// Show No entry
+			[self layoutEmptyViewWithLayoutType:EmptyLayoutTypeNoEntry];
+		}
 	}
 	else if (self.dataSource.count == 0)
 	{
-		self.emptyViewContainerView.hidden = NO;
-		self.timeEntryListScrollView.hidden = YES;
-		[self.emptyView setLayoutType:EmptyLayoutTypeWelcome];
+		// welcome
+		[self layoutEmptyViewWithLayoutType:EmptyLayoutTypeWelcome];
 	}
 	else
 	{
+		// Has entry
 		self.emptyViewContainerView.hidden = YES;
 		self.timeEntryListScrollView.hidden = NO;
-		return;
+	}
+}
+
+- (void)layoutEmptyViewWithLayoutType:(EmptyLayoutType)type
+{
+	switch (type)
+	{
+		case EmptyLayoutTypeNoEntry :
+			self.emptyViewContainerView.hidden = NO;
+			self.timeEntryListScrollView.hidden = YES;
+			[self.emptyView setLayoutType:EmptyLayoutTypeNoEntry];
+			break;
+		case EmptyLayoutTypeWelcome :
+			self.emptyViewContainerView.hidden = NO;
+			self.timeEntryListScrollView.hidden = YES;
+			[self.emptyView setLayoutType:EmptyLayoutTypeWelcome];
+			break;
 	}
 }
 
