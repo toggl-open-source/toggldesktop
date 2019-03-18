@@ -508,6 +508,8 @@ char_t *toggl_create_tag(
 
     poco_assert(!t->GUID().empty());
 
+    //app(context)->UI()->DisplayTags();
+
     return copy_string(t->GUID());
 }
 

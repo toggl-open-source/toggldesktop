@@ -3761,9 +3761,7 @@ Tag *Context::CreateTag(
             logger().warning("Cannot create a client, user logged out");
             return nullptr;
         }
-        for (std::vector<Tag *>::iterator it =
-            user_->related.Tags.begin();
-                it != user_->related.Tags.end(); it++) {
+        for (auto it = user_->related.Tags.begin(); it != user_->related.Tags.end(); it++) {
             Tag *t = *it;
             if (t->WID() == workspace_id && t->Name() == trimmed_tag_name) {
                 displayError(kTagNameAlreadyExists);
@@ -3771,6 +3769,14 @@ Tag *Context::CreateTag(
             }
         }
         result = user_->CreateTag(workspace_id, trimmed_tag_name);
+
+        std::vector<view::Generic> tag_views;
+        for (auto it = user_->related.Tags.begin(); it != user_->related.Tags.end(); it++) {
+            view::Generic view;
+            view.Name = (*it)->Name();
+            tag_views.push_back(view);
+        }
+        UI()->DisplayTags(tag_views);
     }
 
     return result;
