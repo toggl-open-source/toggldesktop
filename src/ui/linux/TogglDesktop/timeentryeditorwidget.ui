@@ -212,14 +212,14 @@
          <item row="0" column="0">
           <widget class="QLabel" name="newProjectWorkspaceLabel">
            <property name="text">
-            <string>Wor&amp;kspace:</string>
+            <string>Workspace:</string>
            </property>
           </widget>
          </item>
          <item row="1" column="0">
           <widget class="QLabel" name="newProjectClientLabel">
            <property name="text">
-            <string>C&amp;lient:</string>
+            <string>Client:</string>
            </property>
           </widget>
          </item>
@@ -484,7 +484,7 @@
             </size>
            </property>
            <property name="text">
-            <string>&amp;Date:</string>
+            <string>Date:</string>
            </property>
           </widget>
          </item>
@@ -540,7 +540,7 @@
             </size>
            </property>
            <property name="text">
-            <string>D&amp;uration:</string>
+            <string>Duration:</string>
            </property>
           </widget>
          </item>
@@ -810,7 +810,7 @@
          </font>
         </property>
         <property name="text">
-         <string>Last update: &amp;2014.06.19 at 21:12:34</string>
+         <string>Last update: 2014.06.19 at 21:12:34</string>
         </property>
        </widget>
       </item>
