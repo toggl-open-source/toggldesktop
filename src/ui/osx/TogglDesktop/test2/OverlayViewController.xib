@@ -11,8 +11,11 @@
             <connections>
                 <outlet property="actionButton" destination="iQo-bT-Stg" id="TPA-gk-uV8"/>
                 <outlet property="bottomLink" destination="TLa-uM-3fx" id="zZL-iz-ewy"/>
+                <outlet property="createNewWorkspaceBtn" destination="sVK-gY-BBV" id="SPP-cX-f75"/>
                 <outlet property="mainText" destination="rVi-dV-7Qd" id="KIG-eu-G2j"/>
+                <outlet property="tosContainerView" destination="xDk-1P-Lle" id="JUQ-Bi-99E"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
+                <outlet property="workspaceContainerView" destination="A6e-lk-OxY" id="UYd-xT-2To"/>
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
@@ -129,10 +132,13 @@ DQ
                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="sVK-gY-BBV" customClass="NSTextFieldClickablePointer">
                             <rect key="frame" x="37" y="389" width="227" height="16"/>
                             <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="Create a new one to continue tracking." id="POn-l9-5co">
-                                <font key="font" metaFont="system" size="12"/>
+                                <font key="font" metaFont="cellTitle"/>
                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
+                            <connections>
+                                <action selector="createWorkspaceOnTap:" target="-2" id="20u-bW-9tI"/>
+                            </connections>
                         </textField>
                         <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="vPy-qD-9ea" customClass="FlatButton" customModule="TogglDesktop" customModuleProvider="target">
                             <rect key="frame" x="100" y="345" width="100" height="24"/>
@@ -155,11 +161,14 @@ DQ
                                     <real key="value" value="4"/>
                                 </userDefinedRuntimeAttribute>
                             </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="loginBtnOnTap:" target="-2" id="u1W-fT-GhJ"/>
+                            </connections>
                         </button>
                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="5iG-hk-Omw">
                             <rect key="frame" x="40" y="309" width="221" height="16"/>
                             <textFieldCell key="cell" lineBreakMode="clipping" title="Already created your new Workspace?" id="yqc-bg-QSL">
-                                <font key="font" metaFont="system" size="12"/>
+                                <font key="font" metaFont="cellTitle"/>
                                 <color key="textColor" name="grey-text-color"/>
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
@@ -171,6 +180,9 @@ DQ
                                 <color key="textColor" name="grey-text-color"/>
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
+                            <connections>
+                                <action selector="forceSyncBtnOnTap:" target="-2" id="3ep-ES-nDO"/>
+                            </connections>
                         </textField>
                     </subviews>
                     <constraints>

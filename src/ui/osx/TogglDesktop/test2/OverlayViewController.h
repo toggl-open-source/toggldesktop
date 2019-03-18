@@ -9,9 +9,12 @@
 #import <Cocoa/Cocoa.h>
 #import "NSTextFieldClickablePointer.h"
 
+typedef NS_ENUM (NSUInteger, OverlayDisplayType)
+{
+	OverlayDisplayTypeWorkspace,
+	OverlayDisplayTypeTOS,
+};
+
 @interface OverlayViewController : NSViewController
-@property (weak) IBOutlet NSButton *actionButton;
-@property (weak) IBOutlet NSTextFieldClickablePointer *bottomLink;
-@property (strong) IBOutlet NSTextView *mainText;
 - (void)setType:(int)type;
 @end

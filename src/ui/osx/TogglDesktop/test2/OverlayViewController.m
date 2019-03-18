@@ -10,81 +10,60 @@
 #import "toggl_api.h"
 
 @interface OverlayViewController ()
-@property int currentType;
+
+@property (weak) IBOutlet NSView *tosContainerView;
+@property (weak) IBOutlet NSButton *actionButton;
+@property (weak) IBOutlet NSTextFieldClickablePointer *bottomLink;
+@property (strong) IBOutlet NSTextView *mainText;
+@property (weak) IBOutlet NSView *workspaceContainerView;
+@property (weak) IBOutlet NSTextFieldClickablePointer *createNewWorkspaceBtn;
+@property (assign, nonatomic) OverlayDisplayType displayType;
+
 @end
 
 @implementation OverlayViewController
 
 extern void *ctx;
 
-- (IBAction)actionClicked:(id)sender
+- (void)awakeFromNib
 {
-	if (self.currentType == 0)
-	{
-		toggl_open_in_browser(ctx);
-	}
-	else
-	{
-		toggl_accept_tos(ctx);
-	}
+	[super awakeFromNib];
+
+	[self initCommon];
+	[self setupTos];
+	[self setupMissingWS];
 }
 
-- (void)textFieldClicked:(id)sender
+- (void)initCommon
 {
-	if (self.currentType == 0 && sender == self.bottomLink)
-	{
-		toggl_fullsync(ctx);
-	}
+    self.displayType = OverlayDisplayTypeWorkspace;
+	self.workspaceContainerView.hidden = YES;
+	self.tosContainerView.hidden = YES;
+}
+
+- (IBAction)actionClicked:(id)sender
+{
+	toggl_accept_tos(ctx);
 }
 
 - (void)setType:(int)type
 {
-	self.currentType = type;
-
-	if (self.currentType == 0)
+	self.displayType = type;
+	self.workspaceContainerView.hidden = YES;
+	self.tosContainerView.hidden = YES;
+	switch (self.displayType)
 	{
-		// missing ws
-		[self setupMissingWS];
-	}
-	else if (self.currentType == 1)
-	{
-		// tos accept
-		[self setupTos];
+		case OverlayDisplayTypeWorkspace :
+			self.workspaceContainerView.hidden = NO;
+			break;
+		case OverlayDisplayTypeTOS :
+			self.tosContainerView.hidden = NO;
+			break;
 	}
 }
 
 - (void)setupMissingWS
 {
-	NSMutableAttributedString *result =
-		[[NSMutableAttributedString alloc] initWithString:@"You no longer have access to your last Workspace. Create a new workspace on Toggl.com to continue tracking"];
-
-	[result setAttributes:
-	 @{
-		 NSFontAttributeName : [NSFont systemFontOfSize:15],
-		 NSForegroundColorAttributeName:[NSColor highlightColor]
-	 }
-					range:NSMakeRange(0, [result length])];
-
-	[self.actionButton setTitle:@"Log in to Toggl.com"];
-	[[self.mainText textStorage] setAttributedString:result];
-
-	// Setup up text underline for "Force sync" link
-
-	NSMutableParagraphStyle *paragrapStyle = NSMutableParagraphStyle.new;
-	paragrapStyle.alignment = kCTTextAlignmentCenter;
-
-	NSMutableAttributedString *string =
-		[[NSMutableAttributedString alloc] initWithString:@"Created your new workspace?\n"];
-
-	NSMutableAttributedString *sync =
-		[[NSMutableAttributedString alloc] initWithString:@"Force sync"];
-
-	[sync addAttribute:NSUnderlineStyleAttributeName value:[NSNumber numberWithInt:NSUnderlineStyleSingle] range:NSMakeRange(0, sync.length)];
-
-	[string appendAttributedString:sync];
-	[string addAttribute:NSParagraphStyleAttributeName value:paragrapStyle range:NSMakeRange(0, string.length)];
-
-	[self.bottomLink setAttributedStringValue:string];
 }
 
 - (void)setupTos
@@ -187,6 +166,21 @@ extern void *ctx;
 	[bottomString addAttribute:NSParagraphStyleAttributeName value:paragrapStyle range:NSMakeRange(0, string.length)];
 
 	[self.bottomLink setAttributedStringValue:bottomString];
+}
+
+- (IBAction)createWorkspaceOnTap:(id)sender
+{
+	toggl_open_in_browser(ctx);
+}
+
+- (IBAction)loginBtnOnTap:(id)sender
+{
+	toggl_open_in_browser(ctx);
+}
+
+- (IBAction)forceSyncBtnOnTap:(id)sender
+{
+	toggl_fullsync(ctx);
 }
 
 @end
