@@ -28,7 +28,8 @@ class TimeEntryCellWidget : public QWidget {
     void deleteTimeEntry();
 
  protected:
-    virtual void resizeEvent(QResizeEvent *);
+    virtual void keyPressEvent(QKeyEvent *event) override;
+    virtual void resizeEvent(QResizeEvent *) override;
 
  private slots:  // NOLINT
     void on_continueButton_clicked();

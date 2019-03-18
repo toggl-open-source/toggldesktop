@@ -3,6 +3,7 @@
 #include "./timeentrycellwidget.h"
 #include "./ui_timeentrycellwidget.h"
 
+#include <QKeyEvent>
 #include <QMessageBox>
 
 #include "./toggl.h"
@@ -102,6 +103,12 @@ void TimeEntryCellWidget::deleteTimeEntry() {
         "Deleted time entries cannot be restored.",
         QMessageBox::Ok|QMessageBox::Cancel).exec()) {
         TogglApi::instance->deleteTimeEntry(guid);
+    }
+}
+
+void TimeEntryCellWidget::keyPressEvent(QKeyEvent *event) {
+    if (event->key() == Qt::Key_Enter || event->key() == Qt::Key_Return) {
+        ui->dataFrame->click();
     }
 }
 
