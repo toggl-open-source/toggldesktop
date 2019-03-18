@@ -13,13 +13,13 @@
 @implementation NSTextFieldClickable
 
 - (void)awakeFromNib {
-	[super awakeFromNib];
+    [super awakeFromNib];
 
-	[self initDefaultValue];
+    [self initDefaultValue];
 }
 
 - (void)initDefaultValue {
-	self.titleUnderline = NO;
+    self.titleUnderline = NO;
 }
 
 - (void)mouseDown:(NSEvent *)theEvent
