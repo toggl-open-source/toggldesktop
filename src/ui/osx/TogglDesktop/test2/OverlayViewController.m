@@ -7,18 +7,18 @@
 //
 
 #import "OverlayViewController.h"
+#import "NSTextFieldClickablePointer.h"
 #import "toggl_api.h"
 
-@interface OverlayViewController ()
-
+@interface OverlayViewController () <NSTextFieldDelegate>
 @property (weak) IBOutlet NSView *tosContainerView;
 @property (weak) IBOutlet NSButton *actionButton;
 @property (weak) IBOutlet NSTextFieldClickablePointer *bottomLink;
 @property (strong) IBOutlet NSTextView *mainText;
 @property (weak) IBOutlet NSView *workspaceContainerView;
 @property (weak) IBOutlet NSTextFieldClickablePointer *createNewWorkspaceBtn;
+@property (weak) IBOutlet NSTextFieldClickablePointer *forceSyncBtn;
 @property (assign, nonatomic) OverlayDisplayType displayType;
-
 @end
 
 @implementation OverlayViewController
@@ -36,9 +36,10 @@ extern void *ctx;
 
 - (void)initCommon
 {
-    self.displayType = OverlayDisplayTypeWorkspace;
+	self.displayType = OverlayDisplayTypeWorkspace;
 	self.workspaceContainerView.hidden = YES;
 	self.tosContainerView.hidden = YES;
+	self.forceSyncBtn.delegate = self;
 }
 
 - (IBAction)actionClicked:(id)sender
@@ -64,6 +65,7 @@ extern void *ctx;
 
 - (void)setupMissingWS
 {
+	self.forceSyncBtn.titleUnderline = YES;
 }
 
 - (void)setupTos
@@ -178,9 +180,12 @@ extern void *ctx;
 	toggl_open_in_browser(ctx);
 }
 
-- (IBAction)forceSyncBtnOnTap:(id)sender
+- (void)textFieldClicked:(id)sender
 {
-	toggl_fullsync(ctx);
+	if (sender == self.forceSyncBtn)
+	{
+		toggl_fullsync(ctx);
+	}
 }
 
 @end
