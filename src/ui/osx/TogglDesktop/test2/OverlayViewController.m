@@ -17,6 +17,8 @@
 @property (strong) IBOutlet NSTextView *mainText;
 @property (weak) IBOutlet NSView *workspaceContainerView;
 @property (weak) IBOutlet NSTextFieldClickablePointer *createNewWorkspaceBtn;
+@property (weak) IBOutlet NSTextFieldClickablePointer *continueTrackingLabel;
+@property (weak) IBOutlet NSTextFieldClickablePointer *createWorkspaceBtn;
 @property (weak) IBOutlet NSTextFieldClickablePointer *forceSyncBtn;
 @property (assign, nonatomic) OverlayDisplayType displayType;
 @end
@@ -40,6 +42,8 @@ extern void *ctx;
 	self.workspaceContainerView.hidden = YES;
 	self.tosContainerView.hidden = YES;
 	self.forceSyncBtn.delegate = self;
+	self.continueTrackingLabel.delegate = self;
+	self.createWorkspaceBtn.delegate = self;
 }
 
 - (IBAction)actionClicked:(id)sender
@@ -66,6 +70,7 @@ extern void *ctx;
 - (void)setupMissingWS
 {
 	self.forceSyncBtn.titleUnderline = YES;
+	self.createWorkspaceBtn.titleUnderline = YES;
 }
 
 - (void)setupTos
@@ -170,11 +175,6 @@ extern void *ctx;
 	[self.bottomLink setAttributedStringValue:bottomString];
 }
 
-- (IBAction)createWorkspaceOnTap:(id)sender
-{
-	toggl_open_in_browser(ctx);
-}
-
 - (IBAction)loginBtnOnTap:(id)sender
 {
 	toggl_open_in_browser(ctx);
@@ -185,6 +185,13 @@ extern void *ctx;
 	if (sender == self.forceSyncBtn)
 	{
 		toggl_fullsync(ctx);
+		return;
+	}
+
+	if (sender == self.createWorkspaceBtn || sender == self.continueTrackingLabel)
+	{
+		toggl_open_in_browser(ctx);
+		return;
 	}
 }
 

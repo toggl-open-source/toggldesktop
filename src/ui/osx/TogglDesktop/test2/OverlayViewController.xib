@@ -11,7 +11,9 @@
             <connections>
                 <outlet property="actionButton" destination="iQo-bT-Stg" id="TPA-gk-uV8"/>
                 <outlet property="bottomLink" destination="TLa-uM-3fx" id="zZL-iz-ewy"/>
+                <outlet property="continueTrackingLabel" destination="sVK-gY-BBV" id="O0E-Zm-0V3"/>
                 <outlet property="createNewWorkspaceBtn" destination="sVK-gY-BBV" id="SPP-cX-f75"/>
+                <outlet property="createWorkspaceBtn" destination="8Cl-8K-N6Z" id="SGX-TL-Ysg"/>
                 <outlet property="forceSyncBtn" destination="syX-BK-Ux7" id="hjG-NW-riH"/>
                 <outlet property="mainText" destination="rVi-dV-7Qd" id="KIG-eu-G2j"/>
                 <outlet property="tosContainerView" destination="xDk-1P-Lle" id="JUQ-Bi-99E"/>
@@ -139,15 +141,12 @@ DQ
                             </textFieldCell>
                         </textField>
                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="sVK-gY-BBV" customClass="NSTextFieldClickablePointer">
-                            <rect key="frame" x="61" y="405" width="227" height="16"/>
-                            <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="Create a new one to continue tracking." id="POn-l9-5co">
+                            <rect key="frame" x="162" y="405" width="125" height="16"/>
+                            <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="to continue tracking." id="POn-l9-5co">
                                 <font key="font" metaFont="cellTitle"/>
                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
-                            <connections>
-                                <action selector="createWorkspaceOnTap:" target="-2" id="20u-bW-9tI"/>
-                            </connections>
                         </textField>
                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="5iG-hk-Omw">
                             <rect key="frame" x="64" y="325" width="221" height="16"/>
@@ -179,14 +178,23 @@ DQ
                                 <action selector="loginBtnOnTap:" target="-2" id="gHU-5G-P7u"/>
                             </connections>
                         </button>
+                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="8Cl-8K-N6Z" customClass="NSTextFieldClickablePointer">
+                            <rect key="frame" x="57" y="405" width="109" height="16"/>
+                            <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="Create a new one" id="RCO-ih-XyO">
+                                <font key="font" metaFont="systemMedium" size="12"/>
+                                <color key="textColor" name="green-color"/>
+                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                            </textFieldCell>
+                        </textField>
                     </subviews>
                     <constraints>
                         <constraint firstItem="sVK-gY-BBV" firstAttribute="top" secondItem="Akl-q0-WA9" secondAttribute="bottom" constant="10" id="2af-3c-fv1"/>
                         <constraint firstItem="syX-BK-Ux7" firstAttribute="top" secondItem="5iG-hk-Omw" secondAttribute="bottom" constant="2" id="BRU-cZ-jbG"/>
-                        <constraint firstItem="sVK-gY-BBV" firstAttribute="centerX" secondItem="A6e-lk-OxY" secondAttribute="centerX" id="BX5-Lw-Ajn"/>
+                        <constraint firstItem="sVK-gY-BBV" firstAttribute="centerX" secondItem="A6e-lk-OxY" secondAttribute="centerX" constant="50" id="BX5-Lw-Ajn"/>
                         <constraint firstItem="5iG-hk-Omw" firstAttribute="centerX" secondItem="A6e-lk-OxY" secondAttribute="centerX" id="EMv-Le-xGu"/>
                         <constraint firstItem="3NL-kZ-ZjY" firstAttribute="top" secondItem="A6e-lk-OxY" secondAttribute="top" constant="30" id="Gd8-lC-Tqj"/>
                         <constraint firstItem="Akl-q0-WA9" firstAttribute="centerX" secondItem="A6e-lk-OxY" secondAttribute="centerX" id="Wzl-kG-wqg"/>
+                        <constraint firstItem="8Cl-8K-N6Z" firstAttribute="centerY" secondItem="sVK-gY-BBV" secondAttribute="centerY" id="YeG-Ux-EE4"/>
                         <constraint firstItem="syX-BK-Ux7" firstAttribute="centerX" secondItem="A6e-lk-OxY" secondAttribute="centerX" id="aZk-Fv-izJ"/>
                         <constraint firstItem="t27-Wi-Hrk" firstAttribute="top" secondItem="sVK-gY-BBV" secondAttribute="bottom" constant="20" id="dpl-0e-UXr"/>
                         <constraint firstItem="2Xp-Hn-pV0" firstAttribute="centerX" secondItem="A6e-lk-OxY" secondAttribute="centerX" id="j34-rj-dRj"/>
@@ -194,6 +202,7 @@ DQ
                         <constraint firstItem="2Xp-Hn-pV0" firstAttribute="top" secondItem="3NL-kZ-ZjY" secondAttribute="bottom" constant="20" id="nSD-ry-CVI"/>
                         <constraint firstItem="3NL-kZ-ZjY" firstAttribute="centerX" secondItem="A6e-lk-OxY" secondAttribute="centerX" id="r8D-QI-o97"/>
                         <constraint firstItem="5iG-hk-Omw" firstAttribute="top" secondItem="t27-Wi-Hrk" secondAttribute="bottom" constant="20" id="vc0-PZ-uB4"/>
+                        <constraint firstItem="sVK-gY-BBV" firstAttribute="leading" secondItem="8Cl-8K-N6Z" secondAttribute="trailing" id="wcE-Dt-d2M"/>
                         <constraint firstItem="Akl-q0-WA9" firstAttribute="top" secondItem="2Xp-Hn-pV0" secondAttribute="bottom" constant="10" id="xQF-FD-LiN"/>
                     </constraints>
                 </customView>
@@ -219,6 +228,9 @@ DQ
         <image name="no-access-icon" width="113" height="99"/>
         <namedColor name="empty-state-background-color">
             <color red="0.98039215686274506" green="0.98431372549019602" blue="0.9882352941176471" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="green-color">
+            <color red="0.15686274509803921" green="0.80392156862745101" blue="0.25490196078431371" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="grey-text-color">
             <color red="0.33333333333333331" green="0.33333333333333331" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
