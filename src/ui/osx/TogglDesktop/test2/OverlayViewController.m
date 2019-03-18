@@ -91,7 +91,7 @@ extern void *ctx;
 
 	[string setAttributes:
 	 @{
-		 NSForegroundColorAttributeName:[NSColor whiteColor],
+		 NSForegroundColorAttributeName:[NSColor labelColor],
 		 NSFontAttributeName: [NSFont systemFontOfSize:20],
 		 NSParagraphStyleAttributeName: topParagrapStyle
 	 }
@@ -107,7 +107,7 @@ extern void *ctx;
 	string = [[NSMutableAttributedString alloc] initWithString:@"Please read and accept our updated "];
 	[string setAttributes:
 	 @{
-		 NSForegroundColorAttributeName:[NSColor whiteColor],
+		 NSForegroundColorAttributeName:[NSColor labelColor],
 		 NSParagraphStyleAttributeName: paragrapStyle
 	 }
 					range:NSMakeRange(0, [string length])];
@@ -127,7 +127,7 @@ extern void *ctx;
 	string = [[NSMutableAttributedString alloc] initWithString:@" and "];
 	[string setAttributes:
 	 @{
-		 NSForegroundColorAttributeName:[NSColor whiteColor],
+		 NSForegroundColorAttributeName:[NSColor labelColor],
 		 NSParagraphStyleAttributeName: paragrapStyle
 	 }
 					range:NSMakeRange(0, [string length])];    [result appendAttributedString:string];
@@ -146,13 +146,13 @@ extern void *ctx;
 	string = [[NSMutableAttributedString alloc] initWithString:@" to continue using Toggl."];
 	[string setAttributes:
 	 @{
-		 NSForegroundColorAttributeName:[NSColor whiteColor],
+		 NSForegroundColorAttributeName:[NSColor labelColor],
 		 NSParagraphStyleAttributeName: paragrapStyle
 	 }
 					range:NSMakeRange(0, [string length])];    [result appendAttributedString:string];
 
-	[self.mainText setTextColor:[NSColor whiteColor]];
-	self.mainText.linkTextAttributes = @{ NSForegroundColorAttributeName:[NSColor whiteColor] };
+	[self.mainText setTextColor:[NSColor labelColor]];
+	self.mainText.linkTextAttributes = @{ NSForegroundColorAttributeName:[NSColor labelColor] };
 
 	[[self.mainText textStorage] setAttributedString:result];
 
@@ -164,7 +164,7 @@ extern void *ctx;
 
 	[mail setAttributes:
 	 @{
-		 NSForegroundColorAttributeName:[NSColor whiteColor],
+		 NSForegroundColorAttributeName:[NSColor labelColor],
 		 NSFontAttributeName : [NSFont boldSystemFontOfSize:12]
 	 }
 				  range:NSMakeRange(0, [mail length])];
