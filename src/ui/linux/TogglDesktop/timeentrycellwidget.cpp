@@ -19,8 +19,8 @@ confirmlessDelete(false) {
     ui->setupUi(this);
     setStyleSheet(
         "* { font-size: 13px }"
-        "QFrame { background-color:transparent; border:none; margins:0 }"
-        "QPushButton#dataFrame { background-color:#fefefe; border: none; border-bottom:1px solid #cacaca; margins: 0 }"
+        "QFrame { background-color:transparent; border:none; margin:0 }"
+        "QPushButton#dataFrame { background-color:#fefefe; border: none; border-bottom:1px solid #cacaca; margin: 0 }"
         "QPushButton#dataFrame:flat { background-color:transparent; }"
     );
     ui->groupButton->setStyleSheet(
