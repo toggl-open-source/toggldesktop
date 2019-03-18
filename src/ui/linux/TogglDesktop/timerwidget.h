@@ -32,6 +32,7 @@ private:
  protected:
     void mousePressEvent(QMouseEvent *event);
     void resizeEvent(QResizeEvent *) override;
+    bool eventFilter(QObject *obj, QEvent *event);
 
  private slots:  // NOLINT
     void displayStoppedTimerState();

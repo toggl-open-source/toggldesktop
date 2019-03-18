@@ -38,6 +38,12 @@ projectModel(new AutocompleteListModel(this, QVector<AutocompleteView*>(), AC_PR
     ui->description->installEventFilter(this);
     ui->project->installEventFilter(this);
 
+    connect(ui->description, &AutocompleteComboBox::returnPressed, [this]() { focusNextChild(); });
+    connect(ui->project, &AutocompleteComboBox::returnPressed, [this]() { focusNextChild(); });
+
+    connect(ui->newProjectWorkspace, QOverload<int>::of(&QComboBox::activated), [this](int) { focusNextChild(); });
+    connect(ui->newProjectClient, QOverload<int>::of(&QComboBox::activated), [this](int) { focusNextChild(); });
+
     toggleNewClientMode(false);
 
     connect(TogglApi::instance, SIGNAL(displayLogin(bool,uint64_t)),  // NOLINT
@@ -315,13 +321,27 @@ bool TimeEntryEditorWidget::eventFilter(QObject *object, QEvent *event) {
 }
 
 void TimeEntryEditorWidget::keyPressEvent(QKeyEvent *event) {
-    if (event->key() == Qt::Key_Return) {
+    if (event->key() == Qt::Key_Return && event->modifiers() & Qt::CTRL) {
         if (applyNewProject()) {
             TogglApi::instance->viewTimeEntryList();
         }
     }
+    else if (event->key() == Qt::Key_Return) {
+        if (focusWidget() && focusWidget()->inherits("QAbstractButton")) {
+            auto button = qobject_cast<QAbstractButton*>(focusWidget());
+            button->click();
+        }
+        else if (focusWidget() && focusWidget()->inherits("QComboBox")) {
+            auto combobox = qobject_cast<QComboBox*>(focusWidget());
+            combobox->showPopup();
+        }
+        else {
+            focusNextChild();
+        }
+    }
     else {
-        QWidget::keyPressEvent(event);
+        event->ignore();
+        //QWidget::keyPressEvent(event);
     }
 }
 
