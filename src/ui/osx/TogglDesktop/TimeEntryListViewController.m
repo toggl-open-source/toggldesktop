@@ -21,6 +21,9 @@
 #import "TogglDesktop-Swift.h"
 #import "TimeEntryCollectionView.h"
 
+static void *XXContext = &XXContext;
+static NSString *kFrameKey = @"frame";
+
 @interface TimeEntryListViewController () <TimeEntryDatasourceDraggingDelegate>
 @property (nonatomic, strong) IBOutlet TimerEditViewController *timerEditViewController;
 @property NSNib *nibTimeEntryCell;
@@ -61,6 +64,11 @@ extern void *ctx;
 														bundle:nil];
 	}
 	return self;
+}
+
+- (void)dealloc
+{
+	[self.collectionView removeObserver:self forKeyPath:kFrameKey];
 }
 
 - (void)viewDidLoad
@@ -153,6 +161,37 @@ extern void *ctx;
 {
 	self.dataSource = [[TimeEntryDatasource alloc] initWithCollectionView:self.collectionView];
 	self.dataSource.delegate = self;
+	[self.collectionView addObserver:self
+						  forKeyPath:kFrameKey
+							 options:NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew
+							 context:XXContext];
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+	if (context == XXContext)
+	{
+		CGRect oldFrame = CGRectZero;
+		CGRect newFrame = CGRectZero;
+		if ([change objectForKey:@"old"] != [NSNull null])
+		{
+			oldFrame = [[change objectForKey:@"old"] CGRectValue];
+		}
+		if ([object valueForKeyPath:keyPath] != [NSNull null])
+		{
+			newFrame = [[object valueForKeyPath:keyPath] CGRectValue];
+		}
+		if (oldFrame.size.width != newFrame.size.width)
+		{
+			// HACK
+			// Relayout if the scrollbar is appear or disappear
+			[self.collectionView.collectionViewLayout invalidateLayout];
+		}
+	}
+	else
+	{
+		[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+	}
 }
 
 - (void)setupEmptyLabel

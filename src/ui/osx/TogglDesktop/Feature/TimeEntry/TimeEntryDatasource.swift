@@ -173,6 +173,15 @@ class TimeEntryDatasource: NSObject {
 
         // Reselect cell with no animation
         collectionView.selectItems(at: selection, scrollPosition: [])
+
+        //TODO: Refactor the hack code
+        // Only happen If we enable "Show ScrollBar" is "Always" or "Auto"
+        // The scroller bar appear and make the size of collection view is smaller
+        // -> We have to re-calulate the layout of DecoratorView again
+        // After 0.1s -> because the ScrollBar appear later after collectionView.reloadData is called
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .microseconds(100)) {
+            self.collectionView.collectionViewLayout?.invalidateLayout()
+        }
     }
     
     fileprivate func sectionItem(at section: Int) -> TimeEntrySection {
