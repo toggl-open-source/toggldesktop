@@ -202,6 +202,7 @@ void TimeEntryEditorWidget::displayTimeEntryEditor(
 
         // Reset adding new client
         toggleNewClientMode(false);
+        toggleNewTagMode(false);
 
         if (focused_field_name == TogglApi::Duration) {
             ui->duration->setFocus();
@@ -440,8 +441,25 @@ void TimeEntryEditorWidget::on_dateEdit_editingFinished() {
 void TimeEntryEditorWidget::displayTags(
     QVector<GenericView*> tags) {
     ui->tags->clear();
+    QStringList tagList;
     foreach(GenericView *view, tags) {
-        QListWidgetItem *item = new QListWidgetItem(view->Name, ui->tags);
+        tagList << view->Name;
+    }
+
+    QSet<QString> actuallyAddedTags;
+    for (auto recentlyAddedTag : recentlyAddedTags) {
+        if (!recentlyAddedTag.isEmpty() && !tagList.contains(recentlyAddedTag)) {
+            tagList << recentlyAddedTag;
+        }
+        if (!recentlyAddedTag.isEmpty() && tagList.contains(recentlyAddedTag)) {
+            actuallyAddedTags.insert(recentlyAddedTag);
+        }
+    }
+    tagList.sort();
+    recentlyAddedTags = recentlyAddedTags - actuallyAddedTags;
+
+    for(auto tag : tagList) {
+        QListWidgetItem *item = new QListWidgetItem(tag, ui->tags);
         item->setFlags(item->flags() | Qt::ItemIsUserCheckable);
         item->setCheckState(Qt::Unchecked);
     }
@@ -458,6 +476,17 @@ void TimeEntryEditorWidget::timeout() {
         ui->duration->setText(
             TogglApi::formatDurationInSecondsHHMMSS(duration));
     }
+}
+
+void TimeEntryEditorWidget::toggleNewTagMode(bool visible) {
+    ui->addNewTagButton->setVisible(!visible);
+    ui->newTagLabel->setVisible(visible);
+    ui->newTagButton->setVisible(visible);
+    ui->newTag->setVisible(visible);
+    if (visible)
+        ui->newTag->setFocus();
+    else
+        ui->addNewTagButton->setFocus();
 }
 
 void TimeEntryEditorWidget::on_tags_itemClicked(QListWidgetItem *item) {
@@ -535,6 +564,60 @@ void TimeEntryEditorWidget::on_colorButton_clicked()
 
     colorPicker->move(newX, newY);
     colorPicker->show();
+}
+
+void TimeEntryEditorWidget::on_newTagButton_clicked() {
+    QStringList tags;
+    QStringList allTags;
+    QString newTag = ui->newTag->text();
+
+    if (!newTag.isEmpty()) {
+        ui->newTag->clear();
+        for (int i = 0; i < ui->tags->count(); i++) {
+            QListWidgetItem *widgetItem = ui->tags->item(i);
+            if (widgetItem->text() == newTag) {
+                if (widgetItem->checkState() != Qt::Checked)
+                    on_tags_itemClicked(widgetItem);
+                return;
+            }
+            allTags << widgetItem->text();
+            if (widgetItem->checkState() == Qt::Checked) {
+                tags.push_back(widgetItem->text());
+            }
+        }
+        tags.push_back(newTag);
+        tags.sort();
+        allTags.push_back(newTag);
+        allTags.sort();
+
+        QString list = tags.join("\t");
+        if (previousTagList != list) {
+            TogglApi::instance->setTimeEntryTags(guid, list);
+            recentlyAddedTags.insert(newTag);
+        }
+        previousTagList = list;
+
+        ui->tags->clear();
+        for (int i = 0; i < allTags.count(); i++) {
+            auto item = new QListWidgetItem(allTags[i], ui->tags);
+            item->setFlags(item->flags() | Qt::ItemIsUserCheckable);
+            if (tags.contains(allTags[i]))
+                item->setCheckState(Qt::Checked);
+            else
+                item->setCheckState(Qt::Unchecked);
+            ui->tags->addItem(item);
+        }
+    }
+
+    QTimer::singleShot(0, [this]() { toggleNewTagMode(false); });
+}
+
+void TimeEntryEditorWidget::on_newTag_returnPressed() {
+    on_newTagButton_clicked();
+}
+
+void TimeEntryEditorWidget::on_addNewTagButton_clicked() {
+    toggleNewTagMode(true);
 }
 
 void TimeEntryEditorWidget::setProjectColors(QVector<char *> list) {
