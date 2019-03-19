@@ -17,6 +17,7 @@ class TimeEntryView : public QObject {
     static TimeEntryView *importOne(TogglTimeEntryView *view);
     static QVector<TimeEntryView *> importAll(TogglTimeEntryView *first);
 
+    bool confirmlessDelete();
     const QString lastUpdate();
 
     int64_t DurationInSeconds;
@@ -46,7 +47,6 @@ class TimeEntryView : public QObject {
     uint64_t DefaultWID;
     QString WorkspaceName;
     QString Error;
-    bool ConfirmlessDelete;
     bool Unsynced;
     // Group mode items
     bool Group;

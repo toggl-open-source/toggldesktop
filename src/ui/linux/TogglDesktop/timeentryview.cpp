@@ -36,7 +36,6 @@ TimeEntryView *TimeEntryView::importOne(TogglTimeEntryView *view) {
     result->DefaultWID = view->DefaultWID;
     result->WorkspaceName = QString(view->WorkspaceName);
     result->Error = QString(view->Error);
-    result->ConfirmlessDelete = (view->DurationInSeconds < 15);
     result->Unsynced = view->Unsynced;
     // Grouped entries mode
     result->Group = view->Group;
@@ -62,4 +61,13 @@ QVector<TimeEntryView *> TimeEntryView::importAll(
 const QString TimeEntryView::lastUpdate() {
     return QString("Last update ") +
            QDateTime::fromTime_t(static_cast<uint>(UpdatedAt)).toString();
+}
+
+bool TimeEntryView::confirmlessDelete() {
+    if (DurationInSeconds < 0) {
+        int64_t actual_duration = DurationInSeconds + time(nullptr);
+        return actual_duration < 15;
+    } else {
+        return DurationInSeconds < 15;
+    }
 }
