@@ -6,56 +6,48 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <customObject id="-2" userLabel="File's Owner"/>
+        <customObject id="-2" userLabel="File's Owner" customClass="LoadMoreCell">
+            <connections>
+                <outlet property="view" destination="c22-O7-iKe" id="Q6l-iM-M9o"/>
+            </connections>
+        </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
-        <customView focusRingType="none" id="c22-O7-iKe" userLabel="LoadMoreCell" customClass="LoadMoreCell">
-            <rect key="frame" x="0.0" y="0.0" width="252" height="51"/>
+        <customView focusRingType="none" id="c22-O7-iKe">
+            <rect key="frame" x="0.0" y="0.0" width="280" height="44"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <box boxType="custom" borderType="none" borderWidth="0.0" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="NK5-eJ-Rnj" userLabel="Background Box">
-                    <rect key="frame" x="0.0" y="0.0" width="252" height="51"/>
-                    <view key="contentView" id="26W-Y5-via">
-                        <rect key="frame" x="0.0" y="0.0" width="252" height="51"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="mHA-iF-pCY" userLabel="LoadMore">
-                                <rect key="frame" x="76" y="14" width="100" height="23"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="100" id="6fw-X1-1lc"/>
-                                </constraints>
-                                <buttonCell key="cell" type="roundTextured" title="Load More" bezelStyle="texturedRounded" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="peg-gd-lu0">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="systemMedium" size="13"/>
-                                </buttonCell>
-                                <connections>
-                                    <action selector="loadMoreClicked:" target="c22-O7-iKe" id="WsP-gU-0oO"/>
-                                </connections>
-                            </button>
-                            <progressIndicator hidden="YES" wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="Weo-Pf-hvP">
-                                <rect key="frame" x="118" y="18" width="16" height="16"/>
-                            </progressIndicator>
-                        </subviews>
-                        <constraints>
-                            <constraint firstItem="mHA-iF-pCY" firstAttribute="centerY" secondItem="26W-Y5-via" secondAttribute="centerY" id="0ud-XN-8b8"/>
-                            <constraint firstItem="Weo-Pf-hvP" firstAttribute="centerY" secondItem="26W-Y5-via" secondAttribute="centerY" id="1yc-5J-5Sz"/>
-                            <constraint firstItem="Weo-Pf-hvP" firstAttribute="centerX" secondItem="26W-Y5-via" secondAttribute="centerX" id="8YA-6o-dt1"/>
-                            <constraint firstItem="mHA-iF-pCY" firstAttribute="centerX" secondItem="26W-Y5-via" secondAttribute="centerX" id="kcz-eC-sLd"/>
-                        </constraints>
-                    </view>
-                </box>
+                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="mHA-iF-pCY" userLabel="LoadMore">
+                    <rect key="frame" x="88" y="8" width="104" height="28"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="100" id="6fw-X1-1lc"/>
+                    </constraints>
+                    <buttonCell key="cell" type="bevel" title="Load More" bezelStyle="regularSquare" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="peg-gd-lu0">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system" size="12"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="loadMoreClicked:" target="eWa-fM-Knf" id="QDE-dr-ZeR"/>
+                    </connections>
+                </button>
+                <progressIndicator hidden="YES" wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="Weo-Pf-hvP">
+                    <rect key="frame" x="132" y="14" width="16" height="16"/>
+                </progressIndicator>
             </subviews>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="NK5-eJ-Rnj" secondAttribute="trailing" id="6si-PB-Eha"/>
-                <constraint firstAttribute="bottom" secondItem="NK5-eJ-Rnj" secondAttribute="bottom" id="8vJ-YO-EvN"/>
-                <constraint firstItem="NK5-eJ-Rnj" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" id="o6g-op-rz3"/>
-                <constraint firstItem="NK5-eJ-Rnj" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" id="q9m-Wt-9e7"/>
+                <constraint firstItem="mHA-iF-pCY" firstAttribute="centerX" secondItem="c22-O7-iKe" secondAttribute="centerX" id="OrM-IS-fiU"/>
+                <constraint firstItem="Weo-Pf-hvP" firstAttribute="centerY" secondItem="c22-O7-iKe" secondAttribute="centerY" id="P2z-iB-QKi"/>
+                <constraint firstItem="mHA-iF-pCY" firstAttribute="centerY" secondItem="c22-O7-iKe" secondAttribute="centerY" id="ZjJ-LS-sTX"/>
+                <constraint firstItem="Weo-Pf-hvP" firstAttribute="centerX" secondItem="c22-O7-iKe" secondAttribute="centerX" id="of5-Ie-100"/>
             </constraints>
-            <connections>
-                <outlet property="loadButton" destination="mHA-iF-pCY" id="5N9-DT-yea"/>
-                <outlet property="loader" destination="Weo-Pf-hvP" id="qa6-gY-w25"/>
-            </connections>
-            <point key="canvasLocation" x="181" y="134.5"/>
+            <point key="canvasLocation" x="-16" y="-14"/>
         </customView>
+        <collectionViewItem identifier="LoadMoreCell" id="eWa-fM-Knf" customClass="LoadMoreCell">
+            <connections>
+                <outlet property="loadButton" destination="mHA-iF-pCY" id="Hze-Fs-YVC"/>
+                <outlet property="loader" destination="Weo-Pf-hvP" id="alS-Pc-A8G"/>
+                <outlet property="view" destination="c22-O7-iKe" id="f7f-cm-meg"/>
+            </connections>
+        </collectionViewItem>
     </objects>
 </document>

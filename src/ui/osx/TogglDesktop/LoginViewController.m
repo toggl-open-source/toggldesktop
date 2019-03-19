@@ -96,6 +96,9 @@ extern void *ctx;
 	self.boxView.layer.shadowOpacity = 1.0;
 	self.boxView.layer.shadowOffset = CGSizeMake(0, -2);
 	self.boxView.layer.shadowRadius = 6;
+
+	self.view.wantsLayer = YES;
+	self.view.layer.backgroundColor = [NSColor colorWithPatternImage:[NSImage imageNamed:@"background-pattern"]].CGColor;
 }
 
 - (void)initCountryAutocomplete {

@@ -13,14 +13,14 @@
 #import "NSTextFieldClickable.h"
 
 @class EditorPopover;
+@class TimeEntryDatasource;
 
 @interface TimeEntryListViewController : NSViewController
 @property (unsafe_unretained) IBOutlet NSView *headerView;
-@property (unsafe_unretained) IBOutlet NSUnstripedTableView *timeEntriesTableView;
 @property (strong) IBOutlet EditorPopover *timeEntrypopover;
 @property (strong) IBOutlet NSViewController *timeEntrypopoverViewController;
 @property (strong) IBOutlet NSViewEscapable *timeEntryPopupEditView;
 @property (strong) IBOutlet NSScrollView *timeEntryListScrollView;
 @property (strong) IBOutlet NSTextFieldClickable *emptyLabel;
-- (IBAction)performClick:(id)sender;
+@property (nonatomic, strong) TimeEntryDatasource *dataSource;
 @end

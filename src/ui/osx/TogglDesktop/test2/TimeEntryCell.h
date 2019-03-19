@@ -10,32 +10,31 @@
 #import "TimeEntryViewItem.h"
 #import "NSHoverButton.h"
 
-@interface TimeEntryCell : NSTableCellView
-@property (nonatomic, strong) IBOutlet NSTextField *descriptionTextField;
-@property (nonatomic, strong) IBOutlet NSTextField *projectTextField;
-@property (nonatomic, strong) IBOutlet NSImageView *billableFlag;
-@property (nonatomic, strong) IBOutlet NSImageView *tagFlag;
-@property (nonatomic, strong) IBOutlet NSTextField *durationTextField;
+typedef NS_ENUM (NSUInteger, CellType)
+{
+	CellTypeNormal,
+	CellTypeGroup,
+	CellTypeSubItemInGroup,
+};
+
+@interface TimeEntryCell : NSCollectionViewItem
+@property (nonatomic, weak) IBOutlet NSTextField *descriptionTextField;
 @property (nonatomic, copy) NSString *GUID;
-@property (strong) NSString *GroupName;
-@property BOOL Group;
-@property BOOL GroupOpen;
+@property (copy) NSString *GroupName;
+@property (assign, nonatomic) CellType cellType;
+@property (assign, nonatomic) BOOL Group;
+@property (assign, nonatomic) BOOL GroupOpen;
+
 @property long long GroupItemCount;
-@property (strong) IBOutlet NSBox *durationBox;
-@property (strong) IBOutlet NSBox *backgroundBox;
-@property (strong) IBOutlet NSImageView *unsyncedIcon;
 @property BOOL confirmless_delete;
-@property (weak) IBOutlet NSBox *DescriptionProjectBox;
-@property (weak) IBOutlet NSLayoutConstraint *descriptionBoxTrail;
-@property (weak) IBOutlet NSLayoutConstraint *descriptionBoxLead;
-@property (weak) IBOutlet NSHoverButton *groupToggleButton;
-@property (weak) IBOutlet NSHoverButton *continueButton;
+
 - (void)render:(TimeEntryViewItem *)view_item;
-- (IBAction)continueTimeEntry:(id)sender;
-- (IBAction)toggleGroup:(id)sender;
 - (void)focusFieldName;
 - (void)setFocused;
-- (void)setupGroupMode;
 - (void)openEdit;
+- (void)setupGroupMode;
+- (void)showHorizontalLine:(BOOL)show;
+- (void)applyMaskForBottomCorner;
+
 @end
 

@@ -82,8 +82,6 @@ extern void *ctx;
 {
 	[super windowDidLoad];
 
-	[self.window setBackgroundColor:[NSColor colorWithPatternImage:[NSImage imageNamed:@"background-pattern"]]];
-
 	// Tracking the size of window after loaded
 	[self trackWindowSize];
 
@@ -121,10 +119,9 @@ extern void *ctx;
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 	if (cmd.open)
 	{
-//        [self.loginViewController changeView:NO];
 		[self.contentView addSubview:self.loginViewController.view];
 		[self.loginViewController.view setFrame:self.contentView.bounds];
-//        [self.loginViewController.email.window makeFirstResponder:self.loginViewController.email];
+		self.loginViewController.view.hidden = NO;
 
 		[self.timeEntryListViewController.view removeFromSuperview];
 		[self.overlayViewController.view removeFromSuperview];
@@ -147,6 +144,7 @@ extern void *ctx;
 			// Close error when loging in
 			[self closeError];
 
+			self.loginViewController.view.hidden = YES;
 			[self.contentView addSubview:self.timeEntryListViewController.view];
 			[self.timeEntryListViewController.view setFrame:self.contentView.bounds];
 

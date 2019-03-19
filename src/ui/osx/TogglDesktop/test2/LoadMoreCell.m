@@ -8,21 +8,48 @@
 
 #import "LoadMoreCell.h"
 
+@interface LoadMoreCell ()
+@property (weak) IBOutlet NSProgressIndicator *loader;
+@property (weak) IBOutlet NSButton *loadButton;
+- (IBAction)loadMoreClicked:(id)sender;
+@end
+
 @implementation LoadMoreCell
 extern void *ctx;
 
-- (void)initCell
+- (void)awakeFromNib {
+	[super awakeFromNib];
+
+	[self setLoading:NO];
+}
+
+- (void)prepareForReuse
 {
-	[self.loader stopAnimation:nil];
-	[self.loader setHidden:YES];
+	[super prepareForReuse];
+
+	[self setLoading:NO];
 }
 
 - (IBAction)loadMoreClicked:(id)sender
 {
-	[self.loadButton setTitle:@""];
-	[self.loader startAnimation:sender];
-	[self.loader setHidden:NO];
+	[self setLoading:YES];
 	toggl_load_more(ctx);
+}
+
+- (void)setLoading:(BOOL)start
+{
+	if (start)
+	{
+		[self.loadButton setTitle:@""];
+		[self.loader startAnimation:nil];
+		[self.loader setHidden:NO];
+	}
+	else
+	{
+		[self.loadButton setTitle:@"Load more"];
+		[self.loader stopAnimation:nil];
+		[self.loader setHidden:YES];
+	}
 }
 
 @end

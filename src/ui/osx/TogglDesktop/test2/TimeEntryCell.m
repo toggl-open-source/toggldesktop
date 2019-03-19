@@ -11,10 +11,136 @@
 #import "ConvertHexColor.h"
 #import "toggl_api.h"
 #import "TogglDesktop-Swift.h"
+#import <QuartzCore/CAShapeLayer.h>
+
+@interface TimeEntryCell ()
+
+@property (weak) IBOutlet NSLayoutConstraint *descriptionLblLeading;
+@property (weak) IBOutlet NSTextField *projectTextField;
+@property (weak) IBOutlet NSImageView *billableFlag;
+@property (weak) IBOutlet NSImageView *tagFlag;
+@property (weak) IBOutlet NSTextField *durationTextField;
+@property (weak) IBOutlet NSImageView *unsyncedIcon;
+@property (weak) IBOutlet NSBox *groupBox;
+@property (weak) IBOutlet NSButton *groupButton;
+@property (weak) IBOutlet NSButton *continueButton;
+@property (weak) IBOutlet NSBox *backgroundBox;
+@property (weak) IBOutlet DotImageView *dotView;
+@property (weak) IBOutlet NSLayoutConstraint *projectConstrainLeading;
+@property (weak) IBOutlet NSBox *horizontalLine;
+@property (strong, nonatomic) NSColor *backgroundColor;
+@property (strong, nonatomic) NSColor *selectedSubItemBackgroundColor;
+@end
 
 @implementation TimeEntryCell
 
 extern void *ctx;
+
+- (void)setSelected:(BOOL)selected {
+	[super setSelected:selected];
+	self.continueButton.hidden = !selected;
+	if (selected)
+	{
+		[self setFocused];
+	}
+	else
+	{
+		[self setUnfocus];
+	}
+}
+
+- (void)awakeFromNib {
+	[super awakeFromNib];
+
+	self.continueButton.hidden = YES;
+
+	NSRect bounds = self.view.bounds;
+
+	// Hack
+	// We don't need to remove TrackingArea and create with new size after cell's size change
+	bounds.size.width = NSScreen.mainScreen.frame.size.width;
+	NSTrackingArea *tracking = [[NSTrackingArea alloc]initWithRect:bounds
+														   options:(NSTrackingMouseEnteredAndExited | NSTrackingActiveInKeyWindow)
+															 owner:self
+														  userInfo:nil];
+	[self.view addTrackingArea:tracking];
+
+	if (@available(macOS 10.13, *))
+	{
+		self.backgroundColor = [NSColor colorNamed:@"white-background-hover-color"];
+		self.selectedSubItemBackgroundColor = [NSColor colorNamed:@"subitem-background-selected-color"];
+	}
+	else
+	{
+		self.backgroundColor = [ConvertHexColor hexCodeToNSColor:@"#f9f9f9"];
+		self.selectedSubItemBackgroundColor = [ConvertHexColor hexCodeToNSColor:@"#e8e8e8"];
+	}
+}
+
+- (void)prepareForReuse {
+	[super prepareForReuse];
+	self.continueButton.hidden = YES;
+	self.backgroundBox.transparent = YES;
+	[self resetMask];
+}
+
+- (void)mouseEntered:(NSEvent *)event
+{
+	[super mouseEntered:event];
+
+	// Only pply hover color if it's not sub-items
+	if (self.cellType != CellTypeSubItemInGroup)
+	{
+		[self updateHoverState:YES];
+	}
+
+	// Continue
+	self.continueButton.hidden = NO;
+}
+
+- (void)mouseExited:(NSEvent *)event
+{
+	[super mouseExited:event];
+
+	if (self.isSelected)
+	{
+		return;
+	}
+
+	// Only pply hover color if it's not sub-items
+	if (self.cellType != CellTypeSubItemInGroup)
+	{
+		[self updateHoverState:NO];
+	}
+
+	// Continue
+	self.continueButton.hidden = YES;
+}
+
+- (void)updateHoverState:(BOOL)isHover {
+	if (isHover)
+	{
+		self.backgroundBox.transparent = NO;
+		if (self.cellType == CellTypeSubItemInGroup)
+		{
+			if (self.isSelected)
+			{
+				self.backgroundBox.fillColor = self.selectedSubItemBackgroundColor;
+				return;
+			}
+		}
+		self.backgroundBox.fillColor = self.backgroundColor;
+	}
+	else
+	{
+		if (self.cellType == CellTypeSubItemInGroup)
+		{
+			self.backgroundBox.fillColor = self.backgroundColor;
+			return;
+		}
+		self.backgroundBox.transparent = YES;
+	}
+}
 
 - (IBAction)continueTimeEntry:(id)sender
 {
@@ -45,6 +171,20 @@ extern void *ctx;
 	self.GroupItemCount = view_item.GroupItemCount;
 	self.durationTextField.toolTip = [NSString stringWithFormat:@"%@ - %@", view_item.startTimeString, view_item.endTimeString];
 
+	// Cell type
+	if (self.Group)
+	{
+		self.cellType = CellTypeGroup;
+	}
+	else if (!self.Group && self.GroupOpen)
+	{
+		self.cellType = CellTypeSubItemInGroup;
+	}
+	else
+	{
+		self.cellType = CellTypeNormal;
+	}
+
 	// Time entry has a description
 	if (view_item.Description && [view_item.Description length] > 0)
 	{
@@ -53,7 +193,8 @@ extern void *ctx;
 	}
 	else
 	{
-		self.descriptionTextField.stringValue = @"(no description)";
+		self.descriptionTextField.stringValue = @"";
+		self.descriptionTextField.placeholderString = @"+ Add description";
 		self.descriptionTextField.toolTip = nil;
 	}
 
@@ -89,38 +230,35 @@ extern void *ctx;
 	// Time entry has a project
 	if (view_item.ProjectAndTaskLabel && [view_item.ProjectAndTaskLabel length] > 0)
 	{
+		NSColor *projectColor = [ConvertHexColor hexCodeToNSColor:view_item.ProjectColor];
+		self.dotView.hidden = NO;
+		[self.dotView fillWith:projectColor];
 		[self.projectTextField setAttributedStringValue:[self setProjectClientLabel:view_item]];
-		[self.projectTextField setHidden:NO];
 		self.projectTextField.toolTip = view_item.ProjectAndTaskLabel;
-		self.projectTextField.textColor =
-			[ConvertHexColor hexCodeToNSColor:view_item.ProjectColor];
+		self.projectTextField.textColor = projectColor;
+		self.projectConstrainLeading.constant = 16;
 		return;
 	}
 
 	// Time entry has no project
 	self.projectTextField.stringValue = @"";
-	[self.projectTextField setHidden:YES];
+	self.projectTextField.placeholderString = @"+ Add project";
 	self.projectTextField.toolTip = nil;
+	self.dotView.hidden = YES;
+	self.projectConstrainLeading.constant = 0;
 }
 
 - (NSMutableAttributedString *)setProjectClientLabel:(TimeEntryViewItem *)view_item
 {
-	NSMutableAttributedString *clientName = [[NSMutableAttributedString alloc] initWithString:view_item.ClientLabel];
-
-	[clientName setAttributes:
-	 @{
-		 NSFontAttributeName : [NSFont systemFontOfSize:[NSFont systemFontSize]],
-		 NSForegroundColorAttributeName:[NSColor disabledControlTextColor]
-	 }
-						range:NSMakeRange(0, [clientName length])];
 	NSMutableAttributedString *string;
+
 	if (view_item.TaskID != 0)
 	{
 		string = [[NSMutableAttributedString alloc] initWithString:[view_item.TaskLabel stringByAppendingString:@". "]];
 
 		[string setAttributes:
 		 @{
-			 NSFontAttributeName : [NSFont systemFontOfSize:[NSFont systemFontSize]],
+			 NSFontAttributeName : [NSFont systemFontOfSize:12],
 			 NSForegroundColorAttributeName:[NSColor controlTextColor]
 		 }
 						range:NSMakeRange(0, [string length])];
@@ -134,95 +272,73 @@ extern void *ctx;
 		string = [[NSMutableAttributedString alloc] initWithString:[view_item.ProjectLabel stringByAppendingString:@" "]];
 	}
 
-	[string appendAttributedString:clientName];
+	if ([view_item.ClientLabel length] > 0)
+	{
+		NSString *clientTitle = [NSString stringWithFormat:@"• %@", view_item.ClientLabel];
+		NSMutableAttributedString *clientName = [[NSMutableAttributedString alloc] initWithString:clientTitle];
+
+		[clientName setAttributes:
+		 @{
+			 NSFontAttributeName : [NSFont systemFontOfSize:12],
+			 NSForegroundColorAttributeName:[self clientTextColor]
+		 }
+							range:NSMakeRange(0, [clientName length])];
+		[string appendAttributedString:clientName];
+	}
 	return string;
 }
 
-- (NSColor *)adaptedBackgroundColor
-{
-	if (self.GroupItemCount && self.GroupOpen && !self.Group)
-	{
-		return self.isDarkMode ? [NSColor controlColor] : [ConvertHexColor hexCodeToNSColor:@"#f0f0f0"];
-	}
-	return self.isDarkMode ? [NSColor safeUnemphasizedSelectedContentBackgroundColor] : [ConvertHexColor hexCodeToNSColor:@"#FAFAFA"];
-}
+- (void)setupGroupMode {
+	self.groupBox.hidden = !self.Group;
+	self.descriptionLblLeading.constant = self.Group || self.GroupOpen ? 46.0 : 15.0;
 
-- (void)setupGroupMode
-{
-	// Default descriptionbox trail (no group icon)
-	int trail = 140;
-	int lead = 0;
-	NSString *continueIcon = @"continue_light.pdf";
-	NSString *toggleGroupIcon = @"group_icon_closed.pdf";
+	// Title
 	NSString *toggleGroupText = [NSString stringWithFormat:@"%lld", self.GroupItemCount];
+	self.groupButton.title = toggleGroupText;
 
-	// Grouped mode background update
-	if (self.GroupItemCount && self.GroupOpen && !self.Group)
+	// Color
+	if (self.Group && self.GroupOpen)
 	{
-		lead = 10;
-
-		NSColor *textColor = self.isDarkMode ? [NSColor secondaryLabelColor] : [ConvertHexColor hexCodeToNSColor:@"#696969"];
-
-		// Gray color for subitem
-		NSMutableAttributedString *description = [[NSMutableAttributedString alloc] initWithString:self.descriptionTextField.stringValue];
-		[description setAttributes:
-		 @{
-			 NSForegroundColorAttributeName:textColor
-		 }
-							 range:NSMakeRange(0, [description length])];
-
-		[self.descriptionTextField setAttributedStringValue:description];
-	}
-
-	if (self.Group)
-	{
-		// Group icon visible
-		trail = 175;
-		if (self.GroupOpen)
+		if (@available(macOS 10.13, *))
 		{
-			toggleGroupIcon = @"group_icon_open.pdf";
-			self.groupToggleButton.title = @"";
+			[self.groupButton setTextColor:[NSColor colorNamed:@"green-color"]];
+			self.groupBox.fillColor = [NSColor colorNamed:@"group-box-background-color"];
 		}
 		else
 		{
-			NSColor *textColor = self.isDarkMode ? [NSColor labelColor] : [ConvertHexColor hexCodeToNSColor:@"#a4a4a4"];
-
-			// Gray color to grouped button text
-			NSMutableParagraphStyle *paragrapStyle = NSMutableParagraphStyle.new;
-			paragrapStyle.alignment = kCTTextAlignmentCenter;
-
-			NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:toggleGroupText];
-			[string setAttributes:
-			 @{
-				 NSFontAttributeName : [NSFont systemFontOfSize:9.0],
-				 NSForegroundColorAttributeName:textColor,
-				 NSParagraphStyleAttributeName:paragrapStyle
-			 }
-							range:NSMakeRange(0, [string length])];
-
-			[self.groupToggleButton setAttributedTitle:string];
+			[self.groupButton setTextColor:[ConvertHexColor hexCodeToNSColor:@"#28cd41"]];
+			self.groupBox.fillColor = [NSColor colorWithRed:40.0 / 255.0 green:205.0 / 255.0 blue:65.0 / 255.0 alpha:0.12];
 		}
-		[self.groupToggleButton setImage:[NSImage imageNamed:toggleGroupIcon]];
-
-		continueIcon = @"continue_regular.pdf";
+		self.groupBox.borderColor = [NSColor clearColor];
+	}
+	else
+	{
+		if (@available(macOS 10.13, *))
+		{
+			[self.groupButton setTextColor:[NSColor colorNamed:@"grey-text-color"]];
+			self.groupBox.fillColor = [NSColor colorNamed:@"upload-background-color"];
+			self.groupBox.borderColor = [NSColor colorNamed:@"upload-border-color"];
+		}
+		else
+		{
+			[self.groupButton setTextColor:[ConvertHexColor hexCodeToNSColor:@"#555555"]];
+			self.groupBox.fillColor = [NSColor whiteColor];
+			self.groupBox.borderColor = [NSColor lightGrayColor];
+		}
 	}
 
-	[self.continueButton setImage:[NSImage imageNamed:continueIcon]];
-	[self.groupToggleButton setHidden:!self.Group];
-	self.descriptionBoxLead.constant = lead;
-	self.descriptionBoxTrail.constant = trail;
-
-	[self.backgroundBox setFillColor:[self adaptedBackgroundColor]];
+	if (self.cellType == CellTypeSubItemInGroup)
+	{
+		[self updateHoverState:YES];
+	}
 }
 
 - (void)focusFieldName
 {
-	NSPoint globalLocation = [ NSEvent mouseLocation ];
-	NSRect rect = [[self window] convertRectFromScreen:NSMakeRect(globalLocation.x, globalLocation.y, 0, 0)];
+	NSPoint globalLocation = [NSEvent mouseLocation];
+	NSRect rect = [self.view.window convertRectFromScreen:NSMakeRect(globalLocation.x, globalLocation.y, 0, 0)];
 	NSPoint windowLocation = rect.origin;
-	NSPoint mouseLocation = [ self convertPoint:windowLocation fromView:nil ];
-
-	[self setFocused];
+	NSPoint mouseLocation = [self.view convertPoint:windowLocation fromView:nil];
 
 	if (NSPointInRect(mouseLocation, self.projectTextField.frame))
 	{
@@ -236,7 +352,7 @@ extern void *ctx;
 		return;
 	}
 
-	if (NSPointInRect(mouseLocation, self.durationBox.frame))
+	if (NSPointInRect(mouseLocation, self.durationTextField.frame))
 	{
 		toggl_edit(ctx, [self.GUID UTF8String], false, kFocusedFieldNameDuration);
 		return;
@@ -247,9 +363,11 @@ extern void *ctx;
 
 - (void)setFocused
 {
-	NSColor *fillColor = self.isDarkMode ? [NSColor controlColor] : [ConvertHexColor hexCodeToNSColor:@"#E8E8E8"];
+	[self updateHoverState:YES];
+}
 
-	[self.backgroundBox setFillColor:fillColor];
+- (void)setUnfocus {
+	[self updateHoverState:NO];
 }
 
 - (void)openEdit
@@ -258,6 +376,33 @@ extern void *ctx;
 	{
 		toggl_edit(ctx, [self.GUID UTF8String], false, "");
 	}
+}
+
+- (NSColor *)clientTextColor
+{
+	if (@available(macOS 10.13, *))
+	{
+		return [NSColor colorNamed:@"grey-text-color"];
+	}
+	else
+	{
+		return [ConvertHexColor hexCodeToNSColor:@"#555555"];
+	}
+}
+
+- (void)showHorizontalLine:(BOOL)show
+{
+	self.horizontalLine.hidden = !show;
+}
+
+- (void)applyMaskForBottomCorner {
+	self.backgroundBox.wantsLayer = YES;
+	self.backgroundBox.layer.mask = [self maskFor:PositionBottom rect:self.view.bounds cornerRadius:4.0];
+}
+
+- (void)resetMask {
+	self.backgroundBox.layer.mask = nil;
+	self.backgroundBox.wantsLayer = NO;
 }
 
 @end

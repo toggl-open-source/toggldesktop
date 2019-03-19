@@ -13,32 +13,30 @@
 #import "toggl_api.h"
 #import "LoadMoreCell.h"
 #import "TimeEntryCell.h"
-#import "TimeEntryCellWithHeader.h"
 #import "UIEvents.h"
 #import "DisplayCommand.h"
 #import "TimeEntryEditViewController.h"
 #import "ConvertHexColor.h"
 #include <Carbon/Carbon.h>
 #import "TogglDesktop-Swift.h"
+#import "TimeEntryCollectionView.h"
 
-static CGFloat kTimeEntryCellWithHeaderHeight = 46.0;
+static void *XXContext = &XXContext;
+static NSString *kFrameKey = @"frame";
 
-@interface TimeEntryListViewController ()
+@interface TimeEntryListViewController () <TimeEntryDatasourceDraggingDelegate>
 @property (nonatomic, strong) IBOutlet TimerEditViewController *timerEditViewController;
 @property NSNib *nibTimeEntryCell;
-@property NSNib *nibTimeEntryCellWithHeader;
 @property NSNib *nibTimeEntryEditViewController;
 @property NSNib *nibLoadMoreCell;
 @property NSInteger defaultPopupHeight;
 @property NSInteger defaultPopupWidth;
 @property NSInteger addedHeight;
 @property NSInteger minimumEditFormWidth;
-@property NSInteger lastSelectedRowIndex;
 @property BOOL runningEdit;
-@property TimeEntryCell *selectedEntryCell;
 @property (copy, nonatomic) NSString *lastSelectedGUID;
 @property (nonatomic, strong) IBOutlet TimeEntryEditViewController *timeEntryEditViewController;
-@property (nonatomic, strong) NSArray<TimeEntryViewItem *> *viewitems;
+@property (weak) IBOutlet TimeEntryCollectionView *collectionView;
 @end
 
 @implementation TimeEntryListViewController
@@ -57,80 +55,38 @@ extern void *ctx;
 		[self.timerEditViewController.view setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
 		[self.timeEntryEditViewController.view setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
 
-		self.viewitems = [[NSArray<TimeEntryViewItem *> alloc] init];
-
 		self.nibTimeEntryCell = [[NSNib alloc] initWithNibNamed:@"TimeEntryCell"
 														 bundle:nil];
-		self.nibTimeEntryCellWithHeader = [[NSNib alloc] initWithNibNamed:@"TimeEntryCellWithHeader"
-																   bundle:nil];
 		self.nibTimeEntryEditViewController = [[NSNib alloc] initWithNibNamed:@"TimeEntryEditViewController"
 																	   bundle:nil];
 		self.nibLoadMoreCell = [[NSNib alloc] initWithNibNamed:@"LoadMoreCell"
 														bundle:nil];
-
-		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(startDisplayTimeEntryList:)
-													 name:kDisplayTimeEntryList
-												   object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(startDisplayTimeEntryEditor:)
-													 name:kDisplayTimeEntryEditor
-												   object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(startDisplayLogin:)
-													 name:kDisplayLogin
-												   object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(closeEditPopup:)
-													 name:kForceCloseEditPopover
-												   object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(resizeEditPopupHeight:)
-													 name:kResizeEditForm
-												   object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(resizeEditPopupWidth:)
-													 name:kResizeEditFormWidth
-												   object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(resetEditPopover:)
-													 name:NSPopoverDidCloseNotification
-												   object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(closeEditPopup:)
-													 name:kCommandStop
-												   object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(resetEditPopoverSize:)
-													 name:kResetEditPopoverSize
-												   object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(focusListing:)
-													 name:kFocusListing
-												   object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(escapeListing:)
-													 name:kEscapeListing
-												   object:nil];
-
-		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(effectiveAppearanceChangedNotification)
-													 name:NSNotification.EffectiveAppearanceChanged
-												   object:nil];
 	}
 	return self;
 }
 
-- (void)loadView
+- (void)dealloc
 {
-	[super loadView];
-	[self.timeEntriesTableView registerNib:self.nibTimeEntryCell
-							 forIdentifier :@"TimeEntryCell"];
-	[self.timeEntriesTableView registerNib:self.nibTimeEntryCellWithHeader
-							 forIdentifier :@"TimeEntryCellWithHeader"];
-	[self.timeEntriesTableView registerNib:self.nibLoadMoreCell
-							 forIdentifier :@"LoadMoreCell"];
+	[self.collectionView removeObserver:self forKeyPath:kFrameKey];
+}
 
+- (void)viewDidLoad
+{
+	[super viewDidLoad];
+
+	[self initCommon];
+	[self initCollectionView];
+	[self setupEmptyLabel];
+	[self initNotifications];
+}
+
+- (void)viewDidAppear
+{
+	[super viewDidAppear];
+	[self.collectionView reloadData];
+}
+
+- (void)initCommon {
 	[self.headerView addSubview:self.timerEditViewController.view];
 	[self.timerEditViewController.view setFrame:self.headerView.bounds];
 
@@ -138,16 +94,103 @@ extern void *ctx;
 	[self.timeEntryEditViewController.view setFrame:self.timeEntryPopupEditView.bounds];
 	self.defaultPopupHeight = self.timeEntryPopupEditView.bounds.size.height;
 	self.addedHeight = 0;
-	self.lastSelectedRowIndex = 0;
 	self.minimumEditFormWidth = self.timeEntryPopupEditView.bounds.size.width;
 	self.runningEdit = NO;
+}
 
-	[self setupEmptyLabel];
+- (void)initNotifications
+{
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(startDisplayTimeEntryList:)
+												 name:kDisplayTimeEntryList
+											   object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(startDisplayTimeEntryEditor:)
+												 name:kDisplayTimeEntryEditor
+											   object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(startDisplayLogin:)
+												 name:kDisplayLogin
+											   object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(closeEditPopup:)
+												 name:kForceCloseEditPopover
+											   object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(resizeEditPopupHeight:)
+												 name:kResizeEditForm
+											   object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(resizeEditPopupWidth:)
+												 name:kResizeEditFormWidth
+											   object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(resetEditPopover:)
+												 name:NSPopoverDidCloseNotification
+											   object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(closeEditPopup:)
+												 name:kCommandStop
+											   object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(resetEditPopoverSize:)
+												 name:kResetEditPopoverSize
+											   object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(focusListing:)
+												 name:kFocusListing
+											   object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(escapeListing:)
+												 name:kEscapeListing
+											   object:nil];
 
-	// Drag and drop
-	[self.timeEntriesTableView setDraggingSourceOperationMask:NSDragOperationLink forLocal:NO];
-	[self.timeEntriesTableView setDraggingSourceOperationMask:NSDragOperationMove forLocal:YES];
-	[self.timeEntriesTableView registerForDraggedTypes:[NSArray arrayWithObject:NSStringPboardType]];
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(effectiveAppearanceChangedNotification)
+												 name:NSNotification.EffectiveAppearanceChanged
+											   object:nil];
+
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(windowSizeDidChange)
+												 name:NSWindowDidResizeNotification
+											   object:nil];
+}
+
+- (void)initCollectionView
+{
+	self.dataSource = [[TimeEntryDatasource alloc] initWithCollectionView:self.collectionView];
+	self.dataSource.delegate = self;
+	[self.collectionView addObserver:self
+						  forKeyPath:kFrameKey
+							 options:NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew
+							 context:XXContext];
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+	if (context == XXContext)
+	{
+		CGRect oldFrame = CGRectZero;
+		CGRect newFrame = CGRectZero;
+		if ([change objectForKey:@"old"] != [NSNull null])
+		{
+			oldFrame = [[change objectForKey:@"old"] CGRectValue];
+		}
+		if ([object valueForKeyPath:keyPath] != [NSNull null])
+		{
+			newFrame = [[object valueForKeyPath:keyPath] CGRectValue];
+		}
+		if (oldFrame.size.width != newFrame.size.width)
+		{
+			// HACK
+			// Relayout if the scrollbar is appear or disappear
+			[self.collectionView.collectionViewLayout invalidateLayout];
+		}
+	}
+	else
+	{
+		[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+	}
 }
 
 - (void)setupEmptyLabel
@@ -179,40 +222,14 @@ extern void *ctx;
 - (void)displayTimeEntryList:(DisplayCommand *)cmd
 {
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
-
 	NSLog(@"TimeEntryListViewController displayTimeEntryList, thread %@", [NSThread currentThread]);
 
-    // Save the current scroll position of entries list
-	NSPoint scrollOrigin;
-	NSRect rowRect = [self.timeEntriesTableView rectOfRow:0];
-	BOOL adjustScroll = !NSEqualRects(rowRect, NSZeroRect) && !NSContainsRect(self.timeEntriesTableView.visibleRect, rowRect);
-	if (adjustScroll)
-	{
-        // get scroll position from the bottom: get bottom left of the visible part of the table view
-		scrollOrigin = self.timeEntriesTableView.visibleRect.origin;
-		if (self.timeEntriesTableView.isFlipped)
-		{
-        // scrollOrigin is top left, calculate unflipped coordinates
-			scrollOrigin.y = self.timeEntriesTableView.bounds.size.height - scrollOrigin.y;
-		}
-	}
+	NSArray<TimeEntryViewItem *> *newTimeEntries = [cmd.timeEntries copy];
 
-	NSMutableArray<TimeEntryViewItem *> *newTimeEntries = [cmd.timeEntries mutableCopy];
-	NSArray<TimeEntryViewItem *> *oldTimeEntries = self.viewitems;
+    // reload
+	[self.dataSource process:newTimeEntries showLoadMore:cmd.show_load_more];
 
-	if (cmd.show_load_more)
-	{
-		TimeEntryViewItem *it = [TimeEntryViewItem alloc];
-		[it setLoadMore:YES];
-		[newTimeEntries addObject:it];
-	}
-
-	NSInteger i = [self.timeEntriesTableView selectedRow];
-
-    // Diff and reload
-	self.viewitems = [newTimeEntries copy];
-	[self.timeEntriesTableView diffReloadWith:oldTimeEntries new:[newTimeEntries copy]];
-
+    // Handle Popover
 	if (cmd.open)
 	{
 		if (self.timeEntrypopover.shown)
@@ -227,56 +244,13 @@ extern void *ctx;
 		}
 	}
 
-	BOOL noItems = self.timeEntriesTableView.numberOfRows == 0;
+    // Adjust the popover position if we change the date
+	[self adjustPositionOfPopover];
+
+    // Show Empty view if need
+	BOOL noItems = newTimeEntries.count == 0;
 	[self.emptyLabel setEnabled:noItems];
 	[self.timeEntryListScrollView setHidden:noItems];
-    // This seems to work for hiding the list when there are no items
-	if (noItems)
-	{
-		[self.timeEntryListScrollView setHidden:noItems];
-	}
-
-    // Restore scroll position after list reload
-	if (adjustScroll)
-	{
-        // restore scroll position from the bottom
-		if (self.timeEntriesTableView.isFlipped)
-		{
-        // calculate new flipped coordinates, height includes the new row
-			scrollOrigin.y = self.timeEntriesTableView.bounds.size.height - scrollOrigin.y;
-		}
-		[self.timeEntriesTableView scrollPoint:scrollOrigin];
-	}
-
-    // If row was focused before reload we restore that state
-	NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:i];
-
-	[self.timeEntriesTableView selectRowIndexes:indexSet byExtendingSelection:NO];
-	TimeEntryCell *cell = [self getSelectedEntryCell:i];
-	if (cell != nil)
-	{
-		[self clearLastSelectedEntry];
-		[cell setFocused];
-	}
-
-    // remove highlight from first item
-	[self removeHighlightOnFirstItem];
-
-    // Adjust the position of arrow of Popover
-	[self adjustPositionOfPopover];
-}
-
-- (void)removeHighlightOnFirstItem {
-	NSInteger selectedRow = [self.timeEntriesTableView selectedRow];
-
-	if (selectedRow < 0)
-	{
-		return;
-	}
-	NSTableRowView *rowView = [self.timeEntriesTableView rowViewAtRow:selectedRow
-													  makeIfNecessary  :NO];
-	[rowView setEmphasized:NO];
-	[rowView setSelected:NO];
 }
 
 - (void)adjustPositionOfPopover {
@@ -284,47 +258,38 @@ extern void *ctx;
 	{
 		return;
 	}
+
 	if (self.lastSelectedGUID == nil)
 	{
 		return;
 	}
 
-    // Get new selected index depend on last GUID
-	NSInteger newSelectedRow = -1;
-	for (NSInteger i = 0; i < self.viewitems.count; i++)
+    // Get Selecte Item from last GUID
+	TimeEntryViewItem *item = [self.dataSource objectWith:self.lastSelectedGUID];
+	if (item == nil)
 	{
-		id item = self.viewitems[i];
-		if ([item isKindOfClass:[TimeEntryViewItem class]])
-		{
-			TimeEntryViewItem *viewItem = (TimeEntryViewItem *)item;
-			if ([viewItem.GUID isEqualToString:self.lastSelectedGUID])
-			{
-				newSelectedRow = i;
-				break;
-			}
-		}
+		return;
 	}
-
-	if (newSelectedRow < 0)
+	NSIndexPath *indexPath = [self.dataSource indexPathFor:item];
+	if (indexPath == nil)
 	{
 		return;
 	}
 
     // Adjus the position of arrow
-	NSRect positionRect = [self positionRectOfSelectedRowAtIndex:newSelectedRow];
+	TimeEntryCell *cell = [self getTimeEntryCellAtIndexPath:indexPath];
+	NSRect positionRect = [self positionRectForItem:cell];
 	self.timeEntrypopover.positioningRect = positionRect;
 
     // Scroll to visible selected row
-	if (!NSContainsRect(self.timeEntriesTableView.visibleRect, positionRect))
+	if (!NSContainsRect(self.collectionView.visibleRect, positionRect))
 	{
-		[self.timeEntriesTableView scrollRowToVisible:newSelectedRow];
+		[self.collectionView scrollToItemsAtIndexPaths:[NSSet setWithCollectionViewIndexPath:indexPath]
+										scrollPosition:NSCollectionViewScrollPositionBottom];
 	}
 
     // Hightlight selected cell
-	if (self.selectedEntryCell)
-	{
-		[self.selectedEntryCell setFocused];
-	}
+	[[self.collectionView getSelectedEntryCell] setFocused];
 }
 
 - (void)resetEditPopover:(NSNotification *)notification
@@ -346,13 +311,15 @@ extern void *ctx;
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
 	NSLog(@"TimeEntryListViewController displayTimeEntryEditor, thread %@", [NSThread currentThread]);
+
 	if (cmd.open)
 	{
 		self.timeEntrypopover.contentViewController = self.timeEntrypopoverViewController;
 		self.runningEdit = (cmd.timeEntry.duration_in_seconds < 0);
 
 		NSView *ofView = self.view;
-		CGRect positionRect = [self positionRectOfSelectedRowAtIndex:self.lastSelectedRowIndex];
+		TimeEntryCell *selectedCell = [self.collectionView getSelectedEntryCell];
+		CGRect positionRect = [self positionRectForItem:selectedCell];
 
 		if (self.runningEdit)
 		{
@@ -360,10 +327,10 @@ extern void *ctx;
 			positionRect = [ofView bounds];
 			self.lastSelectedGUID = nil;
 		}
-		else if (self.selectedEntryCell && [self.selectedEntryCell isKindOfClass:[TimeEntryCell class]])
+		else if (selectedCell != nil)
 		{
-			self.lastSelectedGUID = ((TimeEntryCell *)self.selectedEntryCell).GUID;
-			ofView = self.timeEntriesTableView;
+			self.lastSelectedGUID = selectedCell.GUID;
+			ofView = self.collectionView;
 		}
 
         // Show popover
@@ -376,21 +343,13 @@ extern void *ctx;
 	}
 }
 
-- (CGRect)positionRectOfSelectedRowAtIndex:(NSInteger)index {
-	NSView *selectedView = [self getSelectedEntryCell:index];
-	NSRect positionRect = self.view.bounds;
-
-	if (selectedView)
+- (CGRect)positionRectForItem:(TimeEntryCell *)timeEntry {
+	if (timeEntry)
 	{
-		positionRect = [self.timeEntriesTableView convertRect:selectedView.bounds
-													 fromView:selectedView];
-		if ([selectedView isKindOfClass:[TimeEntryCellWithHeader class]])
-		{
-			positionRect.origin.y += kTimeEntryCellWithHeaderHeight;
-			positionRect.size.height -= kTimeEntryCellWithHeaderHeight;
-		}
+		return [self.collectionView convertRect:timeEntry.view.bounds
+									   fromView:timeEntry.view];
 	}
-	return positionRect;
+	return self.view.bounds;;
 }
 
 - (void)startDisplayTimeEntryEditor:(NSNotification *)notification
@@ -398,152 +357,24 @@ extern void *ctx;
 	[self displayTimeEntryEditor:notification.object];
 }
 
-- (int)numberOfRowsInTableView:(NSTableView *)tv
+- (TimeEntryCell *)getTimeEntryCellAtIndexPath:(NSIndexPath *)indexPath
 {
-	int result = 0;
-
-	@synchronized(self.viewitems)
-	{
-		result = (int)[self.viewitems count];
-	}
-	return result;
-}
-
-- (BOOL)  tableView:(NSTableView *)aTableView
-	shouldSelectRow:(NSInteger)rowIndex
-{
-	[self clearLastSelectedEntry];
-	self.lastSelectedRowIndex = rowIndex;
-	TimeEntryCell *cell = [self getSelectedEntryCell:rowIndex];
-	if (cell != nil)
-	{
-		[cell setFocused];
-	}
-	return YES;
-}
-
-- (NSView *) tableView:(NSTableView *)tableView
-	viewForTableColumn:(NSTableColumn *)tableColumn
-				   row:(NSInteger)row
-{
-	TimeEntryViewItem *item = nil;
-
-	@synchronized(self.viewitems)
-	{
-		item = [self.viewitems objectAtIndex:row];
-	}
-	NSAssert(item != nil, @"view item from viewitems array is nil");
-
-	if (item.loadMore == YES)
-	{
-		LoadMoreCell *cell = [tableView makeViewWithIdentifier:@"LoadMoreCell"
-														 owner:self];
-		[cell initCell];
-		return cell;
-	}
-
-	if (item.isHeader.boolValue)
-	{
-		TimeEntryCellWithHeader *cell = [tableView makeViewWithIdentifier:@"TimeEntryCellWithHeader"
-																	owner:self];
-		[cell render:item];
-		return cell;
-	}
-
-	TimeEntryCell *cell = [tableView makeViewWithIdentifier:@"TimeEntryCell"
-													  owner:self];
-	[cell render:item];
-	return cell;
-}
-
-- (CGFloat)tableView:(NSTableView *)tableView
-		 heightOfRow:(NSInteger)row
-{
-	TimeEntryViewItem *item = nil;
-
-	@synchronized(self.viewitems)
-	{
-		if (row < self.viewitems.count)
-		{
-			item = self.viewitems[row];
-		}
-	}
-	if (item && item.isHeader.boolValue)
-	{
-		return 102;
-	}
-	return 56;
-}
-
-- (IBAction)performClick:(id)sender
-{
-	[self clearLastSelectedEntry];
-	NSInteger row = [self.timeEntriesTableView clickedRow];
-
-	if (row < 0)
-	{
-		return;
-	}
-
-	TimeEntryViewItem *item = 0;
-	@synchronized(self.viewitems)
-	{
-		item = self.viewitems[row];
-	}
-
-	TimeEntryCell *cell = [self getSelectedEntryCell:row];
-
-    // Group header clicked, toggle group open/closed
-	if (cell.Group)
-	{
-		[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kToggleGroup
-																	object:cell.GroupName];
-		return;
-	}
-
-    // Load more cell clicked
-	if ([cell isKindOfClass:[LoadMoreCell class]])
-	{
-		return;
-	}
-
-	if (cell != nil)
-	{
-		[cell focusFieldName];
-	}
-}
-
-- (TimeEntryCell *)getSelectedEntryCell:(NSInteger)row
-{
-	if (row < 0 || row >= [self.timeEntriesTableView numberOfRows])
+	if (indexPath.section < 0 ||  indexPath.section >= self.dataSource.count)
 	{
 		return nil;
 	}
 
-	NSView *latestView = [self.timeEntriesTableView rowViewAtRow:row
-												 makeIfNecessary  :YES];
-
-	if (latestView == nil)
+	id item = [self.collectionView itemAtIndexPath:indexPath];
+	if ([item isKindOfClass:[TimeEntryCell class]])
 	{
-		return nil;
-	}
-
-	self.selectedEntryCell = nil;
-
-	for (NSView *subview in [latestView subviews])
-	{
-		if ([subview isKindOfClass:[TimeEntryCell class]] || [subview isKindOfClass:[TimeEntryCellWithHeader class]])
-		{
-			self.selectedEntryCell = (TimeEntryCell *)subview;
-			return self.selectedEntryCell;
-		}
+		return item;
 	}
 	return nil;
 }
 
 - (void)clearLastSelectedEntry
 {
-	[self.selectedEntryCell setupGroupMode];
+	[[self.collectionView getSelectedEntryCell] setupGroupMode];
 }
 
 - (void)resetEditPopoverSize:(NSNotification *)notification
@@ -551,20 +382,6 @@ extern void *ctx;
 	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kResetEditPopover
 																object:nil];
 	[self setDefaultPopupSize];
-}
-
-- (void)tableViewSelectionDidChange:(NSNotification *)notification
-{
-	NSInteger selectedRow = [self.timeEntriesTableView selectedRow];
-
-	if (selectedRow < 0)
-	{
-		return;
-	}
-	NSTableRowView *rowView = [self.timeEntriesTableView rowViewAtRow:selectedRow
-													  makeIfNecessary  :NO];
-	[rowView setEmphasized:NO];
-	[rowView setSelected:NO];
 }
 
 - (void)resizing:(NSSize)n
@@ -631,7 +448,7 @@ extern void *ctx;
 		}
 		else
 		{
-			[self.selectedEntryCell openEdit];
+			[[self.collectionView getSelectedEntryCell] openEdit];
 		}
 
 		[self setDefaultPopupSize];
@@ -674,29 +491,28 @@ extern void *ctx;
 
 - (void)focusListing:(NSNotification *)notification
 {
-	if (self.timeEntriesTableView.numberOfRows == 0)
+	if (self.dataSource.count == 0)
 	{
 		return;
 	}
 
+	NSIndexPath *selectedIndexpath = [self.collectionView.selectionIndexPaths.allObjects firstObject];
     // If list is focused with keyboard shortcut
 	if (notification != nil && !self.timeEntrypopover.shown)
 	{
 		[self clearLastSelectedEntry];
-		self.lastSelectedRowIndex = 0;
+		selectedIndexpath = [NSIndexPath indexPathForItem:0 inSection:0];
 	}
 
-	if ([self.timeEntriesTableView numberOfRows] < self.lastSelectedRowIndex)
+	if (selectedIndexpath == nil)
 	{
 		return;
 	}
 
-	NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:self.lastSelectedRowIndex];
+	[[self.collectionView window] makeFirstResponder:self.collectionView];
+	[self.collectionView selectItemsAtIndexPaths:[NSSet setWithObject:selectedIndexpath] scrollPosition:NSCollectionViewScrollPositionTop];
 
-	[[self.timeEntriesTableView window] makeFirstResponder:self.timeEntriesTableView];
-	[self.timeEntriesTableView selectRowIndexes:indexSet byExtendingSelection:NO];
-
-	TimeEntryCell *cell = [self getSelectedEntryCell:self.lastSelectedRowIndex];
+	TimeEntryCell *cell = [self getTimeEntryCellAtIndexPath:selectedIndexpath];
 	if (cell != nil)
 	{
 		[self clearLastSelectedEntry];
@@ -714,72 +530,35 @@ extern void *ctx;
 	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kFocusTimer
 																object:nil];
 	[self clearLastSelectedEntry];
-	self.lastSelectedRowIndex = -1;
-	[self.timeEntriesTableView deselectAll:nil];
-	self.selectedEntryCell = nil;
+	[self.collectionView deselectAll:nil];
 }
 
 #pragma mark Drag & Drop Delegates
 
-- (BOOL)       tableView:(NSTableView *)aTableView
-	writeRowsWithIndexes:(NSIndexSet *)rowIndexes
-			toPasteboard:(NSPasteboard *)pboard
-{
-	if (aTableView == self.timeEntriesTableView)
-	{
-        // Disable drag and drop for load more and group row
-		TimeEntryViewItem *model = [self.viewitems objectAtIndex:[rowIndexes firstIndex]];
-		if ([model loadMore] || model.Group)
-		{
-			return NO;
-		}
-		NSData *data = [NSKeyedArchiver archivedDataWithRootObject:rowIndexes];
-		[pboard declareTypes:[NSArray arrayWithObject:NSStringPboardType] owner:self];
-		[pboard setData:data forType:NSStringPboardType];
-		return YES;
-	}
-	else
-	{
-		return NO;
-	}
+- (void)effectiveAppearanceChangedNotification {
+    // Re-draw hard-code color sheme for all cells in tableview
+	[self.collectionView reloadData];
 }
 
-- (NSDragOperation)tableView:(NSTableView *)tv
-				validateDrop:(id )info
-				 proposedRow:(NSInteger)row
-	   proposedDropOperation:(NSTableViewDropOperation)op
-{
-	return NSDragOperationMove;
+- (void)windowSizeDidChange {
+    // We have to reload entire collection rather than calling [self.collectionView.collectionViewLayout invalidateLayout];
+    // Because it's difficult to re-draw the mask for highlight state of TimeEntryCell
+    // -invalidateLayout is more better in term of performance
+    // User is rarely to resize the app, so I believe it's reasonable.
+	[self.collectionView reloadData];
 }
 
-- (BOOL)tableView:(NSTableView *)tv
-	   acceptDrop:(id )info
-			  row:(NSInteger)row
-	dropOperation:(NSTableViewDropOperation)op
-{
-	NSPasteboard *pboard = [info draggingPasteboard];
+- (BOOL)collectionView:(NSCollectionView *_Nonnull)collectionView acceptDrop:(id<NSDraggingInfo> _Nonnull)draggingInfo indexPath:(NSIndexPath *_Nonnull)indexPath dropOperation:(enum NSCollectionViewDropOperation)dropOperation {
+	NSPasteboard *pboard = [draggingInfo draggingPasteboard];
 	NSData *rowData = [pboard dataForType:NSStringPboardType];
-	NSIndexSet *rowIndexes =
-		[NSKeyedUnarchiver unarchiveObjectWithData:rowData];
-	NSInteger dragRow = [rowIndexes firstIndex];
-	int dateIndex = (int)row - 1;
+	NSIndexPath *moveIndexPath = [NSKeyedUnarchiver unarchiveObjectWithData:rowData];
 
-	if (([info draggingSource] == self.timeEntriesTableView) & (tv == self.timeEntriesTableView) && row != dragRow)
+    // Updating the dropped item date
+	TimeEntryViewItem *dateModel = [self.dataSource objectAt:indexPath];
+	TimeEntryViewItem *currentModel = [self.dataSource objectAt:moveIndexPath];
+
+	if (dateModel != nil && currentModel != nil && !dateModel.loadMore && !currentModel.loadMore)
 	{
-		if (row == 0)
-		{
-			dateIndex = (int)row + 1;
-		}
-
-        // Updating the dropped item date
-		TimeEntryViewItem *dateModel = [self.viewitems objectAtIndex:dateIndex];
-		TimeEntryViewItem *currentModel = [self.viewitems objectAtIndex:dragRow];
-
-		if ([dateModel loadMore])
-		{
-			dateModel = [self.viewitems objectAtIndex:dateIndex - 1];
-		}
-
 		NSCalendar *calendar = [NSCalendar currentCalendar];
 		NSDateComponents *components = [calendar components:(NSCalendarUnitHour | NSCalendarUnitMinute) fromDate:currentModel.started];
 		NSInteger hours = [components hour];
@@ -800,17 +579,28 @@ extern void *ctx;
 	return YES;
 }
 
-- (void)tableView:(NSTableView *)tableView draggingSession:(NSDraggingSession *)session willBeginAtPoint:(NSPoint)screenPoint forRowIndexes:(NSIndexSet *)rowIndexes
-{
-	TimeEntryCell *cellView = [self.timeEntriesTableView viewAtColumn:0 row:rowIndexes.firstIndex makeIfNecessary:NO];
+- (void)collectionView:(NSCollectionView *_Nonnull)collectionView draggingSession:(NSDraggingSession *_Nonnull)session willBeginAt:(NSPoint)screenPoint forItemsAt:(NSSet<NSIndexPath *> *_Nonnull)indexPaths {
+	NSIndexPath *indexPath = indexPaths.allObjects.firstObject;
 
+	if (indexPath == nil)
+	{
+		return;
+	}
+
+	NSCollectionViewItem *item = [collectionView itemAtIndexPath:indexPath];
+	if (![item isKindOfClass:[TimeEntryCell class]])
+	{
+		return;
+	}
+
+	TimeEntryCell *cellView = (TimeEntryCell *)item;
 	if (cellView)
 	{
 		[session enumerateDraggingItemsWithOptions:NSDraggingItemEnumerationConcurrent
-										   forView:tableView
+										   forView:collectionView
 										   classes:[NSArray arrayWithObject:[NSPasteboardItem class]]
 									 searchOptions:@{}
-										usingBlock:^(NSDraggingItem *draggingItem, NSInteger idx, BOOL *stop)
+										usingBlock:^(NSDraggingItem *_Nonnull draggingItem, NSInteger idx, BOOL *_Nonnull stop)
 		 {
              // prepare context
 			 NSGraphicsContext *theContext = [NSGraphicsContext currentContext];
@@ -828,22 +618,28 @@ extern void *ctx;
 
              // define a shadow
 			 NSShadow *shadow = [NSShadow new];
-			 shadow.shadowColor = [[NSColor lightGrayColor] colorWithAlphaComponent:0.2];
+			 shadow.shadowColor = [[NSColor lightGrayColor] colorWithAlphaComponent:0.1];
 			 shadow.shadowOffset = NSMakeSize(imageOffset, -imageOffset);
-			 shadow.shadowBlurRadius = 3;
+			 shadow.shadowBlurRadius = 8;
 			 [shadow set];
 
              // define content frame
 			 NSRect contentFrame = NSMakeRect(0, imageOffset, contentSize.width, contentSize.height);
 			 NSBezierPath *contentPath = [NSBezierPath bezierPathWithRect:contentFrame];
-
-             // draw content border and shadow
-			 [[[NSColor lightGrayColor] colorWithAlphaComponent:0.6] set];
-			 [contentPath stroke];
 			 [theContext restoreGraphicsState];
 
+			 NSColor *backgroundColor;
+			 if (@available(macOS 10.13, *))
+			 {
+				 backgroundColor = [NSColor colorNamed:@"white-background-hover-color"];
+			 }
+			 else
+			 {
+				 backgroundColor = [ConvertHexColor hexCodeToNSColor:@"#f9f9f9"];
+			 }
+
              // fill content
-			 [[NSColor whiteColor] set];
+			 [backgroundColor set];
 			 contentPath = [NSBezierPath bezierPathWithRect:NSInsetRect(contentFrame, 1, 1)];
 			 [contentPath fill];
 
@@ -871,11 +667,6 @@ extern void *ctx;
 			 };
 		 }];
 	}
-}
-
-- (void)effectiveAppearanceChangedNotification {
-    // Re-draw hard-code color sheme for all cells in tableview
-	[self.timeEntriesTableView reloadData];
 }
 
 @end

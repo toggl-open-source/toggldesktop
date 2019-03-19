@@ -9,7 +9,6 @@
 #import "NSUnstripedTableView.h"
 #include <Carbon/Carbon.h>
 #import "TimeEntryCell.h"
-#import "TimeEntryCellWithHeader.h"
 #import "UIEvents.h"
 #import "TogglDesktop-Swift.h"
 
@@ -79,7 +78,7 @@ extern void *ctx;
 
 	for (NSView *subview in [latestView subviews])
 	{
-		if ([subview isKindOfClass:[TimeEntryCell class]] || [subview isKindOfClass:[TimeEntryCellWithHeader class]])
+		if ([subview isKindOfClass:[TimeEntryCell class]])
 		{
 			return (TimeEntryCell *)subview;
 		}
