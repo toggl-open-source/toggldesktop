@@ -10,9 +10,13 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class TimeEntryCell;
+
 @interface TimeEntryCollectionView : NSCollectionView
 
 @property (strong, nonatomic) NSIndexPath *clickedIndexPath;
+
+- (TimeEntryCell *)getSelectedEntryCell;
 
 @end
 

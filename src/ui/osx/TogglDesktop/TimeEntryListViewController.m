@@ -34,7 +34,6 @@ static NSString *kFrameKey = @"frame";
 @property NSInteger addedHeight;
 @property NSInteger minimumEditFormWidth;
 @property BOOL runningEdit;
-@property TimeEntryCell *selectedEntryCell;
 @property (copy, nonatomic) NSString *lastSelectedGUID;
 @property (nonatomic, strong) IBOutlet TimeEntryEditViewController *timeEntryEditViewController;
 @property (weak) IBOutlet TimeEntryCollectionView *collectionView;
@@ -278,7 +277,8 @@ extern void *ctx;
 	}
 
     // Adjus the position of arrow
-	NSRect positionRect = [self positionRectOfSelectedRowAtIndexPath:indexPath];
+	TimeEntryCell *cell = [self getTimeEntryCellAtIndexPath:indexPath];
+	NSRect positionRect = [self positionRectForItem:cell];
 	self.timeEntrypopover.positioningRect = positionRect;
 
     // Scroll to visible selected row
@@ -289,10 +289,7 @@ extern void *ctx;
 	}
 
     // Hightlight selected cell
-	if (self.selectedEntryCell)
-	{
-		[self.selectedEntryCell setFocused];
-	}
+	[[self.collectionView getSelectedEntryCell] setFocused];
 }
 
 - (void)resetEditPopover:(NSNotification *)notification
@@ -315,16 +312,14 @@ extern void *ctx;
 
 	NSLog(@"TimeEntryListViewController displayTimeEntryEditor, thread %@", [NSThread currentThread]);
 
-    // Get selected index
-	NSIndexPath *clickedIndexPath = self.collectionView.clickedIndexPath;
-
 	if (cmd.open)
 	{
 		self.timeEntrypopover.contentViewController = self.timeEntrypopoverViewController;
 		self.runningEdit = (cmd.timeEntry.duration_in_seconds < 0);
 
 		NSView *ofView = self.view;
-		CGRect positionRect = [self positionRectOfSelectedRowAtIndexPath:clickedIndexPath];
+		TimeEntryCell *selectedCell = [self.collectionView getSelectedEntryCell];
+		CGRect positionRect = [self positionRectForItem:selectedCell];
 
 		if (self.runningEdit)
 		{
@@ -332,9 +327,9 @@ extern void *ctx;
 			positionRect = [ofView bounds];
 			self.lastSelectedGUID = nil;
 		}
-		else if (self.selectedEntryCell && [self.selectedEntryCell isKindOfClass:[TimeEntryCell class]])
+		else if (selectedCell != nil)
 		{
-			self.lastSelectedGUID = ((TimeEntryCell *)self.selectedEntryCell).GUID;
+			self.lastSelectedGUID = selectedCell.GUID;
 			ofView = self.collectionView;
 		}
 
@@ -348,16 +343,13 @@ extern void *ctx;
 	}
 }
 
-- (CGRect)positionRectOfSelectedRowAtIndexPath:(NSIndexPath *)indexPath {
-	TimeEntryCell *selectedCell = [self getSelectedEntryCellWithIndexPath:indexPath];
-	NSRect positionRect = self.view.bounds;
-
-	if (selectedCell)
+- (CGRect)positionRectForItem:(TimeEntryCell *)timeEntry {
+	if (timeEntry)
 	{
-		positionRect = [self.collectionView convertRect:selectedCell.view.bounds
-											   fromView:selectedCell.view];
+		return [self.collectionView convertRect:timeEntry.view.bounds
+									   fromView:timeEntry.view];
 	}
-	return positionRect;
+	return self.view.bounds;;
 }
 
 - (void)startDisplayTimeEntryEditor:(NSNotification *)notification
@@ -365,27 +357,24 @@ extern void *ctx;
 	[self displayTimeEntryEditor:notification.object];
 }
 
-- (TimeEntryCell *)getSelectedEntryCellWithIndexPath:(NSIndexPath *)indexPath
+- (TimeEntryCell *)getTimeEntryCellAtIndexPath:(NSIndexPath *)indexPath
 {
 	if (indexPath.section < 0 ||  indexPath.section >= self.dataSource.count)
 	{
 		return nil;
 	}
 
-	self.selectedEntryCell = nil;
-
 	id item = [self.collectionView itemAtIndexPath:indexPath];
 	if ([item isKindOfClass:[TimeEntryCell class]])
 	{
-		self.selectedEntryCell = (TimeEntryCell *)item;
-		return self.selectedEntryCell;
+		return item;
 	}
 	return nil;
 }
 
 - (void)clearLastSelectedEntry
 {
-	[self.selectedEntryCell setupGroupMode];
+	[[self.collectionView getSelectedEntryCell] setupGroupMode];
 }
 
 - (void)resetEditPopoverSize:(NSNotification *)notification
@@ -459,7 +448,7 @@ extern void *ctx;
 		}
 		else
 		{
-			[self.selectedEntryCell openEdit];
+			[[self.collectionView getSelectedEntryCell] openEdit];
 		}
 
 		[self setDefaultPopupSize];
@@ -523,7 +512,7 @@ extern void *ctx;
 	[[self.collectionView window] makeFirstResponder:self.collectionView];
 	[self.collectionView selectItemsAtIndexPaths:[NSSet setWithObject:selectedIndexpath] scrollPosition:NSCollectionViewScrollPositionTop];
 
-	TimeEntryCell *cell = [self getSelectedEntryCellWithIndexPath:selectedIndexpath];
+	TimeEntryCell *cell = [self getTimeEntryCellAtIndexPath:selectedIndexpath];
 	if (cell != nil)
 	{
 		[self clearLastSelectedEntry];
@@ -542,7 +531,6 @@ extern void *ctx;
 																object:nil];
 	[self clearLastSelectedEntry];
 	[self.collectionView deselectAll:nil];
-	self.selectedEntryCell = nil;
 }
 
 #pragma mark Drag & Drop Delegates
