@@ -80,8 +80,8 @@ extern void *ctx;
 - (void)prepareForReuse {
 	[super prepareForReuse];
 	self.continueButton.hidden = YES;
+	self.backgroundBox.transparent = YES;
 	[self resetMask];
-	[self updateHoverState:NO];
 }
 
 - (void)mouseEntered:(NSEvent *)event

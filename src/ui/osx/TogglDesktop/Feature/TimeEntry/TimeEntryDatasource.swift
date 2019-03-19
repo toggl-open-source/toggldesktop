@@ -165,14 +165,20 @@ class TimeEntryDatasource: NSObject {
     }
 
     private func reload(with sections: [TimeEntrySection]) {
-        let selection = collectionView.selectionIndexPaths
+        let lastSelection = Array(collectionView.selectionIndexPaths).last
 
         self.sections.removeAll()
         self.sections.append(contentsOf: sections)
         collectionView.reloadData()
 
         // Reselect cell with no animation
-        collectionView.selectItems(at: selection, scrollPosition: [])
+        if let lastSelection = lastSelection {
+            DispatchQueue.main.async {
+                let lastIndexpaths = Set<IndexPath>(arrayLiteral: lastSelection)
+                self.collectionView.deselectAll(self.collectionView)
+                self.collectionView.selectItems(at: lastIndexpaths, scrollPosition: [])
+            }
+        }
 
         //TODO: Refactor the hack code
         // Only happen If we enable "Show ScrollBar" is "Always" or "Auto"
