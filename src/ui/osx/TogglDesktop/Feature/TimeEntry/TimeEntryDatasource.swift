@@ -165,19 +165,21 @@ class TimeEntryDatasource: NSObject {
     }
 
     private func reload(with sections: [TimeEntrySection]) {
-        let lastSelection = Array(collectionView.selectionIndexPaths).last
+
+        // Find the GUID of selection cell
+        var guid: String?
+        if let lastSelection = Array(collectionView.selectionIndexPaths).last,
+            let cell = collectionView.item(at: lastSelection) as? TimeEntryCell {
+            guid = cell.guid
+        }
 
         self.sections.removeAll()
         self.sections.append(contentsOf: sections)
         collectionView.reloadData()
 
         // Reselect cell with no animation
-        if let lastSelection = lastSelection {
-            DispatchQueue.main.async {
-                let lastIndexpaths = Set<IndexPath>(arrayLiteral: lastSelection)
-                self.collectionView.deselectAll(self.collectionView)
-                self.collectionView.selectItems(at: lastIndexpaths, scrollPosition: [])
-            }
+        if let guid = guid {
+            reselectTimeEntryRow(with: guid)
         }
 
         //TODO: Refactor the hack code
@@ -189,7 +191,32 @@ class TimeEntryDatasource: NSObject {
             self.collectionView.collectionViewLayout?.invalidateLayout()
         }
     }
-    
+
+    private func reselectTimeEntryRow(with guid: String) {
+
+        // Prevent jump
+        DispatchQueue.main.async {
+
+            // Find the cell with samw GUID
+            let cell = self.collectionView.visibleItems().first(where:{ (item) in
+                if let cell = item as? TimeEntryCell {
+                    if cell.guid == guid {
+                        return true
+                    }
+                }
+                return false
+            })
+
+            // Select if the cell is available
+            // Prevent invalid selection if we delete cell
+            if let cell = cell,
+                let index = self.collectionView.indexPath(for: cell) {
+                self.collectionView.selectItems(at:  Set<IndexPath>(arrayLiteral: index),
+                                                scrollPosition: [])
+            }
+        }
+    }
+
     fileprivate func sectionItem(at section: Int) -> TimeEntrySection {
         return queue.sync(flags: .barrier) {
             return sections[section]
