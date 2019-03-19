@@ -11,6 +11,9 @@ TimeEntryListWidget::TimeEntryListWidget(QStackedWidget *parent) : QWidget(paren
 ui(new Ui::TimeEntryListWidget) {
     ui->setupUi(this);
 
+    connect(ui->list, &QListWidget::currentRowChanged, [=](int row){
+        qCritical() << row;
+    });
 
     connect(TogglApi::instance, SIGNAL(displayLogin(bool,uint64_t)),  // NOLINT
             this, SLOT(displayLogin(bool,uint64_t)));  // NOLINT
@@ -79,7 +82,7 @@ void TimeEntryListWidget::displayTimeEntryList(
 
         if (!item) {
             item = new QListWidgetItem();
-            cell = new TimeEntryCellWidget();
+            cell = new TimeEntryCellWidget(item);
 
             ui->list->addItem(item);
             ui->list->setItemWidget(item, cell);
@@ -119,7 +122,7 @@ void TimeEntryListWidget::showLoadMoreButton(int size) {
 
     if (!item) {
         item = new QListWidgetItem();
-        cell = new TimeEntryCellWidget();
+        cell = new TimeEntryCellWidget(item);
 
         ui->list->addItem(item);
         ui->list->setItemWidget(item, cell);

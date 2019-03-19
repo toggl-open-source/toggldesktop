@@ -12,11 +12,13 @@ namespace Ui {
 class TimeEntryCellWidget;
 }
 
+class QListWidgetItem;
+
 class TimeEntryCellWidget : public QWidget {
     Q_OBJECT
 
  public:
-    TimeEntryCellWidget();
+    TimeEntryCellWidget(QListWidgetItem *item);
     ~TimeEntryCellWidget();
 
     void display(TimeEntryView *view);
@@ -30,6 +32,8 @@ class TimeEntryCellWidget : public QWidget {
     void deleteTimeEntry();
 
  protected:
+    virtual bool eventFilter(QObject *watched, QEvent *event) override;
+    virtual void focusInEvent(QFocusEvent *event) override;
     virtual void keyPressEvent(QKeyEvent *event) override;
     virtual void resizeEvent(QResizeEvent *) override;
 
@@ -41,6 +45,7 @@ class TimeEntryCellWidget : public QWidget {
 
  private:
     Ui::TimeEntryCellWidget *ui;
+    QListWidgetItem *item;
 
     QString description;
     QString project;

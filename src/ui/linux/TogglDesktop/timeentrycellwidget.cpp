@@ -5,11 +5,13 @@
 
 #include <QKeyEvent>
 #include <QMessageBox>
+#include <QListWidgetItem>
 
 #include "./toggl.h"
 
-TimeEntryCellWidget::TimeEntryCellWidget() : QWidget(nullptr),
+TimeEntryCellWidget::TimeEntryCellWidget(QListWidgetItem *item) : QWidget(nullptr),
 ui(new Ui::TimeEntryCellWidget),
+item(item),
 description(""),
 project(""),
 guid(""),
@@ -17,6 +19,7 @@ group(false),
 groupName(""),
 confirmlessDelete(false) {
     ui->setupUi(this);
+    ui->dataFrame->installEventFilter(this);
     setStyleSheet(
         "* { font-size: 13px }"
         "QFrame { background-color:transparent; border:none; margin:0 }"
@@ -108,6 +111,17 @@ void TimeEntryCellWidget::deleteTimeEntry() {
         QMessageBox::Ok|QMessageBox::Cancel).exec()) {
         TogglApi::instance->deleteTimeEntry(guid);
     }
+}
+
+bool TimeEntryCellWidget::eventFilter(QObject *watched, QEvent *event) {
+    if (event->type() == QEvent::FocusIn) {
+        focusInEvent(reinterpret_cast<QFocusEvent*>(event));
+    }
+    return QWidget::eventFilter(watched, event);
+}
+
+void TimeEntryCellWidget::focusInEvent(QFocusEvent *event) {
+    item->listWidget()->scrollToItem(item, QAbstractItemView::PositionAtCenter);
 }
 
 void TimeEntryCellWidget::keyPressEvent(QKeyEvent *event) {
