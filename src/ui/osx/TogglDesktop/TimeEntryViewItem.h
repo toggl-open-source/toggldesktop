@@ -47,8 +47,6 @@
 @property (copy, nonatomic) NSString *Error;
 // if the item is load more row
 @property (assign, nonatomic) BOOL loadMore;
-// if item can be deleted without confirm
-@property (assign, nonatomic) BOOL confirmlessDelete;
 // Grouped Mode attributes
 // If entry is group header
 @property (assign, nonatomic) BOOL Group;
@@ -62,5 +60,7 @@
 @property (assign, nonatomic) uint64_t GroupItemCount;
 
 - (NSString *)descriptionEntry;
+// if item can be deleted without confirm
+- (BOOL)confirmlessDelete;
 
 @end

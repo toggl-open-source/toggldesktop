@@ -161,7 +161,7 @@ extern void *ctx;
 {
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
-	self.confirmless_delete = view_item.confirmlessDelete;
+	self.confirmless_delete = [view_item confirmlessDelete];
 
 	self.GUID = view_item.GUID;
 	self.durationTextField.stringValue = view_item.duration;
