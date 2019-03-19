@@ -7,6 +7,7 @@
 #include <QCompleter>  // NOLINT
 #include <QKeyEvent>  // NOLINT
 #include <QMessageBox>  // NOLINT
+#include <QKeyEvent>  // NOLINT
 
 #include "./autocompletelistmodel.h"
 #include "./autocompleteview.h"

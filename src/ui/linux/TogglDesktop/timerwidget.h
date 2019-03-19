@@ -33,7 +33,7 @@ class TimerWidget : public QFrame {
     void buttonClicked();
 
  protected:
-    void mousePressEvent(QMouseEvent *event);
+    void mousePressEvent(QMouseEvent *event) override;
     void resizeEvent(QResizeEvent *) override;
     bool eventFilter(QObject *obj, QEvent *event);
 

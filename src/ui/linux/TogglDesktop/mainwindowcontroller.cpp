@@ -49,6 +49,7 @@ MainWindowController::MainWindowController(
   networkManagement(new NetworkManagement(this)),
   shortcutDelete(QKeySequence(Qt::CTRL + Qt::Key_Delete), this),
   shortcutPause(QKeySequence(Qt::CTRL + Qt::Key_Space), this),
+  shortcutConfirm(QKeySequence(Qt::CTRL + Qt::Key_Return), this),
   ui_started(false) {
     ui->setupUi(this);
 
@@ -318,6 +319,29 @@ void MainWindowController::onShortcutPause() {
     }
 }
 
+void MainWindowController::onShortcutConfirm() {
+    auto w = focusWidget();
+    while (w) {
+        auto timer = qobject_cast<TimerWidget*>(w);
+        auto timeEntryList = qobject_cast<TimeEntryListWidget*>(w);
+        auto timeEntryEdit = qobject_cast<TimeEntryEditorWidget*>(w);
+        if (timer) {
+            TogglApi::instance->editRunningTimeEntry("");
+            return;
+        }
+        else if (timeEntryList) {
+            QString selectedGuid = timeEntryList->highlightedCell() ? timeEntryList->highlightedCell()->entryGuid() : QString();
+            TogglApi::instance->editTimeEntry(selectedGuid, "");
+            return;
+        }
+        else if (timeEntryEdit) {
+            timeEntryEdit->clickDone();
+            return;
+        }
+        w = w->parentWidget();
+    }
+}
+
 void MainWindowController::setShortcuts() {
     showHide = new QxtGlobalShortcut(this);
     connect(showHide, SIGNAL(activated()),
@@ -335,6 +359,8 @@ void MainWindowController::setShortcuts() {
             this, &MainWindowController::onShortcutDelete);
     connect(&shortcutPause, &QShortcut::activated,
             this, &MainWindowController::onShortcutPause);
+    connect(&shortcutConfirm, &QShortcut::activated,
+            this, &MainWindowController::onShortcutConfirm);
 }
 
 void MainWindowController::connectMenuActions() {

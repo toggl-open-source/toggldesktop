@@ -102,6 +102,11 @@ void TimeEntryEditorWidget::deleteTimeEntry() {
     }
 }
 
+void TimeEntryEditorWidget::clickDone()
+{
+    on_doneButton_clicked();
+}
+
 void TimeEntryEditorWidget::displayClientSelect(
     QVector<GenericView *> list) {
     clientSelectUpdate = list;

@@ -33,6 +33,7 @@ class TimeEntryEditorWidget : public QWidget {
 
  public slots:
     void deleteTimeEntry();
+    void clickDone();
 
  private:
     Ui::TimeEntryEditorWidget *ui;

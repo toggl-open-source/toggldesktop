@@ -98,6 +98,7 @@ class MainWindowController : public QMainWindow {
 
     void onShortcutDelete();
     void onShortcutPause();
+    void onShortcutConfirm();
 
  private:
     Ui::MainWindowController *ui;
@@ -128,6 +129,7 @@ class MainWindowController : public QMainWindow {
 
     QShortcut shortcutDelete;
     QShortcut shortcutPause;
+    QShortcut shortcutConfirm;
 
     void readSettings();
     void writeSettings();
