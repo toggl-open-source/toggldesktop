@@ -28,7 +28,8 @@
 @property (weak) IBOutlet DotImageView *dotView;
 @property (weak) IBOutlet NSLayoutConstraint *projectConstrainLeading;
 @property (weak) IBOutlet NSBox *horizontalLine;
-
+@property (strong, nonatomic) NSColor *backgroundColor;
+@property (strong, nonatomic) NSColor *selectedSubItemBackgroundColor;
 @end
 
 @implementation TimeEntryCell
@@ -38,10 +39,6 @@ extern void *ctx;
 - (void)setSelected:(BOOL)selected {
 	[super setSelected:selected];
 	self.continueButton.hidden = !selected;
-	if (self.cellType == CellTypeSubItemInGroup)
-	{
-		return;
-	}
 	if (selected)
 	{
 		[self setFocused];
@@ -67,6 +64,17 @@ extern void *ctx;
 															 owner:self
 														  userInfo:nil];
 	[self.view addTrackingArea:tracking];
+
+	if (@available(macOS 10.13, *))
+	{
+		self.backgroundColor = [NSColor colorNamed:@"white-background-hover-color"];
+		self.selectedSubItemBackgroundColor = [NSColor colorNamed:@"subitem-background-selected-color"];
+	}
+	else
+	{
+		self.backgroundColor = [ConvertHexColor hexCodeToNSColor:@"#f9f9f9"];
+		self.selectedSubItemBackgroundColor = [ConvertHexColor hexCodeToNSColor:@"#e8e8e8"];
+	}
 }
 
 - (void)prepareForReuse {
@@ -113,17 +121,23 @@ extern void *ctx;
 	if (isHover)
 	{
 		self.backgroundBox.transparent = NO;
-		if (@available(macOS 10.13, *))
+		if (self.cellType == CellTypeSubItemInGroup)
 		{
-			self.backgroundBox.fillColor = [NSColor colorNamed:@"white-background-hover-color"];
+			if (self.isSelected)
+			{
+				self.backgroundBox.fillColor = self.selectedSubItemBackgroundColor;
+				return;
+			}
 		}
-		else
-		{
-			self.backgroundBox.fillColor = [ConvertHexColor hexCodeToNSColor:@"#f9f9f9"];
-		}
+		self.backgroundBox.fillColor = self.backgroundColor;
 	}
 	else
 	{
+		if (self.cellType == CellTypeSubItemInGroup)
+		{
+			self.backgroundBox.fillColor = self.backgroundColor;
+			return;
+		}
 		self.backgroundBox.transparent = YES;
 	}
 }
@@ -325,8 +339,6 @@ extern void *ctx;
 	NSRect rect = [self.view.window convertRectFromScreen:NSMakeRect(globalLocation.x, globalLocation.y, 0, 0)];
 	NSPoint windowLocation = rect.origin;
 	NSPoint mouseLocation = [self.view convertPoint:windowLocation fromView:nil];
-
-	[self setFocused];
 
 	if (NSPointInRect(mouseLocation, self.projectTextField.frame))
 	{
