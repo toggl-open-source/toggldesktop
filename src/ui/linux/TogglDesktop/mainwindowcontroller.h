@@ -97,6 +97,7 @@ class MainWindowController : public QMainWindow {
     void onOnlineStateChanged();
 
     void onShortcutDelete();
+    void onShortcutPause();
 
  private:
     Ui::MainWindowController *ui;
@@ -126,6 +127,7 @@ class MainWindowController : public QMainWindow {
     NetworkManagement *networkManagement;
 
     QShortcut shortcutDelete;
+    QShortcut shortcutPause;
 
     void readSettings();
     void writeSettings();

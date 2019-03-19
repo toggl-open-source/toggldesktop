@@ -16,6 +16,7 @@ namespace Ui {
 class TimeEntryListWidget;
 }
 
+class TimeEntryCellWidget;
 class TimerWidget;
 
 class TimeEntryListWidget : public QWidget {
@@ -27,6 +28,7 @@ class TimeEntryListWidget : public QWidget {
 
     void display();
 
+    TimeEntryCellWidget *highlightedCell();
     TimerWidget *timer();
 
  private slots:  // NOLINT

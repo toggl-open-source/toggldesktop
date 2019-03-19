@@ -24,6 +24,8 @@ class TimerWidget : public QFrame {
     explicit TimerWidget(QWidget *parent = 0);
     ~TimerWidget();
 
+    QString currentEntryGuid();
+
  public slots:
     void deleteTimeEntry();
 

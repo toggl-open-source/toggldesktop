@@ -24,6 +24,8 @@ class TimeEntryCellWidget : public QWidget {
     void labelClicked(QString field_name);
     void setLoadMore(bool load_more);
 
+    QString entryGuid();
+
  public slots:
     void deleteTimeEntry();
 

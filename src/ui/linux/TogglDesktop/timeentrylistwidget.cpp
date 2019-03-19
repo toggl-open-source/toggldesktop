@@ -29,6 +29,17 @@ void TimeEntryListWidget::display() {
     qobject_cast<QStackedWidget*>(parent())->setCurrentWidget(this);
 }
 
+TimeEntryCellWidget *TimeEntryListWidget::highlightedCell() {
+    auto w = focusWidget();
+    while (w) {
+        auto cell = qobject_cast<TimeEntryCellWidget*>(w);
+        if (cell)
+            return cell;
+        w = w->parentWidget();
+    }
+    return nullptr;
+}
+
 TimerWidget *TimeEntryListWidget::timer() {
     return ui->timer;
 }

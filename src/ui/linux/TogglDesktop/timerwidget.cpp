@@ -73,6 +73,10 @@ TimerWidget::~TimerWidget() {
     delete ui;
 }
 
+QString TimerWidget::currentEntryGuid() {
+    return guid;
+}
+
 void TimerWidget::deleteTimeEntry() {
     if (guid.isEmpty())
         return;

@@ -93,6 +93,10 @@ void TimeEntryCellWidget::setLoadMore(bool load_more) {
     }
 }
 
+QString TimeEntryCellWidget::entryGuid() {
+    return guid;
+}
+
 void TimeEntryCellWidget::deleteTimeEntry() {
     if (guid.isEmpty())
         return;
