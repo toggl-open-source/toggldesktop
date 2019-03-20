@@ -95,10 +95,6 @@ class TimeEntryDatasource: NSObject {
         registerAllCells()
         initCommon()
     }
-
-    var count: Int {
-        return sections.count
-    }
     
     // MARK: Public
 
