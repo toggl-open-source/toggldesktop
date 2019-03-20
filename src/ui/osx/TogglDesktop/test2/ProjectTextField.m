@@ -12,6 +12,18 @@
 
 @implementation ProjectTextField
 
+- (void)mouseDown:(NSEvent *)theEvent
+{
+	if (self.isInTimerBar)
+	{
+		[self sendAction:@selector(textFieldClicked:) to:[self delegate]];
+	}
+	else
+	{
+		[super mouseDown:theEvent];
+	}
+}
+
 - (void)setTitleWithTimeEntry:(TimeEntryViewItem *)item
 {
 	self.textColor = [ConvertHexColor hexCodeToNSColor:item.ProjectColor];
