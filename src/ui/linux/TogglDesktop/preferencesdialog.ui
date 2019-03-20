@@ -13,9 +13,9 @@
   <property name="windowTitle">
    <string>Preferences</string>
   </property>
-  <property name="styleSheet">
-   <string notr="true">color:rgb(85, 85, 85);font-size:13px;</string>
-  </property>
+   <property name="styleSheet">
+    <string notr="true">font-size:13px;</string>
+   </property>
   <layout class="QVBoxLayout" name="verticalLayout_3">
    <item>
     <widget class="QTabWidget" name="tabWidget">
@@ -35,9 +35,6 @@
          <layout class="QGridLayout" name="gridLayout_3" columnstretch="1,0,0">
           <item row="0" column="0">
            <widget class="QCheckBox" name="pomodoroTimer">
-            <property name="styleSheet">
-             <string notr="true">color:rgb(85, 85, 85);</string>
-            </property>
             <property name="text">
              <string>Pomodoro timer</string>
             </property>
@@ -71,9 +68,6 @@
           </item>
           <item row="1" column="0">
            <widget class="QCheckBox" name="pomodoroBreakTimer">
-            <property name="styleSheet">
-             <string notr="true">color:rgb(85, 85, 85);</string>
-            </property>
             <property name="text">
              <string>Pomodoro break timer</string>
             </property>
@@ -136,9 +130,6 @@
        </item>
        <item row="2" column="0">
         <widget class="QCheckBox" name="idleDetection">
-         <property name="styleSheet">
-          <string notr="true">color:rgb(85, 85, 85);</string>
-         </property>
          <property name="text">
           <string>Idle detection</string>
          </property>
@@ -146,9 +137,6 @@
        </item>
        <item row="3" column="0">
         <widget class="QCheckBox" name="recordTimeline">
-         <property name="styleSheet">
-          <string notr="true">color:rgb(85, 85, 85);</string>
-         </property>
          <property name="text">
           <string>Record timeline</string>
          </property>
@@ -190,9 +178,6 @@
             <property name="toolTip">
              <string>Clear shortcut</string>
             </property>
-            <property name="styleSheet">
-             <string notr="true"/>
-            </property>
             <property name="text">
              <string>x</string>
             </property>
@@ -228,9 +213,6 @@
             <property name="toolTip">
              <string>Clear Shortcut</string>
             </property>
-            <property name="styleSheet">
-             <string notr="true"/>
-            </property>
             <property name="text">
              <string>x</string>
             </property>
@@ -238,9 +220,6 @@
           </item>
           <item row="2" column="0">
            <widget class="QCheckBox" name="focusAppOnShortcut">
-            <property name="styleSheet">
-             <string notr="true">color:rgb(85, 85, 85);</string>
-            </property>
             <property name="text">
              <string>Focus app on shortcut</string>
             </property>
@@ -278,9 +257,6 @@
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
         <widget class="QCheckBox" name="useSystemProxySettings">
-         <property name="styleSheet">
-          <string notr="true">color:rgb(85, 85, 85);</string>
-         </property>
          <property name="text">
           <string>Use system proxy settings</string>
          </property>
@@ -376,9 +352,6 @@
        </item>
        <item row="1" column="0">
         <widget class="QCheckBox" name="remindToTrackTime">
-         <property name="styleSheet">
-          <string notr="true">color:rgb(85, 85, 85);</string>
-         </property>
          <property name="text">
           <string>Remind to track time</string>
          </property>
