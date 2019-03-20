@@ -56,7 +56,7 @@ class TimeEntryEditorWidget : public QWidget {
 
     QString previousTagList;
 
-    bool confirmlessDelete;
+    TimeEntryView *timeEntry;
 
     AutocompleteListModel *descriptionModel;
     AutocompleteListModel *projectModel;

@@ -175,6 +175,8 @@ void TimeEntryEditorWidget::displayTimeEntryEditor(
     TimeEntryView *view,
     const QString focused_field_name) {
 
+    timeEntry = view;
+
     if (!ui->description->hasFocus()) {
         ui->description->setEditText(view->Description);
     }
@@ -212,7 +214,6 @@ void TimeEntryEditorWidget::displayTimeEntryEditor(
 
     guid = view->GUID;
     duration = view->DurationInSeconds;
-    confirmlessDelete = view->ConfirmlessDelete;
 
     if (duration < 0) {
         timer->start(1000);
@@ -346,7 +347,7 @@ void TimeEntryEditorWidget::keyPressEvent(QKeyEvent *event) {
 }
 
 void TimeEntryEditorWidget::on_deleteButton_clicked() {
-    if (confirmlessDelete || QMessageBox::Ok == QMessageBox(
+    if (timeEntry->confirmlessDelete() || QMessageBox::Ok == QMessageBox(
         QMessageBox::Question,
         "Delete this time entry?",
         "Deleted time entries cannot be restored.",

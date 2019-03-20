@@ -89,7 +89,6 @@ namespace TogglDesktop
             .Register("EntryBackColor", typeof(Color), typeof(TimeEntryCell), new FrameworkPropertyMetadata(idleBackColor));
 
         public TimeEntryCellDayHeader DayHeader { get; private set; }
-        public bool confirmlessDelete = false;
 
         private readonly ToolTip descriptionToolTip = new ToolTip();
         private readonly ToolTip taskProjectClientToolTip = new ToolTip();
@@ -99,6 +98,7 @@ namespace TogglDesktop
         private Point mouseDownPosition;
         private bool isMouseDown;
         private bool dragging;
+        private long durationInSeconds;
 
         public TimeEntryCell()
         {
@@ -150,9 +150,8 @@ namespace TogglDesktop
             setOptionalTextBlockText(this.labelClient, item.ClientLabel);
             setOptionalTextBlockText(this.labelTask, item.TaskLabel.IsNullOrEmpty() ? "" : item.TaskLabel + " -");
             this.labelDuration.Text = item.Duration;
+            this.durationInSeconds = item.DurationInSeconds;
             this.billabeIcon.ShowOnlyIf(item.Billable);
-
-            this.confirmlessDelete = (item.DurationInSeconds < 15);
 
             if (string.IsNullOrEmpty(item.Tags))
             {
@@ -344,12 +343,26 @@ namespace TogglDesktop
 
         public void DeleteTimeEntry()
         {
-            if (this.confirmlessDelete)
+            if (this.confirmlessDelete())
             {
                 Toggl.DeleteTimeEntry(this.guid);
                 return;
             }
             Toggl.AskToDeleteEntry(this.guid);
+        }
+
+        public bool confirmlessDelete()
+        {
+            if (this.durationInSeconds < 0)
+            {
+                int epoch = (int)(DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalSeconds;
+                Int64 actual_duration = this.durationInSeconds + epoch;
+                return actual_duration < 15;
+            }
+            else
+            {
+                return this.durationInSeconds < 15;
+            }
         }
 
         private void tryStartDrag(MouseEventArgs e, bool ignoreDistance = false)

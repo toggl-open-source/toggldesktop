@@ -135,8 +135,6 @@
 	{
 		self.Error = nil;
 	}
-	// If duration is less than 15 seconds delete without confirmation
-	self.confirmlessDelete = (self.duration_in_seconds < 15);
 
 	// Grouped mode
 
@@ -177,6 +175,19 @@
 
 - (NSString *)descriptionEntry {
 	return self.Description;
+}
+
+- (BOOL)confirmlessDelete
+{
+	if (self.duration_in_seconds < 0)
+	{
+		int64_t actual_duration = self.duration_in_seconds + time(0);
+		return actual_duration < 15;
+	}
+	else
+	{
+		return self.duration_in_seconds < 15;
+	}
 }
 
 @end

@@ -27,7 +27,6 @@ namespace TogglDesktop
         private string selectedClientName;
         private bool isCreatingProject;
         private bool dateSet = false;
-        private bool confirmlessDelete = false;
         public EditView()
         {
             this.DataContext = this;
@@ -101,8 +100,6 @@ namespace TogglDesktop
                 }
 
                 this.timeEntry = timeEntry;
-
-                this.confirmlessDelete = (timeEntry.DurationInSeconds < 15);
 
                 var isCurrentlyRunning = timeEntry.DurationInSeconds < 0;
 
@@ -1036,12 +1033,26 @@ namespace TogglDesktop
 
         private void deleteButton_OnClick(object sender, RoutedEventArgs e)
         {
-            if (this.confirmlessDelete)
+            if (this.confirmlessDelete())
             {
                 Toggl.DeleteTimeEntry(this.timeEntry.GUID);
                 return;
             }
             Toggl.AskToDeleteEntry(this.timeEntry.GUID);
+        }
+
+        private bool confirmlessDelete()
+        {
+            if (this.timeEntry.DurationInSeconds < 0)
+            {
+                int epoch = (int)(DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalSeconds;
+                Int64 actual_duration = this.timeEntry.DurationInSeconds + epoch;
+                return actual_duration < 15;
+            }
+            else
+            {
+                return this.timeEntry.DurationInSeconds < 15;
+            }
         }
 
         #endregion
