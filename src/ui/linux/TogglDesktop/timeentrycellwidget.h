@@ -51,7 +51,7 @@ class TimeEntryCellWidget : public QWidget {
     QString guid;
     bool group;
     QString groupName;
-    bool confirmlessDelete;
+    TimeEntryView *timeEntry;
     QString getProjectColor(QString color);
 
     void setupGroupedMode(TimeEntryView *view);

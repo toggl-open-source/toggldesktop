@@ -17,7 +17,7 @@ project(""),
 guid(""),
 group(false),
 groupName(""),
-confirmlessDelete(false) {
+timeEntry(nullptr) {
     ui->setupUi(this);
     ui->dataFrame->installEventFilter(this);
     setStyleSheet(
@@ -37,7 +37,7 @@ void TimeEntryCellWidget::display(TimeEntryView *view) {
     setLoadMore(false);
     guid = view->GUID;
     groupName = view->GroupName;
-    confirmlessDelete = view->ConfirmlessDelete;
+    timeEntry = view;
     description =
         (view->Description.length() > 0) ?
         view->Description : "(no description)";
@@ -104,7 +104,7 @@ void TimeEntryCellWidget::deleteTimeEntry() {
     if (guid.isEmpty())
         return;
 
-    if (confirmlessDelete || QMessageBox::Ok == QMessageBox(
+    if (timeEntry->confirmlessDelete() || QMessageBox::Ok == QMessageBox(
         QMessageBox::Question,
         "Delete this time entry?",
         "Deleted time entries cannot be restored.",
