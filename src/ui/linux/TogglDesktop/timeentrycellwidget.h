@@ -34,7 +34,6 @@ class TimeEntryCellWidget : public QWidget {
  protected:
     virtual bool eventFilter(QObject *watched, QEvent *event) override;
     virtual void focusInEvent(QFocusEvent *event) override;
-    virtual void keyPressEvent(QKeyEvent *event) override;
     virtual void resizeEvent(QResizeEvent *) override;
 
  private slots:  // NOLINT

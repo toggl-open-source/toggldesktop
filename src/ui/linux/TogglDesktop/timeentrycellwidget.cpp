@@ -124,12 +124,6 @@ void TimeEntryCellWidget::focusInEvent(QFocusEvent *event) {
     item->listWidget()->scrollToItem(item, QAbstractItemView::PositionAtCenter);
 }
 
-void TimeEntryCellWidget::keyPressEvent(QKeyEvent *event) {
-    if (event->key() == Qt::Key_Enter || event->key() == Qt::Key_Return) {
-        ui->dataFrame->click();
-    }
-}
-
 void TimeEntryCellWidget::setupGroupedMode(TimeEntryView *view) {
     // Grouped Mode Setup
     group = view->Group;
