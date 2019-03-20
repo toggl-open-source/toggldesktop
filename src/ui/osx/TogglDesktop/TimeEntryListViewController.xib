@@ -9,6 +9,7 @@
         <customObject id="-2" userLabel="File's Owner" customClass="TimeEntryListViewController">
             <connections>
                 <outlet property="collectionView" destination="96l-2I-0G5" id="P59-lk-PQF"/>
+                <outlet property="emptyViewContainerView" destination="cvV-eB-sdq" id="0ba-Gb-Z90"/>
                 <outlet property="headerView" destination="OXo-Tz-Vbz" id="vDf-yG-fnR"/>
                 <outlet property="timeEntryListScrollView" destination="7TM-hH-4yE" id="MrY-aB-U9C"/>
                 <outlet property="timeEntryPopupEditView" destination="ozl-58-bBU" id="Tv3-fj-eCx"/>
@@ -38,28 +39,21 @@
             <rect key="frame" x="0.0" y="0.0" width="252" height="260"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6qy-lU-tSK" customClass="NSTextFieldClickable">
-                    <rect key="frame" x="-1" y="115" width="254" height="57"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="250" id="XeO-lf-n0a"/>
-                    </constraints>
-                    <textFieldCell key="cell" enabled="NO" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="center" title="Welcome back! Your previous entries are available in the web under reports" id="kLq-fS-jvh">
-                        <font key="font" metaFont="system" size="15"/>
-                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                    </textFieldCell>
-                    <connections>
-                        <outlet property="delegate" destination="-2" id="la5-2j-euY"/>
-                    </connections>
-                </textField>
+                <box hidden="YES" boxType="custom" borderType="none" borderWidth="0.0" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="cvV-eB-sdq">
+                    <rect key="frame" x="0.0" y="0.0" width="252" height="196"/>
+                    <view key="contentView" id="GUd-Hk-gCH">
+                        <rect key="frame" x="0.0" y="0.0" width="252" height="196"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    </view>
+                </box>
                 <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" horizontalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="7TM-hH-4yE">
-                    <rect key="frame" x="0.0" y="0.0" width="252" height="197"/>
+                    <rect key="frame" x="0.0" y="0.0" width="252" height="196"/>
                     <clipView key="contentView" copiesOnScroll="NO" id="x95-7N-Tpm">
-                        <rect key="frame" x="0.0" y="0.0" width="252" height="197"/>
+                        <rect key="frame" x="0.0" y="0.0" width="252" height="196"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView selectable="YES" id="96l-2I-0G5" customClass="TimeEntryCollectionView">
-                                <rect key="frame" x="0.0" y="0.0" width="252" height="197"/>
+                                <rect key="frame" x="0.0" y="0.0" width="252" height="186"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumInteritemSpacing="10" minimumLineSpacing="10" id="wqE-DF-86P" customClass="VertificalTimeEntryFlowLayout" customModule="TogglDesktop" customModuleProvider="target">
                                     <size key="itemSize" width="50" height="50"/>
@@ -73,28 +67,31 @@
                         <rect key="frame" x="-100" y="-100" width="233" height="15"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
-                    <scroller key="verticalScroller" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="xHG-vx-Jmn">
-                        <rect key="frame" x="236" y="10" width="16" height="187"/>
+                    <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="xHG-vx-Jmn">
+                        <rect key="frame" x="236" y="10" width="16" height="186"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                 </scrollView>
                 <customView translatesAutoresizingMaskIntoConstraints="NO" id="OXo-Tz-Vbz" userLabel="Header View">
-                    <rect key="frame" x="-1" y="197" width="254" height="64"/>
+                    <rect key="frame" x="0.0" y="196" width="252" height="64"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="64" id="OHB-YG-OkN"/>
                     </constraints>
                 </customView>
             </subviews>
             <constraints>
+                <constraint firstItem="cvV-eB-sdq" firstAttribute="leading" secondItem="3" secondAttribute="leading" id="00z-kN-QfJ"/>
                 <constraint firstAttribute="bottom" secondItem="7TM-hH-4yE" secondAttribute="bottom" id="Eef-ul-UqD"/>
                 <constraint firstAttribute="leading" secondItem="3" secondAttribute="leading" id="NIC-HL-0iQ"/>
-                <constraint firstAttribute="top" secondItem="OXo-Tz-Vbz" secondAttribute="bottom" id="Qjo-ju-Jie"/>
+                <constraint firstAttribute="bottom" secondItem="cvV-eB-sdq" secondAttribute="bottom" id="SVd-RQ-je0"/>
                 <constraint firstItem="7TM-hH-4yE" firstAttribute="leading" secondItem="3" secondAttribute="leading" id="Wo4-Tl-2Dg"/>
                 <constraint firstAttribute="trailing" secondItem="7TM-hH-4yE" secondAttribute="trailing" id="a57-rF-7Ww"/>
-                <constraint firstItem="OXo-Tz-Vbz" firstAttribute="top" secondItem="3" secondAttribute="top" constant="-1" id="cFn-Dr-igO"/>
-                <constraint firstAttribute="trailing" secondItem="OXo-Tz-Vbz" secondAttribute="trailing" constant="-1" id="dob-uI-NdT"/>
-                <constraint firstItem="OXo-Tz-Vbz" firstAttribute="leading" secondItem="3" secondAttribute="leading" constant="-1" id="twv-Me-Ne4"/>
+                <constraint firstItem="OXo-Tz-Vbz" firstAttribute="top" secondItem="3" secondAttribute="top" id="cFn-Dr-igO"/>
+                <constraint firstAttribute="trailing" secondItem="OXo-Tz-Vbz" secondAttribute="trailing" id="dob-uI-NdT"/>
+                <constraint firstItem="cvV-eB-sdq" firstAttribute="top" secondItem="OXo-Tz-Vbz" secondAttribute="bottom" id="mR2-P2-vIk"/>
+                <constraint firstItem="OXo-Tz-Vbz" firstAttribute="leading" secondItem="3" secondAttribute="leading" id="twv-Me-Ne4"/>
                 <constraint firstItem="7TM-hH-4yE" firstAttribute="top" secondItem="OXo-Tz-Vbz" secondAttribute="bottom" id="usm-Rv-BiW"/>
+                <constraint firstAttribute="trailing" secondItem="cvV-eB-sdq" secondAttribute="trailing" id="vNc-6T-ad0"/>
             </constraints>
             <point key="canvasLocation" x="-40" y="2"/>
         </customView>

@@ -237,10 +237,10 @@ extern void *ctx;
 		}
 	}
 
-    // Adjust the popover position if we change the date
+	// Adjust the popover position if we change the date
 	[self adjustPositionOfPopover];
 
-    [self handleEmptyView];
+	[self handleEmptyView];
 }
 
 - (void)adjustPositionOfPopover {
@@ -254,7 +254,7 @@ extern void *ctx;
 		return;
 	}
 
-    // Get Selecte Item from last GUID
+	// Get Selecte Item from last GUID
 	TimeEntryViewItem *item = [self.dataSource objectWith:self.lastSelectedGUID];
 	if (item == nil)
 	{
@@ -266,19 +266,19 @@ extern void *ctx;
 		return;
 	}
 
-    // Adjus the position of arrow
+	// Adjus the position of arrow
 	TimeEntryCell *cell = [self getTimeEntryCellAtIndexPath:indexPath];
 	NSRect positionRect = [self positionRectForItem:cell];
 	self.timeEntrypopover.positioningRect = positionRect;
 
-    // Scroll to visible selected row
+	// Scroll to visible selected row
 	if (!NSContainsRect(self.collectionView.visibleRect, positionRect))
 	{
 		[self.collectionView scrollToItemsAtIndexPaths:[NSSet setWithCollectionViewIndexPath:indexPath]
 										scrollPosition:NSCollectionViewScrollPositionBottom];
 	}
 
-    // Hightlight selected cell
+	// Hightlight selected cell
 	[[self.collectionView getSelectedEntryCell] setFocused];
 }
 
