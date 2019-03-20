@@ -67,7 +67,6 @@ class TimeEntryEditorWidget : public QWidget {
 
     bool applyNewProject();
     bool eventFilter(QObject *object, QEvent *event);
-    void keyPressEvent(QKeyEvent *event);
     void toggleNewClientMode(const bool visible);
 
  private slots:  // NOLINT

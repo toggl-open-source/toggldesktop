@@ -337,31 +337,6 @@ bool TimeEntryEditorWidget::eventFilter(QObject *object, QEvent *event) {
     return false;
 }
 
-void TimeEntryEditorWidget::keyPressEvent(QKeyEvent *event) {
-    if (event->key() == Qt::Key_Return && event->modifiers() & Qt::CTRL) {
-        if (applyNewProject()) {
-            TogglApi::instance->viewTimeEntryList();
-        }
-    }
-    else if (event->key() == Qt::Key_Return) {
-        if (focusWidget() && focusWidget()->inherits("QAbstractButton")) {
-            auto button = qobject_cast<QAbstractButton*>(focusWidget());
-            button->click();
-        }
-        else if (focusWidget() && focusWidget()->inherits("QComboBox")) {
-            auto combobox = qobject_cast<QComboBox*>(focusWidget());
-            combobox->showPopup();
-        }
-        else {
-            focusNextChild();
-        }
-    }
-    else {
-        event->ignore();
-        //QWidget::keyPressEvent(event);
-    }
-}
-
 void TimeEntryEditorWidget::on_deleteButton_clicked() {
     deleteTimeEntry();
 }
