@@ -93,6 +93,7 @@ void TimeEntryCellWidget::setLoadMore(bool load_more) {
     ui->dataFrame->setStyleSheet(load_more ? "QPushButton#dataFrame { border:none }" : "");
     ui->dataFrame->setFocusPolicy(load_more ? Qt::NoFocus : Qt::StrongFocus);
     if (load_more) {
+        ui->dataFrame->setStyleSheet("#dataFrame { background-color: palette(window); }");
         ui->unsyncedicon->setVisible(false);
     }
 }
@@ -128,14 +129,14 @@ void TimeEntryCellWidget::focusInEvent(QFocusEvent *event) {
 void TimeEntryCellWidget::setupGroupedMode(TimeEntryView *view) {
     // Grouped Mode Setup
     group = view->Group;
+    QString style = "border-right:2px solid palette(alternate-base);border-bottom:2px solid palette(alternate-base);background-color: palette(base);";
     QString count = "";
     QString continueIcon = ":/images/continue_light.svg";
     QString descriptionStyle = "border:none;";
     int left = 0;
     if (view->GroupItemCount && view->GroupOpen && !view->Group) {
-        ui->dataFrame->setFlat(true);
         left = 10;
-        descriptionStyle = "border:none;color:#878787";
+        descriptionStyle = "border:none;color:palette(mid)";
     }
     ui->description->setStyleSheet(descriptionStyle);
     ui->descProjFrame->layout()->setContentsMargins(left, 9, 9, 9);

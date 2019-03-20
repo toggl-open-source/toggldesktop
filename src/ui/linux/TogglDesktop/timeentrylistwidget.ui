@@ -13,9 +13,6 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <property name="styleSheet">
-   <string notr="true">background-color: rgb(229,229,229);</string>
-  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="spacing">
     <number>0</number>
@@ -50,9 +47,6 @@
    </item>
    <item>
     <widget class="QLabel" name="blankView">
-     <property name="styleSheet">
-      <string notr="true">color:rgb(85, 85, 85);</string>
-     </property>
      <property name="text">
       <string>Welcome back! Your previous entries are available in the web under &lt;a href=&quot;#reports&quot;&gt;Reports&lt;/a&gt;</string>
      </property>
@@ -74,6 +68,12 @@
     <widget class="QListWidget" name="list">
      <property name="focusPolicy">
       <enum>Qt::NoFocus</enum>
+     </property>
+     <property name="autoFillBackground">
+      <bool>false</bool>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QListWidget { background-color:palette(window); }</string>
      </property>
      <property name="horizontalScrollBarPolicy">
       <enum>Qt::ScrollBarAsNeeded</enum>
