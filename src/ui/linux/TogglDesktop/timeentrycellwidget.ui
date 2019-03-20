@@ -25,9 +25,6 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <property name="styleSheet">
-   <string notr="true"/>
-  </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <property name="spacing">
     <number>0</number>
@@ -46,8 +43,14 @@
    </property>
    <item>
     <widget class="QWidget" name="headerFrame" native="true">
-     <property name="styleSheet">
-      <string notr="true"/>
+     <property name="frameShape">
+      <enum>QFrame::NoFrame</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <property name="lineWidth">
+      <number>0</number>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>

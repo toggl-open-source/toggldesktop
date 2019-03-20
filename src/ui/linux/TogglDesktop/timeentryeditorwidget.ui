@@ -14,7 +14,7 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">color:rgb(85, 85, 85);font-size:13px;</string>
+   <string notr="true">font-size:13px;</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="leftMargin">
@@ -170,9 +170,6 @@
       </item>
       <item>
        <widget class="QCheckBox" name="publicProject">
-        <property name="styleSheet">
-         <string notr="true">color:rgb(85, 85, 85);</string>
-        </property>
         <property name="text">
          <string>Public (Visible to the whole team)</string>
         </property>

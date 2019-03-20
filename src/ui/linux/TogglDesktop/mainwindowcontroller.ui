@@ -26,9 +26,6 @@
    <string notr="true"/>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <property name="styleSheet">
-    <string notr="true">QWidget#centralWidget { background-color:#f2f1f0; }</string>
-   </property>
    <layout class="QVBoxLayout" name="verticalLayout">
     <property name="spacing">
      <number>0</number>
