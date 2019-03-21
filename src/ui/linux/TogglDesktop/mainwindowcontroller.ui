@@ -62,11 +62,11 @@
      <x>0</x>
      <y>0</y>
      <width>350</width>
-     <height>29</height>
+     <height>27</height>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">font-size:14px;</string>
+    <string notr="true"/>
    </property>
    <property name="nativeMenuBar">
     <bool>false</bool>
