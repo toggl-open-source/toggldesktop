@@ -4351,14 +4351,15 @@ void Context::syncerActivity() {
                 error err = pullAllUserData(&client);
                 if (err != noError) {
                     displayError(err);
-                    return;
                 }
 
                 setOnline("Data pulled");
 
                 err = pushChanges(&client, &trigger_sync_);
+                trigger_push_ = false;
                 if (err != noError) {
                     displayError(err);
+                    return;
                 } else {
                     setOnline("Data pushed");
                 }
