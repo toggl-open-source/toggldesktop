@@ -24,13 +24,16 @@ class TimerWidget : public QFrame {
     explicit TimerWidget(QWidget *parent = 0);
     ~TimerWidget();
 
- private:
+    QString currentEntryGuid();
+
+ public slots:
+    void deleteTimeEntry();
 
  signals:
     void buttonClicked();
 
  protected:
-    void mousePressEvent(QMouseEvent *event);
+    void mousePressEvent(QMouseEvent *event) override;
     void resizeEvent(QResizeEvent *) override;
     bool eventFilter(QObject *obj, QEvent *event);
 
@@ -78,6 +81,7 @@ class TimerWidget : public QFrame {
     QVector<AutocompleteView *> timeEntryAutocompleteUpdate;
     AutocompleteListModel *descriptionModel;
 
+    TimeEntryView *timeEntry;
     uint64_t selectedTaskId;
     uint64_t selectedProjectId;
 

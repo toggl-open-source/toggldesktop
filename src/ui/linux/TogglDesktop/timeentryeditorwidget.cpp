@@ -29,7 +29,8 @@ timer(new QTimer(this)),
 duration(0),
 previousTagList(""),
 descriptionModel(new AutocompleteListModel(this, QVector<AutocompleteView*>())),
-projectModel(new AutocompleteListModel(this, QVector<AutocompleteView*>(), AC_PROJECT)) {
+projectModel(new AutocompleteListModel(this, QVector<AutocompleteView*>(), AC_PROJECT))
+{
     ui->setupUi(this);
 
     ui->description->setModel(descriptionModel);
@@ -89,6 +90,21 @@ void TimeEntryEditorWidget::setSelectedColor(QString color) {
 
 void TimeEntryEditorWidget::display() {
     qobject_cast<QStackedWidget*>(parent())->setCurrentWidget(this);
+}
+
+void TimeEntryEditorWidget::deleteTimeEntry() {
+    if (timeEntry->confirmlessDelete() || QMessageBox::Ok == QMessageBox(
+        QMessageBox::Question,
+        "Delete this time entry?",
+        "Deleted time entries cannot be restored.",
+        QMessageBox::Ok|QMessageBox::Cancel).exec()) {
+        TogglApi::instance->deleteTimeEntry(guid);
+    }
+}
+
+void TimeEntryEditorWidget::clickDone()
+{
+    on_doneButton_clicked();
 }
 
 void TimeEntryEditorWidget::displayClientSelect(
@@ -321,39 +337,8 @@ bool TimeEntryEditorWidget::eventFilter(QObject *object, QEvent *event) {
     return false;
 }
 
-void TimeEntryEditorWidget::keyPressEvent(QKeyEvent *event) {
-    if (event->key() == Qt::Key_Return && event->modifiers() & Qt::CTRL) {
-        if (applyNewProject()) {
-            TogglApi::instance->viewTimeEntryList();
-        }
-    }
-    else if (event->key() == Qt::Key_Return) {
-        if (focusWidget() && focusWidget()->inherits("QAbstractButton")) {
-            auto button = qobject_cast<QAbstractButton*>(focusWidget());
-            button->click();
-        }
-        else if (focusWidget() && focusWidget()->inherits("QComboBox")) {
-            auto combobox = qobject_cast<QComboBox*>(focusWidget());
-            combobox->showPopup();
-        }
-        else {
-            focusNextChild();
-        }
-    }
-    else {
-        event->ignore();
-        //QWidget::keyPressEvent(event);
-    }
-}
-
 void TimeEntryEditorWidget::on_deleteButton_clicked() {
-    if (timeEntry->confirmlessDelete() || QMessageBox::Ok == QMessageBox(
-        QMessageBox::Question,
-        "Delete this time entry?",
-        "Deleted time entries cannot be restored.",
-        QMessageBox::Ok|QMessageBox::Cancel).exec()) {
-        TogglApi::instance->deleteTimeEntry(guid);
-    }
+    deleteTimeEntry();
 }
 
 void TimeEntryEditorWidget::on_addNewProject_clicked() {

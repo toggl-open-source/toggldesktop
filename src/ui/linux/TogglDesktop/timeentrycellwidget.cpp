@@ -3,22 +3,42 @@
 #include "./timeentrycellwidget.h"
 #include "./ui_timeentrycellwidget.h"
 
+#include <QKeyEvent>
+#include <QMessageBox>
+#include <QListWidgetItem>
+
 #include "./toggl.h"
 
-TimeEntryCellWidget::TimeEntryCellWidget() : QWidget(nullptr),
+TimeEntryCellWidget::TimeEntryCellWidget(QListWidgetItem *item) : QWidget(nullptr),
 ui(new Ui::TimeEntryCellWidget),
+item(item),
 description(""),
 project(""),
 guid(""),
 group(false),
-groupName("") {
+groupOpen(false),
+groupName(""),
+timeEntry(nullptr) {
     ui->setupUi(this);
+    ui->dataFrame->installEventFilter(this);
+    setStyleSheet(
+        "* { font-size: 13px }"
+        "QFrame { background-color:transparent; border:none; margin:0 }"
+        "QPushButton#dataFrame { background-color:#fefefe; border: none; border-bottom:1px solid #cacaca; margin: 0 }"
+        "QPushButton#dataFrame:flat { background-color:transparent; }"
+    );
+    ui->groupButton->setStyleSheet(
+        "QPushButton { outline:none; border:none; font-size:11px; color:#a4a4a4 }"
+        "QPushButton:!checked { background:url(:/images/group_icon_closed.svg) no-repeat; }"
+        "QPushButton:checked { background:url(:/images/group_icon_open.svg) no-repeat; }"
+    );
 }
 
 void TimeEntryCellWidget::display(TimeEntryView *view) {
     setLoadMore(false);
     guid = view->GUID;
     groupName = view->GroupName;
+    timeEntry = view;
     description =
         (view->Description.length() > 0) ?
         view->Description : "(no description)";
@@ -64,41 +84,66 @@ void TimeEntryCellWidget::display(TimeEntryView *view) {
 
 void TimeEntryCellWidget::setLoadMore(bool load_more) {
     ui->headerFrame->setVisible(false);
+    ui->loadMoreButton->setEnabled(load_more);
     ui->loadMoreButton->setVisible(load_more);
     ui->descProjFrame->setVisible(!load_more);
     ui->groupFrame->setVisible(!load_more);
     ui->frame->setVisible(!load_more);
+    ui->dataFrame->setFlat(load_more);
+    ui->dataFrame->setStyleSheet(load_more ? "QPushButton#dataFrame { border:none }" : "");
+    ui->dataFrame->setFocusPolicy(load_more ? Qt::NoFocus : Qt::StrongFocus);
     if (load_more) {
-        ui->dataFrame->setStyleSheet("background-color: rgb(229,229,229);");
         ui->unsyncedicon->setVisible(false);
     }
+}
+
+QString TimeEntryCellWidget::entryGuid() {
+    return guid;
+}
+
+void TimeEntryCellWidget::deleteTimeEntry() {
+    if (guid.isEmpty())
+        return;
+
+    if (timeEntry->confirmlessDelete() || QMessageBox::Ok == QMessageBox(
+        QMessageBox::Question,
+        "Delete this time entry?",
+        "Deleted time entries cannot be restored.",
+        QMessageBox::Ok|QMessageBox::Cancel).exec()) {
+        TogglApi::instance->deleteTimeEntry(guid);
+    }
+}
+
+bool TimeEntryCellWidget::eventFilter(QObject *watched, QEvent *event) {
+    if (event->type() == QEvent::FocusIn) {
+        focusInEvent(reinterpret_cast<QFocusEvent*>(event));
+    }
+    return QWidget::eventFilter(watched, event);
+}
+
+void TimeEntryCellWidget::focusInEvent(QFocusEvent *event) {
+    item->listWidget()->scrollToItem(item, QAbstractItemView::PositionAtCenter);
 }
 
 void TimeEntryCellWidget::setupGroupedMode(TimeEntryView *view) {
     // Grouped Mode Setup
     group = view->Group;
-    QString style = "border-bottom:1px solid #cacaca;background-color: #FAFAFA;";
     QString count = "";
     QString continueIcon = ":/images/continue_light.svg";
     QString descriptionStyle = "border:none;";
     int left = 0;
     if (view->GroupItemCount && view->GroupOpen && !view->Group) {
-        style = "border-bottom:1px solid #cacaca;background-color: #EFEFEF;";
+        ui->dataFrame->setFlat(true);
         left = 10;
         descriptionStyle = "border:none;color:#878787";
     }
     ui->description->setStyleSheet(descriptionStyle);
     ui->descProjFrame->layout()->setContentsMargins(left, 9, 9, 9);
-    ui->dataFrame->setStyleSheet(style);
 
     if (view->Group) {
-        QString buttonStyle = "outline:none;border:none;font-size:11px;color:#a4a4a4;background: url(:/images/group_icon_open.svg) no-repeat;";
-
-        if (!view->GroupOpen) {
+        ui->groupButton->setChecked(view->GroupOpen);
+        if (!view->GroupOpen)
             count = QString::number(view->GroupItemCount);
-            buttonStyle = "outline:none;border:none;font-size:11px;color:#a4a4a4;background: url(:/images/group_icon_closed.svg) no-repeat;";
-        }
-        ui->groupButton->setStyleSheet(buttonStyle);
         continueIcon = ":/images/continue_regular.svg";
     }
     ui->groupButton->setText(count);
@@ -133,15 +178,6 @@ QSize TimeEntryCellWidget::getSizeHint(bool is_header) {
     return QSize(minimumWidth(), ui->dataFrame->height());
 }
 
-void TimeEntryCellWidget::mousePressEvent(QMouseEvent *event) {
-    if (group) {
-        on_groupButton_clicked();
-        return;
-    }
-    TogglApi::instance->editTimeEntry(guid, "");
-    QWidget::mousePressEvent(event);
-}
-
 void TimeEntryCellWidget::on_continueButton_clicked() {
     TogglApi::instance->continueTimeEntry(guid);
 }
@@ -151,6 +187,14 @@ QString TimeEntryCellWidget::getProjectColor(QString color) {
         return QString("#9d9d9d");
     }
     return color;
+}
+
+void TimeEntryCellWidget::toggleGroup(bool open)
+{
+    if (group && groupOpen != open) {
+        groupOpen = open;
+        TogglApi::instance->toggleEntriesGroup(groupName);
+    }
 }
 
 void TimeEntryCellWidget::on_groupButton_clicked()
@@ -168,6 +212,13 @@ void TimeEntryCellWidget::resizeEvent(QResizeEvent* event)
 void TimeEntryCellWidget::on_loadMoreButton_clicked()
 {
     TogglApi::instance->loadMore();
-    ui->loadMoreButton->setStyleSheet("color:#8c8c8c;");
+    ui->loadMoreButton->setEnabled(false);
     ui->loadMoreButton->setText("Loading ...");
+}
+
+void TimeEntryCellWidget::on_dataFrame_clicked() {
+    if (group)
+        on_groupButton_clicked();
+    else
+        TogglApi::instance->editTimeEntry(guid, "");
 }

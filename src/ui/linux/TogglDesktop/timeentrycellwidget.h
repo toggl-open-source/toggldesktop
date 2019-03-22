@@ -12,11 +12,13 @@ namespace Ui {
 class TimeEntryCellWidget;
 }
 
+class QListWidgetItem;
+
 class TimeEntryCellWidget : public QWidget {
     Q_OBJECT
 
  public:
-    TimeEntryCellWidget();
+    TimeEntryCellWidget(QListWidgetItem *item);
     ~TimeEntryCellWidget();
 
     void display(TimeEntryView *view);
@@ -24,23 +26,34 @@ class TimeEntryCellWidget : public QWidget {
     void labelClicked(QString field_name);
     void setLoadMore(bool load_more);
 
+    QString entryGuid();
+    void toggleGroup(bool open);
+
+ public slots:
+    void deleteTimeEntry();
+
  protected:
-    virtual void mousePressEvent(QMouseEvent *event);
-    virtual void resizeEvent(QResizeEvent *);
+    virtual bool eventFilter(QObject *watched, QEvent *event) override;
+    virtual void focusInEvent(QFocusEvent *event) override;
+    virtual void resizeEvent(QResizeEvent *) override;
 
  private slots:  // NOLINT
     void on_continueButton_clicked();
     void on_groupButton_clicked();
     void on_loadMoreButton_clicked();
+    void on_dataFrame_clicked();
 
  private:
     Ui::TimeEntryCellWidget *ui;
+    QListWidgetItem *item;
 
     QString description;
     QString project;
     QString guid;
     bool group;
+    bool groupOpen;
     QString groupName;
+    TimeEntryView *timeEntry;
     QString getProjectColor(QString color);
 
     void setupGroupedMode(TimeEntryView *view);

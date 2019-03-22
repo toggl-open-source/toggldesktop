@@ -32,13 +32,17 @@ bool AutocompleteComboBox::eventFilter(QObject *o, QEvent *e) {
     if (e->type() == QEvent::KeyPress) {
         auto ke = reinterpret_cast<QKeyEvent*>(e);
         switch (ke->key()) {
+        case Qt::Key_Tab:
         case Qt::Key_Escape:
-            setCurrentText(oldLabel);
-            oldLabel = QString();
-            listView->setVisible(false);
+            cancelSelection();
             return true;
         case Qt::Key_Enter:
         case Qt::Key_Return: {
+            if (ke->modifiers() & Qt::CTRL) {
+                cancelSelection();
+                e->ignore();
+                return true;
+            }
             if (listView->currentIndex().isValid()) {
                 listView->keyPressEvent(ke);
             }
@@ -76,6 +80,10 @@ void AutocompleteComboBox::keyPressEvent(QKeyEvent *event) {
     switch (event->key()) {
     case Qt::Key_Enter:
     case Qt::Key_Return:
+        if (event->modifiers() & Qt::CTRL) {
+            event->ignore();
+            return;
+        }
         emit returnPressed();
         break;
     case Qt::Key_Home:
@@ -122,6 +130,12 @@ void AutocompleteComboBox::onDropdownSelected(AutocompleteView *item) {
         }
     }
     emit activated(listView->currentIndex().row());
+}
+
+void AutocompleteComboBox::cancelSelection() {
+    setCurrentText(oldLabel);
+    oldLabel = QString();
+    listView->setVisible(false);
 }
 
 AutocompleteCompleter::AutocompleteCompleter(QWidget *parent)

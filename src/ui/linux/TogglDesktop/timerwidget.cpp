@@ -6,6 +6,8 @@
 #include <QApplication>  // NOLINT
 #include <QCompleter>  // NOLINT
 #include <QKeyEvent>  // NOLINT
+#include <QMessageBox>  // NOLINT
+#include <QKeyEvent>  // NOLINT
 
 #include "./autocompletelistmodel.h"
 #include "./autocompleteview.h"
@@ -20,6 +22,7 @@ project(""),
 tagsHolder(""),
 timeEntryAutocompleteNeedsUpdate(false),
 descriptionModel(new AutocompleteListModel(this)),
+timeEntry(nullptr),
 selectedTaskId(0),
 selectedProjectId(0) {
     ui->setupUi(this);
@@ -51,7 +54,6 @@ selectedProjectId(0) {
     connect(ui->description, &QComboBox::editTextChanged,
             this, &TimerWidget::updateCoverLabel);
 
-
     connect(ui->deleteProject, &QPushButton::clicked, this, &TimerWidget::clearProject);
     connect(ui->deleteTask, &QPushButton::clicked, this, &TimerWidget::clearTask);
 
@@ -70,6 +72,23 @@ TimerWidget::~TimerWidget() {
     timer->stop();
 
     delete ui;
+}
+
+QString TimerWidget::currentEntryGuid() {
+    return guid;
+}
+
+void TimerWidget::deleteTimeEntry() {
+    if (guid.isEmpty())
+        return;
+
+    if (timeEntry->confirmlessDelete() || QMessageBox::Ok == QMessageBox(
+        QMessageBox::Question,
+        "Delete this time entry?",
+        "Deleted time entries cannot be restored.",
+        QMessageBox::Ok|QMessageBox::Cancel).exec()) {
+        TogglApi::instance->deleteTimeEntry(guid);
+    }
 }
 
 void TimerWidget::descriptionReturnPressed() {
@@ -150,6 +169,7 @@ void TimerWidget::focusChanged(QWidget *old, QWidget *now) {
 void TimerWidget::displayRunningTimerState(
     TimeEntryView *te) {
     guid = te->GUID;
+    timeEntry = te;
     selectedTaskId = te->TID;
     selectedProjectId = te->PID;
 
@@ -158,7 +178,7 @@ void TimerWidget::displayRunningTimerState(
 
     ui->start->setText("Stop");
     ui->start->setStyleSheet(
-        "background-color: #e20000; color:'white'; font-weight: bold;");
+        "background-color: #e20000; color:'white'; font-weight: bold; outline:1px dashed white; outline-radius:2px; padding:1px");
 
     QString description = (te->Description.length() > 0) ?
                           te->Description : "(no description)";
@@ -230,7 +250,7 @@ void TimerWidget::displayStoppedTimerState() {
 
     ui->start->setText("Start");
     ui->start->setStyleSheet(
-        "background-color: #47bc00; color:'white'; font-weight: bold;");
+        "background-color: #47bc00; color:'white'; font-weight: bold; outline:1px dashed white; outline-radius:2px; padding:1px");
 
     if (!ui->description->hasFocus()) {
         ui->description->setEditText(descriptionPlaceholder);

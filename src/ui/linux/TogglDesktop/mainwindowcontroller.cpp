@@ -21,12 +21,11 @@
 #include <QPushButton>  // NOLINT
 
 #include "./toggl.h"
-#include "./errorviewcontroller.h"
-#include "./overlaywidget.h"
-#include "./loginwidget.h"
-#include "./timeentrylistwidget.h"
 #include "./timeentryeditorwidget.h"
-#include "./idlenotificationwidget.h"
+#include "./timeentrylistwidget.h"
+#include "./timerwidget.h"
+#include "./errorviewcontroller.h"
+#include "./timeentrycellwidget.h"
 
 MainWindowController::MainWindowController(
     QWidget *parent,
@@ -48,23 +47,15 @@ MainWindowController::MainWindowController(
   script(scriptPath),
   powerManagement(new PowerManagement(this)),
   networkManagement(new NetworkManagement(this)),
+  shortcutDelete(QKeySequence(Qt::CTRL + Qt::Key_Delete), this),
+  shortcutPause(QKeySequence(Qt::CTRL + Qt::Key_Space), this),
+  shortcutConfirm(QKeySequence(Qt::CTRL + Qt::Key_Return), this),
+  shortcutGroupOpen(QKeySequence(Qt::Key_Right), this),
+  shortcutGroupClose(QKeySequence(Qt::Key_Left), this),
   ui_started(false) {
     ui->setupUi(this);
 
     ui->menuBar->setVisible(true);
-
-    QStackedWidget *stacked = new QStackedWidget;
-    stacked->addWidget(new OverlayWidget(stacked));
-    stacked->addWidget(new LoginWidget(stacked));
-    stacked->addWidget(new TimeEntryEditorWidget(stacked));
-    stacked->addWidget(new TimeEntryListWidget(stacked));
-    stacked->addWidget(new IdleNotificationWidget(stacked));
-    QVBoxLayout *verticalLayout = new QVBoxLayout;
-    verticalLayout->setContentsMargins(0, 0, 0, 0);
-    verticalLayout->setSpacing(0);
-    verticalLayout->addWidget(new ErrorViewController());
-    verticalLayout->addWidget(stacked);
-    centralWidget()->setLayout(verticalLayout);
 
     readSettings();
 
@@ -284,6 +275,95 @@ void MainWindowController::onOnlineStateChanged() {
     }
 }
 
+void MainWindowController::onShortcutDelete() {
+    if (ui->stackedWidget->currentWidget() == ui->timeEntryListWidget) {
+        if (ui->timeEntryListWidget->focusWidget() &&
+            ui->timeEntryListWidget->focusWidget()->parentWidget() &&
+            qobject_cast<TimeEntryCellWidget*>(ui->timeEntryListWidget->focusWidget()->parentWidget())) {
+            qobject_cast<TimeEntryCellWidget*>(ui->timeEntryListWidget->focusWidget()->parentWidget())->deleteTimeEntry();
+        }
+        else {
+            ui->timeEntryListWidget->timer()->deleteTimeEntry();
+        }
+    }
+    else if (ui->stackedWidget->currentWidget() == ui->timeEntryEditorWidget) {
+        ui->timeEntryEditorWidget->deleteTimeEntry();
+    }
+}
+
+void MainWindowController::onShortcutPause() {
+    auto w = focusWidget();
+    while (w) {
+        auto timer = qobject_cast<TimerWidget*>(w);
+        auto timeEntryList = qobject_cast<TimeEntryListWidget*>(w);
+        auto timeEntryEdit = qobject_cast<TimeEntryEditorWidget*>(w);
+        if (timer) {
+            continueStopHotkeyPressed();
+            return;
+        }
+        else if (timeEntryList) {
+            bool thisItem = !timeEntryList->timer()->currentEntryGuid().isEmpty() &&
+                    timeEntryList->highlightedCell() &&
+                    timeEntryList->timer()->currentEntryGuid() == timeEntryList->highlightedCell()->entryGuid();
+            QString selectedGuid = timeEntryList->highlightedCell() ? timeEntryList->highlightedCell()->entryGuid() : QString();
+            if (tracking) {
+                onActionStop();
+            }
+            if (!thisItem) {
+                TogglApi::instance->continueTimeEntry(selectedGuid);
+            }
+            return;
+        }
+        else if (timeEntryEdit) {
+            return;
+        }
+        w = w->parentWidget();
+    }
+}
+
+void MainWindowController::onShortcutConfirm() {
+    auto w = focusWidget();
+    while (w) {
+        auto timer = qobject_cast<TimerWidget*>(w);
+        auto timeEntryList = qobject_cast<TimeEntryListWidget*>(w);
+        auto timeEntryEdit = qobject_cast<TimeEntryEditorWidget*>(w);
+        if (timer) {
+            TogglApi::instance->editRunningTimeEntry("");
+            return;
+        }
+        else if (timeEntryList) {
+            QString selectedGuid = timeEntryList->highlightedCell() ? timeEntryList->highlightedCell()->entryGuid() : QString();
+            TogglApi::instance->editTimeEntry(selectedGuid, "");
+            return;
+        }
+        else if (timeEntryEdit) {
+            timeEntryEdit->clickDone();
+            return;
+        }
+        w = w->parentWidget();
+    }
+}
+
+void MainWindowController::onShortcutGroupOpen() {
+    if (ui->stackedWidget->currentWidget() == ui->timeEntryListWidget) {
+        if (ui->timeEntryListWidget->focusWidget() &&
+            ui->timeEntryListWidget->focusWidget()->parentWidget() &&
+            qobject_cast<TimeEntryCellWidget*>(ui->timeEntryListWidget->focusWidget()->parentWidget())) {
+            qobject_cast<TimeEntryCellWidget*>(ui->timeEntryListWidget->focusWidget()->parentWidget())->toggleGroup(true);
+        }
+    }
+}
+
+void MainWindowController::onShortcutGroupClose() {
+    if (ui->stackedWidget->currentWidget() == ui->timeEntryListWidget) {
+        if (ui->timeEntryListWidget->focusWidget() &&
+            ui->timeEntryListWidget->focusWidget()->parentWidget() &&
+            qobject_cast<TimeEntryCellWidget*>(ui->timeEntryListWidget->focusWidget()->parentWidget())) {
+            qobject_cast<TimeEntryCellWidget*>(ui->timeEntryListWidget->focusWidget()->parentWidget())->toggleGroup(false);
+        }
+    }
+}
+
 void MainWindowController::setShortcuts() {
     showHide = new QxtGlobalShortcut(this);
     connect(showHide, SIGNAL(activated()),
@@ -296,6 +376,17 @@ void MainWindowController::setShortcuts() {
             this, SLOT(continueStopHotkeyPressed()));
 
     updateContinueStopShortcut();
+
+    connect(&shortcutDelete, &QShortcut::activated,
+            this, &MainWindowController::onShortcutDelete);
+    connect(&shortcutPause, &QShortcut::activated,
+            this, &MainWindowController::onShortcutPause);
+    connect(&shortcutConfirm, &QShortcut::activated,
+            this, &MainWindowController::onShortcutConfirm);
+    connect(&shortcutGroupOpen, &QShortcut::activated,
+            this, &MainWindowController::onShortcutGroupOpen);
+    connect(&shortcutGroupClose, &QShortcut::activated,
+            this, &MainWindowController::onShortcutGroupClose);
 }
 
 void MainWindowController::connectMenuActions() {

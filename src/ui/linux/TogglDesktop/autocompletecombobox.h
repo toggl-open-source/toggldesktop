@@ -32,6 +32,8 @@ private slots:
     void onDropdownVisibleChanged();
     void onDropdownSelected(AutocompleteView *item);
 
+    void cancelSelection();
+
 signals:
     void returnPressed();
     void timeEntrySelected(const QString &name);

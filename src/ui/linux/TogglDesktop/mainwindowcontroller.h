@@ -6,13 +6,12 @@
 #include <QMainWindow>
 #include <QSystemTrayIcon>
 #include <QMessageBox>  // NOLINT
+#include <QShortcut>
 
 #include <stdbool.h>
 #include <stdint.h>
 
 #include "./toggl.h"
-#include "./loginwidget.h"
-#include "./timeentrylistwidget.h"
 #include "./preferencesdialog.h"
 #include "./aboutdialog.h"
 #include "./feedbackdialog.h"
@@ -20,6 +19,11 @@
 #include "./systemtray.h"
 #include "./powermanagement.h"
 #include "./networkmanagement.h"
+#include "./overlaywidget.h"
+#include "./loginwidget.h"
+#include "./timeentrylistwidget.h"
+#include "./timeentryeditorwidget.h"
+#include "./idlenotificationwidget.h"
 
 namespace Ui {
 class MainWindowController;
@@ -92,6 +96,12 @@ class MainWindowController : public QMainWindow {
 
     void onOnlineStateChanged();
 
+    void onShortcutDelete();
+    void onShortcutPause();
+    void onShortcutConfirm();
+    void onShortcutGroupOpen();
+    void onShortcutGroupClose();
+
  private:
     Ui::MainWindowController *ui;
 
@@ -118,6 +128,12 @@ class MainWindowController : public QMainWindow {
 
     PowerManagement *powerManagement;
     NetworkManagement *networkManagement;
+
+    QShortcut shortcutDelete;
+    QShortcut shortcutPause;
+    QShortcut shortcutConfirm;
+    QShortcut shortcutGroupOpen;
+    QShortcut shortcutGroupClose;
 
     void readSettings();
     void writeSettings();

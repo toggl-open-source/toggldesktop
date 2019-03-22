@@ -31,6 +31,10 @@ class TimeEntryEditorWidget : public QWidget {
 
     void display();
 
+ public slots:
+    void deleteTimeEntry();
+    void clickDone();
+
  private:
     Ui::TimeEntryEditorWidget *ui;
 
@@ -63,7 +67,6 @@ class TimeEntryEditorWidget : public QWidget {
 
     bool applyNewProject();
     bool eventFilter(QObject *object, QEvent *event);
-    void keyPressEvent(QKeyEvent *event);
     void toggleNewClientMode(const bool visible);
 
  private slots:  // NOLINT
