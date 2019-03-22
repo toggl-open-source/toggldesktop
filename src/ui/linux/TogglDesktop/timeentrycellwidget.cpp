@@ -16,6 +16,7 @@ description(""),
 project(""),
 guid(""),
 group(false),
+groupOpen(false),
 groupName(""),
 timeEntry(nullptr) {
     ui->setupUi(this);
@@ -186,6 +187,14 @@ QString TimeEntryCellWidget::getProjectColor(QString color) {
         return QString("#9d9d9d");
     }
     return color;
+}
+
+void TimeEntryCellWidget::toggleGroup(bool open)
+{
+    if (group && groupOpen != open) {
+        groupOpen = open;
+        TogglApi::instance->toggleEntriesGroup(groupName);
+    }
 }
 
 void TimeEntryCellWidget::on_groupButton_clicked()

@@ -50,6 +50,8 @@ MainWindowController::MainWindowController(
   shortcutDelete(QKeySequence(Qt::CTRL + Qt::Key_Delete), this),
   shortcutPause(QKeySequence(Qt::CTRL + Qt::Key_Space), this),
   shortcutConfirm(QKeySequence(Qt::CTRL + Qt::Key_Return), this),
+  shortcutGroupOpen(QKeySequence(Qt::Key_Right), this),
+  shortcutGroupClose(QKeySequence(Qt::Key_Left), this),
   ui_started(false) {
     ui->setupUi(this);
 
@@ -342,6 +344,26 @@ void MainWindowController::onShortcutConfirm() {
     }
 }
 
+void MainWindowController::onShortcutGroupOpen() {
+    if (ui->stackedWidget->currentWidget() == ui->timeEntryListWidget) {
+        if (ui->timeEntryListWidget->focusWidget() &&
+            ui->timeEntryListWidget->focusWidget()->parentWidget() &&
+            qobject_cast<TimeEntryCellWidget*>(ui->timeEntryListWidget->focusWidget()->parentWidget())) {
+            qobject_cast<TimeEntryCellWidget*>(ui->timeEntryListWidget->focusWidget()->parentWidget())->toggleGroup(true);
+        }
+    }
+}
+
+void MainWindowController::onShortcutGroupClose() {
+    if (ui->stackedWidget->currentWidget() == ui->timeEntryListWidget) {
+        if (ui->timeEntryListWidget->focusWidget() &&
+            ui->timeEntryListWidget->focusWidget()->parentWidget() &&
+            qobject_cast<TimeEntryCellWidget*>(ui->timeEntryListWidget->focusWidget()->parentWidget())) {
+            qobject_cast<TimeEntryCellWidget*>(ui->timeEntryListWidget->focusWidget()->parentWidget())->toggleGroup(false);
+        }
+    }
+}
+
 void MainWindowController::setShortcuts() {
     showHide = new QxtGlobalShortcut(this);
     connect(showHide, SIGNAL(activated()),
@@ -361,6 +383,10 @@ void MainWindowController::setShortcuts() {
             this, &MainWindowController::onShortcutPause);
     connect(&shortcutConfirm, &QShortcut::activated,
             this, &MainWindowController::onShortcutConfirm);
+    connect(&shortcutGroupOpen, &QShortcut::activated,
+            this, &MainWindowController::onShortcutGroupOpen);
+    connect(&shortcutGroupClose, &QShortcut::activated,
+            this, &MainWindowController::onShortcutGroupClose);
 }
 
 void MainWindowController::connectMenuActions() {

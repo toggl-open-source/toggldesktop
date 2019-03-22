@@ -27,6 +27,7 @@ class TimeEntryCellWidget : public QWidget {
     void setLoadMore(bool load_more);
 
     QString entryGuid();
+    void toggleGroup(bool open);
 
  public slots:
     void deleteTimeEntry();
@@ -50,6 +51,7 @@ class TimeEntryCellWidget : public QWidget {
     QString project;
     QString guid;
     bool group;
+    bool groupOpen;
     QString groupName;
     TimeEntryView *timeEntry;
     QString getProjectColor(QString color);
