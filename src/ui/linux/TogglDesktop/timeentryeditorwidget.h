@@ -59,6 +59,7 @@ class TimeEntryEditorWidget : public QWidget {
     int64_t duration;
 
     QString previousTagList;
+    QSet<QString> recentlyAddedTags;
 
     TimeEntryView *timeEntry;
 
@@ -68,6 +69,7 @@ class TimeEntryEditorWidget : public QWidget {
     bool applyNewProject();
     bool eventFilter(QObject *object, QEvent *event);
     void toggleNewClientMode(const bool visible);
+    void toggleNewTagMode(bool visible);
 
  private slots:  // NOLINT
     void displayLogin(
@@ -116,6 +118,9 @@ class TimeEntryEditorWidget : public QWidget {
     void on_addClientButton_clicked();
     void on_cancelNewClient_clicked();
     void on_colorButton_clicked();
+    void on_newTagButton_clicked();
+    void on_newTag_returnPressed();
+    void on_addNewTagButton_clicked();
 };
 
 #endif  // SRC_UI_LINUX_TOGGLDESKTOP_TIMEENTRYEDITORWIDGET_H_
