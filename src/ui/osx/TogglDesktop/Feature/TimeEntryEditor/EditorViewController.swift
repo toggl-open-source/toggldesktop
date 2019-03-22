@@ -8,11 +8,20 @@
 
 import Cocoa
 
-class EditorViewController: NSViewController {
+final class EditorViewController: NSViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do view setup here.
     }
     
+}
+
+// MARK: Private
+
+extension EditorViewController {
+
+    fileprivate func initCommon() {
+
+    }
 }

@@ -17,9 +17,7 @@
 
 @interface TimeEntryListViewController : NSViewController
 @property (unsafe_unretained) IBOutlet NSView *headerView;
-@property (strong) IBOutlet EditorPopover *timeEntrypopover;
-@property (strong) IBOutlet NSViewController *timeEntrypopoverViewController;
-@property (strong) IBOutlet NSViewEscapable *timeEntryPopupEditView;
+@property (strong, nonatomic) EditorPopover *timeEntrypopover;
 @property (strong) IBOutlet NSScrollView *timeEntryListScrollView;
 @property (nonatomic, strong) TimeEntryDatasource *dataSource;
 @end

@@ -1045,7 +1045,6 @@
 				BAFBFCC621CD1D3C004B443F /* SystemService.h */,
 				BAFBFCC721CD1D3C004B443F /* SystemService.m */,
 				BA03725421FE9FD400FC277B /* FlatButton.swift */,
-				BA2E5FB0223787C300EB866E /* EditorPopover.swift */,
 				BA08E085222E709C0075F68E /* ProjectTextField.h */,
 				BA08E086222E709C0075F68E /* ProjectTextField.m */,
 				BAE49CAD222FC1C900773814 /* TimerContainerBox.swift */,
@@ -1272,6 +1271,7 @@
 		BA34F0DB22439BF300C27A15 /* TimeEntryEditor */ = {
 			isa = PBXGroup;
 			children = (
+				BA2E5FB0223787C300EB866E /* EditorPopover.swift */,
 				BA34F0FE22439C3000C27A15 /* EditorViewController.swift */,
 				BA34F0FF22439C3000C27A15 /* EditorViewController.xib */,
 			);
