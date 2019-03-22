@@ -566,7 +566,7 @@
          <string notr="true">padding:1px;text-align:right;color:palette(link);text-decoration:underline</string>
         </property>
         <property name="text">
-         <string>Add new client</string>
+         <string>Add new tag</string>
         </property>
         <property name="flat">
          <bool>true</bool>
