@@ -4709,6 +4709,10 @@ error Context::pushChanges(
                 api_token,
                 *toggl_client);
             if (err != noError) {
+                // Reload list to show unsynced icons in items
+                UIElements render;
+                render.display_time_entries = true;
+                updateUI(render);
                 return err;
             }
 
