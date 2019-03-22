@@ -177,7 +177,7 @@
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="veq-fR-isT">
                                 <rect key="frame" x="8" y="53" width="132" height="16"/>
                                 <textFieldCell key="cell" lineBreakMode="clipping" title="Marketing Department" id="GvP-Ai-0ZS">
-                                    <font key="font" metaFont="system" size="12"/>
+                                    <font key="font" metaFont="cellTitle"/>
                                     <color key="textColor" name="grey-text-color"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
