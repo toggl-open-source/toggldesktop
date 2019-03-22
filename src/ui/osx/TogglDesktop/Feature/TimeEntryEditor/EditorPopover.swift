@@ -14,7 +14,21 @@ final class EditorPopover: NSPopover {
         static let FocusTimerNotification = NSNotification.Name(kFocusTimer)
     }
 
-    // MARK: Public
+    override var appearance: NSAppearance? {
+        get {
+            if let appearance = NSApplication.shared.windows.first?.effectiveAppearance {
+                if appearance.name.rawValue.lowercased().contains("dark") {
+                    if #available(OSX 10.14, *) {
+                        return NSAppearance(named: .darkAqua)
+                    } else {
+                        return NSAppearance(named: .aqua)
+                    }
+                }
+            }
+            return NSAppearance(named: .aqua)
+        }
+        set {}
+    }
 
     @objc func prepareViewController() {
         let editor = EditorViewController.init(nibName: NSNib.Name("EditorViewController"), bundle: nil)
@@ -34,21 +48,5 @@ final class EditorPopover: NSPopover {
         if focusTimer {
             NotificationCenter.default.post(name: Constants.FocusTimerNotification, object: nil)
         }
-    }
-
-    
-    override func viewDidMoveToWindow() {
-        guard let frameView = window?.contentView?.superview else { return }
-
-        let backgroundView = PopoverMainView(frame: frameView.bounds)
-        backgroundView.autoresizingMask = [.width, .height]
-        frameView.addSubview(backgroundView, positioned: .below, relativeTo: frameView)
-    }
-}
-
-class PopoverMainView:NSView {
-    override func draw(_ dirtyRect: NSRect) {
-        Color(named: "MyColor")!.set()
-        self.bounds.fill()
     }
 }
