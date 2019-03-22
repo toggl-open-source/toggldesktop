@@ -498,8 +498,12 @@ void TimeEntryEditorWidget::on_tags_itemClicked(QListWidgetItem *item) {
             tags.push_back(widgetItem->text());
         }
     }
+    if (item) {
+        tags.push_back(item->text());
+    }
     tags.sort();
     QString list = tags.join("\t");
+
     if (previousTagList != list) {
         TogglApi::instance->setTimeEntryTags(guid, list);
     }
