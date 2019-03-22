@@ -1,0 +1,33 @@
+//
+//  NSView+Shadow+Border.swift
+//  TogglDesktop
+//
+//  Created by Nghia Tran on 3/4/19.
+//  Copyright © 2019 Alari. All rights reserved.
+//
+
+import Foundation
+
+extension NSView {
+
+    func applyShadow(color: NSColor = NSColor.black,
+                     opacity: Float = 0.13,
+                     radius: CGFloat = 6.0) {
+        wantsLayer = true
+        shadow = NSShadow()
+        layer?.shadowOpacity = opacity
+        layer?.shadowColor = color.cgColor
+        layer?.shadowOffset = NSMakeSize(0, -2)
+        layer?.shadowRadius = radius
+    }
+
+    func applyBorder(width: CGFloat = 1,
+                     color: NSColor = NSColor(white: 0.0, alpha: 0.1),
+                     cornerRadius: CGFloat = 8) {
+        wantsLayer = true
+        layer?.masksToBounds = false
+        layer?.cornerRadius = cornerRadius
+        layer?.borderWidth = width;
+        layer?.borderColor = color.cgColor
+    }
+}

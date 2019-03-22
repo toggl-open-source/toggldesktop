@@ -9,9 +9,7 @@
         <customObject id="-2" userLabel="File's Owner" customClass="MainWindowController">
             <connections>
                 <outlet property="contentView" destination="av5-A6-9S5" id="g24-fx-drT"/>
-                <outlet property="errorContainerView" destination="qhD-lQ-1ny" id="Amb-8Z-BZO"/>
                 <outlet property="mainView" destination="2" id="tVF-qk-gqj"/>
-                <outlet property="onlineStatusTextField" destination="fXQ-pa-GDD" id="bj3-uu-3Ey"/>
                 <outlet property="window" destination="1" id="3"/>
             </connections>
         </customObject>
@@ -30,35 +28,11 @@
                     <customView translatesAutoresizingMaskIntoConstraints="NO" id="av5-A6-9S5" userLabel="ContentView">
                         <rect key="frame" x="0.0" y="0.0" width="300" height="398"/>
                     </customView>
-                    <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="fXQ-pa-GDD">
-                        <rect key="frame" x="-2" y="-1" width="304" height="22"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="22" id="aDb-MB-STD"/>
-                        </constraints>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" borderStyle="bezel" title="Status: Online" id="iCQ-vt-0Yg">
-                            <font key="font" metaFont="system"/>
-                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                        </textFieldCell>
-                    </textField>
-                    <customView translatesAutoresizingMaskIntoConstraints="NO" id="qhD-lQ-1ny">
-                        <rect key="frame" x="50" y="10" width="240" height="38"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="240" id="ONR-eI-wsr"/>
-                            <constraint firstAttribute="height" priority="250" constant="38" id="jjn-Bd-SaA"/>
-                        </constraints>
-                    </customView>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="fXQ-pa-GDD" firstAttribute="leading" secondItem="2" secondAttribute="leading" constant="-2" id="BaB-uj-sTK"/>
-                    <constraint firstAttribute="trailing" secondItem="fXQ-pa-GDD" secondAttribute="trailing" constant="-2" id="CFW-2g-1Zg"/>
                     <constraint firstItem="av5-A6-9S5" firstAttribute="leading" secondItem="2" secondAttribute="leading" id="P13-nu-UZ0"/>
-                    <constraint firstAttribute="bottom" secondItem="fXQ-pa-GDD" secondAttribute="bottom" constant="-1" id="TGf-wj-BiJ"/>
-                    <constraint firstAttribute="trailing" secondItem="qhD-lQ-1ny" secondAttribute="trailing" constant="10" id="d2y-I7-wuc"/>
-                    <constraint firstAttribute="bottom" secondItem="qhD-lQ-1ny" secondAttribute="bottom" constant="10" id="dUa-4s-nD8"/>
                     <constraint firstAttribute="bottom" secondItem="av5-A6-9S5" secondAttribute="bottom" priority="750" id="dey-uV-HtZ"/>
                     <constraint firstItem="av5-A6-9S5" firstAttribute="top" secondItem="2" secondAttribute="top" id="fQ4-vy-qkk"/>
-                    <constraint firstItem="qhD-lQ-1ny" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="2" secondAttribute="leading" constant="30" id="ok8-Lh-vQj"/>
                     <constraint firstAttribute="trailing" secondItem="av5-A6-9S5" secondAttribute="trailing" id="vIk-4N-Ddi"/>
                 </constraints>
             </view>

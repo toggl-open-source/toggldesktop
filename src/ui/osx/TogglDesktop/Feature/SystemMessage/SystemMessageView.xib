@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner"/>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView id="c22-O7-iKe" customClass="SystemMessageView" customModule="TogglDesktop" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="480" height="57"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <box autoresizesSubviews="NO" boxType="custom" borderType="none" borderWidth="0.0" cornerRadius="13" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="fVP-X9-q3H">
+                    <rect key="frame" x="450" y="10" width="25" height="25"/>
+                    <view key="contentView" id="N1r-9q-qe3">
+                        <rect key="frame" x="0.0" y="0.0" width="25" height="25"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="nJi-cp-K4J">
+                                <rect key="frame" x="0.0" y="0.0" width="25" height="25"/>
+                                <buttonCell key="cell" type="bevel" bezelStyle="circular" image="offline-icon" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="azO-7I-Z4E">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="iconOnTap:" target="c22-O7-iKe" id="hfE-xk-aJ5"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="nJi-cp-K4J" firstAttribute="leading" secondItem="N1r-9q-qe3" secondAttribute="leading" id="0vV-Me-qCl"/>
+                            <constraint firstAttribute="bottom" secondItem="nJi-cp-K4J" secondAttribute="bottom" id="aQv-34-0Dg"/>
+                            <constraint firstItem="nJi-cp-K4J" firstAttribute="top" secondItem="N1r-9q-qe3" secondAttribute="top" id="gN4-iV-T89"/>
+                            <constraint firstAttribute="trailing" secondItem="nJi-cp-K4J" secondAttribute="trailing" id="vw9-Ux-f82"/>
+                        </constraints>
+                    </view>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="25" id="J5V-aU-8Vh"/>
+                        <constraint firstAttribute="height" constant="25" id="jE9-dv-vxY"/>
+                    </constraints>
+                    <color key="fillColor" name="white-background-color"/>
+                </box>
+            </subviews>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="fVP-X9-q3H" secondAttribute="trailing" constant="5" id="oM6-5N-BqP"/>
+                <constraint firstAttribute="bottom" secondItem="fVP-X9-q3H" secondAttribute="bottom" constant="10" id="zeZ-Eu-n99"/>
+            </constraints>
+            <connections>
+                <outlet property="iconBtn" destination="nJi-cp-K4J" id="Nv1-Hq-P9t"/>
+                <outlet property="iconContainerView" destination="fVP-X9-q3H" id="baM-1V-HLt"/>
+            </connections>
+            <point key="canvasLocation" x="-87" y="51.5"/>
+        </customView>
+    </objects>
+    <resources>
+        <image name="offline-icon" width="17" height="16"/>
+        <namedColor name="white-background-color">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

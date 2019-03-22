@@ -20,7 +20,8 @@
 @property (weak) IBOutlet NSImageView *billableFlag;
 @property (weak) IBOutlet NSImageView *tagFlag;
 @property (weak) IBOutlet NSTextField *durationTextField;
-@property (weak) IBOutlet NSImageView *unsyncedIcon;
+@property (weak) IBOutlet NSButton *unsyncedIcon;
+@property (weak) IBOutlet NSLayoutConstraint *unsyncedIconBottom;
 @property (weak) IBOutlet NSBox *groupBox;
 @property (weak) IBOutlet NSButton *groupButton;
 @property (weak) IBOutlet NSButton *continueButton;
@@ -81,6 +82,8 @@ extern void *ctx;
 	[super prepareForReuse];
 	self.continueButton.hidden = YES;
 	self.backgroundBox.transparent = YES;
+	self.unsyncedIcon.hidden = YES;
+	self.unsyncedIconBottom.constant = 0;
 	[self resetMask];
 }
 
@@ -398,11 +401,21 @@ extern void *ctx;
 - (void)applyMaskForBottomCorner {
 	self.backgroundBox.wantsLayer = YES;
 	self.backgroundBox.layer.mask = [self maskFor:PositionBottom rect:self.view.bounds cornerRadius:4.0];
+
+	self.unsyncedIcon.wantsLayer = YES;
+	self.unsyncedIcon.layer.mask = [self maskFor:PositionBottomRight rect:self.unsyncedIcon.bounds cornerRadius:4.0];
+	self.unsyncedIconBottom.constant = -1;
 }
 
 - (void)resetMask {
 	self.backgroundBox.layer.mask = nil;
 	self.backgroundBox.wantsLayer = NO;
+	self.unsyncedIcon.layer.mask = nil;
+	self.unsyncedIcon.wantsLayer = NO;
+}
+
+- (IBAction)unsyncBtnOnTap:(id)sender {
+	toggl_sync(ctx);
 }
 
 @end

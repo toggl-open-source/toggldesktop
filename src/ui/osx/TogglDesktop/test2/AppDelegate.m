@@ -774,11 +774,11 @@ BOOL onTop = NO;
 
 	if ([state intValue])
 	{
-		// FIXME: display syncing spinner
+		// [[SystemMessage shared] presentSyncing];
 	}
 	else
 	{
-		// FIXME: hide syncing spinner
+		// [[SystemMessage shared] dismissSyncing];
 	}
 }
 

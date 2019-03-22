@@ -18,14 +18,12 @@
 #import "TrackingService.h"
 #import "TogglDesktop-Swift.h"
 
-@interface MainWindowController () <FloatingErrorViewDelegate>
+@interface MainWindowController ()
 @property (nonatomic, strong) IBOutlet LoginViewController *loginViewController;
 @property (nonatomic, strong) IBOutlet TimeEntryListViewController *timeEntryListViewController;
 @property (nonatomic, strong) IBOutlet OverlayViewController *overlayViewController;
-@property (nonatomic, strong) NSLayoutConstraint *contentViewBottom;
 @property double troubleBoxDefaultHeight;
-@property (nonatomic, strong) FloatingErrorView *errorView;
-@property (weak) IBOutlet NSView *errorContainerView;
+@property (nonatomic, strong) SystemMessageView *messageView;
 
 @end
 
@@ -90,23 +88,23 @@ extern void *ctx;
 }
 
 - (void)initErrorView {
-	self.errorView = [FloatingErrorView initFromXib];
-	self.errorView.translatesAutoresizingMaskIntoConstraints = NO;
-	self.errorView.delegate = self;
+	self.messageView = [SystemMessageView initFromXib];
+	self.messageView.translatesAutoresizingMaskIntoConstraints = NO;
+	[self.contentView addSubview:self.messageView];
 
-	[self.errorContainerView addSubview:self.errorView];
-
-	[self.errorContainerView addConstraint:[NSLayoutConstraint constraintWithItem:self.errorContainerView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.errorView attribute:NSLayoutAttributeTop multiplier:1.0 constant:0]];
-	[self.errorContainerView addConstraint:[NSLayoutConstraint constraintWithItem:self.errorContainerView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.errorView attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0]];
-	[self.errorContainerView addConstraint:[NSLayoutConstraint constraintWithItem:self.errorContainerView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.errorView attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0]];
-	[self.errorContainerView addConstraint:[NSLayoutConstraint constraintWithItem:self.errorContainerView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.errorView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0]];
-
-	// Able to draw shadow
-	self.errorContainerView.wantsLayer = YES;
-	self.errorContainerView.layer.masksToBounds = NO;
+	[self.messageView addConstraint:[NSLayoutConstraint constraintWithItem:self.messageView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:270.0]];
+	NSLayoutConstraint *height = [NSLayoutConstraint constraintWithItem:self.messageView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:38.0];
+	// Message View should be expandable depend on the length of text
+	height.priority = NSLayoutPriorityDefaultLow;
+	[self.messageView addConstraint:height];
+	[self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.messageView attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0]];
+	[self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:self.contentView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.messageView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0]];
 
 	// Hidden by default
-	self.errorContainerView.hidden = YES;
+	self.messageView.hidden = YES;
+
+	// Register
+	[self.messageView registerToSystemMessage];
 }
 
 - (void)startDisplayLogin:(NSNotification *)notification
@@ -186,9 +184,8 @@ extern void *ctx;
 {
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
-	self.errorContainerView.hidden = NO;
 	NSString *errorMessage = msg == nil ? @"Error" : msg;
-	[self.errorView updateWithError:errorMessage];
+	[[SystemMessage shared] presentError:errorMessage subTitle:nil];
 }
 
 - (void)startDisplayOnlineState:(NSNotification *)notification
@@ -200,40 +197,17 @@ extern void *ctx;
 {
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
-	[self setContentViewBottomConstraint];
-
 	switch ([status intValue])
 	{
 		case 1 :
-			[self.onlineStatusTextField setHidden:NO];
-			[self.onlineStatusTextField setStringValue:@"Status: Offline, no network"];
-			self.contentViewBottom.constant = -20;
+			[[SystemMessage shared] presentOffline:@"Error" subTitle:@"Offline, no network"];
 			break;
 		case 2 :
-			[self.onlineStatusTextField setHidden:NO];
-			[self.onlineStatusTextField setStringValue:@"Status: Offline, Toggl not responding"];
-			self.contentViewBottom.constant = -20;
+			[[SystemMessage shared] presentOffline:@"Error" subTitle:@"Offline, Toggl not responding"];
 			break;
 		default :
-			[self.onlineStatusTextField setHidden:YES];
-			[self.onlineStatusTextField setStringValue:@"Status: Online"];
-			self.contentViewBottom.constant = 0;
+			[self closeError];
 			break;
-	}
-}
-
-- (void)setContentViewBottomConstraint
-{
-	if (!self.contentViewBottom)
-	{
-		self.contentViewBottom = [NSLayoutConstraint constraintWithItem:self.contentView
-															  attribute:NSLayoutAttributeBottom
-															  relatedBy:NSLayoutRelationEqual
-																 toItem:self.mainView
-															  attribute:NSLayoutAttributeBottom
-															 multiplier:1
-															   constant:0];
-		[self.mainView addConstraint:self.contentViewBottom];
 	}
 }
 
@@ -244,7 +218,7 @@ extern void *ctx;
 
 - (void)closeError
 {
-	self.errorContainerView.hidden = YES;
+	self.messageView.hidden = YES;
 }
 
 - (void)keyUp:(NSEvent *)event
@@ -286,10 +260,6 @@ extern void *ctx;
 			[self.window setLevel:NSNormalWindowLevel];
 			break;
 	}
-}
-
-- (void)floatingErrorShouldHide {
-	[self closeError];
 }
 
 @end
