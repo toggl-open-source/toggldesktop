@@ -24,31 +24,35 @@ final class ProjectDataSource: AutoCompleteViewDataSource {
 
     private struct Constants {
 
-        static let HeaderCell = NSUserInterfaceItemIdentifier("HeaderCell")
+        static let HeaderCell = NSUserInterfaceItemIdentifier("AutoCompleteProjectHeaderView")
+        static let HeaderNibName = NSNib.Name("AutoCompleteProjectHeaderView")
         static let ProjectCell = NSUserInterfaceItemIdentifier("ProjectCell")
+        static let ProjectNibName = NSNib.Name("AutoCompleteProjectItemView")
     }
 
     // MARK: Variables
 
-    func registerCustomeCells() {
-
+    override func registerCustomeCells() {
+        tableView?.register(NSNib(nibNamed: Constants.HeaderNibName, bundle: nil),
+                            forIdentifier: Constants.HeaderCell)
+        tableView?.register(NSNib(nibNamed: Constants.ProjectNibName, bundle: nil),
+                            forIdentifier: Constants.ProjectCell)
     }
 
     // MARK: Public
 
-    override func tableView(_ tableView: NSTableView, rowViewForRow row: Int) -> NSTableRowView? {
-        return nil
-//        let item = items[row]
-//        switch item {
-//        case let header as HeaderItem:
-//            let view = tableView.makeView(withIdentifier: Constants.HeaderCell, owner: self) as! AutoCompleteProjectHeaderView
-//            return view
-//        case let project as ProjectItem:
-//            let view = tableView.makeView(withIdentifier: Constants.HeaderCell, owner: self) as! AutoCompleteProjectItemView
-//            return view
-//        default:
-//            return nil
-//        }
+    override func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
+        let item = items[row]
+        switch item {
+        case let header as HeaderItem:
+            let view = tableView.makeView(withIdentifier: Constants.HeaderCell, owner: self) as! AutoCompleteProjectHeaderView
+            return view
+        case let project as ProjectItem:
+            let view = tableView.makeView(withIdentifier: Constants.HeaderCell, owner: self) as! AutoCompleteProjectItemView
+            return view
+        default:
+            return nil
+        }
     }
 
     override func tableView(_ tableView: NSTableView, heightOfRow row: Int) -> CGFloat {

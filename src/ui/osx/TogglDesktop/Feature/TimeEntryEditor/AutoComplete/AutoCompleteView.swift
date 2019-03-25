@@ -18,7 +18,7 @@ final class AutoCompleteView: NSView {
 
     // MARK: Public
 
-    func render(with datasource: AutoCompleteViewDataSource) {
+    func prepare(with datasource: AutoCompleteViewDataSource) {
         datasource.tableView = tableView
         tableView.delegate = datasource
         tableView.dataSource = datasource

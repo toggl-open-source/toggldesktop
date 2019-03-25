@@ -176,6 +176,7 @@
 		BA7D3355224898E400B953A8 /* AutoCompleteProjectItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA7D3354224898E400B953A8 /* AutoCompleteProjectItemView.xib */; };
 		BA7D335722489BD000B953A8 /* AutoCompleteViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7D335622489BD000B953A8 /* AutoCompleteViewDataSource.swift */; };
 		BA7D335A22489C8000B953A8 /* ProjectDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7D335922489C8000B953A8 /* ProjectDataSource.swift */; };
+		BA7D335E2248B48000B953A8 /* AutoCompleteTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7D335D2248B48000B953A8 /* AutoCompleteTextField.swift */; };
 		BA7DB6E321F9C77A0059239B /* MASShortcut.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA7DB6D221F9C7660059239B /* MASShortcut.framework */; };
 		BA7DB6E421F9C77A0059239B /* MASShortcut.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA7DB6D221F9C7660059239B /* MASShortcut.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BA80BEB2221EAE6F00BDFD35 /* Array+ByGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA80BEB1221EAE6F00BDFD35 /* Array+ByGroup.swift */; };
@@ -755,6 +756,7 @@
 		BA7D3354224898E400B953A8 /* AutoCompleteProjectItemView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AutoCompleteProjectItemView.xib; sourceTree = "<group>"; };
 		BA7D335622489BD000B953A8 /* AutoCompleteViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoCompleteViewDataSource.swift; sourceTree = "<group>"; };
 		BA7D335922489C8000B953A8 /* ProjectDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectDataSource.swift; sourceTree = "<group>"; };
+		BA7D335D2248B48000B953A8 /* AutoCompleteTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoCompleteTextField.swift; sourceTree = "<group>"; };
 		BA7DB6BB21F9C7660059239B /* MASShortcut.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MASShortcut.xcodeproj; path = ../../../../third_party/MASShortcut/MASShortcut.xcodeproj; sourceTree = "<group>"; };
 		BA80BEB1221EAE6F00BDFD35 /* Array+ByGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+ByGroup.swift"; sourceTree = "<group>"; };
 		BA9D90B3222D14ED00D5EC0E /* NSView+Animation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSView+Animation.swift"; sourceTree = "<group>"; };
@@ -1381,6 +1383,7 @@
 		BA7D332B2248940800B953A8 /* AutoComplete */ = {
 			isa = PBXGroup;
 			children = (
+				BA7D335C2248B46A00B953A8 /* Input */,
 				BA7D335822489C6E00B953A8 /* DataSource */,
 				BA7D334A2248944C00B953A8 /* AutoCompleteView.swift */,
 				BA7D334C2248945300B953A8 /* AutoCompleteView.xib */,
@@ -1399,6 +1402,14 @@
 				BA7D335922489C8000B953A8 /* ProjectDataSource.swift */,
 			);
 			path = DataSource;
+			sourceTree = "<group>";
+		};
+		BA7D335C2248B46A00B953A8 /* Input */ = {
+			isa = PBXGroup;
+			children = (
+				BA7D335D2248B48000B953A8 /* AutoCompleteTextField.swift */,
+			);
+			path = Input;
 			sourceTree = "<group>";
 		};
 		BA7DB6BC21F9C7660059239B /* Products */ = {
@@ -1976,6 +1987,7 @@
 				BA7D334F224897FC00B953A8 /* AutoCompleteProjectHeaderView.swift in Sources */,
 				BAE49CAE222FC1C900773814 /* TimerContainerBox.swift in Sources */,
 				74AA9474180909F50000539F /* GTMOAuth2SignIn.m in Sources */,
+				BA7D335E2248B48000B953A8 /* AutoCompleteTextField.swift in Sources */,
 				3C07B75A193C88AE00ED6E6F /* NSCustomTimerComboBox.m in Sources */,
 				BA7D335722489BD000B953A8 /* AutoCompleteViewDataSource.swift in Sources */,
 				74BAD31E18BD7D83002FD4CF /* ViewItem.m in Sources */,
