@@ -167,6 +167,15 @@
 		BA7B4BCB21C0EF8800B75B14 /* NSAlert+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = BA7B4BCA21C0EF8800B75B14 /* NSAlert+Utils.m */; };
 		BA7B4C3721C24B9D00B75B14 /* UndoTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = BA7B4C3621C24B9D00B75B14 /* UndoTextField.m */; };
 		BA7B4C7C21C293E700B75B14 /* String+Optional.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7B4C7B21C293E700B75B14 /* String+Optional.swift */; };
+		BA7D330322488B5F00B953A8 /* VerticallyCenteredTextFieldCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7D330222488B5F00B953A8 /* VerticallyCenteredTextFieldCell.swift */; };
+		BA7D334B2248944C00B953A8 /* AutoCompleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7D334A2248944C00B953A8 /* AutoCompleteView.swift */; };
+		BA7D334D2248945300B953A8 /* AutoCompleteView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA7D334C2248945300B953A8 /* AutoCompleteView.xib */; };
+		BA7D334F224897FC00B953A8 /* AutoCompleteProjectHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7D334E224897FC00B953A8 /* AutoCompleteProjectHeaderView.swift */; };
+		BA7D33512248980B00B953A8 /* AutoCompleteProjectItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7D33502248980B00B953A8 /* AutoCompleteProjectItemView.swift */; };
+		BA7D33532248981200B953A8 /* AutoCompleteProjectHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA7D33522248981200B953A8 /* AutoCompleteProjectHeaderView.xib */; };
+		BA7D3355224898E400B953A8 /* AutoCompleteProjectItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA7D3354224898E400B953A8 /* AutoCompleteProjectItemView.xib */; };
+		BA7D335722489BD000B953A8 /* AutoCompleteViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7D335622489BD000B953A8 /* AutoCompleteViewDataSource.swift */; };
+		BA7D335A22489C8000B953A8 /* ProjectDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7D335922489C8000B953A8 /* ProjectDataSource.swift */; };
 		BA7DB6E321F9C77A0059239B /* MASShortcut.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA7DB6D221F9C7660059239B /* MASShortcut.framework */; };
 		BA7DB6E421F9C77A0059239B /* MASShortcut.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA7DB6D221F9C7660059239B /* MASShortcut.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BA80BEB2221EAE6F00BDFD35 /* Array+ByGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA80BEB1221EAE6F00BDFD35 /* Array+ByGroup.swift */; };
@@ -737,6 +746,15 @@
 		BA7B4C3521C24B9D00B75B14 /* UndoTextField.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UndoTextField.h; sourceTree = "<group>"; };
 		BA7B4C3621C24B9D00B75B14 /* UndoTextField.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UndoTextField.m; sourceTree = "<group>"; };
 		BA7B4C7B21C293E700B75B14 /* String+Optional.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Optional.swift"; sourceTree = "<group>"; };
+		BA7D330222488B5F00B953A8 /* VerticallyCenteredTextFieldCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerticallyCenteredTextFieldCell.swift; sourceTree = "<group>"; };
+		BA7D334A2248944C00B953A8 /* AutoCompleteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoCompleteView.swift; sourceTree = "<group>"; };
+		BA7D334C2248945300B953A8 /* AutoCompleteView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AutoCompleteView.xib; sourceTree = "<group>"; };
+		BA7D334E224897FC00B953A8 /* AutoCompleteProjectHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoCompleteProjectHeaderView.swift; sourceTree = "<group>"; };
+		BA7D33502248980B00B953A8 /* AutoCompleteProjectItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoCompleteProjectItemView.swift; sourceTree = "<group>"; };
+		BA7D33522248981200B953A8 /* AutoCompleteProjectHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AutoCompleteProjectHeaderView.xib; sourceTree = "<group>"; };
+		BA7D3354224898E400B953A8 /* AutoCompleteProjectItemView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AutoCompleteProjectItemView.xib; sourceTree = "<group>"; };
+		BA7D335622489BD000B953A8 /* AutoCompleteViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoCompleteViewDataSource.swift; sourceTree = "<group>"; };
+		BA7D335922489C8000B953A8 /* ProjectDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectDataSource.swift; sourceTree = "<group>"; };
 		BA7DB6BB21F9C7660059239B /* MASShortcut.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MASShortcut.xcodeproj; path = ../../../../third_party/MASShortcut/MASShortcut.xcodeproj; sourceTree = "<group>"; };
 		BA80BEB1221EAE6F00BDFD35 /* Array+ByGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+ByGroup.swift"; sourceTree = "<group>"; };
 		BA9D90B3222D14ED00D5EC0E /* NSView+Animation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSView+Animation.swift"; sourceTree = "<group>"; };
@@ -1271,6 +1289,7 @@
 		BA34F0DB22439BF300C27A15 /* TimeEntryEditor */ = {
 			isa = PBXGroup;
 			children = (
+				BA7D332B2248940800B953A8 /* AutoComplete */,
 				BA2E5FB0223787C300EB866E /* EditorPopover.swift */,
 				BA34F0FE22439C3000C27A15 /* EditorViewController.swift */,
 				BA34F0FF22439C3000C27A15 /* EditorViewController.xib */,
@@ -1357,6 +1376,29 @@
 				BA7B4C7B21C293E700B75B14 /* String+Optional.swift */,
 			);
 			path = Undo;
+			sourceTree = "<group>";
+		};
+		BA7D332B2248940800B953A8 /* AutoComplete */ = {
+			isa = PBXGroup;
+			children = (
+				BA7D335822489C6E00B953A8 /* DataSource */,
+				BA7D334A2248944C00B953A8 /* AutoCompleteView.swift */,
+				BA7D334C2248945300B953A8 /* AutoCompleteView.xib */,
+				BA7D334E224897FC00B953A8 /* AutoCompleteProjectHeaderView.swift */,
+				BA7D33522248981200B953A8 /* AutoCompleteProjectHeaderView.xib */,
+				BA7D33502248980B00B953A8 /* AutoCompleteProjectItemView.swift */,
+				BA7D3354224898E400B953A8 /* AutoCompleteProjectItemView.xib */,
+			);
+			path = AutoComplete;
+			sourceTree = "<group>";
+		};
+		BA7D335822489C6E00B953A8 /* DataSource */ = {
+			isa = PBXGroup;
+			children = (
+				BA7D335622489BD000B953A8 /* AutoCompleteViewDataSource.swift */,
+				BA7D335922489C8000B953A8 /* ProjectDataSource.swift */,
+			);
+			path = DataSource;
 			sourceTree = "<group>";
 		};
 		BA7DB6BC21F9C7660059239B /* Products */ = {
@@ -1747,6 +1789,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3C65A7E51DE5757A005586B4 /* continue_regular.pdf in Resources */,
+				BA7D33532248981200B953A8 /* AutoCompleteProjectHeaderView.xib in Resources */,
 				BAF50DE521A29FED0090BA95 /* Images.xcassets in Resources */,
 				3C65A7D41DE574E7005586B4 /* group_icon_open.pdf in Resources */,
 				BA34F10122439C3000C27A15 /* EditorViewController.xib in Resources */,
@@ -1758,6 +1801,7 @@
 				3CDA2C5B1913B61000A94967 /* icon-billable@2x.png in Resources */,
 				3CD30F441F58B02C006FAA0D /* OverlayViewController.xib in Resources */,
 				74664DB218AA860800AAD282 /* off.pdf in Resources */,
+				BA7D3355224898E400B953A8 /* AutoCompleteProjectItemView.xib in Resources */,
 				7430750518204EFB009019CB /* AboutWindowController.xib in Resources */,
 				BA4059B1221D2186002969B8 /* TimeHeaderView.xib in Resources */,
 				749CB8CD18167D6E00814841 /* PreferencesWindowController.xib in Resources */,
@@ -1777,6 +1821,7 @@
 				7423393D1829B99C00063FA9 /* IdleNotificationWindowController.xib in Resources */,
 				95DBF8CD18BF7A910021FB41 /* offline_on.pdf in Resources */,
 				69FC180B17E6534500B96425 /* MainMenu.xib in Resources */,
+				BA7D334D2248945300B953A8 /* AutoCompleteView.xib in Resources */,
 				3C65A7D31DE574E7005586B4 /* group_icon_closed.pdf in Resources */,
 				C5DA1FC017F1B08A001C4565 /* MainWindowController.xib in Resources */,
 				BAF38FEF2241FF20009147D7 /* FloatingErrorView.xib in Resources */,
@@ -1879,6 +1924,7 @@
 				745126B619A28AA600390F47 /* Reachability.m in Sources */,
 				74C1579B183BA5DA00550613 /* AutocompleteDataSource.m in Sources */,
 				BA0E38102225257D00D0121B /* BezierPath+Corner.swift in Sources */,
+				BA7D33512248980B00B953A8 /* AutoCompleteProjectItemView.swift in Sources */,
 				74BA5FCF18B6E770009DAA2D /* NSHoverButton.m in Sources */,
 				BA3E75D422291CEB009AD291 /* SystemMessage.swift in Sources */,
 				BAB8D49421BE742D00D63DA5 /* NSTableView+TimeEntryDiff.swift in Sources */,
@@ -1917,6 +1963,7 @@
 				BA4059B7221D46F4002969B8 /* TimeEntryCollectionView.m in Sources */,
 				BA4059AF221D215A002969B8 /* TimeHeaderView.swift in Sources */,
 				74AA9476180909F50000539F /* GTMOAuth2WindowController.m in Sources */,
+				BA7D334B2248944C00B953A8 /* AutoCompleteView.swift in Sources */,
 				BA03729D21FED85700FC277B /* NSView+Xib.swift in Sources */,
 				74D1D25D17EB71C100E709B0 /* TimeEntryEditViewController.m in Sources */,
 				3C0A571C1C22E12E00301D77 /* MKColorSwatchMatrix.m in Sources */,
@@ -1926,12 +1973,15 @@
 				BA08E087222E709C0075F68E /* ProjectTextField.m in Sources */,
 				BA0CEC6521BE590200F1BF01 /* NSTableView+Diff.swift in Sources */,
 				BA2E5FB1223787C300EB866E /* EditorPopover.swift in Sources */,
+				BA7D334F224897FC00B953A8 /* AutoCompleteProjectHeaderView.swift in Sources */,
 				BAE49CAE222FC1C900773814 /* TimerContainerBox.swift in Sources */,
 				74AA9474180909F50000539F /* GTMOAuth2SignIn.m in Sources */,
 				3C07B75A193C88AE00ED6E6F /* NSCustomTimerComboBox.m in Sources */,
+				BA7D335722489BD000B953A8 /* AutoCompleteViewDataSource.swift in Sources */,
 				74BAD31E18BD7D83002FD4CF /* ViewItem.m in Sources */,
 				3CD7AD6F19ED579700372797 /* NSResize.m in Sources */,
 				BA08E012222E32C90075F68E /* NSView+LayoutConstraint.swift in Sources */,
+				BA7D335A22489C8000B953A8 /* ProjectDataSource.swift in Sources */,
 				BAA260D1222D1DC70094F4E4 /* NSView+Shadow+Border.swift in Sources */,
 				BA712EC221BF907200A2D8DD /* UndoManager.swift in Sources */,
 				3C3AF64E20ACC6280088A3A6 /* CountryViewItem.m in Sources */,
