@@ -38,6 +38,9 @@ if(NOT USE_BUNDLED_LIBRARIES)
     
     # Look for JSON
     find_package(jsoncpp CONFIG)
+    if(jsoncpp_FOUND)
+        set(JSONCPP_LIBRARIES jsoncpp_lib)
+    endif()
 
     # Look for Qxt
     pkg_search_module(QXT_CORE QxtCore-qt5)

@@ -121,12 +121,12 @@ if(NOT jsoncpp_FOUND)
     target_include_directories(jsoncpp PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/jsoncpp/include
     )        
-    set(JSON_INCLUDE_DIRS
+    set(JSONCPP_INCLUDE_DIRS
         ${CMAKE_CURRENT_SOURCE_DIR}/jsoncpp/include
         ${CMAKE_CURRENT_SOURCE_DIR}/jsoncpp/src/lib_json
         PARENT_SCOPE
     )
-    set(JSON_LIBRARIES
+    set(JSONCPP_LIBRARIES
         jsoncpp
         PARENT_SCOPE
     )
