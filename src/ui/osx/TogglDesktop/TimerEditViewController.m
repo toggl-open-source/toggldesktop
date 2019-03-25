@@ -611,10 +611,12 @@ NSString *kInactiveTimerColor = @"#999999";
 
 - (void)renderProjectLabelWithViewItem:(TimeEntryViewItem *)item
 {
-	NSString *text = self.time_entry.ProjectAndTaskLabel;
+	NSString *text = item.ProjectAndTaskLabel;
 
 	if (text != nil && text.length > 0)
 	{
+		NSColor *projectColor = [ConvertHexColor hexCodeToNSColor:item.ProjectColor];
+		[self.dotImageView fillWith:projectColor];
 		self.dotImageView.hidden = NO;
 		[self.projectTextField setTitleWithTimeEntry:item];
 		self.projectTextField.toolTip = text;

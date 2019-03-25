@@ -32,16 +32,8 @@
 
 - (NSMutableAttributedString *)attributeStringWithItem:(TimeEntryViewItem *)view_item
 {
-	NSString *clientTitle = [NSString stringWithFormat:@"• %@", view_item.ClientLabel];
-	NSMutableAttributedString *clientName = [[NSMutableAttributedString alloc] initWithString:clientTitle];
-
-	[clientName setAttributes:
-	 @{
-		 NSFontAttributeName : [NSFont systemFontOfSize:12],
-		 NSForegroundColorAttributeName:[self clientTextColor]
-	 }
-						range:NSMakeRange(0, [clientName length])];
 	NSMutableAttributedString *string;
+
 	if (view_item.TaskID != 0)
 	{
 		string = [[NSMutableAttributedString alloc] initWithString:[view_item.TaskLabel stringByAppendingString:@". "]];
@@ -62,7 +54,20 @@
 		string = [[NSMutableAttributedString alloc] initWithString:[view_item.ProjectLabel stringByAppendingString:@" "]];
 	}
 
-	[string appendAttributedString:clientName];
+	if ([view_item.ClientLabel length] > 0)
+	{
+		NSString *clientTitle = [NSString stringWithFormat:@"• %@", view_item.ClientLabel];
+		NSMutableAttributedString *clientName = [[NSMutableAttributedString alloc] initWithString:clientTitle];
+
+		[clientName setAttributes:
+		 @{
+			 NSFontAttributeName : [NSFont systemFontOfSize:12],
+			 NSForegroundColorAttributeName:[self clientTextColor]
+		 }
+							range:NSMakeRange(0, [clientName length])];
+		[string appendAttributedString:clientName];
+	}
+
 	return string;
 }
 
