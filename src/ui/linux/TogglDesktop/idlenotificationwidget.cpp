@@ -117,7 +117,6 @@ void IdleNotificationWidget::storeIdlePeriod(uint64_t period) {
         lastActiveTime = static_cast<uint64_t>(time(nullptr)) - period;
         TogglApi::instance->setIdleSeconds(period);
     }
-    qCritical() << "Setting period to" << period << "and screen is locked:" << isScreenLocked() << "; last active time is:" << lastActiveTime << "and that makes the period" << static_cast<uint64_t>(time(nullptr)) - lastActiveTime;
 }
 
 IdleNotificationWidget::~IdleNotificationWidget() {
