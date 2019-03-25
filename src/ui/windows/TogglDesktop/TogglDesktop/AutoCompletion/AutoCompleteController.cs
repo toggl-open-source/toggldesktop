@@ -365,7 +365,7 @@ namespace TogglDesktop.AutoCompletion
                 return;
 
             var i = this.selectedIndex + 1;
-            if (i == this.visibleItems.Count)
+            if (i >= this.visibleItems.Count)
             {
                 i = 0;
                 LB.UpdateLayout();
@@ -387,7 +387,7 @@ namespace TogglDesktop.AutoCompletion
                 return;
 
             var i = this.selectedIndex - 1;
-            if (i < 0)
+            if (i < 0 || i >= this.visibleItems.Count)
             {
                 i = this.visibleItems.Count - 1;   
             }
