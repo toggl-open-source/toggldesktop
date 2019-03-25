@@ -334,6 +334,18 @@ extern void *ctx;
 			self.lastSelectedGUID = selectedCell.GUID;
 			ofView = self.collectionView;
 		}
+		else
+		{
+            // It's for new Time Entry from Manual Timer
+			NSCollectionViewItem *firstItem = [self.collectionView itemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
+			if ([firstItem isKindOfClass:[TimeEntryCell class]])
+			{
+				TimeEntryCell *timeEntryCell = (TimeEntryCell *)firstItem;
+				self.lastSelectedGUID = timeEntryCell.GUID;
+				positionRect = [self positionRectForItem:timeEntryCell];
+				ofView = self.collectionView;
+			}
+		}
 
         // Show popover
 		[self.timeEntrypopover showRelativeToRect:positionRect
