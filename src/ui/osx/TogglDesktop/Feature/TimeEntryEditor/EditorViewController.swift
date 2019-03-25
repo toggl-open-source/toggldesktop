@@ -39,10 +39,8 @@ final class EditorViewController: NSViewController {
 extension EditorViewController {
 
     fileprivate func initCommon() {
-        projectBox.wantsLayer = true
-        projectBox.layer?.masksToBounds = false
-        projectBox.contentView?.wantsLayer = true
-        projectBox.contentView?.layer?.masksToBounds = false
+        view.wantsLayer = true
+        view.layer?.masksToBounds = false
     }
 
     fileprivate func initDatasource() {

@@ -31,7 +31,7 @@ final class EditorPopover: NSPopover {
     }
 
     @objc func prepareViewController() {
-        let editor = EditorViewController.init(nibName: NSNib.Name("EditorViewController"), bundle: nil)
+        let editor = EditorViewController(nibName: NSNib.Name("EditorViewController"), bundle: nil)
         contentViewController = editor
     }
 

@@ -11,7 +11,7 @@ import Foundation
 class AutoCompleteViewDataSource: NSObject {
 
     // MARK: Variables
-
+    private let maxHeight: CGFloat = 400.0
     private(set) var items: [Any] = []
     private var autoCompleteView: AutoCompleteView!
     var tableView: NSTableView {
@@ -49,6 +49,7 @@ class AutoCompleteViewDataSource: NSObject {
     func render(with items: [Any]) {
         self.items = items
         tableView.reloadData()
+        sizeToFit()
     }
 
     func filter(with text: String) {
@@ -60,6 +61,18 @@ class AutoCompleteViewDataSource: NSObject {
             return
         }
         render(with: items)
+    }
+
+    private func sizeToFit() {
+        // Get total height of all cells
+        let totalHeight = items.enumerated().reduce(into: 0.0) { (height, item) in
+            return height += tableView(tableView, heightOfRow: item.offset)
+        }
+
+        // Get suitable height
+        // 0 <= height <= maxHeight
+        let suitableHeight = CGFloat.minimum(CGFloat.maximum(0, totalHeight), maxHeight)
+        autoCompleteView.update(height: suitableHeight)
     }
 }
 
