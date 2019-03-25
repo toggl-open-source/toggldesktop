@@ -9,6 +9,8 @@
 #import <Cocoa/Cocoa.h>
 #import "Reachability.h"
 
+@class AutocompleteItem;
+
 @interface AppDelegate : NSObject <NSApplicationDelegate, NSUserNotificationCenterDelegate>
 @property (strong) NSStatusItem *statusItem;
 @property (retain, nonatomic) Reachability *reach;

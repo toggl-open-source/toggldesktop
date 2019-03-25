@@ -8,16 +8,28 @@
 
 import Foundation
 
-struct HeaderItem {
+struct ProjectHeaderItem {
 
     let name: String
+    let item: AutocompleteItem
 
+    init(item: AutocompleteItem) {
+        self.item = item
+        self.name = item.clientLabel
+    }
 }
 
-struct ProjectItem {
+struct ProjectRowItem {
 
     let name: String
     let colorHex: String
+    let item: AutocompleteItem
+
+    init(item: AutocompleteItem) {
+        self.item = item
+        self.name = item.projectLabel
+        self.colorHex = item.projectColor
+    }
 }
 
 final class ProjectDataSource: AutoCompleteViewDataSource {
@@ -44,10 +56,10 @@ final class ProjectDataSource: AutoCompleteViewDataSource {
     override func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
         let item = items[row]
         switch item {
-        case let header as HeaderItem:
+        case let header as ProjectHeaderItem:
             let view = tableView.makeView(withIdentifier: Constants.HeaderCell, owner: self) as! AutoCompleteProjectHeaderView
             return view
-        case let project as ProjectItem:
+        case let project as ProjectRowItem:
             let view = tableView.makeView(withIdentifier: Constants.HeaderCell, owner: self) as! AutoCompleteProjectItemView
             return view
         default:
@@ -58,9 +70,9 @@ final class ProjectDataSource: AutoCompleteViewDataSource {
     override func tableView(_ tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
         let item = items[row]
         switch item {
-        case is HeaderItem:
+        case is ProjectHeaderItem:
             return 23.0
-        case is ProjectItem:
+        case is ProjectRowItem:
             return 35.0
         default:
             return 0

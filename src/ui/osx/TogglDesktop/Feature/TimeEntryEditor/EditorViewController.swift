@@ -18,7 +18,8 @@ final class EditorViewController: NSViewController {
 
     // MARK: Variables
 
-    private lazy var projectDatasource = ProjectDataSource()
+    private lazy var projectDatasource = ProjectDataSource(items: ProjectStorage.shared.items,
+                                                           updateNotificationName: .ProjectStorageChangedNotification)
 
     // MARK: View Cycle
     override func viewDidLoad() {
@@ -46,6 +47,6 @@ extension EditorViewController {
 
     fileprivate func initDatasource() {
         projectDatasource.registerCustomeCells()
-        projectTextField.prepare(with: projectDatasource, parentView: projectBox)
+        projectTextField.prepare(with: projectDatasource, parentView: view)
     }
 }
