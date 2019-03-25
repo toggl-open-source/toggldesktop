@@ -45,10 +45,23 @@ final class ProjectDataSource: AutoCompleteViewDataSource {
     // MARK: Variables
 
     override func registerCustomeCells() {
-        tableView?.register(NSNib(nibNamed: Constants.HeaderNibName, bundle: nil),
+        tableView.register(NSNib(nibNamed: Constants.HeaderNibName, bundle: nil),
                             forIdentifier: Constants.HeaderCell)
-        tableView?.register(NSNib(nibNamed: Constants.ProjectNibName, bundle: nil),
+        tableView.register(NSNib(nibNamed: Constants.ProjectNibName, bundle: nil),
                             forIdentifier: Constants.ProjectCell)
+    }
+
+    override func filter(with text: String) {
+
+        // show all
+        if text.isEmpty {
+            render(with: ProjectStorage.shared.items)
+            return
+        }
+
+        // Filter
+        let filterItems = ProjectStorage.shared.filter(with: text)
+        render(with: filterItems)
     }
 
     // MARK: Public

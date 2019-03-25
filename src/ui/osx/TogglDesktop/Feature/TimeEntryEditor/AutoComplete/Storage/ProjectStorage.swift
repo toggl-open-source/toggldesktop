@@ -19,14 +19,39 @@ extension Notification.Name {
     // MARK: Variables
 
     private(set) var items: [Any] = []
+    private var autoCompleteItems: [AutocompleteItem] = []
 
     // MARK: Public
 
     func update(with autoCompleteItems: [AutocompleteItem]) {
+        self.autoCompleteItems = autoCompleteItems
+        self.items = buildProjectItems(with: autoCompleteItems)
+        NotificationCenter.default.post(name: .ProjectStorageChangedNotification,
+                                        object: items)
+    }
+
+    func filter(with text: String) -> [Any] {
+        let lowercaseText = text.lowercased()
+
+        // Filter with project lable or client label
+        let filters = autoCompleteItems.filter {
+            return $0.projectLabel.lowercased().contains(lowercaseText) ||
+                $0.clientLabel.lowercased().contains(lowercaseText)
+        }
+
+        return buildProjectItems(with: filters)
+    }
+}
+
+// MARK: Private
+
+extension ProjectStorage {
+
+    func buildProjectItems(with autoCompleteItems: [AutocompleteItem]) -> [Any] {
+
+        // Get first item
         guard let firstItem = autoCompleteItems.first else {
-            items = []
-            NotificationCenter.default.post(name: .ProjectStorageChangedNotification, object: items)
-            return
+            return []
         }
 
         // Process
@@ -45,8 +70,6 @@ extension Notification.Name {
             newItems.append(ProjectContentItem(item: item))
         }
 
-        // Notify
-        items = newItems
-        NotificationCenter.default.post(name: .ProjectStorageChangedNotification, object: items)
+        return newItems
     }
 }
