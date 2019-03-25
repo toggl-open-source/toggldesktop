@@ -30,6 +30,10 @@ final class AutoCompleteView: NSView {
         dataSource.filter(with: text)
     }
 
+    func update(height: CGFloat) {
+        tableViewHeight.constant = height
+    }
+    
     @IBAction func newProjectBtnOnTap(_ sender: Any) {
     }
 }
