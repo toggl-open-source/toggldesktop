@@ -17,6 +17,10 @@ class AutoCompleteViewDataSource: NSObject {
 
     // MARK: Public
 
+    func registerCustomeCells() {
+        // Should override
+    }
+
     func render(with items: [Any]) {
         self.items = items
         tableView?.reloadData()
@@ -29,10 +33,9 @@ extension AutoCompleteViewDataSource: NSTableViewDataSource, NSTableViewDelegate
         return items.count
     }
 
-    func tableView(_ tableView: NSTableView, rowViewForRow row: Int) -> NSTableRowView? {
+    func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
         return nil
     }
-
 
     func tableView(_ tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
         return 44.0
