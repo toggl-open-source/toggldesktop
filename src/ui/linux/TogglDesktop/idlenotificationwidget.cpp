@@ -13,6 +13,7 @@ IdleNotificationWidget::IdleNotificationWidget(QStackedWidget *parent)
   ui(new Ui::IdleNotificationWidget),
   idleStarted(0),
   dbusApiAvailable(true),
+  screenLocked(false),
   timeEntryGUID(""),
   idleHintTimer(new QTimer(this)) {
     ui->setupUi(this);
@@ -33,6 +34,8 @@ IdleNotificationWidget::IdleNotificationWidget(QStackedWidget *parent)
 
     connect(TogglApi::instance, SIGNAL(displayLogin(bool,uint64_t)),  // NOLINT
             this, SLOT(displayLogin(bool,uint64_t)));  // NOLINT
+
+    connect(screensaver, SIGNAL(ActiveChanged(bool)), this, SLOT(onScreensaverActiveChanged(bool)));
 
     connect(idleHintTimer, &QTimer::timeout, this, &IdleNotificationWidget::requestIdleHint);
     idleHintTimer->setInterval(5000);
@@ -61,7 +64,7 @@ void IdleNotificationWidget::requestIdleHint() {
         XScreenSaverInfo *info = XScreenSaverAllocInfo();
         if (XScreenSaverQueryInfo(display, DefaultRootWindow(display), info)) {
             uint64_t idleSeconds = info->idle / 1000;
-            TogglApi::instance->setIdleSeconds(idleSeconds);
+            storeIdlePeriod(idleSeconds);
         }
         XFree(info);
         XCloseDisplay(display);
@@ -76,9 +79,14 @@ void IdleNotificationWidget::idleHintReceived(QDBusPendingCallWatcher *watcher) 
     }
     else {
         qulonglong value = reply.argumentAt<0>();
-        TogglApi::instance->setIdleSeconds(value / 1000);
+        uint64_t idleSeconds = value / 1000;
+        storeIdlePeriod(idleSeconds);
     }
     watcher->deleteLater();
+}
+
+void IdleNotificationWidget::onScreensaverActiveChanged(bool active) {
+    screenLocked = active;
 }
 
 void IdleNotificationWidget::display() {
@@ -94,6 +102,20 @@ void IdleNotificationWidget::hide() {
     if (previousView) {
         qobject_cast<QStackedWidget*>(parent())->setCurrentWidget(previousView);
         previousView = nullptr;
+    }
+}
+
+bool IdleNotificationWidget::isScreenLocked() const {
+    return screenLocked;
+}
+
+void IdleNotificationWidget::storeIdlePeriod(uint64_t period) {
+    if (isScreenLocked()) {
+        TogglApi::instance->setIdleSeconds(static_cast<uint64_t>(time(nullptr)) - lastActiveTime);
+    }
+    else {
+        lastActiveTime = static_cast<uint64_t>(time(nullptr)) - period;
+        TogglApi::instance->setIdleSeconds(period);
     }
 }
 

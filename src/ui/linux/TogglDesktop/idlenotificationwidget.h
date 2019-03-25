@@ -26,9 +26,16 @@ class IdleNotificationWidget : public QWidget {
     void display();
     void hide();
 
+    bool isScreenLocked() const;
+
+private:
+    void storeIdlePeriod(uint64_t period);
+
  private slots:  // NOLINT
     void requestIdleHint();
     void idleHintReceived(QDBusPendingCallWatcher *watcher);
+
+    void onScreensaverActiveChanged(bool active);
 
     void displaySettings(const bool open, SettingsView *settings);
 
@@ -60,6 +67,8 @@ class IdleNotificationWidget : public QWidget {
     uint64_t idleStarted;
     QDBusInterface *screensaver;
     bool dbusApiAvailable;
+    bool screenLocked;
+    uint64_t lastActiveTime;
 
     QString timeEntryGUID;
 
