@@ -11,13 +11,12 @@ import Foundation
 class AutoCompleteViewDataSource: NSObject {
 
     // MARK: Variables
-    
-    weak var tableView: NSTableView? {
-        didSet {
-            registerCustomeCells()
-        }
-    }
+
     private(set) var items: [Any] = []
+    private var autoCompleteView: AutoCompleteView!
+    var tableView: NSTableView {
+        return autoCompleteView.tableView
+    }
 
     // MARK: Init
 
@@ -36,19 +35,26 @@ class AutoCompleteViewDataSource: NSObject {
 
     // MARK: Public
 
+    func prepare(_ autoCompleteView: AutoCompleteView) {
+        self.autoCompleteView = autoCompleteView
+        registerCustomeCells()
+        tableView.delegate = self
+        tableView.dataSource = self
+    }
+
     func registerCustomeCells() {
         // Should override
     }
 
     func render(with items: [Any]) {
         self.items = items
-        tableView?.reloadData()
+        tableView.reloadData()
     }
 
     func filter(with text: String) {
-
+        // Should override
     }
-    
+
     @objc func receiveDataSourceNotifiation(_ noti: Notification) {
         guard let items = noti.object as? [Any] else {
             return

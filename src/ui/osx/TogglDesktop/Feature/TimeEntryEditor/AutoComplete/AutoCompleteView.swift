@@ -16,12 +16,18 @@ final class AutoCompleteView: NSView {
     @IBOutlet weak var tableViewHeight: NSLayoutConstraint!
     @IBOutlet weak var createNewProjectBtn: NSButton!
 
+    // MARK: Variables
+    private var dataSource: AutoCompleteViewDataSource!
+
     // MARK: Public
 
-    func prepare(with datasource: AutoCompleteViewDataSource) {
-        datasource.tableView = tableView
-        tableView.delegate = datasource
-        tableView.dataSource = datasource
+    func prepare(with dataSource: AutoCompleteViewDataSource) {
+        self.dataSource = dataSource
+        self.dataSource.prepare(self)
+    }
+
+    func filter(with text: String) {
+        dataSource.filter(with: text)
     }
 
     @IBAction func newProjectBtnOnTap(_ sender: Any) {
