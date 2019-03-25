@@ -262,7 +262,10 @@ NSString *kInactiveTimerColor = @"#999999";
 	{
 		self.autoCompleteInput.stringValue = @"";
 	}
-	[self.view.window makeFirstResponder:self.autoCompleteInput];
+	if (self.displayMode == DisplayModeTimer)
+	{
+		[self.view.window makeFirstResponder:self.autoCompleteInput];
+	}
 
 	self.time_entry = [[TimeEntryViewItem alloc] init];
 }
@@ -432,13 +435,13 @@ NSString *kInactiveTimerColor = @"#999999";
 {
 	[self.mainBox setHidden:NO];
 	[self.manualBox setHidden:YES];
+    [self.view.window makeFirstResponder:self.autoCompleteInput];
 }
 
 - (void)toggleManual:(NSNotification *)notification
 {
 	[self.manualBox setHidden:NO];
 	[self.mainBox setHidden:YES];
-	[self.view.window makeFirstResponder:self.autoCompleteInput];
 }
 
 - (void)addButtonClicked
