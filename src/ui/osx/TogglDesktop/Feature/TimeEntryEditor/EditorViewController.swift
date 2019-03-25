@@ -15,6 +15,9 @@ final class EditorViewController: NSViewController {
         // Do view setup here.
     }
     
+    @IBAction func closeBtnOnTap(_ sender: Any) {
+        
+    }
 }
 
 // MARK: Private
