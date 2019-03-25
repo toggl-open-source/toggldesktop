@@ -39,8 +39,8 @@
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="EMT-i8-OD1">
-                                            <rect key="frame" x="8" y="6" width="222" height="18"/>
-                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" alignment="left" placeholderString="Description…" id="0MM-Wa-hOG">
+                                            <rect key="frame" x="-2" y="0.0" width="242" height="28"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" alignment="left" placeholderString="Description…" id="0MM-Wa-hOG" customClass="VerticallyCenteredTextFieldCell" customModule="TogglDesktop" customModuleProvider="target">
                                                 <font key="font" metaFont="system" size="14"/>
                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -48,9 +48,10 @@
                                         </textField>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="EMT-i8-OD1" firstAttribute="leading" secondItem="5IK-eN-9gu" secondAttribute="leading" constant="10" id="Bi1-1O-e8W"/>
-                                        <constraint firstAttribute="trailing" secondItem="EMT-i8-OD1" secondAttribute="trailing" constant="10" id="EYd-6z-Ups"/>
-                                        <constraint firstItem="EMT-i8-OD1" firstAttribute="centerY" secondItem="5IK-eN-9gu" secondAttribute="centerY" constant="-1" id="kPm-cI-acu"/>
+                                        <constraint firstAttribute="trailing" secondItem="EMT-i8-OD1" secondAttribute="trailing" id="36U-8E-mmy"/>
+                                        <constraint firstAttribute="bottom" secondItem="EMT-i8-OD1" secondAttribute="bottom" id="60n-1k-y0Y"/>
+                                        <constraint firstItem="EMT-i8-OD1" firstAttribute="top" secondItem="5IK-eN-9gu" secondAttribute="top" id="eSp-Wf-wTz"/>
+                                        <constraint firstItem="EMT-i8-OD1" firstAttribute="leading" secondItem="5IK-eN-9gu" secondAttribute="leading" id="qAI-0I-7v7"/>
                                     </constraints>
                                 </view>
                                 <constraints>
