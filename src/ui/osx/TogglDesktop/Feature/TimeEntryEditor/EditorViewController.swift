@@ -46,7 +46,6 @@ extension EditorViewController {
     }
 
     fileprivate func initDatasource() {
-        projectDatasource.registerCustomeCells()
         projectTextField.prepare(with: projectDatasource, parentView: view)
     }
 }

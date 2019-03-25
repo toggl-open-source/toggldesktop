@@ -42,7 +42,7 @@ extension Notification.Name {
                 newItems.append(ProjectHeaderItem(item: item))
                 currentClient = item.clientLabel
             }
-            newItems.append(ProjectRowItem(item: item))
+            newItems.append(ProjectContentItem(item: item))
         }
 
         // Notify

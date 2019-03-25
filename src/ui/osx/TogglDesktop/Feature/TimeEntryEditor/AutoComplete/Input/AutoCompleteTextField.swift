@@ -35,6 +35,12 @@ final class AutoCompleteTextField: NSTextField, NSTextFieldDelegate {
         autoCompleteView.isHidden = false
     }
 
+    func controlTextDidChange(_ obj: Notification) {
+        autoCompleteView.isHidden = false
+
+        // Filter
+        autoCompleteView.filter(with: self.stringValue)
+    }
 }
 
 // MARK: Private

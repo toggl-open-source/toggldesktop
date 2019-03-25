@@ -171,10 +171,10 @@
 		BA7D330322488B5F00B953A8 /* VerticallyCenteredTextFieldCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7D330222488B5F00B953A8 /* VerticallyCenteredTextFieldCell.swift */; };
 		BA7D334B2248944C00B953A8 /* AutoCompleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7D334A2248944C00B953A8 /* AutoCompleteView.swift */; };
 		BA7D334D2248945300B953A8 /* AutoCompleteView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA7D334C2248945300B953A8 /* AutoCompleteView.xib */; };
-		BA7D334F224897FC00B953A8 /* AutoCompleteProjectHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7D334E224897FC00B953A8 /* AutoCompleteProjectHeaderView.swift */; };
-		BA7D33512248980B00B953A8 /* AutoCompleteProjectItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7D33502248980B00B953A8 /* AutoCompleteProjectItemView.swift */; };
-		BA7D33532248981200B953A8 /* AutoCompleteProjectHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA7D33522248981200B953A8 /* AutoCompleteProjectHeaderView.xib */; };
-		BA7D3355224898E400B953A8 /* AutoCompleteProjectItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA7D3354224898E400B953A8 /* AutoCompleteProjectItemView.xib */; };
+		BA7D334F224897FC00B953A8 /* ProjectHeaderCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7D334E224897FC00B953A8 /* ProjectHeaderCellView.swift */; };
+		BA7D33512248980B00B953A8 /* ProjectContentCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7D33502248980B00B953A8 /* ProjectContentCellView.swift */; };
+		BA7D33532248981200B953A8 /* ProjectHeaderCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA7D33522248981200B953A8 /* ProjectHeaderCellView.xib */; };
+		BA7D3355224898E400B953A8 /* ProjectContentCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA7D3354224898E400B953A8 /* ProjectContentCellView.xib */; };
 		BA7D335722489BD000B953A8 /* AutoCompleteViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7D335622489BD000B953A8 /* AutoCompleteViewDataSource.swift */; };
 		BA7D335A22489C8000B953A8 /* ProjectDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7D335922489C8000B953A8 /* ProjectDataSource.swift */; };
 		BA7D335E2248B48000B953A8 /* AutoCompleteTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7D335D2248B48000B953A8 /* AutoCompleteTextField.swift */; };
@@ -752,10 +752,10 @@
 		BA7D330222488B5F00B953A8 /* VerticallyCenteredTextFieldCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerticallyCenteredTextFieldCell.swift; sourceTree = "<group>"; };
 		BA7D334A2248944C00B953A8 /* AutoCompleteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoCompleteView.swift; sourceTree = "<group>"; };
 		BA7D334C2248945300B953A8 /* AutoCompleteView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AutoCompleteView.xib; sourceTree = "<group>"; };
-		BA7D334E224897FC00B953A8 /* AutoCompleteProjectHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoCompleteProjectHeaderView.swift; sourceTree = "<group>"; };
-		BA7D33502248980B00B953A8 /* AutoCompleteProjectItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoCompleteProjectItemView.swift; sourceTree = "<group>"; };
-		BA7D33522248981200B953A8 /* AutoCompleteProjectHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AutoCompleteProjectHeaderView.xib; sourceTree = "<group>"; };
-		BA7D3354224898E400B953A8 /* AutoCompleteProjectItemView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AutoCompleteProjectItemView.xib; sourceTree = "<group>"; };
+		BA7D334E224897FC00B953A8 /* ProjectHeaderCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectHeaderCellView.swift; sourceTree = "<group>"; };
+		BA7D33502248980B00B953A8 /* ProjectContentCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectContentCellView.swift; sourceTree = "<group>"; };
+		BA7D33522248981200B953A8 /* ProjectHeaderCellView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProjectHeaderCellView.xib; sourceTree = "<group>"; };
+		BA7D3354224898E400B953A8 /* ProjectContentCellView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProjectContentCellView.xib; sourceTree = "<group>"; };
 		BA7D335622489BD000B953A8 /* AutoCompleteViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoCompleteViewDataSource.swift; sourceTree = "<group>"; };
 		BA7D335922489C8000B953A8 /* ProjectDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectDataSource.swift; sourceTree = "<group>"; };
 		BA7D335D2248B48000B953A8 /* AutoCompleteTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoCompleteTextField.swift; sourceTree = "<group>"; };
@@ -1398,10 +1398,10 @@
 				BA7D335822489C6E00B953A8 /* DataSource */,
 				BA7D334A2248944C00B953A8 /* AutoCompleteView.swift */,
 				BA7D334C2248945300B953A8 /* AutoCompleteView.xib */,
-				BA7D334E224897FC00B953A8 /* AutoCompleteProjectHeaderView.swift */,
-				BA7D33522248981200B953A8 /* AutoCompleteProjectHeaderView.xib */,
-				BA7D33502248980B00B953A8 /* AutoCompleteProjectItemView.swift */,
-				BA7D3354224898E400B953A8 /* AutoCompleteProjectItemView.xib */,
+				BA7D334E224897FC00B953A8 /* ProjectHeaderCellView.swift */,
+				BA7D33522248981200B953A8 /* ProjectHeaderCellView.xib */,
+				BA7D33502248980B00B953A8 /* ProjectContentCellView.swift */,
+				BA7D3354224898E400B953A8 /* ProjectContentCellView.xib */,
 			);
 			path = AutoComplete;
 			sourceTree = "<group>";
@@ -1811,7 +1811,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3C65A7E51DE5757A005586B4 /* continue_regular.pdf in Resources */,
-				BA7D33532248981200B953A8 /* AutoCompleteProjectHeaderView.xib in Resources */,
+				BA7D33532248981200B953A8 /* ProjectHeaderCellView.xib in Resources */,
 				BAF50DE521A29FED0090BA95 /* Images.xcassets in Resources */,
 				3C65A7D41DE574E7005586B4 /* group_icon_open.pdf in Resources */,
 				BA34F10122439C3000C27A15 /* EditorViewController.xib in Resources */,
@@ -1823,7 +1823,7 @@
 				3CDA2C5B1913B61000A94967 /* icon-billable@2x.png in Resources */,
 				3CD30F441F58B02C006FAA0D /* OverlayViewController.xib in Resources */,
 				74664DB218AA860800AAD282 /* off.pdf in Resources */,
-				BA7D3355224898E400B953A8 /* AutoCompleteProjectItemView.xib in Resources */,
+				BA7D3355224898E400B953A8 /* ProjectContentCellView.xib in Resources */,
 				7430750518204EFB009019CB /* AboutWindowController.xib in Resources */,
 				BA4059B1221D2186002969B8 /* TimeHeaderView.xib in Resources */,
 				749CB8CD18167D6E00814841 /* PreferencesWindowController.xib in Resources */,
@@ -1947,7 +1947,7 @@
 				745126B619A28AA600390F47 /* Reachability.m in Sources */,
 				74C1579B183BA5DA00550613 /* AutocompleteDataSource.m in Sources */,
 				BA0E38102225257D00D0121B /* BezierPath+Corner.swift in Sources */,
-				BA7D33512248980B00B953A8 /* AutoCompleteProjectItemView.swift in Sources */,
+				BA7D33512248980B00B953A8 /* ProjectContentCellView.swift in Sources */,
 				74BA5FCF18B6E770009DAA2D /* NSHoverButton.m in Sources */,
 				BA3E75D422291CEB009AD291 /* SystemMessage.swift in Sources */,
 				BAB8D49421BE742D00D63DA5 /* NSTableView+TimeEntryDiff.swift in Sources */,
@@ -1996,7 +1996,7 @@
 				BA08E087222E709C0075F68E /* ProjectTextField.m in Sources */,
 				BA0CEC6521BE590200F1BF01 /* NSTableView+Diff.swift in Sources */,
 				BA2E5FB1223787C300EB866E /* EditorPopover.swift in Sources */,
-				BA7D334F224897FC00B953A8 /* AutoCompleteProjectHeaderView.swift in Sources */,
+				BA7D334F224897FC00B953A8 /* ProjectHeaderCellView.swift in Sources */,
 				BAE49CAE222FC1C900773814 /* TimerContainerBox.swift in Sources */,
 				74AA9474180909F50000539F /* GTMOAuth2SignIn.m in Sources */,
 				BA7D335E2248B48000B953A8 /* AutoCompleteTextField.swift in Sources */,

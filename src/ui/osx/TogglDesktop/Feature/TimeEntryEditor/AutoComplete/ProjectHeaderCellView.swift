@@ -1,5 +1,5 @@
 //
-//  ProjectHeaderCellView.swift
+//  AutoCompleteProjectHeaderView.swift
 //  TogglDesktop
 //
 //  Created by Nghia Tran on 3/25/19.

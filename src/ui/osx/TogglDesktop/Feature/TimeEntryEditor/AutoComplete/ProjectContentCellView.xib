@@ -10,7 +10,7 @@
         <customObject id="-2" userLabel="File's Owner"/>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
-        <tableCellView identifier="AutoCompleteProjectItemView" id="md2-yZ-6lc" customClass="AutoCompleteProjectItemView" customModule="TogglDesktop" customModuleProvider="target">
+        <tableCellView identifier="ProjectContentCellView" id="md2-yZ-6lc" customClass="ProjectContentCellView" customModule="TogglDesktop" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="319" height="35"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
@@ -68,7 +68,7 @@
             <connections>
                 <outlet property="contentContainerView" destination="nEw-Tk-vnL" id="VTd-SG-8YX"/>
                 <outlet property="dotImageView" destination="Xxk-H3-WcX" id="vFN-Jm-PoI"/>
-                <outlet property="porjectTextField" destination="wJh-2Y-Bsr" id="Uz8-to-LPG"/>
+                <outlet property="projectTextField" destination="wJh-2Y-Bsr" id="noE-dt-xnC"/>
             </connections>
             <point key="canvasLocation" x="244.5" y="-8.5"/>
         </tableCellView>

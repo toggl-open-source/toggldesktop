@@ -12,14 +12,18 @@ class AutoCompleteViewDataSource: NSObject {
 
     // MARK: Variables
     
-    weak var tableView: NSTableView?
+    weak var tableView: NSTableView? {
+        didSet {
+            registerCustomeCells()
+        }
+    }
     private(set) var items: [Any] = []
 
     // MARK: Init
 
     init(items: [Any], updateNotificationName: Notification.Name) {
         super.init()
-        render(with: items)
+        self.items = items
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(self.receiveDataSourceNotifiation(_:)),
                                                name: updateNotificationName,
@@ -41,6 +45,10 @@ class AutoCompleteViewDataSource: NSObject {
         tableView?.reloadData()
     }
 
+    func filter(with text: String) {
+
+    }
+    
     @objc func receiveDataSourceNotifiation(_ noti: Notification) {
         guard let items = noti.object as? [Any] else {
             return
@@ -61,5 +69,9 @@ extension AutoCompleteViewDataSource: NSTableViewDataSource, NSTableViewDelegate
 
     func tableView(_ tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
         return 44.0
+    }
+
+    func tableView(_ tableView: NSTableView, shouldSelectRow row: Int) -> Bool {
+        return true
     }
 }
