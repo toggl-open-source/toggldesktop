@@ -1618,8 +1618,11 @@ void on_mini_timer_autocomplete(TogglAutocompleteView *first)
 
 void on_project_autocomplete(TogglAutocompleteView *first)
 {
+	NSArray *items = [AutocompleteItem loadAll:first];
+
 	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayProjectAutocomplete
-																object:[AutocompleteItem loadAll:first]];
+																object:items];
+	[[ProjectStorage shared] updateWith:items];
 }
 
 void on_tags(TogglGenericView *first)

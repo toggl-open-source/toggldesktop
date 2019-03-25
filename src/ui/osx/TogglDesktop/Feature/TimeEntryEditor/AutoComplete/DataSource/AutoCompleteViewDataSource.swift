@@ -15,6 +15,21 @@ class AutoCompleteViewDataSource: NSObject {
     weak var tableView: NSTableView?
     private(set) var items: [Any] = []
 
+    // MARK: Init
+
+    init(items: [Any], updateNotificationName: Notification.Name) {
+        super.init()
+        render(with: items)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(self.receiveDataSourceNotifiation(_:)),
+                                               name: updateNotificationName,
+                                               object: nil)
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
     // MARK: Public
 
     func registerCustomeCells() {
@@ -24,6 +39,13 @@ class AutoCompleteViewDataSource: NSObject {
     func render(with items: [Any]) {
         self.items = items
         tableView?.reloadData()
+    }
+
+    @objc func receiveDataSourceNotifiation(_ noti: Notification) {
+        guard let items = noti.object as? [Any] else {
+            return
+        }
+        render(with: items)
     }
 }
 

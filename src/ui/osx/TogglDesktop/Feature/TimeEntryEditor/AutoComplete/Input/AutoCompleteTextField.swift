@@ -52,9 +52,8 @@ extension AutoCompleteTextField {
         autoCompleteView.translatesAutoresizingMaskIntoConstraints = false
         parentView.addSubview(autoCompleteView)
 
-        autoCompleteView.topAnchor.constraint(equalTo: parentView.bottomAnchor, constant: 5).isActive = true
-        autoCompleteView.leadingAnchor.constraint(equalTo: parentView.leadingAnchor, constant: 0).isActive = true
-        autoCompleteView.trailingAnchor.constraint(equalTo: parentView.trailingAnchor, constant: 0).isActive = true
-        autoCompleteView.heightAnchor.constraint(equalToConstant: 200).isActive = true
+        autoCompleteView.topAnchor.constraint(equalTo: self.bottomAnchor, constant: 5).isActive = true
+        autoCompleteView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 0).isActive = true
+        autoCompleteView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 0).isActive = true
     }
 }

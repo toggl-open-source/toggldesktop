@@ -13,7 +13,7 @@
 
 @interface AutocompleteItem : NSObject
 - (instancetype)initWithSnapshot:(ProjectSnapshot *)snapshot;
-+ (NSMutableArray *)loadAll:(TogglAutocompleteView *)first;
++ (NSArray<AutocompleteItem *> *)loadAll:(TogglAutocompleteView *)first;
 - (void)load:(TogglAutocompleteView *)data;
 - (void)save:(TogglAutocompleteView *)data;
 @property NSString *Text;
