@@ -66,8 +66,8 @@
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Doe-dQ-82A">
-                                            <rect key="frame" x="8" y="6" width="222" height="18"/>
-                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" alignment="left" placeholderString="Select project" id="6po-73-koG">
+                                            <rect key="frame" x="-2" y="0.0" width="242" height="28"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" alignment="left" placeholderString="Select project" id="6po-73-koG" customClass="VerticallyCenteredTextFieldCell" customModule="TogglDesktop" customModuleProvider="target">
                                                 <font key="font" metaFont="system" size="14"/>
                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -75,9 +75,10 @@
                                         </textField>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="Doe-dQ-82A" firstAttribute="leading" secondItem="lQC-MY-kz1" secondAttribute="leading" constant="10" id="EJc-Eh-a2C"/>
-                                        <constraint firstItem="Doe-dQ-82A" firstAttribute="centerY" secondItem="lQC-MY-kz1" secondAttribute="centerY" constant="-1" id="hWi-WE-3PC"/>
-                                        <constraint firstAttribute="trailing" secondItem="Doe-dQ-82A" secondAttribute="trailing" constant="10" id="y5v-rR-jTm"/>
+                                        <constraint firstItem="Doe-dQ-82A" firstAttribute="leading" secondItem="lQC-MY-kz1" secondAttribute="leading" id="Hdy-ni-8Ue"/>
+                                        <constraint firstAttribute="bottom" secondItem="Doe-dQ-82A" secondAttribute="bottom" id="JWU-5Y-dO5"/>
+                                        <constraint firstItem="Doe-dQ-82A" firstAttribute="top" secondItem="lQC-MY-kz1" secondAttribute="top" id="U4d-c9-zsI"/>
+                                        <constraint firstAttribute="trailing" secondItem="Doe-dQ-82A" secondAttribute="trailing" id="o88-at-iEf"/>
                                     </constraints>
                                 </view>
                                 <constraints>
@@ -92,8 +93,8 @@
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="euZ-Fv-idX">
-                                            <rect key="frame" x="8" y="6" width="222" height="18"/>
-                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" alignment="left" placeholderString="Add tags" id="Sff-pG-la9">
+                                            <rect key="frame" x="-2" y="0.0" width="242" height="28"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" alignment="left" placeholderString="Add tags" id="Sff-pG-la9" customClass="VerticallyCenteredTextFieldCell" customModule="TogglDesktop" customModuleProvider="target">
                                                 <font key="font" metaFont="system" size="14"/>
                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -101,9 +102,10 @@
                                         </textField>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="euZ-Fv-idX" firstAttribute="centerY" secondItem="GjA-gG-Fhy" secondAttribute="centerY" constant="-1" id="DyF-O5-GwU"/>
-                                        <constraint firstItem="euZ-Fv-idX" firstAttribute="leading" secondItem="GjA-gG-Fhy" secondAttribute="leading" constant="10" id="JwO-W8-aUE"/>
-                                        <constraint firstAttribute="trailing" secondItem="euZ-Fv-idX" secondAttribute="trailing" constant="10" id="bdE-zW-DEB"/>
+                                        <constraint firstItem="euZ-Fv-idX" firstAttribute="leading" secondItem="GjA-gG-Fhy" secondAttribute="leading" id="3M4-wM-wOT"/>
+                                        <constraint firstItem="euZ-Fv-idX" firstAttribute="top" secondItem="GjA-gG-Fhy" secondAttribute="top" id="5Sm-Vb-HkC"/>
+                                        <constraint firstAttribute="trailing" secondItem="euZ-Fv-idX" secondAttribute="trailing" id="FrD-rO-z6R"/>
+                                        <constraint firstAttribute="bottom" secondItem="euZ-Fv-idX" secondAttribute="bottom" id="g1f-aj-nR8"/>
                                     </constraints>
                                 </view>
                                 <constraints>
@@ -287,6 +289,16 @@
                                 </constraints>
                                 <color key="borderColor" name="upload-border-color"/>
                             </box>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="FXR-Ha-kYg" customClass="NSHoverButton">
+                                <rect key="frame" x="243" y="364" width="7" height="7"/>
+                                <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="close-button" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="UZy-3R-deK">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="closeBtnOnTap:" target="-2" id="LME-BW-gYu"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <constraints>
                             <constraint firstItem="Qzj-M9-zrp" firstAttribute="centerY" secondItem="8Gv-Ta-I1u" secondAttribute="centerY" constant="2" id="1lo-UI-uco"/>
@@ -298,6 +310,7 @@
                             <constraint firstItem="kfQ-Tm-uet" firstAttribute="centerY" secondItem="8Gv-Ta-I1u" secondAttribute="centerY" id="CAc-Bz-mye"/>
                             <constraint firstItem="Z2P-L8-d10" firstAttribute="top" secondItem="RzB-ad-pEO" secondAttribute="top" constant="20" id="ErY-fV-eb0"/>
                             <constraint firstItem="HK8-ig-0Mv" firstAttribute="centerX" secondItem="RzB-ad-pEO" secondAttribute="centerX" id="FKt-5X-1jx"/>
+                            <constraint firstAttribute="trailing" secondItem="FXR-Ha-kYg" secondAttribute="trailing" constant="10" id="FXs-l3-uQK"/>
                             <constraint firstAttribute="bottom" secondItem="UnC-x9-3oX" secondAttribute="bottom" id="GSq-Az-UQ6"/>
                             <constraint firstItem="veq-fR-isT" firstAttribute="leading" secondItem="RzB-ad-pEO" secondAttribute="leading" constant="10" id="KqF-kc-dI6"/>
                             <constraint firstItem="kfQ-Tm-uet" firstAttribute="leading" secondItem="8Gv-Ta-I1u" secondAttribute="trailing" constant="28" id="Mly-QB-mWV"/>
@@ -320,6 +333,7 @@
                             <constraint firstItem="flL-k2-TC8" firstAttribute="top" secondItem="sts-eu-78s" secondAttribute="bottom" constant="20" id="qJa-hb-Nve"/>
                             <constraint firstItem="sts-eu-78s" firstAttribute="top" secondItem="HK8-ig-0Mv" secondAttribute="bottom" constant="10" id="qvL-VD-13f"/>
                             <constraint firstItem="LcZ-Q8-F7m" firstAttribute="centerX" secondItem="RzB-ad-pEO" secondAttribute="centerX" id="tkP-Z8-ayM"/>
+                            <constraint firstItem="FXR-Ha-kYg" firstAttribute="top" secondItem="RzB-ad-pEO" secondAttribute="top" constant="10" id="uSd-7e-ckx"/>
                             <constraint firstAttribute="trailing" secondItem="fPF-go-RPE" secondAttribute="trailing" constant="10" id="utZ-T7-DxC"/>
                             <constraint firstItem="Qo9-rw-PRz" firstAttribute="top" secondItem="flL-k2-TC8" secondAttribute="bottom" constant="10" id="vlX-v9-R8U"/>
                             <constraint firstItem="sts-eu-78s" firstAttribute="leading" secondItem="RzB-ad-pEO" secondAttribute="leading" constant="10" id="xot-d9-UOv"/>
@@ -338,6 +352,7 @@
         </customView>
     </objects>
     <resources>
+        <image name="close-button" width="7" height="7"/>
         <image name="duration-arrow" width="12" height="7"/>
         <image name="next_date_arrow" width="4" height="7"/>
         <image name="previous_date_arrow" width="4" height="7"/>
