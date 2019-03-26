@@ -37,13 +37,11 @@
                                     BorderThickness="{TemplateBinding BorderThickness}">
 
                         <ScrollViewer 
-                                    Cursor="IBeam"
                                     Padding="{TemplateBinding Padding}"
                                     BorderThickness="0" 
                                     IsTabStop="False" 
                                     Margin="2" 
                                     Background="{x:Null}"
-                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                     VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
 
                             <Decorator 
