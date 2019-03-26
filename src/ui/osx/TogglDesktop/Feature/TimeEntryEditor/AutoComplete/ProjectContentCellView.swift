@@ -28,7 +28,8 @@ final class ProjectContentCellView: NSTableCellView {
     }
 
     func render(_ item: ProjectContentItem) {
-        projectTextField.stringValue = item.name
+        projectTextField.setTitleWithAutoComplete(item.item)
+        dotImageView.fill(with: ConvertHexColor.hexCode(toNSColor: item.colorHex))
     }
 
     override func mouseExited(with event: NSEvent) {

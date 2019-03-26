@@ -15,7 +15,6 @@ final class EditorViewController: NSViewController {
     @IBOutlet weak var projectBox: NSBox!
     @IBOutlet weak var projectTextField: AutoCompleteTextField!
 
-
     // MARK: Variables
 
     private lazy var projectDatasource = ProjectDataSource(items: ProjectStorage.shared.items,
