@@ -11,7 +11,7 @@ import Foundation
 final class AutoCompleteTextField: NSTextField, NSTextFieldDelegate {
 
     // MARK: Variables
-    private lazy var autoCompleteView: AutoCompleteView = AutoCompleteView.xibView()
+    private lazy var autoCompleteWindow = AutoCompleteViewWindow()
 
     // MARK: Init
     override init(frame frameRect: NSRect) {
@@ -27,19 +27,27 @@ final class AutoCompleteTextField: NSTextField, NSTextFieldDelegate {
     // MARK: Public
 
     func prepare(with dataSource: AutoCompleteViewDataSource, parentView: NSView) {
-        autoCompleteView.prepare(with: dataSource)
-        layoutAutoCompleteView(with: parentView)
+        autoCompleteWindow.prepare(with: dataSource)
     }
 
     func controlTextDidBeginEditing(_ obj: Notification) {
-        autoCompleteView.isHidden = false
+
+    }
+
+    func controlTextDidEndEditing(_ obj: Notification) {
+        autoCompleteWindow.cancel()
     }
 
     func controlTextDidChange(_ obj: Notification) {
-        autoCompleteView.isHidden = false
+        autoCompleteWindow.layout(with: self)
+
+        if !autoCompleteWindow.isVisible {
+            window?.addChildWindow(autoCompleteWindow,
+                                   ordered: .above)
+        }
 
         // Filter
-        autoCompleteView.filter(with: self.stringValue)
+        autoCompleteWindow.filter(with: self.stringValue)
     }
 }
 
@@ -49,17 +57,5 @@ extension AutoCompleteTextField {
 
     fileprivate func initCommon() {
         delegate = self
-        wantsLayer = true
-        layer?.masksToBounds = false
-    }
-
-    fileprivate func layoutAutoCompleteView(with parentView: NSView) {
-        autoCompleteView.isHidden = true
-        autoCompleteView.translatesAutoresizingMaskIntoConstraints = false
-        parentView.addSubview(autoCompleteView)
-
-        autoCompleteView.topAnchor.constraint(equalTo: self.bottomAnchor, constant: 5).isActive = true
-        autoCompleteView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 0).isActive = true
-        autoCompleteView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 0).isActive = true
     }
 }
