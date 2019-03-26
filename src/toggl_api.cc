@@ -637,6 +637,20 @@ void toggl_view_time_entry_list(void *context) {
     app(context)->OpenTimeEntryList();
 }
 
+void toggl_view_timeline_data(void *context) {
+    app(context)->OpenTimelineDataView();
+}
+
+void toggl_view_timeline_prev_day(
+    void *context) {
+    app(context)->ViewTimelinePrevDay();
+}
+
+void toggl_view_timeline_next_day(
+    void *context) {
+    app(context)->ViewTimelineNextDay();
+}
+
 void toggl_edit(
     void *context,
     const char_t *guid,
@@ -1109,6 +1123,12 @@ void toggl_on_time_entry_list(
     void *context,
     TogglDisplayTimeEntryList cb) {
     app(context)->UI()->OnDisplayTimeEntryList(cb);
+}
+
+void toggl_on_timeline(
+    void *context,
+    TogglDisplayTimeline cb) {
+    app(context)->UI()->OnDisplayTimeline(cb);
 }
 
 void toggl_on_mini_timer_autocomplete(

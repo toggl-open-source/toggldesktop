@@ -416,6 +416,12 @@ std::string UIElements::String() const {
     if (display_unsynced_items) {
         ss << "display_unsynced_items ";
     }
+    if (display_timeline) {
+        ss << " display_timeline=" << display_timeline;
+    }
+    if (open_timeline) {
+        ss << " open_timeline=" << open_timeline;
+    }
     return ss.str();
 }
 
@@ -497,6 +503,9 @@ void Context::updateUI(const UIElements &what) {
     std::vector<view::Autocomplete> time_entry_autocompletes;
     std::vector<view::Autocomplete> minitimer_autocompletes;
     std::vector<view::Autocomplete> project_autocompletes;
+
+    // For timeline UI view data
+    std::vector<TimelineEvent> timeline;
 
     bool use_proxy(false);
     bool record_timeline(false);
@@ -830,6 +839,38 @@ void Context::updateUI(const UIElements &what) {
                           CompareAutotrackerTitles);
             }
         }
+
+        if (what.display_timeline && user_) {
+            // Get Timeline data
+            Poco::LocalDateTime date(UI()->TimelineDateAt());
+            timeline = user_->CompressedTimeline(&date);
+
+            // Get a sorted list of time entries
+            std::vector<TimeEntry *> time_entries =
+                user_->related.VisibleTimeEntries();
+            std::sort(time_entries.begin(), time_entries.end(),
+                      CompareByStart);
+
+            // Collect the time entries into a list
+            for (unsigned int i = 0; i < time_entries.size(); i++) {
+                TimeEntry *te = time_entries[i];
+                if (te->Duration() < 0) {
+                    // Don't account running entries
+                    continue;
+                }
+
+                Poco::LocalDateTime te_date(Poco::Timestamp::fromEpochTime(te->Start()));
+                if (te_date.year() == UI()->TimelineDateAt().year()
+                        && te_date.month() == UI()->TimelineDateAt().month()
+                        && te_date.day() == UI()->TimelineDateAt().day()) {
+
+                    view::TimeEntry view;
+                    view.Fill(te);
+                    view.GenerateRoundedTimes();
+                    time_entry_views.push_back(view);
+                }
+            }
+        }
     }
 
     // Render data
@@ -848,6 +889,10 @@ void Context::updateUI(const UIElements &what) {
             time_entry_views,
             !user_->HasLoadedMore());
         last_time_entry_list_render_at_ = Poco::LocalDateTime();
+    }
+
+    if (what.display_timeline) {
+        UI()->DisplayTimeline(what.open_timeline, timeline, time_entry_views);
     }
 
     if (what.display_time_entry_autocomplete) {
@@ -5446,6 +5491,36 @@ error Context::signup(
     }
     return noError;
 }
+
+void Context::OpenTimelineDataView() {
+    logger().debug("OpenTimelineDataView");
+
+    UI()->SetTimelineDateAt(Poco::LocalDateTime());
+
+    UIElements render;
+    render.open_timeline = true;
+    render.display_timeline = true;
+    updateUI(render);
+}
+
+void Context::ViewTimelinePrevDay() {
+    UI()->SetTimelineDateAt(
+        UI()->TimelineDateAt() - Poco::Timespan(1 * Poco::Timespan::DAYS));
+
+    UIElements render;
+    render.display_timeline = true;
+    updateUI(render);
+}
+
+void Context::ViewTimelineNextDay() {
+    UI()->SetTimelineDateAt(
+        UI()->TimelineDateAt() + Poco::Timespan(1 * Poco::Timespan::DAYS));
+
+    UIElements render;
+    render.display_timeline = true;
+    updateUI(render);
+}
+
 
 error Context::ToSAccept() {
     std::string api_token = user_->APIToken();
