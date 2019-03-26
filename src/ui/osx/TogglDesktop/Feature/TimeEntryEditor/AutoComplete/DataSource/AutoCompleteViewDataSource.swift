@@ -64,6 +64,11 @@ class AutoCompleteViewDataSource: NSObject {
     }
 
     private func sizeToFit() {
+        if items.isEmpty {
+            autoCompleteView.update(height: 0.0)
+            return
+        }
+
         // Get total height of all cells
         let totalHeight = items.enumerated().reduce(into: 0.0) { (height, item) in
             return height += tableView(tableView, heightOfRow: item.offset)
