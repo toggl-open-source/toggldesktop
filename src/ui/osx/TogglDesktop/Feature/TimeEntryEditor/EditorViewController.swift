@@ -41,6 +41,9 @@ extension EditorViewController {
     fileprivate func initCommon() {
         view.wantsLayer = true
         view.layer?.masksToBounds = false
+        projectTextField.wantsLayer = true
+        projectTextField.layer?.masksToBounds = true
+        projectTextField.layer?.cornerRadius = 8
     }
 
     fileprivate func initDatasource() {
