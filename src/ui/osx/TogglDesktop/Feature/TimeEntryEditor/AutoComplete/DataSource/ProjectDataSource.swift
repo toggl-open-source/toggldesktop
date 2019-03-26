@@ -96,7 +96,7 @@ final class ProjectDataSource: AutoCompleteViewDataSource {
 
     override func tableView(_ tableView: NSTableView, shouldSelectRow row: Int) -> Bool {
         let item = items[row]
-        if item is ProjectHeaderItem {
+        if item is ProjectContentItem {
             return true
         }
         return false
