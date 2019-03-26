@@ -7,19 +7,8 @@
 //
 
 #import "BetterFocusAutoCompleteInput.h"
-#import "FocusCell.h"
 
 @implementation BetterFocusAutoCompleteInput
-
-+ (Class)cellClass
-{
-	return [FocusCell class];
-}
-
-- (NSRect)focusRingMaskBounds
-{
-	return [FocusCell frameFocusRingFromFrame:self.bounds];
-}
 
 - (BOOL)becomeFirstResponder
 {

@@ -217,11 +217,16 @@
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="8Fy-tG-odG" customClass="BetterFocusAutoCompleteInput">
-                                            <rect key="frame" x="13" y="5" width="323" height="18"/>
-                                            <textFieldCell key="cell" lineBreakMode="truncatingTail" truncatesLastVisibleLine="YES" selectable="YES" editable="YES" continuous="YES" sendsActionOnEndEditing="YES" state="on" alignment="left" placeholderString="What are you doing?" usesSingleLineMode="YES" id="GDj-uR-Arc" customClass="FocusCell">
+                                            <rect key="frame" x="-2" y="0.0" width="353" height="28"/>
+                                            <textFieldCell key="cell" lineBreakMode="truncatingTail" truncatesLastVisibleLine="YES" selectable="YES" editable="YES" continuous="YES" sendsActionOnEndEditing="YES" state="on" alignment="left" placeholderString="What are you doing?" usesSingleLineMode="YES" id="GDj-uR-Arc" customClass="VerticallyCenteredTextFieldCell" customModule="TogglDesktop" customModuleProvider="target">
                                                 <font key="font" metaFont="system" size="14"/>
                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="focusRingCornerRadius">
+                                                        <real key="value" value="8"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
                                             </textFieldCell>
                                             <connections>
                                                 <action selector="autoCompleteChanged:" target="-2" id="JAu-qR-UCk"/>
@@ -230,9 +235,10 @@
                                         </textField>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="8Fy-tG-odG" firstAttribute="centerY" secondItem="WHR-Ck-cjy" secondAttribute="centerY" id="BQj-OF-cYC"/>
-                                        <constraint firstItem="8Fy-tG-odG" firstAttribute="leading" secondItem="WHR-Ck-cjy" secondAttribute="leading" constant="15" id="EhO-5v-5TP"/>
-                                        <constraint firstAttribute="trailing" secondItem="8Fy-tG-odG" secondAttribute="trailing" constant="15" id="HCM-iV-iJg"/>
+                                        <constraint firstAttribute="trailing" secondItem="8Fy-tG-odG" secondAttribute="trailing" id="47H-SU-D3j"/>
+                                        <constraint firstItem="8Fy-tG-odG" firstAttribute="top" secondItem="WHR-Ck-cjy" secondAttribute="top" id="87F-K4-In1"/>
+                                        <constraint firstItem="8Fy-tG-odG" firstAttribute="leading" secondItem="WHR-Ck-cjy" secondAttribute="leading" id="ZXm-Pz-gKS"/>
+                                        <constraint firstAttribute="bottom" secondItem="8Fy-tG-odG" secondAttribute="bottom" id="tnB-Me-gkp"/>
                                     </constraints>
                                 </view>
                                 <constraints>

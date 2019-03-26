@@ -147,7 +147,6 @@
 		BA3E75D62229356D009AD291 /* SystemMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA3E75D52229356D009AD291 /* SystemMessageView.swift */; };
 		BA3E75D822293576009AD291 /* SystemMessageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA3E75D722293576009AD291 /* SystemMessageView.xib */; };
 		BA403BAE2230CFBC008B202C /* BetterFocusAutoCompleteInput.m in Sources */ = {isa = PBXBuildFile; fileRef = BA403BAD2230CFBC008B202C /* BetterFocusAutoCompleteInput.m */; };
-		BA403BCF2230CFD8008B202C /* FocusCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BA403BCE2230CFD8008B202C /* FocusCell.m */; };
 		BA4059AF221D215A002969B8 /* TimeHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4059AE221D215A002969B8 /* TimeHeaderView.swift */; };
 		BA4059B1221D2186002969B8 /* TimeHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA4059B0221D2186002969B8 /* TimeHeaderView.xib */; };
 		BA4059B7221D46F4002969B8 /* TimeEntryCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = BA4059B6221D46F4002969B8 /* TimeEntryCollectionView.m */; };
@@ -155,6 +154,7 @@
 		BA46E09F2226707F00C25763 /* Collection+Safe.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA46E09E2226707F00C25763 /* Collection+Safe.swift */; };
 		BA6E873521DDC1E2005E2451 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA6E86B621DDB331005E2451 /* Sparkle.framework */; };
 		BA6E873621DDC1E2005E2451 /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA6E86B621DDB331005E2451 /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		BA6EB8942249DB33003BB8EF /* VerticallyCenteredTextFieldCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6EB8752249DB33003BB8EF /* VerticallyCenteredTextFieldCell.swift */; };
 		BA6F1B1A21EEE258009265E4 /* NSColor+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6F1B1921EEE258009265E4 /* NSColor+Utils.swift */; };
 		BA6F1B3821EEE998009265E4 /* Theme+Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6F1B3721EEE998009265E4 /* Theme+Notification.swift */; };
 		BA712EC221BF907200A2D8DD /* UndoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA712EC121BF907200A2D8DD /* UndoManager.swift */; };
@@ -709,8 +709,6 @@
 		BA3E75D722293576009AD291 /* SystemMessageView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SystemMessageView.xib; sourceTree = "<group>"; };
 		BA403BAC2230CFBC008B202C /* BetterFocusAutoCompleteInput.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BetterFocusAutoCompleteInput.h; sourceTree = "<group>"; };
 		BA403BAD2230CFBC008B202C /* BetterFocusAutoCompleteInput.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BetterFocusAutoCompleteInput.m; sourceTree = "<group>"; };
-		BA403BCD2230CFD8008B202C /* FocusCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FocusCell.h; sourceTree = "<group>"; };
-		BA403BCE2230CFD8008B202C /* FocusCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FocusCell.m; sourceTree = "<group>"; };
 		BA4059AE221D215A002969B8 /* TimeHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeHeaderView.swift; sourceTree = "<group>"; };
 		BA4059B0221D2186002969B8 /* TimeHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimeHeaderView.xib; sourceTree = "<group>"; };
 		BA4059B5221D46F4002969B8 /* TimeEntryCollectionView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TimeEntryCollectionView.h; sourceTree = "<group>"; };
@@ -718,6 +716,7 @@
 		BA4059B8221D53E7002969B8 /* TimeEntryDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeEntryDatasource.swift; sourceTree = "<group>"; };
 		BA46E09E2226707F00C25763 /* Collection+Safe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collection+Safe.swift"; sourceTree = "<group>"; };
 		BA6E86A521DDB331005E2451 /* Sparkle.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Sparkle.xcodeproj; path = ../../../../third_party/Sparkle/Sparkle.xcodeproj; sourceTree = "<group>"; };
+		BA6EB8752249DB33003BB8EF /* VerticallyCenteredTextFieldCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerticallyCenteredTextFieldCell.swift; sourceTree = "<group>"; };
 		BA6F1B1921EEE258009265E4 /* NSColor+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSColor+Utils.swift"; sourceTree = "<group>"; };
 		BA6F1B3721EEE998009265E4 /* Theme+Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Theme+Notification.swift"; sourceTree = "<group>"; };
 		BA712EC121BF907200A2D8DD /* UndoManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UndoManager.swift; sourceTree = "<group>"; };
@@ -830,8 +829,6 @@
 				3CE30E012052BD8B00AF2E2A /* AutoCompleteTableContainer.m */,
 				BA403BAC2230CFBC008B202C /* BetterFocusAutoCompleteInput.h */,
 				BA403BAD2230CFBC008B202C /* BetterFocusAutoCompleteInput.m */,
-				BA403BCD2230CFD8008B202C /* FocusCell.h */,
-				BA403BCE2230CFD8008B202C /* FocusCell.m */,
 			);
 			name = AutoComplete;
 			sourceTree = "<group>";
@@ -1040,6 +1037,7 @@
 				BA08E085222E709C0075F68E /* ProjectTextField.h */,
 				BA08E086222E709C0075F68E /* ProjectTextField.m */,
 				BAE49CAD222FC1C900773814 /* TimerContainerBox.swift */,
+				BA6EB8752249DB33003BB8EF /* VerticallyCenteredTextFieldCell.swift */,
 			);
 			name = ui;
 			path = test2;
@@ -1831,6 +1829,7 @@
 				3C6B2488203E01D90063FC08 /* AutoCompleteTable.m in Sources */,
 				74AA9472180909F50000539F /* GTMHTTPFetchHistory.m in Sources */,
 				BAAF567E2223CAC5003D0D73 /* NSButton+TextColor.swift in Sources */,
+				BA6EB8942249DB33003BB8EF /* VerticallyCenteredTextFieldCell.swift in Sources */,
 				BA46E09F2226707F00C25763 /* Collection+Safe.swift in Sources */,
 				74E3CDC617FBABE400C3ADD3 /* Bugsnag.m in Sources */,
 				745126B619A28AA600390F47 /* Reachability.m in Sources */,
@@ -1855,7 +1854,6 @@
 				74E3CDCA17FBABE400C3ADD3 /* BugsnagEvent.m in Sources */,
 				3C6B2487203E01D90063FC08 /* AutoCompleteInput.m in Sources */,
 				BA13E05C21C7BA6000835EC1 /* UserNotificationCenter.m in Sources */,
-				BA403BCF2230CFD8008B202C /* FocusCell.m in Sources */,
 				74098C331919899600CBDFB9 /* Utils.m in Sources */,
 				69FC180117E6534400B96425 /* main.m in Sources */,
 				74F1070118993FFE00E93BD5 /* FeedbackWindowController.m in Sources */,

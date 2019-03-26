@@ -435,7 +435,7 @@ NSString *kInactiveTimerColor = @"#999999";
 {
 	[self.mainBox setHidden:NO];
 	[self.manualBox setHidden:YES];
-    [self.view.window makeFirstResponder:self.autoCompleteInput];
+	[self.view.window makeFirstResponder:self.autoCompleteInput];
 }
 
 - (void)toggleManual:(NSNotification *)notification
