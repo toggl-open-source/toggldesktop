@@ -86,9 +86,9 @@ final class ProjectDataSource: AutoCompleteViewDataSource {
         let item = items[row]
         switch item {
         case is ProjectHeaderItem:
-            return 23.0
+            return ProjectHeaderCellView.cellHeight
         case is ProjectContentItem:
-            return 35.0
+            return ProjectContentCellView.cellHeight
         default:
             return 0
         }

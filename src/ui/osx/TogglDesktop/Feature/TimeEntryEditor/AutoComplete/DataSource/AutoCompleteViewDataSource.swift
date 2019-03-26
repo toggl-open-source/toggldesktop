@@ -11,7 +11,7 @@ import Foundation
 class AutoCompleteViewDataSource: NSObject {
 
     // MARK: Variables
-    private let maxHeight: CGFloat = 400.0
+    private let maxHeight: CGFloat = 600.0
     private(set) var items: [Any] = []
     private var autoCompleteView: AutoCompleteView!
     var tableView: NSTableView {
@@ -71,7 +71,13 @@ class AutoCompleteViewDataSource: NSObject {
 
         // Get suitable height
         // 0 <= height <= maxHeight
-        let suitableHeight = CGFloat.minimum(CGFloat.maximum(0, totalHeight), maxHeight)
+        var suitableHeight = CGFloat.minimum(CGFloat.maximum(0, totalHeight), maxHeight)
+
+        // Padding
+        if let scrollView = tableView.enclosingScrollView {
+            suitableHeight += scrollView.contentInsets.bottom + scrollView.contentInsets.top
+        }
+
         autoCompleteView.update(height: suitableHeight)
     }
 }
