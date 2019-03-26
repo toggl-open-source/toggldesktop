@@ -7,6 +7,7 @@
 #include <ctime>
 #include <vector>
 
+#include "Poco/LocalDateTime.h"
 #include "Poco/Timestamp.h"
 
 #include "./types.h"
@@ -35,7 +36,6 @@ class TimedEvent {
     virtual ~TimedEvent() {}
 
     virtual const Poco::UInt64 &Start() const = 0;
-    virtual Poco::Int64 Duration() const = 0;
 };
 
 class Formatter {
@@ -65,6 +65,9 @@ class Formatter {
 
     static std::string FormatDateHeader(
         const std::time_t date);
+
+    static std::string FormatDateHeader(
+        const Poco::LocalDateTime datetime);
 
     static std::string FormatTimeForTimeEntryEditor(
         const std::time_t date);

@@ -88,6 +88,10 @@ std::string Formatter::FormatDateHeader(const std::time_t date) {
     Poco::Timestamp ts = Poco::Timestamp::fromEpochTime(date);
     Poco::LocalDateTime datetime(ts);
 
+    return FormatDateHeader(datetime);
+}
+
+std::string Formatter::FormatDateHeader(const Poco::LocalDateTime datetime) {
     Poco::LocalDateTime today;
     if (today.year() == datetime.year() &&
             today.month() == datetime.month() &&
