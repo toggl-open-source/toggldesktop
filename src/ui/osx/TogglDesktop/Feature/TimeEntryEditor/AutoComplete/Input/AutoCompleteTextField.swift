@@ -39,8 +39,11 @@ final class AutoCompleteTextField: NSTextField, NSTextFieldDelegate {
     }
 
     func controlTextDidChange(_ obj: Notification) {
+
+        // Layout frame and position
         autoCompleteWindow.layout(with: self)
 
+        // Present if need
         if !autoCompleteWindow.isVisible {
             window?.addChildWindow(autoCompleteWindow,
                                    ordered: .above)

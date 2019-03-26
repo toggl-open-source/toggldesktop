@@ -10,6 +10,8 @@ import Cocoa
 
 final class ProjectHeaderCellView: NSTableCellView {
 
+    static let cellHeight: CGFloat = 26.0
+
     // MARK: OUTLET
 
     @IBOutlet weak var titleTextField: NSTextField!
