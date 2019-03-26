@@ -379,6 +379,7 @@ class GUI : public SyncStateMonitor {
     , lastOnlineState(-1)
     , lastErr(noError)
     , isFirstLaunch(true) {}
+    , time_entry_editor_guid_("") {}
 
     ~GUI() {}
 
@@ -632,6 +633,10 @@ class GUI : public SyncStateMonitor {
     void resetFirstLaunch() {
         isFirstLaunch = true;
     }
+    
+    const std::string &TimeEntryEditorGUID() {
+        return time_entry_editor_guid_;
+    }
 
  private:
     error findMissingCallbacks();
@@ -676,6 +681,10 @@ class GUI : public SyncStateMonitor {
     Poco::Int64 lastOnlineState;
     error lastErr;
     bool isFirstLaunch;
+
+    // UI state
+    std::string time_entry_editor_guid_;
+
     Poco::Logger &logger() const;
 };
 
