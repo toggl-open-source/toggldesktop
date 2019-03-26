@@ -92,8 +92,8 @@ install(FILES icons/256x256/toggldesktop.png DESTINATION share/icons/hicolor/256
 if(INSTALL_HIRES_ICONS)
     install(FILES icons/1024x1024/toggldesktop.png DESTINATION share/icons/hicolor/1024x1024/apps)
 endif()
-install(FILES dist/toggldesktop.desktop DESTINATION share/applications)
-install(FILES dist/toggldesktop.appdata.xml DESTINATION share/appdata)
+install(FILES dist/com.toggl.TogglDesktop.desktop DESTINATION share/applications)
+install(FILES dist/com.toggl.TogglDesktop.appdata.xml DESTINATION share/metainfo)
 
 install(FILES ${PROJECT_SOURCE_DIR}/src/ui/linux/TogglDesktop.sh DESTINATION ${TOGGL_BINARY_DIR} PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
 install(TARGETS TogglDesktop DESTINATION ${TOGGL_BINARY_DIR})
