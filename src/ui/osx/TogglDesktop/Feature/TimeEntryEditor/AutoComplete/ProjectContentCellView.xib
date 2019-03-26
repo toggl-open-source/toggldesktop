@@ -14,61 +14,55 @@
             <rect key="frame" x="0.0" y="0.0" width="319" height="34"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <box boxType="custom" borderWidth="0.0" cornerRadius="8" title="Box" translatesAutoresizingMaskIntoConstraints="NO" id="nEw-Tk-vnL">
+                <box boxType="custom" borderWidth="0.0" cornerRadius="8" title="Box" translatesAutoresizingMaskIntoConstraints="NO" id="bp5-qI-RfF">
                     <rect key="frame" x="5" y="2" width="309" height="30"/>
-                    <view key="contentView" id="p7Q-g6-423">
+                    <view key="contentView" id="7sK-u4-GXV">
                         <rect key="frame" x="0.0" y="0.0" width="309" height="30"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <stackView distribution="equalSpacing" orientation="horizontal" alignment="centerY" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wod-n2-eLl">
-                                <rect key="frame" x="10" y="7" width="117" height="16"/>
-                                <subviews>
-                                    <imageView horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="Xxk-H3-WcX" customClass="DotImageView" customModule="TogglDesktop" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="4" width="8" height="8"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="8" id="Qal-n2-1Wl"/>
-                                            <constraint firstAttribute="width" constant="8" id="dlc-zH-oeR"/>
-                                        </constraints>
-                                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" image="time-entry-dot" id="fcI-Qi-mor"/>
-                                    </imageView>
-                                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="wJh-2Y-Bsr" customClass="ProjectTextField">
-                                        <rect key="frame" x="14" y="0.0" width="105" height="16"/>
-                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" alignment="left" title="Project and Client" usesSingleLineMode="YES" id="hRb-6o-ZHC">
-                                            <font key="font" metaFont="cellTitle"/>
-                                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                        </textFieldCell>
-                                    </textField>
-                                </subviews>
-                                <visibilityPriorities>
-                                    <integer value="1000"/>
-                                    <integer value="1000"/>
-                                </visibilityPriorities>
-                                <customSpacing>
-                                    <real value="3.4028234663852886e+38"/>
-                                    <real value="3.4028234663852886e+38"/>
-                                </customSpacing>
-                            </stackView>
-                        </subviews>
-                        <constraints>
-                            <constraint firstItem="wod-n2-eLl" firstAttribute="centerY" secondItem="p7Q-g6-423" secondAttribute="centerY" id="BVc-MA-vcn"/>
-                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="wod-n2-eLl" secondAttribute="trailing" id="NHz-dZ-HfO"/>
-                            <constraint firstItem="wod-n2-eLl" firstAttribute="leading" secondItem="p7Q-g6-423" secondAttribute="leading" constant="10" id="RPC-xv-qm9"/>
-                        </constraints>
                     </view>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="30" id="mxJ-2y-fzZ"/>
-                    </constraints>
-                    <color key="fillColor" name="grey-color"/>
+                    <color key="fillColor" name="auto-complete-cell-hover"/>
                 </box>
+                <stackView distribution="equalSpacing" orientation="horizontal" alignment="centerY" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wod-n2-eLl">
+                    <rect key="frame" x="15" y="9" width="117" height="16"/>
+                    <subviews>
+                        <imageView horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="Xxk-H3-WcX" customClass="DotImageView" customModule="TogglDesktop" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="4" width="8" height="8"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="8" id="Qal-n2-1Wl"/>
+                                <constraint firstAttribute="width" constant="8" id="dlc-zH-oeR"/>
+                            </constraints>
+                            <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" image="time-entry-dot" id="fcI-Qi-mor"/>
+                        </imageView>
+                        <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="wJh-2Y-Bsr" customClass="ProjectTextField">
+                            <rect key="frame" x="14" y="0.0" width="105" height="16"/>
+                            <textFieldCell key="cell" lineBreakMode="truncatingTail" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" alignment="left" title="Project and Client" usesSingleLineMode="YES" id="hRb-6o-ZHC">
+                                <font key="font" metaFont="cellTitle"/>
+                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                            </textFieldCell>
+                        </textField>
+                    </subviews>
+                    <visibilityPriorities>
+                        <integer value="1000"/>
+                        <integer value="1000"/>
+                    </visibilityPriorities>
+                    <customSpacing>
+                        <real value="3.4028234663852886e+38"/>
+                        <real value="3.4028234663852886e+38"/>
+                    </customSpacing>
+                </stackView>
             </subviews>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="nEw-Tk-vnL" secondAttribute="trailing" constant="5" id="6eS-Wf-DcF"/>
-                <constraint firstItem="nEw-Tk-vnL" firstAttribute="centerY" secondItem="md2-yZ-6lc" secondAttribute="centerY" id="lOD-8C-O2E"/>
-                <constraint firstItem="nEw-Tk-vnL" firstAttribute="leading" secondItem="md2-yZ-6lc" secondAttribute="leading" constant="5" id="qUk-dZ-qMf"/>
+                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="wod-n2-eLl" secondAttribute="trailing" constant="15" id="02q-no-Zed"/>
+                <constraint firstAttribute="trailing" secondItem="bp5-qI-RfF" secondAttribute="trailing" constant="5" id="4O2-fW-Iqn"/>
+                <constraint firstItem="bp5-qI-RfF" firstAttribute="top" secondItem="md2-yZ-6lc" secondAttribute="top" constant="2" id="Ch5-Oz-HpJ"/>
+                <constraint firstItem="wod-n2-eLl" firstAttribute="centerY" secondItem="md2-yZ-6lc" secondAttribute="centerY" id="N9a-XM-gYe"/>
+                <constraint firstItem="bp5-qI-RfF" firstAttribute="leading" secondItem="md2-yZ-6lc" secondAttribute="leading" constant="5" id="SFe-HN-Cw3"/>
+                <constraint firstItem="wod-n2-eLl" firstAttribute="leading" secondItem="md2-yZ-6lc" secondAttribute="leading" constant="15" id="Tzg-tK-RcM"/>
+                <constraint firstAttribute="bottom" secondItem="bp5-qI-RfF" secondAttribute="bottom" constant="2" id="hFJ-1J-0kD"/>
             </constraints>
             <connections>
-                <outlet property="contentContainerView" destination="nEw-Tk-vnL" id="VTd-SG-8YX"/>
+                <outlet property="contentContainerView" destination="bp5-qI-RfF" id="uNQ-DB-oki"/>
                 <outlet property="dotImageView" destination="Xxk-H3-WcX" id="vFN-Jm-PoI"/>
                 <outlet property="projectTextField" destination="wJh-2Y-Bsr" id="noE-dt-xnC"/>
             </connections>
@@ -77,8 +71,8 @@
     </objects>
     <resources>
         <image name="time-entry-dot" width="8" height="8"/>
-        <namedColor name="grey-color">
-            <color red="0.85098039215686272" green="0.85098039215686272" blue="0.85098039215686272" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        <namedColor name="auto-complete-cell-hover">
+            <color red="0.97647058823529409" green="0.97647058823529409" blue="0.97647058823529409" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>

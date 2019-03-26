@@ -20,7 +20,38 @@ final class ProjectContentCellView: NSTableCellView {
 
     // MARK: Public
 
+    override func awakeFromNib() {
+        super.awakeFromNib()
+
+        initCommon()
+        initTracking()
+    }
+
     func render(_ item: ProjectContentItem) {
         projectTextField.stringValue = item.name
+    }
+
+    override func mouseExited(with event: NSEvent) {
+        super.mouseExited(with: event)
+        NSCursor.arrow.set()
+        contentContainerView.animator().alphaValue = 0.0
+    }
+
+    override func mouseEntered(with event: NSEvent) {
+        super.mouseEntered(with: event)
+        NSCursor.pointingHand.set()
+        contentContainerView.animator().alphaValue = 1.0
+    }
+
+    fileprivate func initCommon() {
+        contentContainerView.alphaValue = 0
+    }
+
+    fileprivate func initTracking() {
+        let trackingArea = NSTrackingArea(rect: bounds,
+                                          options: [.activeAlways, .inVisibleRect, .mouseEnteredAndExited],
+                                          owner: self,
+                                          userInfo: nil)
+        addTrackingArea(trackingArea)
     }
 }

@@ -47,6 +47,7 @@ final class AutoCompleteTextField: NSTextField, NSTextFieldDelegate {
         if !autoCompleteWindow.isVisible {
             window?.addChildWindow(autoCompleteWindow,
                                    ordered: .above)
+            autoCompleteWindow.makeKey()
         }
 
         // Filter
