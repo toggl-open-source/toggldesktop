@@ -528,7 +528,7 @@ void GUI::DisplayTimeEntryEditor(
     const bool open,
     const view::TimeEntry te,
     const std::string focused_field_name) {
-
+    time_entry_editor_guid_ = te.GUID;
     logger().debug(
         "DisplayTimeEntryEditor focused_field_name=" + focused_field_name);
 
