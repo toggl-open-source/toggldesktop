@@ -92,6 +92,18 @@ TogglHelpArticleView *help_article_list_init(
 void help_article_clear(
     TogglHelpArticleView *first);
 
+TogglTimelineChunkView *timeline_chunk_view_init(
+    const time_t &start);
+
+void timeline_chunk_view_clear(
+    TogglTimelineChunkView *first);
+
+TogglTimelineEventView *timeline_event_view_init(
+    const toggl::TimelineEvent &event);
+
+void timeline_event_view_clear(
+    TogglTimelineEventView *event_view);
+
 Poco::Logger &logger();
 
 toggl::Context *app(void *context);

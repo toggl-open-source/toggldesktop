@@ -83,9 +83,32 @@ extern "C" {
         char_t *GroupName;
         char_t *GroupDuration;
         uint64_t GroupItemCount;
+        // To categorize to 15-minute batches
+        uint64_t RoundedStart;
+        uint64_t RoundedEnd;
         // Next in list
         void *Next;
     } TogglTimeEntryView;
+
+    typedef struct {
+        char_t *Title;
+        char_t *Filename;
+        int64_t Duration;
+        bool Header;
+        // references subevents
+        void *Event;
+        // Next in list
+        void *Next;
+    } TogglTimelineEventView;
+
+    typedef struct {
+        uint64_t Started;
+        char_t *StartTimeString;
+        void *Next;
+        TogglTimelineEventView *FirstEvent;
+        // Reference to Time entries in this Chunk
+        void *Entry;
+    } TogglTimelineChunkView;
 
     typedef struct {
         // This is what is displayed to user, includes project and task.
@@ -174,16 +197,6 @@ extern "C" {
 
     typedef struct {
         int64_t ID;
-        char_t *Title;
-        char_t *Filename;
-        uint64_t StartTime;
-        uint64_t EndTime;
-        bool_t Idle;
-        void *Next;
-    } TogglTimelineEventView;
-
-    typedef struct {
-        int64_t ID;
         char_t *Name;
         bool_t VatApplicable;
         char_t *VatRegex;
@@ -249,6 +262,11 @@ extern "C" {
         const bool_t open,
         TogglTimeEntryView *first,
         const bool_t show_load_more_button);
+
+    typedef void (*TogglDisplayTimeline)(
+        const bool_t open,
+        const char_t *date,
+        TogglTimelineChunkView *first);
 
     typedef void (*TogglDisplayAutocomplete)(
         TogglAutocompleteView *first);
@@ -428,6 +446,10 @@ extern "C" {
         void *context,
         const char_t *name);
 
+    TOGGL_EXPORT void toggl_on_timeline(
+        void *context,
+        TogglDisplayTimeline cb);
+
     TOGGL_EXPORT void toggl_on_mini_timer_autocomplete(
         void *context,
         TogglDisplayAutocomplete cb);
@@ -559,6 +581,15 @@ extern "C" {
         const char_t *keywords);
 
     TOGGL_EXPORT void toggl_view_time_entry_list(
+        void *context);
+
+    TOGGL_EXPORT void toggl_view_timeline_data(
+        void *context);
+
+    TOGGL_EXPORT void toggl_view_timeline_prev_day(
+        void *context);
+
+    TOGGL_EXPORT void toggl_view_timeline_next_day(
         void *context);
 
     TOGGL_EXPORT void toggl_edit(

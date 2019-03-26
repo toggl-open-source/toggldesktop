@@ -1410,7 +1410,8 @@ void User::CompressTimeline() {
     }
 }
 
-std::vector<TimelineEvent> User::CompressedTimeline() const {
+std::vector<TimelineEvent> User::CompressedTimeline(
+    const Poco::LocalDateTime *date) const {
     std::vector<TimelineEvent> list;
     for (std::vector<TimelineEvent *>::const_iterator i =
         related.TimelineEvents.begin();
@@ -1418,10 +1419,25 @@ std::vector<TimelineEvent> User::CompressedTimeline() const {
             ++i) {
         TimelineEvent *event = *i;
         poco_check_ptr(event);
-        if (event->VisibleToUser()) {
-            // Make a copy of the timeline event
-            list.push_back(*event);
+        if (event->DeletedAt() > 0 || !event->Chunked()) {
+            continue;
         }
+
+        if (date) {
+            // Check if timeline event occured on the
+            // required date:
+            Poco::LocalDateTime event_date(
+                Poco::Timestamp::fromEpochTime(event->Start()));
+            if (event_date.year() != date->year() ||
+                    event_date.month() != date->month() ||
+                    event_date.day() != date->day()) {
+                continue;
+            }
+            // Set Event Duration
+            event->SetDuration(event->EndTime() - event->Start());
+        }
+        // Make a copy of the timeline event
+        list.push_back(*event);
     }
     return list;
 }

@@ -16,6 +16,7 @@
 #include "./types.h"
 #include "./workspace.h"
 
+#include "Poco/LocalDateTime.h"
 #include "Poco/Types.h"
 
 namespace toggl {
@@ -193,7 +194,8 @@ class User : public BaseModel {
     void MarkTimelineBatchAsUploaded(
         const std::vector<TimelineEvent> &events);
     void CompressTimeline();
-    std::vector<TimelineEvent> CompressedTimeline() const;
+    std::vector<TimelineEvent> CompressedTimeline(
+        const Poco::LocalDateTime *date = nullptr) const;
 
     error UpdateJSON(
         std::vector<TimeEntry *> * const,
