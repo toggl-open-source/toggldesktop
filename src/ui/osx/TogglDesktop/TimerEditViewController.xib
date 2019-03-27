@@ -96,7 +96,7 @@
                                     <customView horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="8Om-Ck-d1h">
                                         <rect key="frame" x="0.0" y="0.0" width="236" height="64"/>
                                         <subviews>
-                                            <textField horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="oaA-Wf-zkO" customClass="NSTextFieldClickable">
+                                            <textField horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="oaA-Wf-zkO" customClass="AutoCompleteInput">
                                                 <rect key="frame" x="-2" y="32" width="105" height="16"/>
                                                 <textFieldCell key="cell" lineBreakMode="truncatingTail" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" alignment="left" placeholderString="+ Add description" id="qf8-8Y-Po8">
                                                     <font key="font" metaFont="cellTitle"/>
@@ -104,6 +104,7 @@
                                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                 </textFieldCell>
                                                 <connections>
+                                                    <action selector="autoCompleteChanged:" target="-2" id="BJq-F4-lV1"/>
                                                     <outlet property="delegate" destination="-2" id="7kX-oH-plq"/>
                                                 </connections>
                                             </textField>

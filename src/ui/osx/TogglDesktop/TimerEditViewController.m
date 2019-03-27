@@ -34,7 +34,7 @@ typedef enum : NSUInteger
 @property (weak) IBOutlet NSTextFieldDuration *durationTextField;
 @property (weak) IBOutlet NSHoverButton *startButton;
 @property (weak) IBOutlet ProjectTextField *projectTextField;
-@property (weak) IBOutlet NSTextFieldClickable *descriptionLabel;
+@property (weak) IBOutlet AutoCompleteInput *descriptionLabel;
 @property (weak) IBOutlet NSImageView *billableFlag;
 @property (weak) IBOutlet NSImageView *tagFlag;
 @property (weak) IBOutlet NSButton *addEntryBtn;
@@ -227,7 +227,10 @@ NSString *kInactiveTimerColor = @"#999999";
 	}
 
 	// Display project name
-	[self renderProjectLabelWithViewItem:self.time_entry];
+	if (self.time_entry.GUID != nil)
+	{
+		[self renderProjectLabelWithViewItem:self.time_entry];
+	}
 
 	// Display duration
 	if (self.time_entry.duration != nil)
@@ -424,13 +427,12 @@ NSString *kInactiveTimerColor = @"#999999";
 		AutoCompleteInput *field = [aNotification object];
 		[self.liteAutocompleteDataSource setFilter:[field stringValue]];
 		[field.autocompleteTableView resetSelected];
-		// NSLog(@"Filter: %@", [field stringValue]);
-		return;
-	}
 
-	if (aNotification.object == self.descriptionLabel)
-	{
-		self.autoCompleteInput.stringValue = self.descriptionLabel.stringValue;
+		if (aNotification.object == self.descriptionLabel)
+		{
+			self.autoCompleteInput.stringValue = self.descriptionLabel.stringValue;
+		}
+
 		return;
 	}
 }
@@ -551,68 +553,52 @@ NSString *kInactiveTimerColor = @"#999999";
 {
 	BOOL retval = NO;
 
-	if (control == self.descriptionLabel)
+	if (commandSelector == @selector(moveDown:))
 	{
-		if (commandSelector == @selector(insertNewline:))
-		{
-			self.descriptionLabel.editable = NO;
-			[self startButtonClicked:nil];
-			[self.autoCompleteInput resetTable];
-			[self.liteAutocompleteDataSource clearFilter];
-			return YES;
-		}
+		[self.autoCompleteInput.autocompleteTableView nextItem];
 	}
-
-	// For auto complete input
-	if (control == self.autoCompleteInput)
+	if (commandSelector == @selector(moveUp:))
 	{
-		if ([self.autoCompleteInput currentEditor] != nil)
+		[self.autoCompleteInput.autocompleteTableView previousItem];
+	}
+	if (commandSelector == @selector(insertTab:))
+	{
+		// Set data according to selected item
+		if (self.autoCompleteInput.autocompleteTableView.lastSelected >= 0)
 		{
-			if (commandSelector == @selector(moveDown:))
+			AutocompleteItem *item = [self.liteAutocompleteDataSource itemAtIndex:self.autoCompleteInput.autocompleteTableView.lastSelected];
+			if (item == nil)
 			{
-				[self.autoCompleteInput.autocompleteTableView nextItem];
+				return retval;
 			}
-			if (commandSelector == @selector(moveUp:))
-			{
-				[self.autoCompleteInput.autocompleteTableView previousItem];
-			}
-			if (commandSelector == @selector(insertTab:))
-			{
-				// Set data according to selected item
-				if (self.autoCompleteInput.autocompleteTableView.lastSelected >= 0)
-				{
-					AutocompleteItem *item = [self.liteAutocompleteDataSource itemAtIndex:self.autoCompleteInput.autocompleteTableView.lastSelected];
-					if (item == nil)
-					{
-						return retval;
-					}
-					[self fillEntryFromAutoComplete:item];
-				}
-				[self.autoCompleteInput resetTable];
-				[self.liteAutocompleteDataSource clearFilter];
-			}
-			if (commandSelector == @selector(insertNewline:))
-			{
-				// avoid firing default Enter actions
-				retval = YES;
-
-				// Set data according to selected item
-				if (self.autoCompleteInput.autocompleteTableView.lastSelected >= 0)
-				{
-					AutocompleteItem *item = [self.liteAutocompleteDataSource itemAtIndex:self.autoCompleteInput.autocompleteTableView.lastSelected];
-					if (item == nil)
-					{
-						return retval;
-					}
-					[self fillEntryFromAutoComplete:item];
-				}
-
-				// Start entry
-				[self startButtonClicked:nil];
-				[self.autoCompleteInput resetTable];
-				[self.liteAutocompleteDataSource clearFilter];
-			}
+			[self fillEntryFromAutoComplete:item];
 		}
+		[self.autoCompleteInput resetTable];
+		[self.liteAutocompleteDataSource clearFilter];
+	}
+	if (commandSelector == @selector(insertNewline:))
+	{
+		// avoid firing default Enter actions
+		retval = YES;
+
+		// Disable editable
+		self.descriptionLabel.editable = NO;
+
+		// Set data according to selected item
+		if (self.autoCompleteInput.autocompleteTableView.lastSelected >= 0)
+		{
+			AutocompleteItem *item = [self.liteAutocompleteDataSource itemAtIndex:self.autoCompleteInput.autocompleteTableView.lastSelected];
+			if (item == nil)
+			{
+				return retval;
+			}
+			[self fillEntryFromAutoComplete:item];
+		}
+
+		// Start entry
+		[self startButtonClicked:nil];
+		[self.autoCompleteInput resetTable];
+		[self.liteAutocompleteDataSource clearFilter];
 	}
 
 	return retval;
