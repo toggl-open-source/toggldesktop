@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using Hardcodet.Wpf.TaskbarNotification;
 using Hardcodet.Wpf.TaskbarNotification.Interop;
@@ -111,6 +112,11 @@ static class UIExtensions
         }
     }
 
+    public static void ClearUndoHistory(this TextBoxBase textBox)
+    {
+        textBox.IsUndoEnabled = false;
+        textBox.IsUndoEnabled = true;
+    }
 
     public static int CountSubstrings(this string s, string searchString)
     {

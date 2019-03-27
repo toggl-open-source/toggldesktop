@@ -182,6 +182,11 @@ namespace TogglDesktop
             return this.tags.ContainsKey(tag);
         }
 
+        public void ClearUndoHistory()
+        {
+            this.textBox.ClearUndoHistory();
+        }
+
         private void autoComplete_OnConfirmCompletion(object sender, AutoCompleteItem e)
         {
             var asStringItem = e as StringItem;
