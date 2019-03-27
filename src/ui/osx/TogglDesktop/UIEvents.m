@@ -34,6 +34,7 @@ NSString *const kDisplayTimerState = @"kDisplayTimerState";
 NSString *const kDisplayUnsyncedItems = @"kDisplayUnsyncedItems";
 NSString *const kDisplayAutotrackerRules = @"kDisplayAutotrackerRules";
 NSString *const kDisplayPromotion = @"kDisplayPromotion";
+NSString *const kDisplayTimeline = @"kDisplayTimeline";
 
 NSString *const kHideDisplayError = @"kHideDisplayError";
 NSString *const kForceCloseEditPopover = @"kForceCloseEditPopover";
