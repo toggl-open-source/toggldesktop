@@ -24,6 +24,8 @@
 #import "Settings.h"
 #import <Sparkle/Sparkle.h>
 #import "TimeEntryViewItem.h"
+#import "TimelineChunkView.h"
+#import "TimelineEventView.h"
 #import "UIEvents.h"
 #import "Utils.h"
 #import "ViewItem.h"
@@ -62,6 +64,9 @@
 
 // We'll add user email once userdata has been loaded
 @property (strong) IBOutlet NSMenuItem *currentUserEmailMenuItem;
+
+// We'll change "show timeline" caption when needed
+@property (strong) IBOutlet NSMenuItem *showTimelineMenuitem;
 
 // Where logs are written and db is kept
 @property NSString *app_path;
@@ -225,7 +230,14 @@ BOOL onTop = NO;
 											 selector:@selector(startUpdateIconTooltip:)
 												 name:kUpdateIconTooltip
 											   object:nil];
-
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(startDisplayTimeline:)
+												 name:kDisplayTimeline
+											   object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(startDisplayTimeEntryList:)
+												 name:kDisplayTimeEntryList
+											   object:nil];
 	if (@available(macOS 10.14, *))
 	{
 		self.effectiveAppearanceObs = [self.mainWindowController.window observerEffectiveAppearanceNotification];
@@ -727,6 +739,36 @@ BOOL onTop = NO;
 	toggl_set_promotion_response(ctx, promotion_type.intValue, NSAlertFirstButtonReturn == result);
 }
 
+- (void)startDisplayTimeline:(NSNotification *)notification
+{
+	[self displayTimeline:notification.object];
+}
+
+- (void)displayTimeline:(DisplayCommand *)cmd
+{
+	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+	if (cmd.open)
+	{
+		[self.showTimelineMenuitem setTitle:@"Hide timeline data"];
+		[self.showTimelineMenuitem setTag:kMenuItemTagHideTimelineData];
+	}
+}
+
+- (void)startDisplayTimeEntryList:(NSNotification *)notification
+{
+	[self displayTimeEntryList:notification.object];
+}
+
+- (void)displayTimeEntryList:(DisplayCommand *)cmd
+{
+	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+	if (cmd.open)
+	{
+		[self.showTimelineMenuitem setTitle:@"Show timeline data"];
+		[self.showTimelineMenuitem setTag:kMenuItemTagShowTimelineData];
+	}
+}
+
 - (void)startDisplayLogin:(NSNotification *)notification
 {
 	[self displayLogin:notification.object];
@@ -955,6 +997,10 @@ BOOL onTop = NO;
 	[menu addItemWithTitle:@"Edit"
 					action:@selector(onEditMenuItem:)
 			 keyEquivalent:@"e"].tag = kMenuItemTagEdit;
+	self.showTimelineMenuitem = [menu addItemWithTitle:@"Show timeline data"
+												action:@selector(onShowTimelineDataMenuItem:)
+										 keyEquivalent:@"l"];
+	self.showTimelineMenuitem.tag = kMenuItemTagShowTimelineData;
 	[menu addItem:[NSMenuItem separatorItem]];
 	[menu addItemWithTitle:@"Sync"
 					action:@selector(onSyncMenuItem:)
@@ -967,7 +1013,7 @@ BOOL onTop = NO;
 			 keyEquivalent:@""];
 	[menu addItemWithTitle:@"Record Timeline"
 					action:@selector(onToggleRecordTimeline:)
-			 keyEquivalent:@""].tag = kMenuItemRecordTimeline;
+			 keyEquivalent:@""].tag = kMenuItemTagRecordTimeline;
 	self.manualModeMenuItem = [menu addItemWithTitle:@"Use manual mode"
 											  action:@selector(onModeChange:)
 									   keyEquivalent:@"d"];
@@ -978,7 +1024,7 @@ BOOL onTop = NO;
 			 keyEquivalent:@""];
 	[menu addItemWithTitle:@"Send Feedback"
 					action:@selector(onSendFeedbackMenuItem)
-			 keyEquivalent:@""].tag = kMenuItemSendFeedBack;
+			 keyEquivalent:@""].tag = kMenuItemTagSendFeedBack;
 	[menu addItemWithTitle:@"Logout"
 					action:@selector(onLogoutMenuItem:)
 			 keyEquivalent:@""].tag = kMenuItemTagLogout;
@@ -1121,6 +1167,20 @@ BOOL onTop = NO;
 {
 	[self.mainWindowController showWindow:self];
 	toggl_edit(ctx, "", true, "description");
+}
+
+- (IBAction)onShowTimelineDataMenuItem:(id)sender
+{
+	[self.mainWindowController showWindow:self];
+	switch (self.showTimelineMenuitem.tag)
+	{
+		case kMenuItemTagShowTimelineData :
+			toggl_view_timeline_data(ctx);
+			break;
+		case kMenuItemTagHideTimelineData :
+			toggl_view_time_entry_list(ctx);
+			break;
+	}
 }
 
 - (IBAction)onPreferencesMenuItem:(id)sender
@@ -1291,6 +1351,7 @@ const NSString *appName = @"osx_native_app";
 	toggl_on_promotion(ctx, on_promotion);
 	toggl_on_project_colors(ctx, on_project_colors);
 	toggl_on_countries(ctx, on_countries);
+	toggl_on_timeline(ctx, on_timeline);
 
 	NSLog(@"Version %@", self.version);
 
@@ -1413,13 +1474,15 @@ const NSString *appName = @"osx_native_app";
 		case kMenuItemTagClearCache :
 		case kMenuItemTagOpenBrowser :
 		case kMenuItemTagNew :
-		case kMenuItemSendFeedBack :
+		case kMenuItemTagSendFeedBack :
+		case kMenuItemTagShowTimelineData :
+		case kMenuItemTagHideTimelineData :
 			if (!self.lastKnownUserID)
 			{
 				return NO;
 			}
 			break;
-		case kMenuItemRecordTimeline :
+		case kMenuItemTagRecordTimeline :
 			if (!self.lastKnownUserID)
 			{
 				NSMenuItem *menuItem = (NSMenuItem *)anItem;
@@ -1626,6 +1689,32 @@ void on_time_entry_list(const bool_t open,
 																object:cmd];
 	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kUpdateIconTooltip
 																object:todayTotal];
+}
+
+void on_timeline(const bool_t open,
+				 const char_t *date,
+				 TogglTimelineChunkView *first)
+{
+	NSMutableArray *timelineChunks = [[NSMutableArray alloc] init];
+	TogglTimelineChunkView *it = first;
+
+	while (it)
+	{
+		TimelineChunkView *chunk = [[TimelineChunkView alloc] init];
+		[chunk load:it];
+		[timelineChunks addObject:chunk];
+
+		it = it->Next;
+	}
+	NSArray *reversed = [[timelineChunks reverseObjectEnumerator] allObjects];
+	NSMutableArray *reversedTimelineChunks = [NSMutableArray arrayWithArray:reversed];
+
+	DisplayCommand *cmd = [[DisplayCommand alloc] init];
+	cmd.open = open;
+	cmd.timelineChunks = reversedTimelineChunks;
+	cmd.timelineDate = [NSString stringWithUTF8String:date];
+	[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayTimeline
+														object:cmd];
 }
 
 void on_time_entry_autocomplete(TogglAutocompleteView *first)

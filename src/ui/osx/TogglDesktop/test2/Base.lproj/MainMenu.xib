@@ -68,6 +68,11 @@
                                     <action selector="onModeChange:" target="494" id="SoP-VP-yqv"/>
                                 </connections>
                             </menuItem>
+                            <menuItem title="Show Timeline" keyEquivalent="l" id="cRQ-QS-A1h">
+                                <connections>
+                                    <action selector="onShowTimelineDataMenuItem:" target="494" id="SwG-Wr-lyw"/>
+                                </connections>
+                            </menuItem>
                             <menuItem isSeparatorItem="YES" id="149">
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                             </menuItem>

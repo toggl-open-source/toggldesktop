@@ -13,6 +13,21 @@
 		3C2F239D21A7B43400CBE6BC /* UnsupportedNotice.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C2F239C21A7B43300CBE6BC /* UnsupportedNotice.m */; };
 		3C3AF64E20ACC6280088A3A6 /* CountryViewItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C3AF64D20ACC6280088A3A6 /* CountryViewItem.m */; };
 		3C50BCAC1C1F0574004BAE9E /* (null) in Resources */ = {isa = PBXBuildFile; };
+		3C53D112224B373B00674DC8 /* TimelineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C53D110224B373B00674DC8 /* TimelineViewController.m */; };
+		3C53D113224B373B00674DC8 /* TimelineViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3C53D111224B373B00674DC8 /* TimelineViewController.xib */; };
+		3C53D134224B3E9600674DC8 /* TDBarChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C53D133224B3E9600674DC8 /* TDBarChart.m */; };
+		3C53D138224B3F4B00674DC8 /* TimelineChunkCircle.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C53D137224B3F4B00674DC8 /* TimelineChunkCircle.m */; };
+		3C53D13B224B3F9C00674DC8 /* TimelineChunkView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C53D13A224B3F9C00674DC8 /* TimelineChunkView.m */; };
+		3C53D13F224B3FEE00674DC8 /* TimelineChunkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C53D13D224B3FEE00674DC8 /* TimelineChunkViewController.m */; };
+		3C53D140224B3FEE00674DC8 /* TimelineChunkViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3C53D13E224B3FEE00674DC8 /* TimelineChunkViewController.xib */; };
+		3C53D143224B406600674DC8 /* TimelineEventView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C53D142224B406600674DC8 /* TimelineEventView.m */; };
+		3C53D147224B40FE00674DC8 /* TimelineEventsListItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C53D145224B40FE00674DC8 /* TimelineEventsListItem.m */; };
+		3C53D148224B40FE00674DC8 /* TimelineEventsListItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3C53D146224B40FE00674DC8 /* TimelineEventsListItem.xib */; };
+		3C53D14B224B416900674DC8 /* TimelineLines.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C53D14A224B416900674DC8 /* TimelineLines.m */; };
+		3C65A7D21DE574E7005586B4 /* continue_light.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 3C65A7CE1DE574E7005586B4 /* continue_light.pdf */; };
+		3C65A7D31DE574E7005586B4 /* group_icon_closed.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 3C65A7CF1DE574E7005586B4 /* group_icon_closed.pdf */; };
+		3C65A7D41DE574E7005586B4 /* group_icon_open.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 3C65A7D01DE574E7005586B4 /* group_icon_open.pdf */; };
+		3C65A7E51DE5757A005586B4 /* continue_regular.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 3C65A7E41DE5757A005586B4 /* continue_regular.pdf */; };
 		3C6B2486203E01D90063FC08 /* AutoCompleteTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C6B2480203E01D60063FC08 /* AutoCompleteTableCell.m */; };
 		3C6B2487203E01D90063FC08 /* AutoCompleteInput.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C6B2483203E01D90063FC08 /* AutoCompleteInput.m */; };
 		3C6B2488203E01D90063FC08 /* AutoCompleteTable.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C6B2484203E01D90063FC08 /* AutoCompleteTable.m */; };
@@ -516,6 +531,31 @@
 		3C2F239C21A7B43300CBE6BC /* UnsupportedNotice.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UnsupportedNotice.m; sourceTree = "<group>"; };
 		3C3AF64C20ACC6280088A3A6 /* CountryViewItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CountryViewItem.h; sourceTree = "<group>"; };
 		3C3AF64D20ACC6280088A3A6 /* CountryViewItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CountryViewItem.m; sourceTree = "<group>"; };
+		3C4237151A9F612E00643059 /* toggl-logo-white.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "toggl-logo-white.pdf"; sourceTree = "<group>"; };
+		3C4237161A9F612E00643059 /* toggl-desktop-bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "toggl-desktop-bg.png"; sourceTree = "<group>"; };
+		3C53D10F224B373B00674DC8 /* TimelineViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TimelineViewController.h; sourceTree = "<group>"; };
+		3C53D110224B373B00674DC8 /* TimelineViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TimelineViewController.m; sourceTree = "<group>"; };
+		3C53D111224B373B00674DC8 /* TimelineViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimelineViewController.xib; sourceTree = "<group>"; };
+		3C53D132224B3E9600674DC8 /* TDBarChart.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TDBarChart.h; sourceTree = "<group>"; };
+		3C53D133224B3E9600674DC8 /* TDBarChart.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TDBarChart.m; sourceTree = "<group>"; };
+		3C53D136224B3F4B00674DC8 /* TimelineChunkCircle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TimelineChunkCircle.h; sourceTree = "<group>"; };
+		3C53D137224B3F4B00674DC8 /* TimelineChunkCircle.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TimelineChunkCircle.m; sourceTree = "<group>"; };
+		3C53D139224B3F9C00674DC8 /* TimelineChunkView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TimelineChunkView.h; sourceTree = "<group>"; };
+		3C53D13A224B3F9C00674DC8 /* TimelineChunkView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TimelineChunkView.m; sourceTree = "<group>"; };
+		3C53D13C224B3FEE00674DC8 /* TimelineChunkViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TimelineChunkViewController.h; sourceTree = "<group>"; };
+		3C53D13D224B3FEE00674DC8 /* TimelineChunkViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TimelineChunkViewController.m; sourceTree = "<group>"; };
+		3C53D13E224B3FEE00674DC8 /* TimelineChunkViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimelineChunkViewController.xib; sourceTree = "<group>"; };
+		3C53D141224B406600674DC8 /* TimelineEventView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TimelineEventView.h; sourceTree = "<group>"; };
+		3C53D142224B406600674DC8 /* TimelineEventView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TimelineEventView.m; sourceTree = "<group>"; };
+		3C53D144224B40FE00674DC8 /* TimelineEventsListItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TimelineEventsListItem.h; sourceTree = "<group>"; };
+		3C53D145224B40FE00674DC8 /* TimelineEventsListItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TimelineEventsListItem.m; sourceTree = "<group>"; };
+		3C53D146224B40FE00674DC8 /* TimelineEventsListItem.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimelineEventsListItem.xib; sourceTree = "<group>"; };
+		3C53D149224B416900674DC8 /* TimelineLines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TimelineLines.h; sourceTree = "<group>"; };
+		3C53D14A224B416900674DC8 /* TimelineLines.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TimelineLines.m; sourceTree = "<group>"; };
+		3C65A7CE1DE574E7005586B4 /* continue_light.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = continue_light.pdf; sourceTree = "<group>"; };
+		3C65A7CF1DE574E7005586B4 /* group_icon_closed.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = group_icon_closed.pdf; sourceTree = "<group>"; };
+		3C65A7D01DE574E7005586B4 /* group_icon_open.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = group_icon_open.pdf; sourceTree = "<group>"; };
+		3C65A7E41DE5757A005586B4 /* continue_regular.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = continue_regular.pdf; sourceTree = "<group>"; };
 		3C6B247F203E01D60063FC08 /* AutoCompleteTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutoCompleteTableCell.h; sourceTree = "<group>"; };
 		3C6B2480203E01D60063FC08 /* AutoCompleteTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutoCompleteTableCell.m; sourceTree = "<group>"; };
 		3C6B2481203E01D80063FC08 /* AutoCompleteInput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutoCompleteInput.h; sourceTree = "<group>"; };
@@ -838,6 +878,52 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3C0A570C1C22E12E00301D77 /* MKPopoverColorWell */ = {
+			isa = PBXGroup;
+			children = (
+				3C0A570D1C22E12E00301D77 /* LICENSE.txt */,
+				3C0A570E1C22E12E00301D77 /* MKColorPickerView.h */,
+				3C0A570F1C22E12E00301D77 /* MKColorPickerView.m */,
+				3C0A57101C22E12E00301D77 /* MKColorSwatchCell.h */,
+				3C0A57111C22E12E00301D77 /* MKColorSwatchCell.m */,
+				3C0A57121C22E12E00301D77 /* MKColorSwatchMatrix.h */,
+				3C0A57131C22E12E00301D77 /* MKColorSwatchMatrix.m */,
+				3C0A57141C22E12E00301D77 /* MKColorWell+Bindings.h */,
+				3C0A57151C22E12E00301D77 /* MKColorWell+Bindings.m */,
+				3C0A57171C22E12E00301D77 /* MKColorWell.m */,
+				3C0A57161C22E12E00301D77 /* MKColorWell.h */,
+				3C0A57181C22E12E00301D77 /* README.md */,
+			);
+			name = MKPopoverColorWell;
+			path = ../../../../third_party/MKPopoverColorWell;
+			sourceTree = "<group>";
+		};
+		3C53D135224B3F0200674DC8 /* Timeline */ = {
+			isa = PBXGroup;
+			children = (
+				3C53D10F224B373B00674DC8 /* TimelineViewController.h */,
+				3C53D110224B373B00674DC8 /* TimelineViewController.m */,
+				3C53D111224B373B00674DC8 /* TimelineViewController.xib */,
+				3C53D132224B3E9600674DC8 /* TDBarChart.h */,
+				3C53D133224B3E9600674DC8 /* TDBarChart.m */,
+				3C53D136224B3F4B00674DC8 /* TimelineChunkCircle.h */,
+				3C53D137224B3F4B00674DC8 /* TimelineChunkCircle.m */,
+				3C53D139224B3F9C00674DC8 /* TimelineChunkView.h */,
+				3C53D13A224B3F9C00674DC8 /* TimelineChunkView.m */,
+				3C53D13C224B3FEE00674DC8 /* TimelineChunkViewController.h */,
+				3C53D13D224B3FEE00674DC8 /* TimelineChunkViewController.m */,
+				3C53D13E224B3FEE00674DC8 /* TimelineChunkViewController.xib */,
+				3C53D141224B406600674DC8 /* TimelineEventView.h */,
+				3C53D142224B406600674DC8 /* TimelineEventView.m */,
+				3C53D144224B40FE00674DC8 /* TimelineEventsListItem.h */,
+				3C53D145224B40FE00674DC8 /* TimelineEventsListItem.m */,
+				3C53D146224B40FE00674DC8 /* TimelineEventsListItem.xib */,
+				3C53D149224B416900674DC8 /* TimelineLines.h */,
+				3C53D14A224B416900674DC8 /* TimelineLines.m */,
+			);
+			path = Timeline;
+			sourceTree = "<group>";
+		};
 		3C6B246F203E01B70063FC08 /* AutoComplete */ = {
 			isa = PBXGroup;
 			children = (
@@ -933,6 +1019,8 @@
 		69FC17FA17E6534400B96425 /* ui */ = {
 			isa = PBXGroup;
 			children = (
+				3C53D135224B3F0200674DC8 /* Timeline */,
+				BA229D0E21EDEDBA00DEB4B9 /* Theme */,
 				BA13E05B21C7B9F800835EC1 /* UserNotification */,
 				BAF87DDB21A3E1E700624EBE /* Extension */,
 				BAF50DF521A2A16D0090BA95 /* IconFactory */,
@@ -1840,6 +1928,7 @@
 			files = (
 				BA7D33532248981200B953A8 /* ProjectHeaderCellView.xib in Resources */,
 				BA05369F225E239600C26E1F /* ProjectWorksapceCellView.xib in Resources */,
+				3C53D140224B3FEE00674DC8 /* TimelineChunkViewController.xib in Resources */,
 				BAF50DE521A29FED0090BA95 /* Images.xcassets in Resources */,
 				BA34F10122439C3000C27A15 /* EditorViewController.xib in Resources */,
 				74E857BC194F8854007A88B9 /* cacert.pem in Resources */,
@@ -1850,6 +1939,8 @@
 				BA19FC21226DA079006D8741 /* DateCellViewItem.xib in Resources */,
 				BA9C2E06224C84E7002AD2A1 /* ColorViewItem.xib in Resources */,
 				3CD30F441F58B02C006FAA0D /* OverlayViewController.xib in Resources */,
+				3C53D148224B40FE00674DC8 /* TimelineEventsListItem.xib in Resources */,
+				74664DB218AA860800AAD282 /* off.pdf in Resources */,
 				BA7D3355224898E400B953A8 /* ProjectContentCellView.xib in Resources */,
 				BA014054225711A3000E5B91 /* TagTokenView.xib in Resources */,
 				7430750518204EFB009019CB /* AboutWindowController.xib in Resources */,
@@ -1867,6 +1958,8 @@
 				74F1070218993FFE00E93BD5 /* FeedbackWindowController.xib in Resources */,
 				7423393D1829B99C00063FA9 /* IdleNotificationWindowController.xib in Resources */,
 				BA8B4C772251FADF00592BC7 /* WorkspaceCellView.xib in Resources */,
+				95DBF8CD18BF7A910021FB41 /* offline_on.pdf in Resources */,
+				3C53D113224B373B00674DC8 /* TimelineViewController.xib in Resources */,
 				69FC180B17E6534500B96425 /* MainMenu.xib in Resources */,
 				BA7D334D2248945300B953A8 /* AutoCompleteView.xib in Resources */,
 				C5DA1FC017F1B08A001C4565 /* MainWindowController.xib in Resources */,
@@ -1982,7 +2075,10 @@
 				748B3A3419222DB100F31468 /* DisplayCommand.m in Sources */,
 				BA9C2E05224C84E7002AD2A1 /* ColorViewItem.swift in Sources */,
 				7438B3D318253CD2002AE43C /* MenuItemTags.m in Sources */,
+				74E3CDCC17FBABE400C3ADD3 /* BugsnagMetaData.m in Sources */,
+				3C53D112224B373B00674DC8 /* TimelineViewController.m in Sources */,
 				3CE1CAC11C774F2B00D0ADD5 /* LoadMoreCell.m in Sources */,
+				3C53D143224B406600674DC8 /* TimelineEventView.m in Sources */,
 				749CB8CC18167D6E00814841 /* PreferencesWindowController.m in Sources */,
 				3C7B4E8D190FA6D200627DC3 /* NSTextFieldVerticallyAligned.m in Sources */,
 				BAB0027F22731248005ECC93 /* DayLabel.swift in Sources */,
@@ -1996,6 +2092,7 @@
 				BA0F67B7224A32F700ED0F91 /* CursorButton.swift in Sources */,
 				BA9C2E0C224C8F58002AD2A1 /* KeyboardTableView.swift in Sources */,
 				69FC180117E6534400B96425 /* main.m in Sources */,
+				3C53D14B224B416900674DC8 /* TimelineLines.m in Sources */,
 				74F1070118993FFE00E93BD5 /* FeedbackWindowController.m in Sources */,
 				BAB818E3228D594D008C2367 /* DescriptionTimeEntryStorage.swift in Sources */,
 				BA03725521FE9FD400FC277B /* FlatButton.swift in Sources */,
@@ -2008,6 +2105,9 @@
 				BA01404E22571081000E5B91 /* TagDataSource.swift in Sources */,
 				BA6572A9224DFA6F00BA4C60 /* ColorGraphicsView.swift in Sources */,
 				BAA11AC52251F502007F31D2 /* WorkspaceDataSource.swift in Sources */,
+				3C53D13F224B3FEE00674DC8 /* TimelineChunkViewController.m in Sources */,
+				3C53D13B224B3F9C00674DC8 /* TimelineChunkView.m in Sources */,
+				3C0A571B1C22E12E00301D77 /* MKColorSwatchCell.m in Sources */,
 				3CD30F431F58B02C006FAA0D /* OverlayViewController.m in Sources */,
 				BA412C25224E147A003CA17A /* ClientAutoCompleteTextField.swift in Sources */,
 				74D1D25617EB713F00E709B0 /* TimeEntryListViewController.m in Sources */,
@@ -2024,6 +2124,10 @@
 				BA1F9032229D19C000670E0B /* NoInteractionView.swift in Sources */,
 				BA03729D21FED85700FC277B /* NSView+Xib.swift in Sources */,
 				BA84363B22533A6600EF5830 /* DesktopLibraryBridge.m in Sources */,
+				3C53D138224B3F4B00674DC8 /* TimelineChunkCircle.m in Sources */,
+				74D1D25D17EB71C100E709B0 /* TimeEntryEditViewController.m in Sources */,
+				3C0A571C1C22E12E00301D77 /* MKColorSwatchMatrix.m in Sources */,
+				3C53D134224B3E9600674DC8 /* TDBarChart.m in Sources */,
 				BA4059B9221D53E7002969B8 /* TimeEntryDatasource.swift in Sources */,
 				BA3E75D62229356D009AD291 /* SystemMessageView.swift in Sources */,
 				BA013FF5225705B6000E5B91 /* HoverTableCellView.swift in Sources */,
@@ -2041,6 +2145,7 @@
 				BAD307D3229C1BD000C727DB /* KeyboardDatePicker.swift in Sources */,
 				BA7D335722489BD000B953A8 /* AutoCompleteViewDataSource.swift in Sources */,
 				BA01404C22570967000E5B91 /* TagStorage.swift in Sources */,
+				3C53D147224B40FE00674DC8 /* TimelineEventsListItem.m in Sources */,
 				74BAD31E18BD7D83002FD4CF /* ViewItem.m in Sources */,
 				BA35B21F22E6E95200FA560E /* CalendarCollectionView.swift in Sources */,
 				3CD7AD6F19ED579700372797 /* NSResize.m in Sources */,

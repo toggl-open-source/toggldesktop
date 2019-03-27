@@ -10,6 +10,7 @@
 #import "LoginViewController.h"
 #import "TimeEntryListViewController.h"
 #import "OverlayViewController.h"
+#import "TimelineViewController.h"
 #import "TimeEntryViewItem.h"
 #import "UIEvents.h"
 #import "MenuItemTags.h"
@@ -22,6 +23,7 @@
 @property (nonatomic, strong) IBOutlet LoginViewController *loginViewController;
 @property (nonatomic, strong) IBOutlet TimeEntryListViewController *timeEntryListViewController;
 @property (nonatomic, strong) IBOutlet OverlayViewController *overlayViewController;
+@property (nonatomic, strong) IBOutlet TimelineViewController *timelineViewController;
 @property double troubleBoxDefaultHeight;
 @property (nonatomic, strong) SystemMessageView *messageView;
 
@@ -42,6 +44,8 @@ extern void *ctx;
 											initWithNibName:@"TimeEntryListViewController" bundle:nil];
 		self.overlayViewController = [[OverlayViewController alloc]
 									  initWithNibName:@"OverlayViewController" bundle:nil];
+		self.timelineViewController = [[TimelineViewController alloc]
+									   initWithNibName:@"TimelineViewController" bundle:nil];
 
 
 		[self.loginViewController.view setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
@@ -71,6 +75,10 @@ extern void *ctx;
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(startDisplayOnlineState:)
 													 name:kDisplayOnlineState
+												   object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self
+												 selector:@selector(startDisplayTimeline:)
+													 name:kDisplayTimeline
 												   object:nil];
 	}
 	return self;
@@ -123,6 +131,7 @@ extern void *ctx;
 
 		[self.timeEntryListViewController.view removeFromSuperview];
 		[self.overlayViewController.view removeFromSuperview];
+		[self.timelineViewController.view removeFromSuperview];
 	}
 }
 
@@ -149,10 +158,29 @@ extern void *ctx;
 
 			[self.loginViewController.view removeFromSuperview];
 			[self.overlayViewController.view removeFromSuperview];
+			[self.timelineViewController.view removeFromSuperview];
 
 			[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kFocusTimer
 																		object:nil];
 		}
+	}
+}
+
+- (void)startDisplayTimeline:(NSNotification *)notification
+{
+	[self displayTimeline:notification.object];
+}
+
+- (void)displayTimeline:(DisplayCommand *)cmd
+{
+	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
+	if (cmd.open)
+	{
+		[self.contentView addSubview:self.timelineViewController.view];
+		[self.timelineViewController.view setFrame:self.contentView.bounds];
+
+		[self.loginViewController.view removeFromSuperview];
+		[self.timeEntryListViewController.view removeFromSuperview];
 	}
 }
 
