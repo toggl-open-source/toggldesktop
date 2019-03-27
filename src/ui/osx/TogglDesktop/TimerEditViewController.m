@@ -254,7 +254,10 @@ NSString *kInactiveTimerColor = @"#999999";
 
 - (void)showDefaultTimer
 {
-	self.displayMode = DisplayModeInput;
+	if (!self.descriptionLabel.isEditable)
+	{
+		self.displayMode = DisplayModeInput;
+	}
 
 	// Start/stop button title and color depend on
 	// whether time entry is running
@@ -316,6 +319,7 @@ NSString *kInactiveTimerColor = @"#999999";
 	}
 	if (self.time_entry.duration_in_seconds < 0)
 	{
+		self.descriptionLabel.editable = NO;
 		[self clear];
 		[self showDefaultTimer];
 		[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kCommandStop
