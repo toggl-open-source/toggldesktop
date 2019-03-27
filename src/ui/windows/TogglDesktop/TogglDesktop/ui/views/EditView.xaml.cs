@@ -99,6 +99,8 @@ namespace TogglDesktop
                     this.confirmNewProject();
                 }
 
+                var isDifferentTimeEntry = this.timeEntry.GUID != timeEntry.GUID;
+
                 this.timeEntry = timeEntry;
 
                 var isCurrentlyRunning = timeEntry.DurationInSeconds < 0;
@@ -110,6 +112,10 @@ namespace TogglDesktop
                 setTime(this.startTimeTextBox, timeEntry.StartTimeString, open);
                 setTime(this.endTimeTextBox, timeEntry.EndTimeString, open);
                 this.startDatePicker.SelectedDate = Toggl.DateTimeFromUnix(timeEntry.Started);
+                if (isDifferentTimeEntry)
+                {
+                    this.clearUndoHistory();
+                }
 
                 if (isCurrentlyRunning)
                 {
@@ -1053,6 +1059,15 @@ namespace TogglDesktop
             {
                 return this.timeEntry.DurationInSeconds < 15;
             }
+        }
+
+        private void clearUndoHistory()
+        {
+            descriptionTextBox.ClearUndoHistory();
+            startTimeTextBox.ClearUndoHistory();
+            endTimeTextBox.ClearUndoHistory();
+            durationTextBox.ClearUndoHistory();
+            tagList.ClearUndoHistory();
         }
 
         #endregion
