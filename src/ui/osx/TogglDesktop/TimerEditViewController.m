@@ -171,7 +171,11 @@ NSString *kInactiveTimerColor = @"#999999";
 
 	if (!te)
 	{
-		if ([self.autoCompleteInput currentEditor] != nil)
+		if ([self.autoCompleteInput currentEditor] != nil || self.descriptionLabel.currentEditor != nil)
+		{
+			return;
+		}
+		if (self.descriptionLabel.stringValue != nil || self.projectTextField.stringValue != nil)
 		{
 			return;
 		}
