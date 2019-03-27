@@ -56,7 +56,12 @@ namespace TogglDesktop
                 }
 
                 this.Show();
-                this.EditView.FocusField(focusedFieldName);
+
+                // focus field only if the edit popup was just open
+                if (open)
+                {
+                    this.EditView.FocusField(focusedFieldName);
+                }
             }
         }
 
