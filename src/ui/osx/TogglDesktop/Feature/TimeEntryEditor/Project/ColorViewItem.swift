@@ -10,8 +10,25 @@ import Cocoa
 
 final class ColorViewItem: NSCollectionViewItem {
 
+    // MARK: OUTLET
+
+    @IBOutlet weak var boxView: NSBox!
+
+    // MARK: View Cycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do view setup here.
+
+        initCommon()
+    }
+
+    // MARK: Public
+
+    func render(_ color: ProjectColor) {
+        boxView.fillColor = ConvertHexColor.hexCode(toNSColor: color.colorHex)!
+    }
+
+    private func initCommon() {
+
     }
 }
