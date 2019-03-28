@@ -74,7 +74,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="244" height="46"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <button verticalHuggingPriority="750" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sT2-gq-IUf" customClass="NSHoverButton">
+                                        <button verticalHuggingPriority="750" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sT2-gq-IUf" customClass="CursorButton" customModule="TogglDesktop" customModuleProvider="target">
                                             <rect key="frame" x="0.0" y="0.0" width="244" height="46"/>
                                             <buttonCell key="cell" type="bevel" title=" Create a new Project" bezelStyle="rounded" image="add-icon" imagePosition="left" alignment="center" imageScaling="proportionallyDown" inset="2" id="thJ-D8-tYu">
                                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>

@@ -65,12 +65,18 @@ final class AutoCompleteView: NSView {
 
     @IBOutlet weak var tableView: NSTableView!
     @IBOutlet weak var tableViewHeight: NSLayoutConstraint!
-    @IBOutlet weak var createNewProjectBtn: NSButton!
+    @IBOutlet weak var createNewProjectBtn: CursorButton!
 
     // MARK: Variables
     private var dataSource: AutoCompleteViewDataSource!
 
     // MARK: Public
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+
+        initCommon()
+    }
 
     func prepare(with dataSource: AutoCompleteViewDataSource) {
         self.dataSource = dataSource
@@ -86,5 +92,15 @@ final class AutoCompleteView: NSView {
     }
 
     @IBAction func newProjectBtnOnTap(_ sender: Any) {
+
+    }
+}
+
+// MARK: Private
+
+extension AutoCompleteView {
+
+    fileprivate func initCommon() {
+        createNewProjectBtn.cursor = .pointingHand
     }
 }
