@@ -12,8 +12,11 @@ final class AutoCompleteViewWindow: NSWindow {
 
     // MARK: Private
     private let topPadding: CGFloat = 5.0
-    private let autoCompleteView: AutoCompleteView
-
+    let autoCompleteView: AutoCompleteView
+    override var canBecomeMain: Bool {
+        return true
+    }
+    
     // MARK: Init
 
     init() {
@@ -81,7 +84,7 @@ final class AutoCompleteView: NSView {
     func update(height: CGFloat) {
         tableViewHeight.constant = height
     }
-    
+
     @IBAction func newProjectBtnOnTap(_ sender: Any) {
     }
 }

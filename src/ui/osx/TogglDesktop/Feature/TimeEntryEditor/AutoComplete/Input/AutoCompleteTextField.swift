@@ -70,7 +70,7 @@ final class AutoCompleteTextField: NSTextField, NSTextFieldDelegate {
         if !autoCompleteWindow.isVisible {
             window?.addChildWindow(autoCompleteWindow,
                                    ordered: .above)
-            autoCompleteWindow.makeKey()
+            autoCompleteWindow.makeMain()
         }
 
         // Filter
@@ -91,5 +91,35 @@ extension AutoCompleteTextField {
         addSubview(arrowBtn)
         arrowBtn.centerYAnchor.constraint(equalTo: centerYAnchor, constant: 0).isActive = true
         arrowBtn.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15.0).isActive = true
+    }
+
+    func control(_ control: NSControl, textView: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
+        guard let currentEvent = NSApp.currentEvent else {
+            return false
+        }
+
+        // Enter
+        if commandSelector == #selector(NSResponder.insertNewline(_:)) {
+            return true
+        }
+
+        // Escape
+        if commandSelector == #selector(NSResponder.cancelOperation(_:)) {
+            return true
+        }
+
+        // Down key
+        if commandSelector == #selector(NSResponder.moveDown(_:)) {
+            autoCompleteWindow.autoCompleteView.tableView.keyDown(with: currentEvent)
+            return true
+        }
+
+        // Down key
+        if commandSelector == #selector(NSResponder.moveUp(_:)) {
+            autoCompleteWindow.autoCompleteView.tableView.keyDown(with: currentEvent)
+            return true
+        }
+
+        return false
     }
 }

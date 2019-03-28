@@ -14,6 +14,9 @@ class AutoCompleteViewDataSource: NSObject {
     private let maxHeight: CGFloat = 600.0
     private(set) var items: [Any] = []
     private var autoCompleteView: AutoCompleteView!
+    var count: Int {
+        return items.count
+    }
     var tableView: NSTableView {
         return autoCompleteView.tableView
     }
