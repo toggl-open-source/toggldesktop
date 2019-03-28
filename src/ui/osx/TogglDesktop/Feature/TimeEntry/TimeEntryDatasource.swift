@@ -102,7 +102,7 @@ class TimeEntryDatasource: NSObject {
         let groups = timeEntries.groupSort(ascending: false, byDate: { $0.started })
         var sections = groups.compactMap { group -> TimeEntrySection? in
             guard let firstEntry = group.first else { return nil }
-            let header = TimeEntryHeader(date: firstEntry.formattedDate, totalTime: firstEntry.duration)
+            let header = TimeEntryHeader(date: firstEntry.formattedDate, totalTime: firstEntry.dateDuration)
             return TimeEntrySection(header: header, entries: group)
         }
 
