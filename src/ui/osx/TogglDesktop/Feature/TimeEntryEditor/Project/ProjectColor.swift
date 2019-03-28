@@ -10,5 +10,7 @@ import Foundation
 
 struct ProjectColor {
 
+    static let `default` = ProjectColor(colorHex: "#c56bff")
+    
     let colorHex: String
 }

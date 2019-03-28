@@ -8,12 +8,15 @@
 
 import Cocoa
 
-class ColorPickerView: NSView {
+final class ColorPickerView: NSView {
 
-    override func draw(_ dirtyRect: NSRect) {
-        super.draw(dirtyRect)
-
-        // Drawing code here.
+    override func awakeFromNib() {
+        super.awakeFromNib()
     }
-    
+
+    // MARK: Public
+
+    func select(_ color: ProjectColor) {
+
+    }
 }
