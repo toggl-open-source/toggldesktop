@@ -14,13 +14,13 @@
             <rect key="frame" x="0.0" y="0.0" width="220" height="190"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mxV-pt-2uu">
+                <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" usesPredominantAxisScrolling="NO" horizontalScrollElasticity="none" verticalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="mxV-pt-2uu">
                     <rect key="frame" x="0.0" y="125" width="220" height="65"/>
                     <clipView key="contentView" id="xTa-DE-szS">
                         <rect key="frame" x="0.0" y="0.0" width="220" height="65"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <collectionView id="52y-nX-aep">
+                            <collectionView selectable="YES" allowsEmptySelection="NO" id="52y-nX-aep">
                                 <rect key="frame" x="0.0" y="0.0" width="220" height="158"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumInteritemSpacing="10" minimumLineSpacing="10" id="jeB-XW-ECn">

@@ -16,6 +16,7 @@
         <collectionViewItem id="D9v-Zg-363" customClass="ColorViewItem" customModule="TogglDesktop" customModuleProvider="target">
             <connections>
                 <outlet property="boxView" destination="Wt0-1A-Mqe" id="JPk-fY-J2Y"/>
+                <outlet property="colorCheckImageView" destination="3HI-EW-bAf" id="eYa-6f-7x4"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="5FH-A8-tgf"/>
             </connections>
         </collectionViewItem>
@@ -31,13 +32,25 @@
                     </view>
                     <color key="fillColor" name="systemRedColor" catalog="System" colorSpace="catalog"/>
                 </box>
+                <imageView hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="3HI-EW-bAf">
+                    <rect key="frame" x="0.0" y="0.0" width="24" height="24"/>
+                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="color-check" id="0Uf-dA-Nxo"/>
+                </imageView>
             </subviews>
             <constraints>
+                <constraint firstAttribute="bottom" secondItem="3HI-EW-bAf" secondAttribute="bottom" id="J86-1Y-EuS"/>
+                <constraint firstItem="3HI-EW-bAf" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="T4E-wb-0Wv"/>
+                <constraint firstItem="3HI-EW-bAf" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" id="VlQ-kI-dXh"/>
                 <constraint firstAttribute="bottom" secondItem="Wt0-1A-Mqe" secondAttribute="bottom" id="a57-mU-bcf"/>
                 <constraint firstAttribute="trailing" secondItem="Wt0-1A-Mqe" secondAttribute="trailing" id="dDF-F5-Uxr"/>
+                <constraint firstAttribute="trailing" secondItem="3HI-EW-bAf" secondAttribute="trailing" id="hWc-f5-ALF"/>
                 <constraint firstItem="Wt0-1A-Mqe" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" id="yh1-zt-I1n"/>
                 <constraint firstItem="Wt0-1A-Mqe" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="yxW-U7-7CP"/>
             </constraints>
+            <point key="canvasLocation" x="139" y="153.5"/>
         </customView>
     </objects>
+    <resources>
+        <image name="color-check" width="11" height="8"/>
+    </resources>
 </document>

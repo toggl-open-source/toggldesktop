@@ -49,6 +49,7 @@ final class ProjectCreationView: NSView {
     }
     private lazy var colorPickerView: ColorPickerView = {
         let picker = ColorPickerView.xibView() as ColorPickerView
+        picker.delegate = self
         colorPickerContainerView.addSubview(picker)
         picker.edgesToSuperView()
         return picker
@@ -135,5 +136,14 @@ extension ProjectCreationView {
         } else {
             return NSColor(white: 0, alpha: 0.1)
         }
+    }
+}
+
+// MARK: ColorPickerViewDelegate
+
+extension ProjectCreationView: ColorPickerViewDelegate {
+
+    func colorPickerDidSelectColor(_ color: ProjectColor) {
+        selectedColor = color
     }
 }
