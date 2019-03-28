@@ -72,7 +72,7 @@
                                     <rect key="frame" x="1" y="1" width="238" height="28"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Doe-dQ-82A" customClass="AutoCompleteTextField" customModule="TogglDesktop" customModuleProvider="target">
+                                        <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Doe-dQ-82A" customClass="ProjectAutoCompleteTextField" customModule="TogglDesktop" customModuleProvider="target">
                                             <rect key="frame" x="-2" y="0.0" width="242" height="28"/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" alignment="left" placeholderString="Select project" id="6po-73-koG" customClass="VerticallyCenteredTextFieldCell" customModule="TogglDesktop" customModuleProvider="target">
                                                 <font key="font" metaFont="system" size="14"/>

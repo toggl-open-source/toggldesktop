@@ -212,6 +212,7 @@
 		BAD2342721D612DF0039C742 /* libPocoFoundation.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BAD2341E21D612DF0039C742 /* libPocoFoundation.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		BAE007DE21FAF00D00404379 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BAE007DD21FAF00D00404379 /* Media.xcassets */; };
 		BAE49CAE222FC1C900773814 /* TimerContainerBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAE49CAD222FC1C900773814 /* TimerContainerBox.swift */; };
+		BAE8E845224CA9AC006D534E /* ProjectAutoCompleteTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAE8E844224CA9AC006D534E /* ProjectAutoCompleteTextField.swift */; };
 		BAF38FEF2241FF20009147D7 /* FloatingErrorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA276A132240F5B500810C51 /* FloatingErrorView.xib */; };
 		BAF50DE521A29FED0090BA95 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BAF50DE421A29FED0090BA95 /* Images.xcassets */; };
 		BAF50DF821A2A18D0090BA95 /* AppIconFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = BAF50DF721A2A18D0090BA95 /* AppIconFactory.m */; };
@@ -801,6 +802,7 @@
 		BAD2341E21D612DF0039C742 /* libPocoFoundation.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoFoundation.60.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoFoundation.60.dylib; sourceTree = "<group>"; };
 		BAE007DD21FAF00D00404379 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
 		BAE49CAD222FC1C900773814 /* TimerContainerBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerContainerBox.swift; sourceTree = "<group>"; };
+		BAE8E844224CA9AC006D534E /* ProjectAutoCompleteTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectAutoCompleteTextField.swift; sourceTree = "<group>"; };
 		BAF50DE421A29FED0090BA95 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = TogglDesktop/Images.xcassets; sourceTree = "<group>"; };
 		BAF50DF621A2A18D0090BA95 /* AppIconFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppIconFactory.h; sourceTree = "<group>"; };
 		BAF50DF721A2A18D0090BA95 /* AppIconFactory.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppIconFactory.m; sourceTree = "<group>"; };
@@ -1441,6 +1443,7 @@
 			isa = PBXGroup;
 			children = (
 				BA7D335D2248B48000B953A8 /* AutoCompleteTextField.swift */,
+				BAE8E844224CA9AC006D534E /* ProjectAutoCompleteTextField.swift */,
 			);
 			path = Input;
 			sourceTree = "<group>";
@@ -2073,6 +2076,7 @@
 				95C0707718CDB67300A34D0D /* NSCustomComboBoxCell.m in Sources */,
 				BAAF569E2223D4C7003D0D73 /* DotImageView.swift in Sources */,
 				3C0A571A1C22E12E00301D77 /* MKColorPickerView.m in Sources */,
+				BAE8E845224CA9AC006D534E /* ProjectAutoCompleteTextField.swift in Sources */,
 				BA2E3F2C22375E640035D034 /* NSView+Appearance.swift in Sources */,
 				74E3CDC817FBABE400C3ADD3 /* BugsnagConfiguration.m in Sources */,
 				743D782A182791FA00978BCC /* idler.c in Sources */,

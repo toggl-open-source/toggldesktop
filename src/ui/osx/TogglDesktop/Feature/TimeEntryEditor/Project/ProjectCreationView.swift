@@ -45,7 +45,7 @@ final class ProjectCreationView: NSView {
     }
 
     @IBAction func cancelBtnOnTap(_ sender: Any) {
-        removeFromSuperview()
+
     }
 
     @IBAction func addBtnOnTap(_ sender: Any) {
@@ -63,16 +63,18 @@ final class ProjectCreationView: NSView {
 extension ProjectCreationView {
 
     fileprivate func initCommon() {
-        
+        colorPickerContainerView.isHidden = true
     }
 
     fileprivate func updateLayout() {
         switch displayMode {
         case .compact:
             colorPickerContainerView.isHidden = true
+            self.frame = CGRect(x: frame.origin.x, y: frame.origin.y, width: frame.size.width, height: 200.0)
         case .full:
             colorPickerContainerView.isHidden = false
             colorPickerView.select(selectedColor)
+            self.frame = CGRect(x: frame.origin.x, y: frame.origin.y, width: frame.size.width, height: 398.0)
         }
     }
 }

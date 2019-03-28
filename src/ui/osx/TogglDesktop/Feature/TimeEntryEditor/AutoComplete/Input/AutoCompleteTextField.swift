@@ -8,7 +8,7 @@
 
 import Foundation
 
-final class AutoCompleteTextField: NSTextField, NSTextFieldDelegate {
+class AutoCompleteTextField: NSTextField, NSTextFieldDelegate, AutoCompleteViewDelegate {
 
     // MARK: OUTLET
 
@@ -21,7 +21,11 @@ final class AutoCompleteTextField: NSTextField, NSTextFieldDelegate {
 
     // MARK: Variables
 
-    private lazy var autoCompleteWindow = AutoCompleteViewWindow()
+    private lazy var autoCompleteWindow: AutoCompleteViewWindow = {
+        let window = AutoCompleteViewWindow(view: autoCompleteView)
+        return window
+    }()
+    private let autoCompleteView: AutoCompleteView = AutoCompleteView.xibView()
 
     // MARK: Init
 
@@ -40,11 +44,7 @@ final class AutoCompleteTextField: NSTextField, NSTextFieldDelegate {
     // MARK: Public
 
     func prepare(with dataSource: AutoCompleteViewDataSource, parentView: NSView) {
-        autoCompleteWindow.prepare(with: dataSource)
-    }
-
-    func controlTextDidBeginEditing(_ obj: Notification) {
-        
+        autoCompleteView.prepare(with: dataSource)
     }
 
     func controlTextDidEndEditing(_ obj: Notification) {
@@ -60,9 +60,28 @@ final class AutoCompleteTextField: NSTextField, NSTextFieldDelegate {
         presentAutoComplete()
     }
 
+    func closeSuggestion() {
+        autoCompleteWindow.cancel()
+    }
+
+    func updateWindowContent(with view: NSView) {
+        guard view != autoCompleteWindow.contentView else {
+            return
+        }
+        autoCompleteWindow.contentView = view
+        autoCompleteWindow.setContentSize(view.frame.size)
+        autoCompleteWindow.makeKey()
+    }
+
     private func presentAutoComplete() {
+
+        //
         arrowBtn.image = NSImage(named: NSImage.Name("arrow-section-open"))
 
+        // Set auto complete table
+        autoCompleteWindow.contentView = autoCompleteView
+        autoCompleteWindow.setContentSize(autoCompleteView.frame.size)
+        
         // Layout frame and position
         autoCompleteWindow.layout(with: self)
 
@@ -74,7 +93,11 @@ final class AutoCompleteTextField: NSTextField, NSTextFieldDelegate {
         }
 
         // Filter
-        autoCompleteWindow.filter(with: self.stringValue)
+        autoCompleteView.filter(with: self.stringValue)
+    }
+
+    func didTapOnCreateButton() {
+
     }
 }
 
@@ -84,6 +107,7 @@ extension AutoCompleteTextField {
 
     fileprivate func initCommon() {
         delegate = self
+        autoCompleteView.delegate = self
     }
 
     fileprivate func initArrowBtn() {
@@ -100,7 +124,7 @@ extension AutoCompleteTextField {
 
         // Enter
         if commandSelector == #selector(NSResponder.insertNewline(_:)) {
-            autoCompleteWindow.autoCompleteView.tableView.keyDown(with: currentEvent)
+            autoCompleteView.tableView.keyDown(with: currentEvent)
             return true
         }
 
@@ -111,13 +135,13 @@ extension AutoCompleteTextField {
 
         // Down key
         if commandSelector == #selector(NSResponder.moveDown(_:)) {
-            autoCompleteWindow.autoCompleteView.tableView.keyDown(with: currentEvent)
+            autoCompleteView.tableView.keyDown(with: currentEvent)
             return true
         }
 
         // Down key
         if commandSelector == #selector(NSResponder.moveUp(_:)) {
-            autoCompleteWindow.autoCompleteView.tableView.keyDown(with: currentEvent)
+            autoCompleteView.tableView.keyDown(with: currentEvent)
             return true
         }
 
