@@ -29,7 +29,7 @@ final class AutoCompleteViewWindow: NSWindow {
         contentView = view
     }
 
-    func layout(with textField: NSTextField) {
+    func layoutFrame(with textField: NSTextField, height: CGFloat) {
         guard let window = textField.window else { return }
         let size = textField.frame.size
 
@@ -42,7 +42,7 @@ final class AutoCompleteViewWindow: NSWindow {
             // Fallback on earlier versions
         }
         location.y -= topPadding
-        setFrame(CGRect(x: 0, y: 0, width: size.width, height: size.height), display: false)
+        setFrame(CGRect(x: 0, y: 0, width: size.width, height: height), display: false)
         setFrameTopLeftPoint(location)
     }
 

@@ -46,12 +46,22 @@
                     <rect key="frame" x="10" y="5" width="37" height="16"/>
                     <buttonCell key="cell" type="bevel" title="Reset" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="Upl-pY-Pye">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="system" size="12"/>
+                        <font key="font" metaFont="cellTitle"/>
                     </buttonCell>
                     <color key="contentTintColor" name="grey-text-color"/>
                 </button>
                 <customView translatesAutoresizingMaskIntoConstraints="NO" id="ekt-4K-GjN">
                     <rect key="frame" x="0.0" y="26" width="220" height="99"/>
+                    <subviews>
+                        <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5RO-we-akJ">
+                            <rect key="frame" x="70" y="32" width="81" height="32"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <buttonCell key="cell" type="push" title="Button" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="uEH-wY-u5f">
+                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                <font key="font" metaFont="system"/>
+                            </buttonCell>
+                        </button>
+                    </subviews>
                 </customView>
             </subviews>
             <constraints>

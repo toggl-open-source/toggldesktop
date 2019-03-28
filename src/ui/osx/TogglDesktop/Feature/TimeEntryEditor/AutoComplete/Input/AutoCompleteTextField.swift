@@ -21,7 +21,7 @@ class AutoCompleteTextField: NSTextField, NSTextFieldDelegate, AutoCompleteViewD
 
     // MARK: Variables
 
-    private lazy var autoCompleteWindow: AutoCompleteViewWindow = {
+    lazy var autoCompleteWindow: AutoCompleteViewWindow = {
         let window = AutoCompleteViewWindow(view: autoCompleteView)
         return window
     }()
@@ -64,12 +64,12 @@ class AutoCompleteTextField: NSTextField, NSTextFieldDelegate, AutoCompleteViewD
         autoCompleteWindow.cancel()
     }
 
-    func updateWindowContent(with view: NSView) {
+    func updateWindowContent(with view: NSView, height: CGFloat) {
         guard view != autoCompleteWindow.contentView else {
             return
         }
         autoCompleteWindow.contentView = view
-        autoCompleteWindow.setContentSize(view.frame.size)
+        autoCompleteWindow.layoutFrame(with: self, height: height)
         autoCompleteWindow.makeKey()
     }
 
@@ -83,7 +83,7 @@ class AutoCompleteTextField: NSTextField, NSTextFieldDelegate, AutoCompleteViewD
         autoCompleteWindow.setContentSize(autoCompleteView.frame.size)
         
         // Layout frame and position
-        autoCompleteWindow.layout(with: self)
+        autoCompleteWindow.layoutFrame(with: self, height: autoCompleteView.frame.size.height)
 
         // Present if need
         if !autoCompleteWindow.isVisible {
