@@ -15,6 +15,7 @@
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <collectionViewItem id="D9v-Zg-363" customClass="ColorViewItem" customModule="TogglDesktop" customModuleProvider="target">
             <connections>
+                <outlet property="boxView" destination="Wt0-1A-Mqe" id="JPk-fY-J2Y"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="5FH-A8-tgf"/>
             </connections>
         </collectionViewItem>
