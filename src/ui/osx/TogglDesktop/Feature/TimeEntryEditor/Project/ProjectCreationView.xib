@@ -10,34 +10,40 @@
         <customObject id="-2" userLabel="File's Owner"/>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
-        <customView id="c22-O7-iKe">
-            <rect key="frame" x="0.0" y="0.0" width="240" height="200"/>
+        <customView id="c22-O7-iKe" customClass="ProjectCreationView" customModule="TogglDesktop" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="240" height="411"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <box boxType="custom" cornerRadius="8" title="Box" translatesAutoresizingMaskIntoConstraints="NO" id="oZH-ml-wNQ">
-                    <rect key="frame" x="0.0" y="0.0" width="240" height="200"/>
+                    <rect key="frame" x="0.0" y="0.0" width="240" height="411"/>
                     <view key="contentView" id="W2E-GI-g3i">
-                        <rect key="frame" x="1" y="1" width="238" height="198"/>
+                        <rect key="frame" x="1" y="1" width="238" height="409"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="XFr-qK-S1A">
-                                <rect key="frame" x="10" y="170" width="43" height="16"/>
+                                <rect key="frame" x="10" y="381" width="43" height="16"/>
                                 <buttonCell key="cell" type="bevel" title="Cancel" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="BE4-An-YWJ">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system" size="12"/>
                                 </buttonCell>
                                 <color key="contentTintColor" name="grey-text-color"/>
+                                <connections>
+                                    <action selector="cancelBtnOnTap:" target="c22-O7-iKe" id="bqb-F5-9Wn"/>
+                                </connections>
                             </button>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="E94-Yr-Bp7">
-                                <rect key="frame" x="199" y="169" width="29" height="17"/>
+                                <rect key="frame" x="199" y="380" width="29" height="17"/>
                                 <buttonCell key="cell" type="bevel" title="Add" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="Yu9-6E-JSG">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
                                 <color key="contentTintColor" name="green-color"/>
+                                <connections>
+                                    <action selector="addBtnOnTap:" target="c22-O7-iKe" id="BoR-UV-IiL"/>
+                                </connections>
                             </button>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="e8h-de-FNI">
-                                <rect key="frame" x="78" y="170" width="83" height="18"/>
+                                <rect key="frame" x="78" y="381" width="83" height="18"/>
                                 <textFieldCell key="cell" lineBreakMode="clipping" title="New Project" id="xL2-RA-McQ">
                                     <font key="font" metaFont="system" size="14"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -56,128 +62,158 @@
                     </view>
                     <color key="fillColor" name="auto-complete-background"/>
                 </box>
-                <box boxType="custom" cornerRadius="8" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="abC-PV-f56">
-                    <rect key="frame" x="10" y="126" width="191" height="30"/>
-                    <view key="contentView" id="O2n-JI-pPR">
-                        <rect key="frame" x="1" y="1" width="189" height="28"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="eQK-O0-2vn" customClass="AutoCompleteTextField" customModule="TogglDesktop" customModuleProvider="target">
-                                <rect key="frame" x="-2" y="0.0" width="193" height="28"/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" alignment="left" placeholderString="Select project" id="vml-ft-AoW" customClass="VerticallyCenteredTextFieldCell" customModule="TogglDesktop" customModuleProvider="target">
-                                    <font key="font" metaFont="system" size="14"/>
-                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                    <userDefinedRuntimeAttributes>
-                                        <userDefinedRuntimeAttribute type="number" keyPath="focusRingCornerRadius">
-                                            <real key="value" value="8"/>
-                                        </userDefinedRuntimeAttribute>
-                                    </userDefinedRuntimeAttributes>
-                                </textFieldCell>
-                            </textField>
-                        </subviews>
-                        <constraints>
-                            <constraint firstAttribute="trailing" secondItem="eQK-O0-2vn" secondAttribute="trailing" id="2x8-qd-Elb"/>
-                            <constraint firstItem="eQK-O0-2vn" firstAttribute="leading" secondItem="O2n-JI-pPR" secondAttribute="leading" id="Kdz-rp-48c"/>
-                            <constraint firstAttribute="bottom" secondItem="eQK-O0-2vn" secondAttribute="bottom" id="aPc-qd-LgU"/>
-                            <constraint firstItem="eQK-O0-2vn" firstAttribute="top" secondItem="O2n-JI-pPR" secondAttribute="top" id="gqB-se-GEA"/>
-                        </constraints>
-                    </view>
+                <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OJp-YS-19d">
+                    <rect key="frame" x="10" y="57" width="220" height="310"/>
+                    <subviews>
+                        <box boxType="custom" cornerRadius="8" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="abC-PV-f56">
+                            <rect key="frame" x="0.0" y="280" width="191" height="30"/>
+                            <view key="contentView" id="O2n-JI-pPR">
+                                <rect key="frame" x="1" y="1" width="189" height="28"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <subviews>
+                                    <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="eQK-O0-2vn" customClass="AutoCompleteTextField" customModule="TogglDesktop" customModuleProvider="target">
+                                        <rect key="frame" x="-2" y="0.0" width="193" height="28"/>
+                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" alignment="left" placeholderString="Select project" id="vml-ft-AoW" customClass="VerticallyCenteredTextFieldCell" customModule="TogglDesktop" customModuleProvider="target">
+                                            <font key="font" metaFont="system" size="14"/>
+                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="focusRingCornerRadius">
+                                                    <real key="value" value="8"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
+                                        </textFieldCell>
+                                    </textField>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="eQK-O0-2vn" secondAttribute="trailing" id="2x8-qd-Elb"/>
+                                    <constraint firstItem="eQK-O0-2vn" firstAttribute="leading" secondItem="O2n-JI-pPR" secondAttribute="leading" id="Kdz-rp-48c"/>
+                                    <constraint firstAttribute="bottom" secondItem="eQK-O0-2vn" secondAttribute="bottom" id="aPc-qd-LgU"/>
+                                    <constraint firstItem="eQK-O0-2vn" firstAttribute="top" secondItem="O2n-JI-pPR" secondAttribute="top" id="gqB-se-GEA"/>
+                                </constraints>
+                            </view>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="30" id="1jm-DR-zOm"/>
+                            </constraints>
+                            <color key="borderColor" name="upload-border-color"/>
+                        </box>
+                        <customView translatesAutoresizingMaskIntoConstraints="NO" id="Z6i-Vm-FEs">
+                            <rect key="frame" x="0.0" y="80" width="220" height="190"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="190" id="Oee-h7-oLp"/>
+                            </constraints>
+                        </customView>
+                        <box boxType="custom" cornerRadius="8" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="5Vn-FK-aKk">
+                            <rect key="frame" x="0.0" y="40" width="220" height="30"/>
+                            <view key="contentView" id="qm3-nV-m4Z">
+                                <rect key="frame" x="1" y="1" width="218" height="28"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <subviews>
+                                    <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="I8L-vz-Mr7" customClass="AutoCompleteTextField" customModule="TogglDesktop" customModuleProvider="target">
+                                        <rect key="frame" x="-2" y="0.0" width="222" height="28"/>
+                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" alignment="left" placeholderString="Marketing Department" id="Kqx-Qa-pyM" customClass="VerticallyCenteredTextFieldCell" customModule="TogglDesktop" customModuleProvider="target">
+                                            <font key="font" metaFont="system" size="14"/>
+                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="focusRingCornerRadius">
+                                                    <real key="value" value="8"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
+                                        </textFieldCell>
+                                    </textField>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="I8L-vz-Mr7" firstAttribute="leading" secondItem="qm3-nV-m4Z" secondAttribute="leading" id="RcV-rG-k0x"/>
+                                    <constraint firstAttribute="bottom" secondItem="I8L-vz-Mr7" secondAttribute="bottom" id="RmF-XK-YOF"/>
+                                    <constraint firstAttribute="trailing" secondItem="I8L-vz-Mr7" secondAttribute="trailing" id="Sbh-Nx-8bz"/>
+                                    <constraint firstItem="I8L-vz-Mr7" firstAttribute="top" secondItem="qm3-nV-m4Z" secondAttribute="top" id="lav-xU-FNr"/>
+                                </constraints>
+                            </view>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="30" id="RaZ-Ke-N4I"/>
+                            </constraints>
+                            <color key="borderColor" name="upload-border-color"/>
+                        </box>
+                        <box boxType="custom" cornerRadius="8" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="CXA-mW-IBV">
+                            <rect key="frame" x="0.0" y="0.0" width="220" height="30"/>
+                            <view key="contentView" id="d4q-Of-09z">
+                                <rect key="frame" x="1" y="1" width="218" height="28"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <subviews>
+                                    <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="cCQ-e0-gV1" customClass="AutoCompleteTextField" customModule="TogglDesktop" customModuleProvider="target">
+                                        <rect key="frame" x="-2" y="0.0" width="222" height="28"/>
+                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" alignment="left" placeholderString="No Client" id="8Nw-wN-b3U" customClass="VerticallyCenteredTextFieldCell" customModule="TogglDesktop" customModuleProvider="target">
+                                            <font key="font" metaFont="system" size="14"/>
+                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="focusRingCornerRadius">
+                                                    <real key="value" value="8"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
+                                        </textFieldCell>
+                                    </textField>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="cCQ-e0-gV1" firstAttribute="leading" secondItem="d4q-Of-09z" secondAttribute="leading" id="8JU-G1-KB0"/>
+                                    <constraint firstItem="cCQ-e0-gV1" firstAttribute="top" secondItem="d4q-Of-09z" secondAttribute="top" id="Pqw-Jh-AkA"/>
+                                    <constraint firstAttribute="bottom" secondItem="cCQ-e0-gV1" secondAttribute="bottom" id="Re0-Jb-QUA"/>
+                                    <constraint firstAttribute="trailing" secondItem="cCQ-e0-gV1" secondAttribute="trailing" id="lNc-fS-kwt"/>
+                                </constraints>
+                            </view>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="30" id="6DM-cR-j7V"/>
+                            </constraints>
+                            <color key="borderColor" name="upload-border-color"/>
+                        </box>
+                    </subviews>
                     <constraints>
-                        <constraint firstAttribute="height" constant="30" id="1jm-DR-zOm"/>
+                        <constraint firstAttribute="trailing" secondItem="Z6i-Vm-FEs" secondAttribute="trailing" id="MiO-5j-6aq"/>
+                        <constraint firstItem="Z6i-Vm-FEs" firstAttribute="leading" secondItem="OJp-YS-19d" secondAttribute="leading" id="ro1-uF-IR3"/>
                     </constraints>
-                    <color key="borderColor" name="upload-border-color"/>
-                </box>
-                <box boxType="custom" cornerRadius="8" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="5Vn-FK-aKk">
-                    <rect key="frame" x="10" y="86" width="220" height="30"/>
-                    <view key="contentView" id="qm3-nV-m4Z">
-                        <rect key="frame" x="1" y="1" width="218" height="28"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="I8L-vz-Mr7" customClass="AutoCompleteTextField" customModule="TogglDesktop" customModuleProvider="target">
-                                <rect key="frame" x="-2" y="0.0" width="222" height="28"/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" alignment="left" placeholderString="Marketing Department" id="Kqx-Qa-pyM" customClass="VerticallyCenteredTextFieldCell" customModule="TogglDesktop" customModuleProvider="target">
-                                    <font key="font" metaFont="system" size="14"/>
-                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                    <userDefinedRuntimeAttributes>
-                                        <userDefinedRuntimeAttribute type="number" keyPath="focusRingCornerRadius">
-                                            <real key="value" value="8"/>
-                                        </userDefinedRuntimeAttribute>
-                                    </userDefinedRuntimeAttributes>
-                                </textFieldCell>
-                            </textField>
-                        </subviews>
-                        <constraints>
-                            <constraint firstItem="I8L-vz-Mr7" firstAttribute="leading" secondItem="qm3-nV-m4Z" secondAttribute="leading" id="RcV-rG-k0x"/>
-                            <constraint firstAttribute="bottom" secondItem="I8L-vz-Mr7" secondAttribute="bottom" id="RmF-XK-YOF"/>
-                            <constraint firstAttribute="trailing" secondItem="I8L-vz-Mr7" secondAttribute="trailing" id="Sbh-Nx-8bz"/>
-                            <constraint firstItem="I8L-vz-Mr7" firstAttribute="top" secondItem="qm3-nV-m4Z" secondAttribute="top" id="lav-xU-FNr"/>
-                        </constraints>
-                    </view>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="30" id="RaZ-Ke-N4I"/>
-                    </constraints>
-                    <color key="borderColor" name="upload-border-color"/>
-                </box>
-                <box boxType="custom" cornerRadius="8" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="CXA-mW-IBV">
-                    <rect key="frame" x="10" y="46" width="220" height="30"/>
-                    <view key="contentView" id="d4q-Of-09z">
-                        <rect key="frame" x="1" y="1" width="218" height="28"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="cCQ-e0-gV1" customClass="AutoCompleteTextField" customModule="TogglDesktop" customModuleProvider="target">
-                                <rect key="frame" x="-2" y="0.0" width="222" height="28"/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" alignment="left" placeholderString="No Client" id="8Nw-wN-b3U" customClass="VerticallyCenteredTextFieldCell" customModule="TogglDesktop" customModuleProvider="target">
-                                    <font key="font" metaFont="system" size="14"/>
-                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                    <userDefinedRuntimeAttributes>
-                                        <userDefinedRuntimeAttribute type="number" keyPath="focusRingCornerRadius">
-                                            <real key="value" value="8"/>
-                                        </userDefinedRuntimeAttribute>
-                                    </userDefinedRuntimeAttributes>
-                                </textFieldCell>
-                            </textField>
-                        </subviews>
-                        <constraints>
-                            <constraint firstItem="cCQ-e0-gV1" firstAttribute="leading" secondItem="d4q-Of-09z" secondAttribute="leading" id="8JU-G1-KB0"/>
-                            <constraint firstItem="cCQ-e0-gV1" firstAttribute="top" secondItem="d4q-Of-09z" secondAttribute="top" id="Pqw-Jh-AkA"/>
-                            <constraint firstAttribute="bottom" secondItem="cCQ-e0-gV1" secondAttribute="bottom" id="Re0-Jb-QUA"/>
-                            <constraint firstAttribute="trailing" secondItem="cCQ-e0-gV1" secondAttribute="trailing" id="lNc-fS-kwt"/>
-                        </constraints>
-                    </view>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="30" id="6DM-cR-j7V"/>
-                    </constraints>
-                    <color key="borderColor" name="upload-border-color"/>
-                </box>
+                    <visibilityPriorities>
+                        <integer value="1000"/>
+                        <integer value="1000"/>
+                        <integer value="1000"/>
+                        <integer value="1000"/>
+                    </visibilityPriorities>
+                    <customSpacing>
+                        <real value="3.4028234663852886e+38"/>
+                        <real value="3.4028234663852886e+38"/>
+                        <real value="3.4028234663852886e+38"/>
+                        <real value="3.4028234663852886e+38"/>
+                    </customSpacing>
+                </stackView>
                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="2Vy-Nq-8Ub">
-                    <rect key="frame" x="8" y="18" width="112" height="18"/>
+                    <rect key="frame" x="8" y="29" width="112" height="18"/>
                     <buttonCell key="cell" type="check" title="Public Project" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="m2f-QZ-VmO">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system" size="14"/>
                     </buttonCell>
+                    <connections>
+                        <action selector="publicProjectOnChange:" target="c22-O7-iKe" id="xJq-rh-gVf"/>
+                    </connections>
                 </button>
             </subviews>
             <constraints>
-                <constraint firstItem="abC-PV-f56" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="10" id="2H0-8Z-IVT"/>
                 <constraint firstAttribute="trailing" secondItem="oZH-ml-wNQ" secondAttribute="trailing" id="2Lr-jb-ART"/>
-                <constraint firstItem="abC-PV-f56" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" constant="44" id="309-nE-8OR"/>
+                <constraint firstItem="OJp-YS-19d" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" constant="44" id="3cq-A9-ixI"/>
+                <constraint firstAttribute="trailing" secondItem="OJp-YS-19d" secondAttribute="trailing" constant="10" id="4mQ-sG-Ttm"/>
                 <constraint firstItem="oZH-ml-wNQ" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" id="6k1-l9-kbW"/>
                 <constraint firstItem="2Vy-Nq-8Ub" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="10" id="7Em-70-GNI"/>
-                <constraint firstAttribute="trailing" secondItem="CXA-mW-IBV" secondAttribute="trailing" constant="10" id="F2H-Bi-ot3"/>
                 <constraint firstItem="oZH-ml-wNQ" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" id="L7c-up-029"/>
-                <constraint firstItem="CXA-mW-IBV" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="10" id="Pe9-iX-wWB"/>
-                <constraint firstAttribute="trailing" secondItem="5Vn-FK-aKk" secondAttribute="trailing" constant="10" id="TBC-ha-YAg"/>
-                <constraint firstItem="2Vy-Nq-8Ub" firstAttribute="top" secondItem="CXA-mW-IBV" secondAttribute="bottom" constant="12" id="g22-KQ-cT8"/>
-                <constraint firstItem="5Vn-FK-aKk" firstAttribute="top" secondItem="abC-PV-f56" secondAttribute="bottom" constant="10" id="j6X-Fu-YkC"/>
-                <constraint firstItem="CXA-mW-IBV" firstAttribute="top" secondItem="5Vn-FK-aKk" secondAttribute="bottom" constant="10" id="otm-mF-TjB"/>
-                <constraint firstAttribute="trailing" secondItem="abC-PV-f56" secondAttribute="trailing" constant="39" id="uBs-FP-pda"/>
+                <constraint firstItem="OJp-YS-19d" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="10" id="Vh9-hn-IuH"/>
+                <constraint firstItem="2Vy-Nq-8Ub" firstAttribute="top" secondItem="OJp-YS-19d" secondAttribute="bottom" constant="12" id="eFD-mF-IN1"/>
                 <constraint firstAttribute="bottom" secondItem="oZH-ml-wNQ" secondAttribute="bottom" id="uIF-9i-gxF"/>
-                <constraint firstItem="5Vn-FK-aKk" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="10" id="w5h-LU-WtZ"/>
             </constraints>
-            <point key="canvasLocation" x="76" y="67"/>
+            <connections>
+                <outlet property="addBtn" destination="E94-Yr-Bp7" id="QXJ-Wa-LHX"/>
+                <outlet property="clientAutoComplete" destination="cCQ-e0-gV1" id="sMM-dm-fm9"/>
+                <outlet property="marketingAutoComplete" destination="I8L-vz-Mr7" id="Sxo-1a-jZN"/>
+                <outlet property="projectAutoComplete" destination="eQK-O0-2vn" id="6uc-e7-Vcj"/>
+            </connections>
+            <point key="canvasLocation" x="76" y="172.5"/>
         </customView>
     </objects>
     <resources>

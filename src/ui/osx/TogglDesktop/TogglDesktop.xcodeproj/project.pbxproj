@@ -184,6 +184,11 @@
 		BA80BEB2221EAE6F00BDFD35 /* Array+ByGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA80BEB1221EAE6F00BDFD35 /* Array+ByGroup.swift */; };
 		BA9C2DF8224C7E44002AD2A1 /* ProjectCreationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA9C2DF7224C7E44002AD2A1 /* ProjectCreationView.swift */; };
 		BA9C2DFA224C7E77002AD2A1 /* ProjectCreationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA9C2DF9224C7E77002AD2A1 /* ProjectCreationView.xib */; };
+		BA9C2DFC224C8235002AD2A1 /* ColorPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA9C2DFB224C8235002AD2A1 /* ColorPickerView.swift */; };
+		BA9C2DFE224C823C002AD2A1 /* ColorPickerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA9C2DFD224C823C002AD2A1 /* ColorPickerView.xib */; };
+		BA9C2E05224C84E7002AD2A1 /* ColorViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA9C2E03224C84E7002AD2A1 /* ColorViewItem.swift */; };
+		BA9C2E06224C84E7002AD2A1 /* ColorViewItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA9C2E04224C84E7002AD2A1 /* ColorViewItem.xib */; };
+		BA9C2E08224C854C002AD2A1 /* ProjectColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA9C2E07224C854C002AD2A1 /* ProjectColor.swift */; };
 		BA9D90B4222D14ED00D5EC0E /* NSView+Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA9D90B3222D14ED00D5EC0E /* NSView+Animation.swift */; };
 		BA9D90D4222D155900D5EC0E /* NSView+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA9D90D3222D155900D5EC0E /* NSView+Ext.swift */; };
 		BAA260D1222D1DC70094F4E4 /* NSView+Shadow+Border.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAA260D0222D1DC70094F4E4 /* NSView+Shadow+Border.swift */; };
@@ -767,6 +772,11 @@
 		BA80BEB1221EAE6F00BDFD35 /* Array+ByGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+ByGroup.swift"; sourceTree = "<group>"; };
 		BA9C2DF7224C7E44002AD2A1 /* ProjectCreationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectCreationView.swift; sourceTree = "<group>"; };
 		BA9C2DF9224C7E77002AD2A1 /* ProjectCreationView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProjectCreationView.xib; sourceTree = "<group>"; };
+		BA9C2DFB224C8235002AD2A1 /* ColorPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickerView.swift; sourceTree = "<group>"; };
+		BA9C2DFD224C823C002AD2A1 /* ColorPickerView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ColorPickerView.xib; sourceTree = "<group>"; };
+		BA9C2E03224C84E7002AD2A1 /* ColorViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorViewItem.swift; sourceTree = "<group>"; };
+		BA9C2E04224C84E7002AD2A1 /* ColorViewItem.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ColorViewItem.xib; sourceTree = "<group>"; };
+		BA9C2E07224C854C002AD2A1 /* ProjectColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectColor.swift; sourceTree = "<group>"; };
 		BA9D90B3222D14ED00D5EC0E /* NSView+Animation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSView+Animation.swift"; sourceTree = "<group>"; };
 		BA9D90D3222D155900D5EC0E /* NSView+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSView+Ext.swift"; sourceTree = "<group>"; };
 		BAA260D0222D1DC70094F4E4 /* NSView+Shadow+Border.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSView+Shadow+Border.swift"; sourceTree = "<group>"; };
@@ -1447,6 +1457,11 @@
 			children = (
 				BA9C2DF7224C7E44002AD2A1 /* ProjectCreationView.swift */,
 				BA9C2DF9224C7E77002AD2A1 /* ProjectCreationView.xib */,
+				BA9C2DFB224C8235002AD2A1 /* ColorPickerView.swift */,
+				BA9C2DFD224C823C002AD2A1 /* ColorPickerView.xib */,
+				BA9C2E03224C84E7002AD2A1 /* ColorViewItem.swift */,
+				BA9C2E04224C84E7002AD2A1 /* ColorViewItem.xib */,
+				BA9C2E07224C854C002AD2A1 /* ProjectColor.swift */,
 			);
 			path = Project;
 			sourceTree = "<group>";
@@ -1839,6 +1854,7 @@
 				95DBF8D718C48B300021FB41 /* logo.png in Resources */,
 				BAD15FFE223A530600A8CCC9 /* TimeEntryEmptyView.xib in Resources */,
 				3CDA2C5B1913B61000A94967 /* icon-billable@2x.png in Resources */,
+				BA9C2E06224C84E7002AD2A1 /* ColorViewItem.xib in Resources */,
 				3CD30F441F58B02C006FAA0D /* OverlayViewController.xib in Resources */,
 				74664DB218AA860800AAD282 /* off.pdf in Resources */,
 				BA7D3355224898E400B953A8 /* ProjectContentCellView.xib in Resources */,
@@ -1846,6 +1862,7 @@
 				BA4059B1221D2186002969B8 /* TimeHeaderView.xib in Resources */,
 				749CB8CD18167D6E00814841 /* PreferencesWindowController.xib in Resources */,
 				69FC17FF17E6534400B96425 /* InfoPlist.strings in Resources */,
+				BA9C2DFE224C823C002AD2A1 /* ColorPickerView.xib in Resources */,
 				3CDA2C5C1913B61000A94967 /* icon-tags@2x.png in Resources */,
 				747B74881A0AD28200BB3791 /* ConsoleViewController.xib in Resources */,
 				3C1C09C51C298ABA00BF9B6C /* warning-icon.png in Resources */,
@@ -1972,6 +1989,7 @@
 				BAB8D49421BE742D00D63DA5 /* NSTableView+TimeEntryDiff.swift in Sources */,
 				3C8979CA19235EA2007061E0 /* NSTextFieldClickablePointer.m in Sources */,
 				748B3A3419222DB100F31468 /* DisplayCommand.m in Sources */,
+				BA9C2E05224C84E7002AD2A1 /* ColorViewItem.swift in Sources */,
 				74E3CDD017FBABE400C3ADD3 /* BugsnagReachability.m in Sources */,
 				3C0A571E1C22E12E00301D77 /* MKColorWell.m in Sources */,
 				7438B3D318253CD2002AE43C /* MenuItemTags.m in Sources */,
@@ -2006,6 +2024,7 @@
 				BA4059B7221D46F4002969B8 /* TimeEntryCollectionView.m in Sources */,
 				BA4059AF221D215A002969B8 /* TimeHeaderView.swift in Sources */,
 				74AA9476180909F50000539F /* GTMOAuth2WindowController.m in Sources */,
+				BA9C2E08224C854C002AD2A1 /* ProjectColor.swift in Sources */,
 				BA7D334B2248944C00B953A8 /* AutoCompleteView.swift in Sources */,
 				BA03729D21FED85700FC277B /* NSView+Xib.swift in Sources */,
 				74D1D25D17EB71C100E709B0 /* TimeEntryEditViewController.m in Sources */,
@@ -2062,6 +2081,7 @@
 				BA0C3A65223219470081C6DE /* AutoCompleteCellType.swift in Sources */,
 				3C0A571D1C22E12E00301D77 /* MKColorWell+Bindings.m in Sources */,
 				BA7B4C3721C24B9D00B75B14 /* UndoTextField.m in Sources */,
+				BA9C2DFC224C8235002AD2A1 /* ColorPickerView.swift in Sources */,
 				BA276A142240F5B500810C51 /* FloatingErrorView.swift in Sources */,
 				C5DA1FC417F1B38B001C4565 /* LoginViewController.m in Sources */,
 				743D942F1827C633000E6F70 /* IdleEvent.m in Sources */,
