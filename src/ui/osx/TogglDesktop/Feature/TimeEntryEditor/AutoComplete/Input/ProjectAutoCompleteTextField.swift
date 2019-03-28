@@ -14,10 +14,33 @@ final class ProjectAutoCompleteTextField: AutoCompleteTextField {
 
     private lazy var projectCreationView: ProjectCreationView = {
         let view = ProjectCreationView.xibView() as ProjectCreationView
+        view.delegate = self
         return view
     }()
 
     override func didTapOnCreateButton() {
+
+        // Update content
+        updateWindowContent(with: projectCreationView, height: projectCreationView.suitableHeight)
+
+        // Set text and focus
+        projectCreationView.setTitleAndFocus(self.stringValue)
+    }
+}
+
+// MARK: ProjectCreationViewDelegate
+
+extension ProjectAutoCompleteTextField: ProjectCreationViewDelegate {
+
+    func projectCreationDidAdd() {
+        closeSuggestion()
+    }
+
+    func projectCreationDidCancel() {
+        closeSuggestion()
+    }
+
+    func projectCreationDidUpdateSize() {
         updateWindowContent(with: projectCreationView, height: projectCreationView.suitableHeight)
     }
 }

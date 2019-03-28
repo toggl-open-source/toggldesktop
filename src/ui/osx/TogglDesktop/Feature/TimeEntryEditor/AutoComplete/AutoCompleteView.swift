@@ -16,9 +16,17 @@ final class AutoCompleteViewWindow: NSWindow {
         return true
     }
     override var canBecomeKey: Bool {
-        return true
+        guard let contentView = contentView else {
+            return false
+        }
+        switch contentView {
+        case is ProjectCreationView:
+            return true
+        default:
+            return false
+        }
     }
-    
+
     // MARK: Init
 
     init(view: NSView) {
