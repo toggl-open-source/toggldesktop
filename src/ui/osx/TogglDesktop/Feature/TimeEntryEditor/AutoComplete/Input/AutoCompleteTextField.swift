@@ -65,9 +65,6 @@ class AutoCompleteTextField: NSTextField, NSTextFieldDelegate, AutoCompleteViewD
     }
 
     func updateWindowContent(with view: NSView, height: CGFloat) {
-        guard view != autoCompleteWindow.contentView else {
-            return
-        }
         autoCompleteWindow.contentView = view
         autoCompleteWindow.layoutFrame(with: self, height: height)
         autoCompleteWindow.makeKey()
@@ -89,7 +86,6 @@ class AutoCompleteTextField: NSTextField, NSTextFieldDelegate, AutoCompleteViewD
         if !autoCompleteWindow.isVisible {
             window?.addChildWindow(autoCompleteWindow,
                                    ordered: .above)
-            autoCompleteWindow.makeMain()
         }
 
         // Filter

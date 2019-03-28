@@ -100,7 +100,7 @@
                                     </constraints>
                                     <color key="borderColor" name="upload-border-color"/>
                                 </box>
-                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Zz6-Ng-Mjf">
+                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Zz6-Ng-Mjf" customClass="CursorButton" customModule="TogglDesktop" customModuleProvider="target">
                                     <rect key="frame" x="246" y="3" width="24" height="24"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="24" id="mwz-Qx-Oyr"/>
@@ -241,7 +241,7 @@
                 <outlet property="colorBtn" destination="Zz6-Ng-Mjf" id="dah-ED-Ork"/>
                 <outlet property="colorPickerContainerView" destination="Z6i-Vm-FEs" id="v2g-mc-5rf"/>
                 <outlet property="marketingAutoComplete" destination="I8L-vz-Mr7" id="Sxo-1a-jZN"/>
-                <outlet property="projectAutoComplete" destination="eQK-O0-2vn" id="6uc-e7-Vcj"/>
+                <outlet property="projectTextField" destination="eQK-O0-2vn" id="yle-Cg-xGS"/>
             </connections>
             <point key="canvasLocation" x="76" y="167"/>
         </customView>
