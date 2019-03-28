@@ -100,6 +100,7 @@ extension AutoCompleteTextField {
 
         // Enter
         if commandSelector == #selector(NSResponder.insertNewline(_:)) {
+            autoCompleteWindow.autoCompleteView.tableView.keyDown(with: currentEvent)
             return true
         }
 

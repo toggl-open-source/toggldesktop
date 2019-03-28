@@ -63,7 +63,7 @@ final class AutoCompleteView: NSView {
 
     // MARK: OUTLET
 
-    @IBOutlet weak var tableView: NSTableView!
+    @IBOutlet weak var tableView: KeyboardTableView!
     @IBOutlet weak var tableViewHeight: NSLayoutConstraint!
     @IBOutlet weak var createNewProjectBtn: CursorButton!
 
@@ -102,5 +102,15 @@ extension AutoCompleteView {
 
     fileprivate func initCommon() {
         createNewProjectBtn.cursor = .pointingHand
+
+        tableView.keyUpOnPress = {[weak self] key in
+            switch key {
+            case .enter,
+                 .returnKey:
+                self?.dataSource.selectSelectedRow()
+            default:
+                break
+            }
+        }
     }
 }

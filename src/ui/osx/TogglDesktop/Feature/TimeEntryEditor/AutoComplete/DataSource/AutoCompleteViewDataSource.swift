@@ -8,12 +8,18 @@
 
 import Foundation
 
+protocol AutoCompleteViewDataSourceDelegate: class {
+
+    func autoCompleteSelectionDidChange(sender: AutoCompleteViewDataSource, item: Any)
+}
+
 class AutoCompleteViewDataSource: NSObject {
 
     // MARK: Variables
     private let maxHeight: CGFloat = 600.0
     private(set) var items: [Any] = []
     private var autoCompleteView: AutoCompleteView!
+    weak var delegate: AutoCompleteViewDataSourceDelegate?
     var count: Int {
         return items.count
     }
@@ -66,6 +72,10 @@ class AutoCompleteViewDataSource: NSObject {
         render(with: items)
     }
 
+    func selectSelectedRow() {
+        selectCurrentSelectedRow()
+    }
+
     private func sizeToFit() {
         if items.isEmpty {
             autoCompleteView.update(height: 0.0)
@@ -106,5 +116,14 @@ extension AutoCompleteViewDataSource: NSTableViewDataSource, NSTableViewDelegate
 
     func tableView(_ tableView: NSTableView, shouldSelectRow row: Int) -> Bool {
         return true
+    }
+
+    func tableViewSelectionIsChanging(_ notification: Notification) {
+        selectCurrentSelectedRow()
+    }
+
+    fileprivate func selectCurrentSelectedRow() {
+        let item = items[tableView.selectedRow]
+        delegate?.autoCompleteSelectionDidChange(sender: self, item: item)
     }
 }

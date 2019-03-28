@@ -189,6 +189,7 @@
 		BA9C2E05224C84E7002AD2A1 /* ColorViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA9C2E03224C84E7002AD2A1 /* ColorViewItem.swift */; };
 		BA9C2E06224C84E7002AD2A1 /* ColorViewItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA9C2E04224C84E7002AD2A1 /* ColorViewItem.xib */; };
 		BA9C2E08224C854C002AD2A1 /* ProjectColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA9C2E07224C854C002AD2A1 /* ProjectColor.swift */; };
+		BA9C2E0C224C8F58002AD2A1 /* KeyboardTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA9C2E0B224C8F58002AD2A1 /* KeyboardTableView.swift */; };
 		BA9D90B4222D14ED00D5EC0E /* NSView+Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA9D90B3222D14ED00D5EC0E /* NSView+Animation.swift */; };
 		BA9D90D4222D155900D5EC0E /* NSView+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA9D90D3222D155900D5EC0E /* NSView+Ext.swift */; };
 		BAA260D1222D1DC70094F4E4 /* NSView+Shadow+Border.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAA260D0222D1DC70094F4E4 /* NSView+Shadow+Border.swift */; };
@@ -777,6 +778,7 @@
 		BA9C2E03224C84E7002AD2A1 /* ColorViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorViewItem.swift; sourceTree = "<group>"; };
 		BA9C2E04224C84E7002AD2A1 /* ColorViewItem.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ColorViewItem.xib; sourceTree = "<group>"; };
 		BA9C2E07224C854C002AD2A1 /* ProjectColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectColor.swift; sourceTree = "<group>"; };
+		BA9C2E0B224C8F58002AD2A1 /* KeyboardTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardTableView.swift; sourceTree = "<group>"; };
 		BA9D90B3222D14ED00D5EC0E /* NSView+Animation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSView+Animation.swift"; sourceTree = "<group>"; };
 		BA9D90D3222D155900D5EC0E /* NSView+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSView+Ext.swift"; sourceTree = "<group>"; };
 		BAA260D0222D1DC70094F4E4 /* NSView+Shadow+Border.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSView+Shadow+Border.swift"; sourceTree = "<group>"; };
@@ -1421,6 +1423,7 @@
 				BA7D33522248981200B953A8 /* ProjectHeaderCellView.xib */,
 				BA7D33502248980B00B953A8 /* ProjectContentCellView.swift */,
 				BA7D3354224898E400B953A8 /* ProjectContentCellView.xib */,
+				BA9C2E0B224C8F58002AD2A1 /* KeyboardTableView.swift */,
 			);
 			path = AutoComplete;
 			sourceTree = "<group>";
@@ -2006,6 +2009,7 @@
 				BA13E05C21C7BA6000835EC1 /* UserNotificationCenter.m in Sources */,
 				74098C331919899600CBDFB9 /* Utils.m in Sources */,
 				BA0F67B7224A32F700ED0F91 /* CursorButton.swift in Sources */,
+				BA9C2E0C224C8F58002AD2A1 /* KeyboardTableView.swift in Sources */,
 				69FC180117E6534400B96425 /* main.m in Sources */,
 				74F1070118993FFE00E93BD5 /* FeedbackWindowController.m in Sources */,
 				BA03725521FE9FD400FC277B /* FlatButton.swift in Sources */,
