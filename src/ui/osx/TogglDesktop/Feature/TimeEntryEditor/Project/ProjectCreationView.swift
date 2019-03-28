@@ -10,10 +10,35 @@ import Cocoa
 
 final class ProjectCreationView: NSView {
 
-    override func draw(_ dirtyRect: NSRect) {
-        super.draw(dirtyRect)
+    // MARK: OUTLET
 
-        // Drawing code here.
+    @IBOutlet weak var addBtn: NSButton!
+    @IBOutlet weak var projectAutoComplete: AutoCompleteTextField!
+    @IBOutlet weak var marketingAutoComplete: AutoCompleteTextField!
+    @IBOutlet weak var clientAutoComplete: AutoCompleteTextField!
+
+    // MARK: Public
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
     }
-    
+
+    @IBAction func cancelBtnOnTap(_ sender: Any) {
+    }
+
+    @IBAction func addBtnOnTap(_ sender: Any) {
+    }
+
+    @IBAction func publicProjectOnChange(_ sender: Any) {
+    }
+
+}
+
+// MARK: Private
+
+extension ProjectCreationView {
+
+    fileprivate func initCommon() {
+        
+    }
 }
