@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct ProjectColor {
+struct ProjectColor: Equatable {
 
     static let `default` = ProjectColor(colorHex: "#c56bff")
     static let defaultColors: [ProjectColor] = [ProjectColor(colorHex: "#06aaf5"),

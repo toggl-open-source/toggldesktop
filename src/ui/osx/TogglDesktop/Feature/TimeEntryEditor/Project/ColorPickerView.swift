@@ -8,6 +8,11 @@
 
 import Cocoa
 
+protocol ColorPickerViewDelegate: class {
+
+    func colorPickerDidSelectColor(_ color: ProjectColor)
+}
+
 final class ColorPickerView: NSView {
 
     fileprivate struct Constants {
@@ -20,6 +25,7 @@ final class ColorPickerView: NSView {
 
     // MARK: Variables
 
+    weak var delegate: ColorPickerViewDelegate?
     fileprivate lazy var colors: [ProjectColor] = ProjectColor.defaultColors
 
     // MARK: View Cycle
@@ -34,7 +40,8 @@ final class ColorPickerView: NSView {
     // MARK: Public
 
     func select(_ color: ProjectColor) {
-
+        guard let index = colors.firstIndex(where: { $0 == color }) else { return }
+        collectionView.selectItems(at: Set<IndexPath>.init(arrayLiteral: IndexPath.init(item: index, section: 0)), scrollPosition: [])
     }
 
     @IBAction func resetBtnOnTap(_ sender: Any) {
@@ -81,6 +88,8 @@ extension ColorPickerView: NSCollectionViewDelegate, NSCollectionViewDataSource,
     }
 
     func collectionView(_ collectionView: NSCollectionView, didSelectItemsAt indexPaths: Set<IndexPath>) {
-        
+        guard let selection = indexPaths.first else { return }
+        let color = colors[selection.item]
+        delegate?.colorPickerDidSelectColor(color)
     }
 }

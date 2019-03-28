@@ -13,6 +13,7 @@ final class ColorViewItem: NSCollectionViewItem {
     // MARK: OUTLET
 
     @IBOutlet weak var boxView: NSBox!
+    @IBOutlet weak var colorCheckImageView: NSImageView!
 
     // MARK: View Cycle
 
@@ -26,6 +27,12 @@ final class ColorViewItem: NSCollectionViewItem {
 
     func render(_ color: ProjectColor) {
         boxView.fillColor = ConvertHexColor.hexCode(toNSColor: color.colorHex)!
+    }
+
+    override var isSelected: Bool {
+        didSet {
+            colorCheckImageView.isHidden = !isSelected
+        }
     }
 
     private func initCommon() {
