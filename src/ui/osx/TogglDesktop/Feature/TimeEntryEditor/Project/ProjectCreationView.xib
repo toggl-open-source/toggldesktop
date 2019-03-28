@@ -24,7 +24,7 @@
                                 <rect key="frame" x="10" y="170" width="43" height="16"/>
                                 <buttonCell key="cell" type="bevel" title="Cancel" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="BE4-An-YWJ">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system" size="12"/>
+                                    <font key="font" metaFont="cellTitle"/>
                                 </buttonCell>
                                 <color key="contentTintColor" name="grey-text-color"/>
                                 <connections>
@@ -74,9 +74,9 @@
                                         <rect key="frame" x="1" y="1" width="239" height="28"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <subviews>
-                                            <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="eQK-O0-2vn" customClass="AutoCompleteTextField" customModule="TogglDesktop" customModuleProvider="target">
+                                            <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="eQK-O0-2vn">
                                                 <rect key="frame" x="-2" y="0.0" width="243" height="28"/>
-                                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" alignment="left" placeholderString="Select project" id="vml-ft-AoW" customClass="VerticallyCenteredTextFieldCell" customModule="TogglDesktop" customModuleProvider="target">
+                                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" alignment="left" placeholderString="Project Name" id="vml-ft-AoW" customClass="VerticallyCenteredTextFieldCell" customModule="TogglDesktop" customModuleProvider="target">
                                                     <font key="font" metaFont="system" size="14"/>
                                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>

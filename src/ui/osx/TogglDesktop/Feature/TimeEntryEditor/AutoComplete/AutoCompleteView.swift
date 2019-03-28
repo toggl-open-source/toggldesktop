@@ -12,20 +12,21 @@ final class AutoCompleteViewWindow: NSWindow {
 
     // MARK: Private
     private let topPadding: CGFloat = 5.0
-    let autoCompleteView: AutoCompleteView
     override var canBecomeMain: Bool {
+        return true
+    }
+    override var canBecomeKey: Bool {
         return true
     }
     
     // MARK: Init
 
-    init() {
-        self.autoCompleteView = AutoCompleteView.xibView()
-        super.init(contentRect: autoCompleteView.bounds,
+    init(view: NSView) {
+        super.init(contentRect: view.bounds,
                    styleMask: .borderless,
                    backing: .buffered,
                    defer: true)
-        contentView = autoCompleteView
+        contentView = view
     }
 
     func layout(with textField: NSTextField) {
@@ -49,14 +50,11 @@ final class AutoCompleteViewWindow: NSWindow {
         parent?.removeChildWindow(self)
         orderOut(nil)
     }
+}
 
-    func prepare(with dataSource: AutoCompleteViewDataSource) {
-        autoCompleteView.prepare(with: dataSource)
-    }
+protocol AutoCompleteViewDelegate: class {
 
-    func filter(with text: String) {
-        autoCompleteView.filter(with: text)
-    }
+    func didTapOnCreateButton()
 }
 
 final class AutoCompleteView: NSView {
@@ -68,6 +66,7 @@ final class AutoCompleteView: NSView {
     @IBOutlet weak var createNewProjectBtn: CursorButton!
 
     // MARK: Variables
+    weak var delegate: AutoCompleteViewDelegate?
     private var dataSource: AutoCompleteViewDataSource!
 
     // MARK: Public
@@ -92,7 +91,7 @@ final class AutoCompleteView: NSView {
     }
 
     @IBAction func newProjectBtnOnTap(_ sender: Any) {
-
+        delegate?.didTapOnCreateButton()
     }
 }
 

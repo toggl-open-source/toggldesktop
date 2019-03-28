@@ -13,7 +13,7 @@ final class EditorViewController: NSViewController {
     // MARK: OUTLET
 
     @IBOutlet weak var projectBox: NSBox!
-    @IBOutlet weak var projectTextField: AutoCompleteTextField!
+    @IBOutlet weak var projectTextField: ProjectAutoCompleteTextField!
 
     // MARK: Variables
     private var selectedProjectItem: ProjectContentItem? {
@@ -65,6 +65,7 @@ extension EditorViewController: AutoCompleteViewDataSourceDelegate {
         if sender == projectDatasource {
             if let projectItem = item as? ProjectContentItem {
                 selectedProjectItem = projectItem
+                projectTextField.closeSuggestion()
             }
         }
     }
