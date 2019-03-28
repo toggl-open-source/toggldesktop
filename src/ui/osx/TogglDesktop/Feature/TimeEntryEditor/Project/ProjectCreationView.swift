@@ -10,12 +10,33 @@ import Cocoa
 
 final class ProjectCreationView: NSView {
 
+    enum DisplayMode {
+        case compact
+        case full // with color picker
+    }
+
     // MARK: OUTLET
 
     @IBOutlet weak var addBtn: NSButton!
     @IBOutlet weak var projectAutoComplete: AutoCompleteTextField!
     @IBOutlet weak var marketingAutoComplete: AutoCompleteTextField!
     @IBOutlet weak var clientAutoComplete: AutoCompleteTextField!
+    @IBOutlet weak var colorBtn: NSButton!
+    @IBOutlet weak var colorPickerContainerView: NSView!
+
+    // MARK: Variables
+    private var selectedColor = ProjectColor.default
+    private lazy var colorPickerView: ColorPickerView = {
+        let picker = ColorPickerView.xibView() as ColorPickerView
+        colorPickerContainerView.addSubview(picker)
+        picker.edgesToSuperView()
+        return picker
+    }()
+    private var displayMode = DisplayMode.compact {
+        didSet {
+            updateLayout()
+        }
+    }
 
     // MARK: Public
 
@@ -24,6 +45,7 @@ final class ProjectCreationView: NSView {
     }
 
     @IBAction func cancelBtnOnTap(_ sender: Any) {
+        removeFromSuperview()
     }
 
     @IBAction func addBtnOnTap(_ sender: Any) {
@@ -32,6 +54,8 @@ final class ProjectCreationView: NSView {
     @IBAction func publicProjectOnChange(_ sender: Any) {
     }
 
+    @IBAction func colorBtnOnTap(_ sender: Any) {
+    }
 }
 
 // MARK: Private
@@ -40,5 +64,15 @@ extension ProjectCreationView {
 
     fileprivate func initCommon() {
         
+    }
+
+    fileprivate func updateLayout() {
+        switch displayMode {
+        case .compact:
+            colorPickerContainerView.isHidden = true
+        case .full:
+            colorPickerContainerView.isHidden = false
+            colorPickerView.select(selectedColor)
+        }
     }
 }

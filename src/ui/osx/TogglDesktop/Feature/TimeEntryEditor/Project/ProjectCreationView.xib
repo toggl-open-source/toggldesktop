@@ -11,17 +11,17 @@
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customView id="c22-O7-iKe" customClass="ProjectCreationView" customModule="TogglDesktop" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="240" height="411"/>
+            <rect key="frame" x="0.0" y="0.0" width="290" height="200"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <box boxType="custom" cornerRadius="8" title="Box" translatesAutoresizingMaskIntoConstraints="NO" id="oZH-ml-wNQ">
-                    <rect key="frame" x="0.0" y="0.0" width="240" height="411"/>
+                    <rect key="frame" x="0.0" y="0.0" width="290" height="200"/>
                     <view key="contentView" id="W2E-GI-g3i">
-                        <rect key="frame" x="1" y="1" width="238" height="409"/>
+                        <rect key="frame" x="1" y="1" width="288" height="198"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="XFr-qK-S1A">
-                                <rect key="frame" x="10" y="381" width="43" height="16"/>
+                                <rect key="frame" x="10" y="170" width="43" height="16"/>
                                 <buttonCell key="cell" type="bevel" title="Cancel" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="BE4-An-YWJ">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system" size="12"/>
@@ -32,7 +32,7 @@
                                 </connections>
                             </button>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="E94-Yr-Bp7">
-                                <rect key="frame" x="199" y="380" width="29" height="17"/>
+                                <rect key="frame" x="249" y="169" width="29" height="17"/>
                                 <buttonCell key="cell" type="bevel" title="Add" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="Yu9-6E-JSG">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -43,7 +43,7 @@
                                 </connections>
                             </button>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="e8h-de-FNI">
-                                <rect key="frame" x="78" y="381" width="83" height="18"/>
+                                <rect key="frame" x="103" y="170" width="83" height="18"/>
                                 <textFieldCell key="cell" lineBreakMode="clipping" title="New Project" id="xL2-RA-McQ">
                                     <font key="font" metaFont="system" size="14"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -63,42 +63,69 @@
                     <color key="fillColor" name="auto-complete-background"/>
                 </box>
                 <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OJp-YS-19d">
-                    <rect key="frame" x="10" y="57" width="220" height="310"/>
+                    <rect key="frame" x="10" y="46" width="270" height="110"/>
                     <subviews>
-                        <box boxType="custom" cornerRadius="8" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="abC-PV-f56">
-                            <rect key="frame" x="0.0" y="280" width="191" height="30"/>
-                            <view key="contentView" id="O2n-JI-pPR">
-                                <rect key="frame" x="1" y="1" width="189" height="28"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                <subviews>
-                                    <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="eQK-O0-2vn" customClass="AutoCompleteTextField" customModule="TogglDesktop" customModuleProvider="target">
-                                        <rect key="frame" x="-2" y="0.0" width="193" height="28"/>
-                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" alignment="left" placeholderString="Select project" id="vml-ft-AoW" customClass="VerticallyCenteredTextFieldCell" customModule="TogglDesktop" customModuleProvider="target">
-                                            <font key="font" metaFont="system" size="14"/>
-                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                            <userDefinedRuntimeAttributes>
-                                                <userDefinedRuntimeAttribute type="number" keyPath="focusRingCornerRadius">
-                                                    <real key="value" value="8"/>
-                                                </userDefinedRuntimeAttribute>
-                                            </userDefinedRuntimeAttributes>
-                                        </textFieldCell>
-                                    </textField>
-                                </subviews>
-                                <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="eQK-O0-2vn" secondAttribute="trailing" id="2x8-qd-Elb"/>
-                                    <constraint firstItem="eQK-O0-2vn" firstAttribute="leading" secondItem="O2n-JI-pPR" secondAttribute="leading" id="Kdz-rp-48c"/>
-                                    <constraint firstAttribute="bottom" secondItem="eQK-O0-2vn" secondAttribute="bottom" id="aPc-qd-LgU"/>
-                                    <constraint firstItem="eQK-O0-2vn" firstAttribute="top" secondItem="O2n-JI-pPR" secondAttribute="top" id="gqB-se-GEA"/>
-                                </constraints>
-                            </view>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="30" id="1jm-DR-zOm"/>
-                            </constraints>
-                            <color key="borderColor" name="upload-border-color"/>
-                        </box>
-                        <customView translatesAutoresizingMaskIntoConstraints="NO" id="Z6i-Vm-FEs">
-                            <rect key="frame" x="0.0" y="80" width="220" height="190"/>
+                        <stackView distribution="equalSpacing" orientation="horizontal" alignment="centerY" spacing="5" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="H6x-LK-MTr">
+                            <rect key="frame" x="0.0" y="80" width="270" height="30"/>
+                            <subviews>
+                                <box boxType="custom" cornerRadius="8" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="abC-PV-f56">
+                                    <rect key="frame" x="0.0" y="0.0" width="241" height="30"/>
+                                    <view key="contentView" id="O2n-JI-pPR">
+                                        <rect key="frame" x="1" y="1" width="239" height="28"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                        <subviews>
+                                            <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="eQK-O0-2vn" customClass="AutoCompleteTextField" customModule="TogglDesktop" customModuleProvider="target">
+                                                <rect key="frame" x="-2" y="0.0" width="243" height="28"/>
+                                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" alignment="left" placeholderString="Select project" id="vml-ft-AoW" customClass="VerticallyCenteredTextFieldCell" customModule="TogglDesktop" customModuleProvider="target">
+                                                    <font key="font" metaFont="system" size="14"/>
+                                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="focusRingCornerRadius">
+                                                            <real key="value" value="8"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
+                                                </textFieldCell>
+                                            </textField>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstAttribute="trailing" secondItem="eQK-O0-2vn" secondAttribute="trailing" id="2x8-qd-Elb"/>
+                                            <constraint firstItem="eQK-O0-2vn" firstAttribute="leading" secondItem="O2n-JI-pPR" secondAttribute="leading" id="Kdz-rp-48c"/>
+                                            <constraint firstAttribute="bottom" secondItem="eQK-O0-2vn" secondAttribute="bottom" id="aPc-qd-LgU"/>
+                                            <constraint firstItem="eQK-O0-2vn" firstAttribute="top" secondItem="O2n-JI-pPR" secondAttribute="top" id="gqB-se-GEA"/>
+                                        </constraints>
+                                    </view>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="30" id="1jm-DR-zOm"/>
+                                    </constraints>
+                                    <color key="borderColor" name="upload-border-color"/>
+                                </box>
+                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Zz6-Ng-Mjf">
+                                    <rect key="frame" x="246" y="3" width="24" height="24"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="24" id="mwz-Qx-Oyr"/>
+                                        <constraint firstAttribute="width" constant="24" id="upz-zX-0fd"/>
+                                    </constraints>
+                                    <buttonCell key="cell" type="bevel" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="KgK-3f-Z42">
+                                        <behavior key="behavior" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <action selector="colorBtnOnTap:" target="c22-O7-iKe" id="frh-YC-eNA"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                            <visibilityPriorities>
+                                <integer value="1000"/>
+                                <integer value="1000"/>
+                            </visibilityPriorities>
+                            <customSpacing>
+                                <real value="3.4028234663852886e+38"/>
+                                <real value="3.4028234663852886e+38"/>
+                            </customSpacing>
+                        </stackView>
+                        <customView hidden="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Z6i-Vm-FEs">
+                            <rect key="frame" x="0.0" y="-80" width="270" height="190"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="190" id="Oee-h7-oLp"/>
                             </constraints>
@@ -169,6 +196,7 @@
                         </box>
                     </subviews>
                     <constraints>
+                        <constraint firstAttribute="trailing" secondItem="H6x-LK-MTr" secondAttribute="trailing" id="84y-J7-xaq"/>
                         <constraint firstAttribute="trailing" secondItem="Z6i-Vm-FEs" secondAttribute="trailing" id="MiO-5j-6aq"/>
                         <constraint firstItem="Z6i-Vm-FEs" firstAttribute="leading" secondItem="OJp-YS-19d" secondAttribute="leading" id="ro1-uF-IR3"/>
                     </constraints>
@@ -186,7 +214,7 @@
                     </customSpacing>
                 </stackView>
                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="2Vy-Nq-8Ub">
-                    <rect key="frame" x="8" y="29" width="112" height="18"/>
+                    <rect key="frame" x="8" y="18" width="112" height="18"/>
                     <buttonCell key="cell" type="check" title="Public Project" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="m2f-QZ-VmO">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system" size="14"/>
@@ -210,10 +238,12 @@
             <connections>
                 <outlet property="addBtn" destination="E94-Yr-Bp7" id="QXJ-Wa-LHX"/>
                 <outlet property="clientAutoComplete" destination="cCQ-e0-gV1" id="sMM-dm-fm9"/>
+                <outlet property="colorBtn" destination="Zz6-Ng-Mjf" id="dah-ED-Ork"/>
+                <outlet property="colorPickerContainerView" destination="Z6i-Vm-FEs" id="v2g-mc-5rf"/>
                 <outlet property="marketingAutoComplete" destination="I8L-vz-Mr7" id="Sxo-1a-jZN"/>
                 <outlet property="projectAutoComplete" destination="eQK-O0-2vn" id="6uc-e7-Vcj"/>
             </connections>
-            <point key="canvasLocation" x="76" y="172.5"/>
+            <point key="canvasLocation" x="76" y="67"/>
         </customView>
     </objects>
     <resources>
