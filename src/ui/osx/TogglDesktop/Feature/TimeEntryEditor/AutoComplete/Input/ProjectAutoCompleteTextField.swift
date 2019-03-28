@@ -18,6 +18,6 @@ final class ProjectAutoCompleteTextField: AutoCompleteTextField {
     }()
 
     override func didTapOnCreateButton() {
-        updateWindowContent(with: projectCreationView)
+        updateWindowContent(with: projectCreationView, height: projectCreationView.suitableHeight)
     }
 }

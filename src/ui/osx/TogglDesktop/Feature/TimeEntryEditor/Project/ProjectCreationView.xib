@@ -243,7 +243,7 @@
                 <outlet property="marketingAutoComplete" destination="I8L-vz-Mr7" id="Sxo-1a-jZN"/>
                 <outlet property="projectAutoComplete" destination="eQK-O0-2vn" id="6uc-e7-Vcj"/>
             </connections>
-            <point key="canvasLocation" x="76" y="67"/>
+            <point key="canvasLocation" x="76" y="167"/>
         </customView>
     </objects>
     <resources>

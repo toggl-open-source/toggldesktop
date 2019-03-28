@@ -13,6 +13,15 @@ final class ProjectCreationView: NSView {
     enum DisplayMode {
         case compact
         case full // with color picker
+
+        var height: CGFloat {
+            switch self {
+            case .compact:
+                return 200.0
+            case .full:
+                return 400.0
+            }
+        }
     }
 
     // MARK: OUTLET
@@ -37,11 +46,16 @@ final class ProjectCreationView: NSView {
             updateLayout()
         }
     }
+    var suitableHeight: CGFloat {
+        return displayMode.height
+    }
 
     // MARK: Public
 
     override func awakeFromNib() {
         super.awakeFromNib()
+
+        initCommon()
     }
 
     @IBAction func cancelBtnOnTap(_ sender: Any) {
@@ -63,18 +77,21 @@ final class ProjectCreationView: NSView {
 extension ProjectCreationView {
 
     fileprivate func initCommon() {
+        colorPickerView.isHidden = false
         colorPickerContainerView.isHidden = true
+        displayMode = .compact
     }
 
     fileprivate func updateLayout() {
+        let height = displayMode.height
         switch displayMode {
         case .compact:
             colorPickerContainerView.isHidden = true
-            self.frame = CGRect(x: frame.origin.x, y: frame.origin.y, width: frame.size.width, height: 200.0)
+            self.frame = CGRect(x: frame.origin.x, y: frame.origin.y, width: frame.size.width, height: height)
         case .full:
             colorPickerContainerView.isHidden = false
             colorPickerView.select(selectedColor)
-            self.frame = CGRect(x: frame.origin.x, y: frame.origin.y, width: frame.size.width, height: 398.0)
+            self.frame = CGRect(x: frame.origin.x, y: frame.origin.y, width: frame.size.width, height: height)
         }
     }
 }
