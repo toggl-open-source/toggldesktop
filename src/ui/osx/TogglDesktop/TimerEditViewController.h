@@ -13,28 +13,15 @@
 #import "NSHoverButton.h"
 #import "NSBoxClickable.h"
 #import "AutoCompleteInput.h"
+#import "BetterFocusAutoCompleteInput.h"
 
 @interface TimerEditViewController : NSViewController <NSComboBoxDataSource, NSTextFieldDelegate, NSTableViewDelegate>
-{
-}
-@property (strong) IBOutlet NSBoxClickable *manualBox;
-@property (strong) IBOutlet NSBox *hidingBox;
-@property (strong) IBOutlet NSBoxClickable *mainBox;
-@property IBOutlet NSTextFieldDuration *durationTextField;
-@property (weak) IBOutlet NSLayoutConstraint *descriptionTrailing;
-@property IBOutlet NSHoverButton *startButton;
-@property IBOutlet NSTextField *projectTextField;
-@property IBOutlet NSTextFieldClickable *descriptionLabel;
-@property IBOutlet NSBox *startButtonBox;
-@property (nonatomic, strong) IBOutlet NSImageView *billableFlag;
-@property (nonatomic, strong) IBOutlet NSImageView *tagFlag;
-@property NSArray *projectComboConstraint;
-@property NSArray *projectLabelConstraint;
-- (IBAction)startButtonClicked:(id)sender;
-- (IBAction)durationFieldChanged:(id)sender;
-- (IBAction)autoCompleteChanged:(id)sender;
-@property (strong) IBOutlet NSTextFieldClickable *addEntryLabel;
-@property (weak) IBOutlet AutoCompleteInput *autoCompleteInput;
+
+@property (weak) IBOutlet BetterFocusAutoCompleteInput *autoCompleteInput;
+@property (strong, nonatomic) NSArray *projectComboConstraint;
+@property (strong, nonatomic) NSArray *projectLabelConstraint;
+
 - (void)timerFired:(NSTimer *)timer;
 - (void)fillEntryFromAutoComplete:(AutocompleteItem *)item;
+
 @end

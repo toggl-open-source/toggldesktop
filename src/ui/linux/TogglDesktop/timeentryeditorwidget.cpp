@@ -39,11 +39,19 @@ projectModel(new AutocompleteListModel(this, QVector<AutocompleteView*>(), AC_PR
     ui->description->installEventFilter(this);
     ui->project->installEventFilter(this);
 
-    connect(ui->description, &AutocompleteComboBox::returnPressed, [this]() { focusNextChild(); });
-    connect(ui->project, &AutocompleteComboBox::returnPressed, [this]() { focusNextChild(); });
+    connect(ui->description, &AutocompleteComboBox::returnPressed, [this]() {
+        focusNextChild();
+    });
+    connect(ui->project, &AutocompleteComboBox::returnPressed, [this]() {
+        focusNextChild();
+    });
 
-    connect(ui->newProjectWorkspace, QOverload<int>::of(&QComboBox::activated), [this](int) { focusNextChild(); });
-    connect(ui->newProjectClient, QOverload<int>::of(&QComboBox::activated), [this](int) { focusNextChild(); });
+    connect(ui->newProjectWorkspace, QOverload<int>::of(&QComboBox::activated), [this](int) {
+        focusNextChild();
+    });
+    connect(ui->newProjectClient, QOverload<int>::of(&QComboBox::activated), [this](int) {
+        focusNextChild();
+    });
 
     toggleNewClientMode(false);
 

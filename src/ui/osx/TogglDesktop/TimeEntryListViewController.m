@@ -25,7 +25,7 @@ static void *XXContext = &XXContext;
 static NSString *kFrameKey = @"frame";
 
 @interface TimeEntryListViewController () <TimeEntryDatasourceDraggingDelegate>
-@property (nonatomic, strong) IBOutlet TimerEditViewController *timerEditViewController;
+@property (nonatomic, strong) TimerEditViewController *timerEditViewController;
 @property NSNib *nibTimeEntryCell;
 @property NSNib *nibTimeEntryEditViewController;
 @property NSNib *nibLoadMoreCell;
@@ -52,7 +52,6 @@ extern void *ctx;
 										initWithNibName:@"TimerEditViewController" bundle:nil];
 		self.timeEntryEditViewController = [[TimeEntryEditViewController alloc]
 											initWithNibName:@"TimeEntryEditViewController" bundle:nil];
-		[self.timerEditViewController.view setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
 		[self.timeEntryEditViewController.view setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
 
 		self.nibTimeEntryCell = [[NSNib alloc] initWithNibNamed:@"TimeEntryCell"
@@ -88,7 +87,7 @@ extern void *ctx;
 
 - (void)initCommon {
 	[self.headerView addSubview:self.timerEditViewController.view];
-	[self.timerEditViewController.view setFrame:self.headerView.bounds];
+	[self.timerEditViewController.view edgesToSuperView];
 
 	[self.timeEntryPopupEditView addSubview:self.timeEntryEditViewController.view];
 	[self.timeEntryEditViewController.view setFrame:self.timeEntryPopupEditView.bounds];
@@ -96,6 +95,9 @@ extern void *ctx;
 	self.addedHeight = 0;
 	self.minimumEditFormWidth = self.timeEntryPopupEditView.bounds.size.width;
 	self.runningEdit = NO;
+
+	// Shadow for Header
+	[self.headerView applyShadowWithColor:[NSColor blackColor] opacity:0.1 radius:6.0];
 }
 
 - (void)initNotifications
@@ -331,6 +333,18 @@ extern void *ctx;
 		{
 			self.lastSelectedGUID = selectedCell.GUID;
 			ofView = self.collectionView;
+		}
+		else
+		{
+            // It's for new Time Entry from Manual Timer
+			NSCollectionViewItem *firstItem = [self.collectionView itemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
+			if ([firstItem isKindOfClass:[TimeEntryCell class]])
+			{
+				TimeEntryCell *timeEntryCell = (TimeEntryCell *)firstItem;
+				self.lastSelectedGUID = timeEntryCell.GUID;
+				positionRect = [self positionRectForItem:timeEntryCell];
+				ofView = self.collectionView;
+			}
 		}
 
         // Show popover

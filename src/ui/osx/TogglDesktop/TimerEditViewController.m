@@ -19,13 +19,42 @@
 #import "NSCustomTimerComboBox.h"
 #import "DisplayCommand.h"
 #import "TogglDesktop-Swift.h"
+#import "ProjectTextField.h"
+
+typedef enum : NSUInteger
+{
+	DisplayModeManual,
+	DisplayModeTimer,
+	DisplayModeInput,
+} DisplayMode;
 
 @interface TimerEditViewController ()
-@property LiteAutoCompleteDataSource *liteAutocompleteDataSource;
-@property TimeEntryViewItem *time_entry;
-@property NSTimer *timer;
-@property BOOL constraintsAdded;
-@property BOOL disableChange;
+@property (weak) IBOutlet NSBoxClickable *manualBox;
+@property (weak) IBOutlet NSBoxClickable *mainBox;
+@property (weak) IBOutlet NSTextFieldDuration *durationTextField;
+@property (weak) IBOutlet NSHoverButton *startButton;
+@property (weak) IBOutlet ProjectTextField *projectTextField;
+@property (weak) IBOutlet AutoCompleteInput *descriptionLabel;
+@property (weak) IBOutlet NSImageView *billableFlag;
+@property (weak) IBOutlet NSImageView *tagFlag;
+@property (weak) IBOutlet NSButton *addEntryBtn;
+@property (weak) IBOutlet NSView *contentContainerView;
+@property (weak) IBOutlet TimerContainerBox *autocompleteContainerView;
+@property (weak) IBOutlet DotImageView *dotImageView;
+@property (weak) IBOutlet NSLayoutConstraint *projectTextFieldLeading;
+
+- (IBAction)startButtonClicked:(id)sender;
+- (IBAction)durationFieldChanged:(id)sender;
+- (IBAction)autoCompleteChanged:(id)sender;
+- (IBAction)addEntryBtnOnTap:(id)sender;
+
+@property (strong, nonatomic) LiteAutoCompleteDataSource *liteAutocompleteDataSource;
+@property (strong, nonatomic) TimeEntryViewItem *time_entry;
+@property (strong, nonatomic) NSTimer *timer;
+@property (assign, nonatomic) BOOL disableChange;
+@property (assign, nonatomic) BOOL focusNotSet;
+@property (assign, nonatomic) BOOL displayMode;
+
 @end
 
 @implementation TimerEditViewController
@@ -75,7 +104,6 @@ NSString *kInactiveTimerColor = @"#999999";
 													selector:@selector(timerFired:)
 													userInfo:nil
 													 repeats:YES];
-		self.constraintsAdded = NO;
 		self.disableChange = NO;
 	}
 
@@ -84,60 +112,31 @@ NSString *kInactiveTimerColor = @"#999999";
 
 - (void)viewDidLoad
 {
+	[super viewDidLoad];
+
+	[self initCommon];
+}
+
+- (void)initCommon
+{
+	// Manual as default
+	self.displayMode = DisplayModeManual;
+	self.projectTextField.isInTimerBar = YES;
 	self.liteAutocompleteDataSource.input = self.autoCompleteInput;
 	[self.liteAutocompleteDataSource setFilter:@""];
 
-	NSFont *descriptionFont = [NSFont fontWithName:@"Lucida Grande" size:13.0];
-	NSFont *durationFont = [NSFont fontWithName:@"Lucida Grande" size:14.0];
-	NSColor *color = [ConvertHexColor hexCodeToNSColor:kTrackingColor];
-	NSDictionary *descriptionDictionary = @{
-			NSFontAttributeName : descriptionFont,
-			NSForegroundColorAttributeName : color
-	};
-	NSDictionary *durationDictionary = @{
-			NSFontAttributeName : durationFont,
-			NSForegroundColorAttributeName : color
-	};
-
-	NSAttributedString *descriptionLightString =
-		[[NSAttributedString alloc] initWithString:NSLocalizedString(@"What are you working on?", nil)
-										attributes:descriptionDictionary];
-
-	NSAttributedString *durationLightString =
-		[[NSAttributedString alloc] initWithString:@"00:00:00"
-										attributes:durationDictionary];
-
-	[[self.durationTextField cell] setPlaceholderAttributedString:durationLightString];
-	[[self.descriptionLabel cell] setPlaceholderAttributedString:descriptionLightString];
-	[[self.autoCompleteInput cell] setPlaceholderAttributedString:descriptionLightString];
-
 	[self.startButton setHoverAlpha:0.75];
-
-	int osxMode = [[[NSUserDefaults standardUserDefaults] stringForKey:@"AppleAquaColorVariant"] intValue];
-	int trail = 40;
-	if (osxMode == 6)
-	{
-		trail = 60;
-	}
-	self.descriptionTrailing.constant = trail;
 
 	[self.autoCompleteInput.autocompleteTableView setTarget:self];
 	[self.autoCompleteInput.autocompleteTableView setAction:@selector(performClick:)];
-}
+	self.autoCompleteInput.responderDelegate = self.autocompleteContainerView;
 
-- (void)loadView
-{
-	[super loadView];
-	NSOperatingSystemVersion version = [[NSProcessInfo processInfo] operatingSystemVersion];
-	if (version.minorVersion < 11)
-	{
-		[self viewDidLoad];
-		[self viewDidAppear];
-	}
+	self.descriptionLabel.delegate = self;
 }
 
 - (void)viewDidAppear
 {
+	[super viewDidAppear];
 	NSRect viewFrameInWindowCoords = [self.view convertRect:[self.view bounds] toView:nil];
 
 	[self.autoCompleteInput setPos:(int)viewFrameInWindowCoords.origin.y];
@@ -172,7 +171,11 @@ NSString *kInactiveTimerColor = @"#999999";
 
 	if (!te)
 	{
-		if ([self.autoCompleteInput currentEditor] != nil)
+		if ([self.autoCompleteInput currentEditor] != nil || self.descriptionLabel.currentEditor != nil)
+		{
+			return;
+		}
+		if (self.descriptionLabel.stringValue != nil || self.projectTextField.stringValue != nil)
 		{
 			return;
 		}
@@ -186,30 +189,26 @@ NSString *kInactiveTimerColor = @"#999999";
 	{
 		// Start/stop button title and color depend on
 		// whether time entry is running
+		self.displayMode = DisplayModeTimer;
 		self.startButton.toolTip = @"Stop";
-		[self.startButton setImage:[NSImage imageNamed:@"stop_button.pdf"]];
+		self.startButton.state = NSOnState;
 		toggl_set_settings_manual_mode(ctx, NO);
 
 		[self.durationTextField setDelegate:self];
 		// Time entry has a description
-		if (self.time_entry.Description && [self.time_entry.Description length] > 0)
+		if (self.time_entry.descriptionName && [self.time_entry.descriptionName length] > 0)
 		{
-			self.descriptionLabel.stringValue = self.time_entry.Description;
-			self.descriptionLabel.toolTip = self.time_entry.Description;
+			self.descriptionLabel.stringValue = self.time_entry.descriptionName;
+			self.descriptionLabel.toolTip = self.time_entry.descriptionName;
 		}
 		else
 		{
-			self.descriptionLabel.stringValue = @"(no description)";
+			self.descriptionLabel.stringValue = @"";
 			self.descriptionLabel.toolTip = @"(no description)";
 		}
 		[self.autoCompleteInput hide];
-		[self.descriptionLabel setHidden:NO];
 		[self.durationTextField setEditable:NO];
 		[self.durationTextField setSelectable:NO];
-		[self.durationTextField setHidden:NO];
-		[self.descriptionLabel setTextColor:[ConvertHexColor hexCodeToNSColor:kTrackingColor]];
-
-		[self.durationTextField setTextColor:[ConvertHexColor hexCodeToNSColor:kTrackingColor]];
 		[self.billableFlag setHidden:!self.time_entry.billable];
 
 		// Time entry tags icon
@@ -231,21 +230,11 @@ NSString *kInactiveTimerColor = @"#999999";
 		[self showDefaultTimer];
 	}
 
-	[self checkProjectConstraints];
-
 	// Display project name
-	if (self.time_entry.ProjectAndTaskLabel != nil)
+	if (self.time_entry.GUID != nil)
 	{
-		[self.projectTextField setAttributedStringValue:[self setProjectClientLabel:self.time_entry]];
-		self.projectTextField.toolTip = self.time_entry.ProjectAndTaskLabel;
+		[self renderProjectLabelWithViewItem:self.time_entry];
 	}
-	else
-	{
-		self.projectTextField.stringValue = @"";
-		self.projectTextField.toolTip = nil;
-	}
-	self.projectTextField.backgroundColor =
-		[ConvertHexColor hexCodeToNSColor:self.time_entry.ProjectColor];
 
 	// Display duration
 	if (self.time_entry.duration != nil)
@@ -270,112 +259,40 @@ NSString *kInactiveTimerColor = @"#999999";
 	NSLog(@"TimeEntryListViewController displayTimeEntryEditor, thread %@", [NSThread currentThread]);
 }
 
-- (void)checkProjectConstraints
-{
-	// If a project is assigned, then project name
-	// is visible.
-	if (self.time_entry.ProjectID || self.time_entry.ProjectGUID || [self.time_entry.ProjectAndTaskLabel length])
-	{
-		if (![self.projectComboConstraint count])
-		{
-			[self createConstraints];
-		}
-		if (!self.constraintsAdded)
-		{
-			[self.view addConstraints:self.projectComboConstraint];
-			[self.view addConstraints:self.projectLabelConstraint];
-			self.constraintsAdded = YES;
-		}
-
-		[self.projectTextField setHidden:NO];
-	}
-	else
-	{
-		[self.projectTextField setHidden:YES];
-		if (self.constraintsAdded)
-		{
-			[self.view removeConstraints:self.projectComboConstraint];
-			[self.view removeConstraints:self.projectLabelConstraint];
-			self.constraintsAdded = NO;
-		}
-	}
-}
-
 - (void)showDefaultTimer
 {
+	if (!self.descriptionLabel.isEditable)
+	{
+		self.displayMode = DisplayModeInput;
+	}
+
 	// Start/stop button title and color depend on
 	// whether time entry is running
 	self.startButton.toolTip = @"Start";
-	[self.startButton setImage:[NSImage imageNamed:@"start_button.pdf"]];
+	self.startButton.state = NSOffState;
 	if ([self.autoCompleteInput currentEditor] == nil)
 	{
 		self.autoCompleteInput.stringValue = @"";
 	}
-	[self.autoCompleteInput setHidden:NO];
-	[self.descriptionLabel setHidden:YES];
-	[self.durationTextField setEditable:YES];
-	[self.durationTextField setSelectable:YES];
-	[self.durationTextField setHidden:YES];
-	[self.descriptionLabel setTextColor:[ConvertHexColor hexCodeToNSColor:kInactiveTimerColor]];
-
-	[self.durationTextField setTextColor:[ConvertHexColor hexCodeToNSColor:kInactiveTimerColor]];
-	[self.tagFlag setHidden:YES];
-	[self.billableFlag setHidden:YES];
+	if (self.displayMode == DisplayModeTimer)
+	{
+		[self.view.window makeFirstResponder:self.autoCompleteInput];
+	}
 
 	self.time_entry = [[TimeEntryViewItem alloc] init];
 }
 
-- (NSMutableAttributedString *)setProjectClientLabel:(TimeEntryViewItem *)view_item
-{
-	NSMutableAttributedString *clientName = [[NSMutableAttributedString alloc] initWithString:view_item.ClientLabel];
-	NSColor *color = [ConvertHexColor hexCodeToNSColor:@"#666666"];
-
-	[clientName setAttributes:
-	 @{
-		 NSFontAttributeName : [NSFont systemFontOfSize:[NSFont systemFontSize]],
-		 NSForegroundColorAttributeName:color
-	 }
-						range:NSMakeRange(0, [clientName length])];
-	NSMutableAttributedString *string;
-	if (view_item.TaskID != 0)
-	{
-		string = [[NSMutableAttributedString alloc] initWithString:[view_item.TaskLabel stringByAppendingString:@". "]];
-
-		[string setAttributes:
-		 @{
-			 NSFontAttributeName : [NSFont systemFontOfSize:[NSFont systemFontSize]],
-			 NSForegroundColorAttributeName:color
-		 }
-						range:NSMakeRange(0, [string length])];
-
-		NSMutableAttributedString *projectName = [[NSMutableAttributedString alloc] initWithString:[view_item.ProjectLabel stringByAppendingString:@" "]];
-
-		[string appendAttributedString:projectName];
-	}
-	else
-	{
-		string = [[NSMutableAttributedString alloc] initWithString:[view_item.ProjectLabel stringByAppendingString:@" "]];
-	}
-
-	[string appendAttributedString:clientName];
-	return string;
-}
-
 - (void)textFieldClicked:(id)sender
 {
+	if (self.time_entry.GUID == nil)
+	{
+		return;
+	}
+
 	[self.autoCompleteInput.window makeFirstResponder:self.autoCompleteInput];
 
 	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kResetEditPopoverSize
 																object:nil];
-
-	if (nil == self.time_entry || nil == self.time_entry.GUID)
-	{
-		if (sender == self.addEntryLabel)
-		{
-			[self addButtonClicked];
-		}
-		return;
-	}
 
 	const char *focusField = kFocusedFieldNameDescription;
 	if (sender == self.projectTextField)
@@ -390,22 +307,6 @@ NSString *kInactiveTimerColor = @"#999999";
 	toggl_edit(ctx, [self.time_entry.GUID UTF8String], false, focusField);
 }
 
-- (void)createConstraints
-{
-	NSDictionary *viewsDict = NSDictionaryOfVariableBindings(_autoCompleteInput, _projectTextField);
-
-	self.projectComboConstraint = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[_autoCompleteInput]-2@1000-[_projectTextField]"
-																		  options:0
-																		  metrics:nil
-																			views:viewsDict];
-
-	NSDictionary *viewsDict_ = NSDictionaryOfVariableBindings(_descriptionLabel, _projectTextField);
-	self.projectLabelConstraint = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[_descriptionLabel]-6@1000-[_projectTextField]"
-																		  options:0
-																		  metrics:nil
-																			views:viewsDict_];
-}
-
 - (void)clear
 {
 	self.durationTextField.stringValue = @"";
@@ -413,7 +314,7 @@ NSString *kInactiveTimerColor = @"#999999";
 	[self.autoCompleteInput resetTable];
 	[self.liteAutocompleteDataSource clearFilter];
 	self.projectTextField.stringValue = @"";
-	[self.projectTextField setHidden:YES];
+	[self.contentContainerView setHidden:YES];
 }
 
 - (IBAction)startButtonClicked:(id)sender
@@ -425,16 +326,9 @@ NSString *kInactiveTimerColor = @"#999999";
 	}
 	if (self.time_entry.duration_in_seconds < 0)
 	{
+		self.descriptionLabel.editable = NO;
 		[self clear];
 		[self showDefaultTimer];
-		[self.autoCompleteInput.window makeFirstResponder:self.autoCompleteInput];
-		[self.projectTextField setHidden:YES];
-		if (self.constraintsAdded)
-		{
-			[self.view removeConstraints:self.projectComboConstraint];
-			[self.view removeConstraints:self.projectLabelConstraint];
-			self.constraintsAdded = NO;
-		}
 		[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kCommandStop
 																	object:nil];
 		return;
@@ -485,6 +379,14 @@ NSString *kInactiveTimerColor = @"#999999";
 	self.time_entry.Description = [self.autoCompleteInput stringValue];
 }
 
+- (IBAction)addEntryBtnOnTap:(id)sender
+{
+	if (nil == self.time_entry || nil == self.time_entry.GUID)
+	{
+		[self addButtonClicked];
+	}
+}
+
 - (void)fillEntryFromAutoComplete:(AutocompleteItem *)item
 {
 	// User has selected a autocomplete item.
@@ -504,17 +406,15 @@ NSString *kInactiveTimerColor = @"#999999";
 	}
 
 	self.autoCompleteInput.stringValue = self.time_entry.Description;
-	if (item.ProjectID > 0)
-	{
-		[self.projectTextField setAttributedStringValue:[self setProjectClientLabel:self.time_entry]];
-		self.projectTextField.toolTip = self.time_entry.ProjectAndTaskLabel;
-	}
-	else
-	{
-		self.projectTextField.stringValue = @"";
-		self.projectTextField.toolTip = nil;
-	}
-	[self checkProjectConstraints];
+
+	// Make descriptionLabel is editable and focus
+	self.descriptionLabel.editable = YES;
+	self.descriptionLabel.stringValue = self.time_entry.Description;
+	self.displayMode = DisplayModeTimer;
+	[self.view.window makeFirstResponder:self.descriptionLabel];
+
+	// Display project name
+	[self renderProjectLabelWithViewItem:self.time_entry];
 
 	self.time_entry.billable = item.Billable;
 }
@@ -531,7 +431,12 @@ NSString *kInactiveTimerColor = @"#999999";
 		AutoCompleteInput *field = [aNotification object];
 		[self.liteAutocompleteDataSource setFilter:[field stringValue]];
 		[field.autocompleteTableView resetSelected];
-		// NSLog(@"Filter: %@", [field stringValue]);
+
+		if (aNotification.object == self.descriptionLabel)
+		{
+			self.autoCompleteInput.stringValue = self.descriptionLabel.stringValue;
+		}
+
 		return;
 	}
 }
@@ -554,13 +459,13 @@ NSString *kInactiveTimerColor = @"#999999";
 {
 	[self.mainBox setHidden:NO];
 	[self.manualBox setHidden:YES];
+	[self.view.window makeFirstResponder:self.autoCompleteInput];
 }
 
 - (void)toggleManual:(NSNotification *)notification
 {
 	[self.manualBox setHidden:NO];
 	[self.mainBox setHidden:YES];
-	[self.view.window makeFirstResponder:self.autoCompleteInput];
 }
 
 - (void)addButtonClicked
@@ -642,9 +547,8 @@ NSString *kInactiveTimerColor = @"#999999";
 		return;
 	}
 	[self fillEntryFromAutoComplete:item];
-	[self.autoCompleteInput.window makeFirstResponder:self.autoCompleteInput];
-	NSRange tRange = [[self.autoCompleteInput currentEditor] selectedRange];
-	[[self.autoCompleteInput currentEditor] setSelectedRange:NSMakeRange(tRange.length, 0)];
+	NSRange tRange = [[self.descriptionLabel currentEditor] selectedRange];
+	[[self.descriptionLabel currentEditor] setSelectedRange:NSMakeRange(tRange.length, 0)];
 	[self.autoCompleteInput resetTable];
 	[self.liteAutocompleteDataSource clearFilter];
 }
@@ -653,56 +557,101 @@ NSString *kInactiveTimerColor = @"#999999";
 {
 	BOOL retval = NO;
 
-	if ([self.autoCompleteInput currentEditor] != nil)
+	if (commandSelector == @selector(moveDown:))
 	{
-		if (commandSelector == @selector(moveDown:))
-		{
-			[self.autoCompleteInput.autocompleteTableView nextItem];
-		}
-		if (commandSelector == @selector(moveUp:))
-		{
-			[self.autoCompleteInput.autocompleteTableView previousItem];
-		}
-		if (commandSelector == @selector(insertTab:))
-		{
-			// Set data according to selected item
-			if (self.autoCompleteInput.autocompleteTableView.lastSelected >= 0)
-			{
-				AutocompleteItem *item = [self.liteAutocompleteDataSource itemAtIndex:self.autoCompleteInput.autocompleteTableView.lastSelected];
-				if (item == nil)
-				{
-					return retval;
-				}
-				[self fillEntryFromAutoComplete:item];
-			}
-			[self.autoCompleteInput resetTable];
-			[self.liteAutocompleteDataSource clearFilter];
-		}
-		if (commandSelector == @selector(insertNewline:))
-		{
-			// avoid firing default Enter actions
-			retval = YES;
-
-			// Set data according to selected item
-			if (self.autoCompleteInput.autocompleteTableView.lastSelected >= 0)
-			{
-				AutocompleteItem *item = [self.liteAutocompleteDataSource itemAtIndex:self.autoCompleteInput.autocompleteTableView.lastSelected];
-				if (item == nil)
-				{
-					return retval;
-				}
-				[self fillEntryFromAutoComplete:item];
-			}
-
-			// Start entry
-			[self startButtonClicked:nil];
-
-			[self.autoCompleteInput resetTable];
-			[self.liteAutocompleteDataSource clearFilter];
-		}
+		[self.autoCompleteInput.autocompleteTableView nextItem];
 	}
-	// NSLog(@"Selector = %@", NSStringFromSelector( commandSelector ) );
+	if (commandSelector == @selector(moveUp:))
+	{
+		[self.autoCompleteInput.autocompleteTableView previousItem];
+	}
+	if (commandSelector == @selector(insertTab:))
+	{
+		// Set data according to selected item
+		if (self.autoCompleteInput.autocompleteTableView.lastSelected >= 0)
+		{
+			AutocompleteItem *item = [self.liteAutocompleteDataSource itemAtIndex:self.autoCompleteInput.autocompleteTableView.lastSelected];
+			if (item == nil)
+			{
+				return retval;
+			}
+			[self fillEntryFromAutoComplete:item];
+		}
+		[self.autoCompleteInput resetTable];
+		[self.liteAutocompleteDataSource clearFilter];
+	}
+	if (commandSelector == @selector(insertNewline:))
+	{
+		// avoid firing default Enter actions
+		retval = YES;
+
+		// Disable editable
+		self.descriptionLabel.editable = NO;
+
+		// Set data according to selected item
+		if (self.autoCompleteInput.autocompleteTableView.lastSelected >= 0)
+		{
+			AutocompleteItem *item = [self.liteAutocompleteDataSource itemAtIndex:self.autoCompleteInput.autocompleteTableView.lastSelected];
+			if (item == nil)
+			{
+				return retval;
+			}
+			[self fillEntryFromAutoComplete:item];
+		}
+
+		// Start entry
+		[self startButtonClicked:nil];
+		[self.autoCompleteInput resetTable];
+		[self.liteAutocompleteDataSource clearFilter];
+	}
+
 	return retval;
+}
+
+- (void)setDisplayMode:(BOOL)displayMode
+{
+	_displayMode = displayMode;
+	switch (displayMode)
+	{
+		case DisplayModeManual :
+			self.manualBox.hidden = NO;
+			self.mainBox.hidden = YES;
+			break;
+		case DisplayModeTimer :
+			self.manualBox.hidden = YES;
+			self.mainBox.hidden = NO;
+			self.contentContainerView.hidden = NO;
+			self.autocompleteContainerView.hidden = YES;
+			break;
+		case DisplayModeInput :
+			self.contentContainerView.hidden = YES;
+			self.autocompleteContainerView.hidden = NO;
+			self.autoCompleteInput.hidden = NO;
+			break;
+	}
+}
+
+- (void)renderProjectLabelWithViewItem:(TimeEntryViewItem *)item
+{
+	NSString *text = item.ProjectAndTaskLabel;
+
+	if (text != nil && text.length > 0)
+	{
+		NSColor *projectColor = [ConvertHexColor hexCodeToNSColor:item.ProjectColor];
+		[self.dotImageView fillWith:projectColor];
+		self.dotImageView.hidden = NO;
+		[self.projectTextField setTitleWithTimeEntry:item];
+		self.projectTextField.toolTip = text;
+		self.projectTextFieldLeading.constant = 16.0;
+	}
+	else
+	{
+		self.dotImageView.hidden = YES;
+		self.projectTextField.stringValue = @"";
+		self.projectTextField.toolTip = nil;
+		self.projectTextField.placeholderString = @"+ Add project";
+		self.projectTextFieldLeading.constant = 0;
+	}
 }
 
 @end
