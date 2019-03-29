@@ -168,7 +168,7 @@
                                 <rect key="frame" x="1" y="1" width="218" height="28"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
-                                    <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="cCQ-e0-gV1" customClass="AutoCompleteTextField" customModule="TogglDesktop" customModuleProvider="target">
+                                    <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="cCQ-e0-gV1" customClass="ClientAutoCompleteTextField" customModule="TogglDesktop" customModuleProvider="target">
                                         <rect key="frame" x="-2" y="0.0" width="222" height="28"/>
                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" alignment="left" placeholderString="No Client" id="8Nw-wN-b3U" customClass="VerticallyCenteredTextFieldCell" customModule="TogglDesktop" customModuleProvider="target">
                                             <font key="font" metaFont="system" size="14"/>

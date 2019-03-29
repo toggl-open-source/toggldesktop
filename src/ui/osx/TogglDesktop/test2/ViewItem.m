@@ -21,9 +21,9 @@
 	}
 }
 
-+ (NSMutableArray *)loadAll:(TogglGenericView *)first
++ (NSArray<ViewItem *> *)loadAll:(TogglGenericView *)first
 {
-	NSMutableArray *result = [[NSMutableArray alloc] init];
+	NSMutableArray<ViewItem *> *result = [[NSMutableArray<ViewItem *> alloc] init];
 	TogglGenericView *it = first;
 
 	while (it)
@@ -33,7 +33,7 @@
 		[result addObject:item];
 		it = it->Next;
 	}
-	return result;
+	return [result copy];
 }
 
 @end

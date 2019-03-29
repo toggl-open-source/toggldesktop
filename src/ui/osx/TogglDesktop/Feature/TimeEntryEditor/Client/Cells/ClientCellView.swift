@@ -27,7 +27,7 @@ final class ClientCellView: NSTableCellView {
     }
 
     func render(_ item: Client) {
-
+        titleTextField.stringValue = item.name
     }
 
     override func mouseExited(with event: NSEvent) {

@@ -36,7 +36,7 @@ final class ProjectCreationView: NSView {
     @IBOutlet weak var addBtn: NSButton!
     @IBOutlet weak var projectTextField: NSTextField!
     @IBOutlet weak var marketingAutoComplete: AutoCompleteTextField!
-    @IBOutlet weak var clientAutoComplete: AutoCompleteTextField!
+    @IBOutlet weak var clientAutoComplete: ClientAutoCompleteTextField!
     @IBOutlet weak var colorBtn: CursorButton!
     @IBOutlet weak var colorPickerContainerView: NSView!
 
@@ -72,6 +72,10 @@ final class ProjectCreationView: NSView {
         super.awakeFromNib()
 
         initCommon()
+
+        clientDatasource.delegate = self
+        clientAutoComplete.prepare(with: clientDatasource,
+                                   parentView:  self)
     }
 
     func setTitleAndFocus(_ title: String) {
@@ -152,5 +156,14 @@ extension ProjectCreationView: ColorPickerViewDelegate {
 
     func colorPickerShouldResetColor() {
         selectedColor = originalColor
+    }
+}
+
+// MARK: AutoCompleteViewDataSourceDelegate
+
+extension ProjectCreationView: AutoCompleteViewDataSourceDelegate {
+
+    func autoCompleteSelectionDidChange(sender: AutoCompleteViewDataSource, item: Any) {
+        
     }
 }

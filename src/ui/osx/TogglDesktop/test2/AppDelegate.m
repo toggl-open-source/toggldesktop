@@ -1665,8 +1665,11 @@ void on_promotion(const int64_t promotion_type)
 
 void on_client_select(TogglGenericView *first)
 {
+	NSArray<ViewItem *> *viewItems = [ViewItem loadAll:first];
+
 	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayClientSelect
-																object:[ViewItem loadAll:first]];
+																object:viewItems];
+	[[ClientStorage shared] updateWith:viewItems];
 }
 
 void on_workspace_select(TogglGenericView *first)

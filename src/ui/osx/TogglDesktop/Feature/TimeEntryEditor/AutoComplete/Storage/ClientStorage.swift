@@ -30,7 +30,7 @@ extension Notification.Name {
     }
 
     func filter(with text: String) -> [Client] {
-        return []
+        return clients.filter { $0.name.lowercased() == text.lowercased() }
     }
 }
 
