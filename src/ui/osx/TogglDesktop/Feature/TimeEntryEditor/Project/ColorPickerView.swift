@@ -11,6 +11,7 @@ import Cocoa
 protocol ColorPickerViewDelegate: class {
 
     func colorPickerDidSelectColor(_ color: ProjectColor)
+    func colorPickerShouldResetColor()
 }
 
 final class ColorPickerView: NSView {
@@ -42,11 +43,16 @@ final class ColorPickerView: NSView {
     // MARK: Public
 
     func select(_ color: ProjectColor) {
+        // Deselect
+        collectionView.deselectAll(collectionView)
+
+        // Select color if it's possible
         guard let index = colors.firstIndex(where: { $0 == color }) else { return }
         collectionView.selectItems(at: Set<IndexPath>.init(arrayLiteral: IndexPath.init(item: index, section: 0)), scrollPosition: [])
     }
 
     @IBAction func resetBtnOnTap(_ sender: Any) {
+        delegate?.colorPickerShouldResetColor()
     }
 }
 

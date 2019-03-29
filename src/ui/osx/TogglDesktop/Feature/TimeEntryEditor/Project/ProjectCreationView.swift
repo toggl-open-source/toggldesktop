@@ -42,6 +42,7 @@ final class ProjectCreationView: NSView {
 
     // MARK: Variables
     weak var delegate: ProjectCreationViewDelegate?
+    private var originalColor = ProjectColor.default
     private var selectedColor = ProjectColor.default {
         didSet {
             updateSelectColorView()
@@ -120,7 +121,6 @@ extension ProjectCreationView {
             self.frame = CGRect(x: frame.origin.x, y: frame.origin.y, width: frame.size.width, height: height)
         case .full:
             colorPickerContainerView.isHidden = false
-            colorPickerView.select(selectedColor)
             self.frame = CGRect(x: frame.origin.x, y: frame.origin.y, width: frame.size.width, height: height)
         }
         delegate?.projectCreationDidUpdateSize()
@@ -128,6 +128,7 @@ extension ProjectCreationView {
 
     fileprivate func updateSelectColorView() {
         colorBtn.layer?.backgroundColor = ConvertHexColor.hexCode(toNSColor: selectedColor.colorHex)!.cgColor
+        colorPickerView.select(selectedColor)
     }
 
     fileprivate var colorBtnBorderColor: NSColor {
@@ -147,7 +148,7 @@ extension ProjectCreationView: ColorPickerViewDelegate {
         selectedColor = color
     }
 
-    func colorPickerDidSelectCustomeColor(_ color: ProjectColor) {
-        
+    func colorPickerShouldResetColor() {
+        selectedColor = originalColor
     }
 }
