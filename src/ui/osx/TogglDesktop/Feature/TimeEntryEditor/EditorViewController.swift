@@ -50,7 +50,6 @@ extension EditorViewController {
         projectDatasource.delegate = self
         projectTextField.prepare(with: projectDatasource, parentView: view)
     }
-
 }
 
 // MARK: AutoCompleteViewDataSourceDelegate

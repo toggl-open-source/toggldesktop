@@ -71,9 +71,12 @@ final class AutoCompleteView: NSView {
 
     @IBOutlet weak var tableView: KeyboardTableView!
     @IBOutlet weak var tableViewHeight: NSLayoutConstraint!
-    @IBOutlet weak var createNewProjectBtn: CursorButton!
+    @IBOutlet weak var createNewItemBtn: CursorButton!
+    @IBOutlet weak var createNewItemContainerView: NSBox!
+    @IBOutlet weak var horizontalLine: NSBox!
 
     // MARK: Variables
+
     weak var delegate: AutoCompleteViewDelegate?
     private var dataSource: AutoCompleteViewDataSource!
 
@@ -98,7 +101,12 @@ final class AutoCompleteView: NSView {
         tableViewHeight.constant = height
     }
 
-    @IBAction func newProjectBtnOnTap(_ sender: Any) {
+    func setCreateButtonSectionHidden(_ isHidden: Bool) {
+        horizontalLine.isHidden = isHidden
+        createNewItemContainerView.isHidden = isHidden
+    }
+
+    @IBAction func createNewItemOnTap(_ sender: Any) {
         delegate?.didTapOnCreateButton()
     }
 }
@@ -108,8 +116,7 @@ final class AutoCompleteView: NSView {
 extension AutoCompleteView {
 
     fileprivate func initCommon() {
-        createNewProjectBtn.cursor = .pointingHand
-
+        createNewItemBtn.cursor = .pointingHand
         tableView.keyUpOnPress = {[weak self] key in
             switch key {
             case .enter,
