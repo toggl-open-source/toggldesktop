@@ -160,6 +160,7 @@
 		BA412C1D224E0D61003CA17A /* ClientDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA412C1C224E0D61003CA17A /* ClientDataSource.swift */; };
 		BA412C21224E1189003CA17A /* ClientCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA412C20224E1189003CA17A /* ClientCellView.swift */; };
 		BA412C23224E11AC003CA17A /* ClientCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA412C22224E11AC003CA17A /* ClientCellView.xib */; };
+		BA412C25224E147A003CA17A /* ClientAutoCompleteTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA412C24224E147A003CA17A /* ClientAutoCompleteTextField.swift */; };
 		BA46E09F2226707F00C25763 /* Collection+Safe.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA46E09E2226707F00C25763 /* Collection+Safe.swift */; };
 		BA6572A6224DFA6F00BA4C60 /* RGB.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6572A0224DFA6E00BA4C60 /* RGB.swift */; };
 		BA6572A7224DFA6F00BA4C60 /* HSBGen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6572A1224DFA6E00BA4C60 /* HSBGen.swift */; };
@@ -759,6 +760,7 @@
 		BA412C1C224E0D61003CA17A /* ClientDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientDataSource.swift; sourceTree = "<group>"; };
 		BA412C20224E1189003CA17A /* ClientCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientCellView.swift; sourceTree = "<group>"; };
 		BA412C22224E11AC003CA17A /* ClientCellView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ClientCellView.xib; sourceTree = "<group>"; };
+		BA412C24224E147A003CA17A /* ClientAutoCompleteTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientAutoCompleteTextField.swift; sourceTree = "<group>"; };
 		BA46E09E2226707F00C25763 /* Collection+Safe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collection+Safe.swift"; sourceTree = "<group>"; };
 		BA6572A0224DFA6E00BA4C60 /* RGB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RGB.swift; sourceTree = "<group>"; };
 		BA6572A1224DFA6E00BA4C60 /* HSBGen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HSBGen.swift; sourceTree = "<group>"; };
@@ -1502,6 +1504,7 @@
 			children = (
 				BA7D335D2248B48000B953A8 /* AutoCompleteTextField.swift */,
 				BAE8E844224CA9AC006D534E /* ProjectAutoCompleteTextField.swift */,
+				BA412C24224E147A003CA17A /* ClientAutoCompleteTextField.swift */,
 			);
 			path = Input;
 			sourceTree = "<group>";
@@ -2089,6 +2092,7 @@
 				BA6572A9224DFA6F00BA4C60 /* ColorGraphicsView.swift in Sources */,
 				3C0A571B1C22E12E00301D77 /* MKColorSwatchCell.m in Sources */,
 				3CD30F431F58B02C006FAA0D /* OverlayViewController.m in Sources */,
+				BA412C25224E147A003CA17A /* ClientAutoCompleteTextField.swift in Sources */,
 				74D1D25617EB713F00E709B0 /* TimeEntryListViewController.m in Sources */,
 				BAAF56A22223E18B003D0D73 /* TimeDecoratorView.swift in Sources */,
 				BAD15FFC223A52D600A8CCC9 /* TimeEntryEmptyView.swift in Sources */,

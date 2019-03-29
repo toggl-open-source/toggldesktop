@@ -10,7 +10,7 @@
 #import "toggl_api.h"
 
 @interface ViewItem : NSObject
-+ (NSMutableArray *)loadAll:(TogglGenericView *)first;
++ (NSArray<ViewItem *> *)loadAll:(TogglGenericView *)first;
 - (void)load:(TogglGenericView *)data;
 @property uint64_t ID;
 @property uint64_t WID;
