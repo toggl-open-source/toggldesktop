@@ -41,6 +41,8 @@ final class ProjectCreationView: NSView {
     @IBOutlet weak var colorPickerContainerView: NSView!
 
     // MARK: Variables
+    private lazy var clientDatasource = ClientDataSource.init(items: ClientStorage.shared.clients,
+                                                              updateNotificationName: .ClientStorageChangedNotification)
     weak var delegate: ProjectCreationViewDelegate?
     private var originalColor = ProjectColor.default
     private var selectedColor = ProjectColor.default {

@@ -156,6 +156,10 @@
 		BA4059B1221D2186002969B8 /* TimeHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA4059B0221D2186002969B8 /* TimeHeaderView.xib */; };
 		BA4059B7221D46F4002969B8 /* TimeEntryCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = BA4059B6221D46F4002969B8 /* TimeEntryCollectionView.m */; };
 		BA4059B9221D53E7002969B8 /* TimeEntryDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4059B8221D53E7002969B8 /* TimeEntryDatasource.swift */; };
+		BA412BFC224E0CBE003CA17A /* ClientStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA412BFB224E0CBE003CA17A /* ClientStorage.swift */; };
+		BA412C1D224E0D61003CA17A /* ClientDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA412C1C224E0D61003CA17A /* ClientDataSource.swift */; };
+		BA412C21224E1189003CA17A /* ClientCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA412C20224E1189003CA17A /* ClientCellView.swift */; };
+		BA412C23224E11AC003CA17A /* ClientCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA412C22224E11AC003CA17A /* ClientCellView.xib */; };
 		BA46E09F2226707F00C25763 /* Collection+Safe.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA46E09E2226707F00C25763 /* Collection+Safe.swift */; };
 		BA6572A6224DFA6F00BA4C60 /* RGB.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6572A0224DFA6E00BA4C60 /* RGB.swift */; };
 		BA6572A7224DFA6F00BA4C60 /* HSBGen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6572A1224DFA6E00BA4C60 /* HSBGen.swift */; };
@@ -751,6 +755,10 @@
 		BA4059B5221D46F4002969B8 /* TimeEntryCollectionView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TimeEntryCollectionView.h; sourceTree = "<group>"; };
 		BA4059B6221D46F4002969B8 /* TimeEntryCollectionView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TimeEntryCollectionView.m; sourceTree = "<group>"; };
 		BA4059B8221D53E7002969B8 /* TimeEntryDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeEntryDatasource.swift; sourceTree = "<group>"; };
+		BA412BFB224E0CBE003CA17A /* ClientStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientStorage.swift; sourceTree = "<group>"; };
+		BA412C1C224E0D61003CA17A /* ClientDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientDataSource.swift; sourceTree = "<group>"; };
+		BA412C20224E1189003CA17A /* ClientCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientCellView.swift; sourceTree = "<group>"; };
+		BA412C22224E11AC003CA17A /* ClientCellView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ClientCellView.xib; sourceTree = "<group>"; };
 		BA46E09E2226707F00C25763 /* Collection+Safe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collection+Safe.swift"; sourceTree = "<group>"; };
 		BA6572A0224DFA6E00BA4C60 /* RGB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RGB.swift; sourceTree = "<group>"; };
 		BA6572A1224DFA6E00BA4C60 /* HSBGen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HSBGen.swift; sourceTree = "<group>"; };
@@ -1323,6 +1331,7 @@
 		BA34F0DB22439BF300C27A15 /* TimeEntryEditor */ = {
 			isa = PBXGroup;
 			children = (
+				BA412C1B224E0D3E003CA17A /* Client */,
 				BA9C2DD8224C7E2E002AD2A1 /* Project */,
 				BA7D332B2248940800B953A8 /* AutoComplete */,
 				BA2E5FB0223787C300EB866E /* EditorPopover.swift */,
@@ -1374,6 +1383,34 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		BA412C1B224E0D3E003CA17A /* Client */ = {
+			isa = PBXGroup;
+			children = (
+				BA412C1F224E1169003CA17A /* Cells */,
+			);
+			path = Client;
+			sourceTree = "<group>";
+		};
+		BA412C1E224E1158003CA17A /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				BA7D334E224897FC00B953A8 /* ProjectHeaderCellView.swift */,
+				BA7D33522248981200B953A8 /* ProjectHeaderCellView.xib */,
+				BA7D33502248980B00B953A8 /* ProjectContentCellView.swift */,
+				BA7D3354224898E400B953A8 /* ProjectContentCellView.xib */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		BA412C1F224E1169003CA17A /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				BA412C20224E1189003CA17A /* ClientCellView.swift */,
+				BA412C22224E11AC003CA17A /* ClientCellView.xib */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
 		BA657280224DFA4F00BA4C60 /* ColorWheel */ = {
 			isa = PBXGroup;
 			children = (
@@ -1407,6 +1444,7 @@
 			isa = PBXGroup;
 			children = (
 				BA6EB83F2248CBE3003BB8EF /* ProjectStorage.swift */,
+				BA412BFB224E0CBE003CA17A /* ClientStorage.swift */,
 			);
 			path = Storage;
 			sourceTree = "<group>";
@@ -1444,10 +1482,6 @@
 				BA7D335822489C6E00B953A8 /* DataSource */,
 				BA7D334A2248944C00B953A8 /* AutoCompleteView.swift */,
 				BA7D334C2248945300B953A8 /* AutoCompleteView.xib */,
-				BA7D334E224897FC00B953A8 /* ProjectHeaderCellView.swift */,
-				BA7D33522248981200B953A8 /* ProjectHeaderCellView.xib */,
-				BA7D33502248980B00B953A8 /* ProjectContentCellView.swift */,
-				BA7D3354224898E400B953A8 /* ProjectContentCellView.xib */,
 				BA9C2E0B224C8F58002AD2A1 /* KeyboardTableView.swift */,
 			);
 			path = AutoComplete;
@@ -1458,6 +1492,7 @@
 			children = (
 				BA7D335622489BD000B953A8 /* AutoCompleteViewDataSource.swift */,
 				BA7D335922489C8000B953A8 /* ProjectDataSource.swift */,
+				BA412C1C224E0D61003CA17A /* ClientDataSource.swift */,
 			);
 			path = DataSource;
 			sourceTree = "<group>";
@@ -1484,6 +1519,7 @@
 		BA9C2DD8224C7E2E002AD2A1 /* Project */ = {
 			isa = PBXGroup;
 			children = (
+				BA412C1E224E1158003CA17A /* Cells */,
 				BA9C2DF7224C7E44002AD2A1 /* ProjectCreationView.swift */,
 				BA9C2DF9224C7E77002AD2A1 /* ProjectCreationView.xib */,
 				BA9C2DFB224C8235002AD2A1 /* ColorPickerView.swift */,
@@ -1911,6 +1947,7 @@
 				BA7D334D2248945300B953A8 /* AutoCompleteView.xib in Resources */,
 				3C65A7D31DE574E7005586B4 /* group_icon_closed.pdf in Resources */,
 				C5DA1FC017F1B08A001C4565 /* MainWindowController.xib in Resources */,
+				BA412C23224E11AC003CA17A /* ClientCellView.xib in Resources */,
 				BAF38FEF2241FF20009147D7 /* FloatingErrorView.xib in Resources */,
 				74D1D25817EB713F00E709B0 /* TimeEntryListViewController.xib in Resources */,
 				3C50BCAC1C1F0574004BAE9E /* (null) in Resources */,
@@ -2004,6 +2041,7 @@
 				BA712EC821BF9F1200A2D8DD /* UndoStack.swift in Sources */,
 				BA0CEC5321BE528900F1BF01 /* TableViewDiffer.swift in Sources */,
 				3C6B2488203E01D90063FC08 /* AutoCompleteTable.m in Sources */,
+				BA412C1D224E0D61003CA17A /* ClientDataSource.swift in Sources */,
 				74AA9472180909F50000539F /* GTMHTTPFetchHistory.m in Sources */,
 				BA6EB8402248CBE3003BB8EF /* ProjectStorage.swift in Sources */,
 				BAAF567E2223CAC5003D0D73 /* NSButton+TextColor.swift in Sources */,
@@ -2011,6 +2049,7 @@
 				BA46E09F2226707F00C25763 /* Collection+Safe.swift in Sources */,
 				74E3CDC617FBABE400C3ADD3 /* Bugsnag.m in Sources */,
 				745126B619A28AA600390F47 /* Reachability.m in Sources */,
+				BA412C21224E1189003CA17A /* ClientCellView.swift in Sources */,
 				74C1579B183BA5DA00550613 /* AutocompleteDataSource.m in Sources */,
 				BA0E38102225257D00D0121B /* BezierPath+Corner.swift in Sources */,
 				BA7D33512248980B00B953A8 /* ProjectContentCellView.swift in Sources */,
@@ -2109,6 +2148,7 @@
 				743D782A182791FA00978BCC /* idler.c in Sources */,
 				BA9C2DF8224C7E44002AD2A1 /* ProjectCreationView.swift in Sources */,
 				74AA9473180909F50000539F /* GTMOAuth2Authentication.m in Sources */,
+				BA412BFC224E0CBE003CA17A /* ClientStorage.swift in Sources */,
 				BA7B4C7C21C293E700B75B14 /* String+Optional.swift in Sources */,
 				BA6572A8224DFA6F00BA4C60 /* CurrentColorView.swift in Sources */,
 				BA2DA12021A691FF0027B7A5 /* TrackingService.m in Sources */,

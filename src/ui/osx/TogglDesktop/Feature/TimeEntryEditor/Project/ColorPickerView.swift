@@ -43,6 +43,7 @@ final class ColorPickerView: NSView {
     // MARK: Public
 
     func select(_ color: ProjectColor) {
+
         // Deselect
         collectionView.deselectAll(collectionView)
 
