@@ -22,7 +22,9 @@ final class ColorPickerView: NSView {
     // MARK: OUTLET
 
     @IBOutlet weak var collectionView: NSCollectionView!
-
+    @IBOutlet weak var colorWheelView: ColorGraphicsView!
+    @IBOutlet weak var colorWheelContainerView: NSView!
+    
     // MARK: Variables
 
     weak var delegate: ColorPickerViewDelegate?
@@ -52,7 +54,17 @@ final class ColorPickerView: NSView {
 extension ColorPickerView {
 
     fileprivate func initCommon() {
-
+        colorWheelView.selectedHSBComponent = .brightness
+        colorWheelContainerView.wantsLayer = true
+        colorWheelContainerView.layer?.masksToBounds = true
+        wantsLayer = true
+        layer?.masksToBounds = true
+        layer?.cornerRadius = 8
+        if #available(OSX 10.13, *) {
+            layer?.backgroundColor = NSColor(named: "color-picker-background")?.cgColor
+        } else {
+            layer?.backgroundColor = ConvertHexColor.hexCode(toNSColor: "#f9f9f9")?.cgColor
+        }
     }
 
     fileprivate func initCollectionView() {
