@@ -48,7 +48,7 @@ final class ClientCellView: NSTableCellView {
 
     fileprivate func initTracking() {
         let trackingArea = NSTrackingArea(rect: bounds,
-                                          options: [.activeInKeyWindow, .inVisibleRect, .mouseEnteredAndExited],
+                                          options: [.activeAlways, .inVisibleRect, .mouseEnteredAndExited],
                                           owner: self,
                                           userInfo: nil)
         addTrackingArea(trackingArea)

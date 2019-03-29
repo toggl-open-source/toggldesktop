@@ -18,7 +18,7 @@ class AutoCompleteViewDataSource: NSObject {
     // MARK: Variables
     private let maxHeight: CGFloat = 600.0
     private(set) var items: [Any] = []
-    private var autoCompleteView: AutoCompleteView!
+    private(set) var autoCompleteView: AutoCompleteView!
     weak var delegate: AutoCompleteViewDataSourceDelegate?
     var count: Int {
         return items.count

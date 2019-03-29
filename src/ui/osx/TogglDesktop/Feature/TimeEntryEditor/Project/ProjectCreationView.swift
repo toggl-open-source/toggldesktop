@@ -164,6 +164,10 @@ extension ProjectCreationView: ColorPickerViewDelegate {
 extension ProjectCreationView: AutoCompleteViewDataSourceDelegate {
 
     func autoCompleteSelectionDidChange(sender: AutoCompleteViewDataSource, item: Any) {
-        
+        if sender == clientDatasource {
+            guard let client = item as? Client else { return }
+            clientAutoComplete.stringValue = client.name
+            clientAutoComplete.closeSuggestion()
+        }
     }
 }
