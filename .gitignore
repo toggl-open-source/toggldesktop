@@ -88,6 +88,7 @@ src/ui/windows/TogglDesktop/TogglDesktopUpdater/bin
 src/lib/windows/TogglDesktopDLL/Debug
 src/lib/windows/TogglDesktopDLL/Release_VS
 src/lib/windows/TogglDesktopDLL/Release
+src/ui/windows/TogglDesktop/.vs
 
 *.dSYM
 
@@ -164,3 +165,10 @@ src/ui/windows/TogglDesktop/TogglDesktopDLLInteropTest/bin
 
 # Qt Creator
 .*.swp
+
+# poco binaries
+third_party/poco/bin
+third_party/poco/lib
+
+# Resharper user settings
+*.DotSettings.user
