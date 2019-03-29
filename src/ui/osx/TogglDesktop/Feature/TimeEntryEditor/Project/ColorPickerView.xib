@@ -20,7 +20,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="220" height="70"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <collectionView selectable="YES" allowsEmptySelection="NO" id="52y-nX-aep">
+                            <collectionView selectable="YES" id="52y-nX-aep">
                                 <rect key="frame" x="0.0" y="0.0" width="220" height="70"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumInteritemSpacing="10" minimumLineSpacing="10" id="jeB-XW-ECn">

@@ -146,4 +146,8 @@ extension ProjectCreationView: ColorPickerViewDelegate {
     func colorPickerDidSelectColor(_ color: ProjectColor) {
         selectedColor = color
     }
+
+    func colorPickerDidSelectCustomeColor(_ color: ProjectColor) {
+        
+    }
 }

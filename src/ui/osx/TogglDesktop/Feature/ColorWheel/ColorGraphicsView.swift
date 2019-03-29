@@ -7,15 +7,23 @@
 
 import Cocoa
 
-@IBDesignable
-class ColorGraphicsView: NSView {
+protocol ChangeColorDelegate: class {
+    /// Called on every drag event
+    func colorChanged(color: HSV)
+
+    /// Called when mouse is released
+    func colorSettled(color: HSV)
+}
+
+
+final class ColorGraphicsView: NSView {
     
     override func prepareForInterfaceBuilder() {
         currentColor = HSV(h: 40, s: 0.8, v: 0.7)
         selectedHSBComponent = .brightness
     }
     
-    var delegate: ChangeColorDelegate?
+    weak var delegate: ChangeColorDelegate?
     var selectedSlider: Sliders = .None
     var selectedHSBComponent: HSBComponent = .hue {
         didSet {
@@ -57,11 +65,11 @@ class ColorGraphicsView: NSView {
 
     // Rects
     
-    func totalRect() -> NSRect {
+    private func totalRect() -> NSRect {
         return bounds
     }
     
-    func mainViewRect() -> NSRect {
+    private func mainViewRect() -> NSRect {
         
         let total = totalRect()
         
@@ -71,14 +79,14 @@ class ColorGraphicsView: NSView {
         return NSRect(x: total.minX, y: total.minY + bottomMargin, width: smallestSize, height: height)
     }
     
-    func alphaSliderRect() -> NSRect {
+    private func alphaSliderRect() -> NSRect {
         
         let mainRect = mainViewRect()
         
         return NSRect(x: totalRect().minX, y: mainRect.minY - (Constants.verticalMargin * 2 + Constants.bottomSliderHeight * 2), width: mainRect.width, height: Constants.bottomSliderHeight)
     }
     
-    func secondarySliderRect() -> NSRect {
+    private func secondarySliderRect() -> NSRect {
         
         let mainRect = mainViewRect()
         
@@ -86,11 +94,11 @@ class ColorGraphicsView: NSView {
     }
     
     // MARK: Draw functions
-    var hsbSquare: CGImage?
-    var hsbSquareColor: HSV = HSV(h: 0, s: 1, v: 1)
-    var hsbSquarePreviousComponet: HSBComponent? = nil
+    private var hsbSquare: CGImage?
+    private var hsbSquareColor: HSV = HSV(h: 0, s: 1, v: 1)
+    private var hsbSquarePreviousComponet: HSBComponent? = nil
     
-    func drawMainView(_ context: CGContext) {
+    private func drawMainView(_ context: CGContext) {
         
         if (hsbSquare == nil || hsbSquarePreviousComponet == nil ||
             hsbSquarePreviousComponet != selectedHSBComponent || hsbSquareColor.h != currentColor.h) {
@@ -109,13 +117,13 @@ class ColorGraphicsView: NSView {
             }
             
         }
-        
+
         context.draw(hsbSquare!, in: mainViewRect())
     }
-    
+
     // MARK: Secondary slider functions
     
-    func secondaryPointingArrowOrigin() -> CGPoint {
+    private func secondaryPointingArrowOrigin() -> CGPoint {
         let sliderRect = secondarySliderRect()
         
         var x: CGFloat = 0
@@ -135,7 +143,7 @@ class ColorGraphicsView: NSView {
         return CGPoint(x: x, y: sliderRect.maxY)
     }
     
-    func drawSecondarySlider(_ context: CGContext) {
+    private func drawSecondarySlider(_ context: CGContext) {
         
         let sliderRect = secondarySliderRect()
         
@@ -147,7 +155,7 @@ class ColorGraphicsView: NSView {
     
     // MARK: Alpha slider functions
     
-    func alphaPointingArrowOrigin() -> CGPoint {
+    private func alphaPointingArrowOrigin() -> CGPoint {
         let alphaRec = alphaSliderRect()
         
         let x = currentColor.a * alphaRec.width + totalRect().minX
@@ -155,7 +163,7 @@ class ColorGraphicsView: NSView {
         return CGPoint(x: x, y: alphaRec.maxY)
     }
     
-    func drawAlphaSlider(_ context: CGContext) {
+    private func drawAlphaSlider(_ context: CGContext) {
         let colorSpace = CGColorSpaceCreateDeviceRGB()
         
         let color = currentColor.toNSColor().withAlphaComponent(1).cgColor
@@ -176,7 +184,7 @@ class ColorGraphicsView: NSView {
         drawPointingArrow(context, position: alphaPointingArrowOrigin())
     }
     
-    func drawMainCircleIndicator(_ context: CGContext) {
+    private func drawMainCircleIndicator(_ context: CGContext) {
         
         let viewRect = mainViewRect()
         
@@ -207,7 +215,7 @@ class ColorGraphicsView: NSView {
         context.resetClip()
     }
     
-    func pointingArrowBountingRect(position: CGPoint) -> CGRect {
+    private func pointingArrowBountingRect(position: CGPoint) -> CGRect {
         let size: CGFloat = 0.25
         
         let offset = CGPoint(x: position.x, y: position.y - 30 * size - 6)
@@ -219,7 +227,7 @@ class ColorGraphicsView: NSView {
         
     }
     
-    func drawPointingArrow(_ context: CGContext, position: CGPoint) {
+    private func drawPointingArrow(_ context: CGContext, position: CGPoint) {
         
         let size: CGFloat = 0.25
         
@@ -317,7 +325,7 @@ extension ColorGraphicsView {
         self.delegate?.colorSettled(color: currentColor)
     }
     
-    func updateMainCursor(locationInWindow: NSPoint) {
+    private func updateMainCursor(locationInWindow: NSPoint) {
         var newColor = currentColor
         let mainWindowRect = convert(mainViewRect(), to: window?.contentView)
         
@@ -349,7 +357,7 @@ extension ColorGraphicsView {
         delegate?.colorChanged(color: newColor)
     }
     
-    func updateSecondaryCursor(locationInWindow: NSPoint) {
+    private func updateSecondaryCursor(locationInWindow: NSPoint) {
         var newColor = currentColor
         let secondaryWindowRect = convert(secondarySliderRect(), to: window?.contentView)
         
@@ -374,7 +382,7 @@ extension ColorGraphicsView {
         delegate?.colorChanged(color: newColor)
     }
     
-    func updateAlphaCursor(locationInWindow: NSPoint) {
+    private func updateAlphaCursor(locationInWindow: NSPoint) {
         var newColor = currentColor
         let alphaWindowRect = convert(alphaSliderRect(), to: window?.contentView)
         
@@ -388,12 +396,4 @@ extension ColorGraphicsView {
         currentColor = newColor
         delegate?.colorChanged(color: newColor)
     }
-}
-
-protocol ChangeColorDelegate {
-    /// Called on every drag event
-    func colorChanged(color: HSV)
-    
-    /// Called when mouse is released
-    func colorSettled(color: HSV)
 }
