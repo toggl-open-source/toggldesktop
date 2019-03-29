@@ -55,16 +55,8 @@
 
 - (NSAttributedString *)attributeStringWithClient:(NSString *)client taskID:(NSInteger)taskID task:(NSString *)task project:(NSString *)project
 {
-	NSString *clientTitle = [NSString stringWithFormat:@"• %@", client];
-	NSMutableAttributedString *clientName = [[NSMutableAttributedString alloc] initWithString:clientTitle];
-
-	[clientName setAttributes:
-	 @{
-		 NSFontAttributeName : [NSFont systemFontOfSize:12],
-		 NSForegroundColorAttributeName:[self clientTextColor]
-	 }
-						range:NSMakeRange(0, [clientName length])];
 	NSMutableAttributedString *string;
+
 	if (taskID != 0)
 	{
 		string = [[NSMutableAttributedString alloc] initWithString:[task stringByAppendingString:@". "]];
@@ -85,7 +77,19 @@
 		string = [[NSMutableAttributedString alloc] initWithString:[project stringByAppendingString:@" "]];
 	}
 
-	[string appendAttributedString:clientName];
+	if ([client length] > 0)
+	{
+		NSString *clientTitle = [NSString stringWithFormat:@"• %@", client];
+		NSMutableAttributedString *clientName = [[NSMutableAttributedString alloc] initWithString:clientTitle];
+
+		[clientName setAttributes:
+		 @{
+			 NSFontAttributeName : [NSFont systemFontOfSize:12],
+			 NSForegroundColorAttributeName:[self clientTextColor]
+		 }
+							range:NSMakeRange(0, [clientName length])];
+		[string appendAttributedString:clientName];
+	}
 	return [string copy];
 }
 
