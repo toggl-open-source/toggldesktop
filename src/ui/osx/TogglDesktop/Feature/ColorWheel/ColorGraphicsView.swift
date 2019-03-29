@@ -52,28 +52,23 @@ class ColorGraphicsView: NSView {
     
     fileprivate struct Constants {
         static let bottomSliderHeight: CGFloat = 16.0
-        static let verticalMargin: CGFloat = 8.0
+        static let verticalMargin: CGFloat = 10.0
     }
-    
-    
-    
+
     // Rects
     
     func totalRect() -> NSRect {
-        return bounds.insetBy(dx: 16, dy: 16)
+        return bounds
     }
     
     func mainViewRect() -> NSRect {
         
         let total = totalRect()
         
-        let bottomMargin: CGFloat = Constants.bottomSliderHeight * 2 + Constants.verticalMargin * 2
+        let bottomMargin: CGFloat = Constants.bottomSliderHeight + Constants.verticalMargin
         let height = total.height - bottomMargin
-        
-        let smallestSize = min(total.width, height)
-        let difference = max(height - total.width, 0.0)
-        
-        return NSRect(x: total.minX, y: total.minY + bottomMargin + difference, width: smallestSize, height: smallestSize)
+        let smallestSize = total.width
+        return NSRect(x: total.minX, y: total.minY + bottomMargin, width: smallestSize, height: height)
     }
     
     func alphaSliderRect() -> NSRect {
