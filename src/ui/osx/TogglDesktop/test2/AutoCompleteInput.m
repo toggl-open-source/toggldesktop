@@ -113,7 +113,12 @@ NSString *upArrow = @"\u25B2";
 	NSLayoutConstraint *top = [NSLayoutConstraint constraintWithItem:self.autocompleteTableContainer attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeBottom multiplier:1 constant:[self topPaddingForContainer]];
 
 	self.heightConstraint = [NSLayoutConstraint constraintWithItem:self.autocompleteTableContainer attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:0];
-	[self.window.contentView addConstraints:@[left, right, top, self.heightConstraint]];
+	self.heightConstraint.priority = NSLayoutPriorityDefaultHigh;
+
+	NSLayoutConstraint *bottom = [NSLayoutConstraint constraintWithItem:self.autocompleteTableContainer attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationGreaterThanOrEqual toItem:view attribute:NSLayoutAttributeBottom multiplier:1 constant:0];
+	bottom.priority = NSLayoutPriorityDefaultLow;
+
+	[self.window.contentView addConstraints:@[left, right, top, self.heightConstraint, bottom]];
 }
 
 - (void)setPos:(int)posy
@@ -140,7 +145,19 @@ NSString *upArrow = @"\u25B2";
 
 - (void)updateDropdownWithHeight:(CGFloat)height
 {
-	CGFloat suitableHeight = MIN(height, self.posY - 50);
+	CGFloat suitableHeight;
+
+	switch (self.displayMode)
+	{
+		case AutoCompleteDisplayModeCompact :
+			suitableHeight = MIN(height, self.posY - 50);
+			break;
+		case AutoCompleteDisplayModeFullscreen :
+			suitableHeight = MIN(height, self.backgroundView.frame.size.height - 25);
+			break;
+		default :
+			break;
+	}
 
 	self.heightConstraint.constant = suitableHeight;
 }
