@@ -168,7 +168,6 @@ src/ui/windows/TogglDesktop/TogglDesktopDLLInteropTest/bin
 
 # poco binaries
 third_party/poco/bin
-third_party/poco/lib
 
 # Resharper user settings
 *.DotSettings.user
