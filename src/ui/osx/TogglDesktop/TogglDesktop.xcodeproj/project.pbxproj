@@ -157,6 +157,11 @@
 		BA4059B7221D46F4002969B8 /* TimeEntryCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = BA4059B6221D46F4002969B8 /* TimeEntryCollectionView.m */; };
 		BA4059B9221D53E7002969B8 /* TimeEntryDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4059B8221D53E7002969B8 /* TimeEntryDatasource.swift */; };
 		BA46E09F2226707F00C25763 /* Collection+Safe.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA46E09E2226707F00C25763 /* Collection+Safe.swift */; };
+		BA6572A6224DFA6F00BA4C60 /* RGB.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6572A0224DFA6E00BA4C60 /* RGB.swift */; };
+		BA6572A7224DFA6F00BA4C60 /* HSBGen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6572A1224DFA6E00BA4C60 /* HSBGen.swift */; };
+		BA6572A8224DFA6F00BA4C60 /* CurrentColorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6572A2224DFA6F00BA4C60 /* CurrentColorView.swift */; };
+		BA6572A9224DFA6F00BA4C60 /* ColorGraphicsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6572A3224DFA6F00BA4C60 /* ColorGraphicsView.swift */; };
+		BA6572AA224DFA6F00BA4C60 /* HSV.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6572A4224DFA6F00BA4C60 /* HSV.swift */; };
 		BA6E873521DDC1E2005E2451 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA6E86B621DDB331005E2451 /* Sparkle.framework */; };
 		BA6E873621DDC1E2005E2451 /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA6E86B621DDB331005E2451 /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BA6EB8942249DB33003BB8EF /* VerticallyCenteredTextFieldCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6EB8752249DB33003BB8EF /* VerticallyCenteredTextFieldCell.swift */; };
@@ -747,6 +752,11 @@
 		BA4059B6221D46F4002969B8 /* TimeEntryCollectionView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TimeEntryCollectionView.m; sourceTree = "<group>"; };
 		BA4059B8221D53E7002969B8 /* TimeEntryDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeEntryDatasource.swift; sourceTree = "<group>"; };
 		BA46E09E2226707F00C25763 /* Collection+Safe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collection+Safe.swift"; sourceTree = "<group>"; };
+		BA6572A0224DFA6E00BA4C60 /* RGB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RGB.swift; sourceTree = "<group>"; };
+		BA6572A1224DFA6E00BA4C60 /* HSBGen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HSBGen.swift; sourceTree = "<group>"; };
+		BA6572A2224DFA6F00BA4C60 /* CurrentColorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrentColorView.swift; sourceTree = "<group>"; };
+		BA6572A3224DFA6F00BA4C60 /* ColorGraphicsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorGraphicsView.swift; sourceTree = "<group>"; };
+		BA6572A4224DFA6F00BA4C60 /* HSV.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HSV.swift; sourceTree = "<group>"; };
 		BA6E86A521DDB331005E2451 /* Sparkle.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Sparkle.xcodeproj; path = ../../../../third_party/Sparkle/Sparkle.xcodeproj; sourceTree = "<group>"; };
 		BA6EB8752249DB33003BB8EF /* VerticallyCenteredTextFieldCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerticallyCenteredTextFieldCell.swift; sourceTree = "<group>"; };
 		BA6EB83F2248CBE3003BB8EF /* ProjectStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectStorage.swift; sourceTree = "<group>"; };
@@ -1364,6 +1374,18 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		BA657280224DFA4F00BA4C60 /* ColorWheel */ = {
+			isa = PBXGroup;
+			children = (
+				BA6572A3224DFA6F00BA4C60 /* ColorGraphicsView.swift */,
+				BA6572A2224DFA6F00BA4C60 /* CurrentColorView.swift */,
+				BA6572A1224DFA6E00BA4C60 /* HSBGen.swift */,
+				BA6572A4224DFA6F00BA4C60 /* HSV.swift */,
+				BA6572A0224DFA6E00BA4C60 /* RGB.swift */,
+			);
+			path = ColorWheel;
+			sourceTree = "<group>";
+		};
 		BA6E86A621DDB331005E2451 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -1392,6 +1414,7 @@
 		BA712EAF21BF904E00A2D8DD /* Feature */ = {
 			isa = PBXGroup;
 			children = (
+				BA657280224DFA4F00BA4C60 /* ColorWheel */,
 				BA34F0DB22439BF300C27A15 /* TimeEntryEditor */,
 				BAD15FDC223A521900A8CCC9 /* TimeEntryEmptyView */,
 				BA0C3A45223219330081C6DE /* AutoComplete */,
@@ -1589,6 +1612,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 				et,
@@ -2016,12 +2040,14 @@
 				69FC180117E6534400B96425 /* main.m in Sources */,
 				74F1070118993FFE00E93BD5 /* FeedbackWindowController.m in Sources */,
 				BA03725521FE9FD400FC277B /* FlatButton.swift in Sources */,
+				BA6572AA224DFA6F00BA4C60 /* HSV.swift in Sources */,
 				69FC180817E6534400B96425 /* AppDelegate.m in Sources */,
 				BA34F10022439C3000C27A15 /* EditorViewController.swift in Sources */,
 				BA0C3A6722321FBC0081C6DE /* AutoCompleteTableCell+Ext.swift in Sources */,
 				3C6B24A4203FC8200063FC08 /* LiteAutoCompleteDataSource.m in Sources */,
 				3C068C6A1C22F25000874B9A /* MKColorWellCustom.m in Sources */,
 				3CA14529192DE32300414620 /* NSViewEscapable.m in Sources */,
+				BA6572A9224DFA6F00BA4C60 /* ColorGraphicsView.swift in Sources */,
 				3C0A571B1C22E12E00301D77 /* MKColorSwatchCell.m in Sources */,
 				3CD30F431F58B02C006FAA0D /* OverlayViewController.m in Sources */,
 				74D1D25617EB713F00E709B0 /* TimeEntryListViewController.m in Sources */,
@@ -2077,14 +2103,17 @@
 				BAAF569E2223D4C7003D0D73 /* DotImageView.swift in Sources */,
 				3C0A571A1C22E12E00301D77 /* MKColorPickerView.m in Sources */,
 				BAE8E845224CA9AC006D534E /* ProjectAutoCompleteTextField.swift in Sources */,
+				BA6572A7224DFA6F00BA4C60 /* HSBGen.swift in Sources */,
 				BA2E3F2C22375E640035D034 /* NSView+Appearance.swift in Sources */,
 				74E3CDC817FBABE400C3ADD3 /* BugsnagConfiguration.m in Sources */,
 				743D782A182791FA00978BCC /* idler.c in Sources */,
 				BA9C2DF8224C7E44002AD2A1 /* ProjectCreationView.swift in Sources */,
 				74AA9473180909F50000539F /* GTMOAuth2Authentication.m in Sources */,
 				BA7B4C7C21C293E700B75B14 /* String+Optional.swift in Sources */,
+				BA6572A8224DFA6F00BA4C60 /* CurrentColorView.swift in Sources */,
 				BA2DA12021A691FF0027B7A5 /* TrackingService.m in Sources */,
 				3C6B2486203E01D90063FC08 /* AutoCompleteTableCell.m in Sources */,
+				BA6572A6224DFA6F00BA4C60 /* RGB.swift in Sources */,
 				3CE30E022052BD8B00AF2E2A /* AutoCompleteTableContainer.m in Sources */,
 				BA0C3A65223219470081C6DE /* AutoCompleteCellType.swift in Sources */,
 				3C0A571D1C22E12E00301D77 /* MKColorWell+Bindings.m in Sources */,
