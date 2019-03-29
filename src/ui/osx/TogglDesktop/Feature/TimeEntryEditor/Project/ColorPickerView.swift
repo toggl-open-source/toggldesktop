@@ -55,6 +55,7 @@ extension ColorPickerView {
 
     fileprivate func initCommon() {
         colorWheelView.selectedHSBComponent = .brightness
+        colorWheelView.delegate = self
         colorWheelContainerView.wantsLayer = true
         colorWheelContainerView.layer?.masksToBounds = true
         wantsLayer = true
@@ -82,6 +83,7 @@ extension ColorPickerView {
     }
 }
 
+// MARK: NSCollectionViewDelegate & NSCollectionViewDataSource
 extension ColorPickerView: NSCollectionViewDelegate, NSCollectionViewDataSource, NSCollectionViewDelegateFlowLayout {
 
     func numberOfSections(in collectionView: NSCollectionView) -> Int {
@@ -102,6 +104,26 @@ extension ColorPickerView: NSCollectionViewDelegate, NSCollectionViewDataSource,
     func collectionView(_ collectionView: NSCollectionView, didSelectItemsAt indexPaths: Set<IndexPath>) {
         guard let selection = indexPaths.first else { return }
         let color = colors[selection.item]
+        delegate?.colorPickerDidSelectColor(color)
+    }
+}
+
+// MARK: ColorPickerViewDelegate
+
+extension ColorPickerView: ChangeColorDelegate {
+
+    func colorChanged(color: HSV) {
+        notifySelectedColorChange(with: color)
+    }
+
+    func colorSettled(color: HSV) {
+        collectionView.deselectAll(collectionView)
+        notifySelectedColorChange(with: color)
+    }
+
+    private func notifySelectedColorChange(with color: HSV) {
+        let hex = color.toRGB().toHEX()
+        let color = ProjectColor(colorHex: hex)
         delegate?.colorPickerDidSelectColor(color)
     }
 }
