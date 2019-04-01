@@ -136,7 +136,7 @@
                                 <rect key="frame" x="1" y="1" width="218" height="28"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
-                                    <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="I8L-vz-Mr7" customClass="AutoCompleteTextField" customModule="TogglDesktop" customModuleProvider="target">
+                                    <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="I8L-vz-Mr7" customClass="WorkspaceAutoCompleteTextField" customModule="TogglDesktop" customModuleProvider="target">
                                         <rect key="frame" x="-2" y="0.0" width="222" height="28"/>
                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" alignment="left" placeholderString="Marketing Department" id="Kqx-Qa-pyM" customClass="VerticallyCenteredTextFieldCell" customModule="TogglDesktop" customModuleProvider="target">
                                             <font key="font" metaFont="system" size="14"/>
@@ -240,8 +240,8 @@
                 <outlet property="clientAutoComplete" destination="cCQ-e0-gV1" id="sMM-dm-fm9"/>
                 <outlet property="colorBtn" destination="Zz6-Ng-Mjf" id="dah-ED-Ork"/>
                 <outlet property="colorPickerContainerView" destination="Z6i-Vm-FEs" id="v2g-mc-5rf"/>
-                <outlet property="marketingAutoComplete" destination="I8L-vz-Mr7" id="Sxo-1a-jZN"/>
                 <outlet property="projectTextField" destination="eQK-O0-2vn" id="yle-Cg-xGS"/>
+                <outlet property="workspaceAutoComplete" destination="I8L-vz-Mr7" id="CXb-Ky-yPT"/>
             </connections>
             <point key="canvasLocation" x="76" y="167"/>
         </customView>

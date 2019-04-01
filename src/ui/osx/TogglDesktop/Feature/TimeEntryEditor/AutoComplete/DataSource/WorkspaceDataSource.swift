@@ -25,4 +25,42 @@ struct Workspace {
 
 final class WorkspaceDataSource: AutoCompleteViewDataSource {
 
+    private struct Constants {
+
+        static let CellID = NSUserInterfaceItemIdentifier("WorkspaceCellView")
+        static let CellNibName = NSNib.Name("WorkspaceCellView")
+    }
+
+    // MARK: Variables
+
+    override func registerCustomeCells() {
+        tableView.register(NSNib(nibNamed: Constants.CellNibName, bundle: nil),
+                           forIdentifier: Constants.CellID)
+    }
+
+    override func filter(with text: String) {
+
+        // show all
+        if text.isEmpty {
+            render(with: WorkspaceStorage.shared.workspaces)
+            return
+        }
+
+        // Filter
+        let filterItems = WorkspaceStorage.shared.filter(with: text)
+        render(with: filterItems)
+    }
+
+    // MARK: Public
+
+    override func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
+        let item = items[row] as! Workspace
+        let view = tableView.makeView(withIdentifier: Constants.CellID, owner: self) as! WorkspaceCellView
+        view.render(item)
+        return view
+    }
+
+    override func tableView(_ tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
+        return WorkspaceCellView.cellHeight
+    }
 }

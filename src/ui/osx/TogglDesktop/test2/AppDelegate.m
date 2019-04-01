@@ -1678,6 +1678,7 @@ void on_workspace_select(TogglGenericView *first)
 
 	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayWorkspaceSelect
 																object:viewItems];
+	[[WorkspaceStorage shared] updateWith:viewItems];
 }
 
 void on_time_entry_editor(const bool_t open,

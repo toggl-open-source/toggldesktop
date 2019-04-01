@@ -35,7 +35,7 @@ final class ProjectCreationView: NSView {
 
     @IBOutlet weak var addBtn: NSButton!
     @IBOutlet weak var projectTextField: NSTextField!
-    @IBOutlet weak var marketingAutoComplete: AutoCompleteTextField!
+    @IBOutlet weak var workspaceAutoComplete: WorkspaceAutoCompleteTextField!
     @IBOutlet weak var clientAutoComplete: ClientAutoCompleteTextField!
     @IBOutlet weak var colorBtn: CursorButton!
     @IBOutlet weak var colorPickerContainerView: NSView!
@@ -43,6 +43,8 @@ final class ProjectCreationView: NSView {
     // MARK: Variables
     private lazy var clientDatasource = ClientDataSource.init(items: ClientStorage.shared.clients,
                                                               updateNotificationName: .ClientStorageChangedNotification)
+    private lazy var workspaceDatasource = WorkspaceDataSource.init(items: WorkspaceStorage.shared.workspaces,
+                                                                    updateNotificationName: .WorkspaceStorageChangedNotification)
     weak var delegate: ProjectCreationViewDelegate?
     private var originalColor = ProjectColor.default
     private var selectedColor = ProjectColor.default {
@@ -76,6 +78,8 @@ final class ProjectCreationView: NSView {
         clientDatasource.delegate = self
         clientAutoComplete.prepare(with: clientDatasource,
                                    parentView:  self)
+        workspaceDatasource.delegate = self
+        workspaceAutoComplete.prepare(with: workspaceDatasource, parentView: self)
     }
 
     func setTitleAndFocus(_ title: String) {
@@ -168,6 +172,11 @@ extension ProjectCreationView: AutoCompleteViewDataSourceDelegate {
             guard let client = item as? Client else { return }
             clientAutoComplete.stringValue = client.name
             clientAutoComplete.closeSuggestion()
+        }
+        if sender == workspaceDatasource {
+            guard let workspace = item as? Workspace else { return }
+            workspaceAutoComplete.stringValue = workspace.name
+            workspaceAutoComplete.closeSuggestion()
         }
     }
 }
