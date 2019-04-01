@@ -1674,8 +1674,10 @@ void on_client_select(TogglGenericView *first)
 
 void on_workspace_select(TogglGenericView *first)
 {
+	NSArray<ViewItem *> *viewItems = [ViewItem loadAll:first];
+
 	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayWorkspaceSelect
-																object:[ViewItem loadAll:first]];
+																object:viewItems];
 }
 
 void on_time_entry_editor(const bool_t open,
