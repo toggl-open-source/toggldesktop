@@ -73,7 +73,12 @@ class AutoCompleteViewDataSource: NSObject {
     }
 
     func selectSelectedRow() {
-        selectCurrentSelectedRow()
+        selectRow(at: tableView.selectedRow)
+    }
+
+    func selectRow(at index: Int) {
+        let item = items[index]
+        delegate?.autoCompleteSelectionDidChange(sender: self, item: item)
     }
 
     private func sizeToFit() {
@@ -116,14 +121,5 @@ extension AutoCompleteViewDataSource: NSTableViewDataSource, NSTableViewDelegate
 
     func tableView(_ tableView: NSTableView, shouldSelectRow row: Int) -> Bool {
         return true
-    }
-
-    func tableViewSelectionIsChanging(_ notification: Notification) {
-        selectCurrentSelectedRow()
-    }
-
-    fileprivate func selectCurrentSelectedRow() {
-        let item = items[tableView.selectedRow]
-        delegate?.autoCompleteSelectionDidChange(sender: self, item: item)
     }
 }
