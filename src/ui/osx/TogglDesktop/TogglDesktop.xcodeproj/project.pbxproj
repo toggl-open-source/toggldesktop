@@ -194,6 +194,8 @@
 		BA7DB6E321F9C77A0059239B /* MASShortcut.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA7DB6D221F9C7660059239B /* MASShortcut.framework */; };
 		BA7DB6E421F9C77A0059239B /* MASShortcut.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA7DB6D221F9C7660059239B /* MASShortcut.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BA80BEB2221EAE6F00BDFD35 /* Array+ByGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA80BEB1221EAE6F00BDFD35 /* Array+ByGroup.swift */; };
+		BA8B4C752251FAD500592BC7 /* WorkspaceCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA8B4C742251FAD500592BC7 /* WorkspaceCellView.swift */; };
+		BA8B4C772251FADF00592BC7 /* WorkspaceCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA8B4C762251FADF00592BC7 /* WorkspaceCellView.xib */; };
 		BA9C2DF8224C7E44002AD2A1 /* ProjectCreationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA9C2DF7224C7E44002AD2A1 /* ProjectCreationView.swift */; };
 		BA9C2DFA224C7E77002AD2A1 /* ProjectCreationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA9C2DF9224C7E77002AD2A1 /* ProjectCreationView.xib */; };
 		BA9C2DFC224C8235002AD2A1 /* ColorPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA9C2DFB224C8235002AD2A1 /* ColorPickerView.swift */; };
@@ -799,6 +801,8 @@
 		BA7D335D2248B48000B953A8 /* AutoCompleteTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoCompleteTextField.swift; sourceTree = "<group>"; };
 		BA7DB6BB21F9C7660059239B /* MASShortcut.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MASShortcut.xcodeproj; path = ../../../../third_party/MASShortcut/MASShortcut.xcodeproj; sourceTree = "<group>"; };
 		BA80BEB1221EAE6F00BDFD35 /* Array+ByGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+ByGroup.swift"; sourceTree = "<group>"; };
+		BA8B4C742251FAD500592BC7 /* WorkspaceCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceCellView.swift; sourceTree = "<group>"; };
+		BA8B4C762251FADF00592BC7 /* WorkspaceCellView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WorkspaceCellView.xib; sourceTree = "<group>"; };
 		BA9C2DF7224C7E44002AD2A1 /* ProjectCreationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectCreationView.swift; sourceTree = "<group>"; };
 		BA9C2DF9224C7E77002AD2A1 /* ProjectCreationView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProjectCreationView.xib; sourceTree = "<group>"; };
 		BA9C2DFB224C8235002AD2A1 /* ColorPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickerView.swift; sourceTree = "<group>"; };
@@ -1343,6 +1347,7 @@
 		BA34F0DB22439BF300C27A15 /* TimeEntryEditor */ = {
 			isa = PBXGroup;
 			children = (
+				BA8B4C522251FA6900592BC7 /* Workspace */,
 				BA412C1B224E0D3E003CA17A /* Client */,
 				BA9C2DD8224C7E2E002AD2A1 /* Project */,
 				BA7D332B2248940800B953A8 /* AutoComplete */,
@@ -1398,7 +1403,10 @@
 		BA412C1B224E0D3E003CA17A /* Client */ = {
 			isa = PBXGroup;
 			children = (
-				BA412C1F224E1169003CA17A /* Cells */,
+				BA412C20224E1189003CA17A /* ClientCellView.swift */,
+				BA412C22224E11AC003CA17A /* ClientCellView.xib */,
+				BA412C26224E195C003CA17A /* NoClientCellView.swift */,
+				BA412C28224E196D003CA17A /* NoClientCellView.xib */,
 			);
 			path = Client;
 			sourceTree = "<group>";
@@ -1410,17 +1418,6 @@
 				BA7D33522248981200B953A8 /* ProjectHeaderCellView.xib */,
 				BA7D33502248980B00B953A8 /* ProjectContentCellView.swift */,
 				BA7D3354224898E400B953A8 /* ProjectContentCellView.xib */,
-			);
-			path = Cells;
-			sourceTree = "<group>";
-		};
-		BA412C1F224E1169003CA17A /* Cells */ = {
-			isa = PBXGroup;
-			children = (
-				BA412C20224E1189003CA17A /* ClientCellView.swift */,
-				BA412C22224E11AC003CA17A /* ClientCellView.xib */,
-				BA412C26224E195C003CA17A /* NoClientCellView.swift */,
-				BA412C28224E196D003CA17A /* NoClientCellView.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -1532,6 +1529,15 @@
 				BA7DB6D621F9C7660059239B /* Demo.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		BA8B4C522251FA6900592BC7 /* Workspace */ = {
+			isa = PBXGroup;
+			children = (
+				BA8B4C742251FAD500592BC7 /* WorkspaceCellView.swift */,
+				BA8B4C762251FADF00592BC7 /* WorkspaceCellView.xib */,
+			);
+			path = Workspace;
 			sourceTree = "<group>";
 		};
 		BA9C2DD8224C7E2E002AD2A1 /* Project */ = {
@@ -1960,6 +1966,7 @@
 				74F1070218993FFE00E93BD5 /* FeedbackWindowController.xib in Resources */,
 				3C4237171A9F612E00643059 /* toggl-logo-white.pdf in Resources */,
 				7423393D1829B99C00063FA9 /* IdleNotificationWindowController.xib in Resources */,
+				BA8B4C772251FADF00592BC7 /* WorkspaceCellView.xib in Resources */,
 				95DBF8CD18BF7A910021FB41 /* offline_on.pdf in Resources */,
 				69FC180B17E6534500B96425 /* MainMenu.xib in Resources */,
 				BA7D334D2248945300B953A8 /* AutoCompleteView.xib in Resources */,
@@ -2168,6 +2175,7 @@
 				3C0A571A1C22E12E00301D77 /* MKColorPickerView.m in Sources */,
 				BAE8E845224CA9AC006D534E /* ProjectAutoCompleteTextField.swift in Sources */,
 				BA6572A7224DFA6F00BA4C60 /* HSBGen.swift in Sources */,
+				BA8B4C752251FAD500592BC7 /* WorkspaceCellView.swift in Sources */,
 				BA2E3F2C22375E640035D034 /* NSView+Appearance.swift in Sources */,
 				74E3CDC817FBABE400C3ADD3 /* BugsnagConfiguration.m in Sources */,
 				743D782A182791FA00978BCC /* idler.c in Sources */,
