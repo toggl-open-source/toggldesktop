@@ -48,7 +48,7 @@ extension EditorViewController {
 
     fileprivate func initDatasource() {
         projectDatasource.delegate = self
-        projectTextField.prepare(with: projectDatasource, parentView: view)
+        projectDatasource.setup(with: projectTextField)
     }
 }
 

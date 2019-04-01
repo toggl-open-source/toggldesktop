@@ -21,11 +21,8 @@ class AutoCompleteTextField: NSTextField, NSTextFieldDelegate, AutoCompleteViewD
 
     // MARK: Variables
 
-    lazy var autoCompleteWindow: AutoCompleteViewWindow = {
-        let window = AutoCompleteViewWindow(view: autoCompleteView)
-        return window
-    }()
-    private let autoCompleteView: AutoCompleteView = AutoCompleteView.xibView()
+    lazy var autoCompleteWindow: AutoCompleteViewWindow = AutoCompleteViewWindow(view: autoCompleteView)
+    lazy var autoCompleteView: AutoCompleteView = AutoCompleteView.xibView()
 
     // MARK: Init
 
@@ -42,10 +39,6 @@ class AutoCompleteTextField: NSTextField, NSTextFieldDelegate, AutoCompleteViewD
     }
 
     // MARK: Public
-
-    func prepare(with dataSource: AutoCompleteViewDataSource, parentView: NSView) {
-        autoCompleteView.prepare(with: dataSource)
-    }
 
     func controlTextDidEndEditing(_ obj: Notification) {
         arrowBtn.image = NSImage(named: NSImage.Name("arrow-section-close"))

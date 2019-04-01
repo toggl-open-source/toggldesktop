@@ -33,6 +33,11 @@ final class WorkspaceDataSource: AutoCompleteViewDataSource {
 
     // MARK: Variables
 
+    override func setup(with textField: AutoCompleteTextField) {
+        super.setup(with: textField)
+        autoCompleteView.setCreateButtonSectionHidden(true)
+    }
+
     override func registerCustomeCells() {
         tableView.register(NSNib(nibNamed: Constants.CellNibName, bundle: nil),
                            forIdentifier: Constants.CellID)

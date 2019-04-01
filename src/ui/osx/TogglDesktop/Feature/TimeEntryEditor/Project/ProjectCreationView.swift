@@ -76,10 +76,9 @@ final class ProjectCreationView: NSView {
         initCommon()
 
         clientDatasource.delegate = self
-        clientAutoComplete.prepare(with: clientDatasource,
-                                   parentView:  self)
+        clientDatasource.setup(with: clientAutoComplete)
         workspaceDatasource.delegate = self
-        workspaceAutoComplete.prepare(with: workspaceDatasource, parentView: self)
+        workspaceDatasource.setup(with: workspaceAutoComplete)
     }
 
     func setTitleAndFocus(_ title: String) {

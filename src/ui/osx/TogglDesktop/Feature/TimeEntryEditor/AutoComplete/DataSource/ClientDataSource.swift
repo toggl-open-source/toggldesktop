@@ -73,10 +73,12 @@ final class ClientDataSource: AutoCompleteViewDataSource {
         // Hide create if it's has content
         if let first = items.first as? Client, first.isEmpty {
             autoCompleteView.setCreateButtonSectionHidden(false)
+            autoCompleteView.updateTitleForCreateButton(with: "Create Client ")
         } else {
             autoCompleteView.setCreateButtonSectionHidden(true)
         }
     }
+
     // MARK: Public
 
     override func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
