@@ -11,6 +11,7 @@ import Cocoa
 final class KeyboardTableView: NSTableView {
 
     typealias KeyUpClosure = (Key) -> Void
+    typealias ClickedOnRowClosure = (Int) -> Void
 
     enum Key: UInt16 {
         case returnKey                  = 0x24
@@ -18,11 +19,24 @@ final class KeyboardTableView: NSTableView {
         case tab                       = 0x30
     }
 
+    // MARK: Variables
+
     var keyUpOnPress: KeyUpClosure?
+    var clickedOnRow: ClickedOnRowClosure?
+
+    // MARK: Public
 
     override func keyDown(with event: NSEvent) {
         super.keyDown(with: event)
         guard let key = Key(rawValue: event.keyCode) else { return }
         keyUpOnPress?(key)
+    }
+
+    override func mouseDown(with event: NSEvent) {
+        super.mouseDown(with: event)
+
+        let point = convert(event.locationInWindow, from: nil)
+        let rowIndex = row(at: point)
+        clickedOnRow?(rowIndex)
     }
 }

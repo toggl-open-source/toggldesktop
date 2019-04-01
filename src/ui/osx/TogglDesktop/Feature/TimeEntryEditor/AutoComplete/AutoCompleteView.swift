@@ -126,5 +126,9 @@ extension AutoCompleteView {
                 break
             }
         }
+
+        tableView.clickedOnRow = {[weak self] clickedRow in
+            self?.dataSource.selectRow(at: clickedRow)
+        }
     }
 }
