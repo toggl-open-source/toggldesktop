@@ -4358,6 +4358,7 @@ void Context::syncerActivity() {
                 err = pushChanges(&client, &trigger_sync_);
                 trigger_push_ = false;
                 if (err != noError) {
+                    user_->ConfirmLoadedMore();
                     displayError(err);
                     return;
                 } else {
@@ -4385,6 +4386,7 @@ void Context::syncerActivity() {
 
                 error err = pushChanges(&client, &trigger_sync_);
                 if (err != noError) {
+                    user_->ConfirmLoadedMore();
                     displayError(err);
                 } else {
                     setOnline("Data pushed");
@@ -4709,6 +4711,8 @@ error Context::pushChanges(
                 api_token,
                 *toggl_client);
             if (err != noError) {
+                // Hide load more button when offline
+                user_->ConfirmLoadedMore();
                 // Reload list to show unsynced icons in items
                 UIElements render;
                 render.display_time_entries = true;
