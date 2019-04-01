@@ -43,6 +43,8 @@ class AutoCompleteTextField: NSTextField, NSTextFieldDelegate, AutoCompleteViewD
                 closeAutoComplete()
             case .expand:
                 presentAutoComplete()
+                guard currentEditor() != nil else { return }
+                self.bringSubviewToFront(arrowBtn)
             }
         }
     }
@@ -140,7 +142,9 @@ extension AutoCompleteTextField {
         arrowBtn.translatesAutoresizingMaskIntoConstraints = false
         addSubview(arrowBtn)
         arrowBtn.centerYAnchor.constraint(equalTo: centerYAnchor, constant: 0).isActive = true
-        arrowBtn.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15.0).isActive = true
+        arrowBtn.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10).isActive = true
+        arrowBtn.widthAnchor.constraint(equalToConstant: 20).isActive = true
+        arrowBtn.heightAnchor.constraint(equalToConstant: 20).isActive = true
     }
 
     func control(_ control: NSControl, textView: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
