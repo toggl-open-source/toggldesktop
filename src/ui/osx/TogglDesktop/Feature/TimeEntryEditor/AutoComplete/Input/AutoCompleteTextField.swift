@@ -10,12 +10,22 @@ import Foundation
 
 class AutoCompleteTextField: NSTextField, NSTextFieldDelegate, AutoCompleteViewDelegate {
 
+    enum State {
+        case expand
+        case collapse
+    }
+
     // MARK: OUTLET
 
     private lazy var arrowBtn: CursorButton = {
         let button = CursorButton(frame: NSRect.zero)
         button.image = NSImage(named: NSImage.Name("arrow-section-close"))
         button.cursor = .pointingHand
+        button.target = self
+        button.action = #selector(self.arrowBtnOnTap)
+        button.setButtonType(NSButton.ButtonType.momentaryPushIn)
+        button.isBordered = false
+        button.bezelStyle = NSButton.BezelStyle.texturedRounded
         return button
     }()
 
@@ -23,6 +33,26 @@ class AutoCompleteTextField: NSTextField, NSTextFieldDelegate, AutoCompleteViewD
 
     lazy var autoCompleteWindow: AutoCompleteViewWindow = AutoCompleteViewWindow(view: autoCompleteView)
     lazy var autoCompleteView: AutoCompleteView = AutoCompleteView.xibView()
+    private var _state = State.collapse {
+        didSet {
+            let name = state == .collapse ? NSImage.Name("arrow-section-open") : NSImage.Name("arrow-section-close")
+            arrowBtn.image = NSImage(named: name)
+
+            switch state {
+            case .collapse:
+                closeAutoComplete()
+            case .expand:
+                presentAutoComplete()
+            }
+        }
+    }
+    private var state: State {
+        get { return _state }
+        set {
+            guard newValue != state else { return }
+            _state = newValue
+        }
+    }
 
     // MARK: Init
 
@@ -41,20 +71,25 @@ class AutoCompleteTextField: NSTextField, NSTextFieldDelegate, AutoCompleteViewD
     // MARK: Public
 
     func controlTextDidEndEditing(_ obj: Notification) {
-        arrowBtn.image = NSImage(named: NSImage.Name("arrow-section-close"))
-        autoCompleteWindow.cancel()
+        state = .collapse
     }
 
     func controlTextDidChange(_ obj: Notification) {
-        presentAutoComplete()
+        state = .expand
+        autoCompleteView.filter(with: self.stringValue)
     }
 
     @objc func arrowBtnOnTap() {
-        presentAutoComplete()
+        switch state {
+        case .collapse:
+            state = .expand
+        case .expand:
+            state = .collapse
+        }
     }
 
     func closeSuggestion() {
-        autoCompleteWindow.cancel()
+        state = .collapse
     }
 
     func updateWindowContent(with view: NSView, height: CGFloat) {
@@ -63,10 +98,11 @@ class AutoCompleteTextField: NSTextField, NSTextFieldDelegate, AutoCompleteViewD
         autoCompleteWindow.makeKey()
     }
 
-    private func presentAutoComplete() {
+    private func closeAutoComplete() {
+        autoCompleteWindow.cancel()
+    }
 
-        //
-        arrowBtn.image = NSImage(named: NSImage.Name("arrow-section-open"))
+    private func presentAutoComplete() {
 
         // Set auto complete table
         autoCompleteWindow.contentView = autoCompleteView
@@ -97,6 +133,7 @@ extension AutoCompleteTextField {
     fileprivate func initCommon() {
         delegate = self
         autoCompleteView.delegate = self
+        state = .collapse
     }
 
     fileprivate func initArrowBtn() {
