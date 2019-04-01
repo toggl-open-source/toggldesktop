@@ -22,6 +22,10 @@
 #define kTimelineUploadIntervalSeconds 60
 #define kTimelineUploadMaxBackoffSeconds (kTimelineUploadIntervalSeconds * 10)  // NOLINT
 #define kMaxFileSize 5242880  // 5MB
+#define kMaxDurationSeconds (999 * 3600)
+#define kMaxTagsPerTimeEntry 50
+#define kMinimumAllowedYear 2006
+#define kMaximumAllowedYear 2030
 
 #define kLostPasswordURL "https://toggl.com/forgot-password?desktop=true"
 #define kGeneralSupportURL "https://support.toggl.com/toggl-on-my-desktop/"
@@ -32,6 +36,13 @@
 
 #define kContentTypeMultipartFormData "multipart/form-data"
 #define kContentTypeApplicationJSON "application/json"
+
+// Data validation errors
+#define kOverMaxDurationError "Max allowed duration per 1 time entry is 999 hours"
+#define kMaxTagsPerTimeEntryError "Tags are limited to 50 per task"
+#define kInvalidStartTimeError "Start time year must be between 2006 and 2030"
+#define kInvalidStopTimeError "Stop time year must be between 2006 and 2030"
+#define kStartNotBeforeStopError "Stop time must be after start time"
 
 #define kCheckYourSignupError "Signup failed - please check your details. The e-mail might be already taken."  // NOLINT
 #define kEndpointGoneError "The API endpoint used by this app is gone. Please contact Toggl support!"  // NOLINT
