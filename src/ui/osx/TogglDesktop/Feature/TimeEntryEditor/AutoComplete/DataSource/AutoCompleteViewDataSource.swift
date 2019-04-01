@@ -44,8 +44,9 @@ class AutoCompleteViewDataSource: NSObject {
 
     // MARK: Public
 
-    func prepare(_ autoCompleteView: AutoCompleteView) {
-        self.autoCompleteView = autoCompleteView
+    func setup(with textField: AutoCompleteTextField) {
+        self.autoCompleteView = textField.autoCompleteView
+        self.autoCompleteView.prepare(with: self)
         registerCustomeCells()
         tableView.delegate = self
         tableView.dataSource = self

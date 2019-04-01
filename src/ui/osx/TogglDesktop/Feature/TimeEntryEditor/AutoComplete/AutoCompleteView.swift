@@ -78,7 +78,7 @@ final class AutoCompleteView: NSView {
     // MARK: Variables
 
     weak var delegate: AutoCompleteViewDelegate?
-    private var dataSource: AutoCompleteViewDataSource!
+    private weak var dataSource: AutoCompleteViewDataSource?
 
     // MARK: Public
 
@@ -90,11 +90,10 @@ final class AutoCompleteView: NSView {
 
     func prepare(with dataSource: AutoCompleteViewDataSource) {
         self.dataSource = dataSource
-        self.dataSource.prepare(self)
     }
 
     func filter(with text: String) {
-        dataSource.filter(with: text)
+        dataSource?.filter(with: text)
     }
 
     func update(height: CGFloat) {
@@ -104,6 +103,10 @@ final class AutoCompleteView: NSView {
     func setCreateButtonSectionHidden(_ isHidden: Bool) {
         horizontalLine.isHidden = isHidden
         createNewItemContainerView.isHidden = isHidden
+    }
+
+    func updateTitleForCreateButton(with text: String) {
+        createNewItemBtn.title = text
     }
 
     @IBAction func createNewItemOnTap(_ sender: Any) {
@@ -121,14 +124,13 @@ extension AutoCompleteView {
             switch key {
             case .enter,
                  .returnKey:
-                self?.dataSource.selectSelectedRow()
+                self?.dataSource?.selectSelectedRow()
             default:
                 break
             }
         }
-
         tableView.clickedOnRow = {[weak self] clickedRow in
-            self?.dataSource.selectRow(at: clickedRow)
+            self?.dataSource?.selectRow(at: clickedRow)
         }
     }
 }
