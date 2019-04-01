@@ -12,10 +12,6 @@ final class ClientAutoCompleteTextField: AutoCompleteTextField {
 
     // MARK: Variables
 
-    override func controlTextDidChange(_ obj: Notification) {
-        super.controlTextDidChange(obj)
-
-    }
     override func didTapOnCreateButton() {
 
     }
