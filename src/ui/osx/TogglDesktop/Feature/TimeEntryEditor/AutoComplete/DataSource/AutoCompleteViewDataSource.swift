@@ -19,6 +19,7 @@ class AutoCompleteViewDataSource: NSObject {
     private let maxHeight: CGFloat = 600.0
     private(set) var items: [Any] = []
     private(set) var autoCompleteView: AutoCompleteView!
+    private(set) var textField: AutoCompleteTextField!
     weak var delegate: AutoCompleteViewDataSourceDelegate?
     var count: Int {
         return items.count
@@ -45,6 +46,7 @@ class AutoCompleteViewDataSource: NSObject {
     // MARK: Public
 
     func setup(with textField: AutoCompleteTextField) {
+        self.textField = textField
         self.autoCompleteView = textField.autoCompleteView
         self.autoCompleteView.prepare(with: self)
         registerCustomeCells()
