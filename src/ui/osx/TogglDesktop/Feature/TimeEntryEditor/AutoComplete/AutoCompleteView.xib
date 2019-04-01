@@ -77,9 +77,9 @@
                                             <rect key="frame" x="0.0" y="0.0" width="244" height="46"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
-                                                <button verticalHuggingPriority="750" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sT2-gq-IUf" customClass="CursorButton" customModule="TogglDesktop" customModuleProvider="target">
-                                                    <rect key="frame" x="0.0" y="0.0" width="244" height="46"/>
-                                                    <buttonCell key="cell" type="bevel" title=" Create a new Project" bezelStyle="rounded" image="add-icon" imagePosition="left" alignment="center" imageScaling="proportionallyDown" inset="2" id="thJ-D8-tYu">
+                                                <button horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sT2-gq-IUf" customClass="CursorButton" customModule="TogglDesktop" customModuleProvider="target">
+                                                    <rect key="frame" x="8" y="0.0" width="228" height="46"/>
+                                                    <buttonCell key="cell" type="bevel" title=" Create a new Project" bezelStyle="rounded" image="add-icon" imagePosition="left" alignment="center" lineBreakMode="truncatingTail" imageScaling="proportionallyDown" inset="2" id="thJ-D8-tYu">
                                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                         <font key="font" metaFont="system" size="14"/>
                                                     </buttonCell>
@@ -90,10 +90,10 @@
                                                 </button>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="sT2-gq-IUf" secondAttribute="trailing" constant="8" id="8Ig-JV-Y1r"/>
+                                                <constraint firstItem="sT2-gq-IUf" firstAttribute="leading" secondItem="jOf-Uz-5NP" secondAttribute="leading" constant="8" id="I89-gG-Pzq"/>
                                                 <constraint firstItem="sT2-gq-IUf" firstAttribute="top" secondItem="jOf-Uz-5NP" secondAttribute="top" id="Y5J-oX-GnP"/>
                                                 <constraint firstAttribute="bottom" secondItem="sT2-gq-IUf" secondAttribute="bottom" id="ZFe-WR-Eon"/>
-                                                <constraint firstAttribute="trailing" secondItem="sT2-gq-IUf" secondAttribute="trailing" id="j23-j5-jTx"/>
-                                                <constraint firstItem="sT2-gq-IUf" firstAttribute="leading" secondItem="jOf-Uz-5NP" secondAttribute="leading" id="y3A-Lh-cwa"/>
                                             </constraints>
                                         </view>
                                         <constraints>

@@ -73,7 +73,7 @@ final class ClientDataSource: AutoCompleteViewDataSource {
         // Hide create if it's has content
         if let first = items.first as? Client, first.isEmpty {
             autoCompleteView.setCreateButtonSectionHidden(false)
-            autoCompleteView.updateTitleForCreateButton(with: "Create Client ")
+            autoCompleteView.updateTitleForCreateButton(with: "Create Client \"\(textField.stringValue)\"")
         } else {
             autoCompleteView.setCreateButtonSectionHidden(true)
         }
