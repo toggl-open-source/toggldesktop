@@ -102,6 +102,7 @@ final class ProjectCreationView: NSView {
         }
 
         // Safe for unwrapped
+        let isBillable = selectedTimeEntry.billable
         let timeEntryGUID = selectedTimeEntry.guid!
         let workspaceID = selectedWorkspace.ID
         let clientID = selectedClient.ID
@@ -116,6 +117,10 @@ final class ProjectCreationView: NSView {
                                                                     projectName: projectName,
                                                                     colorHex: colorHex,
                                                                     isPublic: isPublic)
+        if projectID != nil && selectedTimeEntry.billable {
+            DesktopLibraryBridge.shared().setBillableForTimeEntryWithTimeEntryGUID(timeEntryGUID,
+                                                                                   isBillable: isBillable)
+        }
         delegate?.projectCreationDidAdd()
     }
 

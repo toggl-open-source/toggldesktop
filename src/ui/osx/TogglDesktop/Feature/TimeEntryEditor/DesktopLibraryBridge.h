@@ -25,6 +25,9 @@ NS_ASSUME_NONNULL_BEGIN
 									colorHex:(NSString *)colorHex
 									isPublic:(BOOL)isPublic;
 
+- (void)setBillableForTimeEntryWithTimeEntryGUID:(NSString *)timeEntryGUID
+                                      isBillable:(BOOL)isBillable;
+
 @end
 
 NS_ASSUME_NONNULL_END
