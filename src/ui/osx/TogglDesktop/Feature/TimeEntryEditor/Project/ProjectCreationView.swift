@@ -84,6 +84,7 @@ final class ProjectCreationView: NSView {
 
         initCommon()
         updateLayoutState()
+        selecteFirstWorkspace()
     }
 
     func setTitleAndFocus(_ title: String) {
@@ -209,6 +210,11 @@ extension ProjectCreationView {
         }
 
         addBtn.isEnabled = true
+    }
+
+    fileprivate func selecteFirstWorkspace() {
+        guard !workspaceDatasource.items.isEmpty else { return }
+        workspaceDatasource.selectRow(at: 0)
     }
 }
 

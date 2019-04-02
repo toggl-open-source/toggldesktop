@@ -297,6 +297,7 @@ extern void *ctx;
 
 	if (cmd.open)
 	{
+		TimeEntryViewItem *timeEntry = cmd.timeEntry;
 		self.runningEdit = (cmd.timeEntry.duration_in_seconds < 0);
 
 		NSView *ofView = self.view;
@@ -328,7 +329,9 @@ extern void *ctx;
 		}
 
 		// Show popover
-		[self.timeEntrypopover presentTo:positionRect of:ofView];
+		[self.timeEntrypopover presentWith:timeEntry
+										to:positionRect
+										of:ofView];
 
 //        BOOL onLeft = (self.view.window.frame.origin.x > self.timeEntryPopupEditView.window.frame.origin.x);
 //        [self.timeEntryEditViewController setDragHandle:onLeft];
