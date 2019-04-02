@@ -9,8 +9,11 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="EditorViewController" customModule="TogglDesktop" customModuleProvider="target">
             <connections>
+                <outlet property="billableCheckBox" destination="vpV-Av-rbR" id="7vp-xl-qrd"/>
+                <outlet property="descriptionTextField" destination="EMT-i8-OD1" id="PN4-q1-PU7"/>
                 <outlet property="projectBox" destination="HK8-ig-0Mv" id="Dnb-C3-7iP"/>
                 <outlet property="projectTextField" destination="Doe-dQ-82A" id="cgo-cM-Mbh"/>
+                <outlet property="tagTextField" destination="euZ-Fv-idX" id="lqe-b7-4g3"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
             </connections>
         </customObject>
@@ -183,8 +186,8 @@
                                 </textFieldCell>
                             </textField>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="vpV-Av-rbR">
-                                <rect key="frame" x="8" y="77" width="64" height="18"/>
-                                <buttonCell key="cell" type="check" title="Check" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="y28-TJ-qRF">
+                                <rect key="frame" x="8" y="77" width="69" height="18"/>
+                                <buttonCell key="cell" type="check" title="Billable" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="y28-TJ-qRF">
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                     <font key="font" metaFont="system" size="14"/>
                                 </buttonCell>
