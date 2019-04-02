@@ -39,10 +39,14 @@ final class ProjectCreationView: NSView {
     @IBOutlet weak var clientAutoComplete: ClientAutoCompleteTextField!
     @IBOutlet weak var colorBtn: CursorButton!
     @IBOutlet weak var colorPickerContainerView: NSView!
-
+    @IBOutlet weak var publicProjectCheckBox: NSButton!
+    
     // MARK: Variables
+
+    var selectedTimeEntry: TimeEntryViewItem!
     private(set) var selectedWorkspace: Workspace?
     private(set) var selectedClient: Client?
+    private var isPublic = false
     private lazy var clientDatasource = ClientDataSource.init(items: ClientStorage.shared.clients,
                                                               updateNotificationName: .ClientStorageChangedNotification)
     private lazy var workspaceDatasource = WorkspaceDataSource.init(items: WorkspaceStorage.shared.workspaces,
@@ -69,6 +73,9 @@ final class ProjectCreationView: NSView {
     var suitableHeight: CGFloat {
         return displayMode.height
     }
+    var isValidDataForProjectCreation: Bool {
+        return selectedClient != nil && selectedWorkspace != nil && !projectTextField.stringValue.isEmpty
+    }
 
     // MARK: Public
 
@@ -89,11 +96,31 @@ final class ProjectCreationView: NSView {
     }
 
     @IBAction func addBtnOnTap(_ sender: Any) {
+        guard isValidDataForProjectCreation else { return }
+        guard let selectedWorkspace = selectedWorkspace, let selectedClient = selectedClient else {
+            return
+        }
+
+        // Safe for unwrapped
+        let timeEntryGUID = selectedTimeEntry.guid!
+        let workspaceID = selectedWorkspace.ID
+        let clientID = selectedClient.ID
+        let clientGUID = selectedClient.guid!
+        let projectName = projectTextField.stringValue
+        let colorHex = selectedColor.colorHex
+
+        let projectID = DesktopLibraryBridge.shared().createProject(withTimeEntryGUID: timeEntryGUID,
+                                                                    workspaceID: workspaceID,
+                                                                    clientID: clientID,
+                                                                    clientGUID: clientGUID,
+                                                                    projectName: projectName,
+                                                                    colorHex: colorHex,
+                                                                    isPublic: isPublic)
         delegate?.projectCreationDidAdd()
     }
 
     @IBAction func publicProjectOnChange(_ sender: Any) {
-
+        isPublic = publicProjectCheckBox.state == .on
     }
 
     @IBAction func colorBtnOnTap(_ sender: Any) {
@@ -171,7 +198,7 @@ extension ProjectCreationView {
     }
 
     fileprivate func updateLayoutState() {
-        guard selectedClient != nil && selectedWorkspace != nil && !projectTextField.stringValue.isEmpty else {
+        guard isValidDataForProjectCreation else {
             addBtn.isEnabled = false
             return
         }

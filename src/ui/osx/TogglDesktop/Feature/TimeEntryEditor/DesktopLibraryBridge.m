@@ -24,7 +24,8 @@ void *ctx;
 	return instance;
 }
 
-- (NSString *)createClientWithWorkspaceID:(uint64_t)workspaceID clientName:(NSString *)clientName
+- (NSString *)createClientWithWorkspaceID:(uint64_t)workspaceID
+							   clientName:(NSString *)clientName
 {
 	char *clientGUID = toggl_create_client(ctx,
 										   workspaceID,
@@ -32,6 +33,28 @@ void *ctx;
 	NSString *guid = [NSString stringWithUTF8String:clientGUID];
 
 	free(clientGUID);
+	return guid;
+}
+
+- (NSString *)createProjectWithTimeEntryGUID:(NSString *)timeEntryGUID
+								 workspaceID:(uint64_t)workspaceID
+									clientID:(uint64_t)clientID
+								  clientGUID:(NSString *)clientGUID
+								 projectName:(NSString *)projectName
+									colorHex:(NSString *)colorHex
+									isPublic:(BOOL)isPublic
+{
+	char_t *projectGUID = toggl_add_project(ctx,
+											[timeEntryGUID UTF8String],
+											workspaceID,
+											clientID,
+											[clientGUID UTF8String],
+											[projectName UTF8String],
+											!isPublic,
+											[colorHex UTF8String]);
+	NSString *guid = [NSString stringWithUTF8String:projectGUID];
+
+	free(projectGUID);
 	return guid;
 }
 
