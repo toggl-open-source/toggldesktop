@@ -58,4 +58,10 @@ void *ctx;
 	return guid;
 }
 
+- (void)setBillableForTimeEntryWithTimeEntryGUID:(NSString *)timeEntryGUID
+									  isBillable:(BOOL)isBillable
+{
+	toggl_set_time_entry_billable(ctx, [timeEntryGUID UTF8String], isBillable);
+}
+
 @end
