@@ -20,8 +20,9 @@ final class ProjectAutoCompleteTextField: AutoCompleteTextField {
 
     func setTimeEntry(_ timeEntry: TimeEntryViewItem) {
         projectCreationView.selectedTimeEntry = timeEntry
+        stringValue = timeEntry.projectLabel
     }
-    
+
     override func didTapOnCreateButton() {
         super.didTapOnCreateButton()
 

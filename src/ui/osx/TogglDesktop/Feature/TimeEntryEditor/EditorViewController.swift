@@ -14,19 +14,18 @@ final class EditorViewController: NSViewController {
 
     @IBOutlet weak var projectBox: NSBox!
     @IBOutlet weak var projectTextField: ProjectAutoCompleteTextField!
+    @IBOutlet weak var descriptionTextField: NSTextField!
+    @IBOutlet weak var tagTextField: NSTextField!
+    @IBOutlet weak var billableCheckBox: NSButton!
 
     // MARK: Variables
 
     var timeEntry: TimeEntryViewItem! {
         didSet {
-            projectTextField.setTimeEntry(timeEntry)
+            fillData()
         }
     }
-    private var selectedProjectItem: ProjectContentItem? {
-        didSet {
-            projectTextField.stringValue = selectedProjectItem?.name ?? ""
-        }
-    }
+    private var selectedProjectItem: ProjectContentItem?
     private lazy var projectDatasource = ProjectDataSource(items: ProjectStorage.shared.items,
                                                            updateNotificationName: .ProjectStorageChangedNotification)
 
@@ -56,6 +55,12 @@ extension EditorViewController {
         projectDatasource.delegate = self
         projectDatasource.setup(with: projectTextField)
     }
+
+    fileprivate func fillData() {
+        descriptionTextField.stringValue = timeEntry.descriptionName
+        billableCheckBox.state = timeEntry.billable ? .on : .off
+        projectTextField.setTimeEntry(timeEntry)
+    }
 }
 
 // MARK: AutoCompleteViewDataSourceDelegate
@@ -66,6 +71,7 @@ extension EditorViewController: AutoCompleteViewDataSourceDelegate {
         if sender == projectDatasource {
             if let projectItem = item as? ProjectContentItem {
                 selectedProjectItem = projectItem
+                projectTextField.stringValue = projectItem.name
                 projectTextField.closeSuggestion()
             }
         }
