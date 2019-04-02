@@ -64,4 +64,15 @@ void *ctx;
 	toggl_set_time_entry_billable(ctx, [timeEntryGUID UTF8String], isBillable);
 }
 
+- (void)setProjectForTimeEntryWithGUID:(NSString *)guid
+								taskID:(uint64_t)taskID
+							 projectID:(uint64_t)projectID
+{
+	toggl_set_time_entry_project(ctx,
+								 [guid UTF8String],
+								 taskID,
+								 projectID,
+								 0);
+}
+
 @end

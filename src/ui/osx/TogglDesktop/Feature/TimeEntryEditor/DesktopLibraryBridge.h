@@ -28,6 +28,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)setBillableForTimeEntryWithTimeEntryGUID:(NSString *)timeEntryGUID
 									  isBillable:(BOOL)isBillable;
 
+- (void)setProjectForTimeEntryWithGUID:(NSString *)guid
+								taskID:(uint64_t)taskID
+							 projectID:(uint64_t)projectID;
+
 @end
 
 NS_ASSUME_NONNULL_END
