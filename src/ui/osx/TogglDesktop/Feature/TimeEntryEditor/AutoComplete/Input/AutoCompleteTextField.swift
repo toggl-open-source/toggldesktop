@@ -8,6 +8,11 @@
 
 import Foundation
 
+protocol AutoCompleteTextFieldDelegate: class {
+
+    func autoCompleteDidTapOnCreateButton(_ sender: AutoCompleteTextField)
+}
+
 class AutoCompleteTextField: NSTextField, NSTextFieldDelegate, AutoCompleteViewDelegate {
 
     enum State {
@@ -31,6 +36,7 @@ class AutoCompleteTextField: NSTextField, NSTextFieldDelegate, AutoCompleteViewD
 
     // MARK: Variables
 
+    weak var autoCompleteDelegate: AutoCompleteTextFieldDelegate?
     lazy var autoCompleteWindow: AutoCompleteViewWindow = AutoCompleteViewWindow(view: autoCompleteView)
     lazy var autoCompleteView: AutoCompleteView = AutoCompleteView.xibView()
     private var _state = State.collapse {
@@ -124,7 +130,7 @@ class AutoCompleteTextField: NSTextField, NSTextFieldDelegate, AutoCompleteViewD
     }
 
     func didTapOnCreateButton() {
-
+        autoCompleteDelegate?.autoCompleteDidTapOnCreateButton(self)
     }
 }
 

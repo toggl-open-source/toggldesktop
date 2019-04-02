@@ -11,3 +11,4 @@
 #import "AutoCompleteTableCell.h"
 #import "ProjectTextField.h"
 #import "ViewItem.h"
+#import "DesktopLibraryBridge.h"

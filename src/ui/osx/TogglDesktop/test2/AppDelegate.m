@@ -1622,7 +1622,10 @@ void on_project_autocomplete(TogglAutocompleteView *first)
 
 	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayProjectAutocomplete
 																object:items];
-	[[ProjectStorage shared] updateWith:items];
+
+	dispatch_async(dispatch_get_main_queue(), ^{
+		[[ProjectStorage shared] updateWith:items];
+	});
 }
 
 void on_tags(TogglGenericView *first)
@@ -1669,7 +1672,9 @@ void on_client_select(TogglGenericView *first)
 
 	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayClientSelect
 																object:viewItems];
-	[[ClientStorage shared] updateWith:viewItems];
+	dispatch_async(dispatch_get_main_queue(), ^{
+		[[ClientStorage shared] updateWith:viewItems];
+	});
 }
 
 void on_workspace_select(TogglGenericView *first)
@@ -1678,7 +1683,9 @@ void on_workspace_select(TogglGenericView *first)
 
 	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayWorkspaceSelect
 																object:viewItems];
-	[[WorkspaceStorage shared] updateWith:viewItems];
+	dispatch_async(dispatch_get_main_queue(), ^{
+		[[WorkspaceStorage shared] updateWith:viewItems];
+	});
 }
 
 void on_time_entry_editor(const bool_t open,

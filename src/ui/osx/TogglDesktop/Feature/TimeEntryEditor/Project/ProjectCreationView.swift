@@ -41,6 +41,8 @@ final class ProjectCreationView: NSView {
     @IBOutlet weak var colorPickerContainerView: NSView!
 
     // MARK: Variables
+    private(set) var selectedWorkspace: Workspace?
+    private(set) var selectedClient: Client?
     private lazy var clientDatasource = ClientDataSource.init(items: ClientStorage.shared.clients,
                                                               updateNotificationName: .ClientStorageChangedNotification)
     private lazy var workspaceDatasource = WorkspaceDataSource.init(items: WorkspaceStorage.shared.workspaces,
@@ -120,6 +122,9 @@ extension ProjectCreationView {
         // Default value
         selectedColor = ProjectColor.default
         displayMode = .compact
+
+        // Delegate
+        clientAutoComplete.autoCompleteDelegate = self
     }
 
     fileprivate func updateLayout() {
@@ -147,6 +152,21 @@ extension ProjectCreationView {
             return NSColor(white: 0, alpha: 0.1)
         }
     }
+
+    fileprivate func createNewClient(with name: String) {
+        guard !name.isEmpty else { return }
+
+        // Focus to workspace text field if user hasn't selected any workspace
+        guard let workspace = selectedWorkspace else {
+            window?.makeFirstResponder(workspaceAutoComplete)
+            return
+        }
+
+        let newClientGUID = DesktopLibraryBridge.shared().createClient(withWorkspaceID: workspace.ID, clientName: name)
+        if let newClient = ClientStorage.shared.clients.first(where: { $0.guid == newClientGUID }) {
+            self.selectedClient = newClient
+        }
+    }
 }
 
 // MARK: ColorPickerViewDelegate
@@ -169,13 +189,26 @@ extension ProjectCreationView: AutoCompleteViewDataSourceDelegate {
     func autoCompleteSelectionDidChange(sender: AutoCompleteViewDataSource, item: Any) {
         if sender == clientDatasource {
             guard let client = item as? Client else { return }
+            self.selectedClient = client
             clientAutoComplete.stringValue = client.name
             clientAutoComplete.closeSuggestion()
         }
         if sender == workspaceDatasource {
             guard let workspace = item as? Workspace else { return }
+            self.selectedWorkspace = workspace
             workspaceAutoComplete.stringValue = workspace.name
             workspaceAutoComplete.closeSuggestion()
+        }
+    }
+}
+
+// MARK: AutoCompleteTextFieldDelegate
+
+extension ProjectCreationView: AutoCompleteTextFieldDelegate {
+
+    func autoCompleteDidTapOnCreateButton(_ sender: AutoCompleteTextField) {
+        if sender == clientAutoComplete {
+            createNewClient(with: clientAutoComplete.stringValue)
         }
     }
 }

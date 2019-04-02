@@ -9,10 +9,4 @@
 import Foundation
 
 final class ClientAutoCompleteTextField: AutoCompleteTextField {
-
-    // MARK: Variables
-
-    override func didTapOnCreateButton() {
-        super.didTapOnCreateButton()
-    }
 }

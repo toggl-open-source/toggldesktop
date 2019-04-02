@@ -316,7 +316,7 @@ extern void *ctx;
 		}
 		else
 		{
-            // It's for new Time Entry from Manual Timer
+			// It's for new Time Entry from Manual Timer
 			NSCollectionViewItem *firstItem = [self.collectionView itemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
 			if ([firstItem isKindOfClass:[TimeEntryCell class]])
 			{
