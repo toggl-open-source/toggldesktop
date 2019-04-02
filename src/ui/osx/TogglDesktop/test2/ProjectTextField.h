@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface ProjectTextField : NSTextField
 
 @property (assign, nonatomic) BOOL isInTimerBar;
+@property (assign, nonatomic) BOOL renderClient;
 
 - (void)setTitleWithTimeEntry:(TimeEntryViewItem *)item;
 - (void)setTitleWithAutoCompleteItem:(AutocompleteItem *)item;
