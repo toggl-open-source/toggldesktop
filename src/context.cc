@@ -2788,7 +2788,7 @@ error Context::SetTimeEntryDuration(
 
     // validate the value
     int seconds = Formatter::ParseDurationString(duration);
-    if (seconds > kMaxDurationSeconds) {
+    if (seconds >= kMaxDurationSeconds) {
         return displayError(error(kOverMaxDurationError));
     }
 
