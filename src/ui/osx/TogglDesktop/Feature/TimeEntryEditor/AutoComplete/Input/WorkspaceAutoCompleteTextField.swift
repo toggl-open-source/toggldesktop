@@ -9,8 +9,4 @@
 import Foundation
 
 final class WorkspaceAutoCompleteTextField: AutoCompleteTextField {
-
-    override func didTapOnCreateButton() {
-        super.didTapOnCreateButton()
-    }
 }

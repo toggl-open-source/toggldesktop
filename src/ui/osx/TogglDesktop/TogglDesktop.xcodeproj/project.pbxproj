@@ -193,6 +193,7 @@
 		BA7DB6E321F9C77A0059239B /* MASShortcut.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA7DB6D221F9C7660059239B /* MASShortcut.framework */; };
 		BA7DB6E421F9C77A0059239B /* MASShortcut.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA7DB6D221F9C7660059239B /* MASShortcut.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BA80BEB2221EAE6F00BDFD35 /* Array+ByGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA80BEB1221EAE6F00BDFD35 /* Array+ByGroup.swift */; };
+		BA84363B22533A6600EF5830 /* DesktopLibraryBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = BA84363A22533A6600EF5830 /* DesktopLibraryBridge.m */; };
 		BA8B4C752251FAD500592BC7 /* WorkspaceCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA8B4C742251FAD500592BC7 /* WorkspaceCellView.swift */; };
 		BA8B4C772251FADF00592BC7 /* WorkspaceCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA8B4C762251FADF00592BC7 /* WorkspaceCellView.xib */; };
 		BA9C2DF8224C7E44002AD2A1 /* ProjectCreationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA9C2DF7224C7E44002AD2A1 /* ProjectCreationView.swift */; };
@@ -799,6 +800,8 @@
 		BA7D335D2248B48000B953A8 /* AutoCompleteTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoCompleteTextField.swift; sourceTree = "<group>"; };
 		BA7DB6BB21F9C7660059239B /* MASShortcut.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MASShortcut.xcodeproj; path = ../../../../third_party/MASShortcut/MASShortcut.xcodeproj; sourceTree = "<group>"; };
 		BA80BEB1221EAE6F00BDFD35 /* Array+ByGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+ByGroup.swift"; sourceTree = "<group>"; };
+		BA84363922533A6600EF5830 /* DesktopLibraryBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DesktopLibraryBridge.h; sourceTree = "<group>"; };
+		BA84363A22533A6600EF5830 /* DesktopLibraryBridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DesktopLibraryBridge.m; sourceTree = "<group>"; };
 		BA8B4C742251FAD500592BC7 /* WorkspaceCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceCellView.swift; sourceTree = "<group>"; };
 		BA8B4C762251FADF00592BC7 /* WorkspaceCellView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WorkspaceCellView.xib; sourceTree = "<group>"; };
 		BA9C2DF7224C7E44002AD2A1 /* ProjectCreationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectCreationView.swift; sourceTree = "<group>"; };
@@ -1353,6 +1356,8 @@
 				BA34F0FE22439C3000C27A15 /* EditorViewController.swift */,
 				BA34F0FF22439C3000C27A15 /* EditorViewController.xib */,
 				BA0F67B6224A32F700ED0F91 /* CursorButton.swift */,
+				BA84363922533A6600EF5830 /* DesktopLibraryBridge.h */,
+				BA84363A22533A6600EF5830 /* DesktopLibraryBridge.m */,
 			);
 			path = TimeEntryEditor;
 			sourceTree = "<group>";
@@ -2125,6 +2130,7 @@
 				BA9C2E08224C854C002AD2A1 /* ProjectColor.swift in Sources */,
 				BA7D334B2248944C00B953A8 /* AutoCompleteView.swift in Sources */,
 				BA03729D21FED85700FC277B /* NSView+Xib.swift in Sources */,
+				BA84363B22533A6600EF5830 /* DesktopLibraryBridge.m in Sources */,
 				74D1D25D17EB71C100E709B0 /* TimeEntryEditViewController.m in Sources */,
 				3C0A571C1C22E12E00301D77 /* MKColorSwatchMatrix.m in Sources */,
 				BA4059B9221D53E7002969B8 /* TimeEntryDatasource.swift in Sources */,
