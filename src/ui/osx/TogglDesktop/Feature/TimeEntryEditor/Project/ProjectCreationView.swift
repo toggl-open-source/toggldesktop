@@ -118,7 +118,7 @@ final class ProjectCreationView: NSView {
                                                                     projectName: projectName,
                                                                     colorHex: colorHex,
                                                                     isPublic: isPublic)
-        if projectID != nil && selectedTimeEntry.billable {
+        if selectedTimeEntry.billable {
             DesktopLibraryBridge.shared().setBillableForTimeEntryWithTimeEntryGUID(timeEntryGUID,
                                                                                    isBillable: isBillable)
         }
