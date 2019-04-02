@@ -241,6 +241,7 @@
                 <outlet property="colorBtn" destination="Zz6-Ng-Mjf" id="dah-ED-Ork"/>
                 <outlet property="colorPickerContainerView" destination="Z6i-Vm-FEs" id="v2g-mc-5rf"/>
                 <outlet property="projectTextField" destination="eQK-O0-2vn" id="yle-Cg-xGS"/>
+                <outlet property="publicProjectCheckBox" destination="2Vy-Nq-8Ub" id="Ik7-Kv-WnW"/>
                 <outlet property="workspaceAutoComplete" destination="I8L-vz-Mr7" id="CXb-Ky-yPT"/>
             </connections>
             <point key="canvasLocation" x="76" y="167"/>
