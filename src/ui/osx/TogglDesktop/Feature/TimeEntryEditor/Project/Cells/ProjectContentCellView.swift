@@ -28,6 +28,7 @@ final class ProjectContentCellView: NSTableCellView {
     }
 
     func render(_ item: ProjectContentItem) {
+        projectTextField.renderClient = false
         projectTextField.setTitleWithAutoComplete(item.item)
         dotImageView.fill(with: ConvertHexColor.hexCode(toNSColor: item.colorHex))
     }

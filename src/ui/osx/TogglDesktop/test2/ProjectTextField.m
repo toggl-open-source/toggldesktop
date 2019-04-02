@@ -13,6 +13,23 @@
 
 @implementation ProjectTextField
 
+- (instancetype)init
+{
+	self = [super init];
+	if (self)
+	{
+		self.renderClient = YES;
+	}
+	return self;
+}
+
+- (void)awakeFromNib
+{
+	[super awakeFromNib];
+
+	self.renderClient = YES;
+}
+
 - (void)mouseDown:(NSEvent *)theEvent
 {
 	if (self.isInTimerBar)
@@ -77,7 +94,7 @@
 		string = [[NSMutableAttributedString alloc] initWithString:[project stringByAppendingString:@" "]];
 	}
 
-	if ([client length] > 0)
+	if (self.renderClient && [client length] > 0)
 	{
 		NSString *clientTitle = [NSString stringWithFormat:@"• %@", client];
 		NSMutableAttributedString *clientName = [[NSMutableAttributedString alloc] initWithString:clientTitle];
