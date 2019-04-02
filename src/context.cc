@@ -2897,7 +2897,7 @@ error Context::SetTimeEntryDate(
             Poco::Timestamp::fromEpochTime(te->Start()));
 
         // Validate date input
-        if (date_part.year() < kMinimumAllowedYear || date_part.year() > kMinimumAllowedYear) {
+        if (date_part.year() < kMinimumAllowedYear || date_part.year() > kMaximumAllowedYear) {
             return displayError(error(kInvalidDateError));
         }
 
@@ -2953,7 +2953,7 @@ error Context::SetTimeEntryStart(
     Poco::LocalDateTime local(Poco::Timestamp::fromEpochTime(te->Start()));
 
     // Validate time input
-    if (local.year() < kMinimumAllowedYear || local.year() > kMinimumAllowedYear) {
+    if (local.year() < kMinimumAllowedYear || local.year() > kMaximumAllowedYear) {
         return displayError(error(kInvalidStartTimeError));
     }
 
