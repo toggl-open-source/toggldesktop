@@ -76,11 +76,7 @@ final class ProjectCreationView: NSView {
         super.awakeFromNib()
 
         initCommon()
-
-        clientDatasource.delegate = self
-        clientDatasource.setup(with: clientAutoComplete)
-        workspaceDatasource.delegate = self
-        workspaceDatasource.setup(with: workspaceAutoComplete)
+        updateLayoutState()
     }
 
     func setTitleAndFocus(_ title: String) {
@@ -125,6 +121,12 @@ extension ProjectCreationView {
 
         // Delegate
         clientAutoComplete.autoCompleteDelegate = self
+
+        // Setup data source
+        clientDatasource.delegate = self
+        clientDatasource.setup(with: clientAutoComplete)
+        workspaceDatasource.delegate = self
+        workspaceDatasource.setup(with: workspaceAutoComplete)
     }
 
     fileprivate func updateLayout() {
@@ -167,6 +169,15 @@ extension ProjectCreationView {
             self.selectedClient = newClient
         }
     }
+
+    fileprivate func updateLayoutState() {
+        guard selectedClient != nil && selectedWorkspace != nil && !projectTextField.stringValue.isEmpty else {
+            addBtn.isEnabled = false
+            return
+        }
+
+        addBtn.isEnabled = true
+    }
 }
 
 // MARK: ColorPickerViewDelegate
@@ -199,6 +210,9 @@ extension ProjectCreationView: AutoCompleteViewDataSourceDelegate {
             workspaceAutoComplete.stringValue = workspace.name
             workspaceAutoComplete.closeSuggestion()
         }
+
+        // Update add button
+        updateLayoutState()
     }
 }
 
@@ -208,7 +222,9 @@ extension ProjectCreationView: AutoCompleteTextFieldDelegate {
 
     func autoCompleteDidTapOnCreateButton(_ sender: AutoCompleteTextField) {
         if sender == clientAutoComplete {
+            clientAutoComplete.closeSuggestion()
             createNewClient(with: clientAutoComplete.stringValue)
+            updateLayoutState()
         }
     }
 }
