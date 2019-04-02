@@ -26,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 									isPublic:(BOOL)isPublic;
 
 - (void)setBillableForTimeEntryWithTimeEntryGUID:(NSString *)timeEntryGUID
-                                      isBillable:(BOOL)isBillable;
+									  isBillable:(BOOL)isBillable;
 
 @end
 

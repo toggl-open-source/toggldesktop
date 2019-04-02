@@ -35,8 +35,15 @@ final class EditorPopover: NSPopover {
         contentViewController = editor
     }
 
-    @objc func present(to rect: NSRect, of view: NSView) {
+    @objc func present(with timeEntry: TimeEntryViewItem, to rect: NSRect, of view: NSView) {
+
+        // Present
         show(relativeTo: rect, of: view, preferredEdge: .maxX)
+
+        // Set value
+        if let editor = contentViewController as? EditorViewController {
+            editor.timeEntry = timeEntry
+        }
     }
 
     @objc func close(focusTimer: Bool) {

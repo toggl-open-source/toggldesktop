@@ -18,6 +18,10 @@ final class ProjectAutoCompleteTextField: AutoCompleteTextField {
         return view
     }()
 
+    func setTimeEntry(_ timeEntry: TimeEntryViewItem) {
+        projectCreationView.selectedTimeEntry = timeEntry
+    }
+    
     override func didTapOnCreateButton() {
         super.didTapOnCreateButton()
 

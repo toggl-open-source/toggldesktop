@@ -16,6 +16,12 @@ final class EditorViewController: NSViewController {
     @IBOutlet weak var projectTextField: ProjectAutoCompleteTextField!
 
     // MARK: Variables
+
+    var timeEntry: TimeEntryViewItem! {
+        didSet {
+            projectTextField.setTimeEntry(timeEntry)
+        }
+    }
     private var selectedProjectItem: ProjectContentItem? {
         didSet {
             projectTextField.stringValue = selectedProjectItem?.name ?? ""
