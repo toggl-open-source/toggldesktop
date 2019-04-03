@@ -49,7 +49,7 @@ final class ProjectCreationView: NSView {
         }
     }
     private(set) var selectedWorkspace: Workspace?
-    private(set) var selectedClient: Client?
+    private var selectedClient: Client?
     private var isPublic = false
     private lazy var clientDatasource = ClientDataSource.init(items: ClientStorage.shared.clients,
                                                               updateNotificationName: .ClientStorageChangedNotification)
@@ -97,6 +97,7 @@ final class ProjectCreationView: NSView {
     }
 
     @IBAction func cancelBtnOnTap(_ sender: Any) {
+        closeAllSuggestions()
         delegate?.projectCreationDidCancel()
     }
 
@@ -106,6 +107,8 @@ final class ProjectCreationView: NSView {
             return
         }
 
+        closeAllSuggestions()
+        
         // Safe for unwrapped
         let isBillable = selectedTimeEntry.billable
         let timeEntryGUID = selectedTimeEntry.guid!
@@ -207,9 +210,16 @@ extension ProjectCreationView {
         }
 
         let newClientGUID = DesktopLibraryBridge.shared().createClient(withWorkspaceID: workspace.ID, clientName: name)
-        if let newClient = ClientStorage.shared.clients.first(where: { $0.guid == newClientGUID }) {
-            self.selectedClient = newClient
-        }
+
+        // Create fake client
+        // because -createClient only return the client GUID and there is no way to construct the real ViewItem
+        let newItem = ViewItem()
+        newItem.guid = newClientGUID
+        newItem.name = name
+        self.selectedClient = Client(viewItem: newItem)
+
+        // Update
+        updateLayoutState()
     }
 
     fileprivate func updateLayoutState() {
@@ -232,6 +242,11 @@ extension ProjectCreationView {
         selectedClient = nil
         selectedColor = ProjectColor.default
         updateLayoutState()
+    }
+
+    fileprivate func closeAllSuggestions() {
+        workspaceAutoComplete.closeSuggestion()
+        clientAutoComplete.closeSuggestion()
     }
 }
 

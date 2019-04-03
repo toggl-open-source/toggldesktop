@@ -41,13 +41,12 @@ class AutoCompleteTextField: NSTextField, NSTextFieldDelegate, AutoCompleteViewD
     lazy var autoCompleteView: AutoCompleteView = AutoCompleteView.xibView()
     private var _state = State.collapse {
         didSet {
-            let name = state == .collapse ? NSImage.Name("arrow-section-open") : NSImage.Name("arrow-section-close")
-            arrowBtn.image = NSImage(named: name)
-
-            switch state {
+            switch _state {
             case .collapse:
+                arrowBtn.image = NSImage(named: NSImage.Name("arrow-section-open"))
                 closeAutoComplete()
             case .expand:
+                arrowBtn.image = NSImage(named: NSImage.Name("arrow-section-close"))
                 presentAutoComplete()
             }
         }
@@ -98,6 +97,7 @@ class AutoCompleteTextField: NSTextField, NSTextFieldDelegate, AutoCompleteViewD
         switch state {
         case .collapse:
             state = .expand
+            window?.makeFirstResponder(self)
         case .expand:
             state = .collapse
         }
@@ -134,9 +134,6 @@ class AutoCompleteTextField: NSTextField, NSTextFieldDelegate, AutoCompleteViewD
 
         // Filter
         autoCompleteView.filter(with: self.stringValue)
-
-        // Focus
-        window?.makeFirstResponder(self)
     }
 
     func didTapOnCreateButton() {

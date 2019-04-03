@@ -26,6 +26,12 @@ final class ClientCellView: NSTableCellView {
         initTracking()
     }
 
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        NSCursor.arrow.set()
+        contentContainerView.animator().alphaValue = 0.0
+    }
+
     func render(_ item: Client) {
         titleTextField.stringValue = item.name
     }

@@ -60,6 +60,7 @@
                             <constraint firstItem="E94-Yr-Bp7" firstAttribute="top" secondItem="W2E-GI-g3i" secondAttribute="top" constant="12" id="uHg-Ez-uTB"/>
                         </constraints>
                     </view>
+                    <color key="borderColor" name="color-project-btn-border-color"/>
                     <color key="fillColor" name="auto-complete-background"/>
                 </box>
                 <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OJp-YS-19d">
@@ -244,12 +245,15 @@
                 <outlet property="publicProjectCheckBox" destination="2Vy-Nq-8Ub" id="Ik7-Kv-WnW"/>
                 <outlet property="workspaceAutoComplete" destination="I8L-vz-Mr7" id="CXb-Ky-yPT"/>
             </connections>
-            <point key="canvasLocation" x="76" y="167"/>
+            <point key="canvasLocation" x="-290" y="114"/>
         </customView>
     </objects>
     <resources>
         <namedColor name="auto-complete-background">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="color-project-btn-border-color">
+            <color red="0.0" green="0.0" blue="0.0" alpha="0.10000000149011612" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="green-color">
             <color red="0.15686274509803921" green="0.80392156862745101" blue="0.25490196078431371" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
