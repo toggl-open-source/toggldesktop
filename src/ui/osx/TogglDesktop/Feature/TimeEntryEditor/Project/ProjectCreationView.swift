@@ -43,7 +43,11 @@ final class ProjectCreationView: NSView {
     
     // MARK: Variables
 
-    var selectedTimeEntry: TimeEntryViewItem!
+    var selectedTimeEntry: TimeEntryViewItem! {
+        didSet {
+            resetViews()
+        }
+    }
     private(set) var selectedWorkspace: Workspace?
     private(set) var selectedClient: Client?
     private var isPublic = false
@@ -83,8 +87,8 @@ final class ProjectCreationView: NSView {
         super.awakeFromNib()
 
         initCommon()
-        updateLayoutState()
         selecteFirstWorkspace()
+        updateLayoutState()
     }
 
     func setTitleAndFocus(_ title: String) {
@@ -122,6 +126,7 @@ final class ProjectCreationView: NSView {
             DesktopLibraryBridge.shared().setBillableForTimeEntryWithTimeEntryGUID(timeEntryGUID,
                                                                                    isBillable: isBillable)
         }
+
         delegate?.projectCreationDidAdd()
     }
 
@@ -215,6 +220,14 @@ extension ProjectCreationView {
     fileprivate func selecteFirstWorkspace() {
         guard !workspaceDatasource.items.isEmpty else { return }
         workspaceDatasource.selectRow(at: 0)
+    }
+
+    fileprivate func resetViews() {
+        selecteFirstWorkspace()
+        clientAutoComplete.stringValue = ""
+        selectedClient = nil
+        selectedColor = ProjectColor.default
+        updateLayoutState()
     }
 }
 
