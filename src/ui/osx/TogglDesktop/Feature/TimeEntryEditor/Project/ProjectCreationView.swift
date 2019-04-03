@@ -33,7 +33,8 @@ final class ProjectCreationView: NSView {
 
     // MARK: OUTLET
 
-    @IBOutlet weak var addBtn: NSButton!
+    @IBOutlet weak var addBtn: CursorButton!
+    @IBOutlet weak var cancelBtn: CursorButton!
     @IBOutlet weak var projectTextField: NSTextField!
     @IBOutlet weak var workspaceAutoComplete: WorkspaceAutoCompleteTextField!
     @IBOutlet weak var clientAutoComplete: ClientAutoCompleteTextField!
@@ -155,7 +156,9 @@ extension ProjectCreationView {
         colorBtn.layer?.cornerRadius = 12.0
         colorBtn.layer?.borderColor = colorBtnBorderColor.cgColor
         colorBtn.cursor = .pointingHand
-
+        cancelBtn.cursor = .pointingHand
+        addBtn.cursor = .pointingHand
+        
         // Default value
         selectedColor = ProjectColor.default
         displayMode = .compact

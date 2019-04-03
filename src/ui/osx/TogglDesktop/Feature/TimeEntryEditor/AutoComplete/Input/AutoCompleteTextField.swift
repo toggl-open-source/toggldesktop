@@ -76,10 +76,8 @@ class AutoCompleteTextField: NSTextField, NSTextFieldDelegate, AutoCompleteViewD
     override func becomeFirstResponder() -> Bool {
         let value = super.becomeFirstResponder()
 
-        // Expand the autocomplete view if it's selected and have empty content
-        if value && stringValue.isEmpty {
-            state = .expand
-        }
+        // Expand the autocomplete view if it's selected
+        state = .expand
 
         return value
     }
