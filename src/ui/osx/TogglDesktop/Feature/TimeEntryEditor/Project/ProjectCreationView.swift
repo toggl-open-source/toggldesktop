@@ -165,6 +165,10 @@ extension ProjectCreationView {
         clientDatasource.setup(with: clientAutoComplete)
         workspaceDatasource.delegate = self
         workspaceDatasource.setup(with: workspaceAutoComplete)
+
+        // Arrow
+        workspaceAutoComplete.layoutArrowBtn(with: self)
+        clientAutoComplete.layoutArrowBtn(with: self)
     }
 
     fileprivate func updateLayout() {
