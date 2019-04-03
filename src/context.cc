@@ -2786,6 +2786,12 @@ error Context::SetTimeEntryDuration(
         return logAndDisplayUserTriedEditingLockedEntry();
     }
 
+    // validate the value
+    int seconds = Formatter::ParseDurationString(duration);
+    if (seconds >= kMaxDurationSeconds) {
+        return displayError(error(kOverMaxDurationError));
+    }
+
     te->SetDurationUserInput(duration);
     return displayError(save());
 }
@@ -2890,6 +2896,11 @@ error Context::SetTimeEntryDate(
         Poco::LocalDateTime time_part(
             Poco::Timestamp::fromEpochTime(te->Start()));
 
+        // Validate date input
+        if (date_part.year() < kMinimumAllowedYear || date_part.year() > kMaximumAllowedYear) {
+            return displayError(error(kInvalidDateError));
+        }
+
         dt = Poco::LocalDateTime(
             date_part.year(), date_part.month(), date_part.day(),
             time_part.hour(), time_part.minute(), time_part.second());
@@ -2940,6 +2951,11 @@ error Context::SetTimeEntryStart(
     }
 
     Poco::LocalDateTime local(Poco::Timestamp::fromEpochTime(te->Start()));
+
+    // Validate time input
+    if (local.year() < kMinimumAllowedYear || local.year() > kMaximumAllowedYear) {
+        return displayError(error(kInvalidStartTimeError));
+    }
 
     int hours(0), minutes(0);
     if (!toggl::Formatter::ParseTimeInput(value, &hours, &minutes)) {
@@ -3127,6 +3143,11 @@ error Context::SetTimeEntryDescription(
         if (isTimeEntryLocked(te)) {
             return logAndDisplayUserTriedEditingLockedEntry();
         }
+    }
+
+    // Validate description length
+    if (value.length() > kMaximumDescriptionLength) {
+        return displayError(error(kMaximumDescriptionLengthError));
     }
 
     te->SetDescription(value);
@@ -4351,14 +4372,16 @@ void Context::syncerActivity() {
                 error err = pullAllUserData(&client);
                 if (err != noError) {
                     displayError(err);
-                    return;
                 }
 
                 setOnline("Data pulled");
 
                 err = pushChanges(&client, &trigger_sync_);
+                trigger_push_ = false;
                 if (err != noError) {
+                    user_->ConfirmLoadedMore();
                     displayError(err);
+                    return;
                 } else {
                     setOnline("Data pushed");
                 }
@@ -4384,6 +4407,7 @@ void Context::syncerActivity() {
 
                 error err = pushChanges(&client, &trigger_sync_);
                 if (err != noError) {
+                    user_->ConfirmLoadedMore();
                     displayError(err);
                 } else {
                     setOnline("Data pushed");
@@ -4708,6 +4732,12 @@ error Context::pushChanges(
                 api_token,
                 *toggl_client);
             if (err != noError) {
+                // Hide load more button when offline
+                user_->ConfirmLoadedMore();
+                // Reload list to show unsynced icons in items
+                UIElements render;
+                render.display_time_entries = true;
+                updateUI(render);
                 return err;
             }
 

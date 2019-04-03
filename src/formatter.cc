@@ -370,9 +370,12 @@ int Formatter::ParseDurationString(const std::string value) {
 
     // 15
     if (input.find(".") == std::string::npos) {
-        int minutes = 0;
-        if (Poco::NumberParser::tryParse(input, minutes)) {
-            return seconds + (minutes * 60);
+        Poco::Int64 minutes = 0;
+        if (Poco::NumberParser::tryParse64(input, minutes)) {
+            if ((minutes * 60) > kMaxDurationSeconds) {
+                return kMaxDurationSeconds;
+            }
+            return static_cast<int>(seconds + (minutes * 60));
         }
     }
 
