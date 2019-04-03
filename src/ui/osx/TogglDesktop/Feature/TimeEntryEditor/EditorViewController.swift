@@ -17,7 +17,8 @@ final class EditorViewController: NSViewController {
     @IBOutlet weak var descriptionTextField: NSTextField!
     @IBOutlet weak var tagTextField: NSTextField!
     @IBOutlet weak var billableCheckBox: NSButton!
-
+    @IBOutlet weak var projectDotImageView: DotImageView!
+    
     // MARK: Variables
 
     var timeEntry: TimeEntryViewItem! {
@@ -50,6 +51,7 @@ extension EditorViewController {
     fileprivate func initCommon() {
         view.wantsLayer = true
         view.layer?.masksToBounds = false
+        projectTextField.dotImageView = projectDotImageView
         projectTextField.layoutArrowBtn(with: view)
 
         descriptionTextField.delegate = self
@@ -75,9 +77,9 @@ extension EditorViewController: AutoCompleteViewDataSourceDelegate {
         if sender == projectDatasource {
             if let projectItem = item as? ProjectContentItem {
                 selectedProjectItem = projectItem
-                projectTextField.stringValue = projectItem.name
+                projectTextField.projectItem = projectItem
                 projectTextField.closeSuggestion()
-
+        
                 // Update
                 let item = projectItem.item
                 DesktopLibraryBridge.shared().setProjectForTimeEntryWithGUID(timeEntry.guid,
