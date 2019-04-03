@@ -25,7 +25,7 @@ final class ColorGraphicsView: NSView {
     
     weak var delegate: ChangeColorDelegate?
     var selectedSlider: Sliders = .None
-    var selectedHSBComponent: HSBComponent = .hue {
+    var selectedHSBComponent: HSBComponent = .brightness {
         didSet {
             needsDisplay = true
         }

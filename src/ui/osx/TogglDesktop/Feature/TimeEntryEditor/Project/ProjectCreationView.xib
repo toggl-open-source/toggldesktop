@@ -20,7 +20,7 @@
                         <rect key="frame" x="1" y="1" width="288" height="198"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="XFr-qK-S1A">
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="XFr-qK-S1A" customClass="CursorButton" customModule="TogglDesktop" customModuleProvider="target">
                                 <rect key="frame" x="10" y="170" width="43" height="16"/>
                                 <buttonCell key="cell" type="bevel" title="Cancel" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="BE4-An-YWJ">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -31,7 +31,7 @@
                                     <action selector="cancelBtnOnTap:" target="c22-O7-iKe" id="bqb-F5-9Wn"/>
                                 </connections>
                             </button>
-                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="E94-Yr-Bp7">
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="E94-Yr-Bp7" customClass="CursorButton" customModule="TogglDesktop" customModuleProvider="target">
                                 <rect key="frame" x="249" y="169" width="29" height="17"/>
                                 <buttonCell key="cell" type="bevel" title="Add" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="Yu9-6E-JSG">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -238,6 +238,7 @@
             </constraints>
             <connections>
                 <outlet property="addBtn" destination="E94-Yr-Bp7" id="QXJ-Wa-LHX"/>
+                <outlet property="cancelBtn" destination="XFr-qK-S1A" id="Uu9-nT-Ggg"/>
                 <outlet property="clientAutoComplete" destination="cCQ-e0-gV1" id="sMM-dm-fm9"/>
                 <outlet property="colorBtn" destination="Zz6-Ng-Mjf" id="dah-ED-Ork"/>
                 <outlet property="colorPickerContainerView" destination="Z6i-Vm-FEs" id="v2g-mc-5rf"/>
