@@ -26,6 +26,12 @@ final class WorkspaceCellView: NSTableCellView {
         initTracking()
     }
 
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        NSCursor.arrow.set()
+        contentContainerView.animator().alphaValue = 0.0
+    }
+
     func render(_ item: Workspace) {
         titleTextField.stringValue = item.name
     }

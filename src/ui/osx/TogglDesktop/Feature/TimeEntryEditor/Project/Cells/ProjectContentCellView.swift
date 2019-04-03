@@ -27,6 +27,12 @@ final class ProjectContentCellView: NSTableCellView {
         initTracking()
     }
 
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        NSCursor.arrow.set()
+        contentContainerView.animator().alphaValue = 0.0
+    }
+    
     func render(_ item: ProjectContentItem) {
         projectTextField.renderClient = false
         projectTextField.setTitleWithAutoComplete(item.item)

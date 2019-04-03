@@ -57,7 +57,7 @@
                                         <constraints>
                                             <constraint firstAttribute="height" constant="158" id="nCT-aH-EfR"/>
                                         </constraints>
-                                        <edgeInsets key="contentInsets" left="0.0" right="0.0" top="0.0" bottom="8"/>
+                                        <edgeInsets key="contentInsets" left="0.0" right="0.0" top="4" bottom="4"/>
                                         <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="OHc-mW-pik">
                                             <rect key="frame" x="-100" y="-100" width="223" height="15"/>
                                             <autoresizingMask key="autoresizingMask"/>
@@ -127,7 +127,7 @@
                             <constraint firstAttribute="trailing" secondItem="GoP-8R-z9o" secondAttribute="trailing" id="ypL-0C-AE1"/>
                         </constraints>
                     </view>
-                    <color key="borderColor" name="upload-border-color"/>
+                    <color key="borderColor" name="color-project-btn-border-color"/>
                     <color key="fillColor" name="auto-complete-background"/>
                 </box>
             </subviews>
@@ -141,6 +141,7 @@
                 <outlet property="createNewItemBtn" destination="sT2-gq-IUf" id="tMw-df-FD7"/>
                 <outlet property="createNewItemContainerView" destination="gfh-56-r1Z" id="tRe-UZ-WTK"/>
                 <outlet property="horizontalLine" destination="qiv-1e-vax" id="5iE-dj-kav"/>
+                <outlet property="stackView" destination="GoP-8R-z9o" id="WsH-Dy-JAF"/>
                 <outlet property="tableView" destination="HmX-fe-ZLW" id="av0-YS-nIR"/>
                 <outlet property="tableViewHeight" destination="nCT-aH-EfR" id="LFE-wE-2Yq"/>
             </connections>
@@ -152,11 +153,11 @@
         <namedColor name="auto-complete-background">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
+        <namedColor name="color-project-btn-border-color">
+            <color red="0.0" green="0.0" blue="0.0" alpha="0.10000000149011612" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="grey-text-color">
             <color red="0.33333333333333331" green="0.33333333333333331" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="upload-border-color">
-            <color red="0.67450980392156867" green="0.67450980392156867" blue="0.67450980392156867" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>

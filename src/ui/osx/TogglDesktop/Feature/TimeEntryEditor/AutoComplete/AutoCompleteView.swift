@@ -11,6 +11,7 @@ import Cocoa
 final class AutoCompleteViewWindow: NSWindow {
 
     // MARK: Private
+
     private let topPadding: CGFloat = 5.0
     override var canBecomeMain: Bool {
         return true
@@ -35,6 +36,9 @@ final class AutoCompleteViewWindow: NSWindow {
                    backing: .buffered,
                    defer: true)
         contentView = view
+        backgroundColor = NSColor.clear
+        isOpaque = false
+        setContentBorderThickness(0, for: NSRectEdge(rawValue: 0)!)
     }
 
     func layoutFrame(with textField: NSTextField, height: CGFloat) {
@@ -74,6 +78,7 @@ final class AutoCompleteView: NSView {
     @IBOutlet weak var createNewItemBtn: CursorButton!
     @IBOutlet weak var createNewItemContainerView: NSBox!
     @IBOutlet weak var horizontalLine: NSBox!
+    @IBOutlet weak var stackView: NSStackView!
 
     // MARK: Variables
 
@@ -119,6 +124,9 @@ final class AutoCompleteView: NSView {
 extension AutoCompleteView {
 
     fileprivate func initCommon() {
+        stackView.wantsLayer = true
+        stackView.layer?.masksToBounds = true
+        stackView.layer?.cornerRadius = 8
         createNewItemBtn.cursor = .pointingHand
         tableView.keyUpOnPress = {[weak self] key in
             switch key {
