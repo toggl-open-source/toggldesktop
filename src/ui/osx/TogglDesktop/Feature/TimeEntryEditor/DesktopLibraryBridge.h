@@ -34,6 +34,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)togglEditor;
 
+- (void)updateTimeEntryWithDescription:(NSString *)descriptionName guid:(NSString *)guid;
+
 @end
 
 NS_ASSUME_NONNULL_END

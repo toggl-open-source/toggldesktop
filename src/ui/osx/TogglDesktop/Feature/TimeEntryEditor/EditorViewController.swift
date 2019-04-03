@@ -30,6 +30,7 @@ final class EditorViewController: NSViewController {
                                                            updateNotificationName: .ProjectStorageChangedNotification)
 
     // MARK: View Cycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -50,6 +51,8 @@ extension EditorViewController {
         view.wantsLayer = true
         view.layer?.masksToBounds = false
         projectTextField.layoutArrowBtn(with: view)
+
+        descriptionTextField.delegate = self
     }
 
     fileprivate func initDatasource() {
@@ -82,5 +85,15 @@ extension EditorViewController: AutoCompleteViewDataSourceDelegate {
                                                                              projectID: item.projectID)
             }
         }
+    }
+}
+
+extension EditorViewController: NSTextFieldDelegate {
+
+    func controlTextDidEndEditing(_ obj: Notification) {
+        guard timeEntry.descriptionName != descriptionTextField.stringValue else { return }
+        let name = descriptionTextField.stringValue
+        let guid = timeEntry.guid!
+        DesktopLibraryBridge.shared().updateTimeEntry(withDescription: name, guid: guid)
     }
 }

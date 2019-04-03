@@ -134,6 +134,9 @@ class AutoCompleteTextField: NSTextField, NSTextFieldDelegate, AutoCompleteViewD
 
         // Filter
         autoCompleteView.filter(with: self.stringValue)
+
+        // Focus
+        window?.makeFirstResponder(self)
     }
 
     func didTapOnCreateButton() {
