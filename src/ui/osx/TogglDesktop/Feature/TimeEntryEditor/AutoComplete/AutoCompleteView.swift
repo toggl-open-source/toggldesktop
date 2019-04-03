@@ -36,6 +36,7 @@ final class AutoCompleteViewWindow: NSWindow {
                    backing: .buffered,
                    defer: true)
         contentView = view
+        hasShadow = true
         backgroundColor = NSColor.clear
         isOpaque = false
         setContentBorderThickness(0, for: NSRectEdge(rawValue: 0)!)

@@ -12,6 +12,7 @@
                 <outlet property="billableCheckBox" destination="vpV-Av-rbR" id="7vp-xl-qrd"/>
                 <outlet property="descriptionTextField" destination="EMT-i8-OD1" id="PN4-q1-PU7"/>
                 <outlet property="projectBox" destination="HK8-ig-0Mv" id="Dnb-C3-7iP"/>
+                <outlet property="projectDotImageView" destination="gFc-aw-iMX" id="BEl-Tj-c8T"/>
                 <outlet property="projectTextField" destination="Doe-dQ-82A" id="cgo-cM-Mbh"/>
                 <outlet property="tagTextField" destination="euZ-Fv-idX" id="lqe-b7-4g3"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
@@ -88,8 +89,18 @@
                                                 </userDefinedRuntimeAttributes>
                                             </textFieldCell>
                                         </textField>
+                                        <imageView hidden="YES" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="gFc-aw-iMX" customClass="DotImageView" customModule="TogglDesktop" customModuleProvider="target">
+                                            <rect key="frame" x="15" y="8" width="8" height="8"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="8" id="6fB-ab-2MJ"/>
+                                                <constraint firstAttribute="width" constant="8" id="Y3t-hx-cDI"/>
+                                            </constraints>
+                                            <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" image="time-entry-dot" id="kzc-82-qjF"/>
+                                        </imageView>
                                     </subviews>
                                     <constraints>
+                                        <constraint firstItem="gFc-aw-iMX" firstAttribute="leading" secondItem="lQC-MY-kz1" secondAttribute="leading" constant="15" id="AXX-ZJ-hG7"/>
+                                        <constraint firstItem="gFc-aw-iMX" firstAttribute="centerY" secondItem="lQC-MY-kz1" secondAttribute="centerY" constant="2" id="HNk-7n-jiX"/>
                                         <constraint firstItem="Doe-dQ-82A" firstAttribute="leading" secondItem="lQC-MY-kz1" secondAttribute="leading" id="Hdy-ni-8Ue"/>
                                         <constraint firstAttribute="bottom" secondItem="Doe-dQ-82A" secondAttribute="bottom" id="JWU-5Y-dO5"/>
                                         <constraint firstItem="Doe-dQ-82A" firstAttribute="top" secondItem="lQC-MY-kz1" secondAttribute="top" id="U4d-c9-zsI"/>
@@ -382,6 +393,7 @@
         <image name="duration-arrow" width="12" height="7"/>
         <image name="next_date_arrow" width="4" height="7"/>
         <image name="previous_date_arrow" width="4" height="7"/>
+        <image name="time-entry-dot" width="8" height="8"/>
         <namedColor name="error-title-color">
             <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
