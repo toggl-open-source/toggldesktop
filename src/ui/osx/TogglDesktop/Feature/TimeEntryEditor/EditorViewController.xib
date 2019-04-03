@@ -113,6 +113,11 @@
                                                 <font key="font" metaFont="system" size="14"/>
                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="focusRingCornerRadius">
+                                                        <real key="value" value="8"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
                                             </textFieldCell>
                                         </textField>
                                     </subviews>
@@ -135,18 +140,24 @@
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="q9U-uY-bOj">
-                                            <rect key="frame" x="8" y="5" width="87" height="18"/>
-                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" alignment="left" title="0:00:00" placeholderString="0:00:00" id="dJu-5a-D7u">
+                                            <rect key="frame" x="-2" y="0.0" width="107" height="28"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" alignment="left" title="0:00:00" placeholderString="0:00:00" id="dJu-5a-D7u" customClass="VerticallyCenteredTextFieldCell" customModule="TogglDesktop" customModuleProvider="target">
                                                 <font key="font" metaFont="system" size="14"/>
                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="focusRingCornerRadius">
+                                                        <real key="value" value="8"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
                                             </textFieldCell>
                                         </textField>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstAttribute="trailing" secondItem="q9U-uY-bOj" secondAttribute="trailing" constant="10" id="3d3-Rc-0qw"/>
-                                        <constraint firstItem="q9U-uY-bOj" firstAttribute="centerY" secondItem="glG-am-Jtd" secondAttribute="centerY" id="McY-TQ-dM3"/>
-                                        <constraint firstItem="q9U-uY-bOj" firstAttribute="leading" secondItem="glG-am-Jtd" secondAttribute="leading" constant="10" id="wW0-8e-59z"/>
+                                        <constraint firstAttribute="bottom" secondItem="q9U-uY-bOj" secondAttribute="bottom" id="QzH-zN-aRI"/>
+                                        <constraint firstItem="q9U-uY-bOj" firstAttribute="top" secondItem="glG-am-Jtd" secondAttribute="top" id="deS-8S-dI2"/>
+                                        <constraint firstItem="q9U-uY-bOj" firstAttribute="leading" secondItem="glG-am-Jtd" secondAttribute="leading" id="hdo-Kt-akz"/>
+                                        <constraint firstAttribute="trailing" secondItem="q9U-uY-bOj" secondAttribute="trailing" id="q34-7t-UP4"/>
                                     </constraints>
                                 </view>
                                 <constraints>

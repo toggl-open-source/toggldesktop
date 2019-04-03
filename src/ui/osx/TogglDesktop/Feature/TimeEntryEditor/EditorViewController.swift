@@ -49,6 +49,7 @@ extension EditorViewController {
     fileprivate func initCommon() {
         view.wantsLayer = true
         view.layer?.masksToBounds = false
+        projectTextField.layoutArrowBtn(with: view)
     }
 
     fileprivate func initDatasource() {
