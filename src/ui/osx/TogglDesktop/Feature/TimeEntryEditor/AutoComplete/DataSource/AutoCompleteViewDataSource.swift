@@ -125,4 +125,8 @@ extension AutoCompleteViewDataSource: NSTableViewDataSource, NSTableViewDelegate
     func tableView(_ tableView: NSTableView, shouldSelectRow row: Int) -> Bool {
         return true
     }
+
+    func tableView(_ tableView: NSTableView, rowViewForRow row: Int) -> NSTableRowView? {
+        return AutoCompleteRowView()
+    }
 }
