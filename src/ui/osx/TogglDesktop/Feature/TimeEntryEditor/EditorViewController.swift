@@ -38,7 +38,7 @@ final class EditorViewController: NSViewController {
     }
     
     @IBAction func closeBtnOnTap(_ sender: Any) {
-        
+        DesktopLibraryBridge.shared().togglEditor()
     }
 }
 

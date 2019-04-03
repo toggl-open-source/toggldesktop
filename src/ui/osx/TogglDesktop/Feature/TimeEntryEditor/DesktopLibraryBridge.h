@@ -32,6 +32,8 @@ NS_ASSUME_NONNULL_BEGIN
 								taskID:(uint64_t)taskID
 							 projectID:(uint64_t)projectID;
 
+- (void)togglEditor;
+
 @end
 
 NS_ASSUME_NONNULL_END
