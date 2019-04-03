@@ -75,4 +75,9 @@ void *ctx;
 								 0);
 }
 
+- (void)togglEditor
+{
+	toggl_view_time_entry_list(ctx);
+}
+
 @end
