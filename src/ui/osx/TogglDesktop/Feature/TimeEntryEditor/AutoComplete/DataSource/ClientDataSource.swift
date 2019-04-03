@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Client {
+final class Client {
 
     static let noMatching = Client()
     let ID: UInt64

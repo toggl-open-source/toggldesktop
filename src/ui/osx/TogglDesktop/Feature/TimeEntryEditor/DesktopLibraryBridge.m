@@ -68,6 +68,10 @@ void *ctx;
 								taskID:(uint64_t)taskID
 							 projectID:(uint64_t)projectID
 {
+	if (projectID == 0)
+	{
+		return;
+	}
 	toggl_set_time_entry_project(ctx,
 								 [guid UTF8String],
 								 taskID,

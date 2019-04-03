@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Workspace {
+final class Workspace {
 
     let ID: UInt64
     let WID: UInt64
