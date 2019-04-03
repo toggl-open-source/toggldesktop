@@ -80,4 +80,11 @@ void *ctx;
 	toggl_view_time_entry_list(ctx);
 }
 
+- (void)updateTimeEntryWithDescription:(NSString *)descriptionName guid:(NSString *)guid
+{
+	toggl_set_time_entry_description(ctx,
+									 [guid UTF8String],
+									 [descriptionName UTF8String]);
+}
+
 @end

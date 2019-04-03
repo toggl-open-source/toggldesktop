@@ -295,9 +295,9 @@ extern void *ctx;
 
 	NSLog(@"TimeEntryListViewController displayTimeEntryEditor, thread %@", [NSThread currentThread]);
 
+	TimeEntryViewItem *timeEntry = cmd.timeEntry;
 	if (cmd.open)
 	{
-		TimeEntryViewItem *timeEntry = cmd.timeEntry;
 		self.runningEdit = (cmd.timeEntry.duration_in_seconds < 0);
 
 		NSView *ofView = self.view;
@@ -329,13 +329,14 @@ extern void *ctx;
 		}
 
 		// Show popover
-		[self.timeEntrypopover presentWith:timeEntry
-										to:positionRect
-										of:ofView];
+		[self.timeEntrypopover presentFrom:positionRect of:ofView];
 
 //        BOOL onLeft = (self.view.window.frame.origin.x > self.timeEntryPopupEditView.window.frame.origin.x);
 //        [self.timeEntryEditViewController setDragHandle:onLeft];
 	}
+
+	// Update time entry for editor
+	[self.timeEntrypopover setTimeEntry:timeEntry];
 }
 
 - (CGRect)positionRectForItem:(TimeEntryCell *)timeEntry {
