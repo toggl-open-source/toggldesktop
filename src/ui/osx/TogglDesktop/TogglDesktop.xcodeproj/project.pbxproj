@@ -216,6 +216,7 @@
 		BAAF56A22223E18B003D0D73 /* TimeDecoratorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAAF56A12223E18B003D0D73 /* TimeDecoratorView.swift */; };
 		BAAF56A42223E19C003D0D73 /* TimeDecoratorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BAAF56A32223E19C003D0D73 /* TimeDecoratorView.xib */; };
 		BAB8D49421BE742D00D63DA5 /* NSTableView+TimeEntryDiff.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB8D49321BE742D00D63DA5 /* NSTableView+TimeEntryDiff.swift */; };
+		BAC4D399225470DA00254DAD /* AutoCompleteRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAC4D398225470DA00254DAD /* AutoCompleteRowView.swift */; };
 		BAD15FFC223A52D600A8CCC9 /* TimeEntryEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD15FFB223A52D600A8CCC9 /* TimeEntryEmptyView.swift */; };
 		BAD15FFE223A530600A8CCC9 /* TimeEntryEmptyView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BAD15FFD223A530600A8CCC9 /* TimeEntryEmptyView.xib */; };
 		BAD2341F21D612DF0039C742 /* libPocoDataSQLite.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BAD2341621D612DE0039C742 /* libPocoDataSQLite.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
@@ -824,6 +825,7 @@
 		BAAF56A12223E18B003D0D73 /* TimeDecoratorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeDecoratorView.swift; sourceTree = "<group>"; };
 		BAAF56A32223E19C003D0D73 /* TimeDecoratorView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimeDecoratorView.xib; sourceTree = "<group>"; };
 		BAB8D49321BE742D00D63DA5 /* NSTableView+TimeEntryDiff.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSTableView+TimeEntryDiff.swift"; sourceTree = "<group>"; };
+		BAC4D398225470DA00254DAD /* AutoCompleteRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoCompleteRowView.swift; sourceTree = "<group>"; };
 		BAD15FFB223A52D600A8CCC9 /* TimeEntryEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeEntryEmptyView.swift; sourceTree = "<group>"; };
 		BAD15FFD223A530600A8CCC9 /* TimeEntryEmptyView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimeEntryEmptyView.xib; sourceTree = "<group>"; };
 		BAD2341621D612DE0039C742 /* libPocoDataSQLite.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoDataSQLite.60.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoDataSQLite.60.dylib; sourceTree = "<group>"; };
@@ -1497,6 +1499,7 @@
 				BA7D334A2248944C00B953A8 /* AutoCompleteView.swift */,
 				BA7D334C2248945300B953A8 /* AutoCompleteView.xib */,
 				BA9C2E0B224C8F58002AD2A1 /* KeyboardTableView.swift */,
+				BAC4D398225470DA00254DAD /* AutoCompleteRowView.swift */,
 			);
 			path = AutoComplete;
 			sourceTree = "<group>";
@@ -2149,6 +2152,7 @@
 				3CD7AD6F19ED579700372797 /* NSResize.m in Sources */,
 				BA08E012222E32C90075F68E /* NSView+LayoutConstraint.swift in Sources */,
 				BA7D335A22489C8000B953A8 /* ProjectDataSource.swift in Sources */,
+				BAC4D399225470DA00254DAD /* AutoCompleteRowView.swift in Sources */,
 				BAA260D1222D1DC70094F4E4 /* NSView+Shadow+Border.swift in Sources */,
 				BA712EC221BF907200A2D8DD /* UndoManager.swift in Sources */,
 				BAA11AC12251F49E007F31D2 /* WorkspaceStorage.swift in Sources */,
