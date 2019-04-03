@@ -49,8 +49,6 @@ class AutoCompleteTextField: NSTextField, NSTextFieldDelegate, AutoCompleteViewD
                 closeAutoComplete()
             case .expand:
                 presentAutoComplete()
-                guard currentEditor() != nil else { return }
-                self.bringSubviewToFront(arrowBtn)
             }
         }
     }
@@ -67,13 +65,11 @@ class AutoCompleteTextField: NSTextField, NSTextFieldDelegate, AutoCompleteViewD
     override init(frame frameRect: NSRect) {
         super.init(frame: frameRect)
         initCommon()
-        initArrowBtn()
     }
 
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         initCommon()
-        initArrowBtn()
     }
 
     // MARK: Public
@@ -152,12 +148,12 @@ extension AutoCompleteTextField {
     fileprivate func initCommon() {
         delegate = self
         autoCompleteView.delegate = self
-        state = .collapse
+        _state = .collapse
     }
 
-    fileprivate func initArrowBtn() {
+    func layoutArrowBtn(with parentView: NSView) {
         arrowBtn.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(arrowBtn)
+        parentView.addSubview(arrowBtn)
         arrowBtn.centerYAnchor.constraint(equalTo: centerYAnchor, constant: 0).isActive = true
         arrowBtn.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10).isActive = true
         arrowBtn.widthAnchor.constraint(equalToConstant: 20).isActive = true
