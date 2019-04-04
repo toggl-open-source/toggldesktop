@@ -79,7 +79,8 @@ extension EditorViewController: AutoCompleteViewDataSourceDelegate {
                 selectedProjectItem = projectItem
                 projectTextField.projectItem = projectItem
                 projectTextField.closeSuggestion()
-        
+
+
                 // Update
                 let item = projectItem.item
                 DesktopLibraryBridge.shared().setProjectForTimeEntryWithGUID(timeEntry.guid,

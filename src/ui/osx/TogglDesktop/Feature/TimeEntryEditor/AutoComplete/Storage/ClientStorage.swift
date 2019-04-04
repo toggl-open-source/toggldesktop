@@ -38,6 +38,10 @@ extension Notification.Name {
 
         return filters
     }
+
+    func client(with name: String) -> Client? {
+        return clients.first { $0.name == name }
+    }
 }
 
 extension ClientStorage {
