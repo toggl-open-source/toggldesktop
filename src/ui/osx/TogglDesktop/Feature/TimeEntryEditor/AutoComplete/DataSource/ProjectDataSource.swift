@@ -24,7 +24,7 @@ class ProjectContentItem {
     let name: String
     let colorHex: String
     let item: AutocompleteItem
-
+    
     init(item: AutocompleteItem) {
         self.item = item
         self.name = item.projectLabel
