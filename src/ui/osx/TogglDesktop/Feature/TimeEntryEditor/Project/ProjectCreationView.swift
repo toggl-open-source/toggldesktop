@@ -104,7 +104,7 @@ final class ProjectCreationView: NSView {
 
     @IBAction func addBtnOnTap(_ sender: Any) {
         guard isValidDataForProjectCreation else { return }
-        guard let selectedWorkspace = selectedWorkspace, let selectedClient = selectedClient else {
+        guard let selectedWorkspace = selectedWorkspace, let selectedClient = ClientStorage.shared.client(with: clientAutoComplete.stringValue) else {
             return
         }
 
