@@ -18,7 +18,8 @@ final class EditorViewController: NSViewController {
     @IBOutlet weak var tagTextField: NSTextField!
     @IBOutlet weak var billableCheckBox: NSButton!
     @IBOutlet weak var projectDotImageView: DotImageView!
-    
+    @IBOutlet weak var closeBtn: CursorButton!
+
     // MARK: Variables
 
     var timeEntry: TimeEntryViewItem! {
@@ -51,6 +52,8 @@ extension EditorViewController {
     fileprivate func initCommon() {
         view.wantsLayer = true
         view.layer?.masksToBounds = false
+        closeBtn.cursor = .pointingHand
+        
         projectTextField.dotImageView = projectDotImageView
         projectTextField.layoutArrowBtn(with: view)
 
