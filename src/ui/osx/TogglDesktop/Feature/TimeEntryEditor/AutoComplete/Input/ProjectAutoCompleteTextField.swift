@@ -34,16 +34,6 @@ final class ProjectAutoCompleteTextField: AutoCompleteTextField {
     func setTimeEntry(_ timeEntry: TimeEntryViewItem) {
         projectCreationView.selectedTimeEntry = timeEntry
 
-        //TODO: Fix this hack
-        // As soon as we set project for TimeEntry
-        // The TimeEntryEditor will be called from Library
-        // But the timeEntry.projectLable is empty for some reason (bug library)
-        // WE skip it
-        if let project = projectItem {
-            if timeEntry.projectID == project.item.projectID {
-                return
-            }
-        }
         stringValue = timeEntry.projectLabel
         layoutProject(with: stringValue)
         applyColor(with: timeEntry.projectColor)
@@ -87,8 +77,11 @@ final class ProjectAutoCompleteTextField: AutoCompleteTextField {
 
 extension ProjectAutoCompleteTextField: ProjectCreationViewDelegate {
 
-    func projectCreationDidAdd() {
+    func projectCreationDidAdd(with name: String, color: String) {
         closeSuggestion()
+        stringValue = name
+        layoutProject(with: name)
+        applyColor(with: color)
     }
 
     func projectCreationDidCancel() {

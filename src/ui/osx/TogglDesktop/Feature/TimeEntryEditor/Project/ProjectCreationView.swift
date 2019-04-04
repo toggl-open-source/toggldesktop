@@ -11,7 +11,7 @@ import Cocoa
 protocol ProjectCreationViewDelegate: class {
 
     func projectCreationDidCancel()
-    func projectCreationDidAdd()
+    func projectCreationDidAdd(with name: String, color: String)
     func projectCreationDidUpdateSize()
 }
 
@@ -131,7 +131,7 @@ final class ProjectCreationView: NSView {
                                                                                    isBillable: isBillable)
         }
 
-        delegate?.projectCreationDidAdd()
+        delegate?.projectCreationDidAdd(with: projectName, color: colorHex)
     }
 
     @IBAction func publicProjectOnChange(_ sender: Any) {

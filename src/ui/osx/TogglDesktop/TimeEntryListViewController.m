@@ -331,12 +331,12 @@ extern void *ctx;
 		// Show popover
 		[self.timeEntrypopover presentFrom:positionRect of:ofView];
 
+		// Update time entry for editor
+		[self.timeEntrypopover setTimeEntry:timeEntry];
+
 //        BOOL onLeft = (self.view.window.frame.origin.x > self.timeEntryPopupEditView.window.frame.origin.x);
 //        [self.timeEntryEditViewController setDragHandle:onLeft];
 	}
-
-	// Update time entry for editor
-	[self.timeEntrypopover setTimeEntry:timeEntry];
 }
 
 - (CGRect)positionRectForItem:(TimeEntryCell *)timeEntry {
