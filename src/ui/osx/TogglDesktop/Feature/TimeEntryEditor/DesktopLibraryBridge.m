@@ -88,4 +88,13 @@ void *ctx;
 									 [descriptionName UTF8String]);
 }
 
+- (void)updateTimeEntryWithTags:(NSArray<NSString *> *)tags guid:(NSString *)guid
+{
+	const char *value = [[tags componentsJoinedByString:@"\t"] UTF8String];
+
+	toggl_set_time_entry_tags(ctx,
+							  [guid UTF8String],
+							  value);
+}
+
 @end

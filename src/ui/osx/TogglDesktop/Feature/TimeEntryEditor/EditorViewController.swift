@@ -103,6 +103,7 @@ extension EditorViewController {
         if let tags = timeEntry.tags as? [String] {
             let tokens = tags.map { tagName -> TagTokenView in
                 let view = TagTokenView.xibView() as TagTokenView
+                view.delegate = self
                 view.render(Tag(name: tagName))
                 return view
             }
@@ -173,6 +174,25 @@ extension EditorViewController: AutoCompleteTextFieldDelegate {
                                                                          taskID: 0,
                                                                          projectID: 0,
                                                                          projectGUID: "")
+        }
+    }
+}
+
+// MARK: TagTokenViewDelegate
+
+extension EditorViewController: TagTokenViewDelegate {
+
+    func tagTokenShouldDelete(with tag: Tag, sender: TagTokenView) {
+        sender.removeFromSuperview()
+
+        if let tags = timeEntry.tags as? [String] {
+            let remainingTags = tags.compactMap { (tagName) -> String? in
+                if tagName == tag.name {
+                    return nil
+                }
+                return tag.name
+            }
+            DesktopLibraryBridge.shared().updateTimeEntry(withTags: remainingTags, guid: timeEntry.guid)
         }
     }
 }

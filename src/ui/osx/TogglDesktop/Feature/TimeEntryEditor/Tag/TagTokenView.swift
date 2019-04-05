@@ -8,6 +8,11 @@
 
 import Cocoa
 
+protocol TagTokenViewDelegate: class {
+
+    func tagTokenShouldDelete(with tag: Tag, sender: TagTokenView)
+}
+
 final class TagTokenView: NSView {
 
     // MARK: OUTLET
@@ -15,6 +20,11 @@ final class TagTokenView: NSView {
     @IBOutlet weak var boxContainerView: NSBox!
     @IBOutlet weak var titleLabel: NSTextField!
     @IBOutlet weak var closeButton: CursorButton!
+
+    // MARK: Variables
+
+    weak var delegate: TagTokenViewDelegate?
+    private var tagToken: Tag!
 
     // MARK: Views
 
@@ -32,7 +42,12 @@ final class TagTokenView: NSView {
     }
 
     func render(_ tag: Tag) {
+        self.tagToken = tag
         titleLabel.stringValue = tag.name
+    }
+
+    @IBAction func deleteBtnOnTap(_ sender: Any) {
+        delegate?.tagTokenShouldDelete(with: tagToken, sender: self)
     }
 
     override func mouseExited(with event: NSEvent) {
