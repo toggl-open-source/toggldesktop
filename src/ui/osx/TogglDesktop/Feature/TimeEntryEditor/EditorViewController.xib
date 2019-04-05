@@ -391,7 +391,7 @@
                 <constraint firstItem="fZO-4l-jo1" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" id="nno-xe-fYT"/>
                 <constraint firstAttribute="bottom" secondItem="fZO-4l-jo1" secondAttribute="bottom" id="yr2-gk-PkQ"/>
             </constraints>
-            <point key="canvasLocation" x="-361" y="-131"/>
+            <point key="canvasLocation" x="-472" y="-285"/>
         </customView>
     </objects>
     <resources>
