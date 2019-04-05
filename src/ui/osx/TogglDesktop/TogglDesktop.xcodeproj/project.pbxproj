@@ -132,6 +132,8 @@
 		BA0140482257080F000E5B91 /* TagCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA0140472257080F000E5B91 /* TagCellView.xib */; };
 		BA01404A22570893000E5B91 /* Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA01404922570893000E5B91 /* Tag.swift */; };
 		BA01404C22570967000E5B91 /* TagStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA01404B22570967000E5B91 /* TagStorage.swift */; };
+		BA01404E22571081000E5B91 /* TagDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA01404D22571081000E5B91 /* TagDataSource.swift */; };
+		BA014050225710FD000E5B91 /* TagAutoCompleteTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA01404F225710FD000E5B91 /* TagAutoCompleteTextField.swift */; };
 		BA03725521FE9FD400FC277B /* FlatButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA03725421FE9FD400FC277B /* FlatButton.swift */; };
 		BA03729D21FED85700FC277B /* NSView+Xib.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA03729C21FED85700FC277B /* NSView+Xib.swift */; };
 		BA053659225DDDBB00C26E1F /* CustomFocusRingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA053658225DDDBB00C26E1F /* CustomFocusRingButton.swift */; };
@@ -742,6 +744,8 @@
 		BA0140472257080F000E5B91 /* TagCellView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TagCellView.xib; sourceTree = "<group>"; };
 		BA01404922570893000E5B91 /* Tag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tag.swift; sourceTree = "<group>"; };
 		BA01404B22570967000E5B91 /* TagStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagStorage.swift; sourceTree = "<group>"; };
+		BA01404D22571081000E5B91 /* TagDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagDataSource.swift; sourceTree = "<group>"; };
+		BA01404F225710FD000E5B91 /* TagAutoCompleteTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagAutoCompleteTextField.swift; sourceTree = "<group>"; };
 		BA03725421FE9FD400FC277B /* FlatButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlatButton.swift; sourceTree = "<group>"; };
 		BA03729C21FED85700FC277B /* NSView+Xib.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSView+Xib.swift"; sourceTree = "<group>"; };
 		BA053658225DDDBB00C26E1F /* CustomFocusRingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFocusRingButton.swift; sourceTree = "<group>"; };
@@ -1545,6 +1549,7 @@
 				BA7D335922489C8000B953A8 /* ProjectDataSource.swift */,
 				BA412C1C224E0D61003CA17A /* ClientDataSource.swift */,
 				BAA11AC42251F502007F31D2 /* WorkspaceDataSource.swift */,
+				BA01404D22571081000E5B91 /* TagDataSource.swift */,
 			);
 			path = DataSource;
 			sourceTree = "<group>";
@@ -1556,6 +1561,7 @@
 				BAE8E844224CA9AC006D534E /* ProjectAutoCompleteTextField.swift */,
 				BA412C24224E147A003CA17A /* ClientAutoCompleteTextField.swift */,
 				BAA11AC22251F4D6007F31D2 /* WorkspaceAutoCompleteTextField.swift */,
+				BA01404F225710FD000E5B91 /* TagAutoCompleteTextField.swift */,
 			);
 			path = Input;
 			sourceTree = "<group>";
@@ -2155,6 +2161,7 @@
 				BA0C3A6722321FBC0081C6DE /* AutoCompleteTableCell+Ext.swift in Sources */,
 				3C6B24A4203FC8200063FC08 /* LiteAutoCompleteDataSource.m in Sources */,
 				3C068C6A1C22F25000874B9A /* MKColorWellCustom.m in Sources */,
+				BA01404E22571081000E5B91 /* TagDataSource.swift in Sources */,
 				3CA14529192DE32300414620 /* NSViewEscapable.m in Sources */,
 				BA6572A9224DFA6F00BA4C60 /* ColorGraphicsView.swift in Sources */,
 				BAA11AC52251F502007F31D2 /* WorkspaceDataSource.swift in Sources */,
@@ -2223,6 +2230,7 @@
 				95C0707718CDB67300A34D0D /* NSCustomComboBoxCell.m in Sources */,
 				BAAF569E2223D4C7003D0D73 /* DotImageView.swift in Sources */,
 				3C0A571A1C22E12E00301D77 /* MKColorPickerView.m in Sources */,
+				BA014050225710FD000E5B91 /* TagAutoCompleteTextField.swift in Sources */,
 				BAE8E845224CA9AC006D534E /* ProjectAutoCompleteTextField.swift in Sources */,
 				BA6572A7224DFA6F00BA4C60 /* HSBGen.swift in Sources */,
 				BA8B4C752251FAD500592BC7 /* WorkspaceCellView.swift in Sources */,

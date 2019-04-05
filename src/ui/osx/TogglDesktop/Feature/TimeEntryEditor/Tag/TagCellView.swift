@@ -10,6 +10,8 @@ import Cocoa
 
 final class TagCellView: HoverTableCellView {
 
+    static let cellHeight: CGFloat = 34.0
+
     // MARK: OUTLET
 
     @IBOutlet weak var checkButton: NSButton!
