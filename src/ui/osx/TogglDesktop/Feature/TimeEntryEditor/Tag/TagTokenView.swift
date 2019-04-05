@@ -22,10 +22,37 @@ final class TagTokenView: NSView {
         super.awakeFromNib()
 
         initCommon()
+        initTracking()
+    }
+
+    deinit {
+        trackingAreas.forEach {
+            removeTrackingArea($0)
+        }
     }
 
     func render(_ tag: Tag) {
         titleLabel.stringValue = tag.name
+    }
+
+    override func mouseExited(with event: NSEvent) {
+        super.mouseExited(with: event)
+        boxContainerView.animator().alphaValue = 1.0
+        closeButton.animator().alphaValue = 0.0
+    }
+
+    override func mouseEntered(with event: NSEvent) {
+        super.mouseEntered(with: event)
+        boxContainerView.animator().alphaValue = 0.0
+        closeButton.animator().alphaValue = 1.0
+    }
+
+    fileprivate func initTracking() {
+        let trackingArea = NSTrackingArea(rect: bounds,
+                                          options: [.activeInActiveApp, .inVisibleRect, .mouseEnteredAndExited],
+                                          owner: self,
+                                          userInfo: nil)
+        addTrackingArea(trackingArea)
     }
 }
 
@@ -34,7 +61,8 @@ final class TagTokenView: NSView {
 extension TagTokenView {
 
     fileprivate func initCommon() {
-        closeButton.isHidden = true
+        boxContainerView.alphaValue = 1
+        closeButton.alphaValue = 0
         closeButton.cursor = .pointingHand
     }
 }

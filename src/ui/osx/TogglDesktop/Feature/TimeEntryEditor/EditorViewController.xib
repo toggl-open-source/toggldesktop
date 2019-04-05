@@ -436,7 +436,7 @@
                             <constraint firstItem="sts-eu-78s" firstAttribute="leading" secondItem="RzB-ad-pEO" secondAttribute="leading" constant="10" id="xot-d9-UOv"/>
                         </constraints>
                     </view>
-                    <color key="fillColor" name="preference-background-color"/>
+                    <color key="fillColor" name="editor-background-color"/>
                 </box>
             </subviews>
             <constraints>
@@ -454,14 +454,14 @@
         <image name="next_date_arrow" width="4" height="7"/>
         <image name="previous_date_arrow" width="4" height="7"/>
         <image name="time-entry-dot" width="8" height="8"/>
+        <namedColor name="editor-background-color">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="error-title-color">
             <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="grey-text-color">
             <color red="0.33333333333333331" green="0.33333333333333331" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="preference-background-color">
-            <color red="0.98039215686274506" green="0.98431372549019602" blue="0.9882352941176471" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="upload-border-color">
             <color red="0.67450980392156867" green="0.67450980392156867" blue="0.67450980392156867" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
