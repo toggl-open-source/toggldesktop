@@ -15,12 +15,16 @@ final class EditorViewController: NSViewController {
     @IBOutlet weak var projectBox: NSBox!
     @IBOutlet weak var projectTextField: ProjectAutoCompleteTextField!
     @IBOutlet weak var descriptionTextField: NSTextField!
-    @IBOutlet weak var tagTextField: NSTextField!
+    @IBOutlet weak var tagTextField: TagAutoCompleteTextField!
     @IBOutlet weak var billableCheckBox: NSButton!
     @IBOutlet weak var projectDotImageView: DotImageView!
     @IBOutlet weak var closeBtn: CursorButton!
     @IBOutlet weak var deleteBtn: NSButton!
     
+    @IBOutlet weak var tagAutoCompleteContainerView: NSBox!
+    @IBOutlet weak var tagStackView: NSStackView!
+    @IBOutlet weak var tagAddButton: NSButton!
+
     // MARK: Variables
 
     var timeEntry: TimeEntryViewItem! {
@@ -31,7 +35,7 @@ final class EditorViewController: NSViewController {
     private var selectedProjectItem: ProjectContentItem?
     private lazy var projectDatasource = ProjectDataSource(items: ProjectStorage.shared.items,
                                                            updateNotificationName: .ProjectStorageChangedNotification)
-
+    
     // MARK: View Cycle
 
     override func viewDidLoad() {
@@ -50,6 +54,11 @@ final class EditorViewController: NSViewController {
     
     @IBAction func closeBtnOnTap(_ sender: Any) {
         DesktopLibraryBridge.shared().togglEditor()
+    }
+
+    @IBAction func tagAddButtonOnTap(_ sender: Any) {
+        tagAutoCompleteContainerView.isHidden = false
+        view.window?.makeFirstResponder(tagTextField)
     }
 }
 
