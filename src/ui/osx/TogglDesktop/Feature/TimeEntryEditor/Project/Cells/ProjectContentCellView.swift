@@ -8,58 +8,20 @@
 
 import Cocoa
 
-final class ProjectContentCellView: NSTableCellView {
+final class ProjectContentCellView: HoverTableCellView {
 
     static let cellHeight: CGFloat = 34.0
 
     // MARK: OUTLET
 
-    @IBOutlet weak var contentContainerView: NSBox!
     @IBOutlet weak var dotImageView: DotImageView!
     @IBOutlet weak var projectTextField: ProjectTextField!
 
     // MARK: Public
-
-    override func awakeFromNib() {
-        super.awakeFromNib()
-
-        initCommon()
-        initTracking()
-    }
-
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        NSCursor.arrow.set()
-        contentContainerView.animator().alphaValue = 0.0
-    }
     
     func render(_ item: ProjectContentItem) {
         projectTextField.renderClient = false
         projectTextField.setTitleWithAutoComplete(item.item)
         dotImageView.fill(with: ConvertHexColor.hexCode(toNSColor: item.colorHex))
-    }
-
-    override func mouseExited(with event: NSEvent) {
-        super.mouseExited(with: event)
-        NSCursor.arrow.set()
-        contentContainerView.animator().alphaValue = 0.0
-    }
-
-    override func mouseEntered(with event: NSEvent) {
-        super.mouseEntered(with: event)
-        NSCursor.pointingHand.set()
-        contentContainerView.animator().alphaValue = 1.0
-    }
-
-    fileprivate func initCommon() {
-        contentContainerView.alphaValue = 0
-    }
-
-    fileprivate func initTracking() {
-        let trackingArea = NSTrackingArea(rect: bounds,
-                                          options: [.activeAlways, .inVisibleRect, .mouseEnteredAndExited],
-                                          owner: self,
-                                          userInfo: nil)
-        addTrackingArea(trackingArea)
     }
 }

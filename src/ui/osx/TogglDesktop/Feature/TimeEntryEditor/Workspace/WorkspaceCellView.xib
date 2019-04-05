@@ -41,7 +41,7 @@
                 <constraint firstAttribute="bottom" secondItem="Os2-Qu-0eN" secondAttribute="bottom" constant="2" id="pMT-M4-2TQ"/>
             </constraints>
             <connections>
-                <outlet property="contentContainerView" destination="Os2-Qu-0eN" id="Eml-0F-o7N"/>
+                <outlet property="contentContainerView" destination="Os2-Qu-0eN" id="fbW-wB-aLv"/>
                 <outlet property="titleTextField" destination="FLR-xo-ozF" id="9Ea-ma-izF"/>
             </connections>
             <point key="canvasLocation" x="244.5" y="-8.5"/>

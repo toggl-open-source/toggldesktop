@@ -41,7 +41,7 @@
                 <constraint firstItem="hxi-rr-5H5" firstAttribute="leading" secondItem="G68-AK-hWz" secondAttribute="leading" constant="5" id="oWA-Lh-k2F"/>
             </constraints>
             <connections>
-                <outlet property="contentContainerView" destination="hxi-rr-5H5" id="x6P-5D-8IC"/>
+                <outlet property="contentContainerView" destination="hxi-rr-5H5" id="JHR-bW-tWj"/>
                 <outlet property="titleTextField" destination="EMW-r3-F4p" id="NaO-LP-74K"/>
             </connections>
             <point key="canvasLocation" x="244.5" y="-8.5"/>

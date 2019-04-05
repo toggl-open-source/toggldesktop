@@ -62,7 +62,7 @@
                 <constraint firstAttribute="bottom" secondItem="bp5-qI-RfF" secondAttribute="bottom" constant="2" id="hFJ-1J-0kD"/>
             </constraints>
             <connections>
-                <outlet property="contentContainerView" destination="bp5-qI-RfF" id="uNQ-DB-oki"/>
+                <outlet property="contentContainerView" destination="bp5-qI-RfF" id="dBL-hX-eXI"/>
                 <outlet property="dotImageView" destination="Xxk-H3-WcX" id="vFN-Jm-PoI"/>
                 <outlet property="projectTextField" destination="wJh-2Y-Bsr" id="noE-dt-xnC"/>
             </connections>
@@ -72,7 +72,7 @@
     <resources>
         <image name="time-entry-dot" width="8" height="8"/>
         <namedColor name="auto-complete-cell-hover">
-            <color red="0.97647058823529409" green="0.97647058823529409" blue="0.97647058823529409" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.69411764705882351" green="0.69411764705882351" blue="0.69411764705882351" alpha="0.20000000298023224" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>
