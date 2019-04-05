@@ -18,6 +18,7 @@
                 <outlet property="projectTextField" destination="Doe-dQ-82A" id="cgo-cM-Mbh"/>
                 <outlet property="tagAddButton" destination="fzH-q2-m3a" id="Z2u-zq-e9e"/>
                 <outlet property="tagAutoCompleteContainerView" destination="mUe-Xn-xvP" id="cvg-Ii-7IT"/>
+                <outlet property="tagInputContainerView" destination="sts-eu-78s" id="Xu1-2S-B1m"/>
                 <outlet property="tagStackView" destination="qgG-HS-MvE" id="aDQ-6D-KtU"/>
                 <outlet property="tagTextField" destination="aeq-aC-W8G" id="ZA7-lD-iQX"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
@@ -124,7 +125,7 @@
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <stackView hidden="YES" distribution="equalSpacing" orientation="horizontal" alignment="centerY" spacing="5" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qgG-HS-MvE">
-                                            <rect key="frame" x="0.0" y="0.0" width="238" height="28"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="0.0" height="28"/>
                                         </stackView>
                                         <customView translatesAutoresizingMaskIntoConstraints="NO" id="Scx-li-Ewv">
                                             <rect key="frame" x="0.0" y="0.0" width="238" height="28"/>
@@ -151,7 +152,7 @@
                                     <constraints>
                                         <constraint firstAttribute="trailing" secondItem="Scx-li-Ewv" secondAttribute="trailing" id="7uN-c2-g31"/>
                                         <constraint firstAttribute="bottom" secondItem="qgG-HS-MvE" secondAttribute="bottom" id="JCc-fX-syf"/>
-                                        <constraint firstAttribute="trailing" secondItem="qgG-HS-MvE" secondAttribute="trailing" id="N5a-Q5-H8g"/>
+                                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="qgG-HS-MvE" secondAttribute="trailing" id="N5a-Q5-H8g"/>
                                         <constraint firstAttribute="bottom" secondItem="Scx-li-Ewv" secondAttribute="bottom" id="W8T-By-CMT"/>
                                         <constraint firstItem="Scx-li-Ewv" firstAttribute="top" secondItem="GjA-gG-Fhy" secondAttribute="top" id="d78-9b-S6x"/>
                                         <constraint firstItem="qgG-HS-MvE" firstAttribute="leading" secondItem="GjA-gG-Fhy" secondAttribute="leading" id="f5V-sW-lys"/>

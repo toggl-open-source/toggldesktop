@@ -24,7 +24,8 @@ final class EditorViewController: NSViewController {
     @IBOutlet weak var tagAutoCompleteContainerView: NSBox!
     @IBOutlet weak var tagStackView: NSStackView!
     @IBOutlet weak var tagAddButton: NSButton!
-
+    @IBOutlet weak var tagInputContainerView: NSBox!
+    
     // MARK: Variables
 
     var timeEntry: TimeEntryViewItem! {
@@ -87,6 +88,31 @@ extension EditorViewController {
         descriptionTextField.stringValue = timeEntry.descriptionName
         billableCheckBox.state = timeEntry.billable ? .on : .off
         projectTextField.setTimeEntry(timeEntry)
+        renderTagsView()
+    }
+
+    private func renderTagsView() {
+
+        // Remove all
+        tagStackView.subviews.forEach { $0.removeFromSuperview() }
+        tagStackView.isHidden = true
+        tagAddButton.isHidden = false
+        tagInputContainerView.borderWidth = 1
+
+        // Add tag token if need
+        if let tags = timeEntry.tags as? [String] {
+            let tokens = tags.map { tagName -> TagTokenView in
+                let view = TagTokenView.xibView() as TagTokenView
+                view.render(Tag(name: tagName))
+                return view
+            }
+            tokens.forEach {
+                tagStackView.addArrangedSubview($0)
+            }
+            tagStackView.isHidden = false
+            tagAddButton.isHidden = true
+            tagInputContainerView.borderWidth = 0
+        }
     }
 
     fileprivate func updateNextKeyViews() {
