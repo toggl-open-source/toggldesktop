@@ -19,6 +19,6 @@ final class TagCellView: HoverTableCellView {
     // MARK: Public
 
     func render(_ tag: Tag) {
-        
+        checkButton.title = tag.name
     }
 }

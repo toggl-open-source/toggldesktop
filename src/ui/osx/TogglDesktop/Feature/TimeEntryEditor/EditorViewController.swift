@@ -36,7 +36,9 @@ final class EditorViewController: NSViewController {
     private var selectedProjectItem: ProjectContentItem?
     private lazy var projectDatasource = ProjectDataSource(items: ProjectStorage.shared.items,
                                                            updateNotificationName: .ProjectStorageChangedNotification)
-    
+    private lazy var tagDatasource = TagDataSource(items: TagStorage.shared.tags,
+                                                   updateNotificationName: .TagStorageChangedNotification)
+
     // MARK: View Cycle
 
     override func viewDidLoad() {
@@ -82,6 +84,8 @@ extension EditorViewController {
     fileprivate func initDatasource() {
         projectDatasource.delegate = self
         projectDatasource.setup(with: projectTextField)
+        tagDatasource.delegate = self
+        tagDatasource.setup(with: tagTextField)
     }
 
     fileprivate func fillData() {
@@ -100,11 +104,17 @@ extension EditorViewController {
         tagInputContainerView.borderWidth = 1
 
         // Add tag token if need
-        if let tags = timeEntry.tags as? [String] {
-            let tokens = tags.map { tagName -> TagTokenView in
+        if let tagNames = timeEntry.tags as? [String] {
+            let tags = tagNames.map { Tag(name: $0) }
+
+            // Update selected tags
+            tagDatasource.updateSelectedTags(tags)
+
+            // Render tag token
+            let tokens = tags.map { tag -> TagTokenView in
                 let view = TagTokenView.xibView() as TagTokenView
                 view.delegate = self
-                view.render(Tag(name: tagName))
+                view.render(tag)
                 return view
             }
             tokens.forEach {
@@ -113,6 +123,9 @@ extension EditorViewController {
             tagStackView.isHidden = false
             tagAddButton.isHidden = true
             tagInputContainerView.borderWidth = 0
+        }
+        else {
+            tagDatasource.updateSelectedTags([])
         }
     }
 
@@ -140,6 +153,8 @@ extension EditorViewController: AutoCompleteViewDataSourceDelegate {
                                                                              projectID: item.projectID,
                                                                              projectGUID: projectGUID)
             }
+        } else if sender == tagDatasource {
+            
         }
     }
 }
