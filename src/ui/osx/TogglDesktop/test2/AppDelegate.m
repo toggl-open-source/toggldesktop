@@ -1630,8 +1630,13 @@ void on_project_autocomplete(TogglAutocompleteView *first)
 
 void on_tags(TogglGenericView *first)
 {
+	NSArray<ViewItem *> *viewItems = [ViewItem loadAll:first];
+
 	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayTags
-																object:[ViewItem loadAll:first]];
+																object:viewItems];
+	dispatch_async(dispatch_get_main_queue(), ^{
+		[[TagStorage shared] updateWith:viewItems];
+	});
 }
 
 void on_autotracker_rules(TogglAutotrackerRuleView *first, const uint64_t title_count, char_t *title_list[])
