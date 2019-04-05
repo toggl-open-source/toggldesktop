@@ -75,7 +75,7 @@
                                 <constraint firstAttribute="width" constant="185" id="EzF-pq-qMV"/>
                                 <constraint firstAttribute="height" constant="37" id="bp4-Os-3rU"/>
                             </constraints>
-                            <buttonCell key="cell" type="bevel" title="Log in to Toggl.com" bezelStyle="regularSquare" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="HG2-Ic-fiP">
+                            <buttonCell key="cell" type="bevel" title="I accept" bezelStyle="regularSquare" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="HG2-Ic-fiP">
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                 <font key="font" metaFont="system"/>
                                 <string key="keyEquivalent" base64-UTF8="YES">
@@ -91,10 +91,8 @@ DQ
                             <constraints>
                                 <constraint firstAttribute="width" constant="225" id="nbx-aC-5Pr"/>
                             </constraints>
-                            <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" allowsEditingTextAttributes="YES" id="qvS-Hv-mvP">
+                            <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" title="If you have any questions, contact us at support@toggl.com" allowsEditingTextAttributes="YES" id="qvS-Hv-mvP">
                                 <font key="font" metaFont="system"/>
-                                <string key="title">Created your new workspace? 
-</string>
                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
