@@ -18,8 +18,13 @@ final class TagDataSource: AutoCompleteViewDataSource {
 
     // MARK: Variables
 
+    private(set) var selectedTags: [Tag] = []
+
+    // MARK: Override
+
     override func setup(with textField: AutoCompleteTextField) {
         super.setup(with: textField)
+        tableView.allowsMultipleSelection = true
         autoCompleteView.setCreateButtonSectionHidden(true)
     }
 
@@ -41,6 +46,39 @@ final class TagDataSource: AutoCompleteViewDataSource {
         render(with: filterItems)
     }
 
+    override func render(with items: [Any]) {
+        super.render(with: items)
+        reSelectSelectedTags()
+    }
+
+    func updateSelectedTags(_ tags: [Tag]) {
+        self.selectedTags = tags
+        reSelectSelectedTags()
+    }
+
+    private func reSelectSelectedTags() {
+        guard let tags = items as? [Tag] else {
+            return
+        }
+
+        // Re-select the selected tab
+        tableView.deselectAll(nil)
+
+        // Convert selected tag with new index from the list
+        let selectedIndexs = tags.enumerated().compactMap { (item) -> IndexSet? in
+            if tags.contains(where: { $0.name == item.element.name }) {
+                return IndexSet(integer: item.offset)
+            }
+            return nil
+        }
+
+        // Select all selected
+        tableView.beginUpdates()
+        selectedIndexs.forEach {
+            tableView.selectRowIndexes($0, byExtendingSelection: false)
+        }
+        tableView.endUpdates()
+    }
     // MARK: Public
 
     override func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
