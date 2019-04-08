@@ -11,6 +11,7 @@
             <connections>
                 <outlet property="billableCheckBox" destination="vpV-Av-rbR" id="7vp-xl-qrd"/>
                 <outlet property="closeBtn" destination="FXR-Ha-kYg" id="nra-rB-rRw"/>
+                <outlet property="deleteBtn" destination="5ym-is-B1S" id="cBg-gL-hqJ"/>
                 <outlet property="descriptionTextField" destination="EMT-i8-OD1" id="PN4-q1-PU7"/>
                 <outlet property="projectBox" destination="HK8-ig-0Mv" id="Dnb-C3-7iP"/>
                 <outlet property="projectDotImageView" destination="gFc-aw-iMX" id="BEl-Tj-c8T"/>

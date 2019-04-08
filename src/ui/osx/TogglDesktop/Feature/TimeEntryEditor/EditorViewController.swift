@@ -19,7 +19,8 @@ final class EditorViewController: NSViewController {
     @IBOutlet weak var billableCheckBox: NSButton!
     @IBOutlet weak var projectDotImageView: DotImageView!
     @IBOutlet weak var closeBtn: CursorButton!
-
+    @IBOutlet weak var deleteBtn: NSButton!
+    
     // MARK: Variables
 
     var timeEntry: TimeEntryViewItem! {
@@ -38,6 +39,13 @@ final class EditorViewController: NSViewController {
 
         initCommon()
         initDatasource()
+    }
+
+    override func viewDidAppear() {
+        super.viewDidAppear()
+
+        view.window?.makeFirstResponder(descriptionTextField)
+        updateNextKeyViews()
     }
     
     @IBAction func closeBtnOnTap(_ sender: Any) {
@@ -69,6 +77,10 @@ extension EditorViewController {
         descriptionTextField.stringValue = timeEntry.descriptionName
         billableCheckBox.state = timeEntry.billable ? .on : .off
         projectTextField.setTimeEntry(timeEntry)
+    }
+
+    fileprivate func updateNextKeyViews() {
+        deleteBtn.nextKeyView = descriptionTextField
     }
 }
 
