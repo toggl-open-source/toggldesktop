@@ -95,6 +95,7 @@ final class ProjectCreationView: NSView {
     func setTitleAndFocus(_ title: String) {
         projectTextField.stringValue = title
         window?.makeFirstResponder(projectTextField)
+        updateLayoutState()
     }
 
     @IBAction func cancelBtnOnTap(_ sender: Any) {
@@ -172,6 +173,7 @@ extension ProjectCreationView {
         displayMode = .compact
 
         // Delegate
+        projectTextField.delegate = self
         clientAutoComplete.autoCompleteDelegate = self
 
         // Setup data source
@@ -305,6 +307,17 @@ extension ProjectCreationView: AutoCompleteTextFieldDelegate {
         if sender == clientAutoComplete {
             clientAutoComplete.closeSuggestion()
             createNewClient(with: clientAutoComplete.stringValue)
+            updateLayoutState()
+        }
+    }
+}
+
+// MARK: NSTextFieldDelegate
+
+extension ProjectCreationView: NSTextFieldDelegate {
+
+    func controlTextDidChange(_ obj: Notification) {
+        if let textField = obj.object as? NSTextField, textField == projectTextField {
             updateLayoutState()
         }
     }
