@@ -79,7 +79,7 @@ final class ProjectCreationView: NSView {
         return displayMode.height
     }
     var isValidDataForProjectCreation: Bool {
-        return selectedClient != nil && selectedWorkspace != nil && !projectTextField.stringValue.isEmpty
+        return selectedWorkspace != nil && !projectTextField.stringValue.isEmpty
     }
 
     // MARK: Public
@@ -102,20 +102,28 @@ final class ProjectCreationView: NSView {
         delegate?.projectCreationDidCancel()
     }
 
+    private func getSelectedClientData() -> (UInt64, String?) {
+        if let selectedClient = ClientStorage.shared.client(with: clientAutoComplete.stringValue) {
+            return (selectedClient.ID, selectedClient.guid)
+        }
+        return (0, nil)
+    }
+
     @IBAction func addBtnOnTap(_ sender: Any) {
         guard isValidDataForProjectCreation else { return }
-        guard let selectedWorkspace = selectedWorkspace, let selectedClient = ClientStorage.shared.client(with: clientAutoComplete.stringValue) else {
+        guard let selectedWorkspace = selectedWorkspace else {
             return
         }
 
         closeAllSuggestions()
-        
+        let clientData = getSelectedClientData()
+
         // Safe for unwrapped
         let isBillable = selectedTimeEntry.billable
         let timeEntryGUID = selectedTimeEntry.guid!
         let workspaceID = selectedWorkspace.ID
-        let clientID = selectedClient.ID
-        let clientGUID = selectedClient.guid!
+        let clientID = clientData.0
+        let clientGUID = clientData.1
         let projectName = projectTextField.stringValue
         let colorHex = selectedColor.colorHex
 

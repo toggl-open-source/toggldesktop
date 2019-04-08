@@ -20,7 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSString *)createProjectWithTimeEntryGUID:(NSString *)timeEntryGUID
 								 workspaceID:(uint64_t)workspaceID
 									clientID:(uint64_t)clientID
-								  clientGUID:(NSString *)clientGUID
+								  clientGUID:(NSString *_Nullable)clientGUID
 								 projectName:(NSString *)projectName
 									colorHex:(NSString *)colorHex
 									isPublic:(BOOL)isPublic;
