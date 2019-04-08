@@ -59,6 +59,13 @@ final class ProjectAutoCompleteTextField: AutoCompleteTextField {
             cell.rightPadding = 35.0
             cell.leftPadding = 28.0
             dotImageView?.isHidden = false
+
+            // If we're editing this field
+            // Resign and make first responder to render the currentEditor
+            if self.currentEditor() == window?.firstResponder {
+                window?.makeFirstResponder(nil)
+                window?.makeFirstResponder(self)
+            }
         }
         setNeedsDisplay()
         displayIfNeeded()
