@@ -73,25 +73,29 @@
 - (NSAttributedString *)attributeStringWithClient:(NSString *)client taskID:(NSInteger)taskID task:(NSString *)task project:(NSString *)project
 {
 	NSMutableAttributedString *string;
+	NSMutableParagraphStyle *parStyle = [[NSMutableParagraphStyle alloc] init];
 
+	[parStyle setLineBreakMode:NSLineBreakByTruncatingTail];
+	NSColor *color = self.textColor == nil ? [NSColor controlTextColor] : self.textColor;
+	NSDictionary *baseAttribute =          @{
+			NSFontAttributeName: [NSFont systemFontOfSize:12],
+			NSForegroundColorAttributeName: color,
+			NSParagraphStyleAttributeName: parStyle
+	};
 	if (taskID != 0)
 	{
 		string = [[NSMutableAttributedString alloc] initWithString:[task stringByAppendingString:@". "]];
 
-		[string setAttributes:
-		 @{
-			 NSFontAttributeName : [NSFont systemFontOfSize:12],
-			 NSForegroundColorAttributeName:[NSColor controlTextColor]
-		 }
+		[string setAttributes:baseAttribute
 						range:NSMakeRange(0, [string length])];
 
-		NSMutableAttributedString *projectName = [[NSMutableAttributedString alloc] initWithString:[project stringByAppendingString:@" "]];
-
+		NSMutableAttributedString *projectName = [[NSMutableAttributedString alloc] initWithString:[project stringByAppendingString:@" "]
+																						attributes:baseAttribute];
 		[string appendAttributedString:projectName];
 	}
 	else
 	{
-		string = [[NSMutableAttributedString alloc] initWithString:[project stringByAppendingString:@" "]];
+		string = [[NSMutableAttributedString alloc] initWithString:[project stringByAppendingString:@" "] attributes:baseAttribute];
 	}
 
 	if (self.renderClient && [client length] > 0)
@@ -102,7 +106,8 @@
 		[clientName setAttributes:
 		 @{
 			 NSFontAttributeName : [NSFont systemFontOfSize:12],
-			 NSForegroundColorAttributeName:[self clientTextColor]
+			 NSForegroundColorAttributeName:[self clientTextColor],
+			 NSParagraphStyleAttributeName: parStyle
 		 }
 							range:NSMakeRange(0, [clientName length])];
 		[string appendAttributedString:clientName];

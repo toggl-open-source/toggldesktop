@@ -19,8 +19,8 @@ final class ProjectHeaderCellView: NSTableCellView {
     // MARK: Public
 
     func render(_ item: ProjectHeaderItem) {
-        print("==== item.name \(item.name)")
-        titleTextField.stringValue = item.name
+        let name = item.name.isEmpty ? "No client" : item.name
+        titleTextField.stringValue = name
     }
 
 }
