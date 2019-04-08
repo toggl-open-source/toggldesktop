@@ -29,6 +29,7 @@
                                 <color key="contentTintColor" name="grey-text-color"/>
                                 <connections>
                                     <action selector="cancelBtnOnTap:" target="c22-O7-iKe" id="bqb-F5-9Wn"/>
+                                    <outlet property="nextKeyView" destination="eQK-O0-2vn" id="YEl-3a-wZS"/>
                                 </connections>
                             </button>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="E94-Yr-Bp7" customClass="CursorButton" customModule="TogglDesktop" customModuleProvider="target">
@@ -40,6 +41,7 @@
                                 <color key="contentTintColor" name="green-color"/>
                                 <connections>
                                     <action selector="addBtnOnTap:" target="c22-O7-iKe" id="BoR-UV-IiL"/>
+                                    <outlet property="nextKeyView" destination="XFr-qK-S1A" id="Bje-3n-j0S"/>
                                 </connections>
                             </button>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="e8h-de-FNI">
@@ -87,6 +89,9 @@
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
                                                 </textFieldCell>
+                                                <connections>
+                                                    <outlet property="nextKeyView" destination="I8L-vz-Mr7" id="Qn5-zk-wXH"/>
+                                                </connections>
                                             </textField>
                                         </subviews>
                                         <constraints>
@@ -149,6 +154,9 @@
                                                 </userDefinedRuntimeAttribute>
                                             </userDefinedRuntimeAttributes>
                                         </textFieldCell>
+                                        <connections>
+                                            <outlet property="nextKeyView" destination="cCQ-e0-gV1" id="gFg-eo-8oV"/>
+                                        </connections>
                                     </textField>
                                 </subviews>
                                 <constraints>
@@ -181,6 +189,9 @@
                                                 </userDefinedRuntimeAttribute>
                                             </userDefinedRuntimeAttributes>
                                         </textFieldCell>
+                                        <connections>
+                                            <outlet property="nextKeyView" destination="2Vy-Nq-8Ub" id="HOU-FC-A8T"/>
+                                        </connections>
                                     </textField>
                                 </subviews>
                                 <constraints>
@@ -222,6 +233,7 @@
                     </buttonCell>
                     <connections>
                         <action selector="publicProjectOnChange:" target="c22-O7-iKe" id="xJq-rh-gVf"/>
+                        <outlet property="nextKeyView" destination="E94-Yr-Bp7" id="I4r-1P-0vk"/>
                     </connections>
                 </button>
             </subviews>
