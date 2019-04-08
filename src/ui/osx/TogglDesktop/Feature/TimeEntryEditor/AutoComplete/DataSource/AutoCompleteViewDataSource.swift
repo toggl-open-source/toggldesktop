@@ -80,6 +80,7 @@ class AutoCompleteViewDataSource: NSObject {
     }
 
     func selectRow(at index: Int) {
+        guard index >= 0 else { return }
         let item = items[index]
         delegate?.autoCompleteSelectionDidChange(sender: self, item: item)
     }

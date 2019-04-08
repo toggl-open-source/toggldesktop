@@ -19,6 +19,7 @@ final class ProjectHeaderCellView: NSTableCellView {
     // MARK: Public
 
     func render(_ item: ProjectHeaderItem) {
+        print("==== item.name \(item.name)")
         titleTextField.stringValue = item.name
     }
 

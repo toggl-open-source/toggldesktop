@@ -53,8 +53,10 @@ final class ProjectAutoCompleteTextField: AutoCompleteTextField {
         guard let cell = self.cell as? VerticallyCenteredTextFieldCell else { return }
         if name.isEmpty {
             cell.leftPadding = 10
+            cell.rightPadding = 0
             dotImageView?.isHidden = true
         } else {
+            cell.rightPadding = 35.0
             cell.leftPadding = 28.0
             dotImageView?.isHidden = false
         }
@@ -65,10 +67,12 @@ final class ProjectAutoCompleteTextField: AutoCompleteTextField {
     private func applyColor(with hex: String) {
         guard let color = ConvertHexColor.hexCode(toNSColor: hex) else { return }
         dotImageView?.fill(with: color)
-
         let font = self.font ?? NSFont.systemFont(ofSize: 14.0)
+        let parap = NSMutableParagraphStyle()
+        parap.lineBreakMode = .byTruncatingTail
         let att: [NSAttributedString.Key: Any] = [NSAttributedString.Key.font: font,
-                                                  NSAttributedString.Key.foregroundColor: color]
+                                                  NSAttributedString.Key.foregroundColor: color,
+                                                  NSAttributedString.Key.paragraphStyle: parap]
         attributedStringValue = NSAttributedString(string: stringValue, attributes: att)
     }
 }

@@ -13,6 +13,7 @@ final class VerticallyCenteredTextFieldCell: NSTextFieldCell {
 
     @IBInspectable var focusRingCornerRadius: CGFloat = 0
     @IBInspectable var leftPadding: CGFloat = 10.0
+    @IBInspectable var rightPadding: CGFloat = 0
     private var isEditingOrSelecting = false
 
     override func drawingRect(forBounds theRect: NSRect) -> NSRect {
@@ -21,7 +22,8 @@ final class VerticallyCenteredTextFieldCell: NSTextFieldCell {
         // Padding
         newRect.origin.x += leftPadding
         newRect.size.width -= leftPadding
-
+        newRect.size.width -= rightPadding
+        
         // When the text field is being edited or selected, we have to turn off the magic because it screws up
         // the configuration of the field editor.  We sneak around this by intercepting selectWithFrame and editWithFrame and sneaking a
         // reduced, centered rect in at the last minute.
