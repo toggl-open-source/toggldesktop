@@ -11,6 +11,7 @@ import Foundation
 protocol AutoCompleteTextFieldDelegate: class {
 
     func autoCompleteDidTapOnCreateButton(_ sender: AutoCompleteTextField)
+    func shouldClearCurrentSelection(_ sender: AutoCompleteTextField)
 }
 
 class AutoCompleteTextField: NSTextField, NSTextFieldDelegate, AutoCompleteViewDelegate {
@@ -75,6 +76,11 @@ class AutoCompleteTextField: NSTextField, NSTextFieldDelegate, AutoCompleteViewD
 
     func controlTextDidEndEditing(_ obj: Notification) {
         state = .collapse
+
+        // Remove currrent selection
+        if stringValue.isEmpty {
+            autoCompleteDelegate?.shouldClearCurrentSelection(self)
+        }
     }
 
     func controlTextDidChange(_ obj: Notification) {

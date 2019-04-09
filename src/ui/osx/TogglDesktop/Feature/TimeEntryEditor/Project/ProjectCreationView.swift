@@ -310,6 +310,9 @@ extension ProjectCreationView: AutoCompleteTextFieldDelegate {
             updateLayoutState()
         }
     }
+
+    func shouldClearCurrentSelection(_ sender: AutoCompleteTextField) {
+    }
 }
 
 // MARK: NSTextFieldDelegate

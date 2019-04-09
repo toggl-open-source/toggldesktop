@@ -61,7 +61,8 @@ extension EditorViewController {
         view.wantsLayer = true
         view.layer?.masksToBounds = false
         closeBtn.cursor = .pointingHand
-        
+
+        projectTextField.autoCompleteDelegate = self
         projectTextField.dotImageView = projectDotImageView
         projectTextField.layoutArrowBtn(with: view)
 
@@ -95,7 +96,6 @@ extension EditorViewController: AutoCompleteViewDataSourceDelegate {
                 projectTextField.projectItem = projectItem
                 projectTextField.closeSuggestion()
 
-
                 // Update
                 let item = projectItem.item
                 DesktopLibraryBridge.shared().setProjectForTimeEntryWithGUID(timeEntry.guid,
@@ -113,5 +113,27 @@ extension EditorViewController: NSTextFieldDelegate {
         let name = descriptionTextField.stringValue
         let guid = timeEntry.guid!
         DesktopLibraryBridge.shared().updateTimeEntry(withDescription: name, guid: guid)
+    }
+}
+
+// MARK: AutoCompleteTextFieldDelegate
+
+extension EditorViewController: AutoCompleteTextFieldDelegate {
+
+    func autoCompleteDidTapOnCreateButton(_ sender: AutoCompleteTextField) {
+
+    }
+
+    func shouldClearCurrentSelection(_ sender: AutoCompleteTextField) {
+        if sender == projectTextField {
+            selectedProjectItem = nil
+            projectTextField.projectItem = nil
+            projectTextField.closeSuggestion()
+
+            // Update
+            DesktopLibraryBridge.shared().setProjectForTimeEntryWithGUID(timeEntry.guid,
+                                                                         taskID: 0,
+                                                                         projectID: 0)
+        }
     }
 }
