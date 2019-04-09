@@ -15,9 +15,9 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="96c-Kj-xNT">
-                    <rect key="frame" x="104" y="7" width="111" height="16"/>
+                    <rect key="frame" x="104" y="11" width="111" height="16"/>
                     <textFieldCell key="cell" lineBreakMode="clipping" title="No matching items" id="Lb5-G8-xLG">
-                        <font key="font" metaFont="system" size="12"/>
+                        <font key="font" metaFont="cellTitle"/>
                         <color key="textColor" name="grey-text-color"/>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
@@ -25,7 +25,7 @@
             </subviews>
             <constraints>
                 <constraint firstItem="96c-Kj-xNT" firstAttribute="centerX" secondItem="wyH-PC-olv" secondAttribute="centerX" id="EvY-oR-YVm"/>
-                <constraint firstItem="96c-Kj-xNT" firstAttribute="centerY" secondItem="wyH-PC-olv" secondAttribute="centerY" constant="4" id="Y5n-7T-44v"/>
+                <constraint firstItem="96c-Kj-xNT" firstAttribute="centerY" secondItem="wyH-PC-olv" secondAttribute="centerY" id="Y5n-7T-44v"/>
             </constraints>
             <point key="canvasLocation" x="244.5" y="-8.5"/>
         </tableCellView>

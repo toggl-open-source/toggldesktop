@@ -129,11 +129,25 @@ extension AutoCompleteView {
         stackView.layer?.masksToBounds = true
         stackView.layer?.cornerRadius = 8
         createNewItemBtn.cursor = .pointingHand
-        tableView.keyUpOnPress = {[weak self] key in
+        var previousSelectedRow = tableView.selectedRow
+        tableView.keyWillDownOnPress = {[weak self] in
+            guard let strongSelf = self else { return }
+            previousSelectedRow = strongSelf.tableView.selectedRow
+        }
+        tableView.keyDidDownOnPress = {[weak self] key in
+            guard let strongSelf = self else { return }
             switch key {
             case .enter,
                  .returnKey:
-                self?.dataSource?.selectSelectedRow()
+                strongSelf.dataSource?.selectSelectedRow()
+            case .downArrow:
+                let lastRow = strongSelf.tableView.numberOfRows - 1
+                if previousSelectedRow == lastRow || previousSelectedRow == -1 {
+                    if strongSelf.tableView.selectedRow >= 0 {
+                        strongSelf.tableView.deselectRow(lastRow)
+                    }
+                    strongSelf.window?.makeFirstResponder(strongSelf.createNewItemBtn)
+                }
             default:
                 break
             }

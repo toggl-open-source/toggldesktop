@@ -17,19 +17,22 @@ final class KeyboardTableView: NSTableView {
         case returnKey                  = 0x24
         case enter                      = 0x4C
         case tab                       = 0x30
+        case downArrow = 125
     }
 
     // MARK: Variables
 
-    var keyUpOnPress: KeyUpClosure?
+    var keyWillDownOnPress: (() -> Void)?
+    var keyDidDownOnPress: KeyUpClosure?
     var clickedOnRow: ClickedOnRowClosure?
 
     // MARK: Public
 
     override func keyDown(with event: NSEvent) {
+        keyWillDownOnPress?()
         super.keyDown(with: event)
         guard let key = Key(rawValue: event.keyCode) else { return }
-        keyUpOnPress?(key)
+        keyDidDownOnPress?(key)
     }
 
     override func mouseDown(with event: NSEvent) {
