@@ -86,7 +86,10 @@ class AutoCompleteTextField: NSTextField, NSTextFieldDelegate, AutoCompleteViewD
         switch state {
         case .collapse:
             state = .expand
-            window?.makeFirstResponder(self)
+            autoCompleteView.filter(with: "")
+            if window?.firstResponder != self.currentEditor() {
+                window?.makeFirstResponder(self)
+            }
         case .expand:
             state = .collapse
         }
@@ -120,9 +123,6 @@ class AutoCompleteTextField: NSTextField, NSTextFieldDelegate, AutoCompleteViewD
             window?.addChildWindow(autoCompleteWindow,
                                    ordered: .above)
         }
-
-        // Filter
-        autoCompleteView.filter(with: self.stringValue)
     }
 
     func didTapOnCreateButton() {
@@ -162,6 +162,7 @@ extension AutoCompleteTextField {
 
         // Escape
         if commandSelector == #selector(NSResponder.cancelOperation(_:)) {
+            closeSuggestion()
             return true
         }
 
