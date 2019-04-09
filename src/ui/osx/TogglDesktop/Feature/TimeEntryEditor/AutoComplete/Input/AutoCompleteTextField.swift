@@ -52,7 +52,7 @@ class AutoCompleteTextField: NSTextField, NSTextFieldDelegate, AutoCompleteViewD
             }
         }
     }
-    private var state: State {
+    private(set) var state: State {
         get { return _state }
         set {
             guard newValue != state else { return }
@@ -73,17 +73,6 @@ class AutoCompleteTextField: NSTextField, NSTextFieldDelegate, AutoCompleteViewD
     }
 
     // MARK: Public
-
-    override func becomeFirstResponder() -> Bool {
-        let value = super.becomeFirstResponder()
-
-        // Expand the autocomplete view if it's selected
-        if stringValue.isEmpty {
-             state = .expand
-        }
-
-        return value
-    }
 
     func controlTextDidEndEditing(_ obj: Notification) {
         state = .collapse
@@ -173,8 +162,7 @@ extension AutoCompleteTextField {
 
         // Enter
         if commandSelector == #selector(NSResponder.insertNewline(_:)) {
-            autoCompleteView.tableView.keyDown(with: currentEvent)
-            return true
+            return autoCompleteView.tableView.handleKeyboardEvent(currentEvent)
         }
 
         // Escape
@@ -185,14 +173,17 @@ extension AutoCompleteTextField {
 
         // Down key
         if commandSelector == #selector(NSResponder.moveDown(_:)) {
-            autoCompleteView.tableView.keyDown(with: currentEvent)
-            return true
+            return autoCompleteView.tableView.handleKeyboardEvent(currentEvent)
         }
 
-        // Down key
+        // Up key
         if commandSelector == #selector(NSResponder.moveUp(_:)) {
-            autoCompleteView.tableView.keyDown(with: currentEvent)
-            return true
+            return autoCompleteView.tableView.handleKeyboardEvent(currentEvent)
+        }
+
+        // Tab
+        if commandSelector == #selector(NSResponder.insertTab(_:)) {
+            return autoCompleteView.tableView.handleKeyboardEvent(currentEvent)
         }
 
         return false

@@ -17,15 +17,7 @@ final class AutoCompleteViewWindow: NSWindow {
         return true
     }
     override var canBecomeKey: Bool {
-        guard let contentView = contentView else {
-            return false
-        }
-        switch contentView {
-        case is ProjectCreationView:
-            return true
-        default:
-            return false
-        }
+        return true
     }
 
     // MARK: Init
@@ -129,28 +121,24 @@ extension AutoCompleteView {
         stackView.layer?.masksToBounds = true
         stackView.layer?.cornerRadius = 8
         createNewItemBtn.cursor = .pointingHand
-        var previousSelectedRow = tableView.selectedRow
-        tableView.keyWillDownOnPress = {[weak self] in
-            guard let strongSelf = self else { return }
-            previousSelectedRow = strongSelf.tableView.selectedRow
-        }
-        tableView.keyDidDownOnPress = {[weak self] key in
-            guard let strongSelf = self else { return }
+        tableView.keyDidDownOnPress = {[weak self] key -> Bool in
+            guard let strongSelf = self else { return false }
             switch key {
             case .enter,
                  .returnKey:
                 strongSelf.dataSource?.selectSelectedRow()
-            case .downArrow:
-                let lastRow = strongSelf.tableView.numberOfRows - 1
-                if previousSelectedRow == lastRow || previousSelectedRow == -1 {
-                    if strongSelf.tableView.selectedRow >= 0 {
-                        strongSelf.tableView.deselectRow(lastRow)
-                    }
+                return true
+            case .tab:
+                // Only focus to create button if the view is expaned
+                if let textField = strongSelf.dataSource?.textField, textField.state == .expand {
+                    strongSelf.window?.makeKeyAndOrderFront(nil)
                     strongSelf.window?.makeFirstResponder(strongSelf.createNewItemBtn)
+                    return true
                 }
             default:
-                break
+                return false
             }
+            return false
         }
         tableView.clickedOnRow = {[weak self] clickedRow in
             self?.dataSource?.selectRow(at: clickedRow)
