@@ -190,10 +190,13 @@ NSString *kInactiveTimerColor = @"#999999";
 	{
 		// Start/stop button title and color depend on
 		// whether time entry is running
+		if (self.displayMode == DisplayModeManual)
+		{
+			toggl_set_settings_manual_mode(ctx, NO);
+		}
 		self.displayMode = DisplayModeTimer;
 		self.startButton.toolTip = @"Stop";
 		self.startButton.state = NSOnState;
-		toggl_set_settings_manual_mode(ctx, NO);
 
 		[self.durationTextField setDelegate:self];
 		// Time entry has a description
