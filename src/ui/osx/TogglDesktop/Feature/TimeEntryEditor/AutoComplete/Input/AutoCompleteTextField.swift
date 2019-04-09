@@ -74,6 +74,17 @@ class AutoCompleteTextField: NSTextField, NSTextFieldDelegate, AutoCompleteViewD
 
     // MARK: Public
 
+    override func becomeFirstResponder() -> Bool {
+        let value = super.becomeFirstResponder()
+
+        // Expand the autocomplete view if it's selected
+        if stringValue.isEmpty {
+             state = .expand
+        }
+
+        return value
+    }
+
     func controlTextDidEndEditing(_ obj: Notification) {
         state = .collapse
 
