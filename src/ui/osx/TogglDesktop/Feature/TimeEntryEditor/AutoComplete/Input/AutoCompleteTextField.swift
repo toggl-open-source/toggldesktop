@@ -173,6 +173,13 @@ extension AutoCompleteTextField {
 
         // Down key
         if commandSelector == #selector(NSResponder.moveDown(_:)) {
+            if state == .collapse {
+                state = .expand
+                autoCompleteView.filter(with: "")
+                if window?.firstResponder != self.currentEditor() {
+                    window?.makeFirstResponder(self)
+                }
+            }
             return autoCompleteView.tableView.handleKeyboardEvent(currentEvent)
         }
 
