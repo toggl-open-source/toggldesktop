@@ -40,6 +40,7 @@
                 <constraint firstItem="ZvV-w8-dCM" firstAttribute="leading" secondItem="kdV-QX-CmW" secondAttribute="leading" constant="15" id="zEd-Vw-1OT"/>
             </constraints>
             <connections>
+                <outlet property="backgroundView" destination="Ws3-BI-x3S" id="hSq-eI-9Q4"/>
                 <outlet property="checkButton" destination="ZvV-w8-dCM" id="Rqp-WW-NUb"/>
                 <outlet property="contentContainerView" destination="Ws3-BI-x3S" id="UxL-Yv-iol"/>
             </connections>
