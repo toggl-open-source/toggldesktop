@@ -39,6 +39,16 @@
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
+                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="8lo-U3-Yk5">
+                    <rect key="frame" x="0.0" y="0.0" width="70" height="22"/>
+                    <buttonCell key="cell" type="bevel" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="Z2c-sQ-0ee">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="clickedBtnOnTap:" target="c22-O7-iKe" id="p7d-9o-cXl"/>
+                    </connections>
+                </button>
                 <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="MP2-f0-MdB">
                     <rect key="frame" x="27" y="3" width="35" height="16"/>
                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="tag_gradient" id="J2p-3r-l4I"/>
@@ -59,6 +69,7 @@
                 </button>
             </subviews>
             <constraints>
+                <constraint firstAttribute="bottom" secondItem="8lo-U3-Yk5" secondAttribute="bottom" id="0hP-0F-yVF"/>
                 <constraint firstItem="Ix1-m2-ZVO" firstAttribute="centerX" secondItem="c22-O7-iKe" secondAttribute="centerX" id="14N-dF-TN1"/>
                 <constraint firstItem="di9-tm-V4I" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" id="2Bf-X5-fKP"/>
                 <constraint firstAttribute="bottom" secondItem="Ix1-m2-ZVO" secondAttribute="bottom" constant="3" id="3dj-ei-L45"/>
@@ -70,11 +81,14 @@
                 <constraint firstItem="MP2-f0-MdB" firstAttribute="centerY" secondItem="c22-O7-iKe" secondAttribute="centerY" id="TN9-rI-HFS"/>
                 <constraint firstItem="di9-tm-V4I" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" id="UUY-XR-4dB"/>
                 <constraint firstItem="Ix1-m2-ZVO" firstAttribute="centerY" secondItem="c22-O7-iKe" secondAttribute="centerY" id="aKs-n5-x9m"/>
+                <constraint firstItem="8lo-U3-Yk5" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" id="bOM-Fj-wzI"/>
                 <constraint firstAttribute="bottom" secondItem="ymK-AT-aPJ" secondAttribute="bottom" id="eSC-pa-eGU"/>
                 <constraint firstAttribute="trailing" secondItem="ymK-AT-aPJ" secondAttribute="trailing" id="eh2-Kb-FlL"/>
                 <constraint firstItem="ymK-AT-aPJ" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" id="goM-vc-5fr"/>
                 <constraint firstItem="Ix1-m2-ZVO" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="7" id="hUn-qH-Nvh"/>
+                <constraint firstAttribute="trailing" secondItem="8lo-U3-Yk5" secondAttribute="trailing" id="iXJ-C6-zYX"/>
                 <constraint firstItem="ymK-AT-aPJ" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" id="ibs-eU-WVh"/>
+                <constraint firstItem="8lo-U3-Yk5" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" id="idJ-dX-bEx"/>
                 <constraint firstAttribute="trailing" secondItem="MP2-f0-MdB" secondAttribute="trailing" constant="8" id="lxM-GM-gTf"/>
                 <constraint firstAttribute="trailing" secondItem="Shm-xU-vvz" secondAttribute="trailing" constant="4" id="mI7-YV-Qpf"/>
             </constraints>

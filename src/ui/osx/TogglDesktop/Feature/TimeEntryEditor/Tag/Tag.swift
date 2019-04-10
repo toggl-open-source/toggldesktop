@@ -25,3 +25,10 @@ final class Tag {
         self.isEmptyTag = isEmptyTag
     }
 }
+
+extension Array where Element == Tag {
+
+    func toNames() -> [String] {
+        return map { $0.name }
+    }
+}

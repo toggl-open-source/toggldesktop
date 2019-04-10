@@ -59,9 +59,7 @@ final class EditorViewController: NSViewController {
     }
 
     @IBAction func tagAddButtonOnTap(_ sender: Any) {
-        tagAutoCompleteContainerView.isHidden = false
-        view.window?.makeFirstResponder(tagTextField)
-        tagTextField.openSuggestion()
+        openTagAutoCompleteView()
     }
 }
 
@@ -83,6 +81,7 @@ extension EditorViewController {
 
     fileprivate func initDatasource() {
         projectDatasource.delegate = self
+        tagTextField.autoCompleteDelegate = self
         projectDatasource.setup(with: projectTextField)
         tagDatasource.delegate = self
         tagDatasource.tagDelegte = self
@@ -133,6 +132,12 @@ extension EditorViewController {
     fileprivate func updateNextKeyViews() {
         deleteBtn.nextKeyView = descriptionTextField
     }
+
+    fileprivate func openTagAutoCompleteView() {
+        tagAutoCompleteContainerView.isHidden = false
+        view.window?.makeFirstResponder(tagTextField)
+        tagTextField.openSuggestion()
+    }
 }
 
 // MARK: AutoCompleteViewDataSourceDelegate
@@ -154,8 +159,6 @@ extension EditorViewController: AutoCompleteViewDataSourceDelegate {
                                                                              projectID: item.projectID,
                                                                              projectGUID: projectGUID)
             }
-        } else if sender == tagDatasource {
-            
         }
     }
 }
@@ -176,9 +179,21 @@ extension EditorViewController: NSTextFieldDelegate {
 extension EditorViewController: AutoCompleteTextFieldDelegate {
 
     func autoCompleteDidTapOnCreateButton(_ sender: AutoCompleteTextField) {
-
+        if sender == tagTextField {
+            let newTag = Tag(name: sender.stringValue)
+            var selectedTags = tagDatasource.selectedTags
+            selectedTags.append(newTag)
+            tagDatasource.updateSelectedTags(selectedTags)
+            DesktopLibraryBridge.shared().updateTimeEntry(withTags: selectedTags.toNames(), guid: timeEntry.guid)
+        }
     }
 
+    func autoCompleteViewDidClose(_ sender: AutoCompleteTextField) {
+        if sender == tagTextField {
+            tagAutoCompleteContainerView.isHidden = true
+        }
+    }
+    
     func shouldClearCurrentSelection(_ sender: AutoCompleteTextField) {
         if sender == projectTextField {
             selectedProjectItem = nil
@@ -210,6 +225,10 @@ extension EditorViewController: TagTokenViewDelegate {
             DesktopLibraryBridge.shared().updateTimeEntry(withTags: remainingTags, guid: timeEntry.guid)
         }
     }
+
+    func tagTokenShouldOpenAutoCompleteView() {
+        openTagAutoCompleteView()
+    }
 }
 
 // MARK: TagDataSourceDelegate
@@ -217,7 +236,7 @@ extension EditorViewController: TagTokenViewDelegate {
 extension EditorViewController: TagDataSourceDelegate {
 
     func tagSelectionChanged(with selectedTags: [Tag]) {
-        let tags = selectedTags.map { $0.name }
+        let tags = selectedTags.toNames()
         DesktopLibraryBridge.shared().updateTimeEntry(withTags: tags, guid: timeEntry.guid)
     }
 }

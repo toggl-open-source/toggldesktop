@@ -11,6 +11,7 @@ import Cocoa
 protocol TagTokenViewDelegate: class {
 
     func tagTokenShouldDelete(with tag: Tag, sender: TagTokenView)
+    func tagTokenShouldOpenAutoCompleteView()
 }
 
 final class TagTokenView: NSView {
@@ -49,6 +50,10 @@ final class TagTokenView: NSView {
 
     @IBAction func deleteBtnOnTap(_ sender: Any) {
         delegate?.tagTokenShouldDelete(with: tagToken, sender: self)
+    }
+
+    @IBAction func clickedBtnOnTap(_ sender: Any) {
+        delegate?.tagTokenShouldOpenAutoCompleteView()
     }
 
     override func mouseExited(with event: NSEvent) {

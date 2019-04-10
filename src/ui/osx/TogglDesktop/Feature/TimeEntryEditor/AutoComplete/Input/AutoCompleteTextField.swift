@@ -12,6 +12,7 @@ protocol AutoCompleteTextFieldDelegate: class {
 
     func autoCompleteDidTapOnCreateButton(_ sender: AutoCompleteTextField)
     func shouldClearCurrentSelection(_ sender: AutoCompleteTextField)
+    func autoCompleteViewDidClose(_ sender: AutoCompleteTextField)
 }
 
 class AutoCompleteTextField: NSTextField, NSTextFieldDelegate, AutoCompleteViewDelegate {
@@ -46,6 +47,7 @@ class AutoCompleteTextField: NSTextField, NSTextFieldDelegate, AutoCompleteViewD
             case .collapse:
                 arrowBtn.image = NSImage(named: NSImage.Name("arrow-section-open"))
                 closeAutoComplete()
+                autoCompleteDelegate?.autoCompleteViewDidClose(self)
             case .expand:
                 arrowBtn.image = NSImage(named: NSImage.Name("arrow-section-close"))
                 presentAutoComplete()
