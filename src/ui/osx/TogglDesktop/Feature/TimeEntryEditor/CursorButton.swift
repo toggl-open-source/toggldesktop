@@ -8,7 +8,7 @@
 
 import Foundation
 
-final class CursorButton: NSButton {
+class CursorButton: NSButton {
 
     // MARK: - Variable
 

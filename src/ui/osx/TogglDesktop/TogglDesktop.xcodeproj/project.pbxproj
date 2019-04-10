@@ -130,6 +130,7 @@
 		BA013FF5225705B6000E5B91 /* HoverTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA013FF4225705B6000E5B91 /* HoverTableCellView.swift */; };
 		BA03725521FE9FD400FC277B /* FlatButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA03725421FE9FD400FC277B /* FlatButton.swift */; };
 		BA03729D21FED85700FC277B /* NSView+Xib.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA03729C21FED85700FC277B /* NSView+Xib.swift */; };
+		BA053659225DDDBB00C26E1F /* CustomFocusRingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA053658225DDDBB00C26E1F /* CustomFocusRingButton.swift */; };
 		BA08E012222E32C90075F68E /* NSView+LayoutConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA08E011222E32C90075F68E /* NSView+LayoutConstraint.swift */; };
 		BA08E087222E709C0075F68E /* ProjectTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = BA08E086222E709C0075F68E /* ProjectTextField.m */; };
 		BA0C3A65223219470081C6DE /* AutoCompleteCellType.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0C3A64223219470081C6DE /* AutoCompleteCellType.swift */; };
@@ -732,6 +733,7 @@
 		BA013FF4225705B6000E5B91 /* HoverTableCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoverTableCellView.swift; sourceTree = "<group>"; };
 		BA03725421FE9FD400FC277B /* FlatButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlatButton.swift; sourceTree = "<group>"; };
 		BA03729C21FED85700FC277B /* NSView+Xib.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSView+Xib.swift"; sourceTree = "<group>"; };
+		BA053658225DDDBB00C26E1F /* CustomFocusRingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFocusRingButton.swift; sourceTree = "<group>"; };
 		BA08E011222E32C90075F68E /* NSView+LayoutConstraint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSView+LayoutConstraint.swift"; sourceTree = "<group>"; };
 		BA08E085222E709C0075F68E /* ProjectTextField.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProjectTextField.h; sourceTree = "<group>"; };
 		BA08E086222E709C0075F68E /* ProjectTextField.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProjectTextField.m; sourceTree = "<group>"; };
@@ -1362,6 +1364,7 @@
 				BA0F67B6224A32F700ED0F91 /* CursorButton.swift */,
 				BA84363922533A6600EF5830 /* DesktopLibraryBridge.h */,
 				BA84363A22533A6600EF5830 /* DesktopLibraryBridge.m */,
+				BA053658225DDDBB00C26E1F /* CustomFocusRingButton.swift */,
 			);
 			path = TimeEntryEditor;
 			sourceTree = "<group>";
@@ -2149,6 +2152,7 @@
 				BA7D334F224897FC00B953A8 /* ProjectHeaderCellView.swift in Sources */,
 				BAE49CAE222FC1C900773814 /* TimerContainerBox.swift in Sources */,
 				74AA9474180909F50000539F /* GTMOAuth2SignIn.m in Sources */,
+				BA053659225DDDBB00C26E1F /* CustomFocusRingButton.swift in Sources */,
 				BA7D335E2248B48000B953A8 /* AutoCompleteTextField.swift in Sources */,
 				3C07B75A193C88AE00ED6E6F /* NSCustomTimerComboBox.m in Sources */,
 				BA7D335722489BD000B953A8 /* AutoCompleteViewDataSource.swift in Sources */,
