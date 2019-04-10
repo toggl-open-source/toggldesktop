@@ -31,6 +31,11 @@ extension Notification.Name {
 
     func filter(with text: String) -> [Tag] {
         let filters = tags.filter { $0.name.lowercased().contains(text.lowercased()) }
+
+        if filters.isEmpty {
+            return [Tag.noMatching]
+        }
+
         return filters
     }
 }

@@ -101,6 +101,10 @@ class AutoCompleteTextField: NSTextField, NSTextFieldDelegate, AutoCompleteViewD
         }
     }
 
+    func openSuggestion() {
+        state = .expand
+    }
+    
     func closeSuggestion() {
         state = .collapse
     }

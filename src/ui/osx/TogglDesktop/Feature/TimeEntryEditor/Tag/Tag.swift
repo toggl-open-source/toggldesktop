@@ -10,7 +10,7 @@ import Foundation
 
 final class Tag {
 
-    static let empty = Tag(name: "", isEmptyTag: true)
+    static let noMatching = Tag(name: "", isEmptyTag: true)
 
     let name:String
     let isEmptyTag: Bool

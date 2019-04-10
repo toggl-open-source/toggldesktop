@@ -56,7 +56,7 @@ final class TagDataSource: AutoCompleteViewDataSource {
         reSelectSelectedTags()
 
         // Hide create if it's has content
-        if let first = items.first as? Client, first.isEmpty {
+        if let first = items.first as? Tag, first.isEmptyTag {
             autoCompleteView.setCreateButtonSectionHidden(false)
             autoCompleteView.updateTitleForCreateButton(with: "Create new tag \"\(textField.stringValue)\"")
         } else {

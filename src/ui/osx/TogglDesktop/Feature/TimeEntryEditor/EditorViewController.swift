@@ -62,6 +62,7 @@ final class EditorViewController: NSViewController {
     @IBAction func tagAddButtonOnTap(_ sender: Any) {
         tagAutoCompleteContainerView.isHidden = false
         view.window?.makeFirstResponder(tagTextField)
+        tagTextField.openSuggestion()
     }
 }
 
