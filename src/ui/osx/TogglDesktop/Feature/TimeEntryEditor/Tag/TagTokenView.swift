@@ -20,6 +20,7 @@ final class TagTokenView: NSView {
     @IBOutlet weak var boxContainerView: NSBox!
     @IBOutlet weak var titleLabel: NSTextField!
     @IBOutlet weak var closeButton: CursorButton!
+    @IBOutlet weak var gradientView: NSImageView!
 
     // MARK: Variables
 
@@ -54,12 +55,14 @@ final class TagTokenView: NSView {
         super.mouseExited(with: event)
         boxContainerView.animator().alphaValue = 1.0
         closeButton.animator().alphaValue = 0.0
+        gradientView.animator().alphaValue = 0
     }
 
     override func mouseEntered(with event: NSEvent) {
         super.mouseEntered(with: event)
         boxContainerView.animator().alphaValue = 0.0
         closeButton.animator().alphaValue = 1.0
+        gradientView.animator().alphaValue = 1.0
     }
 
     fileprivate func initTracking() {
@@ -78,6 +81,7 @@ extension TagTokenView {
     fileprivate func initCommon() {
         boxContainerView.alphaValue = 1
         closeButton.alphaValue = 0
+        gradientView.alphaValue = 0
         closeButton.cursor = .pointingHand
     }
 }
