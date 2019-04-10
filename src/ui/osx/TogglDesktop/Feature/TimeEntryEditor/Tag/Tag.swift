@@ -10,13 +10,18 @@ import Foundation
 
 final class Tag {
 
+    static let empty = Tag(name: "", isEmptyTag: true)
+
     let name:String
+    let isEmptyTag: Bool
 
     init(viewItem: ViewItem) {
         self.name = viewItem.name ?? ""
+        self.isEmptyTag = false
     }
 
-    init(name: String) {
+    init(name: String, isEmptyTag: Bool = false) {
         self.name = name
+        self.isEmptyTag = isEmptyTag
     }
 }

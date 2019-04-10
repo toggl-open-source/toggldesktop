@@ -14,6 +14,8 @@ final class TagDataSource: AutoCompleteViewDataSource {
 
         static let CellID = NSUserInterfaceItemIdentifier("TagCellView")
         static let CellNibName = NSNib.Name("TagCellView")
+        static let ClientEmptyCellID = NSUserInterfaceItemIdentifier("NoClientCellView")
+        static let ClientEmptyIDNibName = NSNib.Name("NoClientCellView")
     }
 
     // MARK: Variables
@@ -31,6 +33,8 @@ final class TagDataSource: AutoCompleteViewDataSource {
     override func registerCustomeCells() {
         tableView.register(NSNib(nibNamed: Constants.CellNibName, bundle: nil),
                            forIdentifier: Constants.CellID)
+        tableView.register(NSNib(nibNamed: Constants.ClientEmptyIDNibName, bundle: nil),
+                           forIdentifier: Constants.ClientEmptyCellID)
     }
 
     override func filter(with text: String) {
@@ -48,7 +52,16 @@ final class TagDataSource: AutoCompleteViewDataSource {
 
     override func render(with items: [Any]) {
         super.render(with: items)
+
         reSelectSelectedTags()
+
+        // Hide create if it's has content
+        if let first = items.first as? Client, first.isEmpty {
+            autoCompleteView.setCreateButtonSectionHidden(false)
+            autoCompleteView.updateTitleForCreateButton(with: "Create new tag \"\(textField.stringValue)\"")
+        } else {
+            autoCompleteView.setCreateButtonSectionHidden(true)
+        }
     }
 
     func updateSelectedTags(_ tags: [Tag]) {
@@ -83,12 +96,27 @@ final class TagDataSource: AutoCompleteViewDataSource {
 
     override func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
         let item = items[row] as! Tag
+        if item.isEmptyTag {
+            return tableView.makeView(withIdentifier: Constants.ClientEmptyCellID, owner: self) as! NoClientCellView
+        }
         let view = tableView.makeView(withIdentifier: Constants.CellID, owner: self) as! TagCellView
         view.render(item)
         return view
     }
 
     override func tableView(_ tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
+        let item = items[row] as! Tag
+        if item.isEmptyTag {
+            return NoClientCellView.cellHeight
+        }
         return TagCellView.cellHeight
+    }
+
+    override func tableView(_ tableView: NSTableView, shouldSelectRow row: Int) -> Bool {
+        let item = items[row] as! Tag
+        if item.isEmptyTag {
+            return false
+        }
+        return true
     }
 }

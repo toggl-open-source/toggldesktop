@@ -196,6 +196,7 @@
                                     <constraint firstAttribute="height" constant="30" id="8Bq-u5-vwp"/>
                                 </constraints>
                                 <color key="borderColor" name="upload-border-color"/>
+                                <color key="fillColor" name="green-color"/>
                             </box>
                             <box boxType="custom" cornerRadius="8" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="Qo9-rw-PRz">
                                 <rect key="frame" x="10" y="153" width="105" height="30"/>
@@ -459,6 +460,9 @@
         </namedColor>
         <namedColor name="error-title-color">
             <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="green-color">
+            <color red="0.15686274509803921" green="0.80392156862745101" blue="0.25490196078431371" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="grey-text-color">
             <color red="0.33333333333333331" green="0.33333333333333331" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
