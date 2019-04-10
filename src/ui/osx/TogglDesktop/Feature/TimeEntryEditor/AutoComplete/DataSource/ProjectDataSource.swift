@@ -8,7 +8,17 @@
 
 import Foundation
 
-class ProjectHeaderItem {
+final class ProjectWorkspaceItem {
+    let name: String
+    let item: AutocompleteItem
+
+    init(item: AutocompleteItem) {
+        self.item = item
+        self.name = item.workspaceName
+    }
+}
+
+final class ProjectHeaderItem {
 
     let name: String
     let item: AutocompleteItem
@@ -19,7 +29,7 @@ class ProjectHeaderItem {
     }
 }
 
-class ProjectContentItem {
+final class ProjectContentItem {
 
     let name: String
     let colorHex: String
@@ -42,6 +52,8 @@ final class ProjectDataSource: AutoCompleteViewDataSource {
 
         static let HeaderCell = NSUserInterfaceItemIdentifier("ProjectHeaderCellView")
         static let HeaderNibName = NSNib.Name("ProjectHeaderCellView")
+        static let WorkspaceCell = NSUserInterfaceItemIdentifier("ProjectWorksapceCellView")
+        static let WorkspaceNibName = NSNib.Name("ProjectWorksapceCellView")
         static let ProjectCell = NSUserInterfaceItemIdentifier("ProjectContentCellView")
         static let ProjectNibName = NSNib.Name("ProjectContentCellView")
     }
@@ -53,6 +65,8 @@ final class ProjectDataSource: AutoCompleteViewDataSource {
                             forIdentifier: Constants.HeaderCell)
         tableView.register(NSNib(nibNamed: Constants.ProjectNibName, bundle: nil),
                             forIdentifier: Constants.ProjectCell)
+        tableView.register(NSNib(nibNamed: Constants.WorkspaceNibName, bundle: nil),
+                           forIdentifier: Constants.WorkspaceCell)
     }
 
     override func filter(with text: String) {
@@ -81,6 +95,10 @@ final class ProjectDataSource: AutoCompleteViewDataSource {
             let view = tableView.makeView(withIdentifier: Constants.ProjectCell, owner: self) as! ProjectContentCellView
             view.render(project)
             return view
+        case let worksapce as ProjectWorkspaceItem:
+            let view = tableView.makeView(withIdentifier: Constants.WorkspaceCell, owner: self) as! ProjectWorksapceCellView
+            view.render(worksapce)
+            return view
         default:
             return nil
         }
@@ -93,6 +111,8 @@ final class ProjectDataSource: AutoCompleteViewDataSource {
             return ProjectHeaderCellView.cellHeight
         case is ProjectContentItem:
             return ProjectContentCellView.cellHeight
+        case is ProjectWorkspaceItem:
+            return ProjectWorksapceCellView.cellHeight
         default:
             return 0
         }

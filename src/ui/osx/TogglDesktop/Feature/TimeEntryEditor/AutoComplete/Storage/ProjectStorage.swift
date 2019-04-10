@@ -56,13 +56,19 @@ extension ProjectStorage {
 
         // Process
         var newItems: [Any] = []
+        var currentWorkspace = firstItem.workspaceName
         var currentClient = firstItem.clientLabel
 
-        // Append the first client
+        // Append the first workspace and client
+        newItems.append(ProjectWorkspaceItem(item: firstItem))
         newItems.append(ProjectHeaderItem(item: firstItem))
 
         // Append new item or create new client
         for item in autoCompleteItems {
+            if item.workspaceName != currentWorkspace {
+                newItems.append(ProjectWorkspaceItem(item: firstItem))
+                currentWorkspace = item.workspaceName
+            }
             if item.clientLabel != currentClient {
                 newItems.append(ProjectHeaderItem(item: item))
                 currentClient = item.clientLabel
