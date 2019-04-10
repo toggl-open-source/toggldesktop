@@ -8,6 +8,11 @@
 
 import Foundation
 
+protocol TagDataSourceDelegate: class {
+
+    func tagSelectionChanged(with selectedTags: [Tag])
+}
+
 final class TagDataSource: AutoCompleteViewDataSource {
 
     private struct Constants {
@@ -20,6 +25,7 @@ final class TagDataSource: AutoCompleteViewDataSource {
 
     // MARK: Variables
 
+    weak var tagDelegte: TagDataSourceDelegate?
     private(set) var selectedTags: [Tag] = []
 
     // MARK: Override
@@ -75,6 +81,7 @@ final class TagDataSource: AutoCompleteViewDataSource {
         }
         let view = tableView.makeView(withIdentifier: Constants.CellID, owner: self) as! TagCellView
         let isSelected = selectedTags.contains(where: { $0.name == item.name })
+        view.delegate = self
         view.render(item, isSelected: isSelected)
         return view
     }
@@ -89,5 +96,22 @@ final class TagDataSource: AutoCompleteViewDataSource {
 
     override func tableView(_ tableView: NSTableView, shouldSelectRow row: Int) -> Bool {
         return false
+    }
+}
+
+// MARK: TagCellViewDelegate
+
+extension TagDataSource: TagCellViewDelegate {
+
+    func tagSelectionStateOnChange(with tag: Tag, isSelected: Bool) {
+        if isSelected {
+            guard !selectedTags.contains(where: { $0.name == tag.name }) else { return }
+            selectedTags.append(tag)
+            tagDelegte?.tagSelectionChanged(with: selectedTags)
+        } else {
+            guard let index = selectedTags.firstIndex(where: { $0.name == tag.name }) else { return }
+            selectedTags.remove(at: index)
+            tagDelegte?.tagSelectionChanged(with: selectedTags)
+        }
     }
 }

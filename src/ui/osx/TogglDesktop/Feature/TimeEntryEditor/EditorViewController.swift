@@ -20,7 +20,6 @@ final class EditorViewController: NSViewController {
     @IBOutlet weak var projectDotImageView: DotImageView!
     @IBOutlet weak var closeBtn: CursorButton!
     @IBOutlet weak var deleteBtn: NSButton!
-    
     @IBOutlet weak var tagAutoCompleteContainerView: NSBox!
     @IBOutlet weak var tagStackView: NSStackView!
     @IBOutlet weak var tagAddButton: NSButton!
@@ -86,6 +85,7 @@ extension EditorViewController {
         projectDatasource.delegate = self
         projectDatasource.setup(with: projectTextField)
         tagDatasource.delegate = self
+        tagDatasource.tagDelegte = self
         tagDatasource.setup(with: tagTextField)
     }
 
@@ -200,7 +200,6 @@ extension EditorViewController: TagTokenViewDelegate {
 
     func tagTokenShouldDelete(with tag: Tag, sender: TagTokenView) {
         sender.removeFromSuperview()
-
         if let tags = timeEntry.tags as? [String] {
             let remainingTags = tags.compactMap { (tagName) -> String? in
                 if tagName == tag.name {
@@ -210,5 +209,15 @@ extension EditorViewController: TagTokenViewDelegate {
             }
             DesktopLibraryBridge.shared().updateTimeEntry(withTags: remainingTags, guid: timeEntry.guid)
         }
+    }
+}
+
+// MARK: TagDataSourceDelegate
+
+extension EditorViewController: TagDataSourceDelegate {
+
+    func tagSelectionChanged(with selectedTags: [Tag]) {
+        let tags = selectedTags.map { $0.name }
+        DesktopLibraryBridge.shared().updateTimeEntry(withTags: tags, guid: timeEntry.guid)
     }
 }
