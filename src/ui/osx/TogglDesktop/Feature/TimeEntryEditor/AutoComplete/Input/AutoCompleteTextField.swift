@@ -137,8 +137,12 @@ class AutoCompleteTextField: NSTextField, NSTextFieldDelegate, AutoCompleteViewD
 
         // Present if need
         if !autoCompleteWindow.isVisible {
-            window?.addChildWindow(autoCompleteWindow,
-                                   ordered: .above)
+            if self.window != autoCompleteWindow {
+                window?.addChildWindow(autoCompleteWindow,
+                                       ordered: .above)
+            } else {
+                autoCompleteWindow.makeKeyAndOrderFront(nil)
+            }
         }
 
         didPresentAutoComplete()

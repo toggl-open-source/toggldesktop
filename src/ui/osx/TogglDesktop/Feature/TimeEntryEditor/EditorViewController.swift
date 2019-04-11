@@ -135,8 +135,8 @@ extension EditorViewController {
 
     fileprivate func openTagAutoCompleteView() {
         tagAutoCompleteContainerView.isHidden = false
-        view.window?.makeFirstResponder(tagTextField)
         tagTextField.openSuggestion()
+        view.window?.makeFirstResponder(tagTextField)
     }
 }
 

@@ -37,6 +37,7 @@
                                             </box>
                                         </subviews>
                                         <constraints>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="240" id="46S-ru-W4M"/>
                                             <constraint firstItem="kGW-MJ-M06" firstAttribute="top" secondItem="p5b-iT-O8A" secondAttribute="top" constant="5" id="5wO-di-tuT"/>
                                             <constraint firstItem="kGW-MJ-M06" firstAttribute="leading" secondItem="p5b-iT-O8A" secondAttribute="leading" constant="5" id="7vP-Pw-zMG"/>
                                             <constraint firstAttribute="trailing" secondItem="kGW-MJ-M06" secondAttribute="trailing" constant="5" id="Te2-3N-AzJ"/>

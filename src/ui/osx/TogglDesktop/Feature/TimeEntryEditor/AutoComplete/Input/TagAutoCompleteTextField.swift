@@ -8,15 +8,28 @@
 
 import Foundation
 
-final class TagAutoCompleteTextField: AutoCompleteTextField {
+final class TagAutoCompleteTextField: AutoCompleteTextField, NSWindowDelegate {
 
     private var isMovedToWindowsView = false
 
-    
     // The design for TagTextField is different than other
     // The AutoCompleteWindow will contain the TextView
     override var isSeperateWindow: Bool {
         return false
+    }
+
+    override init(frame frameRect: NSRect) {
+        super.init(frame: frameRect)
+        autoCompleteWindow.delegate = self
+    }
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        autoCompleteWindow.delegate = self
+    }
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
     }
 
     override func didPresentAutoComplete() {
@@ -30,5 +43,9 @@ final class TagAutoCompleteTextField: AutoCompleteTextField {
         translatesAutoresizingMaskIntoConstraints = false
         autoCompleteView.placeholderBoxContainerView.addSubview(self)
         edgesToSuperView()
+    }
+
+    func windowDidResignMain(_ notification: Notification) {
+        closeSuggestion()
     }
 }
