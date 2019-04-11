@@ -39,8 +39,13 @@ class AutoCompleteTextField: NSTextField, NSTextFieldDelegate, AutoCompleteViewD
     // MARK: Variables
 
     weak var autoCompleteDelegate: AutoCompleteTextFieldDelegate?
-    lazy var autoCompleteWindow: AutoCompleteViewWindow = AutoCompleteViewWindow(view: autoCompleteView)
+    lazy var autoCompleteWindow: AutoCompleteViewWindow = {
+        let window = AutoCompleteViewWindow(view: autoCompleteView)
+        window.isSeparateWindow = isSeperateWindow
+        return window
+    }()
     lazy var autoCompleteView: AutoCompleteView = AutoCompleteView.xibView()
+    var isSeperateWindow: Bool { return true }
     private var _state = State.collapse {
         didSet {
             switch _state {
@@ -135,6 +140,12 @@ class AutoCompleteTextField: NSTextField, NSTextFieldDelegate, AutoCompleteViewD
             window?.addChildWindow(autoCompleteWindow,
                                    ordered: .above)
         }
+
+        didPresentAutoComplete()
+    }
+
+    func didPresentAutoComplete() {
+        // Override
     }
 
     func didTapOnCreateButton() {

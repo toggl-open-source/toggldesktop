@@ -12,7 +12,8 @@ final class AutoCompleteViewWindow: NSWindow {
 
     // MARK: Private
 
-    private let topPadding: CGFloat = 5.0
+    private var topPadding: CGFloat = 5.0
+    var isSeparateWindow = true
     override var canBecomeMain: Bool {
         return true
     }
@@ -36,6 +37,7 @@ final class AutoCompleteViewWindow: NSWindow {
 
     func layoutFrame(with textField: NSTextField, height: CGFloat) {
         guard let window = textField.window else { return }
+        var height = height
         let size = textField.frame.size
 
         // Convert
@@ -46,7 +48,13 @@ final class AutoCompleteViewWindow: NSWindow {
         } else {
             // Fallback on earlier versions
         }
-        location.y -= topPadding
+        if isSeparateWindow {
+            location.y -= topPadding
+        } else {
+            location.y -= -30.0
+            height += 30.0
+        }
+
         setFrame(CGRect(x: 0, y: 0, width: size.width, height: height), display: false)
         setFrameTopLeftPoint(location)
     }
@@ -72,6 +80,8 @@ final class AutoCompleteView: NSView {
     @IBOutlet weak var createNewItemContainerView: NSBox!
     @IBOutlet weak var horizontalLine: NSBox!
     @IBOutlet weak var stackView: NSStackView!
+    @IBOutlet weak var placeholderBox: NSView!
+    @IBOutlet weak var placeholderBoxContainerView: NSView!
 
     // MARK: Variables
 
@@ -120,6 +130,7 @@ extension AutoCompleteView {
         stackView.wantsLayer = true
         stackView.layer?.masksToBounds = true
         stackView.layer?.cornerRadius = 8
+        placeholderBox.isHidden = true
         createNewItemBtn.cursor = .pointingHand
         tableView.keyDidDownOnPress = {[weak self] key -> Bool in
             guard let strongSelf = self else { return false }

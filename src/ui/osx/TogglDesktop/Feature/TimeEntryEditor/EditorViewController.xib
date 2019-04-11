@@ -165,39 +165,6 @@
                                 </constraints>
                                 <color key="borderColor" name="upload-border-color"/>
                             </box>
-                            <box hidden="YES" boxType="custom" cornerRadius="8" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="mUe-Xn-xvP">
-                                <rect key="frame" x="10" y="192" width="240" height="30"/>
-                                <view key="contentView" id="21r-cG-sfg">
-                                    <rect key="frame" x="1" y="1" width="238" height="28"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                    <subviews>
-                                        <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="aeq-aC-W8G" customClass="TagAutoCompleteTextField" customModule="TogglDesktop" customModuleProvider="target">
-                                            <rect key="frame" x="-2" y="0.0" width="242" height="28"/>
-                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" alignment="left" placeholderString="Select project" id="u0H-N9-7h5" customClass="VerticallyCenteredTextFieldCell" customModule="TogglDesktop" customModuleProvider="target">
-                                                <font key="font" metaFont="system" size="14"/>
-                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="focusRingCornerRadius">
-                                                        <real key="value" value="8"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                </userDefinedRuntimeAttributes>
-                                            </textFieldCell>
-                                        </textField>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstItem="aeq-aC-W8G" firstAttribute="leading" secondItem="21r-cG-sfg" secondAttribute="leading" id="MgJ-2t-hQj"/>
-                                        <constraint firstItem="aeq-aC-W8G" firstAttribute="top" secondItem="21r-cG-sfg" secondAttribute="top" id="i1e-fL-XBo"/>
-                                        <constraint firstAttribute="trailing" secondItem="aeq-aC-W8G" secondAttribute="trailing" id="lBb-WJ-8bl"/>
-                                        <constraint firstAttribute="bottom" secondItem="aeq-aC-W8G" secondAttribute="bottom" id="sNP-Id-DmK"/>
-                                    </constraints>
-                                </view>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="8Bq-u5-vwp"/>
-                                </constraints>
-                                <color key="borderColor" name="upload-border-color"/>
-                                <color key="fillColor" name="green-color"/>
-                            </box>
                             <box boxType="custom" cornerRadius="8" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="Qo9-rw-PRz">
                                 <rect key="frame" x="10" y="153" width="105" height="30"/>
                                 <view key="contentView" id="glG-am-Jtd">
@@ -394,6 +361,39 @@
                                     <action selector="closeBtnOnTap:" target="-2" id="LME-BW-gYu"/>
                                 </connections>
                             </button>
+                            <box hidden="YES" boxType="custom" cornerRadius="8" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="mUe-Xn-xvP">
+                                <rect key="frame" x="10" y="192" width="240" height="30"/>
+                                <view key="contentView" id="21r-cG-sfg">
+                                    <rect key="frame" x="1" y="1" width="238" height="28"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <textField hidden="YES" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="aeq-aC-W8G" customClass="TagAutoCompleteTextField" customModule="TogglDesktop" customModuleProvider="target">
+                                            <rect key="frame" x="-2" y="0.0" width="242" height="28"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" alignment="left" placeholderString="Select project" id="u0H-N9-7h5" customClass="VerticallyCenteredTextFieldCell" customModule="TogglDesktop" customModuleProvider="target">
+                                                <font key="font" metaFont="system" size="14"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="focusRingCornerRadius">
+                                                        <real key="value" value="8"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                            </textFieldCell>
+                                        </textField>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="aeq-aC-W8G" firstAttribute="leading" secondItem="21r-cG-sfg" secondAttribute="leading" id="MgJ-2t-hQj"/>
+                                        <constraint firstItem="aeq-aC-W8G" firstAttribute="top" secondItem="21r-cG-sfg" secondAttribute="top" id="i1e-fL-XBo"/>
+                                        <constraint firstAttribute="trailing" secondItem="aeq-aC-W8G" secondAttribute="trailing" id="lBb-WJ-8bl"/>
+                                        <constraint firstAttribute="bottom" secondItem="aeq-aC-W8G" secondAttribute="bottom" id="sNP-Id-DmK"/>
+                                    </constraints>
+                                </view>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="8Bq-u5-vwp"/>
+                                </constraints>
+                                <color key="borderColor" name="upload-border-color"/>
+                                <color key="fillColor" name="editor-background-color"/>
+                            </box>
                         </subviews>
                         <constraints>
                             <constraint firstItem="Qzj-M9-zrp" firstAttribute="centerY" secondItem="8Gv-Ta-I1u" secondAttribute="centerY" constant="2" id="1lo-UI-uco"/>
@@ -460,9 +460,6 @@
         </namedColor>
         <namedColor name="error-title-color">
             <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="green-color">
-            <color red="0.15686274509803921" green="0.80392156862745101" blue="0.25490196078431371" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="grey-text-color">
             <color red="0.33333333333333331" green="0.33333333333333331" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

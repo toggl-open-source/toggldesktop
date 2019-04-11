@@ -11,32 +11,53 @@
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customView id="c22-O7-iKe" customClass="AutoCompleteView" customModule="TogglDesktop" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="240" height="201"/>
+            <rect key="frame" x="0.0" y="0.0" width="242" height="201"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <box boxType="custom" cornerRadius="8" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="3zn-tF-zLf">
-                    <rect key="frame" x="0.0" y="0.0" width="240" height="201"/>
+                    <rect key="frame" x="0.0" y="0.0" width="242" height="201"/>
                     <view key="contentView" id="jWI-5M-Pt3">
-                        <rect key="frame" x="1" y="1" width="238" height="199"/>
+                        <rect key="frame" x="1" y="1" width="240" height="199"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GoP-8R-z9o">
-                                <rect key="frame" x="0.0" y="0.0" width="238" height="199"/>
+                                <rect key="frame" x="0.0" y="0.0" width="240" height="199"/>
                                 <subviews>
+                                    <customView hidden="YES" translatesAutoresizingMaskIntoConstraints="NO" id="p5b-iT-O8A">
+                                        <rect key="frame" x="0.0" y="169" width="240" height="30"/>
+                                        <subviews>
+                                            <box boxType="custom" cornerRadius="8" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="kGW-MJ-M06">
+                                                <rect key="frame" x="5" y="0.0" width="230" height="25"/>
+                                                <view key="contentView" id="beQ-V1-NYT">
+                                                    <rect key="frame" x="1" y="1" width="228" height="23"/>
+                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                </view>
+                                                <color key="borderColor" name="upload-border-color"/>
+                                                <color key="fillColor" name="editor-background-color"/>
+                                            </box>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstItem="kGW-MJ-M06" firstAttribute="top" secondItem="p5b-iT-O8A" secondAttribute="top" constant="5" id="5wO-di-tuT"/>
+                                            <constraint firstItem="kGW-MJ-M06" firstAttribute="leading" secondItem="p5b-iT-O8A" secondAttribute="leading" constant="5" id="7vP-Pw-zMG"/>
+                                            <constraint firstAttribute="trailing" secondItem="kGW-MJ-M06" secondAttribute="trailing" constant="5" id="Te2-3N-AzJ"/>
+                                            <constraint firstAttribute="height" constant="30" id="hFs-Re-9Ng"/>
+                                            <constraint firstAttribute="bottom" secondItem="kGW-MJ-M06" secondAttribute="bottom" id="lBY-kq-NUJ"/>
+                                        </constraints>
+                                    </customView>
                                     <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="17" horizontalPageScroll="10" verticalLineScroll="17" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" horizontalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="ozk-6N-fZL">
-                                        <rect key="frame" x="0.0" y="41" width="238" height="158"/>
+                                        <rect key="frame" x="0.0" y="41" width="240" height="158"/>
                                         <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="Ex7-BM-qUy">
-                                            <rect key="frame" x="0.0" y="0.0" width="238" height="158"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="240" height="158"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
                                                 <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnReordering="NO" columnResizing="NO" multipleSelection="NO" emptySelection="NO" autosaveColumns="NO" typeSelect="NO" rowSizeStyle="automatic" viewBased="YES" id="HmX-fe-ZLW" customClass="KeyboardTableView" customModule="TogglDesktop" customModuleProvider="target">
-                                                    <rect key="frame" x="0.0" y="0.0" width="238" height="150"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="240" height="150"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <size key="intercellSpacing" width="3" height="0.0"/>
                                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                     <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                                     <tableColumns>
-                                                        <tableColumn width="235" minWidth="40" maxWidth="1000" id="oJU-jg-bNN">
+                                                        <tableColumn width="237" minWidth="40" maxWidth="1000" id="oJU-jg-bNN">
                                                             <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border">
                                                                 <font key="font" metaFont="smallSystem"/>
                                                                 <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -68,16 +89,16 @@
                                         </scroller>
                                     </scrollView>
                                     <box verticalHuggingPriority="750" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="qiv-1e-vax">
-                                        <rect key="frame" x="0.0" y="38" width="238" height="5"/>
+                                        <rect key="frame" x="0.0" y="38" width="240" height="5"/>
                                     </box>
                                     <box borderType="none" title="Box" titlePosition="noTitle" transparent="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gfh-56-r1Z">
-                                        <rect key="frame" x="-3" y="-4" width="244" height="46"/>
+                                        <rect key="frame" x="-3" y="-4" width="246" height="46"/>
                                         <view key="contentView" id="jOf-Uz-5NP">
-                                            <rect key="frame" x="0.0" y="0.0" width="244" height="46"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="246" height="46"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
                                                 <button verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sT2-gq-IUf" customClass="CustomFocusRingButton" customModule="TogglDesktop" customModuleProvider="target">
-                                                    <rect key="frame" x="4" y="6" width="236" height="36"/>
+                                                    <rect key="frame" x="4" y="6" width="238" height="36"/>
                                                     <buttonCell key="cell" type="bevel" title=" Create a new Project" bezelStyle="rounded" image="add-icon" imagePosition="left" alignment="center" lineBreakMode="truncatingTail" imageScaling="proportionallyDown" inset="2" id="thJ-D8-tYu">
                                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                         <font key="font" metaFont="system" size="14"/>
@@ -101,10 +122,12 @@
                                     </box>
                                 </subviews>
                                 <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="p5b-iT-O8A" secondAttribute="trailing" id="EnK-LO-V02"/>
                                     <constraint firstItem="qiv-1e-vax" firstAttribute="leading" secondItem="GoP-8R-z9o" secondAttribute="leading" id="I05-Pv-yey"/>
                                     <constraint firstAttribute="trailing" secondItem="ozk-6N-fZL" secondAttribute="trailing" id="WFS-MI-Q3J"/>
                                     <constraint firstItem="ozk-6N-fZL" firstAttribute="leading" secondItem="GoP-8R-z9o" secondAttribute="leading" id="YlZ-DP-MbI"/>
                                     <constraint firstItem="gfh-56-r1Z" firstAttribute="leading" secondItem="GoP-8R-z9o" secondAttribute="leading" id="e3R-Lx-RnT"/>
+                                    <constraint firstItem="p5b-iT-O8A" firstAttribute="leading" secondItem="GoP-8R-z9o" secondAttribute="leading" id="hTR-l5-Ybl"/>
                                     <constraint firstAttribute="trailing" secondItem="qiv-1e-vax" secondAttribute="trailing" id="knw-gl-Dvt"/>
                                     <constraint firstAttribute="trailing" secondItem="gfh-56-r1Z" secondAttribute="trailing" id="sl2-a3-KSg"/>
                                 </constraints>
@@ -112,8 +135,10 @@
                                     <integer value="1000"/>
                                     <integer value="1000"/>
                                     <integer value="1000"/>
+                                    <integer value="1000"/>
                                 </visibilityPriorities>
                                 <customSpacing>
+                                    <real value="3.4028234663852886e+38"/>
                                     <real value="3.4028234663852886e+38"/>
                                     <real value="3.4028234663852886e+38"/>
                                     <real value="3.4028234663852886e+38"/>
@@ -141,11 +166,13 @@
                 <outlet property="createNewItemBtn" destination="sT2-gq-IUf" id="tMw-df-FD7"/>
                 <outlet property="createNewItemContainerView" destination="gfh-56-r1Z" id="tRe-UZ-WTK"/>
                 <outlet property="horizontalLine" destination="qiv-1e-vax" id="5iE-dj-kav"/>
+                <outlet property="placeholderBox" destination="p5b-iT-O8A" id="xwL-fP-30A"/>
+                <outlet property="placeholderBoxContainerView" destination="beQ-V1-NYT" id="AIi-01-oac"/>
                 <outlet property="stackView" destination="GoP-8R-z9o" id="WsH-Dy-JAF"/>
                 <outlet property="tableView" destination="HmX-fe-ZLW" id="av0-YS-nIR"/>
                 <outlet property="tableViewHeight" destination="nCT-aH-EfR" id="LFE-wE-2Yq"/>
             </connections>
-            <point key="canvasLocation" x="59" y="258"/>
+            <point key="canvasLocation" x="59" y="257.5"/>
         </customView>
     </objects>
     <resources>
@@ -156,8 +183,14 @@
         <namedColor name="color-project-btn-border-color">
             <color red="0.0" green="0.0" blue="0.0" alpha="0.10000000149011612" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
+        <namedColor name="editor-background-color">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="grey-text-color">
             <color red="0.33333333333333331" green="0.33333333333333331" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="upload-border-color">
+            <color red="0.67450980392156867" green="0.67450980392156867" blue="0.67450980392156867" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>
