@@ -22,6 +22,14 @@
                     </view>
                     <color key="fillColor" name="auto-complete-cell-hover"/>
                 </box>
+                <box boxType="custom" borderWidth="0.0" cornerRadius="8" title="Box" translatesAutoresizingMaskIntoConstraints="NO" id="P4q-6R-6o7">
+                    <rect key="frame" x="5" y="2" width="309" height="34"/>
+                    <view key="contentView" id="sRp-zU-f9w">
+                        <rect key="frame" x="0.0" y="0.0" width="309" height="34"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    </view>
+                    <color key="fillColor" name="auto-complete-cell-hover"/>
+                </box>
                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ZvV-w8-dCM">
                     <rect key="frame" x="13" y="10" width="293" height="18"/>
                     <buttonCell key="cell" type="check" title="Check" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="cwN-gd-eAk">
@@ -35,7 +43,11 @@
             </subviews>
             <constraints>
                 <constraint firstItem="ZvV-w8-dCM" firstAttribute="centerY" secondItem="kdV-QX-CmW" secondAttribute="centerY" id="14C-gc-qDZ"/>
+                <constraint firstItem="P4q-6R-6o7" firstAttribute="trailing" secondItem="Ws3-BI-x3S" secondAttribute="trailing" id="Fis-0Y-MuK"/>
+                <constraint firstItem="P4q-6R-6o7" firstAttribute="top" secondItem="Ws3-BI-x3S" secondAttribute="top" id="LLM-Tx-xnm"/>
+                <constraint firstItem="P4q-6R-6o7" firstAttribute="bottom" secondItem="Ws3-BI-x3S" secondAttribute="bottom" id="PKF-6h-dTu"/>
                 <constraint firstAttribute="trailing" secondItem="Ws3-BI-x3S" secondAttribute="trailing" constant="5" id="Pbh-rC-b5o"/>
+                <constraint firstItem="P4q-6R-6o7" firstAttribute="leading" secondItem="Ws3-BI-x3S" secondAttribute="leading" id="bvN-Gi-jcg"/>
                 <constraint firstItem="Ws3-BI-x3S" firstAttribute="top" secondItem="kdV-QX-CmW" secondAttribute="top" constant="2" id="dKj-KO-ZfI"/>
                 <constraint firstAttribute="bottom" secondItem="Ws3-BI-x3S" secondAttribute="bottom" constant="2" id="fu0-8h-Pbb"/>
                 <constraint firstAttribute="trailing" secondItem="ZvV-w8-dCM" secondAttribute="trailing" constant="15" id="q9B-jY-sUX"/>
@@ -45,6 +57,7 @@
             <connections>
                 <outlet property="backgroundView" destination="Ws3-BI-x3S" id="hSq-eI-9Q4"/>
                 <outlet property="checkButton" destination="ZvV-w8-dCM" id="Rqp-WW-NUb"/>
+                <outlet property="hoverView" destination="P4q-6R-6o7" id="FqS-op-lgT"/>
             </connections>
             <point key="canvasLocation" x="244.5" y="-9"/>
         </tableCellView>

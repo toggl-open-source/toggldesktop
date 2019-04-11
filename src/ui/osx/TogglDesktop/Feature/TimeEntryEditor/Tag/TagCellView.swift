@@ -29,19 +29,26 @@ final class TagCellView: NSTableCellView {
             return ConvertHexColor.hexCode(toNSColor: "#e5f9e8")
         }
     }()
-    private lazy var hoverBackgroundColor: NSColor = {
+    private var greenColor: NSColor {
         if #available(OSX 10.13, *) {
-            return NSColor(named: NSColor.Name("auto-complete-cell-hover"))!
+            return NSColor(named: NSColor.Name("green-color"))!
         } else {
-            return NSColor(calibratedRed: 177.0/255.0, green: 177.0/255.0, blue: 177.0/255.0, alpha: 0.2)
+            return ConvertHexColor.hexCode(toNSColor: "#28cd41")
         }
+    }
+    private lazy var attributeDict: [NSAttributedString.Key: Any] = {
+        let font = checkButton.font ?? NSFont.systemFont(ofSize: 14.0)
+        let color = greenColor
+        return [NSAttributedString.Key.foregroundColor: color,
+                NSAttributedString.Key.font: font]
     }()
 
     // MARK: OUTLET
 
     @IBOutlet weak var checkButton: NSButton!
     @IBOutlet weak var backgroundView: NSBox!
-
+    @IBOutlet weak var hoverView: NSBox!
+    
     // MARK: Public
 
     override func awakeFromNib() {
@@ -59,9 +66,14 @@ final class TagCellView: NSTableCellView {
     func render(_ tag: Tag, isSelected: Bool) {
         self.tagItem = tag
         self.isSelected = isSelected
-        checkButton.title = tag.name
         checkButton.state = isSelected ? .on : .off
         backgroundView.fillColor = isSelected ? backgroundColor : .clear
+        if isSelected {
+            checkButton.attributedTitle = NSAttributedString(string: tag.name, attributes: attributeDict)
+        } else {
+            checkButton.title = tag.name
+        }
+
     }
 
     @IBAction func checkButtonOnChanged(_ sender: Any) {
@@ -73,23 +85,18 @@ final class TagCellView: NSTableCellView {
     override func mouseExited(with event: NSEvent) {
         super.mouseExited(with: event)
         NSCursor.arrow.set()
-        if !isSelected {
-            backgroundView.animator().alphaValue = 0.0
-        }
+        hoverView.animator().alphaValue = 0.0
     }
 
     override func mouseEntered(with event: NSEvent) {
         super.mouseEntered(with: event)
         NSCursor.pointingHand.set()
-        if !isSelected {
-            backgroundView.fillColor = hoverBackgroundColor
-            backgroundView.animator().alphaValue = 1.0
-        }
+        hoverView.animator().alphaValue = 1.0
     }
 
     fileprivate func initTracking() {
         let trackingArea = NSTrackingArea(rect: bounds,
-                                          options: [.activeAlways, .inVisibleRect, .mouseEnteredAndExited],
+                                          options: [.activeInKeyWindow, .inVisibleRect, .mouseEnteredAndExited],
                                           owner: self,
                                           userInfo: nil)
         addTrackingArea(trackingArea)
