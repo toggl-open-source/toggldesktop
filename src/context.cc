@@ -840,9 +840,6 @@ void Context::updateUI(const UIElements &what) {
     // Render data
     if (what.display_time_entry_editor
             && !editor_time_entry_view.GUID.empty()) {
-        if (what.open_time_entry_editor) {
-            UI()->DisplayApp();
-        }
         UI()->DisplayTags(tag_views);
         UI()->DisplayTimeEntryEditor(
             what.open_time_entry_editor,
