@@ -118,7 +118,8 @@ class AutoCompleteTextField: NSTextField, NSTextFieldDelegate, AutoCompleteViewD
 
     func updateWindowContent(with view: NSView, height: CGFloat) {
         autoCompleteWindow.contentView = view
-        autoCompleteWindow.layoutFrame(with: self, height: height)
+        let rect = windowFrameRect()
+        autoCompleteWindow.layoutFrame(with: self, origin: rect.origin, size: rect.size)
         autoCompleteWindow.makeKey()
     }
 
@@ -133,7 +134,8 @@ class AutoCompleteTextField: NSTextField, NSTextFieldDelegate, AutoCompleteViewD
         autoCompleteWindow.setContentSize(autoCompleteView.frame.size)
         
         // Layout frame and position
-        autoCompleteWindow.layoutFrame(with: self, height: autoCompleteView.frame.size.height)
+        let rect = windowFrameRect()
+        autoCompleteWindow.layoutFrame(with: self, origin: rect.origin, size: rect.size)
 
         // Present if need
         if !autoCompleteWindow.isVisible {
@@ -146,6 +148,10 @@ class AutoCompleteTextField: NSTextField, NSTextFieldDelegate, AutoCompleteViewD
         }
 
         didPresentAutoComplete()
+    }
+
+    func windowFrameRect() -> CGRect {
+        return frame
     }
 
     func didPresentAutoComplete() {

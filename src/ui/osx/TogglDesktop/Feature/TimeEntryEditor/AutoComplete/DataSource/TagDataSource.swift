@@ -95,7 +95,11 @@ final class TagDataSource: AutoCompleteViewDataSource {
     }
 
     override func tableView(_ tableView: NSTableView, shouldSelectRow row: Int) -> Bool {
-        return false
+        let item = items[row] as! Tag
+        if item.isEmptyTag {
+            return false
+        }
+        return true
     }
 }
 

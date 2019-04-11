@@ -134,9 +134,7 @@ extension EditorViewController {
     }
 
     fileprivate func openTagAutoCompleteView() {
-        tagAutoCompleteContainerView.isHidden = false
         tagTextField.openSuggestion()
-        view.window?.makeFirstResponder(tagTextField)
     }
 }
 
@@ -190,7 +188,9 @@ extension EditorViewController: AutoCompleteTextFieldDelegate {
 
     func autoCompleteViewDidClose(_ sender: AutoCompleteTextField) {
         if sender == tagTextField {
-            tagAutoCompleteContainerView.isHidden = true
+            tagTextField.removeFromSuperview()
+            tagAutoCompleteContainerView.addSubview(tagTextField)
+            tagTextField.edgesToSuperView()
         }
     }
     

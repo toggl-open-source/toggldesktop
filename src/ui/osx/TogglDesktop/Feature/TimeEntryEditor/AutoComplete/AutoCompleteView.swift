@@ -35,14 +35,13 @@ final class AutoCompleteViewWindow: NSWindow {
         setContentBorderThickness(0, for: NSRectEdge(rawValue: 0)!)
     }
 
-    func layoutFrame(with textField: NSTextField, height: CGFloat) {
+    func layoutFrame(with textField: NSTextField, origin: CGPoint, size: CGSize) {
         guard let window = textField.window else { return }
-        var height = height
-        let size = textField.frame.size
+        var height = size.height
 
         // Convert
         var location = CGPoint.zero
-        let point = textField.superview!.convert(textField.frame.origin, to: nil)
+        let point = textField.superview!.convert(origin, to: nil)
         if #available(OSX 10.12, *) {
             location = window.convertPoint(toScreen: point)
         } else {

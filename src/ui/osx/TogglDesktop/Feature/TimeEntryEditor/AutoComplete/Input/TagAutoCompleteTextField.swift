@@ -10,8 +10,6 @@ import Foundation
 
 final class TagAutoCompleteTextField: AutoCompleteTextField, NSWindowDelegate {
 
-    private var isMovedToWindowsView = false
-
     // The design for TagTextField is different than other
     // The AutoCompleteWindow will contain the TextView
     override var isSeperateWindow: Bool {
@@ -33,16 +31,20 @@ final class TagAutoCompleteTextField: AutoCompleteTextField, NSWindowDelegate {
     }
 
     override func didPresentAutoComplete() {
-        guard !isMovedToWindowsView else { return }
-        isMovedToWindowsView = true
         isHidden = false
         removeFromSuperview()
 
+        // Add
         autoCompleteView.placeholderBox.isHidden = false
-
         translatesAutoresizingMaskIntoConstraints = false
         autoCompleteView.placeholderBoxContainerView.addSubview(self)
         edgesToSuperView()
+
+
+        DispatchQueue.main.async {
+            self.autoCompleteWindow.makeKeyAndOrderFront(nil)
+            self.autoCompleteWindow.makeFirstResponder(self)
+        }
     }
 
     func windowDidResignMain(_ notification: Notification) {
