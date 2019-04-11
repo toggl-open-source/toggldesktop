@@ -220,7 +220,7 @@ extension EditorViewController: TagTokenViewDelegate {
                 if tagName == tag.name {
                     return nil
                 }
-                return tag.name
+                return tagName
             }
             DesktopLibraryBridge.shared().updateTimeEntry(withTags: remainingTags, guid: timeEntry.guid)
         }

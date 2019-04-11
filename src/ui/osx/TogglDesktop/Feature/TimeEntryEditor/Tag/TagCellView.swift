@@ -17,6 +17,8 @@ final class TagCellView: NSTableCellView {
 
     static let cellHeight: CGFloat = 34.0
 
+    // MARK: Variables
+    
     weak var delegate: TagCellViewDelegate?
     private var tagItem: Tag?
     private var isSelected = false
