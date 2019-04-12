@@ -132,13 +132,15 @@ class AutoCompleteTextField: NSTextField, NSTextFieldDelegate, AutoCompleteViewD
         // Set auto complete table
         autoCompleteWindow.contentView = autoCompleteView
         autoCompleteWindow.setContentSize(autoCompleteView.frame.size)
-        
-        // Layout frame and position
-        let rect = windowFrameRect()
-        autoCompleteWindow.layoutFrame(with: self, origin: rect.origin, size: rect.size)
 
         // Present if need
         if !autoCompleteWindow.isVisible {
+
+            // Layout frame and position
+            let rect = windowFrameRect()
+            autoCompleteWindow.layoutFrame(with: self, origin: rect.origin, size: rect.size)
+
+            // Add or make key
             if self.window != autoCompleteWindow {
                 window?.addChildWindow(autoCompleteWindow,
                                        ordered: .above)
