@@ -76,6 +76,10 @@ final class TagCellView: NSTableCellView {
 
     }
 
+    func selectCheckBox() {
+        checkButton.performClick(checkButton)
+    }
+
     @IBAction func checkButtonOnChanged(_ sender: Any) {
         guard let tagItem = tagItem else { return }
         let isSelected = checkButton.state == .on

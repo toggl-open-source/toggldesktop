@@ -137,6 +137,7 @@ extension AutoCompleteView {
             case .enter,
                  .returnKey:
                 strongSelf.dataSource?.selectSelectedRow()
+                strongSelf.dataSource?.keyboardDidEnter()
                 return true
             case .tab:
                 // Only focus to create button if the view is expaned

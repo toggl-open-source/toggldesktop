@@ -101,6 +101,12 @@ final class TagDataSource: AutoCompleteViewDataSource {
         }
         return true
     }
+
+    override func keyboardDidEnter() {
+        guard tableView.selectedRow >= 0 else { return }
+        guard let tagView = tableView.view(atColumn: 0, row: tableView.selectedRow, makeIfNecessary: false) as? TagCellView else { return }
+        tagView.selectCheckBox()
+    }
 }
 
 // MARK: TagCellViewDelegate
