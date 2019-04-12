@@ -38,6 +38,13 @@ final class EditorViewController: NSViewController {
     private lazy var tagDatasource = TagDataSource(items: TagStorage.shared.tags,
                                                    updateNotificationName: .TagStorageChangedNotification)
 
+    private lazy var borderColor: NSColor = {
+        if #available(OSX 10.13, *) {
+            return NSColor(named: NSColor.Name("upload-border-color"))!
+        } else {
+            return ConvertHexColor.hexCode(toNSColor: "#ACACAC")
+        }
+    }()
     // MARK: View Cycle
 
     override func viewDidLoad() {
@@ -101,7 +108,7 @@ extension EditorViewController {
         tagStackView.subviews.forEach { $0.removeFromSuperview() }
         tagStackView.isHidden = true
         tagAddButton.isHidden = false
-        tagInputContainerView.borderWidth = 1
+        tagInputContainerView.borderColor = borderColor
 
         // Add tag token if need
         if let tagNames = timeEntry.tags as? [String] {
@@ -122,7 +129,7 @@ extension EditorViewController {
             }
             tagStackView.isHidden = false
             tagAddButton.isHidden = true
-            tagInputContainerView.borderWidth = 0
+            tagInputContainerView.borderColor = .clear
         }
         else {
             tagDatasource.updateSelectedTags([])
