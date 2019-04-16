@@ -30,7 +30,7 @@ extension Notification.Name {
     }
 
     func filter(with text: String) -> [Workspace] {
-        let filters = workspaces.filter { $0.name.lowercased().contains(text.lowercased()) }
+        let filters = workspaces.filter { $0.name.fuzzySearch(with: text) }
 
         return filters
     }

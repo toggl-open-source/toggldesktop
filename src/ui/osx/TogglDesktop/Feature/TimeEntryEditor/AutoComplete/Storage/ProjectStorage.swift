@@ -31,12 +31,11 @@ extension Notification.Name {
     }
 
     func filter(with text: String) -> [Any] {
-        let lowercaseText = text.lowercased()
 
         // Filter with project lable or client label
         let filters = autoCompleteItems.filter {
-            return $0.projectLabel.lowercased().contains(lowercaseText) ||
-                $0.clientLabel.lowercased().contains(lowercaseText)
+            return $0.projectLabel.fuzzySearch(with: text) ||
+                $0.clientLabel.fuzzySearch(with: text)
         }
 
         return buildProjectItems(with: filters)

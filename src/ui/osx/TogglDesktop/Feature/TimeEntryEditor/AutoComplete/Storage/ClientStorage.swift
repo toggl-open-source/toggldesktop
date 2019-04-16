@@ -30,7 +30,7 @@ extension Notification.Name {
     }
 
     func filter(with text: String) -> [Client] {
-        let filters = clients.filter { $0.name.lowercased().contains(text.lowercased()) }
+        let filters = clients.filter { $0.name.fuzzySearch(with: text) }
 
         if filters.isEmpty {
             return [Client.noMatching]

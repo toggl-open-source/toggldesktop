@@ -2823,7 +2823,7 @@ error Context::SetTimeEntryProject(
         if (project_id) {
             p = user_->related.ProjectByID(project_id);
         }
-        if (!project_guid.empty()) {
+        if (p == nullptr && !project_guid.empty()) {
             p = user_->related.ProjectByGUID(project_guid);
         }
 
