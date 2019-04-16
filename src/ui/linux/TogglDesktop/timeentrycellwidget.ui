@@ -42,7 +42,7 @@
     <number>0</number>
    </property>
    <item>
-    <widget class="QWidget" name="headerFrame" native="true">
+    <widget class="QFrame" name="headerFrame" native="true">
      <property name="frameShape">
       <enum>QFrame::NoFrame</enum>
      </property>
