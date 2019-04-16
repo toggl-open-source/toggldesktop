@@ -67,12 +67,13 @@ void *ctx;
 - (void)setProjectForTimeEntryWithGUID:(NSString *)guid
 								taskID:(uint64_t)taskID
 							 projectID:(uint64_t)projectID
+						   projectGUID:(NSString *)projectGUID
 {
 	toggl_set_time_entry_project(ctx,
 								 [guid UTF8String],
 								 taskID,
 								 projectID,
-								 0);
+								 [projectGUID UTF8String]);
 }
 
 - (void)togglEditor

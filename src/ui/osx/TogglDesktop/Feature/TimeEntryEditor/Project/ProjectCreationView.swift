@@ -11,7 +11,7 @@ import Cocoa
 protocol ProjectCreationViewDelegate: class {
 
     func projectCreationDidCancel()
-    func projectCreationDidAdd(with name: String, color: String)
+    func projectCreationDidAdd(with name: String, color: String, projectGUID: String)
     func projectCreationDidUpdateSize()
 }
 
@@ -128,7 +128,7 @@ final class ProjectCreationView: NSView {
         let projectName = projectTextField.stringValue
         let colorHex = selectedColor.colorHex
 
-        let projectID = DesktopLibraryBridge.shared().createProject(withTimeEntryGUID: timeEntryGUID,
+        let projectGUID = DesktopLibraryBridge.shared().createProject(withTimeEntryGUID: timeEntryGUID,
                                                                     workspaceID: workspaceID,
                                                                     clientID: clientID,
                                                                     clientGUID: clientGUID,
@@ -140,7 +140,7 @@ final class ProjectCreationView: NSView {
                                                                                    isBillable: isBillable)
         }
 
-        delegate?.projectCreationDidAdd(with: projectName, color: colorHex)
+        delegate?.projectCreationDidAdd(with: projectName, color: colorHex, projectGUID: projectGUID)
     }
 
     @IBAction func publicProjectOnChange(_ sender: Any) {

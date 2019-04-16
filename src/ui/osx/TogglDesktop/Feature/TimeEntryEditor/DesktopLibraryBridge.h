@@ -30,7 +30,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)setProjectForTimeEntryWithGUID:(NSString *)guid
 								taskID:(uint64_t)taskID
-							 projectID:(uint64_t)projectID;
+							 projectID:(uint64_t)projectID
+						   projectGUID:(NSString *)projectGUID;
 
 - (void)togglEditor;
 

@@ -11,6 +11,7 @@ import Cocoa
 final class ProjectAutoCompleteTextField: AutoCompleteTextField {
 
     // MARK: Variables
+    private(set) var lastProjectGUID: String?
     var projectItem: ProjectContentItem? {
         didSet {
             guard let project = projectItem else { return }
@@ -88,7 +89,8 @@ final class ProjectAutoCompleteTextField: AutoCompleteTextField {
 
 extension ProjectAutoCompleteTextField: ProjectCreationViewDelegate {
 
-    func projectCreationDidAdd(with name: String, color: String) {
+    func projectCreationDidAdd(with name: String, color: String, projectGUID: String) {
+        lastProjectGUID = projectGUID
         closeSuggestion()
         stringValue = name
         layoutProject(with: name)

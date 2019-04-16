@@ -98,9 +98,12 @@ extension EditorViewController: AutoCompleteViewDataSourceDelegate {
 
                 // Update
                 let item = projectItem.item
+                let projectGUID = projectTextField.lastProjectGUID ?? ""
+                print("project GUID = \(projectGUID)")
                 DesktopLibraryBridge.shared().setProjectForTimeEntryWithGUID(timeEntry.guid,
                                                                              taskID: item.taskID,
-                                                                             projectID: item.projectID)
+                                                                             projectID: item.projectID,
+                                                                             projectGUID: projectGUID)
             }
         }
     }
@@ -134,7 +137,8 @@ extension EditorViewController: AutoCompleteTextFieldDelegate {
             // Update
             DesktopLibraryBridge.shared().setProjectForTimeEntryWithGUID(timeEntry.guid,
                                                                          taskID: 0,
-                                                                         projectID: 0)
+                                                                         projectID: 0,
+                                                                         projectGUID: "")
         }
     }
 }
