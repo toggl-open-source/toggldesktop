@@ -10,6 +10,12 @@ import Cocoa
 
 final class EditorViewController: NSViewController {
 
+    private struct Constans {
+
+        static let TokenViewSpacing: CGFloat = 5.0
+        static let MaximumTokenWidth: CGFloat = 240.0
+    }
+
     // MARK: OUTLET
 
     @IBOutlet weak var projectBox: NSBox!
@@ -124,9 +130,22 @@ extension EditorViewController {
                 view.render(tag)
                 return view
             }
-            tokens.forEach {
-                tagStackView.addArrangedSubview($0)
+
+            var width: CGFloat = 0
+            for token in tokens {
+                let size = token.fittingSize
+                width += size.width + Constans.TokenViewSpacing
+                if width <= Constans.MaximumTokenWidth {
+                    tagStackView.addArrangedSubview(token)
+                } else {
+                    let moreToken = TagTokenView.xibView() as TagTokenView
+                    moreToken.delegate = self
+                    moreToken.render(Tag.moreTag)
+                    tagStackView.addArrangedSubview(moreToken)
+                    break
+                }
             }
+
             tagStackView.isHidden = false
             tagAddButton.isHidden = true
             tagInputContainerView.borderColor = .clear
