@@ -240,6 +240,7 @@ extension EditorViewController: AutoCompleteTextFieldDelegate {
 extension EditorViewController: TagTokenViewDelegate {
 
     func tagTokenShouldDelete(with tag: Tag, sender: TagTokenView) {
+        guard !tag.isMoreTag && !tag.isEmptyTag else { return }
         sender.removeFromSuperview()
         if let tags = timeEntry.tags as? [String] {
             let remainingTags = tags.compactMap { (tagName) -> String? in

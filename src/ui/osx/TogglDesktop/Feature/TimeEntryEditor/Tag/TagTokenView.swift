@@ -49,6 +49,13 @@ final class TagTokenView: NSView {
     }
 
     @IBAction func deleteBtnOnTap(_ sender: Any) {
+        // Show autoComplete if it's .. tag
+        if tagToken.isMoreTag {
+            delegate?.tagTokenShouldOpenAutoCompleteView()
+            return
+        }
+
+        // Delete
         delegate?.tagTokenShouldDelete(with: tagToken, sender: self)
     }
 
@@ -66,8 +73,10 @@ final class TagTokenView: NSView {
     override func mouseEntered(with event: NSEvent) {
         super.mouseEntered(with: event)
         boxContainerView.animator().alphaValue = 0.0
-        closeButton.animator().alphaValue = 1.0
-        gradientView.animator().alphaValue = 1.0
+        if let tag = tagToken, !tag.isMoreTag {
+            closeButton.animator().alphaValue = 1.0
+            gradientView.animator().alphaValue = 1.0
+        }
     }
 
     fileprivate func initTracking() {
