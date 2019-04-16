@@ -39,10 +39,6 @@ final class ProjectContentItem {
         self.item = item
         self.name = item.projectLabel
         self.colorHex = item.projectColor
-
-        if item.projectID == 0 {
-            print("== 0 \(self.name)")
-        }
     }
 }
 

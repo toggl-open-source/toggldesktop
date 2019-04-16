@@ -99,7 +99,6 @@ extension EditorViewController: AutoCompleteViewDataSourceDelegate {
                 // Update
                 let item = projectItem.item
                 let projectGUID = projectTextField.lastProjectGUID ?? ""
-                print("project GUID = \(projectGUID)")
                 DesktopLibraryBridge.shared().setProjectForTimeEntryWithGUID(timeEntry.guid,
                                                                              taskID: item.taskID,
                                                                              projectID: item.projectID,

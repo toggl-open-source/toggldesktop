@@ -19,8 +19,6 @@ final class AutoCompleteRowView: NSTableRowView {
     }()
 
     override func drawSelection(in dirtyRect: NSRect) {
-//        guard selectionHighlightStyle != .none else { return }
-
         let selectionRect = NSInsetRect(self.bounds, 5, 2)
         selectionColor.setFill()
         let selectionPath = NSBezierPath(roundedRect: selectionRect, xRadius: 8, yRadius: 8)
