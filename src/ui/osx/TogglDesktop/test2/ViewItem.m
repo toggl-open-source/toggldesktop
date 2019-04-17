@@ -19,6 +19,10 @@
 	{
 		self.GUID = [NSString stringWithUTF8String:data->GUID];
 	}
+	if (data->WorkspaceName)
+	{
+		self.workspaceName = [NSString stringWithUTF8String:data->WorkspaceName];
+	}
 }
 
 + (NSArray<ViewItem *> *)loadAll:(TogglGenericView *)first

@@ -16,6 +16,7 @@ final class Client {
     let name:String
     let guid: String?
     let isEmpty: Bool
+    let workspaceName: String
 
     init(viewItem: ViewItem) {
         self.ID = viewItem.id
@@ -23,6 +24,7 @@ final class Client {
         self.name = viewItem.name ?? ""
         self.guid = viewItem.guid ?? nil
         self.isEmpty = false
+        self.workspaceName = viewItem.workspaceName ?? ""
     }
 
     init() {
@@ -31,6 +33,7 @@ final class Client {
         self.name = ""
         self.guid = nil
         self.isEmpty = true
+        self.workspaceName = ""
     }
 }
 

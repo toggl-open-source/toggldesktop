@@ -10,12 +10,14 @@
 #import "toggl_api.h"
 
 @interface ViewItem : NSObject
+@property (assign, nonatomic) uint64_t ID;
+@property (assign, nonatomic) uint64_t WID;
+@property (copy, nonatomic) NSString *GUID;
+@property (copy, nonatomic) NSString *Name;
+@property (copy, nonatomic) NSString *workspaceName;
+
 + (NSArray<ViewItem *> *)loadAll:(TogglGenericView *)first;
 - (void)load:(TogglGenericView *)data;
-@property uint64_t ID;
-@property uint64_t WID;
-@property (strong) NSString *GUID;
-@property (strong) NSString *Name;
 @end
 
 
