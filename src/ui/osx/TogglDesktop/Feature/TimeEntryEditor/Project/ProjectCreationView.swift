@@ -52,6 +52,12 @@ final class ProjectCreationView: NSView {
     private(set) var selectedWorkspace: Workspace? {
         didSet {
             clientDatasource.selectedWorkspace = selectedWorkspace
+
+            // Reset the current client
+            if oldValue?.ID != selectedWorkspace?.ID {
+                selectedClient = nil
+                clientAutoComplete.stringValue = ""
+            }
         }
     }
     private var selectedClient: Client?
