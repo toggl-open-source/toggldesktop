@@ -144,8 +144,6 @@
 		BA2DA12021A691FF0027B7A5 /* TrackingService.m in Sources */ = {isa = PBXBuildFile; fileRef = BA2DA11F21A691FF0027B7A5 /* TrackingService.m */; };
 		BA2E3F2C22375E640035D034 /* NSView+Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2E3F2B22375E640035D034 /* NSView+Appearance.swift */; };
 		BA2E5FB1223787C300EB866E /* EditorPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2E5FB0223787C300EB866E /* EditorPopover.swift */; };
-		BA6E873521DDC1E2005E2451 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA6E86B621DDB331005E2451 /* Sparkle.framework */; };
-		BA6E873621DDC1E2005E2451 /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA6E86B621DDB331005E2451 /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BA6F1B1A21EEE258009265E4 /* NSColor+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6F1B1921EEE258009265E4 /* NSColor+Utils.swift */; };
 		BA6F1B3821EEE998009265E4 /* Theme+Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6F1B3721EEE998009265E4 /* Theme+Notification.swift */; };
 		BA712EC221BF907200A2D8DD /* UndoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA712EC121BF907200A2D8DD /* UndoManager.swift */; };
@@ -396,13 +394,6 @@
 			remoteGlobalIDString = 5A5ADED7214EDE4900DF0099;
 			remoteInfo = sign_update;
 		};
-		BA6E873721DDC1E2005E2451 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BA6E86A521DDB331005E2451 /* Sparkle.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
-			remoteInfo = Sparkle;
-		};
 		BA7DB6D121F9C7660059239B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BA7DB6BB21F9C7660059239B /* MASShortcut.xcodeproj */;
@@ -456,7 +447,6 @@
 				BAD2342221D612DF0039C742 /* libPocoCrypto.60.dylib in CopyFiles */,
 				BAD2342421D612DF0039C742 /* libPocoXML.60.dylib in CopyFiles */,
 				74213490195C50B5007EF78B /* CrashReporter.framework in CopyFiles */,
-				BA6E873621DDC1E2005E2451 /* Sparkle.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -531,6 +521,7 @@
 		3CE30E012052BD8B00AF2E2A /* AutoCompleteTableContainer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AutoCompleteTableContainer.m; sourceTree = "<group>"; };
 		3CFE546D201781A5006B673A /* libcrypto.1.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcrypto.1.1.dylib; path = ../../../../third_party/openssl/libcrypto.1.1.dylib; sourceTree = "<group>"; };
 		3CFE547D201781A5006B673A /* libssl.1.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libssl.1.1.dylib; path = ../../../../third_party/openssl/libssl.1.1.dylib; sourceTree = "<group>"; };
+		3D711DBA1A67535900B4C830 /* TogglDesktop.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = TogglDesktop.entitlements; sourceTree = "<group>"; };
 		69FC17F117E6534400B96425 /* TogglDesktop.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TogglDesktop.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		69FC17F417E6534400B96425 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		69FC17F717E6534400B96425 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -739,7 +730,6 @@
 				74E3CDD917FC369700C3ADD3 /* ExceptionHandling.framework in Frameworks */,
 				7421348F195C4F1A007EF78B /* CrashReporter.framework in Frameworks */,
 				74E3CDD717FBAE0800C3ADD3 /* SystemConfiguration.framework in Frameworks */,
-				BA6E873521DDC1E2005E2451 /* Sparkle.framework in Frameworks */,
 				BA7DB6E321F9C77A0059239B /* MASShortcut.framework in Frameworks */,
 				7421348E195C4EE8007EF78B /* TFDatePicker.framework in Frameworks */,
 				BA0CEC4821BE4D4600F1BF01 /* DeepDiff.framework in Frameworks */,
@@ -802,6 +792,7 @@
 				BAD2341721D612DE0039C742 /* libPocoNetSSL.60.dylib */,
 				BAD2341D21D612DF0039C742 /* libPocoUtil.60.dylib */,
 				BAD2341B21D612DE0039C742 /* libPocoXML.60.dylib */,
+				3D711DBA1A67535900B4C830 /* TogglDesktop.entitlements */,
 				BAF50DE421A29FED0090BA95 /* Images.xcassets */,
 				3CFE546D201781A5006B673A /* libcrypto.1.1.dylib */,
 				3CFE547D201781A5006B673A /* libssl.1.1.dylib */,
@@ -1312,6 +1303,15 @@
 /* Begin PBXNativeTarget section */
 		69FC17F017E6534400B96425 /* TogglDesktop */ = {
 			isa = PBXNativeTarget;
+			TargetAttributes = {
+				69FC17F017E6534400B96425 = {
+					SystemCapabilities = {
+						com.apple.Sandbox = {
+							enabled = 1;
+						};
+					};
+				};
+			};
 			buildConfigurationList = 69FC182217E6534500B96425 /* Build configuration list for PBXNativeTarget "TogglDesktop" */;
 			buildPhases = (
 				69FC17ED17E6534400B96425 /* Sources */,
@@ -1329,7 +1329,6 @@
 				749A3A7318D89F23000AD2DB /* PBXTargetDependency */,
 				74FD8CDE18A8EF4800F7DB80 /* PBXTargetDependency */,
 				BA0CEC4B21BE4D4600F1BF01 /* PBXTargetDependency */,
-				BA6E873821DDC1E2005E2451 /* PBXTargetDependency */,
 				BA7DB6E621F9C77A0059239B /* PBXTargetDependency */,
 			);
 			name = TogglDesktop;
@@ -1347,7 +1346,9 @@
 				ORGANIZATIONNAME = Alari;
 				TargetAttributes = {
 					69FC17F017E6534400B96425 = {
+						DevelopmentTeam = B227VTMZ94;
 						LastSwiftMigration = 1010;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -1840,11 +1841,6 @@
 			name = "DeepDiff-macOS";
 			targetProxy = BA0CEC4A21BE4D4600F1BF01 /* PBXContainerItemProxy */;
 		};
-		BA6E873821DDC1E2005E2451 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = Sparkle;
-			targetProxy = BA6E873721DDC1E2005E2451 /* PBXContainerItemProxy */;
-		};
 		BA7DB6E621F9C77A0059239B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = MASShortcut;
@@ -1964,7 +1960,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = TogglDesktop.entitlements;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = B227VTMZ94;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -1996,6 +1996,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = TogglDesktop;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
 				STRIP_INSTALLED_PRODUCT = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "Diff/TogglDesktop-Bridging-Header.h";
@@ -2012,8 +2013,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = TogglDesktop.entitlements;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = B227VTMZ94;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -2045,6 +2050,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = TogglDesktop;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
 				STRIP_INSTALLED_PRODUCT = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "Diff/TogglDesktop-Bridging-Header.h";
