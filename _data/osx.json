@@ -1,7 +1,7 @@
 {
     "versions": [
         {
-            "version": "7.4.365",
+            "version": "7.4.373",
             "rows": [
                 "Added 'Stop timer on shutdown' functionality",
                 "Added Dark mode support",
@@ -15,10 +15,10 @@
                 "New design for App Icon",
                 "Fixed issue with timer not starting in some cases",
                 "Fixed issues with global shortcut keys not being saved",
-                "Fixed issue with tracking reminder triggering when editing reminder settings"
+                "Fixed issue with tracking reminder triggering when editing reminder settings",
+                "Fixed focus jumping issue"
             ],
-            "date": "February 22nd 2019",
-            "beta": "true"
+            "date": "April 17th 2019"
         },
         {
             "version": "7.4.330",
