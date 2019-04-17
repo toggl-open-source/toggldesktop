@@ -19,7 +19,7 @@ extension Notification.Name {
 
     // MARK: Variables
 
-    private(set) var clients: [Client] = []
+    private var clients: [Client] = []
 
     // MARK: Public
 
@@ -29,9 +29,16 @@ extension Notification.Name {
                                         object: clients)
     }
 
-    func filter(with text: String) -> [Client] {
-        let filters = clients.filter { $0.name.fuzzySearch(with: text) }
+    func getClients(at workspace: Workspace?) -> [Client] {
+        guard let workspace = workspace else {
+             return self.clients
+        }
+        return clients.filter { $0.workspaceName == workspace.name }
+    }
 
+    func filter(with text: String, at workspace: Workspace?) -> [Client] {
+        let selectedClients = getClients(at: workspace)
+        let filters = selectedClients.filter { $0.name.fuzzySearch(with: text) }
         if filters.isEmpty {
             return [Client.noMatching]
         }

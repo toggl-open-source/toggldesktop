@@ -50,6 +50,8 @@ final class ClientDataSource: AutoCompleteViewDataSource {
 
     // MARK: Variables
 
+    var selectedWorkspace: Workspace?
+    
     override func registerCustomeCells() {
         tableView.register(NSNib(nibNamed: Constants.ClientCellIDNibName, bundle: nil),
                            forIdentifier: Constants.ClientCellID)
@@ -61,12 +63,12 @@ final class ClientDataSource: AutoCompleteViewDataSource {
 
         // show all
         if text.isEmpty {
-            render(with: ClientStorage.shared.clients)
+            render(with: ClientStorage.shared.getClients(at: selectedWorkspace))
             return
         }
 
         // Filter
-        let filterItems = ClientStorage.shared.filter(with: text)
+        let filterItems = ClientStorage.shared.filter(with: text, at: selectedWorkspace)
         render(with: filterItems)
     }
 

@@ -49,12 +49,20 @@ final class ProjectCreationView: NSView {
             resetViews()
         }
     }
-    private(set) var selectedWorkspace: Workspace?
+    private(set) var selectedWorkspace: Workspace? {
+        didSet {
+            clientDatasource.selectedWorkspace = selectedWorkspace
+        }
+    }
     private var selectedClient: Client?
     private var isPublic = false
-    private lazy var clientDatasource = ClientDataSource.init(items: ClientStorage.shared.clients,
-                                                              updateNotificationName: .ClientStorageChangedNotification)
-    private lazy var workspaceDatasource = WorkspaceDataSource.init(items: WorkspaceStorage.shared.workspaces,
+    private lazy var clientDatasource: ClientDataSource = {
+        let firstWorkspace = workspaceDatasource.items.first as? Workspace
+        let clients = ClientStorage.shared.getClients(at: firstWorkspace)
+        return ClientDataSource(items: clients,
+                                updateNotificationName: .ClientStorageChangedNotification)
+    }()
+    private lazy var workspaceDatasource = WorkspaceDataSource(items: WorkspaceStorage.shared.workspaces,
                                                                     updateNotificationName: .WorkspaceStorageChangedNotification)
     weak var delegate: ProjectCreationViewDelegate?
     private var originalColor = ProjectColor.default

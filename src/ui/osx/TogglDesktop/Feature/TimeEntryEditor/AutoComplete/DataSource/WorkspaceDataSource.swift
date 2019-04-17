@@ -12,7 +12,7 @@ final class Workspace {
 
     let ID: UInt64
     let WID: UInt64
-    let name:String
+    let name: String
     let guid: String?
 
     init(viewItem: ViewItem) {
