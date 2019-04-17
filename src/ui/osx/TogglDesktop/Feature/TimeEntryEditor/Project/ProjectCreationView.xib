@@ -247,6 +247,7 @@
                 <constraint firstItem="OJp-YS-19d" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="10" id="Vh9-hn-IuH"/>
                 <constraint firstItem="2Vy-Nq-8Ub" firstAttribute="top" secondItem="OJp-YS-19d" secondAttribute="bottom" constant="12" id="eFD-mF-IN1"/>
                 <constraint firstAttribute="bottom" secondItem="oZH-ml-wNQ" secondAttribute="bottom" id="uIF-9i-gxF"/>
+                <constraint firstAttribute="bottom" secondItem="2Vy-Nq-8Ub" secondAttribute="bottom" constant="20" id="zwz-lk-UcF"/>
             </constraints>
             <connections>
                 <outlet property="addBtn" destination="E94-Yr-Bp7" id="QXJ-Wa-LHX"/>
