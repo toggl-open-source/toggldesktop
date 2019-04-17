@@ -7,9 +7,7 @@
 //
 
 #import "Utils.h"
-#import <Sparkle/Sparkle.h>
 #import "NSAlert+Utils.h"
-
 #include "toggl_api.h"
 
 extern void *ctx;
@@ -70,15 +68,6 @@ extern void *ctx;
 	{
 		NSLog(@"Failed to clear old updates folder at: %@", directory);
 	}
-}
-
-+ (void)setUpdaterChannel:(NSString *)channel
-{
-	NSString *url = [NSString stringWithFormat:@"https://assets.toggl.com/installers/darwin_%@_appcast.xml", channel];
-
-	NSAssert([SUUpdater sharedUpdater], @"No updater found");
-	NSLog(@"Setting updater feed URL to %@", url);
-	[[SUUpdater sharedUpdater] setFeedURL:[NSURL URLWithString:url]];
 }
 
 + (NSInteger)boolToState:(BOOL)value

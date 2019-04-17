@@ -59,23 +59,6 @@ extern void *ctx;
 	self.windowHasLoad = YES;
 	self.restart = NO;
 
-	char *str = toggl_get_update_channel(ctx);
-	self.updateChannelComboBox.stringValue = [NSString stringWithUTF8String:str];
-	free(str);
-
-	if ([self updateCheckEnabled])
-	{
-		self.updateChannelComboBox.hidden = NO;
-		self.updateChannelLabel.hidden = NO;
-
-		if (![[SUUpdater sharedUpdater] updateInProgress])
-		{
-			[self checkForUpdates];
-		}
-
-		[self displayUpdateStatus];
-	}
-
 	[self initCommon];
 }
 
@@ -95,71 +78,6 @@ extern void *ctx;
 	[self setDownloadState:self.downloadState];
 }
 
-- (BOOL)updateCheckEnabled
-{
-#ifdef DEBUG
-	return NO;
-
-#else
-	return YES;
-
-#endif
-}
-
-- (void)checkForUpdates
-{
-	if (![[UnsupportedNotice sharedInstance] validateOSVersion])
-	{
-		return;
-	}
-	if (![self updateCheckEnabled])
-	{
-		return;
-	}
-	[[SUUpdater sharedUpdater] resetUpdateCycle];
-	[[SUUpdater sharedUpdater] checkForUpdatesInBackground];
-}
-
-- (void)updater:(SUUpdater *)updater willInstallUpdateOnQuit:(SUAppcastItem *)item immediateInstallationInvocation:(NSInvocation *)invocation
-{
-	NSLog(@"Download finished: %@", item.displayVersionString);
-
-	self.updateStatus =
-		[NSString stringWithFormat:@"Restart app to upgrade to %@",
-		 item.displayVersionString];
-
-	[self displayUpdateStatus];
-	[self setDownloadState:DownloadStateRestart];
-}
-
-- (void)updater:(SUUpdater *)updater didFindValidUpdate:(SUAppcastItem *)update
-{
-	NSLog(@"update found: %@", update.displayVersionString);
-
-	self.updateStatus =
-		[NSString stringWithFormat:@"Update found: %@",
-		 update.displayVersionString];
-
-	[self setDownloadState:DownloadStateDownloading];
-	[self displayUpdateStatus];
-	[Utils runClearCommand];
-}
-
-- (void)displayUpdateStatus
-{
-	NSLog(@"automaticallyDownloadsUpdates=%d", [[SUUpdater sharedUpdater] automaticallyDownloadsUpdates]);
-
-	if (self.updateStatus)
-	{
-		self.updateStatusTextField.stringValue = self.updateStatus;
-		[self.updateStatusTextField setHidden:NO];
-	}
-	else
-	{
-		[self.updateStatusTextField setHidden:YES];
-	}
-}
-
 - (BOOL)isVisible
 {
 	if (!self.windowHasLoad)
@@ -169,42 +87,10 @@ extern void *ctx;
 	return self.window.isVisible;
 }
 
-- (IBAction)updateChannelSelected:(id)sender
-{
-	NSString *updateChannel = self.updateChannelComboBox.stringValue;
-
-	toggl_set_update_channel(ctx, [updateChannel UTF8String]);
-
-	[Utils setUpdaterChannel:updateChannel];
-
-	[self checkForUpdates];
-}
-
 - (IBAction)clickRestartButton:(id)sender;
 {
 	self.restart = YES;
 	[[NSApplication sharedApplication] terminate:nil];
-}
-
-- (void)updaterDidNotFindUpdate:(SUUpdater *)update
-{
-	NSLog(@"No update found");
-}
-
-- (void)updater:(SUUpdater *)updater willInstallUpdate:(SUAppcastItem *)update
-{
-	NSLog(@"Will install update %@", update.displayVersionString);
-}
-
-- (void)updater:(SUUpdater *)updater didAbortWithError:(NSError *)error
-{
-	NSLog(@"Update check failed with error %@", error);
-}
-
-- (void)updater:(SUUpdater *)updater willDownloadUpdate:(SUAppcastItem *)item withRequest:(NSMutableURLRequest *)request
-{
-	NSLog(@"willDownloadUpdate %@", item);
-	[self setDownloadState:DownloadStateDownloading];
 }
 
 - (void)textFieldClicked:(id)sender
@@ -219,10 +105,6 @@ extern void *ctx;
 - (void)setDownloadState:(DownloadState)downloadState
 {
 	_downloadState = downloadState;
-	if ([self updateCheckEnabled])
-	{
-		[self renderRestartButton];
-	}
 }
 
 - (void)renderRestartButton {

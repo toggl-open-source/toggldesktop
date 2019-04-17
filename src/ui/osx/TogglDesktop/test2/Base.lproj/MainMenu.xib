@@ -30,12 +30,6 @@
                                     <action selector="onViewChangelogMenuItem:" target="494" id="gfS-by-tbT"/>
                                 </connections>
                             </menuItem>
-                            <menuItem title="Check for update..." id="fZK-ps-0cd">
-                                <modifierMask key="keyEquivalentModifierMask"/>
-                                <connections>
-                                    <action selector="checkForUpdates:" target="L4h-36-cEH" id="s3V-9r-CqY"/>
-                                </connections>
-                            </menuItem>
                             <menuItem isSeparatorItem="YES" id="236">
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                             </menuItem>
@@ -283,6 +277,5 @@
             </segmentedCell>
         </segmentedControl>
         <toolbarItem implicitItemIdentifier="NSToolbarSeparatorItem" id="Xfa-oB-Ta9"/>
-        <customObject id="L4h-36-cEH" customClass="SUUpdater"/>
     </objects>
 </document>

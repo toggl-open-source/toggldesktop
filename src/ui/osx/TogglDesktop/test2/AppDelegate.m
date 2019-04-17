@@ -22,7 +22,6 @@
 #import "MenuItemTags.h"
 #import "PreferencesWindowController.h"
 #import "Settings.h"
-#import <Sparkle/Sparkle.h>
 #import "TimeEntryViewItem.h"
 #import "UIEvents.h"
 #import "Utils.h"
@@ -274,23 +273,6 @@ BOOL onTop = NO;
 
 	self.reach = [Reachability reachabilityForInternetConnection];
 	[self.reach startNotifier];
-
-	if ([self updateCheckEnabled])
-	{
-		[[SUUpdater sharedUpdater] setAutomaticallyDownloadsUpdates:YES];
-
-		NSAssert(ctx, @"ctx is not initialized, cannot continue");
-		char *str = toggl_get_update_channel(ctx);
-
-		NSAssert(str, @"Could not read update channel value");
-		NSString *channel = [NSString stringWithUTF8String:str];
-
-		free(str);
-		[Utils setUpdaterChannel:channel];
-
-		[[SUUpdater sharedUpdater] setDelegate:self.aboutWindowController];
-		[[SUUpdater sharedUpdater] checkForUpdatesInBackground];
-	}
 
 	// Listen for system shutdown, to automatically stop timer. Experimental feature.
 	[[[NSWorkspace sharedWorkspace] notificationCenter] addObserver:self
@@ -1100,7 +1082,6 @@ BOOL onTop = NO;
 - (IBAction)onAboutMenuItem:(id)sender
 {
 	[self.aboutWindowController showWindow:self];
-	[self.aboutWindowController checkForUpdates];
 	[NSApp activateIgnoringOtherApps:YES];
 }
 
