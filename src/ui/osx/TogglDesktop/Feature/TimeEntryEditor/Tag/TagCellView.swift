@@ -53,6 +53,7 @@ final class TagCellView: NSTableCellView {
 
     override func awakeFromNib() {
         super.awakeFromNib()
+        initCommon()
         initTracking()
     }
 
@@ -61,6 +62,7 @@ final class TagCellView: NSTableCellView {
         NSCursor.arrow.set()
         isSelected = false
         checkButton.state = .off
+        hoverView.alphaValue = 0.0
     }
 
     func render(_ tag: Tag, isSelected: Bool) {
@@ -98,7 +100,11 @@ final class TagCellView: NSTableCellView {
         hoverView.animator().alphaValue = 1.0
     }
 
-    fileprivate func initTracking() {
+    private func initCommon() {
+        hoverView.alphaValue = 0.0
+    }
+
+    private func initTracking() {
         let trackingArea = NSTrackingArea(rect: bounds,
                                           options: [.activeInKeyWindow, .inVisibleRect, .mouseEnteredAndExited],
                                           owner: self,

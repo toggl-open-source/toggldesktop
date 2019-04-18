@@ -161,6 +161,11 @@ extension EditorViewController {
 
     fileprivate func openTagAutoCompleteView() {
         tagTextField.openSuggestion()
+
+        // Reload again to active the NSTrackingArea in TagCell
+        // At the first time the cells are loaded, the view doesn't appear yet.
+        // So TrackingArea doesn't work when hovering the mouse
+        tagDatasource.tableView.reloadData()
     }
 }
 
