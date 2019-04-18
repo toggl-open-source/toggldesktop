@@ -19,3 +19,31 @@ extension NSView {
         return false
     }
 }
+
+/// Check or get notified about macOS Dark Mode status
+public final class DarkMode {
+    private static let notificationName = NSNotification.Name("AppleInterfaceThemeChangedNotification")
+
+    static var onChange: ((Bool) -> Void)? {
+        didSet {
+            if onChange == nil {
+                DistributedNotificationCenter.default().removeObserver(self, name: notificationName, object: nil)
+            } else {
+                DistributedNotificationCenter.default().addObserver(self, selector: #selector(selectorHandler), name: notificationName, object: nil)
+            }
+        }
+    }
+
+    static var isEnabled: Bool {
+        return UserDefaults.standard.string(forKey: "AppleInterfaceStyle") == "Dark"
+    }
+
+    static var blackColor: NSColor {
+        return isEnabled ? .white : .black
+    }
+
+    @objc
+    private static func selectorHandler() {
+        onChange?(isEnabled)
+    }
+}

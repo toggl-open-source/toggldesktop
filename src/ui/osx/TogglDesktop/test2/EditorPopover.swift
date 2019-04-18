@@ -14,6 +14,33 @@ final class EditorPopover: NSPopover {
         static let FocusTimerNotification = NSNotification.Name(kFocusTimer)
     }
 
+    private var isDarkMode = false {
+        didSet {
+            if isDarkMode {
+                if #available(OSX 10.14, *) {
+                    appearance = NSAppearance(named: NSAppearance.Name.darkAqua)
+                } else {
+                    appearance = NSAppearance(named: .aqua)
+                }
+            } else {
+                appearance = NSAppearance(named: .aqua)
+            }
+        }
+    }
+
+    override var contentViewController: NSViewController? {
+        didSet {
+            DarkMode.onChange = {[weak self] isDarkmode in
+                self?.isDarkMode = isDarkmode
+            }
+            if let isDarkMode = contentViewController?.view.isDarkMode, isDarkMode == true {
+                self.isDarkMode = true
+            } else {
+                self.isDarkMode = false
+            }
+        }
+    }
+
     // MARK: Public
 
     @objc func close(focusTimer: Bool) {
