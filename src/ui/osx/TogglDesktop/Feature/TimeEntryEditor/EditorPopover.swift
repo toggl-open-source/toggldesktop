@@ -31,11 +31,11 @@ final class EditorPopover: NSPopover {
     }
 
     @objc func prepareViewController() {
-        let editor = EditorViewController.init(nibName: NSNib.Name("EditorViewController"), bundle: nil)
+        let editor = EditorViewController(nibName: NSNib.Name("EditorViewController"), bundle: nil)
         contentViewController = editor
     }
 
-    @objc func present(to rect: NSRect, of view: NSView) {
+    @objc func present(from rect: NSRect, of view: NSView) {
         show(relativeTo: rect, of: view, preferredEdge: .maxX)
     }
 
@@ -47,6 +47,12 @@ final class EditorPopover: NSPopover {
         // Focus on timer bar
         if focusTimer {
             NotificationCenter.default.post(name: Constants.FocusTimerNotification, object: nil)
+        }
+    }
+
+    @objc func setTimeEntry(_ timeEntry: TimeEntryViewItem) {
+        if let editor = contentViewController as? EditorViewController {
+            editor.timeEntry = timeEntry
         }
     }
 }

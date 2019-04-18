@@ -13,6 +13,23 @@
 
 @implementation ProjectTextField
 
+- (instancetype)init
+{
+	self = [super init];
+	if (self)
+	{
+		self.renderClient = YES;
+	}
+	return self;
+}
+
+- (void)awakeFromNib
+{
+	[super awakeFromNib];
+
+	self.renderClient = YES;
+}
+
 - (void)mouseDown:(NSEvent *)theEvent
 {
 	if (self.isInTimerBar)
@@ -56,28 +73,32 @@
 - (NSAttributedString *)attributeStringWithClient:(NSString *)client taskID:(NSInteger)taskID task:(NSString *)task project:(NSString *)project
 {
 	NSMutableAttributedString *string;
+	NSMutableParagraphStyle *parStyle = [[NSMutableParagraphStyle alloc] init];
 
+	[parStyle setLineBreakMode:NSLineBreakByTruncatingTail];
+	NSColor *color = self.textColor == nil ? [NSColor controlTextColor] : self.textColor;
+	NSDictionary *baseAttribute =          @{
+			NSFontAttributeName: [NSFont systemFontOfSize:12],
+			NSForegroundColorAttributeName: color,
+			NSParagraphStyleAttributeName: parStyle
+	};
 	if (taskID != 0)
 	{
 		string = [[NSMutableAttributedString alloc] initWithString:[task stringByAppendingString:@". "]];
 
-		[string setAttributes:
-		 @{
-			 NSFontAttributeName : [NSFont systemFontOfSize:12],
-			 NSForegroundColorAttributeName:[NSColor controlTextColor]
-		 }
+		[string setAttributes:baseAttribute
 						range:NSMakeRange(0, [string length])];
 
-		NSMutableAttributedString *projectName = [[NSMutableAttributedString alloc] initWithString:[project stringByAppendingString:@" "]];
-
+		NSMutableAttributedString *projectName = [[NSMutableAttributedString alloc] initWithString:[project stringByAppendingString:@" "]
+																						attributes:baseAttribute];
 		[string appendAttributedString:projectName];
 	}
 	else
 	{
-		string = [[NSMutableAttributedString alloc] initWithString:[project stringByAppendingString:@" "]];
+		string = [[NSMutableAttributedString alloc] initWithString:[project stringByAppendingString:@" "] attributes:baseAttribute];
 	}
 
-	if ([client length] > 0)
+	if (self.renderClient && [client length] > 0)
 	{
 		NSString *clientTitle = [NSString stringWithFormat:@"• %@", client];
 		NSMutableAttributedString *clientName = [[NSMutableAttributedString alloc] initWithString:clientTitle];
@@ -85,7 +106,8 @@
 		[clientName setAttributes:
 		 @{
 			 NSFontAttributeName : [NSFont systemFontOfSize:12],
-			 NSForegroundColorAttributeName:[self clientTextColor]
+			 NSForegroundColorAttributeName:[self clientTextColor],
+			 NSParagraphStyleAttributeName: parStyle
 		 }
 							range:NSMakeRange(0, [clientName length])];
 		[string appendAttributedString:clientName];

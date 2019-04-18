@@ -9,6 +9,14 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="EditorViewController" customModule="TogglDesktop" customModuleProvider="target">
             <connections>
+                <outlet property="billableCheckBox" destination="vpV-Av-rbR" id="7vp-xl-qrd"/>
+                <outlet property="closeBtn" destination="FXR-Ha-kYg" id="nra-rB-rRw"/>
+                <outlet property="deleteBtn" destination="5ym-is-B1S" id="cBg-gL-hqJ"/>
+                <outlet property="descriptionTextField" destination="EMT-i8-OD1" id="PN4-q1-PU7"/>
+                <outlet property="projectBox" destination="HK8-ig-0Mv" id="Dnb-C3-7iP"/>
+                <outlet property="projectDotImageView" destination="gFc-aw-iMX" id="BEl-Tj-c8T"/>
+                <outlet property="projectTextField" destination="Doe-dQ-82A" id="cgo-cM-Mbh"/>
+                <outlet property="tagTextField" destination="euZ-Fv-idX" id="lqe-b7-4g3"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
             </connections>
         </customObject>
@@ -40,10 +48,15 @@
                                     <subviews>
                                         <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="EMT-i8-OD1">
                                             <rect key="frame" x="-2" y="0.0" width="242" height="28"/>
-                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" alignment="left" placeholderString="Description…" id="0MM-Wa-hOG" customClass="VerticallyCenteredTextFieldCell" customModule="TogglDesktop" customModuleProvider="target">
+                                            <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" alignment="left" placeholderString="Description…" usesSingleLineMode="YES" id="0MM-Wa-hOG" customClass="VerticallyCenteredTextFieldCell" customModule="TogglDesktop" customModuleProvider="target">
                                                 <font key="font" metaFont="system" size="14"/>
                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="focusRingCornerRadius">
+                                                        <real key="value" value="8"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
                                             </textFieldCell>
                                         </textField>
                                     </subviews>
@@ -65,16 +78,31 @@
                                     <rect key="frame" x="1" y="1" width="238" height="28"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Doe-dQ-82A">
+                                        <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Doe-dQ-82A" customClass="ProjectAutoCompleteTextField" customModule="TogglDesktop" customModuleProvider="target">
                                             <rect key="frame" x="-2" y="0.0" width="242" height="28"/>
-                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" alignment="left" placeholderString="Select project" id="6po-73-koG" customClass="VerticallyCenteredTextFieldCell" customModule="TogglDesktop" customModuleProvider="target">
+                                            <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" alignment="left" placeholderString="Select project" usesSingleLineMode="YES" id="6po-73-koG" customClass="VerticallyCenteredTextFieldCell" customModule="TogglDesktop" customModuleProvider="target">
                                                 <font key="font" metaFont="system" size="14"/>
                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="focusRingCornerRadius">
+                                                        <real key="value" value="8"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
                                             </textFieldCell>
                                         </textField>
+                                        <imageView hidden="YES" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="gFc-aw-iMX" customClass="DotImageView" customModule="TogglDesktop" customModuleProvider="target">
+                                            <rect key="frame" x="15" y="8" width="8" height="8"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="8" id="6fB-ab-2MJ"/>
+                                                <constraint firstAttribute="width" constant="8" id="Y3t-hx-cDI"/>
+                                            </constraints>
+                                            <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" image="time-entry-dot" id="kzc-82-qjF"/>
+                                        </imageView>
                                     </subviews>
                                     <constraints>
+                                        <constraint firstItem="gFc-aw-iMX" firstAttribute="leading" secondItem="lQC-MY-kz1" secondAttribute="leading" constant="15" id="AXX-ZJ-hG7"/>
+                                        <constraint firstItem="gFc-aw-iMX" firstAttribute="centerY" secondItem="lQC-MY-kz1" secondAttribute="centerY" constant="2" id="HNk-7n-jiX"/>
                                         <constraint firstItem="Doe-dQ-82A" firstAttribute="leading" secondItem="lQC-MY-kz1" secondAttribute="leading" id="Hdy-ni-8Ue"/>
                                         <constraint firstAttribute="bottom" secondItem="Doe-dQ-82A" secondAttribute="bottom" id="JWU-5Y-dO5"/>
                                         <constraint firstItem="Doe-dQ-82A" firstAttribute="top" secondItem="lQC-MY-kz1" secondAttribute="top" id="U4d-c9-zsI"/>
@@ -98,6 +126,11 @@
                                                 <font key="font" metaFont="system" size="14"/>
                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="focusRingCornerRadius">
+                                                        <real key="value" value="8"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
                                             </textFieldCell>
                                         </textField>
                                     </subviews>
@@ -120,18 +153,24 @@
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="q9U-uY-bOj">
-                                            <rect key="frame" x="8" y="5" width="87" height="18"/>
-                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" alignment="left" title="0:00:00" placeholderString="0:00:00" id="dJu-5a-D7u">
+                                            <rect key="frame" x="-2" y="0.0" width="107" height="28"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" alignment="left" title="0:00:00" placeholderString="0:00:00" id="dJu-5a-D7u" customClass="VerticallyCenteredTextFieldCell" customModule="TogglDesktop" customModuleProvider="target">
                                                 <font key="font" metaFont="system" size="14"/>
                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="focusRingCornerRadius">
+                                                        <real key="value" value="8"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
                                             </textFieldCell>
                                         </textField>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstAttribute="trailing" secondItem="q9U-uY-bOj" secondAttribute="trailing" constant="10" id="3d3-Rc-0qw"/>
-                                        <constraint firstItem="q9U-uY-bOj" firstAttribute="centerY" secondItem="glG-am-Jtd" secondAttribute="centerY" id="McY-TQ-dM3"/>
-                                        <constraint firstItem="q9U-uY-bOj" firstAttribute="leading" secondItem="glG-am-Jtd" secondAttribute="leading" constant="10" id="wW0-8e-59z"/>
+                                        <constraint firstAttribute="bottom" secondItem="q9U-uY-bOj" secondAttribute="bottom" id="QzH-zN-aRI"/>
+                                        <constraint firstItem="q9U-uY-bOj" firstAttribute="top" secondItem="glG-am-Jtd" secondAttribute="top" id="deS-8S-dI2"/>
+                                        <constraint firstItem="q9U-uY-bOj" firstAttribute="leading" secondItem="glG-am-Jtd" secondAttribute="leading" id="hdo-Kt-akz"/>
+                                        <constraint firstAttribute="trailing" secondItem="q9U-uY-bOj" secondAttribute="trailing" id="q34-7t-UP4"/>
                                     </constraints>
                                 </view>
                                 <constraints>
@@ -171,8 +210,8 @@
                                 </textFieldCell>
                             </textField>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="vpV-Av-rbR">
-                                <rect key="frame" x="8" y="77" width="64" height="18"/>
-                                <buttonCell key="cell" type="check" title="Check" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="y28-TJ-qRF">
+                                <rect key="frame" x="8" y="77" width="69" height="18"/>
+                                <buttonCell key="cell" type="check" title="Billable" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="y28-TJ-qRF">
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                     <font key="font" metaFont="system" size="14"/>
                                 </buttonCell>
@@ -289,8 +328,12 @@
                                 </constraints>
                                 <color key="borderColor" name="upload-border-color"/>
                             </box>
-                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="FXR-Ha-kYg" customClass="NSHoverButton">
-                                <rect key="frame" x="243" y="364" width="7" height="7"/>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="FXR-Ha-kYg" customClass="CursorButton" customModule="TogglDesktop" customModuleProvider="target">
+                                <rect key="frame" x="235" y="356" width="20" height="20"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="20" id="bbQ-Pp-Vcw"/>
+                                    <constraint firstAttribute="width" constant="20" id="bnN-Hu-0cO"/>
+                                </constraints>
                                 <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="close-button" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="UZy-3R-deK">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -310,7 +353,7 @@
                             <constraint firstItem="kfQ-Tm-uet" firstAttribute="centerY" secondItem="8Gv-Ta-I1u" secondAttribute="centerY" id="CAc-Bz-mye"/>
                             <constraint firstItem="Z2P-L8-d10" firstAttribute="top" secondItem="RzB-ad-pEO" secondAttribute="top" constant="20" id="ErY-fV-eb0"/>
                             <constraint firstItem="HK8-ig-0Mv" firstAttribute="centerX" secondItem="RzB-ad-pEO" secondAttribute="centerX" id="FKt-5X-1jx"/>
-                            <constraint firstAttribute="trailing" secondItem="FXR-Ha-kYg" secondAttribute="trailing" constant="10" id="FXs-l3-uQK"/>
+                            <constraint firstAttribute="trailing" secondItem="FXR-Ha-kYg" secondAttribute="trailing" constant="5" id="FXs-l3-uQK"/>
                             <constraint firstAttribute="bottom" secondItem="UnC-x9-3oX" secondAttribute="bottom" id="GSq-Az-UQ6"/>
                             <constraint firstItem="veq-fR-isT" firstAttribute="leading" secondItem="RzB-ad-pEO" secondAttribute="leading" constant="10" id="KqF-kc-dI6"/>
                             <constraint firstItem="kfQ-Tm-uet" firstAttribute="leading" secondItem="8Gv-Ta-I1u" secondAttribute="trailing" constant="28" id="Mly-QB-mWV"/>
@@ -333,7 +376,7 @@
                             <constraint firstItem="flL-k2-TC8" firstAttribute="top" secondItem="sts-eu-78s" secondAttribute="bottom" constant="20" id="qJa-hb-Nve"/>
                             <constraint firstItem="sts-eu-78s" firstAttribute="top" secondItem="HK8-ig-0Mv" secondAttribute="bottom" constant="10" id="qvL-VD-13f"/>
                             <constraint firstItem="LcZ-Q8-F7m" firstAttribute="centerX" secondItem="RzB-ad-pEO" secondAttribute="centerX" id="tkP-Z8-ayM"/>
-                            <constraint firstItem="FXR-Ha-kYg" firstAttribute="top" secondItem="RzB-ad-pEO" secondAttribute="top" constant="10" id="uSd-7e-ckx"/>
+                            <constraint firstItem="FXR-Ha-kYg" firstAttribute="top" secondItem="RzB-ad-pEO" secondAttribute="top" constant="5" id="uSd-7e-ckx"/>
                             <constraint firstAttribute="trailing" secondItem="fPF-go-RPE" secondAttribute="trailing" constant="10" id="utZ-T7-DxC"/>
                             <constraint firstItem="Qo9-rw-PRz" firstAttribute="top" secondItem="flL-k2-TC8" secondAttribute="bottom" constant="10" id="vlX-v9-R8U"/>
                             <constraint firstItem="sts-eu-78s" firstAttribute="leading" secondItem="RzB-ad-pEO" secondAttribute="leading" constant="10" id="xot-d9-UOv"/>
@@ -356,6 +399,7 @@
         <image name="duration-arrow" width="12" height="7"/>
         <image name="next_date_arrow" width="4" height="7"/>
         <image name="previous_date_arrow" width="4" height="7"/>
+        <image name="time-entry-dot" width="8" height="8"/>
         <namedColor name="error-title-color">
             <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

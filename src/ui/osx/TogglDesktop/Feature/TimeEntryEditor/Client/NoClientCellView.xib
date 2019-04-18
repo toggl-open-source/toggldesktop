@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner"/>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <tableCellView identifier="NoClientCellView" id="wyH-PC-olv" customClass="NoClientCellView" customModule="TogglDesktop" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="319" height="38"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="96c-Kj-xNT">
+                    <rect key="frame" x="104" y="11" width="111" height="16"/>
+                    <textFieldCell key="cell" lineBreakMode="clipping" title="No matching items" id="Lb5-G8-xLG">
+                        <font key="font" metaFont="cellTitle"/>
+                        <color key="textColor" name="grey-text-color"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+            </subviews>
+            <constraints>
+                <constraint firstItem="96c-Kj-xNT" firstAttribute="centerX" secondItem="wyH-PC-olv" secondAttribute="centerX" id="EvY-oR-YVm"/>
+                <constraint firstItem="96c-Kj-xNT" firstAttribute="centerY" secondItem="wyH-PC-olv" secondAttribute="centerY" id="Y5n-7T-44v"/>
+            </constraints>
+            <point key="canvasLocation" x="244.5" y="-8.5"/>
+        </tableCellView>
+    </objects>
+    <resources>
+        <namedColor name="grey-text-color">
+            <color red="0.33333333333333331" green="0.33333333333333331" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>
