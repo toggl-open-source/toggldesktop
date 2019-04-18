@@ -41,7 +41,7 @@ NSString *upArrow = @"\u25B2";
 	self.backgroundView = [[NSView alloc] initWithFrame:CGRectZero];
 	self.backgroundView.translatesAutoresizingMaskIntoConstraints = NO;
 	self.backgroundView.wantsLayer = YES;
-	self.backgroundView.layer.backgroundColor = [NSColor colorWithWhite:0 alpha:1.0f].CGColor;
+	self.backgroundView.layer.backgroundColor = [NSColor colorWithWhite:0 alpha:0.5f].CGColor;
 }
 
 - (void)createAutocomplete
