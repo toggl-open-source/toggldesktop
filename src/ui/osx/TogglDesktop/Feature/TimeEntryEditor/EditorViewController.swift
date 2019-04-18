@@ -208,6 +208,7 @@ extension EditorViewController: AutoCompleteTextFieldDelegate {
             var selectedTags = tagDatasource.selectedTags
             selectedTags.append(newTag)
             tagDatasource.updateSelectedTags(selectedTags)
+            TagStorage.shared.addNewTag(newTag)
             DesktopLibraryBridge.shared().updateTimeEntry(withTags: selectedTags.toNames(), guid: timeEntry.guid)
         }
     }
