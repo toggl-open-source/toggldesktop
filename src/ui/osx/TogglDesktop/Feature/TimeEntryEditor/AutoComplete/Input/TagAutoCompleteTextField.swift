@@ -10,6 +10,11 @@ import Foundation
 
 final class TagAutoCompleteTextField: AutoCompleteTextField, NSWindowDelegate {
 
+    // Hack
+    // Because the TagAutoCompleteTextField is inside the AutoCompleteWindow
+    // So we have to prevent the action to closeSuggestion when the textField is resigned
+    private var isPressingTab = false
+
     // The design for TagTextField is different than other
     // The AutoCompleteWindow will contain the TextView
     override var isSeperateWindow: Bool {
@@ -30,6 +35,12 @@ final class TagAutoCompleteTextField: AutoCompleteTextField, NSWindowDelegate {
         super.init(coder: coder)
     }
 
+    override func controlTextDidEndEditing(_ obj: Notification) {
+        if !isPressingTab {
+            super.controlTextDidEndEditing(obj)
+        }
+    }
+
     override func didPresentAutoComplete() {
         isHidden = false
         removeFromSuperview()
@@ -40,7 +51,6 @@ final class TagAutoCompleteTextField: AutoCompleteTextField, NSWindowDelegate {
         autoCompleteView.placeholderBoxContainerView.addSubview(self)
         edgesToSuperView()
 
-
         DispatchQueue.main.async {
             self.autoCompleteWindow.makeKeyAndOrderFront(nil)
             self.autoCompleteWindow.makeFirstResponder(self)
@@ -49,5 +59,14 @@ final class TagAutoCompleteTextField: AutoCompleteTextField, NSWindowDelegate {
 
     func windowDidResignMain(_ notification: Notification) {
         closeSuggestion()
+    }
+
+    override func control(_ control: NSControl, textView: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
+        if commandSelector == #selector(NSResponder.insertTab(_:)) {
+            isPressingTab = true
+        }
+        let handled = super.control(control, textView: textView, doCommandBy: commandSelector)
+        isPressingTab = false
+        return handled
     }
 }
