@@ -12,7 +12,7 @@ import Cocoa
 
     override func viewDidMoveToWindow() {
         if let view = window?.contentView?.superview {
-            let backgroundView = MyPopoverBackgroundView(frame: NSRect.zero)
+            let backgroundView = PopoverBackgroundView(frame: NSRect.zero)
             view.addSubview(backgroundView, positioned: NSWindow.OrderingMode.below, relativeTo: view)
             backgroundView.edgesToSuperView()
         }
@@ -21,11 +21,11 @@ import Cocoa
     }
 }
 
-final class MyPopoverBackgroundView: NSView {
+final class PopoverBackgroundView: NSView {
 
     var backgroundColor: NSColor {
         if #available(OSX 10.13, *) {
-            return NSColor(named: NSColor.Name("preference-background-color"))!
+            return NSColor(named: NSColor.Name("white-background-color"))!
         } else {
             return NSColor.white
         }
