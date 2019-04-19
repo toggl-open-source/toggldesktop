@@ -24,4 +24,8 @@ extension Date {
     func nextDate() -> Date? {
         return Calendar.current.date(byAdding: .day, value: 1, to: self)
     }
+
+    func firstDayOfWeek() -> Date? {
+        return Calendar.current.dateComponents([.yearForWeekOfYear, .weekOfYear], from: self).date
+    }
 }
