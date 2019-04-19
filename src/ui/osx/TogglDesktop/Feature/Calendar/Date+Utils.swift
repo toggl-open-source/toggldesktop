@@ -26,4 +26,12 @@ extension Date {
         }
         return Date.daysOfWeek[safe: weekday - 1]
     }
+
+    func previousDate() -> Date? {
+        return Calendar.current.date(byAdding: .day, value: -1, to: self)
+    }
+
+    func nextDate() -> Date? {
+        return Calendar.current.date(byAdding: .day, value: 1, to: self)
+    }
 }

@@ -97,4 +97,12 @@ void *ctx;
 							  value);
 }
 
+- (void)updateTimeEntryWithStartDate:(NSDate *)startDate
+								guid:(NSString *)guid
+{
+	toggl_set_time_entry_date(ctx,
+							  [guid UTF8String],
+							  [startDate timeIntervalSince1970]);
+}
+
 @end
