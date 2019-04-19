@@ -12,7 +12,7 @@ final class CalendarDataSource: NSObject {
 
     private struct Constants {
 
-        static let shiftWeek = 4 * 4
+        static let shiftWeek = 1 * 4
     }
 
     // MARK: Variables
@@ -31,7 +31,10 @@ final class CalendarDataSource: NSObject {
     init(_ selectedDate: Date) {
         self.selectedDate = selectedDate
         currentDate = DateInfo(date: selectedDate)
-        let firstDayOfWeek = selectedDate.firstDayOfWeek()!
+
+        // firstDayOfWeek will return the Sunday
+        // But we need monday -> advance by 1
+        let firstDayOfWeek = selectedDate.firstDayOfWeek()?.nextDate() ?? selectedDate
         let from = Calendar.current.date(byAdding: .weekOfYear, value: -Constants.shiftWeek, to: firstDayOfWeek)!
         let to = Calendar.current.date(byAdding: .weekOfYear, value: Constants.shiftWeek, to: firstDayOfWeek)!
         fromDate = DateInfo(date: from)

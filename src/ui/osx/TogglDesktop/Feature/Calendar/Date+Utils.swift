@@ -8,6 +8,10 @@
 
 import Foundation
 
+extension Calendar {
+    static let gregorian = Calendar(identifier: .gregorian)
+}
+
 extension Date {
 
     func dayOfWeekString() -> String? {
@@ -26,6 +30,6 @@ extension Date {
     }
 
     func firstDayOfWeek() -> Date? {
-        return Calendar.current.dateComponents([.yearForWeekOfYear, .weekOfYear], from: self).date
+        return Calendar.current.date(from: Calendar.gregorian.dateComponents([.yearForWeekOfYear, .weekOfYear], from: self))
     }
 }
