@@ -320,6 +320,9 @@
                                                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                                 </datePickerCell>
+                                                                <connections>
+                                                                    <action selector="datePickerChanged:" target="-2" id="FDS-Ab-Dfd"/>
+                                                                </connections>
                                                             </datePicker>
                                                         </subviews>
                                                         <constraints>

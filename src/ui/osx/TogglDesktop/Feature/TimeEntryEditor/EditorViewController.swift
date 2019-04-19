@@ -94,6 +94,10 @@ final class EditorViewController: NSViewController {
         }
         DesktopLibraryBridge.shared().updateTimeEntry(withStart: nextDate, guid: timeEntry.guid)
     }
+
+    @IBAction func datePickerChanged(_ sender: Any) {
+        DesktopLibraryBridge.shared().updateTimeEntry(withStart: datePickerView.dateValue, guid: timeEntry.guid)
+    }
 }
 
 // MARK: Private
@@ -179,7 +183,7 @@ extension EditorViewController {
     private func renderDatePicker() {
         let isRunning = timeEntry.duration_in_seconds >= 0
         datePickerView.dateValue = timeEntry.started
-        datePickerView.isEnabled = !isRunning
+        datePickerView.isEnabled = isRunning
         let dayName = timeEntry.started.dayOfWeekString() ?? "Unknown"
         dateNameLbl.stringValue = "\(dayName),"
     }
