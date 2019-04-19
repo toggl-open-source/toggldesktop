@@ -30,7 +30,11 @@ final class EditorViewController: NSViewController {
     @IBOutlet weak var tagStackView: NSStackView!
     @IBOutlet weak var tagAddButton: NSButton!
     @IBOutlet weak var tagInputContainerView: NSBox!
-    
+    @IBOutlet weak var datePickerView: NSDatePicker!
+    @IBOutlet weak var dateNameLbl: NSTextField!
+    @IBOutlet weak var nextDateBtn: NSButton!
+    @IBOutlet weak var previousDateBtn: NSButton!
+
     // MARK: Variables
 
     var timeEntry: TimeEntryViewItem! {
@@ -73,6 +77,14 @@ final class EditorViewController: NSViewController {
 
     @IBAction func tagAddButtonOnTap(_ sender: Any) {
         openTagAutoCompleteView()
+    }
+
+    @IBAction func nextDateBtnOnTap(_ sender: Any) {
+
+    }
+
+    @IBAction func previousDateBtnOnTap(_ sender: Any) {
+
     }
 }
 
