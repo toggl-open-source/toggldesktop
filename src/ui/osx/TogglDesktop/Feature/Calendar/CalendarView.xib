@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner"/>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView identifier="CalendarView" id="c22-O7-iKe" customClass="CalendarView" customModule="TogglDesktop" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="240" height="313"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <box boxType="custom" borderType="none" borderWidth="0.0" title="Box" translatesAutoresizingMaskIntoConstraints="NO" id="pfY-Ff-7Pe">
+                    <rect key="frame" x="0.0" y="0.0" width="240" height="313"/>
+                    <view key="contentView" id="zZk-Jf-ixS">
+                        <rect key="frame" x="0.0" y="0.0" width="240" height="313"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="9Gu-ZM-D4S">
+                                <rect key="frame" x="0.0" y="274" width="240" height="39"/>
+                                <subviews>
+                                    <stackView distribution="equalSpacing" orientation="horizontal" alignment="centerY" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ds8-uL-15V">
+                                        <rect key="frame" x="5" y="0.0" width="230" height="39"/>
+                                        <subviews>
+                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="w6g-Tw-FZV">
+                                                <rect key="frame" x="-2" y="13" width="35" height="14"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="31" id="aWo-yC-o4f"/>
+                                                </constraints>
+                                                <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="MON" id="86j-Dg-QQk">
+                                                    <font key="font" metaFont="systemMedium" size="11"/>
+                                                    <color key="textColor" name="grey-text-color"/>
+                                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                </textFieldCell>
+                                            </textField>
+                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="4Mq-XV-nOI">
+                                                <rect key="frame" x="31" y="13" width="35" height="14"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="31" id="HkX-ty-fVL"/>
+                                                </constraints>
+                                                <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="TUE" id="rUb-Cc-1Ag">
+                                                    <font key="font" metaFont="systemMedium" size="11"/>
+                                                    <color key="textColor" name="grey-text-color"/>
+                                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                </textFieldCell>
+                                            </textField>
+                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="djR-HR-847">
+                                                <rect key="frame" x="64" y="13" width="35" height="14"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="31" id="iVC-1K-82o"/>
+                                                </constraints>
+                                                <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="WED" id="Fdz-WG-vA7">
+                                                    <font key="font" metaFont="systemMedium" size="11"/>
+                                                    <color key="textColor" name="grey-text-color"/>
+                                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                </textFieldCell>
+                                            </textField>
+                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="yEu-Zm-fjr">
+                                                <rect key="frame" x="98" y="13" width="35" height="14"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="31" id="XrH-0d-FYc"/>
+                                                </constraints>
+                                                <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="THU" id="02g-eM-SOP">
+                                                    <font key="font" metaFont="systemMedium" size="11"/>
+                                                    <color key="textColor" name="grey-text-color"/>
+                                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                </textFieldCell>
+                                            </textField>
+                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="4qk-FO-BCb">
+                                                <rect key="frame" x="131" y="13" width="35" height="14"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="31" id="vds-7S-ggb"/>
+                                                </constraints>
+                                                <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="FRI" id="3oX-7b-b4Q">
+                                                    <font key="font" metaFont="systemMedium" size="11"/>
+                                                    <color key="textColor" name="grey-text-color"/>
+                                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                </textFieldCell>
+                                            </textField>
+                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="i6H-bK-y0x">
+                                                <rect key="frame" x="164" y="13" width="35" height="14"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="31" id="rhJ-St-Z86"/>
+                                                </constraints>
+                                                <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="SAT" id="bhT-M5-eZ2">
+                                                    <font key="font" metaFont="systemMedium" size="11"/>
+                                                    <color key="textColor" name="grey-text-color"/>
+                                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                </textFieldCell>
+                                            </textField>
+                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="fNz-nh-9rC">
+                                                <rect key="frame" x="197" y="13" width="35" height="14"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="31" id="gSf-Ld-6jM"/>
+                                                </constraints>
+                                                <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="SUN" id="ZF3-5s-zGp">
+                                                    <font key="font" metaFont="systemMedium" size="11"/>
+                                                    <color key="textColor" name="grey-text-color"/>
+                                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                </textFieldCell>
+                                            </textField>
+                                        </subviews>
+                                        <visibilityPriorities>
+                                            <integer value="1000"/>
+                                            <integer value="1000"/>
+                                            <integer value="1000"/>
+                                            <integer value="1000"/>
+                                            <integer value="1000"/>
+                                            <integer value="1000"/>
+                                            <integer value="1000"/>
+                                        </visibilityPriorities>
+                                        <customSpacing>
+                                            <real value="3.4028234663852886e+38"/>
+                                            <real value="3.4028234663852886e+38"/>
+                                            <real value="3.4028234663852886e+38"/>
+                                            <real value="3.4028234663852886e+38"/>
+                                            <real value="3.4028234663852886e+38"/>
+                                            <real value="3.4028234663852886e+38"/>
+                                            <real value="3.4028234663852886e+38"/>
+                                        </customSpacing>
+                                    </stackView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="ds8-uL-15V" secondAttribute="bottom" id="5Kh-3a-3Ks"/>
+                                    <constraint firstAttribute="width" constant="240" id="B68-mY-Be1"/>
+                                    <constraint firstAttribute="trailing" secondItem="ds8-uL-15V" secondAttribute="trailing" constant="5" id="L7k-Ea-3bT"/>
+                                    <constraint firstItem="ds8-uL-15V" firstAttribute="top" secondItem="9Gu-ZM-D4S" secondAttribute="top" id="TGK-2G-vNp"/>
+                                    <constraint firstItem="ds8-uL-15V" firstAttribute="leading" secondItem="9Gu-ZM-D4S" secondAttribute="leading" constant="5" id="gmj-iT-3sr"/>
+                                    <constraint firstAttribute="height" constant="39" id="mYS-fU-NTa"/>
+                                </constraints>
+                            </customView>
+                            <box verticalHuggingPriority="750" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="vEA-Gh-F9h">
+                                <rect key="frame" x="0.0" y="271" width="240" height="5"/>
+                            </box>
+                            <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tl6-D2-1nw">
+                                <rect key="frame" x="0.0" y="0.0" width="240" height="273"/>
+                                <clipView key="contentView" copiesOnScroll="NO" id="E6N-M6-nS3">
+                                    <rect key="frame" x="0.0" y="0.0" width="240" height="273"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <collectionView id="Eb0-OT-1bz">
+                                            <rect key="frame" x="0.0" y="0.0" width="240" height="158"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
+                                            <collectionViewFlowLayout key="collectionViewLayout" minimumInteritemSpacing="10" minimumLineSpacing="10" id="Eyu-ow-sX2">
+                                                <size key="itemSize" width="50" height="50"/>
+                                            </collectionViewFlowLayout>
+                                            <color key="primaryBackgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                        </collectionView>
+                                    </subviews>
+                                </clipView>
+                                <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="11V-xL-YQ7">
+                                    <rect key="frame" x="0.0" y="257" width="227" height="16"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </scroller>
+                                <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="17H-JS-qZp">
+                                    <rect key="frame" x="234" y="1" width="15" height="143"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </scroller>
+                            </scrollView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="vEA-Gh-F9h" firstAttribute="leading" secondItem="zZk-Jf-ixS" secondAttribute="leading" id="1KN-mc-ZrT"/>
+                            <constraint firstAttribute="bottom" secondItem="Tl6-D2-1nw" secondAttribute="bottom" id="Ke1-Yr-qOH"/>
+                            <constraint firstItem="Tl6-D2-1nw" firstAttribute="leading" secondItem="zZk-Jf-ixS" secondAttribute="leading" id="Ojt-9E-fnW"/>
+                            <constraint firstItem="Tl6-D2-1nw" firstAttribute="top" secondItem="vEA-Gh-F9h" secondAttribute="bottom" id="P21-pw-oee"/>
+                            <constraint firstAttribute="trailing" secondItem="9Gu-ZM-D4S" secondAttribute="trailing" id="Sbp-vn-lcL"/>
+                            <constraint firstAttribute="trailing" secondItem="Tl6-D2-1nw" secondAttribute="trailing" id="i5e-OW-w51"/>
+                            <constraint firstAttribute="trailing" secondItem="vEA-Gh-F9h" secondAttribute="trailing" id="kT1-YO-GiG"/>
+                            <constraint firstItem="vEA-Gh-F9h" firstAttribute="top" secondItem="9Gu-ZM-D4S" secondAttribute="bottom" id="mC2-P5-hgJ"/>
+                            <constraint firstItem="9Gu-ZM-D4S" firstAttribute="top" secondItem="zZk-Jf-ixS" secondAttribute="top" id="uF9-dA-CNe"/>
+                            <constraint firstItem="9Gu-ZM-D4S" firstAttribute="leading" secondItem="zZk-Jf-ixS" secondAttribute="leading" id="ui6-oZ-gGV"/>
+                        </constraints>
+                    </view>
+                    <color key="fillColor" name="white-background-color"/>
+                </box>
+            </subviews>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="pfY-Ff-7Pe" secondAttribute="bottom" id="G3R-Mc-kre"/>
+                <constraint firstAttribute="trailing" secondItem="pfY-Ff-7Pe" secondAttribute="trailing" id="HTn-Ev-2HX"/>
+                <constraint firstItem="pfY-Ff-7Pe" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" id="e6G-ke-hML"/>
+                <constraint firstItem="pfY-Ff-7Pe" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" id="qPF-wV-Ptk"/>
+            </constraints>
+            <point key="canvasLocation" x="-4" y="38"/>
+        </customView>
+        <scrollView wantsLayer="YES" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" usesPredominantAxisScrolling="NO" id="LnO-91-Zpo">
+            <rect key="frame" x="0.0" y="0.0" width="250" height="160"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <clipView key="contentView" id="Zwf-vT-9e9">
+                <rect key="frame" x="1" y="1" width="248" height="158"/>
+                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                <subviews>
+                    <collectionView id="tLn-Xd-zYB">
+                        <rect key="frame" x="0.0" y="0.0" width="248" height="158"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
+                        <collectionViewFlowLayout key="collectionViewLayout" minimumInteritemSpacing="10" minimumLineSpacing="10" id="BQc-sQ-LxN">
+                            <size key="itemSize" width="50" height="50"/>
+                        </collectionViewFlowLayout>
+                        <color key="primaryBackgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </collectionView>
+                </subviews>
+            </clipView>
+            <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="Pn5-SW-Tzb">
+                <rect key="frame" x="1" y="144" width="233" height="15"/>
+                <autoresizingMask key="autoresizingMask"/>
+            </scroller>
+            <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="1D1-sm-GS6">
+                <rect key="frame" x="234" y="1" width="15" height="143"/>
+                <autoresizingMask key="autoresizingMask"/>
+            </scroller>
+        </scrollView>
+    </objects>
+    <resources>
+        <namedColor name="grey-text-color">
+            <color red="0.33333333333333331" green="0.33333333333333331" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="white-background-color">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

@@ -152,6 +152,8 @@
 		BA0E38102225257D00D0121B /* BezierPath+Corner.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0E380F2225257D00D0121B /* BezierPath+Corner.swift */; };
 		BA0E38122225260B00D0121B /* TimeEntryCell+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0E38112225260B00D0121B /* TimeEntryCell+Ext.swift */; };
 		BA0F67B7224A32F700ED0F91 /* CursorButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0F67B6224A32F700ED0F91 /* CursorButton.swift */; };
+		BA13D2062269B7C400EB3833 /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA13D2052269B7C400EB3833 /* CalendarView.swift */; };
+		BA13D2082269B7CD00EB3833 /* CalendarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA13D2072269B7CD00EB3833 /* CalendarView.xib */; };
 		BA13E05C21C7BA6000835EC1 /* UserNotificationCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = BA13E05921C7B9D900835EC1 /* UserNotificationCenter.m */; };
 		BA276A142240F5B500810C51 /* FloatingErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA276A122240F5B500810C51 /* FloatingErrorView.swift */; };
 		BA2DA0C621A542E30027B7A5 /* NSTextField+Ext.m in Sources */ = {isa = PBXBuildFile; fileRef = BA2DA0C521A542E30027B7A5 /* NSTextField+Ext.m */; };
@@ -767,6 +769,8 @@
 		BA0E380F2225257D00D0121B /* BezierPath+Corner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BezierPath+Corner.swift"; sourceTree = "<group>"; };
 		BA0E38112225260B00D0121B /* TimeEntryCell+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TimeEntryCell+Ext.swift"; sourceTree = "<group>"; };
 		BA0F67B6224A32F700ED0F91 /* CursorButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CursorButton.swift; sourceTree = "<group>"; };
+		BA13D2052269B7C400EB3833 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
+		BA13D2072269B7CD00EB3833 /* CalendarView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CalendarView.xib; sourceTree = "<group>"; };
 		BA13E05921C7B9D900835EC1 /* UserNotificationCenter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = UserNotificationCenter.m; path = test2/UserNotificationCenter.m; sourceTree = SOURCE_ROOT; };
 		BA13E05A21C7B9D900835EC1 /* UserNotificationCenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = UserNotificationCenter.h; path = test2/UserNotificationCenter.h; sourceTree = SOURCE_ROOT; };
 		BA276A122240F5B500810C51 /* FloatingErrorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatingErrorView.swift; sourceTree = "<group>"; };
@@ -1367,6 +1371,15 @@
 			path = Diff;
 			sourceTree = "<group>";
 		};
+		BA13D1E42269B4F600EB3833 /* Calendar */ = {
+			isa = PBXGroup;
+			children = (
+				BA13D2052269B7C400EB3833 /* CalendarView.swift */,
+				BA13D2072269B7CD00EB3833 /* CalendarView.xib */,
+			);
+			path = Calendar;
+			sourceTree = "<group>";
+		};
 		BA13E05B21C7B9F800835EC1 /* UserNotification */ = {
 			isa = PBXGroup;
 			children = (
@@ -1511,6 +1524,7 @@
 		BA712EAF21BF904E00A2D8DD /* Feature */ = {
 			isa = PBXGroup;
 			children = (
+				BA13D1E42269B4F600EB3833 /* Calendar */,
 				BA657280224DFA4F00BA4C60 /* ColorWheel */,
 				BA34F0DB22439BF300C27A15 /* TimeEntryEditor */,
 				BAD15FDC223A521900A8CCC9 /* TimeEntryEmptyView */,
@@ -2024,6 +2038,7 @@
 				95DBF8CD18BF7A910021FB41 /* offline_on.pdf in Resources */,
 				69FC180B17E6534500B96425 /* MainMenu.xib in Resources */,
 				BA7D334D2248945300B953A8 /* AutoCompleteView.xib in Resources */,
+				BA13D2082269B7CD00EB3833 /* CalendarView.xib in Resources */,
 				3C65A7D31DE574E7005586B4 /* group_icon_closed.pdf in Resources */,
 				C5DA1FC017F1B08A001C4565 /* MainWindowController.xib in Resources */,
 				BA412C23224E11AC003CA17A /* ClientCellView.xib in Resources */,
@@ -2216,6 +2231,7 @@
 				BAA11AC12251F49E007F31D2 /* WorkspaceStorage.swift in Sources */,
 				3C3AF64E20ACC6280088A3A6 /* CountryViewItem.m in Sources */,
 				74E3CDD417FBABE400C3ADD3 /* BugsnagOSXNotifier.m in Sources */,
+				BA13D2062269B7C400EB3833 /* CalendarView.swift in Sources */,
 				BAF6319C21E6F868002DD6AB /* NotificationCenter+MainThread.swift in Sources */,
 				74AA9471180909F50000539F /* GTMHTTPFetcher.m in Sources */,
 				BAFBFCC821CD1D3C004B443F /* SystemService.m in Sources */,

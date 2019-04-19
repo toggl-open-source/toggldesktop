@@ -11,8 +11,12 @@
             <connections>
                 <outlet property="billableCheckBox" destination="vpV-Av-rbR" id="7vp-xl-qrd"/>
                 <outlet property="closeBtn" destination="FXR-Ha-kYg" id="nra-rB-rRw"/>
+                <outlet property="dateNameLbl" destination="uPw-gN-7GS" id="tJh-4l-Kd7"/>
+                <outlet property="datePickerView" destination="PKt-Ig-fee" id="DN1-Wa-zOJ"/>
                 <outlet property="deleteBtn" destination="5ym-is-B1S" id="cBg-gL-hqJ"/>
                 <outlet property="descriptionTextField" destination="EMT-i8-OD1" id="PN4-q1-PU7"/>
+                <outlet property="nextDateBtn" destination="kZS-XS-SCf" id="I7K-7w-GmO"/>
+                <outlet property="previousDateBtn" destination="2eM-xR-ruv" id="Nlx-ay-1OZ"/>
                 <outlet property="projectBox" destination="HK8-ig-0Mv" id="Dnb-C3-7iP"/>
                 <outlet property="projectDotImageView" destination="gFc-aw-iMX" id="BEl-Tj-c8T"/>
                 <outlet property="projectTextField" destination="Doe-dQ-82A" id="cgo-cM-Mbh"/>
@@ -295,19 +299,46 @@
                                                 <rect key="frame" x="1" y="1" width="176" height="28"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
-                                                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="QSs-0Y-l7W">
-                                                        <rect key="frame" x="0.0" y="0.0" width="176" height="28"/>
-                                                        <buttonCell key="cell" type="bevel" title="Tuesday, 4/12/18" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="ZrH-J7-voP">
-                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                            <font key="font" metaFont="system" size="14"/>
-                                                        </buttonCell>
-                                                    </button>
+                                                    <stackView distribution="equalSpacing" orientation="horizontal" alignment="centerY" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vQx-6F-FAx">
+                                                        <rect key="frame" x="17" y="0.0" width="143" height="28"/>
+                                                        <subviews>
+                                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="uPw-gN-7GS">
+                                                                <rect key="frame" x="-2" y="6" width="61" height="18"/>
+                                                                <textFieldCell key="cell" lineBreakMode="clipping" alignment="right" title="Tuesday," id="7Q1-ED-Dqw">
+                                                                    <font key="font" metaFont="system" size="14"/>
+                                                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                                </textFieldCell>
+                                                            </textField>
+                                                            <datePicker verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="PKt-Ig-fee">
+                                                                <rect key="frame" x="57" y="3" width="86" height="23"/>
+                                                                <datePickerCell key="cell" alignment="left" drawsBackground="NO" datePickerStyle="textField" id="eIj-kY-idV">
+                                                                    <font key="font" size="14" name=".SFNSText"/>
+                                                                    <date key="date" timeIntervalSinceReferenceDate="-595929600">
+                                                                        <!--1982-02-12 16:00:00 +0000-->
+                                                                    </date>
+                                                                    <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                </datePickerCell>
+                                                            </datePicker>
+                                                        </subviews>
+                                                        <constraints>
+                                                            <constraint firstItem="uPw-gN-7GS" firstAttribute="top" secondItem="vQx-6F-FAx" secondAttribute="top" constant="4" id="Na5-f1-F6f"/>
+                                                        </constraints>
+                                                        <visibilityPriorities>
+                                                            <integer value="1000"/>
+                                                            <integer value="1000"/>
+                                                        </visibilityPriorities>
+                                                        <customSpacing>
+                                                            <real value="3.4028234663852886e+38"/>
+                                                            <real value="3.4028234663852886e+38"/>
+                                                        </customSpacing>
+                                                    </stackView>
                                                 </subviews>
                                                 <constraints>
-                                                    <constraint firstAttribute="bottom" secondItem="QSs-0Y-l7W" secondAttribute="bottom" id="TZe-Op-kNg"/>
-                                                    <constraint firstItem="QSs-0Y-l7W" firstAttribute="top" secondItem="Vxl-ZN-LqT" secondAttribute="top" id="hAN-Qh-umH"/>
-                                                    <constraint firstItem="QSs-0Y-l7W" firstAttribute="leading" secondItem="Vxl-ZN-LqT" secondAttribute="leading" id="qSA-He-i8C"/>
-                                                    <constraint firstAttribute="trailing" secondItem="QSs-0Y-l7W" secondAttribute="trailing" id="w61-zb-5Ki"/>
+                                                    <constraint firstItem="vQx-6F-FAx" firstAttribute="centerX" secondItem="Vxl-ZN-LqT" secondAttribute="centerX" id="Xjd-qD-8Bf"/>
+                                                    <constraint firstItem="vQx-6F-FAx" firstAttribute="top" secondItem="Vxl-ZN-LqT" secondAttribute="top" id="r19-8k-Dm0"/>
+                                                    <constraint firstAttribute="bottom" secondItem="vQx-6F-FAx" secondAttribute="bottom" id="vKr-eE-xZr"/>
                                                 </constraints>
                                             </view>
                                             <color key="borderColor" name="upload-border-color"/>
@@ -318,6 +349,9 @@
                                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
+                                            <connections>
+                                                <action selector="nextDateBtnOnTap:" target="-2" id="yd4-PS-lG2"/>
+                                            </connections>
                                         </button>
                                         <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="2eM-xR-ruv">
                                             <rect key="frame" x="0.0" y="0.0" width="30" height="28"/>
@@ -325,6 +359,9 @@
                                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
+                                            <connections>
+                                                <action selector="previousDateBtnOnTap:" target="-2" id="Wmg-rt-NIN"/>
+                                            </connections>
                                         </button>
                                     </subviews>
                                     <constraints>
