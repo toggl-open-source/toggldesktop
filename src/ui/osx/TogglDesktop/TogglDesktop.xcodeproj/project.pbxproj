@@ -158,6 +158,7 @@
 		BA13D20E2269BAA600EB3833 /* DateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA13D20C2269BAA600EB3833 /* DateCell.swift */; };
 		BA13D20F2269BAA600EB3833 /* DateCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA13D20D2269BAA600EB3833 /* DateCell.xib */; };
 		BA13D2112269BE2F00EB3833 /* DateInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA13D2102269BE2F00EB3833 /* DateInfo.swift */; };
+		BA13D2152269C01500EB3833 /* Date+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA13D2142269C01500EB3833 /* Date+Utils.swift */; };
 		BA13E05C21C7BA6000835EC1 /* UserNotificationCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = BA13E05921C7B9D900835EC1 /* UserNotificationCenter.m */; };
 		BA276A142240F5B500810C51 /* FloatingErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA276A122240F5B500810C51 /* FloatingErrorView.swift */; };
 		BA2DA0C621A542E30027B7A5 /* NSTextField+Ext.m in Sources */ = {isa = PBXBuildFile; fileRef = BA2DA0C521A542E30027B7A5 /* NSTextField+Ext.m */; };
@@ -779,6 +780,7 @@
 		BA13D20C2269BAA600EB3833 /* DateCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateCell.swift; sourceTree = "<group>"; };
 		BA13D20D2269BAA600EB3833 /* DateCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DateCell.xib; sourceTree = "<group>"; };
 		BA13D2102269BE2F00EB3833 /* DateInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateInfo.swift; sourceTree = "<group>"; };
+		BA13D2142269C01500EB3833 /* Date+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Utils.swift"; sourceTree = "<group>"; };
 		BA13E05921C7B9D900835EC1 /* UserNotificationCenter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = UserNotificationCenter.m; path = test2/UserNotificationCenter.m; sourceTree = SOURCE_ROOT; };
 		BA13E05A21C7B9D900835EC1 /* UserNotificationCenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = UserNotificationCenter.h; path = test2/UserNotificationCenter.h; sourceTree = SOURCE_ROOT; };
 		BA276A122240F5B500810C51 /* FloatingErrorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatingErrorView.swift; sourceTree = "<group>"; };
@@ -965,6 +967,7 @@
 		69FC17E817E6534400B96425 = {
 			isa = PBXGroup;
 			children = (
+				BA13D2142269C01500EB3833 /* Date+Utils.swift */,
 				BAE007DD21FAF00D00404379 /* Media.xcassets */,
 				BAD2341921D612DE0039C742 /* libPocoCrypto.60.dylib */,
 				BAD2341A21D612DE0039C742 /* libPocoData.60.dylib */,
@@ -2147,6 +2150,7 @@
 				95C0707A18CDB91500A34D0D /* NSCustomComboBox.m in Sources */,
 				3CC450E91A31ED540012440B /* NSTextFieldDuration.m in Sources */,
 				7424949E17F1E3D20030121C /* UIEvents.m in Sources */,
+				BA13D2152269C01500EB3833 /* Date+Utils.swift in Sources */,
 				BAAF56A02223DF9A003D0D73 /* VertificalTimeEntryFlowLayout.swift in Sources */,
 				C5CB7F0417F43EE100A2AEB1 /* TimeEntryCell.m in Sources */,
 				74762BA118A139D4004433A9 /* NSUnstripedTableView.m in Sources */,
