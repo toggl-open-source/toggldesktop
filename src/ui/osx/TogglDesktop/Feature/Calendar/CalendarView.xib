@@ -136,13 +136,13 @@
                             <box verticalHuggingPriority="750" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="vEA-Gh-F9h">
                                 <rect key="frame" x="0.0" y="271" width="240" height="5"/>
                             </box>
-                            <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tl6-D2-1nw">
+                            <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" horizontalScrollElasticity="none" verticalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="Tl6-D2-1nw">
                                 <rect key="frame" x="0.0" y="0.0" width="240" height="273"/>
                                 <clipView key="contentView" copiesOnScroll="NO" id="E6N-M6-nS3">
                                     <rect key="frame" x="0.0" y="0.0" width="240" height="273"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <collectionView id="Eb0-OT-1bz">
+                                        <collectionView selectable="YES" allowsEmptySelection="NO" id="Eb0-OT-1bz">
                                             <rect key="frame" x="0.0" y="0.0" width="240" height="158"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                             <collectionViewFlowLayout key="collectionViewLayout" minimumInteritemSpacing="10" minimumLineSpacing="10" id="Eyu-ow-sX2">
@@ -153,11 +153,11 @@
                                     </subviews>
                                 </clipView>
                                 <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="11V-xL-YQ7">
-                                    <rect key="frame" x="0.0" y="257" width="227" height="16"/>
+                                    <rect key="frame" x="-100" y="-100" width="227" height="16"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                                 <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="17H-JS-qZp">
-                                    <rect key="frame" x="234" y="1" width="15" height="143"/>
+                                    <rect key="frame" x="-100" y="-100" width="15" height="143"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                             </scrollView>
@@ -184,6 +184,9 @@
                 <constraint firstItem="pfY-Ff-7Pe" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" id="e6G-ke-hML"/>
                 <constraint firstItem="pfY-Ff-7Pe" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" id="qPF-wV-Ptk"/>
             </constraints>
+            <connections>
+                <outlet property="collectionView" destination="Eb0-OT-1bz" id="lTf-z2-UEJ"/>
+            </connections>
             <point key="canvasLocation" x="-4" y="38"/>
         </customView>
         <scrollView wantsLayer="YES" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" usesPredominantAxisScrolling="NO" id="LnO-91-Zpo">

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="DateCell" customModule="TogglDesktop" customModuleProvider="target">
+            <connections>
+                <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView id="Hz6-mo-xeY">
+            <rect key="frame" x="0.0" y="0.0" width="32" height="26"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <box boxType="custom" borderType="none" borderWidth="0.0" cornerRadius="8" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="D5h-lo-zFy">
+                    <rect key="frame" x="0.0" y="0.0" width="32" height="26"/>
+                    <view key="contentView" id="LaC-6X-sDu">
+                        <rect key="frame" x="0.0" y="0.0" width="32" height="26"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    </view>
+                </box>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="DuL-ri-Jw3">
+                    <rect key="frame" x="9" y="4" width="15" height="18"/>
+                    <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="1" id="XMQ-Zo-E9T">
+                        <font key="font" metaFont="system" size="14"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+            </subviews>
+            <constraints>
+                <constraint firstItem="D5h-lo-zFy" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" id="7Zq-hS-73H"/>
+                <constraint firstAttribute="trailing" secondItem="D5h-lo-zFy" secondAttribute="trailing" id="7ou-sF-5cH"/>
+                <constraint firstItem="DuL-ri-Jw3" firstAttribute="centerX" secondItem="Hz6-mo-xeY" secondAttribute="centerX" id="Gsw-ti-wR1"/>
+                <constraint firstAttribute="bottom" secondItem="D5h-lo-zFy" secondAttribute="bottom" id="TdF-5n-Ouv"/>
+                <constraint firstItem="D5h-lo-zFy" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="gNR-TC-zMX"/>
+                <constraint firstItem="DuL-ri-Jw3" firstAttribute="centerY" secondItem="Hz6-mo-xeY" secondAttribute="centerY" id="qf8-li-MIV"/>
+            </constraints>
+            <point key="canvasLocation" x="2" y="-10"/>
+        </customView>
+        <collectionViewItem id="uS0-lU-fJp" customClass="DateCell" customModule="TogglDesktop" customModuleProvider="target">
+            <connections>
+                <outlet property="backgroundBox" destination="D5h-lo-zFy" id="OtA-8S-nOy"/>
+                <outlet property="titleLbl" destination="DuL-ri-Jw3" id="sxN-Oh-PCV"/>
+                <outlet property="view" destination="Hz6-mo-xeY" id="nNt-oC-Cte"/>
+            </connections>
+        </collectionViewItem>
+    </objects>
+</document>

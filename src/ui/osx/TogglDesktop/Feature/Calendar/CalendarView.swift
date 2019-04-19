@@ -8,12 +8,31 @@
 
 import Cocoa
 
-class CalendarView: NSView {
+final class CalendarView: NSView {
 
-    override func draw(_ dirtyRect: NSRect) {
-        super.draw(dirtyRect)
+    // MARK: OUTLET
 
-        // Drawing code here.
+    @IBOutlet weak var collectionView: NSCollectionView!
+
+    // MARK: View Cycle
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+
+        initCommon()
+        initCollectionView()
     }
-    
+}
+
+// MARK: Private
+
+extension CalendarView {
+
+    fileprivate func initCommon() {
+
+    }
+
+    fileprivate func initCollectionView() {
+        
+    }
 }
