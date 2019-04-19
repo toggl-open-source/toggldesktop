@@ -967,7 +967,6 @@
 		69FC17E817E6534400B96425 = {
 			isa = PBXGroup;
 			children = (
-				BA13D2142269C01500EB3833 /* Date+Utils.swift */,
 				BAE007DD21FAF00D00404379 /* Media.xcassets */,
 				BAD2341921D612DE0039C742 /* libPocoCrypto.60.dylib */,
 				BAD2341A21D612DE0039C742 /* libPocoData.60.dylib */,
@@ -1390,6 +1389,7 @@
 				BA13D2072269B7CD00EB3833 /* CalendarView.xib */,
 				BA13D2092269BA6500EB3833 /* CalendarDataSource.swift */,
 				BA13D2102269BE2F00EB3833 /* DateInfo.swift */,
+				BA13D2142269C01500EB3833 /* Date+Utils.swift */,
 			);
 			path = Calendar;
 			sourceTree = "<group>";

@@ -80,11 +80,19 @@ final class EditorViewController: NSViewController {
     }
 
     @IBAction func nextDateBtnOnTap(_ sender: Any) {
-
+        guard let startDate = timeEntry.started,
+            let nextDate = startDate.nextDate() else {
+            return
+        }
+        DesktopLibraryBridge.shared().updateTimeEntry(withStart: nextDate, guid: timeEntry.guid)
     }
 
     @IBAction func previousDateBtnOnTap(_ sender: Any) {
-
+        guard let startDate = timeEntry.started,
+            let nextDate = startDate.previousDate() else {
+                return
+        }
+        DesktopLibraryBridge.shared().updateTimeEntry(withStart: nextDate, guid: timeEntry.guid)
     }
 }
 
