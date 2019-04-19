@@ -118,6 +118,7 @@ extension EditorViewController {
         billableCheckBox.state = timeEntry.billable ? .on : .off
         projectTextField.setTimeEntry(timeEntry)
         renderTagsView()
+        renderDatePicker()
     }
 
     private func renderTagsView() {
@@ -165,6 +166,14 @@ extension EditorViewController {
         else {
             tagDatasource.updateSelectedTags([])
         }
+    }
+
+    private func renderDatePicker() {
+        let isRunning = timeEntry.duration_in_seconds >= 0
+        datePickerView.dateValue = timeEntry.started
+        datePickerView.isEnabled = !isRunning
+        let dayName = timeEntry.started.dayOfWeekString() ?? "Unknown"
+        dateNameLbl.stringValue = "\(dayName),"
     }
 
     fileprivate func updateNextKeyViews() {

@@ -324,6 +324,7 @@
                                                         </subviews>
                                                         <constraints>
                                                             <constraint firstItem="uPw-gN-7GS" firstAttribute="top" secondItem="vQx-6F-FAx" secondAttribute="top" constant="4" id="Na5-f1-F6f"/>
+                                                            <constraint firstItem="PKt-Ig-fee" firstAttribute="top" secondItem="vQx-6F-FAx" secondAttribute="top" constant="-2" id="hTb-5P-rmE"/>
                                                         </constraints>
                                                         <visibilityPriorities>
                                                             <integer value="1000"/>
