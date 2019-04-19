@@ -31,7 +31,7 @@ final class EditorViewController: NSViewController {
     @IBOutlet weak var tagAddButton: NSButton!
     @IBOutlet weak var tagInputContainerView: NSBox!
     @IBOutlet weak var datePickerView: NSDatePicker!
-    @IBOutlet weak var dateNameLbl: NSTextField!
+    @IBOutlet weak var dayNameButton: CursorButton!
     @IBOutlet weak var nextDateBtn: NSButton!
     @IBOutlet weak var previousDateBtn: NSButton!
 
@@ -55,6 +55,13 @@ final class EditorViewController: NSViewController {
             return ConvertHexColor.hexCode(toNSColor: "#ACACAC")
         }
     }()
+
+    private lazy var calendarPopover: NoVibrantPopoverView = {
+        let popover = NoVibrantPopoverView()
+        popover.contentViewController = CalendarViewController(nibName: NSNib.Name("CalendarViewController"), bundle: nil)
+        return popover
+    }()
+
     // MARK: View Cycle
 
     override func viewDidLoad() {
@@ -98,6 +105,10 @@ final class EditorViewController: NSViewController {
     @IBAction func datePickerChanged(_ sender: Any) {
         DesktopLibraryBridge.shared().updateTimeEntry(withStart: datePickerView.dateValue, guid: timeEntry.guid)
     }
+    
+    @IBAction func dayButtonOnTap(_ sender: Any) {
+        calendarPopover.present(from: datePickerView.bounds, of: datePickerView)
+    }
 }
 
 // MARK: Private
@@ -114,6 +125,7 @@ extension EditorViewController {
         projectTextField.layoutArrowBtn(with: view)
 
         descriptionTextField.delegate = self
+        dayNameButton.cursor = .pointingHand
     }
 
     fileprivate func initDatasource() {
@@ -185,7 +197,7 @@ extension EditorViewController {
         datePickerView.dateValue = timeEntry.started
         datePickerView.isEnabled = isRunning
         let dayName = timeEntry.started.dayOfWeekString() ?? "Unknown"
-        dateNameLbl.stringValue = "\(dayName),"
+        dayNameButton.title = "\(dayName),"
     }
 
     fileprivate func updateNextKeyViews() {

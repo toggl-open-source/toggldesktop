@@ -31,10 +31,12 @@ final class CalendarDataSource: NSObject {
     init(_ selectedDate: Date) {
         self.selectedDate = selectedDate
         currentDate = DateInfo(date: selectedDate)
-        let from = Calendar.current.date(byAdding: .weekOfYear, value: -Constants.shiftWeek, to: selectedDate)!
-        let to = Calendar.current.date(byAdding: .weekOfYear, value: Constants.shiftWeek, to: selectedDate)!
+        let firstDayOfWeek = selectedDate.firstDayOfWeek()!
+        let from = Calendar.current.date(byAdding: .weekOfYear, value: -Constants.shiftWeek, to: firstDayOfWeek)!
+        let to = Calendar.current.date(byAdding: .weekOfYear, value: Constants.shiftWeek, to: firstDayOfWeek)!
         fromDate = DateInfo(date: from)
         toDate = DateInfo(date: to)
+        print("")
     }
 }
 

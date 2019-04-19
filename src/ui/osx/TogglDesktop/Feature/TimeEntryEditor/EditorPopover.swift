@@ -8,26 +8,10 @@
 
 import Cocoa
 
-final class EditorPopover: NSPopover {
+final class EditorPopover: NoVibrantPopoverView {
 
     private struct Constants {
         static let FocusTimerNotification = NSNotification.Name(kFocusTimer)
-    }
-
-    override var appearance: NSAppearance? {
-        get {
-            if let appearance = NSApplication.shared.windows.first?.effectiveAppearance {
-                if appearance.name.rawValue.lowercased().contains("dark") {
-                    if #available(OSX 10.14, *) {
-                        return NSAppearance(named: .darkAqua)
-                    } else {
-                        return NSAppearance(named: .aqua)
-                    }
-                }
-            }
-            return NSAppearance(named: .aqua)
-        }
-        set {}
     }
 
     @objc func prepareViewController() {
@@ -35,16 +19,8 @@ final class EditorPopover: NSPopover {
         contentViewController = editor
     }
 
-    @objc func present(from rect: NSRect, of view: NSView) {
-        show(relativeTo: rect, of: view, preferredEdge: .maxX)
-    }
-
-    @objc func close(focusTimer: Bool) {
-
-        // Close and notify delegate if need
-        performClose(self)
-
-        // Focus on timer bar
+    override func close(focusTimer: Bool) {
+        super.close(focusTimer: focusTimer)
         if focusTimer {
             NotificationCenter.default.post(name: Constants.FocusTimerNotification, object: nil)
         }
