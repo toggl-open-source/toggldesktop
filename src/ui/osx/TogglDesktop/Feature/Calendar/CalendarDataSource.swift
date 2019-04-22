@@ -47,7 +47,7 @@ final class CalendarDataSource: NSObject {
     }
 
     private class func calculateDateRange(with selectedDate: Date) -> (DateInfo, DateInfo, DateInfo) {
-        let currentDate = DateInfo(date: selectedDate)
+        let currentDate = DateInfo(date: selectedDate.toLocalTime())
 
         // firstDayOfWeek will return the Sunday
         // But we need monday -> advance by 2
@@ -75,8 +75,8 @@ extension CalendarDataSource: NSCollectionViewDelegate, NSCollectionViewDataSour
 
         let date = Calendar.current.date(byAdding: .day, value: indexPath.item, to: fromDate.date)!
         let info = DateInfo(date: date)
-
-        view.render(with: info)
+        let isCurrentDate = info.isSameDay(with: currentDate)
+        view.render(with: info, highlight: isCurrentDate)
         return view
     }
 

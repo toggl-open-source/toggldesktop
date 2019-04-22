@@ -28,9 +28,9 @@ final class DateCellViewItem: NSCollectionViewItem {
         initCommon()
     }
 
-    func render(with info: DateInfo) {
+    func render(with info: DateInfo, highlight: Bool) {
         titleLbl.stringValue = "\(info.day)"
-        backgroundBox.isHidden = !info.isToday
+        backgroundBox.isHidden = !highlight
         if info.isFirstDayOfMonth {
             monthLbl.isHidden = false
             monthLbl.stringValue = info.monthTitle
