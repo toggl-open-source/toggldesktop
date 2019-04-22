@@ -12,7 +12,7 @@ final class CalendarDataSource: NSObject {
 
     struct Constants {
 
-        static let shiftWeek = 1 * 4
+        static let shiftWeek = 6 * 4 // 6 months
         static let cellID = NSUserInterfaceItemIdentifier("DateCellViewItem")
         static let cellNibName = NSNib.Name("DateCellViewItem")
     }
@@ -25,25 +25,20 @@ final class CalendarDataSource: NSObject {
             currentDate = result.0
             fromDate = result.1
             toDate = result.2
+            numberOfDay = fromDate.date.daysBetween(endDate: toDate.date)
+            indexForCurrentDate = numberOfDay / 2
         }
     }
-    private var currentDate: DateInfo
-    private var fromDate: DateInfo
-    private var toDate: DateInfo
-    private var numberOfItems: Int {
-        let count = (toDate.weekOfYear - fromDate.weekOfYear + 1) * 7 // number of week * 7 days a week
-        print("number of days \(count)")
-        return count
-    }
+    private var currentDate: DateInfo!
+    private var fromDate: DateInfo!
+    private var toDate: DateInfo!
+    private var numberOfDay: Int!
+    private(set) var indexForCurrentDate = 0
 
     // MARK: Init
 
-    init(_ selectedDate: Date) {
+    init(selectedDate: Date) {
         self.selectedDate = selectedDate
-        let result = CalendarDataSource.calculateDateRange(with: selectedDate)
-        currentDate = result.0
-        fromDate = result.1
-        toDate = result.2
     }
 
     private class func calculateDateRange(with selectedDate: Date) -> (DateInfo, DateInfo, DateInfo) {
@@ -67,12 +62,11 @@ extension CalendarDataSource: NSCollectionViewDelegate, NSCollectionViewDataSour
     }
 
     func collectionView(_ collectionView: NSCollectionView, numberOfItemsInSection section: Int) -> Int {
-        return numberOfItems
+        return numberOfDay
     }
 
     func collectionView(_ collectionView: NSCollectionView, itemForRepresentedObjectAt indexPath: IndexPath) -> NSCollectionViewItem {
         guard let view = collectionView.makeItem(withIdentifier: Constants.cellID, for: indexPath) as? DateCellViewItem else { return NSCollectionViewItem() }
-
         let date = Calendar.current.date(byAdding: .day, value: indexPath.item, to: fromDate.date)!
         let info = DateInfo(date: date)
         let isCurrentDate = info.isSameDay(with: currentDate)

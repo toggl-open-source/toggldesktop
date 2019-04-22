@@ -11,11 +11,6 @@ import Foundation
 extension Calendar {
 
     static let gregorian = Calendar(identifier: .gregorian)
-    static let utcCalendar: Calendar = {
-        var calender = Calendar.current
-        calender.timeZone = TimeZone(identifier: "UTC")!
-        return calender
-    }()
 }
 
 extension Date {
@@ -43,5 +38,10 @@ extension Date {
         let timezone = TimeZone.current
         let seconds = TimeInterval(timezone.secondsFromGMT(for: self))
         return Date(timeInterval: seconds, since: self)
+    }
+
+    func daysBetween(endDate: Date) -> Int {
+        let daysBetween = Calendar.current.dateComponents([.day], from: self, to: endDate)
+        return daysBetween.day ?? 0
     }
 }

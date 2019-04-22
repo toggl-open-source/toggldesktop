@@ -16,13 +16,11 @@ final class CalendarViewController: NSViewController {
     
     // MARK: Variables
 
-    fileprivate lazy var dataSource: CalendarDataSource = CalendarDataSource(selectedDate)
+    fileprivate lazy var dataSource: CalendarDataSource = CalendarDataSource(selectedDate: selectedDate)
+    private var isViewAppearing = false
     private var selectedDate = Date() {
         didSet {
             dataSource.selectedDate = selectedDate
-            if isViewLoaded {
-                collectionView.reloadData()
-            }
         }
     }
 
@@ -34,10 +32,30 @@ final class CalendarViewController: NSViewController {
         initCollectionView()
     }
 
+    override func viewDidAppear() {
+        super.viewDidAppear()
+        isViewAppearing = true
+        reloadCalendarView()
+    }
+
+    override func viewWillDisappear() {
+        super.viewWillDisappear()
+        isViewAppearing = false
+    }
+
     // MARK: Public
 
     func prepareLayout(with date: Date) {
         selectedDate = date
+        reloadCalendarView()
+    }
+
+    private func reloadCalendarView() {
+        if isViewAppearing {
+            collectionView.reloadData()
+            self.collectionView.scrollToItems(at: Set<IndexPath>.init(arrayLiteral: IndexPath(item: self.dataSource.indexForCurrentDate, section: 0)),
+                                              scrollPosition: [.centeredVertically])
+        }
     }
 }
 
