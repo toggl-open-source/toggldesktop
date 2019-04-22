@@ -10,12 +10,12 @@
         <customObject id="-2" userLabel="File's Owner" customClass="CalendarViewController" customModule="TogglDesktop" customModuleProvider="target">
             <connections>
                 <outlet property="collectionView" destination="V4G-fh-5PF" id="SCh-ld-pwZ"/>
-                <outlet property="view" destination="B5d-J5-SqN" id="YGr-To-b72"/>
+                <outlet property="view" destination="B5d-J5-SqN" id="WMb-Ev-b1E"/>
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
-        <customView identifier="CalendarView" id="B5d-J5-SqN" customClass="CalendarView" customModule="TogglDesktop" customModuleProvider="target">
+        <customView id="B5d-J5-SqN">
             <rect key="frame" x="0.0" y="0.0" width="240" height="313"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
