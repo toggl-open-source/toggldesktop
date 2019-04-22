@@ -127,6 +127,9 @@ extension EditorViewController {
 
         descriptionTextField.delegate = self
         dayNameButton.cursor = .pointingHand
+
+        var calendar = Calendar.current
+        calendar.timeZone = TimeZone.current
     }
 
     fileprivate func initDatasource() {
@@ -196,9 +199,10 @@ extension EditorViewController {
 
     private func renderDatePicker() {
         let isRunning = timeEntry.duration_in_seconds >= 0
-        datePickerView.dateValue = timeEntry.started
+        let startDay = timeEntry.started.toLocalTime()
+        datePickerView.dateValue = startDay
         datePickerView.isEnabled = isRunning
-        let dayName = timeEntry.started.dayOfWeekString() ?? "Unknown"
+        let dayName = startDay.dayOfWeekString() ?? "Unknown"
         dayNameButton.title = "\(dayName),"
     }
 

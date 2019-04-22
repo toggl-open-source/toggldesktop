@@ -30,6 +30,7 @@ final class DateCellViewItem: NSCollectionViewItem {
 
     func render(with info: DateInfo) {
         titleLbl.stringValue = "\(info.day)"
+        backgroundBox.isHidden = !info.isToday
         if info.isFirstDayOfMonth {
             monthLbl.isHidden = false
             monthLbl.stringValue = info.monthTitle
@@ -40,5 +41,6 @@ final class DateCellViewItem: NSCollectionViewItem {
 
     private func initCommon() {
         monthLbl.isHidden = true
+        backgroundBox.isHidden = true
     }
 }

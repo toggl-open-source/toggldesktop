@@ -14,12 +14,13 @@
             <rect key="frame" x="0.0" y="0.0" width="32" height="32"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <box boxType="custom" borderType="none" borderWidth="0.0" cornerRadius="8" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="D5h-lo-zFy">
+                <box hidden="YES" boxType="custom" borderType="none" borderWidth="0.0" cornerRadius="8" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="D5h-lo-zFy">
                     <rect key="frame" x="0.0" y="0.0" width="32" height="32"/>
                     <view key="contentView" id="LaC-6X-sDu">
                         <rect key="frame" x="0.0" y="0.0" width="32" height="32"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     </view>
+                    <color key="fillColor" name="green-color"/>
                 </box>
                 <stackView distribution="equalSpacing" orientation="vertical" alignment="centerX" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="d33-Ax-4zW">
                     <rect key="frame" x="0.0" y="7" width="32" height="18"/>
@@ -74,6 +75,9 @@
     <resources>
         <namedColor name="error-title-color">
             <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="green-color">
+            <color red="0.15686274509803921" green="0.80392156862745101" blue="0.25490196078431371" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>

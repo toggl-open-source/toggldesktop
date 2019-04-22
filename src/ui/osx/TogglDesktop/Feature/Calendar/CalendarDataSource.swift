@@ -51,7 +51,7 @@ final class CalendarDataSource: NSObject {
 
         // firstDayOfWeek will return the Sunday
         // But we need monday -> advance by 2
-        let firstDayOfWeek = selectedDate.firstDayOfWeek()?.nextDate()?.nextDate() ?? selectedDate
+        let firstDayOfWeek = selectedDate.firstDayOfWeek()?.nextDate() ?? selectedDate
         let from = Calendar.current.date(byAdding: .weekOfYear, value: -Constants.shiftWeek, to: firstDayOfWeek)!
         let to = Calendar.current.date(byAdding: .weekOfYear, value: Constants.shiftWeek, to: firstDayOfWeek)!
         let fromDate = DateInfo(date: from)
