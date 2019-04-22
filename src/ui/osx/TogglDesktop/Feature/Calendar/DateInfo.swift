@@ -16,9 +16,6 @@ struct DateInfo {
     let year: Int
     let weekOfYear: Int
     let date: Date
-    var isToday: Bool {
-        return Calendar.current.isDateInToday(date)
-    }
     var isFirstDayOfMonth: Bool {
         return day == 1
     }
@@ -32,5 +29,9 @@ struct DateInfo {
         year = component.year ?? 0
         weekOfYear = component.weekOfYear ?? 0
         monthTitle = calendar.shortMonthSymbols[month - 1]
+    }
+
+    func isSameDay(with info: DateInfo) -> Bool {
+        return day == info.day && month == info.month && year == info.year
     }
 }
