@@ -15,12 +15,14 @@ final class DateCellViewItem: NSCollectionViewItem {
     @IBOutlet weak var titleLbl: NSTextField!
     @IBOutlet weak var backgroundBox: NSBox!
     @IBOutlet weak var monthLbl: NSTextField!
+    @IBOutlet weak var hoverView: NSBox!
 
     // MARK: Public
 
     override func awakeFromNib() {
         super.awakeFromNib()
         initCommon()
+        initTracking()
     }
 
     override func prepareForReuse() {
@@ -42,5 +44,26 @@ final class DateCellViewItem: NSCollectionViewItem {
     private func initCommon() {
         monthLbl.isHidden = true
         backgroundBox.isHidden = true
+        hoverView.alphaValue = 0.0
+    }
+
+    override func mouseExited(with event: NSEvent) {
+        super.mouseExited(with: event)
+        NSCursor.arrow.set()
+        hoverView.animator().alphaValue = 0.0
+    }
+
+    override func mouseEntered(with event: NSEvent) {
+        super.mouseEntered(with: event)
+        NSCursor.pointingHand.set()
+        hoverView.animator().alphaValue = 1.0
+    }
+
+    private func initTracking() {
+        let trackingArea = NSTrackingArea(rect: view.bounds,
+                                          options: [.activeInKeyWindow, .inVisibleRect, .mouseEnteredAndExited],
+                                          owner: self,
+                                          userInfo: nil)
+        view.addTrackingArea(trackingArea)
     }
 }

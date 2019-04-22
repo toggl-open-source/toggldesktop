@@ -22,6 +22,14 @@
                     </view>
                     <color key="fillColor" name="green-color"/>
                 </box>
+                <box boxType="custom" borderType="none" borderWidth="0.0" cornerRadius="8" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="M6m-jn-KO0">
+                    <rect key="frame" x="0.0" y="0.0" width="32" height="32"/>
+                    <view key="contentView" id="qN9-10-1dI">
+                        <rect key="frame" x="0.0" y="0.0" width="32" height="32"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    </view>
+                    <color key="fillColor" name="auto-complete-cell-hover"/>
+                </box>
                 <stackView distribution="equalSpacing" orientation="vertical" alignment="centerX" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="d33-Ax-4zW">
                     <rect key="frame" x="0.0" y="7" width="32" height="18"/>
                     <subviews>
@@ -53,19 +61,24 @@
                 </stackView>
             </subviews>
             <constraints>
+                <constraint firstAttribute="trailing" secondItem="M6m-jn-KO0" secondAttribute="trailing" id="0rE-aU-Gko"/>
                 <constraint firstItem="d33-Ax-4zW" firstAttribute="centerY" secondItem="Hz6-mo-xeY" secondAttribute="centerY" id="4jt-3C-3ug"/>
                 <constraint firstItem="D5h-lo-zFy" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" id="7Zq-hS-73H"/>
                 <constraint firstAttribute="trailing" secondItem="D5h-lo-zFy" secondAttribute="trailing" id="7ou-sF-5cH"/>
+                <constraint firstItem="M6m-jn-KO0" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" id="GuD-Th-e4d"/>
+                <constraint firstItem="M6m-jn-KO0" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="M3m-JP-Rfp"/>
                 <constraint firstAttribute="bottom" secondItem="D5h-lo-zFy" secondAttribute="bottom" id="TdF-5n-Ouv"/>
                 <constraint firstItem="d33-Ax-4zW" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="cAT-9r-eVP"/>
                 <constraint firstItem="D5h-lo-zFy" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="gNR-TC-zMX"/>
                 <constraint firstAttribute="trailing" secondItem="d33-Ax-4zW" secondAttribute="trailing" id="qP2-MS-EwL"/>
+                <constraint firstAttribute="bottom" secondItem="M6m-jn-KO0" secondAttribute="bottom" id="vaK-nV-Ubb"/>
             </constraints>
             <point key="canvasLocation" x="2" y="-10"/>
         </customView>
         <collectionViewItem identifier="DateCellViewItem" id="uS0-lU-fJp" customClass="DateCellViewItem" customModule="TogglDesktop" customModuleProvider="target">
             <connections>
                 <outlet property="backgroundBox" destination="D5h-lo-zFy" id="lzs-uE-M2t"/>
+                <outlet property="hoverView" destination="M6m-jn-KO0" id="o4b-qz-qsP"/>
                 <outlet property="monthLbl" destination="tRO-0R-uEU" id="RDX-4H-BjV"/>
                 <outlet property="titleLbl" destination="DuL-ri-Jw3" id="Gl5-Le-UqB"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="JBr-HQ-VLi"/>
@@ -73,6 +86,9 @@
         </collectionViewItem>
     </objects>
     <resources>
+        <namedColor name="auto-complete-cell-hover">
+            <color red="0.69411764705882351" green="0.69411764705882351" blue="0.69411764705882351" alpha="0.20000000298023224" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="error-title-color">
             <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
