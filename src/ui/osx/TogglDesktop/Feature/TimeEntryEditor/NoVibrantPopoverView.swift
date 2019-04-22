@@ -26,8 +26,8 @@ class NoVibrantPopoverView: NSPopover {
         set {}
     }
 
-    @objc func present(from rect: NSRect, of view: NSView) {
-        show(relativeTo: rect, of: view, preferredEdge: .maxX)
+    @objc func present(from rect: NSRect, of view: NSView, preferredEdge: NSRectEdge = .maxX) {
+        show(relativeTo: rect, of: view, preferredEdge: preferredEdge)
     }
 
     @objc func close(focusTimer: Bool) {
