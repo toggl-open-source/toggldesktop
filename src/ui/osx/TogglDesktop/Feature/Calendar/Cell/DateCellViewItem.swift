@@ -14,5 +14,31 @@ final class DateCellViewItem: NSCollectionViewItem {
 
     @IBOutlet weak var titleLbl: NSTextField!
     @IBOutlet weak var backgroundBox: NSBox!
+    @IBOutlet weak var monthLbl: NSTextField!
 
+    // MARK: Public
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        initCommon()
+    }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        initCommon()
+    }
+
+    func render(with info: DateInfo) {
+        titleLbl.stringValue = "\(info.day)"
+        if info.isFirstDayOfMonth {
+            monthLbl.isHidden = false
+            monthLbl.stringValue = info.monthTitle
+        } else {
+            monthLbl.isHidden = true
+        }
+    }
+
+    private func initCommon() {
+        monthLbl.isHidden = true
+    }
 }
