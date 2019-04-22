@@ -16,17 +16,21 @@ struct DateInfo {
     let year: Int
     let weekOfYear: Int
     let date: Date
+    var isToday: Bool {
+        return Calendar.current.isDateInToday(date)
+    }
     var isFirstDayOfMonth: Bool {
         return day == 1
     }
     
     init(date: Date) {
         let calendar = Calendar.current
+        let component = calendar.dateComponents([.day, .month, .year, .weekOfYear], from: date)
         self.date = date
-        day = calendar.component(.day, from: date)
-        month = calendar.component(.month, from: date)
-        year = calendar.component(.year, from: date)
-        weekOfYear = calendar.component(Calendar.Component.weekOfYear, from: date)
-        monthTitle = calendar.shortMonthSymbols[month]
+        day = component.day ?? 0
+        month = component.month ?? 0
+        year = component.year ?? 0
+        weekOfYear = component.weekOfYear ?? 0
+        monthTitle = calendar.shortMonthSymbols[month - 1]
     }
 }
