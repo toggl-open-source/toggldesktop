@@ -9,7 +9,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="CalendarViewController" customModule="TogglDesktop" customModuleProvider="target">
             <connections>
-                <outlet property="collectionView" destination="V4G-fh-5PF" id="SCh-ld-pwZ"/>
+                <outlet property="collectionView" destination="V4G-fh-5PF" id="5Qh-9C-5s5"/>
                 <outlet property="view" destination="B5d-J5-SqN" id="WMb-Ev-b1E"/>
             </connections>
         </customObject>
@@ -189,9 +189,6 @@
                 <constraint firstItem="Xdh-0I-8Jz" firstAttribute="top" secondItem="B5d-J5-SqN" secondAttribute="top" id="hJZ-dy-S1J"/>
                 <constraint firstAttribute="trailing" secondItem="Xdh-0I-8Jz" secondAttribute="trailing" id="pbb-LY-68s"/>
             </constraints>
-            <connections>
-                <outlet property="collectionView" destination="V4G-fh-5PF" id="ZSB-Gj-SOb"/>
-            </connections>
             <point key="canvasLocation" x="-4" y="38"/>
         </customView>
     </objects>

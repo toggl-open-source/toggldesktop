@@ -10,36 +10,53 @@ import Foundation
 
 final class CalendarDataSource: NSObject {
 
-    private struct Constants {
+    struct Constants {
 
         static let shiftWeek = 1 * 4
+        static let cellID = NSUserInterfaceItemIdentifier("DateCellViewItem")
+        static let cellNibName = NSNib.Name("DateCellViewItem")
     }
 
     // MARK: Variables
 
-    var selectedDate: Date
+    var selectedDate: Date {
+        didSet {
+            let result = CalendarDataSource.calculateDateRange(with: selectedDate)
+            currentDate = result.0
+            fromDate = result.1
+            toDate = result.2
+        }
+    }
     private var currentDate: DateInfo
     private var fromDate: DateInfo
     private var toDate: DateInfo
-
     private var numberOfItems: Int {
-        return (toDate.weekOfYear - fromDate.weekOfYear + 1) * 7 // number of week * 7 days a week
+        let count = (toDate.weekOfYear - fromDate.weekOfYear + 1) * 7 // number of week * 7 days a week
+        print("number of days \(count)")
+        return count
     }
 
     // MARK: Init
 
     init(_ selectedDate: Date) {
         self.selectedDate = selectedDate
-        currentDate = DateInfo(date: selectedDate)
+        let result = CalendarDataSource.calculateDateRange(with: selectedDate)
+        currentDate = result.0
+        fromDate = result.1
+        toDate = result.2
+    }
+
+    private class func calculateDateRange(with selectedDate: Date) -> (DateInfo, DateInfo, DateInfo) {
+        let currentDate = DateInfo(date: selectedDate)
 
         // firstDayOfWeek will return the Sunday
-        // But we need monday -> advance by 1
+        // But we need monday -> advance by 2
         let firstDayOfWeek = selectedDate.firstDayOfWeek()?.nextDate()?.nextDate() ?? selectedDate
         let from = Calendar.current.date(byAdding: .weekOfYear, value: -Constants.shiftWeek, to: firstDayOfWeek)!
         let to = Calendar.current.date(byAdding: .weekOfYear, value: Constants.shiftWeek, to: firstDayOfWeek)!
-        fromDate = DateInfo(date: from)
-        toDate = DateInfo(date: to)
-        print("")
+        let fromDate = DateInfo(date: from)
+        let toDate = DateInfo(date: to)
+        return (currentDate, fromDate, toDate)
     }
 }
 
@@ -54,7 +71,8 @@ extension CalendarDataSource: NSCollectionViewDelegate, NSCollectionViewDataSour
     }
 
     func collectionView(_ collectionView: NSCollectionView, itemForRepresentedObjectAt indexPath: IndexPath) -> NSCollectionViewItem {
-        return NSCollectionViewItem()
+        guard let view = collectionView.makeItem(withIdentifier: Constants.cellID, for: indexPath) as? DateCellViewItem else { return NSCollectionViewItem() }
+        return view
     }
 
     func collectionView(_ collectionView: NSCollectionView, didSelectItemsAt indexPaths: Set<IndexPath>) {

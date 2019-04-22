@@ -153,15 +153,14 @@
 		BA0E38122225260B00D0121B /* TimeEntryCell+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0E38112225260B00D0121B /* TimeEntryCell+Ext.swift */; };
 		BA0F67B7224A32F700ED0F91 /* CursorButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0F67B6224A32F700ED0F91 /* CursorButton.swift */; };
 		BA13D2062269B7C400EB3833 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA13D2052269B7C400EB3833 /* CalendarViewController.swift */; };
-		BA13D2082269B7CD00EB3833 /* CalendarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA13D2072269B7CD00EB3833 /* CalendarView.xib */; };
 		BA13D20A2269BA6500EB3833 /* CalendarDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA13D2092269BA6500EB3833 /* CalendarDataSource.swift */; };
 		BA13D20E2269BAA600EB3833 /* DateCellViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA13D20C2269BAA600EB3833 /* DateCellViewItem.swift */; };
-		BA13D20F2269BAA600EB3833 /* DateCellViewItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA13D20D2269BAA600EB3833 /* DateCellViewItem.xib */; };
 		BA13D2112269BE2F00EB3833 /* DateInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA13D2102269BE2F00EB3833 /* DateInfo.swift */; };
 		BA13D2152269C01500EB3833 /* Date+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA13D2142269C01500EB3833 /* Date+Utils.swift */; };
 		BA13D2172269DE3400EB3833 /* NoVibrantPopoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA13D2162269DE3400EB3833 /* NoVibrantPopoverView.swift */; };
 		BA13D21B2269E0B500EB3833 /* CalendarViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA13D2192269E0B500EB3833 /* CalendarViewController.xib */; };
 		BA13E05C21C7BA6000835EC1 /* UserNotificationCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = BA13E05921C7B9D900835EC1 /* UserNotificationCenter.m */; };
+		BA19FC21226DA079006D8741 /* DateCellViewItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA13D20D2269BAA600EB3833 /* DateCellViewItem.xib */; };
 		BA276A142240F5B500810C51 /* FloatingErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA276A122240F5B500810C51 /* FloatingErrorView.swift */; };
 		BA2DA0C621A542E30027B7A5 /* NSTextField+Ext.m in Sources */ = {isa = PBXBuildFile; fileRef = BA2DA0C521A542E30027B7A5 /* NSTextField+Ext.m */; };
 		BA2DA12021A691FF0027B7A5 /* TrackingService.m in Sources */ = {isa = PBXBuildFile; fileRef = BA2DA11F21A691FF0027B7A5 /* TrackingService.m */; };
@@ -777,7 +776,6 @@
 		BA0E38112225260B00D0121B /* TimeEntryCell+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TimeEntryCell+Ext.swift"; sourceTree = "<group>"; };
 		BA0F67B6224A32F700ED0F91 /* CursorButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CursorButton.swift; sourceTree = "<group>"; };
 		BA13D2052269B7C400EB3833 /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
-		BA13D2072269B7CD00EB3833 /* CalendarView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CalendarView.xib; sourceTree = "<group>"; };
 		BA13D2092269BA6500EB3833 /* CalendarDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarDataSource.swift; sourceTree = "<group>"; };
 		BA13D20C2269BAA600EB3833 /* DateCellViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateCellViewItem.swift; sourceTree = "<group>"; };
 		BA13D20D2269BAA600EB3833 /* DateCellViewItem.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DateCellViewItem.xib; sourceTree = "<group>"; };
@@ -1389,7 +1387,6 @@
 			isa = PBXGroup;
 			children = (
 				BA13D20B2269BA8600EB3833 /* Cell */,
-				BA13D2072269B7CD00EB3833 /* CalendarView.xib */,
 				BA13D2092269BA6500EB3833 /* CalendarDataSource.swift */,
 				BA13D2102269BE2F00EB3833 /* DateInfo.swift */,
 				BA13D2142269C01500EB3833 /* Date+Utils.swift */,
@@ -2040,6 +2037,7 @@
 				95DBF8D718C48B300021FB41 /* logo.png in Resources */,
 				BAD15FFE223A530600A8CCC9 /* TimeEntryEmptyView.xib in Resources */,
 				3CDA2C5B1913B61000A94967 /* icon-billable@2x.png in Resources */,
+				BA19FC21226DA079006D8741 /* DateCellViewItem.xib in Resources */,
 				BA9C2E06224C84E7002AD2A1 /* ColorViewItem.xib in Resources */,
 				3CD30F441F58B02C006FAA0D /* OverlayViewController.xib in Resources */,
 				74664DB218AA860800AAD282 /* off.pdf in Resources */,
@@ -2067,7 +2065,6 @@
 				95DBF8CD18BF7A910021FB41 /* offline_on.pdf in Resources */,
 				69FC180B17E6534500B96425 /* MainMenu.xib in Resources */,
 				BA7D334D2248945300B953A8 /* AutoCompleteView.xib in Resources */,
-				BA13D2082269B7CD00EB3833 /* CalendarView.xib in Resources */,
 				3C65A7D31DE574E7005586B4 /* group_icon_closed.pdf in Resources */,
 				C5DA1FC017F1B08A001C4565 /* MainWindowController.xib in Resources */,
 				BA412C23224E11AC003CA17A /* ClientCellView.xib in Resources */,
@@ -2088,7 +2085,6 @@
 				3CA1453C192DF0DE00414620 /* trash_can.pdf in Resources */,
 				3CAFDFF51AA713830022CD40 /* icon-google.pdf in Resources */,
 				95DBF8CC18BF7A910021FB41 /* offline_off.pdf in Resources */,
-				BA13D20F2269BAA600EB3833 /* DateCellViewItem.xib in Resources */,
 				3C4237181A9F612E00643059 /* toggl-desktop-bg.png in Resources */,
 				74D1D27417EB72D900E709B0 /* TimerEditViewController.xib in Resources */,
 				74AA9475180909F50000539F /* GTMOAuth2Window.xib in Resources */,

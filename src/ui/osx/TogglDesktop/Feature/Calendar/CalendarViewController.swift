@@ -10,22 +10,19 @@ import Cocoa
 
 final class CalendarViewController: NSViewController {
 
-    private struct Constants {
-
-        static let cellID = NSUserInterfaceItemIdentifier("DateCellViewItem")
-        static let cellNibName = NSNib.Name("DateCellViewItem")
-    }
-
     // MARK: OUTLET
 
     @IBOutlet weak var collectionView: NSCollectionView!
-
+    
     // MARK: Variables
 
     fileprivate lazy var dataSource: CalendarDataSource = CalendarDataSource(selectedDate)
     private var selectedDate = Date() {
         didSet {
             dataSource.selectedDate = selectedDate
+            if isViewLoaded {
+                collectionView.reloadData()
+            }
         }
     }
 
@@ -34,7 +31,7 @@ final class CalendarViewController: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         initCommon()
-        //initCollectionView()
+        initCollectionView()
     }
 
     // MARK: Public
@@ -53,8 +50,8 @@ extension CalendarViewController {
     }
 
     fileprivate func initCollectionView() {
-        collectionView.register(NSNib(nibNamed: Constants.cellNibName, bundle: nil),
-                                forItemWithIdentifier: Constants.cellID)
+        collectionView.register(NSNib(nibNamed: CalendarDataSource.Constants.cellNibName, bundle: nil),
+                                forItemWithIdentifier: CalendarDataSource.Constants.cellID)
         collectionView.dataSource = dataSource
         collectionView.delegate = dataSource
         let flow = NSCollectionViewFlowLayout()

@@ -55,10 +55,11 @@ final class EditorViewController: NSViewController {
             return ConvertHexColor.hexCode(toNSColor: "#ACACAC")
         }
     }()
-
+    private lazy var calendarViewControler: CalendarViewController = CalendarViewController(nibName: NSNib.Name("CalendarViewController"), bundle: nil)
     private lazy var calendarPopover: NoVibrantPopoverView = {
         let popover = NoVibrantPopoverView()
-        popover.contentViewController = CalendarViewController(nibName: NSNib.Name("CalendarViewController"), bundle: nil)
+        popover.behavior = .semitransient
+        popover.contentViewController = calendarViewControler
         return popover
     }()
 
@@ -107,7 +108,7 @@ final class EditorViewController: NSViewController {
     }
     
     @IBAction func dayButtonOnTap(_ sender: Any) {
-        calendarPopover.present(from: datePickerView.bounds, of: datePickerView)
+        calendarPopover.present(from: datePickerView.bounds, of: datePickerView, preferredEdge: .maxY)
     }
 }
 
@@ -141,6 +142,7 @@ extension EditorViewController {
         descriptionTextField.stringValue = timeEntry.descriptionName
         billableCheckBox.state = timeEntry.billable ? .on : .off
         projectTextField.setTimeEntry(timeEntry)
+        calendarViewControler.prepareLayout(with: timeEntry.started)
         renderTagsView()
         renderDatePicker()
     }
