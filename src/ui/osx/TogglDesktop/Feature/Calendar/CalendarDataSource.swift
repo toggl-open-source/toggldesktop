@@ -72,6 +72,11 @@ extension CalendarDataSource: NSCollectionViewDelegate, NSCollectionViewDataSour
 
     func collectionView(_ collectionView: NSCollectionView, itemForRepresentedObjectAt indexPath: IndexPath) -> NSCollectionViewItem {
         guard let view = collectionView.makeItem(withIdentifier: Constants.cellID, for: indexPath) as? DateCellViewItem else { return NSCollectionViewItem() }
+
+        let date = Calendar.current.date(byAdding: .day, value: indexPath.item, to: fromDate.date)!
+        let info = DateInfo(date: date)
+
+        view.render(with: info)
         return view
     }
 
