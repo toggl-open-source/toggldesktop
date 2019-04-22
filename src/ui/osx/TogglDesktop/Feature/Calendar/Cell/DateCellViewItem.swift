@@ -1,5 +1,5 @@
 //
-//  DateCell.swift
+//  DateCellViewItem.swift
 //  TogglDesktop
 //
 //  Created by Nghia Tran on 4/19/19.
@@ -8,7 +8,7 @@
 
 import Cocoa
 
-final class DateCell: NSCollectionViewItem {
+final class DateCellViewItem: NSCollectionViewItem {
 
     // MARK: OUTLET
 

@@ -12,8 +12,8 @@ final class CalendarViewController: NSViewController {
 
     private struct Constants {
 
-        static let cellID = NSUserInterfaceItemIdentifier("DateCell")
-        static let cellNibName = NSNib.Name("DateCell")
+        static let cellID = NSUserInterfaceItemIdentifier("DateCellViewItem")
+        static let cellNibName = NSNib.Name("DateCellViewItem")
     }
 
     // MARK: OUTLET
@@ -34,7 +34,7 @@ final class CalendarViewController: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         initCommon()
-        initCollectionView()
+        //initCollectionView()
     }
 
     // MARK: Public
