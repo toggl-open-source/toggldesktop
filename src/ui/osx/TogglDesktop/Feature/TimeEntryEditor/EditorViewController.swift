@@ -37,6 +37,7 @@ final class EditorViewController: NSViewController {
     @IBOutlet weak var durationTextField: NSTextField!
     @IBOutlet weak var startAtTextField: NSTextField!
     @IBOutlet weak var endAtTextField: NSTextField!
+    @IBOutlet weak var dateSelectionBox: NSBox!
     
     // MARK: Variables
 
@@ -68,6 +69,10 @@ final class EditorViewController: NSViewController {
         popover.behavior = .semitransient
         popover.contentViewController = calendarViewControler
         return popover
+    }()
+    private lazy var dayNameAttribute: [NSAttributedString.Key : Any] = {
+        return [NSAttributedString.Key.font : NSFont.systemFont(ofSize: 14),
+                NSAttributedString.Key.foregroundColor: NSColor.labelColor]
     }()
 
     // MARK: View Cycle
@@ -115,7 +120,7 @@ final class EditorViewController: NSViewController {
     }
     
     @IBAction func dayButtonOnTap(_ sender: Any) {
-        calendarPopover.present(from: datePickerView.bounds, of: datePickerView, preferredEdge: .maxY)
+        calendarPopover.present(from: dateSelectionBox.bounds, of: dateSelectionBox, preferredEdge: .maxY)
     }
 
     @IBAction func durationTextFieldOnChange(_ sender: Any) {
@@ -226,11 +231,11 @@ extension EditorViewController {
 
     private func renderDatePicker() {
         let isRunning = timeEntry.duration_in_seconds >= 0
-        let startDay = timeEntry.started.toLocalTime()
+        let startDay = timeEntry.started!
         datePickerView.dateValue = startDay
         datePickerView.isEnabled = isRunning
         let dayName = startDay.dayOfWeekString() ?? "Unknown"
-        dayNameButton.title = "\(dayName),"
+        dayNameButton.attributedTitle = NSAttributedString(string: "\(dayName),", attributes: dayNameAttribute)
     }
 
     private func renderTime() {
