@@ -76,7 +76,8 @@ extension CalendarDataSource: NSCollectionViewDelegate, NSCollectionViewDataSour
             let date = Calendar.current.date(byAdding: .day, value: indexPath.item, to: fromDate.date) else { return NSCollectionViewItem() }
         let info = DateInfo(date: date)
         let isCurrentDate = info.isSameDay(with: currentDate)
-        view.render(with: info, highlight: isCurrentDate)
+        let isCurrentMonth = info.month == currentDate.month
+        view.render(with: info, highlight: isCurrentDate, isCurrentMonth: isCurrentMonth)
         return view
     }
 
