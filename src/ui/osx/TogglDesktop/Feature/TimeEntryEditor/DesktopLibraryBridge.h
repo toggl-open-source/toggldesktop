@@ -41,6 +41,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)updateTimeEntryWithStartDate:(NSDate *)startDate
 								guid:(NSString *)guid;
+
+- (void)updateTimeEntryWithDuration:(NSString *)duration
+							   guid:(NSString *)guid;
+
+- (void)updateTimeEntryWithStartTime:(NSString *)startTime
+								guid:(NSString *)guid;
+
+- (void)updateTimeEntryWithEndTime:(NSString *)endTime
+							  guid:(NSString *)guid;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -105,4 +105,28 @@ void *ctx;
 							  [startDate timeIntervalSince1970]);
 }
 
+- (void)updateTimeEntryWithDuration:(NSString *)duration
+							   guid:(NSString *)guid
+{
+	toggl_set_time_entry_duration(ctx,
+								  [guid UTF8String],
+								  [duration UTF8String]);
+}
+
+- (void)updateTimeEntryWithStartTime:(NSString *)startTime
+								guid:(NSString *)guid
+{
+	toggl_set_time_entry_start(ctx,
+							   [guid UTF8String],
+							   [startTime UTF8String]);
+}
+
+- (void)updateTimeEntryWithEndTime:(NSString *)endTime
+							  guid:(NSString *)guid
+{
+	toggl_set_time_entry_end(ctx,
+							 [guid UTF8String],
+							 [endTime UTF8String]);
+}
+
 @end

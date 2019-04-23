@@ -131,6 +131,10 @@ extension EditorViewController {
         descriptionTextField.delegate = self
         dayNameButton.cursor = .pointingHand
 
+        durationTextField.delegate = self
+        startAtTextField.delegate = self
+        endAtTextField.delegate = self
+        
         var calendar = Calendar.current
         calendar.timeZone = TimeZone.current
     }
