@@ -8,6 +8,11 @@
 
 import Foundation
 
+protocol CalendarDataSourceDelegate: class {
+
+    func calendarDidSelect(_ date: Date)
+}
+
 final class CalendarDataSource: NSObject {
 
     struct Constants {
@@ -19,6 +24,7 @@ final class CalendarDataSource: NSObject {
 
     // MARK: Variables
 
+    weak var delegate: CalendarDataSourceDelegate?
     var selectedDate: Date {
         didSet {
             let result = CalendarDataSource.calculateDateRange(with: selectedDate)
@@ -66,8 +72,8 @@ extension CalendarDataSource: NSCollectionViewDelegate, NSCollectionViewDataSour
     }
 
     func collectionView(_ collectionView: NSCollectionView, itemForRepresentedObjectAt indexPath: IndexPath) -> NSCollectionViewItem {
-        guard let view = collectionView.makeItem(withIdentifier: Constants.cellID, for: indexPath) as? DateCellViewItem else { return NSCollectionViewItem() }
-        let date = Calendar.current.date(byAdding: .day, value: indexPath.item, to: fromDate.date)!
+        guard let view = collectionView.makeItem(withIdentifier: Constants.cellID, for: indexPath) as? DateCellViewItem,
+            let date = Calendar.current.date(byAdding: .day, value: indexPath.item, to: fromDate.date) else { return NSCollectionViewItem() }
         let info = DateInfo(date: date)
         let isCurrentDate = info.isSameDay(with: currentDate)
         view.render(with: info, highlight: isCurrentDate)
@@ -75,6 +81,9 @@ extension CalendarDataSource: NSCollectionViewDelegate, NSCollectionViewDataSour
     }
 
     func collectionView(_ collectionView: NSCollectionView, didSelectItemsAt indexPaths: Set<IndexPath>) {
-
+        guard let selectedIndex = indexPaths.first,
+            let date = Calendar.current.date(byAdding: .day, value: selectedIndex.item, to: fromDate.date)
+            else { return }
+        delegate?.calendarDidSelect(date)
     }
 }
