@@ -58,7 +58,11 @@ final class EditorViewController: NSViewController {
             return ConvertHexColor.hexCode(toNSColor: "#ACACAC")
         }
     }()
-    private lazy var calendarViewControler: CalendarViewController = CalendarViewController(nibName: NSNib.Name("CalendarViewController"), bundle: nil)
+    private lazy var calendarViewControler: CalendarViewController = {
+        let controller = CalendarViewController(nibName: NSNib.Name("CalendarViewController"), bundle: nil)
+        controller.delegate = self
+        return controller
+    }()
     private lazy var calendarPopover: NoVibrantPopoverView = {
         let popover = NoVibrantPopoverView()
         popover.behavior = .semitransient
@@ -351,5 +355,14 @@ extension EditorViewController: TagDataSourceDelegate {
     func tagSelectionChanged(with selectedTags: [Tag]) {
         let tags = selectedTags.toNames()
         DesktopLibraryBridge.shared().updateTimeEntry(withTags: tags, guid: timeEntry.guid)
+    }
+}
+
+// MARK: CalendarViewControllerDelegate
+
+extension EditorViewController: CalendarViewControllerDelegate {
+
+    func calendarViewControllerDidSelect(date: Date) {
+        DesktopLibraryBridge.shared().updateTimeEntry(withStart: date, guid: timeEntry.guid)
     }
 }

@@ -8,6 +8,11 @@
 
 import Cocoa
 
+protocol CalendarViewControllerDelegate: class {
+
+    func calendarViewControllerDidSelect(date: Date)
+}
+
 final class CalendarViewController: NSViewController {
 
     // MARK: OUTLET
@@ -16,6 +21,7 @@ final class CalendarViewController: NSViewController {
     
     // MARK: Variables
 
+    weak var delegate: CalendarViewControllerDelegate?
     fileprivate lazy var dataSource: CalendarDataSource = CalendarDataSource(selectedDate: selectedDate)
     private var isViewAppearing = false
     private var selectedDate = Date() {
@@ -64,7 +70,7 @@ final class CalendarViewController: NSViewController {
 extension CalendarViewController {
 
     fileprivate func initCommon() {
-
+        dataSource.delegate = self
     }
 
     fileprivate func initCollectionView() {
@@ -77,5 +83,12 @@ extension CalendarViewController {
         flow.minimumLineSpacing = 20
         flow.minimumInteritemSpacing = 2
         collectionView.collectionViewLayout = flow
+    }
+}
+
+extension CalendarViewController: CalendarDataSourceDelegate {
+
+    func calendarDidSelect(_ date: Date) {
+        delegate?.calendarViewControllerDidSelect(date: date)
     }
 }
