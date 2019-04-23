@@ -79,9 +79,10 @@ extension CalendarViewController {
         collectionView.dataSource = dataSource
         collectionView.delegate = dataSource
         let flow = NSCollectionViewFlowLayout()
-        flow.itemSize = CGSize(width: 32, height: 26)
+        flow.itemSize = CGSize(width: 32, height: 32)
         flow.minimumLineSpacing = 20
         flow.minimumInteritemSpacing = 2
+        flow.sectionInset = NSEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
         collectionView.collectionViewLayout = flow
     }
 }

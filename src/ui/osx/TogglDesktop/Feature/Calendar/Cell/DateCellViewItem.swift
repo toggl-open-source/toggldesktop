@@ -17,6 +17,16 @@ final class DateCellViewItem: NSCollectionViewItem {
     @IBOutlet weak var monthLbl: NSTextField!
     @IBOutlet weak var hoverView: NSBox!
 
+    // MARK: Variables
+
+    private lazy var titleColor: NSColor = {
+        if #available(OSX 10.13, *) {
+            return NSColor(named: NSColor.Name("grey-text-color"))!
+        } else {
+            return ConvertHexColor.hexCode(toNSColor: "#555555")
+        }
+    }()
+
     // MARK: Public
 
     override func awakeFromNib() {
@@ -30,15 +40,16 @@ final class DateCellViewItem: NSCollectionViewItem {
         initCommon()
     }
 
-    func render(with info: DateInfo, highlight: Bool) {
+    func render(with info: DateInfo, highlight: Bool, isCurrentMonth: Bool) {
         titleLbl.stringValue = "\(info.day)"
         backgroundBox.isHidden = !highlight
         if info.isFirstDayOfMonth {
             monthLbl.isHidden = false
-            monthLbl.stringValue = info.monthTitle
+            monthLbl.stringValue = info.monthTitle.uppercased()
         } else {
             monthLbl.isHidden = true
         }
+        titleLbl.textColor = isCurrentMonth ? NSColor.labelColor : titleColor
     }
 
     private func initCommon() {
@@ -61,7 +72,7 @@ final class DateCellViewItem: NSCollectionViewItem {
 
     private func initTracking() {
         let trackingArea = NSTrackingArea(rect: view.bounds,
-                                          options: [.activeInKeyWindow, .inVisibleRect, .mouseEnteredAndExited],
+                                          options: [.activeInKeyWindow, .mouseEnteredAndExited],
                                           owner: self,
                                           userInfo: nil)
         view.addTrackingArea(trackingArea)
