@@ -34,7 +34,10 @@ final class EditorViewController: NSViewController {
     @IBOutlet weak var dayNameButton: CursorButton!
     @IBOutlet weak var nextDateBtn: NSButton!
     @IBOutlet weak var previousDateBtn: NSButton!
-
+    @IBOutlet weak var durationTextField: NSTextField!
+    @IBOutlet weak var startAtTextField: NSTextField!
+    @IBOutlet weak var endAtTextField: NSTextField!
+    
     // MARK: Variables
 
     var timeEntry: TimeEntryViewItem! {
@@ -146,8 +149,10 @@ extension EditorViewController {
         billableCheckBox.state = timeEntry.billable ? .on : .off
         projectTextField.setTimeEntry(timeEntry)
         calendarViewControler.prepareLayout(with: timeEntry.started)
+        
         renderTagsView()
         renderDatePicker()
+        renderTime()
     }
 
     private func renderTagsView() {
@@ -204,6 +209,12 @@ extension EditorViewController {
         datePickerView.isEnabled = isRunning
         let dayName = startDay.dayOfWeekString() ?? "Unknown"
         dayNameButton.title = "\(dayName),"
+    }
+
+    private func renderTime() {
+        durationTextField.stringValue = timeEntry.duration
+        startAtTextField.stringValue = timeEntry.startTimeString
+        endAtTextField.stringValue = timeEntry.endTimeString
     }
 
     fileprivate func updateNextKeyViews() {
