@@ -190,6 +190,9 @@
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                             </textFieldCell>
+                                            <connections>
+                                                <action selector="durationTextFieldOnChange:" target="-2" id="Z5Z-Tg-dV8"/>
+                                            </connections>
                                         </textField>
                                     </subviews>
                                     <constraints>
@@ -218,22 +221,28 @@
                                 <constraints>
                                     <constraint firstAttribute="width" constant="45" id="Uid-Ux-Vre"/>
                                 </constraints>
-                                <textFieldCell key="cell" lineBreakMode="clipping" title="10:00" id="U2K-i7-ZgB">
+                                <textFieldCell key="cell" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" title="10:00" id="U2K-i7-ZgB">
                                     <font key="font" metaFont="system" size="14"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
+                                <connections>
+                                    <action selector="startTextFieldOnChange:" target="-2" id="TAI-Lu-fzg"/>
+                                </connections>
                             </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="kfQ-Tm-uet">
                                 <rect key="frame" x="201" y="159" width="49" height="18"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="45" id="JZC-cQ-fAT"/>
                                 </constraints>
-                                <textFieldCell key="cell" lineBreakMode="clipping" title="10:00" id="IAA-Ou-al8">
+                                <textFieldCell key="cell" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" title="10:00" id="IAA-Ou-al8">
                                     <font key="font" metaFont="system" size="14"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
+                                <connections>
+                                    <action selector="endTextFieldOnChange:" target="-2" id="27k-Wr-dOR"/>
+                                </connections>
                             </textField>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="vpV-Av-rbR">
                                 <rect key="frame" x="8" y="77" width="69" height="18"/>
