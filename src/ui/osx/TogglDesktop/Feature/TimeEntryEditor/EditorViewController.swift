@@ -113,6 +113,24 @@ final class EditorViewController: NSViewController {
     @IBAction func dayButtonOnTap(_ sender: Any) {
         calendarPopover.present(from: datePickerView.bounds, of: datePickerView, preferredEdge: .maxY)
     }
+
+    @IBAction func durationTextFieldOnChange(_ sender: Any) {
+        guard durationTextField.stringValue != timeEntry.duration else { return }
+        DesktopLibraryBridge.shared().updateTimeEntry(withDuration: durationTextField.stringValue,
+                                                      guid: timeEntry.guid)
+    }
+
+    @IBAction func startTextFieldOnChange(_ sender: Any) {
+        guard startAtTextField.stringValue != timeEntry.startTimeString else { return }
+        DesktopLibraryBridge.shared().updateTimeEntry(withStartTime: startAtTextField.stringValue,
+                                                      guid: timeEntry.guid)
+    }
+
+    @IBAction func endTextFieldOnChange(_ sender: Any) {
+        guard endAtTextField.stringValue != timeEntry.endTimeString else { return }
+        DesktopLibraryBridge.shared().updateTimeEntry(withEndTime: endAtTextField.stringValue,
+                                                      guid: timeEntry.guid)
+    }
 }
 
 // MARK: Private
@@ -130,10 +148,6 @@ extension EditorViewController {
 
         descriptionTextField.delegate = self
         dayNameButton.cursor = .pointingHand
-
-        durationTextField.delegate = self
-        startAtTextField.delegate = self
-        endAtTextField.delegate = self
         
         var calendar = Calendar.current
         calendar.timeZone = TimeZone.current
