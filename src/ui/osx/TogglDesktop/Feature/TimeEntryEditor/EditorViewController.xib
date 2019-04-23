@@ -12,6 +12,7 @@
                 <outlet property="billableCheckBox" destination="vpV-Av-rbR" id="7vp-xl-qrd"/>
                 <outlet property="closeBtn" destination="FXR-Ha-kYg" id="nra-rB-rRw"/>
                 <outlet property="datePickerView" destination="PKt-Ig-fee" id="DN1-Wa-zOJ"/>
+                <outlet property="dateSelectionBox" destination="NTv-X9-sKT" id="POl-20-RhI"/>
                 <outlet property="dayNameButton" destination="UYO-W1-uSI" id="nEd-l5-54R"/>
                 <outlet property="deleteBtn" destination="5ym-is-B1S" id="cBg-gL-hqJ"/>
                 <outlet property="descriptionTextField" destination="EMT-i8-OD1" id="PN4-q1-PU7"/>
@@ -312,20 +313,23 @@
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <stackView distribution="equalSpacing" orientation="horizontal" alignment="centerY" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vQx-6F-FAx">
-                                                        <rect key="frame" x="17" y="0.0" width="142" height="28"/>
+                                                        <rect key="frame" x="16" y="0.0" width="145" height="28"/>
                                                         <subviews>
                                                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="UYO-W1-uSI" customClass="CursorButton" customModule="TogglDesktop" customModuleProvider="target">
-                                                                <rect key="frame" x="0.0" y="6" width="58" height="17"/>
+                                                                <rect key="frame" x="0.0" y="5" width="61" height="18"/>
                                                                 <buttonCell key="cell" type="bevel" title="Tuesday," bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="DZ6-Ag-EuF">
                                                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                                    <font key="font" metaFont="system"/>
+                                                                    <font key="font" metaFont="system" size="14"/>
                                                                 </buttonCell>
                                                                 <connections>
                                                                     <action selector="dayButtonOnTap:" target="-2" id="9Xi-H2-Cv0"/>
                                                                 </connections>
                                                             </button>
                                                             <datePicker verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="PKt-Ig-fee">
-                                                                <rect key="frame" x="58" y="1" width="84" height="26"/>
+                                                                <rect key="frame" x="61" y="3" width="84" height="22"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="height" constant="22" id="60V-hr-SJM"/>
+                                                                </constraints>
                                                                 <datePickerCell key="cell" alignment="left" drawsBackground="NO" datePickerStyle="textField" id="eIj-kY-idV">
                                                                     <font key="font" size="14" name=".SFNSText"/>
                                                                     <date key="date" timeIntervalSinceReferenceDate="-595929600">
@@ -339,9 +343,6 @@
                                                                 </connections>
                                                             </datePicker>
                                                         </subviews>
-                                                        <constraints>
-                                                            <constraint firstItem="PKt-Ig-fee" firstAttribute="top" secondItem="vQx-6F-FAx" secondAttribute="top" constant="-2" id="hTb-5P-rmE"/>
-                                                        </constraints>
                                                         <visibilityPriorities>
                                                             <integer value="1000"/>
                                                             <integer value="1000"/>

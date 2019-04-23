@@ -48,7 +48,7 @@ final class CalendarDataSource: NSObject {
     }
 
     private class func calculateDateRange(with selectedDate: Date) -> (DateInfo, DateInfo, DateInfo) {
-        let currentDate = DateInfo(date: selectedDate.toLocalTime())
+        let currentDate = DateInfo(date: selectedDate)
 
         // firstDayOfWeek will return the Sunday
         // But we need monday -> advance by 2
