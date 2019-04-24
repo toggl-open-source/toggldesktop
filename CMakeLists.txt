@@ -38,6 +38,9 @@ if(NOT USE_BUNDLED_LIBRARIES)
     
     # Look for JSON
     find_package(jsoncpp CONFIG)
+    if(jsoncpp_FOUND)
+        set(JSONCPP_LIBRARIES jsoncpp_lib)
+    endif()
 
     # Look for Qxt
     pkg_search_module(QXT_CORE QxtCore-qt5)
@@ -55,6 +58,12 @@ endif()
 set(TOGGLDESKTOP_BUILDROOT
     ${CMAKE_CURRENT_BINARY_DIR}/buildroot
 )
+
+set(TOGGL_BINARY_DIR "${CMAKE_INSTALL_PREFIX}/bin" CACHE STRING "Binary install directory")
+set(TOGGL_DATA_DIR "${CMAKE_INSTALL_PREFIX}/share/toggldesktop" CACHE STRING "Runtime data install directory")
+set(TOGGL_LIB_DIR "${CMAKE_INSTALL_PREFIX}/lib" CACHE STRING "Library install directory")
+set(TOGGL_INTERNAL_LIB_DIR "${CMAKE_INSTALL_PREFIX}/lib" CACHE STRING "Bundled library install directory")
+set(CMAKE_INSTALL_RPATH "${TOGGL_LIB_DIR};${TOGGL_INTERNAL_LIB_DIR}" CACHE STRING "Custom RPATH for the binaries and libraries")
 
 add_subdirectory(third_party)
 add_subdirectory(src)

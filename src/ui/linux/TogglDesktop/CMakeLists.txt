@@ -3,6 +3,7 @@ set(CMAKE_CXX_FLAGS
 )
 
 add_definitions(-DAPP_VERSION="${TOGGL_VERSION}")
+add_definitions(-DTOGGL_DATA_DIR="${TOGGL_DATA_DIR}")
 
 # And include dirs
 include_directories(
@@ -78,21 +79,21 @@ target_link_libraries(TogglDesktop PRIVATE
 
 configure_file(${PROJECT_SOURCE_DIR}/src/ssl/cacert.pem cacert.pem COPYONLY)
 
-install(FILES ${PROJECT_SOURCE_DIR}/src/ssl/cacert.pem DESTINATION bin)
+install(FILES ${PROJECT_SOURCE_DIR}/src/ssl/cacert.pem DESTINATION ${TOGGL_DATA_DIR})
 
-install(FILES icons/16x16/toggldesktop.png DESTINATION share/icons/hicolor/16x16/apps)
-install(FILES icons/24x24/toggldesktop.png DESTINATION share/icons/hicolor/24x24/apps)
-install(FILES icons/32x32/toggldesktop.png DESTINATION share/icons/hicolor/32x32/apps)
-install(FILES icons/48x48/toggldesktop.png DESTINATION share/icons/hicolor/48x48/apps)
-install(FILES icons/64x64/toggldesktop.png DESTINATION share/icons/hicolor/64x64/apps)
-install(FILES icons/96x96/toggldesktop.png DESTINATION share/icons/hicolor/96x96/apps)
-install(FILES icons/128x128/toggldesktop.png DESTINATION share/icons/hicolor/128x128/apps)
-install(FILES icons/256x256/toggldesktop.png DESTINATION share/icons/hicolor/256x256/apps)
+install(FILES icons/16x16/toggldesktop.png DESTINATION share/icons/hicolor/16x16/apps/)
+install(FILES icons/24x24/toggldesktop.png DESTINATION share/icons/hicolor/24x24/apps/)
+install(FILES icons/32x32/toggldesktop.png DESTINATION share/icons/hicolor/32x32/apps/)
+install(FILES icons/48x48/toggldesktop.png DESTINATION share/icons/hicolor/48x48/apps/)
+install(FILES icons/64x64/toggldesktop.png DESTINATION share/icons/hicolor/64x64/apps/)
+install(FILES icons/96x96/toggldesktop.png DESTINATION share/icons/hicolor/96x96/apps/)
+install(FILES icons/128x128/toggldesktop.png DESTINATION share/icons/hicolor/128x128/apps/)
+install(FILES icons/256x256/toggldesktop.png DESTINATION share/icons/hicolor/256x256/apps/)
 if(INSTALL_HIRES_ICONS)
-    install(FILES icons/1024x1024/toggldesktop.png DESTINATION share/icons/hicolor/1024x1024/apps)
+    install(FILES icons/1024x1024/toggldesktop.png DESTINATION share/icons/hicolor/1024x1024/apps/)
 endif()
-install(FILES dist/toggldesktop.desktop DESTINATION share/applications)
-install(FILES dist/toggldesktop.appdata.xml DESTINATION share/appdata)
+install(FILES dist/com.toggl.TogglDesktop.desktop DESTINATION share/applications)
+install(FILES dist/com.toggl.TogglDesktop.appdata.xml DESTINATION share/metainfo)
 
-install(FILES ${PROJECT_SOURCE_DIR}/src/ui/linux/TogglDesktop.sh DESTINATION bin PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
-install(TARGETS TogglDesktop DESTINATION bin)
+install(FILES ${PROJECT_SOURCE_DIR}/src/ui/linux/TogglDesktop.sh DESTINATION ${TOGGL_BINARY_DIR} PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
+install(TARGETS TogglDesktop DESTINATION ${TOGGL_BINARY_DIR})
