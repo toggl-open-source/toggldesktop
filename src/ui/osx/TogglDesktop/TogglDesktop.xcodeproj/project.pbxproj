@@ -184,6 +184,7 @@
 		BA412C27224E195C003CA17A /* NoClientCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA412C26224E195C003CA17A /* NoClientCellView.swift */; };
 		BA412C29224E196D003CA17A /* NoClientCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA412C28224E196D003CA17A /* NoClientCellView.xib */; };
 		BA46E09F2226707F00C25763 /* Collection+Safe.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA46E09E2226707F00C25763 /* Collection+Safe.swift */; };
+		BA50ED8522705F9E008323FA /* CalendarFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA50ED8422705F9E008323FA /* CalendarFlowLayout.swift */; };
 		BA6572A6224DFA6F00BA4C60 /* RGB.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6572A0224DFA6E00BA4C60 /* RGB.swift */; };
 		BA6572A7224DFA6F00BA4C60 /* HSBGen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6572A1224DFA6E00BA4C60 /* HSBGen.swift */; };
 		BA6572A8224DFA6F00BA4C60 /* CurrentColorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6572A2224DFA6F00BA4C60 /* CurrentColorView.swift */; };
@@ -813,6 +814,7 @@
 		BA412C26224E195C003CA17A /* NoClientCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoClientCellView.swift; sourceTree = "<group>"; };
 		BA412C28224E196D003CA17A /* NoClientCellView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NoClientCellView.xib; sourceTree = "<group>"; };
 		BA46E09E2226707F00C25763 /* Collection+Safe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collection+Safe.swift"; sourceTree = "<group>"; };
+		BA50ED8422705F9E008323FA /* CalendarFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarFlowLayout.swift; sourceTree = "<group>"; };
 		BA6572A0224DFA6E00BA4C60 /* RGB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RGB.swift; sourceTree = "<group>"; };
 		BA6572A1224DFA6E00BA4C60 /* HSBGen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HSBGen.swift; sourceTree = "<group>"; };
 		BA6572A2224DFA6F00BA4C60 /* CurrentColorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrentColorView.swift; sourceTree = "<group>"; };
@@ -1392,6 +1394,7 @@
 				BA13D2142269C01500EB3833 /* Date+Utils.swift */,
 				BA13D2052269B7C400EB3833 /* CalendarViewController.swift */,
 				BA13D2192269E0B500EB3833 /* CalendarViewController.xib */,
+				BA50ED8422705F9E008323FA /* CalendarFlowLayout.swift */,
 			);
 			path = Calendar;
 			sourceTree = "<group>";
@@ -2283,6 +2286,7 @@
 				74F8FBA318313FA6000F09EE /* NSTextFieldClickable.m in Sources */,
 				BA7B4BCB21C0EF8800B75B14 /* NSAlert+Utils.m in Sources */,
 				BA403BAE2230CFBC008B202C /* BetterFocusAutoCompleteInput.m in Sources */,
+				BA50ED8522705F9E008323FA /* CalendarFlowLayout.swift in Sources */,
 				95C0707718CDB67300A34D0D /* NSCustomComboBoxCell.m in Sources */,
 				BAAF569E2223D4C7003D0D73 /* DotImageView.swift in Sources */,
 				3C0A571A1C22E12E00301D77 /* MKColorPickerView.m in Sources */,
