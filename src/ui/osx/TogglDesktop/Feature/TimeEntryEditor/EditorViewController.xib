@@ -307,7 +307,7 @@
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="UYO-W1-uSI" customClass="CursorButton" customModule="TogglDesktop" customModuleProvider="target">
-                                                        <rect key="frame" x="16" y="5" width="61" height="18"/>
+                                                        <rect key="frame" x="22" y="5" width="61" height="18"/>
                                                         <buttonCell key="cell" type="bevel" title="Tuesday," bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="DZ6-Ag-EuF">
                                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                             <font key="font" metaFont="system" size="14"/>
@@ -317,7 +317,7 @@
                                                         </connections>
                                                     </button>
                                                     <datePicker verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="PKt-Ig-fee">
-                                                        <rect key="frame" x="74" y="2" width="84" height="22"/>
+                                                        <rect key="frame" x="80" y="2" width="84" height="22"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="22" id="60V-hr-SJM"/>
                                                         </constraints>
@@ -338,7 +338,7 @@
                                                     <constraint firstItem="PKt-Ig-fee" firstAttribute="centerY" secondItem="Vxl-ZN-LqT" secondAttribute="centerY" constant="1" id="EGV-gt-f22"/>
                                                     <constraint firstItem="PKt-Ig-fee" firstAttribute="leading" secondItem="UYO-W1-uSI" secondAttribute="trailing" constant="-3" id="lji-Oq-B7P"/>
                                                     <constraint firstItem="UYO-W1-uSI" firstAttribute="centerY" secondItem="Vxl-ZN-LqT" secondAttribute="centerY" id="u2a-uP-rxD"/>
-                                                    <constraint firstAttribute="trailing" secondItem="UYO-W1-uSI" secondAttribute="trailing" constant="100" id="zVj-az-eGs"/>
+                                                    <constraint firstAttribute="trailing" secondItem="UYO-W1-uSI" secondAttribute="trailing" constant="94" id="zVj-az-eGs"/>
                                                 </constraints>
                                             </view>
                                             <color key="borderColor" name="upload-border-color"/>

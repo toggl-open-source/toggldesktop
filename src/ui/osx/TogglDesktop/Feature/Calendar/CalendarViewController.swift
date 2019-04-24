@@ -18,7 +18,10 @@ final class CalendarViewController: NSViewController {
     // MARK: OUTLET
 
     @IBOutlet weak var collectionView: NSCollectionView!
-    
+    @IBOutlet weak var popverWidth: NSLayoutConstraint!
+    @IBOutlet weak var clipView: NSClipView!
+    @IBOutlet weak var stackViewTrailing: NSLayoutConstraint!
+
     // MARK: Variables
 
     weak var delegate: CalendarViewControllerDelegate?
@@ -59,8 +62,18 @@ final class CalendarViewController: NSViewController {
     private func reloadCalendarView() {
         if isViewAppearing {
             collectionView.reloadData()
-            self.collectionView.scrollToItems(at: Set<IndexPath>.init(arrayLiteral: IndexPath(item: self.dataSource.indexForCurrentDate, section: 0)),
-                                              scrollPosition: [.centeredVertically])
+            collectionView.scrollToItems(at: Set<IndexPath>.init(arrayLiteral: IndexPath(item: dataSource.indexForCurrentDate, section: 0)),
+                                         scrollPosition: [.centeredVertically])
+            if let flow = collectionView.collectionViewLayout as? CalendarFlowLayout {
+
+                // If the scroller bar is showing
+                // Increase the padding
+                if clipView.frame.width < 240 {
+                    let width = flow.collectionViewContentSize.width
+                    popverWidth.constant = width + 15
+                    stackViewTrailing.constant = 20
+                }
+            }
         }
     }
 }

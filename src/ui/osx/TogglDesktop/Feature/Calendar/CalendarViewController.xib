@@ -9,7 +9,10 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="CalendarViewController" customModule="TogglDesktop" customModuleProvider="target">
             <connections>
+                <outlet property="clipView" destination="8dq-zD-FLg" id="s5C-Ra-Nfp"/>
                 <outlet property="collectionView" destination="V4G-fh-5PF" id="5Qh-9C-5s5"/>
+                <outlet property="popverWidth" destination="liD-Se-PEq" id="tM4-mp-9NE"/>
+                <outlet property="stackViewTrailing" destination="ik1-Gd-lGm" id="ktw-rv-8Tx"/>
                 <outlet property="view" destination="B5d-J5-SqN" id="WMb-Ev-b1E"/>
             </connections>
         </customObject>
@@ -132,23 +135,23 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="39" id="E6f-ZN-K4M"/>
                                     <constraint firstAttribute="bottom" secondItem="wcm-Z5-oER" secondAttribute="bottom" id="FBs-6g-VhN"/>
-                                    <constraint firstAttribute="width" constant="240" id="a3H-ky-ezy"/>
                                     <constraint firstItem="wcm-Z5-oER" firstAttribute="top" secondItem="E9x-BN-aaU" secondAttribute="top" id="hSc-qG-rPs"/>
                                     <constraint firstAttribute="trailing" secondItem="wcm-Z5-oER" secondAttribute="trailing" constant="5" id="ik1-Gd-lGm"/>
+                                    <constraint firstAttribute="width" constant="240" id="liD-Se-PEq"/>
                                     <constraint firstItem="wcm-Z5-oER" firstAttribute="leading" secondItem="E9x-BN-aaU" secondAttribute="leading" constant="5" id="lzM-1H-fKF"/>
                                 </constraints>
                             </customView>
                             <box verticalHuggingPriority="750" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="C0K-Lf-4GI">
                                 <rect key="frame" x="0.0" y="271" width="240" height="5"/>
                             </box>
-                            <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" horizontalScrollElasticity="none" verticalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="Upb-gx-L0v">
+                            <scrollView wantsLayer="YES" borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" horizontalScrollElasticity="none" verticalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="Upb-gx-L0v">
                                 <rect key="frame" x="0.0" y="0.0" width="240" height="273"/>
                                 <clipView key="contentView" copiesOnScroll="NO" id="8dq-zD-FLg">
                                     <rect key="frame" x="0.0" y="0.0" width="240" height="273"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <collectionView selectable="YES" allowsEmptySelection="NO" id="V4G-fh-5PF">
-                                            <rect key="frame" x="0.0" y="0.0" width="240" height="158"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="240" height="273"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                             <collectionViewFlowLayout key="collectionViewLayout" minimumInteritemSpacing="10" minimumLineSpacing="10" id="OPE-W1-KLS">
                                                 <size key="itemSize" width="50" height="50"/>
@@ -161,8 +164,8 @@
                                     <rect key="frame" x="-100" y="-100" width="227" height="16"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
-                                <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="cVi-K4-cFC">
-                                    <rect key="frame" x="-100" y="-100" width="15" height="143"/>
+                                <scroller key="verticalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="cVi-K4-cFC">
+                                    <rect key="frame" x="224" y="0.0" width="16" height="273"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                             </scrollView>
@@ -189,7 +192,7 @@
                 <constraint firstItem="Xdh-0I-8Jz" firstAttribute="top" secondItem="B5d-J5-SqN" secondAttribute="top" id="hJZ-dy-S1J"/>
                 <constraint firstAttribute="trailing" secondItem="Xdh-0I-8Jz" secondAttribute="trailing" id="pbb-LY-68s"/>
             </constraints>
-            <point key="canvasLocation" x="-4" y="38"/>
+            <point key="canvasLocation" x="-4" y="37.5"/>
         </customView>
     </objects>
     <resources>
