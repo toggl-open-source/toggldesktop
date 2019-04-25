@@ -16,7 +16,7 @@
             <subviews>
                 <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" horizontalScrollElasticity="none" verticalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="mxV-pt-2uu">
                     <rect key="frame" x="0.0" y="120" width="220" height="70"/>
-                    <clipView key="contentView" copiesOnScroll="NO" id="xTa-DE-szS">
+                    <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="xTa-DE-szS">
                         <rect key="frame" x="0.0" y="0.0" width="220" height="70"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -26,9 +26,10 @@
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumInteritemSpacing="10" minimumLineSpacing="10" id="jeB-XW-ECn">
                                     <size key="itemSize" width="50" height="50"/>
                                 </collectionViewFlowLayout>
-                                <color key="primaryBackgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                <color key="primaryBackgroundColor" name="color-picker-background"/>
                             </collectionView>
                         </subviews>
+                        <color key="backgroundColor" name="color-picker-background"/>
                     </clipView>
                     <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="Zo6-MO-MYG">
                         <rect key="frame" x="-100" y="-100" width="218" height="16"/>
@@ -85,6 +86,9 @@
         </customView>
     </objects>
     <resources>
+        <namedColor name="color-picker-background">
+            <color red="0.97647058823529409" green="0.97647058823529409" blue="0.97647058823529409" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="grey-text-color">
             <color red="0.33333333333333331" green="0.33333333333333331" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

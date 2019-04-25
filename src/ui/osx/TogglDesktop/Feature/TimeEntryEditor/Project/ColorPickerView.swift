@@ -68,11 +68,6 @@ extension ColorPickerView {
         wantsLayer = true
         layer?.masksToBounds = true
         layer?.cornerRadius = 8
-        if #available(OSX 10.13, *) {
-            layer?.backgroundColor = NSColor(named: "color-picker-background")?.cgColor
-        } else {
-            layer?.backgroundColor = ConvertHexColor.hexCode(toNSColor: "#f9f9f9")?.cgColor
-        }
     }
 
     fileprivate func initCollectionView() {

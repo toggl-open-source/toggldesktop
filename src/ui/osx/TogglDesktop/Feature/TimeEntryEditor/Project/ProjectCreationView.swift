@@ -39,6 +39,7 @@ final class ProjectCreationView: NSView {
     @IBOutlet weak var workspaceAutoComplete: WorkspaceAutoCompleteTextField!
     @IBOutlet weak var clientAutoComplete: ClientAutoCompleteTextField!
     @IBOutlet weak var colorBtn: CursorButton!
+    @IBOutlet weak var colorPickerContainerBox: NSBox!
     @IBOutlet weak var colorPickerContainerView: NSView!
     @IBOutlet weak var publicProjectCheckBox: NSButton!
     
@@ -80,7 +81,7 @@ final class ProjectCreationView: NSView {
     private lazy var colorPickerView: ColorPickerView = {
         let picker = ColorPickerView.xibView() as ColorPickerView
         picker.delegate = self
-        colorPickerContainerView.addSubview(picker)
+        colorPickerContainerBox.addSubview(picker)
         picker.edgesToSuperView()
         return picker
     }()
@@ -199,6 +200,10 @@ extension ProjectCreationView {
         // Arrow
         workspaceAutoComplete.layoutArrowBtn(with: self)
         clientAutoComplete.layoutArrowBtn(with: self)
+
+        colorPickerContainerView.wantsLayer = true
+        colorPickerContainerView.layer?.masksToBounds = true
+        colorPickerContainerView.layer?.cornerRadius = 8
     }
 
     fileprivate func updateLayout() {
