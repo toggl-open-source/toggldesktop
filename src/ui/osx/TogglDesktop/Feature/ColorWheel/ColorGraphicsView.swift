@@ -54,8 +54,6 @@ final class ColorGraphicsView: NSView {
         
         //drawAlphaSlider(context)
         drawSecondarySlider(context)
-        
-        
     }
     
     fileprivate struct Constants {
@@ -209,9 +207,10 @@ final class ColorGraphicsView: NSView {
         context.clip(to: viewRect)
         
         NSColor.white.setStroke()
-        context.addEllipse(in: CGRect(x: x - 4, y: y - 4 + viewRect.minY, width: 8, height: 8))
+        let frame = CGRect(x: x - 12, y: y - 12 + viewRect.minY, width: 24, height: 24)
+        context.setLineWidth(2.0)
+        context.addEllipse(in: frame)
         context.strokePath()
-        
         context.resetClip()
     }
     
