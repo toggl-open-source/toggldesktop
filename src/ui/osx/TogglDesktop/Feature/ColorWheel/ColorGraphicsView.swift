@@ -17,7 +17,7 @@ protocol ChangeColorDelegate: class {
 
 
 final class ColorGraphicsView: NSView {
-    
+
     override func prepareForInterfaceBuilder() {
         currentColor = HSV(h: 40, s: 0.8, v: 0.7)
         selectedHSBComponent = .brightness
@@ -59,6 +59,7 @@ final class ColorGraphicsView: NSView {
     fileprivate struct Constants {
         static let bottomSliderHeight: CGFloat = 16.0
         static let verticalMargin: CGFloat = 10.0
+        static let ColorIndicatorSize = CGSize(width: 14, height: 14)
     }
 
     // Rects
@@ -125,8 +126,9 @@ final class ColorGraphicsView: NSView {
     // MARK: Secondary slider functions
     
     private func secondaryPointingArrowOrigin() -> CGPoint {
-        let sliderRect = secondarySliderRect()
-        
+        var sliderRect = secondarySliderRect()
+        sliderRect.size.width -= Constants.ColorIndicatorSize.width
+
         var x: CGFloat = 0
         
         switch (selectedHSBComponent) {
@@ -137,7 +139,7 @@ final class ColorGraphicsView: NSView {
             x = currentColor.s * sliderRect.width + totalRect().minX
             break
         case .brightness:
-            x = currentColor.v * sliderRect.width + totalRect().minX
+            x = Constants.ColorIndicatorSize.width / 2 + currentColor.v * sliderRect.width + totalRect().minX
             break
         }
         
@@ -232,7 +234,9 @@ final class ColorGraphicsView: NSView {
     
     private func drawPointingArrow(_ context: CGContext, position: CGPoint) {
         NSColor.white.setFill()
-        let frame = CGRect(x: position.x - 7, y: position.y - 15 + 0.5, width: 14, height: 14)
+        let frame = CGRect(x: position.x - Constants.ColorIndicatorSize.width / 2,
+                           y: position.y - Constants.ColorIndicatorSize.width - 1,
+                           width: Constants.ColorIndicatorSize.width, height: Constants.ColorIndicatorSize.height)
         context.addEllipse(in: frame)
         context.fillPath()
     }
@@ -343,7 +347,7 @@ extension ColorGraphicsView {
     private func updateSecondaryCursor(locationInWindow: NSPoint) {
         var newColor = currentColor
         let secondaryWindowRect = convert(secondarySliderRect(), to: window?.contentView)
-        
+
         var x = (locationInWindow.x - secondaryWindowRect.minX) / secondaryWindowRect.width
         
         x = min(1, x)
