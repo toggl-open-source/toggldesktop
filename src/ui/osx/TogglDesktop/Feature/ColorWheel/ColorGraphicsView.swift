@@ -104,7 +104,8 @@ final class ColorGraphicsView: NSView {
             hsbSquareColor = currentColor
             
             switch (selectedHSBComponent) {
-            case .hue:                hsbSquare = HSBGen.createSaturationBrightnessSquareContentImageWithHue(hue: currentColor.h)
+            case .hue:
+                hsbSquare = HSBGen.createSaturationBrightnessSquareContentImageWithHue(hue: currentColor.h)
                 break
             case .saturation:
                 hsbSquare = HSBGen.createHueBrightnessSquareContentImageWithSaturation(saturation: currentColor.s)
@@ -227,30 +228,10 @@ final class ColorGraphicsView: NSView {
     }
     
     private func drawPointingArrow(_ context: CGContext, position: CGPoint) {
-        
-        let size: CGFloat = 0.25
-        
-        let pos = CGPoint(x: position.x, y: position.y - 30 * size - 6)
-        
-        context.beginPath()
-        context.move(to: CGPoint(x: pos.x - 15 * size, y: pos.y - 30 * size))
-        context.addLine(to: CGPoint(x: pos.x + 15 * size, y: pos.y - 30 * size))
-        
-        context.addArc(center: CGPoint(x: pos.x + 15 * size, y: pos.y - 20 * size), radius: 10 * size, startAngle: CGFloat.pi * 1.5, endAngle: 0, clockwise: false)
-        
-        context.addLine(to: CGPoint(x: pos.x + 25 * size, y: pos.y))
-        context.addLine(to: CGPoint(x: pos.x, y: pos.y + 30 * size))
-        context.addLine(to: CGPoint(x: pos.x - 25 * size, y: pos.y))
-        context.addLine(to: CGPoint(x: pos.x - 25 * size, y: pos.y - 20 * size))
-        
-        context.addArc(center: CGPoint(x: pos.x - 15 * size, y: pos.y - 20 * size), radius: 10 * size, startAngle: CGFloat.pi, endAngle: CGFloat.pi * 1.5, clockwise: false)
-        
-        context.closePath()
-        
-        NSColor.black.withAlphaComponent(0.1).setStroke()
         NSColor.white.setFill()
-        
-        context.drawPath(using: CGPathDrawingMode.fillStroke)
+        let frame = CGRect(x: position.x - 7, y: position.y - 15, width: 14, height: 14)
+        context.addEllipse(in: frame)
+        context.fillPath()
     }
     
     static func drawTransparentGridOverlay(rect: NSRect, context: CGContext) {
