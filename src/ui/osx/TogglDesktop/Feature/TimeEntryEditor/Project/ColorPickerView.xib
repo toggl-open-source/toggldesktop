@@ -55,13 +55,13 @@
                     <rect key="frame" x="0.0" y="26" width="220" height="94"/>
                     <subviews>
                         <customView translatesAutoresizingMaskIntoConstraints="NO" id="ekt-4K-GjN" customClass="ColorGraphicsView" customModule="TogglDesktop" customModuleProvider="target">
-                            <rect key="frame" x="0.0" y="0.0" width="220" height="94"/>
+                            <rect key="frame" x="5" y="0.0" width="210" height="94"/>
                         </customView>
                     </subviews>
                     <constraints>
-                        <constraint firstAttribute="trailing" secondItem="ekt-4K-GjN" secondAttribute="trailing" id="bxE-3S-72K"/>
+                        <constraint firstAttribute="trailing" secondItem="ekt-4K-GjN" secondAttribute="trailing" constant="5" id="bxE-3S-72K"/>
                         <constraint firstAttribute="bottom" secondItem="ekt-4K-GjN" secondAttribute="bottom" id="l49-1b-Adg"/>
-                        <constraint firstItem="ekt-4K-GjN" firstAttribute="leading" secondItem="Bng-FC-0Ya" secondAttribute="leading" id="ox7-PJ-vvT"/>
+                        <constraint firstItem="ekt-4K-GjN" firstAttribute="leading" secondItem="Bng-FC-0Ya" secondAttribute="leading" constant="5" id="ox7-PJ-vvT"/>
                         <constraint firstItem="ekt-4K-GjN" firstAttribute="top" secondItem="Bng-FC-0Ya" secondAttribute="top" id="uHM-e6-LhC"/>
                     </constraints>
                 </customView>

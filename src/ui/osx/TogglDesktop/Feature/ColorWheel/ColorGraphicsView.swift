@@ -97,7 +97,7 @@ final class ColorGraphicsView: NSView {
     private var hsbSquarePreviousComponet: HSBComponent? = nil
     
     private func drawMainView(_ context: CGContext) {
-        
+        let mainRect = mainViewRect()
         if (hsbSquare == nil || hsbSquarePreviousComponet == nil ||
             hsbSquarePreviousComponet != selectedHSBComponent || hsbSquareColor.h != currentColor.h) {
             
@@ -117,7 +117,9 @@ final class ColorGraphicsView: NSView {
             
         }
 
-        context.draw(hsbSquare!, in: mainViewRect())
+        let rounded = NSBezierPath(roundedRect: mainRect, xRadius: 8, yRadius: 8)
+        rounded.addClip()
+        context.draw(hsbSquare!, in: mainRect)
     }
 
     // MARK: Secondary slider functions
@@ -147,8 +149,9 @@ final class ColorGraphicsView: NSView {
         let sliderRect = secondarySliderRect()
         
         let bar = HSBGen.createHSVBarContentImage(hsbComponent: selectedHSBComponent, hsv: currentColor)!
+        let rounded = NSBezierPath(roundedRect: sliderRect, xRadius: 8, yRadius: 8)
+        rounded.addClip()
         context.draw(bar, in: sliderRect)
-        
         drawPointingArrow(context, position: secondaryPointingArrowOrigin())
     }
     
@@ -229,7 +232,7 @@ final class ColorGraphicsView: NSView {
     
     private func drawPointingArrow(_ context: CGContext, position: CGPoint) {
         NSColor.white.setFill()
-        let frame = CGRect(x: position.x - 7, y: position.y - 15, width: 14, height: 14)
+        let frame = CGRect(x: position.x - 7, y: position.y - 15 + 0.5, width: 14, height: 14)
         context.addEllipse(in: frame)
         context.fillPath()
     }
