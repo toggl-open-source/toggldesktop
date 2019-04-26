@@ -11,6 +11,7 @@
             <connections>
                 <outlet property="clipView" destination="8dq-zD-FLg" id="s5C-Ra-Nfp"/>
                 <outlet property="collectionView" destination="V4G-fh-5PF" id="5Qh-9C-5s5"/>
+                <outlet property="dayStackView" destination="wcm-Z5-oER" id="zJx-5J-8cZ"/>
                 <outlet property="popverWidth" destination="liD-Se-PEq" id="tM4-mp-9NE"/>
                 <outlet property="stackViewTrailing" destination="ik1-Gd-lGm" id="ktw-rv-8Tx"/>
                 <outlet property="view" destination="B5d-J5-SqN" id="WMb-Ev-b1E"/>
@@ -33,103 +34,6 @@
                                 <subviews>
                                     <stackView distribution="equalSpacing" orientation="horizontal" alignment="centerY" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wcm-Z5-oER">
                                         <rect key="frame" x="5" y="0.0" width="230" height="39"/>
-                                        <subviews>
-                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="kIf-6l-1va">
-                                                <rect key="frame" x="-2" y="13" width="35" height="14"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="31" id="nEY-Rf-nHn"/>
-                                                </constraints>
-                                                <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="MON" id="Uwg-D6-R19">
-                                                    <font key="font" metaFont="systemMedium" size="11"/>
-                                                    <color key="textColor" name="grey-text-color"/>
-                                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                </textFieldCell>
-                                            </textField>
-                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="a98-FR-SHM">
-                                                <rect key="frame" x="31" y="13" width="35" height="14"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="31" id="Sev-qf-knK"/>
-                                                </constraints>
-                                                <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="TUE" id="u8q-Ve-COZ">
-                                                    <font key="font" metaFont="systemMedium" size="11"/>
-                                                    <color key="textColor" name="grey-text-color"/>
-                                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                </textFieldCell>
-                                            </textField>
-                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="gob-5K-YcG">
-                                                <rect key="frame" x="64" y="13" width="35" height="14"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="31" id="FCn-3y-v1b"/>
-                                                </constraints>
-                                                <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="WED" id="J5G-wT-1Zi">
-                                                    <font key="font" metaFont="systemMedium" size="11"/>
-                                                    <color key="textColor" name="grey-text-color"/>
-                                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                </textFieldCell>
-                                            </textField>
-                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="pjr-26-OKe">
-                                                <rect key="frame" x="98" y="13" width="35" height="14"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="31" id="zOV-xd-vzU"/>
-                                                </constraints>
-                                                <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="THU" id="u18-g7-uHO">
-                                                    <font key="font" metaFont="systemMedium" size="11"/>
-                                                    <color key="textColor" name="grey-text-color"/>
-                                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                </textFieldCell>
-                                            </textField>
-                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="JVw-hn-v0u">
-                                                <rect key="frame" x="131" y="13" width="35" height="14"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="31" id="Vsl-RJ-qi1"/>
-                                                </constraints>
-                                                <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="FRI" id="Ufj-v7-gPu">
-                                                    <font key="font" metaFont="systemMedium" size="11"/>
-                                                    <color key="textColor" name="grey-text-color"/>
-                                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                </textFieldCell>
-                                            </textField>
-                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="e0Q-cP-8dd">
-                                                <rect key="frame" x="164" y="13" width="35" height="14"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="31" id="pvV-8Z-Jq9"/>
-                                                </constraints>
-                                                <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="SAT" id="W4K-qT-z37">
-                                                    <font key="font" metaFont="systemMedium" size="11"/>
-                                                    <color key="textColor" name="grey-text-color"/>
-                                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                </textFieldCell>
-                                            </textField>
-                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="l4V-ci-0bo">
-                                                <rect key="frame" x="197" y="13" width="35" height="14"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="31" id="pKz-EU-tyH"/>
-                                                </constraints>
-                                                <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="SUN" id="T7v-xj-4Fo">
-                                                    <font key="font" metaFont="systemMedium" size="11"/>
-                                                    <color key="textColor" name="grey-text-color"/>
-                                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                </textFieldCell>
-                                            </textField>
-                                        </subviews>
-                                        <visibilityPriorities>
-                                            <integer value="1000"/>
-                                            <integer value="1000"/>
-                                            <integer value="1000"/>
-                                            <integer value="1000"/>
-                                            <integer value="1000"/>
-                                            <integer value="1000"/>
-                                            <integer value="1000"/>
-                                        </visibilityPriorities>
-                                        <customSpacing>
-                                            <real value="3.4028234663852886e+38"/>
-                                            <real value="3.4028234663852886e+38"/>
-                                            <real value="3.4028234663852886e+38"/>
-                                            <real value="3.4028234663852886e+38"/>
-                                            <real value="3.4028234663852886e+38"/>
-                                            <real value="3.4028234663852886e+38"/>
-                                            <real value="3.4028234663852886e+38"/>
-                                        </customSpacing>
                                     </stackView>
                                 </subviews>
                                 <constraints>
@@ -196,9 +100,6 @@
         </customView>
     </objects>
     <resources>
-        <namedColor name="grey-text-color">
-            <color red="0.33333333333333331" green="0.33333333333333331" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
         <namedColor name="white-background-color">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

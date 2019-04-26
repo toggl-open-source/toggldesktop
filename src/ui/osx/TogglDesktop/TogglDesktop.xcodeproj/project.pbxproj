@@ -237,6 +237,8 @@
 		BAAF56A02223DF9A003D0D73 /* VertificalTimeEntryFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAAF569F2223DF9A003D0D73 /* VertificalTimeEntryFlowLayout.swift */; };
 		BAAF56A22223E18B003D0D73 /* TimeDecoratorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAAF56A12223E18B003D0D73 /* TimeDecoratorView.swift */; };
 		BAAF56A42223E19C003D0D73 /* TimeDecoratorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BAAF56A32223E19C003D0D73 /* TimeDecoratorView.xib */; };
+		BAB0027F22731248005ECC93 /* DayLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB0027E22731248005ECC93 /* DayLabel.swift */; };
+		BAB0029F2273125C005ECC93 /* DayLabel.xib in Resources */ = {isa = PBXBuildFile; fileRef = BAB0029E2273125C005ECC93 /* DayLabel.xib */; };
 		BAB8D49421BE742D00D63DA5 /* NSTableView+TimeEntryDiff.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB8D49321BE742D00D63DA5 /* NSTableView+TimeEntryDiff.swift */; };
 		BAC4D399225470DA00254DAD /* AutoCompleteRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAC4D398225470DA00254DAD /* AutoCompleteRowView.swift */; };
 		BAD15FFC223A52D600A8CCC9 /* TimeEntryEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD15FFB223A52D600A8CCC9 /* TimeEntryEmptyView.swift */; };
@@ -868,6 +870,8 @@
 		BAAF569F2223DF9A003D0D73 /* VertificalTimeEntryFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VertificalTimeEntryFlowLayout.swift; sourceTree = "<group>"; };
 		BAAF56A12223E18B003D0D73 /* TimeDecoratorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeDecoratorView.swift; sourceTree = "<group>"; };
 		BAAF56A32223E19C003D0D73 /* TimeDecoratorView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimeDecoratorView.xib; sourceTree = "<group>"; };
+		BAB0027E22731248005ECC93 /* DayLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayLabel.swift; sourceTree = "<group>"; };
+		BAB0029E2273125C005ECC93 /* DayLabel.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DayLabel.xib; sourceTree = "<group>"; };
 		BAB8D49321BE742D00D63DA5 /* NSTableView+TimeEntryDiff.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSTableView+TimeEntryDiff.swift"; sourceTree = "<group>"; };
 		BAC4D398225470DA00254DAD /* AutoCompleteRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoCompleteRowView.swift; sourceTree = "<group>"; };
 		BAD15FFB223A52D600A8CCC9 /* TimeEntryEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeEntryEmptyView.swift; sourceTree = "<group>"; };
@@ -1395,6 +1399,8 @@
 				BA13D2052269B7C400EB3833 /* CalendarViewController.swift */,
 				BA13D2192269E0B500EB3833 /* CalendarViewController.xib */,
 				BA50ED8422705F9E008323FA /* CalendarFlowLayout.swift */,
+				BAB0027E22731248005ECC93 /* DayLabel.swift */,
+				BAB0029E2273125C005ECC93 /* DayLabel.xib */,
 			);
 			path = Calendar;
 			sourceTree = "<group>";
@@ -2050,6 +2056,7 @@
 				BA4059B1221D2186002969B8 /* TimeHeaderView.xib in Resources */,
 				749CB8CD18167D6E00814841 /* PreferencesWindowController.xib in Resources */,
 				69FC17FF17E6534400B96425 /* InfoPlist.strings in Resources */,
+				BAB0029F2273125C005ECC93 /* DayLabel.xib in Resources */,
 				BA9C2DFE224C823C002AD2A1 /* ColorPickerView.xib in Resources */,
 				3CDA2C5C1913B61000A94967 /* icon-tags@2x.png in Resources */,
 				747B74881A0AD28200BB3791 /* ConsoleViewController.xib in Resources */,
@@ -2199,6 +2206,7 @@
 				3CE1CAC11C774F2B00D0ADD5 /* LoadMoreCell.m in Sources */,
 				749CB8CC18167D6E00814841 /* PreferencesWindowController.m in Sources */,
 				3C7B4E8D190FA6D200627DC3 /* NSTextFieldVerticallyAligned.m in Sources */,
+				BAB0027F22731248005ECC93 /* DayLabel.swift in Sources */,
 				3C7B4EB3190FB57A00627DC3 /* NSSecureTextFieldVerticallyAligned.m in Sources */,
 				BA0E38122225260B00D0121B /* TimeEntryCell+Ext.swift in Sources */,
 				BA9D90B4222D14ED00D5EC0E /* NSView+Animation.swift in Sources */,

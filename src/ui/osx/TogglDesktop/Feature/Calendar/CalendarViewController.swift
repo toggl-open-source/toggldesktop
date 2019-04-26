@@ -21,6 +21,7 @@ final class CalendarViewController: NSViewController {
     @IBOutlet weak var popverWidth: NSLayoutConstraint!
     @IBOutlet weak var clipView: NSClipView!
     @IBOutlet weak var stackViewTrailing: NSLayoutConstraint!
+    @IBOutlet weak var dayStackView: NSStackView!
 
     // MARK: Variables
 
@@ -37,7 +38,9 @@ final class CalendarViewController: NSViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         initCommon()
+        renderCalendarHeader()
         initCollectionView()
     }
 
@@ -61,6 +64,7 @@ final class CalendarViewController: NSViewController {
 
     private func reloadCalendarView() {
         if isViewAppearing {
+            renderCalendarHeader()
             collectionView.reloadData()
             collectionView.scrollToItems(at: Set<IndexPath>.init(arrayLiteral: IndexPath(item: dataSource.indexForCurrentDate, section: 0)),
                                          scrollPosition: [.centeredVertically])
@@ -92,6 +96,31 @@ extension CalendarViewController {
         collectionView.dataSource = dataSource
         collectionView.delegate = dataSource
         collectionView.collectionViewLayout = CalendarFlowLayout()
+    }
+
+    fileprivate func renderCalendarHeader() {
+
+        // remove all
+        dayStackView.arrangedSubviews.forEach {
+            $0.removeFromSuperview()
+        }
+
+        // Get the config
+        let days = Calendar.current.shortStandaloneWeekdaySymbols
+        let firstDayOfWeekIndex = Calendar.current.firstWeekday
+
+        // Rotate the days since the days is started from Sun
+        let rotatedDays = Array(days[firstDayOfWeekIndex-1..<days.count]) + days[0..<firstDayOfWeekIndex-1]
+
+        // Map to label
+        let labels = rotatedDays.map { title -> DayLabel in
+            let label = DayLabel.xibView() as DayLabel
+            label.stringValue = title.uppercased()
+            return label
+        }
+        labels.forEach {
+            dayStackView.addArrangedSubview($0)
+        }
     }
 }
 
