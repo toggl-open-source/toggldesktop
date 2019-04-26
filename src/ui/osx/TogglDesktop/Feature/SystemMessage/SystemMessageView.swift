@@ -52,7 +52,26 @@ final class SystemMessageView: NSView {
 
     @IBAction func iconOnTap(_ sender: Any) {
         floatingView.isHidden = false
-        iconContainerView.isHidden = true
+        iconContainerView.isHidden = false
+
+        iconContainerView.alphaValue = 1.0
+        floatingView.alphaValue = 0.0
+        floatingView.wantsLayer = true
+        floatingView.layer?.transform = CATransform3DMakeTranslation(200, 0, 0)
+
+        NSAnimationContext.runAnimationGroup({ (context) in
+            context.duration = 0.5
+            context.timingFunction = CAMediaTimingFunction(name: .easeOut)
+
+            // Animate
+            self.iconContainerView.animator().alphaValue = 0
+            self.floatingView.animator().alphaValue = 1
+            self.floatingView.animator().layer?.transform = CATransform3DIdentity
+            
+        }, completionHandler: {[weak self] in
+            guard let strongSelf = self else { return }
+            strongSelf.iconContainerView.isHidden = true
+        })
     }
 }
 
@@ -156,8 +175,27 @@ extension SystemMessageView {
         case .offline, .syncing:
             // Hide floating view
             // Then presenting the icon btn
-            floatingView.isHidden = true
+            floatingView.isHidden = false
             iconContainerView.isHidden = false
+
+            iconContainerView.alphaValue = 1.0
+            floatingView.alphaValue = 0.0
+            floatingView.wantsLayer = true
+            floatingView.layer?.transform = CATransform3DIdentity
+
+            NSAnimationContext.runAnimationGroup({ (context) in
+                context.duration = 0.5
+                context.timingFunction = CAMediaTimingFunction(name: .easeOut)
+
+                // Animate
+                self.iconContainerView.animator().alphaValue = 1.0
+                self.floatingView.animator().alphaValue = 0
+                self.floatingView.animator().layer?.transform = CATransform3DMakeTranslation(200, 0, 0)
+
+            }, completionHandler: {[weak self] in
+                guard let strongSelf = self else { return }
+                strongSelf.floatingView.isHidden = true
+            })
         }
     }
 }
