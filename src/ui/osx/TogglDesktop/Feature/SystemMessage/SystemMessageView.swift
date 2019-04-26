@@ -14,6 +14,7 @@ final class SystemMessageView: NSView {
     
     @IBOutlet weak var iconContainerView: NSBox!
     @IBOutlet weak var iconBtn: NSButton!
+    private var floatingViewLeftConstraint: NSLayoutConstraint!
     private lazy var floatingView: FloatingErrorView = {
         return FloatingErrorView.xibView()
     }()
@@ -53,21 +54,21 @@ final class SystemMessageView: NSView {
     @IBAction func iconOnTap(_ sender: Any) {
         floatingView.isHidden = false
         iconContainerView.isHidden = false
-
         iconContainerView.alphaValue = 1.0
         floatingView.alphaValue = 0.0
-        floatingView.wantsLayer = true
-        floatingView.layer?.transform = CATransform3DMakeTranslation(200, 0, 0)
+        floatingViewLeftConstraint.constant = -self.frame.width
 
-        NSAnimationContext.runAnimationGroup({ (context) in
-            context.duration = 0.5
+        NSAnimationContext.runAnimationGroup({[weak self] (context) in
+            guard let strongSelf = self else { return }
+
+            context.duration = 0.3
             context.timingFunction = CAMediaTimingFunction(name: .easeOut)
 
             // Animate
-            self.iconContainerView.animator().alphaValue = 0
-            self.floatingView.animator().alphaValue = 1
-            self.floatingView.animator().layer?.transform = CATransform3DIdentity
-            
+            strongSelf.iconContainerView.animator().alphaValue = 0
+            strongSelf.floatingView.animator().alphaValue = 1
+            strongSelf.floatingViewLeftConstraint.animator().constant = 0
+
         }, completionHandler: {[weak self] in
             guard let strongSelf = self else { return }
             strongSelf.iconContainerView.isHidden = true
@@ -131,6 +132,7 @@ extension SystemMessageView {
         layer?.masksToBounds = false
         iconContainerView.applyShadow()
         iconContainerView.applyBorder(cornerRadius: 13)
+        floatingView.wantsLayer = true
     }
 
     fileprivate func initFloatingView() {
@@ -140,28 +142,29 @@ extension SystemMessageView {
                                      attribute: .top,
                                      relatedBy: .equal,
                                      toItem: floatingView,
-                                     attribute: .top
-            , multiplier: 1.0, constant: 0)
+                                     attribute: .top,
+                                     multiplier: 1.0, constant: 0)
         let left = NSLayoutConstraint(item: self,
                                       attribute: .left,
                                       relatedBy: .equal,
                                       toItem: floatingView,
-                                      attribute: .left
-            , multiplier: 1.0, constant: 0)
-        let right = NSLayoutConstraint(item: self,
-                                       attribute: .right,
+                                      attribute: .left,
+                                      multiplier: 1.0, constant: 0)
+        let width = NSLayoutConstraint(item: floatingView,
+                                       attribute: .width,
                                        relatedBy: .equal,
-                                       toItem: floatingView,
-                                       attribute: .right
-            , multiplier: 1.0, constant: 30)
+                                       toItem: nil,
+                                       attribute: .notAnAttribute,
+                                       multiplier: 1,
+                                       constant: 240.0)
         let bottom = NSLayoutConstraint(item: self,
                                         attribute: .bottom,
                                         relatedBy: .equal,
                                         toItem: floatingView,
-                                        attribute: .bottom
-            , multiplier: 1.0, constant: 10)
-
-        addConstraints([top, left, right, bottom])
+                                        attribute: .bottom,
+                                        multiplier: 1.0, constant: 10)
+        floatingViewLeftConstraint = left
+        addConstraints([top, left, width, bottom])
     }
 
     fileprivate func handleClosing() {
@@ -177,20 +180,20 @@ extension SystemMessageView {
             // Then presenting the icon btn
             floatingView.isHidden = false
             iconContainerView.isHidden = false
+            iconContainerView.alphaValue = 0.0
+            floatingView.alphaValue = 1.0
+            floatingViewLeftConstraint.constant = 0
 
-            iconContainerView.alphaValue = 1.0
-            floatingView.alphaValue = 0.0
-            floatingView.wantsLayer = true
-            floatingView.layer?.transform = CATransform3DIdentity
+            NSAnimationContext.runAnimationGroup({[weak self] (context) in
+                guard let strongSelf = self else { return }
 
-            NSAnimationContext.runAnimationGroup({ (context) in
-                context.duration = 0.5
+                context.duration = 0.3
                 context.timingFunction = CAMediaTimingFunction(name: .easeOut)
 
                 // Animate
-                self.iconContainerView.animator().alphaValue = 1.0
-                self.floatingView.animator().alphaValue = 0
-                self.floatingView.animator().layer?.transform = CATransform3DMakeTranslation(200, 0, 0)
+                strongSelf.iconContainerView.animator().alphaValue = 1.0
+                strongSelf.floatingView.animator().alphaValue = 0
+                strongSelf.floatingViewLeftConstraint.animator().constant = -strongSelf.frame.width
 
             }, completionHandler: {[weak self] in
                 guard let strongSelf = self else { return }
