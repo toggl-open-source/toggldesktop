@@ -54,25 +54,7 @@ final class SystemMessageView: NSView {
     @IBAction func iconOnTap(_ sender: Any) {
         floatingView.isHidden = false
         iconContainerView.isHidden = false
-        iconContainerView.alphaValue = 1.0
-        floatingView.alphaValue = 0.0
-        floatingViewLeftConstraint.constant = -self.frame.width
-
-        NSAnimationContext.runAnimationGroup({[weak self] (context) in
-            guard let strongSelf = self else { return }
-
-            context.duration = 0.3
-            context.timingFunction = CAMediaTimingFunction(name: .easeOut)
-
-            // Animate
-            strongSelf.iconContainerView.animator().alphaValue = 0
-            strongSelf.floatingView.animator().alphaValue = 1
-            strongSelf.floatingViewLeftConstraint.animator().constant = 0
-
-        }, completionHandler: {[weak self] in
-            guard let strongSelf = self else { return }
-            strongSelf.iconContainerView.isHidden = true
-        })
+        fadeInAnimation()
     }
 }
 
@@ -87,6 +69,9 @@ extension SystemMessageView: SystemMessagePresentable {
         floatingView.isHidden = false
         iconContainerView.isHidden = true
         self.superview?.bringSubviewToFront(self)
+
+        // Animate
+        fadeInAnimation(forAll: false)
 
         // Stop all animation
         stopAllAnimations()
@@ -115,7 +100,9 @@ extension SystemMessageView: SystemMessagePresentable {
         guard currentPayload.mode == payload.mode else { return }
 
         stopAllAnimations()
-        isHidden = true
+        fadeOutAnimation(for: false) {
+            self.isHidden = true
+        }
     }
 
     private func stopAllAnimations() {
@@ -172,33 +159,74 @@ extension SystemMessageView {
         switch payload.mode {
         case .error,
              .information:
-            // Hide all, because we don't have circle icon for information
-            isHidden = true
+
+            fadeOutAnimation(for: false) {
+                self.isHidden = true
+            }
 
         case .offline, .syncing:
             // Hide floating view
             // Then presenting the icon btn
             floatingView.isHidden = false
             iconContainerView.isHidden = false
+
+            // Animate
+            fadeOutAnimation()
+        }
+    }
+
+    private func fadeOutAnimation(for allItems: Bool = true, complete: (() -> Void)? = nil) {
+        if allItems {
             iconContainerView.alphaValue = 0.0
-            floatingView.alphaValue = 1.0
-            floatingViewLeftConstraint.constant = 0
+        }
+        floatingView.alphaValue = 1.0
+        floatingViewLeftConstraint.constant = 0
 
-            NSAnimationContext.runAnimationGroup({[weak self] (context) in
-                guard let strongSelf = self else { return }
+        NSAnimationContext.runAnimationGroup({[weak self] (context) in
+            guard let strongSelf = self else { return }
 
-                context.duration = 0.3
-                context.timingFunction = CAMediaTimingFunction(name: .easeOut)
+            context.duration = 0.3
+            context.timingFunction = CAMediaTimingFunction(name: .easeOut)
 
-                // Animate
+            // Animate
+            if allItems {
                 strongSelf.iconContainerView.animator().alphaValue = 1.0
-                strongSelf.floatingView.animator().alphaValue = 0
-                strongSelf.floatingViewLeftConstraint.animator().constant = -strongSelf.frame.width
+            }
+            strongSelf.floatingView.animator().alphaValue = 0
+            strongSelf.floatingViewLeftConstraint.animator().constant = -strongSelf.frame.width
 
             }, completionHandler: {[weak self] in
                 guard let strongSelf = self else { return }
                 strongSelf.floatingView.isHidden = true
-            })
+                complete?()
+        })
+    }
+
+    private func fadeInAnimation(forAll allItems: Bool = true) {
+        if allItems {
+            iconContainerView.alphaValue = 1.0
         }
+        floatingView.alphaValue = 0.0
+        floatingViewLeftConstraint.constant = -self.frame.width
+
+        NSAnimationContext.runAnimationGroup({[weak self] (context) in
+            guard let strongSelf = self else { return }
+
+            context.duration = 0.3
+            context.timingFunction = CAMediaTimingFunction(name: .easeIn)
+
+            // Animate
+            if allItems {
+                strongSelf.iconContainerView.animator().alphaValue = 0
+            }
+            strongSelf.floatingView.animator().alphaValue = 1
+            strongSelf.floatingViewLeftConstraint.animator().constant = 0
+
+            }, completionHandler: {[weak self] in
+                guard let strongSelf = self else { return }
+                if allItems {
+                    strongSelf.iconContainerView.isHidden = true
+                }
+        })
     }
 }
