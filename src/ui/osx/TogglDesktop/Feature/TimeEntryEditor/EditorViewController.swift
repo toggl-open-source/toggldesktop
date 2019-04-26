@@ -13,7 +13,7 @@ final class EditorViewController: NSViewController {
     private struct Constans {
 
         static let TokenViewSpacing: CGFloat = 5.0
-        static let MaximumTokenWidth: CGFloat = 240.0
+        static let MaximumTokenWidth: CGFloat = 260.0
     }
 
     // MARK: OUTLET
