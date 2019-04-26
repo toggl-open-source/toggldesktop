@@ -328,39 +328,50 @@
                                                 <rect key="frame" x="1" y="1" width="186" height="28"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
-                                                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="UYO-W1-uSI" customClass="CursorButton" customModule="TogglDesktop" customModuleProvider="target">
-                                                        <rect key="frame" x="31" y="5" width="61" height="18"/>
-                                                        <buttonCell key="cell" type="bevel" title="Tuesday," bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="DZ6-Ag-EuF">
-                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                            <font key="font" metaFont="system" size="14"/>
-                                                        </buttonCell>
-                                                        <connections>
-                                                            <action selector="dayButtonOnTap:" target="-2" id="9Xi-H2-Cv0"/>
-                                                        </connections>
-                                                    </button>
-                                                    <datePicker verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="PKt-Ig-fee">
-                                                        <rect key="frame" x="89" y="2" width="84" height="22"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="height" constant="22" id="60V-hr-SJM"/>
-                                                        </constraints>
-                                                        <datePickerCell key="cell" alignment="left" drawsBackground="NO" datePickerStyle="textField" id="eIj-kY-idV">
-                                                            <font key="font" size="14" name=".SFNSText"/>
-                                                            <date key="date" timeIntervalSinceReferenceDate="-569750400">
-                                                                <!--1982-12-12 16:00:00 +0000-->
-                                                            </date>
-                                                            <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                                        </datePickerCell>
-                                                        <connections>
-                                                            <action selector="datePickerChanged:" target="-2" id="FDS-Ab-Dfd"/>
-                                                        </connections>
-                                                    </datePicker>
+                                                    <stackView distribution="equalSpacing" orientation="horizontal" alignment="baseline" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gKy-N8-5Oe">
+                                                        <rect key="frame" x="21" y="2" width="145" height="22"/>
+                                                        <subviews>
+                                                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="UYO-W1-uSI" customClass="CursorButton" customModule="TogglDesktop" customModuleProvider="target">
+                                                                <rect key="frame" x="0.0" y="3" width="61" height="18"/>
+                                                                <buttonCell key="cell" type="bevel" title="Tuesday," bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="DZ6-Ag-EuF">
+                                                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                                    <font key="font" metaFont="system" size="14"/>
+                                                                </buttonCell>
+                                                                <connections>
+                                                                    <action selector="dayButtonOnTap:" target="-2" id="9Xi-H2-Cv0"/>
+                                                                </connections>
+                                                            </button>
+                                                            <datePicker verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="PKt-Ig-fee">
+                                                                <rect key="frame" x="61" y="0.0" width="84" height="22"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="height" constant="22" id="60V-hr-SJM"/>
+                                                                </constraints>
+                                                                <datePickerCell key="cell" alignment="left" drawsBackground="NO" datePickerStyle="textField" id="eIj-kY-idV">
+                                                                    <font key="font" size="14" name=".SFNSText"/>
+                                                                    <date key="date" timeIntervalSinceReferenceDate="-569750400">
+                                                                        <!--1982-12-12 16:00:00 +0000-->
+                                                                    </date>
+                                                                    <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                </datePickerCell>
+                                                                <connections>
+                                                                    <action selector="datePickerChanged:" target="-2" id="FDS-Ab-Dfd"/>
+                                                                </connections>
+                                                            </datePicker>
+                                                        </subviews>
+                                                        <visibilityPriorities>
+                                                            <integer value="1000"/>
+                                                            <integer value="1000"/>
+                                                        </visibilityPriorities>
+                                                        <customSpacing>
+                                                            <real value="3.4028234663852886e+38"/>
+                                                            <real value="3.4028234663852886e+38"/>
+                                                        </customSpacing>
+                                                    </stackView>
                                                 </subviews>
                                                 <constraints>
-                                                    <constraint firstItem="PKt-Ig-fee" firstAttribute="centerY" secondItem="Vxl-ZN-LqT" secondAttribute="centerY" constant="1" id="EGV-gt-f22"/>
-                                                    <constraint firstItem="PKt-Ig-fee" firstAttribute="leading" secondItem="UYO-W1-uSI" secondAttribute="trailing" constant="-3" id="lji-Oq-B7P"/>
-                                                    <constraint firstItem="UYO-W1-uSI" firstAttribute="centerY" secondItem="Vxl-ZN-LqT" secondAttribute="centerY" id="u2a-uP-rxD"/>
-                                                    <constraint firstAttribute="trailing" secondItem="UYO-W1-uSI" secondAttribute="trailing" constant="94" id="zVj-az-eGs"/>
+                                                    <constraint firstItem="gKy-N8-5Oe" firstAttribute="centerX" secondItem="Vxl-ZN-LqT" secondAttribute="centerX" id="Rli-js-4iw"/>
+                                                    <constraint firstItem="gKy-N8-5Oe" firstAttribute="centerY" secondItem="Vxl-ZN-LqT" secondAttribute="centerY" constant="1" id="e4a-R8-SDt"/>
                                                 </constraints>
                                             </view>
                                             <color key="borderColor" name="upload-border-color"/>
