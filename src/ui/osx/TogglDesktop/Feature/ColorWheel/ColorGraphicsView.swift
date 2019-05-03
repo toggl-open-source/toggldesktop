@@ -17,7 +17,7 @@ protocol ChangeColorDelegate: class {
 
 
 final class ColorGraphicsView: NSView {
-    
+
     override func prepareForInterfaceBuilder() {
         currentColor = HSV(h: 40, s: 0.8, v: 0.7)
         selectedHSBComponent = .brightness
@@ -54,13 +54,12 @@ final class ColorGraphicsView: NSView {
         
         //drawAlphaSlider(context)
         drawSecondarySlider(context)
-        
-        
     }
     
     fileprivate struct Constants {
         static let bottomSliderHeight: CGFloat = 16.0
         static let verticalMargin: CGFloat = 10.0
+        static let ColorIndicatorSize = CGSize(width: 14, height: 14)
     }
 
     // Rects
@@ -99,14 +98,15 @@ final class ColorGraphicsView: NSView {
     private var hsbSquarePreviousComponet: HSBComponent? = nil
     
     private func drawMainView(_ context: CGContext) {
-        
+        let mainRect = mainViewRect()
         if (hsbSquare == nil || hsbSquarePreviousComponet == nil ||
             hsbSquarePreviousComponet != selectedHSBComponent || hsbSquareColor.h != currentColor.h) {
             
             hsbSquareColor = currentColor
             
             switch (selectedHSBComponent) {
-            case .hue:                hsbSquare = HSBGen.createSaturationBrightnessSquareContentImageWithHue(hue: currentColor.h)
+            case .hue:
+                hsbSquare = HSBGen.createSaturationBrightnessSquareContentImageWithHue(hue: currentColor.h)
                 break
             case .saturation:
                 hsbSquare = HSBGen.createHueBrightnessSquareContentImageWithSaturation(saturation: currentColor.s)
@@ -118,14 +118,17 @@ final class ColorGraphicsView: NSView {
             
         }
 
-        context.draw(hsbSquare!, in: mainViewRect())
+        let rounded = NSBezierPath(roundedRect: mainRect, xRadius: 8, yRadius: 8)
+        rounded.addClip()
+        context.draw(hsbSquare!, in: mainRect)
     }
 
     // MARK: Secondary slider functions
     
     private func secondaryPointingArrowOrigin() -> CGPoint {
-        let sliderRect = secondarySliderRect()
-        
+        var sliderRect = secondarySliderRect()
+        sliderRect.size.width -= Constants.ColorIndicatorSize.width
+
         var x: CGFloat = 0
         
         switch (selectedHSBComponent) {
@@ -136,7 +139,7 @@ final class ColorGraphicsView: NSView {
             x = currentColor.s * sliderRect.width + totalRect().minX
             break
         case .brightness:
-            x = currentColor.v * sliderRect.width + totalRect().minX
+            x = Constants.ColorIndicatorSize.width / 2 + currentColor.v * sliderRect.width + totalRect().minX
             break
         }
         
@@ -148,8 +151,9 @@ final class ColorGraphicsView: NSView {
         let sliderRect = secondarySliderRect()
         
         let bar = HSBGen.createHSVBarContentImage(hsbComponent: selectedHSBComponent, hsv: currentColor)!
+        let rounded = NSBezierPath(roundedRect: sliderRect, xRadius: 8, yRadius: 8)
+        rounded.addClip()
         context.draw(bar, in: sliderRect)
-        
         drawPointingArrow(context, position: secondaryPointingArrowOrigin())
     }
     
@@ -209,9 +213,10 @@ final class ColorGraphicsView: NSView {
         context.clip(to: viewRect)
         
         NSColor.white.setStroke()
-        context.addEllipse(in: CGRect(x: x - 4, y: y - 4 + viewRect.minY, width: 8, height: 8))
+        let frame = CGRect(x: x - 12, y: y - 12 + viewRect.minY, width: 24, height: 24)
+        context.setLineWidth(2.0)
+        context.addEllipse(in: frame)
         context.strokePath()
-        
         context.resetClip()
     }
     
@@ -228,30 +233,12 @@ final class ColorGraphicsView: NSView {
     }
     
     private func drawPointingArrow(_ context: CGContext, position: CGPoint) {
-        
-        let size: CGFloat = 0.25
-        
-        let pos = CGPoint(x: position.x, y: position.y - 30 * size - 6)
-        
-        context.beginPath()
-        context.move(to: CGPoint(x: pos.x - 15 * size, y: pos.y - 30 * size))
-        context.addLine(to: CGPoint(x: pos.x + 15 * size, y: pos.y - 30 * size))
-        
-        context.addArc(center: CGPoint(x: pos.x + 15 * size, y: pos.y - 20 * size), radius: 10 * size, startAngle: CGFloat.pi * 1.5, endAngle: 0, clockwise: false)
-        
-        context.addLine(to: CGPoint(x: pos.x + 25 * size, y: pos.y))
-        context.addLine(to: CGPoint(x: pos.x, y: pos.y + 30 * size))
-        context.addLine(to: CGPoint(x: pos.x - 25 * size, y: pos.y))
-        context.addLine(to: CGPoint(x: pos.x - 25 * size, y: pos.y - 20 * size))
-        
-        context.addArc(center: CGPoint(x: pos.x - 15 * size, y: pos.y - 20 * size), radius: 10 * size, startAngle: CGFloat.pi, endAngle: CGFloat.pi * 1.5, clockwise: false)
-        
-        context.closePath()
-        
-        NSColor.black.withAlphaComponent(0.1).setStroke()
         NSColor.white.setFill()
-        
-        context.drawPath(using: CGPathDrawingMode.fillStroke)
+        let frame = CGRect(x: position.x - Constants.ColorIndicatorSize.width / 2,
+                           y: position.y - Constants.ColorIndicatorSize.width - 1,
+                           width: Constants.ColorIndicatorSize.width, height: Constants.ColorIndicatorSize.height)
+        context.addEllipse(in: frame)
+        context.fillPath()
     }
     
     static func drawTransparentGridOverlay(rect: NSRect, context: CGContext) {
@@ -360,7 +347,7 @@ extension ColorGraphicsView {
     private func updateSecondaryCursor(locationInWindow: NSPoint) {
         var newColor = currentColor
         let secondaryWindowRect = convert(secondarySliderRect(), to: window?.contentView)
-        
+
         var x = (locationInWindow.x - secondaryWindowRect.minX) / secondaryWindowRect.width
         
         x = min(1, x)

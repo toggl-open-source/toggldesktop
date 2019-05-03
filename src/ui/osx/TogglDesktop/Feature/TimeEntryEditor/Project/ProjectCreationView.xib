@@ -11,17 +11,17 @@
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customView id="c22-O7-iKe" customClass="ProjectCreationView" customModule="TogglDesktop" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="290" height="200"/>
+            <rect key="frame" x="0.0" y="0.0" width="290" height="400"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <box boxType="custom" cornerRadius="8" title="Box" translatesAutoresizingMaskIntoConstraints="NO" id="oZH-ml-wNQ">
-                    <rect key="frame" x="0.0" y="0.0" width="290" height="200"/>
+                    <rect key="frame" x="0.0" y="0.0" width="290" height="400"/>
                     <view key="contentView" id="W2E-GI-g3i">
-                        <rect key="frame" x="1" y="1" width="288" height="198"/>
+                        <rect key="frame" x="1" y="1" width="288" height="398"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="XFr-qK-S1A" customClass="CursorButton" customModule="TogglDesktop" customModuleProvider="target">
-                                <rect key="frame" x="10" y="170" width="43" height="16"/>
+                                <rect key="frame" x="10" y="370" width="43" height="16"/>
                                 <buttonCell key="cell" type="bevel" title="Cancel" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="BE4-An-YWJ">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="cellTitle"/>
@@ -33,7 +33,7 @@
                                 </connections>
                             </button>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="E94-Yr-Bp7" customClass="CursorButton" customModule="TogglDesktop" customModuleProvider="target">
-                                <rect key="frame" x="249" y="169" width="29" height="17"/>
+                                <rect key="frame" x="249" y="369" width="29" height="17"/>
                                 <buttonCell key="cell" type="bevel" title="Add" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="Yu9-6E-JSG">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -45,7 +45,7 @@
                                 </connections>
                             </button>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="e8h-de-FNI">
-                                <rect key="frame" x="103" y="170" width="83" height="18"/>
+                                <rect key="frame" x="103" y="370" width="83" height="18"/>
                                 <textFieldCell key="cell" lineBreakMode="clipping" title="New Project" id="xL2-RA-McQ">
                                     <font key="font" metaFont="system" size="14"/>
                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -66,13 +66,13 @@
                     <color key="fillColor" name="auto-complete-background"/>
                 </box>
                 <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OJp-YS-19d">
-                    <rect key="frame" x="10" y="46" width="270" height="110"/>
+                    <rect key="frame" x="10" y="46" width="270" height="310"/>
                     <subviews>
                         <stackView distribution="equalSpacing" orientation="horizontal" alignment="centerY" spacing="5" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="H6x-LK-MTr">
-                            <rect key="frame" x="0.0" y="80" width="270" height="30"/>
+                            <rect key="frame" x="0.0" y="80" width="270" height="230"/>
                             <subviews>
                                 <box boxType="custom" cornerRadius="8" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="abC-PV-f56">
-                                    <rect key="frame" x="0.0" y="0.0" width="241" height="30"/>
+                                    <rect key="frame" x="0.0" y="100" width="241" height="30"/>
                                     <view key="contentView" id="O2n-JI-pPR">
                                         <rect key="frame" x="1" y="1" width="239" height="28"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -107,7 +107,7 @@
                                     <color key="borderColor" name="upload-border-color"/>
                                 </box>
                                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Zz6-Ng-Mjf" customClass="CursorButton" customModule="TogglDesktop" customModuleProvider="target">
-                                    <rect key="frame" x="246" y="3" width="24" height="24"/>
+                                    <rect key="frame" x="246" y="103" width="24" height="24"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="24" id="mwz-Qx-Oyr"/>
                                         <constraint firstAttribute="width" constant="24" id="upz-zX-0fd"/>
@@ -131,9 +131,23 @@
                             </customSpacing>
                         </stackView>
                         <customView hidden="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Z6i-Vm-FEs">
-                            <rect key="frame" x="0.0" y="-80" width="270" height="190"/>
+                            <rect key="frame" x="0.0" y="120" width="270" height="190"/>
+                            <subviews>
+                                <box boxType="custom" borderType="none" borderWidth="0.0" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="1oc-cY-QWd">
+                                    <rect key="frame" x="0.0" y="0.0" width="270" height="190"/>
+                                    <view key="contentView" id="Bzo-Ix-voH">
+                                        <rect key="frame" x="0.0" y="0.0" width="270" height="190"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    </view>
+                                    <color key="fillColor" name="color-picker-background"/>
+                                </box>
+                            </subviews>
                             <constraints>
+                                <constraint firstItem="1oc-cY-QWd" firstAttribute="top" secondItem="Z6i-Vm-FEs" secondAttribute="top" id="3b3-Ti-mMg"/>
+                                <constraint firstAttribute="trailing" secondItem="1oc-cY-QWd" secondAttribute="trailing" id="HMa-Br-pYx"/>
                                 <constraint firstAttribute="height" constant="190" id="Oee-h7-oLp"/>
+                                <constraint firstItem="1oc-cY-QWd" firstAttribute="leading" secondItem="Z6i-Vm-FEs" secondAttribute="leading" id="V1z-0K-RDn"/>
+                                <constraint firstAttribute="bottom" secondItem="1oc-cY-QWd" secondAttribute="bottom" id="gEN-1b-JnV"/>
                             </constraints>
                         </customView>
                         <box boxType="custom" cornerRadius="8" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="5Vn-FK-aKk">
@@ -254,7 +268,8 @@
                 <outlet property="cancelBtn" destination="XFr-qK-S1A" id="Uu9-nT-Ggg"/>
                 <outlet property="clientAutoComplete" destination="cCQ-e0-gV1" id="sMM-dm-fm9"/>
                 <outlet property="colorBtn" destination="Zz6-Ng-Mjf" id="dah-ED-Ork"/>
-                <outlet property="colorPickerContainerView" destination="Z6i-Vm-FEs" id="v2g-mc-5rf"/>
+                <outlet property="colorPickerContainerBox" destination="1oc-cY-QWd" id="jyE-Q2-QW5"/>
+                <outlet property="colorPickerContainerView" destination="Z6i-Vm-FEs" id="hac-Fv-cL7"/>
                 <outlet property="projectTextField" destination="eQK-O0-2vn" id="yle-Cg-xGS"/>
                 <outlet property="publicProjectCheckBox" destination="2Vy-Nq-8Ub" id="Ik7-Kv-WnW"/>
                 <outlet property="workspaceAutoComplete" destination="I8L-vz-Mr7" id="CXb-Ky-yPT"/>
@@ -265,6 +280,9 @@
     <resources>
         <namedColor name="auto-complete-background">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="color-picker-background">
+            <color red="0.97647058823529409" green="0.97647058823529409" blue="0.97647058823529409" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="color-project-btn-border-color">
             <color red="0.0" green="0.0" blue="0.0" alpha="0.10000000149011612" colorSpace="custom" customColorSpace="sRGB"/>
