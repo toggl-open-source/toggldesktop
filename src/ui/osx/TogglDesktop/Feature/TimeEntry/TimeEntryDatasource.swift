@@ -159,7 +159,9 @@ class TimeEntryDatasource: NSObject {
             guard previousSectionIndex >= 0 && previousSectionIndex < self.count else {
                 return nil
             }
-            let previousSection = sectionItem(at: previousSectionIndex)
+            guard let previousSection = sectionItem(at: previousSectionIndex) else {
+                return nil
+            }
             let lastRowIndex = previousSection.entries.count - 1
             return IndexPath(item: lastRowIndex, section: previousSectionIndex)
         }
@@ -220,9 +222,9 @@ class TimeEntryDatasource: NSObject {
         }
     }
 
-    fileprivate func sectionItem(at section: Int) -> TimeEntrySection {
+    fileprivate func sectionItem(at section: Int) -> TimeEntrySection? {
         return queue.sync(flags: .barrier) {
-            return sections[section]
+            return sections[safe: section]
         }
     }
 }
@@ -271,13 +273,13 @@ extension TimeEntryDatasource: NSCollectionViewDataSource, NSCollectionViewDeleg
     func collectionView(_ collectionView: NSCollectionView,
                         numberOfItemsInSection section: Int) -> Int {
         let sectionItem = self.sectionItem(at: section)
-        return sectionItem.entries.count
+        return sectionItem?.entries.count ?? 0
     }
 
     func collectionView(_ collectionView: NSCollectionView,
                         itemForRepresentedObjectAt indexPath: IndexPath) -> NSCollectionViewItem {
 
-        let section = sectionItem(at: indexPath.section)
+        guard let section = sectionItem(at: indexPath.section) else { return NSCollectionViewItem() }
 
         if section.isLoadMore {
             return makeLoadMoreCell(with: collectionView, indexPath: indexPath)
@@ -289,7 +291,7 @@ extension TimeEntryDatasource: NSCollectionViewDataSource, NSCollectionViewDeleg
     func collectionView(_ collectionView: NSCollectionView,
                         viewForSupplementaryElementOfKind kind: NSCollectionView.SupplementaryElementKind,
                         at indexPath: IndexPath) -> NSView {
-        let section = sectionItem(at: indexPath.section)
+        guard let section = sectionItem(at: indexPath.section) else { return NSView() }
 
         // Return empty view
         if section.isLoadMore {
@@ -311,7 +313,7 @@ extension TimeEntryDatasource: NSCollectionViewDataSource, NSCollectionViewDeleg
     func collectionView(_ collectionView: NSCollectionView,
                         layout collectionViewLayout: NSCollectionViewLayout,
                         referenceSizeForHeaderInSection section: Int) -> NSSize {
-        let sectionData = sectionItem(at: section)
+        guard let sectionData = sectionItem(at: section) else { return .zero }
 
         // We don't need header for load more cell
         // but we don't have choice to opt-out, so we return zero size
@@ -326,7 +328,7 @@ extension TimeEntryDatasource: NSCollectionViewDataSource, NSCollectionViewDeleg
     func collectionView(_ collectionView: NSCollectionView,
                         layout collectionViewLayout: NSCollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> NSSize {
-        let section = sectionItem(at: indexPath.section)
+        guard let section = sectionItem(at: indexPath.section) else { return .zero }
         if section.isLoadMore {
             return loaderMoreSize
         }
@@ -339,7 +341,7 @@ extension TimeEntryDatasource: NSCollectionViewDataSource, NSCollectionViewDeleg
                                                  for: indexPath) as? TimeEntryCell else {
                                                     fatalError()
         }
-        let section = sectionItem(at: indexPath.section)
+        guard let section = sectionItem(at: indexPath.section) else { return NSCollectionViewItem() }
         if let item = section.entries[safe: indexPath.item] {
             cell.render(item)
         }
@@ -424,7 +426,7 @@ extension TimeEntryDatasource {
 extension TimeEntryDatasource: VertificalTimeEntryFlowLayoutDelegate {
 
     func isLoadMoreItem(at section: Int) -> Bool {
-        let section = sectionItem(at: section)
+        guard let section = sectionItem(at: section) else { return false }
         return section.isLoadMore
     }
 }
