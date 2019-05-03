@@ -12,6 +12,7 @@ protocol AutoCompleteTextFieldDelegate: class {
 
     func autoCompleteDidTapOnCreateButton(_ sender: AutoCompleteTextField)
     func shouldClearCurrentSelection(_ sender: AutoCompleteTextField)
+    func autoCompleteViewDidClose(_ sender: AutoCompleteTextField)
 }
 
 class AutoCompleteTextField: NSTextField, NSTextFieldDelegate, AutoCompleteViewDelegate {
@@ -38,14 +39,20 @@ class AutoCompleteTextField: NSTextField, NSTextFieldDelegate, AutoCompleteViewD
     // MARK: Variables
 
     weak var autoCompleteDelegate: AutoCompleteTextFieldDelegate?
-    lazy var autoCompleteWindow: AutoCompleteViewWindow = AutoCompleteViewWindow(view: autoCompleteView)
+    lazy var autoCompleteWindow: AutoCompleteViewWindow = {
+        let window = AutoCompleteViewWindow(view: autoCompleteView)
+        window.isSeparateWindow = isSeperateWindow
+        return window
+    }()
     lazy var autoCompleteView: AutoCompleteView = AutoCompleteView.xibView()
+    var isSeperateWindow: Bool { return true }
     private var _state = State.collapse {
         didSet {
             switch _state {
             case .collapse:
                 arrowBtn.image = NSImage(named: NSImage.Name("arrow-section-open"))
                 closeAutoComplete()
+                autoCompleteDelegate?.autoCompleteViewDidClose(self)
             case .expand:
                 arrowBtn.image = NSImage(named: NSImage.Name("arrow-section-close"))
                 presentAutoComplete()
@@ -101,13 +108,18 @@ class AutoCompleteTextField: NSTextField, NSTextFieldDelegate, AutoCompleteViewD
         }
     }
 
+    func openSuggestion() {
+        state = .expand
+    }
+    
     func closeSuggestion() {
         state = .collapse
     }
 
     func updateWindowContent(with view: NSView, height: CGFloat) {
         autoCompleteWindow.contentView = view
-        autoCompleteWindow.layoutFrame(with: self, height: height)
+        let rect = windowFrameRect()
+        autoCompleteWindow.layoutFrame(with: self, origin: rect.origin, size: rect.size)
         autoCompleteWindow.makeKey()
     }
 
@@ -120,15 +132,32 @@ class AutoCompleteTextField: NSTextField, NSTextFieldDelegate, AutoCompleteViewD
         // Set auto complete table
         autoCompleteWindow.contentView = autoCompleteView
         autoCompleteWindow.setContentSize(autoCompleteView.frame.size)
-        
-        // Layout frame and position
-        autoCompleteWindow.layoutFrame(with: self, height: autoCompleteView.frame.size.height)
 
         // Present if need
         if !autoCompleteWindow.isVisible {
-            window?.addChildWindow(autoCompleteWindow,
-                                   ordered: .above)
+
+            // Layout frame and position
+            let rect = windowFrameRect()
+            autoCompleteWindow.layoutFrame(with: self, origin: rect.origin, size: rect.size)
+
+            // Add or make key
+            if self.window != autoCompleteWindow {
+                window?.addChildWindow(autoCompleteWindow,
+                                       ordered: .above)
+            } else {
+                autoCompleteWindow.makeKeyAndOrderFront(nil)
+            }
         }
+
+        didPresentAutoComplete()
+    }
+
+    func windowFrameRect() -> CGRect {
+        return frame
+    }
+
+    func didPresentAutoComplete() {
+        // Override
     }
 
     func didTapOnCreateButton() {

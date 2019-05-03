@@ -16,7 +16,11 @@
                 <outlet property="projectBox" destination="HK8-ig-0Mv" id="Dnb-C3-7iP"/>
                 <outlet property="projectDotImageView" destination="gFc-aw-iMX" id="BEl-Tj-c8T"/>
                 <outlet property="projectTextField" destination="Doe-dQ-82A" id="cgo-cM-Mbh"/>
-                <outlet property="tagTextField" destination="euZ-Fv-idX" id="lqe-b7-4g3"/>
+                <outlet property="tagAddButton" destination="fzH-q2-m3a" id="Z2u-zq-e9e"/>
+                <outlet property="tagAutoCompleteContainerView" destination="mUe-Xn-xvP" id="cvg-Ii-7IT"/>
+                <outlet property="tagInputContainerView" destination="sts-eu-78s" id="Xu1-2S-B1m"/>
+                <outlet property="tagStackView" destination="qgG-HS-MvE" id="aDQ-6D-KtU"/>
+                <outlet property="tagTextField" destination="aeq-aC-W8G" id="ZA7-lD-iQX"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
             </connections>
         </customObject>
@@ -120,25 +124,40 @@
                                     <rect key="frame" x="1" y="1" width="238" height="28"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="euZ-Fv-idX">
-                                            <rect key="frame" x="-2" y="0.0" width="242" height="28"/>
-                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" alignment="left" placeholderString="Add tags" id="Sff-pG-la9" customClass="VerticallyCenteredTextFieldCell" customModule="TogglDesktop" customModuleProvider="target">
-                                                <font key="font" metaFont="system" size="14"/>
-                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="focusRingCornerRadius">
-                                                        <real key="value" value="8"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                </userDefinedRuntimeAttributes>
-                                            </textFieldCell>
-                                        </textField>
+                                        <stackView hidden="YES" distribution="equalSpacing" orientation="horizontal" alignment="centerY" spacing="5" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qgG-HS-MvE">
+                                            <rect key="frame" x="0.0" y="0.0" width="0.0" height="28"/>
+                                        </stackView>
+                                        <customView translatesAutoresizingMaskIntoConstraints="NO" id="Scx-li-Ewv">
+                                            <rect key="frame" x="0.0" y="0.0" width="238" height="28"/>
+                                            <subviews>
+                                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="fzH-q2-m3a">
+                                                    <rect key="frame" x="10" y="0.0" width="218" height="28"/>
+                                                    <buttonCell key="cell" type="bevel" title="Add tags" bezelStyle="rounded" alignment="left" imageScaling="proportionallyDown" inset="2" id="FrN-5J-6rF">
+                                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                        <font key="font" metaFont="system" size="14"/>
+                                                    </buttonCell>
+                                                    <connections>
+                                                        <action selector="tagAddButtonOnTap:" target="-2" id="Bfd-bb-wxi"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="fzH-q2-m3a" firstAttribute="leading" secondItem="Scx-li-Ewv" secondAttribute="leading" constant="10" id="2Ap-96-clS"/>
+                                                <constraint firstAttribute="bottom" secondItem="fzH-q2-m3a" secondAttribute="bottom" id="7uf-bd-HJg"/>
+                                                <constraint firstItem="fzH-q2-m3a" firstAttribute="top" secondItem="Scx-li-Ewv" secondAttribute="top" id="Z9s-pO-4Gv"/>
+                                                <constraint firstAttribute="trailing" secondItem="fzH-q2-m3a" secondAttribute="trailing" constant="10" id="vNW-Jk-62b"/>
+                                            </constraints>
+                                        </customView>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="euZ-Fv-idX" firstAttribute="leading" secondItem="GjA-gG-Fhy" secondAttribute="leading" id="3M4-wM-wOT"/>
-                                        <constraint firstItem="euZ-Fv-idX" firstAttribute="top" secondItem="GjA-gG-Fhy" secondAttribute="top" id="5Sm-Vb-HkC"/>
-                                        <constraint firstAttribute="trailing" secondItem="euZ-Fv-idX" secondAttribute="trailing" id="FrD-rO-z6R"/>
-                                        <constraint firstAttribute="bottom" secondItem="euZ-Fv-idX" secondAttribute="bottom" id="g1f-aj-nR8"/>
+                                        <constraint firstAttribute="trailing" secondItem="Scx-li-Ewv" secondAttribute="trailing" id="7uN-c2-g31"/>
+                                        <constraint firstAttribute="bottom" secondItem="qgG-HS-MvE" secondAttribute="bottom" id="JCc-fX-syf"/>
+                                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="qgG-HS-MvE" secondAttribute="trailing" id="N5a-Q5-H8g"/>
+                                        <constraint firstAttribute="bottom" secondItem="Scx-li-Ewv" secondAttribute="bottom" id="W8T-By-CMT"/>
+                                        <constraint firstItem="Scx-li-Ewv" firstAttribute="top" secondItem="GjA-gG-Fhy" secondAttribute="top" id="d78-9b-S6x"/>
+                                        <constraint firstItem="qgG-HS-MvE" firstAttribute="leading" secondItem="GjA-gG-Fhy" secondAttribute="leading" id="f5V-sW-lys"/>
+                                        <constraint firstItem="Scx-li-Ewv" firstAttribute="leading" secondItem="GjA-gG-Fhy" secondAttribute="leading" id="fVD-Dt-0Bg"/>
+                                        <constraint firstItem="qgG-HS-MvE" firstAttribute="top" secondItem="GjA-gG-Fhy" secondAttribute="top" id="yEs-m5-WeO"/>
                                     </constraints>
                                 </view>
                                 <constraints>
@@ -342,6 +361,39 @@
                                     <action selector="closeBtnOnTap:" target="-2" id="LME-BW-gYu"/>
                                 </connections>
                             </button>
+                            <box hidden="YES" boxType="custom" cornerRadius="8" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="mUe-Xn-xvP">
+                                <rect key="frame" x="10" y="192" width="240" height="30"/>
+                                <view key="contentView" id="21r-cG-sfg">
+                                    <rect key="frame" x="1" y="1" width="238" height="28"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <textField hidden="YES" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="aeq-aC-W8G" customClass="TagAutoCompleteTextField" customModule="TogglDesktop" customModuleProvider="target">
+                                            <rect key="frame" x="-2" y="0.0" width="242" height="28"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" alignment="left" placeholderString="Select a tag" id="u0H-N9-7h5" customClass="VerticallyCenteredTextFieldCell" customModule="TogglDesktop" customModuleProvider="target">
+                                                <font key="font" metaFont="system" size="14"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="focusRingCornerRadius">
+                                                        <real key="value" value="8"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                            </textFieldCell>
+                                        </textField>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="aeq-aC-W8G" firstAttribute="leading" secondItem="21r-cG-sfg" secondAttribute="leading" id="MgJ-2t-hQj"/>
+                                        <constraint firstItem="aeq-aC-W8G" firstAttribute="top" secondItem="21r-cG-sfg" secondAttribute="top" id="i1e-fL-XBo"/>
+                                        <constraint firstAttribute="trailing" secondItem="aeq-aC-W8G" secondAttribute="trailing" id="lBb-WJ-8bl"/>
+                                        <constraint firstAttribute="bottom" secondItem="aeq-aC-W8G" secondAttribute="bottom" id="sNP-Id-DmK"/>
+                                    </constraints>
+                                </view>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="8Bq-u5-vwp"/>
+                                </constraints>
+                                <color key="borderColor" name="upload-border-color"/>
+                                <color key="fillColor" name="editor-background-color"/>
+                            </box>
                         </subviews>
                         <constraints>
                             <constraint firstItem="Qzj-M9-zrp" firstAttribute="centerY" secondItem="8Gv-Ta-I1u" secondAttribute="centerY" constant="2" id="1lo-UI-uco"/>
@@ -349,6 +401,7 @@
                             <constraint firstItem="Z2P-L8-d10" firstAttribute="leading" secondItem="RzB-ad-pEO" secondAttribute="leading" constant="20" id="4Bn-aX-Nah"/>
                             <constraint firstItem="UnC-x9-3oX" firstAttribute="leading" secondItem="RzB-ad-pEO" secondAttribute="leading" id="4yy-Ou-d89"/>
                             <constraint firstAttribute="trailing" secondItem="UnC-x9-3oX" secondAttribute="trailing" id="6cS-Y3-C1b"/>
+                            <constraint firstItem="mUe-Xn-xvP" firstAttribute="leading" secondItem="RzB-ad-pEO" secondAttribute="leading" constant="10" id="AWM-wE-BYp"/>
                             <constraint firstItem="fPF-go-RPE" firstAttribute="leading" secondItem="RzB-ad-pEO" secondAttribute="leading" constant="10" id="AiD-3K-fZu"/>
                             <constraint firstItem="kfQ-Tm-uet" firstAttribute="centerY" secondItem="8Gv-Ta-I1u" secondAttribute="centerY" id="CAc-Bz-mye"/>
                             <constraint firstItem="Z2P-L8-d10" firstAttribute="top" secondItem="RzB-ad-pEO" secondAttribute="top" constant="20" id="ErY-fV-eb0"/>
@@ -369,8 +422,10 @@
                             <constraint firstItem="vpV-Av-rbR" firstAttribute="top" secondItem="fPF-go-RPE" secondAttribute="bottom" constant="20" id="gXc-d6-ab2"/>
                             <constraint firstItem="Qo9-rw-PRz" firstAttribute="leading" secondItem="RzB-ad-pEO" secondAttribute="leading" constant="10" id="hB8-KN-2vg"/>
                             <constraint firstItem="flL-k2-TC8" firstAttribute="leading" secondItem="Z2P-L8-d10" secondAttribute="leading" id="ifh-Dy-Ovn"/>
+                            <constraint firstAttribute="trailing" secondItem="mUe-Xn-xvP" secondAttribute="trailing" constant="10" id="izn-Pa-rxI"/>
                             <constraint firstItem="8Gv-Ta-I1u" firstAttribute="leading" secondItem="Qo9-rw-PRz" secondAttribute="trailing" constant="15" id="k1o-PS-6Zs"/>
                             <constraint firstItem="veq-fR-isT" firstAttribute="top" secondItem="vpV-Av-rbR" secondAttribute="bottom" constant="10" id="kvi-19-lAV"/>
+                            <constraint firstItem="mUe-Xn-xvP" firstAttribute="top" secondItem="sts-eu-78s" secondAttribute="bottom" constant="5" id="nU7-YF-Me0"/>
                             <constraint firstItem="LcZ-Q8-F7m" firstAttribute="top" secondItem="Z2P-L8-d10" secondAttribute="bottom" constant="10" id="oO1-Mp-Gsa"/>
                             <constraint firstItem="Qzj-M9-zrp" firstAttribute="leading" secondItem="8Gv-Ta-I1u" secondAttribute="trailing" constant="4" id="qDM-9K-UMe"/>
                             <constraint firstItem="flL-k2-TC8" firstAttribute="top" secondItem="sts-eu-78s" secondAttribute="bottom" constant="20" id="qJa-hb-Nve"/>
@@ -382,7 +437,7 @@
                             <constraint firstItem="sts-eu-78s" firstAttribute="leading" secondItem="RzB-ad-pEO" secondAttribute="leading" constant="10" id="xot-d9-UOv"/>
                         </constraints>
                     </view>
-                    <color key="fillColor" name="preference-background-color"/>
+                    <color key="fillColor" name="editor-background-color"/>
                 </box>
             </subviews>
             <constraints>
@@ -391,7 +446,7 @@
                 <constraint firstItem="fZO-4l-jo1" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" id="nno-xe-fYT"/>
                 <constraint firstAttribute="bottom" secondItem="fZO-4l-jo1" secondAttribute="bottom" id="yr2-gk-PkQ"/>
             </constraints>
-            <point key="canvasLocation" x="-361" y="-131"/>
+            <point key="canvasLocation" x="-472" y="-285"/>
         </customView>
     </objects>
     <resources>
@@ -400,14 +455,14 @@
         <image name="next_date_arrow" width="4" height="7"/>
         <image name="previous_date_arrow" width="4" height="7"/>
         <image name="time-entry-dot" width="8" height="8"/>
+        <namedColor name="editor-background-color">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="error-title-color">
             <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="grey-text-color">
             <color red="0.33333333333333331" green="0.33333333333333331" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="preference-background-color">
-            <color red="0.98039215686274506" green="0.98431372549019602" blue="0.9882352941176471" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="upload-border-color">
             <color red="0.67450980392156867" green="0.67450980392156867" blue="0.67450980392156867" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

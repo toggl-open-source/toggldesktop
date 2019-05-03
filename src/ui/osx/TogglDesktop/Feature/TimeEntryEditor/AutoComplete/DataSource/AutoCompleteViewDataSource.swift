@@ -107,6 +107,10 @@ class AutoCompleteViewDataSource: NSObject {
 
         autoCompleteView.update(height: suitableHeight)
     }
+
+    func keyboardDidEnter() {
+        // Override
+    }
 }
 
 extension AutoCompleteViewDataSource: NSTableViewDataSource, NSTableViewDelegate {

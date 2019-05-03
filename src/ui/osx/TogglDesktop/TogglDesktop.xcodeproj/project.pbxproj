@@ -128,6 +128,14 @@
 		95DBF8CD18BF7A910021FB41 /* offline_on.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 95DBF8CB18BF7A910021FB41 /* offline_on.pdf */; };
 		95DBF8D718C48B300021FB41 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 95DBF8D618C48B300021FB41 /* logo.png */; };
 		BA013FF5225705B6000E5B91 /* HoverTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA013FF4225705B6000E5B91 /* HoverTableCellView.swift */; };
+		BA01404622570805000E5B91 /* TagCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA01404522570805000E5B91 /* TagCellView.swift */; };
+		BA0140482257080F000E5B91 /* TagCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA0140472257080F000E5B91 /* TagCellView.xib */; };
+		BA01404A22570893000E5B91 /* Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA01404922570893000E5B91 /* Tag.swift */; };
+		BA01404C22570967000E5B91 /* TagStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA01404B22570967000E5B91 /* TagStorage.swift */; };
+		BA01404E22571081000E5B91 /* TagDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA01404D22571081000E5B91 /* TagDataSource.swift */; };
+		BA014050225710FD000E5B91 /* TagAutoCompleteTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA01404F225710FD000E5B91 /* TagAutoCompleteTextField.swift */; };
+		BA01405222571199000E5B91 /* TagTokenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA01405122571199000E5B91 /* TagTokenView.swift */; };
+		BA014054225711A3000E5B91 /* TagTokenView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA014053225711A3000E5B91 /* TagTokenView.xib */; };
 		BA03725521FE9FD400FC277B /* FlatButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA03725421FE9FD400FC277B /* FlatButton.swift */; };
 		BA03729D21FED85700FC277B /* NSView+Xib.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA03729C21FED85700FC277B /* NSView+Xib.swift */; };
 		BA053659225DDDBB00C26E1F /* CustomFocusRingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA053658225DDDBB00C26E1F /* CustomFocusRingButton.swift */; };
@@ -734,6 +742,14 @@
 		95DBF8CB18BF7A910021FB41 /* offline_on.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = offline_on.pdf; sourceTree = "<group>"; };
 		95DBF8D618C48B300021FB41 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo.png; sourceTree = "<group>"; };
 		BA013FF4225705B6000E5B91 /* HoverTableCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoverTableCellView.swift; sourceTree = "<group>"; };
+		BA01404522570805000E5B91 /* TagCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagCellView.swift; sourceTree = "<group>"; };
+		BA0140472257080F000E5B91 /* TagCellView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TagCellView.xib; sourceTree = "<group>"; };
+		BA01404922570893000E5B91 /* Tag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tag.swift; sourceTree = "<group>"; };
+		BA01404B22570967000E5B91 /* TagStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagStorage.swift; sourceTree = "<group>"; };
+		BA01404D22571081000E5B91 /* TagDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagDataSource.swift; sourceTree = "<group>"; };
+		BA01404F225710FD000E5B91 /* TagAutoCompleteTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagAutoCompleteTextField.swift; sourceTree = "<group>"; };
+		BA01405122571199000E5B91 /* TagTokenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagTokenView.swift; sourceTree = "<group>"; };
+		BA014053225711A3000E5B91 /* TagTokenView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TagTokenView.xib; sourceTree = "<group>"; };
 		BA03725421FE9FD400FC277B /* FlatButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlatButton.swift; sourceTree = "<group>"; };
 		BA03729C21FED85700FC277B /* NSView+Xib.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSView+Xib.swift"; sourceTree = "<group>"; };
 		BA053658225DDDBB00C26E1F /* CustomFocusRingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFocusRingButton.swift; sourceTree = "<group>"; };
@@ -1310,6 +1326,18 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		BA014026225707F1000E5B91 /* Tag */ = {
+			isa = PBXGroup;
+			children = (
+				BA01404922570893000E5B91 /* Tag.swift */,
+				BA01404522570805000E5B91 /* TagCellView.swift */,
+				BA0140472257080F000E5B91 /* TagCellView.xib */,
+				BA01405122571199000E5B91 /* TagTokenView.swift */,
+				BA014053225711A3000E5B91 /* TagTokenView.xib */,
+			);
+			path = Tag;
+			sourceTree = "<group>";
+		};
 		BA0C3A45223219330081C6DE /* AutoComplete */ = {
 			isa = PBXGroup;
 			children = (
@@ -1360,6 +1388,7 @@
 		BA34F0DB22439BF300C27A15 /* TimeEntryEditor */ = {
 			isa = PBXGroup;
 			children = (
+				BA014026225707F1000E5B91 /* Tag */,
 				BA8B4C522251FA6900592BC7 /* Workspace */,
 				BA412C1B224E0D3E003CA17A /* Client */,
 				BA9C2DD8224C7E2E002AD2A1 /* Project */,
@@ -1474,6 +1503,7 @@
 				BA6EB83F2248CBE3003BB8EF /* ProjectStorage.swift */,
 				BA412BFB224E0CBE003CA17A /* ClientStorage.swift */,
 				BAA11AC02251F49E007F31D2 /* WorkspaceStorage.swift */,
+				BA01404B22570967000E5B91 /* TagStorage.swift */,
 			);
 			path = Storage;
 			sourceTree = "<group>";
@@ -1525,6 +1555,7 @@
 				BA7D335922489C8000B953A8 /* ProjectDataSource.swift */,
 				BA412C1C224E0D61003CA17A /* ClientDataSource.swift */,
 				BAA11AC42251F502007F31D2 /* WorkspaceDataSource.swift */,
+				BA01404D22571081000E5B91 /* TagDataSource.swift */,
 			);
 			path = DataSource;
 			sourceTree = "<group>";
@@ -1536,6 +1567,7 @@
 				BAE8E844224CA9AC006D534E /* ProjectAutoCompleteTextField.swift */,
 				BA412C24224E147A003CA17A /* ClientAutoCompleteTextField.swift */,
 				BAA11AC22251F4D6007F31D2 /* WorkspaceAutoCompleteTextField.swift */,
+				BA01404F225710FD000E5B91 /* TagAutoCompleteTextField.swift */,
 			);
 			path = Input;
 			sourceTree = "<group>";
@@ -1969,6 +2001,7 @@
 				3CD30F441F58B02C006FAA0D /* OverlayViewController.xib in Resources */,
 				74664DB218AA860800AAD282 /* off.pdf in Resources */,
 				BA7D3355224898E400B953A8 /* ProjectContentCellView.xib in Resources */,
+				BA014054225711A3000E5B91 /* TagTokenView.xib in Resources */,
 				7430750518204EFB009019CB /* AboutWindowController.xib in Resources */,
 				BA4059B1221D2186002969B8 /* TimeHeaderView.xib in Resources */,
 				749CB8CD18167D6E00814841 /* PreferencesWindowController.xib in Resources */,
@@ -1997,6 +2030,7 @@
 				BAF38FEF2241FF20009147D7 /* FloatingErrorView.xib in Resources */,
 				74D1D25817EB713F00E709B0 /* TimeEntryListViewController.xib in Resources */,
 				3C50BCAC1C1F0574004BAE9E /* (null) in Resources */,
+				BA0140482257080F000E5B91 /* TagCellView.xib in Resources */,
 				BA9C2DFA224C7E77002AD2A1 /* ProjectCreationView.xib in Resources */,
 				3C8979B71920B7B7007061E0 /* continue.pdf in Resources */,
 				BA412C29224E196D003CA17A /* NoClientCellView.xib in Resources */,
@@ -2093,6 +2127,7 @@
 				BA6EB8402248CBE3003BB8EF /* ProjectStorage.swift in Sources */,
 				BAAF567E2223CAC5003D0D73 /* NSButton+TextColor.swift in Sources */,
 				BA6EB8942249DB33003BB8EF /* VerticallyCenteredTextFieldCell.swift in Sources */,
+				BA01405222571199000E5B91 /* TagTokenView.swift in Sources */,
 				BA46E09F2226707F00C25763 /* Collection+Safe.swift in Sources */,
 				BA05367F225E238D00C26E1F /* ProjectWorksapceCellView.swift in Sources */,
 				74E3CDC617FBABE400C3ADD3 /* Bugsnag.m in Sources */,
@@ -2134,6 +2169,7 @@
 				BA0C3A6722321FBC0081C6DE /* AutoCompleteTableCell+Ext.swift in Sources */,
 				3C6B24A4203FC8200063FC08 /* LiteAutoCompleteDataSource.m in Sources */,
 				3C068C6A1C22F25000874B9A /* MKColorWellCustom.m in Sources */,
+				BA01404E22571081000E5B91 /* TagDataSource.swift in Sources */,
 				3CA14529192DE32300414620 /* NSViewEscapable.m in Sources */,
 				BA6572A9224DFA6F00BA4C60 /* ColorGraphicsView.swift in Sources */,
 				BAA11AC52251F502007F31D2 /* WorkspaceDataSource.swift in Sources */,
@@ -2149,6 +2185,7 @@
 				74AA9476180909F50000539F /* GTMOAuth2WindowController.m in Sources */,
 				BA89CB392265EA4400D21584 /* String+Search.swift in Sources */,
 				BA9C2E08224C854C002AD2A1 /* ProjectColor.swift in Sources */,
+				BA01404622570805000E5B91 /* TagCellView.swift in Sources */,
 				BA7D334B2248944C00B953A8 /* AutoCompleteView.swift in Sources */,
 				BA03729D21FED85700FC277B /* NSView+Xib.swift in Sources */,
 				BA84363B22533A6600EF5830 /* DesktopLibraryBridge.m in Sources */,
@@ -2168,6 +2205,7 @@
 				BA7D335E2248B48000B953A8 /* AutoCompleteTextField.swift in Sources */,
 				3C07B75A193C88AE00ED6E6F /* NSCustomTimerComboBox.m in Sources */,
 				BA7D335722489BD000B953A8 /* AutoCompleteViewDataSource.swift in Sources */,
+				BA01404C22570967000E5B91 /* TagStorage.swift in Sources */,
 				74BAD31E18BD7D83002FD4CF /* ViewItem.m in Sources */,
 				3CD7AD6F19ED579700372797 /* NSResize.m in Sources */,
 				BA08E012222E32C90075F68E /* NSView+LayoutConstraint.swift in Sources */,
@@ -2186,6 +2224,7 @@
 				74BAAA0B17F37B140079386F /* TimeEntryViewItem.m in Sources */,
 				BA412C27224E195C003CA17A /* NoClientCellView.swift in Sources */,
 				7423393C1829B99C00063FA9 /* IdleNotificationWindowController.m in Sources */,
+				BA01404A22570893000E5B91 /* Tag.swift in Sources */,
 				BA6F1B3821EEE998009265E4 /* Theme+Notification.swift in Sources */,
 				7430750418204EFB009019CB /* AboutWindowController.m in Sources */,
 				74D1D27217EB72D900E709B0 /* TimerEditViewController.m in Sources */,
@@ -2199,6 +2238,7 @@
 				95C0707718CDB67300A34D0D /* NSCustomComboBoxCell.m in Sources */,
 				BAAF569E2223D4C7003D0D73 /* DotImageView.swift in Sources */,
 				3C0A571A1C22E12E00301D77 /* MKColorPickerView.m in Sources */,
+				BA014050225710FD000E5B91 /* TagAutoCompleteTextField.swift in Sources */,
 				BAE8E845224CA9AC006D534E /* ProjectAutoCompleteTextField.swift in Sources */,
 				BA6572A7224DFA6F00BA4C60 /* HSBGen.swift in Sources */,
 				BA8B4C752251FAD500592BC7 /* WorkspaceCellView.swift in Sources */,

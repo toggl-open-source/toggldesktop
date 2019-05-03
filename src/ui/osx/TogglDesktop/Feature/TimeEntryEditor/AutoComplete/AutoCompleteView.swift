@@ -12,7 +12,8 @@ final class AutoCompleteViewWindow: NSWindow {
 
     // MARK: Private
 
-    private let topPadding: CGFloat = 5.0
+    private var topPadding: CGFloat = 5.0
+    var isSeparateWindow = true
     override var canBecomeMain: Bool {
         return true
     }
@@ -34,19 +35,25 @@ final class AutoCompleteViewWindow: NSWindow {
         setContentBorderThickness(0, for: NSRectEdge(rawValue: 0)!)
     }
 
-    func layoutFrame(with textField: NSTextField, height: CGFloat) {
+    func layoutFrame(with textField: NSTextField, origin: CGPoint, size: CGSize) {
         guard let window = textField.window else { return }
-        let size = textField.frame.size
+        var height = size.height
 
         // Convert
         var location = CGPoint.zero
-        let point = textField.superview!.convert(textField.frame.origin, to: nil)
+        let point = textField.superview!.convert(origin, to: nil)
         if #available(OSX 10.12, *) {
             location = window.convertPoint(toScreen: point)
         } else {
             // Fallback on earlier versions
         }
-        location.y -= topPadding
+        if isSeparateWindow {
+            location.y -= topPadding
+        } else {
+            location.y -= -30.0
+            height += 30.0
+        }
+
         setFrame(CGRect(x: 0, y: 0, width: size.width, height: height), display: false)
         setFrameTopLeftPoint(location)
     }
@@ -72,6 +79,8 @@ final class AutoCompleteView: NSView {
     @IBOutlet weak var createNewItemContainerView: NSBox!
     @IBOutlet weak var horizontalLine: NSBox!
     @IBOutlet weak var stackView: NSStackView!
+    @IBOutlet weak var placeholderBox: NSView!
+    @IBOutlet weak var placeholderBoxContainerView: NSView!
 
     // MARK: Variables
 
@@ -120,6 +129,7 @@ extension AutoCompleteView {
         stackView.wantsLayer = true
         stackView.layer?.masksToBounds = true
         stackView.layer?.cornerRadius = 8
+        placeholderBox.isHidden = true
         createNewItemBtn.cursor = .pointingHand
         tableView.keyDidDownOnPress = {[weak self] key -> Bool in
             guard let strongSelf = self else { return false }
@@ -127,6 +137,7 @@ extension AutoCompleteView {
             case .enter,
                  .returnKey:
                 strongSelf.dataSource?.selectSelectedRow()
+                strongSelf.dataSource?.keyboardDidEnter()
                 return true
             case .tab:
                 // Only focus to create button if the view is expaned

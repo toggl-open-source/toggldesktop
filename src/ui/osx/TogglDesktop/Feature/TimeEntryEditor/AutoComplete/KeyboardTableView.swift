@@ -44,4 +44,8 @@ final class KeyboardTableView: NSTableView {
         let rowIndex = row(at: point)
         clickedOnRow?(rowIndex)
     }
+
+    override func acceptsFirstMouse(for event: NSEvent?) -> Bool {
+        return true
+    }
 }
