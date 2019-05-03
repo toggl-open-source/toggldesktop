@@ -24,10 +24,10 @@
                                 <rect key="frame" x="0.0" y="0.0" width="240" height="199"/>
                                 <subviews>
                                     <customView hidden="YES" translatesAutoresizingMaskIntoConstraints="NO" id="p5b-iT-O8A">
-                                        <rect key="frame" x="0.0" y="169" width="240" height="30"/>
+                                        <rect key="frame" x="0.0" y="164" width="240" height="35"/>
                                         <subviews>
                                             <box boxType="custom" cornerRadius="8" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="kGW-MJ-M06">
-                                                <rect key="frame" x="5" y="0.0" width="230" height="25"/>
+                                                <rect key="frame" x="5" y="5" width="230" height="25"/>
                                                 <view key="contentView" id="beQ-V1-NYT">
                                                     <rect key="frame" x="1" y="1" width="228" height="23"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -41,8 +41,8 @@
                                             <constraint firstItem="kGW-MJ-M06" firstAttribute="top" secondItem="p5b-iT-O8A" secondAttribute="top" constant="5" id="5wO-di-tuT"/>
                                             <constraint firstItem="kGW-MJ-M06" firstAttribute="leading" secondItem="p5b-iT-O8A" secondAttribute="leading" constant="5" id="7vP-Pw-zMG"/>
                                             <constraint firstAttribute="trailing" secondItem="kGW-MJ-M06" secondAttribute="trailing" constant="5" id="Te2-3N-AzJ"/>
-                                            <constraint firstAttribute="height" constant="30" id="hFs-Re-9Ng"/>
-                                            <constraint firstAttribute="bottom" secondItem="kGW-MJ-M06" secondAttribute="bottom" id="lBY-kq-NUJ"/>
+                                            <constraint firstAttribute="height" constant="35" id="hFs-Re-9Ng"/>
+                                            <constraint firstAttribute="bottom" secondItem="kGW-MJ-M06" secondAttribute="bottom" constant="5" id="lBY-kq-NUJ"/>
                                         </constraints>
                                     </customView>
                                     <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="17" horizontalPageScroll="10" verticalLineScroll="17" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" horizontalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="ozk-6N-fZL">
