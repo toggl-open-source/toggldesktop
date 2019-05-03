@@ -181,6 +181,7 @@
 		BA47C8DB227C45D600BF0869 /* TimeInputViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA47C8D9227C45D600BF0869 /* TimeInputViewController.xib */; };
 		BA47C8DD227C477E00BF0869 /* TimeInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA47C8DC227C477E00BF0869 /* TimeInputView.swift */; };
 		BA47C8DF227C47C200BF0869 /* TimeInputView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA47C8DE227C47C200BF0869 /* TimeInputView.xib */; };
+		BA47C8E1227C4B0100BF0869 /* TimeData.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA47C8E0227C4B0100BF0869 /* TimeData.swift */; };
 		BA50ED8522705F9E008323FA /* CalendarFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA50ED8422705F9E008323FA /* CalendarFlowLayout.swift */; };
 		BA6572A6224DFA6F00BA4C60 /* RGB.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6572A0224DFA6E00BA4C60 /* RGB.swift */; };
 		BA6572A7224DFA6F00BA4C60 /* HSBGen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6572A1224DFA6E00BA4C60 /* HSBGen.swift */; };
@@ -833,6 +834,7 @@
 		BA47C8D9227C45D600BF0869 /* TimeInputViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimeInputViewController.xib; sourceTree = "<group>"; };
 		BA47C8DC227C477E00BF0869 /* TimeInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeInputView.swift; sourceTree = "<group>"; };
 		BA47C8DE227C47C200BF0869 /* TimeInputView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimeInputView.xib; sourceTree = "<group>"; };
+		BA47C8E0227C4B0100BF0869 /* TimeData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeData.swift; sourceTree = "<group>"; };
 		BA50ED8422705F9E008323FA /* CalendarFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarFlowLayout.swift; sourceTree = "<group>"; };
 		BA6572A0224DFA6E00BA4C60 /* RGB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RGB.swift; sourceTree = "<group>"; };
 		BA6572A1224DFA6E00BA4C60 /* HSBGen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HSBGen.swift; sourceTree = "<group>"; };
@@ -1516,6 +1518,7 @@
 				BA47C8D9227C45D600BF0869 /* TimeInputViewController.xib */,
 				BA47C8DC227C477E00BF0869 /* TimeInputView.swift */,
 				BA47C8DE227C47C200BF0869 /* TimeInputView.xib */,
+				BA47C8E0227C4B0100BF0869 /* TimeData.swift */,
 			);
 			path = Time;
 			sourceTree = "<group>";
@@ -2316,6 +2319,7 @@
 				BA7D335722489BD000B953A8 /* AutoCompleteViewDataSource.swift in Sources */,
 				BA01404C22570967000E5B91 /* TagStorage.swift in Sources */,
 				74BAD31E18BD7D83002FD4CF /* ViewItem.m in Sources */,
+				BA47C8E1227C4B0100BF0869 /* TimeData.swift in Sources */,
 				3CD7AD6F19ED579700372797 /* NSResize.m in Sources */,
 				BA08E012222E32C90075F68E /* NSView+LayoutConstraint.swift in Sources */,
 				BA7D335A22489C8000B953A8 /* ProjectDataSource.swift in Sources */,
