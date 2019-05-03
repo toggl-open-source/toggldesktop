@@ -25,6 +25,21 @@ final class TimeInputView: NSView {
     enum DisplayMode {
         case compact // only hour + minute
         case full // all
+
+        var font: NSFont {
+            switch self {
+            case .compact:
+                return NSFont.systemFont(ofSize: 14.0)
+            case .full:
+                return NSFont.systemFont(ofSize: 19.0)
+            }
+        }
+    }
+
+    fileprivate struct TimeComponent {
+
+        let value: String
+        let selection: Selection
     }
 
     // MARK: OUTLET
@@ -36,24 +51,26 @@ final class TimeInputView: NSView {
     weak var delegate: TimeInputViewDelegate?
     private var time: TimeData! {
         didSet {
+            baseAtt = generateBaseAttribute()
+            selectionAtt = generateSelectionAttribute()
             renderTimeTitle()
         }
     }
     private var mode: DisplayMode = .full {
         didSet {
-
-            // Font
-            switch mode {
-            case .compact:
-                titleLbl.font = NSFont.systemFont(ofSize: 14.0)
-            case .full:
-                titleLbl.font = NSFont.systemFont(ofSize: 19.0)
-            }
-
-            // Title
             renderTimeTitle()
         }
     }
+    fileprivate var currentSelection: Selection = .none
+    private var greenColor: NSColor {
+        if #available(OSX 10.13, *) {
+            return NSColor(named: NSColor.Name("green-color"))!
+        } else {
+            return ConvertHexColor.hexCode(toNSColor: "#28cd41")
+        }
+    }
+    fileprivate lazy var baseAtt: [NSAttributedString.Key: Any] = generateBaseAttribute()
+    fileprivate lazy var selectionAtt: [NSAttributedString.Key: Any] = generateSelectionAttribute()
 
     // MARK: View cycle
 
@@ -74,14 +91,43 @@ final class TimeInputView: NSView {
 
 extension TimeInputView {
 
+
     fileprivate func renderTimeTitle() {
+
+        // Get componetns
+        var components: [TimeComponent] = []
         switch mode {
         case .full:
-            let text = "\(time.hour):\(time.minute):\(time.second)"
-            titleLbl.stringValue = text
+            components = [TimeComponent(value: "\(time.hour)", selection: .hour),
+                          TimeComponent(value: "\(time.minute)", selection: .minute),
+                          TimeComponent(value: "\(time.second)", selection: .second)]
         case .compact:
-            let text = "\(time.minute):\(time.second)"
-            titleLbl.stringValue = text
+            components = [TimeComponent(value: "\(time.hour)", selection: .hour),
+                          TimeComponent(value: "\(time.minute)", selection: .minute)]
         }
+
+
+        // Combine all components
+        // Render attribute if it's selected
+        let emptyString = NSMutableAttributedString(string: "", attributes: baseAtt)
+        let attributedTitle = components.reduce(into: emptyString) { (previousResult, component) in
+            let attribute = component.selection == currentSelection ? selectionAtt : baseAtt
+            let subTitle = NSAttributedString(string: component.value,
+                                              attributes: attribute)
+            previousResult.append(subTitle)
+        }
+        titleLbl.attributedStringValue = attributedTitle
     }
+
+    fileprivate func generateBaseAttribute() -> [NSAttributedString.Key: Any] {
+        return [NSAttributedString.Key.font: mode.font,
+                NSAttributedString.Key.foregroundColor: NSColor.labelColor]
+    }
+
+    fileprivate func generateSelectionAttribute() -> [NSAttributedString.Key: Any] {
+        return [NSAttributedString.Key.font: mode.font,
+                NSAttributedString.Key.foregroundColor: greenColor]
+    }
+
+
 }
