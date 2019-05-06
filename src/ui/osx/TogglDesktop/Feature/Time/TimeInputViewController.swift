@@ -16,7 +16,11 @@ final class TimeInputViewController: NSViewController {
     @IBOutlet weak var timeStackView: NSStackView!
     @IBOutlet weak var clockContainerView: NSView!
     @IBOutlet weak var durationLbl: NSTextField!
-    
+    @IBOutlet weak var startLbl: NSTextField!
+    @IBOutlet weak var startContainerView: NSView!
+    @IBOutlet weak var endLbl: NSTextField!
+    @IBOutlet weak var endContainerView: NSView!
+
     // MARK: Variables
 
     private var isAppearing = false
@@ -71,5 +75,17 @@ extension TimeInputViewController {
         durationInputView.leftAnchor.constraint(equalTo: durationContainerView.leftAnchor, constant: 20).isActive = true
 
         // Start
+        let startInputView = TimeInputView.xibView() as TimeInputView
+        startInputView.translatesAutoresizingMaskIntoConstraints = false
+        startContainerView.addSubview(startInputView)
+        startInputView.topAnchor.constraint(equalTo: startLbl.bottomAnchor, constant: 0).isActive = true
+        startInputView.leftAnchor.constraint(equalTo: startContainerView.leftAnchor, constant: 10).isActive = true
+
+        // End
+        let endInputView = TimeInputView.xibView() as TimeInputView
+        endInputView.translatesAutoresizingMaskIntoConstraints = false
+        endContainerView.addSubview(endInputView)
+        endInputView.topAnchor.constraint(equalTo: endLbl.bottomAnchor, constant: 0).isActive = true
+        endInputView.leftAnchor.constraint(equalTo: endContainerView.leftAnchor, constant: 10).isActive = true
     }
 }
