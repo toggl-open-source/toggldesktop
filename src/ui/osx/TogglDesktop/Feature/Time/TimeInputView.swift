@@ -94,7 +94,7 @@ extension TimeInputView {
 
     fileprivate func renderTimeTitle() {
         guard let time = time else { return }
-        
+
         // Get componetns
         var components: [TimeComponent] = []
         switch mode {
@@ -115,6 +115,9 @@ extension TimeInputView {
             let attribute = component.selection == currentSelection ? selectionAtt : baseAtt
             let subTitle = NSAttributedString(string: component.value,
                                               attributes: attribute)
+            if !previousResult.string.isEmpty {
+                previousResult.append(NSAttributedString(string: ":", attributes: baseAtt))
+            }
             previousResult.append(subTitle)
         }
         titleLbl.attributedStringValue = attributedTitle

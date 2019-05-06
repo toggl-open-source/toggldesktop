@@ -30,9 +30,10 @@ final class TimeInputViewController: NSViewController {
                 layoutContent()
             }
         }
-
     }
-
+    private lazy var durationInputView: TimeInputView = initDurationInputView()
+    private lazy var startInputView: TimeInputView = initStartInputView()
+    private lazy var endInputView: TimeInputView = initEndInputView()
 
     // MARK: View Cycle
 
@@ -40,7 +41,6 @@ final class TimeInputViewController: NSViewController {
         super.viewDidLoad()
 
         initCommon()
-        setupTimeInputs()
         layoutContent()
     }
 
@@ -55,7 +55,9 @@ final class TimeInputViewController: NSViewController {
     }
 
     private func layoutContent() {
-        
+        durationInputView.render(with: timeEntry.started)
+        startInputView.render(with: timeEntry.started)
+        endInputView.render(with: timeEntry.ended)
     }
 }
 
@@ -67,30 +69,33 @@ extension TimeInputViewController {
 
     }
 
-    fileprivate func setupTimeInputs() {
+    fileprivate func initDurationInputView() -> TimeInputView {
+        let inputView = TimeInputView.xibView() as TimeInputView
+        inputView.updateLayout(with: .full)
+        inputView.translatesAutoresizingMaskIntoConstraints = false
+        durationContainerView.addSubview(inputView)
+        inputView.topAnchor.constraint(equalTo: durationLbl.bottomAnchor, constant: 10).isActive = true
+        inputView.leftAnchor.constraint(equalTo: durationContainerView.leftAnchor, constant: 20).isActive = true
+        return inputView
+    }
 
-        // Duration
-        let durationInputView = TimeInputView.xibView() as TimeInputView
-        durationInputView.updateLayout(with: .full)
-        durationInputView.translatesAutoresizingMaskIntoConstraints = false
-        durationContainerView.addSubview(durationInputView)
-        durationInputView.topAnchor.constraint(equalTo: durationLbl.bottomAnchor, constant: 10).isActive = true
-        durationInputView.leftAnchor.constraint(equalTo: durationContainerView.leftAnchor, constant: 20).isActive = true
+    fileprivate func initStartInputView() -> TimeInputView {
+        let inputView = TimeInputView.xibView() as TimeInputView
+        inputView.updateLayout(with: .compact)
+        inputView.translatesAutoresizingMaskIntoConstraints = false
+        startContainerView.addSubview(inputView)
+        inputView.topAnchor.constraint(equalTo: startLbl.bottomAnchor, constant: 0).isActive = true
+        inputView.leftAnchor.constraint(equalTo: startContainerView.leftAnchor, constant: 10).isActive = true
+        return inputView
+    }
 
-        // Start
-        let startInputView = TimeInputView.xibView() as TimeInputView
-        startInputView.updateLayout(with: .compact)
-        startInputView.translatesAutoresizingMaskIntoConstraints = false
-        startContainerView.addSubview(startInputView)
-        startInputView.topAnchor.constraint(equalTo: startLbl.bottomAnchor, constant: 0).isActive = true
-        startInputView.leftAnchor.constraint(equalTo: startContainerView.leftAnchor, constant: 10).isActive = true
-
-        // End
-        let endInputView = TimeInputView.xibView() as TimeInputView
-        endInputView.updateLayout(with: .compact)
-        endInputView.translatesAutoresizingMaskIntoConstraints = false
-        endContainerView.addSubview(endInputView)
-        endInputView.topAnchor.constraint(equalTo: endLbl.bottomAnchor, constant: 0).isActive = true
-        endInputView.leftAnchor.constraint(equalTo: endContainerView.leftAnchor, constant: 10).isActive = true
+    fileprivate func initEndInputView() -> TimeInputView {
+        let inputView = TimeInputView.xibView() as TimeInputView
+        inputView.updateLayout(with: .compact)
+        inputView.translatesAutoresizingMaskIntoConstraints = false
+        endContainerView.addSubview(inputView)
+        inputView.topAnchor.constraint(equalTo: endLbl.bottomAnchor, constant: 0).isActive = true
+        inputView.leftAnchor.constraint(equalTo: endContainerView.leftAnchor, constant: 10).isActive = true
+        return inputView
     }
 }
