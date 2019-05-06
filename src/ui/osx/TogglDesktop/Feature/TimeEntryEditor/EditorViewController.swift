@@ -37,10 +37,13 @@ final class EditorViewController: NSViewController {
     @IBOutlet weak var previousDateBtn: NSButton!
     @IBOutlet weak var durationTextField: NSTextField!
     @IBOutlet weak var startAtBtn: CursorButton!
-    @IBOutlet weak var endAtTextField: NSTextField!
+    @IBOutlet weak var endAtBtn: CursorButton!
     @IBOutlet weak var dateSelectionBox: NSBox!
     @IBOutlet weak var workspaceLbl: NSTextField!
 
+    @IBOutlet weak var timeContainerView: NSView!
+    @IBOutlet weak var arrowBtn: NSButton!
+    
     // MARK: Variables
 
     var timeEntry: TimeEntryViewItem! {
@@ -153,10 +156,9 @@ final class EditorViewController: NSViewController {
                                                       guid: timeEntry.guid)
     }
 
-    @IBAction func endTextFieldOnChange(_ sender: Any) {
-        guard endAtTextField.stringValue != timeEntry.endTimeString else { return }
-        DesktopLibraryBridge.shared().updateTimeEntry(withEndTime: endAtTextField.stringValue,
-                                                      guid: timeEntry.guid)
+    @IBAction func endAtBtnOnTap(_ sender: Any) {
+        timeInputViewController.selectedComponent = .end
+        presentTimeInputPopover()
     }
 
     @IBAction func billableCheckBoxOnChange(_ sender: Any) {
@@ -172,7 +174,13 @@ final class EditorViewController: NSViewController {
     
     @IBAction func startBtnOnTap(_ sender: Any) {
         timeInputViewController.selectedComponent = .start
-        timePopover.present(from: startAtBtn.bounds, of: startAtBtn, preferredEdge: .maxY)
+        presentTimeInputPopover()
+    }
+
+    private func presentTimeInputPopover() {
+        if !timePopover.isShown {
+            timePopover.present(from: timeContainerView.bounds, of: timeContainerView, preferredEdge: .maxY)
+        }
     }
 }
 
@@ -298,8 +306,9 @@ extension EditorViewController {
     private func renderTime() {
         durationTextField.stringValue = timeEntry.duration
         startAtBtn.title = timeEntry.startTimeString
+        endAtBtn.title = timeEntry.endTimeString
         startAtBtn.setTextColor(NSColor.labelColor)
-        endAtTextField.stringValue = timeEntry.endTimeString
+        endAtBtn.setTextColor(NSColor.labelColor)
 
         // Time controller
         timeInputViewController.timeEntry = timeEntry

@@ -30,7 +30,13 @@ final class TimeInputViewController: NSViewController {
 
     // MARK: Variables
 
-    var selectedComponent: Component = .none
+    var selectedComponent: Component = .none {
+        didSet {
+            if isAppearing {
+                layoutContent()
+            }
+        }
+    }
     private var isAppearing = false
     var timeEntry: TimeEntryViewItem! {
         didSet {

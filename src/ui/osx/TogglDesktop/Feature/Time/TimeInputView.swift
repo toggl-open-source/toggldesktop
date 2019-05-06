@@ -87,6 +87,8 @@ final class TimeInputView: NSView {
         // If there is no selection -> select hours as defaul
         if isSelected && currentSelection == .none {
             currentSelection = .hour
+        } else if !isSelected {
+            currentSelection = .none
         }
 
         self.time = TimeData(date: date)
