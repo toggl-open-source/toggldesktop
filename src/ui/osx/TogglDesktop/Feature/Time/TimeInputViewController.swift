@@ -10,6 +10,13 @@ import Cocoa
 
 final class TimeInputViewController: NSViewController {
 
+    enum Component {
+        case duration
+        case start
+        case end
+        case none
+    }
+
     // MARK: OUTLET
 
     @IBOutlet weak var durationContainerView: NSView!
@@ -23,6 +30,7 @@ final class TimeInputViewController: NSViewController {
 
     // MARK: Variables
 
+    var selectedComponent: Component = .none
     private var isAppearing = false
     var timeEntry: TimeEntryViewItem! {
         didSet {
@@ -55,9 +63,9 @@ final class TimeInputViewController: NSViewController {
     }
 
     private func layoutContent() {
-        durationInputView.render(with: timeEntry.started)
-        startInputView.render(with: timeEntry.started)
-        endInputView.render(with: timeEntry.ended)
+        durationInputView.render(with: timeEntry.started, isSelected: selectedComponent == .duration)
+        startInputView.render(with: timeEntry.started, isSelected: selectedComponent == .start)
+        endInputView.render(with: timeEntry.ended, isSelected: selectedComponent == .end)
     }
 }
 

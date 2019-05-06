@@ -82,7 +82,13 @@ final class TimeInputView: NSView {
         self.mode = mode
     }
 
-    func render(with date: Date) {
+    func render(with date: Date, isSelected: Bool) {
+
+        // If there is no selection -> select hours as defaul
+        if isSelected && currentSelection == .none {
+            currentSelection = .hour
+        }
+
         self.time = TimeData(date: date)
     }
 }

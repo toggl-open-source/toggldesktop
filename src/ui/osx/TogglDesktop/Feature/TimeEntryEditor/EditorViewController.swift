@@ -171,6 +171,7 @@ final class EditorViewController: NSViewController {
     }
     
     @IBAction func startBtnOnTap(_ sender: Any) {
+        timeInputViewController.selectedComponent = .start
         timePopover.present(from: startAtBtn.bounds, of: startAtBtn, preferredEdge: .maxY)
     }
 }
