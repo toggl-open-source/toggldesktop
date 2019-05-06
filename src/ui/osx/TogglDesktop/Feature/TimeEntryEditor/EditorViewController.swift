@@ -36,7 +36,7 @@ final class EditorViewController: NSViewController {
     @IBOutlet weak var nextDateBtn: NSButton!
     @IBOutlet weak var previousDateBtn: NSButton!
     @IBOutlet weak var durationTextField: NSTextField!
-    @IBOutlet weak var startAtTextField: NSTextField!
+    @IBOutlet weak var startAtBtn: CursorButton!
     @IBOutlet weak var endAtTextField: NSTextField!
     @IBOutlet weak var dateSelectionBox: NSBox!
     @IBOutlet weak var workspaceLbl: NSTextField!
@@ -72,6 +72,16 @@ final class EditorViewController: NSViewController {
         let popover = NoVibrantPopoverView()
         popover.behavior = .semitransient
         popover.contentViewController = calendarViewControler
+        return popover
+    }()
+    private lazy var timeInputViewController: TimeInputViewController = {
+        let controller = TimeInputViewController(nibName: NSNib.Name("TimeInputViewController"), bundle: nil)
+        return controller
+    }()
+    private lazy var timePopover: NoVibrantPopoverView = {
+        let popover = NoVibrantPopoverView()
+        popover.behavior = .semitransient
+        popover.contentViewController = timeInputViewController
         return popover
     }()
     private lazy var dayNameAttribute: [NSAttributedString.Key : Any] = {
@@ -143,12 +153,6 @@ final class EditorViewController: NSViewController {
                                                       guid: timeEntry.guid)
     }
 
-    @IBAction func startTextFieldOnChange(_ sender: Any) {
-        guard startAtTextField.stringValue != timeEntry.startTimeString else { return }
-        DesktopLibraryBridge.shared().updateTimeEntry(withStartTime: startAtTextField.stringValue,
-                                                      guid: timeEntry.guid)
-    }
-
     @IBAction func endTextFieldOnChange(_ sender: Any) {
         guard endAtTextField.stringValue != timeEntry.endTimeString else { return }
         DesktopLibraryBridge.shared().updateTimeEntry(withEndTime: endAtTextField.stringValue,
@@ -165,6 +169,10 @@ final class EditorViewController: NSViewController {
     @IBAction func deleteBtnOnTap(_ sender: Any) {
         DesktopLibraryBridge.shared().deleteTimeEntryImte(timeEntry)
     }
+    
+    @IBAction func startBtnOnTap(_ sender: Any) {
+        timePopover.present(from: startAtBtn.bounds, of: startAtBtn, preferredEdge: .maxY)
+    }
 }
 
 // MARK: Private
@@ -175,6 +183,7 @@ extension EditorViewController {
         view.wantsLayer = true
         view.layer?.masksToBounds = false
         closeBtn.cursor = .pointingHand
+        startAtBtn.cursor = .pointingHand
 
         descriptionTextField.autoCompleteDelegate = self
         projectTextField.autoCompleteDelegate = self
@@ -287,8 +296,12 @@ extension EditorViewController {
 
     private func renderTime() {
         durationTextField.stringValue = timeEntry.duration
-        startAtTextField.stringValue = timeEntry.startTimeString
+        startAtBtn.title = timeEntry.startTimeString
+        startAtBtn.setTextColor(NSColor.labelColor)
         endAtTextField.stringValue = timeEntry.endTimeString
+
+        // Time controller
+        timeInputViewController.timeEntry = timeEntry
     }
 
     fileprivate func updateNextKeyViews() {

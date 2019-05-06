@@ -24,7 +24,7 @@ final class TimeInputViewController: NSViewController {
     // MARK: Variables
 
     private var isAppearing = false
-    private var timeEntry: TimeEntryViewItem! {
+    var timeEntry: TimeEntryViewItem! {
         didSet {
             if isAppearing {
                 layoutContent()
@@ -32,6 +32,8 @@ final class TimeInputViewController: NSViewController {
         }
 
     }
+
+
     // MARK: View Cycle
 
     override func viewDidLoad() {
@@ -53,7 +55,7 @@ final class TimeInputViewController: NSViewController {
     }
 
     private func layoutContent() {
-
+        
     }
 }
 
@@ -69,13 +71,15 @@ extension TimeInputViewController {
 
         // Duration
         let durationInputView = TimeInputView.xibView() as TimeInputView
+        durationInputView.updateLayout(with: .full)
         durationInputView.translatesAutoresizingMaskIntoConstraints = false
-        durationInputView.addSubview(durationInputView)
+        durationContainerView.addSubview(durationInputView)
         durationInputView.topAnchor.constraint(equalTo: durationLbl.bottomAnchor, constant: 10).isActive = true
         durationInputView.leftAnchor.constraint(equalTo: durationContainerView.leftAnchor, constant: 20).isActive = true
 
         // Start
         let startInputView = TimeInputView.xibView() as TimeInputView
+        startInputView.updateLayout(with: .compact)
         startInputView.translatesAutoresizingMaskIntoConstraints = false
         startContainerView.addSubview(startInputView)
         startInputView.topAnchor.constraint(equalTo: startLbl.bottomAnchor, constant: 0).isActive = true
@@ -83,6 +87,7 @@ extension TimeInputViewController {
 
         // End
         let endInputView = TimeInputView.xibView() as TimeInputView
+        endInputView.updateLayout(with: .compact)
         endInputView.translatesAutoresizingMaskIntoConstraints = false
         endContainerView.addSubview(endInputView)
         endInputView.topAnchor.constraint(equalTo: endLbl.bottomAnchor, constant: 0).isActive = true

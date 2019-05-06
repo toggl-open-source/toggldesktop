@@ -93,7 +93,8 @@ extension TimeInputView {
 
 
     fileprivate func renderTimeTitle() {
-
+        guard let time = time else { return }
+        
         // Get componetns
         var components: [TimeComponent] = []
         switch mode {
