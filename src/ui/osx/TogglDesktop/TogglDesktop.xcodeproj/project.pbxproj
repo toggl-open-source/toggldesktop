@@ -154,6 +154,9 @@
 		BA13D21B2269E0B500EB3833 /* CalendarViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA13D2192269E0B500EB3833 /* CalendarViewController.xib */; };
 		BA13E05C21C7BA6000835EC1 /* UserNotificationCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = BA13E05921C7B9D900835EC1 /* UserNotificationCenter.m */; };
 		BA19FC21226DA079006D8741 /* DateCellViewItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA13D20D2269BAA600EB3833 /* DateCellViewItem.xib */; };
+		BA2302AE228041750045DC9E /* ClockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2302AD228041750045DC9E /* ClockView.swift */; };
+		BA2302CE2280417D0045DC9E /* ClockView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA2302CD2280417D0045DC9E /* ClockView.xib */; };
+		BA2302D0228042240045DC9E /* screenshot@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BA2302CF228042240045DC9E /* screenshot@2x.png */; };
 		BA276A142240F5B500810C51 /* FloatingErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA276A122240F5B500810C51 /* FloatingErrorView.swift */; };
 		BA2DA0C621A542E30027B7A5 /* NSTextField+Ext.m in Sources */ = {isa = PBXBuildFile; fileRef = BA2DA0C521A542E30027B7A5 /* NSTextField+Ext.m */; };
 		BA2DA12021A691FF0027B7A5 /* TrackingService.m in Sources */ = {isa = PBXBuildFile; fileRef = BA2DA11F21A691FF0027B7A5 /* TrackingService.m */; };
@@ -802,6 +805,9 @@
 		BA13D2192269E0B500EB3833 /* CalendarViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CalendarViewController.xib; sourceTree = "<group>"; };
 		BA13E05921C7B9D900835EC1 /* UserNotificationCenter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = UserNotificationCenter.m; path = test2/UserNotificationCenter.m; sourceTree = SOURCE_ROOT; };
 		BA13E05A21C7B9D900835EC1 /* UserNotificationCenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = UserNotificationCenter.h; path = test2/UserNotificationCenter.h; sourceTree = SOURCE_ROOT; };
+		BA2302AD228041750045DC9E /* ClockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockView.swift; sourceTree = "<group>"; };
+		BA2302CD2280417D0045DC9E /* ClockView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ClockView.xib; sourceTree = "<group>"; };
+		BA2302CF228042240045DC9E /* screenshot@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "screenshot@2x.png"; sourceTree = "<group>"; };
 		BA276A122240F5B500810C51 /* FloatingErrorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatingErrorView.swift; sourceTree = "<group>"; };
 		BA276A132240F5B500810C51 /* FloatingErrorView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FloatingErrorView.xib; sourceTree = "<group>"; };
 		BA2DA0C421A542E20027B7A5 /* NSTextField+Ext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSTextField+Ext.h"; sourceTree = "<group>"; };
@@ -1514,11 +1520,14 @@
 		BA47C8B9227C45AC00BF0869 /* Time */ = {
 			isa = PBXGroup;
 			children = (
+				BA2302CF228042240045DC9E /* screenshot@2x.png */,
 				BA47C8D8227C45D600BF0869 /* TimeInputViewController.swift */,
 				BA47C8D9227C45D600BF0869 /* TimeInputViewController.xib */,
 				BA47C8DC227C477E00BF0869 /* TimeInputView.swift */,
 				BA47C8DE227C47C200BF0869 /* TimeInputView.xib */,
 				BA47C8E0227C4B0100BF0869 /* TimeData.swift */,
+				BA2302AD228041750045DC9E /* ClockView.swift */,
+				BA2302CD2280417D0045DC9E /* ClockView.xib */,
 			);
 			path = Time;
 			sourceTree = "<group>";
@@ -2096,6 +2105,7 @@
 				BAD15FFE223A530600A8CCC9 /* TimeEntryEmptyView.xib in Resources */,
 				3CDA2C5B1913B61000A94967 /* icon-billable@2x.png in Resources */,
 				BA19FC21226DA079006D8741 /* DateCellViewItem.xib in Resources */,
+				BA2302D0228042240045DC9E /* screenshot@2x.png in Resources */,
 				BA9C2E06224C84E7002AD2A1 /* ColorViewItem.xib in Resources */,
 				3CD30F441F58B02C006FAA0D /* OverlayViewController.xib in Resources */,
 				74664DB218AA860800AAD282 /* off.pdf in Resources */,
@@ -2108,6 +2118,7 @@
 				BAB0029F2273125C005ECC93 /* DayLabel.xib in Resources */,
 				BA9C2DFE224C823C002AD2A1 /* ColorPickerView.xib in Resources */,
 				3CDA2C5C1913B61000A94967 /* icon-tags@2x.png in Resources */,
+				BA2302CE2280417D0045DC9E /* ClockView.xib in Resources */,
 				747B74881A0AD28200BB3791 /* ConsoleViewController.xib in Resources */,
 				3C1C09C51C298ABA00BF9B6C /* warning-icon.png in Resources */,
 				743E584D1A775BB300F17CB0 /* Localizable.strings in Resources */,
@@ -2323,6 +2334,7 @@
 				3CD7AD6F19ED579700372797 /* NSResize.m in Sources */,
 				BA08E012222E32C90075F68E /* NSView+LayoutConstraint.swift in Sources */,
 				BA7D335A22489C8000B953A8 /* ProjectDataSource.swift in Sources */,
+				BA2302AE228041750045DC9E /* ClockView.swift in Sources */,
 				BAC4D399225470DA00254DAD /* AutoCompleteRowView.swift in Sources */,
 				BAA260D1222D1DC70094F4E4 /* NSView+Shadow+Border.swift in Sources */,
 				BA712EC221BF907200A2D8DD /* UndoManager.swift in Sources */,
