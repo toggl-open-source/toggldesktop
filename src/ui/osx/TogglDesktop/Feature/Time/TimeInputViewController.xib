@@ -9,6 +9,10 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="TimeInputViewController" customModule="TogglDesktop" customModuleProvider="target">
             <connections>
+                <outlet property="clockContainerView" destination="yfS-1d-GFb" id="qcf-cv-JYx"/>
+                <outlet property="durationContainerView" destination="OCf-B3-nFK" id="5cM-TQ-jHn"/>
+                <outlet property="durationLbl" destination="HCt-54-2Ua" id="4zd-Ic-NiK"/>
+                <outlet property="timeStackView" destination="iJi-l7-yeJ" id="xgl-75-GAd"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
             </connections>
         </customObject>
@@ -50,23 +54,13 @@
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                         </textField>
-                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Foh-KO-Tpz">
-                            <rect key="frame" x="18" y="33" width="72" height="23"/>
-                            <textFieldCell key="cell" lineBreakMode="clipping" title="0:00:00" id="KNN-r1-v3Y">
-                                <font key="font" metaFont="system" size="19"/>
-                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                            </textFieldCell>
-                        </textField>
                     </subviews>
                     <constraints>
                         <constraint firstAttribute="trailing" secondItem="ba0-W0-XCM" secondAttribute="trailing" id="CT0-Hh-qCz"/>
                         <constraint firstItem="HCt-54-2Ua" firstAttribute="leading" secondItem="OCf-B3-nFK" secondAttribute="leading" constant="20" id="Dik-Gf-R9k"/>
                         <constraint firstItem="HCt-54-2Ua" firstAttribute="top" secondItem="OCf-B3-nFK" secondAttribute="top" constant="20" id="QZa-OO-M1X"/>
-                        <constraint firstItem="Foh-KO-Tpz" firstAttribute="leading" secondItem="OCf-B3-nFK" secondAttribute="leading" constant="20" id="cnW-Ij-Aqy"/>
                         <constraint firstAttribute="bottom" secondItem="ba0-W0-XCM" secondAttribute="bottom" id="f3D-GM-PcL"/>
                         <constraint firstItem="ba0-W0-XCM" firstAttribute="top" secondItem="OCf-B3-nFK" secondAttribute="top" id="oFv-il-7Pd"/>
-                        <constraint firstItem="Foh-KO-Tpz" firstAttribute="top" secondItem="HCt-54-2Ua" secondAttribute="bottom" constant="10" id="wkN-3o-Lih"/>
                     </constraints>
                 </customView>
             </subviews>
