@@ -22,6 +22,7 @@ class ClockView: NSView {
 
     // MARK: Variables
 
+    private var timeInput: TimeInputView?
     private var displayMode: DisplayMode = . minute {
         didSet {
             layoutClock()
@@ -42,8 +43,21 @@ class ClockView: NSView {
 
     }
 
-    func config(with timeEntry: TimeEntryViewItem, displayMode: DisplayMode) {
+    func config(with timeInput: TimeInputView) {
+        self.timeInput?.delegate = nil
+        self.timeInput = timeInput
+        self.timeInput?.delegate = self
 
+        switch timeInput.currentSelection {
+        case .hour:
+            displayMode = .hour12
+        case .minute:
+            displayMode = .minute
+        case .second:
+            displayMode = .minute
+        case .none:
+            displayMode = .hour12
+        }
     }
 }
 
@@ -57,5 +71,14 @@ extension ClockView {
 
     fileprivate func layoutClock() {
 
+    }
+}
+
+// MARK: TimeInputViewDelegate
+
+extension ClockView: TimeInputViewDelegate {
+
+    func timeInputDidSelect(_ time: TimeData, with selection: TimeInputView.Selection) {
+        
     }
 }

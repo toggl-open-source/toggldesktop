@@ -61,7 +61,7 @@ final class TimeInputView: NSView {
             renderTimeTitle()
         }
     }
-    fileprivate var currentSelection: Selection = .none
+    fileprivate(set) var currentSelection: Selection = .none
     private var greenColor: NSColor {
         if #available(OSX 10.13, *) {
             return NSColor(named: NSColor.Name("green-color"))!

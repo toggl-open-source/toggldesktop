@@ -48,6 +48,19 @@ final class TimeInputViewController: NSViewController {
     private lazy var durationInputView: TimeInputView = initDurationInputView()
     private lazy var startInputView: TimeInputView = initStartInputView()
     private lazy var endInputView: TimeInputView = initEndInputView()
+    private lazy var clockView: ClockView = initClockView()
+    private var selectedTimeInput: TimeInputView? {
+        switch selectedComponent {
+        case .duration:
+            return durationInputView
+        case .start:
+            return startInputView
+        case .end:
+            return endInputView
+        case .none:
+            return nil
+        }
+    }
 
     // MARK: View Cycle
 
@@ -72,6 +85,14 @@ final class TimeInputViewController: NSViewController {
         durationInputView.render(with: timeEntry.started, isSelected: selectedComponent == .duration)
         startInputView.render(with: timeEntry.started, isSelected: selectedComponent == .start)
         endInputView.render(with: timeEntry.ended, isSelected: selectedComponent == .end)
+
+        // Clock
+        if let selectedInputView = selectedTimeInput {
+            clockView.isHidden = false
+            clockView.config(with: selectedInputView)
+        } else {
+            clockView.isHidden = true
+        }
     }
 }
 
@@ -111,5 +132,13 @@ extension TimeInputViewController {
         inputView.topAnchor.constraint(equalTo: endLbl.bottomAnchor, constant: 0).isActive = true
         inputView.leftAnchor.constraint(equalTo: endContainerView.leftAnchor, constant: 10).isActive = true
         return inputView
+    }
+
+    fileprivate func initClockView() -> ClockView {
+        let clock = ClockView.xibView() as ClockView
+        clock.translatesAutoresizingMaskIntoConstraints = false
+        clockContainerView.addSubview(clock)
+        clock.edgesToSuperView()
+        return clock
     }
 }
