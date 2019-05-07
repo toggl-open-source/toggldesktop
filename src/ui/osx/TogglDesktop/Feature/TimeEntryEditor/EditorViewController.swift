@@ -177,6 +177,17 @@ final class EditorViewController: NSViewController {
         presentTimeInputPopover()
     }
 
+    @IBAction func billableCheckBoxOnChange(_ sender: Any) {
+        guard let timeEntryGUID = timeEntry.guid else { return }
+        let isBillable = billableCheckBox.state == .on
+        DesktopLibraryBridge.shared().setBillableForTimeEntryWithTimeEntryGUID(timeEntryGUID,
+                                                                               isBillable: isBillable)
+    }
+
+    @IBAction func deleteBtnOnTap(_ sender: Any) {
+        
+    }
+    
     private func presentTimeInputPopover() {
         if !timePopover.isShown {
             timePopover.present(from: timeContainerView.bounds, of: timeContainerView, preferredEdge: .maxY)

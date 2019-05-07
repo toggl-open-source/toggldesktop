@@ -423,6 +423,7 @@
                 <constraint firstAttribute="trailing" secondItem="BOY-Gb-MdQ" secondAttribute="trailing" id="whP-7P-m9z"/>
             </constraints>
             <connections>
+                <outlet property="hourContainerView" destination="BOY-Gb-MdQ" id="RAv-Gi-IUQ"/>
                 <outlet property="minuteContainerView" destination="y7R-2S-SoA" id="EGc-6X-JeZ"/>
             </connections>
             <point key="canvasLocation" x="118" y="-83"/>

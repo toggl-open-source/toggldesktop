@@ -19,12 +19,14 @@ class ClockView: NSView {
     // MARK: OUTLET
 
     @IBOutlet weak var minuteContainerView: NSView!
-
+    @IBOutlet weak var hourContainerView: NSView!
+    
     // MARK: Variables
 
     private var timeInput: TimeInputView?
     private var displayMode: DisplayMode = . minute {
         didSet {
+            guard displayMode != oldValue else { return }
             layoutClock()
         }
     }
@@ -70,7 +72,17 @@ extension ClockView {
     }
 
     fileprivate func layoutClock() {
+        hourContainerView.isHidden = true
+        minuteContainerView.isHidden = true
 
+        switch displayMode {
+        case .hour12:
+            hourContainerView.isHidden = false
+        case .hour24:
+            hourContainerView.isHidden = false
+        case .minute:
+            minuteContainerView.isHidden = false
+        }
     }
 }
 
@@ -79,6 +91,6 @@ extension ClockView {
 extension ClockView: TimeInputViewDelegate {
 
     func timeInputDidSelect(_ time: TimeData, with selection: TimeInputView.Selection) {
-        
+
     }
 }
