@@ -7,6 +7,7 @@
 //
 
 #import "DesktopLibraryBridge.h"
+#import "TimeEntryViewItem.h"
 #import "toggl_api.h"
 
 @implementation DesktopLibraryBridge
@@ -127,6 +128,31 @@ void *ctx;
 	toggl_set_time_entry_end(ctx,
 							 [guid UTF8String],
 							 [endTime UTF8String]);
+}
+
+- (void)deleteTimeEntryImte:(TimeEntryViewItem *)item
+{
+	// If description is empty and duration is less than 15 seconds delete without confirmation
+	if ([item confirmlessDelete])
+	{
+		toggl_delete_time_entry(ctx, [item.GUID UTF8String]);
+		return;
+	}
+	NSString *msg = [NSString stringWithFormat:@"Delete time entry \"%@\"?", item.Description];
+
+	NSAlert *alert = [[NSAlert alloc] init];
+	[alert addButtonWithTitle:@"OK"];
+	[alert addButtonWithTitle:@"Cancel"];
+	[alert setMessageText:msg];
+	[alert setInformativeText:@"Deleted time entries cannot be restored."];
+	[alert setAlertStyle:NSWarningAlertStyle];
+	if ([alert runModal] != NSAlertFirstButtonReturn)
+	{
+		return;
+	}
+
+	// Delete
+	toggl_delete_time_entry(ctx, [item.GUID UTF8String]);
 }
 
 @end

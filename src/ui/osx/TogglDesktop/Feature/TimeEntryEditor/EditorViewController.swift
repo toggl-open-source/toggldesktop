@@ -148,6 +148,9 @@ final class EditorViewController: NSViewController {
                                                                                isBillable: isBillable)
     }
 
+    @IBAction func deleteBtnOnTap(_ sender: Any) {
+        DesktopLibraryBridge.shared().deleteTimeEntryImte(timeEntry)
+    }
 }
 
 // MARK: Private

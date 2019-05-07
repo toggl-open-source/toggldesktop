@@ -10,6 +10,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class TimeEntryViewItem;
+
 @interface DesktopLibraryBridge : NSObject
 
 + (instancetype)shared;
@@ -50,6 +52,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)updateTimeEntryWithEndTime:(NSString *)endTime
 							  guid:(NSString *)guid;
+
+- (void)deleteTimeEntryImte:(TimeEntryViewItem *)item;
 
 @end
 

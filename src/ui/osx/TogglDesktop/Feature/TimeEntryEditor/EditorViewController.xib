@@ -252,6 +252,9 @@
                                                 <font key="font" metaFont="system"/>
                                             </buttonCell>
                                             <color key="contentTintColor" name="error-title-color"/>
+                                            <connections>
+                                                <action selector="deleteBtnOnTap:" target="-2" id="vEg-0H-68f"/>
+                                            </connections>
                                         </button>
                                         <box verticalHuggingPriority="750" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="unD-T8-stz">
                                             <rect key="frame" x="0.0" y="43" width="266" height="5"/>
