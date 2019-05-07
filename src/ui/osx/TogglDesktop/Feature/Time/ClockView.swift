@@ -10,10 +10,52 @@ import Cocoa
 
 class ClockView: NSView {
 
-    override func draw(_ dirtyRect: NSRect) {
-        super.draw(dirtyRect)
-
-        // Drawing code here.
+    enum DisplayMode {
+        case minute
+        case hour12
+        case hour24
     }
-    
+
+    // MARK: OUTLET
+
+    @IBOutlet weak var minuteContainerView: NSView!
+
+    // MARK: Variables
+
+    private var displayMode: DisplayMode = . minute {
+        didSet {
+            layoutClock()
+        }
+    }
+
+    // MARK: View Cycle
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+    }
+
+    @IBAction func minuteBtnOnTap(_ sender: NSButton) {
+
+    }
+
+    @IBAction func hourBtnOnTap(_ sender: NSButton) {
+
+    }
+
+    func config(with timeEntry: TimeEntryViewItem, displayMode: DisplayMode) {
+
+    }
+}
+
+// MARK: Private
+
+extension ClockView {
+
+    fileprivate func initCommon() {
+
+    }
+
+    fileprivate func layoutClock() {
+
+    }
 }

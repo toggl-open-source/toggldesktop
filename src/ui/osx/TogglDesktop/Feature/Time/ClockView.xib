@@ -24,10 +24,13 @@
                             </constraints>
                             <buttonCell key="cell" type="bevel" title="0" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="qG8-v4-C7v">
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                <font key="font" metaFont="system" size="12"/>
+                                <font key="font" metaFont="cellTitle"/>
                             </buttonCell>
+                            <connections>
+                                <action selector="hourBtnOnTap:" target="c22-O7-iKe" id="Du3-Nx-Wn5"/>
+                            </connections>
                         </button>
-                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="RaE-VD-xa3" customClass="CursorButton" customModule="TogglDesktop" customModuleProvider="target">
+                        <button verticalHuggingPriority="750" tag="1" translatesAutoresizingMaskIntoConstraints="NO" id="RaE-VD-xa3" customClass="CursorButton" customModule="TogglDesktop" customModuleProvider="target">
                             <rect key="frame" x="142" y="127" width="16" height="16"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="16" id="SEH-ac-l4h"/>
@@ -35,10 +38,13 @@
                             </constraints>
                             <buttonCell key="cell" type="bevel" title="1" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="Im3-Of-pv0">
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                <font key="font" metaFont="system" size="12"/>
+                                <font key="font" metaFont="cellTitle"/>
                             </buttonCell>
+                            <connections>
+                                <action selector="hourBtnOnTap:" target="c22-O7-iKe" id="m8j-3A-TJR"/>
+                            </connections>
                         </button>
-                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="F6K-DH-Lod" customClass="CursorButton" customModule="TogglDesktop" customModuleProvider="target">
+                        <button verticalHuggingPriority="750" tag="2" translatesAutoresizingMaskIntoConstraints="NO" id="F6K-DH-Lod" customClass="CursorButton" customModule="TogglDesktop" customModuleProvider="target">
                             <rect key="frame" x="162" y="107" width="16" height="16"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="16" id="09w-SG-MkT"/>
@@ -46,10 +52,13 @@
                             </constraints>
                             <buttonCell key="cell" type="bevel" title="2" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="c75-fU-ONE">
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                <font key="font" metaFont="system" size="12"/>
+                                <font key="font" metaFont="cellTitle"/>
                             </buttonCell>
+                            <connections>
+                                <action selector="hourBtnOnTap:" target="c22-O7-iKe" id="pGl-Ck-c4g"/>
+                            </connections>
                         </button>
-                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="xFp-Pl-1z8" customClass="CursorButton" customModule="TogglDesktop" customModuleProvider="target">
+                        <button verticalHuggingPriority="750" tag="3" translatesAutoresizingMaskIntoConstraints="NO" id="xFp-Pl-1z8" customClass="CursorButton" customModule="TogglDesktop" customModuleProvider="target">
                             <rect key="frame" x="170" y="77" width="16" height="16"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="16" id="XPx-cd-T6B"/>
@@ -57,10 +66,13 @@
                             </constraints>
                             <buttonCell key="cell" type="bevel" title="3" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="JRs-yd-IqD">
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                <font key="font" metaFont="system" size="12"/>
+                                <font key="font" metaFont="cellTitle"/>
                             </buttonCell>
+                            <connections>
+                                <action selector="hourBtnOnTap:" target="c22-O7-iKe" id="Sjx-bn-vd2"/>
+                            </connections>
                         </button>
-                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="lJe-Gs-HKz" customClass="CursorButton" customModule="TogglDesktop" customModuleProvider="target">
+                        <button verticalHuggingPriority="750" tag="4" translatesAutoresizingMaskIntoConstraints="NO" id="lJe-Gs-HKz" customClass="CursorButton" customModule="TogglDesktop" customModuleProvider="target">
                             <rect key="frame" x="162" y="47" width="16" height="16"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="16" id="2BT-ib-DSI"/>
@@ -68,10 +80,13 @@
                             </constraints>
                             <buttonCell key="cell" type="bevel" title="4" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="0Um-Ch-drB">
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                <font key="font" metaFont="system" size="12"/>
+                                <font key="font" metaFont="cellTitle"/>
                             </buttonCell>
+                            <connections>
+                                <action selector="hourBtnOnTap:" target="c22-O7-iKe" id="nyO-eM-ITP"/>
+                            </connections>
                         </button>
-                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="xua-tt-mjm" customClass="CursorButton" customModule="TogglDesktop" customModuleProvider="target">
+                        <button verticalHuggingPriority="750" tag="5" translatesAutoresizingMaskIntoConstraints="NO" id="xua-tt-mjm" customClass="CursorButton" customModule="TogglDesktop" customModuleProvider="target">
                             <rect key="frame" x="142" y="28" width="16" height="16"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="16" id="3Zi-7x-8mr"/>
@@ -79,10 +94,13 @@
                             </constraints>
                             <buttonCell key="cell" type="bevel" title="5" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="N7v-gT-1fN">
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                <font key="font" metaFont="system" size="12"/>
+                                <font key="font" metaFont="cellTitle"/>
                             </buttonCell>
+                            <connections>
+                                <action selector="hourBtnOnTap:" target="c22-O7-iKe" id="a8t-T9-NNb"/>
+                            </connections>
                         </button>
-                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="90Y-jT-x0z" customClass="CursorButton" customModule="TogglDesktop" customModuleProvider="target">
+                        <button verticalHuggingPriority="750" tag="6" translatesAutoresizingMaskIntoConstraints="NO" id="90Y-jT-x0z" customClass="CursorButton" customModule="TogglDesktop" customModuleProvider="target">
                             <rect key="frame" x="112" y="20" width="16" height="16"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="16" id="Gxe-iO-xLa"/>
@@ -90,10 +108,13 @@
                             </constraints>
                             <buttonCell key="cell" type="bevel" title="6" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="hrH-S3-Ojp">
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                <font key="font" metaFont="system" size="12"/>
+                                <font key="font" metaFont="cellTitle"/>
                             </buttonCell>
+                            <connections>
+                                <action selector="hourBtnOnTap:" target="c22-O7-iKe" id="wLD-KS-u7i"/>
+                            </connections>
                         </button>
-                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="cja-sv-pH5" customClass="CursorButton" customModule="TogglDesktop" customModuleProvider="target">
+                        <button verticalHuggingPriority="750" tag="7" translatesAutoresizingMaskIntoConstraints="NO" id="cja-sv-pH5" customClass="CursorButton" customModule="TogglDesktop" customModuleProvider="target">
                             <rect key="frame" x="82" y="28" width="16" height="16"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="16" id="Gen-8W-Siv"/>
@@ -101,10 +122,13 @@
                             </constraints>
                             <buttonCell key="cell" type="bevel" title="7" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="OOt-4n-1bI">
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                <font key="font" metaFont="system" size="12"/>
+                                <font key="font" metaFont="cellTitle"/>
                             </buttonCell>
+                            <connections>
+                                <action selector="hourBtnOnTap:" target="c22-O7-iKe" id="vl2-dF-Tek"/>
+                            </connections>
                         </button>
-                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="pHd-T7-uji" customClass="CursorButton" customModule="TogglDesktop" customModuleProvider="target">
+                        <button verticalHuggingPriority="750" tag="8" translatesAutoresizingMaskIntoConstraints="NO" id="pHd-T7-uji" customClass="CursorButton" customModule="TogglDesktop" customModuleProvider="target">
                             <rect key="frame" x="62" y="47" width="16" height="16"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="16" id="Sib-Vi-Qch"/>
@@ -112,10 +136,13 @@
                             </constraints>
                             <buttonCell key="cell" type="bevel" title="8" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="jvJ-s4-qu7">
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                <font key="font" metaFont="system" size="12"/>
+                                <font key="font" metaFont="cellTitle"/>
                             </buttonCell>
+                            <connections>
+                                <action selector="hourBtnOnTap:" target="c22-O7-iKe" id="5sT-Yg-ecz"/>
+                            </connections>
                         </button>
-                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="aEZ-dN-S9W" customClass="CursorButton" customModule="TogglDesktop" customModuleProvider="target">
+                        <button verticalHuggingPriority="750" tag="9" translatesAutoresizingMaskIntoConstraints="NO" id="aEZ-dN-S9W" customClass="CursorButton" customModule="TogglDesktop" customModuleProvider="target">
                             <rect key="frame" x="54" y="77" width="16" height="16"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="16" id="59W-b0-mcZ"/>
@@ -123,10 +150,13 @@
                             </constraints>
                             <buttonCell key="cell" type="bevel" title="9" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="zwO-3Y-p5W">
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                <font key="font" metaFont="system" size="12"/>
+                                <font key="font" metaFont="cellTitle"/>
                             </buttonCell>
+                            <connections>
+                                <action selector="hourBtnOnTap:" target="c22-O7-iKe" id="kmx-we-Nl2"/>
+                            </connections>
                         </button>
-                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="bcs-MI-rxd" customClass="CursorButton" customModule="TogglDesktop" customModuleProvider="target">
+                        <button verticalHuggingPriority="750" tag="10" translatesAutoresizingMaskIntoConstraints="NO" id="bcs-MI-rxd" customClass="CursorButton" customModule="TogglDesktop" customModuleProvider="target">
                             <rect key="frame" x="62" y="107" width="16" height="16"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="16" id="2V0-bK-55R"/>
@@ -134,10 +164,13 @@
                             </constraints>
                             <buttonCell key="cell" type="bevel" title="10" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="OMo-9W-SPa">
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                <font key="font" metaFont="system" size="12"/>
+                                <font key="font" metaFont="cellTitle"/>
                             </buttonCell>
+                            <connections>
+                                <action selector="hourBtnOnTap:" target="c22-O7-iKe" id="gjp-U8-jjy"/>
+                            </connections>
                         </button>
-                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="T1B-TR-0bW" customClass="CursorButton" customModule="TogglDesktop" customModuleProvider="target">
+                        <button verticalHuggingPriority="750" tag="11" translatesAutoresizingMaskIntoConstraints="NO" id="T1B-TR-0bW" customClass="CursorButton" customModule="TogglDesktop" customModuleProvider="target">
                             <rect key="frame" x="82" y="127" width="16" height="16"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="16" id="3Vy-oe-kVO"/>
@@ -145,8 +178,11 @@
                             </constraints>
                             <buttonCell key="cell" type="bevel" title="11" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="8JH-aX-CSx">
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                <font key="font" metaFont="system" size="12"/>
+                                <font key="font" metaFont="cellTitle"/>
                             </buttonCell>
+                            <connections>
+                                <action selector="hourBtnOnTap:" target="c22-O7-iKe" id="wau-uh-uix"/>
+                            </connections>
                         </button>
                     </subviews>
                     <constraints>
@@ -187,10 +223,13 @@
                             </constraints>
                             <buttonCell key="cell" type="bevel" title="00" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="V8z-vr-0h8">
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                <font key="font" metaFont="system" size="12"/>
+                                <font key="font" metaFont="cellTitle"/>
                             </buttonCell>
+                            <connections>
+                                <action selector="minuteBtnOnTap:" target="c22-O7-iKe" id="hXL-cK-qiN"/>
+                            </connections>
                         </button>
-                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="tbe-aN-1bs" customClass="CursorButton" customModule="TogglDesktop" customModuleProvider="target">
+                        <button verticalHuggingPriority="750" tag="5" translatesAutoresizingMaskIntoConstraints="NO" id="tbe-aN-1bs" customClass="CursorButton" customModule="TogglDesktop" customModuleProvider="target">
                             <rect key="frame" x="144" y="127" width="20" height="16"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="20" id="Et0-wm-E6F"/>
@@ -198,10 +237,13 @@
                             </constraints>
                             <buttonCell key="cell" type="bevel" title="05" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="jb4-q1-lzH">
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                <font key="font" metaFont="system" size="12"/>
+                                <font key="font" metaFont="cellTitle"/>
                             </buttonCell>
+                            <connections>
+                                <action selector="minuteBtnOnTap:" target="c22-O7-iKe" id="l1i-kE-EVl"/>
+                            </connections>
                         </button>
-                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="WDm-kP-AnE" customClass="CursorButton" customModule="TogglDesktop" customModuleProvider="target">
+                        <button verticalHuggingPriority="750" tag="10" translatesAutoresizingMaskIntoConstraints="NO" id="WDm-kP-AnE" customClass="CursorButton" customModule="TogglDesktop" customModuleProvider="target">
                             <rect key="frame" x="168" y="103" width="20" height="20"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="20" id="P7Q-g3-Htj"/>
@@ -209,10 +251,13 @@
                             </constraints>
                             <buttonCell key="cell" type="bevel" title="10" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="Km8-KD-bah">
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                <font key="font" metaFont="system" size="12"/>
+                                <font key="font" metaFont="cellTitle"/>
                             </buttonCell>
+                            <connections>
+                                <action selector="minuteBtnOnTap:" target="c22-O7-iKe" id="RqT-RM-6LS"/>
+                            </connections>
                         </button>
-                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ibq-ET-wyO" customClass="CursorButton" customModule="TogglDesktop" customModuleProvider="target">
+                        <button verticalHuggingPriority="750" tag="15" translatesAutoresizingMaskIntoConstraints="NO" id="ibq-ET-wyO" customClass="CursorButton" customModule="TogglDesktop" customModuleProvider="target">
                             <rect key="frame" x="170" y="77" width="20" height="16"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="20" id="AlW-2u-guz"/>
@@ -220,10 +265,13 @@
                             </constraints>
                             <buttonCell key="cell" type="bevel" title="15" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="BBb-6o-AkW">
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                <font key="font" metaFont="system" size="12"/>
+                                <font key="font" metaFont="cellTitle"/>
                             </buttonCell>
+                            <connections>
+                                <action selector="minuteBtnOnTap:" target="c22-O7-iKe" id="KIX-Nf-eeJ"/>
+                            </connections>
                         </button>
-                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ovt-g1-O76" customClass="CursorButton" customModule="TogglDesktop" customModuleProvider="target">
+                        <button verticalHuggingPriority="750" tag="20" translatesAutoresizingMaskIntoConstraints="NO" id="ovt-g1-O76" customClass="CursorButton" customModule="TogglDesktop" customModuleProvider="target">
                             <rect key="frame" x="168" y="47" width="20" height="20"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="20" id="UYt-3C-rwu"/>
@@ -231,10 +279,13 @@
                             </constraints>
                             <buttonCell key="cell" type="bevel" title="20" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="jQ9-EM-Gg6">
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                <font key="font" metaFont="system" size="12"/>
+                                <font key="font" metaFont="cellTitle"/>
                             </buttonCell>
+                            <connections>
+                                <action selector="minuteBtnOnTap:" target="c22-O7-iKe" id="ZLZ-Pw-zxO"/>
+                            </connections>
                         </button>
-                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="zTe-J3-3Us" customClass="CursorButton" customModule="TogglDesktop" customModuleProvider="target">
+                        <button verticalHuggingPriority="750" tag="25" translatesAutoresizingMaskIntoConstraints="NO" id="zTe-J3-3Us" customClass="CursorButton" customModule="TogglDesktop" customModuleProvider="target">
                             <rect key="frame" x="144" y="28" width="20" height="16"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="20" id="fc8-o8-mrN"/>
@@ -242,10 +293,13 @@
                             </constraints>
                             <buttonCell key="cell" type="bevel" title="25" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="a5O-uR-7mk">
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                <font key="font" metaFont="system" size="12"/>
+                                <font key="font" metaFont="cellTitle"/>
                             </buttonCell>
+                            <connections>
+                                <action selector="minuteBtnOnTap:" target="c22-O7-iKe" id="t7I-ga-xTl"/>
+                            </connections>
                         </button>
-                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="BdK-cS-YfF" customClass="CursorButton" customModule="TogglDesktop" customModuleProvider="target">
+                        <button verticalHuggingPriority="750" tag="30" translatesAutoresizingMaskIntoConstraints="NO" id="BdK-cS-YfF" customClass="CursorButton" customModule="TogglDesktop" customModuleProvider="target">
                             <rect key="frame" x="110" y="20" width="20" height="16"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="16" id="Jim-qn-gNJ"/>
@@ -253,10 +307,13 @@
                             </constraints>
                             <buttonCell key="cell" type="bevel" title="30" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="V7V-Wu-UTy">
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                <font key="font" metaFont="system" size="12"/>
+                                <font key="font" metaFont="cellTitle"/>
                             </buttonCell>
+                            <connections>
+                                <action selector="minuteBtnOnTap:" target="c22-O7-iKe" id="By7-Td-90c"/>
+                            </connections>
                         </button>
-                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="5kq-gy-ixi" customClass="CursorButton" customModule="TogglDesktop" customModuleProvider="target">
+                        <button verticalHuggingPriority="750" tag="35" translatesAutoresizingMaskIntoConstraints="NO" id="5kq-gy-ixi" customClass="CursorButton" customModule="TogglDesktop" customModuleProvider="target">
                             <rect key="frame" x="76" y="28" width="20" height="16"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="20" id="Mg2-X3-fl8"/>
@@ -264,10 +321,13 @@
                             </constraints>
                             <buttonCell key="cell" type="bevel" title="35" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="1Q3-Jx-jhN">
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                <font key="font" metaFont="system" size="12"/>
+                                <font key="font" metaFont="cellTitle"/>
                             </buttonCell>
+                            <connections>
+                                <action selector="minuteBtnOnTap:" target="c22-O7-iKe" id="sIn-jv-U2g"/>
+                            </connections>
                         </button>
-                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="aEh-ox-h8t" customClass="CursorButton" customModule="TogglDesktop" customModuleProvider="target">
+                        <button verticalHuggingPriority="750" tag="40" translatesAutoresizingMaskIntoConstraints="NO" id="aEh-ox-h8t" customClass="CursorButton" customModule="TogglDesktop" customModuleProvider="target">
                             <rect key="frame" x="52" y="47" width="20" height="16"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="20" id="B1w-Vx-Tn7"/>
@@ -275,10 +335,13 @@
                             </constraints>
                             <buttonCell key="cell" type="bevel" title="40" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="D3J-uu-Kdp">
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                <font key="font" metaFont="system" size="12"/>
+                                <font key="font" metaFont="cellTitle"/>
                             </buttonCell>
+                            <connections>
+                                <action selector="minuteBtnOnTap:" target="c22-O7-iKe" id="HAh-tn-cE6"/>
+                            </connections>
                         </button>
-                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="7Sg-UB-QWG" customClass="CursorButton" customModule="TogglDesktop" customModuleProvider="target">
+                        <button verticalHuggingPriority="750" tag="45" translatesAutoresizingMaskIntoConstraints="NO" id="7Sg-UB-QWG" customClass="CursorButton" customModule="TogglDesktop" customModuleProvider="target">
                             <rect key="frame" x="50" y="77" width="20" height="16"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="16" id="IN4-Fv-3GT"/>
@@ -286,10 +349,13 @@
                             </constraints>
                             <buttonCell key="cell" type="bevel" title="45" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="KU4-CK-eTY">
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                <font key="font" metaFont="system" size="12"/>
+                                <font key="font" metaFont="cellTitle"/>
                             </buttonCell>
+                            <connections>
+                                <action selector="minuteBtnOnTap:" target="c22-O7-iKe" id="Luq-Q2-73p"/>
+                            </connections>
                         </button>
-                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="STa-oD-ksT" customClass="CursorButton" customModule="TogglDesktop" customModuleProvider="target">
+                        <button verticalHuggingPriority="750" tag="50" translatesAutoresizingMaskIntoConstraints="NO" id="STa-oD-ksT" customClass="CursorButton" customModule="TogglDesktop" customModuleProvider="target">
                             <rect key="frame" x="56" y="103" width="20" height="20"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="20" id="AWs-B2-DyR"/>
@@ -297,10 +363,13 @@
                             </constraints>
                             <buttonCell key="cell" type="bevel" title="50" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="dhK-vr-kwt">
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                <font key="font" metaFont="system" size="12"/>
+                                <font key="font" metaFont="cellTitle"/>
                             </buttonCell>
+                            <connections>
+                                <action selector="minuteBtnOnTap:" target="c22-O7-iKe" id="uP5-GO-ItU"/>
+                            </connections>
                         </button>
-                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="p4S-tk-Ifd" customClass="CursorButton" customModule="TogglDesktop" customModuleProvider="target">
+                        <button verticalHuggingPriority="750" tag="55" translatesAutoresizingMaskIntoConstraints="NO" id="p4S-tk-Ifd" customClass="CursorButton" customModule="TogglDesktop" customModuleProvider="target">
                             <rect key="frame" x="80" y="127" width="16" height="16"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="16" id="Gsb-zV-ZBk"/>
@@ -308,8 +377,11 @@
                             </constraints>
                             <buttonCell key="cell" type="bevel" title="55" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="7dI-eb-ghO">
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                <font key="font" metaFont="system" size="12"/>
+                                <font key="font" metaFont="cellTitle"/>
                             </buttonCell>
+                            <connections>
+                                <action selector="minuteBtnOnTap:" target="c22-O7-iKe" id="WAL-g2-HfC"/>
+                            </connections>
                         </button>
                     </subviews>
                     <constraints>
@@ -350,6 +422,9 @@
                 <constraint firstItem="BOY-Gb-MdQ" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" id="u7G-6f-q4U"/>
                 <constraint firstAttribute="trailing" secondItem="BOY-Gb-MdQ" secondAttribute="trailing" id="whP-7P-m9z"/>
             </constraints>
+            <connections>
+                <outlet property="minuteContainerView" destination="y7R-2S-SoA" id="EGc-6X-JeZ"/>
+            </connections>
             <point key="canvasLocation" x="118" y="-83"/>
         </customView>
     </objects>
