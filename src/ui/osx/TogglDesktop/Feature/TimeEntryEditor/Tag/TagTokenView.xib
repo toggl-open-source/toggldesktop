@@ -11,36 +11,39 @@
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customView id="c22-O7-iKe" customClass="TagTokenView" customModule="TogglDesktop" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="70" height="22"/>
+            <rect key="frame" x="0.0" y="0.0" width="74" height="22"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <box horizontalHuggingPriority="200" verticalHuggingPriority="200" horizontalCompressionResistancePriority="200" verticalCompressionResistancePriority="200" boxType="custom" borderType="none" borderWidth="0.0" cornerRadius="8" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="ymK-AT-aPJ">
-                    <rect key="frame" x="0.0" y="0.0" width="70" height="22"/>
+                    <rect key="frame" x="0.0" y="0.0" width="74" height="22"/>
                     <view key="contentView" id="viu-il-13S">
-                        <rect key="frame" x="0.0" y="0.0" width="70" height="22"/>
+                        <rect key="frame" x="0.0" y="0.0" width="74" height="22"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     </view>
                     <color key="fillColor" name="color-picker-background"/>
                 </box>
                 <box horizontalHuggingPriority="200" verticalHuggingPriority="200" horizontalCompressionResistancePriority="200" verticalCompressionResistancePriority="200" boxType="custom" cornerRadius="8" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="di9-tm-V4I">
-                    <rect key="frame" x="0.0" y="0.0" width="70" height="22"/>
+                    <rect key="frame" x="0.0" y="0.0" width="74" height="22"/>
                     <view key="contentView" id="bne-4r-GPa">
-                        <rect key="frame" x="1" y="1" width="68" height="20"/>
+                        <rect key="frame" x="1" y="1" width="72" height="20"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     </view>
                     <color key="borderColor" name="upload-border-color"/>
                     <color key="fillColor" name="auto-complete-background"/>
                 </box>
                 <textField horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="Ix1-m2-ZVO">
-                    <rect key="frame" x="5" y="3" width="60" height="16"/>
-                    <textFieldCell key="cell" lineBreakMode="clipping" title="Metabase" id="4Um-3l-zmx">
+                    <rect key="frame" x="5" y="3" width="64" height="16"/>
+                    <constraints>
+                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="25" id="mMa-Q8-ij5"/>
+                    </constraints>
+                    <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="Metabase" id="4Um-3l-zmx">
                         <font key="font" metaFont="cellTitle"/>
                         <color key="textColor" name="grey-text-color"/>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="8lo-U3-Yk5">
-                    <rect key="frame" x="0.0" y="0.0" width="70" height="22"/>
+                    <rect key="frame" x="0.0" y="0.0" width="74" height="22"/>
                     <buttonCell key="cell" type="bevel" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="Z2c-sQ-0ee">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
@@ -50,11 +53,11 @@
                     </connections>
                 </button>
                 <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="MP2-f0-MdB">
-                    <rect key="frame" x="27" y="3" width="35" height="16"/>
+                    <rect key="frame" x="31" y="3" width="35" height="16"/>
                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="tag_gradient" id="J2p-3r-l4I"/>
                 </imageView>
                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Shm-xU-vvz" customClass="CursorButton" customModule="TogglDesktop" customModuleProvider="target">
-                    <rect key="frame" x="46" y="1" width="20" height="20"/>
+                    <rect key="frame" x="50" y="1" width="20" height="20"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="20" id="dQh-iK-dvw"/>
                         <constraint firstAttribute="height" constant="20" id="mMP-rs-JMd"/>
