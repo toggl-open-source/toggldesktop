@@ -44,18 +44,18 @@
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
-        <customView appearanceType="aqua" id="qjv-II-K0N">
+        <customView id="qjv-II-K0N" customClass="PopoverRootView" customModule="TogglDesktop" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="347" height="502"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <box autoresizesSubviews="NO" boxType="custom" borderType="none" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="Mka-gG-oqB">
-                    <rect key="frame" x="0.0" y="0.0" width="347" height="502"/>
+                <box autoresizesSubviews="NO" borderType="none" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="Mka-gG-oqB">
+                    <rect key="frame" x="-3" y="-4" width="353" height="508"/>
                     <view key="contentView" id="gq5-PC-ftr">
-                        <rect key="frame" x="0.0" y="0.0" width="347" height="502"/>
+                        <rect key="frame" x="0.0" y="0.0" width="353" height="508"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="zwE-pW-vQN" customClass="NSHoverButton">
-                                <rect key="frame" x="316" y="475" width="20" height="25"/>
+                                <rect key="frame" x="322" y="481" width="20" height="25"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="20" id="O7b-Hm-mwT"/>
                                     <constraint firstAttribute="height" constant="25" id="obC-fA-Eo8"/>
@@ -70,7 +70,7 @@
                                 </connections>
                             </button>
                             <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="cv5-TQ-M7L" customClass="AutoCompleteInput">
-                                <rect key="frame" x="15" y="455" width="317" height="22"/>
+                                <rect key="frame" x="15" y="461" width="323" height="22"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="22" id="MF4-Rm-GEg"/>
                                 </constraints>
@@ -86,13 +86,13 @@
                                 </connections>
                             </textField>
                             <box autoresizesSubviews="NO" boxType="custom" borderType="none" title="ProjectBox" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="6Sh-4d-bKb">
-                                <rect key="frame" x="0.0" y="410" width="347" height="45"/>
+                                <rect key="frame" x="0.0" y="416" width="353" height="45"/>
                                 <view key="contentView" id="x3p-PS-0cI">
-                                    <rect key="frame" x="0.0" y="0.0" width="347" height="45"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="353" height="45"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Z6v-zC-TTo" customClass="AutoCompleteInput">
-                                            <rect key="frame" x="15" y="18" width="317" height="22"/>
+                                            <rect key="frame" x="15" y="18" width="323" height="22"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="22" id="hTE-eN-3fO"/>
                                             </constraints>
@@ -108,7 +108,7 @@
                                             </connections>
                                         </textField>
                                         <button toolTip="Add new project" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="mjR-fr-Qy0">
-                                            <rect key="frame" x="242" y="0.0" width="90" height="14"/>
+                                            <rect key="frame" x="248" y="0.0" width="90" height="14"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="14" id="tWd-2B-NMH"/>
                                             </constraints>
@@ -122,7 +122,7 @@
                                             </connections>
                                         </button>
                                         <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="wb9-Zz-BWb">
-                                            <rect key="frame" x="311" y="19" width="20" height="20"/>
+                                            <rect key="frame" x="317" y="19" width="20" height="20"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="20" id="krd-5F-JqQ"/>
                                                 <constraint firstAttribute="width" constant="20" id="wpJ-mu-jA6"/>
@@ -152,9 +152,9 @@
                                 <color key="borderColor" name="secondarySelectedControlColor" catalog="System" colorSpace="catalog"/>
                             </box>
                             <box hidden="YES" autoresizesSubviews="NO" borderType="line" title="AddProjectBox" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="fz4-yg-eQZ">
-                                <rect key="frame" x="7" y="261" width="333" height="147"/>
+                                <rect key="frame" x="7" y="261" width="339" height="147"/>
                                 <view key="contentView" id="m0X-fg-ElY">
-                                    <rect key="frame" x="3" y="3" width="327" height="141"/>
+                                    <rect key="frame" x="3" y="3" width="333" height="141"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="4nJ-ND-RNO">
@@ -169,7 +169,7 @@
                                             </textFieldCell>
                                         </textField>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="2Pz-WE-b3h">
-                                            <rect key="frame" x="118" y="110" width="167" height="22"/>
+                                            <rect key="frame" x="118" y="110" width="173" height="22"/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="" drawsBackground="YES" id="bkz-aO-Chr">
                                                 <font key="font" metaFont="system"/>
                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -177,7 +177,7 @@
                                             </textFieldCell>
                                         </textField>
                                         <colorWell translatesAutoresizingMaskIntoConstraints="NO" id="oQ3-ya-PW0" customClass="MKColorWellCustom">
-                                            <rect key="frame" x="289" y="109" width="24" height="24"/>
+                                            <rect key="frame" x="295" y="109" width="24" height="24"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="24" id="TZE-DM-y4R"/>
                                                 <constraint firstAttribute="height" constant="24" id="ovr-dd-VhK"/>
@@ -189,7 +189,7 @@
                                             </userDefinedRuntimeAttributes>
                                         </colorWell>
                                         <button translatesAutoresizingMaskIntoConstraints="NO" id="b5J-U3-cc3">
-                                            <rect key="frame" x="116" y="84" width="198" height="18"/>
+                                            <rect key="frame" x="116" y="84" width="204" height="18"/>
                                             <buttonCell key="cell" type="check" title="Public (visible to the whole team)" bezelStyle="regularSquare" imagePosition="left" inset="2" id="BcI-iU-p6J">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                 <font key="font" metaFont="smallSystem"/>
@@ -210,7 +210,7 @@
                                             </textFieldCell>
                                         </textField>
                                         <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ewn-SY-SXJ" userLabel="Workspace Select Box">
-                                            <rect key="frame" x="116" y="57" width="199" height="25"/>
+                                            <rect key="frame" x="116" y="57" width="205" height="25"/>
                                             <popUpButtonCell key="cell" type="push" title="Item 1" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="FeF-5j-ewO" id="qm6-ft-U60">
                                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                 <font key="font" metaFont="menu"/>
@@ -239,7 +239,7 @@
                                             </textFieldCell>
                                         </textField>
                                         <comboBox verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Kdc-c6-b4n" userLabel="Client Combo Box">
-                                            <rect key="frame" x="118" y="26" width="197" height="26"/>
+                                            <rect key="frame" x="118" y="26" width="203" height="26"/>
                                             <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" placeholderString="" drawsBackground="YES" completes="NO" usesDataSource="YES" numberOfVisibleItems="10" id="kia-Yb-YgV">
                                                 <font key="font" metaFont="system"/>
                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -253,7 +253,7 @@
                                             </connections>
                                         </comboBox>
                                         <button hidden="YES" translatesAutoresizingMaskIntoConstraints="NO" id="z0P-ED-dJk">
-                                            <rect key="frame" x="265" y="23" width="49" height="29"/>
+                                            <rect key="frame" x="271" y="23" width="49" height="29"/>
                                             <buttonCell key="cell" type="bevel" title="Add" bezelStyle="regularSquare" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Act-2y-tZr">
                                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                 <font key="font" metaFont="system"/>
@@ -264,7 +264,7 @@
                                             </connections>
                                         </button>
                                         <button toolTip="Add new project" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="sRN-Rb-j5x">
-                                            <rect key="frame" x="222" y="9" width="90" height="14"/>
+                                            <rect key="frame" x="228" y="9" width="90" height="14"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="90" id="6sX-Q7-orO"/>
                                             </constraints>
@@ -278,7 +278,7 @@
                                             </connections>
                                         </button>
                                         <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="TGq-XU-G0v" userLabel="Client Name Text Field">
-                                            <rect key="frame" x="118" y="28" width="139" height="22"/>
+                                            <rect key="frame" x="118" y="28" width="145" height="22"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="22" id="gmi-4N-7RX"/>
                                             </constraints>
@@ -327,15 +327,15 @@
                                 </constraints>
                             </box>
                             <box autoresizesSubviews="NO" borderType="line" title="TimeEditBox" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="Uof-FM-Nqj">
-                                <rect key="frame" x="7" y="121" width="333" height="136"/>
+                                <rect key="frame" x="7" y="121" width="339" height="136"/>
                                 <view key="contentView" id="Pne-IK-CeY">
-                                    <rect key="frame" x="3" y="3" width="327" height="130"/>
+                                    <rect key="frame" x="3" y="3" width="333" height="130"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <box autoresizesSubviews="NO" boxType="custom" borderType="none" title="DurationBox" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="cGh-Uz-aLx">
-                                            <rect key="frame" x="0.0" y="85" width="327" height="40"/>
+                                            <rect key="frame" x="0.0" y="85" width="333" height="40"/>
                                             <view key="contentView" id="FA0-yA-Cbt">
-                                                <rect key="frame" x="0.0" y="0.0" width="327" height="40"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="333" height="40"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="TCO-sA-JGh">
@@ -380,9 +380,9 @@
                                             <color key="borderColor" name="secondarySelectedControlColor" catalog="System" colorSpace="catalog"/>
                                         </box>
                                         <box autoresizesSubviews="NO" boxType="custom" borderType="none" title="TimeBox" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="TSC-79-BuD">
-                                            <rect key="frame" x="0.0" y="45" width="327" height="40"/>
+                                            <rect key="frame" x="0.0" y="45" width="333" height="40"/>
                                             <view key="contentView" id="anM-4s-MSJ">
-                                                <rect key="frame" x="0.0" y="0.0" width="327" height="40"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="333" height="40"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="cOA-WX-7sp">
@@ -455,9 +455,9 @@
                                             <color key="borderColor" name="secondarySelectedControlColor" catalog="System" colorSpace="catalog"/>
                                         </box>
                                         <box autoresizesSubviews="NO" boxType="custom" borderType="none" title="DateBox" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="r22-gF-YfG">
-                                            <rect key="frame" x="0.0" y="5" width="327" height="40"/>
+                                            <rect key="frame" x="0.0" y="5" width="333" height="40"/>
                                             <view key="contentView" id="9af-L6-Mdd">
-                                                <rect key="frame" x="0.0" y="0.0" width="327" height="40"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="333" height="40"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="C0o-lq-OP0">
@@ -521,9 +521,9 @@
                                 </constraints>
                             </box>
                             <box autoresizesSubviews="NO" boxType="custom" borderType="none" title="TagsAndBillableBox" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="ByL-Em-l61">
-                                <rect key="frame" x="0.0" y="15" width="347" height="100"/>
+                                <rect key="frame" x="0.0" y="15" width="353" height="100"/>
                                 <view key="contentView" id="1gU-9P-78Z">
-                                    <rect key="frame" x="0.0" y="0.0" width="347" height="100"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="353" height="100"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="aj8-1w-aCw">
@@ -535,7 +535,7 @@
                                             </textFieldCell>
                                         </textField>
                                         <tokenField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="9Uk-YS-6nx">
-                                            <rect key="frame" x="118" y="77" width="213" height="18"/>
+                                            <rect key="frame" x="118" y="77" width="219" height="18"/>
                                             <tokenFieldCell key="cell" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" alignment="left" placeholderString="" drawsBackground="YES" allowsEditingTextAttributes="YES" id="Ugp-hu-uZB">
                                                 <font key="font" metaFont="miniSystem"/>
                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -570,7 +570,7 @@
                                             </textFieldCell>
                                         </textField>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="feg-gg-X4L">
-                                            <rect key="frame" x="116" y="24" width="217" height="17"/>
+                                            <rect key="frame" x="116" y="24" width="223" height="17"/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Workspace" id="amF-LP-y9l">
                                                 <font key="font" metaFont="system"/>
                                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>

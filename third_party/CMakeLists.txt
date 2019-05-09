@@ -23,7 +23,7 @@ add_library(OAuth2 SHARED ${OAUTH2_SOURCE_FILES})
 target_link_libraries(OAuth2 PRIVATE
     Qt5::Widgets Qt5::WebEngine Qt5::WebEngineWidgets
 )
-install(TARGETS OAuth2 DESTINATION lib)
+install(TARGETS OAuth2 DESTINATION ${TOGGL_INTERNAL_LIB_DIR})
 
 # Bugsnag has to be bundled
 set(BUGSNAG_SOURCE_FILES
@@ -33,7 +33,7 @@ add_library(Bugsnag SHARED ${BUGSNAG_SOURCE_FILES})
 target_link_libraries(Bugsnag PRIVATE
     Qt5::Widgets Qt5::Network
 )
-install(TARGETS Bugsnag DESTINATION lib)
+install(TARGETS Bugsnag DESTINATION ${TOGGL_INTERNAL_LIB_DIR})
 
 if(NOT Poco_FOUND)
     # to avoid that annoying check
@@ -108,7 +108,7 @@ if(NOT LUA_FOUND)
         Lua
         PARENT_SCOPE
     )
-    install(TARGETS Lua DESTINATION lib)
+    install(TARGETS Lua DESTINATION ${TOGGL_INTERNAL_LIB_DIR})
 endif()
 
 if(NOT jsoncpp_FOUND)
@@ -121,16 +121,16 @@ if(NOT jsoncpp_FOUND)
     target_include_directories(jsoncpp PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/jsoncpp/include
     )        
-    set(JSON_INCLUDE_DIRS
+    set(JSONCPP_INCLUDE_DIRS
         ${CMAKE_CURRENT_SOURCE_DIR}/jsoncpp/include
         ${CMAKE_CURRENT_SOURCE_DIR}/jsoncpp/src/lib_json
         PARENT_SCOPE
     )
-    set(JSON_LIBRARIES
+    set(JSONCPP_LIBRARIES
         jsoncpp
         PARENT_SCOPE
     )
-    install(TARGETS jsoncpp DESTINATION lib)
+    install(TARGETS jsoncpp DESTINATION ${TOGGL_INTERNAL_LIB_DIR})
 endif()
 
 if(NOT QXT_CORE_FOUND)
@@ -164,5 +164,5 @@ if(NOT QXT_CORE_FOUND)
         Qxt
         PARENT_SCOPE
     )
-    install(TARGETS Qxt DESTINATION lib)
+    install(TARGETS Qxt DESTINATION ${TOGGL_INTERNAL_LIB_DIR})
 endif()

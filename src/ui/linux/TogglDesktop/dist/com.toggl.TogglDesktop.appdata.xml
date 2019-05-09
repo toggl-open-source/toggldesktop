@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<application>
-    <id type="desktop">toggldesktop.desktop</id>
+<component type="desktop">
+    <id type="desktop">com.toggl.TogglDesktop.desktop</id>
     <project_license>BSD-3-Clause</project_license>
     <metadata_license>BSD-3_Clause</metadata_license>
     <name>Toggl Desktop</name>
@@ -30,5 +30,5 @@
         <screenshot>https://toggl.github.io/toggldesktop/assets/images/linux_ui_edit.png</screenshot>
     </screenshots>
     <update_contact>martin@toggl.com</update_contact>
-</application>
+</component>
 

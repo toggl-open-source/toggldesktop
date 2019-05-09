@@ -14,6 +14,7 @@ final class SystemMessageView: NSView {
     
     @IBOutlet weak var iconContainerView: NSBox!
     @IBOutlet weak var iconBtn: NSButton!
+    private var floatingViewLeftConstraint: NSLayoutConstraint!
     private lazy var floatingView: FloatingErrorView = {
         return FloatingErrorView.xibView()
     }()
@@ -52,7 +53,8 @@ final class SystemMessageView: NSView {
 
     @IBAction func iconOnTap(_ sender: Any) {
         floatingView.isHidden = false
-        iconContainerView.isHidden = true
+        iconContainerView.isHidden = false
+        fadeInAnimation()
     }
 }
 
@@ -67,6 +69,9 @@ extension SystemMessageView: SystemMessagePresentable {
         floatingView.isHidden = false
         iconContainerView.isHidden = true
         self.superview?.bringSubviewToFront(self)
+
+        // Animate
+        fadeInAnimation(forAll: false)
 
         // Stop all animation
         stopAllAnimations()
@@ -95,7 +100,9 @@ extension SystemMessageView: SystemMessagePresentable {
         guard currentPayload.mode == payload.mode else { return }
 
         stopAllAnimations()
-        isHidden = true
+        fadeOutAnimation(for: false) {
+            self.isHidden = true
+        }
     }
 
     private func stopAllAnimations() {
@@ -112,6 +119,7 @@ extension SystemMessageView {
         layer?.masksToBounds = false
         iconContainerView.applyShadow()
         iconContainerView.applyBorder(cornerRadius: 13)
+        floatingView.wantsLayer = true
     }
 
     fileprivate func initFloatingView() {
@@ -121,28 +129,29 @@ extension SystemMessageView {
                                      attribute: .top,
                                      relatedBy: .equal,
                                      toItem: floatingView,
-                                     attribute: .top
-            , multiplier: 1.0, constant: 0)
+                                     attribute: .top,
+                                     multiplier: 1.0, constant: 0)
         let left = NSLayoutConstraint(item: self,
                                       attribute: .left,
                                       relatedBy: .equal,
                                       toItem: floatingView,
-                                      attribute: .left
-            , multiplier: 1.0, constant: 0)
-        let right = NSLayoutConstraint(item: self,
-                                       attribute: .right,
+                                      attribute: .left,
+                                      multiplier: 1.0, constant: 0)
+        let width = NSLayoutConstraint(item: floatingView,
+                                       attribute: .width,
                                        relatedBy: .equal,
-                                       toItem: floatingView,
-                                       attribute: .right
-            , multiplier: 1.0, constant: 30)
+                                       toItem: nil,
+                                       attribute: .notAnAttribute,
+                                       multiplier: 1,
+                                       constant: 240.0)
         let bottom = NSLayoutConstraint(item: self,
                                         attribute: .bottom,
                                         relatedBy: .equal,
                                         toItem: floatingView,
-                                        attribute: .bottom
-            , multiplier: 1.0, constant: 10)
-
-        addConstraints([top, left, right, bottom])
+                                        attribute: .bottom,
+                                        multiplier: 1.0, constant: 10)
+        floatingViewLeftConstraint = left
+        addConstraints([top, left, width, bottom])
     }
 
     fileprivate func handleClosing() {
@@ -150,14 +159,74 @@ extension SystemMessageView {
         switch payload.mode {
         case .error,
              .information:
-            // Hide all, because we don't have circle icon for information
-            isHidden = true
+
+            fadeOutAnimation(for: false) {
+                self.isHidden = true
+            }
 
         case .offline, .syncing:
             // Hide floating view
             // Then presenting the icon btn
-            floatingView.isHidden = true
+            floatingView.isHidden = false
             iconContainerView.isHidden = false
+
+            // Animate
+            fadeOutAnimation()
         }
+    }
+
+    private func fadeOutAnimation(for allItems: Bool = true, complete: (() -> Void)? = nil) {
+        if allItems {
+            iconContainerView.alphaValue = 0.0
+        }
+        floatingView.alphaValue = 1.0
+        floatingViewLeftConstraint.constant = 0
+
+        NSAnimationContext.runAnimationGroup({[weak self] (context) in
+            guard let strongSelf = self else { return }
+
+            context.duration = 0.3
+            context.timingFunction = CAMediaTimingFunction(name: .easeOut)
+
+            // Animate
+            if allItems {
+                strongSelf.iconContainerView.animator().alphaValue = 1.0
+            }
+            strongSelf.floatingView.animator().alphaValue = 0
+            strongSelf.floatingViewLeftConstraint.animator().constant = -strongSelf.frame.width
+
+            }, completionHandler: {[weak self] in
+                guard let strongSelf = self else { return }
+                strongSelf.floatingView.isHidden = true
+                complete?()
+        })
+    }
+
+    private func fadeInAnimation(forAll allItems: Bool = true) {
+        if allItems {
+            iconContainerView.alphaValue = 1.0
+        }
+        floatingView.alphaValue = 0.0
+        floatingViewLeftConstraint.constant = -self.frame.width
+
+        NSAnimationContext.runAnimationGroup({[weak self] (context) in
+            guard let strongSelf = self else { return }
+
+            context.duration = 0.3
+            context.timingFunction = CAMediaTimingFunction(name: .easeIn)
+
+            // Animate
+            if allItems {
+                strongSelf.iconContainerView.animator().alphaValue = 0
+            }
+            strongSelf.floatingView.animator().alphaValue = 1
+            strongSelf.floatingViewLeftConstraint.animator().constant = 0
+
+            }, completionHandler: {[weak self] in
+                guard let strongSelf = self else { return }
+                if allItems {
+                    strongSelf.iconContainerView.isHidden = true
+                }
+        })
     }
 }

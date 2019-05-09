@@ -24,7 +24,7 @@ include_directories(
     ${OAUTH_INCLUDE_DIR}
     ${BUGSNAG_INCLUDE_DIR}
     ${LUA_INCLUDE_DIRS}
-    ${JSON_INCLUDE_DIRS}
+    ${JSONCPP_INCLUDE_DIRS}
     ${POCO_INCLUDE_DIRS}
 )
 
@@ -74,7 +74,7 @@ add_library(TogglDesktopLibrary SHARED ${LIBRARY_SOURCE_FILES})
 
 # And list the dependencies between them (and system libraries)
 target_link_libraries(TogglDesktopLibrary PRIVATE
-    jsoncpp
+    ${JSONCPP_LIBRARIES}
     ${LUA_LIBRARIES}
     PocoCrypto PocoDataSQLite PocoNetSSL
 )
