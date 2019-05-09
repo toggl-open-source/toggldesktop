@@ -224,6 +224,9 @@
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                     <font key="font" metaFont="system" size="14"/>
                                 </buttonCell>
+                                <connections>
+                                    <action selector="billableCheckBoxOnChange:" target="-2" id="P99-UM-Dcd"/>
+                                </connections>
                             </button>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="veq-fR-isT">
                                 <rect key="frame" x="8" y="53" width="132" height="16"/>

@@ -140,6 +140,14 @@ final class EditorViewController: NSViewController {
         DesktopLibraryBridge.shared().updateTimeEntry(withEndTime: endAtTextField.stringValue,
                                                       guid: timeEntry.guid)
     }
+
+    @IBAction func billableCheckBoxOnChange(_ sender: Any) {
+        guard let timeEntryGUID = timeEntry.guid else { return }
+        let isBillable = billableCheckBox.state == .on
+        DesktopLibraryBridge.shared().setBillableForTimeEntryWithTimeEntryGUID(timeEntryGUID,
+                                                                               isBillable: isBillable)
+    }
+
 }
 
 // MARK: Private
