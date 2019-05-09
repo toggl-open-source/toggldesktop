@@ -20,7 +20,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="74" height="22"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     </view>
-                    <color key="fillColor" name="color-picker-background"/>
+                    <color key="fillColor" name="tag-token-background"/>
                 </box>
                 <box horizontalHuggingPriority="200" verticalHuggingPriority="200" horizontalCompressionResistancePriority="200" verticalCompressionResistancePriority="200" boxType="custom" cornerRadius="8" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="di9-tm-V4I">
                     <rect key="frame" x="0.0" y="0.0" width="74" height="22"/>
@@ -53,8 +53,8 @@
                     </connections>
                 </button>
                 <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="MP2-f0-MdB">
-                    <rect key="frame" x="31" y="3" width="35" height="16"/>
-                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="tag_gradient" id="J2p-3r-l4I"/>
+                    <rect key="frame" x="31" y="0.0" width="35" height="22"/>
+                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" image="tag_gradient" id="J2p-3r-l4I"/>
                 </imageView>
                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Shm-xU-vvz" customClass="CursorButton" customModule="TogglDesktop" customModuleProvider="target">
                     <rect key="frame" x="50" y="1" width="20" height="20"/>
@@ -78,11 +78,13 @@
                 <constraint firstAttribute="bottom" secondItem="Ix1-m2-ZVO" secondAttribute="bottom" constant="3" id="3dj-ei-L45"/>
                 <constraint firstAttribute="trailing" secondItem="Ix1-m2-ZVO" secondAttribute="trailing" constant="7" id="4lk-WZ-N4X"/>
                 <constraint firstAttribute="bottom" secondItem="di9-tm-V4I" secondAttribute="bottom" id="FPV-Vg-Yh6"/>
+                <constraint firstAttribute="bottom" secondItem="MP2-f0-MdB" secondAttribute="bottom" id="JJ7-D2-Brl"/>
                 <constraint firstItem="Shm-xU-vvz" firstAttribute="centerY" secondItem="c22-O7-iKe" secondAttribute="centerY" id="JQG-Bk-MtV"/>
                 <constraint firstItem="Ix1-m2-ZVO" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" constant="3" id="LDN-1O-Zzm"/>
                 <constraint firstAttribute="trailing" secondItem="di9-tm-V4I" secondAttribute="trailing" id="LpB-6E-ase"/>
                 <constraint firstItem="MP2-f0-MdB" firstAttribute="centerY" secondItem="c22-O7-iKe" secondAttribute="centerY" id="TN9-rI-HFS"/>
                 <constraint firstItem="di9-tm-V4I" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" id="UUY-XR-4dB"/>
+                <constraint firstItem="MP2-f0-MdB" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" id="Y4u-8R-DV7"/>
                 <constraint firstItem="Ix1-m2-ZVO" firstAttribute="centerY" secondItem="c22-O7-iKe" secondAttribute="centerY" id="aKs-n5-x9m"/>
                 <constraint firstItem="8lo-U3-Yk5" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" id="bOM-Fj-wzI"/>
                 <constraint firstAttribute="bottom" secondItem="ymK-AT-aPJ" secondAttribute="bottom" id="eSC-pa-eGU"/>
@@ -110,11 +112,11 @@
         <namedColor name="auto-complete-background">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
-        <namedColor name="color-picker-background">
-            <color red="0.97647058823529409" green="0.97647058823529409" blue="0.97647058823529409" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
         <namedColor name="grey-text-color">
             <color red="0.33333333333333331" green="0.33333333333333331" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="tag-token-background">
+            <color red="0.97647058823529409" green="0.97647058823529409" blue="0.97647058823529409" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="upload-border-color">
             <color red="0.67450980392156867" green="0.67450980392156867" blue="0.67450980392156867" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
