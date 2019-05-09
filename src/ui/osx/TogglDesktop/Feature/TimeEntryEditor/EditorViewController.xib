@@ -425,11 +425,14 @@
                                 <subviews>
                                     <textField horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="bCC-ON-SgR">
                                         <rect key="frame" x="-2" y="0.0" width="57" height="18"/>
-                                        <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="09:90" id="XRL-p8-r7I">
+                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" alignment="center" title="09:90" id="XRL-p8-r7I">
                                             <font key="font" metaFont="system" size="14"/>
                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
+                                        <connections>
+                                            <action selector="startTextFieldOnChange:" target="-2" id="QA7-3N-T9h"/>
+                                        </connections>
                                     </textField>
                                     <button horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="Qzj-M9-zrp">
                                         <rect key="frame" x="61" y="6" width="12" height="7"/>
@@ -443,11 +446,14 @@
                                     </button>
                                     <textField horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="8yt-KD-lKA">
                                         <rect key="frame" x="79" y="0.0" width="57" height="18"/>
-                                        <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="09:90" id="m0O-Wy-5Cq">
+                                        <textFieldCell key="cell" lineBreakMode="clipping" selectable="YES" editable="YES" alignment="center" title="09:90" id="m0O-Wy-5Cq">
                                             <font key="font" metaFont="system" size="14"/>
                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
+                                        <connections>
+                                            <action selector="endTextFieldOnChange:" target="-2" id="j6I-iv-TvL"/>
+                                        </connections>
                                     </textField>
                                 </subviews>
                                 <constraints>
