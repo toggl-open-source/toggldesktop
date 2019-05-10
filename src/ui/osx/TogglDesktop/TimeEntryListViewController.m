@@ -520,24 +520,21 @@ extern void *ctx;
 		return nil;
 	}
 
-	NSView *latestView = [self.timeEntriesTableView rowViewAtRow:row
-												 makeIfNecessary  :YES];
+	NSView *cellView = [self.timeEntriesTableView viewAtColumn:0 row:row makeIfNecessary:YES];
 
-	if (latestView == nil)
+	if (cellView == nil)
 	{
 		return nil;
 	}
 
 	self.selectedEntryCell = nil;
 
-	for (NSView *subview in [latestView subviews])
+	if ([cellView isKindOfClass:[TimeEntryCell class]] || [cellView isKindOfClass:[TimeEntryCellWithHeader class]])
 	{
-		if ([subview isKindOfClass:[TimeEntryCell class]] || [subview isKindOfClass:[TimeEntryCellWithHeader class]])
-		{
-			self.selectedEntryCell = (TimeEntryCell *)subview;
-			return self.selectedEntryCell;
-		}
+		self.selectedEntryCell = (TimeEntryCell *)cellView;
+		return self.selectedEntryCell;
 	}
+
 	return nil;
 }
 
