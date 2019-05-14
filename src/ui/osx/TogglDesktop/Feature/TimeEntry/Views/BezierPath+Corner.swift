@@ -154,13 +154,15 @@ extension NSBezierPath {
                 case .closePath:
                     path.closeSubpath()
                     didClosePath = true
+                default:
+                    break
                 }
             }
 
             if !didClosePath { path.closeSubpath() }
         }
 
-        points.deallocate(capacity: 3)
+        points.deallocate()
         return path
     }
 }
