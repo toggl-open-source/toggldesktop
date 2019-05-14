@@ -89,7 +89,7 @@
 
 // Manual mode
 @property NSMenuItem *manualModeMenuItem;
-@property (strong, nonatomic) NSKeyValueObservation *effectiveAppearanceObs;
+@property (strong, nonatomic) _NSKeyValueObservation *effectiveAppearanceObs;
 
 // System Service
 @property (strong, nonatomic) SystemService *systemService;
