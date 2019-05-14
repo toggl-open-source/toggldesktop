@@ -56,6 +56,7 @@
 #include "Poco/Util/TimerTask.h"
 #include "Poco/Util/TimerTaskAdapter.h"
 #include <mutex> // NOLINT
+#include <thread>
 
 namespace toggl {
 
@@ -2117,6 +2118,10 @@ error Context::GoogleLogin(const std::string access_token) {
     return Login(access_token, "google_access_token");
 }
 
+error Context::AsyncGoogleLogin(const std::string access_token) {
+    return AsyncLogin(access_token, "google_access_token");
+}
+
 error Context::attemptOfflineLogin(const std::string email,
                                    const std::string password) {
     if (email.empty()) {
@@ -2169,6 +2174,15 @@ error Context::attemptOfflineLogin(const std::string email,
     updateUI(UIElements::Reset());
 
     return save();
+}
+
+error Context::AsyncLogin(const std::string email,
+                          const std::string password) {
+    std::thread backgroundThread([&](std::string email, std::string password) {
+        return this->Login(email, password);
+    }, email, password);
+    backgroundThread.detach();
+    return noError;
 }
 
 error Context::Login(
@@ -2229,6 +2243,16 @@ error Context::Login(
     } catch(const std::string& ex) {
         return displayError(ex);
     }
+    return noError;
+}
+
+error Context::AsyncSignup(const std::string email,
+                           const std::string password,
+                           const uint64_t country_id) {
+    std::thread backgroundThread([&](std::string email, std::string password, uint64_t country_id) {
+        return this->Signup(email, password, country_id);
+    }, email, password, country_id);
+    backgroundThread.detach();
     return noError;
 }
 
@@ -3757,6 +3781,14 @@ void Context::SetSleep() {
         logger().debug("SetSleep");
         idle_.SetSleep();
     }
+}
+
+error Context::AsyncOpenReportsInBrowser() {
+    std::thread backgroundThread([&]() {
+        return this->OpenReportsInBrowser();
+    });
+    backgroundThread.detach();
+    return noError;
 }
 
 error Context::OpenReportsInBrowser() {
@@ -5458,6 +5490,14 @@ error Context::ToSAccept() {
 error Context::ToggleEntriesGroup(std::string name) {
     entry_groups[name] = !entry_groups[name];
     OpenTimeEntryList();
+    return noError;
+}
+
+error Context::AsyncPullCountries() {
+    std::thread backgroundThread([&]() {
+        return this->PullCountries();
+    });
+    backgroundThread.detach();
     return noError;
 }
 

@@ -1571,7 +1571,12 @@ void on_pomodoro_break(const char *title, const char *informative_text)
 
 void on_url(const char *url)
 {
-	[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:[NSString stringWithUTF8String:url]]];
+	// Capture url
+	NSString *reportURL = [NSString stringWithUTF8String:url];
+
+	dispatch_async(dispatch_get_main_queue(), ^{
+		[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:reportURL]];
+	});
 }
 
 void on_time_entry_list(const bool_t open,

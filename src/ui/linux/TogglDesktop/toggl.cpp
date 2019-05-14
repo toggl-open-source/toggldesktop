@@ -251,7 +251,7 @@ TogglApi::TogglApi(
     QString cacertPath = executableDir.filePath("cacert.pem");
 #ifdef TOGGL_DATA_DIR
     if (!QFile::exists(cacertPath)) {
-         cacertPath = QString("%1/cacert.pem").arg(TOGGL_DATA_DIR);
+        cacertPath = QString("%1/cacert.pem").arg(TOGGL_DATA_DIR);
     }
 #endif // TOGGL_DATA_DIR
     toggl_set_cacert_path(ctx, cacertPath.toUtf8().constData());
@@ -312,17 +312,17 @@ bool TogglApi::startEvents() {
 }
 
 void TogglApi::login(const QString email, const QString password) {
-    toggl_login(ctx,
-                email.toStdString().c_str(),
-                password.toStdString().c_str());
+    toggl_login_async(ctx,
+                      email.toStdString().c_str(),
+                      password.toStdString().c_str());
 }
 
 void TogglApi::signup(const QString email, const QString password,
                       const uint64_t countryID) {
-    toggl_signup(ctx,
-                 email.toStdString().c_str(),
-                 password.toStdString().c_str(),
-                 countryID);
+    toggl_signup_async(ctx,
+                       email.toStdString().c_str(),
+                       password.toStdString().c_str(),
+                       countryID);
 }
 
 void TogglApi::setEnvironment(const QString environment) {
@@ -355,7 +355,7 @@ bool TogglApi::setTimeEntryStop(
 }
 
 void TogglApi::googleLogin(const QString accessToken) {
-    toggl_google_login(ctx, accessToken.toStdString().c_str());
+    toggl_google_login_async(ctx, accessToken.toStdString().c_str());
 }
 
 bool TogglApi::setProxySettings(

@@ -141,6 +141,7 @@ extern void *ctx;
 		{
 			// Close error when loging in
 			[self closeError];
+			[self.loginViewController resetLoader];
 
 			self.loginViewController.view.hidden = YES;
 			[self.contentView addSubview:self.timeEntryListViewController.view];
@@ -186,6 +187,13 @@ extern void *ctx;
 
 	NSString *errorMessage = msg == nil ? @"Error" : msg;
 	[[SystemMessage shared] presentError:errorMessage subTitle:nil];
+
+	// Reset loader if there is error
+	// Have to check if login is present
+	if (self.loginViewController.view.superview != nil)
+	{
+		[self.loginViewController resetLoader];
+	}
 }
 
 - (void)startDisplayOnlineState:(NSNotification *)notification

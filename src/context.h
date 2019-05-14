@@ -276,10 +276,17 @@ class Context : public TimelineDatasource {
     void SetMiniTimerW(
         const int64_t w);
 
+    error AsyncLogin(const std::string email,
+                     const std::string password);
 
     error Login(
         const std::string email,
         const std::string password);
+
+    error AsyncSignup(
+        const std::string email,
+        const std::string password,
+        const uint64_t country_id);
 
     error Signup(
         const std::string email,
@@ -287,6 +294,7 @@ class Context : public TimelineDatasource {
         const uint64_t country_id);
 
     error GoogleLogin(const std::string access_token);
+    error AsyncGoogleLogin(const std::string access_token);
 
     error Logout();
 
@@ -414,6 +422,7 @@ class Context : public TimelineDatasource {
 
     void SetOnline();
 
+    error AsyncOpenReportsInBrowser();
     error OpenReportsInBrowser();
 
     error ToSAccept();
@@ -457,6 +466,7 @@ class Context : public TimelineDatasource {
     error ToggleEntriesGroup(
         std::string name);
 
+    error AsyncPullCountries();
     error PullCountries();
 
     void TrackWindowSize(const Poco::Int64 width,

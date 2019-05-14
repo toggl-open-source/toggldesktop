@@ -407,6 +407,14 @@ bool_t toggl_login(
             to_string(password));
 }
 
+bool_t toggl_login_async(
+    void *context,
+    const char_t *email,
+    const char_t *password) {
+    return toggl::noError == app(context)->AsyncLogin(to_string(email),
+            to_string(password));
+}
+
 bool_t toggl_signup(
     void *context,
     const char_t *email,
@@ -416,10 +424,25 @@ bool_t toggl_signup(
             to_string(password), country_id);
 }
 
+bool_t toggl_signup_async(
+    void *context,
+    const char_t *email,
+    const char_t *password,
+    const uint64_t country_id) {
+    return toggl::noError == app(context)->AsyncSignup(to_string(email),
+            to_string(password), country_id);
+}
+
 bool_t toggl_google_login(
     void *context,
     const char_t *access_token) {
     return toggl::noError == app(context)->GoogleLogin(to_string(access_token));
+}
+
+bool_t toggl_google_login_async(
+    void *context,
+    const char_t *access_token) {
+    return toggl::noError == app(context)->AsyncGoogleLogin(to_string(access_token));
 }
 
 bool_t toggl_logout(
@@ -853,6 +876,10 @@ void toggl_get_countries(void *context) {
     app(context)->PullCountries();
 }
 
+void toggl_get_countries_async(void *context) {
+    app(context)->AsyncPullCountries();
+}
+
 // Close/Open Entries Group
 void toggl_toggle_entries_group(void *context,
                                 const char_t *name) {
@@ -1043,7 +1070,7 @@ void toggl_set_online(void *context) {
 }
 
 void toggl_open_in_browser(void *context) {
-    app(context)->OpenReportsInBrowser();
+    app(context)->AsyncOpenReportsInBrowser();
 }
 
 bool_t toggl_accept_tos(void *context) {

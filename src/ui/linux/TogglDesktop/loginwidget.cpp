@@ -17,6 +17,9 @@ oauth2(new OAuth2(this)) {
     connect(TogglApi::instance, SIGNAL(setCountries(QVector<CountryView * >)),  // NOLINT
             this, SLOT(setCountries(QVector<CountryView * >)));  // NOLINT
 
+    connect(TogglApi::instance, SIGNAL(displayError(QString,bool)),  // NOLINT
+            this, SLOT(displayError(QString,bool)));  // NOLINT
+
     oauth2->setScope("profile email");
     oauth2->setAppName("Toggl Desktop");
     oauth2->setClientID("426090949585.apps.googleusercontent.com");
@@ -33,6 +36,24 @@ oauth2(new OAuth2(this)) {
 
 LoginWidget::~LoginWidget() {
     delete ui;
+}
+
+void LoginWidget::displayError(
+    const QString errmsg,
+    const bool user_error) {
+    Q_UNUSED(errmsg);
+    Q_UNUSED(user_error);
+    enableAllControls(true);
+}
+
+void LoginWidget::enableAllControls(const bool enable) {
+    ui->email->setEnabled(enable);
+    ui->password->setEnabled(enable);
+    ui->login->setEnabled(enable);
+    ui->signup->setEnabled(enable);
+    ui->googleLogin->setEnabled(enable);
+    ui->forgotPassword->setEnabled(enable);
+    ui->viewchangelabel->setEnabled(enable);
 }
 
 void LoginWidget::display() {
@@ -67,12 +88,16 @@ void LoginWidget::displayLogin(
     if (user_id) {
         ui->password->clear();
     }
+
+    // Enable all
+    enableAllControls(true);
 }
 
 void LoginWidget::on_login_clicked() {
     if (!validateFields(false)) {
         return;
     }
+    enableAllControls(false);
     TogglApi::instance->login(ui->email->text(), ui->password->text());
 }
 

@@ -278,8 +278,8 @@ void MainWindowController::onOnlineStateChanged() {
 void MainWindowController::onShortcutDelete() {
     if (ui->stackedWidget->currentWidget() == ui->timeEntryListWidget) {
         if (ui->timeEntryListWidget->focusWidget() &&
-            ui->timeEntryListWidget->focusWidget()->parentWidget() &&
-            qobject_cast<TimeEntryCellWidget*>(ui->timeEntryListWidget->focusWidget()->parentWidget())) {
+                ui->timeEntryListWidget->focusWidget()->parentWidget() &&
+                qobject_cast<TimeEntryCellWidget*>(ui->timeEntryListWidget->focusWidget()->parentWidget())) {
             qobject_cast<TimeEntryCellWidget*>(ui->timeEntryListWidget->focusWidget()->parentWidget())->deleteTimeEntry();
         }
         else {
@@ -303,8 +303,8 @@ void MainWindowController::onShortcutPause() {
         }
         else if (timeEntryList) {
             bool thisItem = !timeEntryList->timer()->currentEntryGuid().isEmpty() &&
-                    timeEntryList->highlightedCell() &&
-                    timeEntryList->timer()->currentEntryGuid() == timeEntryList->highlightedCell()->entryGuid();
+                            timeEntryList->highlightedCell() &&
+                            timeEntryList->timer()->currentEntryGuid() == timeEntryList->highlightedCell()->entryGuid();
             QString selectedGuid = timeEntryList->highlightedCell() ? timeEntryList->highlightedCell()->entryGuid() : QString();
             if (tracking) {
                 onActionStop();
@@ -347,8 +347,8 @@ void MainWindowController::onShortcutConfirm() {
 void MainWindowController::onShortcutGroupOpen() {
     if (ui->stackedWidget->currentWidget() == ui->timeEntryListWidget) {
         if (ui->timeEntryListWidget->focusWidget() &&
-            ui->timeEntryListWidget->focusWidget()->parentWidget() &&
-            qobject_cast<TimeEntryCellWidget*>(ui->timeEntryListWidget->focusWidget()->parentWidget())) {
+                ui->timeEntryListWidget->focusWidget()->parentWidget() &&
+                qobject_cast<TimeEntryCellWidget*>(ui->timeEntryListWidget->focusWidget()->parentWidget())) {
             qobject_cast<TimeEntryCellWidget*>(ui->timeEntryListWidget->focusWidget()->parentWidget())->toggleGroup(true);
         }
     }
@@ -357,8 +357,8 @@ void MainWindowController::onShortcutGroupOpen() {
 void MainWindowController::onShortcutGroupClose() {
     if (ui->stackedWidget->currentWidget() == ui->timeEntryListWidget) {
         if (ui->timeEntryListWidget->focusWidget() &&
-            ui->timeEntryListWidget->focusWidget()->parentWidget() &&
-            qobject_cast<TimeEntryCellWidget*>(ui->timeEntryListWidget->focusWidget()->parentWidget())) {
+                ui->timeEntryListWidget->focusWidget()->parentWidget() &&
+                qobject_cast<TimeEntryCellWidget*>(ui->timeEntryListWidget->focusWidget()->parentWidget())) {
             qobject_cast<TimeEntryCellWidget*>(ui->timeEntryListWidget->focusWidget()->parentWidget())->toggleGroup(false);
         }
     }
