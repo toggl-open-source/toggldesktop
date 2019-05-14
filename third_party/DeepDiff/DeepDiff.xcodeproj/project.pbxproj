@@ -233,6 +233,7 @@
 					D5C6293F1C3A7FAA007F7B7C = {
 						CreatedOnToolsVersion = 7.2;
 						DevelopmentTeam = B227VTMZ94;
+						LastSwiftMigration = 1020;
 						ProvisioningStyle = Automatic;
 					};
 					D5C629481C3A7FAA007F7B7C = {
@@ -245,6 +246,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = D5B2E8951C3A780C00C0327D;
