@@ -440,7 +440,7 @@ void TimeEntryEditorWidget::displayTags(
     }
 
     QSet<QString> actuallyAddedTags;
-    for (auto recentlyAddedTag : recentlyAddedTags) {
+for (auto recentlyAddedTag : recentlyAddedTags) {
         if (!recentlyAddedTag.isEmpty() && !tagList.contains(recentlyAddedTag)) {
             tagList << recentlyAddedTag;
         }
@@ -451,7 +451,7 @@ void TimeEntryEditorWidget::displayTags(
     tagList.sort();
     recentlyAddedTags = recentlyAddedTags - actuallyAddedTags;
 
-    for(auto tag : tagList) {
+for(auto tag : tagList) {
         QListWidgetItem *item = new QListWidgetItem(tag, ui->tags);
         item->setFlags(item->flags() | Qt::ItemIsUserCheckable);
         item->setCheckState(Qt::Unchecked);
@@ -606,7 +606,9 @@ void TimeEntryEditorWidget::on_newTagButton_clicked() {
         }
     }
 
-    QTimer::singleShot(0, [this]() { toggleNewTagMode(false); });
+    QTimer::singleShot(0, [this]() {
+        toggleNewTagMode(false);
+    });
 }
 
 void TimeEntryEditorWidget::on_newTag_returnPressed() {

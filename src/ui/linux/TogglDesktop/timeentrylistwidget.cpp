@@ -11,7 +11,7 @@ TimeEntryListWidget::TimeEntryListWidget(QStackedWidget *parent) : QWidget(paren
 ui(new Ui::TimeEntryListWidget) {
     ui->setupUi(this);
 
-    connect(ui->list, &QListWidget::currentRowChanged, [=](int row){
+    connect(ui->list, &QListWidget::currentRowChanged, [=](int row) {
         qCritical() << row;
     });
 
