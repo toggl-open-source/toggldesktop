@@ -13,7 +13,7 @@ var str = "Hello, playground"
 struct Corners: OptionSet {
     let rawValue: Int
 
-    init(rawValue: Corners.RawValue) {
+    init(rawValue: Int) {
         self.rawValue = rawValue
     }
 
