@@ -12,7 +12,7 @@ import Cocoa
 final class FlatButton: NSButton {
 
     @IBInspectable var bgColor: NSColor?
-    @IBInspectable var textColor: NSColor?
+    @IBInspectable var titleColor: NSColor?
     @IBInspectable var cornerRadius: CGFloat = 0 {
         didSet {
             wantsLayer = true
@@ -38,11 +38,11 @@ final class FlatButton: NSButton {
     }
 
     private func drawTextColor() {
-        if let textColor = textColor, let font = font {
+        if let titleColor = titleColor, let font = font {
             let style = NSMutableParagraphStyle()
             style.alignment = .center
             let attributes: [NSAttributedString.Key: Any] = [
-                NSAttributedString.Key.foregroundColor: textColor,
+                NSAttributedString.Key.foregroundColor: titleColor,
                 NSAttributedString.Key.font: font,
                 NSAttributedString.Key.paragraphStyle: style]
             let attributedTitle = NSAttributedString(string: title, attributes: attributes)
