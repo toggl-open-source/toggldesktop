@@ -91,45 +91,19 @@ make -j8                                  # Build the app. The number defines th
 
 ### Dependencies
 
-#### Install dev tools
+Install Visual Studio 2013 to get Visual C++ 2013 Build Tools (v120). You can download it [here](https://visualstudio.microsoft.com/vs/older-downloads/).
 
-We're building the Windows app using Visual Studio Community - it's a [free download](https://www.visualstudio.com/en-us/products/visual-studio-community-vs.aspx)
+Build the app using any Visual Studio 2013 or above. You can download free Visual Studio Community [here](https://visualstudio.microsoft.com/vs/community/).
 
-You'll need to [install ActivePerl](http://www.activestate.com/activeperl/downloads) to build OpenSSL from source.
-
-If you plan to run tests then you might want to install [Cygwin](https://www.cygwin.com/).
-
-#### Build OpenSSL
-
-Use pre-built OpenSSL binaries (recommended)
-
-Clone OpenSSL distribution provided by Poco project under the poco directory
-
-```
-cd %POCO_BASE%
-git clone https://github.com/pocoproject/openssl
-```
-
-Or
-
-build OpenSSL, from Visual Studio Tools, open up a Developer Command Prompt.
-
-cd to the project folder, then
-
-```
-cd third_party\openssl
-perl Configure VC-WIN32
-nmake
-```
-
-Instead of do_nasm (use NASM) you can also use do_ms (no asm at all), or do_masm (use MASM). 
-NASM can be downloaded here: http://www.nasm.us/pub/nasm/releasebuilds/?C=M;O=D
+If you want to run tests or build the app using make, then install [Cygwin](https://www.cygwin.com/).
 
 ### Build the app
 
 Now, select *Release_VS* from the Solution Configurations combobox in the Visual Studio toolbar, and build the solution.
 
 If you have Cygwin installed, you can also build the app from from Cygwin terminal, using make. (See macOS and Linux build instructions on above regarding make).
+
+If you want to build OpenSSL from sources, refer to [this page](docs/win/build-openSSL.md).
 
 # Downloads
 
