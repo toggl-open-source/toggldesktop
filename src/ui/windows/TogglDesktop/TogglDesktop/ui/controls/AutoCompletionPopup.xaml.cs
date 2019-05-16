@@ -202,7 +202,7 @@ namespace TogglDesktop
             this.controller = controller;
             this.needsToRefreshList = true;
             if (this.popup.IsOpen)
-                this.ensureList();
+                this.open(true);
         }
 
         public void OpenAndShowAll()
