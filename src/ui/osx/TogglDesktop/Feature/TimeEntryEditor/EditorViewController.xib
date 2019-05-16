@@ -218,24 +218,37 @@
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="vpV-Av-rbR">
-                                <rect key="frame" x="8" y="77" width="69" height="18"/>
-                                <buttonCell key="cell" type="check" title="Billable" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="y28-TJ-qRF">
-                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                    <font key="font" metaFont="system" size="14"/>
-                                </buttonCell>
-                                <connections>
-                                    <action selector="billableCheckBoxOnChange:" target="-2" id="P99-UM-Dcd"/>
-                                </connections>
-                            </button>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="veq-fR-isT">
-                                <rect key="frame" x="8" y="53" width="132" height="16"/>
-                                <textFieldCell key="cell" lineBreakMode="clipping" title="Marketing Department" id="GvP-Ai-0ZS">
-                                    <font key="font" metaFont="cellTitle"/>
-                                    <color key="textColor" name="grey-text-color"/>
-                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                </textFieldCell>
-                            </textField>
+                            <stackView distribution="equalSpacing" orientation="vertical" alignment="leading" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Zk0-BK-EiX">
+                                <rect key="frame" x="10" y="53" width="128" height="40"/>
+                                <subviews>
+                                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="vpV-Av-rbR">
+                                        <rect key="frame" x="-2" y="24" width="69" height="18"/>
+                                        <buttonCell key="cell" type="check" title="Billable" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="y28-TJ-qRF">
+                                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                            <font key="font" metaFont="system" size="14"/>
+                                        </buttonCell>
+                                        <connections>
+                                            <action selector="billableCheckBoxOnChange:" target="-2" id="P99-UM-Dcd"/>
+                                        </connections>
+                                    </button>
+                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="veq-fR-isT">
+                                        <rect key="frame" x="-2" y="0.0" width="132" height="16"/>
+                                        <textFieldCell key="cell" lineBreakMode="clipping" title="Marketing Department" id="GvP-Ai-0ZS">
+                                            <font key="font" metaFont="cellTitle"/>
+                                            <color key="textColor" name="grey-text-color"/>
+                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                        </textFieldCell>
+                                    </textField>
+                                </subviews>
+                                <visibilityPriorities>
+                                    <integer value="1000"/>
+                                    <integer value="1000"/>
+                                </visibilityPriorities>
+                                <customSpacing>
+                                    <real value="3.4028234663852886e+38"/>
+                                    <real value="3.4028234663852886e+38"/>
+                                </customSpacing>
+                            </stackView>
                             <box borderType="none" title="Box" titlePosition="noTitle" transparent="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UnC-x9-3oX">
                                 <rect key="frame" x="-3" y="-4" width="266" height="46"/>
                                 <view key="contentView" id="vyT-gw-aM1">
@@ -470,6 +483,7 @@
                             </customView>
                         </subviews>
                         <constraints>
+                            <constraint firstItem="Zk0-BK-EiX" firstAttribute="top" secondItem="fPF-go-RPE" secondAttribute="bottom" constant="20" id="2Kn-Wq-cyT"/>
                             <constraint firstItem="fPF-go-RPE" firstAttribute="top" secondItem="Qo9-rw-PRz" secondAttribute="bottom" constant="10" id="2Tv-8n-UiQ"/>
                             <constraint firstItem="Z2P-L8-d10" firstAttribute="leading" secondItem="RzB-ad-pEO" secondAttribute="leading" constant="20" id="4Bn-aX-Nah"/>
                             <constraint firstItem="UnC-x9-3oX" firstAttribute="leading" secondItem="RzB-ad-pEO" secondAttribute="leading" id="4yy-Ou-d89"/>
@@ -481,8 +495,6 @@
                             <constraint firstItem="HK8-ig-0Mv" firstAttribute="centerX" secondItem="RzB-ad-pEO" secondAttribute="centerX" id="FKt-5X-1jx"/>
                             <constraint firstAttribute="trailing" secondItem="FXR-Ha-kYg" secondAttribute="trailing" constant="5" id="FXs-l3-uQK"/>
                             <constraint firstAttribute="bottom" secondItem="UnC-x9-3oX" secondAttribute="bottom" id="GSq-Az-UQ6"/>
-                            <constraint firstItem="veq-fR-isT" firstAttribute="leading" secondItem="RzB-ad-pEO" secondAttribute="leading" constant="10" id="KqF-kc-dI6"/>
-                            <constraint firstItem="vpV-Av-rbR" firstAttribute="leading" secondItem="RzB-ad-pEO" secondAttribute="leading" constant="10" id="MtN-ev-70A"/>
                             <constraint firstAttribute="trailing" secondItem="Wyt-sv-sZR" secondAttribute="trailing" constant="8" id="NJw-FZ-a8c"/>
                             <constraint firstAttribute="trailing" secondItem="LcZ-Q8-F7m" secondAttribute="trailing" constant="10" id="Onu-1F-1In"/>
                             <constraint firstAttribute="trailing" secondItem="HK8-ig-0Mv" secondAttribute="trailing" constant="10" id="VCY-fI-WHe"/>
@@ -491,16 +503,16 @@
                             <constraint firstAttribute="trailing" secondItem="sts-eu-78s" secondAttribute="trailing" constant="10" id="dqZ-EC-h7p"/>
                             <constraint firstItem="HK8-ig-0Mv" firstAttribute="leading" secondItem="RzB-ad-pEO" secondAttribute="leading" constant="10" id="eqs-xi-dDm"/>
                             <constraint firstItem="Wyt-sv-sZR" firstAttribute="top" secondItem="mUe-Xn-xvP" secondAttribute="bottom" constant="15" id="f12-FA-Vs7"/>
-                            <constraint firstItem="vpV-Av-rbR" firstAttribute="top" secondItem="fPF-go-RPE" secondAttribute="bottom" constant="20" id="gXc-d6-ab2"/>
                             <constraint firstItem="Qo9-rw-PRz" firstAttribute="leading" secondItem="RzB-ad-pEO" secondAttribute="leading" constant="10" id="hB8-KN-2vg"/>
+                            <constraint firstItem="UnC-x9-3oX" firstAttribute="top" secondItem="Zk0-BK-EiX" secondAttribute="bottom" constant="13" id="hPi-Wt-1od"/>
                             <constraint firstItem="flL-k2-TC8" firstAttribute="leading" secondItem="Z2P-L8-d10" secondAttribute="leading" id="ifh-Dy-Ovn"/>
                             <constraint firstAttribute="trailing" secondItem="mUe-Xn-xvP" secondAttribute="trailing" constant="10" id="izn-Pa-rxI"/>
-                            <constraint firstItem="veq-fR-isT" firstAttribute="top" secondItem="vpV-Av-rbR" secondAttribute="bottom" constant="10" id="kvi-19-lAV"/>
                             <constraint firstItem="mUe-Xn-xvP" firstAttribute="top" secondItem="sts-eu-78s" secondAttribute="bottom" constant="5" id="nU7-YF-Me0"/>
                             <constraint firstItem="LcZ-Q8-F7m" firstAttribute="top" secondItem="Z2P-L8-d10" secondAttribute="bottom" constant="10" id="oO1-Mp-Gsa"/>
                             <constraint firstItem="flL-k2-TC8" firstAttribute="top" secondItem="sts-eu-78s" secondAttribute="bottom" constant="20" id="qJa-hb-Nve"/>
                             <constraint firstItem="sts-eu-78s" firstAttribute="top" secondItem="HK8-ig-0Mv" secondAttribute="bottom" constant="10" id="qvL-VD-13f"/>
                             <constraint firstItem="LcZ-Q8-F7m" firstAttribute="centerX" secondItem="RzB-ad-pEO" secondAttribute="centerX" id="tkP-Z8-ayM"/>
+                            <constraint firstItem="Zk0-BK-EiX" firstAttribute="leading" secondItem="RzB-ad-pEO" secondAttribute="leading" constant="10" id="uKE-Oe-S4J"/>
                             <constraint firstItem="FXR-Ha-kYg" firstAttribute="top" secondItem="RzB-ad-pEO" secondAttribute="top" constant="5" id="uSd-7e-ckx"/>
                             <constraint firstAttribute="trailing" secondItem="fPF-go-RPE" secondAttribute="trailing" constant="10" id="utZ-T7-DxC"/>
                             <constraint firstItem="Wyt-sv-sZR" firstAttribute="leading" secondItem="Qo9-rw-PRz" secondAttribute="trailing" constant="8" id="vUQ-3b-rmy"/>

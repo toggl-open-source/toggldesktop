@@ -189,6 +189,7 @@ extension EditorViewController {
     fileprivate func fillData() {
         descriptionTextField.stringValue = timeEntry.descriptionName
         billableCheckBox.state = timeEntry.billable ? .on : .off
+        billableCheckBox.isHidden = !timeEntry.canSeeBillable
         projectTextField.setTimeEntry(timeEntry)
         calendarViewControler.prepareLayout(with: timeEntry.started)
         
