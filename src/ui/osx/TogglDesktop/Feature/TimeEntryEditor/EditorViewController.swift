@@ -168,7 +168,11 @@ extension EditorViewController {
 
         descriptionTextField.delegate = self
         dayNameButton.cursor = .pointingHand
-        
+
+        durationTextField.delegate = self
+        startAtTextField.delegate = self
+        endAtTextField.delegate = self
+
         var calendar = Calendar.current
         calendar.timeZone = TimeZone.current
     }
@@ -257,8 +261,8 @@ extension EditorViewController {
         endAtTextField.isEditable = false
 
         // Set date
-        startAtTextField.stringValue = "14:24 PM"
-        endAtTextField.stringValue = "15:24 PM"
+        startAtTextField.stringValue = timeEntry.startTimeString
+        endAtTextField.stringValue = timeEntry.endTimeString
 
         // Enable editable with new size
         view.displayIfNeeded()
@@ -306,12 +310,45 @@ extension EditorViewController: AutoCompleteViewDataSourceDelegate {
 extension EditorViewController: NSTextFieldDelegate {
 
     func controlTextDidEndEditing(_ obj: Notification) {
-        guard let timeEntry = timeEntry else { return }
-        guard timeEntry.descriptionName != descriptionTextField.stringValue else { return }
-        let name = descriptionTextField.stringValue
-        let guid = timeEntry.guid!
-        DesktopLibraryBridge.shared().updateTimeEntry(withDescription: name, guid: guid)
+        guard let timeEntry = timeEntry,
+            let textField = obj.object as? NSTextField else { return }
+
+        // Description
+        if textField == descriptionTextField {
+            guard timeEntry.descriptionName != descriptionTextField.stringValue else { return }
+            let name = descriptionTextField.stringValue
+            let guid = timeEntry.guid!
+            DesktopLibraryBridge.shared().updateTimeEntry(withDescription: name, guid: guid)
+        }
+
+        // Duration
+        if textField == durationTextField {
+            durationTextFieldOnChange(durationTextField)
+            return
+        }
+
+        // Start at
+        if textField == startAtTextField {
+            startTextFieldOnChange(startAtTextField)
+            return
+        }
+
+        // End at
+        if textField == endAtTextField {
+            endTextFieldOnChange(endAtTextField)
+        }
     }
+
+//    func control(_ control: NSControl, textView: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
+//
+//        if control == startAtTextField || control == endAtTextField {
+//            // Tab
+//            if commandSelector == #selector(NSResponder.insertTab(_:)) {
+//                return false
+//            }
+//        }
+//        return false
+//    }
 }
 
 // MARK: AutoCompleteTextFieldDelegate
