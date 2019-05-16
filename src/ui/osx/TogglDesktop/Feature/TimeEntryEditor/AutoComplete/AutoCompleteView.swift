@@ -140,6 +140,12 @@ extension AutoCompleteView {
                 strongSelf.dataSource?.keyboardDidEnter()
                 return true
             case .tab:
+
+                // Don't focus to create button if it's hidden
+                if strongSelf.createNewItemContainerView.isHidden {
+                    return false
+                }
+
                 // Only focus to create button if the view is expaned
                 if let textField = strongSelf.dataSource?.textField, textField.state == .expand {
                     strongSelf.window?.makeKeyAndOrderFront(nil)

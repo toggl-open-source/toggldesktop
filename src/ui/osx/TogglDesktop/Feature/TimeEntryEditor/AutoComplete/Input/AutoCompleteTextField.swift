@@ -13,6 +13,7 @@ protocol AutoCompleteTextFieldDelegate: class {
     func autoCompleteDidTapOnCreateButton(_ sender: AutoCompleteTextField)
     func shouldClearCurrentSelection(_ sender: AutoCompleteTextField)
     func autoCompleteViewDidClose(_ sender: AutoCompleteTextField)
+    func autoCompleteTextFieldDidEndEditing(_ sender: AutoCompleteTextField)
 }
 
 class AutoCompleteTextField: NSTextField, NSTextFieldDelegate, AutoCompleteViewDelegate {
@@ -88,6 +89,9 @@ class AutoCompleteTextField: NSTextField, NSTextFieldDelegate, AutoCompleteViewD
         if stringValue.isEmpty {
             autoCompleteDelegate?.shouldClearCurrentSelection(self)
         }
+
+        // Notify delegates
+        autoCompleteDelegate?.autoCompleteTextFieldDidEndEditing(self)
     }
 
     func controlTextDidChange(_ obj: Notification) {

@@ -48,6 +48,11 @@ final class DescriptionDataSource: AutoCompleteViewDataSource {
                            forIdentifier: Constants.WorkspaceCell)
     }
 
+    override func render(with items: [Any]) {
+        super.render(with: items)
+        autoCompleteView.isHidden = items.isEmpty
+    }
+
     override func filter(with text: String) {
 
         // show all

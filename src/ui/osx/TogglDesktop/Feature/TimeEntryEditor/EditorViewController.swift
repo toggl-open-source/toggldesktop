@@ -311,6 +311,11 @@ extension EditorViewController: AutoCompleteViewDataSourceDelegate {
                                                                              projectID: item.projectID,
                                                                              projectGUID: projectGUID)
             }
+            return
+        }
+
+        if sender == descriptionDatasource {
+            print(item)
         }
     }
 }
@@ -320,14 +325,6 @@ extension EditorViewController: NSTextFieldDelegate {
     func controlTextDidEndEditing(_ obj: Notification) {
         guard let timeEntry = timeEntry,
             let textField = obj.object as? NSTextField else { return }
-
-        // Description
-        if textField == descriptionTextField {
-            guard timeEntry.descriptionName != descriptionTextField.stringValue else { return }
-            let name = descriptionTextField.stringValue
-            let guid = timeEntry.guid!
-            DesktopLibraryBridge.shared().updateTimeEntry(withDescription: name, guid: guid)
-        }
 
         // Duration
         if textField == durationTextField {
@@ -346,17 +343,6 @@ extension EditorViewController: NSTextFieldDelegate {
             endTextFieldOnChange(endAtTextField)
         }
     }
-
-//    func control(_ control: NSControl, textView: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
-//
-//        if control == startAtTextField || control == endAtTextField {
-//            // Tab
-//            if commandSelector == #selector(NSResponder.insertTab(_:)) {
-//                return false
-//            }
-//        }
-//        return false
-//    }
 }
 
 // MARK: AutoCompleteTextFieldDelegate
@@ -393,6 +379,16 @@ extension EditorViewController: AutoCompleteTextFieldDelegate {
                                                                          taskID: 0,
                                                                          projectID: 0,
                                                                          projectGUID: "")
+        }
+    }
+
+    func autoCompleteTextFieldDidEndEditing(_ sender: AutoCompleteTextField) {
+        if sender == descriptionTextField {
+            guard let timeEntry = timeEntry,
+                timeEntry.descriptionName != descriptionTextField.stringValue else { return }
+            let name = descriptionTextField.stringValue
+            let guid = timeEntry.guid!
+            DesktopLibraryBridge.shared().updateTimeEntry(withDescription: name, guid: guid)
         }
     }
 }
