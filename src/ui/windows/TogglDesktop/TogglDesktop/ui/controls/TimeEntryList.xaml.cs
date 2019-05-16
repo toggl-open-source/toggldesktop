@@ -274,7 +274,11 @@ namespace TogglDesktop
             if (this.selectedDay != null)
                 return false;
 
-            this.keyboardHighlightedCell.DayHeader.Collapse();
+            if (this.keyboardSelectedId >= 0 && this.keyboardSelectedId < cells.Count)
+            {
+                this.keyboardHighlightedCell.DayHeader.Collapse();
+            }
+
             this.refreshKeyboardHighlight();
 
             return true;
