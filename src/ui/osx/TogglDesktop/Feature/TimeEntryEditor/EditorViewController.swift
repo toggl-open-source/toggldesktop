@@ -38,7 +38,8 @@ final class EditorViewController: NSViewController {
     @IBOutlet weak var startAtTextField: NSTextField!
     @IBOutlet weak var endAtTextField: NSTextField!
     @IBOutlet weak var dateSelectionBox: NSBox!
-    
+    @IBOutlet weak var workspaceLbl: NSTextField!
+
     // MARK: Variables
 
     var timeEntry: TimeEntryViewItem! {
@@ -187,6 +188,8 @@ extension EditorViewController {
     }
 
     fileprivate func fillData() {
+        guard let timeEntry = timeEntry else { return }
+        workspaceLbl.stringValue = timeEntry.workspaceName
         descriptionTextField.stringValue = timeEntry.descriptionName
         billableCheckBox.state = timeEntry.billable ? .on : .off
         billableCheckBox.isHidden = !timeEntry.canSeeBillable
