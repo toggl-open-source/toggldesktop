@@ -11,6 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @class TimeEntryViewItem;
+@class AutocompleteItem;
 
 @interface DesktopLibraryBridge : NSObject
 
@@ -55,6 +56,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)deleteTimeEntryImte:(TimeEntryViewItem *)item;
 
+- (void)updateDescriptionForTimeEntry:(TimeEntryViewItem *)timeEntry
+						 autocomplete:(AutocompleteItem *)autocomplete;
 @end
 
 NS_ASSUME_NONNULL_END

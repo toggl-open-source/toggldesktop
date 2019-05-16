@@ -9,6 +9,7 @@
 #import "DesktopLibraryBridge.h"
 #import "TimeEntryViewItem.h"
 #import "toggl_api.h"
+#import "AutocompleteItem.h"
 
 @implementation DesktopLibraryBridge
 
@@ -153,6 +154,18 @@ void *ctx;
 
 	// Delete
 	toggl_delete_time_entry(ctx, [item.GUID UTF8String]);
+}
+
+- (void)updateDescriptionForTimeEntry:(TimeEntryViewItem *)timeEntry autocomplete:(AutocompleteItem *)autocomplete
+{
+	toggl_set_time_entry_project(ctx,
+								 [timeEntry.GUID UTF8String],
+								 autocomplete.TaskID,
+								 autocomplete.ProjectID,
+								 0);
+	toggl_set_time_entry_description(ctx,
+									 [timeEntry.GUID UTF8String],
+									 [autocomplete.Description UTF8String]);
 }
 
 @end

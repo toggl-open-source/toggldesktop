@@ -315,7 +315,11 @@ extension EditorViewController: AutoCompleteViewDataSourceDelegate {
         }
 
         if sender == descriptionDatasource {
-            print(item)
+            if let descriptionTimeEntry = item as? DescriptionTimeEntry {
+                DesktopLibraryBridge.shared().updateDescription(forTimeEntry: timeEntry,
+                                                                autocomplete: descriptionTimeEntry.item)
+                descriptionTextField.closeSuggestion()
+            }
         }
     }
 }
