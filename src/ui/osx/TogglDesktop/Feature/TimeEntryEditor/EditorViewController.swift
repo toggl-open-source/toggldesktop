@@ -20,7 +20,7 @@ final class EditorViewController: NSViewController {
 
     @IBOutlet weak var projectBox: NSBox!
     @IBOutlet weak var projectTextField: ProjectAutoCompleteTextField!
-    @IBOutlet weak var descriptionTextField: NSTextField!
+    @IBOutlet weak var descriptionTextField: DescriptionAutoCompleteTextField!
     @IBOutlet weak var tagTextField: TagAutoCompleteTextField!
     @IBOutlet weak var billableCheckBox: NSButton!
     @IBOutlet weak var projectDotImageView: DotImageView!
@@ -163,6 +163,7 @@ extension EditorViewController {
         view.layer?.masksToBounds = false
         closeBtn.cursor = .pointingHand
 
+        descriptionTextField.autoCompleteDelegate = self
         projectTextField.autoCompleteDelegate = self
         projectTextField.dotImageView = projectDotImageView
         projectTextField.layoutArrowBtn(with: view)
@@ -180,8 +181,11 @@ extension EditorViewController {
 
     fileprivate func initDatasource() {
         projectDatasource.delegate = self
-        tagTextField.autoCompleteDelegate = self
         projectDatasource.setup(with: projectTextField)
+
+
+
+        tagTextField.autoCompleteDelegate = self
         tagDatasource.delegate = self
         tagDatasource.tagDelegte = self
         tagDatasource.setup(with: tagTextField)

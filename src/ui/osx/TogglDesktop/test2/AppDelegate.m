@@ -1606,8 +1606,13 @@ void on_time_entry_list(const bool_t open,
 
 void on_time_entry_autocomplete(TogglAutocompleteView *first)
 {
+	NSArray *items = [AutocompleteItem loadAll:first];
+
 	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayTimeEntryAutocomplete
-																object:[AutocompleteItem loadAll:first]];
+																object:items];
+	dispatch_async(dispatch_get_main_queue(), ^{
+		[[DesciptionTimeEntryStorage shared] updateWith:items];
+	});
 }
 
 void on_mini_timer_autocomplete(TogglAutocompleteView *first)

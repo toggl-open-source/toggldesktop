@@ -59,7 +59,7 @@
                                     <rect key="frame" x="1" y="1" width="238" height="28"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="EMT-i8-OD1">
+                                        <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="EMT-i8-OD1" customClass="DescriptionAutoCompleteTextField" customModule="TogglDesktop" customModuleProvider="target">
                                             <rect key="frame" x="-2" y="0.0" width="242" height="28"/>
                                             <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" alignment="left" placeholderString="Description…" usesSingleLineMode="YES" id="0MM-Wa-hOG" customClass="VerticallyCenteredTextFieldCell" customModule="TogglDesktop" customModuleProvider="target">
                                                 <font key="font" metaFont="system" size="14"/>
