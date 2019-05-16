@@ -95,6 +95,10 @@ NSString *kInactiveTimerColor = @"#999999";
 												 selector:@selector(startDisplayLogin:)
 													 name:kDisplayLogin
 												   object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self
+												 selector:@selector(stop:)
+													 name:kCommandStop
+												   object:nil];
 
 
 		self.time_entry = [[TimeEntryViewItem alloc] init];
@@ -164,6 +168,13 @@ NSString *kInactiveTimerColor = @"#999999";
 - (void)startDisplayTimerState:(NSNotification *)notification
 {
 	[self displayTimerState:notification.object];
+}
+
+- (void)stop:(NSNotification *)notification
+{
+	self.descriptionLabel.editable = NO;
+	[self clear];
+	[self showDefaultTimer];
 }
 
 - (void)displayTimerState:(TimeEntryViewItem *)te
@@ -330,9 +341,6 @@ NSString *kInactiveTimerColor = @"#999999";
 	}
 	if (self.time_entry.duration_in_seconds < 0)
 	{
-		self.descriptionLabel.editable = NO;
-		[self clear];
-		[self showDefaultTimer];
 		[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kCommandStop
 																	object:nil];
 		return;
