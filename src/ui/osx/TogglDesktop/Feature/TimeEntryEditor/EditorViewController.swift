@@ -323,8 +323,7 @@ extension EditorViewController: AutoCompleteViewDataSourceDelegate {
 extension EditorViewController: NSTextFieldDelegate {
 
     func controlTextDidEndEditing(_ obj: Notification) {
-        guard let timeEntry = timeEntry,
-            let textField = obj.object as? NSTextField else { return }
+        guard let textField = obj.object as? NSTextField else { return }
 
         // Duration
         if textField == durationTextField {

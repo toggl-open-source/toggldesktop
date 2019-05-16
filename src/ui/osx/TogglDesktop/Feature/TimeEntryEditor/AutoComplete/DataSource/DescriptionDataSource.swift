@@ -66,6 +66,18 @@ final class DescriptionDataSource: AutoCompleteViewDataSource {
         render(with: filterItems)
     }
 
+    override func keyboardDidEnter() {
+
+        // If there is no selection
+        // Just get the stringValue
+        if items[safe: tableView.selectedRow] == nil {
+
+            // Close and update
+            textField.closeSuggestion()
+            textField.autoCompleteDelegate?.autoCompleteTextFieldDidEndEditing(textField)
+        }
+    }
+
     // MARK: Public
 
     override func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
