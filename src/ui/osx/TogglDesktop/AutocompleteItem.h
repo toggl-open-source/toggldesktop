@@ -18,6 +18,7 @@
 - (void)save:(TogglAutocompleteView *)data;
 @property NSString *Text;
 @property NSString *Description;
+@property (copy, nonatomic) NSString *DescriptionTitle; // Fix conflict with description in swift
 @property NSString *ProjectAndTaskLabel;
 @property NSString *TaskLabel;
 @property NSString *ProjectLabel;

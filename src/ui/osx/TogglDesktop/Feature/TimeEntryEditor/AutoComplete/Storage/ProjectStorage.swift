@@ -65,7 +65,7 @@ extension ProjectStorage {
         // Append new item or create new client
         for item in autoCompleteItems {
             if item.workspaceName != currentWorkspace {
-                newItems.append(ProjectWorkspaceItem(item: firstItem))
+                newItems.append(ProjectWorkspaceItem(item: item))
                 currentWorkspace = item.workspaceName
             }
             if item.clientLabel != currentClient {

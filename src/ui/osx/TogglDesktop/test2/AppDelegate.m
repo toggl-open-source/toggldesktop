@@ -1611,7 +1611,7 @@ void on_time_entry_autocomplete(TogglAutocompleteView *first)
 	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayTimeEntryAutocomplete
 																object:items];
 	dispatch_async(dispatch_get_main_queue(), ^{
-		[[DesciptionTimeEntryStorage shared] updateWith:items];
+		[[DescriptionTimeEntryStorage shared] updateWith:items];
 	});
 }
 

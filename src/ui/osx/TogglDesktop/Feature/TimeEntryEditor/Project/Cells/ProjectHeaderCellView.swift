@@ -23,4 +23,7 @@ final class ProjectHeaderCellView: NSTableCellView {
         titleTextField.stringValue = name
     }
 
+    func renderAsTimeEntry() {
+        titleTextField.stringValue = "TIME ENTRIES"
+    }
 }

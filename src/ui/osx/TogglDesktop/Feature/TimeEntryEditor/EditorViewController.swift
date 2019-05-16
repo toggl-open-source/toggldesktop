@@ -50,6 +50,8 @@ final class EditorViewController: NSViewController {
     private var selectedProjectItem: ProjectContentItem?
     private lazy var projectDatasource = ProjectDataSource(items: ProjectStorage.shared.items,
                                                            updateNotificationName: .ProjectStorageChangedNotification)
+    private lazy var descriptionDatasource = DescriptionDataSource(items: DescriptionTimeEntryStorage.shared.items,
+                                                                   updateNotificationName: .DescrptionTimeEntryStorageChangedNotification)
     private lazy var tagDatasource = TagDataSource(items: TagStorage.shared.tags,
                                                    updateNotificationName: .TagStorageChangedNotification)
 
@@ -182,8 +184,8 @@ extension EditorViewController {
     fileprivate func initDatasource() {
         projectDatasource.delegate = self
         projectDatasource.setup(with: projectTextField)
-
-
+        descriptionDatasource.delegate = self
+        descriptionDatasource.setup(with: descriptionTextField)
 
         tagTextField.autoCompleteDelegate = self
         tagDatasource.delegate = self

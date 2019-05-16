@@ -1,5 +1,5 @@
 //
-//  DesciptionTimeEntryStorage.swift
+//  DescriptionTimeEntryStorage.swift
 //  TogglDesktop
 //
 //  Created by Nghia Tran on 5/16/19.
@@ -12,9 +12,9 @@ extension Notification.Name {
     static let DescrptionTimeEntryStorageChangedNotification = Notification.Name("DescrptionTimeEntryStorageChangedNotification")
 }
 
-@objcMembers final class DesciptionTimeEntryStorage: NSObject {
+@objcMembers final class DescriptionTimeEntryStorage: NSObject {
 
-    static let shared = DesciptionTimeEntryStorage()
+    static let shared = DescriptionTimeEntryStorage()
 
     // MARK: Variables
 
@@ -44,7 +44,7 @@ extension Notification.Name {
 
 // MARK: Private
 
-extension DesciptionTimeEntryStorage {
+extension DescriptionTimeEntryStorage {
 
     func buildProjectItems(with autoCompleteItems: [AutocompleteItem]) -> [Any] {
 
@@ -56,7 +56,6 @@ extension DesciptionTimeEntryStorage {
         // Process
         var newItems: [Any] = []
         var currentWorkspace = firstItem.workspaceName
-        var currentClient = firstItem.clientLabel
 
         // Append the first workspace and client
         newItems.append(ProjectWorkspaceItem(item: firstItem))
@@ -65,14 +64,11 @@ extension DesciptionTimeEntryStorage {
         // Append new item or create new client
         for item in autoCompleteItems {
             if item.workspaceName != currentWorkspace {
-                newItems.append(ProjectWorkspaceItem(item: firstItem))
+                newItems.append(ProjectWorkspaceItem(item: item))
+                newItems.append(ProjectHeaderItem(item: item))
                 currentWorkspace = item.workspaceName
             }
-            if item.clientLabel != currentClient {
-                newItems.append(ProjectHeaderItem(item: item))
-                currentClient = item.clientLabel
-            }
-            newItems.append(ProjectContentItem(item: item))
+            newItems.append(DescriptionTimeEntry(item: item))
         }
 
         return newItems
