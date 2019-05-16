@@ -34,8 +34,7 @@ extension Notification.Name {
 
         // Filter with project lable or client label
         let filters = autoCompleteItems.filter {
-            return $0.projectLabel.fuzzySearch(with: text) ||
-                $0.clientLabel.fuzzySearch(with: text)
+            return $0.text.fuzzySearch(with: text)
         }
 
         return buildProjectItems(with: filters)

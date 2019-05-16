@@ -19,6 +19,6 @@ final class DescriptionContentCellView: HoverTableCellView {
     // MARK: Public
 
     func render(_ item: DescriptionTimeEntry) {
-
+        descriptionTextField.stringValue = item.name
     }
 }

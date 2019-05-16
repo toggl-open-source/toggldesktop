@@ -169,8 +169,6 @@ extension EditorViewController {
         projectTextField.autoCompleteDelegate = self
         projectTextField.dotImageView = projectDotImageView
         projectTextField.layoutArrowBtn(with: view)
-
-        descriptionTextField.delegate = self
         dayNameButton.cursor = .pointingHand
 
         durationTextField.delegate = self

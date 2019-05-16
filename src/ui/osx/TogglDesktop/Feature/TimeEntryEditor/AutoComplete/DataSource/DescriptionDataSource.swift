@@ -15,7 +15,7 @@ final class DescriptionTimeEntry {
 
     init(item: AutocompleteItem) {
         self.item = item
-        self.name = item.descriptionTitle
+        self.name = item.text
     }
 }
 
@@ -33,6 +33,12 @@ final class DescriptionDataSource: AutoCompleteViewDataSource {
 
     // MARK: Variables
 
+    override func setup(with textField: AutoCompleteTextField) {
+        super.setup(with: textField)
+        tableView.allowsEmptySelection = true
+        autoCompleteView.setCreateButtonSectionHidden(true)
+    }
+
     override func registerCustomeCells() {
         tableView.register(NSNib(nibNamed: Constants.HeaderNibName, bundle: nil),
                            forIdentifier: Constants.HeaderCell)
@@ -46,12 +52,12 @@ final class DescriptionDataSource: AutoCompleteViewDataSource {
 
         // show all
         if text.isEmpty {
-            render(with: ProjectStorage.shared.items)
+            render(with: DescriptionTimeEntryStorage.shared.items)
             return
         }
 
         // Filter
-        let filterItems = ProjectStorage.shared.filter(with: text)
+        let filterItems = DescriptionTimeEntryStorage.shared.filter(with: text)
         render(with: filterItems)
     }
 
