@@ -15,7 +15,7 @@ final class DescriptionTimeEntry {
 
     init(item: AutocompleteItem) {
         self.item = item
-        self.name = item.text
+        self.name = item.descriptionTitle
     }
 }
 

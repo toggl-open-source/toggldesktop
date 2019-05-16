@@ -23,11 +23,27 @@
                     <color key="fillColor" name="auto-complete-cell-hover"/>
                 </box>
                 <stackView distribution="equalSpacing" orientation="horizontal" alignment="centerY" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FOC-RO-rx7">
-                    <rect key="frame" x="15" y="9" width="101" height="16"/>
+                    <rect key="frame" x="15" y="9" width="190" height="16"/>
                     <subviews>
-                        <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="UgF-sa-i6g">
-                            <rect key="frame" x="-2" y="0.0" width="105" height="16"/>
-                            <textFieldCell key="cell" lineBreakMode="truncatingTail" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" alignment="left" title="Project and Client" usesSingleLineMode="YES" id="g4S-jf-1T5">
+                        <textField horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="UgF-sa-i6g">
+                            <rect key="frame" x="-2" y="0.0" width="69" height="16"/>
+                            <textFieldCell key="cell" lineBreakMode="truncatingTail" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" alignment="left" title="Description" usesSingleLineMode="YES" id="g4S-jf-1T5">
+                                <font key="font" metaFont="cellTitle"/>
+                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                            </textFieldCell>
+                        </textField>
+                        <imageView horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="3O4-dp-fgR" customClass="DotImageView" customModule="TogglDesktop" customModuleProvider="target">
+                            <rect key="frame" x="73" y="4" width="8" height="8"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="8" id="6TB-1d-IYq"/>
+                                <constraint firstAttribute="width" constant="8" id="jgy-O9-zdP"/>
+                            </constraints>
+                            <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" image="time-entry-dot" id="kcq-4A-tbo"/>
+                        </imageView>
+                        <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="qfN-UG-C9a" customClass="ProjectTextField">
+                            <rect key="frame" x="87" y="0.0" width="105" height="16"/>
+                            <textFieldCell key="cell" lineBreakMode="truncatingTail" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" alignment="left" title="Project and Client" usesSingleLineMode="YES" id="5p0-E8-PK1">
                                 <font key="font" metaFont="cellTitle"/>
                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -36,8 +52,12 @@
                     </subviews>
                     <visibilityPriorities>
                         <integer value="1000"/>
+                        <integer value="1000"/>
+                        <integer value="1000"/>
                     </visibilityPriorities>
                     <customSpacing>
+                        <real value="3.4028234663852886e+38"/>
+                        <real value="3.4028234663852886e+38"/>
                         <real value="3.4028234663852886e+38"/>
                     </customSpacing>
                 </stackView>
@@ -53,12 +73,15 @@
             </constraints>
             <connections>
                 <outlet property="contentContainerView" destination="l14-kx-nQQ" id="RXR-my-YsA"/>
-                <outlet property="descriptionTextField" destination="UgF-sa-i6g" id="1JR-MF-23u"/>
+                <outlet property="descriptionTextField" destination="UgF-sa-i6g" id="9Tj-FO-BNv"/>
+                <outlet property="dotView" destination="3O4-dp-fgR" id="2Ng-bt-FVo"/>
+                <outlet property="projectTextField" destination="qfN-UG-C9a" id="O1z-ip-HOC"/>
             </connections>
             <point key="canvasLocation" x="244.5" y="-8.5"/>
         </tableCellView>
     </objects>
     <resources>
+        <image name="time-entry-dot" width="8" height="8"/>
         <namedColor name="auto-complete-cell-hover">
             <color red="0.69411764705882351" green="0.69411764705882351" blue="0.69411764705882351" alpha="0.20000000298023224" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
