@@ -66,6 +66,7 @@ static class Program
             Toggl.InitialiseLog();
 
             var configuration = new Bugsnag.Configuration("aa13053a88d5133b688db0f25ec103b7");
+            configuration.AppVersion = Version();
 
 #if TOGGL_PRODUCTION_BUILD
             configuration.ReleaseStage = "production";
@@ -79,8 +80,6 @@ static class Program
                 report.Event.User = new Bugsnag.Payload.User { Id = uid.ToString() };
                 report.Event.Metadata.Add("Details", new Dictionary<string, string>
                 {
-                    { "OSVersion", Environment.OSVersion.ToString() },
-                    { "Version", Version() },
                     { "Channel", Toggl.UpdateChannel() }
                 });
             });
