@@ -71,8 +71,8 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Bugsnag">
-      <HintPath>..\packages\Bugsnag.1.2.0.0\lib\Net45\Bugsnag.dll</HintPath>
+    <Reference Include="Bugsnag, Version=2.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Bugsnag.2.2.0\lib\net45\Bugsnag.dll</HintPath>
     </Reference>
     <Reference Include="Google.Apis, Version=1.37.0.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
       <HintPath>..\packages\Google.Apis.1.37.0\lib\net45\Google.Apis.dll</HintPath>

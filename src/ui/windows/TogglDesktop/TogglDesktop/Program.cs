@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
 using System.Threading;
@@ -11,7 +12,7 @@ namespace TogglDesktop
 static class Program
 {
     private const string appGUID = "29067F3B-F706-46CB-92D2-1EA1E72A4CE3";
-    private static Bugsnag.Clients.BaseClient bugsnag;
+    private static Bugsnag.Client bugsnag;
     private static UInt64 uid;
 
     public static bool IsLoggedIn
@@ -64,13 +65,25 @@ static class Program
 
             Toggl.InitialiseLog();
 
-            bugsnag = new Bugsnag.Clients.BaseClient("aa13053a88d5133b688db0f25ec103b7");
+            var configuration = new Bugsnag.Configuration("aa13053a88d5133b688db0f25ec103b7");
 
 #if TOGGL_PRODUCTION_BUILD
-            bugsnag.Config.ReleaseStage = "production";
+            configuration.ReleaseStage = "production";
 #else
-            bugsnag.Config.ReleaseStage = "development";
+            configuration.ReleaseStage = "development";
 #endif
+
+            bugsnag = new Bugsnag.Client(configuration);
+            bugsnag.BeforeNotify(report =>
+            {
+                report.Event.User = new Bugsnag.Payload.User { Id = uid.ToString() };
+                report.Event.Metadata.Add("Details", new Dictionary<string, string>
+                {
+                    { "OSVersion", Environment.OSVersion.ToString() },
+                    { "Version", Version() },
+                    { "Channel", Toggl.UpdateChannel() }
+                });
+            });
 
             Toggl.OnLogin += delegate(bool open, UInt64 user_id)
             {
@@ -82,7 +95,7 @@ static class Program
                 Toggl.Debug(errmsg);
                 try
                 {
-                    if (!user_error && bugsnag.Config.ReleaseStage != "development")
+                    if (!user_error && bugsnag.Configuration.ReleaseStage != "development")
                     {
                         notifyBugsnag(new Exception(errmsg));
                     }
@@ -110,12 +123,7 @@ static class Program
         Toggl.Debug("Notifying bugsnag: " + e);
         try
         {
-            var metadata = new Bugsnag.Metadata();
-            metadata.AddToTab("Details", "UserID", uid.ToString());
-            metadata.AddToTab("Details", "OSVersion", Environment.OSVersion.ToString());
-            metadata.AddToTab("Details", "Version", Version());
-            metadata.AddToTab("Details", "Channel", Toggl.UpdateChannel());
-            bugsnag.Notify(e, metadata);
+            bugsnag.Notify(e);
         }
         catch (Exception ex)
         {
