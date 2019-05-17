@@ -36,8 +36,8 @@ final class EditorViewController: NSViewController {
     @IBOutlet weak var nextDateBtn: NSButton!
     @IBOutlet weak var previousDateBtn: NSButton!
     @IBOutlet weak var durationTextField: NSTextField!
-    @IBOutlet weak var startAtBtn: CursorButton!
-    @IBOutlet weak var endAtBtn: CursorButton!
+    @IBOutlet weak var startAtTextField: NSTextField!
+    @IBOutlet weak var endAtTextField: NSTextField!
     @IBOutlet weak var dateSelectionBox: NSBox!
     @IBOutlet weak var workspaceLbl: NSTextField!
 
@@ -176,17 +176,6 @@ final class EditorViewController: NSViewController {
         timeInputViewController.selectedComponent = .start
         presentTimeInputPopover()
     }
-
-    @IBAction func billableCheckBoxOnChange(_ sender: Any) {
-        guard let timeEntryGUID = timeEntry.guid else { return }
-        let isBillable = billableCheckBox.state == .on
-        DesktopLibraryBridge.shared().setBillableForTimeEntryWithTimeEntryGUID(timeEntryGUID,
-                                                                               isBillable: isBillable)
-    }
-
-    @IBAction func deleteBtnOnTap(_ sender: Any) {
-        DesktopLibraryBridge.shared().deleteTimeEntryImte(timeEntry)
-    }
     
     private func presentTimeInputPopover() {
         if !timePopover.isShown {
@@ -316,10 +305,10 @@ extension EditorViewController {
 
     private func renderTime() {
         durationTextField.stringValue = timeEntry.duration
-        startAtBtn.title = timeEntry.startTimeString
-        endAtBtn.title = timeEntry.endTimeString
-        startAtBtn.setTextColor(NSColor.labelColor)
-        endAtBtn.setTextColor(NSColor.labelColor)
+//        startAtBtn.title = timeEntry.startTimeString
+//        endAtBtn.title = timeEntry.endTimeString
+//        startAtBtn.setTextColor(NSColor.labelColor)
+//        endAtBtn.setTextColor(NSColor.labelColor)
 
         // Time controller
         timeInputViewController.timeEntry = timeEntry
