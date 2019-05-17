@@ -109,13 +109,6 @@
 		74D1D25F17EB71C100E709B0 /* TimeEntryEditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74D1D25C17EB71C100E709B0 /* TimeEntryEditViewController.xib */; };
 		74D1D27217EB72D900E709B0 /* TimerEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74D1D27017EB72D900E709B0 /* TimerEditViewController.m */; };
 		74D1D27417EB72D900E709B0 /* TimerEditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74D1D27117EB72D900E709B0 /* TimerEditViewController.xib */; };
-		74E3CDC617FBABE400C3ADD3 /* Bugsnag.m in Sources */ = {isa = PBXBuildFile; fileRef = 74E3CDB317FBABE400C3ADD3 /* Bugsnag.m */; };
-		74E3CDC817FBABE400C3ADD3 /* BugsnagConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 74E3CDB517FBABE400C3ADD3 /* BugsnagConfiguration.m */; };
-		74E3CDCA17FBABE400C3ADD3 /* BugsnagEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 74E3CDB717FBABE400C3ADD3 /* BugsnagEvent.m */; };
-		74E3CDCC17FBABE400C3ADD3 /* BugsnagMetaData.m in Sources */ = {isa = PBXBuildFile; fileRef = 74E3CDBA17FBABE400C3ADD3 /* BugsnagMetaData.m */; };
-		74E3CDCE17FBABE400C3ADD3 /* BugsnagNotifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 74E3CDBC17FBABE400C3ADD3 /* BugsnagNotifier.m */; };
-		74E3CDD017FBABE400C3ADD3 /* BugsnagReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 74E3CDBF17FBABE400C3ADD3 /* BugsnagReachability.m */; };
-		74E3CDD417FBABE400C3ADD3 /* BugsnagOSXNotifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 74E3CDC517FBABE400C3ADD3 /* BugsnagOSXNotifier.m */; };
 		74E3CDD717FBAE0800C3ADD3 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74E3CDD617FBAE0800C3ADD3 /* SystemConfiguration.framework */; };
 		74E3CDD917FC369700C3ADD3 /* ExceptionHandling.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74E3CDD817FC369700C3ADD3 /* ExceptionHandling.framework */; };
 		74E857BC194F8854007A88B9 /* cacert.pem in Resources */ = {isa = PBXBuildFile; fileRef = 74E857AB194F8807007A88B9 /* cacert.pem */; };
@@ -656,21 +649,6 @@
 		74D1D26F17EB72D900E709B0 /* TimerEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimerEditViewController.h; sourceTree = SOURCE_ROOT; };
 		74D1D27017EB72D900E709B0 /* TimerEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimerEditViewController.m; sourceTree = SOURCE_ROOT; };
 		74D1D27117EB72D900E709B0 /* TimerEditViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimerEditViewController.xib; sourceTree = SOURCE_ROOT; };
-		74E3CDB217FBABE400C3ADD3 /* Bugsnag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Bugsnag.h; sourceTree = "<group>"; };
-		74E3CDB317FBABE400C3ADD3 /* Bugsnag.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Bugsnag.m; sourceTree = "<group>"; };
-		74E3CDB417FBABE400C3ADD3 /* BugsnagConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BugsnagConfiguration.h; sourceTree = "<group>"; };
-		74E3CDB517FBABE400C3ADD3 /* BugsnagConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BugsnagConfiguration.m; sourceTree = "<group>"; };
-		74E3CDB617FBABE400C3ADD3 /* BugsnagEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BugsnagEvent.h; sourceTree = "<group>"; };
-		74E3CDB717FBABE400C3ADD3 /* BugsnagEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BugsnagEvent.m; sourceTree = "<group>"; };
-		74E3CDB817FBABE400C3ADD3 /* BugsnagLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BugsnagLogger.h; sourceTree = "<group>"; };
-		74E3CDB917FBABE400C3ADD3 /* BugsnagMetaData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BugsnagMetaData.h; sourceTree = "<group>"; };
-		74E3CDBA17FBABE400C3ADD3 /* BugsnagMetaData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BugsnagMetaData.m; sourceTree = "<group>"; };
-		74E3CDBB17FBABE400C3ADD3 /* BugsnagNotifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BugsnagNotifier.h; sourceTree = "<group>"; };
-		74E3CDBC17FBABE400C3ADD3 /* BugsnagNotifier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BugsnagNotifier.m; sourceTree = "<group>"; };
-		74E3CDBE17FBABE400C3ADD3 /* BugsnagReachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BugsnagReachability.h; sourceTree = "<group>"; };
-		74E3CDBF17FBABE400C3ADD3 /* BugsnagReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BugsnagReachability.m; sourceTree = "<group>"; };
-		74E3CDC417FBABE400C3ADD3 /* BugsnagOSXNotifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BugsnagOSXNotifier.h; sourceTree = "<group>"; };
-		74E3CDC517FBABE400C3ADD3 /* BugsnagOSXNotifier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BugsnagOSXNotifier.m; sourceTree = "<group>"; };
 		74E3CDD617FBAE0800C3ADD3 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		74E3CDD817FC369700C3ADD3 /* ExceptionHandling.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ExceptionHandling.framework; path = System/Library/Frameworks/ExceptionHandling.framework; sourceTree = SDKROOT; };
 		74E857AB194F8807007A88B9 /* cacert.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = cacert.pem; sourceTree = "<group>"; };
@@ -868,7 +846,6 @@
 				BA0CEBA321BA851700F1BF01 /* DeepDiff.xcodeproj */,
 				BA6E86A521DDB331005E2451 /* Sparkle.xcodeproj */,
 				BA7DB6BB21F9C7660059239B /* MASShortcut.xcodeproj */,
-				74E3CDB117FBABE400C3ADD3 /* bugsnag */,
 				745E7FC1192D247300747C18 /* images */,
 				3C0A570C1C22E12E00301D77 /* MKPopoverColorWell */,
 				74E1682E180F269F0026261C /* gtm */,
@@ -1163,45 +1140,6 @@
 				74AA9470180909F50000539F /* GTMOAuth2WindowController.m */,
 			);
 			name = gtm;
-			sourceTree = "<group>";
-		};
-		74E3CDB117FBABE400C3ADD3 /* bugsnag */ = {
-			isa = PBXGroup;
-			children = (
-				74E3CDB217FBABE400C3ADD3 /* Bugsnag.h */,
-				74E3CDB317FBABE400C3ADD3 /* Bugsnag.m */,
-				74E3CDB417FBABE400C3ADD3 /* BugsnagConfiguration.h */,
-				74E3CDB517FBABE400C3ADD3 /* BugsnagConfiguration.m */,
-				74E3CDB617FBABE400C3ADD3 /* BugsnagEvent.h */,
-				74E3CDB717FBABE400C3ADD3 /* BugsnagEvent.m */,
-				74E3CDB817FBABE400C3ADD3 /* BugsnagLogger.h */,
-				74E3CDB917FBABE400C3ADD3 /* BugsnagMetaData.h */,
-				74E3CDBA17FBABE400C3ADD3 /* BugsnagMetaData.m */,
-				74E3CDBB17FBABE400C3ADD3 /* BugsnagNotifier.h */,
-				74E3CDBC17FBABE400C3ADD3 /* BugsnagNotifier.m */,
-				74E3CDBD17FBABE400C3ADD3 /* dependencies */,
-				74E3CDC317FBABE400C3ADD3 /* OSX */,
-			);
-			name = bugsnag;
-			path = "../../../../third_party/bugsnag-cocoa/bugsnag";
-			sourceTree = "<group>";
-		};
-		74E3CDBD17FBABE400C3ADD3 /* dependencies */ = {
-			isa = PBXGroup;
-			children = (
-				74E3CDBE17FBABE400C3ADD3 /* BugsnagReachability.h */,
-				74E3CDBF17FBABE400C3ADD3 /* BugsnagReachability.m */,
-			);
-			path = dependencies;
-			sourceTree = "<group>";
-		};
-		74E3CDC317FBABE400C3ADD3 /* OSX */ = {
-			isa = PBXGroup;
-			children = (
-				74E3CDC417FBABE400C3ADD3 /* BugsnagOSXNotifier.h */,
-				74E3CDC517FBABE400C3ADD3 /* BugsnagOSXNotifier.m */,
-			);
-			path = OSX;
 			sourceTree = "<group>";
 		};
 		74E857AA194F8807007A88B9 /* ssl */ = {
@@ -1863,7 +1801,6 @@
 				BAAF567E2223CAC5003D0D73 /* NSButton+TextColor.swift in Sources */,
 				BA6EB8942249DB33003BB8EF /* VerticallyCenteredTextFieldCell.swift in Sources */,
 				BA46E09F2226707F00C25763 /* Collection+Safe.swift in Sources */,
-				74E3CDC617FBABE400C3ADD3 /* Bugsnag.m in Sources */,
 				745126B619A28AA600390F47 /* Reachability.m in Sources */,
 				74C1579B183BA5DA00550613 /* AutocompleteDataSource.m in Sources */,
 				BA0E38102225257D00D0121B /* BezierPath+Corner.swift in Sources */,
@@ -1872,10 +1809,8 @@
 				BAB8D49421BE742D00D63DA5 /* NSTableView+TimeEntryDiff.swift in Sources */,
 				3C8979CA19235EA2007061E0 /* NSTextFieldClickablePointer.m in Sources */,
 				748B3A3419222DB100F31468 /* DisplayCommand.m in Sources */,
-				74E3CDD017FBABE400C3ADD3 /* BugsnagReachability.m in Sources */,
 				3C0A571E1C22E12E00301D77 /* MKColorWell.m in Sources */,
 				7438B3D318253CD2002AE43C /* MenuItemTags.m in Sources */,
-				74E3CDCC17FBABE400C3ADD3 /* BugsnagMetaData.m in Sources */,
 				3CE1CAC11C774F2B00D0ADD5 /* LoadMoreCell.m in Sources */,
 				749CB8CC18167D6E00814841 /* PreferencesWindowController.m in Sources */,
 				3C7B4E8D190FA6D200627DC3 /* NSTextFieldVerticallyAligned.m in Sources */,
@@ -1883,7 +1818,6 @@
 				BA0E38122225260B00D0121B /* TimeEntryCell+Ext.swift in Sources */,
 				BA9D90B4222D14ED00D5EC0E /* NSView+Animation.swift in Sources */,
 				746947FA1AF3FE3E0024BED7 /* AutotrackerRuleItem.m in Sources */,
-				74E3CDCA17FBABE400C3ADD3 /* BugsnagEvent.m in Sources */,
 				3C6B2487203E01D90063FC08 /* AutoCompleteInput.m in Sources */,
 				BA13E05C21C7BA6000835EC1 /* UserNotificationCenter.m in Sources */,
 				74098C331919899600CBDFB9 /* Utils.m in Sources */,
@@ -1923,7 +1857,6 @@
 				BAA260D1222D1DC70094F4E4 /* NSView+Shadow+Border.swift in Sources */,
 				BA712EC221BF907200A2D8DD /* UndoManager.swift in Sources */,
 				3C3AF64E20ACC6280088A3A6 /* CountryViewItem.m in Sources */,
-				74E3CDD417FBABE400C3ADD3 /* BugsnagOSXNotifier.m in Sources */,
 				BAF6319C21E6F868002DD6AB /* NotificationCenter+MainThread.swift in Sources */,
 				74AA9471180909F50000539F /* GTMHTTPFetcher.m in Sources */,
 				BAFBFCC821CD1D3C004B443F /* SystemService.m in Sources */,
@@ -1937,7 +1870,6 @@
 				3C2F239D21A7B43400CBE6BC /* UnsupportedNotice.m in Sources */,
 				741104BF18C7682700BC7A49 /* NSTextFieldWithBackground.m in Sources */,
 				BA80BEB2221EAE6F00BDFD35 /* Array+ByGroup.swift in Sources */,
-				74E3CDCE17FBABE400C3ADD3 /* BugsnagNotifier.m in Sources */,
 				74F8FBA318313FA6000F09EE /* NSTextFieldClickable.m in Sources */,
 				BA7B4BCB21C0EF8800B75B14 /* NSAlert+Utils.m in Sources */,
 				BA403BAE2230CFBC008B202C /* BetterFocusAutoCompleteInput.m in Sources */,
@@ -1945,7 +1877,6 @@
 				BAAF569E2223D4C7003D0D73 /* DotImageView.swift in Sources */,
 				3C0A571A1C22E12E00301D77 /* MKColorPickerView.m in Sources */,
 				BA2E3F2C22375E640035D034 /* NSView+Appearance.swift in Sources */,
-				74E3CDC817FBABE400C3ADD3 /* BugsnagConfiguration.m in Sources */,
 				743D782A182791FA00978BCC /* idler.c in Sources */,
 				74AA9473180909F50000539F /* GTMOAuth2Authentication.m in Sources */,
 				BA7B4C7C21C293E700B75B14 /* String+Optional.swift in Sources */,
