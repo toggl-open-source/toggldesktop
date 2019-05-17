@@ -35,14 +35,14 @@
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
-        <customView id="Hz6-mo-xeY">
-            <rect key="frame" x="0.0" y="0.0" width="260" height="381"/>
+        <customView misplaced="YES" id="Hz6-mo-xeY">
+            <rect key="frame" x="0.0" y="0.0" width="274" height="381"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <box boxType="custom" borderWidth="0.0" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="fZO-4l-jo1">
-                    <rect key="frame" x="0.0" y="0.0" width="260" height="381"/>
+                    <rect key="frame" x="0.0" y="0.0" width="274" height="381"/>
                     <view key="contentView" id="RzB-ad-pEO">
-                        <rect key="frame" x="0.0" y="0.0" width="260" height="381"/>
+                        <rect key="frame" x="0.0" y="0.0" width="274" height="381"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Z2P-L8-d10">
@@ -54,13 +54,13 @@
                                 </textFieldCell>
                             </textField>
                             <box boxType="custom" cornerRadius="8" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="LcZ-Q8-F7m">
-                                <rect key="frame" x="10" y="307" width="240" height="30"/>
+                                <rect key="frame" x="10" y="307" width="254" height="30"/>
                                 <view key="contentView" id="5IK-eN-9gu">
-                                    <rect key="frame" x="1" y="1" width="238" height="28"/>
+                                    <rect key="frame" x="1" y="1" width="252" height="28"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="EMT-i8-OD1" customClass="DescriptionAutoCompleteTextField" customModule="TogglDesktop" customModuleProvider="target">
-                                            <rect key="frame" x="-2" y="0.0" width="242" height="28"/>
+                                            <rect key="frame" x="-2" y="0.0" width="256" height="28"/>
                                             <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" alignment="left" placeholderString="Description…" usesSingleLineMode="YES" id="0MM-Wa-hOG" customClass="VerticallyCenteredTextFieldCell" customModule="TogglDesktop" customModuleProvider="target">
                                                 <font key="font" metaFont="system" size="14"/>
                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -87,13 +87,13 @@
                                 <color key="borderColor" name="upload-border-color"/>
                             </box>
                             <box boxType="custom" cornerRadius="8" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="HK8-ig-0Mv">
-                                <rect key="frame" x="10" y="267" width="240" height="30"/>
+                                <rect key="frame" x="10" y="267" width="254" height="30"/>
                                 <view key="contentView" id="lQC-MY-kz1">
-                                    <rect key="frame" x="1" y="1" width="238" height="28"/>
+                                    <rect key="frame" x="1" y="1" width="252" height="28"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Doe-dQ-82A" customClass="ProjectAutoCompleteTextField" customModule="TogglDesktop" customModuleProvider="target">
-                                            <rect key="frame" x="-2" y="0.0" width="242" height="28"/>
+                                            <rect key="frame" x="-2" y="0.0" width="256" height="28"/>
                                             <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" alignment="left" placeholderString="Select project" usesSingleLineMode="YES" id="6po-73-koG" customClass="VerticallyCenteredTextFieldCell" customModule="TogglDesktop" customModuleProvider="target">
                                                 <font key="font" metaFont="system" size="14"/>
                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -129,19 +129,19 @@
                                 <color key="borderColor" name="upload-border-color"/>
                             </box>
                             <box boxType="custom" cornerRadius="8" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="sts-eu-78s">
-                                <rect key="frame" x="10" y="227" width="240" height="30"/>
+                                <rect key="frame" x="10" y="227" width="254" height="30"/>
                                 <view key="contentView" id="GjA-gG-Fhy">
-                                    <rect key="frame" x="1" y="1" width="238" height="28"/>
+                                    <rect key="frame" x="1" y="1" width="252" height="28"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <stackView hidden="YES" distribution="equalSpacing" orientation="horizontal" alignment="centerY" spacing="5" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qgG-HS-MvE">
                                             <rect key="frame" x="0.0" y="0.0" width="0.0" height="28"/>
                                         </stackView>
                                         <customView translatesAutoresizingMaskIntoConstraints="NO" id="Scx-li-Ewv">
-                                            <rect key="frame" x="0.0" y="0.0" width="238" height="28"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="252" height="28"/>
                                             <subviews>
                                                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="fzH-q2-m3a">
-                                                    <rect key="frame" x="10" y="0.0" width="218" height="28"/>
+                                                    <rect key="frame" x="10" y="0.0" width="232" height="28"/>
                                                     <buttonCell key="cell" type="bevel" title="Add tags" bezelStyle="rounded" alignment="left" imageScaling="proportionallyDown" inset="2" id="FrN-5J-6rF">
                                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                         <font key="font" metaFont="system" size="14"/>
@@ -176,13 +176,13 @@
                                 <color key="borderColor" name="upload-border-color"/>
                             </box>
                             <box boxType="custom" cornerRadius="8" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="Qo9-rw-PRz">
-                                <rect key="frame" x="10" y="153" width="100" height="30"/>
+                                <rect key="frame" x="10" y="153" width="80" height="30"/>
                                 <view key="contentView" id="glG-am-Jtd">
-                                    <rect key="frame" x="1" y="1" width="98" height="28"/>
+                                    <rect key="frame" x="1" y="1" width="78" height="28"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="q9U-uY-bOj">
-                                            <rect key="frame" x="-2" y="0.0" width="102" height="28"/>
+                                            <rect key="frame" x="-2" y="0.0" width="82" height="28"/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" alignment="left" title="0:00:00" placeholderString="0:00:00" id="dJu-5a-D7u" customClass="VerticallyCenteredTextFieldCell" customModule="TogglDesktop" customModuleProvider="target">
                                                 <font key="font" metaFont="system" size="14"/>
                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -207,7 +207,7 @@
                                 </view>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="Zgc-cB-1iO"/>
-                                    <constraint firstAttribute="width" constant="100" id="oLg-tf-aMC"/>
+                                    <constraint firstAttribute="width" constant="80" id="oLg-tf-aMC"/>
                                 </constraints>
                                 <color key="borderColor" name="upload-border-color"/>
                             </box>
@@ -251,9 +251,9 @@
                                 </customSpacing>
                             </stackView>
                             <box borderType="none" title="Box" titlePosition="noTitle" transparent="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UnC-x9-3oX">
-                                <rect key="frame" x="-3" y="-4" width="266" height="46"/>
+                                <rect key="frame" x="-3" y="-4" width="280" height="46"/>
                                 <view key="contentView" id="vyT-gw-aM1">
-                                    <rect key="frame" x="0.0" y="0.0" width="266" height="46"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="280" height="46"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <button horizontalHuggingPriority="750" verticalHuggingPriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="5ym-is-B1S">
@@ -271,7 +271,7 @@
                                             </connections>
                                         </button>
                                         <box verticalHuggingPriority="750" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="unD-T8-stz">
-                                            <rect key="frame" x="0.0" y="43" width="266" height="5"/>
+                                            <rect key="frame" x="0.0" y="43" width="280" height="5"/>
                                         </box>
                                     </subviews>
                                     <constraints>
@@ -287,19 +287,19 @@
                                 </constraints>
                             </box>
                             <box boxType="custom" cornerRadius="8" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="fPF-go-RPE">
-                                <rect key="frame" x="10" y="113" width="240" height="30"/>
+                                <rect key="frame" x="10" y="113" width="254" height="30"/>
                                 <view key="contentView" id="WrW-21-htC">
-                                    <rect key="frame" x="1" y="1" width="238" height="28"/>
+                                    <rect key="frame" x="1" y="1" width="252" height="28"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <box boxType="custom" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="NTv-X9-sKT">
-                                            <rect key="frame" x="30" y="-1" width="178" height="30"/>
+                                            <rect key="frame" x="30" y="-1" width="192" height="30"/>
                                             <view key="contentView" id="Vxl-ZN-LqT">
-                                                <rect key="frame" x="1" y="1" width="176" height="28"/>
+                                                <rect key="frame" x="1" y="1" width="190" height="28"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <stackView distribution="equalSpacing" orientation="horizontal" alignment="baseline" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gKy-N8-5Oe">
-                                                        <rect key="frame" x="16" y="2" width="145" height="22"/>
+                                                        <rect key="frame" x="23" y="2" width="145" height="22"/>
                                                         <subviews>
                                                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="UYO-W1-uSI" customClass="CursorButton" customModule="TogglDesktop" customModuleProvider="target">
                                                                 <rect key="frame" x="0.0" y="3" width="61" height="18"/>
@@ -347,7 +347,7 @@
                                             <color key="borderColor" name="upload-border-color"/>
                                         </box>
                                         <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="kZS-XS-SCf">
-                                            <rect key="frame" x="208" y="0.0" width="30" height="28"/>
+                                            <rect key="frame" x="222" y="0.0" width="30" height="28"/>
                                             <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="next_date_arrow" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="5Vp-ly-G5a">
                                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                 <font key="font" metaFont="system"/>
@@ -388,7 +388,7 @@
                                 <color key="borderColor" name="upload-border-color"/>
                             </box>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="FXR-Ha-kYg" customClass="CursorButton" customModule="TogglDesktop" customModuleProvider="target">
-                                <rect key="frame" x="235" y="356" width="20" height="20"/>
+                                <rect key="frame" x="249" y="356" width="20" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20" id="bbQ-Pp-Vcw"/>
                                     <constraint firstAttribute="width" constant="20" id="bnN-Hu-0cO"/>
@@ -402,13 +402,13 @@
                                 </connections>
                             </button>
                             <box hidden="YES" boxType="custom" cornerRadius="8" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="mUe-Xn-xvP">
-                                <rect key="frame" x="10" y="192" width="240" height="30"/>
+                                <rect key="frame" x="10" y="192" width="254" height="30"/>
                                 <view key="contentView" id="21r-cG-sfg">
-                                    <rect key="frame" x="1" y="1" width="238" height="28"/>
+                                    <rect key="frame" x="1" y="1" width="252" height="28"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <textField hidden="YES" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="aeq-aC-W8G" customClass="TagAutoCompleteTextField" customModule="TogglDesktop" customModuleProvider="target">
-                                            <rect key="frame" x="-2" y="0.0" width="242" height="28"/>
+                                            <rect key="frame" x="-2" y="0.0" width="256" height="28"/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" alignment="left" placeholderString="Select project" id="u0H-N9-7h5" customClass="VerticallyCenteredTextFieldCell" customModule="TogglDesktop" customModuleProvider="target">
                                                 <font key="font" metaFont="system" size="14"/>
                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -435,11 +435,11 @@
                                 <color key="fillColor" name="editor-background-color"/>
                             </box>
                             <customView horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="Wyt-sv-sZR">
-                                <rect key="frame" x="118" y="159" width="134" height="18"/>
+                                <rect key="frame" x="98" y="159" width="168" height="18"/>
                                 <subviews>
                                     <textField horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="bCC-ON-SgR">
-                                        <rect key="frame" x="-2" y="0.0" width="57" height="18"/>
-                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" alignment="center" title="09:90" id="XRL-p8-r7I">
+                                        <rect key="frame" x="-2" y="0.0" width="74" height="18"/>
+                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" alignment="center" title="09:20 AM" id="XRL-p8-r7I">
                                             <font key="font" metaFont="system" size="14"/>
                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -449,7 +449,7 @@
                                         </connections>
                                     </textField>
                                     <button focusRingType="none" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="Qzj-M9-zrp">
-                                        <rect key="frame" x="61" y="6" width="12" height="7"/>
+                                        <rect key="frame" x="78" y="6" width="12" height="7"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="12" id="kq9-bs-ARZ"/>
                                         </constraints>
@@ -459,8 +459,11 @@
                                         </buttonCell>
                                     </button>
                                     <textField horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="8yt-KD-lKA">
-                                        <rect key="frame" x="79" y="0.0" width="57" height="18"/>
-                                        <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="09:90" id="m0O-Wy-5Cq">
+                                        <rect key="frame" x="96" y="0.0" width="74" height="18"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="70" id="l2i-Ea-wbs"/>
+                                        </constraints>
+                                        <textFieldCell key="cell" lineBreakMode="clipping" selectable="YES" editable="YES" alignment="center" title="09:30 PM" id="m0O-Wy-5Cq">
                                             <font key="font" metaFont="system" size="14"/>
                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>

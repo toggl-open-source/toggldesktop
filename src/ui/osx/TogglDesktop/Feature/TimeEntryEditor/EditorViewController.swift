@@ -263,19 +263,8 @@ extension EditorViewController {
 
     private func renderTime() {
         durationTextField.stringValue = timeEntry.duration
-
-        // Disable editable, so the text field will expand depend on size of text
-        startAtTextField.isEditable = false
-        endAtTextField.isEditable = false
-
-        // Set date
         startAtTextField.stringValue = timeEntry.startTimeString
         endAtTextField.stringValue = timeEntry.endTimeString
-
-        // Enable editable with new size
-        view.displayIfNeeded()
-        startAtTextField.isEditable = true
-        endAtTextField.isEditable = true
     }
 
     fileprivate func updateNextKeyViews() {
