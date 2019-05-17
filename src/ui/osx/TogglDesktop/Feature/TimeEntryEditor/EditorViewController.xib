@@ -439,7 +439,7 @@
                                 <subviews>
                                     <textField horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="bCC-ON-SgR">
                                         <rect key="frame" x="-2" y="0.0" width="57" height="18"/>
-                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" alignment="center" title="09:90" id="XRL-p8-r7I">
+                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" alignment="center" title="09:90" id="XRL-p8-r7I">
                                             <font key="font" metaFont="system" size="14"/>
                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
