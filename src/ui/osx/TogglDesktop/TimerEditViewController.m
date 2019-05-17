@@ -424,7 +424,6 @@ NSString *kInactiveTimerColor = @"#999999";
 	self.autoCompleteInput.stringValue = self.time_entry.Description;
 
 	// Make descriptionLabel is editable and focus
-	self.descriptionLabel.editable = YES;
 	self.descriptionLabel.stringValue = self.time_entry.Description;
 	self.displayMode = DisplayModeTimer;
 	[self.view.window makeFirstResponder:self.descriptionLabel];
