@@ -32,17 +32,29 @@
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="E9x-BN-aaU">
                                 <rect key="frame" x="0.0" y="274" width="240" height="39"/>
                                 <subviews>
+                                    <box boxType="custom" borderType="none" borderWidth="0.0" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="HZ0-06-ZeH">
+                                        <rect key="frame" x="0.0" y="0.0" width="240" height="39"/>
+                                        <view key="contentView" id="vWx-UJ-mvk">
+                                            <rect key="frame" x="0.0" y="0.0" width="240" height="39"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                        </view>
+                                        <color key="fillColor" name="calendar-background-color"/>
+                                    </box>
                                     <stackView distribution="equalSpacing" orientation="horizontal" alignment="centerY" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wcm-Z5-oER">
                                         <rect key="frame" x="5" y="0.0" width="230" height="39"/>
                                     </stackView>
                                 </subviews>
                                 <constraints>
+                                    <constraint firstItem="HZ0-06-ZeH" firstAttribute="top" secondItem="E9x-BN-aaU" secondAttribute="top" id="048-iN-Fog"/>
                                     <constraint firstAttribute="height" constant="39" id="E6f-ZN-K4M"/>
+                                    <constraint firstAttribute="trailing" secondItem="HZ0-06-ZeH" secondAttribute="trailing" id="F3I-UG-ie8"/>
                                     <constraint firstAttribute="bottom" secondItem="wcm-Z5-oER" secondAttribute="bottom" id="FBs-6g-VhN"/>
                                     <constraint firstItem="wcm-Z5-oER" firstAttribute="top" secondItem="E9x-BN-aaU" secondAttribute="top" id="hSc-qG-rPs"/>
                                     <constraint firstAttribute="trailing" secondItem="wcm-Z5-oER" secondAttribute="trailing" constant="5" id="ik1-Gd-lGm"/>
                                     <constraint firstAttribute="width" constant="240" id="liD-Se-PEq"/>
                                     <constraint firstItem="wcm-Z5-oER" firstAttribute="leading" secondItem="E9x-BN-aaU" secondAttribute="leading" constant="5" id="lzM-1H-fKF"/>
+                                    <constraint firstItem="HZ0-06-ZeH" firstAttribute="leading" secondItem="E9x-BN-aaU" secondAttribute="leading" id="n0C-UM-lAn"/>
+                                    <constraint firstAttribute="bottom" secondItem="HZ0-06-ZeH" secondAttribute="bottom" id="rTy-sz-JN3"/>
                                 </constraints>
                             </customView>
                             <box verticalHuggingPriority="750" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="C0K-Lf-4GI">
@@ -50,7 +62,7 @@
                             </box>
                             <scrollView wantsLayer="YES" borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" horizontalScrollElasticity="none" verticalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="Upb-gx-L0v">
                                 <rect key="frame" x="0.0" y="0.0" width="240" height="273"/>
-                                <clipView key="contentView" copiesOnScroll="NO" id="8dq-zD-FLg">
+                                <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="8dq-zD-FLg">
                                     <rect key="frame" x="0.0" y="0.0" width="240" height="273"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
@@ -60,7 +72,7 @@
                                             <collectionViewFlowLayout key="collectionViewLayout" minimumInteritemSpacing="10" minimumLineSpacing="10" id="OPE-W1-KLS">
                                                 <size key="itemSize" width="50" height="50"/>
                                             </collectionViewFlowLayout>
-                                            <color key="primaryBackgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="primaryBackgroundColor" name="calendar-background-color"/>
                                         </collectionView>
                                     </subviews>
                                 </clipView>
@@ -87,7 +99,7 @@
                             <constraint firstAttribute="bottom" secondItem="Upb-gx-L0v" secondAttribute="bottom" id="zBp-sf-bx6"/>
                         </constraints>
                     </view>
-                    <color key="fillColor" name="white-background-color"/>
+                    <color key="fillColor" name="calendar-background-color"/>
                 </box>
             </subviews>
             <constraints>
@@ -100,7 +112,7 @@
         </customView>
     </objects>
     <resources>
-        <namedColor name="white-background-color">
+        <namedColor name="calendar-background-color">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
