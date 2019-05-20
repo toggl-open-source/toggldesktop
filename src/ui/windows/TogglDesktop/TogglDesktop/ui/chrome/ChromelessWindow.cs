@@ -118,7 +118,7 @@ namespace TogglDesktop
             {
                 CaptionHeight = this.WindowHeaderHeight,
                 CornerRadius = new CornerRadius(0),
-                GlassFrameThickness = new Thickness(1),
+                GlassFrameThickness = new Thickness(0),
                 UseAeroCaptionButtons = false
             };
 
@@ -130,6 +130,7 @@ namespace TogglDesktop
             if (this.WindowState == WindowState.Maximized)
             {
                 chrome.ResizeBorderThickness = new Thickness(0);
+                chrome.GlassFrameThickness = new Thickness(1);
             }
 
             WindowChrome.SetWindowChrome(this, chrome);
