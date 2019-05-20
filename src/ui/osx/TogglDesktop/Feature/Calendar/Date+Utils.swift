@@ -44,4 +44,9 @@ extension Date {
         let daysBetween = Calendar.current.dateComponents([.day], from: self, to: endDate)
         return daysBetween.day ?? 0
     }
+
+    func monthBetween(endDate: Date) -> Int {
+        let between = Calendar.current.dateComponents([.month], from: self, to: endDate)
+        return between.month ?? 0
+    }
 }
