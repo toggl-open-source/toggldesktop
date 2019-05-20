@@ -239,6 +239,7 @@ NSString *kInactiveTimerColor = @"#999999";
 		}
 
 		self.durationTextField.toolTip = [NSString stringWithFormat:@"Started: %@", self.time_entry.startTimeString];
+		self.descriptionLabel.editable = NO;
 	}
 	else
 	{
@@ -424,6 +425,7 @@ NSString *kInactiveTimerColor = @"#999999";
 	self.autoCompleteInput.stringValue = self.time_entry.Description;
 
 	// Make descriptionLabel is editable and focus
+	self.descriptionLabel.editable = (item.Type != 0);
 	self.descriptionLabel.stringValue = self.time_entry.Description;
 	self.displayMode = DisplayModeTimer;
 	[self.view.window makeFirstResponder:self.descriptionLabel];
