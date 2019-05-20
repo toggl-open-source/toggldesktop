@@ -32,8 +32,7 @@ struct MonthData {
 final class CalendarDataSource: NSObject {
 
     struct Constants {
-
-        static let shiftWeek = 5 * 4 // 6 months
+        static let shiftWeek = 4 * 4 // 4 months
         static let cellID = NSUserInterfaceItemIdentifier("DateCellViewItem")
         static let cellNibName = NSNib.Name("DateCellViewItem")
     }
@@ -41,8 +40,11 @@ final class CalendarDataSource: NSObject {
     // MARK: Variables
 
     weak var delegate: CalendarDataSourceDelegate?
-    private var selectedData: DateInfo!
+    private var selectedData: DateInfo?
     private var calendar: [DateInfo] = []
+    var indexForCurrentDate: Int {
+        return calendar.count / 2
+    }
 
     // MARK: Init
 
@@ -88,7 +90,6 @@ final class CalendarDataSource: NSObject {
         calendar[calendar.count - 1] = last
 
         let shortMonthSymbols = Calendar.current.shortMonthSymbols
-
         let infos = calendar.map { (data) -> [DateInfo] in
             return data.days.map { day -> DateInfo in
                 return DateInfo(day: day, month: data.month, monthTitle: shortMonthSymbols[data.month - 1], year: data.year)
@@ -122,11 +123,8 @@ extension CalendarDataSource: NSCollectionViewDelegate, NSCollectionViewDataSour
     func collectionView(_ collectionView: NSCollectionView, itemForRepresentedObjectAt indexPath: IndexPath) -> NSCollectionViewItem {
         guard let view = collectionView.makeItem(withIdentifier: Constants.cellID, for: indexPath) as? DateCellViewItem else { return NSCollectionViewItem() }
         let info = calendar[indexPath.item]
-        let isCurrentDate = info.isSameDay(with: selectedData)
+        let isCurrentDate = info.isSameDay(with: selectedData!)
         let isCurrentMonth = info.month == selectedData!.month
-        if isCurrentDate {
-            print("")
-        }
         view.render(with: info, highlight: isCurrentDate, isCurrentMonth: isCurrentMonth)
         return view
     }

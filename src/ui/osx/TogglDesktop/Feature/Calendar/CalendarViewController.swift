@@ -59,21 +59,28 @@ final class CalendarViewController: NSViewController {
     }
 
     private func reloadCalendarView() {
-        if isViewAppearing {
-            dataSource.render(at: selectedDate)
-            collectionView.reloadData()
-//            collectionView.scrollToItems(at: Set<IndexPath>.init(arrayLiteral: IndexPath(item: dataSource.indexForCurrentDate, section: 0)),
-//                                         scrollPosition: [.centeredVertically])
-//            if let flow = collectionView.collectionViewLayout as? CalendarFlowLayout {
-//
-//                // If the scroller bar is showing
-//                // Increase the padding
-//                if clipView.frame.width < 240 {
-//                    let width = flow.collectionViewContentSize.width
-//                    popverWidth.constant = width + 15
-//                    stackViewTrailing.constant = 20
-//                }
-//            }
+        guard isViewAppearing else { return }
+        dataSource.render(at: selectedDate)
+        reloadCalendarCollectionView()
+    }
+
+    private func reloadCalendarCollectionView() {
+        collectionView.reloadData()
+
+        // Scroll to selected date
+        collectionView.scrollToItems(at: Set<IndexPath>(arrayLiteral: IndexPath(item: dataSource.indexForCurrentDate, section: 0)),
+                                     scrollPosition: [.centeredVertically])
+
+        // Fix for the padding of scoller bar
+        if let flow = collectionView.collectionViewLayout as? CalendarFlowLayout {
+
+            // If the scroller bar is showing
+            // Increase the padding
+            if clipView.frame.width < 240 {
+                let width = flow.collectionViewContentSize.width
+                popverWidth.constant = width + 15
+                stackViewTrailing.constant = 20
+            }
         }
     }
 }
