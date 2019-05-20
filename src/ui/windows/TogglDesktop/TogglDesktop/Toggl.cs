@@ -19,9 +19,9 @@ public static partial class Toggl
     public const string Description = "description";
 
     public const string TagSeparator = "\t";
-
-    private static readonly DateTime UnixEpoch =
-        new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+    
+    private static readonly DateTimeOffset UnixEpoch = 
+        new DateTimeOffset(1970, 1, 1, 0, 0, 0, TimeSpan.Zero);
 
     private static IntPtr ctx = IntPtr.Zero;
 
@@ -1366,12 +1366,12 @@ public static partial class Toggl
 
     public static DateTime DateTimeFromUnix(UInt64 unix_seconds)
     {
-        return UnixEpoch.AddSeconds(unix_seconds).ToLocalTime();
+        return UnixEpoch.AddSeconds(unix_seconds).ToLocalTime().DateTime;
     }
 
     public static Int64 UnixFromDateTime(DateTime value)
     {
-        TimeSpan span = (value - UnixEpoch.ToLocalTime());
+        var span = new DateTimeOffset(value) - UnixEpoch;
         return (Int64)span.TotalSeconds;
     }
 
