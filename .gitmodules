@@ -4,3 +4,6 @@
 [submodule "third_party/MASShortcut"]
 	path = third_party/MASShortcut
 	url = https://github.com/shpakovski/MASShortcut.git
+[submodule "third_party/bugsnag-cocoa"]
+	path = third_party/bugsnag-cocoa
+	url = https://github.com/bugsnag/bugsnag-cocoa
