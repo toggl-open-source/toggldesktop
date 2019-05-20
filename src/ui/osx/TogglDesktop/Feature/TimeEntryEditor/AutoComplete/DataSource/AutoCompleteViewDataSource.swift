@@ -73,6 +73,12 @@ class AutoCompleteViewDataSource: NSObject {
             return
         }
         render(with: items)
+
+        // If there is new data during searching on auto-complete
+        // We should filter gain
+        if textField.state == .expand && !textField.stringValue.isEmpty {
+            filter(with: textField.stringValue)
+        }
     }
 
     func selectSelectedRow() {
