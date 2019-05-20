@@ -28,7 +28,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="32" height="32"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     </view>
-                    <color key="fillColor" name="auto-complete-cell-hover"/>
+                    <color key="fillColor" name="calendar-cell-hover-color"/>
                 </box>
                 <stackView distribution="equalSpacing" orientation="vertical" alignment="centerX" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="d33-Ax-4zW">
                     <rect key="frame" x="0.0" y="7" width="32" height="18"/>
@@ -86,8 +86,8 @@
         </collectionViewItem>
     </objects>
     <resources>
-        <namedColor name="auto-complete-cell-hover">
-            <color red="0.69411764705882351" green="0.69411764705882351" blue="0.69411764705882351" alpha="0.20000000298023224" colorSpace="custom" customColorSpace="sRGB"/>
+        <namedColor name="calendar-cell-hover-color">
+            <color red="0.15686274509803921" green="0.80392156862745101" blue="0.25490196078431371" alpha="0.11999999731779099" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="error-title-color">
             <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
