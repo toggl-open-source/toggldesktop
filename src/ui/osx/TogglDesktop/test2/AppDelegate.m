@@ -1507,8 +1507,12 @@ const NSString *appName = @"osx_native_app";
 	NSString *channel = [NSString stringWithUTF8String:str];
 	free(str);
 
-	[Bugsnag notify:exception block:^(BugsnagCrashReport *_Nonnull report) {
-		 report.metaData = [NSDictionary dictionaryWithObjectsAndKeys:@"channel", channel, nil];
+	[Bugsnag notify:exception
+			  block:^(BugsnagCrashReport *report) {
+		 NSDictionary *data = @{
+				 @"channel": channel
+		 };
+		 [report addMetadata:data toTabWithName:@"metadata"];
 	 }];
 
 	[crashReporter purgePendingCrashReport];
@@ -1719,8 +1723,11 @@ void on_error(const char *errmsg, const bool_t is_user_error)
 		free(str);
 
 		[Bugsnag notify:[NSException exceptionWithName:msg reason:msg userInfo:nil]
-				  block:^(BugsnagCrashReport *_Nonnull report) {
-			 report.metaData = [NSDictionary dictionaryWithObjectsAndKeys:@"channel", channel, nil];
+				  block:^(BugsnagCrashReport *report) {
+			 NSDictionary *data = @{
+					 @"channel": channel
+			 };
+			 [report addMetadata:data toTabWithName:@"metadata"];
 		 }];
 	}
 }
