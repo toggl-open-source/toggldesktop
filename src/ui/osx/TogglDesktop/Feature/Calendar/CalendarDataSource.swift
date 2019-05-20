@@ -41,41 +41,14 @@ final class CalendarDataSource: NSObject {
     // MARK: Variables
 
     weak var delegate: CalendarDataSourceDelegate?
-    var selectedDate: Date {
-        didSet {
-            let result = CalendarDataSource.calculateDateRange(with: selectedDate)
-            _ = calculateDates(from: selectedDate)
-            currentDate = result.0
-            fromDate = result.1
-            toDate = result.2
-//            numberOfDay = fromDate.date.daysBetween(endDate: toDate.date)
-            numberOfDay = 0
-            indexForCurrentDate = numberOfDay / 2
-        }
-    }
-    private var currentDate: DateInfo!
-    private var fromDate: DateInfo!
-    private var toDate: DateInfo!
-    private var numberOfDay: Int!
-    private(set) var indexForCurrentDate = 0
+    private var selectedData: DateInfo!
+    private var calendar: [DateInfo] = []
 
     // MARK: Init
 
-    init(selectedDate: Date) {
-        self.selectedDate = selectedDate
-    }
-
-    private class func calculateDateRange(with selectedDate: Date) -> (DateInfo, DateInfo, DateInfo) {
-        let currentDate = DateInfo(date: selectedDate)
-
-        // firstDayOfWeek will return the Sunday
-        // But we need monday -> advance by 2
-        let firstDayOfWeek = selectedDate.firstDayOfWeek() ?? selectedDate
-        let from = Calendar.current.date(byAdding: .weekOfYear, value: -Constants.shiftWeek, to: firstDayOfWeek)!
-        let to = Calendar.current.date(byAdding: .weekOfYear, value: Constants.shiftWeek, to: firstDayOfWeek)!
-        let fromDate = DateInfo(date: from)
-        let toDate = DateInfo(date: to)
-        return (currentDate, fromDate, toDate)
+    func render(at date: Date) {
+        selectedData = DateInfo(date: date)
+        calendar = calculateDates(from: date)
     }
 
     private func calculateDates(from selectedDate: Date) -> [DateInfo] {
@@ -114,8 +87,20 @@ final class CalendarDataSource: NSObject {
         calendar[0] = first
         calendar[calendar.count - 1] = last
 
-        // Map
-        return []
+        let shortMonthSymbols = Calendar.current.shortMonthSymbols
+
+        let infos = calendar.map { (data) -> [DateInfo] in
+            return data.days.map { day -> DateInfo in
+                return DateInfo(day: day, month: data.month, monthTitle: shortMonthSymbols[data.month - 1], year: data.year)
+            }
+        }
+
+        var items: [DateInfo] = []
+        for info in infos {
+            items.append(contentsOf: info)
+        }
+
+        return items
     }
 
     private func buildDate(day: Int, month: Int, year: Int) -> Date {
@@ -131,24 +116,25 @@ extension CalendarDataSource: NSCollectionViewDelegate, NSCollectionViewDataSour
     }
 
     func collectionView(_ collectionView: NSCollectionView, numberOfItemsInSection section: Int) -> Int {
-        return numberOfDay
+        return calendar.count
     }
 
     func collectionView(_ collectionView: NSCollectionView, itemForRepresentedObjectAt indexPath: IndexPath) -> NSCollectionViewItem {
-        return NSCollectionViewItem()
-//        guard let view = collectionView.makeItem(withIdentifier: Constants.cellID, for: indexPath) as? DateCellViewItem,
-//            let date = Calendar.current.date(byAdding: .day, value: indexPath.item, to: fromDate.date) else { return NSCollectionViewItem() }
-//        let info = DateInfo(date: date)
-//        let isCurrentDate = info.isSameDay(with: currentDate)
-//        let isCurrentMonth = info.month == currentDate.month
-//        view.render(with: info, highlight: isCurrentDate, isCurrentMonth: isCurrentMonth)
-//        return view
+        guard let view = collectionView.makeItem(withIdentifier: Constants.cellID, for: indexPath) as? DateCellViewItem else { return NSCollectionViewItem() }
+        let info = calendar[indexPath.item]
+        let isCurrentDate = info.isSameDay(with: selectedData)
+        let isCurrentMonth = info.month == selectedData!.month
+        if isCurrentDate {
+            print("")
+        }
+        view.render(with: info, highlight: isCurrentDate, isCurrentMonth: isCurrentMonth)
+        return view
     }
 
     func collectionView(_ collectionView: NSCollectionView, didSelectItemsAt indexPaths: Set<IndexPath>) {
-//        guard let selectedIndex = indexPaths.first,
-//            let date = Calendar.current.date(byAdding: .day, value: selectedIndex.item, to: fromDate.date)
-//            else { return }
-//        delegate?.calendarDidSelect(date)
+        guard let selectedIndex = indexPaths.first,
+            let date = calendar[safe: selectedIndex.item]
+            else { return }
+        delegate?.calendarDidSelect(buildDate(day: date.day, month: date.month, year: date.year))
     }
 }

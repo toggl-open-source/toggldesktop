@@ -26,13 +26,9 @@ final class CalendarViewController: NSViewController {
     // MARK: Variables
 
     weak var delegate: CalendarViewControllerDelegate?
-    fileprivate lazy var dataSource: CalendarDataSource = CalendarDataSource(selectedDate: selectedDate)
+    fileprivate lazy var dataSource: CalendarDataSource = CalendarDataSource()
     private var isViewAppearing = false
-    private var selectedDate = Date() {
-        didSet {
-            dataSource.selectedDate = selectedDate
-        }
-    }
+    private var selectedDate = Date()
 
     // MARK: View Cycle
 
@@ -64,20 +60,20 @@ final class CalendarViewController: NSViewController {
 
     private func reloadCalendarView() {
         if isViewAppearing {
-            renderCalendarHeader()
+            dataSource.render(at: selectedDate)
             collectionView.reloadData()
-            collectionView.scrollToItems(at: Set<IndexPath>.init(arrayLiteral: IndexPath(item: dataSource.indexForCurrentDate, section: 0)),
-                                         scrollPosition: [.centeredVertically])
-            if let flow = collectionView.collectionViewLayout as? CalendarFlowLayout {
-
-                // If the scroller bar is showing
-                // Increase the padding
-                if clipView.frame.width < 240 {
-                    let width = flow.collectionViewContentSize.width
-                    popverWidth.constant = width + 15
-                    stackViewTrailing.constant = 20
-                }
-            }
+//            collectionView.scrollToItems(at: Set<IndexPath>.init(arrayLiteral: IndexPath(item: dataSource.indexForCurrentDate, section: 0)),
+//                                         scrollPosition: [.centeredVertically])
+//            if let flow = collectionView.collectionViewLayout as? CalendarFlowLayout {
+//
+//                // If the scroller bar is showing
+//                // Increase the padding
+//                if clipView.frame.width < 240 {
+//                    let width = flow.collectionViewContentSize.width
+//                    popverWidth.constant = width + 15
+//                    stackViewTrailing.constant = 20
+//                }
+//            }
         }
     }
 }

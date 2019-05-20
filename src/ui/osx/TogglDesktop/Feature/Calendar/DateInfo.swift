@@ -14,7 +14,6 @@ struct DateInfo {
     let month: Int
     let monthTitle: String
     let year: Int
-    let weekOfYear: Int
     var isFirstDayOfMonth: Bool {
         return day == 1
     }
@@ -25,16 +24,14 @@ struct DateInfo {
         day = component.day ?? 0
         month = component.month ?? 0
         year = component.year ?? 0
-        weekOfYear = component.weekOfYear ?? 0
         monthTitle = calendar.shortMonthSymbols[month - 1]
     }
 
-    init(day: Int, month: Int, monthTitle: String, year: Int, weekOfYear: Int) {
+    init(day: Int, month: Int, monthTitle: String, year: Int) {
         self.day = day
         self.month = month
         self.monthTitle = monthTitle
         self.year = year
-        self.weekOfYear = weekOfYear
     }
 
     func isSameDay(with info: DateInfo) -> Bool {
