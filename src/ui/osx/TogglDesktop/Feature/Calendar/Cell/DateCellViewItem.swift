@@ -43,13 +43,21 @@ final class DateCellViewItem: NSCollectionViewItem {
     func render(with info: DateInfo, highlight: Bool, isCurrentMonth: Bool) {
         titleLbl.stringValue = "\(info.day)"
         backgroundBox.isHidden = !highlight
+
+        // Month
         if info.isFirstDayOfMonth {
             monthLbl.isHidden = false
             monthLbl.stringValue = info.monthTitle.uppercased()
         } else {
             monthLbl.isHidden = true
         }
-        titleLbl.textColor = isCurrentMonth ? NSColor.labelColor : titleColor
+
+        // Color for title
+        if highlight {
+            titleLbl.textColor = .white
+        } else {
+            titleLbl.textColor = isCurrentMonth ? NSColor.labelColor : titleColor
+        }
     }
 
     private func initCommon() {
