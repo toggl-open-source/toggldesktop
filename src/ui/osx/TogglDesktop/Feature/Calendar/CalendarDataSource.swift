@@ -32,7 +32,7 @@ struct MonthData {
 final class CalendarDataSource: NSObject {
 
     struct Constants {
-        static let shiftWeek = 4 * 4 // 4 months
+        static let shiftWeek = 3 * 4 // 3 months
         static let cellID = NSUserInterfaceItemIdentifier("DateCellViewItem")
         static let cellNibName = NSNib.Name("DateCellViewItem")
     }
@@ -42,15 +42,14 @@ final class CalendarDataSource: NSObject {
     weak var delegate: CalendarDataSourceDelegate?
     private var selectedData: DateInfo?
     private var calendar: [DateInfo] = []
-    var indexForCurrentDate: Int {
-        return calendar.count / 2
-    }
+    private(set) var indexForCurrentDate: Int = 0
 
     // MARK: Init
 
     func render(at date: Date) {
         selectedData = DateInfo(date: date)
         calendar = calculateDates(from: date)
+        indexForCurrentDate = calendar.firstIndex(where: { $0.isSameDay(with: selectedData!) }) ?? calendar.count / 2
     }
 
     private func calculateDates(from selectedDate: Date) -> [DateInfo] {
@@ -68,7 +67,7 @@ final class CalendarDataSource: NSObject {
         var calendar: [MonthData] = []
 
         // Convert
-        for _ in 0..<numberOfMonths {
+        for _ in 0...numberOfMonths {
             let firstDayInMonth = buildDate(day: 1, month: currentMonth, year: currentYear)
             let totalDateInMonth = Calendar.current.range(of: .day, in: .month, for: firstDayInMonth)!.count
             let days = Array(1...totalDateInMonth)
@@ -89,6 +88,7 @@ final class CalendarDataSource: NSObject {
         calendar[0] = first
         calendar[calendar.count - 1] = last
 
+        // Map all date in calendar to DateInfo (Don't use NSCalendar)
         let shortMonthSymbols = Calendar.current.shortMonthSymbols
         let infos = calendar.map { (data) -> [DateInfo] in
             return data.days.map { day -> DateInfo in
@@ -96,6 +96,7 @@ final class CalendarDataSource: NSObject {
             }
         }
 
+        // Convert all flat array
         var items: [DateInfo] = []
         for info in infos {
             items.append(contentsOf: info)

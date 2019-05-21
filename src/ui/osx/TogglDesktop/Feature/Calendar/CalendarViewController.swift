@@ -68,8 +68,11 @@ final class CalendarViewController: NSViewController {
         collectionView.reloadData()
 
         // Scroll to selected date
-        collectionView.scrollToItems(at: Set<IndexPath>(arrayLiteral: IndexPath(item: dataSource.indexForCurrentDate, section: 0)),
-                                     scrollPosition: [.centeredVertically])
+        DispatchQueue.main.asyncAfter(deadline: .now()) {
+            self.collectionView.scrollToItems(at: Set<IndexPath>(arrayLiteral: IndexPath(item: self.dataSource.indexForCurrentDate, section: 0)),
+                                         scrollPosition: [.centeredVertically])
+        }
+
 
         // Fix for the padding of scoller bar
         if let flow = collectionView.collectionViewLayout as? CalendarFlowLayout {
