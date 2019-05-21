@@ -52,6 +52,10 @@ class LoginWidget : public QWidget {
 
     void on_countryComboBox_currentIndexChanged(int index);
 
+    void displayError(
+        const QString errmsg,
+        const bool user_error);
+
  private:
     Ui::LoginWidget *ui;
 
@@ -61,6 +65,8 @@ class LoginWidget : public QWidget {
 
     bool countriesLoaded;
     uint64_t selectedCountryId;
+
+    void enableAllControls(const bool enable);
 };
 
 #endif  // SRC_UI_LINUX_TOGGLDESKTOP_LOGINWIDGET_H_

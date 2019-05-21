@@ -95,6 +95,10 @@ NSString *kInactiveTimerColor = @"#999999";
 												 selector:@selector(startDisplayLogin:)
 													 name:kDisplayLogin
 												   object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self
+												 selector:@selector(stop:)
+													 name:kCommandStop
+												   object:nil];
 
 
 		self.time_entry = [[TimeEntryViewItem alloc] init];
@@ -166,6 +170,13 @@ NSString *kInactiveTimerColor = @"#999999";
 	[self displayTimerState:notification.object];
 }
 
+- (void)stop:(NSNotification *)notification
+{
+	self.descriptionLabel.editable = NO;
+	[self clear];
+	[self showDefaultTimer];
+}
+
 - (void)displayTimerState:(TimeEntryViewItem *)te
 {
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
@@ -228,6 +239,7 @@ NSString *kInactiveTimerColor = @"#999999";
 		}
 
 		self.durationTextField.toolTip = [NSString stringWithFormat:@"Started: %@", self.time_entry.startTimeString];
+		self.descriptionLabel.editable = NO;
 	}
 	else
 	{
@@ -330,9 +342,6 @@ NSString *kInactiveTimerColor = @"#999999";
 	}
 	if (self.time_entry.duration_in_seconds < 0)
 	{
-		self.descriptionLabel.editable = NO;
-		[self clear];
-		[self showDefaultTimer];
 		[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kCommandStop
 																	object:nil];
 		return;
@@ -416,7 +425,7 @@ NSString *kInactiveTimerColor = @"#999999";
 	self.autoCompleteInput.stringValue = self.time_entry.Description;
 
 	// Make descriptionLabel is editable and focus
-	self.descriptionLabel.editable = YES;
+	self.descriptionLabel.editable = (item.Type != 0);
 	self.descriptionLabel.stringValue = self.time_entry.Description;
 	self.displayMode = DisplayModeTimer;
 	[self.view.window makeFirstResponder:self.descriptionLabel];

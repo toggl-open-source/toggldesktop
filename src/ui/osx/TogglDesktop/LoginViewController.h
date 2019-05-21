@@ -13,4 +13,5 @@
 #import "NSCustomComboBox.h"
 
 @interface LoginViewController : NSViewController <NSTextFieldDelegate, NSTableViewDataSource, NSComboBoxDataSource, NSComboBoxDelegate>
+- (void)resetLoader;
 @end

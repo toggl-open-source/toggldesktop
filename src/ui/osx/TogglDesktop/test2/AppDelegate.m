@@ -11,7 +11,7 @@
 #import "AboutWindowController.h"
 #import "AutocompleteItem.h"
 #import "AutotrackerRuleItem.h"
-#import "Bugsnag.h"
+#import <Bugsnag/Bugsnag.h>
 #import "ConsoleViewController.h"
 #import "CrashReporter.h"
 #import "DisplayCommand.h"
@@ -1506,7 +1506,14 @@ const NSString *appName = @"osx_native_app";
 	char *str = toggl_get_update_channel(ctx);
 	NSString *channel = [NSString stringWithUTF8String:str];
 	free(str);
-	[Bugsnag notify:exception withData:[NSDictionary dictionaryWithObjectsAndKeys:@"channel", channel, nil]];
+
+	[Bugsnag notify:exception
+			  block:^(BugsnagCrashReport *report) {
+		 NSDictionary *data = @{
+				 @"channel": channel
+		 };
+		 [report addMetadata:data toTabWithName:@"metadata"];
+	 }];
 
 	[crashReporter purgePendingCrashReport];
 }
@@ -1541,7 +1548,9 @@ void on_unsynced_items(const int64_t count)
 
 void on_login(const bool_t open, const uint64_t user_id)
 {
-	[Bugsnag setUserAttribute:@"user_id" withValue:[NSString stringWithFormat:@"%lld", user_id]];
+	[[Bugsnag configuration] setUser:[NSString stringWithFormat:@"%lld", user_id]
+							withName:nil
+							andEmail:nil];
 
 	DisplayCommand *cmd = [[DisplayCommand alloc] init];
 	cmd.open = open;
@@ -1571,7 +1580,12 @@ void on_pomodoro_break(const char *title, const char *informative_text)
 
 void on_url(const char *url)
 {
-	[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:[NSString stringWithUTF8String:url]]];
+	// Capture url
+	NSString *reportURL = [NSString stringWithUTF8String:url];
+
+	dispatch_async(dispatch_get_main_queue(), ^{
+		[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:reportURL]];
+	});
 }
 
 void on_time_entry_list(const bool_t open,
@@ -1733,8 +1747,14 @@ void on_error(const char *errmsg, const bool_t is_user_error)
 		char *str = toggl_get_update_channel(ctx);
 		NSString *channel = [NSString stringWithUTF8String:str];
 		free(str);
+
 		[Bugsnag notify:[NSException exceptionWithName:msg reason:msg userInfo:nil]
-			   withData :[NSDictionary dictionaryWithObjectsAndKeys:@"channel", channel, nil]];
+				  block:^(BugsnagCrashReport *report) {
+			 NSDictionary *data = @{
+					 @"channel": channel
+			 };
+			 [report addMetadata:data toTabWithName:@"metadata"];
+		 }];
 	}
 }
 

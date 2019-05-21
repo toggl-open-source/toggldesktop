@@ -44,6 +44,8 @@ typedef NS_ENUM (NSUInteger, TabViewType)
 - (IBAction)clickLoginButton:(id)sender;
 - (IBAction)clickSignupButton:(id)sender;
 - (IBAction)countrySelected:(id)sender;
+@property (weak) IBOutlet NSProgressIndicator *loginLoaderView;
+@property (weak) IBOutlet NSProgressIndicator *signUpLoaderView;
 
 @end
 
@@ -137,8 +139,9 @@ extern void *ctx;
 
 	// for empty State
 	[self setUserSignUp:NO];
+	[self showLoaderView:YES];
 
-	if (!toggl_login(ctx, [email UTF8String], [pass UTF8String]))
+	if (!toggl_login_async(ctx, [email UTF8String], [pass UTF8String]))
 	{
 		return;
 	}
@@ -201,7 +204,7 @@ extern void *ctx;
 			if (!self.countriesLoaded)
 			{
 				// Load countries in signup view
-				toggl_get_countries(ctx);
+				toggl_get_countries_async(ctx);
 				self.countriesLoaded = YES;
 			}
 
@@ -278,7 +281,10 @@ extern void *ctx;
 		return;
 	}
 
-	toggl_google_login(ctx, [auth.accessToken UTF8String]);
+	// Show loader and disable text boxs
+	[self showLoaderView:YES];
+
+	toggl_google_login_async(ctx, [auth.accessToken UTF8String]);
 }
 
 - (BOOL)validateForm:(BOOL)signup
@@ -347,8 +353,10 @@ extern void *ctx;
 
 	// for empty State
 	[self setUserSignUp:YES];
+	// Show loader and disable text boxs
+	[self showLoaderView:YES];
 
-	if (!toggl_signup(ctx, [email UTF8String], [pass UTF8String], self.selectedCountryID))
+	if (!toggl_signup_async(ctx, [email UTF8String], [pass UTF8String], self.selectedCountryID))
 	{
 		return;
 	}
@@ -418,6 +426,35 @@ extern void *ctx;
 {
 	[[NSUserDefaults standardUserDefaults] setBool:isSignUp forKey:kUserHasBeenSignup];
 	[[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (void)showLoaderView:(BOOL)show
+{
+	self.loginLoaderView.hidden = !show;
+	self.signUpLoaderView.hidden = !show;
+
+	if (show)
+	{
+		[self.loginLoaderView startAnimation:self];
+		[self.signUpLoaderView startAnimation:self];
+	}
+	else
+	{
+		[self.loginLoaderView stopAnimation:self];
+		[self.signUpLoaderView stopAnimation:self];
+	}
+
+	self.email.enabled = !show;
+	self.password.enabled = !show;
+	self.loginButton.enabled = !show;
+	self.signupButton.enabled = !show;
+	self.loginGooglBtn.enabled = !show;
+	self.loginLink.enabled = !show;
+	self.signUpLink.enabled = !show;
+}
+
+- (void)resetLoader {
+	[self showLoaderView:NO];
 }
 
 @end

@@ -501,13 +501,28 @@ extern "C" {
         const char_t *email,
         const char_t *password);
 
+    TOGGL_EXPORT bool_t toggl_login_async(
+        void *context,
+        const char_t *email,
+        const char_t *password);
+
     TOGGL_EXPORT bool_t toggl_signup(
         void *context,
         const char_t *email,
         const char_t *password,
         const uint64_t country_id);
 
+    TOGGL_EXPORT bool_t toggl_signup_async(
+        void *context,
+        const char_t *email,
+        const char_t *password,
+        const uint64_t country_id);
+
     TOGGL_EXPORT bool_t toggl_google_login(
+        void *context,
+        const char_t *access_token);
+
+    TOGGL_EXPORT bool_t toggl_google_login_async(
         void *context,
         const char_t *access_token);
 
@@ -844,6 +859,8 @@ extern "C" {
 
     TOGGL_EXPORT void toggl_get_countries(
         void *context);
+
+    TOGGL_EXPORT void toggl_get_countries_async(void *context);
 
     // You must free() the result
     TOGGL_EXPORT char_t *toggl_get_default_project_name(
