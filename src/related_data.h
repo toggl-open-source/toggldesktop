@@ -38,8 +38,8 @@ T *modelByID(const Poco::UInt64 id, std::vector<T *> const *list);
 template <typename T>
 T *modelByGUID(const guid GUID, std::vector<T *> const *list);
 
-template <typename T> using protected_vector = std::pair<std::unique_lock<std::mutex>, std::vector<T>*>;
-template <typename T> using protected_const_vector = std::pair<std::unique_lock<std::mutex>, const std::vector<T>*>;
+template <typename T> using protected_vector = std::pair<std::unique_lock<std::recursive_mutex>, std::vector<T>*>;
+template <typename T> using protected_const_vector = std::pair<std::unique_lock<std::recursive_mutex>, const std::vector<T>*>;
 
 class RelatedData {
  public:
@@ -160,25 +160,25 @@ class RelatedData {
         std::map<std::string, std::vector<view::Autocomplete> > *items) const;
 
     std::vector<Workspace *> _Workspaces;
-    mutable std::mutex _WorkspacesMutex;
+    mutable std::recursive_mutex _WorkspacesMutex;
     std::vector<Client *> _Clients;
-    mutable std::mutex _ClientsMutex;
+    mutable std::recursive_mutex _ClientsMutex;
     std::vector<Project *> _Projects;
-    mutable std::mutex _ProjectsMutex;
+    mutable std::recursive_mutex _ProjectsMutex;
     std::vector<Task *> _Tasks;
-    mutable std::mutex _TasksMutex;
+    mutable std::recursive_mutex _TasksMutex;
     std::vector<Tag *> _Tags;
-    mutable std::mutex _TagsMutex;
+    mutable std::recursive_mutex _TagsMutex;
     std::vector<TimeEntry *> _TimeEntries;
-    mutable std::mutex _TimeEntriesMutex;
+    mutable std::recursive_mutex _TimeEntriesMutex;
     std::vector<AutotrackerRule *> _AutotrackerRules;
-    mutable std::mutex _AutotrackerRulesMutex;
+    mutable std::recursive_mutex _AutotrackerRulesMutex;
     std::vector<TimelineEvent *> _TimelineEvents;
-    mutable std::mutex _TimelineEventsMutex;
+    mutable std::recursive_mutex _TimelineEventsMutex;
     std::vector<ObmAction *> _ObmActions;
-    mutable std::mutex _ObmActionsMutex;
+    mutable std::recursive_mutex _ObmActionsMutex;
     std::vector<ObmExperiment *> _ObmExperiments;
-    mutable std::mutex _ObmExperimentsMutex;
+    mutable std::recursive_mutex _ObmExperimentsMutex;
 };
 
 template<typename T>

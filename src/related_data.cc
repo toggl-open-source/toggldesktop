@@ -40,83 +40,83 @@ void RelatedData::pushBackTimeEntry(TimeEntry *timeEntry) {
 }
 
 protected_vector<Workspace *> RelatedData::GetWorkspaces() {
-    return std::make_pair(std::unique_lock<std::mutex>(_WorkspacesMutex), &_Workspaces);
+    return std::make_pair(std::unique_lock<std::recursive_mutex>(_WorkspacesMutex), &_Workspaces);
 }
 
 protected_vector<Client *> RelatedData::GetClients() {
-    return std::make_pair(std::unique_lock<std::mutex>(_ClientsMutex), &_Clients);
+    return std::make_pair(std::unique_lock<std::recursive_mutex>(_ClientsMutex), &_Clients);
 }
 
 protected_vector<Project *> RelatedData::GetProjects() {
-    return std::make_pair(std::unique_lock<std::mutex>(_ProjectsMutex), &_Projects);
+    return std::make_pair(std::unique_lock<std::recursive_mutex>(_ProjectsMutex), &_Projects);
 }
 
 protected_vector<Task *> RelatedData::GetTasks() {
-    return std::make_pair(std::unique_lock<std::mutex>(_TasksMutex), &_Tasks);
+    return std::make_pair(std::unique_lock<std::recursive_mutex>(_TasksMutex), &_Tasks);
 }
 
 protected_vector<Tag *> RelatedData::GetTags() {
-    return std::make_pair(std::unique_lock<std::mutex>(_TagsMutex), &_Tags);
+    return std::make_pair(std::unique_lock<std::recursive_mutex>(_TagsMutex), &_Tags);
 }
 
 protected_vector<TimeEntry *> RelatedData::GetTimeEntries() {
-    return std::make_pair(std::unique_lock<std::mutex>(_TimeEntriesMutex), &_TimeEntries);
+    return std::make_pair(std::unique_lock<std::recursive_mutex>(_TimeEntriesMutex), &_TimeEntries);
 }
 
 protected_vector<AutotrackerRule *> RelatedData::GetAutotrackerRules() {
-    return std::make_pair(std::unique_lock<std::mutex>(_AutotrackerRulesMutex), &_AutotrackerRules);
+    return std::make_pair(std::unique_lock<std::recursive_mutex>(_AutotrackerRulesMutex), &_AutotrackerRules);
 }
 
 protected_vector<TimelineEvent *> RelatedData::GetTimelineEvents() {
-    return std::make_pair(std::unique_lock<std::mutex>(_TimelineEventsMutex), &_TimelineEvents);
+    return std::make_pair(std::unique_lock<std::recursive_mutex>(_TimelineEventsMutex), &_TimelineEvents);
 }
 
 protected_vector<ObmAction *> RelatedData::GetObmActions() {
-    return std::make_pair(std::unique_lock<std::mutex>(_ObmActionsMutex), &_ObmActions);
+    return std::make_pair(std::unique_lock<std::recursive_mutex>(_ObmActionsMutex), &_ObmActions);
 }
 
 protected_vector<ObmExperiment *> RelatedData::GetObmExperiments() {
-    return std::make_pair(std::unique_lock<std::mutex>(_ObmExperimentsMutex), &_ObmExperiments);
+    return std::make_pair(std::unique_lock<std::recursive_mutex>(_ObmExperimentsMutex), &_ObmExperiments);
 }
 
 protected_const_vector<Workspace *> RelatedData::GetWorkspaces() const {
-    return std::make_pair(std::unique_lock<std::mutex>(_WorkspacesMutex), &_Workspaces);
+    return std::make_pair(std::unique_lock<std::recursive_mutex>(_WorkspacesMutex), &_Workspaces);
 }
 
 protected_const_vector<Client *> RelatedData::GetClients() const {
-    return std::make_pair(std::unique_lock<std::mutex>(_ClientsMutex), &_Clients);
+    return std::make_pair(std::unique_lock<std::recursive_mutex>(_ClientsMutex), &_Clients);
 }
 
 protected_const_vector<Project *> RelatedData::GetProjects() const {
-    return std::make_pair(std::unique_lock<std::mutex>(_ProjectsMutex), &_Projects);
+    return std::make_pair(std::unique_lock<std::recursive_mutex>(_ProjectsMutex), &_Projects);
 }
 
 protected_const_vector<Task *> RelatedData::GetTasks() const {
-    return std::make_pair(std::unique_lock<std::mutex>(_TasksMutex), &_Tasks);
+    return std::make_pair(std::unique_lock<std::recursive_mutex>(_TasksMutex), &_Tasks);
 }
 
 protected_const_vector<Tag *> RelatedData::GetTags() const {
-    return std::make_pair(std::unique_lock<std::mutex>(_TagsMutex), &_Tags);
+    return std::make_pair(std::unique_lock<std::recursive_mutex>(_TagsMutex), &_Tags);
 }
 
 protected_const_vector<TimeEntry *> RelatedData::GetTimeEntries() const {
-    return std::make_pair(std::unique_lock<std::mutex>(_TimeEntriesMutex), &_TimeEntries);
+    return std::make_pair(std::unique_lock<std::recursive_mutex>(_TimeEntriesMutex), &_TimeEntries);
 }
 
 protected_const_vector<AutotrackerRule *> RelatedData::GetAutotrackerRules() const {
-    return std::make_pair(std::unique_lock<std::mutex>(_AutotrackerRulesMutex), &_AutotrackerRules);
+    return std::make_pair(std::unique_lock<std::recursive_mutex>(_AutotrackerRulesMutex), &_AutotrackerRules);
 }
 
 protected_const_vector<TimelineEvent *> RelatedData::GetTimelineEvents() const {
-    return std::make_pair(std::unique_lock<std::mutex>(_TimelineEventsMutex), &_TimelineEvents);
+    return std::make_pair(std::unique_lock<std::recursive_mutex>(_TimelineEventsMutex), &_TimelineEvents);
 }
 
 protected_const_vector<ObmAction *> RelatedData::GetObmActions() const {
-    return std::make_pair(std::unique_lock<std::mutex>(_ObmActionsMutex), &_ObmActions);
+    return std::make_pair(std::unique_lock<std::recursive_mutex>(_ObmActionsMutex), &_ObmActions);
 }
 
 protected_const_vector<ObmExperiment *> RelatedData::GetObmExperiments() const {
-    return std::make_pair(std::unique_lock<std::mutex>(_ObmExperimentsMutex), &_ObmExperiments);
+    return std::make_pair(std::unique_lock<std::recursive_mutex>(_ObmExperimentsMutex), &_ObmExperiments);
 }
 
 void RelatedData::Clear() {
