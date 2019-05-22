@@ -2326,8 +2326,6 @@ void Context::setUser(User *value, const bool logged_in) {
 
     UI()->DisplayLogin(false, user_id);
 
-    OpenTimeEntryList();
-
     {
         Poco::Mutex::ScopedLock l(window_change_recorder_m_);
         if (window_change_recorder_) {

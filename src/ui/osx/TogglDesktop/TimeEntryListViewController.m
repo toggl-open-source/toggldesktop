@@ -208,7 +208,7 @@ extern void *ctx;
 - (void)displayTimeEntryList:(DisplayCommand *)cmd
 {
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
-	NSLog(@"TimeEntryListViewController displayTimeEntryList, thread %@", [NSThread currentThread]);
+	NSLog(@"❌ TimeEntryListViewController displayTimeEntryList, Total Count %lu, show_load_more %@", (unsigned long)cmd.timeEntries.count, cmd.show_load_more ? @"YES" : @"NO");
 
 	NSArray<TimeEntryViewItem *> *newTimeEntries = [cmd.timeEntries copy];
 
