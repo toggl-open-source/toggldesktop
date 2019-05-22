@@ -94,7 +94,7 @@
                                 <rect key="frame" x="25" y="0.0" width="336" height="64"/>
                                 <subviews>
                                     <customView horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="8Om-Ck-d1h">
-                                        <rect key="frame" x="0.0" y="0.0" width="236" height="64"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="235" height="64"/>
                                         <subviews>
                                             <textField horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="oaA-Wf-zkO" customClass="AutoCompleteInput">
                                                 <rect key="frame" x="-2" y="32" width="105" height="16"/>
@@ -141,7 +141,7 @@
                                         </constraints>
                                     </customView>
                                     <stackView distribution="equalSpacing" orientation="horizontal" alignment="centerY" spacing="5" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IPz-wJ-rvs">
-                                        <rect key="frame" x="236" y="24" width="39" height="17"/>
+                                        <rect key="frame" x="235" y="24" width="39" height="17"/>
                                         <subviews>
                                             <imageView translatesAutoresizingMaskIntoConstraints="NO" id="5nL-Cd-iWe">
                                                 <rect key="frame" x="0.0" y="0.0" width="17" height="17"/>
@@ -170,11 +170,11 @@
                                         </customSpacing>
                                     </stackView>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Rt4-7t-bwl" customClass="NSTextFieldDuration">
-                                        <rect key="frame" x="278" y="24" width="60" height="16"/>
+                                        <rect key="frame" x="277" y="24" width="61" height="16"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="56" id="Qcm-6z-Cf8"/>
+                                            <constraint firstAttribute="width" constant="57" id="Qcm-6z-Cf8"/>
                                         </constraints>
-                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="1.25 h" id="AtD-uY-SAZ">
+                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="44:49 min" id="AtD-uY-SAZ">
                                             <font key="font" metaFont="cellTitle"/>
                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>

@@ -13,11 +13,12 @@
 
 @interface AutocompleteItem : NSObject
 - (instancetype)initWithSnapshot:(ProjectSnapshot *)snapshot;
-+ (NSMutableArray *)loadAll:(TogglAutocompleteView *)first;
++ (NSArray<AutocompleteItem *> *)loadAll:(TogglAutocompleteView *)first;
 - (void)load:(TogglAutocompleteView *)data;
 - (void)save:(TogglAutocompleteView *)data;
 @property NSString *Text;
 @property NSString *Description;
+@property (copy, nonatomic) NSString *DescriptionTitle; // Fix conflict with description in swift
 @property NSString *ProjectAndTaskLabel;
 @property NSString *TaskLabel;
 @property NSString *ProjectLabel;

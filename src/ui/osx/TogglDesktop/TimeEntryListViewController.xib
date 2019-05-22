@@ -12,29 +12,11 @@
                 <outlet property="emptyViewContainerView" destination="cvV-eB-sdq" id="0ba-Gb-Z90"/>
                 <outlet property="headerView" destination="OXo-Tz-Vbz" id="vDf-yG-fnR"/>
                 <outlet property="timeEntryListScrollView" destination="7TM-hH-4yE" id="MrY-aB-U9C"/>
-                <outlet property="timeEntryPopupEditView" destination="ozl-58-bBU" id="Tv3-fj-eCx"/>
-                <outlet property="timeEntrypopover" destination="dIa-oe-UAP" id="CwJ-50-ejV"/>
-                <outlet property="timeEntrypopoverViewController" destination="U32-F3-bea" id="AQr-DI-TYB"/>
                 <outlet property="view" destination="3" id="Tzl-sf-sWH"/>
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
-        <viewController id="U32-F3-bea" userLabel="Popover View Controller">
-            <connections>
-                <outlet property="view" destination="ozl-58-bBU" id="kIv-R4-Xca"/>
-            </connections>
-        </viewController>
-        <popover id="dIa-oe-UAP" customClass="EditorPopover" customModule="TogglDesktop" customModuleProvider="target">
-            <connections>
-                <outlet property="delegate" destination="-2" id="Za9-G4-27V"/>
-            </connections>
-        </popover>
-        <customView id="ozl-58-bBU" customClass="NSViewEscapable">
-            <rect key="frame" x="0.0" y="0.0" width="346" height="356"/>
-            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-            <point key="canvasLocation" x="87" y="560"/>
-        </customView>
         <customView id="3">
             <rect key="frame" x="0.0" y="0.0" width="252" height="260"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>

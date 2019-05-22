@@ -1620,8 +1620,13 @@ void on_time_entry_list(const bool_t open,
 
 void on_time_entry_autocomplete(TogglAutocompleteView *first)
 {
+	NSArray *items = [AutocompleteItem loadAll:first];
+
 	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayTimeEntryAutocomplete
-																object:[AutocompleteItem loadAll:first]];
+																object:items];
+	dispatch_async(dispatch_get_main_queue(), ^{
+		[[DescriptionTimeEntryStorage shared] updateWith:items];
+	});
 }
 
 void on_mini_timer_autocomplete(TogglAutocompleteView *first)
@@ -1632,14 +1637,25 @@ void on_mini_timer_autocomplete(TogglAutocompleteView *first)
 
 void on_project_autocomplete(TogglAutocompleteView *first)
 {
+	NSArray *items = [AutocompleteItem loadAll:first];
+
 	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayProjectAutocomplete
-																object:[AutocompleteItem loadAll:first]];
+																object:items];
+
+	dispatch_async(dispatch_get_main_queue(), ^{
+		[[ProjectStorage shared] updateWith:items];
+	});
 }
 
 void on_tags(TogglGenericView *first)
 {
+	NSArray<ViewItem *> *viewItems = [ViewItem loadAll:first];
+
 	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayTags
-																object:[ViewItem loadAll:first]];
+																object:viewItems];
+	dispatch_async(dispatch_get_main_queue(), ^{
+		[[TagStorage shared] updateWith:viewItems];
+	});
 }
 
 void on_autotracker_rules(TogglAutotrackerRuleView *first, const uint64_t title_count, char_t *title_list[])
@@ -1676,14 +1692,24 @@ void on_promotion(const int64_t promotion_type)
 
 void on_client_select(TogglGenericView *first)
 {
+	NSArray<ViewItem *> *viewItems = [ViewItem loadAll:first];
+
 	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayClientSelect
-																object:[ViewItem loadAll:first]];
+																object:viewItems];
+	dispatch_async(dispatch_get_main_queue(), ^{
+		[[ClientStorage shared] updateWith:viewItems];
+	});
 }
 
 void on_workspace_select(TogglGenericView *first)
 {
+	NSArray<ViewItem *> *viewItems = [ViewItem loadAll:first];
+
 	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayWorkspaceSelect
-																object:[ViewItem loadAll:first]];
+																object:viewItems];
+	dispatch_async(dispatch_get_main_queue(), ^{
+		[[WorkspaceStorage shared] updateWith:viewItems];
+	});
 }
 
 void on_time_entry_editor(const bool_t open,

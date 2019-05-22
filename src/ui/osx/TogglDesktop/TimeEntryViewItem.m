@@ -192,4 +192,9 @@
 	}
 }
 
+- (BOOL)isRunning
+{
+	return self.duration_in_seconds < 0;
+}
+
 @end

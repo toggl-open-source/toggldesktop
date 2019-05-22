@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner"/>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView id="c22-O7-iKe" customClass="ProjectCreationView" customModule="TogglDesktop" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="290" height="400"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <box boxType="custom" cornerRadius="8" title="Box" translatesAutoresizingMaskIntoConstraints="NO" id="oZH-ml-wNQ">
+                    <rect key="frame" x="0.0" y="0.0" width="290" height="400"/>
+                    <view key="contentView" id="W2E-GI-g3i">
+                        <rect key="frame" x="1" y="1" width="288" height="398"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="XFr-qK-S1A" customClass="CursorButton" customModule="TogglDesktop" customModuleProvider="target">
+                                <rect key="frame" x="10" y="370" width="43" height="16"/>
+                                <buttonCell key="cell" type="bevel" title="Cancel" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="BE4-An-YWJ">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="cellTitle"/>
+                                </buttonCell>
+                                <color key="contentTintColor" name="grey-text-color"/>
+                                <connections>
+                                    <action selector="cancelBtnOnTap:" target="c22-O7-iKe" id="bqb-F5-9Wn"/>
+                                    <outlet property="nextKeyView" destination="eQK-O0-2vn" id="YEl-3a-wZS"/>
+                                </connections>
+                            </button>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="E94-Yr-Bp7" customClass="CursorButton" customModule="TogglDesktop" customModuleProvider="target">
+                                <rect key="frame" x="249" y="369" width="29" height="17"/>
+                                <buttonCell key="cell" type="bevel" title="Add" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="Yu9-6E-JSG">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <color key="contentTintColor" name="green-color"/>
+                                <connections>
+                                    <action selector="addBtnOnTap:" target="c22-O7-iKe" id="BoR-UV-IiL"/>
+                                    <outlet property="nextKeyView" destination="XFr-qK-S1A" id="Bje-3n-j0S"/>
+                                </connections>
+                            </button>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="e8h-de-FNI">
+                                <rect key="frame" x="103" y="370" width="83" height="18"/>
+                                <textFieldCell key="cell" lineBreakMode="clipping" title="New Project" id="xL2-RA-McQ">
+                                    <font key="font" metaFont="system" size="14"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="XFr-qK-S1A" firstAttribute="leading" secondItem="W2E-GI-g3i" secondAttribute="leading" constant="10" id="AWA-yH-VZP"/>
+                            <constraint firstItem="e8h-de-FNI" firstAttribute="centerX" secondItem="W2E-GI-g3i" secondAttribute="centerX" id="DVi-5g-kbb"/>
+                            <constraint firstItem="e8h-de-FNI" firstAttribute="top" secondItem="W2E-GI-g3i" secondAttribute="top" constant="10" id="epo-gp-pJD"/>
+                            <constraint firstItem="XFr-qK-S1A" firstAttribute="top" secondItem="W2E-GI-g3i" secondAttribute="top" constant="12" id="nt8-Xi-gA5"/>
+                            <constraint firstAttribute="trailing" secondItem="E94-Yr-Bp7" secondAttribute="trailing" constant="10" id="ohn-sB-WGO"/>
+                            <constraint firstItem="E94-Yr-Bp7" firstAttribute="top" secondItem="W2E-GI-g3i" secondAttribute="top" constant="12" id="uHg-Ez-uTB"/>
+                        </constraints>
+                    </view>
+                    <color key="borderColor" name="color-project-btn-border-color"/>
+                    <color key="fillColor" name="auto-complete-background"/>
+                </box>
+                <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OJp-YS-19d">
+                    <rect key="frame" x="10" y="46" width="270" height="310"/>
+                    <subviews>
+                        <stackView distribution="equalSpacing" orientation="horizontal" alignment="centerY" spacing="5" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="H6x-LK-MTr">
+                            <rect key="frame" x="0.0" y="80" width="270" height="230"/>
+                            <subviews>
+                                <box boxType="custom" cornerRadius="8" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="abC-PV-f56">
+                                    <rect key="frame" x="0.0" y="100" width="241" height="30"/>
+                                    <view key="contentView" id="O2n-JI-pPR">
+                                        <rect key="frame" x="1" y="1" width="239" height="28"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                        <subviews>
+                                            <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="eQK-O0-2vn">
+                                                <rect key="frame" x="-2" y="0.0" width="243" height="28"/>
+                                                <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" alignment="left" placeholderString="Project Name" usesSingleLineMode="YES" id="vml-ft-AoW" customClass="VerticallyCenteredTextFieldCell" customModule="TogglDesktop" customModuleProvider="target">
+                                                    <font key="font" metaFont="system" size="14"/>
+                                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="focusRingCornerRadius">
+                                                            <real key="value" value="8"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
+                                                </textFieldCell>
+                                                <connections>
+                                                    <outlet property="nextKeyView" destination="I8L-vz-Mr7" id="Qn5-zk-wXH"/>
+                                                </connections>
+                                            </textField>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstAttribute="trailing" secondItem="eQK-O0-2vn" secondAttribute="trailing" id="2x8-qd-Elb"/>
+                                            <constraint firstItem="eQK-O0-2vn" firstAttribute="leading" secondItem="O2n-JI-pPR" secondAttribute="leading" id="Kdz-rp-48c"/>
+                                            <constraint firstAttribute="bottom" secondItem="eQK-O0-2vn" secondAttribute="bottom" id="aPc-qd-LgU"/>
+                                            <constraint firstItem="eQK-O0-2vn" firstAttribute="top" secondItem="O2n-JI-pPR" secondAttribute="top" id="gqB-se-GEA"/>
+                                        </constraints>
+                                    </view>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="30" id="1jm-DR-zOm"/>
+                                    </constraints>
+                                    <color key="borderColor" name="upload-border-color"/>
+                                </box>
+                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Zz6-Ng-Mjf" customClass="CursorButton" customModule="TogglDesktop" customModuleProvider="target">
+                                    <rect key="frame" x="246" y="103" width="24" height="24"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="24" id="mwz-Qx-Oyr"/>
+                                        <constraint firstAttribute="width" constant="24" id="upz-zX-0fd"/>
+                                    </constraints>
+                                    <buttonCell key="cell" type="bevel" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="KgK-3f-Z42">
+                                        <behavior key="behavior" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                    <connections>
+                                        <action selector="colorBtnOnTap:" target="c22-O7-iKe" id="frh-YC-eNA"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                            <visibilityPriorities>
+                                <integer value="1000"/>
+                                <integer value="1000"/>
+                            </visibilityPriorities>
+                            <customSpacing>
+                                <real value="3.4028234663852886e+38"/>
+                                <real value="3.4028234663852886e+38"/>
+                            </customSpacing>
+                        </stackView>
+                        <customView hidden="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Z6i-Vm-FEs">
+                            <rect key="frame" x="0.0" y="120" width="270" height="190"/>
+                            <subviews>
+                                <box boxType="custom" borderType="none" borderWidth="0.0" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="1oc-cY-QWd">
+                                    <rect key="frame" x="0.0" y="0.0" width="270" height="190"/>
+                                    <view key="contentView" id="Bzo-Ix-voH">
+                                        <rect key="frame" x="0.0" y="0.0" width="270" height="190"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    </view>
+                                    <color key="fillColor" name="color-picker-background"/>
+                                </box>
+                            </subviews>
+                            <constraints>
+                                <constraint firstItem="1oc-cY-QWd" firstAttribute="top" secondItem="Z6i-Vm-FEs" secondAttribute="top" id="3b3-Ti-mMg"/>
+                                <constraint firstAttribute="trailing" secondItem="1oc-cY-QWd" secondAttribute="trailing" id="HMa-Br-pYx"/>
+                                <constraint firstAttribute="height" constant="190" id="Oee-h7-oLp"/>
+                                <constraint firstItem="1oc-cY-QWd" firstAttribute="leading" secondItem="Z6i-Vm-FEs" secondAttribute="leading" id="V1z-0K-RDn"/>
+                                <constraint firstAttribute="bottom" secondItem="1oc-cY-QWd" secondAttribute="bottom" id="gEN-1b-JnV"/>
+                            </constraints>
+                        </customView>
+                        <box boxType="custom" cornerRadius="8" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="5Vn-FK-aKk">
+                            <rect key="frame" x="0.0" y="40" width="220" height="30"/>
+                            <view key="contentView" id="qm3-nV-m4Z">
+                                <rect key="frame" x="1" y="1" width="218" height="28"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <subviews>
+                                    <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="I8L-vz-Mr7" customClass="WorkspaceAutoCompleteTextField" customModule="TogglDesktop" customModuleProvider="target">
+                                        <rect key="frame" x="-2" y="0.0" width="222" height="28"/>
+                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" alignment="left" placeholderString="Marketing Department" id="Kqx-Qa-pyM" customClass="VerticallyCenteredTextFieldCell" customModule="TogglDesktop" customModuleProvider="target">
+                                            <font key="font" metaFont="system" size="14"/>
+                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="focusRingCornerRadius">
+                                                    <real key="value" value="8"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
+                                        </textFieldCell>
+                                        <connections>
+                                            <outlet property="nextKeyView" destination="cCQ-e0-gV1" id="gFg-eo-8oV"/>
+                                        </connections>
+                                    </textField>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="I8L-vz-Mr7" firstAttribute="leading" secondItem="qm3-nV-m4Z" secondAttribute="leading" id="RcV-rG-k0x"/>
+                                    <constraint firstAttribute="bottom" secondItem="I8L-vz-Mr7" secondAttribute="bottom" id="RmF-XK-YOF"/>
+                                    <constraint firstAttribute="trailing" secondItem="I8L-vz-Mr7" secondAttribute="trailing" id="Sbh-Nx-8bz"/>
+                                    <constraint firstItem="I8L-vz-Mr7" firstAttribute="top" secondItem="qm3-nV-m4Z" secondAttribute="top" id="lav-xU-FNr"/>
+                                </constraints>
+                            </view>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="30" id="RaZ-Ke-N4I"/>
+                            </constraints>
+                            <color key="borderColor" name="upload-border-color"/>
+                        </box>
+                        <box boxType="custom" cornerRadius="8" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="CXA-mW-IBV">
+                            <rect key="frame" x="0.0" y="0.0" width="220" height="30"/>
+                            <view key="contentView" id="d4q-Of-09z">
+                                <rect key="frame" x="1" y="1" width="218" height="28"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <subviews>
+                                    <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="cCQ-e0-gV1" customClass="ClientAutoCompleteTextField" customModule="TogglDesktop" customModuleProvider="target">
+                                        <rect key="frame" x="-2" y="0.0" width="222" height="28"/>
+                                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" alignment="left" placeholderString="No Client" id="8Nw-wN-b3U" customClass="VerticallyCenteredTextFieldCell" customModule="TogglDesktop" customModuleProvider="target">
+                                            <font key="font" metaFont="system" size="14"/>
+                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="focusRingCornerRadius">
+                                                    <real key="value" value="8"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
+                                        </textFieldCell>
+                                        <connections>
+                                            <outlet property="nextKeyView" destination="2Vy-Nq-8Ub" id="HOU-FC-A8T"/>
+                                        </connections>
+                                    </textField>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="cCQ-e0-gV1" firstAttribute="leading" secondItem="d4q-Of-09z" secondAttribute="leading" id="8JU-G1-KB0"/>
+                                    <constraint firstItem="cCQ-e0-gV1" firstAttribute="top" secondItem="d4q-Of-09z" secondAttribute="top" id="Pqw-Jh-AkA"/>
+                                    <constraint firstAttribute="bottom" secondItem="cCQ-e0-gV1" secondAttribute="bottom" id="Re0-Jb-QUA"/>
+                                    <constraint firstAttribute="trailing" secondItem="cCQ-e0-gV1" secondAttribute="trailing" id="lNc-fS-kwt"/>
+                                </constraints>
+                            </view>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="30" id="6DM-cR-j7V"/>
+                            </constraints>
+                            <color key="borderColor" name="upload-border-color"/>
+                        </box>
+                    </subviews>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="H6x-LK-MTr" secondAttribute="trailing" id="84y-J7-xaq"/>
+                        <constraint firstAttribute="trailing" secondItem="Z6i-Vm-FEs" secondAttribute="trailing" id="MiO-5j-6aq"/>
+                        <constraint firstItem="Z6i-Vm-FEs" firstAttribute="leading" secondItem="OJp-YS-19d" secondAttribute="leading" id="ro1-uF-IR3"/>
+                    </constraints>
+                    <visibilityPriorities>
+                        <integer value="1000"/>
+                        <integer value="1000"/>
+                        <integer value="1000"/>
+                        <integer value="1000"/>
+                    </visibilityPriorities>
+                    <customSpacing>
+                        <real value="3.4028234663852886e+38"/>
+                        <real value="3.4028234663852886e+38"/>
+                        <real value="3.4028234663852886e+38"/>
+                        <real value="3.4028234663852886e+38"/>
+                    </customSpacing>
+                </stackView>
+                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="2Vy-Nq-8Ub">
+                    <rect key="frame" x="8" y="18" width="112" height="18"/>
+                    <buttonCell key="cell" type="check" title="Public Project" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="m2f-QZ-VmO">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system" size="14"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="publicProjectOnChange:" target="c22-O7-iKe" id="xJq-rh-gVf"/>
+                        <outlet property="nextKeyView" destination="E94-Yr-Bp7" id="I4r-1P-0vk"/>
+                    </connections>
+                </button>
+            </subviews>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="oZH-ml-wNQ" secondAttribute="trailing" id="2Lr-jb-ART"/>
+                <constraint firstItem="OJp-YS-19d" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" constant="44" id="3cq-A9-ixI"/>
+                <constraint firstAttribute="trailing" secondItem="OJp-YS-19d" secondAttribute="trailing" constant="10" id="4mQ-sG-Ttm"/>
+                <constraint firstItem="oZH-ml-wNQ" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" id="6k1-l9-kbW"/>
+                <constraint firstItem="2Vy-Nq-8Ub" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="10" id="7Em-70-GNI"/>
+                <constraint firstItem="oZH-ml-wNQ" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" id="L7c-up-029"/>
+                <constraint firstItem="OJp-YS-19d" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="10" id="Vh9-hn-IuH"/>
+                <constraint firstItem="2Vy-Nq-8Ub" firstAttribute="top" secondItem="OJp-YS-19d" secondAttribute="bottom" constant="12" id="eFD-mF-IN1"/>
+                <constraint firstAttribute="bottom" secondItem="oZH-ml-wNQ" secondAttribute="bottom" id="uIF-9i-gxF"/>
+                <constraint firstAttribute="bottom" secondItem="2Vy-Nq-8Ub" secondAttribute="bottom" constant="20" id="zwz-lk-UcF"/>
+            </constraints>
+            <connections>
+                <outlet property="addBtn" destination="E94-Yr-Bp7" id="QXJ-Wa-LHX"/>
+                <outlet property="cancelBtn" destination="XFr-qK-S1A" id="Uu9-nT-Ggg"/>
+                <outlet property="clientAutoComplete" destination="cCQ-e0-gV1" id="sMM-dm-fm9"/>
+                <outlet property="colorBtn" destination="Zz6-Ng-Mjf" id="dah-ED-Ork"/>
+                <outlet property="colorPickerContainerBox" destination="1oc-cY-QWd" id="jyE-Q2-QW5"/>
+                <outlet property="colorPickerContainerView" destination="Z6i-Vm-FEs" id="hac-Fv-cL7"/>
+                <outlet property="projectTextField" destination="eQK-O0-2vn" id="yle-Cg-xGS"/>
+                <outlet property="publicProjectCheckBox" destination="2Vy-Nq-8Ub" id="Ik7-Kv-WnW"/>
+                <outlet property="workspaceAutoComplete" destination="I8L-vz-Mr7" id="CXb-Ky-yPT"/>
+            </connections>
+            <point key="canvasLocation" x="-290" y="114"/>
+        </customView>
+    </objects>
+    <resources>
+        <namedColor name="auto-complete-background">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="color-picker-background">
+            <color red="0.97647058823529409" green="0.97647058823529409" blue="0.97647058823529409" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="color-project-btn-border-color">
+            <color red="0.0" green="0.0" blue="0.0" alpha="0.10000000149011612" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="green-color">
+            <color red="0.15686274509803921" green="0.80392156862745101" blue="0.25490196078431371" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="grey-text-color">
+            <color red="0.33333333333333331" green="0.33333333333333331" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="upload-border-color">
+            <color red="0.67450980392156867" green="0.67450980392156867" blue="0.67450980392156867" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

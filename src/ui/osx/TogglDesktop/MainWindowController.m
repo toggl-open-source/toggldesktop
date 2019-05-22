@@ -244,7 +244,7 @@ extern void *ctx;
 
 - (BOOL)isEditOpened
 {
-	return self.timeEntryListViewController.timeEntrypopover.shown;
+	return self.timeEntryListViewController.isEditorOpen;
 }
 
 - (void)trackWindowSize

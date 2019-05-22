@@ -9,3 +9,6 @@
 #import "UIEvents.h"
 #import "AutocompleteItem.h"
 #import "AutoCompleteTableCell.h"
+#import "ProjectTextField.h"
+#import "ViewItem.h"
+#import "DesktopLibraryBridge.h"

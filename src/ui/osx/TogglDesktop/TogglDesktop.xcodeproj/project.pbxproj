@@ -120,8 +120,20 @@
 		95DBF8CC18BF7A910021FB41 /* offline_off.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 95DBF8CA18BF7A910021FB41 /* offline_off.pdf */; };
 		95DBF8CD18BF7A910021FB41 /* offline_on.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 95DBF8CB18BF7A910021FB41 /* offline_on.pdf */; };
 		95DBF8D718C48B300021FB41 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 95DBF8D618C48B300021FB41 /* logo.png */; };
+		BA013FF5225705B6000E5B91 /* HoverTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA013FF4225705B6000E5B91 /* HoverTableCellView.swift */; };
+		BA01404622570805000E5B91 /* TagCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA01404522570805000E5B91 /* TagCellView.swift */; };
+		BA0140482257080F000E5B91 /* TagCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA0140472257080F000E5B91 /* TagCellView.xib */; };
+		BA01404A22570893000E5B91 /* Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA01404922570893000E5B91 /* Tag.swift */; };
+		BA01404C22570967000E5B91 /* TagStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA01404B22570967000E5B91 /* TagStorage.swift */; };
+		BA01404E22571081000E5B91 /* TagDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA01404D22571081000E5B91 /* TagDataSource.swift */; };
+		BA014050225710FD000E5B91 /* TagAutoCompleteTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA01404F225710FD000E5B91 /* TagAutoCompleteTextField.swift */; };
+		BA01405222571199000E5B91 /* TagTokenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA01405122571199000E5B91 /* TagTokenView.swift */; };
+		BA014054225711A3000E5B91 /* TagTokenView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA014053225711A3000E5B91 /* TagTokenView.xib */; };
 		BA03725521FE9FD400FC277B /* FlatButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA03725421FE9FD400FC277B /* FlatButton.swift */; };
 		BA03729D21FED85700FC277B /* NSView+Xib.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA03729C21FED85700FC277B /* NSView+Xib.swift */; };
+		BA053659225DDDBB00C26E1F /* CustomFocusRingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA053658225DDDBB00C26E1F /* CustomFocusRingButton.swift */; };
+		BA05367F225E238D00C26E1F /* ProjectWorksapceCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA05367E225E238D00C26E1F /* ProjectWorksapceCellView.swift */; };
+		BA05369F225E239600C26E1F /* ProjectWorksapceCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA05369E225E239600C26E1F /* ProjectWorksapceCellView.xib */; };
 		BA08E012222E32C90075F68E /* NSView+LayoutConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA08E011222E32C90075F68E /* NSView+LayoutConstraint.swift */; };
 		BA08E087222E709C0075F68E /* ProjectTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = BA08E086222E709C0075F68E /* ProjectTextField.m */; };
 		BA0C3A65223219470081C6DE /* AutoCompleteCellType.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0C3A64223219470081C6DE /* AutoCompleteCellType.swift */; };
@@ -132,12 +144,23 @@
 		BA0CEC6521BE590200F1BF01 /* NSTableView+Diff.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0CEC6421BE590200F1BF01 /* NSTableView+Diff.swift */; };
 		BA0E38102225257D00D0121B /* BezierPath+Corner.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0E380F2225257D00D0121B /* BezierPath+Corner.swift */; };
 		BA0E38122225260B00D0121B /* TimeEntryCell+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0E38112225260B00D0121B /* TimeEntryCell+Ext.swift */; };
+		BA0F67B7224A32F700ED0F91 /* CursorButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0F67B6224A32F700ED0F91 /* CursorButton.swift */; };
+		BA13D2062269B7C400EB3833 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA13D2052269B7C400EB3833 /* CalendarViewController.swift */; };
+		BA13D20A2269BA6500EB3833 /* CalendarDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA13D2092269BA6500EB3833 /* CalendarDataSource.swift */; };
+		BA13D20E2269BAA600EB3833 /* DateCellViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA13D20C2269BAA600EB3833 /* DateCellViewItem.swift */; };
+		BA13D2112269BE2F00EB3833 /* DateInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA13D2102269BE2F00EB3833 /* DateInfo.swift */; };
+		BA13D2152269C01500EB3833 /* Date+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA13D2142269C01500EB3833 /* Date+Utils.swift */; };
+		BA13D2172269DE3400EB3833 /* NoVibrantPopoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA13D2162269DE3400EB3833 /* NoVibrantPopoverView.swift */; };
+		BA13D21B2269E0B500EB3833 /* CalendarViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA13D2192269E0B500EB3833 /* CalendarViewController.xib */; };
 		BA13E05C21C7BA6000835EC1 /* UserNotificationCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = BA13E05921C7B9D900835EC1 /* UserNotificationCenter.m */; };
+		BA19FC21226DA079006D8741 /* DateCellViewItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA13D20D2269BAA600EB3833 /* DateCellViewItem.xib */; };
 		BA276A142240F5B500810C51 /* FloatingErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA276A122240F5B500810C51 /* FloatingErrorView.swift */; };
 		BA2DA0C621A542E30027B7A5 /* NSTextField+Ext.m in Sources */ = {isa = PBXBuildFile; fileRef = BA2DA0C521A542E30027B7A5 /* NSTextField+Ext.m */; };
 		BA2DA12021A691FF0027B7A5 /* TrackingService.m in Sources */ = {isa = PBXBuildFile; fileRef = BA2DA11F21A691FF0027B7A5 /* TrackingService.m */; };
 		BA2E3F2C22375E640035D034 /* NSView+Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2E3F2B22375E640035D034 /* NSView+Appearance.swift */; };
 		BA2E5FB1223787C300EB866E /* EditorPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2E5FB0223787C300EB866E /* EditorPopover.swift */; };
+		BA34F10022439C3000C27A15 /* EditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA34F0FE22439C3000C27A15 /* EditorViewController.swift */; };
+		BA34F10122439C3000C27A15 /* EditorViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA34F0FF22439C3000C27A15 /* EditorViewController.xib */; };
 		BA3E75D422291CEB009AD291 /* SystemMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA3E75D322291CEB009AD291 /* SystemMessage.swift */; };
 		BA3E75D62229356D009AD291 /* SystemMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA3E75D52229356D009AD291 /* SystemMessageView.swift */; };
 		BA3E75D822293576009AD291 /* SystemMessageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA3E75D722293576009AD291 /* SystemMessageView.xib */; };
@@ -146,9 +169,23 @@
 		BA4059B1221D2186002969B8 /* TimeHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA4059B0221D2186002969B8 /* TimeHeaderView.xib */; };
 		BA4059B7221D46F4002969B8 /* TimeEntryCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = BA4059B6221D46F4002969B8 /* TimeEntryCollectionView.m */; };
 		BA4059B9221D53E7002969B8 /* TimeEntryDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4059B8221D53E7002969B8 /* TimeEntryDatasource.swift */; };
+		BA412BFC224E0CBE003CA17A /* ClientStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA412BFB224E0CBE003CA17A /* ClientStorage.swift */; };
+		BA412C1D224E0D61003CA17A /* ClientDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA412C1C224E0D61003CA17A /* ClientDataSource.swift */; };
+		BA412C21224E1189003CA17A /* ClientCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA412C20224E1189003CA17A /* ClientCellView.swift */; };
+		BA412C23224E11AC003CA17A /* ClientCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA412C22224E11AC003CA17A /* ClientCellView.xib */; };
+		BA412C25224E147A003CA17A /* ClientAutoCompleteTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA412C24224E147A003CA17A /* ClientAutoCompleteTextField.swift */; };
+		BA412C27224E195C003CA17A /* NoClientCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA412C26224E195C003CA17A /* NoClientCellView.swift */; };
+		BA412C29224E196D003CA17A /* NoClientCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA412C28224E196D003CA17A /* NoClientCellView.xib */; };
 		BA46E09F2226707F00C25763 /* Collection+Safe.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA46E09E2226707F00C25763 /* Collection+Safe.swift */; };
+		BA50ED8522705F9E008323FA /* CalendarFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA50ED8422705F9E008323FA /* CalendarFlowLayout.swift */; };
+		BA6572A6224DFA6F00BA4C60 /* RGB.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6572A0224DFA6E00BA4C60 /* RGB.swift */; };
+		BA6572A7224DFA6F00BA4C60 /* HSBGen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6572A1224DFA6E00BA4C60 /* HSBGen.swift */; };
+		BA6572A8224DFA6F00BA4C60 /* CurrentColorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6572A2224DFA6F00BA4C60 /* CurrentColorView.swift */; };
+		BA6572A9224DFA6F00BA4C60 /* ColorGraphicsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6572A3224DFA6F00BA4C60 /* ColorGraphicsView.swift */; };
+		BA6572AA224DFA6F00BA4C60 /* HSV.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6572A4224DFA6F00BA4C60 /* HSV.swift */; };
 		BA6E873521DDC1E2005E2451 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA6E86B621DDB331005E2451 /* Sparkle.framework */; };
 		BA6E873621DDC1E2005E2451 /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA6E86B621DDB331005E2451 /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		BA6EB8402248CBE3003BB8EF /* ProjectStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6EB83F2248CBE3003BB8EF /* ProjectStorage.swift */; };
 		BA6EB8942249DB33003BB8EF /* VerticallyCenteredTextFieldCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6EB8752249DB33003BB8EF /* VerticallyCenteredTextFieldCell.swift */; };
 		BA6F1B1A21EEE258009265E4 /* NSColor+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6F1B1921EEE258009265E4 /* NSColor+Utils.swift */; };
 		BA6F1B3821EEE998009265E4 /* Theme+Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6F1B3721EEE998009265E4 /* Theme+Notification.swift */; };
@@ -159,18 +196,50 @@
 		BA7B4BCB21C0EF8800B75B14 /* NSAlert+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = BA7B4BCA21C0EF8800B75B14 /* NSAlert+Utils.m */; };
 		BA7B4C3721C24B9D00B75B14 /* UndoTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = BA7B4C3621C24B9D00B75B14 /* UndoTextField.m */; };
 		BA7B4C7C21C293E700B75B14 /* String+Optional.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7B4C7B21C293E700B75B14 /* String+Optional.swift */; };
+		BA7D334B2248944C00B953A8 /* AutoCompleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7D334A2248944C00B953A8 /* AutoCompleteView.swift */; };
+		BA7D334D2248945300B953A8 /* AutoCompleteView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA7D334C2248945300B953A8 /* AutoCompleteView.xib */; };
+		BA7D334F224897FC00B953A8 /* ProjectHeaderCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7D334E224897FC00B953A8 /* ProjectHeaderCellView.swift */; };
+		BA7D33512248980B00B953A8 /* ProjectContentCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7D33502248980B00B953A8 /* ProjectContentCellView.swift */; };
+		BA7D33532248981200B953A8 /* ProjectHeaderCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA7D33522248981200B953A8 /* ProjectHeaderCellView.xib */; };
+		BA7D3355224898E400B953A8 /* ProjectContentCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA7D3354224898E400B953A8 /* ProjectContentCellView.xib */; };
+		BA7D335722489BD000B953A8 /* AutoCompleteViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7D335622489BD000B953A8 /* AutoCompleteViewDataSource.swift */; };
+		BA7D335A22489C8000B953A8 /* ProjectDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7D335922489C8000B953A8 /* ProjectDataSource.swift */; };
+		BA7D335E2248B48000B953A8 /* AutoCompleteTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7D335D2248B48000B953A8 /* AutoCompleteTextField.swift */; };
 		BA7DB6E321F9C77A0059239B /* MASShortcut.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA7DB6D221F9C7660059239B /* MASShortcut.framework */; };
 		BA7DB6E421F9C77A0059239B /* MASShortcut.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA7DB6D221F9C7660059239B /* MASShortcut.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BA80BEB2221EAE6F00BDFD35 /* Array+ByGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA80BEB1221EAE6F00BDFD35 /* Array+ByGroup.swift */; };
+		BA84363B22533A6600EF5830 /* DesktopLibraryBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = BA84363A22533A6600EF5830 /* DesktopLibraryBridge.m */; };
+		BA89CB392265EA4400D21584 /* String+Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA89CB382265EA4400D21584 /* String+Search.swift */; };
+		BA8B4C752251FAD500592BC7 /* WorkspaceCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA8B4C742251FAD500592BC7 /* WorkspaceCellView.swift */; };
+		BA8B4C772251FADF00592BC7 /* WorkspaceCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA8B4C762251FADF00592BC7 /* WorkspaceCellView.xib */; };
+		BA9C2DF8224C7E44002AD2A1 /* ProjectCreationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA9C2DF7224C7E44002AD2A1 /* ProjectCreationView.swift */; };
+		BA9C2DFA224C7E77002AD2A1 /* ProjectCreationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA9C2DF9224C7E77002AD2A1 /* ProjectCreationView.xib */; };
+		BA9C2DFC224C8235002AD2A1 /* ColorPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA9C2DFB224C8235002AD2A1 /* ColorPickerView.swift */; };
+		BA9C2DFE224C823C002AD2A1 /* ColorPickerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA9C2DFD224C823C002AD2A1 /* ColorPickerView.xib */; };
+		BA9C2E05224C84E7002AD2A1 /* ColorViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA9C2E03224C84E7002AD2A1 /* ColorViewItem.swift */; };
+		BA9C2E06224C84E7002AD2A1 /* ColorViewItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA9C2E04224C84E7002AD2A1 /* ColorViewItem.xib */; };
+		BA9C2E08224C854C002AD2A1 /* ProjectColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA9C2E07224C854C002AD2A1 /* ProjectColor.swift */; };
+		BA9C2E0C224C8F58002AD2A1 /* KeyboardTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA9C2E0B224C8F58002AD2A1 /* KeyboardTableView.swift */; };
 		BA9D90B4222D14ED00D5EC0E /* NSView+Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA9D90B3222D14ED00D5EC0E /* NSView+Animation.swift */; };
 		BA9D90D4222D155900D5EC0E /* NSView+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA9D90D3222D155900D5EC0E /* NSView+Ext.swift */; };
+		BAA11AC12251F49E007F31D2 /* WorkspaceStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAA11AC02251F49E007F31D2 /* WorkspaceStorage.swift */; };
+		BAA11AC32251F4D6007F31D2 /* WorkspaceAutoCompleteTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAA11AC22251F4D6007F31D2 /* WorkspaceAutoCompleteTextField.swift */; };
+		BAA11AC52251F502007F31D2 /* WorkspaceDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAA11AC42251F502007F31D2 /* WorkspaceDataSource.swift */; };
 		BAA260D1222D1DC70094F4E4 /* NSView+Shadow+Border.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAA260D0222D1DC70094F4E4 /* NSView+Shadow+Border.swift */; };
 		BAAF567E2223CAC5003D0D73 /* NSButton+TextColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAAF567D2223CAC5003D0D73 /* NSButton+TextColor.swift */; };
 		BAAF569E2223D4C7003D0D73 /* DotImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAAF569D2223D4C7003D0D73 /* DotImageView.swift */; };
 		BAAF56A02223DF9A003D0D73 /* VertificalTimeEntryFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAAF569F2223DF9A003D0D73 /* VertificalTimeEntryFlowLayout.swift */; };
 		BAAF56A22223E18B003D0D73 /* TimeDecoratorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAAF56A12223E18B003D0D73 /* TimeDecoratorView.swift */; };
 		BAAF56A42223E19C003D0D73 /* TimeDecoratorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BAAF56A32223E19C003D0D73 /* TimeDecoratorView.xib */; };
+		BAB0027F22731248005ECC93 /* DayLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB0027E22731248005ECC93 /* DayLabel.swift */; };
+		BAB0029F2273125C005ECC93 /* DayLabel.xib in Resources */ = {isa = PBXBuildFile; fileRef = BAB0029E2273125C005ECC93 /* DayLabel.xib */; };
+		BAB818C3228D5847008C2367 /* DescriptionAutoCompleteTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB818C2228D5847008C2367 /* DescriptionAutoCompleteTextField.swift */; };
+		BAB818E3228D594D008C2367 /* DescriptionTimeEntryStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB818E2228D594D008C2367 /* DescriptionTimeEntryStorage.swift */; };
+		BAB818E5228D5A17008C2367 /* DescriptionDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB818E4228D5A16008C2367 /* DescriptionDataSource.swift */; };
+		BAB818E9228D5A97008C2367 /* DescriptionContentCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB818E8228D5A97008C2367 /* DescriptionContentCellView.swift */; };
+		BAB818EB228D5AA8008C2367 /* DescriptionContentCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BAB818EA228D5AA8008C2367 /* DescriptionContentCellView.xib */; };
 		BAB8D49421BE742D00D63DA5 /* NSTableView+TimeEntryDiff.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB8D49321BE742D00D63DA5 /* NSTableView+TimeEntryDiff.swift */; };
+		BAC4D399225470DA00254DAD /* AutoCompleteRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAC4D398225470DA00254DAD /* AutoCompleteRowView.swift */; };
 		BAD15FFC223A52D600A8CCC9 /* TimeEntryEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD15FFB223A52D600A8CCC9 /* TimeEntryEmptyView.swift */; };
 		BAD15FFE223A530600A8CCC9 /* TimeEntryEmptyView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BAD15FFD223A530600A8CCC9 /* TimeEntryEmptyView.xib */; };
 		BAD2341F21D612DF0039C742 /* libPocoDataSQLite.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BAD2341621D612DE0039C742 /* libPocoDataSQLite.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
@@ -187,6 +256,7 @@
 		BAD858CC228EAE7C00226C71 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = BAD858CB228EAE7C00226C71 /* libz.tbd */; };
 		BAE007DE21FAF00D00404379 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BAE007DD21FAF00D00404379 /* Media.xcassets */; };
 		BAE49CAE222FC1C900773814 /* TimerContainerBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAE49CAD222FC1C900773814 /* TimerContainerBox.swift */; };
+		BAE8E845224CA9AC006D534E /* ProjectAutoCompleteTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAE8E844224CA9AC006D534E /* ProjectAutoCompleteTextField.swift */; };
 		BAF38FEF2241FF20009147D7 /* FloatingErrorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA276A132240F5B500810C51 /* FloatingErrorView.xib */; };
 		BAF50DE521A29FED0090BA95 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BAF50DE421A29FED0090BA95 /* Images.xcassets */; };
 		BAF50DF821A2A18D0090BA95 /* AppIconFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = BAF50DF721A2A18D0090BA95 /* AppIconFactory.m */; };
@@ -691,8 +761,20 @@
 		95DBF8CA18BF7A910021FB41 /* offline_off.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = offline_off.pdf; sourceTree = "<group>"; };
 		95DBF8CB18BF7A910021FB41 /* offline_on.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = offline_on.pdf; sourceTree = "<group>"; };
 		95DBF8D618C48B300021FB41 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo.png; sourceTree = "<group>"; };
+		BA013FF4225705B6000E5B91 /* HoverTableCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoverTableCellView.swift; sourceTree = "<group>"; };
+		BA01404522570805000E5B91 /* TagCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagCellView.swift; sourceTree = "<group>"; };
+		BA0140472257080F000E5B91 /* TagCellView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TagCellView.xib; sourceTree = "<group>"; };
+		BA01404922570893000E5B91 /* Tag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tag.swift; sourceTree = "<group>"; };
+		BA01404B22570967000E5B91 /* TagStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagStorage.swift; sourceTree = "<group>"; };
+		BA01404D22571081000E5B91 /* TagDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagDataSource.swift; sourceTree = "<group>"; };
+		BA01404F225710FD000E5B91 /* TagAutoCompleteTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagAutoCompleteTextField.swift; sourceTree = "<group>"; };
+		BA01405122571199000E5B91 /* TagTokenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagTokenView.swift; sourceTree = "<group>"; };
+		BA014053225711A3000E5B91 /* TagTokenView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TagTokenView.xib; sourceTree = "<group>"; };
 		BA03725421FE9FD400FC277B /* FlatButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlatButton.swift; sourceTree = "<group>"; };
 		BA03729C21FED85700FC277B /* NSView+Xib.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSView+Xib.swift"; sourceTree = "<group>"; };
+		BA053658225DDDBB00C26E1F /* CustomFocusRingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFocusRingButton.swift; sourceTree = "<group>"; };
+		BA05367E225E238D00C26E1F /* ProjectWorksapceCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectWorksapceCellView.swift; sourceTree = "<group>"; };
+		BA05369E225E239600C26E1F /* ProjectWorksapceCellView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProjectWorksapceCellView.xib; sourceTree = "<group>"; };
 		BA08E011222E32C90075F68E /* NSView+LayoutConstraint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSView+LayoutConstraint.swift"; sourceTree = "<group>"; };
 		BA08E085222E709C0075F68E /* ProjectTextField.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProjectTextField.h; sourceTree = "<group>"; };
 		BA08E086222E709C0075F68E /* ProjectTextField.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProjectTextField.m; sourceTree = "<group>"; };
@@ -704,6 +786,15 @@
 		BA0CEC6421BE590200F1BF01 /* NSTableView+Diff.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSTableView+Diff.swift"; sourceTree = "<group>"; };
 		BA0E380F2225257D00D0121B /* BezierPath+Corner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BezierPath+Corner.swift"; sourceTree = "<group>"; };
 		BA0E38112225260B00D0121B /* TimeEntryCell+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TimeEntryCell+Ext.swift"; sourceTree = "<group>"; };
+		BA0F67B6224A32F700ED0F91 /* CursorButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CursorButton.swift; sourceTree = "<group>"; };
+		BA13D2052269B7C400EB3833 /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
+		BA13D2092269BA6500EB3833 /* CalendarDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarDataSource.swift; sourceTree = "<group>"; };
+		BA13D20C2269BAA600EB3833 /* DateCellViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateCellViewItem.swift; sourceTree = "<group>"; };
+		BA13D20D2269BAA600EB3833 /* DateCellViewItem.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DateCellViewItem.xib; sourceTree = "<group>"; };
+		BA13D2102269BE2F00EB3833 /* DateInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateInfo.swift; sourceTree = "<group>"; };
+		BA13D2142269C01500EB3833 /* Date+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Utils.swift"; sourceTree = "<group>"; };
+		BA13D2162269DE3400EB3833 /* NoVibrantPopoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoVibrantPopoverView.swift; sourceTree = "<group>"; };
+		BA13D2192269E0B500EB3833 /* CalendarViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CalendarViewController.xib; sourceTree = "<group>"; };
 		BA13E05921C7B9D900835EC1 /* UserNotificationCenter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = UserNotificationCenter.m; path = test2/UserNotificationCenter.m; sourceTree = SOURCE_ROOT; };
 		BA13E05A21C7B9D900835EC1 /* UserNotificationCenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = UserNotificationCenter.h; path = test2/UserNotificationCenter.h; sourceTree = SOURCE_ROOT; };
 		BA276A122240F5B500810C51 /* FloatingErrorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatingErrorView.swift; sourceTree = "<group>"; };
@@ -714,6 +805,8 @@
 		BA2DA11F21A691FF0027B7A5 /* TrackingService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TrackingService.m; sourceTree = "<group>"; };
 		BA2E3F2B22375E640035D034 /* NSView+Appearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSView+Appearance.swift"; sourceTree = "<group>"; };
 		BA2E5FB0223787C300EB866E /* EditorPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorPopover.swift; sourceTree = "<group>"; };
+		BA34F0FE22439C3000C27A15 /* EditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorViewController.swift; sourceTree = "<group>"; };
+		BA34F0FF22439C3000C27A15 /* EditorViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EditorViewController.xib; sourceTree = "<group>"; };
 		BA3E75D322291CEB009AD291 /* SystemMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemMessage.swift; sourceTree = "<group>"; };
 		BA3E75D52229356D009AD291 /* SystemMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemMessageView.swift; sourceTree = "<group>"; };
 		BA3E75D722293576009AD291 /* SystemMessageView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SystemMessageView.xib; sourceTree = "<group>"; };
@@ -724,8 +817,22 @@
 		BA4059B5221D46F4002969B8 /* TimeEntryCollectionView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TimeEntryCollectionView.h; sourceTree = "<group>"; };
 		BA4059B6221D46F4002969B8 /* TimeEntryCollectionView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TimeEntryCollectionView.m; sourceTree = "<group>"; };
 		BA4059B8221D53E7002969B8 /* TimeEntryDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeEntryDatasource.swift; sourceTree = "<group>"; };
+		BA412BFB224E0CBE003CA17A /* ClientStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientStorage.swift; sourceTree = "<group>"; };
+		BA412C1C224E0D61003CA17A /* ClientDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientDataSource.swift; sourceTree = "<group>"; };
+		BA412C20224E1189003CA17A /* ClientCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientCellView.swift; sourceTree = "<group>"; };
+		BA412C22224E11AC003CA17A /* ClientCellView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ClientCellView.xib; sourceTree = "<group>"; };
+		BA412C24224E147A003CA17A /* ClientAutoCompleteTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientAutoCompleteTextField.swift; sourceTree = "<group>"; };
+		BA412C26224E195C003CA17A /* NoClientCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoClientCellView.swift; sourceTree = "<group>"; };
+		BA412C28224E196D003CA17A /* NoClientCellView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NoClientCellView.xib; sourceTree = "<group>"; };
 		BA46E09E2226707F00C25763 /* Collection+Safe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collection+Safe.swift"; sourceTree = "<group>"; };
+		BA50ED8422705F9E008323FA /* CalendarFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarFlowLayout.swift; sourceTree = "<group>"; };
+		BA6572A0224DFA6E00BA4C60 /* RGB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RGB.swift; sourceTree = "<group>"; };
+		BA6572A1224DFA6E00BA4C60 /* HSBGen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HSBGen.swift; sourceTree = "<group>"; };
+		BA6572A2224DFA6F00BA4C60 /* CurrentColorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrentColorView.swift; sourceTree = "<group>"; };
+		BA6572A3224DFA6F00BA4C60 /* ColorGraphicsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorGraphicsView.swift; sourceTree = "<group>"; };
+		BA6572A4224DFA6F00BA4C60 /* HSV.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HSV.swift; sourceTree = "<group>"; };
 		BA6E86A521DDB331005E2451 /* Sparkle.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Sparkle.xcodeproj; path = ../../../../third_party/Sparkle/Sparkle.xcodeproj; sourceTree = "<group>"; };
+		BA6EB83F2248CBE3003BB8EF /* ProjectStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectStorage.swift; sourceTree = "<group>"; };
 		BA6EB8752249DB33003BB8EF /* VerticallyCenteredTextFieldCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerticallyCenteredTextFieldCell.swift; sourceTree = "<group>"; };
 		BA6F1B1921EEE258009265E4 /* NSColor+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSColor+Utils.swift"; sourceTree = "<group>"; };
 		BA6F1B3721EEE998009265E4 /* Theme+Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Theme+Notification.swift"; sourceTree = "<group>"; };
@@ -738,17 +845,50 @@
 		BA7B4C3521C24B9D00B75B14 /* UndoTextField.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UndoTextField.h; sourceTree = "<group>"; };
 		BA7B4C3621C24B9D00B75B14 /* UndoTextField.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UndoTextField.m; sourceTree = "<group>"; };
 		BA7B4C7B21C293E700B75B14 /* String+Optional.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Optional.swift"; sourceTree = "<group>"; };
+		BA7D334A2248944C00B953A8 /* AutoCompleteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoCompleteView.swift; sourceTree = "<group>"; };
+		BA7D334C2248945300B953A8 /* AutoCompleteView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AutoCompleteView.xib; sourceTree = "<group>"; };
+		BA7D334E224897FC00B953A8 /* ProjectHeaderCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectHeaderCellView.swift; sourceTree = "<group>"; };
+		BA7D33502248980B00B953A8 /* ProjectContentCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectContentCellView.swift; sourceTree = "<group>"; };
+		BA7D33522248981200B953A8 /* ProjectHeaderCellView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProjectHeaderCellView.xib; sourceTree = "<group>"; };
+		BA7D3354224898E400B953A8 /* ProjectContentCellView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProjectContentCellView.xib; sourceTree = "<group>"; };
+		BA7D335622489BD000B953A8 /* AutoCompleteViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoCompleteViewDataSource.swift; sourceTree = "<group>"; };
+		BA7D335922489C8000B953A8 /* ProjectDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectDataSource.swift; sourceTree = "<group>"; };
+		BA7D335D2248B48000B953A8 /* AutoCompleteTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoCompleteTextField.swift; sourceTree = "<group>"; };
 		BA7DB6BB21F9C7660059239B /* MASShortcut.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MASShortcut.xcodeproj; path = ../../../../third_party/MASShortcut/MASShortcut.xcodeproj; sourceTree = "<group>"; };
 		BA80BEB1221EAE6F00BDFD35 /* Array+ByGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+ByGroup.swift"; sourceTree = "<group>"; };
+		BA84363922533A6600EF5830 /* DesktopLibraryBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DesktopLibraryBridge.h; sourceTree = "<group>"; };
+		BA84363A22533A6600EF5830 /* DesktopLibraryBridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DesktopLibraryBridge.m; sourceTree = "<group>"; };
+		BA89CB382265EA4400D21584 /* String+Search.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Search.swift"; sourceTree = "<group>"; };
+		BA8B4C742251FAD500592BC7 /* WorkspaceCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceCellView.swift; sourceTree = "<group>"; };
+		BA8B4C762251FADF00592BC7 /* WorkspaceCellView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WorkspaceCellView.xib; sourceTree = "<group>"; };
+		BA9C2DF7224C7E44002AD2A1 /* ProjectCreationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectCreationView.swift; sourceTree = "<group>"; };
+		BA9C2DF9224C7E77002AD2A1 /* ProjectCreationView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProjectCreationView.xib; sourceTree = "<group>"; };
+		BA9C2DFB224C8235002AD2A1 /* ColorPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickerView.swift; sourceTree = "<group>"; };
+		BA9C2DFD224C823C002AD2A1 /* ColorPickerView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ColorPickerView.xib; sourceTree = "<group>"; };
+		BA9C2E03224C84E7002AD2A1 /* ColorViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorViewItem.swift; sourceTree = "<group>"; };
+		BA9C2E04224C84E7002AD2A1 /* ColorViewItem.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ColorViewItem.xib; sourceTree = "<group>"; };
+		BA9C2E07224C854C002AD2A1 /* ProjectColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectColor.swift; sourceTree = "<group>"; };
+		BA9C2E0B224C8F58002AD2A1 /* KeyboardTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardTableView.swift; sourceTree = "<group>"; };
 		BA9D90B3222D14ED00D5EC0E /* NSView+Animation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSView+Animation.swift"; sourceTree = "<group>"; };
 		BA9D90D3222D155900D5EC0E /* NSView+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSView+Ext.swift"; sourceTree = "<group>"; };
+		BAA11AC02251F49E007F31D2 /* WorkspaceStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceStorage.swift; sourceTree = "<group>"; };
+		BAA11AC22251F4D6007F31D2 /* WorkspaceAutoCompleteTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceAutoCompleteTextField.swift; sourceTree = "<group>"; };
+		BAA11AC42251F502007F31D2 /* WorkspaceDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceDataSource.swift; sourceTree = "<group>"; };
 		BAA260D0222D1DC70094F4E4 /* NSView+Shadow+Border.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSView+Shadow+Border.swift"; sourceTree = "<group>"; };
 		BAAF567D2223CAC5003D0D73 /* NSButton+TextColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSButton+TextColor.swift"; sourceTree = "<group>"; };
 		BAAF569D2223D4C7003D0D73 /* DotImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotImageView.swift; sourceTree = "<group>"; };
 		BAAF569F2223DF9A003D0D73 /* VertificalTimeEntryFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VertificalTimeEntryFlowLayout.swift; sourceTree = "<group>"; };
 		BAAF56A12223E18B003D0D73 /* TimeDecoratorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeDecoratorView.swift; sourceTree = "<group>"; };
 		BAAF56A32223E19C003D0D73 /* TimeDecoratorView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimeDecoratorView.xib; sourceTree = "<group>"; };
+		BAB0027E22731248005ECC93 /* DayLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayLabel.swift; sourceTree = "<group>"; };
+		BAB0029E2273125C005ECC93 /* DayLabel.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DayLabel.xib; sourceTree = "<group>"; };
+		BAB818C2228D5847008C2367 /* DescriptionAutoCompleteTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptionAutoCompleteTextField.swift; sourceTree = "<group>"; };
+		BAB818E2228D594D008C2367 /* DescriptionTimeEntryStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptionTimeEntryStorage.swift; sourceTree = "<group>"; };
+		BAB818E4228D5A16008C2367 /* DescriptionDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptionDataSource.swift; sourceTree = "<group>"; };
+		BAB818E8228D5A97008C2367 /* DescriptionContentCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptionContentCellView.swift; sourceTree = "<group>"; };
+		BAB818EA228D5AA8008C2367 /* DescriptionContentCellView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DescriptionContentCellView.xib; sourceTree = "<group>"; };
 		BAB8D49321BE742D00D63DA5 /* NSTableView+TimeEntryDiff.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSTableView+TimeEntryDiff.swift"; sourceTree = "<group>"; };
+		BAC4D398225470DA00254DAD /* AutoCompleteRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoCompleteRowView.swift; sourceTree = "<group>"; };
 		BAD15FFB223A52D600A8CCC9 /* TimeEntryEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeEntryEmptyView.swift; sourceTree = "<group>"; };
 		BAD15FFD223A530600A8CCC9 /* TimeEntryEmptyView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimeEntryEmptyView.xib; sourceTree = "<group>"; };
 		BAD2341621D612DE0039C742 /* libPocoDataSQLite.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoDataSQLite.60.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoDataSQLite.60.dylib; sourceTree = "<group>"; };
@@ -765,6 +905,7 @@
 		BAD858CB228EAE7C00226C71 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		BAE007DD21FAF00D00404379 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
 		BAE49CAD222FC1C900773814 /* TimerContainerBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerContainerBox.swift; sourceTree = "<group>"; };
+		BAE8E844224CA9AC006D534E /* ProjectAutoCompleteTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectAutoCompleteTextField.swift; sourceTree = "<group>"; };
 		BAF50DE421A29FED0090BA95 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = TogglDesktop/Images.xcassets; sourceTree = "<group>"; };
 		BAF50DF621A2A18D0090BA95 /* AppIconFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppIconFactory.h; sourceTree = "<group>"; };
 		BAF50DF721A2A18D0090BA95 /* AppIconFactory.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppIconFactory.m; sourceTree = "<group>"; };
@@ -1053,7 +1194,6 @@
 				BAFBFCC621CD1D3C004B443F /* SystemService.h */,
 				BAFBFCC721CD1D3C004B443F /* SystemService.m */,
 				BA03725421FE9FD400FC277B /* FlatButton.swift */,
-				BA2E5FB0223787C300EB866E /* EditorPopover.swift */,
 				BA08E085222E709C0075F68E /* ProjectTextField.h */,
 				BA08E086222E709C0075F68E /* ProjectTextField.m */,
 				BAE49CAD222FC1C900773814 /* TimerContainerBox.swift */,
@@ -1192,6 +1332,18 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		BA014026225707F1000E5B91 /* Tag */ = {
+			isa = PBXGroup;
+			children = (
+				BA01404922570893000E5B91 /* Tag.swift */,
+				BA01404522570805000E5B91 /* TagCellView.swift */,
+				BA0140472257080F000E5B91 /* TagCellView.xib */,
+				BA01405122571199000E5B91 /* TagTokenView.swift */,
+				BA014053225711A3000E5B91 /* TagTokenView.xib */,
+			);
+			path = Tag;
+			sourceTree = "<group>";
+		};
 		BA0C3A45223219330081C6DE /* AutoComplete */ = {
 			isa = PBXGroup;
 			children = (
@@ -1221,6 +1373,31 @@
 			path = Diff;
 			sourceTree = "<group>";
 		};
+		BA13D1E42269B4F600EB3833 /* Calendar */ = {
+			isa = PBXGroup;
+			children = (
+				BA13D20B2269BA8600EB3833 /* Cell */,
+				BA13D2092269BA6500EB3833 /* CalendarDataSource.swift */,
+				BA13D2102269BE2F00EB3833 /* DateInfo.swift */,
+				BA13D2142269C01500EB3833 /* Date+Utils.swift */,
+				BA13D2052269B7C400EB3833 /* CalendarViewController.swift */,
+				BA13D2192269E0B500EB3833 /* CalendarViewController.xib */,
+				BA50ED8422705F9E008323FA /* CalendarFlowLayout.swift */,
+				BAB0027E22731248005ECC93 /* DayLabel.swift */,
+				BAB0029E2273125C005ECC93 /* DayLabel.xib */,
+			);
+			path = Calendar;
+			sourceTree = "<group>";
+		};
+		BA13D20B2269BA8600EB3833 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				BA13D20C2269BAA600EB3833 /* DateCellViewItem.swift */,
+				BA13D20D2269BAA600EB3833 /* DateCellViewItem.xib */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
 		BA13E05B21C7B9F800835EC1 /* UserNotification */ = {
 			isa = PBXGroup;
 			children = (
@@ -1237,6 +1414,27 @@
 				BA2E3F2B22375E640035D034 /* NSView+Appearance.swift */,
 			);
 			name = Theme;
+			sourceTree = "<group>";
+		};
+		BA34F0DB22439BF300C27A15 /* TimeEntryEditor */ = {
+			isa = PBXGroup;
+			children = (
+				BAB818E7228D5A66008C2367 /* Description */,
+				BA014026225707F1000E5B91 /* Tag */,
+				BA8B4C522251FA6900592BC7 /* Workspace */,
+				BA412C1B224E0D3E003CA17A /* Client */,
+				BA9C2DD8224C7E2E002AD2A1 /* Project */,
+				BA7D332B2248940800B953A8 /* AutoComplete */,
+				BA13D2162269DE3400EB3833 /* NoVibrantPopoverView.swift */,
+				BA2E5FB0223787C300EB866E /* EditorPopover.swift */,
+				BA34F0FE22439C3000C27A15 /* EditorViewController.swift */,
+				BA34F0FF22439C3000C27A15 /* EditorViewController.xib */,
+				BA0F67B6224A32F700ED0F91 /* CursorButton.swift */,
+				BA84363922533A6600EF5830 /* DesktopLibraryBridge.h */,
+				BA84363A22533A6600EF5830 /* DesktopLibraryBridge.m */,
+				BA053658225DDDBB00C26E1F /* CustomFocusRingButton.swift */,
+			);
+			path = TimeEntryEditor;
 			sourceTree = "<group>";
 		};
 		BA3E75B422291C9D009AD291 /* SystemMessage */ = {
@@ -1279,6 +1477,42 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		BA412C1B224E0D3E003CA17A /* Client */ = {
+			isa = PBXGroup;
+			children = (
+				BA412C20224E1189003CA17A /* ClientCellView.swift */,
+				BA412C22224E11AC003CA17A /* ClientCellView.xib */,
+				BA412C26224E195C003CA17A /* NoClientCellView.swift */,
+				BA412C28224E196D003CA17A /* NoClientCellView.xib */,
+			);
+			path = Client;
+			sourceTree = "<group>";
+		};
+		BA412C1E224E1158003CA17A /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				BA7D334E224897FC00B953A8 /* ProjectHeaderCellView.swift */,
+				BA7D33522248981200B953A8 /* ProjectHeaderCellView.xib */,
+				BA7D33502248980B00B953A8 /* ProjectContentCellView.swift */,
+				BA7D3354224898E400B953A8 /* ProjectContentCellView.xib */,
+				BA05367E225E238D00C26E1F /* ProjectWorksapceCellView.swift */,
+				BA05369E225E239600C26E1F /* ProjectWorksapceCellView.xib */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		BA657280224DFA4F00BA4C60 /* ColorWheel */ = {
+			isa = PBXGroup;
+			children = (
+				BA6572A3224DFA6F00BA4C60 /* ColorGraphicsView.swift */,
+				BA6572A2224DFA6F00BA4C60 /* CurrentColorView.swift */,
+				BA6572A1224DFA6E00BA4C60 /* HSBGen.swift */,
+				BA6572A4224DFA6F00BA4C60 /* HSV.swift */,
+				BA6572A0224DFA6E00BA4C60 /* RGB.swift */,
+			);
+			path = ColorWheel;
+			sourceTree = "<group>";
+		};
 		BA6E86A621DDB331005E2451 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -1296,9 +1530,24 @@
 			name = Products;
 			sourceTree = "<unknown>";
 		};
+		BA6EB8202248CBD3003BB8EF /* Storage */ = {
+			isa = PBXGroup;
+			children = (
+				BA6EB83F2248CBE3003BB8EF /* ProjectStorage.swift */,
+				BAB818E2228D594D008C2367 /* DescriptionTimeEntryStorage.swift */,
+				BA412BFB224E0CBE003CA17A /* ClientStorage.swift */,
+				BAA11AC02251F49E007F31D2 /* WorkspaceStorage.swift */,
+				BA01404B22570967000E5B91 /* TagStorage.swift */,
+			);
+			path = Storage;
+			sourceTree = "<group>";
+		};
 		BA712EAF21BF904E00A2D8DD /* Feature */ = {
 			isa = PBXGroup;
 			children = (
+				BA13D1E42269B4F600EB3833 /* Calendar */,
+				BA657280224DFA4F00BA4C60 /* ColorWheel */,
+				BA34F0DB22439BF300C27A15 /* TimeEntryEditor */,
 				BAD15FDC223A521900A8CCC9 /* TimeEntryEmptyView */,
 				BA0C3A45223219330081C6DE /* AutoComplete */,
 				BA3E75B422291C9D009AD291 /* SystemMessage */,
@@ -1319,6 +1568,47 @@
 			path = Undo;
 			sourceTree = "<group>";
 		};
+		BA7D332B2248940800B953A8 /* AutoComplete */ = {
+			isa = PBXGroup;
+			children = (
+				BA6EB8202248CBD3003BB8EF /* Storage */,
+				BA7D335C2248B46A00B953A8 /* Input */,
+				BA7D335822489C6E00B953A8 /* DataSource */,
+				BA7D334A2248944C00B953A8 /* AutoCompleteView.swift */,
+				BA7D334C2248945300B953A8 /* AutoCompleteView.xib */,
+				BA9C2E0B224C8F58002AD2A1 /* KeyboardTableView.swift */,
+				BAC4D398225470DA00254DAD /* AutoCompleteRowView.swift */,
+				BA013FF4225705B6000E5B91 /* HoverTableCellView.swift */,
+			);
+			path = AutoComplete;
+			sourceTree = "<group>";
+		};
+		BA7D335822489C6E00B953A8 /* DataSource */ = {
+			isa = PBXGroup;
+			children = (
+				BA7D335622489BD000B953A8 /* AutoCompleteViewDataSource.swift */,
+				BA7D335922489C8000B953A8 /* ProjectDataSource.swift */,
+				BA412C1C224E0D61003CA17A /* ClientDataSource.swift */,
+				BAA11AC42251F502007F31D2 /* WorkspaceDataSource.swift */,
+				BA01404D22571081000E5B91 /* TagDataSource.swift */,
+				BAB818E4228D5A16008C2367 /* DescriptionDataSource.swift */,
+			);
+			path = DataSource;
+			sourceTree = "<group>";
+		};
+		BA7D335C2248B46A00B953A8 /* Input */ = {
+			isa = PBXGroup;
+			children = (
+				BA7D335D2248B48000B953A8 /* AutoCompleteTextField.swift */,
+				BAE8E844224CA9AC006D534E /* ProjectAutoCompleteTextField.swift */,
+				BA412C24224E147A003CA17A /* ClientAutoCompleteTextField.swift */,
+				BAA11AC22251F4D6007F31D2 /* WorkspaceAutoCompleteTextField.swift */,
+				BA01404F225710FD000E5B91 /* TagAutoCompleteTextField.swift */,
+				BAB818C2228D5847008C2367 /* DescriptionAutoCompleteTextField.swift */,
+			);
+			path = Input;
+			sourceTree = "<group>";
+		};
 		BA7DB6BC21F9C7660059239B /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -1327,6 +1617,39 @@
 				BA7DB6D621F9C7660059239B /* Demo.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		BA8B4C522251FA6900592BC7 /* Workspace */ = {
+			isa = PBXGroup;
+			children = (
+				BA8B4C742251FAD500592BC7 /* WorkspaceCellView.swift */,
+				BA8B4C762251FADF00592BC7 /* WorkspaceCellView.xib */,
+			);
+			path = Workspace;
+			sourceTree = "<group>";
+		};
+		BA9C2DD8224C7E2E002AD2A1 /* Project */ = {
+			isa = PBXGroup;
+			children = (
+				BA412C1E224E1158003CA17A /* Cells */,
+				BA9C2DF7224C7E44002AD2A1 /* ProjectCreationView.swift */,
+				BA9C2DF9224C7E77002AD2A1 /* ProjectCreationView.xib */,
+				BA9C2DFB224C8235002AD2A1 /* ColorPickerView.swift */,
+				BA9C2DFD224C823C002AD2A1 /* ColorPickerView.xib */,
+				BA9C2E03224C84E7002AD2A1 /* ColorViewItem.swift */,
+				BA9C2E04224C84E7002AD2A1 /* ColorViewItem.xib */,
+				BA9C2E07224C854C002AD2A1 /* ProjectColor.swift */,
+			);
+			path = Project;
+			sourceTree = "<group>";
+		};
+		BAB818E7228D5A66008C2367 /* Description */ = {
+			isa = PBXGroup;
+			children = (
+				BAB818E8228D5A97008C2367 /* DescriptionContentCellView.swift */,
+				BAB818EA228D5AA8008C2367 /* DescriptionContentCellView.xib */,
+			);
+			path = Description;
 			sourceTree = "<group>";
 		};
 		BAD15FDC223A521900A8CCC9 /* TimeEntryEmptyView */ = {
@@ -1371,6 +1694,7 @@
 				BA9D90D3222D155900D5EC0E /* NSView+Ext.swift */,
 				BAA260D0222D1DC70094F4E4 /* NSView+Shadow+Border.swift */,
 				BA08E011222E32C90075F68E /* NSView+LayoutConstraint.swift */,
+				BA89CB382265EA4400D21584 /* String+Search.swift */,
 			);
 			name = Extension;
 			sourceTree = "<group>";
@@ -1456,6 +1780,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 				et,
@@ -1735,20 +2060,30 @@
 			buildActionMask = 2147483647;
 			files = (
 				3C65A7E51DE5757A005586B4 /* continue_regular.pdf in Resources */,
+				BA7D33532248981200B953A8 /* ProjectHeaderCellView.xib in Resources */,
+				BA05369F225E239600C26E1F /* ProjectWorksapceCellView.xib in Resources */,
 				BAF50DE521A29FED0090BA95 /* Images.xcassets in Resources */,
 				3C65A7D41DE574E7005586B4 /* group_icon_open.pdf in Resources */,
+				BA34F10122439C3000C27A15 /* EditorViewController.xib in Resources */,
 				74E857BC194F8854007A88B9 /* cacert.pem in Resources */,
+				BAB818EB228D5AA8008C2367 /* DescriptionContentCellView.xib in Resources */,
 				3C6B2489203E01D90063FC08 /* AutoCompleteTableCell.xib in Resources */,
 				BA3E75D822293576009AD291 /* SystemMessageView.xib in Resources */,
 				95DBF8D718C48B300021FB41 /* logo.png in Resources */,
 				BAD15FFE223A530600A8CCC9 /* TimeEntryEmptyView.xib in Resources */,
 				3CDA2C5B1913B61000A94967 /* icon-billable@2x.png in Resources */,
+				BA19FC21226DA079006D8741 /* DateCellViewItem.xib in Resources */,
+				BA9C2E06224C84E7002AD2A1 /* ColorViewItem.xib in Resources */,
 				3CD30F441F58B02C006FAA0D /* OverlayViewController.xib in Resources */,
 				74664DB218AA860800AAD282 /* off.pdf in Resources */,
+				BA7D3355224898E400B953A8 /* ProjectContentCellView.xib in Resources */,
+				BA014054225711A3000E5B91 /* TagTokenView.xib in Resources */,
 				7430750518204EFB009019CB /* AboutWindowController.xib in Resources */,
 				BA4059B1221D2186002969B8 /* TimeHeaderView.xib in Resources */,
 				749CB8CD18167D6E00814841 /* PreferencesWindowController.xib in Resources */,
 				69FC17FF17E6534400B96425 /* InfoPlist.strings in Resources */,
+				BAB0029F2273125C005ECC93 /* DayLabel.xib in Resources */,
+				BA9C2DFE224C823C002AD2A1 /* ColorPickerView.xib in Resources */,
 				3CDA2C5C1913B61000A94967 /* icon-tags@2x.png in Resources */,
 				747B74881A0AD28200BB3791 /* ConsoleViewController.xib in Resources */,
 				3C1C09C51C298ABA00BF9B6C /* warning-icon.png in Resources */,
@@ -1762,20 +2097,27 @@
 				74F1070218993FFE00E93BD5 /* FeedbackWindowController.xib in Resources */,
 				3C4237171A9F612E00643059 /* toggl-logo-white.pdf in Resources */,
 				7423393D1829B99C00063FA9 /* IdleNotificationWindowController.xib in Resources */,
+				BA8B4C772251FADF00592BC7 /* WorkspaceCellView.xib in Resources */,
 				95DBF8CD18BF7A910021FB41 /* offline_on.pdf in Resources */,
 				69FC180B17E6534500B96425 /* MainMenu.xib in Resources */,
+				BA7D334D2248945300B953A8 /* AutoCompleteView.xib in Resources */,
 				3C65A7D31DE574E7005586B4 /* group_icon_closed.pdf in Resources */,
 				C5DA1FC017F1B08A001C4565 /* MainWindowController.xib in Resources */,
+				BA412C23224E11AC003CA17A /* ClientCellView.xib in Resources */,
 				BAF38FEF2241FF20009147D7 /* FloatingErrorView.xib in Resources */,
 				74D1D25817EB713F00E709B0 /* TimeEntryListViewController.xib in Resources */,
 				3C50BCAC1C1F0574004BAE9E /* (null) in Resources */,
+				BA0140482257080F000E5B91 /* TagCellView.xib in Resources */,
+				BA9C2DFA224C7E77002AD2A1 /* ProjectCreationView.xib in Resources */,
 				3C8979B71920B7B7007061E0 /* continue.pdf in Resources */,
+				BA412C29224E196D003CA17A /* NoClientCellView.xib in Resources */,
 				74D1D25F17EB71C100E709B0 /* TimeEntryEditViewController.xib in Resources */,
 				3CDA2C581913A4E200A94967 /* icon-start-gray@2x.png in Resources */,
 				7498D2481888B226001390B9 /* TimeEntryCell.xib in Resources */,
 				3C0A57191C22E12E00301D77 /* LICENSE.txt in Resources */,
 				3C65A7D21DE574E7005586B4 /* continue_light.pdf in Resources */,
 				3C0158F01C7B414E00FE63AA /* LoadMoreCell.xib in Resources */,
+				BA13D21B2269E0B500EB3833 /* CalendarViewController.xib in Resources */,
 				3CA1453C192DF0DE00414620 /* trash_can.pdf in Resources */,
 				3CAFDFF51AA713830022CD40 /* icon-google.pdf in Resources */,
 				95DBF8CC18BF7A910021FB41 /* offline_off.pdf in Resources */,
@@ -1847,6 +2189,7 @@
 				95C0707A18CDB91500A34D0D /* NSCustomComboBox.m in Sources */,
 				3CC450E91A31ED540012440B /* NSTextFieldDuration.m in Sources */,
 				7424949E17F1E3D20030121C /* UIEvents.m in Sources */,
+				BA13D2152269C01500EB3833 /* Date+Utils.swift in Sources */,
 				BAAF56A02223DF9A003D0D73 /* VertificalTimeEntryFlowLayout.swift in Sources */,
 				C5CB7F0417F43EE100A2AEB1 /* TimeEntryCell.m in Sources */,
 				74762BA118A139D4004433A9 /* NSUnstripedTableView.m in Sources */,
@@ -1855,26 +2198,41 @@
 				747B74871A0AD28200BB3791 /* ConsoleViewController.m in Sources */,
 				BA9D90D4222D155900D5EC0E /* NSView+Ext.swift in Sources */,
 				BA712EC621BF913800A2D8DD /* TimeEntrySnapshot.swift in Sources */,
+				BAB818C3228D5847008C2367 /* DescriptionAutoCompleteTextField.swift in Sources */,
+				BA13D2112269BE2F00EB3833 /* DateInfo.swift in Sources */,
+				BA13D20E2269BAA600EB3833 /* DateCellViewItem.swift in Sources */,
 				BA712EC821BF9F1200A2D8DD /* UndoStack.swift in Sources */,
 				BA0CEC5321BE528900F1BF01 /* TableViewDiffer.swift in Sources */,
+				BA13D2172269DE3400EB3833 /* NoVibrantPopoverView.swift in Sources */,
 				3C6B2488203E01D90063FC08 /* AutoCompleteTable.m in Sources */,
+				BA412C1D224E0D61003CA17A /* ClientDataSource.swift in Sources */,
 				74AA9472180909F50000539F /* GTMHTTPFetchHistory.m in Sources */,
+				BA6EB8402248CBE3003BB8EF /* ProjectStorage.swift in Sources */,
 				BAAF567E2223CAC5003D0D73 /* NSButton+TextColor.swift in Sources */,
 				BA6EB8942249DB33003BB8EF /* VerticallyCenteredTextFieldCell.swift in Sources */,
+				BA01405222571199000E5B91 /* TagTokenView.swift in Sources */,
 				BA46E09F2226707F00C25763 /* Collection+Safe.swift in Sources */,
+				BA05367F225E238D00C26E1F /* ProjectWorksapceCellView.swift in Sources */,
+				74E3CDC617FBABE400C3ADD3 /* Bugsnag.m in Sources */,
 				745126B619A28AA600390F47 /* Reachability.m in Sources */,
+				BA412C21224E1189003CA17A /* ClientCellView.swift in Sources */,
 				74C1579B183BA5DA00550613 /* AutocompleteDataSource.m in Sources */,
 				BA0E38102225257D00D0121B /* BezierPath+Corner.swift in Sources */,
+				BA7D33512248980B00B953A8 /* ProjectContentCellView.swift in Sources */,
 				74BA5FCF18B6E770009DAA2D /* NSHoverButton.m in Sources */,
 				BA3E75D422291CEB009AD291 /* SystemMessage.swift in Sources */,
+				BAA11AC32251F4D6007F31D2 /* WorkspaceAutoCompleteTextField.swift in Sources */,
 				BAB8D49421BE742D00D63DA5 /* NSTableView+TimeEntryDiff.swift in Sources */,
 				3C8979CA19235EA2007061E0 /* NSTextFieldClickablePointer.m in Sources */,
 				748B3A3419222DB100F31468 /* DisplayCommand.m in Sources */,
+				BA9C2E05224C84E7002AD2A1 /* ColorViewItem.swift in Sources */,
+				74E3CDD017FBABE400C3ADD3 /* BugsnagReachability.m in Sources */,
 				3C0A571E1C22E12E00301D77 /* MKColorWell.m in Sources */,
 				7438B3D318253CD2002AE43C /* MenuItemTags.m in Sources */,
 				3CE1CAC11C774F2B00D0ADD5 /* LoadMoreCell.m in Sources */,
 				749CB8CC18167D6E00814841 /* PreferencesWindowController.m in Sources */,
 				3C7B4E8D190FA6D200627DC3 /* NSTextFieldVerticallyAligned.m in Sources */,
+				BAB0027F22731248005ECC93 /* DayLabel.swift in Sources */,
 				3C7B4EB3190FB57A00627DC3 /* NSSecureTextFieldVerticallyAligned.m in Sources */,
 				BA0E38122225260B00D0121B /* TimeEntryCell+Ext.swift in Sources */,
 				BA9D90B4222D14ED00D5EC0E /* NSView+Animation.swift in Sources */,
@@ -1882,16 +2240,26 @@
 				3C6B2487203E01D90063FC08 /* AutoCompleteInput.m in Sources */,
 				BA13E05C21C7BA6000835EC1 /* UserNotificationCenter.m in Sources */,
 				74098C331919899600CBDFB9 /* Utils.m in Sources */,
+				BA0F67B7224A32F700ED0F91 /* CursorButton.swift in Sources */,
+				BA9C2E0C224C8F58002AD2A1 /* KeyboardTableView.swift in Sources */,
 				69FC180117E6534400B96425 /* main.m in Sources */,
 				74F1070118993FFE00E93BD5 /* FeedbackWindowController.m in Sources */,
+				BAB818E3228D594D008C2367 /* DescriptionTimeEntryStorage.swift in Sources */,
 				BA03725521FE9FD400FC277B /* FlatButton.swift in Sources */,
+				BA6572AA224DFA6F00BA4C60 /* HSV.swift in Sources */,
 				69FC180817E6534400B96425 /* AppDelegate.m in Sources */,
+				BA34F10022439C3000C27A15 /* EditorViewController.swift in Sources */,
 				BA0C3A6722321FBC0081C6DE /* AutoCompleteTableCell+Ext.swift in Sources */,
 				3C6B24A4203FC8200063FC08 /* LiteAutoCompleteDataSource.m in Sources */,
+				BAB818E5228D5A17008C2367 /* DescriptionDataSource.swift in Sources */,
 				3C068C6A1C22F25000874B9A /* MKColorWellCustom.m in Sources */,
+				BA01404E22571081000E5B91 /* TagDataSource.swift in Sources */,
 				3CA14529192DE32300414620 /* NSViewEscapable.m in Sources */,
+				BA6572A9224DFA6F00BA4C60 /* ColorGraphicsView.swift in Sources */,
+				BAA11AC52251F502007F31D2 /* WorkspaceDataSource.swift in Sources */,
 				3C0A571B1C22E12E00301D77 /* MKColorSwatchCell.m in Sources */,
 				3CD30F431F58B02C006FAA0D /* OverlayViewController.m in Sources */,
+				BA412C25224E147A003CA17A /* ClientAutoCompleteTextField.swift in Sources */,
 				74D1D25617EB713F00E709B0 /* TimeEntryListViewController.m in Sources */,
 				BAAF56A22223E18B003D0D73 /* TimeDecoratorView.swift in Sources */,
 				BAD15FFC223A52D600A8CCC9 /* TimeEntryEmptyView.swift in Sources */,
@@ -1899,32 +2267,52 @@
 				BA4059B7221D46F4002969B8 /* TimeEntryCollectionView.m in Sources */,
 				BA4059AF221D215A002969B8 /* TimeHeaderView.swift in Sources */,
 				74AA9476180909F50000539F /* GTMOAuth2WindowController.m in Sources */,
+				BA89CB392265EA4400D21584 /* String+Search.swift in Sources */,
+				BA9C2E08224C854C002AD2A1 /* ProjectColor.swift in Sources */,
+				BA01404622570805000E5B91 /* TagCellView.swift in Sources */,
+				BA7D334B2248944C00B953A8 /* AutoCompleteView.swift in Sources */,
 				BA03729D21FED85700FC277B /* NSView+Xib.swift in Sources */,
+				BA84363B22533A6600EF5830 /* DesktopLibraryBridge.m in Sources */,
 				74D1D25D17EB71C100E709B0 /* TimeEntryEditViewController.m in Sources */,
 				3C0A571C1C22E12E00301D77 /* MKColorSwatchMatrix.m in Sources */,
 				BA4059B9221D53E7002969B8 /* TimeEntryDatasource.swift in Sources */,
 				BA3E75D62229356D009AD291 /* SystemMessageView.swift in Sources */,
+				BA013FF5225705B6000E5B91 /* HoverTableCellView.swift in Sources */,
 				749BD0BD1833E28400980494 /* NSBoxClickable.m in Sources */,
 				BA08E087222E709C0075F68E /* ProjectTextField.m in Sources */,
 				BA0CEC6521BE590200F1BF01 /* NSTableView+Diff.swift in Sources */,
 				BA2E5FB1223787C300EB866E /* EditorPopover.swift in Sources */,
+				BA7D334F224897FC00B953A8 /* ProjectHeaderCellView.swift in Sources */,
 				BAE49CAE222FC1C900773814 /* TimerContainerBox.swift in Sources */,
+				BA13D20A2269BA6500EB3833 /* CalendarDataSource.swift in Sources */,
 				74AA9474180909F50000539F /* GTMOAuth2SignIn.m in Sources */,
+				BA053659225DDDBB00C26E1F /* CustomFocusRingButton.swift in Sources */,
+				BA7D335E2248B48000B953A8 /* AutoCompleteTextField.swift in Sources */,
 				BA763B7B2268601700DC245A /* PopoverRootView.swift in Sources */,
 				3C07B75A193C88AE00ED6E6F /* NSCustomTimerComboBox.m in Sources */,
+				BA7D335722489BD000B953A8 /* AutoCompleteViewDataSource.swift in Sources */,
+				BA01404C22570967000E5B91 /* TagStorage.swift in Sources */,
 				74BAD31E18BD7D83002FD4CF /* ViewItem.m in Sources */,
 				3CD7AD6F19ED579700372797 /* NSResize.m in Sources */,
 				BA08E012222E32C90075F68E /* NSView+LayoutConstraint.swift in Sources */,
+				BA7D335A22489C8000B953A8 /* ProjectDataSource.swift in Sources */,
+				BAC4D399225470DA00254DAD /* AutoCompleteRowView.swift in Sources */,
 				BAA260D1222D1DC70094F4E4 /* NSView+Shadow+Border.swift in Sources */,
 				BA712EC221BF907200A2D8DD /* UndoManager.swift in Sources */,
+				BAA11AC12251F49E007F31D2 /* WorkspaceStorage.swift in Sources */,
 				3C3AF64E20ACC6280088A3A6 /* CountryViewItem.m in Sources */,
+				74E3CDD417FBABE400C3ADD3 /* BugsnagOSXNotifier.m in Sources */,
+				BA13D2062269B7C400EB3833 /* CalendarViewController.swift in Sources */,
 				BAF6319C21E6F868002DD6AB /* NotificationCenter+MainThread.swift in Sources */,
 				74AA9471180909F50000539F /* GTMHTTPFetcher.m in Sources */,
 				BAFBFCC821CD1D3C004B443F /* SystemService.m in Sources */,
 				BAF50DF821A2A18D0090BA95 /* AppIconFactory.m in Sources */,
 				74A7346A18297DD100525BBC /* ConvertHexColor.m in Sources */,
 				74BAAA0B17F37B140079386F /* TimeEntryViewItem.m in Sources */,
+				BA412C27224E195C003CA17A /* NoClientCellView.swift in Sources */,
 				7423393C1829B99C00063FA9 /* IdleNotificationWindowController.m in Sources */,
+				BA01404A22570893000E5B91 /* Tag.swift in Sources */,
+				BAB818E9228D5A97008C2367 /* DescriptionContentCellView.swift in Sources */,
 				BA6F1B3821EEE998009265E4 /* Theme+Notification.swift in Sources */,
 				7430750418204EFB009019CB /* AboutWindowController.m in Sources */,
 				74D1D27217EB72D900E709B0 /* TimerEditViewController.m in Sources */,
@@ -1934,19 +2322,29 @@
 				74F8FBA318313FA6000F09EE /* NSTextFieldClickable.m in Sources */,
 				BA7B4BCB21C0EF8800B75B14 /* NSAlert+Utils.m in Sources */,
 				BA403BAE2230CFBC008B202C /* BetterFocusAutoCompleteInput.m in Sources */,
+				BA50ED8522705F9E008323FA /* CalendarFlowLayout.swift in Sources */,
 				95C0707718CDB67300A34D0D /* NSCustomComboBoxCell.m in Sources */,
 				BAAF569E2223D4C7003D0D73 /* DotImageView.swift in Sources */,
 				3C0A571A1C22E12E00301D77 /* MKColorPickerView.m in Sources */,
+				BA014050225710FD000E5B91 /* TagAutoCompleteTextField.swift in Sources */,
+				BAE8E845224CA9AC006D534E /* ProjectAutoCompleteTextField.swift in Sources */,
+				BA6572A7224DFA6F00BA4C60 /* HSBGen.swift in Sources */,
+				BA8B4C752251FAD500592BC7 /* WorkspaceCellView.swift in Sources */,
 				BA2E3F2C22375E640035D034 /* NSView+Appearance.swift in Sources */,
 				743D782A182791FA00978BCC /* idler.c in Sources */,
+				BA9C2DF8224C7E44002AD2A1 /* ProjectCreationView.swift in Sources */,
 				74AA9473180909F50000539F /* GTMOAuth2Authentication.m in Sources */,
+				BA412BFC224E0CBE003CA17A /* ClientStorage.swift in Sources */,
 				BA7B4C7C21C293E700B75B14 /* String+Optional.swift in Sources */,
+				BA6572A8224DFA6F00BA4C60 /* CurrentColorView.swift in Sources */,
 				BA2DA12021A691FF0027B7A5 /* TrackingService.m in Sources */,
 				3C6B2486203E01D90063FC08 /* AutoCompleteTableCell.m in Sources */,
+				BA6572A6224DFA6F00BA4C60 /* RGB.swift in Sources */,
 				3CE30E022052BD8B00AF2E2A /* AutoCompleteTableContainer.m in Sources */,
 				BA0C3A65223219470081C6DE /* AutoCompleteCellType.swift in Sources */,
 				3C0A571D1C22E12E00301D77 /* MKColorWell+Bindings.m in Sources */,
 				BA7B4C3721C24B9D00B75B14 /* UndoTextField.m in Sources */,
+				BA9C2DFC224C8235002AD2A1 /* ColorPickerView.swift in Sources */,
 				BA276A142240F5B500810C51 /* FloatingErrorView.swift in Sources */,
 				C5DA1FC417F1B38B001C4565 /* LoginViewController.m in Sources */,
 				743D942F1827C633000E6F70 /* IdleEvent.m in Sources */,

@@ -27,7 +27,6 @@ static NSString *kFrameKey = @"frame";
 @interface TimeEntryListViewController () <TimeEntryDatasourceDraggingDelegate, TimeEntryEmptyViewDelegate>
 @property (nonatomic, strong) TimerEditViewController *timerEditViewController;
 @property NSNib *nibTimeEntryCell;
-@property NSNib *nibTimeEntryEditViewController;
 @property NSNib *nibLoadMoreCell;
 @property NSInteger defaultPopupHeight;
 @property NSInteger defaultPopupWidth;
@@ -35,11 +34,10 @@ static NSString *kFrameKey = @"frame";
 @property NSInteger minimumEditFormWidth;
 @property BOOL runningEdit;
 @property (copy, nonatomic) NSString *lastSelectedGUID;
-@property (nonatomic, strong) IBOutlet TimeEntryEditViewController *timeEntryEditViewController;
 @property (weak) IBOutlet TimeEntryCollectionView *collectionView;
 @property (strong, nonatomic) TimeEntryEmptyView *emptyView;
 @property (weak) IBOutlet NSBox *emptyViewContainerView;
-
+@property (strong, nonatomic) EditorPopover *timeEntrypopover;
 @end
 
 @implementation TimeEntryListViewController
@@ -53,14 +51,8 @@ extern void *ctx;
 	{
 		self.timerEditViewController = [[TimerEditViewController alloc]
 										initWithNibName:@"TimerEditViewController" bundle:nil];
-		self.timeEntryEditViewController = [[TimeEntryEditViewController alloc]
-											initWithNibName:@"TimeEntryEditViewController" bundle:nil];
-		[self.timeEntryEditViewController.view setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
-
 		self.nibTimeEntryCell = [[NSNib alloc] initWithNibNamed:@"TimeEntryCell"
 														 bundle:nil];
-		self.nibTimeEntryEditViewController = [[NSNib alloc] initWithNibNamed:@"TimeEntryEditViewController"
-																	   bundle:nil];
 		self.nibLoadMoreCell = [[NSNib alloc] initWithNibNamed:@"LoadMoreCell"
 														bundle:nil];
 	}
@@ -77,6 +69,7 @@ extern void *ctx;
 	[super viewDidLoad];
 
 	[self initCommon];
+	[self initEditorPopover];
 	[self initCollectionView];
 	[self initEmptyView];
 	[self initNotifications];
@@ -91,12 +84,7 @@ extern void *ctx;
 - (void)initCommon {
 	[self.headerView addSubview:self.timerEditViewController.view];
 	[self.timerEditViewController.view edgesToSuperView];
-
-	[self.timeEntryPopupEditView addSubview:self.timeEntryEditViewController.view];
-	[self.timeEntryEditViewController.view setFrame:self.timeEntryPopupEditView.bounds];
-	self.defaultPopupHeight = self.timeEntryPopupEditView.bounds.size.height;
 	self.addedHeight = 0;
-	self.minimumEditFormWidth = self.timeEntryPopupEditView.bounds.size.width;
 	self.runningEdit = NO;
 
 	// Shadow for Header
@@ -207,6 +195,11 @@ extern void *ctx;
 	self.emptyViewContainerView.hidden = YES;
 }
 
+- (void)initEditorPopover {
+	self.timeEntrypopover = [[EditorPopover alloc] init];
+	[self.timeEntrypopover prepareViewController];
+}
+
 - (void)startDisplayTimeEntryList:(NSNotification *)notification
 {
 	[self displayTimeEntryList:notification.object];
@@ -302,9 +295,9 @@ extern void *ctx;
 
 	NSLog(@"TimeEntryListViewController displayTimeEntryEditor, thread %@", [NSThread currentThread]);
 
+	TimeEntryViewItem *timeEntry = cmd.timeEntry;
 	if (cmd.open)
 	{
-		self.timeEntrypopover.contentViewController = self.timeEntrypopoverViewController;
 		self.runningEdit = (cmd.timeEntry.duration_in_seconds < 0);
 
 		NSView *ofView = self.view;
@@ -336,13 +329,14 @@ extern void *ctx;
 		}
 
 		// Show popover
-		[self.timeEntrypopover showRelativeToRect:positionRect
-										   ofView:ofView
-									preferredEdge:NSMaxXEdge];
+		[self.timeEntrypopover presentFrom:positionRect of:ofView preferredEdge:NSRectEdgeMaxX];
 
-		BOOL onLeft = (self.view.window.frame.origin.x > self.timeEntryPopupEditView.window.frame.origin.x);
-		[self.timeEntryEditViewController setDragHandle:onLeft];
+//        BOOL onLeft = (self.view.window.frame.origin.x > self.timeEntryPopupEditView.window.frame.origin.x);
+//        [self.timeEntryEditViewController setDragHandle:onLeft];
 	}
+
+	// Update time entry for editor
+	[self.timeEntrypopover setTimeEntry:timeEntry];
 }
 
 - (CGRect)positionRectForItem:(TimeEntryCell *)timeEntry {
@@ -388,15 +382,15 @@ extern void *ctx;
 
 - (void)resizing:(NSSize)n
 {
-	[self.timeEntrypopover setContentSize:n];
-	NSRect f = [self.timeEntryEditViewController.view frame];
-	NSRect r = NSMakeRect(f.origin.x,
-						  f.origin.y,
-						  n.width,
-						  n.height);
-
-	[self.timeEntryPopupEditView setBounds:r];
-	[self.timeEntryEditViewController.view setFrame:self.timeEntryPopupEditView.bounds];
+//    [self.timeEntrypopover setContentSize:n];
+//    NSRect f = [self.timeEntryEditViewController.view frame];
+//    NSRect r = NSMakeRect(f.origin.x,
+//                          f.origin.y,
+//                          n.width,
+//                          n.height);
+//
+//    [self.timeEntryPopupEditView setBounds:r];
+//    [self.timeEntryEditViewController.view setFrame:self.timeEntryPopupEditView.bounds];
 }
 
 - (void)resizeEditPopupHeight:(NSNotification *)notification
@@ -437,24 +431,24 @@ extern void *ctx;
 
 - (void)closeEditPopup:(NSNotification *)notification
 {
-	if (self.timeEntrypopover.shown)
-	{
-		if ([self.timeEntryEditViewController autcompleteFocused])
-		{
-			return;
-		}
-		if (self.runningEdit)
-		{
-			[self.timeEntryEditViewController closeEdit];
-			self.runningEdit = false;
-		}
-		else
-		{
-			[[self.collectionView getSelectedEntryCell] openEdit];
-		}
-
-		[self setDefaultPopupSize];
-	}
+//    if (self.timeEntrypopover.shown)
+//    {
+//        if ([self.timeEntryEditViewController autcompleteFocused])
+//        {
+//            return;
+//        }
+//        if (self.runningEdit)
+//        {
+//            [self.timeEntryEditViewController closeEdit];
+//            self.runningEdit = false;
+//        }
+//        else
+//        {
+//            [[self.collectionView getSelectedEntryCell] openEdit];
+//        }
+//
+//        [self setDefaultPopupSize];
+//    }
 }
 
 - (void)setDefaultPopupSize
@@ -712,6 +706,11 @@ extern void *ctx;
 - (void)emptyViewDidTapOnLoadMore
 {
 	toggl_load_more(ctx);
+}
+
+- (BOOL)isEditorOpen
+{
+	return self.timeEntrypopover.shown;
 }
 
 @end

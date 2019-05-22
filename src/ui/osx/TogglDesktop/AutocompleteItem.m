@@ -57,10 +57,12 @@
 	if (data->Description)
 	{
 		self.Description = [NSString stringWithUTF8String:data->Description];
+		self.DescriptionTitle = [NSString stringWithUTF8String:data->Description];
 	}
 	else
 	{
 		self.Description = @"";
+		self.DescriptionTitle = @"";
 	}
 
 	if (data->ProjectColor)
@@ -116,7 +118,7 @@
 			self.Text, self.WorkspaceID, self.ProjectID, self.TaskID, self.Type];
 }
 
-+ (NSMutableArray *)loadAll:(TogglAutocompleteView *)first
++ (NSArray<AutocompleteItem *> *)loadAll:(TogglAutocompleteView *)first
 {
 	NSMutableArray *result = [[NSMutableArray alloc] init];
 	TogglAutocompleteView *record = first;
@@ -128,7 +130,7 @@
 		[result addObject:item];
 		record = record->Next;
 	}
-	return result;
+	return [result copy];
 }
 
 @end
