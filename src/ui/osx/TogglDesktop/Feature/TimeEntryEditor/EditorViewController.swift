@@ -77,6 +77,7 @@ final class EditorViewController: NSViewController {
         return [NSAttributedString.Key.font : NSFont.systemFont(ofSize: 14),
                 NSAttributedString.Key.foregroundColor: NSColor.labelColor]
     }()
+    fileprivate var timer: Timer?
 
     // MARK: View Cycle
 
@@ -286,6 +287,34 @@ extension EditorViewController {
         // At the first time the cells are loaded, the view doesn't appear yet.
         // So TrackingArea doesn't work when hovering the mouse
         tagDatasource.tableView.reloadData()
+    }
+
+    fileprivate func startTimerForRunningEntry() {
+
+        // Invalid if need
+        invalidTimer()
+
+        // Init timer
+        timer = Timer(timeInterval: 1.0, target: self, selector: #selector(self.timerOnTick), userInfo: nil, repeats: true)
+    }
+
+    fileprivate func invalidTimer() {
+        if let timer = timer {
+            timer.invalidate()
+            self.timer = nil
+        }
+    }
+
+    @objc private func timerOnTick() {
+        // Ignore if the TE isn't running
+        guard let timeEntry = timeEntry, timeEntry.isRunning() else { return }
+
+        // Ignore if the user is editing
+        guard durationTextField.currentEditor() == nil else { return }
+
+        // Update
+        let durationText = DesktopLibraryBridge.shared().convertDuraton(inSecond: timeEntry.duration_in_seconds)
+        durationTextField.stringValue = durationText
     }
 }
 

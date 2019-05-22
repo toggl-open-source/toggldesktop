@@ -17,6 +17,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (instancetype)shared;
 
+- (NSString *)convertDuratonInSecond:(int64_t)durationInSecond;
+
 - (NSString *)createClientWithWorkspaceID:(uint64_t)workspaceID
 							   clientName:(NSString *)clientName;
 

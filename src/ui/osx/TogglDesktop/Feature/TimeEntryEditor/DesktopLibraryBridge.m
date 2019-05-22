@@ -168,4 +168,13 @@ void *ctx;
 									 [autocomplete.Description UTF8String]);
 }
 
+- (NSString *)convertDuratonInSecond:(int64_t)durationInSecond
+{
+	char *str = toggl_format_tracking_time_duration(durationInSecond);
+	NSString *newValue = [NSString stringWithUTF8String:str];
+
+	free(str);
+	return [newValue copy];
+}
+
 @end
