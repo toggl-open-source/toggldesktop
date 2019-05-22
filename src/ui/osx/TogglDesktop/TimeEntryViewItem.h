@@ -63,5 +63,5 @@
 - (NSString *)descriptionEntry;
 // if item can be deleted without confirm
 - (BOOL)confirmlessDelete;
-
+- (BOOL)isRunning;
 @end

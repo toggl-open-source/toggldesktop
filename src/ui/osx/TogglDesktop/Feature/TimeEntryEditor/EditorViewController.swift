@@ -104,7 +104,8 @@ final class EditorViewController: NSViewController {
 
     @IBAction func nextDateBtnOnTap(_ sender: Any) {
         guard let startDate = timeEntry.started,
-            let nextDate = startDate.nextDate() else {
+            let nextDate = startDate.nextDate(),
+            !timeEntry.isRunning() else {
             return
         }
         DesktopLibraryBridge.shared().updateTimeEntry(withStart: nextDate, guid: timeEntry.guid)
@@ -112,7 +113,8 @@ final class EditorViewController: NSViewController {
 
     @IBAction func previousDateBtnOnTap(_ sender: Any) {
         guard let startDate = timeEntry.started,
-            let nextDate = startDate.previousDate() else {
+            let nextDate = startDate.previousDate(),
+            !timeEntry.isRunning() else {
                 return
         }
         DesktopLibraryBridge.shared().updateTimeEntry(withStart: nextDate, guid: timeEntry.guid)
@@ -123,6 +125,7 @@ final class EditorViewController: NSViewController {
     }
     
     @IBAction func dayButtonOnTap(_ sender: Any) {
+        guard !timeEntry.isRunning() else { return }
         calendarPopover.present(from: dateSelectionBox.bounds, of: dateSelectionBox, preferredEdge: .maxY)
     }
 
@@ -199,6 +202,11 @@ extension EditorViewController {
         billableCheckBox.isHidden = !timeEntry.canSeeBillable
         projectTextField.setTimeEntry(timeEntry)
         calendarViewControler.prepareLayout(with: timeEntry.started)
+
+        // Disable if it's running entry
+        let isRunning = timeEntry.isRunning()
+        endAtTextField.isHidden = isRunning
+        datePickerView.isEnabled = !isRunning
         
         renderTagsView()
         renderDatePicker()
@@ -253,7 +261,7 @@ extension EditorViewController {
     }
 
     private func renderDatePicker() {
-        let isRunning = timeEntry.duration_in_seconds >= 0
+        let isRunning = timeEntry.isRunning()
         let startDay = timeEntry.started!
         datePickerView.dateValue = startDay
         datePickerView.isEnabled = isRunning
