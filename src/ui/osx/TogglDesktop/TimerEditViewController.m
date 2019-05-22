@@ -470,6 +470,9 @@ NSString *kInactiveTimerColor = @"#999999";
 	free(str);
 
 	[self.durationTextField setStringValue:newValue];
+
+	// Update
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"TimerForRunningTimeEntryOnTicket" object:nil];
 }
 
 - (void)toggleTimer:(NSNotification *)notification

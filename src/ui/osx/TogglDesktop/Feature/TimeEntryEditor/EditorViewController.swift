@@ -14,6 +14,7 @@ final class EditorViewController: NSViewController {
 
         static let TokenViewSpacing: CGFloat = 5.0
         static let MaximumTokenWidth: CGFloat = 260.0
+        static let TimerNotification = NSNotification.Name("TimerForRunningTimeEntryOnTicket")
     }
 
     // MARK: OUTLET
@@ -77,9 +78,9 @@ final class EditorViewController: NSViewController {
         return [NSAttributedString.Key.font : NSFont.systemFont(ofSize: 14),
                 NSAttributedString.Key.foregroundColor: NSColor.labelColor]
     }()
-    fileprivate var timer: Timer?
+    fileprivate var isRegisterTimerNotification = false
 
-    // MARK: View Cycle
+    // MARK: View Cyclex
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -94,7 +95,13 @@ final class EditorViewController: NSViewController {
         view.window?.makeFirstResponder(descriptionTextField)
         updateNextKeyViews()
     }
-    
+
+    override func viewWillDisappear() {
+        super.viewWillDisappear()
+
+        unregisterTimerNotification()
+    }
+
     @IBAction func closeBtnOnTap(_ sender: Any) {
         DesktopLibraryBridge.shared().togglEditor()
     }
@@ -208,7 +215,15 @@ extension EditorViewController {
         let isRunning = timeEntry.isRunning()
         endAtTextField.isHidden = isRunning
         datePickerView.isEnabled = !isRunning
-        
+
+        // Update Timer
+        if isRunning {
+            registerTimerNotification()
+        } else {
+            unregisterTimerNotification()
+        }
+
+        // Render other views
         renderTagsView()
         renderDatePicker()
         renderTime()
@@ -289,20 +304,23 @@ extension EditorViewController {
         tagDatasource.tableView.reloadData()
     }
 
-    fileprivate func startTimerForRunningEntry() {
+    fileprivate func registerTimerNotification() {
+        guard !isRegisterTimerNotification else { return }
 
-        // Invalid if need
-        invalidTimer()
-
-        // Init timer
-        timer = Timer(timeInterval: 1.0, target: self, selector: #selector(self.timerOnTick), userInfo: nil, repeats: true)
+        isRegisterTimerNotification = true
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(self.timerOnTick),
+                                               name: Constans.TimerNotification,
+                                               object: nil)
     }
 
-    fileprivate func invalidTimer() {
-        if let timer = timer {
-            timer.invalidate()
-            self.timer = nil
-        }
+    fileprivate func unregisterTimerNotification() {
+        guard isRegisterTimerNotification else { return }
+
+        isRegisterTimerNotification = false
+        NotificationCenter.default.removeObserver(self,
+                                                  name: Constans.TimerNotification,
+                                                  object: nil)
     }
 
     @objc private func timerOnTick() {
