@@ -1,6 +1,8 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace TogglDesktop
 {
@@ -14,7 +16,7 @@ namespace TogglDesktop
         public IdleNotificationWindow()
         {
             this.InitializeComponent();
-
+            this.Closing += OnClosing;
             Toggl.OnIdleNotification += this.onIdleNotification;
             Toggl.OnStoppedTimerState += this.onStoppedTimerState;
         }
@@ -34,6 +36,13 @@ namespace TogglDesktop
             this.Show();
             this.Topmost = true;
             this.Activate();
+        }
+
+        private void OnClosing(object sender, CancelEventArgs e)
+        {
+            e.Cancel = true;
+            Action hideAction = () => this.Hide();
+            Dispatcher.BeginInvoke(DispatcherPriority.Background, hideAction);
         }
 
         protected override void OnDeactivated(EventArgs e)
@@ -60,11 +69,6 @@ namespace TogglDesktop
                 this.Hide();
                 e.Handled = true;
             }
-        }
-
-        protected override void onCloseButtonClick(object sender, RoutedEventArgs e)
-        {
-            this.Hide();
         }
 
         private void onKeepTimeClick(object sender, RoutedEventArgs e)
