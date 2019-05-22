@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
@@ -9,7 +8,6 @@ using System.Windows.Input;
 using TogglDesktop.AutoCompleteControls;
 using TogglDesktop.AutoCompletion;
 using TogglDesktop.Diagnostics;
-using TogglDesktop.AutoCompletion.Implementation;
 
 namespace TogglDesktop
 {
@@ -30,7 +28,6 @@ namespace TogglDesktop
         private ToggleButton dropDownButton;
 
         private bool needsToRefreshList;
-        private bool mouseClickedOnListBox = false;
 
         private AutoCompleteController controller;
 
@@ -432,8 +429,6 @@ namespace TogglDesktop
 
         private void listBox_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-            mouseClickedOnListBox = true;
-
             DependencyObject dep = (DependencyObject)e.OriginalSource;
             while ((dep != null) && !(dep is System.Windows.Controls.ListBoxItem))
             {
