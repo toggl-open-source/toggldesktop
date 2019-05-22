@@ -199,6 +199,7 @@
       <DependentUpon>TimeEntryCellDayHeader.xaml</DependentUpon>
     </Compile>
     <Compile Include="ui\controls\TimeEntryCellDragImposter.cs" />
+    <Compile Include="ui\Converters\StringToBrushConverter.cs" />
     <Compile Include="ui\Experiments\implementations\Experiment98.cs" />
     <Compile Include="ui\Experiments\implementations\Experiment98Screen2.xaml.cs">
       <DependentUpon>Experiment98Screen2.xaml</DependentUpon>
@@ -268,7 +269,7 @@
     <Compile Include="utilities\StaticObjectPool.cs" />
     <Compile Include="TogglApi.cs" />
     <Compile Include="ui\UIExtensions.cs" />
-    <Compile Include="ui\BooleanToVisibilityConverter.cs" />
+    <Compile Include="ui\Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="ui\controls\AutotrackerNotification.xaml.cs">
       <DependentUpon>AutotrackerNotification.xaml</DependentUpon>
     </Compile>
