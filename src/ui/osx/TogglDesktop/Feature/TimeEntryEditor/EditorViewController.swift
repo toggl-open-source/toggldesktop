@@ -274,6 +274,8 @@ extension EditorViewController {
         durationTextField.stringValue = timeEntry.duration
         startAtTextField.stringValue = timeEntry.startTimeString
         endAtTextField.stringValue = timeEntry.endTimeString
+        let isRunning = timeEntry.duration_in_seconds < 0
+        endAtTextField.isHidden = isRunning
     }
 
     fileprivate func updateNextKeyViews() {
