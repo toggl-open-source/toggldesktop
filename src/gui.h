@@ -373,7 +373,8 @@ class GUI : public SyncStateMonitor {
     , lastDisplayLoginOpen(false)
     , lastDisplayLoginUserID(0)
     , lastOnlineState(-1)
-    , lastErr(noError) {}
+    , lastErr(noError)
+    , isFirstLaunch(true) {}
 
     ~GUI() {}
 
@@ -666,7 +667,7 @@ class GUI : public SyncStateMonitor {
     uint64_t lastDisplayLoginUserID;
     Poco::Int64 lastOnlineState;
     error lastErr;
-
+    bool isFirstLaunch;
     Poco::Logger &logger() const;
 };
 
