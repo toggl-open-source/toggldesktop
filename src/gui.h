@@ -625,6 +625,10 @@ class GUI : public SyncStateMonitor {
         }
     }
 
+    void resetFirstLaunch() {
+        isFirstLaunch = true;
+    }
+
  private:
     error findMissingCallbacks();
 
