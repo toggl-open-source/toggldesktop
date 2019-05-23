@@ -29,9 +29,7 @@
 
             <ListBox ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                      BorderThickness="0" Margin="10" Padding="0" Background="White"
-                     Name="list" x:FieldModifier="private"
-                     ItemsSource="{Binding Colors}"
-                     >
+                     Name="list" x:FieldModifier="private">
 
                 <ListBox.Effect>
                     <DropShadowEffect BlurRadius="8" ShadowDepth="2" Opacity="0.3" Direction="270" />
