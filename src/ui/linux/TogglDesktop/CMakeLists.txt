@@ -79,6 +79,11 @@ target_link_libraries(TogglDesktop PRIVATE
 
 configure_file(${PROJECT_SOURCE_DIR}/src/ssl/cacert.pem cacert.pem COPYONLY)
 
+configure_file(dist/com.toggl.TogglDesktop.appdata.xml.in dist/com.toggl.TogglDesktop.appdata.xml @ONLY)
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/dist/com.toggl.TogglDesktop.appdata.xml DESTINATION share/metainfo)
+
+install(FILES dist/com.toggl.TogglDesktop.desktop DESTINATION share/applications)
+
 install(FILES ${PROJECT_SOURCE_DIR}/src/ssl/cacert.pem DESTINATION ${TOGGL_DATA_DIR})
 
 install(FILES icons/16x16/toggldesktop.png DESTINATION share/icons/hicolor/16x16/apps/)
@@ -92,8 +97,6 @@ install(FILES icons/256x256/toggldesktop.png DESTINATION share/icons/hicolor/256
 if(INSTALL_HIRES_ICONS)
     install(FILES icons/1024x1024/toggldesktop.png DESTINATION share/icons/hicolor/1024x1024/apps/)
 endif()
-install(FILES dist/com.toggl.TogglDesktop.desktop DESTINATION share/applications)
-install(FILES dist/com.toggl.TogglDesktop.appdata.xml DESTINATION share/metainfo)
 
 install(FILES ${PROJECT_SOURCE_DIR}/src/ui/linux/TogglDesktop.sh DESTINATION ${TOGGL_BINARY_DIR} PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
 install(TARGETS TogglDesktop DESTINATION ${TOGGL_BINARY_DIR})
