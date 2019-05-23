@@ -106,6 +106,7 @@ namespace TogglDesktop
                 var isCurrentlyRunning = timeEntry.DurationInSeconds < 0;
 
                 this.endTimeTextBox.IsEnabled = !isCurrentlyRunning;
+                this.startDatePicker.IsEnabled = !isCurrentlyRunning;
 
                 setText(this.descriptionTextBox, timeEntry.Description, open);
                 setTime(this.durationTextBox, timeEntry.Duration, open);

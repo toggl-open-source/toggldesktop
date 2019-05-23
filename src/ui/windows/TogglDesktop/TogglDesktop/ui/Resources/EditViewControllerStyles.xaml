@@ -183,6 +183,11 @@
                                                     </ControlTemplate>
                                                 </Setter.Value>
                                             </Setter>
+                                            <Style.Triggers>
+                                                <Trigger Property="IsEnabled" Value="False">
+                                                    <Setter Property="Foreground" Value="#B2252525"></Setter>
+                                                </Trigger>
+                                            </Style.Triggers>
                                         </Style>
                                     </DatePickerTextBox.Style>
                                 </DatePickerTextBox>
@@ -190,6 +195,11 @@
                                     <Button.Style>
                                         <Style TargetType="Button" BasedOn="{StaticResource EditViewTextFieldImageButtonBase}">
                                             <Setter Property="Margin" Value="0"/>
+                                            <Style.Triggers>
+                                                <Trigger Property="IsEnabled" Value="False">
+                                                    <Setter Property="Visibility" Value="Hidden" />
+                                                </Trigger>
+                                            </Style.Triggers>
                                         </Style>
                                     </Button.Style>
                                 </Button>
