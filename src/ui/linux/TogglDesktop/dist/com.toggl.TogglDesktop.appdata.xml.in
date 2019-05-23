@@ -14,6 +14,13 @@
             <li>Timeline</li>
         </ul>
     </description>
+    <releases>
+        <release version="@TOGGL_VERSION@" date="@TOGGL_VERSION_RELEASE_DATE@">
+        ​    <description>
+                @TOGGL_VERSION_DESCRIPTION@
+        ​    </description>
+        </release>
+    </releases>
     <keywords>
         <keyword>productivity</keyword>
         <keyword>employee time tracking</keyword>
@@ -25,6 +32,8 @@
         <keyword>hours tracker</keyword>
     </keywords>
     <url type="homepage">https://toggl.com</url>
+    <developer_name>Toggl OÜ</developer_name>
+    ​<update_contact>support_AT_toggl.com</update_contact>
     <screenshots>
         <screenshot type="default">https://toggl.github.io/toggldesktop/assets/images/linux_ui_main.png</screenshot>
         <screenshot>https://toggl.github.io/toggldesktop/assets/images/linux_ui_edit.png</screenshot>
