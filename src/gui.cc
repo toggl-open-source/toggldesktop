@@ -412,18 +412,34 @@ void GUI::DisplayTimeEntryList(const bool open,
                                const std::vector<view::TimeEntry> list,
                                const bool show_load_more_button) {
     Poco::Stopwatch stopwatch;
+    auto renderList = std::vector<view::TimeEntry>();
     stopwatch.start();
     {
+        if (this->isFirstLaunch) {
+            this->isFirstLaunch = false;
+
+            // Get render list from last 9 days at the first launch
+            time_t last9Days = time(0) - 9 * 86400;
+            for (auto it = list.begin(); it != list.end(); it++) {
+                auto timeEntry = *it;
+                if (timeEntry.Started >= last9Days) {
+                    renderList.push_back(timeEntry);
+                }
+            }
+        } else {
+            // Otherwise, just get from the list
+            renderList = list;
+        }
         std::stringstream ss;
         ss << "DisplayTimeEntryList open=" << open
-           << ", has items=" << list.size();
+           << ", has items=" << renderList.size();
         logger().debug(ss.str());
     }
 
     // Render
     TogglTimeEntryView *first = nullptr;
-    for (unsigned int i = 0; i < list.size(); i++) {
-        view::TimeEntry te = list.at(i);
+    for (unsigned int i = 0; i < renderList.size(); i++) {
+        view::TimeEntry te = renderList.at(i);
         TogglTimeEntryView *item = time_entry_view_item_init(te);
         item->Next = first;
         if (first && compare_string(item->DateHeader, first->DateHeader) != 0) {
