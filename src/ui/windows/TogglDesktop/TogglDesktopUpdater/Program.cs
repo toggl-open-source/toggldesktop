@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace TogglDesktopUpdater
 {
     static class Program
     {
-        private static Bugsnag.Clients.BaseClient bugsnag = null;
+        private static Bugsnag.Client bugsnag;
 
         /// <summary>
         /// The main entry point for the application.
@@ -13,26 +14,25 @@ namespace TogglDesktopUpdater
         [STAThread]
         static void Main()
         {
+            Application.ThreadException += Application_ThreadException;
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            bugsnag = new Bugsnag.Clients.BaseClient("aa13053a88d5133b688db0f25ec103b7");
-            bugsnag.Config.ReleaseStage = "production";
+            var configuration = new Bugsnag.Configuration("aa13053a88d5133b688db0f25ec103b7");
+            configuration.AppVersion = Application.ProductVersion;
+            configuration.ReleaseStage = "production";
+            bugsnag = new Bugsnag.Client(configuration);
 
             Application.Run(new MainForm());
         }
 
-        public static void NotifyBugsnag(Exception e, Bugsnag.Metadata metadata)
+        public static void NotifyBugsnag(Exception e)
         {
             try
             {
-                if (null == metadata)
-                {
-                    metadata = new Bugsnag.Metadata();
-                }
-                metadata.AddToTab("Details", "OSVersion", Environment.OSVersion.ToString());
-                metadata.AddToTab("Details", "applicationVersion", Application.ProductVersion);
-                bugsnag.Notify(e, metadata);
+                bugsnag.Notify(e);
             }
             catch (Exception ex)
             {
@@ -40,14 +40,22 @@ namespace TogglDesktopUpdater
             }
         }
 
+        public static void UpdateBugsnagMetadata(string tabName, Dictionary<string, string> keyValuePairs)
+        {
+            bugsnag.BeforeNotify(report =>
+            {
+                report.Event.Metadata.Add(tabName, keyValuePairs);
+            });
+        }
+
         static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            NotifyBugsnag(e.ExceptionObject as Exception, null);
+            bugsnag.Notify(e.ExceptionObject as Exception);
         }
 
         static void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
         {
-            NotifyBugsnag(e.Exception, null);
+            bugsnag.Notify(e.Exception);
         }
 
     }

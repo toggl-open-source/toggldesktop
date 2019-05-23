@@ -1,11 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
 
@@ -38,19 +32,20 @@ namespace TogglDesktopUpdater
                     error = "Unable to automatically start Toggl Desktop. Please start Toggl Desktop manually";
                 }
                 MessageBox.Show(error, "Toggl Desktop update failed");
-                notifyBugsnag(ex);
+                Program.NotifyBugsnag(ex);
                 cleanup();
                 Environment.Exit(1);
             }
         }
 
-        private void notifyBugsnag(Exception ex)
+        private void updateBugsnagMetadata(string pid, string installer, string executable)
         {
-            var metadata = new Bugsnag.Metadata();
-            metadata.AddToTab("Installer", "installer", installer);
-            metadata.AddToTab("Installer", "pid", pid);
-            metadata.AddToTab("Installer", "executable", executable);
-            Program.NotifyBugsnag(ex, metadata);
+            Program.UpdateBugsnagMetadata("Installer", new Dictionary<string, string>
+            {
+                { "installer", installer },
+                { "pid", pid },
+                {"executable", executable }
+            });
         }
 
         private void upgrade() 
@@ -64,6 +59,8 @@ namespace TogglDesktopUpdater
             pid = args[1];
             installer = args[2];
             executable = args[3];
+
+            updateBugsnagMetadata(pid, installer, executable);
 
             // should we wait for pid to stop, then start installer?
 
@@ -99,7 +96,7 @@ namespace TogglDesktopUpdater
             catch (Exception ex)
             {
                 Console.Error.WriteLine("Error deleting installer: " + ex.Message);
-                notifyBugsnag(ex);
+                Program.NotifyBugsnag(ex);
             }
         }
     }
