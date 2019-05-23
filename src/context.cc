@@ -2438,6 +2438,7 @@ error Context::Logout() {
         overlay_visible_ = false;
         setUser(nullptr);
 
+        UI()->resetFirstLaunch();
         UI()->DisplayApp();
 
         Shutdown();
