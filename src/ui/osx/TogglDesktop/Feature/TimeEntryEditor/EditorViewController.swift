@@ -192,7 +192,6 @@ extension EditorViewController {
         view.wantsLayer = true
         view.layer?.masksToBounds = false
         closeBtn.cursor = .pointingHand
-        startAtBtn.cursor = .pointingHand
 
         descriptionTextField.autoCompleteDelegate = self
         projectTextField.autoCompleteDelegate = self
@@ -400,17 +399,6 @@ extension EditorViewController: NSTextFieldDelegate {
         if textField == durationTextField {
             durationTextFieldOnChange(durationTextField)
             return
-        }
-
-        // Start at
-        if textField == startAtTextField {
-            startTextFieldOnChange(startAtTextField)
-            return
-        }
-
-        // End at
-        if textField == endAtTextField {
-            endTextFieldOnChange(endAtTextField)
         }
     }
 }
