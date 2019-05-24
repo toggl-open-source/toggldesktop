@@ -18,6 +18,11 @@
 #include <QDebug>
 #include <QNetworkReply>
 
+#include <execinfo.h>
+#include <signal.h>
+#include <stdlib.h>
+#include <unistd.h>
+
 class Notifier {
  public:
     Notifier()
@@ -266,14 +271,23 @@ class BUGSNAGQTSHARED_EXPORT Bugsnag : public QObject {
         exception.message = message;
         exception.errorClass = errorClass;
 
-	// Bugsnag will reject notifications without a 
-	// stack trace. So just send something to get
-	// things going.
-        StackTrace trace;
-	trace.file = "somefile";
-	trace.lineNumber = 123;
-	trace.method = "somemethod";
-        exception.stacktrace << trace;
+        // Bugsnag will reject notifications without a
+        // stack trace. So just send something to get
+        // things going.
+        void *buffer[64];
+        char **strings;
+        int size;
+
+        size = backtrace(buffer, 64);
+        strings = backtrace_symbols(buffer, size);
+        if (strings) {
+            for (int i = 0; i < size; i++) {
+                StackTrace trace;
+                trace.method = strings[i];
+                exception.stacktrace << trace;
+            }
+            free(strings);
+        }
 
         Event event;
         event.context = context;

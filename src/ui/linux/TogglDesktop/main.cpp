@@ -10,6 +10,9 @@
 
 #include <stdint.h>
 #include <stdbool.h>
+#include <stdio.h>
+#include <iostream>
+#include <unistd.h>
 
 #include "singleapplication.h"  // NOLINT
 
@@ -18,6 +21,8 @@
 #include "./genericview.h"
 #include "./mainwindowcontroller.h"
 #include "./toggl.h"
+
+MainWindowController *w = nullptr;
 
 class TogglApplication : public SingleApplication {
  public:
@@ -40,8 +45,17 @@ bool TogglApplication::notify(QObject *receiver, QEvent *event) {
     return true;
 }
 
+[[ noreturn ]] void handler(int sig) {
+    TogglApi::notifyBugsnag("crash", "signal", "SIGSEGV");
+    delete w;
+    QApplication::exit(1);
+    exit(1);
+}
+
+
 int main(int argc, char *argv[]) try {
     Bugsnag::apiKey = "aa13053a88d5133b688db0f25ec103b7";
+    signal(SIGSEGV, handler);
 
     TogglApplication::setQuitOnLastWindowClosed(false);
 
@@ -95,19 +109,20 @@ int main(int argc, char *argv[]) try {
 
     parser.process(a);
 
-    MainWindowController w(nullptr,
-                           parser.value(logPathOption),
-                           parser.value(dbPathOption),
-                           parser.value(scriptPathOption));
+    w = new MainWindowController(nullptr,
+                                 parser.value(logPathOption),
+                                 parser.value(dbPathOption),
+                                 parser.value(scriptPathOption));
 
-    a.w = &w;
+    a.w = w;
 
     if (parser.isSet(forceOption)) {
-        w.hide();
+        w->hide();
     } else {
-        w.show();
+        w->show();
     }
 
+    signal(SIGSEGV, handler);
     return a.exec();
 } catch (std::exception &e) {  // NOLINT
     TogglApi::notifyBugsnag("std::exception", e.what(), "main");
