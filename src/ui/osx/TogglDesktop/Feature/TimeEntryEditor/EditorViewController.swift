@@ -7,7 +7,6 @@
 //
 
 import Cocoa
-import Carbon.HIToolbox
 
 final class EditorViewController: NSViewController {
 
@@ -32,7 +31,7 @@ final class EditorViewController: NSViewController {
     @IBOutlet weak var tagStackView: NSStackView!
     @IBOutlet weak var tagAddButton: NSButton!
     @IBOutlet weak var tagInputContainerView: NSBox!
-    @IBOutlet weak var datePickerView: NSDatePicker!
+    @IBOutlet weak var datePickerView: KeyboardDatePicker!
     @IBOutlet weak var dayNameButton: CursorButton!
     @IBOutlet weak var nextDateBtn: NSButton!
     @IBOutlet weak var previousDateBtn: NSButton!
@@ -202,6 +201,12 @@ extension EditorViewController {
 
         var calendar = Calendar.current
         calendar.timeZone = TimeZone.current
+
+        // Date picker
+        datePickerView.escapeKeyOnAction = {[weak self] in
+            guard let strongSelf = self else { return }
+            strongSelf.closeBtnOnTap(strongSelf)
+        }
     }
 
     fileprivate func initDatasource() {
