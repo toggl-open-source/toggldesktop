@@ -2264,9 +2264,6 @@ error Context::Signup(
     TogglClient client(UI());
     std::string json("");
     error err = signup(&client, email, password, &json, country_id);
-    if (kBadRequestError == err) {
-        return displayError(kCheckYourSignupError);
-    }
     if (err != noError) {
         return displayError(err);
     }
@@ -5438,6 +5435,9 @@ error Context::signup(
 
         HTTPSResponse resp = toggl_client->Post(req);
         if (resp.err != noError) {
+            if (kBadRequestError == resp.err) {
+                return resp.body;
+            }
             return resp.err;
         }
 
