@@ -308,7 +308,8 @@ extension EditorViewController {
             tagDatasource.updateSelectedTags([])
 
             // Tab
-            projectTextField.nextKeyView = durationTextField
+            projectTextField.nextKeyView = tagAddButton
+            tagAddButton.nextKeyView = durationTextField
         }
     }
 

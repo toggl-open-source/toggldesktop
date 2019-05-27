@@ -141,10 +141,18 @@
                                             <rect key="frame" x="0.0" y="0.0" width="252" height="28"/>
                                             <subviews>
                                                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="fzH-q2-m3a">
-                                                    <rect key="frame" x="10" y="0.0" width="232" height="28"/>
-                                                    <buttonCell key="cell" type="bevel" title="Add tags" bezelStyle="rounded" alignment="left" imageScaling="proportionallyDown" inset="2" id="FrN-5J-6rF">
+                                                    <rect key="frame" x="0.0" y="0.0" width="252" height="28"/>
+                                                    <buttonCell key="cell" type="bevel" title="Add tags" bezelStyle="rounded" alignment="left" imageScaling="proportionallyDown" inset="2" id="FrN-5J-6rF" customClass="VerticallyCenteredButtonCell" customModule="TogglDesktop" customModuleProvider="target">
                                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                         <font key="font" metaFont="system" size="14"/>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="focusRingCornerRadius">
+                                                                <real key="value" value="8"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="leftPadding">
+                                                                <real key="value" value="10"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                        </userDefinedRuntimeAttributes>
                                                     </buttonCell>
                                                     <connections>
                                                         <action selector="tagAddButtonOnTap:" target="-2" id="Bfd-bb-wxi"/>
@@ -152,10 +160,10 @@
                                                 </button>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="fzH-q2-m3a" firstAttribute="leading" secondItem="Scx-li-Ewv" secondAttribute="leading" constant="10" id="2Ap-96-clS"/>
+                                                <constraint firstItem="fzH-q2-m3a" firstAttribute="leading" secondItem="Scx-li-Ewv" secondAttribute="leading" id="2Ap-96-clS"/>
                                                 <constraint firstAttribute="bottom" secondItem="fzH-q2-m3a" secondAttribute="bottom" id="7uf-bd-HJg"/>
                                                 <constraint firstItem="fzH-q2-m3a" firstAttribute="top" secondItem="Scx-li-Ewv" secondAttribute="top" id="Z9s-pO-4Gv"/>
-                                                <constraint firstAttribute="trailing" secondItem="fzH-q2-m3a" secondAttribute="trailing" constant="10" id="vNW-Jk-62b"/>
+                                                <constraint firstAttribute="trailing" secondItem="fzH-q2-m3a" secondAttribute="trailing" id="vNW-Jk-62b"/>
                                             </constraints>
                                         </customView>
                                     </subviews>
