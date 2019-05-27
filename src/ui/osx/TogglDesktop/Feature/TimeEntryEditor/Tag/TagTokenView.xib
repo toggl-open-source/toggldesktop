@@ -44,7 +44,7 @@
                 </textField>
                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="8lo-U3-Yk5">
                     <rect key="frame" x="0.0" y="0.0" width="74" height="22"/>
-                    <buttonCell key="cell" type="bevel" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="Z2c-sQ-0ee">
+                    <buttonCell key="cell" type="bevel" title=" " bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="Z2c-sQ-0ee">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
@@ -98,6 +98,7 @@
                 <constraint firstAttribute="trailing" secondItem="Shm-xU-vvz" secondAttribute="trailing" constant="4" id="mI7-YV-Qpf"/>
             </constraints>
             <connections>
+                <outlet property="actionButton" destination="8lo-U3-Yk5" id="D6G-un-nZx"/>
                 <outlet property="boxContainerView" destination="di9-tm-V4I" id="kKA-cd-jzL"/>
                 <outlet property="closeButton" destination="Shm-xU-vvz" id="TwK-J0-h67"/>
                 <outlet property="gradientView" destination="MP2-f0-MdB" id="HVd-zg-th9"/>
