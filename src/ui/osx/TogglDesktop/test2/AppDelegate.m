@@ -1069,6 +1069,12 @@ BOOL onTop = NO;
 
 - (IBAction)onLogoutMenuItem:(id)sender
 {
+	// Reset the sign up state for the Empty View
+	// Because the Time Entry list present last 9 weeks, so it's no way to know that it's new user or old user
+	[[NSUserDefaults standardUserDefaults] setBool:NO forKey:kUserHasBeenSignup];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+
+	// Logout
 	toggl_logout(ctx);
 }
 

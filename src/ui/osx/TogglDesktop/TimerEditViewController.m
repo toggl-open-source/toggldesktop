@@ -362,10 +362,6 @@ NSString *kInactiveTimerColor = @"#999999";
 	// Reset autocomplete
 	[self.autoCompleteInput resetTable];
 	[self.liteAutocompleteDataSource clearFilter];
-
-	// If we start new entry after sign-up, we should remove the Sign-up state for Empty screen
-	[[NSUserDefaults standardUserDefaults] setBool:NO forKey:kUserHasBeenSignup];
-	[[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (IBAction)durationFieldChanged:(id)sender
