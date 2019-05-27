@@ -291,10 +291,8 @@ extension EditorViewController {
     }
 
     private func renderDatePicker() {
-        let isRunning = timeEntry.isRunning()
         let startDay = timeEntry.started!
         datePickerView.dateValue = startDay
-        datePickerView.isEnabled = isRunning
         let dayName = startDay.dayOfWeekString() ?? "Unknown"
         dayNameButton.attributedTitle = NSAttributedString(string: "\(dayName),", attributes: dayNameAttribute)
     }
