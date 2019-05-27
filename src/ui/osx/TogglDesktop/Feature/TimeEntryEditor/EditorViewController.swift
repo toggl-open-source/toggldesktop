@@ -166,6 +166,19 @@ final class EditorViewController: NSViewController {
     @IBAction func deleteBtnOnTap(_ sender: Any) {
         DesktopLibraryBridge.shared().deleteTimeEntryImte(timeEntry)
     }
+
+    override func mouseDown(with event: NSEvent) {
+        super.mouseDown(with: event)
+
+        // Close the auto-complete view if tap on Windows side
+        if descriptionTextField.state == .expand {
+            descriptionTextField.closeSuggestion()
+        } else if projectTextField.state == .expand {
+            projectTextField.closeSuggestion()
+        } else if tagTextField.state == .expand {
+            tagTextField.closeSuggestion()
+        }
+    }
 }
 
 // MARK: Private

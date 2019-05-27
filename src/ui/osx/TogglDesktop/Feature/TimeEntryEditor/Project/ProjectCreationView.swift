@@ -336,7 +336,9 @@ extension ProjectCreationView: AutoCompleteTextFieldDelegate {
 
     func autoCompleteTextFieldDidEndEditing(_ sender: AutoCompleteTextField) {}
 
-    func autoCompleteShouldCloseEditor(_ sender: AutoCompleteTextField) {}
+    func autoCompleteShouldCloseEditor(_ sender: AutoCompleteTextField) {
+        cancelBtnOnTap(self)
+    }
 }
 
 // MARK: NSTextFieldDelegate
