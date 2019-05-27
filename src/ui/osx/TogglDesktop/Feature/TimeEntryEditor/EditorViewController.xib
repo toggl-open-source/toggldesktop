@@ -311,7 +311,7 @@
                                                                     <action selector="dayButtonOnTap:" target="-2" id="9Xi-H2-Cv0"/>
                                                                 </connections>
                                                             </button>
-                                                            <datePicker verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="PKt-Ig-fee">
+                                                            <datePicker verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="PKt-Ig-fee" customClass="KeyboardDatePicker" customModule="TogglDesktop" customModuleProvider="target">
                                                                 <rect key="frame" x="61" y="0.0" width="84" height="22"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="22" id="60V-hr-SJM"/>
