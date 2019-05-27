@@ -289,9 +289,26 @@ extension EditorViewController {
             tagStackView.isHidden = false
             tagAddButton.isHidden = true
             tagInputContainerView.borderColor = .clear
+
+            // Tab to move to each Token View
+            projectTextField.nextKeyView = tokens.first?.actionButton
+
+            // Connection
+            var currentToken = tokens.first?.actionButton
+            for i in 1..<tokens.count {
+                let token = tokens[i]
+                currentToken?.nextKeyView = token.actionButton
+                currentToken = token.actionButton
+            }
+
+            // Last to duration
+            tokens.last?.actionButton.nextKeyView = durationTextField
         }
         else {
             tagDatasource.updateSelectedTags([])
+
+            // Tab
+            projectTextField.nextKeyView = durationTextField
         }
     }
 
