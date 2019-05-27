@@ -14,6 +14,7 @@ protocol AutoCompleteTextFieldDelegate: class {
     func shouldClearCurrentSelection(_ sender: AutoCompleteTextField)
     func autoCompleteViewDidClose(_ sender: AutoCompleteTextField)
     func autoCompleteTextFieldDidEndEditing(_ sender: AutoCompleteTextField)
+    func autoCompleteShouldCloseEditor(_ sender: AutoCompleteTextField)
 }
 
 class AutoCompleteTextField: NSTextField, NSTextFieldDelegate, AutoCompleteViewDelegate {
@@ -200,7 +201,15 @@ extension AutoCompleteTextField {
 
         // Escape
         if commandSelector == #selector(NSResponder.cancelOperation(_:)) {
+
+            // Close editor if need
+            if state == .collapse {
+                autoCompleteDelegate?.autoCompleteShouldCloseEditor(self)
+            }
+
+            // Close suggestion
             closeSuggestion()
+
             return true
         }
 
