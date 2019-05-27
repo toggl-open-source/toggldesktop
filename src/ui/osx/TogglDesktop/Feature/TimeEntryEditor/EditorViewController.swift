@@ -7,6 +7,7 @@
 //
 
 import Cocoa
+import Carbon.HIToolbox
 
 final class EditorViewController: NSViewController {
 
@@ -437,6 +438,10 @@ extension EditorViewController: AutoCompleteTextFieldDelegate {
             let guid = timeEntry.guid!
             DesktopLibraryBridge.shared().updateTimeEntry(withDescription: name, guid: guid)
         }
+    }
+
+    func autoCompleteShouldCloseEditor(_ sender: AutoCompleteTextField) {
+        closeBtnOnTap(self)
     }
 }
 
