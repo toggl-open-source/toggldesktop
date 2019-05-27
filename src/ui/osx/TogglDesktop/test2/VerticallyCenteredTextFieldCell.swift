@@ -80,3 +80,35 @@ final class VerticallyCenteredTextFieldCell: NSTextFieldCell {
         path.fill()
     }
 }
+
+@IBDesignable
+final class VerticallyCenteredButtonCell: NSButtonCell {
+
+    @IBInspectable var focusRingCornerRadius: CGFloat = 0
+    @IBInspectable var leftPadding: CGFloat = 0
+
+    override func drawingRect(forBounds theRect: NSRect) -> NSRect {
+        var newRect = super.drawingRect(forBounds: theRect)
+
+        // Padding
+        newRect.origin.x += leftPadding
+        newRect.size.width -= leftPadding
+
+        return newRect
+    }
+
+    override func drawFocusRingMask(withFrame cellFrame: NSRect, in controlView: NSView) {
+
+        // Draw default
+        guard focusRingCornerRadius > 0.0 else {
+            super.drawFocusRingMask(withFrame: cellFrame, in: controlView)
+            return
+        }
+
+        // Custome
+        // Make forcus ring frame fit with cell size
+        let newFrame = cellFrame.insetBy(dx: 2, dy: 1)
+        let path = NSBezierPath(roundedRect: newFrame, xRadius: focusRingCornerRadius, yRadius: focusRingCornerRadius)
+        path.fill()
+    }
+}
