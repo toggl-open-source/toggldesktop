@@ -404,6 +404,19 @@ extension EditorViewController: NSTextFieldDelegate {
             endTextFieldOnChange(endAtTextField)
         }
     }
+
+    func control(_ control: NSControl, textView: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
+
+        // Escape
+        if control == durationTextField || control == startAtTextField || control == endAtTextField {
+            if commandSelector == #selector(NSResponder.cancelOperation(_:)) {
+                closeBtnOnTap(self)
+                return true
+            }
+        }
+
+        return false
+    }
 }
 
 // MARK: AutoCompleteTextFieldDelegate
