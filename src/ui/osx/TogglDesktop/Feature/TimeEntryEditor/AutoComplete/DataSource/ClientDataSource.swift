@@ -63,7 +63,12 @@ final class ClientDataSource: AutoCompleteViewDataSource {
 
         // show all
         if text.isEmpty {
-            render(with: ClientStorage.shared.getClients(at: selectedWorkspace))
+            let clients = ClientStorage.shared.getClients(at: selectedWorkspace)
+            if clients.isEmpty {
+                render(with: [Client.noMatching])
+            } else {
+                render(with: clients)
+            }
             return
         }
 
@@ -82,6 +87,9 @@ final class ClientDataSource: AutoCompleteViewDataSource {
         } else {
             autoCompleteView.setCreateButtonSectionHidden(true)
         }
+
+        // Enable
+        autoCompleteView.createNewItemBtn.isEnabled = !textField.stringValue.isEmpty
     }
 
     // MARK: Public
