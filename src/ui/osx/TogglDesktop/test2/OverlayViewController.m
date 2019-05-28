@@ -177,7 +177,8 @@ extern void *ctx;
 
 - (IBAction)loginBtnOnTap:(id)sender
 {
-	toggl_open_in_browser(ctx);
+    // Logout to open the login screen
+	toggl_logout(ctx);
 }
 
 - (void)textFieldClicked:(id)sender
