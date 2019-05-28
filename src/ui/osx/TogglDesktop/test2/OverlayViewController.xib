@@ -163,12 +163,12 @@ DQ
                             </textFieldCell>
                         </textField>
                         <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="t27-Wi-Hrk" userLabel="LoadMore">
-                            <rect key="frame" x="122" y="358" width="104" height="29"/>
+                            <rect key="frame" x="102" y="358" width="144" height="29"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="100" id="8CP-sK-oBy"/>
+                                <constraint firstAttribute="width" constant="140" id="8CP-sK-oBy"/>
                                 <constraint firstAttribute="height" constant="24" id="HB3-jL-v5m"/>
                             </constraints>
-                            <buttonCell key="cell" type="bevel" title="Log in" bezelStyle="regularSquare" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="xw0-Lo-gMf">
+                            <buttonCell key="cell" type="bevel" title="Log in to toggl.com" bezelStyle="regularSquare" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="xw0-Lo-gMf">
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                 <font key="font" metaFont="cellTitle"/>
                             </buttonCell>
