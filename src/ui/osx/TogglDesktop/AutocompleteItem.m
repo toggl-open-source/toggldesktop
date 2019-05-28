@@ -19,6 +19,8 @@
 		self.ProjectAndTaskLabel = snapshot.projectAndTaskLabel;
 		self.TaskID = snapshot.taskID;
 		self.ProjectID = snapshot.projectID;
+		self.ProjectLabel = snapshot.projectLabel;
+		self.ProjectColor = snapshot.projectColor;
 	}
 	return self;
 }

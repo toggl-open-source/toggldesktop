@@ -70,16 +70,20 @@ extension TimeEntrySnapshot {
 	}
 }
 
-@objc class ProjectSnapshot: NSObject {
+@objcMembers class ProjectSnapshot: NSObject {
 
-	@objc let projectAndTaskLabel: String
-	@objc let taskID: UInt64
-	@objc let projectID: UInt64
+	let projectAndTaskLabel: String
+	let taskID: UInt64
+	let projectID: UInt64
+    let projectLabel: String
+    let projectColor: String
 
 	init(timeEntry: TimeEntryViewItem) {
 		self.projectAndTaskLabel = timeEntry.projectAndTaskLabel.safeUnwrapped
 		self.taskID = timeEntry.taskID
 		self.projectID = timeEntry.projectID
+        self.projectLabel = timeEntry.projectLabel
+        self.projectColor = timeEntry.projectColor
 		super.init()
 	}
 
