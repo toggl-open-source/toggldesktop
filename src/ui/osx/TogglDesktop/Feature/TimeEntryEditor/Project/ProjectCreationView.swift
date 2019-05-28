@@ -7,6 +7,7 @@
 //
 
 import Cocoa
+import Carbon.HIToolbox
 
 protocol ProjectCreationViewDelegate: class {
 
@@ -166,6 +167,15 @@ final class ProjectCreationView: NSView {
         let isON = colorBtn.state == .on
         displayMode = isON ? .full : .compact
         colorBtn.layer?.borderWidth = isON ? 4.0 : 0.0
+    }
+
+    override func keyDown(with event: NSEvent) {
+        super.keyDown(with: event)
+
+        // Close if need
+        if event.keyCode == UInt16(kVK_Escape) {
+            cancelBtnOnTap(self)
+        }
     }
 }
 
@@ -349,5 +359,16 @@ extension ProjectCreationView: NSTextFieldDelegate {
         if let textField = obj.object as? NSTextField, textField == projectTextField {
             updateLayoutState()
         }
+    }
+
+    func control(_ control: NSControl, textView: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
+
+        // Escape
+        if commandSelector == #selector(NSResponder.cancelOperation(_:)) {
+            cancelBtnOnTap(self)
+            return true
+        }
+
+        return false
     }
 }
