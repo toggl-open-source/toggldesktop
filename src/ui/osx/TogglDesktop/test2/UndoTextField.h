@@ -8,10 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-NS_ASSUME_NONNULL_BEGIN
-
 @interface UndoTextField : NSTextField
-- (void)registerUndoWithValue:(NSString *)value;
+- (void)registerUndoWithValue:(NSString *_Nullable)value;
 @end
-
-NS_ASSUME_NONNULL_END
