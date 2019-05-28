@@ -389,17 +389,7 @@ extension EditorViewController: AutoCompleteViewDataSourceDelegate {
     func autoCompleteSelectionDidChange(sender: AutoCompleteViewDataSource, item: Any) {
         if sender == projectDatasource {
             if let projectItem = item as? ProjectContentItem {
-                selectedProjectItem = projectItem
-                projectTextField.projectItem = projectItem
-                projectTextField.closeSuggestion()
-
-                // Update
-                let item = projectItem.item
-                let projectGUID = projectTextField.lastProjectGUID ?? ""
-                DesktopLibraryBridge.shared().setProjectForTimeEntryWithGUID(timeEntry.guid,
-                                                                             taskID: item.taskID,
-                                                                             projectID: item.projectID,
-                                                                             projectGUID: projectGUID)
+                updateProjectSelection(with: projectItem)
             }
             return
         }
@@ -411,6 +401,20 @@ extension EditorViewController: AutoCompleteViewDataSourceDelegate {
                 descriptionTextField.closeSuggestion()
             }
         }
+    }
+
+    fileprivate func updateProjectSelection(with projectItem: ProjectContentItem) {
+        selectedProjectItem = projectItem
+        projectTextField.projectItem = projectItem
+        projectTextField.closeSuggestion()
+
+        // Update
+        let item = projectItem.item
+        let projectGUID = projectTextField.lastProjectGUID ?? ""
+        DesktopLibraryBridge.shared().setProjectForTimeEntryWithGUID(timeEntry.guid,
+                                                                     taskID: item.taskID,
+                                                                     projectID: item.projectID,
+                                                                     projectGUID: projectGUID)
     }
 }
 
@@ -557,12 +561,27 @@ extension EditorViewController {
             durationTextField.registerUndo(withValue: snapshot.durationUndoValue)
             startAtTextField.registerUndo(withValue: snapshot.startTimeUndoValue)
             endAtTextField.registerUndo(withValue: snapshot.endTimeUndoValue)
-            
+            registerUndoForProject(with: snapshot.projectLableUndoValue)
         } else {
             descriptionTextField.undoManager?.removeAllActions()
             durationTextField.undoManager?.removeAllActions()
             startAtTextField.undoManager?.removeAllActions()
             endAtTextField.undoManager?.removeAllActions()
+            projectTextField.undoManager?.removeAllActions()
         }
+    }
+
+    private func registerUndoForProject(with snapshot: ProjectSnapshot?) {
+        guard let snapshot = snapshot else { return }
+        let item = AutocompleteItem(snapshot: snapshot)
+        projectTextField.undoManager?.removeAllActions()
+        projectTextField.undoManager?.registerUndo(withTarget: self,
+                                                   selector: #selector(self.updateProjectUndoValue(_:)),
+                                                   object: item)
+    }
+
+    @objc private func updateProjectUndoValue(_ item: AutocompleteItem) {
+        let project = ProjectContentItem(item: item)
+        updateProjectSelection(with: project)
     }
 }
