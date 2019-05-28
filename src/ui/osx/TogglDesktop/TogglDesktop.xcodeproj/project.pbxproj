@@ -154,6 +154,7 @@
 		BA13D21B2269E0B500EB3833 /* CalendarViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA13D2192269E0B500EB3833 /* CalendarViewController.xib */; };
 		BA13E05C21C7BA6000835EC1 /* UserNotificationCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = BA13E05921C7B9D900835EC1 /* UserNotificationCenter.m */; };
 		BA19FC21226DA079006D8741 /* DateCellViewItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA13D20D2269BAA600EB3833 /* DateCellViewItem.xib */; };
+		BA1F9032229D19C000670E0B /* NoInteractionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA1F9031229D19C000670E0B /* NoInteractionView.swift */; };
 		BA276A142240F5B500810C51 /* FloatingErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA276A122240F5B500810C51 /* FloatingErrorView.swift */; };
 		BA2DA0C621A542E30027B7A5 /* NSTextField+Ext.m in Sources */ = {isa = PBXBuildFile; fileRef = BA2DA0C521A542E30027B7A5 /* NSTextField+Ext.m */; };
 		BA2DA12021A691FF0027B7A5 /* TrackingService.m in Sources */ = {isa = PBXBuildFile; fileRef = BA2DA11F21A691FF0027B7A5 /* TrackingService.m */; };
@@ -798,6 +799,7 @@
 		BA13D2192269E0B500EB3833 /* CalendarViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CalendarViewController.xib; sourceTree = "<group>"; };
 		BA13E05921C7B9D900835EC1 /* UserNotificationCenter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = UserNotificationCenter.m; path = test2/UserNotificationCenter.m; sourceTree = SOURCE_ROOT; };
 		BA13E05A21C7B9D900835EC1 /* UserNotificationCenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = UserNotificationCenter.h; path = test2/UserNotificationCenter.h; sourceTree = SOURCE_ROOT; };
+		BA1F9031229D19C000670E0B /* NoInteractionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoInteractionView.swift; sourceTree = "<group>"; };
 		BA276A122240F5B500810C51 /* FloatingErrorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatingErrorView.swift; sourceTree = "<group>"; };
 		BA276A132240F5B500810C51 /* FloatingErrorView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FloatingErrorView.xib; sourceTree = "<group>"; };
 		BA2DA0C421A542E20027B7A5 /* NSTextField+Ext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSTextField+Ext.h"; sourceTree = "<group>"; };
@@ -1201,6 +1203,7 @@
 				BAE49CAD222FC1C900773814 /* TimerContainerBox.swift */,
 				BA6EB8752249DB33003BB8EF /* VerticallyCenteredTextFieldCell.swift */,
 				BA763B7A2268601700DC245A /* PopoverRootView.swift */,
+				BA1F9031229D19C000670E0B /* NoInteractionView.swift */,
 			);
 			name = ui;
 			path = test2;
@@ -2272,6 +2275,7 @@
 				BA9C2E08224C854C002AD2A1 /* ProjectColor.swift in Sources */,
 				BA01404622570805000E5B91 /* TagCellView.swift in Sources */,
 				BA7D334B2248944C00B953A8 /* AutoCompleteView.swift in Sources */,
+				BA1F9032229D19C000670E0B /* NoInteractionView.swift in Sources */,
 				BA03729D21FED85700FC277B /* NSView+Xib.swift in Sources */,
 				BA84363B22533A6600EF5830 /* DesktopLibraryBridge.m in Sources */,
 				74D1D25D17EB71C100E709B0 /* TimeEntryEditViewController.m in Sources */,

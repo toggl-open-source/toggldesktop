@@ -7,11 +7,12 @@
 //
 
 #import "AutoCompleteInput.h"
+#import "TogglDesktop-Swift.h"
 
-@interface AutoCompleteInput ()
+@interface AutoCompleteInput () <NoInteractionViewDelegate>
 
 @property (assign, nonatomic) BOOL constraintsActive;
-@property (strong, nonatomic) NSView *backgroundView;
+@property (strong, nonatomic) NoInteractionView *backgroundView;
 @property (strong, nonatomic) NSLayoutConstraint *heightConstraint;
 @end
 
@@ -38,7 +39,8 @@ NSString *upArrow = @"\u25B2";
 
 - (void)initBackgroundView
 {
-	self.backgroundView = [[NSView alloc] initWithFrame:CGRectZero];
+	self.backgroundView = [[NoInteractionView alloc] initWithFrame:CGRectZero];
+	self.backgroundView.delegate = self;
 	self.backgroundView.translatesAutoresizingMaskIntoConstraints = NO;
 	self.backgroundView.wantsLayer = YES;
 	self.backgroundView.layer.backgroundColor = [NSColor colorWithWhite:0 alpha:0.5f].CGColor;
@@ -267,6 +269,11 @@ NSString *upArrow = @"\u25B2";
 		case AutoCompleteDisplayModeFullscreen :
 			return 18;
 	}
+}
+
+- (void)noInteractionViewMouseDidDown:(NoInteractionView *)sender
+{
+	[self resetTable];
 }
 
 @end
