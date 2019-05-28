@@ -36,9 +36,9 @@ final class EditorViewController: NSViewController {
     @IBOutlet weak var dayNameButton: CursorButton!
     @IBOutlet weak var nextDateBtn: NSButton!
     @IBOutlet weak var previousDateBtn: NSButton!
-    @IBOutlet weak var durationTextField: NSTextField!
-    @IBOutlet weak var startAtTextField: NSTextField!
-    @IBOutlet weak var endAtTextField: NSTextField!
+    @IBOutlet weak var durationTextField: UndoTextField!
+    @IBOutlet weak var startAtTextField: UndoTextField!
+    @IBOutlet weak var endAtTextField: UndoTextField!
     @IBOutlet weak var dateSelectionBox: NSBox!
     @IBOutlet weak var workspaceLbl: NSTextField!
 
@@ -47,6 +47,7 @@ final class EditorViewController: NSViewController {
     var timeEntry: TimeEntryViewItem! {
         didSet {
             fillData()
+            registerUndoForAllFields()
         }
     }
     private var selectedProjectItem: ProjectContentItem?
@@ -541,5 +542,27 @@ extension EditorViewController: CalendarViewControllerDelegate {
 
     func calendarViewControllerDidSelect(date: Date) {
         DesktopLibraryBridge.shared().updateTimeEntry(withStart: date, guid: timeEntry.guid)
+    }
+}
+
+// MARK: Undo
+
+extension EditorViewController {
+
+    fileprivate func registerUndoForAllFields() {
+        guard let timeEntry = timeEntry else { return }
+
+        if let snapshot = UndoManager.shared.getSnapshot(for: timeEntry) {
+            descriptionTextField.registerUndo(withValue: snapshot.descriptionUndoValue)
+            durationTextField.registerUndo(withValue: snapshot.durationUndoValue)
+            startAtTextField.registerUndo(withValue: snapshot.startTimeUndoValue)
+            endAtTextField.registerUndo(withValue: snapshot.endTimeUndoValue)
+            
+        } else {
+            descriptionTextField.undoManager?.removeAllActions()
+            durationTextField.undoManager?.removeAllActions()
+            startAtTextField.undoManager?.removeAllActions()
+            endAtTextField.undoManager?.removeAllActions()
+        }
     }
 }

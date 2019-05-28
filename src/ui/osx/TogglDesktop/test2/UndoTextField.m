@@ -22,7 +22,7 @@
 	return self.undo;
 }
 
-- (void)registerUndoWithValue:(NSString *)value
+- (void)registerUndoWithValue:(NSString *_Nullable)value
 {
 	if (value == nil)
 	{

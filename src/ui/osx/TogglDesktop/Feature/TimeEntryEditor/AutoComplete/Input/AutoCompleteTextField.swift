@@ -17,7 +17,7 @@ protocol AutoCompleteTextFieldDelegate: class {
     func autoCompleteShouldCloseEditor(_ sender: AutoCompleteTextField)
 }
 
-class AutoCompleteTextField: NSTextField, NSTextFieldDelegate, AutoCompleteViewDelegate {
+class AutoCompleteTextField: UndoTextField, NSTextFieldDelegate, AutoCompleteViewDelegate {
 
     enum State {
         case expand
