@@ -1,6 +1,25 @@
 {
     "versions": [
         {
+            "version": "7.4.422",
+            "rows": [
+                "Fixed issue with confirmless deletion of a running time entry",
+                "Fixed crash when pressing up/down on autocomplete",
+                "Fixed cursor placement issue when clicking on text fields",
+                "Fixed issue with cursor changing text field while an entry is syncing",
+                "Fixed issue with Ctrl+Z changing text/time entry field to values unrelated to current time entry",
+                "Added more visual feedback when enabling/disabling 'Autotracker' and 'Reminder to track time' in Preferences",
+                "Fixed issue with incorrect autocomplete list in some cases",
+                "Fixed crash when pressing left arrow key when no fields are focused",
+                "Fixed issue with date field being automatically set to the day before the selected date",
+                "Disabled calendar when the timer is running",
+                "Fixed crash after idle notification was closed with Alt+F4",
+                "Improved signup error messages"
+            ],
+            "date": "May 28th 2019",
+            "beta": "true"
+        },
+        {
             "version": "7.4.345",
             "rows": [
                 "Send more log info with in-app feedback",
