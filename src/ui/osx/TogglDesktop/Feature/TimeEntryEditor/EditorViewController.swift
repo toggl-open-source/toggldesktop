@@ -7,6 +7,7 @@
 //
 
 import Cocoa
+import Carbon.HIToolbox
 
 final class EditorViewController: NSViewController {
 
@@ -176,6 +177,15 @@ final class EditorViewController: NSViewController {
             projectTextField.closeSuggestion()
         } else if tagTextField.state == .expand {
             tagTextField.closeSuggestion()
+        }
+    }
+
+    override func keyDown(with event: NSEvent) {
+        super.keyDown(with: event)
+
+        // Close if need
+        if event.keyCode == UInt16(kVK_Escape) {
+            closeBtnOnTap(self)
         }
     }
 }
