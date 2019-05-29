@@ -135,18 +135,35 @@ std::string getDEName() {
     return std::string(env);
 }
 
-std::string getDistro() {
+std::string getDistroName() {
     std::string name, version;
     std::ifstream osinfo("/etc/os-release", std::ifstream::in);
     while (osinfo.good() && !osinfo.eof()) {
         std::string line;
         std::getline(osinfo, line);
         if (line.find("NAME=") == 0)
-            name = line.substr(5);
-        if (line.find("VERSION_ID=") == 0)
-            version = line.substr(11);
+            return line.substr(5);
     }
-    return name + version;
+    return std::string();
+}
+
+std::string getDistroVersion() {
+    std::string name, version;
+    std::ifstream osinfo("/etc/os-release", std::ifstream::in);
+    while (osinfo.good() && !osinfo.eof()) {
+        std::string line;
+        std::getline(osinfo, line);
+        if (line.find("VERSION_ID=") == 0)
+            return line.substr(11);
+    }
+    return std::string();
+}
+
+std::string getSessionType() {
+    char *val = getenv("XDG_SESSION_TYPE");
+    if (val && *val)
+        return val;
+    return std::string();
 }
 
 void RetrieveOsDetails(std::stringstream &ss) {
@@ -158,10 +175,41 @@ void RetrieveOsDetails(std::stringstream &ss) {
     if (!de.empty()) {
         ss << "osdetails/de-" << de << ";";
     }
-    std::string distro = getDistro();
+    std::string distro = getDistroName() + getDistroVersion();
     if (!distro.empty()) {
         ss << "osdetails/distro-" << distro << ";";
     }
+    std::string sessionType = getSessionType();
+    if (!sessionType.empty()) {
+        ss << "osdetails/session-" << sessionType << ";";
+    }
+    ss << "osdetails/build-" << TOGGL_BUILD_TYPE;
+}
+
+std::map<std::string, std::string> RetrieveOsDetailsMap() {
+    std::map<std::string, std::string> result;
+    std::string wm = getWMName();
+    if (!wm.empty()) {
+        result["window_manager"] = wm;
+    }
+    std::string de = getDEName();
+    if (!de.empty()) {
+        result["desktop_environment"] = de;
+    }
+    std::string distro = getDistroName();
+    if (!distro.empty()) {
+        result["distribution"] = distro;
+    }
+    std::string version = getDistroVersion();
+    if (!version.empty()) {
+        result["distribution_version"] = version;
+    }
+    std::string sessionType = getSessionType();
+    if (!sessionType.empty()) {
+        result["session_type"] = sessionType;
+    }
+    result["build_type"] = TOGGL_BUILD_TYPE;
+    return result;
 }
 
 #endif // __linux
