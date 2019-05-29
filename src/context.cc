@@ -1134,7 +1134,7 @@ error Context::LoadUpdateFromJSONString(const std::string json) {
         resetLastTrackingReminderTime();
     }
 
-    return displayError(save());
+    return displayError(save(false));
 }
 
 void Context::switchWebSocketOn() {
@@ -2173,7 +2173,7 @@ error Context::attemptOfflineLogin(const std::string email,
 
     updateUI(UIElements::Reset());
 
-    return save();
+    return save(false);
 }
 
 error Context::AsyncLogin(const std::string email,
@@ -2235,7 +2235,7 @@ error Context::Login(
             }
         }
         overlay_visible_ = false;
-        return displayError(save());
+        return displayError(save(false));
     } catch(const Poco::Exception& exc) {
         return displayError(exc.displayText());
     } catch(const std::exception& ex) {
@@ -2399,7 +2399,7 @@ error Context::SetLoggedInUserFromJSON(
 
     updateUI(UIElements::Reset());
 
-    err = save();
+    err = save(false);
     if (err != noError) {
         return displayError(err);
     }
@@ -2532,7 +2532,7 @@ TimeEntry *Context::Start(
                           tags);
     }
 
-    error err = save();
+    error err = save(true);
     if (err != noError) {
         displayError(err);
         return nullptr;
@@ -2649,7 +2649,7 @@ TimeEntry *Context::ContinueLatest(const bool prevent_on_app) {
 
 
 
-    error err = save();
+    error err = save(true);
     if (noError != err) {
         displayError(err);
         return nullptr;
@@ -2715,7 +2715,7 @@ TimeEntry *Context::Continue(
             settings_.manual_mode);
     }
 
-    error err = save();
+    error err = save(true);
     if (err != noError) {
         displayError(err);
         return nullptr;
@@ -2778,7 +2778,7 @@ error Context::DeleteTimeEntryByGUID(const std::string GUID) {
     }
     te->ClearValidationError();
     te->Delete();
-    return displayError(save());
+    return displayError(save(true));
 }
 
 error Context::SetTimeEntryDuration(
@@ -2810,7 +2810,7 @@ error Context::SetTimeEntryDuration(
     }
 
     te->SetDurationUserInput(duration);
-    return displayError(save());
+    return displayError(save(true));
 }
 
 error Context::SetTimeEntryProject(
@@ -2876,7 +2876,7 @@ error Context::SetTimeEntryProject(
     } catch(const std::string& ex) {
         return displayError(ex);
     }
-    return displayError(save());
+    return displayError(save(true));
 }
 
 error Context::SetTimeEntryDate(
@@ -2935,7 +2935,7 @@ error Context::SetTimeEntryDate(
 
     te->SetStartUserInput(s, false);
 
-    return displayError(save());
+    return displayError(save(true));
 }
 
 
@@ -2995,7 +2995,7 @@ error Context::SetTimeEntryStart(
 
     te->SetStartUserInput(s, GetKeepEndTimeFixed());
 
-    return displayError(save());
+    return displayError(save(true));
 }
 
 error Context::SetTimeEntryStop(
@@ -3058,7 +3058,7 @@ error Context::SetTimeEntryStop(
 
     te->SetStopUserInput(s);
 
-    return displayError(save());
+    return displayError(save(true));
 }
 
 error Context::SetTimeEntryTags(
@@ -3095,7 +3095,7 @@ error Context::SetTimeEntryTags(
         te->SetUIModified();
     }
 
-    return displayError(save());
+    return displayError(save(true));
 }
 
 error Context::SetTimeEntryBillable(
@@ -3132,7 +3132,7 @@ error Context::SetTimeEntryBillable(
         te->SetUIModified();
     }
 
-    return displayError(save());
+    return displayError(save(true));
 }
 
 error Context::SetTimeEntryDescription(
@@ -3174,7 +3174,7 @@ error Context::SetTimeEntryDescription(
         te->SetUIModified();
     }
 
-    return displayError(save());
+    return displayError(save(true));
 }
 
 error Context::Stop(const bool prevent_on_app) {
@@ -3243,7 +3243,7 @@ error Context::DiscardTimeAt(
         split = user_->DiscardTimeAt(guid, at, split_into_new_entry);
     }
 
-    error err = save();
+    error err = save(true);
     if (err != noError) {
         return displayError(err);
     }
@@ -3282,7 +3282,7 @@ TimeEntry *Context::DiscardTimeAndContinue(
         user_->DiscardTimeAt(guid, at, false);
     }
 
-    error err = save();
+    error err = save(true);
     if (err != noError) {
         displayError(err);
         return nullptr;
@@ -3309,7 +3309,7 @@ error Context::ToggleTimelineRecording(const bool record_timeline) {
     try {
         user_->SetRecordTimeline(record_timeline);
 
-        error err = save();
+        error err = save(false);
         if (err != noError) {
             return displayError(err);
         }
@@ -3395,7 +3395,7 @@ error Context::SetDefaultProject(
                 user_->SetDefaultTID(0);
             }
         }
-        return displayError(save());
+        return displayError(save(false));
     } catch(const Poco::Exception& exc) {
         return displayError(exc.displayText());
     } catch(const std::exception& ex) {
@@ -3545,7 +3545,7 @@ error Context::AddAutotrackerRule(
         user_->related.AutotrackerRules.push_back(rule);
     }
 
-    error err = save();
+    error err = save(false);
     if (noError != err) {
         return displayError(err);
     }
@@ -3577,7 +3577,7 @@ error Context::DeleteAutotrackerRule(
         }
     }
 
-    return displayError(save());
+    return displayError(save(false));
 }
 
 Project *Context::CreateProject(
@@ -3668,7 +3668,7 @@ Project *Context::CreateProject(
             billable);
     }
 
-    err = save();
+    err = save(false);
     if (err != noError) {
         displayError(err);
         return nullptr;
@@ -3715,7 +3715,7 @@ error Context::AddObmAction(
         action->SetValue(trimmed_value);
         user_->related.ObmActions.push_back(action);
     }
-    return displayError(save());
+    return displayError(save(false));
 }
 
 Client *Context::CreateClient(
@@ -3758,7 +3758,7 @@ Client *Context::CreateClient(
         result = user_->CreateClient(workspace_id, trimmed_client_name);
     }
 
-    err = save();
+    err = save(false);
     if (err != noError) {
         displayError(err);
         return nullptr;
@@ -3917,7 +3917,7 @@ error Context::runObmExperiments() {
             }
         }
         // Save the (seen/unseen) state
-        error err = save();
+        error err = save(false);
         if (err != noError) {
             return err;
         }
@@ -4810,7 +4810,7 @@ error Context::pushClients(
         if (resp.err != noError) {
             // if we're able to solve the error
             if ((*it)->ResolveError(resp.body)) {
-                displayError(save());
+                displayError(save(false));
             }
             continue;
         }
@@ -4867,7 +4867,7 @@ error Context::pushProjects(
         if (resp.err != noError) {
             // if we're able to solve the error
             if ((*it)->ResolveError(resp.body)) {
-                displayError(save());
+                displayError(save(false));
             }
             continue;
         }
@@ -4956,7 +4956,7 @@ error Context::pushEntries(
         if (resp.err != noError) {
             // if we're able to solve the error
             if ((*it)->ResolveError(resp.body)) {
-                displayError(save());
+                displayError(save(false));
             }
 
             // Not found on server. Probably deleted already.
