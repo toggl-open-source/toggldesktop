@@ -196,7 +196,9 @@ extension AutoCompleteTextField {
 
         // Enter
         if commandSelector == #selector(NSResponder.insertNewline(_:)) {
-            return autoCompleteView.tableView.handleKeyboardEvent(currentEvent)
+            if state == .expand {
+                return autoCompleteView.tableView.handleKeyboardEvent(currentEvent)
+            }
         }
 
         // Escape
