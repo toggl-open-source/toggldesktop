@@ -98,6 +98,7 @@ extern "C" {
         char_t *ProjectLabel;
         char_t *ClientLabel;
         char_t *ProjectColor;
+        char_t *ProjectGUID;
         uint64_t TaskID;
         uint64_t ProjectID;
         uint64_t WorkspaceID;
