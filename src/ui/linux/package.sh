@@ -44,12 +44,14 @@ rm -fr include lib/cmake
 if [ ! -z "$CMAKE_PREFIX_PATH" ]; then
     export LD_LIBRARY_PATH="$CMAKE_PREFIX_PATH/../"
 fi
-CHECK cp $(ldd bin/TogglDesktop | grep -e libQt -e ssl -e libicu | sed 's/.* => \(.*\)[(]0x.*/\1/') lib
 
 corelib=$(ldd bin/TogglDesktop | grep -e libQt5Core  | sed 's/.* => \(.*\)[(]0x.*/\1/')
 libdir=$(dirname "$corelib")
 qmake=$(ls $libdir/../bin/{qmake,qmake-qt5} 2>/dev/null)
+
+CHECK cp $(ldd bin/TogglDesktop | grep -e libQt -e ssl -e libicu | sed 's/.* => \(.*\)[(]0x.*/\1/') lib
 CHECK ls "$qmake" >/dev/null
+
 libexecdir=$($qmake -query QT_INSTALL_LIBEXECS)
 plugindir=$($qmake -query QT_INSTALL_PLUGINS)
 translationdir=$($qmake -query QT_INSTALL_TRANSLATIONS)
@@ -62,12 +64,12 @@ for i in $PLUGINS; do
     CHECK mkdir -p $newpath
     CHECK cp $plugindir/$i $newpath
     CHECK patchelf --set-rpath '\$ORIGIN/../../../' $newpath/$file >> ../patchelf.log
-    CHECK cp -n $(ldd $newpath/$file | grep -e libQt -e ssl | sed 's/.* => \(.*\)[(]0x.*/\1/') lib
+    CHECK cp -arn $(ldd $newpath/$file | grep -e libQt -e ssl | sed 's/.* => \(.*\)[(]0x.*/\1/') lib
 done
 
 for i in $(ls lib/*.so); do
     for j in $(ldd $i | grep -e libQt | sed 's/.* => \(.*\)[(]0x.*/\1/'); do
-        CHECK cp $j lib
+        CHECK cp -arn $j lib
     done
 done
 
