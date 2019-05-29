@@ -123,7 +123,8 @@ class Autocomplete {
     , Billable(false)
     , Tags("")
     , WorkspaceName("")
-    , ClientID(0) {}
+    , ClientID(0)
+    , ProjectGUID("") {}
 
     bool IsTimeEntry() const {
         return kAutocompleteItemTE == Type;
@@ -178,6 +179,7 @@ class Autocomplete {
     std::string Tags;
     std::string WorkspaceName;
     uint64_t ClientID;
+    std::string ProjectGUID;
 
     bool operator == (const Autocomplete& other) const;
 };

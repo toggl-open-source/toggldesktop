@@ -262,6 +262,7 @@ void RelatedData::timeEntryAutocompleteItems(
         if (p) {
             autocomplete_item.ProjectColor = p->ColorCode();
             autocomplete_item.ProjectID = p->ID();
+            autocomplete_item.ProjectGUID = p->GUID();
             autocomplete_item.ProjectLabel = p->Name();
             if (p->CID()) {
                 autocomplete_item.ClientLabel = p->ClientName();
@@ -344,6 +345,7 @@ void RelatedData::taskAutocompleteItems(
         if (p) {
             autocomplete_item.ProjectColor = p->ColorCode();
             autocomplete_item.ProjectID = p->ID();
+            autocomplete_item.ProjectGUID = p->GUID();
             autocomplete_item.ProjectLabel = p->Name();
             autocomplete_item.Billable = p->Billable();
             if (p->CID()) {
@@ -411,6 +413,7 @@ void RelatedData::projectAutocompleteItems(
             autocomplete_item.ClientID = c->ID();
         }
         autocomplete_item.ProjectID = p->ID();
+        autocomplete_item.ProjectGUID = p->GUID();
         autocomplete_item.ProjectColor = p->ColorCode();
         if (ws_names) {
             autocomplete_item.WorkspaceName = (*ws_names)[p->WID()];
