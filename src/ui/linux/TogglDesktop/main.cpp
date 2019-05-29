@@ -107,6 +107,7 @@ int main(int argc, char *argv[]) try {
     } else {
         w.show();
     }
+    TogglApi::notifyBugsnag("TEST1", "TEST1", "TEST1");
 
     return a.exec();
 } catch (std::exception &e) {  // NOLINT

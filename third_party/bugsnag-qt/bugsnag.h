@@ -119,17 +119,25 @@ class App {
 
 class Device {
  public:
-    Device()
-        : osVersion("")
-    , hostname("") {}
+    Device() {}
 
     void write(QJsonObject &json) const {  // NOLINT
+        json["osName"] = osName;
         json["osVersion"] = osVersion;
         json["hostname"] = hostname;
+        json["wm"] = wm;
+        json["session_type"] = session;
+        json["build_type"] = build;
+        json["de"] = de;
     }
 
+    QString osName;
     QString osVersion;
     QString hostname;
+    QString wm;
+    QString session;
+    QString build;
+    QString de;
 };
 
 class Event {
