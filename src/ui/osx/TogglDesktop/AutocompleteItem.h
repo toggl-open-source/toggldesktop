@@ -27,6 +27,7 @@
 @property NSString *WorkspaceName;
 @property uint64_t ID;
 @property uint64_t ProjectID;
+@property (copy, nonatomic) NSString *ProjectGUID;
 @property uint64_t WorkspaceID;
 @property uint64_t TaskID;
 @property int64_t Type;

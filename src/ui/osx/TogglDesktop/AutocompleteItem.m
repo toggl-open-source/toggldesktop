@@ -96,6 +96,14 @@
 	{
 		self.tags = nil;
 	}
+	if (data->ProjectGUID)
+	{
+		self.ProjectGUID = [NSString stringWithUTF8String:data->ProjectGUID];
+	}
+	else
+	{
+		self.ProjectGUID = @"";
+	}
 
 	if (data->Billable)
 	{
