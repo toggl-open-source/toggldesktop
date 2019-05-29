@@ -574,14 +574,22 @@ extension EditorViewController {
     private func registerUndoForProject(with snapshot: ProjectSnapshot?) {
         guard let snapshot = snapshot else { return }
         let item = AutocompleteItem(snapshot: snapshot)
-        projectTextField.undoManager?.removeAllActions()
+        projectTextField.undoManager?.removeAllActions(withTarget: self)
         projectTextField.undoManager?.registerUndo(withTarget: self,
                                                    selector: #selector(self.updateProjectUndoValue(_:)),
                                                    object: item)
     }
 
     @objc private func updateProjectUndoValue(_ item: AutocompleteItem) {
+        let oldValue = selectedProjectItem?.item
         let project = ProjectContentItem(item: item)
         updateProjectSelection(with: project)
+
+        // Register to redo
+        if let oldValue = oldValue {
+            projectTextField.undoManager?.registerUndo(withTarget: self,
+                                                       selector: #selector(self.updateProjectUndoValue(_:)),
+                                                       object: oldValue)
+        }
     }
 }
