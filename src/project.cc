@@ -7,6 +7,7 @@
 
 #include "Poco/UTF8String.h"
 #include "Poco/NumberParser.h"
+#include "Poco/UTF8String.h"
 
 #include "./formatter.h"
 
@@ -85,7 +86,7 @@ void Project::SetBillable(const bool value) {
 
 void Project::SetColor(const std::string value) {
     if (color_ != value) {
-        color_ = value;
+        color_ = Poco::UTF8::toLower(value);
         SetDirty();
     }
 }
@@ -154,7 +155,7 @@ Json::Value Project::SaveToJSON() const {
     // There is no way to set it in UI and free ws gets error when it's sent
     // n["billable"] = Billable();
     n["is_private"] = IsPrivate();
-    n["color"] = Color();
+    n["color"] = Poco::UTF8::toLower(Color());
     n["active"] = Active();
 
     return n;
