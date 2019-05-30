@@ -244,6 +244,7 @@ TimeEntry *User::Continue(
     result->SetDescription(existing->Description());
     result->SetWID(existing->WID());
     result->SetPID(existing->PID());
+    result->SetProjectGUID(existing->ProjectGUID());
     result->SetTID(existing->TID());
     result->SetBillable(existing->Billable());
     result->SetTags(existing->Tags());
