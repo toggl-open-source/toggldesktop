@@ -11,14 +11,14 @@
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customView id="c22-O7-iKe" customClass="ColorPickerView" customModule="TogglDesktop" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="220" height="190"/>
+            <rect key="frame" x="0.0" y="0.0" width="220" height="96"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <stackView distribution="fill" orientation="vertical" alignment="centerX" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FZc-LL-v7b">
-                    <rect key="frame" x="0.0" y="26" width="220" height="164"/>
+                    <rect key="frame" x="0.0" y="26" width="220" height="70"/>
                     <subviews>
                         <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" horizontalScrollElasticity="none" verticalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="mxV-pt-2uu">
-                            <rect key="frame" x="0.0" y="94" width="220" height="70"/>
+                            <rect key="frame" x="0.0" y="0.0" width="220" height="70"/>
                             <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="xTa-DE-szS">
                                 <rect key="frame" x="0.0" y="0.0" width="220" height="70"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -46,8 +46,8 @@
                                 <autoresizingMask key="autoresizingMask"/>
                             </scroller>
                         </scrollView>
-                        <customView translatesAutoresizingMaskIntoConstraints="NO" id="Bng-FC-0Ya">
-                            <rect key="frame" x="0.0" y="0.0" width="220" height="94"/>
+                        <customView hidden="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Bng-FC-0Ya">
+                            <rect key="frame" x="0.0" y="-24" width="220" height="94"/>
                             <subviews>
                                 <customView translatesAutoresizingMaskIntoConstraints="NO" id="ekt-4K-GjN" customClass="ColorGraphicsView" customModule="TogglDesktop" customModuleProvider="target">
                                     <rect key="frame" x="5" y="0.0" width="210" height="94"/>
