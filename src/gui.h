@@ -191,13 +191,15 @@ class Generic {
     , WID(0)
     , GUID("")
     , Name("")
-    , WorkspaceName("") {}
+    , WorkspaceName("")
+    , Premium(false) {}
 
     uint64_t ID;
     uint64_t WID;
     std::string GUID;
     std::string Name;
     std::string WorkspaceName;
+    bool_t Premium;
 
     bool operator == (const Generic& other) const;
 };

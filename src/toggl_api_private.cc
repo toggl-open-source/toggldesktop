@@ -107,6 +107,7 @@ TogglGenericView *generic_to_view_item(
     result->GUID = copy_string(c.GUID);
     result->Name = copy_string(c.Name);
     result->WorkspaceName = copy_string(c.WorkspaceName);
+    result->Premium = c.Premium;
     return result;
 }
 

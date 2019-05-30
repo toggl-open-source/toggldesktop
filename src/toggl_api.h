@@ -118,6 +118,7 @@ extern "C" {
         char_t *GUID;
         char_t *Name;
         char_t *WorkspaceName;
+        bool_t Premium;
         void *Next;
     } TogglGenericView;
 
