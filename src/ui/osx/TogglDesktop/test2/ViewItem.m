@@ -15,7 +15,7 @@
 	self.WID = data->WID;
 	self.Name = [NSString stringWithUTF8String:data->Name];
 	self.GUID = nil;
-	self.Premium =  data->Premium;
+	self.Premium = data->Premium;
 	if (data->GUID)
 	{
 		self.GUID = [NSString stringWithUTF8String:data->GUID];

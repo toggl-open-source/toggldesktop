@@ -41,7 +41,6 @@ final class ProjectCreationView: NSView {
     @IBOutlet weak var clientAutoComplete: ClientAutoCompleteTextField!
     @IBOutlet weak var colorBtn: CursorButton!
     @IBOutlet weak var colorPickerContainerBox: NSBox!
-    @IBOutlet weak var colorPickerContainerView: NSView!
     @IBOutlet weak var publicProjectCheckBox: NSButton!
     
     // MARK: Variables
@@ -61,7 +60,9 @@ final class ProjectCreationView: NSView {
                 clientAutoComplete.stringValue = ""
             }
 
-            // Update color picker visible
+            // Update Premium plan
+            let isPremium = selectedWorkspace?.isPremium ?? false
+            updateWorkspacePlan(isPremium: isPremium)
         }
     }
     private var selectedClient: Client?
@@ -187,7 +188,7 @@ extension ProjectCreationView {
 
     fileprivate func initCommon() {
         colorPickerView.isHidden = false
-        colorPickerContainerView.isHidden = true
+        colorPickerContainerBox.isHidden = true
         colorBtn.wantsLayer = true
         colorBtn.layer?.cornerRadius = 12.0
         colorBtn.layer?.borderColor = colorBtnBorderColor.cgColor
@@ -213,19 +214,22 @@ extension ProjectCreationView {
         workspaceAutoComplete.layoutArrowBtn(with: self)
         clientAutoComplete.layoutArrowBtn(with: self)
 
-        colorPickerContainerView.wantsLayer = true
-        colorPickerContainerView.layer?.masksToBounds = true
-        colorPickerContainerView.layer?.cornerRadius = 8
+        colorPickerContainerBox.wantsLayer = true
+        colorPickerContainerBox.layer?.masksToBounds = true
+        colorPickerContainerBox.layer?.cornerRadius = 8
+
+        // Hide color wheel for free workspace by default
+        updateWorkspacePlan(isPremium: false)
     }
 
     fileprivate func updateLayout() {
         let height = displayMode.height
         switch displayMode {
         case .compact:
-            colorPickerContainerView.isHidden = true
+            colorPickerContainerBox.isHidden = true
             self.frame = CGRect(x: frame.origin.x, y: frame.origin.y, width: frame.size.width, height: height)
         case .full:
-            colorPickerContainerView.isHidden = false
+            colorPickerContainerBox.isHidden = false
             self.frame = CGRect(x: frame.origin.x, y: frame.origin.y, width: frame.size.width, height: height)
         }
         delegate?.projectCreationDidUpdateSize()
@@ -291,6 +295,10 @@ extension ProjectCreationView {
     fileprivate func closeAllSuggestions() {
         workspaceAutoComplete.closeSuggestion()
         clientAutoComplete.closeSuggestion()
+    }
+
+    fileprivate func updateWorkspacePlan(isPremium: Bool) {
+        colorPickerView.setColorWheelHidden(!isPremium)
     }
 }
 

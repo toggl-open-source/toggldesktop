@@ -25,7 +25,8 @@ final class ColorPickerView: NSView {
     @IBOutlet weak var collectionView: NSCollectionView!
     @IBOutlet weak var colorWheelView: ColorGraphicsView!
     @IBOutlet weak var colorWheelContainerView: NSView!
-    
+    @IBOutlet weak var resetBtnTop: NSLayoutConstraint!
+
     // MARK: Variables
 
     weak var delegate: ColorPickerViewDelegate?
@@ -54,6 +55,11 @@ final class ColorPickerView: NSView {
 
     @IBAction func resetBtnOnTap(_ sender: Any) {
         delegate?.colorPickerShouldResetColor()
+    }
+
+    func setColorWheelHidden(_ isHidden: Bool) {
+        resetBtnTop.constant = isHidden ? 0 : 5
+        colorWheelContainerView.isHidden = isHidden
     }
 }
 
