@@ -165,14 +165,18 @@ extern void *ctx;
 	{
 		CGRect oldFrame = CGRectZero;
 		CGRect newFrame = CGRectZero;
-		if ([change objectForKey:@"old"] != [NSNull null])
+		id oldValue = change[NSKeyValueChangeOldKey];
+		id newValue = change[NSKeyValueChangeNewKey];
+
+		if ([oldValue respondsToSelector:@selector(CGRectValue)])
 		{
-			oldFrame = [[change objectForKey:@"old"] CGRectValue];
+			oldFrame = [oldValue CGRectValue];
 		}
-		if ([object valueForKeyPath:keyPath] != [NSNull null])
+		if ([newValue respondsToSelector:@selector(CGRectValue)])
 		{
-			newFrame = [[object valueForKeyPath:keyPath] CGRectValue];
+			newFrame = [newValue CGRectValue];
 		}
+
 		if (oldFrame.size.width != newFrame.size.width)
 		{
 			// HACK
