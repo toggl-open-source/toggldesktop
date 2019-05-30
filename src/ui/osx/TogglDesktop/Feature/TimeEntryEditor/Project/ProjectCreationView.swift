@@ -67,7 +67,6 @@ final class ProjectCreationView: NSView {
             isPremiumWorkspace = selectedWorkspace?.isPremium ?? false
         }
     }
-    private var isPremiumWorkspace = false { didSet { updateWorkspacePlanLayout() }}
     private var selectedClient: Client?
     private var isPublic = false
     private lazy var clientDatasource: ClientDataSource = {
@@ -95,6 +94,16 @@ final class ProjectCreationView: NSView {
     private var displayMode = DisplayMode.normal {
         didSet {
             updateLayout()
+        }
+    }
+    private var isPremiumWorkspace = false {
+        didSet {
+            updateWorkspacePlanLayout()
+
+            // Reset custom color if we switch Premium -> Free
+            if oldValue && !isPremiumWorkspace {
+                colorPickerView.resetBtnOnTap(self)
+            }
         }
     }
     var suitableHeight: CGFloat {
