@@ -202,6 +202,12 @@
          </item>
          <item row="0" column="0">
           <widget class="QLabel" name="newProjectWorkspaceLabel">
+           <property name="minimumSize">
+            <size>
+             <width>99</width>
+             <height>0</height>
+            </size>
+           </property>
            <property name="text">
             <string>Workspace:</string>
            </property>
@@ -246,8 +252,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="newClientName">
-             </widget>
+             <widget class="QLineEdit" name="newClientName"/>
             </item>
             <item>
              <widget class="QPushButton" name="addClientButton">
@@ -482,8 +487,7 @@
        </widget>
       </item>
       <item row="3" column="1" colspan="2">
-       <widget class="QListWidget" name="tags">
-       </widget>
+       <widget class="QListWidget" name="tags"/>
       </item>
       <item row="4" column="0">
        <widget class="QLabel" name="newTagLabel">
@@ -498,6 +502,9 @@
           <width>0</width>
           <height>0</height>
          </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true"/>
         </property>
         <property name="text">
          <string>New Tag:</string>
@@ -553,12 +560,18 @@
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_5">
       <property name="spacing">
-       <number>15</number>
+       <number>6</number>
       </property>
       <property name="leftMargin">
        <number>0</number>
       </property>
       <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
        <number>0</number>
       </property>
       <item>
@@ -571,7 +584,7 @@
         </property>
         <property name="sizeHint" stdset="0">
          <size>
-          <width>128</width>
+          <width>105</width>
           <height>20</height>
          </size>
         </property>
@@ -580,7 +593,7 @@
       <item>
        <widget class="QCheckBox" name="billable">
         <property name="styleSheet">
-         <string notr="true">color:rgb(85, 85, 85);</string>
+         <string notr="true"/>
         </property>
         <property name="text">
          <string>Billable</string>
@@ -591,34 +604,57 @@
     </widget>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="workspaceNameWidget">
-     <item>
-      <widget class="QLabel" name="label_2">
-       <property name="minimumSize">
-        <size>
-         <width>125</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>125</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>Workspace:</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="workspaceNameLabel">
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </item>
-    </layout>
+    <widget class="QFrame" name="wsFrame">
+     <layout class="QHBoxLayout" name="workspaceNameWidget">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QLabel" name="wslabel">
+        <property name="minimumSize">
+         <size>
+          <width>99</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>99</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="autoFillBackground">
+         <bool>false</bool>
+        </property>
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
+        <property name="text">
+         <string>Workspace:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="workspaceNameLabel">
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
    </item>
    <item>
     <widget class="QWidget" name="buttons" native="true">
