@@ -596,6 +596,7 @@ void Context::updateUI(const UIElements &what) {
                 view.WID = ws->ID();
                 view.Name = ws->Name();
                 view.WorkspaceName = ws->Name();
+                view.Premium = ws->Premium();
                 workspace_views.push_back(view);
             }
         }
@@ -616,6 +617,7 @@ void Context::updateUI(const UIElements &what) {
                     Workspace *ws = user_->related.WorkspaceByID(c->WID());
                     if (ws) {
                         view.WorkspaceName = ws->Name();
+                        view.Premium = ws->Premium();
                     }
                 }
                 client_views.push_back(view);

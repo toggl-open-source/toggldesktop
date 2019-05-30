@@ -14,12 +14,14 @@ final class Workspace {
     let WID: UInt64
     let name: String
     let guid: String?
+    let isPremium: Bool
 
     init(viewItem: ViewItem) {
         self.ID = viewItem.id
         self.WID = viewItem.wid
         self.name = viewItem.name ?? ""
         self.guid = viewItem.guid ?? nil
+        self.isPremium = viewItem.premium
     }
 }
 

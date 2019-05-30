@@ -60,6 +60,8 @@ final class ProjectCreationView: NSView {
                 selectedClient = nil
                 clientAutoComplete.stringValue = ""
             }
+
+            // Update color picker visible
         }
     }
     private var selectedClient: Client?
