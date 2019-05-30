@@ -211,6 +211,8 @@
                     </subviews>
                     <constraints>
                         <constraint firstAttribute="trailing" secondItem="H6x-LK-MTr" secondAttribute="trailing" id="84y-J7-xaq"/>
+                        <constraint firstAttribute="trailing" secondItem="1oc-cY-QWd" secondAttribute="trailing" id="piX-EB-QmW"/>
+                        <constraint firstItem="1oc-cY-QWd" firstAttribute="leading" secondItem="OJp-YS-19d" secondAttribute="leading" id="zL2-YD-z6B"/>
                     </constraints>
                     <visibilityPriorities>
                         <integer value="1000"/>
