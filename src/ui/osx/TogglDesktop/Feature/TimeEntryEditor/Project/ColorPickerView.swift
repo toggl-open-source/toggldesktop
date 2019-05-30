@@ -124,7 +124,7 @@ extension ColorPickerView: ChangeColorDelegate {
     }
 
     private func notifySelectedColorChange(with color: HSV) {
-        let hex = color.toNSColor().hexString
+        let hex = color.toNSColor().hexString.lowercased()
         let color = ProjectColor(colorHex: hex)
         delegate?.colorPickerDidSelectColor(color)
     }
