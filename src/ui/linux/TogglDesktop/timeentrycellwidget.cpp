@@ -93,7 +93,6 @@ void TimeEntryCellWidget::setLoadMore(bool load_more) {
     ui->dataFrame->setStyleSheet(load_more ? "QPushButton#dataFrame { border:none }" : "");
     ui->dataFrame->setFocusPolicy(load_more ? Qt::NoFocus : Qt::StrongFocus);
     if (load_more) {
-        ui->dataFrame->setStyleSheet("#dataFrame { background-color: palette(window); }");
         ui->unsyncedicon->setVisible(false);
     }
 }
