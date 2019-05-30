@@ -32,7 +32,7 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">font-size:13px;background-color: palette(shadow);color:palette(light);</string>
+   <string notr="true">font-size:13px;background-color: rgb(22, 22, 22);color:palette(light);</string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,0,0,0,0">
    <property name="spacing">
@@ -104,7 +104,7 @@
          </font>
         </property>
         <property name="styleSheet">
-         <string notr="true">background: palette(shadow); color: rgb(200, 200, 200); combobox-popup: 0; font-size: 14px;</string>
+         <string notr="true">background: rgb(22, 22, 22); color: rgb(200, 200, 200); combobox-popup: 0; font-size: 14px;</string>
         </property>
         <property name="editable">
          <bool>true</bool>
