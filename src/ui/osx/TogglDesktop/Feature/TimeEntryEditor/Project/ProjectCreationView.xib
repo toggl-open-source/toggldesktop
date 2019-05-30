@@ -130,26 +130,14 @@
                                 <real value="3.4028234663852886e+38"/>
                             </customSpacing>
                         </stackView>
-                        <customView hidden="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Z6i-Vm-FEs">
+                        <box hidden="YES" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" boxType="custom" borderType="none" borderWidth="0.0" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="1oc-cY-QWd">
                             <rect key="frame" x="0.0" y="120" width="270" height="190"/>
-                            <subviews>
-                                <box boxType="custom" borderType="none" borderWidth="0.0" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="1oc-cY-QWd">
-                                    <rect key="frame" x="0.0" y="0.0" width="270" height="190"/>
-                                    <view key="contentView" id="Bzo-Ix-voH">
-                                        <rect key="frame" x="0.0" y="0.0" width="270" height="190"/>
-                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                    </view>
-                                    <color key="fillColor" name="color-picker-background"/>
-                                </box>
-                            </subviews>
-                            <constraints>
-                                <constraint firstItem="1oc-cY-QWd" firstAttribute="top" secondItem="Z6i-Vm-FEs" secondAttribute="top" id="3b3-Ti-mMg"/>
-                                <constraint firstAttribute="trailing" secondItem="1oc-cY-QWd" secondAttribute="trailing" id="HMa-Br-pYx"/>
-                                <constraint firstAttribute="height" constant="190" id="Oee-h7-oLp"/>
-                                <constraint firstItem="1oc-cY-QWd" firstAttribute="leading" secondItem="Z6i-Vm-FEs" secondAttribute="leading" id="V1z-0K-RDn"/>
-                                <constraint firstAttribute="bottom" secondItem="1oc-cY-QWd" secondAttribute="bottom" id="gEN-1b-JnV"/>
-                            </constraints>
-                        </customView>
+                            <view key="contentView" ambiguous="YES" id="Bzo-Ix-voH">
+                                <rect key="frame" x="0.0" y="0.0" width="270" height="190"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            </view>
+                            <color key="fillColor" name="color-picker-background"/>
+                        </box>
                         <box boxType="custom" cornerRadius="8" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="5Vn-FK-aKk">
                             <rect key="frame" x="0.0" y="40" width="220" height="30"/>
                             <view key="contentView" id="qm3-nV-m4Z">
@@ -223,8 +211,6 @@
                     </subviews>
                     <constraints>
                         <constraint firstAttribute="trailing" secondItem="H6x-LK-MTr" secondAttribute="trailing" id="84y-J7-xaq"/>
-                        <constraint firstAttribute="trailing" secondItem="Z6i-Vm-FEs" secondAttribute="trailing" id="MiO-5j-6aq"/>
-                        <constraint firstItem="Z6i-Vm-FEs" firstAttribute="leading" secondItem="OJp-YS-19d" secondAttribute="leading" id="ro1-uF-IR3"/>
                     </constraints>
                     <visibilityPriorities>
                         <integer value="1000"/>
@@ -269,12 +255,11 @@
                 <outlet property="clientAutoComplete" destination="cCQ-e0-gV1" id="sMM-dm-fm9"/>
                 <outlet property="colorBtn" destination="Zz6-Ng-Mjf" id="dah-ED-Ork"/>
                 <outlet property="colorPickerContainerBox" destination="1oc-cY-QWd" id="jyE-Q2-QW5"/>
-                <outlet property="colorPickerContainerView" destination="Z6i-Vm-FEs" id="hac-Fv-cL7"/>
                 <outlet property="projectTextField" destination="eQK-O0-2vn" id="yle-Cg-xGS"/>
                 <outlet property="publicProjectCheckBox" destination="2Vy-Nq-8Ub" id="Ik7-Kv-WnW"/>
                 <outlet property="workspaceAutoComplete" destination="I8L-vz-Mr7" id="CXb-Ky-yPT"/>
             </connections>
-            <point key="canvasLocation" x="-290" y="114"/>
+            <point key="canvasLocation" x="-290" y="9"/>
         </customView>
     </objects>
     <resources>

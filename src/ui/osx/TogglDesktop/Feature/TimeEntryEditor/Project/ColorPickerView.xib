@@ -11,35 +11,69 @@
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customView id="c22-O7-iKe" customClass="ColorPickerView" customModule="TogglDesktop" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="220" height="190"/>
+            <rect key="frame" x="0.0" y="0.0" width="220" height="96"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" horizontalScrollElasticity="none" verticalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="mxV-pt-2uu">
-                    <rect key="frame" x="0.0" y="120" width="220" height="70"/>
-                    <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="xTa-DE-szS">
-                        <rect key="frame" x="0.0" y="0.0" width="220" height="70"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <collectionView selectable="YES" id="52y-nX-aep">
+                <stackView distribution="fill" orientation="vertical" alignment="centerX" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FZc-LL-v7b">
+                    <rect key="frame" x="0.0" y="26" width="220" height="70"/>
+                    <subviews>
+                        <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" horizontalScrollElasticity="none" verticalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="mxV-pt-2uu">
+                            <rect key="frame" x="0.0" y="0.0" width="220" height="70"/>
+                            <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="xTa-DE-szS">
                                 <rect key="frame" x="0.0" y="0.0" width="220" height="70"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
-                                <collectionViewFlowLayout key="collectionViewLayout" minimumInteritemSpacing="10" minimumLineSpacing="10" id="jeB-XW-ECn">
-                                    <size key="itemSize" width="50" height="50"/>
-                                </collectionViewFlowLayout>
-                                <color key="primaryBackgroundColor" name="color-picker-background"/>
-                            </collectionView>
-                        </subviews>
-                        <color key="backgroundColor" name="color-picker-background"/>
-                    </clipView>
-                    <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="Zo6-MO-MYG">
-                        <rect key="frame" x="-100" y="-100" width="218" height="16"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </scroller>
-                    <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="aVa-2w-HKQ">
-                        <rect key="frame" x="204" y="0.0" width="16" height="70"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </scroller>
-                </scrollView>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <subviews>
+                                    <collectionView selectable="YES" id="52y-nX-aep">
+                                        <rect key="frame" x="0.0" y="0.0" width="220" height="70"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
+                                        <collectionViewFlowLayout key="collectionViewLayout" minimumInteritemSpacing="10" minimumLineSpacing="10" id="jeB-XW-ECn">
+                                            <size key="itemSize" width="50" height="50"/>
+                                        </collectionViewFlowLayout>
+                                        <color key="primaryBackgroundColor" name="color-picker-background"/>
+                                    </collectionView>
+                                </subviews>
+                                <color key="backgroundColor" name="color-picker-background"/>
+                            </clipView>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="70" id="Ogv-f6-yDi"/>
+                            </constraints>
+                            <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="Zo6-MO-MYG">
+                                <rect key="frame" x="-100" y="-100" width="218" height="16"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                            </scroller>
+                            <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="aVa-2w-HKQ">
+                                <rect key="frame" x="204" y="0.0" width="16" height="70"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                            </scroller>
+                        </scrollView>
+                        <customView hidden="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Bng-FC-0Ya">
+                            <rect key="frame" x="0.0" y="-24" width="220" height="94"/>
+                            <subviews>
+                                <customView translatesAutoresizingMaskIntoConstraints="NO" id="ekt-4K-GjN" customClass="ColorGraphicsView" customModule="TogglDesktop" customModuleProvider="target">
+                                    <rect key="frame" x="5" y="0.0" width="210" height="94"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="210" id="0EG-UJ-IN8"/>
+                                    </constraints>
+                                </customView>
+                            </subviews>
+                            <constraints>
+                                <constraint firstItem="ekt-4K-GjN" firstAttribute="top" secondItem="Bng-FC-0Ya" secondAttribute="top" id="aLF-uO-FMS"/>
+                                <constraint firstAttribute="trailing" secondItem="ekt-4K-GjN" secondAttribute="trailing" constant="5" id="lR2-ff-s1E"/>
+                                <constraint firstAttribute="height" constant="94" id="mJP-wd-r6t"/>
+                                <constraint firstAttribute="bottom" secondItem="ekt-4K-GjN" secondAttribute="bottom" id="n8m-d2-TrO"/>
+                                <constraint firstItem="ekt-4K-GjN" firstAttribute="leading" secondItem="Bng-FC-0Ya" secondAttribute="leading" constant="5" id="oOO-Cg-AeH"/>
+                            </constraints>
+                        </customView>
+                    </subviews>
+                    <visibilityPriorities>
+                        <integer value="1000"/>
+                        <integer value="1000"/>
+                    </visibilityPriorities>
+                    <customSpacing>
+                        <real value="3.4028234663852886e+38"/>
+                        <real value="3.4028234663852886e+38"/>
+                    </customSpacing>
+                </stackView>
                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="uIm-iS-FNW">
                     <rect key="frame" x="10" y="5" width="37" height="16"/>
                     <buttonCell key="cell" type="bevel" title="Reset" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="Upl-pY-Pye">
@@ -51,37 +85,20 @@
                         <action selector="resetBtnOnTap:" target="c22-O7-iKe" id="siu-nZ-gaK"/>
                     </connections>
                 </button>
-                <customView translatesAutoresizingMaskIntoConstraints="NO" id="Bng-FC-0Ya">
-                    <rect key="frame" x="0.0" y="26" width="220" height="94"/>
-                    <subviews>
-                        <customView translatesAutoresizingMaskIntoConstraints="NO" id="ekt-4K-GjN" customClass="ColorGraphicsView" customModule="TogglDesktop" customModuleProvider="target">
-                            <rect key="frame" x="5" y="0.0" width="210" height="94"/>
-                        </customView>
-                    </subviews>
-                    <constraints>
-                        <constraint firstAttribute="trailing" secondItem="ekt-4K-GjN" secondAttribute="trailing" constant="5" id="bxE-3S-72K"/>
-                        <constraint firstAttribute="bottom" secondItem="ekt-4K-GjN" secondAttribute="bottom" id="l49-1b-Adg"/>
-                        <constraint firstItem="ekt-4K-GjN" firstAttribute="leading" secondItem="Bng-FC-0Ya" secondAttribute="leading" constant="5" id="ox7-PJ-vvT"/>
-                        <constraint firstItem="ekt-4K-GjN" firstAttribute="top" secondItem="Bng-FC-0Ya" secondAttribute="top" id="uHM-e6-LhC"/>
-                    </constraints>
-                </customView>
             </subviews>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="Bng-FC-0Ya" secondAttribute="bottom" constant="26" id="JKP-eI-1Df"/>
-                <constraint firstAttribute="trailing" secondItem="Bng-FC-0Ya" secondAttribute="trailing" id="Obo-a8-U4c"/>
-                <constraint firstItem="Bng-FC-0Ya" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" constant="70" id="Rfk-bD-RlL"/>
-                <constraint firstItem="mxV-pt-2uu" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" id="S1r-yj-NqA"/>
-                <constraint firstItem="Bng-FC-0Ya" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" id="bMP-Ll-ICH"/>
-                <constraint firstItem="mxV-pt-2uu" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" id="d8D-QU-RAB"/>
+                <constraint firstItem="uIm-iS-FNW" firstAttribute="top" secondItem="FZc-LL-v7b" secondAttribute="bottom" constant="5" id="A5o-B2-WHQ"/>
+                <constraint firstItem="FZc-LL-v7b" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" id="Dyu-N2-3gB"/>
+                <constraint firstAttribute="trailing" secondItem="FZc-LL-v7b" secondAttribute="trailing" id="FNw-MP-Y9u"/>
+                <constraint firstItem="FZc-LL-v7b" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" id="Nvh-HB-yjR"/>
                 <constraint firstItem="uIm-iS-FNW" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="10" id="iPZ-su-whG"/>
-                <constraint firstItem="Bng-FC-0Ya" firstAttribute="top" secondItem="mxV-pt-2uu" secondAttribute="bottom" id="qcy-kk-sNT"/>
                 <constraint firstAttribute="bottom" secondItem="uIm-iS-FNW" secondAttribute="bottom" constant="5" id="sbd-83-TJc"/>
-                <constraint firstAttribute="trailing" secondItem="mxV-pt-2uu" secondAttribute="trailing" id="zDH-Ua-8Hk"/>
             </constraints>
             <connections>
                 <outlet property="collectionView" destination="52y-nX-aep" id="B50-ae-Mf3"/>
                 <outlet property="colorWheelContainerView" destination="Bng-FC-0Ya" id="nym-d2-Mu1"/>
                 <outlet property="colorWheelView" destination="ekt-4K-GjN" id="b07-Li-ktA"/>
+                <outlet property="resetBtnTop" destination="A5o-B2-WHQ" id="sgG-7Q-xMa"/>
             </connections>
         </customView>
     </objects>
