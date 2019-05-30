@@ -130,7 +130,7 @@
                                 <real value="3.4028234663852886e+38"/>
                             </customSpacing>
                         </stackView>
-                        <box hidden="YES" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" boxType="custom" borderType="none" borderWidth="0.0" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="1oc-cY-QWd">
+                        <box hidden="YES" horizontalHuggingPriority="200" verticalHuggingPriority="200" horizontalCompressionResistancePriority="200" verticalCompressionResistancePriority="200" boxType="custom" borderType="none" borderWidth="0.0" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="1oc-cY-QWd">
                             <rect key="frame" x="0.0" y="120" width="270" height="190"/>
                             <view key="contentView" ambiguous="YES" id="Bzo-Ix-voH">
                                 <rect key="frame" x="0.0" y="0.0" width="270" height="190"/>

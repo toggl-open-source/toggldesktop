@@ -19,15 +19,18 @@ protocol ProjectCreationViewDelegate: class {
 final class ProjectCreationView: NSView {
 
     enum DisplayMode {
-        case compact
-        case full // with color picker
+        case normal
+        case compactColorPicker // Predefined colors
+        case fullColorPicker // Predefined colors + wheel color
 
         var height: CGFloat {
             switch self {
-            case .compact:
+            case .normal:
                 return 200.0
-            case .full:
+            case .fullColorPicker:
                 return 400.0
+            case .compactColorPicker:
+                return 300.0
             }
         }
     }
@@ -61,10 +64,10 @@ final class ProjectCreationView: NSView {
             }
 
             // Update Premium plan
-            let isPremium = selectedWorkspace?.isPremium ?? false
-            updateWorkspacePlan(isPremium: isPremium)
+            isPremiumWorkspace = selectedWorkspace?.isPremium ?? false
         }
     }
+    private var isPremiumWorkspace = false { didSet { updateWorkspacePlanLayout() }}
     private var selectedClient: Client?
     private var isPublic = false
     private lazy var clientDatasource: ClientDataSource = {
@@ -74,7 +77,7 @@ final class ProjectCreationView: NSView {
                                 updateNotificationName: .ClientStorageChangedNotification)
     }()
     private lazy var workspaceDatasource = WorkspaceDataSource(items: WorkspaceStorage.shared.workspaces,
-                                                                    updateNotificationName: .WorkspaceStorageChangedNotification)
+                                                               updateNotificationName: .WorkspaceStorageChangedNotification)
     weak var delegate: ProjectCreationViewDelegate?
     private var originalColor = ProjectColor.default
     private var selectedColor = ProjectColor.default {
@@ -89,7 +92,7 @@ final class ProjectCreationView: NSView {
         picker.edgesToSuperView()
         return picker
     }()
-    private var displayMode = DisplayMode.compact {
+    private var displayMode = DisplayMode.normal {
         didSet {
             updateLayout()
         }
@@ -168,7 +171,11 @@ final class ProjectCreationView: NSView {
 
     @IBAction func colorBtnOnTap(_ sender: Any) {
         let isON = colorBtn.state == .on
-        displayMode = isON ? .full : .compact
+        if isON {
+            displayMode = isPremiumWorkspace ? .fullColorPicker : .compactColorPicker
+        } else {
+            displayMode = .normal
+        }
         colorBtn.layer?.borderWidth = isON ? 4.0 : 0.0
     }
 
@@ -198,7 +205,7 @@ extension ProjectCreationView {
         
         // Default value
         selectedColor = ProjectColor.default
-        displayMode = .compact
+        displayMode = .normal
 
         // Delegate
         projectTextField.delegate = self
@@ -219,16 +226,17 @@ extension ProjectCreationView {
         colorPickerContainerBox.layer?.cornerRadius = 8
 
         // Hide color wheel for free workspace by default
-        updateWorkspacePlan(isPremium: false)
+        isPremiumWorkspace = false
     }
 
     fileprivate func updateLayout() {
         let height = displayMode.height
         switch displayMode {
-        case .compact:
+        case .normal:
             colorPickerContainerBox.isHidden = true
             self.frame = CGRect(x: frame.origin.x, y: frame.origin.y, width: frame.size.width, height: height)
-        case .full:
+        case .compactColorPicker,
+             .fullColorPicker:
             colorPickerContainerBox.isHidden = false
             self.frame = CGRect(x: frame.origin.x, y: frame.origin.y, width: frame.size.width, height: height)
         }
@@ -297,8 +305,11 @@ extension ProjectCreationView {
         clientAutoComplete.closeSuggestion()
     }
 
-    fileprivate func updateWorkspacePlan(isPremium: Bool) {
-        colorPickerView.setColorWheelHidden(!isPremium)
+    fileprivate func updateWorkspacePlanLayout() {
+        colorPickerView.setColorWheelHidden(!isPremiumWorkspace)
+        if displayMode != .normal {
+            displayMode = isPremiumWorkspace ? .fullColorPicker : .compactColorPicker
+        }
     }
 }
 
