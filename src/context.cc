@@ -2856,7 +2856,8 @@ error Context::SetTimeEntryProject(
             // If user re-assigns project, don't mess with the billable
             // flag any more. (User selected billable project, unchecked
             // billable, // then selected the same project again).
-            if (p->ID() != te->PID()) {
+            if (p->ID() != te->PID()
+                    || (!project_guid.empty() && p->GUID().compare(te->ProjectGUID()) != 0)) {
                 te->SetBillable(p->Billable());
             }
             te->SetWID(p->WID());
