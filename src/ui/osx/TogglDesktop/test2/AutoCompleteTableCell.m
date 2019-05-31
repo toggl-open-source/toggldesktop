@@ -143,8 +143,7 @@
 	self.projectLbl.hidden = NO;
 	self.contentStackView.hidden = NO;
 
-	if (viewItem.ClientLabel == nil || viewItem.ClientLabel.length == 0 ||
-		viewItem.ProjectLabel == nil || viewItem.ProjectLabel.length == 0)
+	if (viewItem.ProjectLabel == nil || viewItem.ProjectLabel.length == 0)
 	{
 		self.dotView.hidden = YES;
 		self.projectLbl.hidden = YES;
