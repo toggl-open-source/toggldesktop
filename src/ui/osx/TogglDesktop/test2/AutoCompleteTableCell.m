@@ -153,7 +153,7 @@
 			NSFontAttributeName : [NSFont systemFontOfSize:12],
 			NSForegroundColorAttributeName:[NSColor labelColor]
 	};
-	self.cellDescription.attributedStringValue = [[NSAttributedString alloc] initWithString:viewItem.Text attributes:attribute];
+	self.cellDescription.attributedStringValue = [[NSAttributedString alloc] initWithString:viewItem.Description attributes:attribute];
 	[self.projectLbl setTitleWithAutoCompleteItem:viewItem];
 	[self.dotView fillWith:[ConvertHexColor hexCodeToNSColor:viewItem.ProjectColor]];
 }
