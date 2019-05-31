@@ -685,6 +685,7 @@ void Context::updateUI(const UIElements &what) {
                     std::stringstream ss;
                     ss << date_header << te->Description()
                        << te->PID() << te->TID()
+                       << te->ProjectGUID()
                        << te->Billable() << te->Tags();
                     std::string group_name = ss.str();
 
