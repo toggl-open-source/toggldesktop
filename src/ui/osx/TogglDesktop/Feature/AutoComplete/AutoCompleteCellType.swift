@@ -28,7 +28,7 @@ import Foundation
             self = .client
             return
         }
-        if type == 2 && item.projectID == 0 {
+        if type == 2 && item.projectID == 0 && item.projectGUID == nil {
             self = .noProject
             return
         }
