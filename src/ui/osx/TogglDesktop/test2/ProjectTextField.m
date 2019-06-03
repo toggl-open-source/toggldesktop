@@ -86,8 +86,16 @@
 
 	if (taskID != 0)
 	{
-		NSMutableAttributedString *taskName = [[NSMutableAttributedString alloc] initWithString:[@": " stringByAppendingString:task]
-																					 attributes:baseAttribute];
+		NSMutableAttributedString *taskName;
+		if (self.renderTask)
+		{
+			string = [[NSMutableAttributedString alloc] initWithString:@"" attributes:baseAttribute];
+			taskName = [[NSMutableAttributedString alloc] initWithString:[@"     - " stringByAppendingString:task]];
+		}
+		else
+		{
+			taskName = [[NSMutableAttributedString alloc] initWithString:[@": " stringByAppendingString:task]];
+		}
 
 		[string appendAttributedString:taskName];
 	}
