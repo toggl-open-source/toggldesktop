@@ -1024,7 +1024,7 @@ extern "C" {
         void *context);
 
     TOGGL_EXPORT void toggl_load_more(
-        void* context);
+        void *context);
 
     TOGGL_EXPORT void track_window_size(
         void *context,

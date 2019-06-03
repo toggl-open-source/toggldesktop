@@ -1547,7 +1547,7 @@ public static partial class Toggl
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_load_more(
-        void* context);
+        IntPtr context);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void track_window_size(
