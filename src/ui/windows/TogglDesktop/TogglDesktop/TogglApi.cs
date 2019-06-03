@@ -653,9 +653,10 @@ public static partial class Toggl
         TogglDisplayTimeEntryList cb);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-    private static extern void context,
-            [MarshalAs(UnmanagedType.LPWStr)]
-            string name);
+    private static extern void toggl_toggle_entries_group(
+        IntPtr context,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string name);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_on_mini_timer_autocomplete(
@@ -1327,7 +1328,8 @@ public static partial class Toggl
         IntPtr context);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-    private static extern void context);
+    private static extern void toggl_get_countries_async(
+        IntPtr context);
 
     // You must free() the result
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
@@ -1544,12 +1546,14 @@ public static partial class Toggl
         IntPtr context);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-    private static extern void context);
+    private static extern void toggl_load_more(
+        void* context);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-    private static extern void context,
-    UInt64 width,
-    UInt64 height);
+    private static extern void track_window_size(
+        IntPtr context,
+        UInt64 width,
+        UInt64 height);
 
 
 
