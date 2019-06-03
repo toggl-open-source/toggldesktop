@@ -29,7 +29,7 @@ namespace TogglDesktop
         private ConfirmAction confirmAction = ConfirmAction.Unknown;
         private bool loggingIn;
         private bool countriesLoaded = false;
-        private int selectedCountryID = -1;
+        private long selectedCountryID = -1;
         private List<TogglDesktop.Toggl.TogglCountryView> countriesList;
 
         public LoginView()
@@ -175,7 +175,7 @@ namespace TogglDesktop
             }
         }
 
-        private async void confirm(Func<string, string, int, bool> confirmAction, string actionName)
+        private async void confirm(Func<string, string, long, bool> confirmAction, string actionName)
         {
             using (Performance.Measure("attempting " + actionName))
             {
@@ -370,7 +370,7 @@ namespace TogglDesktop
         private void countrySelect_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
             TogglDesktop.Toggl.TogglCountryView item = this.countriesList[this.countrySelect.SelectedIndex];
-            this.selectedCountryID = (int)item.ID;
+            this.selectedCountryID = item.ID;
         }
     }
 

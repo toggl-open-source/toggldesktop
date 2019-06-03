@@ -202,12 +202,12 @@ public static partial class Toggl
     }
     #endregion
 
-    public static bool Signup(string email, string password, int country_id)
+    public static bool Signup(string email, string password, long country_id)
     {
         return toggl_signup(ctx, email, password, Convert.ToUInt64(country_id));
     }
 
-    public static bool Login(string email, string password, int country_id)
+    public static bool Login(string email, string password, long country_id)
     {
         return toggl_login(ctx, email, password);
     }
