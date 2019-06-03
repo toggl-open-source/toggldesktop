@@ -104,7 +104,7 @@ extern "C" {
         uint64_t WorkspaceID;
         uint64_t Type;
         // If its a time entry or project, it can be billable
-        bool Billable;
+        bool_t Billable;
         // If its a time entry, it has tags
         char_t *Tags;
         char_t *WorkspaceName;
