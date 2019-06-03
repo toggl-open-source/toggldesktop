@@ -75,14 +75,20 @@
 		return;
 	}
 
-	// Project
+	// Project item
 	if (cellType == AutoCompleteCellTypeProject)
 	{
 		[self renderTitleForProjectCellWithViewItem:view_item];
 		return;
 	}
 
-	// Item
+	// Task item
+	if (cellType == AutoCompleteCellTypeTask)
+	{
+		[self renderTitleForTaskCellWithViewItem:view_item];
+		return;
+	}
+	// Time Entry item
 	[self renderTitleForTimeEntryCellWithViewItem:view_item];
 }
 
@@ -101,14 +107,14 @@
 {
 	NSString *spacing = @"  ";
 	NSString *text = [NSString stringWithFormat:@"%@%@", spacing, viewItem.Text];
-	NSDictionary *attribute = @{
-			NSFontAttributeName : [NSFont systemFontOfSize:12],
-			NSForegroundColorAttributeName:[NSColor labelColor]
+	NSDictionary *attribute =      @{
+			NSFontAttributeName : [NSFont systemFontOfSize:11 weight:NSFontWeightMedium],
+			NSForegroundColorAttributeName:[self categoryLabelColor]
 	};
 
 	self.cellDescription.hidden = NO;
 	self.contentStackView.hidden = NO;
-	self.cellDescription.attributedStringValue = [[NSAttributedString alloc] initWithString:text attributes:attribute];
+	self.cellDescription.attributedStringValue = [[NSAttributedString alloc] initWithString:[text uppercaseString] attributes:attribute];
 }
 
 - (void)renderTitleForWorkspaceCellWithViewItem:(AutocompleteItem *)viewItem
@@ -136,6 +142,23 @@
 	[self.projectLbl setTitleWithAutoCompleteItem:viewItem];
 }
 
+- (void)renderTitleForTaskCellWithViewItem:(AutocompleteItem *)viewItem
+{
+	self.dotView.hidden = YES;
+	self.projectLbl.hidden = YES;
+	self.contentStackView.hidden = NO;
+	self.cellDescription.hidden = NO;
+
+	NSString *spacing = @"        ";
+	NSString *text = [NSString stringWithFormat:@"%@%@", spacing, viewItem.TaskLabel];
+
+	NSDictionary *attribute = @{
+			NSFontAttributeName : [NSFont systemFontOfSize:12],
+			NSForegroundColorAttributeName:[NSColor labelColor]
+	};
+	self.cellDescription.attributedStringValue = [[NSAttributedString alloc] initWithString:text attributes:attribute];
+}
+
 - (void)renderTitleForTimeEntryCellWithViewItem:(AutocompleteItem *)viewItem
 {
 	self.cellDescription.hidden = NO;
@@ -149,11 +172,14 @@
 		self.projectLbl.hidden = YES;
 	}
 
+	NSString *spacing = @"  ";
+	NSString *text = [NSString stringWithFormat:@"%@%@", spacing, viewItem.Description];
+
 	NSDictionary *attribute = @{
 			NSFontAttributeName : [NSFont systemFontOfSize:12],
 			NSForegroundColorAttributeName:[NSColor labelColor]
 	};
-	self.cellDescription.attributedStringValue = [[NSAttributedString alloc] initWithString:viewItem.Description attributes:attribute];
+	self.cellDescription.attributedStringValue = [[NSAttributedString alloc] initWithString:text attributes:attribute];
 	[self.projectLbl setTitleWithAutoCompleteItem:viewItem];
 	[self.dotView fillWith:[ConvertHexColor hexCodeToNSColor:viewItem.ProjectColor]];
 }
