@@ -4,12 +4,15 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:toggl="clr-namespace:TogglDesktop"
+             xmlns:converters="clr-namespace:TogglDesktop.Converters"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance Type=toggl:TimeEntryCellSample, IsDesignTimeCreatable=True}"
              d:DesignWidth="455"
-             ContextMenu="{StaticResource TimeEntryContextMenu}"
-             >
-    
+             ContextMenu="{StaticResource TimeEntryContextMenu}">
+    <UserControl.Resources>
+        <converters:ElementSizeConverter x:Key="ElementSizeConverter" />
+    </UserControl.Resources>
+
     <StackPanel Style="{StaticResource TimeEntryCell}"
                 Background="White" x:Name="MainBack">
         
@@ -54,10 +57,13 @@
                     <RowDefinition Height="*" Name="projectRow" x:FieldModifier="private"/>
                 </Grid.RowDefinitions>
 
-                <StackPanel Orientation="Horizontal" Grid.Row="1">
+                <StackPanel Orientation="Horizontal" Grid.Row="1" x:Name="clientAndProjectNamePanel">
 
                     <TextBlock Name="labelClient" x:FieldModifier="private"
-                                Foreground="DimGray">Client</TextBlock>
+                                Foreground="DimGray"
+                                MaxWidth="{Binding ActualWidth, ElementName=clientAndProjectNamePanel, Converter={StaticResource ElementSizeConverter}, ConverterParameter=0.5}">
+                        Client
+                    </TextBlock>
                     <TextBlock Name="labelProject" x:FieldModifier="private" MouseLeftButtonDown="labelProject_MouseDown"
                                 >Project</TextBlock>
 
