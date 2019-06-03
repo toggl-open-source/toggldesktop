@@ -82,25 +82,19 @@
 			NSForegroundColorAttributeName: color,
 			NSParagraphStyleAttributeName: parStyle
 	};
+	string = [[NSMutableAttributedString alloc] initWithString:project attributes:baseAttribute];
+
 	if (taskID != 0)
 	{
-		string = [[NSMutableAttributedString alloc] initWithString:[task stringByAppendingString:@". "]];
+		NSMutableAttributedString *taskName = [[NSMutableAttributedString alloc] initWithString:[@": " stringByAppendingString:task]
+																					 attributes:baseAttribute];
 
-		[string setAttributes:baseAttribute
-						range:NSMakeRange(0, [string length])];
-
-		NSMutableAttributedString *projectName = [[NSMutableAttributedString alloc] initWithString:[project stringByAppendingString:@" "]
-																						attributes:baseAttribute];
-		[string appendAttributedString:projectName];
-	}
-	else
-	{
-		string = [[NSMutableAttributedString alloc] initWithString:[project stringByAppendingString:@" "] attributes:baseAttribute];
+		[string appendAttributedString:taskName];
 	}
 
 	if (self.renderClient && [client length] > 0)
 	{
-		NSString *clientTitle = [NSString stringWithFormat:@"• %@", client];
+		NSString *clientTitle = [NSString stringWithFormat:@" • %@", client];
 		NSMutableAttributedString *clientName = [[NSMutableAttributedString alloc] initWithString:clientTitle];
 
 		[clientName setAttributes:
