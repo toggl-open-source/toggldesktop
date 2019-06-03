@@ -137,6 +137,7 @@
 	self.dotView.hidden = NO;
 	self.projectLbl.hidden = NO;
 	self.contentStackView.hidden = NO;
+	self.projectLbl.renderClient = NO;
 
 	[self.dotView fillWith:[ConvertHexColor hexCodeToNSColor:viewItem.ProjectColor]];
 	[self.projectLbl setTitleWithAutoCompleteItem:viewItem];
