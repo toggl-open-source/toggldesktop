@@ -424,8 +424,9 @@ extern "C" {
         void *context,
         TogglDisplayTimeEntryList cb);
 
-    TOGGL_EXPORT void toggl_toggle_entries_group(void *context,
-            const char_t *name);
+    TOGGL_EXPORT void toggl_toggle_entries_group(
+        void *context,
+        const char_t *name);
 
     TOGGL_EXPORT void toggl_on_mini_timer_autocomplete(
         void *context,
@@ -862,7 +863,8 @@ extern "C" {
     TOGGL_EXPORT void toggl_get_countries(
         void *context);
 
-    TOGGL_EXPORT void toggl_get_countries_async(void *context);
+    TOGGL_EXPORT void toggl_get_countries_async(
+        void *context);
 
     // You must free() the result
     TOGGL_EXPORT char_t *toggl_get_default_project_name(
@@ -1021,11 +1023,13 @@ extern "C" {
     TOGGL_EXPORT bool_t toggl_get_mini_timer_visible(
         void *context);
 
-    TOGGL_EXPORT void toggl_load_more(void* context);
+    TOGGL_EXPORT void toggl_load_more(
+        void* context);
 
-    TOGGL_EXPORT void track_window_size(void *context,
-                                        const uint64_t width,
-                                        const uint64_t height);
+    TOGGL_EXPORT void track_window_size(
+        void *context,
+        const uint64_t width,
+        const uint64_t height);
 
 #undef TOGGL_EXPORT
 
