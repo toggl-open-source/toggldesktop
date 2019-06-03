@@ -49,7 +49,7 @@ corelib=$(ldd bin/TogglDesktop | grep -e libQt5Core  | sed 's/.* => \(.*\)[(]0x.
 libdir=$(dirname "$corelib")
 qmake=$(ls $libdir/../bin/{qmake,qmake-qt5} 2>/dev/null)
 
-CHECK cp $(ldd bin/TogglDesktop | grep -e libQt -e ssl -e libicu | sed 's/.* => \(.*\)[(]0x.*/\1/') lib
+CHECK cp -Lrn $(ldd bin/TogglDesktop | grep -e libQt -e ssl -e libicu | sed 's/.* => \(.*\)[(]0x.*/\1/') lib
 CHECK ls "$qmake" >/dev/null
 
 libexecdir=$($qmake -query QT_INSTALL_LIBEXECS)
@@ -62,14 +62,14 @@ for i in $PLUGINS; do
     newpath=lib/qt5/plugins/$(dirname $i)/
     file=$(basename $i)
     CHECK mkdir -p $newpath
-    CHECK cp $plugindir/$i $newpath
+    CHECK cp -Lrn $plugindir/$i $newpath
     CHECK patchelf --set-rpath '\$ORIGIN/../../../' $newpath/$file >> ../patchelf.log
-    CHECK cp -arn $(ldd $newpath/$file | grep -e libQt -e ssl | sed 's/.* => \(.*\)[(]0x.*/\1/') lib
+    CHECK cp -Lrn $(ldd $newpath/$file | grep -e libQt -e ssl | sed 's/.* => \(.*\)[(]0x.*/\1/') lib
 done
 
 for i in $(ls lib/*.so); do
     for j in $(ldd $i | grep -e libQt | sed 's/.* => \(.*\)[(]0x.*/\1/'); do
-        CHECK cp -arn $j lib
+        CHECK cp -Lrn $j lib
     done
 done
 
@@ -81,8 +81,8 @@ for i in $(ls lib/*.so); do
 done
 
 CHECK mkdir -p lib/qt5/translations lib/qt5/resources
-CHECK cp -r "$translationdir/qtwebengine_locales" lib/qt5/translations
-CHECK cp "$datadir/resources/"* lib/qt5/resources
+CHECK cp -Lrn "$translationdir/qtwebengine_locales" lib/qt5/translations
+CHECK cp -Lrn "$datadir/resources/"* lib/qt5/resources
 
 CHECK mv "bin/TogglDesktop.sh" "."
 
