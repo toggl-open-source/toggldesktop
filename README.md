@@ -8,8 +8,6 @@ Table of Contents
       * [Build the app](#build-the-app)
     * [Windows](#windows)
       * [Dependencies](#dependencies-1)
-        * [Install dev tools](#install-dev-tools)
-        * [Build OpenSSL](#build-openssl)
       * [Build the app](#build-the-app-1)
   * [Downloads](#downloads)
     * [macOS](#macos)
