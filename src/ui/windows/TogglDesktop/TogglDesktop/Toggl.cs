@@ -19,8 +19,8 @@ public static partial class Toggl
     public const string Description = "description";
 
     public const string TagSeparator = "\t";
-    
-    private static readonly DateTimeOffset UnixEpoch = 
+
+    private static readonly DateTimeOffset UnixEpoch =
         new DateTimeOffset(1970, 1, 1, 0, 0, 0, TimeSpan.Zero);
 
     private static IntPtr ctx = IntPtr.Zero;
