@@ -21,6 +21,8 @@ final class ProjectContentCellView: HoverTableCellView {
     
     func render(_ item: ProjectContentItem) {
         projectTextField.renderClient = false
+        projectTextField.renderTask = (item.item.type == 1)
+        dotImageView.isHidden = projectTextField.renderTask
         projectTextField.setTitleWithAutoComplete(item.item)
         dotImageView.fill(with: ConvertHexColor.hexCode(toNSColor: item.colorHex))
     }

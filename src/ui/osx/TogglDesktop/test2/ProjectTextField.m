@@ -50,7 +50,7 @@
 
 - (void)setTitleWithAutoCompleteItem:(AutocompleteItem *)item
 {
-	self.textColor = [ConvertHexColor hexCodeToNSColor:item.ProjectColor];
+	self.textColor = (item.Type == 1) ? nil : [ConvertHexColor hexCodeToNSColor:item.ProjectColor];
 	self.attributedStringValue = [self attributeStringWithAutoCompleteItem:item];
 }
 
@@ -82,25 +82,27 @@
 			NSForegroundColorAttributeName: color,
 			NSParagraphStyleAttributeName: parStyle
 	};
+	string = [[NSMutableAttributedString alloc] initWithString:project attributes:baseAttribute];
+
 	if (taskID != 0)
 	{
-		string = [[NSMutableAttributedString alloc] initWithString:[task stringByAppendingString:@". "]];
+		NSMutableAttributedString *taskName;
+		if (self.renderTask)
+		{
+			string = [[NSMutableAttributedString alloc] initWithString:@"" attributes:baseAttribute];
+			taskName = [[NSMutableAttributedString alloc] initWithString:[@"     " stringByAppendingString:task]];
+		}
+		else
+		{
+			taskName = [[NSMutableAttributedString alloc] initWithString:[@": " stringByAppendingString:task]];
+		}
 
-		[string setAttributes:baseAttribute
-						range:NSMakeRange(0, [string length])];
-
-		NSMutableAttributedString *projectName = [[NSMutableAttributedString alloc] initWithString:[project stringByAppendingString:@" "]
-																						attributes:baseAttribute];
-		[string appendAttributedString:projectName];
-	}
-	else
-	{
-		string = [[NSMutableAttributedString alloc] initWithString:[project stringByAppendingString:@" "] attributes:baseAttribute];
+		[string appendAttributedString:taskName];
 	}
 
 	if (self.renderClient && [client length] > 0)
 	{
-		NSString *clientTitle = [NSString stringWithFormat:@"• %@", client];
+		NSString *clientTitle = [NSString stringWithFormat:@" • %@", client];
 		NSMutableAttributedString *clientName = [[NSMutableAttributedString alloc] initWithString:clientTitle];
 
 		[clientName setAttributes:

@@ -32,10 +32,9 @@ extension Notification.Name {
 
     func filter(with text: String) -> [Any] {
 
-        // Filter with project lable or client label
+        // Filter with project, client or task label
         let filters = autoCompleteItems.filter {
-            return $0.projectLabel.fuzzySearch(with: text) ||
-                $0.clientLabel.fuzzySearch(with: text)
+            return $0.projectAndTaskLabel.fuzzySearch(with: text)
         }
 
         return buildProjectItems(with: filters)
@@ -57,6 +56,7 @@ extension ProjectStorage {
         var newItems: [Any] = []
         var currentWorkspace = firstItem.workspaceName
         var currentClient = firstItem.clientLabel
+        var currentPID: UInt64 = 0
 
         // Append the first workspace and client
         newItems.append(ProjectWorkspaceItem(item: firstItem))
@@ -72,6 +72,24 @@ extension ProjectStorage {
                 newItems.append(ProjectHeaderItem(item: item))
                 currentClient = item.clientLabel
             }
+            // In case we have task and project is not completed
+            if item.type == 1 && item.projectID != currentPID
+            {
+                let projectItem = AutocompleteItem()
+                projectItem.type = 2
+                projectItem.text = item.projectLabel
+                projectItem.projectLabel = item.projectLabel
+                projectItem.projectColor = item.projectColor;
+                projectItem.projectID = item.projectID;
+                projectItem.description = item.description;
+                projectItem.taskLabel = ""
+                projectItem.taskID = 0
+                projectItem.clientLabel = item.clientLabel;
+                projectItem.projectAndTaskLabel = item.projectAndTaskLabel;
+                newItems.append(ProjectContentItem(item: projectItem))
+            }
+            currentPID = item.projectID;
+
             newItems.append(ProjectContentItem(item: item))
         }
 

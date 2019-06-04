@@ -13,8 +13,6 @@
 #import "AutoCompleteTableCell.h"
 
 @interface LiteAutoCompleteDataSource : NSObject <NSTableViewDataSource>
-@property (assign, nonatomic, readonly) CGFloat itemHeight;
-@property (assign, nonatomic, readonly) CGFloat worksapceItemHeight;
 @property NSMutableArray *orderedKeys;
 @property NSMutableArray *filteredOrderedKeys;
 @property NSString *currentFilter;

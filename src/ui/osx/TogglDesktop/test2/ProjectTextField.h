@@ -17,6 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (assign, nonatomic) BOOL isInTimerBar;
 @property (assign, nonatomic) BOOL renderClient;
+@property (assign, nonatomic) BOOL renderTask;
 
 - (void)setTitleWithTimeEntry:(TimeEntryViewItem *)item;
 - (void)setTitleWithAutoCompleteItem:(AutocompleteItem *)item;

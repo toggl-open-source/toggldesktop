@@ -15,6 +15,7 @@ import Foundation
     case noProject
     case workspace
     case project
+    case task
     case timeEntryFullData
     case unknown
 
@@ -38,6 +39,10 @@ import Foundation
         }
         if type == 2 {
             self = .project
+            return
+        }
+        if type == 1 {
+            self = .task
             return
         }
         if type == 0 {

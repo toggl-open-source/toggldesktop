@@ -555,11 +555,11 @@ NSString *kInactiveTimerColor = @"#999999";
 	// Big workspace
 	if (cellType == AutoCompleteCellTypeWorkspace)
 	{
-		return self.liteAutocompleteDataSource.worksapceItemHeight;
+		return self.autoCompleteInput.worksapceItemHeight;
 	}
 
 	// Other cells
-	return self.liteAutocompleteDataSource.itemHeight;
+	return self.autoCompleteInput.itemHeight;
 }
 
 - (IBAction)performClick:(id)sender

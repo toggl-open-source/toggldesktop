@@ -28,8 +28,6 @@ extern void *ctx;
 	self.filteredOrderedKeys = [[NSMutableArray alloc] init];
 	self.lastType = -1;
 	self.lastWID = -1;
-	self.itemHeight = 30.0;
-	self.worksapceItemHeight = 40.0;
 	self.lastClientLabel = nil;
 	self.types = [NSArray arrayWithObjects:@"TIME ENTRIES", @"TASKS", @"PROJECTS", @"WORKSPACES", nil];
 
@@ -159,11 +157,7 @@ extern void *ctx;
 {
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
-	CGFloat totalHeight = [self calculateTotalHeightFromArray:self.filteredOrderedKeys];
-	NSInteger count = self.filteredOrderedKeys.count;
-	[self.input.autocompleteTableView reloadData];
-	[self.input toggleTableViewWithNumberOfItem:count];
-	[self.input updateDropdownWithHeight:totalHeight];
+	[self.input reloadAutocomplete:self.filteredOrderedKeys];
 }
 
 - (void)findFilter:(NSString *)filter
@@ -221,13 +215,15 @@ extern void *ctx;
 								}
 
 			                    // Add category title
-								if (item.Type != self.lastType && item.Type != 1)
+								if (item.Type != self.lastType)
 								{
+									int64_t itemType = (item.Type == 1) ? 2 : item.Type;
 									AutocompleteItem *it = [[AutocompleteItem alloc] init];
 									it.Type = -1;
-									it.Text = self.types[item.Type];
+									it.Text = self.types[itemType];
 									[filtered addObject:it];
-									self.lastType = item.Type;
+									self.lastType = itemType;
+									lastPID = -1;
 								}
 
 			                    // Add client name row
@@ -290,13 +286,15 @@ extern void *ctx;
 						}
 
 			            // Add category title
-						if (item.Type != self.lastType && item.Type != 1)
+						if (item.Type != self.lastType)
 						{
+							int64_t itemType = (item.Type == 1) ? 2 : item.Type;
 							AutocompleteItem *it = [[AutocompleteItem alloc] init];
 							it.Type = -1;
-							it.Text = self.types[item.Type];
+							it.Text = self.types[itemType];
 							[filtered addObject:it];
-							self.lastType = item.Type;
+							self.lastType = itemType;
+							lastPID = -1;
 						}
 
 			            // Add client name row
@@ -371,6 +369,8 @@ extern void *ctx;
 			else
 			{
 				[self.input.autocompleteTableView reloadData];
+				CGFloat totalHeight = [self.input calculateTotalHeightFromArray:self.filteredOrderedKeys];
+				[self.input updateDropdownWithHeight:totalHeight];
 			}
 			return;
 		}
@@ -392,25 +392,6 @@ extern void *ctx;
 	NSLog(@"----- ROWS: %lu", (unsigned long)result);
 
 	return result;
-}
-
-- (CGFloat)calculateTotalHeightFromArray:(NSArray<AutocompleteItem *> *)array
-{
-	CGFloat height = 0;
-
-	for (AutocompleteItem *item in array)
-	{
-		AutoCompleteCellType cellType = [AutoCompleteTableCell cellTypeFrom:item];
-		if (cellType == AutoCompleteCellTypeWorkspace)
-		{
-			height += self.worksapceItemHeight;
-		}
-		else
-		{
-			height += self.itemHeight;
-		}
-	}
-	return height;
 }
 
 @end
