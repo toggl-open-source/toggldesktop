@@ -181,6 +181,7 @@
 			NSForegroundColorAttributeName:[NSColor labelColor]
 	};
 	self.cellDescription.attributedStringValue = [[NSAttributedString alloc] initWithString:text attributes:attribute];
+	self.projectLbl.renderClient = YES;
 	[self.projectLbl setTitleWithAutoCompleteItem:viewItem];
 	[self.dotView fillWith:[ConvertHexColor hexCodeToNSColor:viewItem.ProjectColor]];
 }
