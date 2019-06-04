@@ -50,10 +50,7 @@
 
 - (void)setTitleWithAutoCompleteItem:(AutocompleteItem *)item
 {
-	if (item.Type != 1)
-	{
-		self.textColor = [ConvertHexColor hexCodeToNSColor:item.ProjectColor];
-	}
+	self.textColor = (item.Type == 1) ? nil : [ConvertHexColor hexCodeToNSColor:item.ProjectColor];
 	self.attributedStringValue = [self attributeStringWithAutoCompleteItem:item];
 }
 
