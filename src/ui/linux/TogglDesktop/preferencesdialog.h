@@ -18,8 +18,6 @@ class PreferencesDialog : public QDialog {
     explicit PreferencesDialog(QWidget *parent = 0);
     ~PreferencesDialog();
 
-    void setRemindersEnabled(bool enabled);
-
  private:
     Ui::PreferencesDialog *ui;
     int keyId;
@@ -27,8 +25,6 @@ class PreferencesDialog : public QDialog {
 
     bool setSettings();
     bool setProxySettings();
-
-    void paintEvent(QPaintEvent *event) override;
 
  private slots:  // NOLINT
     void displaySettings(const bool open,
