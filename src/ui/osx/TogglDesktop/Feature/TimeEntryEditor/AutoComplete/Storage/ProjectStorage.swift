@@ -32,10 +32,9 @@ extension Notification.Name {
 
     func filter(with text: String) -> [Any] {
 
-        // Filter with project lable or client label
+        // Filter with project, client or task label
         let filters = autoCompleteItems.filter {
-            return $0.projectLabel.fuzzySearch(with: text) ||
-                $0.clientLabel.fuzzySearch(with: text)
+            return $0.projectAndTaskLabel.fuzzySearch(with: text)
         }
 
         return buildProjectItems(with: filters)
