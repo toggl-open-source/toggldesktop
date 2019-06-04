@@ -26,6 +26,9 @@ typedef NS_ENUM (NSUInteger, AutoCompleteDisplayMode)
 @property int posY;
 @property NSButton *actionButton;
 @property (assign, nonatomic) AutoCompleteDisplayMode displayMode;
+@property (assign, nonatomic) CGFloat itemHeight;
+@property (assign, nonatomic) CGFloat worksapceItemHeight;
+@property (assign, nonatomic) CGFloat totalHeight;
 
 - (void)toggleTableViewWithNumberOfItem:(NSInteger)numberOfItem;
 - (void)updateDropdownWithHeight:(CGFloat)height;
@@ -34,4 +37,6 @@ typedef NS_ENUM (NSUInteger, AutoCompleteDisplayMode)
 - (void)resetTable;
 - (void)showAutoComplete:(BOOL)show;
 - (void)setButton:(NSButton *)button;
+- (void)reloadAutocomplete:(NSArray<AutocompleteItem *> *)array;
+- (CGFloat)calculateTotalHeightFromArray:(NSArray<AutocompleteItem *> *)array;
 @end

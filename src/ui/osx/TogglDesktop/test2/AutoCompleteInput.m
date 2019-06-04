@@ -28,6 +28,8 @@ NSString *upArrow = @"\u25B2";
 	{
 		self.posY = 0;
 		self.constraintsActive = NO;
+		self.itemHeight = 30.0;
+		self.worksapceItemHeight = 40.0;
 		[self createAutocomplete];
 		self.wantsLayer = YES;
 		self.layer.masksToBounds = NO;
@@ -136,6 +138,7 @@ NSString *upArrow = @"\u25B2";
 		{
 			[self addAutocompleteContainerIfNeed];
 			[self addBackgroundViewIfNeed];
+			[self updateDropdownWithHeight:self.totalHeight];
 			[self showAutoComplete:YES];
 		}
 	}
@@ -147,6 +150,7 @@ NSString *upArrow = @"\u25B2";
 
 - (void)updateDropdownWithHeight:(CGFloat)height
 {
+	self.totalHeight = height;
 	CGFloat suitableHeight;
 
 	switch (self.displayMode)
@@ -155,7 +159,7 @@ NSString *upArrow = @"\u25B2";
 			suitableHeight = MIN(height, self.posY - 50);
 			break;
 		case AutoCompleteDisplayModeFullscreen :
-			suitableHeight = MIN(height, self.backgroundView.frame.size.height - 25);
+			suitableHeight = MIN(height, self.posY - 25);
 			break;
 		default :
 			break;
@@ -274,6 +278,34 @@ NSString *upArrow = @"\u25B2";
 - (void)noInteractionViewMouseDidDown:(NoInteractionView *)sender
 {
 	[self resetTable];
+}
+
+- (CGFloat)calculateTotalHeightFromArray:(NSArray<AutocompleteItem *> *)array
+{
+	CGFloat height = 0;
+
+	for (AutocompleteItem *item in array)
+	{
+		AutoCompleteCellType cellType = [AutoCompleteTableCell cellTypeFrom:item];
+		if (cellType == AutoCompleteCellTypeWorkspace)
+		{
+			height += self.worksapceItemHeight;
+		}
+		else
+		{
+			height += self.itemHeight;
+		}
+	}
+	return height;
+}
+
+- (void)reloadAutocomplete:(NSArray<AutocompleteItem *> *)array
+{
+	CGFloat totalHeight = [self calculateTotalHeightFromArray:array];
+
+	[self.autocompleteTableView reloadData];
+	[self toggleTableViewWithNumberOfItem:array.count];
+	[self updateDropdownWithHeight:totalHeight];
 }
 
 @end
