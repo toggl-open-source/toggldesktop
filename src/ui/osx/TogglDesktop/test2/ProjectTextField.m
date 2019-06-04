@@ -50,7 +50,10 @@
 
 - (void)setTitleWithAutoCompleteItem:(AutocompleteItem *)item
 {
-	self.textColor = [ConvertHexColor hexCodeToNSColor:item.ProjectColor];
+	if (item.Type != 1)
+	{
+		self.textColor = [ConvertHexColor hexCodeToNSColor:item.ProjectColor];
+	}
 	self.attributedStringValue = [self attributeStringWithAutoCompleteItem:item];
 }
 
@@ -90,7 +93,7 @@
 		if (self.renderTask)
 		{
 			string = [[NSMutableAttributedString alloc] initWithString:@"" attributes:baseAttribute];
-			taskName = [[NSMutableAttributedString alloc] initWithString:[@"     - " stringByAppendingString:task]];
+			taskName = [[NSMutableAttributedString alloc] initWithString:[@"     " stringByAppendingString:task]];
 		}
 		else
 		{
