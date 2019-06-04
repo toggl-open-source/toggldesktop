@@ -215,13 +215,15 @@ extern void *ctx;
 								}
 
 			                    // Add category title
-								if (item.Type != self.lastType && item.Type != 1)
+								if (item.Type != self.lastType)
 								{
+									int64_t itemType = (item.Type == 1) ? 2 : item.Type;
 									AutocompleteItem *it = [[AutocompleteItem alloc] init];
 									it.Type = -1;
-									it.Text = self.types[item.Type];
+									it.Text = self.types[itemType];
 									[filtered addObject:it];
-									self.lastType = item.Type;
+									self.lastType = itemType;
+									lastPID = -1;
 								}
 
 			                    // Add client name row
@@ -284,13 +286,15 @@ extern void *ctx;
 						}
 
 			            // Add category title
-						if (item.Type != self.lastType && item.Type != 1)
+						if (item.Type != self.lastType)
 						{
+							int64_t itemType = (item.Type == 1) ? 2 : item.Type;
 							AutocompleteItem *it = [[AutocompleteItem alloc] init];
 							it.Type = -1;
-							it.Text = self.types[item.Type];
+							it.Text = self.types[itemType];
 							[filtered addObject:it];
-							self.lastType = item.Type;
+							self.lastType = itemType;
+							lastPID = -1;
 						}
 
 			            // Add client name row
