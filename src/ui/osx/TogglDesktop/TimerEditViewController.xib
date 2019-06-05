@@ -29,17 +29,42 @@
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customView id="M2u-7B-WCs">
-            <rect key="frame" x="0.0" y="0.0" width="411" height="64"/>
+            <rect key="frame" x="0.0" y="0.0" width="411" height="84"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
+                <box boxType="custom" borderWidth="0.0" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="d3A-e0-VV6" userLabel="titleBox">
+                    <rect key="frame" x="0.0" y="62" width="411" height="22"/>
+                    <view key="contentView" id="cd1-aB-ksZ">
+                        <rect key="frame" x="0.0" y="0.0" width="411" height="22"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Wfb-M9-ix6">
+                                <rect key="frame" x="185" y="3" width="42" height="17"/>
+                                <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="Toggl" id="w7a-dF-DEb">
+                                    <font key="font" usesAppearanceFont="YES"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="Wfb-M9-ix6" firstAttribute="centerY" secondItem="cd1-aB-ksZ" secondAttribute="centerY" id="Opg-Ji-cSA"/>
+                            <constraint firstItem="Wfb-M9-ix6" firstAttribute="centerX" secondItem="cd1-aB-ksZ" secondAttribute="centerX" id="j1g-DT-vCr"/>
+                        </constraints>
+                    </view>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="22" id="qzh-sP-x7b"/>
+                    </constraints>
+                    <color key="fillColor" name="white-background-color"/>
+                </box>
                 <box hidden="YES" autoresizesSubviews="NO" boxType="custom" borderType="none" borderWidth="0.0" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="NZl-PW-g8z" userLabel="manualBox" customClass="NSBoxClickable">
-                    <rect key="frame" x="0.0" y="0.0" width="411" height="64"/>
+                    <rect key="frame" x="0.0" y="0.0" width="411" height="62"/>
                     <view key="contentView" id="Ott-qi-Egp">
-                        <rect key="frame" x="0.0" y="0.0" width="411" height="64"/>
+                        <rect key="frame" x="0.0" y="0.0" width="411" height="62"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <box autoresizesSubviews="NO" boxType="custom" cornerRadius="8" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="Noa-Sc-kzT">
-                                <rect key="frame" x="10" y="17" width="391" height="30"/>
+                                <rect key="frame" x="10" y="16" width="391" height="30"/>
                                 <view key="contentView" id="2bC-QJ-uuN">
                                     <rect key="frame" x="1" y="1" width="389" height="28"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -85,19 +110,19 @@
                     <color key="fillColor" name="white-background-color"/>
                 </box>
                 <box autoresizesSubviews="NO" boxType="custom" borderType="none" borderWidth="0.0" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="Fga-BR-x8G" userLabel="timerBox" customClass="NSBoxClickable">
-                    <rect key="frame" x="0.0" y="0.0" width="411" height="64"/>
+                    <rect key="frame" x="0.0" y="0.0" width="411" height="62"/>
                     <view key="contentView" id="gK5-Lo-ktx">
-                        <rect key="frame" x="0.0" y="0.0" width="411" height="64"/>
+                        <rect key="frame" x="0.0" y="0.0" width="411" height="62"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <customView hidden="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UVu-2D-59K">
-                                <rect key="frame" x="25" y="0.0" width="336" height="64"/>
+                                <rect key="frame" x="25" y="0.0" width="336" height="62"/>
                                 <subviews>
                                     <customView horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="8Om-Ck-d1h">
-                                        <rect key="frame" x="0.0" y="0.0" width="235" height="64"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="235" height="62"/>
                                         <subviews>
                                             <textField horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="oaA-Wf-zkO" customClass="AutoCompleteInput">
-                                                <rect key="frame" x="-2" y="32" width="105" height="16"/>
+                                                <rect key="frame" x="-2" y="30" width="105" height="16"/>
                                                 <textFieldCell key="cell" lineBreakMode="truncatingTail" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" alignment="left" placeholderString="+ Add description" id="qf8-8Y-Po8">
                                                     <font key="font" metaFont="cellTitle"/>
                                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -109,7 +134,7 @@
                                                 </connections>
                                             </textField>
                                             <imageView horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="fQn-ym-gNM" customClass="DotImageView" customModule="TogglDesktop" customModuleProvider="target">
-                                                <rect key="frame" x="1" y="19" width="8" height="8"/>
+                                                <rect key="frame" x="1" y="17" width="8" height="8"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="8" id="5jt-T8-42H"/>
                                                     <constraint firstAttribute="height" constant="8" id="kbX-JT-n52"/>
@@ -117,7 +142,7 @@
                                                 <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" image="time-entry-dot" id="R7r-TA-kJS"/>
                                             </imageView>
                                             <textField horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="Cqy-Vf-bE1" customClass="ProjectTextField">
-                                                <rect key="frame" x="14" y="14" width="81" height="18"/>
+                                                <rect key="frame" x="14" y="12" width="81" height="18"/>
                                                 <textFieldCell key="cell" lineBreakMode="truncatingTail" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" alignment="left" placeholderString="+ Add project" id="BuW-NB-Qnm">
                                                     <font key="font" metaFont="cellTitle"/>
                                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -141,7 +166,7 @@
                                         </constraints>
                                     </customView>
                                     <stackView distribution="equalSpacing" orientation="horizontal" alignment="centerY" spacing="5" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IPz-wJ-rvs">
-                                        <rect key="frame" x="235" y="24" width="39" height="17"/>
+                                        <rect key="frame" x="235" y="23" width="39" height="17"/>
                                         <subviews>
                                             <imageView translatesAutoresizingMaskIntoConstraints="NO" id="5nL-Cd-iWe">
                                                 <rect key="frame" x="0.0" y="0.0" width="17" height="17"/>
@@ -170,7 +195,7 @@
                                         </customSpacing>
                                     </stackView>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Rt4-7t-bwl" customClass="NSTextFieldDuration">
-                                        <rect key="frame" x="277" y="24" width="61" height="16"/>
+                                        <rect key="frame" x="277" y="23" width="61" height="16"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="57" id="Qcm-6z-Cf8"/>
                                         </constraints>
@@ -198,7 +223,7 @@
                                 </constraints>
                             </customView>
                             <button toolTip="Continue with this time entry" horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="pBI-7b-vVj" customClass="NSHoverButton">
-                                <rect key="frame" x="371" y="17" width="30" height="30"/>
+                                <rect key="frame" x="371" y="16" width="30" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="30" id="9qp-aL-5CL"/>
                                     <constraint firstAttribute="height" constant="30" id="tYt-35-tqe"/>
@@ -212,7 +237,7 @@
                                 </connections>
                             </button>
                             <box autoresizesSubviews="NO" boxType="custom" cornerRadius="15" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="Cg4-tk-Y3a" customClass="TimerContainerBox" customModule="TogglDesktop" customModuleProvider="target">
-                                <rect key="frame" x="10" y="17" width="351" height="30"/>
+                                <rect key="frame" x="10" y="16" width="351" height="30"/>
                                 <view key="contentView" id="WHR-Ck-cjy">
                                     <rect key="frame" x="1" y="1" width="349" height="28"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -267,12 +292,15 @@
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="NZl-PW-g8z" secondAttribute="bottom" id="5za-ld-w1k"/>
                 <constraint firstAttribute="trailing" secondItem="Fga-BR-x8G" secondAttribute="trailing" id="6oC-eJ-dBs"/>
+                <constraint firstAttribute="trailing" secondItem="d3A-e0-VV6" secondAttribute="trailing" id="CIu-iB-Kur"/>
                 <constraint firstAttribute="bottom" secondItem="Fga-BR-x8G" secondAttribute="bottom" id="Cub-Lx-DNo"/>
+                <constraint firstItem="d3A-e0-VV6" firstAttribute="leading" secondItem="M2u-7B-WCs" secondAttribute="leading" id="Hbp-O2-Z3H"/>
+                <constraint firstItem="d3A-e0-VV6" firstAttribute="top" secondItem="M2u-7B-WCs" secondAttribute="top" id="dqx-nV-7YI"/>
                 <constraint firstItem="NZl-PW-g8z" firstAttribute="leading" secondItem="M2u-7B-WCs" secondAttribute="leading" id="hf4-yQ-qL5"/>
                 <constraint firstAttribute="trailing" secondItem="NZl-PW-g8z" secondAttribute="trailing" id="po2-OJ-DBk"/>
-                <constraint firstItem="Fga-BR-x8G" firstAttribute="top" secondItem="M2u-7B-WCs" secondAttribute="top" id="s0O-bN-wX6"/>
+                <constraint firstItem="Fga-BR-x8G" firstAttribute="top" secondItem="M2u-7B-WCs" secondAttribute="top" constant="22" id="s0O-bN-wX6"/>
                 <constraint firstItem="Fga-BR-x8G" firstAttribute="leading" secondItem="M2u-7B-WCs" secondAttribute="leading" id="wJK-xr-4eQ"/>
-                <constraint firstItem="NZl-PW-g8z" firstAttribute="top" secondItem="M2u-7B-WCs" secondAttribute="top" id="y6G-Gi-ezO"/>
+                <constraint firstItem="NZl-PW-g8z" firstAttribute="top" secondItem="M2u-7B-WCs" secondAttribute="top" constant="22" id="y6G-Gi-ezO"/>
             </constraints>
             <point key="canvasLocation" x="-403" y="-172"/>
         </customView>

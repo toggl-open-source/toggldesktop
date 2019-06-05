@@ -22,20 +22,20 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <box hidden="YES" boxType="custom" borderType="none" borderWidth="0.0" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="cvV-eB-sdq">
-                    <rect key="frame" x="0.0" y="0.0" width="252" height="196"/>
+                    <rect key="frame" x="0.0" y="0.0" width="252" height="174"/>
                     <view key="contentView" id="GUd-Hk-gCH">
-                        <rect key="frame" x="0.0" y="0.0" width="252" height="196"/>
+                        <rect key="frame" x="0.0" y="0.0" width="252" height="174"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     </view>
                 </box>
                 <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" horizontalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="7TM-hH-4yE">
-                    <rect key="frame" x="0.0" y="0.0" width="252" height="196"/>
+                    <rect key="frame" x="0.0" y="0.0" width="252" height="174"/>
                     <clipView key="contentView" copiesOnScroll="NO" id="x95-7N-Tpm">
-                        <rect key="frame" x="0.0" y="0.0" width="252" height="196"/>
+                        <rect key="frame" x="0.0" y="0.0" width="252" height="174"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView selectable="YES" id="96l-2I-0G5" customClass="TimeEntryCollectionView">
-                                <rect key="frame" x="0.0" y="0.0" width="252" height="186"/>
+                                <rect key="frame" x="0.0" y="0.0" width="252" height="164"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumInteritemSpacing="10" minimumLineSpacing="10" id="wqE-DF-86P" customClass="VertificalTimeEntryFlowLayout" customModule="TogglDesktop" customModuleProvider="target">
                                     <size key="itemSize" width="50" height="50"/>
@@ -49,15 +49,15 @@
                         <rect key="frame" x="-100" y="-100" width="233" height="15"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
-                    <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="xHG-vx-Jmn">
+                    <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="xHG-vx-Jmn">
                         <rect key="frame" x="236" y="10" width="16" height="186"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                 </scrollView>
                 <customView translatesAutoresizingMaskIntoConstraints="NO" id="OXo-Tz-Vbz" userLabel="Header View">
-                    <rect key="frame" x="0.0" y="196" width="252" height="64"/>
+                    <rect key="frame" x="0.0" y="174" width="252" height="86"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="64" id="OHB-YG-OkN"/>
+                        <constraint firstAttribute="height" constant="86" id="OHB-YG-OkN"/>
                     </constraints>
                 </customView>
             </subviews>
