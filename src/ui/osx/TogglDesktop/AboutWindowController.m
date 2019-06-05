@@ -45,6 +45,11 @@ extern void *ctx;
 {
 	[super windowDidLoad];
 
+	// Clean window titlebar
+	self.window.titleVisibility = NSWindowTitleHidden;
+	self.window.titlebarAppearsTransparent = YES;
+	self.window.styleMask |= NSFullSizeContentViewWindowMask;
+
 	[self.window setBackgroundColor:[NSColor colorWithPatternImage:[NSImage imageNamed:@"background-pattern"]]];
 
 	NSDictionary *infoDict = [[NSBundle mainBundle] infoDictionary];

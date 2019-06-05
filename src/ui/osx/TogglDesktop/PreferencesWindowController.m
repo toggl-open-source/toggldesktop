@@ -135,6 +135,11 @@ extern void *ctx;
 {
 	[super windowDidLoad];
 
+	// Clean window titlebar
+	self.window.titleVisibility = NSWindowTitleHidden;
+	self.window.titlebarAppearsTransparent = YES;
+	self.window.styleMask |= NSFullSizeContentViewWindowMask;
+
 	self.currentTab = TabIndexGeneral;
 	self.autotrackerProjectAutocompleteDataSource.combobox = self.autotrackerProject;
 	self.autotrackerProjectAutocompleteDataSource.combobox.dataSource = self.autotrackerProjectAutocompleteDataSource;

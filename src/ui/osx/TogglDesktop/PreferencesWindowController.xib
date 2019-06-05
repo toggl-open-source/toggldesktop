@@ -60,18 +60,32 @@
         <window title="Preferences" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" frameAutosaveName="Preferences" animationBehavior="default" id="1">
             <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="196" y="240" width="400" height="548"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
-            <value key="minSize" type="size" width="400" height="548"/>
-            <view key="contentView" misplaced="YES" id="2">
-                <rect key="frame" x="0.0" y="0.0" width="412" height="548"/>
+            <rect key="contentRect" x="196" y="240" width="400" height="570"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
+            <value key="minSize" type="size" width="400" height="570"/>
+            <view key="contentView" id="2">
+                <rect key="frame" x="0.0" y="0.0" width="412" height="570"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <box boxType="custom" borderType="none" borderWidth="0.0" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="qdc-hR-YLw">
-                        <rect key="frame" x="0.0" y="0.0" width="412" height="548"/>
+                        <rect key="frame" x="0.0" y="0.0" width="412" height="570"/>
                         <view key="contentView" id="QZK-80-mX3">
-                            <rect key="frame" x="0.0" y="0.0" width="412" height="548"/>
+                            <rect key="frame" x="0.0" y="0.0" width="412" height="570"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <subviews>
+                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="RqW-Eb-jQc">
+                                    <rect key="frame" x="166" y="551" width="81" height="17"/>
+                                    <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="Preferences" id="DcZ-K3-JhQ">
+                                        <font key="font" usesAppearanceFont="YES"/>
+                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                </textField>
+                            </subviews>
+                            <constraints>
+                                <constraint firstItem="RqW-Eb-jQc" firstAttribute="top" secondItem="QZK-80-mX3" secondAttribute="top" constant="2" id="GI0-kn-8py"/>
+                                <constraint firstItem="RqW-Eb-jQc" firstAttribute="centerX" secondItem="QZK-80-mX3" secondAttribute="centerX" id="nG5-2e-G1p"/>
+                            </constraints>
                         </view>
                         <color key="fillColor" name="preference-background-color"/>
                     </box>
@@ -491,11 +505,11 @@
                             </tabViewItem>
                             <tabViewItem label="Proxy" identifier="2" id="adI-Zg-JOo">
                                 <view key="view" id="Leo-bI-fp3">
-                                    <rect key="frame" x="0.0" y="0.0" width="412" height="540"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="412" height="562"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <box autoresizesSubviews="NO" boxType="custom" borderType="none" borderWidth="0.0" cornerRadius="4" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="qEc-dB-aZv">
-                                            <rect key="frame" x="15" y="430" width="382" height="98"/>
+                                            <rect key="frame" x="15" y="452" width="382" height="98"/>
                                             <view key="contentView" id="Vcc-fQ-nPv">
                                                 <rect key="frame" x="0.0" y="0.0" width="382" height="98"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -561,7 +575,7 @@
                                             <color key="fillColor" name="preference-box-background-color"/>
                                         </box>
                                         <box autoresizesSubviews="NO" boxType="custom" borderType="none" borderWidth="0.0" cornerRadius="4" title="Proxy Settings" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="hoK-7e-akc">
-                                            <rect key="frame" x="15" y="241" width="382" height="145"/>
+                                            <rect key="frame" x="15" y="263" width="382" height="145"/>
                                             <view key="contentView" id="XhL-bq-2bj">
                                                 <rect key="frame" x="0.0" y="0.0" width="382" height="145"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -741,7 +755,7 @@
                                             <font key="titleFont" metaFont="systemMedium" size="14"/>
                                         </box>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="q6d-hl-jcC">
-                                            <rect key="frame" x="23" y="396" width="101" height="14"/>
+                                            <rect key="frame" x="23" y="418" width="101" height="14"/>
                                             <textFieldCell key="cell" lineBreakMode="clipping" title="PROXY SETTINGS" id="yxg-ba-w8p">
                                                 <font key="font" metaFont="systemMedium" size="11"/>
                                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -763,11 +777,11 @@
                             </tabViewItem>
                             <tabViewItem label="Autotracker" identifier="" id="L4T-cB-5tT">
                                 <view key="view" id="Z2O-u3-FHM">
-                                    <rect key="frame" x="0.0" y="0.0" width="412" height="540"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="412" height="562"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <box autoresizesSubviews="NO" boxType="custom" borderType="none" borderWidth="0.0" cornerRadius="4" title="Box" translatesAutoresizingMaskIntoConstraints="NO" id="0Xg-0J-xLS">
-                                            <rect key="frame" x="15" y="181" width="382" height="347"/>
+                                            <rect key="frame" x="15" y="203" width="382" height="347"/>
                                             <view key="contentView" id="Flx-qJ-rba">
                                                 <rect key="frame" x="0.0" y="0.0" width="382" height="347"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -776,7 +790,7 @@
                                                         <rect key="frame" x="10" y="12" width="362" height="257"/>
                                                         <clipView key="contentView" id="anG-U7-QUu">
                                                             <rect key="frame" x="1" y="1" width="360" height="255"/>
-                                                            <autoresizingMask key="autoresizingMask"/>
+                                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnReordering="NO" multipleSelection="NO" autosaveColumns="NO" headerView="SWk-HQ-4y3" id="aw6-zQ-ZW8">
                                                                     <rect key="frame" x="0.0" y="0.0" width="360" height="232"/>
@@ -922,11 +936,11 @@
                             </tabViewItem>
                             <tabViewItem label="Reminder" identifier="" id="BnX-Iu-Map">
                                 <view key="view" id="g4Y-c9-6hQ">
-                                    <rect key="frame" x="0.0" y="0.0" width="412" height="540"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="412" height="562"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <box autoresizesSubviews="NO" boxType="custom" borderType="none" borderWidth="0.0" cornerRadius="4" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="Qyg-qT-WIB">
-                                            <rect key="frame" x="15" y="233" width="382" height="295"/>
+                                            <rect key="frame" x="15" y="255" width="382" height="295"/>
                                             <view key="contentView" id="ylC-Qj-tj3">
                                                 <rect key="frame" x="0.0" y="0.0" width="382" height="295"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1188,9 +1202,9 @@
                     <constraint firstItem="x8k-FT-alL" firstAttribute="trailing" secondItem="2zJ-7y-OAc" secondAttribute="trailing" id="Ntq-hO-Nbx"/>
                     <constraint firstAttribute="trailing" secondItem="qdc-hR-YLw" secondAttribute="trailing" id="PRc-AI-CTu"/>
                     <constraint firstItem="qdc-hR-YLw" firstAttribute="leading" secondItem="2" secondAttribute="leading" id="UvL-jc-rqF"/>
-                    <constraint firstItem="ZDX-gA-MBn" firstAttribute="top" secondItem="2" secondAttribute="top" constant="8" id="YTv-tE-7LO"/>
+                    <constraint firstItem="ZDX-gA-MBn" firstAttribute="top" secondItem="2" secondAttribute="top" constant="30" id="YTv-tE-7LO"/>
                     <constraint firstAttribute="trailing" secondItem="ZDX-gA-MBn" secondAttribute="trailing" id="aY5-FM-nM7"/>
-                    <constraint firstItem="2zJ-7y-OAc" firstAttribute="top" secondItem="2" secondAttribute="top" constant="10" id="ilc-xa-Ab5"/>
+                    <constraint firstItem="2zJ-7y-OAc" firstAttribute="top" secondItem="2" secondAttribute="top" constant="32" id="ilc-xa-Ab5"/>
                     <constraint firstItem="2zJ-7y-OAc" firstAttribute="leading" secondItem="2" secondAttribute="leading" constant="32" id="o12-og-FN9"/>
                     <constraint firstItem="x8k-FT-alL" firstAttribute="leading" secondItem="2zJ-7y-OAc" secondAttribute="leading" id="pyJ-9S-oSl"/>
                     <constraint firstAttribute="trailing" secondItem="2zJ-7y-OAc" secondAttribute="trailing" constant="32" id="qJ9-gc-eqg"/>

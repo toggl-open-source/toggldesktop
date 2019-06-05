@@ -41,6 +41,16 @@ typedef enum : NSUInteger
 
 extern void *ctx;
 
+- (void)windowDidLoad
+{
+	[super windowDidLoad];
+
+	// Clean window titlebar
+	self.window.titleVisibility = NSWindowTitleHidden;
+	self.window.titlebarAppearsTransparent = YES;
+	self.window.styleMask |= NSFullSizeContentViewWindowMask;
+}
+
 - (void)awakeFromNib
 {
 	[super awakeFromNib];

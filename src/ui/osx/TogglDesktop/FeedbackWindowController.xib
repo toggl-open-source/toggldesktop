@@ -23,19 +23,33 @@
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <window title="Send Feedback" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" animationBehavior="default" id="1">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
-            <rect key="contentRect" x="196" y="240" width="300" height="400"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
-            <value key="minSize" type="size" width="300" height="400"/>
+            <rect key="contentRect" x="196" y="240" width="300" height="422"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
+            <value key="minSize" type="size" width="300" height="422"/>
             <value key="maxSize" type="size" width="500" height="700"/>
             <view key="contentView" id="2">
-                <rect key="frame" x="0.0" y="0.0" width="300" height="400"/>
+                <rect key="frame" x="0.0" y="0.0" width="300" height="422"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <box boxType="custom" borderType="none" borderWidth="0.0" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="Zfu-dT-QNC">
-                        <rect key="frame" x="0.0" y="0.0" width="300" height="400"/>
+                        <rect key="frame" x="0.0" y="0.0" width="300" height="422"/>
                         <view key="contentView" id="0n9-kQ-v9n">
-                            <rect key="frame" x="0.0" y="0.0" width="300" height="400"/>
+                            <rect key="frame" x="0.0" y="0.0" width="300" height="422"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <subviews>
+                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="g8z-eT-2aF">
+                                    <rect key="frame" x="99" y="403" width="102" height="17"/>
+                                    <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="Send Feedback" id="hXf-jO-25u">
+                                        <font key="font" usesAppearanceFont="YES"/>
+                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                </textField>
+                            </subviews>
+                            <constraints>
+                                <constraint firstItem="g8z-eT-2aF" firstAttribute="top" secondItem="0n9-kQ-v9n" secondAttribute="top" constant="2" id="1Mn-G5-MEa"/>
+                                <constraint firstItem="g8z-eT-2aF" firstAttribute="centerX" secondItem="0n9-kQ-v9n" secondAttribute="centerX" id="4Vy-TI-af6"/>
+                            </constraints>
                         </view>
                         <color key="fillColor" name="feedback-background-color"/>
                     </box>
@@ -208,7 +222,7 @@
                     <constraint firstItem="Zfu-dT-QNC" firstAttribute="top" secondItem="2" secondAttribute="top" id="Qna-Qu-9Gv"/>
                     <constraint firstItem="dhE-W6-jv7" firstAttribute="leading" secondItem="2" secondAttribute="leading" constant="20" id="Qyr-q0-P9b"/>
                     <constraint firstItem="F8Z-u0-ZgF" firstAttribute="trailing" secondItem="TG8-w0-r91" secondAttribute="trailing" id="Ss5-DD-BAi"/>
-                    <constraint firstItem="dhE-W6-jv7" firstAttribute="top" secondItem="2" secondAttribute="top" constant="20" id="VsN-h0-MP7"/>
+                    <constraint firstItem="dhE-W6-jv7" firstAttribute="top" secondItem="2" secondAttribute="top" constant="42" id="VsN-h0-MP7"/>
                     <constraint firstItem="Zfu-dT-QNC" firstAttribute="leading" secondItem="2" secondAttribute="leading" id="Y3j-cE-oNv"/>
                     <constraint firstItem="F8Z-u0-ZgF" firstAttribute="leading" secondItem="ELz-XL-Qzo" secondAttribute="leading" id="cVV-nO-iiQ"/>
                     <constraint firstItem="dbV-zH-aRj" firstAttribute="top" secondItem="dhE-W6-jv7" secondAttribute="bottom" constant="10" id="cXa-bh-JMO"/>
