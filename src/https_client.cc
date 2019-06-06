@@ -495,8 +495,11 @@ HTTPSResponse HTTPSClient::makeHttpRequest(
         if (resp.err != noError &&
                 response.getContentType().find(kContentTypeApplicationJSON) != std::string::npos) {
             Json::Value root;
-            Json::Reader reader;
-            if (reader.parse(resp.body, root)) {
+            Json::CharReaderBuilder builder;
+            Json::CharReader *reader = builder.newCharReader();
+            std::string errors;
+
+            if (reader->parse(resp.body.c_str(), resp.body.c_str() + resp.body.size(), &root, &errors)) {
                 resp.body = root["error_message"].asString();
             }
         }

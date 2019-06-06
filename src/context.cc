@@ -1403,9 +1403,11 @@ error Context::downloadUpdate() {
             }
 
             Json::Value root;
-            Json::Reader reader;
-            if (!reader.parse(resp.body, root)) {
-                return error("Error parsing update check response body");
+            Json::CharReaderBuilder builder;
+            Json::CharReader *reader = builder.newCharReader();
+            std::string errors;
+            if (!reader->parse(resp.body.c_str(), resp.body.c_str() + resp.body.size(), &root, &errors)) {
+                return error("Error parsing update check response body:" + errors);
             }
 
             url = root["url"].asString();
@@ -4817,9 +4819,12 @@ error Context::pushClients(
         }
 
         Json::Value root;
-        Json::Reader reader;
-        if (!reader.parse(resp.body, root)) {
-            err = error("error parsing client POST response");
+        Json::CharReaderBuilder builder;
+        Json::CharReader *reader = builder.newCharReader();
+        std::string errors;
+
+        if (!reader->parse(resp.body.c_str(), resp.body.c_str() + resp.body.size(), &root, &errors)) {
+            err = error("error parsing client POST response: " + errors);
             continue;
         }
 
@@ -4874,9 +4879,12 @@ error Context::pushProjects(
         }
 
         Json::Value root;
-        Json::Reader reader;
-        if (!reader.parse(resp.body, root)) {
-            err = error("error parsing project POST response");
+        Json::CharReaderBuilder builder;
+        Json::CharReader *reader = builder.newCharReader();
+        std::string errors;
+
+        if (!reader->parse(resp.body.c_str(), resp.body.c_str() + resp.body.size(), &root, &errors)) {
+            err = error("error parsing project POST response: " + errors);
             continue;
         }
 
@@ -4989,9 +4997,12 @@ error Context::pushEntries(
         }
 
         Json::Value root;
-        Json::Reader reader;
-        if (!reader.parse(resp.body, root)) {
-            return error("error parsing time entry POST response");
+        Json::CharReaderBuilder builder;
+        Json::CharReader *reader = builder.newCharReader();
+        std::string errors;
+
+        if (!reader->parse(resp.body.c_str(), resp.body.c_str() + resp.body.size(), &root, &errors)) {
+            return error("error parsing time entry POST response: " + errors);
         }
 
         (*it)->LoadFromJSON(root);
@@ -5034,10 +5045,13 @@ error Context::pullObmExperiments() {
             return resp.err;
         }
 
-        Json::Value json;
-        Json::Reader reader;
-        if (!reader.parse(resp.body, json)) {
-            return error("Error in OBM experiments response body");
+        Json::Value root;
+        Json::CharReaderBuilder builder;
+        Json::CharReader *reader = builder.newCharReader();
+        std::string errors;
+
+        if (!reader->parse(resp.body.c_str(), resp.body.c_str() + resp.body.size(), &root, &errors)) {
+            return error("Error in OBM experiments response body: " + errors);
         }
 
         {
@@ -5046,7 +5060,7 @@ error Context::pullObmExperiments() {
                 logger().warning("Cannot apply OBM experiments without user");
                 return noError;
             }
-            user_->LoadObmExperiments(json);
+            user_->LoadObmExperiments(root);
         }
 
         return noError;
@@ -5283,8 +5297,11 @@ error Context::pullWorkspacePreferences(TogglClient* toggl_client) {
             continue;
 
         Json::Value root;
-        Json::Reader reader;
-        if (!reader.parse(json, root)) {
+        Json::CharReaderBuilder builder;
+        Json::CharReader *reader = builder.newCharReader();
+        std::string errors;
+
+        if (!reader->parse(json.c_str(), json.c_str() + json.size(), &root, &errors)) {
             return error("Failed to load workspace preferences");
         }
 
@@ -5366,9 +5383,12 @@ error Context::pullUserPreferences(
             return noError;
 
         Json::Value root;
-        Json::Reader reader;
-        if (!reader.parse(json, root)) {
-            return error("Failed to load user preferences");
+        Json::CharReaderBuilder builder;
+        Json::CharReader *reader = builder.newCharReader();
+        std::string errors;
+
+        if (!reader->parse(json.c_str(), json.c_str() + json.size(), &root, &errors)) {
+            return error("Failed to load user preferences: " + errors);
         }
 
         if (user_->LoadUserPreferencesFromJSON(root)) {
@@ -5511,11 +5531,14 @@ error Context::PullCountries() {
         if (resp.err != noError) {
             return resp.err;
         }
-        Json::Value root;
-        Json::Reader reader;
 
-        if (!reader.parse(resp.body, root)) {
-            return error("Error parsing countries response body");
+        Json::Value root;
+        Json::CharReaderBuilder builder;
+        Json::CharReader *reader = builder.newCharReader();
+        std::string errors;
+
+        if (!reader->parse(resp.body.c_str(), resp.body.c_str() + resp.body.size(), &root, &errors)) {
+            return error("Error parsing countries response body: " + errors);
         }
 
         std::vector<TogglCountryView> countries;

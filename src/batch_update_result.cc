@@ -103,9 +103,12 @@ error BatchUpdateResult::ParseResponseArray(
     logger.debug(response_body);
 
     Json::Value root;
-    Json::Reader reader;
-    if (!reader.parse(response_body, root)) {
-        return error("error parsing batch update response");
+    Json::CharReaderBuilder builder;
+    Json::CharReader *reader = builder.newCharReader();
+    std::string errors;
+
+    if (!reader->parse(response_body.c_str(), response_body.c_str() + response_body.size(), &root, &errors)) {
+        return error("error parsing batch update response: " + errors);
     }
 
     for (unsigned int i = 0; i < root.size(); i++) {

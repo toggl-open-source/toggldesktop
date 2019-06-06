@@ -111,9 +111,11 @@ void BaseModel::SetUpdatedAtString(const std::string value) {
 
 error BaseModel::LoadFromDataString(const std::string data_string) {
     Json::Value root;
-    Json::Reader reader;
-    if (!reader.parse(data_string, root)) {
-        return error("Failed to parse data string");
+    Json::CharReaderBuilder builder;
+    Json::CharReader *reader = builder.newCharReader();
+    std::string errors;
+    if (!reader->parse(data_string.c_str(), data_string.c_str() + data_string.size(), &root, &errors)) {
+        return error("Failed to parse data string: " + errors);
     }
     LoadFromJSON(root["data"]);
     return noError;

@@ -479,7 +479,7 @@ Json::Value TimeEntry::SaveToJSON() const {
     n["ui_modified_at"] = Json::UInt64(UIModifiedAt());
     n["created_with"] = Formatter::EscapeJSONString(CreatedWith());
 
-    Json::Value tag_nodes;
+    Json::Value tag_nodes = Json::Value(Json::arrayValue);
     if (TagNames.size() > 0) {
         for (std::vector<std::string>::const_iterator it = TagNames.begin();
                 it != TagNames.end();
@@ -487,9 +487,6 @@ Json::Value TimeEntry::SaveToJSON() const {
             std::string tag_name = Formatter::EscapeJSONString(*it);
             tag_nodes.append(Json::Value(tag_name));
         }
-    } else {
-        Json::Reader reader;
-        reader.parse("[]", tag_nodes);
     }
     n["tags"] = tag_nodes;
 

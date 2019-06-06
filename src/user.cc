@@ -596,9 +596,12 @@ error User::LoadUserUpdateFromJSONString(
     }
 
     Json::Value root;
-    Json::Reader reader;
-    if (!reader.parse(json, root)) {
-        return error("Failed to LoadUserUpdateFromJSONString");
+    Json::CharReaderBuilder builder;
+    Json::CharReader *reader = builder.newCharReader();
+    std::string errors;
+
+    if (!reader->parse(json.c_str(), json.c_str() + json.size(), &root, &errors)) {
+        return error("Failed to LoadUserUpdateFromJSONString: " + errors);
     }
 
     loadUserUpdateFromJSON(root);
@@ -682,9 +685,12 @@ error User::LoadUserAndRelatedDataFromJSONString(
     }
 
     Json::Value root;
-    Json::Reader reader;
-    if (!reader.parse(json, root)) {
-        return error("Failed to LoadUserAndRelatedDataFromJSONString");
+    Json::CharReaderBuilder builder;
+    Json::CharReader *reader = builder.newCharReader();
+    std::string errors;
+
+    if (!reader->parse(json.c_str(), json.c_str() + json.size(), &root, &errors)) {
+        return error("Failed to LoadUserAndRelatedDataFromJSONString: " + errors);
     }
 
     SetSince(root["since"].asUInt64());
@@ -705,9 +711,12 @@ error User::LoadWorkspacesFromJSONString(const std::string& json) {
     }
 
     Json::Value root;
-    Json::Reader reader;
-    if (!reader.parse(json, root)) {
-        return error("Failed to LoadWorkspacessFromJSONString");
+    Json::CharReaderBuilder builder;
+    Json::CharReader *reader = builder.newCharReader();
+    std::string errors;
+
+    if (!reader->parse(json.c_str(), json.c_str() + json.size(), &root, &errors)) {
+        return error("Failed to LoadWorkspacessFromJSONString: " + errors);
     }
 
     if (root.size() == 0) {
@@ -731,9 +740,12 @@ error User::LoadTimeEntriesFromJSONString(const std::string& json) {
     }
 
     Json::Value root;
-    Json::Reader reader;
-    if (!reader.parse(json, root)) {
-        return error("Failed to LoadTimeEntriesFromJSONString");
+    Json::CharReaderBuilder builder;
+    Json::CharReader *reader = builder.newCharReader();
+    std::string errors;
+
+    if (!reader->parse(json.c_str(), json.c_str() + json.size(), &root, &errors)) {
+        return error("Failed to LoadTimeEntriesFromJSONString: " + errors);
     }
 
     std::set<Poco::UInt64> alive;
@@ -1104,11 +1116,15 @@ error User::UserID(
     const std::string json_data_string,
     Poco::UInt64 *result) {
     *result = 0;
+
     Json::Value root;
-    Json::Reader reader;
-    bool ok = reader.parse(json_data_string, root);
+    Json::CharReaderBuilder builder;
+    Json::CharReader *reader = builder.newCharReader();
+    std::string errors;
+
+    bool ok = reader->parse(json_data_string.c_str(), json_data_string.c_str() + json_data_string.size(), &root, &errors);
     if (!ok) {
-        return error("error parsing UserID JSON");
+        return error("error parsing UserID JSON: " + errors);
     }
     *result = root["data"]["id"].asUInt64();
     return noError;
@@ -1118,11 +1134,15 @@ error User::LoginToken(
     const std::string json_data_string,
     std::string *result) {
     *result = "";
+
     Json::Value root;
-    Json::Reader reader;
-    bool ok = reader.parse(json_data_string, root);
+    Json::CharReaderBuilder builder;
+    Json::CharReader *reader = builder.newCharReader();
+    std::string errors;
+
+    bool ok = reader->parse(json_data_string.c_str(), json_data_string.c_str() + json_data_string.size(), &root, &errors);
     if (!ok) {
-        return error("error parsing UserID JSON");
+        return error("error parsing UserID JSON: " + errors);
     }
     *result = root["login_token"].asString();
     return noError;
@@ -1180,13 +1200,17 @@ error User::SetAPITokenFromOfflineData(const std::string password) {
 
         std::string key = generateKey(password);
 
-        Json::Value data;
-        Json::Reader reader;
-        if (!reader.parse(OfflineData(), data)) {
-            return error("failed to parse offline data");
+        Json::Value root;
+        Json::CharReaderBuilder builder;
+        Json::CharReader *reader = builder.newCharReader();
+        std::string errors;
+        std::string json = OfflineData();
+
+        if (!reader->parse(json.c_str(), json.c_str() + json.size(), &root, &errors)) {
+            return error("failed to parse offline data: " + errors);
         }
 
-        std::istringstream istr(data["salt"].asString());
+        std::istringstream istr(root["salt"].asString());
         Poco::Base64Decoder decoder(istr);
         std::string salt("");
         decoder >> salt;
@@ -1195,7 +1219,7 @@ error User::SetAPITokenFromOfflineData(const std::string password) {
         Poco::Crypto::Cipher* pCipher = factory.createCipher(ckey);
 
         std::string decrypted = pCipher->decryptString(
-            data["encrypted"].asString(),
+            root["encrypted"].asString(),
             Poco::Crypto::Cipher::ENC_BASE64);
 
         delete pCipher;

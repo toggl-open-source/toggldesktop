@@ -168,8 +168,11 @@ std::string WebSocketClient::parseWebSocketMessageType(
     }
 
     Json::Value root;
-    Json::Reader reader;
-    if (!reader.parse(json, root)) {
+    Json::CharReaderBuilder builder;
+    Json::CharReader *reader = builder.newCharReader();
+    std::string errors;
+
+    if (!reader->parse(json.c_str(), json.c_str() + json.size(), &root, &errors)) {
         return "";
     }
 
