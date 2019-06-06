@@ -16,8 +16,7 @@
                 "Fixed crash after idle notification was closed with Alt+F4",
                 "Improved signup error messages"
             ],
-            "date": "May 28th 2019",
-            "beta": "true"
+            "date": "May 28th 2019"
         },
         {
             "version": "7.4.345",
