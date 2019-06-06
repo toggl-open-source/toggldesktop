@@ -96,8 +96,8 @@ class GoogleAnalyticsSettingsEvent : public Poco::Task {
         : Poco::Task("GoogleAnalyticsSettingsEvent")
     , client_id_(client_id)
     , category_(category)
-    , record_timeline(record_timeline)
     , settings(settings)
+    , record_timeline(record_timeline)
     , uses_proxy(uses_proxy)
     , proxy(proxy) {}
     void runTask();
@@ -106,9 +106,9 @@ class GoogleAnalyticsSettingsEvent : public Poco::Task {
     std::string client_id_;
     std::string category_;
     std::string action_;
-    bool uses_proxy;
-    bool record_timeline;
     Settings settings;
+    bool record_timeline;
+    bool uses_proxy;
     Proxy proxy;
 
     const std::string relativeURL();

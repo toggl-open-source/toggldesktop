@@ -313,7 +313,8 @@ int Formatter::parseDurationStringHoursMinutesSeconds(
     take("sec", &seconds, whatsleft);
     take("s", &seconds, whatsleft);
 
-    return Poco::Timespan(hours*3600 + minutes*60 + seconds, 0).totalSeconds();
+    long duration = static_cast<long>(hours) * 3600 + static_cast<long>(minutes) * 60 + static_cast<long>(seconds);
+    return Poco::Timespan(duration, 0).totalSeconds();
 }
 
 bool Formatter::parseDurationStringMMSS(const std::string value,
@@ -393,7 +394,7 @@ Poco::UInt64 Formatter::AbsDuration(const Poco::Int64 value) {
 
     // Duration is negative when time is tracking
     if (duration < 0) {
-        duration += time(0);
+        duration += time(nullptr);
     }
     // If after calculation time is still negative,
     // either computer clock is wrong or user
@@ -408,7 +409,7 @@ Poco::UInt64 Formatter::AbsDuration(const Poco::Int64 value) {
 
 std::string Formatter::FormatDurationForDateHeader(
     const Poco::Int64 value) {
-    Poco::Int64 duration = AbsDuration(value);
+    Poco::Int64 duration = static_cast<Poco::Int64>(AbsDuration(value));
 
     std::stringstream ss;
 
@@ -428,14 +429,14 @@ std::string Formatter::FormatDuration(
     const Poco::Int64 value,
     const std::string format_name,
     const bool with_seconds) {
-    Poco::Int64 duration = AbsDuration(value);
+    Poco::Int64 duration = static_cast<Poco::Int64>(AbsDuration(value));
 
     if (Format::Decimal == format_name) {
         double hours = duration / 3600.0;
         // Following rounding up is needed
         // to be compatible with Toggl web site.
         double a = hours * 100.0;
-        int b = hours * 100;
+        int b = static_cast<int>(hours) * 100;
         double d = a - std::floor(a);
         if (d > 0.5) {
             b++;

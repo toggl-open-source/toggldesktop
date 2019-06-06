@@ -1306,13 +1306,13 @@ void User::CompressTimeline() {
     std::map<std::string, TimelineEvent *> compressed;
 
     // Older events will be deleted
-    Poco::UInt64 minimum_time = time(0) - kTimelineSecondsToKeep;
+    Poco::UInt64 minimum_time = time(nullptr) - kTimelineSecondsToKeep;
 
     // Find the chunk start time of current time.
     // then process only events that are older that this chunk start time.
     // Else we will have no full chunks to compress.
     Poco::UInt64 chunk_up_to =
-        (time(0) / kTimelineChunkSeconds) * kTimelineChunkSeconds;
+        (time(nullptr) / kTimelineChunkSeconds) * kTimelineChunkSeconds;
 
 
     time_t start = time(0);

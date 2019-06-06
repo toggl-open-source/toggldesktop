@@ -88,14 +88,14 @@ int getFocusedWindowInfo(
     *filename = "";
     *idle = false;
 
-    Display *display = XOpenDisplay(NULL);
+    Display *display = XOpenDisplay(nullptr);
     if (!display) {
         return 1;
     }
 
     // get active window
     unsigned long size = 0; // NOLINT
-    Window active_window = (Window)0;
+    Window active_window = 0;
     char *prop = get_property(
         display,
         DefaultRootWindow(display),
@@ -114,12 +114,12 @@ int getFocusedWindowInfo(
             active_window,
             XInternAtom(display, "UTF8_STRING", false),
             "_NET_WM_NAME",
-            NULL);
+            nullptr);
         if (net_wm_name) {
             *title = std::string(net_wm_name);
         } else {
             char *wm_name = get_property(display, active_window,
-                                         XA_STRING, "WM_NAME", NULL);
+                                         XA_STRING, "WM_NAME", nullptr);
             if (wm_name) {
                 *title = std::string(wm_name);
             }
@@ -129,27 +129,25 @@ int getFocusedWindowInfo(
     }
 
     // get pid of active window
-    unsigned long *pid = 0; // NOLINT
+    unsigned long *pid = nullptr;
     if (active_window) {
-        pid = (unsigned long *)get_property(display, active_window, // NOLINT
-                                            XA_CARDINAL, "_NET_WM_PID", NULL);
+        pid = reinterpret_cast<unsigned long*>(get_property(display, active_window, XA_CARDINAL, "_NET_WM_PID", nullptr));
         if (pid) {
             // get process name by pid
             char buf[256];
             snprintf(buf, sizeof(buf), "/proc/%lu/stat", *pid);
             const int fd = open(buf, O_RDONLY);
             if (fd >= 0) {
-                const ssize_t len =
-                    HANDLE_EINTR(read(fd, buf, sizeof(buf) - 1));
+                const ssize_t len = HANDLE_EINTR(read(fd, buf, sizeof(buf) - 1));
                 HANDLE_EINTR(close(fd));
                 if (len > 0) {
                     buf[len] = 0;
                     // The start of the file looks like:
                     //   <pid> (<name>) R <parent pid>
                     unsigned tmp_pid, tmp_ppid;
-                    char *process_name = 0;
-                    if (sscanf(buf, "%u (%a[^)]) %*c %u", // NOLINT
-                               &tmp_pid, &process_name, &tmp_ppid) == 3) {
+                    char *process_name = nullptr;
+                    // this is probably wrong, the %a format specifier handles float, not string and definitely not like this
+                    if (sscanf(buf, "%u (%a[^)]) %*c %u", &tmp_pid, &process_name, &tmp_ppid) == 3) {
                         *filename = std::string(process_name);
                     }
                     free(process_name);

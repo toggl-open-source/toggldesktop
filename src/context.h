@@ -469,8 +469,8 @@ class Context : public TimelineDatasource {
     error AsyncPullCountries();
     error PullCountries();
 
-    void TrackWindowSize(const Poco::Int64 width,
-                         const Poco::Int64 height);
+    void TrackWindowSize(const Poco::UInt64 width,
+                         const Poco::UInt64 height);
 
  protected:
     void uiUpdaterActivity();
@@ -709,7 +709,7 @@ class Context : public TimelineDatasource {
 
     bool overlay_visible_;
 
-    const bool handleStopRunningEntry();
+    bool handleStopRunningEntry();
 };
 
 void on_websocket_message(

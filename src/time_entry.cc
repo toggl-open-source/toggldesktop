@@ -300,8 +300,8 @@ void TimeEntry::SetStartUserInput(const std::string value,
     if (IsTracking()) {
         SetDurationInSeconds(-start);
     } else {
-        auto stop = Stop();
-        if (keepEndTimeFixed && stop > start) {
+        Poco::UInt64 stop = Stop();
+        if (keepEndTimeFixed && stop > static_cast<Poco::UInt64>(start)) {
             SetDurationInSeconds(stop - start);
         } else {
             SetStop(start + DurationInSeconds());

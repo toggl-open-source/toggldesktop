@@ -24,7 +24,7 @@ namespace toggl {
 
 namespace view {
 
-bool TimeEntry::operator == (const TimeEntry& a) const {
+bool TimeEntry::operator == (const TimeEntry&) const {
     return false;
 }
 
@@ -40,15 +40,16 @@ void TimeEntry::Fill(toggl::TimeEntry * const model) {
     Ended = model->Stop();
     StartTimeString =
         toggl::Formatter::FormatTimeForTimeEntryEditor(
-            model->Start());
+            static_cast<time_t>(model->Start()));
     EndTimeString =
         toggl::Formatter::FormatTimeForTimeEntryEditor(
-            model->Stop());
+            static_cast<time_t>(model->Stop()));
     Billable = model->Billable();
     Tags = model->Tags();
     UpdatedAt = model->UpdatedAt();
     DateHeader =
-        toggl::Formatter::FormatDateHeader(model->Start());
+        toggl::Formatter::FormatDateHeader(
+            static_cast<time_t>(model->Start()));
     DurOnly = model->DurOnly();
     Error = model->ValidationError();
     Unsynced = model->Unsynced();
@@ -59,19 +60,19 @@ void TimeEntry::Fill(toggl::TimeEntry * const model) {
     GroupName = ss.str();
 }
 
-bool Autocomplete::operator == (const Autocomplete& a) const {
+bool Autocomplete::operator == (const Autocomplete&) const {
     return false;
 }
 
-bool Generic::operator == (const Generic& a) const {
+bool Generic::operator == (const Generic&) const {
     return false;
 }
 
-bool AutotrackerRule::operator == (const AutotrackerRule& a) const {
+bool AutotrackerRule::operator == (const AutotrackerRule&) const {
     return false;
 }
 
-bool TimelineEvent::operator == (const TimelineEvent& a) const {
+bool TimelineEvent::operator == (const TimelineEvent&) const {
     return false;
 }
 
@@ -419,7 +420,7 @@ void GUI::DisplayTimeEntryList(const bool open,
             this->isFirstLaunch = false;
 
             // Get render list from last 9 days at the first launch
-            time_t last9Days = time(0) - 9 * 86400;
+            uint64_t last9Days = static_cast<uint64_t>(time(nullptr) - 9 * 86400);
             for (auto it = list.begin(); it != list.end(); it++) {
                 auto timeEntry = *it;
                 if (timeEntry.Started >= last9Days) {
