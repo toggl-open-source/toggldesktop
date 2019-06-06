@@ -1179,6 +1179,20 @@
                         "name": "TogglDesktopEnterpriseInstaller-7.4.345.exe"
                     }
                 ]
+            },
+            {
+                "version": "7.4.422",
+                "timestamp": "06-06-2019",
+                "filename": [
+                    {
+                        "type": "windows",
+                        "name": "TogglDesktopInstaller-7.4.422.exe"
+                    },
+                    {
+                        "type": "windows_enterprise",
+                        "name": "TogglDesktopEnterpriseInstaller-7.4.422.exe"
+                    }
+                ]
             }
         ]
     },
