@@ -63,48 +63,56 @@ void SystemTray::notificationCapabilitiesReceived(QDBusPendingCallWatcher *watch
 }
 
 uint SystemTray::requestNotification(uint previous, const QString &title, const QString &description) {
-    QByteArray data;
-    QImage im(":/icons/64x64/toggldesktop.png");
-    im = im.convertToFormat(QImage::Format_RGBA8888);
+    // on supported platforms, this makes icons work as we want
+    if (notificationsPresent) {
+        QByteArray data;
+        QImage im(":/icons/64x64/toggldesktop.png");
+        im = im.convertToFormat(QImage::Format_RGBA8888);
 
-    for (int i = 0; i < im.height(); i++) {
-        data.append(reinterpret_cast<const char*>(im.scanLine(i)), im.width() * 4);
+        for (int i = 0; i < im.height(); i++) {
+            data.append(reinterpret_cast<const char*>(im.scanLine(i)), im.width() * 4);
+        }
+
+        QStringList actions;
+        actions << "default" << "Open Toggl";
+
+        // prepare the structure with the image beforehand
+        // as far as I know, it cannot be done inline (without defining a custom stream operator)
+        QDBusArgument hints;
+        hints.beginStructure();
+        hints << im.width() // width in pixels
+              << im.height() // height in pixels
+              << im.width() * 4 // line stride (line length in bytes including padding)
+              << 1 // has alpha
+              << 8 // bits per pixel
+              << 4 // samples per pixel (4 - ARGB format)
+              << data; // byte array with pixel data
+        hints.endStructure();
+
+        auto reply = notifications->call("Notify", // function name
+                                         "TogglDesktop", // application name
+                                         previous, // replaces ID
+                                         "", // application icon - we need none because we pass it with the data
+                                         title,
+                                         description,
+                                         actions, // actions - pairs - first string is identifier, second is display text
+                                         QVariantMap { // hints
+                                             { "icon_data", QVariant::fromValue(hints) }
+                                         },
+                                         0); // timeout - 0 is never expire, -1 is default, >0 in ms
+
+        if (reply.type() == QDBusMessage::InvalidMessage) {
+            qWarning() << "When requesting a notification:" << reply.errorMessage();
+            return 0;
+        }
+
+        return reply.arguments()[0].toUInt();
     }
-
-    QStringList actions;
-    actions << "default" << "Open Toggl";
-
-    // prepare the structure with the image beforehand
-    // as far as I know, it cannot be done inline (without defining a custom stream operator)
-    QDBusArgument hints;
-    hints.beginStructure();
-    hints << im.width() // width in pixels
-          << im.height() // height in pixels
-          << im.width() * 4 // line stride (line length in bytes including padding)
-          << 1 // has alpha
-          << 8 // bits per pixel
-          << 4 // samples per pixel (4 - ARGB format)
-          << data; // byte array with pixel data
-    hints.endStructure();
-
-    auto reply = notifications->call("Notify", // function name
-                                     "TogglDesktop", // application name
-                                     previous, // replaces ID
-                                     "", // application icon - we need none because we pass it with the data
-                                     title,
-                                     description,
-                                     actions, // actions - pairs - first string is identifier, second is display text
-                                     QVariantMap { // hints
-                                         { "icon_data", QVariant::fromValue(hints) }
-                                     },
-                                     0); // timeout - 0 is never expire, -1 is default, >0 in ms
-
-    if (reply.type() == QDBusMessage::InvalidMessage) {
-        qWarning() << "When requesting a notification:" << reply.errorMessage();
+    // fallback for other platforms
+    else {
+        showMessage(title, description, QIcon(":/icons/64x64/toggldesktop.png"));
         return 0;
     }
-
-    return reply.arguments()[0].toUInt();
 }
 
 void SystemTray::notificationClosed(uint id, uint reason) {

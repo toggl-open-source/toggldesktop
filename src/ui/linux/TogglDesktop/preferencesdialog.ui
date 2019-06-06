@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>451</width>
-    <height>414</height>
+    <height>447</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,7 +20,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="tab_general">
       <attribute name="title">
@@ -466,41 +466,6 @@
         </widget>
        </item>
       </layout>
-      <widget class="QLabel" name="reminderWarning">
-       <property name="geometry">
-        <rect>
-         <x>-1</x>
-         <y>200</y>
-         <width>331</width>
-         <height>101</height>
-        </rect>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">color:white;background-color:#bb888888</string>
-       </property>
-       <property name="text">
-        <string>&lt;b&gt;Notifications are not available on your system&lt;/b&gt;&lt;br&gt;You do not have a notfication daemon running.</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-      </widget>
-      <zorder>reminderEndTimeEdit</zorder>
-      <zorder>remindToTrackTime</zorder>
-      <zorder>dayCheckbox_7</zorder>
-      <zorder>reminderEndTimeLabel</zorder>
-      <zorder>dayCheckbox_4</zorder>
-      <zorder>reminderStartTimeLabel</zorder>
-      <zorder>dayCheckbox_3</zorder>
-      <zorder>reminderDaysLabel</zorder>
-      <zorder>dayCheckbox_5</zorder>
-      <zorder>dayCheckbox_6</zorder>
-      <zorder>dayCheckbox_1</zorder>
-      <zorder>reminderMinutes</zorder>
-      <zorder>dayCheckbox_2</zorder>
-      <zorder>reminderStartTimeEdit</zorder>
-      <zorder>reminderMinutesLabel</zorder>
-      <zorder>reminderWarning</zorder>
      </widget>
     </widget>
    </item>
