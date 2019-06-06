@@ -9,9 +9,6 @@
              d:DataContext="{d:DesignInstance Type=toggl:TimeEntryCellSample, IsDesignTimeCreatable=True}"
              d:DesignWidth="455"
              ContextMenu="{StaticResource TimeEntryContextMenu}">
-    <UserControl.Resources>
-        <converters:ElementSizeConverter x:Key="ElementSizeConverter" />
-    </UserControl.Resources>
 
     <StackPanel Style="{StaticResource TimeEntryCell}"
                 Background="White" x:Name="MainBack">
@@ -57,15 +54,10 @@
                     <RowDefinition Height="*" Name="projectRow" x:FieldModifier="private"/>
                 </Grid.RowDefinitions>
 
-                <StackPanel Orientation="Horizontal" Grid.Row="1" x:Name="clientAndProjectNamePanel">
-
-                    <TextBlock Name="labelClient" x:FieldModifier="private"
-                                Foreground="DimGray"
-                                MaxWidth="{Binding ActualWidth, ElementName=clientAndProjectNamePanel, Converter={StaticResource ElementSizeConverter}, ConverterParameter=0.5}">
-                        Client
-                    </TextBlock>
-                    <TextBlock Name="labelProject" x:FieldModifier="private" MouseLeftButtonDown="labelProject_MouseDown"
-                                >Project</TextBlock>
+                <StackPanel Orientation="Horizontal" Grid.Row="1">
+                    <TextBlock Name="labelProject" x:FieldModifier="private" MouseLeftButtonDown="labelProject_MouseDown">Project</TextBlock>
+                    <TextBlock Name="separatorLabel" Foreground="DimGray">·</TextBlock>
+                    <TextBlock Name="labelClient" x:FieldModifier="private" Foreground="DimGray">Client</TextBlock>
 
                 </StackPanel>
 

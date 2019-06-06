@@ -199,7 +199,6 @@
       <DependentUpon>TimeEntryCellDayHeader.xaml</DependentUpon>
     </Compile>
     <Compile Include="ui\controls\TimeEntryCellDragImposter.cs" />
-    <Compile Include="ui\Converters\ElementSizeConverter.cs" />
     <Compile Include="ui\Converters\StringToBrushConverter.cs" />
     <Compile Include="ui\Experiments\implementations\Experiment98.cs" />
     <Compile Include="ui\Experiments\implementations\Experiment98Screen2.xaml.cs">

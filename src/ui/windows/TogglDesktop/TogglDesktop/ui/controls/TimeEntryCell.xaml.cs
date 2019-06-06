@@ -146,7 +146,8 @@ namespace TogglDesktop
 
             this.projectColor.Fill = projectColorBrush;
             this.labelProject.Foreground = projectColorBrush;
-            this.labelProject.Text = item.ClientLabel.IsNullOrEmpty() ? item.ProjectLabel : "• " + item.ProjectLabel;
+            this.labelProject.Text = "• " + item.ProjectLabel;
+            this.separatorLabel.ShowOnlyIf(!item.ClientLabel.IsNullOrEmpty());
             setOptionalTextBlockText(this.labelClient, item.ClientLabel);
             setOptionalTextBlockText(this.labelTask, item.TaskLabel.IsNullOrEmpty() ? "" : item.TaskLabel + " -");
             this.labelDuration.Text = item.Duration;
