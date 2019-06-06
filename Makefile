@@ -41,10 +41,15 @@ xcodebuild_command_release=xcodebuild \
 				  -scheme TogglDesktop \
 				  -project src/ui/osx/TogglDesktop/TogglDesktop.xcodeproj  \
 				  -configuration Release
+
+ifeq ($(uname), Linux)
+executable=./build/src/ui/linux/TogglDesktop/TogglDesktop
+else
 executable=$(shell $(xcodebuild_command) \
 			 -showBuildSettings \
  			| grep -w 'BUILT_PRODUCTS_DIR' \
  			| cut -d'=' -f 2)/TogglDesktop.app/Contents/MacOS/TogglDesktop
+endif
 executable_release=$(shell $(xcodebuild_command_release) \
 			 -showBuildSettings \
 			| grep -w 'BUILT_PRODUCTS_DIR' \
@@ -139,7 +144,12 @@ qa: lint fmt cppclean test
 
 fmt: fmt_lib fmt_ui
 
+ifeq ($(uname), Linux)
+app:
+	mkdir -p build && cd build && cmake .. && make
+else
 app: lib ui
+endif
 
 app_release: lib_release ui_release
 
