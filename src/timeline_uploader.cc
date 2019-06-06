@@ -125,8 +125,11 @@ std::string convertTimelineToJSON(
         root.append(n);
     }
 
-    Json::StyledWriter writer;
-    return writer.write(root);
+    Json::StreamWriterBuilder builder;
+    Json::StreamWriter *writer = builder.newStreamWriter();
+    std::stringstream ss;
+    writer->write(root, &ss);
+    return ss.str();
 }
 
 void TimelineUploader::backoff() {

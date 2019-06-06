@@ -1168,8 +1168,11 @@ error User::UpdateJSON(
         c.append(update);
     }
 
-    Json::StyledWriter writer;
-    *result = writer.write(c);
+    Json::StreamWriterBuilder builder;
+    Json::StreamWriter *writer = builder.newStreamWriter();
+    std::stringstream ss;
+    writer->write(c, &ss);
+    *result = ss.str();
 
     return noError;
 }
@@ -1271,7 +1274,12 @@ error User::EnableOfflineLogin(
         data["encrypted"] = pCipher->encryptString(
             APIToken(),
             Poco::Crypto::Cipher::ENC_BASE64);
-        std::string json = Json::FastWriter().write(data);
+
+        Json::StreamWriterBuilder builder;
+        Json::StreamWriter *writer = builder.newStreamWriter();
+        std::stringstream ss;
+        writer->write(data, &ss);
+        std::string json = ss.str();
 
         delete pCipher;
         pCipher = nullptr;

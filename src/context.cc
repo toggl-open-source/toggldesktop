@@ -12,6 +12,7 @@
 #include "../src/context.h"
 
 #include <iostream>  // NOLINT
+#include <sstream>
 
 #include "./autotracker.h"
 #include "./client.h"
@@ -1689,9 +1690,13 @@ void Context::onSendFeedback(Poco::Util::TimerTask&) {
         settings_json["record_timeline"] = user_->RecordTimeline();
     }
 
+    Json::StreamWriterBuilder builder;
+    Json::StreamWriter *writer = builder.newStreamWriter();
+    std::stringstream ss;
+    writer->write(settings_json, &ss);
     form.addPart("files",
                  new Poco::Net::StringPartSource(
-                     Json::StyledWriter().write(settings_json),
+                     ss.str(),
                      "application/json",
                      "settings.json"));
 
@@ -4798,8 +4803,11 @@ error Context::pushClients(
             it != clients.end(); it++) {
         Json::Value clientJson = (*it)->SaveToJSON();
 
-        Json::StyledWriter writer;
-        client_json = writer.write(clientJson);
+        Json::StreamWriterBuilder wBuilder;
+        Json::StreamWriter *writer = wBuilder.newStreamWriter();
+        std::stringstream ss;
+        writer->write(clientJson, &ss);
+        client_json = ss.str();
 
         HTTPSRequest req;
         req.host = urls::API();
@@ -4819,8 +4827,8 @@ error Context::pushClients(
         }
 
         Json::Value root;
-        Json::CharReaderBuilder builder;
-        Json::CharReader *reader = builder.newCharReader();
+        Json::CharReaderBuilder rBuilder;
+        Json::CharReader *reader = rBuilder.newCharReader();
         std::string errors;
 
         if (!reader->parse(resp.body.c_str(), resp.body.c_str() + resp.body.size(), &root, &errors)) {
@@ -4858,8 +4866,11 @@ error Context::pushProjects(
 
         Json::Value projectJson = (*it)->SaveToJSON();
 
-        Json::StyledWriter writer;
-        project_json = writer.write(projectJson);
+        Json::StreamWriterBuilder wBuilder;
+        Json::StreamWriter *writer = wBuilder.newStreamWriter();
+        std::stringstream ss;
+        writer->write(projectJson, &ss);
+        project_json = ss.str();
 
         HTTPSRequest req;
         req.host = urls::API();
@@ -4879,8 +4890,8 @@ error Context::pushProjects(
         }
 
         Json::Value root;
-        Json::CharReaderBuilder builder;
-        Json::CharReader *reader = builder.newCharReader();
+        Json::CharReaderBuilder rBuilder;
+        Json::CharReader *reader = rBuilder.newCharReader();
         std::string errors;
 
         if (!reader->parse(resp.body.c_str(), resp.body.c_str() + resp.body.size(), &root, &errors)) {
@@ -4939,8 +4950,11 @@ error Context::pushEntries(
 
         Json::Value entryJson = (*it)->SaveToJSON();
 
-        Json::StyledWriter writer;
-        entry_json = writer.write(entryJson);
+        Json::StreamWriterBuilder wBuilder;
+        Json::StreamWriter *writer = wBuilder.newStreamWriter();
+        std::stringstream ss;
+        writer->write(entryJson, &ss);
+        entry_json = ss.str();
 
         // std::cout << entry_json;
 
@@ -4997,8 +5011,8 @@ error Context::pushEntries(
         }
 
         Json::Value root;
-        Json::CharReaderBuilder builder;
-        Json::CharReader *reader = builder.newCharReader();
+        Json::CharReaderBuilder rBuilder;
+        Json::CharReader *reader = rBuilder.newCharReader();
         std::string errors;
 
         if (!reader->parse(resp.body.c_str(), resp.body.c_str() + resp.body.size(), &root, &errors)) {
@@ -5115,7 +5129,12 @@ error Context::pushObmAction() {
 
             Json::Value root = for_upload->SaveToJSON();
             req.relative_url = for_upload->ModelURL();
-            req.payload = Json::StyledWriter().write(root);
+
+            Json::StreamWriterBuilder builder;
+            Json::StreamWriter *writer = builder.newStreamWriter();
+            std::stringstream ss;
+            writer->write(root, &ss);
+            req.payload = ss.str();
         }
 
         logger().debug(req.payload);
@@ -5451,7 +5470,12 @@ error Context::signup(
         HTTPSRequest req;
         req.host = urls::API();
         req.relative_url = "/api/v9/signup";
-        req.payload = Json::StyledWriter().write(user);
+
+        Json::StreamWriterBuilder builder;
+        Json::StreamWriter *writer = builder.newStreamWriter();
+        std::stringstream ss;
+        writer->write(user, &ss);
+        req.payload = ss.str();
 
         HTTPSResponse resp = toggl_client->Post(req);
         if (resp.err != noError) {
