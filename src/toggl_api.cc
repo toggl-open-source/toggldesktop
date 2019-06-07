@@ -347,7 +347,7 @@ bool_t toggl_set_proxy_settings(void *context,
 }
 
 void toggl_set_cacert_path(
-    void *context,
+    void *,
     const char_t *path) {
 
     toggl::HTTPSClient::Config.CACertPath = to_string(path);

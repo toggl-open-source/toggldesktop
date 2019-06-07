@@ -502,9 +502,9 @@ void RelatedData::ProjectAutocompleteItems(
 }
 
 void RelatedData::workspaceAutocompleteItems(
-    std::set<std::string> *unique_names,
+    std::set<std::string> *,
     std::map<Poco::UInt64, std::string> *ws_names,
-    std::vector<view::Autocomplete> *list) const {
+    std::vector<view::Autocomplete> *) const {
 
     // remember workspaces that have projects
     std::set<Poco::UInt64> ws_ids_with_projects;

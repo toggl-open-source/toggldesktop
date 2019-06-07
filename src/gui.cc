@@ -24,7 +24,7 @@ namespace toggl {
 
 namespace view {
 
-bool TimeEntry::operator == (const TimeEntry& a) const {
+bool TimeEntry::operator == (const TimeEntry&) const {
     return false;
 }
 
@@ -59,19 +59,19 @@ void TimeEntry::Fill(toggl::TimeEntry * const model) {
     GroupName = ss.str();
 }
 
-bool Autocomplete::operator == (const Autocomplete& a) const {
+bool Autocomplete::operator == (const Autocomplete&) const {
     return false;
 }
 
-bool Generic::operator == (const Generic& a) const {
+bool Generic::operator == (const Generic&) const {
     return false;
 }
 
-bool AutotrackerRule::operator == (const AutotrackerRule& a) const {
+bool AutotrackerRule::operator == (const AutotrackerRule&) const {
     return false;
 }
 
-bool TimelineEvent::operator == (const TimelineEvent& a) const {
+bool TimelineEvent::operator == (const TimelineEvent&) const {
     return false;
 }
 

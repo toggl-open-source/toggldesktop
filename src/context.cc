@@ -1056,7 +1056,7 @@ void Context::Sync() {
     }
 }
 
-void Context::onTimeEntryAutocompletes(Poco::Util::TimerTask& task) {  // NOLINT
+void Context::onTimeEntryAutocompletes(Poco::Util::TimerTask&) {  // NOLINT
     std::vector<view::Autocomplete> time_entry_autocompletes;
     if (user_) {
         user_->related.TimeEntryAutocompleteItems(&time_entry_autocompletes);
@@ -1064,7 +1064,7 @@ void Context::onTimeEntryAutocompletes(Poco::Util::TimerTask& task) {  // NOLINT
     UI()->DisplayTimeEntryAutocomplete(&time_entry_autocompletes);
 }
 
-void Context::onMiniTimerAutocompletes(Poco::Util::TimerTask& task) {  // NOLINT
+void Context::onMiniTimerAutocompletes(Poco::Util::TimerTask&) {  // NOLINT
     std::vector<view::Autocomplete> minitimer_autocompletes;
     if (user_) {
         user_->related.MinitimerAutocompleteItems(&minitimer_autocompletes);
@@ -1072,7 +1072,7 @@ void Context::onMiniTimerAutocompletes(Poco::Util::TimerTask& task) {  // NOLINT
     UI()->DisplayMinitimerAutocomplete(&minitimer_autocompletes);
 }
 
-void Context::onProjectAutocompletes(Poco::Util::TimerTask& task) {  // NOLINT
+void Context::onProjectAutocompletes(Poco::Util::TimerTask&) {  // NOLINT
     std::vector<view::Autocomplete> project_autocompletes;
     if (user_) {
         user_->related.ProjectAutocompleteItems(&project_autocompletes);
@@ -1105,7 +1105,7 @@ void Context::switchWebSocketOff() {
     timer_.schedule(ptask, Poco::Timestamp());
 }
 
-void Context::onSwitchWebSocketOff(Poco::Util::TimerTask& task) {  // NOLINT
+void Context::onSwitchWebSocketOff(Poco::Util::TimerTask&) {  // NOLINT
     logger().debug("onSwitchWebSocketOff");
 
     Poco::Mutex::ScopedLock lock(ws_client_m_);
@@ -1151,7 +1151,7 @@ void Context::switchWebSocketOn() {
     timer_.schedule(ptask, Poco::Timestamp());
 }
 
-void Context::onSwitchWebSocketOn(Poco::Util::TimerTask& task) {  // NOLINT
+void Context::onSwitchWebSocketOn(Poco::Util::TimerTask&) {  // NOLINT
     logger().debug("onSwitchWebSocketOn");
 
     std::string apitoken("");
@@ -1186,7 +1186,7 @@ void Context::switchTimelineOff() {
     timer_.schedule(ptask, Poco::Timestamp());
 }
 
-void Context::onSwitchTimelineOff(Poco::Util::TimerTask& task) {  // NOLINT
+void Context::onSwitchTimelineOff(Poco::Util::TimerTask&) {  // NOLINT
     logger().debug("onSwitchTimelineOff");
 
     {
@@ -1213,7 +1213,7 @@ void Context::switchTimelineOn() {
     timer_.schedule(ptask, Poco::Timestamp());
 }
 
-void Context::onSwitchTimelineOn(Poco::Util::TimerTask& task) {  // NOLINT
+void Context::onSwitchTimelineOn(Poco::Util::TimerTask&) {  // NOLINT
     logger().debug("onSwitchTimelineOn");
 
     if (quit_) {
@@ -1255,7 +1255,7 @@ void Context::fetchUpdates() {
     logger().debug(ss.str());
 }
 
-void Context::onFetchUpdates(Poco::Util::TimerTask& task) {  // NOLINT
+void Context::onFetchUpdates(Poco::Util::TimerTask&) {  // NOLINT
     if (isPostponed(next_fetch_updates_at_,
                     kRequestThrottleSeconds * kOneSecondInMicros)) {
         logger().debug("onFetchUpdates postponed");
@@ -1285,7 +1285,7 @@ void Context::startPeriodicSync() {
     logger().debug(ss.str());
 }
 
-void Context::onPeriodicSync(Poco::Util::TimerTask& task) {  // NOLINT
+void Context::onPeriodicSync(Poco::Util::TimerTask&) {  // NOLINT
     logger().debug("onPeriodicSync");
 
     scheduleSync();
@@ -1312,7 +1312,7 @@ void Context::startPeriodicUpdateCheck() {
     logger().debug(ss.str());
 }
 
-void Context::onPeriodicUpdateCheck(Poco::Util::TimerTask& task) {  // NOLINT
+void Context::onPeriodicUpdateCheck(Poco::Util::TimerTask&) {  // NOLINT
     logger().debug("onPeriodicUpdateCheck");
 
     executeUpdateCheck();
@@ -1564,7 +1564,7 @@ void Context::TimelineUpdateServerSettings() {
 const std::string kRecordTimelineEnabledJSON = "{\"record_timeline\": true}";
 const std::string kRecordTimelineDisabledJSON = "{\"record_timeline\": false}";
 
-void Context::onTimelineUpdateServerSettings(Poco::Util::TimerTask& task) {  // NOLINT
+void Context::onTimelineUpdateServerSettings(Poco::Util::TimerTask&) {  // NOLINT
     if (isPostponed(next_update_timeline_settings_at_,
                     kRequestThrottleSeconds * kOneSecondInMicros)) {
         logger().debug("onTimelineUpdateServerSettings postponed");
@@ -1629,7 +1629,7 @@ error Context::SendFeedback(Feedback fb) {
     return noError;
 }
 
-void Context::onSendFeedback(Poco::Util::TimerTask& task) {  // NOLINT
+void Context::onSendFeedback(Poco::Util::TimerTask&) {  // NOLINT
     logger().debug("onSendFeedback");
 
     std::string api_token_value("");
@@ -3967,7 +3967,7 @@ void Context::SetWake() {
     logger().debug(ss.str());
 }
 
-void Context::onWake(Poco::Util::TimerTask& task) {  // NOLINT
+void Context::onWake(Poco::Util::TimerTask&) {  // NOLINT
     if (isPostponed(next_wake_at_,
                     kRequestThrottleSeconds * kOneSecondInMicros)) {
         logger().debug("onWake postponed");
@@ -4472,7 +4472,7 @@ void Context::LoadMore() {
     }
 }
 
-void Context::onLoadMore(Poco::Util::TimerTask& task) {
+void Context::onLoadMore(Poco::Util::TimerTask&) {
     bool needs_render = !user_->HasLoadedMore();
     std::string api_token;
     {
@@ -4912,7 +4912,7 @@ error Context::updateEntryProjects(
 }
 
 error Context::pushEntries(
-    std::map<std::string, BaseModel *> models,
+    std::map<std::string, BaseModel *>,
     std::vector<TimeEntry *> time_entries,
     std::string api_token,
     TogglClient toggl_client) {
