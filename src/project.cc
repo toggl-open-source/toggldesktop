@@ -13,7 +13,7 @@
 
 namespace toggl {
 
-const char *known_colors[] = {
+static const char *known_colors[] = {
     "#06aaf5", "#c56bff", "#ea468d", "#fb8b14", "#c7741c",
     "#4bc800", "#04bb9b", "#e19a86", "#3750b5", "#a01aa5",
     "#f1c33f", "#205500", "#890000", "#e20505", "#000000"
