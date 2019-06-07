@@ -1,6 +1,6 @@
 var url = "https://github.com/toggl/toggldesktop/releases/download/v",
 releases = {},
-msg,
+defaultPath = "/toggldesktop/installers",
 links = {
   "windows": "win",
   "windows_enterprise": "win-enterprise",
@@ -10,8 +10,7 @@ links = {
 
 //We need a function which handles requests and send response
 function load(){
-  var channel, ver, ok,
-    location = window.location.pathname.replace("/installers", ""),
+  var location = window.location.pathname.replace(defaultPath, ""),
     hash = window.location.hash;
   try {
     if (location == "/") {
@@ -31,36 +30,32 @@ function load(){
 }
 
 function findRedirect(location) {
+  var channel, ver, ok, msg;
   if (location.match("/win/")) {
       channel = location.match(/win\/(.*)/)[1].replace("/", "");
       ver = releases["win"][channel];
       ver = ver[ver.length-1];
-      url += ver.version + "/" + ver.filename[0].name;
-      redirect(url);
+      redirect(url + ver.version + "/" + ver.filename[0].name);
     } else if (location.match("/linux/")) {
       channel = location.match(/linux\/(.*)/)[1].replace("/");
       ver = releases["linux"][channel];
       ver = ver[ver.length-1];
-      url += ver.version + "/" + ver.filename[0].name;
-      redirect(url);
+      redirect(url + ver.version + "/" + ver.filename[0].name);
     } else if (location.match("/macos")) {
       channel = location.match(/macos\/(.*)/)[1].replace("/", "");
       ver = releases["osx"][channel];
       ver = ver[ver.length-1];
-      url += ver.version + "/" + ver.filename[0].name;
-      redirect(url);
+      redirect(url + ver.version + "/" + ver.filename[0].name);
     } else if (location.match("/win-enterprise")) {
       channel = location.match(/win-enterprise\/(.*)/)[1].replace("/", "");
       ver = releases["win"][channel];
       ver = ver[ver.length-1];
-      url += ver.version + "/" + ver.filename[1].name;
-      redirect(url);
+      redirect(url + ver.version + "/" + ver.filename[1].name);
     } else if (location.match("/linux-deb64")) {
       channel = location.match(/linux-deb64\/(.*)/)[1].replace("/", "");
       ver = releases["linux"][channel];
       ver = ver[ver.length-1];
-      url += ver.version + "/" + ver.filename[1].name;
-      redirect(url);
+      redirect(url + ver.version + "/" + ver.filename[1].name);
     } else if (location.match("/status")) {
       ok = !!releases;
       if (ok) {
@@ -94,7 +89,7 @@ function fillHtml() {
       prev = ch[ch.length-2];
 
       for (var kb in cur.filename) {
-        link = "/installers/#" + (links[cur.filename[kb].type] || cur.filename[kb].type) + "/" + ka + "/";
+        link = defaultPath + "/#" + (links[cur.filename[kb].type] || cur.filename[kb].type) + "/" + ka + "/";
         if (!prev) {
           prev = cur;
         }
