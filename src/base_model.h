@@ -57,7 +57,7 @@ class BaseModel {
     }
     void SetUIModifiedAt(const Poco::Int64 value);
     void SetUIModified() {
-        SetUIModifiedAt(time(0));
+        SetUIModifiedAt(time(nullptr));
     }
 
     const std::string &GUID() const {

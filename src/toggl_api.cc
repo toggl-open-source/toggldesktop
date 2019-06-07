@@ -833,7 +833,7 @@ bool_t toggl_feedback_send(
     feedback.SetSubject(to_string(topic));
     feedback.SetDetails(to_string(details));
 
-    if (filename != NULL) {
+    if (filename != nullptr) {
         // Check image size (max 5mb)
         std::ifstream file(filename, std::ifstream::ate | std::ifstream::binary);
 

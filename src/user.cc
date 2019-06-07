@@ -166,7 +166,7 @@ TimeEntry *User::Start(
 
     Stop();
 
-    time_t now = time(0);
+    time_t now = time(nullptr);
 
     std::stringstream ss;
     ss << "User::Start now=" << now;
@@ -237,7 +237,7 @@ TimeEntry *User::Continue(
 
     Stop();
 
-    time_t now = time(0);
+    time_t now = time(nullptr);
 
     TimeEntry *result = new TimeEntry();
     result->SetCreatedWith(HTTPSClient::Config.UserAgent());
@@ -465,7 +465,7 @@ bool User::HasValidSinceDate() const {
     }
 
     // too old
-    Poco::Timestamp ts = Poco::Timestamp::fromEpochTime(time(0))
+    Poco::Timestamp ts = Poco::Timestamp::fromEpochTime(time(nullptr))
                          - (60 * Poco::Timespan::DAYS);
     Poco::Int64 min_allowed = ts.epochTime();
     if (Since() < min_allowed) {
@@ -1306,16 +1306,16 @@ void User::CompressTimeline() {
     std::map<std::string, TimelineEvent *> compressed;
 
     // Older events will be deleted
-    Poco::Int64 minimum_time = time(0) - kTimelineSecondsToKeep;
+    Poco::Int64 minimum_time = time(nullptr) - kTimelineSecondsToKeep;
 
     // Find the chunk start time of current time.
     // then process only events that are older that this chunk start time.
     // Else we will have no full chunks to compress.
     Poco::Int64 chunk_up_to =
-        (time(0) / kTimelineChunkSeconds) * kTimelineChunkSeconds;
+        (time(nullptr) / kTimelineChunkSeconds) * kTimelineChunkSeconds;
 
 
-    time_t start = time(0);
+    time_t start = time(nullptr);
 
     {
         std::stringstream ss;
@@ -1400,7 +1400,7 @@ void User::CompressTimeline() {
 
     {
         std::stringstream ss;
-        ss << "CompressTimeline done in " << (time(0) - start)
+        ss << "CompressTimeline done in " << (time(nullptr) - start)
            << " seconds, "
            << related.TimelineEvents.size()
            << " compressed into "

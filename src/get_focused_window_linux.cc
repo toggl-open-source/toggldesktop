@@ -54,12 +54,12 @@ static char *get_property(Display *disp, Window win, Atom xa_prop_type,
                            &ret_nitems,
                            &ret_bytes_after,
                            &ret_prop) != Success) {
-        return NULL;
+        return nullptr;
     }
 
     if (xa_ret_type != xa_prop_type) {
         XFree(ret_prop);
-        return NULL;
+        return nullptr;
     }
 
     // null terminate the result to make string handling easier
@@ -67,7 +67,7 @@ static char *get_property(Display *disp, Window win, Atom xa_prop_type,
     ret = reinterpret_cast<char *>(malloc(tmp_size + 1));
     if (!ret) {
         XFree(ret_prop);
-        return NULL;
+        return nullptr;
     }
     memcpy(ret, ret_prop, tmp_size);
     ret[tmp_size] = '\0';
@@ -88,7 +88,7 @@ int getFocusedWindowInfo(
     *filename = "";
     *idle = false;
 
-    Display *display = XOpenDisplay(NULL);
+    Display *display = XOpenDisplay(nullptr);
     if (!display) {
         return 1;
     }
@@ -114,12 +114,12 @@ int getFocusedWindowInfo(
             active_window,
             XInternAtom(display, "UTF8_STRING", false),
             "_NET_WM_NAME",
-            NULL);
+            nullptr);
         if (net_wm_name) {
             *title = std::string(net_wm_name);
         } else {
             char *wm_name = get_property(display, active_window,
-                                         XA_STRING, "WM_NAME", NULL);
+                                         XA_STRING, "WM_NAME", nullptr);
             if (wm_name) {
                 *title = std::string(wm_name);
             }
@@ -129,10 +129,10 @@ int getFocusedWindowInfo(
     }
 
     // get pid of active window
-    unsigned long *pid = 0; // NOLINT
+    unsigned long *pid = nullptr;
     if (active_window) {
         pid = (unsigned long *)get_property(display, active_window, // NOLINT
-                                            XA_CARDINAL, "_NET_WM_PID", NULL);
+                                            XA_CARDINAL, "_NET_WM_PID", nullptr);
         if (pid) {
             // get process name by pid
             char buf[256];
@@ -147,7 +147,7 @@ int getFocusedWindowInfo(
                     // The start of the file looks like:
                     //   <pid> (<name>) R <parent pid>
                     unsigned tmp_pid, tmp_ppid;
-                    char *process_name = 0;
+                    char *process_name = nullptr;
                     if (sscanf(buf, "%u (%a[^)]) %*c %u", // NOLINT
                                &tmp_pid, &process_name, &tmp_ppid) == 3) {
                         *filename = std::string(process_name);

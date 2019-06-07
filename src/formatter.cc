@@ -396,7 +396,7 @@ Poco::Int64 Formatter::AbsDuration(const Poco::Int64 value) {
 
     // Duration is negative when time is tracking
     if (duration < 0) {
-        duration += time(0);
+        duration += time(nullptr);
     }
     // If after calculation time is still negative,
     // either computer clock is wrong or user

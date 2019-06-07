@@ -28,12 +28,12 @@ class Idle {
     }
 
     void SetSleep() {
-        last_sleep_started_ = time(0);
+        last_sleep_started_ = time(nullptr);
     }
 
     void SetWake(User *current_user) {
         if (last_sleep_started_) {
-            Poco::Int64 slept_seconds = time(0) - last_sleep_started_;
+            Poco::Int64 slept_seconds = time(nullptr) - last_sleep_started_;
             if (slept_seconds > 0) {
                 SetIdleSeconds(slept_seconds, current_user);
             }

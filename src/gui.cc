@@ -419,7 +419,7 @@ void GUI::DisplayTimeEntryList(const bool open,
             this->isFirstLaunch = false;
 
             // Get render list from last 9 days at the first launch
-            time_t last9Days = time(0) - 9 * 86400;
+            time_t last9Days = time(nullptr) - 9 * 86400;
             for (auto it = list.begin(); it != list.end(); it++) {
                 auto timeEntry = *it;
                 if (timeEntry.Started >= last9Days) {

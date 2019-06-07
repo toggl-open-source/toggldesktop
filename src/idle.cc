@@ -56,7 +56,7 @@ void Idle::computeIdleState(
     if (settings_.idle_minutes &&
             (idle_seconds >= (settings_.idle_minutes*60)) &&
             !last_idle_started_) {
-        last_idle_started_ = time(0) - idle_seconds;
+        last_idle_started_ = time(nullptr) - idle_seconds;
 
         std::stringstream ss;
         ss << "User is idle since " << last_idle_started_;
@@ -67,7 +67,7 @@ void Idle::computeIdleState(
 
     if (last_idle_started_ &&
             idle_seconds < last_idle_seconds_reading_) {
-        time_t now = time(0);
+        time_t now = time(nullptr);
 
         TimeEntry *te = current_user->RunningTimeEntry();
         if (!te) {

@@ -1007,7 +1007,7 @@ int Context::nextSyncIntervalSeconds() const {
 }
 
 void Context::scheduleSync() {
-    Poco::Int64 elapsed_seconds = Poco::Int64(time(0)) - last_sync_started_;
+    Poco::Int64 elapsed_seconds = Poco::Int64(time(nullptr)) - last_sync_started_;
 
     {
         std::stringstream ss;
@@ -1040,14 +1040,14 @@ void Context::Sync() {
 
     overlay_visible_ = false;
 
-    Poco::Int64 elapsed_seconds = Poco::Int64(time(0)) - last_sync_started_;
+    Poco::Int64 elapsed_seconds = Poco::Int64(time(nullptr)) - last_sync_started_;
 
     // 2 seconds backoff to avoid too many sync requests
     if (elapsed_seconds < kRequestThrottleSeconds) {
         return;
     }
 
-    last_sync_started_ = time(0);
+    last_sync_started_ = time(nullptr);
 
     // Always sync asyncronously with syncerActivity
     trigger_sync_ = true;
@@ -1655,7 +1655,7 @@ void Context::onSendFeedback(Poco::Util::TimerTask& task) {  // NOLINT
     form.set("toggl_version", HTTPSClient::Config.AppVersion);
     form.set("details", Formatter::EscapeJSONString(feedback_.Details()));
     form.set("subject", Formatter::EscapeJSONString(feedback_.Subject()));
-    form.set("date", Formatter::Format8601(time(0)));
+    form.set("date", Formatter::Format8601(time(nullptr)));
     form.set("update_channel", Formatter::EscapeJSONString(update_channel));
 
     if (!feedback_.AttachmentPath().empty()) {
@@ -3269,7 +3269,7 @@ TimeEntry *Context::DiscardTimeAndContinue(
     const Poco::Int64 at) {
 
     // Reset reminder count when doing idle actions
-    last_tracking_reminder_time_ = time(0);
+    last_tracking_reminder_time_ = time(nullptr);
 
     // Tracking action
     if ("production" == environment_) {
@@ -4035,7 +4035,7 @@ void Context::displayReminder() {
             return;
         }
 
-        if (time(0) - last_tracking_reminder_time_
+        if (time(nullptr) - last_tracking_reminder_time_
                 < settings_.reminder_minutes * 60) {
             return;
         }
@@ -4094,7 +4094,7 @@ void Context::displayReminder() {
 }
 
 void Context::resetLastTrackingReminderTime() {
-    last_tracking_reminder_time_ = time(0);
+    last_tracking_reminder_time_ = time(nullptr);
 }
 
 void Context::displayPomodoro() {
@@ -4122,12 +4122,12 @@ void Context::displayPomodoro() {
         }
 
         if (current_te->DurOnly() && current_te->LastStartAt() != 0) {
-            if (time(0) - current_te->LastStartAt()
+            if (time(nullptr) - current_te->LastStartAt()
                     < settings_.pomodoro_minutes * 60) {
                 return;
             }
         } else {
-            if (time(0) - current_te->Start()
+            if (time(nullptr) - current_te->Start()
                     < settings_.pomodoro_minutes * 60) {
                 return;
             }
@@ -4177,7 +4177,7 @@ void Context::displayPomodoroBreak() {
             return;
         }
 
-        if (time(0) - current_te->Start()
+        if (time(nullptr) - current_te->Start()
                 < settings_.pomodoro_break_minutes * 60) {
             return;
         }

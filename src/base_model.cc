@@ -120,7 +120,7 @@ error BaseModel::LoadFromDataString(const std::string data_string) {
 }
 
 void BaseModel::Delete() {
-    SetDeletedAt(time(0));
+    SetDeletedAt(time(nullptr));
     SetUIModified();
 }
 

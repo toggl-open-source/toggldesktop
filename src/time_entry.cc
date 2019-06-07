@@ -143,7 +143,7 @@ void TimeEntry::DiscardAt(const Poco::Int64 at) {
 }
 
 void TimeEntry::StopTracking() {
-    DiscardAt(time(0));
+    DiscardAt(time(nullptr));
 }
 
 std::string TimeEntry::String() const {
@@ -322,7 +322,7 @@ void TimeEntry::SetStartString(const std::string value) {
 void TimeEntry::SetDurationUserInput(const std::string value) {
     int seconds = Formatter::ParseDurationString(value);
     if (IsTracking()) {
-        time_t now = time(0);
+        time_t now = time(nullptr);
         time_t start = now - seconds;
         SetStart(start);
         SetDurationInSeconds(-start);
@@ -497,7 +497,7 @@ Json::Value TimeEntry::SaveToJSON() const {
 }
 
 Poco::Int64 TimeEntry::RealDurationInSeconds() const {
-    auto now = time(0);
+    auto now = time(nullptr);
 
     return now + DurationInSeconds();
 }

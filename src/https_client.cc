@@ -109,7 +109,7 @@ void ServerStatus::runActivity() {
         if (noError != resp.err) {
             logger().error(resp.err);
 
-            srand(static_cast<unsigned>(time(0)));
+            srand(static_cast<unsigned>(time(nullptr)));
             float low(1.0), high(1.5);
             if (!fast_retry_) {
                 low = 1.5;
@@ -338,7 +338,7 @@ HTTPSResponse HTTPSClient::makeHttpRequest(
             verification_mode, 9, true, "ALL");
 
         Poco::Net::SSLManager::instance().initializeClient(
-            0, acceptCertHandler, context);
+            nullptr, acceptCertHandler, context);
 
         Poco::Net::HTTPSClientSession session(uri.getHost(), uri.getPort(),
                                               context);

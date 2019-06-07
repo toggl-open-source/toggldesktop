@@ -305,7 +305,7 @@ void RelatedData::taskAutocompleteItems(
             it != Tasks.end(); it++) {
         Task *t = *it;
 
-        if (t == NULL) {
+        if (t == nullptr) {
             continue;
         }
 
@@ -389,7 +389,7 @@ void RelatedData::projectAutocompleteItems(
 
         Client *c = clientByProject(p);
 
-        std::string text = Formatter::JoinTaskName(0, p);
+        std::string text = Formatter::JoinTaskName(nullptr, p);
         if (text.empty()) {
             continue;
         }
