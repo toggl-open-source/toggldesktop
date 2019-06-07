@@ -96,9 +96,9 @@ class GoogleAnalyticsSettingsEvent : public Poco::Task {
         : Poco::Task("GoogleAnalyticsSettingsEvent")
     , client_id_(client_id)
     , category_(category)
+    , uses_proxy(uses_proxy)
     , record_timeline(record_timeline)
     , settings(settings)
-    , uses_proxy(uses_proxy)
     , proxy(proxy) {}
     void runTask();
 

@@ -236,8 +236,8 @@ class Settings {
     , Autotrack(false)
     , OpenEditorOnShortcut(false)
     , Pomodoro(false)
-    , PomodoroMinutes(0)
     , PomodoroBreak(false)
+    , PomodoroMinutes(0)
     , PomodoroBreakMinutes(0)
     , StopEntryOnShutdownSleep(false) {}
 
