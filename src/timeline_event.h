@@ -82,8 +82,8 @@ class TimelineEvent : public BaseModel, public TimedEvent {
  private:
     std::string title_;
     std::string filename_;
-    Poco::UInt64 start_time_;
-    Poco::UInt64 end_time_;
+    Poco::Int64 start_time_;
+    Poco::Int64 end_time_;
     bool idle_;
     bool chunked_;
     bool uploaded_;

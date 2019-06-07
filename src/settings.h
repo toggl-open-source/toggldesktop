@@ -54,9 +54,9 @@ class Settings : public BaseModel {
     bool dock_icon;
     bool on_top;
     bool reminder;
-    Poco::UInt64 idle_minutes;
+    Poco::Int64 idle_minutes;
     bool focus_on_shortcut;
-    Poco::UInt64 reminder_minutes;
+    Poco::Int64 reminder_minutes;
     bool manual_mode;
     bool autodetect_proxy;
     bool remind_mon;
@@ -73,8 +73,8 @@ class Settings : public BaseModel {
     bool has_seen_beta_offering;
     bool pomodoro;
     bool pomodoro_break;
-    Poco::UInt64 pomodoro_minutes;
-    Poco::UInt64 pomodoro_break_minutes;
+    Poco::Int64 pomodoro_minutes;
+    Poco::Int64 pomodoro_break_minutes;
     bool stop_entry_on_shutdown_sleep;
 
     bool IsSame(const Settings &other) const;

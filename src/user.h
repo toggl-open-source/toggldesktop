@@ -312,7 +312,7 @@ class User : public BaseModel {
     std::string api_token_;
     Poco::UInt64 default_wid_;
     // Unix timestamp of the user data; returned from API
-    Poco::UInt64 since_;
+    Poco::Int64 since_;
     std::string fullname_;
     std::string email_;
     bool record_timeline_;

@@ -167,12 +167,12 @@ class BaseModel {
     Poco::Int64 local_id_;
     Poco::UInt64 id_;
     guid guid_;
-    Poco::UInt64 ui_modified_at_;
+    Poco::Int64 ui_modified_at_;
     Poco::UInt64 uid_;
     bool dirty_;
-    Poco::UInt64 deleted_at_;
+    Poco::Int64 deleted_at_;
     bool is_marked_as_deleted_on_server_;
-    Poco::UInt64 updated_at_;
+    Poco::Int64 updated_at_;
 
     // If model push to backend results in an error,
     // the error is attached to the model for later inspection.

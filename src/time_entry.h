@@ -144,15 +144,15 @@ class TimeEntry : public BaseModel, public TimedEvent {
     Poco::UInt64 pid_;
     Poco::UInt64 tid_;
     bool billable_;
-    Poco::UInt64 start_;
-    Poco::UInt64 stop_;
+    Poco::Int64 start_;
+    Poco::Int64 stop_;
     Poco::Int64 duration_in_seconds_;
     std::string description_;
     bool duronly_;
     std::string created_with_;
     std::string project_guid_;
     bool unsynced_;
-    Poco::UInt64 last_start_at_;
+    Poco::Int64 last_start_at_;
 
     bool setDurationStringHHMMSS(const std::string value);
     bool setDurationStringHHMM(const std::string value);

@@ -50,8 +50,8 @@ class Idle {
     Poco::Logger &logger() const;
 
     // Idle detection related values
-    Poco::UInt64 last_idle_seconds_reading_;
-    Poco::UInt64 last_idle_started_;
+    Poco::Int64 last_idle_seconds_reading_;
+    Poco::Int64 last_idle_started_;
     time_t last_sleep_started_;
 
     Settings settings_;
