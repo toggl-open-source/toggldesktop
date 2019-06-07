@@ -3756,7 +3756,6 @@ error Database::EnsureTimelineGUIDS() {
     } catch(const std::string& ex) {
         return ex;
     }
-    return noError;
 }
 
 error Database::EnsureAnalyticsClientID() {

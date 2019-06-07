@@ -2246,7 +2246,6 @@ error Context::Login(
     } catch(const std::string& ex) {
         return displayError(ex);
     }
-    return noError;
 }
 
 error Context::AsyncSignup(const std::string email,
@@ -2483,7 +2482,6 @@ error Context::ClearCache() {
     } catch(const std::string& ex) {
         return displayError(ex);
     }
-    return noError;
 }
 
 TimeEntry *Context::Start(
@@ -3407,7 +3405,6 @@ error Context::SetDefaultProject(
     } catch(const std::string& ex) {
         return displayError(ex);
     }
-    return noError;
 }
 
 error Context::DefaultProjectName(std::string *name) {
@@ -5060,7 +5057,6 @@ error Context::pullObmExperiments() {
     } catch(const std::string& ex) {
         return ex;
     }
-    return noError;
 }
 
 error Context::pushObmAction() {
