@@ -24,7 +24,7 @@ Idle::Idle(GUI *ui)
 }
 
 void Idle::SetIdleSeconds(
-    const Poco::UInt64 idle_seconds,
+    const Poco::Int64 idle_seconds,
     User *current_user) {
     /*
     {
@@ -51,7 +51,7 @@ void Idle::SetIdleSeconds(
 }
 
 void Idle::computeIdleState(
-    const Poco::UInt64 idle_seconds,
+    const Poco::Int64 idle_seconds,
     User *current_user) {
     if (settings_.idle_minutes &&
             (idle_seconds >= (settings_.idle_minutes*60)) &&

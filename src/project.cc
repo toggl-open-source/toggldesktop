@@ -92,8 +92,8 @@ void Project::SetColor(const std::string value) {
 }
 
 std::string Project::ColorCode() const {
-    int index(0);
-    if (!Poco::NumberParser::tryParse(Color(), index)) {
+    unsigned index(0);
+    if (!Poco::NumberParser::tryParseUnsigned(Color(), index)) {
         return Color();
     }
     return ColorCodes[index % ColorCodes.size()];

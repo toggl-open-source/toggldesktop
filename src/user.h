@@ -108,10 +108,10 @@ class User : public BaseModel {
     void SetDefaultWID(Poco::UInt64 value);
 
     // Unix timestamp of the user data; returned from API
-    const Poco::UInt64 &Since() const {
+    const Poco::Int64 &Since() const {
         return since_;
     }
-    void SetSince(const Poco::UInt64 value);
+    void SetSince(const Poco::Int64 value);
 
     bool HasValidSinceDate() const;
 

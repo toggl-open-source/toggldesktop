@@ -658,8 +658,8 @@ void Context::updateUI(const UIElements &what) {
 
             // Group data maps
             std::map<std::string, Poco::Int64> group_durations;
-            std::map<std::string, Poco::Int64> group_header_id;
-            std::map<std::string, std::vector<Poco::Int64> > group_items;
+            std::map<std::string, Poco::UInt64> group_header_id;
+            std::map<std::string, std::vector<Poco::UInt64> > group_items;
 
             for (unsigned int i = 0; i < time_entries.size(); i++) {
                 TimeEntry *te = time_entries[i];
@@ -999,7 +999,7 @@ error Context::displayError(const error err) {
 int Context::nextSyncIntervalSeconds() const {
     Poco::Random random;
     random.seed();
-    int n = random.next(kSyncIntervalRangeSeconds) + kSyncIntervalRangeSeconds;
+    int n = static_cast<int>(random.next(kSyncIntervalRangeSeconds)) + kSyncIntervalRangeSeconds;
     std::stringstream ss;
     ss << "Next autosync in " << n << " seconds";
     logger().trace(ss.str());
@@ -1300,8 +1300,8 @@ void Context::startPeriodicUpdateCheck() {
         new Poco::Util::TimerTaskAdapter<Context>
     (*this, &Context::onPeriodicUpdateCheck);
 
-    Poco::UInt64 micros = kCheckUpdateIntervalSeconds *
-                          Poco::UInt64(kOneSecondInMicros);
+    Poco::Int64 micros = kCheckUpdateIntervalSeconds *
+                          Poco::Int64(kOneSecondInMicros);
     Poco::Timestamp next_periodic_check_at = Poco::Timestamp() + micros;
     Poco::Mutex::ScopedLock lock(timer_m_);
     timer_.schedule(ptask, next_periodic_check_at);
@@ -4577,7 +4577,7 @@ error Context::pullAllUserData(
     TogglClient *toggl_client) {
 
     std::string api_token("");
-    Poco::UInt64 since(0);
+    Poco::Int64 since(0);
     {
         Poco::Mutex::ScopedLock lock(user_m_);
         if (!user_) {
@@ -5138,7 +5138,7 @@ error Context::me(
     const std::string email,
     const std::string password,
     std::string *user_data_json,
-    const Poco::UInt64 since) {
+    const Poco::Int64 since) {
 
     if (email.empty()) {
         return "Empty email or API token";
@@ -5524,8 +5524,8 @@ error Context::PullCountries() {
 
         std::vector<TogglCountryView> countries;
 
-        for (int i = root.size() - 1; i >= 0; i--) {
-            TogglCountryView *item = country_view_item_init(root[i]);
+        for (unsigned int i = root.size(); i > 0; i--) {
+            TogglCountryView *item = country_view_item_init(root[i - 1]);
             countries.push_back(*item);
         }
 
@@ -5582,8 +5582,8 @@ void on_websocket_message(
     ctx->LoadUpdateFromJSONString(json);
 }
 
-void Context::TrackWindowSize(const Poco::Int64 width,
-                              const Poco::Int64 height) {
+void Context::TrackWindowSize(const Poco::UInt64 width,
+                              const Poco::UInt64 height) {
     if ("production" == environment_) {
         analytics_.TrackWindowSize(db_->AnalyticsClientID(),
                                    shortOSName(),

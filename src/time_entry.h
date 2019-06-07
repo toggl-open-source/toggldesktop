@@ -34,10 +34,10 @@ class TimeEntry : public BaseModel, public TimedEvent {
 
     virtual ~TimeEntry() {}
 
-    const Poco::UInt64 &LastStartAt() const {
+    const Poco::Int64 &LastStartAt() const {
         return last_start_at_;
     }
-    void SetLastStartAt(const Poco::UInt64 value);
+    void SetLastStartAt(const Poco::Int64 value);
 
     std::vector<std::string> TagNames;
 
@@ -82,25 +82,25 @@ class TimeEntry : public BaseModel, public TimedEvent {
     std::string StartString() const;
     void SetStartString(const std::string value);
 
-    const Poco::UInt64 &Start() const {
+    const Poco::Int64 &Start() const {
         return start_;
     }
-    void SetStart(const Poco::UInt64 value);
+    void SetStart(const Poco::Int64 value);
 
     std::string StopString() const;
     void SetStopString(const std::string value);
 
-    const Poco::UInt64 &Stop() const {
+    const Poco::Int64 &Stop() const {
         return stop_;
     }
-    void SetStop(const Poco::UInt64 value);
+    void SetStop(const Poco::Int64 value);
 
     const std::string &CreatedWith() const {
         return created_with_;
     }
     void SetCreatedWith(const std::string value);
 
-    void DiscardAt(const Poco::UInt64);
+    void DiscardAt(const Poco::Int64);
 
     bool IsToday() const;
 

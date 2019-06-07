@@ -115,9 +115,9 @@ void ServerStatus::runActivity() {
                 low = 1.5;
                 high = 2.0;
             }
-            float r = low + static_cast<float>(rand()) /  // NOLINT
+            float r = low + static_cast<float>(rand()) /
                       (static_cast<float>(RAND_MAX / (high - low)));
-            delay_seconds = delay_seconds * r;
+            delay_seconds = static_cast<int>(delay_seconds * r);
 
             {
                 std::stringstream ss;

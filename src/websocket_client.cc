@@ -189,7 +189,7 @@ error WebSocketClient::receiveWebSocketMessage(std::string *message) {
         char buf[kWebsocketBufSize];
         int n = ws_->receiveFrame(buf, kWebsocketBufSize, flags);
         if (n > 0) {
-            json.append(buf, n);
+            json.append(buf, static_cast<unsigned>(n));
         }
     } catch(const Poco::Exception& exc) {
         return error(exc.displayText());
@@ -324,7 +324,7 @@ Poco::Logger &WebSocketClient::logger() const {
 int WebSocketClient::nextWebsocketRestartInterval() {
     Poco::Random random;
     random.seed();
-    int res = random.next(kWebsocketRestartRangeSeconds) + 1;
+    int res = static_cast<int>(random.next(kWebsocketRestartRangeSeconds)) + 1;
     std::stringstream ss;
     ss << "Next websocket restart in " << res << " seconds";
     logger().trace(ss.str());

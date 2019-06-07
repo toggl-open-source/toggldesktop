@@ -63,14 +63,14 @@ void BaseModel::SetValidationError(const std::string value) {
     }
 }
 
-void BaseModel::SetDeletedAt(const Poco::UInt64 value) {
+void BaseModel::SetDeletedAt(const Poco::Int64 value) {
     if (deleted_at_ != value) {
         deleted_at_ = value;
         SetDirty();
     }
 }
 
-void BaseModel::SetUpdatedAt(const Poco::UInt64 value) {
+void BaseModel::SetUpdatedAt(const Poco::Int64 value) {
     if (updated_at_ != value) {
         updated_at_ = value;
         SetDirty();
@@ -84,7 +84,7 @@ void BaseModel::SetGUID(const std::string value) {
     }
 }
 
-void BaseModel::SetUIModifiedAt(const Poco::UInt64 value) {
+void BaseModel::SetUIModifiedAt(const Poco::Int64 value) {
     if (ui_modified_at_ != value) {
         ui_modified_at_ = value;
         SetDirty();

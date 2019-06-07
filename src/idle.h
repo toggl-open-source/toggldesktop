@@ -20,7 +20,7 @@ class Idle {
     virtual ~Idle() {}
 
     void SetIdleSeconds(
-        const Poco::UInt64 idle_seconds,
+        const Poco::Int64 idle_seconds,
         User *current_user);
 
     void SetSettings(const Settings settings) {
@@ -43,8 +43,7 @@ class Idle {
     }
 
  private:
-    void computeIdleState(
-        const Poco::UInt64 idle_seconds,
+    void computeIdleState(const Poco::Int64 idle_seconds,
         User *current_user);
 
     Poco::Logger &logger() const;

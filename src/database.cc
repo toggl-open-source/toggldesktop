@@ -209,7 +209,7 @@ error Database::DeleteUser(
 
 error Database::deleteAllFromTableByUID(
     const std::string table_name,
-    const Poco::Int64 &UID) {
+    const Poco::UInt64 &UID) {
 
 
     if (!UID) {
@@ -1183,7 +1183,7 @@ error Database::LoadUserByID(
         Poco::Int64 local_id(0);
         Poco::UInt64 id(0);
         Poco::UInt64 default_wid(0);
-        Poco::UInt64 since(0);
+        Poco::Int64 since(0);
         std::string fullname("");
         std::string email("");
         bool record_timeline(false);
@@ -1930,13 +1930,13 @@ error Database::loadTimeEntriesFromSQLStatement(
                 if (rs[10].isEmpty()) {
                     model->SetUIModifiedAt(0);
                 } else {
-                    model->SetUIModifiedAt(rs[10].convert<Poco::UInt64>());
+                    model->SetUIModifiedAt(rs[10].convert<Poco::Int64>());
                 }
-                model->SetStart(rs[11].convert<Poco::UInt64>());
+                model->SetStart(rs[11].convert<Poco::Int64>());
                 if (rs[12].isEmpty()) {
                     model->SetStop(0);
                 } else {
-                    model->SetStop(rs[12].convert<Poco::UInt64>());
+                    model->SetStop(rs[12].convert<Poco::Int64>());
                 }
                 model->SetDurationInSeconds(rs[13].convert<Poco::Int64>());
                 if (rs[14].isEmpty()) {
@@ -1952,12 +1952,12 @@ error Database::loadTimeEntriesFromSQLStatement(
                 if (rs[16].isEmpty()) {
                     model->SetDeletedAt(0);
                 } else {
-                    model->SetDeletedAt(rs[16].convert<Poco::UInt64>());
+                    model->SetDeletedAt(rs[16].convert<Poco::Int64>());
                 }
                 if (rs[17].isEmpty()) {
                     model->SetUpdatedAt(0);
                 } else {
-                    model->SetUpdatedAt(rs[17].convert<Poco::UInt64>());
+                    model->SetUpdatedAt(rs[17].convert<Poco::Int64>());
                 }
                 if (rs[18].isEmpty()) {
                     model->SetProjectGUID("");

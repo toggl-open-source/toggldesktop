@@ -363,7 +363,7 @@ void User::SetAPIToken(const std::string value) {
     api_token_ = value;
 }
 
-void User::SetSince(const Poco::UInt64 value) {
+void User::SetSince(const Poco::Int64 value) {
     if (since_ != value) {
         since_ = value;
         SetDirty();
@@ -467,7 +467,7 @@ bool User::HasValidSinceDate() const {
     // too old
     Poco::Timestamp ts = Poco::Timestamp::fromEpochTime(time(0))
                          - (60 * Poco::Timespan::DAYS);
-    Poco::UInt64 min_allowed = ts.epochTime();
+    Poco::Int64 min_allowed = ts.epochTime();
     if (Since() < min_allowed) {
         return false;
     }
@@ -687,7 +687,7 @@ error User::LoadUserAndRelatedDataFromJSONString(
         return error("Failed to LoadUserAndRelatedDataFromJSONString");
     }
 
-    SetSince(root["since"].asUInt64());
+    SetSince(root["since"].asInt64());
 
     Poco::Logger &logger = Poco::Logger::get("json");
     std::stringstream s;
@@ -1306,12 +1306,12 @@ void User::CompressTimeline() {
     std::map<std::string, TimelineEvent *> compressed;
 
     // Older events will be deleted
-    Poco::UInt64 minimum_time = time(0) - kTimelineSecondsToKeep;
+    Poco::Int64 minimum_time = time(0) - kTimelineSecondsToKeep;
 
     // Find the chunk start time of current time.
     // then process only events that are older that this chunk start time.
     // Else we will have no full chunks to compress.
-    Poco::UInt64 chunk_up_to =
+    Poco::Int64 chunk_up_to =
         (time(0) / kTimelineChunkSeconds) * kTimelineChunkSeconds;
 
 

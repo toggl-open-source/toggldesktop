@@ -769,7 +769,7 @@ bool_t toggl_stop(
 bool_t toggl_discard_time_at(
     void *context,
     const char_t *guid,
-    const uint64_t at,
+    const int64_t at,
     const bool_t split_into_new_entry) {
 
     if (!guid) {
@@ -793,7 +793,7 @@ bool_t toggl_discard_time_at(
 bool_t toggl_discard_time_and_continue(
     void *context,
     const char_t *guid,
-    const uint64_t at) {
+    const int64_t at) {
 
     if (!at) {
         logger().error("Cannot discard time without a timestamp");

@@ -469,8 +469,8 @@ class Context : public TimelineDatasource {
     error AsyncPullCountries();
     error PullCountries();
 
-    void TrackWindowSize(const Poco::Int64 width,
-                         const Poco::Int64 height);
+    void TrackWindowSize(const Poco::UInt64 width,
+                         const Poco::UInt64 height);
 
  protected:
     void uiUpdaterActivity();
@@ -598,12 +598,11 @@ class Context : public TimelineDatasource {
         const std::string password,
         std::string *user_data_json,
         const uint64_t country_id);
-    static error me(
-        TogglClient *https_client,
+    static error me(TogglClient *https_client,
         const std::string email,
         const std::string password,
         std::string *user_data,
-        const Poco::UInt64 since);
+        const Poco::Int64 since);
 
     bool isTimeEntryLocked(TimeEntry* te);
     bool isTimeLockedInWorkspace(time_t t, Workspace* ws);

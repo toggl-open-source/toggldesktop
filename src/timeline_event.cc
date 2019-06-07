@@ -35,14 +35,14 @@ void TimelineEvent::SetTitle(const std::string value) {
     }
 }
 
-void TimelineEvent::SetStart(const Poco::UInt64 value) {
+void TimelineEvent::SetStart(const Poco::Int64 value) {
     if (start_time_ != value) {
         start_time_ = value;
         SetDirty();
     }
 }
 
-void TimelineEvent::SetEndTime(const Poco::UInt64 value) {
+void TimelineEvent::SetEndTime(const Poco::Int64 value) {
     if (end_time_ != value) {
         end_time_ = value;
         SetDirty();

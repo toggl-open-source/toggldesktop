@@ -21,6 +21,7 @@
 
 namespace toggl {
 
+
 void Analytics::Track(const std::string client_id,
                       const std::string category,
                       const std::string action) {

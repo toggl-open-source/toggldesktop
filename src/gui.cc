@@ -269,7 +269,7 @@ void GUI::DisplayReminder() {
     free(s2);
 }
 
-void GUI::DisplayPomodoro(const Poco::UInt64 minutes) {
+void GUI::DisplayPomodoro(const Poco::Int64 minutes) {
     logger().debug("DisplayPomodoro");
     char_t *s1 = copy_string("Pomodoro Timer");
 
@@ -282,7 +282,7 @@ void GUI::DisplayPomodoro(const Poco::UInt64 minutes) {
     free(s2);
 }
 
-void GUI::DisplayPomodoroBreak(const Poco::UInt64 minutes) {
+void GUI::DisplayPomodoroBreak(const Poco::Int64 minutes) {
     logger().debug("DisplayPomodoroBreak");
     char_t *s1 = copy_string("Pomodoro Break Timer");
 
@@ -612,7 +612,7 @@ void GUI::DisplayEmptyTimerState() {
 void GUI::DisplayIdleNotification(const std::string guid,
                                   const std::string since,
                                   const std::string duration,
-                                  const uint64_t started,
+                                  const int64_t started,
                                   const std::string description) {
     char_t *guid_s = copy_string(guid);
     char_t *since_s = copy_string(since);
