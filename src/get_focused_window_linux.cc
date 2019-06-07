@@ -95,7 +95,7 @@ int getFocusedWindowInfo(
 
     // get active window
     unsigned long size = 0; // NOLINT
-    Window active_window = (Window)0;
+    Window active_window = 0;
     char *prop = get_property(
         display,
         DefaultRootWindow(display),
@@ -131,8 +131,8 @@ int getFocusedWindowInfo(
     // get pid of active window
     unsigned long *pid = nullptr;
     if (active_window) {
-        pid = (unsigned long *)get_property(display, active_window, // NOLINT
-                                            XA_CARDINAL, "_NET_WM_PID", nullptr);
+        pid = reinterpret_cast<unsigned long*>(get_property(display, active_window,
+                                                            XA_CARDINAL, "_NET_WM_PID", nullptr));
         if (pid) {
             // get process name by pid
             char buf[256];
