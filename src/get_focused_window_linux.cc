@@ -148,7 +148,7 @@ int getFocusedWindowInfo(
                     //   <pid> (<name>) R <parent pid>
                     unsigned tmp_pid, tmp_ppid;
                     char *process_name = nullptr;
-                    if (sscanf(buf, "%u (%a[^)]) %*c %u", // NOLINT
+                    if (sscanf(buf, "%u (%m[^)]) %*c %u", // NOLINT
                                &tmp_pid, &process_name, &tmp_ppid) == 3) {
                         *filename = std::string(process_name);
                     }
