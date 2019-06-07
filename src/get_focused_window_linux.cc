@@ -1,5 +1,11 @@
 // Copyright 2014 Toggl Desktop developers.
 
+// HANDLE_EITNR and scanf("%m") won't work without declaring it a GNU source file
+#ifndef _GNU_SOURCE
+#define _GNU_SOURCE
+#endif
+#pragma GCC diagnostic ignored "-Wgnu"
+
 #include <unistd.h>
 #include <fcntl.h>
 #include <stdlib.h>
