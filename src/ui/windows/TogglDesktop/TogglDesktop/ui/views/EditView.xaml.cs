@@ -565,6 +565,7 @@ namespace TogglDesktop
 
         private void enableNewProjectMode()
         {
+            this.isProjectPublicCheckBox.IsChecked = false;
             this.isProjectPublicCheckBox.Visibility = Visibility.Visible;
             this.showClientArea();
 
