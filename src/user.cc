@@ -363,7 +363,7 @@ void User::SetAPIToken(const std::string value) {
     api_token_ = value;
 }
 
-void User::SetSince(const Poco::UInt64 value) {
+void User::SetSince(const Poco::Int64 value) {
     if (since_ != value) {
         since_ = value;
         SetDirty();

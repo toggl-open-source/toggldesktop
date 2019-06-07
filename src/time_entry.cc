@@ -114,7 +114,7 @@ bool TimeEntry::billableIsAPremiumFeature(const error err) const {
         "Billable is a premium feature"));
 }
 
-void TimeEntry::DiscardAt(const Poco::UInt64 at) {
+void TimeEntry::DiscardAt(const Poco::Int64 at) {
     if (!IsTracking()) {
         logger().error("Cannot discard time entry that is not tracking");
         return;
@@ -183,14 +183,14 @@ void TimeEntry::SetDurOnly(const bool value) {
     }
 }
 
-void TimeEntry::SetStart(const Poco::UInt64 value) {
+void TimeEntry::SetStart(const Poco::Int64 value) {
     if (start_ != value) {
         start_ = value;
         SetDirty();
     }
 }
 
-void TimeEntry::SetStop(const Poco::UInt64 value) {
+void TimeEntry::SetStop(const Poco::Int64 value) {
     if (stop_ != value) {
         stop_ = value;
         SetDirty();

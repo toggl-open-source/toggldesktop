@@ -82,25 +82,25 @@ class TimeEntry : public BaseModel, public TimedEvent {
     std::string StartString() const;
     void SetStartString(const std::string value);
 
-    const Poco::UInt64 &Start() const {
+    const Poco::Int64 &Start() const {
         return start_;
     }
-    void SetStart(const Poco::UInt64 value);
+    void SetStart(const Poco::Int64 value);
 
     std::string StopString() const;
     void SetStopString(const std::string value);
 
-    const Poco::UInt64 &Stop() const {
+    const Poco::Int64 &Stop() const {
         return stop_;
     }
-    void SetStop(const Poco::UInt64 value);
+    void SetStop(const Poco::Int64 value);
 
     const std::string &CreatedWith() const {
         return created_with_;
     }
     void SetCreatedWith(const std::string value);
 
-    void DiscardAt(const Poco::UInt64);
+    void DiscardAt(const Poco::Int64);
 
     bool IsToday() const;
 
@@ -144,15 +144,15 @@ class TimeEntry : public BaseModel, public TimedEvent {
     Poco::UInt64 pid_;
     Poco::UInt64 tid_;
     bool billable_;
-    Poco::UInt64 start_;
-    Poco::UInt64 stop_;
+    Poco::Int64 start_;
+    Poco::Int64 stop_;
     Poco::Int64 duration_in_seconds_;
     std::string description_;
     bool duronly_;
     std::string created_with_;
     std::string project_guid_;
     bool unsynced_;
-    Poco::UInt64 last_start_at_;
+    Poco::Int64 last_start_at_;
 
     bool setDurationStringHHMMSS(const std::string value);
     bool setDurationStringHHMM(const std::string value);
