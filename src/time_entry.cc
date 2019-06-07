@@ -16,8 +16,9 @@
 
 #include <json/json.h>  // NOLINT
 
-#include "./https_client.h"
 #include "./formatter.h"
+#include "./https_client.h"
+#include "./json_helper.h"
 
 #include "Poco/DateTime.h"
 #include "Poco/LocalDateTime.h"
@@ -512,8 +513,8 @@ Json::Value TimeEntry::SaveToJSON() const {
             tag_nodes.append(Json::Value(tag_name));
         }
     } else {
-        Json::Reader reader;
-        reader.parse("[]", tag_nodes);
+        auto reader = JsonHelper::reader();
+        reader->parse("[]", &tag_nodes);
     }
     n["tags"] = tag_nodes;
 
