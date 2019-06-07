@@ -146,8 +146,7 @@ int getFocusedWindowInfo(
                     //   <pid> (<name>) R <parent pid>
                     unsigned tmp_pid, tmp_ppid;
                     char *process_name = nullptr;
-                    // this is probably wrong, the %a format specifier handles float, not string and definitely not like this
-                    if (sscanf(buf, "%u (%a[^)]) %*c %u", &tmp_pid, &process_name, &tmp_ppid) == 3) {
+                    if (sscanf(buf, "%u (%m[^)]) %*c %u", &tmp_pid, &process_name, &tmp_ppid) == 3) {
                         *filename = std::string(process_name);
                     }
                     free(process_name);
