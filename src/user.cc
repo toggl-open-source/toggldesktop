@@ -10,6 +10,7 @@
 #include "./const.h"
 #include "./formatter.h"
 #include "./https_client.h"
+#include "./json_helper.h"
 #include "./obm_action.h"
 #include "./project.h"
 #include "./tag.h"
@@ -596,8 +597,8 @@ error User::LoadUserUpdateFromJSONString(
     }
 
     Json::Value root;
-    Json::Reader reader;
-    if (!reader.parse(json, root)) {
+    auto reader = JsonHelper::reader();
+    if (!reader->parse(json, &root)) {
         return error("Failed to LoadUserUpdateFromJSONString");
     }
 
@@ -682,8 +683,8 @@ error User::LoadUserAndRelatedDataFromJSONString(
     }
 
     Json::Value root;
-    Json::Reader reader;
-    if (!reader.parse(json, root)) {
+    auto reader = JsonHelper::reader();
+    if (!reader->parse(json, &root)) {
         return error("Failed to LoadUserAndRelatedDataFromJSONString");
     }
 
@@ -705,8 +706,8 @@ error User::LoadWorkspacesFromJSONString(const std::string & json) {
     }
 
     Json::Value root;
-    Json::Reader reader;
-    if (!reader.parse(json, root)) {
+    auto reader = JsonHelper::reader();
+    if (!reader->parse(json, &root)) {
         return error("Failed to LoadWorkspacessFromJSONString");
     }
 
@@ -731,8 +732,8 @@ error User::LoadTimeEntriesFromJSONString(const std::string & json) {
     }
 
     Json::Value root;
-    Json::Reader reader;
-    if (!reader.parse(json, root)) {
+    auto reader = JsonHelper::reader();
+    if (!reader->parse(json, &root)) {
         return error("Failed to LoadTimeEntriesFromJSONString");
     }
 
@@ -1105,8 +1106,8 @@ error User::UserID(
     Poco::UInt64 *result) {
     *result = 0;
     Json::Value root;
-    Json::Reader reader;
-    bool ok = reader.parse(json_data_string, root);
+    auto reader = JsonHelper::reader();
+    bool ok = reader->parse(json_data_string, &root);
     if (!ok) {
         return error("error parsing UserID JSON");
     }
@@ -1119,8 +1120,8 @@ error User::LoginToken(
     std::string *result) {
     *result = "";
     Json::Value root;
-    Json::Reader reader;
-    bool ok = reader.parse(json_data_string, root);
+    auto reader = JsonHelper::reader();
+    bool ok = reader->parse(json_data_string, &root);
     if (!ok) {
         return error("error parsing UserID JSON");
     }
@@ -1148,8 +1149,8 @@ error User::UpdateJSON(
         c.append(update);
     }
 
-    Json::StyledWriter writer;
-    *result = writer.write(c);
+    auto writer = JsonHelper::writer();
+    *result = writer->write(c);
 
     return noError;
 }
@@ -1181,8 +1182,8 @@ error User::SetAPITokenFromOfflineData(const std::string &password) {
         std::string key = generateKey(password);
 
         Json::Value data;
-        Json::Reader reader;
-        if (!reader.parse(OfflineData(), data)) {
+        auto reader = JsonHelper::reader();
+        if (!reader->parse(OfflineData(), &data)) {
             return error("failed to parse offline data");
         }
 
@@ -1247,7 +1248,9 @@ error User::EnableOfflineLogin(
         data["encrypted"] = pCipher->encryptString(
             APIToken(),
             Poco::Crypto::Cipher::ENC_BASE64);
-        std::string json = Json::FastWriter().write(data);
+
+        auto writer = JsonHelper::writer();
+        std::string json = writer->write(data);
 
         delete pCipher;
         pCipher = nullptr;

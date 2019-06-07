@@ -67,6 +67,7 @@ set(LIBRARY_SOURCE_FILES
     websocket_client.cc
     window_change_recorder.cc
     workspace.cc
+    json_helper.cc
 )
 
 # Set up compilation targets

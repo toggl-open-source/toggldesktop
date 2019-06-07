@@ -20,6 +20,7 @@
 #include "./error.h"
 #include "./formatter.h"
 #include "./https_client.h"
+#include "./json_helper.h"
 #include "./obm_action.h"
 #include "./project.h"
 #include "./settings.h"
@@ -1403,8 +1404,8 @@ error Context::downloadUpdate() {
             }
 
             Json::Value root;
-            Json::Reader reader;
-            if (!reader.parse(resp.body, root)) {
+            auto reader = JsonHelper::reader();
+            if (!reader->parse(resp.body, &root)) {
                 return error("Error parsing update check response body");
             }
 
@@ -1687,9 +1688,10 @@ void Context::onSendFeedback(Poco::Util::TimerTask&) {  // NOLINT
         settings_json["record_timeline"] = user_->RecordTimeline();
     }
 
+    auto writer = JsonHelper::writer();
     form.addPart("files",
                  new Poco::Net::StringPartSource(
-                     Json::StyledWriter().write(settings_json),
+                     writer->write(settings_json),
                      "application/json",
                      "settings.json"));
 
@@ -4796,8 +4798,8 @@ error Context::pushClients(
             it != clients.end(); it++) {
         Json::Value clientJson = (*it)->SaveToJSON();
 
-        Json::StyledWriter writer;
-        client_json = writer.write(clientJson);
+        auto writer = JsonHelper::writer();
+        client_json = writer->write(clientJson);
 
         HTTPSRequest req;
         req.host = urls::API();
@@ -4817,8 +4819,8 @@ error Context::pushClients(
         }
 
         Json::Value root;
-        Json::Reader reader;
-        if (!reader.parse(resp.body, root)) {
+        auto reader = JsonHelper::reader();
+        if (!reader->parse(resp.body, &root)) {
             err = error("error parsing client POST response");
             continue;
         }
@@ -4852,8 +4854,8 @@ error Context::pushProjects(const std::vector<Project *> &projects,
 
         Json::Value projectJson = (*it)->SaveToJSON();
 
-        Json::StyledWriter writer;
-        project_json = writer.write(projectJson);
+        auto writer = JsonHelper::writer();
+        project_json = writer->write(projectJson);
 
         HTTPSRequest req;
         req.host = urls::API();
@@ -4873,8 +4875,8 @@ error Context::pushProjects(const std::vector<Project *> &projects,
         }
 
         Json::Value root;
-        Json::Reader reader;
-        if (!reader.parse(resp.body, root)) {
+        auto reader = JsonHelper::reader();
+        if (!reader->parse(resp.body, &root)) {
             err = error("error parsing project POST response");
             continue;
         }
@@ -4929,8 +4931,8 @@ error Context::pushEntries(
 
         Json::Value entryJson = (*it)->SaveToJSON();
 
-        Json::StyledWriter writer;
-        entry_json = writer.write(entryJson);
+        auto writer = JsonHelper::writer();
+        entry_json = writer->write(entryJson);
 
         // std::cout << entry_json;
 
@@ -4987,8 +4989,8 @@ error Context::pushEntries(
         }
 
         Json::Value root;
-        Json::Reader reader;
-        if (!reader.parse(resp.body, root)) {
+        auto reader = JsonHelper::reader();
+        if (!reader->parse(resp.body, &root)) {
             return error("error parsing time entry POST response");
         }
 
@@ -5033,8 +5035,8 @@ error Context::pullObmExperiments() {
         }
 
         Json::Value json;
-        Json::Reader reader;
-        if (!reader.parse(resp.body, json)) {
+        auto reader = JsonHelper::reader();
+        if (!reader->parse(resp.body, &json)) {
             return error("Error in OBM experiments response body");
         }
 
@@ -5099,7 +5101,7 @@ error Context::pushObmAction() {
 
             Json::Value root = for_upload->SaveToJSON();
             req.relative_url = for_upload->ModelURL();
-            req.payload = Json::StyledWriter().write(root);
+            req.payload = JsonHelper::writer()->write(root);
         }
 
         logger().debug(req.payload);
@@ -5281,8 +5283,8 @@ error Context::pullWorkspacePreferences(TogglClient* toggl_client) {
             continue;
 
         Json::Value root;
-        Json::Reader reader;
-        if (!reader.parse(json, root)) {
+        auto reader = JsonHelper::reader();
+        if (!reader->parse(json, &root)) {
             return error("Failed to load workspace preferences");
         }
 
@@ -5364,8 +5366,8 @@ error Context::pullUserPreferences(
             return noError;
 
         Json::Value root;
-        Json::Reader reader;
-        if (!reader.parse(json, root)) {
+        auto reader = JsonHelper::reader();
+        if (!reader->parse(json, &root)) {
             return error("Failed to load user preferences");
         }
 
@@ -5429,7 +5431,7 @@ error Context::signup(
         HTTPSRequest req;
         req.host = urls::API();
         req.relative_url = "/api/v9/signup";
-        req.payload = Json::StyledWriter().write(user);
+        req.payload = JsonHelper::writer()->write(user);
 
         HTTPSResponse resp = toggl_client->Post(req);
         if (resp.err != noError) {
@@ -5510,9 +5512,9 @@ error Context::PullCountries() {
             return resp.err;
         }
         Json::Value root;
-        Json::Reader reader;
+        auto reader = JsonHelper::reader();
 
-        if (!reader.parse(resp.body, root)) {
+        if (!reader->parse(resp.body, &root)) {
             return error("Error parsing countries response body");
         }
 
