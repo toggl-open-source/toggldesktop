@@ -565,6 +565,8 @@ namespace TogglDesktop
 
         private void enableNewProjectMode()
         {
+            this.isProjectPublicCheckBox.IsChecked = false;
+            this.isProjectPublicCheckBox.Visibility = Visibility.Visible;
             this.showClientArea();
 
             this.projectTextBox.SetText("", "");
@@ -587,6 +589,7 @@ namespace TogglDesktop
         private void disableNewProjectMode()
         {
             this.disableNewClientMode();
+            this.isProjectPublicCheckBox.Visibility = Visibility.Collapsed;
             this.hideClientArea();
 
             this.projectTextBox.SetText(this.timeEntry.ProjectLabel, this.timeEntry.TaskLabel);
@@ -658,7 +661,7 @@ namespace TogglDesktop
             var ret = Toggl.AddProject(
                 this.timeEntry.GUID, this.selectedWorkspaceId,
                 this.selectedClientId, this.selectedClientGUID,
-                text, false, color) != null;
+                text, !isProjectPublicCheckBox.IsChecked.GetValueOrDefault(), color) != null;
 
             this.isCreatingProject = false;
 

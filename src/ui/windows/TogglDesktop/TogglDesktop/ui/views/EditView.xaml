@@ -65,6 +65,7 @@
                 <Grid Grid.IsSharedSizeScope="True">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
@@ -124,9 +125,11 @@
                                 ConfirmWithoutCompletion="projectAutoComplete_OnConfirmWithoutCompletion"/>
 
                     </Grid>
+
+                    <CheckBox Grid.Row="1" Name="isProjectPublicCheckBox">Public (visible to the whole team)</CheckBox>
             
                     <!-- client -->
-                    <Grid  Grid.Row="1"  Height="50" Visibility="Visible"
+                    <Grid  Grid.Row="2"  Height="50" Visibility="Visible"
                            Name="clientArea" x:FieldModifier="private">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
@@ -177,7 +180,7 @@
                     </Grid>
                 
                     <!-- workspace -->
-                    <Grid Grid.Row="2" Height="50" Visibility="Visible"
+                    <Grid Grid.Row="3" Height="50" Visibility="Visible"
                            Name="workspaceArea" x:FieldModifier="private">
 
                         <toggl:ExtendedTextBox x:Name="workspaceTextBox" x:FieldModifier="private"
@@ -194,7 +197,7 @@
                                 ConfirmWithoutCompletion="workspaceAutoComplete_OnConfirmWithoutCompletion"/>
                     </Grid>
 
-                    <StackPanel Grid.Row="3" Height="50" Visibility="Visible"
+                    <StackPanel Grid.Row="4" Height="50" Visibility="Visible"
                                 Name="projectSaveArea" x:FieldModifier="private"
                                 Orientation="Horizontal" HorizontalAlignment="Right">
                         <Button Click="projectSaveButton_Click">SAVE</Button>
