@@ -45,8 +45,9 @@ final class AutoCompleteViewWindow: NSWindow {
         if #available(OSX 10.12, *) {
             location = window.convertPoint(toScreen: point)
         } else {
-            // Fallback on earlier versions
+            location = window.convertToScreen(NSRect(origin: point, size: size)).origin
         }
+
         if isSeparateWindow {
             location.y -= topPadding
         } else {
