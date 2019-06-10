@@ -83,11 +83,14 @@ obj
 
 src/ui/windows/TogglDesktop/TogglDesktop/bin
 src/ui/windows/TogglDesktop/Release
-src/lib/windows/TogglDesktopDLL/Release
+src/ui/windows/TogglDesktop/x64/Release
 src/ui/windows/TogglDesktop/TogglDesktopUpdater/bin
 src/lib/windows/TogglDesktopDLL/Debug
 src/lib/windows/TogglDesktopDLL/Release_VS
 src/lib/windows/TogglDesktopDLL/Release
+src/lib/windows/TogglDesktopDLL/x64/Debug
+src/lib/windows/TogglDesktopDLL/x64/Release_VS
+src/lib/windows/TogglDesktopDLL/x64/Release
 src/ui/windows/TogglDesktop/.vs
 
 *.dSYM
@@ -168,6 +171,7 @@ src/ui/windows/TogglDesktop/TogglDesktopDLLInteropTest/bin
 
 # poco binaries
 third_party/poco/bin
+third_party/poco/bin64
 
 # Resharper user settings
 *.DotSettings.user
