@@ -39,6 +39,25 @@ extern void *ctx;
 - (void)mouseDown:(NSEvent *)event {
 	[super mouseDown:event];
 	self.isUserAction = YES;
+
+	[self handleReslectSelectedRowWithEvent:event];
+}
+
+- (void)handleReslectSelectedRowWithEvent:(NSEvent *)event
+{
+	if ([event clickCount] > 1)
+	{
+		return;
+	}
+
+	NSPoint curPoint = [self convertPoint:[event locationInWindow] fromView:nil];
+	NSIndexPath *index = [self indexPathForItemAtPoint:curPoint];
+	NSIndexPath *currentSelection = self.selectionIndexPaths.allObjects.firstObject;
+
+	if ([index isEqualTo:currentSelection])
+	{
+		[self.delegate collectionView:self didSelectItemsAtIndexPaths:self.selectionIndexPaths];
+	}
 }
 
 - (void)keyDown:(NSEvent *)event {
