@@ -50,19 +50,6 @@ Database::Database(const std::string db_path)
 
     session_ = new Poco::Data::Session("SQLite", db_path);
 
-    {
-        int is_sqlite_threadsafe = sqlite3_threadsafe();
-
-        std::stringstream ss;
-        ss << "sqlite3_threadsafe()=" << is_sqlite_threadsafe;
-        logger().debug(ss.str());
-
-        if (!is_sqlite_threadsafe) {
-            logger().error("Database is not thread safe!");
-            return;
-        }
-    }
-
     error err = setJournalMode("wal");
     if (err != noError) {
         logger().error("Failed to set journal mode to wal!");

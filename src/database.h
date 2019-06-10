@@ -3,12 +3,6 @@
 #ifndef SRC_DATABASE_H_
 #define SRC_DATABASE_H_
 
-#if defined(POCO_UNBUNDLED)
-#include <sqlite3.h>
-#else
-#include "sqlite3.h" // NOLINT
-#endif
-
 #include <string>
 #include <vector>
 
