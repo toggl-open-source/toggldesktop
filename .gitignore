@@ -80,6 +80,7 @@ xcshareddata
 
 tmp32
 obj
+obj64
 
 src/ui/windows/TogglDesktop/TogglDesktop/bin
 src/ui/windows/TogglDesktop/Release
