@@ -66,7 +66,7 @@ class TimeEntryDatasource: NSObject {
     private var firstTime = true
     private var sections: [TimeEntrySection]
     private var currentIndexPath = IndexPath(item: 0, section: 0)
-    private let collectionView: NSCollectionView
+    private let collectionView: TimeEntryCollectionView
     private let queue = DispatchQueue(label: "com.toggl.toggldesktop.TogglDesktop.timeentryqueue")
     fileprivate var cellSize: NSSize {
         return CGSize(width: collectionView.frame.size.width - 20.0, height: 64)
@@ -86,7 +86,7 @@ class TimeEntryDatasource: NSObject {
 
     // MARK: Init
 
-    init(collectionView: NSCollectionView) {
+    init(collectionView: TimeEntryCollectionView) {
         self.sections = []
         self.collectionView = collectionView
         super.init()
@@ -363,6 +363,22 @@ extension TimeEntryDatasource: NSCollectionViewDataSource, NSCollectionViewDeleg
                                                     fatalError()
         }
         return cell
+    }
+
+    func collectionView(_ collectionView: NSCollectionView, didSelectItemsAt indexPaths: Set<IndexPath>) {
+        guard let selectedIndexPath = indexPaths.first,
+            let itemCell = collectionView.item(at: selectedIndexPath) as? TimeEntryCell else { return }
+
+         // We have to store the click index
+         // so, the displayTimeEntryEditor can detect which cell should be show popover
+         self.collectionView.clickedIndexPath = selectedIndexPath
+
+        // Expand or open Edit
+        if itemCell.cellType == .group {
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: kToggleGroup), object: itemCell.groupName)
+        } else {
+            itemCell.focusFieldName()
+        }
     }
 }
 

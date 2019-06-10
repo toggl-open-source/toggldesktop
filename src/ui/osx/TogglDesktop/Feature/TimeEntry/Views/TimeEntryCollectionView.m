@@ -30,38 +30,6 @@ extern void *ctx;
 	return YES;
 }
 
-- (void)mouseUp:(NSEvent *)event {
-	[super mouseUp:event];
-
-	if ([event clickCount] > 1)
-	{
-		return;
-	}
-
-	NSPoint curPoint = [self convertPoint:[event locationInWindow] fromView:nil];
-	NSIndexPath *index = [self indexPathForItemAtPoint:curPoint];
-	NSCollectionViewItem *item = [self itemAtIndexPath:index];
-
-	if ([item isKindOfClass:[TimeEntryCell class]])
-	{
-		TimeEntryCell *timeCell = (TimeEntryCell *)item;
-
-		// We have to store the click index
-		// so, the displayTimeEntryEditor can detect which cell should be show popover
-		self.clickedIndexPath = index;
-
-		// Show popover or open group
-		if (timeCell.cellType == CellTypeGroup)
-		{
-			[[NSNotificationCenter defaultCenter] postNotificationName:kToggleGroup object:timeCell.GroupName];
-		}
-		else
-		{
-			[timeCell focusFieldName];
-		}
-	}
-}
-
 - (void)keyDown:(NSEvent *)event {
 	if ((event.keyCode == kVK_Return) || (event.keyCode == kVK_ANSI_KeypadEnter))
 	{
