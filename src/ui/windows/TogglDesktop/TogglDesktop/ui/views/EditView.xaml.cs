@@ -661,7 +661,7 @@ namespace TogglDesktop
             var ret = Toggl.AddProject(
                 this.timeEntry.GUID, this.selectedWorkspaceId,
                 this.selectedClientId, this.selectedClientGUID,
-                text, !isProjectPublicCheckBox.IsChecked.GetValueOrDefault(true), color) != null;
+                text, !isProjectPublicCheckBox.IsChecked.GetValueOrDefault(), color) != null;
 
             this.isCreatingProject = false;
 
