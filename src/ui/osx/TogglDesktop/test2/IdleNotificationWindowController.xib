@@ -9,6 +9,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="IdleNotificationWindowController">
             <connections>
+                <outlet property="addIdleTimeButton" destination="3DH-9w-EQH" id="aPb-tD-mWD"/>
                 <outlet property="idleAmountTextField" destination="LfR-bu-tys" id="Y6v-ka-ovg"/>
                 <outlet property="idleSinceTextField" destination="sqC-ri-2J8" id="wsN-vw-dVh"/>
                 <outlet property="timeentryDescriptionTextField" destination="QuW-zx-5VW" id="d9n-7m-tBh"/>
@@ -69,6 +70,9 @@
                                 <real key="value" value="8"/>
                             </userDefinedRuntimeAttribute>
                         </userDefinedRuntimeAttributes>
+                        <connections>
+                            <action selector="stopButtonClicked:" target="-2" id="U8b-ud-zy9"/>
+                        </connections>
                     </button>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="upW-Uw-TwE">
                         <rect key="frame" x="83" y="198" width="134" height="14"/>
@@ -96,6 +100,9 @@
                                 <real key="value" value="8"/>
                             </userDefinedRuntimeAttribute>
                         </userDefinedRuntimeAttributes>
+                        <connections>
+                            <action selector="addIdleTimeAsNewTimeEntry:" target="-2" id="tDh-N4-FxP"/>
+                        </connections>
                     </button>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="QuW-zx-5VW">
                         <rect key="frame" x="103" y="177" width="95" height="16"/>
@@ -111,6 +118,9 @@
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="systemMedium" size="12"/>
                         </buttonCell>
+                        <connections>
+                            <action selector="ignoreButtonClicked:" target="-2" id="q5X-MT-BaQ"/>
+                        </connections>
                     </button>
                 </subviews>
                 <constraints>

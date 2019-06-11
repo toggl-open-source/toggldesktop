@@ -12,9 +12,46 @@
 #import "UIEvents.h"
 #import "TogglDesktop-Swift.h"
 
+@interface IdleNotificationWindowController()
+
+@property (weak) IBOutlet NSTextField *idleSinceTextField;
+@property (weak) IBOutlet NSTextField *idleAmountTextField;
+@property (weak) IBOutlet NSTextField *timeentryDescriptionTextField;
+@property (weak) IBOutlet FlatButton *addIdleTimeButton;
+
+- (IBAction)stopButtonClicked:(id)sender;
+- (IBAction)ignoreButtonClicked:(id)sender;
+- (IBAction)addIdleTimeAsNewTimeEntry:(id)sender;
+
+@end
+
 @implementation IdleNotificationWindowController
 
 extern void *ctx;
+
+-(void)awakeFromNib
+{
+    [super awakeFromNib];
+
+    [self initCommon];
+}
+
+- (void) initCommon
+{
+    // Style buttons
+    self.addIdleTimeButton.wantsLayer = YES;
+    self.addIdleTimeButton.layer.borderWidth = 1;
+    if (@available(macOS 10.13, *))
+    {
+        self.addIdleTimeButton.layer.borderColor = [NSColor colorNamed:@"upload-border-color"].CGColor;
+        self.addIdleTimeButton.bgColor = [NSColor colorNamed:@"upload-background-color"];
+    }
+    else
+    {
+        self.addIdleTimeButton.layer.borderColor = [ConvertHexColor hexCodeToNSColor:@"#acacac"].CGColor;
+        self.addIdleTimeButton.bgColor = NSColor.whiteColor;
+    }
+}
 
 - (void)displayIdleEvent:(IdleEvent *)idleEvent
 {
@@ -61,14 +98,6 @@ extern void *ctx;
 	cmd.open = YES;
 	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayApp
 																object:cmd];
-}
-
-- (IBAction)discardIdleAndContinue:(id)sender
-{
-	toggl_discard_time_and_continue(ctx,
-									[self.idleEvent.guid UTF8String],
-									self.idleEvent.started);
-	[self.window orderOut:nil];
 }
 
 @end
