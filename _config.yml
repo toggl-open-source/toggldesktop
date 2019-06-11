@@ -24,3 +24,7 @@ social:
 # Build settings
 markdown: kramdown
 permalink: pretty
+
+# Plugins
+plugins:
+  - jekyll-redirect-from
