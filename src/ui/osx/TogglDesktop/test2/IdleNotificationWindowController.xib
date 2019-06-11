@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -47,6 +48,28 @@
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="gae-h6-aWA" customClass="FlatButton" customModule="TogglDesktop" customModuleProvider="target">
+                        <rect key="frame" x="20" y="117" width="260" height="30"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="260" id="WVR-29-5dM"/>
+                            <constraint firstAttribute="height" constant="30" id="u8q-1m-Hpd"/>
+                        </constraints>
+                        <buttonCell key="cell" type="bevel" title="Discard idle time" bezelStyle="regularSquare" alignment="center" imageScaling="proportionallyDown" inset="2" id="SPr-5Y-gLE">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="color" keyPath="bgColor">
+                                <color key="value" name="green-color"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="color" keyPath="textColor">
+                                <color key="value" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                <real key="value" value="8"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </button>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="upW-Uw-TwE">
                         <rect key="frame" x="83" y="198" width="134" height="14"/>
                         <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" title="RUNNING TIME ENTRY:" id="roh-tK-cQL">
@@ -55,6 +78,25 @@
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="3DH-9w-EQH" customClass="FlatButton" customModule="TogglDesktop" customModuleProvider="target">
+                        <rect key="frame" x="20" y="77" width="260" height="30"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="260" id="56T-8y-5cD"/>
+                            <constraint firstAttribute="height" constant="30" id="ONB-DD-jbd"/>
+                        </constraints>
+                        <buttonCell key="cell" type="squareTextured" title="Add idle time as new time entry" bezelStyle="texturedSquare" alignment="center" imageScaling="proportionallyDown" inset="2" id="DjU-En-tIH">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="color" keyPath="textColor">
+                                <color key="value" name="black-text-color"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                <real key="value" value="8"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </button>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="QuW-zx-5VW">
                         <rect key="frame" x="103" y="177" width="95" height="16"/>
                         <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" title="Doing the thing" id="nx5-lP-3u0">
@@ -63,34 +105,6 @@
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <button toolTip="Stops timer with the same time when the idle was triggered" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="nGW-lp-Mrf">
-                        <rect key="frame" x="19" y="115" width="262" height="33"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="260" id="CO0-rV-0UT"/>
-                            <constraint firstAttribute="height" constant="30" id="vSW-2s-Z1y"/>
-                        </constraints>
-                        <buttonCell key="cell" type="squareTextured" title="Discard idle time" bezelStyle="texturedSquare" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="qPv-hn-mbG">
-                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                            <font key="font" metaFont="system"/>
-                        </buttonCell>
-                        <connections>
-                            <action selector="stopButtonClicked:" target="-2" id="YUn-hV-7AD"/>
-                        </connections>
-                    </button>
-                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="71P-8X-s86">
-                        <rect key="frame" x="19" y="75" width="262" height="33"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="30" id="fEs-pf-W1r"/>
-                            <constraint firstAttribute="width" constant="260" id="iXJ-je-2QU"/>
-                        </constraints>
-                        <buttonCell key="cell" type="squareTextured" title="Add idle time as a new time entry" bezelStyle="texturedSquare" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="neF-QU-h5e">
-                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                            <font key="font" metaFont="system"/>
-                        </buttonCell>
-                        <connections>
-                            <action selector="addIdleTimeAsNewTimeEntry:" target="-2" id="GW3-ad-oMu"/>
-                        </connections>
-                    </button>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="B6d-ef-DQm">
                         <rect key="frame" x="236" y="20" width="44" height="16"/>
                         <buttonCell key="cell" type="bevel" title="Cancel" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="0Qu-8p-peH">
@@ -100,12 +114,12 @@
                     </button>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="nGW-lp-Mrf" firstAttribute="centerX" secondItem="IAa-lP-ER3" secondAttribute="centerX" id="4Q1-6l-iML"/>
                     <constraint firstItem="QuW-zx-5VW" firstAttribute="top" secondItem="upW-Uw-TwE" secondAttribute="bottom" constant="5" id="C1n-iA-xRY"/>
+                    <constraint firstItem="3DH-9w-EQH" firstAttribute="centerX" secondItem="IAa-lP-ER3" secondAttribute="centerX" id="HpV-0U-O5Y"/>
                     <constraint firstItem="upW-Uw-TwE" firstAttribute="top" secondItem="LfR-bu-tys" secondAttribute="bottom" constant="30" id="JTR-sF-zof"/>
                     <constraint firstItem="LfR-bu-tys" firstAttribute="centerX" secondItem="IAa-lP-ER3" secondAttribute="centerX" id="JTU-LE-9YD"/>
                     <constraint firstAttribute="bottom" secondItem="B6d-ef-DQm" secondAttribute="bottom" constant="20" id="MpJ-aO-IoC"/>
-                    <constraint firstItem="71P-8X-s86" firstAttribute="top" secondItem="nGW-lp-Mrf" secondAttribute="bottom" constant="10" id="WUs-ag-XAe"/>
+                    <constraint firstItem="3DH-9w-EQH" firstAttribute="top" secondItem="gae-h6-aWA" secondAttribute="bottom" constant="10" id="Vki-vT-rfn"/>
                     <constraint firstItem="upW-Uw-TwE" firstAttribute="centerX" secondItem="IAa-lP-ER3" secondAttribute="centerX" id="Yau-29-g0u"/>
                     <constraint firstAttribute="trailing" secondItem="31J-mN-zmo" secondAttribute="trailing" id="b1L-Ng-Oak"/>
                     <constraint firstAttribute="bottom" secondItem="31J-mN-zmo" secondAttribute="bottom" id="b62-TI-aXl"/>
@@ -113,14 +127,22 @@
                     <constraint firstItem="sqC-ri-2J8" firstAttribute="top" secondItem="IAa-lP-ER3" secondAttribute="top" constant="40" id="dXk-ty-x12"/>
                     <constraint firstItem="QuW-zx-5VW" firstAttribute="centerX" secondItem="IAa-lP-ER3" secondAttribute="centerX" id="eQW-qe-RjN"/>
                     <constraint firstItem="31J-mN-zmo" firstAttribute="top" secondItem="IAa-lP-ER3" secondAttribute="top" id="iPz-wC-Ums"/>
-                    <constraint firstItem="71P-8X-s86" firstAttribute="centerX" secondItem="IAa-lP-ER3" secondAttribute="centerX" id="jYj-zc-nbe"/>
+                    <constraint firstItem="gae-h6-aWA" firstAttribute="centerX" secondItem="IAa-lP-ER3" secondAttribute="centerX" id="p34-TA-wmM"/>
                     <constraint firstItem="31J-mN-zmo" firstAttribute="leading" secondItem="IAa-lP-ER3" secondAttribute="leading" id="p6f-ue-RuO"/>
                     <constraint firstAttribute="trailing" secondItem="B6d-ef-DQm" secondAttribute="trailing" constant="20" id="q00-hb-age"/>
-                    <constraint firstItem="nGW-lp-Mrf" firstAttribute="top" secondItem="QuW-zx-5VW" secondAttribute="bottom" constant="30" id="q8V-6X-6jB"/>
+                    <constraint firstItem="gae-h6-aWA" firstAttribute="top" secondItem="QuW-zx-5VW" secondAttribute="bottom" constant="30" id="vkM-Ij-h0S"/>
                     <constraint firstItem="LfR-bu-tys" firstAttribute="top" secondItem="sqC-ri-2J8" secondAttribute="bottom" constant="5" id="ycY-wp-cGX"/>
                 </constraints>
             </view>
             <point key="canvasLocation" x="282" y="371.5"/>
         </window>
     </objects>
+    <resources>
+        <namedColor name="black-text-color">
+            <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="green-color">
+            <color red="0.15686274509803921" green="0.80392156862745101" blue="0.25490196078431371" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
 </document>
