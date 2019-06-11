@@ -10,6 +10,7 @@
         <customObject id="-2" userLabel="File's Owner" customClass="IdleNotificationWindowController">
             <connections>
                 <outlet property="addIdleTimeButton" destination="3DH-9w-EQH" id="aPb-tD-mWD"/>
+                <outlet property="cancelButton" destination="B6d-ef-DQm" id="BKq-yb-bcR"/>
                 <outlet property="idleAmountTextField" destination="LfR-bu-tys" id="Y6v-ka-ovg"/>
                 <outlet property="idleSinceTextField" destination="sqC-ri-2J8" id="wsN-vw-dVh"/>
                 <outlet property="timeentryDescriptionTextField" destination="QuW-zx-5VW" id="d9n-7m-tBh"/>
@@ -64,9 +65,6 @@
                             <userDefinedRuntimeAttribute type="color" keyPath="bgColor">
                                 <color key="value" name="green-color"/>
                             </userDefinedRuntimeAttribute>
-                            <userDefinedRuntimeAttribute type="color" keyPath="textColor">
-                                <color key="value" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            </userDefinedRuntimeAttribute>
                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                                 <real key="value" value="8"/>
                             </userDefinedRuntimeAttribute>
@@ -79,7 +77,7 @@
                         <rect key="frame" x="83" y="198" width="134" height="14"/>
                         <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" title="RUNNING TIME ENTRY:" id="roh-tK-cQL">
                             <font key="font" metaFont="systemMedium" size="11"/>
-                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="textColor" name="grey-text-color"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
@@ -160,6 +158,9 @@
         </namedColor>
         <namedColor name="green-color">
             <color red="0.15686274509803921" green="0.80392156862745101" blue="0.25490196078431371" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="grey-text-color">
+            <color red="0.33333333333333331" green="0.33333333333333331" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>

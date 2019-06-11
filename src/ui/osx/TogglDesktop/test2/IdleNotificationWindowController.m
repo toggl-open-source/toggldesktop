@@ -12,12 +12,13 @@
 #import "UIEvents.h"
 #import "TogglDesktop-Swift.h"
 
-@interface IdleNotificationWindowController()
+@interface IdleNotificationWindowController ()
 
 @property (weak) IBOutlet NSTextField *idleSinceTextField;
 @property (weak) IBOutlet NSTextField *idleAmountTextField;
 @property (weak) IBOutlet NSTextField *timeentryDescriptionTextField;
 @property (weak) IBOutlet FlatButton *addIdleTimeButton;
+@property (weak) IBOutlet NSButton *cancelButton;
 
 - (IBAction)stopButtonClicked:(id)sender;
 - (IBAction)ignoreButtonClicked:(id)sender;
@@ -29,28 +30,58 @@
 
 extern void *ctx;
 
--(void)awakeFromNib
+- (void)awakeFromNib
 {
-    [super awakeFromNib];
+	[super awakeFromNib];
 
-    [self initCommon];
+	[self initCommon];
 }
 
-- (void) initCommon
+- (void)initCommon
 {
-    // Style buttons
-    self.addIdleTimeButton.wantsLayer = YES;
-    self.addIdleTimeButton.layer.borderWidth = 1;
-    if (@available(macOS 10.13, *))
-    {
-        self.addIdleTimeButton.layer.borderColor = [NSColor colorNamed:@"upload-border-color"].CGColor;
-        self.addIdleTimeButton.bgColor = [NSColor colorNamed:@"upload-background-color"];
-    }
-    else
-    {
-        self.addIdleTimeButton.layer.borderColor = [ConvertHexColor hexCodeToNSColor:@"#acacac"].CGColor;
-        self.addIdleTimeButton.bgColor = NSColor.whiteColor;
-    }
+	// Style buttons
+	[self styleAddIdleButton];
+	[self applyUnderlineStyle];
+}
+
+- (void)styleAddIdleButton
+{
+	self.addIdleTimeButton.wantsLayer = YES;
+	self.addIdleTimeButton.layer.borderWidth = 1;
+	if (@available(macOS 10.13, *))
+	{
+		self.addIdleTimeButton.layer.borderColor = [NSColor colorNamed:@"upload-border-color"].CGColor;
+		self.addIdleTimeButton.bgColor = [NSColor colorNamed:@"upload-background-color"];
+	}
+	else
+	{
+		self.addIdleTimeButton.layer.borderColor = [ConvertHexColor hexCodeToNSColor:@"#acacac"].CGColor;
+		self.addIdleTimeButton.bgColor = NSColor.whiteColor;
+	}
+}
+
+- (void)applyUnderlineStyle
+{
+	// Font
+	NSFont *font = self.cancelButton.font;
+
+	if (font == nil)
+	{
+		font = [NSFont systemFontOfSize:12 weight:NSFontWeightMedium];
+	}
+
+	// Color
+	NSColor *color = [ConvertHexColor hexCodeToNSColor:@"#555555"];
+	if (@available(macOS 10.13, *))
+	{
+		color = [NSColor colorNamed:@"grey-text-color"];
+	}
+
+	NSDictionary<NSAttributedStringKey, id> *attributes = @{ NSFontAttributeName: font,
+															 NSForegroundColorAttributeName: color,
+															 NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle), };
+	NSAttributedString *underlineString = [[NSAttributedString alloc] initWithString:@"Cancel" attributes:attributes];
+	self.cancelButton.attributedTitle = underlineString;
 }
 
 - (void)displayIdleEvent:(IdleEvent *)idleEvent
