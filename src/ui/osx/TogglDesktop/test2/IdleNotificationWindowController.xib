@@ -57,9 +57,14 @@
                             <constraint firstAttribute="width" constant="260" id="WVR-29-5dM"/>
                             <constraint firstAttribute="height" constant="30" id="u8q-1m-Hpd"/>
                         </constraints>
-                        <buttonCell key="cell" type="bevel" title="Discard idle time" bezelStyle="regularSquare" alignment="center" imageScaling="proportionallyDown" inset="2" id="SPr-5Y-gLE">
+                        <buttonCell key="cell" type="bevel" title="Discard idle time" bezelStyle="regularSquare" alignment="center" imageScaling="proportionallyDown" inset="2" id="SPr-5Y-gLE" customClass="VerticallyCenteredButtonCell" customModule="TogglDesktop" customModuleProvider="target">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="focusRingCornerRadius">
+                                    <real key="value" value="8"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
                         </buttonCell>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="color" keyPath="bgColor">
@@ -87,9 +92,14 @@
                             <constraint firstAttribute="width" constant="260" id="56T-8y-5cD"/>
                             <constraint firstAttribute="height" constant="30" id="ONB-DD-jbd"/>
                         </constraints>
-                        <buttonCell key="cell" type="squareTextured" title="Add idle time as new time entry" bezelStyle="texturedSquare" alignment="center" imageScaling="proportionallyDown" inset="2" id="DjU-En-tIH">
+                        <buttonCell key="cell" type="squareTextured" title="Add idle time as new time entry" bezelStyle="texturedSquare" alignment="center" imageScaling="proportionallyDown" inset="2" id="DjU-En-tIH" customClass="VerticallyCenteredButtonCell" customModule="TogglDesktop" customModuleProvider="target">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="focusRingCornerRadius">
+                                    <real key="value" value="8"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
                         </buttonCell>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="color" keyPath="textColor">

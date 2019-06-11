@@ -41,7 +41,7 @@ extern void *ctx;
 {
 	// Style buttons
 	[self styleAddIdleButton];
-	[self applyUnderlineStyle];
+	[self styleCancelButton];
 }
 
 - (void)styleAddIdleButton
@@ -60,7 +60,7 @@ extern void *ctx;
 	}
 }
 
-- (void)applyUnderlineStyle
+- (void)styleCancelButton
 {
 	// Font
 	NSFont *font = self.cancelButton.font;
