@@ -32,6 +32,7 @@
                             <rect key="frame" x="0.0" y="0.0" width="300" height="323"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         </view>
+                        <color key="fillColor" name="feedback-background-color"/>
                     </box>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="sqC-ri-2J8">
                         <rect key="frame" x="36" y="265" width="229" height="18"/>
@@ -144,12 +145,18 @@
                     <constraint firstItem="LfR-bu-tys" firstAttribute="top" secondItem="sqC-ri-2J8" secondAttribute="bottom" constant="5" id="ycY-wp-cGX"/>
                 </constraints>
             </view>
+            <connections>
+                <outlet property="initialFirstResponder" destination="gae-h6-aWA" id="MWd-1C-OCJ"/>
+            </connections>
             <point key="canvasLocation" x="282" y="371.5"/>
         </window>
     </objects>
     <resources>
         <namedColor name="black-text-color">
             <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="feedback-background-color">
+            <color red="0.98039215686274506" green="0.98431372549019602" blue="0.9882352941176471" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="green-color">
             <color red="0.15686274509803921" green="0.80392156862745101" blue="0.25490196078431371" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
