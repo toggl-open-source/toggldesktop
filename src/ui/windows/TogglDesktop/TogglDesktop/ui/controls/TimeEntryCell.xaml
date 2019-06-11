@@ -4,12 +4,12 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:toggl="clr-namespace:TogglDesktop"
+             xmlns:converters="clr-namespace:TogglDesktop.Converters"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance Type=toggl:TimeEntryCellSample, IsDesignTimeCreatable=True}"
              d:DesignWidth="455"
-             ContextMenu="{StaticResource TimeEntryContextMenu}"
-             >
-    
+             ContextMenu="{StaticResource TimeEntryContextMenu}">
+
     <StackPanel Style="{StaticResource TimeEntryCell}"
                 Background="White" x:Name="MainBack">
         
@@ -55,11 +55,9 @@
                 </Grid.RowDefinitions>
 
                 <StackPanel Orientation="Horizontal" Grid.Row="1">
-
-                    <TextBlock Name="labelClient" x:FieldModifier="private"
-                                Foreground="DimGray">Client</TextBlock>
-                    <TextBlock Name="labelProject" x:FieldModifier="private" MouseLeftButtonDown="labelProject_MouseDown"
-                                >Project</TextBlock>
+                    <TextBlock Name="labelProject" x:FieldModifier="private" MouseLeftButtonDown="labelProject_MouseDown">Project</TextBlock>
+                    <TextBlock Name="separatorLabel" Foreground="DimGray">·</TextBlock>
+                    <TextBlock Name="labelClient" x:FieldModifier="private" Foreground="DimGray">Client</TextBlock>
 
                 </StackPanel>
 
