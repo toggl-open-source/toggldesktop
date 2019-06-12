@@ -30,7 +30,7 @@ class Client : public BaseModel {
     const std::string &Name() const {
         return name_;
     }
-    void SetName(const std::string value);
+    void SetName(const std::string &value);
 
     // Override BaseModel
     std::string String() const;
@@ -38,14 +38,14 @@ class Client : public BaseModel {
     std::string ModelURL() const;
     void LoadFromJSON(Json::Value value);
     Json::Value SaveToJSON() const;
-    bool ResolveError(const toggl::error);
-    bool ResourceCannotBeCreated(const toggl::error) const;
+    bool ResolveError(const toggl::error &err);
+    bool ResourceCannotBeCreated(const toggl::error &err) const;
 
  private:
     Poco::UInt64 wid_;
     std::string name_;
 
-    static bool nameHasAlreadyBeenTaken(const error err);
+    static bool nameHasAlreadyBeenTaken(const error &err);
 };
 
 }  // namespace toggl

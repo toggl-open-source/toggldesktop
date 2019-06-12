@@ -25,7 +25,7 @@ class Task : public BaseModel {
     const std::string &Name() const {
         return name_;
     }
-    void SetName(const std::string value);
+    void SetName(const std::string &value);
 
     const Poco::UInt64 &WID() const {
         return wid_;

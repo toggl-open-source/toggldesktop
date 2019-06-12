@@ -35,7 +35,7 @@ WebSocketClient::~WebSocketClient() {
 
 void WebSocketClient::Start(
     void *ctx,
-    const std::string api_token,
+    const std::string &api_token,
     WebSocketMessageCallback on_websocket_message) {
 
     poco_check_ptr(ctx);
@@ -138,7 +138,7 @@ error WebSocketClient::createSession() {
         return exc.displayText();
     } catch(const std::exception& ex) {
         return ex.what();
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return ex;
     }
 
@@ -161,7 +161,7 @@ void WebSocketClient::authenticate() {
 }
 
 std::string WebSocketClient::parseWebSocketMessageType(
-    const std::string json) {
+    const std::string &json) {
 
     if (json.empty()) {
         return "";
@@ -195,14 +195,14 @@ error WebSocketClient::receiveWebSocketMessage(std::string *message) {
         return error(exc.displayText());
     } catch(const std::exception& ex) {
         return error(ex.what());
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return error(ex);
     }
     *message = json;
     return noError;
 }
 
-const std::string kPong("{\"type\": \"pong\"}");
+const std::string &kPong("{\"type\": \"pong\"}");
 
 error WebSocketClient::poll() {
     try {
@@ -245,7 +245,7 @@ error WebSocketClient::poll() {
         return error(exc.displayText());
     } catch(const std::exception& ex) {
         return error(ex.what());
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return error(ex);
     }
     return noError;

@@ -137,7 +137,7 @@ void GUI::DisplayLogin(const bool open, const uint64_t user_id) {
     lastDisplayLoginUserID = user_id;
 }
 
-error GUI::DisplayError(const error err) {
+error GUI::DisplayError(const error &err) {
     if (noError == err) {
         return noError;
     }
@@ -374,7 +374,7 @@ void GUI::DisplayTimeEntryAutocomplete(
 }
 
 void GUI::DisplayHelpArticles(
-    std::vector<HelpArticle> articles) {
+    const std::vector<HelpArticle> &articles) {
     logger().debug("DisplayHelpArticles");
 
     if (!on_display_help_articles_) {
@@ -405,7 +405,7 @@ void GUI::DisplayProjectAutocomplete(
 }
 
 void GUI::DisplayTimeEntryList(const bool open,
-                               const std::vector<view::TimeEntry> list,
+                               const std::vector<view::TimeEntry> &list,
                                const bool show_load_more_button) {
     Poco::Stopwatch stopwatch;
     auto renderList = std::vector<view::TimeEntry>();
@@ -461,7 +461,7 @@ void GUI::DisplayTimeEntryList(const bool open,
     }
 }
 
-void GUI::DisplayTags(const std::vector<view::Generic> list) {
+void GUI::DisplayTags(const std::vector<view::Generic> &list) {
     logger().debug("DisplayTags");
 
     TogglGenericView *first = generic_to_view_item_list(list);
@@ -503,7 +503,7 @@ void GUI::DisplayAutotrackerRules(
 }
 
 void GUI::DisplayClientSelect(
-    const std::vector<view::Generic> list) {
+    const std::vector<view::Generic> &list) {
     logger().debug("DisplayClientSelect");
 
     TogglGenericView *first = generic_to_view_item_list(list);
@@ -512,7 +512,7 @@ void GUI::DisplayClientSelect(
 }
 
 void GUI::DisplayWorkspaceSelect(
-    const std::vector<view::Generic> list) {
+    const std::vector<view::Generic> &list) {
     logger().debug("DisplayWorkspaceSelect");
 
     TogglGenericView *first = generic_to_view_item_list(list);
@@ -520,10 +520,9 @@ void GUI::DisplayWorkspaceSelect(
     view_list_clear(first);
 }
 
-void GUI::DisplayTimeEntryEditor(
-    const bool open,
-    const view::TimeEntry te,
-    const std::string focused_field_name) {
+void GUI::DisplayTimeEntryEditor(const bool open,
+    const view::TimeEntry &te,
+    const std::string &focused_field_name) {
 
     logger().debug(
         "DisplayTimeEntryEditor focused_field_name=" + focused_field_name);
@@ -537,7 +536,7 @@ void GUI::DisplayTimeEntryEditor(
     time_entry_view_list_clear(view);
 }
 
-void GUI::DisplayURL(const std::string URL) {
+void GUI::DisplayURL(const std::string &URL) {
     logger().debug("DisplayURL " + URL);
 
     char_t *url = copy_string(URL);
@@ -545,7 +544,7 @@ void GUI::DisplayURL(const std::string URL) {
     free(url);
 }
 
-void GUI::DisplayUpdate(const std::string URL) {
+void GUI::DisplayUpdate(const std::string &URL) {
     logger().debug("DisplayUpdate " + URL);
 
     char_t *url = copy_string(URL);
@@ -554,7 +553,7 @@ void GUI::DisplayUpdate(const std::string URL) {
 }
 
 void GUI::DisplayUpdateDownloadState(
-    const std::string version,
+    const std::string &version,
     const Poco::Int64 download_state) {
 
     if (!CanDisplayUpdateDownloadState()) {
@@ -574,9 +573,9 @@ void GUI::DisplayUpdateDownloadState(
 
 void GUI::DisplaySettings(const bool open,
                           const bool record_timeline,
-                          const Settings settings,
+                          const Settings &settings,
                           const bool use_proxy,
-                          const Proxy proxy) {
+                          const Proxy &proxy) {
     logger().debug("DisplaySettings");
 
     TogglSettingsView *view = settings_view_item_init(
@@ -605,11 +604,11 @@ void GUI::DisplayEmptyTimerState() {
     logger().debug("DisplayEmptyTimerState");
 }
 
-void GUI::DisplayIdleNotification(const std::string guid,
-                                  const std::string since,
-                                  const std::string duration,
+void GUI::DisplayIdleNotification(const std::string &guid,
+                                  const std::string &since,
+                                  const std::string &duration,
                                   const int64_t started,
-                                  const std::string description) {
+                                  const std::string &description) {
     char_t *guid_s = copy_string(guid);
     char_t *since_s = copy_string(since);
     char_t *duration_s = copy_string(duration);

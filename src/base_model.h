@@ -63,7 +63,7 @@ class BaseModel {
     const std::string &GUID() const {
         return guid_;
     }
-    void SetGUID(const std::string value);
+    void SetGUID(const std::string &value);
 
     const Poco::UInt64 &UID() const {
         return uid_;
@@ -99,7 +99,7 @@ class BaseModel {
     void SetUpdatedAt(const Poco::Int64 value);
 
     std::string UpdatedAtString() const;
-    void SetUpdatedAtString(const std::string value);
+    void SetUpdatedAtString(const std::string &value);
 
     // When a model is deleted
     // on server, it will be removed from local
@@ -122,7 +122,7 @@ class BaseModel {
     void EnsureGUID();
 
     void ClearValidationError();
-    void SetValidationError(const std::string value);
+    void SetValidationError(const std::string &value);
     const std::string &ValidationError() const {
         return validation_error_;
     }
@@ -136,17 +136,17 @@ class BaseModel {
         return 0;
     }
 
-    virtual bool DuplicateResource(const toggl::error) const {
+    virtual bool DuplicateResource(const toggl::error &err) const {
         return false;
     }
-    virtual bool ResourceCannotBeCreated(const toggl::error) const {
+    virtual bool ResourceCannotBeCreated(const toggl::error &err) const {
         return false;
     }
-    virtual bool ResolveError(const toggl::error) {
+    virtual bool ResolveError(const toggl::error &err) {
         return false;
     }
 
-    error LoadFromDataString(const std::string);
+    error LoadFromDataString(const std::string &);
 
     void Delete();
 
@@ -158,7 +158,7 @@ class BaseModel {
  protected:
     Poco::Logger &logger() const;
 
-    bool userCannotAccessWorkspace(const toggl::error err) const;
+    bool userCannotAccessWorkspace(const toggl::error &err) const;
 
  private:
     std::string batchUpdateRelativeURL() const;

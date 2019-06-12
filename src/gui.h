@@ -384,14 +384,14 @@ class GUI : public SyncStateMonitor {
 
     void DisplayApp();
 
-    error DisplayError(const error);
+    error DisplayError(const error &err);
 
     // Overlay screen triggers
     error DisplayWSError();
     error DisplayTosAccept();
 
     void DisplayHelpArticles(
-        const std::vector<HelpArticle> articles);
+        const std::vector<HelpArticle> &articles);
 
     void DisplaySyncState(const Poco::Int64 state);
 
@@ -417,7 +417,7 @@ class GUI : public SyncStateMonitor {
 
     void DisplayTimeEntryList(
         const bool open,
-        const std::vector<view::TimeEntry> list,
+        const std::vector<view::TimeEntry> &list,
         const bool show_load_more_button);
 
     void DisplayProjectColors();
@@ -426,13 +426,13 @@ class GUI : public SyncStateMonitor {
         std::vector<TogglCountryView> *items);
 
     void DisplayWorkspaceSelect(
-        const std::vector<view::Generic> list);
+        const std::vector<view::Generic> &list);
 
     void DisplayClientSelect(
-        const std::vector<view::Generic> list);
+        const std::vector<view::Generic> &list);
 
     void DisplayTags(
-        const std::vector<view::Generic> list);
+        const std::vector<view::Generic> &list);
 
     void DisplayAutotrackerRules(
         const std::vector<view::AutotrackerRule> &autotracker_rules,
@@ -440,35 +440,35 @@ class GUI : public SyncStateMonitor {
 
     void DisplayTimeEntryEditor(
         const bool open,
-        const view::TimeEntry te,
-        const std::string focused_field_name);
+        const view::TimeEntry &te,
+        const std::string &focused_field_name);
 
-    void DisplayURL(const std::string);
+    void DisplayURL(const std::string &);
 
     void DisplayLogin(const bool open, const uint64_t user_id);
 
     void DisplaySettings(
         const bool open,
         const bool record_timeline,
-        const Settings settings,
+        const Settings &settings,
         const bool use_proxy,
-        const Proxy proxy);
+        const Proxy &proxy);
 
     void DisplayTimerState(
         const view::TimeEntry &te);
 
     void DisplayEmptyTimerState();
 
-    void DisplayIdleNotification(const std::string guid,
-                                 const std::string since,
-                                 const std::string duration,
+    void DisplayIdleNotification(const std::string &guid,
+                                 const std::string &since,
+                                 const std::string &duration,
                                  const int64_t started,
-                                 const std::string description);
+                                 const std::string &description);
 
-    void DisplayUpdate(const std::string URL);
+    void DisplayUpdate(const std::string &URL);
 
     void DisplayUpdateDownloadState(
-        const std::string version,
+        const std::string &version,
         const Poco::Int64 download_state);
 
     error VerifyCallbacks();

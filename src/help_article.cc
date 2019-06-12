@@ -590,7 +590,7 @@ HelpDatabase::HelpDatabase() {
 }
 
 std::vector<HelpArticle> HelpDatabase::GetArticles(
-    const std::string keywords) {
+    const std::string &keywords) {
     std::string lower = Poco::UTF8::toLower(keywords);
     Poco::StringTokenizer tokenizer(lower, ";, ",
                                     Poco::StringTokenizer::TOK_TRIM);

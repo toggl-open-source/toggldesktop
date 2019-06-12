@@ -24,10 +24,10 @@ class AutotrackerRule : public BaseModel {
 
     virtual ~AutotrackerRule() {}
 
-    bool Matches(const TimelineEvent event) const;
+    bool Matches(const TimelineEvent &event) const;
 
     const std::string &Term() const;
-    void SetTerm(const std::string value);
+    void SetTerm(const std::string &value);
 
     const Poco::UInt64 &PID() const;
     void SetPID(const Poco::UInt64 value);

@@ -41,7 +41,7 @@ class User : public BaseModel {
     ~User();
 
     error EnableOfflineLogin(
-        const std::string password);
+        const std::string &password);
 
     bool HasPremiumWorkspaces() const;
     bool CanAddProjects() const;
@@ -49,7 +49,7 @@ class User : public BaseModel {
     bool CanSeeBillable(
         const Workspace *ws) const;
 
-    void SetLastTEDate(const std::string value);
+    void SetLastTEDate(const std::string &value);
 
     TimeEntry *RunningTimeEntry() const;
     bool IsTracking() const {
@@ -57,15 +57,15 @@ class User : public BaseModel {
     }
 
     TimeEntry *Start(
-        const std::string description,
-        const std::string duration,
+        const std::string &description,
+        const std::string &duration,
         const Poco::UInt64 task_id,
         const Poco::UInt64 project_id,
-        const std::string project_guid,
-        const std::string tags);
+        const std::string &project_guid,
+        const std::string &tags);
 
     TimeEntry *Continue(
-        const std::string GUID,
+        const std::string &GUID,
         const bool manual_mode);
 
     void Stop(std::vector<TimeEntry *> *stopped = nullptr);
@@ -73,25 +73,25 @@ class User : public BaseModel {
     // Discard time. Return a new time entry if
     // the discarded time was split into a new time entry
     TimeEntry *DiscardTimeAt(
-        const std::string guid,
+        const std::string &guid,
         const Poco::Int64 at,
         const bool split_into_new_entry);
 
     Project *CreateProject(
         const Poco::UInt64 workspace_id,
         const Poco::UInt64 client_id,
-        const std::string client_guid,
-        const std::string client_name,
-        const std::string project_name,
+        const std::string &client_guid,
+        const std::string &client_name,
+        const std::string &project_name,
         const bool is_private,
-        const std::string project_color,
+        const std::string &project_color,
         const bool billable);
 
     void AddProjectToList(Project *p);
 
     Client *CreateClient(
         const Poco::UInt64 workspace_id,
-        const std::string client_name);
+        const std::string &client_name);
 
     void AddClientToList(Client *c);
 
@@ -100,7 +100,7 @@ class User : public BaseModel {
     const std::string &APIToken() const {
         return api_token_;
     }
-    void SetAPIToken(std::string api_token);
+    void SetAPIToken(const std::string &api_token);
 
     const Poco::UInt64 &DefaultWID() const {
         return default_wid_;
@@ -118,17 +118,17 @@ class User : public BaseModel {
     const std::string &Fullname() const {
         return fullname_;
     }
-    void SetFullname(std::string value);
+    void SetFullname(const std::string &value);
 
     const std::string &TimeOfDayFormat() const {
         return timeofday_format_;
     }
-    void SetTimeOfDayFormat(std::string value);
+    void SetTimeOfDayFormat(const std::string &value);
 
     const std::string &Email() const {
         return email_;
     }
-    void SetEmail(const std::string value);
+    void SetEmail(const std::string &value);
 
     const bool &RecordTimeline() const {
         return record_timeline_;
@@ -138,17 +138,17 @@ class User : public BaseModel {
     const std::string &DurationFormat() const {
         return duration_format_;
     }
-    void SetDurationFormat(const std::string);
+    void SetDurationFormat(const std::string &);
 
     const bool &StoreStartAndStopTime() const {
         return store_start_and_stop_time_;
     }
     void SetStoreStartAndStopTime(const bool value);
 
-    const std::string& OfflineData() const {
+    const std::string & OfflineData() const {
         return offline_data_;
     }
-    void SetOfflineData(const std::string);
+    void SetOfflineData(const std::string &);
 
     const Poco::UInt64& DefaultPID() const {
         return default_pid_;
@@ -178,17 +178,17 @@ class User : public BaseModel {
     void RemoveProjectFromRelatedModels(const Poco::UInt64 pid);
     void RemoveTaskFromRelatedModels(const Poco::UInt64 tid);
 
-    error LoadUserUpdateFromJSONString(const std::string json);
+    error LoadUserUpdateFromJSONString(const std::string &json);
 
     error LoadUserAndRelatedDataFromJSONString(
         const std::string &json,
         const bool &including_related_data);
 
-    error LoadWorkspacesFromJSONString(const std::string& json);
+    error LoadWorkspacesFromJSONString(const std::string & json);
 
     error LoadTimeEntriesFromJSONString(const std::string &json);
 
-    error SetAPITokenFromOfflineData(const std::string password);
+    error SetAPITokenFromOfflineData(const std::string &password);
 
     void MarkTimelineBatchAsUploaded(
         const std::vector<TimelineEvent> &events);
@@ -227,16 +227,16 @@ class User : public BaseModel {
     }
 
     static error UserID(
-        const std::string json_data_string,
+        const std::string &json_data_string,
         Poco::UInt64 *result);
 
     static error LoginToken(
-        const std::string json_data_string,
+        const std::string &json_data_string,
         std::string *result);
 
     static error GenerateOfflineLogin(
-        const std::string email,
-        const std::string password,
+        const std::string &email,
+        const std::string &password,
         std::string *result);
 
     bool HasLoadedMore() {
@@ -295,17 +295,17 @@ class User : public BaseModel {
         std::vector<error> *errors);
 
     error requestJSON(
-        const std::string method,
-        const std::string relative_url,
-        const std::string json,
+        const std::string &method,
+        const std::string &relative_url,
+        const std::string &json,
         const bool authenticate_with_api_token,
         std::string *response_body);
 
     void parseResponseArray(
-        const std::string response_body,
+        const std::string &response_body,
         std::vector<BatchUpdateResult> *responses);
 
-    std::string generateKey(const std::string password);
+    std::string generateKey(const std::string &password);
 
     void loadObmExperimentFromJson(Json::Value const &obm);
 

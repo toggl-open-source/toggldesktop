@@ -9,9 +9,9 @@
 
 namespace toggl {
 
-bool IsNetworkingError(const error);
-bool IsUserError(const error);
-std::string MakeErrorActionable(const error);
+bool IsNetworkingError(const error &err);
+bool IsUserError(const error &err);
+std::string MakeErrorActionable(const error &err);
 
 }  // namespace toggl
 

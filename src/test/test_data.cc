@@ -10,7 +10,7 @@ std::string loadTestData() {
     return loadTestDataFile("../testdata/me.json");
 }
 
-std::string loadTestDataFile(const std::string filename) {
+std::string loadTestDataFile(const std::string &filename) {
     Poco::FileStream fis(filename, std::ios::binary);
     std::stringstream ss;
     ss << fis.rdbuf();
