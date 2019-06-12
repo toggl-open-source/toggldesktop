@@ -76,6 +76,7 @@
                         </userDefinedRuntimeAttributes>
                         <connections>
                             <action selector="stopButtonClicked:" target="-2" id="U8b-ud-zy9"/>
+                            <outlet property="nextKeyView" destination="3DH-9w-EQH" id="UYF-TD-Jdn"/>
                         </connections>
                     </button>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="upW-Uw-TwE">
@@ -111,6 +112,7 @@
                         </userDefinedRuntimeAttributes>
                         <connections>
                             <action selector="addIdleTimeAsNewTimeEntry:" target="-2" id="tDh-N4-FxP"/>
+                            <outlet property="nextKeyView" destination="B6d-ef-DQm" id="m5K-Pj-a0h"/>
                         </connections>
                     </button>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="QuW-zx-5VW">
@@ -129,6 +131,7 @@
                         </buttonCell>
                         <connections>
                             <action selector="ignoreButtonClicked:" target="-2" id="q5X-MT-BaQ"/>
+                            <outlet property="nextKeyView" destination="gae-h6-aWA" id="rE5-Za-aBm"/>
                         </connections>
                     </button>
                 </subviews>
