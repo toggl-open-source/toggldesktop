@@ -20,26 +20,26 @@ class Feedback {
 
     toggl::error Validate() const;
 
-    const std::string AttachmentPath() const {
+    const std::string &AttachmentPath() const {
         return attachment_path_;
     }
-    void SetAttachmentPath(const std::string value) {
+    void SetAttachmentPath(const std::string &value) {
         attachment_path_ = value;
     }
 
-    const std::string Details() const {
+    const std::string &Details() const {
         return details_;
     }
-    void SetDetails(const std::string value) {
+    void SetDetails(const std::string &value) {
         details_ = value;
     }
 
-    void SetSubject(const std::string value) {
+    void SetSubject(const std::string &value) {
         std::stringstream ss;
         ss << "Toggl Desktop - " << value;
         subject_ = ss.str();
     }
-    const std::string Subject() const {
+    const std::string &Subject() const {
         return subject_;
     }
 

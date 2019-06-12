@@ -27,7 +27,7 @@
 namespace toggl {
 
 error Netconf::autodetectProxy(
-    const std::string encoded_url,
+    const std::string &encoded_url,
     std::vector<std::string> *proxy_strings) {
 
     poco_assert(proxy_strings);
@@ -89,7 +89,7 @@ error Netconf::autodetectProxy(
 }
 
 error Netconf::ConfigureProxy(
-    const std::string encoded_url,
+    const std::string &encoded_url,
     Poco::Net::HTTPSClientSession *session) {
 
     Poco::Logger &logger = Poco::Logger::get("ConfigureProxy");

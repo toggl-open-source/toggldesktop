@@ -8,6 +8,6 @@
 #define TESTDB "test.db"
 
 std::string loadTestData();
-std::string loadTestDataFile(const std::string filename);
+std::string loadTestDataFile(const std::string &filename);
 
 #endif  // SRC_TEST_TEST_DATA_H_

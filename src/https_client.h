@@ -58,7 +58,7 @@ class ServerStatus {
     bool gone();
 
     void startStatusCheck();
-    void stopStatusCheck(const std::string reason);
+    void stopStatusCheck(const std::string &reason);
     bool checkingStatus();
 
     Poco::Logger &logger() const;

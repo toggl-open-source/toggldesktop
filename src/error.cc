@@ -9,7 +9,7 @@
 
 namespace toggl {
 
-bool IsNetworkingError(const error err) {
+bool IsNetworkingError(const error &err) {
     if (noError == err) {
         return false;
     }
@@ -99,7 +99,7 @@ bool IsNetworkingError(const error err) {
     return false;
 }
 
-bool IsUserError(const error err) {
+bool IsUserError(const error &err) {
     if (noError == err) {
         return false;
     }
@@ -206,7 +206,7 @@ bool IsUserError(const error err) {
     return false;
 }
 
-std::string MakeErrorActionable(const error err) {
+std::string MakeErrorActionable(const error &err) {
     if (noError == err) {
         return err;
     }

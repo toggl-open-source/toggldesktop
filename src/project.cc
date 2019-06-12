@@ -49,7 +49,7 @@ std::string Project::FullName() const {
     return ss.str();
 }
 
-void Project::SetClientGUID(const std::string value) {
+void Project::SetClientGUID(const std::string &value) {
     if (client_guid_ != value) {
         client_guid_ = value;
         SetDirty();
@@ -70,7 +70,7 @@ void Project::SetPrivate(const bool value) {
     }
 }
 
-void Project::SetName(const std::string value) {
+void Project::SetName(const std::string &value) {
     if (name_ != value) {
         name_ = value;
         SetDirty();
@@ -84,7 +84,7 @@ void Project::SetBillable(const bool value) {
     }
 }
 
-void Project::SetColor(const std::string value) {
+void Project::SetColor(const std::string &value) {
     if (color_ != value) {
         color_ = Poco::UTF8::toLower(value);
         SetDirty();
@@ -99,7 +99,7 @@ std::string Project::ColorCode() const {
     return ColorCodes[index % ColorCodes.size()];
 }
 
-error Project::SetColorCode(const std::string color_code) {
+error Project::SetColorCode(const std::string &color_code) {
     SetColor(color_code);
     return noError;
 }
@@ -118,7 +118,7 @@ void Project::SetCID(const Poco::UInt64 value) {
     }
 }
 
-void Project::SetClientName(const std::string value) {
+void Project::SetClientName(const std::string &value) {
     if (client_name_ != value) {
         client_name_ = value;
         SetDirty();
@@ -161,17 +161,17 @@ Json::Value Project::SaveToJSON() const {
     return n;
 }
 
-bool Project::DuplicateResource(const toggl::error err) const {
+bool Project::DuplicateResource(const toggl::error &err) const {
     return (std::string::npos !=
             std::string(err).find("Name has already been taken"));
 }
 
-bool Project::ResourceCannotBeCreated(const toggl::error err) const {
+bool Project::ResourceCannotBeCreated(const toggl::error &err) const {
     return (std::string::npos != std::string(err).find(
         "User cannot add or edit projects in workspace"));
 }
 
-bool Project::clientIsInAnotherWorkspace(const toggl::error err) const {
+bool Project::clientIsInAnotherWorkspace(const toggl::error &err) const {
     return (std::string::npos != std::string(err).find(
         "client is in another workspace")
             || (std::string::npos != std::string(err).find("Client with the ID")
@@ -179,12 +179,12 @@ bool Project::clientIsInAnotherWorkspace(const toggl::error err) const {
 }
 
 bool Project::onlyAdminsCanChangeProjectVisibility(
-    const toggl::error err) const {
+    const toggl::error &err) const {
     return (std::string::npos != std::string(err).find(
         "Only admins can change project visibility"));
 }
 
-bool Project::ResolveError(const toggl::error err) {
+bool Project::ResolveError(const toggl::error &err) {
     if (userCannotAccessWorkspace(err)) {
         SetWID(0);
         return true;

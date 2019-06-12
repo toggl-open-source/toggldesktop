@@ -19,9 +19,9 @@ class Autocomplete;
 
 class Format {
  public:
-    static const std::string Classic;
-    static const std::string Improved;
-    static const std::string Decimal;
+    static const std::string &Classic;
+    static const std::string &Improved;
+    static const std::string &Decimal;
 };
 
 class Client;
@@ -51,7 +51,7 @@ class Formatter {
 
     static std::string FormatDuration(
         const Poco::Int64 value,
-        const std::string format_name,
+        const std::string &format_name,
         const bool with_seconds = true);
 
     static std::string FormatDurationForDateHeader(
@@ -79,53 +79,53 @@ class Formatter {
     // Parse
 
     static std::time_t Parse8601(
-        const std::string iso_8601_formatted_date);
+        const std::string &iso_8601_formatted_date);
 
     static int ParseDurationString(
-        const std::string value);
+        const std::string &value);
 
     static bool ParseTimeInput(
-        const std::string value,
+        const std::string &value,
         int *hours,
         int *minutes);
 
     // Escape
 
     static std::string EscapeJSONString(
-        const std::string input);
+        const std::string &input);
 
  private:
     static std::string togglTimeOfDayToPocoFormat(
-        const std::string toggl_format);
+        const std::string &toggl_format);
 
     static void take(
-        const std::string delimiter,
+        const std::string &delimiter,
         double *value,
         std::string *whatsleft);
 
     static bool parseTimeInputAMPM(
-        const std::string numbers,
+        const std::string &numbers,
         int *hours,
         int *minutes,
         const bool has_pm);
 
     static bool parseTimeInputAMPM(
-        const std::string value,
-        const std::string am_symbol,
-        const std::string pm_symbol,
+        const std::string &value,
+        const std::string &am_symbol,
+        const std::string &pm_symbol,
         int *hours,
         int *minutes);
 
     static bool parseDurationStringHHMMSS(
-        const std::string value,
+        const std::string &value,
         int *parsed_seconds);
 
     static bool parseDurationStringHHMM(
-        const std::string value,
+        const std::string &value,
         int *parsed_seconds);
 
     static bool parseDurationStringMMSS(
-        const std::string value,
+        const std::string &value,
         int *parsed_seconds);
 
     static int parseDurationStringHoursMinutesSeconds(

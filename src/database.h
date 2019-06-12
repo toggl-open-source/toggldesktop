@@ -44,11 +44,11 @@ class Workspace;
 
 class Database {
  public:
-    explicit Database(const std::string db_path);
+    explicit Database(const std::string &db_path);
     ~Database();
 
     error DeleteFromTable(
-        const std::string table_name,
+        const std::string &table_name,
         const Poco::Int64 &local_id);
 
     error DeleteUser(
@@ -180,22 +180,22 @@ class Database {
     error GetWindowEditSizeWidth(Poco::Int64 *result);
 
     error SetKeyStart(
-        const std::string value);
+        const std::string &value);
 
     error GetKeyStart(std::string *result);
 
     error SetKeyShow(
-        const std::string value);
+        const std::string &value);
 
     error GetKeyShow(std::string *result);
 
     error SetKeyModifierShow(
-        const std::string value);
+        const std::string &value);
 
     error GetKeyModifierShow(std::string *result);
 
     error SetKeyModifierStart(
-        const std::string value);
+        const std::string &value);
 
     error GetKeyModifierStart(std::string *result);
 
@@ -214,11 +214,11 @@ class Database {
         const std::string &update_channel);
 
     error UInt(
-        const std::string sql,
+        const std::string &sql,
         Poco::UInt64 *result);
 
     error String(
-        const std::string sql,
+        const std::string &sql,
         std::string *result);
 
     error SaveUser(User *user, bool with_related_data,
@@ -248,11 +248,11 @@ class Database {
 
     error Migrate(
         const std::string &name,
-        const std::string sql);
+        const std::string &sql);
 
     error EnsureTimelineGUIDS();
 
-    error Trim(const std::string text, std::string *result);
+    error Trim(const std::string &text, std::string *result);
 
     error ResetWindow();
 
@@ -265,22 +265,22 @@ class Database {
 
     template<typename T>
     error setSettingsValue(
-        const std::string field_name,
+        const std::string &field_name,
         const T &value);
 
     template<typename T>
     error getSettingsValue(
-        const std::string field_name,
+        const std::string &field_name,
         T *value);
 
     error execute(
-        const std::string sql);
+        const std::string &sql);
 
     error last_error(
-        const std::string was_doing);
+        const std::string &was_doing);
 
     error journalMode(std::string *);
-    error setJournalMode(const std::string);
+    error setJournalMode(const std::string &);
 
     error loadUsersRelatedData(User *user);
 
@@ -331,19 +331,19 @@ class Database {
     template <typename T>
     error saveRelatedModels(
         const Poco::UInt64 UID,
-        const std::string table_name,
+        const std::string &table_name,
         std::vector<T *> *list,
         std::vector<ModelChange> *changes);
 
     error deleteAllFromTableByDate(
-        const std::string table_name,
+        const std::string &table_name,
         const Poco::Timestamp &time);
 
     error deleteAllSyncedTimelineEventsByDate(
         const Poco::Timestamp &time);
 
     error deleteAllFromTableByUID(
-        const std::string table_name,
+        const std::string &table_name,
         const Poco::UInt64 &UID);
 
     error saveModel(
