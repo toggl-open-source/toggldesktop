@@ -399,7 +399,7 @@ class TOGGL_INTERNAL_EXPORT GUI : public SyncStateMonitor {
     void DisplayHelpArticles(
         const std::vector<HelpArticle> &articles);
 
-    void DisplaySyncState(const Poco::Int64 state);
+    void DisplaySyncState(const Poco::Int64 state) override;
 
     void DisplayOnlineState(const Poco::Int64 state);
 

@@ -190,9 +190,9 @@ class TOGGL_INTERNAL_EXPORT TogglClient : public HTTPSClient {
 
  protected:
     virtual HTTPSResponse request(
-        HTTPSRequest req);
+        HTTPSRequest req) override;
 
-    virtual Poco::Logger &logger() const;
+    virtual Poco::Logger &logger() const override;
 
  private:
     SyncStateMonitor *monitor_;
