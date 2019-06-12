@@ -463,11 +463,11 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     std::string UserEmail();
 
     // Timeline datasource
-    error StartAutotrackerEvent(const TimelineEvent &event);
-    error CreateCompressedTimelineBatchForUpload(TimelineBatch *batch);
-    error StartTimelineEvent(TimelineEvent *event);
+    error StartAutotrackerEvent(const TimelineEvent &event) override;
+    error CreateCompressedTimelineBatchForUpload(TimelineBatch *batch) override;
+    error StartTimelineEvent(TimelineEvent *event) override;
     error MarkTimelineBatchAsUploaded(
-        const std::vector<TimelineEvent> &events);
+        const std::vector<TimelineEvent> &events) override;
 
     error SetPromotionResponse(
         const int64_t promotion_type,
