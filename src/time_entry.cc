@@ -507,7 +507,7 @@ Json::Value TimeEntry::SaveToJSON() const {
     if (TagNames.size() > 0) {
         for (std::vector<std::string>::const_iterator it = TagNames.begin();
                 it != TagNames.end();
-                it++) {
+                ++it) {
             std::string tag_name = Formatter::EscapeJSONString(*it);
             tag_nodes.append(Json::Value(tag_name));
         }

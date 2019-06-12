@@ -77,7 +77,7 @@ void User::AddProjectToList(Project *p) {
     // (since we try to avoid sorting the large list)
     for (std::vector<Project *>::iterator it =
         related.Projects.begin();
-            it != related.Projects.end(); it++) {
+            it != related.Projects.end(); ++it) {
         Project *pr = *it;
         if (p->WID() == pr->WID()) {
             WIDMatch = true;
@@ -136,7 +136,7 @@ void User::AddClientToList(Client *c) {
     // (since we try to avoid sorting the large list)
     for (std::vector<Client *>::iterator it =
         related.Clients.begin();
-            it != related.Clients.end(); it++) {
+            it != related.Clients.end(); ++it) {
         Client *cl = *it;
         if (c->WID() == cl->WID()) {
             foundMatch = true;
@@ -268,7 +268,7 @@ std::string User::DateDuration(TimeEntry * const te) const {
     for (std::vector<TimeEntry *>::const_iterator it =
         related.TimeEntries.begin();
             it != related.TimeEntries.end();
-            it++) {
+            ++it) {
         TimeEntry *n = *it;
         if (Formatter::FormatDateHeader(n->Start()) == date_header) {
             Poco::Int64 duration = n->DurationInSeconds();
@@ -284,7 +284,7 @@ bool User::HasPremiumWorkspaces() const {
     for (std::vector<Workspace *>::const_iterator it =
         related.Workspaces.begin();
             it != related.Workspaces.end();
-            it++) {
+            ++it) {
         Workspace *model = *it;
         if (model->Premium()) {
             return true;
@@ -297,7 +297,7 @@ bool User::CanAddProjects() const {
     for (std::vector<Workspace *>::const_iterator it =
         related.Workspaces.begin();
             it != related.Workspaces.end();
-            it++) {
+            ++it) {
         Workspace *model = *it;
         if (model->OnlyAdminsMayCreateProjects()) {
             return false;
@@ -450,7 +450,7 @@ TimeEntry *User::RunningTimeEntry() const {
     for (std::vector<TimeEntry *>::const_iterator it =
         related.TimeEntries.begin();
             it != related.TimeEntries.end();
-            it++) {
+            ++it) {
         if ((*it)->DurationInSeconds() < 0) {
             return *it;
         }
@@ -496,7 +496,7 @@ void User::DeleteRelatedModelsWithWorkspace(const Poco::UInt64 wid) {
 
 void User::RemoveClientFromRelatedModels(const Poco::UInt64 cid) {
     for (std::vector<Project *>::iterator it = related.Projects.begin();
-            it != related.Projects.end(); it++) {
+            it != related.Projects.end(); ++it) {
         Project *model = *it;
         if (model->CID() == cid) {
             model->SetCID(0);
@@ -766,7 +766,7 @@ void User::loadObmExperimentFromJson(Json::Value const &obm) {
     for (std::vector<ObmExperiment *>::const_iterator it =
         related.ObmExperiments.begin();
             it != related.ObmExperiments.end();
-            it++) {
+            ++it) {
         ObmExperiment *existing = *it;
         if (existing->Nr() == nr) {
             model = existing;
@@ -1139,7 +1139,7 @@ error User::UpdateJSON(
     // Time entries go last
     for (std::vector<TimeEntry *>::const_iterator it =
         time_entries->begin();
-            it != time_entries->end(); it++) {
+            it != time_entries->end(); ++it) {
         Json::Value update;
         error err = (*it)->BatchUpdateJSON(&update);
         if (err != noError) {
@@ -1456,7 +1456,7 @@ template <typename T>
 void deleteRelatedModelsWithWorkspace(const Poco::UInt64 wid,
                                       std::vector<T *> *list) {
     typedef typename std::vector<T *>::iterator iterator;
-    for (iterator it = list->begin(); it != list->end(); it++) {
+    for (iterator it = list->begin(); it != list->end(); ++it) {
         T *model = *it;
         if (model->WID() == wid) {
             model->MarkAsDeletedOnServer();
@@ -1468,7 +1468,7 @@ template <typename T>
 void removeProjectFromRelatedModels(const Poco::UInt64 pid,
                                     std::vector<T *> *list) {
     typedef typename std::vector<T *>::iterator iterator;
-    for (iterator it = list->begin(); it != list->end(); it++) {
+    for (iterator it = list->begin(); it != list->end(); ++it) {
         T *model = *it;
         if (model->PID() == pid) {
             model->SetPID(0);

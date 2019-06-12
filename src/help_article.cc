@@ -597,7 +597,7 @@ std::vector<HelpArticle> HelpDatabase::GetArticles(
     std::vector<HelpArticle> result;
     for (std::vector<HelpArticle>::const_iterator it = articles_.begin();
             it != articles_.end();
-            it++) {
+            ++it) {
         HelpArticle article = *it;
         for (Poco::StringTokenizer::Iterator sit = tokenizer.begin();
                 sit != tokenizer.end();
