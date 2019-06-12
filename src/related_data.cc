@@ -58,7 +58,7 @@ error RelatedData::DeleteAutotrackerRule(const Poco::Int64 local_id) {
     }
     for (std::vector<AutotrackerRule *>::iterator it =
         AutotrackerRules.begin();
-            it != AutotrackerRules.end(); it++) {
+            it != AutotrackerRules.end(); ++it) {
         AutotrackerRule *rule = *it;
         // Autotracker settings are not saved to DB,
         // so the ID will be 0 always. But will have local ID
@@ -75,7 +75,7 @@ AutotrackerRule *RelatedData::FindAutotrackerRule(
     const TimelineEvent &event) const {
     for (std::vector<AutotrackerRule *>::const_iterator it =
         AutotrackerRules.begin();
-            it != AutotrackerRules.end(); it++) {
+            it != AutotrackerRules.end(); ++it) {
         AutotrackerRule *rule = *it;
         if (rule->Matches(event)) {
             return rule;
@@ -88,7 +88,7 @@ bool RelatedData::HasMatchingAutotrackerRule(
     const std::string &lowercase_term) const {
     for (std::vector<AutotrackerRule *>::const_iterator it =
         AutotrackerRules.begin();
-            it != AutotrackerRules.end(); it++) {
+            it != AutotrackerRules.end(); ++it) {
         AutotrackerRule *rule = *it;
         if (rule->Term() == lowercase_term) {
             return true;
@@ -102,7 +102,7 @@ Poco::Int64 RelatedData::NumberOfUnsyncedTimeEntries() const {
 
     for (std::vector<TimeEntry *>::const_iterator it =
         TimeEntries.begin();
-            it != TimeEntries.end(); it++) {
+            it != TimeEntries.end(); ++it) {
         TimeEntry *te = *it;
         if (te->NeedsPush()) {
             count++;
@@ -130,7 +130,7 @@ std::vector<TimeEntry *> RelatedData::VisibleTimeEntries() const {
     std::vector<TimeEntry *> result;
     for (std::vector<TimeEntry *>::const_iterator it =
         TimeEntries.begin();
-            it != TimeEntries.end(); it++) {
+            it != TimeEntries.end(); ++it) {
         TimeEntry *te = *it;
         if (te->GUID().empty()) {
             continue;
@@ -148,7 +148,7 @@ Poco::Int64 RelatedData::TotalDurationForDate(const TimeEntry *match) const {
     Poco::Int64 duration(0);
     for (std::vector<TimeEntry *>::const_iterator it =
         TimeEntries.begin();
-            it != TimeEntries.end(); it++) {
+            it != TimeEntries.end(); ++it) {
         TimeEntry *te = *it;
         if (te->GUID().empty()) {
             continue;
@@ -171,7 +171,7 @@ TimeEntry *RelatedData::LatestTimeEntry() const {
     // Find the time entry that was stopped most recently
     for (std::vector<TimeEntry *>::const_iterator it =
         TimeEntries.begin();
-            it != TimeEntries.end(); it++) {
+            it != TimeEntries.end(); ++it) {
         TimeEntry *te = *it;
 
         if (te->GUID().empty()) {
@@ -210,7 +210,7 @@ void RelatedData::timeEntryAutocompleteItems(
 
     for (std::vector<TimeEntry *>::const_iterator it =
         TimeEntries.begin();
-            it != TimeEntries.end(); it++) {
+            it != TimeEntries.end(); ++it) {
         TimeEntry *te = *it;
 
         if (te->DeletedAt() || te->IsMarkedAsDeletedOnServer()
@@ -302,7 +302,7 @@ void RelatedData::taskAutocompleteItems(
 
     for (std::vector<Task *>::const_iterator it =
         Tasks.begin();
-            it != Tasks.end(); it++) {
+            it != Tasks.end(); ++it) {
         Task *t = *it;
 
         if (t == nullptr) {
@@ -380,7 +380,7 @@ void RelatedData::projectAutocompleteItems(
 
     for (std::vector<Project *>::const_iterator it =
         Projects.begin();
-            it != Projects.end(); it++) {
+            it != Projects.end(); ++it) {
         Project *p = *it;
 
         if (!p->Active()) {
@@ -426,7 +426,7 @@ void RelatedData::projectAutocompleteItems(
             if (task_items) {
                 for (std::vector<view::Autocomplete>::const_iterator it =
                     (*task_items)[autocomplete_item.ProjectID].begin();
-                        it != (*task_items)[autocomplete_item.ProjectID].end(); it++) {
+                        it != (*task_items)[autocomplete_item.ProjectID].end(); ++it) {
                     view::Autocomplete ac = *it;
                     (*items)[autocomplete_item.WorkspaceName].push_back(ac);
                 }
@@ -436,7 +436,7 @@ void RelatedData::projectAutocompleteItems(
             if (task_items) {
                 for (std::vector<view::Autocomplete>::const_iterator it =
                     (*task_items)[autocomplete_item.ProjectID].begin();
-                        it != (*task_items)[autocomplete_item.ProjectID].end(); it++) {
+                        it != (*task_items)[autocomplete_item.ProjectID].end(); ++it) {
                     view::Autocomplete ac = *it;
                     list->push_back(ac);
                 }
@@ -510,7 +510,7 @@ void RelatedData::workspaceAutocompleteItems(
     std::set<Poco::UInt64> ws_ids_with_projects;
     for (std::vector<Project *>::const_iterator it =
         Projects.begin();
-            it != Projects.end(); it++) {
+            it != Projects.end(); ++it) {
         Project *p = *it;
 
         if (p->Active()) {
@@ -520,7 +520,7 @@ void RelatedData::workspaceAutocompleteItems(
 
     for (std::vector<Workspace *>::const_iterator it =
         Workspaces.begin();
-            it != Workspaces.end(); it++) {
+            it != Workspaces.end(); ++it) {
         Workspace *ws = *it;
 
         if (ws_ids_with_projects.find(ws->ID()) == ws_ids_with_projects.end()) {
@@ -543,7 +543,7 @@ void RelatedData::TagList(
     for (std::vector<Tag *>::const_iterator it =
         Tags.begin();
             it != Tags.end();
-            it++) {
+            ++it) {
         Tag *tag = *it;
         if (wid && tag->WID() != wid) {
             continue;
@@ -565,7 +565,7 @@ void RelatedData::WorkspaceList(std::vector<Workspace *> *result) const {
     for (std::vector<Workspace *>::const_iterator it =
         Workspaces.begin();
             it != Workspaces.end();
-            it++) {
+            ++it) {
         Workspace *ws = *it;
         if (!ws->Admin() && ws->OnlyAdminsMayCreateProjects()) {
             continue;
@@ -692,7 +692,7 @@ T *modelByGUID(const guid GUID, std::vector<T *> const *list) {
         return nullptr;
     }
     typedef typename std::vector<T *>::const_iterator iterator;
-    for (iterator it = list->begin(); it != list->end(); it++) {
+    for (iterator it = list->begin(); it != list->end(); ++it) {
         T *model = *it;
         if (model->GUID() == GUID) {
             return model;
@@ -707,7 +707,7 @@ T *modelByID(const Poco::UInt64 id, std::vector<T *> const *list) {
         return nullptr;
     }
     typedef typename std::vector<T *>::const_iterator iterator;
-    for (iterator it = list->begin(); it != list->end(); it++) {
+    for (iterator it = list->begin(); it != list->end(); ++it) {
         T *model = *it;
         if (model->ID() == id) {
             return model;
