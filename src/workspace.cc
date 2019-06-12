@@ -15,7 +15,7 @@ std::string Workspace::String() const {
     return ss.str();
 }
 
-void Workspace::SetName(const std::string value) {
+void Workspace::SetName(const std::string &value) {
     if (name_ != value) {
         name_ = value;
         SetDirty();

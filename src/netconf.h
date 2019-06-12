@@ -26,12 +26,12 @@ class Netconf {
     virtual ~Netconf() {}
 
     static error ConfigureProxy(
-        const std::string encoded_url,
+        const std::string &encoded_url,
         Poco::Net::HTTPSClientSession *session);
 
  private:
     static error autodetectProxy(
-        const std::string encoded_url,
+        const std::string &encoded_url,
         std::vector<std::string> *proxy_strings);
 };
 

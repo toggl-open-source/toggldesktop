@@ -15,8 +15,7 @@
 #include "Poco/Logger.h"
 #include "Poco/UnicodeConverter.h"
 
-TogglAutocompleteView *autocomplete_item_init(
-    const toggl::view::Autocomplete item) {
+TogglAutocompleteView *autocomplete_item_init(const toggl::view::Autocomplete &item) {
     TogglAutocompleteView *result = new TogglAutocompleteView();
     result->Description = copy_string(item.Description);
     result->Text = copy_string(item.Text);
@@ -86,7 +85,7 @@ void autocomplete_list_clear(TogglAutocompleteView *first) {
 }
 
 TogglGenericView *generic_to_view_item_list(
-    const std::vector<toggl::view::Generic> list) {
+    const std::vector<toggl::view::Generic> &list) {
     TogglGenericView *first = nullptr;
     for (std::vector<toggl::view::Generic>::const_iterator
             it = list.begin();
@@ -100,7 +99,7 @@ TogglGenericView *generic_to_view_item_list(
 }
 
 TogglGenericView *generic_to_view_item(
-    const toggl::view::Generic c) {
+    const toggl::view::Generic &c) {
     TogglGenericView *result = new TogglGenericView();
     result->ID = static_cast<unsigned int>(c.ID);
     result->WID = static_cast<unsigned int>(c.WID);
@@ -111,8 +110,7 @@ TogglGenericView *generic_to_view_item(
     return result;
 }
 
-TogglAutotrackerRuleView *autotracker_rule_to_view_item(
-    const toggl::view::AutotrackerRule model) {
+TogglAutotrackerRuleView *autotracker_rule_to_view_item(const toggl::view::AutotrackerRule &model) {
     TogglAutotrackerRuleView *view = new TogglAutotrackerRuleView();
     // Autotracker settings are not saved to DB,
     // so the ID will be 0 always. But will have local ID
@@ -212,9 +210,9 @@ std::string to_string(const char_t *s) {
 #endif
 }
 
-std::string trim_whitespace(const std::string str)
+std::string trim_whitespace(const std::string &str)
 {
-    const std::string& whitespace = " \t";
+    const std::string & whitespace = " \t";
     const auto strBegin = str.find_first_not_of(whitespace);
     if (strBegin == std::string::npos)
         return ""; // no content
@@ -225,7 +223,7 @@ std::string trim_whitespace(const std::string str)
     return str.substr(strBegin, strRange);
 }
 
-char_t *copy_string(const std::string s) {
+char_t *copy_string(const std::string &s) {
 #if defined(_WIN32) || defined(WIN32)
     std::wstring ws;
     Poco::UnicodeConverter::toUTF16(s, ws);
@@ -415,9 +413,9 @@ void time_entry_view_list_clear(TogglTimeEntryView *first) {
 
 TogglSettingsView *settings_view_item_init(
     const bool_t record_timeline,
-    const toggl::Settings settings,
+    const toggl::Settings &settings,
     const bool_t use_proxy,
-    const toggl::Proxy proxy) {
+    const toggl::Proxy &proxy) {
     TogglSettingsView *view = new TogglSettingsView();
 
     view->RecordTimeline = record_timeline;
@@ -490,7 +488,7 @@ TogglAutocompleteView *autocomplete_list_init(
 }
 
 TogglHelpArticleView *help_article_init(
-    const toggl::HelpArticle item) {
+    const toggl::HelpArticle &item) {
     TogglHelpArticleView *result = new TogglHelpArticleView();
     result->Category = copy_string(item.Type);
     result->Name = copy_string(item.Name);
@@ -524,8 +522,7 @@ void help_article_list_clear(TogglHelpArticleView *first) {
     }
 }
 
-TogglHelpArticleView *help_article_list_init(
-    const std::vector<toggl::HelpArticle> items) {
+TogglHelpArticleView *help_article_list_init(const std::vector<toggl::HelpArticle> &items) {
     TogglHelpArticleView *first = nullptr;
     for (std::vector<toggl::HelpArticle>::const_reverse_iterator it =
         items.rbegin();

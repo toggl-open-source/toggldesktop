@@ -24,12 +24,12 @@ class ObmAction : public BaseModel {
     const std::string &Key() const {
         return key_;
     }
-    void SetKey(const std::string value);
+    void SetKey(const std::string &value);
 
     const std::string &Value() const {
         return value_;
     }
-    void SetValue(const std::string value);
+    void SetValue(const std::string &value);
 
     const Poco::UInt64 &ExperimentID() const {
         return experiment_id_;
@@ -72,10 +72,10 @@ class ObmExperiment : public BaseModel {
     }
     void SetNr(const Poco::UInt64 value);
 
-    const std::string Actions() const {
+    const std::string &Actions() const {
         return actions_;
     }
-    void SetActions(const std::string value);
+    void SetActions(const std::string &value);
 
     // Override BaseModel
     std::string String() const;

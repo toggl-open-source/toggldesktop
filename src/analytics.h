@@ -23,38 +23,38 @@ class Analytics : public Poco::TaskManager {
         Poco::Timespan(24 * Poco::Timespan::HOURS)) {}
 
     void Track(
-        const std::string client_id,
-        const std::string category,
-        const std::string action);
+        const std::string &client_id,
+        const std::string &category,
+        const std::string &action);
 
     void TrackChannel(
-        const std::string client_id,
-        const std::string channel);
+        const std::string &client_id,
+        const std::string &channel);
 
     void TrackOs(
-        const std::string client_id,
-        const std::string os);
+        const std::string &client_id,
+        const std::string &os);
 
     void TrackOSDetails(
-        const std::string client_id);
+        const std::string &client_id);
 
     void TrackSettings(
-        const std::string client_id,
+        const std::string &client_id,
         const bool record_timeline,
-        const Settings settings,
+        const Settings &settings,
         const bool use_proxy,
-        const Proxy proxy);
+        const Proxy &proxy);
 
     void TrackIdleDetectionClick(
-        const std::string client_id,
-        const std::string button);
+        const std::string &client_id,
+        const std::string &button);
 
     void TrackAutocompleteUsage(
-        const std::string client_id,
+        const std::string &client_id,
         const bool was_using_autocomplete);
 
-    void TrackWindowSize(const std::string client_id,
-                         const std::string os,
+    void TrackWindowSize(const std::string &client_id,
+                         const std::string &os,
                          const toggl::Rectangle rect);
 
     void TrackEditSize(const std::string client_id,
@@ -73,10 +73,10 @@ class Analytics : public Poco::TaskManager {
 class GoogleAnalyticsEvent : public Poco::Task {
  public:
     GoogleAnalyticsEvent(
-        const std::string client_id,
-        const std::string category,
-        const std::string action,
-        const std::string opt_label,
+        const std::string &client_id,
+        const std::string &category,
+        const std::string &action,
+        const std::string &opt_label,
         const int opt_value)
         : Poco::Task("GoogleAnalyticsEvent")
     , client_id_(client_id)
@@ -99,12 +99,12 @@ class GoogleAnalyticsEvent : public Poco::Task {
 class GoogleAnalyticsSettingsEvent : public Poco::Task {
  public:
     GoogleAnalyticsSettingsEvent(
-        const std::string client_id,
-        const std::string category,
+        const std::string &client_id,
+        const std::string &category,
         const bool record_timeline,
-        Settings settings,
+        const Settings &settings,
         const bool uses_proxy,
-        Proxy proxy)
+        const Proxy &proxy)
         : Poco::Task("GoogleAnalyticsSettingsEvent")
     , client_id_(client_id)
     , category_(category)
@@ -125,9 +125,9 @@ class GoogleAnalyticsSettingsEvent : public Poco::Task {
 
     const std::string relativeURL();
     void makeReq();
-    void setActionBool(std::string type, bool value);
-    void setActionInt(std::string type, Poco::Int64 value);
-    void setActionString(std::string type, std::string value);
+    void setActionBool(const std::string &type, bool value);
+    void setActionInt(const std::string &type, Poco::Int64 value);
+    void setActionString(const std::string &type, const std::string &value);
 };
 
 

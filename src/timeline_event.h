@@ -30,7 +30,7 @@ class TimelineEvent : public BaseModel, public TimedEvent {
     const std::string &Title() const {
         return title_;
     }
-    void SetTitle(const std::string value);
+    void SetTitle(const std::string &value);
 
     const Poco::Int64 &Start() const {
         return start_time_;
@@ -50,7 +50,7 @@ class TimelineEvent : public BaseModel, public TimedEvent {
     const std::string &Filename() const {
         return filename_;
     }
-    void SetFilename(const std::string value);
+    void SetFilename(const std::string &value);
 
     const bool &Chunked() const {
         return chunked_;

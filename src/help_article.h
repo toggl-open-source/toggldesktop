@@ -12,10 +12,10 @@ namespace toggl {
 class HelpArticle {
  public:
     HelpArticle(
-        const std::string type,
-        const std::string name,
-        const std::string url,
-        const std::string search_text)
+        const std::string &type,
+        const std::string &name,
+        const std::string &url,
+        const std::string &search_text)
         : Type(type)
     , Name(name)
     , URL(url)
@@ -44,7 +44,7 @@ class HelpDatabase {
     virtual ~HelpDatabase() {}
 
     std::vector<HelpArticle> GetArticles(
-        const std::string keywords);
+        const std::string &keywords);
 
  private:
     std::vector<HelpArticle> articles_;

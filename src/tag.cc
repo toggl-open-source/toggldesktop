@@ -25,7 +25,7 @@ void Tag::SetWID(const Poco::UInt64 value) {
     }
 }
 
-void Tag::SetName(const std::string value) {
+void Tag::SetName(const std::string &value) {
     if (name_ != value) {
         name_ = value;
         SetDirty();

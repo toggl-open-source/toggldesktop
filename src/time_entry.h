@@ -42,7 +42,7 @@ class TimeEntry : public BaseModel, public TimedEvent {
     std::vector<std::string> TagNames;
 
     const std::string Tags() const;
-    void SetTags(const std::string tags);
+    void SetTags(const std::string &tags);
 
     const std::string TagsHash() const;
 
@@ -79,10 +79,10 @@ class TimeEntry : public BaseModel, public TimedEvent {
     const std::string &Description() const {
         return description_;
     }
-    void SetDescription(const std::string value);
+    void SetDescription(const std::string &value);
 
     std::string StartString() const;
-    void SetStartString(const std::string value);
+    void SetStartString(const std::string &value);
 
     const Poco::Int64 &Start() const {
         return start_;
@@ -90,7 +90,7 @@ class TimeEntry : public BaseModel, public TimedEvent {
     void SetStart(const Poco::Int64 value);
 
     std::string StopString() const;
-    void SetStopString(const std::string value);
+    void SetStopString(const std::string &value);
 
     const Poco::Int64 &Stop() const {
         return stop_;
@@ -100,7 +100,7 @@ class TimeEntry : public BaseModel, public TimedEvent {
     const std::string &CreatedWith() const {
         return created_with_;
     }
-    void SetCreatedWith(const std::string value);
+    void SetCreatedWith(const std::string &value);
 
     void DiscardAt(const Poco::Int64);
 
@@ -109,12 +109,12 @@ class TimeEntry : public BaseModel, public TimedEvent {
     const std::string &ProjectGUID() const {
         return project_guid_;
     }
-    void SetProjectGUID(const std::string);
+    void SetProjectGUID(const std::string &);
 
     // User-triggered changes to timer:
-    void SetDurationUserInput(const std::string);
-    void SetStopUserInput(const std::string);
-    void SetStartUserInput(const std::string, const bool);
+    void SetDurationUserInput(const std::string &);
+    void SetStopUserInput(const std::string &);
+    void SetStartUserInput(const std::string &, const bool);
 
     bool IsTracking() const {
         return duration_in_seconds_ < 0;
@@ -127,7 +127,7 @@ class TimeEntry : public BaseModel, public TimedEvent {
     std::string ModelName() const;
     std::string ModelURL() const;
     std::string String() const;
-    virtual bool ResolveError(const error err);
+    virtual bool ResolveError(const error &err);
     void LoadFromJSON(Json::Value value);
     Json::Value SaveToJSON() const;
 
@@ -139,7 +139,7 @@ class TimeEntry : public BaseModel, public TimedEvent {
 
     Poco::Int64 RealDurationInSeconds() const;
 
-    bool isNotFound(const error err) const;
+    bool isNotFound(const error &err) const;
 
     const std::string GroupHash() const;
 
@@ -158,19 +158,19 @@ class TimeEntry : public BaseModel, public TimedEvent {
     bool unsynced_;
     Poco::Int64 last_start_at_;
 
-    bool setDurationStringHHMMSS(const std::string value);
-    bool setDurationStringHHMM(const std::string value);
-    bool setDurationStringMMSS(const std::string value);
+    bool setDurationStringHHMMSS(const std::string &value);
+    bool setDurationStringHHMM(const std::string &value);
+    bool setDurationStringMMSS(const std::string &value);
 
     void loadTagsFromJSON(Json::Value value);
 
-    bool durationTooLarge(const error) const;
-    bool startTimeWrongYear(const error err) const;
-    bool stopTimeMustBeAfterStartTime(const error) const;
-    bool userCannotAccessTheSelectedProject(const error) const;
-    bool userCannotAccessSelectedTask(const error) const;
-    bool billableIsAPremiumFeature(const error) const;
-    bool isMissingCreatedWith(const error err) const;
+    bool durationTooLarge(const error &err) const;
+    bool startTimeWrongYear(const error &err) const;
+    bool stopTimeMustBeAfterStartTime(const error &err) const;
+    bool userCannotAccessTheSelectedProject(const error &err) const;
+    bool userCannotAccessSelectedTask(const error &err) const;
+    bool billableIsAPremiumFeature(const error &err) const;
+    bool isMissingCreatedWith(const error &err) const;
 };
 
 }  // namespace toggl

@@ -23,15 +23,15 @@
 namespace toggl {
 
 
-void Analytics::Track(const std::string client_id,
-                      const std::string category,
-                      const std::string action) {
+void Analytics::Track(const std::string &client_id,
+                      const std::string &category,
+                      const std::string &action) {
     start(new GoogleAnalyticsEvent(
         client_id, category, action, "", 1));
 }
 
-void Analytics::TrackChannel(const std::string client_id,
-                             const std::string channel) {
+void Analytics::TrackChannel(const std::string &client_id,
+                             const std::string &channel) {
     std::stringstream ss;
     ss << "channel-"
        << channel;
@@ -39,8 +39,8 @@ void Analytics::TrackChannel(const std::string client_id,
     Track(client_id, "channel", ss.str());
 }
 
-void Analytics::TrackOs(const std::string client_id,
-                        const std::string os) {
+void Analytics::TrackOs(const std::string &client_id,
+                        const std::string &os) {
     std::stringstream ss;
     ss << "os-"
        << os;
@@ -48,7 +48,7 @@ void Analytics::TrackOs(const std::string client_id,
     Track(client_id, "os", ss.str());
 }
 
-void Analytics::TrackOSDetails(const std::string client_id) {
+void Analytics::TrackOSDetails(const std::string &client_id) {
     std::stringstream ss;
 
     RetrieveOsDetails(ss);
@@ -56,8 +56,8 @@ void Analytics::TrackOSDetails(const std::string client_id) {
     Track(client_id, "osdetails", ss.str());
 }
 
-void Analytics::TrackWindowSize(const std::string client_id,
-                                const std::string os,
+void Analytics::TrackWindowSize(const std::string &client_id,
+                                const std::string &os,
                                 const toggl::Rectangle rect) {
     TrackSize(client_id, os, "mainsize", rect);
 }
@@ -78,11 +78,11 @@ void Analytics::TrackSize(const std::string client_id,
     Track(client_id, "stats", ss.str());
 }
 
-void Analytics::TrackSettings(const std::string client_id,
+void Analytics::TrackSettings(const std::string &client_id,
                               const bool record_timeline,
-                              const Settings settings,
+                              const Settings &settings,
                               const bool use_proxy,
-                              const Proxy proxy) {
+                              const Proxy &proxy) {
     Poco::LocalDateTime now;
     if (now.year() != settings_sync_date.year()
             || now.month() != settings_sync_date.month()
@@ -94,8 +94,8 @@ void Analytics::TrackSettings(const std::string client_id,
     }
 }
 
-void Analytics::TrackIdleDetectionClick(const std::string client_id,
-                                        const std::string button) {
+void Analytics::TrackIdleDetectionClick(const std::string &client_id,
+                                        const std::string &button) {
     std::stringstream ss;
     ss << "reminder/"
        << button;
@@ -103,7 +103,7 @@ void Analytics::TrackIdleDetectionClick(const std::string client_id,
     Track(client_id, "reminder", ss.str());
 }
 
-void Analytics::TrackAutocompleteUsage(const std::string client_id,
+void Analytics::TrackAutocompleteUsage(const std::string &client_id,
                                        const bool was_using_autocomplete) {
     std::stringstream ss;
     ss << "timer/autocomplete-";
@@ -258,7 +258,7 @@ void GoogleAnalyticsSettingsEvent::runTask() {
     }
 }
 
-void GoogleAnalyticsSettingsEvent::setActionBool(std::string type, bool value) {
+void GoogleAnalyticsSettingsEvent::setActionBool(const std::string &type, bool value) {
     std::stringstream ss;
     ss << "settings/"
        << type
@@ -266,7 +266,7 @@ void GoogleAnalyticsSettingsEvent::setActionBool(std::string type, bool value) {
     action_ = ss.str();
 }
 
-void GoogleAnalyticsSettingsEvent::setActionInt(std::string type,
+void GoogleAnalyticsSettingsEvent::setActionInt(const std::string &type,
         Poco::Int64 value) {
     std::stringstream ss;
     ss << "settings/"
@@ -275,8 +275,8 @@ void GoogleAnalyticsSettingsEvent::setActionInt(std::string type,
     action_ = ss.str();
 }
 
-void GoogleAnalyticsSettingsEvent::setActionString(std::string type,
-        std::string value) {
+void GoogleAnalyticsSettingsEvent::setActionString(const std::string &type,
+        const std::string &value) {
     std::stringstream ss;
     ss << "settings/"
        << type

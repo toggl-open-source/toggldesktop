@@ -42,7 +42,7 @@ using Poco::Data::Keywords::limit;
 using Poco::Data::Keywords::into;
 using Poco::Data::Keywords::now;
 
-Database::Database(const std::string db_path)
+Database::Database(const std::string &db_path)
     : session_(nullptr)
 , desktop_id_("")
 , analytics_client_id_("") {
@@ -208,7 +208,7 @@ error Database::DeleteUser(
 }
 
 error Database::deleteAllFromTableByUID(
-    const std::string table_name,
+    const std::string &table_name,
     const Poco::UInt64 &UID) {
 
 
@@ -232,14 +232,14 @@ error Database::deleteAllFromTableByUID(
         return exc.displayText();
     } catch(const std::exception& ex) {
         return ex.what();
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return ex;
     }
     return last_error("deleteAllFromTableByUID");
 }
 
 error Database::deleteAllFromTableByDate(
-    const std::string table_name,
+    const std::string &table_name,
     const Poco::Timestamp &time) {
 
     if (table_name.empty()) {
@@ -262,7 +262,7 @@ error Database::deleteAllFromTableByDate(
         return exc.displayText();
     } catch(const std::exception& ex) {
         return ex.what();
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return ex;
     }
     return last_error("deleteAllFromTableByDate");
@@ -286,7 +286,7 @@ error Database::deleteAllSyncedTimelineEventsByDate(
         return exc.displayText();
     } catch(const std::exception& ex) {
         return ex.what();
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return ex;
     }
     return last_error("deleteAllSyncedTimelineEventsByDate");
@@ -308,13 +308,13 @@ error Database::journalMode(std::string *mode) {
         return exc.displayText();
     } catch(const std::exception& ex) {
         return ex.what();
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return ex;
     }
     return last_error("journalMode");
 }
 
-error Database::setJournalMode(const std::string mode) {
+error Database::setJournalMode(const std::string &mode) {
     if (mode.empty()) {
         return error("Cannot set journal mode without a mode");
     }
@@ -331,7 +331,7 @@ error Database::setJournalMode(const std::string mode) {
         return exc.displayText();
     } catch(const std::exception& ex) {
         return ex.what();
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return ex;
     }
     return last_error("setJournalMode");
@@ -348,7 +348,7 @@ error Database::vacuum() {
         return exc.displayText();
     } catch(const std::exception& ex) {
         return ex.what();
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return ex;
     }
     return last_error("vacuum");
@@ -359,7 +359,7 @@ Poco::Logger &Database::logger() const {
 }
 
 error Database::DeleteFromTable(
-    const std::string table_name,
+    const std::string &table_name,
     const Poco::Int64 &local_id) {
 
     if (table_name.empty()) {
@@ -389,13 +389,13 @@ error Database::DeleteFromTable(
         return exc.displayText();
     } catch(const std::exception& ex) {
         return ex.what();
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return ex;
     }
     return last_error("DeleteFromTable");
 }
 
-error Database::last_error(const std::string was_doing) {
+error Database::last_error(const std::string &was_doing) {
     Poco::Mutex::ScopedLock lock(session_m_);
 
     poco_check_ptr(session_);
@@ -487,7 +487,7 @@ error Database::LoadSettings(Settings *settings) {
         return exc.displayText();
     } catch(const std::exception& ex) {
         return ex.what();
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return ex;
     }
     return last_error("LoadSettings");
@@ -519,7 +519,7 @@ error Database::SaveWindowSettings(
         return exc.displayText();
     } catch(const std::exception& ex) {
         return ex.what();
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return ex;
     }
 
@@ -581,7 +581,7 @@ error Database::LoadWindowSettings(
         return exc.displayText();
     } catch(const std::exception& ex) {
         return ex.what();
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return ex;
     }
     return last_error("LoadWindowSettings");
@@ -619,7 +619,7 @@ error Database::LoadProxySettings(
         return exc.displayText();
     } catch(const std::exception& ex) {
         return ex.what();
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return ex;
     }
     return last_error("LoadProxySettings");
@@ -689,7 +689,7 @@ error Database::GetWindowEditSizeWidth(Poco::Int64 *result) {
 }
 
 error Database::SetKeyStart(
-    const std::string value) {
+    const std::string &value) {
     return setSettingsValue("key_start", value);
 }
 
@@ -698,7 +698,7 @@ error Database::GetKeyStart(std::string *result) {
 }
 
 error Database::SetKeyShow(
-    const std::string value) {
+    const std::string &value) {
     return setSettingsValue("key_show", value);
 }
 
@@ -707,7 +707,7 @@ error Database::GetKeyShow(std::string *result) {
 }
 
 error Database::SetKeyModifierShow(
-    const std::string value) {
+    const std::string &value) {
     return setSettingsValue("key_modifier_show", value);
 }
 
@@ -716,7 +716,7 @@ error Database::GetKeyModifierShow(std::string *result) {
 }
 
 error Database::SetKeyModifierStart(
-    const std::string value) {
+    const std::string &value) {
     return setSettingsValue("key_modifier_start", value);
 }
 
@@ -744,7 +744,7 @@ error Database::SetSettingsRemindTimes(
         return exc.displayText();
     } catch(const std::exception& ex) {
         return ex.what();
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return ex;
     }
 
@@ -786,7 +786,7 @@ error Database::SetSettingsRemindDays(
         return exc.displayText();
     } catch(const std::exception& ex) {
         return ex.what();
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return ex;
     }
 
@@ -866,7 +866,7 @@ error Database::SetSettingsAutodetectProxy(const bool &autodetect_proxy) {
 
 template<typename T>
 error Database::setSettingsValue(
-    const std::string field_name,
+    const std::string &field_name,
     const T &value) {
 
     try {
@@ -882,7 +882,7 @@ error Database::setSettingsValue(
         return exc.displayText();
     } catch(const std::exception& ex) {
         return ex.what();
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return ex;
     }
     return last_error("setSettingsValue");
@@ -890,7 +890,7 @@ error Database::setSettingsValue(
 
 template<typename T>
 error Database::getSettingsValue(
-    const std::string field_name,
+    const std::string &field_name,
     T *value) {
 
     try {
@@ -908,7 +908,7 @@ error Database::getSettingsValue(
         return exc.displayText();
     } catch(const std::exception& ex) {
         return ex.what();
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return ex;
     }
     return last_error("getSettingsValue");
@@ -967,13 +967,13 @@ error Database::SaveProxySettings(
         return exc.displayText();
     } catch(const std::exception& ex) {
         return ex.what();
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return ex;
     }
     return last_error("SaveProxySettings");
 }
 
-error Database::Trim(const std::string text, std::string *result) {
+error Database::Trim(const std::string &text, std::string *result) {
     try {
         Poco::Mutex::ScopedLock lock(session_m_);
 
@@ -992,7 +992,7 @@ error Database::Trim(const std::string text, std::string *result) {
         return exc.displayText();
     } catch(const std::exception& ex) {
         return ex.what();
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return ex;
     }
     return last_error("Trim");
@@ -1022,7 +1022,7 @@ error Database::ResetWindow() {
         return exc.displayText();
     } catch(const std::exception& ex) {
         return ex.what();
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return ex;
     }
     return last_error("ResetWindow");
@@ -1046,7 +1046,7 @@ error Database::LoadUpdateChannel(
         return exc.displayText();
     } catch(const std::exception& ex) {
         return ex.what();
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return ex;
     }
     return last_error("LoadUpdateChannel");
@@ -1102,7 +1102,7 @@ error Database::LoadUserByEmail(
         return exc.displayText();
     } catch(const std::exception& ex) {
         return ex.what();
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return ex;
     }
     return LoadUserByID(uid, model);
@@ -1247,7 +1247,7 @@ error Database::LoadUserByID(
         return exc.displayText();
     } catch(const std::exception& ex) {
         return ex.what();
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return ex;
     }
     error err = loadUsersRelatedData(user);
@@ -1317,7 +1317,7 @@ error Database::loadWorkspaces(
         return exc.displayText();
     } catch(const std::exception& ex) {
         return ex.what();
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return ex;
     }
     return last_error("loadWorkspaces");
@@ -1379,7 +1379,7 @@ error Database::loadClients(
         return exc.displayText();
     } catch(const std::exception& ex) {
         return ex.what();
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return ex;
     }
     return last_error("loadClients");
@@ -1469,7 +1469,7 @@ error Database::loadProjects(
         return exc.displayText();
     } catch(const std::exception& ex) {
         return ex.what();
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return ex;
     }
     return last_error("loadProjects");
@@ -1531,7 +1531,7 @@ error Database::loadTasks(
         return exc.displayText();
     } catch(const std::exception& ex) {
         return ex.what();
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return ex;
     }
     return last_error("loadTasks");
@@ -1592,7 +1592,7 @@ error Database::loadTags(
         return exc.displayText();
     } catch(const std::exception& ex) {
         return ex.what();
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return ex;
     }
     return last_error("loadTags");
@@ -1646,7 +1646,7 @@ error Database::loadAutotrackerRules(
         return exc.displayText();
     } catch(const std::exception& ex) {
         return ex.what();
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return ex;
     }
     return last_error("loadAutotrackerRules");
@@ -1698,7 +1698,7 @@ error Database::loadObmActions(
         return exc.displayText();
     } catch(const std::exception& ex) {
         return ex.what();
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return ex;
     }
     return last_error("loadObmActions");
@@ -1751,7 +1751,7 @@ error Database::loadObmExperiments(
         return exc.displayText();
     } catch(const std::exception& ex) {
         return ex.what();
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return ex;
     }
     return last_error("loadObmExperiments");
@@ -1827,7 +1827,7 @@ error Database::loadTimelineEvents(
         return exc.displayText();
     } catch(const std::exception& ex) {
         return ex.what();
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return ex;
     }
     return noError;
@@ -1881,7 +1881,7 @@ error Database::loadTimeEntries(
         return exc.displayText();
     } catch(const std::exception& ex) {
         return ex.what();
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return ex;
     }
     return noError;
@@ -1978,7 +1978,7 @@ error Database::loadTimeEntriesFromSQLStatement(
         return exc.displayText();
     } catch(const std::exception& ex) {
         return ex.what();
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return ex;
     }
     return noError;
@@ -1987,7 +1987,7 @@ error Database::loadTimeEntriesFromSQLStatement(
 template <typename T>
 error Database::saveRelatedModels(
     const Poco::UInt64 UID,
-    const std::string table_name,
+    const std::string &table_name,
     std::vector<T *> *list,
     std::vector<ModelChange> *changes) {
 
@@ -2254,7 +2254,7 @@ error Database::saveModel(
         return exc.displayText();
     } catch(const std::exception& ex) {
         return ex.what();
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return ex;
     }
     return noError;
@@ -2413,7 +2413,7 @@ error Database::saveModel(
         return exc.displayText();
     } catch(const std::exception& ex) {
         return ex.what();
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return ex;
     }
     return noError;
@@ -2507,7 +2507,7 @@ error Database::saveModel(
         return exc.displayText();
     } catch(const std::exception& ex) {
         return ex.what();
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return ex;
     }
     return noError;
@@ -2603,7 +2603,7 @@ error Database::saveModel(
         return exc.displayText();
     } catch(const std::exception& ex) {
         return ex.what();
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return ex;
     }
     return noError;
@@ -2704,7 +2704,7 @@ error Database::saveModel(
         return exc.displayText();
     } catch(const std::exception& ex) {
         return ex.what();
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return ex;
     }
     return noError;
@@ -2825,7 +2825,7 @@ error Database::saveModel(
         return exc.displayText();
     } catch(const std::exception& ex) {
         return ex.what();
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return ex;
     }
     return noError;
@@ -3072,7 +3072,7 @@ error Database::saveModel(
         return exc.displayText();
     } catch(const std::exception& ex) {
         return ex.what();
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return ex;
     }
     return noError;
@@ -3155,7 +3155,7 @@ error Database::saveModel(
         return exc.displayText();
     } catch(const std::exception& ex) {
         return ex.what();
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return ex;
     }
     return noError;
@@ -3266,7 +3266,7 @@ error Database::saveModel(
         return exc.displayText();
     } catch(const std::exception& ex) {
         return ex.what();
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return ex;
     }
     return noError;
@@ -3410,7 +3410,7 @@ error Database::SaveUser(
         } catch(const std::exception& ex) {
             session_->rollback();
             return ex.what();
-        } catch(const std::string& ex) {
+        } catch(const std::string & ex) {
             session_->rollback();
             return ex;
         }
@@ -3656,7 +3656,7 @@ error Database::CurrentAPIToken(
         return exc.displayText();
     } catch(const std::exception& ex) {
         return ex.what();
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return ex;
     }
     return last_error("CurrentAPIToken");
@@ -3674,7 +3674,7 @@ error Database::ClearCurrentAPIToken() {
         return exc.displayText();
     } catch(const std::exception& ex) {
         return ex.what();
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return ex;
     }
     return last_error("ClearCurrentAPIToken");
@@ -3710,7 +3710,7 @@ error Database::SetCurrentAPIToken(
         return exc.displayText();
     } catch(const std::exception& ex) {
         return ex.what();
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return ex;
     }
     return last_error("SetCurrentAPIToken");
@@ -3753,7 +3753,7 @@ error Database::EnsureTimelineGUIDS() {
         return exc.displayText();
     } catch(const std::exception& ex) {
         return ex.what();
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return ex;
     }
 }
@@ -3812,7 +3812,7 @@ error Database::saveAnalyticsClientID() {
         return exc.displayText();
     } catch(const std::exception& ex) {
         return ex.what();
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return ex;
     }
     return last_error("saveAnalyticsClientID");
@@ -3849,7 +3849,7 @@ error Database::LoadMigrations(
         return exc.displayText();
     } catch(const std::exception& ex) {
         return ex.what();
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return ex;
     }
     return last_error("LoadMigrations");
@@ -3857,7 +3857,7 @@ error Database::LoadMigrations(
 
 error Database::Migrate(
     const std::string &name,
-    const std::string sql) {
+    const std::string &sql) {
 
     if (name.empty()) {
         return error("Cannot run a migration without name");
@@ -3909,14 +3909,14 @@ error Database::Migrate(
         return exc.displayText();
     } catch(const std::exception& ex) {
         return ex.what();
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return ex;
     }
     return noError;
 }
 
 error Database::execute(
-    const std::string sql) {
+    const std::string &sql) {
 
 
     if (sql.empty()) {
@@ -3937,14 +3937,14 @@ error Database::execute(
         return exc.displayText();
     } catch(const std::exception& ex) {
         return ex.what();
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return ex;
     }
     return noError;
 }
 
 error Database::String(
-    const std::string sql,
+    const std::string &sql,
     std::string *result) {
 
     if (sql.empty()) {
@@ -3966,14 +3966,14 @@ error Database::String(
         return exc.displayText();
     } catch(const std::exception& ex) {
         return ex.what();
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return ex;
     }
     return last_error("String");
 }
 
 error Database::UInt(
-    const std::string sql,
+    const std::string &sql,
     Poco::UInt64 *result) {
 
     if (sql.empty()) {
@@ -3995,7 +3995,7 @@ error Database::UInt(
         return exc.displayText();
     } catch(const std::exception& ex) {
         return ex.what();
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return ex;
     }
     return last_error("UInt");
@@ -4016,7 +4016,7 @@ error Database::saveDesktopID() {
         return exc.displayText();
     } catch(const std::exception& ex) {
         return ex.what();
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return ex;
     }
     return last_error("saveDesktopID");
@@ -4118,7 +4118,7 @@ error Database::saveModel(
         return exc.displayText();
     } catch(const std::exception& ex) {
         return ex.what();
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return ex;
     }
     return noError;

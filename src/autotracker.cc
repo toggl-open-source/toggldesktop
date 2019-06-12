@@ -9,7 +9,7 @@
 
 namespace toggl {
 
-bool AutotrackerRule::Matches(const TimelineEvent event) const {
+bool AutotrackerRule::Matches(const TimelineEvent &event) const {
     if (Poco::UTF8::toLower(event.Filename()).find(term_)
             != std::string::npos) {
         return true;
@@ -25,7 +25,7 @@ const std::string &AutotrackerRule::Term() const {
     return term_;
 }
 
-void AutotrackerRule::SetTerm(const std::string value) {
+void AutotrackerRule::SetTerm(const std::string &value) {
     if (term_ != value) {
         term_ = value;
         SetDirty();
