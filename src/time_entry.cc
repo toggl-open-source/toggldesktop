@@ -356,7 +356,7 @@ const std::string TimeEntry::Tags() const {
     return ss.str();
 }
 
-const std::string TimeEntry::TagsHash() const {
+std::string TimeEntry::TagsHash() const {
     std::vector<std::string> sortedTagNames(TagNames);
     sort(sortedTagNames.begin(), sortedTagNames.end());
     std::stringstream ss;
@@ -377,7 +377,7 @@ std::string TimeEntry::StartString() const {
     return Formatter::Format8601(start_);
 }
 
-const std::string TimeEntry::GroupHash() const {
+std::string TimeEntry::GroupHash() const {
     std::stringstream ss;
     ss << toggl::Formatter::FormatDateHeader(Start())
        << Description()

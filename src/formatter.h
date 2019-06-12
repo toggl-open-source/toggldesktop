@@ -19,9 +19,9 @@ class Autocomplete;
 
 class Format {
  public:
-    static const std::string Classic;
-    static const std::string Improved;
-    static const std::string Decimal;
+    static const std::string &Classic;
+    static const std::string &Improved;
+    static const std::string &Decimal;
 };
 
 class Client;
