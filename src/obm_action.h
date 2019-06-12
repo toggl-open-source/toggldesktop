@@ -37,10 +37,10 @@ class ObmAction : public BaseModel {
     void SetExperimentID(const Poco::UInt64 value);
 
     // Override BaseModel
-    std::string String() const;
-    std::string ModelName() const;
-    std::string ModelURL() const;
-    Json::Value SaveToJSON() const;
+    std::string String() const override;
+    std::string ModelName() const override;
+    std::string ModelURL() const override;
+    Json::Value SaveToJSON() const override;
 
  private:
     Poco::UInt64 experiment_id_;
@@ -78,9 +78,9 @@ class ObmExperiment : public BaseModel {
     void SetActions(const std::string &value);
 
     // Override BaseModel
-    std::string String() const;
-    std::string ModelName() const;
-    std::string ModelURL() const;
+    std::string String() const override;
+    std::string ModelName() const override;
+    std::string ModelURL() const override;
 
  private:
     bool included_;

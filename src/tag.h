@@ -29,10 +29,10 @@ class Tag : public BaseModel {
     void SetName(const std::string &value);
 
     // Override BaseModel
-    std::string String() const;
-    std::string ModelName() const;
-    std::string ModelURL() const;
-    void LoadFromJSON(Json::Value data);
+    std::string String() const override;
+    std::string ModelName() const override;
+    std::string ModelURL() const override;
+    void LoadFromJSON(Json::Value data) override;
 
  private:
     Poco::UInt64 wid_;

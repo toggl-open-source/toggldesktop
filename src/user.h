@@ -168,9 +168,9 @@ class User : public BaseModel {
     RelatedData related;
 
     // Override BaseModel
-    std::string String() const;
-    std::string ModelName() const;
-    std::string ModelURL() const;
+    std::string String() const override;
+    std::string ModelName() const override;
+    std::string ModelURL() const override;
 
     // Handle related model deletions
     void DeleteRelatedModelsWithWorkspace(const Poco::UInt64 wid);

@@ -59,10 +59,11 @@ class Workspace : public BaseModel {
     void SetLockedTime(const time_t value);
 
     // Override BaseModel
-    std::string String() const;
-    std::string ModelName() const;
-    std::string ModelURL() const;
-    void LoadFromJSON(Json::Value value);
+    std::string String() const override;
+    std::string ModelName() const override;
+    std::string ModelURL() const override;
+    void LoadFromJSON(Json::Value value) override;
+
     void LoadSettingsFromJson(Json::Value value);
 
  private:

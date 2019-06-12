@@ -78,14 +78,14 @@ class Project : public BaseModel {
     std::string FullName() const;
 
     // Override BaseModel
-    std::string String() const;
-    std::string ModelName() const;
-    std::string ModelURL() const;
-    void LoadFromJSON(Json::Value value);
-    Json::Value SaveToJSON() const;
-    bool DuplicateResource(const toggl::error &err) const;
-    bool ResourceCannotBeCreated(const toggl::error &err) const;
-    bool ResolveError(const toggl::error &err);
+    std::string String() const override;
+    std::string ModelName() const override;
+    std::string ModelURL() const override;
+    void LoadFromJSON(Json::Value value) override;
+    Json::Value SaveToJSON() const override;
+    bool DuplicateResource(const toggl::error &err) const override;
+    bool ResourceCannotBeCreated(const toggl::error &err) const override;
+    bool ResolveError(const toggl::error &err) override;
 
     static std::vector<std::string> ColorCodes;
 

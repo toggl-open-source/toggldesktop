@@ -82,7 +82,7 @@ class TimeEntry : public BaseModel, public TimedEvent {
     std::string StartString() const;
     void SetStartString(const std::string &value);
 
-    const Poco::Int64 &Start() const {
+    const Poco::Int64 &Start() const override {
         return start_;
     }
     void SetStart(const Poco::Int64 value);
@@ -122,16 +122,16 @@ class TimeEntry : public BaseModel, public TimedEvent {
 
     // Override BaseModel
 
-    std::string ModelName() const;
-    std::string ModelURL() const;
-    std::string String() const;
-    virtual bool ResolveError(const error &err);
-    void LoadFromJSON(Json::Value value);
-    Json::Value SaveToJSON() const;
+    std::string ModelName() const override;
+    std::string ModelURL() const override;
+    std::string String() const override;
+    virtual bool ResolveError(const error &err) override;
+    void LoadFromJSON(Json::Value value) override;
+    Json::Value SaveToJSON() const override;
 
     // Implement TimedEvent
 
-    virtual Poco::Int64 Duration() const {
+    virtual Poco::Int64 Duration() const override {
         return DurationInSeconds();
     }
 

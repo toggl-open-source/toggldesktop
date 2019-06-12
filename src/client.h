@@ -33,13 +33,13 @@ class Client : public BaseModel {
     void SetName(const std::string &value);
 
     // Override BaseModel
-    std::string String() const;
-    std::string ModelName() const;
-    std::string ModelURL() const;
-    void LoadFromJSON(Json::Value value);
-    Json::Value SaveToJSON() const;
-    bool ResolveError(const toggl::error &err);
-    bool ResourceCannotBeCreated(const toggl::error &err) const;
+    std::string String() const override;
+    std::string ModelName() const override;
+    std::string ModelURL() const override;
+    void LoadFromJSON(Json::Value value) override;
+    Json::Value SaveToJSON() const override;
+    bool ResolveError(const toggl::error &err) override;
+    bool ResourceCannotBeCreated(const toggl::error &err) const override;
 
  private:
     Poco::UInt64 wid_;

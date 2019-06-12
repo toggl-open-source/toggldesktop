@@ -43,10 +43,10 @@ class Task : public BaseModel {
     void SetActive(const bool value);
 
     // Override BaseModel
-    std::string String() const;
-    std::string ModelName() const;
-    std::string ModelURL() const;
-    void LoadFromJSON(Json::Value value);
+    std::string String() const override;
+    std::string ModelName() const override;
+    std::string ModelURL() const override;
+    void LoadFromJSON(Json::Value value) override;
 
  private:
     std::string name_;

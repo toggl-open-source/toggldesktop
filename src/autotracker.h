@@ -36,9 +36,9 @@ class AutotrackerRule : public BaseModel {
     void SetTID(const Poco::UInt64 value);
 
     // Override BaseModel
-    std::string String() const;
-    std::string ModelName() const;
-    std::string ModelURL() const;
+    std::string String() const override;
+    std::string ModelName() const override;
+    std::string ModelURL() const override;
 
  private:
     std::string term_;
