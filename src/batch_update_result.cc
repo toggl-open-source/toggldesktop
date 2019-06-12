@@ -60,7 +60,7 @@ void BatchUpdateResult::ProcessResponseArray(
     Poco::Logger &logger = Poco::Logger::get("BatchUpdateResult");
     for (std::vector<BatchUpdateResult>::const_iterator it = results->begin();
             it != results->end();
-            it++) {
+            ++it) {
         BatchUpdateResult result = *it;
 
         logger.debug(result.String());
