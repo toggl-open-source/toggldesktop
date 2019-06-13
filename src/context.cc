@@ -4788,7 +4788,7 @@ error Context::pushChanges(
 error Context::pushClients(
     const std::vector<Client *> &clients,
     const std::string &api_token,
-    TogglClient toggl_client) {
+    const TogglClient &toggl_client) {
     std::string client_json("");
     error err = noError;
     for (std::vector<Client *>::const_iterator it =
@@ -4832,7 +4832,7 @@ error Context::pushClients(
 error Context::pushProjects(const std::vector<Project *> &projects,
     const std::vector<Client *> &clients,
     const std::string &api_token,
-    TogglClient toggl_client) {
+    const TogglClient &toggl_client) {
     error err = noError;
     std::string project_json("");
     for (std::vector<Project *>::const_iterator it =
@@ -4910,7 +4910,7 @@ error Context::pushEntries(
     const std::map<std::string, BaseModel *>&,
     const std::vector<TimeEntry *> &time_entries,
     const std::string &api_token,
-    TogglClient toggl_client) {
+    const TogglClient &toggl_client) {
 
     std::string entry_json("");
     std::string error_message("");
