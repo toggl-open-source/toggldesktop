@@ -55,6 +55,7 @@ set(LIBRARY_SOURCE_FILES
     obm_action.cc
     project.cc
     proxy.cc
+    random.cc
     rectangle.cc
     related_data.cc
     settings.cc

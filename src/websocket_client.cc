@@ -19,13 +19,13 @@
 #include "Poco/Net/PrivateKeyPassphraseHandler.h"
 #include "Poco/Net/SSLManager.h"
 #include "Poco/Net/WebSocket.h"
-#include "Poco/Random.h"
 #include "Poco/URI.h"
 
 #include "./const.h"
 #include "./https_client.h"
 #include "./json_helper.h"
 #include "./netconf.h"
+#include "./random.h"
 #include "./urls.h"
 
 namespace toggl {
@@ -323,9 +323,7 @@ Poco::Logger &WebSocketClient::logger() const {
 }
 
 int WebSocketClient::nextWebsocketRestartInterval() {
-    Poco::Random random;
-    random.seed();
-    int res = static_cast<int>(random.next(kWebsocketRestartRangeSeconds)) + 1;
+    int res = static_cast<int>(Random::next(kWebsocketRestartRangeSeconds)) + 1;
     std::stringstream ss;
     ss << "Next websocket restart in " << res << " seconds";
     logger().trace(ss.str());

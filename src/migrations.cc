@@ -4,8 +4,7 @@
 
 #include "./const.h"
 #include "./database.h"
-
-#include "Poco/Random.h"
+#include "./random.h"
 
 namespace toggl {
 
@@ -849,10 +848,8 @@ error Migrations::migrateSettings() {
         return err;
     }
     if (!has_settings) {
-        Poco::Random random;
-        random.seed();
         std::string channel("stable");
-        Poco::UInt32 r = random.next(100);
+        Poco::UInt32 r = Random::next(100);
         if (r < kBetaChannelPercentage) {
             channel = "beta";
         }
