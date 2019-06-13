@@ -109,6 +109,11 @@ final class EditorViewController: NSViewController {
     }
 
     @IBAction func tagAddButtonOnTap(_ sender: Any) {
+
+        // Reset
+        tagTextField.resetText()
+
+        // Expand the view
         openTagAutoCompleteView()
     }
 
@@ -610,7 +615,7 @@ extension EditorViewController: AddTagButtonDelegate {
 
     func shouldOpenTagAutoComplete(with text: String) {
         // Expand the tag auto-complete
-        tagAddButtonOnTap(self)
+        openTagAutoCompleteView()
 
         // Pass the text
         tagTextField.stringValue = text

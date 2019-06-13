@@ -120,6 +120,11 @@ class AutoCompleteTextField: UndoTextField, NSTextFieldDelegate, AutoCompleteVie
         state = .collapse
     }
 
+    func resetText() {
+        stringValue = ""
+        handleTextDidChange()
+    }
+
     func updateWindowContent(with view: NSView, height: CGFloat) {
         autoCompleteWindow.contentView = view
         let rect = windowFrameRect()
