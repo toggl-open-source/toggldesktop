@@ -30,7 +30,7 @@ final class EditorViewController: NSViewController {
     @IBOutlet weak var deleteBtn: NSButton!
     @IBOutlet weak var tagAutoCompleteContainerView: NSBox!
     @IBOutlet weak var tagStackView: NSStackView!
-    @IBOutlet weak var tagAddButton: NSButton!
+    @IBOutlet weak var tagAddButton: AddTagButton!
     @IBOutlet weak var tagInputContainerView: NSBox!
     @IBOutlet weak var datePickerView: KeyboardDatePicker!
     @IBOutlet weak var dayNameButton: CursorButton!
@@ -218,6 +218,9 @@ extension EditorViewController {
             guard let strongSelf = self else { return }
             strongSelf.closeBtnOnTap(strongSelf)
         }
+
+        // Tags
+        tagAddButton.delegate = self
     }
 
     fileprivate func initDatasource() {
@@ -598,5 +601,22 @@ extension EditorViewController {
                                                        selector: #selector(self.updateProjectUndoValue(_:)),
                                                        object: oldValue)
         }
+    }
+}
+
+// MARK: AddTagButtonDelegate
+
+extension EditorViewController: AddTagButtonDelegate {
+
+    func shouldOpenTagAutoComplete(with text: String) {
+        // Expand the tag auto-complete
+        tagAddButtonOnTap(self)
+
+        // Pass the text
+        tagTextField.stringValue = text
+
+        // Notify the change manually
+        // because stringValue doesn't notify the delegate
+        tagTextField.handleTextDidChange()
     }
 }
