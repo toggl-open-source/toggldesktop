@@ -30,7 +30,32 @@ extern void *ctx;
 	return YES;
 }
 
-- (void)handleReslectSelectedRowWithEvent:(NSEvent *)event
+- (void)mouseUp:(NSEvent *)event {
+	[super mouseUp:event];
+
+	if (@available(macOS 10.12, *))
+	{
+		// >= macOS 10.12, the mouse Up is executed when selecting the cell
+		[self handleMouseSelectionWithEvent:event];
+	}
+}
+
+- (void)mouseDown:(NSEvent *)event {
+	[super mouseDown:event];
+
+	if (@available(macOS 10.12, *))
+	{
+        // Do nothing
+	}
+    else
+    {
+        // In macOS 10.11, the -mouseUp doesn't execute, so we have to handle the logic here
+        // if we call this logic in macOS >= 10.12 => The selection doesn't update
+        [self handleMouseSelectionWithEvent:event];
+    }
+}
+
+- (void)handleMouseSelectionWithEvent:(NSEvent *)event
 {
 	if ([event clickCount] > 1)
 	{
@@ -39,11 +64,25 @@ extern void *ctx;
 
 	NSPoint curPoint = [self convertPoint:[event locationInWindow] fromView:nil];
 	NSIndexPath *index = [self indexPathForItemAtPoint:curPoint];
-	NSIndexPath *currentSelection = self.selectionIndexPaths.allObjects.firstObject;
+	NSCollectionViewItem *item = [self itemAtIndexPath:index];
 
-	if ([index isEqualTo:currentSelection])
+	if ([item isKindOfClass:[TimeEntryCell class]])
 	{
-		[self.delegate collectionView:self didSelectItemsAtIndexPaths:self.selectionIndexPaths];
+		TimeEntryCell *timeCell = (TimeEntryCell *)item;
+
+		// We have to store the click index
+		// so, the displayTimeEntryEditor can detect which cell should be show popover
+		self.clickedIndexPath = index;
+
+		// Show popover or open group
+		if (timeCell.cellType == CellTypeGroup)
+		{
+			[[NSNotificationCenter defaultCenter] postNotificationName:kToggleGroup object:timeCell.GroupName];
+		}
+		else
+		{
+			[timeCell focusFieldName];
+		}
 	}
 }
 

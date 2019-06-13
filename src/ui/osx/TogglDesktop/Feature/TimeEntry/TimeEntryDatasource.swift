@@ -364,22 +364,6 @@ extension TimeEntryDatasource: NSCollectionViewDataSource, NSCollectionViewDeleg
         }
         return cell
     }
-
-    func collectionView(_ collectionView: NSCollectionView, didSelectItemsAt indexPaths: Set<IndexPath>) {
-        guard let selectedIndexPath = indexPaths.first,
-            let itemCell = collectionView.item(at: selectedIndexPath) as? TimeEntryCell else { return }
-
-        // We have to store the click index
-        // so, the displayTimeEntryEditor can detect which cell should be show popover
-        self.collectionView.clickedIndexPath = selectedIndexPath
-
-        // Expand or open Edit
-        if itemCell.cellType == .group {
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: kToggleGroup), object: itemCell.groupName)
-        } else {
-            itemCell.focusFieldName()
-        }
-    }
 }
 
 // MARK: Dragging
