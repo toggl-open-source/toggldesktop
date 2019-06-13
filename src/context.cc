@@ -22,6 +22,7 @@
 #include "./https_client.h"
 #include "./obm_action.h"
 #include "./project.h"
+#include "./random.h"
 #include "./settings.h"
 #include "./task.h"
 #include "./time_entry.h"
@@ -46,7 +47,6 @@
 #include "Poco/Net/StringPartSource.h"
 #include "Poco/Path.h"
 #include "Poco/PatternFormatter.h"
-#include "Poco/Random.h"
 #include "Poco/SimpleFileChannel.h"
 #include "Poco/Stopwatch.h"
 #include "Poco/StreamCopier.h"
@@ -992,9 +992,7 @@ error Context::displayError(const error &err) {
 }
 
 int Context::nextSyncIntervalSeconds() const {
-    Poco::Random random;
-    random.seed();
-    int n = static_cast<int>(random.next(kSyncIntervalRangeSeconds)) + kSyncIntervalRangeSeconds;
+    int n = static_cast<int>(Random::next(kSyncIntervalRangeSeconds)) + kSyncIntervalRangeSeconds;
     std::stringstream ss;
     ss << "Next autosync in " << n << " seconds";
     logger().trace(ss.str());
