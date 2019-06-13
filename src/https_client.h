@@ -140,25 +140,25 @@ class HTTPSClient {
     virtual ~HTTPSClient() {}
 
     HTTPSResponse Post(
-        HTTPSRequest req);
+        HTTPSRequest req) const;
 
     HTTPSResponse Get(
-        HTTPSRequest req);
+        HTTPSRequest req) const;
 
     HTTPSResponse GetFile(
-        HTTPSRequest req);
+        HTTPSRequest req) const;
 
     HTTPSResponse Delete(
-        HTTPSRequest req);
+        HTTPSRequest req) const;
 
     HTTPSResponse Put(
-        HTTPSRequest req);
+        HTTPSRequest req) const;
 
     static HTTPSClientConfig Config;
 
  protected:
     virtual HTTPSResponse request(
-        HTTPSRequest req);
+        HTTPSRequest req) const;
 
     virtual Poco::Logger &logger() const;
 
@@ -171,7 +171,7 @@ class HTTPSClient {
     bool isRedirect(const Poco::Int64 status_code) const;
 
     virtual HTTPSResponse makeHttpRequest(
-        HTTPSRequest req);
+        HTTPSRequest req) const;
 };
 
 class SyncStateMonitor {
@@ -190,7 +190,7 @@ class TogglClient : public HTTPSClient {
 
  protected:
     virtual HTTPSResponse request(
-        HTTPSRequest req) override;
+        HTTPSRequest req) const override;
 
     virtual Poco::Logger &logger() const override;
 

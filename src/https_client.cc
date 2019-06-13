@@ -226,38 +226,38 @@ error HTTPSClient::statusCodeToError(const Poco::Int64 status_code) const {
 }
 
 HTTPSResponse HTTPSClient::Post(
-    HTTPSRequest req) {
+    HTTPSRequest req) const {
     req.method = Poco::Net::HTTPRequest::HTTP_POST;
     return request(req);
 }
 
 HTTPSResponse HTTPSClient::Get(
-    HTTPSRequest req) {
+    HTTPSRequest req) const {
     req.method = Poco::Net::HTTPRequest::HTTP_GET;
     return request(req);
 }
 
 HTTPSResponse HTTPSClient::GetFile(
-    HTTPSRequest req) {
+    HTTPSRequest req) const {
     req.method = Poco::Net::HTTPRequest::HTTP_GET;
     req.timeout_seconds = kHTTPClientTimeoutSeconds * 10;
     return request(req);
 }
 
 HTTPSResponse HTTPSClient::Delete(
-    HTTPSRequest req) {
+    HTTPSRequest req) const {
     req.method = Poco::Net::HTTPRequest::HTTP_DELETE;
     return request(req);
 }
 
 HTTPSResponse HTTPSClient::Put(
-    HTTPSRequest req) {
+    HTTPSRequest req) const {
     req.method = Poco::Net::HTTPRequest::HTTP_PUT;
     return request(req);
 }
 
 HTTPSResponse HTTPSClient::request(
-    HTTPSRequest req) {
+    HTTPSRequest req) const {
     HTTPSResponse resp = makeHttpRequest(req);
 
     if (kCannotConnectError == resp.err && isRedirect(resp.status_code)) {
@@ -279,7 +279,7 @@ HTTPSResponse HTTPSClient::request(
 }
 
 HTTPSResponse HTTPSClient::makeHttpRequest(
-    HTTPSRequest req) {
+    HTTPSRequest req) const {
 
     HTTPSResponse resp;
 
@@ -521,7 +521,7 @@ Poco::Logger &TogglClient::logger() const {
 }
 
 HTTPSResponse TogglClient::request(
-    HTTPSRequest req) {
+    HTTPSRequest req) const {
 
     error err = TogglStatus.Status();
     if (err != noError) {
