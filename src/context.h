@@ -590,18 +590,20 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     error pushChanges(
         TogglClient *https_client,
         bool *had_something_to_push);
-    error pushClients(const std::vector<Client *> &clients,
-                      const std::string &api_token,
-                      TogglClient toggl_client);
+    error pushClients(
+        const std::vector<Client *> &clients,
+        const std::string &api_token,
+        const TogglClient &toggl_client);
     error pushProjects(
         const std::vector<Project *> &projects,
         const std::vector<Client *> &clients,
         const std::string &api_token,
-        TogglClient toggl_client);
-    error pushEntries(const std::map<std::string, BaseModel *> &models,
-                      const std::vector<TimeEntry *> &time_entries,
-                      const std::string &api_token,
-                      TogglClient toggl_client);
+        const TogglClient &toggl_client);
+    error pushEntries(
+        const std::map<std::string, BaseModel *> &models,
+        const std::vector<TimeEntry *> &time_entries,
+        const std::string &api_token,
+        const TogglClient &toggl_client);
     error updateEntryProjects(
         const std::vector<Project *> &projects,
         const std::vector<TimeEntry *> &time_entries);
