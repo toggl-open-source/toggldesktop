@@ -369,10 +369,6 @@ extension TimeEntryDatasource: NSCollectionViewDataSource, NSCollectionViewDeleg
         guard let selectedIndexPath = indexPaths.first,
             let itemCell = collectionView.item(at: selectedIndexPath) as? TimeEntryCell else { return }
 
-        // Only do action if user select it by using mouse
-        // Otherwise, if selecte from Keyboard -> Shouldn't open editor
-        guard self.collectionView.isUserAction else { return }
-
         // We have to store the click index
         // so, the displayTimeEntryEditor can detect which cell should be show popover
         self.collectionView.clickedIndexPath = selectedIndexPath

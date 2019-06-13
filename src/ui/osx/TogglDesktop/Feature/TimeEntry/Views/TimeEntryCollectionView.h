@@ -14,7 +14,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface TimeEntryCollectionView : NSCollectionView
 
-@property (assign, nonatomic) BOOL isUserAction;
 @property (strong, nonatomic) NSIndexPath *clickedIndexPath;
 
 - (TimeEntryCell *)getSelectedEntryCell;

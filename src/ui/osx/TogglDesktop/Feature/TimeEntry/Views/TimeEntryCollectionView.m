@@ -23,24 +23,11 @@ extern void *ctx;
 - (void)awakeFromNib
 {
 	[super awakeFromNib];
-	self.isUserAction = NO;
 }
 
 - (BOOL)isFlipped
 {
 	return YES;
-}
-
-- (void)mouseUp:(NSEvent *)event {
-	[super mouseUp:event];
-	self.isUserAction = NO;
-}
-
-- (void)mouseDown:(NSEvent *)event {
-	[super mouseDown:event];
-	self.isUserAction = YES;
-
-	[self handleReslectSelectedRowWithEvent:event];
 }
 
 - (void)handleReslectSelectedRowWithEvent:(NSEvent *)event
