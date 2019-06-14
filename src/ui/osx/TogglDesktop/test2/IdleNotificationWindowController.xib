@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14490.70"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="IdleNotificationWindowController">
             <connections>
+                <outlet property="addIdleTimeButton" destination="3DH-9w-EQH" id="aPb-tD-mWD"/>
+                <outlet property="cancelButton" destination="B6d-ef-DQm" id="BKq-yb-bcR"/>
                 <outlet property="idleAmountTextField" destination="LfR-bu-tys" id="Y6v-ka-ovg"/>
                 <outlet property="idleSinceTextField" destination="sqC-ri-2J8" id="wsN-vw-dVh"/>
                 <outlet property="timeentryDescriptionTextField" destination="QuW-zx-5VW" id="d9n-7m-tBh"/>
@@ -16,104 +19,161 @@
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
-        <window title="Toggl Desktop" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="idleNotificationWindow" animationBehavior="default" id="OXh-s9-LHB" customClass="NSPanel">
-            <windowStyleMask key="styleMask" titled="YES" closable="YES" utility="YES" HUD="YES"/>
-            <rect key="contentRect" x="517" y="489" width="291" height="286"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1417"/>
-            <view key="contentView" appearanceType="aqua" id="IAa-lP-ER3">
-                <rect key="frame" x="0.0" y="0.0" width="291" height="286"/>
+        <window title="Toggl Desktop" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" visibleAtLaunch="NO" frameAutosaveName="idleNotificationWindow" animationBehavior="default" tabbingMode="disallowed" titlebarAppearsTransparent="YES" id="OXh-s9-LHB" customClass="NSPanel">
+            <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
+            <rect key="contentRect" x="517" y="489" width="300" height="323"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
+            <view key="contentView" id="IAa-lP-ER3">
+                <rect key="frame" x="0.0" y="0.0" width="300" height="323"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" preferredMaxLayoutWidth="251" translatesAutoresizingMaskIntoConstraints="NO" id="sqC-ri-2J8">
-                        <rect key="frame" x="18" y="249" width="255" height="17"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <box boxType="custom" borderType="none" borderWidth="0.0" title="Box" translatesAutoresizingMaskIntoConstraints="NO" id="31J-mN-zmo">
+                        <rect key="frame" x="0.0" y="0.0" width="300" height="323"/>
+                        <view key="contentView" id="peO-4A-XP2">
+                            <rect key="frame" x="0.0" y="0.0" width="300" height="323"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        </view>
+                        <color key="fillColor" name="feedback-background-color"/>
+                    </box>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="sqC-ri-2J8">
+                        <rect key="frame" x="36" y="265" width="229" height="18"/>
                         <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" title="You have been idle since 12:34:50" id="M7R-YX-LRb">
-                            <font key="font" metaFont="system"/>
-                            <color key="textColor" name="controlLightHighlightColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                            <font key="font" metaFont="system" size="14"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" preferredMaxLayoutWidth="250" translatesAutoresizingMaskIntoConstraints="NO" id="LfR-bu-tys">
-                        <rect key="frame" x="19" y="224" width="254" height="17"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="LfR-bu-tys">
+                        <rect key="frame" x="109" y="242" width="82" height="18"/>
                         <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" title="(5 minutes)" id="xfZ-e6-g8a">
-                            <font key="font" metaFont="system"/>
-                            <color key="textColor" name="controlLightHighlightColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                            <font key="font" metaFont="system" size="14"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <button toolTip="Stops timer with the same time when the idle was triggered" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nGW-lp-Mrf">
-                        <rect key="frame" x="15" y="79" width="262" height="32"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <buttonCell key="cell" type="push" title="Discard idle time" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="qPv-hn-mbG">
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="gae-h6-aWA" customClass="FlatButton" customModule="TogglDesktop" customModuleProvider="target">
+                        <rect key="frame" x="20" y="117" width="260" height="30"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="260" id="WVR-29-5dM"/>
+                            <constraint firstAttribute="height" constant="30" id="u8q-1m-Hpd"/>
+                        </constraints>
+                        <buttonCell key="cell" type="bevel" title="Discard idle time" bezelStyle="regularSquare" alignment="center" imageScaling="proportionallyDown" inset="2" id="SPr-5Y-gLE" customClass="VerticallyCenteredButtonCell" customModule="TogglDesktop" customModuleProvider="target">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="focusRingCornerRadius">
+                                    <real key="value" value="8"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
                         </buttonCell>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="color" keyPath="bgColor">
+                                <color key="value" name="green-color"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                <real key="value" value="8"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
                         <connections>
-                            <action selector="stopButtonClicked:" target="-2" id="YUn-hV-7AD"/>
-                            <outlet property="nextKeyView" destination="Hfh-FR-her" id="Mc6-Gs-hy5"/>
+                            <action selector="stopButtonClicked:" target="-2" id="U8b-ud-zy9"/>
+                            <outlet property="nextKeyView" destination="3DH-9w-EQH" id="UYF-TD-Jdn"/>
                         </connections>
                     </button>
-                    <button toolTip="Keeps timer running" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fpJ-rI-lKJ">
-                        <rect key="frame" x="14" y="112" width="263" height="32"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <buttonCell key="cell" type="push" title="Keep idle time" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="x6P-HU-yW4">
-                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                            <font key="font" metaFont="system"/>
-                        </buttonCell>
-                        <connections>
-                            <action selector="ignoreButtonClicked:" target="-2" id="01H-Ma-Ieq"/>
-                            <outlet property="nextKeyView" destination="nGW-lp-Mrf" id="ZsK-62-YQR"/>
-                        </connections>
-                    </button>
-                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="71P-8X-s86">
-                        <rect key="frame" x="15" y="13" width="262" height="32"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <buttonCell key="cell" type="push" title="Add idle time as a new time entry" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="neF-QU-h5e">
-                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                            <font key="font" metaFont="system"/>
-                        </buttonCell>
-                        <connections>
-                            <action selector="addIdleTimeAsNewTimeEntry:" target="-2" id="GW3-ad-oMu"/>
-                            <outlet property="nextKeyView" destination="fpJ-rI-lKJ" id="vkc-8c-5iR"/>
-                        </connections>
-                    </button>
-                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Hfh-FR-her">
-                        <rect key="frame" x="15" y="46" width="262" height="32"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <buttonCell key="cell" type="push" title="Discard idle and continue" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="jp9-g4-Obx">
-                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                            <font key="font" metaFont="system"/>
-                        </buttonCell>
-                        <connections>
-                            <action selector="discardIdleAndContinue:" target="-2" id="sxN-W1-g0Q"/>
-                            <outlet property="nextKeyView" destination="71P-8X-s86" id="f6j-ou-88x"/>
-                        </connections>
-                    </button>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" preferredMaxLayoutWidth="251" translatesAutoresizingMaskIntoConstraints="NO" id="upW-Uw-TwE">
-                        <rect key="frame" x="18" y="185" width="255" height="17"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" title="Running time entry:" id="roh-tK-cQL">
-                            <font key="font" metaFont="system"/>
-                            <color key="textColor" name="controlLightHighlightColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="upW-Uw-TwE">
+                        <rect key="frame" x="83" y="198" width="134" height="14"/>
+                        <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" title="RUNNING TIME ENTRY:" id="roh-tK-cQL">
+                            <font key="font" metaFont="systemMedium" size="11"/>
+                            <color key="textColor" name="grey-text-color"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" preferredMaxLayoutWidth="250" translatesAutoresizingMaskIntoConstraints="NO" id="QuW-zx-5VW">
-                        <rect key="frame" x="19" y="160" width="254" height="17"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="3DH-9w-EQH" customClass="FlatButton" customModule="TogglDesktop" customModuleProvider="target">
+                        <rect key="frame" x="20" y="77" width="260" height="30"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="260" id="56T-8y-5cD"/>
+                            <constraint firstAttribute="height" constant="30" id="ONB-DD-jbd"/>
+                        </constraints>
+                        <buttonCell key="cell" type="squareTextured" title="Add idle time as new time entry" bezelStyle="texturedSquare" alignment="center" imageScaling="proportionallyDown" inset="2" id="DjU-En-tIH" customClass="VerticallyCenteredButtonCell" customModule="TogglDesktop" customModuleProvider="target">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="focusRingCornerRadius">
+                                    <real key="value" value="8"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </buttonCell>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="color" keyPath="textColor">
+                                <color key="value" name="black-text-color"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                <real key="value" value="8"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                        <connections>
+                            <action selector="addIdleTimeAsNewTimeEntry:" target="-2" id="tDh-N4-FxP"/>
+                            <outlet property="nextKeyView" destination="B6d-ef-DQm" id="m5K-Pj-a0h"/>
+                        </connections>
+                    </button>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="QuW-zx-5VW">
+                        <rect key="frame" x="103" y="177" width="95" height="16"/>
                         <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" title="Doing the thing" id="nx5-lP-3u0">
-                            <font key="font" metaFont="system"/>
-                            <color key="textColor" name="controlLightHighlightColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                            <font key="font" metaFont="cellTitle"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="B6d-ef-DQm">
+                        <rect key="frame" x="236" y="20" width="44" height="16"/>
+                        <buttonCell key="cell" type="bevel" title="Cancel" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="0Qu-8p-peH">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="systemMedium" size="12"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="ignoreButtonClicked:" target="-2" id="q5X-MT-BaQ"/>
+                            <outlet property="nextKeyView" destination="gae-h6-aWA" id="rE5-Za-aBm"/>
+                        </connections>
+                    </button>
                 </subviews>
+                <constraints>
+                    <constraint firstItem="QuW-zx-5VW" firstAttribute="top" secondItem="upW-Uw-TwE" secondAttribute="bottom" constant="5" id="C1n-iA-xRY"/>
+                    <constraint firstItem="3DH-9w-EQH" firstAttribute="centerX" secondItem="IAa-lP-ER3" secondAttribute="centerX" id="HpV-0U-O5Y"/>
+                    <constraint firstItem="upW-Uw-TwE" firstAttribute="top" secondItem="LfR-bu-tys" secondAttribute="bottom" constant="30" id="JTR-sF-zof"/>
+                    <constraint firstItem="LfR-bu-tys" firstAttribute="centerX" secondItem="IAa-lP-ER3" secondAttribute="centerX" id="JTU-LE-9YD"/>
+                    <constraint firstAttribute="bottom" secondItem="B6d-ef-DQm" secondAttribute="bottom" constant="20" id="MpJ-aO-IoC"/>
+                    <constraint firstItem="3DH-9w-EQH" firstAttribute="top" secondItem="gae-h6-aWA" secondAttribute="bottom" constant="10" id="Vki-vT-rfn"/>
+                    <constraint firstItem="upW-Uw-TwE" firstAttribute="centerX" secondItem="IAa-lP-ER3" secondAttribute="centerX" id="Yau-29-g0u"/>
+                    <constraint firstAttribute="trailing" secondItem="31J-mN-zmo" secondAttribute="trailing" id="b1L-Ng-Oak"/>
+                    <constraint firstAttribute="bottom" secondItem="31J-mN-zmo" secondAttribute="bottom" id="b62-TI-aXl"/>
+                    <constraint firstItem="sqC-ri-2J8" firstAttribute="centerX" secondItem="IAa-lP-ER3" secondAttribute="centerX" id="bki-td-YVU"/>
+                    <constraint firstItem="sqC-ri-2J8" firstAttribute="top" secondItem="IAa-lP-ER3" secondAttribute="top" constant="40" id="dXk-ty-x12"/>
+                    <constraint firstItem="QuW-zx-5VW" firstAttribute="centerX" secondItem="IAa-lP-ER3" secondAttribute="centerX" id="eQW-qe-RjN"/>
+                    <constraint firstItem="31J-mN-zmo" firstAttribute="top" secondItem="IAa-lP-ER3" secondAttribute="top" id="iPz-wC-Ums"/>
+                    <constraint firstItem="gae-h6-aWA" firstAttribute="centerX" secondItem="IAa-lP-ER3" secondAttribute="centerX" id="p34-TA-wmM"/>
+                    <constraint firstItem="31J-mN-zmo" firstAttribute="leading" secondItem="IAa-lP-ER3" secondAttribute="leading" id="p6f-ue-RuO"/>
+                    <constraint firstAttribute="trailing" secondItem="B6d-ef-DQm" secondAttribute="trailing" constant="20" id="q00-hb-age"/>
+                    <constraint firstItem="gae-h6-aWA" firstAttribute="top" secondItem="QuW-zx-5VW" secondAttribute="bottom" constant="30" id="vkM-Ij-h0S"/>
+                    <constraint firstItem="LfR-bu-tys" firstAttribute="top" secondItem="sqC-ri-2J8" secondAttribute="bottom" constant="5" id="ycY-wp-cGX"/>
+                </constraints>
             </view>
             <connections>
-                <outlet property="initialFirstResponder" destination="fpJ-rI-lKJ" id="QFm-QX-kPF"/>
+                <outlet property="initialFirstResponder" destination="gae-h6-aWA" id="MWd-1C-OCJ"/>
             </connections>
-            <point key="canvasLocation" x="282.5" y="372"/>
+            <point key="canvasLocation" x="282" y="371.5"/>
         </window>
     </objects>
+    <resources>
+        <namedColor name="black-text-color">
+            <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="feedback-background-color">
+            <color red="0.98039215686274506" green="0.98431372549019602" blue="0.9882352941176471" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="green-color">
+            <color red="0.15686274509803921" green="0.80392156862745101" blue="0.25490196078431371" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="grey-text-color">
+            <color red="0.33333333333333331" green="0.33333333333333331" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
 </document>
