@@ -45,14 +45,14 @@ extern void *ctx;
 
 	if (@available(macOS 10.12, *))
 	{
-        // Do nothing
+		// Do nothing
 	}
-    else
-    {
-        // In macOS 10.11, the -mouseUp doesn't execute, so we have to handle the logic here
-        // if we call this logic in macOS >= 10.12 => The selection doesn't update
-        [self handleMouseSelectionWithEvent:event];
-    }
+	else
+	{
+		// In macOS 10.11, the -mouseUp doesn't execute, so we have to handle the logic here
+		// if we call this logic in macOS >= 10.12 => The selection doesn't update
+		[self handleMouseSelectionWithEvent:event];
+	}
 }
 
 - (void)handleMouseSelectionWithEvent:(NSEvent *)event
