@@ -13,6 +13,7 @@ final class MainDashboardViewController: NSViewController {
     private struct Constants {
         static let TimeEntryXibName = NSNib.Name("TimeEntryListViewController")
         static let TimelineXibName = NSNib.Name("TimelineDashboardViewController")
+        static let TimerXibName = NSNib.Name("TimerEditViewController")
     }
 
     enum Tab: Int {
@@ -28,12 +29,14 @@ final class MainDashboardViewController: NSViewController {
     @IBOutlet weak var timelineTabContainerView: NSView!
     @IBOutlet weak var listBtn: NSButton!
     @IBOutlet weak var timelineBtn: NSButton!
-
+    @IBOutlet weak var tabButtonContainer: NSView!
+    
     // MARK: Controllers
 
     @objc lazy var timeEntryController = TimeEntryListViewController(nibName: Constants.TimeEntryXibName, bundle: nil)
     @objc lazy var timelineController = TimelineDashboardViewController(nibName: Constants.TimelineXibName, bundle: nil)
-
+    @objc lazy var timerController = TimerEditViewController(nibName: Constants.TimerXibName, bundle: nil)
+    
     // MARK: Variables
 
     private var currentTab = Tab.timeEntryList {
@@ -49,6 +52,7 @@ final class MainDashboardViewController: NSViewController {
         super.viewDidLoad()
 
         initCommon()
+        initTimerView()
         initTabs()
     }
 
@@ -66,7 +70,8 @@ final class MainDashboardViewController: NSViewController {
 extension MainDashboardViewController {
 
     fileprivate func initCommon() {
-
+        timeEntryController.delegate = self
+        tabButtonContainer.applyShadow(color: .black, opacity: 0.1, radius: 6.0)
     }
 
     fileprivate func initTabs() {
@@ -76,7 +81,26 @@ extension MainDashboardViewController {
         timelineController.view.edgesToSuperView()
     }
 
+    fileprivate func initTimerView() {
+        timerContainerView.addSubview(timerController.view)
+        timerController.view.edgesToSuperView()
+    }
+
     fileprivate func updateTabLayout() {
         tabView.selectTabViewItem(at: currentTab.rawValue)
+    }
+}
+
+// MARK: TimeEntryListViewControllerDelegate
+// It's for backward compatible in TimeEntryListViewController
+
+extension MainDashboardViewController: TimeEntryListViewControllerDelegate {
+
+    func isTimerFocusing() -> Bool {
+        return timerController.autoCompleteInput.currentEditor() != nil
+    }
+
+    func containerViewForTimer() -> NSView! {
+        return timerContainerView
     }
 }

@@ -14,3 +14,4 @@
 #import "DesktopLibraryBridge.h"
 #import "UndoTextField.h"
 #import "TimeEntryListViewController.h"
+#import "TimerEditViewController.h"

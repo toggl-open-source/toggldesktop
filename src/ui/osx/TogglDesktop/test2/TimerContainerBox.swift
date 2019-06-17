@@ -8,12 +8,6 @@
 
 import Cocoa
 
-@objc protocol TextFieldResponderDelegate: class {
-
-    func didBecomeFirstResponder(_ sender: NSTextField)
-    func didResignFirstResponder(_ sender: NSTextField)
-}
-
 final class TimerContainerBox: NSBox, TextFieldResponderDelegate {
 
     enum State {
