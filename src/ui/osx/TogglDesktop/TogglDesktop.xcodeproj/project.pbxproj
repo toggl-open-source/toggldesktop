@@ -195,6 +195,10 @@
 		BA6572A8224DFA6F00BA4C60 /* CurrentColorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6572A2224DFA6F00BA4C60 /* CurrentColorView.swift */; };
 		BA6572A9224DFA6F00BA4C60 /* ColorGraphicsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6572A3224DFA6F00BA4C60 /* ColorGraphicsView.swift */; };
 		BA6572AA224DFA6F00BA4C60 /* HSV.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6572A4224DFA6F00BA4C60 /* HSV.swift */; };
+		BA65A21F22B7808700F895FD /* TimelineDashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA65A21E22B7808700F895FD /* TimelineDashboardViewController.swift */; };
+		BA65A22122B7809300F895FD /* TimelineDashboardViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA65A22022B7809300F895FD /* TimelineDashboardViewController.xib */; };
+		BA65A22422B7823200F895FD /* MainDashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA65A22222B7823200F895FD /* MainDashboardViewController.swift */; };
+		BA65A22522B7823200F895FD /* MainDashboardViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA65A22322B7823200F895FD /* MainDashboardViewController.xib */; };
 		BA6E873521DDC1E2005E2451 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA6E86B621DDB331005E2451 /* Sparkle.framework */; };
 		BA6E873621DDC1E2005E2451 /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA6E86B621DDB331005E2451 /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BA6EB8402248CBE3003BB8EF /* ProjectStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6EB83F2248CBE3003BB8EF /* ProjectStorage.swift */; };
@@ -864,6 +868,10 @@
 		BA6572A2224DFA6F00BA4C60 /* CurrentColorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrentColorView.swift; sourceTree = "<group>"; };
 		BA6572A3224DFA6F00BA4C60 /* ColorGraphicsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorGraphicsView.swift; sourceTree = "<group>"; };
 		BA6572A4224DFA6F00BA4C60 /* HSV.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HSV.swift; sourceTree = "<group>"; };
+		BA65A21E22B7808700F895FD /* TimelineDashboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineDashboardViewController.swift; sourceTree = "<group>"; };
+		BA65A22022B7809300F895FD /* TimelineDashboardViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimelineDashboardViewController.xib; sourceTree = "<group>"; };
+		BA65A22222B7823200F895FD /* MainDashboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainDashboardViewController.swift; sourceTree = "<group>"; };
+		BA65A22322B7823200F895FD /* MainDashboardViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainDashboardViewController.xib; sourceTree = "<group>"; };
 		BA6E86A521DDB331005E2451 /* Sparkle.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Sparkle.xcodeproj; path = ../../../../third_party/Sparkle/Sparkle.xcodeproj; sourceTree = "<group>"; };
 		BA6EB83F2248CBE3003BB8EF /* ProjectStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectStorage.swift; sourceTree = "<group>"; };
 		BA6EB8752249DB33003BB8EF /* VerticallyCenteredTextFieldCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerticallyCenteredTextFieldCell.swift; sourceTree = "<group>"; };
@@ -1576,6 +1584,17 @@
 			path = ColorWheel;
 			sourceTree = "<group>";
 		};
+		BA65A1FE22B7807300F895FD /* Timeline */ = {
+			isa = PBXGroup;
+			children = (
+				BA65A21E22B7808700F895FD /* TimelineDashboardViewController.swift */,
+				BA65A22022B7809300F895FD /* TimelineDashboardViewController.xib */,
+				BA65A22222B7823200F895FD /* MainDashboardViewController.swift */,
+				BA65A22322B7823200F895FD /* MainDashboardViewController.xib */,
+			);
+			path = Timeline;
+			sourceTree = "<group>";
+		};
 		BA6E86A621DDB331005E2451 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -1608,6 +1627,7 @@
 		BA712EAF21BF904E00A2D8DD /* Feature */ = {
 			isa = PBXGroup;
 			children = (
+				BA65A1FE22B7807300F895FD /* Timeline */,
 				BA13D1E42269B4F600EB3833 /* Calendar */,
 				BA657280224DFA4F00BA4C60 /* ColorWheel */,
 				BA34F0DB22439BF300C27A15 /* TimeEntryEditor */,
@@ -2133,6 +2153,7 @@
 				BAB818EB228D5AA8008C2367 /* DescriptionContentCellView.xib in Resources */,
 				3C6B2489203E01D90063FC08 /* AutoCompleteTableCell.xib in Resources */,
 				BA3E75D822293576009AD291 /* SystemMessageView.xib in Resources */,
+				BA65A22522B7823200F895FD /* MainDashboardViewController.xib in Resources */,
 				95DBF8D718C48B300021FB41 /* logo.png in Resources */,
 				BAD15FFE223A530600A8CCC9 /* TimeEntryEmptyView.xib in Resources */,
 				3CDA2C5B1913B61000A94967 /* icon-billable@2x.png in Resources */,
@@ -2179,6 +2200,7 @@
 				BA412C29224E196D003CA17A /* NoClientCellView.xib in Resources */,
 				74D1D25F17EB71C100E709B0 /* TimeEntryEditViewController.xib in Resources */,
 				3CDA2C581913A4E200A94967 /* icon-start-gray@2x.png in Resources */,
+				BA65A22122B7809300F895FD /* TimelineDashboardViewController.xib in Resources */,
 				7498D2481888B226001390B9 /* TimeEntryCell.xib in Resources */,
 				3C0A57191C22E12E00301D77 /* LICENSE.txt in Resources */,
 				3C65A7D21DE574E7005586B4 /* continue_light.pdf in Resources */,
@@ -2255,6 +2277,7 @@
 				95C0707A18CDB91500A34D0D /* NSCustomComboBox.m in Sources */,
 				3CC450E91A31ED540012440B /* NSTextFieldDuration.m in Sources */,
 				7424949E17F1E3D20030121C /* UIEvents.m in Sources */,
+				BA65A21F22B7808700F895FD /* TimelineDashboardViewController.swift in Sources */,
 				BA13D2152269C01500EB3833 /* Date+Utils.swift in Sources */,
 				BAAF56A02223DF9A003D0D73 /* VertificalTimeEntryFlowLayout.swift in Sources */,
 				C5CB7F0417F43EE100A2AEB1 /* TimeEntryCell.m in Sources */,
@@ -2293,7 +2316,6 @@
 				BA9C2E05224C84E7002AD2A1 /* ColorViewItem.swift in Sources */,
 				3C0A571E1C22E12E00301D77 /* MKColorWell.m in Sources */,
 				7438B3D318253CD2002AE43C /* MenuItemTags.m in Sources */,
-				74E3CDCC17FBABE400C3ADD3 /* BugsnagMetaData.m in Sources */,
 				3C53D112224B373B00674DC8 /* TimelineViewController.m in Sources */,
 				3CE1CAC11C774F2B00D0ADD5 /* LoadMoreCell.m in Sources */,
 				3C53D143224B406600674DC8 /* TimelineEventView.m in Sources */,
@@ -2363,6 +2385,7 @@
 				BA7D335E2248B48000B953A8 /* AutoCompleteTextField.swift in Sources */,
 				BA763B7B2268601700DC245A /* PopoverRootView.swift in Sources */,
 				3C07B75A193C88AE00ED6E6F /* NSCustomTimerComboBox.m in Sources */,
+				BA65A22422B7823200F895FD /* MainDashboardViewController.swift in Sources */,
 				BAD307D3229C1BD000C727DB /* KeyboardDatePicker.swift in Sources */,
 				BA7D335722489BD000B953A8 /* AutoCompleteViewDataSource.swift in Sources */,
 				BA01404C22570967000E5B91 /* TagStorage.swift in Sources */,
