@@ -36,6 +36,7 @@ final class EditorViewController: NSViewController {
     @IBOutlet weak var startAtTextField: UndoTextField!
     @IBOutlet weak var endAtTextField: UndoTextField!
     @IBOutlet weak var workspaceLbl: NSTextField!
+    @IBOutlet weak var datePickerContainerView: NSView!
 
     // MARK: Variables
 
@@ -46,13 +47,9 @@ final class EditorViewController: NSViewController {
         }
     }
     private var selectedProjectItem: ProjectContentItem?
-    private lazy var projectDatasource = ProjectDataSource(items: ProjectStorage.shared.items,
-                                                           updateNotificationName: .ProjectStorageChangedNotification)
-    private lazy var descriptionDatasource = DescriptionDataSource(items: DescriptionTimeEntryStorage.shared.items,
-                                                                   updateNotificationName: .DescrptionTimeEntryStorageChangedNotification)
-    private lazy var tagDatasource = TagDataSource(items: TagStorage.shared.tags,
-                                                   updateNotificationName: .TagStorageChangedNotification)
-
+    private lazy var projectDatasource = ProjectDataSource(items: ProjectStorage.shared.items, updateNotificationName: .ProjectStorageChangedNotification)
+    private lazy var descriptionDatasource = DescriptionDataSource(items: DescriptionTimeEntryStorage.shared.items, updateNotificationName: .DescrptionTimeEntryStorageChangedNotification)
+    private lazy var tagDatasource = TagDataSource(items: TagStorage.shared.tags, updateNotificationName: .TagStorageChangedNotification)
     private lazy var borderColor: NSColor = {
         if #available(OSX 10.13, *) {
             return NSColor(named: NSColor.Name("upload-border-color"))!
@@ -60,11 +57,8 @@ final class EditorViewController: NSViewController {
             return ConvertHexColor.hexCode(toNSColor: "#ACACAC")
         }
     }()
-    private lazy var dayNameAttribute: [NSAttributedString.Key : Any] = {
-        return [NSAttributedString.Key.font : NSFont.systemFont(ofSize: 14),
-                NSAttributedString.Key.foregroundColor: NSColor.labelColor]
-    }()
     fileprivate var isRegisterTimerNotification = false
+    private lazy var datePickerView: DatePickerView = DatePickerView.xibView()
 
     // MARK: View Cyclex
 
@@ -94,33 +88,6 @@ final class EditorViewController: NSViewController {
 
     @IBAction func tagAddButtonOnTap(_ sender: Any) {
         openTagAutoCompleteView()
-    }
-
-    @IBAction func nextDateBtnOnTap(_ sender: Any) {
-        guard let startDate = timeEntry.started,
-            let nextDate = startDate.nextDate(),
-            !timeEntry.isRunning() else {
-            return
-        }
-        DesktopLibraryBridge.shared().updateTimeEntry(withStart: nextDate, guid: timeEntry.guid)
-    }
-
-    @IBAction func previousDateBtnOnTap(_ sender: Any) {
-        guard let startDate = timeEntry.started,
-            let nextDate = startDate.previousDate(),
-            !timeEntry.isRunning() else {
-                return
-        }
-        DesktopLibraryBridge.shared().updateTimeEntry(withStart: nextDate, guid: timeEntry.guid)
-    }
-
-    @IBAction func datePickerChanged(_ sender: Any) {
-        DesktopLibraryBridge.shared().updateTimeEntry(withStart: datePickerView.dateValue, guid: timeEntry.guid)
-    }
-    
-    @IBAction func dayButtonOnTap(_ sender: Any) {
-        guard !timeEntry.isRunning() else { return }
-        calendarPopover.present(from: dateSelectionBox.bounds, of: dateSelectionBox, preferredEdge: .maxY)
     }
 
     @IBAction func durationTextFieldOnChange(_ sender: Any) {
@@ -188,7 +155,6 @@ extension EditorViewController {
         projectTextField.autoCompleteDelegate = self
         projectTextField.dotImageView = projectDotImageView
         projectTextField.layoutArrowBtn(with: view)
-        dayNameButton.cursor = .pointingHand
 
         durationTextField.delegate = self
         startAtTextField.delegate = self
@@ -197,11 +163,10 @@ extension EditorViewController {
         var calendar = Calendar.current
         calendar.timeZone = TimeZone.current
 
-        // Date picker
-        datePickerView.escapeKeyOnAction = {[weak self] in
-            guard let strongSelf = self else { return }
-            strongSelf.closeBtnOnTap(strongSelf)
-        }
+        // Picker View
+        datePickerContainerView.addSubview(datePickerView)
+        datePickerView.edgesToSuperView()
+        datePickerView.delegate = self
     }
 
     fileprivate func initDatasource() {
@@ -223,7 +188,6 @@ extension EditorViewController {
         billableCheckBox.state = timeEntry.billable ? .on : .off
         billableCheckBox.isHidden = !timeEntry.canSeeBillable
         projectTextField.setTimeEntry(timeEntry)
-        calendarViewControler.prepareLayout(with: timeEntry.started)
 
         // Disable if it's running entry
         let isRunning = timeEntry.isRunning()
@@ -309,10 +273,7 @@ extension EditorViewController {
     }
 
     private func renderDatePicker() {
-        let startDay = timeEntry.started!
-        datePickerView.dateValue = startDay
-        let dayName = startDay.dayOfWeekString() ?? "Unknown"
-        dayNameButton.attributedTitle = NSAttributedString(string: "\(dayName),", attributes: dayNameAttribute)
+        datePickerView.currentDate = timeEntry.started ?? Date()
     }
 
     private func renderTime() {
@@ -531,15 +492,6 @@ extension EditorViewController: TagDataSourceDelegate {
     }
 }
 
-// MARK: CalendarViewControllerDelegate
-
-extension EditorViewController: CalendarViewControllerDelegate {
-
-    func calendarViewControllerDidSelect(date: Date) {
-        DesktopLibraryBridge.shared().updateTimeEntry(withStart: date, guid: timeEntry.guid)
-    }
-}
-
 // MARK: Undo
 
 extension EditorViewController {
@@ -582,5 +534,22 @@ extension EditorViewController {
                                                        selector: #selector(self.updateProjectUndoValue(_:)),
                                                        object: oldValue)
         }
+    }
+}
+
+// MARK: DateSelectionViewDelegate
+
+extension EditorViewController: DateSelectionViewDelegate {
+
+    func datePickerOnChanged(_ sender: DatePickerView, date: Date) {
+        DesktopLibraryBridge.shared().updateTimeEntry(withStart: date, guid: timeEntry.guid)
+    }
+
+    func datePickerShouldClose(_ sender: DatePickerView) {
+        closeBtnOnTap(self)
+    }
+
+    func isTimeEntryRunning(_ sender: DatePickerView) -> Bool {
+        return timeEntry.isRunning()
     }
 }
