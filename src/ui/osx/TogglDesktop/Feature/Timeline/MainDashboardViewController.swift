@@ -27,8 +27,8 @@ final class MainDashboardViewController: NSViewController {
     @IBOutlet weak var tabView: NSTabView!
     @IBOutlet weak var timeEntryTabContainerView: NSView!
     @IBOutlet weak var timelineTabContainerView: NSView!
-    @IBOutlet weak var listBtn: NSButton!
-    @IBOutlet weak var timelineBtn: NSButton!
+    @IBOutlet weak var listBtn: FlatButton!
+    @IBOutlet weak var timelineBtn: FlatButton!
     @IBOutlet weak var tabButtonContainer: NSView!
     @IBOutlet weak var headerContainerView: NSView!
     
@@ -71,6 +71,7 @@ final class MainDashboardViewController: NSViewController {
 extension MainDashboardViewController {
 
     fileprivate func initCommon() {
+        listBtn.isSelected = true
         timeEntryController.delegate = self
         headerContainerView.applyShadow(color: .black, opacity: 0.1, radius: 6.0)
     }
@@ -89,6 +90,14 @@ extension MainDashboardViewController {
 
     fileprivate func updateTabLayout() {
         tabView.selectTabViewItem(at: currentTab.rawValue)
+        switch currentTab {
+        case .timeEntryList:
+            listBtn.isSelected = true
+            timelineBtn.isSelected = false
+        case .timeline:
+            timelineBtn.isSelected = true
+            listBtn.isSelected = false
+        }
     }
 }
 
