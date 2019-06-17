@@ -200,6 +200,8 @@
 		BA65A22422B7823200F895FD /* MainDashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA65A22222B7823200F895FD /* MainDashboardViewController.swift */; };
 		BA65A22522B7823200F895FD /* MainDashboardViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA65A22322B7823200F895FD /* MainDashboardViewController.xib */; };
 		BA65A24D22B79FEC00F895FD /* OGSwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA65A22D22B79FEC00F895FD /* OGSwitch.swift */; };
+		BA65A25022B7A65D00F895FD /* DateSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA65A24F22B7A65D00F895FD /* DateSelectionView.swift */; };
+		BA65A25222B7A66A00F895FD /* DateSelectionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA65A25122B7A66A00F895FD /* DateSelectionView.xib */; };
 		BA6E873521DDC1E2005E2451 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA6E86B621DDB331005E2451 /* Sparkle.framework */; };
 		BA6E873621DDC1E2005E2451 /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA6E86B621DDB331005E2451 /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BA6EB8402248CBE3003BB8EF /* ProjectStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6EB83F2248CBE3003BB8EF /* ProjectStorage.swift */; };
@@ -874,6 +876,8 @@
 		BA65A22222B7823200F895FD /* MainDashboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainDashboardViewController.swift; sourceTree = "<group>"; };
 		BA65A22322B7823200F895FD /* MainDashboardViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainDashboardViewController.xib; sourceTree = "<group>"; };
 		BA65A22D22B79FEC00F895FD /* OGSwitch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OGSwitch.swift; sourceTree = "<group>"; };
+		BA65A24F22B7A65D00F895FD /* DateSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateSelectionView.swift; sourceTree = "<group>"; };
+		BA65A25122B7A66A00F895FD /* DateSelectionView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DateSelectionView.xib; sourceTree = "<group>"; };
 		BA6E86A521DDB331005E2451 /* Sparkle.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Sparkle.xcodeproj; path = ../../../../third_party/Sparkle/Sparkle.xcodeproj; sourceTree = "<group>"; };
 		BA6EB83F2248CBE3003BB8EF /* ProjectStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectStorage.swift; sourceTree = "<group>"; };
 		BA6EB8752249DB33003BB8EF /* VerticallyCenteredTextFieldCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerticallyCenteredTextFieldCell.swift; sourceTree = "<group>"; };
@@ -1491,6 +1495,7 @@
 		BA34F0DB22439BF300C27A15 /* TimeEntryEditor */ = {
 			isa = PBXGroup;
 			children = (
+				BA65A24E22B7A64400F895FD /* DateSelectionView */,
 				BAB818E7228D5A66008C2367 /* Description */,
 				BA014026225707F1000E5B91 /* Tag */,
 				BA8B4C522251FA6900592BC7 /* Workspace */,
@@ -1596,6 +1601,15 @@
 				BA65A22D22B79FEC00F895FD /* OGSwitch.swift */,
 			);
 			path = Timeline;
+			sourceTree = "<group>";
+		};
+		BA65A24E22B7A64400F895FD /* DateSelectionView */ = {
+			isa = PBXGroup;
+			children = (
+				BA65A24F22B7A65D00F895FD /* DateSelectionView.swift */,
+				BA65A25122B7A66A00F895FD /* DateSelectionView.xib */,
+			);
+			path = DateSelectionView;
 			sourceTree = "<group>";
 		};
 		BA6E86A621DDB331005E2451 /* Products */ = {
@@ -2166,6 +2180,7 @@
 				3C53D148224B40FE00674DC8 /* TimelineEventsListItem.xib in Resources */,
 				74664DB218AA860800AAD282 /* off.pdf in Resources */,
 				BA7D3355224898E400B953A8 /* ProjectContentCellView.xib in Resources */,
+				BA65A25222B7A66A00F895FD /* DateSelectionView.xib in Resources */,
 				BA014054225711A3000E5B91 /* TagTokenView.xib in Resources */,
 				7430750518204EFB009019CB /* AboutWindowController.xib in Resources */,
 				BA4059B1221D2186002969B8 /* TimeHeaderView.xib in Resources */,
@@ -2383,6 +2398,7 @@
 				BA7D334F224897FC00B953A8 /* ProjectHeaderCellView.swift in Sources */,
 				BAE49CAE222FC1C900773814 /* TimerContainerBox.swift in Sources */,
 				BA13D20A2269BA6500EB3833 /* CalendarDataSource.swift in Sources */,
+				BA65A25022B7A65D00F895FD /* DateSelectionView.swift in Sources */,
 				74AA9474180909F50000539F /* GTMOAuth2SignIn.m in Sources */,
 				BA053659225DDDBB00C26E1F /* CustomFocusRingButton.swift in Sources */,
 				BA7D335E2248B48000B953A8 /* AutoCompleteTextField.swift in Sources */,

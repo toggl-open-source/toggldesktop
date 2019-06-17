@@ -32,14 +32,9 @@ final class EditorViewController: NSViewController {
     @IBOutlet weak var tagStackView: NSStackView!
     @IBOutlet weak var tagAddButton: NSButton!
     @IBOutlet weak var tagInputContainerView: NSBox!
-    @IBOutlet weak var datePickerView: KeyboardDatePicker!
-    @IBOutlet weak var dayNameButton: CursorButton!
-    @IBOutlet weak var nextDateBtn: NSButton!
-    @IBOutlet weak var previousDateBtn: NSButton!
     @IBOutlet weak var durationTextField: UndoTextField!
     @IBOutlet weak var startAtTextField: UndoTextField!
     @IBOutlet weak var endAtTextField: UndoTextField!
-    @IBOutlet weak var dateSelectionBox: NSBox!
     @IBOutlet weak var workspaceLbl: NSTextField!
 
     // MARK: Variables
@@ -64,17 +59,6 @@ final class EditorViewController: NSViewController {
         } else {
             return ConvertHexColor.hexCode(toNSColor: "#ACACAC")
         }
-    }()
-    private lazy var calendarViewControler: CalendarViewController = {
-        let controller = CalendarViewController(nibName: NSNib.Name("CalendarViewController"), bundle: nil)
-        controller.delegate = self
-        return controller
-    }()
-    private lazy var calendarPopover: NoVibrantPopoverView = {
-        let popover = NoVibrantPopoverView()
-        popover.behavior = .semitransient
-        popover.contentViewController = calendarViewControler
-        return popover
     }()
     private lazy var dayNameAttribute: [NSAttributedString.Key : Any] = {
         return [NSAttributedString.Key.font : NSFont.systemFont(ofSize: 14),
