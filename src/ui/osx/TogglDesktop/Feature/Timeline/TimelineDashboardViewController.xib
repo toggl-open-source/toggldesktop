@@ -8,6 +8,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="TimelineDashboardViewController" customModule="TogglDesktop" customModuleProvider="target">
             <connections>
+                <outlet property="datePickerContainerView" destination="wlf-0e-ttW" id="86r-YF-M9C"/>
                 <outlet property="view" destination="c22-O7-iKe" id="D7F-6m-KJo"/>
             </connections>
         </customObject>
@@ -38,13 +39,22 @@
                                 <constraint firstAttribute="width" constant="40" id="hh6-kQ-Om4"/>
                             </constraints>
                         </customView>
+                        <customView translatesAutoresizingMaskIntoConstraints="NO" id="wlf-0e-ttW">
+                            <rect key="frame" x="10" y="13" width="277" height="30"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="30" id="dza-G1-J0f"/>
+                            </constraints>
+                        </customView>
                     </subviews>
                     <constraints>
+                        <constraint firstItem="wlf-0e-ttW" firstAttribute="top" secondItem="oEw-Jd-lIP" secondAttribute="bottom" constant="12" id="0rH-e0-NUk"/>
                         <constraint firstItem="I6m-RA-gUy" firstAttribute="centerY" secondItem="oEw-Jd-lIP" secondAttribute="centerY" id="aWn-ju-3Sc"/>
                         <constraint firstItem="oEw-Jd-lIP" firstAttribute="top" secondItem="CV9-Ue-zhq" secondAttribute="top" constant="13" id="igE-d4-QVd"/>
+                        <constraint firstAttribute="trailing" secondItem="wlf-0e-ttW" secondAttribute="trailing" constant="10" id="mPL-xl-8j9"/>
                         <constraint firstAttribute="trailing" secondItem="I6m-RA-gUy" secondAttribute="trailing" constant="10" id="maq-iT-Fcc"/>
                         <constraint firstItem="oEw-Jd-lIP" firstAttribute="leading" secondItem="CV9-Ue-zhq" secondAttribute="leading" constant="10" id="t9Q-Bm-qdd"/>
                         <constraint firstAttribute="height" constant="86" id="wv3-y8-Rz9"/>
+                        <constraint firstItem="wlf-0e-ttW" firstAttribute="leading" secondItem="CV9-Ue-zhq" secondAttribute="leading" constant="10" id="zxE-BA-Fdk"/>
                     </constraints>
                 </customView>
             </subviews>

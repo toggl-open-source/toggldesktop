@@ -537,9 +537,9 @@ extension EditorViewController {
     }
 }
 
-// MARK: DateSelectionViewDelegate
+// MARK: DatePickerViewDelegate
 
-extension EditorViewController: DateSelectionViewDelegate {
+extension EditorViewController: DatePickerViewDelegate {
 
     func datePickerOnChanged(_ sender: DatePickerView, date: Date) {
         DesktopLibraryBridge.shared().updateTimeEntry(withStart: date, guid: timeEntry.guid)

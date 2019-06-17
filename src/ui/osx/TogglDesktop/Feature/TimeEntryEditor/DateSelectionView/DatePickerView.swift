@@ -8,7 +8,7 @@
 
 import Cocoa
 
-protocol DateSelectionViewDelegate: class {
+protocol DatePickerViewDelegate: class {
 
     func datePickerOnChanged(_ sender: DatePickerView, date: Date)
     func datePickerShouldClose(_ sender: DatePickerView)
@@ -27,7 +27,7 @@ final class DatePickerView: NSView {
 
     // MARK: View
 
-    weak var delegate: DateSelectionViewDelegate?
+    weak var delegate: DatePickerViewDelegate?
     var currentDate: Date = Date() {
         didSet {
             populateDate()
