@@ -30,6 +30,7 @@ final class MainDashboardViewController: NSViewController {
     @IBOutlet weak var listBtn: NSButton!
     @IBOutlet weak var timelineBtn: NSButton!
     @IBOutlet weak var tabButtonContainer: NSView!
+    @IBOutlet weak var headerContainerView: NSView!
     
     // MARK: Controllers
 
@@ -71,7 +72,7 @@ extension MainDashboardViewController {
 
     fileprivate func initCommon() {
         timeEntryController.delegate = self
-        tabButtonContainer.applyShadow(color: .black, opacity: 0.1, radius: 6.0)
+        headerContainerView.applyShadow(color: .black, opacity: 0.1, radius: 6.0)
     }
 
     fileprivate func initTabs() {
