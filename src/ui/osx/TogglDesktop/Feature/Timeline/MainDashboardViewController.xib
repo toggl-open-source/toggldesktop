@@ -64,12 +64,20 @@
                                     </view>
                                     <color key="fillColor" name="white-background-color"/>
                                 </box>
-                                <button horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="Ezz-Na-3Er">
+                                <button horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="Ezz-Na-3Er" customClass="FlatButton" customModule="TogglDesktop" customModuleProvider="target">
                                     <rect key="frame" x="0.0" y="0.0" width="192" height="40"/>
                                     <buttonCell key="cell" type="bevel" title="List" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="lc5-kV-hsA">
                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                         <font key="font" metaFont="system" size="14"/>
                                     </buttonCell>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="color" keyPath="selectedTextColor">
+                                            <color key="value" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                        </userDefinedRuntimeAttribute>
+                                        <userDefinedRuntimeAttribute type="color" keyPath="textColor">
+                                            <color key="value" name="tab-view-text-color"/>
+                                        </userDefinedRuntimeAttribute>
+                                    </userDefinedRuntimeAttributes>
                                     <connections>
                                         <action selector="listBtnOnTap:" target="-2" id="UVv-a3-2Pn"/>
                                     </connections>
@@ -80,12 +88,20 @@
                                         <constraint firstAttribute="height" constant="20" id="u7t-Xu-ij7"/>
                                     </constraints>
                                 </box>
-                                <button horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="Ph1-05-Qce">
+                                <button horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="Ph1-05-Qce" customClass="FlatButton" customModule="TogglDesktop" customModuleProvider="target">
                                     <rect key="frame" x="193" y="0.0" width="192" height="40"/>
                                     <buttonCell key="cell" type="bevel" title="Timeline" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="O2U-sp-dei">
                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                         <font key="font" metaFont="system" size="14"/>
                                     </buttonCell>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="color" keyPath="textColor">
+                                            <color key="value" name="tab-view-text-color"/>
+                                        </userDefinedRuntimeAttribute>
+                                        <userDefinedRuntimeAttribute type="color" keyPath="selectedTextColor">
+                                            <color key="value" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                        </userDefinedRuntimeAttribute>
+                                    </userDefinedRuntimeAttributes>
                                     <connections>
                                         <action selector="timelineBtnOnTap:" target="-2" id="MwQ-LN-sfr"/>
                                     </connections>
@@ -134,6 +150,9 @@
         </customView>
     </objects>
     <resources>
+        <namedColor name="tab-view-text-color">
+            <color red="0.67450980392156867" green="0.67450980392156867" blue="0.67450980392156867" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="white-background-color">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
