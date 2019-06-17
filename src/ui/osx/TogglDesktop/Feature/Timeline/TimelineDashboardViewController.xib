@@ -16,6 +16,47 @@
         <customView id="c22-O7-iKe">
             <rect key="frame" x="0.0" y="0.0" width="297" height="526"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <customView translatesAutoresizingMaskIntoConstraints="NO" id="Xu6-6s-ozI">
+                    <rect key="frame" x="0.0" y="0.0" width="297" height="440"/>
+                </customView>
+                <customView translatesAutoresizingMaskIntoConstraints="NO" id="CV9-Ue-zhq">
+                    <rect key="frame" x="0.0" y="440" width="297" height="86"/>
+                    <subviews>
+                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="oEw-Jd-lIP">
+                            <rect key="frame" x="8" y="55" width="101" height="18"/>
+                            <textFieldCell key="cell" lineBreakMode="clipping" title="Record activity" id="x0y-gM-oPn">
+                                <font key="font" metaFont="system" size="14"/>
+                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                            </textFieldCell>
+                        </textField>
+                        <customView translatesAutoresizingMaskIntoConstraints="NO" id="I6m-RA-gUy" customClass="OGSwitch" customModule="TogglDesktop" customModuleProvider="target">
+                            <rect key="frame" x="247" y="56" width="40" height="16"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="16" id="KZb-zk-hfP"/>
+                                <constraint firstAttribute="width" constant="40" id="hh6-kQ-Om4"/>
+                            </constraints>
+                        </customView>
+                    </subviews>
+                    <constraints>
+                        <constraint firstItem="I6m-RA-gUy" firstAttribute="centerY" secondItem="oEw-Jd-lIP" secondAttribute="centerY" id="aWn-ju-3Sc"/>
+                        <constraint firstItem="oEw-Jd-lIP" firstAttribute="top" secondItem="CV9-Ue-zhq" secondAttribute="top" constant="13" id="igE-d4-QVd"/>
+                        <constraint firstAttribute="trailing" secondItem="I6m-RA-gUy" secondAttribute="trailing" constant="10" id="maq-iT-Fcc"/>
+                        <constraint firstItem="oEw-Jd-lIP" firstAttribute="leading" secondItem="CV9-Ue-zhq" secondAttribute="leading" constant="10" id="t9Q-Bm-qdd"/>
+                        <constraint firstAttribute="height" constant="86" id="wv3-y8-Rz9"/>
+                    </constraints>
+                </customView>
+            </subviews>
+            <constraints>
+                <constraint firstItem="CV9-Ue-zhq" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" id="0BA-9G-TtB"/>
+                <constraint firstAttribute="trailing" secondItem="CV9-Ue-zhq" secondAttribute="trailing" id="4Y9-1V-goq"/>
+                <constraint firstItem="CV9-Ue-zhq" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" id="A6t-Zz-auh"/>
+                <constraint firstItem="Xu6-6s-ozI" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" id="adW-Bq-961"/>
+                <constraint firstAttribute="bottom" secondItem="Xu6-6s-ozI" secondAttribute="bottom" id="e9a-Lv-hrr"/>
+                <constraint firstAttribute="trailing" secondItem="Xu6-6s-ozI" secondAttribute="trailing" id="p9a-gs-Xzn"/>
+                <constraint firstItem="Xu6-6s-ozI" firstAttribute="top" secondItem="CV9-Ue-zhq" secondAttribute="bottom" id="rIq-HF-FLH"/>
+            </constraints>
             <point key="canvasLocation" x="230.5" y="281"/>
         </customView>
     </objects>

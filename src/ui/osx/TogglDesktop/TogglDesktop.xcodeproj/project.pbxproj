@@ -199,6 +199,7 @@
 		BA65A22122B7809300F895FD /* TimelineDashboardViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA65A22022B7809300F895FD /* TimelineDashboardViewController.xib */; };
 		BA65A22422B7823200F895FD /* MainDashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA65A22222B7823200F895FD /* MainDashboardViewController.swift */; };
 		BA65A22522B7823200F895FD /* MainDashboardViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA65A22322B7823200F895FD /* MainDashboardViewController.xib */; };
+		BA65A24D22B79FEC00F895FD /* OGSwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA65A22D22B79FEC00F895FD /* OGSwitch.swift */; };
 		BA6E873521DDC1E2005E2451 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA6E86B621DDB331005E2451 /* Sparkle.framework */; };
 		BA6E873621DDC1E2005E2451 /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA6E86B621DDB331005E2451 /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BA6EB8402248CBE3003BB8EF /* ProjectStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6EB83F2248CBE3003BB8EF /* ProjectStorage.swift */; };
@@ -872,6 +873,7 @@
 		BA65A22022B7809300F895FD /* TimelineDashboardViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimelineDashboardViewController.xib; sourceTree = "<group>"; };
 		BA65A22222B7823200F895FD /* MainDashboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainDashboardViewController.swift; sourceTree = "<group>"; };
 		BA65A22322B7823200F895FD /* MainDashboardViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainDashboardViewController.xib; sourceTree = "<group>"; };
+		BA65A22D22B79FEC00F895FD /* OGSwitch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OGSwitch.swift; sourceTree = "<group>"; };
 		BA6E86A521DDB331005E2451 /* Sparkle.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Sparkle.xcodeproj; path = ../../../../third_party/Sparkle/Sparkle.xcodeproj; sourceTree = "<group>"; };
 		BA6EB83F2248CBE3003BB8EF /* ProjectStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectStorage.swift; sourceTree = "<group>"; };
 		BA6EB8752249DB33003BB8EF /* VerticallyCenteredTextFieldCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerticallyCenteredTextFieldCell.swift; sourceTree = "<group>"; };
@@ -1591,6 +1593,7 @@
 				BA65A22022B7809300F895FD /* TimelineDashboardViewController.xib */,
 				BA65A22222B7823200F895FD /* MainDashboardViewController.swift */,
 				BA65A22322B7823200F895FD /* MainDashboardViewController.xib */,
+				BA65A22D22B79FEC00F895FD /* OGSwitch.swift */,
 			);
 			path = Timeline;
 			sourceTree = "<group>";
@@ -2405,6 +2408,7 @@
 				BAFBFCC821CD1D3C004B443F /* SystemService.m in Sources */,
 				BAF50DF821A2A18D0090BA95 /* AppIconFactory.m in Sources */,
 				74A7346A18297DD100525BBC /* ConvertHexColor.m in Sources */,
+				BA65A24D22B79FEC00F895FD /* OGSwitch.swift in Sources */,
 				74BAAA0B17F37B140079386F /* TimeEntryViewItem.m in Sources */,
 				BA412C27224E195C003CA17A /* NoClientCellView.swift in Sources */,
 				7423393C1829B99C00063FA9 /* IdleNotificationWindowController.m in Sources */,
