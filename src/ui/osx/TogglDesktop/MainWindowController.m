@@ -39,11 +39,9 @@ extern void *ctx;
 	self = [super initWithWindow:window];
 	if (self)
 	{
-		self.loginViewController = [[LoginViewController alloc]
-									initWithNibName:@"LoginViewController" bundle:nil];
+		self.loginViewController = [[LoginViewController alloc] initWithNibName:@"LoginViewController" bundle:nil];
 		self.mainDashboardViewController = [[MainDashboardViewController alloc] initWithNibName:@"MainDashboardViewController" bundle:nil];
-		self.overlayViewController = [[OverlayViewController alloc]
-									  initWithNibName:@"OverlayViewController" bundle:nil];
+		self.overlayViewController = [[OverlayViewController alloc] initWithNibName:@"OverlayViewController" bundle:nil];
 
 		[self.loginViewController.view setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
 		[self.mainDashboardViewController.view setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];

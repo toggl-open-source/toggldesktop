@@ -13,8 +13,15 @@
 @class EditorPopover;
 @class TimeEntryDatasource;
 
+@protocol TimeEntryListViewControllerDelegate <NSObject>
+
+- (BOOL)isTimerFocusing;
+- (NSView *)containerViewForTimer;
+
+@end
+
 @interface TimeEntryListViewController : NSViewController
-@property (unsafe_unretained) IBOutlet NSView *headerView;
+@property (weak, nonatomic) id<TimeEntryListViewControllerDelegate> delegate;
 @property (strong) IBOutlet NSScrollView *timeEntryListScrollView;
 @property (nonatomic, strong) TimeEntryDatasource *dataSource;
 @property (assign, readonly, nonatomic) BOOL isEditorOpen;

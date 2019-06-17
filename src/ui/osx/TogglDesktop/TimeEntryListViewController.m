@@ -8,7 +8,6 @@
 
 #import "TimeEntryListViewController.h"
 #import "TimeEntryViewItem.h"
-#import "TimerEditViewController.h"
 #import "UIEvents.h"
 #import "toggl_api.h"
 #import "LoadMoreCell.h"
@@ -24,7 +23,6 @@ static void *XXContext = &XXContext;
 static NSString *kFrameKey = @"frame";
 
 @interface TimeEntryListViewController () <TimeEntryDatasourceDraggingDelegate, TimeEntryEmptyViewDelegate>
-@property (nonatomic, strong) TimerEditViewController *timerEditViewController;
 @property NSNib *nibTimeEntryCell;
 @property NSNib *nibLoadMoreCell;
 @property NSInteger defaultPopupHeight;
@@ -48,8 +46,6 @@ extern void *ctx;
 	self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
 	if (self)
 	{
-		self.timerEditViewController = [[TimerEditViewController alloc]
-										initWithNibName:@"TimerEditViewController" bundle:nil];
 		self.nibTimeEntryCell = [[NSNib alloc] initWithNibNamed:@"TimeEntryCell"
 														 bundle:nil];
 		self.nibLoadMoreCell = [[NSNib alloc] initWithNibNamed:@"LoadMoreCell"
@@ -81,13 +77,8 @@ extern void *ctx;
 }
 
 - (void)initCommon {
-	[self.headerView addSubview:self.timerEditViewController.view];
-	[self.timerEditViewController.view edgesToSuperView];
 	self.addedHeight = 0;
 	self.runningEdit = NO;
-
-	// Shadow for Header
-	[self.headerView applyShadowWithColor:[NSColor blackColor] opacity:0.1 radius:6.0];
 }
 
 - (void)initNotifications
@@ -227,7 +218,7 @@ extern void *ctx;
 			[self setDefaultPopupSize];
 		}
 		// when timer not focused
-		if ([self.timerEditViewController.autoCompleteInput currentEditor] == nil)
+		if (![self.delegate isTimerFocusing])
 		{
 			[self focusListing:nil];
 		}
@@ -309,7 +300,7 @@ extern void *ctx;
 
 		if (self.runningEdit)
 		{
-			ofView = self.headerView;
+			ofView = [self.delegate containerViewForTimer];
 			positionRect = [ofView bounds];
 			self.lastSelectedGUID = nil;
 		}

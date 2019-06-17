@@ -9,6 +9,7 @@
         <customObject id="-2" userLabel="File's Owner" customClass="MainDashboardViewController" customModule="TogglDesktop" customModuleProvider="target">
             <connections>
                 <outlet property="listBtn" destination="Ezz-Na-3Er" id="FFa-D9-h9n"/>
+                <outlet property="tabButtonContainer" destination="TkD-My-f80" id="xlR-Oc-35C"/>
                 <outlet property="tabView" destination="Br1-Q3-RJh" id="vpn-ui-nFM"/>
                 <outlet property="timeEntryTabContainerView" destination="Jdf-Gu-kPW" id="utG-fv-nMR"/>
                 <outlet property="timelineBtn" destination="Ph1-05-Qce" id="HmD-Di-463"/>
