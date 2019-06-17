@@ -655,7 +655,7 @@ class GUI : public SyncStateMonitor {
     void resetFirstLaunch() {
         isFirstLaunch = true;
     }
-    
+
     const std::string &TimeEntryEditorGUID() {
         return time_entry_editor_guid_;
     }
