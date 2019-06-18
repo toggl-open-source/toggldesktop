@@ -668,6 +668,10 @@ class GUI : public SyncStateMonitor {
         timeline_date_at_ = value;
     }
 
+    void resetTimeEntryGUID() {
+        time_entry_editor_guid_ = "";
+    }
+
  private:
     error findMissingCallbacks();
 
