@@ -13,6 +13,7 @@ class TimelineDashboardViewController: NSViewController {
     // MARK: OUTLET
 
     @IBOutlet weak var datePickerContainerView: NSView!
+    @IBOutlet weak var recordSwitcher: OGSwitch!
 
     // MARK: Variables
 
@@ -24,6 +25,10 @@ class TimelineDashboardViewController: NSViewController {
         super.viewDidLoad()
 
         initCommon()
+    }
+
+    @IBAction func recordSwitchOnChanged(_ sender: Any) {
+        DesktopLibraryBridge.shared().enableTimelineRecord(recordSwitcher.isOn)
     }
 }
 

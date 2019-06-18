@@ -9,6 +9,7 @@
         <customObject id="-2" userLabel="File's Owner" customClass="TimelineDashboardViewController" customModule="TogglDesktop" customModuleProvider="target">
             <connections>
                 <outlet property="datePickerContainerView" destination="wlf-0e-ttW" id="86r-YF-M9C"/>
+                <outlet property="recordSwitcher" destination="I6m-RA-gUy" id="Sef-EC-Cn6"/>
                 <outlet property="view" destination="c22-O7-iKe" id="D7F-6m-KJo"/>
             </connections>
         </customObject>
@@ -38,6 +39,9 @@
                                 <constraint firstAttribute="height" constant="16" id="KZb-zk-hfP"/>
                                 <constraint firstAttribute="width" constant="40" id="hh6-kQ-Om4"/>
                             </constraints>
+                            <connections>
+                                <action selector="recordSwitchOnChanged:" target="-2" id="yGC-CS-Z9N"/>
+                            </connections>
                         </customView>
                         <customView translatesAutoresizingMaskIntoConstraints="NO" id="wlf-0e-ttW">
                             <rect key="frame" x="10" y="13" width="277" height="30"/>

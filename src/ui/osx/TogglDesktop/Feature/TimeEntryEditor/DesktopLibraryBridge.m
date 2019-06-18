@@ -10,6 +10,7 @@
 #import "TimeEntryViewItem.h"
 #import "toggl_api.h"
 #import "AutocompleteItem.h"
+#import "Utils.h"
 
 @implementation DesktopLibraryBridge
 
@@ -175,6 +176,13 @@ void *ctx;
 
 	free(str);
 	return [newValue copy];
+}
+
+#pragma mark - Timeline
+
+- (void) enableTimelineRecord:(BOOL) isEnabled
+{
+    toggl_timeline_toggle_recording(ctx, isEnabled);
 }
 
 @end
