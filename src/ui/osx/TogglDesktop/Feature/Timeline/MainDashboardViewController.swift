@@ -90,6 +90,7 @@ extension MainDashboardViewController {
 
     fileprivate func updateTabLayout() {
         tabView.selectTabViewItem(at: currentTab.rawValue)
+        updateNextKeyView()
         switch currentTab {
         case .timeEntryList:
             listBtn.isSelected = true
@@ -97,6 +98,19 @@ extension MainDashboardViewController {
         case .timeline:
             timelineBtn.isSelected = true
             listBtn.isSelected = false
+        }
+    }
+
+    fileprivate func updateNextKeyView() {
+        switch currentTab {
+        case .timeline:
+            timerController.autoCompleteInput.nextKeyView = listBtn
+            listBtn.nextKeyView = timelineBtn
+            timelineBtn.nextKeyView = timelineController.recordSwitcher
+            timelineController.updateNextKeyView()
+            timelineController.datePickerView.nextDateBtn.nextKeyView = timerController.autoCompleteInput
+        case .timeEntryList:
+            timerController.autoCompleteInput.nextKeyView = listBtn
         }
     }
 }

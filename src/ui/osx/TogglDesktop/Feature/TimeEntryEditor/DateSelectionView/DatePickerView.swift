@@ -64,6 +64,12 @@ final class DatePickerView: NSView {
 
     // MARK: Public
 
+    func updateNextKeyView() {
+        previousDateBtn.nextKeyView = dayNameButton
+        dayNameButton.nextKeyView = datePickerView
+        datePickerView.nextKeyView = nextDateBtn
+    }
+
     @IBAction func datePickerChanged(_ sender: Any) {
         delegate?.datePickerOnChanged(self, date: datePickerView.dateValue)
     }

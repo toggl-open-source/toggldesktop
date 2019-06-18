@@ -17,7 +17,7 @@ class TimelineDashboardViewController: NSViewController {
 
     // MARK: Variables
 
-    private lazy var datePickerView: DatePickerView = DatePickerView.xibView()
+    lazy var datePickerView: DatePickerView = DatePickerView.xibView()
 
     // MARK: View
     
@@ -34,6 +34,11 @@ class TimelineDashboardViewController: NSViewController {
 
     @IBAction func recordSwitchOnChanged(_ sender: Any) {
         DesktopLibraryBridge.shared().enableTimelineRecord(recordSwitcher.isOn)
+    }
+
+    func updateNextKeyView() {
+        recordSwitcher.nextKeyView = datePickerView.previousDateBtn
+        datePickerView.updateNextKeyView()
     }
 }
 
