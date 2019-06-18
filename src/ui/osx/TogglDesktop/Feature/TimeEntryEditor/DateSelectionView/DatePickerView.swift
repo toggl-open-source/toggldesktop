@@ -13,6 +13,7 @@ protocol DatePickerViewDelegate: class {
     func datePickerOnChanged(_ sender: DatePickerView, date: Date)
     func datePickerShouldClose(_ sender: DatePickerView)
     func isTimeEntryRunning(_ sender: DatePickerView) -> Bool
+    func shouldOpenCalendar(_ sender: DatePickerView) -> Bool
 }
 
 final class DatePickerView: NSView {
@@ -77,6 +78,7 @@ final class DatePickerView: NSView {
     @IBAction func dayButtonOnTap(_ sender: Any) {
         guard let delegate = delegate,
             !delegate.isTimeEntryRunning(self) else { return }
+        guard delegate.shouldOpenCalendar(self) else { return }
         calendarPopover.present(from: dateSelectionBox.bounds, of: dateSelectionBox, preferredEdge: .maxY)
     }
 

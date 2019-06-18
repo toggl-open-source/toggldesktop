@@ -90,4 +90,8 @@ extension TimelineDashboardViewController: DatePickerViewDelegate {
     func isTimeEntryRunning(_ sender: DatePickerView) -> Bool {
         return false
     }
+
+    func shouldOpenCalendar(_ sender: DatePickerView) -> Bool {
+        return false
+    }
 }

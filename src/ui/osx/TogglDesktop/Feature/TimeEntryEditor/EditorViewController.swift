@@ -552,4 +552,8 @@ extension EditorViewController: DatePickerViewDelegate {
     func isTimeEntryRunning(_ sender: DatePickerView) -> Bool {
         return timeEntry.isRunning()
     }
+
+    func shouldOpenCalendar(_ sender: DatePickerView) -> Bool {
+        return true
+    }
 }
