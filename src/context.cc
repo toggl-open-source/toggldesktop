@@ -648,6 +648,10 @@ void Context::updateUI(const UIElements &what) {
         }
 
         if (what.display_time_entries && user_) {
+            if (what.open_time_entry_list) {
+                UI()->resetTimeEntryGUID();
+            }
+
             // Get a sorted list of time entries
             std::vector<TimeEntry *> time_entries =
                 user_->related.VisibleTimeEntries();
