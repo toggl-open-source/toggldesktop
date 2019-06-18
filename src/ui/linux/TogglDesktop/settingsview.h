@@ -14,8 +14,9 @@ class SettingsView : public QObject {
  public:
     explicit SettingsView(QObject *parent = 0);
 
-    static SettingsView *importOne(TogglSettingsView *view) {
+    static SettingsView *importOne(const TogglSettingsView *view) {
         SettingsView *result = new SettingsView();
+        /*
         result->AutodetectProxy = view->AutodetectProxy;
         result->UseProxy = view->UseProxy;
         result->ProxyHost = QString(view->ProxyHost);
@@ -46,6 +47,7 @@ class SettingsView : public QObject {
         result->RemindStartTime = QTime::fromString(view->RemindStarts, "HH:mm");
         result->RemindEndTime = QTime::fromString(view->RemindEnds, "HH:mm");
         result->StopEntryOnShutdownSleep = view->StopEntryOnShutdownSleep;
+        */
         return result;
     }
 

@@ -94,7 +94,7 @@ void on_display_reminder(
 
 void on_display_time_entry_list(
     const bool_t open,
-    TogglTimeEntryView *first,
+    const TogglTimeEntryView *first,
     const bool_t show_load_more_button) {
     if (open) {
         TogglApi::instance->aboutToDisplayTimeEntryList();
@@ -106,44 +106,44 @@ void on_display_time_entry_list(
 }
 
 void on_display_time_entry_autocomplete(
-    TogglAutocompleteView *first) {
+    const TogglAutocompleteView *first) {
     TogglApi::instance->displayTimeEntryAutocomplete(
         AutocompleteView::importAll(first));
 }
 
 void on_display_mini_timer_autocomplete(
-    TogglAutocompleteView *first) {
+    const TogglAutocompleteView *first) {
     TogglApi::instance->displayMinitimerAutocomplete(
         AutocompleteView::importAll(first));
 }
 
 void on_display_project_autocomplete(
-    TogglAutocompleteView *first) {
+    const TogglAutocompleteView *first) {
     TogglApi::instance->displayProjectAutocomplete(
         AutocompleteView::importAll(first));
 }
 
 void on_display_workspace_select(
-    TogglGenericView *first) {
+    const TogglGenericView *first) {
     TogglApi::instance->displayWorkspaceSelect(
         GenericView::importAll(first));
 }
 
 void on_display_client_select(
-    TogglGenericView *first) {
+    const TogglGenericView *first) {
     TogglApi::instance->displayClientSelect(
         GenericView::importAll(first));
 }
 
 void on_display_tags(
-    TogglGenericView *first) {
+    const TogglGenericView *first) {
     TogglApi::instance->displayTags(
         GenericView::importAll(first));
 }
 
 void on_display_time_entry_editor(
     const bool_t open,
-    TogglTimeEntryView *te,
+    const TogglTimeEntryView *te,
     const char *focused_field_name) {
     if (open) {
         TogglApi::instance->aboutToDisplayTimeEntryEditor();
@@ -156,14 +156,14 @@ void on_display_time_entry_editor(
 
 void on_display_settings(
     const bool_t open,
-    TogglSettingsView *settings) {
+    const TogglSettingsView *settings) {
     TogglApi::instance->displaySettings(
         open,
         SettingsView::importOne(settings));
 }
 
 void on_display_timer_state(
-    TogglTimeEntryView *te) {
+    const TogglTimeEntryView *te) {
     if (te) {
         TogglApi::instance->displayRunningTimerState(
             TimeEntryView::importOne(te));
@@ -189,7 +189,7 @@ void on_display_idle_notification(
 
 
 void on_project_colors(
-    char *list[],
+    char * const list[],
     const uint64_t count)
 {
     QVector<char *> result;
@@ -202,7 +202,7 @@ void on_project_colors(
 }
 
 void on_countries(
-    TogglCountryView *first) {
+    const TogglCountryView *first) {
     TogglApi::instance->setCountries(
         CountryView::importAll(first));
 }

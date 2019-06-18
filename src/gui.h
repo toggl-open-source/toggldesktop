@@ -253,9 +253,9 @@ class Settings {
     bool OnTop;
     bool Reminder;
     bool RecordTimeline;
-    uint64_t IdleMinutes;
+    int64_t IdleMinutes;
     bool FocusOnShortcut;
-    uint64_t ReminderMinutes;
+    int64_t ReminderMinutes;
     bool ManualMode;
     bool AutodetectProxy;
     bool RemindMon;
@@ -271,8 +271,8 @@ class Settings {
     bool OpenEditorOnShortcut;
     bool Pomodoro;
     bool PomodoroBreak;
-    uint64_t PomodoroMinutes;
-    uint64_t PomodoroBreakMinutes;
+    int64_t PomodoroMinutes;
+    int64_t PomodoroBreakMinutes;
     bool StopEntryOnShutdownSleep;
 
     bool operator == (const Settings& other) const;
@@ -285,7 +285,7 @@ class AutotrackerRule {
     , Term("")
     , ProjectName("") {}
 
-    int64_t ID;
+    uint64_t ID;
     std::string Term;
     std::string ProjectName;
 
@@ -302,11 +302,11 @@ class TimelineEvent {
     , EndTime(0)
     , Idle(false) {}
 
-    int64_t ID;
+    uint64_t ID;
     std::string Title;
     std::string Filename;
-    uint64_t StartTime;
-    uint64_t EndTime;
+    int64_t StartTime;
+    int64_t EndTime;
     bool Idle;
 
     bool operator == (const TimelineEvent& other) const;
@@ -333,6 +333,8 @@ class Country {
 };
 
 }  // namespace view
+
+#include "./toggl_api_views.h"
 
 class Client;
 class RelatedData;
@@ -424,8 +426,7 @@ class GUI : public SyncStateMonitor {
 
     void DisplayProjectColors();
 
-    void DisplayCountries(
-        std::vector<TogglCountryView> *items);
+    void DisplayCountries(std::vector<view::Country> &items);
 
     void DisplayWorkspaceSelect(
         const std::vector<view::Generic> &list);
@@ -434,7 +435,7 @@ class GUI : public SyncStateMonitor {
         const std::vector<view::Generic> &list);
 
     void DisplayTags(
-        const std::vector<view::Generic> &list);
+        std::vector<view::Generic> &list);
 
     void DisplayAutotrackerRules(
         const std::vector<view::AutotrackerRule> &autotracker_rules,

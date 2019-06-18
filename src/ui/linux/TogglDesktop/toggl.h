@@ -348,35 +348,36 @@ void on_display_reminder(
     const char *informative_text);
 void on_display_time_entry_list(
     const bool_t open,
-    TogglTimeEntryView *first);
+    const TogglTimeEntryView *first,
+    const bool_t show_load_more_button);
 void on_display_time_entry_autocomplete(
-    TogglAutocompleteView *first);
+    const TogglAutocompleteView *first);
 void on_display_mini_timer_autocomplete(
-    TogglAutocompleteView *first);
+    const TogglAutocompleteView *first);
 void on_display_project_autocomplete(
-    TogglAutocompleteView *first);
+    const TogglAutocompleteView *first);
 void on_display_workspace_select(
-    TogglGenericView *first);
+    const TogglGenericView *first);
 void on_display_client_select(
-    TogglGenericView *first);
+    const TogglGenericView *first);
 void on_display_tags(
-    TogglGenericView *first);
+    const TogglGenericView *first);
 void on_display_time_entry_editor(
     const bool_t open,
-    TogglTimeEntryView *te,
+    const TogglTimeEntryView *te,
     const char *focused_field_name);
 void on_display_settings(
     const bool_t open,
-    TogglSettingsView *settings);
+    const TogglSettingsView *settings);
 void on_display_timer_state(
-    TogglTimeEntryView *te);
+    const TogglTimeEntryView *te);
 void on_display_idle_notification(
     const char *guid,
     const char *since,
     const char *duration,
     const int64_t started);
 void on_project_colors(
-    const char_t *list[],
+    char_t * const list[],
     const uint64_t count);
 
 #endif  // SRC_UI_LINUX_TOGGLDESKTOP_TOGGL_H_

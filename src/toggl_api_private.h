@@ -44,48 +44,6 @@ std::string to_string(const char_t *s);
  */
 std::string trim_whitespace(const std::string &str);
 
-TogglGenericView *generic_to_view_item(
-    const toggl::view::Generic &c);
-
-TogglGenericView *generic_to_view_item_list(
-    const std::vector<toggl::view::Generic> &list);
-
-TogglAutotrackerRuleView *autotracker_rule_to_view_item(
-    const toggl::view::AutotrackerRule &model);
-
-void autotracker_view_item_clear(TogglAutotrackerRuleView *view);
-
-TogglAutocompleteView *autocomplete_item_init(
-    const toggl::view::Autocomplete &item);
-
-void view_item_clear(TogglGenericView *item);
-
-void autocomplete_item_clear(TogglAutocompleteView *item);
-
-TogglCountryView *country_list_init(
-    std::vector<TogglCountryView> *items);
-
-void country_item_clear(TogglCountryView *item);
-
-TogglCountryView *country_view_item_init(
-    const Json::Value v);
-
-TogglTimeEntryView *time_entry_view_item_init(
-    const toggl::view::TimeEntry &te);
-
-void time_entry_view_item_clear(TogglTimeEntryView *item);
-
-TogglSettingsView *settings_view_item_init(
-    const bool_t record_timeline,
-    const toggl::Settings &settings,
-    const bool_t use_proxy,
-    const toggl::Proxy &proxy);
-
-void settings_view_item_clear(TogglSettingsView *view);
-
-TogglAutocompleteView *autocomplete_list_init(
-    std::vector<toggl::view::Autocomplete> *items);
-
 TogglHelpArticleView *help_article_list_init(
     const std::vector<toggl::HelpArticle> &items);
 

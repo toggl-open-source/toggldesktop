@@ -14,8 +14,8 @@ class TimeEntryView : public QObject {
  public:
     explicit TimeEntryView(QObject *parent = 0);
 
-    static TimeEntryView *importOne(TogglTimeEntryView *view);
-    static QVector<TimeEntryView *> importAll(TogglTimeEntryView *first);
+    static TimeEntryView *importOne(const TogglTimeEntryView *view);
+    static QVector<TimeEntryView *> importAll(const TogglTimeEntryView *first);
 
     bool confirmlessDelete();
     const QString lastUpdate();

@@ -25,8 +25,9 @@ class AutocompleteView : public QObject {
     explicit AutocompleteView(QObject *parent = 0);
 
     static QVector<AutocompleteView *> importAll(
-        TogglAutocompleteView *first) {
+        const TogglAutocompleteView *first) {
         QVector<AutocompleteView *> result;
+        /*
         TogglAutocompleteView *it = first;
 
         AutocompleteView *currentWorkspace = nullptr;
@@ -38,6 +39,8 @@ class AutocompleteView : public QObject {
 
         while (it) {
             AutocompleteView *view = new AutocompleteView();
+            */
+            /*
             view->Text = QString(it->Text);
             view->Description = QString(it->Description);
             view->ProjectAndTaskLabel = QString(it->ProjectAndTaskLabel);
@@ -53,7 +56,8 @@ class AutocompleteView : public QObject {
             view->Type = it->Type;
             view->Billable = it->Billable;
             view->Tags = QString(it->Tags);
-
+            */
+/*
             if (!currentWorkspace || currentWorkspace->Description != view->WorkspaceName) {
                 currentWorkspace = new AutocompleteView();
                 currentWorkspace->Type = 13;
@@ -122,9 +126,9 @@ class AutocompleteView : public QObject {
             }
 
             result.push_back(view);
-            it = static_cast<TogglAutocompleteView *>(it->Next);
+            //it = static_cast<TogglAutocompleteView *>(it->Next);
         }
-
+*/
         return result;
     }
 

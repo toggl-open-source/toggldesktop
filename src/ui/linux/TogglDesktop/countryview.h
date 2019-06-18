@@ -13,11 +13,13 @@ class CountryView : public QObject
 public:
     explicit CountryView(QObject *parent = 0);
 
-    static QVector<CountryView *> importAll(TogglCountryView *first) {
+    static QVector<CountryView *> importAll(const TogglCountryView *first) {
         QVector<CountryView *> result;
-        TogglCountryView *it = first;
+        //TogglCountryView *it = first;
+        /*
         while (it) {
             CountryView *view = new CountryView();
+            /*
             view->ID = it->ID;
             view->VatApplicable = it->VatApplicable;
             view->Text = QString(it->Name);
@@ -27,7 +29,9 @@ public:
             view->Name = QString(it->VatRegex);
             view->Name = QString(it->Code);
             it = static_cast<TogglCountryView *>(it->Next);
-        }
+            */
+        //}
+
         return result;
     }
 

@@ -7,54 +7,58 @@
 TimeEntryView::TimeEntryView(QObject *parent) : QObject(parent) {
 }
 
-TimeEntryView *TimeEntryView::importOne(TogglTimeEntryView *view) {
+TimeEntryView *TimeEntryView::importOne(const TogglTimeEntryView *view) {
     TimeEntryView *result = new TimeEntryView();
-    result->DurationInSeconds = view->DurationInSeconds;
-    result->ProjectAndTaskLabel = view->ProjectAndTaskLabel;
-    result->Description = QString(view->Description);
-    result->ProjectLabel = QString(view->ProjectLabel);
-    result->TaskLabel = QString(view->TaskLabel);
-    result->ClientLabel = QString(view->ClientLabel);
-    result->WID = view->WID;
-    result->PID = view->PID;
-    result->TID = view->TID;
-    result->Duration = QString(view->Duration);
-    result->Color = QString(view->Color);
-    result->GUID = QString(view->GUID);
-    result->Billable = view->Billable;
-    result->Tags = QString(view->Tags);
-    result->Started = view->Started;
-    result->Ended = view->Ended;
-    result->StartTimeString = QString(view->StartTimeString);
-    result->EndTimeString = QString(view->EndTimeString);
-    result->UpdatedAt = view->UpdatedAt;
-    result->DateHeader = QString(view->DateHeader);
-    result->DateDuration = QString(view->DateDuration);
-    result->IsHeader = view->IsHeader;
-    result->CanSeeBillable = view->CanSeeBillable;
-    result->CanAddProjects = view->CanAddProjects;
-    result->DefaultWID = view->DefaultWID;
-    result->WorkspaceName = QString(view->WorkspaceName);
-    result->Error = QString(view->Error);
-    result->Unsynced = view->Unsynced;
+
+    result->DurationInSeconds = TogglTimeEntryView_DurationInSeconds(view);
+    result->ProjectAndTaskLabel = TogglTimeEntryView_ProjectAndTaskLabel(view);
+    result->Description = TogglTimeEntryView_Description(view);
+    result->ProjectLabel = TogglTimeEntryView_ProjectLabel(view);
+    result->TaskLabel = TogglTimeEntryView_TaskLabel(view);
+    result->ClientLabel = TogglTimeEntryView_ClientLabel(view);
+    result->WID = TogglTimeEntryView_WID(view);
+    result->PID = TogglTimeEntryView_PID(view);
+    result->TID = TogglTimeEntryView_TID(view);
+    result->Duration = TogglTimeEntryView_Duration(view);
+    result->Color = TogglTimeEntryView_Color(view);
+    result->GUID = TogglTimeEntryView_GUID(view);
+    result->Billable = TogglTimeEntryView_Billable(view);
+    result->Tags = TogglTimeEntryView_Tags(view);
+    result->Started = TogglTimeEntryView_Started(view);
+    result->Ended = TogglTimeEntryView_Ended(view);
+    result->StartTimeString = TogglTimeEntryView_StartTimeString(view);
+    result->EndTimeString = TogglTimeEntryView_EndTimeString(view);
+    result->UpdatedAt = TogglTimeEntryView_UpdatedAt(view);
+    result->DateHeader = TogglTimeEntryView_DateHeader(view);
+    result->DateDuration = TogglTimeEntryView_DateDuration(view);
+    result->IsHeader = TogglTimeEntryView_IsHeader(view);
+    result->CanSeeBillable = TogglTimeEntryView_CanSeeBillable(view);
+    result->CanAddProjects = TogglTimeEntryView_CanAddProjects(view);
+    result->DefaultWID = TogglTimeEntryView_DefaultWID(view);
+    result->WorkspaceName = TogglTimeEntryView_WorkspaceName(view);
+    result->Error = TogglTimeEntryView_Error(view);
+    result->Unsynced = TogglTimeEntryView_Unsynced(view);
     // Grouped entries mode
-    result->Group = view->Group;
-    result->GroupOpen = view->GroupOpen;
-    result->GroupName = QString(view->GroupName);
-    result->GroupDuration = QString(view->GroupDuration);
-    result->GroupItemCount = view->GroupItemCount;
+    result->Group = TogglTimeEntryView_Group(view);
+    result->GroupOpen = TogglTimeEntryView_GroupOpen(view);
+    result->GroupName = TogglTimeEntryView_GroupName(view);
+    result->GroupDuration = TogglTimeEntryView_GroupDuration(view);
+    result->GroupItemCount = TogglTimeEntryView_GroupItemCount(view);
 
     return result;
 }
 
 QVector<TimeEntryView *> TimeEntryView::importAll(
-    TogglTimeEntryView *first) {
+    const TogglTimeEntryView *first) {
     QVector<TimeEntryView *> result;
+    /*
     TogglTimeEntryView *view = first;
     while (view) {
         result.push_back(importOne(view));
-        view = static_cast<TogglTimeEntryView *>(view->Next);
+        view = nullptr;
+        //view = static_cast<TogglTimeEntryView *>(view->Next);
     }
+    */
     return result;
 }
 

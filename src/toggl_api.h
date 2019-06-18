@@ -11,6 +11,7 @@ extern "C" {
 #include <stdio.h>
 #include <stdint.h>
 
+
 #if defined(_WIN32) || defined(WIN32)
 #define TOGGL_EXPORT __declspec(dllexport)
 #else
@@ -25,62 +26,7 @@ extern "C" {
 #define bool_t int
 #endif
 
-#define VIEW(parent, view) \
-    typedef void* view;
-#define VIEW_GET(_parent, _view, _type, _property) \
-    _type _view ## _ ## _property(const _view *v);
-#define VIEW_DEDUCE(_parent, _view, _type, _property, ...) \
-    _type _view ## _ ## _property(const _view *v);
-
-
-VIEW(TimeEntry, TestTimeEntryView)
-VIEW_GET(TimeEntry, TestTimeEntryView, int64_t, DurationInSeconds)
-VIEW_GET(TimeEntry, TestTimeEntryView, const char_t*, Description)
-VIEW_GET(TimeEntry, TestTimeEntryView, const char_t*, ProjectAndTaskLabel)
-VIEW_GET(TimeEntry, TestTimeEntryView, const char_t*, TaskLabel)
-VIEW_GET(TimeEntry, TestTimeEntryView, const char_t*, ProjectLabel)
-VIEW_GET(TimeEntry, TestTimeEntryView, const char_t*, ClientLabel)
-VIEW_GET(TimeEntry, TestTimeEntryView, uint64_t, WID)
-VIEW_GET(TimeEntry, TestTimeEntryView, uint64_t, PID)
-VIEW_GET(TimeEntry, TestTimeEntryView, uint64_t, TID)
-VIEW_GET(TimeEntry, TestTimeEntryView, const char_t*, Duration)
-VIEW_GET(TimeEntry, TestTimeEntryView, const char_t*, Color)
-VIEW_GET(TimeEntry, TestTimeEntryView, const char_t*, GUID)
-VIEW_GET(TimeEntry, TestTimeEntryView, bool_t, Billable)
-VIEW_GET(TimeEntry, TestTimeEntryView, const char_t*, Tags)
-VIEW_GET(TimeEntry, TestTimeEntryView, int64_t, Started)
-VIEW_GET(TimeEntry, TestTimeEntryView, int64_t, Ended)
-VIEW_GET(TimeEntry, TestTimeEntryView, const char_t*, StartTimeString)
-VIEW_GET(TimeEntry, TestTimeEntryView, const char_t*, EndTimeString)
-VIEW_GET(TimeEntry, TestTimeEntryView, int64_t, UpdatedAt)
-VIEW_GET(TimeEntry, TestTimeEntryView, bool_t, DurOnly)
-// In case it's a header
-VIEW_GET(TimeEntry, TestTimeEntryView, const char_t*, DateHeader)
-VIEW_GET(TimeEntry, TestTimeEntryView, const char_t*, DateDuration)
-//VIEW_GET(TimeEntry, TestTimeEntryView, bool_t, IsHeader)
-// TODO
-VIEW_DEDUCE(TimeEntry, TestTimeEntryView, bool_t, IsHeader,
-    return false;
-)
-// Additional fields only when in time entry editor
-VIEW_GET(TimeEntry, TestTimeEntryView, bool_t, CanAddProjects)
-VIEW_GET(TimeEntry, TestTimeEntryView, bool_t, CanSeeBillable)
-VIEW_GET(TimeEntry, TestTimeEntryView, uint64_t, DefaultWID)
-VIEW_GET(TimeEntry, TestTimeEntryView, const char_t*, WorkspaceName)
-// If syncing a time entry ended with an error
-// the error is attached to the time entry
-VIEW_GET(TimeEntry, TestTimeEntryView, const char_t*, Error)
-VIEW_GET(TimeEntry, TestTimeEntryView, bool_t, Locked)
-// Indicates if time entry is not synced to server
-VIEW_GET(TimeEntry, TestTimeEntryView, bool_t, Unsynced)
-// Group attributes
-VIEW_GET(TimeEntry, TestTimeEntryView, bool_t, Group)
-VIEW_GET(TimeEntry, TestTimeEntryView, bool_t, GroupOpen)
-VIEW_GET(TimeEntry, TestTimeEntryView, const char_t*, GroupName)
-VIEW_GET(TimeEntry, TestTimeEntryView, const char_t*, GroupDuration)
-VIEW_GET(TimeEntry, TestTimeEntryView, uint64_t, GroupItemCount)
-// Next in list
-//VIEW_GET(TimeEntry, TestTimeEntryView, void *, Next)
+#include "./toggl_api_views.h"
 
 // Constants
 
@@ -142,7 +88,7 @@ VIEW_GET(TimeEntry, TestTimeEntryView, uint64_t, GroupItemCount)
         uint64_t GroupItemCount;
         // Next in list
         void *Next;
-    } TogglTimeEntryView;
+    } TogglTimeEntryViewOld;
 
     typedef struct {
         // This is what is displayed to user, includes project and task.
@@ -167,7 +113,7 @@ VIEW_GET(TimeEntry, TestTimeEntryView, uint64_t, GroupItemCount)
         char_t *WorkspaceName;
         uint64_t ClientID;
         void *Next;
-    } TogglAutocompleteView;
+    } TogglAutocompleteViewOld;
 
     typedef struct {
         uint64_t ID;
@@ -177,14 +123,14 @@ VIEW_GET(TimeEntry, TestTimeEntryView, uint64_t, GroupItemCount)
         char_t *WorkspaceName;
         bool_t Premium;
         void *Next;
-    } TogglGenericView;
+    } TogglGenericViewOld;
 
     typedef struct {
         char_t *Category;
         char_t *Name;
         char_t *URL;
         void *Next;
-    } TogglHelpArticleView;
+    } TogglHelpArticleViewOld;
 
     typedef struct {
         bool_t UseProxy;
@@ -220,14 +166,14 @@ VIEW_GET(TimeEntry, TestTimeEntryView, uint64_t, GroupItemCount)
         int64_t PomodoroMinutes;
         int64_t PomodoroBreakMinutes;
         bool_t StopEntryOnShutdownSleep;
-    } TogglSettingsView;
+    } TogglSettingsViewOld;
 
     typedef struct {
         int64_t ID;
         char_t *Term;
         char_t *ProjectAndTaskLabel;
         void *Next;
-    } TogglAutotrackerRuleView;
+    } TogglAutotrackerRuleViewOld;
 
     typedef struct {
         int64_t ID;
@@ -237,7 +183,7 @@ VIEW_GET(TimeEntry, TestTimeEntryView, uint64_t, GroupItemCount)
         int64_t EndTime;
         bool_t Idle;
         void *Next;
-    } TogglTimelineEventView;
+    } TogglTimelineEventViewOld;
 
     typedef struct {
         int64_t ID;
@@ -247,7 +193,7 @@ VIEW_GET(TimeEntry, TestTimeEntryView, uint64_t, GroupItemCount)
         char_t *VatPercentage;
         char_t *Code;
         void *Next;
-    } TogglCountryView;
+    } TogglCountryViewOld;
 
     // Callbacks that need to be implemented in UI
 
@@ -304,29 +250,29 @@ VIEW_GET(TimeEntry, TestTimeEntryView, uint64_t, GroupItemCount)
 
     typedef void (*TogglDisplayTimeEntryList)(
         const bool_t open,
-        TogglTimeEntryView *first,
+        const TogglTimeEntryView *first,
         const bool_t show_load_more_button);
 
     typedef void (*TogglDisplayAutocomplete)(
-        TogglAutocompleteView *first);
+        const TogglAutocompleteView *first);
 
     typedef void (*TogglDisplayHelpArticles)(
-        TogglHelpArticleView *first);
+        const TogglHelpArticleView *first);
 
     typedef void (*TogglDisplayViewItems)(
-        TogglGenericView *first);
+        const TogglGenericView *first);
 
     typedef void (*TogglDisplayTimeEntryEditor)(
         const bool_t open,
-        TogglTimeEntryView *te,
+        const TogglTimeEntryView *te,
         const char_t *focused_field_name);
 
     typedef void (*TogglDisplaySettings)(
         const bool_t open,
-        TogglSettingsView *settings);
+        const TogglSettingsView *settings);
 
     typedef void (*TogglDisplayTimerState)(
-        TogglTimeEntryView *te);
+        const TogglTimeEntryView *te);
 
     typedef void (*TogglDisplayIdleNotification)(
         const char_t *guid,
@@ -345,16 +291,16 @@ VIEW_GET(TimeEntry, TestTimeEntryView, uint64_t, GroupItemCount)
     typedef char_t * string_list_t[];
 
     typedef void (*TogglDisplayAutotrackerRules)(
-        TogglAutotrackerRuleView *first,
+        const TogglAutotrackerRuleView *first,
         const uint64_t title_count,
-        string_list_t title_list);
+        const string_list_t title_list);
 
     typedef void (*TogglDisplayProjectColors)(
-        string_list_t color_list,
+        const string_list_t color_list,
         const uint64_t color_count);
 
     typedef void (*TogglDisplayCountries)(
-        TogglCountryView *first);
+        const TogglCountryView *first);
 
     // Initialize/destroy an instance of the app
 
@@ -1093,5 +1039,7 @@ VIEW_GET(TimeEntry, TestTimeEntryView, uint64_t, GroupItemCount)
 #ifdef __cplusplus
 }
 #endif
+
+#include "./toggl_api_views.h"
 
 #endif  // SRC_TOGGL_API_H_

@@ -51,6 +51,7 @@ set(LIBRARY_SOURCE_FILES
     https_client.cc
     toggl_api.cc
     toggl_api_private.cc
+    toggl_api_views.cc
     model_change.cc
     obm_action.cc
     project.cc

@@ -14,18 +14,23 @@ class GenericView : public QObject {
  public:
     explicit GenericView(QObject *parent = 0);
 
-    static QVector<GenericView *> importAll(TogglGenericView *first) {
+    static QVector<GenericView *> importAll(const TogglGenericView *first) {
         QVector<GenericView *> result;
+        /*
         TogglGenericView *it = first;
         while (it) {
             GenericView *view = new GenericView();
+
             view->ID = it->ID;
             view->WID = it->WID;
             view->GUID = QString(it->GUID);
             view->Name = QString(it->Name);
             result.push_back(view);
             it = static_cast<TogglGenericView *>(it->Next);
+
+
         }
+        */
         return result;
     }
 

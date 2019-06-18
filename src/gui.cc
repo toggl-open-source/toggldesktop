@@ -98,13 +98,11 @@ void GUI::DisplayProjectColors() {
 }
 
 void GUI::DisplayCountries(
-    std::vector<TogglCountryView> *items) {
+    std::vector<toggl::view::Country> &items) {
     if (!on_display_countries_) {
         return;
     }
-    TogglCountryView *first = country_list_init(items);
-    on_display_countries_(first);
-    country_item_clear(first);
+    //on_display_countries_(items->data());
 }
 
 void GUI::DisplaySyncState(const Poco::Int64 state) {
@@ -372,9 +370,7 @@ void GUI::DisplayTimeEntryAutocomplete(
     std::vector<toggl::view::Autocomplete> *items) {
     logger().debug("DisplayTimeEntryAutocomplete");
 
-    TogglAutocompleteView *first = autocomplete_list_init(items);
-    on_display_time_entry_autocomplete_(first);
-    autocomplete_item_clear(first);
+    on_display_time_entry_autocomplete_(reinterpret_cast<TogglAutocompleteView*>(items->data()));
 }
 
 void GUI::DisplayHelpArticles(
@@ -394,18 +390,14 @@ void GUI::DisplayMinitimerAutocomplete(
     std::vector<toggl::view::Autocomplete> *items) {
     logger().debug("DisplayMinitimerAutocomplete");
 
-    TogglAutocompleteView *first = autocomplete_list_init(items);
-    on_display_mini_timer_autocomplete_(first);
-    autocomplete_item_clear(first);
+    on_display_mini_timer_autocomplete_(reinterpret_cast<TogglAutocompleteView*>(items->data()));
 }
 
 void GUI::DisplayProjectAutocomplete(
     std::vector<toggl::view::Autocomplete> *items) {
     logger().debug("DisplayProjectAutocomplete");
 
-    TogglAutocompleteView *first = autocomplete_list_init(items);
-    on_display_project_autocomplete_(first);
-    autocomplete_item_clear(first);
+    on_display_project_autocomplete_(reinterpret_cast<TogglAutocompleteView*>(items->data()));
 }
 
 void GUI::DisplayTimeEntryList(const bool open,
@@ -440,21 +432,21 @@ void GUI::DisplayTimeEntryList(const bool open,
     TogglTimeEntryView *first = nullptr;
     for (unsigned int i = 0; i < renderList.size(); i++) {
         view::TimeEntry te = renderList.at(i);
-        TogglTimeEntryView *item = time_entry_view_item_init(te);
+        //TogglTimeEntryView *item = time_entry_view_item_init(te);
+        /*
         item->Next = first;
         if (first && compare_string(item->DateHeader, first->DateHeader) != 0) {
             first->IsHeader = true;
         }
-        first = item;
+        */
+        //first = item;
     }
 
     if (first) {
-        first->IsHeader = true;
+        //first->IsHeader = true;
     }
 
     on_display_time_entry_list_(open, first, show_load_more_button);
-
-    time_entry_view_item_clear(first);
 
     stopwatch.stop();
     {
@@ -465,12 +457,10 @@ void GUI::DisplayTimeEntryList(const bool open,
     }
 }
 
-void GUI::DisplayTags(const std::vector<view::Generic> &list) {
+void GUI::DisplayTags(std::vector<view::Generic> &list) {
     logger().debug("DisplayTags");
 
-    TogglGenericView *first = generic_to_view_item_list(list);
-    on_display_tags_(first);
-    view_item_clear(first);
+    on_display_tags_(reinterpret_cast<TogglGenericView*>(list.data()));
 }
 
 void GUI::DisplayAutotrackerRules(
@@ -482,13 +472,14 @@ void GUI::DisplayAutotrackerRules(
     }
 
     // FIXME: dont re-render if cached items (models or view) are the same
+    /*
     TogglAutotrackerRuleView *first = nullptr;
     for (std::vector<view::AutotrackerRule>::const_iterator
             it = autotracker_rules.begin();
             it != autotracker_rules.end();
             ++it) {
         TogglAutotrackerRuleView *item = autotracker_rule_to_view_item(*it);
-        item->Next = first;
+        //item->Next = first;
         first = item;
     }
 
@@ -503,25 +494,24 @@ void GUI::DisplayAutotrackerRules(
     }
     delete[] title_list;
 
-    autotracker_view_item_clear(first);
+    */
+    on_display_autotracker_rules_(reinterpret_cast<const TogglAutotrackerRuleView*>(autotracker_rules.data()),
+                                  autotracker_rules.size(),
+                                  nullptr); // TODO!
 }
 
 void GUI::DisplayClientSelect(
     const std::vector<view::Generic> &list) {
     logger().debug("DisplayClientSelect");
 
-    TogglGenericView *first = generic_to_view_item_list(list);
-    on_display_client_select_(first);
-    view_item_clear(first);
+    on_display_client_select_(reinterpret_cast<const TogglGenericView*>(list.data()));
 }
 
 void GUI::DisplayWorkspaceSelect(
     const std::vector<view::Generic> &list) {
     logger().debug("DisplayWorkspaceSelect");
 
-    TogglGenericView *first = generic_to_view_item_list(list);
-    on_display_workspace_select_(first);
-    view_item_clear(first);
+    on_display_workspace_select_(reinterpret_cast<const TogglGenericView*>(list.data()));
 }
 
 void GUI::DisplayTimeEntryEditor(const bool open,
@@ -531,13 +521,10 @@ void GUI::DisplayTimeEntryEditor(const bool open,
     logger().debug(
         "DisplayTimeEntryEditor focused_field_name=" + focused_field_name);
 
-    TogglTimeEntryView *view = time_entry_view_item_init(te);
-
     char_t *field_s = copy_string(focused_field_name);
-    on_display_time_entry_editor_(open, view, field_s);
+    on_display_time_entry_editor_(open, reinterpret_cast<const TogglTimeEntryView*>(&te), field_s);
     free(field_s);
 
-    time_entry_view_item_clear(view);
 }
 
 void GUI::DisplayURL(const std::string &URL) {
@@ -582,23 +569,13 @@ void GUI::DisplaySettings(const bool open,
                           const Proxy &proxy) {
     logger().debug("DisplaySettings");
 
-    TogglSettingsView *view = settings_view_item_init(
-        record_timeline,
-        settings,
-        use_proxy,
-        proxy);
-
-    on_display_settings_(open, view);
-
-    settings_view_item_clear(view);
+    on_display_settings_(open, reinterpret_cast<const TogglSettingsView*>(&settings));
 }
 
 void GUI::DisplayTimerState(
     const view::TimeEntry &te) {
 
-    TogglTimeEntryView *view = time_entry_view_item_init(te);
-    on_display_timer_state_(view);
-    time_entry_view_item_clear(view);
+    on_display_timer_state_(reinterpret_cast<const TogglTimelineEventView*>(&te));
 
     logger().debug("DisplayTimerState");
 }

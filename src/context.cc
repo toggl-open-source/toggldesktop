@@ -5516,15 +5516,21 @@ error Context::PullCountries() {
             return error("Error parsing countries response body");
         }
 
-        std::vector<TogglCountryView> countries;
+        std::vector<toggl::view::Country> countries;
 
         for (unsigned int i = root.size(); i > 0; i--) {
-            TogglCountryView *item = country_view_item_init(root[i - 1]);
-            countries.push_back(*item);
+            toggl::view::Country item;
+            item.ID = root[i - 1]["id"].asUInt64();
+            item.Name = root[i - 1]["name"].asString();
+            item.VatApplicable = root[i - 1]["vat_applicable"].asBool();
+            item.VatRegex = root[i - 1]["vat_regex"].asString();
+            item.VatPercentage = root[i - 1]["vat_percentage"].asString();
+            item.Code = root[i - 1]["country_code"].asString();
+            countries.push_back(item);
         }
 
         // update country selectbox
-        UI()->DisplayCountries(&countries);
+        UI()->DisplayCountries(countries);
 
         //country_item_clear(first);
     } catch(const Poco::Exception& exc) {
