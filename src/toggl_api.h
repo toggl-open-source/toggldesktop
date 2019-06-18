@@ -25,6 +25,63 @@ extern "C" {
 #define bool_t int
 #endif
 
+#define VIEW(parent, view) \
+    typedef void* view;
+#define VIEW_GET(_parent, _view, _type, _property) \
+    _type _view ## _ ## _property(const _view *v);
+#define VIEW_DEDUCE(_parent, _view, _type, _property, ...) \
+    _type _view ## _ ## _property(const _view *v);
+
+
+VIEW(TimeEntry, TestTimeEntryView)
+VIEW_GET(TimeEntry, TestTimeEntryView, int64_t, DurationInSeconds)
+VIEW_GET(TimeEntry, TestTimeEntryView, const char_t*, Description)
+VIEW_GET(TimeEntry, TestTimeEntryView, const char_t*, ProjectAndTaskLabel)
+VIEW_GET(TimeEntry, TestTimeEntryView, const char_t*, TaskLabel)
+VIEW_GET(TimeEntry, TestTimeEntryView, const char_t*, ProjectLabel)
+VIEW_GET(TimeEntry, TestTimeEntryView, const char_t*, ClientLabel)
+VIEW_GET(TimeEntry, TestTimeEntryView, uint64_t, WID)
+VIEW_GET(TimeEntry, TestTimeEntryView, uint64_t, PID)
+VIEW_GET(TimeEntry, TestTimeEntryView, uint64_t, TID)
+VIEW_GET(TimeEntry, TestTimeEntryView, const char_t*, Duration)
+VIEW_GET(TimeEntry, TestTimeEntryView, const char_t*, Color)
+VIEW_GET(TimeEntry, TestTimeEntryView, const char_t*, GUID)
+VIEW_GET(TimeEntry, TestTimeEntryView, bool_t, Billable)
+VIEW_GET(TimeEntry, TestTimeEntryView, const char_t*, Tags)
+VIEW_GET(TimeEntry, TestTimeEntryView, int64_t, Started)
+VIEW_GET(TimeEntry, TestTimeEntryView, int64_t, Ended)
+VIEW_GET(TimeEntry, TestTimeEntryView, const char_t*, StartTimeString)
+VIEW_GET(TimeEntry, TestTimeEntryView, const char_t*, EndTimeString)
+VIEW_GET(TimeEntry, TestTimeEntryView, int64_t, UpdatedAt)
+VIEW_GET(TimeEntry, TestTimeEntryView, bool_t, DurOnly)
+// In case it's a header
+VIEW_GET(TimeEntry, TestTimeEntryView, const char_t*, DateHeader)
+VIEW_GET(TimeEntry, TestTimeEntryView, const char_t*, DateDuration)
+//VIEW_GET(TimeEntry, TestTimeEntryView, bool_t, IsHeader)
+// TODO
+VIEW_DEDUCE(TimeEntry, TestTimeEntryView, bool_t, IsHeader,
+    return false;
+)
+// Additional fields only when in time entry editor
+VIEW_GET(TimeEntry, TestTimeEntryView, bool_t, CanAddProjects)
+VIEW_GET(TimeEntry, TestTimeEntryView, bool_t, CanSeeBillable)
+VIEW_GET(TimeEntry, TestTimeEntryView, uint64_t, DefaultWID)
+VIEW_GET(TimeEntry, TestTimeEntryView, const char_t*, WorkspaceName)
+// If syncing a time entry ended with an error
+// the error is attached to the time entry
+VIEW_GET(TimeEntry, TestTimeEntryView, const char_t*, Error)
+VIEW_GET(TimeEntry, TestTimeEntryView, bool_t, Locked)
+// Indicates if time entry is not synced to server
+VIEW_GET(TimeEntry, TestTimeEntryView, bool_t, Unsynced)
+// Group attributes
+VIEW_GET(TimeEntry, TestTimeEntryView, bool_t, Group)
+VIEW_GET(TimeEntry, TestTimeEntryView, bool_t, GroupOpen)
+VIEW_GET(TimeEntry, TestTimeEntryView, const char_t*, GroupName)
+VIEW_GET(TimeEntry, TestTimeEntryView, const char_t*, GroupDuration)
+VIEW_GET(TimeEntry, TestTimeEntryView, uint64_t, GroupItemCount)
+// Next in list
+//VIEW_GET(TimeEntry, TestTimeEntryView, void *, Next)
+
 // Constants
 
 #define kOnlineStateOnline 0
