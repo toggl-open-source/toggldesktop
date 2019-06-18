@@ -22,8 +22,7 @@ typedef NS_ENUM (NSUInteger, WindowMode)
 };
 
 @interface MainWindowController : NSWindowController
-@property IBOutlet NSView *contentView;
-@property (strong) IBOutlet NSView *mainView;
+
 - (BOOL)isEditOpened;
 - (void)setWindowMode:(WindowMode)mode;
 

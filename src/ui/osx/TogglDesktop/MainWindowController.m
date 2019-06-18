@@ -20,10 +20,11 @@
 #import "TogglDesktop-Swift.h"
 
 @interface MainWindowController ()
+@property (nonatomic, weak) IBOutlet NSView *contentView;
+@property (nonatomic, weak) IBOutlet NSView *mainView;
 @property (nonatomic, strong) IBOutlet LoginViewController *loginViewController;
-@property (nonatomic, strong) IBOutlet TimeEntryListViewController *timeEntryListViewController;
 @property (nonatomic, strong) IBOutlet OverlayViewController *overlayViewController;
-@property (nonatomic, strong) IBOutlet TimelineViewController *timelineViewController;
+@property (nonatomic, strong) MainDashboardViewController *mainDashboardViewController;
 @property double troubleBoxDefaultHeight;
 @property (nonatomic, strong) SystemMessageView *messageView;
 
@@ -38,18 +39,12 @@ extern void *ctx;
 	self = [super initWithWindow:window];
 	if (self)
 	{
-		self.loginViewController = [[LoginViewController alloc]
-									initWithNibName:@"LoginViewController" bundle:nil];
-		self.timeEntryListViewController = [[TimeEntryListViewController alloc]
-											initWithNibName:@"TimeEntryListViewController" bundle:nil];
-		self.overlayViewController = [[OverlayViewController alloc]
-									  initWithNibName:@"OverlayViewController" bundle:nil];
-		self.timelineViewController = [[TimelineViewController alloc]
-									   initWithNibName:@"TimelineViewController" bundle:nil];
-
+		self.loginViewController = [[LoginViewController alloc] initWithNibName:@"LoginViewController" bundle:nil];
+		self.mainDashboardViewController = [[MainDashboardViewController alloc] initWithNibName:@"MainDashboardViewController" bundle:nil];
+		self.overlayViewController = [[OverlayViewController alloc] initWithNibName:@"OverlayViewController" bundle:nil];
 
 		[self.loginViewController.view setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
-		[self.timeEntryListViewController.view setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
+		[self.mainDashboardViewController.view setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
 		[self.overlayViewController.view setAutoresizingMask:NSViewWidthSizable | NSViewHeightSizable];
 
 		[[NSNotificationCenter defaultCenter] addObserver:self
@@ -134,9 +129,8 @@ extern void *ctx;
 		[self.loginViewController.view setFrame:self.contentView.bounds];
 		self.loginViewController.view.hidden = NO;
 
-		[self.timeEntryListViewController.view removeFromSuperview];
+		[self.mainDashboardViewController.view removeFromSuperview];
 		[self.overlayViewController.view removeFromSuperview];
-		[self.timelineViewController.view removeFromSuperview];
 	}
 }
 
@@ -151,19 +145,18 @@ extern void *ctx;
 	if (cmd.open)
 	{
 		if ([self.loginViewController.view superview] != nil
-			|| [self.timeEntryListViewController.view superview] == nil)
+			|| [self.mainDashboardViewController.view superview] == nil)
 		{
 			// Close error when loging in
 			[self closeError];
 			[self.loginViewController resetLoader];
 
 			self.loginViewController.view.hidden = YES;
-			[self.contentView addSubview:self.timeEntryListViewController.view];
-			[self.timeEntryListViewController.view setFrame:self.contentView.bounds];
+			[self.contentView addSubview:self.mainDashboardViewController.view];
+			[self.mainDashboardViewController.view setFrame:self.contentView.bounds];
 
 			[self.loginViewController.view removeFromSuperview];
 			[self.overlayViewController.view removeFromSuperview];
-			[self.timelineViewController.view removeFromSuperview];
 
 			[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kFocusTimer
 																		object:nil];
@@ -181,11 +174,7 @@ extern void *ctx;
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 	if (cmd.open)
 	{
-		[self.contentView addSubview:self.timelineViewController.view];
-		[self.timelineViewController.view setFrame:self.contentView.bounds];
-
-		[self.loginViewController.view removeFromSuperview];
-		[self.timeEntryListViewController.view removeFromSuperview];
+		[self.mainDashboardViewController timelineBtnOnTap:self];
 	}
 }
 
@@ -206,7 +195,7 @@ extern void *ctx;
 	[self.overlayViewController.view setFrame:self.contentView.bounds];
 
 	[self.loginViewController.view removeFromSuperview];
-	[self.timeEntryListViewController.view removeFromSuperview];
+	[self.mainDashboardViewController.view removeFromSuperview];
 }
 
 - (void)startDisplayError:(NSNotification *)notification
@@ -277,7 +266,7 @@ extern void *ctx;
 
 - (BOOL)isEditOpened
 {
-	return self.timeEntryListViewController.isEditorOpen;
+	return self.mainDashboardViewController.timeEntryController.isEditorOpen;
 }
 
 - (void)trackWindowSize

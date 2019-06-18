@@ -11,14 +11,27 @@ import Cocoa
 @IBDesignable
 final class FlatButton: NSButton {
 
+    // MARK: IBInspectable
+
     @IBInspectable var bgColor: NSColor?
     @IBInspectable var textColor: NSColor?
+    @IBInspectable var selectedTextColor: NSColor?
     @IBInspectable var cornerRadius: CGFloat = 0 {
         didSet {
             wantsLayer = true
             layer?.cornerRadius = cornerRadius
         }
     }
+
+    // MARK: Variables
+
+    var isSelected = false {
+        didSet {
+            drawTextColor()
+        }
+    }
+
+    // MARK: View
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -41,8 +54,10 @@ final class FlatButton: NSButton {
         if let textColor = textColor, let font = font {
             let style = NSMutableParagraphStyle()
             style.alignment = .center
+            let selectedColor = self.selectedTextColor ?? textColor
+            let drawTextColor = isSelected ? selectedColor : textColor
             let attributes: [NSAttributedString.Key: Any] = [
-                NSAttributedString.Key.foregroundColor: textColor,
+                NSAttributedString.Key.foregroundColor: drawTextColor,
                 NSAttributedString.Key.font: font,
                 NSAttributedString.Key.paragraphStyle: style]
             let attributedTitle = NSAttributedString(string: title, attributes: attributes)
