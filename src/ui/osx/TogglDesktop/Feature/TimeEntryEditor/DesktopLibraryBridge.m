@@ -180,9 +180,9 @@ void *ctx;
 
 #pragma mark - Timeline
 
-- (void) enableTimelineRecord:(BOOL) isEnabled
+- (void)enableTimelineRecord:(BOOL)isEnabled
 {
-    toggl_timeline_toggle_recording(ctx, isEnabled);
+	toggl_timeline_toggle_recording(ctx, isEnabled);
 }
 
 @end

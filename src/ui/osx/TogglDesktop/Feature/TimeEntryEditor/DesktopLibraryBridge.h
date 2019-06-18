@@ -65,7 +65,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - Timeline
 
-- (void) enableTimelineRecord:(BOOL) isEnabled;
+- (void)enableTimelineRecord:(BOOL)isEnabled;
 
 @end
 

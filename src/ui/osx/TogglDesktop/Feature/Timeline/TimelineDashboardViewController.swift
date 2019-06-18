@@ -25,6 +25,11 @@ class TimelineDashboardViewController: NSViewController {
         super.viewDidLoad()
 
         initCommon()
+        initNotifications()
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 
     @IBAction func recordSwitchOnChanged(_ sender: Any) {
@@ -40,6 +45,28 @@ extension TimelineDashboardViewController {
         datePickerContainerView.addSubview(datePickerView)
         datePickerView.edgesToSuperView()
         datePickerView.delegate = self
+    }
+
+    fileprivate func initNotifications() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(self.handleDisplaySettingNotification(_:)),
+                                               name: NSNotification.Name(kDisplaySettings),
+                                               object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(self.handleLoginNotification(_:)),
+                                               name: NSNotification.Name(kDisplayLogin),
+                                               object: nil)
+    }
+
+    @objc private func handleLoginNotification(_ noti: Notification) {
+        guard let cmd = noti.object as? DisplayCommand else { return }
+        recordSwitcher.isEnabled = cmd.user_id != 0
+    }
+
+    @objc private func handleDisplaySettingNotification(_ noti: Notification) {
+        guard let cmd = noti.object as? DisplayCommand,
+            let setting = cmd.settings else { return }
+        recordSwitcher.setOn(isOn: setting.timeline_recording_enabled, animated: false)
     }
 }
 
