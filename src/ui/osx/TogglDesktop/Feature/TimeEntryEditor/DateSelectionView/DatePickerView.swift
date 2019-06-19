@@ -14,6 +14,9 @@ protocol DatePickerViewDelegate: class {
     func datePickerShouldClose(_ sender: DatePickerView)
     func isTimeEntryRunning(_ sender: DatePickerView) -> Bool
     func shouldOpenCalendar(_ sender: DatePickerView) -> Bool
+
+    func datePickerDidTapPreviousDate(_ sender: DatePickerView)
+    func datePickerDidTapNextDate(_ sender: DatePickerView)
 }
 
 final class DatePickerView: NSView {
@@ -88,6 +91,7 @@ final class DatePickerView: NSView {
             !delegate.isTimeEntryRunning(self) else {
             return
         }
+        delegate.datePickerDidTapNextDate(self)
         delegate.datePickerOnChanged(self, date: nextDate)
     }
 
@@ -97,6 +101,7 @@ final class DatePickerView: NSView {
             !delegate.isTimeEntryRunning(self) else {
             return
         }
+        delegate.datePickerDidTapPreviousDate(self)
         delegate.datePickerOnChanged(self, date: previousDate)
     }
 }

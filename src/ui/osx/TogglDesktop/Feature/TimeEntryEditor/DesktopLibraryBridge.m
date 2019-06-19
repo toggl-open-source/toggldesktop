@@ -185,4 +185,14 @@ void *ctx;
 	toggl_timeline_toggle_recording(ctx, isEnabled);
 }
 
+- (void)timelineSetPreviousDate
+{
+	toggl_view_timeline_prev_day(ctx);
+}
+
+- (void)timelineSetNextDate
+{
+	toggl_view_timeline_next_day(ctx);
+}
+
 @end

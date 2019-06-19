@@ -78,7 +78,7 @@ extension TimelineDashboardViewController {
 // MARK: DatePickerViewDelegate
 
 extension TimelineDashboardViewController: DatePickerViewDelegate {
-    
+
     func datePickerOnChanged(_ sender: DatePickerView, date: Date) {
 
     }
@@ -93,5 +93,13 @@ extension TimelineDashboardViewController: DatePickerViewDelegate {
 
     func shouldOpenCalendar(_ sender: DatePickerView) -> Bool {
         return false
+    }
+
+    func datePickerDidTapPreviousDate(_ sender: DatePickerView) {
+        DesktopLibraryBridge.shared().timelineSetPreviousDate()
+    }
+
+    func datePickerDidTapNextDate(_ sender: DatePickerView) {
+        DesktopLibraryBridge.shared().timelineSetNextDate()
     }
 }

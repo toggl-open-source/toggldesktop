@@ -556,4 +556,10 @@ extension EditorViewController: DatePickerViewDelegate {
     func shouldOpenCalendar(_ sender: DatePickerView) -> Bool {
         return true
     }
+
+    func datePickerDidTapPreviousDate(_ sender: DatePickerView) {
+    }
+
+    func datePickerDidTapNextDate(_ sender: DatePickerView) {
+    }
 }
