@@ -13,6 +13,8 @@
 # undef VIEW_DEDUCE
 
 # define VIEW(_parent, _view) \
+    template<> _view const* convert(toggl::_parent* const& p) { return reinterpret_cast<_view const*>(p); } \
+    //template <> const _view* convert(const toggl::_parent *&p) { return nullptr; }  \
     //typedef toggl::_parent _view;
 # define VIEW_GET(_parent, _view, _type, _property) \
  _type _view ## _ ## _property(const _view *v) { \
@@ -72,7 +74,7 @@ VIEW_GET(view::TimeEntry, TogglTimeEntryView, const char_t*, GroupName)
 VIEW_GET(view::TimeEntry, TogglTimeEntryView, const char_t*, GroupDuration)
 VIEW_GET(view::TimeEntry, TogglTimeEntryView, uint64_t, GroupItemCount)
 // Next in list
-//VIEW_GET(view::TimeEntry, TogglTimeEntryView, void *, Next)
+VIEW_GET(view::TimeEntry, TogglTimeEntryView, const TogglTimeEntryView *, Next)
 
 VIEW(view::Autocomplete, TogglAutocompleteView)
 // This is what is displayed to user, includes project and task.
@@ -96,7 +98,7 @@ VIEW_GET(view::Autocomplete, TogglAutocompleteView, bool_t, Billable)
 VIEW_GET(view::Autocomplete, TogglAutocompleteView, const char_t*, Tags)
 VIEW_GET(view::Autocomplete, TogglAutocompleteView, const char_t*, WorkspaceName)
 VIEW_GET(view::Autocomplete, TogglAutocompleteView, uint64_t, ClientID)
-//VIEW_GET(view::Autocomplete, TogglAutocompleteView, void*, Next)
+VIEW_GET(view::Autocomplete, TogglAutocompleteView, const TogglAutocompleteView*, Next)
 
 VIEW(view::Generic, TogglGenericView)
 VIEW_GET(view::Generic, TogglGenericView, uint64_t, ID)
@@ -105,13 +107,13 @@ VIEW_GET(view::Generic, TogglGenericView, const char_t*, GUID)
 VIEW_GET(view::Generic, TogglGenericView, const char_t*, Name)
 VIEW_GET(view::Generic, TogglGenericView, const char_t*, WorkspaceName)
 VIEW_GET(view::Generic, TogglGenericView, bool_t, Premium)
-//VIEW_GET(view::Generic, TogglGenericView, void*, Next)
+VIEW_GET(view::Generic, TogglGenericView, const TogglGenericView*, Next)
 
 VIEW(HelpArticle, TogglHelpArticleView)
 //VIEW_GET(HelpArticle, TogglHelpArticleView, const char_t*, Category)
 VIEW_GET(HelpArticle, TogglHelpArticleView, const char_t*, Name)
 VIEW_GET(HelpArticle, TogglHelpArticleView, const char_t*, URL)
-//VIEW_GET(view::HelpArticle, TogglHelpArticleView, void*, Next)
+//VIEW_GET(view::HelpArticle, TogglHelpArticleView, TogglHelpArticleView*, Next)
 
 VIEW(view::Settings, TogglSettingsView)
 VIEW_GET(view::Settings, TogglSettingsView, bool_t, UseProxy)
@@ -152,7 +154,7 @@ VIEW(view::AutotrackerRule, TogglAutotrackerRuleView)
 VIEW_GET(view::AutotrackerRule, TogglAutotrackerRuleView, uint64_t, ID)
 VIEW_GET(view::AutotrackerRule, TogglAutotrackerRuleView, const char_t*, Term)
 //VIEW_GET(view::AutotrackerRule, TogglAutotrackerRuleView, const char_t*, ProjectAndTaskLabel)
-//VIEW_GET(view::AutotrackerRule, TogglAutotrackerRuleView, void*, Next)
+VIEW_GET(view::AutotrackerRule, TogglAutotrackerRuleView, const TogglAutotrackerRuleView*, Next)
 
 VIEW(view::TimelineEvent, TogglTimelineEventView)
 VIEW_GET(view::TimelineEvent, TogglTimelineEventView, uint64_t, ID)
@@ -161,7 +163,7 @@ VIEW_GET(view::TimelineEvent, TogglTimelineEventView, const char_t*, Filename)
 VIEW_GET(view::TimelineEvent, TogglTimelineEventView, int64_t, StartTime)
 VIEW_GET(view::TimelineEvent, TogglTimelineEventView, int64_t, EndTime)
 VIEW_GET(view::TimelineEvent, TogglTimelineEventView, bool_t, Idle)
-//VIEW_GET(view::TimelineEvent, TogglTimelineEventView, void*, Next)
+VIEW_GET(view::TimelineEvent, TogglTimelineEventView, const TogglTimelineEventView*, Next)
 
 VIEW(view::Country, TogglCountryView)
 VIEW_GET(view::Country, TogglCountryView, uint64_t, ID)
@@ -170,4 +172,4 @@ VIEW_GET(view::Country, TogglCountryView, bool_t, VatApplicable)
 VIEW_GET(view::Country, TogglCountryView, const char_t*, VatRegex)
 VIEW_GET(view::Country, TogglCountryView, const char_t*, VatPercentage)
 VIEW_GET(view::Country, TogglCountryView, const char_t*, Code)
-//VIEW_GET(view::Country, TogglCountryView, void*, Next)
+VIEW_GET(view::Country, TogglCountryView, const TogglCountryView*, Next)
