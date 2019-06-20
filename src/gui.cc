@@ -481,22 +481,18 @@ void GUI::DisplayAutotrackerRules(
         //item->Next = first;
         first = item;
     }
+    */
 
     uint64_t title_count = titles.size();
     char_t **title_list = new char_t *[title_count];
     for (uint64_t i = 0; i < title_count; i++) {
         title_list[i] = copy_string(titles[i]);
     }
-    on_display_autotracker_rules_(first, title_count, title_list);
+    on_display_autotracker_rules_(reinterpret_cast<const TogglAutotrackerRuleView*>(autotracker_rules.data()), title_count, title_list);
     for (uint64_t i = 0; i < title_count; i++) {
         free(title_list[i]);
     }
     delete[] title_list;
-
-    */
-    on_display_autotracker_rules_(reinterpret_cast<const TogglAutotrackerRuleView*>(autotracker_rules.data()),
-                                  autotracker_rules.size(),
-                                  nullptr); // TODO!
 }
 
 void GUI::DisplayClientSelect(
