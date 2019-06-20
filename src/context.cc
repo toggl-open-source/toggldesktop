@@ -853,6 +853,15 @@ void Context::updateUI(const UIElements &what) {
     }
 
     if (what.display_time_entries) {
+        // make a list out of the items
+        view::TimeEntry *previous = nullptr;
+        for (auto &i : time_entry_views) {
+            if (previous)
+                previous->Next = &i;
+            previous = &i;
+        }
+        if (previous)
+            previous->Next = nullptr;
         UI()->DisplayTimeEntryList(
             what.open_time_entry_list,
             time_entry_views,

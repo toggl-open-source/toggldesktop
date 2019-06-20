@@ -51,14 +51,11 @@ TimeEntryView *TimeEntryView::importOne(const TogglTimeEntryView *view) {
 QVector<TimeEntryView *> TimeEntryView::importAll(
     const TogglTimeEntryView *first) {
     QVector<TimeEntryView *> result;
-    /*
-    TogglTimeEntryView *view = first;
+    const TogglTimeEntryView *view = reinterpret_cast<const TogglTimeEntryView*>(first);
     while (view) {
         result.push_back(importOne(view));
-        view = nullptr;
-        //view = static_cast<TogglTimeEntryView *>(view->Next);
+        view = TogglTimeEntryView_Next(view);
     }
-    */
     return result;
 }
 

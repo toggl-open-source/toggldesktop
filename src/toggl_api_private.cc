@@ -60,6 +60,10 @@ int compare_string(const char_t *s1, const char_t *s2) {
 #endif
 }
 
+int compare_string(const std::string &s1, const std::string &s2) {
+    return compare_string(s1.c_str(), s2.c_str());
+}
+
 TogglHelpArticleView *help_artice_init(
     const toggl::HelpArticle &item) {
     TogglHelpArticleView *result = new TogglHelpArticleView();

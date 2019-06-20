@@ -429,24 +429,23 @@ void GUI::DisplayTimeEntryList(const bool open,
     }
 
     // Render
-    TogglTimeEntryView *first = nullptr;
+
+    view::TimeEntry *first = nullptr;
     for (unsigned int i = 0; i < renderList.size(); i++) {
-        view::TimeEntry te = renderList.at(i);
-        //TogglTimeEntryView *item = time_entry_view_item_init(te);
-        /*
-        item->Next = first;
-        if (first && compare_string(item->DateHeader, first->DateHeader) != 0) {
+        view::TimeEntry &te = renderList.at(i);
+        te.Next = first;
+        if (first && compare_string(te.DateHeader, first->DateHeader) != 0) {
             first->IsHeader = true;
         }
-        */
-        //first = item;
+        first = &te;
+        first->IsHeader = false;
     }
 
     if (first) {
-        //first->IsHeader = true;
+        first->IsHeader = true;
     }
 
-    on_display_time_entry_list_(open, first, show_load_more_button);
+    on_display_time_entry_list_(open, reinterpret_cast<TogglTimeEntryView*>(first), show_load_more_button);
 
     stopwatch.stop();
     {

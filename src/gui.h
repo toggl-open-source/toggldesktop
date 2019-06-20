@@ -27,6 +27,7 @@ class TimeEntry {
  public:
     TimeEntry()
     : Next(nullptr)
+    , IsHeader(false)
     , DurationInSeconds(0)
     , Description("")
     , ProjectAndTaskLabel("")
@@ -63,6 +64,7 @@ class TimeEntry {
     , GroupItemCount(0) {}
 
     TimeEntry *Next;
+    bool IsHeader;
 
     int64_t DurationInSeconds;
     std::string Description;
