@@ -63,6 +63,18 @@ namespace toggl {
 
 std::string Context::log_path_ = "";
 
+template <typename T>
+static void link_vector(std::vector<T> &v) {
+    T *previous = nullptr;
+    for (auto &i : v) {
+        if (previous)
+            i.Next = previous;
+        previous = &i;
+    }
+    if (previous)
+        previous->Next = nullptr;
+}
+
 Context::Context(const std::string &app_name, const std::string &app_version)
     : db_(nullptr)
 , user_(nullptr)
@@ -845,6 +857,7 @@ void Context::updateUI(const UIElements &what) {
     // Render data
     if (what.display_time_entry_editor
             && !editor_time_entry_view.GUID.empty()) {
+        link_vector(tag_views);
         UI()->DisplayTags(tag_views);
         UI()->DisplayTimeEntryEditor(
             what.open_time_entry_editor,
@@ -853,15 +866,7 @@ void Context::updateUI(const UIElements &what) {
     }
 
     if (what.display_time_entries) {
-        // make a list out of the items
-        view::TimeEntry *previous = nullptr;
-        for (auto &i : time_entry_views) {
-            if (previous)
-                previous->Next = &i;
-            previous = &i;
-        }
-        if (previous)
-            previous->Next = nullptr;
+        link_vector(time_entry_views);
         UI()->DisplayTimeEntryList(
             what.open_time_entry_list,
             time_entry_views,
@@ -874,6 +879,7 @@ void Context::updateUI(const UIElements &what) {
             if (user_) {
                 user_->related.TimeEntryAutocompleteItems(&time_entry_autocompletes);
             }
+            link_vector(time_entry_autocompletes);
             UI()->DisplayTimeEntryAutocomplete(&time_entry_autocompletes);
         } else {
             Poco::Util::TimerTask::Ptr teTask =
@@ -887,6 +893,7 @@ void Context::updateUI(const UIElements &what) {
             if (user_) {
                 user_->related.MinitimerAutocompleteItems(&minitimer_autocompletes);
             }
+            link_vector(minitimer_autocompletes);
             UI()->DisplayMinitimerAutocomplete(&minitimer_autocompletes);
         } else {
             Poco::Util::TimerTask::Ptr mtTask =
@@ -896,10 +903,12 @@ void Context::updateUI(const UIElements &what) {
     }
 
     if (what.display_workspace_select) {
+        link_vector(workspace_views);
         UI()->DisplayWorkspaceSelect(workspace_views);
     }
 
     if (what.display_client_select) {
+        link_vector(client_views);
         UI()->DisplayClientSelect(client_views);
     }
 
@@ -913,6 +922,7 @@ void Context::updateUI(const UIElements &what) {
 
     if (what.display_autotracker_rules) {
         if (UI()->CanDisplayAutotrackerRules()) {
+            link_vector(autotracker_rule_views);
             UI()->DisplayAutotrackerRules(
                 autotracker_rule_views,
                 autotracker_title_views);
@@ -942,6 +952,7 @@ void Context::updateUI(const UIElements &what) {
             if (user_) {
                 user_->related.ProjectAutocompleteItems(&project_autocompletes);
             }
+            link_vector(project_autocompletes);
             UI()->DisplayProjectAutocomplete(&project_autocompletes);
         } else {
             Poco::Util::TimerTask::Ptr prTask =
@@ -1069,6 +1080,7 @@ void Context::onTimeEntryAutocompletes(Poco::Util::TimerTask&) {  // NOLINT
     if (user_) {
         user_->related.TimeEntryAutocompleteItems(&time_entry_autocompletes);
     }
+    link_vector(time_entry_autocompletes);
     UI()->DisplayTimeEntryAutocomplete(&time_entry_autocompletes);
 }
 
@@ -1077,6 +1089,7 @@ void Context::onMiniTimerAutocompletes(Poco::Util::TimerTask&) {  // NOLINT
     if (user_) {
         user_->related.MinitimerAutocompleteItems(&minitimer_autocompletes);
     }
+    link_vector(minitimer_autocompletes);
     UI()->DisplayMinitimerAutocomplete(&minitimer_autocompletes);
 }
 
@@ -1085,6 +1098,7 @@ void Context::onProjectAutocompletes(Poco::Util::TimerTask&) {  // NOLINT
     if (user_) {
         user_->related.ProjectAutocompleteItems(&project_autocompletes);
     }
+    link_vector(project_autocompletes);
     UI()->DisplayProjectAutocomplete(&project_autocompletes);
 }
 
@@ -5539,6 +5553,7 @@ error Context::PullCountries() {
         }
 
         // update country selectbox
+        link_vector(countries);
         UI()->DisplayCountries(countries);
 
         //country_item_clear(first);
