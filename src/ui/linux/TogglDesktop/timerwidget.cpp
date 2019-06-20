@@ -168,7 +168,7 @@ void TimerWidget::focusChanged(QWidget *old, QWidget *now) {
 
 void TimerWidget::displayRunningTimerState(
     TimeEntryView *te) {
-    guid = te->GUID;
+    guid = QString::fromStdString(te->GUID);
     timeEntry = te;
     selectedTaskId = te->TID;
     selectedProjectId = te->PID;
@@ -180,32 +180,32 @@ void TimerWidget::displayRunningTimerState(
     ui->start->setStyleSheet(
         "background-color: #e20000; color:'white'; font-weight: bold; border: none;");
 
-    QString description = (te->Description.length() > 0) ?
-                          te->Description : "(no description)";
+    QString description = (te->Description.size() > 0) ?
+                          QString::fromStdString(te->Description) : "(no description)";
 
     updateCoverLabel(description);
     ui->description->setEditText(description);
     ui->description->setEnabled(false);
 
-    ui->duration->setText(te->Duration);
+    ui->duration->setText(QString::fromStdString(te->Duration));
     ui->duration->setEnabled(false);
     ui->duration->setToolTip(
         QString("<p style='color:white;background-color:black;'>Started: " +
-                te->StartTimeString+"</p>"));
+                QString::fromStdString(te->StartTimeString) + "</p>"));
 
-    if (!te->ProjectLabel.isEmpty()) {
+    if (!te->ProjectLabel.empty()) {
         ui->projectFrame->setVisible(true);
         ui->deleteProject->setVisible(true);
-        setEllipsisTextToLabel(ui->project, te->ProjectLabel);
+        setEllipsisTextToLabel(ui->project, QString::fromStdString(te->ProjectLabel));
     }
     else {
         ui->deleteProject->setVisible(true);
         ui->projectFrame->setVisible(false);
     }
-    if (!te->TaskLabel.isEmpty()) {
+    if (!te->TaskLabel.empty()) {
         ui->taskFrame->setVisible(true);
         ui->deleteTask->setVisible(true);
-        setEllipsisTextToLabel(ui->task, te->TaskLabel);
+        setEllipsisTextToLabel(ui->task, QString::fromStdString(te->TaskLabel));
     }
     else {
         ui->deleteTask->setVisible(true);
@@ -213,21 +213,21 @@ void TimerWidget::displayRunningTimerState(
     }
 
     ui->billable->setVisible(te->Billable);
-    ui->tags->setVisible(!te->Tags.isEmpty());
+    ui->tags->setVisible(!te->Tags.empty());
     ui->tags->setToolTip(QString("<p style='color:white;background-color:black;'>" +
-                                 te->Tags + "</p>"));
+                                 QString::fromStdString(te->Tags) + "</p>"));
 
     duration = te->DurationInSeconds;
 
     if (te->Description.length() > 0) {
         ui->description->setToolTip(
             QString("<p style='color:white;background-color:black;'>" +
-                    te->Description + "</p>"));
+                    QString::fromStdString(te->Description) + "</p>"));
     }
     if (te->ProjectAndTaskLabel.length() > 0) {
         ui->project->setToolTip(
             QString("<p style='color:white;background-color:black;'>" +
-                    te->ProjectAndTaskLabel+"</p>"));
+                    QString::fromStdString(te->ProjectAndTaskLabel) + "</p>"));
     } else {
         ui->project->setToolTip(QString(""));
     }

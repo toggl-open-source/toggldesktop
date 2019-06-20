@@ -45,11 +45,11 @@ QVariant AutocompleteListModel::data(const QModelIndex &index, int role) const {
         if (view->Type == displayItem) {
             switch (displayItem) {
             case 2:
-                return view->ProjectLabel;
+                return QString::fromStdString(view->ProjectLabel);
             case 1:
-                return view->TaskLabel;
+                return QString::fromStdString(view->TaskLabel);
             default:
-                return view->Description;
+                return QString::fromStdString(view->Description);
             }
         }
         else {

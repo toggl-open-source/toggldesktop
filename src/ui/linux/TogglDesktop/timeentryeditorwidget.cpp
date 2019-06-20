@@ -135,7 +135,7 @@ void TimeEntryEditorWidget::displayClientSelect(
         if (workspaceID && workspaceID != view->WID) {
             continue;
         }
-        ui->newProjectClient->addItem(view->Name, QVariant::fromValue(view));
+        ui->newProjectClient->addItem(QString::fromStdString(view->Name), QVariant::fromValue(view));
     }
     clientSelectNeedsUpdate = false;
 }
@@ -177,7 +177,7 @@ void TimeEntryEditorWidget::displayWorkspaceSelect(
     }
     ui->newProjectWorkspace->clear();
     foreach(GenericView *view, workspaceSelectUpdate) {
-        ui->newProjectWorkspace->addItem(view->Name, QVariant::fromValue(view));
+        ui->newProjectWorkspace->addItem(QString::fromStdString(view->Name), QVariant::fromValue(view));
     }
     workspaceSelectNeedsUpdate = false;
 }
@@ -202,13 +202,13 @@ void TimeEntryEditorWidget::displayTimeEntryEditor(
     timeEntry = view;
 
     if (!ui->description->hasFocus()) {
-        ui->description->setEditText(view->Description);
+        ui->description->setEditText(QString::fromStdString(view->Description));
     }
     if (!ui->project->hasFocus()) {
-        ui->project->setEditText(view->ProjectAndTaskLabel);
+        ui->project->setEditText(QString::fromStdString(view->ProjectAndTaskLabel));
     }
     if (!ui->duration->hasFocus()) {
-        ui->duration->setText(view->Duration);
+        ui->duration->setText(QString::fromStdString(view->Duration));
     }
 
     if (open) {
@@ -237,7 +237,7 @@ void TimeEntryEditorWidget::displayTimeEntryEditor(
         }
     }
 
-    guid = view->GUID;
+    guid = QString::fromStdString(view->GUID);
     duration = view->DurationInSeconds;
 
     if (duration < 0) {
@@ -245,10 +245,10 @@ void TimeEntryEditorWidget::displayTimeEntryEditor(
     }
 
     if (!ui->start->hasFocus()) {
-        ui->start->setText(view->StartTimeString);
+        ui->start->setText(QString::fromStdString(view->StartTimeString));
     }
     if (!ui->stop->hasFocus()) {
-        ui->stop->setText(view->EndTimeString);
+        ui->stop->setText(QString::fromStdString(view->EndTimeString));
     }
     ui->stop->setVisible(duration >= 0);
     ui->timeSeparator->setVisible(duration >= 0);
@@ -267,7 +267,7 @@ void TimeEntryEditorWidget::displayTimeEntryEditor(
         ui->addNewProject->setVisible(false);
     }
 
-    QStringList tags = view->Tags.split("\t", QString::SkipEmptyParts);
+    QStringList tags = QString::fromStdString(view->Tags).split("\t", QString::SkipEmptyParts);
     tags.sort();
     previousTagList = tags.join("\t");
 
@@ -280,7 +280,7 @@ void TimeEntryEditorWidget::displayTimeEntryEditor(
         }
     }
 
-    ui->workspaceNameLabel->setText(view->WorkspaceName);
+    ui->workspaceNameLabel->setText(QString::fromStdString(view->WorkspaceName));
 }
 
 void TimeEntryEditorWidget::on_doneButton_clicked() {
@@ -373,7 +373,7 @@ void TimeEntryEditorWidget::on_newProjectWorkspace_currentIndexChanged(
 void TimeEntryEditorWidget::on_description_activated(int index) {
     AutocompleteView *view = ui->description->currentView();
     if (view) {
-        ui->description->setEditText(view->Description);
+        ui->description->setEditText(QString::fromStdString(view->Description));
         ui->project->setFocus();
         ui->description->setFocus();
         TogglApi::instance->setTimeEntryProject(guid,
@@ -384,7 +384,7 @@ void TimeEntryEditorWidget::on_description_activated(int index) {
             TogglApi::instance->setTimeEntryBillable(guid, view->Billable);
         }
 
-        if (!view->Tags.isEmpty() && ui->tags->count() > 0) {
+        if (!view->Tags.empty() && ui->tags->count() > 0) {
             bool tagsSet = false;
             for (int i = 0; i < ui->tags->count(); i++) {
                 QListWidgetItem *widgetItem = ui->tags->item(i);
@@ -394,7 +394,7 @@ void TimeEntryEditorWidget::on_description_activated(int index) {
                 }
             }
             if (!tagsSet) {
-                TogglApi::instance->setTimeEntryTags(guid, view->Tags);
+                TogglApi::instance->setTimeEntryTags(guid, QString::fromStdString(view->Tags));
             }
         }
     }
@@ -436,7 +436,7 @@ void TimeEntryEditorWidget::displayTags(
     ui->tags->clear();
     QStringList tagList;
     foreach(GenericView *view, tags) {
-        tagList << view->Name;
+        tagList << QString::fromStdString(view->Name);
     }
 
     QSet<QString> actuallyAddedTags;

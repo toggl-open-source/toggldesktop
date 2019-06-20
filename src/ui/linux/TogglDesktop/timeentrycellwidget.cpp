@@ -36,25 +36,25 @@ timeEntry(nullptr) {
 
 void TimeEntryCellWidget::display(TimeEntryView *view) {
     setLoadMore(false);
-    guid = view->GUID;
-    groupName = view->GroupName;
+    guid = QString::fromStdString(view->GUID);
+    groupName = QString::fromStdString(view->GroupName);
     timeEntry = view;
     description =
-        (view->Description.length() > 0) ?
-        view->Description : "(no description)";
-    project = view->ProjectAndTaskLabel;
+        (view->Description.size() > 0) ?
+        QString::fromStdString(view->Description) : "(no description)";
+    project = QString::fromStdString(view->ProjectAndTaskLabel);
 
     setEllipsisTextToLabel(ui->description, description);
     setEllipsisTextToLabel(ui->project, project);
-    ui->project->setStyleSheet("color: '" + getProjectColor(view->Color) + "'");
-    ui->duration->setText(view->Duration);
+    ui->project->setStyleSheet("color: '" + getProjectColor(QString::fromStdString(view->Color)) + "'");
+    ui->duration->setText(QString::fromStdString(view->Duration));
 
     ui->billable->setVisible(view->Billable);
-    ui->tags->setVisible(!view->Tags.isEmpty());
+    ui->tags->setVisible(!view->Tags.empty());
 
     ui->headerFrame->setVisible(view->IsHeader);
-    ui->date->setText(view->DateHeader);
-    ui->dateDuration->setText(view->DateDuration);
+    ui->date->setText(QString::fromStdString(view->DateHeader));
+    ui->dateDuration->setText(QString::fromStdString(view->DateDuration));
 
     ui->unsyncedicon->setVisible(view->Unsynced);
 
@@ -62,22 +62,22 @@ void TimeEntryCellWidget::display(TimeEntryView *view) {
             view->EndTimeString.length() > 0) {
         ui->duration->setToolTip(
             QString("<p style='color:black;background-color:white;'>" +
-                    view->StartTimeString + " - " +
-                    view->EndTimeString+"</p>"));
+                    QString::fromStdString(view->StartTimeString) + " - " +
+                    QString::fromStdString(view->EndTimeString) + "</p>"));
     }
 
     ui->tags->setToolTip(
         QString("<p style='color:black;background-color:white;'>" +
-                (view->Tags).replace(QString("\t"), QString(", ")) + "</p>"));
+                QString::fromStdString(view->Tags).replace(QString("\t"), QString(", ")) + "</p>"));
     if (view->Description.length() > 0) {
         ui->description->setToolTip(
             QString("<p style='color:white;background-color:black;'>" +
-                    view->Description + "</p>"));
+                    QString::fromStdString(view->Description) + "</p>"));
     }
     if (view->ProjectAndTaskLabel.length() > 0) {
         ui->project->setToolTip(
             QString("<p style='color:white;background-color:black;'>" +
-                    view->ProjectAndTaskLabel + "</p>"));
+                    QString::fromStdString(view->ProjectAndTaskLabel) + "</p>"));
     }
     setupGroupedMode(view);
 }

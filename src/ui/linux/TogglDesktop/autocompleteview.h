@@ -7,6 +7,7 @@
 #include <QVector>
 #include <QDebug>
 
+#include "gui.h"
 #include "./toggl_api.h"
 
 enum AutocompleteType {
@@ -18,17 +19,18 @@ enum AutocompleteType {
     AC_WORKSPACE = 13
 };
 
-class AutocompleteView : public QObject {
+class AutocompleteView : public QObject, public toggl::view::Autocomplete {
     Q_OBJECT
 
  public:
     explicit AutocompleteView(QObject *parent = 0);
+    explicit AutocompleteView(QObject *parent, const toggl::view::Autocomplete *view);
 
     static QVector<AutocompleteView *> importAll(
         const TogglAutocompleteView *first) {
         QVector<AutocompleteView *> result;
-        /*
-        TogglAutocompleteView *it = first;
+
+        const TogglAutocompleteView *it = first;
 
         AutocompleteView *currentWorkspace = nullptr;
         AutocompleteView *currentLevel1Header = nullptr;
@@ -38,26 +40,9 @@ class AutocompleteView : public QObject {
         uint64_t lastType = static_cast<uint64_t>(-1);
 
         while (it) {
-            AutocompleteView *view = new AutocompleteView();
-            */
-            /*
-            view->Text = QString(it->Text);
-            view->Description = QString(it->Description);
-            view->ProjectAndTaskLabel = QString(it->ProjectAndTaskLabel);
-            view->ProjectLabel = QString(it->ProjectLabel);
-            view->ClientLabel = QString(it->ClientLabel);
-            view->ProjectColor = QString(it->ProjectColor);
-            view->ClientID = it->ClientID;
-            view->TaskID = it->TaskID;
-            view->TaskLabel = it->TaskLabel;
-            view->ProjectID = it->ProjectID;
-            view->WorkspaceID = it->WorkspaceID;
-            view->WorkspaceName = QString(it->WorkspaceName);
-            view->Type = it->Type;
-            view->Billable = it->Billable;
-            view->Tags = QString(it->Tags);
-            */
-/*
+            const toggl::view::Autocomplete *v = reinterpret_cast<const toggl::view::Autocomplete*>(it);
+            AutocompleteView *view = new AutocompleteView(nullptr, v);
+
             if (!currentWorkspace || currentWorkspace->Description != view->WorkspaceName) {
                 currentWorkspace = new AutocompleteView();
                 currentWorkspace->Type = 13;
@@ -91,7 +76,7 @@ class AutocompleteView : public QObject {
                         currentLevel1Header->Description = "PROJECTS";
                         break;
                     default:
-                        currentLevel1Header->Description = QString("UNHANDLED TYPE %1").arg(view->Type);
+                        currentLevel1Header->Description = ("UNHANDLED TYPE " + view->Type);
                         break;
                     }
                     result.push_back(currentLevel1Header);
@@ -102,7 +87,7 @@ class AutocompleteView : public QObject {
                 currentLevel2Header = new AutocompleteView();
                 currentLevel2Header->Type = 12;
                 currentLevel2Header->ClientLabel = view->ClientLabel;
-                if (view->ClientLabel.isEmpty())
+                if (view->ClientLabel.empty())
                     currentLevel2Header->Description = "No client";
                 else
                     currentLevel2Header->Description = view->ClientLabel;
@@ -128,25 +113,9 @@ class AutocompleteView : public QObject {
             result.push_back(view);
             //it = static_cast<TogglAutocompleteView *>(it->Next);
         }
-*/
+
         return result;
     }
-
-    QString Text {};
-    QString Description {};
-    QString ProjectAndTaskLabel {};
-    QString ProjectLabel {};
-    QString ClientLabel {};
-    QString TaskLabel {};
-    QString WorkspaceName {};
-    QString ProjectColor {};
-    uint64_t TaskID { 0 };
-    uint64_t ProjectID { 0 };
-    uint64_t ClientID { 0 };
-    uint64_t WorkspaceID { 0 };
-    uint64_t Type { 0 };
-    bool Billable { false };
-    QString Tags {};
 
     QList<AutocompleteView*> _Children;
 };

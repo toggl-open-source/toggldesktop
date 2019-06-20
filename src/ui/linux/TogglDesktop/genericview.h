@@ -6,38 +6,26 @@
 #include <QObject>
 #include <QVector>
 
+#include "./gui.h"
 #include "./toggl_api.h"
 
-class GenericView : public QObject {
+class GenericView : public QObject, public toggl::view::Generic {
     Q_OBJECT
 
  public:
-    explicit GenericView(QObject *parent = 0);
+    explicit GenericView(QObject *parent = nullptr, const toggl::view::Generic *view = nullptr);
 
     static QVector<GenericView *> importAll(const TogglGenericView *first) {
         QVector<GenericView *> result;
-        /*
-        TogglGenericView *it = first;
+        const TogglGenericView *it = first;
         while (it) {
-            GenericView *view = new GenericView();
-
-            view->ID = it->ID;
-            view->WID = it->WID;
-            view->GUID = QString(it->GUID);
-            view->Name = QString(it->Name);
-            result.push_back(view);
-            it = static_cast<TogglGenericView *>(it->Next);
-
-
+            const toggl::view::Generic *v = reinterpret_cast<const toggl::view::Generic*>(it);
+            auto sv = new GenericView(nullptr, v);
+            result.push_back(sv);
+            it = TogglGenericView_Next(it);
         }
-        */
         return result;
     }
-
-    uint64_t ID;
-    uint64_t WID;
-    QString GUID;
-    QString Name;
 };
 
 #endif  // SRC_UI_LINUX_TOGGLDESKTOP_GENERICVIEW_H_

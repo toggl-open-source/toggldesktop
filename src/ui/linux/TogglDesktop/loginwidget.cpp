@@ -149,7 +149,7 @@ void LoginWidget::setCountries(
     ui->countryComboBox->clear();
     ui->countryComboBox->addItem("  -- Select country --   ");
     foreach(CountryView *view, list) {
-        ui->countryComboBox->addItem(view->Text, QVariant::fromValue(view));
+        ui->countryComboBox->addItem(QString::fromStdString(view->Name), QVariant::fromValue(view));
     }
 }
 

@@ -47,10 +47,10 @@ void PreferencesDialog::displaySettings(const bool open,
     ui->useSystemProxySettings->setChecked(settings->AutodetectProxy);
 
     ui->useProxy->setChecked(settings->UseProxy);
-    ui->proxyHost->setText(settings->ProxyHost);
+    ui->proxyHost->setText(QString::fromStdString(settings->ProxyHost));
     ui->proxyPort->setText(QString::number(settings->ProxyPort));
-    ui->proxyUsername->setText(settings->ProxyUsername);
-    ui->proxyPassword->setText(settings->ProxyPassword);
+    ui->proxyUsername->setText(QString::fromStdString(settings->ProxyUsername));
+    ui->proxyPassword->setText(QString::fromStdString(settings->ProxyPassword));
 
     ui->recordTimeline->setChecked(settings->RecordTimeline);  // user based!
 
@@ -85,16 +85,15 @@ void PreferencesDialog::displaySettings(const bool open,
 
     ui->focusAppOnShortcut->setChecked((settings->FocusOnShortcut));
 
-    ui->dayCheckbox_1->setChecked(settings->RemindOnMonday);
-    ui->dayCheckbox_2->setChecked(settings->RemindOnTuesday);
-    ui->dayCheckbox_3->setChecked(settings->RemindOnWednesday);
-    ui->dayCheckbox_4->setChecked(settings->RemindOnThursday);
-    ui->dayCheckbox_5->setChecked(settings->RemindOnFriday);
-    ui->dayCheckbox_6->setChecked(settings->RemindOnSaturday);
-    ui->dayCheckbox_7->setChecked(settings->RemindOnSunday);
-
-    ui->reminderStartTimeEdit->setTime(settings->RemindStartTime);
-    ui->reminderEndTimeEdit->setTime(settings->RemindEndTime);
+    ui->dayCheckbox_1->setChecked(settings->RemindMon);
+    ui->dayCheckbox_2->setChecked(settings->RemindTue);
+    ui->dayCheckbox_3->setChecked(settings->RemindWed);
+    ui->dayCheckbox_4->setChecked(settings->RemindThu);
+    ui->dayCheckbox_5->setChecked(settings->RemindFri);
+    ui->dayCheckbox_6->setChecked(settings->RemindSat);
+    ui->dayCheckbox_7->setChecked(settings->RemindSun);
+    ui->reminderStartTimeEdit->setTime(QTime::fromString(settings->RemindStarts.c_str(), "HH:mm"));
+    ui->reminderEndTimeEdit->setTime(QTime::fromString(settings->RemindEnds.c_str(), "HH:mm"));
 
     ui->stopEntry->setChecked(settings->StopEntryOnShutdownSleep);
 

@@ -113,17 +113,29 @@ void AutocompleteComboBox::onDropdownSelected(AutocompleteView *item) {
     if (item) {
         switch (item->Type) {
         case 0:
-            emit projectSelected(item->ProjectLabel, item->ProjectID, item->ProjectColor, item->TaskLabel, item->TaskID);
+            emit projectSelected(QString::fromStdString(item->ProjectLabel),
+                                 item->ProjectID,
+                                 QString::fromStdString(item->ProjectColor),
+                                 QString::fromStdString(item->TaskLabel),
+                                 item->TaskID);
             emit billableChanged(item->Billable);
-            emit tagsChanged(item->Tags);
-            emit timeEntrySelected(item->Text);
+            emit tagsChanged(QString::fromStdString(item->Tags));
+            emit timeEntrySelected(QString::fromStdString(item->Text));
             break;
         case 1:
-            emit projectSelected(item->ProjectLabel, item->ProjectID, item->ProjectColor, item->TaskLabel, item->TaskID);
+            emit projectSelected(QString::fromStdString(item->ProjectLabel),
+                                 item->ProjectID,
+                                 QString::fromStdString(item->ProjectColor),
+                                 QString::fromStdString(item->TaskLabel),
+                                 item->TaskID);
             emit billableChanged(item->Billable);
             break;
         case 2:
-            emit projectSelected(item->Text, item->ProjectID, item->ProjectColor, QString(), 0);
+            emit projectSelected(QString::fromStdString(item->Text),
+                                 item->ProjectID,
+                                 QString::fromStdString(item->ProjectColor),
+                                 QString(),
+                                 0);
             break;
         default:
             break;
@@ -168,15 +180,15 @@ bool AutocompleteProxyModel::filterAcceptsRow(int source_row, const QModelIndex 
         if (word.isEmpty() && words.count() > 1)
             continue;
         if (view->_Children.isEmpty()) {
-            if (view->Description.contains(word, Qt::CaseInsensitive))
+            if (QString::fromStdString(view->Description).contains(word, Qt::CaseInsensitive))
                     return true;
-            if (view->Text.contains(word, Qt::CaseInsensitive))
+            if (QString::fromStdString(view->Text).contains(word, Qt::CaseInsensitive))
                     return true;
         }
         for (auto v : view->_Children) {
-            if (v->Description.contains(word, Qt::CaseInsensitive))
+            if (QString::fromStdString(v->Description).contains(word, Qt::CaseInsensitive))
                     return true;
-            if (v->Text.contains(word, Qt::CaseInsensitive))
+            if (QString::fromStdString(v->Text).contains(word, Qt::CaseInsensitive))
                     return true;
         }
     }

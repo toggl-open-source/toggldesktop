@@ -161,8 +161,8 @@ void AutoCompleteItemDelegate::layoutProject(QPainter *painter, const QStyleOpti
     font.setPixelSize(12);
     QFontMetrics metrics(font);
     QPen colorPen;
-    if (!view->ProjectColor.isEmpty())
-        colorPen.setColor(QColor(view->ProjectColor));
+    if (!view->ProjectColor.empty())
+        colorPen.setColor(QColor(QString::fromStdString(view->ProjectColor)));
 
     // center the string vertically
     int topMargin = (24 - metrics.height()) / 2;
@@ -173,7 +173,7 @@ void AutoCompleteItemDelegate::layoutProject(QPainter *painter, const QStyleOpti
     // then lay out the project
     QTextLayout projectLayout;
     int projectWidth = lineWidth - leftMargin - rightMargin - 1;
-    QString elidedProject = metrics.elidedText(view->ProjectLabel, option.textElideMode, projectWidth);
+    QString elidedProject = metrics.elidedText(QString::fromStdString(view->ProjectLabel), option.textElideMode, projectWidth);
     projectLayout.setText(" • " + elidedProject);
     projectLayout.setFont(font);
     projectWidth = metrics.width(" • " + elidedProject) + 1;
@@ -210,7 +210,7 @@ void AutoCompleteItemDelegate::layoutTask(QPainter *painter, const QStyleOptionV
     // do line trimming
     QTextLayout taskLayout;
     int taskWidth = lineWidth - leftMargin - rightMargin - 1;
-    QString elidedTask = metrics.elidedText(view->TaskLabel, option.textElideMode, taskWidth);
+    QString elidedTask = metrics.elidedText(QString::fromStdString(view->TaskLabel), option.textElideMode, taskWidth);
     taskLayout.setText(elidedTask);
     taskLayout.setFont(font);
     taskWidth = metrics.width(elidedTask) + 1;
@@ -239,8 +239,8 @@ void AutoCompleteItemDelegate::layoutTimeEntry(QPainter *painter, const QStyleOp
     QFontMetrics metrics(font);
     QPen defaultPen(painter->pen());
     QPen colorPen(defaultPen);
-    if (!view->ProjectColor.isEmpty())
-        colorPen.setColor(QColor(view->ProjectColor));
+    if (!view->ProjectColor.empty())
+        colorPen.setColor(QColor(QString::fromStdString(view->ProjectColor)));
     QPen grayPen(defaultPen);
     grayPen.setColor(Qt::darkGray);
 
@@ -253,8 +253,8 @@ void AutoCompleteItemDelegate::layoutTimeEntry(QPainter *painter, const QStyleOp
     // first lay out the client (rightmost string)
     QTextLayout clientLayout;
     int clientWidth = 0;
-    if (!view->ClientLabel.isEmpty()) {
-        QString elidedClient = metrics.elidedText(view->ClientLabel, option.textElideMode, lineWidth / 3);
+    if (!view->ClientLabel.empty()) {
+        QString elidedClient = metrics.elidedText(QString::fromStdString(view->ClientLabel), option.textElideMode, lineWidth / 3);
         clientLayout.setText(elidedClient);
         clientLayout.setFont(font);
         clientWidth = metrics.width(elidedClient) + 1;
@@ -263,8 +263,8 @@ void AutoCompleteItemDelegate::layoutTimeEntry(QPainter *painter, const QStyleOp
     // then lay out the project
     QTextLayout projectLayout;
     int projectWidth = 0;
-    if (!view->ProjectLabel.isEmpty()) {
-        QString elidedProject = metrics.elidedText(view->ProjectLabel, option.textElideMode, lineWidth / 2);
+    if (!view->ProjectLabel.empty()) {
+        QString elidedProject = metrics.elidedText(QString::fromStdString(view->ProjectLabel), option.textElideMode, lineWidth / 2);
         projectLayout.setText(" • " + elidedProject);
         projectLayout.setFont(font);
         projectWidth = metrics.width(" • " + elidedProject) + 1;
@@ -275,7 +275,7 @@ void AutoCompleteItemDelegate::layoutTimeEntry(QPainter *painter, const QStyleOp
     // crop the potential length by the margins and client/project widths
     int descriptionWidth = lineWidth - projectWidth - clientWidth - leftMargin - rightMargin + 1;
     // metrics will do the ellipsis for us
-    QString elidedDescription = metrics.elidedText(view->Description, option.textElideMode, descriptionWidth);
+    QString elidedDescription = metrics.elidedText(QString::fromStdString(view->Description), option.textElideMode, descriptionWidth);
     // and now we measure the actual length of the ellided string so everything aligns nicely
     descriptionWidth = metrics.width(elidedDescription);
     descriptionLayout.setText(elidedDescription);
@@ -322,43 +322,48 @@ QString AutoCompleteItemDelegate::format(const AutocompleteView *view) const {
     QString transparent = "background-color: transparent;";
 
     // Format is: Description - TaskName · ProjectName - ClientName
+    QString description = QString::fromStdString(view->Description);
+    QString clientLabel = QString::fromStdString(view->ClientLabel);
+    QString taskLabel = QString::fromStdString(view->TaskLabel);
+    QString projectLabel = QString::fromStdString(view->ProjectLabel);
+    QString projectColor = QString::fromStdString(view->ProjectColor);
 
     switch (view->Type) {
     case 13: // Workspace row
-        return "<div width=320px style='width:320px;font-size:13px;color:#9e9e9e;text-align:center;background-color:transparent;font-weight:bold;margin:2px;padding:2px;'>" + view->Description + "</div><div width=320px height=1px style='background-color:#ececec'/>";
+        return "<div width=320px style='width:320px;font-size:13px;color:#9e9e9e;text-align:center;background-color:transparent;font-weight:bold;margin:2px;padding:2px;'>" + description + "</div><div width=320px height=1px style='background-color:#ececec'/>";
     case 11: // Category row
-        return "<div width=320px style='width:320px;font-size:12px;color:#9e9e9e;background-color:transparent;font-weight:500'>" + view->Description + "</div>";
+        return "<div width=320px style='width:320px;font-size:12px;color:#9e9e9e;background-color:transparent;font-weight:500'>" + description + "</div>";
     case 12: { // Client row / no project row
-        return "<div width=320px style='width:320px;font-size:12px;color:#9e9e9e;background-color:transparent;font-weight:500;margin-left:9px;'>" + view->Description + "</div>";
+        return "<div width=320px style='width:320px;font-size:12px;color:#9e9e9e;background-color:transparent;font-weight:500;margin-left:9px;'>" + description + "</div>";
     }
     case 2: { // Project items rows
-        label.append("<div style='font-size:12px;margin-left:18px;color:" + view->ProjectColor + ";'>• " + view->ProjectLabel + "</div>");
+        label.append("<div style='font-size:12px;margin-left:18px;color:" + projectColor + ";'>• " + projectLabel + "</div>");
         return label;
     }
     case 1: { // Task row
         QString row = QString("<div style='font-size:12px;margin-left:27px;background-color:transparent;color:gray'>");
-        row += view->TaskLabel;
+        row += taskLabel;
         row += "</div>";
         return row;
     }
     case 0: { // Item rows (projects/time entries)
         // !!! UNUSED
         QString table("<div style='margin-left:9px;font-size:12px;'>");
-        if (!view->Description.isEmpty())
-            table.append(view->Description + " ");
+        if (!description.isEmpty())
+            table.append(description + " ");
         if (view->TaskID)
-            table.append(view->TaskLabel + " ");
+            table.append(taskLabel + " ");
         //table.append("<br>");
         if (view->ProjectID)
-            table.append("<span style='color:" + view->ProjectColor + ";'> • " + view->ProjectLabel + " </span>");
+            table.append("<span style='color:" + projectColor + ";'> • " + projectLabel + " </span>");
         if (view->ClientID)
-            table.append("<span style='color:#9e9e9e;'> " + view->ClientLabel + "</span>");
+            table.append("<span style='color:#9e9e9e;'> " + clientLabel + "</span>");
         table.append("</div>");
         return table;
     }
     default:
         //ui->label->setStyleSheet(transparent + "padding-top:7px;padding-left:15px;font-size:9pt;");
-        return "<span style='background-color: transparent;font-size:13px;'>" + view->ProjectLabel + view->TaskLabel + view->ClientLabel + view->Description + "</span>";
+        return "<span style='background-color: transparent;font-size:13px;'>" + projectLabel + taskLabel + clientLabel + description + "</span>";
     }
 }
 

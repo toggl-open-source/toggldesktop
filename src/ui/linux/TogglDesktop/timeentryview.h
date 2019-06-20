@@ -7,53 +7,19 @@
 #include <QVector>
 
 #include "./toggl_api.h"
+#include "./gui.h"
 
-class TimeEntryView : public QObject {
+class TimeEntryView : public QObject, public toggl::view::TimeEntry {
     Q_OBJECT
 
  public:
-    explicit TimeEntryView(QObject *parent = 0);
+    explicit TimeEntryView(QObject *parent = nullptr, const toggl::view::TimeEntry* view = nullptr);
 
     static TimeEntryView *importOne(const TogglTimeEntryView *view);
     static QVector<TimeEntryView *> importAll(const TogglTimeEntryView *first);
 
     bool confirmlessDelete();
     const QString lastUpdate();
-
-    int64_t DurationInSeconds;
-    QString Description;
-    QString ProjectAndTaskLabel;
-    QString ProjectLabel;
-    QString TaskLabel;
-    QString ClientLabel;
-    uint64_t WID;
-    uint64_t PID;
-    uint64_t TID;
-    QString Duration;
-    QString Color;
-    QString GUID;
-    bool Billable;
-    QString Tags;
-    uint64_t Started;
-    uint64_t Ended;
-    QString StartTimeString;
-    QString EndTimeString;
-    uint64_t UpdatedAt;
-    QString DateHeader;
-    QString DateDuration;
-    bool IsHeader;
-    bool CanAddProjects;
-    bool CanSeeBillable;
-    uint64_t DefaultWID;
-    QString WorkspaceName;
-    QString Error;
-    bool Unsynced;
-    // Group mode items
-    bool Group;
-    bool GroupOpen;
-    QString GroupName;
-    QString GroupDuration;
-    u_int64_t GroupItemCount;
 };
 
 #endif  // SRC_UI_LINUX_TOGGLDESKTOP_TIMEENTRYVIEW_H_
