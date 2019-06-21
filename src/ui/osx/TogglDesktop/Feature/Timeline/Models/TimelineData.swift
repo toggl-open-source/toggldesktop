@@ -36,12 +36,8 @@ class TimelineData {
         activities = []
     }
 
-    convenience init(cmd: DisplayCommand) {
-        guard let timelines = cmd.timelineChunks as? [TimelineChunkView],
-            let timeEntries = cmd.timeEntries as? [TimeEntryViewItem] else {
-            fatalError("Incorrect data type for Timeline")
-        }
-        self.init(timelines, timeEntries: timeEntries, dateLabel: cmd.timelineDate)
+    convenience init(cmd: TimelineDisplayCommand) {
+        self.init(cmd.timelineChunks, timeEntries: cmd.timeEntries, dateLabel: cmd.timelineDate)
     }
 
     // MARK: Public

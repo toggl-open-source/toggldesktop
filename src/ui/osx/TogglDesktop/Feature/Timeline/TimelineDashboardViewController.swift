@@ -42,7 +42,10 @@ final class TimelineDashboardViewController: NSViewController {
         datePickerView.updateNextKeyView()
     }
 
-    func render(_ timeline: TimelineData) {
+    func render(with cmd: TimelineDisplayCommand) {
+        let timeline = TimelineData(cmd: cmd)
+        let date = Date(timeIntervalSince1970: cmd.start)
+        datePickerView.currentDate = date
         datasource.render(timeline)
     }
     

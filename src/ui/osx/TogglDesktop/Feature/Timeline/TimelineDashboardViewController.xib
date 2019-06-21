@@ -26,6 +26,14 @@
                         <customView translatesAutoresizingMaskIntoConstraints="NO" id="oFH-aL-e6h">
                             <rect key="frame" x="0.0" y="410" width="297" height="30"/>
                             <subviews>
+                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="JX7-EL-bRV">
+                                    <rect key="frame" x="106" y="8" width="85" height="14"/>
+                                    <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="TIME ENTRIES" id="ac2-oR-01d">
+                                        <font key="font" metaFont="systemMedium" size="11"/>
+                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                </textField>
                                 <customView translatesAutoresizingMaskIntoConstraints="NO" id="xXU-Yr-nTf">
                                     <rect key="frame" x="0.0" y="0.0" width="54" height="30"/>
                                     <constraints>
@@ -59,6 +67,8 @@
                                 <constraint firstAttribute="height" constant="30" id="N4N-S7-Kwl"/>
                                 <constraint firstItem="WO4-HV-33l" firstAttribute="top" secondItem="oFH-aL-e6h" secondAttribute="top" id="QOr-bg-ZRK"/>
                                 <constraint firstAttribute="bottom" secondItem="WO4-HV-33l" secondAttribute="bottom" id="RSH-hh-Roa"/>
+                                <constraint firstItem="JX7-EL-bRV" firstAttribute="centerY" secondItem="oFH-aL-e6h" secondAttribute="centerY" id="aCD-Ln-ggd"/>
+                                <constraint firstItem="JX7-EL-bRV" firstAttribute="centerX" secondItem="oFH-aL-e6h" secondAttribute="centerX" id="iBn-wo-nSb"/>
                             </constraints>
                         </customView>
                         <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DJx-ob-wM0">

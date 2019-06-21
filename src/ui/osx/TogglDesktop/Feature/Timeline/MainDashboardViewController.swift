@@ -71,9 +71,8 @@ final class MainDashboardViewController: NSViewController {
     }
 
     @objc func timelineDataNotification(_ noti: Notification) {
-        guard let cmd = noti.object as? DisplayCommand else { return }
-        let timeline = TimelineData(cmd: cmd)
-        timelineController.render(timeline)
+        guard let cmd = noti.object as? TimelineDisplayCommand else { return }
+        timelineController.render(with: cmd)
     }
 }
 

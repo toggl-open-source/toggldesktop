@@ -18,3 +18,4 @@
 #import "DisplayCommand.h"
 #import "TimelineChunkView.h"
 #import "TimelineEventView.h"
+#import "TimelineDisplayCommand.h"
