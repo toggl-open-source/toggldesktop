@@ -8,7 +8,16 @@
 
 import Cocoa
 
-class TimelineDatasource: NSObject {
+final class TimelineDatasource: NSObject {
+
+    fileprivate struct Constants {
+        static let TimeLabelCellID = NSUserInterfaceItemIdentifier("TimelineTimeLabelCell")
+        static let TimeLabelCellXIB = NSNib.Name("TimelineTimeLabelCell")
+        static let TimeEntryCellID = NSUserInterfaceItemIdentifier("TimelineTimeEntryCell")
+        static let TimeEntryCellXIB = NSNib.Name("TimelineTimeEntryCell")
+        static let ActivityCellID = NSUserInterfaceItemIdentifier("TimelineActivityCell")
+        static let ActivityCellXIB = NSNib.Name("TimelineActivityCell")
+    }
 
     // MARK: Variables
 
@@ -23,6 +32,9 @@ class TimelineDatasource: NSObject {
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.collectionViewLayout = TimelineFlowLayout()
+        collectionView.register(NSNib(nibNamed: Constants.TimeLabelCellXIB, bundle: nil), forItemWithIdentifier: Constants.TimeLabelCellID)
+        collectionView.register(NSNib(nibNamed: Constants.TimeEntryCellXIB, bundle: nil), forItemWithIdentifier: Constants.TimeEntryCellID)
+        collectionView.register(NSNib(nibNamed: Constants.ActivityCellXIB, bundle: nil), forItemWithIdentifier: Constants.ActivityCellID)
     }
 
     func render(_ timeline: TimelineData) {
@@ -34,14 +46,30 @@ class TimelineDatasource: NSObject {
 extension TimelineDatasource: NSCollectionViewDataSource, NSCollectionViewDelegateFlowLayout {
 
     func numberOfSections(in collectionView: NSCollectionView) -> Int {
-        return 3
+        guard let timeline = timeline else { return 0 }
+        return timeline.numberOfSections
     }
 
     func collectionView(_ collectionView: NSCollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 0
+        guard let timeline = timeline else { return 0 }
+        return timeline.numberOfItems(in: section)
     }
 
     func collectionView(_ collectionView: NSCollectionView, itemForRepresentedObjectAt indexPath: IndexPath) -> NSCollectionViewItem {
-        return NSCollectionViewItem()
+        guard let timeline = timeline,
+            let section = TimelineData.Section(rawValue: indexPath.section),
+            let item = timeline.item(at: indexPath) else { return NSCollectionViewItem() }
+
+        switch section {
+        case .timeLabel:
+            let cell = collectionView.makeItem(withIdentifier: Constants.TimeLabelCellID, for: indexPath) as! TimelineTimeLabelCell
+            return cell
+        case .timeEntry:
+            let cell = collectionView.makeItem(withIdentifier: Constants.TimeEntryCellID, for: indexPath) as! TimelineTimeEntryCell
+            return cell
+        case .activity:
+            let cell = collectionView.makeItem(withIdentifier: Constants.ActivityCellID, for: indexPath) as! TimelineActivityCell
+            return cell
+        }
     }
 }

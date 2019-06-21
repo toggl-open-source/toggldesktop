@@ -10,7 +10,7 @@ import Foundation
 
 class TimelineData {
 
-    enum Section: Int {
+    enum Section: Int, CaseIterable {
         case timeLabel = 0
         case timeEntry
         case activity
@@ -22,10 +22,12 @@ class TimelineData {
     let timeEntries: [TimelineTimeEntry]
     let activities: [TimelineActivity]
     let date: String
+    let numberOfSections: Int
 
     // MARK: Init
 
     init(_ view: TimelineChunkView, dateLabel: String) {
+        numberOfSections = Section.allCases.count
         date = dateLabel
         timeChunks = []
         timeEntries = []
@@ -34,15 +36,27 @@ class TimelineData {
 
     // MARK: Public
 
-    func item<T>(at indexPath: IndexPath, type: T.Type) -> T? {
+    func numberOfItems(in section: Int) -> Int {
+        guard let section = Section(rawValue: section) else { return 0 }
+        switch section {
+        case .timeLabel:
+            return timeChunks.count
+        case .timeEntry:
+            return timeEntries.count
+        case .activity:
+            return activities.count
+        }
+    }
+
+    func item(at indexPath: IndexPath) -> Any? {
         guard let section = Section(rawValue: indexPath.section) else { return nil }
         switch section {
         case .timeLabel:
-            return timeChunks[safe: indexPath.item] as? T
+            return timeChunks[safe: indexPath.item]
         case .timeEntry:
-            return timeEntries[safe: indexPath.item] as? T
+            return timeEntries[safe: indexPath.item]
         case .activity:
-            return activities[safe: indexPath.item] as? T
+            return activities[safe: indexPath.item]
         }
     }
 }
