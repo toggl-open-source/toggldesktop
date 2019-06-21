@@ -14,7 +14,8 @@ class TimelineDashboardViewController: NSViewController {
 
     @IBOutlet weak var datePickerContainerView: NSView!
     @IBOutlet weak var recordSwitcher: OGSwitch!
-
+    @IBOutlet weak var collectionView: NSCollectionView!
+    
     // MARK: Variables
 
     lazy var datePickerView: DatePickerView = DatePickerView.xibView()

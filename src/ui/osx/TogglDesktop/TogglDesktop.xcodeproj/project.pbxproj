@@ -211,6 +211,12 @@
 		BA712EC221BF907200A2D8DD /* UndoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA712EC121BF907200A2D8DD /* UndoManager.swift */; };
 		BA712EC621BF913800A2D8DD /* TimeEntrySnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA712EC521BF913800A2D8DD /* TimeEntrySnapshot.swift */; };
 		BA712EC821BF9F1200A2D8DD /* UndoStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA712EC721BF9F1200A2D8DD /* UndoStack.swift */; };
+		BA75FF2322BCC1EA00D3F08C /* TimelineTimeLabelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA75FF2122BCC1EA00D3F08C /* TimelineTimeLabelCell.swift */; };
+		BA75FF2422BCC1EA00D3F08C /* TimelineTimeLabelCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA75FF2222BCC1EA00D3F08C /* TimelineTimeLabelCell.xib */; };
+		BA75FF2722BCC1FC00D3F08C /* TimelineTimeEntryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA75FF2522BCC1FC00D3F08C /* TimelineTimeEntryCell.swift */; };
+		BA75FF2822BCC1FC00D3F08C /* TimelineTimeEntryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA75FF2622BCC1FC00D3F08C /* TimelineTimeEntryCell.xib */; };
+		BA75FF2B22BCC20D00D3F08C /* TimelineActivityCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA75FF2922BCC20D00D3F08C /* TimelineActivityCell.swift */; };
+		BA75FF2C22BCC20D00D3F08C /* TimelineActivityCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA75FF2A22BCC20D00D3F08C /* TimelineActivityCell.xib */; };
 		BA763B7B2268601700DC245A /* PopoverRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA763B7A2268601700DC245A /* PopoverRootView.swift */; };
 		BA7B4BCB21C0EF8800B75B14 /* NSAlert+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = BA7B4BCA21C0EF8800B75B14 /* NSAlert+Utils.m */; };
 		BA7B4C3721C24B9D00B75B14 /* UndoTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = BA7B4C3621C24B9D00B75B14 /* UndoTextField.m */; };
@@ -886,6 +892,12 @@
 		BA712EC121BF907200A2D8DD /* UndoManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UndoManager.swift; sourceTree = "<group>"; };
 		BA712EC521BF913800A2D8DD /* TimeEntrySnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeEntrySnapshot.swift; sourceTree = "<group>"; };
 		BA712EC721BF9F1200A2D8DD /* UndoStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UndoStack.swift; sourceTree = "<group>"; };
+		BA75FF2122BCC1EA00D3F08C /* TimelineTimeLabelCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineTimeLabelCell.swift; sourceTree = "<group>"; };
+		BA75FF2222BCC1EA00D3F08C /* TimelineTimeLabelCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimelineTimeLabelCell.xib; sourceTree = "<group>"; };
+		BA75FF2522BCC1FC00D3F08C /* TimelineTimeEntryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineTimeEntryCell.swift; sourceTree = "<group>"; };
+		BA75FF2622BCC1FC00D3F08C /* TimelineTimeEntryCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimelineTimeEntryCell.xib; sourceTree = "<group>"; };
+		BA75FF2922BCC20D00D3F08C /* TimelineActivityCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineActivityCell.swift; sourceTree = "<group>"; };
+		BA75FF2A22BCC20D00D3F08C /* TimelineActivityCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimelineActivityCell.xib; sourceTree = "<group>"; };
 		BA763B7A2268601700DC245A /* PopoverRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopoverRootView.swift; sourceTree = "<group>"; };
 		BA7B4BC921C0EF8800B75B14 /* NSAlert+Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSAlert+Utils.h"; sourceTree = "<group>"; };
 		BA7B4BCA21C0EF8800B75B14 /* NSAlert+Utils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSAlert+Utils.m"; sourceTree = "<group>"; };
@@ -1594,6 +1606,7 @@
 		BA65A1FE22B7807300F895FD /* Timeline */ = {
 			isa = PBXGroup;
 			children = (
+				BA75FF0122BCC17000D3F08C /* Views */,
 				BA65A21E22B7808700F895FD /* TimelineDashboardViewController.swift */,
 				BA65A22022B7809300F895FD /* TimelineDashboardViewController.xib */,
 				BA65A22222B7823200F895FD /* MainDashboardViewController.swift */,
@@ -1666,6 +1679,19 @@
 				BA7B4C7B21C293E700B75B14 /* String+Optional.swift */,
 			);
 			path = Undo;
+			sourceTree = "<group>";
+		};
+		BA75FF0122BCC17000D3F08C /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				BA75FF2122BCC1EA00D3F08C /* TimelineTimeLabelCell.swift */,
+				BA75FF2222BCC1EA00D3F08C /* TimelineTimeLabelCell.xib */,
+				BA75FF2522BCC1FC00D3F08C /* TimelineTimeEntryCell.swift */,
+				BA75FF2622BCC1FC00D3F08C /* TimelineTimeEntryCell.xib */,
+				BA75FF2922BCC20D00D3F08C /* TimelineActivityCell.swift */,
+				BA75FF2A22BCC20D00D3F08C /* TimelineActivityCell.xib */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		BA7D332B2248940800B953A8 /* AutoComplete */ = {
@@ -2215,9 +2241,11 @@
 				BA0140482257080F000E5B91 /* TagCellView.xib in Resources */,
 				BA9C2DFA224C7E77002AD2A1 /* ProjectCreationView.xib in Resources */,
 				3C8979B71920B7B7007061E0 /* continue.pdf in Resources */,
+				BA75FF2822BCC1FC00D3F08C /* TimelineTimeEntryCell.xib in Resources */,
 				BA412C29224E196D003CA17A /* NoClientCellView.xib in Resources */,
 				74D1D25F17EB71C100E709B0 /* TimeEntryEditViewController.xib in Resources */,
 				3CDA2C581913A4E200A94967 /* icon-start-gray@2x.png in Resources */,
+				BA75FF2C22BCC20D00D3F08C /* TimelineActivityCell.xib in Resources */,
 				BA65A22122B7809300F895FD /* TimelineDashboardViewController.xib in Resources */,
 				7498D2481888B226001390B9 /* TimeEntryCell.xib in Resources */,
 				3C0A57191C22E12E00301D77 /* LICENSE.txt in Resources */,
@@ -2231,6 +2259,7 @@
 				74D1D27417EB72D900E709B0 /* TimerEditViewController.xib in Resources */,
 				74AA9475180909F50000539F /* GTMOAuth2Window.xib in Resources */,
 				3C1E013F19D2DAE300DBF9A5 /* dsa_pub.pem in Resources */,
+				BA75FF2422BCC1EA00D3F08C /* TimelineTimeLabelCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2309,6 +2338,7 @@
 				BA13D2112269BE2F00EB3833 /* DateInfo.swift in Sources */,
 				BA13D20E2269BAA600EB3833 /* DateCellViewItem.swift in Sources */,
 				BA712EC821BF9F1200A2D8DD /* UndoStack.swift in Sources */,
+				BA75FF2722BCC1FC00D3F08C /* TimelineTimeEntryCell.swift in Sources */,
 				BA0CEC5321BE528900F1BF01 /* TableViewDiffer.swift in Sources */,
 				BA13D2172269DE3400EB3833 /* NoVibrantPopoverView.swift in Sources */,
 				3C6B2488203E01D90063FC08 /* AutoCompleteTable.m in Sources */,
@@ -2334,6 +2364,7 @@
 				BA9C2E05224C84E7002AD2A1 /* ColorViewItem.swift in Sources */,
 				3C0A571E1C22E12E00301D77 /* MKColorWell.m in Sources */,
 				7438B3D318253CD2002AE43C /* MenuItemTags.m in Sources */,
+				BA75FF2322BCC1EA00D3F08C /* TimelineTimeLabelCell.swift in Sources */,
 				3C53D112224B373B00674DC8 /* TimelineViewController.m in Sources */,
 				3CE1CAC11C774F2B00D0ADD5 /* LoadMoreCell.m in Sources */,
 				3C53D143224B406600674DC8 /* TimelineEventView.m in Sources */,
@@ -2401,6 +2432,7 @@
 				BA65A25022B7A65D00F895FD /* DatePickerView.swift in Sources */,
 				74AA9474180909F50000539F /* GTMOAuth2SignIn.m in Sources */,
 				BA053659225DDDBB00C26E1F /* CustomFocusRingButton.swift in Sources */,
+				BA75FF2B22BCC20D00D3F08C /* TimelineActivityCell.swift in Sources */,
 				BA7D335E2248B48000B953A8 /* AutoCompleteTextField.swift in Sources */,
 				BA763B7B2268601700DC245A /* PopoverRootView.swift in Sources */,
 				3C07B75A193C88AE00ED6E6F /* NSCustomTimerComboBox.m in Sources */,
