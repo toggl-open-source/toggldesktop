@@ -18,6 +18,7 @@ class TimelineData {
 
     // MARK: Variables
 
+    let chunkViews: [TimelineChunkView]
     let timeChunks: [TimelineTimeChunk]
     let timeEntries: [TimelineTimeEntry]
     let activities: [TimelineActivity]
@@ -26,19 +27,21 @@ class TimelineData {
 
     // MARK: Init
 
-    init(_ chunkViews: [TimelineChunkView], dateLabel: String) {
+    init(_ chunkViews: [TimelineChunkView], timeEntries: [TimeEntryViewItem], dateLabel: String) {
+        self.chunkViews = chunkViews
         numberOfSections = Section.allCases.count
         date = dateLabel
         timeChunks = []
-        timeEntries = []
+        self.timeEntries = timeEntries.map { TimelineTimeEntry($0) }
         activities = []
     }
 
     convenience init(cmd: DisplayCommand) {
-        guard let timelines = cmd.timelineChunks as? [TimelineChunkView] else {
+        guard let timelines = cmd.timelineChunks as? [TimelineChunkView],
+            let timeEntries = cmd.timeEntries as? [TimeEntryViewItem] else {
             fatalError("Incorrect data type for Timeline")
         }
-        self.init(timelines, dateLabel: cmd.timelineDate)
+        self.init(timelines, timeEntries: timeEntries, dateLabel: cmd.timelineDate)
     }
 
     // MARK: Public

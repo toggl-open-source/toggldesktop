@@ -1689,7 +1689,8 @@ void on_time_entry_list(const bool_t open,
 
 void on_timeline(const bool_t open,
 				 const char_t *date,
-				 TogglTimelineChunkView *first)
+				 TogglTimelineChunkView *first,
+				 TogglTimeEntryView *first_entry)
 {
 	NSMutableArray *timelineChunks = [[NSMutableArray alloc] init];
 	TogglTimelineChunkView *it = first;
@@ -1702,6 +1703,18 @@ void on_timeline(const bool_t open,
 
 		it = it->Next;
 	}
+
+	// Get entries
+	NSMutableArray *timeEntries = [[NSMutableArray alloc] init];
+	TogglTimeEntryView *it_entry = first_entry;
+	while (it_entry)
+	{
+		TimeEntryViewItem *item = [[TimeEntryViewItem alloc] init];
+		[item load:it_entry];
+		[timeEntries addObject:item];
+		it_entry = it_entry->Next;
+	}
+
 	NSArray *reversed = [[timelineChunks reverseObjectEnumerator] allObjects];
 	NSMutableArray *reversedTimelineChunks = [NSMutableArray arrayWithArray:reversed];
 
@@ -1709,6 +1722,8 @@ void on_timeline(const bool_t open,
 	cmd.open = open;
 	cmd.timelineChunks = reversedTimelineChunks;
 	cmd.timelineDate = [NSString stringWithUTF8String:date];
+	cmd.timeEntries = [[[timeEntries reverseObjectEnumerator] allObjects] mutableCopy];
+
 	[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayTimeline
 														object:cmd];
 }

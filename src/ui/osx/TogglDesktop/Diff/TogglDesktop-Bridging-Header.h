@@ -17,3 +17,4 @@
 #import "TimerEditViewController.h"
 #import "DisplayCommand.h"
 #import "TimelineChunkView.h"
+#import "TimelineEventView.h"

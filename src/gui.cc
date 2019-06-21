@@ -494,6 +494,21 @@ void GUI::DisplayTimeline(
 
     TogglTimelineChunkView *first_chunk = nullptr;
 
+    // Get all entires in this day (no chunk, no overlap)
+    TogglTimeEntryView *first_entry = nullptr;
+    time_t start_day = datetime.timestamp().epochTime();
+    time_t end_day = start_day + 86400; // one day
+    for (unsigned int i = 0; i < entries_list.size(); i++) {
+        view::TimeEntry te = entries_list.at(i);
+        TogglTimeEntryView *item = time_entry_view_item_init(te);
+        time_t start_time_entry = Poco::Timestamp::fromEpochTime(item->Started).epochTime();
+
+        if (start_time_entry >= start_day && start_time_entry <= end_day) {
+            item->Next = first_entry;
+            first_entry = item;
+        }
+    }
+
     while (datetime.year() == TimelineDateAt().year()
             && datetime.month() == TimelineDateAt().month()
             && datetime.day() == TimelineDateAt().day()) {
@@ -604,7 +619,7 @@ void GUI::DisplayTimeline(
     }
 
     std::string formatted_date = Formatter::FormatDateHeader(TimelineDateAt());
-    on_display_timeline_(open, formatted_date.c_str(), first_chunk);
+    on_display_timeline_(open, formatted_date.c_str(), first_chunk, first_entry);
 
     timeline_chunk_view_clear(first_chunk);
 }

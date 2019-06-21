@@ -266,7 +266,8 @@ extern "C" {
     typedef void (*TogglDisplayTimeline)(
         const bool_t open,
         const char_t *date,
-        TogglTimelineChunkView *first);
+        TogglTimelineChunkView *first,
+        TogglTimeEntryView *first_entry);
 
     typedef void (*TogglDisplayAutocomplete)(
         TogglAutocompleteView *first);

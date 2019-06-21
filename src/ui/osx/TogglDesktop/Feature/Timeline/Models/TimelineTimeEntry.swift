@@ -10,4 +10,13 @@ import Foundation
 
 final class TimelineTimeEntry {
 
+    // MARK: Variables
+
+    let timeEntry: TimeEntryViewItem
+
+    // MARK: Init
+
+    init(_ timeEntry: TimeEntryViewItem) {
+        self.timeEntry = timeEntry
+    }
 }
