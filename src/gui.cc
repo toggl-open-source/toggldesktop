@@ -619,7 +619,7 @@ void GUI::DisplayTimeline(
     }
 
     std::string formatted_date = Formatter::FormatDateHeader(TimelineDateAt());
-    on_display_timeline_(open, formatted_date.c_str(), first_chunk, first_entry);
+    on_display_timeline_(open, formatted_date.c_str(), first_chunk, first_entry, start_day, end_day);
 
     timeline_chunk_view_clear(first_chunk);
 }

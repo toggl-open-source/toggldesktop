@@ -223,6 +223,7 @@
 		BA75FF3522BCC5C400D3F08C /* TimelineDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA75FF3422BCC5C400D3F08C /* TimelineDatasource.swift */; };
 		BA75FF3722BCC5FB00D3F08C /* TimelineFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA75FF3622BCC5FB00D3F08C /* TimelineFlowLayout.swift */; };
 		BA75FF3922BCC6F800D3F08C /* TimelineData.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA75FF3822BCC6F800D3F08C /* TimelineData.swift */; };
+		BA75FF3C22BCE94100D3F08C /* TimelineDisplayCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = BA75FF3B22BCE94100D3F08C /* TimelineDisplayCommand.m */; };
 		BA763B7B2268601700DC245A /* PopoverRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA763B7A2268601700DC245A /* PopoverRootView.swift */; };
 		BA7B4BCB21C0EF8800B75B14 /* NSAlert+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = BA7B4BCA21C0EF8800B75B14 /* NSAlert+Utils.m */; };
 		BA7B4C3721C24B9D00B75B14 /* UndoTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = BA7B4C3621C24B9D00B75B14 /* UndoTextField.m */; };
@@ -910,6 +911,8 @@
 		BA75FF3422BCC5C400D3F08C /* TimelineDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineDatasource.swift; sourceTree = "<group>"; };
 		BA75FF3622BCC5FB00D3F08C /* TimelineFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineFlowLayout.swift; sourceTree = "<group>"; };
 		BA75FF3822BCC6F800D3F08C /* TimelineData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineData.swift; sourceTree = "<group>"; };
+		BA75FF3A22BCE94100D3F08C /* TimelineDisplayCommand.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TimelineDisplayCommand.h; sourceTree = "<group>"; };
+		BA75FF3B22BCE94100D3F08C /* TimelineDisplayCommand.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TimelineDisplayCommand.m; sourceTree = "<group>"; };
 		BA763B7A2268601700DC245A /* PopoverRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopoverRootView.swift; sourceTree = "<group>"; };
 		BA7B4BC921C0EF8800B75B14 /* NSAlert+Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSAlert+Utils.h"; sourceTree = "<group>"; };
 		BA7B4BCA21C0EF8800B75B14 /* NSAlert+Utils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSAlert+Utils.m"; sourceTree = "<group>"; };
@@ -1299,6 +1302,8 @@
 				BA6EB8752249DB33003BB8EF /* VerticallyCenteredTextFieldCell.swift */,
 				BA763B7A2268601700DC245A /* PopoverRootView.swift */,
 				BA1F9031229D19C000670E0B /* NoInteractionView.swift */,
+				BA75FF3A22BCE94100D3F08C /* TimelineDisplayCommand.h */,
+				BA75FF3B22BCE94100D3F08C /* TimelineDisplayCommand.m */,
 			);
 			name = ui;
 			path = test2;
@@ -2503,6 +2508,7 @@
 				BA7B4BCB21C0EF8800B75B14 /* NSAlert+Utils.m in Sources */,
 				BA403BAE2230CFBC008B202C /* BetterFocusAutoCompleteInput.m in Sources */,
 				BA50ED8522705F9E008323FA /* CalendarFlowLayout.swift in Sources */,
+				BA75FF3C22BCE94100D3F08C /* TimelineDisplayCommand.m in Sources */,
 				95C0707718CDB67300A34D0D /* NSCustomComboBoxCell.m in Sources */,
 				BAAF569E2223D4C7003D0D73 /* DotImageView.swift in Sources */,
 				3C0A571A1C22E12E00301D77 /* MKColorPickerView.m in Sources */,

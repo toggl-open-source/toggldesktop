@@ -52,7 +52,8 @@ final class TimelineDatasource: NSObject {
 
     func update(_ zoomLevel: ZoomLevel) {
         self.zoomLevel = zoomLevel
-        collectionView.collectionViewLayout?.invalidateLayout()
+        timeline?.render(with: zoomLevel)
+        collectionView.reloadData()
     }
 }
 

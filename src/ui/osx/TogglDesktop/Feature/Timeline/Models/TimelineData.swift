@@ -69,4 +69,15 @@ class TimelineData {
             return activities[safe: indexPath.item]
         }
     }
+
+    func render(with zoomLevel: TimelineDatasource.ZoomLevel) {
+        switch zoomLevel {
+        case .x4:
+            break
+        case .x1,
+             .x2,
+             .x3:
+            return
+        }
+    }
 }

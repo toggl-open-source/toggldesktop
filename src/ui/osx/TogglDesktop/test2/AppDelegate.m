@@ -38,6 +38,7 @@
 #import "TogglDesktop-Swift.h"
 #import "AppIconFactory.h"
 #import <MASShortcut/Shortcut.h>
+#import "TimelineDisplayCommand.h"
 
 @interface AppDelegate ()
 @property (nonatomic, strong) IBOutlet MainWindowController *mainWindowController;
@@ -1690,39 +1691,17 @@ void on_time_entry_list(const bool_t open,
 void on_timeline(const bool_t open,
 				 const char_t *date,
 				 TogglTimelineChunkView *first,
-				 TogglTimeEntryView *first_entry)
+				 TogglTimeEntryView *first_entry,
+				 long start_day,
+				 long end_day)
 {
-	NSMutableArray *timelineChunks = [[NSMutableArray alloc] init];
-	TogglTimelineChunkView *it = first;
-
-	while (it)
-	{
-		TimelineChunkView *chunk = [[TimelineChunkView alloc] init];
-		[chunk load:it];
-		[timelineChunks addObject:chunk];
-
-		it = it->Next;
-	}
-
-	// Get entries
-	NSMutableArray *timeEntries = [[NSMutableArray alloc] init];
-	TogglTimeEntryView *it_entry = first_entry;
-	while (it_entry)
-	{
-		TimeEntryViewItem *item = [[TimeEntryViewItem alloc] init];
-		[item load:it_entry];
-		[timeEntries addObject:item];
-		it_entry = it_entry->Next;
-	}
-
-	NSArray *reversed = [[timelineChunks reverseObjectEnumerator] allObjects];
-	NSMutableArray *reversedTimelineChunks = [NSMutableArray arrayWithArray:reversed];
-
-	DisplayCommand *cmd = [[DisplayCommand alloc] init];
-	cmd.open = open;
-	cmd.timelineChunks = reversedTimelineChunks;
-	cmd.timelineDate = [NSString stringWithUTF8String:date];
-	cmd.timeEntries = [[[timeEntries reverseObjectEnumerator] allObjects] mutableCopy];
+	TimelineDisplayCommand *cmd =
+		[[TimelineDisplayCommand alloc] initWithOpen:open
+												date:[NSString stringWithUTF8String:date]
+										  firstChunk:first
+										  firstEntry:first_entry
+											startDay:start_day
+											  endDay:end_day];
 
 	[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayTimeline
 														object:cmd];

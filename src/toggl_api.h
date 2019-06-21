@@ -267,7 +267,9 @@ extern "C" {
         const bool_t open,
         const char_t *date,
         TogglTimelineChunkView *first,
-        TogglTimeEntryView *first_entry);
+        TogglTimeEntryView *first_entry,
+        long start_day,
+        long end_day);
 
     typedef void (*TogglDisplayAutocomplete)(
         TogglAutocompleteView *first);
