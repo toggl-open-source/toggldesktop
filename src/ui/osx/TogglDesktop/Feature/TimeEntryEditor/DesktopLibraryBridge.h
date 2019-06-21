@@ -71,6 +71,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)enableTimelineRecord:(BOOL)isEnabled;
 
+- (void)fetchTimelineData;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -19,11 +19,19 @@ final class TimelineDatasource: NSObject {
         static let ActivityCellXIB = NSNib.Name("TimelineActivityCell")
     }
 
+    enum ZoomLevel {
+        case x1 // normal
+        case x2
+        case x3
+        case x4
+    }
+
     // MARK: Variables
 
     private unowned let collectionView: NSCollectionView
     private var timeline: TimelineData?
-
+    private var zoomLevel: ZoomLevel = .x1
+    
     // MARK: Init
 
     init(_ collectionView: NSCollectionView) {
@@ -40,6 +48,11 @@ final class TimelineDatasource: NSObject {
     func render(_ timeline: TimelineData) {
         self.timeline = timeline
         collectionView.reloadData()
+    }
+
+    func update(_ zoomLevel: ZoomLevel) {
+        self.zoomLevel = zoomLevel
+        collectionView.collectionViewLayout?.invalidateLayout()
     }
 }
 

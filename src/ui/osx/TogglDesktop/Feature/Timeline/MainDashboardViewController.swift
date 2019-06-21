@@ -53,8 +53,13 @@ final class MainDashboardViewController: NSViewController {
         super.viewDidLoad()
 
         initCommon()
+        initNotification()
         initTimerView()
         initTabs()
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 
     @IBAction func listBtnOnTap(_ sender: Any) {
@@ -63,6 +68,12 @@ final class MainDashboardViewController: NSViewController {
 
     @IBAction func timelineBtnOnTap(_ sender: Any) {
         currentTab = .timeline
+    }
+
+    @objc func timelineDataNotification(_ noti: Notification) {
+        guard let cmd = noti.object as? DisplayCommand else { return }
+        let timeline = TimelineData(cmd: cmd)
+        timelineController.render(timeline)
     }
 }
 
@@ -74,6 +85,13 @@ extension MainDashboardViewController {
         listBtn.isSelected = true
         timeEntryController.delegate = self
         headerContainerView.applyShadow(color: .black, opacity: 0.1, radius: 6.0)
+    }
+
+    fileprivate func initNotification() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(self.timelineDataNotification(_:)),
+                                               name: NSNotification.Name(kDisplayTimeline),
+                                               object: nil)
     }
 
     fileprivate func initTabs() {

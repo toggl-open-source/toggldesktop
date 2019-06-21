@@ -195,4 +195,9 @@ void *ctx;
 	toggl_view_timeline_next_day(ctx);
 }
 
+- (void)fetchTimelineData
+{
+	toggl_view_timeline_data(ctx);
+}
+
 @end

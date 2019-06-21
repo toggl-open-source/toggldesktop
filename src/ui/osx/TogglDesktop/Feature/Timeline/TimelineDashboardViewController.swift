@@ -8,7 +8,7 @@
 
 import Cocoa
 
-class TimelineDashboardViewController: NSViewController {
+final class TimelineDashboardViewController: NSViewController {
 
     // MARK: OUTLET
 
@@ -29,19 +29,29 @@ class TimelineDashboardViewController: NSViewController {
         initCommon()
         initNotifications()
         initCollectionView()
+
+        DesktopLibraryBridge.shared().fetchTimelineData()
     }
 
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
 
+    func updateNextKeyView() {
+        recordSwitcher.nextKeyView = datePickerView.previousDateBtn
+        datePickerView.updateNextKeyView()
+    }
+
+    func render(_ timeline: TimelineData) {
+        datasource.render(timeline)
+    }
+    
     @IBAction func recordSwitchOnChanged(_ sender: Any) {
         DesktopLibraryBridge.shared().enableTimelineRecord(recordSwitcher.isOn)
     }
 
-    func updateNextKeyView() {
-        recordSwitcher.nextKeyView = datePickerView.previousDateBtn
-        datePickerView.updateNextKeyView()
+    @IBAction func zoomLevelOnChanged(_ sender: Any) {
+        datasource.update(.x1)
     }
 }
 

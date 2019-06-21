@@ -26,12 +26,19 @@ class TimelineData {
 
     // MARK: Init
 
-    init(_ view: TimelineChunkView, dateLabel: String) {
+    init(_ chunkViews: [TimelineChunkView], dateLabel: String) {
         numberOfSections = Section.allCases.count
         date = dateLabel
         timeChunks = []
         timeEntries = []
         activities = []
+    }
+
+    convenience init(cmd: DisplayCommand) {
+        guard let timelines = cmd.timelineChunks as? [TimelineChunkView] else {
+            fatalError("Incorrect data type for Timeline")
+        }
+        self.init(timelines, dateLabel: cmd.timelineDate)
     }
 
     // MARK: Public
