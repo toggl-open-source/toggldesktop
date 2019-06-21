@@ -188,6 +188,7 @@
     <ClInclude Include="..\..\..\migrations.h" />
     <ClInclude Include="..\..\..\netconf.h" />
     <ClInclude Include="..\..\..\obm_action.h" />
+    <ClInclude Include="..\..\..\random.h" />
     <ClInclude Include="..\..\..\Rectangle.h" />
     <ClInclude Include="..\..\..\toggl_api_private.h" />
     <ClInclude Include="..\..\..\project.h" />
@@ -265,6 +266,7 @@
     <ClCompile Include="..\..\..\migrations.cc" />
     <ClCompile Include="..\..\..\netconf.cc" />
     <ClCompile Include="..\..\..\obm_action.cc" />
+    <ClCompile Include="..\..\..\random.cc" />
     <ClCompile Include="..\..\..\Rectangle.cc" />
     <ClCompile Include="..\..\..\settings.cc" />
     <ClCompile Include="..\..\..\timeline_event.cc" />
