@@ -498,6 +498,7 @@
     <ClInclude Include="..\..\..\help_article.h" />
     <ClInclude Include="..\..\..\https_client.h" />
     <ClInclude Include="..\..\..\idle.h" />
+    <ClInclude Include="..\..\..\json_helper.h" />
     <ClInclude Include="..\..\..\migrations.h" />
     <ClInclude Include="..\..\..\netconf.h" />
     <ClInclude Include="..\..\..\obm_action.h" />
@@ -575,6 +576,7 @@
     <ClCompile Include="..\..\..\help_article.cc" />
     <ClCompile Include="..\..\..\https_client.cc" />
     <ClCompile Include="..\..\..\idle.cc" />
+    <ClCompile Include="..\..\..\json_helper.cc" />
     <ClCompile Include="..\..\..\migrations.cc" />
     <ClCompile Include="..\..\..\netconf.cc" />
     <ClCompile Include="..\..\..\obm_action.cc" />
