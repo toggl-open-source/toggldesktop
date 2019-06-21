@@ -313,6 +313,11 @@ namespace TogglDesktop
                 return;
 
             this.updateEditPopupLocation(true);
+
+            if (open)
+            {
+                this.Show();
+            }
         }
 
         private void onStoppedTimerState()
