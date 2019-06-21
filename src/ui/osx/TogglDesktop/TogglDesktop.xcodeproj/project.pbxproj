@@ -217,6 +217,12 @@
 		BA75FF2822BCC1FC00D3F08C /* TimelineTimeEntryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA75FF2622BCC1FC00D3F08C /* TimelineTimeEntryCell.xib */; };
 		BA75FF2B22BCC20D00D3F08C /* TimelineActivityCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA75FF2922BCC20D00D3F08C /* TimelineActivityCell.swift */; };
 		BA75FF2C22BCC20D00D3F08C /* TimelineActivityCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA75FF2A22BCC20D00D3F08C /* TimelineActivityCell.xib */; };
+		BA75FF2F22BCC56C00D3F08C /* TimelineTimeChunk.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA75FF2E22BCC56C00D3F08C /* TimelineTimeChunk.swift */; };
+		BA75FF3122BCC57700D3F08C /* TimelineTimeEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA75FF3022BCC57700D3F08C /* TimelineTimeEntry.swift */; };
+		BA75FF3322BCC58000D3F08C /* TimelineActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA75FF3222BCC58000D3F08C /* TimelineActivity.swift */; };
+		BA75FF3522BCC5C400D3F08C /* TimelineDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA75FF3422BCC5C400D3F08C /* TimelineDatasource.swift */; };
+		BA75FF3722BCC5FB00D3F08C /* TimelineFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA75FF3622BCC5FB00D3F08C /* TimelineFlowLayout.swift */; };
+		BA75FF3922BCC6F800D3F08C /* TimelineData.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA75FF3822BCC6F800D3F08C /* TimelineData.swift */; };
 		BA763B7B2268601700DC245A /* PopoverRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA763B7A2268601700DC245A /* PopoverRootView.swift */; };
 		BA7B4BCB21C0EF8800B75B14 /* NSAlert+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = BA7B4BCA21C0EF8800B75B14 /* NSAlert+Utils.m */; };
 		BA7B4C3721C24B9D00B75B14 /* UndoTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = BA7B4C3621C24B9D00B75B14 /* UndoTextField.m */; };
@@ -898,6 +904,12 @@
 		BA75FF2622BCC1FC00D3F08C /* TimelineTimeEntryCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimelineTimeEntryCell.xib; sourceTree = "<group>"; };
 		BA75FF2922BCC20D00D3F08C /* TimelineActivityCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineActivityCell.swift; sourceTree = "<group>"; };
 		BA75FF2A22BCC20D00D3F08C /* TimelineActivityCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimelineActivityCell.xib; sourceTree = "<group>"; };
+		BA75FF2E22BCC56C00D3F08C /* TimelineTimeChunk.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineTimeChunk.swift; sourceTree = "<group>"; };
+		BA75FF3022BCC57700D3F08C /* TimelineTimeEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineTimeEntry.swift; sourceTree = "<group>"; };
+		BA75FF3222BCC58000D3F08C /* TimelineActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineActivity.swift; sourceTree = "<group>"; };
+		BA75FF3422BCC5C400D3F08C /* TimelineDatasource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineDatasource.swift; sourceTree = "<group>"; };
+		BA75FF3622BCC5FB00D3F08C /* TimelineFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineFlowLayout.swift; sourceTree = "<group>"; };
+		BA75FF3822BCC6F800D3F08C /* TimelineData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineData.swift; sourceTree = "<group>"; };
 		BA763B7A2268601700DC245A /* PopoverRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopoverRootView.swift; sourceTree = "<group>"; };
 		BA7B4BC921C0EF8800B75B14 /* NSAlert+Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSAlert+Utils.h"; sourceTree = "<group>"; };
 		BA7B4BCA21C0EF8800B75B14 /* NSAlert+Utils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSAlert+Utils.m"; sourceTree = "<group>"; };
@@ -1606,12 +1618,15 @@
 		BA65A1FE22B7807300F895FD /* Timeline */ = {
 			isa = PBXGroup;
 			children = (
+				BA75FF2D22BCC4F300D3F08C /* Models */,
 				BA75FF0122BCC17000D3F08C /* Views */,
 				BA65A21E22B7808700F895FD /* TimelineDashboardViewController.swift */,
 				BA65A22022B7809300F895FD /* TimelineDashboardViewController.xib */,
 				BA65A22222B7823200F895FD /* MainDashboardViewController.swift */,
 				BA65A22322B7823200F895FD /* MainDashboardViewController.xib */,
 				BA65A22D22B79FEC00F895FD /* OGSwitch.swift */,
+				BA75FF3422BCC5C400D3F08C /* TimelineDatasource.swift */,
+				BA75FF3622BCC5FB00D3F08C /* TimelineFlowLayout.swift */,
 			);
 			path = Timeline;
 			sourceTree = "<group>";
@@ -1692,6 +1707,17 @@
 				BA75FF2A22BCC20D00D3F08C /* TimelineActivityCell.xib */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		BA75FF2D22BCC4F300D3F08C /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				BA75FF2E22BCC56C00D3F08C /* TimelineTimeChunk.swift */,
+				BA75FF3022BCC57700D3F08C /* TimelineTimeEntry.swift */,
+				BA75FF3222BCC58000D3F08C /* TimelineActivity.swift */,
+				BA75FF3822BCC6F800D3F08C /* TimelineData.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		BA7D332B2248940800B953A8 /* AutoComplete */ = {
@@ -2323,8 +2349,10 @@
 				7484F622191D92C30038885C /* Settings.m in Sources */,
 				95C0707A18CDB91500A34D0D /* NSCustomComboBox.m in Sources */,
 				3CC450E91A31ED540012440B /* NSTextFieldDuration.m in Sources */,
+				BA75FF3722BCC5FB00D3F08C /* TimelineFlowLayout.swift in Sources */,
 				7424949E17F1E3D20030121C /* UIEvents.m in Sources */,
 				BA65A21F22B7808700F895FD /* TimelineDashboardViewController.swift in Sources */,
+				BA75FF2F22BCC56C00D3F08C /* TimelineTimeChunk.swift in Sources */,
 				BA13D2152269C01500EB3833 /* Date+Utils.swift in Sources */,
 				BAAF56A02223DF9A003D0D73 /* VertificalTimeEntryFlowLayout.swift in Sources */,
 				C5CB7F0417F43EE100A2AEB1 /* TimeEntryCell.m in Sources */,
@@ -2347,6 +2375,7 @@
 				BA6EB8402248CBE3003BB8EF /* ProjectStorage.swift in Sources */,
 				BAAF567E2223CAC5003D0D73 /* NSButton+TextColor.swift in Sources */,
 				BA6EB8942249DB33003BB8EF /* VerticallyCenteredTextFieldCell.swift in Sources */,
+				BA75FF3922BCC6F800D3F08C /* TimelineData.swift in Sources */,
 				BA01405222571199000E5B91 /* TagTokenView.swift in Sources */,
 				BA46E09F2226707F00C25763 /* Collection+Safe.swift in Sources */,
 				BA05367F225E238D00C26E1F /* ProjectWorksapceCellView.swift in Sources */,
@@ -2372,6 +2401,7 @@
 				3C7B4E8D190FA6D200627DC3 /* NSTextFieldVerticallyAligned.m in Sources */,
 				BAB0027F22731248005ECC93 /* DayLabel.swift in Sources */,
 				3C7B4EB3190FB57A00627DC3 /* NSSecureTextFieldVerticallyAligned.m in Sources */,
+				BA75FF3122BCC57700D3F08C /* TimelineTimeEntry.swift in Sources */,
 				BA0E38122225260B00D0121B /* TimeEntryCell+Ext.swift in Sources */,
 				BA9D90B4222D14ED00D5EC0E /* NSView+Animation.swift in Sources */,
 				746947FA1AF3FE3E0024BED7 /* AutotrackerRuleItem.m in Sources */,
@@ -2461,6 +2491,7 @@
 				BA412C27224E195C003CA17A /* NoClientCellView.swift in Sources */,
 				7423393C1829B99C00063FA9 /* IdleNotificationWindowController.m in Sources */,
 				BA01404A22570893000E5B91 /* Tag.swift in Sources */,
+				BA75FF3322BCC58000D3F08C /* TimelineActivity.swift in Sources */,
 				BAB818E9228D5A97008C2367 /* DescriptionContentCellView.swift in Sources */,
 				BA6F1B3821EEE998009265E4 /* Theme+Notification.swift in Sources */,
 				7430750418204EFB009019CB /* AboutWindowController.m in Sources */,
@@ -2491,6 +2522,7 @@
 				BA6572A6224DFA6F00BA4C60 /* RGB.swift in Sources */,
 				3CE30E022052BD8B00AF2E2A /* AutoCompleteTableContainer.m in Sources */,
 				BA0C3A65223219470081C6DE /* AutoCompleteCellType.swift in Sources */,
+				BA75FF3522BCC5C400D3F08C /* TimelineDatasource.swift in Sources */,
 				3C0A571D1C22E12E00301D77 /* MKColorWell+Bindings.m in Sources */,
 				BA7B4C3721C24B9D00B75B14 /* UndoTextField.m in Sources */,
 				BA9C2DFC224C8235002AD2A1 /* ColorPickerView.swift in Sources */,

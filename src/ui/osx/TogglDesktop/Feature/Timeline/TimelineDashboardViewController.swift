@@ -15,10 +15,11 @@ class TimelineDashboardViewController: NSViewController {
     @IBOutlet weak var datePickerContainerView: NSView!
     @IBOutlet weak var recordSwitcher: OGSwitch!
     @IBOutlet weak var collectionView: NSCollectionView!
-    
+
     // MARK: Variables
 
     lazy var datePickerView: DatePickerView = DatePickerView.xibView()
+    private lazy var datasource = TimelineDatasource(collectionView)
 
     // MARK: View
     
@@ -27,6 +28,7 @@ class TimelineDashboardViewController: NSViewController {
 
         initCommon()
         initNotifications()
+        initCollectionView()
     }
 
     deinit {
@@ -62,6 +64,10 @@ extension TimelineDashboardViewController {
                                                selector: #selector(self.handleLoginNotification(_:)),
                                                name: NSNotification.Name(kDisplayLogin),
                                                object: nil)
+    }
+
+    fileprivate func initCollectionView() {
+
     }
 
     @objc private func handleLoginNotification(_ noti: Notification) {

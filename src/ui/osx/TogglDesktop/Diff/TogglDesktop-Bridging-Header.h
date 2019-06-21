@@ -16,3 +16,4 @@
 #import "TimeEntryListViewController.h"
 #import "TimerEditViewController.h"
 #import "DisplayCommand.h"
+#import "TimelineChunkView.h"
