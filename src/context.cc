@@ -978,26 +978,8 @@ void Context::updateUI(const UIElements &what) {
     if (what.display_time_entry_editor && !editor_time_entry_view.GUID.empty())
         renderTimeEntryEditor(what, editor_time_entry_view, tag_views);
 
-    if (what.display_workspace_select)
-        renderWorkspaceSelect(workspace_views);
-
-    if (what.display_client_select)
-        renderClientSelect(client_views);
-
-    if (what.display_timer_state)
-        renderTimerState(running_entry_view);
-
     if (what.display_time_entries)
         renderTimeEntries(what, time_entry_views);
-
-    if (what.display_settings)
-        renderSettings(what, settings_view, proxy);
-
-    if (what.display_unsynced_items)
-        renderUnsyncedItems(unsynced_item_count);
-
-    if (what.display_autotracker_rules)
-        renderAutotrackerRules(autotracker_rule_views, autotracker_title_views);
 
     if (what.display_time_entry_autocomplete) {
         if (what.first_load) {
@@ -1027,6 +1009,21 @@ void Context::updateUI(const UIElements &what) {
         }
     }
 
+    if (what.display_workspace_select)
+        renderWorkspaceSelect(workspace_views);
+
+    if (what.display_client_select)
+        renderClientSelect(client_views);
+
+    if (what.display_timer_state)
+        renderTimerState(running_entry_view);
+
+    if (what.display_autotracker_rules)
+        renderAutotrackerRules(autotracker_rule_views, autotracker_title_views);
+
+    if (what.display_settings)
+        renderSettings(what, settings_view, proxy);
+
     // Apply autocomplete as last element,
     // as its depending on selects on Windows
     if (what.display_project_autocomplete) {
@@ -1042,6 +1039,9 @@ void Context::updateUI(const UIElements &what) {
             timer_.schedule(prTask, Poco::Timestamp());
         }
     }
+
+    if (what.display_unsynced_items)
+        renderUnsyncedItems(unsynced_item_count);
 }
 
 Poco::Timestamp Context::postpone(
