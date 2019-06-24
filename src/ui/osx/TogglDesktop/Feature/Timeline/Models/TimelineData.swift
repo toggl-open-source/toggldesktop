@@ -19,25 +19,27 @@ class TimelineData {
     // MARK: Variables
 
     let chunkViews: [TimelineChunkView]
-    let timeChunks: [TimelineTimeChunk]
+    private(set) var timeChunks: [TimelineTimeChunk] = []
     let timeEntries: [TimelineTimeEntry]
     let activities: [TimelineActivity]
-    let date: String
     let numberOfSections: Int
+    let start: TimeInterval
+    let end: TimeInterval
+    private(set) var zoomLevel: TimelineDatasource.ZoomLevel
 
     // MARK: Init
 
-    init(_ chunkViews: [TimelineChunkView], timeEntries: [TimeEntryViewItem], dateLabel: String) {
-        self.chunkViews = chunkViews
+    init(cmd: TimelineDisplayCommand, zoomLevel: TimelineDatasource.ZoomLevel) {
+        self.zoomLevel = zoomLevel
+        self.chunkViews = cmd.timelineChunks
+        self.start = cmd.start
+        self.end = cmd.end
+        self.timeEntries = cmd.timeEntries.map { TimelineTimeEntry($0) }
         numberOfSections = Section.allCases.count
-        date = dateLabel
-        timeChunks = []
-        self.timeEntries = timeEntries.map { TimelineTimeEntry($0) }
         activities = []
-    }
-
-    convenience init(cmd: TimelineDisplayCommand) {
-        self.init(cmd.timelineChunks, timeEntries: cmd.timeEntries, dateLabel: cmd.timelineDate)
+        timeChunks = generateTimelineLabel(for: start,
+                                           endDate: end,
+                                           zoomLevel: zoomLevel)
     }
 
     // MARK: Public
@@ -67,13 +69,39 @@ class TimelineData {
     }
 
     func render(with zoomLevel: TimelineDatasource.ZoomLevel) {
-        switch zoomLevel {
-        case .x4:
-            break
-        case .x1,
-             .x2,
-             .x3:
-            return
+        self.zoomLevel = zoomLevel
+        timeChunks = generateTimelineLabel(for: start, endDate: end, zoomLevel: zoomLevel)
+    }
+
+    func timestampForItem(at indexPath: IndexPath) -> Timestamp? {
+        guard let section = Section(rawValue: indexPath.section) else {
+            return nil
         }
+        switch section {
+        case .timeLabel:
+            return nil
+        case .timeEntry:
+            return timeEntries[safe: indexPath.item]?.timestamp()
+        case .activity:
+            return activities[safe: indexPath.item]?.timestamp()
+        }
+    }
+}
+
+// MARK: Private
+
+extension TimelineData {
+
+    fileprivate func generateTimelineLabel(for startDate: TimeInterval,
+                                                 endDate: TimeInterval,
+                                                 zoomLevel: TimelineDatasource.ZoomLevel) -> [TimelineTimeChunk] {
+        var times: [TimeInterval] = []
+        let timeGap = zoomLevel.timeGap
+        var current = startDate
+        while current <= endDate {
+            times.append(current)
+            current += timeGap
+        }
+        return times.map { TimelineTimeChunk($0) }
     }
 }

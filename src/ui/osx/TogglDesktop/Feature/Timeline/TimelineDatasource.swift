@@ -19,16 +19,36 @@ final class TimelineDatasource: NSObject {
         static let ActivityCellXIB = NSNib.Name("TimelineActivityCell")
     }
 
-    enum ZoomLevel {
-        case x1 // normal
+    enum ZoomLevel: Int {
+        case x1 = 0 // normal
         case x2
         case x3
         case x4
+
+        var timeGap: TimeInterval {
+            switch self {
+            case .x4:
+                return 7200.0 // Each 2 hours
+            case .x1,
+                .x2,
+                .x3:
+                return 3600 // Each 1 hour
+            }
+        }
+
+        var nextLevel: ZoomLevel? {
+            return ZoomLevel(rawValue: self.rawValue + 1)
+        }
+
+        var previousLevel: ZoomLevel? {
+            return ZoomLevel(rawValue: self.rawValue - 1)
+        }
     }
 
     // MARK: Variables
 
     private unowned let collectionView: NSCollectionView
+    private let flow: TimelineFlowLayout
     private var timeline: TimelineData?
     private var zoomLevel: ZoomLevel = .x1
     
@@ -36,10 +56,12 @@ final class TimelineDatasource: NSObject {
 
     init(_ collectionView: NSCollectionView) {
         self.collectionView = collectionView
+        self.flow = TimelineFlowLayout()
         super.init()
+        flow.flowDelegate = self
         collectionView.delegate = self
         collectionView.dataSource = self
-        collectionView.collectionViewLayout = TimelineFlowLayout()
+        collectionView.collectionViewLayout = flow
         collectionView.register(NSNib(nibNamed: Constants.TimeLabelCellXIB, bundle: nil), forItemWithIdentifier: Constants.TimeLabelCellID)
         collectionView.register(NSNib(nibNamed: Constants.TimeEntryCellXIB, bundle: nil), forItemWithIdentifier: Constants.TimeEntryCellID)
         collectionView.register(NSNib(nibNamed: Constants.ActivityCellXIB, bundle: nil), forItemWithIdentifier: Constants.ActivityCellID)
@@ -53,6 +75,7 @@ final class TimelineDatasource: NSObject {
     func update(_ zoomLevel: ZoomLevel) {
         self.zoomLevel = zoomLevel
         timeline?.render(with: zoomLevel)
+        flow.apply(zoomLevel)
         collectionView.reloadData()
     }
 }
@@ -77,6 +100,8 @@ extension TimelineDatasource: NSCollectionViewDataSource, NSCollectionViewDelega
         switch section {
         case .timeLabel:
             let cell = collectionView.makeItem(withIdentifier: Constants.TimeLabelCellID, for: indexPath) as! TimelineTimeLabelCell
+            let chunk = item as! TimelineTimeChunk
+            cell.render(chunk)
             return cell
         case .timeEntry:
             let cell = collectionView.makeItem(withIdentifier: Constants.TimeEntryCellID, for: indexPath) as! TimelineTimeEntryCell
@@ -85,5 +110,14 @@ extension TimelineDatasource: NSCollectionViewDataSource, NSCollectionViewDelega
             let cell = collectionView.makeItem(withIdentifier: Constants.ActivityCellID, for: indexPath) as! TimelineActivityCell
             return cell
         }
+    }
+}
+
+// MARK: TimelineFlowLayoutDelegate
+
+extension TimelineDatasource: TimelineFlowLayoutDelegate {
+
+    func timestampForItem(at indexPath: IndexPath) -> Timestamp? {
+        return timeline?.timestampForItem(at: indexPath)
     }
 }

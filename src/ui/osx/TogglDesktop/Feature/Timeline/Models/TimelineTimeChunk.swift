@@ -9,5 +9,13 @@
 import Foundation
 
 final class TimelineTimeChunk {
+
+    let label: String
+
+    // MARK: Init
     
+    init(_ time: TimeInterval) {
+        let date = Date(timeIntervalSince1970: time)
+        label = TimelineDateFormatter.shared.convertToHours(date)
+    }
 }

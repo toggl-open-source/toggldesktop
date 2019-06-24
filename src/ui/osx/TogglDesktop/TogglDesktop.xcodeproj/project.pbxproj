@@ -189,6 +189,7 @@
 		BA412C27224E195C003CA17A /* NoClientCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA412C26224E195C003CA17A /* NoClientCellView.swift */; };
 		BA412C29224E196D003CA17A /* NoClientCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA412C28224E196D003CA17A /* NoClientCellView.xib */; };
 		BA46E09F2226707F00C25763 /* Collection+Safe.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA46E09E2226707F00C25763 /* Collection+Safe.swift */; };
+		BA49912E22C0BA14008149D9 /* TimelineDateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA49912D22C0BA14008149D9 /* TimelineDateFormatter.swift */; };
 		BA50ED8522705F9E008323FA /* CalendarFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA50ED8422705F9E008323FA /* CalendarFlowLayout.swift */; };
 		BA6572A6224DFA6F00BA4C60 /* RGB.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6572A0224DFA6E00BA4C60 /* RGB.swift */; };
 		BA6572A7224DFA6F00BA4C60 /* HSBGen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6572A1224DFA6E00BA4C60 /* HSBGen.swift */; };
@@ -244,6 +245,7 @@
 		BA89CB392265EA4400D21584 /* String+Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA89CB382265EA4400D21584 /* String+Search.swift */; };
 		BA8B4C752251FAD500592BC7 /* WorkspaceCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA8B4C742251FAD500592BC7 /* WorkspaceCellView.swift */; };
 		BA8B4C772251FADF00592BC7 /* WorkspaceCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA8B4C762251FADF00592BC7 /* WorkspaceCellView.xib */; };
+		BA96846722C0CD8800E07C89 /* Timestamp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA96846622C0CD8800E07C89 /* Timestamp.swift */; };
 		BA9C2DF8224C7E44002AD2A1 /* ProjectCreationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA9C2DF7224C7E44002AD2A1 /* ProjectCreationView.swift */; };
 		BA9C2DFA224C7E77002AD2A1 /* ProjectCreationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA9C2DF9224C7E77002AD2A1 /* ProjectCreationView.xib */; };
 		BA9C2DFC224C8235002AD2A1 /* ColorPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA9C2DFB224C8235002AD2A1 /* ColorPickerView.swift */; };
@@ -878,6 +880,7 @@
 		BA412C26224E195C003CA17A /* NoClientCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoClientCellView.swift; sourceTree = "<group>"; };
 		BA412C28224E196D003CA17A /* NoClientCellView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NoClientCellView.xib; sourceTree = "<group>"; };
 		BA46E09E2226707F00C25763 /* Collection+Safe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collection+Safe.swift"; sourceTree = "<group>"; };
+		BA49912D22C0BA14008149D9 /* TimelineDateFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineDateFormatter.swift; sourceTree = "<group>"; };
 		BA50ED8422705F9E008323FA /* CalendarFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarFlowLayout.swift; sourceTree = "<group>"; };
 		BA6572A0224DFA6E00BA4C60 /* RGB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RGB.swift; sourceTree = "<group>"; };
 		BA6572A1224DFA6E00BA4C60 /* HSBGen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HSBGen.swift; sourceTree = "<group>"; };
@@ -935,6 +938,7 @@
 		BA89CB382265EA4400D21584 /* String+Search.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Search.swift"; sourceTree = "<group>"; };
 		BA8B4C742251FAD500592BC7 /* WorkspaceCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceCellView.swift; sourceTree = "<group>"; };
 		BA8B4C762251FADF00592BC7 /* WorkspaceCellView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WorkspaceCellView.xib; sourceTree = "<group>"; };
+		BA96846622C0CD8800E07C89 /* Timestamp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Timestamp.swift; sourceTree = "<group>"; };
 		BA9C2DF7224C7E44002AD2A1 /* ProjectCreationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectCreationView.swift; sourceTree = "<group>"; };
 		BA9C2DF9224C7E77002AD2A1 /* ProjectCreationView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProjectCreationView.xib; sourceTree = "<group>"; };
 		BA9C2DFB224C8235002AD2A1 /* ColorPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickerView.swift; sourceTree = "<group>"; };
@@ -1632,6 +1636,7 @@
 				BA65A22D22B79FEC00F895FD /* OGSwitch.swift */,
 				BA75FF3422BCC5C400D3F08C /* TimelineDatasource.swift */,
 				BA75FF3622BCC5FB00D3F08C /* TimelineFlowLayout.swift */,
+				BA49912D22C0BA14008149D9 /* TimelineDateFormatter.swift */,
 			);
 			path = Timeline;
 			sourceTree = "<group>";
@@ -1720,6 +1725,7 @@
 				BA75FF2E22BCC56C00D3F08C /* TimelineTimeChunk.swift */,
 				BA75FF3022BCC57700D3F08C /* TimelineTimeEntry.swift */,
 				BA75FF3222BCC58000D3F08C /* TimelineActivity.swift */,
+				BA96846622C0CD8800E07C89 /* Timestamp.swift */,
 				BA75FF3822BCC6F800D3F08C /* TimelineData.swift */,
 			);
 			path = Models;
@@ -2397,6 +2403,7 @@
 				748B3A3419222DB100F31468 /* DisplayCommand.m in Sources */,
 				BA9C2E05224C84E7002AD2A1 /* ColorViewItem.swift in Sources */,
 				3C0A571E1C22E12E00301D77 /* MKColorWell.m in Sources */,
+				BA96846722C0CD8800E07C89 /* Timestamp.swift in Sources */,
 				7438B3D318253CD2002AE43C /* MenuItemTags.m in Sources */,
 				BA75FF2322BCC1EA00D3F08C /* TimelineTimeLabelCell.swift in Sources */,
 				3C53D112224B373B00674DC8 /* TimelineViewController.m in Sources */,
@@ -2464,6 +2471,7 @@
 				BA7D334F224897FC00B953A8 /* ProjectHeaderCellView.swift in Sources */,
 				BAE49CAE222FC1C900773814 /* TimerContainerBox.swift in Sources */,
 				BA13D20A2269BA6500EB3833 /* CalendarDataSource.swift in Sources */,
+				BA49912E22C0BA14008149D9 /* TimelineDateFormatter.swift in Sources */,
 				BA65A25022B7A65D00F895FD /* DatePickerView.swift in Sources */,
 				74AA9474180909F50000539F /* GTMOAuth2SignIn.m in Sources */,
 				BA053659225DDDBB00C26E1F /* CustomFocusRingButton.swift in Sources */,

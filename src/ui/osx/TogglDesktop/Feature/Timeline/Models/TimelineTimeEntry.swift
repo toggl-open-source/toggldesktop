@@ -19,4 +19,9 @@ final class TimelineTimeEntry {
     init(_ timeEntry: TimeEntryViewItem) {
         self.timeEntry = timeEntry
     }
+
+    func timestamp() -> Timestamp {
+        return Timestamp(start: timeEntry.started.timeIntervalSince1970,
+                         end: timeEntry.ended.timeIntervalSince1970)
+    }
 }

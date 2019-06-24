@@ -20,4 +20,8 @@ final class TimelineTimeLabelCell: NSCollectionViewItem {
         super.viewDidLoad()
         // Do view setup here.
     }
+
+    func render(_ chunk: TimelineTimeChunk) {
+        titleLbl.stringValue = chunk.label
+    }
 }

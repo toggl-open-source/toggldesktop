@@ -20,6 +20,11 @@ final class TimelineDashboardViewController: NSViewController {
 
     lazy var datePickerView: DatePickerView = DatePickerView.xibView()
     private lazy var datasource = TimelineDatasource(collectionView)
+    private var zoomLevel: TimelineDatasource.ZoomLevel = .x1 {
+        didSet {
+            datasource.update(zoomLevel)
+        }
+    }
 
     // MARK: View
     
@@ -43,7 +48,7 @@ final class TimelineDashboardViewController: NSViewController {
     }
 
     func render(with cmd: TimelineDisplayCommand) {
-        let timeline = TimelineData(cmd: cmd)
+        let timeline = TimelineData(cmd: cmd, zoomLevel: zoomLevel)
         let date = Date(timeIntervalSince1970: cmd.start)
         datePickerView.currentDate = date
         datasource.render(timeline)
@@ -53,8 +58,14 @@ final class TimelineDashboardViewController: NSViewController {
         DesktopLibraryBridge.shared().enableTimelineRecord(recordSwitcher.isOn)
     }
 
-    @IBAction func zoomLevelOnChanged(_ sender: Any) {
-        datasource.update(.x1)
+    @IBAction func zoomLevelDecreaseOnChange(_ sender: Any) {
+        guard let previous = zoomLevel.previousLevel else { return }
+        zoomLevel = previous
+    }
+
+    @IBAction func zoomLevelIncreaseOnChange(_ sender: Any) {
+        guard let next = zoomLevel.nextLevel else { return }
+        zoomLevel = next
     }
 }
 
