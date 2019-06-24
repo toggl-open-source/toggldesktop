@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -26,11 +27,19 @@
                         <customView translatesAutoresizingMaskIntoConstraints="NO" id="oFH-aL-e6h">
                             <rect key="frame" x="0.0" y="410" width="297" height="30"/>
                             <subviews>
+                                <box boxType="custom" borderType="none" borderWidth="0.0" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="SbK-rs-cgp">
+                                    <rect key="frame" x="0.0" y="0.0" width="297" height="30"/>
+                                    <view key="contentView" id="yem-eb-vRP">
+                                        <rect key="frame" x="0.0" y="0.0" width="297" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    </view>
+                                    <color key="fillColor" name="timeline-background-color"/>
+                                </box>
                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="JX7-EL-bRV">
                                     <rect key="frame" x="106" y="8" width="85" height="14"/>
                                     <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="TIME ENTRIES" id="ac2-oR-01d">
                                         <font key="font" metaFont="systemMedium" size="11"/>
-                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="textColor" name="lighter-grey-text"/>
                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
                                 </textField>
@@ -73,7 +82,7 @@
                                             <rect key="frame" x="6" y="8" width="59" height="14"/>
                                             <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="ACTIVITY" id="eib-Fj-syc">
                                                 <font key="font" metaFont="systemMedium" size="11"/>
-                                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="textColor" name="lighter-grey-text"/>
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>
                                         </textField>
@@ -89,21 +98,25 @@
                                 <constraint firstItem="xXU-Yr-nTf" firstAttribute="top" secondItem="oFH-aL-e6h" secondAttribute="top" id="2u6-VL-8g8"/>
                                 <constraint firstAttribute="bottom" secondItem="xXU-Yr-nTf" secondAttribute="bottom" id="6w9-UQ-k9z"/>
                                 <constraint firstAttribute="trailing" secondItem="WO4-HV-33l" secondAttribute="trailing" id="Amy-gg-D4X"/>
+                                <constraint firstAttribute="bottom" secondItem="SbK-rs-cgp" secondAttribute="bottom" id="E4p-ga-zCa"/>
                                 <constraint firstItem="xXU-Yr-nTf" firstAttribute="leading" secondItem="oFH-aL-e6h" secondAttribute="leading" id="Hr7-KM-60u"/>
+                                <constraint firstAttribute="trailing" secondItem="SbK-rs-cgp" secondAttribute="trailing" id="Kom-IA-R5o"/>
                                 <constraint firstAttribute="height" constant="30" id="N4N-S7-Kwl"/>
                                 <constraint firstItem="WO4-HV-33l" firstAttribute="top" secondItem="oFH-aL-e6h" secondAttribute="top" id="QOr-bg-ZRK"/>
                                 <constraint firstAttribute="bottom" secondItem="WO4-HV-33l" secondAttribute="bottom" id="RSH-hh-Roa"/>
                                 <constraint firstItem="JX7-EL-bRV" firstAttribute="centerY" secondItem="oFH-aL-e6h" secondAttribute="centerY" id="aCD-Ln-ggd"/>
+                                <constraint firstItem="SbK-rs-cgp" firstAttribute="leading" secondItem="oFH-aL-e6h" secondAttribute="leading" id="anF-6L-bkh"/>
                                 <constraint firstItem="JX7-EL-bRV" firstAttribute="centerX" secondItem="oFH-aL-e6h" secondAttribute="centerX" id="iBn-wo-nSb"/>
+                                <constraint firstItem="SbK-rs-cgp" firstAttribute="top" secondItem="oFH-aL-e6h" secondAttribute="top" id="tes-cu-2kp"/>
                             </constraints>
                         </customView>
-                        <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DJx-ob-wM0">
+                        <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DJx-ob-wM0">
                             <rect key="frame" x="0.0" y="0.0" width="297" height="410"/>
                             <clipView key="contentView" copiesOnScroll="NO" id="1RV-Mg-WKj">
                                 <rect key="frame" x="0.0" y="0.0" width="297" height="410"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
-                                    <collectionView id="hht-dC-mpO">
+                                    <collectionView selectable="YES" allowsEmptySelection="NO" id="hht-dC-mpO">
                                         <rect key="frame" x="0.0" y="0.0" width="297" height="158"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                         <collectionViewFlowLayout key="collectionViewLayout" minimumInteritemSpacing="10" minimumLineSpacing="10" id="ZtE-Ms-OYm">
@@ -112,13 +125,14 @@
                                         <color key="primaryBackgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     </collectionView>
                                 </subviews>
+                                <color key="backgroundColor" name="timeline-background-color"/>
                             </clipView>
                             <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="XMO-f5-mn6">
                                 <rect key="frame" x="-100" y="-100" width="233" height="15"/>
                                 <autoresizingMask key="autoresizingMask"/>
                             </scroller>
                             <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="N4X-vu-zzW">
-                                <rect key="frame" x="234" y="1" width="15" height="143"/>
+                                <rect key="frame" x="-100" y="-100" width="16" height="410"/>
                                 <autoresizingMask key="autoresizingMask"/>
                             </scroller>
                         </scrollView>
@@ -136,11 +150,19 @@
                 <customView translatesAutoresizingMaskIntoConstraints="NO" id="CV9-Ue-zhq">
                     <rect key="frame" x="0.0" y="440" width="297" height="86"/>
                     <subviews>
+                        <box boxType="custom" borderWidth="0.0" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="sGN-8K-7IZ">
+                            <rect key="frame" x="0.0" y="0.0" width="297" height="86"/>
+                            <view key="contentView" id="fec-sY-eYm">
+                                <rect key="frame" x="0.0" y="0.0" width="297" height="86"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            </view>
+                            <color key="fillColor" name="preference-background-color"/>
+                        </box>
                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="oEw-Jd-lIP">
                             <rect key="frame" x="8" y="55" width="101" height="18"/>
                             <textFieldCell key="cell" lineBreakMode="clipping" title="Record activity" id="x0y-gM-oPn">
                                 <font key="font" metaFont="system" size="14"/>
-                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                <color key="textColor" name="grey-text-color"/>
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                         </textField>
@@ -163,12 +185,16 @@
                     </subviews>
                     <constraints>
                         <constraint firstItem="wlf-0e-ttW" firstAttribute="top" secondItem="oEw-Jd-lIP" secondAttribute="bottom" constant="12" id="0rH-e0-NUk"/>
+                        <constraint firstAttribute="trailing" secondItem="sGN-8K-7IZ" secondAttribute="trailing" id="8d7-zq-V41"/>
+                        <constraint firstItem="sGN-8K-7IZ" firstAttribute="leading" secondItem="CV9-Ue-zhq" secondAttribute="leading" id="GTe-dy-kVB"/>
                         <constraint firstItem="I6m-RA-gUy" firstAttribute="centerY" secondItem="oEw-Jd-lIP" secondAttribute="centerY" id="aWn-ju-3Sc"/>
+                        <constraint firstItem="sGN-8K-7IZ" firstAttribute="top" secondItem="CV9-Ue-zhq" secondAttribute="top" id="eaq-AF-dtf"/>
                         <constraint firstItem="oEw-Jd-lIP" firstAttribute="top" secondItem="CV9-Ue-zhq" secondAttribute="top" constant="13" id="igE-d4-QVd"/>
                         <constraint firstAttribute="trailing" secondItem="wlf-0e-ttW" secondAttribute="trailing" constant="10" id="mPL-xl-8j9"/>
                         <constraint firstAttribute="trailing" secondItem="I6m-RA-gUy" secondAttribute="trailing" constant="10" id="maq-iT-Fcc"/>
                         <constraint firstItem="oEw-Jd-lIP" firstAttribute="leading" secondItem="CV9-Ue-zhq" secondAttribute="leading" constant="10" id="t9Q-Bm-qdd"/>
                         <constraint firstAttribute="height" constant="86" id="wv3-y8-Rz9"/>
+                        <constraint firstAttribute="bottom" secondItem="sGN-8K-7IZ" secondAttribute="bottom" id="zqM-he-CUS"/>
                         <constraint firstItem="wlf-0e-ttW" firstAttribute="leading" secondItem="CV9-Ue-zhq" secondAttribute="leading" constant="10" id="zxE-BA-Fdk"/>
                     </constraints>
                 </customView>
@@ -182,11 +208,23 @@
                 <constraint firstAttribute="trailing" secondItem="Xu6-6s-ozI" secondAttribute="trailing" id="p9a-gs-Xzn"/>
                 <constraint firstItem="Xu6-6s-ozI" firstAttribute="top" secondItem="CV9-Ue-zhq" secondAttribute="bottom" id="rIq-HF-FLH"/>
             </constraints>
-            <point key="canvasLocation" x="-55" y="290"/>
+            <point key="canvasLocation" x="-55.5" y="290"/>
         </customView>
     </objects>
     <resources>
         <image name="NSAddTemplate" width="11" height="11"/>
         <image name="NSRemoveTemplate" width="11" height="11"/>
+        <namedColor name="grey-text-color">
+            <color red="0.33300000429153442" green="0.33300000429153442" blue="0.33300000429153442" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="lighter-grey-text">
+            <color red="0.67500001192092896" green="0.67500001192092896" blue="0.67500001192092896" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="preference-background-color">
+            <color red="0.98000001907348633" green="0.98400002717971802" blue="0.98799997568130493" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="timeline-background-color">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
     </resources>
 </document>

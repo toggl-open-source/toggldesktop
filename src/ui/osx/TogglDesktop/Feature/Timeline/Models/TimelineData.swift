@@ -96,11 +96,11 @@ extension TimelineData {
                                                  endDate: TimeInterval,
                                                  zoomLevel: TimelineDatasource.ZoomLevel) -> [TimelineTimeChunk] {
         var times: [TimeInterval] = []
-        let timeGap = zoomLevel.timeGap
+        let span = zoomLevel.span
         var current = startDate
         while current <= endDate {
             times.append(current)
-            current += timeGap
+            current += span
         }
         return times.map { TimelineTimeChunk($0) }
     }

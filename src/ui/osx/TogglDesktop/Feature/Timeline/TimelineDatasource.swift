@@ -25,7 +25,7 @@ final class TimelineDatasource: NSObject {
         case x3
         case x4
 
-        var timeGap: TimeInterval {
+        var span: TimeInterval {
             switch self {
             case .x4:
                 return 7200.0 // Each 2 hours

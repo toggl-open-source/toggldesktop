@@ -15,15 +15,27 @@ protocol TimelineFlowLayoutDelegate: class {
 
 final class TimelineFlowLayout: NSCollectionViewFlowLayout {
 
+    private struct Constants {
+        static let MinimumHeightOfTimeEntry: CGFloat = 2.0
+
+        struct TimeLabel {
+            static let Size = CGSize(width: 54.0, height: 32)
+        }
+        struct TimeEntry {
+            static let LeftPadding: CGFloat = 65.0
+            static let RightPadding: CGFloat = 10.0
+            static let Width: CGFloat = 20.0
+        }
+    }
+
     // MARK: Variables
 
     weak var flowDelegate: TimelineFlowLayoutDelegate?
     private var zoomLevel: TimelineDatasource.ZoomLevel = .x1
-    private var timeLabelSize = CGSize(width: 54.0, height: 32)
     private var timeLablesAttributes: [NSCollectionViewLayoutAttributes] = []
     private var timeEntryAttributes: [NSCollectionViewLayoutAttributes] = []
     private var activityAttributes: [NSCollectionViewLayoutAttributes] = []
-    private var paddingTimeLabel: CGFloat {
+    private var verticalPaddingTimeLabel: CGFloat {
         switch zoomLevel {
         case .x1:
             return 150.0
@@ -76,30 +88,83 @@ final class TimelineFlowLayout: NSCollectionViewFlowLayout {
         let numberOfTimeEntry = dataSource.collectionView(collectionView, numberOfItemsInSection: TimelineData.Section.timeEntry.rawValue)
         let numberOfActivity = dataSource.collectionView(collectionView, numberOfItemsInSection: TimelineData.Section.activity.rawValue)
 
-        // Size
+        // MARK: Calculation
 
         // Time labels
         for i in 0..<numberOfTimeLabels {
             let indexPath = IndexPath(item: i, section: TimelineData.Section.timeLabel.rawValue)
             let att = NSCollectionViewLayoutAttributes(forItemWith: indexPath)
-            let y: CGFloat = CGFloat(i) * (paddingTimeLabel + timeLabelSize.height)
+            let size = Constants.TimeLabel.Size
+            let y: CGFloat = CGFloat(i) * (verticalPaddingTimeLabel + size.height)
             att.frame = CGRect(x: 0,
                                y: y,
-                               width: timeLabelSize.width,
-                               height: timeLabelSize.height)
+                               width: size.width,
+                               height: size.height)
             timeLablesAttributes.append(att)
         }
 
         // Time entries
         for i in 0..<numberOfTimeEntry {
-            let indexPath = IndexPath(item: i, section: TimelineData.Section.timeLabel.rawValue)
-            guard let timestamp = flowDelegate.timestampForItem(at: indexPath)
+            let indexPath = IndexPath(item: i, section: TimelineData.Section.timeEntry.rawValue)
+            guard let timestamp = flowDelegate.timestampForItem(at: indexPath) else {
+                print("Missing timestamp for at \(indexPath)")
+                continue
+            }
+
             let att = NSCollectionViewLayoutAttributes(forItemWith: indexPath)
+
+            let beginDay = getTimestampForStartOfDay(from: timestamp.start)
+
+            // Length of time entry
+            let span = CGFloat(timestamp.end - timestamp.start)
+
+            // The ratio
+            // From the design, the size of time label + padding prepresents 1 hours or 2 hours (depend on zoomLevel)
+            // Get the ratio for later calculations
+            let ratio = (Constants.TimeLabel.Size.height + verticalPaddingTimeLabel) / CGFloat(zoomLevel.span)
+
+            // Ex: To calculate the height of the entry with X timestamp
+            // Height = X * ratio
+            let y = CGFloat((timestamp.start - beginDay)) * ratio
+
+            // The minimum height is 2.0 pixel
+            let height = CGFloat.maximum(span * ratio, Constants.MinimumHeightOfTimeEntry)
+
+            var frame = CGRect.zero
+
+            // Check if this time entry intersect with previous one
+            // If overlap, increase the number of columns
+            var col = 0
+            var intersected = false
+            repeat {
+                let x = Constants.TimeEntry.LeftPadding + CGFloat(col) * (Constants.TimeEntry.Width + Constants.TimeEntry.RightPadding)
+                frame = CGRect(x: x,
+                               y: y,
+                               width: Constants.TimeEntry.Width,
+                               height: height)
+
+                // Travesal all previous TimeEntry, if it's overlapped -> return
+                // O(n) = n
+                // It's reasonal since the number of items is small
+                intersected = timeEntryAttributes.contains { (attribute) -> Bool in
+                    return attribute.frame.intersects(frame)
+                }
+
+                // If overlap -> Move to next column
+                if intersected {
+                    col += 1
+                }
+            } while intersected
+
+            // Finalize
+            att.frame = frame
+            timeEntryAttributes.append(att)
         }
     }
 
     override func layoutAttributesForElements(in rect: NSRect) -> [NSCollectionViewLayoutAttributes] {
-        return timeLablesAttributes.compactMap({ (att) -> NSCollectionViewLayoutAttributes? in
+        let allAttributes = timeLablesAttributes + timeEntryAttributes + activityAttributes
+        return allAttributes.compactMap({ (att) -> NSCollectionViewLayoutAttributes? in
             if att.frame.intersects(rect) {
                 return att
             }
@@ -108,12 +173,27 @@ final class TimelineFlowLayout: NSCollectionViewFlowLayout {
     }
 
     override func layoutAttributesForItem(at indexPath: IndexPath) -> NSCollectionViewLayoutAttributes? {
-        return timeLablesAttributes[indexPath.item]
+        guard let section = TimelineData.Section(rawValue: indexPath.section) else { return nil }
+        switch section {
+        case .timeLabel:
+            return timeLablesAttributes[safe: indexPath.item]
+        case .timeEntry:
+            return timeEntryAttributes[safe: indexPath.item]
+        case .activity:
+            return activityAttributes[safe: indexPath.item]
+        }
     }
 
     override var collectionViewContentSize: NSSize {
         let width = collectionView?.bounds.width ?? 300.0
-        let height = CGFloat(numberOfTimeLabels) * (paddingTimeLabel + timeLabelSize.height)
+        let height = CGFloat(numberOfTimeLabels) * (verticalPaddingTimeLabel + Constants.TimeLabel.Size.height)
         return CGSize(width: width, height: height)
+    }
+
+    private func getTimestampForStartOfDay(from timestamp: TimeInterval) -> TimeInterval {
+        let date = Date(timeIntervalSince1970: timestamp)
+        var calendar = Calendar.current
+        calendar.timeZone = TimeZone(abbreviation: "UTC")!
+        return calendar.startOfDay(for: date).timeIntervalSince1970
     }
 }
