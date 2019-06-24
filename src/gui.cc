@@ -558,13 +558,10 @@ void GUI::DisplayUpdateDownloadState(
 }
 
 void GUI::DisplaySettings(const bool open,
-                          const bool record_timeline,
-                          const Settings &settings,
-                          const bool use_proxy,
-                          const Proxy &proxy) {
+                          const view::Settings *settings) {
     logger().debug("DisplaySettings");
 
-    on_display_settings_(open, reinterpret_cast<const TogglSettingsView*>(&settings));
+    on_display_settings_(open, reinterpret_cast<const TogglSettingsView*>(settings));
 }
 
 void GUI::DisplayTimerState(

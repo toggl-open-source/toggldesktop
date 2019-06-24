@@ -508,14 +508,14 @@ void Context::updateUI(const UIElements &what) {
 
     view::TimeEntry editor_time_entry_view;
 
+    view::Settings settings_view;
+
     std::vector<view::Autocomplete> time_entry_autocompletes;
     std::vector<view::Autocomplete> minitimer_autocompletes;
     std::vector<view::Autocomplete> project_autocompletes;
 
-    bool use_proxy(false);
-    bool record_timeline(false);
-    Poco::Int64 unsynced_item_count(0);
     Proxy proxy;
+    Poco::Int64 unsynced_item_count(0);
 
     view::TimeEntry running_entry_view;
 
@@ -796,6 +796,9 @@ void Context::updateUI(const UIElements &what) {
         }
 
         if (what.display_settings) {
+            bool use_proxy(false);
+            bool record_timeline(false);
+
             error err = db()->LoadSettings(&settings_);
             if (err != noError) {
                 setUser(nullptr);
@@ -813,9 +816,43 @@ void Context::updateUI(const UIElements &what) {
             }
             idle_.SetSettings(settings_);
 
-            HTTPSClient::Config.UseProxy = use_proxy;
-            HTTPSClient::Config.ProxySettings = proxy;
-            HTTPSClient::Config.AutodetectProxy = settings_.autodetect_proxy;
+            // this is crazy, let's do something about it in the future
+            settings_view.UseIdleDetection = settings_.use_idle_detection;
+            settings_view.MenubarTimer = settings_.menubar_timer;
+            settings_view.MenubarProject = settings_.menubar_project;
+            settings_view.DockIcon = settings_.dock_icon;
+            settings_view.OnTop = settings_.on_top;
+            settings_view.Reminder = settings_.reminder;
+            settings_view.IdleMinutes = settings_.idle_minutes;
+            settings_view.FocusOnShortcut = settings_.focus_on_shortcut;
+            settings_view.ReminderMinutes = settings_.reminder_minutes;
+            settings_view.ManualMode = settings_.manual_mode;
+            settings_view.RemindMon = settings_.remind_mon;
+            settings_view.RemindTue = settings_.remind_tue;
+            settings_view.RemindWed = settings_.remind_wed;
+            settings_view.RemindThu = settings_.remind_thu;
+            settings_view.RemindFri = settings_.remind_fri;
+            settings_view.RemindSat = settings_.remind_sat;
+            settings_view.RemindSun = settings_.remind_sun;
+            settings_view.RemindStarts = settings_.remind_starts;
+            settings_view.RemindEnds = settings_.remind_ends;
+            settings_view.Autotrack = settings_.autotrack;
+            settings_view.OpenEditorOnShortcut = settings_.open_editor_on_shortcut;
+            //has_seen_beta_offering;
+            settings_view.Pomodoro = settings_.pomodoro;
+            settings_view.PomodoroBreak = settings_.pomodoro_break;
+            settings_view.PomodoroMinutes = settings_.pomodoro_minutes;
+            settings_view.PomodoroBreakMinutes = settings_.pomodoro_break_minutes;
+            settings_view.StopEntryOnShutdownSleep = settings_.stop_entry_on_shutdown_sleep;
+
+            settings_view.UseProxy = use_proxy;
+            settings_view.ProxyHost = proxy.Host();
+            settings_view.ProxyPort = proxy.Port();
+            settings_view.ProxyPassword = proxy.Password();
+            settings_view.ProxyUsername = proxy.Username();
+            settings_view.AutodetectProxy = settings_.autodetect_proxy;
+
+            settings_view.RecordTimeline = record_timeline;
         }
 
         if (what.display_unsynced_items && user_) {
@@ -931,16 +968,13 @@ void Context::updateUI(const UIElements &what) {
 
     if (what.display_settings) {
         UI()->DisplaySettings(what.open_settings,
-                              record_timeline,
-                              settings_,
-                              use_proxy,
-                              proxy);
+                              &settings_view);
         // Tracking Settings
         if ("production" == environment_) {
             analytics_.TrackSettings(db_->AnalyticsClientID(),
-                                     record_timeline,
+                                     settings_view.RecordTimeline,
                                      settings_,
-                                     use_proxy,
+                                     settings_view.UseProxy,
                                      proxy);
         }
     }

@@ -472,10 +472,7 @@ class GUI : public SyncStateMonitor {
 
     void DisplaySettings(
         const bool open,
-        const bool record_timeline,
-        const Settings &settings,
-        const bool use_proxy,
-        const Proxy &proxy);
+        const view::Settings *settings);
 
     void DisplayTimerState(
         const view::TimeEntry &te);
