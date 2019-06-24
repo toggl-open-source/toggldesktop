@@ -111,7 +111,7 @@ class AutocompleteView : public QObject, public toggl::view::Autocomplete {
             }
 
             result.push_back(view);
-            //it = static_cast<TogglAutocompleteView *>(it->Next);
+            it = TogglAutocompleteView_Next(it);
         }
 
         return result;
