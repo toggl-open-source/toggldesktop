@@ -801,7 +801,7 @@ void Context::updateUI(const UIElements &what) {
         }
         idle_.SetSettings(settings_);
 
-        // this is crazy, let's do something about it in the future
+        // TODO this is crazy, let's do something about it in the future
         settings_view.UseIdleDetection = settings_.use_idle_detection;
         settings_view.MenubarTimer = settings_.menubar_timer;
         settings_view.MenubarProject = settings_.menubar_project;
