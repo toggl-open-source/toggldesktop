@@ -30,7 +30,7 @@ final class EditorViewController: NSViewController {
     @IBOutlet weak var deleteBtn: NSButton!
     @IBOutlet weak var tagAutoCompleteContainerView: NSBox!
     @IBOutlet weak var tagStackView: NSStackView!
-    @IBOutlet weak var tagAddButton: NSButton!
+    @IBOutlet weak var tagAddButton: AddTagButton!
     @IBOutlet weak var tagInputContainerView: NSBox!
     @IBOutlet weak var datePickerView: KeyboardDatePicker!
     @IBOutlet weak var dayNameButton: CursorButton!
@@ -109,6 +109,11 @@ final class EditorViewController: NSViewController {
     }
 
     @IBAction func tagAddButtonOnTap(_ sender: Any) {
+
+        // Reset
+        tagTextField.resetText()
+
+        // Expand the view
         openTagAutoCompleteView()
     }
 
@@ -218,6 +223,9 @@ extension EditorViewController {
             guard let strongSelf = self else { return }
             strongSelf.closeBtnOnTap(strongSelf)
         }
+
+        // Tags
+        tagAddButton.delegate = self
     }
 
     fileprivate func initDatasource() {
@@ -474,6 +482,9 @@ extension EditorViewController: AutoCompleteTextFieldDelegate {
             tagDatasource.updateSelectedTags(selectedTags)
             TagStorage.shared.addNewTag(newTag)
             DesktopLibraryBridge.shared().updateTimeEntry(withTags: selectedTags.toNames(), guid: timeEntry.guid)
+
+            // Focus on tag textfield agains, so user can continue typying
+            sender.window?.makeFirstResponder(tagTextField)
         }
     }
 
@@ -598,5 +609,22 @@ extension EditorViewController {
                                                        selector: #selector(self.updateProjectUndoValue(_:)),
                                                        object: oldValue)
         }
+    }
+}
+
+// MARK: AddTagButtonDelegate
+
+extension EditorViewController: AddTagButtonDelegate {
+
+    func shouldOpenTagAutoComplete(with text: String) {
+        // Expand the tag auto-complete
+        openTagAutoCompleteView()
+
+        // Pass the text
+        tagTextField.stringValue = text
+
+        // Notify the change manually
+        // because stringValue doesn't notify the delegate
+        tagTextField.handleTextDidChange()
     }
 }

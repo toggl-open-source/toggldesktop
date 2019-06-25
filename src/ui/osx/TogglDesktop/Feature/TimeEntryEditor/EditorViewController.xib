@@ -140,7 +140,7 @@
                                         <customView translatesAutoresizingMaskIntoConstraints="NO" id="Scx-li-Ewv">
                                             <rect key="frame" x="0.0" y="0.0" width="252" height="28"/>
                                             <subviews>
-                                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="fzH-q2-m3a">
+                                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="fzH-q2-m3a" customClass="AddTagButton" customModule="TogglDesktop" customModuleProvider="target">
                                                     <rect key="frame" x="0.0" y="0.0" width="252" height="28"/>
                                                     <buttonCell key="cell" type="bevel" title="Add tags" bezelStyle="rounded" alignment="left" imageScaling="proportionallyDown" inset="2" id="FrN-5J-6rF" customClass="VerticallyCenteredButtonCell" customModule="TogglDesktop" customModuleProvider="target">
                                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>

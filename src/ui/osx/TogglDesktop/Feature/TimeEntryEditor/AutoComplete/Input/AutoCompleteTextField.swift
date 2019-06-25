@@ -96,8 +96,7 @@ class AutoCompleteTextField: UndoTextField, NSTextFieldDelegate, AutoCompleteVie
     }
 
     func controlTextDidChange(_ obj: Notification) {
-        state = .expand
-        autoCompleteView.filter(with: self.stringValue)
+        handleTextDidChange()
     }
 
     @objc func arrowBtnOnTap() {
@@ -121,11 +120,21 @@ class AutoCompleteTextField: UndoTextField, NSTextFieldDelegate, AutoCompleteVie
         state = .collapse
     }
 
+    func resetText() {
+        stringValue = ""
+        handleTextDidChange()
+    }
+
     func updateWindowContent(with view: NSView, height: CGFloat) {
         autoCompleteWindow.contentView = view
         let rect = windowFrameRect()
         autoCompleteWindow.layoutFrame(with: self, origin: rect.origin, size: rect.size)
         autoCompleteWindow.makeKey()
+    }
+
+    func handleTextDidChange() {
+        state = .expand
+        autoCompleteView.filter(with: self.stringValue)
     }
 
     private func closeAutoComplete() {
