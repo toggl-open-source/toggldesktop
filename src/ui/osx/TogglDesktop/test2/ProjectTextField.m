@@ -42,6 +42,11 @@
 	}
 }
 
+- (void)setAttributedStringValue:(NSAttributedString *)attributedStringValue {
+	[super setAttributedStringValue:attributedStringValue];
+	self.toolTip = self.attributedStringValue.string;
+}
+
 - (void)setTitleWithTimeEntry:(TimeEntryViewItem *)item
 {
 	self.textColor = [ConvertHexColor hexCodeToNSColor:item.ProjectColor];
