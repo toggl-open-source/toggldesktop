@@ -398,6 +398,13 @@ extension EditorViewController {
             view.window?.makeFirstResponder(durationTextField)
         case String(utf8String: kFocusedFieldNameProject):
             view.window?.makeFirstResponder(projectTextField)
+        case String(utf8String: kFocusedFieldNameTag):
+            if let tags = timeEntry.tags, tags.isEmpty {
+                view.window?.makeFirstResponder(tagAddButton)
+            } else {
+                guard let firstTag = tagStackView.arrangedSubviews.first as? TagTokenView else { return }
+                view.window?.makeFirstResponder(firstTag.actionButton)
+            }
         default:
             view.window?.makeFirstResponder(descriptionTextField)
         }
