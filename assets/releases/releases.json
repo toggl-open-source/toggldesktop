@@ -2197,34 +2197,6 @@
     "linux": {
         "dev": [
             {
-                "version": "7.4.397",
-                "timestamp": "28-03-2019",
-                "filename": [
-                    {
-                        "type": "linux_tar.gz",
-                        "name": "toggldesktop_linux_x86_64-7_4_397.tar.gz"
-                    },
-                    {
-                        "type": "linux_flatpak",
-                        "name": "com.toggl.TogglDesktop_linux_86_64-7.4.397.flatpak"
-                    }
-                ]
-            },
-            {
-                "version": "7.4.399",
-                "timestamp": "29-03-2019",
-                "filename": [
-                    {
-                        "type": "linux_tar.gz",
-                        "name": "toggldesktop_linux_x86_64-7_4_399.tar.gz"
-                    },
-                    {
-                        "type": "linux_flatpak",
-                        "name": "com.toggl.TogglDesktop_linux_86_64-7.4.399.flatpak"
-                    }
-                ]
-            },
-            {
                 "version": "7.4.400",
                 "timestamp": "29-03-2019",
                 "filename": [
@@ -2375,6 +2347,20 @@
                     {
                         "type": "linux_flatpak",
                         "name": "com.toggl.TogglDesktop_linux_86_64-7.4.438.flatpak"
+                    }
+                ]
+            },
+            {
+                "version": "7.4.439",
+                "timestamp": "25-06-2019",
+                "filename": [
+                    {
+                        "type": "linux_tar.gz",
+                        "name": "toggldesktop_linux_x86_64-7_4_439.tar.gz"
+                    },
+                    {
+                        "type": "linux_flatpak",
+                        "name": "com.toggl.TogglDesktop_linux_86_64-7.4.439.flatpak"
                     }
                 ]
             }
