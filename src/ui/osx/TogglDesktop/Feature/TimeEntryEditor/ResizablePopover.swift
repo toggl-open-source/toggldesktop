@@ -10,13 +10,15 @@ import Cocoa
 
 class ResizablePopover: NSPopover {
 
-    let BOTTOM_HIT = CGFloat(4)
-    let CORNER_HIT = CGFloat(10)
+    private struct Constants {
+        static let CornerHit: CGFloat = 10.0
+        static let SideHit: CGFloat = 4.0
+    }
 
     private enum Region {
         case None
-        case LeftBottom
-        case RightBottom
+        case Left
+        case Right
     }
 
     // MARK: Variables
@@ -24,21 +26,19 @@ class ResizablePopover: NSPopover {
     private var isResizable: Bool
     private var min: NSSize
     private var max: NSSize
+    private var size: NSSize?
     private var region: Region = .None
     private var down: NSPoint?
-    private var size: NSSize?
-    private var trackLeftBottom: NSView.TrackingRectTag?
-    private var trackRightBottom: NSView.TrackingRectTag?
-    private var sizeChanged: ((_ size: NSSize) -> Void)? = nil
-
-    private let cursorLeftBottom = NSCursor.resizeLeftRight
-    private let cursorRightBottom = NSCursor.resizeUpDown
-
+    private var bottomHeight = CGFloat(20)
+    private var trackLeft: NSView.TrackingRectTag?
+    private var trackRight: NSView.TrackingRectTag?
     override var contentViewController: NSViewController? {
         didSet {
             prepareTracker()
         }
     }
+
+    // MARK: Init
 
     override init() {
         self.isResizable = false
@@ -72,20 +72,7 @@ class ResizablePopover: NSPopover {
         clearTrackers()
     }
 
-    // Call this to get notified anytime the popover is resized
-    func resized(_ sizeChanged: @escaping (_ size: NSSize) -> Void) {
-        self.sizeChanged = sizeChanged
-    }
-
-    private func prepareTracker() {
-        guard let controller = contentViewController else { return }
-
-        // Set default content size
-        contentSize = NSSize(width: controller.view.bounds.width, height: controller.view.bounds.height)
-
-        // Setup the tracker
-        setTrackers()
-    }
+    // MARK: Override
 
     override public func mouseEntered(with event: NSEvent) {
         guard isResizable else {
@@ -94,10 +81,10 @@ class ResizablePopover: NSPopover {
         }
 
         if region == .None {
-            if event.trackingNumber == trackLeftBottom {
-                region = .LeftBottom
-            } else if event.trackingNumber == trackRightBottom {
-                region = .RightBottom
+            if event.trackingNumber == trackLeft {
+                region = .Left
+            } else if event.trackingNumber == trackRight {
+                region = .Right
             } else {
                 region = .None
             }
@@ -144,10 +131,8 @@ class ResizablePopover: NSPopover {
         let location = NSEvent.mouseLocation
 
         var movedX = (location.x - down.x) * 2
-        let movedY = location.y - down.y
-                print("MOVE x: \(movedX), y: \(movedY)")
 
-        if region == .LeftBottom {
+        if region == .Left {
             movedX = -movedX
         }
 
@@ -158,17 +143,10 @@ class ResizablePopover: NSPopover {
             newWidth = max.width
         }
 
-        var newHeight = size.height - movedY
-        if newHeight < min.height {
-            newHeight = min.height
-        } else if newHeight > max.height {
-            newHeight = max.height
-        }
-
         switch region {
-        case .LeftBottom: fallthrough
-        case .RightBottom:
-            contentSize = NSSize(width: newWidth, height: newHeight)
+        case .Left,
+             .Right:
+            contentSize = NSSize(width: newWidth, height: contentSize.height)
         default:
             break
         }
@@ -187,19 +165,27 @@ class ResizablePopover: NSPopover {
             setCursor()
             setTrackers()
             down = nil
-
-            if let onChanged = sizeChanged {
-                onChanged(NSSize(width: contentSize.width, height: contentSize.height))
-            }
         }
+    }
+
+    // MARK: Private
+
+    private func prepareTracker() {
+        guard let controller = contentViewController else { return }
+
+        // Set default content size
+        contentSize = NSSize(width: controller.view.bounds.width, height: controller.view.bounds.height)
+        bottomHeight = contentSize.height
+
+        // Setup the tracker
+        setTrackers()
     }
 
     private func setCursor() {
         switch region {
-        case .LeftBottom:
-            cursorLeftBottom.set()
-        case .RightBottom:
-            cursorRightBottom.set()
+        case .Left,
+             .Right:
+            NSCursor.resizeLeftRight.set()
         default:
             NSCursor.arrow.set()
         }
@@ -210,29 +196,18 @@ class ResizablePopover: NSPopover {
         clearTrackers()
 
         if let view = contentViewController?.view {
-            var bounds = NSRect(x: 0, y: 0, width: CORNER_HIT, height: CORNER_HIT)
-            trackLeftBottom = view.addTrackingRect(bounds, owner: self, userData: nil, assumeInside: false)
+            var bounds = NSRect(x: 0, y: Constants.CornerHit, width: Constants.SideHit, height: bottomHeight - Constants.CornerHit)
+            trackLeft = view.addTrackingRect(bounds, owner: self, userData: nil, assumeInside: false)
 
-            bounds = NSRect(x: contentSize.width - CORNER_HIT, y: 0, width: CORNER_HIT, height: CORNER_HIT)
-            trackRightBottom = view.addTrackingRect(bounds, owner: self, userData: nil, assumeInside: false)
+            bounds = NSRect(x: contentSize.width - Constants.SideHit, y: Constants.CornerHit, width: Constants.SideHit, height: bottomHeight - Constants.CornerHit)
+            trackRight = view.addTrackingRect(bounds, owner: self, userData: nil, assumeInside: false)
         }
     }
 
     private func clearTrackers() {
-        if let view = contentViewController?.view, let leftBottom = trackLeftBottom, let rightBottom = trackRightBottom {
-            view.removeTrackingRect(rightBottom)
-            view.removeTrackingRect(leftBottom)
+        if let view = contentViewController?.view, let left = trackLeft, let right = trackRight {
+            view.removeTrackingRect(left)
+            view.removeTrackingRect(right)
         }
-    }
-
-    private static func getCursor(_ name: String) -> NSCursor {
-        return NSCursor.openHand
-        let path = Bundle(for: self).bundlePath
-
-        let image = NSImage(byReferencingFile: path + "/Resources/resources/\(name)_cursor.pdf")
-        let info = NSDictionary(contentsOfFile: path + "/Resources/resources/\(name)_info.plist")
-        let cursor = NSCursor(image: image!, hotSpot: NSPoint(x: (info!.value(forKey: "hotx")! as AnyObject).doubleValue!, y: (info!.value(forKey: "hoty")! as AnyObject).doubleValue!))
-
-        return cursor
     }
 }

@@ -16,7 +16,7 @@ final class EditorPopover: NoVibrantPopoverView {
 
     override init() {
         let size = CGSize(width: 274, height: 381)
-        let maxSize = CGSize(width: size.width * 2, height: size.height * 2)
+        let maxSize = CGSize(width: size.width * 3, height: size.height)
         super.init(min: size, max: maxSize)
     }
 
