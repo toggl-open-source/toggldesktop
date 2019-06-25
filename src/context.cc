@@ -506,27 +506,10 @@ void Context::OpenTimeEntryList() {
 void Context::updateUI(const UIElements &what) {
     logger().debug("updateUI " + what.String());
 
-    view::TimeEntry editor_time_entry_view;
-
-    view::Settings settings_view;
-
     std::vector<view::Autocomplete> time_entry_autocompletes;
     std::vector<view::Autocomplete> minitimer_autocompletes;
     std::vector<view::Autocomplete> project_autocompletes;
 
-    Proxy proxy;
-    Poco::Int64 unsynced_item_count(0);
-
-    view::TimeEntry running_entry_view;
-
-    std::vector<view::TimeEntry> time_entry_views;
-
-    std::vector<view::Generic> client_views;
-    std::vector<view::Generic> workspace_views;
-    std::vector<view::Generic> tag_views;
-
-    std::vector<view::AutotrackerRule> autotracker_rule_views;
-    std::vector<std::string> autotracker_title_views;
 
 
     //////////////////////////////////////////////////////////////////////////////////////
@@ -535,7 +518,10 @@ void Context::updateUI(const UIElements &what) {
     //////////////////////////////////////////////////////////////////////////////////////
 
 
-    auto renderTimeEntryEditor = [this](const UIElements &what, view::TimeEntry &editor_time_entry_view, std::vector<view::Generic> &tag_views) {
+    auto renderTimeEntryEditor = [this](const UIElements &what) {
+        view::TimeEntry editor_time_entry_view;
+        std::vector<view::Generic> tag_views;
+
         TimeEntry *editor_time_entry =
             user_->related.TimeEntryByGUID(what.time_entry_editor_guid);
         if (editor_time_entry) {
@@ -597,15 +583,19 @@ void Context::updateUI(const UIElements &what) {
             }
         }
 
-        link_vector(tag_views);
-        UI()->DisplayTags(tag_views);
-        UI()->DisplayTimeEntryEditor(
-            what.open_time_entry_editor,
-            editor_time_entry_view,
-            what.time_entry_editor_field);
+        if (!editor_time_entry_view.GUID.empty()) {
+            link_vector(tag_views);
+            UI()->DisplayTags(tag_views);
+            UI()->DisplayTimeEntryEditor(
+                what.open_time_entry_editor,
+                editor_time_entry_view,
+                what.time_entry_editor_field);
+        }
     };
 
-    auto renderWorkspaceSelect = [this](std::vector<view::Generic> &workspace_views) {
+    auto renderWorkspaceSelect = [this]() {
+        std::vector<view::Generic> workspace_views;
+
         std::vector<Workspace *> workspaces;
         user_->related.WorkspaceList(&workspaces);
         for (std::vector<Workspace *>::const_iterator
@@ -627,7 +617,9 @@ void Context::updateUI(const UIElements &what) {
         UI()->DisplayWorkspaceSelect(workspace_views);
     };
 
-    auto renderClientSelect = [this](std::vector<view::Generic> &client_views) {
+    auto renderClientSelect = [this]() {
+        std::vector<view::Generic> client_views;
+
         std::vector<Client *> models;
         user_->related.ClientList(&models);
         for (std::vector<Client *>::const_iterator it = models.begin();
@@ -653,7 +645,9 @@ void Context::updateUI(const UIElements &what) {
         UI()->DisplayClientSelect(client_views);
     };
 
-    auto renderTimerState = [this](view::TimeEntry &running_entry_view) {
+    auto renderTimerState = [this]() {
+        view::TimeEntry running_entry_view;
+
         TimeEntry *running_entry = user_->RunningTimeEntry();
         if (running_entry) {
             running_entry_view.Fill(running_entry);
@@ -677,7 +671,9 @@ void Context::updateUI(const UIElements &what) {
         }
     };
 
-    auto renderTimeEntries = [this](const UIElements &what, std::vector<view::TimeEntry> &time_entry_views) {
+    auto renderTimeEntries = [this](const UIElements &what) {
+        std::vector<view::TimeEntry> time_entry_views;
+
         if (what.open_time_entry_list) {
             time_entry_editor_guid_ = "";
         }
@@ -813,7 +809,10 @@ void Context::updateUI(const UIElements &what) {
         last_time_entry_list_render_at_ = Poco::LocalDateTime();
     };
 
-    auto renderSettings = [this](const UIElements &what, view::Settings &settings_view, Proxy &proxy) {
+    auto renderSettings = [this](const UIElements &what) {
+        view::Settings settings_view;
+
+        Proxy proxy;
         bool use_proxy(false);
         bool record_timeline(false);
 
@@ -884,12 +883,15 @@ void Context::updateUI(const UIElements &what) {
         }
     };
 
-    auto renderUnsyncedItems = [this](Poco::Int64 &unsynced_item_count) {
-        unsynced_item_count = user_->related.NumberOfUnsyncedTimeEntries();
+    auto renderUnsyncedItems = [this]() {
+        Poco::Int64 unsynced_item_count = user_->related.NumberOfUnsyncedTimeEntries();
         UI()->DisplayUnsyncedItems(unsynced_item_count);
     };
 
-    auto renderAutotrackerRules = [this](std::vector<view::AutotrackerRule> &autotracker_rule_views, std::vector<std::string> &autotracker_title_views) {
+    auto renderAutotrackerRules = [this]() {
+        std::vector<view::AutotrackerRule> autotracker_rule_views;
+        std::vector<std::string> autotracker_title_views;
+
         if (UI()->CanDisplayAutotrackerRules()) {
             // Collect rules
             for (std::vector<toggl::AutotrackerRule *>::const_iterator
@@ -932,11 +934,11 @@ void Context::updateUI(const UIElements &what) {
         Poco::Mutex::ScopedLock lock(user_m_);
 
         // Render data
-        if (what.display_time_entry_editor && !editor_time_entry_view.GUID.empty())
-            renderTimeEntryEditor(what, editor_time_entry_view, tag_views);
+        if (what.display_time_entry_editor)
+            renderTimeEntryEditor(what);
 
         if (what.display_time_entries)
-            renderTimeEntries(what, time_entry_views);
+            renderTimeEntries(what);
 
         if (what.display_time_entry_autocomplete) {
             if (what.first_load) {
@@ -967,19 +969,19 @@ void Context::updateUI(const UIElements &what) {
         }
 
         if (what.display_workspace_select)
-            renderWorkspaceSelect(workspace_views);
+            renderWorkspaceSelect();
 
         if (what.display_client_select)
-            renderClientSelect(client_views);
+            renderClientSelect();
 
         if (what.display_timer_state)
-            renderTimerState(running_entry_view);
+            renderTimerState();
 
         if (what.display_autotracker_rules)
-            renderAutotrackerRules(autotracker_rule_views, autotracker_title_views);
+            renderAutotrackerRules();
 
         if (what.display_settings)
-            renderSettings(what, settings_view, proxy);
+            renderSettings(what);
 
         // Apply autocomplete as last element,
         // as its depending on selects on Windows
@@ -998,7 +1000,7 @@ void Context::updateUI(const UIElements &what) {
         }
 
         if (what.display_unsynced_items)
-            renderUnsyncedItems(unsynced_item_count);
+            renderUnsyncedItems();
     }
 }
 
