@@ -482,6 +482,9 @@ extension EditorViewController: AutoCompleteTextFieldDelegate {
             tagDatasource.updateSelectedTags(selectedTags)
             TagStorage.shared.addNewTag(newTag)
             DesktopLibraryBridge.shared().updateTimeEntry(withTags: selectedTags.toNames(), guid: timeEntry.guid)
+
+            // Focus on tag textfield agains, so user can continue typying
+            sender.window?.makeFirstResponder(tagTextField)
         }
     }
 
