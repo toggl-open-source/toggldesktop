@@ -15,24 +15,20 @@ class ResizablePopover: NSPopover {
 
     private enum Region {
         case None
-        case Left
         case LeftBottom
-        case Right
         case RightBottom
     }
 
     // MARK: Variables
 
+    private var isResizable: Bool
     private var min: NSSize
     private var max: NSSize
     private var region: Region = .None
     private var down: NSPoint?
     private var size: NSSize?
-    private var trackLeft: NSView.TrackingRectTag?
-    private var trackRight: NSView.TrackingRectTag?
     private var trackLeftBottom: NSView.TrackingRectTag?
     private var trackRightBottom: NSView.TrackingRectTag?
-    private var trackBottom: NSView.TrackingRectTag?
     private var sizeChanged: ((_ size: NSSize) -> Void)? = nil
 
     private let cursorLeftBottom = NSCursor.resizeLeftRight
@@ -43,19 +39,27 @@ class ResizablePopover: NSPopover {
             prepareTracker()
         }
     }
-    // min: the mimimum size the popover is allowed to be
-    // max: the maximum size the popover is allowed to be
-    // heightFromBottom: Set this to limit the draggable handle region
-    //                   to a height starting from the bottom of the popover
-    //                   If 0, then it uses the entire height of popover
-    public init(min: NSSize, max: NSSize) {
+
+    override init() {
+        self.isResizable = false
+        self.min = CGSize.zero
+        self.max = CGSize.zero
+        super.init()
+    }
+
+    init(min: CGSize, max: CGSize) {
+        self.isResizable = true
         self.min = min
         self.max = max
 
         // If not defined, use the screen height
-        if let screen = NSScreen.main,
-            self.max.height == 0 {
-            self.max.height = CGFloat(screen.frame.height)
+        if let screen = NSScreen.main {
+            if max.height == 0 {
+                self.max.height = CGFloat(screen.frame.height)
+            }
+            if max.width == 0 {
+                self.max.width = CGFloat(screen.frame.width)
+            }
         }
         super.init()
     }
@@ -84,12 +88,13 @@ class ResizablePopover: NSPopover {
     }
 
     override public func mouseEntered(with event: NSEvent) {
+        guard isResizable else {
+            super.mouseEntered(with: event)
+            return
+        }
+
         if region == .None {
-            if event.trackingNumber == trackLeft {
-                region = .Left
-            } else if event.trackingNumber == trackRight {
-                region = .Right
-            } else if event.trackingNumber == trackLeftBottom {
+            if event.trackingNumber == trackLeftBottom {
                 region = .LeftBottom
             } else if event.trackingNumber == trackRightBottom {
                 region = .RightBottom
@@ -102,6 +107,11 @@ class ResizablePopover: NSPopover {
     }
 
     override public func mouseExited(with event: NSEvent) {
+        guard isResizable else {
+            super.mouseExited(with: event)
+            return
+        }
+
         if down == nil {
             region = .None
             setCursor()
@@ -109,11 +119,21 @@ class ResizablePopover: NSPopover {
     }
 
     override public func mouseDown(with event: NSEvent) {
+        guard isResizable else {
+            super.mouseDown(with: event)
+            return
+        }
+
         self.size = contentSize
         self.down = NSEvent.mouseLocation
     }
 
     override public func mouseDragged(with event: NSEvent) {
+        guard isResizable else {
+            super.mouseDragged(with: event)
+            return
+        }
+
         if region == .None {
             return
         }
@@ -125,9 +145,9 @@ class ResizablePopover: NSPopover {
 
         var movedX = (location.x - down.x) * 2
         let movedY = location.y - down.y
-        //        print("MOVE x: \(movedX), y: \(movedY)")
+                print("MOVE x: \(movedX), y: \(movedY)")
 
-        if region == .Left || region == .LeftBottom {
+        if region == .LeftBottom {
             movedX = -movedX
         }
 
@@ -146,9 +166,6 @@ class ResizablePopover: NSPopover {
         }
 
         switch region {
-        case .Left: fallthrough
-        case .Right:
-            contentSize = NSSize(width: newWidth, height: contentSize.height)
         case .LeftBottom: fallthrough
         case .RightBottom:
             contentSize = NSSize(width: newWidth, height: newHeight)
@@ -160,6 +177,11 @@ class ResizablePopover: NSPopover {
     }
 
     override public func mouseUp(with event: NSEvent) {
+        guard isResizable else {
+            super.mouseUp(with: event)
+            return
+        }
+
         if region != .None {
             region = .None
             setCursor()
@@ -174,10 +196,6 @@ class ResizablePopover: NSPopover {
 
     private func setCursor() {
         switch region {
-        case .Left:
-            NSCursor.resizeLeft.set()
-        case .Right:
-            NSCursor.resizeRight.set()
         case .LeftBottom:
             cursorLeftBottom.set()
         case .RightBottom:
@@ -188,33 +206,22 @@ class ResizablePopover: NSPopover {
     }
 
     private func setTrackers() {
+        guard isResizable else { return }
         clearTrackers()
 
         if let view = contentViewController?.view {
-            var bounds = NSRect(x: 0, y: CORNER_HIT, width: SIDES_HIT, height: CORNER_HIT)
-            trackLeft = view.addTrackingRect(bounds, owner: self, userData: nil, assumeInside: false)
-
-            bounds = NSRect(x: contentSize.width - SIDES_HIT, y: CORNER_HIT, width: SIDES_HIT, height: CORNER_HIT)
-            trackRight = view.addTrackingRect(bounds, owner: self, userData: nil, assumeInside: false)
-
-            bounds = NSRect(x: 0, y: 0, width: CORNER_HIT, height: CORNER_HIT)
+            var bounds = NSRect(x: 0, y: 0, width: CORNER_HIT, height: CORNER_HIT)
             trackLeftBottom = view.addTrackingRect(bounds, owner: self, userData: nil, assumeInside: false)
 
             bounds = NSRect(x: contentSize.width - CORNER_HIT, y: 0, width: CORNER_HIT, height: CORNER_HIT)
             trackRightBottom = view.addTrackingRect(bounds, owner: self, userData: nil, assumeInside: false)
-
-            bounds = NSRect(x: CORNER_HIT, y: 0, width: contentSize.width - CORNER_HIT * 2, height: BOTTOM_HIT)
-            trackBottom = view.addTrackingRect(bounds, owner: self, userData: nil, assumeInside: false)
         }
     }
 
     private func clearTrackers() {
-        if let view = contentViewController?.view, let left = trackLeft, let right = trackRight, let leftBottom = trackLeftBottom, let rightBottom = trackRightBottom, let bottom = trackBottom {
-            view.removeTrackingRect(left)
-            view.removeTrackingRect(right)
+        if let view = contentViewController?.view, let leftBottom = trackLeftBottom, let rightBottom = trackRightBottom {
             view.removeTrackingRect(rightBottom)
             view.removeTrackingRect(leftBottom)
-            view.removeTrackingRect(bottom)
         }
     }
 
