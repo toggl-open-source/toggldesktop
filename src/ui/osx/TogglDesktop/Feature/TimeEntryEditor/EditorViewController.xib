@@ -401,7 +401,7 @@
                                     <constraint firstAttribute="height" constant="20" id="bbQ-Pp-Vcw"/>
                                     <constraint firstAttribute="width" constant="20" id="bnN-Hu-0cO"/>
                                 </constraints>
-                                <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="close-button" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="UZy-3R-deK">
+                                <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="close-button" imagePosition="only" alignment="center" refusesFirstResponder="YES" imageScaling="proportionallyDown" inset="2" id="UZy-3R-deK">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>

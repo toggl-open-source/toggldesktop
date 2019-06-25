@@ -48,6 +48,7 @@ final class EditorViewController: NSViewController {
         didSet {
             fillData()
             registerUndoForAllFields()
+            setFocusOnTextField()
         }
     }
     private var selectedProjectItem: ProjectContentItem?
@@ -93,8 +94,6 @@ final class EditorViewController: NSViewController {
 
     override func viewDidAppear() {
         super.viewDidAppear()
-
-        view.window?.makeFirstResponder(descriptionTextField)
         updateNextKeyViews()
     }
 
@@ -387,6 +386,21 @@ extension EditorViewController {
         // Update
         let durationText = DesktopLibraryBridge.shared().convertDuraton(inSecond: timeEntry.duration_in_seconds)
         durationTextField.stringValue = durationText
+    }
+
+    fileprivate func setFocusOnTextField() {
+        guard let timeEntry = timeEntry,
+            let focusedFieldName = timeEntry.focusedFieldName else { return }
+
+        // Focus on specific text fields
+        switch focusedFieldName {
+        case String(utf8String: kFocusedFieldNameDuration):
+            view.window?.makeFirstResponder(durationTextField)
+        case String(utf8String: kFocusedFieldNameProject):
+            view.window?.makeFirstResponder(projectTextField)
+        default:
+            view.window?.makeFirstResponder(descriptionTextField)
+        }
     }
 }
 
