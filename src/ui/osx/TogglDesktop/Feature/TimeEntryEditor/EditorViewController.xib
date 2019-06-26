@@ -530,7 +530,7 @@
                             <constraint firstItem="Zk0-BK-EiX" firstAttribute="leading" secondItem="RzB-ad-pEO" secondAttribute="leading" constant="10" id="uKE-Oe-S4J"/>
                             <constraint firstItem="FXR-Ha-kYg" firstAttribute="top" secondItem="RzB-ad-pEO" secondAttribute="top" constant="5" id="uSd-7e-ckx"/>
                             <constraint firstAttribute="trailing" secondItem="fPF-go-RPE" secondAttribute="trailing" constant="10" id="utZ-T7-DxC"/>
-                            <constraint firstItem="Wyt-sv-sZR" firstAttribute="leading" secondItem="Qo9-rw-PRz" secondAttribute="trailing" constant="8" id="vUQ-3b-rmy"/>
+                            <constraint firstItem="Wyt-sv-sZR" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Qo9-rw-PRz" secondAttribute="trailing" constant="8" id="vUQ-3b-rmy"/>
                             <constraint firstItem="Qo9-rw-PRz" firstAttribute="top" secondItem="flL-k2-TC8" secondAttribute="bottom" constant="10" id="vlX-v9-R8U"/>
                             <constraint firstItem="sts-eu-78s" firstAttribute="leading" secondItem="RzB-ad-pEO" secondAttribute="leading" constant="10" id="xot-d9-UOv"/>
                         </constraints>
@@ -544,7 +544,7 @@
                 <constraint firstItem="fZO-4l-jo1" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" id="nno-xe-fYT"/>
                 <constraint firstAttribute="bottom" secondItem="fZO-4l-jo1" secondAttribute="bottom" id="yr2-gk-PkQ"/>
             </constraints>
-            <point key="canvasLocation" x="-586" y="-285.5"/>
+            <point key="canvasLocation" x="-545.5" y="-226"/>
         </customView>
     </objects>
     <resources>

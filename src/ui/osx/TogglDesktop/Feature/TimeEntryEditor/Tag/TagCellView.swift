@@ -75,7 +75,7 @@ final class TagCellView: NSTableCellView {
         } else {
             checkButton.title = tag.name
         }
-
+        checkButton.toolTip = tag.name
     }
 
     func selectCheckBox() {

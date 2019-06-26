@@ -8,7 +8,7 @@
 
 import Cocoa
 
-class NoVibrantPopoverView: NSPopover {
+class NoVibrantPopoverView: ResizablePopover {
 
     override var appearance: NSAppearance? {
         get {

@@ -14,6 +14,16 @@ final class EditorPopover: NoVibrantPopoverView {
         static let FocusTimerNotification = NSNotification.Name(kFocusTimer)
     }
 
+    override init() {
+        let size = CGSize(width: 274, height: 381)
+        let maxSize = CGSize(width: size.width * 3, height: size.height)
+        super.init(min: size, max: maxSize)
+    }
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
+
     @objc func prepareViewController() {
         let editor = EditorViewController(nibName: NSNib.Name("EditorViewController"), bundle: nil)
         contentViewController = editor

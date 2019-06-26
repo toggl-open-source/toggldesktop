@@ -69,6 +69,17 @@ class AutoCompleteTextField: UndoTextField, NSTextFieldDelegate, AutoCompleteVie
         }
     }
 
+    override var stringValue: String {
+        didSet {
+            toolTip = stringValue
+        }
+    }
+    override var attributedStringValue: NSAttributedString {
+        didSet {
+            toolTip = attributedStringValue.string
+        }
+    }
+
     // MARK: Init
 
     override init(frame frameRect: NSRect) {
