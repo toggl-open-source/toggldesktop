@@ -58,3 +58,4 @@ extern NSString *const kUserHasBeenSignup;
 const char *kFocusedFieldNameDuration;
 const char *kFocusedFieldNameDescription;
 const char *kFocusedFieldNameProject;
+const char *kFocusedFieldNameTag;

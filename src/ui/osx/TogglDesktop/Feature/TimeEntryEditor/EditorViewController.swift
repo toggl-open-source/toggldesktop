@@ -48,6 +48,11 @@ final class EditorViewController: NSViewController {
         didSet {
             fillData()
             registerUndoForAllFields()
+
+            // Check if the Editor has update with new TimeEntry -> Reset focus to Description TextField
+            // If not, just keep focus on current textfield
+            let defaultFocus = checkShouldFocusByDefault(for: oldValue, newValue: timeEntry)
+            setFocusOnTextField(shouldFocusByDefault: defaultFocus)
         }
     }
     private var selectedProjectItem: ProjectContentItem?
@@ -93,8 +98,6 @@ final class EditorViewController: NSViewController {
 
     override func viewDidAppear() {
         super.viewDidAppear()
-
-        view.window?.makeFirstResponder(descriptionTextField)
         updateNextKeyViews()
     }
 
@@ -387,6 +390,37 @@ extension EditorViewController {
         // Update
         let durationText = DesktopLibraryBridge.shared().convertDuraton(inSecond: timeEntry.duration_in_seconds)
         durationTextField.stringValue = durationText
+    }
+
+    fileprivate func checkShouldFocusByDefault(for oldValue: TimeEntryViewItem?, newValue: TimeEntryViewItem?) -> Bool {
+        guard let oldValueGuid = oldValue?.guid, let newValueGuid = timeEntry?.guid else { return false }
+        return oldValueGuid != newValueGuid
+    }
+
+    fileprivate func setFocusOnTextField(shouldFocusByDefault: Bool) {
+
+
+        guard let timeEntry = timeEntry,
+            let focusedFieldName = timeEntry.focusedFieldName else { return }
+
+        // Focus on specific text fields
+        switch focusedFieldName {
+        case String(utf8String: kFocusedFieldNameDuration):
+            view.window?.makeFirstResponder(durationTextField)
+        case String(utf8String: kFocusedFieldNameProject):
+            view.window?.makeFirstResponder(projectTextField)
+        case String(utf8String: kFocusedFieldNameTag):
+            if let tags = timeEntry.tags, tags.isEmpty {
+                view.window?.makeFirstResponder(tagAddButton)
+            } else {
+                guard let firstTag = tagStackView.arrangedSubviews.first as? TagTokenView else { return }
+                view.window?.makeFirstResponder(firstTag.actionButton)
+            }
+        default:
+            if shouldFocusByDefault {
+                view.window?.makeFirstResponder(descriptionTextField)
+            }
+        }
     }
 }
 
