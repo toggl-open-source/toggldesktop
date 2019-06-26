@@ -85,6 +85,7 @@
                                     <constraint firstAttribute="height" constant="30" id="t4Z-Ah-9I1"/>
                                 </constraints>
                                 <color key="borderColor" name="upload-border-color"/>
+                                <color key="fillColor" name="editor-background-color"/>
                             </box>
                             <box boxType="custom" cornerRadius="8" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="HK8-ig-0Mv">
                                 <rect key="frame" x="10" y="267" width="254" height="30"/>
@@ -127,6 +128,7 @@
                                     <constraint firstAttribute="height" constant="30" id="VTV-f4-lGQ"/>
                                 </constraints>
                                 <color key="borderColor" name="upload-border-color"/>
+                                <color key="fillColor" name="editor-background-color"/>
                             </box>
                             <box boxType="custom" cornerRadius="8" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="sts-eu-78s">
                                 <rect key="frame" x="10" y="227" width="254" height="30"/>
@@ -182,6 +184,7 @@
                                     <constraint firstAttribute="height" constant="30" id="AnT-nB-TSC"/>
                                 </constraints>
                                 <color key="borderColor" name="upload-border-color"/>
+                                <color key="fillColor" name="editor-background-color"/>
                             </box>
                             <box boxType="custom" cornerRadius="8" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="Qo9-rw-PRz">
                                 <rect key="frame" x="10" y="153" width="80" height="30"/>
@@ -218,6 +221,7 @@
                                     <constraint firstAttribute="width" constant="80" id="oLg-tf-aMC"/>
                                 </constraints>
                                 <color key="borderColor" name="upload-border-color"/>
+                                <color key="fillColor" name="editor-background-color"/>
                             </box>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="flL-k2-TC8">
                                 <rect key="frame" x="18" y="193" width="62" height="14"/>
@@ -265,10 +269,7 @@
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <button horizontalHuggingPriority="750" verticalHuggingPriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="5ym-is-B1S">
-                                            <rect key="frame" x="10" y="16" width="88" height="17"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="88" id="165-rH-RsM"/>
-                                            </constraints>
+                                            <rect key="frame" x="10" y="16" width="44" height="17"/>
                                             <buttonCell key="cell" type="bevel" title="Delete" bezelStyle="rounded" alignment="left" imageScaling="proportionallyDown" inset="2" id="MpM-TN-el8">
                                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                 <font key="font" metaFont="system"/>
@@ -306,8 +307,8 @@
                                                 <rect key="frame" x="1" y="1" width="190" height="28"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
-                                                    <stackView distribution="equalSpacing" orientation="horizontal" alignment="baseline" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gKy-N8-5Oe">
-                                                        <rect key="frame" x="23" y="2" width="145" height="22"/>
+                                                    <stackView distribution="equalSpacing" orientation="horizontal" alignment="centerY" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gKy-N8-5Oe">
+                                                        <rect key="frame" x="23" y="3" width="145" height="25"/>
                                                         <subviews>
                                                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="UYO-W1-uSI" customClass="CursorButton" customModule="TogglDesktop" customModuleProvider="target">
                                                                 <rect key="frame" x="0.0" y="3" width="61" height="18"/>
@@ -320,9 +321,9 @@
                                                                 </connections>
                                                             </button>
                                                             <datePicker verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="PKt-Ig-fee" customClass="KeyboardDatePicker" customModule="TogglDesktop" customModuleProvider="target">
-                                                                <rect key="frame" x="61" y="0.0" width="84" height="22"/>
+                                                                <rect key="frame" x="61" y="0.0" width="84" height="25"/>
                                                                 <constraints>
-                                                                    <constraint firstAttribute="height" constant="22" id="60V-hr-SJM"/>
+                                                                    <constraint firstAttribute="height" constant="25" id="jpF-3X-qFm"/>
                                                                 </constraints>
                                                                 <datePickerCell key="cell" alignment="left" drawsBackground="NO" datePickerStyle="textField" id="eIj-kY-idV">
                                                                     <font key="font" size="14" name=".SFNSText"/>
@@ -349,10 +350,11 @@
                                                 </subviews>
                                                 <constraints>
                                                     <constraint firstItem="gKy-N8-5Oe" firstAttribute="centerX" secondItem="Vxl-ZN-LqT" secondAttribute="centerX" id="Rli-js-4iw"/>
-                                                    <constraint firstItem="gKy-N8-5Oe" firstAttribute="centerY" secondItem="Vxl-ZN-LqT" secondAttribute="centerY" constant="1" id="e4a-R8-SDt"/>
+                                                    <constraint firstItem="gKy-N8-5Oe" firstAttribute="centerY" secondItem="Vxl-ZN-LqT" secondAttribute="centerY" constant="-1" id="e4a-R8-SDt"/>
                                                 </constraints>
                                             </view>
                                             <color key="borderColor" name="upload-border-color"/>
+                                            <color key="fillColor" name="editor-background-color"/>
                                         </box>
                                         <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="kZS-XS-SCf">
                                             <rect key="frame" x="222" y="0.0" width="30" height="28"/>
@@ -394,6 +396,7 @@
                                     <constraint firstAttribute="height" constant="30" id="lN9-E3-8LO"/>
                                 </constraints>
                                 <color key="borderColor" name="upload-border-color"/>
+                                <color key="fillColor" name="editor-background-color"/>
                             </box>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="FXR-Ha-kYg" customClass="CursorButton" customModule="TogglDesktop" customModuleProvider="target">
                                 <rect key="frame" x="249" y="356" width="20" height="20"/>
@@ -450,7 +453,7 @@
                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" alignment="center" title="09:20 AM" id="XRL-p8-r7I">
                                             <font key="font" metaFont="system" size="14"/>
                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="editor-background-color"/>
                                         </textFieldCell>
                                         <connections>
                                             <action selector="startTextFieldOnChange:" target="-2" id="QA7-3N-T9h"/>
@@ -474,7 +477,7 @@
                                         <textFieldCell key="cell" lineBreakMode="clipping" selectable="YES" editable="YES" alignment="center" title="09:30 PM" id="m0O-Wy-5Cq">
                                             <font key="font" metaFont="system" size="14"/>
                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="editor-background-color"/>
                                         </textFieldCell>
                                         <connections>
                                             <action selector="endTextFieldOnChange:" target="-2" id="j6I-iv-TvL"/>

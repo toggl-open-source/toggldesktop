@@ -66,7 +66,7 @@ class TimeEntryDatasource: NSObject {
     private var firstTime = true
     private var sections: [TimeEntrySection]
     private var currentIndexPath = IndexPath(item: 0, section: 0)
-    private let collectionView: NSCollectionView
+    private let collectionView: TimeEntryCollectionView
     private let queue = DispatchQueue(label: "com.toggl.toggldesktop.TogglDesktop.timeentryqueue")
     fileprivate var cellSize: NSSize {
         return CGSize(width: collectionView.frame.size.width - 20.0, height: 64)
@@ -86,7 +86,7 @@ class TimeEntryDatasource: NSObject {
 
     // MARK: Init
 
-    init(collectionView: NSCollectionView) {
+    init(collectionView: TimeEntryCollectionView) {
         self.sections = []
         self.collectionView = collectionView
         super.init()
