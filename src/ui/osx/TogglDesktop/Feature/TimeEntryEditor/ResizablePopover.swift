@@ -129,9 +129,7 @@ class ResizablePopover: NSPopover {
         guard let down = down else { return }
 
         let location = NSEvent.mouseLocation
-
-        var movedX = (location.x - down.x) * 2
-
+        var movedX = location.x - down.x
         if region == .Left {
             movedX = -movedX
         }
