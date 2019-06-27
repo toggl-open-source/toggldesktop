@@ -23,6 +23,10 @@ final class TimelineTimeEntryCell: NSCollectionViewItem {
 
     // MARK: Public
 
+    func config(for timeEntry: TimelineTimeEntry) {
+        backgroundView.fillColor = timeEntry.color
+    }
+
     @IBAction func timeEntryOnTap(_ sender: Any) {
     }
 }

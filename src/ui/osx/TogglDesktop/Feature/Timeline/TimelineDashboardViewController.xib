@@ -39,7 +39,7 @@
                                     <rect key="frame" x="106" y="8" width="85" height="14"/>
                                     <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="TIME ENTRIES" id="ac2-oR-01d">
                                         <font key="font" metaFont="systemMedium" size="11"/>
-                                        <color key="textColor" name="lighter-grey-text"/>
+                                        <color key="textColor" name="timeline-label-color"/>
                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
                                 </textField>
@@ -82,7 +82,7 @@
                                             <rect key="frame" x="6" y="8" width="59" height="14"/>
                                             <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="ACTIVITY" id="eib-Fj-syc">
                                                 <font key="font" metaFont="systemMedium" size="11"/>
-                                                <color key="textColor" name="lighter-grey-text"/>
+                                                <color key="textColor" name="timeline-label-color"/>
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>
                                         </textField>
@@ -112,7 +112,7 @@
                         </customView>
                         <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DJx-ob-wM0">
                             <rect key="frame" x="0.0" y="0.0" width="297" height="410"/>
-                            <clipView key="contentView" copiesOnScroll="NO" id="1RV-Mg-WKj">
+                            <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="1RV-Mg-WKj">
                                 <rect key="frame" x="0.0" y="0.0" width="297" height="410"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
@@ -122,7 +122,7 @@
                                         <collectionViewFlowLayout key="collectionViewLayout" minimumInteritemSpacing="10" minimumLineSpacing="10" id="ZtE-Ms-OYm">
                                             <size key="itemSize" width="50" height="50"/>
                                         </collectionViewFlowLayout>
-                                        <color key="primaryBackgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="primaryBackgroundColor" name="timeline-background-color"/>
                                     </collectionView>
                                 </subviews>
                                 <color key="backgroundColor" name="timeline-background-color"/>
@@ -156,13 +156,13 @@
                                 <rect key="frame" x="0.0" y="0.0" width="297" height="86"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </view>
-                            <color key="fillColor" name="preference-background-color"/>
+                            <color key="fillColor" name="timeline-date-picker-background-color"/>
                         </box>
                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="oEw-Jd-lIP">
                             <rect key="frame" x="8" y="55" width="101" height="18"/>
                             <textFieldCell key="cell" lineBreakMode="clipping" title="Record activity" id="x0y-gM-oPn">
                                 <font key="font" metaFont="system" size="14"/>
-                                <color key="textColor" name="grey-text-color"/>
+                                <color key="textColor" name="timeline-time-label-color"/>
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                         </textField>
@@ -214,17 +214,17 @@
     <resources>
         <image name="NSAddTemplate" width="11" height="11"/>
         <image name="NSRemoveTemplate" width="11" height="11"/>
-        <namedColor name="grey-text-color">
-            <color red="0.33300000429153442" green="0.33300000429153442" blue="0.33300000429153442" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="lighter-grey-text">
-            <color red="0.67500001192092896" green="0.67500001192092896" blue="0.67500001192092896" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="preference-background-color">
-            <color red="0.98000001907348633" green="0.98400002717971802" blue="0.98799997568130493" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
         <namedColor name="timeline-background-color">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="timeline-date-picker-background-color">
+            <color red="0.98039215686274506" green="0.98431372549019602" blue="0.9882352941176471" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="timeline-label-color">
+            <color red="0.67450980392156867" green="0.67450980392156867" blue="0.67450980392156867" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="timeline-time-label-color">
+            <color red="0.33333333333333331" green="0.33333333333333331" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>

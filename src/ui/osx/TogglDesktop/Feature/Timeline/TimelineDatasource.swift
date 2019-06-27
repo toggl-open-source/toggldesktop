@@ -17,6 +17,7 @@ final class TimelineDatasource: NSObject {
         static let TimeEntryCellXIB = NSNib.Name("TimelineTimeEntryCell")
         static let ActivityCellID = NSUserInterfaceItemIdentifier("TimelineActivityCell")
         static let ActivityCellXIB = NSNib.Name("TimelineActivityCell")
+        static let DividerViewID = NSUserInterfaceItemIdentifier("DividerViewID")
     }
 
     enum ZoomLevel: Int {
@@ -65,6 +66,7 @@ final class TimelineDatasource: NSObject {
         collectionView.register(NSNib(nibNamed: Constants.TimeLabelCellXIB, bundle: nil), forItemWithIdentifier: Constants.TimeLabelCellID)
         collectionView.register(NSNib(nibNamed: Constants.TimeEntryCellXIB, bundle: nil), forItemWithIdentifier: Constants.TimeEntryCellID)
         collectionView.register(NSNib(nibNamed: Constants.ActivityCellXIB, bundle: nil), forItemWithIdentifier: Constants.ActivityCellID)
+        collectionView.register(TimelineDividerView.self, forSupplementaryViewOfKind: NSCollectionView.elementKindSectionFooter, withIdentifier: Constants.DividerViewID)
     }
 
     func render(_ timeline: TimelineData) {
@@ -105,11 +107,21 @@ extension TimelineDatasource: NSCollectionViewDataSource, NSCollectionViewDelega
             return cell
         case .timeEntry:
             let cell = collectionView.makeItem(withIdentifier: Constants.TimeEntryCellID, for: indexPath) as! TimelineTimeEntryCell
+            let timeEntry = item as! TimelineTimeEntry
+            cell.config(for: timeEntry)
             return cell
         case .activity:
             let cell = collectionView.makeItem(withIdentifier: Constants.ActivityCellID, for: indexPath) as! TimelineActivityCell
             return cell
         }
+    }
+
+    func collectionView(_ collectionView: NSCollectionView, viewForSupplementaryElementOfKind kind: NSCollectionView.SupplementaryElementKind, at indexPath: IndexPath) -> NSView {
+        guard let section = TimelineData.Section(rawValue: indexPath.section) else { return NSView() }
+        let view = collectionView.makeSupplementaryView(ofKind: NSCollectionView.elementKindSectionFooter,
+                                                        withIdentifier: Constants.DividerViewID, for: indexPath) as! TimelineDividerView
+        view.draw(for: section)
+        return view
     }
 }
 

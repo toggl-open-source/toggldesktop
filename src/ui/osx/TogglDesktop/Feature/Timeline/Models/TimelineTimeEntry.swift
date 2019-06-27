@@ -13,11 +13,17 @@ final class TimelineTimeEntry {
     // MARK: Variables
 
     let timeEntry: TimeEntryViewItem
+    let color: NSColor
 
     // MARK: Init
 
     init(_ timeEntry: TimeEntryViewItem) {
         self.timeEntry = timeEntry
+        if let color = timeEntry.projectColor, !color.isEmpty {
+            self.color = ConvertHexColor.hexCode(toNSColor: timeEntry.projectColor) ?? TimeEntryViewItem.defaultProjectColor()
+        } else {
+            self.color = TimeEntryViewItem.defaultProjectColor()
+        }
     }
 
     func timestamp() -> Timestamp {

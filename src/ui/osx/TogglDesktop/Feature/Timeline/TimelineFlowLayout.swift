@@ -21,9 +21,20 @@ final class TimelineFlowLayout: NSCollectionViewFlowLayout {
         struct TimeLabel {
             static let Size = CGSize(width: 54.0, height: 32)
         }
+
+        struct Divider {
+            static let FirstDividerLeftPadding: CGFloat = 54.0
+            static let SeconDividerRightPadding: CGFloat = 70.0
+        }
+
         struct TimeEntry {
             static let LeftPadding: CGFloat = 65.0
             static let RightPadding: CGFloat = 10.0
+            static let Width: CGFloat = 20.0
+        }
+
+        struct Activity {
+            static let RightPadding: CGFloat = 25.0
             static let Width: CGFloat = 20.0
         }
     }
@@ -35,6 +46,7 @@ final class TimelineFlowLayout: NSCollectionViewFlowLayout {
     private var timeLablesAttributes: [NSCollectionViewLayoutAttributes] = []
     private var timeEntryAttributes: [NSCollectionViewLayoutAttributes] = []
     private var activityAttributes: [NSCollectionViewLayoutAttributes] = []
+    private var dividerAttributes: [NSCollectionViewLayoutAttributes] = []
     private var verticalPaddingTimeLabel: CGFloat {
         switch zoomLevel {
         case .x1:
@@ -47,6 +59,8 @@ final class TimelineFlowLayout: NSCollectionViewFlowLayout {
         }
     }
     private var numberOfTimeLabels = 0
+    private var numberOfTimeEntry = 0
+    private var numberOfActivity = 0
 
     // MARK: Override
 
@@ -65,9 +79,7 @@ final class TimelineFlowLayout: NSCollectionViewFlowLayout {
     }
 
     private func initCommon() {
-
-        // Default size
-        itemSize = CGSize(width: 31, height: 32)
+        itemSize = CGSize(width: 32, height: 32)
         minimumLineSpacing = 0
         minimumInteritemSpacing = 0
         sectionInset = NSEdgeInsetsZero
@@ -77,20 +89,97 @@ final class TimelineFlowLayout: NSCollectionViewFlowLayout {
     override func prepare() {
         super.prepare()
         guard let collectionView = self.collectionView,
-            let dataSource = collectionView.dataSource,
-            let flowDelegate = flowDelegate else { return }
+            let dataSource = collectionView.dataSource else { return }
 
+        // Prepare
         timeLablesAttributes = []
         timeEntryAttributes = []
-
-        // Number of items
+        dividerAttributes = []
+        activityAttributes = []
         numberOfTimeLabels = dataSource.collectionView(collectionView, numberOfItemsInSection: TimelineData.Section.timeLabel.rawValue)
-        let numberOfTimeEntry = dataSource.collectionView(collectionView, numberOfItemsInSection: TimelineData.Section.timeEntry.rawValue)
-        let numberOfActivity = dataSource.collectionView(collectionView, numberOfItemsInSection: TimelineData.Section.activity.rawValue)
+        numberOfTimeEntry = dataSource.collectionView(collectionView, numberOfItemsInSection: TimelineData.Section.timeEntry.rawValue)
+        numberOfActivity = dataSource.collectionView(collectionView, numberOfItemsInSection: TimelineData.Section.activity.rawValue)
 
         // MARK: Calculation
 
-        // Time labels
+        calculateDividerAttributes()
+        calculateTimeLabelAttributes()
+        calculateTimeEntryAttributes()
+        calculateActivityAttributes()
+    }
+
+    override func layoutAttributesForElements(in rect: NSRect) -> [NSCollectionViewLayoutAttributes] {
+        let allAttributes = timeLablesAttributes + timeEntryAttributes + activityAttributes + dividerAttributes + activityAttributes
+        return allAttributes.compactMap({ (att) -> NSCollectionViewLayoutAttributes? in
+            if att.frame.intersects(rect) {
+                return att
+            }
+            return nil
+        })
+    }
+
+    override func layoutAttributesForItem(at indexPath: IndexPath) -> NSCollectionViewLayoutAttributes? {
+        guard let section = TimelineData.Section(rawValue: indexPath.section) else { return nil }
+        switch section {
+        case .timeLabel:
+            return timeLablesAttributes[safe: indexPath.item]
+        case .timeEntry:
+            return timeEntryAttributes[safe: indexPath.item]
+        case .activity:
+            return activityAttributes[safe: indexPath.item]
+        }
+    }
+
+    override func layoutAttributesForSupplementaryView(ofKind elementKind: NSCollectionView.SupplementaryElementKind, at indexPath: IndexPath) -> NSCollectionViewLayoutAttributes? {
+        if elementKind == NSCollectionView.elementKindSectionFooter {
+            return dividerAttributes[safe: indexPath.section]
+        }
+        return nil
+    }
+
+    override var collectionViewContentSize: NSSize {
+        let width = collectionView?.bounds.width ?? 300.0
+        let height = CGFloat(numberOfTimeLabels) * (verticalPaddingTimeLabel + Constants.TimeLabel.Size.height)
+        return CGSize(width: width, height: height)
+    }
+
+    private func getTimestampForStartOfDay(from timestamp: TimeInterval) -> TimeInterval {
+        let date = Date(timeIntervalSince1970: timestamp)
+        var calendar = Calendar.current
+        calendar.timeZone = TimeZone(abbreviation: "UTC")!
+        return calendar.startOfDay(for: date).timeIntervalSince1970
+    }
+}
+
+// MARK: Private
+
+extension TimelineFlowLayout {
+
+    private func getXDivider(at section: TimelineData.Section) -> CGFloat {
+        switch section {
+        case .timeLabel:
+            return Constants.Divider.FirstDividerLeftPadding
+        case .timeEntry:
+            return collectionViewContentSize.width - Constants.Divider.SeconDividerRightPadding
+        default:
+            return 0
+        }
+    }
+
+    fileprivate func calculateDividerAttributes() {
+        let dividerSections: [TimelineData.Section] = [.timeLabel, .timeEntry]
+        let dividerSectionsIndex = dividerSections.map { $0.rawValue }
+        for i in dividerSectionsIndex {
+            let indexPath = IndexPath(item: 0, section: i)
+            let x = getXDivider(at: dividerSections[i])
+            let frame = CGRect(x: x, y: 0, width: 1, height: collectionViewContentSize.height)
+            let view = NSCollectionViewLayoutAttributes(forSupplementaryViewOfKind: NSCollectionView.elementKindSectionFooter, with: indexPath)
+            view.frame = frame
+            dividerAttributes.append(view)
+        }
+    }
+
+    fileprivate func calculateTimeLabelAttributes() {
         for i in 0..<numberOfTimeLabels {
             let indexPath = IndexPath(item: i, section: TimelineData.Section.timeLabel.rawValue)
             let att = NSCollectionViewLayoutAttributes(forItemWith: indexPath)
@@ -102,17 +191,17 @@ final class TimelineFlowLayout: NSCollectionViewFlowLayout {
                                height: size.height)
             timeLablesAttributes.append(att)
         }
+    }
 
-        // Time entries
+    func calculateTimeEntryAttributes() {
         for i in 0..<numberOfTimeEntry {
             let indexPath = IndexPath(item: i, section: TimelineData.Section.timeEntry.rawValue)
-            guard let timestamp = flowDelegate.timestampForItem(at: indexPath) else {
+            guard let timestamp = flowDelegate?.timestampForItem(at: indexPath) else {
                 print("Missing timestamp for at \(indexPath)")
                 continue
             }
 
             let att = NSCollectionViewLayoutAttributes(forItemWith: indexPath)
-
             let beginDay = getTimestampForStartOfDay(from: timestamp.start)
 
             // Length of time entry
@@ -162,38 +251,19 @@ final class TimelineFlowLayout: NSCollectionViewFlowLayout {
         }
     }
 
-    override func layoutAttributesForElements(in rect: NSRect) -> [NSCollectionViewLayoutAttributes] {
-        let allAttributes = timeLablesAttributes + timeEntryAttributes + activityAttributes
-        return allAttributes.compactMap({ (att) -> NSCollectionViewLayoutAttributes? in
-            if att.frame.intersects(rect) {
-                return att
-            }
-            return nil
-        })
-    }
-
-    override func layoutAttributesForItem(at indexPath: IndexPath) -> NSCollectionViewLayoutAttributes? {
-        guard let section = TimelineData.Section(rawValue: indexPath.section) else { return nil }
-        switch section {
-        case .timeLabel:
-            return timeLablesAttributes[safe: indexPath.item]
-        case .timeEntry:
-            return timeEntryAttributes[safe: indexPath.item]
-        case .activity:
-            return activityAttributes[safe: indexPath.item]
+    fileprivate func calculateActivityAttributes() {
+        let size = collectionViewContentSize
+        for i in 0..<numberOfActivity {
+            let indexPath = IndexPath(item: i, section: TimelineData.Section.activity.rawValue)
+            let att = NSCollectionViewLayoutAttributes(forItemWith: indexPath)
+            let size = Constants.TimeLabel.Size
+            let x = size.width - Constants.Activity.RightPadding
+            let y: CGFloat = CGFloat(i) * (verticalPaddingTimeLabel + size.height)
+            att.frame = CGRect(x: x,
+                               y: y,
+                               width: size.width,
+                               height: size.height)
+            timeLablesAttributes.append(att)
         }
-    }
-
-    override var collectionViewContentSize: NSSize {
-        let width = collectionView?.bounds.width ?? 300.0
-        let height = CGFloat(numberOfTimeLabels) * (verticalPaddingTimeLabel + Constants.TimeLabel.Size.height)
-        return CGSize(width: width, height: height)
-    }
-
-    private func getTimestampForStartOfDay(from timestamp: TimeInterval) -> TimeInterval {
-        let date = Date(timeIntervalSince1970: timestamp)
-        var calendar = Calendar.current
-        calendar.timeZone = TimeZone(abbreviation: "UTC")!
-        return calendar.startOfDay(for: date).timeIntervalSince1970
     }
 }

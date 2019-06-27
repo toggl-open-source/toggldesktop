@@ -34,8 +34,6 @@ final class TimelineDashboardViewController: NSViewController {
         initCommon()
         initNotifications()
         initCollectionView()
-
-        DesktopLibraryBridge.shared().fetchTimelineData()
     }
 
     deinit {

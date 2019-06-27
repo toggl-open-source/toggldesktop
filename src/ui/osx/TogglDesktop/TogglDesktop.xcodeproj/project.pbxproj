@@ -274,6 +274,7 @@
 		BAB818EB228D5AA8008C2367 /* DescriptionContentCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BAB818EA228D5AA8008C2367 /* DescriptionContentCellView.xib */; };
 		BAB8D49421BE742D00D63DA5 /* NSTableView+TimeEntryDiff.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB8D49321BE742D00D63DA5 /* NSTableView+TimeEntryDiff.swift */; };
 		BAC4D399225470DA00254DAD /* AutoCompleteRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAC4D398225470DA00254DAD /* AutoCompleteRowView.swift */; };
+		BAD0E0BD22C49BAC009F5A83 /* TimelineDividerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD0E0BC22C49BAC009F5A83 /* TimelineDividerView.swift */; };
 		BAD15FFC223A52D600A8CCC9 /* TimeEntryEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD15FFB223A52D600A8CCC9 /* TimeEntryEmptyView.swift */; };
 		BAD15FFE223A530600A8CCC9 /* TimeEntryEmptyView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BAD15FFD223A530600A8CCC9 /* TimeEntryEmptyView.xib */; };
 		BAD2341F21D612DF0039C742 /* libPocoDataSQLite.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BAD2341621D612DE0039C742 /* libPocoDataSQLite.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
@@ -967,6 +968,7 @@
 		BAB818EA228D5AA8008C2367 /* DescriptionContentCellView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DescriptionContentCellView.xib; sourceTree = "<group>"; };
 		BAB8D49321BE742D00D63DA5 /* NSTableView+TimeEntryDiff.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSTableView+TimeEntryDiff.swift"; sourceTree = "<group>"; };
 		BAC4D398225470DA00254DAD /* AutoCompleteRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoCompleteRowView.swift; sourceTree = "<group>"; };
+		BAD0E0BC22C49BAC009F5A83 /* TimelineDividerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineDividerView.swift; sourceTree = "<group>"; };
 		BAD15FFB223A52D600A8CCC9 /* TimeEntryEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeEntryEmptyView.swift; sourceTree = "<group>"; };
 		BAD15FFD223A530600A8CCC9 /* TimeEntryEmptyView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimeEntryEmptyView.xib; sourceTree = "<group>"; };
 		BAD2341621D612DE0039C742 /* libPocoDataSQLite.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoDataSQLite.60.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoDataSQLite.60.dylib; sourceTree = "<group>"; };
@@ -1715,6 +1717,7 @@
 				BA75FF2622BCC1FC00D3F08C /* TimelineTimeEntryCell.xib */,
 				BA75FF2922BCC20D00D3F08C /* TimelineActivityCell.swift */,
 				BA75FF2A22BCC20D00D3F08C /* TimelineActivityCell.xib */,
+				BAD0E0BC22C49BAC009F5A83 /* TimelineDividerView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2373,6 +2376,7 @@
 				747B74871A0AD28200BB3791 /* ConsoleViewController.m in Sources */,
 				BA9D90D4222D155900D5EC0E /* NSView+Ext.swift in Sources */,
 				BA712EC621BF913800A2D8DD /* TimeEntrySnapshot.swift in Sources */,
+				BAD0E0BD22C49BAC009F5A83 /* TimelineDividerView.swift in Sources */,
 				BAB818C3228D5847008C2367 /* DescriptionAutoCompleteTextField.swift in Sources */,
 				BA13D2112269BE2F00EB3833 /* DateInfo.swift in Sources */,
 				BA13D20E2269BAA600EB3833 /* DateCellViewItem.swift in Sources */,
