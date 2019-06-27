@@ -58,6 +58,8 @@ class Workspace : public BaseModel {
     }
     void SetLockedTime(const time_t value);
 
+    bool isTimeLocked(time_t time) const;
+
     // Override BaseModel
     std::string String() const override;
     std::string ModelName() const override;

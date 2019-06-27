@@ -43,55 +43,8 @@ namespace toggl {
 
 class Database;
 class TimelineUploader;
+class UpdateUI;
 class WindowChangeRecorder;
-
-class UIElements {
- public:
-    UIElements()
-        : first_load(false)
-    , display_time_entries(false)
-    , display_time_entry_autocomplete(false)
-    , display_mini_timer_autocomplete(false)
-    , display_project_autocomplete(false)
-    , display_client_select(false)
-    , display_workspace_select(false)
-    , display_timer_state(false)
-    , display_time_entry_editor(false)
-    , open_settings(false)
-    , open_time_entry_list(false)
-    , open_time_entry_editor(false)
-    , display_autotracker_rules(false)
-    , display_settings(false)
-    , time_entry_editor_guid("")
-    , time_entry_editor_field("")
-    , display_unsynced_items(false) {}
-
-    static UIElements Reset();
-
-    std::string String() const;
-
-    void ApplyChanges(
-        const std::string &editor_guid,
-        const std::vector<ModelChange> &changes);
-
-    bool first_load;
-    bool display_time_entries;
-    bool display_time_entry_autocomplete;
-    bool display_mini_timer_autocomplete;
-    bool display_project_autocomplete;
-    bool display_client_select;
-    bool display_workspace_select;
-    bool display_timer_state;
-    bool display_time_entry_editor;
-    bool open_settings;
-    bool open_time_entry_list;
-    bool open_time_entry_editor;
-    bool display_autotracker_rules;
-    bool display_settings;
-    std::string time_entry_editor_guid;
-    std::string time_entry_editor_field;
-    bool display_unsynced_items;
-};
 
 class Context : public TimelineDatasource {
  public:
@@ -315,8 +268,6 @@ class Context : public TimelineDatasource {
     TimeEntry *Continue(
         const std::string &GUID);
 
-    void OpenTimeEntryList();
-
     void OpenSettings();
 
     void OpenTimeEntryEditor(
@@ -534,8 +485,6 @@ class Context : public TimelineDatasource {
 
     void displayPomodoroBreak();
 
-    void updateUI(const UIElements &elements);
-
     error displayError(const error &err);
 
     void scheduleSync();
@@ -656,8 +605,6 @@ class Context : public TimelineDatasource {
 
     class GUI ui_;
 
-    std::string time_entry_editor_guid_;
-
     std::string environment_;
 
     Idle idle_;
@@ -694,16 +641,14 @@ class Context : public TimelineDatasource {
 
     Settings settings_;
 
-    std::set<std::string> autotracker_titles_;
-
     HelpDatabase help_database_;
 
     TimeEntry *pomodoro_break_entry_;
 
-    // To cache grouped entries open/close status
-    std::map<std::string, bool_t> entry_groups;
 
     bool overlay_visible_;
+
+    UpdateUI *update_ui_;
 
     const bool handleStopRunningEntry();
 };

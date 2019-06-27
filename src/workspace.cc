@@ -64,6 +64,17 @@ void Workspace::SetLockedTime(const time_t value) {
     }
 }
 
+bool Workspace::isTimeLocked(time_t time) const {
+    if (!Business())
+        return false;
+    if (Admin())
+        return false;
+    auto lockedTime = LockedTime();
+    if (lockedTime == 0)
+        return false;
+    return time < lockedTime;
+}
+
 void Workspace::LoadFromJSON(Json::Value n) {
     SetID(n["id"].asUInt64());
     SetName(n["name"].asString());

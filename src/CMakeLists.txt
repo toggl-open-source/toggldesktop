@@ -65,6 +65,7 @@ set(LIBRARY_SOURCE_FILES
     timeline_event.cc
     time_entry.cc
     timeline_uploader.cc
+    update_ui.cpp
     user.cc
     websocket_client.cc
     window_change_recorder.cc

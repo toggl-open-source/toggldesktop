@@ -53,8 +53,8 @@ void Idle::SetIdleSeconds(
 void Idle::computeIdleState(
     const Poco::Int64 idle_seconds,
     User *current_user) {
-    if (settings_.idle_minutes &&
-            (idle_seconds >= (settings_.idle_minutes*60)) &&
+    if (Settings::instance()->idle_minutes &&
+            (idle_seconds >= (Settings::instance()->idle_minutes*60)) &&
             !last_idle_started_) {
         last_idle_started_ = time(nullptr) - idle_seconds;
 
@@ -75,7 +75,7 @@ void Idle::computeIdleState(
         } else if (Formatter::AbsDuration(te->DurationInSeconds())
                    < last_idle_seconds_reading_) {
             logger().warning("Time entry duration is less than idle, ignoring");
-        } else if (settings_.use_idle_detection) {
+        } else if (Settings::instance()->use_idle_detection) {
             std::stringstream since;
             since << "You have been idle since "
                   << Formatter::FormatTimeForTimeEntryEditor(

@@ -18,6 +18,7 @@
 
 #include "./https_client.h"
 #include "./json_helper.h"
+#include "./workspace.h"
 
 #include "Poco/DateTime.h"
 #include "Poco/LocalDateTime.h"
@@ -145,6 +146,12 @@ void TimeEntry::DiscardAt(const Poco::Int64 at) {
 
 void TimeEntry::StopTracking() {
     DiscardAt(time(nullptr));
+}
+
+bool TimeEntry::isLockedInWorkspace(Workspace *ws) const {
+    if (!ws)
+        return false;
+    return ws->isTimeLocked(Start());
 }
 
 std::string TimeEntry::String() const {

@@ -23,10 +23,6 @@ class Idle {
         const Poco::Int64 idle_seconds,
         User *current_user);
 
-    void SetSettings(const Settings &settings) {
-        settings_ = settings;
-    }
-
     void SetSleep() {
         last_sleep_started_ = time(nullptr);
     }
@@ -53,7 +49,6 @@ class Idle {
     Poco::Int64 last_idle_started_;
     time_t last_sleep_started_;
 
-    Settings settings_;
     GUI *ui_;
 };
 

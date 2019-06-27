@@ -15,7 +15,6 @@
 namespace toggl {
 
 class Settings : public BaseModel {
- public:
     Settings()
         : use_idle_detection(false)
     , menubar_timer(false)
@@ -45,6 +44,8 @@ class Settings : public BaseModel {
     , pomodoro_minutes(0)
     , pomodoro_break_minutes(0)
     , stop_entry_on_shutdown_sleep(false) {}
+ public:
+    static Settings *instance();
 
     virtual ~Settings() {}
 

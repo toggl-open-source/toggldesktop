@@ -120,6 +120,8 @@ class TimeEntry : public BaseModel, public TimedEvent {
 
     void StopTracking();
 
+    bool isLockedInWorkspace(Workspace *ws) const;
+
     // Override BaseModel
 
     std::string ModelName() const override;

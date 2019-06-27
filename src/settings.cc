@@ -73,6 +73,11 @@ std::string Settings::String() const {
     return ss.str();
 }
 
+Settings *Settings::instance() {
+    static Settings _self;
+    return &_self;
+}
+
 bool Settings::IsSame(const Settings &other) const {
     return ((use_idle_detection == other.use_idle_detection)
             && (menubar_timer == other.menubar_timer)
