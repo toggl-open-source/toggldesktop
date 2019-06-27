@@ -77,8 +77,8 @@ public:
     void renderWorkspaceSelect();
     void renderClientSelect();
     void renderTimerState();
-    void renderTimeEntries(const UIElements &what);
-    void renderSettings(Settings *settings);
+    void renderTimeEntries(bool open = false);
+    void renderSettings(Settings *settings, bool open = false);
     void renderUnsyncedItems();
     void renderAutotrackerRules();
 

@@ -336,7 +336,7 @@ error Context::save(const bool push_changes) {
         render.display_unsynced_items = true;
         render.display_timer_state = true;
         render.ApplyChanges(time_entry_editor_guid_, changes);
-        updateUI(render);
+        gui_update_->update(render);
 
         if (push_changes) {
             logger().debug("onPushChanges executing");
@@ -363,7 +363,7 @@ void Context::OpenTimeEntryList() {
     UIElements render;
     render.open_time_entry_list = true;
     render.display_time_entries = true;
-    updateUI(render);
+    gui_update_->update(render);
 }
 
 Poco::Timestamp Context::postpone(
@@ -1174,9 +1174,7 @@ error Context::applySettingsSaveResultToUI(const error &err) {
         return displayError(err);
     }
 
-    UIElements render;
-    render.display_settings = true;
-    updateUI(render);
+    gui_update_->renderSettings(&settings_);
 
     return noError;
 }
@@ -1470,9 +1468,7 @@ error Context::SetProxySettings(
         return displayError(err);
     }
 
-    UIElements render;
-    render.display_settings = true;
-    updateUI(render);
+    gui_update_->renderSettings(&settings_);
 
     if (use_proxy != was_using_proxy
             || proxy.Host() != previous_proxy_settings.Host()
@@ -1489,10 +1485,7 @@ error Context::SetProxySettings(
 void Context::OpenSettings() {
     logger().debug("OpenSettings");
 
-    UIElements render;
-    render.display_settings = true;
-    render.open_settings = true;
-    updateUI(render);
+    gui_update_->renderSettings(&settings_, true);
 }
 
 error Context::SetDBPath(
@@ -1597,7 +1590,7 @@ error Context::attemptOfflineLogin(const std::string &email,
 
     setUser(user, true);
 
-    updateUI(UIElements::Reset());
+    gui_update_->renderEverything();
 
     return save(false);
 }
@@ -1739,9 +1732,9 @@ void Context::setUser(User *value, const bool logged_in) {
         // Autotracker rules has a project autocomplete, too
         autotracker_titles_.clear();
         UIElements render;
-        render.display_autotracker_rules = true;
         render.display_project_autocomplete = true;
-        updateUI(render);
+        gui_update_->renderAutotrackerRules();
+        gui_update_->update(render);
 
         return;
     }
@@ -1822,7 +1815,7 @@ error Context::SetLoggedInUserFromJSON(
 
     setUser(user, true);
 
-    updateUI(UIElements::Reset());
+    gui_update_->renderEverything();
 
     err = save(false);
     if (err != noError) {
@@ -2034,7 +2027,7 @@ void Context::OpenTimeEntryEditor(
         render.display_time_entries = true;
     }
 
-    updateUI(render);
+    gui_update_->update(render);
 }
 
 TimeEntry *Context::ContinueLatest(const bool prevent_on_app) {
@@ -2084,7 +2077,7 @@ TimeEntry *Context::ContinueLatest(const bool prevent_on_app) {
         render.open_time_entry_editor = true;
         render.display_time_entry_editor = true;
         render.time_entry_editor_guid = result->GUID();
-        updateUI(render);
+        gui_update_->update(render);
     }
 
     if (!prevent_on_app && settings_.focus_on_shortcut) {
@@ -2150,7 +2143,7 @@ TimeEntry *Context::Continue(
         render.open_time_entry_editor = true;
         render.display_time_entry_editor = true;
         render.time_entry_editor_guid = result->GUID();
-        updateUI(render);
+        gui_update_->update(render);
     } else {
         OpenTimeEntryList();
     }
@@ -2679,7 +2672,7 @@ error Context::DiscardTimeAt(
         render.display_time_entry_editor = true;
         render.time_entry_editor_guid = split->GUID();
         render.time_entry_editor_field = "";
-        updateUI(render);
+        gui_update_->update(render);
     }
 
     return noError;
@@ -2739,9 +2732,7 @@ error Context::ToggleTimelineRecording(const bool record_timeline) {
             return displayError(err);
         }
 
-        UIElements render;
-        render.display_settings = true;
-        updateUI(render);
+        gui_update_->renderSettings(&settings_);
 
         TimelineUpdateServerSettings();
 
@@ -3304,9 +3295,7 @@ error Context::offerBetaChannel(bool *did_offer) {
             return err;
         }
 
-        UIElements render;
-        render.display_settings = true;
-        updateUI(render);
+        gui_update_->renderSettings(&settings_);
 
         *did_offer = true;
     } catch(const Poco::Exception& exc) {
@@ -3400,9 +3389,7 @@ void Context::onWake(Poco::Util::TimerTask&) {  // NOLINT
         if (now.year() != gui_update_->LastTimeEntryRenderTime().year()
                 || now.month() != gui_update_->LastTimeEntryRenderTime().month()
                 || now.day() != gui_update_->LastTimeEntryRenderTime().day()) {
-            UIElements render;
-            render.display_time_entries = true;
-            updateUI(render);
+            gui_update_->renderTimeEntries();
         }
 
         idle_.SetWake(user_);
@@ -3773,9 +3760,7 @@ void Context::uiUpdaterActivity() {
             Formatter::FormatDurationForDateHeader(duration);
 
         if (running_time != date_duration) {
-            UIElements render;
-            render.display_time_entries = true;
-            updateUI(render);
+            gui_update_->renderTimeEntries();
         }
 
         running_time = date_duration;
@@ -3947,9 +3932,7 @@ void Context::onLoadMore(Poco::Util::TimerTask&) {
 
             // Removes load more button if nothing is to be loaded
             if (needs_render) {
-                UIElements render;
-                render.display_time_entries = true;
-                updateUI(render);
+                gui_update_->renderTimeEntries();
             }
         }
 
@@ -4184,9 +4167,7 @@ error Context::pushChanges(
                 // Hide load more button when offline
                 user_->ConfirmLoadedMore();
                 // Reload list to show unsynced icons in items
-                UIElements render;
-                render.display_time_entries = true;
-                updateUI(render);
+                gui_update_->renderTimeEntries();
                 return err;
             }
 
@@ -4796,9 +4777,7 @@ error Context::pullUserPreferences(
         if (user_->LoadUserPreferencesFromJSON(root)) {
             // Reload list if user preferences
             // have changed (collapse time entries)
-            UIElements render;
-            render.display_time_entries = true;
-            updateUI(render);
+            gui_update_->renderTimeEntries();
         }
 
         // Show tos accept overlay

@@ -224,7 +224,7 @@ void GUIUpdate::update(const UIElements &what) {
             renderTimeEntryEditor(what);
 
         if (what.display_time_entries)
-            renderTimeEntries(what);
+            renderTimeEntries(what.open_time_entry_list);
 
         if (what.display_time_entry_autocomplete) {
             if (what.first_load) {
@@ -441,10 +441,10 @@ void GUIUpdate::renderTimerState() {
     }
 }
 
-void GUIUpdate::renderTimeEntries(const UIElements &what) {
+void GUIUpdate::renderTimeEntries(bool open) {
     std::vector<view::TimeEntry> time_entry_views;
 
-    if (what.open_time_entry_list) {
+    if (open) {
         time_entry_editor_guid_ = "";
     }
 
@@ -573,13 +573,13 @@ void GUIUpdate::renderTimeEntries(const UIElements &what) {
     // RENDERING PART //
     link_vector(time_entry_views);
     UI()->DisplayTimeEntryList(
-        what.open_time_entry_list,
+        open,
         time_entry_views,
         !user()->HasLoadedMore());
     last_time_entry_list_render_at_ = Poco::LocalDateTime();
 }
 
-void GUIUpdate::renderSettings(Settings *settings) {
+void GUIUpdate::renderSettings(Settings *settings, bool open) {
     view::Settings settings_view;
 
     Proxy proxy;
@@ -642,7 +642,7 @@ void GUIUpdate::renderSettings(Settings *settings) {
 
     settings_view.RecordTimeline = record_timeline;
 /* TODO
-    UI()->DisplaySettings(what.open_settings,
+    UI()->DisplaySettings(open,
                           &settings_view);
     // Tracking Settings
     if ("production" == environment_) {
