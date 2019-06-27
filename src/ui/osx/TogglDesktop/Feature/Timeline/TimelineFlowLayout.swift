@@ -16,7 +16,7 @@ protocol TimelineFlowLayoutDelegate: class {
 final class TimelineFlowLayout: NSCollectionViewFlowLayout {
 
     private struct Constants {
-        static let MinimumHeightOfTimeEntry: CGFloat = 2.0
+        static let MinimumHeight: CGFloat = 2.0
 
         struct TimeLabel {
             static let Size = CGSize(width: 54.0, height: 32)
@@ -155,6 +155,32 @@ final class TimelineFlowLayout: NSCollectionViewFlowLayout {
 
 extension TimelineFlowLayout {
 
+    private func calculateBlockSize(at indexPath: IndexPath) -> (y: CGFloat, height: CGFloat)? {
+        guard let timestamp = flowDelegate?.timestampForItem(at: indexPath) else {
+            print("Missing timestamp for at \(indexPath)")
+            return nil
+        }
+
+        let beginDay = getTimestampForStartOfDay(from: timestamp.start)
+
+        // Length of time entry
+        let span = CGFloat(timestamp.end - timestamp.start)
+
+        // The ratio
+        // From the design, the size of time label + padding prepresents 1 hours or 2 hours (depend on zoomLevel)
+        // Get the ratio for later calculations
+        let ratio = (Constants.TimeLabel.Size.height + verticalPaddingTimeLabel) / CGFloat(zoomLevel.span)
+
+        // Ex: To calculate the height of the entry with X timestamp
+        // Height = X * ratio
+        let y = CGFloat((timestamp.start - beginDay)) * ratio
+
+        // The minimum height is 2.0 pixel
+        let height = CGFloat.maximum(span * ratio, Constants.MinimumHeight)
+
+        return (y, height)
+    }
+
     private func getXDivider(at section: TimelineData.Section) -> CGFloat {
         switch section {
         case .timeLabel:
@@ -196,29 +222,16 @@ extension TimelineFlowLayout {
     func calculateTimeEntryAttributes() {
         for i in 0..<numberOfTimeEntry {
             let indexPath = IndexPath(item: i, section: TimelineData.Section.timeEntry.rawValue)
-            guard let timestamp = flowDelegate?.timestampForItem(at: indexPath) else {
-                print("Missing timestamp for at \(indexPath)")
+
+            // Calculate size, depend on timestamp
+            guard let blockSize = calculateBlockSize(at: indexPath) else {
                 continue
             }
 
+            // Data
             let att = NSCollectionViewLayoutAttributes(forItemWith: indexPath)
-            let beginDay = getTimestampForStartOfDay(from: timestamp.start)
-
-            // Length of time entry
-            let span = CGFloat(timestamp.end - timestamp.start)
-
-            // The ratio
-            // From the design, the size of time label + padding prepresents 1 hours or 2 hours (depend on zoomLevel)
-            // Get the ratio for later calculations
-            let ratio = (Constants.TimeLabel.Size.height + verticalPaddingTimeLabel) / CGFloat(zoomLevel.span)
-
-            // Ex: To calculate the height of the entry with X timestamp
-            // Height = X * ratio
-            let y = CGFloat((timestamp.start - beginDay)) * ratio
-
-            // The minimum height is 2.0 pixel
-            let height = CGFloat.maximum(span * ratio, Constants.MinimumHeightOfTimeEntry)
-
+            let y = blockSize.y
+            let height = blockSize.height
             var frame = CGRect.zero
 
             // Check if this time entry intersect with previous one
@@ -252,18 +265,23 @@ extension TimelineFlowLayout {
     }
 
     fileprivate func calculateActivityAttributes() {
-        let size = collectionViewContentSize
+        let contentSize = collectionViewContentSize
         for i in 0..<numberOfActivity {
             let indexPath = IndexPath(item: i, section: TimelineData.Section.activity.rawValue)
+            let x = contentSize.width - Constants.Activity.RightPadding - Constants.Activity.Width
+            guard let blockSize = calculateBlockSize(at: indexPath) else {
+                print("Missing timestamp for at \(indexPath)")
+                continue
+            }
+
             let att = NSCollectionViewLayoutAttributes(forItemWith: indexPath)
-            let size = Constants.TimeLabel.Size
-            let x = size.width - Constants.Activity.RightPadding
-            let y: CGFloat = CGFloat(i) * (verticalPaddingTimeLabel + size.height)
+            let y = blockSize.y
+            let height = blockSize.height
             att.frame = CGRect(x: x,
                                y: y,
-                               width: size.width,
-                               height: size.height)
-            timeLablesAttributes.append(att)
+                               width: Constants.Activity.Width,
+                               height: height)
+            activityAttributes.append(att)
         }
     }
 }
