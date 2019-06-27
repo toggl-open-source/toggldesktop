@@ -187,10 +187,6 @@ NSString *kInactiveTimerColor = @"#999999";
 		{
 			return;
 		}
-		if (self.descriptionLabel.stringValue != nil || self.projectTextField.stringValue != nil)
-		{
-			return;
-		}
 		te = [[TimeEntryViewItem alloc] init];
 	}
 	self.time_entry = te;
