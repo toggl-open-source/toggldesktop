@@ -418,6 +418,10 @@ class Context : public TimelineDatasource {
 
     void SetWake();
 
+	void SetLocked();
+
+	void SetUnlocked();
+
     void osShutdown();
 
     void SetOnline();
