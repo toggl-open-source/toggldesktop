@@ -63,6 +63,7 @@ set(LIBRARY_SOURCE_FILES
     database.cc
     feedback.cc
     gui.cc
+    gui_update.cpp
     help_article.cc
     idle.cc
     migrations.cc

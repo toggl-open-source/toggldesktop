@@ -44,54 +44,7 @@ namespace toggl {
 class Database;
 class TimelineUploader;
 class WindowChangeRecorder;
-
-class UIElements {
- public:
-    UIElements()
-        : first_load(false)
-    , display_time_entries(false)
-    , display_time_entry_autocomplete(false)
-    , display_mini_timer_autocomplete(false)
-    , display_project_autocomplete(false)
-    , display_client_select(false)
-    , display_workspace_select(false)
-    , display_timer_state(false)
-    , display_time_entry_editor(false)
-    , open_settings(false)
-    , open_time_entry_list(false)
-    , open_time_entry_editor(false)
-    , display_autotracker_rules(false)
-    , display_settings(false)
-    , time_entry_editor_guid("")
-    , time_entry_editor_field("")
-    , display_unsynced_items(false) {}
-
-    static UIElements Reset();
-
-    std::string String() const;
-
-    void ApplyChanges(
-        const std::string &editor_guid,
-        const std::vector<ModelChange> &changes);
-
-    bool first_load;
-    bool display_time_entries;
-    bool display_time_entry_autocomplete;
-    bool display_mini_timer_autocomplete;
-    bool display_project_autocomplete;
-    bool display_client_select;
-    bool display_workspace_select;
-    bool display_timer_state;
-    bool display_time_entry_editor;
-    bool open_settings;
-    bool open_time_entry_list;
-    bool open_time_entry_editor;
-    bool display_autotracker_rules;
-    bool display_settings;
-    std::string time_entry_editor_guid;
-    std::string time_entry_editor_field;
-    bool display_unsynced_items;
-};
+class GUIUpdate;
 
 class Context : public TimelineDatasource {
  public:
@@ -102,6 +55,9 @@ class Context : public TimelineDatasource {
 
     GUI *UI() {
         return &ui_;
+    }
+    User *user() {
+        return user_;
     }
 
     // Check for logged in user etc, start up the app
@@ -534,8 +490,6 @@ class Context : public TimelineDatasource {
 
     void displayPomodoroBreak();
 
-    void updateUI(const UIElements &elements);
-
     error displayError(const error &err);
 
     void scheduleSync();
@@ -601,6 +555,7 @@ class Context : public TimelineDatasource {
         std::string *user_data,
         const Poco::Int64 since);
 
+    // TODO remove this later
     bool isTimeEntryLocked(TimeEntry* te);
     bool isTimeLockedInWorkspace(time_t t, Workspace* ws);
     bool canChangeStartTimeTo(TimeEntry* te, time_t t);
@@ -655,6 +610,7 @@ class Context : public TimelineDatasource {
     Poco::Util::Timer timer_;
 
     class GUI ui_;
+    GUIUpdate *gui_update_;
 
     std::string time_entry_editor_guid_;
 
@@ -672,8 +628,6 @@ class Context : public TimelineDatasource {
 
     bool trigger_sync_;
     bool trigger_push_;
-
-    Poco::LocalDateTime last_time_entry_list_render_at_;
 
     bool quit_;
 
