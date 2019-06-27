@@ -14,9 +14,9 @@
 
 #include "Poco/Data/SQLite/Connector.h"
 
-#include "./model_change.h"
-#include "./timeline_event.h"
-#include "./types.h"
+#include "./common/model_change.h"
+#include "./common/types.h"
+#include "./model/timeline_event.h"
 
 namespace Poco {
 class Logger;

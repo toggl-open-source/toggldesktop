@@ -11,11 +11,11 @@
 
 #include <json/json.h>  // NOLINT
 
-#include "./const.h"
-#include "./https_client.h"
-#include "./settings.h"
-#include "./urls.h"
-#include "./user.h"
+#include "./common/const.h"
+#include "./common/urls.h"
+#include "./model/settings.h"
+#include "./model/user.h"
+#include "./network/https_client.h"
 
 #include "Poco/Logger.h"
 

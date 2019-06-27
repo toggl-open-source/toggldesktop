@@ -6,11 +6,11 @@
 #include <string>
 #include <vector>
 
-#include "./autotracker.h"
 #include "./help_article.h"
-#include "./proxy.h"
-#include "./settings.h"
 #include "./toggl_api.h"
+#include "./model/autotracker.h"
+#include "./model/settings.h"
+#include "./network/proxy.h"
 
 namespace Poco {
 class Logger;

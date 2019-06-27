@@ -2,9 +2,9 @@
 
 #include "../src/migrations.h"
 
-#include "./const.h"
 #include "./database.h"
-#include "./random.h"
+#include "./common/const.h"
+#include "./common/random.h"
 
 namespace toggl {
 

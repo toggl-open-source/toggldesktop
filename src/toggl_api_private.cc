@@ -4,13 +4,13 @@
 
 #include <cstdlib>
 
-#include "./client.h"
 #include "./context.h"
-#include "./formatter.h"
-#include "./project.h"
-#include "./time_entry.h"
-#include "./timeline_event.h"
-#include "./workspace.h"
+#include "./common/formatter.h"
+#include "./model/client.h"
+#include "./model/project.h"
+#include "./model/time_entry.h"
+#include "./model/timeline_event.h"
+#include "./model/workspace.h"
 
 #include "Poco/Logger.h"
 #include "Poco/UnicodeConverter.h"

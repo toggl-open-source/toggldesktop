@@ -4,8 +4,8 @@
 
 #include <sstream>
 
-#include "./formatter.h"
-#include "./https_client.h"
+#include "./common/formatter.h"
+#include "./network/https_client.h"
 
 #include "Poco/Path.h"
 

@@ -6,7 +6,7 @@
 #include <string>
 #include <sstream>  // NOLINT
 
-#include "./types.h"
+#include "./common/types.h"
 
 namespace toggl {
 

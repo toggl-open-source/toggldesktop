@@ -11,16 +11,16 @@
 #include <iostream> // NOLINT
 
 #include "./analytics.h"
-#include "./custom_error_handler.h"
 #include "./feedback.h"
 #include "./gui.h"
 #include "./help_article.h"
 #include "./idle.h"
-#include "./model_change.h"
-#include "./timeline_event.h"
-#include "./timeline_notifications.h"
-#include "./types.h"
-#include "./websocket_client.h"
+#include "./common/custom_error_handler.h"
+#include "./common/model_change.h"
+#include "./common/types.h"
+#include "./model/timeline_event.h"
+#include "./network/websocket_client.h"
+#include "./timeline/timeline_notifications.h"
 
 #include "Poco/Activity.h"
 #include "Poco/LocalDateTime.h"
