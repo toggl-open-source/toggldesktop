@@ -348,7 +348,7 @@ class App {
         toggl_on_help_articles(ctx_, on_help_articles);
         toggl_on_obm_experiment(ctx_, on_obm_experiment);
 
-        poco_assert(toggl_ui_start(ctx_));
+        poco_assert(!toggl_ui_start(ctx_));
     }
     ~App() {
         toggl_context_clear(ctx_);
