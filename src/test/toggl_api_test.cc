@@ -877,7 +877,7 @@ TEST(toggl_api, toggl_open_in_browser) {
 TEST(toggl_api, toggl_get_support) {
     testing::App app;
     toggl_get_support(app.ctx(), 0);
-    ASSERT_EQ("http://support.toggl.com/toggl-on-my-desktop/",
+    ASSERT_EQ("https://support.toggl.com/toggl-on-my-desktop/",
               testing::testresult::url);
 }
 
