@@ -40,7 +40,7 @@ xcodebuild_command=xcodebuild \
 xcodebuild_command_release=xcodebuild \
 				  -scheme TogglDesktop \
 				  -project src/ui/osx/TogglDesktop/TogglDesktop.xcodeproj  \
-				  -configuration Release clean
+				  -configuration Release
 
 ifeq ($(uname), Linux)
 executable=./build/src/ui/linux/TogglDesktop/TogglDesktop
@@ -156,7 +156,7 @@ app_release: lib_release ui_release
 lib:
 	xcodebuild -project src/lib/osx/TogglDesktopLibrary.xcodeproj -configuration Debug
 lib_release:
-	xcodebuild -project src/lib/osx/TogglDesktopLibrary.xcodeproj -configuration Release build clean
+	xcodebuild -project src/lib/osx/TogglDesktopLibrary.xcodeproj -configuration Release build
 
 ui:
 	$(xcodebuild_command)
