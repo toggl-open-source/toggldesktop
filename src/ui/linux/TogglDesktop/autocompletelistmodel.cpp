@@ -52,6 +52,9 @@ QVariant AutocompleteListModel::data(const QModelIndex &index, int role) const {
                 return view->Description;
             }
         }
+        else if (view->Type == 1 && displayItem == 2){
+            return QString("%1. %2").arg(view->TaskLabel).arg(view->ProjectLabel);
+        }
         else {
             return QString();
         }
