@@ -87,4 +87,5 @@ set(CMAKE_INSTALL_RPATH "${TOGGL_LIB_DIR};${TOGGL_INTERNAL_LIB_DIR}" CACHE STRIN
 
 add_subdirectory(third_party)
 add_subdirectory(src)
+add_subdirectory(src/test)
 add_subdirectory(src/ui/linux/TogglDesktop)
