@@ -871,6 +871,9 @@ void Context::updateUI(const UIElements &what) {
                     view::TimeEntry view;
                     view.Fill(te);
                     view.GenerateRoundedTimes();
+                    user_->related.ProjectLabelAndColorCode(
+                        te,
+                        &view);
                     time_entry_views.push_back(view);
                 }
             }

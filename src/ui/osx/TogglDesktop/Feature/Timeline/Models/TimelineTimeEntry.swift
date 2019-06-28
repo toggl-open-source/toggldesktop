@@ -14,6 +14,10 @@ final class TimelineTimeEntry {
 
     let timeEntry: TimeEntryViewItem
     let color: NSColor
+    var isSmall: Bool {
+        // It's small bar if duration less than 1 min
+        return timeEntry.duration_in_seconds <= 60
+    }
 
     // MARK: Init
 

@@ -25,6 +25,16 @@ final class TimelineDashboardViewController: NSViewController {
             datasource.update(zoomLevel)
         }
     }
+    private lazy var timeEntryHoverController: TimelineTimeEntryHoverViewController = {
+        return TimelineTimeEntryHoverViewController(nibName: "TimelineTimeEntryHoverViewController", bundle: nil)
+    }()
+    private lazy var timeEntryPopover: NSPopover = {
+        let popover = NSPopover()
+        popover.animates = false
+        popover.behavior = .transient
+        popover.contentViewController = timeEntryHoverController
+        return popover
+    }()
 
     // MARK: View
     
@@ -72,6 +82,7 @@ final class TimelineDashboardViewController: NSViewController {
 extension TimelineDashboardViewController {
 
     fileprivate func initCommon() {
+        datasource.delegate = self
         datePickerContainerView.addSubview(datePickerView)
         datePickerView.edgesToSuperView()
         datePickerView.delegate = self
@@ -130,5 +141,15 @@ extension TimelineDashboardViewController: DatePickerViewDelegate {
 
     func datePickerDidTapNextDate(_ sender: DatePickerView) {
         DesktopLibraryBridge.shared().timelineSetNextDate()
+    }
+}
+
+// MARK: TimelineDatasourceDelegate
+
+extension TimelineDashboardViewController: TimelineDatasourceDelegate {
+
+    func shouldPresentTimeEntryHover(in view: NSView, timeEntry: TimelineTimeEntry) {
+        timeEntryPopover.show(relativeTo: view.bounds, of: view, preferredEdge: .maxX)
+        timeEntryHoverController.render(with: timeEntry)
     }
 }

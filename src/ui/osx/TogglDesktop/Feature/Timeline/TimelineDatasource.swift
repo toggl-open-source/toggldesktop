@@ -8,6 +8,11 @@
 
 import Cocoa
 
+protocol TimelineDatasourceDelegate: class {
+
+    func shouldPresentTimeEntryHover(in view: NSView, timeEntry: TimelineTimeEntry)
+}
+
 final class TimelineDatasource: NSObject {
 
     fileprivate struct Constants {
@@ -48,6 +53,7 @@ final class TimelineDatasource: NSObject {
 
     // MARK: Variables
 
+    weak var delegate: TimelineDatasourceDelegate?
     private unowned let collectionView: NSCollectionView
     private let flow: TimelineFlowLayout
     private var timeline: TimelineData?
@@ -82,7 +88,7 @@ final class TimelineDatasource: NSObject {
     }
 }
 
-extension TimelineDatasource: NSCollectionViewDataSource, NSCollectionViewDelegateFlowLayout {
+extension TimelineDatasource: NSCollectionViewDataSource, NSCollectionViewDelegateFlowLayout, NSCollectionViewDelegate {
 
     func numberOfSections(in collectionView: NSCollectionView) -> Int {
         guard let timeline = timeline else { return 0 }
@@ -112,6 +118,8 @@ extension TimelineDatasource: NSCollectionViewDataSource, NSCollectionViewDelega
             return cell
         case .activity:
             let cell = collectionView.makeItem(withIdentifier: Constants.ActivityCellID, for: indexPath) as! TimelineActivityCell
+            let activity = item as! TimelineActivity
+            cell.config(for: activity)
             return cell
         }
     }
@@ -122,6 +130,19 @@ extension TimelineDatasource: NSCollectionViewDataSource, NSCollectionViewDelega
                                                         withIdentifier: Constants.DividerViewID, for: indexPath) as! TimelineDividerView
         view.draw(for: section)
         return view
+    }
+
+    func collectionView(_ collectionView: NSCollectionView, didSelectItemsAt indexPaths: Set<IndexPath>) {
+        guard let indexPath = indexPaths.first,
+            let cell = collectionView.item(at: indexPath),
+            let item = timeline?.item(at: indexPath) else { return }
+        switch item {
+        case let timeEntry as TimelineTimeEntry:
+            delegate?.shouldPresentTimeEntryHover(in: cell.view, timeEntry: timeEntry)
+            collectionView.deselectItems(at: indexPaths)
+        default:
+            break
+        }
     }
 }
 

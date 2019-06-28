@@ -25,6 +25,7 @@ final class TimelineTimeEntryCell: NSCollectionViewItem {
 
     func config(for timeEntry: TimelineTimeEntry) {
         backgroundView.fillColor = timeEntry.color
+        backgroundView.cornerRadius = timeEntry.isSmall ? 1.0 : 10.0
     }
 
     @IBAction func timeEntryOnTap(_ sender: Any) {

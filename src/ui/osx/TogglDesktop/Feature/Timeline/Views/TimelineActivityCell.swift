@@ -18,10 +18,14 @@ final class TimelineActivityCell: NSCollectionViewItem {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do view setup here.
+
     }
 
     // MARK: Public
+
+    func config(for activity: TimelineActivity) {
+
+    }
 
     @IBAction func activityOnTap(_ sender: Any) {
     }
