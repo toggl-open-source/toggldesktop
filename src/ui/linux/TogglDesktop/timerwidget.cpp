@@ -101,7 +101,8 @@ void TimerWidget::descriptionProjectSelected(const QString &projectName, uint64_
     if (projectId && !projectName.isEmpty()) {
         ui->projectFrame->setVisible(true);
         ui->project->setText(QString("<font color=\"%1\">%2</font>").arg(color).arg(projectName));
-        clearTask();
+        if (!taskId)
+            clearTask();
         if (taskId && !taskName.isEmpty()) {
             ui->taskFrame->setVisible(true);
             ui->task->setText(QString("<font color=\"gray\">%1</font>").arg(taskName));
@@ -241,6 +242,9 @@ void TimerWidget::displayRunningTimerState(
 }
 
 void TimerWidget::displayStoppedTimerState() {
+    if (ui->description->hasFocus())
+        return;
+
     guid = QString();
     selectedTaskId = 0;
     selectedProjectId = 0;
