@@ -1056,11 +1056,11 @@ void toggl_set_wake(void *context) {
 }
 
 void toggl_set_locked(void* context) {
-	app(context)->SetLocked();
+    app(context)->SetLocked();
 }
 
 void toggl_set_unlocked(void* context) {
-	app(context)->SetUnlocked();
+    app(context)->SetUnlocked();
 }
 
 void toggl_os_shutdown(void *context) {

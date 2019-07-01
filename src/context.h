@@ -418,9 +418,9 @@ class Context : public TimelineDatasource {
 
     void SetWake();
 
-	void SetLocked();
+    void SetLocked();
 
-	void SetUnlocked();
+    void SetUnlocked();
 
     void osShutdown();
 
