@@ -1,6 +1,18 @@
 {
     "versions": [
         {
+            "version": "7.4.444",
+            "rows": [
+                "Fixes for issues in macOS 10.11 with new design",
+                "Added Edit popup field focusing logic",
+                "Added resize logic to edit popup",
+                "Fixed tags popup editing logic",
+                "Fixed idle notification timer stop logic"
+            ],
+            "date": "July 1st 2019",
+            "beta": "true"
+        },
+        {
             "version": "7.4.373",
             "rows": [
                 "Added 'Stop timer on shutdown' functionality",
