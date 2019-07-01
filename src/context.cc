@@ -738,7 +738,6 @@ void Context::updateUI(const UIElements &what) {
                                     group_entry_view.DateDuration =
                                         Formatter::FormatDurationForDateHeader(
                                             date_durations[group_entry_view.DateHeader]);
-                                    group_entry_view.GroupItemCount = entry_groups[group_entry_view.GroupName];
                                     time_entry_views.push_back(group_entry_view);
                                 }
                             }
