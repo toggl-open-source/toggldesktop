@@ -136,8 +136,21 @@ namespace TogglDesktop
 
         private void initializeSessionNotification()
         {
-            SystemEvents.SessionSwitch += new SessionSwitchEventHandler(SystemEvents_SessionSwitch);
-            SystemEvents.SessionEnded += new SessionEndedEventHandler(SystemEventsSessionEndOnChanged);
+            SystemEvents.SessionSwitch += SystemEvents_SessionSwitch;
+            SystemEvents.SessionEnded += SystemEventsSessionEndOnChanged;
+            SystemEvents.PowerModeChanged += SystemEventsOnPowerModeChanged;
+        }
+
+        private void SystemEventsOnPowerModeChanged(object sender, PowerModeChangedEventArgs e)
+        {
+            if (e.Mode == PowerModes.Suspend)
+            {
+                Toggl.SetSleep();
+            }
+            else if (e.Mode == PowerModes.Resume)
+            {
+                Toggl.SetWake();
+            }
         }
 
         private void SystemEvents_SessionSwitch(object sender, SessionSwitchEventArgs e)
