@@ -157,11 +157,11 @@ namespace TogglDesktop
         {
             if (e.Reason == SessionSwitchReason.SessionLock)
             {
-                Toggl.SetSleep();
+                Toggl.SetLocked();
             }
             else if (e.Reason == SessionSwitchReason.SessionUnlock)
             {
-                Toggl.SetWake();
+                Toggl.SetUnlocked();
             }
         }
 
