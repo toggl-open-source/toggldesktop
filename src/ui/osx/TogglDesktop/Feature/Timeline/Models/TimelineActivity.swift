@@ -12,9 +12,8 @@ final class TimelineActivity {
 
     // MARK: Public
 
-    func timestamp() -> Timestamp {
-        // Testing
-        return Timestamp(start: Date().timeIntervalSince1970 - 200,
+    func timechunk() -> TimeChunk? {
+        return TimeChunk(start: Date().timeIntervalSince1970 - 200,
                          end: Date().timeIntervalSince1970)
     }
 }

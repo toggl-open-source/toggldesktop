@@ -1,5 +1,5 @@
 //
-//  TimelineTimeChunk.swift
+//  TimelineTimestamp.swift
 //  TogglDesktop
 //
 //  Created by Nghia Tran on 6/21/19.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-final class TimelineTimeChunk {
+final class TimelineTimestamp {
 
     let label: String
 

@@ -1,5 +1,5 @@
 //
-//  Timestamp.swift
+//  TimeChunk.swift
 //  TogglDesktop
 //
 //  Created by Nghia Tran on 6/24/19.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Timestamp {
+struct TimeChunk {
 
     let start: TimeInterval
     let end: TimeInterval

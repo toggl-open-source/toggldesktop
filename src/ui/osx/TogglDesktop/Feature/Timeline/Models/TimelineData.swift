@@ -19,8 +19,8 @@ class TimelineData {
     // MARK: Variables
 
     let chunkViews: [TimelineChunkView]
-    private(set) var timeChunks: [TimelineTimeChunk] = []
-    let timeEntries: [TimelineTimeEntry]
+    private(set) var timeChunks: [TimelineTimestamp] = []
+    let timeEntries: [TimelineBaseTimeEntry]
     let activities: [TimelineActivity]
     let numberOfSections: Int
     let start: TimeInterval
@@ -73,7 +73,7 @@ class TimelineData {
         timeChunks = generateTimelineLabel(for: start, endDate: end, zoomLevel: zoomLevel)
     }
 
-    func timestampForItem(at indexPath: IndexPath) -> Timestamp? {
+    func timechunkForItem(at indexPath: IndexPath) -> TimeChunk? {
         guard let section = Section(rawValue: indexPath.section) else {
             return nil
         }
@@ -81,9 +81,9 @@ class TimelineData {
         case .timeLabel:
             return nil
         case .timeEntry:
-            return timeEntries[safe: indexPath.item]?.timestamp()
+            return timeEntries[safe: indexPath.item]?.timechunk()
         case .activity:
-            return activities[safe: indexPath.item]?.timestamp()
+            return activities[safe: indexPath.item]?.timechunk()
         }
     }
 }
@@ -94,7 +94,7 @@ extension TimelineData {
 
     fileprivate func generateTimelineLabel(for startDate: TimeInterval,
                                                  endDate: TimeInterval,
-                                                 zoomLevel: TimelineDatasource.ZoomLevel) -> [TimelineTimeChunk] {
+                                                 zoomLevel: TimelineDatasource.ZoomLevel) -> [TimelineTimestamp] {
         var times: [TimeInterval] = []
         let span = zoomLevel.span
         var current = startDate
@@ -102,6 +102,6 @@ extension TimelineData {
             times.append(current)
             current += span
         }
-        return times.map { TimelineTimeChunk($0) }
+        return times.map { TimelineTimestamp($0) }
     }
 }

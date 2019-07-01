@@ -28,11 +28,18 @@ final class TimelineDashboardViewController: NSViewController {
     private lazy var timeEntryHoverController: TimelineTimeEntryHoverViewController = {
         return TimelineTimeEntryHoverViewController(nibName: "TimelineTimeEntryHoverViewController", bundle: nil)
     }()
-    private lazy var timeEntryPopover: NSPopover = {
+    private lazy var hoverPopover: NSPopover = {
         let popover = NSPopover()
         popover.animates = false
-        popover.behavior = .transient
+        popover.behavior = .semitransient
         popover.contentViewController = timeEntryHoverController
+        return popover
+    }()
+    private lazy var editorPopover: EditorPopover = {
+        let popover = EditorPopover()
+        popover.animates = false
+        popover.behavior = .transient
+        popover.prepareViewController()
         return popover
     }()
 
@@ -149,7 +156,17 @@ extension TimelineDashboardViewController: DatePickerViewDelegate {
 extension TimelineDashboardViewController: TimelineDatasourceDelegate {
 
     func shouldPresentTimeEntryHover(in view: NSView, timeEntry: TimelineTimeEntry) {
-        timeEntryPopover.show(relativeTo: view.bounds, of: view, preferredEdge: .maxX)
+        hoverPopover.show(relativeTo: view.bounds, of: view, preferredEdge: .maxX)
         timeEntryHoverController.render(with: timeEntry)
+    }
+
+    func shouldDismissTimeEntryHover() {
+        hoverPopover.close()
+    }
+
+    func shouldPresentTimeEntryEditor(in view: NSView, timeEntry: TimelineTimeEntry) {
+        shouldDismissTimeEntryHover()
+        editorPopover.show(relativeTo: view.bounds, of: view, preferredEdge: .maxX)
+        editorPopover.setTimeEntry(timeEntry.timeEntry)
     }
 }

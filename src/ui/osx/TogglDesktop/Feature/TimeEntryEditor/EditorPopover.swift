@@ -16,6 +16,7 @@ final class EditorPopover: NoVibrantPopoverView {
 
     @objc func prepareViewController() {
         let editor = EditorViewController(nibName: NSNib.Name("EditorViewController"), bundle: nil)
+        editor.delegate = self
         contentViewController = editor
     }
 
@@ -30,5 +31,14 @@ final class EditorPopover: NoVibrantPopoverView {
         if let editor = contentViewController as? EditorViewController {
             editor.timeEntry = timeEntry
         }
+    }
+}
+
+// MARK: EditorViewControllerDelegate
+
+extension EditorPopover: EditorViewControllerDelegate {
+
+    func editorShouldDismissPopover() {
+        close(focusTimer: false)
     }
 }

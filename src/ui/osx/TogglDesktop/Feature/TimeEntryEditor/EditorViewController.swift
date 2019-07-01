@@ -9,6 +9,11 @@
 import Cocoa
 import Carbon.HIToolbox
 
+protocol EditorViewControllerDelegate: class {
+
+    func editorShouldDismissPopover()
+}
+
 final class EditorViewController: NSViewController {
 
     private struct Constans {
@@ -46,6 +51,7 @@ final class EditorViewController: NSViewController {
             registerUndoForAllFields()
         }
     }
+    weak var delegate: EditorViewControllerDelegate?
     private var selectedProjectItem: ProjectContentItem?
     private lazy var projectDatasource = ProjectDataSource(items: ProjectStorage.shared.items, updateNotificationName: .ProjectStorageChangedNotification)
     private lazy var descriptionDatasource = DescriptionDataSource(items: DescriptionTimeEntryStorage.shared.items, updateNotificationName: .DescrptionTimeEntryStorageChangedNotification)
@@ -84,6 +90,7 @@ final class EditorViewController: NSViewController {
 
     @IBAction func closeBtnOnTap(_ sender: Any) {
         DesktopLibraryBridge.shared().togglEditor()
+        delegate?.editorShouldDismissPopover()
     }
 
     @IBAction func tagAddButtonOnTap(_ sender: Any) {

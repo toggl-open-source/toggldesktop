@@ -10,7 +10,7 @@ import Cocoa
 
 protocol TimelineFlowLayoutDelegate: class {
 
-    func timestampForItem(at indexPath: IndexPath) -> Timestamp?
+    func timechunkForItem(at indexPath: IndexPath) -> TimeChunk?
 }
 
 final class TimelineFlowLayout: NSCollectionViewFlowLayout {
@@ -156,7 +156,7 @@ final class TimelineFlowLayout: NSCollectionViewFlowLayout {
 extension TimelineFlowLayout {
 
     private func calculateBlockSize(at indexPath: IndexPath) -> (y: CGFloat, height: CGFloat)? {
-        guard let timestamp = flowDelegate?.timestampForItem(at: indexPath) else {
+        guard let timestamp = flowDelegate?.timechunkForItem(at: indexPath) else {
             print("Missing timestamp for at \(indexPath)")
             return nil
         }

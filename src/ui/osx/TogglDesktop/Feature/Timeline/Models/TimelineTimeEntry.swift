@@ -8,7 +8,22 @@
 
 import Foundation
 
-final class TimelineTimeEntry {
+class TimelineBaseTimeEntry {
+
+    let start: TimeInterval
+    let end: TimeInterval
+
+    init(start: TimeInterval, end: TimeInterval) {
+        self.start = start
+        self.end = end
+    }
+
+    func timechunk() -> TimeChunk {
+        return TimeChunk(start: start, end: end)
+    }
+}
+
+final class TimelineTimeEntry: TimelineBaseTimeEntry {
 
     // MARK: Variables
 
@@ -28,10 +43,7 @@ final class TimelineTimeEntry {
         } else {
             self.color = TimeEntryViewItem.defaultProjectColor()
         }
-    }
-
-    func timestamp() -> Timestamp {
-        return Timestamp(start: timeEntry.started.timeIntervalSince1970,
-                         end: timeEntry.ended.timeIntervalSince1970)
+        super.init(start: timeEntry.started.timeIntervalSince1970,
+                   end: timeEntry.ended.timeIntervalSince1970)
     }
 }

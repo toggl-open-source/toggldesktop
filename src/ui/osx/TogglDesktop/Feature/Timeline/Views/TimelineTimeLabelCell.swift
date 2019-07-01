@@ -21,7 +21,7 @@ final class TimelineTimeLabelCell: NSCollectionViewItem {
         // Do view setup here.
     }
 
-    func render(_ chunk: TimelineTimeChunk) {
+    func render(_ chunk: TimelineTimestamp) {
         titleLbl.stringValue = chunk.label
     }
 }

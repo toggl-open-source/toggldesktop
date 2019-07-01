@@ -10,7 +10,9 @@ import Cocoa
 
 protocol TimelineDatasourceDelegate: class {
 
+    func shouldPresentTimeEntryEditor(in view: NSView, timeEntry: TimelineTimeEntry)
     func shouldPresentTimeEntryHover(in view: NSView, timeEntry: TimelineTimeEntry)
+    func shouldDismissTimeEntryHover()
 }
 
 final class TimelineDatasource: NSObject {
@@ -108,12 +110,13 @@ extension TimelineDatasource: NSCollectionViewDataSource, NSCollectionViewDelega
         switch section {
         case .timeLabel:
             let cell = collectionView.makeItem(withIdentifier: Constants.TimeLabelCellID, for: indexPath) as! TimelineTimeLabelCell
-            let chunk = item as! TimelineTimeChunk
+            let chunk = item as! TimelineTimestamp
             cell.render(chunk)
             return cell
         case .timeEntry:
             let cell = collectionView.makeItem(withIdentifier: Constants.TimeEntryCellID, for: indexPath) as! TimelineTimeEntryCell
             let timeEntry = item as! TimelineTimeEntry
+            cell.delegate = self
             cell.config(for: timeEntry)
             return cell
         case .activity:
@@ -138,7 +141,7 @@ extension TimelineDatasource: NSCollectionViewDataSource, NSCollectionViewDelega
             let item = timeline?.item(at: indexPath) else { return }
         switch item {
         case let timeEntry as TimelineTimeEntry:
-            delegate?.shouldPresentTimeEntryHover(in: cell.view, timeEntry: timeEntry)
+            delegate?.shouldPresentTimeEntryEditor(in: cell.view, timeEntry: timeEntry)
             collectionView.deselectItems(at: indexPaths)
         default:
             break
@@ -150,7 +153,21 @@ extension TimelineDatasource: NSCollectionViewDataSource, NSCollectionViewDelega
 
 extension TimelineDatasource: TimelineFlowLayoutDelegate {
 
-    func timestampForItem(at indexPath: IndexPath) -> Timestamp? {
-        return timeline?.timestampForItem(at: indexPath)
+    func timechunkForItem(at indexPath: IndexPath) -> TimeChunk? {
+        return timeline?.timechunkForItem(at: indexPath)
+    }
+}
+
+// MARK: TimelineTimeEntryCellDelegate
+
+extension TimelineDatasource: TimelineTimeEntryCellDelegate {
+
+    func timeEntryCellMouseDidEntered(_ sender: TimelineTimeEntryCell) {
+        guard let timeEntry = sender.timeEntry else { return }
+        delegate?.shouldPresentTimeEntryHover(in: sender.view, timeEntry: timeEntry)
+    }
+
+    func timeEntryCellMouseDidExited(_ sender: TimelineTimeEntryCell) {
+        delegate?.shouldDismissTimeEntryHover()
     }
 }
