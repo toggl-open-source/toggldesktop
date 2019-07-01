@@ -159,7 +159,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(ProjectDir)..\..\..\..\third_party\poco\Data\SQLite\obj64\SQLite\debug_shared;$(ProjectDir)..\..\..\..\third_party\poco\lib64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>PocoFoundationd.lib;PocoUtild.lib;PocoXMLd.lib;PocoNetd.lib;PocoCryptod.lib;PocoNetSSLd.lib;PocoDatad.lib;PocoDataSQLited.lib;sqlite3%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>PocoFoundationd.lib;PocoUtild.lib;PocoXMLd.lib;PocoNetd.lib;PocoCryptod.lib;PocoNetSSLd.lib;PocoDatad.lib;PocoDataSQLited.lib;sqlite3;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
