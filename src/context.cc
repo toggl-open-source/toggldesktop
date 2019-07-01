@@ -359,6 +359,7 @@ UIElements UIElements::Reset() {
     render.display_unsynced_items = true;
 
     render.open_time_entry_list = true;
+    render.display_timeline = true;
 
     return render;
 }
@@ -5506,6 +5507,13 @@ void Context::OpenTimelineDataView() {
 
     UIElements render;
     render.open_timeline = true;
+    render.display_timeline = true;
+    updateUI(render);
+}
+
+void Context::ViewTimelineCurrentDay() {
+    UI()->SetTimelineDateAt(UI()->TimelineDateAt());
+    UIElements render;
     render.display_timeline = true;
     updateUI(render);
 }

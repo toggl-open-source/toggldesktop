@@ -29,6 +29,8 @@ final class TimelineTimeEntry: TimelineBaseTimeEntry {
 
     let timeEntry: TimeEntryViewItem
     let color: NSColor
+    private(set) var isOverlap = false
+
     var isSmall: Bool {
         // It's small bar if duration less than 1 min
         return timeEntry.duration_in_seconds <= 60
@@ -45,5 +47,11 @@ final class TimelineTimeEntry: TimelineBaseTimeEntry {
         }
         super.init(start: timeEntry.started.timeIntervalSince1970,
                    end: timeEntry.ended.timeIntervalSince1970)
+    }
+
+    // MARK: Public
+
+    func setOverlap() {
+        isOverlap = true
     }
 }

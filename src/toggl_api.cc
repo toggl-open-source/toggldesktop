@@ -651,6 +651,10 @@ void toggl_view_timeline_next_day(
     app(context)->ViewTimelineNextDay();
 }
 
+void toggl_view_timeline_current_day(void *context) {
+    app(context)->ViewTimelineCurrentDay();
+}
+
 void toggl_edit(
     void *context,
     const char_t *guid,

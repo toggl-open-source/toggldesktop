@@ -326,6 +326,8 @@ class Context : public TimelineDatasource {
 
     void ViewTimelinePrevDay();
 
+    void ViewTimelineCurrentDay();
+
     void ViewTimelineNextDay();
 
     void OpenSettings();

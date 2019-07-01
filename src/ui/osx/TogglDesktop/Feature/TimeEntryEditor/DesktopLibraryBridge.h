@@ -63,16 +63,17 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)updateDescriptionForTimeEntry:(TimeEntryViewItem *)timeEntry
 						 autocomplete:(AutocompleteItem *)autocomplete;
 
-- (void)timelineSetPreviousDate;
-
-- (void)timelineSetNextDate;
-
 #pragma mark - Timeline
 
 - (void)enableTimelineRecord:(BOOL)isEnabled;
 
 - (void)fetchTimelineData;
 
+- (void)timelineSetPreviousDate;
+
+- (void)timelineSetNextDate;
+
+- (void)timelineGetCurrentDate;
 @end
 
 NS_ASSUME_NONNULL_END

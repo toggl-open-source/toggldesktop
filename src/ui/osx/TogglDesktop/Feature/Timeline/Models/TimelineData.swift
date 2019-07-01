@@ -86,6 +86,11 @@ class TimelineData {
             return activities[safe: indexPath.item]?.timechunk()
         }
     }
+
+    func setOverlapForTimeEntry(at indexPath: IndexPath) {
+        guard let timeEntry = timeEntries[safe: indexPath.item] as? TimelineTimeEntry else { return }
+        timeEntry.setOverlap()
+    }
 }
 
 // MARK: Private

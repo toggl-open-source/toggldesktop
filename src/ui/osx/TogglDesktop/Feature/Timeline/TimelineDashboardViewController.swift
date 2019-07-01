@@ -104,6 +104,10 @@ extension TimelineDashboardViewController {
                                                selector: #selector(self.handleLoginNotification(_:)),
                                                name: NSNotification.Name(kDisplayLogin),
                                                object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(self.reloadTimeline),
+                                               name: Notification.Name(kDisplayTimeEntryList),
+                                               object: nil)
     }
 
     fileprivate func initCollectionView() {
@@ -119,6 +123,10 @@ extension TimelineDashboardViewController {
         guard let cmd = noti.object as? DisplayCommand,
             let setting = cmd.settings else { return }
         recordSwitcher.setOn(isOn: setting.timeline_recording_enabled, animated: false)
+    }
+
+    @objc private func reloadTimeline() {
+        DesktopLibraryBridge.shared().timelineGetCurrentDate()
     }
 }
 

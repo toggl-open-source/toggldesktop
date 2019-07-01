@@ -326,9 +326,6 @@ BOOL onTop = NO;
 		[self performSelectorInBackground:@selector(runScript:)
 							   withObject:self.scriptPath];
 	}
-
-	// Load timeline
-	toggl_view_timeline_data(ctx);
 }
 
 - (void)systemWillPowerOff:(NSNotification *)aNotification

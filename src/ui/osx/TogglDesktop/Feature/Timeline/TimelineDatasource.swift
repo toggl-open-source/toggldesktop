@@ -156,6 +156,10 @@ extension TimelineDatasource: TimelineFlowLayoutDelegate {
     func timechunkForItem(at indexPath: IndexPath) -> TimeChunk? {
         return timeline?.timechunkForItem(at: indexPath)
     }
+
+    func setOverlapOnTimeEntry(at indexPath: IndexPath) {
+        timeline?.setOverlapForTimeEntry(at: indexPath)
+    }
 }
 
 // MARK: TimelineTimeEntryCellDelegate

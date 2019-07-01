@@ -200,4 +200,9 @@ void *ctx;
 	toggl_view_timeline_data(ctx);
 }
 
+- (void)timelineGetCurrentDate
+{
+	toggl_view_timeline_current_day(ctx);
+}
+
 @end

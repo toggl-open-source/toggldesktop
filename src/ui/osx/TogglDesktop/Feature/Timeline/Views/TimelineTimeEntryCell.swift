@@ -25,7 +25,7 @@ final class TimelineTimeEntryCell: NSCollectionViewItem {
     weak var delegate: TimelineTimeEntryCellDelegate?
     private(set) var timeEntry: TimelineTimeEntry!
     private var trackingArea: NSTrackingArea?
-
+    private lazy var timeEntryMenu = TimelineTimeEntryMenu()
     // MARK: View
 
     override func viewDidLoad() {
@@ -52,9 +52,6 @@ final class TimelineTimeEntryCell: NSCollectionViewItem {
         backgroundView.cornerRadius = timeEntry.isSmall ? 1.0 : 10.0
     }
 
-    @IBAction func timeEntryOnTap(_ sender: Any) {
-    }
-
     override func mouseEntered(with event: NSEvent) {
         super.mouseEntered(with: event)
         delegate?.timeEntryCellMouseDidEntered(self)
@@ -63,6 +60,14 @@ final class TimelineTimeEntryCell: NSCollectionViewItem {
     override func mouseExited(with event: NSEvent) {
         super.mouseExited(with: event)
         delegate?.timeEntryCellMouseDidExited(self)
+    }
+
+    override func rightMouseDown(with event: NSEvent) {
+        super.rightMouseDown(with: event)
+
+        if let timeEntry = timeEntry, timeEntry.isOverlap {
+            NSMenu.popUpContextMenu(timeEntryMenu, with: event, for: self.view)
+        }
     }
 }
 

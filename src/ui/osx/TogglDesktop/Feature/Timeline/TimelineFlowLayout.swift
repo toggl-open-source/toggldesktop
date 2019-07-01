@@ -11,6 +11,7 @@ import Cocoa
 protocol TimelineFlowLayoutDelegate: class {
 
     func timechunkForItem(at indexPath: IndexPath) -> TimeChunk?
+    func setOverlapOnTimeEntry(at indexPath: IndexPath)
 }
 
 final class TimelineFlowLayout: NSCollectionViewFlowLayout {
@@ -258,6 +259,11 @@ extension TimelineFlowLayout {
                 }
             } while intersected
 
+            // It's overlap time entry
+            if col > 0 {
+                flowDelegate?.setOverlapOnTimeEntry(at: indexPath)
+            }
+            
             // Finalize
             att.frame = frame
             timeEntryAttributes.append(att)
