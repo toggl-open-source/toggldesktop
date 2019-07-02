@@ -89,9 +89,7 @@ make -j8                                  # Build the app. The number defines th
 
 ### Dependencies
 
-Install Visual Studio 2013 to get Visual C++ 2013 Build Tools (v120). You can download it [here](https://visualstudio.microsoft.com/vs/older-downloads/).
-
-Build the app using any Visual Studio 2013 or above. You can download free Visual Studio Community [here](https://visualstudio.microsoft.com/vs/community/).
+Install Visual Studio 2019 with `.NET desktop development` and `Desktop development with C++` components checked during installation. You can download free Visual Studio Community [here](https://visualstudio.microsoft.com/vs/community/).
 
 If you want to run tests or build the app using make, then install [Cygwin](https://www.cygwin.com/).
 
