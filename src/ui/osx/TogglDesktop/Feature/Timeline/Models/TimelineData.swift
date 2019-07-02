@@ -20,7 +20,7 @@ class TimelineData {
 
     let chunkViews: [TimelineChunkView]
     private(set) var timeChunks: [TimelineTimestamp] = []
-    let timeEntries: [TimelineBaseTimeEntry]
+    private(set) var timeEntries: [TimelineBaseTimeEntry]
     let activities: [TimelineActivity]
     let numberOfSections: Int
     let start: TimeInterval
@@ -40,6 +40,7 @@ class TimelineData {
         timeChunks = generateTimelineLabel(for: start,
                                            endDate: end,
                                            zoomLevel: zoomLevel)
+        generateEmptyTimeEntry()
     }
 
     // MARK: Public
@@ -86,11 +87,6 @@ class TimelineData {
             return activities[safe: indexPath.item]?.timechunk()
         }
     }
-
-    func setOverlapForTimeEntry(at indexPath: IndexPath) {
-        guard let timeEntry = timeEntries[safe: indexPath.item] as? TimelineTimeEntry else { return }
-        timeEntry.setOverlap()
-    }
 }
 
 // MARK: Private
@@ -108,5 +104,46 @@ extension TimelineData {
             current += span
         }
         return times.map { TimelineTimestamp($0) }
+    }
+
+    fileprivate func generateEmptyTimeEntry() {
+        var processedTimeEmtries: [TimelineTimeEntry] = []
+        for item in timeEntries {
+            guard let timeEntry = item as? TimelineTimeEntry else { continue }
+            let start = timeEntry.start
+            let end = timeEntry.end
+
+            // Check if it's overlap by comparing the start & end
+            let isOverlap = processedTimeEmtries.contains { timeEntry -> Bool in
+                return (start >= timeEntry.start && start <= timeEntry.end) || (end >= timeEntry.start && end <= timeEntry.end)
+            }
+
+            // Set overlap
+            timeEntry.isOverlap = isOverlap
+            processedTimeEmtries.append(timeEntry)
+        }
+
+        // Get all time entires, which are in the first column
+        var firstColumnTimeEntries = processedTimeEmtries.compactMap { (timeEntry) -> TimelineTimeEntry? in
+            return !timeEntry.isOverlap ? timeEntry : nil
+        }
+
+        // Add empty time entry
+        // Only add if there is a gap between two entries
+        if firstColumnTimeEntries.count >= 2 {
+            var emptyTimeEntries: [TimelineBaseTimeEntry] = []
+            for i in 0..<(firstColumnTimeEntries.count - 1) {
+                let current = firstColumnTimeEntries[i]
+                let next = firstColumnTimeEntries[i+1]
+
+                if (next.start - current.end) >= 60.0 { // Gap is 60 seconds
+                    let emptyTimeEntry = TimelineBaseTimeEntry(start: current.end, end: next.start, offset: 60.0)
+                    emptyTimeEntries.append(emptyTimeEntry)
+                }
+            }
+
+            // Add
+            timeEntries.append(contentsOf: emptyTimeEntries)
+        }
     }
 }

@@ -1703,8 +1703,8 @@ void on_timeline(const bool_t open,
 											startDay:start_day
 											  endDay:end_day];
 
-	[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayTimeline
-														object:cmd];
+	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayTimeline
+																object:cmd];
 }
 
 void on_time_entry_autocomplete(TogglAutocompleteView *first)

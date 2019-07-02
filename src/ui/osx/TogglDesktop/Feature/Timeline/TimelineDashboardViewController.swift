@@ -172,9 +172,9 @@ extension TimelineDashboardViewController: TimelineDatasourceDelegate {
         hoverPopover.close()
     }
 
-    func shouldPresentTimeEntryEditor(in view: NSView, timeEntry: TimelineTimeEntry) {
+    func shouldPresentTimeEntryEditor(in view: NSView, timeEntry: TimeEntryViewItem) {
         shouldDismissTimeEntryHover()
         editorPopover.show(relativeTo: view.bounds, of: view, preferredEdge: .maxX)
-        editorPopover.setTimeEntry(timeEntry.timeEntry)
+        editorPopover.setTimeEntry(timeEntry)
     }
 }

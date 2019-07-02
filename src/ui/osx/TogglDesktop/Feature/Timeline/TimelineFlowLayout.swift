@@ -11,7 +11,6 @@ import Cocoa
 protocol TimelineFlowLayoutDelegate: class {
 
     func timechunkForItem(at indexPath: IndexPath) -> TimeChunk?
-    func setOverlapOnTimeEntry(at indexPath: IndexPath)
 }
 
 final class TimelineFlowLayout: NSCollectionViewFlowLayout {
@@ -143,13 +142,6 @@ final class TimelineFlowLayout: NSCollectionViewFlowLayout {
         let height = CGFloat(numberOfTimeLabels) * (verticalPaddingTimeLabel + Constants.TimeLabel.Size.height)
         return CGSize(width: width, height: height)
     }
-
-    private func getTimestampForStartOfDay(from timestamp: TimeInterval) -> TimeInterval {
-        let date = Date(timeIntervalSince1970: timestamp)
-        var calendar = Calendar.current
-        calendar.timeZone = TimeZone(abbreviation: "UTC")!
-        return calendar.startOfDay(for: date).timeIntervalSince1970
-    }
 }
 
 // MARK: Private
@@ -162,7 +154,7 @@ extension TimelineFlowLayout {
             return nil
         }
 
-        let beginDay = getTimestampForStartOfDay(from: timestamp.start)
+        let beginDay = Date.startOfDay(from: timestamp.start)
 
         // Length of time entry
         let span = CGFloat(timestamp.end - timestamp.start)
@@ -259,11 +251,6 @@ extension TimelineFlowLayout {
                 }
             } while intersected
 
-            // It's overlap time entry
-            if col > 0 {
-                flowDelegate?.setOverlapOnTimeEntry(at: indexPath)
-            }
-            
             // Finalize
             att.frame = frame
             timeEntryAttributes.append(att)

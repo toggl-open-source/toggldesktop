@@ -13,9 +13,9 @@ class TimelineBaseTimeEntry {
     let start: TimeInterval
     let end: TimeInterval
 
-    init(start: TimeInterval, end: TimeInterval) {
-        self.start = start
-        self.end = end
+    init(start: TimeInterval, end: TimeInterval, offset: TimeInterval = 0) {
+        self.start = start + offset
+        self.end = end - offset
     }
 
     func timechunk() -> TimeChunk {
@@ -29,7 +29,7 @@ final class TimelineTimeEntry: TimelineBaseTimeEntry {
 
     let timeEntry: TimeEntryViewItem
     let color: NSColor
-    private(set) var isOverlap = false
+    var isOverlap = false
 
     var isSmall: Bool {
         // It's small bar if duration less than 1 min
@@ -47,11 +47,5 @@ final class TimelineTimeEntry: TimelineBaseTimeEntry {
         }
         super.init(start: timeEntry.started.timeIntervalSince1970,
                    end: timeEntry.ended.timeIntervalSince1970)
-    }
-
-    // MARK: Public
-
-    func setOverlap() {
-        isOverlap = true
     }
 }

@@ -10,7 +10,7 @@ import Cocoa
 
 protocol TimelineDatasourceDelegate: class {
 
-    func shouldPresentTimeEntryEditor(in view: NSView, timeEntry: TimelineTimeEntry)
+    func shouldPresentTimeEntryEditor(in view: NSView, timeEntry: TimeEntryViewItem)
     func shouldPresentTimeEntryHover(in view: NSView, timeEntry: TimelineTimeEntry)
     func shouldDismissTimeEntryHover()
 }
@@ -22,6 +22,8 @@ final class TimelineDatasource: NSObject {
         static let TimeLabelCellXIB = NSNib.Name("TimelineTimeLabelCell")
         static let TimeEntryCellID = NSUserInterfaceItemIdentifier("TimelineTimeEntryCell")
         static let TimeEntryCellXIB = NSNib.Name("TimelineTimeEntryCell")
+        static let EmptyTimeEntryCellID = NSUserInterfaceItemIdentifier("TimelineEmptyTimeEntryCell")
+        static let EmptyTimeEntryCellXIB = NSNib.Name("TimelineEmptyTimeEntryCell")
         static let ActivityCellID = NSUserInterfaceItemIdentifier("TimelineActivityCell")
         static let ActivityCellXIB = NSNib.Name("TimelineActivityCell")
         static let DividerViewID = NSUserInterfaceItemIdentifier("DividerViewID")
@@ -74,6 +76,7 @@ final class TimelineDatasource: NSObject {
         collectionView.register(NSNib(nibNamed: Constants.TimeLabelCellXIB, bundle: nil), forItemWithIdentifier: Constants.TimeLabelCellID)
         collectionView.register(NSNib(nibNamed: Constants.TimeEntryCellXIB, bundle: nil), forItemWithIdentifier: Constants.TimeEntryCellID)
         collectionView.register(NSNib(nibNamed: Constants.ActivityCellXIB, bundle: nil), forItemWithIdentifier: Constants.ActivityCellID)
+        collectionView.register(NSNib(nibNamed: Constants.EmptyTimeEntryCellXIB, bundle: nil), forItemWithIdentifier: Constants.EmptyTimeEntryCellID)
         collectionView.register(TimelineDividerView.self, forSupplementaryViewOfKind: NSCollectionView.elementKindSectionFooter, withIdentifier: Constants.DividerViewID)
     }
 
@@ -114,11 +117,20 @@ extension TimelineDatasource: NSCollectionViewDataSource, NSCollectionViewDelega
             cell.render(chunk)
             return cell
         case .timeEntry:
-            let cell = collectionView.makeItem(withIdentifier: Constants.TimeEntryCellID, for: indexPath) as! TimelineTimeEntryCell
-            let timeEntry = item as! TimelineTimeEntry
-            cell.delegate = self
-            cell.config(for: timeEntry)
-            return cell
+            switch item {
+            case let timeEntry as TimelineTimeEntry:
+                let cell = collectionView.makeItem(withIdentifier: Constants.TimeEntryCellID, for: indexPath) as! TimelineTimeEntryCell
+                cell.delegate = self
+                cell.config(for: timeEntry)
+                return cell
+            case let emptyTimeEntry as TimelineBaseTimeEntry:
+                let cell = collectionView.makeItem(withIdentifier: Constants.EmptyTimeEntryCellID, for: indexPath) as! TimelineEmptyTimeEntryCell
+                cell.config(for: emptyTimeEntry)
+                return cell
+            default:
+                fatalError("We haven't support yet")
+            }
+
         case .activity:
             let cell = collectionView.makeItem(withIdentifier: Constants.ActivityCellID, for: indexPath) as! TimelineActivityCell
             let activity = item as! TimelineActivity
@@ -141,7 +153,11 @@ extension TimelineDatasource: NSCollectionViewDataSource, NSCollectionViewDelega
             let item = timeline?.item(at: indexPath) else { return }
         switch item {
         case let timeEntry as TimelineTimeEntry:
-            delegate?.shouldPresentTimeEntryEditor(in: cell.view, timeEntry: timeEntry)
+            delegate?.shouldPresentTimeEntryEditor(in: cell.view, timeEntry: timeEntry.timeEntry)
+            collectionView.deselectItems(at: indexPaths)
+        case is TimelineBaseTimeEntry:
+            // Create new
+            delegate?.shouldPresentTimeEntryEditor(in: cell.view, timeEntry: TimeEntryViewItem())
             collectionView.deselectItems(at: indexPaths)
         default:
             break
@@ -155,10 +171,6 @@ extension TimelineDatasource: TimelineFlowLayoutDelegate {
 
     func timechunkForItem(at indexPath: IndexPath) -> TimeChunk? {
         return timeline?.timechunkForItem(at: indexPath)
-    }
-
-    func setOverlapOnTimeEntry(at indexPath: IndexPath) {
-        timeline?.setOverlapForTimeEntry(at: indexPath)
     }
 }
 
