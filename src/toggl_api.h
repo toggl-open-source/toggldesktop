@@ -911,6 +911,12 @@ extern "C" {
     TOGGL_EXPORT void toggl_set_wake(
         void *context);
 
+    TOGGL_EXPORT void toggl_set_locked(
+        void *context);
+
+    TOGGL_EXPORT void toggl_set_unlocked(
+        void *context);
+
     TOGGL_EXPORT void toggl_os_shutdown(
         void *context);
 

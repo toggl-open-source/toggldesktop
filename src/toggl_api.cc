@@ -1055,6 +1055,14 @@ void toggl_set_wake(void *context) {
     app(context)->SetWake();
 }
 
+void toggl_set_locked(void* context) {
+    app(context)->SetLocked();
+}
+
+void toggl_set_unlocked(void* context) {
+    app(context)->SetUnlocked();
+}
+
 void toggl_os_shutdown(void *context) {
     if (!context) {
         return;

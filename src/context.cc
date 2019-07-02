@@ -3779,6 +3779,7 @@ void Context::SetSleep() {
     if (!isHandled) {
         logger().debug("SetSleep");
         idle_.SetSleep();
+        window_change_recorder_->SetIsSleeping(true);
     }
 }
 
@@ -3985,6 +3986,7 @@ void Context::onWake(Poco::Util::TimerTask& task) {  // NOLINT
         }
 
         idle_.SetWake(user_);
+        window_change_recorder_->SetIsSleeping(false);
 
         Sync();
     }
@@ -3997,6 +3999,16 @@ void Context::onWake(Poco::Util::TimerTask& task) {  // NOLINT
     catch (const std::string& ex) {
         logger().error(ex);
     }
+}
+
+void Context::SetLocked() {
+    logger().debug("SetLocked");
+    window_change_recorder_->SetIsLocked(true);
+}
+
+void Context::SetUnlocked() {
+    logger().debug("SetUnlocked");
+    window_change_recorder_->SetIsLocked(false);
 }
 
 void Context::SetOnline() {

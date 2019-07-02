@@ -582,6 +582,16 @@ public static partial class Toggl
         toggl_set_sleep(ctx);
     }
 
+    public static void SetLocked()
+    {
+        toggl_set_locked(ctx);
+    }
+
+    public static void SetUnlocked()
+    {
+        toggl_set_unlocked(ctx);
+    }
+
     public static void SetOSShutdown()
     {
         toggl_os_shutdown(ctx);
