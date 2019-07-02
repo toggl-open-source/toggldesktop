@@ -1555,35 +1555,29 @@ TEST(Formatter, FormatDecimal) {
 }
 
 TEST(Formatter, JoinTaskName) {
-    std::string res = Formatter::JoinTaskName(0, 0, 0);
+    std::string res = Formatter::JoinTaskName(0, 0);
     ASSERT_EQ("", res);
 
     Task t;
     t.SetName("Task name");
-    res = Formatter::JoinTaskName(&t, 0, 0);
+    res = Formatter::JoinTaskName(&t, 0);
     ASSERT_EQ("Task name", res);
 
     Project p;
     p.SetName("Project name");
-    res = Formatter::JoinTaskName(0, &p, 0);
+    res = Formatter::JoinTaskName(0, &p);
     ASSERT_EQ(p.Name(), res);
 
-    res = Formatter::JoinTaskName(&t, &p, 0);
+    res = Formatter::JoinTaskName(&t, &p);
     ASSERT_EQ("Task name. Project name", res);
 
-    Client c;
-    c.SetName("Customer name");
-    res = Formatter::JoinTaskName(0, 0, &c);
-    ASSERT_EQ(c.Name(), res);
+    p.SetCID(1);
+    p.SetClientName("Client name");
+    res = Formatter::JoinTaskName(&t, &p);
+    ASSERT_EQ("Task name. Project name. Client name", res);
 
-    res = Formatter::JoinTaskName(&t, 0, &c);
-    ASSERT_EQ("Task name. Customer name", res);
-
-    res = Formatter::JoinTaskName(0, &p, &c);
-    ASSERT_EQ("Project name. Customer name", res);
-
-    res = Formatter::JoinTaskName(&t, &p, &c);
-    ASSERT_EQ("Task name. Project name. Customer name", res);
+    res = Formatter::JoinTaskName(0, &p);
+    ASSERT_EQ("Project name. Client name", res);
 }
 
 TEST(JSON, EscapeJSONString) {
