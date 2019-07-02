@@ -121,6 +121,10 @@ static class Win32
         var extendedStyle = GetWindowLong(hwnd, GWL_EXSTYLE);
         SetWindowLong(hwnd, GWL_EXSTYLE, extendedStyle | WS_EX_TRANSPARENT);
     }
+
+    [DllImport("shell32.dll", SetLastError = true)]
+    public static extern void SetCurrentProcessExplicitAppUserModelID([MarshalAs(UnmanagedType.LPWStr)] string AppID);
+
 }
 
 }

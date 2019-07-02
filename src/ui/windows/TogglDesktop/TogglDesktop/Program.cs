@@ -29,6 +29,7 @@ static class Program
     [STAThread]
     static void Main()
     {
+        Win32.SetCurrentProcessExplicitAppUserModelID("Toggl.TogglDesktop." + Version);
         Win32.AttachConsole(Win32.ATTACH_PARENT_PROCESS);
 
         using (Mutex mutex = new Mutex(false, "Global\\" + Environment.UserName + "_" + appGUID))
@@ -66,7 +67,7 @@ static class Program
             Toggl.InitialiseLog();
 
             var configuration = new Bugsnag.Configuration("aa13053a88d5133b688db0f25ec103b7");
-            configuration.AppVersion = Version();
+            configuration.AppVersion = Version;
 
 #if TOGGL_PRODUCTION_BUILD
             configuration.ReleaseStage = "production";
@@ -147,7 +148,7 @@ static class Program
         Environment.Exit(exitCode);
     }
 
-    public static string Version()
+    private static string GetVersionFromAssembly()
     {
         Assembly assembly = Assembly.GetExecutingAssembly();
         FileVersionInfo versionInfo = FileVersionInfo.GetVersionInfo(assembly.Location);
@@ -156,5 +157,7 @@ static class Program
                              versionInfo.ProductMinorPart,
                              versionInfo.ProductBuildPart);
     }
+
+    public static string Version { get; } = GetVersionFromAssembly();
 }
 }
