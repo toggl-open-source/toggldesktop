@@ -359,7 +359,7 @@ namespace TogglDesktop
             if (this.TryBeginInvoke(this.onReminder, title, informativeText))
                 return;
 
-            this.taskbarIcon.ShowBalloonTipWithLargeIcon(title, informativeText, Properties.Resources.toggl);
+            this.taskbarIcon.ShowBalloonTip(title, informativeText, Properties.Resources.toggl, largeIcon: true);
         }
 
         private void onOnlineState(Toggl.OnlineState state)
