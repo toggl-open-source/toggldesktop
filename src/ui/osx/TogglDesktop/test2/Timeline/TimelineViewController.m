@@ -95,7 +95,9 @@ extern void *ctx;
 							   0,
 							   0,
 							   0,
-							   false);
+							   false,
+							   0,
+							   0);
 
 	NSString *GUID = [NSString stringWithUTF8String:guid];
 

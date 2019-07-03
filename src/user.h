@@ -63,7 +63,9 @@ class User : public BaseModel {
         const Poco::UInt64 task_id,
         const Poco::UInt64 project_id,
         const std::string project_guid,
-        const std::string tags);
+        const std::string tags,
+        const time_t started,
+        const time_t ended);
 
     TimeEntry *Continue(
         const std::string GUID,

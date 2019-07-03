@@ -15,9 +15,10 @@ final class TimelineDashboardViewController: NSViewController {
     @IBOutlet weak var datePickerContainerView: NSView!
     @IBOutlet weak var recordSwitcher: OGSwitch!
     @IBOutlet weak var collectionView: NSCollectionView!
-
+    @IBOutlet weak var emptyLbl: NSTextField!
+    
     // MARK: Variables
-
+    private var selectedIndexPath: IndexPath?
     lazy var datePickerView: DatePickerView = DatePickerView.xibView()
     private lazy var datasource = TimelineDatasource(collectionView)
     private var zoomLevel: TimelineDatasource.ZoomLevel = .x1 {
@@ -67,6 +68,8 @@ final class TimelineDashboardViewController: NSViewController {
         let date = Date(timeIntervalSince1970: cmd.start)
         datePickerView.currentDate = date
         datasource.render(timeline)
+        emptyLbl.isHidden = !timeline.timeEntries.isEmpty
+        updatePositionOfEditorIfNeed()
     }
     
     @IBAction func recordSwitchOnChanged(_ sender: Any) {
@@ -74,13 +77,13 @@ final class TimelineDashboardViewController: NSViewController {
     }
 
     @IBAction func zoomLevelDecreaseOnChange(_ sender: Any) {
-        guard let previous = zoomLevel.previousLevel else { return }
-        zoomLevel = previous
+        guard let next = zoomLevel.nextLevel else { return }
+        zoomLevel = next
     }
 
     @IBAction func zoomLevelIncreaseOnChange(_ sender: Any) {
-        guard let next = zoomLevel.nextLevel else { return }
-        zoomLevel = next
+        guard let previous = zoomLevel.previousLevel else { return }
+        zoomLevel = previous
     }
 }
 
@@ -101,10 +104,6 @@ extension TimelineDashboardViewController {
                                                name: NSNotification.Name(kDisplaySettings),
                                                object: nil)
         NotificationCenter.default.addObserver(self,
-                                               selector: #selector(self.handleLoginNotification(_:)),
-                                               name: NSNotification.Name(kDisplayLogin),
-                                               object: nil)
-        NotificationCenter.default.addObserver(self,
                                                selector: #selector(self.reloadTimeline),
                                                name: Notification.Name(kDisplayTimeEntryList),
                                                object: nil)
@@ -112,11 +111,6 @@ extension TimelineDashboardViewController {
 
     fileprivate func initCollectionView() {
 
-    }
-
-    @objc private func handleLoginNotification(_ noti: Notification) {
-        guard let cmd = noti.object as? DisplayCommand else { return }
-        recordSwitcher.isEnabled = cmd.user_id != 0
     }
 
     @objc private func handleDisplaySettingNotification(_ noti: Notification) {
@@ -164,6 +158,8 @@ extension TimelineDashboardViewController: DatePickerViewDelegate {
 extension TimelineDashboardViewController: TimelineDatasourceDelegate {
 
     func shouldPresentTimeEntryHover(in view: NSView, timeEntry: TimelineTimeEntry) {
+        // Dont' show hover if the user is editing
+        guard !editorPopover.isShown else { return }
         hoverPopover.show(relativeTo: view.bounds, of: view, preferredEdge: .maxX)
         timeEntryHoverController.render(with: timeEntry)
     }
@@ -173,8 +169,45 @@ extension TimelineDashboardViewController: TimelineDatasourceDelegate {
     }
 
     func shouldPresentTimeEntryEditor(in view: NSView, timeEntry: TimeEntryViewItem) {
+        selectedIndexPath = collectionView.selectionIndexPaths.first
         shouldDismissTimeEntryHover()
         editorPopover.show(relativeTo: view.bounds, of: view, preferredEdge: .maxX)
         editorPopover.setTimeEntry(timeEntry)
+    }
+
+    func startNewTimeEntry(at started: TimeInterval, ended: TimeInterval) {
+        guard let guid = DesktopLibraryBridge.shared().starNewTimeEntry(atStarted: started, ended: ended) else { return }
+        selectedIndexPath = collectionView.selectionIndexPaths.first
+        self.showEditorForTimeEntry(with: guid)
+    }
+
+    fileprivate func showEditorForTimeEntry(with guid: String) {
+        guard let timeEntries = datasource.timeline?.timeEntries else { return }
+
+        // Get the index for item with guid
+        let foundIndex = timeEntries.firstIndex(where: { entry -> Bool in
+            if let timeEntry = entry as? TimelineTimeEntry,
+                let timeEntryGUID = timeEntry.timeEntry.guid,
+                timeEntryGUID == guid {
+                return true
+            }
+            return false
+        })
+
+        // Get all essential data to present Editor
+        guard let index = foundIndex else { return }
+        let indexPath = IndexPath(item:index, section: TimelineData.Section.timeEntry.rawValue)
+        guard let item = datasource.timeline?.item(at: indexPath) as? TimelineTimeEntry,
+            let cell = collectionView.item(at: indexPath) else { return }
+        shouldPresentTimeEntryEditor(in: cell.view, timeEntry: item.timeEntry)
+    }
+
+    fileprivate func updatePositionOfEditorIfNeed() {
+        guard editorPopover.isShown else { return }
+        guard let selectedIndexPath = selectedIndexPath,
+            let cell = collectionView.item(at: selectedIndexPath) else { return }
+
+        editorPopover.animates = false
+        editorPopover.show(relativeTo: cell.view.bounds, of: cell.view, preferredEdge: .maxX)
     }
 }

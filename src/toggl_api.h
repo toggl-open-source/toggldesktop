@@ -11,6 +11,8 @@ extern "C" {
 #include <stdio.h>
 #include <stdint.h>
 
+#include <time.h>
+
 #if defined(_WIN32) || defined(WIN32)
 #define TOGGL_EXPORT __declspec(dllexport)
 #else
@@ -860,7 +862,9 @@ extern "C" {
         const uint64_t project_id,
         const char_t *project_guid,
         const char_t *tags,
-        const bool_t prevent_on_app);
+        const bool_t prevent_on_app,
+        const time_t started,
+        const time_t ended);
 
     // returns GUID of the new project. you must free() the result
     TOGGL_EXPORT char_t *toggl_add_project(

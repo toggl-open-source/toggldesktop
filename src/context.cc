@@ -2537,7 +2537,9 @@ TimeEntry *Context::Start(
     const Poco::UInt64 project_id,
     const std::string project_guid,
     const std::string tags,
-    const bool prevent_on_app) {
+    const bool prevent_on_app,
+    const time_t started,
+    const time_t ended) {
 
     // Do not even allow to add new time entries,
     // else they will linger around in the app
@@ -2576,7 +2578,9 @@ TimeEntry *Context::Start(
                           tid,
                           pid,
                           project_guid,
-                          tags);
+                          tags,
+                          started,
+                          ended);
     }
 
     error err = save(true);
@@ -4191,7 +4195,9 @@ void Context::displayPomodoro() {
                                              0,  // task_id
                                              0,  // project_id
                                              "",  // project_guid
-                                             "pomodoro-break");  // tags
+                                             "pomodoro-break",
+                                             0,
+                                             0);  // tags
 
         // Set workspace id to same as the previous entry
         pomodoro_break_entry_->SetWID(wid);

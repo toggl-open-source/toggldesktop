@@ -579,7 +579,9 @@ char_t *toggl_start(
     const uint64_t project_id,
     const char_t *project_guid,
     const char_t *tags,
-    const bool_t prevent_on_app) {
+    const bool_t prevent_on_app,
+    const time_t started,
+    const time_t ended) {
 
     logger().debug("toggl_start");
 
@@ -610,7 +612,9 @@ char_t *toggl_start(
         project_id,
         p_guid,
         tag_list,
-        prevent_on_app);
+        prevent_on_app,
+        started,
+        ended);
     if (te) {
         return copy_string(te->GUID());
     }

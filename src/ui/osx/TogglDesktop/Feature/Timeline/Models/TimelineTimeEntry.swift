@@ -30,6 +30,7 @@ final class TimelineTimeEntry: TimelineBaseTimeEntry {
     let timeEntry: TimeEntryViewItem
     let color: NSColor
     var isOverlap = false
+    let name: String
 
     var isSmall: Bool {
         // It's small bar if duration less than 1 min
@@ -40,6 +41,7 @@ final class TimelineTimeEntry: TimelineBaseTimeEntry {
 
     init(_ timeEntry: TimeEntryViewItem) {
         self.timeEntry = timeEntry
+        self.name = timeEntry.descriptionName
         if let color = timeEntry.projectColor, !color.isEmpty {
             self.color = ConvertHexColor.hexCode(toNSColor: timeEntry.projectColor) ?? TimeEntryViewItem.defaultProjectColor()
         } else {

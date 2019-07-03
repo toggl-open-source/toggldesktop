@@ -13,6 +13,7 @@ protocol TimelineDatasourceDelegate: class {
     func shouldPresentTimeEntryEditor(in view: NSView, timeEntry: TimeEntryViewItem)
     func shouldPresentTimeEntryHover(in view: NSView, timeEntry: TimelineTimeEntry)
     func shouldDismissTimeEntryHover()
+    func startNewTimeEntry(at started: TimeInterval, ended: TimeInterval)
 }
 
 final class TimelineDatasource: NSObject {
@@ -35,6 +36,7 @@ final class TimelineDatasource: NSObject {
         case x3
         case x4
 
+        // The span represent how long between current TimeLabel -> Next label
         var span: TimeInterval {
             switch self {
             case .x4:
@@ -53,6 +55,12 @@ final class TimelineDatasource: NSObject {
         var previousLevel: ZoomLevel? {
             return ZoomLevel(rawValue: self.rawValue - 1)
         }
+
+        // If the zoom is x4, two TE could so close
+        // This minimum gap prevents it happends
+        var minimumGap: CGFloat {
+            return 2.0
+        }
     }
 
     // MARK: Variables
@@ -60,7 +68,7 @@ final class TimelineDatasource: NSObject {
     weak var delegate: TimelineDatasourceDelegate?
     private unowned let collectionView: NSCollectionView
     private let flow: TimelineFlowLayout
-    private var timeline: TimelineData?
+    private(set) var timeline: TimelineData?
     private var zoomLevel: ZoomLevel = .x1
     
     // MARK: Init
@@ -90,6 +98,14 @@ final class TimelineDatasource: NSObject {
         timeline?.render(with: zoomLevel)
         flow.apply(zoomLevel)
         collectionView.reloadData()
+        scrollToVisibleItem()
+    }
+
+    private func scrollToVisibleItem() {
+        guard let timeline = timeline,
+            !timeline.timeEntries.isEmpty else { return }
+        collectionView.scrollToItems(at: Set<IndexPath>(arrayLiteral: IndexPath(item: 0, section: TimelineData.Section.timeEntry.rawValue)),
+                                     scrollPosition: [.centeredHorizontally, .centeredVertically])
     }
 }
 
@@ -121,11 +137,11 @@ extension TimelineDatasource: NSCollectionViewDataSource, NSCollectionViewDelega
             case let timeEntry as TimelineTimeEntry:
                 let cell = collectionView.makeItem(withIdentifier: Constants.TimeEntryCellID, for: indexPath) as! TimelineTimeEntryCell
                 cell.delegate = self
-                cell.config(for: timeEntry)
+                cell.config(for: timeEntry, at: zoomLevel)
                 return cell
             case let emptyTimeEntry as TimelineBaseTimeEntry:
                 let cell = collectionView.makeItem(withIdentifier: Constants.EmptyTimeEntryCellID, for: indexPath) as! TimelineEmptyTimeEntryCell
-                cell.config(for: emptyTimeEntry)
+                cell.config(for: emptyTimeEntry, at: zoomLevel)
                 return cell
             default:
                 fatalError("We haven't support yet")
@@ -155,9 +171,8 @@ extension TimelineDatasource: NSCollectionViewDataSource, NSCollectionViewDelega
         case let timeEntry as TimelineTimeEntry:
             delegate?.shouldPresentTimeEntryEditor(in: cell.view, timeEntry: timeEntry.timeEntry)
             collectionView.deselectItems(at: indexPaths)
-        case is TimelineBaseTimeEntry:
-            // Create new
-            delegate?.shouldPresentTimeEntryEditor(in: cell.view, timeEntry: TimeEntryViewItem())
+        case let item as TimelineBaseTimeEntry:
+            delegate?.startNewTimeEntry(at: item.start, ended: item.end)
             collectionView.deselectItems(at: indexPaths)
         default:
             break
@@ -171,6 +186,12 @@ extension TimelineDatasource: TimelineFlowLayoutDelegate {
 
     func timechunkForItem(at indexPath: IndexPath) -> TimeChunk? {
         return timeline?.timechunkForItem(at: indexPath)
+    }
+
+    func isEmptyTimeEntry(at indexPath: IndexPath) -> Bool {
+        guard let item = timeline?.item(at: indexPath),
+            type(of: item) == TimelineBaseTimeEntry.self else { return false }
+        return true
     }
 }
 

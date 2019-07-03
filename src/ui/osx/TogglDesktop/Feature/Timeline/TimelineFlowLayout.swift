@@ -10,6 +10,7 @@ import Cocoa
 
 protocol TimelineFlowLayoutDelegate: class {
 
+    func isEmptyTimeEntry(at indexPath: IndexPath) -> Bool
     func timechunkForItem(at indexPath: IndexPath) -> TimeChunk?
 }
 
@@ -153,7 +154,6 @@ extension TimelineFlowLayout {
             print("Missing timestamp for at \(indexPath)")
             return nil
         }
-
         let beginDay = Date.startOfDay(from: timestamp.start)
 
         // Length of time entry
@@ -254,6 +254,17 @@ extension TimelineFlowLayout {
             // Finalize
             att.frame = frame
             timeEntryAttributes.append(att)
+        }
+
+        // Hide all Empty TimeEntry if it's too small
+        timeEntryAttributes.forEach { (att) in
+            if let indexPath = att.indexPath,
+                let isEmptyTimeEntry = flowDelegate?.isEmptyTimeEntry(at: indexPath),
+                isEmptyTimeEntry == true {
+                if att.frame.size.height <= 20 {
+                    att.isHidden = true
+                }
+            }
         }
     }
 

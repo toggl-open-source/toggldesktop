@@ -11,6 +11,7 @@
 #import "toggl_api.h"
 #import "AutocompleteItem.h"
 #import "Utils.h"
+#import "UIEvents.h"
 
 @implementation DesktopLibraryBridge
 
@@ -203,6 +204,30 @@ void *ctx;
 - (void)timelineGetCurrentDate
 {
 	toggl_view_timeline_current_day(ctx);
+}
+
+- (NSString *)starNewTimeEntryAtStarted:(NSTimeInterval)started ended:(NSTimeInterval)ended
+{
+	char *guid = toggl_start(ctx,
+							 @"".UTF8String,
+							 "0",
+							 0,
+							 0,
+							 0,
+							 NULL,
+							 false,
+							 started,
+							 ended
+							 );
+	NSString *GUID = [NSString stringWithUTF8String:guid];
+
+	free(guid);
+	return GUID;
+}
+
+- (void)startEditorAtGUID:(NSString *)GUID
+{
+	toggl_edit(ctx, [GUID UTF8String], false, kFocusedFieldNameDescription);
 }
 
 @end

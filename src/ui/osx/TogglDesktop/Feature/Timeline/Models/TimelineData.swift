@@ -34,7 +34,9 @@ class TimelineData {
         self.chunkViews = cmd.timelineChunks
         self.start = cmd.start
         self.end = cmd.end
-        self.timeEntries = cmd.timeEntries.map { TimelineTimeEntry($0) }
+        self.timeEntries = cmd.timeEntries.map { TimelineTimeEntry($0) }.sorted(by: { (lhs, rhs) -> Bool in
+            return lhs.start < rhs.start
+        })
         numberOfSections = Section.allCases.count
         activities = []
         timeChunks = generateTimelineLabel(for: start,
@@ -107,25 +109,22 @@ extension TimelineData {
     }
 
     fileprivate func generateEmptyTimeEntry() {
-        var processedTimeEmtries: [TimelineTimeEntry] = []
+        var firstColumnTimeEntries: [TimelineTimeEntry] = []
         for item in timeEntries {
             guard let timeEntry = item as? TimelineTimeEntry else { continue }
             let start = timeEntry.start
             let end = timeEntry.end
 
             // Check if it's overlap by comparing the start & end
-            let isOverlap = processedTimeEmtries.contains { timeEntry -> Bool in
+            let isOverlap = firstColumnTimeEntries.contains { timeEntry -> Bool in
                 return (start >= timeEntry.start && start <= timeEntry.end) || (end >= timeEntry.start && end <= timeEntry.end)
             }
 
             // Set overlap
             timeEntry.isOverlap = isOverlap
-            processedTimeEmtries.append(timeEntry)
-        }
-
-        // Get all time entires, which are in the first column
-        var firstColumnTimeEntries = processedTimeEmtries.compactMap { (timeEntry) -> TimelineTimeEntry? in
-            return !timeEntry.isOverlap ? timeEntry : nil
+            if !isOverlap {
+                firstColumnTimeEntries.append(timeEntry)
+            }
         }
 
         // Add empty time entry
@@ -136,7 +135,7 @@ extension TimelineData {
                 let current = firstColumnTimeEntries[i]
                 let next = firstColumnTimeEntries[i+1]
 
-                if (next.start - current.end) >= 60.0 { // Gap is 60 seconds
+                if (next.start - current.end) >= 600.0 { // Gap is 10 mins
                     let emptyTimeEntry = TimelineBaseTimeEntry(start: current.end, end: next.start, offset: 60.0)
                     emptyTimeEntries.append(emptyTimeEntry)
                 }

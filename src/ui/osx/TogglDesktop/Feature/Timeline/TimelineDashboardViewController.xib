@@ -11,6 +11,7 @@
             <connections>
                 <outlet property="collectionView" destination="hht-dC-mpO" id="9tS-ho-Ut6"/>
                 <outlet property="datePickerContainerView" destination="wlf-0e-ttW" id="86r-YF-M9C"/>
+                <outlet property="emptyLbl" destination="L7J-Lq-Z7U" id="x1D-xG-9dl"/>
                 <outlet property="recordSwitcher" destination="I6m-RA-gUy" id="Sef-EC-Cn6"/>
                 <outlet property="view" destination="c22-O7-iKe" id="D7F-6m-KJo"/>
             </connections>
@@ -18,25 +19,25 @@
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customView id="c22-O7-iKe">
-            <rect key="frame" x="0.0" y="0.0" width="297" height="526"/>
+            <rect key="frame" x="0.0" y="0.0" width="369" height="526"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <customView translatesAutoresizingMaskIntoConstraints="NO" id="Xu6-6s-ozI">
-                    <rect key="frame" x="0.0" y="0.0" width="297" height="440"/>
+                    <rect key="frame" x="0.0" y="0.0" width="369" height="440"/>
                     <subviews>
                         <customView translatesAutoresizingMaskIntoConstraints="NO" id="oFH-aL-e6h">
-                            <rect key="frame" x="0.0" y="410" width="297" height="30"/>
+                            <rect key="frame" x="0.0" y="410" width="369" height="30"/>
                             <subviews>
                                 <box boxType="custom" borderType="none" borderWidth="0.0" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="SbK-rs-cgp">
-                                    <rect key="frame" x="0.0" y="0.0" width="297" height="30"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="369" height="30"/>
                                     <view key="contentView" id="yem-eb-vRP">
-                                        <rect key="frame" x="0.0" y="0.0" width="297" height="30"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="369" height="30"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     </view>
                                     <color key="fillColor" name="timeline-background-color"/>
                                 </box>
                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="JX7-EL-bRV">
-                                    <rect key="frame" x="106" y="8" width="85" height="14"/>
+                                    <rect key="frame" x="142" y="8" width="85" height="14"/>
                                     <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="TIME ENTRIES" id="ac2-oR-01d">
                                         <font key="font" metaFont="systemMedium" size="11"/>
                                         <color key="textColor" name="timeline-label-color"/>
@@ -76,7 +77,7 @@
                                     </constraints>
                                 </customView>
                                 <customView translatesAutoresizingMaskIntoConstraints="NO" id="WO4-HV-33l">
-                                    <rect key="frame" x="227" y="0.0" width="70" height="30"/>
+                                    <rect key="frame" x="299" y="0.0" width="70" height="30"/>
                                     <subviews>
                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="UIS-R7-VXl">
                                             <rect key="frame" x="6" y="8" width="59" height="14"/>
@@ -110,14 +111,14 @@
                                 <constraint firstItem="SbK-rs-cgp" firstAttribute="top" secondItem="oFH-aL-e6h" secondAttribute="top" id="tes-cu-2kp"/>
                             </constraints>
                         </customView>
-                        <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DJx-ob-wM0">
-                            <rect key="frame" x="0.0" y="0.0" width="297" height="410"/>
+                        <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DJx-ob-wM0">
+                            <rect key="frame" x="0.0" y="0.0" width="369" height="410"/>
                             <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="1RV-Mg-WKj">
-                                <rect key="frame" x="0.0" y="0.0" width="297" height="410"/>
+                                <rect key="frame" x="0.0" y="0.0" width="369" height="410"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
                                     <collectionView selectable="YES" id="hht-dC-mpO">
-                                        <rect key="frame" x="0.0" y="0.0" width="297" height="158"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="369" height="410"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                         <collectionViewFlowLayout key="collectionViewLayout" minimumInteritemSpacing="10" minimumLineSpacing="10" id="ZtE-Ms-OYm">
                                             <size key="itemSize" width="50" height="50"/>
@@ -136,10 +137,23 @@
                                 <autoresizingMask key="autoresizingMask"/>
                             </scroller>
                         </scrollView>
+                        <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="L7J-Lq-Z7U">
+                            <rect key="frame" x="113" y="180" width="144" height="51"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="140" id="mdj-ct-y7d"/>
+                            </constraints>
+                            <textFieldCell key="cell" alignment="center" title="No entries here…  Go ahead and track some time!" id="rM7-R2-ABZ">
+                                <font key="font" metaFont="system"/>
+                                <color key="textColor" name="timeline-time-label-color"/>
+                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                            </textFieldCell>
+                        </textField>
                     </subviews>
                     <constraints>
                         <constraint firstItem="DJx-ob-wM0" firstAttribute="top" secondItem="oFH-aL-e6h" secondAttribute="bottom" id="0Cw-bZ-Dqs"/>
+                        <constraint firstItem="L7J-Lq-Z7U" firstAttribute="centerX" secondItem="DJx-ob-wM0" secondAttribute="centerX" id="42h-H4-chg"/>
                         <constraint firstItem="oFH-aL-e6h" firstAttribute="top" secondItem="Xu6-6s-ozI" secondAttribute="top" id="8La-EB-bST"/>
+                        <constraint firstItem="L7J-Lq-Z7U" firstAttribute="centerY" secondItem="DJx-ob-wM0" secondAttribute="centerY" id="8sZ-ui-KCW"/>
                         <constraint firstAttribute="bottom" secondItem="DJx-ob-wM0" secondAttribute="bottom" id="Gm3-VA-gjl"/>
                         <constraint firstAttribute="trailing" secondItem="oFH-aL-e6h" secondAttribute="trailing" id="ayb-sU-fX8"/>
                         <constraint firstItem="oFH-aL-e6h" firstAttribute="leading" secondItem="Xu6-6s-ozI" secondAttribute="leading" id="bTG-wc-ODY"/>
@@ -148,12 +162,12 @@
                     </constraints>
                 </customView>
                 <customView translatesAutoresizingMaskIntoConstraints="NO" id="CV9-Ue-zhq">
-                    <rect key="frame" x="0.0" y="440" width="297" height="86"/>
+                    <rect key="frame" x="0.0" y="440" width="369" height="86"/>
                     <subviews>
                         <box boxType="custom" borderWidth="0.0" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="sGN-8K-7IZ">
-                            <rect key="frame" x="0.0" y="0.0" width="297" height="86"/>
+                            <rect key="frame" x="0.0" y="0.0" width="369" height="86"/>
                             <view key="contentView" id="fec-sY-eYm">
-                                <rect key="frame" x="0.0" y="0.0" width="297" height="86"/>
+                                <rect key="frame" x="0.0" y="0.0" width="369" height="86"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </view>
                             <color key="fillColor" name="timeline-date-picker-background-color"/>
@@ -167,7 +181,7 @@
                             </textFieldCell>
                         </textField>
                         <customView translatesAutoresizingMaskIntoConstraints="NO" id="I6m-RA-gUy" customClass="OGSwitch" customModule="TogglDesktop" customModuleProvider="target">
-                            <rect key="frame" x="247" y="56" width="40" height="16"/>
+                            <rect key="frame" x="319" y="56" width="40" height="16"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="16" id="KZb-zk-hfP"/>
                                 <constraint firstAttribute="width" constant="40" id="hh6-kQ-Om4"/>
@@ -177,7 +191,7 @@
                             </connections>
                         </customView>
                         <customView translatesAutoresizingMaskIntoConstraints="NO" id="wlf-0e-ttW">
-                            <rect key="frame" x="10" y="13" width="277" height="30"/>
+                            <rect key="frame" x="10" y="13" width="349" height="30"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="30" id="dza-G1-J0f"/>
                             </constraints>

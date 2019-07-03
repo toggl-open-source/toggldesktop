@@ -31,7 +31,7 @@
                 <constraint firstAttribute="trailing" secondItem="8e0-5i-0FT" secondAttribute="trailing" constant="5" id="13l-6I-Fco"/>
                 <constraint firstItem="8e0-5i-0FT" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="5" id="8oq-7u-fdu"/>
                 <constraint firstItem="8e0-5i-0FT" firstAttribute="centerX" secondItem="Hz6-mo-xeY" secondAttribute="centerX" id="jFr-ab-BBI"/>
-                <constraint firstItem="8e0-5i-0FT" firstAttribute="centerY" secondItem="Hz6-mo-xeY" secondAttribute="centerY" id="ydI-Zw-eRl"/>
+                <constraint firstItem="8e0-5i-0FT" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" id="nLY-M9-ggX"/>
             </constraints>
             <point key="canvasLocation" x="133" y="103"/>
         </customView>
