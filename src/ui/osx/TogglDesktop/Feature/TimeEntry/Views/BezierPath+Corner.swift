@@ -13,7 +13,7 @@ var str = "Hello, playground"
 struct Corners: OptionSet {
     let rawValue: Int
 
-    init(rawValue: Corners.RawValue) {
+    init(rawValue: Int) {
         self.rawValue = rawValue
     }
 
@@ -154,13 +154,15 @@ extension NSBezierPath {
                 case .closePath:
                     path.closeSubpath()
                     didClosePath = true
+                default:
+                    break
                 }
             }
 
             if !didClosePath { path.closeSubpath() }
         }
 
-        points.deallocate(capacity: 3)
+        points.deallocate()
         return path
     }
 }
