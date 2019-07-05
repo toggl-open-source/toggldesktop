@@ -1,15 +1,12 @@
-﻿<togglDesktop:TogglNotification x:Class="TogglDesktop.AutotrackerNotification"
+﻿<togglDesktop:TogglNotification x:Class="TogglDesktop.ReminderNotification"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:togglDesktop="clr-namespace:TogglDesktop"
              mc:Ignorable="d"
-             Title="Autotracker"
              MouseDown="onNotificationMouseDown">
     <togglDesktop:TogglNotification.Content>
-        <Button Grid.Row="1"
-                Content="START"
-                Click="onStartButtonClick"/>
+        <Button Grid.Row="1" Content="START" Click="onStartButtonClick" />
     </togglDesktop:TogglNotification.Content>
 </togglDesktop:TogglNotification>

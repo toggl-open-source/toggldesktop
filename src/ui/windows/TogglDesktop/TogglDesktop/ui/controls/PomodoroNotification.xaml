@@ -1,69 +1,25 @@
-﻿<UserControl x:Class="TogglDesktop.PomodoroNotification"
+﻿<togglDesktop:TogglNotification x:Class="TogglDesktop.PomodoroNotification"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:togglDesktop="clr-namespace:TogglDesktop"
              mc:Ignorable="d"
-             Style="{StaticResource AutotrackerNotification}">
-
-    <Border Width="360" Height="60"
-        Background="{StaticResource ViewBackgroundLight}"
-        CornerRadius="2"
-        BorderThickness="0"
-        Margin="5">
-        <Border.Effect>
-            <DropShadowEffect
-                Direction="270"
-                ShadowDepth="2"
-                BlurRadius="7"
-                Opacity="0.35"
-                />
-        </Border.Effect>
-
-        <Grid MouseLeftButtonDown="onNotificationMouseDown">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="60"/>
-                <ColumnDefinition />
-                <ColumnDefinition Width="85"/>
-            </Grid.ColumnDefinitions>
-
-            <Image Grid.Column="0"
-                Source="/TogglDesktop;component/Resources/toggl.ico"
-                RenderOptions.BitmapScalingMode="Fant"
-                Margin="12"/>
-
-            <Grid Grid.Column="1" Margin="0 8">
-                <Grid.RowDefinitions>
-                    <RowDefinition />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-
-                <TextBlock Grid.Row="0"
-                    Text="Pomodoro Timer"
-                    FontWeight="Medium"
-                    Name="titleText" x:FieldModifier="private"/>
-                <TextBlock Grid.Row="1"
-                    Text="You have been working for 25 minutes."
-                    FontSize="12"
-                    Name="reminderText" x:FieldModifier="private"/>
-
-            </Grid>
-
-            <Grid Grid.Column="2">
-                <Grid.RowDefinitions>
-                    <RowDefinition />
-                    <RowDefinition Height="1"/>
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-                <Button Grid.Row="0"
+             MouseDown="onNotificationMouseDown">
+    <togglDesktop:TogglNotification.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="1"/>
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Button Grid.Row="0"
                     Content="CONTINUE"
                     Click="onContinueButtonClick"/>
-                <Rectangle Grid.Row="1" Fill="#22000000" />
-                <Button Grid.Row="2"
+            <Rectangle Grid.Row="1" Fill="#22000000" />
+            <Button Grid.Row="2"
                     Content="START NEW"
                     Click="onStartNewButtonClick"/>
-            </Grid>
         </Grid>
-
-    </Border>
-</UserControl>
+    </togglDesktop:TogglNotification.Content>
+</togglDesktop:TogglNotification>

@@ -1,6 +1,4 @@
-﻿
-using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using Hardcodet.Wpf.TaskbarNotification;
@@ -27,8 +25,8 @@ namespace TogglDesktop
             if (this.TryBeginInvoke(onDisplayPomodoro, title, informativetext))
                 return;
 
-            this.reminderText.Text = informativetext;
-            this.titleText.Text = title;
+            this.Message = informativetext;
+            this.Title = title;
 
             this.RemoveFromParent();
 
@@ -42,8 +40,8 @@ namespace TogglDesktop
             if (this.TryBeginInvoke(onDisplayPomodoroBreak, title, informativetext))
                 return;
 
-            this.reminderText.Text = informativetext;
-            this.titleText.Text = title;
+            this.Message = informativetext;
+            this.Title = title;
 
             this.RemoveFromParent();
 
