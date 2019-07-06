@@ -58,7 +58,7 @@
 
                         <CheckBox Grid.Column="0" Grid.Row="1"
                             Name="enablePomodoroCheckBox" x:FieldModifier="private"
-                            HorizontalContentAlignment="Stretch"
+                            HorizontalContentAlignment="Stretch" 
                             Margin="5">Pomodoro Timer</CheckBox>
                         <StackPanel Margin="5" Grid.Column="1" Grid.Row="1"
                                     Orientation="Horizontal">
@@ -72,26 +72,20 @@
                         <CheckBox Grid.Column="0" Grid.Row="2"
                             Name="enablePomodoroBreakCheckBox" x:FieldModifier="private"
                             HorizontalContentAlignment="Stretch"
-                            Margin="5"
+                            Margin="5" 
                             IsEnabled="{Binding ElementName=enablePomodoroCheckBox, Path=IsChecked}">Pomodoro Break Timer</CheckBox>
                         <StackPanel Margin="5" Grid.Column="1" Grid.Row="2"
                                     Orientation="Horizontal">
+                            <StackPanel.IsEnabled>
+                                <MultiBinding Converter="{StaticResource AndConverter}">
+                                    <Binding ElementName="enablePomodoroBreakCheckBox" Path="IsChecked"/>
+                                    <Binding ElementName="enablePomodoroCheckBox" Path="IsChecked"/>
+                                </MultiBinding>
+                            </StackPanel.IsEnabled>
                             <TextBox Name="pomodoroBreakTimerDuration" x:FieldModifier="private"
                                      Width="30"  HorizontalContentAlignment="Right" Text="5">
-                                <TextBox.IsEnabled>
-                                    <MultiBinding Converter="{StaticResource AndConverter}">
-                                        <Binding ElementName="enablePomodoroBreakCheckBox" Path="IsChecked"/>
-                                        <Binding ElementName="enablePomodoroCheckBox" Path="IsChecked"/>
-                                    </MultiBinding>
-                                </TextBox.IsEnabled>
                             </TextBox>
                             <TextBlock Margin="4 0 0 0" Text="minutes">
-                                <TextBlock.IsEnabled>
-                                    <MultiBinding Converter="{StaticResource AndConverter}">
-                                        <Binding ElementName="enablePomodoroBreakCheckBox" Path="IsChecked"/>
-                                        <Binding ElementName="enablePomodoroCheckBox" Path="IsChecked"/>
-                                    </MultiBinding>
-                                </TextBlock.IsEnabled>
                             </TextBlock>
                         </StackPanel>
 
