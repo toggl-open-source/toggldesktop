@@ -82,6 +82,9 @@ tmp32
 obj
 obj64
 
+# IntelliJ/Rider folder
+.idea
+
 src/ui/windows/TogglDesktop/TogglDesktop/bin
 src/ui/windows/TogglDesktop/Release
 src/ui/windows/TogglDesktop/x64/Release
