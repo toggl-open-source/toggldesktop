@@ -102,6 +102,7 @@ third_party/plcrashreporter/build
 *.opensdf
 *.suo
 *.vcxproj.user
+*.csproj.user
 
 third_party/google-astyle/build/
 
