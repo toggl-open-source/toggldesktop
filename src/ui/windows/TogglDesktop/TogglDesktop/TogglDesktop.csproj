@@ -923,10 +923,8 @@
   <PropertyGroup>
     <PostBuildEvent>if $(PlatformName) == x64 (
 XCOPY $(SolutionDir)..\..\..\..\third_party\poco\bin64\*.dll $(TargetDir) /Y
-XCOPY $(SolutionDir)\TogglDesktopUpdater\bin\x64\Release\TogglDesktopUpdater.exe $(TargetDir) /Y
 ) ELSE (
 XCOPY $(SolutionDir)..\..\..\..\third_party\poco\bin\*.dll $(TargetDir) /Y
-XCOPY $(SolutionDir)\TogglDesktopUpdater\bin\Release\TogglDesktopUpdater.exe $(TargetDir) /Y
 )</PostBuildEvent>
   </PropertyGroup>
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
