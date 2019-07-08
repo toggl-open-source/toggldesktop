@@ -1,15 +1,8 @@
 Building OpenSSL from sources on Windows
 =================
 
-[Install ActivePerl](http://www.activestate.com/activeperl/downloads).
+Open `third_party\poco\openssl\buildall.cmd`. Tweak the config if needed.
 
-cd to the project folder, then
+Run `buildall.cmd` from Developer Command Prompt for VS 2019.
 
-```
-cd third_party\openssl
-perl Configure VC-WIN32
-nmake
-```
-
-Instead of do_nasm (use NASM) you can also use do_ms (no asm at all), or do_masm (use MASM). 
-NASM can be downloaded here: http://www.nasm.us/pub/nasm/releasebuilds/?C=M;O=D
+The resulting binaries are in `VS_140` folder if `buildall.cmd` config was not changed. Replace the contents of `build\win32` and/or `build\win64` with the resulting binaries from `VS_140` folder.
