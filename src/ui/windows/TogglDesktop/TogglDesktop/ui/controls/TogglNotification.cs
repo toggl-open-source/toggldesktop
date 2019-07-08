@@ -3,12 +3,8 @@ using System.Windows.Controls;
 
 namespace TogglDesktop
 {
-    public class TogglNotification : Control
+    public class TogglNotification : ContentControl
     {
-        public static readonly DependencyProperty ContentProperty =
-            DependencyProperty.Register(nameof(Content), typeof(object), typeof(TogglNotification),
-                new PropertyMetadata(null));
-
         public static readonly DependencyProperty TitleProperty =
             DependencyProperty.Register(nameof(Title), typeof(string), typeof(TogglNotification),
                 new UIPropertyMetadata(string.Empty));
@@ -16,12 +12,6 @@ namespace TogglDesktop
         public static readonly DependencyProperty MessageProperty =
             DependencyProperty.Register(nameof(Message), typeof(string), typeof(TogglNotification),
                 new UIPropertyMetadata(string.Empty));
-
-        public object Content
-        {
-            get => GetValue(ContentProperty);
-            set => SetValue(ContentProperty, value);
-        }
 
         public string Title
         {

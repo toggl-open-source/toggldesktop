@@ -7,8 +7,6 @@
              mc:Ignorable="d"
              Title="Autotracker"
              MouseDown="onNotificationMouseDown">
-    <togglDesktop:TogglNotification.Content>
-        <Button Content="START"
-                Click="onStartButtonClick"/>
-    </togglDesktop:TogglNotification.Content>
+    <Button Content="START"
+            Click="onStartButtonClick"/>
 </togglDesktop:TogglNotification>

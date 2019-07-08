@@ -6,20 +6,18 @@
              xmlns:togglDesktop="clr-namespace:TogglDesktop"
              mc:Ignorable="d"
              MouseDown="onNotificationMouseDown">
-    <togglDesktop:TogglNotification.Content>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition Height="1"/>
-                <RowDefinition />
-            </Grid.RowDefinitions>
-            <Button Grid.Row="0"
-                    Content="CONTINUE"
-                    Click="onContinueButtonClick"/>
-            <Rectangle Grid.Row="1" Fill="#22000000" />
-            <Button Grid.Row="2"
-                    Content="START NEW"
-                    Click="onStartNewButtonClick"/>
-        </Grid>
-    </togglDesktop:TogglNotification.Content>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="1"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Button Grid.Row="0"
+                Content="CONTINUE"
+                Click="onContinueButtonClick"/>
+        <Rectangle Grid.Row="1" Fill="#22000000" />
+        <Button Grid.Row="2"
+                Content="START NEW"
+                Click="onStartNewButtonClick"/>
+    </Grid>
 </togglDesktop:TogglNotification>

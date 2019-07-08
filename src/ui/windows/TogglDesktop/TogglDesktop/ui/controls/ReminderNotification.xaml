@@ -6,7 +6,5 @@
              xmlns:togglDesktop="clr-namespace:TogglDesktop"
              mc:Ignorable="d"
              MouseDown="onNotificationMouseDown">
-    <togglDesktop:TogglNotification.Content>
-        <Button Grid.Row="1" Content="START" Click="onStartButtonClick" />
-    </togglDesktop:TogglNotification.Content>
+    <Button Content="START" Click="onStartButtonClick" />
 </togglDesktop:TogglNotification>
