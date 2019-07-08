@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:converters="clr-namespace:TogglDesktop.Converters"
         xmlns:toggl="clr-namespace:TogglDesktop"
         mc:Ignorable="d" 
         Height="528" Width="500"
@@ -11,7 +12,9 @@
         Title="Preferences"
         Style="{StaticResource Preferences}"
         >
-
+    <toggl:TogglWindow.Resources>
+        <converters:AndConverter x:Key="AndConverter" />
+    </toggl:TogglWindow.Resources>
     <!-- content -->
     <Grid Background="{StaticResource ViewBackgroundLight}" Height="482">
         <Grid.RowDefinitions>
@@ -55,7 +58,7 @@
 
                         <CheckBox Grid.Column="0" Grid.Row="1"
                             Name="enablePomodoroCheckBox" x:FieldModifier="private"
-                            HorizontalContentAlignment="Stretch"
+                            HorizontalContentAlignment="Stretch" 
                             Margin="5">Pomodoro Timer</CheckBox>
                         <StackPanel Margin="5" Grid.Column="1" Grid.Row="1"
                                     Orientation="Horizontal">
@@ -69,15 +72,21 @@
                         <CheckBox Grid.Column="0" Grid.Row="2"
                             Name="enablePomodoroBreakCheckBox" x:FieldModifier="private"
                             HorizontalContentAlignment="Stretch"
-                            Margin="5"
+                            Margin="5" 
                             IsEnabled="{Binding ElementName=enablePomodoroCheckBox, Path=IsChecked}">Pomodoro Break Timer</CheckBox>
                         <StackPanel Margin="5" Grid.Column="1" Grid.Row="2"
                                     Orientation="Horizontal">
+                            <StackPanel.IsEnabled>
+                                <MultiBinding Converter="{StaticResource AndConverter}">
+                                    <Binding ElementName="enablePomodoroBreakCheckBox" Path="IsChecked"/>
+                                    <Binding ElementName="enablePomodoroCheckBox" Path="IsChecked"/>
+                                </MultiBinding>
+                            </StackPanel.IsEnabled>
                             <TextBox Name="pomodoroBreakTimerDuration" x:FieldModifier="private"
-                                    Width="30"  HorizontalContentAlignment="Right" 
-                                  IsEnabled="{Binding ElementName=enablePomodoroBreakCheckBox, Path=IsChecked}">5</TextBox>
-                            <TextBlock Margin="4 0 0 0"
-                                  IsEnabled="{Binding ElementName=enablePomodoroBreakCheckBox, Path=IsChecked}">minutes</TextBlock>
+                                     Width="30"  HorizontalContentAlignment="Right" Text="5">
+                            </TextBox>
+                            <TextBlock Margin="4 0 0 0" Text="minutes">
+                            </TextBlock>
                         </StackPanel>
 
                         <CheckBox Grid.Column="0" Grid.Row="3"
