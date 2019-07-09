@@ -6,7 +6,7 @@
         xmlns:converters="clr-namespace:TogglDesktop.Converters"
         xmlns:toggl="clr-namespace:TogglDesktop"
         mc:Ignorable="d" 
-        Height="528" Width="500"
+        Height="554" Width="500"
         KeyDown="windowKeyDown"
         IsToolWindow="True"
         Title="Preferences"
@@ -16,7 +16,7 @@
         <converters:AndConverter x:Key="AndConverter" />
     </toggl:TogglWindow.Resources>
     <!-- content -->
-    <Grid Background="{StaticResource ViewBackgroundLight}" Height="482">
+    <Grid Background="{StaticResource ViewBackgroundLight}">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
@@ -28,8 +28,8 @@
         <!-- tabbed content -->
         <TabControl Grid.Row="0" TabStripPlacement="Top">
             <TabItem Header="GENERAL">
-                <StackPanel Margin="11" Height="373">
-                    <Grid>
+                <StackPanel Margin="11">
+                    <Grid Margin="0,0,0,2">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="Auto"/>
@@ -40,7 +40,8 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="28"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
 
                         <CheckBox Grid.Column="0" Grid.Row="0"
@@ -98,6 +99,9 @@
                         <CheckBox Grid.Column="0" Grid.Row="5"
                             x:Name="onStopEntryCheckBox" x:FieldModifier="private"
                             Margin="5" Content="Stop running entry on computer sleep/shutdown"/>
+                        <CheckBox Grid.Column="0" Grid.Row="6"
+                                  x:Name="launchOnStartupCheckBox" x:FieldModifier="private"
+                                  Margin="5" Content="Run the app on Windows login"/>
 
                     </Grid>
 
