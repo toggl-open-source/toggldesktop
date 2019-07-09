@@ -26,7 +26,8 @@ namespace view {
 class TimeEntry {
  public:
     TimeEntry()
-        : DurationInSeconds(0)
+        : ID(0)
+    , DurationInSeconds(0)
     , Description("")
     , ProjectAndTaskLabel("")
     , TaskLabel("")
@@ -61,6 +62,7 @@ class TimeEntry {
     , GroupDuration("")
     , GroupItemCount(0) {}
 
+    uint64_t ID;
     int64_t DurationInSeconds;
     std::string Description;
     std::string ProjectAndTaskLabel;
