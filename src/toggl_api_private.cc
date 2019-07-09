@@ -285,6 +285,7 @@ TogglTimeEntryView *time_entry_view_item_init(
     TogglTimeEntryView *view_item = new TogglTimeEntryView();
     poco_check_ptr(view_item);
 
+    view_item->ID = static_cast<unsigned int>(te.ID);
     view_item->DurationInSeconds = static_cast<int>(te.DurationInSeconds);
     view_item->Description = copy_string(te.Description);
     view_item->GUID = copy_string(te.GUID);

@@ -42,6 +42,7 @@ extern "C" {
 // Models
 
     typedef struct {
+        uint64_t ID;
         int64_t DurationInSeconds;
         char_t *Description;
         char_t *ProjectAndTaskLabel;
