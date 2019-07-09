@@ -1,4 +1,3 @@
-# And include dirs
 include_directories(
     ${OAUTH_INCLUDE_DIR}
     ${BUGSNAG_INCLUDE_DIR}
@@ -8,16 +7,11 @@ include_directories(
     ${GTEST_INCLUDE_DIRS}
 )
 
-# TogglDesktopLibrary sources
 set(API_TEST_SOURCE_FILES
     test_data.cc
     toggl_api_test.cc
 )
-
-# Set up compilation targets
 add_executable(TogglApiTest ${API_TEST_SOURCE_FILES})
-
-# And list the dependencies between them (and system libraries)
 target_link_libraries(TogglApiTest PRIVATE
     TogglDesktopLibrary
     ${JSONCPP_LIBRARIES}
@@ -27,4 +21,16 @@ target_link_libraries(TogglApiTest PRIVATE
     X11
 )
 
-# install(TARGETS TogglDesktopLibrary DESTINATION lib)
+set(APP_TEST_SOURCE_FILES
+    test_data.cc
+    app_test.cc
+)
+add_executable(TogglAppTest ${APP_TEST_SOURCE_FILES})
+target_link_libraries(TogglAppTest PRIVATE
+    TogglDesktopLibrary
+    ${JSONCPP_LIBRARIES}
+    ${LUA_LIBRARIES}
+    PocoCrypto PocoDataSQLite PocoNetSSL PocoFoundation
+    gtest_main gtest
+    X11
+)
