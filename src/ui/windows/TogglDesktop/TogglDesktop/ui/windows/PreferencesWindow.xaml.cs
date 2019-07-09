@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+using Microsoft.Win32;
 using TogglDesktop.AutoCompletion;
 using TogglDesktop.AutoCompletion.Implementation;
 using TogglDesktop.Diagnostics;
@@ -128,6 +130,7 @@ namespace TogglDesktop
             this.keepEndTimeFixedCheckbox.IsChecked = Toggl.GetKeepEndTimeFixed();
 
             this.onStopEntryCheckBox.IsChecked = settings.StopEntryOnShutdownSleep;
+            this.launchOnStartupCheckBox.IsChecked = Utils.GetLaunchOnStartupRegistry();
 
             #endregion
 
@@ -298,6 +301,7 @@ namespace TogglDesktop
 
             Toggl.SetDefaultProject(settings.DefaultProject.ProjectID, settings.DefaultProject.TaskID);
             Toggl.SetKeepEndTimeFixed(settings.KeepEndTimeFixed);
+            Utils.SaveLaunchOnStartupRegistry(settings.LaunchOnStartup);
 
             return Toggl.SetSettings(settings.TogglSettings);
         }
@@ -372,6 +376,7 @@ namespace TogglDesktop
                 TogglSettings = settings,
                 DefaultProject = this.selectedDefaultProject,
                 KeepEndTimeFixed = isChecked(this.keepEndTimeFixedCheckbox),
+                LaunchOnStartup = isChecked(this.launchOnStartupCheckBox)
             };
         }
 
@@ -380,6 +385,7 @@ namespace TogglDesktop
             public Toggl.TogglSettingsView TogglSettings { get; set; }
             public Toggl.TogglAutocompleteView DefaultProject { get; set; }
             public bool KeepEndTimeFixed { get; set; }
+            public bool LaunchOnStartup { get; set; }
         }
 
         #endregion

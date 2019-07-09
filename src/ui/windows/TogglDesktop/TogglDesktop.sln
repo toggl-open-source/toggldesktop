@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.136
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29025.244
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TogglDesktop", "TogglDesktop\TogglDesktop.csproj", "{27AC6261-3916-4683-B692-DC57E2FE0ABD}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -82,13 +82,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SQLite", "..\..\..\..\third
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TogglDesktopUpdater", "TogglDesktopUpdater\TogglDesktopUpdater.csproj", "{013C6551-E2AA-4960-96DA-214CC8895E17}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{BE9EBB1E-726F-4CA7-AF3C-60258A24418F}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.exe = .nuget\NuGet.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TogglDesktopDLLInteropTest", "TogglDesktopDLLInteropTest\TogglDesktopDLLInteropTest.csproj", "{85CA11FB-7793-4026-9998-C8EE9BDB36BF}"
 	ProjectSection(ProjectDependencies) = postProject
