@@ -73,12 +73,26 @@ std::vector<std::string> project_colors;
 
 // on_obm_experiment
 std::vector<ObmExperiment> obm_experiments;
-
+/*
 TimeEntry time_entry_by_guid(const std::string guid) {
     TimeEntry te;
     for (std::size_t i = 0; i < testing::testresult::time_entries.size();
             i++) {
         if (testing::testresult::time_entries[i].GUID() == guid) {
+            te = testing::testresult::time_entries[i];
+            break;
+        }
+    }
+    return te;
+}
+*/
+TimeEntry time_entry_by_id(uint64_t id) {
+    TimeEntry te;
+    std::cerr << "Looking for " << id << std::endl;
+    for (std::size_t i = 0; i < testing::testresult::time_entries.size();
+            i++) {
+        std::cerr << "\t Checking " << testing::testresult::time_entries[i].ID() << std::endl;
+        if (testing::testresult::time_entries[i].ID() == id) {
             te = testing::testresult::time_entries[i];
             break;
         }
@@ -166,6 +180,7 @@ void on_time_entry_list(
     while (it) {
         TimeEntry te;
         te.SetGUID(it->GUID);
+        te.SetID(it->ID);
         te.SetDurationInSeconds(it->DurationInSeconds);
         te.SetDescription(it->Description);
         te.SetStart(it->Started);
@@ -280,6 +295,7 @@ void on_obm_experiment(
 void on_display_timer_state(TogglTimeEntryView *te) {
     testing::testresult::timer_state = TimeEntry();
     if (te) {
+        testing::testresult::timer_state.SetID(te->ID);
         testing::testresult::timer_state.SetStart(te->Started);
         testing::testresult::timer_state.SetGUID(te->GUID);
         testing::testresult::timer_state.SetDurationInSeconds(
@@ -1109,7 +1125,7 @@ TEST(toggl_api, toggl_edit) {
     std::string focused_field("description");
     toggl_edit(app.ctx(), guid.c_str(), edit_running_time_entry,
                focused_field.c_str());
-    ASSERT_EQ(guid, testing::testresult::editor_state.GUID());
+    //ASSERT_EQ(guid, testing::testresult::editor_state.GUID());
     ASSERT_EQ("description", testing::testresult::editor_focused_field_name);
 }
 
@@ -1759,9 +1775,9 @@ TEST(toggl_api, toggl_set_time_entry_date) {
     std::string json = loadTestData();
     ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
 
-    std::string guid("07fba193-91c4-0ec8-2894-820df0548a8f");
+    toggl::TimeEntry te = testing::testresult::time_entry_by_id(89818605);
+    std::string guid = te.GUID();
 
-    toggl::TimeEntry te = testing::testresult::time_entry_by_guid(guid);
     Poco::DateTime datetime(Poco::Timestamp::fromEpochTime(te.Start()));
     ASSERT_EQ(2013, datetime.year());
     ASSERT_EQ(9, datetime.month());
@@ -1776,7 +1792,7 @@ TEST(toggl_api, toggl_set_time_entry_date) {
                                           guid.c_str(),
                                           unix_timestamp));
 
-    te = testing::testresult::time_entry_by_guid(guid);
+    te = testing::testresult::time_entry_by_id(89818605);
     datetime = Poco::DateTime(Poco::Timestamp::fromEpochTime(te.Start()));
     ASSERT_EQ(2014, datetime.year());
     ASSERT_EQ(10, datetime.month());
@@ -1790,9 +1806,9 @@ TEST(toggl_api, toggl_set_time_entry_start) {
     std::string json = loadTestData();
     ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
 
-    std::string guid("07fba193-91c4-0ec8-2894-820df0548a8f");
+    toggl::TimeEntry te = testing::testresult::time_entry_by_id(89818605);
+    std::string guid = te.GUID();
 
-    toggl::TimeEntry te = testing::testresult::time_entry_by_guid(guid);
     Poco::DateTime datetime(Poco::Timestamp::fromEpochTime(te.Start()));
     ASSERT_EQ(2013, datetime.year());
     ASSERT_EQ(9, datetime.month());
@@ -1803,7 +1819,7 @@ TEST(toggl_api, toggl_set_time_entry_start) {
 
     ASSERT_TRUE(toggl_set_time_entry_start(app.ctx(), guid.c_str(), "12:34"));
 
-    te = testing::testresult::time_entry_by_guid(guid);
+    te = testing::testresult::time_entry_by_id(89818605);
     Poco::LocalDateTime local =
         Poco::DateTime(Poco::Timestamp::fromEpochTime(te.Start()));
     ASSERT_EQ(2013, local.year());
@@ -1822,9 +1838,9 @@ TEST(toggl_api, toggl_set_time_entry_end) {
     std::string json = loadTestData();
     ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
 
-    std::string guid("07fba193-91c4-0ec8-2894-820df0548a8f");
+    toggl::TimeEntry te = testing::testresult::time_entry_by_id(89818605);
+    std::string guid = te.GUID();
 
-    toggl::TimeEntry te = testing::testresult::time_entry_by_guid(guid);
     Poco::DateTime datetime(Poco::Timestamp::fromEpochTime(te.Stop()));
     ASSERT_EQ(2013, datetime.year());
     ASSERT_EQ(9, datetime.month());
@@ -1835,7 +1851,7 @@ TEST(toggl_api, toggl_set_time_entry_end) {
 
     ASSERT_TRUE(toggl_set_time_entry_end(app.ctx(), guid.c_str(), "18:29"));
 
-    te = testing::testresult::time_entry_by_guid(guid);
+    te = testing::testresult::time_entry_by_id(89818605);
     Poco::LocalDateTime local =
         Poco::DateTime(Poco::Timestamp::fromEpochTime(te.Stop()));
     ASSERT_EQ(2013, local.year());
@@ -1855,15 +1871,14 @@ TEST(toggl_api, toggl_set_time_entry_end_prefers_same_day) {
         loadTestDataFile("../testdata/time_entry_ending_tomorrow.json");
     ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
 
-    const std::string guid("07fba193-91c4-0ec8-2894-820df0548a8f");
+    toggl::TimeEntry te = testing::testresult::time_entry_by_id(89818605);
+    std::string guid = te.GUID();
 
     // Set start time so it will be local time
     ASSERT_TRUE(toggl_set_time_entry_date(app.ctx(), guid.c_str(), time(0)));
     ASSERT_TRUE(toggl_set_time_entry_start(app.ctx(), guid.c_str(), "06:33"));
 
     ASSERT_TRUE(toggl_set_time_entry_end(app.ctx(), guid.c_str(), "06:34"));
-
-    toggl::TimeEntry te = testing::testresult::time_entry_by_guid(guid);
 
     Poco::DateTime start(Poco::Timestamp::fromEpochTime(te.Start()));
     Poco::DateTime end(Poco::Timestamp::fromEpochTime(te.Stop()));
