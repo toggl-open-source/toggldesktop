@@ -1,0 +1,45 @@
+{
+    "windows": {
+        "beta": {
+            "version": "7.4.422",
+            "windows": "https://github.com/toggl/toggldesktop/releases/download/v7.4.422/TogglDesktopInstaller-7.4.422.exe",
+            "windows_enterprise": "https://github.com/toggl/toggldesktop/releases/download/v7.4.422/TogglDesktopEnterpriseInstaller-7.4.422.exe"
+        },
+        "stable": {
+            "version": "7.4.422",
+            "windows": "https://github.com/toggl/toggldesktop/releases/download/v7.4.422/TogglDesktopInstaller-7.4.422.exe",
+            "windows_enterprise": "https://github.com/toggl/toggldesktop/releases/download/v7.4.422/TogglDesktopEnterpriseInstaller-7.4.422.exe"
+        }
+    },
+    "mac": {
+        "dev": {
+            "version": "7.4.448",
+            "macos": "https://github.com/toggl/toggldesktop/releases/download/v7.4.448/TogglDesktop-7_4_448.dmg"
+        },
+        "beta": {
+            "version": "7.4.444",
+            "macos": "https://github.com/toggl/toggldesktop/releases/download/v7.4.444/TogglDesktop-7_4_444.dmg"
+        },
+        "stable": {
+            "version": "7.4.373",
+            "macos": "https://github.com/toggl/toggldesktop/releases/download/v7.4.373/TogglDesktop-7_4_373.dmg"
+        }
+    },
+    "linux": {
+        "dev": {
+            "version": "7.4.410",
+            "linux_tar.gz": "https://github.com/toggl/toggldesktop/releases/download/v7.4.410/toggldesktop_linux_x86_64-7_4_410.tar.gz",
+            "linux_flatpak": "https://github.com/toggl/toggldesktop/releases/download/v7.4.410/com.toggl.TogglDesktop_linux_86_64-7.4.410.flatpak"
+        },
+        "beta": {
+            "version": "7.4.358",
+            "linux_tar.gz": "https://github.com/toggl/toggldesktop/releases/download/v7.4.358/toggldesktop_linux_x86_64-7_4_358.tar.gz",
+            "linux_deb64": "https://github.com/toggl/toggldesktop/releases/download/v7.4.358/toggldesktop_7.4.358_amd64.deb"
+        },
+        "stable": {
+            "version": "7.4.122",
+            "linux_tar.gz": "https://github.com/toggl/toggldesktop/releases/download/v7.4.122/toggldesktop_linux_x86_64-7_4_122.tar.gz",
+            "linux_deb64": "https://github.com/toggl/toggldesktop/releases/download/v7.4.122/toggldesktop_7.4.122_amd64.deb"
+        }
+    }
+}
