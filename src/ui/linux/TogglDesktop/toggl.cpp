@@ -250,6 +250,9 @@ TogglApi::TogglApi(
     QString executablePath = QCoreApplication::applicationDirPath();
     QDir executableDir = QDir(executablePath);
     QString cacertPath = executableDir.filePath("cacert.pem");
+    if (!QFile::exists(cacertPath)) {
+        cacertPath = QString("%1/../share/toggldesktop/cacert.pem").arg(executableDir.path());
+    }
 #ifdef TOGGL_DATA_DIR
     if (!QFile::exists(cacertPath)) {
         cacertPath = QString("%1/cacert.pem").arg(TOGGL_DATA_DIR);
