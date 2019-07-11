@@ -96,13 +96,14 @@ namespace TogglDesktop
 
         protected override void OnLocationChanged(EventArgs e)
         {
-            this.updateMaximumSize();
-
-            if (!this.isToolWindow
-                && this.WindowState != WindowState.Maximized
-                && this.ResizeMode != ResizeMode.CanResize)
+            if (!this.IsToolWindow)
             {
-                this.ResizeMode = ResizeMode.CanResize;
+                this.updateMaximumSize();
+                if (this.WindowState != WindowState.Maximized
+                    && this.ResizeMode != ResizeMode.CanResize)
+                {
+                    this.ResizeMode = ResizeMode.CanResize;
+                }
             }
 
             base.OnLocationChanged(e);
