@@ -33,7 +33,7 @@ extern void *ctx;
 - (void)awakeFromNib
 {
 	[super awakeFromNib];
-
+	[self.window setLevel:NSFloatingWindowLevel];
 	[self initCommon];
 }
 
