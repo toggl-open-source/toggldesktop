@@ -820,6 +820,9 @@ BOOL onTop = NO;
 
 			free(str);
 		}
+
+		// Update tooltip
+		[self.statusItem setToolTip:[NSString stringWithFormat:@"Total today: %@", self.lastKnownRunningTimeEntry.dateDuration]];
 	}
 
 	NSString *key = nil;
