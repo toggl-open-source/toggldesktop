@@ -88,16 +88,14 @@ obj64
 # Visual Studio cache
 .vs
 
-src/ui/windows/TogglDesktop/TogglDesktop/bin
-src/ui/windows/TogglDesktop/Release
-src/ui/windows/TogglDesktop/x64/Release
-src/ui/windows/TogglDesktop/TogglDesktopUpdater/bin
-src/lib/windows/TogglDesktopDLL/Debug
-src/lib/windows/TogglDesktopDLL/Release_VS
-src/lib/windows/TogglDesktopDLL/Release
-src/lib/windows/TogglDesktopDLL/x64/Debug
-src/lib/windows/TogglDesktopDLL/x64/Release_VS
-src/lib/windows/TogglDesktopDLL/x64/Release
+src/ui/windows/**/bin
+src/ui/windows/TogglDesktop/TogglDesktop.Package/AppPackages
+src/ui/windows/TogglDesktop/TogglDesktop.Package/BundleArtifacts
+src/ui/windows/TogglDesktop/TogglDesktop.Package/Release
+src/ui/windows/TogglDesktop/TogglDesktop.Package/_pkginfo.txt
+src/lib/windows/**/Debug
+src/lib/windows/**/Release_VS
+src/lib/windows/**/Release
 
 *.dSYM
 
@@ -163,9 +161,6 @@ out
 third_party/lua/src/lua
 third_party/lua/src/luac
 third_party/lua/install
-
-# c# unit tests
-src/ui/windows/TogglDesktop/TogglDesktopDLLInteropTest/bin
 
 # Sublime text
 *.sublime-workspace
