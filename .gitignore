@@ -108,6 +108,7 @@ third_party/plcrashreporter/build
 *.suo
 *.vcxproj.user
 *.csproj.user
+*.wapproj.user
 
 third_party/google-astyle/build/
 

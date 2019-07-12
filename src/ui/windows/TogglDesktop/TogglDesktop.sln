@@ -141,6 +141,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "XML", "..\..\..\..\third_pa
 		{EF292CB9-CBEC-441F-A12E-D9DBFB4ACEAF} = {EF292CB9-CBEC-441F-A12E-D9DBFB4ACEAF}
 	EndProjectSection
 EndProject
+Project("{C7167F0D-BC9F-4E6E-AFE1-012C56B48DB5}") = "TogglDesktop.Package", "TogglDesktop.Package\TogglDesktop.Package.wapproj", "{BF2C1343-F7A6-448E-8B02-90E21340EC3C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug.Broken|x64 = Debug.Broken|x64
@@ -343,6 +345,24 @@ Global
 		{B8062AF7-2704-4228-A3C3-8FC505B93A45}.Release|x64.ActiveCfg = release_shared|x64
 		{B8062AF7-2704-4228-A3C3-8FC505B93A45}.Release|x64.Build.0 = release_shared|x64
 		{B8062AF7-2704-4228-A3C3-8FC505B93A45}.Release|x86.ActiveCfg = debug_shared|x64
+		{BF2C1343-F7A6-448E-8B02-90E21340EC3C}.Debug|x64.ActiveCfg = Debug|x64
+		{BF2C1343-F7A6-448E-8B02-90E21340EC3C}.Debug|x64.Build.0 = Debug|x64
+		{BF2C1343-F7A6-448E-8B02-90E21340EC3C}.Debug|x64.Deploy.0 = Debug|x64
+		{BF2C1343-F7A6-448E-8B02-90E21340EC3C}.Debug|x86.ActiveCfg = Debug|x86
+		{BF2C1343-F7A6-448E-8B02-90E21340EC3C}.Debug|x86.Build.0 = Debug|x86
+		{BF2C1343-F7A6-448E-8B02-90E21340EC3C}.Debug|x86.Deploy.0 = Debug|x86
+		{BF2C1343-F7A6-448E-8B02-90E21340EC3C}.Release_VS|x64.ActiveCfg = Release|x64
+		{BF2C1343-F7A6-448E-8B02-90E21340EC3C}.Release_VS|x64.Build.0 = Release|x64
+		{BF2C1343-F7A6-448E-8B02-90E21340EC3C}.Release_VS|x64.Deploy.0 = Release|x64
+		{BF2C1343-F7A6-448E-8B02-90E21340EC3C}.Release_VS|x86.ActiveCfg = Release|x86
+		{BF2C1343-F7A6-448E-8B02-90E21340EC3C}.Release_VS|x86.Build.0 = Release|x86
+		{BF2C1343-F7A6-448E-8B02-90E21340EC3C}.Release_VS|x86.Deploy.0 = Release|x86
+		{BF2C1343-F7A6-448E-8B02-90E21340EC3C}.Release|x64.ActiveCfg = Release|x64
+		{BF2C1343-F7A6-448E-8B02-90E21340EC3C}.Release|x64.Build.0 = Release|x64
+		{BF2C1343-F7A6-448E-8B02-90E21340EC3C}.Release|x64.Deploy.0 = Release|x64
+		{BF2C1343-F7A6-448E-8B02-90E21340EC3C}.Release|x86.ActiveCfg = Release|x86
+		{BF2C1343-F7A6-448E-8B02-90E21340EC3C}.Release|x86.Build.0 = Release|x86
+		{BF2C1343-F7A6-448E-8B02-90E21340EC3C}.Release|x86.Deploy.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
