@@ -26,6 +26,7 @@ final class EditorPopover: NoVibrantPopoverView {
 
     @objc func prepareViewController() {
         let editor = EditorViewController(nibName: NSNib.Name("EditorViewController"), bundle: nil)
+        editor.view.appearance = appearance
         contentViewController = editor
     }
 
