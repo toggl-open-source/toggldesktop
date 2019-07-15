@@ -491,9 +491,7 @@ void TimeEntryEditorWidget::on_tags_itemClicked(QListWidgetItem *item) {
             tags.push_back(widgetItem->text());
         }
     }
-    if (item) {
-        tags.push_back(item->text());
-    }
+
     tags.sort();
     QString list = tags.join("\t");
 
@@ -573,8 +571,10 @@ void TimeEntryEditorWidget::on_newTagButton_clicked() {
         for (int i = 0; i < ui->tags->count(); i++) {
             QListWidgetItem *widgetItem = ui->tags->item(i);
             if (widgetItem->text() == newTag) {
-                if (widgetItem->checkState() != Qt::Checked)
+                if (widgetItem->checkState() != Qt::Checked) {
+                    widgetItem->setCheckState(Qt::Checked);
                     on_tags_itemClicked(widgetItem);
+                }
                 return;
             }
             allTags << widgetItem->text();
