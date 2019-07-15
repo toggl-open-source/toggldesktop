@@ -7,6 +7,7 @@
 //
 
 import Cocoa
+import Carbon.HIToolbox
 
 protocol AddTagButtonDelegate: class {
     func shouldOpenTagAutoComplete(with text: String)
@@ -17,7 +18,7 @@ final class AddTagButton: NSButton {
     // MARK: Variables
 
     weak var delegate: AddTagButtonDelegate?
-    private let ignoreKeys = ["\t", " "] // Tab and space
+    private let ignoreKeys = [kVK_Tab,kVK_Space] // Tab and space
 
     // MARK: Override
 
@@ -25,7 +26,7 @@ final class AddTagButton: NSButton {
         super.keyDown(with: event)
 
         // Open the auto complete if the key isn't ignore key
-        guard let characters = event.characters, !ignoreKeys.contains(characters) else { return }
+        guard let characters = event.characters, !ignoreKeys.contains(Int(event.keyCode)) else { return }
 
         // Replace "enter" with empty string if need
         let text = characters == "\r" ? "" : characters
