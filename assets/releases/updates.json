@@ -27,9 +27,9 @@
     },
     "linux": {
         "dev": {
-            "version": "7.4.458",
-            "linux_tar.gz": "https://github.com/toggl/toggldesktop/releases/download/v7.4.458/toggldesktop_linux_x86_64-7_4_458.tar.gz",
-            "linux_flatpak": "https://github.com/toggl/toggldesktop/releases/download/v7.4.458/com.toggl.TogglDesktop_linux_86_64-7.4.458.flatpak"
+            "version": "7.4.459",
+            "linux_tar.gz": "https://github.com/toggl/toggldesktop/releases/download/v7.4.459/toggldesktop_linux_x86_64-7_4_459.tar.gz",
+            "linux_flatpak": "https://github.com/toggl/toggldesktop/releases/download/v7.4.459/com.toggl.TogglDesktop_linux_86_64-7.4.459.flatpak"
         },
         "beta": {
             "version": "7.4.358",
