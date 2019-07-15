@@ -361,6 +361,15 @@ void TimeEntryEditorWidget::on_addNewProject_clicked() {
 
     if (!hasMultipleWorkspaces) {
         ui->newProjectWorkspace->setCurrentIndex(0);
+    } else {
+        int i = 0;
+        foreach(GenericView *view, workspaceSelectUpdate) {
+            if(view->ID == timeEntry->WID) {
+                ui->newProjectWorkspace->setCurrentIndex(i);
+                break;
+            }
+            i++;
+        }
     }
 }
 
