@@ -1,12 +1,16 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PocoBin>..\..\..\..\..\third_party\poco\bin</PocoBin>
+    <PocoBin64>..\..\..\..\..\third_party\poco\bin64</PocoBin64>
+  </PropertyGroup>
   <ItemGroup Condition="'$(Platform)' == 'x64'">
-    <Content Include="..\..\..\..\..\third_party\poco\bin64\Poco*.dll;..\..\..\..\..\third_party\poco\bin64\libcrypto.dll;..\..\..\..\..\third_party\poco\bin64\libssl.dll">
+    <Content Include="$(PocoBin64)\PocoCrypto64.dll;$(PocoBin64)\PocoData64.dll;$(PocoBin64)\PocoDataSQLite64.dll;$(PocoBin64)\PocoFoundation64.dll;$(PocoBin64)\PocoJSON64.dll;$(PocoBin64)\PocoNet64.dll;$(PocoBin64)\PocoNetSSL64.dll;$(PocoBin64)\PocoUtil64.dll;$(PocoBin64)\PocoXML64.dll;$(PocoBin64)\libcrypto.dll;$(PocoBin64)\libssl.dll">
       <Link>%(Filename)%(Extension)</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup Condition="'$(Platform)' == 'x86'">
-    <Content Include="..\..\..\..\..\third_party\poco\bin\Poco*.dll;..\..\..\..\..\third_party\poco\bin\libcrypto.dll;..\..\..\..\..\third_party\poco\bin\libssl.dll">
+    <Content Include="$(PocoBin)\PocoCrypto.dll;$(PocoBin)\PocoData.dll;$(PocoBin)\PocoDataSQLite.dll;$(PocoBin)\PocoFoundation.dll;$(PocoBin)\PocoJSON.dll;$(PocoBin)\PocoNet.dll;$(PocoBin)\PocoNetSSL.dll;$(PocoBin)\PocoUtil.dll;$(PocoBin)\PocoXML.dll;$(PocoBin)\libcrypto.dll;$(PocoBin)\libssl.dll">
       <Link>%(Filename)%(Extension)</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
