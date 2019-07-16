@@ -1,0 +1,14 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Condition="'$(Platform)' == 'x64'">
+    <Content Include="..\..\..\..\..\third_party\poco\bin64\Poco*.dll;..\..\..\..\..\third_party\poco\bin64\libcrypto.dll;..\..\..\..\..\third_party\poco\bin64\libssl.dll">
+      <Link>%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup Condition="'$(Platform)' == 'x86'">
+    <Content Include="..\..\..\..\..\third_party\poco\bin\Poco*.dll;..\..\..\..\..\third_party\poco\bin\libcrypto.dll;..\..\..\..\..\third_party\poco\bin\libssl.dll">
+      <Link>%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+</Project>
