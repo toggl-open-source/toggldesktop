@@ -19,10 +19,12 @@
 @property (weak) IBOutlet NSTextField *timeentryDescriptionTextField;
 @property (weak) IBOutlet FlatButton *addIdleTimeButton;
 @property (weak) IBOutlet NSButton *cancelButton;
+@property (weak) IBOutlet FlatButton *discardAndContinueButton;
 
 - (IBAction)stopButtonClicked:(id)sender;
 - (IBAction)ignoreButtonClicked:(id)sender;
 - (IBAction)addIdleTimeAsNewTimeEntry:(id)sender;
+- (IBAction)discardAndConitnueButtonClicked:(id)sender;
 
 @end
 
@@ -40,23 +42,24 @@ extern void *ctx;
 - (void)initCommon
 {
 	// Style buttons
-	[self styleAddIdleButton];
+	[self styleTransparentButton:self.addIdleTimeButton];
+	[self styleTransparentButton:self.discardAndContinueButton];
 	[self styleCancelButton];
 }
 
-- (void)styleAddIdleButton
+- (void)styleTransparentButton:(FlatButton *)button
 {
-	self.addIdleTimeButton.wantsLayer = YES;
-	self.addIdleTimeButton.layer.borderWidth = 1;
+	button.wantsLayer = YES;
+	button.layer.borderWidth = 1;
 	if (@available(macOS 10.13, *))
 	{
-		self.addIdleTimeButton.layer.borderColor = [NSColor colorNamed:@"upload-border-color"].CGColor;
-		self.addIdleTimeButton.bgColor = [NSColor colorNamed:@"upload-background-color"];
+		button.layer.borderColor = [NSColor colorNamed:@"upload-border-color"].CGColor;
+		button.bgColor = [NSColor colorNamed:@"upload-background-color"];
 	}
 	else
 	{
-		self.addIdleTimeButton.layer.borderColor = [ConvertHexColor hexCodeToNSColor:@"#acacac"].CGColor;
-		self.addIdleTimeButton.bgColor = NSColor.whiteColor;
+		button.layer.borderColor = [ConvertHexColor hexCodeToNSColor:@"#acacac"].CGColor;
+		button.bgColor = NSColor.whiteColor;
 	}
 }
 
@@ -129,6 +132,13 @@ extern void *ctx;
 	cmd.open = YES;
 	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayApp
 																object:cmd];
+}
+
+- (IBAction)discardAndConitnueButtonClicked:(id)sender {
+	toggl_discard_time_and_continue(ctx,
+									[self.idleEvent.guid UTF8String],
+									self.idleEvent.started);
+	[self.window orderOut:nil];
 }
 
 @end
