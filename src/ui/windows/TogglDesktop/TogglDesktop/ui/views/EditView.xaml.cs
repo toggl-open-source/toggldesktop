@@ -397,18 +397,11 @@ namespace TogglDesktop
             }
 
             DateTime currentDate = Toggl.DateTimeFromUnix(timeEntry.Started);
-            try { 
-                DateTime selected = Convert.ToDateTime(this.startDatePicker.Text);
-           
-                if (!currentDate.Date.Equals(selected.Date))
-                {
-                    currentDate = selected;
-                    Toggl.SetTimeEntryDate(this.timeEntry.GUID, selected);
-                }
-            }
-            catch (Exception e)
+
+            if (!currentDate.Equals(this.startDatePicker.SelectedDate.Value))
             {
-                System.Console.WriteLine("Catched error: " + e.Message);
+                currentDate = this.startDatePicker.SelectedDate.Value;
+                Toggl.SetTimeEntryDate(this.timeEntry.GUID, currentDate);
             }
         }
 
