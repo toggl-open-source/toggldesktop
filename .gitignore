@@ -96,6 +96,7 @@ src/ui/windows/TogglDesktop/TogglDesktop.Package/_pkginfo.txt
 src/lib/windows/**/Debug
 src/lib/windows/**/Release_VS
 src/lib/windows/**/Release
+src/lib/windows/**/StoreRelease
 
 *.dSYM
 
