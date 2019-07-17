@@ -1,6 +1,20 @@
 {
     "versions": [
         {
+            "version": "7.4.461",
+            "rows": [
+                "Fixed issue with idle popup not being in front",
+                "Added back the `Discard and continue` button to idle popup",
+                "Added support for notfications sound settings",
+                "Fixed Tooltip 0h 0m issue with single running entry for today",
+                "Fixed date header format for single digit numbers",
+                "Fixed graphics issues in macos 10.11",
+                "Fixed reverse tabbing for tags input"
+            ],
+            "date": "July 17th 2019",
+            "beta": "true"
+        },
+        {
             "version": "7.4.444",
             "rows": [
                 "Fixes for issues in macOS 10.11 with new design",
