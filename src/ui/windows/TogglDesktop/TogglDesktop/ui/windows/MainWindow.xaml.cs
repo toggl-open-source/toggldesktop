@@ -236,6 +236,7 @@ namespace TogglDesktop
             Toggl.OnOnlineState += this.onOnlineState;
             Toggl.OnReminder += this.onReminder;
             Toggl.OnURL += this.onURL;
+            Toggl.OnUserTimeEntryStart += this.onUserTimeEntryStart;
             Toggl.OnRunningTimerState += this.onRunningTimerState;
             Toggl.OnStoppedTimerState += this.onStoppedTimerState;
             Toggl.OnSettings += this.onSettings;
@@ -347,6 +348,11 @@ namespace TogglDesktop
                 return;
 
             this.updateTracking(te);
+        }
+
+        private void onUserTimeEntryStart()
+        {
+            this.taskbarIcon.CloseBalloon();
         }
 
         private void onURL(string url)
