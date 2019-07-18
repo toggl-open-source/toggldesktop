@@ -99,7 +99,10 @@ NSString *kInactiveTimerColor = @"#999999";
 												 selector:@selector(stop:)
 													 name:kCommandStop
 												   object:nil];
-
+		[[NSNotificationCenter defaultCenter] addObserver:self
+												 selector:@selector(focusTimer:)
+													 name:NSWindowDidBecomeKeyNotification
+												   object:nil];
 
 		self.time_entry = [[TimeEntryViewItem alloc] init];
 
