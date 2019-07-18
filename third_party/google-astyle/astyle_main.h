@@ -69,7 +69,7 @@
 
 // for mingw BOM, UTF-16, and Unicode functions
 #if defined(__MINGW32__)
-#if (__MINGW32_MAJOR_VERSION > 3)  || ((__MINGW32_MAJOR_VERSION == 3) && (__MINGW32_MINOR_VERSION < 16))
+#if (__MINGW32_MAJOR_VERSION < 3)  || ((__MINGW32_MAJOR_VERSION == 3) && (__MINGW32_MINOR_VERSION < 16))
 #error - Use MinGW compiler version 4 or higher
 #endif
 #endif
