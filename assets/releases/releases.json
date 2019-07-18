@@ -2366,6 +2366,20 @@
                         "name": "com.toggl.TogglDesktop_linux_86_64-7.4.463.flatpak"
                     }
                 ]
+            },
+            {
+                "version": "7.4.464",
+                "timestamp": "18-07-2019",
+                "filename": [
+                    {
+                        "type": "linux_tar.gz",
+                        "name": "toggldesktop_linux_x86_64-7_4_464.tar.gz"
+                    },
+                    {
+                        "type": "linux_flatpak",
+                        "name": "com.toggl.TogglDesktop_linux_86_64-7.4.464.flatpak"
+                    }
+                ]
             }
         ],
         "beta": [
