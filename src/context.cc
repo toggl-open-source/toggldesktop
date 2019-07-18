@@ -1492,6 +1492,11 @@ const std::string Context::linuxPlatformName() {
 const std::string Context::windowsPlatformName() {
 #if defined(_WIN64)
     return "windows64";
+#elif defined(_WIN32)
+    BOOL f64 = FALSE;
+    if (IsWow64Process(GetCurrentProcess(), &f64) && f64)
+        return "windows64";
+    return "windows";
 #else
     return "windows";
 #endif
