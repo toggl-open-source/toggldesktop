@@ -85,7 +85,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'StoreRelease|x64'">
     <OutputPath>bin\x64\StoreRelease\</OutputPath>
-    <DefineConstants>TRACE;TOGGL_PRODUCTION_BUILD;TOGGL_ALLOW_UPDATE_CHECK</DefineConstants>
+    <DefineConstants>TRACE;TOGGL_PRODUCTION_BUILD</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>x64</PlatformTarget>
@@ -95,7 +95,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'StoreRelease|x86'">
     <OutputPath>bin\x86\StoreRelease\</OutputPath>
-    <DefineConstants>TRACE;TOGGL_PRODUCTION_BUILD;TOGGL_ALLOW_UPDATE_CHECK</DefineConstants>
+    <DefineConstants>TRACE;TOGGL_PRODUCTION_BUILD</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>x86</PlatformTarget>
