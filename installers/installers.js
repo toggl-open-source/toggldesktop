@@ -90,7 +90,7 @@ function fillHtml() {
       prev = ch[ch.length-2];
 
       for (var kb in cur.filename) {
-        link = downloadtPath + "/" + cur.filename[kb].type + "-" + ka + "/";
+        link = downloadPath + "/" + cur.filename[kb].type + "-" + ka + "/";
         if (!prev) {
           prev = cur;
         }
