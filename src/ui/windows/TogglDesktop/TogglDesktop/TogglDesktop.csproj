@@ -875,7 +875,7 @@
       <Version>1.37.0.1404</Version>
     </PackageReference>
     <PackageReference Include="Hardcodet.NotifyIcon.Wpf">
-      <Version>1.0.5</Version>
+      <Version>1.0.8</Version>
     </PackageReference>
     <PackageReference Include="log4net">
       <Version>2.0.3</Version>
