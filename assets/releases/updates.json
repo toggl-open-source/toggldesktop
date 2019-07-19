@@ -1,9 +1,9 @@
 {
     "win": {
         "dev": {
-            "version": "7.4.463",
-            "windows": "https://github.com/toggl/toggldesktop/releases/download/v7.4.463/TogglDesktopInstaller-7.4.463.exe",
-            "windows64": "https://github.com/toggl/toggldesktop/releases/download/v7.4.463/TogglDesktopInstaller-x64-7.4.463.exe"
+            "version": "7.4.466",
+            "windows": "https://github.com/toggl/toggldesktop/releases/download/v7.4.466/TogglDesktopInstaller-7.4.466.exe",
+            "windows64": "https://github.com/toggl/toggldesktop/releases/download/v7.4.466/TogglDesktopInstaller-x64-7.4.466.exe"
         },
         "beta": {
             "version": "7.4.422",
@@ -32,9 +32,9 @@
     },
     "linux": {
         "dev": {
-            "version": "7.4.465",
-            "linux_tar.gz": "https://github.com/toggl/toggldesktop/releases/download/v7.4.465/toggldesktop_linux_x86_64-7_4_465.tar.gz",
-            "linux_flatpak": "https://github.com/toggl/toggldesktop/releases/download/v7.4.465/com.toggl.TogglDesktop_linux_86_64-7.4.465.flatpak"
+            "version": "7.4.466",
+            "linux_tar.gz": "https://github.com/toggl/toggldesktop/releases/download/v7.4.466/toggldesktop_linux_x86_64-7_4_466.tar.gz",
+            "linux_flatpak": "https://github.com/toggl/toggldesktop/releases/download/v7.4.466/com.toggl.TogglDesktop_linux_86_64-7.4.466.flatpak"
         },
         "beta": {
             "version": "7.4.358",

@@ -14,6 +14,20 @@
                         "name": "TogglDesktopInstaller-x64-7.4.463.exe"
                     }
                 ]
+            },
+            {
+                "version": "7.4.466",
+                "timestamp": "19-07-2019",
+                "filename": [
+                    {
+                        "type": "windows",
+                        "name": "TogglDesktopInstaller-7.4.466.exe"
+                    },
+                    {
+                        "type": "windows64",
+                        "name": "TogglDesktopInstaller-x64-7.4.466.exe"
+                    }
+                ]
             }
         ],
         "beta": [
@@ -2242,20 +2256,6 @@
     "linux": {
         "dev": [
             {
-                "version": "7.4.410",
-                "timestamp": "24-04-2019",
-                "filename": [
-                    {
-                        "type": "linux_tar.gz",
-                        "name": "toggldesktop_linux_x86_64-7_4_410.tar.gz"
-                    },
-                    {
-                        "type": "linux_flatpak",
-                        "name": "com.toggl.TogglDesktop_linux_86_64-7.4.410.flatpak"
-                    }
-                ]
-            },
-            {
                 "version": "7.4.456",
                 "timestamp": "12-07-2019",
                 "filename": [
@@ -2378,6 +2378,20 @@
                     {
                         "type": "linux_flatpak",
                         "name": "com.toggl.TogglDesktop_linux_86_64-7.4.465.flatpak"
+                    }
+                ]
+            },
+            {
+                "version": "7.4.466",
+                "timestamp": "19-07-2019",
+                "filename": [
+                    {
+                        "type": "linux_tar.gz",
+                        "name": "toggldesktop_linux_x86_64-7_4_466.tar.gz"
+                    },
+                    {
+                        "type": "linux_flatpak",
+                        "name": "com.toggl.TogglDesktop_linux_86_64-7.4.466.flatpak"
                     }
                 ]
             }
