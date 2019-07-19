@@ -1,6 +1,7 @@
 var url = "https://github.com/toggl/toggldesktop/releases/download/v",
 releases = {},
 defaultPath = "/toggldesktop/installers",
+downloadPath = "/toggldesktop/download",
 links = {
   "windows": "win",
   "windows_enterprise": "win-enterprise",
@@ -89,7 +90,7 @@ function fillHtml() {
       prev = ch[ch.length-2];
 
       for (var kb in cur.filename) {
-        link = defaultPath + "/" + cur.filename[kb].type + "-" + ka + "/";
+        link = downloadtPath + "/" + cur.filename[kb].type + "-" + ka + "/";
         if (!prev) {
           prev = cur;
         }
