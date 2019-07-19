@@ -120,6 +120,7 @@ namespace TogglDesktop
         {
             new AutotrackerNotification(this.taskbarIcon, this);
             new PomodoroNotification(this.taskbarIcon, this);
+            new ReminderNotification(this.taskbarIcon, this);
         }
 
         private void initializeContextMenu()
@@ -234,7 +235,7 @@ namespace TogglDesktop
             Toggl.OnTimeEntryEditor += this.onTimeEntryEditor;
             Toggl.OnTimeEntryList += this.onTimeEntryList;
             Toggl.OnOnlineState += this.onOnlineState;
-            Toggl.OnReminder += this.onReminder;
+            //Toggl.OnReminder += this.onReminder;
             Toggl.OnURL += this.onURL;
             Toggl.OnUserTimeEntryStart += this.onUserTimeEntryStart;
             Toggl.OnRunningTimerState += this.onRunningTimerState;
@@ -365,7 +366,7 @@ namespace TogglDesktop
             if (this.TryBeginInvoke(this.onReminder, title, informativeText))
                 return;
 
-            this.taskbarIcon.ShowBalloonTipWithLargeIcon(title, informativeText, Properties.Resources.toggl);
+            this.taskbarIcon.ShowBalloonTip(title, informativeText, Properties.Resources.toggl, largeIcon: true);
         }
 
         private void onOnlineState(Toggl.OnlineState state)
@@ -751,6 +752,8 @@ namespace TogglDesktop
             if (this.taskbarIcon != null)
             {
                 this.taskbarIcon.Visibility = Visibility.Collapsed;
+                this.taskbarIcon.Icon = null;
+                this.taskbarIcon.Dispose();
             }
 
             if (this.mainContextMenu != null)

@@ -173,6 +173,10 @@
       <DependentUpon>TimeEntryCellDayHeader.xaml</DependentUpon>
     </Compile>
     <Compile Include="ui\controls\TimeEntryCellDragImposter.cs" />
+    <Compile Include="ui\controls\TogglNotification.cs" />
+    <Compile Include="ui\controls\ReminderNotification.xaml.cs">
+      <DependentUpon>ReminderNotification.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ui\Converters\AndConverter.cs" />
     <Compile Include="ui\Converters\StringToBrushConverter.cs" />
     <Compile Include="ui\Experiments\implementations\Experiment98.cs" />
@@ -557,6 +561,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ui\controls\ReminderNotification.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ui\Experiments\implementations\Experiment87Screen.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -867,7 +875,7 @@
       <Version>1.37.0.1404</Version>
     </PackageReference>
     <PackageReference Include="Hardcodet.NotifyIcon.Wpf">
-      <Version>1.0.5</Version>
+      <Version>1.0.8</Version>
     </PackageReference>
     <PackageReference Include="log4net">
       <Version>2.0.3</Version>

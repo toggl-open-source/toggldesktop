@@ -18,7 +18,6 @@ namespace TogglDesktop
             this.icon = icon;
             this.mainWindow = mainWindow;
             this.InitializeComponent();
-
             Toggl.OnAutotrackerNotification += this.onAutotrackerNotification;
         }
 
@@ -27,7 +26,7 @@ namespace TogglDesktop
             if (this.TryBeginInvoke(this.onAutotrackerNotification, projectName, projectId, taskId))
                 return;
 
-            this.projectText.Text = string.Format("Track {0}?", projectName);
+            this.Message = string.Format("Track {0}?", projectName);
             this.projectId = projectId;
             this.taskId = taskId;
 
