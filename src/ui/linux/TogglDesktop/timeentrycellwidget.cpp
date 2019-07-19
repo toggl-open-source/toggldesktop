@@ -221,5 +221,5 @@ void TimeEntryCellWidget::on_dataFrame_clicked() {
     if (group)
         on_groupButton_clicked();
     else
-        TogglApi::instance->editTimeEntry(guid, "");
+        TogglApi::instance->editTimeEntry(guid, "description");
 }
