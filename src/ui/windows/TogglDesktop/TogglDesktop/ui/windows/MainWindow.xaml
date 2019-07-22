@@ -27,6 +27,7 @@
         <KeyBinding Key="S" Modifiers="Control" Command="{x:Static toggl:KeyboardShortcuts.Stop}" />
         
         <KeyBinding Key="W" Modifiers="Control" Command="{x:Static toggl:KeyboardShortcuts.Hide}" />
+        <KeyBinding Key="F4" Modifiers="Control" Command="{x:Static toggl:KeyboardShortcuts.Hide}" />
         <KeyBinding Key="R" Modifiers="Control" Command="{x:Static toggl:KeyboardShortcuts.Sync}" />
         
         <KeyBinding Key="E" Modifiers="Control" Command="{x:Static toggl:KeyboardShortcuts.EditRunning}" />
