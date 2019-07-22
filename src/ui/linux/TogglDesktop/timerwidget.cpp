@@ -199,7 +199,9 @@ void TimerWidget::displayRunningTimerState(
         ui->projectFrame->setVisible(true);
         ui->deleteProject->setVisible(true);
         projectName = te->ProjectLabel;
-        setEllipsisTextToLabel(ui->project, te->ProjectLabel);
+        if (!te->ClientLabel.isEmpty())
+            projectName += ". " + te->ClientLabel;
+        setEllipsisTextToLabel(ui->project, projectName);
     }
     else {
         ui->deleteProject->setVisible(true);
