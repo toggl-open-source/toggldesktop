@@ -123,6 +123,8 @@ void TimeEntryEditorWidget::displayClientSelect(
         return;
     }
 
+    bool selectingNewClient = !recentlyAddedClient.isEmpty();
+    QString lastSelectedItem = ui->newProjectClient->currentText();
     uint64_t workspaceID = 0;
     QVariant data = ui->newProjectWorkspace->currentData();
     if (data.canConvert<GenericView *>()) {
@@ -131,12 +133,23 @@ void TimeEntryEditorWidget::displayClientSelect(
     }
     ui->newProjectClient->clear();
     ui->newProjectClient->addItem("");
+    int index = 0;
+    int selectedIndex = 0;
     foreach(GenericView *view, clientSelectUpdate) {
         if (workspaceID && workspaceID != view->WID) {
             continue;
         }
         ui->newProjectClient->addItem(view->Name, QVariant::fromValue(view));
+        index++;
+        if (selectingNewClient && view->Name == recentlyAddedClient) {
+            selectedIndex = index;
+            recentlyAddedClient = QString();
+        }
+        if (!selectingNewClient && view->Name == lastSelectedItem) {
+            selectedIndex = index;
+        }
     }
+    ui->newProjectClient->setCurrentIndex(selectedIndex);
     clientSelectNeedsUpdate = false;
 }
 
@@ -223,6 +236,7 @@ void TimeEntryEditorWidget::displayTimeEntryEditor(
         ui->publicProject->setChecked(false);
         ui->newProjectWorkspace->setCurrentIndex(-1);
         ui->newProjectClient->setCurrentIndex(-1);
+        ui->newProjectClient->clear();
 
         // Reset adding new client
         toggleNewClientMode(false);
@@ -271,6 +285,8 @@ void TimeEntryEditorWidget::displayTimeEntryEditor(
     tags.sort();
     previousTagList = tags.join("\t");
 
+    recentlyAddedClient = QString();
+
     for (int i = 0; i < ui->tags->count(); i++) {
         QListWidgetItem *item = ui->tags->item(i);
         if (tags.contains(item->text())) {
@@ -305,11 +321,13 @@ bool TimeEntryEditorWidget::applyNewProject() {
     uint64_t workspaceID = workspace.value<GenericView *>()->ID;
 
     uint64_t clientID = 0;
+    QString clientGUID = "";
     QVariant client = ui->newProjectClient->currentData();
     if (client.canConvert<GenericView *>()) {
         clientID = client.value<GenericView *>()->ID;
+        if (clientID == 0)
+            clientGUID = client.value<GenericView*>()->GUID;
     }
-
     // Get the selected project color from stylesheet
     QString colorCode = ui->colorButton->styleSheet()
                         .replace("font-size:72px;color:", "")
@@ -318,7 +336,7 @@ bool TimeEntryEditorWidget::applyNewProject() {
     QString projectGUID = TogglApi::instance->addProject(guid,
                           workspaceID,
                           clientID,
-                          "",
+                          clientGUID,
                           ui->newProjectName->text(),
                           !ui->publicProject->isChecked(),
                           colorCode);
@@ -449,7 +467,7 @@ void TimeEntryEditorWidget::displayTags(
     }
 
     QSet<QString> actuallyAddedTags;
-for (auto recentlyAddedTag : recentlyAddedTags) {
+    for (auto recentlyAddedTag : recentlyAddedTags) {
         if (!recentlyAddedTag.isEmpty() && !tagList.contains(recentlyAddedTag)) {
             tagList << recentlyAddedTag;
         }
@@ -550,6 +568,7 @@ void TimeEntryEditorWidget::on_addClientButton_clicked() {
         ui->newProjectWorkspace->setFocus();
         return;
     }
+    recentlyAddedClient = name;
     QString clientGUID = TogglApi::instance->createClient(wid, name);
     if (clientGUID.isEmpty()) {
         return;
