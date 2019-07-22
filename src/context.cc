@@ -1373,11 +1373,8 @@ error Context::downloadUpdate() {
             return err;
         }
 
-        // Get update check URL
-        std::string update_url("");
-        err = updateURL(&update_url);
-        if (err != noError) {
-            return err;
+        if (HTTPSClient::Config.AppVersion.empty()) {
+            return error("This version cannot check for updates. This has been probably already fixed. Please check https://toggl.com/toggl-desktop/ for a newer version.");
         }
 
         // Ask Toggl server if we have updates
@@ -1385,8 +1382,8 @@ error Context::downloadUpdate() {
         std::string version_number("");
         {
             HTTPSRequest req;
-            req.host = urls::API();
-            req.relative_url = update_url;
+            req.host = "https://toggl.github.io";
+            req.relative_url = "/toggldesktop/assets/releases/updates.json";
 
             TogglClient client;
             HTTPSResponse resp = client.Get(req);
@@ -1394,27 +1391,31 @@ error Context::downloadUpdate() {
                 return resp.err;
             }
 
-            if ("null" == resp.body) {
+            Json::Value root;
+            Json::Reader reader;
+            if (!reader.parse(resp.body, root)) {
+                return error("Error parsing update check response body");
+            }
+            auto latestVersion = root[shortOSName()][update_channel];
+            url = latestVersion[installerPlatform()].asString();
+            auto versionNumberJsonToken = latestVersion["version"];
+            if (versionNumberJsonToken.empty()) {
+                return error("No versions found for OS " + shortOSName() + ", platform " + installerPlatform() + ", channel " + update_channel);
+            }
+            version_number = versionNumberJsonToken.asString();
+
+            if (lessThanVersion(HTTPSClient::Config.AppVersion, version_number)) {
+                std::stringstream ss;
+                ss << "Found update " << version_number
+                   << " (" << url << ")";
+                logger().debug(ss.str());
+            } else {
                 logger().debug("The app is up to date");
                 if (UI()->CanDisplayUpdate()) {
                     UI()->DisplayUpdate("");
                 }
                 return noError;
             }
-
-            Json::Value root;
-            Json::Reader reader;
-            if (!reader.parse(resp.body, root)) {
-                return error("Error parsing update check response body");
-            }
-
-            url = root["url"].asString();
-            version_number = root["version"].asString();
-
-            std::stringstream ss;
-            ss << "Found update " << version_number
-               << " (" << url << ")";
-            logger().debug(ss.str());
         }
 
         // linux has non-silent updates, just pass on the URL
@@ -1485,31 +1486,6 @@ error Context::downloadUpdate() {
     return noError;
 }
 
-error Context::updateURL(std::string *result) {
-    std::string update_channel("");
-    error err = db()->LoadUpdateChannel(&update_channel);
-    if (err != noError) {
-        return err;
-    }
-
-    if (HTTPSClient::Config.AppVersion.empty()) {
-        return error("Cannot check for updates without app version");
-    }
-
-    // Not implemented in v9 as of 12.05.2017
-    std::stringstream relative_url;
-    relative_url << "/api/v8/updates?app=td"
-                 << "&channel=" << update_channel
-                 << "&platform=" << installerPlatform()
-                 << "&version=" << HTTPSClient::Config.AppVersion
-                 << "&osname=" << Poco::Environment::osName()
-                 << "&osversion=" << Poco::Environment::osVersion()
-                 << "&osarch=" << Poco::Environment::osArchitecture();
-    *result = relative_url.str();
-
-    return noError;
-}
-
 const std::string Context::linuxPlatformName() {
     if (kDebianPackage) {
         return "deb64";
@@ -1517,14 +1493,27 @@ const std::string Context::linuxPlatformName() {
     return std::string("linux");
 }
 
+const std::string Context::windowsPlatformName() {
+#if defined(_WIN64)
+    return "windows64";
+#elif defined(_WIN32)
+    BOOL f64 = FALSE;
+    if (IsWow64Process(GetCurrentProcess(), &f64) && f64)
+        return "windows64";
+    return "windows";
+#else
+    return "windows";
+#endif
+}
+
 const std::string Context::installerPlatform() {
     std::stringstream ss;
     if (POCO_OS_LINUX == POCO_OS) {
         ss <<  linuxPlatformName();
     } else if (POCO_OS_WINDOWS_NT == POCO_OS) {
-        ss << "windows";
+        ss << windowsPlatformName();
     } else {
-        ss << "darwin";
+        ss << "macos";
     }
     if (kEnterpriseInstall) {
         ss << "_enterprise";
@@ -1541,6 +1530,22 @@ const std::string Context::shortOSName() {
         return "mac";
     }
     return "unknown";
+}
+
+void Context::parseVersion(int result[4], const std::string& input) {
+    std::istringstream parser(input);
+    parser >> result[0];
+    for (auto idx = 1; idx < 4; idx++) {
+        parser.get(); //Skip period
+        parser >> result[idx];
+    }
+}
+
+bool Context::lessThanVersion(const std::string& version1, const std::string& version2) {
+    int parsed1[4] {}, parsed2[4] {};
+    parseVersion(parsed1, version1);
+    parseVersion(parsed2, version2);
+    return std::lexicographical_compare(parsed1, &parsed1[4], parsed2, &parsed2[4]);
 }
 
 void Context::TimelineUpdateServerSettings() {

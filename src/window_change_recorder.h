@@ -28,8 +28,8 @@ class WindowChangeRecorder {
     , recording_(this, &WindowChangeRecorder::recordLoop)
     , last_autotracker_title_("")
     , shutdown_(false)
-	, isLocked_(false)
-	, isSleeping_(false)
+    , isLocked_(false)
+    , isSleeping_(false)
     , timeline_errors_() {
         recording_.start();
     }
@@ -38,15 +38,15 @@ class WindowChangeRecorder {
         Shutdown();
     }
 
-	void SetIsLocked(bool isLocked) {
-		Poco::Mutex::ScopedLock lock(isLocked_m_);
-		isLocked_ = isLocked;
+    void SetIsLocked(bool isLocked) {
+        Poco::Mutex::ScopedLock lock(isLocked_m_);
+        isLocked_ = isLocked;
     }
 
-	void SetIsSleeping(bool isSleeping) {
-		Poco::Mutex::ScopedLock lock(isSleeping_m_);
-		isSleeping_ = isSleeping;
-	}
+    void SetIsSleeping(bool isSleeping) {
+        Poco::Mutex::ScopedLock lock(isSleeping_m_);
+        isSleeping_ = isSleeping;
+    }
 
     error Shutdown();
 
@@ -64,15 +64,15 @@ class WindowChangeRecorder {
 
     Poco::Logger &logger();
 
-	bool getIsLocked() {
-		Poco::Mutex::ScopedLock lock(isLocked_m_);
-		return isLocked_;
-	}
+    bool getIsLocked() {
+        Poco::Mutex::ScopedLock lock(isLocked_m_);
+        return isLocked_;
+    }
 
-	bool getIsSleeping() {
-		Poco::Mutex::ScopedLock lock(isSleeping_m_);
-		return isSleeping_;
-	}
+    bool getIsSleeping() {
+        Poco::Mutex::ScopedLock lock(isSleeping_m_);
+        return isSleeping_;
+    }
 
     // Last window focus event data
     std::string last_title_;
@@ -89,11 +89,11 @@ class WindowChangeRecorder {
     Poco::Mutex shutdown_m_;
     bool shutdown_;
 
-	Poco::Mutex isLocked_m_;
-	bool isLocked_;
+    Poco::Mutex isLocked_m_;
+    bool isLocked_;
 
-	Poco::Mutex isSleeping_m_;
-	bool isSleeping_;
+    Poco::Mutex isSleeping_m_;
+    bool isSleeping_;
 
     std::map<const int, int> timeline_errors_;
 };

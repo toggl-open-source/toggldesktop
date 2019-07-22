@@ -79,7 +79,7 @@ void WindowChangeRecorder::inspectFocusedWindow() {
             timeline_datasource_->StartAutotrackerEvent(event);
         }
     }
-	idle = idle || getIsLocked() || getIsSleeping();
+    idle = idle || getIsLocked() || getIsSleeping();
     bool idleChanged = hasIdlenessChanged(idle);
 
     if (idleChanged) {
