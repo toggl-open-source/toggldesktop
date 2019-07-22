@@ -8,14 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3C0158F01C7B414E00FE63AA /* LoadMoreCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3C0158EF1C7B414E00FE63AA /* LoadMoreCell.xib */; };
-		3C068C6A1C22F25000874B9A /* MKColorWellCustom.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C068C691C22F25000874B9A /* MKColorWellCustom.m */; };
 		3C07B75A193C88AE00ED6E6F /* NSCustomTimerComboBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C07B759193C88AE00ED6E6F /* NSCustomTimerComboBox.m */; };
-		3C0A57191C22E12E00301D77 /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 3C0A570D1C22E12E00301D77 /* LICENSE.txt */; };
-		3C0A571A1C22E12E00301D77 /* MKColorPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C0A570F1C22E12E00301D77 /* MKColorPickerView.m */; };
-		3C0A571B1C22E12E00301D77 /* MKColorSwatchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C0A57111C22E12E00301D77 /* MKColorSwatchCell.m */; };
-		3C0A571C1C22E12E00301D77 /* MKColorSwatchMatrix.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C0A57131C22E12E00301D77 /* MKColorSwatchMatrix.m */; };
-		3C0A571D1C22E12E00301D77 /* MKColorWell+Bindings.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C0A57151C22E12E00301D77 /* MKColorWell+Bindings.m */; };
-		3C0A571E1C22E12E00301D77 /* MKColorWell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C0A57171C22E12E00301D77 /* MKColorWell.m */; };
 		3C1C09C51C298ABA00BF9B6C /* warning-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C1C09C41C298ABA00BF9B6C /* warning-icon.png */; };
 		3C1E013F19D2DAE300DBF9A5 /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = 3C1E013E19D2DAE300DBF9A5 /* dsa_pub.pem */; };
 		3C2F239D21A7B43400CBE6BC /* UnsupportedNotice.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C2F239C21A7B43300CBE6BC /* UnsupportedNotice.m */; };
@@ -37,7 +30,6 @@
 		3C7B4EB3190FB57A00627DC3 /* NSSecureTextFieldVerticallyAligned.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C7B4EB2190FB57A00627DC3 /* NSSecureTextFieldVerticallyAligned.m */; };
 		3C8979B71920B7B7007061E0 /* continue.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 3C8979B61920B7B7007061E0 /* continue.pdf */; };
 		3C8979CA19235EA2007061E0 /* NSTextFieldClickablePointer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C8979C919235EA2007061E0 /* NSTextFieldClickablePointer.m */; };
-		3CA14529192DE32300414620 /* NSViewEscapable.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CA14528192DE32300414620 /* NSViewEscapable.m */; };
 		3CA1453C192DF0DE00414620 /* trash_can.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 3CA1453B192DF0DE00414620 /* trash_can.pdf */; };
 		3CAFDFF51AA713830022CD40 /* icon-google.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 3CAFDFF41AA713830022CD40 /* icon-google.pdf */; };
 		3CC450E91A31ED540012440B /* NSTextFieldDuration.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CC450E81A31ED540012440B /* NSTextFieldDuration.m */; };
@@ -81,7 +73,6 @@
 		74664DB118AA860800AAD282 /* on.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 74664DAF18AA860800AAD282 /* on.pdf */; };
 		74664DB218AA860800AAD282 /* off.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 74664DB018AA860800AAD282 /* off.pdf */; };
 		746947FA1AF3FE3E0024BED7 /* AutotrackerRuleItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 746947F91AF3FE3E0024BED7 /* AutotrackerRuleItem.m */; };
-		74762BA118A139D4004433A9 /* NSUnstripedTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 74762BA018A139D4004433A9 /* NSUnstripedTableView.m */; };
 		747B74871A0AD28200BB3791 /* ConsoleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 747B74851A0AD28200BB3791 /* ConsoleViewController.m */; };
 		747B74881A0AD28200BB3791 /* ConsoleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 747B74861A0AD28200BB3791 /* ConsoleViewController.xib */; };
 		7484F622191D92C30038885C /* Settings.m in Sources */ = {isa = PBXBuildFile; fileRef = 7484F621191D92C30038885C /* Settings.m */; };
@@ -576,22 +567,8 @@
 
 /* Begin PBXFileReference section */
 		3C0158EF1C7B414E00FE63AA /* LoadMoreCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoadMoreCell.xib; sourceTree = "<group>"; };
-		3C068C681C22F25000874B9A /* MKColorWellCustom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKColorWellCustom.h; sourceTree = "<group>"; };
-		3C068C691C22F25000874B9A /* MKColorWellCustom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MKColorWellCustom.m; sourceTree = "<group>"; };
 		3C07B758193C88AE00ED6E6F /* NSCustomTimerComboBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSCustomTimerComboBox.h; sourceTree = "<group>"; };
 		3C07B759193C88AE00ED6E6F /* NSCustomTimerComboBox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSCustomTimerComboBox.m; sourceTree = "<group>"; };
-		3C0A570D1C22E12E00301D77 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
-		3C0A570E1C22E12E00301D77 /* MKColorPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKColorPickerView.h; sourceTree = "<group>"; };
-		3C0A570F1C22E12E00301D77 /* MKColorPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MKColorPickerView.m; sourceTree = "<group>"; };
-		3C0A57101C22E12E00301D77 /* MKColorSwatchCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKColorSwatchCell.h; sourceTree = "<group>"; };
-		3C0A57111C22E12E00301D77 /* MKColorSwatchCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MKColorSwatchCell.m; sourceTree = "<group>"; };
-		3C0A57121C22E12E00301D77 /* MKColorSwatchMatrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKColorSwatchMatrix.h; sourceTree = "<group>"; };
-		3C0A57131C22E12E00301D77 /* MKColorSwatchMatrix.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MKColorSwatchMatrix.m; sourceTree = "<group>"; };
-		3C0A57141C22E12E00301D77 /* MKColorWell+Bindings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MKColorWell+Bindings.h"; sourceTree = "<group>"; };
-		3C0A57151C22E12E00301D77 /* MKColorWell+Bindings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MKColorWell+Bindings.m"; sourceTree = "<group>"; };
-		3C0A57161C22E12E00301D77 /* MKColorWell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKColorWell.h; sourceTree = "<group>"; };
-		3C0A57171C22E12E00301D77 /* MKColorWell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MKColorWell.m; sourceTree = "<group>"; };
-		3C0A57181C22E12E00301D77 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		3C1C09C41C298ABA00BF9B6C /* warning-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "warning-icon.png"; path = "../../windows/TogglDesktop/TogglDesktop/Resources/warning-icon.png"; sourceTree = "<group>"; };
 		3C1E013E19D2DAE300DBF9A5 /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dsa_pub.pem; sourceTree = "<group>"; };
 		3C2F239B21A7B43300CBE6BC /* UnsupportedNotice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UnsupportedNotice.h; sourceTree = "<group>"; };
@@ -621,8 +598,6 @@
 		3C8979B61920B7B7007061E0 /* continue.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = continue.pdf; sourceTree = "<group>"; };
 		3C8979C819235EA2007061E0 /* NSTextFieldClickablePointer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSTextFieldClickablePointer.h; sourceTree = "<group>"; };
 		3C8979C919235EA2007061E0 /* NSTextFieldClickablePointer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSTextFieldClickablePointer.m; sourceTree = "<group>"; };
-		3CA14527192DE32300414620 /* NSViewEscapable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSViewEscapable.h; sourceTree = "<group>"; };
-		3CA14528192DE32300414620 /* NSViewEscapable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSViewEscapable.m; sourceTree = "<group>"; };
 		3CA1453B192DF0DE00414620 /* trash_can.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = trash_can.pdf; sourceTree = "<group>"; };
 		3CAFDFF41AA713830022CD40 /* icon-google.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "icon-google.pdf"; sourceTree = "<group>"; };
 		3CC450E71A31ED540012440B /* NSTextFieldDuration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSTextFieldDuration.h; sourceTree = "<group>"; };
@@ -693,8 +668,6 @@
 		746947F81AF3FE3E0024BED7 /* AutotrackerRuleItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutotrackerRuleItem.h; sourceTree = "<group>"; };
 		746947F91AF3FE3E0024BED7 /* AutotrackerRuleItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutotrackerRuleItem.m; sourceTree = "<group>"; };
 		74762B9E18A12DB8004433A9 /* NSComboBox_Expansion.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSComboBox_Expansion.h; sourceTree = "<group>"; };
-		74762B9F18A139D4004433A9 /* NSUnstripedTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSUnstripedTableView.h; sourceTree = "<group>"; };
-		74762BA018A139D4004433A9 /* NSUnstripedTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSUnstripedTableView.m; sourceTree = "<group>"; };
 		747B74841A0AD28200BB3791 /* ConsoleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ConsoleViewController.h; path = ../ConsoleViewController.h; sourceTree = "<group>"; };
 		747B74851A0AD28200BB3791 /* ConsoleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ConsoleViewController.m; path = ../ConsoleViewController.m; sourceTree = "<group>"; };
 		747B74861A0AD28200BB3791 /* ConsoleViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ConsoleViewController.xib; path = ../ConsoleViewController.xib; sourceTree = "<group>"; };
@@ -949,26 +922,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		3C0A570C1C22E12E00301D77 /* MKPopoverColorWell */ = {
-			isa = PBXGroup;
-			children = (
-				3C0A570D1C22E12E00301D77 /* LICENSE.txt */,
-				3C0A570E1C22E12E00301D77 /* MKColorPickerView.h */,
-				3C0A570F1C22E12E00301D77 /* MKColorPickerView.m */,
-				3C0A57101C22E12E00301D77 /* MKColorSwatchCell.h */,
-				3C0A57111C22E12E00301D77 /* MKColorSwatchCell.m */,
-				3C0A57121C22E12E00301D77 /* MKColorSwatchMatrix.h */,
-				3C0A57131C22E12E00301D77 /* MKColorSwatchMatrix.m */,
-				3C0A57141C22E12E00301D77 /* MKColorWell+Bindings.h */,
-				3C0A57151C22E12E00301D77 /* MKColorWell+Bindings.m */,
-				3C0A57171C22E12E00301D77 /* MKColorWell.m */,
-				3C0A57161C22E12E00301D77 /* MKColorWell.h */,
-				3C0A57181C22E12E00301D77 /* README.md */,
-			);
-			name = MKPopoverColorWell;
-			path = ../../../../third_party/MKPopoverColorWell;
-			sourceTree = "<group>";
-		};
 		3C6B246F203E01B70063FC08 /* AutoComplete */ = {
 			isa = PBXGroup;
 			children = (
@@ -1016,7 +969,6 @@
 				BA6E86A521DDB331005E2451 /* Sparkle.xcodeproj */,
 				BA7DB6BB21F9C7660059239B /* MASShortcut.xcodeproj */,
 				745E7FC1192D247300747C18 /* images */,
-				3C0A570C1C22E12E00301D77 /* MKPopoverColorWell */,
 				74E1682E180F269F0026261C /* gtm */,
 				74E857AA194F8807007A88B9 /* ssl */,
 				BA712EAF21BF904E00A2D8DD /* Feature */,
@@ -1077,8 +1029,6 @@
 				3C6B246F203E01B70063FC08 /* AutoComplete */,
 				BA2DA0C421A542E20027B7A5 /* NSTextField+Ext.h */,
 				BA2DA0C521A542E30027B7A5 /* NSTextField+Ext.m */,
-				3C068C681C22F25000874B9A /* MKColorWellCustom.h */,
-				3C068C691C22F25000874B9A /* MKColorWellCustom.m */,
 				746947F81AF3FE3E0024BED7 /* AutotrackerRuleItem.h */,
 				746947F91AF3FE3E0024BED7 /* AutotrackerRuleItem.m */,
 				7430750118204EFB009019CB /* AboutWindowController.h */,
@@ -1143,10 +1093,6 @@
 				3C7B4E8C190FA6D200627DC3 /* NSTextFieldVerticallyAligned.m */,
 				741104BD18C7682700BC7A49 /* NSTextFieldWithBackground.h */,
 				741104BE18C7682700BC7A49 /* NSTextFieldWithBackground.m */,
-				74762B9F18A139D4004433A9 /* NSUnstripedTableView.h */,
-				74762BA018A139D4004433A9 /* NSUnstripedTableView.m */,
-				3CA14527192DE32300414620 /* NSViewEscapable.h */,
-				3CA14528192DE32300414620 /* NSViewEscapable.m */,
 				749CB8C918167D6E00814841 /* PreferencesWindowController.h */,
 				749CB8CA18167D6E00814841 /* PreferencesWindowController.m */,
 				749CB8CB18167D6E00814841 /* PreferencesWindowController.xib */,
@@ -2110,7 +2056,6 @@
 				BA412C29224E196D003CA17A /* NoClientCellView.xib in Resources */,
 				3CDA2C581913A4E200A94967 /* icon-start-gray@2x.png in Resources */,
 				7498D2481888B226001390B9 /* TimeEntryCell.xib in Resources */,
-				3C0A57191C22E12E00301D77 /* LICENSE.txt in Resources */,
 				3C65A7D21DE574E7005586B4 /* continue_light.pdf in Resources */,
 				3C0158F01C7B414E00FE63AA /* LoadMoreCell.xib in Resources */,
 				BA13D21B2269E0B500EB3833 /* CalendarViewController.xib in Resources */,
@@ -2188,7 +2133,6 @@
 				BA13D2152269C01500EB3833 /* Date+Utils.swift in Sources */,
 				BAAF56A02223DF9A003D0D73 /* VertificalTimeEntryFlowLayout.swift in Sources */,
 				C5CB7F0417F43EE100A2AEB1 /* TimeEntryCell.m in Sources */,
-				74762BA118A139D4004433A9 /* NSUnstripedTableView.m in Sources */,
 				C5DA1FBF17F1B08A001C4565 /* MainWindowController.m in Sources */,
 				BAE6379A22B225C70024DD08 /* AddTagButton.swift in Sources */,
 				BA2DA0C621A542E30027B7A5 /* NSTextField+Ext.m in Sources */,
@@ -2220,7 +2164,6 @@
 				3C8979CA19235EA2007061E0 /* NSTextFieldClickablePointer.m in Sources */,
 				748B3A3419222DB100F31468 /* DisplayCommand.m in Sources */,
 				BA9C2E05224C84E7002AD2A1 /* ColorViewItem.swift in Sources */,
-				3C0A571E1C22E12E00301D77 /* MKColorWell.m in Sources */,
 				7438B3D318253CD2002AE43C /* MenuItemTags.m in Sources */,
 				3CE1CAC11C774F2B00D0ADD5 /* LoadMoreCell.m in Sources */,
 				749CB8CC18167D6E00814841 /* PreferencesWindowController.m in Sources */,
@@ -2245,12 +2188,9 @@
 				BA0C3A6722321FBC0081C6DE /* AutoCompleteTableCell+Ext.swift in Sources */,
 				3C6B24A4203FC8200063FC08 /* LiteAutoCompleteDataSource.m in Sources */,
 				BAB818E5228D5A17008C2367 /* DescriptionDataSource.swift in Sources */,
-				3C068C6A1C22F25000874B9A /* MKColorWellCustom.m in Sources */,
 				BA01404E22571081000E5B91 /* TagDataSource.swift in Sources */,
-				3CA14529192DE32300414620 /* NSViewEscapable.m in Sources */,
 				BA6572A9224DFA6F00BA4C60 /* ColorGraphicsView.swift in Sources */,
 				BAA11AC52251F502007F31D2 /* WorkspaceDataSource.swift in Sources */,
-				3C0A571B1C22E12E00301D77 /* MKColorSwatchCell.m in Sources */,
 				3CD30F431F58B02C006FAA0D /* OverlayViewController.m in Sources */,
 				BA412C25224E147A003CA17A /* ClientAutoCompleteTextField.swift in Sources */,
 				74D1D25617EB713F00E709B0 /* TimeEntryListViewController.m in Sources */,
@@ -2267,7 +2207,6 @@
 				BA1F9032229D19C000670E0B /* NoInteractionView.swift in Sources */,
 				BA03729D21FED85700FC277B /* NSView+Xib.swift in Sources */,
 				BA84363B22533A6600EF5830 /* DesktopLibraryBridge.m in Sources */,
-				3C0A571C1C22E12E00301D77 /* MKColorSwatchMatrix.m in Sources */,
 				BA4059B9221D53E7002969B8 /* TimeEntryDatasource.swift in Sources */,
 				BA3E75D62229356D009AD291 /* SystemMessageView.swift in Sources */,
 				BA013FF5225705B6000E5B91 /* HoverTableCellView.swift in Sources */,
@@ -2318,7 +2257,6 @@
 				BA50ED8522705F9E008323FA /* CalendarFlowLayout.swift in Sources */,
 				95C0707718CDB67300A34D0D /* NSCustomComboBoxCell.m in Sources */,
 				BAAF569E2223D4C7003D0D73 /* DotImageView.swift in Sources */,
-				3C0A571A1C22E12E00301D77 /* MKColorPickerView.m in Sources */,
 				BA014050225710FD000E5B91 /* TagAutoCompleteTextField.swift in Sources */,
 				BAE8E845224CA9AC006D534E /* ProjectAutoCompleteTextField.swift in Sources */,
 				BA6572A7224DFA6F00BA4C60 /* HSBGen.swift in Sources */,
@@ -2335,7 +2273,6 @@
 				BA6572A6224DFA6F00BA4C60 /* RGB.swift in Sources */,
 				3CE30E022052BD8B00AF2E2A /* AutoCompleteTableContainer.m in Sources */,
 				BA0C3A65223219470081C6DE /* AutoCompleteCellType.swift in Sources */,
-				3C0A571D1C22E12E00301D77 /* MKColorWell+Bindings.m in Sources */,
 				BA7B4C3721C24B9D00B75B14 /* UndoTextField.m in Sources */,
 				BA9C2DFC224C8235002AD2A1 /* ColorPickerView.swift in Sources */,
 				BA276A142240F5B500810C51 /* FloatingErrorView.swift in Sources */,
