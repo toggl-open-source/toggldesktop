@@ -69,8 +69,17 @@ final class CalendarViewController: NSViewController {
 
         // Scroll to selected date
         DispatchQueue.main.asyncAfter(deadline: .now()) {
-            self.collectionView.scrollToItems(at: Set<IndexPath>(arrayLiteral: IndexPath(item: self.dataSource.indexForCurrentDate, section: 0)),
-                                         scrollPosition: [.centeredVertically])
+            let indexPath = Set<IndexPath>(arrayLiteral: IndexPath(item: self.dataSource.indexForCurrentDate, section: 0))
+            let position = NSCollectionView.ScrollPosition.centeredVertically
+
+            // Scroll to selected position because it's in middle of the list
+            self.collectionView.scrollToItems(at: indexPath,
+                                              scrollPosition: position)
+
+            // Select this row to make this collectionView become firstResponder
+            // Able to navigate by keyboard
+            self.collectionView.selectItems(at: indexPath,
+                                            scrollPosition: position)
         }
 
 
