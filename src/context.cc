@@ -1374,7 +1374,7 @@ error Context::downloadUpdate() {
         }
 
         if (HTTPSClient::Config.AppVersion.empty()) {
-            return error("Cannot check for updates without app version");
+            return error("This version cannot check for updates. This has been probably already fixed. Please check https://toggl.com/toggl-desktop/ for a newer version.");
         }
 
         // Ask Toggl server if we have updates
