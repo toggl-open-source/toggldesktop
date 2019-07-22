@@ -360,6 +360,17 @@ bool TimeEntryEditorWidget::eventFilter(QObject *object, QEvent *event) {
                                                     "");
         }
     }
+    if (event->type() == QEvent::KeyPress) {
+        if (object == ui->description) {
+            ui->deleteButton->setFocusPolicy(Qt::StrongFocus);
+            auto ke = static_cast<QKeyEvent*>(event);
+            if (ke && ke->key() == Qt::Key_Backtab) {
+                // this is an ugly hack for the focus chain - backtabbing selected the date picker for some reason
+                ui->deleteButton->setFocus(Qt::FocusReason::MouseFocusReason);
+                return true;
+            }
+        }
+    }
 
     return false;
 }
