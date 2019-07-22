@@ -18,7 +18,8 @@ TimerWidget::TimerWidget(QWidget *parent) : QFrame(parent),
 ui(new Ui::TimerWidget),
 timer(new QTimer(this)),
 duration(0),
-project(""),
+projectName(""),
+taskName(""),
 tagsHolder(""),
 timeEntryAutocompleteNeedsUpdate(false),
 descriptionModel(new AutocompleteListModel(this)),
@@ -197,6 +198,7 @@ void TimerWidget::displayRunningTimerState(
     if (!te->ProjectLabel.isEmpty()) {
         ui->projectFrame->setVisible(true);
         ui->deleteProject->setVisible(true);
+        projectName = te->ProjectLabel;
         setEllipsisTextToLabel(ui->project, te->ProjectLabel);
     }
     else {
@@ -206,6 +208,7 @@ void TimerWidget::displayRunningTimerState(
     if (!te->TaskLabel.isEmpty()) {
         ui->taskFrame->setVisible(true);
         ui->deleteTask->setVisible(true);
+        taskName = te->TaskLabel;
         setEllipsisTextToLabel(ui->task, te->TaskLabel);
     }
     else {
@@ -360,7 +363,8 @@ void TimerWidget::on_duration_returnPressed() {
 
 void TimerWidget::resizeEvent(QResizeEvent* event)
 {
-    setEllipsisTextToLabel(ui->project, project);
+    setEllipsisTextToLabel(ui->project, projectName);
+    setEllipsisTextToLabel(ui->task, taskName);
     QWidget::resizeEvent(event);
 }
 
