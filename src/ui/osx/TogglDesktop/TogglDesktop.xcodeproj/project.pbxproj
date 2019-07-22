@@ -108,8 +108,6 @@
 		BA08E087222E709C0075F68E /* ProjectTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = BA08E086222E709C0075F68E /* ProjectTextField.m */; };
 		BA0C3A65223219470081C6DE /* AutoCompleteCellType.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0C3A64223219470081C6DE /* AutoCompleteCellType.swift */; };
 		BA0C3A6722321FBC0081C6DE /* AutoCompleteTableCell+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0C3A6622321FBC0081C6DE /* AutoCompleteTableCell+Ext.swift */; };
-		BA0CEC4821BE4D4600F1BF01 /* DeepDiff.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA0CEBC121BA851700F1BF01 /* DeepDiff.framework */; };
-		BA0CEC4921BE4D4600F1BF01 /* DeepDiff.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA0CEBC121BA851700F1BF01 /* DeepDiff.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BA0E38102225257D00D0121B /* BezierPath+Corner.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0E380F2225257D00D0121B /* BezierPath+Corner.swift */; };
 		BA0E38122225260B00D0121B /* TimeEntryCell+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0E38112225260B00D0121B /* TimeEntryCell+Ext.swift */; };
 		BA0F67B7224A32F700ED0F91 /* CursorButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0F67B6224A32F700ED0F91 /* CursorButton.swift */; };
@@ -367,27 +365,6 @@
 			remoteGlobalIDString = E2D656E5160A18F100DEC117;
 			remoteInfo = TFDatePicker;
 		};
-		BA0CEBC021BA851700F1BF01 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BA0CEBA321BA851700F1BF01 /* DeepDiff.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = D5C629401C3A7FAA007F7B7C;
-			remoteInfo = "DeepDiff-macOS";
-		};
-		BA0CEBC221BA851700F1BF01 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BA0CEBA321BA851700F1BF01 /* DeepDiff.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = D5C629491C3A7FAA007F7B7C;
-			remoteInfo = "DeepDiff-macOS-Tests";
-		};
-		BA0CEC4A21BE4D4600F1BF01 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BA0CEBA321BA851700F1BF01 /* DeepDiff.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = D5C6293F1C3A7FAA007F7B7C;
-			remoteInfo = "DeepDiff-macOS";
-		};
 		BA6E86B521DDB331005E2451 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BA6E86A521DDB331005E2451 /* Sparkle.xcodeproj */;
@@ -530,7 +507,6 @@
 				BAD2342321D612DF0039C742 /* libPocoData.60.dylib in CopyFiles */,
 				BAD2342721D612DF0039C742 /* libPocoFoundation.60.dylib in CopyFiles */,
 				3CFE547F201781A7006B673A /* libssl.1.1.dylib in CopyFiles */,
-				BA0CEC4921BE4D4600F1BF01 /* DeepDiff.framework in CopyFiles */,
 				BAD858C8228EAE6500226C71 /* Bugsnag.framework in CopyFiles */,
 				74456B9E1A774CB0002A6338 /* TogglDesktopLibrary.dylib in CopyFiles */,
 				74213491195C50BC007EF78B /* TFDatePicker.framework in CopyFiles */,
@@ -706,7 +682,6 @@
 		BA08E086222E709C0075F68E /* ProjectTextField.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProjectTextField.m; sourceTree = "<group>"; };
 		BA0C3A64223219470081C6DE /* AutoCompleteCellType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoCompleteCellType.swift; sourceTree = "<group>"; };
 		BA0C3A6622321FBC0081C6DE /* AutoCompleteTableCell+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AutoCompleteTableCell+Ext.swift"; sourceTree = "<group>"; };
-		BA0CEBA321BA851700F1BF01 /* DeepDiff.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = DeepDiff.xcodeproj; path = ../../../../third_party/DeepDiff/DeepDiff.xcodeproj; sourceTree = "<group>"; };
 		BA0CEC5121BE528900F1BF01 /* TogglDesktop-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TogglDesktop-Bridging-Header.h"; sourceTree = "<group>"; };
 		BA0E380F2225257D00D0121B /* BezierPath+Corner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BezierPath+Corner.swift"; sourceTree = "<group>"; };
 		BA0E38112225260B00D0121B /* TimeEntryCell+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TimeEntryCell+Ext.swift"; sourceTree = "<group>"; };
@@ -870,7 +845,6 @@
 				BA7DB6E321F9C77A0059239B /* MASShortcut.framework in Frameworks */,
 				7421348E195C4EE8007EF78B /* TFDatePicker.framework in Frameworks */,
 				BAD858C7228EAE6500226C71 /* Bugsnag.framework in Frameworks */,
-				BA0CEC4821BE4D4600F1BF01 /* DeepDiff.framework in Frameworks */,
 				74033C9717EC1DE100CA53D3 /* libc++.dylib in Frameworks */,
 				69FC17F517E6534400B96425 /* Cocoa.framework in Frameworks */,
 			);
@@ -922,7 +896,6 @@
 				749A3A4318D889BD000AD2DB /* CrashReporter.xcodeproj */,
 				74FD8CD718A8EEE200F7DB80 /* TFDatePicker.xcodeproj */,
 				74B680A8180759C300B697AA /* TogglDesktopLibrary.xcodeproj */,
-				BA0CEBA321BA851700F1BF01 /* DeepDiff.xcodeproj */,
 				BA6E86A521DDB331005E2451 /* Sparkle.xcodeproj */,
 				BA7DB6BB21F9C7660059239B /* MASShortcut.xcodeproj */,
 				74E1682E180F269F0026261C /* gtm */,
@@ -1196,15 +1169,6 @@
 				BA0C3A6622321FBC0081C6DE /* AutoCompleteTableCell+Ext.swift */,
 			);
 			path = AutoComplete;
-			sourceTree = "<group>";
-		};
-		BA0CEBA421BA851700F1BF01 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				BA0CEBC121BA851700F1BF01 /* DeepDiff.framework */,
-				BA0CEBC321BA851700F1BF01 /* DeepDiff-macOS-Tests.xctest */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		BA0CEC4C21BE516F00F1BF01 /* Other */ = {
@@ -1617,7 +1581,6 @@
 				74456B9C1A77486B002A6338 /* PBXTargetDependency */,
 				749A3A7318D89F23000AD2DB /* PBXTargetDependency */,
 				74FD8CDE18A8EF4800F7DB80 /* PBXTargetDependency */,
-				BA0CEC4B21BE4D4600F1BF01 /* PBXTargetDependency */,
 				BA6E873821DDC1E2005E2451 /* PBXTargetDependency */,
 				BA7DB6E621F9C77A0059239B /* PBXTargetDependency */,
 				BAD858CA228EAE6500226C71 /* PBXTargetDependency */,
@@ -1664,10 +1627,6 @@
 				{
 					ProductGroup = 749A3A4418D889BD000AD2DB /* Products */;
 					ProjectRef = 749A3A4318D889BD000AD2DB /* CrashReporter.xcodeproj */;
-				},
-				{
-					ProductGroup = BA0CEBA421BA851700F1BF01 /* Products */;
-					ProjectRef = BA0CEBA321BA851700F1BF01 /* DeepDiff.xcodeproj */;
 				},
 				{
 					ProductGroup = BA7DB6BC21F9C7660059239B /* Products */;
@@ -1799,20 +1758,6 @@
 			fileType = wrapper.framework;
 			path = TFDatePicker.framework;
 			remoteRef = 74FD8CDB18A8EEE200F7DB80 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		BA0CEBC121BA851700F1BF01 /* DeepDiff.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = DeepDiff.framework;
-			remoteRef = BA0CEBC021BA851700F1BF01 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		BA0CEBC321BA851700F1BF01 /* DeepDiff-macOS-Tests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = "DeepDiff-macOS-Tests.xctest";
-			remoteRef = BA0CEBC221BA851700F1BF01 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		BA6E86B621DDB331005E2451 /* Sparkle.framework */ = {
@@ -2204,11 +2149,6 @@
 			isa = PBXTargetDependency;
 			name = TFDatePicker;
 			targetProxy = 74FD8CDD18A8EF4800F7DB80 /* PBXContainerItemProxy */;
-		};
-		BA0CEC4B21BE4D4600F1BF01 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "DeepDiff-macOS";
-			targetProxy = BA0CEC4A21BE4D4600F1BF01 /* PBXContainerItemProxy */;
 		};
 		BA6E873821DDC1E2005E2451 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
