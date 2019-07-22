@@ -1398,7 +1398,11 @@ error Context::downloadUpdate() {
             }
             auto latestVersion = root[shortOSName()][update_channel];
             url = latestVersion[installerPlatform()].asString();
-            version_number = latestVersion["version"].asString();
+            auto versionNumberJsonToken = latestVersion["version"];
+            if (versionNumberJsonToken.empty()) {
+                return error("No versions found for OS " + shortOSName() + ", platform " + installerPlatform() + ", channel " + update_channel);
+            }
+            version_number = versionNumberJsonToken.asString();
 
             if (lessThanVersion(HTTPSClient::Config.AppVersion, version_number)) {
                 std::stringstream ss;
@@ -1541,7 +1545,7 @@ bool Context::lessThanVersion(const std::string& version1, const std::string& ve
     int parsed1[4] {}, parsed2[4] {};
     parseVersion(parsed1, version1);
     parseVersion(parsed2, version2);
-    return std::lexicographical_compare(parsed1, parsed1 + 4, parsed2, parsed2 + 4);
+    return std::lexicographical_compare(parsed1, &parsed1[4], parsed2, &parsed2[4]);
 }
 
 void Context::TimelineUpdateServerSettings() {
