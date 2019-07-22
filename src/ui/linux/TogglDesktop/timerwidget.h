@@ -73,7 +73,8 @@ class TimerWidget : public QFrame {
 
     int64_t duration;
 
-    QString project;
+    QString projectName;
+    QString taskName;
     QString descriptionPlaceholder;
     QString tagsHolder;
 
