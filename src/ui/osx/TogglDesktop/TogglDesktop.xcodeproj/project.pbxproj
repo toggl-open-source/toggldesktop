@@ -90,7 +90,6 @@
 		74F8FBA318313FA6000F09EE /* NSTextFieldClickable.m in Sources */ = {isa = PBXBuildFile; fileRef = 74F8FBA218313FA6000F09EE /* NSTextFieldClickable.m */; };
 		95C0707718CDB67300A34D0D /* NSCustomComboBoxCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 95C0707618CDB67300A34D0D /* NSCustomComboBoxCell.m */; };
 		95C0707A18CDB91500A34D0D /* NSCustomComboBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 95C0707918CDB91500A34D0D /* NSCustomComboBox.m */; };
-		95DBF8D718C48B300021FB41 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 95DBF8D618C48B300021FB41 /* logo.png */; };
 		BA013FF5225705B6000E5B91 /* HoverTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA013FF4225705B6000E5B91 /* HoverTableCellView.swift */; };
 		BA01404622570805000E5B91 /* TagCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA01404522570805000E5B91 /* TagCellView.swift */; };
 		BA0140482257080F000E5B91 /* TagCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA0140472257080F000E5B91 /* TagCellView.xib */; };
@@ -688,7 +687,6 @@
 		95C0707618CDB67300A34D0D /* NSCustomComboBoxCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSCustomComboBoxCell.m; sourceTree = "<group>"; };
 		95C0707818CDB91500A34D0D /* NSCustomComboBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSCustomComboBox.h; sourceTree = "<group>"; };
 		95C0707918CDB91500A34D0D /* NSCustomComboBox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSCustomComboBox.m; sourceTree = "<group>"; };
-		95DBF8D618C48B300021FB41 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo.png; sourceTree = "<group>"; };
 		BA013FF4225705B6000E5B91 /* HoverTableCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoverTableCellView.swift; sourceTree = "<group>"; };
 		BA01404522570805000E5B91 /* TagCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagCellView.swift; sourceTree = "<group>"; };
 		BA0140472257080F000E5B91 /* TagCellView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TagCellView.xib; sourceTree = "<group>"; };
@@ -930,6 +928,7 @@
 				74E1682E180F269F0026261C /* gtm */,
 				74E857AA194F8807007A88B9 /* ssl */,
 				BA712EAF21BF904E00A2D8DD /* Feature */,
+				BA1B7FA122E5D52F001333D9 /* Swift */,
 				BA0CEC4C21BE516F00F1BF01 /* Other */,
 				69FC17FA17E6534400B96425 /* ui */,
 				69FC17F317E6534400B96425 /* Frameworks */,
@@ -979,10 +978,9 @@
 		69FC17FA17E6534400B96425 /* ui */ = {
 			isa = PBXGroup;
 			children = (
-				BA229D0E21EDEDBA00DEB4B9 /* Theme */,
 				BA13E05B21C7B9F800835EC1 /* UserNotification */,
 				BAF87DDB21A3E1E700624EBE /* Extension */,
-				BAF50DF521A2A16D0090BA95 /* Icon */,
+				BAF50DF521A2A16D0090BA95 /* IconFactory */,
 				3C6B246F203E01B70063FC08 /* AutoComplete */,
 				BA2DA0C421A542E20027B7A5 /* NSTextField+Ext.h */,
 				BA2DA0C521A542E30027B7A5 /* NSTextField+Ext.m */,
@@ -1018,7 +1016,6 @@
 				C5DA1FC117F1B38B001C4565 /* LoginViewController.h */,
 				C5DA1FC217F1B38B001C4565 /* LoginViewController.m */,
 				C5DA1FC317F1B38B001C4565 /* LoginViewController.xib */,
-				95DBF8D618C48B300021FB41 /* logo.png */,
 				69FC180917E6534500B96425 /* MainMenu.xib */,
 				C5DA1FBC17F1B08A001C4565 /* MainWindowController.h */,
 				C5DA1FBD17F1B08A001C4565 /* MainWindowController.m */,
@@ -1090,13 +1087,8 @@
 				BA7B4C3621C24B9D00B75B14 /* UndoTextField.m */,
 				BAFBFCC621CD1D3C004B443F /* SystemService.h */,
 				BAFBFCC721CD1D3C004B443F /* SystemService.m */,
-				BA03725421FE9FD400FC277B /* FlatButton.swift */,
 				BA08E085222E709C0075F68E /* ProjectTextField.h */,
 				BA08E086222E709C0075F68E /* ProjectTextField.m */,
-				BAE49CAD222FC1C900773814 /* TimerContainerBox.swift */,
-				BA6EB8752249DB33003BB8EF /* VerticallyCenteredTextFieldCell.swift */,
-				BA763B7A2268601700DC245A /* PopoverRootView.swift */,
-				BA1F9031229D19C000670E0B /* NoInteractionView.swift */,
 			);
 			name = ui;
 			path = test2;
@@ -1257,13 +1249,43 @@
 			name = UserNotification;
 			sourceTree = "<unknown>";
 		};
-		BA229D0E21EDEDBA00DEB4B9 /* Theme */ = {
+		BA1B7FA122E5D52F001333D9 /* Swift */ = {
+			isa = PBXGroup;
+			children = (
+				BA1B7FA322E5D543001333D9 /* Extensions */,
+				BA1B7FA222E5D53A001333D9 /* Views */,
+			);
+			path = Swift;
+			sourceTree = "<group>";
+		};
+		BA1B7FA222E5D53A001333D9 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				BA03725421FE9FD400FC277B /* FlatButton.swift */,
+				BAE49CAD222FC1C900773814 /* TimerContainerBox.swift */,
+				BA6EB8752249DB33003BB8EF /* VerticallyCenteredTextFieldCell.swift */,
+				BA763B7A2268601700DC245A /* PopoverRootView.swift */,
+				BA1F9031229D19C000670E0B /* NoInteractionView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		BA1B7FA322E5D543001333D9 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
 				BA6F1B3721EEE998009265E4 /* Theme+Notification.swift */,
 				BA2E3F2B22375E640035D034 /* NSView+Appearance.swift */,
+				BAF6319B21E6F868002DD6AB /* NotificationCenter+MainThread.swift */,
+				BA6F1B1921EEE258009265E4 /* NSColor+Utils.swift */,
+				BA03729C21FED85700FC277B /* NSView+Xib.swift */,
+				BA46E09E2226707F00C25763 /* Collection+Safe.swift */,
+				BA9D90B3222D14ED00D5EC0E /* NSView+Animation.swift */,
+				BA9D90D3222D155900D5EC0E /* NSView+Ext.swift */,
+				BAA260D0222D1DC70094F4E4 /* NSView+Shadow+Border.swift */,
+				BA08E011222E32C90075F68E /* NSView+LayoutConstraint.swift */,
+				BA89CB382265EA4400D21584 /* String+Search.swift */,
 			);
-			name = Theme;
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		BA34F0DB22439BF300C27A15 /* TimeEntryEditor */ = {
@@ -1523,13 +1545,13 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		BAF50DF521A2A16D0090BA95 /* Icon */ = {
+		BAF50DF521A2A16D0090BA95 /* IconFactory */ = {
 			isa = PBXGroup;
 			children = (
 				BAF50DF621A2A18D0090BA95 /* AppIconFactory.h */,
 				BAF50DF721A2A18D0090BA95 /* AppIconFactory.m */,
 			);
-			name = Icon;
+			name = IconFactory;
 			sourceTree = "<group>";
 		};
 		BAF87DDB21A3E1E700624EBE /* Extension */ = {
@@ -1539,15 +1561,6 @@
 				BAF87DEC21A3E1F600624EBE /* NSTextField+Ext.m */,
 				BA7B4BC921C0EF8800B75B14 /* NSAlert+Utils.h */,
 				BA7B4BCA21C0EF8800B75B14 /* NSAlert+Utils.m */,
-				BAF6319B21E6F868002DD6AB /* NotificationCenter+MainThread.swift */,
-				BA6F1B1921EEE258009265E4 /* NSColor+Utils.swift */,
-				BA03729C21FED85700FC277B /* NSView+Xib.swift */,
-				BA46E09E2226707F00C25763 /* Collection+Safe.swift */,
-				BA9D90B3222D14ED00D5EC0E /* NSView+Animation.swift */,
-				BA9D90D3222D155900D5EC0E /* NSView+Ext.swift */,
-				BAA260D0222D1DC70094F4E4 /* NSView+Shadow+Border.swift */,
-				BA08E011222E32C90075F68E /* NSView+LayoutConstraint.swift */,
-				BA89CB382265EA4400D21584 /* String+Search.swift */,
 			);
 			name = Extension;
 			sourceTree = "<group>";
@@ -1922,7 +1935,6 @@
 				BAB818EB228D5AA8008C2367 /* DescriptionContentCellView.xib in Resources */,
 				3C6B2489203E01D90063FC08 /* AutoCompleteTableCell.xib in Resources */,
 				BA3E75D822293576009AD291 /* SystemMessageView.xib in Resources */,
-				95DBF8D718C48B300021FB41 /* logo.png in Resources */,
 				BAD15FFE223A530600A8CCC9 /* TimeEntryEmptyView.xib in Resources */,
 				BA19FC21226DA079006D8741 /* DateCellViewItem.xib in Resources */,
 				BA9C2E06224C84E7002AD2A1 /* ColorViewItem.xib in Resources */,
