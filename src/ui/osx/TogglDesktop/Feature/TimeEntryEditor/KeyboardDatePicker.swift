@@ -11,13 +11,30 @@ import Carbon.HIToolbox
 
 final class KeyboardDatePicker: NSDatePicker {
 
-    var escapeKeyOnAction: (() -> Void)?
+    enum Key {
+        case escape
+        case space
+
+        init?(rawValue: Int) {
+            switch rawValue {
+            case kVK_Escape:
+                self = .escape
+            case kVK_Space:
+                self = .space
+            default:
+                return nil
+            }
+        }
+    }
+
+    // MARK: Variable
+
+    var keyOnAction: ((Key) -> Void)?
 
     override func keyDown(with event: NSEvent) {
         super.keyDown(with: event)
 
-        if event.keyCode == UInt16(kVK_Escape) {
-            escapeKeyOnAction?()
-        }
+        guard let key = Key(rawValue: Int(event.keyCode)) else { return }
+        keyOnAction?(key)
     }
 }
