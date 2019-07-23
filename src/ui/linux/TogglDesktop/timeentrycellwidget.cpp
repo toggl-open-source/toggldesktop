@@ -116,7 +116,9 @@ void TimeEntryCellWidget::deleteTimeEntry() {
 
 bool TimeEntryCellWidget::eventFilter(QObject *watched, QEvent *event) {
     if (event->type() == QEvent::FocusIn) {
-        focusInEvent(reinterpret_cast<QFocusEvent*>(event));
+        auto fe = reinterpret_cast<QFocusEvent*>(event);
+        if (fe->reason() == Qt::TabFocusReason || fe->reason() == Qt::BacktabFocusReason)
+            focusInEvent(fe);
     }
     return QWidget::eventFilter(watched, event);
 }
