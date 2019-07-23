@@ -80,7 +80,7 @@ NSString *kInactiveTimerColor = @"#999999";
 													 name:kDisplayTimeEntryEditor
 												   object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(focusTimer:)
+												 selector:@selector(focusTimer)
 													 name:kFocusTimer
 												   object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self
@@ -100,7 +100,7 @@ NSString *kInactiveTimerColor = @"#999999";
 													 name:kCommandStop
 												   object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(focusTimer:)
+												 selector:@selector(windowDidBecomeKeyNotification:)
 													 name:NSWindowDidBecomeKeyNotification
 												   object:nil];
 
@@ -156,7 +156,7 @@ NSString *kInactiveTimerColor = @"#999999";
 	[self clear];
 }
 
-- (void)focusTimer:(NSNotification *)notification
+- (void)focusTimer
 {
 	if (self.time_entry.duration < 0 || ![self.manualBox isHidden])
 	{
@@ -166,6 +166,17 @@ NSString *kInactiveTimerColor = @"#999999";
 	{
 		[self.autoCompleteInput.window makeFirstResponder:self.autoCompleteInput];
 	}
+}
+
+- (void)windowDidBecomeKeyNotification:(NSNotification *)notification
+{
+	// Only focus if the window is main
+	// Otherwise, shouldn't override the firstResponder
+	if (notification.object != self.view.window)
+	{
+		return;
+	}
+	[self focusTimer];
 }
 
 - (void)startDisplayTimerState:(NSNotification *)notification
