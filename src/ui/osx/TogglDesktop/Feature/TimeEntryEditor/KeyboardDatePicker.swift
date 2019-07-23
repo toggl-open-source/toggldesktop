@@ -7,25 +7,8 @@
 //
 
 import Foundation
-import Carbon.HIToolbox
 
 final class KeyboardDatePicker: NSDatePicker {
-
-    enum Key {
-        case escape
-        case space
-
-        init?(rawValue: Int) {
-            switch rawValue {
-            case kVK_Escape:
-                self = .escape
-            case kVK_Space:
-                self = .space
-            default:
-                return nil
-            }
-        }
-    }
 
     // MARK: Variable
 
