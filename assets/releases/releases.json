@@ -1242,26 +1242,6 @@
     "osx": {
         "dev": [
             {
-                "version": "7.4.428",
-                "timestamp": "31-05-2019",
-                "filename": [
-                    {
-                        "type": "macos",
-                        "name": "TogglDesktop-7_4_428.dmg"
-                    }
-                ]
-            },
-            {
-                "version": "7.4.429",
-                "timestamp": "05-06-2019",
-                "filename": [
-                    {
-                        "type": "macos",
-                        "name": "TogglDesktop-7_4_429.dmg"
-                    }
-                ]
-            },
-            {
                 "version": "7.4.430",
                 "timestamp": "05-06-2019",
                 "filename": [
@@ -1338,6 +1318,16 @@
                     {
                         "type": "macos",
                         "name": "TogglDesktop-7_4_470.dmg"
+                    }
+                ]
+            },
+            {
+                "version": "7.4.471",
+                "timestamp": "23-07-2019",
+                "filename": [
+                    {
+                        "type": "macos",
+                        "name": "TogglDesktop-7_4_471.dmg"
                     }
                 ]
             }
@@ -2280,20 +2270,6 @@
     "linux": {
         "dev": [
             {
-                "version": "7.4.461",
-                "timestamp": "16-07-2019",
-                "filename": [
-                    {
-                        "type": "linux_tar.gz",
-                        "name": "toggldesktop_linux_x86_64-7_4_461.tar.gz"
-                    },
-                    {
-                        "type": "linux_flatpak",
-                        "name": "com.toggl.TogglDesktop_linux_86_64-7.4.461.flatpak"
-                    }
-                ]
-            },
-            {
                 "version": "7.4.463",
                 "timestamp": "17-07-2019",
                 "filename": [
@@ -2416,6 +2392,20 @@
                     {
                         "type": "linux_flatpak",
                         "name": "com.toggl.TogglDesktop_linux_86_64-7.4.471.flatpak"
+                    }
+                ]
+            },
+            {
+                "version": "7.4.472",
+                "timestamp": "23-07-2019",
+                "filename": [
+                    {
+                        "type": "linux_tar.gz",
+                        "name": "toggldesktop_linux_x86_64-7_4_472.tar.gz"
+                    },
+                    {
+                        "type": "linux_flatpak",
+                        "name": "com.toggl.TogglDesktop_linux_86_64-7.4.472.flatpak"
                     }
                 ]
             }
