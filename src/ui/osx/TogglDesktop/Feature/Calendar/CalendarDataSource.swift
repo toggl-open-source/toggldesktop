@@ -54,6 +54,17 @@ final class CalendarDataSource: NSObject {
         indexForCurrentDate = calendar.firstIndex(where: { $0.isSameDay(with: currentDate!) }) ?? calendar.count / 2
     }
 
+    func selectDate(at indexPath: IndexPath) {
+        guard let date = calendar[safe: indexPath.item] else { return }
+        selectedDate = date
+        selectSelectedDate()
+    }
+
+    func selectSelectedDate() {
+        guard let selectedDate = selectedDate else { return }
+        delegate?.calendarDidSelect(buildDate(day: selectedDate.day, month: selectedDate.month, year: selectedDate.year))
+    }
+    
     private func calculateDates(from selectedDate: Date) -> [DateInfo] {
         let firstDayOfWeek = selectedDate.firstDayOfWeek() ?? selectedDate
         let from = Calendar.current.date(byAdding: .weekOfYear, value: -Constants.shiftWeek, to: firstDayOfWeek)!
@@ -137,6 +148,5 @@ extension CalendarDataSource: NSCollectionViewDelegate, NSCollectionViewDataSour
             let date = calendar[safe: selectedIndex.item]
             else { return }
         selectedDate = date
-//        delegate?.calendarDidSelect(buildDate(day: date.day, month: date.month, year: date.year))
     }
 }

@@ -10,11 +10,11 @@ import Cocoa
 
 protocol CalendarCollectionViewDelegate: class {
 
-    func calendarCollectionViewDidClicked(on item: NSCollectionViewItem)
+    func calendarCollectionViewDidClicked(at indexPath: IndexPath)
     func calendarCollectionViewDidPress(_ key: Key)
 }
 
-class CalendarCollectionView: NSCollectionView {
+final class CalendarCollectionView: NSCollectionView {
 
     // MARK: Variables
 
@@ -50,8 +50,7 @@ class CalendarCollectionView: NSCollectionView {
     private func handleClickAction(with event: NSEvent) {
         let clickedPoint = convert(event.locationInWindow, from: nil)
         guard event.clickCount == 1,
-            let indexPath = indexPathForItem(at: clickedPoint),
-            let item = item(at: indexPath) else { return }
-        calendarDelegate?.calendarCollectionViewDidClicked(on: item)
+            let indexPath = indexPathForItem(at: clickedPoint) else { return }
+        calendarDelegate?.calendarCollectionViewDidClicked(at: indexPath)
     }
 }

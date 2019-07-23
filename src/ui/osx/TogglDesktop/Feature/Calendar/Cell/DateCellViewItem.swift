@@ -31,7 +31,7 @@ final class DateCellViewItem: NSCollectionViewItem {
     override var isSelected: Bool {
         didSet {
             guard !isHightlight else { return }
-            backgroundBox.isHidden = !isSelected
+            hoverView.alphaValue = isSelected ? 1.0 : 0.0
         }
     }
 
