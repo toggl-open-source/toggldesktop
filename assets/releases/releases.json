@@ -28,20 +28,6 @@
                         "name": "TogglDesktopInstaller-x64-7.4.466.exe"
                     }
                 ]
-            },
-            {
-                "version": "7.4.470",
-                "timestamp": "23-07-2019",
-                "filename": [
-                    {
-                        "type": "windows",
-                        "name": "TogglDesktopInstaller-7.4.470.exe"
-                    },
-                    {
-                        "type": "windows64",
-                        "name": "TogglDesktopInstaller-x64-7.4.470.exe"
-                    }
-                ]
             }
         ],
         "beta": [
@@ -1242,16 +1228,6 @@
     "osx": {
         "dev": [
             {
-                "version": "7.4.427",
-                "timestamp": "31-05-2019",
-                "filename": [
-                    {
-                        "type": "macos",
-                        "name": "TogglDesktop-7_4_427.dmg"
-                    }
-                ]
-            },
-            {
                 "version": "7.4.428",
                 "timestamp": "31-05-2019",
                 "filename": [
@@ -1338,6 +1314,16 @@
                     {
                         "type": "macos",
                         "name": "TogglDesktop-7_4_461.dmg"
+                    }
+                ]
+            },
+            {
+                "version": "7.4.470",
+                "timestamp": "23-07-2019",
+                "filename": [
+                    {
+                        "type": "macos",
+                        "name": "TogglDesktop-7_4_470.dmg"
                     }
                 ]
             }
@@ -1900,6 +1886,16 @@
                     {
                         "type": "macos",
                         "name": "TogglDesktop-7_4_461.dmg"
+                    }
+                ]
+            },
+            {
+                "version": "7.4.470",
+                "timestamp": "23-07-2019",
+                "filename": [
+                    {
+                        "type": "macos",
+                        "name": "TogglDesktop-7_4_470.dmg"
                     }
                 ]
             }
