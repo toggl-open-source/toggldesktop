@@ -222,9 +222,14 @@ extension EditorViewController {
         calendar.timeZone = TimeZone.current
 
         // Date picker
-        datePickerView.escapeKeyOnAction = {[weak self] in
+        datePickerView.keyOnAction = {[weak self] key in
             guard let strongSelf = self else { return }
-            strongSelf.closeBtnOnTap(strongSelf)
+            switch key {
+            case .escape:
+                strongSelf.closeBtnOnTap(strongSelf)
+            case .space:
+                strongSelf.dayButtonOnTap(strongSelf)
+            }
         }
 
         // Tags
