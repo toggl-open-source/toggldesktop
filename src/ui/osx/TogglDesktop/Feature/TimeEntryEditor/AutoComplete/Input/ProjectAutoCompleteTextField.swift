@@ -35,9 +35,11 @@ final class ProjectAutoCompleteTextField: AutoCompleteTextField {
     func setTimeEntry(_ timeEntry: TimeEntryViewItem) {
         projectCreationView.selectedTimeEntry = timeEntry
 
-        stringValue = timeEntry.projectLabel
-        layoutProject(with: stringValue)
-        applyColor(with: timeEntry.projectColor)
+        if currentEditor() == nil {
+            stringValue = timeEntry.projectLabel
+            layoutProject(with: stringValue)
+            applyColor(with: timeEntry.projectColor)
+        }
     }
 
     override func didTapOnCreateButton() {
