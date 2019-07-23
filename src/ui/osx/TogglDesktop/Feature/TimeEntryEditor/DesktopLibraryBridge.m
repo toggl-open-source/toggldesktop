@@ -190,6 +190,7 @@ void *ctx;
 
 	// Prevent small size
 	const CGSize minimumSize = CGSizeMake(274.0, 381.0);
+
 	width = MAX(minimumSize.width, width);
 	height = MAX(minimumSize.height, height);
 	return CGSizeMake(width, height);
