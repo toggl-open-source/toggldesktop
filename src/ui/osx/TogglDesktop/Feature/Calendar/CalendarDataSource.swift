@@ -40,16 +40,18 @@ final class CalendarDataSource: NSObject {
     // MARK: Variables
 
     weak var delegate: CalendarDataSourceDelegate?
-    private var selectedData: DateInfo?
+    private var currentDate: DateInfo?
+    private var selectedDate: DateInfo?
     private var calendar: [DateInfo] = []
     private(set) var indexForCurrentDate: Int = 0
 
     // MARK: Init
 
     func render(at date: Date) {
-        selectedData = DateInfo(date: date)
+        currentDate = DateInfo(date: date)
+        selectedDate = currentDate
         calendar = calculateDates(from: date)
-        indexForCurrentDate = calendar.firstIndex(where: { $0.isSameDay(with: selectedData!) }) ?? calendar.count / 2
+        indexForCurrentDate = calendar.firstIndex(where: { $0.isSameDay(with: currentDate!) }) ?? calendar.count / 2
     }
 
     private func calculateDates(from selectedDate: Date) -> [DateInfo] {
@@ -124,8 +126,8 @@ extension CalendarDataSource: NSCollectionViewDelegate, NSCollectionViewDataSour
     func collectionView(_ collectionView: NSCollectionView, itemForRepresentedObjectAt indexPath: IndexPath) -> NSCollectionViewItem {
         guard let view = collectionView.makeItem(withIdentifier: Constants.cellID, for: indexPath) as? DateCellViewItem else { return NSCollectionViewItem() }
         let info = calendar[indexPath.item]
-        let isCurrentDate = info.isSameDay(with: selectedData!)
-        let isCurrentMonth = info.month == selectedData!.month
+        let isCurrentDate = info.isSameDay(with: currentDate!)
+        let isCurrentMonth = info.month == currentDate!.month
         view.render(with: info, highlight: isCurrentDate, isCurrentMonth: isCurrentMonth)
         return view
     }
@@ -134,6 +136,7 @@ extension CalendarDataSource: NSCollectionViewDelegate, NSCollectionViewDataSour
         guard let selectedIndex = indexPaths.first,
             let date = calendar[safe: selectedIndex.item]
             else { return }
-        delegate?.calendarDidSelect(buildDate(day: date.day, month: date.month, year: date.year))
+        selectedDate = date
+//        delegate?.calendarDidSelect(buildDate(day: date.day, month: date.month, year: date.year))
     }
 }

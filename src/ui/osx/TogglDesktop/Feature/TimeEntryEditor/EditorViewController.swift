@@ -229,6 +229,8 @@ extension EditorViewController {
                 strongSelf.closeBtnOnTap(strongSelf)
             case .space:
                 strongSelf.dayButtonOnTap(strongSelf)
+            default:
+                break
             }
         }
 

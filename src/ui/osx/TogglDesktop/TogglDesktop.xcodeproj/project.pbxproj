@@ -162,6 +162,8 @@
 		BA2E5FB1223787C300EB866E /* EditorPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2E5FB0223787C300EB866E /* EditorPopover.swift */; };
 		BA34F10022439C3000C27A15 /* EditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA34F0FE22439C3000C27A15 /* EditorViewController.swift */; };
 		BA34F10122439C3000C27A15 /* EditorViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA34F0FF22439C3000C27A15 /* EditorViewController.xib */; };
+		BA35B21F22E6E95200FA560E /* CalendarCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA35B21E22E6E95200FA560E /* CalendarCollectionView.swift */; };
+		BA35B22122E6E9E200FA560E /* Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA35B22022E6E9E200FA560E /* Key.swift */; };
 		BA3E75D422291CEB009AD291 /* SystemMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA3E75D322291CEB009AD291 /* SystemMessage.swift */; };
 		BA3E75D62229356D009AD291 /* SystemMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA3E75D52229356D009AD291 /* SystemMessageView.swift */; };
 		BA3E75D822293576009AD291 /* SystemMessageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA3E75D722293576009AD291 /* SystemMessageView.xib */; };
@@ -812,6 +814,8 @@
 		BA2E5FB0223787C300EB866E /* EditorPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorPopover.swift; sourceTree = "<group>"; };
 		BA34F0FE22439C3000C27A15 /* EditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorViewController.swift; sourceTree = "<group>"; };
 		BA34F0FF22439C3000C27A15 /* EditorViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EditorViewController.xib; sourceTree = "<group>"; };
+		BA35B21E22E6E95200FA560E /* CalendarCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCollectionView.swift; sourceTree = "<group>"; };
+		BA35B22022E6E9E200FA560E /* Key.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Key.swift; sourceTree = "<group>"; };
 		BA3E75D322291CEB009AD291 /* SystemMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemMessage.swift; sourceTree = "<group>"; };
 		BA3E75D52229356D009AD291 /* SystemMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemMessageView.swift; sourceTree = "<group>"; };
 		BA3E75D722293576009AD291 /* SystemMessageView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SystemMessageView.xib; sourceTree = "<group>"; };
@@ -1394,6 +1398,7 @@
 				BA50ED8422705F9E008323FA /* CalendarFlowLayout.swift */,
 				BAB0027E22731248005ECC93 /* DayLabel.swift */,
 				BAB0029E2273125C005ECC93 /* DayLabel.xib */,
+				BA35B21E22E6E95200FA560E /* CalendarCollectionView.swift */,
 			);
 			path = Calendar;
 			sourceTree = "<group>";
@@ -1445,6 +1450,7 @@
 				BA053658225DDDBB00C26E1F /* CustomFocusRingButton.swift */,
 				BAD307D2229C1BD000C727DB /* KeyboardDatePicker.swift */,
 				BAE6379922B225C70024DD08 /* AddTagButton.swift */,
+				BA35B22022E6E9E200FA560E /* Key.swift */,
 			);
 			path = TimeEntryEditor;
 			sourceTree = "<group>";
@@ -2308,6 +2314,7 @@
 				BA7D335722489BD000B953A8 /* AutoCompleteViewDataSource.swift in Sources */,
 				BA01404C22570967000E5B91 /* TagStorage.swift in Sources */,
 				74BAD31E18BD7D83002FD4CF /* ViewItem.m in Sources */,
+				BA35B21F22E6E95200FA560E /* CalendarCollectionView.swift in Sources */,
 				3CD7AD6F19ED579700372797 /* NSResize.m in Sources */,
 				BA08E012222E32C90075F68E /* NSView+LayoutConstraint.swift in Sources */,
 				BA7D335A22489C8000B953A8 /* ProjectDataSource.swift in Sources */,
@@ -2335,6 +2342,7 @@
 				741104BF18C7682700BC7A49 /* NSTextFieldWithBackground.m in Sources */,
 				BA80BEB2221EAE6F00BDFD35 /* Array+ByGroup.swift in Sources */,
 				74F8FBA318313FA6000F09EE /* NSTextFieldClickable.m in Sources */,
+				BA35B22122E6E9E200FA560E /* Key.swift in Sources */,
 				BA7B4BCB21C0EF8800B75B14 /* NSAlert+Utils.m in Sources */,
 				BA403BAE2230CFBC008B202C /* BetterFocusAutoCompleteInput.m in Sources */,
 				BA50ED8522705F9E008323FA /* CalendarFlowLayout.swift in Sources */,
