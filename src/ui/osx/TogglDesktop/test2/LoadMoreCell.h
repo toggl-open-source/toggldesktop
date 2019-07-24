@@ -7,7 +7,6 @@
 //
 
 #import "TimeEntryCell.h"
-#import "ConvertHexColor.h"
 
 @interface LoadMoreCell : NSCollectionViewItem
 

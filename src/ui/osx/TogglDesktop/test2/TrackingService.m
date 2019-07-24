@@ -7,7 +7,6 @@
 //
 
 #import "TrackingService.h"
-#import "toggl_api.h"
 
 @implementation TrackingService
 

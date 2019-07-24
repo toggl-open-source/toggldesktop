@@ -7,8 +7,6 @@
 //
 
 #import "SystemService.h"
-#import "toggl_api.h"
-
 extern void *ctx;
 
 static NSString *kScreenIsLockedNotification = @"com.apple.screenIsLocked";
