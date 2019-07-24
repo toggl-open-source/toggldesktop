@@ -269,7 +269,7 @@ extern void *ctx;
 	self.descriptionLblLeading.constant = self.Group || self.GroupOpen ? 46.0 : 15.0;
 
 	// Title
-	NSString *toggleGroupText = [NSString stringWithFormat:@"%lld", self.GroupItemCount];
+	NSString *toggleGroupText = [NSString stringWithFormat:@"%ld", (long)self.GroupItemCount];
 	self.groupButton.title = toggleGroupText;
 
 	// Color
