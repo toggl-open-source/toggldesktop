@@ -26,3 +26,6 @@
 + (void)runClearCommand;
 + (BOOL)deleteTimeEntryWithConfirmationWithGUID:(NSString *)guid title:(NSString *)title;
 @end
+
+BOOL wasLaunchedAsLoginOrResumeItem(void);
+BOOL wasLaunchedAsHiddenLoginItem(void);

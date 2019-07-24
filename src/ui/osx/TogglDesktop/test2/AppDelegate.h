@@ -7,13 +7,13 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "Reachability.h"
 
 @class AutocompleteItem;
+@class Reachability;
 
 @interface AppDelegate : NSObject <NSApplicationDelegate, NSUserNotificationCenterDelegate>
-@property (strong) NSStatusItem *statusItem;
-@property (retain, nonatomic) Reachability *reach;
+@property (strong, nonatomic) NSStatusItem *statusItem;
+@property (strong, nonatomic) Reachability *reach;
 - (IBAction)onPreferencesMenuItem:(id)sender;
 - (IBAction)onAboutMenuItem:(id)sender;
 - (IBAction)onSyncMenuItem:(id)sender;

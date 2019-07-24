@@ -14,9 +14,6 @@ extern void *ctx;
 
 @implementation ScriptResult
 
-BOOL wasLaunchedAsLoginOrResumeItem(void);
-BOOL wasLaunchedAsHiddenLoginItem(void);
-
 - (void)append:(NSString *)moreText
 {
 	if (!self.text)
