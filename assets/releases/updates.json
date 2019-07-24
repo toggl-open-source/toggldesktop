@@ -22,8 +22,8 @@
             "macos": "https://github.com/toggl/toggldesktop/releases/download/v7.4.471/TogglDesktop-7_4_471.dmg"
         },
         "beta": {
-            "version": "7.4.471",
-            "macos": "https://github.com/toggl/toggldesktop/releases/download/v7.4.471/TogglDesktop-7_4_471.dmg"
+            "version": "7.4.470",
+            "macos": "https://github.com/toggl/toggldesktop/releases/download/v7.4.470/TogglDesktop-7_4_470.dmg"
         },
         "stable": {
             "version": "7.4.373",
@@ -32,9 +32,9 @@
     },
     "linux": {
         "dev": {
-            "version": "7.4.410",
-            "linux_tar.gz": "https://github.com/toggl/toggldesktop/releases/download/v7.4.410/toggldesktop_linux_x86_64-7_4_410.tar.gz",
-            "linux_flatpak": "https://github.com/toggl/toggldesktop/releases/download/v7.4.410/com.toggl.TogglDesktop_linux_86_64-7.4.410.flatpak"
+            "version": "7.4.473",
+            "linux_tar.gz": "https://github.com/toggl/toggldesktop/releases/download/v7.4.473/toggldesktop_linux_x86_64-7_4_473.tar.gz",
+            "linux_flatpak": "https://github.com/toggl/toggldesktop/releases/download/v7.4.473/com.toggl.TogglDesktop_linux_86_64-7.4.473.flatpak"
         },
         "beta": {
             "version": "7.4.358",
