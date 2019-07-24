@@ -1,6 +1,16 @@
 {
     "versions": [
         {
+            "version": "7.4.471",
+            "rows": [
+                "Always focus timer when app gets focus",
+                "Added keyboard support to selecting date from calendar",
+                "Fixed timer focusing issues"
+            ],
+            "date": "July 24th 2019",
+            "beta": "true"
+        },
+        {
             "version": "7.4.461",
             "rows": [
                 "Fixed issue with idle popup not being in front",
