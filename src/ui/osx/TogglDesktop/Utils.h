@@ -9,9 +9,9 @@
 #import <Foundation/Foundation.h>
 
 @interface ScriptResult : NSObject
+@property (copy, nonatomic) NSString *text;
+@property (assign, nonatomic) NSInteger err;
 - (void)append:(NSString *)moreText;
-@property NSString *text;
-@property int64_t err;
 @end
 
 @interface Utils : NSObject
@@ -26,6 +26,3 @@
 + (void)runClearCommand;
 + (BOOL)deleteTimeEntryWithConfirmationWithGUID:(NSString *)guid title:(NSString *)title;
 @end
-
-BOOL wasLaunchedAsLoginOrResumeItem();
-BOOL wasLaunchedAsHiddenLoginItem();

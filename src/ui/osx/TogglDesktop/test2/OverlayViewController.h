@@ -7,7 +7,6 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "NSTextFieldClickablePointer.h"
 
 typedef NS_ENUM (NSUInteger, OverlayDisplayType)
 {

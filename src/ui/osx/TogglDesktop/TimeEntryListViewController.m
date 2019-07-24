@@ -9,34 +9,32 @@
 #import "TimeEntryListViewController.h"
 #import "TimeEntryViewItem.h"
 #import "TimerEditViewController.h"
-#import "UIEvents.h"
-#import "toggl_api.h"
-#import "LoadMoreCell.h"
 #import "TimeEntryCell.h"
-#import "UIEvents.h"
 #import "DisplayCommand.h"
 #import "ConvertHexColor.h"
-#include <Carbon/Carbon.h>
 #import "TogglDesktop-Swift.h"
 #import "TimeEntryCollectionView.h"
+#import "BetterFocusAutoCompleteInput.h"
 
 static void *XXContext = &XXContext;
 static NSString *kFrameKey = @"frame";
 
 @interface TimeEntryListViewController () <TimeEntryDatasourceDraggingDelegate, TimeEntryEmptyViewDelegate>
-@property (nonatomic, strong) TimerEditViewController *timerEditViewController;
-@property NSNib *nibTimeEntryCell;
-@property NSNib *nibLoadMoreCell;
-@property NSInteger defaultPopupHeight;
-@property NSInteger defaultPopupWidth;
-@property NSInteger addedHeight;
-@property NSInteger minimumEditFormWidth;
-@property BOOL runningEdit;
-@property (copy, nonatomic) NSString *lastSelectedGUID;
+@property (weak) IBOutlet NSView *headerView;
+@property (weak) IBOutlet NSScrollView *timeEntryListScrollView;
 @property (weak) IBOutlet TimeEntryCollectionView *collectionView;
-@property (strong, nonatomic) TimeEntryEmptyView *emptyView;
 @property (weak) IBOutlet NSBox *emptyViewContainerView;
-@property (strong, nonatomic) EditorPopover *timeEntrypopover;
+
+@property (nonatomic, strong) TimeEntryDatasource *dataSource;
+@property (nonatomic, strong) TimerEditViewController *timerEditViewController;
+@property (nonatomic, assign) NSInteger defaultPopupHeight;
+@property (nonatomic, assign) NSInteger defaultPopupWidth;
+@property (nonatomic, assign) NSInteger addedHeight;
+@property (nonatomic, assign) NSInteger minimumEditFormWidth;
+@property (nonatomic, assign) BOOL runningEdit;
+@property (nonatomic, copy) NSString *lastSelectedGUID;
+@property (nonatomic, strong) TimeEntryEmptyView *emptyView;
+@property (nonatomic, strong) EditorPopover *timeEntrypopover;
 @end
 
 @implementation TimeEntryListViewController
@@ -50,10 +48,6 @@ extern void *ctx;
 	{
 		self.timerEditViewController = [[TimerEditViewController alloc]
 										initWithNibName:@"TimerEditViewController" bundle:nil];
-		self.nibTimeEntryCell = [[NSNib alloc] initWithNibNamed:@"TimeEntryCell"
-														 bundle:nil];
-		self.nibLoadMoreCell = [[NSNib alloc] initWithNibNamed:@"LoadMoreCell"
-														bundle:nil];
 	}
 	return self;
 }
@@ -61,6 +55,7 @@ extern void *ctx;
 - (void)dealloc
 {
 	[self.collectionView removeObserver:self forKeyPath:kFrameKey];
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)viewDidLoad

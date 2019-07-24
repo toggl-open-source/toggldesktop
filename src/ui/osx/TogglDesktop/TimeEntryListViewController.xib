@@ -10,7 +10,7 @@
             <connections>
                 <outlet property="collectionView" destination="96l-2I-0G5" id="P59-lk-PQF"/>
                 <outlet property="emptyViewContainerView" destination="cvV-eB-sdq" id="0ba-Gb-Z90"/>
-                <outlet property="headerView" destination="OXo-Tz-Vbz" id="vDf-yG-fnR"/>
+                <outlet property="headerView" destination="OXo-Tz-Vbz" id="qr5-Iw-OmB"/>
                 <outlet property="timeEntryListScrollView" destination="7TM-hH-4yE" id="MrY-aB-U9C"/>
                 <outlet property="view" destination="3" id="Tzl-sf-sWH"/>
             </connections>

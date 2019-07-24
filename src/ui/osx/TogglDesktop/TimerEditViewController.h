@@ -7,16 +7,11 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "NSTextFieldClickable.h"
-#import "NSTextFieldDuration.h"
-#import "NSCustomTimerComboBox.h"
-#import "NSHoverButton.h"
-#import "NSBoxClickable.h"
-#import "AutoCompleteInput.h"
-#import "BetterFocusAutoCompleteInput.h"
+
+@class BetterFocusAutoCompleteInput;
+@class AutocompleteItem;
 
 @interface TimerEditViewController : NSViewController <NSComboBoxDataSource, NSTextFieldDelegate, NSTableViewDelegate>
-
 @property (weak) IBOutlet BetterFocusAutoCompleteInput *autoCompleteInput;
 @property (strong, nonatomic) NSArray *projectComboConstraint;
 @property (strong, nonatomic) NSArray *projectLabelConstraint;

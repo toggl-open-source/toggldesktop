@@ -7,8 +7,6 @@
 
 #import <Foundation/Foundation.h>
 
-#import "toggl_api.h"
-
 @interface ViewItem : NSObject
 @property (assign, nonatomic) uint64_t ID;
 @property (assign, nonatomic) uint64_t WID;
