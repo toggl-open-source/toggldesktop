@@ -2,7 +2,8 @@
 <component type="desktop">
     <id type="desktop">com.toggl.TogglDesktop.desktop</id>
     <project_license>BSD-3-Clause</project_license>
-    <metadata_license>MIT</metadata_license>
+    <metadata_license>CC0-1.0</metadata_license>
+    <content_rating>none</content_rating>
     <name>Toggl Desktop</name>
     <summary>Simple and Intuitive Time Tracking Software</summary>
     <description>
