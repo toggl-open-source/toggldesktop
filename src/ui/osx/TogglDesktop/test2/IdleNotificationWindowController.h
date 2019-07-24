@@ -7,12 +7,10 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "IdleEvent.h"
+
+@class IdleEvent;
 
 @interface IdleNotificationWindowController : NSWindowController
-
+@property (nonatomic, strong) IdleEvent *idleEvent;
 - (void)displayIdleEvent:(IdleEvent *)idleEvent;
-
-@property (strong, nonatomic) IdleEvent *idleEvent;
-
 @end

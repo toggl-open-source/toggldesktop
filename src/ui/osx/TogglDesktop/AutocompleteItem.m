@@ -124,8 +124,12 @@
 
 - (NSString *)description
 {
-	return [NSString stringWithFormat:@"Text: %@, WID: %llu, PID: %llu, TID: %llu, type: %llu",
-			self.Text, self.WorkspaceID, self.ProjectID, self.TaskID, self.Type];
+	return [NSString stringWithFormat:@"Text: %@, WID: %ld, PID: %lu, TID: %llu, type: %llu",
+			self.Text,
+			(long)self.WorkspaceID,
+			self.ProjectID,
+			(unsigned long)self.TaskID,
+			self.Type];
 }
 
 + (NSArray<AutocompleteItem *> *)loadAll:(TogglAutocompleteView *)first

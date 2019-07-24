@@ -474,8 +474,8 @@ extension EditorViewController: AutoCompleteViewDataSourceDelegate {
         }
 
         DesktopLibraryBridge.shared().setProjectForTimeEntryWithGUID(timeEntry.guid,
-                                                                     taskID: item.taskID,
-                                                                     projectID: item.projectID,
+                                                                     taskID: UInt64(item.taskID),
+                                                                     projectID: UInt64(item.projectID),
                                                                      projectGUID: projectGUID)
     }
 }

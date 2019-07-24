@@ -7,30 +7,30 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "toggl_api.h"
 
 @class ProjectSnapshot;
 
 @interface AutocompleteItem : NSObject
+@property (nonatomic, copy) NSString *Text;
+@property (nonatomic, copy) NSString *Description;
+@property (nonatomic, copy) NSString *DescriptionTitle; // Fix conflict with description in swift
+@property (nonatomic, copy) NSString *ProjectAndTaskLabel;
+@property (nonatomic, copy) NSString *TaskLabel;
+@property (nonatomic, copy) NSString *ProjectLabel;
+@property (nonatomic, copy) NSString *ClientLabel;
+@property (nonatomic, copy) NSString *ProjectColor;
+@property (nonatomic, copy) NSString *WorkspaceName;
+@property (nonatomic, copy) NSString *ProjectGUID;
+@property (nonatomic, assign) NSUInteger ID;
+@property (nonatomic, assign) NSUInteger ProjectID;
+@property (nonatomic, assign) NSUInteger WorkspaceID;
+@property (nonatomic, assign) NSUInteger TaskID;
+@property (nonatomic, assign) NSInteger Type;
+@property (nonatomic, assign) BOOL Billable;
+@property (nonatomic, strong) NSArray<NSString *> *tags;
+
 - (instancetype)initWithSnapshot:(ProjectSnapshot *)snapshot;
 + (NSArray<AutocompleteItem *> *)loadAll:(TogglAutocompleteView *)first;
 - (void)load:(TogglAutocompleteView *)data;
 - (void)save:(TogglAutocompleteView *)data;
-@property NSString *Text;
-@property NSString *Description;
-@property (copy, nonatomic) NSString *DescriptionTitle; // Fix conflict with description in swift
-@property NSString *ProjectAndTaskLabel;
-@property NSString *TaskLabel;
-@property NSString *ProjectLabel;
-@property NSString *ClientLabel;
-@property NSString *ProjectColor;
-@property NSString *WorkspaceName;
-@property uint64_t ID;
-@property uint64_t ProjectID;
-@property (copy, nonatomic) NSString *ProjectGUID;
-@property uint64_t WorkspaceID;
-@property uint64_t TaskID;
-@property int64_t Type;
-@property bool Billable;
-@property (strong) NSArray *tags;
 @end

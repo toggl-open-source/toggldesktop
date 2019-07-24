@@ -7,9 +7,18 @@
 //
 
 #import "AutocompleteDataSource.h"
-#import "toggl_api.h"
 #import "UIEvents.h"
 #import "AutocompleteItem.h"
+
+@interface AutocompleteDataSource () <NSComboBoxDataSource>
+
+@property (nonatomic, strong) NSMutableArray<NSString *> *orderedKeys;
+@property (nonatomic, strong) NSMutableArray<NSString *> *filteredOrderedKeys;
+@property (nonatomic, strong) NSMutableDictionary<NSString *, AutocompleteItem *> *dictionary;
+@property (nonatomic, copy) NSString *currentFilter;
+@property (nonatomic, assign) NSInteger textLength;
+
+@end
 
 @implementation AutocompleteDataSource
 
@@ -19,8 +28,8 @@ extern void *ctx;
 {
 	self = [super init];
 
-	self.orderedKeys = [[NSMutableArray alloc] init];
-	self.filteredOrderedKeys = [[NSMutableArray alloc] init];
+	self.orderedKeys = [NSMutableArray<NSString *> array];
+	self.filteredOrderedKeys = [NSMutableArray<NSString *> array];
 	self.dictionary = [[NSMutableDictionary alloc] init];
 
 	[[NSNotificationCenter defaultCenter] addObserver:self
@@ -46,9 +55,9 @@ extern void *ctx;
 	return @"";
 }
 
-- (NSString *)get:(NSString *)key
+- (AutocompleteItem *)get:(NSString *)key;
 {
-	NSString *object = nil;
+	AutocompleteItem *object = nil;
 
 	@synchronized(self)
 	{

@@ -1,14 +1,13 @@
 
 #import <Foundation/Foundation.h>
 
-#import "toggl_api.h"
-
 @interface AutotrackerRuleItem : NSObject
+@property (nonatomic, assign) NSInteger ID;
+@property (nonatomic, copy) NSString *Term;
+@property (nonatomic, copy) NSString *ProjectAndTaskLabel;
+
 + (NSMutableArray *)loadAll:(TogglAutotrackerRuleView *)first;
 - (void)load:(TogglAutotrackerRuleView *)data;
-@property int64_t ID;
-@property (strong) NSString *Term;
-@property (strong) NSString *ProjectAndTaskLabel;
 @end
 
 

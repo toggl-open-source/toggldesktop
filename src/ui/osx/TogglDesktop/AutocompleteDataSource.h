@@ -7,15 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "AutocompleteItem.h"
 
-@interface AutocompleteDataSource : NSObject <NSComboBoxDataSource>
-@property NSMutableArray *orderedKeys;
-@property NSMutableArray *filteredOrderedKeys;
-@property NSMutableDictionary *dictionary;
-@property NSString *currentFilter;
-@property NSInteger textLength;
-@property NSComboBox *combobox;
+@class AutocompleteItem;
+
+@interface AutocompleteDataSource : NSObject
+@property (nonatomic, strong) NSComboBox *combobox;
 - (NSString *)completedString:(NSString *)partialString;
 - (AutocompleteItem *)get:(NSString *)key;
 - (NSUInteger)count;

@@ -7,24 +7,24 @@
 //
 
 #import "MainWindowController.h"
+#import <Carbon/Carbon.h>
 #import "LoginViewController.h"
 #import "TimeEntryListViewController.h"
 #import "OverlayViewController.h"
 #import "TimeEntryViewItem.h"
 #import "UIEvents.h"
-#import "MenuItemTags.h"
 #import "DisplayCommand.h"
-#include <Carbon/Carbon.h>
 #import "TrackingService.h"
 #import "TogglDesktop-Swift.h"
 
 @interface MainWindowController ()
-@property (nonatomic, strong) IBOutlet LoginViewController *loginViewController;
-@property (nonatomic, strong) IBOutlet TimeEntryListViewController *timeEntryListViewController;
-@property (nonatomic, strong) IBOutlet OverlayViewController *overlayViewController;
-@property double troubleBoxDefaultHeight;
+@property (weak) IBOutlet NSView *contentView;
+@property (weak) IBOutlet NSView *mainView;
+@property (nonatomic, strong) LoginViewController *loginViewController;
+@property (nonatomic, strong) TimeEntryListViewController *timeEntryListViewController;
+@property (nonatomic, strong) OverlayViewController *overlayViewController;
 @property (nonatomic, strong) SystemMessageView *messageView;
-
+@property (nonatomic, assign) CGFloat troubleBoxDefaultHeight;
 @end
 
 @implementation MainWindowController

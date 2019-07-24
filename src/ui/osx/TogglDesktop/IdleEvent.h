@@ -9,9 +9,9 @@
 #import <Foundation/Foundation.h>
 
 @interface IdleEvent : NSObject
-@property (strong) NSString *guid;
-@property (strong) NSString *since;
-@property (strong) NSString *duration;
-@property uint64_t started;
-@property (strong) NSString *timeEntryDescription;
+@property (nonatomic, assign) NSInteger started;
+@property (nonatomic, copy) NSString *guid;
+@property (nonatomic, copy) NSString *since;
+@property (nonatomic, copy) NSString *duration;
+@property (nonatomic, copy) NSString *timeEntryDescription;
 @end

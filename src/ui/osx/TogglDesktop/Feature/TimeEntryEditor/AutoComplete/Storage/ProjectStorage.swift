@@ -88,7 +88,7 @@ extension ProjectStorage {
                 projectItem.projectAndTaskLabel = item.projectAndTaskLabel;
                 newItems.append(ProjectContentItem(item: projectItem))
             }
-            currentPID = item.projectID;
+            currentPID = UInt64(item.projectID);
 
             newItems.append(ProjectContentItem(item: item))
         }

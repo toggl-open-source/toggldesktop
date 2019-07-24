@@ -5,14 +5,13 @@
 //
 
 #import "LoginViewController.h"
-#import "toggl_api.h"
-#import "UIEvents.h"
 #import "GTMOAuth2WindowController.h"
 #import "Utils.h"
-#import "UIEvents.h"
-#import "const.h"
 #import "NSTextField+Ext.h"
 #import "TogglDesktop-Swift.h"
+#import "NSTextFieldClickablePointer.h"
+#import "AutocompleteDataSource.h"
+#import "NSCustomComboBox.h"
 
 typedef NS_ENUM (NSUInteger, TabViewType)
 {
@@ -20,8 +19,12 @@ typedef NS_ENUM (NSUInteger, TabViewType)
 	TabViewTypeSingup,
 };
 
-@interface LoginViewController ()
-@property AutocompleteDataSource *countryAutocompleteDataSource;
+static NSString *const emailMissingError = @"Please enter valid email address";
+static NSString *const passwordMissingError = @"A password is required";
+static NSString *const countryNotSelectedError = @"Please select Country before signing up";
+static NSString *const tosAgreeError = @"You must agree to the terms of service and privacy policy to use Toggl";
+
+@interface LoginViewController () <NSTextFieldDelegate, NSTableViewDataSource, NSComboBoxDataSource, NSComboBoxDelegate>
 @property (weak) IBOutlet NSTabView *tabView;
 @property (weak) IBOutlet NSTextField *email;
 @property (weak) IBOutlet NSSecureTextField *password;
@@ -30,30 +33,27 @@ typedef NS_ENUM (NSUInteger, TabViewType)
 @property (weak) IBOutlet NSTextFieldClickablePointer *signUpLink;
 @property (weak) IBOutlet NSTextFieldClickablePointer *loginLink;
 @property (weak) IBOutlet NSCustomComboBox *countrySelect;
-
-@property BOOL countriesLoaded;
-@property uint64_t selectedCountryID;
 @property (weak) IBOutlet FlatButton *tosCheckbox;
 @property (weak) IBOutlet NSTextFieldClickablePointer *tosLink;
 @property (weak) IBOutlet NSTextFieldClickablePointer *privacyLink;
 @property (weak) IBOutlet FlatButton *loginButton;
 @property (weak) IBOutlet FlatButton *signupButton;
-@property (assign, nonatomic) TabViewType currentTab;
 @property (weak) IBOutlet NSBox *boxView;
+@property (weak) IBOutlet NSProgressIndicator *loginLoaderView;
+@property (weak) IBOutlet NSProgressIndicator *signUpLoaderView;
+
+@property (nonatomic, strong) AutocompleteDataSource *countryAutocompleteDataSource;
+@property (nonatomic, assign) BOOL countriesLoaded;
+@property (nonatomic, assign) NSInteger selectedCountryID;
+@property (nonatomic, assign) TabViewType currentTab;
 
 - (IBAction)clickLoginButton:(id)sender;
 - (IBAction)clickSignupButton:(id)sender;
 - (IBAction)countrySelected:(id)sender;
-@property (weak) IBOutlet NSProgressIndicator *loginLoaderView;
-@property (weak) IBOutlet NSProgressIndicator *signUpLoaderView;
 
 @end
 
 @implementation LoginViewController
-NSString *emailMissingError = @"Please enter valid email address";
-NSString *passwordMissingError = @"A password is required";
-NSString *countryNotSelectedError = @"Please select Country before signing up";
-NSString *tosAgreeError = @"You must agree to the terms of service and privacy policy to use Toggl";
 extern void *ctx;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
