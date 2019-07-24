@@ -2289,7 +2289,7 @@
                     },
                     {
                         "type": "linux_flatpak",
-                        "name": "com.toggl.TogglDesktop_linux_86_64-7_4_465.flatpak"
+                        "name": "com.toggl.TogglDesktop_linux_x86_64-7_4_465.flatpak"
                     }
                 ]
             },
@@ -2303,7 +2303,7 @@
                     },
                     {
                         "type": "linux_flatpak",
-                        "name": "com.toggl.TogglDesktop_linux_86_64-7_4_466.flatpak"
+                        "name": "com.toggl.TogglDesktop_linux_x86_64-7_4_466.flatpak"
                     }
                 ]
             },
@@ -2317,7 +2317,7 @@
                     },
                     {
                         "type": "linux_flatpak",
-                        "name": "com.toggl.TogglDesktop_linux_86_64-7_4_467.flatpak"
+                        "name": "com.toggl.TogglDesktop_linux_x86_64-7_4_467.flatpak"
                     }
                 ]
             },
@@ -2331,7 +2331,7 @@
                     },
                     {
                         "type": "linux_flatpak",
-                        "name": "com.toggl.TogglDesktop_linux_86_64-7_4_468.flatpak"
+                        "name": "com.toggl.TogglDesktop_linux_x86_64-7_4_468.flatpak"
                     }
                 ]
             },
@@ -2345,7 +2345,7 @@
                     },
                     {
                         "type": "linux_flatpak",
-                        "name": "com.toggl.TogglDesktop_linux_86_64-7_4_469.flatpak"
+                        "name": "com.toggl.TogglDesktop_linux_x86_64-7_4_469.flatpak"
                     }
                 ]
             },
@@ -2359,7 +2359,7 @@
                     },
                     {
                         "type": "linux_flatpak",
-                        "name": "com.toggl.TogglDesktop_linux_86_64-7_4_470.flatpak"
+                        "name": "com.toggl.TogglDesktop_linux_x86_64-7_4_470.flatpak"
                     }
                 ]
             },
@@ -2373,7 +2373,7 @@
                     },
                     {
                         "type": "linux_flatpak",
-                        "name": "com.toggl.TogglDesktop_linux_86_64-7_4_471.flatpak"
+                        "name": "com.toggl.TogglDesktop_linux_x86_64-7_4_471.flatpak"
                     }
                 ]
             },
@@ -2387,7 +2387,7 @@
                     },
                     {
                         "type": "linux_flatpak",
-                        "name": "com.toggl.TogglDesktop_linux_86_64-7_4_472.flatpak"
+                        "name": "com.toggl.TogglDesktop_linux_x86_64-7_4_472.flatpak"
                     }
                 ]
             },
@@ -2401,7 +2401,7 @@
                     },
                     {
                         "type": "linux_flatpak",
-                        "name": "com.toggl.TogglDesktop_linux_86_64-7_4_473.flatpak"
+                        "name": "com.toggl.TogglDesktop_linux_x86_64-7_4_473.flatpak"
                     }
                 ]
             },
@@ -2415,7 +2415,7 @@
                     },
                     {
                         "type": "linux_flatpak",
-                        "name": "com.toggl.TogglDesktop_linux_86_64-7_4_474.flatpak"
+                        "name": "com.toggl.TogglDesktop_linux_x86_64-7_4_474.flatpak"
                     }
                 ]
             }
