@@ -6,9 +6,9 @@
         <description>Most recent changes.</description>
         <language>en</language>
         <item>
-            <title>Version 7.4.470</title>
-            <pubDate>2019-07-23-14-42-08</pubDate>
-            <enclosure url="https://github.com/toggl/toggldesktop/releases/download/v7.4.470/TogglDesktop-7_4_470.dmg" sparkle:version="7.4.470" length="18575824" type="application/octet-stream" sparkle:dsaSignature="MC0CFDsgPMe2wmYC4bVzGtHQD0R8HuntAhUAjOIE90pRmttaRWp5j6BF0s9fQqM=" />
+            <title>Version 7.4.471</title>
+            <pubDate>2019-07-23-17-11-54</pubDate>
+            <enclosure url="https://github.com/toggl/toggldesktop/releases/download/v7.4.471/TogglDesktop-7_4_471.dmg" sparkle:version="7.4.471" length="18579928" type="application/octet-stream" sparkle:dsaSignature="MC0CFQCuR3EY3Mpq23DZ04inz4T2q7E7UQIUCdDqw2tQV9xm3gXWkEZmW+Qnk44=" />
             <description>
                 <![CDATA[
                     <ul>
