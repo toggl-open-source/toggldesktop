@@ -60,6 +60,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)updateDescriptionForTimeEntry:(TimeEntryViewItem *)timeEntry
 						 autocomplete:(AutocompleteItem *)autocomplete;
+
+- (void)setEditorWindowSize:(CGSize)size;
+- (CGSize)getEditorWindowSize;
+
 @end
 
 NS_ASSUME_NONNULL_END

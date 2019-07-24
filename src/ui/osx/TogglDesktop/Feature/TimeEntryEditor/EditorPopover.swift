@@ -27,6 +27,8 @@ final class EditorPopover: NoVibrantPopoverView {
     @objc func prepareViewController() {
         let editor = EditorViewController(nibName: NSNib.Name("EditorViewController"), bundle: nil)
         editor.view.appearance = appearance
+        let size = DesktopLibraryBridge.shared().getEditorWindowSize()
+        editor.view.frame.size = size
         contentViewController = editor
     }
 
@@ -41,5 +43,9 @@ final class EditorPopover: NoVibrantPopoverView {
         if let editor = contentViewController as? EditorViewController {
             editor.timeEntry = timeEntry
         }
+    }
+
+    override func popoverDidResize() {
+        DesktopLibraryBridge.shared().setEditorWindowSize(contentSize)
     }
 }

@@ -163,7 +163,12 @@ class ResizablePopover: NSPopover {
             setCursor()
             setTrackers()
             down = nil
+            popoverDidResize()
         }
+    }
+
+    func popoverDidResize() {
+        // for overriden
     }
 
     // MARK: Private
