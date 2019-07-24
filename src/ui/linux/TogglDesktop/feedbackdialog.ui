@@ -14,7 +14,7 @@
    <string>Send Feedback</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">color:rgb(85, 85, 85);font-size:13px;</string>
+   <string notr="true">font-size:13px;</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
