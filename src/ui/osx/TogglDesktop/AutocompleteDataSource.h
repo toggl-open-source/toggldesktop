@@ -10,7 +10,7 @@
 
 @class AutocompleteItem;
 
-@interface AutocompleteDataSource : NSObject
+@interface AutocompleteDataSource : NSObject <NSComboBoxDataSource>
 @property (nonatomic, strong) NSComboBox *combobox;
 - (NSString *)completedString:(NSString *)partialString;
 - (AutocompleteItem *)get:(NSString *)key;

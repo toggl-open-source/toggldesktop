@@ -478,7 +478,7 @@ void TimeEntryEditorWidget::displayTags(
     }
 
     QSet<QString> actuallyAddedTags;
-    for (auto recentlyAddedTag : recentlyAddedTags) {
+for (auto recentlyAddedTag : recentlyAddedTags) {
         if (!recentlyAddedTag.isEmpty() && !tagList.contains(recentlyAddedTag)) {
             tagList << recentlyAddedTag;
         }

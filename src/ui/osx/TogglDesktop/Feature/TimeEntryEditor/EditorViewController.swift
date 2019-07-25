@@ -487,19 +487,19 @@ extension EditorViewController: NSTextFieldDelegate {
 
         // Duration
         if textField == durationTextField {
-            durationTextFieldOnChange(durationTextField)
+            durationTextFieldOnChange(self)
             return
         }
 
         // Start at
         if textField == startAtTextField {
-            startTextFieldOnChange(startAtTextField)
+            startTextFieldOnChange(self)
             return
         }
 
         // End at
         if textField == endAtTextField {
-            endTextFieldOnChange(endAtTextField)
+            endTextFieldOnChange(self)
         }
     }
 

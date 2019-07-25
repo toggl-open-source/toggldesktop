@@ -122,16 +122,6 @@
 	data->Tags = strdup([[self.tags componentsJoinedByString:@"\t"] UTF8String]);
 }
 
-- (NSString *)description
-{
-	return [NSString stringWithFormat:@"Text: %@, WID: %ld, PID: %lu, TID: %llu, type: %llu",
-			self.Text,
-			(long)self.WorkspaceID,
-			self.ProjectID,
-			(unsigned long)self.TaskID,
-			self.Type];
-}
-
 + (NSArray<AutocompleteItem *> *)loadAll:(TogglAutocompleteView *)first
 {
 	NSMutableArray *result = [[NSMutableArray alloc] init];

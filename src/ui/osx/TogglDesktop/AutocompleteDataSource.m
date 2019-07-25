@@ -10,7 +10,7 @@
 #import "UIEvents.h"
 #import "AutocompleteItem.h"
 
-@interface AutocompleteDataSource () <NSComboBoxDataSource>
+@interface AutocompleteDataSource ()
 
 @property (nonatomic, strong) NSMutableArray<NSString *> *orderedKeys;
 @property (nonatomic, strong) NSMutableArray<NSString *> *filteredOrderedKeys;
