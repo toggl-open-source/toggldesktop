@@ -8,6 +8,7 @@
 
 #import "LiteAutoCompleteDataSource.h"
 #import "AutoCompleteTableCell.h"
+#import "AutoCompleteTable.h"
 #import "TogglDesktop-Swift.h"
 
 @interface LiteAutoCompleteDataSource ()

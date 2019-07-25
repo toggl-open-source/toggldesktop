@@ -19,6 +19,7 @@
 #import "NSBoxClickable.h"
 #import "AutoCompleteInput.h"
 #import "BetterFocusAutoCompleteInput.h"
+#import "AutoCompleteTable.h"
 
 typedef enum : NSUInteger
 {

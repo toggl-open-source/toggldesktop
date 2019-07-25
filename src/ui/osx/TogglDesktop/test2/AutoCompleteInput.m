@@ -8,18 +8,28 @@
 
 #import "AutoCompleteInput.h"
 #import "TogglDesktop-Swift.h"
+#import "AutoCompleteTable.h"
+#import "AutoCompleteTableCell.h"
+#import "AutoCompleteTableContainer.h"
+#import <Carbon/Carbon.h>
 
-@interface AutoCompleteInput () <NoInteractionViewDelegate>
+static NSString *const downArrow = @"\u25BC";
+static NSString *const upArrow = @"\u25B2";
 
+@interface AutoCompleteInput () <NoInteractionViewDelegate, NSTableViewDelegate, NSTableViewDataSource, NSTextFieldDelegate>
+@property (strong, nonatomic) AutoCompleteTable *autocompleteTableView;
+@property (strong, nonatomic) AutoCompleteTableContainer *autocompleteTableContainer;
 @property (assign, nonatomic) BOOL constraintsActive;
 @property (strong, nonatomic) NoInteractionView *backgroundView;
 @property (strong, nonatomic) NSLayoutConstraint *heightConstraint;
+@property (assign, nonatomic) NSInteger posY;
+@property (strong, nonatomic) NSButton *actionButton;
+@property (assign, nonatomic) CGFloat totalHeight;
+@property (assign, nonatomic) CGFloat itemHeight;
+@property (assign, nonatomic) CGFloat worksapceItemHeight;
 @end
 
 @implementation AutoCompleteInput
-
-NSString *downArrow = @"\u25BC";
-NSString *upArrow = @"\u25B2";
 
 - (id)initWithCoder:(NSCoder *)coder
 {
@@ -51,9 +61,8 @@ NSString *upArrow = @"\u25B2";
 - (void)createAutocomplete
 {
 	self.autocompleteTableContainer = [[AutoCompleteTableContainer alloc] initWithFrame:CGRectZero];
-	self.nibAutoCompleteTableCell = [[NSNib alloc] initWithNibNamed:@"AutoCompleteTableCell" bundle:nil];
 	self.autocompleteTableView = [[AutoCompleteTable alloc] initWithFrame:NSMakeRect(0, 0, 0, 0)];
-	[self.autocompleteTableView registerNib:self.nibAutoCompleteTableCell
+	[self.autocompleteTableView registerNib:[[NSNib alloc] initWithNibNamed:@"AutoCompleteTableCell" bundle:nil]
 							  forIdentifier :@"AutoCompleteTableCell"];
 
 	[self.autocompleteTableView setDelegate:self];

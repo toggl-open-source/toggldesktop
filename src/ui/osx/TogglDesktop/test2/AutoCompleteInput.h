@@ -7,11 +7,11 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#include <Carbon/Carbon.h>
-#import "AutoCompleteTable.h"
-#import "AutoCompleteTableCell.h"
-#import "AutoCompleteTableContainer.h"
 #import "UndoTextField.h"
+
+@class AutoCompleteTable;
+@class AutoCompleteTableContainer;
+@class AutocompleteItem;
 
 typedef NS_ENUM (NSUInteger, AutoCompleteDisplayMode)
 {
@@ -19,16 +19,12 @@ typedef NS_ENUM (NSUInteger, AutoCompleteDisplayMode)
 	AutoCompleteDisplayModeFullscreen,
 };
 
-@interface AutoCompleteInput : UndoTextField <NSTableViewDelegate, NSTableViewDataSource, NSTextFieldDelegate>
-@property NSNib *nibAutoCompleteTableCell;
-@property AutoCompleteTableContainer *autocompleteTableContainer;
-@property AutoCompleteTable *autocompleteTableView;
-@property int posY;
-@property NSButton *actionButton;
+@interface AutoCompleteInput : UndoTextField
+@property (strong, nonatomic, readonly) AutoCompleteTable *autocompleteTableView;
+@property (strong, nonatomic, readonly) AutoCompleteTableContainer *autocompleteTableContainer;
+@property (assign, nonatomic, readonly) CGFloat itemHeight;
+@property (assign, nonatomic, readonly) CGFloat worksapceItemHeight;
 @property (assign, nonatomic) AutoCompleteDisplayMode displayMode;
-@property (assign, nonatomic) CGFloat itemHeight;
-@property (assign, nonatomic) CGFloat worksapceItemHeight;
-@property (assign, nonatomic) CGFloat totalHeight;
 
 - (void)toggleTableViewWithNumberOfItem:(NSInteger)numberOfItem;
 - (void)updateDropdownWithHeight:(CGFloat)height;
