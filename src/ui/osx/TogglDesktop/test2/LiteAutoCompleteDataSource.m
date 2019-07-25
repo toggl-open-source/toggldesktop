@@ -10,12 +10,20 @@
 #import "AutoCompleteTableCell.h"
 #import "AutoCompleteTable.h"
 #import "TogglDesktop-Swift.h"
+#import "AutoCompleteInput.h"
+#import "AutocompleteItem.h"
 
-@interface LiteAutoCompleteDataSource ()
+@interface LiteAutoCompleteDataSource () <NSTableViewDataSource>
 @property (assign, nonatomic) CGFloat itemHeight;
 @property (assign, nonatomic) CGFloat worksapceItemHeight;
+@property (nonatomic, strong) NSMutableArray *orderedKeys;
+@property (nonatomic, strong) NSMutableArray *filteredOrderedKeys;
+@property (nonatomic, assign) NSInteger textLength;
+@property (nonatomic, assign) NSInteger lastType;
+@property (nonatomic, assign) NSInteger lastWID;
+@property (nonatomic, copy) NSString *lastClientLabel;
+@property (nonatomic, strong) NSArray *types;
 @end
-
 
 @implementation LiteAutoCompleteDataSource
 

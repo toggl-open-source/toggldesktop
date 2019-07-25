@@ -6,7 +6,6 @@
 #import "UIEvents.h"
 #import "TimeEntryCell.h"
 #import "LoadMoreCell.h"
-#import "UIEvents.h"
 #import "AutocompleteItem.h"
 #import "AutoCompleteTableCell.h"
 #import "ProjectTextField.h"
@@ -14,3 +13,4 @@
 #import "DesktopLibraryBridge.h"
 #import "UndoTextField.h"
 #import "TimeEntryCollectionView.h"
+#import "ConvertHexColor.h"

@@ -7,7 +7,12 @@
 //
 
 #import "AutoCompleteTable.h"
-#include <Carbon/Carbon.h>
+#import "AutoCompleteTableCell.h"
+
+@interface AutoCompleteTable ()
+@property (nonatomic, assign) NSInteger lastSelected;
+@property (nonatomic, assign) NSInteger lastClicked;
+@end
 
 @implementation AutoCompleteTable
 
