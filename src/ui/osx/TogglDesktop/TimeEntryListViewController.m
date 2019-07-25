@@ -270,7 +270,7 @@ extern void *ctx;
 	}
 
 	// Hightlight selected cell
-	[[self.collectionView getSelectedEntryCell] setFocused];
+	[[self.collectionView getSelectedEntryCells].firstObject setFocused];
 }
 
 - (void)resetEditPopover:(NSNotification *)notification
@@ -299,7 +299,7 @@ extern void *ctx;
 		self.runningEdit = (cmd.timeEntry.duration_in_seconds < 0);
 
 		NSView *ofView = self.view;
-		TimeEntryCell *selectedCell = [self.collectionView getSelectedEntryCell];
+		TimeEntryCell *selectedCell = [self.collectionView getSelectedEntryCells].firstObject;
 		CGRect positionRect = [self positionRectForItem:selectedCell];
 
 		if (self.runningEdit)
@@ -365,7 +365,7 @@ extern void *ctx;
 
 - (void)clearLastSelectedEntry
 {
-	[[self.collectionView getSelectedEntryCell] setupGroupMode];
+	[[self.collectionView getSelectedEntryCells].firstObject setupGroupMode];
 }
 
 - (void)resetEditPopoverSize:(NSNotification *)notification

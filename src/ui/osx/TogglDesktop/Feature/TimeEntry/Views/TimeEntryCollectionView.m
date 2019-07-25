@@ -97,13 +97,18 @@ extern void *ctx;
 }
 
 - (void)keyDown:(NSEvent *)event {
+	NSArray<TimeEntryCell *> *cells = [self getSelectedEntryCells];
+
+	// Ignore if there is no selection
+	if (cells == nil)
+	{
+		[super keyDown:event];
+		return;
+	}
+
 	if ((event.keyCode == kVK_Return) || (event.keyCode == kVK_ANSI_KeypadEnter))
 	{
-		TimeEntryCell *cell = [self getSelectedEntryCell];
-		if (cell != nil)
-		{
-			[cell openEdit];
-		}
+		[cells.firstObject openEdit];
 	}
 	else if (event.keyCode == kVK_Escape)
 	{
@@ -117,23 +122,34 @@ extern void *ctx;
 	}
 	else if (event.keyCode == kVK_RightArrow)
 	{
-		TimeEntryCell *cell = [self getSelectedEntryCell];
-		if (cell != nil && cell.GroupName.length && !cell.GroupOpen)
+		for (TimeEntryCell *cell in cells)
 		{
-			toggl_toggle_entries_group(ctx, [cell.GroupName UTF8String]);
+			if (cell != nil && cell.GroupName.length && !cell.GroupOpen)
+			{
+				toggl_toggle_entries_group(ctx, [cell.GroupName UTF8String]);
+			}
 		}
 	}
 	else if (event.keyCode == kVK_LeftArrow)
 	{
-		TimeEntryCell *cell = [self getSelectedEntryCell];
-		if (cell != nil && cell.GroupName.length && cell.GroupOpen)
+		for (TimeEntryCell *cell in cells)
 		{
-			toggl_toggle_entries_group(ctx, [cell.GroupName UTF8String]);
+			if (cell != nil && cell.GroupName.length && cell.GroupOpen)
+			{
+				toggl_toggle_entries_group(ctx, [cell.GroupName UTF8String]);
+			}
 		}
 	}
 	else if (event.keyCode == kVK_Space)
 	{
-		TimeEntryCell *cell = [self getSelectedEntryCell];
+		// Only start TE if we select one TE
+		if (cells.count >= 2)
+		{
+			[super keyDown:event];
+			return;
+		}
+
+		TimeEntryCell *cell = cells.firstObject;
 		if (cell != nil)
 		{
 			toggl_continue(ctx, [cell.GUID UTF8String]);
@@ -153,7 +169,7 @@ extern void *ctx;
 	}
 }
 
-- (TimeEntryCell *)getSelectedEntryCell
+- (NSArray<TimeEntryCell *> *)getSelectedEntryCells
 {
 	if (self.selectionIndexPaths.count == 0)
 	{
@@ -161,33 +177,34 @@ extern void *ctx;
 	}
 	self.latestSelectedIndexPath = [[self.selectionIndexPaths allObjects] firstObject];
 
-	id view = [self itemAtIndexPath:self.latestSelectedIndexPath];
-	if ([view isKindOfClass:[TimeEntryCell class]])
+	// Get all selected cells
+	NSMutableArray<TimeEntryCell *> *items = [@[] mutableCopy];
+	for (NSIndexPath *indexPath in self.selectionIndexPaths.allObjects)
 	{
-		return (TimeEntryCell *)view;
+		id view = [self itemAtIndexPath:indexPath];
+		if ([view isKindOfClass:[TimeEntryCell class]])
+		{
+			[items addObject:(TimeEntryCell *)view];
+		}
 	}
-	return nil;
+	return [items copy];
 }
 
 - (void)deleteEntry
 {
-	TimeEntryCell *cell = [self getSelectedEntryCell];
+	NSArray<TimeEntryCell *> *cells = [self getSelectedEntryCells];
 
-	if (cell != nil)
+	if (cells.count == 0)
 	{
-		// If description is empty and duration is less than 15 seconds delete without confirmation
-		if (cell.confirmless_delete)
-		{
-			if (toggl_delete_time_entry(ctx, [cell.GUID UTF8String]))
-			{
-				[self selectPreviousRowFromIndexPath:self.latestSelectedIndexPath];
-			}
-			return;
-		}
-		NSString *msg = [NSString stringWithFormat:@"Delete time entry \"%@\"?", cell.descriptionTextField.stringValue];
+		return;
+	}
+
+	if (cells.count >= 2)
+	{
+		NSString *msg = [NSString stringWithFormat:@"Are you sure to delete %lu items", (unsigned long)cells.count];
 
 		NSAlert *alert = [[NSAlert alloc] init];
-		[alert addButtonWithTitle:@"OK"];
+		[alert addButtonWithTitle:@"Delete"];
 		[alert addButtonWithTitle:@"Cancel"];
 		[alert setMessageText:msg];
 		[alert setInformativeText:@"Deleted time entries cannot be restored."];
@@ -197,12 +214,60 @@ extern void *ctx;
 			return;
 		}
 
-		NSLog(@"Deleting time entry %@", cell.GUID);
+		// Delete all
+		[self deleteTimeEntries:cells];
+	}
+	else
+	{
+		// Delete single with confirmation
+		TimeEntryCell *cell = cells.firstObject;
+		[self deleteTimeEntry:cell];
+	}
+}
 
+- (void)deleteTimeEntries:(NSArray<TimeEntryCell *> *)cells
+{
+	for (TimeEntryCell *cell in cells)
+	{
+		toggl_delete_time_entry(ctx, [cell.GUID UTF8String]);
+	}
+	[self selectPreviousRowFromIndexPath:self.latestSelectedIndexPath];
+}
+
+- (void)deleteTimeEntry:(TimeEntryCell *)cell
+{
+	if (cell == nil)
+	{
+		return;
+	}
+
+	// If description is empty and duration is less than 15 seconds delete without confirmation
+	if (cell.confirmless_delete)
+	{
 		if (toggl_delete_time_entry(ctx, [cell.GUID UTF8String]))
 		{
 			[self selectPreviousRowFromIndexPath:self.latestSelectedIndexPath];
 		}
+		return;
+	}
+	NSString *msg = [NSString stringWithFormat:@"Delete time entry \"%@\"?", cell.descriptionTextField.stringValue];
+
+	NSAlert *alert = [[NSAlert alloc] init];
+	[alert addButtonWithTitle:@"OK"];
+	[alert addButtonWithTitle:@"Cancel"];
+	[alert setMessageText:msg];
+	[alert setInformativeText:@"Deleted time entries cannot be restored."];
+	[alert setAlertStyle:NSWarningAlertStyle];
+	if ([alert runModal] != NSAlertFirstButtonReturn)
+	{
+		return;
+	}
+
+	NSLog(@"Deleting time entry %@", cell.GUID);
+
+	if (toggl_delete_time_entry(ctx, [cell.GUID UTF8String]))
+	{
+		[self selectPreviousRowFromIndexPath:self.latestSelectedIndexPath];
 	}
 }
 
