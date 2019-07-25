@@ -18,7 +18,8 @@
                 "Signed the uninstaller"
             ],
             "date": "July 25th 2019",
-            "beta": "true"
+            "beta": "true",
+            "has64bit": "true"
         },
         {
             "version": "7.4.422",
