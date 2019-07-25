@@ -42,6 +42,20 @@
                         "name": "TogglDesktopInstaller-x64-7.4.470.exe"
                     }
                 ]
+            },
+            {
+                "version": "7.4.474",
+                "timestamp": "24-07-2019",
+                "filename": [
+                    {
+                        "type": "windows",
+                        "name": "TogglDesktopInstaller-7.4.474.exe"
+                    },
+                    {
+                        "type": "windows64",
+                        "name": "TogglDesktopInstaller-x64-7.4.474.exe"
+                    }
+                ]
             }
         ],
         "beta": [
