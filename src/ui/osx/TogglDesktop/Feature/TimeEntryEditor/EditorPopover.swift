@@ -10,10 +10,6 @@ import Cocoa
 
 final class EditorPopover: NoVibrantPopoverView {
 
-    private struct Constants {
-        static let FocusTimerNotification = NSNotification.Name(kFocusTimer)
-    }
-
     override init() {
         let size = CGSize(width: 274, height: 381)
         let maxSize = CGSize(width: size.width * 3, height: size.height)
@@ -30,13 +26,6 @@ final class EditorPopover: NoVibrantPopoverView {
         let size = DesktopLibraryBridge.shared().getEditorWindowSize()
         editor.view.frame.size = size
         contentViewController = editor
-    }
-
-    override func close(focusTimer: Bool) {
-        super.close(focusTimer: focusTimer)
-        if focusTimer {
-            NotificationCenter.default.post(name: Constants.FocusTimerNotification, object: nil)
-        }
     }
 
     @objc func setTimeEntry(_ timeEntry: TimeEntryViewItem) {

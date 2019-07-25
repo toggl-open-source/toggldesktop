@@ -223,7 +223,7 @@ extern void *ctx;
 	{
 		if (self.timeEntrypopover.shown)
 		{
-			[self.timeEntrypopover closeWithFocusTimer:YES];
+			[self.timeEntrypopover performClose:self];
 			[self setDefaultPopupSize];
 		}
 		// when timer not focused
@@ -472,7 +472,7 @@ extern void *ctx;
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 	if (cmd.open && self.timeEntrypopover.shown)
 	{
-		[self.timeEntrypopover closeWithFocusTimer:YES];
+		[self.timeEntrypopover performClose:self];
 		[self setDefaultPopupSize];
 	}
 }
