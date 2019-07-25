@@ -1,6 +1,26 @@
 {
     "versions": [
         {
+            "version": "7.4.475",
+            "rows": [
+                "Created a 64-bit version",
+                "Made project name displayed before client name",
+                "Added possibility to create private projects",
+                "Fixed issue with time entry being stopped when computer gets locked",
+                "Made timeline stop tracking processes when computer is locked",
+                "Added standard behavior for selecting word with double click and whole field with triple click",
+                "Added command-line option to start minimized",
+                "Added checkbox to start the app minimized on Windows login",
+                "Fixed date selection issue when using custom date display format",
+                "Made all notifications hide the moment user starts the timer with a shortcut",
+                "Added Ctrl+F4 shortcut to minimize the app",
+                "Fixed issues with unsynced projects",
+                "Signed the uninstaller"
+            ],
+            "date": "July 25th 2019",
+            "beta": "true"
+        },
+        {
             "version": "7.4.422",
             "rows": [
                 "Fixed issue with confirmless deletion of a running time entry",
