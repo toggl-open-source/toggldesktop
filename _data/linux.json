@@ -1,6 +1,27 @@
 {
   "versions": [
     {
+        "version": "7.4.476",
+        "rows": [
+          "You can control TogglDesktop using your keyboard entirely. If in doubt, use Ctrl+Enter to open a Time entry or Ctrl+Delete to delete it.",
+          "Systemwide font, style and color palette settings are now used - the application should fit your environment a lot better.",
+          "Idle and tracking reminder notifications now use system notifications instead of popup windows.",
+          "Deleting a running time entry will prompt the user to confirm if it's running for more than 15 seconds.",
+          "Idle time calculation now takes locked screen into account.",
+          "Creating a client will automatically select and assign it to the project being created.",
+          "Adding tags is now possible.",
+          "When creating a new project, it gets created in the right workspace (the one of the time entry being edited).",
+          "Automatic crash reports now contain better backtraces.",
+          "Pressing Shift+Tab in the time entry editor now behaves as expected.",
+          "The continue button in the time entry list now needs to be clicked only once every time.",
+          "Creating a tab that already exists will select it in the list.",
+          "Timer widget now displays the current task right even when the window is resized.",
+          "The app now detects network state changes to represent the online/offline states appropriately."
+        ],
+        "date": "July 25th 2019",
+        "beta": "true"
+    },
+    {
         "version": "7.4.358",
         "rows": [
           "Added confirmless delete for all items shorter than 15 seconds",
