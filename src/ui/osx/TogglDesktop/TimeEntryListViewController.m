@@ -226,11 +226,6 @@ extern void *ctx;
 			[self.timeEntrypopover performClose:self];
 			[self setDefaultPopupSize];
 		}
-		// when timer not focused
-		if ([self.timerEditViewController.autoCompleteInput currentEditor] == nil)
-		{
-			[self focusListing:nil];
-		}
 	}
 
 	// Adjust the popover position if we change the date

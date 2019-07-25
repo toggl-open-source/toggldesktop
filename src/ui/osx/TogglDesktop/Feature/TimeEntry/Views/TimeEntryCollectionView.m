@@ -66,13 +66,23 @@ extern void *ctx;
 	NSIndexPath *index = [self indexPathForItemAtPoint:curPoint];
 	NSCollectionViewItem *item = [self itemAtIndexPath:index];
 
-	if ([item isKindOfClass:[TimeEntryCell class]])
+	if (index && [item isKindOfClass:[TimeEntryCell class]])
 	{
 		TimeEntryCell *timeCell = (TimeEntryCell *)item;
 
 		// We have to store the click index
 		// so, the displayTimeEntryEditor can detect which cell should be show popover
 		self.clickedIndexPath = index;
+
+		// If we're pressing SHIFT and click
+		// Don't show Editor, just select
+		NSUInteger flags = [[NSApp currentEvent] modifierFlags];
+		if (flags & NSShiftKeyMask)
+		{
+			[self selectItemsAtIndexPaths:[NSSet setWithObject:index]
+						   scrollPosition:NSCollectionViewScrollPositionLeft];
+			return;
+		}
 
 		// Show popover or open group
 		if (timeCell.cellType == CellTypeGroup)
