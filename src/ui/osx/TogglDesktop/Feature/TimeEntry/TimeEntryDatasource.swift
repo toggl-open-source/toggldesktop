@@ -423,9 +423,8 @@ extension TimeEntryDatasource {
     func collectionView(_ collectionView: NSCollectionView, pasteboardWriterForItemAt indexPath: IndexPath) -> NSPasteboardWriting? {
         guard let item = object(at: indexPath) else { return nil }
         guard !item.loadMore else { return nil }
-
         // Save indexpath
-        let data = NSKeyedArchiver.archivedData(withRootObject: indexPath)
+        let data = NSKeyedArchiver.archivedData(withRootObject: Array(collectionView.selectionIndexPaths))
         let pbItem = NSPasteboardItem()
         pbItem.setData(data, forType: NSPasteboard.PasteboardType.string)
         return pbItem

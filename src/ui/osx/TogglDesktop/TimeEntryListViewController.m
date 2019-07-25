@@ -522,31 +522,41 @@ extern void *ctx;
 - (BOOL)collectionView:(NSCollectionView *_Nonnull)collectionView acceptDrop:(id<NSDraggingInfo> _Nonnull)draggingInfo indexPath:(NSIndexPath *_Nonnull)indexPath dropOperation:(enum NSCollectionViewDropOperation)dropOperation {
 	NSPasteboard *pboard = [draggingInfo draggingPasteboard];
 	NSData *rowData = [pboard dataForType:NSStringPboardType];
-	NSIndexPath *moveIndexPath = [NSKeyedUnarchiver unarchiveObjectWithData:rowData];
+	id data = [NSKeyedUnarchiver unarchiveObjectWithData:rowData];
 
-	// Updating the dropped item date
-	TimeEntryViewItem *dateModel = [self.dataSource objectAt:indexPath];
-	TimeEntryViewItem *currentModel = [self.dataSource objectAt:moveIndexPath];
-
-	if (dateModel != nil && currentModel != nil && !dateModel.loadMore && !currentModel.loadMore)
+	// Make sure it's an array of indexPath
+	if ([data isKindOfClass:[NSArray<NSIndexPath *> class]])
 	{
-		NSCalendar *calendar = [NSCalendar currentCalendar];
-		NSDateComponents *components = [calendar components:(NSCalendarUnitHour | NSCalendarUnitMinute) fromDate:currentModel.started];
-		NSInteger hours = [components hour];
-		NSInteger minutes = [components minute];
-		NSInteger seconds = [components second];
+		NSArray *moveIndexPaths = (NSArray *)data;
 
-		unsigned unitFlags = NSCalendarUnitYear | NSCalendarUnitMonth |  NSCalendarUnitDay;
-		NSDateComponents *comps = [calendar components:unitFlags fromDate:dateModel.started];
-		comps.hour = hours;
-		comps.minute = minutes;
-		comps.second = seconds;
-		NSDate *newDate = [calendar dateFromComponents:comps];
+		// Update items
+		for (NSIndexPath *moveIndexPath in moveIndexPaths)
+		{
+			TimeEntryViewItem *dateModel = [self.dataSource objectAt:indexPath];
+			TimeEntryViewItem *currentModel = [self.dataSource objectAt:moveIndexPath];
 
-		toggl_set_time_entry_date(ctx,
-								  [currentModel.GUID UTF8String],
-								  [newDate timeIntervalSince1970]);
+			if (dateModel != nil && currentModel != nil && !dateModel.loadMore && !currentModel.loadMore)
+			{
+				NSCalendar *calendar = [NSCalendar currentCalendar];
+				NSDateComponents *components = [calendar components:(NSCalendarUnitHour | NSCalendarUnitMinute) fromDate:currentModel.started];
+				NSInteger hours = [components hour];
+				NSInteger minutes = [components minute];
+				NSInteger seconds = [components second];
+
+				unsigned unitFlags = NSCalendarUnitYear | NSCalendarUnitMonth |  NSCalendarUnitDay;
+				NSDateComponents *comps = [calendar components:unitFlags fromDate:dateModel.started];
+				comps.hour = hours;
+				comps.minute = minutes;
+				comps.second = seconds;
+				NSDate *newDate = [calendar dateFromComponents:comps];
+
+				toggl_set_time_entry_date(ctx,
+										  [currentModel.GUID UTF8String],
+										  [newDate timeIntervalSince1970]);
+			}
+		}
 	}
+
 	return YES;
 }
 
