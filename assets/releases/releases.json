@@ -2322,6 +2322,20 @@
     "linux": {
         "dev": [
             {
+                "version": "7.4.465",
+                "timestamp": "19-07-2019",
+                "filename": [
+                    {
+                        "type": "linux_tar.gz",
+                        "name": "toggldesktop_linux_x86_64-7_4_465.tar.gz"
+                    },
+                    {
+                        "type": "linux_flatpak",
+                        "name": "com.toggl.TogglDesktop_linux_x86_64-7_4_465.flatpak"
+                    }
+                ]
+            },
+            {
                 "version": "7.4.466",
                 "timestamp": "19-07-2019",
                 "filename": [
@@ -2444,20 +2458,6 @@
                     {
                         "type": "linux_flatpak",
                         "name": "com.toggl.TogglDesktop_linux_x86_64-7_4_474.flatpak"
-                    }
-                ]
-            },
-            {
-                "version": "7.4.476",
-                "timestamp": "25-07-2019",
-                "filename": [
-                    {
-                        "type": "linux_tar.gz",
-                        "name": "toggldesktop_linux_x86_64-7_4_476.tar.gz"
-                    },
-                    {
-                        "type": "linux_flatpak",
-                        "name": "com.toggl.TogglDesktop_linux_x86_64-7_4_476.flatpak"
                     }
                 ]
             }
@@ -2796,6 +2796,20 @@
                     {
                         "type": "linux_deb64",
                         "name": "toggldesktop_7.4.358_amd64.deb"
+                    }
+                ]
+            },
+            {
+                "version": "7.4.476",
+                "timestamp": "25-07-2019",
+                "filename": [
+                    {
+                        "type": "linux_tar.gz",
+                        "name": "toggldesktop_linux_x86_64-7_4_476.tar.gz"
+                    },
+                    {
+                        "type": "linux_flatpak",
+                        "name": "com.toggl.TogglDesktop_linux_x86_64-7_4_476.flatpak"
                     }
                 ]
             }
