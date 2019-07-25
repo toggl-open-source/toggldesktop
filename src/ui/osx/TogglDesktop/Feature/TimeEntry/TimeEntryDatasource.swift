@@ -98,6 +98,17 @@ class TimeEntryDatasource: NSObject {
     
     // MARK: Public
 
+    func selectFirstItem() {
+        // Check if there is a least 1 item
+        guard sections.first?.entries.first != nil else { return }
+        collectionView.window?.makeFirstResponder(collectionView)
+
+        // Deselect all because TE is multiple-selections
+        collectionView.deselectAll(self)
+        collectionView.selectItems(at: Set<IndexPath>(arrayLiteral: IndexPath(item: 0, section: 0)),
+                                   scrollPosition: .left)
+    }
+
     func process(_ timeEntries: [TimeEntryViewItem], showLoadMore: Bool) {
         isShowLoadMore = showLoadMore
 

@@ -485,27 +485,15 @@ extern void *ctx;
 	}
 
 	NSIndexPath *selectedIndexpath = [self.collectionView.selectionIndexPaths.allObjects firstObject];
-	// If list is focused with keyboard shortcut
-	if (notification != nil && !self.timeEntrypopover.shown)
-	{
-		[self clearLastSelectedEntry];
-		selectedIndexpath = [NSIndexPath indexPathForItem:0 inSection:0];
-	}
 
-	if (selectedIndexpath == nil)
+	// Don't select the first item if the TE List is focusing with selected item
+	if (selectedIndexpath != nil && self.collectionView.isFirstResponder)
 	{
 		return;
 	}
 
-	[[self.collectionView window] makeFirstResponder:self.collectionView];
-	[self.collectionView selectItemsAtIndexPaths:[NSSet setWithObject:selectedIndexpath] scrollPosition:NSCollectionViewScrollPositionTop];
-
-	TimeEntryCell *cell = [self getTimeEntryCellAtIndexPath:selectedIndexpath];
-	if (cell != nil)
-	{
-		[self clearLastSelectedEntry];
-		[cell setFocused];
-	}
+	// Select first cell
+	[self.dataSource selectFirstItem];
 }
 
 - (void)escapeListing:(NSNotification *)notification
