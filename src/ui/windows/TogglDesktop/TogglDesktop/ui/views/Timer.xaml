@@ -44,10 +44,12 @@
 
                 <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" MouseLeftButtonDown="onProjectLabelMouseDown">
 
+                    <TextBlock Name="projectLabel" x:FieldModifier="private"
+                               Text="Project"/>
+                    <TextBlock Name="separatorLabel" Foreground="#dddddd">·</TextBlock>
                     <TextBlock Name="clientLabel" x:FieldModifier="private"
                             Foreground="#dddddd" Text="Client"/>
-                    <TextBlock Name="projectLabel" x:FieldModifier="private"
-                         Text="Project"/>
+                    
                 </StackPanel>
 
                 <Grid Grid.Row="0" Grid.Column="1" MouseLeftButtonDown="onDescriptionLabelMouseDown"
