@@ -54,7 +54,7 @@ typedef enum : NSUInteger
 @property (strong, nonatomic) NSTimer *timer;
 @property (assign, nonatomic) BOOL disableChange;
 @property (assign, nonatomic) BOOL focusNotSet;
-@property (assign, nonatomic) BOOL displayMode;
+@property (assign, nonatomic) DisplayMode displayMode;
 
 @end
 
@@ -169,6 +169,9 @@ NSString *kInactiveTimerColor = @"#999999";
 			[self.view.window makeFirstResponder:self.startButton];
 			return;
 
+		case DisplayModeInput :
+			[self.autoCompleteInput.window makeFirstResponder:self.autoCompleteInput];
+			break;
 		case DisplayModeTimer :
 			if (self.time_entry.isRunning)
 			{
@@ -178,10 +181,6 @@ NSString *kInactiveTimerColor = @"#999999";
 				// Because we're focusing on the Timer bar since the TE is running
 				[[NSNotificationCenter defaultCenter] postNotificationName:kDeselectAllTimeEntryList
 																	object:nil];
-			}
-			else
-			{
-				[self.autoCompleteInput.window makeFirstResponder:self.autoCompleteInput];
 			}
 			break;
 	}
@@ -670,7 +669,7 @@ NSString *kInactiveTimerColor = @"#999999";
 	return retval;
 }
 
-- (void)setDisplayMode:(BOOL)displayMode
+- (void)setDisplayMode:(DisplayMode)displayMode
 {
 	_displayMode = displayMode;
 	switch (displayMode)
