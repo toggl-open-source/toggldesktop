@@ -11,6 +11,7 @@ namespace TogglDesktop
         public AboutWindow()
         {
             this.InitializeComponent();
+            this.Closing += this.HideWindowOnClosing;
 
             this.updateText.Text = "";
             this.restartButton.Visibility = Visibility.Collapsed;
@@ -60,11 +61,6 @@ namespace TogglDesktop
                 this.Hide();
                 e.Handled = true;
             }
-        }
-
-        protected override void onCloseButtonClick(object sender, RoutedEventArgs e)
-        {
-            this.Hide();
         }
 
         private void onReleaseChannelSelectionChanged(object sender, SelectionChangedEventArgs e)
