@@ -162,13 +162,22 @@ NSString *kInactiveTimerColor = @"#999999";
 
 - (void)focusTimer
 {
-	if (self.time_entry.duration < 0 || ![self.manualBox isHidden])
+	switch (self.displayMode)
 	{
-		[self.view.window makeFirstResponder:self.startButton];
-	}
-	else
-	{
-		[self.autoCompleteInput.window makeFirstResponder:self.autoCompleteInput];
+		case DisplayModeManual :
+			[self.view.window makeFirstResponder:self.startButton];
+			return;
+
+		case DisplayModeTimer :
+			if (self.time_entry.isRunning)
+			{
+				[self.view.window makeFirstResponder:self.view];
+			}
+			else
+			{
+				[self.autoCompleteInput.window makeFirstResponder:self.autoCompleteInput];
+			}
+			break;
 	}
 }
 
@@ -702,6 +711,27 @@ NSString *kInactiveTimerColor = @"#999999";
 - (void)startNewShortcut:(NSNotification *)notification
 {
 	[self startButtonClicked:self];
+}
+
+- (void)keyDown:(NSEvent *)event
+{
+	[super keyDown:event];
+
+	if (self.time_entry != nil && self.time_entry.isRunning)
+	{
+        if ((event.keyCode == kVK_Return) || (event.keyCode == kVK_ANSI_KeypadEnter))
+        {
+            // Edit
+        }
+        else if (event.keyCode == kVK_Delete)
+        {
+            // Delete
+        }
+        else if (event.keyCode == kVK_Space)
+        {
+            // Stop
+        }
+	}
 }
 
 @end

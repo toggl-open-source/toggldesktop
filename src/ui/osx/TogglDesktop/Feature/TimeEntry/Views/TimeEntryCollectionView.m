@@ -153,6 +153,9 @@ extern void *ctx;
 		if (cell != nil)
 		{
 			toggl_continue(ctx, [cell.GUID UTF8String]);
+
+            // Focus on timer
+            [[NSNotificationCenter defaultCenter] postNotificationName:kFocusTimer object:nil];
 		}
 	}
 	else if (event.keyCode == kVK_UpArrow)
