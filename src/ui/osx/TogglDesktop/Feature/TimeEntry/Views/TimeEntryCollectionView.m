@@ -11,6 +11,7 @@
 #import "UIEvents.h"
 #import "TogglDesktop-Swift.h"
 #include <Carbon/Carbon.h>
+#import "Utils.h"
 
 @interface TimeEntryCollectionView ()
 @property (assign, nonatomic) NSIndexPath *latestSelectedIndexPath;
@@ -154,8 +155,8 @@ extern void *ctx;
 		{
 			toggl_continue(ctx, [cell.GUID UTF8String]);
 
-            // Focus on timer
-            [[NSNotificationCenter defaultCenter] postNotificationName:kFocusTimer object:nil];
+			// Focus on timer
+			[[NSNotificationCenter defaultCenter] postNotificationName:kFocusTimer object:nil];
 		}
 	}
 	else if (event.keyCode == kVK_UpArrow)
@@ -253,22 +254,9 @@ extern void *ctx;
 		}
 		return;
 	}
-	NSString *msg = [NSString stringWithFormat:@"Delete time entry \"%@\"?", cell.descriptionTextField.stringValue];
 
-	NSAlert *alert = [[NSAlert alloc] init];
-	[alert addButtonWithTitle:@"OK"];
-	[alert addButtonWithTitle:@"Cancel"];
-	[alert setMessageText:msg];
-	[alert setInformativeText:@"Deleted time entries cannot be restored."];
-	[alert setAlertStyle:NSWarningAlertStyle];
-	if ([alert runModal] != NSAlertFirstButtonReturn)
-	{
-		return;
-	}
-
-	NSLog(@"Deleting time entry %@", cell.GUID);
-
-	if (toggl_delete_time_entry(ctx, [cell.GUID UTF8String]))
+	// Delete and select preview cell
+	if ([Utils deleteTimeEntryWithConfirmationWithGUID:cell.GUID title:cell.descriptionTextField.stringValue])
 	{
 		[self selectPreviousRowFromIndexPath:self.latestSelectedIndexPath];
 	}

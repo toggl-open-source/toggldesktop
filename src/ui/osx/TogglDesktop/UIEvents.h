@@ -54,6 +54,7 @@ extern NSString *const kToggleGroup;
 extern NSString *const kDisplayCountries;
 extern NSString *const kUpdateIconTooltip;
 extern NSString *const kUserHasBeenSignup;
+extern NSString *const kDeselectAllTimeEntryList;
 
 const char *kFocusedFieldNameDuration;
 const char *kFocusedFieldNameDescription;

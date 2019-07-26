@@ -20,6 +20,7 @@
 #import "DisplayCommand.h"
 #import "TogglDesktop-Swift.h"
 #import "ProjectTextField.h"
+#import "Utils.h"
 
 typedef enum : NSUInteger
 {
@@ -172,6 +173,11 @@ NSString *kInactiveTimerColor = @"#999999";
 			if (self.time_entry.isRunning)
 			{
 				[self.view.window makeFirstResponder:self.view];
+
+				// Deselect all selected in TE list
+				// Because we're focusing on the Timer bar since the TE is running
+				[[NSNotificationCenter defaultCenter] postNotificationName:kDeselectAllTimeEntryList
+																	object:nil];
 			}
 			else
 			{
@@ -263,6 +269,8 @@ NSString *kInactiveTimerColor = @"#999999";
 
 		self.durationTextField.toolTip = [NSString stringWithFormat:@"Started: %@", self.time_entry.startTimeString];
 		self.descriptionLabel.editable = NO;
+
+		[self focusTimer];
 	}
 	else
 	{
@@ -717,20 +725,22 @@ NSString *kInactiveTimerColor = @"#999999";
 {
 	[super keyDown:event];
 
-	if (self.time_entry != nil && self.time_entry.isRunning)
+	if (self.time_entry.GUID != nil && self.time_entry.isRunning)
 	{
-        if ((event.keyCode == kVK_Return) || (event.keyCode == kVK_ANSI_KeypadEnter))
-        {
-            // Edit
-        }
-        else if (event.keyCode == kVK_Delete)
-        {
-            // Delete
-        }
-        else if (event.keyCode == kVK_Space)
-        {
-            // Stop
-        }
+		if ((event.keyCode == kVK_Return) || (event.keyCode == kVK_ANSI_KeypadEnter))
+		{
+			toggl_edit(ctx, [self.time_entry.GUID UTF8String], false, "");
+		}
+		else if (event.keyCode == kVK_Delete)
+		{
+			[Utils deleteTimeEntryWithConfirmationWithGUID:self.time_entry.GUID
+													 title:self.descriptionLabel.stringValue];
+		}
+		else if (event.keyCode == kVK_Space)
+		{
+			[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kCommandStop
+																		object:nil];
+		}
 	}
 }
 

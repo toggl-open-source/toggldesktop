@@ -146,6 +146,10 @@ extern void *ctx;
 											 selector:@selector(windowSizeDidChange)
 												 name:NSWindowDidResizeNotification
 											   object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(deselectAllTimeEntryNotification)
+												 name:kDeselectAllTimeEntryList
+											   object:nil];
 }
 
 - (void)initCollectionView
@@ -704,6 +708,11 @@ extern void *ctx;
 - (BOOL)isEditorOpen
 {
 	return self.timeEntrypopover.shown;
+}
+
+- (void)deselectAllTimeEntryNotification
+{
+	[self.collectionView deselectAll:self];
 }
 
 @end
