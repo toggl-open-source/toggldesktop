@@ -54,8 +54,10 @@ void TimeEntry::Fill(toggl::TimeEntry * const model) {
     Unsynced = model->Unsynced();
 
     std::stringstream ss;
-    ss << DateHeader << model->Description() << model->PID()
-       << model->TID() << model->Billable() << model->Tags();
+    ss << DateHeader << model->Description()
+       << model->PID() << model->TID()
+       << model->ProjectGUID()
+       << model->Billable() << model->Tags();
     GroupName = ss.str();
 }
 
