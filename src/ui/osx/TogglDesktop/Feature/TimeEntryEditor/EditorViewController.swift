@@ -46,7 +46,7 @@ final class EditorViewController: NSViewController {
 
     var timeEntry: TimeEntryViewItem! {
         didSet {
-            fillData()
+            fillData(oldValue)
             registerUndoForAllFields()
 
             // Check if the Editor has update with new TimeEntry -> Reset focus to Description TextField
@@ -250,14 +250,19 @@ extension EditorViewController {
         tagDatasource.setup(with: tagTextField)
     }
 
-    fileprivate func fillData() {
+    fileprivate func fillData(_ oldValue: TimeEntryViewItem?) {
         guard let timeEntry = timeEntry else { return }
+
         workspaceLbl.stringValue = timeEntry.workspaceName
-        descriptionTextField.stringValue = timeEntry.descriptionName
         billableCheckBox.state = timeEntry.billable ? .on : .off
         billableCheckBox.isHidden = !timeEntry.canSeeBillable
         projectTextField.setTimeEntry(timeEntry)
         calendarViewControler.prepareLayout(with: timeEntry.started)
+
+        // Update description with condition to prevent lossing text
+        if !(oldValue?.guid == timeEntry.guid && descriptionTextField.currentEditor() != nil) {
+            descriptionTextField.stringValue = timeEntry.descriptionName
+        }
 
         // Disable if it's running entry
         let isRunning = timeEntry.isRunning()
