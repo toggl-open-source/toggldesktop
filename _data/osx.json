@@ -1,7 +1,7 @@
 {
     "versions": [
         {
-            "version": "7.4.471",
+            "version": "7.4.479",
             "rows": [
                 "Totally new clean design",
                 "Added new project and client add flow",
@@ -11,7 +11,9 @@
                 "Fixed Tooltip 0h 0m issue with single running entry for today",
                 "Fixed date header format for single digit numbers",
                 "Fixed tags popup editing logic",
-                "Fixed idle notification timer stop logic"
+                "Fixed idle notification timer stop logic",
+                "Fixed description field clearing issue",
+                "Fixed grouping issues with new accounts"
             ],
             "date": "July 26th 2019"
         },
