@@ -50,6 +50,7 @@
         <KeyBinding Key="Enter" Command="{StaticResource HighlightEdit}" />
         <KeyBinding Key="Space" Command="{StaticResource HighlightContinue}" />
         <KeyBinding Key="Back" Command="{StaticResource HighlightDelete}" />
+        <KeyBinding Key="Delete" Command="{StaticResource HighlightDelete}" />
         <KeyBinding Key="Escape" Command="{StaticResource FocusTimer}" />
         <KeyBinding Key="Right" Command="{StaticResource ExpandDay}" />
         <KeyBinding Key="Left" Command="{StaticResource CollapseDay}" />
