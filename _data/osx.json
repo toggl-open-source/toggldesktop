@@ -5,7 +5,7 @@
             "rows": [
                 "Totally new clean design",
                 "Added new project and client add flow",
-                "Added new tags autocomplete solution"
+                "Added new tags autocomplete solution",
                 "Added keyboard support to selecting date from calendar",
                 "Added support for notfications sound settings",
                 "Fixed Tooltip 0h 0m issue with single running entry for today",
