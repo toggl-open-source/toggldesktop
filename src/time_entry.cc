@@ -358,12 +358,6 @@ const std::string TimeEntry::Tags() const {
     return ss.str();
 }
 
-const std::string TimeEntry::TagsHash() const {
-    std::string str = Tags();
-    sort(str.begin(), str.end());
-    return str;
-}
-
 std::string TimeEntry::StopString() const {
     return Formatter::Format8601(stop_);
 }

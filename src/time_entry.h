@@ -44,8 +44,6 @@ class TimeEntry : public BaseModel, public TimedEvent {
     const std::string Tags() const;
     void SetTags(const std::string tags);
 
-    const std::string TagsHash() const;
-
     const Poco::UInt64 &WID() const {
         return wid_;
     }
