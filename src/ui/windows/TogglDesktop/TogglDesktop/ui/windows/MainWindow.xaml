@@ -25,17 +25,14 @@
         <KeyBinding Key="N" Modifiers="Control" Command="{x:Static toggl:KeyboardShortcuts.New}" />
         <KeyBinding Key="O" Modifiers="Control" Command="{x:Static toggl:KeyboardShortcuts.Continue}" />
         <KeyBinding Key="S" Modifiers="Control" Command="{x:Static toggl:KeyboardShortcuts.Stop}" />
-        
         <KeyBinding Key="W" Modifiers="Control" Command="{x:Static toggl:KeyboardShortcuts.Hide}" />
         <KeyBinding Key="F4" Modifiers="Control" Command="{x:Static toggl:KeyboardShortcuts.Hide}" />
         <KeyBinding Key="R" Modifiers="Control" Command="{x:Static toggl:KeyboardShortcuts.Sync}" />
-        
         <KeyBinding Key="E" Modifiers="Control" Command="{x:Static toggl:KeyboardShortcuts.EditRunning}" />
-
         <KeyBinding Key="D" Modifiers="Control" Command="{x:Static toggl:KeyboardShortcuts.ToggleManualMode}" />
-
         <KeyBinding Key="V" Modifiers="Control" Command="{x:Static toggl:KeyboardShortcuts.NewFromPaste}" />
-
+        <KeyBinding Key="Q" Modifiers="Control" Command="{x:Static toggl:KeyboardShortcuts.Quit}" />
+        <KeyBinding Key="OemComma" Modifiers="Control" Command="{x:Static toggl:KeyboardShortcuts.Preferences}" />
         <KeyBinding Key="Escape" Command="{StaticResource EscapeCommand}" />
     </Window.InputBindings>
     
@@ -89,7 +86,7 @@
                       Command="{x:Static toggl:KeyboardShortcuts.Sync}"/>
             <MenuItem Header="Reports"
                       Command="{x:Static toggl:KeyboardShortcuts.Reports}"/>
-            <MenuItem Header="Preferences"
+            <MenuItem Header="Preferences" InputGestureText="Ctrl+,"
                       Command="{x:Static toggl:KeyboardShortcuts.Preferences}"/>
             <MenuItem Header="Use manual mode" InputGestureText="Ctrl+D"
                       Name="togglManualModeMenuItem" x:FieldModifier="private"
@@ -110,7 +107,7 @@
                       Command="{x:Static toggl:KeyboardShortcuts.About}"/>
             <MenuItem Header="Logout"
                       Command="{x:Static toggl:KeyboardShortcuts.Logout}"/>
-            <MenuItem Header="Quit"
+            <MenuItem Header="Quit" InputGestureText="Ctrl+Q"
                       Command="{x:Static toggl:KeyboardShortcuts.Quit}"/>
         </ContextMenu>
     </Window.ContextMenu>
