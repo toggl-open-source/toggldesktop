@@ -57,7 +57,7 @@ void TimeEntry::Fill(toggl::TimeEntry * const model) {
     ss << DateHeader << model->Description()
        << model->PID() << model->TID()
        << model->ProjectGUID()
-       << model->Billable() << model->Tags();
+       << model->Billable() << model->TagsHash();
     GroupName = ss.str();
 }
 
