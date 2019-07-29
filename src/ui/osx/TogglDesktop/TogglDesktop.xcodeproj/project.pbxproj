@@ -749,6 +749,7 @@
 		BAA11AC22251F4D6007F31D2 /* WorkspaceAutoCompleteTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceAutoCompleteTextField.swift; sourceTree = "<group>"; };
 		BAA11AC42251F502007F31D2 /* WorkspaceDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceDataSource.swift; sourceTree = "<group>"; };
 		BAA260D0222D1DC70094F4E4 /* NSView+Shadow+Border.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSView+Shadow+Border.swift"; sourceTree = "<group>"; };
+		BAAC931A22EEF92100E2EE1C /* TogglDesktop.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = TogglDesktop.entitlements; path = TogglDesktop/TogglDesktop.entitlements; sourceTree = "<group>"; };
 		BAAF567D2223CAC5003D0D73 /* NSButton+TextColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSButton+TextColor.swift"; sourceTree = "<group>"; };
 		BAAF569D2223D4C7003D0D73 /* DotImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotImageView.swift; sourceTree = "<group>"; };
 		BAAF569F2223DF9A003D0D73 /* VertificalTimeEntryFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VertificalTimeEntryFlowLayout.swift; sourceTree = "<group>"; };
@@ -861,6 +862,7 @@
 		69FC17E817E6534400B96425 = {
 			isa = PBXGroup;
 			children = (
+				BAAC931A22EEF92100E2EE1C /* TogglDesktop.entitlements */,
 				BAE007DD21FAF00D00404379 /* Media.xcassets */,
 				BAF50DE421A29FED0090BA95 /* Images.xcassets */,
 				742134C3195C63AE007EF78B /* poco */,
@@ -1580,6 +1582,11 @@
 						DevelopmentTeam = B227VTMZ94;
 						LastSwiftMigration = 1020;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.HardenedRuntime = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -2273,6 +2280,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = B227VTMZ94;
+				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -2328,6 +2336,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				DEVELOPMENT_TEAM = B227VTMZ94;
+				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
