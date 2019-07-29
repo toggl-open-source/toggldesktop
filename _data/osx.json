@@ -1,8 +1,10 @@
 {
     "versions": [
         {
-            "version": "7.4.479",
+            "version": "7.4.483",
             "rows": [
+                "Fixed window resizing issues",
+                "Fixed grouping detect with same tags in different order"
                 "Totally new clean design",
                 "Added new project and client add flow",
                 "Added new tags autocomplete solution",
@@ -15,7 +17,7 @@
                 "Fixed description field clearing issue",
                 "Fixed grouping issues with new accounts"
             ],
-            "date": "July 26th 2019"
+            "date": "July 29th 2019"
         },
         {
             "version": "7.4.373",
