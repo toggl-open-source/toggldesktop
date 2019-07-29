@@ -46,8 +46,8 @@ class Formatter {
     static std::string DurationFormat;
 
     static std::string JoinTaskName(
-        Task * const,
-        Project * const);
+        const Task *,
+        const Project *);
 
     static std::string FormatDuration(
         const Poco::Int64 value,

@@ -51,9 +51,9 @@ class User : public BaseModel {
 
     void SetLastTEDate(const std::string value);
 
-    TimeEntry *RunningTimeEntry() const;
+    protected_variable<TimeEntry> RunningTimeEntry() const;
     bool IsTracking() const {
-        return RunningTimeEntry() != nullptr;
+        return RunningTimeEntry();
     }
 
     TimeEntry *Start(
@@ -218,11 +218,10 @@ class User : public BaseModel {
         }
 
         // Try to set first WID available
-        std::vector<Workspace *>::const_iterator it =
-            related.Workspaces.begin();
-        if (it != related.Workspaces.end()) {
-            Workspace *ws = *it;
-            model->SetWID(ws->ID());
+        auto workspaces = related.Workspaces();
+        auto it = workspaces->begin();
+        if (it != workspaces->end()) {
+            model->SetWID((*it)->ID());
         }
     }
 

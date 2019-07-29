@@ -521,14 +521,13 @@ void Context::updateUI(const UIElements &what) {
         Poco::Mutex::ScopedLock lock(user_m_);
 
         if (what.display_time_entry_editor && user_) {
-            TimeEntry *editor_time_entry =
-                user_->related.TimeEntryByGUID(what.time_entry_editor_guid);
+            auto editor_time_entry = user_->related.TimeEntryByGUID(what.time_entry_editor_guid);
             if (editor_time_entry) {
                 if (what.open_time_entry_editor) {
                     time_entry_editor_guid_ = editor_time_entry->GUID();
                 }
 
-                editor_time_entry_view.Fill(editor_time_entry);
+                editor_time_entry_view.Fill(editor_time_entry.data());
                 if (editor_time_entry->IsTracking()) {
                     editor_time_entry_view.Duration =
                         toggl::Formatter::FormatDuration(
@@ -543,14 +542,14 @@ void Context::updateUI(const UIElements &what) {
                 editor_time_entry_view.DateDuration =
                     Formatter::FormatDurationForDateHeader(
                         user_->related.TotalDurationForDate(
-                            editor_time_entry));
+                            editor_time_entry.data()));
                 user_->related.ProjectLabelAndColorCode(
-                    editor_time_entry,
+                    editor_time_entry.data(),
                     &editor_time_entry_view);
 
                 // Various fields in TE editor related to workspace
                 // and user permissions
-                Workspace *ws = nullptr;
+                protected_variable<Workspace> ws;
                 if (editor_time_entry->WID()) {
                     ws = user_->related.WorkspaceByID(editor_time_entry->WID());
                 }
@@ -561,12 +560,10 @@ void Context::updateUI(const UIElements &what) {
                     editor_time_entry_view.CanAddProjects =
                         user_->CanAddProjects();
                 }
-                editor_time_entry_view.CanSeeBillable =
-                    user_->CanSeeBillable(ws);
+                editor_time_entry_view.CanSeeBillable = user_->CanSeeBillable(ws.data());
                 editor_time_entry_view.DefaultWID = user_->DefaultWID();
 
-                editor_time_entry_view.Locked = isTimeEntryLocked(
-                    editor_time_entry);
+                editor_time_entry_view.Locked = isTimeEntryLocked(editor_time_entry.data());
 
                 // Display tags also when time entry is being edited,
                 // because tags are filtered by TE WID
@@ -615,7 +612,7 @@ void Context::updateUI(const UIElements &what) {
                 view.WID = c->WID();
                 view.Name = c->Name();
                 if (c->WID()) {
-                    Workspace *ws = user_->related.WorkspaceByID(c->WID());
+                    auto ws = user_->related.WorkspaceByID(c->WID());
                     if (ws) {
                         view.WorkspaceName = ws->Name();
                         view.Premium = ws->Premium();
@@ -626,9 +623,9 @@ void Context::updateUI(const UIElements &what) {
         }
 
         if (what.display_timer_state && user_) {
-            TimeEntry *running_entry = user_->RunningTimeEntry();
+            auto running_entry = user_->RunningTimeEntry();
             if (running_entry) {
-                running_entry_view.Fill(running_entry);
+                running_entry_view.Fill(running_entry.data());
                 running_entry_view.Duration =
                     toggl::Formatter::FormatDuration(
                         running_entry->DurationInSeconds(),
@@ -636,9 +633,9 @@ void Context::updateUI(const UIElements &what) {
                 running_entry_view.DateDuration =
                     Formatter::FormatDurationForDateHeader(
                         user_->related.TotalDurationForDate(
-                            running_entry));
+                            running_entry.data()));
                 user_->related.ProjectLabelAndColorCode(
-                    running_entry,
+                    running_entry.data(),
                     &running_entry_view);
             }
         }
@@ -812,16 +809,14 @@ void Context::updateUI(const UIElements &what) {
         if (what.display_autotracker_rules && user_) {
             if (UI()->CanDisplayAutotrackerRules()) {
                 // Collect rules
-                for (std::vector<toggl::AutotrackerRule *>::const_iterator
-                        it = user_->related.AutotrackerRules.begin();
-                        it != user_->related.AutotrackerRules.end();
-                        it++) {
+                auto autotrackerRules = user_->related.AutotrackerRules();
+                for (auto it = autotrackerRules->begin(); it != autotrackerRules->end(); it++) {
                     AutotrackerRule *model = *it;
-                    Project *p = user_->related.ProjectByID(model->PID());
-                    Task *t = user_->related.TaskByID(model->TID());
+                    auto p = user_->related.ProjectByID(model->PID());
+                    auto t = user_->related.TaskByID(model->TID());
 
                     view::AutotrackerRule rule;
-                    rule.ProjectName = Formatter::JoinTaskName(t, p);
+                    rule.ProjectName = Formatter::JoinTaskName(t.data(), p.data());
                     rule.ID = model->LocalID();
                     rule.Term = model->Term();
                     autotracker_rule_views.push_back(rule);
@@ -1123,14 +1118,14 @@ error Context::LoadUpdateFromJSONString(const std::string json) {
         return noError;
     }
 
-    TimeEntry *running_entry = user_->RunningTimeEntry();
+    auto running_entry = user_->RunningTimeEntry();
 
     error err = user_->LoadUserUpdateFromJSONString(json);
     if (err != noError) {
         return displayError(err);
     }
 
-    TimeEntry *new_running_entry = user_->RunningTimeEntry();
+    auto new_running_entry = user_->RunningTimeEntry();
 
     // Reset reminder time when entry stopped by websocket
     if (running_entry && !new_running_entry) {
@@ -2579,7 +2574,7 @@ void Context::OpenTimeEntryEditor(
         return;
     }
 
-    TimeEntry *te = nullptr;
+    protected_variable<TimeEntry> te;
 
     {
         Poco::Mutex::ScopedLock lock(user_m_);
@@ -2754,7 +2749,7 @@ error Context::DeleteTimeEntryByGUID(const std::string GUID) {
         return displayError(std::string(__FUNCTION__) + ": Missing GUID");
     }
 
-    TimeEntry *te = nullptr;
+    protected_variable<TimeEntry> te;
 
     {
         Poco::Mutex::ScopedLock lock(user_m_);
@@ -2773,7 +2768,7 @@ error Context::DeleteTimeEntryByGUID(const std::string GUID) {
             return displayError(kCannotDeleteDeletedTimeEntry);
         }
 
-        if (isTimeEntryLocked(te)) {
+        if (isTimeEntryLocked(te.data())) {
             return logAndDisplayUserTriedEditingLockedEntry();
         }
     }
@@ -2801,13 +2796,13 @@ error Context::SetTimeEntryDuration(
         logger().warning("Cannot set duration, user logged out");
         return noError;
     }
-    TimeEntry *te = user_->related.TimeEntryByGUID(GUID);
+    auto te = user_->related.TimeEntryByGUID(GUID);
     if (!te) {
         logger().warning("Time entry not found: " + GUID);
         return noError;
     }
 
-    if (isTimeEntryLocked(te)) {
+    if (isTimeEntryLocked(te.data())) {
         return logAndDisplayUserTriedEditingLockedEntry();
     }
 
@@ -2837,25 +2832,25 @@ error Context::SetTimeEntryProject(
             return noError;
         }
 
-        TimeEntry *te = user_->related.TimeEntryByGUID(GUID);
+        protected_variable<TimeEntry> te = user_->related.TimeEntryByGUID(GUID);
         if (!te) {
             logger().warning("Time entry not found: " + GUID);
             return noError;
         }
 
-        if (isTimeEntryLocked(te)) {
+        if (isTimeEntryLocked(te.data())) {
             return logAndDisplayUserTriedEditingLockedEntry();
         }
 
-        Project *p = nullptr;
+        protected_variable<Project> p;
         if (project_id) {
             p = user_->related.ProjectByID(project_id);
         }
-        if (p == nullptr && !project_guid.empty()) {
+        if (!p && !project_guid.empty()) {
             p = user_->related.ProjectByGUID(project_guid);
         }
 
-        if (p && !canChangeProjectTo(te, p)) {
+        if (p && !canChangeProjectTo(te.data(), p.data())) {
             return displayError(error(
                 "Cannot change project: would end up with locked time entry"));
         }
@@ -2896,7 +2891,7 @@ error Context::SetTimeEntryDate(
         return displayError(std::string(__FUNCTION__) + ": Missing GUID");
     }
 
-    TimeEntry *te;
+    protected_variable<TimeEntry> te;
     Poco::LocalDateTime dt;
 
     {
@@ -2912,7 +2907,7 @@ error Context::SetTimeEntryDate(
             return noError;
         }
 
-        if (isTimeEntryLocked(te)) {
+        if (isTimeEntryLocked(te.data())) {
             return displayError(error("Cannot change locked time entry."));
         }
 
@@ -2931,7 +2926,7 @@ error Context::SetTimeEntryDate(
             date_part.year(), date_part.month(), date_part.day(),
             time_part.hour(), time_part.minute(), time_part.second());
 
-        if (!canChangeStartTimeTo(te, dt.timestamp().epochTime())) {
+        if (!canChangeStartTimeTo(te.data(), dt.timestamp().epochTime())) {
             return displayError(
                 error(
                     "Failed to change time entry date: workspace is locked."));
@@ -2956,7 +2951,7 @@ error Context::SetTimeEntryStart(
     }
     Poco::LocalDateTime now;
 
-    TimeEntry *te = nullptr;
+    protected_variable<TimeEntry> te;
 
     {
         Poco::Mutex::ScopedLock lock(user_m_);
@@ -2971,7 +2966,7 @@ error Context::SetTimeEntryStart(
             return noError;
         }
 
-        if (isTimeEntryLocked(te)) {
+        if (isTimeEntryLocked(te.data())) {
             return logAndDisplayUserTriedEditingLockedEntry();
         }
     }
@@ -3014,7 +3009,7 @@ error Context::SetTimeEntryStop(
         return displayError(std::string(__FUNCTION__) + ": Missing GUID");
     }
 
-    TimeEntry *te = nullptr;
+    protected_variable<TimeEntry> te;
 
     {
         Poco::Mutex::ScopedLock lock(user_m_);
@@ -3029,7 +3024,7 @@ error Context::SetTimeEntryStop(
             return noError;
         }
 
-        if (isTimeEntryLocked(te)) {
+        if (isTimeEntryLocked(te.data())) {
             return logAndDisplayUserTriedEditingLockedEntry();
         }
     }
@@ -3077,7 +3072,7 @@ error Context::SetTimeEntryTags(
         return displayError(std::string(__FUNCTION__) + ": Missing GUID");
     }
 
-    TimeEntry *te = nullptr;
+    protected_variable<TimeEntry> te;
 
     {
         Poco::Mutex::ScopedLock lock(user_m_);
@@ -3092,7 +3087,7 @@ error Context::SetTimeEntryTags(
             return noError;
         }
 
-        if (isTimeEntryLocked(te)) {
+        if (isTimeEntryLocked(te.data())) {
             return logAndDisplayUserTriedEditingLockedEntry();
         }
     }
@@ -3114,7 +3109,7 @@ error Context::SetTimeEntryBillable(
         return displayError(std::string(__FUNCTION__) + ": Missing GUID");
     }
 
-    TimeEntry *te = nullptr;
+    protected_variable<TimeEntry> te;
 
     {
         Poco::Mutex::ScopedLock lock(user_m_);
@@ -3129,7 +3124,7 @@ error Context::SetTimeEntryBillable(
             return noError;
         }
 
-        if (isTimeEntryLocked(te)) {
+        if (isTimeEntryLocked(te.data())) {
             return logAndDisplayUserTriedEditingLockedEntry();
         }
     }
@@ -3151,7 +3146,7 @@ error Context::SetTimeEntryDescription(
         return displayError(std::string(__FUNCTION__) + ": Missing GUID");
     }
 
-    TimeEntry *te = nullptr;
+    protected_variable<TimeEntry> te;
 
     {
         Poco::Mutex::ScopedLock lock(user_m_);
@@ -3166,7 +3161,7 @@ error Context::SetTimeEntryDescription(
             return noError;
         }
 
-        if (isTimeEntryLocked(te)) {
+        if (isTimeEntryLocked(te.data())) {
             return logAndDisplayUserTriedEditingLockedEntry();
         }
     }
@@ -3300,11 +3295,11 @@ TimeEntry *Context::DiscardTimeAndContinue(
     return Continue(guid);
 }
 
-TimeEntry *Context::RunningTimeEntry() {
+protected_variable<TimeEntry> Context::RunningTimeEntry() {
     Poco::Mutex::ScopedLock lock(user_m_);
     if (!user_) {
         logger().warning("Cannot fetch time entry, user logged out");
-        return nullptr;
+        return {};
     }
     return user_->RunningTimeEntry();
 }
@@ -3369,7 +3364,7 @@ error Context::SetDefaultProject(
                 return noError;
             }
 
-            Task *t = nullptr;
+            protected_variable<Task> t;
             if (tid) {
                 t = user_->related.TaskByID(tid);
             }
@@ -3377,7 +3372,7 @@ error Context::SetDefaultProject(
                 return displayError("task not found");
             }
 
-            Project *p = nullptr;
+            protected_variable<Project> p;
             if (pid) {
                 p = user_->related.ProjectByID(pid);
             }
@@ -3418,8 +3413,8 @@ error Context::SetDefaultProject(
 error Context::DefaultProjectName(std::string *name) {
     try {
         poco_check_ptr(name);
-        Project *p = nullptr;
-        Task *t = nullptr;
+        protected_variable<Project> p;
+        protected_variable<Task> t;
         {
             Poco::Mutex::ScopedLock lock(user_m_);
             if (!user_) {
@@ -3433,7 +3428,7 @@ error Context::DefaultProjectName(std::string *name) {
                 t = user_->related.TaskByID(user_->DefaultTID());
             }
         }
-        *name = Formatter::JoinTaskName(t, p);
+        *name = Formatter::JoinTaskName(t.data(), p.data());
     } catch(const Poco::Exception& exc) {
         return displayError(exc.displayText());
     } catch(const std::exception& ex) {
@@ -3519,7 +3514,7 @@ error Context::AddAutotrackerRule(
             return displayError(kErrorRuleAlreadyExists);
         }
 
-        Task *t = nullptr;
+        protected_variable<Task> t;
         if (tid) {
             t = user_->related.TaskByID(tid);
         }
@@ -3527,7 +3522,7 @@ error Context::AddAutotrackerRule(
             return displayError("task not found");
         }
 
-        Project *p = nullptr;
+        protected_variable<Project> p;
         if (pid) {
             p = user_->related.ProjectByID(pid);
         }
@@ -3551,7 +3546,7 @@ error Context::AddAutotrackerRule(
             rule->SetPID(p->ID());
         }
         rule->SetUID(user_->ID());
-        user_->related.AutotrackerRules.push_back(rule);
+        user_->related.AutotrackerRules()->insert(rule);
     }
 
     error err = save(false);
@@ -3621,9 +3616,8 @@ Project *Context::CreateProject(
             logger().warning("Cannot add project, user logged out");
             return nullptr;
         }
-        for (std::vector<Project *>::iterator it =
-            user_->related.Projects.begin();
-                it != user_->related.Projects.end(); it++) {
+        auto projects = user_->related.Projects();
+        for (auto it = projects->begin(); it != projects->end(); it++) {
             Project *p = *it;
 
             bool clientIsSame = false;
@@ -3641,17 +3635,15 @@ Project *Context::CreateProject(
             }
         }
         // Check if projects are billable by default
-        Workspace *ws = nullptr;
         bool billable = false;
-
-        ws = user_->related.WorkspaceByID(workspace_id);
+        auto ws = user_->related.WorkspaceByID(workspace_id);
         if (ws) {
             billable = ws->ProjectsBillableByDefault();
         }
 
         std::string client_name("");
         Poco::UInt64 cid(0);
-        Client *c = nullptr;
+        protected_variable<Client> c;
 
         // Search by client ID
         if (client_id != 0) {
@@ -3722,7 +3714,7 @@ error Context::AddObmAction(
         action->SetUID(user_->ID());
         action->SetKey(trimmed_key);
         action->SetValue(trimmed_value);
-        user_->related.ObmActions.push_back(action);
+        user_->related.ObmActions()->insert(action);
     }
     return displayError(save(false));
 }
@@ -3755,9 +3747,8 @@ Client *Context::CreateClient(
             logger().warning("Cannot create a client, user logged out");
             return nullptr;
         }
-        for (std::vector<Client *>::iterator it =
-            user_->related.Clients.begin();
-                it != user_->related.Clients.end(); it++) {
+        auto clients = user_->related.Clients();
+        for (auto it = clients->begin(); it != clients->end(); it++) {
             Client *c = *it;
             if (c->WID() == workspace_id && c->Name() == trimmed_client_name) {
                 displayError(kClientNameAlreadyExists);
@@ -3915,10 +3906,8 @@ error Context::runObmExperiments() {
                 logger().warning("User logged out, cannot OBM experiment");
                 return noError;
             }
-            for (std::vector<ObmExperiment *>::const_iterator it =
-                user_->related.ObmExperiments.begin();
-                    it != user_->related.ObmExperiments.end();
-                    it++) {
+            auto obmExperiments = user_->related.ObmExperiments();
+            for (auto it = obmExperiments->begin(); it != obmExperiments->end(); it++) {
                 ObmExperiment *model = *it;
                 if (!model->DeletedAt()) {
                     experiments[model->Nr()] = *model;
@@ -4127,7 +4116,7 @@ void Context::displayPomodoro() {
             return;
         }
 
-        TimeEntry *current_te = user_->RunningTimeEntry();
+        auto current_te = user_->RunningTimeEntry();
         if (!current_te) {
             return;
         }
@@ -4182,7 +4171,7 @@ void Context::displayPomodoroBreak() {
             return;
         }
 
-        TimeEntry *current_te = user_->RunningTimeEntry();
+        auto current_te = user_->RunningTimeEntry();
 
         if (!current_te) {
             return;
@@ -4227,7 +4216,7 @@ error Context::StartAutotrackerEvent(const TimelineEvent event) {
         return noError;
     }
 
-    Project *p = nullptr;
+    protected_variable<Project> p;
     if (rule->PID()) {
         p = user_->related.ProjectByID(rule->PID());
     }
@@ -4235,7 +4224,7 @@ error Context::StartAutotrackerEvent(const TimelineEvent event) {
         return error("autotracker project not found");
     }
 
-    Task *t = nullptr;
+    protected_variable<Task> t;
     if (rule->TID()) {
         t = user_->related.TaskByID(rule->TID());
     }
@@ -4247,7 +4236,7 @@ error Context::StartAutotrackerEvent(const TimelineEvent event) {
         return error("no project or task specified in autotracker rule");
     }
 
-    UI()->DisplayAutotrackerNotification(p, t);
+    UI()->DisplayAutotrackerNotification(p.data(), t.data());
 
     return noError;
 }
@@ -4297,7 +4286,7 @@ error Context::StartTimelineEvent(TimelineEvent *event) {
 
         if (user_ && user_->RecordTimeline()) {
             event->SetUID(static_cast<unsigned int>(user_->ID()));
-            user_->related.TimelineEvents.push_back(event);
+            user_->related.TimelineEvents()->insert(event);
             return displayError(save(false));
         }
     } catch(const Poco::Exception& exc) {
@@ -4352,7 +4341,7 @@ void Context::uiUpdaterActivity() {
             Poco::Thread::sleep(250);
         }
 
-        TimeEntry *te = nullptr;
+        protected_variable<TimeEntry> te;
         Poco::Int64 duration(0);
         {
             Poco::Mutex::ScopedLock lock(user_m_);
@@ -4363,7 +4352,7 @@ void Context::uiUpdaterActivity() {
             if (!te) {
                 continue;
             }
-            duration = user_->related.TotalDurationForDate(te);
+            duration = user_->related.TotalDurationForDate(te.data());
         }
 
         std::string date_duration =
@@ -4631,7 +4620,7 @@ error Context::pullAllUserData(
             if (!user_) {
                 return error("cannot load user data when logged out");
             }
-            TimeEntry *running_entry = user_->RunningTimeEntry();
+            auto running_entry = user_->RunningTimeEntry();
 
             error err = user_->LoadUserAndRelatedDataFromJSONString(user_data_json, !since);
 
@@ -4639,7 +4628,7 @@ error Context::pullAllUserData(
                 return err;
             }
             overlay_visible_ = false;
-            TimeEntry *new_running_entry = user_->RunningTimeEntry();
+            auto new_running_entry = user_->RunningTimeEntry();
 
             // Reset reminder time when entry stopped by sync
             if (running_entry && !new_running_entry) {
@@ -4701,7 +4690,8 @@ error Context::pushChanges(
             if (api_token.empty()) {
                 return error("cannot push changes without API token");
             }
-
+            // OVERHAUL_TODO
+/*
             collectPushableModels(
                 user_->related.TimeEntries,
                 &time_entries,
@@ -4714,6 +4704,7 @@ error Context::pushChanges(
                 user_->related.Clients,
                 &clients,
                 &models);
+                */
             if (time_entries.empty()
                     && projects.empty()
                     && clients.empty()) {
@@ -5095,7 +5086,8 @@ error Context::pushObmAction() {
                 return noError;
             }
 
-            if (user_->related.ObmActions.empty()) {
+            auto obmActions = user_->related.ObmActions();
+            if (obmActions->empty()) {
                 return noError;
             }
 
@@ -5105,10 +5097,7 @@ error Context::pushObmAction() {
             }
 
             // find action that has not been uploaded yet
-            for (std::vector<ObmAction *>::iterator it =
-                user_->related.ObmActions.begin();
-                    it != user_->related.ObmActions.end();
-                    it++) {
+            for (auto it = obmActions->begin(); it != obmActions->end(); it++) {
                 ObmAction *model = *it;
                 if (!model->IsMarkedAsDeletedOnServer()) {
                     for_upload = model;
@@ -5201,16 +5190,16 @@ error Context::me(
 
 bool Context::isTimeEntryLocked(TimeEntry* te) {
     return isTimeLockedInWorkspace(te->Start(),
-                                   user_->related.WorkspaceByID(te->WID()));
+                                   user_->related.WorkspaceByID(te->WID()).data());
 }
 
 bool Context::canChangeStartTimeTo(TimeEntry* te, time_t t) {
-    return !isTimeLockedInWorkspace(t, user_->related.WorkspaceByID(te->WID()));
+    return !isTimeLockedInWorkspace(t, user_->related.WorkspaceByID(te->WID()).data());
 }
 
 bool Context::canChangeProjectTo(TimeEntry* te, Project* p) {
     return !isTimeLockedInWorkspace(te->Start(),
-                                    user_->related.WorkspaceByID(p->WID()));
+                                    user_->related.WorkspaceByID(p->WID()).data());
 }
 
 error Context::logAndDisplayUserTriedEditingLockedEntry() {

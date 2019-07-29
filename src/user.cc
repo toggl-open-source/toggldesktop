@@ -446,16 +446,14 @@ TimeEntry *User::DiscardTimeAt(
     return nullptr;
 }
 
-TimeEntry *User::RunningTimeEntry() const {
-    for (std::vector<TimeEntry *>::const_iterator it =
-        related.TimeEntries.begin();
-            it != related.TimeEntries.end();
-            it++) {
+protected_variable<TimeEntry> User::RunningTimeEntry() const {
+    auto timeEntries = related.TimeEntries();
+    for (auto it = timeEntries->begin(); it != timeEntries->end(); it++) {
         if ((*it)->DurationInSeconds() < 0) {
-            return *it;
+            return related.make_protected(it);
         }
     }
-    return nullptr;
+    return {};
 }
 
 bool User::HasValidSinceDate() const {

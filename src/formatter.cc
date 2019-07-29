@@ -44,8 +44,8 @@ std::string Formatter::togglTimeOfDayToPocoFormat(
 }
 
 std::string Formatter::JoinTaskName(
-    Task * const t,
-    Project * const p) {
+    const Task *t,
+    const Project *p) {
     std::stringstream ss;
     bool empty = true;
     if (t) {

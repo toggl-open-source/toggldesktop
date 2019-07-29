@@ -372,7 +372,7 @@ class Context : public TimelineDatasource {
         const std::string GUID,
         const Poco::Int64 at);
 
-    TimeEntry *RunningTimeEntry();
+    protected_variable<TimeEntry> RunningTimeEntry();
 
     error ToggleTimelineRecording(
         const bool record_timeline);

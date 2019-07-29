@@ -11,6 +11,7 @@
 
 #include <string>
 #include <vector>
+#include <set>
 
 #include "Poco/Data/SQLite/Connector.h"
 
@@ -286,53 +287,53 @@ class Database {
 
     error loadWorkspaces(
         const Poco::UInt64 &UID,
-        std::vector<Workspace *> *list);
+        std::set<Workspace *> *list);
 
     error loadClients(
         const Poco::UInt64 &UID,
-        std::vector<Client *> *list);
+        std::set<Client *> *list);
 
     error loadProjects(
         const Poco::UInt64 &UID,
-        std::vector<Project *> *list);
+        std::set<Project *> *list);
 
     error loadTasks(
         const Poco::UInt64 &UID,
-        std::vector<Task *> *list);
+        std::set<Task *> *list);
 
     error loadTags(
         const Poco::UInt64 &UID,
-        std::vector<Tag *> *list);
+        std::set<Tag *> *list);
 
     error loadAutotrackerRules(
         const Poco::UInt64 &UID,
-        std::vector<AutotrackerRule *> *list);
+        std::set<AutotrackerRule *> *list);
 
     error loadObmActions(
         const Poco::UInt64 &UID,
-        std::vector<ObmAction *> *list);
+        std::set<ObmAction *> *list);
 
     error loadObmExperiments(
         const Poco::UInt64 &UID,
-        std::vector<ObmExperiment *> *list);
+        std::set<ObmExperiment *> *list);
 
     error loadTimeEntries(
         const Poco::UInt64 &UID,
-        std::vector<TimeEntry *> *list);
+        std::set<TimeEntry *> *list);
 
     error loadTimelineEvents(
         const Poco::UInt64 &UID,
-        std::vector<TimelineEvent *> *list);
+        std::set<TimelineEvent *> *list);
 
     error loadTimeEntriesFromSQLStatement(
         Poco::Data::Statement *select,
-        std::vector<TimeEntry *> *list);
+        std::set<TimeEntry *> *list);
 
     template <typename T>
     error saveRelatedModels(
         const Poco::UInt64 UID,
         const std::string table_name,
-        std::vector<T *> *list,
+        std::set<T *> &list,
         std::vector<ModelChange> *changes);
 
     error deleteAllFromTableByDate(
