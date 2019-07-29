@@ -1176,7 +1176,7 @@ public static partial class Toggl
 
         return () =>
         {
-            var process = Process.Start(installerFullPath, "/U");
+            var process = Process.Start(installerFullPath, "/S /U");
             if (process != null && !process.HasExited && process.Id != 0)
             {
                 // Update has started. Quit, installer will restart me.
