@@ -26,8 +26,8 @@
             "macos": "https://github.com/toggl/toggldesktop/releases/download/v7.4.483/TogglDesktop-7_4_483.dmg"
         },
         "stable": {
-            "version": "7.4.479",
-            "macos": "https://github.com/toggl/toggldesktop/releases/download/v7.4.479/TogglDesktop-7_4_479.dmg"
+            "version": "7.4.483",
+            "macos": "https://github.com/toggl/toggldesktop/releases/download/v7.4.483/TogglDesktop-7_4_483.dmg"
         }
     },
     "linux": {
