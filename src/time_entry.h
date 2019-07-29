@@ -141,6 +141,8 @@ class TimeEntry : public BaseModel, public TimedEvent {
 
     bool isNotFound(const error err) const;
 
+    const std::string GroupHash() const;
+
  private:
     Poco::UInt64 wid_;
     Poco::UInt64 pid_;

@@ -17,6 +17,7 @@
 #include <json/json.h>  // NOLINT
 
 #include "./https_client.h"
+#include "./formatter.h"
 
 #include "Poco/DateTime.h"
 #include "Poco/LocalDateTime.h"
@@ -374,6 +375,18 @@ std::string TimeEntry::StopString() const {
 
 std::string TimeEntry::StartString() const {
     return Formatter::Format8601(start_);
+}
+
+const std::string TimeEntry::GroupHash() const {
+    std::stringstream ss;
+    ss << toggl::Formatter::FormatDateHeader(Start())
+       << Description()
+       << PID()
+       << TID()
+       << ProjectGUID()
+       << Billable()
+       << TagsHash();
+    return ss.str();
 }
 
 bool TimeEntry::IsToday() const {
