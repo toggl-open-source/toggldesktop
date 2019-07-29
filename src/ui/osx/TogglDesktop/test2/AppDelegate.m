@@ -93,6 +93,7 @@
 
 // System Service
 @property (strong, nonatomic) SystemService *systemService;
+@property (weak) IBOutlet NSMenuItem *consoleMenuItem;
 
 @end
 
@@ -313,6 +314,8 @@ BOOL onTop = NO;
 		[self performSelectorInBackground:@selector(runScript:)
 							   withObject:self.scriptPath];
 	}
+
+	[self hideConsoleMenuIfNeed];
 }
 
 - (void)systemWillPowerOff:(NSNotification *)aNotification
@@ -1838,6 +1841,15 @@ void on_countries(TogglCountryView *first)
 {
 	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayCountries
 																object:[CountryViewItem loadAll:first]];
+}
+
+- (void)hideConsoleMenuIfNeed
+{
+#if DEBUG
+	[self.consoleMenuItem setHidden:NO];
+#else
+	[self.consoleMenuItem setHidden:YES];
+#endif
 }
 
 @end
