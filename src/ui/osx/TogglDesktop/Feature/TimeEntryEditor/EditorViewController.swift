@@ -260,7 +260,7 @@ extension EditorViewController {
         calendarViewControler.prepareLayout(with: timeEntry.started)
 
         // Update description with condition to prevent lossing text
-        if !(oldValue?.guid == timeEntry.guid && descriptionTextField.currentEditor() != nil) {
+        if !(oldValue?.guid == timeEntry.guid && descriptionTextField.currentEditor() != nil) || !timeEntry.isRunning() {
             descriptionTextField.stringValue = timeEntry.descriptionName
         }
 
@@ -453,6 +453,7 @@ extension EditorViewController: AutoCompleteViewDataSourceDelegate {
                 DesktopLibraryBridge.shared().updateDescription(forTimeEntry: timeEntry,
                                                                 autocomplete: descriptionTimeEntry.item)
                 descriptionTextField.closeSuggestion()
+                descriptionTextField.stringValue = descriptionTimeEntry.item.descriptionTitle
             }
         }
     }
