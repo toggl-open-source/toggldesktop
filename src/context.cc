@@ -683,12 +683,7 @@ void Context::updateUI(const UIElements &what) {
 
                 // Calculate total duration of group
                 if (user_->CollapseEntries()) {
-                    std::stringstream ss;
-                    ss << date_header << te->Description()
-                       << te->PID() << te->TID()
-                       << te->ProjectGUID()
-                       << te->Billable() << te->TagsHash();
-                    std::string group_name = ss.str();
+                    std::string group_name = te->GroupHash();
 
                     group_header_id[group_name] = i;
                     duration = group_durations[group_name];
