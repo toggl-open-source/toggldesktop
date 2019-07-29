@@ -4,22 +4,22 @@ using System.Windows;
 
 namespace TogglDesktop
 {
-    partial class App
+partial class App
+{
+    public App()
     {
-        public App()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
+    }
 
-        protected override void OnStartup(StartupEventArgs e)
+    protected override void OnStartup(StartupEventArgs e)
+    {
+        base.OnStartup(e);
+        var mainWindow = new MainWindow();
+        var startMinimized = Environment.GetCommandLineArgs().Contains("--minimize");
+        if (!startMinimized)
         {
-            base.OnStartup(e);
-            var mainWindow = new MainWindow();
-            var startMinimized = Environment.GetCommandLineArgs().Contains("--minimize");
-            if (!startMinimized)
-            {
-                mainWindow.Show();
-            }
+            mainWindow.Show();
         }
     }
+}
 }

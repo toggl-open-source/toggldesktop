@@ -8,49 +8,25 @@
 
 /* Begin PBXBuildFile section */
 		3C0158F01C7B414E00FE63AA /* LoadMoreCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3C0158EF1C7B414E00FE63AA /* LoadMoreCell.xib */; };
-		3C068C6A1C22F25000874B9A /* MKColorWellCustom.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C068C691C22F25000874B9A /* MKColorWellCustom.m */; };
 		3C07B75A193C88AE00ED6E6F /* NSCustomTimerComboBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C07B759193C88AE00ED6E6F /* NSCustomTimerComboBox.m */; };
-		3C0A57191C22E12E00301D77 /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 3C0A570D1C22E12E00301D77 /* LICENSE.txt */; };
-		3C0A571A1C22E12E00301D77 /* MKColorPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C0A570F1C22E12E00301D77 /* MKColorPickerView.m */; };
-		3C0A571B1C22E12E00301D77 /* MKColorSwatchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C0A57111C22E12E00301D77 /* MKColorSwatchCell.m */; };
-		3C0A571C1C22E12E00301D77 /* MKColorSwatchMatrix.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C0A57131C22E12E00301D77 /* MKColorSwatchMatrix.m */; };
-		3C0A571D1C22E12E00301D77 /* MKColorWell+Bindings.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C0A57151C22E12E00301D77 /* MKColorWell+Bindings.m */; };
-		3C0A571E1C22E12E00301D77 /* MKColorWell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C0A57171C22E12E00301D77 /* MKColorWell.m */; };
-		3C1C09C51C298ABA00BF9B6C /* warning-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C1C09C41C298ABA00BF9B6C /* warning-icon.png */; };
 		3C1E013F19D2DAE300DBF9A5 /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = 3C1E013E19D2DAE300DBF9A5 /* dsa_pub.pem */; };
 		3C2F239D21A7B43400CBE6BC /* UnsupportedNotice.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C2F239C21A7B43300CBE6BC /* UnsupportedNotice.m */; };
 		3C3AF64E20ACC6280088A3A6 /* CountryViewItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C3AF64D20ACC6280088A3A6 /* CountryViewItem.m */; };
-		3C4237171A9F612E00643059 /* toggl-logo-white.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 3C4237151A9F612E00643059 /* toggl-logo-white.pdf */; };
-		3C4237181A9F612E00643059 /* toggl-desktop-bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C4237161A9F612E00643059 /* toggl-desktop-bg.png */; };
 		3C50BCAC1C1F0574004BAE9E /* (null) in Resources */ = {isa = PBXBuildFile; };
-		3C65A7D21DE574E7005586B4 /* continue_light.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 3C65A7CE1DE574E7005586B4 /* continue_light.pdf */; };
-		3C65A7D31DE574E7005586B4 /* group_icon_closed.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 3C65A7CF1DE574E7005586B4 /* group_icon_closed.pdf */; };
-		3C65A7D41DE574E7005586B4 /* group_icon_open.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 3C65A7D01DE574E7005586B4 /* group_icon_open.pdf */; };
-		3C65A7E51DE5757A005586B4 /* continue_regular.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 3C65A7E41DE5757A005586B4 /* continue_regular.pdf */; };
 		3C6B2486203E01D90063FC08 /* AutoCompleteTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C6B2480203E01D60063FC08 /* AutoCompleteTableCell.m */; };
 		3C6B2487203E01D90063FC08 /* AutoCompleteInput.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C6B2483203E01D90063FC08 /* AutoCompleteInput.m */; };
 		3C6B2488203E01D90063FC08 /* AutoCompleteTable.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C6B2484203E01D90063FC08 /* AutoCompleteTable.m */; };
 		3C6B2489203E01D90063FC08 /* AutoCompleteTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3C6B2485203E01D90063FC08 /* AutoCompleteTableCell.xib */; };
 		3C6B24A4203FC8200063FC08 /* LiteAutoCompleteDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C6B24A3203FC8200063FC08 /* LiteAutoCompleteDataSource.m */; };
 		3C7B4E8D190FA6D200627DC3 /* NSTextFieldVerticallyAligned.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C7B4E8C190FA6D200627DC3 /* NSTextFieldVerticallyAligned.m */; };
-		3C7B4E9E190FA7F900627DC3 /* logo-white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C7B4E9D190FA7F900627DC3 /* logo-white@2x.png */; };
 		3C7B4EB3190FB57A00627DC3 /* NSSecureTextFieldVerticallyAligned.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C7B4EB2190FB57A00627DC3 /* NSSecureTextFieldVerticallyAligned.m */; };
-		3C8979B71920B7B7007061E0 /* continue.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 3C8979B61920B7B7007061E0 /* continue.pdf */; };
 		3C8979CA19235EA2007061E0 /* NSTextFieldClickablePointer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C8979C919235EA2007061E0 /* NSTextFieldClickablePointer.m */; };
-		3CA14529192DE32300414620 /* NSViewEscapable.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CA14528192DE32300414620 /* NSViewEscapable.m */; };
-		3CA1453C192DF0DE00414620 /* trash_can.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 3CA1453B192DF0DE00414620 /* trash_can.pdf */; };
-		3CAFDFF51AA713830022CD40 /* icon-google.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 3CAFDFF41AA713830022CD40 /* icon-google.pdf */; };
 		3CC450E91A31ED540012440B /* NSTextFieldDuration.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CC450E81A31ED540012440B /* NSTextFieldDuration.m */; };
 		3CD30F431F58B02C006FAA0D /* OverlayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CD30F411F58B02C006FAA0D /* OverlayViewController.m */; };
 		3CD30F441F58B02C006FAA0D /* OverlayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3CD30F421F58B02C006FAA0D /* OverlayViewController.xib */; };
 		3CD7AD6F19ED579700372797 /* NSResize.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CD7AD6E19ED579700372797 /* NSResize.m */; };
-		3CDA2C581913A4E200A94967 /* icon-start-gray@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CDA2C571913A4E200A94967 /* icon-start-gray@2x.png */; };
-		3CDA2C5B1913B61000A94967 /* icon-billable@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CDA2C591913B60F00A94967 /* icon-billable@2x.png */; };
-		3CDA2C5C1913B61000A94967 /* icon-tags@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CDA2C5A1913B60F00A94967 /* icon-tags@2x.png */; };
 		3CE1CAC11C774F2B00D0ADD5 /* LoadMoreCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE1CAC01C774F2B00D0ADD5 /* LoadMoreCell.m */; };
 		3CE30E022052BD8B00AF2E2A /* AutoCompleteTableContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE30E012052BD8B00AF2E2A /* AutoCompleteTableContainer.m */; };
-		3CFE547E201781A7006B673A /* libcrypto.1.1.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3CFE546D201781A5006B673A /* libcrypto.1.1.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		3CFE547F201781A7006B673A /* libssl.1.1.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3CFE547D201781A5006B673A /* libssl.1.1.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		69FC17F517E6534400B96425 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69FC17F417E6534400B96425 /* Cocoa.framework */; };
 		69FC17FF17E6534400B96425 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 69FC17FD17E6534400B96425 /* InfoPlist.strings */; };
 		69FC180117E6534400B96425 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 69FC180017E6534400B96425 /* main.m */; };
@@ -60,10 +36,8 @@
 		74033C9717EC1DE100CA53D3 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 74033C9617EC1DE100CA53D3 /* libc++.dylib */; };
 		74098C331919899600CBDFB9 /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 74098C321919899600CBDFB9 /* Utils.m */; };
 		741104BF18C7682700BC7A49 /* NSTextFieldWithBackground.m in Sources */ = {isa = PBXBuildFile; fileRef = 741104BE18C7682700BC7A49 /* NSTextFieldWithBackground.m */; };
-		7421348E195C4EE8007EF78B /* TFDatePicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74FD8CDC18A8EEE200F7DB80 /* TFDatePicker.framework */; };
 		7421348F195C4F1A007EF78B /* CrashReporter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 749A3A5918D889BE000AD2DB /* CrashReporter.framework */; };
 		74213490195C50B5007EF78B /* CrashReporter.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 749A3A5918D889BE000AD2DB /* CrashReporter.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		74213491195C50BC007EF78B /* TFDatePicker.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 74FD8CDC18A8EEE200F7DB80 /* TFDatePicker.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		7423393C1829B99C00063FA9 /* IdleNotificationWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7423393A1829B99C00063FA9 /* IdleNotificationWindowController.m */; };
 		7423393D1829B99C00063FA9 /* IdleNotificationWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7423393B1829B99C00063FA9 /* IdleNotificationWindowController.xib */; };
 		7424949E17F1E3D20030121C /* UIEvents.m in Sources */ = {isa = PBXBuildFile; fileRef = 7424949D17F1E3D20030121C /* UIEvents.m */; };
@@ -78,10 +52,7 @@
 		74456B9D1A774BAE002A6338 /* TogglDesktopLibrary.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 74456B9A1A774858002A6338 /* TogglDesktopLibrary.dylib */; };
 		74456B9E1A774CB0002A6338 /* TogglDesktopLibrary.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 74456B9A1A774858002A6338 /* TogglDesktopLibrary.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		745126B619A28AA600390F47 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 745126B519A28AA600390F47 /* Reachability.m */; };
-		74664DB118AA860800AAD282 /* on.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 74664DAF18AA860800AAD282 /* on.pdf */; };
-		74664DB218AA860800AAD282 /* off.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 74664DB018AA860800AAD282 /* off.pdf */; };
 		746947FA1AF3FE3E0024BED7 /* AutotrackerRuleItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 746947F91AF3FE3E0024BED7 /* AutotrackerRuleItem.m */; };
-		74762BA118A139D4004433A9 /* NSUnstripedTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 74762BA018A139D4004433A9 /* NSUnstripedTableView.m */; };
 		747B74871A0AD28200BB3791 /* ConsoleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 747B74851A0AD28200BB3791 /* ConsoleViewController.m */; };
 		747B74881A0AD28200BB3791 /* ConsoleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 747B74861A0AD28200BB3791 /* ConsoleViewController.xib */; };
 		7484F622191D92C30038885C /* Settings.m in Sources */ = {isa = PBXBuildFile; fileRef = 7484F621191D92C30038885C /* Settings.m */; };
@@ -105,8 +76,6 @@
 		74C1579B183BA5DA00550613 /* AutocompleteDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 74C1579A183BA5DA00550613 /* AutocompleteDataSource.m */; };
 		74D1D25617EB713F00E709B0 /* TimeEntryListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74D1D25417EB713F00E709B0 /* TimeEntryListViewController.m */; };
 		74D1D25817EB713F00E709B0 /* TimeEntryListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74D1D25517EB713F00E709B0 /* TimeEntryListViewController.xib */; };
-		74D1D25D17EB71C100E709B0 /* TimeEntryEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74D1D25B17EB71C100E709B0 /* TimeEntryEditViewController.m */; };
-		74D1D25F17EB71C100E709B0 /* TimeEntryEditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74D1D25C17EB71C100E709B0 /* TimeEntryEditViewController.xib */; };
 		74D1D27217EB72D900E709B0 /* TimerEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74D1D27017EB72D900E709B0 /* TimerEditViewController.m */; };
 		74D1D27417EB72D900E709B0 /* TimerEditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74D1D27117EB72D900E709B0 /* TimerEditViewController.xib */; };
 		74E3CDD717FBAE0800C3ADD3 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74E3CDD617FBAE0800C3ADD3 /* SystemConfiguration.framework */; };
@@ -117,9 +86,6 @@
 		74F8FBA318313FA6000F09EE /* NSTextFieldClickable.m in Sources */ = {isa = PBXBuildFile; fileRef = 74F8FBA218313FA6000F09EE /* NSTextFieldClickable.m */; };
 		95C0707718CDB67300A34D0D /* NSCustomComboBoxCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 95C0707618CDB67300A34D0D /* NSCustomComboBoxCell.m */; };
 		95C0707A18CDB91500A34D0D /* NSCustomComboBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 95C0707918CDB91500A34D0D /* NSCustomComboBox.m */; };
-		95DBF8CC18BF7A910021FB41 /* offline_off.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 95DBF8CA18BF7A910021FB41 /* offline_off.pdf */; };
-		95DBF8CD18BF7A910021FB41 /* offline_on.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 95DBF8CB18BF7A910021FB41 /* offline_on.pdf */; };
-		95DBF8D718C48B300021FB41 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 95DBF8D618C48B300021FB41 /* logo.png */; };
 		BA013FF5225705B6000E5B91 /* HoverTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA013FF4225705B6000E5B91 /* HoverTableCellView.swift */; };
 		BA01404622570805000E5B91 /* TagCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA01404522570805000E5B91 /* TagCellView.swift */; };
 		BA0140482257080F000E5B91 /* TagCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA0140472257080F000E5B91 /* TagCellView.xib */; };
@@ -138,10 +104,6 @@
 		BA08E087222E709C0075F68E /* ProjectTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = BA08E086222E709C0075F68E /* ProjectTextField.m */; };
 		BA0C3A65223219470081C6DE /* AutoCompleteCellType.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0C3A64223219470081C6DE /* AutoCompleteCellType.swift */; };
 		BA0C3A6722321FBC0081C6DE /* AutoCompleteTableCell+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0C3A6622321FBC0081C6DE /* AutoCompleteTableCell+Ext.swift */; };
-		BA0CEC4821BE4D4600F1BF01 /* DeepDiff.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA0CEBC121BA851700F1BF01 /* DeepDiff.framework */; };
-		BA0CEC4921BE4D4600F1BF01 /* DeepDiff.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA0CEBC121BA851700F1BF01 /* DeepDiff.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		BA0CEC5321BE528900F1BF01 /* TableViewDiffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0CEC5221BE528900F1BF01 /* TableViewDiffer.swift */; };
-		BA0CEC6521BE590200F1BF01 /* NSTableView+Diff.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0CEC6421BE590200F1BF01 /* NSTableView+Diff.swift */; };
 		BA0E38102225257D00D0121B /* BezierPath+Corner.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0E380F2225257D00D0121B /* BezierPath+Corner.swift */; };
 		BA0E38122225260B00D0121B /* TimeEntryCell+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0E38112225260B00D0121B /* TimeEntryCell+Ext.swift */; };
 		BA0F67B7224A32F700ED0F91 /* CursorButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0F67B6224A32F700ED0F91 /* CursorButton.swift */; };
@@ -242,19 +204,20 @@
 		BAB818E5228D5A17008C2367 /* DescriptionDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB818E4228D5A16008C2367 /* DescriptionDataSource.swift */; };
 		BAB818E9228D5A97008C2367 /* DescriptionContentCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB818E8228D5A97008C2367 /* DescriptionContentCellView.swift */; };
 		BAB818EB228D5AA8008C2367 /* DescriptionContentCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BAB818EA228D5AA8008C2367 /* DescriptionContentCellView.xib */; };
-		BAB8D49421BE742D00D63DA5 /* NSTableView+TimeEntryDiff.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB8D49321BE742D00D63DA5 /* NSTableView+TimeEntryDiff.swift */; };
 		BAC4D399225470DA00254DAD /* AutoCompleteRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAC4D398225470DA00254DAD /* AutoCompleteRowView.swift */; };
+		BACCC76422E5F4110040F12E /* libssl.1.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BACCC76022E5F34C0040F12E /* libssl.1.1.dylib */; };
+		BACCC76522E5F4110040F12E /* libPocoCrypto.60.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BACCC75422E5F2AA0040F12E /* libPocoCrypto.60.dylib */; };
+		BACCC76622E5F4110040F12E /* libPocoData.60.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BACCC75122E5F2AA0040F12E /* libPocoData.60.dylib */; };
+		BACCC76722E5F4110040F12E /* libPocoDataSQLite.60.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BACCC74D22E5F2AA0040F12E /* libPocoDataSQLite.60.dylib */; };
+		BACCC76822E5F4110040F12E /* libPocoFoundation.60.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BACCC74F22E5F2AA0040F12E /* libPocoFoundation.60.dylib */; };
+		BACCC76922E5F4110040F12E /* libPocoJSON.60.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BACCC74E22E5F2AA0040F12E /* libPocoJSON.60.dylib */; };
+		BACCC76A22E5F4110040F12E /* libPocoNet.60.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BACCC75522E5F2AA0040F12E /* libPocoNet.60.dylib */; };
+		BACCC76B22E5F4110040F12E /* libPocoNetSSL.60.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BACCC75022E5F2AA0040F12E /* libPocoNetSSL.60.dylib */; };
+		BACCC76C22E5F4110040F12E /* libPocoUtil.60.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BACCC75222E5F2AA0040F12E /* libPocoUtil.60.dylib */; };
+		BACCC76D22E5F4110040F12E /* libPocoXML.60.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BACCC75322E5F2AA0040F12E /* libPocoXML.60.dylib */; };
+		BACCC76F22E5F5D30040F12E /* libcrypto.1.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BACCC76E22E5F5D30040F12E /* libcrypto.1.1.dylib */; };
 		BAD15FFC223A52D600A8CCC9 /* TimeEntryEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD15FFB223A52D600A8CCC9 /* TimeEntryEmptyView.swift */; };
 		BAD15FFE223A530600A8CCC9 /* TimeEntryEmptyView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BAD15FFD223A530600A8CCC9 /* TimeEntryEmptyView.xib */; };
-		BAD2341F21D612DF0039C742 /* libPocoDataSQLite.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BAD2341621D612DE0039C742 /* libPocoDataSQLite.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		BAD2342021D612DF0039C742 /* libPocoNetSSL.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BAD2341721D612DE0039C742 /* libPocoNetSSL.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		BAD2342121D612DF0039C742 /* libPocoNet.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BAD2341821D612DE0039C742 /* libPocoNet.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		BAD2342221D612DF0039C742 /* libPocoCrypto.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BAD2341921D612DE0039C742 /* libPocoCrypto.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		BAD2342321D612DF0039C742 /* libPocoData.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BAD2341A21D612DE0039C742 /* libPocoData.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		BAD2342421D612DF0039C742 /* libPocoXML.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BAD2341B21D612DE0039C742 /* libPocoXML.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		BAD2342521D612DF0039C742 /* libPocoJSON.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BAD2341C21D612DF0039C742 /* libPocoJSON.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		BAD2342621D612DF0039C742 /* libPocoUtil.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BAD2341D21D612DF0039C742 /* libPocoUtil.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		BAD2342721D612DF0039C742 /* libPocoFoundation.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BAD2341E21D612DF0039C742 /* libPocoFoundation.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		BAD307D3229C1BD000C727DB /* KeyboardDatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD307D2229C1BD000C727DB /* KeyboardDatePicker.swift */; };
 		BAD858C7228EAE6500226C71 /* Bugsnag.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BAD858A3228EAE0E00226C71 /* Bugsnag.framework */; };
 		BAD858C8228EAE6500226C71 /* Bugsnag.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BAD858A3228EAE0E00226C71 /* Bugsnag.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -387,41 +350,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
 			remoteInfo = "CrashReporter-MacOSX";
-		};
-		74FD8CDB18A8EEE200F7DB80 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 74FD8CD718A8EEE200F7DB80 /* TFDatePicker.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = E2D656E6160A18F100DEC117;
-			remoteInfo = TFDatePicker;
-		};
-		74FD8CDD18A8EF4800F7DB80 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 74FD8CD718A8EEE200F7DB80 /* TFDatePicker.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = E2D656E5160A18F100DEC117;
-			remoteInfo = TFDatePicker;
-		};
-		BA0CEBC021BA851700F1BF01 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BA0CEBA321BA851700F1BF01 /* DeepDiff.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = D5C629401C3A7FAA007F7B7C;
-			remoteInfo = "DeepDiff-macOS";
-		};
-		BA0CEBC221BA851700F1BF01 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BA0CEBA321BA851700F1BF01 /* DeepDiff.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = D5C629491C3A7FAA007F7B7C;
-			remoteInfo = "DeepDiff-macOS-Tests";
-		};
-		BA0CEC4A21BE4D4600F1BF01 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BA0CEBA321BA851700F1BF01 /* DeepDiff.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = D5C6293F1C3A7FAA007F7B7C;
-			remoteInfo = "DeepDiff-macOS";
 		};
 		BA6E86B521DDB331005E2451 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -558,22 +486,9 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				3CFE547E201781A7006B673A /* libcrypto.1.1.dylib in CopyFiles */,
-				BAD2342121D612DF0039C742 /* libPocoNet.60.dylib in CopyFiles */,
 				BA7DB6E421F9C77A0059239B /* MASShortcut.framework in CopyFiles */,
-				BAD2342521D612DF0039C742 /* libPocoJSON.60.dylib in CopyFiles */,
-				BAD2342321D612DF0039C742 /* libPocoData.60.dylib in CopyFiles */,
-				BAD2342721D612DF0039C742 /* libPocoFoundation.60.dylib in CopyFiles */,
-				3CFE547F201781A7006B673A /* libssl.1.1.dylib in CopyFiles */,
-				BA0CEC4921BE4D4600F1BF01 /* DeepDiff.framework in CopyFiles */,
 				BAD858C8228EAE6500226C71 /* Bugsnag.framework in CopyFiles */,
 				74456B9E1A774CB0002A6338 /* TogglDesktopLibrary.dylib in CopyFiles */,
-				74213491195C50BC007EF78B /* TFDatePicker.framework in CopyFiles */,
-				BAD2341F21D612DF0039C742 /* libPocoDataSQLite.60.dylib in CopyFiles */,
-				BAD2342621D612DF0039C742 /* libPocoUtil.60.dylib in CopyFiles */,
-				BAD2342021D612DF0039C742 /* libPocoNetSSL.60.dylib in CopyFiles */,
-				BAD2342221D612DF0039C742 /* libPocoCrypto.60.dylib in CopyFiles */,
-				BAD2342421D612DF0039C742 /* libPocoXML.60.dylib in CopyFiles */,
 				74213490195C50B5007EF78B /* CrashReporter.framework in CopyFiles */,
 				BA6E873621DDC1E2005E2451 /* Sparkle.framework in CopyFiles */,
 			);
@@ -583,34 +498,13 @@
 
 /* Begin PBXFileReference section */
 		3C0158EF1C7B414E00FE63AA /* LoadMoreCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoadMoreCell.xib; sourceTree = "<group>"; };
-		3C068C681C22F25000874B9A /* MKColorWellCustom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKColorWellCustom.h; sourceTree = "<group>"; };
-		3C068C691C22F25000874B9A /* MKColorWellCustom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MKColorWellCustom.m; sourceTree = "<group>"; };
 		3C07B758193C88AE00ED6E6F /* NSCustomTimerComboBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSCustomTimerComboBox.h; sourceTree = "<group>"; };
 		3C07B759193C88AE00ED6E6F /* NSCustomTimerComboBox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSCustomTimerComboBox.m; sourceTree = "<group>"; };
-		3C0A570D1C22E12E00301D77 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
-		3C0A570E1C22E12E00301D77 /* MKColorPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKColorPickerView.h; sourceTree = "<group>"; };
-		3C0A570F1C22E12E00301D77 /* MKColorPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MKColorPickerView.m; sourceTree = "<group>"; };
-		3C0A57101C22E12E00301D77 /* MKColorSwatchCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKColorSwatchCell.h; sourceTree = "<group>"; };
-		3C0A57111C22E12E00301D77 /* MKColorSwatchCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MKColorSwatchCell.m; sourceTree = "<group>"; };
-		3C0A57121C22E12E00301D77 /* MKColorSwatchMatrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKColorSwatchMatrix.h; sourceTree = "<group>"; };
-		3C0A57131C22E12E00301D77 /* MKColorSwatchMatrix.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MKColorSwatchMatrix.m; sourceTree = "<group>"; };
-		3C0A57141C22E12E00301D77 /* MKColorWell+Bindings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MKColorWell+Bindings.h"; sourceTree = "<group>"; };
-		3C0A57151C22E12E00301D77 /* MKColorWell+Bindings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MKColorWell+Bindings.m"; sourceTree = "<group>"; };
-		3C0A57161C22E12E00301D77 /* MKColorWell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKColorWell.h; sourceTree = "<group>"; };
-		3C0A57171C22E12E00301D77 /* MKColorWell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MKColorWell.m; sourceTree = "<group>"; };
-		3C0A57181C22E12E00301D77 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		3C1C09C41C298ABA00BF9B6C /* warning-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "warning-icon.png"; path = "../../windows/TogglDesktop/TogglDesktop/Resources/warning-icon.png"; sourceTree = "<group>"; };
 		3C1E013E19D2DAE300DBF9A5 /* dsa_pub.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dsa_pub.pem; sourceTree = "<group>"; };
 		3C2F239B21A7B43300CBE6BC /* UnsupportedNotice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UnsupportedNotice.h; sourceTree = "<group>"; };
 		3C2F239C21A7B43300CBE6BC /* UnsupportedNotice.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UnsupportedNotice.m; sourceTree = "<group>"; };
 		3C3AF64C20ACC6280088A3A6 /* CountryViewItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CountryViewItem.h; sourceTree = "<group>"; };
 		3C3AF64D20ACC6280088A3A6 /* CountryViewItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CountryViewItem.m; sourceTree = "<group>"; };
-		3C4237151A9F612E00643059 /* toggl-logo-white.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "toggl-logo-white.pdf"; sourceTree = "<group>"; };
-		3C4237161A9F612E00643059 /* toggl-desktop-bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "toggl-desktop-bg.png"; sourceTree = "<group>"; };
-		3C65A7CE1DE574E7005586B4 /* continue_light.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = continue_light.pdf; sourceTree = "<group>"; };
-		3C65A7CF1DE574E7005586B4 /* group_icon_closed.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = group_icon_closed.pdf; sourceTree = "<group>"; };
-		3C65A7D01DE574E7005586B4 /* group_icon_open.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = group_icon_open.pdf; sourceTree = "<group>"; };
-		3C65A7E41DE5757A005586B4 /* continue_regular.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = continue_regular.pdf; sourceTree = "<group>"; };
 		3C6B247F203E01D60063FC08 /* AutoCompleteTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutoCompleteTableCell.h; sourceTree = "<group>"; };
 		3C6B2480203E01D60063FC08 /* AutoCompleteTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutoCompleteTableCell.m; sourceTree = "<group>"; };
 		3C6B2481203E01D80063FC08 /* AutoCompleteInput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutoCompleteInput.h; sourceTree = "<group>"; };
@@ -622,16 +516,10 @@
 		3C6B24A3203FC8200063FC08 /* LiteAutoCompleteDataSource.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LiteAutoCompleteDataSource.m; sourceTree = "<group>"; };
 		3C7B4E8B190FA6D200627DC3 /* NSTextFieldVerticallyAligned.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSTextFieldVerticallyAligned.h; sourceTree = "<group>"; };
 		3C7B4E8C190FA6D200627DC3 /* NSTextFieldVerticallyAligned.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSTextFieldVerticallyAligned.m; sourceTree = "<group>"; };
-		3C7B4E9D190FA7F900627DC3 /* logo-white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo-white@2x.png"; sourceTree = "<group>"; };
 		3C7B4EB1190FB57A00627DC3 /* NSSecureTextFieldVerticallyAligned.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSSecureTextFieldVerticallyAligned.h; sourceTree = "<group>"; };
 		3C7B4EB2190FB57A00627DC3 /* NSSecureTextFieldVerticallyAligned.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSSecureTextFieldVerticallyAligned.m; sourceTree = "<group>"; };
-		3C8979B61920B7B7007061E0 /* continue.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = continue.pdf; sourceTree = "<group>"; };
 		3C8979C819235EA2007061E0 /* NSTextFieldClickablePointer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSTextFieldClickablePointer.h; sourceTree = "<group>"; };
 		3C8979C919235EA2007061E0 /* NSTextFieldClickablePointer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSTextFieldClickablePointer.m; sourceTree = "<group>"; };
-		3CA14527192DE32300414620 /* NSViewEscapable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSViewEscapable.h; sourceTree = "<group>"; };
-		3CA14528192DE32300414620 /* NSViewEscapable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSViewEscapable.m; sourceTree = "<group>"; };
-		3CA1453B192DF0DE00414620 /* trash_can.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = trash_can.pdf; sourceTree = "<group>"; };
-		3CAFDFF41AA713830022CD40 /* icon-google.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "icon-google.pdf"; sourceTree = "<group>"; };
 		3CC450E71A31ED540012440B /* NSTextFieldDuration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSTextFieldDuration.h; sourceTree = "<group>"; };
 		3CC450E81A31ED540012440B /* NSTextFieldDuration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSTextFieldDuration.m; sourceTree = "<group>"; };
 		3CD30F401F58B02C006FAA0D /* OverlayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OverlayViewController.h; sourceTree = "<group>"; };
@@ -639,15 +527,10 @@
 		3CD30F421F58B02C006FAA0D /* OverlayViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OverlayViewController.xib; sourceTree = "<group>"; };
 		3CD7AD6D19ED579700372797 /* NSResize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSResize.h; sourceTree = "<group>"; };
 		3CD7AD6E19ED579700372797 /* NSResize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSResize.m; sourceTree = "<group>"; };
-		3CDA2C571913A4E200A94967 /* icon-start-gray@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-start-gray@2x.png"; sourceTree = "<group>"; };
-		3CDA2C591913B60F00A94967 /* icon-billable@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-billable@2x.png"; sourceTree = "<group>"; };
-		3CDA2C5A1913B60F00A94967 /* icon-tags@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-tags@2x.png"; sourceTree = "<group>"; };
 		3CE1CABF1C774F2B00D0ADD5 /* LoadMoreCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoadMoreCell.h; sourceTree = "<group>"; };
 		3CE1CAC01C774F2B00D0ADD5 /* LoadMoreCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoadMoreCell.m; sourceTree = "<group>"; };
 		3CE30E002052BD8B00AF2E2A /* AutoCompleteTableContainer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AutoCompleteTableContainer.h; sourceTree = "<group>"; };
 		3CE30E012052BD8B00AF2E2A /* AutoCompleteTableContainer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AutoCompleteTableContainer.m; sourceTree = "<group>"; };
-		3CFE546D201781A5006B673A /* libcrypto.1.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcrypto.1.1.dylib; path = ../../../../third_party/openssl/libcrypto.1.1.dylib; sourceTree = "<group>"; };
-		3CFE547D201781A5006B673A /* libssl.1.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libssl.1.1.dylib; path = ../../../../third_party/openssl/libssl.1.1.dylib; sourceTree = "<group>"; };
 		69FC17F117E6534400B96425 /* TogglDesktop.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TogglDesktop.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		69FC17F417E6534400B96425 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		69FC17F717E6534400B96425 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -660,10 +543,6 @@
 		69FC180617E6534400B96425 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		69FC180717E6534400B96425 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		69FC181217E6534500B96425 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
-		69FC181917E6534500B96425 /* TogglDesktopTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "TogglDesktopTests-Info.plist"; sourceTree = "<group>"; };
-		69FC181B17E6534500B96425 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		69FC181D17E6534500B96425 /* test2Tests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = test2Tests.h; sourceTree = "<group>"; };
-		69FC181E17E6534500B96425 /* test2Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = test2Tests.m; sourceTree = "<group>"; };
 		74033C8D17EC1CFD00CA53D3 /* libstdc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libstdc++.dylib"; path = "usr/lib/libstdc++.dylib"; sourceTree = SDKROOT; };
 		74033C9617EC1DE100CA53D3 /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
 		7408EDB918C532C200CBE8F1 /* const.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = const.h; path = ../../../../const.h; sourceTree = "<group>"; };
@@ -690,18 +569,13 @@
 		743E58461A775B7700F17CB0 /* et */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = et; path = et.lproj/MainMenu.strings; sourceTree = "<group>"; };
 		743E58481A775B7700F17CB0 /* et */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = et; path = et.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		743E58491A775B7700F17CB0 /* et */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = et; path = et.lproj/Credits.rtf; sourceTree = "<group>"; };
-		743E584A1A775B7700F17CB0 /* et */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = et; path = et.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		743E584E1A775BB300F17CB0 /* et */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = et; path = et.lproj/Localizable.strings; sourceTree = "<group>"; };
 		74456B9F1A774E12002A6338 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
-		745126B419A28AA500390F47 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Reachability.h; path = ../../../../third_party/Reachability/Reachability/Reachability.h; sourceTree = "<group>"; };
-		745126B519A28AA600390F47 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Reachability.m; path = ../../../../third_party/Reachability/Reachability/Reachability.m; sourceTree = "<group>"; };
-		74664DAF18AA860800AAD282 /* on.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = on.pdf; sourceTree = "<group>"; };
-		74664DB018AA860800AAD282 /* off.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = off.pdf; sourceTree = "<group>"; };
+		745126B419A28AA500390F47 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		745126B519A28AA600390F47 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		746947F81AF3FE3E0024BED7 /* AutotrackerRuleItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutotrackerRuleItem.h; sourceTree = "<group>"; };
 		746947F91AF3FE3E0024BED7 /* AutotrackerRuleItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutotrackerRuleItem.m; sourceTree = "<group>"; };
 		74762B9E18A12DB8004433A9 /* NSComboBox_Expansion.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSComboBox_Expansion.h; sourceTree = "<group>"; };
-		74762B9F18A139D4004433A9 /* NSUnstripedTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSUnstripedTableView.h; sourceTree = "<group>"; };
-		74762BA018A139D4004433A9 /* NSUnstripedTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSUnstripedTableView.m; sourceTree = "<group>"; };
 		747B74841A0AD28200BB3791 /* ConsoleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ConsoleViewController.h; path = ../ConsoleViewController.h; sourceTree = "<group>"; };
 		747B74851A0AD28200BB3791 /* ConsoleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ConsoleViewController.m; path = ../ConsoleViewController.m; sourceTree = "<group>"; };
 		747B74861A0AD28200BB3791 /* ConsoleViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ConsoleViewController.xib; path = ../ConsoleViewController.xib; sourceTree = "<group>"; };
@@ -744,9 +618,6 @@
 		74D1D25317EB713F00E709B0 /* TimeEntryListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeEntryListViewController.h; sourceTree = SOURCE_ROOT; };
 		74D1D25417EB713F00E709B0 /* TimeEntryListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimeEntryListViewController.m; sourceTree = SOURCE_ROOT; };
 		74D1D25517EB713F00E709B0 /* TimeEntryListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimeEntryListViewController.xib; sourceTree = SOURCE_ROOT; };
-		74D1D25A17EB71C100E709B0 /* TimeEntryEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeEntryEditViewController.h; sourceTree = SOURCE_ROOT; };
-		74D1D25B17EB71C100E709B0 /* TimeEntryEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimeEntryEditViewController.m; sourceTree = SOURCE_ROOT; };
-		74D1D25C17EB71C100E709B0 /* TimeEntryEditViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimeEntryEditViewController.xib; sourceTree = SOURCE_ROOT; };
 		74D1D26F17EB72D900E709B0 /* TimerEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimerEditViewController.h; sourceTree = SOURCE_ROOT; };
 		74D1D27017EB72D900E709B0 /* TimerEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimerEditViewController.m; sourceTree = SOURCE_ROOT; };
 		74D1D27117EB72D900E709B0 /* TimerEditViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimerEditViewController.xib; sourceTree = SOURCE_ROOT; };
@@ -758,15 +629,11 @@
 		74F1070018993FFE00E93BD5 /* FeedbackWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = FeedbackWindowController.xib; path = ../FeedbackWindowController.xib; sourceTree = "<group>"; };
 		74F8FBA118313FA6000F09EE /* NSTextFieldClickable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSTextFieldClickable.h; sourceTree = "<group>"; };
 		74F8FBA218313FA6000F09EE /* NSTextFieldClickable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSTextFieldClickable.m; sourceTree = "<group>"; };
-		74FD8CD718A8EEE200F7DB80 /* TFDatePicker.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TFDatePicker.xcodeproj; path = ../../../../third_party/TFDatePicker/TFDatePicker/TFDatePicker.xcodeproj; sourceTree = "<group>"; };
 		74FD8CDF18A8EF8300F7DB80 /* TFDatePicker.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TFDatePicker.framework; path = ../../../../third_party/TFDatePicker/TFDatePicker/build/Release/TFDatePicker.framework; sourceTree = "<group>"; };
 		95C0707518CDB67300A34D0D /* NSCustomComboBoxCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSCustomComboBoxCell.h; sourceTree = "<group>"; };
 		95C0707618CDB67300A34D0D /* NSCustomComboBoxCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSCustomComboBoxCell.m; sourceTree = "<group>"; };
 		95C0707818CDB91500A34D0D /* NSCustomComboBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSCustomComboBox.h; sourceTree = "<group>"; };
 		95C0707918CDB91500A34D0D /* NSCustomComboBox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSCustomComboBox.m; sourceTree = "<group>"; };
-		95DBF8CA18BF7A910021FB41 /* offline_off.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = offline_off.pdf; sourceTree = "<group>"; };
-		95DBF8CB18BF7A910021FB41 /* offline_on.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = offline_on.pdf; sourceTree = "<group>"; };
-		95DBF8D618C48B300021FB41 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo.png; sourceTree = "<group>"; };
 		BA013FF4225705B6000E5B91 /* HoverTableCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoverTableCellView.swift; sourceTree = "<group>"; };
 		BA01404522570805000E5B91 /* TagCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagCellView.swift; sourceTree = "<group>"; };
 		BA0140472257080F000E5B91 /* TagCellView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TagCellView.xib; sourceTree = "<group>"; };
@@ -786,10 +653,7 @@
 		BA08E086222E709C0075F68E /* ProjectTextField.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProjectTextField.m; sourceTree = "<group>"; };
 		BA0C3A64223219470081C6DE /* AutoCompleteCellType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoCompleteCellType.swift; sourceTree = "<group>"; };
 		BA0C3A6622321FBC0081C6DE /* AutoCompleteTableCell+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AutoCompleteTableCell+Ext.swift"; sourceTree = "<group>"; };
-		BA0CEBA321BA851700F1BF01 /* DeepDiff.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = DeepDiff.xcodeproj; path = ../../../../third_party/DeepDiff/DeepDiff.xcodeproj; sourceTree = "<group>"; };
 		BA0CEC5121BE528900F1BF01 /* TogglDesktop-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TogglDesktop-Bridging-Header.h"; sourceTree = "<group>"; };
-		BA0CEC5221BE528900F1BF01 /* TableViewDiffer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewDiffer.swift; sourceTree = "<group>"; };
-		BA0CEC6421BE590200F1BF01 /* NSTableView+Diff.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSTableView+Diff.swift"; sourceTree = "<group>"; };
 		BA0E380F2225257D00D0121B /* BezierPath+Corner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BezierPath+Corner.swift"; sourceTree = "<group>"; };
 		BA0E38112225260B00D0121B /* TimeEntryCell+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TimeEntryCell+Ext.swift"; sourceTree = "<group>"; };
 		BA0F67B6224A32F700ED0F91 /* CursorButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CursorButton.swift; sourceTree = "<group>"; };
@@ -897,19 +761,20 @@
 		BAB818E4228D5A16008C2367 /* DescriptionDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptionDataSource.swift; sourceTree = "<group>"; };
 		BAB818E8228D5A97008C2367 /* DescriptionContentCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptionContentCellView.swift; sourceTree = "<group>"; };
 		BAB818EA228D5AA8008C2367 /* DescriptionContentCellView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DescriptionContentCellView.xib; sourceTree = "<group>"; };
-		BAB8D49321BE742D00D63DA5 /* NSTableView+TimeEntryDiff.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSTableView+TimeEntryDiff.swift"; sourceTree = "<group>"; };
 		BAC4D398225470DA00254DAD /* AutoCompleteRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoCompleteRowView.swift; sourceTree = "<group>"; };
+		BACCC74D22E5F2AA0040F12E /* libPocoDataSQLite.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoDataSQLite.60.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoDataSQLite.60.dylib; sourceTree = "<group>"; };
+		BACCC74E22E5F2AA0040F12E /* libPocoJSON.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoJSON.60.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoJSON.60.dylib; sourceTree = "<group>"; };
+		BACCC74F22E5F2AA0040F12E /* libPocoFoundation.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoFoundation.60.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoFoundation.60.dylib; sourceTree = "<group>"; };
+		BACCC75022E5F2AA0040F12E /* libPocoNetSSL.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoNetSSL.60.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoNetSSL.60.dylib; sourceTree = "<group>"; };
+		BACCC75122E5F2AA0040F12E /* libPocoData.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoData.60.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoData.60.dylib; sourceTree = "<group>"; };
+		BACCC75222E5F2AA0040F12E /* libPocoUtil.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoUtil.60.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoUtil.60.dylib; sourceTree = "<group>"; };
+		BACCC75322E5F2AA0040F12E /* libPocoXML.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoXML.60.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoXML.60.dylib; sourceTree = "<group>"; };
+		BACCC75422E5F2AA0040F12E /* libPocoCrypto.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoCrypto.60.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoCrypto.60.dylib; sourceTree = "<group>"; };
+		BACCC75522E5F2AA0040F12E /* libPocoNet.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoNet.60.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoNet.60.dylib; sourceTree = "<group>"; };
+		BACCC76022E5F34C0040F12E /* libssl.1.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libssl.1.1.dylib; path = ../../../../third_party/openssl/libssl.1.1.dylib; sourceTree = "<group>"; };
+		BACCC76E22E5F5D30040F12E /* libcrypto.1.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcrypto.1.1.dylib; path = ../../../../third_party/openssl/libcrypto.1.1.dylib; sourceTree = "<group>"; };
 		BAD15FFB223A52D600A8CCC9 /* TimeEntryEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeEntryEmptyView.swift; sourceTree = "<group>"; };
 		BAD15FFD223A530600A8CCC9 /* TimeEntryEmptyView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimeEntryEmptyView.xib; sourceTree = "<group>"; };
-		BAD2341621D612DE0039C742 /* libPocoDataSQLite.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoDataSQLite.60.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoDataSQLite.60.dylib; sourceTree = "<group>"; };
-		BAD2341721D612DE0039C742 /* libPocoNetSSL.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoNetSSL.60.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoNetSSL.60.dylib; sourceTree = "<group>"; };
-		BAD2341821D612DE0039C742 /* libPocoNet.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoNet.60.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoNet.60.dylib; sourceTree = "<group>"; };
-		BAD2341921D612DE0039C742 /* libPocoCrypto.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoCrypto.60.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoCrypto.60.dylib; sourceTree = "<group>"; };
-		BAD2341A21D612DE0039C742 /* libPocoData.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoData.60.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoData.60.dylib; sourceTree = "<group>"; };
-		BAD2341B21D612DE0039C742 /* libPocoXML.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoXML.60.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoXML.60.dylib; sourceTree = "<group>"; };
-		BAD2341C21D612DF0039C742 /* libPocoJSON.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoJSON.60.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoJSON.60.dylib; sourceTree = "<group>"; };
-		BAD2341D21D612DF0039C742 /* libPocoUtil.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoUtil.60.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoUtil.60.dylib; sourceTree = "<group>"; };
-		BAD2341E21D612DF0039C742 /* libPocoFoundation.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoFoundation.60.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoFoundation.60.dylib; sourceTree = "<group>"; };
 		BAD307D2229C1BD000C727DB /* KeyboardDatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardDatePicker.swift; sourceTree = "<group>"; };
 		BAD8589D228EAE0E00226C71 /* Bugsnag.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Bugsnag.xcodeproj; path = "../../../../third_party/bugsnag-cocoa/OSX/Bugsnag.xcodeproj"; sourceTree = "<group>"; };
 		BAD858C5228EAE3000226C71 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
@@ -953,37 +818,26 @@
 				74E3CDD717FBAE0800C3ADD3 /* SystemConfiguration.framework in Frameworks */,
 				BA6E873521DDC1E2005E2451 /* Sparkle.framework in Frameworks */,
 				BA7DB6E321F9C77A0059239B /* MASShortcut.framework in Frameworks */,
-				7421348E195C4EE8007EF78B /* TFDatePicker.framework in Frameworks */,
 				BAD858C7228EAE6500226C71 /* Bugsnag.framework in Frameworks */,
-				BA0CEC4821BE4D4600F1BF01 /* DeepDiff.framework in Frameworks */,
 				74033C9717EC1DE100CA53D3 /* libc++.dylib in Frameworks */,
 				69FC17F517E6534400B96425 /* Cocoa.framework in Frameworks */,
+				BACCC76F22E5F5D30040F12E /* libcrypto.1.1.dylib in Frameworks */,
+				BACCC76422E5F4110040F12E /* libssl.1.1.dylib in Frameworks */,
+				BACCC76522E5F4110040F12E /* libPocoCrypto.60.dylib in Frameworks */,
+				BACCC76622E5F4110040F12E /* libPocoData.60.dylib in Frameworks */,
+				BACCC76722E5F4110040F12E /* libPocoDataSQLite.60.dylib in Frameworks */,
+				BACCC76822E5F4110040F12E /* libPocoFoundation.60.dylib in Frameworks */,
+				BACCC76922E5F4110040F12E /* libPocoJSON.60.dylib in Frameworks */,
+				BACCC76A22E5F4110040F12E /* libPocoNet.60.dylib in Frameworks */,
+				BACCC76B22E5F4110040F12E /* libPocoNetSSL.60.dylib in Frameworks */,
+				BACCC76C22E5F4110040F12E /* libPocoUtil.60.dylib in Frameworks */,
+				BACCC76D22E5F4110040F12E /* libPocoXML.60.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		3C0A570C1C22E12E00301D77 /* MKPopoverColorWell */ = {
-			isa = PBXGroup;
-			children = (
-				3C0A570D1C22E12E00301D77 /* LICENSE.txt */,
-				3C0A570E1C22E12E00301D77 /* MKColorPickerView.h */,
-				3C0A570F1C22E12E00301D77 /* MKColorPickerView.m */,
-				3C0A57101C22E12E00301D77 /* MKColorSwatchCell.h */,
-				3C0A57111C22E12E00301D77 /* MKColorSwatchCell.m */,
-				3C0A57121C22E12E00301D77 /* MKColorSwatchMatrix.h */,
-				3C0A57131C22E12E00301D77 /* MKColorSwatchMatrix.m */,
-				3C0A57141C22E12E00301D77 /* MKColorWell+Bindings.h */,
-				3C0A57151C22E12E00301D77 /* MKColorWell+Bindings.m */,
-				3C0A57171C22E12E00301D77 /* MKColorWell.m */,
-				3C0A57161C22E12E00301D77 /* MKColorWell.h */,
-				3C0A57181C22E12E00301D77 /* README.md */,
-			);
-			name = MKPopoverColorWell;
-			path = ../../../../third_party/MKPopoverColorWell;
-			sourceTree = "<group>";
-		};
 		3C6B246F203E01B70063FC08 /* AutoComplete */ = {
 			isa = PBXGroup;
 			children = (
@@ -1008,36 +862,19 @@
 			isa = PBXGroup;
 			children = (
 				BAE007DD21FAF00D00404379 /* Media.xcassets */,
-				BAD2341921D612DE0039C742 /* libPocoCrypto.60.dylib */,
-				BAD2341A21D612DE0039C742 /* libPocoData.60.dylib */,
-				BAD2341621D612DE0039C742 /* libPocoDataSQLite.60.dylib */,
-				BAD2341E21D612DF0039C742 /* libPocoFoundation.60.dylib */,
-				BAD2341C21D612DF0039C742 /* libPocoJSON.60.dylib */,
-				BAD2341821D612DE0039C742 /* libPocoNet.60.dylib */,
-				BAD2341721D612DE0039C742 /* libPocoNetSSL.60.dylib */,
-				BAD2341D21D612DF0039C742 /* libPocoUtil.60.dylib */,
-				BAD2341B21D612DE0039C742 /* libPocoXML.60.dylib */,
 				BAF50DE421A29FED0090BA95 /* Images.xcassets */,
-				3CFE546D201781A5006B673A /* libcrypto.1.1.dylib */,
-				3CFE547D201781A5006B673A /* libssl.1.1.dylib */,
-				745126B419A28AA500390F47 /* Reachability.h */,
-				745126B519A28AA600390F47 /* Reachability.m */,
 				742134C3195C63AE007EF78B /* poco */,
 				BAD8589D228EAE0E00226C71 /* Bugsnag.xcodeproj */,
 				749A3A4318D889BD000AD2DB /* CrashReporter.xcodeproj */,
-				74FD8CD718A8EEE200F7DB80 /* TFDatePicker.xcodeproj */,
 				74B680A8180759C300B697AA /* TogglDesktopLibrary.xcodeproj */,
-				BA0CEBA321BA851700F1BF01 /* DeepDiff.xcodeproj */,
 				BA6E86A521DDB331005E2451 /* Sparkle.xcodeproj */,
 				BA7DB6BB21F9C7660059239B /* MASShortcut.xcodeproj */,
-				745E7FC1192D247300747C18 /* images */,
-				3C0A570C1C22E12E00301D77 /* MKPopoverColorWell */,
 				74E1682E180F269F0026261C /* gtm */,
 				74E857AA194F8807007A88B9 /* ssl */,
 				BA712EAF21BF904E00A2D8DD /* Feature */,
-				BA0CEC4C21BE516F00F1BF01 /* Diff */,
+				BA1B7FA122E5D52F001333D9 /* Swift */,
+				BA0CEC4C21BE516F00F1BF01 /* Other */,
 				69FC17FA17E6534400B96425 /* ui */,
-				69FC181717E6534500B96425 /* kopsikTests */,
 				69FC17F317E6534400B96425 /* Frameworks */,
 				69FC17F217E6534400B96425 /* Products */,
 				3C1E013E19D2DAE300DBF9A5 /* dsa_pub.pem */,
@@ -1085,15 +922,12 @@
 		69FC17FA17E6534400B96425 /* ui */ = {
 			isa = PBXGroup;
 			children = (
-				BA229D0E21EDEDBA00DEB4B9 /* Theme */,
 				BA13E05B21C7B9F800835EC1 /* UserNotification */,
 				BAF87DDB21A3E1E700624EBE /* Extension */,
-				BAF50DF521A2A16D0090BA95 /* Icon */,
+				BAF50DF521A2A16D0090BA95 /* IconFactory */,
 				3C6B246F203E01B70063FC08 /* AutoComplete */,
 				BA2DA0C421A542E20027B7A5 /* NSTextField+Ext.h */,
 				BA2DA0C521A542E30027B7A5 /* NSTextField+Ext.m */,
-				3C068C681C22F25000874B9A /* MKColorWellCustom.h */,
-				3C068C691C22F25000874B9A /* MKColorWellCustom.m */,
 				746947F81AF3FE3E0024BED7 /* AutotrackerRuleItem.h */,
 				746947F91AF3FE3E0024BED7 /* AutotrackerRuleItem.m */,
 				7430750118204EFB009019CB /* AboutWindowController.h */,
@@ -1126,7 +960,6 @@
 				C5DA1FC117F1B38B001C4565 /* LoginViewController.h */,
 				C5DA1FC217F1B38B001C4565 /* LoginViewController.m */,
 				C5DA1FC317F1B38B001C4565 /* LoginViewController.xib */,
-				95DBF8D618C48B300021FB41 /* logo.png */,
 				69FC180917E6534500B96425 /* MainMenu.xib */,
 				C5DA1FBC17F1B08A001C4565 /* MainWindowController.h */,
 				C5DA1FBD17F1B08A001C4565 /* MainWindowController.m */,
@@ -1158,10 +991,6 @@
 				3C7B4E8C190FA6D200627DC3 /* NSTextFieldVerticallyAligned.m */,
 				741104BD18C7682700BC7A49 /* NSTextFieldWithBackground.h */,
 				741104BE18C7682700BC7A49 /* NSTextFieldWithBackground.m */,
-				74762B9F18A139D4004433A9 /* NSUnstripedTableView.h */,
-				74762BA018A139D4004433A9 /* NSUnstripedTableView.m */,
-				3CA14527192DE32300414620 /* NSViewEscapable.h */,
-				3CA14528192DE32300414620 /* NSViewEscapable.m */,
 				749CB8C918167D6E00814841 /* PreferencesWindowController.h */,
 				749CB8CA18167D6E00814841 /* PreferencesWindowController.m */,
 				749CB8CB18167D6E00814841 /* PreferencesWindowController.xib */,
@@ -1171,9 +1000,6 @@
 				C5CB7F0217F43EE100A2AEB1 /* TimeEntryCell.h */,
 				C5CB7F0317F43EE100A2AEB1 /* TimeEntryCell.m */,
 				7498D2471888B226001390B9 /* TimeEntryCell.xib */,
-				74D1D25A17EB71C100E709B0 /* TimeEntryEditViewController.h */,
-				74D1D25B17EB71C100E709B0 /* TimeEntryEditViewController.m */,
-				74D1D25C17EB71C100E709B0 /* TimeEntryEditViewController.xib */,
 				74D1D25317EB713F00E709B0 /* TimeEntryListViewController.h */,
 				74D1D25417EB713F00E709B0 /* TimeEntryListViewController.m */,
 				74D1D25517EB713F00E709B0 /* TimeEntryListViewController.xib */,
@@ -1205,13 +1031,10 @@
 				BA7B4C3621C24B9D00B75B14 /* UndoTextField.m */,
 				BAFBFCC621CD1D3C004B443F /* SystemService.h */,
 				BAFBFCC721CD1D3C004B443F /* SystemService.m */,
-				BA03725421FE9FD400FC277B /* FlatButton.swift */,
 				BA08E085222E709C0075F68E /* ProjectTextField.h */,
 				BA08E086222E709C0075F68E /* ProjectTextField.m */,
-				BAE49CAD222FC1C900773814 /* TimerContainerBox.swift */,
-				BA6EB8752249DB33003BB8EF /* VerticallyCenteredTextFieldCell.swift */,
-				BA763B7A2268601700DC245A /* PopoverRootView.swift */,
-				BA1F9031229D19C000670E0B /* NoInteractionView.swift */,
+				745126B419A28AA500390F47 /* Reachability.h */,
+				745126B519A28AA600390F47 /* Reachability.m */,
 			);
 			name = ui;
 			path = test2;
@@ -1230,29 +1053,20 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		69FC181717E6534500B96425 /* kopsikTests */ = {
-			isa = PBXGroup;
-			children = (
-				69FC181D17E6534500B96425 /* test2Tests.h */,
-				69FC181E17E6534500B96425 /* test2Tests.m */,
-				69FC181817E6534500B96425 /* Supporting Files */,
-			);
-			name = kopsikTests;
-			path = test2Tests;
-			sourceTree = "<group>";
-		};
-		69FC181817E6534500B96425 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				69FC181917E6534500B96425 /* TogglDesktopTests-Info.plist */,
-				69FC181A17E6534500B96425 /* InfoPlist.strings */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
 		742134C3195C63AE007EF78B /* poco */ = {
 			isa = PBXGroup;
 			children = (
+				BACCC76E22E5F5D30040F12E /* libcrypto.1.1.dylib */,
+				BACCC76022E5F34C0040F12E /* libssl.1.1.dylib */,
+				BACCC75422E5F2AA0040F12E /* libPocoCrypto.60.dylib */,
+				BACCC75122E5F2AA0040F12E /* libPocoData.60.dylib */,
+				BACCC74D22E5F2AA0040F12E /* libPocoDataSQLite.60.dylib */,
+				BACCC74F22E5F2AA0040F12E /* libPocoFoundation.60.dylib */,
+				BACCC74E22E5F2AA0040F12E /* libPocoJSON.60.dylib */,
+				BACCC75522E5F2AA0040F12E /* libPocoNet.60.dylib */,
+				BACCC75022E5F2AA0040F12E /* libPocoNetSSL.60.dylib */,
+				BACCC75222E5F2AA0040F12E /* libPocoUtil.60.dylib */,
+				BACCC75322E5F2AA0040F12E /* libPocoXML.60.dylib */,
 			);
 			name = poco;
 			sourceTree = "<group>";
@@ -1263,31 +1077,6 @@
 				74456B9A1A774858002A6338 /* TogglDesktopLibrary.dylib */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		745E7FC1192D247300747C18 /* images */ = {
-			isa = PBXGroup;
-			children = (
-				3C65A7CE1DE574E7005586B4 /* continue_light.pdf */,
-				3C65A7E41DE5757A005586B4 /* continue_regular.pdf */,
-				3C65A7CF1DE574E7005586B4 /* group_icon_closed.pdf */,
-				3C65A7D01DE574E7005586B4 /* group_icon_open.pdf */,
-				3C1C09C41C298ABA00BF9B6C /* warning-icon.png */,
-				3CAFDFF41AA713830022CD40 /* icon-google.pdf */,
-				3C4237151A9F612E00643059 /* toggl-logo-white.pdf */,
-				3C4237161A9F612E00643059 /* toggl-desktop-bg.png */,
-				74664DAF18AA860800AAD282 /* on.pdf */,
-				74664DB018AA860800AAD282 /* off.pdf */,
-				3C7B4E9D190FA7F900627DC3 /* logo-white@2x.png */,
-				3CDA2C571913A4E200A94967 /* icon-start-gray@2x.png */,
-				3CDA2C591913B60F00A94967 /* icon-billable@2x.png */,
-				3CDA2C5A1913B60F00A94967 /* icon-tags@2x.png */,
-				3C8979B61920B7B7007061E0 /* continue.pdf */,
-				95DBF8CA18BF7A910021FB41 /* offline_off.pdf */,
-				95DBF8CB18BF7A910021FB41 /* offline_on.pdf */,
-				3CA1453B192DF0DE00414620 /* trash_can.pdf */,
-			);
-			name = images;
 			sourceTree = "<group>";
 		};
 		749A3A4418D889BD000AD2DB /* Products */ = {
@@ -1337,14 +1126,6 @@
 			path = ../../../ssl;
 			sourceTree = "<group>";
 		};
-		74FD8CD818A8EEE200F7DB80 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				74FD8CDC18A8EEE200F7DB80 /* TFDatePicker.framework */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		BA014026225707F1000E5B91 /* Tag */ = {
 			isa = PBXGroup;
 			children = (
@@ -1366,24 +1147,12 @@
 			path = AutoComplete;
 			sourceTree = "<group>";
 		};
-		BA0CEBA421BA851700F1BF01 /* Products */ = {
+		BA0CEC4C21BE516F00F1BF01 /* Other */ = {
 			isa = PBXGroup;
 			children = (
-				BA0CEBC121BA851700F1BF01 /* DeepDiff.framework */,
-				BA0CEBC321BA851700F1BF01 /* DeepDiff-macOS-Tests.xctest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		BA0CEC4C21BE516F00F1BF01 /* Diff */ = {
-			isa = PBXGroup;
-			children = (
-				BA0CEC5221BE528900F1BF01 /* TableViewDiffer.swift */,
-				BA0CEC6421BE590200F1BF01 /* NSTableView+Diff.swift */,
-				BAB8D49321BE742D00D63DA5 /* NSTableView+TimeEntryDiff.swift */,
 				BA0CEC5121BE528900F1BF01 /* TogglDesktop-Bridging-Header.h */,
 			);
-			path = Diff;
+			path = Other;
 			sourceTree = "<group>";
 		};
 		BA13D1E42269B4F600EB3833 /* Calendar */ = {
@@ -1421,13 +1190,43 @@
 			name = UserNotification;
 			sourceTree = "<unknown>";
 		};
-		BA229D0E21EDEDBA00DEB4B9 /* Theme */ = {
+		BA1B7FA122E5D52F001333D9 /* Swift */ = {
+			isa = PBXGroup;
+			children = (
+				BA1B7FA322E5D543001333D9 /* Extensions */,
+				BA1B7FA222E5D53A001333D9 /* Views */,
+			);
+			path = Swift;
+			sourceTree = "<group>";
+		};
+		BA1B7FA222E5D53A001333D9 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				BA03725421FE9FD400FC277B /* FlatButton.swift */,
+				BAE49CAD222FC1C900773814 /* TimerContainerBox.swift */,
+				BA6EB8752249DB33003BB8EF /* VerticallyCenteredTextFieldCell.swift */,
+				BA763B7A2268601700DC245A /* PopoverRootView.swift */,
+				BA1F9031229D19C000670E0B /* NoInteractionView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		BA1B7FA322E5D543001333D9 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
 				BA6F1B3721EEE998009265E4 /* Theme+Notification.swift */,
 				BA2E3F2B22375E640035D034 /* NSView+Appearance.swift */,
+				BAF6319B21E6F868002DD6AB /* NotificationCenter+MainThread.swift */,
+				BA6F1B1921EEE258009265E4 /* NSColor+Utils.swift */,
+				BA03729C21FED85700FC277B /* NSView+Xib.swift */,
+				BA46E09E2226707F00C25763 /* Collection+Safe.swift */,
+				BA9D90B3222D14ED00D5EC0E /* NSView+Animation.swift */,
+				BA9D90D3222D155900D5EC0E /* NSView+Ext.swift */,
+				BAA260D0222D1DC70094F4E4 /* NSView+Shadow+Border.swift */,
+				BA08E011222E32C90075F68E /* NSView+LayoutConstraint.swift */,
+				BA89CB382265EA4400D21584 /* String+Search.swift */,
 			);
-			name = Theme;
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		BA34F0DB22439BF300C27A15 /* TimeEntryEditor */ = {
@@ -1688,13 +1487,13 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		BAF50DF521A2A16D0090BA95 /* Icon */ = {
+		BAF50DF521A2A16D0090BA95 /* IconFactory */ = {
 			isa = PBXGroup;
 			children = (
 				BAF50DF621A2A18D0090BA95 /* AppIconFactory.h */,
 				BAF50DF721A2A18D0090BA95 /* AppIconFactory.m */,
 			);
-			name = Icon;
+			name = IconFactory;
 			sourceTree = "<group>";
 		};
 		BAF87DDB21A3E1E700624EBE /* Extension */ = {
@@ -1704,15 +1503,6 @@
 				BAF87DEC21A3E1F600624EBE /* NSTextField+Ext.m */,
 				BA7B4BC921C0EF8800B75B14 /* NSAlert+Utils.h */,
 				BA7B4BCA21C0EF8800B75B14 /* NSAlert+Utils.m */,
-				BAF6319B21E6F868002DD6AB /* NotificationCenter+MainThread.swift */,
-				BA6F1B1921EEE258009265E4 /* NSColor+Utils.swift */,
-				BA03729C21FED85700FC277B /* NSView+Xib.swift */,
-				BA46E09E2226707F00C25763 /* Collection+Safe.swift */,
-				BA9D90B3222D14ED00D5EC0E /* NSView+Animation.swift */,
-				BA9D90D3222D155900D5EC0E /* NSView+Ext.swift */,
-				BAA260D0222D1DC70094F4E4 /* NSView+Shadow+Border.swift */,
-				BA08E011222E32C90075F68E /* NSView+LayoutConstraint.swift */,
-				BA89CB382265EA4400D21584 /* String+Search.swift */,
 			);
 			name = Extension;
 			sourceTree = "<group>";
@@ -1768,8 +1558,6 @@
 			dependencies = (
 				74456B9C1A77486B002A6338 /* PBXTargetDependency */,
 				749A3A7318D89F23000AD2DB /* PBXTargetDependency */,
-				74FD8CDE18A8EF4800F7DB80 /* PBXTargetDependency */,
-				BA0CEC4B21BE4D4600F1BF01 /* PBXTargetDependency */,
 				BA6E873821DDC1E2005E2451 /* PBXTargetDependency */,
 				BA7DB6E621F9C77A0059239B /* PBXTargetDependency */,
 				BAD858CA228EAE6500226C71 /* PBXTargetDependency */,
@@ -1818,20 +1606,12 @@
 					ProjectRef = 749A3A4318D889BD000AD2DB /* CrashReporter.xcodeproj */;
 				},
 				{
-					ProductGroup = BA0CEBA421BA851700F1BF01 /* Products */;
-					ProjectRef = BA0CEBA321BA851700F1BF01 /* DeepDiff.xcodeproj */;
-				},
-				{
 					ProductGroup = BA7DB6BC21F9C7660059239B /* Products */;
 					ProjectRef = BA7DB6BB21F9C7660059239B /* MASShortcut.xcodeproj */;
 				},
 				{
 					ProductGroup = BA6E86A621DDB331005E2451 /* Products */;
 					ProjectRef = BA6E86A521DDB331005E2451 /* Sparkle.xcodeproj */;
-				},
-				{
-					ProductGroup = 74FD8CD818A8EEE200F7DB80 /* Products */;
-					ProjectRef = 74FD8CD718A8EEE200F7DB80 /* TFDatePicker.xcodeproj */;
 				},
 				{
 					ProductGroup = 74456B871A774858002A6338 /* Products */;
@@ -1946,27 +1726,6 @@
 			remoteRef = 749A3A6E18D889BE000AD2DB /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		74FD8CDC18A8EEE200F7DB80 /* TFDatePicker.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = TFDatePicker.framework;
-			remoteRef = 74FD8CDB18A8EEE200F7DB80 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		BA0CEBC121BA851700F1BF01 /* DeepDiff.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = DeepDiff.framework;
-			remoteRef = BA0CEBC021BA851700F1BF01 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		BA0CEBC321BA851700F1BF01 /* DeepDiff-macOS-Tests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = "DeepDiff-macOS-Tests.xctest";
-			remoteRef = BA0CEBC221BA851700F1BF01 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		BA6E86B621DDB331005E2451 /* Sparkle.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -2079,23 +1838,18 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3C65A7E51DE5757A005586B4 /* continue_regular.pdf in Resources */,
 				BA7D33532248981200B953A8 /* ProjectHeaderCellView.xib in Resources */,
 				BA05369F225E239600C26E1F /* ProjectWorksapceCellView.xib in Resources */,
 				BAF50DE521A29FED0090BA95 /* Images.xcassets in Resources */,
-				3C65A7D41DE574E7005586B4 /* group_icon_open.pdf in Resources */,
 				BA34F10122439C3000C27A15 /* EditorViewController.xib in Resources */,
 				74E857BC194F8854007A88B9 /* cacert.pem in Resources */,
 				BAB818EB228D5AA8008C2367 /* DescriptionContentCellView.xib in Resources */,
 				3C6B2489203E01D90063FC08 /* AutoCompleteTableCell.xib in Resources */,
 				BA3E75D822293576009AD291 /* SystemMessageView.xib in Resources */,
-				95DBF8D718C48B300021FB41 /* logo.png in Resources */,
 				BAD15FFE223A530600A8CCC9 /* TimeEntryEmptyView.xib in Resources */,
-				3CDA2C5B1913B61000A94967 /* icon-billable@2x.png in Resources */,
 				BA19FC21226DA079006D8741 /* DateCellViewItem.xib in Resources */,
 				BA9C2E06224C84E7002AD2A1 /* ColorViewItem.xib in Resources */,
 				3CD30F441F58B02C006FAA0D /* OverlayViewController.xib in Resources */,
-				74664DB218AA860800AAD282 /* off.pdf in Resources */,
 				BA7D3355224898E400B953A8 /* ProjectContentCellView.xib in Resources */,
 				BA014054225711A3000E5B91 /* TagTokenView.xib in Resources */,
 				7430750518204EFB009019CB /* AboutWindowController.xib in Resources */,
@@ -2104,24 +1858,17 @@
 				69FC17FF17E6534400B96425 /* InfoPlist.strings in Resources */,
 				BAB0029F2273125C005ECC93 /* DayLabel.xib in Resources */,
 				BA9C2DFE224C823C002AD2A1 /* ColorPickerView.xib in Resources */,
-				3CDA2C5C1913B61000A94967 /* icon-tags@2x.png in Resources */,
 				747B74881A0AD28200BB3791 /* ConsoleViewController.xib in Resources */,
-				3C1C09C51C298ABA00BF9B6C /* warning-icon.png in Resources */,
 				743E584D1A775BB300F17CB0 /* Localizable.strings in Resources */,
 				BAE007DE21FAF00D00404379 /* Media.xcassets in Resources */,
 				C5DA1FC517F1B38B001C4565 /* LoginViewController.xib in Resources */,
-				74664DB118AA860800AAD282 /* on.pdf in Resources */,
 				69FC180517E6534400B96425 /* Credits.rtf in Resources */,
 				BAAF56A42223E19C003D0D73 /* TimeDecoratorView.xib in Resources */,
-				3C7B4E9E190FA7F900627DC3 /* logo-white@2x.png in Resources */,
 				74F1070218993FFE00E93BD5 /* FeedbackWindowController.xib in Resources */,
-				3C4237171A9F612E00643059 /* toggl-logo-white.pdf in Resources */,
 				7423393D1829B99C00063FA9 /* IdleNotificationWindowController.xib in Resources */,
 				BA8B4C772251FADF00592BC7 /* WorkspaceCellView.xib in Resources */,
-				95DBF8CD18BF7A910021FB41 /* offline_on.pdf in Resources */,
 				69FC180B17E6534500B96425 /* MainMenu.xib in Resources */,
 				BA7D334D2248945300B953A8 /* AutoCompleteView.xib in Resources */,
-				3C65A7D31DE574E7005586B4 /* group_icon_closed.pdf in Resources */,
 				C5DA1FC017F1B08A001C4565 /* MainWindowController.xib in Resources */,
 				BA412C23224E11AC003CA17A /* ClientCellView.xib in Resources */,
 				BAF38FEF2241FF20009147D7 /* FloatingErrorView.xib in Resources */,
@@ -2129,19 +1876,10 @@
 				3C50BCAC1C1F0574004BAE9E /* (null) in Resources */,
 				BA0140482257080F000E5B91 /* TagCellView.xib in Resources */,
 				BA9C2DFA224C7E77002AD2A1 /* ProjectCreationView.xib in Resources */,
-				3C8979B71920B7B7007061E0 /* continue.pdf in Resources */,
 				BA412C29224E196D003CA17A /* NoClientCellView.xib in Resources */,
-				74D1D25F17EB71C100E709B0 /* TimeEntryEditViewController.xib in Resources */,
-				3CDA2C581913A4E200A94967 /* icon-start-gray@2x.png in Resources */,
 				7498D2481888B226001390B9 /* TimeEntryCell.xib in Resources */,
-				3C0A57191C22E12E00301D77 /* LICENSE.txt in Resources */,
-				3C65A7D21DE574E7005586B4 /* continue_light.pdf in Resources */,
 				3C0158F01C7B414E00FE63AA /* LoadMoreCell.xib in Resources */,
 				BA13D21B2269E0B500EB3833 /* CalendarViewController.xib in Resources */,
-				3CA1453C192DF0DE00414620 /* trash_can.pdf in Resources */,
-				3CAFDFF51AA713830022CD40 /* icon-google.pdf in Resources */,
-				95DBF8CC18BF7A910021FB41 /* offline_off.pdf in Resources */,
-				3C4237181A9F612E00643059 /* toggl-desktop-bg.png in Resources */,
 				74D1D27417EB72D900E709B0 /* TimerEditViewController.xib in Resources */,
 				74AA9475180909F50000539F /* GTMOAuth2Window.xib in Resources */,
 				3C1E013F19D2DAE300DBF9A5 /* dsa_pub.pem in Resources */,
@@ -2212,7 +1950,6 @@
 				BA13D2152269C01500EB3833 /* Date+Utils.swift in Sources */,
 				BAAF56A02223DF9A003D0D73 /* VertificalTimeEntryFlowLayout.swift in Sources */,
 				C5CB7F0417F43EE100A2AEB1 /* TimeEntryCell.m in Sources */,
-				74762BA118A139D4004433A9 /* NSUnstripedTableView.m in Sources */,
 				C5DA1FBF17F1B08A001C4565 /* MainWindowController.m in Sources */,
 				BAE6379A22B225C70024DD08 /* AddTagButton.swift in Sources */,
 				BA2DA0C621A542E30027B7A5 /* NSTextField+Ext.m in Sources */,
@@ -2223,7 +1960,6 @@
 				BA13D2112269BE2F00EB3833 /* DateInfo.swift in Sources */,
 				BA13D20E2269BAA600EB3833 /* DateCellViewItem.swift in Sources */,
 				BA712EC821BF9F1200A2D8DD /* UndoStack.swift in Sources */,
-				BA0CEC5321BE528900F1BF01 /* TableViewDiffer.swift in Sources */,
 				BA13D2172269DE3400EB3833 /* NoVibrantPopoverView.swift in Sources */,
 				3C6B2488203E01D90063FC08 /* AutoCompleteTable.m in Sources */,
 				BA412C1D224E0D61003CA17A /* ClientDataSource.swift in Sources */,
@@ -2242,11 +1978,9 @@
 				74BA5FCF18B6E770009DAA2D /* NSHoverButton.m in Sources */,
 				BA3E75D422291CEB009AD291 /* SystemMessage.swift in Sources */,
 				BAA11AC32251F4D6007F31D2 /* WorkspaceAutoCompleteTextField.swift in Sources */,
-				BAB8D49421BE742D00D63DA5 /* NSTableView+TimeEntryDiff.swift in Sources */,
 				3C8979CA19235EA2007061E0 /* NSTextFieldClickablePointer.m in Sources */,
 				748B3A3419222DB100F31468 /* DisplayCommand.m in Sources */,
 				BA9C2E05224C84E7002AD2A1 /* ColorViewItem.swift in Sources */,
-				3C0A571E1C22E12E00301D77 /* MKColorWell.m in Sources */,
 				7438B3D318253CD2002AE43C /* MenuItemTags.m in Sources */,
 				3CE1CAC11C774F2B00D0ADD5 /* LoadMoreCell.m in Sources */,
 				749CB8CC18167D6E00814841 /* PreferencesWindowController.m in Sources */,
@@ -2271,12 +2005,9 @@
 				BA0C3A6722321FBC0081C6DE /* AutoCompleteTableCell+Ext.swift in Sources */,
 				3C6B24A4203FC8200063FC08 /* LiteAutoCompleteDataSource.m in Sources */,
 				BAB818E5228D5A17008C2367 /* DescriptionDataSource.swift in Sources */,
-				3C068C6A1C22F25000874B9A /* MKColorWellCustom.m in Sources */,
 				BA01404E22571081000E5B91 /* TagDataSource.swift in Sources */,
-				3CA14529192DE32300414620 /* NSViewEscapable.m in Sources */,
 				BA6572A9224DFA6F00BA4C60 /* ColorGraphicsView.swift in Sources */,
 				BAA11AC52251F502007F31D2 /* WorkspaceDataSource.swift in Sources */,
-				3C0A571B1C22E12E00301D77 /* MKColorSwatchCell.m in Sources */,
 				3CD30F431F58B02C006FAA0D /* OverlayViewController.m in Sources */,
 				BA412C25224E147A003CA17A /* ClientAutoCompleteTextField.swift in Sources */,
 				74D1D25617EB713F00E709B0 /* TimeEntryListViewController.m in Sources */,
@@ -2293,14 +2024,11 @@
 				BA1F9032229D19C000670E0B /* NoInteractionView.swift in Sources */,
 				BA03729D21FED85700FC277B /* NSView+Xib.swift in Sources */,
 				BA84363B22533A6600EF5830 /* DesktopLibraryBridge.m in Sources */,
-				74D1D25D17EB71C100E709B0 /* TimeEntryEditViewController.m in Sources */,
-				3C0A571C1C22E12E00301D77 /* MKColorSwatchMatrix.m in Sources */,
 				BA4059B9221D53E7002969B8 /* TimeEntryDatasource.swift in Sources */,
 				BA3E75D62229356D009AD291 /* SystemMessageView.swift in Sources */,
 				BA013FF5225705B6000E5B91 /* HoverTableCellView.swift in Sources */,
 				749BD0BD1833E28400980494 /* NSBoxClickable.m in Sources */,
 				BA08E087222E709C0075F68E /* ProjectTextField.m in Sources */,
-				BA0CEC6521BE590200F1BF01 /* NSTableView+Diff.swift in Sources */,
 				BA2E5FB1223787C300EB866E /* EditorPopover.swift in Sources */,
 				BA7D334F224897FC00B953A8 /* ProjectHeaderCellView.swift in Sources */,
 				BAE49CAE222FC1C900773814 /* TimerContainerBox.swift in Sources */,
@@ -2348,7 +2076,6 @@
 				BA50ED8522705F9E008323FA /* CalendarFlowLayout.swift in Sources */,
 				95C0707718CDB67300A34D0D /* NSCustomComboBoxCell.m in Sources */,
 				BAAF569E2223D4C7003D0D73 /* DotImageView.swift in Sources */,
-				3C0A571A1C22E12E00301D77 /* MKColorPickerView.m in Sources */,
 				BA014050225710FD000E5B91 /* TagAutoCompleteTextField.swift in Sources */,
 				BAE8E845224CA9AC006D534E /* ProjectAutoCompleteTextField.swift in Sources */,
 				BA6572A7224DFA6F00BA4C60 /* HSBGen.swift in Sources */,
@@ -2365,7 +2092,6 @@
 				BA6572A6224DFA6F00BA4C60 /* RGB.swift in Sources */,
 				3CE30E022052BD8B00AF2E2A /* AutoCompleteTableContainer.m in Sources */,
 				BA0C3A65223219470081C6DE /* AutoCompleteCellType.swift in Sources */,
-				3C0A571D1C22E12E00301D77 /* MKColorWell+Bindings.m in Sources */,
 				BA7B4C3721C24B9D00B75B14 /* UndoTextField.m in Sources */,
 				BA9C2DFC224C8235002AD2A1 /* ColorPickerView.swift in Sources */,
 				BA276A142240F5B500810C51 /* FloatingErrorView.swift in Sources */,
@@ -2386,16 +2112,6 @@
 			isa = PBXTargetDependency;
 			name = "CrashReporter-MacOSX";
 			targetProxy = 749A3A7218D89F23000AD2DB /* PBXContainerItemProxy */;
-		};
-		74FD8CDE18A8EF4800F7DB80 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = TFDatePicker;
-			targetProxy = 74FD8CDD18A8EF4800F7DB80 /* PBXContainerItemProxy */;
-		};
-		BA0CEC4B21BE4D4600F1BF01 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "DeepDiff-macOS";
-			targetProxy = BA0CEC4A21BE4D4600F1BF01 /* PBXContainerItemProxy */;
 		};
 		BA6E873821DDC1E2005E2451 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -2440,15 +2156,6 @@
 				743E58461A775B7700F17CB0 /* et */,
 			);
 			name = MainMenu.xib;
-			sourceTree = "<group>";
-		};
-		69FC181A17E6534500B96425 /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				69FC181B17E6534500B96425 /* en */,
-				743E584A1A775B7700F17CB0 /* et */,
-			);
-			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
 		743E584F1A775BB300F17CB0 /* Localizable.strings */ = {
@@ -2570,7 +2277,6 @@
 					"$(inherited)",
 					"$(SRCROOT)",
 					"$(SRCROOT)/../../../../third_party/plcrashreporter/**",
-					"$(SRCROOT)/../../../../third_party/TFDatePicker/TFDatePicker/build/Release",
 					"$(PROJECT_DIR)",
 					"$(SRCROOT)/../../../../third_party",
 					"$(SRCROOT)/../../../../third_party/Sparkle",
@@ -2582,10 +2288,10 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"$(SRCROOT)/../../../../third_party/TFDatePicker/**",
 					"$(SRCROOT)/../../../../third_party/plcrashreporter/**",
 					"$(SRCROOT)/../../../lib/include",
 					"$(SRCROOT)/../../../../third_party/Sparkle/Sparkle.framework/**",
+					"$(SRCROOT)/../../../../third_party/openssl/include",
 				);
 				INFOPLIST_FILE = "test2/TogglDesktop-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
@@ -2594,6 +2300,7 @@
 					"$(SRCROOT)",
 					../../../lib/osx/build,
 					"$(SRCROOT)/../../../../third_party/poco/lib/Darwin/x86_64",
+					"$(SRCROOT)/../../../../third_party/openssl/",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				ONLY_ACTIVE_ARCH = YES;
@@ -2602,7 +2309,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
 				STRIP_INSTALLED_PRODUCT = NO;
-				SWIFT_OBJC_BRIDGING_HEADER = "Diff/TogglDesktop-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "Other/TogglDesktop-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				WRAPPER_EXTENSION = app;
@@ -2625,7 +2332,6 @@
 					"$(inherited)",
 					"$(SRCROOT)",
 					"$(SRCROOT)/../../../../third_party/plcrashreporter/**",
-					"$(SRCROOT)/../../../../third_party/TFDatePicker/TFDatePicker/build/Release",
 					"$(PROJECT_DIR)",
 					"$(SRCROOT)/../../../../third_party",
 					"$(SRCROOT)/../../../../third_party/Sparkle",
@@ -2637,10 +2343,10 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"$(SRCROOT)/../../../../third_party/TFDatePicker/**",
 					"$(SRCROOT)/../../../../third_party/plcrashreporter/**",
 					"$(SRCROOT)/../../../lib/include",
 					"$(SRCROOT)/../../../../third_party/Sparkle/Sparkle.framework/**",
+					"$(SRCROOT)/../../../../third_party/openssl/include",
 				);
 				INFOPLIST_FILE = "test2/TogglDesktop-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
@@ -2649,6 +2355,7 @@
 					"$(SRCROOT)",
 					../../../lib/osx/build,
 					"$(SRCROOT)/../../../../third_party/poco/lib/Darwin/x86_64",
+					"$(SRCROOT)/../../../../third_party/openssl/",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				ONLY_ACTIVE_ARCH = NO;
@@ -2657,7 +2364,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
 				STRIP_INSTALLED_PRODUCT = NO;
-				SWIFT_OBJC_BRIDGING_HEADER = "Diff/TogglDesktop-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "Other/TogglDesktop-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				WRAPPER_EXTENSION = app;
 			};
