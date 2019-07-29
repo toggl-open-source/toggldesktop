@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows;
 using TogglDesktop.Diagnostics;
@@ -1126,14 +1127,25 @@ public static partial class Toggl
     // (updates are disabled in Release_VS configuration to allow for proper debugging)
     private static void installPendingUpdates()
     {
+        if (Environment.GetCommandLineArgs().Contains("--updated"))
+        {
+            // --updated means we've just been silently updated and started by the installer
+            // so we just clean up the installer files and continue
+            var di = new DirectoryInfo(updatePath);
+            foreach (var file in di.GetFiles("TogglDesktopInstaller*.exe", SearchOption.TopDirectoryOnly))
+            {
+                file.Delete();
+            }
+
+            return;
+        }
+
         var update = createUpdateAction();
 
         if (update == null)
             return;
 
         update();
-
-        Debug("Failed to start updater process");
     }
 
     private static Action createUpdateAction()
@@ -1144,8 +1156,7 @@ public static partial class Toggl
         }
 
         var di = new DirectoryInfo(updatePath);
-        var files = di.GetFiles("TogglDesktopInstaller*.exe",
-                                SearchOption.TopDirectoryOnly);
+        var files = di.GetFiles("TogglDesktopInstaller*.exe", SearchOption.TopDirectoryOnly);
         if (files.Length > 1)
         {
             Debug("Multiple update installers found. Deleting.");
@@ -1161,33 +1172,18 @@ public static partial class Toggl
             return null;
         }
 
-        var updaterPath = Path.Combine(
-            AppDomain.CurrentDomain.BaseDirectory,
-            "TogglDesktopUpdater.exe");
-        if (!File.Exists(updaterPath))
-        {
-            Debug("TogglDesktopUpdater.exe not found");
-            return null;
-        }
-
-        var psi = new ProcessStartInfo
-        {
-            FileName = updaterPath,
-            Arguments = Process.GetCurrentProcess().Id
-            + " " + string.Format("\"{0}\"", files[0].FullName)
-            + " " + string.Format("\"{0}\"", System.Reflection.Assembly.GetEntryAssembly().Location)
-        };
+        var installerFullPath = files[0].FullName;
 
         return () =>
         {
-            var process = Process.Start(psi);
+            var process = Process.Start(installerFullPath, "/U");
             if (process != null && !process.HasExited && process.Id != 0)
             {
                 // Update has started. Quit, installer will restart me.
                 Environment.Exit(0);
             }
 
-            Debug("Failed to start updater process");
+            Debug("Failed to start installer process");
         };
     }
 
