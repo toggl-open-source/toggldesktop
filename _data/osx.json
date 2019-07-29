@@ -4,7 +4,7 @@
             "version": "7.4.483",
             "rows": [
                 "Fixed window resizing issues",
-                "Fixed grouping detect with same tags in different order"
+                "Fixed grouping detect with same tags in different order",
                 "Totally new clean design",
                 "Added new project and client add flow",
                 "Added new tags autocomplete solution",
