@@ -687,7 +687,7 @@ void Context::updateUI(const UIElements &what) {
                     ss << date_header << te->Description()
                        << te->PID() << te->TID()
                        << te->ProjectGUID()
-                       << te->Billable() << te->Tags();
+                       << te->Billable() << te->TagsHash();
                     std::string group_name = ss.str();
 
                     group_header_id[group_name] = i;
