@@ -76,10 +76,10 @@ public:
         (*this)()->insert(val);
         return { mutex_, val };
     }
-    locked<T> make_locked(T *val) {
+    template<typename U> locked<U> make_locked(U *val) {
         return { mutex_, val };
     }
-    locked<const T> make_locked(T *val) const {
+    template<typename U> locked<const U> make_locked(const U *val) const {
         return { mutex_, val };
     }
     locked<T> findByID(Poco::UInt64 id) {
@@ -136,19 +136,19 @@ public:
     void Clear();
 
     void TagList( std::vector<std::string> *result, const Poco::UInt64 wid) const;
-    void WorkspaceList(std::vector<Workspace *> *) const;
-    void ClientList(std::vector<Client *> *) const;
+    locked<std::vector<Workspace*>> WorkspaceList();
+    locked<std::vector<Client*>> ClientList();
 
     Poco::Int64 NumberOfUnsyncedTimeEntries() const;
 
     // Find the time entry that was stopped most recently
-    TimeEntry *LatestTimeEntry() const;
+    locked<const TimeEntry> LatestTimeEntry() const;
 
     // Collect visible timeline events
-    std::vector<TimelineEvent *> VisibleTimelineEvents() const;
+    locked<std::vector<TimelineEvent *> > VisibleTimelineEvents();
 
     // Collect visible time entries
-    std::vector<TimeEntry *> VisibleTimeEntries() const;
+    locked<std::vector<TimeEntry *>> VisibleTimeEntries();
 
     Poco::Int64 TotalDurationForDate(const TimeEntry *match) const;
 

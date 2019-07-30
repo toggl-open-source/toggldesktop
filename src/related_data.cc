@@ -98,8 +98,9 @@ Poco::Int64 RelatedData::NumberOfUnsyncedTimeEntries() const {
     return count;
 }
 
-std::vector<TimelineEvent *> RelatedData::VisibleTimelineEvents() const {
-    std::vector<TimelineEvent *> result;
+locked<std::vector<TimelineEvent *> > RelatedData::VisibleTimelineEvents() {
+    static std::vector<TimelineEvent *> result;
+    result.clear();
     auto timelineEvents = TimelineEvents();
     for (auto it = timelineEvents->begin(); it != timelineEvents->end(); it++) {
         TimelineEvent *event = *it;
@@ -107,11 +108,12 @@ std::vector<TimelineEvent *> RelatedData::VisibleTimelineEvents() const {
             result.push_back(event);
         }
     }
-    return result;
+    return TimelineEvents.make_locked(&result);
 }
 
-std::vector<TimeEntry *> RelatedData::VisibleTimeEntries() const {
-    std::vector<TimeEntry *> result;
+locked<std::vector<TimeEntry *> > RelatedData::VisibleTimeEntries() {
+    static std::vector<TimeEntry *> result;
+    result.clear();
     auto timeEntries = TimeEntries();
     for (auto it = timeEntries->begin(); it != timeEntries->end(); it++) {
         TimeEntry *te = *it;
@@ -123,7 +125,7 @@ std::vector<TimeEntry *> RelatedData::VisibleTimeEntries() const {
         }
         result.push_back(te);
     }
-    return result;
+    return TimeEntries.make_locked(&result);
 }
 
 Poco::Int64 RelatedData::TotalDurationForDate(const TimeEntry *match) const {
@@ -145,7 +147,7 @@ Poco::Int64 RelatedData::TotalDurationForDate(const TimeEntry *match) const {
     return duration;
 }
 
-TimeEntry *RelatedData::LatestTimeEntry() const {
+locked<const TimeEntry> RelatedData::LatestTimeEntry() const {
     TimeEntry *latest = nullptr;
     std::string pomodoro_decription("Pomodoro Break");
     std::string pomodoro_tag("pomodoro-break");
@@ -176,7 +178,7 @@ TimeEntry *RelatedData::LatestTimeEntry() const {
         }
     }
 
-    return latest;
+    return TimeEntries.make_locked(latest);
 }
 
 // Add time entries, in format:
@@ -533,9 +535,9 @@ void RelatedData::TagList(
     //std::sort(tags->rbegin(), tags->rend());
 }
 
-void RelatedData::WorkspaceList(std::vector<Workspace *> *result) const {
-
-    poco_check_ptr(result);
+locked<std::vector<Workspace*>> RelatedData::WorkspaceList() {
+    static std::vector<Workspace*> result;
+    result.clear();
 
     auto workspaces = Workspaces();
     for (auto it = workspaces->begin(); it != workspaces->end(); it++) {
@@ -543,24 +545,27 @@ void RelatedData::WorkspaceList(std::vector<Workspace *> *result) const {
         if (!ws->Admin() && ws->OnlyAdminsMayCreateProjects()) {
             continue;
         }
-        result->push_back(ws);
+        result.push_back(ws);
     }
 
     // OVERHAUL_TODO
     //std::sort(result->rbegin(), result->rend(), CompareWorkspaces.findByName);
+
+    return Workspaces.make_locked(&result);
 }
 
-void RelatedData::ClientList(std::vector<Client *> *result) const {
+locked<std::vector<Client *> > RelatedData::ClientList() {
+    static std::vector<Client*> result;
+    result.clear();
 
-    poco_check_ptr(result);
     auto clients = Clients();
-    result->clear();
     for (auto i : *clients) {
-        result->push_back(i);
+        result.push_back(i);
     }
-
     // OVERHAUL_TODO
     //std::sort(result->rbegin(), result->rend(), CompareClients.findByName);
+
+    return Clients.make_locked(&result);
 }
 
 void RelatedData::ProjectLabelAndColorCode(

@@ -581,11 +581,10 @@ void Context::updateUI(const UIElements &what) {
         }
 
         if (what.display_workspace_select && user_) {
-            std::vector<Workspace *> workspaces;
-            user_->related.WorkspaceList(&workspaces);
+            auto workspaces = user_->related.WorkspaceList();
             for (std::vector<Workspace *>::const_iterator
-                    it = workspaces.begin();
-                    it != workspaces.end();
+                    it = workspaces->begin();
+                    it != workspaces->end();
                     it++) {
                 Workspace *ws = *it;
                 view::Generic view;
@@ -600,10 +599,9 @@ void Context::updateUI(const UIElements &what) {
         }
 
         if (what.display_client_select && user_) {
-            std::vector<Client *> models;
-            user_->related.ClientList(&models);
-            for (std::vector<Client *>::const_iterator it = models.begin();
-                    it != models.end();
+            auto models = user_->related.ClientList();
+            for (std::vector<Client *>::const_iterator it = models->begin();
+                    it != models->end();
                     it++) {
                 Client *c = *it;
                 view::Generic view;
@@ -646,9 +644,8 @@ void Context::updateUI(const UIElements &what) {
             }
 
             // Get a sorted list of time entries
-            std::vector<TimeEntry *> time_entries =
-                user_->related.VisibleTimeEntries();
-            std::sort(time_entries.begin(), time_entries.end(),
+            auto time_entries = user_->related.VisibleTimeEntries();
+            std::sort(time_entries->begin(), time_entries->end(),
                       CompareByStart);
 
             // Collect the time entries into a list
@@ -659,8 +656,8 @@ void Context::updateUI(const UIElements &what) {
             std::map<std::string, Poco::Int64> group_header_id;
             std::map<std::string, std::vector<Poco::Int64> > group_items;
 
-            for (unsigned int i = 0; i < time_entries.size(); i++) {
-                TimeEntry *te = time_entries[i];
+            for (unsigned int i = 0; i < time_entries->size(); i++) {
+                TimeEntry *te = time_entries->at(i);
 
                 std::string date_header =
                     toggl::Formatter::FormatDateHeader(te->Start());
@@ -696,8 +693,8 @@ void Context::updateUI(const UIElements &what) {
             }
 
             // Assign the date durations we calculated previously
-            for (unsigned int i = 0; i < time_entries.size(); i++) {
-                TimeEntry *te = time_entries[i];
+            for (unsigned int i = 0; i < time_entries->size(); i++) {
+                TimeEntry *te = time_entries->at(i);
 
                 // Dont render running entry in list,
                 // although its calculated into totals per date.
@@ -717,7 +714,7 @@ void Context::updateUI(const UIElements &what) {
                             if (entry_groups[view.GroupName]) {
                                 for (unsigned int j = 0; j < group_items[view.GroupName].size(); j++) {
                                     TimeEntry *group_entry =
-                                        time_entries[group_items[view.GroupName][j]];
+                                        time_entries->at(group_items[view.GroupName][j]);
 
                                     view::TimeEntry group_entry_view;
                                     group_entry_view.Fill(group_entry);
@@ -2639,7 +2636,7 @@ locked<TimeEntry> Context::ContinueLatest(const bool prevent_on_app) {
             return {};
         }
 
-        TimeEntry *latest = user_->related.LatestTimeEntry();
+        auto latest = user_->related.LatestTimeEntry();
 
         if (!latest) {
             return {};
@@ -5261,16 +5258,16 @@ error Context::pullWorkspaces(TogglClient* toggl_client) {
 }
 
 error Context::pullWorkspacePreferences(TogglClient* toggl_client) {
-    std::vector<Workspace*> workspaces;
+    locked<std::vector<Workspace*>> workspaces;
     {
         Poco::Mutex::ScopedLock lock(user_m_);
         logger().debug("user mutex lock success - c:pullWorkspacePreferences");
 
-        user_->related.WorkspaceList(&workspaces);
+        workspaces = user_->related.WorkspaceList();
     }
     for (std::vector<Workspace*>::const_iterator
-            it = workspaces.begin();
-            it != workspaces.end();
+            it = workspaces->begin();
+            it != workspaces->end();
             it++) {
         Workspace* ws = *it;
 
