@@ -27,6 +27,8 @@
 		3CD7AD6F19ED579700372797 /* NSResize.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CD7AD6E19ED579700372797 /* NSResize.m */; };
 		3CE1CAC11C774F2B00D0ADD5 /* LoadMoreCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE1CAC01C774F2B00D0ADD5 /* LoadMoreCell.m */; };
 		3CE30E022052BD8B00AF2E2A /* AutoCompleteTableContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE30E012052BD8B00AF2E2A /* AutoCompleteTableContainer.m */; };
+		3CFE547E201781A7006B673A /* libcrypto.1.1.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3CFE546D201781A5006B673A /* libcrypto.1.1.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		3CFE547F201781A7006B673A /* libssl.1.1.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3CFE547D201781A5006B673A /* libssl.1.1.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		69FC17F517E6534400B96425 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69FC17F417E6534400B96425 /* Cocoa.framework */; };
 		69FC17FF17E6534400B96425 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 69FC17FD17E6534400B96425 /* InfoPlist.strings */; };
 		69FC180117E6534400B96425 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 69FC180017E6534400B96425 /* main.m */; };
@@ -205,19 +207,17 @@
 		BAB818E9228D5A97008C2367 /* DescriptionContentCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB818E8228D5A97008C2367 /* DescriptionContentCellView.swift */; };
 		BAB818EB228D5AA8008C2367 /* DescriptionContentCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BAB818EA228D5AA8008C2367 /* DescriptionContentCellView.xib */; };
 		BAC4D399225470DA00254DAD /* AutoCompleteRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAC4D398225470DA00254DAD /* AutoCompleteRowView.swift */; };
-		BACCC76422E5F4110040F12E /* libssl.1.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BACCC76022E5F34C0040F12E /* libssl.1.1.dylib */; };
-		BACCC76522E5F4110040F12E /* libPocoCrypto.60.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BACCC75422E5F2AA0040F12E /* libPocoCrypto.60.dylib */; };
-		BACCC76622E5F4110040F12E /* libPocoData.60.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BACCC75122E5F2AA0040F12E /* libPocoData.60.dylib */; };
-		BACCC76722E5F4110040F12E /* libPocoDataSQLite.60.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BACCC74D22E5F2AA0040F12E /* libPocoDataSQLite.60.dylib */; };
-		BACCC76822E5F4110040F12E /* libPocoFoundation.60.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BACCC74F22E5F2AA0040F12E /* libPocoFoundation.60.dylib */; };
-		BACCC76922E5F4110040F12E /* libPocoJSON.60.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BACCC74E22E5F2AA0040F12E /* libPocoJSON.60.dylib */; };
-		BACCC76A22E5F4110040F12E /* libPocoNet.60.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BACCC75522E5F2AA0040F12E /* libPocoNet.60.dylib */; };
-		BACCC76B22E5F4110040F12E /* libPocoNetSSL.60.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BACCC75022E5F2AA0040F12E /* libPocoNetSSL.60.dylib */; };
-		BACCC76C22E5F4110040F12E /* libPocoUtil.60.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BACCC75222E5F2AA0040F12E /* libPocoUtil.60.dylib */; };
-		BACCC76D22E5F4110040F12E /* libPocoXML.60.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BACCC75322E5F2AA0040F12E /* libPocoXML.60.dylib */; };
-		BACCC76F22E5F5D30040F12E /* libcrypto.1.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BACCC76E22E5F5D30040F12E /* libcrypto.1.1.dylib */; };
 		BAD15FFC223A52D600A8CCC9 /* TimeEntryEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD15FFB223A52D600A8CCC9 /* TimeEntryEmptyView.swift */; };
 		BAD15FFE223A530600A8CCC9 /* TimeEntryEmptyView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BAD15FFD223A530600A8CCC9 /* TimeEntryEmptyView.xib */; };
+		BAD2341F21D612DF0039C742 /* libPocoDataSQLite.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BAD2341621D612DE0039C742 /* libPocoDataSQLite.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BAD2342021D612DF0039C742 /* libPocoNetSSL.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BAD2341721D612DE0039C742 /* libPocoNetSSL.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BAD2342121D612DF0039C742 /* libPocoNet.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BAD2341821D612DE0039C742 /* libPocoNet.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BAD2342221D612DF0039C742 /* libPocoCrypto.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BAD2341921D612DE0039C742 /* libPocoCrypto.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BAD2342321D612DF0039C742 /* libPocoData.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BAD2341A21D612DE0039C742 /* libPocoData.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BAD2342421D612DF0039C742 /* libPocoXML.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BAD2341B21D612DE0039C742 /* libPocoXML.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BAD2342521D612DF0039C742 /* libPocoJSON.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BAD2341C21D612DF0039C742 /* libPocoJSON.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BAD2342621D612DF0039C742 /* libPocoUtil.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BAD2341D21D612DF0039C742 /* libPocoUtil.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BAD2342721D612DF0039C742 /* libPocoFoundation.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BAD2341E21D612DF0039C742 /* libPocoFoundation.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		BAD307D3229C1BD000C727DB /* KeyboardDatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD307D2229C1BD000C727DB /* KeyboardDatePicker.swift */; };
 		BAD858C7228EAE6500226C71 /* Bugsnag.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BAD858A3228EAE0E00226C71 /* Bugsnag.framework */; };
 		BAD858C8228EAE6500226C71 /* Bugsnag.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BAD858A3228EAE0E00226C71 /* Bugsnag.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -486,9 +486,20 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				3CFE547E201781A7006B673A /* libcrypto.1.1.dylib in CopyFiles */,
+				BAD2342121D612DF0039C742 /* libPocoNet.60.dylib in CopyFiles */,
 				BA7DB6E421F9C77A0059239B /* MASShortcut.framework in CopyFiles */,
+				BAD2342521D612DF0039C742 /* libPocoJSON.60.dylib in CopyFiles */,
+				BAD2342321D612DF0039C742 /* libPocoData.60.dylib in CopyFiles */,
+				BAD2342721D612DF0039C742 /* libPocoFoundation.60.dylib in CopyFiles */,
+				3CFE547F201781A7006B673A /* libssl.1.1.dylib in CopyFiles */,
 				BAD858C8228EAE6500226C71 /* Bugsnag.framework in CopyFiles */,
 				74456B9E1A774CB0002A6338 /* TogglDesktopLibrary.dylib in CopyFiles */,
+				BAD2341F21D612DF0039C742 /* libPocoDataSQLite.60.dylib in CopyFiles */,
+				BAD2342621D612DF0039C742 /* libPocoUtil.60.dylib in CopyFiles */,
+				BAD2342021D612DF0039C742 /* libPocoNetSSL.60.dylib in CopyFiles */,
+				BAD2342221D612DF0039C742 /* libPocoCrypto.60.dylib in CopyFiles */,
+				BAD2342421D612DF0039C742 /* libPocoXML.60.dylib in CopyFiles */,
 				74213490195C50B5007EF78B /* CrashReporter.framework in CopyFiles */,
 				BA6E873621DDC1E2005E2451 /* Sparkle.framework in CopyFiles */,
 			);
@@ -531,6 +542,8 @@
 		3CE1CAC01C774F2B00D0ADD5 /* LoadMoreCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoadMoreCell.m; sourceTree = "<group>"; };
 		3CE30E002052BD8B00AF2E2A /* AutoCompleteTableContainer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AutoCompleteTableContainer.h; sourceTree = "<group>"; };
 		3CE30E012052BD8B00AF2E2A /* AutoCompleteTableContainer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AutoCompleteTableContainer.m; sourceTree = "<group>"; };
+		3CFE546D201781A5006B673A /* libcrypto.1.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcrypto.1.1.dylib; path = ../../../../third_party/openssl/libcrypto.1.1.dylib; sourceTree = "<group>"; };
+		3CFE547D201781A5006B673A /* libssl.1.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libssl.1.1.dylib; path = ../../../../third_party/openssl/libssl.1.1.dylib; sourceTree = "<group>"; };
 		69FC17F117E6534400B96425 /* TogglDesktop.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TogglDesktop.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		69FC17F417E6534400B96425 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		69FC17F717E6534400B96425 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -762,19 +775,17 @@
 		BAB818E8228D5A97008C2367 /* DescriptionContentCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptionContentCellView.swift; sourceTree = "<group>"; };
 		BAB818EA228D5AA8008C2367 /* DescriptionContentCellView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DescriptionContentCellView.xib; sourceTree = "<group>"; };
 		BAC4D398225470DA00254DAD /* AutoCompleteRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoCompleteRowView.swift; sourceTree = "<group>"; };
-		BACCC74D22E5F2AA0040F12E /* libPocoDataSQLite.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoDataSQLite.60.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoDataSQLite.60.dylib; sourceTree = "<group>"; };
-		BACCC74E22E5F2AA0040F12E /* libPocoJSON.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoJSON.60.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoJSON.60.dylib; sourceTree = "<group>"; };
-		BACCC74F22E5F2AA0040F12E /* libPocoFoundation.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoFoundation.60.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoFoundation.60.dylib; sourceTree = "<group>"; };
-		BACCC75022E5F2AA0040F12E /* libPocoNetSSL.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoNetSSL.60.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoNetSSL.60.dylib; sourceTree = "<group>"; };
-		BACCC75122E5F2AA0040F12E /* libPocoData.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoData.60.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoData.60.dylib; sourceTree = "<group>"; };
-		BACCC75222E5F2AA0040F12E /* libPocoUtil.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoUtil.60.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoUtil.60.dylib; sourceTree = "<group>"; };
-		BACCC75322E5F2AA0040F12E /* libPocoXML.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoXML.60.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoXML.60.dylib; sourceTree = "<group>"; };
-		BACCC75422E5F2AA0040F12E /* libPocoCrypto.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoCrypto.60.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoCrypto.60.dylib; sourceTree = "<group>"; };
-		BACCC75522E5F2AA0040F12E /* libPocoNet.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoNet.60.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoNet.60.dylib; sourceTree = "<group>"; };
-		BACCC76022E5F34C0040F12E /* libssl.1.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libssl.1.1.dylib; path = ../../../../third_party/openssl/libssl.1.1.dylib; sourceTree = "<group>"; };
-		BACCC76E22E5F5D30040F12E /* libcrypto.1.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcrypto.1.1.dylib; path = ../../../../third_party/openssl/libcrypto.1.1.dylib; sourceTree = "<group>"; };
 		BAD15FFB223A52D600A8CCC9 /* TimeEntryEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeEntryEmptyView.swift; sourceTree = "<group>"; };
 		BAD15FFD223A530600A8CCC9 /* TimeEntryEmptyView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimeEntryEmptyView.xib; sourceTree = "<group>"; };
+		BAD2341621D612DE0039C742 /* libPocoDataSQLite.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoDataSQLite.60.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoDataSQLite.60.dylib; sourceTree = "<group>"; };
+		BAD2341721D612DE0039C742 /* libPocoNetSSL.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoNetSSL.60.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoNetSSL.60.dylib; sourceTree = "<group>"; };
+		BAD2341821D612DE0039C742 /* libPocoNet.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoNet.60.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoNet.60.dylib; sourceTree = "<group>"; };
+		BAD2341921D612DE0039C742 /* libPocoCrypto.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoCrypto.60.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoCrypto.60.dylib; sourceTree = "<group>"; };
+		BAD2341A21D612DE0039C742 /* libPocoData.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoData.60.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoData.60.dylib; sourceTree = "<group>"; };
+		BAD2341B21D612DE0039C742 /* libPocoXML.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoXML.60.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoXML.60.dylib; sourceTree = "<group>"; };
+		BAD2341C21D612DF0039C742 /* libPocoJSON.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoJSON.60.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoJSON.60.dylib; sourceTree = "<group>"; };
+		BAD2341D21D612DF0039C742 /* libPocoUtil.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoUtil.60.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoUtil.60.dylib; sourceTree = "<group>"; };
+		BAD2341E21D612DF0039C742 /* libPocoFoundation.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoFoundation.60.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoFoundation.60.dylib; sourceTree = "<group>"; };
 		BAD307D2229C1BD000C727DB /* KeyboardDatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardDatePicker.swift; sourceTree = "<group>"; };
 		BAD8589D228EAE0E00226C71 /* Bugsnag.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Bugsnag.xcodeproj; path = "../../../../third_party/bugsnag-cocoa/OSX/Bugsnag.xcodeproj"; sourceTree = "<group>"; };
 		BAD858C5228EAE3000226C71 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
@@ -821,17 +832,6 @@
 				BAD858C7228EAE6500226C71 /* Bugsnag.framework in Frameworks */,
 				74033C9717EC1DE100CA53D3 /* libc++.dylib in Frameworks */,
 				69FC17F517E6534400B96425 /* Cocoa.framework in Frameworks */,
-				BACCC76F22E5F5D30040F12E /* libcrypto.1.1.dylib in Frameworks */,
-				BACCC76422E5F4110040F12E /* libssl.1.1.dylib in Frameworks */,
-				BACCC76522E5F4110040F12E /* libPocoCrypto.60.dylib in Frameworks */,
-				BACCC76622E5F4110040F12E /* libPocoData.60.dylib in Frameworks */,
-				BACCC76722E5F4110040F12E /* libPocoDataSQLite.60.dylib in Frameworks */,
-				BACCC76822E5F4110040F12E /* libPocoFoundation.60.dylib in Frameworks */,
-				BACCC76922E5F4110040F12E /* libPocoJSON.60.dylib in Frameworks */,
-				BACCC76A22E5F4110040F12E /* libPocoNet.60.dylib in Frameworks */,
-				BACCC76B22E5F4110040F12E /* libPocoNetSSL.60.dylib in Frameworks */,
-				BACCC76C22E5F4110040F12E /* libPocoUtil.60.dylib in Frameworks */,
-				BACCC76D22E5F4110040F12E /* libPocoXML.60.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -862,7 +862,18 @@
 			isa = PBXGroup;
 			children = (
 				BAE007DD21FAF00D00404379 /* Media.xcassets */,
+				BAD2341921D612DE0039C742 /* libPocoCrypto.60.dylib */,
+				BAD2341A21D612DE0039C742 /* libPocoData.60.dylib */,
+				BAD2341621D612DE0039C742 /* libPocoDataSQLite.60.dylib */,
+				BAD2341E21D612DF0039C742 /* libPocoFoundation.60.dylib */,
+				BAD2341C21D612DF0039C742 /* libPocoJSON.60.dylib */,
+				BAD2341821D612DE0039C742 /* libPocoNet.60.dylib */,
+				BAD2341721D612DE0039C742 /* libPocoNetSSL.60.dylib */,
+				BAD2341D21D612DF0039C742 /* libPocoUtil.60.dylib */,
+				BAD2341B21D612DE0039C742 /* libPocoXML.60.dylib */,
 				BAF50DE421A29FED0090BA95 /* Images.xcassets */,
+				3CFE546D201781A5006B673A /* libcrypto.1.1.dylib */,
+				3CFE547D201781A5006B673A /* libssl.1.1.dylib */,
 				742134C3195C63AE007EF78B /* poco */,
 				BAD8589D228EAE0E00226C71 /* Bugsnag.xcodeproj */,
 				749A3A4318D889BD000AD2DB /* CrashReporter.xcodeproj */,
@@ -1056,17 +1067,6 @@
 		742134C3195C63AE007EF78B /* poco */ = {
 			isa = PBXGroup;
 			children = (
-				BACCC76E22E5F5D30040F12E /* libcrypto.1.1.dylib */,
-				BACCC76022E5F34C0040F12E /* libssl.1.1.dylib */,
-				BACCC75422E5F2AA0040F12E /* libPocoCrypto.60.dylib */,
-				BACCC75122E5F2AA0040F12E /* libPocoData.60.dylib */,
-				BACCC74D22E5F2AA0040F12E /* libPocoDataSQLite.60.dylib */,
-				BACCC74F22E5F2AA0040F12E /* libPocoFoundation.60.dylib */,
-				BACCC74E22E5F2AA0040F12E /* libPocoJSON.60.dylib */,
-				BACCC75522E5F2AA0040F12E /* libPocoNet.60.dylib */,
-				BACCC75022E5F2AA0040F12E /* libPocoNetSSL.60.dylib */,
-				BACCC75222E5F2AA0040F12E /* libPocoUtil.60.dylib */,
-				BACCC75322E5F2AA0040F12E /* libPocoXML.60.dylib */,
 			);
 			name = poco;
 			sourceTree = "<group>";
