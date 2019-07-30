@@ -130,9 +130,6 @@ public:
 
     void Clear();
 
-    template <typename T> locked<T> make_protected(T *data);
-    template <typename T> locked<const T> make_protected(const T *data) const;
-
     void TagList( std::vector<std::string> *result, const Poco::UInt64 wid) const;
     void WorkspaceList(std::vector<Workspace *> *) const;
     void ClientList(std::vector<Client *> *) const;
