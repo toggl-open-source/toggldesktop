@@ -16,7 +16,7 @@ namespace TogglDesktop
         public IdleNotificationWindow()
         {
             this.InitializeComponent();
-            this.Closing += OnClosing;
+            this.Closing += this.HideWindowOnClosing;
             Toggl.OnIdleNotification += this.onIdleNotification;
             Toggl.OnStoppedTimerState += this.onStoppedTimerState;
         }
@@ -36,13 +36,6 @@ namespace TogglDesktop
             this.Show();
             this.Topmost = true;
             this.Activate();
-        }
-
-        private void OnClosing(object sender, CancelEventArgs e)
-        {
-            e.Cancel = true;
-            Action hideAction = () => this.Hide();
-            Dispatcher.BeginInvoke(DispatcherPriority.Background, hideAction);
         }
 
         protected override void OnDeactivated(EventArgs e)

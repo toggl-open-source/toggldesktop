@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.ComponentModel;
+using System.Windows;
 using System.Windows.Controls;
 using Microsoft.Win32;
 
@@ -11,6 +12,13 @@ namespace TogglDesktop
         public FeedbackWindow()
         {
             this.InitializeComponent();
+            this.Closing += this.HideWindowOnClosing;
+            this.Closing += ResetOnClosing;
+            this.reset();
+        }
+
+        private void ResetOnClosing(object sender, CancelEventArgs e)
+        {
             this.reset();
         }
 
@@ -22,12 +30,6 @@ namespace TogglDesktop
             this.errorText.Visibility = Visibility.Hidden;
             this.topicEmptyText.Visibility = Visibility.Visible;
             this.attachedFileName = null;
-        }
-
-        protected override void onCloseButtonClick(object sender, RoutedEventArgs e)
-        {
-            this.Hide();
-            this.reset();
         }
 
         private void onTopicSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -80,6 +82,5 @@ namespace TogglDesktop
             this.reset();
             this.Hide();
         }
-
     }
 }

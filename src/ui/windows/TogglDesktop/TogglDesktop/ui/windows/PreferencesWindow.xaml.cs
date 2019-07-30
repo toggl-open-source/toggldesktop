@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
-using Microsoft.Win32;
 using TogglDesktop.AutoCompletion;
 using TogglDesktop.AutoCompletion.Implementation;
 using TogglDesktop.Diagnostics;
@@ -29,6 +27,7 @@ namespace TogglDesktop
         public PreferencesWindow()
         {
             this.InitializeComponent();
+            this.Closing += this.HideWindowOnClosing;
 
             Toggl.OnSettings += this.onSettings;
             Toggl.OnLogin += this.onLogin;
@@ -248,11 +247,6 @@ namespace TogglDesktop
         }
 
         private void cancelButtonClicked(object sender, RoutedEventArgs e)
-        {
-            this.Hide();
-        }
-
-        protected override void onCloseButtonClick(object sender, RoutedEventArgs e)
         {
             this.Hide();
         }
