@@ -165,11 +165,7 @@ extern void *ctx;
 	[self displayTimeline:notification.object];
 }
 
-<<<<<<< HEAD
 - (void)displayTimeline:(TimelineDisplayCommand *)cmd
-=======
-- (void)displayTimeline:(DisplayCommand *)cmd
->>>>>>> feature/timeline-ui
 {
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 	if (cmd.open)

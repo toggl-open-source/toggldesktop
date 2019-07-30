@@ -8,7 +8,6 @@
 
 import Cocoa
 
-<<<<<<< HEAD
 final class TimelineDashboardViewController: NSViewController {
 
     // MARK: OUTLET
@@ -211,13 +210,4 @@ extension TimelineDashboardViewController: TimelineDatasourceDelegate {
         editorPopover.animates = false
         editorPopover.show(relativeTo: cell.view.bounds, of: cell.view, preferredEdge: .maxX)
     }
-=======
-class TimelineDashboardViewController: NSViewController {
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do view setup here.
-    }
-    
->>>>>>> feature/timeline-ui
 }

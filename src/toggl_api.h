@@ -596,7 +596,7 @@ extern "C" {
 
     TOGGL_EXPORT void toggl_view_timeline_next_day(
         void *context);
-        
+
     TOGGL_EXPORT void toggl_view_timeline_current_day(
         void *context);
 

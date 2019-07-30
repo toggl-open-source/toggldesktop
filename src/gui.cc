@@ -68,19 +68,6 @@ void TimeEntry::GenerateRoundedTimes() {
     RoundedEnd = (tmp_rounded - Ended) / 9;
 }
 
-void TimeEntry::GenerateRoundedTimes() {
-    int quarter = 900;
-    int tmp_rounded;
-
-    tmp_rounded = ((int)(Started / quarter) * quarter);
-    // gets the percentage that is used to set margin from top
-    RoundedStart = (Started - tmp_rounded) / 9;
-
-    tmp_rounded = (((int)(Ended / quarter)) * quarter) + quarter;
-    // gets the percentage that is used to set margin from bottom
-    RoundedEnd = (tmp_rounded - Ended) / 9;
-}
-
 bool Autocomplete::operator == (const Autocomplete& a) const {
     return false;
 }

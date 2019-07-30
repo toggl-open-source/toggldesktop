@@ -6,19 +6,15 @@
 //  Copyright © 2019 Alari. All rights reserved.
 //
 
+
 import Cocoa
 
 @IBDesignable
 final class FlatButton: NSButton {
 
     // MARK: IBInspectable
-
     @IBInspectable var bgColor: NSColor?
-<<<<<<< HEAD:src/ui/osx/TogglDesktop/test2/FlatButton.swift
     @IBInspectable var textColor: NSColor?
-=======
-    @IBInspectable var titleColor: NSColor?
->>>>>>> feature/timeline-ui:src/ui/osx/TogglDesktop/Swift/Views/FlatButton.swift
     @IBInspectable var selectedTextColor: NSColor?
     @IBInspectable var cornerRadius: CGFloat = 0 {
         didSet {
@@ -28,7 +24,6 @@ final class FlatButton: NSButton {
     }
 
     // MARK: Variables
-
     var isSelected = false {
         didSet {
             drawTextColor()
@@ -36,7 +31,6 @@ final class FlatButton: NSButton {
     }
 
     // MARK: View
-
     override func awakeFromNib() {
         super.awakeFromNib()
 
@@ -55,16 +49,11 @@ final class FlatButton: NSButton {
     }
 
     private func drawTextColor() {
-        if let titleColor = titleColor, let font = font {
+        if let textColor = textColor, let font = font {
             let style = NSMutableParagraphStyle()
             style.alignment = .center
-<<<<<<< HEAD:src/ui/osx/TogglDesktop/test2/FlatButton.swift
             let selectedColor = self.selectedTextColor ?? textColor
             let drawTextColor = isSelected ? selectedColor : textColor
-=======
-            let selectedColor = self.selectedTextColor ?? titleColor
-            let drawTextColor = isSelected ? selectedColor : titleColor
->>>>>>> feature/timeline-ui:src/ui/osx/TogglDesktop/Swift/Views/FlatButton.swift
             let attributes: [NSAttributedString.Key: Any] = [
                 NSAttributedString.Key.foregroundColor: drawTextColor,
                 NSAttributedString.Key.font: font,

@@ -110,9 +110,14 @@ extension DatePickerView {
 
     fileprivate func initCommon() {
         dayNameButton.cursor = .pointingHand
-        datePickerView.escapeKeyOnAction = {[weak self] in
+        datePickerView.keyOnAction = {[weak self] key in
             guard let strongSelf = self else { return }
-            strongSelf.delegate?.datePickerShouldClose(strongSelf)
+            switch key {
+            case .escape:
+                strongSelf.delegate?.datePickerShouldClose(strongSelf)
+            default:
+                break
+            }
         }
     }
 
