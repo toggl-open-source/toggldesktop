@@ -8,7 +8,6 @@
 
 #import <Cocoa/Cocoa.h>
 #import "toggl_api.h"
-#import "NSUnstripedTableView.h"
 #import "TimelineEventsListItem.h"
 #import "TDBarChart.h"
 
@@ -27,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property IBOutlet NSButton *prevButton;
 @property IBOutlet NSButton *nextButton;
 @property IBOutlet NSButton *createButton;
-@property (strong) IBOutlet NSUnstripedTableView *eventsTableView;
+@property (strong) IBOutlet NSTableView *eventsTableView;
 @property (strong) IBOutlet NSScrollView *eventsBox;
 @property (strong) IBOutlet NSBox *headerBox;
 @property (strong) IBOutlet NSBox *footerBox;
