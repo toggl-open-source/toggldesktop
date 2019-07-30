@@ -1273,7 +1273,7 @@ error Database::loadWorkspaces(const Poco::UInt64 &UID,
     try {
         poco_check_ptr(user);
 
-        user->related.clearWorkspaces();
+        user->related.Workspaces.clear();
 
         Poco::Mutex::ScopedLock lock(session_m_);
 
@@ -1296,7 +1296,7 @@ error Database::loadWorkspaces(const Poco::UInt64 &UID,
             select.execute();
             bool more = rs.moveFirst();
             while (more) {
-                auto model = user->related.newWorkspace();
+                auto model = user->related.Workspaces.create();
                 model->SetLocalID(rs[0].convert<Poco::Int64>());
                 model->SetID(rs[1].convert<Poco::UInt64>());
                 model->SetUID(rs[2].convert<Poco::UInt64>());
@@ -1331,7 +1331,7 @@ error Database::loadClients(const Poco::UInt64 &UID,
     try {
         poco_check_ptr(user);
 
-        user->related.clearClients();
+        user->related.Clients.clear();
 
         Poco::Mutex::ScopedLock lock(session_m_);
 
@@ -1352,7 +1352,7 @@ error Database::loadClients(const Poco::UInt64 &UID,
             select.execute();
             bool more = rs.moveFirst();
             while (more) {
-                auto model = user->related.newClient();
+                auto model = user->related.Clients.create();
                 model->SetLocalID(rs[0].convert<Poco::Int64>());
                 if (rs[1].isEmpty()) {
                     model->SetID(0);
@@ -1391,7 +1391,7 @@ error Database::loadProjects(const Poco::UInt64 &UID,
     try {
         poco_check_ptr(user);
 
-        user->related.clearProjects();
+        user->related.Projects.clear();
 
         Poco::Mutex::ScopedLock lock(session_m_);
 
@@ -1418,7 +1418,7 @@ error Database::loadProjects(const Poco::UInt64 &UID,
             select.execute();
             bool more = rs.moveFirst();
             while (more) {
-                auto model = user->related.newProject();
+                auto model = user->related.Projects.create();
                 model->SetLocalID(rs[0].convert<Poco::Int64>());
                 if (rs[1].isEmpty()) {
                     model->SetID(0);
@@ -1479,7 +1479,7 @@ error Database::loadTasks(const Poco::UInt64 &UID,
     try {
         poco_check_ptr(user);
 
-        user->related.clearTasks();
+        user->related.Tasks.clear();
 
         Poco::Mutex::ScopedLock lock(session_m_);
 
@@ -1499,7 +1499,7 @@ error Database::loadTasks(const Poco::UInt64 &UID,
             select.execute();
             bool more = rs.moveFirst();
             while (more) {
-                auto model = user->related.newTask();
+                auto model = user->related.Tasks.create();
                 model->SetLocalID(rs[0].convert<Poco::Int64>());
                 if (rs[1].isEmpty()) {
                     model->SetID(0);
@@ -1539,7 +1539,7 @@ error Database::loadTags(const Poco::UInt64 &UID,
     try {
         poco_check_ptr(user);
 
-        user->related.clearTags();
+        user->related.Tags.clear();
 
         Poco::Mutex::ScopedLock lock(session_m_);
 
@@ -1559,7 +1559,7 @@ error Database::loadTags(const Poco::UInt64 &UID,
             select.execute();
             bool more = rs.moveFirst();
             while (more) {
-                auto model = user->related.newTag();
+                auto model = user->related.Tags.create();
                 model->SetLocalID(rs[0].convert<Poco::Int64>());
                 if (rs[1].isEmpty()) {
                     model->SetID(0);
@@ -1598,7 +1598,7 @@ error Database::loadAutotrackerRules(const Poco::UInt64 &UID,
     try {
         poco_check_ptr(user);
 
-        user->related.clearAutotrackerRules();
+        user->related.AutotrackerRules.clear();
 
         Poco::Mutex::ScopedLock lock(session_m_);
 
@@ -1618,7 +1618,7 @@ error Database::loadAutotrackerRules(const Poco::UInt64 &UID,
             select.execute();
             bool more = rs.moveFirst();
             while (more) {
-                auto model = user->related.newAutotrackerRule();
+                auto model = user->related.AutotrackerRules.create();
                 model->SetLocalID(rs[0].convert<Poco::Int64>());
                 model->SetUID(rs[1].convert<Poco::UInt64>());
                 model->SetTerm(rs[2].convert<std::string>());
@@ -1650,7 +1650,7 @@ error Database::loadObmActions(const Poco::UInt64 &UID,
     try {
         poco_check_ptr(user);
 
-        user->related.clearObmActions();
+        user->related.ObmActions.clear();
 
         Poco::Mutex::ScopedLock lock(session_m_);
 
@@ -1670,7 +1670,7 @@ error Database::loadObmActions(const Poco::UInt64 &UID,
             select.execute();
             bool more = rs.moveFirst();
             while (more) {
-                auto model = user->related.newObmAction();
+                auto model = user->related.ObmActions.create();
                 model->SetLocalID(rs[0].convert<Poco::Int64>());
                 model->SetUID(rs[1].convert<Poco::UInt64>());
                 model->SetExperimentID(rs[2].convert<Poco::UInt64>());
@@ -1700,7 +1700,7 @@ error Database::loadObmExperiments(const Poco::UInt64 &UID,
     try {
         poco_check_ptr(user);
 
-        user->related.clearObmExperiments();
+        user->related.ObmExperiments.clear();
 
         Poco::Mutex::ScopedLock lock(session_m_);
 
@@ -1720,7 +1720,7 @@ error Database::loadObmExperiments(const Poco::UInt64 &UID,
             select.execute();
             bool more = rs.moveFirst();
             while (more) {
-                auto model = user->related.newObmExperiment();
+                auto model = user->related.ObmExperiments.create();
                 model->SetLocalID(rs[0].convert<Poco::Int64>());
                 model->SetUID(rs[1].convert<Poco::UInt64>());
                 model->SetNr(rs[2].convert<Poco::UInt64>());
@@ -1751,7 +1751,7 @@ error Database::loadTimelineEvents(const Poco::UInt64 &UID,
     try {
         poco_check_ptr(user);
 
-        user->related.clearTimelineEvents();
+        user->related.TimelineEvents.clear();
 
         Poco::Mutex::ScopedLock lock(session_m_);
 
@@ -1772,7 +1772,7 @@ error Database::loadTimelineEvents(const Poco::UInt64 &UID,
             select.execute();
             bool more = rs.moveFirst();
             while (more) {
-                auto model = user->related.newTimelineEvent();
+                auto model = user->related.TimelineEvents.create();
                 model->SetLocalID(rs[0].convert<unsigned int>());
                 if (!rs[1].isEmpty()) {
                     model->SetTitle(rs[1].convert<std::string>());
@@ -1821,7 +1821,7 @@ error Database::loadTimeEntries(const Poco::UInt64 &UID,
     try {
         poco_check_ptr(user);
 
-        user->related.clearTimeEntries();
+        user->related.TimeEntries.clear();
 
         Poco::Mutex::ScopedLock lock(session_m_);
 
@@ -1873,7 +1873,7 @@ error Database::loadTimeEntriesFromSQLStatement(Poco::Data::Statement *select,
             select->execute();
             bool more = rs.moveFirst();
             while (more) {
-                auto model = user->related.newTimeEntry();
+                auto model = user->related.TimeEntries.create();
                 model->SetLocalID(rs[0].convert<Poco::Int64>());
                 if (rs[1].isEmpty()) {
                     model->SetID(0);

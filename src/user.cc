@@ -50,7 +50,7 @@ locked<Project> User::CreateProject(
     const std::string project_color,
     const bool billable) {
 
-    auto p = related.newProject();
+    auto p = related.Projects.create();
     p->SetWID(workspace_id);
     p->SetName(project_name);
     p->SetCID(client_id);
@@ -123,7 +123,7 @@ void User::AddProjectToList(Project *p) {
 locked<Client> User::CreateClient(
     const Poco::UInt64 workspace_id,
     const std::string client_name) {
-    auto c = related.newClient();
+    auto c = related.Clients.create();
     c->SetWID(workspace_id);
     c->SetName(client_name);
     c->SetUID(ID());
@@ -179,7 +179,7 @@ locked<TimeEntry> User::Start(
     std::stringstream ss;
     ss << "User::Start now=" << now;
 
-    auto te = related.newTimeEntry();
+    auto te = related.TimeEntries.create();
     te->SetCreatedWith(HTTPSClient::Config.UserAgent());
     te->SetDescription(description);
     te->SetUID(ID());
@@ -202,9 +202,9 @@ locked<TimeEntry> User::Start(
     // Try to set workspace ID from project
     locked<Project> p;
     if (te->PID()) {
-        p = related.ProjectByID(te->PID());
+        p = related.Projects.findByID(te->PID());
     } else if (!te->ProjectGUID().empty()) {
-        p = related.ProjectByGUID(te->ProjectGUID());
+        p = related.Projects.findByGUID(te->ProjectGUID());
     }
     if (p) {
         te->SetWID(p->WID());
@@ -213,7 +213,7 @@ locked<TimeEntry> User::Start(
 
     // Try to set workspace ID from task
     if (!te->WID() && te->TID()) {
-        auto t = related.TaskByID(te->TID());
+        auto t = related.Tasks.findByID(te->TID());
         if (t) {
             te->SetWID(t->WID());
         }
@@ -230,7 +230,7 @@ locked<TimeEntry> User::Continue(
     const std::string GUID,
     const bool manual_mode) {
 
-    auto existing = related.TimeEntryByGUID(GUID);
+    auto existing = related.TimeEntries.findByGUID(GUID);
     if (!existing) {
         logger().warning("Time entry not found: " + GUID);
         return {};
@@ -245,7 +245,7 @@ locked<TimeEntry> User::Continue(
 
     time_t now = time(0);
 
-    auto result = related.newTimeEntry();
+    auto result = related.TimeEntries.create();
     result->SetCreatedWith(HTTPSClient::Config.UserAgent());
     result->SetDescription(existing->Description());
     result->SetWID(existing->WID());
@@ -424,13 +424,13 @@ locked<TimeEntry> User::DiscardTimeAt(
     ss << "User is discarding time entry " << guid << " at " << at;
     logger().debug(ss.str());
 
-    auto te = related.TimeEntryByGUID(guid);
+    auto te = related.TimeEntries.findByGUID(guid);
     if (te) {
         te->DiscardAt(at);
     }
 
     if (te && split_into_new_entry) {
-        auto split = related.newTimeEntry();
+        auto split = related.TimeEntries.create();
         split->SetCreatedWith(HTTPSClient::Config.UserAgent());
         split->SetUID(ID());
         split->SetStart(at);
@@ -447,7 +447,7 @@ locked<const TimeEntry> User::RunningTimeEntry() const {
     auto timeEntries = related.TimeEntries();
     for (auto it = timeEntries->begin(); it != timeEntries->end(); it++) {
         if ((*it)->DurationInSeconds() < 0) {
-            return related.make_protected(*it);
+            return related.TimeEntries.make_locked(*it);
         }
     }
     return {};
@@ -457,7 +457,7 @@ locked<TimeEntry> User::RunningTimeEntry() {
     auto timeEntries = related.TimeEntries();
     for (auto it = timeEntries->begin(); it != timeEntries->end(); it++) {
         if ((*it)->DurationInSeconds() < 0) {
-            return related.make_protected(*it);
+            return related.TimeEntries.make_locked(*it);
         }
     }
     return {};
@@ -534,10 +534,10 @@ void User::loadUserTagFromJSON(
         return;
     }
 
-    locked<Tag> model = related.TagByID(id);
+    locked<Tag> model = related.Tags.findByID(id);
 
     if (!model) {
-        model = related.TagByGUID(data["guid"].asString());
+        model = related.Tags.findByGUID(data["guid"].asString());
     }
 
     if (!data["server_deleted_at"].asString().empty()) {
@@ -548,7 +548,7 @@ void User::loadUserTagFromJSON(
     }
 
     if (!model) {
-        model = related.newTag();
+        model = related.Tags.create();
     }
     if (alive) {
         alive->insert(id);
@@ -569,7 +569,7 @@ void User::loadUserTaskFromJSON(
         return;
     }
 
-    auto model = related.TaskByID(id);
+    auto model = related.Tasks.findByID(id);
 
     // Tasks have no GUID
 
@@ -581,7 +581,7 @@ void User::loadUserTaskFromJSON(
     }
 
     if (!model) {
-        model = related.newTask();
+        model = related.Tasks.create();
     }
     if (alive) {
         alive->insert(id);
@@ -651,7 +651,7 @@ void User::loadUserWorkspaceFromJSON(
         logger().error("Backend is sending invalid data: ignoring update without an ID");  // NOLINT
         return;
     }
-    auto model = related.WorkspaceByID(id);
+    auto model = related.Workspaces.findByID(id);
 
     // Workspaces have no GUID
 
@@ -663,7 +663,7 @@ void User::loadUserWorkspaceFromJSON(
     }
 
     if (!model) {
-        model = related.newWorkspace();
+        model = related.Workspaces.create();
     }
     if (alive) {
         alive->insert(id);
@@ -768,12 +768,12 @@ void User::loadObmExperimentFromJson(Json::Value const &obm) {
     for (auto it = obmExperiments->begin(); it != obmExperiments->end(); it++) {
         ObmExperiment *existing = *it;
         if (existing->Nr() == nr) {
-            model = related.make_protected(existing);
+            model = related.ObmExperiments.make_locked(existing);
             break;
         }
     }
     if (!model) {
-        model = related.newObmExperiment();
+        model = related.ObmExperiments.create();
         model->SetUID(ID());
         model->SetNr(nr);
     }
@@ -905,10 +905,10 @@ void User::loadUserClientFromSyncJSON(
         logger().error("Backend is sending invalid data: ignoring update without an ID");  // NOLINT
         return;
     }
-    auto model = related.ClientByID(id);
+    auto model = related.Clients.findByID(id);
 
     if (!model) {
-        model = related.ClientByGUID(data["guid"].asString());
+        model = related.Clients.findByGUID(data["guid"].asString());
     }
 
     if (!data["server_deleted_at"].asString().empty()) {
@@ -919,7 +919,7 @@ void User::loadUserClientFromSyncJSON(
     }
 
     if (!model) {
-        model = related.newClient();
+        model = related.Clients.create();
     }
     if (alive) {
         alive->insert(id);
@@ -940,10 +940,10 @@ void User::loadUserClientFromJSON(
         logger().error("Backend is sending invalid data: ignoring update without an ID");  // NOLINT
         return;
     }
-    auto model = related.ClientByID(id);
+    auto model = related.Clients.findByID(id);
 
     if (!model) {
-        model = related.ClientByGUID(data["guid"].asString());
+        model = related.Clients.findByGUID(data["guid"].asString());
     }
 
     if (!data["server_deleted_at"].asString().empty()) {
@@ -954,7 +954,7 @@ void User::loadUserClientFromJSON(
     }
 
     if (!model) {
-        model = related.newClient();
+        model = related.Clients.create();
     }
     if (alive) {
         alive->insert(id);
@@ -972,10 +972,10 @@ void User::loadUserProjectFromSyncJSON(
         return;
     }
 
-    auto model = related.ProjectByID(id);
+    auto model = related.Projects.findByID(id);
 
     if (!model) {
-        model = related.ProjectByGUID(data["guid"].asString());
+        model = related.Projects.findByGUID(data["guid"].asString());
     }
 
     if (!data["server_deleted_at"].asString().empty()) {
@@ -986,7 +986,7 @@ void User::loadUserProjectFromSyncJSON(
     }
 
     if (!model) {
-        model = related.newProject();
+        model = related.Projects.create();
     }
     if (alive) {
         alive->insert(id);
@@ -1013,10 +1013,10 @@ void User::loadUserProjectFromJSON(
         return;
     }
 
-    auto model = related.ProjectByID(id);
+    auto model = related.Projects.findByID(id);
 
     if (!model) {
-        model = related.ProjectByGUID(data["guid"].asString());
+        model = related.Projects.findByGUID(data["guid"].asString());
     }
 
     if (!data["server_deleted_at"].asString().empty()) {
@@ -1027,7 +1027,7 @@ void User::loadUserProjectFromJSON(
     }
 
     if (!model) {
-        model = related.newProject();
+        model = related.Projects.create();
     }
     if (alive) {
         alive->insert(id);
@@ -1048,10 +1048,10 @@ void User::loadUserTimeEntryFromJSON(
         return;
     }
 
-    auto model = related.TimeEntryByID(id);
+    auto model = related.TimeEntries.findByID(id);
 
     if (!model) {
-        model = related.TimeEntryByGUID(data["guid"].asString());
+        model = related.TimeEntries.findByGUID(data["guid"].asString());
     }
 
     if (!data["server_deleted_at"].asString().empty()) {
@@ -1062,7 +1062,7 @@ void User::loadUserTimeEntryFromJSON(
     }
 
     if (!model) {
-        model = related.newTimeEntry();
+        model = related.TimeEntries.create();
     }
     if (alive) {
         alive->insert(id);
@@ -1273,7 +1273,7 @@ void User::MarkTimelineBatchAsUploaded(
             i != events.end();
             ++i) {
         TimelineEvent event = *i;
-        auto uploaded = related.TimelineEventByGUID(event.GUID());
+        auto uploaded = related.TimelineEvents.findByGUID(event.GUID());
         if (!uploaded) {
             logger().error(
                 "Could not find timeline event to mark it as uploaded: "

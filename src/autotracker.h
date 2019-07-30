@@ -24,7 +24,7 @@ class AutotrackerRule : public BaseModel {
     virtual ~AutotrackerRule() {}
 
  public:
-    friend class RelatedData;
+    template<class T> friend class locked_impl;
     bool Matches(const TimelineEvent event) const;
 
     const std::string &Term() const;

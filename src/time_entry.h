@@ -34,7 +34,7 @@ class TimeEntry : public BaseModel, public TimedEvent {
     virtual ~TimeEntry() {}
 
  public:
-    friend class RelatedData;
+    template<class T> friend class locked_impl;
     const Poco::UInt64 &LastStartAt() const {
         return last_start_at_;
     }

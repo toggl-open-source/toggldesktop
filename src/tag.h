@@ -18,7 +18,7 @@ class Tag : public BaseModel {
     , name_("") {}
 
  public:
-    friend class RelatedData;
+    template<class T> friend class locked_impl;
     const Poco::UInt64 &WID() const {
         return wid_;
     }

@@ -20,14 +20,6 @@
 
 namespace toggl {
 
-template<typename T>
-void RelatedData::clearList(std::set<T *> &list) {
-    for (auto it : list) {
-        delete it;
-    }
-    list.clear();
-}
-
 void RelatedData::forEachTimeEntries(std::function<void(TimeEntry *)> f) {
     auto timeEntries = TimeEntries();
     std::for_each(timeEntries->begin(), timeEntries->end(), f);
@@ -38,117 +30,17 @@ void RelatedData::pushBackTimeEntry(TimeEntry *timeEntry) {
     timeEntries->insert(timeEntry);
 }
 
-void RelatedData::clearWorkspaces() {
-    Workspaces()->clear();
-}
-
-void RelatedData::clearClients() {
-    Clients()->clear();
-}
-
-void RelatedData::clearProjects() {
-    Projects()->clear();
-}
-
-void RelatedData::clearTasks() {
-    Tasks()->clear();
-}
-
-void RelatedData::clearTags() {
-    Tags()->clear();
-}
-
-void RelatedData::clearTimeEntries() {
-    TimeEntries()->clear();
-}
-
-void RelatedData::clearAutotrackerRules() {
-    AutotrackerRules()->clear();
-}
-
-void RelatedData::clearTimelineEvents() {
-    TimelineEvents()->clear();
-}
-
-void RelatedData::clearObmActions() {
-    ObmActions()->clear();
-}
-
-void RelatedData::clearObmExperiments() {
-    ObmExperiments()->clear();
-}
-
-locked<Workspace> RelatedData::newWorkspace() {
-    auto workspace = new Workspace();
-    Workspaces()->insert(workspace);
-    return { workspaces_m_, workspace };
-}
-
-locked<Client> RelatedData::newClient() {
-    auto client = new Client();
-    Clients()->insert(client);
-    return { clients_m_, client };
-}
-
-locked<Project> RelatedData::newProject() {
-    auto project = new Project();
-    Projects()->insert(project);
-    return { projects_m_, project };
-}
-
-locked<Task> RelatedData::newTask() {
-    auto task = new Task();
-    Tasks()->insert(task);
-    return { tasks_m_, task };
-}
-
-locked<Tag> RelatedData::newTag() {
-    auto tag = new Tag();
-    Tags()->insert(tag);
-    return { tags_m_, tag };
-}
-
-locked<TimeEntry> RelatedData::newTimeEntry() {
-    auto timeEntry = new TimeEntry();
-    TimeEntries()->insert(timeEntry);
-    return { timeEntries_m_, timeEntry };
-}
-
-locked<AutotrackerRule> RelatedData::newAutotrackerRule() {
-    auto autotrackerRule = new AutotrackerRule();
-    AutotrackerRules()->insert(autotrackerRule);
-    return { autotrackerRules_m_, autotrackerRule };
-}
-
-locked<TimelineEvent> RelatedData::newTimelineEvent() {
-    auto timelineEvent = new TimelineEvent();
-    TimelineEvents()->insert(timelineEvent);
-    return { timelineEvents_m_, timelineEvent };
-}
-
-locked<ObmAction> RelatedData::newObmAction() {
-    auto obmAction = new ObmAction();
-    ObmActions()->insert(obmAction);
-    return { obmActions_m_, obmAction };
-}
-
-locked<ObmExperiment> RelatedData::newObmExperiment() {
-    auto obmExperiment = new ObmExperiment();
-    ObmExperiments()->insert(obmExperiment);
-    return { obmExperiments_m_, obmExperiment };
-}
-
 void RelatedData::Clear() {
-    clearList(*Workspaces());
-    clearList(*Clients());
-    clearList(*Projects());
-    clearList(*Tasks());
-    clearList(*Tags());
-    clearList(*TimeEntries());
-    clearList(*AutotrackerRules());
-    clearList(*TimelineEvents());
-    clearList(*ObmActions());
-    clearList(*ObmExperiments());
+    Workspaces()->clear();
+    Clients()->clear();
+    Projects()->clear();
+    Tasks()->clear();
+    Tags()->clear();
+    TimeEntries()->clear();
+    AutotrackerRules()->clear();
+    TimelineEvents()->clear();
+    ObmActions()->clear();
+    ObmExperiments()->clear();
 }
 
 error RelatedData::DeleteAutotrackerRule(const Poco::Int64 local_id) {
@@ -308,14 +200,14 @@ void RelatedData::timeEntryAutocompleteItems(
 
         locked<const Task> t;
         if (te->TID()) {
-            t = TaskByID(te->TID());
+            t = Tasks.findByID(te->TID());
         }
 
         locked<const Project> p;
         if (t && t->PID()) {
-            p = ProjectByID(t->PID());
+            p = Projects.findByID(t->PID());
         } else if (te->PID()) {
-            p = ProjectByID(te->PID());
+            p = Projects.findByID(te->PID());
         }
 
         if (p && !p->Active()) {
@@ -406,7 +298,7 @@ void RelatedData::taskAutocompleteItems(
 
         locked<const Project> p;
         if (t->PID()) {
-            p = ProjectByID(t->PID());
+            p = Projects.findByID(t->PID());
         }
 
         if (p && !p->Active()) {
@@ -655,7 +547,7 @@ void RelatedData::WorkspaceList(std::vector<Workspace *> *result) const {
     }
 
     // OVERHAUL_TODO
-    //std::sort(result->rbegin(), result->rend(), CompareWorkspaceByName);
+    //std::sort(result->rbegin(), result->rend(), CompareWorkspaces.findByName);
 }
 
 void RelatedData::ClientList(std::vector<Client *> *result) const {
@@ -668,7 +560,7 @@ void RelatedData::ClientList(std::vector<Client *> *result) const {
     }
 
     // OVERHAUL_TODO
-    //std::sort(result->rbegin(), result->rend(), CompareClientByName);
+    //std::sort(result->rbegin(), result->rend(), CompareClients.findByName);
 }
 
 void RelatedData::ProjectLabelAndColorCode(
@@ -680,7 +572,7 @@ void RelatedData::ProjectLabelAndColorCode(
 
     locked<const Workspace> ws;
     if (te->WID()) {
-        ws = WorkspaceByID(te->WID());
+        ws = Workspaces.findByID(te->WID());
     }
     if (ws) {
         view->WorkspaceName = ws->Name();
@@ -688,7 +580,7 @@ void RelatedData::ProjectLabelAndColorCode(
 
     locked<const Task> t;
     if (te->TID()) {
-        t = TaskByID(te->TID());
+        t = Tasks.findByID(te->TID());
     }
     if (t) {
         view->TaskLabel = t->Name();
@@ -696,13 +588,13 @@ void RelatedData::ProjectLabelAndColorCode(
 
     locked<const Project> p;
     if (t && t->PID()) {
-        p = ProjectByID(t->PID());
+        p = Projects.findByID(t->PID());
     }
     if (!p && te->PID()) {
-        p = ProjectByID(te->PID());
+        p = Projects.findByID(te->PID());
     }
     if (!p && !te->ProjectGUID().empty()) {
-        p = ProjectByGUID(te->ProjectGUID());
+        p = Projects.findByGUID(te->ProjectGUID());
     }
 
     locked<const Client> c = clientByProject(p.data());
@@ -722,10 +614,10 @@ void RelatedData::ProjectLabelAndColorCode(
 locked<Client> RelatedData::clientByProject(Project *p) {
     locked<Client> c;
     if (p && p->CID()) {
-        c = ClientByID(p->CID());
+        c = Clients.findByID(p->CID());
     }
     if (!c && p && !p->ClientGUID().empty()) {
-        c = ClientByGUID(p->ClientGUID());
+        c = Clients.findByGUID(p->ClientGUID());
     }
     return c;
 }
@@ -733,150 +625,12 @@ locked<Client> RelatedData::clientByProject(Project *p) {
 locked<const Client> RelatedData::clientByProject(const Project *p) const {
     locked<const Client> c;
     if (p && p->CID()) {
-        c = ClientByID(p->CID());
+        c = Clients.findByID(p->CID());
     }
     if (!c && p && !p->ClientGUID().empty()) {
-        c = ClientByGUID(p->ClientGUID());
+        c = Clients.findByGUID(p->ClientGUID());
     }
     return c;
-}
-
-locked<Task> RelatedData::TaskByID(const Poco::UInt64 id) {
-    auto tasks = Tasks();
-    return { tasks_m_, modelByID<Task>(id, *tasks) };
-}
-
-locked<Client> RelatedData::ClientByID(const Poco::UInt64 id) {
-    auto clients = Clients();
-    return { clients_m_, modelByID(id, *clients) };
-}
-
-locked<Project> RelatedData::ProjectByID(const Poco::UInt64 id) {
-    auto projects = Projects();
-    return { projects_m_, modelByID(id, *projects) };
-}
-
-locked<Tag> RelatedData::TagByID(const Poco::UInt64 id) {
-    auto tags = Tags();
-    return { tags_m_, modelByID(id, *tags) };
-}
-
-locked<Workspace> RelatedData::WorkspaceByID(const Poco::UInt64 id) {
-    auto workspaces = Workspaces();
-    return { workspaces_m_, modelByID(id, *workspaces) };
-}
-
-locked<TimeEntry> RelatedData::TimeEntryByID(const Poco::UInt64 id) {
-    auto timeEntries = TimeEntries();
-    return { timeEntries_m_, modelByID(id, *timeEntries) };
-}
-
-locked<TimeEntry> RelatedData::TimeEntryByGUID(const guid GUID) {
-    auto timeEntries = TimeEntries();
-    return { timeEntries_m_, modelByGUID(GUID, *timeEntries) };
-}
-
-locked<TimelineEvent> RelatedData::TimelineEventByGUID(const guid GUID) {
-    auto timelineEvents = TimelineEvents();
-    return { timelineEvents_m_, modelByGUID(GUID, *timelineEvents) };
-}
-
-locked<Tag> RelatedData::TagByGUID(const guid GUID) {
-    auto tags = Tags();
-    return { tags_m_, modelByGUID(GUID, *tags) };
-}
-
-locked<Project> RelatedData::ProjectByGUID(const guid GUID) {
-    auto projects = Projects();
-    return { projects_m_, modelByGUID(GUID, *projects) };
-}
-
-locked<Client> RelatedData::ClientByGUID(const guid GUID) {
-    auto clients = Clients();
-    return { clients_m_, modelByGUID(GUID, *clients) };
-}
-
-locked<const Task> RelatedData::TaskByID(const Poco::UInt64 id) const {
-    auto tasks = Tasks();
-    return { tasks_m_, modelByID<Task>(id, *tasks) };
-}
-
-locked<const Client> RelatedData::ClientByID(const Poco::UInt64 id) const {
-    auto clients = Clients();
-    return { clients_m_, modelByID(id, *clients) };
-}
-
-locked<const Project> RelatedData::ProjectByID(const Poco::UInt64 id) const {
-    auto projects = Projects();
-    return { projects_m_, modelByID(id, *projects) };
-}
-
-locked<const Tag> RelatedData::TagByID(const Poco::UInt64 id) const {
-    auto tags = Tags();
-    return { tags_m_, modelByID(id, *tags) };
-}
-
-locked<const Workspace> RelatedData::WorkspaceByID(const Poco::UInt64 id) const {
-    auto workspaces = Workspaces();
-    return { workspaces_m_, modelByID(id, *workspaces) };
-}
-
-locked<const TimeEntry> RelatedData::TimeEntryByID(const Poco::UInt64 id) const {
-    auto timeEntries = TimeEntries();
-    return { timeEntries_m_, modelByID(id, *timeEntries) };
-}
-
-locked<const TimeEntry> RelatedData::TimeEntryByGUID(const guid GUID) const {
-    auto timeEntries = TimeEntries();
-    return { timeEntries_m_, modelByGUID(GUID, *timeEntries) };
-}
-
-locked<const TimelineEvent> RelatedData::TimelineEventByGUID(const guid GUID) const {
-    auto timelineEvents = TimelineEvents();
-    return { timelineEvents_m_, modelByGUID(GUID, *timelineEvents) };
-}
-
-locked<const Tag> RelatedData::TagByGUID(const guid GUID) const {
-    auto tags = Tags();
-    return { tags_m_, modelByGUID(GUID, *tags) };
-}
-
-locked<const Project> RelatedData::ProjectByGUID(const guid GUID) const {
-    auto projects = Projects();
-    return { projects_m_, modelByGUID(GUID, *projects) };
-}
-
-locked<const Client> RelatedData::ClientByGUID(const guid GUID) const {
-    auto clients = Clients();
-    return { clients_m_, modelByGUID(GUID, *clients) };
-}
-
-template <typename T>
-T *modelByGUID(const guid GUID, const std::set<T *> &list) {
-    if (GUID.empty()) {
-        return nullptr;
-    }
-    for (auto it : list) {
-        T *model = it;
-        if (model->GUID() == GUID) {
-            return model;
-        }
-    }
-    return nullptr;
-}
-
-template<typename T>
-T *modelByID(const Poco::UInt64 id, const std::set<T *> &list) {
-    if (!id) {
-        return nullptr;
-    }
-    for (auto it : list) {
-        T *model = it;
-        if (model->ID() == id) {
-            return model;
-        }
-    }
-    return nullptr;
 }
 
 }   // namespace toggl

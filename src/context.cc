@@ -521,7 +521,7 @@ void Context::updateUI(const UIElements &what) {
         Poco::Mutex::ScopedLock lock(user_m_);
 
         if (what.display_time_entry_editor && user_) {
-            auto editor_time_entry = user_->related.TimeEntryByGUID(what.time_entry_editor_guid);
+            auto editor_time_entry = user_->related.TimeEntries.findByGUID(what.time_entry_editor_guid);
             if (editor_time_entry) {
                 if (what.open_time_entry_editor) {
                     time_entry_editor_guid_ = editor_time_entry->GUID();
@@ -551,7 +551,7 @@ void Context::updateUI(const UIElements &what) {
                 // and user permissions
                 locked<Workspace> ws;
                 if (editor_time_entry->WID()) {
-                    ws = user_->related.WorkspaceByID(editor_time_entry->WID());
+                    ws = user_->related.Workspaces.findByID(editor_time_entry->WID());
                 }
                 if (ws) {
                     editor_time_entry_view.CanAddProjects =
@@ -612,7 +612,7 @@ void Context::updateUI(const UIElements &what) {
                 view.WID = c->WID();
                 view.Name = c->Name();
                 if (c->WID()) {
-                    auto ws = user_->related.WorkspaceByID(c->WID());
+                    auto ws = user_->related.Workspaces.findByID(c->WID());
                     if (ws) {
                         view.WorkspaceName = ws->Name();
                         view.Premium = ws->Premium();
@@ -812,8 +812,8 @@ void Context::updateUI(const UIElements &what) {
                 auto autotrackerRules = user_->related.AutotrackerRules();
                 for (auto it = autotrackerRules->begin(); it != autotrackerRules->end(); it++) {
                     AutotrackerRule *model = *it;
-                    auto p = user_->related.ProjectByID(model->PID());
-                    auto t = user_->related.TaskByID(model->TID());
+                    auto p = user_->related.Projects.findByID(model->PID());
+                    auto t = user_->related.Tasks.findByID(model->TID());
 
                     view::AutotrackerRule rule;
                     rule.ProjectName = Formatter::JoinTaskName(t.data(), p.data());
@@ -2586,7 +2586,7 @@ void Context::OpenTimeEntryEditor(
         if (edit_running_entry) {
             te = user_->RunningTimeEntry();
         } else {
-            te = user_->related.TimeEntryByGUID(GUID);
+            te = user_->related.TimeEntries.findByGUID(GUID);
         }
     }
 
@@ -2757,7 +2757,7 @@ error Context::DeleteTimeEntryByGUID(const std::string GUID) {
             logger().warning("Cannot delete time entry, user logged out");
             return noError;
         }
-        te = user_->related.TimeEntryByGUID(GUID);
+        te = user_->related.TimeEntries.findByGUID(GUID);
 
         if (!te) {
             logger().warning("Time entry not found: " + GUID);
@@ -2796,7 +2796,7 @@ error Context::SetTimeEntryDuration(
         logger().warning("Cannot set duration, user logged out");
         return noError;
     }
-    auto te = user_->related.TimeEntryByGUID(GUID);
+    auto te = user_->related.TimeEntries.findByGUID(GUID);
     if (!te) {
         logger().warning("Time entry not found: " + GUID);
         return noError;
@@ -2832,7 +2832,7 @@ error Context::SetTimeEntryProject(
             return noError;
         }
 
-        locked<TimeEntry> te = user_->related.TimeEntryByGUID(GUID);
+        locked<TimeEntry> te = user_->related.TimeEntries.findByGUID(GUID);
         if (!te) {
             logger().warning("Time entry not found: " + GUID);
             return noError;
@@ -2844,10 +2844,10 @@ error Context::SetTimeEntryProject(
 
         locked<Project> p;
         if (project_id) {
-            p = user_->related.ProjectByID(project_id);
+            p = user_->related.Projects.findByID(project_id);
         }
         if (!p && !project_guid.empty()) {
-            p = user_->related.ProjectByGUID(project_guid);
+            p = user_->related.Projects.findByGUID(project_guid);
         }
 
         if (p && !canChangeProjectTo(te.data(), p.data())) {
@@ -2900,7 +2900,7 @@ error Context::SetTimeEntryDate(
             logger().warning("Cannot change date, user logged out");
             return noError;
         }
-        te = user_->related.TimeEntryByGUID(GUID);
+        te = user_->related.TimeEntries.findByGUID(GUID);
 
         if (!te) {
             logger().warning("Time entry not found: " + GUID);
@@ -2959,7 +2959,7 @@ error Context::SetTimeEntryStart(
             logger().warning("Cannot change start time, user logged out");
             return noError;
         }
-        te = user_->related.TimeEntryByGUID(GUID);
+        te = user_->related.TimeEntries.findByGUID(GUID);
 
         if (!te) {
             logger().warning("Time entry not found: " + GUID);
@@ -3017,7 +3017,7 @@ error Context::SetTimeEntryStop(
             logger().warning("Cannot change stop time, user logged out");
             return noError;
         }
-        te = user_->related.TimeEntryByGUID(GUID);
+        te = user_->related.TimeEntries.findByGUID(GUID);
 
         if (!te) {
             logger().warning("Time entry not found: " + GUID);
@@ -3080,7 +3080,7 @@ error Context::SetTimeEntryTags(
             logger().warning("Cannot set tags, user logged out");
             return noError;
         }
-        te = user_->related.TimeEntryByGUID(GUID);
+        te = user_->related.TimeEntries.findByGUID(GUID);
 
         if (!te) {
             logger().warning("Time entry not found: " + GUID);
@@ -3117,7 +3117,7 @@ error Context::SetTimeEntryBillable(
             logger().warning("Cannot set billable, user logged out");
             return noError;
         }
-        te = user_->related.TimeEntryByGUID(GUID);
+        te = user_->related.TimeEntries.findByGUID(GUID);
 
         if (!te) {
             logger().warning("Time entry not found: " + GUID);
@@ -3154,7 +3154,7 @@ error Context::SetTimeEntryDescription(
             logger().warning("Cannot set description, user logged out");
             return noError;
         }
-        te = user_->related.TimeEntryByGUID(GUID);
+        te = user_->related.TimeEntries.findByGUID(GUID);
 
         if (!te) {
             logger().warning("Time entry not found: " + GUID);
@@ -3366,7 +3366,7 @@ error Context::SetDefaultProject(
 
             locked<Task> t;
             if (tid) {
-                t = user_->related.TaskByID(tid);
+                t = user_->related.Tasks.findByID(tid);
             }
             if (tid && !t) {
                 return displayError("task not found");
@@ -3374,13 +3374,13 @@ error Context::SetDefaultProject(
 
             locked<Project> p;
             if (pid) {
-                p = user_->related.ProjectByID(pid);
+                p = user_->related.Projects.findByID(pid);
             }
             if (pid && !p) {
                 return displayError("project not found");
             }
             if (!p && t && t->PID()) {
-                p = user_->related.ProjectByID(t->PID());
+                p = user_->related.Projects.findByID(t->PID());
             }
 
             if (p && t && p->ID() != t->PID()) {
@@ -3422,10 +3422,10 @@ error Context::DefaultProjectName(std::string *name) {
                 return noError;
             }
             if (user_->DefaultPID()) {
-                p = user_->related.ProjectByID(user_->DefaultPID());
+                p = user_->related.Projects.findByID(user_->DefaultPID());
             }
             if (user_->DefaultTID()) {
-                t = user_->related.TaskByID(user_->DefaultTID());
+                t = user_->related.Tasks.findByID(user_->DefaultTID());
             }
         }
         *name = Formatter::JoinTaskName(t.data(), p.data());
@@ -3516,7 +3516,7 @@ error Context::AddAutotrackerRule(
 
         locked<Task> t;
         if (tid) {
-            t = user_->related.TaskByID(tid);
+            t = user_->related.Tasks.findByID(tid);
         }
         if (tid && !t) {
             return displayError("task not found");
@@ -3524,20 +3524,20 @@ error Context::AddAutotrackerRule(
 
         locked<Project> p;
         if (pid) {
-            p = user_->related.ProjectByID(pid);
+            p = user_->related.Projects.findByID(pid);
         }
         if (pid && !p) {
             return displayError("project not found");
         }
         if (t && t->PID() && !p) {
-            p = user_->related.ProjectByID(t->PID());
+            p = user_->related.Projects.findByID(t->PID());
         }
 
         if (p && t && p->ID() != t->PID()) {
             return displayError("task does not belong to project");
         }
 
-        rule = user_->related.newAutotrackerRule();
+        rule = user_->related.AutotrackerRules.create();
         rule->SetTerm(lowercase);
         if (t) {
             rule->SetTID(t->ID());
@@ -3635,7 +3635,7 @@ locked<Project> Context::CreateProject(
         }
         // Check if projects are billable by default
         bool billable = false;
-        auto ws = user_->related.WorkspaceByID(workspace_id);
+        auto ws = user_->related.Workspaces.findByID(workspace_id);
         if (ws) {
             billable = ws->ProjectsBillableByDefault();
         }
@@ -3646,10 +3646,10 @@ locked<Project> Context::CreateProject(
 
         // Search by client ID
         if (client_id != 0) {
-            c = user_->related.ClientByID(client_id);
+            c = user_->related.Clients.findByID(client_id);
         } else {
             // Search by Client GUID (when Client is not synced to server yet)
-            c = user_->related.ClientByGUID(client_guid);
+            c = user_->related.Clients.findByGUID(client_guid);
         }
 
         if (c) {
@@ -3708,7 +3708,7 @@ error Context::AddObmAction(
             logger().warning("Cannot create a OBM action, user logged out");
             return noError;
         }
-        auto action = user_->related.newObmAction();
+        auto action = user_->related.ObmActions.create();
         action->SetExperimentID(experiment_id);
         action->SetUID(user_->ID());
         action->SetKey(trimmed_key);
@@ -4213,7 +4213,7 @@ error Context::StartAutotrackerEvent(const TimelineEvent &event) {
 
     locked<Project> p;
     if (rule->PID()) {
-        p = user_->related.ProjectByID(rule->PID());
+        p = user_->related.Projects.findByID(rule->PID());
     }
     if (rule->PID() && !p) {
         return error("autotracker project not found");
@@ -4221,7 +4221,7 @@ error Context::StartAutotrackerEvent(const TimelineEvent &event) {
 
     locked<Task> t;
     if (rule->TID()) {
-        t = user_->related.TaskByID(rule->TID());
+        t = user_->related.Tasks.findByID(rule->TID());
     }
     if (rule->TID() && !t) {
         return error("autotracker task not found");
@@ -5185,16 +5185,16 @@ error Context::me(
 
 bool Context::isTimeEntryLocked(TimeEntry* te) {
     return isTimeLockedInWorkspace(te->Start(),
-                                   user_->related.WorkspaceByID(te->WID()).data());
+                                   user_->related.Workspaces.findByID(te->WID()).data());
 }
 
 bool Context::canChangeStartTimeTo(TimeEntry* te, time_t t) {
-    return !isTimeLockedInWorkspace(t, user_->related.WorkspaceByID(te->WID()).data());
+    return !isTimeLockedInWorkspace(t, user_->related.Workspaces.findByID(te->WID()).data());
 }
 
 bool Context::canChangeProjectTo(TimeEntry* te, Project* p) {
     return !isTimeLockedInWorkspace(te->Start(),
-                                    user_->related.WorkspaceByID(p->WID()).data());
+                                    user_->related.Workspaces.findByID(p->WID()).data());
 }
 
 error Context::logAndDisplayUserTriedEditingLockedEntry() {

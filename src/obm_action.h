@@ -21,7 +21,7 @@ class ObmAction : public BaseModel {
     , value_("") {}
 
  public:
-    friend class RelatedData;
+    template<class T> friend class locked_impl;
     const std::string &Key() const {
         return key_;
     }
@@ -58,7 +58,7 @@ class ObmExperiment : public BaseModel {
     , actions_("") {}
 
  public:
-    friend class RelatedData;
+    template<class T> friend class locked_impl;
     const bool &Included() const {
         return included_;
     }

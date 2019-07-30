@@ -23,7 +23,7 @@ class Workspace : public BaseModel {
     , locked_time_(0) {}
 
 public:
-    friend class RelatedData;
+    template<class T> friend class locked_impl;
     const std::string &Name() const {
         return name_;
     }
