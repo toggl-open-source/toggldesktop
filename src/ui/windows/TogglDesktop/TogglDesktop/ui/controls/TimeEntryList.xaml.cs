@@ -61,7 +61,7 @@ namespace TogglDesktop
 
         public void FinishedFillingList()
         {
-            this.emptyListText.ShowOnlyIf(this.panel.Children.Count == 0);
+            this.emptyListText.ShowOnlyIf(this.panel.Children.Count == 0 && !loadMoreButton.IsVisible);
         }
 
         private void onEmptyListTextClick(object sender, RoutedEventArgs e)
