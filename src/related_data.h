@@ -153,6 +153,7 @@ public:
     void Clear();
 
     template <typename T> protected_variable<T> make_protected(T *data);
+    template <typename T> const_protected_variable<T> make_protected(const T *data) const;
 
     protected_variable<Task> TaskByID(const Poco::UInt64 id);
     protected_variable<Client> ClientByID(const Poco::UInt64 id);
@@ -248,6 +249,14 @@ public:
         std::vector<view::Autocomplete> *result,
         std::map<std::string, std::vector<view::Autocomplete> > *items) const;
 };
+
+template <> inline const_protected_variable<TimeEntry> RelatedData::make_protected(const TimeEntry *data) const {
+    return { timeEntries_m_, data };
+}
+template <> inline protected_variable<TimeEntry> RelatedData::make_protected(TimeEntry *data) {
+    return { timeEntries_m_, data };
+}
+
 
 template<typename T>
 void clearList(std::set<T *> &list);

@@ -51,7 +51,8 @@ class User : public BaseModel {
 
     void SetLastTEDate(const std::string value);
 
-    protected_variable<TimeEntry> RunningTimeEntry() const;
+    const_protected_variable<TimeEntry> RunningTimeEntry() const;
+    protected_variable<TimeEntry> RunningTimeEntry();
     bool IsTracking() const {
         return RunningTimeEntry();
     }
@@ -328,16 +329,16 @@ class User : public BaseModel {
 
 template<class T>
 void deleteZombies(
-    const std::vector<T> &list,
+    const std::set<T> &list,
     const std::set<Poco::UInt64> &alive);
 
 template <typename T>
 void deleteRelatedModelsWithWorkspace(const Poco::UInt64 wid,
-                                      std::vector<T *> *list);
+                                      std::set<T *> &list);
 
 template <typename T>
 void removeProjectFromRelatedModels(const Poco::UInt64 pid,
-                                    std::vector<T *> *list);
+                                    std::set<T *> &list);
 
 }  // namespace toggl
 

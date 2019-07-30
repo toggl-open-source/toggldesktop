@@ -641,6 +641,61 @@ const_protected_variable<Client> RelatedData::clientByProject(const Project *p) 
     return c;
 }
 
+protected_variable<Task> RelatedData::TaskByID(const Poco::UInt64 id) {
+    auto tasks = Tasks();
+    return { tasks_m_, modelByID<Task>(id, *tasks) };
+}
+
+protected_variable<Client> RelatedData::ClientByID(const Poco::UInt64 id) {
+    auto clients = Clients();
+    return { clients_m_, modelByID(id, *clients) };
+}
+
+protected_variable<Project> RelatedData::ProjectByID(const Poco::UInt64 id) {
+    auto projects = Projects();
+    return { projects_m_, modelByID(id, *projects) };
+}
+
+protected_variable<Tag> RelatedData::TagByID(const Poco::UInt64 id) {
+    auto tags = Tags();
+    return { tags_m_, modelByID(id, *tags) };
+}
+
+protected_variable<Workspace> RelatedData::WorkspaceByID(const Poco::UInt64 id) {
+    auto workspaces = Workspaces();
+    return { workspaces_m_, modelByID(id, *workspaces) };
+}
+
+protected_variable<TimeEntry> RelatedData::TimeEntryByID(const Poco::UInt64 id) {
+    auto timeEntries = TimeEntries();
+    return { timeEntries_m_, modelByID(id, *timeEntries) };
+}
+
+protected_variable<TimeEntry> RelatedData::TimeEntryByGUID(const guid GUID) {
+    auto timeEntries = TimeEntries();
+    return { timeEntries_m_, modelByGUID(GUID, *timeEntries) };
+}
+
+protected_variable<TimelineEvent> RelatedData::TimelineEventByGUID(const guid GUID) {
+    auto timelineEvents = TimelineEvents();
+    return { timelineEvents_m_, modelByGUID(GUID, *timelineEvents) };
+}
+
+protected_variable<Tag> RelatedData::TagByGUID(const guid GUID) {
+    auto tags = Tags();
+    return { tags_m_, modelByGUID(GUID, *tags) };
+}
+
+protected_variable<Project> RelatedData::ProjectByGUID(const guid GUID) {
+    auto projects = Projects();
+    return { projects_m_, modelByGUID(GUID, *projects) };
+}
+
+protected_variable<Client> RelatedData::ClientByGUID(const guid GUID) {
+    auto clients = Clients();
+    return { clients_m_, modelByGUID(GUID, *clients) };
+}
+
 const_protected_variable<Task> RelatedData::TaskByID(const Poco::UInt64 id) const {
     auto tasks = Tasks();
     return { tasks_m_, modelByID<Task>(id, *tasks) };
@@ -697,13 +752,12 @@ const_protected_variable<Client> RelatedData::ClientByGUID(const guid GUID) cons
 }
 
 template <typename T>
-T *modelByGUID(const guid GUID, std::set<T *> const *list) {
+T *modelByGUID(const guid GUID, const std::set<T *> &list) {
     if (GUID.empty()) {
         return nullptr;
     }
-    typedef typename std::vector<T *>::const_iterator iterator;
-    for (iterator it = list->begin(); it != list->end(); it++) {
-        T *model = *it;
+    for (auto it : list) {
+        T *model = it;
         if (model->GUID() == GUID) {
             return model;
         }
@@ -712,13 +766,12 @@ T *modelByGUID(const guid GUID, std::set<T *> const *list) {
 }
 
 template<typename T>
-T *modelByID(const Poco::UInt64 id, std::set<T *> const *list) {
+T *modelByID(const Poco::UInt64 id, const std::set<T *> &list) {
     if (!id) {
         return nullptr;
     }
-    typedef typename std::vector<T *>::const_iterator iterator;
-    for (iterator it = list->begin(); it != list->end(); it++) {
-        T *model = *it;
+    for (auto it : list) {
+        T *model = it;
         if (model->ID() == id) {
             return model;
         }

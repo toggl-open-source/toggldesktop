@@ -75,6 +75,11 @@ void User::AddProjectToList(Project *p) {
 
     // We should push the project to correct alphabetical position
     // (since we try to avoid sorting the large list)
+    auto projects = related.Projects();
+    projects->insert(p);
+
+    // OVERHAUL_TODO
+    /*
     for (std::vector<Project *>::iterator it =
         related.Projects.begin();
             it != related.Projects.end(); it++) {
@@ -114,6 +119,7 @@ void User::AddProjectToList(Project *p) {
 
     // if projects vector is empty or project should be added to the end
     related.Projects.push_back(p);
+    */
 }
 
 Client *User::CreateClient(
@@ -134,6 +140,12 @@ void User::AddClientToList(Client *c) {
 
     // We should push the project to correct alphabetical position
     // (since we try to avoid sorting the large list)
+
+    auto clients = related.Clients();
+    clients->insert(c);
+
+    // OVERHAUL_TODO
+    /*
     for (std::vector<Client *>::iterator it =
         related.Clients.begin();
             it != related.Clients.end(); it++) {
@@ -152,6 +164,7 @@ void User::AddClientToList(Client *c) {
 
     // if clients vector is empty or client should be added to the end
     related.Clients.push_back(c);
+    */
 }
 
 // Start a time entry, mark it as dirty and add to user time entry collection.
@@ -192,7 +205,7 @@ TimeEntry *User::Start(
     }
 
     // Try to set workspace ID from project
-    Project *p = nullptr;
+    protected_variable<Project> p;
     if (te->PID()) {
         p = related.ProjectByID(te->PID());
     } else if (!te->ProjectGUID().empty()) {
@@ -205,7 +218,7 @@ TimeEntry *User::Start(
 
     // Try to set workspace ID from task
     if (!te->WID() && te->TID()) {
-        Task *t = related.TaskByID(te->TID());
+        auto t = related.TaskByID(te->TID());
         if (t) {
             te->SetWID(t->WID());
         }
@@ -224,7 +237,7 @@ TimeEntry *User::Continue(
     const std::string GUID,
     const bool manual_mode) {
 
-    TimeEntry *existing = related.TimeEntryByGUID(GUID);
+    auto existing = related.TimeEntryByGUID(GUID);
     if (!existing) {
         logger().warning("Time entry not found: " + GUID);
         return nullptr;
@@ -265,10 +278,8 @@ TimeEntry *User::Continue(
 std::string User::DateDuration(TimeEntry * const te) const {
     Poco::Int64 date_duration(0);
     std::string date_header = Formatter::FormatDateHeader(te->Start());
-    for (std::vector<TimeEntry *>::const_iterator it =
-        related.TimeEntries.begin();
-            it != related.TimeEntries.end();
-            it++) {
+    auto timeEntries = related.TimeEntries();
+    for (auto it = timeEntries->begin(); it != timeEntries->end(); it++) {
         TimeEntry *n = *it;
         if (Formatter::FormatDateHeader(n->Start()) == date_header) {
             Poco::Int64 duration = n->DurationInSeconds();
@@ -281,10 +292,8 @@ std::string User::DateDuration(TimeEntry * const te) const {
 }
 
 bool User::HasPremiumWorkspaces() const {
-    for (std::vector<Workspace *>::const_iterator it =
-        related.Workspaces.begin();
-            it != related.Workspaces.end();
-            it++) {
+    auto workspaces = related.Workspaces();
+    for (auto it = workspaces->begin(); it != workspaces->end(); it++) {
         Workspace *model = *it;
         if (model->Premium()) {
             return true;
@@ -294,10 +303,8 @@ bool User::HasPremiumWorkspaces() const {
 }
 
 bool User::CanAddProjects() const {
-    for (std::vector<Workspace *>::const_iterator it =
-        related.Workspaces.begin();
-            it != related.Workspaces.end();
-            it++) {
+    auto workspaces = related.Workspaces();
+    for (auto it = workspaces->begin(); it != workspaces->end(); it++) {
         Workspace *model = *it;
         if (model->OnlyAdminsMayCreateProjects()) {
             return false;
@@ -402,10 +409,10 @@ void User::SetCollapseEntries(const bool value) {
 // Note that there may be multiple TE-s running. If there are,
 // all of them are stopped (multi-tracking is not supported by Toggl).
 void User::Stop(std::vector<TimeEntry *> *stopped) {
-    TimeEntry *te = RunningTimeEntry();
+    auto te = RunningTimeEntry();
     while (te) {
         if (stopped) {
-            stopped->push_back(te);
+            stopped->push_back(te.data());
         }
         te->StopTracking();
         te = RunningTimeEntry();
@@ -426,7 +433,7 @@ TimeEntry *User::DiscardTimeAt(
     ss << "User is discarding time entry " << guid << " at " << at;
     logger().debug(ss.str());
 
-    TimeEntry *te = related.TimeEntryByGUID(guid);
+    auto te = related.TimeEntryByGUID(guid);
     if (te) {
         te->DiscardAt(at);
     }
@@ -446,11 +453,21 @@ TimeEntry *User::DiscardTimeAt(
     return nullptr;
 }
 
-protected_variable<TimeEntry> User::RunningTimeEntry() const {
+const_protected_variable<TimeEntry> User::RunningTimeEntry() const {
     auto timeEntries = related.TimeEntries();
     for (auto it = timeEntries->begin(); it != timeEntries->end(); it++) {
         if ((*it)->DurationInSeconds() < 0) {
-            return related.make_protected(it);
+            return related.make_protected(*it);
+        }
+    }
+    return {};
+}
+
+protected_variable<TimeEntry> User::RunningTimeEntry() {
+    auto timeEntries = related.TimeEntries();
+    for (auto it = timeEntries->begin(); it != timeEntries->end(); it++) {
+        if ((*it)->DurationInSeconds() < 0) {
+            return related.make_protected(*it);
         }
     }
     return {};
@@ -485,16 +502,16 @@ std::string User::String() const {
 }
 
 void User::DeleteRelatedModelsWithWorkspace(const Poco::UInt64 wid) {
-    deleteRelatedModelsWithWorkspace(wid, &related.Clients);
-    deleteRelatedModelsWithWorkspace(wid, &related.Projects);
-    deleteRelatedModelsWithWorkspace(wid, &related.Tasks);
-    deleteRelatedModelsWithWorkspace(wid, &related.TimeEntries);
-    deleteRelatedModelsWithWorkspace(wid, &related.Tags);
+    deleteRelatedModelsWithWorkspace(wid, *related.Clients());
+    deleteRelatedModelsWithWorkspace(wid, *related.Projects());
+    deleteRelatedModelsWithWorkspace(wid, *related.Tasks());
+    deleteRelatedModelsWithWorkspace(wid, *related.TimeEntries());
+    deleteRelatedModelsWithWorkspace(wid, *related.Tags());
 }
 
 void User::RemoveClientFromRelatedModels(const Poco::UInt64 cid) {
-    for (std::vector<Project *>::iterator it = related.Projects.begin();
-            it != related.Projects.end(); it++) {
+    auto projects = related.Projects();
+    for (auto it = projects->begin(); it != projects->end(); it++) {
         Project *model = *it;
         if (model->CID() == cid) {
             model->SetCID(0);
@@ -503,8 +520,8 @@ void User::RemoveClientFromRelatedModels(const Poco::UInt64 cid) {
 }
 
 void User::RemoveProjectFromRelatedModels(const Poco::UInt64 pid) {
-    removeProjectFromRelatedModels(pid, &related.Tasks);
-    removeProjectFromRelatedModels(pid, &related.TimeEntries);
+    removeProjectFromRelatedModels(pid, *related.Tasks());
+    removeProjectFromRelatedModels(pid, *related.TimeEntries());
 }
 
 void User::RemoveTaskFromRelatedModels(const Poco::UInt64 tid) {
@@ -527,7 +544,7 @@ void User::loadUserTagFromJSON(
         return;
     }
 
-    Tag *model = related.TagByID(id);
+    protected_variable<Tag> model = related.TagByID(id);
 
     if (!model) {
         model = related.TagByGUID(data["guid"].asString());
@@ -541,14 +558,22 @@ void User::loadUserTagFromJSON(
     }
 
     if (!model) {
-        model = new Tag();
-        related.Tags.push_back(model);
+        auto tags = related.Tags();
+        auto newModel = new Tag();
+        tags->insert(newModel);
+        if (alive) {
+            alive->insert(id);
+        }
+        newModel->SetUID(ID());
+        newModel->LoadFromJSON(data);
     }
-    if (alive) {
-        alive->insert(id);
+    else {
+        if (alive) {
+            alive->insert(id);
+        }
+        model->SetUID(ID());
+        model->LoadFromJSON(data);
     }
-    model->SetUID(ID());
-    model->LoadFromJSON(data);
 }
 
 void User::loadUserTaskFromJSON(
@@ -563,7 +588,7 @@ void User::loadUserTaskFromJSON(
         return;
     }
 
-    Task *model = related.TaskByID(id);
+    auto model = related.TaskByID(id);
 
     // Tasks have no GUID
 
@@ -575,15 +600,22 @@ void User::loadUserTaskFromJSON(
     }
 
     if (!model) {
-        model = new Task();
-        related.Tasks.push_back(model);
+        auto tasks = related.Tasks();
+        auto newModel = new Task();
+        tasks->insert(newModel);
+        if (alive) {
+            alive->insert(id);
+        }
+        newModel->SetUID(ID());
+        newModel->LoadFromJSON(data);
     }
-
-    if (alive) {
-        alive->insert(id);
+    else {
+        if (alive) {
+            alive->insert(id);
+        }
+        model->SetUID(ID());
+        model->LoadFromJSON(data);
     }
-    model->SetUID(ID());
-    model->LoadFromJSON(data);
 }
 
 error User::LoadUserUpdateFromJSONString(
@@ -647,7 +679,7 @@ void User::loadUserWorkspaceFromJSON(
         logger().error("Backend is sending invalid data: ignoring update without an ID");  // NOLINT
         return;
     }
-    Workspace *model = related.WorkspaceByID(id);
+    auto model = related.WorkspaceByID(id);
 
     // Workspaces have no GUID
 
@@ -659,14 +691,22 @@ void User::loadUserWorkspaceFromJSON(
     }
 
     if (!model) {
-        model = new Workspace();
-        related.Workspaces.push_back(model);
+        auto workspaces = related.Workspaces();
+        auto newModel = new Workspace();
+        workspaces->insert(newModel);
+        if (alive) {
+            alive->insert(id);
+        }
+        newModel->SetUID(ID());
+        newModel->LoadFromJSON(data);
     }
-    if (alive) {
-        alive->insert(id);
+    else {
+        if (alive) {
+            alive->insert(id);
+        }
+        model->SetUID(ID());
+        model->LoadFromJSON(data);
     }
-    model->SetUID(ID());
-    model->LoadFromJSON(data);
 }
 
 error User::LoadUserAndRelatedDataFromJSONString(
@@ -740,7 +780,7 @@ error User::LoadTimeEntriesFromJSONString(const std::string& json) {
         loadUserTimeEntryFromJSON(root[i], &alive);
     }
 
-    deleteZombies(related.TimeEntries, alive);
+    deleteZombies(*related.TimeEntries(), alive);
 
     return noError;
 }
@@ -761,10 +801,8 @@ void User::loadObmExperimentFromJson(Json::Value const &obm) {
         return;
     }
     ObmExperiment *model = nullptr;
-    for (std::vector<ObmExperiment *>::const_iterator it =
-        related.ObmExperiments.begin();
-            it != related.ObmExperiments.end();
-            it++) {
+    auto obmExperiments = related.ObmExperiments();
+    for (auto it = obmExperiments->begin(); it != obmExperiments->end(); it++) {
         ObmExperiment *existing = *it;
         if (existing->Nr() == nr) {
             model = existing;
@@ -775,7 +813,7 @@ void User::loadObmExperimentFromJson(Json::Value const &obm) {
         model = new ObmExperiment();
         model->SetUID(ID());
         model->SetNr(nr);
-        related.ObmExperiments.push_back(model);
+        obmExperiments->insert(model);
     }
     model->SetIncluded(obm["included"].asBool());
     model->SetActions(obm["actions"].asString());
@@ -812,7 +850,7 @@ void User::loadUserAndRelatedDataFromJSON(
         }
 
         if (including_related_data) {
-            deleteZombies(related.Workspaces, alive);
+            deleteZombies(*related.Workspaces(), alive);
         }
     }
 
@@ -828,7 +866,7 @@ void User::loadUserAndRelatedDataFromJSON(
         }
 
         if (including_related_data) {
-            deleteZombies(related.Clients, alive);
+            deleteZombies(*related.Clients(), alive);
         }
     }
 
@@ -844,7 +882,7 @@ void User::loadUserAndRelatedDataFromJSON(
         }
 
         if (including_related_data) {
-            deleteZombies(related.Projects, alive);
+            deleteZombies(*related.Projects(), alive);
         }
     }
 
@@ -860,7 +898,7 @@ void User::loadUserAndRelatedDataFromJSON(
         }
 
         if (including_related_data) {
-            deleteZombies(related.Tasks, alive);
+            deleteZombies(*related.Tasks(), alive);
         }
     }
 
@@ -876,7 +914,7 @@ void User::loadUserAndRelatedDataFromJSON(
         }
 
         if (including_related_data) {
-            deleteZombies(related.Tags, alive);
+            deleteZombies(*related.Tags(), alive);
         }
     }
 
@@ -892,7 +930,7 @@ void User::loadUserAndRelatedDataFromJSON(
         }
 
         if (including_related_data) {
-            deleteZombies(related.TimeEntries, alive);
+            deleteZombies(*related.TimeEntries(), alive);
         }
     }
 }
@@ -900,13 +938,12 @@ void User::loadUserAndRelatedDataFromJSON(
 void User::loadUserClientFromSyncJSON(
     Json::Value data,
     std::set<Poco::UInt64> *alive) {
-    bool addNew = false;
     Poco::UInt64 id = data["id"].asUInt64();
     if (!id) {
         logger().error("Backend is sending invalid data: ignoring update without an ID");  // NOLINT
         return;
     }
-    Client *model = related.ClientByID(id);
+    auto model = related.ClientByID(id);
 
     if (!model) {
         model = related.ClientByGUID(data["guid"].asString());
@@ -920,18 +957,24 @@ void User::loadUserClientFromSyncJSON(
     }
 
     if (!model) {
-        model = new Client();
-        addNew = true;
-    }
-    if (alive) {
-        alive->insert(id);
-    }
+        auto newModel = new Client();
 
-    model->SetUID(ID());
-    model->LoadFromJSON(data);
+        if (alive) {
+            alive->insert(id);
+        }
 
-    if (addNew) {
-        AddClientToList(model);
+        newModel->SetUID(ID());
+        newModel->LoadFromJSON(data);
+
+        AddClientToList(newModel);
+    }
+    else {
+        if (alive) {
+            alive->insert(id);
+        }
+
+        model->SetUID(ID());
+        model->LoadFromJSON(data);
     }
 }
 
@@ -946,7 +989,7 @@ void User::loadUserClientFromJSON(
         logger().error("Backend is sending invalid data: ignoring update without an ID");  // NOLINT
         return;
     }
-    Client *model = related.ClientByID(id);
+    auto model = related.ClientByID(id);
 
     if (!model) {
         model = related.ClientByGUID(data["guid"].asString());
@@ -960,27 +1003,34 @@ void User::loadUserClientFromJSON(
     }
 
     if (!model) {
-        model = new Client();
-        related.Clients.push_back(model);
+        auto clients = related.Clients();
+        auto newModel = new Client();
+        clients->insert(newModel);
+        if (alive) {
+            alive->insert(id);
+        }
+        newModel->SetUID(ID());
+        newModel->LoadFromJSON(data);
     }
-    if (alive) {
-        alive->insert(id);
+    else {
+        if (alive) {
+            alive->insert(id);
+        }
+        model->SetUID(ID());
+        model->LoadFromJSON(data);
     }
-    model->SetUID(ID());
-    model->LoadFromJSON(data);
 }
 
 void User::loadUserProjectFromSyncJSON(
     Json::Value data,
     std::set<Poco::UInt64> *alive) {
-    bool addNew = false;
     Poco::UInt64 id = data["id"].asUInt64();
     if (!id) {
         logger().error("Backend is sending invalid data: ignoring update without an ID");  // NOLINT
         return;
     }
 
-    Project *model = related.ProjectByID(id);
+    auto model = related.ProjectByID(id);
 
     if (!model) {
         model = related.ProjectByGUID(data["guid"].asString());
@@ -994,23 +1044,30 @@ void User::loadUserProjectFromSyncJSON(
     }
 
     if (!model) {
-        model = new Project();
-        addNew = true;
-    }
-    if (alive) {
-        alive->insert(id);
-    }
+        auto newModel = new Project();
 
-    model->SetUID(ID());
-    model->LoadFromJSON(data);
+        newModel->SetUID(ID());
+        newModel->LoadFromJSON(data);
 
-    Client *c = related.clientByProject(model);
-    if (c) {
-        model->SetClientName(c->Name());
+        auto c = related.clientByProject(newModel);
+        if (c) {
+            newModel->SetClientName(c->Name());
+        }
+
+        AddProjectToList(newModel);
     }
+    else {
+        if (alive) {
+            alive->insert(id);
+        }
 
-    if (addNew) {
-        AddProjectToList(model);
+        model->SetUID(ID());
+        model->LoadFromJSON(data);
+
+        auto c = related.clientByProject(model.data());
+        if (c) {
+            model->SetClientName(c->Name());
+        }
     }
 }
 
@@ -1026,7 +1083,7 @@ void User::loadUserProjectFromJSON(
         return;
     }
 
-    Project *model = related.ProjectByID(id);
+    auto model = related.ProjectByID(id);
 
     if (!model) {
         model = related.ProjectByGUID(data["guid"].asString());
@@ -1040,14 +1097,22 @@ void User::loadUserProjectFromJSON(
     }
 
     if (!model) {
-        model = new Project();
-        related.Projects.push_back(model);
+        auto projects = related.Projects();
+        auto newModel = new Project();
+        projects->insert(newModel);
+        if (alive) {
+            alive->insert(id);
+        }
+        newModel->SetUID(ID());
+        newModel->LoadFromJSON(data);
     }
-    if (alive) {
-        alive->insert(id);
+    else {
+        if (alive) {
+            alive->insert(id);
+        }
+        model->SetUID(ID());
+        model->LoadFromJSON(data);
     }
-    model->SetUID(ID());
-    model->LoadFromJSON(data);
 }
 
 void User::loadUserTimeEntryFromJSON(
@@ -1062,7 +1127,7 @@ void User::loadUserTimeEntryFromJSON(
         return;
     }
 
-    TimeEntry *model = related.TimeEntryByID(id);
+    auto model = related.TimeEntryByID(id);
 
     if (!model) {
         model = related.TimeEntryByGUID(data["guid"].asString());
@@ -1076,15 +1141,23 @@ void User::loadUserTimeEntryFromJSON(
     }
 
     if (!model) {
-        model = new TimeEntry();
-        related.pushBackTimeEntry(model);
+        auto newModel = new TimeEntry();
+        related.pushBackTimeEntry(newModel);
+        if (alive) {
+            alive->insert(id);
+        }
+        newModel->SetUID(ID());
+        newModel->LoadFromJSON(data);
+        newModel->EnsureGUID();
     }
-    if (alive) {
-        alive->insert(id);
+    else {
+        if (alive) {
+            alive->insert(id);
+        }
+        model->SetUID(ID());
+        model->LoadFromJSON(data);
+        model->EnsureGUID();
     }
-    model->SetUID(ID());
-    model->LoadFromJSON(data);
-    model->EnsureGUID();
 }
 
 bool User::LoadUserPreferencesFromJSON(
@@ -1288,7 +1361,7 @@ void User::MarkTimelineBatchAsUploaded(
             i != events.end();
             ++i) {
         TimelineEvent event = *i;
-        TimelineEvent *uploaded = related.TimelineEventByGUID(event.GUID());
+        auto uploaded = related.TimelineEventByGUID(event.GUID());
         if (!uploaded) {
             logger().error(
                 "Could not find timeline event to mark it as uploaded: "
@@ -1314,22 +1387,20 @@ void User::CompressTimeline() {
 
 
     time_t start = time(0);
+    auto timelineEvents = related.TimelineEvents();
 
     {
         std::stringstream ss;
         ss << "CompressTimeline "
            << " user_id=" << ID()
            << " chunk_up_to=" << chunk_up_to
-           << " number of events=" << related.TimelineEvents.size();
+           << " number of events=" << timelineEvents->size();
 
         logger().debug(ss.str());
     }
 
-    for (std::vector<TimelineEvent *>::iterator i =
-        related.TimelineEvents.begin();
-            i != related.TimelineEvents.end();
-            ++i) {
-        TimelineEvent *event = *i;
+    for (auto it = timelineEvents->begin(); it != timelineEvents->end(); ++it) {
+        TimelineEvent *event = *it;
 
         poco_check_ptr(event);
 
@@ -1400,7 +1471,7 @@ void User::CompressTimeline() {
         std::stringstream ss;
         ss << "CompressTimeline done in " << (time(0) - start)
            << " seconds, "
-           << related.TimelineEvents.size()
+           << timelineEvents->size()
            << " compressed into "
            << compressed.size()
            << " chunks";
@@ -1410,11 +1481,9 @@ void User::CompressTimeline() {
 
 std::vector<TimelineEvent> User::CompressedTimeline() const {
     std::vector<TimelineEvent> list;
-    for (std::vector<TimelineEvent *>::const_iterator i =
-        related.TimelineEvents.begin();
-            i != related.TimelineEvents.end();
-            ++i) {
-        TimelineEvent *event = *i;
+    auto timelineEvents = related.TimelineEvents();
+    for (auto it = timelineEvents->begin(); it != timelineEvents->end(); ++it) {
+        TimelineEvent *event = *it;
         poco_check_ptr(event);
         if (event->VisibleToUser()) {
             // Make a copy of the timeline event
@@ -1434,10 +1503,10 @@ std::string User::ModelURL() const {
 
 template<class T>
 void deleteZombies(
-    const std::vector<T> &list,
+    const std::set<T> &list,
     const std::set<Poco::UInt64> &alive) {
-    for (size_t i = 0; i < list.size(); ++i) {
-        BaseModel *model = list[i];
+    for (auto i : list) {
+        BaseModel *model = i;
         if (!model->ID()) {
             // If model has no server-assigned ID, it's not even
             // pushed to server. So actually we don't know if it's
@@ -1452,9 +1521,8 @@ void deleteZombies(
 
 template <typename T>
 void deleteRelatedModelsWithWorkspace(const Poco::UInt64 wid,
-                                      std::vector<T *> *list) {
-    typedef typename std::vector<T *>::iterator iterator;
-    for (iterator it = list->begin(); it != list->end(); it++) {
+                                      std::set<T *> &list) {
+    for (auto it = list.begin(); it != list.end(); it++) {
         T *model = *it;
         if (model->WID() == wid) {
             model->MarkAsDeletedOnServer();
@@ -1464,9 +1532,8 @@ void deleteRelatedModelsWithWorkspace(const Poco::UInt64 wid,
 
 template <typename T>
 void removeProjectFromRelatedModels(const Poco::UInt64 pid,
-                                    std::vector<T *> *list) {
-    typedef typename std::vector<T *>::iterator iterator;
-    for (iterator it = list->begin(); it != list->end(); it++) {
+                                    std::set<T *> &list) {
+    for (auto it = list.begin(); it != list.end(); it++) {
         T *model = *it;
         if (model->PID() == pid) {
             model->SetPID(0);
