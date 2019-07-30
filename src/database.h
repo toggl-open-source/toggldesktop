@@ -287,47 +287,47 @@ class Database {
 
     error loadWorkspaces(
         const Poco::UInt64 &UID,
-        std::set<Workspace *> *list);
+        User *user);
 
     error loadClients(
         const Poco::UInt64 &UID,
-        std::set<Client *> *list);
+        User *user);
 
     error loadProjects(
         const Poco::UInt64 &UID,
-        std::set<Project *> *list);
+        User *user);
 
     error loadTasks(
         const Poco::UInt64 &UID,
-        std::set<Task *> *list);
+        User *user);
 
     error loadTags(
         const Poco::UInt64 &UID,
-        std::set<Tag *> *list);
+        User *user);
 
     error loadAutotrackerRules(
         const Poco::UInt64 &UID,
-        std::set<AutotrackerRule *> *list);
+        User *user);
 
     error loadObmActions(
         const Poco::UInt64 &UID,
-        std::set<ObmAction *> *list);
+        User *user);
 
     error loadObmExperiments(
         const Poco::UInt64 &UID,
-        std::set<ObmExperiment *> *list);
+        User *user);
 
     error loadTimeEntries(
         const Poco::UInt64 &UID,
-        std::set<TimeEntry *> *list);
+        User *user);
 
     error loadTimelineEvents(
         const Poco::UInt64 &UID,
-        std::set<TimelineEvent *> *list);
+        User *user);
 
     error loadTimeEntriesFromSQLStatement(
         Poco::Data::Statement *select,
-        std::set<TimeEntry *> *list);
+        User *user);
 
     template <typename T>
     error saveRelatedModels(

@@ -21,7 +21,6 @@
 namespace toggl {
 
 class User : public BaseModel {
- public:
     User()
         : api_token_("")
     , default_wid_(0)
@@ -40,6 +39,9 @@ class User : public BaseModel {
 
     ~User();
 
+ public:
+    friend class RelatedData;
+    friend class Context;
     error EnableOfflineLogin(
         const std::string password);
 
@@ -57,7 +59,7 @@ class User : public BaseModel {
         return RunningTimeEntry();
     }
 
-    TimeEntry *Start(
+    protected_variable<TimeEntry> Start(
         const std::string description,
         const std::string duration,
         const Poco::UInt64 task_id,
@@ -65,7 +67,7 @@ class User : public BaseModel {
         const std::string project_guid,
         const std::string tags);
 
-    TimeEntry *Continue(
+    protected_variable<TimeEntry> Continue(
         const std::string GUID,
         const bool manual_mode);
 
@@ -73,12 +75,12 @@ class User : public BaseModel {
 
     // Discard time. Return a new time entry if
     // the discarded time was split into a new time entry
-    TimeEntry *DiscardTimeAt(
+    protected_variable<TimeEntry> DiscardTimeAt(
         const std::string guid,
         const Poco::Int64 at,
         const bool split_into_new_entry);
 
-    Project *CreateProject(
+    protected_variable<Project> CreateProject(
         const Poco::UInt64 workspace_id,
         const Poco::UInt64 client_id,
         const std::string client_guid,
@@ -90,7 +92,7 @@ class User : public BaseModel {
 
     void AddProjectToList(Project *p);
 
-    Client *CreateClient(
+    protected_variable<Client> CreateClient(
         const Poco::UInt64 workspace_id,
         const std::string client_name);
 
@@ -206,15 +208,15 @@ class User : public BaseModel {
         Json::Value data);
 
     template<typename T>
-    void EnsureWID(T *model) const {
+    void EnsureWID(T &model) const {
         // Do nothing if TE already has WID assigned
-        if (model->WID()) {
+        if (model.WID()) {
             return;
         }
 
         // Try to set default user WID
         if (DefaultWID()) {
-            model->SetWID(DefaultWID());
+            model.SetWID(DefaultWID());
             return;
         }
 
@@ -222,7 +224,7 @@ class User : public BaseModel {
         auto workspaces = related.Workspaces();
         auto it = workspaces->begin();
         if (it != workspaces->end()) {
-            model->SetWID((*it)->ID());
+            model.SetWID((*it)->ID());
         }
     }
 

@@ -150,6 +150,30 @@ public:
     const_protected_set<ObmAction*> ObmActions() const { return { obmActions_m_, &obmActions_ }; }
     const_protected_set<ObmExperiment*> ObmExperiments() const { return { obmExperiments_m_, &obmExperiments_ }; }
 
+    template<typename T> void clearList(std::set<T *> &list);
+
+    void clearWorkspaces();
+    void clearClients();
+    void clearProjects();
+    void clearTasks();
+    void clearTags();
+    void clearTimeEntries();
+    void clearAutotrackerRules();
+    void clearTimelineEvents();
+    void clearObmActions();
+    void clearObmExperiments();
+
+    protected_variable<Workspace> newWorkspace();
+    protected_variable<Client> newClient();
+    protected_variable<Project> newProject();
+    protected_variable<Task> newTask();
+    protected_variable<Tag> newTag();
+    protected_variable<TimeEntry> newTimeEntry();
+    protected_variable<AutotrackerRule> newAutotrackerRule();
+    protected_variable<TimelineEvent> newTimelineEvent();
+    protected_variable<ObmAction> newObmAction();
+    protected_variable<ObmExperiment> newObmExperiment();
+
     void Clear();
 
     template <typename T> protected_variable<T> make_protected(T *data);
@@ -211,7 +235,7 @@ public:
         TimeEntry * const te,
         view::TimeEntry *view) const;
 
-    AutotrackerRule *FindAutotrackerRule(const TimelineEvent event) const;
+    AutotrackerRule *FindAutotrackerRule(const TimelineEvent &event) const;
 
     protected_variable<Client> clientByProject(Project *p);
     const_protected_variable<Client> clientByProject(const Project *p) const;
@@ -255,6 +279,13 @@ template <> inline const_protected_variable<TimeEntry> RelatedData::make_protect
 }
 template <> inline protected_variable<TimeEntry> RelatedData::make_protected(TimeEntry *data) {
     return { timeEntries_m_, data };
+}
+
+template <> inline const_protected_variable<ObmExperiment> RelatedData::make_protected(const ObmExperiment *data) const {
+    return { obmExperiments_m_, data };
+}
+template <> inline protected_variable<ObmExperiment> RelatedData::make_protected(ObmExperiment *data) {
+    return { obmExperiments_m_, data };
 }
 
 

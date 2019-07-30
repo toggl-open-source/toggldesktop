@@ -15,7 +15,6 @@
 namespace toggl {
 
 class TimeEntry : public BaseModel, public TimedEvent {
- public:
     TimeEntry()
         : BaseModel()
     , wid_(0)
@@ -34,6 +33,8 @@ class TimeEntry : public BaseModel, public TimedEvent {
 
     virtual ~TimeEntry() {}
 
+ public:
+    friend class RelatedData;
     const Poco::UInt64 &LastStartAt() const {
         return last_start_at_;
     }

@@ -12,7 +12,6 @@
 namespace toggl {
 
 class Workspace : public BaseModel {
- public:
     Workspace()
         : BaseModel()
     , name_("")
@@ -23,6 +22,8 @@ class Workspace : public BaseModel {
     , business_(false)
     , locked_time_(0) {}
 
+public:
+    friend class RelatedData;
     const std::string &Name() const {
         return name_;
     }

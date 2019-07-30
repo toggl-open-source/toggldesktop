@@ -21,7 +21,7 @@
 namespace toggl {
 
 template<typename T>
-void clearList(std::set<T *> &list) {
+void RelatedData::clearList(std::set<T *> &list) {
     for (auto it : list) {
         delete it;
     }
@@ -36,6 +36,106 @@ void RelatedData::forEachTimeEntries(std::function<void(TimeEntry *)> f) {
 void RelatedData::pushBackTimeEntry(TimeEntry *timeEntry) {
     auto timeEntries = TimeEntries();
     timeEntries->insert(timeEntry);
+}
+
+void RelatedData::clearWorkspaces() {
+    Workspaces()->clear();
+}
+
+void RelatedData::clearClients() {
+    Clients()->clear();
+}
+
+void RelatedData::clearProjects() {
+    Projects()->clear();
+}
+
+void RelatedData::clearTasks() {
+    Tasks()->clear();
+}
+
+void RelatedData::clearTags() {
+    Tags()->clear();
+}
+
+void RelatedData::clearTimeEntries() {
+    TimeEntries()->clear();
+}
+
+void RelatedData::clearAutotrackerRules() {
+    AutotrackerRules()->clear();
+}
+
+void RelatedData::clearTimelineEvents() {
+    TimelineEvents()->clear();
+}
+
+void RelatedData::clearObmActions() {
+    ObmActions()->clear();
+}
+
+void RelatedData::clearObmExperiments() {
+    ObmExperiments()->clear();
+}
+
+protected_variable<Workspace> RelatedData::newWorkspace() {
+    auto workspace = new Workspace();
+    Workspaces()->insert(workspace);
+    return { workspaces_m_, workspace };
+}
+
+protected_variable<Client> RelatedData::newClient() {
+    auto client = new Client();
+    Clients()->insert(client);
+    return { clients_m_, client };
+}
+
+protected_variable<Project> RelatedData::newProject() {
+    auto project = new Project();
+    Projects()->insert(project);
+    return { projects_m_, project };
+}
+
+protected_variable<Task> RelatedData::newTask() {
+    auto task = new Task();
+    Tasks()->insert(task);
+    return { tasks_m_, task };
+}
+
+protected_variable<Tag> RelatedData::newTag() {
+    auto tag = new Tag();
+    Tags()->insert(tag);
+    return { tags_m_, tag };
+}
+
+protected_variable<TimeEntry> RelatedData::newTimeEntry() {
+    auto timeEntry = new TimeEntry();
+    TimeEntries()->insert(timeEntry);
+    return { timeEntries_m_, timeEntry };
+}
+
+protected_variable<AutotrackerRule> RelatedData::newAutotrackerRule() {
+    auto autotrackerRule = new AutotrackerRule();
+    AutotrackerRules()->insert(autotrackerRule);
+    return { autotrackerRules_m_, autotrackerRule };
+}
+
+protected_variable<TimelineEvent> RelatedData::newTimelineEvent() {
+    auto timelineEvent = new TimelineEvent();
+    TimelineEvents()->insert(timelineEvent);
+    return { timelineEvents_m_, timelineEvent };
+}
+
+protected_variable<ObmAction> RelatedData::newObmAction() {
+    auto obmAction = new ObmAction();
+    ObmActions()->insert(obmAction);
+    return { obmActions_m_, obmAction };
+}
+
+protected_variable<ObmExperiment> RelatedData::newObmExperiment() {
+    auto obmExperiment = new ObmExperiment();
+    ObmExperiments()->insert(obmExperiment);
+    return { obmExperiments_m_, obmExperiment };
 }
 
 void RelatedData::Clear() {
@@ -70,7 +170,7 @@ error RelatedData::DeleteAutotrackerRule(const Poco::Int64 local_id) {
 }
 
 AutotrackerRule *RelatedData::FindAutotrackerRule(
-    const TimelineEvent event) const {
+    const TimelineEvent &event) const {
     auto autotrackerRules = AutotrackerRules();
     for (auto it = autotrackerRules->begin(); it != autotrackerRules->end(); it++) {
         AutotrackerRule *rule = *it;

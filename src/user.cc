@@ -40,7 +40,7 @@ User::~User() {
     related.Clear();
 }
 
-Project *User::CreateProject(
+protected_variable<Project> User::CreateProject(
     const Poco::UInt64 workspace_id,
     const Poco::UInt64 client_id,
     const std::string client_guid,
@@ -50,7 +50,7 @@ Project *User::CreateProject(
     const std::string project_color,
     const bool billable) {
 
-    Project *p = new Project();
+    auto p = related.newProject();
     p->SetWID(workspace_id);
     p->SetName(project_name);
     p->SetCID(client_id);
@@ -63,8 +63,6 @@ Project *User::CreateProject(
     if (!project_color.empty()) {
         p->SetColorCode(project_color);
     }
-
-    AddProjectToList(p);
 
     return p;
 }
@@ -122,16 +120,13 @@ void User::AddProjectToList(Project *p) {
     */
 }
 
-Client *User::CreateClient(
+protected_variable<Client> User::CreateClient(
     const Poco::UInt64 workspace_id,
     const std::string client_name) {
-    Client *c = new Client();
+    auto c = related.newClient();
     c->SetWID(workspace_id);
     c->SetName(client_name);
     c->SetUID(ID());
-
-    AddClientToList(c);
-
     return c;
 }
 
@@ -169,7 +164,7 @@ void User::AddClientToList(Client *c) {
 
 // Start a time entry, mark it as dirty and add to user time entry collection.
 // Do not save here, dirtyness will be handled outside of this module.
-TimeEntry *User::Start(
+protected_variable<TimeEntry> User::Start(
     const std::string description,
     const std::string duration,
     const Poco::UInt64 task_id,
@@ -184,7 +179,7 @@ TimeEntry *User::Start(
     std::stringstream ss;
     ss << "User::Start now=" << now;
 
-    TimeEntry *te = new TimeEntry();
+    auto te = related.newTimeEntry();
     te->SetCreatedWith(HTTPSClient::Config.UserAgent());
     te->SetDescription(description);
     te->SetUID(ID());
@@ -224,35 +219,33 @@ TimeEntry *User::Start(
         }
     }
 
-    EnsureWID(te);
+    EnsureWID(*te);
 
     te->SetUIModified();
-
-    related.pushBackTimeEntry(te);
 
     return te;
 }
 
-TimeEntry *User::Continue(
+protected_variable<TimeEntry> User::Continue(
     const std::string GUID,
     const bool manual_mode) {
 
     auto existing = related.TimeEntryByGUID(GUID);
     if (!existing) {
         logger().warning("Time entry not found: " + GUID);
-        return nullptr;
+        return {};
     }
 
     if (existing->DeletedAt()) {
         logger().warning(kCannotContinueDeletedTimeEntry);
-        return nullptr;
+        return {};
     }
 
     Stop();
 
     time_t now = time(0);
 
-    TimeEntry *result = new TimeEntry();
+    auto result = related.newTimeEntry();
     result->SetCreatedWith(HTTPSClient::Config.UserAgent());
     result->SetDescription(existing->Description());
     result->SetWID(existing->WID());
@@ -269,8 +262,6 @@ TimeEntry *User::Continue(
     }
 
     result->SetCreatedWith(HTTPSClient::Config.UserAgent());
-
-    related.pushBackTimeEntry(result);
 
     return result;
 }
@@ -419,14 +410,14 @@ void User::Stop(std::vector<TimeEntry *> *stopped) {
     }
 }
 
-TimeEntry *User::DiscardTimeAt(
+protected_variable<TimeEntry> User::DiscardTimeAt(
     const std::string guid,
     const Poco::Int64 at,
     const bool split_into_new_entry) {
 
     if (!(at > 0)) {
         logger().error("Cannot discard without valid timestamp");
-        return nullptr;
+        return {};
     }
 
     std::stringstream ss;
@@ -439,18 +430,17 @@ TimeEntry *User::DiscardTimeAt(
     }
 
     if (te && split_into_new_entry) {
-        TimeEntry *split = new TimeEntry();
+        auto split = related.newTimeEntry();
         split->SetCreatedWith(HTTPSClient::Config.UserAgent());
         split->SetUID(ID());
         split->SetStart(at);
         split->SetDurationInSeconds(-at);
         split->SetUIModified();
         split->SetWID(te->WID());
-        related.pushBackTimeEntry(split);
         return split;
     }
 
-    return nullptr;
+    return {};
 }
 
 const_protected_variable<TimeEntry> User::RunningTimeEntry() const {
@@ -558,22 +548,13 @@ void User::loadUserTagFromJSON(
     }
 
     if (!model) {
-        auto tags = related.Tags();
-        auto newModel = new Tag();
-        tags->insert(newModel);
-        if (alive) {
-            alive->insert(id);
-        }
-        newModel->SetUID(ID());
-        newModel->LoadFromJSON(data);
+        model = related.newTag();
     }
-    else {
-        if (alive) {
-            alive->insert(id);
-        }
-        model->SetUID(ID());
-        model->LoadFromJSON(data);
+    if (alive) {
+        alive->insert(id);
     }
+    model->SetUID(ID());
+    model->LoadFromJSON(data);
 }
 
 void User::loadUserTaskFromJSON(
@@ -600,22 +581,13 @@ void User::loadUserTaskFromJSON(
     }
 
     if (!model) {
-        auto tasks = related.Tasks();
-        auto newModel = new Task();
-        tasks->insert(newModel);
-        if (alive) {
-            alive->insert(id);
-        }
-        newModel->SetUID(ID());
-        newModel->LoadFromJSON(data);
+        model = related.newTask();
     }
-    else {
-        if (alive) {
-            alive->insert(id);
-        }
-        model->SetUID(ID());
-        model->LoadFromJSON(data);
+    if (alive) {
+        alive->insert(id);
     }
+    model->SetUID(ID());
+    model->LoadFromJSON(data);
 }
 
 error User::LoadUserUpdateFromJSONString(
@@ -691,22 +663,13 @@ void User::loadUserWorkspaceFromJSON(
     }
 
     if (!model) {
-        auto workspaces = related.Workspaces();
-        auto newModel = new Workspace();
-        workspaces->insert(newModel);
-        if (alive) {
-            alive->insert(id);
-        }
-        newModel->SetUID(ID());
-        newModel->LoadFromJSON(data);
+        model = related.newWorkspace();
     }
-    else {
-        if (alive) {
-            alive->insert(id);
-        }
-        model->SetUID(ID());
-        model->LoadFromJSON(data);
+    if (alive) {
+        alive->insert(id);
     }
+    model->SetUID(ID());
+    model->LoadFromJSON(data);
 }
 
 error User::LoadUserAndRelatedDataFromJSONString(
@@ -800,20 +763,19 @@ void User::loadObmExperimentFromJson(Json::Value const &obm) {
     if (!nr) {
         return;
     }
-    ObmExperiment *model = nullptr;
+    protected_variable<ObmExperiment> model;
     auto obmExperiments = related.ObmExperiments();
     for (auto it = obmExperiments->begin(); it != obmExperiments->end(); it++) {
         ObmExperiment *existing = *it;
         if (existing->Nr() == nr) {
-            model = existing;
+            model = related.make_protected(existing);
             break;
         }
     }
     if (!model) {
-        model = new ObmExperiment();
+        model = related.newObmExperiment();
         model->SetUID(ID());
         model->SetNr(nr);
-        obmExperiments->insert(model);
     }
     model->SetIncluded(obm["included"].asBool());
     model->SetActions(obm["actions"].asString());
@@ -957,25 +919,14 @@ void User::loadUserClientFromSyncJSON(
     }
 
     if (!model) {
-        auto newModel = new Client();
-
-        if (alive) {
-            alive->insert(id);
-        }
-
-        newModel->SetUID(ID());
-        newModel->LoadFromJSON(data);
-
-        AddClientToList(newModel);
+        model = related.newClient();
     }
-    else {
-        if (alive) {
-            alive->insert(id);
-        }
-
-        model->SetUID(ID());
-        model->LoadFromJSON(data);
+    if (alive) {
+        alive->insert(id);
     }
+
+    model->SetUID(ID());
+    model->LoadFromJSON(data);
 }
 
 void User::loadUserClientFromJSON(
@@ -1003,22 +954,13 @@ void User::loadUserClientFromJSON(
     }
 
     if (!model) {
-        auto clients = related.Clients();
-        auto newModel = new Client();
-        clients->insert(newModel);
-        if (alive) {
-            alive->insert(id);
-        }
-        newModel->SetUID(ID());
-        newModel->LoadFromJSON(data);
+        model = related.newClient();
     }
-    else {
-        if (alive) {
-            alive->insert(id);
-        }
-        model->SetUID(ID());
-        model->LoadFromJSON(data);
+    if (alive) {
+        alive->insert(id);
     }
+    model->SetUID(ID());
+    model->LoadFromJSON(data);
 }
 
 void User::loadUserProjectFromSyncJSON(
@@ -1044,30 +986,18 @@ void User::loadUserProjectFromSyncJSON(
     }
 
     if (!model) {
-        auto newModel = new Project();
-
-        newModel->SetUID(ID());
-        newModel->LoadFromJSON(data);
-
-        auto c = related.clientByProject(newModel);
-        if (c) {
-            newModel->SetClientName(c->Name());
-        }
-
-        AddProjectToList(newModel);
+        model = related.newProject();
     }
-    else {
-        if (alive) {
-            alive->insert(id);
-        }
+    if (alive) {
+        alive->insert(id);
+    }
 
-        model->SetUID(ID());
-        model->LoadFromJSON(data);
+    model->SetUID(ID());
+    model->LoadFromJSON(data);
 
-        auto c = related.clientByProject(model.data());
-        if (c) {
-            model->SetClientName(c->Name());
-        }
+    auto c = related.clientByProject(model.data());
+    if (c) {
+        model->SetClientName(c->Name());
     }
 }
 
@@ -1097,22 +1027,13 @@ void User::loadUserProjectFromJSON(
     }
 
     if (!model) {
-        auto projects = related.Projects();
-        auto newModel = new Project();
-        projects->insert(newModel);
-        if (alive) {
-            alive->insert(id);
-        }
-        newModel->SetUID(ID());
-        newModel->LoadFromJSON(data);
+        model = related.newProject();
     }
-    else {
-        if (alive) {
-            alive->insert(id);
-        }
-        model->SetUID(ID());
-        model->LoadFromJSON(data);
+    if (alive) {
+        alive->insert(id);
     }
+    model->SetUID(ID());
+    model->LoadFromJSON(data);
 }
 
 void User::loadUserTimeEntryFromJSON(
@@ -1141,23 +1062,14 @@ void User::loadUserTimeEntryFromJSON(
     }
 
     if (!model) {
-        auto newModel = new TimeEntry();
-        related.pushBackTimeEntry(newModel);
-        if (alive) {
-            alive->insert(id);
-        }
-        newModel->SetUID(ID());
-        newModel->LoadFromJSON(data);
-        newModel->EnsureGUID();
+        model = related.newTimeEntry();
     }
-    else {
-        if (alive) {
-            alive->insert(id);
-        }
-        model->SetUID(ID());
-        model->LoadFromJSON(data);
-        model->EnsureGUID();
+    if (alive) {
+        alive->insert(id);
     }
+    model->SetUID(ID());
+    model->LoadFromJSON(data);
+    model->EnsureGUID();
 }
 
 bool User::LoadUserPreferencesFromJSON(

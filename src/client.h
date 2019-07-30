@@ -16,12 +16,13 @@
 namespace toggl {
 
 class Client : public BaseModel {
- public:
     Client()
         : BaseModel()
     , wid_(0)
     , name_("") {}
 
+ public:
+    friend class RelatedData;
     const Poco::UInt64 &WID() const {
         return wid_;
     }

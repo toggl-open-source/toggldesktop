@@ -12,12 +12,13 @@
 namespace toggl {
 
 class Tag : public BaseModel {
- public:
     Tag()
         : BaseModel()
     , wid_(0)
     , name_("") {}
 
+ public:
+    friend class RelatedData;
     const Poco::UInt64 &WID() const {
         return wid_;
     }

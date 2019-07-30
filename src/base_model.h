@@ -24,7 +24,7 @@ namespace toggl {
 class BatchUpdateResult;
 
 class BaseModel {
- public:
+ protected:
     BaseModel()
         : local_id_(0)
     , id_(0)
@@ -38,6 +38,7 @@ class BaseModel {
     , validation_error_("")
     , unsynced_(false) {}
 
+ public:
     virtual ~BaseModel() {}
 
     const Poco::Int64 &LocalID() const {

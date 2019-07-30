@@ -14,7 +14,6 @@
 namespace toggl {
 
 class Task : public BaseModel {
- public:
     Task()
         : BaseModel()
     , name_("")
@@ -22,6 +21,8 @@ class Task : public BaseModel {
     , pid_(0)
     , active_(false) {}
 
+ public:
+    friend class RelatedData;
     const std::string &Name() const {
         return name_;
     }

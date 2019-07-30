@@ -14,13 +14,14 @@
 namespace toggl {
 
 class ObmAction : public BaseModel {
- public:
     ObmAction()
         : BaseModel()
     , experiment_id_(0)
     , key_("")
     , value_("") {}
 
+ public:
+    friend class RelatedData;
     const std::string &Key() const {
         return key_;
     }
@@ -49,7 +50,6 @@ class ObmAction : public BaseModel {
 };
 
 class ObmExperiment : public BaseModel {
- public:
     ObmExperiment()
         : BaseModel()
     , included_(false)
@@ -57,6 +57,8 @@ class ObmExperiment : public BaseModel {
     , has_seen_(false)
     , actions_("") {}
 
+ public:
+    friend class RelatedData;
     const bool &Included() const {
         return included_;
     }

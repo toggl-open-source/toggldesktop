@@ -2486,7 +2486,7 @@ error Context::ClearCache() {
     return noError;
 }
 
-TimeEntry *Context::Start(
+protected_variable<TimeEntry> Context::Start(
     const std::string description,
     const std::string duration,
     const Poco::UInt64 task_id,
@@ -2500,21 +2500,21 @@ TimeEntry *Context::Start(
     // and the user can continue using the unsupported app.
     if (urls::ImATeapot()) {
         displayError(kUnsupportedAppError);
-        return nullptr;
+        return {};
     }
 
     // Discard Start if WS missing error is present
     if (overlay_visible_) {
-        return nullptr;
+        return {};
     }
 
-    TimeEntry *te = nullptr;
+    protected_variable<TimeEntry> te;
 
     {
         Poco::Mutex::ScopedLock lock(user_m_);
         if (!user_) {
             logger().warning("Cannot start tracking, user logged out");
-            return nullptr;
+            return {};
         }
 
         Poco::UInt64 tid(task_id);
@@ -2538,7 +2538,7 @@ TimeEntry *Context::Start(
     error err = save(true);
     if (err != noError) {
         displayError(err);
-        return nullptr;
+        return {};
     }
 
     if ("production" == environment_) {
@@ -2616,33 +2616,33 @@ void Context::OpenTimeEntryEditor(
     updateUI(render);
 }
 
-TimeEntry *Context::ContinueLatest(const bool prevent_on_app) {
+protected_variable<TimeEntry> Context::ContinueLatest(const bool prevent_on_app) {
     // Do not even allow to continue entries,
     // else they will linger around in the app
     // and the user can continue using the unsupported app.
     if (urls::ImATeapot()) {
         displayError(kUnsupportedAppError);
-        return nullptr;
+        return {};
     }
 
     // Discard Start if WS missing error is present
     if (overlay_visible_) {
-        return nullptr;
+        return {};
     }
 
-    TimeEntry *result = nullptr;
+    protected_variable<TimeEntry> result;
 
     {
         Poco::Mutex::ScopedLock lock(user_m_);
         if (!user_) {
             logger().warning("Cannot continue tracking, user logged out");
-            return nullptr;
+            return {};
         }
 
         TimeEntry *latest = user_->related.LatestTimeEntry();
 
         if (!latest) {
-            return nullptr;
+            return {};
         }
 
         result = user_->Continue(
@@ -2655,7 +2655,7 @@ TimeEntry *Context::ContinueLatest(const bool prevent_on_app) {
     error err = save(true);
     if (noError != err) {
         displayError(err);
-        return nullptr;
+        return {};
     }
 
     if (settings_.manual_mode && result) {
@@ -2683,7 +2683,7 @@ TimeEntry *Context::ContinueLatest(const bool prevent_on_app) {
     return result;
 }
 
-TimeEntry *Context::Continue(
+protected_variable<TimeEntry> Context::Continue(
     const std::string GUID) {
 
     // Do not even allow to continue entries,
@@ -2691,26 +2691,26 @@ TimeEntry *Context::Continue(
     // and the user can continue using the unsupported app.
     if (urls::ImATeapot()) {
         displayError(kUnsupportedAppError);
-        return nullptr;
+        return {};
     }
 
     // Discard Start if WS missing error is present
     if (overlay_visible_) {
-        return nullptr;
+        return {};
     }
 
     if (GUID.empty()) {
         displayError(std::string(__FUNCTION__) + ": Missing GUID");
-        return nullptr;
+        return {};
     }
 
-    TimeEntry *result = nullptr;
+    protected_variable<TimeEntry> result;
 
     {
         Poco::Mutex::ScopedLock lock(user_m_);
         if (!user_) {
             logger().warning("Cannot continue time entry, user logged out");
-            return nullptr;
+            return {};
         }
 
         result = user_->Continue(
@@ -2721,7 +2721,7 @@ TimeEntry *Context::Continue(
     error err = save(true);
     if (err != noError) {
         displayError(err);
-        return nullptr;
+        return {};
     }
 
     if (settings_.manual_mode && result) {
@@ -3235,7 +3235,7 @@ error Context::DiscardTimeAt(
                                            ss.str());
     }
 
-    TimeEntry *split = nullptr;
+    protected_variable<TimeEntry> split;
 
     {
         Poco::Mutex::ScopedLock lock(user_m_);
@@ -3264,7 +3264,7 @@ error Context::DiscardTimeAt(
     return noError;
 }
 
-TimeEntry *Context::DiscardTimeAndContinue(
+protected_variable<TimeEntry> Context::DiscardTimeAndContinue(
     const std::string guid,
     const Poco::Int64 at) {
 
@@ -3281,7 +3281,7 @@ TimeEntry *Context::DiscardTimeAndContinue(
         Poco::Mutex::ScopedLock lock(user_m_);
         if (!user_) {
             logger().warning("Cannot stop time entry, user logged out");
-            return nullptr;
+            return {};
         }
         user_->DiscardTimeAt(guid, at, false);
     }
@@ -3289,7 +3289,7 @@ TimeEntry *Context::DiscardTimeAndContinue(
     error err = save(true);
     if (err != noError) {
         displayError(err);
-        return nullptr;
+        return {};
     }
 
     return Continue(guid);
@@ -3501,7 +3501,7 @@ error Context::AddAutotrackerRule(
 
     std::string lowercase = Poco::UTF8::toLower(term);
 
-    AutotrackerRule *rule = nullptr;
+    protected_variable<AutotrackerRule> rule;
 
     {
         Poco::Mutex::ScopedLock lock(user_m_);
@@ -3537,7 +3537,7 @@ error Context::AddAutotrackerRule(
             return displayError("task does not belong to project");
         }
 
-        rule = new AutotrackerRule();
+        rule = user_->related.newAutotrackerRule();
         rule->SetTerm(lowercase);
         if (t) {
             rule->SetTID(t->ID());
@@ -3546,7 +3546,6 @@ error Context::AddAutotrackerRule(
             rule->SetPID(p->ID());
         }
         rule->SetUID(user_->ID());
-        user_->related.AutotrackerRules()->insert(rule);
     }
 
     error err = save(false);
@@ -3584,7 +3583,7 @@ error Context::DeleteAutotrackerRule(
     return displayError(save(false));
 }
 
-Project *Context::CreateProject(
+protected_variable<Project> Context::CreateProject(
     const Poco::UInt64 workspace_id,
     const Poco::UInt64 client_id,
     const std::string client_guid,
@@ -3594,27 +3593,27 @@ Project *Context::CreateProject(
 
     if (!workspace_id) {
         displayError(kPleaseSelectAWorkspace);
-        return nullptr;
+        return {};
     }
 
     std::string trimmed_project_name("");
     error err = db_->Trim(project_name, &trimmed_project_name);
     if (err != noError) {
         displayError(err);
-        return nullptr;
+        return {};
     }
     if (trimmed_project_name.empty()) {
         displayError(kProjectNameMustNotBeEmpty);
-        return nullptr;
+        return {};
     }
 
-    Project *result = nullptr;
+    protected_variable<Project> result;
 
     {
         Poco::Mutex::ScopedLock lock(user_m_);
         if (!user_) {
             logger().warning("Cannot add project, user logged out");
-            return nullptr;
+            return {};
         }
         auto projects = user_->related.Projects();
         for (auto it = projects->begin(); it != projects->end(); it++) {
@@ -3631,7 +3630,7 @@ Project *Context::CreateProject(
 
             if (clientIsSame && p->Name() == trimmed_project_name) {
                 displayError(kProjectNameAlreadyExists);
-                return nullptr;
+                return {};
             }
         }
         // Check if projects are billable by default
@@ -3672,7 +3671,7 @@ Project *Context::CreateProject(
     err = save(false);
     if (err != noError) {
         displayError(err);
-        return nullptr;
+        return {};
     }
 
     return result;
@@ -3709,50 +3708,49 @@ error Context::AddObmAction(
             logger().warning("Cannot create a OBM action, user logged out");
             return noError;
         }
-        ObmAction *action = new ObmAction();
+        auto action = user_->related.newObmAction();
         action->SetExperimentID(experiment_id);
         action->SetUID(user_->ID());
         action->SetKey(trimmed_key);
         action->SetValue(trimmed_value);
-        user_->related.ObmActions()->insert(action);
     }
     return displayError(save(false));
 }
 
-Client *Context::CreateClient(
+protected_variable<Client> Context::CreateClient(
     const Poco::UInt64 workspace_id,
     const std::string client_name) {
 
     if (!workspace_id) {
         displayError(kPleaseSelectAWorkspace);
-        return nullptr;
+        return {};
     }
 
     std::string trimmed_client_name("");
     error err = db_->Trim(client_name, &trimmed_client_name);
     if (err != noError) {
         displayError(err);
-        return nullptr;
+        return {};
     }
     if (trimmed_client_name.empty()) {
         displayError(kClientNameMustNotBeEmpty);
-        return nullptr;
+        return {};
     }
 
-    Client *result = nullptr;
+    protected_variable<Client> result;
 
     {
         Poco::Mutex::ScopedLock lock(user_m_);
         if (!user_) {
             logger().warning("Cannot create a client, user logged out");
-            return nullptr;
+            return {};
         }
         auto clients = user_->related.Clients();
         for (auto it = clients->begin(); it != clients->end(); it++) {
             Client *c = *it;
             if (c->WID() == workspace_id && c->Name() == trimmed_client_name) {
                 displayError(kClientNameAlreadyExists);
-                return nullptr;
+                return {};
             }
         }
         result = user_->CreateClient(workspace_id, trimmed_client_name);
@@ -3761,7 +3759,7 @@ Client *Context::CreateClient(
     err = save(false);
     if (err != noError) {
         displayError(err);
-        return nullptr;
+        return {};
     }
 
     return result;
@@ -3899,18 +3897,18 @@ error Context::offerBetaChannel(bool *did_offer) {
 error Context::runObmExperiments() {
     try {
         // Collect OBM experiments
-        std::map<Poco::UInt64, ObmExperiment> experiments;
+        auto obmExperiments = user_->related.ObmExperiments();
+        std::map<Poco::UInt64, ObmExperiment*> experiments;
         {
             Poco::Mutex::ScopedLock lock(user_m_);
             if (!user_) {
                 logger().warning("User logged out, cannot OBM experiment");
                 return noError;
             }
-            auto obmExperiments = user_->related.ObmExperiments();
             for (auto it = obmExperiments->begin(); it != obmExperiments->end(); it++) {
                 ObmExperiment *model = *it;
                 if (!model->DeletedAt()) {
-                    experiments[model->Nr()] = *model;
+                    experiments[model->Nr()] = model;
                     model->SetHasSeen(true);
                 }
             }
@@ -3921,15 +3919,12 @@ error Context::runObmExperiments() {
             return err;
         }
         // Now pass the experiments on to UI
-        for (std::map<Poco::UInt64, ObmExperiment>::const_iterator
-                it = experiments.begin();
-                it != experiments.end();
-                it++) {
-            ObmExperiment experiment = it->second;
+        for (auto it : experiments) {
+            ObmExperiment *experiment = it.second;
             UI()->DisplayObmExperiment(
-                experiment.Nr(),
-                experiment.Included(),
-                experiment.HasSeen());
+                experiment->Nr(),
+                experiment->Included(),
+                experiment->HasSeen());
         }
     } catch(const Poco::Exception& exc) {
         return displayError(exc.displayText());
@@ -4153,7 +4148,7 @@ void Context::displayPomodoro() {
                                              0,  // task_id
                                              0,  // project_id
                                              "",  // project_guid
-                                             "pomodoro-break");  // tags
+                                             "pomodoro-break").data();  // tags
 
         // Set workspace id to same as the previous entry
         pomodoro_break_entry_->SetWID(wid);
@@ -4197,7 +4192,7 @@ void Context::displayPomodoroBreak() {
     UI()->DisplayPomodoroBreak(settings_.pomodoro_break_minutes);
 }
 
-error Context::StartAutotrackerEvent(const TimelineEvent event) {
+error Context::StartAutotrackerEvent(const TimelineEvent &event) {
     Poco::Mutex::ScopedLock lock(user_m_);
     if (!user_) {
         return noError;

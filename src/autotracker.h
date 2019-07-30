@@ -15,7 +15,6 @@
 namespace toggl {
 
 class AutotrackerRule : public BaseModel {
- public:
     AutotrackerRule()
         : BaseModel()
     , term_("")
@@ -24,6 +23,8 @@ class AutotrackerRule : public BaseModel {
 
     virtual ~AutotrackerRule() {}
 
+ public:
+    friend class RelatedData;
     bool Matches(const TimelineEvent event) const;
 
     const std::string &Term() const;

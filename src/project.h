@@ -14,7 +14,6 @@
 namespace toggl {
 
 class Project : public BaseModel {
- public:
     Project()
         : BaseModel()
     , wid_(0)
@@ -27,6 +26,8 @@ class Project : public BaseModel {
     , client_guid_("")
     , client_name_("") {}
 
+ public:
+    friend class RelatedData;
     const Poco::UInt64 &WID() const {
         return wid_;
     }

@@ -302,7 +302,7 @@ class Context : public TimelineDatasource {
 
     error ClearCache();
 
-    TimeEntry *Start(
+    protected_variable<TimeEntry> Start(
         const std::string description,
         const std::string duration,
         const Poco::UInt64 task_id,
@@ -311,9 +311,9 @@ class Context : public TimelineDatasource {
         const std::string tags,
         const bool prevent_on_app);
 
-    TimeEntry *ContinueLatest(const bool prevent_on_app);
+    protected_variable<TimeEntry> ContinueLatest(const bool prevent_on_app);
 
-    TimeEntry *Continue(
+    protected_variable<TimeEntry> Continue(
         const std::string GUID);
 
     void OpenTimeEntryList();
@@ -368,7 +368,7 @@ class Context : public TimelineDatasource {
         const Poco::Int64 at,
         const bool split_into_new_entry);
 
-    TimeEntry *DiscardTimeAndContinue(
+    protected_variable<TimeEntry> DiscardTimeAndContinue(
         const std::string GUID,
         const Poco::Int64 at);
 
@@ -397,7 +397,7 @@ class Context : public TimelineDatasource {
     error UpdateChannel(
         std::string *update_channel);
 
-    Project *CreateProject(
+    protected_variable<Project> CreateProject(
         const Poco::UInt64 workspace_id,
         const Poco::UInt64 client_id,
         const std::string client_guid,
@@ -405,7 +405,7 @@ class Context : public TimelineDatasource {
         const bool is_private,
         const std::string project_color);
 
-    Client *CreateClient(
+    protected_variable<Client> CreateClient(
         const Poco::UInt64 workspace_id,
         const std::string client_name);
 
@@ -457,11 +457,11 @@ class Context : public TimelineDatasource {
     std::string UserEmail();
 
     // Timeline datasource
-    error StartAutotrackerEvent(const TimelineEvent event);
-    error CreateCompressedTimelineBatchForUpload(TimelineBatch *batch);
-    error StartTimelineEvent(TimelineEvent *event);
+    error StartAutotrackerEvent(const TimelineEvent &event) override;
+    error CreateCompressedTimelineBatchForUpload(TimelineBatch *batch) override;
+    error StartTimelineEvent(TimelineEvent *event) override;
     error MarkTimelineBatchAsUploaded(
-        const std::vector<TimelineEvent> &events);
+        const std::vector<TimelineEvent> &events) override;
 
     error SetPromotionResponse(
         const int64_t promotion_type,
@@ -708,6 +708,8 @@ class Context : public TimelineDatasource {
 
     HelpDatabase help_database_;
 
+    // OVERHAUL_TODO - this SHOULD NOT be here, all time entries are protected with a mutex
+    // currently solved with a hack (accessing the pointer directly)
     TimeEntry *pomodoro_break_entry_;
 
     // To cache grouped entries open/close status
