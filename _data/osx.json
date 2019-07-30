@@ -3,7 +3,7 @@
         {
             "version": "7.4.484",
             "rows": [
-                "Fixed library rerefencing issues"
+                "Fixed library rerefencing issues",
                 "Fixed window resizing issues",
                 "Fixed grouping detect with same tags in different order",
                 "Totally new clean design",
