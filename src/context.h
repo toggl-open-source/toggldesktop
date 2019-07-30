@@ -302,7 +302,7 @@ class Context : public TimelineDatasource {
 
     error ClearCache();
 
-    protected_variable<TimeEntry> Start(
+    locked<TimeEntry> Start(
         const std::string description,
         const std::string duration,
         const Poco::UInt64 task_id,
@@ -311,9 +311,9 @@ class Context : public TimelineDatasource {
         const std::string tags,
         const bool prevent_on_app);
 
-    protected_variable<TimeEntry> ContinueLatest(const bool prevent_on_app);
+    locked<TimeEntry> ContinueLatest(const bool prevent_on_app);
 
-    protected_variable<TimeEntry> Continue(
+    locked<TimeEntry> Continue(
         const std::string GUID);
 
     void OpenTimeEntryList();
@@ -368,11 +368,11 @@ class Context : public TimelineDatasource {
         const Poco::Int64 at,
         const bool split_into_new_entry);
 
-    protected_variable<TimeEntry> DiscardTimeAndContinue(
+    locked<TimeEntry> DiscardTimeAndContinue(
         const std::string GUID,
         const Poco::Int64 at);
 
-    protected_variable<TimeEntry> RunningTimeEntry();
+    locked<TimeEntry> RunningTimeEntry();
 
     error ToggleTimelineRecording(
         const bool record_timeline);
@@ -397,7 +397,7 @@ class Context : public TimelineDatasource {
     error UpdateChannel(
         std::string *update_channel);
 
-    protected_variable<Project> CreateProject(
+    locked<Project> CreateProject(
         const Poco::UInt64 workspace_id,
         const Poco::UInt64 client_id,
         const std::string client_guid,
@@ -405,7 +405,7 @@ class Context : public TimelineDatasource {
         const bool is_private,
         const std::string project_color);
 
-    protected_variable<Client> CreateClient(
+    locked<Client> CreateClient(
         const Poco::UInt64 workspace_id,
         const std::string client_name);
 

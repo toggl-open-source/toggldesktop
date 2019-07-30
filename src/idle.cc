@@ -69,7 +69,7 @@ void Idle::computeIdleState(
             idle_seconds < last_idle_seconds_reading_) {
         time_t now = time(0);
 
-        protected_variable<TimeEntry> te = current_user->RunningTimeEntry();
+        locked<TimeEntry> te = current_user->RunningTimeEntry();
         if (!te) {
             logger().warning("Time entry is not tracking, ignoring idleness");
         } else if (Formatter::AbsDuration(te->DurationInSeconds())

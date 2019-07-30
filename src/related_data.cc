@@ -78,61 +78,61 @@ void RelatedData::clearObmExperiments() {
     ObmExperiments()->clear();
 }
 
-protected_variable<Workspace> RelatedData::newWorkspace() {
+locked<Workspace> RelatedData::newWorkspace() {
     auto workspace = new Workspace();
     Workspaces()->insert(workspace);
     return { workspaces_m_, workspace };
 }
 
-protected_variable<Client> RelatedData::newClient() {
+locked<Client> RelatedData::newClient() {
     auto client = new Client();
     Clients()->insert(client);
     return { clients_m_, client };
 }
 
-protected_variable<Project> RelatedData::newProject() {
+locked<Project> RelatedData::newProject() {
     auto project = new Project();
     Projects()->insert(project);
     return { projects_m_, project };
 }
 
-protected_variable<Task> RelatedData::newTask() {
+locked<Task> RelatedData::newTask() {
     auto task = new Task();
     Tasks()->insert(task);
     return { tasks_m_, task };
 }
 
-protected_variable<Tag> RelatedData::newTag() {
+locked<Tag> RelatedData::newTag() {
     auto tag = new Tag();
     Tags()->insert(tag);
     return { tags_m_, tag };
 }
 
-protected_variable<TimeEntry> RelatedData::newTimeEntry() {
+locked<TimeEntry> RelatedData::newTimeEntry() {
     auto timeEntry = new TimeEntry();
     TimeEntries()->insert(timeEntry);
     return { timeEntries_m_, timeEntry };
 }
 
-protected_variable<AutotrackerRule> RelatedData::newAutotrackerRule() {
+locked<AutotrackerRule> RelatedData::newAutotrackerRule() {
     auto autotrackerRule = new AutotrackerRule();
     AutotrackerRules()->insert(autotrackerRule);
     return { autotrackerRules_m_, autotrackerRule };
 }
 
-protected_variable<TimelineEvent> RelatedData::newTimelineEvent() {
+locked<TimelineEvent> RelatedData::newTimelineEvent() {
     auto timelineEvent = new TimelineEvent();
     TimelineEvents()->insert(timelineEvent);
     return { timelineEvents_m_, timelineEvent };
 }
 
-protected_variable<ObmAction> RelatedData::newObmAction() {
+locked<ObmAction> RelatedData::newObmAction() {
     auto obmAction = new ObmAction();
     ObmActions()->insert(obmAction);
     return { obmActions_m_, obmAction };
 }
 
-protected_variable<ObmExperiment> RelatedData::newObmExperiment() {
+locked<ObmExperiment> RelatedData::newObmExperiment() {
     auto obmExperiment = new ObmExperiment();
     ObmExperiments()->insert(obmExperiment);
     return { obmExperiments_m_, obmExperiment };
@@ -306,12 +306,12 @@ void RelatedData::timeEntryAutocompleteItems(
             continue;
         }
 
-        const_protected_variable<Task> t;
+        locked<const Task> t;
         if (te->TID()) {
             t = TaskByID(te->TID());
         }
 
-        const_protected_variable<Project> p;
+        locked<const Project> p;
         if (t && t->PID()) {
             p = ProjectByID(t->PID());
         } else if (te->PID()) {
@@ -404,7 +404,7 @@ void RelatedData::taskAutocompleteItems(
             continue;
         }
 
-        const_protected_variable<Project> p;
+        locked<const Project> p;
         if (t->PID()) {
             p = ProjectByID(t->PID());
         }
@@ -473,7 +473,7 @@ void RelatedData::projectAutocompleteItems(
             continue;
         }
 
-        const_protected_variable<Client> c = clientByProject(p);
+        locked<const Client> c = clientByProject(p);
 
         std::string text = Formatter::JoinTaskName(0, p);
         if (text.empty()) {
@@ -678,7 +678,7 @@ void RelatedData::ProjectLabelAndColorCode(
     poco_check_ptr(te);
     poco_check_ptr(view);
 
-    const_protected_variable<Workspace> ws;
+    locked<const Workspace> ws;
     if (te->WID()) {
         ws = WorkspaceByID(te->WID());
     }
@@ -686,7 +686,7 @@ void RelatedData::ProjectLabelAndColorCode(
         view->WorkspaceName = ws->Name();
     }
 
-    const_protected_variable<Task> t;
+    locked<const Task> t;
     if (te->TID()) {
         t = TaskByID(te->TID());
     }
@@ -694,7 +694,7 @@ void RelatedData::ProjectLabelAndColorCode(
         view->TaskLabel = t->Name();
     }
 
-    const_protected_variable<Project> p;
+    locked<const Project> p;
     if (t && t->PID()) {
         p = ProjectByID(t->PID());
     }
@@ -705,7 +705,7 @@ void RelatedData::ProjectLabelAndColorCode(
         p = ProjectByGUID(te->ProjectGUID());
     }
 
-    const_protected_variable<Client> c = clientByProject(p.data());
+    locked<const Client> c = clientByProject(p.data());
 
     view->ProjectAndTaskLabel = Formatter::JoinTaskName(t.data(), p.data());
 
@@ -719,8 +719,8 @@ void RelatedData::ProjectLabelAndColorCode(
     }
 }
 
-protected_variable<Client> RelatedData::clientByProject(Project *p) {
-    protected_variable<Client> c;
+locked<Client> RelatedData::clientByProject(Project *p) {
+    locked<Client> c;
     if (p && p->CID()) {
         c = ClientByID(p->CID());
     }
@@ -730,8 +730,8 @@ protected_variable<Client> RelatedData::clientByProject(Project *p) {
     return c;
 }
 
-const_protected_variable<Client> RelatedData::clientByProject(const Project *p) const {
-    const_protected_variable<Client> c;
+locked<const Client> RelatedData::clientByProject(const Project *p) const {
+    locked<const Client> c;
     if (p && p->CID()) {
         c = ClientByID(p->CID());
     }
@@ -741,112 +741,112 @@ const_protected_variable<Client> RelatedData::clientByProject(const Project *p) 
     return c;
 }
 
-protected_variable<Task> RelatedData::TaskByID(const Poco::UInt64 id) {
+locked<Task> RelatedData::TaskByID(const Poco::UInt64 id) {
     auto tasks = Tasks();
     return { tasks_m_, modelByID<Task>(id, *tasks) };
 }
 
-protected_variable<Client> RelatedData::ClientByID(const Poco::UInt64 id) {
+locked<Client> RelatedData::ClientByID(const Poco::UInt64 id) {
     auto clients = Clients();
     return { clients_m_, modelByID(id, *clients) };
 }
 
-protected_variable<Project> RelatedData::ProjectByID(const Poco::UInt64 id) {
+locked<Project> RelatedData::ProjectByID(const Poco::UInt64 id) {
     auto projects = Projects();
     return { projects_m_, modelByID(id, *projects) };
 }
 
-protected_variable<Tag> RelatedData::TagByID(const Poco::UInt64 id) {
+locked<Tag> RelatedData::TagByID(const Poco::UInt64 id) {
     auto tags = Tags();
     return { tags_m_, modelByID(id, *tags) };
 }
 
-protected_variable<Workspace> RelatedData::WorkspaceByID(const Poco::UInt64 id) {
+locked<Workspace> RelatedData::WorkspaceByID(const Poco::UInt64 id) {
     auto workspaces = Workspaces();
     return { workspaces_m_, modelByID(id, *workspaces) };
 }
 
-protected_variable<TimeEntry> RelatedData::TimeEntryByID(const Poco::UInt64 id) {
+locked<TimeEntry> RelatedData::TimeEntryByID(const Poco::UInt64 id) {
     auto timeEntries = TimeEntries();
     return { timeEntries_m_, modelByID(id, *timeEntries) };
 }
 
-protected_variable<TimeEntry> RelatedData::TimeEntryByGUID(const guid GUID) {
+locked<TimeEntry> RelatedData::TimeEntryByGUID(const guid GUID) {
     auto timeEntries = TimeEntries();
     return { timeEntries_m_, modelByGUID(GUID, *timeEntries) };
 }
 
-protected_variable<TimelineEvent> RelatedData::TimelineEventByGUID(const guid GUID) {
+locked<TimelineEvent> RelatedData::TimelineEventByGUID(const guid GUID) {
     auto timelineEvents = TimelineEvents();
     return { timelineEvents_m_, modelByGUID(GUID, *timelineEvents) };
 }
 
-protected_variable<Tag> RelatedData::TagByGUID(const guid GUID) {
+locked<Tag> RelatedData::TagByGUID(const guid GUID) {
     auto tags = Tags();
     return { tags_m_, modelByGUID(GUID, *tags) };
 }
 
-protected_variable<Project> RelatedData::ProjectByGUID(const guid GUID) {
+locked<Project> RelatedData::ProjectByGUID(const guid GUID) {
     auto projects = Projects();
     return { projects_m_, modelByGUID(GUID, *projects) };
 }
 
-protected_variable<Client> RelatedData::ClientByGUID(const guid GUID) {
+locked<Client> RelatedData::ClientByGUID(const guid GUID) {
     auto clients = Clients();
     return { clients_m_, modelByGUID(GUID, *clients) };
 }
 
-const_protected_variable<Task> RelatedData::TaskByID(const Poco::UInt64 id) const {
+locked<const Task> RelatedData::TaskByID(const Poco::UInt64 id) const {
     auto tasks = Tasks();
     return { tasks_m_, modelByID<Task>(id, *tasks) };
 }
 
-const_protected_variable<Client> RelatedData::ClientByID(const Poco::UInt64 id) const {
+locked<const Client> RelatedData::ClientByID(const Poco::UInt64 id) const {
     auto clients = Clients();
     return { clients_m_, modelByID(id, *clients) };
 }
 
-const_protected_variable<Project> RelatedData::ProjectByID(const Poco::UInt64 id) const {
+locked<const Project> RelatedData::ProjectByID(const Poco::UInt64 id) const {
     auto projects = Projects();
     return { projects_m_, modelByID(id, *projects) };
 }
 
-const_protected_variable<Tag> RelatedData::TagByID(const Poco::UInt64 id) const {
+locked<const Tag> RelatedData::TagByID(const Poco::UInt64 id) const {
     auto tags = Tags();
     return { tags_m_, modelByID(id, *tags) };
 }
 
-const_protected_variable<Workspace> RelatedData::WorkspaceByID(const Poco::UInt64 id) const {
+locked<const Workspace> RelatedData::WorkspaceByID(const Poco::UInt64 id) const {
     auto workspaces = Workspaces();
     return { workspaces_m_, modelByID(id, *workspaces) };
 }
 
-const_protected_variable<TimeEntry> RelatedData::TimeEntryByID(const Poco::UInt64 id) const {
+locked<const TimeEntry> RelatedData::TimeEntryByID(const Poco::UInt64 id) const {
     auto timeEntries = TimeEntries();
     return { timeEntries_m_, modelByID(id, *timeEntries) };
 }
 
-const_protected_variable<TimeEntry> RelatedData::TimeEntryByGUID(const guid GUID) const {
+locked<const TimeEntry> RelatedData::TimeEntryByGUID(const guid GUID) const {
     auto timeEntries = TimeEntries();
     return { timeEntries_m_, modelByGUID(GUID, *timeEntries) };
 }
 
-const_protected_variable<TimelineEvent> RelatedData::TimelineEventByGUID(const guid GUID) const {
+locked<const TimelineEvent> RelatedData::TimelineEventByGUID(const guid GUID) const {
     auto timelineEvents = TimelineEvents();
     return { timelineEvents_m_, modelByGUID(GUID, *timelineEvents) };
 }
 
-const_protected_variable<Tag> RelatedData::TagByGUID(const guid GUID) const {
+locked<const Tag> RelatedData::TagByGUID(const guid GUID) const {
     auto tags = Tags();
     return { tags_m_, modelByGUID(GUID, *tags) };
 }
 
-const_protected_variable<Project> RelatedData::ProjectByGUID(const guid GUID) const {
+locked<const Project> RelatedData::ProjectByGUID(const guid GUID) const {
     auto projects = Projects();
     return { projects_m_, modelByGUID(GUID, *projects) };
 }
 
-const_protected_variable<Client> RelatedData::ClientByGUID(const guid GUID) const {
+locked<const Client> RelatedData::ClientByGUID(const guid GUID) const {
     auto clients = Clients();
     return { clients_m_, modelByGUID(GUID, *clients) };
 }

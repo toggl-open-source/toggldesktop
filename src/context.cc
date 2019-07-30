@@ -549,7 +549,7 @@ void Context::updateUI(const UIElements &what) {
 
                 // Various fields in TE editor related to workspace
                 // and user permissions
-                protected_variable<Workspace> ws;
+                locked<Workspace> ws;
                 if (editor_time_entry->WID()) {
                     ws = user_->related.WorkspaceByID(editor_time_entry->WID());
                 }
@@ -2486,7 +2486,7 @@ error Context::ClearCache() {
     return noError;
 }
 
-protected_variable<TimeEntry> Context::Start(
+locked<TimeEntry> Context::Start(
     const std::string description,
     const std::string duration,
     const Poco::UInt64 task_id,
@@ -2508,7 +2508,7 @@ protected_variable<TimeEntry> Context::Start(
         return {};
     }
 
-    protected_variable<TimeEntry> te;
+    locked<TimeEntry> te;
 
     {
         Poco::Mutex::ScopedLock lock(user_m_);
@@ -2574,7 +2574,7 @@ void Context::OpenTimeEntryEditor(
         return;
     }
 
-    protected_variable<TimeEntry> te;
+    locked<TimeEntry> te;
 
     {
         Poco::Mutex::ScopedLock lock(user_m_);
@@ -2616,7 +2616,7 @@ void Context::OpenTimeEntryEditor(
     updateUI(render);
 }
 
-protected_variable<TimeEntry> Context::ContinueLatest(const bool prevent_on_app) {
+locked<TimeEntry> Context::ContinueLatest(const bool prevent_on_app) {
     // Do not even allow to continue entries,
     // else they will linger around in the app
     // and the user can continue using the unsupported app.
@@ -2630,7 +2630,7 @@ protected_variable<TimeEntry> Context::ContinueLatest(const bool prevent_on_app)
         return {};
     }
 
-    protected_variable<TimeEntry> result;
+    locked<TimeEntry> result;
 
     {
         Poco::Mutex::ScopedLock lock(user_m_);
@@ -2683,7 +2683,7 @@ protected_variable<TimeEntry> Context::ContinueLatest(const bool prevent_on_app)
     return result;
 }
 
-protected_variable<TimeEntry> Context::Continue(
+locked<TimeEntry> Context::Continue(
     const std::string GUID) {
 
     // Do not even allow to continue entries,
@@ -2704,7 +2704,7 @@ protected_variable<TimeEntry> Context::Continue(
         return {};
     }
 
-    protected_variable<TimeEntry> result;
+    locked<TimeEntry> result;
 
     {
         Poco::Mutex::ScopedLock lock(user_m_);
@@ -2749,7 +2749,7 @@ error Context::DeleteTimeEntryByGUID(const std::string GUID) {
         return displayError(std::string(__FUNCTION__) + ": Missing GUID");
     }
 
-    protected_variable<TimeEntry> te;
+    locked<TimeEntry> te;
 
     {
         Poco::Mutex::ScopedLock lock(user_m_);
@@ -2832,7 +2832,7 @@ error Context::SetTimeEntryProject(
             return noError;
         }
 
-        protected_variable<TimeEntry> te = user_->related.TimeEntryByGUID(GUID);
+        locked<TimeEntry> te = user_->related.TimeEntryByGUID(GUID);
         if (!te) {
             logger().warning("Time entry not found: " + GUID);
             return noError;
@@ -2842,7 +2842,7 @@ error Context::SetTimeEntryProject(
             return logAndDisplayUserTriedEditingLockedEntry();
         }
 
-        protected_variable<Project> p;
+        locked<Project> p;
         if (project_id) {
             p = user_->related.ProjectByID(project_id);
         }
@@ -2891,7 +2891,7 @@ error Context::SetTimeEntryDate(
         return displayError(std::string(__FUNCTION__) + ": Missing GUID");
     }
 
-    protected_variable<TimeEntry> te;
+    locked<TimeEntry> te;
     Poco::LocalDateTime dt;
 
     {
@@ -2951,7 +2951,7 @@ error Context::SetTimeEntryStart(
     }
     Poco::LocalDateTime now;
 
-    protected_variable<TimeEntry> te;
+    locked<TimeEntry> te;
 
     {
         Poco::Mutex::ScopedLock lock(user_m_);
@@ -3009,7 +3009,7 @@ error Context::SetTimeEntryStop(
         return displayError(std::string(__FUNCTION__) + ": Missing GUID");
     }
 
-    protected_variable<TimeEntry> te;
+    locked<TimeEntry> te;
 
     {
         Poco::Mutex::ScopedLock lock(user_m_);
@@ -3072,7 +3072,7 @@ error Context::SetTimeEntryTags(
         return displayError(std::string(__FUNCTION__) + ": Missing GUID");
     }
 
-    protected_variable<TimeEntry> te;
+    locked<TimeEntry> te;
 
     {
         Poco::Mutex::ScopedLock lock(user_m_);
@@ -3109,7 +3109,7 @@ error Context::SetTimeEntryBillable(
         return displayError(std::string(__FUNCTION__) + ": Missing GUID");
     }
 
-    protected_variable<TimeEntry> te;
+    locked<TimeEntry> te;
 
     {
         Poco::Mutex::ScopedLock lock(user_m_);
@@ -3146,7 +3146,7 @@ error Context::SetTimeEntryDescription(
         return displayError(std::string(__FUNCTION__) + ": Missing GUID");
     }
 
-    protected_variable<TimeEntry> te;
+    locked<TimeEntry> te;
 
     {
         Poco::Mutex::ScopedLock lock(user_m_);
@@ -3235,7 +3235,7 @@ error Context::DiscardTimeAt(
                                            ss.str());
     }
 
-    protected_variable<TimeEntry> split;
+    locked<TimeEntry> split;
 
     {
         Poco::Mutex::ScopedLock lock(user_m_);
@@ -3264,7 +3264,7 @@ error Context::DiscardTimeAt(
     return noError;
 }
 
-protected_variable<TimeEntry> Context::DiscardTimeAndContinue(
+locked<TimeEntry> Context::DiscardTimeAndContinue(
     const std::string guid,
     const Poco::Int64 at) {
 
@@ -3295,7 +3295,7 @@ protected_variable<TimeEntry> Context::DiscardTimeAndContinue(
     return Continue(guid);
 }
 
-protected_variable<TimeEntry> Context::RunningTimeEntry() {
+locked<TimeEntry> Context::RunningTimeEntry() {
     Poco::Mutex::ScopedLock lock(user_m_);
     if (!user_) {
         logger().warning("Cannot fetch time entry, user logged out");
@@ -3364,7 +3364,7 @@ error Context::SetDefaultProject(
                 return noError;
             }
 
-            protected_variable<Task> t;
+            locked<Task> t;
             if (tid) {
                 t = user_->related.TaskByID(tid);
             }
@@ -3372,7 +3372,7 @@ error Context::SetDefaultProject(
                 return displayError("task not found");
             }
 
-            protected_variable<Project> p;
+            locked<Project> p;
             if (pid) {
                 p = user_->related.ProjectByID(pid);
             }
@@ -3413,8 +3413,8 @@ error Context::SetDefaultProject(
 error Context::DefaultProjectName(std::string *name) {
     try {
         poco_check_ptr(name);
-        protected_variable<Project> p;
-        protected_variable<Task> t;
+        locked<Project> p;
+        locked<Task> t;
         {
             Poco::Mutex::ScopedLock lock(user_m_);
             if (!user_) {
@@ -3501,7 +3501,7 @@ error Context::AddAutotrackerRule(
 
     std::string lowercase = Poco::UTF8::toLower(term);
 
-    protected_variable<AutotrackerRule> rule;
+    locked<AutotrackerRule> rule;
 
     {
         Poco::Mutex::ScopedLock lock(user_m_);
@@ -3514,7 +3514,7 @@ error Context::AddAutotrackerRule(
             return displayError(kErrorRuleAlreadyExists);
         }
 
-        protected_variable<Task> t;
+        locked<Task> t;
         if (tid) {
             t = user_->related.TaskByID(tid);
         }
@@ -3522,7 +3522,7 @@ error Context::AddAutotrackerRule(
             return displayError("task not found");
         }
 
-        protected_variable<Project> p;
+        locked<Project> p;
         if (pid) {
             p = user_->related.ProjectByID(pid);
         }
@@ -3583,7 +3583,7 @@ error Context::DeleteAutotrackerRule(
     return displayError(save(false));
 }
 
-protected_variable<Project> Context::CreateProject(
+locked<Project> Context::CreateProject(
     const Poco::UInt64 workspace_id,
     const Poco::UInt64 client_id,
     const std::string client_guid,
@@ -3607,7 +3607,7 @@ protected_variable<Project> Context::CreateProject(
         return {};
     }
 
-    protected_variable<Project> result;
+    locked<Project> result;
 
     {
         Poco::Mutex::ScopedLock lock(user_m_);
@@ -3642,7 +3642,7 @@ protected_variable<Project> Context::CreateProject(
 
         std::string client_name("");
         Poco::UInt64 cid(0);
-        protected_variable<Client> c;
+        locked<Client> c;
 
         // Search by client ID
         if (client_id != 0) {
@@ -3717,7 +3717,7 @@ error Context::AddObmAction(
     return displayError(save(false));
 }
 
-protected_variable<Client> Context::CreateClient(
+locked<Client> Context::CreateClient(
     const Poco::UInt64 workspace_id,
     const std::string client_name) {
 
@@ -3737,7 +3737,7 @@ protected_variable<Client> Context::CreateClient(
         return {};
     }
 
-    protected_variable<Client> result;
+    locked<Client> result;
 
     {
         Poco::Mutex::ScopedLock lock(user_m_);
@@ -4211,7 +4211,7 @@ error Context::StartAutotrackerEvent(const TimelineEvent &event) {
         return noError;
     }
 
-    protected_variable<Project> p;
+    locked<Project> p;
     if (rule->PID()) {
         p = user_->related.ProjectByID(rule->PID());
     }
@@ -4219,7 +4219,7 @@ error Context::StartAutotrackerEvent(const TimelineEvent &event) {
         return error("autotracker project not found");
     }
 
-    protected_variable<Task> t;
+    locked<Task> t;
     if (rule->TID()) {
         t = user_->related.TaskByID(rule->TID());
     }
@@ -4336,7 +4336,7 @@ void Context::uiUpdaterActivity() {
             Poco::Thread::sleep(250);
         }
 
-        protected_variable<TimeEntry> te;
+        locked<TimeEntry> te;
         Poco::Int64 duration(0);
         {
             Poco::Mutex::ScopedLock lock(user_m_);

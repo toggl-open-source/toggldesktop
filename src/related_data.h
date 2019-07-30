@@ -40,39 +40,13 @@ template <typename T>
 T *modelByGUID(const guid GUID, const std::set<T *> &list);
 
 template <typename T>
-class protected_set : public std::unique_lock<std::recursive_mutex> {
+class locked : public std::unique_lock<std::recursive_mutex> {
 public:
-    protected_set(mutex_type &mutex, std::set<T> *data)
-        : std::unique_lock<std::recursive_mutex>(mutex)
-        , data_(data)
-    {}
-    std::set<T> *operator->() { return data_; }
-    std::set<T> &operator*() { return *data_; }
-private:
-    std::set<T> *data_;
-};
-
-template <typename T>
-class const_protected_set : public std::unique_lock<std::recursive_mutex> {
-public:
-    const_protected_set(mutex_type &mutex, const std::set<T> *data)
-        : std::unique_lock<std::recursive_mutex>(mutex)
-        , data_(data)
-    {}
-    const std::set<T> *operator->() const { return data_; }
-    const std::set<T> &operator*() const { return *data_; }
-private:
-    const std::set<T> *data_;
-};
-
-template <typename T>
-class protected_variable : public std::unique_lock<std::recursive_mutex> {
-public:
-    protected_variable()
+    locked()
         : std::unique_lock<std::recursive_mutex>()
         , data_(nullptr)
     {}
-    protected_variable(mutex_type &mutex, T *data)
+    locked(mutex_type &mutex, T *data)
         : std::unique_lock<std::recursive_mutex>(mutex)
         , data_(data)
     {}
@@ -86,26 +60,6 @@ private:
     T *data_;
 };
 
-template <typename T>
-class const_protected_variable : public std::unique_lock<std::recursive_mutex> {
-public:
-    const_protected_variable()
-        : std::unique_lock<std::recursive_mutex>()
-        , data_(nullptr)
-    {}
-    const_protected_variable(mutex_type &mutex, const T *data)
-        : std::unique_lock<std::recursive_mutex>(mutex)
-        , data_(data)
-    {}
-    const T* data() const { return data_; }
-    const T *operator->() const { return data_; }
-    const T &operator*() const { return *data_; }
-    operator bool() const {
-        return owns_lock() && data_;
-    }
-private:
-    const T *data_;
-};
 
 class RelatedData {
     std::set<Workspace *> workspaces_;
@@ -129,26 +83,26 @@ class RelatedData {
     std::set<ObmExperiment *> obmExperiments_;
     mutable std::recursive_mutex obmExperiments_m_;
 public:
-    protected_set<Workspace*> Workspaces() { return { workspaces_m_, &workspaces_ }; }
-    protected_set<Client*> Clients() { return { clients_m_, &clients_}; }
-    protected_set<Project*> Projects() { return { projects_m_, &projects_}; }
-    protected_set<Task*> Tasks() { return { tasks_m_, &tasks_}; }
-    protected_set<Tag*> Tags() { return { tags_m_, &tags_ }; }
-    protected_set<TimeEntry*> TimeEntries() { return { timeEntries_m_, &timeEntries_ }; }
-    protected_set<AutotrackerRule*> AutotrackerRules() { return { autotrackerRules_m_, &autotrackerRules_ }; }
-    protected_set<TimelineEvent*> TimelineEvents() { return { timelineEvents_m_, &timelineEvents_ }; }
-    protected_set<ObmAction*> ObmActions() { return { obmActions_m_, &obmActions_ }; }
-    protected_set<ObmExperiment*> ObmExperiments() { return { obmExperiments_m_, &obmExperiments_ }; }
-    const_protected_set<Workspace*> Workspaces() const { return { workspaces_m_, &workspaces_ }; }
-    const_protected_set<Client*> Clients() const { return { clients_m_, &clients_}; }
-    const_protected_set<Project*> Projects() const { return { projects_m_, &projects_}; }
-    const_protected_set<Task*> Tasks() const { return { tasks_m_, &tasks_}; }
-    const_protected_set<Tag*> Tags() const { return { tags_m_, &tags_ }; }
-    const_protected_set<TimeEntry*> TimeEntries() const { return { timeEntries_m_, &timeEntries_ }; }
-    const_protected_set<AutotrackerRule*> AutotrackerRules() const { return { autotrackerRules_m_, &autotrackerRules_ }; }
-    const_protected_set<TimelineEvent*> TimelineEvents() const { return { timelineEvents_m_, &timelineEvents_ }; }
-    const_protected_set<ObmAction*> ObmActions() const { return { obmActions_m_, &obmActions_ }; }
-    const_protected_set<ObmExperiment*> ObmExperiments() const { return { obmExperiments_m_, &obmExperiments_ }; }
+    locked<std::set<Workspace*>> Workspaces() { return { workspaces_m_, &workspaces_ }; }
+    locked<std::set<Client*>> Clients() { return { clients_m_, &clients_}; }
+    locked<std::set<Project*>> Projects() { return { projects_m_, &projects_}; }
+    locked<std::set<Task*>> Tasks() { return { tasks_m_, &tasks_}; }
+    locked<std::set<Tag*>> Tags() { return { tags_m_, &tags_ }; }
+    locked<std::set<TimeEntry*>> TimeEntries() { return { timeEntries_m_, &timeEntries_ }; }
+    locked<std::set<AutotrackerRule*>> AutotrackerRules() { return { autotrackerRules_m_, &autotrackerRules_ }; }
+    locked<std::set<TimelineEvent*>> TimelineEvents() { return { timelineEvents_m_, &timelineEvents_ }; }
+    locked<std::set<ObmAction*>> ObmActions() { return { obmActions_m_, &obmActions_ }; }
+    locked<std::set<ObmExperiment*>> ObmExperiments() { return { obmExperiments_m_, &obmExperiments_ }; }
+    locked<const std::set<Workspace*>> Workspaces() const { return { workspaces_m_, &workspaces_ }; }
+    locked<const std::set<Client*>> Clients() const { return { clients_m_, &clients_}; }
+    locked<const std::set<Project*>> Projects() const { return { projects_m_, &projects_}; }
+    locked<const std::set<Task*>> Tasks() const { return { tasks_m_, &tasks_}; }
+    locked<const std::set<Tag*>> Tags() const { return { tags_m_, &tags_ }; }
+    locked<const std::set<TimeEntry*>> TimeEntries() const { return { timeEntries_m_, &timeEntries_ }; }
+    locked<const std::set<AutotrackerRule*>> AutotrackerRules() const { return { autotrackerRules_m_, &autotrackerRules_ }; }
+    locked<const std::set<TimelineEvent*>> TimelineEvents() const { return { timelineEvents_m_, &timelineEvents_ }; }
+    locked<const std::set<ObmAction*>> ObmActions() const { return { obmActions_m_, &obmActions_ }; }
+    locked<const std::set<ObmExperiment*>> ObmExperiments() const { return { obmExperiments_m_, &obmExperiments_ }; }
 
     template<typename T> void clearList(std::set<T *> &list);
 
@@ -163,47 +117,47 @@ public:
     void clearObmActions();
     void clearObmExperiments();
 
-    protected_variable<Workspace> newWorkspace();
-    protected_variable<Client> newClient();
-    protected_variable<Project> newProject();
-    protected_variable<Task> newTask();
-    protected_variable<Tag> newTag();
-    protected_variable<TimeEntry> newTimeEntry();
-    protected_variable<AutotrackerRule> newAutotrackerRule();
-    protected_variable<TimelineEvent> newTimelineEvent();
-    protected_variable<ObmAction> newObmAction();
-    protected_variable<ObmExperiment> newObmExperiment();
+    locked<Workspace> newWorkspace();
+    locked<Client> newClient();
+    locked<Project> newProject();
+    locked<Task> newTask();
+    locked<Tag> newTag();
+    locked<TimeEntry> newTimeEntry();
+    locked<AutotrackerRule> newAutotrackerRule();
+    locked<TimelineEvent> newTimelineEvent();
+    locked<ObmAction> newObmAction();
+    locked<ObmExperiment> newObmExperiment();
 
     void Clear();
 
-    template <typename T> protected_variable<T> make_protected(T *data);
-    template <typename T> const_protected_variable<T> make_protected(const T *data) const;
+    template <typename T> locked<T> make_protected(T *data);
+    template <typename T> locked<const T> make_protected(const T *data) const;
 
-    protected_variable<Task> TaskByID(const Poco::UInt64 id);
-    protected_variable<Client> ClientByID(const Poco::UInt64 id);
-    protected_variable<Project> ProjectByID(const Poco::UInt64 id);
-    protected_variable<Tag> TagByID(const Poco::UInt64 id);
-    protected_variable<Workspace> WorkspaceByID(const Poco::UInt64 id);
-    protected_variable<TimeEntry> TimeEntryByID(const Poco::UInt64 id);
+    locked<Task> TaskByID(const Poco::UInt64 id);
+    locked<Client> ClientByID(const Poco::UInt64 id);
+    locked<Project> ProjectByID(const Poco::UInt64 id);
+    locked<Tag> TagByID(const Poco::UInt64 id);
+    locked<Workspace> WorkspaceByID(const Poco::UInt64 id);
+    locked<TimeEntry> TimeEntryByID(const Poco::UInt64 id);
 
-    protected_variable<TimeEntry> TimeEntryByGUID(const guid GUID);
-    protected_variable<Tag> TagByGUID(const guid GUID);
-    protected_variable<Project> ProjectByGUID(const guid GUID);
-    protected_variable<Client> ClientByGUID(const guid GUID);
-    protected_variable<TimelineEvent> TimelineEventByGUID(const guid GUID);
+    locked<TimeEntry> TimeEntryByGUID(const guid GUID);
+    locked<Tag> TagByGUID(const guid GUID);
+    locked<Project> ProjectByGUID(const guid GUID);
+    locked<Client> ClientByGUID(const guid GUID);
+    locked<TimelineEvent> TimelineEventByGUID(const guid GUID);
 
-    const_protected_variable<Task> TaskByID(const Poco::UInt64 id) const;
-    const_protected_variable<Client> ClientByID(const Poco::UInt64 id) const;
-    const_protected_variable<Project> ProjectByID(const Poco::UInt64 id) const;
-    const_protected_variable<Tag> TagByID(const Poco::UInt64 id) const;
-    const_protected_variable<Workspace> WorkspaceByID(const Poco::UInt64 id) const;
-    const_protected_variable<TimeEntry> TimeEntryByID(const Poco::UInt64 id) const;
+    locked<const Task> TaskByID(const Poco::UInt64 id) const;
+    locked<const Client> ClientByID(const Poco::UInt64 id) const;
+    locked<const Project> ProjectByID(const Poco::UInt64 id) const;
+    locked<const Tag> TagByID(const Poco::UInt64 id) const;
+    locked<const Workspace> WorkspaceByID(const Poco::UInt64 id) const;
+    locked<const TimeEntry> TimeEntryByID(const Poco::UInt64 id) const;
 
-    const_protected_variable<TimeEntry> TimeEntryByGUID(const guid GUID) const;
-    const_protected_variable<Tag> TagByGUID(const guid GUID) const;
-    const_protected_variable<Project> ProjectByGUID(const guid GUID) const;
-    const_protected_variable<Client> ClientByGUID(const guid GUID) const;
-    const_protected_variable<TimelineEvent> TimelineEventByGUID(const guid GUID) const;
+    locked<const TimeEntry> TimeEntryByGUID(const guid GUID) const;
+    locked<const Tag> TagByGUID(const guid GUID) const;
+    locked<const Project> ProjectByGUID(const guid GUID) const;
+    locked<const Client> ClientByGUID(const guid GUID) const;
+    locked<const TimelineEvent> TimelineEventByGUID(const guid GUID) const;
 
     void TagList( std::vector<std::string> *result, const Poco::UInt64 wid) const;
     void WorkspaceList(std::vector<Workspace *> *) const;
@@ -237,8 +191,8 @@ public:
 
     AutotrackerRule *FindAutotrackerRule(const TimelineEvent &event) const;
 
-    protected_variable<Client> clientByProject(Project *p);
-    const_protected_variable<Client> clientByProject(const Project *p) const;
+    locked<Client> clientByProject(Project *p);
+    locked<const Client> clientByProject(const Project *p) const;
 
     void pushBackTimeEntry(TimeEntry  *timeEntry);
 
@@ -274,17 +228,17 @@ public:
         std::map<std::string, std::vector<view::Autocomplete> > *items) const;
 };
 
-template <> inline const_protected_variable<TimeEntry> RelatedData::make_protected(const TimeEntry *data) const {
+template <> inline locked<const TimeEntry> RelatedData::make_protected(const TimeEntry *data) const {
     return { timeEntries_m_, data };
 }
-template <> inline protected_variable<TimeEntry> RelatedData::make_protected(TimeEntry *data) {
+template <> inline locked<TimeEntry> RelatedData::make_protected(TimeEntry *data) {
     return { timeEntries_m_, data };
 }
 
-template <> inline const_protected_variable<ObmExperiment> RelatedData::make_protected(const ObmExperiment *data) const {
+template <> inline locked<const ObmExperiment> RelatedData::make_protected(const ObmExperiment *data) const {
     return { obmExperiments_m_, data };
 }
-template <> inline protected_variable<ObmExperiment> RelatedData::make_protected(ObmExperiment *data) {
+template <> inline locked<ObmExperiment> RelatedData::make_protected(ObmExperiment *data) {
     return { obmExperiments_m_, data };
 }
 

@@ -40,7 +40,7 @@ User::~User() {
     related.Clear();
 }
 
-protected_variable<Project> User::CreateProject(
+locked<Project> User::CreateProject(
     const Poco::UInt64 workspace_id,
     const Poco::UInt64 client_id,
     const std::string client_guid,
@@ -120,7 +120,7 @@ void User::AddProjectToList(Project *p) {
     */
 }
 
-protected_variable<Client> User::CreateClient(
+locked<Client> User::CreateClient(
     const Poco::UInt64 workspace_id,
     const std::string client_name) {
     auto c = related.newClient();
@@ -164,7 +164,7 @@ void User::AddClientToList(Client *c) {
 
 // Start a time entry, mark it as dirty and add to user time entry collection.
 // Do not save here, dirtyness will be handled outside of this module.
-protected_variable<TimeEntry> User::Start(
+locked<TimeEntry> User::Start(
     const std::string description,
     const std::string duration,
     const Poco::UInt64 task_id,
@@ -200,7 +200,7 @@ protected_variable<TimeEntry> User::Start(
     }
 
     // Try to set workspace ID from project
-    protected_variable<Project> p;
+    locked<Project> p;
     if (te->PID()) {
         p = related.ProjectByID(te->PID());
     } else if (!te->ProjectGUID().empty()) {
@@ -226,7 +226,7 @@ protected_variable<TimeEntry> User::Start(
     return te;
 }
 
-protected_variable<TimeEntry> User::Continue(
+locked<TimeEntry> User::Continue(
     const std::string GUID,
     const bool manual_mode) {
 
@@ -410,7 +410,7 @@ void User::Stop(std::vector<TimeEntry *> *stopped) {
     }
 }
 
-protected_variable<TimeEntry> User::DiscardTimeAt(
+locked<TimeEntry> User::DiscardTimeAt(
     const std::string guid,
     const Poco::Int64 at,
     const bool split_into_new_entry) {
@@ -443,7 +443,7 @@ protected_variable<TimeEntry> User::DiscardTimeAt(
     return {};
 }
 
-const_protected_variable<TimeEntry> User::RunningTimeEntry() const {
+locked<const TimeEntry> User::RunningTimeEntry() const {
     auto timeEntries = related.TimeEntries();
     for (auto it = timeEntries->begin(); it != timeEntries->end(); it++) {
         if ((*it)->DurationInSeconds() < 0) {
@@ -453,7 +453,7 @@ const_protected_variable<TimeEntry> User::RunningTimeEntry() const {
     return {};
 }
 
-protected_variable<TimeEntry> User::RunningTimeEntry() {
+locked<TimeEntry> User::RunningTimeEntry() {
     auto timeEntries = related.TimeEntries();
     for (auto it = timeEntries->begin(); it != timeEntries->end(); it++) {
         if ((*it)->DurationInSeconds() < 0) {
@@ -534,7 +534,7 @@ void User::loadUserTagFromJSON(
         return;
     }
 
-    protected_variable<Tag> model = related.TagByID(id);
+    locked<Tag> model = related.TagByID(id);
 
     if (!model) {
         model = related.TagByGUID(data["guid"].asString());
@@ -763,7 +763,7 @@ void User::loadObmExperimentFromJson(Json::Value const &obm) {
     if (!nr) {
         return;
     }
-    protected_variable<ObmExperiment> model;
+    locked<ObmExperiment> model;
     auto obmExperiments = related.ObmExperiments();
     for (auto it = obmExperiments->begin(); it != obmExperiments->end(); it++) {
         ObmExperiment *existing = *it;

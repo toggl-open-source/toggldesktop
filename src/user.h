@@ -53,13 +53,13 @@ class User : public BaseModel {
 
     void SetLastTEDate(const std::string value);
 
-    const_protected_variable<TimeEntry> RunningTimeEntry() const;
-    protected_variable<TimeEntry> RunningTimeEntry();
+    locked<const TimeEntry> RunningTimeEntry() const;
+    locked<TimeEntry> RunningTimeEntry();
     bool IsTracking() const {
         return RunningTimeEntry();
     }
 
-    protected_variable<TimeEntry> Start(
+    locked<TimeEntry> Start(
         const std::string description,
         const std::string duration,
         const Poco::UInt64 task_id,
@@ -67,7 +67,7 @@ class User : public BaseModel {
         const std::string project_guid,
         const std::string tags);
 
-    protected_variable<TimeEntry> Continue(
+    locked<TimeEntry> Continue(
         const std::string GUID,
         const bool manual_mode);
 
@@ -75,12 +75,12 @@ class User : public BaseModel {
 
     // Discard time. Return a new time entry if
     // the discarded time was split into a new time entry
-    protected_variable<TimeEntry> DiscardTimeAt(
+    locked<TimeEntry> DiscardTimeAt(
         const std::string guid,
         const Poco::Int64 at,
         const bool split_into_new_entry);
 
-    protected_variable<Project> CreateProject(
+    locked<Project> CreateProject(
         const Poco::UInt64 workspace_id,
         const Poco::UInt64 client_id,
         const std::string client_guid,
@@ -92,7 +92,7 @@ class User : public BaseModel {
 
     void AddProjectToList(Project *p);
 
-    protected_variable<Client> CreateClient(
+    locked<Client> CreateClient(
         const Poco::UInt64 workspace_id,
         const std::string client_name);
 
