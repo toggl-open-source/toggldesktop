@@ -12,17 +12,6 @@
 		3C1E013F19D2DAE300DBF9A5 /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = 3C1E013E19D2DAE300DBF9A5 /* dsa_pub.pem */; };
 		3C2F239D21A7B43400CBE6BC /* UnsupportedNotice.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C2F239C21A7B43300CBE6BC /* UnsupportedNotice.m */; };
 		3C3AF64E20ACC6280088A3A6 /* CountryViewItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C3AF64D20ACC6280088A3A6 /* CountryViewItem.m */; };
-		3C409BFF22EF2F9C002BB9B8 /* libcrypto.1.1.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BACCC76E22E5F5D30040F12E /* libcrypto.1.1.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		3C409C0022EF2F9C002BB9B8 /* libssl.1.1.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BACCC76022E5F34C0040F12E /* libssl.1.1.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		3C409C0122EF2F9C002BB9B8 /* libPocoCrypto.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BACCC75422E5F2AA0040F12E /* libPocoCrypto.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		3C409C0222EF2F9C002BB9B8 /* libPocoData.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BACCC75122E5F2AA0040F12E /* libPocoData.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		3C409C0322EF2F9C002BB9B8 /* libPocoDataSQLite.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BACCC74D22E5F2AA0040F12E /* libPocoDataSQLite.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		3C409C0422EF2F9C002BB9B8 /* libPocoFoundation.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BACCC74F22E5F2AA0040F12E /* libPocoFoundation.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		3C409C0522EF2F9C002BB9B8 /* libPocoJSON.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BACCC74E22E5F2AA0040F12E /* libPocoJSON.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		3C409C0622EF2F9C002BB9B8 /* libPocoNet.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BACCC75522E5F2AA0040F12E /* libPocoNet.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		3C409C0722EF2F9C002BB9B8 /* libPocoNetSSL.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BACCC75022E5F2AA0040F12E /* libPocoNetSSL.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		3C409C0822EF2F9C002BB9B8 /* libPocoUtil.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BACCC75222E5F2AA0040F12E /* libPocoUtil.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		3C409C0922EF2F9C002BB9B8 /* libPocoXML.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BACCC75322E5F2AA0040F12E /* libPocoXML.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		3C50BCAC1C1F0574004BAE9E /* (null) in Resources */ = {isa = PBXBuildFile; };
 		3C6B2486203E01D90063FC08 /* AutoCompleteTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C6B2480203E01D60063FC08 /* AutoCompleteTableCell.m */; };
 		3C6B2487203E01D90063FC08 /* AutoCompleteInput.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C6B2483203E01D90063FC08 /* AutoCompleteInput.m */; };
@@ -497,17 +486,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				3C409BFF22EF2F9C002BB9B8 /* libcrypto.1.1.dylib in CopyFiles */,
-				3C409C0022EF2F9C002BB9B8 /* libssl.1.1.dylib in CopyFiles */,
-				3C409C0122EF2F9C002BB9B8 /* libPocoCrypto.60.dylib in CopyFiles */,
-				3C409C0222EF2F9C002BB9B8 /* libPocoData.60.dylib in CopyFiles */,
-				3C409C0322EF2F9C002BB9B8 /* libPocoDataSQLite.60.dylib in CopyFiles */,
-				3C409C0422EF2F9C002BB9B8 /* libPocoFoundation.60.dylib in CopyFiles */,
-				3C409C0522EF2F9C002BB9B8 /* libPocoJSON.60.dylib in CopyFiles */,
-				3C409C0622EF2F9C002BB9B8 /* libPocoNet.60.dylib in CopyFiles */,
-				3C409C0722EF2F9C002BB9B8 /* libPocoNetSSL.60.dylib in CopyFiles */,
-				3C409C0822EF2F9C002BB9B8 /* libPocoUtil.60.dylib in CopyFiles */,
-				3C409C0922EF2F9C002BB9B8 /* libPocoXML.60.dylib in CopyFiles */,
 				BA7DB6E421F9C77A0059239B /* MASShortcut.framework in CopyFiles */,
 				BAD858C8228EAE6500226C71 /* Bugsnag.framework in CopyFiles */,
 				74456B9E1A774CB0002A6338 /* TogglDesktopLibrary.dylib in CopyFiles */,
