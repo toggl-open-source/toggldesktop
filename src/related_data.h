@@ -63,8 +63,13 @@ public:
     locked<const std::set<T*>> operator()() const {
         return { mutex_, &container_ };
     }
-    void clear() {
-        (*this)()->clear();
+    void clear(bool deleteItems = true) {
+        auto lockedContainer = (*this)();
+        if (deleteItems) {
+            for (auto i : *lockedContainer)
+                delete i;
+        }
+        lockedContainer->clear();
     }
     locked<T> create() {
         T *val = new T();
