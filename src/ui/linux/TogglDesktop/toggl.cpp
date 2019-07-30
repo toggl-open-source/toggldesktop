@@ -14,6 +14,7 @@
 #include <iostream>   // NOLINT
 
 #include "./../../../toggl_api.h"
+#include "./../../../platforminfo.h"
 
 #include "./timeentryview.h"
 #include "./genericview.h"
@@ -249,6 +250,9 @@ TogglApi::TogglApi(
     QString executablePath = QCoreApplication::applicationDirPath();
     QDir executableDir = QDir(executablePath);
     QString cacertPath = executableDir.filePath("cacert.pem");
+    if (!QFile::exists(cacertPath)) {
+        cacertPath = QString("%1/../share/toggldesktop/cacert.pem").arg(executableDir.path());
+    }
 #ifdef TOGGL_DATA_DIR
     if (!QFile::exists(cacertPath)) {
         cacertPath = QString("%1/cacert.pem").arg(TOGGL_DATA_DIR);
@@ -285,6 +289,19 @@ TogglApi::TogglApi(
         Bugsnag::releaseStage = QString(env);
         free(env);
     }
+
+    Bugsnag::device.osName = "linux";
+    auto platform = RetrieveOsDetailsMap();
+    if (platform.count("window_manager"))
+        Bugsnag::device.wm = QString::fromStdString(platform["window_manager"]);
+    if (platform.count("desktop_environment"))
+        Bugsnag::device.de = QString::fromStdString(platform["desktop_environment"]);
+    if (platform.count("distribution") && platform.count("distribution_version"))
+        Bugsnag::device.osVersion = QString::fromStdString(platform["distribution"] + " " + platform["distribution_version"]);
+    if (platform.count("session_type"))
+        Bugsnag::device.session = QString::fromStdString(platform["session_type"]);
+    if(platform.count("build_type"))
+        Bugsnag::device.build = QString::fromStdString(platform["build_type"]);
 
     instance = this;
 }

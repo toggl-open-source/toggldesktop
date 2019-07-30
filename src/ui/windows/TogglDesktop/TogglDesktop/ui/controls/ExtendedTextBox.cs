@@ -28,6 +28,11 @@ namespace TogglDesktop
                 this.SelectionLength = 0;
             }
 
+            if (e.ClickCount == 3)
+            {
+                this.SelectAll();
+            }
+
             base.OnMouseDown(e);
         }
 
@@ -62,12 +67,6 @@ namespace TogglDesktop
             }
 
             base.OnLostKeyboardFocus(e);
-        }
-
-        protected override void OnMouseDoubleClick(MouseButtonEventArgs e)
-        {
-            this.SelectAll();
-            e.Handled = true;
         }
     }
 }

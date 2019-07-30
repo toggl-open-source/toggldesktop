@@ -94,13 +94,11 @@
 	notification.hasActionButton = YES;
 	notification.actionButtonTitle = @"Continue";
 	notification.otherButtonTitle = @"Close";
+	notification.soundName = @"Glass";
 
 	// Delivery
 	[self removeAllDeliveredNotificationsWithType:@"pomodoro"];
 	[self scheduleNotification:notification];
-
-	// Play sound
-	[[NSSound soundNamed:@"Glass"] play];
 }
 
 - (void)schedulePomodoroBreakWithTitle:(NSString *)title informativeText:(NSString *)informativeText
@@ -112,13 +110,11 @@
 	notification.hasActionButton = YES;
 	notification.actionButtonTitle = @"Continue";
 	notification.otherButtonTitle = @"Close";
+	notification.soundName = @"Glass";
 
 	// Delivery
 	[self removeAllDeliveredNotificationsWithType:@"pomodoro_break"];
 	[self scheduleNotification:notification];
-
-	// Play sound
-	[[NSSound soundNamed:@"Glass"] play];
 }
 
 - (void)scheduleAutoTrackerWithProjectName:(NSString *)projectName projectID:(NSNumber *)projectID taskID:(NSNumber *)taskID

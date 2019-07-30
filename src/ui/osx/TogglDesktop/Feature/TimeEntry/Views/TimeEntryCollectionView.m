@@ -33,6 +33,30 @@ extern void *ctx;
 - (void)mouseUp:(NSEvent *)event {
 	[super mouseUp:event];
 
+	if (@available(macOS 10.12, *))
+	{
+		// >= macOS 10.12, the mouse Up is executed when selecting the cell
+		[self handleMouseSelectionWithEvent:event];
+	}
+}
+
+- (void)mouseDown:(NSEvent *)event {
+	[super mouseDown:event];
+
+	if (@available(macOS 10.12, *))
+	{
+		// Do nothing
+	}
+	else
+	{
+		// In macOS 10.11, the -mouseUp doesn't execute, so we have to handle the logic here
+		// if we call this logic in macOS >= 10.12 => The selection doesn't update
+		[self handleMouseSelectionWithEvent:event];
+	}
+}
+
+- (void)handleMouseSelectionWithEvent:(NSEvent *)event
+{
 	if ([event clickCount] > 1)
 	{
 		return;

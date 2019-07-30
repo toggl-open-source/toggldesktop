@@ -142,6 +142,7 @@ public static partial class Toggl
         public         UInt64 WorkspaceID;
         public         UInt64 Type;
         // If its a time entry or project, it can be billable
+        [MarshalAs(UnmanagedType.I1)]
         public         bool Billable;
         // If its a time entry, it has tags
         [MarshalAs(UnmanagedType.LPWStr)]
@@ -1392,6 +1393,14 @@ public static partial class Toggl
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_set_wake(
+        IntPtr context);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern void toggl_set_locked(
+        IntPtr context);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern void toggl_set_unlocked(
         IntPtr context);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]

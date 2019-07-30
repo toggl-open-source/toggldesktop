@@ -54,6 +54,10 @@ final class TagAutoCompleteTextField: AutoCompleteTextField, NSWindowDelegate {
         DispatchQueue.main.async {
             self.autoCompleteWindow.makeKeyAndOrderFront(nil)
             self.autoCompleteWindow.makeFirstResponder(self)
+
+            // We don't select all text
+            // so user can start typying
+            self.currentEditor()?.moveToEndOfDocument(nil)
         }
     }
 

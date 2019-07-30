@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Media;
+using Microsoft.Win32;
 using Rectangle = System.Drawing.Rectangle;
 
 namespace TogglDesktop
@@ -246,6 +248,43 @@ public static class Utils
         return brush;
     }
 
-    #endregion
-}
+        #endregion
+
+        #region registry
+
+        private const string StartupAppsRegistryPath = @"Software\Microsoft\Windows\CurrentVersion\Run";
+        public static bool GetLaunchOnStartupRegistry()
+        {
+            var subKey = Registry.CurrentUser.OpenSubKey(StartupAppsRegistryPath);
+            return subKey?.GetValue("TogglDesktop") != null;
+        }
+
+        public static void SaveLaunchOnStartupRegistry(bool launchOnStartup)
+        {
+            if (GetLaunchOnStartupRegistry() == launchOnStartup)
+            {
+                return;
+            }
+
+            using (var subKey = Registry.CurrentUser.OpenSubKey(StartupAppsRegistryPath, true)
+                         ?? Registry.CurrentUser.CreateSubKey(StartupAppsRegistryPath))
+            {
+                if (subKey == null)
+                {
+                    throw new ApplicationException($"Failed to open or create current user registry key: {StartupAppsRegistryPath}");
+                }
+
+                if (launchOnStartup)
+                {
+                    subKey.SetValue("TogglDesktop", "\"" + Assembly.GetEntryAssembly().Location + "\"" + " --minimize");
+                }
+                else
+                {
+                    subKey.DeleteValue("TogglDesktop");
+                }
+            }
+        }
+
+        #endregion
+    }
 }

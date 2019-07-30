@@ -11,11 +11,15 @@
             <connections>
                 <outlet property="billableCheckBox" destination="vpV-Av-rbR" id="7vp-xl-qrd"/>
                 <outlet property="closeBtn" destination="FXR-Ha-kYg" id="nra-rB-rRw"/>
-                <outlet property="datePickerContainerView" destination="Gzy-y8-Teq" id="Fmt-Kh-7pq"/>
+                <outlet property="datePickerView" destination="PKt-Ig-fee" id="DN1-Wa-zOJ"/>
+                <outlet property="dateSelectionBox" destination="NTv-X9-sKT" id="POl-20-RhI"/>
+                <outlet property="dayNameButton" destination="UYO-W1-uSI" id="nEd-l5-54R"/>
                 <outlet property="deleteBtn" destination="5ym-is-B1S" id="cBg-gL-hqJ"/>
                 <outlet property="descriptionTextField" destination="EMT-i8-OD1" id="PN4-q1-PU7"/>
                 <outlet property="durationTextField" destination="q9U-uY-bOj" id="5BU-6G-OFq"/>
                 <outlet property="endAtTextField" destination="8yt-KD-lKA" id="dhz-oD-1u7"/>
+                <outlet property="nextDateBtn" destination="kZS-XS-SCf" id="I7K-7w-GmO"/>
+                <outlet property="previousDateBtn" destination="2eM-xR-ruv" id="Nlx-ay-1OZ"/>
                 <outlet property="projectBox" destination="HK8-ig-0Mv" id="Dnb-C3-7iP"/>
                 <outlet property="projectDotImageView" destination="gFc-aw-iMX" id="BEl-Tj-c8T"/>
                 <outlet property="projectTextField" destination="Doe-dQ-82A" id="cgo-cM-Mbh"/>
@@ -81,6 +85,7 @@
                                     <constraint firstAttribute="height" constant="30" id="t4Z-Ah-9I1"/>
                                 </constraints>
                                 <color key="borderColor" name="upload-border-color"/>
+                                <color key="fillColor" name="editor-background-color"/>
                             </box>
                             <box boxType="custom" cornerRadius="8" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="HK8-ig-0Mv">
                                 <rect key="frame" x="10" y="267" width="254" height="30"/>
@@ -123,6 +128,7 @@
                                     <constraint firstAttribute="height" constant="30" id="VTV-f4-lGQ"/>
                                 </constraints>
                                 <color key="borderColor" name="upload-border-color"/>
+                                <color key="fillColor" name="editor-background-color"/>
                             </box>
                             <box boxType="custom" cornerRadius="8" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="sts-eu-78s">
                                 <rect key="frame" x="10" y="227" width="254" height="30"/>
@@ -136,7 +142,7 @@
                                         <customView translatesAutoresizingMaskIntoConstraints="NO" id="Scx-li-Ewv">
                                             <rect key="frame" x="0.0" y="0.0" width="252" height="28"/>
                                             <subviews>
-                                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="fzH-q2-m3a">
+                                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="fzH-q2-m3a" customClass="AddTagButton" customModule="TogglDesktop" customModuleProvider="target">
                                                     <rect key="frame" x="0.0" y="0.0" width="252" height="28"/>
                                                     <buttonCell key="cell" type="bevel" title="Add tags" bezelStyle="rounded" alignment="left" imageScaling="proportionallyDown" inset="2" id="FrN-5J-6rF" customClass="VerticallyCenteredButtonCell" customModule="TogglDesktop" customModuleProvider="target">
                                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -178,6 +184,7 @@
                                     <constraint firstAttribute="height" constant="30" id="AnT-nB-TSC"/>
                                 </constraints>
                                 <color key="borderColor" name="upload-border-color"/>
+                                <color key="fillColor" name="editor-background-color"/>
                             </box>
                             <box boxType="custom" cornerRadius="8" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="Qo9-rw-PRz">
                                 <rect key="frame" x="10" y="153" width="80" height="30"/>
@@ -214,6 +221,7 @@
                                     <constraint firstAttribute="width" constant="80" id="oLg-tf-aMC"/>
                                 </constraints>
                                 <color key="borderColor" name="upload-border-color"/>
+                                <color key="fillColor" name="editor-background-color"/>
                             </box>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="flL-k2-TC8">
                                 <rect key="frame" x="18" y="193" width="62" height="14"/>
@@ -261,10 +269,7 @@
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <button horizontalHuggingPriority="750" verticalHuggingPriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="5ym-is-B1S">
-                                            <rect key="frame" x="10" y="16" width="88" height="17"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="88" id="165-rH-RsM"/>
-                                            </constraints>
+                                            <rect key="frame" x="10" y="16" width="44" height="17"/>
                                             <buttonCell key="cell" type="bevel" title="Delete" bezelStyle="rounded" alignment="left" imageScaling="proportionallyDown" inset="2" id="MpM-TN-el8">
                                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                 <font key="font" metaFont="system"/>
@@ -290,19 +295,116 @@
                                     <constraint firstAttribute="height" constant="40" id="h75-SW-kGJ"/>
                                 </constraints>
                             </box>
-                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="Gzy-y8-Teq">
+                            <box boxType="custom" cornerRadius="8" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="fPF-go-RPE">
                                 <rect key="frame" x="10" y="113" width="254" height="30"/>
+                                <view key="contentView" id="WrW-21-htC">
+                                    <rect key="frame" x="1" y="1" width="252" height="28"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <box boxType="custom" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="NTv-X9-sKT">
+                                            <rect key="frame" x="30" y="-1" width="192" height="30"/>
+                                            <view key="contentView" id="Vxl-ZN-LqT">
+                                                <rect key="frame" x="1" y="1" width="190" height="28"/>
+                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                <subviews>
+                                                    <stackView distribution="equalSpacing" orientation="horizontal" alignment="centerY" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gKy-N8-5Oe">
+                                                        <rect key="frame" x="23" y="3" width="145" height="25"/>
+                                                        <subviews>
+                                                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="UYO-W1-uSI" customClass="CursorButton" customModule="TogglDesktop" customModuleProvider="target">
+                                                                <rect key="frame" x="0.0" y="3" width="61" height="18"/>
+                                                                <buttonCell key="cell" type="bevel" title="Tuesday," bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="DZ6-Ag-EuF">
+                                                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                                    <font key="font" metaFont="system" size="14"/>
+                                                                </buttonCell>
+                                                                <connections>
+                                                                    <action selector="dayButtonOnTap:" target="-2" id="9Xi-H2-Cv0"/>
+                                                                </connections>
+                                                            </button>
+                                                            <datePicker verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="PKt-Ig-fee" customClass="KeyboardDatePicker" customModule="TogglDesktop" customModuleProvider="target">
+                                                                <rect key="frame" x="61" y="0.0" width="84" height="25"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="height" constant="25" id="jpF-3X-qFm"/>
+                                                                </constraints>
+                                                                <datePickerCell key="cell" alignment="left" drawsBackground="NO" datePickerStyle="textField" id="eIj-kY-idV">
+                                                                    <font key="font" size="14" name=".SFNSText"/>
+                                                                    <date key="date" timeIntervalSinceReferenceDate="-569750400">
+                                                                        <!--1982-12-12 16:00:00 +0000-->
+                                                                    </date>
+                                                                    <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                </datePickerCell>
+                                                                <connections>
+                                                                    <action selector="datePickerChanged:" target="-2" id="FDS-Ab-Dfd"/>
+                                                                </connections>
+                                                            </datePicker>
+                                                        </subviews>
+                                                        <visibilityPriorities>
+                                                            <integer value="1000"/>
+                                                            <integer value="1000"/>
+                                                        </visibilityPriorities>
+                                                        <customSpacing>
+                                                            <real value="3.4028234663852886e+38"/>
+                                                            <real value="3.4028234663852886e+38"/>
+                                                        </customSpacing>
+                                                    </stackView>
+                                                </subviews>
+                                                <constraints>
+                                                    <constraint firstItem="gKy-N8-5Oe" firstAttribute="centerX" secondItem="Vxl-ZN-LqT" secondAttribute="centerX" id="Rli-js-4iw"/>
+                                                    <constraint firstItem="gKy-N8-5Oe" firstAttribute="centerY" secondItem="Vxl-ZN-LqT" secondAttribute="centerY" constant="-1" id="e4a-R8-SDt"/>
+                                                </constraints>
+                                            </view>
+                                            <color key="borderColor" name="upload-border-color"/>
+                                            <color key="fillColor" name="editor-background-color"/>
+                                        </box>
+                                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="kZS-XS-SCf">
+                                            <rect key="frame" x="222" y="0.0" width="30" height="28"/>
+                                            <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="next_date_arrow" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="5Vp-ly-G5a">
+                                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                <font key="font" metaFont="system"/>
+                                            </buttonCell>
+                                            <connections>
+                                                <action selector="nextDateBtnOnTap:" target="-2" id="yd4-PS-lG2"/>
+                                            </connections>
+                                        </button>
+                                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="2eM-xR-ruv">
+                                            <rect key="frame" x="0.0" y="0.0" width="30" height="28"/>
+                                            <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="previous_date_arrow" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="OWs-Il-Hlw">
+                                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                <font key="font" metaFont="system"/>
+                                            </buttonCell>
+                                            <connections>
+                                                <action selector="previousDateBtnOnTap:" target="-2" id="Wmg-rt-NIN"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="bottom" secondItem="2eM-xR-ruv" secondAttribute="bottom" id="1XU-FW-6vF"/>
+                                        <constraint firstAttribute="trailing" secondItem="kZS-XS-SCf" secondAttribute="trailing" id="3ab-Ir-Bas"/>
+                                        <constraint firstItem="kZS-XS-SCf" firstAttribute="top" secondItem="WrW-21-htC" secondAttribute="top" id="BoT-54-jvO"/>
+                                        <constraint firstAttribute="bottom" secondItem="kZS-XS-SCf" secondAttribute="bottom" id="DwK-0F-sr8"/>
+                                        <constraint firstAttribute="bottom" secondItem="NTv-X9-sKT" secondAttribute="bottom" constant="-1" id="Z2g-VO-VMj"/>
+                                        <constraint firstItem="2eM-xR-ruv" firstAttribute="leading" secondItem="WrW-21-htC" secondAttribute="leading" id="bcs-gI-O9u"/>
+                                        <constraint firstItem="2eM-xR-ruv" firstAttribute="top" secondItem="WrW-21-htC" secondAttribute="top" id="bvJ-OO-UJN"/>
+                                        <constraint firstItem="kZS-XS-SCf" firstAttribute="leading" secondItem="NTv-X9-sKT" secondAttribute="trailing" id="iKq-6U-okc"/>
+                                        <constraint firstItem="NTv-X9-sKT" firstAttribute="leading" secondItem="WrW-21-htC" secondAttribute="leading" constant="30" id="nFh-Pm-TAi"/>
+                                        <constraint firstItem="NTv-X9-sKT" firstAttribute="leading" secondItem="2eM-xR-ruv" secondAttribute="trailing" id="nGX-q5-9ac"/>
+                                        <constraint firstItem="NTv-X9-sKT" firstAttribute="top" secondItem="WrW-21-htC" secondAttribute="top" constant="-1" id="qA0-Jc-2ff"/>
+                                        <constraint firstAttribute="trailing" secondItem="NTv-X9-sKT" secondAttribute="trailing" constant="30" id="wzw-B9-g0r"/>
+                                    </constraints>
+                                </view>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="RDo-ju-6s5"/>
+                                    <constraint firstAttribute="height" constant="30" id="lN9-E3-8LO"/>
                                 </constraints>
-                            </customView>
+                                <color key="borderColor" name="upload-border-color"/>
+                                <color key="fillColor" name="editor-background-color"/>
+                            </box>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="FXR-Ha-kYg" customClass="CursorButton" customModule="TogglDesktop" customModuleProvider="target">
                                 <rect key="frame" x="249" y="356" width="20" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="20" id="bbQ-Pp-Vcw"/>
                                     <constraint firstAttribute="width" constant="20" id="bnN-Hu-0cO"/>
                                 </constraints>
-                                <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="close-button" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="UZy-3R-deK">
+                                <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="close-button" imagePosition="only" alignment="center" refusesFirstResponder="YES" imageScaling="proportionallyDown" inset="2" id="UZy-3R-deK">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
@@ -351,7 +453,7 @@
                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" alignment="center" title="09:20 AM" id="XRL-p8-r7I">
                                             <font key="font" metaFont="system" size="14"/>
                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="editor-background-color"/>
                                         </textFieldCell>
                                         <connections>
                                             <action selector="startTextFieldOnChange:" target="-2" id="QA7-3N-T9h"/>
@@ -375,7 +477,7 @@
                                         <textFieldCell key="cell" lineBreakMode="clipping" selectable="YES" editable="YES" alignment="center" title="09:30 PM" id="m0O-Wy-5Cq">
                                             <font key="font" metaFont="system" size="14"/>
                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            <color key="backgroundColor" name="editor-background-color"/>
                                         </textFieldCell>
                                         <connections>
                                             <action selector="endTextFieldOnChange:" target="-2" id="j6I-iv-TvL"/>
@@ -396,19 +498,20 @@
                             </customView>
                         </subviews>
                         <constraints>
+                            <constraint firstItem="Zk0-BK-EiX" firstAttribute="top" secondItem="fPF-go-RPE" secondAttribute="bottom" constant="20" id="2Kn-Wq-cyT"/>
+                            <constraint firstItem="fPF-go-RPE" firstAttribute="top" secondItem="Qo9-rw-PRz" secondAttribute="bottom" constant="10" id="2Tv-8n-UiQ"/>
                             <constraint firstItem="Z2P-L8-d10" firstAttribute="leading" secondItem="RzB-ad-pEO" secondAttribute="leading" constant="20" id="4Bn-aX-Nah"/>
                             <constraint firstItem="UnC-x9-3oX" firstAttribute="leading" secondItem="RzB-ad-pEO" secondAttribute="leading" id="4yy-Ou-d89"/>
                             <constraint firstAttribute="trailing" secondItem="UnC-x9-3oX" secondAttribute="trailing" id="6cS-Y3-C1b"/>
                             <constraint firstItem="Wyt-sv-sZR" firstAttribute="centerY" secondItem="Qo9-rw-PRz" secondAttribute="centerY" id="8ij-Rl-8cl"/>
                             <constraint firstItem="mUe-Xn-xvP" firstAttribute="leading" secondItem="RzB-ad-pEO" secondAttribute="leading" constant="10" id="AWM-wE-BYp"/>
+                            <constraint firstItem="fPF-go-RPE" firstAttribute="leading" secondItem="RzB-ad-pEO" secondAttribute="leading" constant="10" id="AiD-3K-fZu"/>
                             <constraint firstItem="Z2P-L8-d10" firstAttribute="top" secondItem="RzB-ad-pEO" secondAttribute="top" constant="20" id="ErY-fV-eb0"/>
                             <constraint firstItem="HK8-ig-0Mv" firstAttribute="centerX" secondItem="RzB-ad-pEO" secondAttribute="centerX" id="FKt-5X-1jx"/>
                             <constraint firstAttribute="trailing" secondItem="FXR-Ha-kYg" secondAttribute="trailing" constant="5" id="FXs-l3-uQK"/>
                             <constraint firstAttribute="bottom" secondItem="UnC-x9-3oX" secondAttribute="bottom" id="GSq-Az-UQ6"/>
-                            <constraint firstItem="Gzy-y8-Teq" firstAttribute="leading" secondItem="RzB-ad-pEO" secondAttribute="leading" constant="10" id="KMT-bh-ntG"/>
                             <constraint firstAttribute="trailing" secondItem="Wyt-sv-sZR" secondAttribute="trailing" constant="8" id="NJw-FZ-a8c"/>
                             <constraint firstAttribute="trailing" secondItem="LcZ-Q8-F7m" secondAttribute="trailing" constant="10" id="Onu-1F-1In"/>
-                            <constraint firstItem="Zk0-BK-EiX" firstAttribute="top" secondItem="Gzy-y8-Teq" secondAttribute="bottom" constant="20" id="TqS-UL-Xtn"/>
                             <constraint firstAttribute="trailing" secondItem="HK8-ig-0Mv" secondAttribute="trailing" constant="10" id="VCY-fI-WHe"/>
                             <constraint firstItem="HK8-ig-0Mv" firstAttribute="top" secondItem="LcZ-Q8-F7m" secondAttribute="bottom" constant="10" id="ZhF-VO-Byt"/>
                             <constraint firstItem="LcZ-Q8-F7m" firstAttribute="leading" secondItem="RzB-ad-pEO" secondAttribute="leading" constant="10" id="dHV-We-dVI"/>
@@ -419,8 +522,6 @@
                             <constraint firstItem="UnC-x9-3oX" firstAttribute="top" secondItem="Zk0-BK-EiX" secondAttribute="bottom" constant="13" id="hPi-Wt-1od"/>
                             <constraint firstItem="flL-k2-TC8" firstAttribute="leading" secondItem="Z2P-L8-d10" secondAttribute="leading" id="ifh-Dy-Ovn"/>
                             <constraint firstAttribute="trailing" secondItem="mUe-Xn-xvP" secondAttribute="trailing" constant="10" id="izn-Pa-rxI"/>
-                            <constraint firstAttribute="trailing" secondItem="Gzy-y8-Teq" secondAttribute="trailing" constant="10" id="mAz-Lo-eXV"/>
-                            <constraint firstItem="Gzy-y8-Teq" firstAttribute="top" secondItem="Qo9-rw-PRz" secondAttribute="bottom" constant="10" id="maZ-16-vbC"/>
                             <constraint firstItem="mUe-Xn-xvP" firstAttribute="top" secondItem="sts-eu-78s" secondAttribute="bottom" constant="5" id="nU7-YF-Me0"/>
                             <constraint firstItem="LcZ-Q8-F7m" firstAttribute="top" secondItem="Z2P-L8-d10" secondAttribute="bottom" constant="10" id="oO1-Mp-Gsa"/>
                             <constraint firstItem="flL-k2-TC8" firstAttribute="top" secondItem="sts-eu-78s" secondAttribute="bottom" constant="20" id="qJa-hb-Nve"/>
@@ -428,7 +529,8 @@
                             <constraint firstItem="LcZ-Q8-F7m" firstAttribute="centerX" secondItem="RzB-ad-pEO" secondAttribute="centerX" id="tkP-Z8-ayM"/>
                             <constraint firstItem="Zk0-BK-EiX" firstAttribute="leading" secondItem="RzB-ad-pEO" secondAttribute="leading" constant="10" id="uKE-Oe-S4J"/>
                             <constraint firstItem="FXR-Ha-kYg" firstAttribute="top" secondItem="RzB-ad-pEO" secondAttribute="top" constant="5" id="uSd-7e-ckx"/>
-                            <constraint firstItem="Wyt-sv-sZR" firstAttribute="leading" secondItem="Qo9-rw-PRz" secondAttribute="trailing" constant="8" id="vUQ-3b-rmy"/>
+                            <constraint firstAttribute="trailing" secondItem="fPF-go-RPE" secondAttribute="trailing" constant="10" id="utZ-T7-DxC"/>
+                            <constraint firstItem="Wyt-sv-sZR" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Qo9-rw-PRz" secondAttribute="trailing" constant="8" id="vUQ-3b-rmy"/>
                             <constraint firstItem="Qo9-rw-PRz" firstAttribute="top" secondItem="flL-k2-TC8" secondAttribute="bottom" constant="10" id="vlX-v9-R8U"/>
                             <constraint firstItem="sts-eu-78s" firstAttribute="leading" secondItem="RzB-ad-pEO" secondAttribute="leading" constant="10" id="xot-d9-UOv"/>
                         </constraints>
@@ -442,12 +544,14 @@
                 <constraint firstItem="fZO-4l-jo1" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" id="nno-xe-fYT"/>
                 <constraint firstAttribute="bottom" secondItem="fZO-4l-jo1" secondAttribute="bottom" id="yr2-gk-PkQ"/>
             </constraints>
-            <point key="canvasLocation" x="-586" y="-285.5"/>
+            <point key="canvasLocation" x="-545.5" y="-226"/>
         </customView>
     </objects>
     <resources>
         <image name="close-button" width="7" height="7"/>
         <image name="duration-arrow" width="12" height="7"/>
+        <image name="next_date_arrow" width="4" height="7"/>
+        <image name="previous_date_arrow" width="4" height="7"/>
         <image name="time-entry-dot" width="8" height="8"/>
         <namedColor name="editor-background-color">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

@@ -19,6 +19,7 @@ final class DateCellViewItem: NSCollectionViewItem {
 
     // MARK: Variables
 
+    private var isHightlight = false
     private lazy var titleColor: NSColor = {
         if #available(OSX 10.13, *) {
             return NSColor(named: NSColor.Name("grey-text-color"))!
@@ -26,6 +27,14 @@ final class DateCellViewItem: NSCollectionViewItem {
             return ConvertHexColor.hexCode(toNSColor: "#555555")
         }
     }()
+
+    override var isSelected: Bool {
+        didSet {
+            guard !isHightlight else { return }
+            hoverView.isHidden = false
+            hoverView.alphaValue = isSelected ? 1.0 : 0.0
+        }
+    }
 
     // MARK: Public
 
@@ -41,6 +50,7 @@ final class DateCellViewItem: NSCollectionViewItem {
     }
 
     func render(with info: DateInfo, highlight: Bool, isCurrentMonth: Bool) {
+        isHightlight = highlight
         titleLbl.stringValue = "\(info.day)"
         backgroundBox.isHidden = !highlight
 

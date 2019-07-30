@@ -17,6 +17,7 @@
 #include <json/json.h>  // NOLINT
 
 #include "./https_client.h"
+#include "./formatter.h"
 
 #include "Poco/DateTime.h"
 #include "Poco/LocalDateTime.h"
@@ -346,11 +347,21 @@ void TimeEntry::SetProjectGUID(const std::string value) {
 
 const std::string TimeEntry::Tags() const {
     std::stringstream ss;
-    for (std::vector<std::string>::const_iterator it =
-        TagNames.begin();
-            it != TagNames.end();
-            it++) {
+    for (auto it = TagNames.begin(); it != TagNames.end(); ++it) {
         if (it != TagNames.begin()) {
+            ss << kTagSeparator;
+        }
+        ss << *it;
+    }
+    return ss.str();
+}
+
+const std::string TimeEntry::TagsHash() const {
+    std::vector<std::string> sortedTagNames(TagNames);
+    sort(sortedTagNames.begin(), sortedTagNames.end());
+    std::stringstream ss;
+    for (auto it = sortedTagNames.begin(); it != sortedTagNames.end(); ++it) {
+        if (it != sortedTagNames.begin()) {
             ss << kTagSeparator;
         }
         ss << *it;
@@ -364,6 +375,18 @@ std::string TimeEntry::StopString() const {
 
 std::string TimeEntry::StartString() const {
     return Formatter::Format8601(start_);
+}
+
+const std::string TimeEntry::GroupHash() const {
+    std::stringstream ss;
+    ss << toggl::Formatter::FormatDateHeader(Start())
+       << Description()
+       << PID()
+       << TID()
+       << ProjectGUID()
+       << Billable()
+       << TagsHash();
+    return ss.str();
 }
 
 bool TimeEntry::IsToday() const {

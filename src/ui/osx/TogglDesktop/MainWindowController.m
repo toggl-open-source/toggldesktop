@@ -84,11 +84,6 @@ extern void *ctx;
 {
 	[super windowDidLoad];
 
-	// Clean window titlebar
-	self.window.titleVisibility = NSWindowTitleHidden;
-	self.window.titlebarAppearsTransparent = YES;
-	self.window.styleMask |= NSFullSizeContentViewWindowMask;
-
 	// Tracking the size of window after loaded
 	[self trackWindowSize];
 
@@ -170,7 +165,11 @@ extern void *ctx;
 	[self displayTimeline:notification.object];
 }
 
+<<<<<<< HEAD
 - (void)displayTimeline:(TimelineDisplayCommand *)cmd
+=======
+- (void)displayTimeline:(DisplayCommand *)cmd
+>>>>>>> feature/timeline-ui
 {
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 	if (cmd.open)

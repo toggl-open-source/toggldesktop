@@ -53,15 +53,21 @@ final class MainDashboardViewController: NSViewController {
         super.viewDidLoad()
 
         initCommon()
+<<<<<<< HEAD
         initNotification()
+=======
+>>>>>>> feature/timeline-ui
         initTimerView()
         initTabs()
     }
 
+<<<<<<< HEAD
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
 
+=======
+>>>>>>> feature/timeline-ui
     @IBAction func listBtnOnTap(_ sender: Any) {
         currentTab = .timeEntryList
     }
@@ -69,11 +75,14 @@ final class MainDashboardViewController: NSViewController {
     @IBAction func timelineBtnOnTap(_ sender: Any) {
         currentTab = .timeline
     }
+<<<<<<< HEAD
 
     @objc func timelineDataNotification(_ noti: Notification) {
         guard let cmd = noti.object as? TimelineDisplayCommand else { return }
         timelineController.render(with: cmd)
     }
+=======
+>>>>>>> feature/timeline-ui
 }
 
 // MARK: Private
@@ -86,6 +95,7 @@ extension MainDashboardViewController {
         headerContainerView.applyShadow(color: .black, opacity: 0.1, radius: 6.0)
     }
 
+<<<<<<< HEAD
     fileprivate func initNotification() {
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(self.timelineDataNotification(_:)),
@@ -93,6 +103,8 @@ extension MainDashboardViewController {
                                                object: nil)
     }
 
+=======
+>>>>>>> feature/timeline-ui
     fileprivate func initTabs() {
         timeEntryTabContainerView.addSubview(timeEntryController.view)
         timeEntryController.view.edgesToSuperView()
@@ -107,7 +119,10 @@ extension MainDashboardViewController {
 
     fileprivate func updateTabLayout() {
         tabView.selectTabViewItem(at: currentTab.rawValue)
+<<<<<<< HEAD
         updateNextKeyView()
+=======
+>>>>>>> feature/timeline-ui
         switch currentTab {
         case .timeEntryList:
             listBtn.isSelected = true
@@ -117,6 +132,7 @@ extension MainDashboardViewController {
             listBtn.isSelected = false
         }
     }
+<<<<<<< HEAD
 
     fileprivate func updateNextKeyView() {
         switch currentTab {
@@ -130,6 +146,8 @@ extension MainDashboardViewController {
             timerController.autoCompleteInput.nextKeyView = listBtn
         }
     }
+=======
+>>>>>>> feature/timeline-ui
 }
 
 // MARK: TimeEntryListViewControllerDelegate

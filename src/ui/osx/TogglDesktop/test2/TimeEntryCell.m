@@ -321,6 +321,13 @@ extern void *ctx;
 		return;
 	}
 
+	NSRect tagFlagFrame = [self.view convertRect:self.tagFlag.frame fromView:self.tagFlag];
+	if (NSPointInRect(mouseLocation, tagFlagFrame))
+	{
+		toggl_edit(ctx, [self.GUID UTF8String], false, kFocusedFieldNameTag);
+		return;
+	}
+
 	toggl_edit(ctx, [self.GUID UTF8String], false, "");
 }
 

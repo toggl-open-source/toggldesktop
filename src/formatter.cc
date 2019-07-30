@@ -107,7 +107,7 @@ std::string Formatter::FormatDateHeader(const Poco::LocalDateTime datetime) {
         return "Yesterday";
     }
 
-    return Poco::DateTimeFormatter::format(datetime, "%w, %d %b");
+    return Poco::DateTimeFormatter::format(datetime, "%w, %e %b");
 }
 
 bool Formatter::parseTimeInputAMPM(const std::string numbers,

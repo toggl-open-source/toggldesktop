@@ -17,7 +17,7 @@ final class CalendarViewController: NSViewController {
 
     // MARK: OUTLET
 
-    @IBOutlet weak var collectionView: NSCollectionView!
+    @IBOutlet weak var collectionView: CalendarCollectionView!
     @IBOutlet weak var popverWidth: NSLayoutConstraint!
     @IBOutlet weak var clipView: NSClipView!
     @IBOutlet weak var stackViewTrailing: NSLayoutConstraint!
@@ -29,6 +29,7 @@ final class CalendarViewController: NSViewController {
     fileprivate lazy var dataSource: CalendarDataSource = CalendarDataSource()
     private var isViewAppearing = false
     private var selectedDate = Date()
+    private var firstLaunch = true
 
     // MARK: View Cycle
 
@@ -69,8 +70,20 @@ final class CalendarViewController: NSViewController {
 
         // Scroll to selected date
         DispatchQueue.main.asyncAfter(deadline: .now()) {
-            self.collectionView.scrollToItems(at: Set<IndexPath>(arrayLiteral: IndexPath(item: self.dataSource.indexForCurrentDate, section: 0)),
-                                         scrollPosition: [.centeredVertically])
+            let indexPath = Set<IndexPath>(arrayLiteral: IndexPath(item: self.dataSource.indexForCurrentDate, section: 0))
+            let position = NSCollectionView.ScrollPosition.centeredVertically
+
+            // Scroll to selected position because it's in middle of the list
+            self.collectionView.scrollToItems(at: indexPath,
+                                              scrollPosition: position)
+
+            // Select this row to make this collectionView become firstResponder
+            // Able to navigate by keyboard
+            if self.firstLaunch {
+                self.firstLaunch = false
+                self.collectionView.selectItems(at: indexPath,
+                                                scrollPosition: position)
+            }
         }
 
 
@@ -97,6 +110,7 @@ extension CalendarViewController {
     }
 
     fileprivate func initCollectionView() {
+        collectionView.calendarDelegate = self
         collectionView.register(NSNib(nibNamed: CalendarDataSource.Constants.cellNibName, bundle: nil),
                                 forItemWithIdentifier: CalendarDataSource.Constants.cellID)
         collectionView.dataSource = dataSource
@@ -134,5 +148,23 @@ extension CalendarViewController: CalendarDataSourceDelegate {
 
     func calendarDidSelect(_ date: Date) {
         delegate?.calendarViewControllerDidSelect(date: date)
+    }
+}
+
+// MARK: CalendarCollectionViewDelegate
+
+extension CalendarViewController: CalendarCollectionViewDelegate {
+
+    func calendarCollectionViewDidPress(_ key: Key) {
+        switch key {
+        case .enter, .space:
+            dataSource.selectSelectedDate()
+        case .escape:
+            break
+        }
+    }
+
+    func calendarCollectionViewDidClicked(at indexPath: IndexPath) {
+        dataSource.selectDate(at: indexPath)
     }
 }

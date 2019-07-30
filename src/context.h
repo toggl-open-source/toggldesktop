@@ -432,6 +432,10 @@ class Context : public TimelineDatasource {
 
     void SetWake();
 
+    void SetLocked();
+
+    void SetUnlocked();
+
     void osShutdown();
 
     void SetOnline();
@@ -493,11 +497,13 @@ class Context : public TimelineDatasource {
     void syncerActivity();
 
  private:
-    error updateURL(std::string *result);
-
     static const std::string installerPlatform();
     static const std::string linuxPlatformName();
+    static const std::string windowsPlatformName();
     static const std::string shortOSName();
+
+    static void parseVersion(int result[4], const std::string& input);
+    static bool lessThanVersion(const std::string& version1, const std::string& version2);
 
     Poco::Logger &logger() const;
 

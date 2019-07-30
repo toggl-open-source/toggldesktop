@@ -120,6 +120,7 @@ namespace TogglDesktop
         {
             new AutotrackerNotification(this.taskbarIcon, this);
             new PomodoroNotification(this.taskbarIcon, this);
+            new ReminderNotification(this.taskbarIcon, this);
         }
 
         private void initializeContextMenu()
@@ -136,19 +137,32 @@ namespace TogglDesktop
 
         private void initializeSessionNotification()
         {
-            SystemEvents.SessionSwitch += new SessionSwitchEventHandler(SystemEvents_SessionSwitch);
-            SystemEvents.SessionEnded += new SessionEndedEventHandler(SystemEventsSessionEndOnChanged);
+            SystemEvents.SessionSwitch += SystemEvents_SessionSwitch;
+            SystemEvents.SessionEnded += SystemEventsSessionEndOnChanged;
+            SystemEvents.PowerModeChanged += SystemEventsOnPowerModeChanged;
+        }
+
+        private void SystemEventsOnPowerModeChanged(object sender, PowerModeChangedEventArgs e)
+        {
+            if (e.Mode == PowerModes.Suspend)
+            {
+                Toggl.SetSleep();
+            }
+            else if (e.Mode == PowerModes.Resume)
+            {
+                Toggl.SetWake();
+            }
         }
 
         private void SystemEvents_SessionSwitch(object sender, SessionSwitchEventArgs e)
         {
             if (e.Reason == SessionSwitchReason.SessionLock)
             {
-                Toggl.SetSleep();
+                Toggl.SetLocked();
             }
             else if (e.Reason == SessionSwitchReason.SessionUnlock)
             {
-                Toggl.SetWake();
+                Toggl.SetUnlocked();
             }
         }
 
@@ -221,8 +235,9 @@ namespace TogglDesktop
             Toggl.OnTimeEntryEditor += this.onTimeEntryEditor;
             Toggl.OnTimeEntryList += this.onTimeEntryList;
             Toggl.OnOnlineState += this.onOnlineState;
-            Toggl.OnReminder += this.onReminder;
+            //Toggl.OnReminder += this.onReminder;
             Toggl.OnURL += this.onURL;
+            Toggl.OnUserTimeEntryStart += this.onUserTimeEntryStart;
             Toggl.OnRunningTimerState += this.onRunningTimerState;
             Toggl.OnStoppedTimerState += this.onStoppedTimerState;
             Toggl.OnSettings += this.onSettings;
@@ -313,6 +328,11 @@ namespace TogglDesktop
                 return;
 
             this.updateEditPopupLocation(true);
+
+            if (open)
+            {
+                this.Show();
+            }
         }
 
         private void onStoppedTimerState()
@@ -331,6 +351,11 @@ namespace TogglDesktop
             this.updateTracking(te);
         }
 
+        private void onUserTimeEntryStart()
+        {
+            this.taskbarIcon.CloseBalloon();
+        }
+
         private void onURL(string url)
         {
             Process.Start(url);
@@ -341,7 +366,7 @@ namespace TogglDesktop
             if (this.TryBeginInvoke(this.onReminder, title, informativeText))
                 return;
 
-            this.taskbarIcon.ShowBalloonTipWithLargeIcon(title, informativeText, Properties.Resources.toggl);
+            this.taskbarIcon.ShowBalloonTip(title, informativeText, Properties.Resources.toggl, largeIcon: true);
         }
 
         private void onOnlineState(Toggl.OnlineState state)
@@ -727,6 +752,8 @@ namespace TogglDesktop
             if (this.taskbarIcon != null)
             {
                 this.taskbarIcon.Visibility = Visibility.Collapsed;
+                this.taskbarIcon.Icon = null;
+                this.taskbarIcon.Dispose();
             }
 
             if (this.mainContextMenu != null)

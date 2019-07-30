@@ -596,6 +596,7 @@ extern "C" {
 
     TOGGL_EXPORT void toggl_view_timeline_next_day(
         void *context);
+        
     TOGGL_EXPORT void toggl_view_timeline_current_day(
         void *context);
 
@@ -949,6 +950,12 @@ extern "C" {
         void *context);
 
     TOGGL_EXPORT void toggl_set_wake(
+        void *context);
+
+    TOGGL_EXPORT void toggl_set_locked(
+        void *context);
+
+    TOGGL_EXPORT void toggl_set_unlocked(
         void *context);
 
     TOGGL_EXPORT void toggl_os_shutdown(

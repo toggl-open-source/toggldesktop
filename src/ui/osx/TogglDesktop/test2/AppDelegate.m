@@ -95,7 +95,7 @@
 
 // Manual mode
 @property NSMenuItem *manualModeMenuItem;
-@property (strong, nonatomic) NSKeyValueObservation *effectiveAppearanceObs;
+@property (strong, nonatomic) _NSKeyValueObservation *effectiveAppearanceObs;
 
 // System Service
 @property (strong, nonatomic) SystemService *systemService;
@@ -867,6 +867,9 @@ BOOL onTop = NO;
 
 			free(str);
 		}
+
+		// Update tooltip
+		[self.statusItem setToolTip:[NSString stringWithFormat:@"Total today: %@", self.lastKnownRunningTimeEntry.dateDuration]];
 	}
 
 	NSString *key = nil;
@@ -1521,6 +1524,7 @@ const NSString *appName = @"osx_native_app";
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
 	[self.idleNotificationWindowController displayIdleEvent:idleEvent];
+	[NSApp activateIgnoringOtherApps:YES];
 }
 
 - (PLCrashReporter *)configuredCrashReporter

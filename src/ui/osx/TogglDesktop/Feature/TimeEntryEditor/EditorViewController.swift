@@ -9,11 +9,6 @@
 import Cocoa
 import Carbon.HIToolbox
 
-protocol EditorViewControllerDelegate: class {
-
-    func editorShouldDismissPopover()
-}
-
 final class EditorViewController: NSViewController {
 
     private struct Constans {
@@ -35,27 +30,39 @@ final class EditorViewController: NSViewController {
     @IBOutlet weak var deleteBtn: NSButton!
     @IBOutlet weak var tagAutoCompleteContainerView: NSBox!
     @IBOutlet weak var tagStackView: NSStackView!
-    @IBOutlet weak var tagAddButton: NSButton!
+    @IBOutlet weak var tagAddButton: AddTagButton!
     @IBOutlet weak var tagInputContainerView: NSBox!
+    @IBOutlet weak var datePickerView: KeyboardDatePicker!
+    @IBOutlet weak var dayNameButton: CursorButton!
+    @IBOutlet weak var nextDateBtn: NSButton!
+    @IBOutlet weak var previousDateBtn: NSButton!
     @IBOutlet weak var durationTextField: UndoTextField!
     @IBOutlet weak var startAtTextField: UndoTextField!
     @IBOutlet weak var endAtTextField: UndoTextField!
+    @IBOutlet weak var dateSelectionBox: NSBox!
     @IBOutlet weak var workspaceLbl: NSTextField!
-    @IBOutlet weak var datePickerContainerView: NSView!
 
     // MARK: Variables
 
     var timeEntry: TimeEntryViewItem! {
         didSet {
-            fillData()
+            fillData(oldValue)
             registerUndoForAllFields()
+
+            // Check if the Editor has update with new TimeEntry -> Reset focus to Description TextField
+            // If not, just keep focus on current textfield
+            let defaultFocus = checkShouldFocusByDefault(for: oldValue, newValue: timeEntry)
+            setFocusOnTextField(shouldFocusByDefault: defaultFocus)
         }
     }
-    weak var delegate: EditorViewControllerDelegate?
     private var selectedProjectItem: ProjectContentItem?
-    private lazy var projectDatasource = ProjectDataSource(items: ProjectStorage.shared.items, updateNotificationName: .ProjectStorageChangedNotification)
-    private lazy var descriptionDatasource = DescriptionDataSource(items: DescriptionTimeEntryStorage.shared.items, updateNotificationName: .DescrptionTimeEntryStorageChangedNotification)
-    private lazy var tagDatasource = TagDataSource(items: TagStorage.shared.tags, updateNotificationName: .TagStorageChangedNotification)
+    private lazy var projectDatasource = ProjectDataSource(items: ProjectStorage.shared.items,
+                                                           updateNotificationName: .ProjectStorageChangedNotification)
+    private lazy var descriptionDatasource = DescriptionDataSource(items: DescriptionTimeEntryStorage.shared.items,
+                                                                   updateNotificationName: .DescrptionTimeEntryStorageChangedNotification)
+    private lazy var tagDatasource = TagDataSource(items: TagStorage.shared.tags,
+                                                   updateNotificationName: .TagStorageChangedNotification)
+
     private lazy var borderColor: NSColor = {
         if #available(OSX 10.13, *) {
             return NSColor(named: NSColor.Name("upload-border-color"))!
@@ -63,8 +70,22 @@ final class EditorViewController: NSViewController {
             return ConvertHexColor.hexCode(toNSColor: "#ACACAC")
         }
     }()
+    private lazy var calendarViewControler: CalendarViewController = {
+        let controller = CalendarViewController(nibName: NSNib.Name("CalendarViewController"), bundle: nil)
+        controller.delegate = self
+        return controller
+    }()
+    private lazy var calendarPopover: NoVibrantPopoverView = {
+        let popover = NoVibrantPopoverView()
+        popover.behavior = .semitransient
+        popover.contentViewController = calendarViewControler
+        return popover
+    }()
+    private lazy var dayNameAttribute: [NSAttributedString.Key : Any] = {
+        return [NSAttributedString.Key.font : NSFont.systemFont(ofSize: 14),
+                NSAttributedString.Key.foregroundColor: NSColor.labelColor]
+    }()
     fileprivate var isRegisterTimerNotification = false
-    private lazy var datePickerView: DatePickerView = DatePickerView.xibView()
 
     // MARK: View Cyclex
 
@@ -77,8 +98,6 @@ final class EditorViewController: NSViewController {
 
     override func viewDidAppear() {
         super.viewDidAppear()
-
-        view.window?.makeFirstResponder(descriptionTextField)
         updateNextKeyViews()
     }
 
@@ -90,11 +109,42 @@ final class EditorViewController: NSViewController {
 
     @IBAction func closeBtnOnTap(_ sender: Any) {
         DesktopLibraryBridge.shared().togglEditor()
-        delegate?.editorShouldDismissPopover()
     }
 
     @IBAction func tagAddButtonOnTap(_ sender: Any) {
+
+        // Reset
+        tagTextField.resetText()
+
+        // Expand the view
         openTagAutoCompleteView()
+    }
+
+    @IBAction func nextDateBtnOnTap(_ sender: Any) {
+        guard let startDate = timeEntry.started,
+            let nextDate = startDate.nextDate(),
+            !timeEntry.isRunning() else {
+            return
+        }
+        DesktopLibraryBridge.shared().updateTimeEntry(withStart: nextDate, guid: timeEntry.guid)
+    }
+
+    @IBAction func previousDateBtnOnTap(_ sender: Any) {
+        guard let startDate = timeEntry.started,
+            let nextDate = startDate.previousDate(),
+            !timeEntry.isRunning() else {
+                return
+        }
+        DesktopLibraryBridge.shared().updateTimeEntry(withStart: nextDate, guid: timeEntry.guid)
+    }
+
+    @IBAction func datePickerChanged(_ sender: Any) {
+        DesktopLibraryBridge.shared().updateTimeEntry(withStart: datePickerView.dateValue, guid: timeEntry.guid)
+    }
+    
+    @IBAction func dayButtonOnTap(_ sender: Any) {
+        guard !timeEntry.isRunning() else { return }
+        calendarPopover.present(from: dateSelectionBox.bounds, of: dateSelectionBox, preferredEdge: .maxY)
     }
 
     @IBAction func durationTextFieldOnChange(_ sender: Any) {
@@ -162,6 +212,7 @@ extension EditorViewController {
         projectTextField.autoCompleteDelegate = self
         projectTextField.dotImageView = projectDotImageView
         projectTextField.layoutArrowBtn(with: view)
+        dayNameButton.cursor = .pointingHand
 
         durationTextField.delegate = self
         startAtTextField.delegate = self
@@ -170,10 +221,21 @@ extension EditorViewController {
         var calendar = Calendar.current
         calendar.timeZone = TimeZone.current
 
-        // Picker View
-        datePickerContainerView.addSubview(datePickerView)
-        datePickerView.edgesToSuperView()
-        datePickerView.delegate = self
+        // Date picker
+        datePickerView.keyOnAction = {[weak self] key in
+            guard let strongSelf = self else { return }
+            switch key {
+            case .escape:
+                strongSelf.closeBtnOnTap(strongSelf)
+            case .space:
+                strongSelf.dayButtonOnTap(strongSelf)
+            default:
+                break
+            }
+        }
+
+        // Tags
+        tagAddButton.delegate = self
     }
 
     fileprivate func initDatasource() {
@@ -188,13 +250,19 @@ extension EditorViewController {
         tagDatasource.setup(with: tagTextField)
     }
 
-    fileprivate func fillData() {
+    fileprivate func fillData(_ oldValue: TimeEntryViewItem?) {
         guard let timeEntry = timeEntry else { return }
+
         workspaceLbl.stringValue = timeEntry.workspaceName
-        descriptionTextField.stringValue = timeEntry.descriptionName
         billableCheckBox.state = timeEntry.billable ? .on : .off
         billableCheckBox.isHidden = !timeEntry.canSeeBillable
         projectTextField.setTimeEntry(timeEntry)
+        calendarViewControler.prepareLayout(with: timeEntry.started)
+
+        // Update description with condition to prevent lossing text
+        if !(oldValue?.guid == timeEntry.guid && descriptionTextField.currentEditor() != nil) || !timeEntry.isRunning() {
+            descriptionTextField.stringValue = timeEntry.descriptionName
+        }
 
         // Disable if it's running entry
         let isRunning = timeEntry.isRunning()
@@ -280,7 +348,10 @@ extension EditorViewController {
     }
 
     private func renderDatePicker() {
-        datePickerView.currentDate = timeEntry.started ?? Date()
+        let startDay = timeEntry.started!
+        datePickerView.dateValue = startDay
+        let dayName = startDay.dayOfWeekString() ?? "Unknown"
+        dayNameButton.attributedTitle = NSAttributedString(string: "\(dayName),", attributes: dayNameAttribute)
     }
 
     private func renderTime() {
@@ -332,6 +403,37 @@ extension EditorViewController {
         let durationText = DesktopLibraryBridge.shared().convertDuraton(inSecond: timeEntry.duration_in_seconds)
         durationTextField.stringValue = durationText
     }
+
+    fileprivate func checkShouldFocusByDefault(for oldValue: TimeEntryViewItem?, newValue: TimeEntryViewItem?) -> Bool {
+        guard let oldValueGuid = oldValue?.guid, let newValueGuid = timeEntry?.guid else { return false }
+        return oldValueGuid != newValueGuid
+    }
+
+    fileprivate func setFocusOnTextField(shouldFocusByDefault: Bool) {
+
+
+        guard let timeEntry = timeEntry,
+            let focusedFieldName = timeEntry.focusedFieldName else { return }
+
+        // Focus on specific text fields
+        switch focusedFieldName {
+        case String(utf8String: kFocusedFieldNameDuration):
+            view.window?.makeFirstResponder(durationTextField)
+        case String(utf8String: kFocusedFieldNameProject):
+            view.window?.makeFirstResponder(projectTextField)
+        case String(utf8String: kFocusedFieldNameTag):
+            if let tags = timeEntry.tags, tags.isEmpty {
+                view.window?.makeFirstResponder(tagAddButton)
+            } else {
+                guard let firstTag = tagStackView.arrangedSubviews.first as? TagTokenView else { return }
+                view.window?.makeFirstResponder(firstTag.actionButton)
+            }
+        default:
+            if shouldFocusByDefault {
+                view.window?.makeFirstResponder(descriptionTextField)
+            }
+        }
+    }
 }
 
 // MARK: AutoCompleteViewDataSourceDelegate
@@ -351,6 +453,7 @@ extension EditorViewController: AutoCompleteViewDataSourceDelegate {
                 DesktopLibraryBridge.shared().updateDescription(forTimeEntry: timeEntry,
                                                                 autocomplete: descriptionTimeEntry.item)
                 descriptionTextField.closeSuggestion()
+                descriptionTextField.stringValue = descriptionTimeEntry.item.descriptionTitle
             }
         }
     }
@@ -426,6 +529,9 @@ extension EditorViewController: AutoCompleteTextFieldDelegate {
             tagDatasource.updateSelectedTags(selectedTags)
             TagStorage.shared.addNewTag(newTag)
             DesktopLibraryBridge.shared().updateTimeEntry(withTags: selectedTags.toNames(), guid: timeEntry.guid)
+
+            // Focus on tag textfield agains, so user can continue typying
+            sender.window?.makeFirstResponder(tagTextField)
         }
     }
 
@@ -499,6 +605,15 @@ extension EditorViewController: TagDataSourceDelegate {
     }
 }
 
+// MARK: CalendarViewControllerDelegate
+
+extension EditorViewController: CalendarViewControllerDelegate {
+
+    func calendarViewControllerDidSelect(date: Date) {
+        DesktopLibraryBridge.shared().updateTimeEntry(withStart: date, guid: timeEntry.guid)
+    }
+}
+
 // MARK: Undo
 
 extension EditorViewController {
@@ -544,29 +659,19 @@ extension EditorViewController {
     }
 }
 
-// MARK: DatePickerViewDelegate
+// MARK: AddTagButtonDelegate
 
-extension EditorViewController: DatePickerViewDelegate {
+extension EditorViewController: AddTagButtonDelegate {
 
-    func datePickerOnChanged(_ sender: DatePickerView, date: Date) {
-        DesktopLibraryBridge.shared().updateTimeEntry(withStart: date, guid: timeEntry.guid)
-    }
+    func shouldOpenTagAutoComplete(with text: String) {
+        // Expand the tag auto-complete
+        openTagAutoCompleteView()
 
-    func datePickerShouldClose(_ sender: DatePickerView) {
-        closeBtnOnTap(self)
-    }
+        // Pass the text
+        tagTextField.stringValue = text
 
-    func isTimeEntryRunning(_ sender: DatePickerView) -> Bool {
-        return timeEntry.isRunning()
-    }
-
-    func shouldOpenCalendar(_ sender: DatePickerView) -> Bool {
-        return true
-    }
-
-    func datePickerDidTapPreviousDate(_ sender: DatePickerView) {
-    }
-
-    func datePickerDidTapNextDate(_ sender: DatePickerView) {
+        // Notify the change manually
+        // because stringValue doesn't notify the delegate
+        tagTextField.handleTextDidChange()
     }
 }

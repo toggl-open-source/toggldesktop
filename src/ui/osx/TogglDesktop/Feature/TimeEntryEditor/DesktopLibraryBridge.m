@@ -230,4 +230,23 @@ void *ctx;
 	toggl_edit(ctx, [GUID UTF8String], false, kFocusedFieldNameDescription);
 }
 
+- (void)setEditorWindowSize:(CGSize)size
+{
+	toggl_set_window_edit_size_width(ctx, size.width);
+	toggl_set_window_edit_size_height(ctx, size.height);
+}
+
+- (CGSize)getEditorWindowSize
+{
+	NSInteger width = toggl_get_window_edit_size_width(ctx);
+	NSInteger height = toggl_get_window_edit_size_height(ctx);
+
+	// Prevent small size
+	const CGSize minimumSize = CGSizeMake(274.0, 381.0);
+
+	width = MAX(minimumSize.width, width);
+	height = MAX(minimumSize.height, height);
+	return CGSizeMake(width, height);
+}
+
 @end

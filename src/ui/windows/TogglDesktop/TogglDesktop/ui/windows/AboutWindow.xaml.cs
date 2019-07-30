@@ -11,11 +11,12 @@ namespace TogglDesktop
         public AboutWindow()
         {
             this.InitializeComponent();
+            this.Closing += this.HideWindowOnClosing;
 
             this.updateText.Text = "";
             this.restartButton.Visibility = Visibility.Collapsed;
 
-            this.versionText.Text = Program.Version();
+            this.versionText.Text = Program.Version() + (Environment.Is64BitProcess ? " (64-bit)" : " (32-bit)");
 
             var isUpdatCheckDisabled = Toggl.IsUpdateCheckDisabled();
             this.releaseChannelComboBox.ShowOnlyIf(!isUpdatCheckDisabled, true);
@@ -60,11 +61,6 @@ namespace TogglDesktop
                 this.Hide();
                 e.Handled = true;
             }
-        }
-
-        protected override void onCloseButtonClick(object sender, RoutedEventArgs e)
-        {
-            this.Hide();
         }
 
         private void onReleaseChannelSelectionChanged(object sender, SelectionChangedEventArgs e)

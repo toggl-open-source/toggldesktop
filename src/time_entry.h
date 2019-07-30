@@ -44,6 +44,8 @@ class TimeEntry : public BaseModel, public TimedEvent {
     const std::string Tags() const;
     void SetTags(const std::string tags);
 
+    const std::string TagsHash() const;
+
     const Poco::UInt64 &WID() const {
         return wid_;
     }
@@ -138,6 +140,8 @@ class TimeEntry : public BaseModel, public TimedEvent {
     Poco::Int64 RealDurationInSeconds() const;
 
     bool isNotFound(const error err) const;
+
+    const std::string GroupHash() const;
 
  private:
     Poco::UInt64 wid_;

@@ -2,7 +2,8 @@
 <component type="desktop">
     <id type="desktop">com.toggl.TogglDesktop.desktop</id>
     <project_license>BSD-3-Clause</project_license>
-    <metadata_license>BSD-3_Clause</metadata_license>
+    <metadata_license>CC0-1.0</metadata_license>
+    <content_rating>none</content_rating>
     <name>Toggl Desktop</name>
     <summary>Simple and Intuitive Time Tracking Software</summary>
     <description>
@@ -33,11 +34,16 @@
     </keywords>
     <url type="homepage">https://toggl.com</url>
     <developer_name>Toggl OÜ</developer_name>
-    ​<update_contact>support_AT_toggl.com</update_contact>
+    <update_contact>support_AT_toggl.com</update_contact>
     <screenshots>
-        <screenshot type="default">https://toggl.github.io/toggldesktop/assets/images/linux_ui_main.png</screenshot>
-        <screenshot>https://toggl.github.io/toggldesktop/assets/images/linux_ui_edit.png</screenshot>
+        <screenshot type="default">
+            <caption>The time entry list</caption>
+            <image>https://toggl.github.io/toggldesktop/assets/images/linux_ui_main.png</image>
+        </screenshot>
+        <screenshot>
+            <caption>Time entry editor</caption>
+            <image>https://toggl.github.io/toggldesktop/assets/images/linux_ui_edit.png</image>
+        </screenshot>
     </screenshots>
-    <update_contact>martin@toggl.com</update_contact>
 </component>
 

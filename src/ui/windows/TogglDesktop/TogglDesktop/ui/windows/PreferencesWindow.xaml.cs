@@ -27,6 +27,7 @@ namespace TogglDesktop
         public PreferencesWindow()
         {
             this.InitializeComponent();
+            this.Closing += this.HideWindowOnClosing;
 
             Toggl.OnSettings += this.onSettings;
             Toggl.OnLogin += this.onLogin;
@@ -128,6 +129,7 @@ namespace TogglDesktop
             this.keepEndTimeFixedCheckbox.IsChecked = Toggl.GetKeepEndTimeFixed();
 
             this.onStopEntryCheckBox.IsChecked = settings.StopEntryOnShutdownSleep;
+            this.launchOnStartupCheckBox.IsChecked = Utils.GetLaunchOnStartupRegistry();
 
             #endregion
 
@@ -249,11 +251,6 @@ namespace TogglDesktop
             this.Hide();
         }
 
-        protected override void onCloseButtonClick(object sender, RoutedEventArgs e)
-        {
-            this.Hide();
-        }
-
         private void windowKeyDown(object sender, KeyEventArgs e)
         {
             if(e.Key == Key.Escape)
@@ -298,6 +295,7 @@ namespace TogglDesktop
 
             Toggl.SetDefaultProject(settings.DefaultProject.ProjectID, settings.DefaultProject.TaskID);
             Toggl.SetKeepEndTimeFixed(settings.KeepEndTimeFixed);
+            Utils.SaveLaunchOnStartupRegistry(settings.LaunchOnStartup);
 
             return Toggl.SetSettings(settings.TogglSettings);
         }
@@ -372,6 +370,7 @@ namespace TogglDesktop
                 TogglSettings = settings,
                 DefaultProject = this.selectedDefaultProject,
                 KeepEndTimeFixed = isChecked(this.keepEndTimeFixedCheckbox),
+                LaunchOnStartup = isChecked(this.launchOnStartupCheckBox)
             };
         }
 
@@ -380,6 +379,7 @@ namespace TogglDesktop
             public Toggl.TogglSettingsView TogglSettings { get; set; }
             public Toggl.TogglAutocompleteView DefaultProject { get; set; }
             public bool KeepEndTimeFixed { get; set; }
+            public bool LaunchOnStartup { get; set; }
         }
 
         #endregion

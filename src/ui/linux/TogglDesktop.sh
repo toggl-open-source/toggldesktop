@@ -14,6 +14,7 @@ if [ -f "$dirname/QtWebEngineProcess" ]; then
   QTWEBENGINEPROCESS_PATH=$dirname/QtWebEngineProcess
   export QTWEBENGINEPROCESS_PATH
 fi
+export QTWEBENGINE_CHROMIUM_FLAGS="--disable-logging"
 
 # Xubuntu, i3 and Cinnamon tray icon fix
 XDG=$XDG_CURRENT_DESKTOP

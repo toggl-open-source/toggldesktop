@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Drawing;
-using System.Reflection;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
-using Hardcodet.Wpf.TaskbarNotification;
-using Hardcodet.Wpf.TaskbarNotification.Interop;
+using System.Windows.Threading;
 
 namespace TogglDesktop
 {
@@ -48,28 +46,6 @@ static class UIExtensions
 
     #endregion
 
-    public static void ShowBalloonTipWithLargeIcon(this TaskbarIcon icon, string title, string message, Icon customIcon)
-    {
-        if (icon == null)
-            throw new ArgumentNullException("icon");
-
-        var method = typeof (TaskbarIcon)
-                     .GetMethod("ShowBalloonTip", BindingFlags.NonPublic | BindingFlags.Instance);
-
-        lock (icon)
-        {
-            // ReSharper disable once BitwiseOperatorOnEnumWithoutFlags
-            // (The enum behaves like flags)
-            method.Invoke(icon, new object[]
-            {
-                title,
-                message,
-                BalloonFlags.User | BalloonFlags.LargeIcon,
-                customIcon.Handle
-            });
-        }
-    }
-
     public static void ShowOnlyIf(this UIElement control, bool condition)
     {
         control.Visibility = condition
@@ -110,6 +86,13 @@ static class UIExtensions
         {
             parentAsDecorator.Child = null;
         }
+    }
+
+    public static void HideWindowOnClosing(this Window window, object sender, CancelEventArgs e)
+    {
+        e.Cancel = true;
+        Action hideAction = window.Hide;
+        window.Dispatcher.BeginInvoke(DispatcherPriority.Background, hideAction);
     }
 
     public static void ClearUndoHistory(this TextBoxBase textBox)

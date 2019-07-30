@@ -18,7 +18,8 @@ TimerWidget::TimerWidget(QWidget *parent) : QFrame(parent),
 ui(new Ui::TimerWidget),
 timer(new QTimer(this)),
 duration(0),
-project(""),
+projectName(""),
+taskName(""),
 tagsHolder(""),
 timeEntryAutocompleteNeedsUpdate(false),
 descriptionModel(new AutocompleteListModel(this)),
@@ -101,7 +102,8 @@ void TimerWidget::descriptionProjectSelected(const QString &projectName, uint64_
     if (projectId && !projectName.isEmpty()) {
         ui->projectFrame->setVisible(true);
         ui->project->setText(QString("<font color=\"%1\">%2</font>").arg(color).arg(projectName));
-        clearTask();
+        if (!taskId)
+            clearTask();
         if (taskId && !taskName.isEmpty()) {
             ui->taskFrame->setVisible(true);
             ui->task->setText(QString("<font color=\"gray\">%1</font>").arg(taskName));
@@ -196,7 +198,10 @@ void TimerWidget::displayRunningTimerState(
     if (!te->ProjectLabel.isEmpty()) {
         ui->projectFrame->setVisible(true);
         ui->deleteProject->setVisible(true);
-        setEllipsisTextToLabel(ui->project, te->ProjectLabel);
+        projectName = te->ProjectLabel;
+        if (!te->ClientLabel.isEmpty())
+            projectName += ". " + te->ClientLabel;
+        setEllipsisTextToLabel(ui->project, projectName);
     }
     else {
         ui->deleteProject->setVisible(true);
@@ -205,6 +210,7 @@ void TimerWidget::displayRunningTimerState(
     if (!te->TaskLabel.isEmpty()) {
         ui->taskFrame->setVisible(true);
         ui->deleteTask->setVisible(true);
+        taskName = te->TaskLabel;
         setEllipsisTextToLabel(ui->task, te->TaskLabel);
     }
     else {
@@ -241,6 +247,9 @@ void TimerWidget::displayRunningTimerState(
 }
 
 void TimerWidget::displayStoppedTimerState() {
+    if (ui->description->hasFocus())
+        return;
+
     guid = QString();
     selectedTaskId = 0;
     selectedProjectId = 0;
@@ -356,7 +365,8 @@ void TimerWidget::on_duration_returnPressed() {
 
 void TimerWidget::resizeEvent(QResizeEvent* event)
 {
-    setEllipsisTextToLabel(ui->project, project);
+    setEllipsisTextToLabel(ui->project, projectName);
+    setEllipsisTextToLabel(ui->task, taskName);
     QWidget::resizeEvent(event);
 }
 

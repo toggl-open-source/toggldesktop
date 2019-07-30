@@ -332,7 +332,7 @@ void MainWindowController::onShortcutConfirm() {
         }
         else if (timeEntryList) {
             QString selectedGuid = timeEntryList->highlightedCell() ? timeEntryList->highlightedCell()->entryGuid() : QString();
-            TogglApi::instance->editTimeEntry(selectedGuid, "");
+            TogglApi::instance->editTimeEntry(selectedGuid, "description");
             return;
         }
         else if (timeEntryEdit) {

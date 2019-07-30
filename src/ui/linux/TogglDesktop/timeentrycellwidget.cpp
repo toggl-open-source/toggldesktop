@@ -116,7 +116,9 @@ void TimeEntryCellWidget::deleteTimeEntry() {
 
 bool TimeEntryCellWidget::eventFilter(QObject *watched, QEvent *event) {
     if (event->type() == QEvent::FocusIn) {
-        focusInEvent(reinterpret_cast<QFocusEvent*>(event));
+        auto fe = reinterpret_cast<QFocusEvent*>(event);
+        if (fe->reason() == Qt::TabFocusReason || fe->reason() == Qt::BacktabFocusReason)
+            focusInEvent(fe);
     }
     return QWidget::eventFilter(watched, event);
 }
@@ -221,5 +223,5 @@ void TimeEntryCellWidget::on_dataFrame_clicked() {
     if (group)
         on_groupButton_clicked();
     else
-        TogglApi::instance->editTimeEntry(guid, "");
+        TogglApi::instance->editTimeEntry(guid, "description");
 }

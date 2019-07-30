@@ -14,7 +14,6 @@
 #import "TimeEntryCell.h"
 #import "UIEvents.h"
 #import "DisplayCommand.h"
-#import "TimeEntryEditViewController.h"
 #import "ConvertHexColor.h"
 #include <Carbon/Carbon.h>
 #import "TogglDesktop-Swift.h"
@@ -325,9 +324,6 @@ extern void *ctx;
 
 		// Show popover
 		[self.timeEntrypopover presentFrom:positionRect of:ofView preferredEdge:NSRectEdgeMaxX];
-
-//        BOOL onLeft = (self.view.window.frame.origin.x > self.timeEntryPopupEditView.window.frame.origin.x);
-//        [self.timeEntryEditViewController setDragHandle:onLeft];
 	}
 
 	// Update time entry for editor

@@ -1,6 +1,5 @@
-﻿
-
-using System;
+﻿using System;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -23,11 +22,18 @@ namespace TogglDesktop
         {
             this.contextMenu = mainWindow.ContextMenu;
             this.InitializeComponent();
+            this.Closing += OnClosing;
             this.WindowStyle = WindowStyle.SingleBorderWindow;
 
             this.interopHelper = new WindowInteropHelper(this);
 
             KeyboardShortcuts.RegisterShortcuts(this);
+        }
+
+        static void OnClosing(object sender, CancelEventArgs e)
+        {
+            // disallow closing via Alt+F4
+            e.Cancel = true;
         }
 
         protected override void OnMouseRightButtonDown(MouseButtonEventArgs e)

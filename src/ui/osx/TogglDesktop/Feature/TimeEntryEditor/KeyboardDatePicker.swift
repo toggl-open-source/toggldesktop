@@ -7,17 +7,17 @@
 //
 
 import Foundation
-import Carbon.HIToolbox
 
 final class KeyboardDatePicker: NSDatePicker {
 
-    var escapeKeyOnAction: (() -> Void)?
+    // MARK: Variable
+
+    var keyOnAction: ((Key) -> Void)?
 
     override func keyDown(with event: NSEvent) {
         super.keyDown(with: event)
 
-        if event.keyCode == UInt16(kVK_Escape) {
-            escapeKeyOnAction?()
-        }
+        guard let key = Key(rawValue: Int(event.keyCode)) else { return }
+        keyOnAction?(key)
     }
 }

@@ -6,6 +6,7 @@
         xmlns:toggl="clr-namespace:TogglDesktop"
         mc:Ignorable="d" 
         Height="350" Width="280"
+        MinHeight="350" MinWidth="280"
         KeyDown="windowKeyDown"
         IsToolWindow="True"
         Title="Idle Notification"

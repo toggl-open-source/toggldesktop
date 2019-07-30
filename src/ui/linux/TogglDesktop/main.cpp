@@ -10,6 +10,9 @@
 
 #include <stdint.h>
 #include <stdbool.h>
+#include <stdio.h>
+#include <iostream>
+#include <unistd.h>
 
 #include "singleapplication.h"  // NOLINT
 
@@ -18,6 +21,8 @@
 #include "./genericview.h"
 #include "./mainwindowcontroller.h"
 #include "./toggl.h"
+
+MainWindowController *w = nullptr;
 
 class TogglApplication : public SingleApplication {
  public:
@@ -95,19 +100,18 @@ int main(int argc, char *argv[]) try {
 
     parser.process(a);
 
-    MainWindowController w(nullptr,
-                           parser.value(logPathOption),
-                           parser.value(dbPathOption),
-                           parser.value(scriptPathOption));
+    w = new MainWindowController(nullptr,
+                                 parser.value(logPathOption),
+                                 parser.value(dbPathOption),
+                                 parser.value(scriptPathOption));
 
-    a.w = &w;
+    a.w = w;
 
     if (parser.isSet(forceOption)) {
-        w.hide();
+        w->hide();
     } else {
-        w.show();
+        w->show();
     }
-
     return a.exec();
 } catch (std::exception &e) {  // NOLINT
     TogglApi::notifyBugsnag("std::exception", e.what(), "main");

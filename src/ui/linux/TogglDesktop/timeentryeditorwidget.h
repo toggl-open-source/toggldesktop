@@ -51,6 +51,7 @@ class TimeEntryEditorWidget : public QWidget {
 
     QVector<GenericView *> clientSelectUpdate;
     bool clientSelectNeedsUpdate;
+    QString recentlyAddedClient;
 
     ColorPicker *colorPicker;
 

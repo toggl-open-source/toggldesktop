@@ -14,6 +14,8 @@ if(TOGGL_ALLOW_UPDATE_CHECK)
     add_definitions(-DTOGGL_ALLOW_UPDATE_CHECK=1)
 endif()
 
+add_definitions(-DTOGGL_BUILD_TYPE="${TOGGL_BUILD_TYPE}")
+
 set(TOGGLDESKTOPLIBRARY_INCLUDE_DIR
     ${CMAKE_CURRENT_SOURCE_DIR}
     PARENT_SCOPE
@@ -53,6 +55,7 @@ set(LIBRARY_SOURCE_FILES
     toggl_api_private.cc
     model_change.cc
     obm_action.cc
+    platforminfo.cc
     project.cc
     proxy.cc
     rectangle.cc

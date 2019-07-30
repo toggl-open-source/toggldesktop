@@ -123,6 +123,8 @@ void TimeEntryEditorWidget::displayClientSelect(
         return;
     }
 
+    bool selectingNewClient = !recentlyAddedClient.isEmpty();
+    QString lastSelectedItem = ui->newProjectClient->currentText();
     uint64_t workspaceID = 0;
     QVariant data = ui->newProjectWorkspace->currentData();
     if (data.canConvert<GenericView *>()) {
@@ -131,12 +133,23 @@ void TimeEntryEditorWidget::displayClientSelect(
     }
     ui->newProjectClient->clear();
     ui->newProjectClient->addItem("");
+    int index = 0;
+    int selectedIndex = 0;
     foreach(GenericView *view, clientSelectUpdate) {
         if (workspaceID && workspaceID != view->WID) {
             continue;
         }
         ui->newProjectClient->addItem(view->Name, QVariant::fromValue(view));
+        index++;
+        if (selectingNewClient && view->Name == recentlyAddedClient) {
+            selectedIndex = index;
+            recentlyAddedClient = QString();
+        }
+        if (!selectingNewClient && view->Name == lastSelectedItem) {
+            selectedIndex = index;
+        }
     }
+    ui->newProjectClient->setCurrentIndex(selectedIndex);
     clientSelectNeedsUpdate = false;
 }
 
@@ -223,6 +236,7 @@ void TimeEntryEditorWidget::displayTimeEntryEditor(
         ui->publicProject->setChecked(false);
         ui->newProjectWorkspace->setCurrentIndex(-1);
         ui->newProjectClient->setCurrentIndex(-1);
+        ui->newProjectClient->clear();
 
         // Reset adding new client
         toggleNewClientMode(false);
@@ -271,6 +285,8 @@ void TimeEntryEditorWidget::displayTimeEntryEditor(
     tags.sort();
     previousTagList = tags.join("\t");
 
+    recentlyAddedClient = QString();
+
     for (int i = 0; i < ui->tags->count(); i++) {
         QListWidgetItem *item = ui->tags->item(i);
         if (tags.contains(item->text())) {
@@ -305,11 +321,13 @@ bool TimeEntryEditorWidget::applyNewProject() {
     uint64_t workspaceID = workspace.value<GenericView *>()->ID;
 
     uint64_t clientID = 0;
+    QString clientGUID = "";
     QVariant client = ui->newProjectClient->currentData();
     if (client.canConvert<GenericView *>()) {
         clientID = client.value<GenericView *>()->ID;
+        if (clientID == 0)
+            clientGUID = client.value<GenericView*>()->GUID;
     }
-
     // Get the selected project color from stylesheet
     QString colorCode = ui->colorButton->styleSheet()
                         .replace("font-size:72px;color:", "")
@@ -318,7 +336,7 @@ bool TimeEntryEditorWidget::applyNewProject() {
     QString projectGUID = TogglApi::instance->addProject(guid,
                           workspaceID,
                           clientID,
-                          "",
+                          clientGUID,
                           ui->newProjectName->text(),
                           !ui->publicProject->isChecked(),
                           colorCode);
@@ -342,6 +360,17 @@ bool TimeEntryEditorWidget::eventFilter(QObject *object, QEvent *event) {
                                                     "");
         }
     }
+    if (event->type() == QEvent::KeyPress) {
+        if (object == ui->description) {
+            ui->deleteButton->setFocusPolicy(Qt::StrongFocus);
+            auto ke = static_cast<QKeyEvent*>(event);
+            if (ke && ke->key() == Qt::Key_Backtab) {
+                // this is an ugly hack for the focus chain - backtabbing selected the date picker for some reason
+                ui->deleteButton->setFocus(Qt::FocusReason::MouseFocusReason);
+                return true;
+            }
+        }
+    }
 
     return false;
 }
@@ -361,6 +390,15 @@ void TimeEntryEditorWidget::on_addNewProject_clicked() {
 
     if (!hasMultipleWorkspaces) {
         ui->newProjectWorkspace->setCurrentIndex(0);
+    } else {
+        int i = 0;
+        foreach(GenericView *view, workspaceSelectUpdate) {
+            if(view->ID == timeEntry->WID) {
+                ui->newProjectWorkspace->setCurrentIndex(i);
+                break;
+            }
+            i++;
+        }
     }
 }
 
@@ -491,9 +529,7 @@ void TimeEntryEditorWidget::on_tags_itemClicked(QListWidgetItem *item) {
             tags.push_back(widgetItem->text());
         }
     }
-    if (item) {
-        tags.push_back(item->text());
-    }
+
     tags.sort();
     QString list = tags.join("\t");
 
@@ -543,6 +579,7 @@ void TimeEntryEditorWidget::on_addClientButton_clicked() {
         ui->newProjectWorkspace->setFocus();
         return;
     }
+    recentlyAddedClient = name;
     QString clientGUID = TogglApi::instance->createClient(wid, name);
     if (clientGUID.isEmpty()) {
         return;
@@ -573,8 +610,10 @@ void TimeEntryEditorWidget::on_newTagButton_clicked() {
         for (int i = 0; i < ui->tags->count(); i++) {
             QListWidgetItem *widgetItem = ui->tags->item(i);
             if (widgetItem->text() == newTag) {
-                if (widgetItem->checkState() != Qt::Checked)
+                if (widgetItem->checkState() != Qt::Checked) {
+                    widgetItem->setCheckState(Qt::Checked);
                     on_tags_itemClicked(widgetItem);
+                }
                 return;
             }
             allTags << widgetItem->text();
