@@ -1,8 +1,9 @@
 {
     "versions": [
         {
-            "version": "7.4.483",
+            "version": "7.4.484",
             "rows": [
+                "Fixed library rerefencing issues"
                 "Fixed window resizing issues",
                 "Fixed grouping detect with same tags in different order",
                 "Totally new clean design",
@@ -17,7 +18,7 @@
                 "Fixed description field clearing issue",
                 "Fixed grouping issues with new accounts"
             ],
-            "date": "July 29th 2019"
+            "date": "July 30th 2019"
         },
         {
             "version": "7.4.373",
