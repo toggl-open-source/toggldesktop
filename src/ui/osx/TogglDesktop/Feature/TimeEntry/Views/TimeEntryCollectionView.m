@@ -279,7 +279,14 @@ extern void *ctx;
 	NSIndexPath *previousIndexPath = [datasource previousIndexPathFrom:indexPath];
 	if (previousIndexPath != nil)
 	{
-		[self deselectAll:self];
+        // deselect all previous if we don't hold Shift
+		NSUInteger flags = [[NSApp currentEvent] modifierFlags];
+		if (!(flags & NSShiftKeyMask))
+		{
+			[self deselectAll:self];
+		}
+
+        // Select previous cell
 		[self selectItemsAtIndexPaths:[NSSet setWithCollectionViewIndexPath:previousIndexPath]
 					   scrollPosition:NSCollectionViewScrollPositionNone];
 
