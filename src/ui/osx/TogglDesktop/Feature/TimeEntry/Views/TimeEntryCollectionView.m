@@ -122,7 +122,21 @@ extern void *ctx;
 
 	if ((event.keyCode == kVK_Return) || (event.keyCode == kVK_ANSI_KeypadEnter))
 	{
-		[cells.firstObject openEdit];
+		TimeEntryCell *cell = cells.firstObject;
+		if (cell != nil)
+		{
+			if (cell.Group)
+			{
+				if (cell.GroupName.length)
+				{
+					toggl_toggle_entries_group(ctx, [cell.GroupName UTF8String]);
+				}
+			}
+			else
+			{
+				[cell openEdit];
+			}
+		}
 	}
 	else if (event.keyCode == kVK_Escape)
 	{
