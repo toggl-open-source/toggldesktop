@@ -135,7 +135,7 @@ public:
 
     void Clear();
 
-    void TagList( std::vector<std::string> *result, const Poco::UInt64 wid) const;
+    void TagList(std::vector<std::string> *result, Poco::UInt64 wid) const;
     locked<std::vector<Workspace*>> WorkspaceList();
     locked<std::vector<Client*>> ClientList();
 
@@ -150,29 +150,25 @@ public:
     // Collect visible time entries
     locked<std::vector<TimeEntry *>> VisibleTimeEntries();
 
-    Poco::Int64 TotalDurationForDate(const TimeEntry *match) const;
+    Poco::Int64 TotalDurationForDate(const TimeEntry &match) const;
 
     // avoid duplicates
-    bool HasMatchingAutotrackerRule(const std::string lowercase_term) const;
+    bool HasMatchingAutotrackerRule(const std::string &lowercase_term) const;
 
-    error DeleteAutotrackerRule(const Poco::Int64 local_id);
+    error DeleteAutotrackerRule(Poco::Int64 local_id);
 
     void TimeEntryAutocompleteItems(std::vector<view::Autocomplete> *) const;
     void MinitimerAutocompleteItems(std::vector<view::Autocomplete> *) const;
     void ProjectAutocompleteItems(std::vector<view::Autocomplete> *) const;
 
     void ProjectLabelAndColorCode(
-        TimeEntry * const te,
+        const TimeEntry &te,
         view::TimeEntry *view) const;
 
     AutotrackerRule *FindAutotrackerRule(const TimelineEvent &event) const;
 
-    locked<Client> clientByProject(Project *p);
-    locked<const Client> clientByProject(const Project *p) const;
-
-    void pushBackTimeEntry(TimeEntry  *timeEntry);
-
-    void forEachTimeEntries(std::function<void(TimeEntry *)> f);
+    locked<Client> clientByProject(const Project &p);
+    locked<const Client> clientByProject(const Project &p) const;
 
  private:
     void timeEntryAutocompleteItems(

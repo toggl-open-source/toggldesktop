@@ -20,16 +20,6 @@
 
 namespace toggl {
 
-void RelatedData::forEachTimeEntries(std::function<void(TimeEntry *)> f) {
-    auto timeEntries = TimeEntries();
-    std::for_each(timeEntries->begin(), timeEntries->end(), f);
-}
-
-void RelatedData::pushBackTimeEntry(TimeEntry *timeEntry) {
-    auto timeEntries = TimeEntries();
-    timeEntries->insert(timeEntry);
-}
-
 void RelatedData::Clear() {
     Workspaces()->clear();
     Clients()->clear();
@@ -43,7 +33,7 @@ void RelatedData::Clear() {
     ObmExperiments()->clear();
 }
 
-error RelatedData::DeleteAutotrackerRule(const Poco::Int64 local_id) {
+error RelatedData::DeleteAutotrackerRule(Poco::Int64 local_id) {
     if (!local_id) {
         return error("cannot delete rule without an ID");
     }
@@ -74,7 +64,7 @@ AutotrackerRule *RelatedData::FindAutotrackerRule(
 }
 
 bool RelatedData::HasMatchingAutotrackerRule(
-    const std::string lowercase_term) const {
+    const std::string &lowercase_term) const {
     auto autotrackerRules = AutotrackerRules();
     for (auto it = autotrackerRules->begin(); it != autotrackerRules->end(); it++) {
         AutotrackerRule *rule = *it;
@@ -128,8 +118,8 @@ locked<std::vector<TimeEntry *> > RelatedData::VisibleTimeEntries() {
     return TimeEntries.make_locked(&result);
 }
 
-Poco::Int64 RelatedData::TotalDurationForDate(const TimeEntry *match) const {
-    std::string date_header = Formatter::FormatDateHeader(match->Start());
+Poco::Int64 RelatedData::TotalDurationForDate(const TimeEntry &match) const {
+    std::string date_header = Formatter::FormatDateHeader(match.Start());
     Poco::Int64 duration(0);
     auto timeEntries = TimeEntries();
     for (auto it = timeEntries->begin(); it != timeEntries->end(); it++) {
@@ -367,7 +357,9 @@ void RelatedData::projectAutocompleteItems(
             continue;
         }
 
-        locked<const Client> c = clientByProject(p);
+        locked<const Client> c;
+        if (p)
+            c = clientByProject(*p);
 
         std::string text = Formatter::JoinTaskName(0, p);
         if (text.empty()) {
@@ -510,9 +502,8 @@ void RelatedData::workspaceAutocompleteItems(
     }
 }
 
-void RelatedData::TagList(
-    std::vector<std::string> *tag_names,
-    const Poco::UInt64 wid) const {
+void RelatedData::TagList(std::vector<std::string> *tag_names,
+    Poco::UInt64 wid) const {
 
     poco_check_ptr(tag_names);
 
@@ -568,24 +559,22 @@ locked<std::vector<Client *> > RelatedData::ClientList() {
     return Clients.make_locked(&result);
 }
 
-void RelatedData::ProjectLabelAndColorCode(
-    TimeEntry * const te,
+void RelatedData::ProjectLabelAndColorCode(const TimeEntry &te,
     view::TimeEntry *view) const {
 
-    poco_check_ptr(te);
     poco_check_ptr(view);
 
     locked<const Workspace> ws;
-    if (te->WID()) {
-        ws = Workspaces.findByID(te->WID());
+    if (te.WID()) {
+        ws = Workspaces.findByID(te.WID());
     }
     if (ws) {
         view->WorkspaceName = ws->Name();
     }
 
     locked<const Task> t;
-    if (te->TID()) {
-        t = Tasks.findByID(te->TID());
+    if (te.TID()) {
+        t = Tasks.findByID(te.TID());
     }
     if (t) {
         view->TaskLabel = t->Name();
@@ -595,14 +584,14 @@ void RelatedData::ProjectLabelAndColorCode(
     if (t && t->PID()) {
         p = Projects.findByID(t->PID());
     }
-    if (!p && te->PID()) {
-        p = Projects.findByID(te->PID());
+    if (!p && te.PID()) {
+        p = Projects.findByID(te.PID());
     }
-    if (!p && !te->ProjectGUID().empty()) {
-        p = Projects.findByGUID(te->ProjectGUID());
+    if (!p && !te.ProjectGUID().empty()) {
+        p = Projects.findByGUID(te.ProjectGUID());
     }
 
-    locked<const Client> c = clientByProject(p.data());
+    locked<const Client> c = clientByProject(*p);
 
     view->ProjectAndTaskLabel = Formatter::JoinTaskName(t.data(), p.data());
 
@@ -616,24 +605,24 @@ void RelatedData::ProjectLabelAndColorCode(
     }
 }
 
-locked<Client> RelatedData::clientByProject(Project *p) {
+locked<Client> RelatedData::clientByProject(const Project &p) {
     locked<Client> c;
-    if (p && p->CID()) {
-        c = Clients.findByID(p->CID());
+    if (p.CID()) {
+        c = Clients.findByID(p.CID());
     }
-    if (!c && p && !p->ClientGUID().empty()) {
-        c = Clients.findByGUID(p->ClientGUID());
+    if (!c && !p.ClientGUID().empty()) {
+        c = Clients.findByGUID(p.ClientGUID());
     }
     return c;
 }
 
-locked<const Client> RelatedData::clientByProject(const Project *p) const {
+locked<const Client> RelatedData::clientByProject(const Project &p) const {
     locked<const Client> c;
-    if (p && p->CID()) {
-        c = Clients.findByID(p->CID());
+    if (p.CID()) {
+        c = Clients.findByID(p.CID());
     }
-    if (!c && p && !p->ClientGUID().empty()) {
-        c = Clients.findByGUID(p->ClientGUID());
+    if (!c && !p.ClientGUID().empty()) {
+        c = Clients.findByGUID(p.ClientGUID());
     }
     return c;
 }

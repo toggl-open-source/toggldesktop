@@ -515,11 +515,11 @@ void User::RemoveProjectFromRelatedModels(const Poco::UInt64 pid) {
 }
 
 void User::RemoveTaskFromRelatedModels(const Poco::UInt64 tid) {
-    related.forEachTimeEntries([&](TimeEntry *model) {
-        if (model->TID() == tid) {
-            model->SetTID(0);
+    for (auto i : *related.TimeEntries()) {
+        if (i->TID() == tid) {
+            i->SetTID(0);
         }
-    });
+    }
 }
 
 void User::loadUserTagFromJSON(
@@ -995,7 +995,7 @@ void User::loadUserProjectFromSyncJSON(
     model->SetUID(ID());
     model->LoadFromJSON(data);
 
-    auto c = related.clientByProject(model.data());
+    auto c = related.clientByProject(*model);
     if (c) {
         model->SetClientName(c->Name());
     }

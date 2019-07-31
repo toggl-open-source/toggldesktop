@@ -542,9 +542,9 @@ void Context::updateUI(const UIElements &what) {
                 editor_time_entry_view.DateDuration =
                     Formatter::FormatDurationForDateHeader(
                         user_->related.TotalDurationForDate(
-                            editor_time_entry.data()));
+                            *editor_time_entry));
                 user_->related.ProjectLabelAndColorCode(
-                    editor_time_entry.data(),
+                    *editor_time_entry,
                     &editor_time_entry_view);
 
                 // Various fields in TE editor related to workspace
@@ -631,9 +631,9 @@ void Context::updateUI(const UIElements &what) {
                 running_entry_view.DateDuration =
                     Formatter::FormatDurationForDateHeader(
                         user_->related.TotalDurationForDate(
-                            running_entry.data()));
+                            *running_entry));
                 user_->related.ProjectLabelAndColorCode(
-                    running_entry.data(),
+                    *running_entry,
                     &running_entry_view);
             }
         }
@@ -722,7 +722,7 @@ void Context::updateUI(const UIElements &what) {
                                     group_entry_view.GroupOpen = entry_groups[view.GroupName];
 
                                     user_->related.ProjectLabelAndColorCode(
-                                        group_entry,
+                                        *group_entry,
                                         &group_entry_view);
 
                                     group_entry_view.Locked = isTimeEntryLocked(group_entry);
@@ -741,7 +741,7 @@ void Context::updateUI(const UIElements &what) {
                             view::TimeEntry group_view;
                             group_view.Fill(te);
                             user_->related.ProjectLabelAndColorCode(
-                                te,
+                                *te,
                                 &group_view);
                             group_view.Group = true;
                             group_view.GroupOpen = entry_groups[group_view.GroupName];
@@ -760,7 +760,7 @@ void Context::updateUI(const UIElements &what) {
                     view.GroupItemCount = 1;
                 }
                 user_->related.ProjectLabelAndColorCode(
-                    te,
+                    *te,
                     &view);
 
                 view.Locked = isTimeEntryLocked(te);
@@ -4344,7 +4344,7 @@ void Context::uiUpdaterActivity() {
             if (!te) {
                 continue;
             }
-            duration = user_->related.TotalDurationForDate(te.data());
+            duration = user_->related.TotalDurationForDate(*te);
         }
 
         std::string date_duration =
