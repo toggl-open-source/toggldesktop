@@ -591,7 +591,9 @@ void RelatedData::ProjectLabelAndColorCode(const TimeEntry &te,
         p = Projects.findByGUID(te.ProjectGUID());
     }
 
-    locked<const Client> c = clientByProject(*p);
+    locked<const Client> c;
+    if (p)
+        c = clientByProject(*p);
 
     view->ProjectAndTaskLabel = Formatter::JoinTaskName(t.data(), p.data());
 
