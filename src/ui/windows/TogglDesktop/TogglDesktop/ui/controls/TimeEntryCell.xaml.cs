@@ -28,7 +28,8 @@ namespace TogglDesktop
 
         private string guid { get; set; }
         private string groupName { get; set; }
-        private Boolean group = false;
+        private bool group = false;
+        private bool groupOpen = false;
 
         public bool Selected
         {
@@ -179,6 +180,22 @@ namespace TogglDesktop
             this.setupGroupedMode(item);
         }
 
+        public bool TryCollapse()
+        {
+            var canCollapse = this.groupOpen;
+            if (!canCollapse) return false;
+            Toggl.ToggleEntriesGroup(groupName);
+            return true;
+        }
+
+        public bool TryExpand()
+        {
+            var canExpand = this.group && !this.groupOpen;
+            if (!canExpand) return false;
+            Toggl.ToggleEntriesGroup(groupName);
+            return true;
+        }
+
         private void setupGroupedMode(Toggl.TogglTimeEntryView item)
         {
             String groupItemsText = "";
@@ -189,6 +206,7 @@ namespace TogglDesktop
             Visibility visibility = Visibility.Collapsed;
             group = item.Group;
             groupName = item.GroupName;
+            groupOpen = item.GroupOpen;
             SubItem = (item.GroupItemCount > 0 && item.GroupOpen && !item.Group);
             // subitem that is open
             if (SubItem)
