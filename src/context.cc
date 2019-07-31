@@ -4666,8 +4666,11 @@ error Context::pushChanges(
         std::map<std::string, BaseModel *> models;
 
         std::vector<TimeEntry *> time_entries;
+        locked<std::vector<TimeEntry *>> time_entries_guard;
         std::vector<Project *> projects;
+        locked<std::vector<Project *>> projects_guard;
         std::vector<Client *> clients;
+        locked<std::vector<Client *>> clients_guard;
 
         std::string api_token("");
 
@@ -4682,21 +4685,27 @@ error Context::pushChanges(
             if (api_token.empty()) {
                 return error("cannot push changes without API token");
             }
-            // OVERHAUL_TODO
-/*
+
             collectPushableModels(
-                user_->related.TimeEntries,
+                *user_->related.TimeEntries(),
                 &time_entries,
                 &models);
             collectPushableModels(
-                user_->related.Projects,
+                *user_->related.Projects(),
                 &projects,
                 &models);
             collectPushableModels(
-                user_->related.Clients,
+                *user_->related.Clients(),
                 &clients,
                 &models);
-                */
+
+            if (!time_entries.empty())
+                time_entries_guard = user_->related.TimeEntries.make_locked(&time_entries);
+            if (!projects.empty())
+                projects_guard = user_->related.Projects.make_locked(&projects);
+            if (!clients.empty())
+                clients_guard = user_->related.Clients.make_locked(&clients);
+
             if (time_entries.empty()
                     && projects.empty()
                     && clients.empty()) {
@@ -5542,22 +5551,18 @@ error Context::PullCountries() {
 }
 
 template<typename T>
-void Context::collectPushableModels(
-    const std::vector<T *> list,
-    std::vector<T *> *result,
+void Context::collectPushableModels(const std::set<T*> &list,
+    std::vector<T*> *result,
     std::map<std::string, BaseModel *> *models) const {
 
     poco_check_ptr(result);
 
-    for (typename std::vector<T *>::const_iterator it =
-        list.begin();
-            it != list.end();
-            it++) {
-        T *model = *it;
+    for (auto it : list) {
+        T *model = it;
         if (!model->NeedsPush()) {
             continue;
         }
-        user_->EnsureWID(model);
+        user_->EnsureWID(*model);
         model->EnsureGUID();
         result->push_back(model);
         if (models && !model->GUID().empty()) {
