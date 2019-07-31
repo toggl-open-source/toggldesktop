@@ -14,7 +14,8 @@
 #import "Utils.h"
 
 @interface TimeEntryCollectionView ()
-@property (assign, nonatomic) NSIndexPath *latestSelectedIndexPath;
+@property (strong, nonatomic) NSIndexPath *latestSelectedIndexPath;
+@property (strong, nonatomic) NSSet<NSIndexPath *> *previousSelectionSet;
 @end
 
 @implementation TimeEntryCollectionView
@@ -42,8 +43,10 @@ extern void *ctx;
 }
 
 - (void)mouseDown:(NSEvent *)event {
+	// Store previous selection before any actions
+	// To deselect the selected item if need
+	self.previousSelectionSet = [self.selectionIndexPaths copy];
 	[super mouseDown:event];
-
 	if (@available(macOS 10.12, *))
 	{
 		// Do nothing
@@ -80,8 +83,18 @@ extern void *ctx;
 		NSUInteger flags = [[NSApp currentEvent] modifierFlags];
 		if (flags & NSShiftKeyMask)
 		{
-			[self selectItemsAtIndexPaths:[NSSet setWithObject:index]
-						   scrollPosition:NSCollectionViewScrollPositionLeft];
+			NSSet *set = [NSSet setWithObject:index];
+
+			// Select or deselect
+			if ([self.previousSelectionSet containsObject:index])
+			{
+				[self deselectItemsAtIndexPaths:set];
+			}
+			else
+			{
+				[self selectItemsAtIndexPaths:set scrollPosition:NSCollectionViewScrollPositionLeft];
+			}
+
 			return;
 		}
 
@@ -279,14 +292,14 @@ extern void *ctx;
 	NSIndexPath *previousIndexPath = [datasource previousIndexPathFrom:indexPath];
 	if (previousIndexPath != nil)
 	{
-        // deselect all previous if we don't hold Shift
+		// deselect all previous if we don't hold Shift
 		NSUInteger flags = [[NSApp currentEvent] modifierFlags];
 		if (!(flags & NSShiftKeyMask))
 		{
 			[self deselectAll:self];
 		}
 
-        // Select previous cell
+		// Select previous cell
 		[self selectItemsAtIndexPaths:[NSSet setWithCollectionViewIndexPath:previousIndexPath]
 					   scrollPosition:NSCollectionViewScrollPositionNone];
 
