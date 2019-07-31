@@ -103,6 +103,10 @@ NSString *kInactiveTimerColor = @"#999999";
 												 selector:@selector(windowDidBecomeKeyNotification:)
 													 name:NSWindowDidBecomeKeyNotification
 												   object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self
+												 selector:@selector(startNewShortcut:)
+													 name:kCommandNewShortcut
+												   object:nil];
 
 		self.time_entry = [[TimeEntryViewItem alloc] init];
 
@@ -693,6 +697,11 @@ NSString *kInactiveTimerColor = @"#999999";
 		self.projectTextField.placeholderString = @"+ Add project";
 		self.projectTextFieldLeading.constant = 0;
 	}
+}
+
+- (void)startNewShortcut:(NSNotification *)notification
+{
+	[self startButtonClicked:self];
 }
 
 @end

@@ -178,10 +178,6 @@ BOOL onTop = NO;
 												 name:kCommandNew
 											   object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(startNewShortcut:)
-												 name:kCommandNewShortcut
-											   object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(startContinueTimeEntry:)
 												 name:kCommandContinue
 											   object:nil];
@@ -486,28 +482,6 @@ BOOL onTop = NO;
 		{
 			toggl_set_time_entry_billable(ctx, guid, new_time_entry.billable);
 		}
-		free(guid);
-	});
-}
-
-- (void)startNewShortcut:(NSNotification *)notification
-{
-	[self newShortcut:notification.object];
-}
-
-- (void)newShortcut:(TimeEntryViewItem *)new_time_entry
-{
-	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
-	NSAssert(new_time_entry != nil, @"new time entry details cannot be nil");
-	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-		char *guid = toggl_start(ctx,
-								 [new_time_entry.Description UTF8String],
-								 [new_time_entry.duration UTF8String],
-								 new_time_entry.TaskID,
-								 new_time_entry.ProjectID,
-								 0,
-								 0,
-								 false);
 		free(guid);
 	});
 }
