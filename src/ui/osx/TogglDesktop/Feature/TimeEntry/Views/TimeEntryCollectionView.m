@@ -188,7 +188,7 @@ extern void *ctx;
 	}
 	else if (event.keyCode == kVK_UpArrow)
 	{
-		NSIndexPath *index = [self.selectionIndexPaths.allObjects firstObject];
+		NSIndexPath *index = [self.selectionIndexPaths.allObjects lastObject];
 		if (index != nil)
 		{
 			[self selectPreviousRowFromIndexPath:index];
@@ -206,7 +206,7 @@ extern void *ctx;
 	{
 		return nil;
 	}
-	self.latestSelectedIndexPath = [[self.selectionIndexPaths allObjects] firstObject];
+	self.latestSelectedIndexPath = [[self.selectionIndexPaths allObjects] lastObject];
 
 	// Get all selected cells
 	NSMutableArray<TimeEntryCell *> *items = [@[] mutableCopy];
@@ -308,7 +308,14 @@ extern void *ctx;
 	{
 		// deselect all previous if we don't hold Shift
 		NSUInteger flags = [[NSApp currentEvent] modifierFlags];
-		if (!(flags & NSShiftKeyMask))
+		if (flags & NSShiftKeyMask)
+		{
+			if ([self.selectionIndexPaths.allObjects containsObject:previousIndexPath])
+			{
+				[self deselectItemsAtIndexPaths:[NSSet setWithCollectionViewIndexPath:indexPath]];
+			}
+		}
+		else
 		{
 			[self deselectAll:self];
 		}
@@ -316,6 +323,7 @@ extern void *ctx;
 		// Select previous cell
 		[self selectItemsAtIndexPaths:[NSSet setWithCollectionViewIndexPath:previousIndexPath]
 					   scrollPosition:NSCollectionViewScrollPositionNone];
+		self.latestSelectedIndexPath = previousIndexPath;
 
 		// Scroll to visible selected row
 		NSCollectionViewLayoutAttributes *attribute = [self layoutAttributesForItemAtIndexPath:previousIndexPath];
