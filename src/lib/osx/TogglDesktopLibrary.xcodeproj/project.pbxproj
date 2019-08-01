@@ -476,7 +476,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "mkdir -p $PROJECT_DIR/build\ncp $TARGET_BUILD_DIR/*.dylib $PROJECT_DIR/build\n";
+			shellScript = "mkdir -p $PROJECT_DIR/build\ncp $BUILT_PRODUCTS_DIR/*.dylib $PROJECT_DIR/build\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
