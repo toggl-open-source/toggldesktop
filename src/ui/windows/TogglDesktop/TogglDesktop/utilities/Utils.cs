@@ -31,7 +31,8 @@ public static class Utils
         }
 
         long x = 0, y = 0, h = 0, w = 0;
-        if (Toggl.WindowSettings(ref x, ref y, ref h, ref w))
+        if (Toggl.WindowSettings(ref x, ref y, ref h, ref w)
+            && ValidateWindowSettings(x, y, h, w))
         {
             mainWindow.Left = x;
             mainWindow.Top = y;
@@ -64,6 +65,11 @@ public static class Utils
 
             checkMinitimerVisibility(miniTimer);
         }
+    }
+
+    private static bool ValidateWindowSettings(params long[] valuesToValidate)
+    {
+        return valuesToValidate.All(v => v >= int.MinValue && v <= int.MaxValue);
     }
 
     public static void checkMinitimerVisibility(MiniTimerWindow miniTimer) {
@@ -107,7 +113,8 @@ public static class Utils
             h = (long)mainWindow.Height;
         }
 
-        var success = Toggl.SetWindowSettings(x, y, h, w);
+        var success = ValidateWindowSettings(x, y, h, w)
+                      && Toggl.SetWindowSettings(x, y, h, w);
 
         Toggl.Debug(success
                     ? "Saved window location and size ({0}x{1} by {2}x{3})"
