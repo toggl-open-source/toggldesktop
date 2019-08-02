@@ -74,6 +74,7 @@ final class AutoCompleteView: NSView {
 
     private struct Constants {
         static let CreateButtonHeight: CGFloat = 40
+        static let MinimumHeight: CGFloat = 44
     }
 
     // MARK: OUTLET
@@ -113,12 +114,15 @@ final class AutoCompleteView: NSView {
         let screenFrame = self.window!.convertToScreen(frame)
         let topLeftY = screenFrame.origin.y + screenFrame.size.height
         var offset: CGFloat = createNewItemContainerView.isHidden ? 0 : Constants.CreateButtonHeight
-        offset -= 2 // No collision with screen
+        offset += 10 // No collision with edge of the screen
 
         // Reduce the size if the height is greater than screen
         if (height + offset) > topLeftY {
             height = topLeftY - offset
         }
+
+        // Make sure >= minimum size
+        height = CGFloat.maximum(height, Constants.MinimumHeight + offset)
 
         // Overriden
         tableViewHeight.constant = height
