@@ -18,6 +18,23 @@ option(TOGGL_ALLOW_UPDATE_CHECK "Allow the app to check for updates" OFF)
 option(USE_BUNDLED_LIBRARIES "Prefer bundled libraries to bundled ones" OFF)
 option(INSTALL_HIRES_ICONS "Do not install icons over 512x512" OFF)
 
+if ("${TOGGL_VERSION}" STREQUAL "7.0.0")
+    find_package (Git)
+    if (GIT_FOUND)
+        message("git found: ${GIT_EXECUTABLE} in version ${GIT_VERSION_STRING}")
+        execute_process(
+            COMMAND ${GIT_EXECUTABLE} --git-dir=${CMAKE_SOURCE_DIR}/.git --work-tree=${CMAKE_SOURCE_DIR} describe --tags
+            RESULT_VARIABLE RESULT_GIT
+            OUTPUT_VARIABLE OUTPUT_GIT
+            ERROR_VARIABLE ERROR_GIT)
+        string (REGEX REPLACE "^v" "" OUTPUT_GIT ${OUTPUT_GIT})
+        string (REGEX REPLACE "-([0-9]+)-.*" ".\\1" OUTPUT_GIT ${OUTPUT_GIT})
+        string (REGEX REPLACE "\n" ""  TOGGL_VERSION ${OUTPUT_GIT})
+    else(GIT_FOUND)
+        message(WARNING "Version was not set by the user and it could not be retrieved from git - it will default to 7.0.0.")
+    endif (GIT_FOUND)
+endif()
+
 # Use PkgConfig to look for packages without native CMake support
 include(FindPkgConfig)
 
