@@ -612,7 +612,9 @@ char_t *toggl_start(
         tag_list,
         prevent_on_app);
     if (te) {
-        return copy_string(te->GUID());
+        auto result = copy_string(te->GUID());
+        te.unlock();
+        return result;
     }
     return nullptr;
 }

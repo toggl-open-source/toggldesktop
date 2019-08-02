@@ -153,7 +153,6 @@ Context::~Context() {
     }
 
     {
-        Poco::Mutex::ScopedLock lock(user_m_);
         if (user_) {
             delete user_;
             user_ = nullptr;
@@ -238,7 +237,6 @@ error Context::StartEvents() {
         logger().debug("StartEvents");
 
         {
-            Poco::Mutex::ScopedLock lock(user_m_);
             if (user_) {
                 return displayError("Cannot start UI, user already logged in!");
             }
@@ -313,7 +311,7 @@ error Context::save(const bool push_changes) {
         std::vector<ModelChange> changes;
 
         {
-            Poco::Mutex::ScopedLock lock(user_m_);
+            
             error err = db()->SaveUser(user_, true, &changes);
             if (err != noError) {
                 return err;
@@ -518,7 +516,7 @@ void Context::updateUI(const UIElements &what) {
 
     // Collect data
     {
-        Poco::Mutex::ScopedLock lock(user_m_);
+        
 
         if (what.display_time_entry_editor && user_) {
             auto editor_time_entry = user_->related.TimeEntries.findByGUID(what.time_entry_editor_guid);
@@ -1109,7 +1107,7 @@ error Context::LoadUpdateFromJSONString(const std::string json) {
     ss << "LoadUpdateFromJSONString json=" << json;
     logger().debug(ss.str());
 
-    Poco::Mutex::ScopedLock lock(user_m_);
+    
     if (!user_) {
         logger().warning("User is logged out, cannot update");
         return noError;
@@ -1149,7 +1147,7 @@ void Context::onSwitchWebSocketOn(Poco::Util::TimerTask& task) {  // NOLINT
     std::string apitoken("");
 
     {
-        Poco::Mutex::ScopedLock lock(user_m_);
+        
         if (user_) {
             apitoken = user_->APIToken();
         }
@@ -1213,7 +1211,7 @@ void Context::onSwitchTimelineOn(Poco::Util::TimerTask& task) {  // NOLINT
     }
 
     {
-        Poco::Mutex::ScopedLock lock(user_m_);
+        
         if (!user_ || !user_->RecordTimeline()) {
             return;
         }
@@ -1325,7 +1323,7 @@ error Context::UpdateChannel(
 }
 
 std::string Context::UserFullName() {
-    Poco::Mutex::ScopedLock lock(user_m_);
+    
     if (!user_) {
         return "";
     }
@@ -1333,7 +1331,7 @@ std::string Context::UserFullName() {
 }
 
 std::string Context::UserEmail() {
-    Poco::Mutex::ScopedLock lock(user_m_);
+    
     if (!user_) {
         return "";
     }
@@ -1574,7 +1572,7 @@ void Context::onTimelineUpdateServerSettings(Poco::Util::TimerTask& task) {  // 
     std::string json(kRecordTimelineDisabledJSON);
 
     {
-        Poco::Mutex::ScopedLock lock(user_m_);
+        
         if (!user_) {
             return;
         }
@@ -1633,7 +1631,7 @@ void Context::onSendFeedback(Poco::Util::TimerTask& task) {  // NOLINT
     std::string api_token_name("");
 
     {
-        Poco::Mutex::ScopedLock lock(user_m_);
+        
         if (user_) {
             api_token_value = user_->APIToken();
             api_token_name = "api_token";
@@ -2223,7 +2221,7 @@ error Context::Login(
         }
 
         {
-            Poco::Mutex::ScopedLock lock(user_m_);
+            
             if (!user_) {
                 logger().error("cannot enable offline login, no user");
                 return noError;
@@ -2281,7 +2279,7 @@ void Context::setUser(User *value, const bool logged_in) {
     Poco::UInt64 user_id(0);
 
     {
-        Poco::Mutex::ScopedLock lock(user_m_);
+        
         if (user_) {
             delete user_;
         }
@@ -2460,7 +2458,7 @@ error Context::ClearCache() {
         }
 
         {
-            Poco::Mutex::ScopedLock lock(user_m_);
+            
             if (!user_) {
                 logger().warning("User is logged out, cannot clear cache");
                 return noError;
@@ -2508,7 +2506,7 @@ locked<TimeEntry> Context::Start(
     locked<TimeEntry> te;
 
     {
-        Poco::Mutex::ScopedLock lock(user_m_);
+        
         if (!user_) {
             logger().warning("Cannot start tracking, user logged out");
             return {};
@@ -2574,7 +2572,7 @@ void Context::OpenTimeEntryEditor(
     locked<TimeEntry> te;
 
     {
-        Poco::Mutex::ScopedLock lock(user_m_);
+        
         if (!user_) {
             logger().warning("Cannot edit time entry, user logged out");
             return;
@@ -2630,7 +2628,7 @@ locked<TimeEntry> Context::ContinueLatest(const bool prevent_on_app) {
     locked<TimeEntry> result;
 
     {
-        Poco::Mutex::ScopedLock lock(user_m_);
+        
         if (!user_) {
             logger().warning("Cannot continue tracking, user logged out");
             return {};
@@ -2704,7 +2702,7 @@ locked<TimeEntry> Context::Continue(
     locked<TimeEntry> result;
 
     {
-        Poco::Mutex::ScopedLock lock(user_m_);
+        
         if (!user_) {
             logger().warning("Cannot continue time entry, user logged out");
             return {};
@@ -2749,7 +2747,7 @@ error Context::DeleteTimeEntryByGUID(const std::string GUID) {
     locked<TimeEntry> te;
 
     {
-        Poco::Mutex::ScopedLock lock(user_m_);
+        
         if (!user_) {
             logger().warning("Cannot delete time entry, user logged out");
             return noError;
@@ -2788,7 +2786,7 @@ error Context::SetTimeEntryDuration(
         return displayError(std::string(__FUNCTION__) + ": Missing GUID");
     }
 
-    Poco::Mutex::ScopedLock lock(user_m_);
+    
     if (!user_) {
         logger().warning("Cannot set duration, user logged out");
         return noError;
@@ -2823,7 +2821,7 @@ error Context::SetTimeEntryProject(
             return displayError(std::string(__FUNCTION__) + ": Missing GUID");
         }
 
-        Poco::Mutex::ScopedLock lock(user_m_);
+        
         if (!user_) {
             logger().warning("Cannot set project, user logged out");
             return noError;
@@ -2892,7 +2890,7 @@ error Context::SetTimeEntryDate(
     Poco::LocalDateTime dt;
 
     {
-        Poco::Mutex::ScopedLock lock(user_m_);
+        
         if (!user_) {
             logger().warning("Cannot change date, user logged out");
             return noError;
@@ -2951,7 +2949,7 @@ error Context::SetTimeEntryStart(
     locked<TimeEntry> te;
 
     {
-        Poco::Mutex::ScopedLock lock(user_m_);
+        
         if (!user_) {
             logger().warning("Cannot change start time, user logged out");
             return noError;
@@ -3009,7 +3007,7 @@ error Context::SetTimeEntryStop(
     locked<TimeEntry> te;
 
     {
-        Poco::Mutex::ScopedLock lock(user_m_);
+        
         if (!user_) {
             logger().warning("Cannot change stop time, user logged out");
             return noError;
@@ -3072,7 +3070,7 @@ error Context::SetTimeEntryTags(
     locked<TimeEntry> te;
 
     {
-        Poco::Mutex::ScopedLock lock(user_m_);
+        
         if (!user_) {
             logger().warning("Cannot set tags, user logged out");
             return noError;
@@ -3109,7 +3107,7 @@ error Context::SetTimeEntryBillable(
     locked<TimeEntry> te;
 
     {
-        Poco::Mutex::ScopedLock lock(user_m_);
+        
         if (!user_) {
             logger().warning("Cannot set billable, user logged out");
             return noError;
@@ -3146,7 +3144,7 @@ error Context::SetTimeEntryDescription(
     locked<TimeEntry> te;
 
     {
-        Poco::Mutex::ScopedLock lock(user_m_);
+        
         if (!user_) {
             logger().warning("Cannot set description, user logged out");
             return noError;
@@ -3182,7 +3180,7 @@ error Context::Stop(const bool prevent_on_app) {
     std::vector<TimeEntry *> stopped;
 
     {
-        Poco::Mutex::ScopedLock lock(user_m_);
+        
         if (!user_) {
             logger().warning("Cannot stop tracking, user logged out");
             return noError;
@@ -3235,7 +3233,7 @@ error Context::DiscardTimeAt(
     locked<TimeEntry> split;
 
     {
-        Poco::Mutex::ScopedLock lock(user_m_);
+        
         if (!user_) {
             logger().warning("Cannot stop time entry, user logged out");
             return noError;
@@ -3275,7 +3273,7 @@ locked<TimeEntry> Context::DiscardTimeAndContinue(
     }
 
     {
-        Poco::Mutex::ScopedLock lock(user_m_);
+        
         if (!user_) {
             logger().warning("Cannot stop time entry, user logged out");
             return {};
@@ -3293,7 +3291,7 @@ locked<TimeEntry> Context::DiscardTimeAndContinue(
 }
 
 locked<TimeEntry> Context::RunningTimeEntry() {
-    Poco::Mutex::ScopedLock lock(user_m_);
+    
     if (!user_) {
         logger().warning("Cannot fetch time entry, user logged out");
         return {};
@@ -3302,7 +3300,7 @@ locked<TimeEntry> Context::RunningTimeEntry() {
 }
 
 error Context::ToggleTimelineRecording(const bool record_timeline) {
-    Poco::Mutex::ScopedLock lock(user_m_);
+    
     if (!user_) {
         logger().warning("Cannot toggle timeline, user logged out");
         return noError;
@@ -3355,7 +3353,7 @@ error Context::SetDefaultProject(
     const Poco::UInt64 tid) {
     try {
         {
-            Poco::Mutex::ScopedLock lock(user_m_);
+            
             if (!user_) {
                 logger().warning("Cannot set default PID, user logged out");
                 return noError;
@@ -3413,7 +3411,7 @@ error Context::DefaultProjectName(std::string *name) {
         locked<Project> p;
         locked<Task> t;
         {
-            Poco::Mutex::ScopedLock lock(user_m_);
+            
             if (!user_) {
                 logger().warning("Cannot get default PID, user logged out");
                 return noError;
@@ -3441,7 +3439,7 @@ error Context::DefaultPID(Poco::UInt64 *result) {
         poco_check_ptr(result);
         *result = 0;
         {
-            Poco::Mutex::ScopedLock lock(user_m_);
+            
             if (!user_) {
                 logger().warning("Cannot get default PID, user logged out");
                 return noError;
@@ -3463,7 +3461,7 @@ error Context::DefaultTID(Poco::UInt64 *result) {
         poco_check_ptr(result);
         *result = 0;
         {
-            Poco::Mutex::ScopedLock lock(user_m_);
+            
             if (!user_) {
                 logger().warning("Cannot get default PID, user logged out");
                 return noError;
@@ -3501,7 +3499,7 @@ error Context::AddAutotrackerRule(
     locked<AutotrackerRule> rule;
 
     {
-        Poco::Mutex::ScopedLock lock(user_m_);
+        
         if (!user_) {
             logger().warning("cannot add autotracker rule, user logged out");
             return noError;
@@ -3565,7 +3563,7 @@ error Context::DeleteAutotrackerRule(
     }
 
     {
-        Poco::Mutex::ScopedLock lock(user_m_);
+        
         if (!user_) {
             logger().warning("cannot delete rule, user is logged out");
             return noError;
@@ -3607,7 +3605,7 @@ locked<Project> Context::CreateProject(
     locked<Project> result;
 
     {
-        Poco::Mutex::ScopedLock lock(user_m_);
+        
         if (!user_) {
             logger().warning("Cannot add project, user logged out");
             return {};
@@ -3700,7 +3698,7 @@ error Context::AddObmAction(
     }
     // Add OBM action and save
     {
-        Poco::Mutex::ScopedLock lock(user_m_);
+        
         if (!user_) {
             logger().warning("Cannot create a OBM action, user logged out");
             return noError;
@@ -3737,7 +3735,7 @@ locked<Client> Context::CreateClient(
     locked<Client> result;
 
     {
-        Poco::Mutex::ScopedLock lock(user_m_);
+        
         if (!user_) {
             logger().warning("Cannot create a client, user logged out");
             return {};
@@ -3794,7 +3792,7 @@ error Context::OpenReportsInBrowser() {
     std::string apitoken("");
 
     {
-        Poco::Mutex::ScopedLock lock(user_m_);
+        
         if (!user_) {
             return displayError("You must log in to view reports");
         }
@@ -3897,7 +3895,7 @@ error Context::runObmExperiments() {
         auto obmExperiments = user_->related.ObmExperiments();
         std::map<Poco::UInt64, ObmExperiment*> experiments;
         {
-            Poco::Mutex::ScopedLock lock(user_m_);
+            
             if (!user_) {
                 logger().warning("User logged out, cannot OBM experiment");
                 return noError;
@@ -4024,7 +4022,7 @@ void Context::displayReminder() {
     }
 
     {
-        Poco::Mutex::ScopedLock lock(user_m_);
+        
         if (!user_) {
             return;
         }
@@ -4103,7 +4101,7 @@ void Context::displayPomodoro() {
     Poco::UInt64 wid(0);
 
     {
-        Poco::Mutex::ScopedLock lock(user_m_);
+        
         if (!user_) {
             return;
         }
@@ -4158,7 +4156,7 @@ void Context::displayPomodoroBreak() {
     }
 
     {
-        Poco::Mutex::ScopedLock lock(user_m_);
+        
         if (!user_) {
             return;
         }
@@ -4190,7 +4188,7 @@ void Context::displayPomodoroBreak() {
 }
 
 error Context::StartAutotrackerEvent(const TimelineEvent &event) {
-    Poco::Mutex::ScopedLock lock(user_m_);
+    
     if (!user_) {
         return noError;
     }
@@ -4235,7 +4233,7 @@ error Context::StartAutotrackerEvent(const TimelineEvent &event) {
 
 error Context::CreateCompressedTimelineBatchForUpload(TimelineBatch *batch) {
     try {
-        Poco::Mutex::ScopedLock lock(user_m_);
+        
         if (!user_) {
             logger().warning("cannot create timeline batch, user logged out");
             return noError;
@@ -4271,7 +4269,7 @@ error Context::StartTimelineEvent(TimelineEvent *event) {
     try {
         poco_check_ptr(event);
 
-        Poco::Mutex::ScopedLock lock(user_m_);
+        
         if (!user_) {
             return noError;
         }
@@ -4294,7 +4292,7 @@ error Context::StartTimelineEvent(TimelineEvent *event) {
 error Context::MarkTimelineBatchAsUploaded(
     const std::vector<TimelineEvent> &events) {
     try {
-        Poco::Mutex::ScopedLock lock(user_m_);
+        
         if (!user_) {
             logger().warning("cannot mark timeline events as uploaded, "
                              "user is already logged out");
@@ -4336,7 +4334,7 @@ void Context::uiUpdaterActivity() {
         locked<TimeEntry> te;
         Poco::Int64 duration(0);
         {
-            Poco::Mutex::ScopedLock lock(user_m_);
+            
             if (!user_) {
                 continue;
             }
@@ -4456,7 +4454,7 @@ void Context::syncerActivity() {
 
 void Context::LoadMore() {
     {
-        Poco::Mutex::ScopedLock lock(user_m_);
+        
         if (!user_ || user_->HasLoadedMore()) {
             return;
         }
@@ -4474,7 +4472,7 @@ void Context::onLoadMore(Poco::Util::TimerTask& task) {
     bool needs_render = !user_->HasLoadedMore();
     std::string api_token;
     {
-        Poco::Mutex::ScopedLock lock(user_m_);
+        
         if (!user_ || user_->HasLoadedMore()) {
             return;
         }
@@ -4511,7 +4509,7 @@ void Context::onLoadMore(Poco::Util::TimerTask& task) {
         std::string json = resp.body;
 
         {
-            Poco::Mutex::ScopedLock lock(user_m_);
+            
             if (!user_)
                 return;
             error err = user_->LoadTimeEntriesFromJSONString(json);
@@ -4577,7 +4575,7 @@ error Context::pullAllUserData(
     std::string api_token("");
     Poco::UInt64 since(0);
     {
-        Poco::Mutex::ScopedLock lock(user_m_);
+        
         if (!user_) {
             logger().warning("cannot pull user data when logged out");
             return noError;
@@ -4608,7 +4606,7 @@ error Context::pullAllUserData(
         }
 
         {
-            Poco::Mutex::ScopedLock lock(user_m_);
+            
             if (!user_) {
                 return error("cannot load user data when logged out");
             }
@@ -4675,7 +4673,7 @@ error Context::pushChanges(
         std::string api_token("");
 
         {
-            Poco::Mutex::ScopedLock lock(user_m_);
+            
             if (!user_) {
                 logger().warning("cannot push changes when logged out");
                 return noError;
@@ -5026,7 +5024,7 @@ error Context::pullObmExperiments() {
 
         std::string apitoken("");
         {
-            Poco::Mutex::ScopedLock lock(user_m_);
+            
             if (!user_) {
                 logger().warning("Cannot fetch OBM experiments without user");
                 return noError;
@@ -5053,7 +5051,7 @@ error Context::pullObmExperiments() {
         }
 
         {
-            Poco::Mutex::ScopedLock lock(user_m_);
+            
             if (!user_) {
                 logger().warning("Cannot apply OBM experiments without user");
                 return noError;
@@ -5081,7 +5079,7 @@ error Context::pushObmAction() {
 
         // Get next OBM action for upload
         {
-            Poco::Mutex::ScopedLock lock(user_m_);
+            
             if (!user_) {
                 logger().warning("cannot push changes when logged out");
                 return noError;
@@ -5269,7 +5267,7 @@ error Context::pullWorkspaces(TogglClient* toggl_client) {
 error Context::pullWorkspacePreferences(TogglClient* toggl_client) {
     locked<std::vector<Workspace*>> workspaces;
     {
-        Poco::Mutex::ScopedLock lock(user_m_);
+        
         logger().debug("user mutex lock success - c:pullWorkspacePreferences");
 
         workspaces = user_->related.WorkspaceList();
