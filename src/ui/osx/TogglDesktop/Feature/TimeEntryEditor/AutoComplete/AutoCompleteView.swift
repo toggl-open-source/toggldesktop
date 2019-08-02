@@ -74,7 +74,6 @@ final class AutoCompleteView: NSView {
 
     private struct Constants {
         static let CreateButtonHeight: CGFloat = 40
-        static let MinimumHeight: CGFloat = 44
     }
 
     // MARK: OUTLET
@@ -121,8 +120,8 @@ final class AutoCompleteView: NSView {
             height = topLeftY - offset
         }
 
-        // Make sure >= minimum size
-        height = CGFloat.maximum(height, Constants.MinimumHeight + offset)
+        // Make sure >= 0
+        height = CGFloat.maximum(height, 0)
 
         // Overriden
         tableViewHeight.constant = height
