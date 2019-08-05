@@ -29,6 +29,12 @@ namespace testing {
 
 namespace testresult {
 
+#if defined(_WIN32) || defined(WIN32)
+#define STR(X) L ## X
+#else
+#define STR(X) X
+#endif
+
 // on_url
 std::string url("");
 
@@ -127,7 +133,7 @@ void on_sync_state(const int64_t sync_state) {
 }
 
 void on_update(const char_t *url) {
-    testresult::update_url = std::string(url);
+    testresult::update_url = to_string(url);
 }
 
 void on_unsynced_items(const int64_t count) {
@@ -135,10 +141,10 @@ void on_unsynced_items(const int64_t count) {
 }
 
 void on_error(
-    const char *errmsg,
+    const char_t *errmsg,
     const bool_t user_error) {
     if (errmsg) {
-        testresult::error = std::string(errmsg);
+        testresult::error = to_string(errmsg);
         return;
     }
     testresult::error = std::string("");
@@ -148,24 +154,24 @@ void on_online_state(const int64_t state) {
     testresult::online_state = state;
 }
 
-void on_url(const char *url) {
-    testresult::url = std::string(url);
+void on_url(const char_t *url) {
+    testresult::url = to_string(url);
 }
 
 void on_login(const bool_t open, const uint64_t user_id) {
     testresult::user_id = user_id;
 }
 
-void on_reminder(const char *title, const char *informative_text) {
-    testresult::reminder_title = std::string(title);
-    testresult::reminder_informative_text = std::string(informative_text);
+void on_reminder(const char_t *title, const char_t *informative_text) {
+    testresult::reminder_title = to_string(title);
+    testresult::reminder_informative_text = to_string(informative_text);
 }
 
 void on_help_articles(TogglHelpArticleView *first) {
     testing::testresult::help_article_names.clear();
     TogglHelpArticleView *it = first;
     while (it) {
-        std::string name(it->Name);
+        std::string name(to_string(it->Name));
         testing::testresult::help_article_names.push_back(name);
         it = reinterpret_cast<TogglHelpArticleView *>(it->Next);
     }
@@ -179,10 +185,10 @@ void on_time_entry_list(
     TogglTimeEntryView *it = first;
     while (it) {
         TimeEntry te;
-        te.SetGUID(it->GUID);
+        te.SetGUID(to_string(it->GUID));
         te.SetID(it->ID);
         te.SetDurationInSeconds(it->DurationInSeconds);
-        te.SetDescription(it->Description);
+        te.SetDescription(to_string(it->Description));
         te.SetStart(it->Started);
         te.SetStop(it->Ended);
         testing::testresult::time_entries.push_back(te);
@@ -201,7 +207,7 @@ void on_project_autocomplete(TogglAutocompleteView *first) {
     TogglAutocompleteView *it = first;
     while (it) {
         testing::testresult::projects.push_back(
-            std::string(it->ProjectLabel));
+            to_string(it->ProjectLabel));
         it = reinterpret_cast<TogglAutocompleteView *>(it->Next);
     }
 }
@@ -210,7 +216,7 @@ void on_client_select(TogglGenericView *first) {
     testing::testresult::clients.clear();
     TogglGenericView *it = first;
     while (it) {
-        testing::testresult::clients.push_back(std::string(it->Name));
+        testing::testresult::clients.push_back(to_string(it->Name));
         it = reinterpret_cast<TogglGenericView *>(it->Next);
     }
 }
@@ -224,12 +230,12 @@ void on_tags(TogglGenericView *first) {
 void on_time_entry_editor(
     const bool_t open,
     TogglTimeEntryView *te,
-    const char *focused_field_name) {
+    const char_t *focused_field_name) {
     testing::testresult::editor_state = TimeEntry();
-    testing::testresult::editor_state.SetGUID(te->GUID);
+    testing::testresult::editor_state.SetGUID(to_string(te->GUID));
     testing::testresult::editor_open = open;
     testing::testresult::editor_focused_field_name =
-        std::string(focused_field_name);
+        to_string(focused_field_name);
 }
 
 void on_display_settings(
@@ -254,15 +260,15 @@ void on_display_settings(
 
     testing::testresult::use_proxy = settings->UseProxy;
 
-    testing::testresult::proxy.SetHost(std::string(settings->ProxyHost));
+    testing::testresult::proxy.SetHost(to_string(settings->ProxyHost));
     testing::testresult::proxy.SetPort(settings->ProxyPort);
     testing::testresult::proxy.SetUsername(
-        std::string(settings->ProxyUsername));
+        to_string(settings->ProxyUsername));
     testing::testresult::proxy.SetPassword(
-        std::string(settings->ProxyPassword));
+        to_string(settings->ProxyPassword));
 
-    testing::testresult::settings.remind_starts = settings->RemindStarts;
-    testing::testresult::settings.remind_ends = settings->RemindEnds;
+    testing::testresult::settings.remind_starts = to_string(settings->RemindStarts);
+    testing::testresult::settings.remind_ends = to_string(settings->RemindEnds);
     testing::testresult::settings.remind_mon = settings->RemindMon;
     testing::testresult::settings.remind_tue = settings->RemindTue;
     testing::testresult::settings.remind_wed = settings->RemindWed;
@@ -277,7 +283,7 @@ void on_project_colors(
     const uint64_t color_count) {
     testresult::project_colors.clear();
     for (uint64_t i = 0; i < color_count; i++) {
-        testresult::project_colors.push_back(std::string(color_list[i]));
+        testresult::project_colors.push_back(to_string(color_list[i]));
     }
 }
 
@@ -297,12 +303,12 @@ void on_display_timer_state(TogglTimeEntryView *te) {
     if (te) {
         testing::testresult::timer_state.SetID(te->ID);
         testing::testresult::timer_state.SetStart(te->Started);
-        testing::testresult::timer_state.SetGUID(te->GUID);
+        testing::testresult::timer_state.SetGUID(to_string(te->GUID));
         testing::testresult::timer_state.SetDurationInSeconds(
             te->DurationInSeconds);
-        testing::testresult::timer_state.SetDescription(te->Description);
+        testing::testresult::timer_state.SetDescription(to_string(te->Description));
         if (te->Tags) {
-            testing::testresult::timer_state.SetTags(te->Tags);
+            testing::testresult::timer_state.SetTags(to_string(te->Tags));
         }
         testing::testresult::timer_state.SetBillable(te->Billable);
         testing::testresult::timer_state.SetPID(te->PID);
@@ -311,16 +317,16 @@ void on_display_timer_state(TogglTimeEntryView *te) {
 }
 
 void on_display_idle_notification(
-    const char *guid,
-    const char *since,
-    const char *duration,
+    const char_t *guid,
+    const char_t *since,
+    const char_t *duration,
     const uint64_t started,
-    const char *description) {
-    testing::testresult::idle_since = std::string(since);
+    const char_t *description) {
+    testing::testresult::idle_since = to_string(since);
     testing::testresult::idle_started = started;
-    testing::testresult::idle_duration = std::string(duration);
-    testing::testresult::idle_guid = std::string(guid);
-    testing::testresult::idle_description = std::string(description);
+    testing::testresult::idle_duration = to_string(duration);
+    testing::testresult::idle_guid = to_string(guid);
+    testing::testresult::idle_description = to_string(description);
 }
 
 class App {
@@ -331,14 +337,14 @@ class App {
             f.remove(false);
         }
 
-        toggl_set_log_path("test.log");
+        toggl_set_log_path(STR("test.log"));
 
-        ctx_ = toggl_context_init("tests", "0.1");
+        ctx_ = toggl_context_init(STR("tests"), STR("0.1"));
 
         poco_assert(toggl_set_db_path(ctx_, TESTDB));
 
         Poco::Path path("src/ssl/cacert.pem");
-        toggl_set_cacert_path(ctx_, path.toString().c_str());
+        toggl_set_cacert_path(ctx_, to_char_t(path.toString()));
 
         toggl_on_show_app(ctx_, on_app);
         toggl_on_sync_state(ctx_, on_sync_state);
@@ -391,13 +397,13 @@ class ApiClient : public Poco::Runnable {
         std::cout << "runnable " << name_ << " running" << std::endl;
 
         for (int i = 0; i < 100; i++) {
-            char_t *guid = toggl_start(app_->ctx(), "test", "", 0, 0, 0, 0,
+            char_t *guid = toggl_start(app_->ctx(), STR("test"), STR(""), 0, 0, 0, 0,
                                        false);
             ASSERT_TRUE(guid);
 
             ASSERT_TRUE(toggl_stop(app_->ctx(), false));
 
-            toggl_edit(app_->ctx(), guid, true, "");
+            toggl_edit(app_->ctx(), guid, true, STR(""));
 
             ASSERT_TRUE(toggl_delete_time_entry(app_->ctx(), guid));
 
@@ -433,8 +439,8 @@ TEST(toggl_api, testing_sleep) {
 TEST(toggl_api, toggl_run_script) {
     testing::App app;
     int64_t err(0);
-    char *s = toggl_run_script(app.ctx(), "print 'test'", &err);
-    std::string res(s);
+    auto s = toggl_run_script(app.ctx(), STR("print 'test'"), &err);
+    std::string res(to_string(s));
     free(s);
     ASSERT_EQ(0, err);
     ASSERT_EQ("0 value(s) returned\n\n\n", res);
@@ -443,8 +449,8 @@ TEST(toggl_api, toggl_run_script) {
 TEST(toggl_api, toggl_run_script_with_invalid_script) {
     testing::App app;
     int64_t err(0);
-    char *s = toggl_run_script(app.ctx(), "foo bar", &err);
-    std::string res(s);
+    auto s = toggl_run_script(app.ctx(), STR("foo bar"), &err);
+    std::string res(to_string(s));
     free(s);
     ASSERT_NE(0, err);
     ASSERT_EQ("[string \"foo bar\"]:1: syntax error near 'bar'", res);
@@ -544,7 +550,7 @@ TEST(toggl_api, toggl_set_proxy_settings) {
     testing::App app;
 
     ASSERT_TRUE(toggl_set_proxy_settings(
-        app.ctx(), 1, "localhost", 8000, "johnsmith", "secret"));
+        app.ctx(), 1, STR("localhost"), 8000, STR("johnsmith"), STR("secret")));
 
     ASSERT_TRUE(testing::testresult::use_proxy);
     ASSERT_EQ(std::string("localhost"),
@@ -589,12 +595,12 @@ TEST(toggl_api, toggl_set_settings_remind_days) {
 TEST(toggl_api, toggl_set_settings_remind_times) {
     testing::App app;
 
-    ASSERT_TRUE(toggl_set_settings_remind_times(app.ctx(), "", ""));
+    ASSERT_TRUE(toggl_set_settings_remind_times(app.ctx(), STR(""), STR("")));
 
     ASSERT_EQ(std::string(""), testing::testresult::settings.remind_starts);
     ASSERT_EQ(std::string(""), testing::testresult::settings.remind_ends);
 
-    ASSERT_TRUE(toggl_set_settings_remind_times(app.ctx(), "09:30", "17:30"));
+    ASSERT_TRUE(toggl_set_settings_remind_times(app.ctx(), STR("09:30"), STR("17:30")));
 
     ASSERT_EQ(std::string("09:30"),
               testing::testresult::settings.remind_starts);
@@ -626,30 +632,30 @@ TEST(toggl_api, toggl_set_window_settings) {
 TEST(toggl_api, toggl_get_user_fullname) {
     testing::App app;
 
-    char *str = toggl_get_user_fullname(app.ctx());
-    ASSERT_EQ("", std::string(str));
+    auto str = toggl_get_user_fullname(app.ctx());
+    ASSERT_EQ("", to_string(str));
     free(str);
 
     std::string json = loadTestData();
     ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
 
     str = toggl_get_user_fullname(app.ctx());
-    ASSERT_EQ("John Smith", std::string(str));
+    ASSERT_EQ("John Smith", to_string(str));
     free(str);
 }
 
 TEST(toggl_api, toggl_get_user_email) {
     testing::App app;
 
-    char *str = toggl_get_user_email(app.ctx());
-    ASSERT_EQ("", std::string(str));
+    auto str = toggl_get_user_email(app.ctx());
+    ASSERT_EQ("", to_string(str));
     free(str);
 
     std::string json = loadTestData();
     ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
 
     str = toggl_get_user_email(app.ctx());
-    ASSERT_EQ("johnsmith@toggl.com", std::string(str));
+    ASSERT_EQ("johnsmith@toggl.com", to_string(str));
     free(str);
 }
 
@@ -669,94 +675,94 @@ TEST(toggl_api, toggl_set_update_channel) {
     std::string default_channel("stable");
 
     // Also check that the API itself thinks the default channel is
-    char *str = toggl_get_update_channel(app.ctx());
-    ASSERT_TRUE(default_channel == std::string(str)
-                || std::string("beta") == std::string(str));
+    auto str = toggl_get_update_channel(app.ctx());
+    ASSERT_TRUE(default_channel == to_string(str)
+                || std::string("beta") == to_string(str));
     free(str);
 
-    ASSERT_FALSE(toggl_set_update_channel(app.ctx(), "invalid"));
+    ASSERT_FALSE(toggl_set_update_channel(app.ctx(), STR("invalid")));
 
     // The channel should be the same in the API
     str = toggl_get_update_channel(app.ctx());
-    ASSERT_TRUE(default_channel == std::string(str) ||
-                "beta" == std::string(str));
+    ASSERT_TRUE(default_channel == to_string(str) ||
+                "beta" == to_string(str));
     free(str);
 
-    ASSERT_TRUE(toggl_set_update_channel(app.ctx(), "beta"));
+    ASSERT_TRUE(toggl_set_update_channel(app.ctx(), STR("beta")));
 
     // The channel should have been changed in the API
     str = toggl_get_update_channel(app.ctx());
-    ASSERT_EQ(std::string("beta"), std::string(str));
+    ASSERT_EQ(std::string("beta"), to_string(str));
     free(str);
 
-    ASSERT_TRUE(toggl_set_update_channel(app.ctx(), "dev"));
+    ASSERT_TRUE(toggl_set_update_channel(app.ctx(), STR("dev")));
 
     // The channel should have been changed in the API
     str = toggl_get_update_channel(app.ctx());
-    ASSERT_EQ(std::string("dev"), std::string(str));
+    ASSERT_EQ(std::string("dev"), to_string(str));
     free(str);
 
-    ASSERT_TRUE(toggl_set_update_channel(app.ctx(), "stable"));
+    ASSERT_TRUE(toggl_set_update_channel(app.ctx(), STR("stable")));
 
     // The channel should have been changed in the API
     str = toggl_get_update_channel(app.ctx());
-    ASSERT_EQ(std::string("stable"), std::string(str));
+    ASSERT_EQ(std::string("stable"), to_string(str));
     free(str);
 }
 
 TEST(toggl_api, toggl_set_log_level) {
-    toggl_set_log_level("trace");
+    toggl_set_log_level(STR("trace"));
 }
 
 TEST(toggl_api, toggl_format_tracking_time_duration) {
-    char *str = toggl_format_tracking_time_duration(10);
-    ASSERT_EQ("10 sec", std::string(str));
+    auto str = toggl_format_tracking_time_duration(10);
+    ASSERT_EQ("10 sec", to_string(str));
     free(str);
 
     str = toggl_format_tracking_time_duration(60);
-    ASSERT_EQ("01:00 min", std::string(str));
+    ASSERT_EQ("01:00 min", to_string(str));
     free(str);
 
     str = toggl_format_tracking_time_duration(65);
-    ASSERT_EQ("01:05 min", std::string(str));
+    ASSERT_EQ("01:05 min", to_string(str));
     free(str);
 
     str = toggl_format_tracking_time_duration(3600);
-    ASSERT_EQ("01:00:00", std::string(str));
+    ASSERT_EQ("01:00:00", to_string(str));
     free(str);
 
     str = toggl_format_tracking_time_duration(5400);
-    ASSERT_EQ("01:30:00", std::string(str));
+    ASSERT_EQ("01:30:00", to_string(str));
     free(str);
 
     str = toggl_format_tracking_time_duration(5410);
-    ASSERT_EQ("01:30:10", std::string(str));
+    ASSERT_EQ("01:30:10", to_string(str));
     free(str);
 }
 
 TEST(toggl_api, toggl_format_tracked_time_duration) {
-    char *str  = toggl_format_tracked_time_duration(10);
-    ASSERT_EQ("0:00", std::string(str));
+    auto str  = toggl_format_tracked_time_duration(10);
+    ASSERT_EQ("0:00", to_string(str));
     free(str);
 
     str = toggl_format_tracked_time_duration(60);
-    ASSERT_EQ("0:01", std::string(str));
+    ASSERT_EQ("0:01", to_string(str));
     free(str);
 
     str = toggl_format_tracked_time_duration(65);
-    ASSERT_EQ("0:01", std::string(str));
+    ASSERT_EQ("0:01", to_string(str));
     free(str);
 
     str = toggl_format_tracked_time_duration(3600);
-    ASSERT_EQ("1:00", std::string(str));
+    ASSERT_EQ("1:00", to_string(str));
     free(str);
 
     str = toggl_format_tracked_time_duration(5400);
-    ASSERT_EQ("1:30", std::string(str));
+    ASSERT_EQ("1:30", to_string(str));
     free(str);
 
     str = toggl_format_tracked_time_duration(5410);
-    ASSERT_EQ("1:30", std::string(str));
+    ASSERT_EQ("1:30", to_string(str));
     free(str);
 }
 
@@ -770,10 +776,10 @@ TEST(toggl_api, toggl_password_forgot) {
 TEST(toggl_api, toggl_set_environment) {
     testing::App app;
 
-    toggl_set_environment(app.ctx(), "test");
+    toggl_set_environment(app.ctx(), STR("test"));
 
-    char *env = toggl_environment(app.ctx());
-    std::string res(env);
+    auto env = toggl_environment(app.ctx());
+    std::string res(to_string(env));
     free(env);
     ASSERT_EQ("test", res);
 }
@@ -781,10 +787,10 @@ TEST(toggl_api, toggl_set_environment) {
 TEST(toggl_api, toggl_set_update_path) {
     testing::App app;
 
-    toggl_set_update_path(app.ctx(), "/tmp/");
+    toggl_set_update_path(app.ctx(), STR("/tmp/"));
 
-    char *s = toggl_update_path(app.ctx());
-    std::string path(s);
+    auto s = toggl_update_path(app.ctx());
+    std::string path(to_string(s));
     free(s);
 
     ASSERT_EQ("/tmp/", path);
@@ -824,8 +830,8 @@ TEST(toggl_api, toggl_clear_cache) {
 }
 
 TEST(toggl_api, toggl_debug) {
-    toggl_set_log_path("test.log");
-    toggl_debug("Test 123");
+    toggl_set_log_path(STR("test.log"));
+    toggl_debug(STR("Test 123"));
 }
 
 TEST(toggl_api, toggl_set_idle_seconds) {
@@ -857,7 +863,7 @@ TEST(toggl_api, toggl_set_idle_seconds) {
     ASSERT_EQ("", testing::testresult::idle_duration);
     ASSERT_EQ("", testing::testresult::idle_guid);
 
-    char_t *guid = toggl_start(app.ctx(), "test", "", 0, 0, 0, 0, false);
+    char_t *guid = toggl_start(app.ctx(), STR("test"), STR(""), 0, 0, 0, 0, false);
     ASSERT_TRUE(guid);
     free(guid);
 
@@ -871,8 +877,8 @@ TEST(toggl_api, toggl_set_idle_seconds) {
     ASSERT_EQ("", testing::testresult::idle_since);
 
     ASSERT_TRUE(toggl_set_time_entry_duration(app.ctx(),
-                testing::testresult::timer_state.GUID().c_str(),
-                "301 seconds"));
+                to_char_t(testing::testresult::timer_state.GUID()),
+                STR("301 seconds")));
 
     toggl_set_idle_seconds(app.ctx(), 5*60);
     toggl_set_idle_seconds(app.ctx(), 0);
@@ -899,12 +905,12 @@ TEST(toggl_api, toggl_get_support) {
 
 TEST(toggl_api, toggl_login) {
     testing::App app;
-    toggl_login(app.ctx(), "username", "password");
+    toggl_login(app.ctx(), STR("username"), STR("password"));
 }
 
 TEST(toggl_api, toggl_google_login) {
     testing::App app;
-    toggl_google_login(app.ctx(), "token");
+    toggl_google_login(app.ctx(), STR("token"));
 }
 
 TEST(toggl_api, toggl_sync) {
@@ -918,11 +924,11 @@ TEST(toggl_api, toggl_add_obm_action) {
     std::string json = loadTestData();
     ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
 
-    ASSERT_FALSE(toggl_add_obm_action(app.ctx(), 0, "key", "value"));
-    ASSERT_FALSE(toggl_add_obm_action(app.ctx(), 1, "key", " "));
-    ASSERT_FALSE(toggl_add_obm_action(app.ctx(), 2, " ", ""));
-    ASSERT_TRUE(toggl_add_obm_action(app.ctx(), 3, "key", "value"));
-    ASSERT_TRUE(toggl_add_obm_action(app.ctx(), 3, "key", "value"));
+    ASSERT_FALSE(toggl_add_obm_action(app.ctx(), 0, STR("key"), STR("value")));
+    ASSERT_FALSE(toggl_add_obm_action(app.ctx(), 1, STR("key"), STR(" ")));
+    ASSERT_FALSE(toggl_add_obm_action(app.ctx(), 2, STR(" "), STR("")));
+    ASSERT_TRUE(toggl_add_obm_action(app.ctx(), 3, STR("key"), STR("value")));
+    ASSERT_TRUE(toggl_add_obm_action(app.ctx(), 3, STR("key"), STR("value")));
 }
 
 TEST(toggl_api, toggl_add_project) {
@@ -931,47 +937,47 @@ TEST(toggl_api, toggl_add_project) {
     std::string json = loadTestData();
     ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
 
-    std::string guid = "07fba193-91c4-0ec8-2894-820df0548a8f";
+    auto guid = STR("07fba193-91c4-0ec8-2894-820df0548a8f");
     uint64_t wid = 0;
     uint64_t cid = 0;
-    std::string project_name("");
+    auto project_name = STR("");
     bool_t is_private = false;
 
     testing::testresult::error = "";
     char_t *res = toggl_add_project(app.ctx(),
-                                    guid.c_str(),
+                                    guid,
                                     wid,
                                     cid,
-                                    "",
-                                    project_name.c_str(),
+                                    STR(""),
+                                    project_name,
                                     is_private,
-                                    "");
+                                    STR(""));
     ASSERT_EQ("Please select a workspace",
               testing::testresult::error);
     ASSERT_FALSE(res);
 
     wid = 123456789;
     res = toggl_add_project(app.ctx(),
-                            guid.c_str(),
+                            guid,
                             wid,
                             cid,
-                            "",
-                            project_name.c_str(),
+                            STR(""),
+                            project_name,
                             is_private,
-                            "#ffffff");
+                            STR("#ffffff"));
     ASSERT_EQ("Project name must not be empty",
               testing::testresult::error);
     ASSERT_FALSE(res);
     free(res);
 
-    project_name = "A new project";
+    project_name = STR("A new project");
     testing::testresult::error = "";
     res = toggl_add_project(app.ctx(),
-                            guid.c_str(),
+                            guid,
                             wid,
                             cid,
-                            "",
-                            project_name.c_str(),
+                            STR(""),
+                            project_name,
                             is_private,
                             0);
     ASSERT_EQ("", testing::testresult::error);
@@ -980,7 +986,7 @@ TEST(toggl_api, toggl_add_project) {
 
     bool found(false);
     for (std::size_t i = 0; i < testing::testresult::projects.size(); i++) {
-        if (project_name == testing::testresult::projects[i]) {
+        if (to_string(project_name) == testing::testresult::projects[i]) {
             found = true;
             break;
         }
@@ -996,12 +1002,12 @@ TEST(toggl_api, toggl_create_client) {
     ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
 
     uint64_t wid = 0;
-    std::string client_name("        ");
+    auto client_name = STR("        ");
 
     testing::testresult::error = "";
     char_t *res = toggl_create_client(app.ctx(),
                                       wid,
-                                      client_name.c_str());
+                                      client_name);
     ASSERT_EQ("Please select a workspace", testing::testresult::error);
     ASSERT_FALSE(res);
     free(res);
@@ -1009,24 +1015,24 @@ TEST(toggl_api, toggl_create_client) {
     wid = 123456789;
     res = toggl_create_client(app.ctx(),
                               wid,
-                              client_name.c_str());
+                              client_name);
     ASSERT_EQ("Client name must not be empty",
               testing::testresult::error);
     ASSERT_FALSE(res);
     free(res);
 
-    client_name = "A new client";
+    client_name = STR("A new client");
     testing::testresult::error = "";
     res = toggl_create_client(app.ctx(),
                               wid,
-                              client_name.c_str());
+                              client_name);
     ASSERT_EQ("", testing::testresult::error);
     ASSERT_TRUE(res);
     free(res);
 
     bool found(false);
     for (std::size_t i = 0; i < testing::testresult::clients.size(); i++) {
-        if (client_name == testing::testresult::clients[i]) {
+        if (to_string(client_name) == testing::testresult::clients[i]) {
             found = true;
             break;
         }
@@ -1040,7 +1046,7 @@ TEST(toggl_api, toggl_create_client) {
         testing::testresult::error = "";
         res = toggl_create_client(app.ctx(),
                                   wid,
-                                  ss.str().c_str());
+                                  to_char_t(ss.str()));
         ASSERT_EQ("", testing::testresult::error);
         ASSERT_TRUE(res);
         free(res);
@@ -1050,7 +1056,7 @@ TEST(toggl_api, toggl_create_client) {
     testing::testresult::error = "";
     res = toggl_create_client(app.ctx(),
                               wid,
-                              client_name.c_str());
+                              client_name);
     ASSERT_FALSE(res);
     ASSERT_EQ("Client name already exists", testing::testresult::error);
 }
@@ -1064,7 +1070,7 @@ TEST(toggl_api, toggl_continue) {
     std::string guid("6c97dc31-582e-7662-1d6f-5e9d623b1685");
 
     testing::testresult::error = "";
-    ASSERT_TRUE(toggl_continue(app.ctx(), guid.c_str()));
+    ASSERT_TRUE(toggl_continue(app.ctx(), to_char_t(guid)));
     ASSERT_NE(guid, testing::testresult::timer_state.GUID());
     ASSERT_EQ("More work", testing::testresult::timer_state.Description());
 }
@@ -1084,7 +1090,7 @@ TEST(toggl_api, toggl_continue_in_manual_mode) {
     testing::testresult::editor_state = TimeEntry();
     testing::testresult::timer_state = TimeEntry();
 
-    ASSERT_TRUE(toggl_continue(app.ctx(), guid.c_str()));
+    ASSERT_TRUE(toggl_continue(app.ctx(), to_char_t(guid)));
 
     ASSERT_NE(guid, testing::testresult::timer_state.GUID());
 
@@ -1102,7 +1108,7 @@ TEST(toggl_api, toggl_check_view_struct_size) {
         sizeof(TogglSettingsView),
         sizeof(TogglAutotrackerRuleView));
     if (err) {
-        ASSERT_EQ("", std::string(err));
+        ASSERT_EQ("", to_string(err));
     }
     ASSERT_FALSE(err);
     free(err);
@@ -1120,11 +1126,11 @@ TEST(toggl_api, toggl_edit) {
     testing::App app;
     std::string json = loadTestData();
     ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
-    std::string guid("6a958efd-0e9a-d777-7e19-001b2d7ced92");
+    auto guid = STR("6a958efd-0e9a-d777-7e19-001b2d7ced92");
     bool_t edit_running_time_entry = false;
-    std::string focused_field("description");
-    toggl_edit(app.ctx(), guid.c_str(), edit_running_time_entry,
-               focused_field.c_str());
+    auto focused_field = STR("description");
+    toggl_edit(app.ctx(), guid, edit_running_time_entry,
+               focused_field);
     //ASSERT_EQ(guid, testing::testresult::editor_state.GUID());
     ASSERT_EQ("description", testing::testresult::editor_focused_field_name);
 }
@@ -1221,8 +1227,8 @@ TEST(toggl_api, toggl_delete_time_entry) {
     toggl_view_time_entry_list(app.ctx());
     ASSERT_EQ(std::size_t(5), testing::testresult::time_entries.size());
 
-    std::string guid("6a958efd-0e9a-d777-7e19-001b2d7ced92");
-    ASSERT_TRUE(toggl_delete_time_entry(app.ctx(), guid.c_str()));
+    auto guid = STR("6a958efd-0e9a-d777-7e19-001b2d7ced92");
+    ASSERT_TRUE(toggl_delete_time_entry(app.ctx(), guid));
 
     toggl_view_time_entry_list(app.ctx());
     ASSERT_EQ(std::size_t(4), testing::testresult::time_entries.size());
@@ -1236,7 +1242,7 @@ TEST(toggl_api, toggl_set_time_entry_duration) {
     std::string guid = "07fba193-91c4-0ec8-2894-820df0548a8f";
 
     ASSERT_TRUE(toggl_set_time_entry_duration(app.ctx(),
-                guid.c_str(), "2 hours"));
+                to_char_t(guid), STR("2 hours")));
 
     toggl_view_time_entry_list(app.ctx());
     TimeEntry te;
@@ -1259,7 +1265,7 @@ TEST(toggl_api, toggl_set_time_entry_description) {
     std::string guid = "07fba193-91c4-0ec8-2894-820df0548a8f";
 
     ASSERT_TRUE(toggl_set_time_entry_description(app.ctx(),
-                guid.c_str(), "this is a nuclear test"));
+                to_char_t(guid), STR("this is a nuclear test")));
 
     toggl_view_time_entry_list(app.ctx());
     TimeEntry te;
@@ -1281,7 +1287,7 @@ TEST(toggl_api, toggl_stop) {
 
     testing::testresult::timer_state = TimeEntry();
 
-    char_t *guid = toggl_start(app.ctx(), "test", "", 0, 0, 0, 0, false);
+    char_t *guid = toggl_start(app.ctx(), STR("test"), STR(""), 0, 0, 0, 0, false);
     ASSERT_TRUE(guid);
     free(guid);
 
@@ -1308,7 +1314,7 @@ TEST(toggl_api, toggl_with_default_project) {
 
     testing::testresult::timer_state = TimeEntry();
 
-    char_t *guid = toggl_start(app.ctx(), "test", "", 0, 0, 0, 0, false);
+    char_t *guid = toggl_start(app.ctx(), STR("test"), STR(""), 0, 0, 0, 0, false);
     ASSERT_TRUE(guid);
     free(guid);
 
@@ -1324,14 +1330,14 @@ TEST(toggl_api, toggl_with_default_project) {
     ASSERT_TRUE(toggl_set_default_project(app.ctx(), existing_project_id, 0));
     s = toggl_get_default_project_name(app.ctx());
     ASSERT_TRUE(s);
-    ASSERT_EQ(existing_project_name, std::string(s));
+    ASSERT_EQ(existing_project_name, to_string(s));
     free(s);
 
     // Start timer, the default project should apply
 
     testing::testresult::timer_state = TimeEntry();
 
-    guid = toggl_start(app.ctx(), "test", "", 0, 0, 0, 0, false);
+    guid = toggl_start(app.ctx(), STR("test"), STR(""), 0, 0, 0, 0, false);
     ASSERT_TRUE(guid);
     free(guid);
 
@@ -1345,14 +1351,14 @@ TEST(toggl_api, toggl_with_default_project) {
     ASSERT_TRUE(toggl_set_default_project(app.ctx(), 0, existing_task_id));
     s = toggl_get_default_project_name(app.ctx());
     ASSERT_TRUE(s);
-    ASSERT_EQ("dadsad. Testing stuff", std::string(s));
+    ASSERT_EQ("dadsad. Testing stuff", to_string(s));
     free(s);
 
     // Start timer, the default task should apply
 
     testing::testresult::timer_state = TimeEntry();
 
-    guid = toggl_start(app.ctx(), "more testing", "", 0, 0, 0, 0, false);
+    guid = toggl_start(app.ctx(), STR("more testing"), STR(""), 0, 0, 0, 0, false);
     ASSERT_TRUE(guid);
     free(guid);
 
@@ -1365,7 +1371,7 @@ TEST(toggl_api, toggl_with_default_project) {
     ASSERT_TRUE(toggl_set_default_project(app.ctx(), existing_project_id, 0));
     s = toggl_get_default_project_name(app.ctx());
     ASSERT_TRUE(s);
-    ASSERT_EQ(existing_project_name, std::string(s));
+    ASSERT_EQ(existing_project_name, to_string(s));
     free(s);
 
     // Setting task ID to not 0 should attach a project ID, too
@@ -1374,7 +1380,7 @@ TEST(toggl_api, toggl_with_default_project) {
     ASSERT_TRUE(toggl_set_default_project(app.ctx(), 0, another_task_id));
     s = toggl_get_default_project_name(app.ctx());
     ASSERT_TRUE(s);
-    ASSERT_EQ("blog (writing). Testing stuff", std::string(s));
+    ASSERT_EQ("blog (writing). Testing stuff", to_string(s));
     free(s);
 
     // Setting project ID to 0 should not clear out task ID
@@ -1382,7 +1388,7 @@ TEST(toggl_api, toggl_with_default_project) {
     ASSERT_TRUE(toggl_set_default_project(app.ctx(), 0, existing_task_id));
     s = toggl_get_default_project_name(app.ctx());
     ASSERT_TRUE(s);
-    ASSERT_EQ("dadsad. Testing stuff", std::string(s));
+    ASSERT_EQ("dadsad. Testing stuff", to_string(s));
     free(s);
 
     ASSERT_TRUE(toggl_set_default_project(app.ctx(), 0, 0));
@@ -1398,7 +1404,7 @@ TEST(toggl_api, toggl_start) {
 
     testing::testresult::timer_state = TimeEntry();
 
-    char_t *guid = toggl_start(app.ctx(), "test", "", 0, 0, 0, 0, false);
+    char_t *guid = toggl_start(app.ctx(), STR("test"), STR(""), 0, 0, 0, 0, false);
     ASSERT_TRUE(guid);
     free(guid);
 
@@ -1509,48 +1515,48 @@ TEST(toggl_api, toggl_set_window_edit_size_width) {
 TEST(toggl_api, toggl_set_key_start) {
     testing::App app;
 
-    toggl_set_key_start(app.ctx(), "a");
+    toggl_set_key_start(app.ctx(), STR("a"));
     char_t *res = toggl_get_key_start(app.ctx());
     ASSERT_TRUE(res);
-    ASSERT_EQ("a", std::string(res));
+    ASSERT_EQ("a", to_string(res));
     free(res);
 
-    toggl_set_key_start(app.ctx(), "");
+    toggl_set_key_start(app.ctx(), STR(""));
     res = toggl_get_key_start(app.ctx());
     ASSERT_TRUE(res);
-    ASSERT_EQ("", std::string(res));
+    ASSERT_EQ("", to_string(res));
     free(res);
 }
 
 TEST(toggl_api, toggl_set_key_show) {
     testing::App app;
 
-    toggl_set_key_show(app.ctx(), "a");
+    toggl_set_key_show(app.ctx(), STR("a"));
     char_t *res = toggl_get_key_show(app.ctx());
     ASSERT_TRUE(res);
-    ASSERT_EQ("a", std::string(res));
+    ASSERT_EQ("a", to_string(res));
     free(res);
 
-    toggl_set_key_show(app.ctx(), "");
+    toggl_set_key_show(app.ctx(), STR(""));
     res = toggl_get_key_show(app.ctx());
     ASSERT_TRUE(res);
-    ASSERT_EQ("", std::string(res));
+    ASSERT_EQ("", to_string(res));
     free(res);
 }
 
 TEST(toggl_api, toggl_set_key_modifier_start) {
     testing::App app;
 
-    toggl_set_key_modifier_start(app.ctx(), "a");
+    toggl_set_key_modifier_start(app.ctx(), STR("a"));
     char_t *res = toggl_get_key_modifier_start(app.ctx());
     ASSERT_TRUE(res);
-    ASSERT_EQ("a", std::string(res));
+    ASSERT_EQ("a", to_string(res));
     free(res);
 
-    toggl_set_key_modifier_start(app.ctx(), "");
+    toggl_set_key_modifier_start(app.ctx(), STR(""));
     res = toggl_get_key_modifier_start(app.ctx());
     ASSERT_TRUE(res);
-    ASSERT_EQ("", std::string(res));
+    ASSERT_EQ("", to_string(res));
     free(res);
 }
 
@@ -1561,7 +1567,7 @@ TEST(toggl_api, toggl_start_with_tags) {
 
     testing::testresult::timer_state = TimeEntry();
 
-    char_t *guid = toggl_start(app.ctx(), "test", "", 0, 0, 0, "a\tb\tc",
+    char_t *guid = toggl_start(app.ctx(), STR("test"), STR(""), 0, 0, 0, STR("a\tb\tc"),
                                false);
     ASSERT_TRUE(guid);
     free(guid);
@@ -1579,7 +1585,7 @@ TEST(toggl_api, toggl_start_with_open_editor_on_shortcut_setting) {
 
     testing::testresult::editor_state = TimeEntry();
 
-    char_t *guid = toggl_start(app.ctx(), "test", "", 0, 0, 0, 0, false);
+    char_t *guid = toggl_start(app.ctx(), STR("test"), STR(""), 0, 0, 0, 0, false);
     ASSERT_TRUE(guid);
     free(guid);
 
@@ -1589,7 +1595,7 @@ TEST(toggl_api, toggl_start_with_open_editor_on_shortcut_setting) {
 
     testing::testresult::editor_state = TimeEntry();
 
-    guid = toggl_start(app.ctx(), "test", "", 0, 0, 0, 0, false);
+    guid = toggl_start(app.ctx(), STR("test"), STR(""), 0, 0, 0, 0, false);
     ASSERT_TRUE(guid);
     // It should *not* open the editor, unless a shortcut was used
     // in the app, but this logic is driven from the UI instead of the lib.
@@ -1604,17 +1610,17 @@ TEST(toggl_api, toggl_set_time_entry_billable) {
 
     testing::testresult::timer_state = TimeEntry();
 
-    char_t *res = toggl_start(app.ctx(), "test", "", 0, 0, 0, 0, false);
+    char_t *res = toggl_start(app.ctx(), STR("test"), STR(""), 0, 0, 0, 0, false);
     ASSERT_TRUE(res);
     free(res);
 
     std::string guid = testing::testresult::timer_state.GUID();
     ASSERT_FALSE(guid.empty());
 
-    ASSERT_TRUE(toggl_set_time_entry_billable(app.ctx(), guid.c_str(), true));
+    ASSERT_TRUE(toggl_set_time_entry_billable(app.ctx(), to_char_t(guid), true));
     ASSERT_TRUE(testing::testresult::timer_state.Billable());
 
-    ASSERT_TRUE(toggl_set_time_entry_billable(app.ctx(), guid.c_str(), false));
+    ASSERT_TRUE(toggl_set_time_entry_billable(app.ctx(), to_char_t(guid), false));
     ASSERT_FALSE(testing::testresult::timer_state.Billable());
 }
 
@@ -1625,25 +1631,25 @@ TEST(toggl_api, toggl_set_time_entry_tags) {
 
     testing::testresult::timer_state = TimeEntry();
 
-    char_t *res = toggl_start(app.ctx(), "test", "", 0, 0, 0, 0, false);
+    char_t *res = toggl_start(app.ctx(), STR("test"), STR(""), 0, 0, 0, 0, false);
     ASSERT_TRUE(res);
     free(res);
 
     std::string guid = testing::testresult::timer_state.GUID();
     ASSERT_FALSE(guid.empty());
 
-    ASSERT_TRUE(toggl_set_time_entry_tags(app.ctx(), guid.c_str(), "a|b|c"));
+    ASSERT_TRUE(toggl_set_time_entry_tags(app.ctx(), to_char_t(guid), STR("a|b|c")));
     ASSERT_EQ("a|b|c", testing::testresult::timer_state.Tags());
 
-    ASSERT_TRUE(toggl_set_time_entry_tags(app.ctx(), guid.c_str(), "a"));
+    ASSERT_TRUE(toggl_set_time_entry_tags(app.ctx(), to_char_t(guid), STR("a")));
     ASSERT_EQ("a", testing::testresult::timer_state.Tags());
 
-    ASSERT_TRUE(toggl_set_time_entry_tags(app.ctx(), guid.c_str(), ""));
+    ASSERT_TRUE(toggl_set_time_entry_tags(app.ctx(), to_char_t(guid), STR("")));
     ASSERT_EQ("", testing::testresult::timer_state.Tags());
 }
 
 TEST(toggl_api, toggl_parse_duration_string_into_seconds) {
-    int64_t seconds = toggl_parse_duration_string_into_seconds("15 seconds");
+    int64_t seconds = toggl_parse_duration_string_into_seconds(STR("15 seconds"));
     ASSERT_EQ(15, seconds);
 }
 
@@ -1662,7 +1668,7 @@ TEST(toggl_api, toggl_discard_time_at_with_no_guid) {
 TEST(toggl_api, toggl_discard_time_at_with_no_stop_time) {
     testing::App app;
 
-    ASSERT_FALSE(toggl_discard_time_at(app.ctx(), "some fake guid", 0, false));
+    ASSERT_FALSE(toggl_discard_time_at(app.ctx(), STR("some fake guid"), 0, false));
 }
 
 TEST(toggl_api, toggl_discard_time_at) {
@@ -1674,7 +1680,7 @@ TEST(toggl_api, toggl_discard_time_at) {
 
     // Start a time entry
 
-    char_t *res = toggl_start(app.ctx(), "test", "", 0, 0, 0, 0, false);
+    char_t *res = toggl_start(app.ctx(), STR("test"), STR(""), 0, 0, 0, 0, false);
     ASSERT_TRUE(res);
     free(res);
 
@@ -1685,7 +1691,7 @@ TEST(toggl_api, toggl_discard_time_at) {
     // Discard the time entry at some point
 
     Poco::UInt64 stopped = time(0);
-    ASSERT_TRUE(toggl_discard_time_at(app.ctx(), guid.c_str(), stopped, false));
+    ASSERT_TRUE(toggl_discard_time_at(app.ctx(), to_char_t(guid), stopped, false));
     ASSERT_NE(guid, testing::testresult::timer_state.GUID());
     ASSERT_TRUE(testing::testresult::timer_state.GUID().empty());
 
@@ -1703,7 +1709,7 @@ TEST(toggl_api, toggl_discard_time_at) {
 
     // Start another time entry
 
-    res = toggl_start(app.ctx(), "test 2", "", 0, 0, 0, 0, false);
+    res = toggl_start(app.ctx(), STR("test 2"), STR(""), 0, 0, 0, 0, false);
     ASSERT_TRUE(res);
     free(res);
 
@@ -1714,7 +1720,7 @@ TEST(toggl_api, toggl_discard_time_at) {
     // Discard the time entry, by creating a new one
 
     stopped = time(0);
-    ASSERT_TRUE(toggl_discard_time_at(app.ctx(), guid.c_str(), stopped, true));
+    ASSERT_TRUE(toggl_discard_time_at(app.ctx(), to_char_t(guid), stopped, true));
     ASSERT_NE(guid, testing::testresult::timer_state.GUID());
 
     te = TimeEntry();
@@ -1743,7 +1749,7 @@ TEST(toggl_api, toggl_search_help_articles) {
     ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
 
     testing::testresult::help_article_names.clear();
-    toggl_search_help_articles(app.ctx(), "Tracking");
+    toggl_search_help_articles(app.ctx(), STR("Tracking"));
     ASSERT_TRUE(testing::testresult::help_article_names.size());
     ASSERT_TRUE(std::find(
         testing::testresult::help_article_names.begin(),
@@ -1752,7 +1758,7 @@ TEST(toggl_api, toggl_search_help_articles) {
                 testing::testresult::help_article_names.end());
 
     testing::testresult::help_article_names.clear();
-    toggl_search_help_articles(app.ctx(), "basic");
+    toggl_search_help_articles(app.ctx(), STR("basic"));
     ASSERT_TRUE(testing::testresult::help_article_names.size());
     ASSERT_TRUE(std::find(
         testing::testresult::help_article_names.begin(),
@@ -1767,7 +1773,7 @@ TEST(toggl_api, toggl_feedback_send) {
     ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
 
     ASSERT_TRUE(toggl_feedback_send(app.ctx(),
-                                    "Help", "I need help", ""));
+                                    STR("Help"), STR("I need help"), STR("")));
 }
 
 TEST(toggl_api, toggl_set_time_entry_date) {
@@ -1789,7 +1795,7 @@ TEST(toggl_api, toggl_set_time_entry_date) {
     // 10/27/2014 @ 12:51pm in UTC.
     int unix_timestamp(1414414311);
     ASSERT_TRUE(toggl_set_time_entry_date(app.ctx(),
-                                          guid.c_str(),
+                                          to_char_t(guid),
                                           unix_timestamp));
 
     te = testing::testresult::time_entry_by_id(89818605);
@@ -1817,7 +1823,7 @@ TEST(toggl_api, toggl_set_time_entry_start) {
     ASSERT_EQ(33, datetime.minute());
     ASSERT_EQ(50, datetime.second());
 
-    ASSERT_TRUE(toggl_set_time_entry_start(app.ctx(), guid.c_str(), "12:34"));
+    ASSERT_TRUE(toggl_set_time_entry_start(app.ctx(), to_char_t(guid), STR("12:34")));
 
     te = testing::testresult::time_entry_by_id(89818605);
     Poco::LocalDateTime local =
@@ -1830,7 +1836,7 @@ TEST(toggl_api, toggl_set_time_entry_start) {
     ASSERT_EQ(50, local.second());
 
     // Setting an invalid value should not crash the app
-    ASSERT_FALSE(toggl_set_time_entry_start(app.ctx(), guid.c_str(), "12:558"));
+    ASSERT_FALSE(toggl_set_time_entry_start(app.ctx(), to_char_t(guid), STR("12:558")));
 }
 
 TEST(toggl_api, toggl_set_time_entry_end) {
@@ -1849,7 +1855,7 @@ TEST(toggl_api, toggl_set_time_entry_end) {
     ASSERT_EQ(19, datetime.minute());
     ASSERT_EQ(46, datetime.second());
 
-    ASSERT_TRUE(toggl_set_time_entry_end(app.ctx(), guid.c_str(), "18:29"));
+    ASSERT_TRUE(toggl_set_time_entry_end(app.ctx(), to_char_t(guid), STR("18:29")));
 
     te = testing::testresult::time_entry_by_id(89818605);
     Poco::LocalDateTime local =
@@ -1862,7 +1868,7 @@ TEST(toggl_api, toggl_set_time_entry_end) {
     ASSERT_EQ(46, local.second());
 
     // Setting an invalid value should not crash the app
-    ASSERT_FALSE(toggl_set_time_entry_end(app.ctx(), guid.c_str(), "12:558"));
+    ASSERT_FALSE(toggl_set_time_entry_end(app.ctx(), to_char_t(guid), STR("12:558")));
 }
 
 TEST(toggl_api, toggl_set_time_entry_end_prefers_same_day) {
@@ -1875,10 +1881,10 @@ TEST(toggl_api, toggl_set_time_entry_end_prefers_same_day) {
     std::string guid = te.GUID();
 
     // Set start time so it will be local time
-    ASSERT_TRUE(toggl_set_time_entry_date(app.ctx(), guid.c_str(), time(0)));
-    ASSERT_TRUE(toggl_set_time_entry_start(app.ctx(), guid.c_str(), "06:33"));
+    ASSERT_TRUE(toggl_set_time_entry_date(app.ctx(), to_char_t(guid), time(0)));
+    ASSERT_TRUE(toggl_set_time_entry_start(app.ctx(), to_char_t(guid), STR("06:33")));
 
-    ASSERT_TRUE(toggl_set_time_entry_end(app.ctx(), guid.c_str(), "06:34"));
+    ASSERT_TRUE(toggl_set_time_entry_end(app.ctx(), to_char_t(guid), STR("06:34")));
 
     Poco::DateTime start(Poco::Timestamp::fromEpochTime(te.Start()));
     Poco::DateTime end(Poco::Timestamp::fromEpochTime(te.Stop()));
@@ -1897,13 +1903,13 @@ TEST(toggl_api, toggl_autotracker_add_rule) {
     const uint64_t existing_project_id = 2598305;
 
     int64_t rule_id = toggl_autotracker_add_rule(
-        app.ctx(), "delfi", existing_project_id, 0);
+        app.ctx(), STR("delfi"), existing_project_id, 0);
     ASSERT_EQ(noError, testing::testresult::error);
     ASSERT_TRUE(rule_id);
 
     testing::testresult::error = noError;
     rule_id = toggl_autotracker_add_rule(
-        app.ctx(), "delfi", existing_project_id, 0);
+        app.ctx(), STR("delfi"), existing_project_id, 0);
     ASSERT_EQ("rule already exists", testing::testresult::error);
     ASSERT_FALSE(rule_id);
 
@@ -1911,14 +1917,14 @@ TEST(toggl_api, toggl_autotracker_add_rule) {
 
     testing::testresult::error = noError;
     rule_id = toggl_autotracker_add_rule(
-        app.ctx(), "with task", 0, existing_task_id);
+        app.ctx(), STR("with task"), 0, existing_task_id);
     ASSERT_EQ(noError, testing::testresult::error);
     ASSERT_TRUE(rule_id);
 
     testing::testresult::error = noError;
     rule_id = toggl_autotracker_add_rule(
         app.ctx(),
-        "with task and project",
+        STR("with task and project"),
         existing_project_id,
         existing_task_id);
     ASSERT_EQ(noError, testing::testresult::error);
@@ -1952,7 +1958,7 @@ TEST(toggl_api, toggl_set_default_project) {
 
     default_project_name = toggl_get_default_project_name(app.ctx());
     ASSERT_TRUE(default_project_name);
-    ASSERT_EQ(existing_project_name, std::string(default_project_name));
+    ASSERT_EQ(existing_project_name, to_string(default_project_name));
     free(default_project_name);
 
     testing::testresult::error = noError;
