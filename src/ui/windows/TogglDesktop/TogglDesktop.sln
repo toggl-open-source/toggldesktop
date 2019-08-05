@@ -143,6 +143,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "XML", "..\..\..\..\third_pa
 EndProject
 Project("{C7167F0D-BC9F-4E6E-AFE1-012C56B48DB5}") = "TogglDesktop.Package", "TogglDesktop.Package\TogglDesktop.Package.wapproj", "{BF2C1343-F7A6-448E-8B02-90E21340EC3C}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TogglDesktopDLL.Tests", "..\..\..\lib\windows\TogglDesktopDLL.Tests\TogglDesktopDLL.Tests.vcxproj", "{1082CCF1-3D77-4E95-9B51-9262A6FFF766}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug.Broken|x64 = Debug.Broken|x64
@@ -495,6 +497,14 @@ Global
 		{BF2C1343-F7A6-448E-8B02-90E21340EC3C}.StoreRelease|x86.ActiveCfg = StoreRelease|x86
 		{BF2C1343-F7A6-448E-8B02-90E21340EC3C}.StoreRelease|x86.Build.0 = StoreRelease|x86
 		{BF2C1343-F7A6-448E-8B02-90E21340EC3C}.StoreRelease|x86.Deploy.0 = StoreRelease|x86
+		{1082CCF1-3D77-4E95-9B51-9262A6FFF766}.Debug|x64.ActiveCfg = Debug|x64
+		{1082CCF1-3D77-4E95-9B51-9262A6FFF766}.Debug|x64.Build.0 = Debug|x64
+		{1082CCF1-3D77-4E95-9B51-9262A6FFF766}.Debug|x86.ActiveCfg = Debug|Win32
+		{1082CCF1-3D77-4E95-9B51-9262A6FFF766}.Debug|x86.Build.0 = Debug|Win32
+		{1082CCF1-3D77-4E95-9B51-9262A6FFF766}.Release|x64.ActiveCfg = Release|x64
+		{1082CCF1-3D77-4E95-9B51-9262A6FFF766}.Release|x64.Build.0 = Release|x64
+		{1082CCF1-3D77-4E95-9B51-9262A6FFF766}.Release|x86.ActiveCfg = Release|Win32
+		{1082CCF1-3D77-4E95-9B51-9262A6FFF766}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
