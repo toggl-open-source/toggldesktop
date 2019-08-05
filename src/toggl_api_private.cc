@@ -219,6 +219,16 @@ std::string trim_whitespace(const std::string str)
     return str.substr(strBegin, strRange);
 }
 
+const char_t *to_char_t(const std::string s) {
+#if defined(_WIN32) || defined(WIN32)
+    std::wstring ws;
+    Poco::UnicodeConverter::toUTF16(s, ws);
+    return ws.c_str();
+#else
+    return s.c_str();
+#endif
+}
+
 char_t *copy_string(const std::string s) {
 #if defined(_WIN32) || defined(WIN32)
     std::wstring ws;

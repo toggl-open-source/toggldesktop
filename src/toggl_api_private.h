@@ -30,6 +30,7 @@ class TimeEntry;
 }  // namespace toggl
 
 int compare_string(const char_t *s1, const char_t *s2);
+const char_t* to_char_t(const std::string s);
 char_t *copy_string(const std::string s);
 std::string to_string(const char_t *s);
 
