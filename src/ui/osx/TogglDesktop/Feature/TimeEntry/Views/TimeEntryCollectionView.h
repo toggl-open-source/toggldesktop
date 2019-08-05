@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (strong, nonatomic) NSIndexPath *clickedIndexPath;
 
-- (TimeEntryCell *)getSelectedEntryCell;
+- (NSArray<TimeEntryCell *> *)getSelectedEntryCells;
 
 @end
 

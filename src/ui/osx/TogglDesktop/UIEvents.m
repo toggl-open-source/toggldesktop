@@ -52,6 +52,8 @@ NSString *const kDisplayCountries = @"kDisplayCountries";
 NSString *const kUpdateIconTooltip = @"kUpdateIconTooltip";
 NSString *const kUserHasBeenSignup = @"kUserHasBeenSignup";
 
+NSString *const kDeselectAllTimeEntryList = @"kDeselectAllTimeEntryList";
+
 const char *kFocusedFieldNameDuration = "duration";
 const char *kFocusedFieldNameDescription = "description";
 const char *kFocusedFieldNameProject = "project";

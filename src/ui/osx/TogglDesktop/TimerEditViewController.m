@@ -20,6 +20,7 @@
 #import "DisplayCommand.h"
 #import "TogglDesktop-Swift.h"
 #import "ProjectTextField.h"
+#import "Utils.h"
 
 typedef enum : NSUInteger
 {
@@ -53,7 +54,7 @@ typedef enum : NSUInteger
 @property (strong, nonatomic) NSTimer *timer;
 @property (assign, nonatomic) BOOL disableChange;
 @property (assign, nonatomic) BOOL focusNotSet;
-@property (assign, nonatomic) BOOL displayMode;
+@property (assign, nonatomic) DisplayMode displayMode;
 
 @end
 
@@ -162,13 +163,26 @@ NSString *kInactiveTimerColor = @"#999999";
 
 - (void)focusTimer
 {
-	if (self.time_entry.duration < 0 || ![self.manualBox isHidden])
+	switch (self.displayMode)
 	{
-		[self.view.window makeFirstResponder:self.startButton];
-	}
-	else
-	{
-		[self.autoCompleteInput.window makeFirstResponder:self.autoCompleteInput];
+		case DisplayModeManual :
+			[self.view.window makeFirstResponder:self.startButton];
+			return;
+
+		case DisplayModeInput :
+			[self.autoCompleteInput.window makeFirstResponder:self.autoCompleteInput];
+			break;
+		case DisplayModeTimer :
+			if (self.time_entry.isRunning)
+			{
+				[self.view.window makeFirstResponder:self.view];
+
+				// Deselect all selected in TE list
+				// Because we're focusing on the Timer bar since the TE is running
+				[[NSNotificationCenter defaultCenter] postNotificationName:kDeselectAllTimeEntryList
+																	object:nil];
+			}
+			break;
 	}
 }
 
@@ -254,6 +268,8 @@ NSString *kInactiveTimerColor = @"#999999";
 
 		self.durationTextField.toolTip = [NSString stringWithFormat:@"Started: %@", self.time_entry.startTimeString];
 		self.descriptionLabel.editable = NO;
+
+		[self focusTimer];
 	}
 	else
 	{
@@ -653,7 +669,7 @@ NSString *kInactiveTimerColor = @"#999999";
 	return retval;
 }
 
-- (void)setDisplayMode:(BOOL)displayMode
+- (void)setDisplayMode:(DisplayMode)displayMode
 {
 	_displayMode = displayMode;
 	switch (displayMode)
@@ -702,6 +718,29 @@ NSString *kInactiveTimerColor = @"#999999";
 - (void)startNewShortcut:(NSNotification *)notification
 {
 	[self startButtonClicked:self];
+}
+
+- (void)keyDown:(NSEvent *)event
+{
+	[super keyDown:event];
+
+	if (self.time_entry.GUID != nil && self.time_entry.isRunning)
+	{
+		if ((event.keyCode == kVK_Return) || (event.keyCode == kVK_ANSI_KeypadEnter))
+		{
+			toggl_edit(ctx, [self.time_entry.GUID UTF8String], false, "");
+		}
+		else if (event.keyCode == kVK_Delete)
+		{
+			[Utils deleteTimeEntryWithConfirmationWithGUID:self.time_entry.GUID
+													 title:self.descriptionLabel.stringValue];
+		}
+		else if (event.keyCode == kVK_Space)
+		{
+			[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kCommandStop
+																		object:nil];
+		}
+	}
 }
 
 @end

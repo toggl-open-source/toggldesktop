@@ -146,6 +146,10 @@ extern void *ctx;
 											 selector:@selector(windowSizeDidChange)
 												 name:NSWindowDidResizeNotification
 											   object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(deselectAllTimeEntryNotification)
+												 name:kDeselectAllTimeEntryList
+											   object:nil];
 }
 
 - (void)initCollectionView
@@ -223,13 +227,8 @@ extern void *ctx;
 	{
 		if (self.timeEntrypopover.shown)
 		{
-			[self.timeEntrypopover closeWithFocusTimer:YES];
+			[self.timeEntrypopover performClose:self];
 			[self setDefaultPopupSize];
-		}
-		// when timer not focused
-		if ([self.timerEditViewController.autoCompleteInput currentEditor] == nil)
-		{
-			[self focusListing:nil];
 		}
 	}
 
@@ -275,7 +274,7 @@ extern void *ctx;
 	}
 
 	// Hightlight selected cell
-	[[self.collectionView getSelectedEntryCell] setFocused];
+	[[self.collectionView getSelectedEntryCells].firstObject setFocused];
 }
 
 - (void)resetEditPopover:(NSNotification *)notification
@@ -304,7 +303,7 @@ extern void *ctx;
 		self.runningEdit = (cmd.timeEntry.duration_in_seconds < 0);
 
 		NSView *ofView = self.view;
-		TimeEntryCell *selectedCell = [self.collectionView getSelectedEntryCell];
+		TimeEntryCell *selectedCell = [self.collectionView getSelectedEntryCells].firstObject;
 		CGRect positionRect = [self positionRectForItem:selectedCell];
 
 		if (self.runningEdit)
@@ -370,7 +369,7 @@ extern void *ctx;
 
 - (void)clearLastSelectedEntry
 {
-	[[self.collectionView getSelectedEntryCell] setupGroupMode];
+	[[self.collectionView getSelectedEntryCells].firstObject setupGroupMode];
 }
 
 - (void)resetEditPopoverSize:(NSNotification *)notification
@@ -472,7 +471,7 @@ extern void *ctx;
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 	if (cmd.open && self.timeEntrypopover.shown)
 	{
-		[self.timeEntrypopover closeWithFocusTimer:YES];
+		[self.timeEntrypopover performClose:self];
 		[self setDefaultPopupSize];
 	}
 }
@@ -485,27 +484,15 @@ extern void *ctx;
 	}
 
 	NSIndexPath *selectedIndexpath = [self.collectionView.selectionIndexPaths.allObjects firstObject];
-	// If list is focused with keyboard shortcut
-	if (notification != nil && !self.timeEntrypopover.shown)
-	{
-		[self clearLastSelectedEntry];
-		selectedIndexpath = [NSIndexPath indexPathForItem:0 inSection:0];
-	}
 
-	if (selectedIndexpath == nil)
+	// Don't select the first item if the TE List is focusing with selected item
+	if (selectedIndexpath != nil && self.collectionView.isFirstResponder)
 	{
 		return;
 	}
 
-	[[self.collectionView window] makeFirstResponder:self.collectionView];
-	[self.collectionView selectItemsAtIndexPaths:[NSSet setWithObject:selectedIndexpath] scrollPosition:NSCollectionViewScrollPositionTop];
-
-	TimeEntryCell *cell = [self getTimeEntryCellAtIndexPath:selectedIndexpath];
-	if (cell != nil)
-	{
-		[self clearLastSelectedEntry];
-		[cell setFocused];
-	}
+	// Select first cell
+	[self.dataSource selectFirstItem];
 }
 
 - (void)escapeListing:(NSNotification *)notification
@@ -539,31 +526,41 @@ extern void *ctx;
 - (BOOL)collectionView:(NSCollectionView *_Nonnull)collectionView acceptDrop:(id<NSDraggingInfo> _Nonnull)draggingInfo indexPath:(NSIndexPath *_Nonnull)indexPath dropOperation:(enum NSCollectionViewDropOperation)dropOperation {
 	NSPasteboard *pboard = [draggingInfo draggingPasteboard];
 	NSData *rowData = [pboard dataForType:NSStringPboardType];
-	NSIndexPath *moveIndexPath = [NSKeyedUnarchiver unarchiveObjectWithData:rowData];
+	id data = [NSKeyedUnarchiver unarchiveObjectWithData:rowData];
 
-	// Updating the dropped item date
-	TimeEntryViewItem *dateModel = [self.dataSource objectAt:indexPath];
-	TimeEntryViewItem *currentModel = [self.dataSource objectAt:moveIndexPath];
-
-	if (dateModel != nil && currentModel != nil && !dateModel.loadMore && !currentModel.loadMore)
+	// Make sure it's an array of indexPath
+	if ([data isKindOfClass:[NSArray<NSIndexPath *> class]])
 	{
-		NSCalendar *calendar = [NSCalendar currentCalendar];
-		NSDateComponents *components = [calendar components:(NSCalendarUnitHour | NSCalendarUnitMinute) fromDate:currentModel.started];
-		NSInteger hours = [components hour];
-		NSInteger minutes = [components minute];
-		NSInteger seconds = [components second];
+		NSArray *moveIndexPaths = (NSArray *)data;
 
-		unsigned unitFlags = NSCalendarUnitYear | NSCalendarUnitMonth |  NSCalendarUnitDay;
-		NSDateComponents *comps = [calendar components:unitFlags fromDate:dateModel.started];
-		comps.hour = hours;
-		comps.minute = minutes;
-		comps.second = seconds;
-		NSDate *newDate = [calendar dateFromComponents:comps];
+		// Update items
+		for (NSIndexPath *moveIndexPath in moveIndexPaths)
+		{
+			TimeEntryViewItem *dateModel = [self.dataSource objectAt:indexPath];
+			TimeEntryViewItem *currentModel = [self.dataSource objectAt:moveIndexPath];
 
-		toggl_set_time_entry_date(ctx,
-								  [currentModel.GUID UTF8String],
-								  [newDate timeIntervalSince1970]);
+			if (dateModel != nil && currentModel != nil && !dateModel.loadMore && !currentModel.loadMore)
+			{
+				NSCalendar *calendar = [NSCalendar currentCalendar];
+				NSDateComponents *components = [calendar components:(NSCalendarUnitHour | NSCalendarUnitMinute) fromDate:currentModel.started];
+				NSInteger hours = [components hour];
+				NSInteger minutes = [components minute];
+				NSInteger seconds = [components second];
+
+				unsigned unitFlags = NSCalendarUnitYear | NSCalendarUnitMonth |  NSCalendarUnitDay;
+				NSDateComponents *comps = [calendar components:unitFlags fromDate:dateModel.started];
+				comps.hour = hours;
+				comps.minute = minutes;
+				comps.second = seconds;
+				NSDate *newDate = [calendar dateFromComponents:comps];
+
+				toggl_set_time_entry_date(ctx,
+										  [currentModel.GUID UTF8String],
+										  [newDate timeIntervalSince1970]);
+			}
+		}
 	}
+
 	return YES;
 }
 
@@ -711,6 +708,11 @@ extern void *ctx;
 - (BOOL)isEditorOpen
 {
 	return self.timeEntrypopover.shown;
+}
+
+- (void)deselectAllTimeEntryNotification
+{
+	[self.collectionView deselectAll:self];
 }
 
 @end

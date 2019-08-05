@@ -98,6 +98,17 @@ class TimeEntryDatasource: NSObject {
     
     // MARK: Public
 
+    func selectFirstItem() {
+        // Check if there is a least 1 item
+        guard sections.first?.entries.first != nil else { return }
+        collectionView.window?.makeFirstResponder(collectionView)
+
+        // Deselect all because TE is multiple-selections
+        collectionView.deselectAll(self)
+        collectionView.selectItems(at: Set<IndexPath>(arrayLiteral: IndexPath(item: 0, section: 0)),
+                                   scrollPosition: .left)
+    }
+
     func process(_ timeEntries: [TimeEntryViewItem], showLoadMore: Bool) {
         isShowLoadMore = showLoadMore
 
@@ -412,9 +423,8 @@ extension TimeEntryDatasource {
     func collectionView(_ collectionView: NSCollectionView, pasteboardWriterForItemAt indexPath: IndexPath) -> NSPasteboardWriting? {
         guard let item = object(at: indexPath) else { return nil }
         guard !item.loadMore else { return nil }
-
         // Save indexpath
-        let data = NSKeyedArchiver.archivedData(withRootObject: indexPath)
+        let data = NSKeyedArchiver.archivedData(withRootObject: Array(collectionView.selectionIndexPaths))
         let pbItem = NSPasteboardItem()
         pbItem.setData(data, forType: NSPasteboard.PasteboardType.string)
         return pbItem

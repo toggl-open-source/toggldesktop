@@ -29,10 +29,4 @@ class NoVibrantPopoverView: ResizablePopover {
     @objc func present(from rect: NSRect, of view: NSView, preferredEdge: NSRectEdge = .maxX) {
         show(relativeTo: rect, of: view, preferredEdge: preferredEdge)
     }
-
-    @objc func close(focusTimer: Bool) {
-
-        // Close and notify delegate if need
-        performClose(self)
-    }
 }
