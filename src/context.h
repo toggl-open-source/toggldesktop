@@ -637,6 +637,7 @@ class Context : public TimelineDatasource {
     Poco::Mutex db_m_;
     Database *db_;
 
+    Poco::Mutex user_m_;
     User *user_;
 
     Poco::Mutex ws_client_m_;
