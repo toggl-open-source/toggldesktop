@@ -1,9 +1,9 @@
 {
     "win": {
         "dev": {
-            "version": "7.4.501",
-            "windows": "https://github.com/toggl/toggldesktop/releases/download/v7.4.501/TogglDesktopInstaller-7.4.501.exe",
-            "windows64": "https://github.com/toggl/toggldesktop/releases/download/v7.4.501/TogglDesktopInstaller-x64-7.4.501.exe"
+            "version": "7.4.502",
+            "windows": "https://github.com/toggl/toggldesktop/releases/download/v7.4.502/TogglDesktopInstaller-7.4.502.exe",
+            "windows64": "https://github.com/toggl/toggldesktop/releases/download/v7.4.502/TogglDesktopInstaller-x64-7.4.502.exe"
         },
         "beta": {
             "version": "7.4.475",
@@ -18,8 +18,8 @@
     },
     "mac": {
         "dev": {
-            "version": "7.4.501",
-            "macos": "https://github.com/toggl/toggldesktop/releases/download/v7.4.501/TogglDesktop-7_4_501.dmg"
+            "version": "7.4.502",
+            "macos": "https://github.com/toggl/toggldesktop/releases/download/v7.4.502/TogglDesktop-7_4_502.dmg"
         },
         "beta": {
             "version": "7.4.484",
