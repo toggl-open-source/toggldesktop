@@ -105,18 +105,18 @@ If you want to build OpenSSL from sources, refer to [this page](docs/win/build-o
 
 ## macOS
 
-Toggl built and signed app for macOS is [available for download](https://www.toggl.com/api/v8/installer?platform=darwin&app=td&channel=stable). Officially macOS 10.11 and newer stable macOS versions are supported.
+Toggl built and signed app for macOS is [available for download](https://toggl.github.io/toggldesktop/download/macos-stable/). Officially macOS 10.11 and newer stable macOS versions are supported.
 
 ## Windows
 
-Toggl built and signed app for Windows is [available for download](https://www.toggl.com/api/v8/installer?platform=windows&app=td&channel=stable). App has been tested on Windows 7, 8, 8.1 and 10.
+Toggl built and signed app for Windows is [available for download](https://toggl.github.io/toggldesktop/download/windows-stable/). App has been tested on Windows 7, 8, 8.1 and 10.
 
 Toggl Desktop Windows app has not been tested on Surface type touchscreen environments.
 
 ## Linux (64 bit only)
 
 * [flatpak(recommended)](https://flathub.org/apps/details/com.toggl.TogglDesktop)
-* [tarball](https://www.toggl.com/api/v8/installer?app=td&platform=linux&channel=stable)
+* [tarball](https://toggl.github.io/toggldesktop/download/linux_tar.gz-stable/)
 
 
 # Change log
