@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14490.70"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -23,10 +23,10 @@
                 </box>
             </subviews>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="ILd-N3-zAP" secondAttribute="bottom" id="1Mm-Za-otm"/>
-                <constraint firstAttribute="trailing" secondItem="ILd-N3-zAP" secondAttribute="trailing" id="AaW-oM-uPq"/>
-                <constraint firstItem="ILd-N3-zAP" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" id="ibj-8F-oO2"/>
-                <constraint firstItem="ILd-N3-zAP" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="zP1-Vu-Sgm"/>
+                <constraint firstAttribute="bottom" secondItem="ILd-N3-zAP" secondAttribute="bottom" priority="750" id="1Mm-Za-otm"/>
+                <constraint firstAttribute="trailing" secondItem="ILd-N3-zAP" secondAttribute="trailing" priority="750" id="AaW-oM-uPq"/>
+                <constraint firstItem="ILd-N3-zAP" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" priority="750" id="ibj-8F-oO2"/>
+                <constraint firstItem="ILd-N3-zAP" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" priority="750" id="zP1-Vu-Sgm"/>
             </constraints>
         </customView>
         <collectionViewItem identifier="TimelineTimeEntryCell" id="7AB-0R-5ZL" customClass="TimelineTimeEntryCell" customModule="TogglDesktop" customModuleProvider="target">
