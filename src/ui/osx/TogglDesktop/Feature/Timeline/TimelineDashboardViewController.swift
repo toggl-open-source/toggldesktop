@@ -19,6 +19,7 @@ final class TimelineDashboardViewController: NSViewController {
     
     // MARK: Variables
     private var selectedIndexPath: IndexPath?
+    private var isFirstTime = true
     lazy var datePickerView: DatePickerView = DatePickerView.xibView()
     private lazy var datasource = TimelineDatasource(collectionView)
     private var zoomLevel: TimelineDatasource.ZoomLevel = .x1 {
@@ -57,6 +58,16 @@ final class TimelineDashboardViewController: NSViewController {
 
     deinit {
         NotificationCenter.default.removeObserver(self)
+    }
+
+    override func viewDidAppear() {
+        super.viewDidAppear()
+
+        // Scroll to the first visible item at the first time open Timeline
+        if isFirstTime {
+            isFirstTime = false
+            datasource.scrollToVisibleItem()
+        }
     }
 
     func updateNextKeyView() {

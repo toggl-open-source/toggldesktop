@@ -101,7 +101,7 @@ final class TimelineDatasource: NSObject {
         scrollToVisibleItem()
     }
 
-    private func scrollToVisibleItem() {
+    func scrollToVisibleItem() {
         guard let timeline = timeline,
             !timeline.timeEntries.isEmpty else { return }
         collectionView.scrollToItems(at: Set<IndexPath>(arrayLiteral: IndexPath(item: 0, section: TimelineData.Section.timeEntry.rawValue)),
