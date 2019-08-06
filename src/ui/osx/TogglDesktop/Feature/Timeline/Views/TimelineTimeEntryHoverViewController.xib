@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14490.70"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -40,7 +40,7 @@
                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="TBC-6I-6yZ">
                             <rect key="frame" x="148" y="104" width="24" height="16"/>
                             <textFieldCell key="cell" lineBreakMode="clipping" alignment="right" title="12h" id="7OT-AC-5Kb">
-                                <font key="font" metaFont="system" size="12"/>
+                                <font key="font" metaFont="cellTitle"/>
                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
@@ -48,7 +48,7 @@
                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="7hE-S1-toX">
                             <rect key="frame" x="8" y="78" width="77" height="16"/>
                             <textFieldCell key="cell" lineBreakMode="clipping" title="Copy Review" id="bZN-uC-UKm">
-                                <font key="font" metaFont="system" size="12"/>
+                                <font key="font" metaFont="cellTitle"/>
                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
@@ -82,33 +82,46 @@
                                 <real value="3.4028234663852886e+38"/>
                             </customSpacing>
                         </stackView>
-                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="NSd-ph-aKM">
-                            <rect key="frame" x="8" y="32" width="72" height="16"/>
-                            <textFieldCell key="cell" lineBreakMode="clipping" title="Client name" id="K7c-MB-Q8i">
-                                <font key="font" metaFont="system" size="12"/>
-                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                            </textFieldCell>
-                        </textField>
-                        <stackView distribution="equalSpacing" orientation="horizontal" alignment="centerY" spacing="5" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Vyc-z6-ow2">
-                            <rect key="frame" x="10" y="7" width="39" height="17"/>
+                        <stackView distribution="fill" orientation="vertical" alignment="leading" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="n9f-oV-dff">
+                            <rect key="frame" x="10" y="7" width="68" height="41"/>
                             <subviews>
-                                <imageView translatesAutoresizingMaskIntoConstraints="NO" id="Hyb-2T-wKP">
-                                    <rect key="frame" x="0.0" y="0.0" width="17" height="17"/>
-                                    <constraints>
-                                        <constraint firstAttribute="height" constant="17" id="9wg-hw-AlB"/>
-                                        <constraint firstAttribute="width" constant="17" id="b6t-2d-mVh"/>
-                                    </constraints>
-                                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="time-entry-tag" id="XBN-ZW-Jag"/>
-                                </imageView>
-                                <imageView translatesAutoresizingMaskIntoConstraints="NO" id="MTc-gd-Nd5">
-                                    <rect key="frame" x="22" y="0.0" width="17" height="17"/>
-                                    <constraints>
-                                        <constraint firstAttribute="height" constant="17" id="ehu-20-uF8"/>
-                                        <constraint firstAttribute="width" constant="17" id="u9v-WH-fti"/>
-                                    </constraints>
-                                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="time-entry-billable" id="7WH-CO-1lS"/>
-                                </imageView>
+                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="NSd-ph-aKM">
+                                    <rect key="frame" x="-2" y="25" width="72" height="16"/>
+                                    <textFieldCell key="cell" lineBreakMode="clipping" title="Client name" id="K7c-MB-Q8i">
+                                        <font key="font" metaFont="cellTitle"/>
+                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                </textField>
+                                <stackView distribution="fill" orientation="horizontal" alignment="centerY" spacing="5" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Vyc-z6-ow2">
+                                    <rect key="frame" x="0.0" y="0.0" width="39" height="17"/>
+                                    <subviews>
+                                        <imageView translatesAutoresizingMaskIntoConstraints="NO" id="Hyb-2T-wKP">
+                                            <rect key="frame" x="0.0" y="0.0" width="17" height="17"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="17" id="9wg-hw-AlB"/>
+                                                <constraint firstAttribute="width" constant="17" id="b6t-2d-mVh"/>
+                                            </constraints>
+                                            <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="time-entry-tag" id="XBN-ZW-Jag"/>
+                                        </imageView>
+                                        <imageView translatesAutoresizingMaskIntoConstraints="NO" id="MTc-gd-Nd5">
+                                            <rect key="frame" x="22" y="0.0" width="17" height="17"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="17" id="ehu-20-uF8"/>
+                                                <constraint firstAttribute="width" constant="17" id="u9v-WH-fti"/>
+                                            </constraints>
+                                            <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="time-entry-billable" id="7WH-CO-1lS"/>
+                                        </imageView>
+                                    </subviews>
+                                    <visibilityPriorities>
+                                        <integer value="1000"/>
+                                        <integer value="1000"/>
+                                    </visibilityPriorities>
+                                    <customSpacing>
+                                        <real value="3.4028234663852886e+38"/>
+                                        <real value="3.4028234663852886e+38"/>
+                                    </customSpacing>
+                                </stackView>
                             </subviews>
                             <visibilityPriorities>
                                 <integer value="1000"/>
@@ -122,21 +135,19 @@
                     </subviews>
                     <constraints>
                         <constraint firstItem="far-SV-8qd" firstAttribute="leading" secondItem="se7-Iw-awj" secondAttribute="leading" constant="10" id="4Au-JV-YBy"/>
+                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="n9f-oV-dff" secondAttribute="trailing" constant="10" id="4hU-Ml-Eow"/>
                         <constraint firstItem="7hE-S1-toX" firstAttribute="top" secondItem="FXj-H8-jgM" secondAttribute="bottom" constant="10" id="DCF-p6-AGK"/>
+                        <constraint firstItem="n9f-oV-dff" firstAttribute="top" secondItem="far-SV-8qd" secondAttribute="bottom" constant="8" id="EYj-om-NXF"/>
                         <constraint firstItem="TBC-6I-6yZ" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="FXj-H8-jgM" secondAttribute="trailing" constant="2" id="FZ9-TU-hzV"/>
                         <constraint firstItem="TBC-6I-6yZ" firstAttribute="top" secondItem="se7-Iw-awj" secondAttribute="top" constant="10" id="Noq-1g-tuw"/>
                         <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="7hE-S1-toX" secondAttribute="trailing" constant="10" id="Udp-qe-raG"/>
-                        <constraint firstItem="NSd-ph-aKM" firstAttribute="leading" secondItem="se7-Iw-awj" secondAttribute="leading" constant="10" id="ZF0-CM-Vc7"/>
                         <constraint firstItem="7hE-S1-toX" firstAttribute="leading" secondItem="se7-Iw-awj" secondAttribute="leading" constant="10" id="bpI-1E-UkA"/>
-                        <constraint firstItem="NSd-ph-aKM" firstAttribute="top" secondItem="far-SV-8qd" secondAttribute="bottom" constant="8" id="epW-oF-Dkx"/>
                         <constraint firstAttribute="trailing" secondItem="far-SV-8qd" secondAttribute="trailing" constant="10" id="fM3-XP-lwI"/>
-                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="NSd-ph-aKM" secondAttribute="trailing" constant="10" id="g3y-IO-IKV"/>
-                        <constraint firstItem="Vyc-z6-ow2" firstAttribute="top" secondItem="NSd-ph-aKM" secondAttribute="bottom" constant="8" id="kL4-sc-m1i"/>
                         <constraint firstItem="FXj-H8-jgM" firstAttribute="top" secondItem="se7-Iw-awj" secondAttribute="top" constant="10" id="rbD-YC-otL"/>
-                        <constraint firstItem="Vyc-z6-ow2" firstAttribute="leading" secondItem="se7-Iw-awj" secondAttribute="leading" constant="10" id="sGP-ni-xIC"/>
                         <constraint firstItem="FXj-H8-jgM" firstAttribute="leading" secondItem="se7-Iw-awj" secondAttribute="leading" constant="10" id="vG7-4v-V3W"/>
                         <constraint firstItem="far-SV-8qd" firstAttribute="top" secondItem="7hE-S1-toX" secondAttribute="bottom" constant="6" id="xlU-xW-4Xe"/>
                         <constraint firstAttribute="trailing" secondItem="TBC-6I-6yZ" secondAttribute="trailing" constant="10" id="xyy-Jg-IhA"/>
+                        <constraint firstItem="n9f-oV-dff" firstAttribute="leading" secondItem="se7-Iw-awj" secondAttribute="leading" constant="10" id="zoJ-uC-vac"/>
                     </constraints>
                 </visualEffectView>
             </subviews>

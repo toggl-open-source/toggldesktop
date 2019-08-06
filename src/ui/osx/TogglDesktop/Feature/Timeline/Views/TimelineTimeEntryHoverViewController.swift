@@ -8,7 +8,7 @@
 
 import Cocoa
 
-class TimelineTimeEntryHoverViewController: NSViewController {
+final class TimelineTimeEntryHoverViewController: NSViewController {
 
     // MARK: OUTLET
 
@@ -24,6 +24,7 @@ class TimelineTimeEntryHoverViewController: NSViewController {
 
     // MARK: Variables
 
+    weak var popover: NSPopover?
     private var timeEntry: TimelineTimeEntry!
 
     // MARK: View
@@ -64,10 +65,22 @@ class TimelineTimeEntryHoverViewController: NSViewController {
         } else {
             dotImageView.isHidden = true
             projectLbl.stringValue = "No Project"
+            projectLbl.textColor = NSColor.labelColor
             projectLbl.toolTip = nil
         }
 
         // Client
-        clientLbl.stringValue = item.clientLabel
+        clientLbl.stringValue = item.clientLabel.isEmpty ? "No Client" : item.clientLabel
+
+        // Resize to fit the content
+        sizeToFit()
+    }
+
+    private func sizeToFit() {
+        guard let popover = popover else { return }
+        let isAllIconsHidden = tagImageView.isHidden && billableImageView.isHidden
+        var size = popover.contentSize
+        size.height = isAllIconsHidden ? 106 : 130
+        popover.contentSize = size
     }
 }
