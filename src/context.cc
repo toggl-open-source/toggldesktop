@@ -517,6 +517,7 @@ void Context::updateUI(const UIElements &what) {
     view::TimeEntry running_entry_view;
 
     std::vector<view::TimeEntry> time_entry_views;
+    std::vector<view::TimeEntry> timeline_views;
 
     std::vector<view::Generic> client_views;
     std::vector<view::Generic> workspace_views;
@@ -870,7 +871,7 @@ void Context::updateUI(const UIElements &what) {
                     user_->related.ProjectLabelAndColorCode(
                         te,
                         &view);
-                    time_entry_views.push_back(view);
+                    timeline_views.push_back(view);
                 }
             }
         }
@@ -895,7 +896,7 @@ void Context::updateUI(const UIElements &what) {
     }
 
     if (what.display_timeline) {
-        UI()->DisplayTimeline(what.open_timeline, timeline, time_entry_views);
+        UI()->DisplayTimeline(what.open_timeline, timeline, timeline_views);
     }
 
     if (what.display_time_entry_autocomplete) {
