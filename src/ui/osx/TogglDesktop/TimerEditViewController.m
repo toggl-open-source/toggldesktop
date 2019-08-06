@@ -20,6 +20,8 @@
 #import "AutoCompleteInput.h"
 #import "BetterFocusAutoCompleteInput.h"
 #import "AutoCompleteTable.h"
+#import <Carbon/Carbon.h>
+#import "Utils.h"
 
 typedef enum : NSUInteger
 {

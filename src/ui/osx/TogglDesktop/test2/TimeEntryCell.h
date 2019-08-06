@@ -24,6 +24,7 @@ typedef NS_ENUM (NSUInteger, CellType)
 @property (nonatomic, assign, readonly) CellType cellType;
 @property (nonatomic, assign, readonly) BOOL confirmless_delete;
 @property (nonatomic, copy, readonly) NSString *descriptionString;
+@property (nonatomic, assign, readonly) BOOL Group;
 
 - (void)render:(TimeEntryViewItem *)view_item;
 - (void)focusFieldName;
