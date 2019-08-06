@@ -10,7 +10,7 @@
 
 namespace toggl {
 
-class Feedback {
+class TOGGL_INTERNAL_EXPORT Feedback {
  public:
     Feedback()
         : subject_("")

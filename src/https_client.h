@@ -29,7 +29,7 @@ class HTMLForm;
 
 namespace toggl {
 
-class ServerStatus {
+class TOGGL_INTERNAL_EXPORT ServerStatus {
  public:
     ServerStatus()
         : gone_(false)
@@ -64,7 +64,7 @@ class ServerStatus {
     Poco::Logger &logger() const;
 };
 
-class HTTPSClientConfig {
+class TOGGL_INTERNAL_EXPORT HTTPSClientConfig {
  public:
     HTTPSClientConfig()
         : AppName("")
@@ -98,7 +98,7 @@ class HTTPSClientConfig {
     }
 };
 
-class HTTPSRequest {
+class TOGGL_INTERNAL_EXPORT HTTPSRequest {
  public:
     HTTPSRequest()
         : method("")
@@ -121,7 +121,7 @@ class HTTPSRequest {
     Poco::Int64 timeout_seconds;
 };
 
-class HTTPSResponse {
+class TOGGL_INTERNAL_EXPORT HTTPSResponse {
  public:
     HTTPSResponse()
         : body("")
@@ -134,7 +134,7 @@ class HTTPSResponse {
     Poco::Int64 status_code;
 };
 
-class HTTPSClient {
+class TOGGL_INTERNAL_EXPORT HTTPSClient {
  public:
     HTTPSClient() {}
     virtual ~HTTPSClient() {}
@@ -174,14 +174,14 @@ class HTTPSClient {
         HTTPSRequest req);
 };
 
-class SyncStateMonitor {
+class TOGGL_INTERNAL_EXPORT SyncStateMonitor {
  public:
     virtual ~SyncStateMonitor() {}
 
     virtual void DisplaySyncState(const Poco::Int64 state) = 0;
 };
 
-class TogglClient : public HTTPSClient {
+class TOGGL_INTERNAL_EXPORT TogglClient : public HTTPSClient {
  public:
     explicit TogglClient(SyncStateMonitor *monitor = nullptr)
         : monitor_(monitor) {}

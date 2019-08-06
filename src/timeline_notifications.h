@@ -14,7 +14,7 @@
 
 namespace toggl {
 
-class TimelineBatch {
+class TOGGL_INTERNAL_EXPORT TimelineBatch {
  public:
     TimelineBatch()
         : user_id_(0)
@@ -58,7 +58,7 @@ class TimelineBatch {
     std::string desktop_id_;
 };
 
-class TimelineDatasource {
+class TOGGL_INTERNAL_EXPORT TimelineDatasource {
  public:
     virtual ~TimelineDatasource() {}
 

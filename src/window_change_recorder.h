@@ -17,7 +17,7 @@ class Logger;
 
 namespace toggl {
 
-class WindowChangeRecorder {
+class TOGGL_INTERNAL_EXPORT WindowChangeRecorder {
  public:
     explicit WindowChangeRecorder(TimelineDatasource *datasource)
         : last_title_("")

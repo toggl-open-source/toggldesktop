@@ -13,7 +13,7 @@
 
 namespace toggl {
 
-class ObmAction : public BaseModel {
+class TOGGL_INTERNAL_EXPORT ObmAction : public BaseModel {
  public:
     ObmAction()
         : BaseModel()
@@ -48,7 +48,7 @@ class ObmAction : public BaseModel {
     std::string value_;
 };
 
-class ObmExperiment : public BaseModel {
+class TOGGL_INTERNAL_EXPORT ObmExperiment : public BaseModel {
  public:
     ObmExperiment()
         : BaseModel()
