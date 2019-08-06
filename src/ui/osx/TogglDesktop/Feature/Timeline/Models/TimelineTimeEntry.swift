@@ -12,6 +12,10 @@ class TimelineBaseTimeEntry {
 
     let start: TimeInterval
     let end: TimeInterval
+    private(set) var col: Int = 0
+    var isOverlap: Bool {
+        return col > 0
+    }
 
     init(start: TimeInterval, end: TimeInterval, offset: TimeInterval = 0) {
         self.start = start + offset
@@ -21,6 +25,10 @@ class TimelineBaseTimeEntry {
     func timechunk() -> TimeChunk {
         return TimeChunk(start: start, end: end)
     }
+
+    func update(_ col: Int) {
+        self.col = col
+    }
 }
 
 final class TimelineTimeEntry: TimelineBaseTimeEntry {
@@ -29,7 +37,6 @@ final class TimelineTimeEntry: TimelineBaseTimeEntry {
 
     let timeEntry: TimeEntryViewItem
     let color: NSColor
-    var isOverlap = false
     let name: String
 
     var isSmall: Bool {

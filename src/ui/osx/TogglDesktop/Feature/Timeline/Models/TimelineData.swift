@@ -42,7 +42,7 @@ class TimelineData {
         timeChunks = generateTimelineLabel(for: start,
                                            endDate: end,
                                            zoomLevel: zoomLevel)
-        generateEmptyTimeEntry()
+        calculateColumnsPositionForTimeline()
     }
 
     // MARK: Public
@@ -108,23 +108,40 @@ extension TimelineData {
         return times.map { TimelineTimestamp($0) }
     }
 
-    fileprivate func generateEmptyTimeEntry() {
-        var firstColumnTimeEntries: [TimelineTimeEntry] = []
-        for item in timeEntries {
-            guard let timeEntry = item as? TimelineTimeEntry else { continue }
-            let start = timeEntry.start
-            let end = timeEntry.end
+    fileprivate func calculateColumnsPositionForTimeline() {
+        var firstColumnTimeEntries: [TimelineBaseTimeEntry] = []
+        var calculatedEntries: [TimelineBaseTimeEntry] = []
+        for entry in timeEntries {
 
-            // Check if it's overlap by comparing the start & end
-            let isOverlap = firstColumnTimeEntries.contains { timeEntry -> Bool in
-                return (start >= timeEntry.start && start <= timeEntry.end) || (end >= timeEntry.start && end <= timeEntry.end)
+            // Check if this time entry intersect with previous one
+            // If overlap, increase the number of columns
+            var col = 0
+            var isOverlap = false
+            repeat {
+
+                // Travesal all previous TimeEntry, if it's overlapped -> return
+                // O(n) = n
+                // It's reasonal since the number of items is small
+                isOverlap = calculatedEntries.contains { timeEntry -> Bool in
+                    let overlap = (entry.start >= timeEntry.start && entry.start <= timeEntry.end)
+                        || (entry.end >= timeEntry.start && entry.end <= timeEntry.end)
+                    return overlap && (timeEntry.col == col)
+                }
+
+                // If overlap -> Move to next column
+                if isOverlap {
+                    col += 1
+                }
+            } while isOverlap
+
+            // First Col
+            if col == 0 {
+                firstColumnTimeEntries.append(entry)
             }
 
-            // Set overlap
-            timeEntry.isOverlap = isOverlap
-            if !isOverlap {
-                firstColumnTimeEntries.append(timeEntry)
-            }
+            // Exit the loop
+            entry.update(col)
+            calculatedEntries.append(entry)
         }
 
         // Add empty time entry
