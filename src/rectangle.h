@@ -9,12 +9,14 @@
 #ifndef Rectangle_h
 #define Rectangle_h
 
+#include "./types.h"
+
 #include <string>
 #include "Poco/Types.h"
 
 namespace toggl {
 
-class Rectangle {
+class TOGGL_INTERNAL_EXPORT Rectangle {
  private:
     const Poco::UInt64 width;
     const Poco::UInt64 height;

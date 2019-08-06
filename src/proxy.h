@@ -3,13 +3,15 @@
 #ifndef SRC_PROXY_H_
 #define SRC_PROXY_H_
 
+#include "./types.h"
+
 #include <string>
 
 #include "Poco/Types.h"
 
 namespace toggl {
 
-class Proxy {
+class TOGGL_INTERNAL_EXPORT Proxy {
  public:
     Proxy() :
     host_(""),

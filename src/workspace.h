@@ -11,7 +11,7 @@
 
 namespace toggl {
 
-class Workspace : public BaseModel {
+class TOGGL_INTERNAL_EXPORT Workspace : public BaseModel {
  public:
     Workspace()
         : BaseModel()

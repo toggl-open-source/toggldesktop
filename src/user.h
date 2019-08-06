@@ -20,7 +20,7 @@
 
 namespace toggl {
 
-class User : public BaseModel {
+class TOGGL_INTERNAL_EXPORT User : public BaseModel {
  public:
     User()
         : api_token_("")

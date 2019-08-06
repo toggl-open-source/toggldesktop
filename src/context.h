@@ -45,7 +45,7 @@ class Database;
 class TimelineUploader;
 class WindowChangeRecorder;
 
-class UIElements {
+class TOGGL_INTERNAL_EXPORT UIElements {
  public:
     UIElements()
         : first_load(false)
@@ -93,7 +93,7 @@ class UIElements {
     bool display_unsynced_items;
 };
 
-class Context : public TimelineDatasource {
+class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
  public:
     Context(
         const std::string app_name,

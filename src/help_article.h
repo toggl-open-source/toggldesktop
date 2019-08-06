@@ -3,13 +3,15 @@
 #ifndef SRC_HELP_ARTICLE_H_
 #define SRC_HELP_ARTICLE_H_
 
+#include "./types.h"
+
 #include <sstream>
 #include <string>
 #include <vector>
 
 namespace toggl {
 
-class HelpArticle {
+class TOGGL_INTERNAL_EXPORT HelpArticle {
  public:
     HelpArticle(
         const std::string type,
@@ -38,7 +40,7 @@ class HelpArticle {
     std::string SearchText;
 };
 
-class HelpDatabase {
+class TOGGL_INTERNAL_EXPORT HelpDatabase {
  public:
     HelpDatabase();
     virtual ~HelpDatabase() {}

@@ -42,7 +42,7 @@ class TimeEntry;
 class User;
 class Workspace;
 
-class Database {
+class TOGGL_INTERNAL_EXPORT Database {
  public:
     explicit Database(const std::string db_path);
     ~Database();

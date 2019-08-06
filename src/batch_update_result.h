@@ -17,7 +17,7 @@ namespace toggl {
 
 class BaseModel;
 
-class BatchUpdateResult {
+class TOGGL_INTERNAL_EXPORT BatchUpdateResult {
  public:
     BatchUpdateResult()
         : StatusCode(0)

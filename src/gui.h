@@ -23,7 +23,7 @@ namespace toggl {
 
 namespace view {
 
-class TimeEntry {
+class TOGGL_INTERNAL_EXPORT TimeEntry {
  public:
     TimeEntry()
         : ID(0)
@@ -108,7 +108,7 @@ class TimeEntry {
     bool operator == (const TimeEntry& other) const;
 };
 
-class Autocomplete {
+class TOGGL_INTERNAL_EXPORT Autocomplete {
  public:
     Autocomplete()
         : Text("")
@@ -186,7 +186,7 @@ class Autocomplete {
     bool operator == (const Autocomplete& other) const;
 };
 
-class Generic {
+class TOGGL_INTERNAL_EXPORT Generic {
  public:
     Generic()
         : ID(0)
@@ -206,7 +206,7 @@ class Generic {
     bool operator == (const Generic& other) const;
 };
 
-class Settings {
+class TOGGL_INTERNAL_EXPORT Settings {
  public:
     Settings()
         : UseProxy(false)
@@ -280,7 +280,7 @@ class Settings {
     bool operator == (const Settings& other) const;
 };
 
-class AutotrackerRule {
+class TOGGL_INTERNAL_EXPORT AutotrackerRule {
  public:
     AutotrackerRule()
         : ID(0)
@@ -294,7 +294,7 @@ class AutotrackerRule {
     bool operator == (const AutotrackerRule& other) const;
 };
 
-class TimelineEvent {
+class TOGGL_INTERNAL_EXPORT TimelineEvent {
  public:
     TimelineEvent()
         : ID(0)
@@ -314,7 +314,7 @@ class TimelineEvent {
     bool operator == (const TimelineEvent& other) const;
 };
 
-class Country {
+class TOGGL_INTERNAL_EXPORT Country {
  public:
     Country()
         : ID(0)
@@ -342,7 +342,7 @@ class User;
 class TimeEntry;
 class Workspace;
 
-class GUI : public SyncStateMonitor {
+class TOGGL_INTERNAL_EXPORT GUI : public SyncStateMonitor {
  public:
     GUI()
         : on_display_app_(nullptr)

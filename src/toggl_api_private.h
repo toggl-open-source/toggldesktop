@@ -29,10 +29,10 @@ class TimeEntry;
 }
 }  // namespace toggl
 
-int compare_string(const char_t *s1, const char_t *s2);
-const char_t* to_char_t(const std::string s);
-char_t *copy_string(const std::string s);
-std::string to_string(const char_t *s);
+TOGGL_INTERNAL_EXPORT int compare_string(const char_t *s1, const char_t *s2);
+TOGGL_INTERNAL_EXPORT const char_t* to_char_t(const std::string s);
+TOGGL_INTERNAL_EXPORT char_t *copy_string(const std::string s);
+TOGGL_INTERNAL_EXPORT std::string to_string(const char_t *s);
 
 /**
  Trim all leading and trailing whitespace from the string. Don't trim on middle of word.
