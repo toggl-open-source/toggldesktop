@@ -12,6 +12,7 @@ protocol TimelineFlowLayoutDelegate: class {
 
     func isEmptyTimeEntry(at indexPath: IndexPath) -> Bool
     func timechunkForItem(at indexPath: IndexPath) -> TimeChunk?
+    func columnForItem(at indexPath: IndexPath) -> Int
 }
 
 final class TimelineFlowLayout: NSCollectionViewFlowLayout {
@@ -229,27 +230,12 @@ extension TimelineFlowLayout {
 
             // Check if this time entry intersect with previous one
             // If overlap, increase the number of columns
-            var col = 0
-            var intersected = false
-            repeat {
-                let x = Constants.TimeEntry.LeftPadding + CGFloat(col) * (Constants.TimeEntry.Width + Constants.TimeEntry.RightPadding)
-                frame = CGRect(x: x,
-                               y: y,
-                               width: Constants.TimeEntry.Width,
-                               height: height)
-
-                // Travesal all previous TimeEntry, if it's overlapped -> return
-                // O(n) = n
-                // It's reasonal since the number of items is small
-                intersected = timeEntryAttributes.contains { (attribute) -> Bool in
-                    return attribute.frame.intersects(frame)
-                }
-
-                // If overlap -> Move to next column
-                if intersected {
-                    col += 1
-                }
-            } while intersected
+            let col = flowDelegate?.columnForItem(at: indexPath) ?? 0
+            let x = Constants.TimeEntry.LeftPadding + CGFloat(col) * (Constants.TimeEntry.Width + Constants.TimeEntry.RightPadding)
+            frame = CGRect(x: x,
+                           y: y,
+                           width: Constants.TimeEntry.Width,
+                           height: height)
 
             // Finalize
             att.frame = frame

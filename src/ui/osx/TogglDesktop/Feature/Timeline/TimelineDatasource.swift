@@ -193,6 +193,11 @@ extension TimelineDatasource: TimelineFlowLayoutDelegate {
             type(of: item) == TimelineBaseTimeEntry.self else { return false }
         return true
     }
+
+    func columnForItem(at indexPath: IndexPath) -> Int {
+        guard let item = timeline?.item(at: indexPath) as? TimelineBaseTimeEntry else { return 0 }
+        return item.col
+    }
 }
 
 // MARK: TimelineTimeEntryCellDelegate
