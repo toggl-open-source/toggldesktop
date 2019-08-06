@@ -7,19 +7,20 @@
 //  Copyright (c) 2013 TogglDesktop developers. All rights reserved.
 //
 #import "TimerEditViewController.h"
-#import "UIEvents.h"
 #import "AutocompleteItem.h"
 #import "LiteAutoCompleteDataSource.h"
 #import "ConvertHexColor.h"
-#import "NSComboBox_Expansion.h"
 #import "TimeEntryViewItem.h"
-#import "NSTextFieldClickable.h"
-#import "NSCustomComboBoxCell.h"
-#import "NSCustomComboBox.h"
-#import "NSCustomTimerComboBox.h"
 #import "DisplayCommand.h"
 #import "TogglDesktop-Swift.h"
 #import "ProjectTextField.h"
+#import "NSTextFieldDuration.h"
+#import "NSHoverButton.h"
+#import "NSBoxClickable.h"
+#import "AutoCompleteInput.h"
+#import "BetterFocusAutoCompleteInput.h"
+#import "AutoCompleteTable.h"
+#import <Carbon/Carbon.h>
 #import "Utils.h"
 
 typedef enum : NSUInteger
@@ -127,6 +128,11 @@ NSString *kInactiveTimerColor = @"#999999";
 	[super viewDidLoad];
 
 	[self initCommon];
+}
+
+- (void)dealloc
+{
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)initCommon

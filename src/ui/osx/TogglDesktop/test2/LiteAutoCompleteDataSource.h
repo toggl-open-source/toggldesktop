@@ -7,21 +7,14 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import <Foundation/Foundation.h>
-#import "AutoCompleteInput.h"
-#import "AutocompleteItem.h"
-#import "AutoCompleteTableCell.h"
 
-@interface LiteAutoCompleteDataSource : NSObject <NSTableViewDataSource>
-@property NSMutableArray *orderedKeys;
-@property NSMutableArray *filteredOrderedKeys;
-@property NSString *currentFilter;
-@property NSInteger textLength;
-@property AutoCompleteInput *input;
-@property NSInteger lastType;
-@property NSInteger lastWID;
-@property NSString *lastClientLabel;
-@property NSArray *types;
+@class AutocompleteItem;
+@class AutoCompleteInput;
+
+@interface LiteAutoCompleteDataSource : NSObject
+@property (nonatomic, strong, readonly) NSMutableArray *filteredOrderedKeys;
+@property (nonatomic, strong) AutoCompleteInput *input;
+@property (nonatomic, copy) NSString *currentFilter;
 - (NSString *)completedString:(NSString *)partialString;
 - (void)clearFilter;
 - (void)setFilter:(NSString *)filter;

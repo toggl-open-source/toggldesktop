@@ -474,8 +474,8 @@ extension EditorViewController: AutoCompleteViewDataSourceDelegate {
         }
 
         DesktopLibraryBridge.shared().setProjectForTimeEntryWithGUID(timeEntry.guid,
-                                                                     taskID: item.taskID,
-                                                                     projectID: item.projectID,
+                                                                     taskID: UInt64(item.taskID),
+                                                                     projectID: UInt64(item.projectID),
                                                                      projectGUID: projectGUID)
     }
 }
@@ -487,19 +487,19 @@ extension EditorViewController: NSTextFieldDelegate {
 
         // Duration
         if textField == durationTextField {
-            durationTextFieldOnChange(durationTextField)
+            durationTextFieldOnChange(self)
             return
         }
 
         // Start at
         if textField == startAtTextField {
-            startTextFieldOnChange(startAtTextField)
+            startTextFieldOnChange(self)
             return
         }
 
         // End at
         if textField == endAtTextField {
-            endTextFieldOnChange(endAtTextField)
+            endTextFieldOnChange(self)
         }
     }
 

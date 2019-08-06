@@ -8,6 +8,6 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface NSResize : NSTextField <NSTextFieldDelegate>
-@property (strong) NSCursor *cursor;
+@interface NSResize : NSTextField
+@property (nonatomic, strong) NSCursor *cursor;
 @end

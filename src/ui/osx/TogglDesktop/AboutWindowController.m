@@ -8,7 +8,6 @@
 
 #import "AboutWindowController.h"
 #import "UIEvents.h"
-#import "toggl_api.h"
 #import "DisplayCommand.h"
 #import "Utils.h"
 #import "UnsupportedNotice.h"

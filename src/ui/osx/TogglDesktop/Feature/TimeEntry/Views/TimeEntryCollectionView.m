@@ -283,7 +283,7 @@ extern void *ctx;
 	}
 
 	// Delete and select preview cell
-	if ([Utils deleteTimeEntryWithConfirmationWithGUID:cell.GUID title:cell.descriptionTextField.stringValue])
+	if ([Utils deleteTimeEntryWithConfirmationWithGUID:cell.GUID title:cell.descriptionString])
 	{
 		[self selectPreviousRowFromIndexPath:self.latestSelectedIndexPath];
 	}

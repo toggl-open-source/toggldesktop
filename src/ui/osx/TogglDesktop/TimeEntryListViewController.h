@@ -7,15 +7,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "toggl_api.h"
-#import "NSTextFieldClickable.h"
-
-@class EditorPopover;
-@class TimeEntryDatasource;
 
 @interface TimeEntryListViewController : NSViewController
-@property (unsafe_unretained) IBOutlet NSView *headerView;
-@property (strong) IBOutlet NSScrollView *timeEntryListScrollView;
-@property (nonatomic, strong) TimeEntryDatasource *dataSource;
-@property (assign, readonly, nonatomic) BOOL isEditorOpen;
+@property (nonatomic, assign, readonly) BOOL isEditorOpen;
 @end

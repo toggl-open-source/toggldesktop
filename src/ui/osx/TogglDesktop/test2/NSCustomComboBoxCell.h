@@ -9,6 +9,6 @@
 #import <Cocoa/Cocoa.h>
 
 @interface NSCustomComboBoxCell : NSComboBoxCell
-@property double cellLength;
+@property (nonatomic, assign) CGFloat cellLength;
 - (void)setCalculatedMaxWidth:(double)length;
 @end

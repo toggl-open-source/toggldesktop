@@ -7,10 +7,9 @@
 //
 
 #import "IdleNotificationWindowController.h"
-#import "toggl_api.h"
 #import "DisplayCommand.h"
-#import "UIEvents.h"
 #import "TogglDesktop-Swift.h"
+#import "IdleEvent.h"
 
 @interface IdleNotificationWindowController ()
 

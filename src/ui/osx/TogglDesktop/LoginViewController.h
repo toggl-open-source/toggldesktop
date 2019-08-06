@@ -7,11 +7,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "toggl_api.h"
-#import "NSTextFieldClickablePointer.h"
-#import "AutocompleteDataSource.h"
-#import "NSCustomComboBox.h"
 
-@interface LoginViewController : NSViewController <NSTextFieldDelegate, NSTableViewDataSource, NSComboBoxDataSource, NSComboBoxDelegate>
+@interface LoginViewController : NSViewController
 - (void)resetLoader;
 @end

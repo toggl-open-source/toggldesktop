@@ -7,12 +7,14 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "AutoCompleteTableCell.h"
+
+@class AutoCompleteTableCell;
 
 @interface AutoCompleteTable : NSTableView
-@property NSInteger lastSelected;
-@property NSInteger lastSavedSelected;
-@property NSInteger lastClicked;
+@property (nonatomic, assign, readonly) NSInteger lastSelected;
+@property (nonatomic, assign, readonly) NSInteger lastClicked;
+@property (nonatomic, assign) NSInteger lastSavedSelected;
+
 - (void)nextItem;
 - (void)previousItem;
 - (AutoCompleteTableCell *)getSelectedCell:(NSInteger)row;

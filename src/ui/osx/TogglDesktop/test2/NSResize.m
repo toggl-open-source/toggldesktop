@@ -8,6 +8,10 @@
 
 #import "NSResize.h"
 
+@interface NSResize () <NSTextFieldDelegate>
+
+@end
+
 @implementation NSResize
 
 - (void)resetCursorRects

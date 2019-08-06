@@ -30,69 +30,71 @@
 #import "CountryViewItem.h"
 #import "UnsupportedNotice.h"
 #import "idler.h"
-#import "toggl_api.h"
 #import "UserNotificationCenter.h"
 #import "SystemService.h"
 #import "TogglDesktop-Swift.h"
 #import "AppIconFactory.h"
 #import <MASShortcut/Shortcut.h>
+#import "Reachability.h"
 
 @interface AppDelegate ()
-@property (nonatomic, strong) IBOutlet MainWindowController *mainWindowController;
-@property (nonatomic, strong) IBOutlet PreferencesWindowController *preferencesWindowController;
-@property (nonatomic, strong) IBOutlet AboutWindowController *aboutWindowController;
-@property (nonatomic, strong) IBOutlet IdleNotificationWindowController *idleNotificationWindowController;
-@property (nonatomic, strong) IBOutlet FeedbackWindowController *feedbackWindowController;
-@property (nonatomic, strong) IBOutlet ConsoleViewController *consoleWindowController;
+@property (nonatomic, strong) MainWindowController *mainWindowController;
+@property (nonatomic, strong) PreferencesWindowController *preferencesWindowController;
+@property (nonatomic, strong) AboutWindowController *aboutWindowController;
+@property (nonatomic, strong) IdleNotificationWindowController *idleNotificationWindowController;
+@property (nonatomic, strong) FeedbackWindowController *feedbackWindowController;
+@property (nonatomic, strong) ConsoleViewController *consoleWindowController;
 
 // Remember some app state
-@property TimeEntryViewItem *lastKnownRunningTimeEntry;
-@property BOOL lastKnownOnlineState;
-@property uint64_t lastKnownUserID;
+@property (nonatomic, strong) TimeEntryViewItem *lastKnownRunningTimeEntry;
+@property (nonatomic, assign) BOOL lastKnownOnlineState;
+@property (nonatomic, assign) NSUInteger lastKnownUserID;
 
 // We'll change app icon in the tray. So keep the different state images handy
-@property NSMutableDictionary *statusImages;
+@property (nonatomic, strong) NSMutableDictionary *statusImages;
 
 // Timers to update app state
-@property NSTimer *menubarTimer;
-@property NSTimer *idleTimer;
+@property (nonatomic, strong) NSTimer *menubarTimer;
+@property (nonatomic, strong) NSTimer *idleTimer;
 
 // We'll be updating running TE as a menu item, too
-@property (strong) IBOutlet NSMenuItem *runningTimeEntryMenuItem;
+@property (nonatomic, strong) NSMenuItem *runningTimeEntryMenuItem;
 
 // We'll add user email once userdata has been loaded
-@property (strong) IBOutlet NSMenuItem *currentUserEmailMenuItem;
+@property (nonatomic, strong) NSMenuItem *currentUserEmailMenuItem;
 
 // Where logs are written and db is kept
-@property NSString *app_path;
-@property NSString *db_path;
-@property NSString *log_path;
-@property NSString *log_level;
-@property NSString *scriptPath;
+@property (nonatomic, copy) NSString *app_path;
+@property (nonatomic, copy) NSString *db_path;
+@property (nonatomic, copy) NSString *log_path;
+@property (nonatomic, copy) NSString *log_level;
+@property (nonatomic, copy) NSString *scriptPath;
 
 // Environment (development, production, etc)
-@property NSString *environment;
+@property (nonatomic, copy) NSString *environment;
 
-@property NSString *version;
+@property (nonatomic, copy) NSString *version;
 
 // For testing crash reporter
-@property BOOL forceCrash;
+@property (nonatomic, assign) BOOL forceCrash;
 
 // Avoid doing stuff when app is already shutting down
-@property BOOL willTerminate;
+@property (nonatomic, assign) BOOL willTerminate;
 
 // Show or not show menubar timer
-@property BOOL showMenuBarTimer;
+@property (nonatomic, assign) BOOL showMenuBarTimer;
 
 // Show or not show menubar project
-@property BOOL showMenuBarProject;
+@property (nonatomic, assign) BOOL showMenuBarProject;
 
 // Manual mode
-@property NSMenuItem *manualModeMenuItem;
+@property (strong, nonatomic) NSMenuItem *manualModeMenuItem;
 @property (strong, nonatomic) _NSKeyValueObservation *effectiveAppearanceObs;
 
 // System Service
 @property (strong, nonatomic) SystemService *systemService;
+@property (nonatomic, assign) BOOL manualMode;
+@property (nonatomic, assign) BOOL onTop;
 @property (weak) IBOutlet NSMenuItem *consoleMenuItem;
 
 @end
@@ -100,8 +102,7 @@
 @implementation AppDelegate
 
 void *ctx;
-BOOL manualMode = NO;
-BOOL onTop = NO;
+
 
 - (void)applicationWillFinishLaunching:(NSNotification *)not
 {
@@ -109,6 +110,8 @@ BOOL onTop = NO;
 	self.lastKnownOnlineState = YES;
 	self.lastKnownUserID = 0;
 	self.showMenuBarTimer = NO;
+	self.manualMode = NO;
+	self.onTop = NO;
 
 	[NSApp setActivationPolicy:NSApplicationActivationPolicyRegular];
 }
@@ -325,17 +328,17 @@ BOOL onTop = NO;
 {
 	if (self.mainWindowController.window.level == NSFloatingWindowLevel)
 	{
-		onTop = YES;
+		self.onTop = YES;
 		[self.mainWindowController setWindowMode:WindowModeDefault];
 	}
 }
 
 - (void)mainWillRestore:(NSNotification *)aNotification
 {
-	if (onTop)
+	if (self.onTop)
 	{
 		[self.mainWindowController setWindowMode:WindowModeAlwaysOnTop];
-		onTop = NO;
+		self.onTop = NO;
 	}
 }
 
@@ -637,7 +640,7 @@ BOOL onTop = NO;
 		[self.mainWindowController setWindowMode:WindowModeDefault];
 	}
 
-	onTop = cmd.settings.on_top;
+	self.onTop = cmd.settings.on_top;
 
 	if (cmd.open)
 	{
@@ -648,7 +651,7 @@ BOOL onTop = NO;
 	}
 
 	NSString *mode = kToggleTimerMode;
-	manualMode = cmd.settings.manual_mode;
+	self.manualMode = cmd.settings.manual_mode;
 	if (cmd.settings.manual_mode)
 	{
 		mode = kToggleManualMode;
@@ -1033,8 +1036,8 @@ BOOL onTop = NO;
 
 - (IBAction)onModeChange:(id)sender
 {
-	manualMode = !manualMode;
-	toggl_set_settings_manual_mode(ctx, manualMode);
+	self.manualMode = !self.manualMode;
+	toggl_set_settings_manual_mode(ctx, self.manualMode);
 }
 
 - (IBAction)onOpenBrowserMenuItem:(id)sender

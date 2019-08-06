@@ -7,14 +7,11 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "AutocompleteItem.h"
-#import "ConvertHexColor.h"
+
+@class AutocompleteItem;
 
 @interface AutoCompleteTableCell : NSTableCellView
-@property (weak) IBOutlet NSTextField *cellDescription;
-@property (weak) IBOutlet NSBox *backgroundBox;
-@property BOOL isSelectable;
-@property (strong) IBOutlet NSBox *bottomLine;
+@property (nonatomic, assign, readonly) BOOL isSelectable;
 - (void)render:(AutocompleteItem *)view_item selected:(BOOL)selected;
 - (void)setFocused:(BOOL)focus;
 @end

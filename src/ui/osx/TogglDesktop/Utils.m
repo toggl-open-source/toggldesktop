@@ -10,8 +10,6 @@
 #import <Sparkle/Sparkle.h>
 #import "NSAlert+Utils.h"
 
-#include "toggl_api.h"
-
 extern void *ctx;
 
 @implementation ScriptResult
@@ -27,8 +25,8 @@ extern void *ctx;
 
 - (NSString *)description
 {
-	return [NSString stringWithFormat:@"err: %lld, text: %@",
-			self.err, self.text];
+	return [NSString stringWithFormat:@"err: %ld, text: %@",
+			(long)self.err, self.text];
 }
 
 @end

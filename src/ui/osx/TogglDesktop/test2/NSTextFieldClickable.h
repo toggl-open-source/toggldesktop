@@ -8,6 +8,6 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface NSTextFieldClickable : NSTextField <NSTextFieldDelegate>
+@interface NSTextFieldClickable : NSTextField
 @property (assign, nonatomic) BOOL titleUnderline;
 @end

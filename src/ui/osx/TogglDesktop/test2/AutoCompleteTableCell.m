@@ -9,13 +9,18 @@
 #import "AutoCompleteTableCell.h"
 #import "ProjectTextField.h"
 #import "TogglDesktop-Swift.h"
+#import "AutocompleteItem.h"
+#import "ConvertHexColor.h"
 
 @interface AutoCompleteTableCell ()
-
 @property (weak) IBOutlet DotImageView *dotView;
 @property (weak) IBOutlet ProjectTextField *projectLbl;
 @property (weak) IBOutlet NSTextField *centerLabel;
 @property (weak) IBOutlet NSStackView *contentStackView;
+@property (weak) IBOutlet NSTextField *cellDescription;
+@property (weak) IBOutlet NSBox *backgroundBox;
+@property (weak) IBOutlet NSBox *bottomLine;
+@property (nonatomic, assign) BOOL isSelectable;
 
 @end
 

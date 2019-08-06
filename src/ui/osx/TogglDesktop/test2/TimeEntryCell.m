@@ -7,12 +7,10 @@
 //
 
 #import "TimeEntryCell.h"
-#import "UIEvents.h"
 #import "ConvertHexColor.h"
-#import "toggl_api.h"
 #import "TogglDesktop-Swift.h"
-#import <QuartzCore/CAShapeLayer.h>
 #import "ProjectTextField.h"
+#import "TimeEntryViewItem.h"
 
 @interface TimeEntryCell ()
 
@@ -30,13 +28,28 @@
 @property (weak) IBOutlet DotImageView *dotView;
 @property (weak) IBOutlet NSLayoutConstraint *projectConstrainLeading;
 @property (weak) IBOutlet NSBox *horizontalLine;
+@property (weak) IBOutlet NSTextField *descriptionTextField;
+
 @property (strong, nonatomic) NSColor *backgroundColor;
 @property (strong, nonatomic) NSColor *selectedSubItemBackgroundColor;
+@property (nonatomic, copy) NSString *GUID;
+@property (nonatomic, copy) NSString *GroupName;
+@property (nonatomic, assign) CellType cellType;
+@property (nonatomic, assign) BOOL Group;
+@property (nonatomic, assign) BOOL GroupOpen;
+@property (nonatomic, assign) NSInteger GroupItemCount;
+@property (nonatomic, assign) BOOL confirmless_delete;
+
 @end
 
 @implementation TimeEntryCell
 
 extern void *ctx;
+
+- (NSString *)descriptionString
+{
+	return self.descriptionTextField.stringValue;
+}
 
 - (void)setSelected:(BOOL)selected {
 	[super setSelected:selected];
@@ -256,7 +269,7 @@ extern void *ctx;
 	self.descriptionLblLeading.constant = self.Group || self.GroupOpen ? 46.0 : 15.0;
 
 	// Title
-	NSString *toggleGroupText = [NSString stringWithFormat:@"%lld", self.GroupItemCount];
+	NSString *toggleGroupText = [NSString stringWithFormat:@"%ld", (long)self.GroupItemCount];
 	self.groupButton.title = toggleGroupText;
 
 	// Color

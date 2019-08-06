@@ -30,19 +30,8 @@
 	self.renderClient = YES;
 }
 
-- (void)mouseDown:(NSEvent *)theEvent
+- (void)setAttributedStringValue:(NSAttributedString *)attributedStringValue
 {
-	if (self.isInTimerBar)
-	{
-		[self sendAction:@selector(textFieldClicked:) to:[self delegate]];
-	}
-	else
-	{
-		[super mouseDown:theEvent];
-	}
-}
-
-- (void)setAttributedStringValue:(NSAttributedString *)attributedStringValue {
 	[super setAttributedStringValue:attributedStringValue];
 	self.toolTip = self.attributedStringValue.string;
 }

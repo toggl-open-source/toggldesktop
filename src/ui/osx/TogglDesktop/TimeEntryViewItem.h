@@ -10,7 +10,6 @@
 #import "toggl_api.h"
 
 @interface TimeEntryViewItem : NSObject
-- (void)load:(TogglTimeEntryView *)data;
 @property (assign, nonatomic) int64_t duration_in_seconds;
 @property (copy, nonatomic) NSString *Description; // uppercase to avoid clash with [NSObject description]
 @property (copy, nonatomic) NSString *descriptionName;
@@ -36,7 +35,7 @@
 @property (copy, nonatomic) NSString *formattedDate;
 // If this is set to YES, a date header is displayed on top of
 // the time entry cell in the time entry list view:
-@property (strong, nonatomic) NSNumber *isHeader;
+@property (copy, nonatomic) NSNumber *isHeader;
 // If it's a header, this is useful:
 @property (copy, nonatomic) NSString *dateDuration;
 // If TE is passed for editing, this is the field that should be focussed
@@ -64,4 +63,6 @@
 // if item can be deleted without confirm
 - (BOOL)confirmlessDelete;
 - (BOOL)isRunning;
+- (void)load:(TogglTimeEntryView *)data;
+
 @end
