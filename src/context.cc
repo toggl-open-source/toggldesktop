@@ -868,6 +868,9 @@ void Context::updateUI(const UIElements &what) {
                     view::TimeEntry view;
                     view.Fill(te);
                     view.GenerateRoundedTimes();
+                    view.Duration = toggl::Formatter::FormatDuration(
+                        view.DurationInSeconds,
+                        Formatter::DurationFormat);
                     user_->related.ProjectLabelAndColorCode(
                         te,
                         &view);
