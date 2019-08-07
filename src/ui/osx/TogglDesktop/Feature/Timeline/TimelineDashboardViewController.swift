@@ -158,10 +158,12 @@ extension TimelineDashboardViewController: DatePickerViewDelegate {
 
     func datePickerDidTapPreviousDate(_ sender: DatePickerView) {
         DesktopLibraryBridge.shared().timelineSetPreviousDate()
+        datasource.scrollToVisibleItem()
     }
 
     func datePickerDidTapNextDate(_ sender: DatePickerView) {
         DesktopLibraryBridge.shared().timelineSetNextDate()
+        datasource.scrollToVisibleItem()
     }
 }
 

@@ -32,8 +32,6 @@
         <collectionViewItem identifier="TimelineTimeEntryCell" id="7AB-0R-5ZL" customClass="TimelineTimeEntryCell" customModule="TogglDesktop" customModuleProvider="target">
             <connections>
                 <outlet property="backgroundView" destination="ILd-N3-zAP" id="viZ-az-w0y"/>
-                <outlet property="bottomOffset" destination="1Mm-Za-otm" id="nwq-AI-MHI"/>
-                <outlet property="topOffset" destination="ibj-8F-oO2" id="jr7-Cw-jMJ"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="KyO-gv-pek"/>
             </connections>
         </collectionViewItem>

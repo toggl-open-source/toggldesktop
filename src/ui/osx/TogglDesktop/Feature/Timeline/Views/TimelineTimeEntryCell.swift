@@ -19,8 +19,6 @@ final class TimelineTimeEntryCell: NSCollectionViewItem {
     // MARK: OUTLET
 
     @IBOutlet weak var backgroundView: NSBox!
-    @IBOutlet weak var topOffset: NSLayoutConstraint!
-    @IBOutlet weak var bottomOffset: NSLayoutConstraint!
 
     // MARK: Variables
 
@@ -52,27 +50,18 @@ final class TimelineTimeEntryCell: NSCollectionViewItem {
     func config(for timeEntry: TimelineTimeEntry, at zoomLevel: TimelineDatasource.ZoomLevel) {
         self.timeEntry = timeEntry
         backgroundView.fillColor = timeEntry.color
-
         if timeEntry.isSmall {
-            backgroundView.cornerRadius = 1.0
-            topOffset.constant = 0
-            bottomOffset.constant = 0
+            backgroundView.cornerRadius = 1
         } else {
-            // Adjust the top and bottom
-            // So those timeentry will not collide each other
-            var gap = zoomLevel.minimumGap
-            if (gap * 2.0) >= view.frame.height {
-                gap = 1.0
-            }
-            topOffset.constant = gap
-            bottomOffset.constant = gap
-
             // If the size is too smal
             // It's better to reduce the corner radius
-            if view.frame.height <= 20.0 {
-                backgroundView.cornerRadius = 6
-            } else {
-                backgroundView.cornerRadius = 10.0
+            let height = view.frame.height
+            switch height {
+            case 0...2: backgroundView.cornerRadius = 1
+            case 2...5: backgroundView.cornerRadius = 2
+            case 5...20: backgroundView.cornerRadius = 5
+            default:
+                backgroundView.cornerRadius = 10
             }
         }
     }
