@@ -18,7 +18,6 @@ class TimelineData {
 
     // MARK: Variables
 
-    let chunkViews: [TimelineChunkView]
     private(set) var timeChunks: [TimelineTimestamp] = []
     private(set) var timeEntries: [TimelineBaseTimeEntry]
     let activities: [TimelineActivity]
@@ -31,7 +30,6 @@ class TimelineData {
 
     init(cmd: TimelineDisplayCommand, zoomLevel: TimelineDatasource.ZoomLevel) {
         self.zoomLevel = zoomLevel
-        self.chunkViews = cmd.timelineChunks
         self.start = cmd.start
         self.end = cmd.end
         self.timeEntries = cmd.timeEntries.map { TimelineTimeEntry($0) }.sorted(by: { (lhs, rhs) -> Bool in

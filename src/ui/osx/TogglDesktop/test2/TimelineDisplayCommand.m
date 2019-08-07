@@ -7,14 +7,12 @@
 //
 
 #import "TimelineDisplayCommand.h"
-#import "TimelineChunkView.h"
 #import "TimeEntryViewItem.h"
 
 @implementation TimelineDisplayCommand
 
 - (instancetype)initWithOpen:(BOOL)open
 						date:(NSString *)date
-				  firstChunk:(TogglTimelineChunkView *)firstChunk
 				  firstEntry:(TogglTimeEntryView *)firstEntry
 					startDay:(NSTimeInterval)startDay
 					  endDay:(NSTimeInterval)endDay
@@ -22,17 +20,6 @@
 	self = [super init];
 	if (self)
 	{
-		// Chunks
-		NSMutableArray<TimelineChunkView *> *timelineChunks = [NSMutableArray<TimelineChunkView *> array];
-		TogglTimelineChunkView *it = firstChunk;
-		while (it)
-		{
-			TimelineChunkView *chunk = [[TimelineChunkView alloc] init];
-			[chunk load:it];
-			[timelineChunks addObject:chunk];
-			it = it->Next;
-		}
-
 		// Get entries
 		NSMutableArray<TimeEntryViewItem *> *timeEntries = [NSMutableArray<TimeEntryViewItem *> array];
 		TogglTimeEntryView *it_entry = firstEntry;
@@ -49,7 +36,6 @@
 		self.start = startDay;
 		self.end = endDay;
 		self.timeEntries = [[timeEntries reverseObjectEnumerator] allObjects];
-		self.timelineChunks = [[timelineChunks reverseObjectEnumerator] allObjects];
 	}
 	return self;
 }

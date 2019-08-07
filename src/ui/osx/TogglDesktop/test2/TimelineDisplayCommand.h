@@ -12,13 +12,11 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @class TimeEntryViewItem;
-@class TimelineChunkView;
 
 @interface TimelineDisplayCommand : NSObject
 
 - (instancetype)initWithOpen:(BOOL)open
 						date:(NSString *)date
-				  firstChunk:(TogglTimelineChunkView *)firstChunk
 				  firstEntry:(TogglTimeEntryView *)firstEntry
 					startDay:(NSTimeInterval)startDay
 					  endDay:(NSTimeInterval)endDay;
@@ -27,7 +25,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (assign, nonatomic) NSTimeInterval start;
 @property (assign, nonatomic) NSTimeInterval end;
 @property (strong, nonatomic) NSArray<TimeEntryViewItem *> *timeEntries;
-@property (strong, nonatomic) NSArray<TimelineChunkView *> *timelineChunks;
 @property (copy, nonatomic) NSString *timelineDate;
 
 @end

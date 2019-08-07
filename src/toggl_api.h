@@ -268,7 +268,6 @@ extern "C" {
     typedef void (*TogglDisplayTimeline)(
         const bool_t open,
         const char_t *date,
-        TogglTimelineChunkView *first,
         TogglTimeEntryView *first_entry,
         long start_day,
         long end_day);
