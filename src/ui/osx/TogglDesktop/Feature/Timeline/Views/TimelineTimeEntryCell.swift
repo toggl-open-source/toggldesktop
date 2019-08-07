@@ -14,6 +14,23 @@ protocol TimelineTimeEntryCellDelegate: class {
     func timeEntryCellMouseDidExited(_ sender: TimelineTimeEntryCell)
 }
 
+final class CursorView: NSView {
+
+    var cursor: NSCursor? {
+        didSet {
+            resetCursorRects()
+        }
+    }
+
+    override func resetCursorRects() {
+        if let cursor = cursor {
+            addCursorRect(bounds, cursor: cursor)
+        } else {
+            super.resetCursorRects()
+        }
+    }
+}
+
 final class TimelineTimeEntryCell: NSCollectionViewItem {
 
     // MARK: OUTLET
@@ -32,6 +49,7 @@ final class TimelineTimeEntryCell: NSCollectionViewItem {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        initCommon()
         initTrackingArea()
     }
 
@@ -69,11 +87,13 @@ final class TimelineTimeEntryCell: NSCollectionViewItem {
     override func mouseEntered(with event: NSEvent) {
         super.mouseEntered(with: event)
         delegate?.timeEntryCellMouseDidEntered(self)
+        view.resetCursorRects()
     }
 
     override func mouseExited(with event: NSEvent) {
         super.mouseExited(with: event)
         delegate?.timeEntryCellMouseDidExited(self)
+        view.resetCursorRects()
     }
 
     override func rightMouseDown(with event: NSEvent) {
@@ -86,6 +106,12 @@ final class TimelineTimeEntryCell: NSCollectionViewItem {
 }
 
 extension TimelineTimeEntryCell {
+
+    fileprivate func initCommon() {
+        if let cursorView = view as? CursorView {
+            cursorView.cursor = NSCursor.pointingHand
+        }
+    }
 
     fileprivate func initTrackingArea() {
         let tracking = NSTrackingArea(rect: view.bounds, options: [.mouseEnteredAndExited, .activeInActiveApp, .inVisibleRect], owner: self, userInfo: nil)
