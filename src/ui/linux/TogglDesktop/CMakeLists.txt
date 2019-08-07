@@ -2,6 +2,10 @@ set(CMAKE_CXX_FLAGS
     -Wall
 )
 
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTORCC ON)
+
 add_definitions(-DAPP_VERSION="${TOGGL_VERSION}")
 add_definitions(-DTOGGL_DATA_DIR="${TOGGL_DATA_DIR}")
 

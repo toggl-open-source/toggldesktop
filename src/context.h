@@ -22,6 +22,8 @@
 #include "./types.h"
 #include "./websocket_client.h"
 
+#include "./activities/activity_manager.h"
+
 #include "Poco/Activity.h"
 #include "Poco/LocalDateTime.h"
 #include "Poco/Timestamp.h"
@@ -476,6 +478,8 @@ class Context : public TimelineDatasource {
     void TrackWindowSize(const Poco::Int64 width,
                          const Poco::Int64 height);
 
+    error displayError(const error err);
+
  protected:
     void uiUpdaterActivity();
     void checkReminders();
@@ -542,8 +546,6 @@ class Context : public TimelineDatasource {
     void displayPomodoroBreak();
 
     void updateUI(const UIElements &elements);
-
-    error displayError(const error err);
 
     void scheduleSync();
 
@@ -687,14 +689,7 @@ class Context : public TimelineDatasource {
 
     bool quit_;
 
-    Poco::Mutex ui_updater_m_;
-    Poco::Activity<Context> ui_updater_;
-
-    Poco::Mutex reminder_m_;
-    Poco::Activity<Context> reminder_;
-
-    Poco::Mutex syncer_m_;
-    Poco::Activity<Context> syncer_;
+    ActivityManager *activity_manager_;
 
     Analytics analytics_;
 

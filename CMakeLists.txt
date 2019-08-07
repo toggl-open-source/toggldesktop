@@ -5,9 +5,6 @@ set(CMAKE_CXX_STANDARD 11)
 
 # Set up automatic resource generation to make Qt development easier
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
-set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTOUIC ON)
-set(CMAKE_AUTORCC ON)
 
 set(TOGGL_VERSION "7.0.0" CACHE STRING "TogglDesktop version string")
 set(TOGGL_VERSION_RELEASE_DATE "1970-01-01" CACHE STRING "TogglDesktop version release date string")
