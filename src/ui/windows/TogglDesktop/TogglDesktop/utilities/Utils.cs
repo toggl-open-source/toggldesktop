@@ -53,6 +53,11 @@ public static class Utils
             Toggl.Debug("Force moved window to primary screen");
         }
 
+        if (shiftWindowOntoVisibleArea(mainWindow))
+        {
+            Toggl.Debug("Shifted main window onto visible area");
+        }
+
         if (miniTimer != null)
         {
             x = Toggl.GetMiniTimerX();
@@ -80,6 +85,41 @@ public static class Utils
             miniTimer.Top = location.Y;
             Toggl.Debug("Force moved mini timer to primary screen");
         }
+
+        if (shiftWindowOntoVisibleArea(miniTimer))
+        {
+            Toggl.Debug("Shifted mini timer onto visible area");
+        }
+    }
+
+    private static bool shiftWindowOntoVisibleArea(Window window)
+    {
+        var shifted = false;
+        if (window.Top < SystemParameters.VirtualScreenTop)
+        {
+            window.Top = SystemParameters.VirtualScreenTop;
+            shifted = true;
+        }
+
+        if (window.Left < SystemParameters.VirtualScreenLeft)
+        {
+            window.Left = SystemParameters.VirtualScreenLeft;
+            shifted = true;
+        }
+
+        if (window.Left + window.Width > SystemParameters.VirtualScreenLeft + SystemParameters.VirtualScreenWidth)
+        {
+            window.Left = SystemParameters.VirtualScreenWidth + SystemParameters.VirtualScreenLeft - window.Width;
+            shifted = true;
+        }
+
+        if (window.Top + window.Height > SystemParameters.VirtualScreenTop + SystemParameters.VirtualScreenHeight)
+        {
+            window.Top = SystemParameters.VirtualScreenHeight + SystemParameters.VirtualScreenTop - window.Height;
+            shifted = true;
+        }
+
+        return shifted;
     }
 
     private static bool visibleOnAnyScreen(Window f)
