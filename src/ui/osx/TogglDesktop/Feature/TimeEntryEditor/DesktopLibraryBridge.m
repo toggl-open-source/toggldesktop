@@ -10,6 +10,8 @@
 #import "TimeEntryViewItem.h"
 #import "toggl_api.h"
 #import "AutocompleteItem.h"
+#import "Utils.h"
+#import "UIEvents.h"
 
 @implementation DesktopLibraryBridge
 
@@ -175,6 +177,57 @@ void *ctx;
 
 	free(str);
 	return [newValue copy];
+}
+
+#pragma mark - Timeline
+
+- (void)enableTimelineRecord:(BOOL)isEnabled
+{
+	toggl_timeline_toggle_recording(ctx, isEnabled);
+}
+
+- (void)timelineSetPreviousDate
+{
+	toggl_view_timeline_prev_day(ctx);
+}
+
+- (void)timelineSetNextDate
+{
+	toggl_view_timeline_next_day(ctx);
+}
+
+- (void)fetchTimelineData
+{
+	toggl_view_timeline_data(ctx);
+}
+
+- (void)timelineGetCurrentDate
+{
+	toggl_view_timeline_current_day(ctx);
+}
+
+- (NSString *)starNewTimeEntryAtStarted:(NSTimeInterval)started ended:(NSTimeInterval)ended
+{
+	char *guid = toggl_start(ctx,
+							 @"".UTF8String,
+							 "0",
+							 0,
+							 0,
+							 0,
+							 NULL,
+							 false,
+							 started,
+							 ended
+							 );
+	NSString *GUID = [NSString stringWithUTF8String:guid];
+
+	free(guid);
+	return GUID;
+}
+
+- (void)startEditorAtGUID:(NSString *)GUID
+{
+	toggl_edit(ctx, [GUID UTF8String], false, kFocusedFieldNameDescription);
 }
 
 - (void)setEditorWindowSize:(CGSize)size

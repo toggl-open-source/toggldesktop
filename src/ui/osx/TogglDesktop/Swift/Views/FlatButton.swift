@@ -6,15 +6,15 @@
 //  Copyright © 2019 Alari. All rights reserved.
 //
 
+
 import Cocoa
 
 @IBDesignable
 final class FlatButton: NSButton {
 
     // MARK: IBInspectable
-
     @IBInspectable var bgColor: NSColor?
-    @IBInspectable var titleColor: NSColor?
+    @IBInspectable var textColor: NSColor?
     @IBInspectable var selectedTextColor: NSColor?
     @IBInspectable var cornerRadius: CGFloat = 0 {
         didSet {
@@ -24,7 +24,6 @@ final class FlatButton: NSButton {
     }
 
     // MARK: Variables
-
     var isSelected = false {
         didSet {
             drawTextColor()
@@ -32,7 +31,6 @@ final class FlatButton: NSButton {
     }
 
     // MARK: View
-
     override func awakeFromNib() {
         super.awakeFromNib()
 
@@ -51,11 +49,11 @@ final class FlatButton: NSButton {
     }
 
     private func drawTextColor() {
-        if let titleColor = titleColor, let font = font {
+        if let textColor = textColor, let font = font {
             let style = NSMutableParagraphStyle()
             style.alignment = .center
-            let selectedColor = self.selectedTextColor ?? titleColor
-            let drawTextColor = isSelected ? selectedColor : titleColor
+            let selectedColor = self.selectedTextColor ?? textColor
+            let drawTextColor = isSelected ? selectedColor : textColor
             let attributes: [NSAttributedString.Key: Any] = [
                 NSAttributedString.Key.foregroundColor: drawTextColor,
                 NSAttributedString.Key.font: font,

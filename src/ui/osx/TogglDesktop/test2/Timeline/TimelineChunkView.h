@@ -11,17 +11,22 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class TimeEntryViewItem;
+@class TimelineEventView;
+
 @interface TimelineChunkView : NSObject
+@property (assign, nonatomic) uint64_t Started;
+@property (assign, nonatomic) NSInteger activeDuration;
+@property (assign, nonatomic) uint64_t EntryStart;
+@property (assign, nonatomic) uint64_t EntryEnd;
+@property (assign, nonatomic) uint64_t CalculatedHeight;
+@property (strong, nonatomic) NSString *StartTimeString;
+@property (strong, nonatomic) NSArray<TimelineEventView *> *Events;
+@property (strong, nonatomic) NSArray<TimeEntryViewItem *> *Entries;
+@property (copy, nonatomic) NSString *EntryDescription;
+
 - (void)load:(TogglTimelineChunkView *)data;
-@property uint64_t Started;
-@property int activeDuration;
-@property uint64_t EntryStart;
-@property uint64_t EntryEnd;
-@property uint64_t CalculatedHeight;
-@property (strong) NSString *StartTimeString;
-@property (strong) NSMutableArray *Events;
-@property (strong) NSMutableArray *Entries;
-@property (strong) NSString *EntryDescription;
+
 @end
 
 NS_ASSUME_NONNULL_END

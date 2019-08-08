@@ -26,6 +26,7 @@ final class EditorPopover: NoVibrantPopoverView {
 
     @objc func prepareViewController() {
         let editor = EditorViewController(nibName: NSNib.Name("EditorViewController"), bundle: nil)
+        editor.delegate = self
         editor.view.appearance = appearance
         let size = DesktopLibraryBridge.shared().getEditorWindowSize()
         editor.view.frame.size = size
@@ -33,6 +34,9 @@ final class EditorPopover: NoVibrantPopoverView {
     }
 
     override func close(focusTimer: Bool) {
+        if let editor = contentViewController as? EditorViewController {
+            editor.closeCalendarPopover()
+        }
         super.close(focusTimer: focusTimer)
         if focusTimer {
             NotificationCenter.default.post(name: Constants.FocusTimerNotification, object: nil)
@@ -47,5 +51,14 @@ final class EditorPopover: NoVibrantPopoverView {
 
     override func popoverDidResize() {
         DesktopLibraryBridge.shared().setEditorWindowSize(contentSize)
+    }
+}
+
+// MARK: EditorViewControllerDelegate
+
+extension EditorPopover: EditorViewControllerDelegate {
+
+    func editorShouldClose() {
+        close(focusTimer: false)
     }
 }

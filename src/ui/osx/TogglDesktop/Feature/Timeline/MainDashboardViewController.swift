@@ -53,8 +53,13 @@ final class MainDashboardViewController: NSViewController {
         super.viewDidLoad()
 
         initCommon()
+        initNotification()
         initTimerView()
         initTabs()
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 
     @IBAction func listBtnOnTap(_ sender: Any) {
@@ -63,6 +68,11 @@ final class MainDashboardViewController: NSViewController {
 
     @IBAction func timelineBtnOnTap(_ sender: Any) {
         currentTab = .timeline
+    }
+
+    @objc func timelineDataNotification(_ noti: Notification) {
+        guard let cmd = noti.object as? TimelineDisplayCommand else { return }
+        timelineController.render(with: cmd)
     }
 }
 
@@ -74,6 +84,13 @@ extension MainDashboardViewController {
         listBtn.isSelected = true
         timeEntryController.delegate = self
         headerContainerView.applyShadow(color: .black, opacity: 0.1, radius: 6.0)
+    }
+
+    fileprivate func initNotification() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(self.timelineDataNotification(_:)),
+                                               name: NSNotification.Name(kDisplayTimeline),
+                                               object: nil)
     }
 
     fileprivate func initTabs() {
@@ -90,6 +107,7 @@ extension MainDashboardViewController {
 
     fileprivate func updateTabLayout() {
         tabView.selectTabViewItem(at: currentTab.rawValue)
+        updateNextKeyView()
         switch currentTab {
         case .timeEntryList:
             listBtn.isSelected = true
@@ -97,6 +115,19 @@ extension MainDashboardViewController {
         case .timeline:
             timelineBtn.isSelected = true
             listBtn.isSelected = false
+        }
+    }
+
+    fileprivate func updateNextKeyView() {
+        switch currentTab {
+        case .timeline:
+            timerController.autoCompleteInput.nextKeyView = listBtn
+            listBtn.nextKeyView = timelineBtn
+            timelineBtn.nextKeyView = timelineController.recordSwitcher
+            timelineController.updateNextKeyView()
+            timelineController.datePickerView.nextDateBtn.nextKeyView = timerController.autoCompleteInput
+        case .timeEntryList:
+            timerController.autoCompleteInput.nextKeyView = listBtn
         }
     }
 }

@@ -579,7 +579,9 @@ char_t *toggl_start(
     const uint64_t project_id,
     const char_t *project_guid,
     const char_t *tags,
-    const bool_t prevent_on_app) {
+    const bool_t prevent_on_app,
+    const time_t started,
+    const time_t ended) {
 
     logger().debug("toggl_start");
 
@@ -610,7 +612,9 @@ char_t *toggl_start(
         project_id,
         p_guid,
         tag_list,
-        prevent_on_app);
+        prevent_on_app,
+        started,
+        ended);
     if (te) {
         return copy_string(te->GUID());
     }
@@ -649,6 +653,10 @@ void toggl_view_timeline_prev_day(
 void toggl_view_timeline_next_day(
     void *context) {
     app(context)->ViewTimelineNextDay();
+}
+
+void toggl_view_timeline_current_day(void *context) {
+    app(context)->ViewTimelineCurrentDay();
 }
 
 void toggl_edit(

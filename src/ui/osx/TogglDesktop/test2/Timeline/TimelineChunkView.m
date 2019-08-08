@@ -15,11 +15,12 @@
 
 - (void)load:(TogglTimelineChunkView *)view
 {
+	NSMutableArray<TimelineEventView *> *events = [NSMutableArray<TimelineEventView *> array];
+	NSMutableArray<TimeEntryViewItem *> *entries = [NSMutableArray<TimeEntryViewItem *> array];
+
 	self.activeDuration = 0;
 	self.Started = view->Started;
 	self.StartTimeString = [NSString stringWithUTF8String:view->StartTimeString];
-	self.Events = [[NSMutableArray alloc] init];
-	self.Entries = [[NSMutableArray alloc] init];
 	self.EntryDescription = @"";
 	self.EntryStart = 0;
 	self.EntryEnd = 0;
@@ -67,11 +68,12 @@
 			}
 
 			self.EntryDescription = [self.EntryDescription stringByAppendingString:[NSString stringWithFormat:@"%@ [%@ - %@]", model.Description, model.startTimeString, model.endTimeString]];
-
+			[entries addObject:model];
 			entry = entry->Next;
 		}
 		self.EntryStart = start;
 		self.EntryEnd = end;
+		self.Entries = [entries copy];
 	}
 
 	TogglTimelineEventView *it = view->FirstEvent;
@@ -79,7 +81,7 @@
 	{
 		TimelineEventView *event = [[TimelineEventView alloc] init];
 		[event load:it];
-		[self.Events addObject:event];
+		[events addObject:event];
 		self.activeDuration += event.Duration;
 
 		// Load app subevents
@@ -88,15 +90,15 @@
 		{
 			TimelineEventView *sub_event = [[TimelineEventView alloc] init];
 			[sub_event load:sub_it];
-			[self.Events addObject:sub_event];
+			[events addObject:sub_event];
 			sub_it = sub_it->Next;
 		}
 
 		NSLog(@"Timeline event loaded: %@", event);
 		it = it->Next;
 	}
+	self.Events = [events copy];
 	self.CalculatedHeight = MAX(20, ([self.Events count] * 20));
-	//    self.CalculatedHeight = (60 + ([self.Events count] * 20));
 }
 
 - (NSString *)description

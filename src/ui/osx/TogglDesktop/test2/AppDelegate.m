@@ -38,6 +38,7 @@
 #import "TogglDesktop-Swift.h"
 #import "AppIconFactory.h"
 #import <MASShortcut/Shortcut.h>
+#import "TimelineDisplayCommand.h"
 
 @interface AppDelegate ()
 @property (nonatomic, strong) IBOutlet MainWindowController *mainWindowController;
@@ -422,7 +423,7 @@ BOOL onTop = NO;
 				NSNumber *project_id = notification.userInfo[@"project_id"];
 				NSNumber *task_id = notification.userInfo[@"task_id"];
 				NSLog(@"Handle autotracker notification project_id = %@, task_id = %@", project_id, task_id);
-				char_t *guid = toggl_start(ctx, "", "", task_id.longValue, project_id.longValue, 0, "", false);
+				char_t *guid = toggl_start(ctx, "", "", task_id.longValue, project_id.longValue, 0, "", false, 0, 0);
 				free(guid);
 				return;
 			}
@@ -458,7 +459,7 @@ BOOL onTop = NO;
 			// handle reminder track button press
 			if (notification.userInfo[@"reminder"] != nil)
 			{
-				char_t *guid = toggl_start(ctx, "", "", 0, 0, 0, "", false);
+				char_t *guid = toggl_start(ctx, "", "", 0, 0, 0, "", false, 0, 0);
 				free(guid);
 				return;
 			}
@@ -492,7 +493,9 @@ BOOL onTop = NO;
 								 new_time_entry.ProjectID,
 								 0,
 								 tag_list,
-								 false);
+								 false,
+								 0,
+								 0);
 
 		if (new_time_entry.billable)
 		{
@@ -519,7 +522,9 @@ BOOL onTop = NO;
 								 new_time_entry.ProjectID,
 								 0,
 								 0,
-								 false);
+								 false,
+								 0,
+								 0);
 		free(guid);
 	});
 }
@@ -1411,7 +1416,9 @@ const NSString *appName = @"osx_native_app";
 													0,
 													0,
 													0,
-													false);
+													false,
+													0,
+													0);
 									});
 				 }
 			 }
@@ -1693,28 +1700,19 @@ void on_time_entry_list(const bool_t open,
 
 void on_timeline(const bool_t open,
 				 const char_t *date,
-				 TogglTimelineChunkView *first)
+				 TogglTimeEntryView *first_entry,
+				 long start_day,
+				 long end_day)
 {
-	NSMutableArray *timelineChunks = [[NSMutableArray alloc] init];
-	TogglTimelineChunkView *it = first;
+	TimelineDisplayCommand *cmd =
+		[[TimelineDisplayCommand alloc] initWithOpen:open
+												date:[NSString stringWithUTF8String:date]
+										  firstEntry:first_entry
+											startDay:start_day
+											  endDay:end_day];
 
-	while (it)
-	{
-		TimelineChunkView *chunk = [[TimelineChunkView alloc] init];
-		[chunk load:it];
-		[timelineChunks addObject:chunk];
-
-		it = it->Next;
-	}
-	NSArray *reversed = [[timelineChunks reverseObjectEnumerator] allObjects];
-	NSMutableArray *reversedTimelineChunks = [NSMutableArray arrayWithArray:reversed];
-
-	DisplayCommand *cmd = [[DisplayCommand alloc] init];
-	cmd.open = open;
-	cmd.timelineChunks = reversedTimelineChunks;
-	cmd.timelineDate = [NSString stringWithUTF8String:date];
-	[[NSNotificationCenter defaultCenter] postNotificationName:kDisplayTimeline
-														object:cmd];
+	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayTimeline
+																object:cmd];
 }
 
 void on_time_entry_autocomplete(TogglAutocompleteView *first)

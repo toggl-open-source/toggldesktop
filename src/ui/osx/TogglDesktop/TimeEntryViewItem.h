@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "toggl_api.h"
 
+@class NSColor;
+
 @interface TimeEntryViewItem : NSObject
 - (void)load:(TogglTimeEntryView *)data;
 @property (assign, nonatomic) int64_t duration_in_seconds;
@@ -64,4 +66,5 @@
 // if item can be deleted without confirm
 - (BOOL)confirmlessDelete;
 - (BOOL)isRunning;
++ (NSColor *)defaultProjectColor;
 @end

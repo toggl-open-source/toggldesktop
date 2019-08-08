@@ -360,6 +360,7 @@ UIElements UIElements::Reset() {
     render.display_unsynced_items = true;
 
     render.open_time_entry_list = true;
+    render.display_timeline = true;
 
     return render;
 }
@@ -516,6 +517,7 @@ void Context::updateUI(const UIElements &what) {
     view::TimeEntry running_entry_view;
 
     std::vector<view::TimeEntry> time_entry_views;
+    std::vector<view::TimeEntry> timeline_views;
 
     std::vector<view::Generic> client_views;
     std::vector<view::Generic> workspace_views;
@@ -866,7 +868,13 @@ void Context::updateUI(const UIElements &what) {
                     view::TimeEntry view;
                     view.Fill(te);
                     view.GenerateRoundedTimes();
-                    time_entry_views.push_back(view);
+                    view.Duration = toggl::Formatter::FormatDuration(
+                        view.DurationInSeconds,
+                        Formatter::DurationFormat);
+                    user_->related.ProjectLabelAndColorCode(
+                        te,
+                        &view);
+                    timeline_views.push_back(view);
                 }
             }
         }
@@ -891,7 +899,7 @@ void Context::updateUI(const UIElements &what) {
     }
 
     if (what.display_timeline) {
-        UI()->DisplayTimeline(what.open_timeline, timeline, time_entry_views);
+        UI()->DisplayTimeline(what.open_timeline, timeline, timeline_views);
     }
 
     if (what.display_time_entry_autocomplete) {
@@ -2533,7 +2541,9 @@ TimeEntry *Context::Start(
     const Poco::UInt64 project_id,
     const std::string project_guid,
     const std::string tags,
-    const bool prevent_on_app) {
+    const bool prevent_on_app,
+    const time_t started,
+    const time_t ended) {
 
     // Do not even allow to add new time entries,
     // else they will linger around in the app
@@ -2572,7 +2582,9 @@ TimeEntry *Context::Start(
                           tid,
                           pid,
                           project_guid,
-                          tags);
+                          tags,
+                          started,
+                          ended);
     }
 
     error err = save(true);
@@ -4199,7 +4211,9 @@ void Context::displayPomodoro() {
                                              0,  // task_id
                                              0,  // project_id
                                              "",  // project_guid
-                                             "pomodoro-break");  // tags
+                                             "pomodoro-break",
+                                             0,
+                                             0);  // tags
 
         // Set workspace id to same as the previous entry
         pomodoro_break_entry_->SetWID(wid);
@@ -5515,6 +5529,13 @@ void Context::OpenTimelineDataView() {
 
     UIElements render;
     render.open_timeline = true;
+    render.display_timeline = true;
+    updateUI(render);
+}
+
+void Context::ViewTimelineCurrentDay() {
+    UI()->SetTimelineDateAt(UI()->TimelineDateAt());
+    UIElements render;
     render.display_timeline = true;
     updateUI(render);
 }

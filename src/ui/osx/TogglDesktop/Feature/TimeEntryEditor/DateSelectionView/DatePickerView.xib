@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner"/>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView id="c22-O7-iKe" customClass="DatePickerView" customModule="TogglDesktop" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="281" height="30"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <box boxType="custom" cornerRadius="8" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="e37-du-upS">
+                    <rect key="frame" x="0.0" y="0.0" width="281" height="30"/>
+                    <view key="contentView" id="thk-uw-xHx">
+                        <rect key="frame" x="1" y="1" width="279" height="28"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <box boxType="custom" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="bMg-Pt-Nuo">
+                                <rect key="frame" x="30" y="-1" width="219" height="30"/>
+                                <view key="contentView" id="zlB-IK-nNp">
+                                    <rect key="frame" x="1" y="1" width="217" height="28"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <stackView distribution="equalSpacing" orientation="horizontal" alignment="baseline" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LJw-bl-vsP">
+                                            <rect key="frame" x="36" y="2" width="145" height="22"/>
+                                            <subviews>
+                                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="DEI-4B-6HO" customClass="CursorButton" customModule="TogglDesktop" customModuleProvider="target">
+                                                    <rect key="frame" x="0.0" y="3" width="61" height="18"/>
+                                                    <buttonCell key="cell" type="bevel" title="Tuesday," bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="i0g-Ws-dGd">
+                                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                        <font key="font" metaFont="system" size="14"/>
+                                                    </buttonCell>
+                                                    <connections>
+                                                        <action selector="dayButtonOnTap:" target="c22-O7-iKe" id="QAQ-ei-Qiy"/>
+                                                    </connections>
+                                                </button>
+                                                <datePicker verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="6Jw-f6-4jC" customClass="KeyboardDatePicker" customModule="TogglDesktop" customModuleProvider="target">
+                                                    <rect key="frame" x="61" y="0.0" width="84" height="22"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="22" id="n6b-X9-Tlz"/>
+                                                    </constraints>
+                                                    <datePickerCell key="cell" alignment="left" drawsBackground="NO" datePickerStyle="textField" id="INP-WY-XWw">
+                                                        <font key="font" size="14" name=".SFNSText"/>
+                                                        <date key="date" timeIntervalSinceReferenceDate="-569750400">
+                                                            <!--1982-12-12 16:00:00 +0000-->
+                                                        </date>
+                                                        <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                    </datePickerCell>
+                                                    <connections>
+                                                        <action selector="datePickerChanged:" target="c22-O7-iKe" id="lkx-dk-H5S"/>
+                                                    </connections>
+                                                </datePicker>
+                                            </subviews>
+                                            <visibilityPriorities>
+                                                <integer value="1000"/>
+                                                <integer value="1000"/>
+                                            </visibilityPriorities>
+                                            <customSpacing>
+                                                <real value="3.4028234663852886e+38"/>
+                                                <real value="3.4028234663852886e+38"/>
+                                            </customSpacing>
+                                        </stackView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="LJw-bl-vsP" firstAttribute="centerX" secondItem="zlB-IK-nNp" secondAttribute="centerX" id="TSS-sy-uj5"/>
+                                        <constraint firstItem="LJw-bl-vsP" firstAttribute="centerY" secondItem="zlB-IK-nNp" secondAttribute="centerY" constant="1" id="ePw-I7-Xi1"/>
+                                    </constraints>
+                                </view>
+                                <color key="borderColor" name="upload-border-color"/>
+                            </box>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ge4-G4-Vqd">
+                                <rect key="frame" x="249" y="0.0" width="30" height="28"/>
+                                <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="next_date_arrow" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="2zx-Kp-QTZ">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="nextDateBtnOnTap:" target="c22-O7-iKe" id="sOk-CX-l6G"/>
+                                </connections>
+                            </button>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="eFj-dP-iWE">
+                                <rect key="frame" x="0.0" y="0.0" width="30" height="28"/>
+                                <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="previous_date_arrow" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="V77-QB-Zs6">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="previousDateBtnOnTap:" target="c22-O7-iKe" id="NoI-dG-2jf"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="eFj-dP-iWE" firstAttribute="top" secondItem="thk-uw-xHx" secondAttribute="top" id="27V-J7-3JU"/>
+                            <constraint firstAttribute="bottom" secondItem="eFj-dP-iWE" secondAttribute="bottom" id="5On-LL-exm"/>
+                            <constraint firstItem="ge4-G4-Vqd" firstAttribute="top" secondItem="thk-uw-xHx" secondAttribute="top" id="Cuh-gB-aKr"/>
+                            <constraint firstAttribute="trailing" secondItem="ge4-G4-Vqd" secondAttribute="trailing" id="Dob-Ok-nO5"/>
+                            <constraint firstAttribute="bottom" secondItem="bMg-Pt-Nuo" secondAttribute="bottom" constant="-1" id="G6z-lv-8pR"/>
+                            <constraint firstAttribute="trailing" secondItem="bMg-Pt-Nuo" secondAttribute="trailing" constant="30" id="HNR-QA-yrT"/>
+                            <constraint firstItem="bMg-Pt-Nuo" firstAttribute="leading" secondItem="thk-uw-xHx" secondAttribute="leading" constant="30" id="Hi7-lt-oWc"/>
+                            <constraint firstItem="bMg-Pt-Nuo" firstAttribute="top" secondItem="thk-uw-xHx" secondAttribute="top" constant="-1" id="Kb8-XQ-Hkj"/>
+                            <constraint firstItem="ge4-G4-Vqd" firstAttribute="leading" secondItem="bMg-Pt-Nuo" secondAttribute="trailing" id="TDL-bH-hx5"/>
+                            <constraint firstItem="eFj-dP-iWE" firstAttribute="leading" secondItem="thk-uw-xHx" secondAttribute="leading" id="XwC-kD-S3O"/>
+                            <constraint firstAttribute="bottom" secondItem="ge4-G4-Vqd" secondAttribute="bottom" id="YAM-Yt-5Fa"/>
+                            <constraint firstItem="bMg-Pt-Nuo" firstAttribute="leading" secondItem="eFj-dP-iWE" secondAttribute="trailing" id="pbz-d3-5iU"/>
+                        </constraints>
+                    </view>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="30" id="ecb-LN-eX5"/>
+                    </constraints>
+                    <color key="borderColor" name="upload-border-color"/>
+                </box>
+            </subviews>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="e37-du-upS" secondAttribute="bottom" id="3dK-zq-l7d"/>
+                <constraint firstAttribute="trailing" secondItem="e37-du-upS" secondAttribute="trailing" id="IQz-ia-boD"/>
+                <constraint firstItem="e37-du-upS" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" id="gAk-cZ-TdN"/>
+                <constraint firstItem="e37-du-upS" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" id="x30-tk-UvQ"/>
+            </constraints>
+            <connections>
+                <outlet property="datePickerView" destination="6Jw-f6-4jC" id="fRx-Tc-CEl"/>
+                <outlet property="dateSelectionBox" destination="bMg-Pt-Nuo" id="CTp-ok-gkq"/>
+                <outlet property="dayNameButton" destination="DEI-4B-6HO" id="zu1-z3-RH3"/>
+                <outlet property="nextDateBtn" destination="ge4-G4-Vqd" id="rGp-Hl-Vv9"/>
+                <outlet property="previousDateBtn" destination="eFj-dP-iWE" id="YE6-y4-C9r"/>
+            </connections>
+            <point key="canvasLocation" x="238.5" y="154"/>
+        </customView>
+    </objects>
+    <resources>
+        <image name="next_date_arrow" width="4" height="7"/>
+        <image name="previous_date_arrow" width="4" height="7"/>
+        <namedColor name="upload-border-color">
+            <color red="0.67450980392156867" green="0.67450980392156867" blue="0.67450980392156867" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

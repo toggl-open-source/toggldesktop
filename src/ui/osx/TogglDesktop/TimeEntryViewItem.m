@@ -197,4 +197,15 @@
 	return self.duration_in_seconds < 0;
 }
 
++ (NSColor *)defaultProjectColor {
+	if (@available(macOS 10.13, *))
+	{
+		return [NSColor colorNamed:@"timeline-time-entry-default-color"];
+	}
+	else
+	{
+		return [ConvertHexColor hexCodeToNSColor:@"#CECECE"];
+	}
+}
+
 @end

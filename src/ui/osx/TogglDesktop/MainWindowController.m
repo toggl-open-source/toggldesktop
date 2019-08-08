@@ -18,6 +18,7 @@
 #include <Carbon/Carbon.h>
 #import "TrackingService.h"
 #import "TogglDesktop-Swift.h"
+#import "TimelineDisplayCommand.h"
 
 @interface MainWindowController ()
 @property (nonatomic, weak) IBOutlet NSView *contentView;
@@ -164,7 +165,7 @@ extern void *ctx;
 	[self displayTimeline:notification.object];
 }
 
-- (void)displayTimeline:(DisplayCommand *)cmd
+- (void)displayTimeline:(TimelineDisplayCommand *)cmd
 {
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 	if (cmd.open)

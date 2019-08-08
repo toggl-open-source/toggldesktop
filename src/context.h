@@ -313,7 +313,9 @@ class Context : public TimelineDatasource {
         const Poco::UInt64 project_id,
         const std::string project_guid,
         const std::string tags,
-        const bool prevent_on_app);
+        const bool prevent_on_app,
+        const time_t started,
+        const time_t ended);
 
     TimeEntry *ContinueLatest(const bool prevent_on_app);
 
@@ -325,6 +327,8 @@ class Context : public TimelineDatasource {
     void OpenTimelineDataView();
 
     void ViewTimelinePrevDay();
+
+    void ViewTimelineCurrentDay();
 
     void ViewTimelineNextDay();
 

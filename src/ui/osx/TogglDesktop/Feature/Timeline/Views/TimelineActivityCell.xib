@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="TimelineActivityCell" customModule="TogglDesktop" customModuleProvider="target"/>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView id="jva-K5-Pmb">
+            <rect key="frame" x="0.0" y="0.0" width="20" height="30"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <box horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" boxType="custom" borderType="none" borderWidth="0.0" cornerRadius="10" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="3am-zX-gdl">
+                    <rect key="frame" x="0.0" y="0.0" width="20" height="30"/>
+                    <view key="contentView" id="Qu4-7v-dmk">
+                        <rect key="frame" x="0.0" y="0.0" width="20" height="30"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    </view>
+                    <color key="fillColor" name="linkColor" catalog="System" colorSpace="catalog"/>
+                </box>
+                <button horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="uIo-tP-L28">
+                    <rect key="frame" x="0.0" y="0.0" width="20" height="30"/>
+                    <buttonCell key="cell" type="bevel" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="ZVr-Z9-y0w">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="activityOnTap:" target="a5X-y3-2ZH" id="UF9-I8-cyE"/>
+                    </connections>
+                </button>
+            </subviews>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="uIo-tP-L28" secondAttribute="trailing" id="5fQ-FR-z45"/>
+                <constraint firstAttribute="trailing" secondItem="3am-zX-gdl" secondAttribute="trailing" id="8KR-v0-qbg"/>
+                <constraint firstAttribute="bottom" secondItem="uIo-tP-L28" secondAttribute="bottom" id="8Rt-Sm-TOo"/>
+                <constraint firstItem="uIo-tP-L28" firstAttribute="leading" secondItem="jva-K5-Pmb" secondAttribute="leading" id="HQa-Hv-Vz4"/>
+                <constraint firstItem="3am-zX-gdl" firstAttribute="top" secondItem="jva-K5-Pmb" secondAttribute="top" id="I9z-1N-Atc"/>
+                <constraint firstItem="3am-zX-gdl" firstAttribute="leading" secondItem="jva-K5-Pmb" secondAttribute="leading" id="a4h-yP-W4G"/>
+                <constraint firstAttribute="bottom" secondItem="3am-zX-gdl" secondAttribute="bottom" id="gd1-jX-NdO"/>
+                <constraint firstItem="uIo-tP-L28" firstAttribute="top" secondItem="jva-K5-Pmb" secondAttribute="top" id="tW6-dY-evQ"/>
+            </constraints>
+        </customView>
+        <collectionViewItem identifier="TimelineActivityCell" id="a5X-y3-2ZH" customClass="TimelineActivityCell" customModule="TogglDesktop" customModuleProvider="target">
+            <connections>
+                <outlet property="backgroundView" destination="3am-zX-gdl" id="sxI-9p-DV4"/>
+                <outlet property="view" destination="jva-K5-Pmb" id="eHp-m4-Yhn"/>
+            </connections>
+        </collectionViewItem>
+    </objects>
+</document>

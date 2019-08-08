@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="TimelineEmptyTimeEntryCell" customModule="TogglDesktop" customModuleProvider="target"/>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <collectionViewItem id="zqa-Ro-O1h" customClass="TimelineEmptyTimeEntryCell" customModule="TogglDesktop" customModuleProvider="target">
+            <connections>
+                <outlet property="view" destination="N2y-L6-HQl" id="7tE-qi-81v"/>
+            </connections>
+        </collectionViewItem>
+        <customView id="N2y-L6-HQl">
+            <rect key="frame" x="0.0" y="0.0" width="20" height="30"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="GhV-30-OAg">
+                    <rect key="frame" x="6" y="11" width="8" height="9"/>
+                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="timeline-add-btn" id="zvY-f1-uvj"/>
+                </imageView>
+            </subviews>
+            <constraints>
+                <constraint firstItem="GhV-30-OAg" firstAttribute="centerY" secondItem="N2y-L6-HQl" secondAttribute="centerY" id="6fz-zD-jaq"/>
+                <constraint firstItem="GhV-30-OAg" firstAttribute="centerX" secondItem="N2y-L6-HQl" secondAttribute="centerX" id="C46-gB-fbT"/>
+            </constraints>
+        </customView>
+    </objects>
+    <resources>
+        <image name="timeline-add-btn" width="8" height="9"/>
+    </resources>
+</document>

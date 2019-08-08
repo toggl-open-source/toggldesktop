@@ -17,6 +17,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (instancetype)shared;
 
+#pragma mark - Editor
+
 - (NSString *)convertDuratonInSecond:(int64_t)durationInSecond;
 
 - (NSString *)createClientWithWorkspaceID:(uint64_t)workspaceID
@@ -61,7 +63,24 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)updateDescriptionForTimeEntry:(TimeEntryViewItem *)timeEntry
 						 autocomplete:(AutocompleteItem *)autocomplete;
 
+#pragma mark - Timeline
+
+- (void)enableTimelineRecord:(BOOL)isEnabled;
+
+- (void)fetchTimelineData;
+
+- (void)timelineSetPreviousDate;
+
+- (void)timelineSetNextDate;
+
+- (void)timelineGetCurrentDate;
+
+- (NSString *_Nullable)starNewTimeEntryAtStarted:(NSTimeInterval)started ended:(NSTimeInterval)ended;
+
+- (void)startEditorAtGUID:(NSString *)GUID;
+
 - (void)setEditorWindowSize:(CGSize)size;
+
 - (CGSize)getEditorWindowSize;
 
 @end
