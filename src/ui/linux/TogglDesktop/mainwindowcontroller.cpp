@@ -495,6 +495,12 @@ void MainWindowController::writeSettings() {
 
 void MainWindowController::closeEvent(QCloseEvent *event) {
 
+    // Window manager has requested the app to quit so just quit
+    if (powerManagement->aboutToShutdown()) {
+        QMainWindow::closeEvent(event);
+        return;
+    }
+
     // Save current windows frame
     TogglApi::instance->setWindowsFrameSetting(QRect(pos().x(),
             pos().y(),
