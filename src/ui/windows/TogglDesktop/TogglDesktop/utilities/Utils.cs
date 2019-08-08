@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Media;
@@ -45,17 +43,18 @@ public static class Utils
             Toggl.Debug("Failed to retrieve window location and size");
         }
 
-        if (!visibleOnAnyScreen(mainWindow))
+        // First try to shift the window onto the bounding box of visible screens
+        if (ShiftWindowOntoVisibleArea(mainWindow))
+        {
+            Toggl.Debug("Shifted main window onto visible area");
+        }
+        // Then handle the case where the window is in the bounding box but not on any of the screens
+        if (!VisibleOnAnyScreen(mainWindow))
         {
             var location = Screen.PrimaryScreen.WorkingArea.Location;
             mainWindow.Left = location.X;
             mainWindow.Top = location.Y;
             Toggl.Debug("Force moved window to primary screen");
-        }
-
-        if (shiftWindowOntoVisibleArea(mainWindow))
-        {
-            Toggl.Debug("Shifted main window onto visible area");
         }
 
         if (miniTimer != null)
@@ -68,7 +67,7 @@ public static class Utils
             miniTimer.Width = w;
             Toggl.Debug("Retrieved mini timer location ({0}x{1} by {2})", x, y, w);
 
-            checkMinitimerVisibility(miniTimer);
+            CheckMinitimerVisibility(miniTimer);
         }
     }
 
@@ -77,22 +76,25 @@ public static class Utils
         return valuesToValidate.All(v => v >= int.MinValue && v <= int.MaxValue);
     }
 
-    public static void checkMinitimerVisibility(MiniTimerWindow miniTimer) {
-        if (!visibleOnAnyScreen(miniTimer))
+    public static void CheckMinitimerVisibility(MiniTimerWindow miniTimer)
+    {
+        // First try to shift the window onto the bounding box of visible screens
+        if (ShiftWindowOntoVisibleArea(miniTimer))
+        {
+            Toggl.Debug("Shifted mini timer onto visible area");
+        }
+
+        // Then handle the case where the window is in the bounding box but not on any of the screens
+        if (!VisibleOnAnyScreen(miniTimer))
         {
             var location = Screen.PrimaryScreen.WorkingArea.Location;
             miniTimer.Left = location.X;
             miniTimer.Top = location.Y;
             Toggl.Debug("Force moved mini timer to primary screen");
         }
-
-        if (shiftWindowOntoVisibleArea(miniTimer))
-        {
-            Toggl.Debug("Shifted mini timer onto visible area");
-        }
     }
 
-    private static bool shiftWindowOntoVisibleArea(Window window)
+    private static bool ShiftWindowOntoVisibleArea(Window window)
     {
         var shifted = false;
         if (window.Top < SystemParameters.VirtualScreenTop)
@@ -122,14 +124,15 @@ public static class Utils
         return shifted;
     }
 
-    private static bool visibleOnAnyScreen(Window f)
+    private static bool VisibleOnAnyScreen(Window f)
     {
-        var windowBounds = new Rectangle(
-            (int)f.Left, (int)f.Top, (int)f.Width, (int)f.Height
-        );
+        var scalingRatio = Math.Max(Screen.PrimaryScreen.WorkingArea.Width / SystemParameters.PrimaryScreenWidth,
+            Screen.PrimaryScreen.WorkingArea.Height / SystemParameters.PrimaryScreenHeight);
 
-        return Screen.AllScreens
-               .Any(s => s.WorkingArea.IntersectsWith(windowBounds));
+        var windowBounds = new Rectangle((int) (f.Left * scalingRatio), (int) (f.Top * scalingRatio),
+            (int) (f.Width * scalingRatio), (int) (f.Height * scalingRatio));
+
+        return Screen.AllScreens.Any(s => s.WorkingArea.IntersectsWith(windowBounds));
     }
 
     public static void SaveWindowLocation(Window mainWindow, EditViewPopup edit, MiniTimerWindow miniTimer)
