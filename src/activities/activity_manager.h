@@ -3,6 +3,7 @@
 
 #include "activity.h"
 #include "syncer_activity.h"
+#include "reminder_activity.h"
 
 #include <map>
 
@@ -16,6 +17,7 @@ public:
 
     void stopAll();
 
+    ReminderActivity *reminder();
     SyncerActivity *syncer();
 
 private:
@@ -24,6 +26,7 @@ private:
     std::map<int64_t, Activity*> events_;
 
     SyncerActivity *syncer_ { nullptr };
+    ReminderActivity *reminder_ { nullptr };
 };
 
 };

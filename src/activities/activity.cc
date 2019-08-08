@@ -1,6 +1,11 @@
+#include "activity.h"
 
-toggl::Activity::Activity(toggl::Context *context)
+namespace toggl {
+
+Activity::Activity(toggl::Context *context)
     : context_(context)
 {
 
 }
+
+};

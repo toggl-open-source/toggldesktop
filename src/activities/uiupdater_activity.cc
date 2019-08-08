@@ -1,4 +1,8 @@
-#include "ui_updater_activity.h"
+#include "uiupdater_activity.h"
+
+#include "../gui.h"
+#include "../related_data.h"
+#include "../context.h"
 
 namespace toggl {
 
@@ -33,7 +37,7 @@ void UiUpdaterActivity::uiUpdaterActivity() {
         if (running_time != date_duration) {
             UIElements render;
             render.display_time_entries = true;
-            updateUI(render);
+            context_->updateUI(render);
         }
 
         running_time = date_duration;

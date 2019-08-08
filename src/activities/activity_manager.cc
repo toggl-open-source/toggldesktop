@@ -20,6 +20,10 @@ void toggl::ActivityManager::stopAll() {
     */
 }
 
+ReminderActivity *ActivityManager::reminder() {
+    return reminder_;
+}
+
 SyncerActivity *toggl::ActivityManager::syncer() {
     return syncer_;
 }

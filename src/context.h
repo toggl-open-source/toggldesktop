@@ -140,6 +140,8 @@ class Context : public TimelineDatasource {
         update_check_disabled_ = true;
     }
 
+    const Settings *settings() const;
+
     error SetSettingsUseIdleDetection(const bool use_idle_detection);
 
     error SetSettingsAutotrack(const bool value);
@@ -676,9 +678,6 @@ class Context : public TimelineDatasource {
 
     Poco::UInt64 last_sync_started_;
     Poco::Int64 sync_interval_seconds_;
-    Poco::UInt64 last_tracking_reminder_time_;
-    Poco::UInt64 last_pomodoro_reminder_time_;
-    Poco::UInt64 last_pomodoro_break_reminder_time_;
 
     bool update_check_disabled_;
 
@@ -702,10 +701,6 @@ class Context : public TimelineDatasource {
     std::set<std::string> autotracker_titles_;
 
     HelpDatabase help_database_;
-
-    // OVERHAUL_TODO - this SHOULD NOT be here, all time entries are protected with a mutex
-    // currently solved with a hack (accessing the pointer directly)
-    TimeEntry *pomodoro_break_entry_;
 
     // To cache grouped entries open/close status
     std::map<std::string, bool_t> entry_groups;

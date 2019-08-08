@@ -3,6 +3,9 @@
 
 #include "../context.h"
 #include "../https_client.h"
+#include "../obm_action.h"
+#include "../client.h"
+#include "../project.h"
 
 #include <Poco/Logger.h>
 #include <Poco/Stopwatch.h>

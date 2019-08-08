@@ -119,8 +119,6 @@ Context::Context(const std::string app_name, const std::string app_version)
     }
 
     resetLastTrackingReminderTime();
-
-    pomodoro_break_entry_ = nullptr;
 }
 
 Context::~Context() {
@@ -2097,6 +2095,10 @@ void Context::SetEnvironment(const std::string value) {
     urls::SetRequestsAllowed("test" != environment_);
 }
 
+const Settings *Context::settings() const {
+    return &settings_;
+}
+
 Database *Context::db() const {
     poco_check_ptr(db_);
     return db_;
@@ -3254,7 +3256,7 @@ locked<TimeEntry> Context::DiscardTimeAndContinue(
     const Poco::Int64 at) {
 
     // Reset reminder count when doing idle actions
-    last_tracking_reminder_time_ = time(0);
+    activity_manager_->reminder()->resetLastReminderTime();
 
     // Tracking action
     if ("production" == environment_) {
@@ -4007,7 +4009,7 @@ const bool Context::handleStopRunningEntry() {
 }
 
 void Context::resetLastTrackingReminderTime() {
-    last_tracking_reminder_time_ = time(0);
+    activity_manager_->reminder()->resetLastReminderTime();
 }
 
 error Context::StartAutotrackerEvent(const TimelineEvent &event) {
