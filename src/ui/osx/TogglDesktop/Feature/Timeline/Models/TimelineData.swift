@@ -107,7 +107,6 @@ extension TimelineData {
     }
 
     fileprivate func calculateColumnsPositionForTimeline() {
-        var firstColumnTimeEntries: [TimelineBaseTimeEntry] = []
         var calculatedEntries: [TimelineBaseTimeEntry] = []
         for entry in timeEntries {
 
@@ -131,11 +130,6 @@ extension TimelineData {
                 }
             } while isOverlap
 
-            // First Col
-            if col == 0 {
-                firstColumnTimeEntries.append(entry)
-            }
-
             // Exit the loop
             entry.update(col)
             calculatedEntries.append(entry)
@@ -148,7 +142,6 @@ extension TimelineData {
             for i in 0..<(timeEntries.count - 1) {
                 let current = timeEntries[i]
                 let next = timeEntries[i+1]
-
                 if (next.start - current.end) >= 600.0 { // Gap is 10 mins
                     let emptyTimeEntry = TimelineBaseTimeEntry(start: current.end, end: next.start, offset: 60.0)
                     emptyTimeEntries.append(emptyTimeEntry)

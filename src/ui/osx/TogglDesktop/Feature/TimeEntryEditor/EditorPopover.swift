@@ -34,6 +34,9 @@ final class EditorPopover: NoVibrantPopoverView {
     }
 
     override func close(focusTimer: Bool) {
+        if let editor = contentViewController as? EditorViewController {
+            editor.closeCalendarPopover()
+        }
         super.close(focusTimer: focusTimer)
         if focusTimer {
             NotificationCenter.default.post(name: Constants.FocusTimerNotification, object: nil)

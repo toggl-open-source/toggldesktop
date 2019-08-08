@@ -203,6 +203,12 @@ final class EditorViewController: NSViewController {
             closeBtnOnTap(self)
         }
     }
+
+    func closeCalendarPopover() {
+        calendarPopover.animates = false
+        calendarPopover.close()
+        calendarPopover.animates = true
+    }
 }
 
 // MARK: Private
