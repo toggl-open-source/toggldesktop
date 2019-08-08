@@ -18,7 +18,8 @@ final class TimelineDashboardViewController: NSViewController {
     @IBOutlet weak var emptyLbl: NSTextField!
     
     // MARK: Variables
-    private var selectedIndexPath: IndexPath?
+
+    private var selectedGUID: String?
     private var isFirstTime = true
     lazy var datePickerView: DatePickerView = DatePickerView.xibView()
     private lazy var datasource = TimelineDatasource(collectionView)
@@ -157,11 +158,13 @@ extension TimelineDashboardViewController: DatePickerViewDelegate {
     }
 
     func datePickerDidTapPreviousDate(_ sender: DatePickerView) {
+        editorPopover.close(focusTimer: false)
         DesktopLibraryBridge.shared().timelineSetPreviousDate()
         datasource.scrollToVisibleItem()
     }
 
     func datePickerDidTapNextDate(_ sender: DatePickerView) {
+        editorPopover.close(focusTimer: false)
         DesktopLibraryBridge.shared().timelineSetNextDate()
         datasource.scrollToVisibleItem()
     }
@@ -183,15 +186,14 @@ extension TimelineDashboardViewController: TimelineDatasourceDelegate {
     }
 
     func shouldPresentTimeEntryEditor(in view: NSView, timeEntry: TimeEntryViewItem) {
-        selectedIndexPath = collectionView.selectionIndexPaths.first
         shouldDismissTimeEntryHover()
+        selectedGUID = timeEntry.guid
         editorPopover.show(relativeTo: view.bounds, of: view, preferredEdge: .maxX)
         editorPopover.setTimeEntry(timeEntry)
     }
 
     func startNewTimeEntry(at started: TimeInterval, ended: TimeInterval) {
         guard let guid = DesktopLibraryBridge.shared().starNewTimeEntry(atStarted: started, ended: ended) else { return }
-        selectedIndexPath = collectionView.selectionIndexPaths.first
         self.showEditorForTimeEntry(with: guid)
     }
 
@@ -217,9 +219,27 @@ extension TimelineDashboardViewController: TimelineDatasourceDelegate {
     }
 
     fileprivate func updatePositionOfEditorIfNeed() {
-        guard editorPopover.isShown else { return }
-        guard let selectedIndexPath = selectedIndexPath,
-            let cell = collectionView.item(at: selectedIndexPath) else { return }
+        guard editorPopover.isShown,
+            let selectedGUID = selectedGUID else { return }
+
+        // Search the last index for GUID
+        // Since everytime we change the Time entry data
+        // New Entry will come from Library
+        let index = datasource.timeline?.timeEntries.firstIndex(where: { (entry) -> Bool in
+            if let timeEntry = entry as? TimelineTimeEntry {
+                return timeEntry.timeEntry.guid == selectedGUID
+            }
+            return false
+        })
+        guard let item = index else {
+            editorPopover.close(focusTimer: false)
+            return
+        }
+        let indexPath = IndexPath(item: item, section: TimelineData.Section.timeEntry.rawValue)
+        guard let cell = collectionView.item(at: indexPath) else {
+            editorPopover.close(focusTimer: false)
+            return
+        }
 
         editorPopover.animates = false
         editorPopover.show(relativeTo: cell.view.bounds, of: cell.view, preferredEdge: .maxX)
