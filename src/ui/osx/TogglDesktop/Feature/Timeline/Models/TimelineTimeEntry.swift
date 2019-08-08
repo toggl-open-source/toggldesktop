@@ -29,6 +29,12 @@ class TimelineBaseTimeEntry {
     func update(_ col: Int) {
         self.col = col
     }
+
+    func isIntersected(with entry: TimelineBaseTimeEntry) -> Bool {
+        return (start >= entry.start && start <= entry.end)
+            || (end >= entry.start && end <= entry.end)
+            || (start >= entry.start && end <= entry.end)
+    }
 }
 
 final class TimelineTimeEntry: TimelineBaseTimeEntry {

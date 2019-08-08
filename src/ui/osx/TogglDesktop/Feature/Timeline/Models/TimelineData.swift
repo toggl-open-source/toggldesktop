@@ -121,9 +121,8 @@ extension TimelineData {
                 // O(n) = n
                 // It's reasonal since the number of items is small
                 isOverlap = calculatedEntries.contains { timeEntry -> Bool in
-                    let overlap = (entry.start >= timeEntry.start && entry.start <= timeEntry.end)
-                        || (entry.end >= timeEntry.start && entry.end <= timeEntry.end)
-                    return overlap && (timeEntry.col == col)
+                    let isIntersected = entry.isIntersected(with: timeEntry)
+                    return isIntersected && (timeEntry.col == col)
                 }
 
                 // If overlap -> Move to next column
@@ -144,6 +143,7 @@ extension TimelineData {
 
         // Add empty time entry
         // Only add if there is a gap between two entries
+        let overlapEntries = timeEntries.filter { $0.isOverlap }
         if firstColumnTimeEntries.count >= 2 {
             var emptyTimeEntries: [TimelineBaseTimeEntry] = []
             for i in 0..<(firstColumnTimeEntries.count - 1) {
@@ -152,7 +152,12 @@ extension TimelineData {
 
                 if (next.start - current.end) >= 600.0 { // Gap is 10 mins
                     let emptyTimeEntry = TimelineBaseTimeEntry(start: current.end, end: next.start, offset: 60.0)
-                    emptyTimeEntries.append(emptyTimeEntry)
+
+                    // Check this Empty Timeentry is overlap with others
+                    let isOverlap = overlapEntries.contains { emptyTimeEntry.isIntersected(with: $0) }
+                    if !isOverlap {
+                        emptyTimeEntries.append(emptyTimeEntry)
+                    }
                 }
             }
 
