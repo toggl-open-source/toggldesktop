@@ -87,11 +87,11 @@ function fillHtml() {
       }
       // 7.3.0 ...
       cur = ch[ch.length-1];
-      prev = ch[ch.length-2];
 
       for (var kb in cur.filename) {
         link = downloadPath + "/" + cur.filename[kb].type + "-" + ka + "/";
-        if (!prev) {
+        prev = ch[ch.length-2];
+        if (!prev || !prev.filename[kb]) {
           prev = cur;
         }
         tmp = "<tr><td><span class='os-icon " + k + "-icon'></span>" + cur.filename[kb].type + "</td><td>" + ka + "</td>" +
