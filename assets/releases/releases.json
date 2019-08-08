@@ -2610,10 +2610,6 @@
                         "name": "toggldesktop_linux_x86_64-7_4_504.tar.gz"
                     },
                     {
-                        "type": "linux_flatpak",
-                        "name": "com.toggl.TogglDesktop_linux_x86_64-7_4_504.flatpak"
-                    },
-                    {
                         "type": "linux_deb64",
                         "name": "toggldesktop_7.4.504_amd64.deb"
                     }
@@ -2964,10 +2960,6 @@
                     {
                         "type": "linux_tar.gz",
                         "name": "toggldesktop_linux_x86_64-7_4_476.tar.gz"
-                    },
-                    {
-                        "type": "linux_flatpak",
-                        "name": "com.toggl.TogglDesktop_linux_x86_64-7_4_476.flatpak"
                     }
                 ]
             }
