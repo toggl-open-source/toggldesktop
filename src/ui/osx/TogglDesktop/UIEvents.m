@@ -54,6 +54,7 @@ NSString *const kUpdateIconTooltip = @"kUpdateIconTooltip";
 NSString *const kUserHasBeenSignup = @"kUserHasBeenSignup";
 
 NSString *const kDeselectAllTimeEntryList = @"kDeselectAllTimeEntryList";
+NSString *const kDidAdddManualTimeNotification = @"kDidAdddManualTimeNotification";
 
 const char *kFocusedFieldNameDuration = "duration";
 const char *kFocusedFieldNameDescription = "description";

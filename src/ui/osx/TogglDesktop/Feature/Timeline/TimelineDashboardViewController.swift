@@ -79,10 +79,15 @@ final class TimelineDashboardViewController: NSViewController {
     func render(with cmd: TimelineDisplayCommand) {
         let timeline = TimelineData(cmd: cmd, zoomLevel: zoomLevel)
         let date = Date(timeIntervalSince1970: cmd.start)
+        let shouldScroll = datePickerView.currentDate != date
         datePickerView.currentDate = date
         datasource.render(timeline)
         emptyLbl.isHidden = !timeline.timeEntries.isEmpty
         updatePositionOfEditorIfNeed()
+
+        if shouldScroll {
+            datasource.scrollToVisibleItem()
+        }
     }
     
     @IBAction func recordSwitchOnChanged(_ sender: Any) {
@@ -109,6 +114,7 @@ extension TimelineDashboardViewController {
         datePickerContainerView.addSubview(datePickerView)
         datePickerView.edgesToSuperView()
         datePickerView.delegate = self
+        datePickerView.setBackgroundForTimeline()
     }
 
     fileprivate func initNotifications() {
@@ -119,6 +125,10 @@ extension TimelineDashboardViewController {
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(self.reloadTimeline),
                                                name: Notification.Name(kDisplayTimeEntryList),
+                                               object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(self.didAddManualTimeNotification),
+                                               name: NSNotification.Name.didAdddManualTime,
                                                object: nil)
     }
 
@@ -135,6 +145,29 @@ extension TimelineDashboardViewController {
     @objc private func reloadTimeline() {
         DesktopLibraryBridge.shared().timelineGetCurrentDate()
     }
+
+    @objc private func didAddManualTimeNotification() {
+        // Ignore if the Timeline controller is not showing
+        guard view.window != nil else { return }
+
+        // Switch to current date
+        DesktopLibraryBridge.shared().timelineSetDate(Date())
+
+        // Get the New item, which the lib just added
+        guard let numberOfItem = datasource.timeline?.numberOfItems(in: TimelineData.Section.timeEntry.rawValue) else { return }
+        let reversedCollection = (0..<numberOfItem).reversed()
+        for index in reversedCollection {
+            let indexPath = IndexPath(item: index, section: TimelineData.Section.timeEntry.rawValue)
+            let itemView = collectionView.item(at: indexPath)
+
+            // Present editor
+            if let item = itemView as? TimelineTimeEntryCell {
+                collectionView.scrollToItems(at: Set<IndexPath>(arrayLiteral: indexPath), scrollPosition: .centeredVertically)
+                shouldPresentTimeEntryEditor(in: item.view, timeEntry: item.timeEntry.timeEntry)
+                return
+            }
+        }
+    }
 }
 
 // MARK: DatePickerViewDelegate
@@ -142,7 +175,8 @@ extension TimelineDashboardViewController {
 extension TimelineDashboardViewController: DatePickerViewDelegate {
 
     func datePickerOnChanged(_ sender: DatePickerView, date: Date) {
-
+        editorPopover.close()
+        DesktopLibraryBridge.shared().timelineSetDate(date)
     }
 
     func datePickerShouldClose(_ sender: DatePickerView) {
@@ -154,19 +188,17 @@ extension TimelineDashboardViewController: DatePickerViewDelegate {
     }
 
     func shouldOpenCalendar(_ sender: DatePickerView) -> Bool {
-        return false
+        return true
     }
 
     func datePickerDidTapPreviousDate(_ sender: DatePickerView) {
         editorPopover.close()
         DesktopLibraryBridge.shared().timelineSetPreviousDate()
-        datasource.scrollToVisibleItem()
     }
 
     func datePickerDidTapNextDate(_ sender: DatePickerView) {
         editorPopover.close()
         DesktopLibraryBridge.shared().timelineSetNextDate()
-        datasource.scrollToVisibleItem()
     }
 }
 

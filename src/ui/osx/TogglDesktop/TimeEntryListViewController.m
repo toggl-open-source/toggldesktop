@@ -8,7 +8,6 @@
 
 #import "TimeEntryListViewController.h"
 #import "TimeEntryViewItem.h"
-#import "TimerEditViewController.h"
 #import "TimeEntryCell.h"
 #import "DisplayCommand.h"
 #import "ConvertHexColor.h"
@@ -26,7 +25,6 @@ static NSString *kFrameKey = @"frame";
 @property (weak) IBOutlet NSBox *emptyViewContainerView;
 
 @property (nonatomic, strong) TimeEntryDatasource *dataSource;
-@property (nonatomic, strong) TimerEditViewController *timerEditViewController;
 @property (nonatomic, assign) NSInteger defaultPopupHeight;
 @property (nonatomic, assign) NSInteger defaultPopupWidth;
 @property (nonatomic, assign) NSInteger addedHeight;
@@ -46,8 +44,6 @@ extern void *ctx;
 	self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
 	if (self)
 	{
-		self.timerEditViewController = [[TimerEditViewController alloc]
-										initWithNibName:@"TimerEditViewController" bundle:nil];
 	}
 	return self;
 }

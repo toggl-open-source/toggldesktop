@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14490.70"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -123,6 +123,7 @@
                 <constraint firstItem="e37-du-upS" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" id="x30-tk-UvQ"/>
             </constraints>
             <connections>
+                <outlet property="backgroundBox" destination="e37-du-upS" id="yae-TV-F88"/>
                 <outlet property="datePickerView" destination="6Jw-f6-4jC" id="fRx-Tc-CEl"/>
                 <outlet property="dateSelectionBox" destination="bMg-Pt-Nuo" id="CTp-ok-gkq"/>
                 <outlet property="dayNameButton" destination="DEI-4B-6HO" id="zu1-z3-RH3"/>
@@ -136,7 +137,7 @@
         <image name="next_date_arrow" width="4" height="7"/>
         <image name="previous_date_arrow" width="4" height="7"/>
         <namedColor name="upload-border-color">
-            <color red="0.67450980392156867" green="0.67450980392156867" blue="0.67450980392156867" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.67500001192092896" green="0.67500001192092896" blue="0.67500001192092896" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>

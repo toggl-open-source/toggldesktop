@@ -659,6 +659,11 @@ void toggl_view_timeline_current_day(void *context) {
     app(context)->ViewTimelineCurrentDay();
 }
 
+void toggl_view_timeline_set_day(void *context,
+                                 const int64_t unix_timestamp) {
+    app(context)->ViewTimelineSetDate(unix_timestamp);
+}
+
 void toggl_edit(
     void *context,
     const char_t *guid,

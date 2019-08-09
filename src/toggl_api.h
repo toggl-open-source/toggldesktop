@@ -599,6 +599,9 @@ extern "C" {
     TOGGL_EXPORT void toggl_view_timeline_current_day(
         void *context);
 
+    TOGGL_EXPORT void toggl_view_timeline_set_day(void *context,
+            const int64_t unix_timestamp);
+
     TOGGL_EXPORT void toggl_edit(
         void *context,
         const char_t *guid,

@@ -5558,6 +5558,14 @@ void Context::ViewTimelineNextDay() {
     updateUI(render);
 }
 
+void Context::ViewTimelineSetDate(const Poco::Int64 unix_timestamp) {
+    Poco::LocalDateTime date(Poco::Timestamp::fromEpochTime(unix_timestamp));
+    UI()->SetTimelineDateAt(date);
+
+    UIElements render;
+    render.display_timeline = true;
+    updateUI(render);
+}
 
 error Context::ToSAccept() {
     std::string api_token = user_->APIToken();

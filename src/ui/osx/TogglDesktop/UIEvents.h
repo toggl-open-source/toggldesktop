@@ -56,6 +56,7 @@ extern NSString *const kDisplayCountries;
 extern NSString *const kUpdateIconTooltip;
 extern NSString *const kUserHasBeenSignup;
 extern NSString *const kDeselectAllTimeEntryList;
+extern NSString *const kDidAdddManualTimeNotification;
 
 const char *kFocusedFieldNameDuration;
 const char *kFocusedFieldNameDescription;

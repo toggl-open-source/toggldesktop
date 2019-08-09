@@ -320,6 +320,12 @@ extern void *ctx;
 			[self deselectAll:self];
 		}
 
+		// Skip if the indexpath is invalid
+		if ([self itemAtIndexPath:previousIndexPath] == nil)
+		{
+			return;
+		}
+
 		// Select previous cell
 		[self selectItemsAtIndexPaths:[NSSet setWithCollectionViewIndexPath:previousIndexPath]
 					   scrollPosition:NSCollectionViewScrollPositionNone];
