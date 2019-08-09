@@ -652,7 +652,7 @@ namespace TogglDesktop
             if (visible)
             {
                 // Make sure minitimer is not off screen
-                Utils.checkMinitimerVisibility(this.miniTimer);
+                Utils.CheckMinitimerVisibility(this.miniTimer);
             }
 
             if (!fromApi)
