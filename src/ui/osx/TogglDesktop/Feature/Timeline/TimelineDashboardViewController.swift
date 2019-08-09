@@ -153,12 +153,20 @@ extension TimelineDashboardViewController {
         // Switch to current date
         DesktopLibraryBridge.shared().timelineSetDate(Date())
 
-        // Get the first item
-        // It must be the Empty itemm we just added
-        guard let itemView = collectionView.item(at: IndexPath(item: 0, section: TimelineData.Section.timeEntry.rawValue)) as? TimelineTimeEntryCell else { return }
+        // Get the New item, which the lib just added
+        guard let numberOfItem = datasource.timeline?.numberOfItems(in: TimelineData.Section.timeEntry.rawValue) else { return }
+        let reversedCollection = (0..<numberOfItem).reversed()
+        for index in reversedCollection {
+            let indexPath = IndexPath(item: index, section: TimelineData.Section.timeEntry.rawValue)
+            let itemView = collectionView.item(at: indexPath)
 
-        // Present editor
-        shouldPresentTimeEntryEditor(in: itemView.view, timeEntry: itemView.timeEntry.timeEntry)
+            // Present editor
+            if let item = itemView as? TimelineTimeEntryCell {
+                collectionView.scrollToItems(at: Set<IndexPath>(arrayLiteral: indexPath), scrollPosition: .centeredVertically)
+                shouldPresentTimeEntryEditor(in: item.view, timeEntry: item.timeEntry.timeEntry)
+                return
+            }
+        }
     }
 }
 
