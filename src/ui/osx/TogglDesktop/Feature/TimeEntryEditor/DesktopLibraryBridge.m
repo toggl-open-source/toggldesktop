@@ -196,6 +196,11 @@ void *ctx;
 	toggl_view_timeline_next_day(ctx);
 }
 
+- (void)timelineSetDate:(NSDate *)date
+{
+	toggl_view_timeline_set_day(ctx, date.timeIntervalSince1970);
+}
+
 - (void)fetchTimelineData
 {
 	toggl_view_timeline_data(ctx);

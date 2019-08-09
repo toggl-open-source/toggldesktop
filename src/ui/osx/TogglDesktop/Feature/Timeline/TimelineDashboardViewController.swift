@@ -142,7 +142,9 @@ extension TimelineDashboardViewController {
 extension TimelineDashboardViewController: DatePickerViewDelegate {
 
     func datePickerOnChanged(_ sender: DatePickerView, date: Date) {
-
+        editorPopover.close()
+        DesktopLibraryBridge.shared().timelineSetDate(date)
+        datasource.scrollToVisibleItem()
     }
 
     func datePickerShouldClose(_ sender: DatePickerView) {
@@ -154,7 +156,7 @@ extension TimelineDashboardViewController: DatePickerViewDelegate {
     }
 
     func shouldOpenCalendar(_ sender: DatePickerView) -> Bool {
-        return false
+        return true
     }
 
     func datePickerDidTapPreviousDate(_ sender: DatePickerView) {

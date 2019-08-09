@@ -332,6 +332,8 @@ class Context : public TimelineDatasource {
 
     void ViewTimelineNextDay();
 
+    void ViewTimelineSetDate(const Poco::Int64 unix_timestamp);
+
     void OpenSettings();
 
     void OpenTimeEntryEditor(
