@@ -109,6 +109,7 @@ extension TimelineDashboardViewController {
         datePickerContainerView.addSubview(datePickerView)
         datePickerView.edgesToSuperView()
         datePickerView.delegate = self
+        datePickerView.setBackgroundForTimeline()
     }
 
     fileprivate func initNotifications() {

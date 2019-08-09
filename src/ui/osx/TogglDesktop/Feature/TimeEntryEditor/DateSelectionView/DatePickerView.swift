@@ -23,6 +23,7 @@ final class DatePickerView: NSView {
 
     // MARK: OUTLET
 
+    @IBOutlet weak var backgroundBox: NSBox!
     @IBOutlet weak var datePickerView: KeyboardDatePicker!
     @IBOutlet weak var dayNameButton: CursorButton!
     @IBOutlet weak var nextDateBtn: NSButton!
@@ -39,7 +40,7 @@ final class DatePickerView: NSView {
     }
     private lazy var calendarPopover: NoVibrantPopoverView = {
         let popover = NoVibrantPopoverView()
-        popover.behavior = .semitransient
+        popover.behavior = .transient
         popover.contentViewController = calendarViewControler
         return popover
     }()
@@ -103,6 +104,14 @@ final class DatePickerView: NSView {
         }
         delegate.datePickerDidTapPreviousDate(self)
         delegate.datePickerOnChanged(self, date: previousDate)
+    }
+
+    func setBackgroundForTimeline() {
+        if #available(OSX 10.13, *) {
+            backgroundBox.fillColor = NSColor(named: "timeline-date-picker-background-color")!
+        } else {
+            backgroundBox.fillColor = NSColor.white
+        }
     }
 }
 
