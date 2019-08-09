@@ -10,15 +10,19 @@
 #import "UIEvents.h"
 #import "TogglDesktop-Swift.h"
 
+@interface NSTextFieldClickable () <NSTextFieldDelegate>
+@end
+
 @implementation NSTextFieldClickable
 
-- (void)awakeFromNib {
+- (void)awakeFromNib
+{
 	[super awakeFromNib];
-
 	[self initDefaultValue];
 }
 
-- (void)initDefaultValue {
+- (void)initDefaultValue
+{
 	self.titleUnderline = NO;
 }
 

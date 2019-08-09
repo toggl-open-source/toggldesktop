@@ -11,9 +11,11 @@
 #import "UIEvents.h"
 #import "TogglDesktop-Swift.h"
 #include <Carbon/Carbon.h>
+#import "Utils.h"
 
 @interface TimeEntryCollectionView ()
-@property (assign, nonatomic) NSIndexPath *latestSelectedIndexPath;
+@property (strong, nonatomic) NSIndexPath *latestSelectedIndexPath;
+@property (strong, nonatomic) NSSet<NSIndexPath *> *previousSelectionSet;
 @end
 
 @implementation TimeEntryCollectionView
@@ -41,8 +43,10 @@ extern void *ctx;
 }
 
 - (void)mouseDown:(NSEvent *)event {
+	// Store previous selection before any actions
+	// To deselect the selected item if need
+	self.previousSelectionSet = [self.selectionIndexPaths copy];
 	[super mouseDown:event];
-
 	if (@available(macOS 10.12, *))
 	{
 		// Do nothing
@@ -66,13 +70,33 @@ extern void *ctx;
 	NSIndexPath *index = [self indexPathForItemAtPoint:curPoint];
 	NSCollectionViewItem *item = [self itemAtIndexPath:index];
 
-	if ([item isKindOfClass:[TimeEntryCell class]])
+	if (index && [item isKindOfClass:[TimeEntryCell class]])
 	{
 		TimeEntryCell *timeCell = (TimeEntryCell *)item;
 
 		// We have to store the click index
 		// so, the displayTimeEntryEditor can detect which cell should be show popover
 		self.clickedIndexPath = index;
+
+		// If we're pressing SHIFT and click
+		// Don't show Editor, just select
+		NSUInteger flags = [[NSApp currentEvent] modifierFlags];
+		if (flags & NSShiftKeyMask)
+		{
+			NSSet *set = [NSSet setWithObject:index];
+
+			// Select or deselect
+			if ([self.previousSelectionSet containsObject:index])
+			{
+				[self deselectItemsAtIndexPaths:set];
+			}
+			else
+			{
+				[self selectItemsAtIndexPaths:set scrollPosition:NSCollectionViewScrollPositionLeft];
+			}
+
+			return;
+		}
 
 		// Show popover or open group
 		if (timeCell.cellType == CellTypeGroup)
@@ -87,12 +111,31 @@ extern void *ctx;
 }
 
 - (void)keyDown:(NSEvent *)event {
+	NSArray<TimeEntryCell *> *cells = [self getSelectedEntryCells];
+
+	// Ignore if there is no selection
+	if (cells == nil)
+	{
+		[super keyDown:event];
+		return;
+	}
+
 	if ((event.keyCode == kVK_Return) || (event.keyCode == kVK_ANSI_KeypadEnter))
 	{
-		TimeEntryCell *cell = [self getSelectedEntryCell];
+		TimeEntryCell *cell = cells.firstObject;
 		if (cell != nil)
 		{
-			[cell openEdit];
+			if (cell.Group)
+			{
+				if (cell.GroupName.length)
+				{
+					toggl_toggle_entries_group(ctx, [cell.GroupName UTF8String]);
+				}
+			}
+			else
+			{
+				[cell openEdit];
+			}
 		}
 	}
 	else if (event.keyCode == kVK_Escape)
@@ -107,31 +150,45 @@ extern void *ctx;
 	}
 	else if (event.keyCode == kVK_RightArrow)
 	{
-		TimeEntryCell *cell = [self getSelectedEntryCell];
-		if (cell != nil && cell.GroupName.length && !cell.GroupOpen)
+		for (TimeEntryCell *cell in cells)
 		{
-			toggl_toggle_entries_group(ctx, [cell.GroupName UTF8String]);
+			if (cell != nil && cell.GroupName.length && !cell.GroupOpen)
+			{
+				toggl_toggle_entries_group(ctx, [cell.GroupName UTF8String]);
+			}
 		}
 	}
 	else if (event.keyCode == kVK_LeftArrow)
 	{
-		TimeEntryCell *cell = [self getSelectedEntryCell];
-		if (cell != nil && cell.GroupName.length && cell.GroupOpen)
+		for (TimeEntryCell *cell in cells)
 		{
-			toggl_toggle_entries_group(ctx, [cell.GroupName UTF8String]);
+			if (cell != nil && cell.GroupName.length && cell.GroupOpen)
+			{
+				toggl_toggle_entries_group(ctx, [cell.GroupName UTF8String]);
+			}
 		}
 	}
 	else if (event.keyCode == kVK_Space)
 	{
-		TimeEntryCell *cell = [self getSelectedEntryCell];
+		// Only start TE if we select one TE
+		if (cells.count >= 2)
+		{
+			[super keyDown:event];
+			return;
+		}
+
+		TimeEntryCell *cell = cells.firstObject;
 		if (cell != nil)
 		{
 			toggl_continue(ctx, [cell.GUID UTF8String]);
+
+			// Focus on timer
+			[[NSNotificationCenter defaultCenter] postNotificationName:kFocusTimer object:nil];
 		}
 	}
 	else if (event.keyCode == kVK_UpArrow)
 	{
-		NSIndexPath *index = [self.selectionIndexPaths.allObjects firstObject];
+		NSIndexPath *index = [self.selectionIndexPaths.allObjects lastObject];
 		if (index != nil)
 		{
 			[self selectPreviousRowFromIndexPath:index];
@@ -143,41 +200,42 @@ extern void *ctx;
 	}
 }
 
-- (TimeEntryCell *)getSelectedEntryCell
+- (NSArray<TimeEntryCell *> *)getSelectedEntryCells
 {
 	if (self.selectionIndexPaths.count == 0)
 	{
 		return nil;
 	}
-	self.latestSelectedIndexPath = [[self.selectionIndexPaths allObjects] firstObject];
+	self.latestSelectedIndexPath = [[self.selectionIndexPaths allObjects] lastObject];
 
-	id view = [self itemAtIndexPath:self.latestSelectedIndexPath];
-	if ([view isKindOfClass:[TimeEntryCell class]])
+	// Get all selected cells
+	NSMutableArray<TimeEntryCell *> *items = [@[] mutableCopy];
+	for (NSIndexPath *indexPath in self.selectionIndexPaths.allObjects)
 	{
-		return (TimeEntryCell *)view;
+		id view = [self itemAtIndexPath:indexPath];
+		if ([view isKindOfClass:[TimeEntryCell class]])
+		{
+			[items addObject:(TimeEntryCell *)view];
+		}
 	}
-	return nil;
+	return [items copy];
 }
 
 - (void)deleteEntry
 {
-	TimeEntryCell *cell = [self getSelectedEntryCell];
+	NSArray<TimeEntryCell *> *cells = [self getSelectedEntryCells];
 
-	if (cell != nil)
+	if (cells.count == 0)
 	{
-		// If description is empty and duration is less than 15 seconds delete without confirmation
-		if (cell.confirmless_delete)
-		{
-			if (toggl_delete_time_entry(ctx, [cell.GUID UTF8String]))
-			{
-				[self selectPreviousRowFromIndexPath:self.latestSelectedIndexPath];
-			}
-			return;
-		}
-		NSString *msg = [NSString stringWithFormat:@"Delete time entry \"%@\"?", cell.descriptionTextField.stringValue];
+		return;
+	}
+
+	if (cells.count >= 2)
+	{
+		NSString *msg = [NSString stringWithFormat:@"Are you sure to delete %lu items", (unsigned long)cells.count];
 
 		NSAlert *alert = [[NSAlert alloc] init];
-		[alert addButtonWithTitle:@"OK"];
+		[alert addButtonWithTitle:@"Delete"];
 		[alert addButtonWithTitle:@"Cancel"];
 		[alert setMessageText:msg];
 		[alert setInformativeText:@"Deleted time entries cannot be restored."];
@@ -187,12 +245,47 @@ extern void *ctx;
 			return;
 		}
 
-		NSLog(@"Deleting time entry %@", cell.GUID);
+		// Delete all
+		[self deleteTimeEntries:cells];
+	}
+	else
+	{
+		// Delete single with confirmation
+		TimeEntryCell *cell = cells.firstObject;
+		[self deleteTimeEntry:cell];
+	}
+}
 
+- (void)deleteTimeEntries:(NSArray<TimeEntryCell *> *)cells
+{
+	for (TimeEntryCell *cell in cells)
+	{
+		toggl_delete_time_entry(ctx, [cell.GUID UTF8String]);
+	}
+	[self selectPreviousRowFromIndexPath:self.latestSelectedIndexPath];
+}
+
+- (void)deleteTimeEntry:(TimeEntryCell *)cell
+{
+	if (cell == nil)
+	{
+		return;
+	}
+
+	// If description is empty and duration is less than 15 seconds delete without confirmation
+	if (cell.confirmless_delete)
+	{
 		if (toggl_delete_time_entry(ctx, [cell.GUID UTF8String]))
 		{
 			[self selectPreviousRowFromIndexPath:self.latestSelectedIndexPath];
 		}
+		return;
+	}
+
+	// Delete and select preview cell
+	if ([Utils deleteTimeEntryWithConfirmationWithGUID:cell.GUID title:cell.descriptionString])
+	{
+		[self selectPreviousRowFromIndexPath:self.latestSelectedIndexPath];
 	}
 }
 
@@ -213,9 +306,24 @@ extern void *ctx;
 	NSIndexPath *previousIndexPath = [datasource previousIndexPathFrom:indexPath];
 	if (previousIndexPath != nil)
 	{
-		[self deselectAll:self];
+		// deselect all previous if we don't hold Shift
+		NSUInteger flags = [[NSApp currentEvent] modifierFlags];
+		if (flags & NSShiftKeyMask)
+		{
+			if ([self.selectionIndexPaths.allObjects containsObject:previousIndexPath])
+			{
+				[self deselectItemsAtIndexPaths:[NSSet setWithCollectionViewIndexPath:indexPath]];
+			}
+		}
+		else
+		{
+			[self deselectAll:self];
+		}
+
+		// Select previous cell
 		[self selectItemsAtIndexPaths:[NSSet setWithCollectionViewIndexPath:previousIndexPath]
 					   scrollPosition:NSCollectionViewScrollPositionNone];
+		self.latestSelectedIndexPath = previousIndexPath;
 
 		// Scroll to visible selected row
 		NSCollectionViewLayoutAttributes *attribute = [self layoutAttributesForItemAtIndexPath:previousIndexPath];

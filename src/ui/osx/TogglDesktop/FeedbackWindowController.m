@@ -7,7 +7,6 @@
 //
 
 #import "FeedbackWindowController.h"
-#import "toggl_api.h"
 #import "NSAlert+Utils.h"
 #import "TogglDesktop-Swift.h"
 #import "ConvertHexColor.h"
@@ -25,13 +24,13 @@ typedef enum : NSUInteger
 
 @interface FeedbackWindowController ()
 @property (weak) IBOutlet NSComboBox *topicComboBox;
-@property (unsafe_unretained) IBOutlet NSTextView *contentTextView;
+@property (strong) IBOutlet NSTextView *contentTextView; // Strong ref: https://stackoverflow.com/a/27671109/3127477
 @property (weak) IBOutlet FlatButton *uploadImageButton;
 @property (weak) IBOutlet FlatButton *sendButton;
 @property (weak) IBOutlet NSTextField *errorLabel;
 @property (weak) IBOutlet NSTextField *selectedImageTextField;
 @property (weak) IBOutlet NSBox *selectedImageBox;
-@property (copy, nonatomic) NSString *selectedFile;
+@property (nonatomic, copy) NSString *selectedFile;
 
 - (IBAction)uploadImageClick:(id)sender;
 - (IBAction)sendClick:(id)sender;
@@ -147,7 +146,8 @@ extern void *ctx;
 		 informativeTextWithFormat:@"Your feedback was sent successfully."] runModal];
 }
 
-- (NSString *)titleForError:(FeedbackError)feedbackError {
+- (NSString *)titleForError:(FeedbackError)feedbackError
+{
 	switch (feedbackError)
 	{
 		case FeedbackErrorMissingTopic :
@@ -167,7 +167,8 @@ extern void *ctx;
 	}
 }
 
-- (FeedbackError)validateUserFeedback {
+- (FeedbackError)validateUserFeedback
+{
 	if (self.topicComboBox.stringValue == nil
 		|| [self.topicComboBox.stringValue isEqualToString:@""])
 	{
@@ -183,7 +184,8 @@ extern void *ctx;
 	return FeedbackErrorNone;
 }
 
-- (FeedbackError)validateFileSelectionWithURL:(NSURL *)url {
+- (FeedbackError)validateFileSelectionWithURL:(NSURL *)url
+{
 	if (url == nil)
 	{
 		return FeedbackErrorInvalidFile;
@@ -209,12 +211,14 @@ extern void *ctx;
 	return FeedbackErrorNone;
 }
 
-- (void)showAlertTitleWithError:(FeedbackError)error {
+- (void)showAlertTitleWithError:(FeedbackError)error
+{
 	self.errorLabel.hidden = error == FeedbackErrorNone;
 	self.errorLabel.stringValue = [self titleForError:error];
 }
 
-- (IBAction)closeFileOnTap:(id)sender {
+- (IBAction)closeFileOnTap:(id)sender
+{
 	self.errorLabel.hidden = YES;
 	self.selectedImageBox.hidden = YES;
 	self.selectedFile = nil;

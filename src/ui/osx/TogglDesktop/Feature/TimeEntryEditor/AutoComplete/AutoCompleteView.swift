@@ -72,6 +72,10 @@ protocol AutoCompleteViewDelegate: class {
 
 final class AutoCompleteView: NSView {
 
+    private struct Constants {
+        static let CreateButtonHeight: CGFloat = 40
+    }
+
     // MARK: OUTLET
 
     @IBOutlet weak var tableView: KeyboardTableView!
@@ -105,6 +109,21 @@ final class AutoCompleteView: NSView {
     }
 
     func update(height: CGFloat) {
+        var height = height
+        let screenFrame = self.window!.convertToScreen(frame)
+        let topLeftY = screenFrame.origin.y + screenFrame.size.height
+        var offset: CGFloat = createNewItemContainerView.isHidden ? 0 : Constants.CreateButtonHeight
+        offset += 10 // No collision with edge of the screen
+
+        // Reduce the size if the height is greater than screen
+        if (height + offset) > topLeftY {
+            height = topLeftY - offset
+        }
+
+        // Make sure >= 0
+        height = CGFloat.maximum(height, 0)
+
+        // Overriden
         tableViewHeight.constant = height
     }
 

@@ -8,7 +8,6 @@
 
 #import "OverlayViewController.h"
 #import "NSTextFieldClickablePointer.h"
-#import "toggl_api.h"
 
 @interface OverlayViewController () <NSTextFieldDelegate>
 @property (weak) IBOutlet NSView *tosContainerView;

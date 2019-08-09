@@ -8,33 +8,33 @@
 
 #import "TimeEntryListViewController.h"
 #import "TimeEntryViewItem.h"
-#import "UIEvents.h"
-#import "toggl_api.h"
-#import "LoadMoreCell.h"
+#import "TimerEditViewController.h"
 #import "TimeEntryCell.h"
-#import "UIEvents.h"
 #import "DisplayCommand.h"
 #import "ConvertHexColor.h"
-#include <Carbon/Carbon.h>
 #import "TogglDesktop-Swift.h"
 #import "TimeEntryCollectionView.h"
+#import "BetterFocusAutoCompleteInput.h"
 
 static void *XXContext = &XXContext;
 static NSString *kFrameKey = @"frame";
 
 @interface TimeEntryListViewController () <TimeEntryDatasourceDraggingDelegate, TimeEntryEmptyViewDelegate>
-@property NSNib *nibTimeEntryCell;
-@property NSNib *nibLoadMoreCell;
-@property NSInteger defaultPopupHeight;
-@property NSInteger defaultPopupWidth;
-@property NSInteger addedHeight;
-@property NSInteger minimumEditFormWidth;
-@property BOOL runningEdit;
-@property (copy, nonatomic) NSString *lastSelectedGUID;
+@property (weak) IBOutlet NSView *headerView;
+@property (weak) IBOutlet NSScrollView *timeEntryListScrollView;
 @property (weak) IBOutlet TimeEntryCollectionView *collectionView;
-@property (strong, nonatomic) TimeEntryEmptyView *emptyView;
 @property (weak) IBOutlet NSBox *emptyViewContainerView;
-@property (strong, nonatomic) EditorPopover *timeEntrypopover;
+
+@property (nonatomic, strong) TimeEntryDatasource *dataSource;
+@property (nonatomic, strong) TimerEditViewController *timerEditViewController;
+@property (nonatomic, assign) NSInteger defaultPopupHeight;
+@property (nonatomic, assign) NSInteger defaultPopupWidth;
+@property (nonatomic, assign) NSInteger addedHeight;
+@property (nonatomic, assign) NSInteger minimumEditFormWidth;
+@property (nonatomic, assign) BOOL runningEdit;
+@property (nonatomic, copy) NSString *lastSelectedGUID;
+@property (nonatomic, strong) TimeEntryEmptyView *emptyView;
+@property (nonatomic, strong) EditorPopover *timeEntrypopover;
 @end
 
 @implementation TimeEntryListViewController
@@ -46,10 +46,8 @@ extern void *ctx;
 	self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
 	if (self)
 	{
-		self.nibTimeEntryCell = [[NSNib alloc] initWithNibNamed:@"TimeEntryCell"
-														 bundle:nil];
-		self.nibLoadMoreCell = [[NSNib alloc] initWithNibNamed:@"LoadMoreCell"
-														bundle:nil];
+		self.timerEditViewController = [[TimerEditViewController alloc]
+										initWithNibName:@"TimerEditViewController" bundle:nil];
 	}
 	return self;
 }
@@ -57,6 +55,7 @@ extern void *ctx;
 - (void)dealloc
 {
 	[self.collectionView removeObserver:self forKeyPath:kFrameKey];
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)viewDidLoad
@@ -137,6 +136,10 @@ extern void *ctx;
 											 selector:@selector(windowSizeDidChange)
 												 name:NSWindowDidResizeNotification
 											   object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(deselectAllTimeEntryNotification)
+												 name:kDeselectAllTimeEntryList
+											   object:nil];
 }
 
 - (void)initCollectionView
@@ -214,13 +217,8 @@ extern void *ctx;
 	{
 		if (self.timeEntrypopover.shown)
 		{
-			[self.timeEntrypopover closeWithFocusTimer:YES];
+			[self.timeEntrypopover performClose:self];
 			[self setDefaultPopupSize];
-		}
-		// when timer not focused
-		if (![self.delegate isTimerFocusing])
-		{
-			[self focusListing:nil];
 		}
 	}
 
@@ -266,7 +264,7 @@ extern void *ctx;
 	}
 
 	// Hightlight selected cell
-	[[self.collectionView getSelectedEntryCell] setFocused];
+	[[self.collectionView getSelectedEntryCells].firstObject setFocused];
 }
 
 - (void)resetEditPopover:(NSNotification *)notification
@@ -295,7 +293,7 @@ extern void *ctx;
 		self.runningEdit = (cmd.timeEntry.duration_in_seconds < 0);
 
 		NSView *ofView = self.view;
-		TimeEntryCell *selectedCell = [self.collectionView getSelectedEntryCell];
+		TimeEntryCell *selectedCell = [self.collectionView getSelectedEntryCells].firstObject;
 		CGRect positionRect = [self positionRectForItem:selectedCell];
 
 		if (self.runningEdit)
@@ -361,7 +359,7 @@ extern void *ctx;
 
 - (void)clearLastSelectedEntry
 {
-	[[self.collectionView getSelectedEntryCell] setupGroupMode];
+	[[self.collectionView getSelectedEntryCells].firstObject setupGroupMode];
 }
 
 - (void)resetEditPopoverSize:(NSNotification *)notification
@@ -463,7 +461,7 @@ extern void *ctx;
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 	if (cmd.open && self.timeEntrypopover.shown)
 	{
-		[self.timeEntrypopover closeWithFocusTimer:YES];
+		[self.timeEntrypopover performClose:self];
 		[self setDefaultPopupSize];
 	}
 }
@@ -476,27 +474,15 @@ extern void *ctx;
 	}
 
 	NSIndexPath *selectedIndexpath = [self.collectionView.selectionIndexPaths.allObjects firstObject];
-	// If list is focused with keyboard shortcut
-	if (notification != nil && !self.timeEntrypopover.shown)
-	{
-		[self clearLastSelectedEntry];
-		selectedIndexpath = [NSIndexPath indexPathForItem:0 inSection:0];
-	}
 
-	if (selectedIndexpath == nil)
+	// Don't select the first item if the TE List is focusing with selected item
+	if (selectedIndexpath != nil && self.collectionView.isFirstResponder)
 	{
 		return;
 	}
 
-	[[self.collectionView window] makeFirstResponder:self.collectionView];
-	[self.collectionView selectItemsAtIndexPaths:[NSSet setWithObject:selectedIndexpath] scrollPosition:NSCollectionViewScrollPositionTop];
-
-	TimeEntryCell *cell = [self getTimeEntryCellAtIndexPath:selectedIndexpath];
-	if (cell != nil)
-	{
-		[self clearLastSelectedEntry];
-		[cell setFocused];
-	}
+	// Select first cell
+	[self.dataSource selectFirstItem];
 }
 
 - (void)escapeListing:(NSNotification *)notification
@@ -530,31 +516,41 @@ extern void *ctx;
 - (BOOL)collectionView:(NSCollectionView *_Nonnull)collectionView acceptDrop:(id<NSDraggingInfo> _Nonnull)draggingInfo indexPath:(NSIndexPath *_Nonnull)indexPath dropOperation:(enum NSCollectionViewDropOperation)dropOperation {
 	NSPasteboard *pboard = [draggingInfo draggingPasteboard];
 	NSData *rowData = [pboard dataForType:NSStringPboardType];
-	NSIndexPath *moveIndexPath = [NSKeyedUnarchiver unarchiveObjectWithData:rowData];
+	id data = [NSKeyedUnarchiver unarchiveObjectWithData:rowData];
 
-	// Updating the dropped item date
-	TimeEntryViewItem *dateModel = [self.dataSource objectAt:indexPath];
-	TimeEntryViewItem *currentModel = [self.dataSource objectAt:moveIndexPath];
-
-	if (dateModel != nil && currentModel != nil && !dateModel.loadMore && !currentModel.loadMore)
+	// Make sure it's an array of indexPath
+	if ([data isKindOfClass:[NSArray<NSIndexPath *> class]])
 	{
-		NSCalendar *calendar = [NSCalendar currentCalendar];
-		NSDateComponents *components = [calendar components:(NSCalendarUnitHour | NSCalendarUnitMinute) fromDate:currentModel.started];
-		NSInteger hours = [components hour];
-		NSInteger minutes = [components minute];
-		NSInteger seconds = [components second];
+		NSArray *moveIndexPaths = (NSArray *)data;
 
-		unsigned unitFlags = NSCalendarUnitYear | NSCalendarUnitMonth |  NSCalendarUnitDay;
-		NSDateComponents *comps = [calendar components:unitFlags fromDate:dateModel.started];
-		comps.hour = hours;
-		comps.minute = minutes;
-		comps.second = seconds;
-		NSDate *newDate = [calendar dateFromComponents:comps];
+		// Update items
+		for (NSIndexPath *moveIndexPath in moveIndexPaths)
+		{
+			TimeEntryViewItem *dateModel = [self.dataSource objectAt:indexPath];
+			TimeEntryViewItem *currentModel = [self.dataSource objectAt:moveIndexPath];
 
-		toggl_set_time_entry_date(ctx,
-								  [currentModel.GUID UTF8String],
-								  [newDate timeIntervalSince1970]);
+			if (dateModel != nil && currentModel != nil && !dateModel.loadMore && !currentModel.loadMore)
+			{
+				NSCalendar *calendar = [NSCalendar currentCalendar];
+				NSDateComponents *components = [calendar components:(NSCalendarUnitHour | NSCalendarUnitMinute) fromDate:currentModel.started];
+				NSInteger hours = [components hour];
+				NSInteger minutes = [components minute];
+				NSInteger seconds = [components second];
+
+				unsigned unitFlags = NSCalendarUnitYear | NSCalendarUnitMonth |  NSCalendarUnitDay;
+				NSDateComponents *comps = [calendar components:unitFlags fromDate:dateModel.started];
+				comps.hour = hours;
+				comps.minute = minutes;
+				comps.second = seconds;
+				NSDate *newDate = [calendar dateFromComponents:comps];
+
+				toggl_set_time_entry_date(ctx,
+										  [currentModel.GUID UTF8String],
+										  [newDate timeIntervalSince1970]);
+			}
+		}
 	}
+
 	return YES;
 }
 
@@ -702,6 +698,11 @@ extern void *ctx;
 - (BOOL)isEditorOpen
 {
 	return self.timeEntrypopover.shown;
+}
+
+- (void)deselectAllTimeEntryNotification
+{
+	[self.collectionView deselectAll:self];
 }
 
 @end

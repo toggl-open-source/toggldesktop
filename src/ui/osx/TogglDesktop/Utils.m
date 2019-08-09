@@ -10,8 +10,6 @@
 #import <Sparkle/Sparkle.h>
 #import "NSAlert+Utils.h"
 
-#include "toggl_api.h"
-
 extern void *ctx;
 
 @implementation ScriptResult
@@ -27,8 +25,8 @@ extern void *ctx;
 
 - (NSString *)description
 {
-	return [NSString stringWithFormat:@"err: %lld, text: %@",
-			self.err, self.text];
+	return [NSString stringWithFormat:@"err: %ld, text: %@",
+			(long)self.err, self.text];
 }
 
 @end
@@ -144,6 +142,25 @@ extern void *ctx;
 		NSLog(@"Create directory error: %@", error);
 	}
 	return path;
+}
+
++ (BOOL)deleteTimeEntryWithConfirmationWithGUID:(NSString *)guid title:(NSString *)title
+{
+	NSString *msg = [NSString stringWithFormat:@"Delete time entry \"%@\"?", title];
+
+	NSAlert *alert = [[NSAlert alloc] init];
+
+	[alert addButtonWithTitle:@"OK"];
+	[alert addButtonWithTitle:@"Cancel"];
+	[alert setMessageText:msg];
+	[alert setInformativeText:@"Deleted time entries cannot be restored."];
+	[alert setAlertStyle:NSWarningAlertStyle];
+	if ([alert runModal] != NSAlertFirstButtonReturn)
+	{
+		return NO;
+	}
+
+	return toggl_delete_time_entry(ctx, [guid UTF8String]);
 }
 
 /*

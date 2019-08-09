@@ -7,16 +7,17 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "TimeEntryViewItem.h"
-#import "Settings.h"
+
+@class Settings;
+@class TimeEntryViewItem;
 
 @interface DisplayCommand : NSObject
-@property BOOL open;
-@property NSMutableArray *timeEntries;
-@property TimeEntryViewItem *timeEntry;
-@property Settings *settings;
-@property uint64_t user_id;
-@property NSMutableArray *timelineChunks;
-@property NSString *timelineDate;
-@property BOOL show_load_more;
+@property (nonatomic, assign) BOOL open;
+@property (nonatomic, strong) NSMutableArray *timeEntries;
+@property (nonatomic, strong) TimeEntryViewItem *timeEntry;
+@property (nonatomic, strong) Settings *settings;
+@property (nonatomic, assign) NSInteger user_id;
+@property (nonatomic, assign) BOOL show_load_more;
+@property (nonatomic, strong) NSMutableArray *timelineChunks;
+@property (nonatomic, copy) NSString *timelineDate;
 @end

@@ -7,19 +7,21 @@
 //  Copyright (c) 2013 TogglDesktop developers. All rights reserved.
 //
 #import "TimerEditViewController.h"
-#import "UIEvents.h"
 #import "AutocompleteItem.h"
 #import "LiteAutoCompleteDataSource.h"
 #import "ConvertHexColor.h"
-#import "NSComboBox_Expansion.h"
 #import "TimeEntryViewItem.h"
-#import "NSTextFieldClickable.h"
-#import "NSCustomComboBoxCell.h"
-#import "NSCustomComboBox.h"
-#import "NSCustomTimerComboBox.h"
 #import "DisplayCommand.h"
 #import "TogglDesktop-Swift.h"
 #import "ProjectTextField.h"
+#import "NSTextFieldDuration.h"
+#import "NSHoverButton.h"
+#import "NSBoxClickable.h"
+#import "AutoCompleteInput.h"
+#import "BetterFocusAutoCompleteInput.h"
+#import "AutoCompleteTable.h"
+#import <Carbon/Carbon.h>
+#import "Utils.h"
 
 typedef enum : NSUInteger
 {
@@ -53,7 +55,7 @@ typedef enum : NSUInteger
 @property (strong, nonatomic) NSTimer *timer;
 @property (assign, nonatomic) BOOL disableChange;
 @property (assign, nonatomic) BOOL focusNotSet;
-@property (assign, nonatomic) BOOL displayMode;
+@property (assign, nonatomic) DisplayMode displayMode;
 
 @end
 
@@ -103,6 +105,10 @@ NSString *kInactiveTimerColor = @"#999999";
 												 selector:@selector(windowDidBecomeKeyNotification:)
 													 name:NSWindowDidBecomeKeyNotification
 												   object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self
+												 selector:@selector(startNewShortcut:)
+													 name:kCommandNewShortcut
+												   object:nil];
 
 		self.time_entry = [[TimeEntryViewItem alloc] init];
 
@@ -122,6 +128,11 @@ NSString *kInactiveTimerColor = @"#999999";
 	[super viewDidLoad];
 
 	[self initCommon];
+}
+
+- (void)dealloc
+{
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)initCommon
@@ -158,13 +169,26 @@ NSString *kInactiveTimerColor = @"#999999";
 
 - (void)focusTimer
 {
-	if (self.time_entry.duration < 0 || ![self.manualBox isHidden])
+	switch (self.displayMode)
 	{
-		[self.view.window makeFirstResponder:self.startButton];
-	}
-	else
-	{
-		[self.autoCompleteInput.window makeFirstResponder:self.autoCompleteInput];
+		case DisplayModeManual :
+			[self.view.window makeFirstResponder:self.startButton];
+			return;
+
+		case DisplayModeInput :
+			[self.autoCompleteInput.window makeFirstResponder:self.autoCompleteInput];
+			break;
+		case DisplayModeTimer :
+			if (self.time_entry.isRunning)
+			{
+				[self.view.window makeFirstResponder:self.view];
+
+				// Deselect all selected in TE list
+				// Because we're focusing on the Timer bar since the TE is running
+				[[NSNotificationCenter defaultCenter] postNotificationName:kDeselectAllTimeEntryList
+																	object:nil];
+			}
+			break;
 	}
 }
 
@@ -250,6 +274,8 @@ NSString *kInactiveTimerColor = @"#999999";
 
 		self.durationTextField.toolTip = [NSString stringWithFormat:@"Started: %@", self.time_entry.startTimeString];
 		self.descriptionLabel.editable = NO;
+
+		[self focusTimer];
 	}
 	else
 	{
@@ -652,7 +678,7 @@ NSString *kInactiveTimerColor = @"#999999";
 	return retval;
 }
 
-- (void)setDisplayMode:(BOOL)displayMode
+- (void)setDisplayMode:(DisplayMode)displayMode
 {
 	_displayMode = displayMode;
 	switch (displayMode)
@@ -695,6 +721,34 @@ NSString *kInactiveTimerColor = @"#999999";
 		self.projectTextField.toolTip = nil;
 		self.projectTextField.placeholderString = @"+ Add project";
 		self.projectTextFieldLeading.constant = 0;
+	}
+}
+
+- (void)startNewShortcut:(NSNotification *)notification
+{
+	[self startButtonClicked:self];
+}
+
+- (void)keyDown:(NSEvent *)event
+{
+	[super keyDown:event];
+
+	if (self.time_entry.GUID != nil && self.time_entry.isRunning)
+	{
+		if ((event.keyCode == kVK_Return) || (event.keyCode == kVK_ANSI_KeypadEnter))
+		{
+			toggl_edit(ctx, [self.time_entry.GUID UTF8String], false, "");
+		}
+		else if (event.keyCode == kVK_Delete)
+		{
+			[Utils deleteTimeEntryWithConfirmationWithGUID:self.time_entry.GUID
+													 title:self.descriptionLabel.stringValue];
+		}
+		else if (event.keyCode == kVK_Space)
+		{
+			[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kCommandStop
+																		object:nil];
+		}
 	}
 }
 

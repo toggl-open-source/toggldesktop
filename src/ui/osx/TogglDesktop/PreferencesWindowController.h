@@ -5,17 +5,13 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "DisplayCommand.h"
-#import "AutocompleteItem.h"
-#import "AutocompleteDataSource.h"
-#import "NSCustomComboBox.h"
-#import <MASShortcut/Shortcut.h>
+
+@class DisplayCommand;
 
 extern NSString *const kPreferenceGlobalShortcutShowHide;
 extern NSString *const kPreferenceGlobalShortcutStartStop;
 
-@interface PreferencesWindowController : NSWindowController <NSTextFieldDelegate, NSTableViewDataSource, NSComboBoxDataSource, NSComboBoxDelegate>
-
-@property DisplayCommand *originalCmd;
-@property uint64_t user_id;
+@interface PreferencesWindowController : NSWindowController
+@property (nonatomic, strong) DisplayCommand *originalCmd;
+@property (nonatomic, assign) NSInteger user_id;
 @end

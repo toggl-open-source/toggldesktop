@@ -7,7 +7,6 @@
 //
 
 #import "NSBoxClickable.h"
-#import "toggl_api.h"
 
 @implementation NSBoxClickable
 

@@ -7,8 +7,8 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "TimeEntryViewItem.h"
-#import "NSHoverButton.h"
+
+@class TimeEntryViewItem;
 
 typedef NS_ENUM (NSUInteger, CellType)
 {
@@ -18,15 +18,13 @@ typedef NS_ENUM (NSUInteger, CellType)
 };
 
 @interface TimeEntryCell : NSCollectionViewItem
-@property (nonatomic, weak) IBOutlet NSTextField *descriptionTextField;
-@property (nonatomic, copy) NSString *GUID;
-@property (copy) NSString *GroupName;
-@property (assign, nonatomic) CellType cellType;
-@property (assign, nonatomic) BOOL Group;
-@property (assign, nonatomic) BOOL GroupOpen;
-
-@property long long GroupItemCount;
-@property BOOL confirmless_delete;
+@property (nonatomic, copy, readonly) NSString *GUID;
+@property (nonatomic, copy, readonly) NSString *GroupName;
+@property (nonatomic, assign, readonly) BOOL GroupOpen;
+@property (nonatomic, assign, readonly) CellType cellType;
+@property (nonatomic, assign, readonly) BOOL confirmless_delete;
+@property (nonatomic, copy, readonly) NSString *descriptionString;
+@property (nonatomic, assign, readonly) BOOL Group;
 
 - (void)render:(TimeEntryViewItem *)view_item;
 - (void)focusFieldName;

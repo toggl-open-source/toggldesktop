@@ -6,42 +6,42 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "toggl_api.h"
 
 @interface Settings : NSObject
+@property (nonatomic, assign) BOOL idle_detection;
+@property (nonatomic, assign) BOOL menubar_timer;
+@property (nonatomic, assign) BOOL menubar_project;
+@property (nonatomic, assign) BOOL dock_icon;
+@property (nonatomic, assign) BOOL on_top;
+@property (nonatomic, assign) BOOL reminder;
+@property (nonatomic, assign) BOOL autodetect_proxy;
+@property (nonatomic, assign) BOOL use_proxy;
+@property (nonatomic, copy) NSString *proxy_host;
+@property (nonatomic, assign) NSInteger proxy_port;
+@property (nonatomic, copy) NSString *proxy_username;
+@property (nonatomic, copy) NSString *proxy_password;
+@property (nonatomic, assign) BOOL timeline_recording_enabled;
+@property (nonatomic, assign) NSInteger idle_minutes;
+@property (nonatomic, assign) BOOL focus_on_shortcut;
+@property (nonatomic, assign) NSInteger reminder_minutes;
+@property (nonatomic, assign) BOOL manual_mode;
+@property (nonatomic, copy) NSString *remind_starts;
+@property (nonatomic, copy) NSString *remind_ends;
+@property (nonatomic, assign) BOOL remind_mon;
+@property (nonatomic, assign) BOOL remind_tue;
+@property (nonatomic, assign) BOOL remind_wed;
+@property (nonatomic, assign) BOOL remind_thu;
+@property (nonatomic, assign) BOOL remind_fri;
+@property (nonatomic, assign) BOOL remind_sat;
+@property (nonatomic, assign) BOOL remind_sun;
+@property (nonatomic, assign) BOOL autotrack;
+@property (nonatomic, assign) BOOL open_editor_on_shortcut;
+@property (nonatomic, assign) BOOL render_timeline;
+@property (nonatomic, assign) BOOL pomodoro;
+@property (nonatomic, assign) BOOL pomodoro_break;
+@property (nonatomic, assign) NSInteger pomodoro_minutes;
+@property (nonatomic, assign) NSInteger pomodoro_break_minutes;
+@property (nonatomic, assign) BOOL stopWhenShutdown;
+
 - (void)load:(TogglSettingsView *)data;
-@property BOOL idle_detection;
-@property BOOL menubar_timer;
-@property BOOL menubar_project;
-@property BOOL dock_icon;
-@property BOOL on_top;
-@property BOOL reminder;
-@property BOOL autodetect_proxy;
-@property BOOL use_proxy;
-@property NSString *proxy_host;
-@property long proxy_port;
-@property NSString *proxy_username;
-@property NSString *proxy_password;
-@property BOOL timeline_recording_enabled;
-@property int idle_minutes;
-@property BOOL focus_on_shortcut;
-@property int reminder_minutes;
-@property BOOL manual_mode;
-@property NSString *remind_starts;
-@property NSString *remind_ends;
-@property BOOL remind_mon;
-@property BOOL remind_tue;
-@property BOOL remind_wed;
-@property BOOL remind_thu;
-@property BOOL remind_fri;
-@property BOOL remind_sat;
-@property BOOL remind_sun;
-@property BOOL autotrack;
-@property BOOL open_editor_on_shortcut;
-@property BOOL render_timeline;
-@property BOOL pomodoro;
-@property BOOL pomodoro_break;
-@property int pomodoro_minutes;
-@property int pomodoro_break_minutes;
-@property (assign, nonatomic) BOOL stopWhenShutdown;
 @end

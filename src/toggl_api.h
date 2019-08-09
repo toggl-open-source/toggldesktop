@@ -96,7 +96,7 @@ extern "C" {
         char_t *Title;
         char_t *Filename;
         int64_t Duration;
-        bool Header;
+        bool_t Header;
         // references subevents
         void *Event;
         // Next in list

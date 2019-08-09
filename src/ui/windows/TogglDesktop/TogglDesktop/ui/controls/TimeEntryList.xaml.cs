@@ -61,7 +61,7 @@ namespace TogglDesktop
 
         public void FinishedFillingList()
         {
-            this.emptyListText.ShowOnlyIf(this.panel.Children.Count == 0);
+            this.emptyListText.ShowOnlyIf(this.panel.Children.Count == 0 && !loadMoreButton.IsVisible);
         }
 
         private void onEmptyListTextClick(object sender, RoutedEventArgs e)
@@ -210,14 +210,22 @@ namespace TogglDesktop
             Toggl.Edit(this.keyboardHighlightedGUID, false, "");
         }
 
-        private void onExpandDay(object sender, ExecutedRoutedEventArgs e)
+        private void onExpandSelectedItem(object sender, ExecutedRoutedEventArgs e)
         {
-            this.tryExpandSelectedDay();
+            var expandedSelectedGroup = this.tryExpandSelectedGroup();
+            if (!expandedSelectedGroup)
+            {
+                this.tryExpandSelectedDay();
+            }
         }
 
-        private void onCollapseDay(object sender, ExecutedRoutedEventArgs e)
+        private void onCollapseSelectedItem(object sender, ExecutedRoutedEventArgs e)
         {
-            this.tryCollapseCurrentDay();
+            var collapsedSelectedGroup = this.tryCollapseSelectedGroup();
+            if (!collapsedSelectedGroup)
+            {
+                this.tryCollapseCurrentDay();
+            }
         }
 
         private void onExpandAllDays(object sender, ExecutedRoutedEventArgs e)
@@ -282,6 +290,28 @@ namespace TogglDesktop
             this.refreshKeyboardHighlight();
 
             return true;
+        }
+
+        private bool tryCollapseSelectedGroup()
+        {
+            var collapsed = this.hasKeyboardSelection && this.keyboardHighlightedCell.TryCollapse();
+            if (collapsed)
+            {
+                this.refreshKeyboardHighlight();
+            }
+
+            return collapsed;
+        }
+
+        private bool tryExpandSelectedGroup()
+        {
+            var expanded = this.hasKeyboardSelection && this.keyboardHighlightedCell.TryExpand();
+            if (expanded)
+            {
+                this.refreshKeyboardHighlight();
+            }
+
+            return expanded;
         }
 
         private bool tryExpandSelectedDay()

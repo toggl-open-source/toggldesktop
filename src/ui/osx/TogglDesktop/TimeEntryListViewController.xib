@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14490.70"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -10,6 +10,7 @@
             <connections>
                 <outlet property="collectionView" destination="96l-2I-0G5" id="P59-lk-PQF"/>
                 <outlet property="emptyViewContainerView" destination="cvV-eB-sdq" id="0ba-Gb-Z90"/>
+                <outlet property="headerView" destination="OXo-Tz-Vbz" id="qr5-Iw-OmB"/>
                 <outlet property="timeEntryListScrollView" destination="7TM-hH-4yE" id="MrY-aB-U9C"/>
                 <outlet property="view" destination="3" id="Tzl-sf-sWH"/>
             </connections>
@@ -33,8 +34,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="252" height="260"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <collectionView selectable="YES" id="96l-2I-0G5" customClass="TimeEntryCollectionView">
-                                <rect key="frame" x="0.0" y="0.0" width="252" height="250"/>
+                            <collectionView selectable="YES" allowsMultipleSelection="YES" id="96l-2I-0G5" customClass="TimeEntryCollectionView">
+                                <rect key="frame" x="0.0" y="0.0" width="252" height="164"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumInteritemSpacing="10" minimumLineSpacing="10" id="wqE-DF-86P" customClass="VertificalTimeEntryFlowLayout" customModule="TogglDesktop" customModuleProvider="target">
                                     <size key="itemSize" width="50" height="50"/>

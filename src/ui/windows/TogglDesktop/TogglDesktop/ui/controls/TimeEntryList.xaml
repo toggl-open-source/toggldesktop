@@ -24,9 +24,8 @@
         <RoutedUICommand x:Key="HighlightContinue" />
         <RoutedUICommand x:Key="HighlightDelete" />
         <RoutedUICommand x:Key="FocusTimer" />
-
-        <RoutedUICommand x:Key="ExpandDay" />
-        <RoutedUICommand x:Key="CollapseDay" />
+        <RoutedUICommand x:Key="ExpandSelectedItem" />
+        <RoutedUICommand x:Key="CollapseSelectedItem" />
         <RoutedUICommand x:Key="ExpandAllDays" />
         <RoutedUICommand x:Key="CollapseAllDays" />
     </UserControl.Resources>
@@ -38,8 +37,8 @@
         <CommandBinding Command="{StaticResource HighlightContinue}" Executed="onHighlightContinue"/>
         <CommandBinding Command="{StaticResource HighlightDelete}" Executed="onHighlightDelete"/>
         <CommandBinding Command="{StaticResource FocusTimer}" Executed="onFocusTimer"/>
-        <CommandBinding Command="{StaticResource ExpandDay}" Executed="onExpandDay"/>
-        <CommandBinding Command="{StaticResource CollapseDay}" Executed="onCollapseDay"/>
+        <CommandBinding Command="{StaticResource ExpandSelectedItem}" Executed="onExpandSelectedItem"/>
+        <CommandBinding Command="{StaticResource CollapseSelectedItem}" Executed="onCollapseSelectedItem"/>
         <CommandBinding Command="{StaticResource ExpandAllDays}" Executed="onExpandAllDays"/>
         <CommandBinding Command="{StaticResource CollapseAllDays}" Executed="onCollapseAllDays"/>
     </UserControl.CommandBindings>
@@ -50,9 +49,10 @@
         <KeyBinding Key="Enter" Command="{StaticResource HighlightEdit}" />
         <KeyBinding Key="Space" Command="{StaticResource HighlightContinue}" />
         <KeyBinding Key="Back" Command="{StaticResource HighlightDelete}" />
+        <KeyBinding Key="Delete" Command="{StaticResource HighlightDelete}" />
         <KeyBinding Key="Escape" Command="{StaticResource FocusTimer}" />
-        <KeyBinding Key="Right" Command="{StaticResource ExpandDay}" />
-        <KeyBinding Key="Left" Command="{StaticResource CollapseDay}" />
+        <KeyBinding Key="Right" Command="{StaticResource ExpandSelectedItem}" />
+        <KeyBinding Key="Left" Command="{StaticResource CollapseSelectedItem}" />
         <KeyBinding Key="Right" Modifiers="Control" Command="{StaticResource ExpandAllDays}" />
         <KeyBinding Key="Left" Modifiers="Control" Command="{StaticResource CollapseAllDays}" />
     </UserControl.InputBindings>

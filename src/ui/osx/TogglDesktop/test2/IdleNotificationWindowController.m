@@ -7,10 +7,9 @@
 //
 
 #import "IdleNotificationWindowController.h"
-#import "toggl_api.h"
 #import "DisplayCommand.h"
-#import "UIEvents.h"
 #import "TogglDesktop-Swift.h"
+#import "IdleEvent.h"
 
 @interface IdleNotificationWindowController ()
 
@@ -20,6 +19,7 @@
 @property (weak) IBOutlet FlatButton *addIdleTimeButton;
 @property (weak) IBOutlet NSButton *cancelButton;
 @property (weak) IBOutlet FlatButton *discardAndContinueButton;
+@property (weak) IBOutlet FlatButton *keepIdleTimeButton;
 
 - (IBAction)stopButtonClicked:(id)sender;
 - (IBAction)ignoreButtonClicked:(id)sender;
@@ -44,6 +44,7 @@ extern void *ctx;
 	// Style buttons
 	[self styleTransparentButton:self.addIdleTimeButton];
 	[self styleTransparentButton:self.discardAndContinueButton];
+	[self styleTransparentButton:self.keepIdleTimeButton];
 	[self styleCancelButton];
 }
 

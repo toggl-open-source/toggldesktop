@@ -158,13 +158,13 @@ extension TimelineDashboardViewController: DatePickerViewDelegate {
     }
 
     func datePickerDidTapPreviousDate(_ sender: DatePickerView) {
-        editorPopover.close(focusTimer: false)
+        editorPopover.close()
         DesktopLibraryBridge.shared().timelineSetPreviousDate()
         datasource.scrollToVisibleItem()
     }
 
     func datePickerDidTapNextDate(_ sender: DatePickerView) {
-        editorPopover.close(focusTimer: false)
+        editorPopover.close()
         DesktopLibraryBridge.shared().timelineSetNextDate()
         datasource.scrollToVisibleItem()
     }
@@ -232,12 +232,12 @@ extension TimelineDashboardViewController: TimelineDatasourceDelegate {
             return false
         })
         guard let item = index else {
-            editorPopover.close(focusTimer: false)
+            editorPopover.close()
             return
         }
         let indexPath = IndexPath(item: item, section: TimelineData.Section.timeEntry.rawValue)
         guard let cell = collectionView.item(at: indexPath) else {
-            editorPopover.close(focusTimer: false)
+            editorPopover.close()
             return
         }
 

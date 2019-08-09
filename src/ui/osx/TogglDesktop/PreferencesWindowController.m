@@ -5,16 +5,15 @@
 //
 
 #import "PreferencesWindowController.h"
-
-#include <Carbon/Carbon.h>
-
 #import "AutotrackerRuleItem.h"
 #import "DisplayCommand.h"
 #import "Settings.h"
 #import "UIEvents.h"
 #import "Utils.h"
-
-#import "toggl_api.h"
+#import "AutocompleteItem.h"
+#import "AutocompleteDataSource.h"
+#import "NSCustomComboBox.h"
+#import <MASShortcut/Shortcut.h>
 
 NSString *const kPreferenceGlobalShortcutShowHide = @"TogglDesktopGlobalShortcutShowHide";
 NSString *const kPreferenceGlobalShortcutStartStop = @"TogglDesktopGlobalShortcutStartStop";
@@ -27,12 +26,7 @@ typedef enum : NSUInteger
 	TabIndexReminder
 } TabIndex;
 
-@interface PreferencesWindowController ()
-@property NSMutableArray *rules;
-@property AutocompleteDataSource *autotrackerProjectAutocompleteDataSource;
-@property AutocompleteDataSource *defaultProjectAutocompleteDataSource;
-@property NSMutableArray *termAutocompleteItems;
-@property (assign, nonatomic) TabIndex currentTab;
+@interface PreferencesWindowController () <NSTextFieldDelegate, NSTableViewDataSource, NSComboBoxDataSource, NSComboBoxDelegate>
 @property (weak) IBOutlet NSButton *stopOnShutdownCheckbox;
 @property (weak) IBOutlet NSTextField *hostTextField;
 @property (weak) IBOutlet NSTextField *portTextField;
@@ -73,11 +67,17 @@ typedef enum : NSUInteger
 @property (weak) IBOutlet NSButton *proxyDoNot;
 @property (weak) IBOutlet NSButton *proxySystem;
 @property (weak) IBOutlet NSButton *proxyToggl;
-@property (assign, nonatomic) NSInteger selectedProxyIndex;
 @property (weak) IBOutlet NSButton *addAutotrackerRuleButton;
 @property (weak) IBOutlet NSButton *changeDurationButton;
 @property (weak) IBOutlet NSSegmentedControl *tabSegment;
 @property (weak) IBOutlet NSTabView *tabView;
+
+@property (nonatomic, assign) NSInteger selectedProxyIndex;
+@property (nonatomic, strong) NSArray<AutotrackerRuleItem *> *rules;
+@property (nonatomic, strong) AutocompleteDataSource *autotrackerProjectAutocompleteDataSource;
+@property (nonatomic, strong) AutocompleteDataSource *defaultProjectAutocompleteDataSource;
+@property (nonatomic, strong) NSArray<NSString *> *termAutocompleteItems;
+@property (nonatomic, assign) TabIndex currentTab;
 
 - (IBAction)idleMinutesChange:(id)sender;
 - (IBAction)pomodoroMinutesChange:(id)sender;
@@ -121,7 +121,7 @@ extern void *ctx;
 		self.autotrackerProjectAutocompleteDataSource = [[AutocompleteDataSource alloc] initWithNotificationName:kDisplayProjectAutocomplete];
 		self.defaultProjectAutocompleteDataSource = [[AutocompleteDataSource alloc] initWithNotificationName:kDisplayProjectAutocomplete];
 
-		self.termAutocompleteItems = [[NSMutableArray alloc] init];
+		self.termAutocompleteItems = [NSArray<NSString *> array];
 
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(startDisplayAutotrackerRules:)
@@ -398,8 +398,8 @@ const int kUseProxyToConnectToToggl = 2;
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 	@synchronized(self)
 	{
-		self.rules = data[@"rules"];
-		self.termAutocompleteItems = data[@"titles"];
+		self.rules = [data[@"rules"] copy];
+		self.termAutocompleteItems = [data[@"titles"] copy];
 	}
 	[self.autotrackerRulesTableView reloadData];
 	[self.autotrackerTerm reloadData];
@@ -449,16 +449,16 @@ const int kUseProxyToConnectToToggl = 2;
 	[self.usernameTextField setEnabled:settings.use_proxy];
 	[self.passwordTextField setEnabled:settings.use_proxy];
 
-	self.idleMinutesTextField.intValue = settings.idle_minutes;
+	self.idleMinutesTextField.integerValue = settings.idle_minutes;
 	self.idleMinutesTextField.enabled = settings.idle_detection;
 
 	self.usePomodoroBreakButton.enabled = settings.pomodoro;
-	self.pomodoroMinutesTextField.intValue = settings.pomodoro_minutes;
+	self.pomodoroMinutesTextField.integerValue = settings.pomodoro_minutes;
 	self.pomodoroMinutesTextField.enabled = settings.pomodoro;
-	self.pomodoroBreakMinutesTextField.intValue = settings.pomodoro_break_minutes;
+	self.pomodoroBreakMinutesTextField.integerValue = settings.pomodoro_break_minutes;
 	self.pomodoroBreakMinutesTextField.enabled = settings.pomodoro_break;
 
-	self.reminderMinutesTextField.intValue = settings.reminder_minutes;
+	self.reminderMinutesTextField.integerValue = settings.reminder_minutes;
 	self.reminderMinutesTextField.enabled = settings.reminder;
 
 	if (settings.autodetect_proxy)

@@ -12,8 +12,8 @@
 
 - (NSString *)description
 {
-	return [NSString stringWithFormat:@"since: %@, duration: %@, started: %lld",
-			self.since, self.duration, self.started];
+	return [NSString stringWithFormat:@"since: %@, duration: %@, started: %ld",
+			self.since, self.duration, (long)self.started];
 }
 
 @end

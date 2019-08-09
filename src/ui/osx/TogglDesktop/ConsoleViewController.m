@@ -6,10 +6,13 @@
 //
 
 #import "ConsoleViewController.h"
-
 #import "Utils.h"
 
 @interface ConsoleViewController ()
+@property (weak) IBOutlet NSTextField *entryTextField;
+@property (weak) IBOutlet NSButton *runButton;
+@property (strong) IBOutlet NSTextView *resultTextView;
+- (IBAction)onRun:(id)sender;
 @end
 
 @implementation ConsoleViewController

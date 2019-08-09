@@ -7,16 +7,16 @@
 
 #import <Foundation/Foundation.h>
 
-#define kMenuItemTagSync             1
-#define kMenuItemTagLogout           2
-#define kMenuItemTagNew              3
-#define kMenuItemTagContinue         4
-#define kMenuItemTagStop             5
-#define kMenuItemTagClearCache       6
-#define kMenuItemTagOpenBrowser      9
-#define kMenuItemTagEdit             10
-#define kMenuItemTagRecordTimeline   11
-#define kMenuItemTagMode             12
-#define kMenuItemTagSendFeedBack     13
-#define kMenuItemTagShowTimelineData 14
-#define kMenuItemTagHideTimelineData 15
+static NSInteger const kMenuItemTagSync = 1;
+static NSInteger const kMenuItemTagLogout = 2;
+static NSInteger const kMenuItemTagNew = 3;
+static NSInteger const kMenuItemTagContinue = 4;
+static NSInteger const kMenuItemTagStop = 5;
+static NSInteger const kMenuItemTagClearCache = 6;
+static NSInteger const kMenuItemTagOpenBrowser = 9;
+static NSInteger const kMenuItemTagEdit = 10;
+static NSInteger const kMenuItemTagRecordTimeline = 11;
+static NSInteger const kMenuItemTagMode = 12;
+static NSInteger const kMenuItemTagSendFeedBack = 13;
+static NSInteger const kMenuItemTagShowTimelineData = 14;
+static NSInteger const kMenuItemTagHideTimelineData = 15;

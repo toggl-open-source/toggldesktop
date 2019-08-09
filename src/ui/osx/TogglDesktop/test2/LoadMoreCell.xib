@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment version="101100" identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14490.70"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="LoadMoreCell">
             <connections>
+                <outlet property="loadButton" destination="mHA-iF-pCY" id="Q19-TY-WT1"/>
                 <outlet property="view" destination="c22-O7-iKe" id="Q6l-iM-M9o"/>
             </connections>
         </customObject>
@@ -24,7 +25,7 @@
                     </constraints>
                     <buttonCell key="cell" type="bevel" title="Load More" bezelStyle="regularSquare" alignment="center" lineBreakMode="truncatingTail" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="peg-gd-lu0">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="system" size="12"/>
+                        <font key="font" metaFont="cellTitle"/>
                     </buttonCell>
                     <connections>
                         <action selector="loadMoreClicked:" target="eWa-fM-Knf" id="QDE-dr-ZeR"/>
@@ -44,7 +45,6 @@
         </customView>
         <collectionViewItem identifier="LoadMoreCell" id="eWa-fM-Knf" customClass="LoadMoreCell">
             <connections>
-                <outlet property="loadButton" destination="mHA-iF-pCY" id="Hze-Fs-YVC"/>
                 <outlet property="loader" destination="Weo-Pf-hvP" id="alS-Pc-A8G"/>
                 <outlet property="view" destination="c22-O7-iKe" id="f7f-cm-meg"/>
             </connections>
