@@ -166,7 +166,7 @@ namespace TogglDesktop
 
             if (item.ProjectID != 0)
             {
-                this.projectLabel.Text = "• " + item.ProjectLabel;
+                this.projectLabel.Text = string.IsNullOrEmpty(item.ProjectLabel) ? "" : "• " + item.ProjectLabel;
                 this.projectLabel.Foreground = Utils.ProjectColorBrushFromString(item.ProjectColor);
 
                 setOptionalTextBlockText(this.taskLabel, string.IsNullOrEmpty(item.TaskLabel) ? "" : item.TaskLabel + " -");
@@ -319,7 +319,7 @@ namespace TogglDesktop
             this.resetUIState(true);
 
             this.descriptionLabel.Text = item.Description == "" ? "(no description)" : item.Description;
-            this.projectLabel.Text = string.IsNullOrEmpty(item.ClientLabel) ? item.ProjectLabel : "• " + item.ProjectLabel;
+            this.projectLabel.Text = string.IsNullOrEmpty(item.ProjectLabel) ? "" : "• " + item.ProjectLabel;
             setOptionalTextBlockText(this.clientLabel, item.ClientLabel);
             setOptionalTextBlockText(this.taskLabel, string.IsNullOrEmpty(item.TaskLabel) ? "" : item.TaskLabel + " -");
 

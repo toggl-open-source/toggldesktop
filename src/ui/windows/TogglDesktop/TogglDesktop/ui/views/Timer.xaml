@@ -46,7 +46,9 @@
 
                     <TextBlock Name="projectLabel" x:FieldModifier="private"
                                Text="Project"/>
-                    <TextBlock Name="separatorLabel" Foreground="#dddddd">·</TextBlock>
+                    <TextBlock Foreground="#dddddd"
+                               Visibility="{Binding ElementName=clientLabel, Path=Visibility}"
+                               Text="·" />
                     <TextBlock Name="clientLabel" x:FieldModifier="private"
                             Foreground="#dddddd" Text="Client"/>
                     

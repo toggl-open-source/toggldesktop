@@ -56,7 +56,9 @@
 
                 <StackPanel Orientation="Horizontal" Grid.Row="1">
                     <TextBlock Name="labelProject" x:FieldModifier="private" MouseLeftButtonDown="labelProject_MouseDown">Project</TextBlock>
-                    <TextBlock Name="separatorLabel" Foreground="DimGray">·</TextBlock>
+                    <TextBlock Foreground="DimGray"
+                               Visibility="{Binding ElementName=labelClient, Path=Visibility}"
+                               Text="·" />
                     <TextBlock Name="labelClient" x:FieldModifier="private" Foreground="DimGray">Client</TextBlock>
 
                 </StackPanel>
