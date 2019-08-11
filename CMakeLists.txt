@@ -27,9 +27,9 @@ if ("${TOGGL_VERSION}" STREQUAL "7.0.0")
             RESULT_VARIABLE RESULT_GIT
             OUTPUT_VARIABLE OUTPUT_GIT
             ERROR_VARIABLE ERROR_GIT)
-        string (REGEX REPLACE "^v" "" OUTPUT_GIT ${OUTPUT_GIT})
-        string (REGEX REPLACE "-([0-9]+)-.*" ".\\1" OUTPUT_GIT ${OUTPUT_GIT})
-        string (REGEX REPLACE "\n" ""  TOGGL_VERSION ${OUTPUT_GIT})
+        string (REGEX REPLACE "^v" "" OUTPUT_GIT "${OUTPUT_GIT}")
+        string (REGEX REPLACE "-([0-9]+)-.*" ".\\1" OUTPUT_GIT "${OUTPUT_GIT}")
+        string (REGEX REPLACE "\n" ""  TOGGL_VERSION "${OUTPUT_GIT}")
     else(GIT_FOUND)
         message(WARNING "Version was not set by the user and it could not be retrieved from git - it will default to 7.0.0.")
     endif (GIT_FOUND)
