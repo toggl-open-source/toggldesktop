@@ -1,6 +1,15 @@
 {
   "versions": [
     {
+        "version": "7.4.510",
+        "rows": [
+          "Version string is now properly displayed in the About section of the app.",
+          "Application now longer crashes on exit."
+        ],
+        "date": "August 12th 2019",
+        "beta": "true"
+    },
+    {
         "version": "7.4.476",
         "rows": [
           "You can control TogglDesktop using your keyboard entirely. If in doubt, use Ctrl+Enter to open a Time entry or Ctrl+Delete to delete it.",
