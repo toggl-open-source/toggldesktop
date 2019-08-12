@@ -4,6 +4,18 @@
     <VisualStudioVersion>15.0</VisualStudioVersion>
   </PropertyGroup>
   <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="StoreDebug|AnyCPU">
+      <Configuration>StoreDebug</Configuration>
+      <Platform>AnyCPU</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="StoreDebug|x64">
+      <Configuration>StoreDebug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="StoreDebug|x86">
+      <Configuration>StoreDebug</Configuration>
+      <Platform>x86</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="StoreRelease|x86">
       <Configuration>StoreRelease</Configuration>
       <Platform>x86</Platform>
