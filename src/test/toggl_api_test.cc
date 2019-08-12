@@ -332,7 +332,8 @@ void on_display_idle_notification(
 class App {
  public:
     App() {
-        Poco::File f(TESTDB);
+        Poco::File f("test.db");
+        std::cout << f.path();
         if (f.exists()) {
             f.remove(false);
         }
@@ -341,7 +342,7 @@ class App {
 
         ctx_ = toggl_context_init(STR("tests"), STR("0.1"));
 
-        poco_assert(toggl_set_db_path(ctx_, TESTDB));
+        poco_assert(toggl_set_db_path(ctx_, STR("test.db")));
 
         Poco::Path path("src/ssl/cacert.pem");
         toggl_set_cacert_path(ctx_, to_char_t(path.toString()));
