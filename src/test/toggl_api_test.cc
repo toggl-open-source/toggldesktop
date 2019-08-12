@@ -35,6 +35,12 @@ namespace testresult {
 #define STR(X) X
 #endif
 
+#if defined(_WIN32) || defined(WIN32)
+#define SRCDIR "../../../../src/"
+#else
+#define SRCDIR "src/"
+#endif
+
 // on_url
 std::string url("");
 
@@ -344,7 +350,7 @@ class App {
 
         poco_assert(toggl_set_db_path(ctx_, STR("test.db")));
 
-        Poco::Path path("src/ssl/cacert.pem");
+        Poco::Path path(std::string(SRCDIR) + "ssl/cacert.pem");
         toggl_set_cacert_path(ctx_, to_char_t(path.toString()));
 
         toggl_on_show_app(ctx_, on_app);
