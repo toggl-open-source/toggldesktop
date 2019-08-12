@@ -1875,7 +1875,7 @@ TEST(toggl_api, toggl_set_time_entry_end) {
 TEST(toggl_api, toggl_set_time_entry_end_prefers_same_day) {
     testing::App app;
     std::string json =
-        loadTestDataFile("../testdata/time_entry_ending_tomorrow.json");
+        loadFromTestDataDir("time_entry_ending_tomorrow.json");
     ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
 
     toggl::TimeEntry te = testing::testresult::time_entry_by_id(89818605);

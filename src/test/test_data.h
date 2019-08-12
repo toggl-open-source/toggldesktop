@@ -6,6 +6,7 @@
 #include <string>
 
 std::string loadTestData();
+std::string loadFromTestDataDir(const char* filename);
 std::string loadTestDataFile(const std::string filename);
 
 #endif  // SRC_TEST_TEST_DATA_H_
