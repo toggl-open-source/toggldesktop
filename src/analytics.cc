@@ -58,8 +58,21 @@ void Analytics::TrackOSDetails(const std::string client_id) {
 void Analytics::TrackWindowSize(const std::string client_id,
                                 const std::string os,
                                 const toggl::Rectangle rect) {
+    TrackSize(client_id, os, "mainsize", rect);
+}
+
+void Analytics::TrackEditSize(const std::string client_id,
+                              const std::string os,
+                              const toggl::Rectangle rect) {
+    TrackSize(client_id, os, "editsize", rect);
+}
+
+void Analytics::TrackSize(const std::string client_id,
+                          const std::string os,
+                          const std::string name,
+                          const toggl::Rectangle rect) {
     std::stringstream ss;
-    ss << os << "/mainsize-" << rect.str();
+    ss << os << "/" << name << "-" << rect.str();
 
     Track(client_id, "stats", ss.str());
 }

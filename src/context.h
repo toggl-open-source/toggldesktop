@@ -476,6 +476,9 @@ class Context : public TimelineDatasource {
     void TrackWindowSize(const Poco::Int64 width,
                          const Poco::Int64 height);
 
+    void TrackEditorSize(const Poco::Int64 width,
+                         const Poco::Int64 height);
+
  protected:
     void uiUpdaterActivity();
     void checkReminders();

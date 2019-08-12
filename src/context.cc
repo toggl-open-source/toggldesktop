@@ -5603,4 +5603,13 @@ void Context::TrackWindowSize(const Poco::Int64 width,
     }
 }
 
+void Context::TrackEditorSize(const Poco::Int64 width,
+                              const Poco::Int64 height) {
+    if ("production" == environment_) {
+        analytics_.TrackEditSize(db_->AnalyticsClientID(),
+                                 shortOSName(),
+                                 toggl::Rectangle(width, height));
+    }
+}
+
 }  // namespace toggl
