@@ -38,7 +38,8 @@
         },
         "beta": {
             "version": "7.4.510",
-            "linux_tar.gz": "https://github.com/toggl/toggldesktop/releases/download/v7.4.510/toggldesktop_linux_x86_64-7_4_510.tar.gz"
+            "linux_tar.gz": "https://github.com/toggl/toggldesktop/releases/download/v7.4.510/toggldesktop_linux_x86_64-7_4_510.tar.gz",
+            "linux_deb64": "https://github.com/toggl/toggldesktop/releases/download/v7.4.510/toggldesktop_7.4.510_amd64.deb"
         },
         "stable": {
             "version": "7.4.122",
