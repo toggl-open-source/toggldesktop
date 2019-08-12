@@ -307,9 +307,6 @@ TogglApi::TogglApi(
 }
 
 TogglApi::~TogglApi() {
-    toggl_context_clear(ctx);
-    ctx = nullptr;
-
     instance = nullptr;
 }
 
@@ -326,6 +323,13 @@ bool TogglApi::notifyBugsnag(
 
 bool TogglApi::startEvents() {
     return toggl_ui_start(ctx);
+}
+
+void TogglApi::clear() {
+    toggl_context_clear(ctx);
+    ctx = nullptr;
+
+    instance = nullptr;
 }
 
 void TogglApi::login(const QString email, const QString password) {
