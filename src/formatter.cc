@@ -60,7 +60,7 @@ std::string Formatter::JoinTaskName(
         empty = false;
         if (p->CID()) {
             ss << ". "
-                << p->ClientName();
+               << p->ClientName();
         }
     }
 

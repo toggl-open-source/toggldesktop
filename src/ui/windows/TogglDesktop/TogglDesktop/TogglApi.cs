@@ -38,6 +38,7 @@ public static partial class Toggl
     [StructLayout(LayoutKind.Sequential, Pack = structPackingBytes, CharSet = CharSet.Unicode)]
     public struct    TogglTimeEntryView
     {
+        public         UInt64 ID;
         public         Int64 DurationInSeconds;
         [MarshalAs(UnmanagedType.LPWStr)]
         public         string Description;
