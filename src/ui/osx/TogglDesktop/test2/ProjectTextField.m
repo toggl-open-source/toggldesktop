@@ -10,6 +10,7 @@
 #import "TimeEntryViewItem.h"
 #import "ConvertHexColor.h"
 #import "AutocompleteItem.h"
+#import "TogglDesktop-Swift.h"
 
 @implementation ProjectTextField
 
@@ -121,6 +122,12 @@
 	{
 		return [ConvertHexColor hexCodeToNSColor:@"#555555"];
 	}
+}
+
+- (void)setTextColor:(NSColor *)textColor
+{
+	NSColor *visibleColor = [textColor visibleColor];
+	[super setTextColor:visibleColor];
 }
 
 @end
