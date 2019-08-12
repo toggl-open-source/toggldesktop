@@ -457,6 +457,7 @@ void MainWindowController::onActionQuit() {
 
 void MainWindowController::quitApp() {
     TogglApi::instance->shutdown = true;
+    TogglApi::instance->clear();
     qApp->exit(0);
 }
 
