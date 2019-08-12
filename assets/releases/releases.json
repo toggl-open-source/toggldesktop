@@ -1368,6 +1368,16 @@
     "osx": {
         "dev": [
             {
+                "version": "7.4.501",
+                "timestamp": "06-08-2019",
+                "filename": [
+                    {
+                        "type": "macos",
+                        "name": "TogglDesktop-7_4_501.dmg"
+                    }
+                ]
+            },
+            {
                 "version": "7.4.502",
                 "timestamp": "06-08-2019",
                 "filename": [
@@ -1444,16 +1454,6 @@
                     {
                         "type": "macos",
                         "name": "TogglDesktop-7_4_509.dmg"
-                    }
-                ]
-            },
-            {
-                "version": "7.4.510",
-                "timestamp": "12-08-2019",
-                "filename": [
-                    {
-                        "type": "macos",
-                        "name": "TogglDesktop-7_4_510.dmg"
                     }
                 ]
             }
@@ -2476,20 +2476,6 @@
     "linux": {
         "dev": [
             {
-                "version": "7.4.466",
-                "timestamp": "19-07-2019",
-                "filename": [
-                    {
-                        "type": "linux_tar.gz",
-                        "name": "toggldesktop_linux_x86_64-7_4_466.tar.gz"
-                    },
-                    {
-                        "type": "linux_flatpak",
-                        "name": "com.toggl.TogglDesktop_linux_x86_64-7_4_466.flatpak"
-                    }
-                ]
-            },
-            {
                 "version": "7.4.467",
                 "timestamp": "22-07-2019",
                 "filename": [
@@ -2612,6 +2598,20 @@
                     {
                         "type": "linux_deb64",
                         "name": "toggldesktop_7.4.504_amd64.deb"
+                    }
+                ]
+            },
+            {
+                "version": "7.4.510",
+                "timestamp": "12-08-2019",
+                "filename": [
+                    {
+                        "type": "linux_tar.gz",
+                        "name": "toggldesktop_linux_x86_64-7_4_510.tar.gz"
+                    },
+                    {
+                        "type": "linux_deb64",
+                        "name": "toggldesktop_7.4.510_amd64.deb"
                     }
                 ]
             }
