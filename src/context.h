@@ -473,8 +473,8 @@ class Context : public TimelineDatasource {
     error AsyncPullCountries();
     error PullCountries();
 
-    void TrackWindowSize(const Poco::Int64 width,
-                         const Poco::Int64 height);
+    void TrackWindowSize(const Poco::UInt64 width,
+                         const Poco::UInt64 height);
 
  protected:
     void uiUpdaterActivity();
@@ -604,12 +604,11 @@ class Context : public TimelineDatasource {
         const std::string password,
         std::string *user_data_json,
         const uint64_t country_id);
-    static error me(
-        TogglClient *https_client,
+    static error me(TogglClient *https_client,
         const std::string email,
         const std::string password,
         std::string *user_data,
-        const Poco::UInt64 since);
+        const Poco::Int64 since);
 
     bool isTimeEntryLocked(TimeEntry* te);
     bool isTimeLockedInWorkspace(time_t t, Workspace* ws);
@@ -672,11 +671,11 @@ class Context : public TimelineDatasource {
 
     Idle idle_;
 
-    Poco::UInt64 last_sync_started_;
+    Poco::Int64 last_sync_started_;
     Poco::Int64 sync_interval_seconds_;
-    Poco::UInt64 last_tracking_reminder_time_;
-    Poco::UInt64 last_pomodoro_reminder_time_;
-    Poco::UInt64 last_pomodoro_break_reminder_time_;
+    Poco::Int64 last_tracking_reminder_time_;
+    Poco::Int64 last_pomodoro_reminder_time_;
+    Poco::Int64 last_pomodoro_break_reminder_time_;
 
     bool update_check_disabled_;
 

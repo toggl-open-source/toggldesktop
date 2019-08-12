@@ -24,7 +24,7 @@ namespace toggl {
 
 namespace view {
 
-bool TimeEntry::operator == (const TimeEntry& a) const {
+bool TimeEntry::operator == (const TimeEntry&) const {
     return false;
 }
 
@@ -55,19 +55,19 @@ void TimeEntry::Fill(toggl::TimeEntry * const model) {
     GroupName = model->GroupHash();
 }
 
-bool Autocomplete::operator == (const Autocomplete& a) const {
+bool Autocomplete::operator == (const Autocomplete&) const {
     return false;
 }
 
-bool Generic::operator == (const Generic& a) const {
+bool Generic::operator == (const Generic&) const {
     return false;
 }
 
-bool AutotrackerRule::operator == (const AutotrackerRule& a) const {
+bool AutotrackerRule::operator == (const AutotrackerRule&) const {
     return false;
 }
 
-bool TimelineEvent::operator == (const TimelineEvent& a) const {
+bool TimelineEvent::operator == (const TimelineEvent&) const {
     return false;
 }
 
@@ -265,7 +265,7 @@ void GUI::DisplayReminder() {
     free(s2);
 }
 
-void GUI::DisplayPomodoro(const Poco::UInt64 minutes) {
+void GUI::DisplayPomodoro(const Poco::Int64 minutes) {
     logger().debug("DisplayPomodoro");
     char_t *s1 = copy_string("Pomodoro Timer");
 
@@ -278,7 +278,7 @@ void GUI::DisplayPomodoro(const Poco::UInt64 minutes) {
     free(s2);
 }
 
-void GUI::DisplayPomodoroBreak(const Poco::UInt64 minutes) {
+void GUI::DisplayPomodoroBreak(const Poco::Int64 minutes) {
     logger().debug("DisplayPomodoroBreak");
     char_t *s1 = copy_string("Pomodoro Break Timer");
 
@@ -415,7 +415,7 @@ void GUI::DisplayTimeEntryList(const bool open,
             this->isFirstLaunch = false;
 
             // Get render list from last 9 days at the first launch
-            time_t last9Days = time(0) - 9 * 86400;
+            time_t last9Days = time(nullptr) - 9 * 86400;
             for (auto it = list.begin(); it != list.end(); it++) {
                 auto timeEntry = *it;
                 if (timeEntry.Started >= last9Days) {
@@ -608,7 +608,7 @@ void GUI::DisplayEmptyTimerState() {
 void GUI::DisplayIdleNotification(const std::string guid,
                                   const std::string since,
                                   const std::string duration,
-                                  const uint64_t started,
+                                  const int64_t started,
                                   const std::string description) {
     char_t *guid_s = copy_string(guid);
     char_t *since_s = copy_string(since);

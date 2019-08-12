@@ -30,16 +30,16 @@ namespace toggl {
 
 bool TimeEntry::ResolveError(const error err) {
     if (durationTooLarge(err) && Stop() && Start()) {
-        Poco::UInt64 seconds =
+        Poco::Int64 seconds =
             (std::min)(Stop() - Start(),
-                       Poco::UInt64(kMaxTimeEntryDurationSeconds));
+                       Poco::Int64(kMaxTimeEntryDurationSeconds));
         SetDurationInSeconds(seconds);
         return true;
     }
     if (startTimeWrongYear(err) && Stop() && Start()) {
-        Poco::UInt64 seconds =
+        Poco::Int64 seconds =
             (std::min)(Stop() - Start(),
-                       Poco::UInt64(kMaxTimeEntryDurationSeconds));
+                       Poco::Int64(kMaxTimeEntryDurationSeconds));
         SetDurationInSeconds(seconds);
         SetStart(Stop() - Duration());
         return true;
@@ -115,7 +115,7 @@ bool TimeEntry::billableIsAPremiumFeature(const error err) const {
         "Billable is a premium feature"));
 }
 
-void TimeEntry::DiscardAt(const Poco::UInt64 at) {
+void TimeEntry::DiscardAt(const Poco::Int64 at) {
     if (!IsTracking()) {
         logger().error("Cannot discard time entry that is not tracking");
         return;
@@ -144,7 +144,7 @@ void TimeEntry::DiscardAt(const Poco::UInt64 at) {
 }
 
 void TimeEntry::StopTracking() {
-    DiscardAt(time(0));
+    DiscardAt(time(nullptr));
 }
 
 std::string TimeEntry::String() const {
@@ -171,7 +171,7 @@ std::string TimeEntry::String() const {
     return ss.str();
 }
 
-void TimeEntry::SetLastStartAt(const Poco::UInt64 value) {
+void TimeEntry::SetLastStartAt(const Poco::Int64 value) {
     if (last_start_at_ != value) {
         last_start_at_ = value;
     }
@@ -184,14 +184,14 @@ void TimeEntry::SetDurOnly(const bool value) {
     }
 }
 
-void TimeEntry::SetStart(const Poco::UInt64 value) {
+void TimeEntry::SetStart(const Poco::Int64 value) {
     if (start_ != value) {
         start_ = value;
         SetDirty();
     }
 }
 
-void TimeEntry::SetStop(const Poco::UInt64 value) {
+void TimeEntry::SetStop(const Poco::Int64 value) {
     if (stop_ != value) {
         stop_ = value;
         SetDirty();
@@ -323,7 +323,7 @@ void TimeEntry::SetStartString(const std::string value) {
 void TimeEntry::SetDurationUserInput(const std::string value) {
     int seconds = Formatter::ParseDurationString(value);
     if (IsTracking()) {
-        time_t now = time(0);
+        time_t now = time(nullptr);
         time_t start = now - seconds;
         SetStart(start);
         SetDurationInSeconds(-start);
@@ -402,11 +402,11 @@ void TimeEntry::LoadFromJSON(Json::Value data) {
     // No ui_modified_at in server responses.
     // Compare updated_at with ui_modified_at to see if ui has been changed
     Json::Value at = data["at"];
-    Poco::UInt64 updated_at(0);
+    Poco::Int64 updated_at(0);
     if (at.isString()) {
         updated_at = Formatter::Parse8601(at.asString());
     } else {
-        updated_at = at.asUInt64();
+        updated_at = at.asInt64();
     }
 
     if (data.isMember("id")) {
@@ -520,7 +520,7 @@ Json::Value TimeEntry::SaveToJSON() const {
 }
 
 Poco::Int64 TimeEntry::RealDurationInSeconds() const {
-    auto now = time(0);
+    auto now = time(nullptr);
 
     return now + DurationInSeconds();
 }

@@ -347,7 +347,7 @@ bool_t toggl_set_proxy_settings(void *context,
 }
 
 void toggl_set_cacert_path(
-    void *context,
+    void *,
     const char_t *path) {
 
     toggl::HTTPSClient::Config.CACertPath = to_string(path);
@@ -769,7 +769,7 @@ bool_t toggl_stop(
 bool_t toggl_discard_time_at(
     void *context,
     const char_t *guid,
-    const uint64_t at,
+    const int64_t at,
     const bool_t split_into_new_entry) {
 
     if (!guid) {
@@ -793,7 +793,7 @@ bool_t toggl_discard_time_at(
 bool_t toggl_discard_time_and_continue(
     void *context,
     const char_t *guid,
-    const uint64_t at) {
+    const int64_t at) {
 
     if (!at) {
         logger().error("Cannot discard time without a timestamp");
@@ -833,7 +833,7 @@ bool_t toggl_feedback_send(
     feedback.SetSubject(to_string(topic));
     feedback.SetDetails(to_string(details));
 
-    if (filename != NULL) {
+    if (filename != nullptr) {
         // Check image size (max 5mb)
         std::ifstream file(filename, std::ifstream::ate | std::ifstream::binary);
 
