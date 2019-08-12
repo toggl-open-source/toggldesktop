@@ -18,8 +18,8 @@
     },
     "mac": {
         "dev": {
-            "version": "7.4.509",
-            "macos": "https://github.com/toggl/toggldesktop/releases/download/v7.4.509/TogglDesktop-7_4_509.dmg"
+            "version": "7.4.510",
+            "macos": "https://github.com/toggl/toggldesktop/releases/download/v7.4.510/TogglDesktop-7_4_510.dmg"
         },
         "beta": {
             "version": "7.4.484",
@@ -37,9 +37,8 @@
             "linux_deb64": "https://github.com/toggl/toggldesktop/releases/download/v7.4.510/toggldesktop_7.4.510_amd64.deb"
         },
         "beta": {
-            "version": "7.4.476",
-            "linux_tar.gz": "https://github.com/toggl/toggldesktop/releases/download/v7.4.476/toggldesktop_linux_x86_64-7_4_476.tar.gz",
-            "linux_deb64": "https://github.com/toggl/toggldesktop/releases/download/v7.4.476/toggldesktop_7.4.476_amd64.deb"
+            "version": "7.4.510",
+            "linux_tar.gz": "https://github.com/toggl/toggldesktop/releases/download/v7.4.510/toggldesktop_linux_x86_64-7_4_510.tar.gz"
         },
         "stable": {
             "version": "7.4.122",
