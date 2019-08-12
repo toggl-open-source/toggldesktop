@@ -35,7 +35,7 @@ extension TimelineTimeEntryMenu {
     }
 
     @objc private func changeFirstEntryStopTimeOnTap() {
-
+        
     }
 
     @objc private func changeLastEntryStartTimeOnTap() {

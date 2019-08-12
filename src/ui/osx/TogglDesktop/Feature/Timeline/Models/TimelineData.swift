@@ -108,6 +108,7 @@ extension TimelineData {
 
     fileprivate func calculateColumnsPositionForTimeline() {
         var calculatedEntries: [TimelineBaseTimeEntry] = []
+        var group = 0
         for entry in timeEntries {
 
             // Check if this time entry intersect with previous one
@@ -130,8 +131,15 @@ extension TimelineData {
                 }
             } while isOverlap
 
+            // Group of entry
+            // All overlap entries are same group
+            if col == 0 {
+                group += 1
+            }
+
             // Exit the loop
-            entry.update(col)
+            entry.col = col
+            entry.group = group
             calculatedEntries.append(entry)
         }
 
