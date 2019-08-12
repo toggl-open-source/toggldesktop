@@ -502,6 +502,7 @@
     <ClInclude Include="..\..\..\netconf.h" />
     <ClInclude Include="..\..\..\obm_action.h" />
     <ClInclude Include="..\..\..\Rectangle.h" />
+    <ClInclude Include="..\..\..\toggl_api.h" />
     <ClInclude Include="..\..\..\toggl_api_private.h" />
     <ClInclude Include="..\..\..\project.h" />
     <ClInclude Include="..\..\..\proxy.h" />
