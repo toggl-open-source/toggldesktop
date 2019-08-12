@@ -1037,6 +1037,10 @@ extern "C" {
         const uint64_t width,
         const uint64_t height);
 
+    TOGGL_EXPORT void track_edit_size(
+        void *context,
+        const uint64_t width,
+        const uint64_t height);
 #undef TOGGL_EXPORT
 
 #ifdef __cplusplus

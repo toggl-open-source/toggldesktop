@@ -1399,3 +1399,12 @@ void track_window_size(void *context,
     }
     app(context)->TrackWindowSize(width, height);
 }
+
+void track_edit_size(void *context,
+                     const uint64_t width,
+                     const uint64_t height) {
+    if (!context) {
+        return;
+    }
+    app(context)->TrackEditSize(width, height);
+}
