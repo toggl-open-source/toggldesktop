@@ -1037,6 +1037,7 @@ public static partial class Toggl
     {
         string path = Path.Combine(Environment.GetFolderPath(
             Environment.SpecialFolder.LocalApplicationData), "TogglDesktop");
+        Directory.CreateDirectory(path);
 
         if (null == LogPath)
         {
