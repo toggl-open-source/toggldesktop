@@ -94,11 +94,11 @@ class TimelineData {
         // If there is only 1 -> Skip
         guard group.count > 1,
             let firstEntry = group.first,
-            let startAt = entry.timeEntry.startTimeString else { return }
+            let started = entry.timeEntry.started else { return }
 
         // Set the end time as a start time of selected entry
-        DesktopLibraryBridge.shared().updateTimeEntry(withEndTime: startAt,
-                                                      guid: firstEntry.timeEntry.guid)
+        DesktopLibraryBridge.shared().updateTimeEntryWithEnd(atTimestamp: started.timeIntervalSince1970 - 1,
+                                                             guid: firstEntry.timeEntry.guid)
     }
 
     func changeLastEntryStartTime(at entry: TimelineTimeEntry) {
@@ -107,11 +107,11 @@ class TimelineData {
         // If there is only 1 -> Skip
         guard group.count > 1,
             let firstEntry = group.first,
-            let endAt = firstEntry.timeEntry.endTimeString else { return }
+            let endAt = firstEntry.timeEntry.ended else { return }
 
         // Set the start time as a stop time of First entry
-        DesktopLibraryBridge.shared().updateTimeEntry(withStartTime: endAt,
-                                                      guid: entry.timeEntry.guid)
+        DesktopLibraryBridge.shared().updateTimeEntryWithStart(atTimestamp: endAt.timeIntervalSince1970 + 1,
+                                                               guid: entry.timeEntry.guid)
     }
 }
 
