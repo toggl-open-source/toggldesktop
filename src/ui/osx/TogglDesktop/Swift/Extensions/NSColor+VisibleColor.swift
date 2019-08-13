@@ -13,13 +13,13 @@ import Foundation
     @objc func visibleColor() -> NSColor {
         guard let window = NSApplication.shared.keyWindow else { return self }
         let darkMode = window.isDarkMode
-        let bottomThreshold: CGFloat = 30.0 / 255.0
-        let topThreshold: CGFloat = 225.0 / 255.0
+        let bottomThreshold: CGFloat = 75.0 / 255.0
+        let topThreshold: CGFloat = 180.0 / 255.0
 
         // If darkmode and color is black-based
         // or light mode and color is white-based
-        if (darkMode && redComponent <= bottomThreshold && blueComponent <= bottomThreshold && greenComponent <= bottomThreshold) ||
-            (!darkMode && redComponent >= topThreshold && blueComponent >= topThreshold && greenComponent >= topThreshold) {
+        if (darkMode && (redComponent + blueComponent + greenComponent) <= 3.0 * bottomThreshold) ||
+            (!darkMode && (redComponent + blueComponent + greenComponent) >= 3.0 * topThreshold) {
 
             // Revert color to make it visible
             let red = 1.0 - redComponent
