@@ -469,8 +469,8 @@ TEST(toggl_api, toggl_add_obm_experiment_nr) {
     toggl_add_obm_experiment_nr(123);
     ASSERT_EQ("tests/0.1-obm-123", toggl::HTTPSClient::Config.UserAgent());
 
-    toggl_add_obm_experiment_nr(0);
-    ASSERT_EQ("tests/0.1", toggl::HTTPSClient::Config.UserAgent());
+    toggl_add_obm_experiment_nr(456);
+    ASSERT_EQ("tests/0.1-obm-123-obm-456", toggl::HTTPSClient::Config.UserAgent());
 }
 
 TEST(toggl_api, toggl_set_settings) {
