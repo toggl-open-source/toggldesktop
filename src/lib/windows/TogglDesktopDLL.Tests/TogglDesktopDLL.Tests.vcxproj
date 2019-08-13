@@ -113,6 +113,7 @@
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>..\..\..\test\toggl_api_test.h</PrecompiledHeaderFile>
+      <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_WIN32;X64;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
@@ -122,7 +123,7 @@
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
-      <OptimizeReferences>true</OptimizeReferences>
+      <OptimizeReferences>false</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <AdditionalLibraryDirectories>$(ProjectDir)..\..\..\..\third_party\poco\Data\SQLite\obj64\SQLite\release_shared;$(ProjectDir)..\..\..\..\third_party\poco\lib64;$(ProjectDir)..\..\..\ui\windows\TogglDesktop\packages\Microsoft.googletest.v140.windesktop.msvcstl.dyn.rt-dyn.1.8.1\lib\native\v140\windesktop\msvcstl\dyn\rt-dyn\x64\Release;$(ProjectDir)..\..\..\ui\windows\TogglDesktop\TogglDesktop\bin\x64\Release_VS;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>PocoFoundation.lib;PocoUtil.lib;PocoXML.lib;PocoNet.lib;PocoCrypto.lib;PocoNetSSL.lib;PocoData.lib;PocoDataSQLite.lib;sqlite3;TogglDesktopDLL.lib;gtest_main.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -135,7 +136,7 @@
     <LibraryBin64>$(SolutionDir)\TogglDesktop\bin\x64\$(Configuration)\</LibraryBin64>
   </PropertyGroup>
   <ItemGroup Condition="'$(Platform)' == 'x64'">
-    <Content Include="$(PocoBin64)\PocoCrypto64.dll;$(PocoBin64)\PocoData64.dll;$(PocoBin64)\PocoDataSQLite64.dll;$(PocoBin64)\PocoFoundation64.dll;$(PocoBin64)\PocoJSON64.dll;$(PocoBin64)\PocoNet64.dll;$(PocoBin64)\PocoNetSSL64.dll;$(PocoBin64)\PocoUtil64.dll;$(PocoBin64)\PocoXML64.dll;$(PocoBin64)\libcrypto.dll;$(PocoBin64)\libssl.dll;$(LibraryBin64)\TogglDesktopDLL.dll">
+    <Content Include="$(PocoBin64)\PocoCrypto64.dll;$(PocoBin64)\PocoData64.dll;$(PocoBin64)\PocoDataSQLite64.dll;$(PocoBin64)\PocoFoundation64.dll;$(PocoBin64)\PocoJSON64.dll;$(PocoBin64)\PocoNet64.dll;$(PocoBin64)\PocoNetSSL64.dll;$(PocoBin64)\PocoUtil64.dll;$(PocoBin64)\PocoXML64.dll;$(PocoBin64)\libcrypto.dll;$(PocoBin64)\libssl.dll;$(LibraryBin64)\TogglDesktopDLL.dll;$(LibraryBin64)\TogglDesktopDLL.pdb">
       <Link>%(Filename)%(Extension)</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
