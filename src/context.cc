@@ -2935,6 +2935,34 @@ error Context::SetTimeEntryProject(
     return displayError(save(true));
 }
 
+error Context::GetTimeEntryFromGUID(const std::string GUID, TimeEntry** timeEntry) {
+    if (GUID.empty()) {
+        return displayError(std::string(__FUNCTION__) + ": Missing GUID");
+    }
+
+    TimeEntry *te = nullptr;
+
+    {
+        Poco::Mutex::ScopedLock lock(user_m_);
+        if (!user_) {
+            logger().warning("Cannot change stop time, user logged out");
+            return noError;
+        }
+        te = user_->related.TimeEntryByGUID(GUID);
+
+        if (!te) {
+            logger().warning("Time entry not found: " + GUID);
+            return noError;
+        }
+
+        if (isTimeEntryLocked(te)) {
+            return logAndDisplayUserTriedEditingLockedEntry();
+        }
+    }
+    *timeEntry = te;
+    return noError;
+}
+
 error Context::SetTimeEntryDate(
     const std::string GUID,
     const Poco::Int64 unix_timestamp) {
@@ -2997,23 +3025,9 @@ error Context::SetTimeEntryDate(
 error Context::SetTimeEntryStart(const std::string GUID,
                                  const Poco::Int64 startAt) {
     TimeEntry *te = nullptr;
-
-    {
-        Poco::Mutex::ScopedLock lock(user_m_);
-        if (!user_) {
-            logger().warning("Cannot change stop time, user logged out");
-            return noError;
-        }
-        te = user_->related.TimeEntryByGUID(GUID);
-
-        if (!te) {
-            logger().warning("Time entry not found: " + GUID);
-            return noError;
-        }
-
-        if (isTimeEntryLocked(te)) {
-            return logAndDisplayUserTriedEditingLockedEntry();
-        }
+    error findError = GetTimeEntryFromGUID(GUID, &te);
+    if (findError != noError) {
+        return findError;
     }
 
     Poco::LocalDateTime start(Poco::Timestamp::fromEpochTime(startAt));
@@ -3084,23 +3098,9 @@ error Context::SetTimeEntryStart(
 error Context::SetTimeEntryStop(const std::string GUID,
                                 const Poco::Int64 endAt) {
     TimeEntry *te = nullptr;
-
-    {
-        Poco::Mutex::ScopedLock lock(user_m_);
-        if (!user_) {
-            logger().warning("Cannot change stop time, user logged out");
-            return noError;
-        }
-        te = user_->related.TimeEntryByGUID(GUID);
-
-        if (!te) {
-            logger().warning("Time entry not found: " + GUID);
-            return noError;
-        }
-
-        if (isTimeEntryLocked(te)) {
-            return logAndDisplayUserTriedEditingLockedEntry();
-        }
+    error findError = GetTimeEntryFromGUID(GUID, &te);
+    if (findError != noError) {
+        return findError;
     }
 
     Poco::LocalDateTime stop(Poco::Timestamp::fromEpochTime(endAt));

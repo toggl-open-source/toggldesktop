@@ -353,6 +353,8 @@ class Context : public TimelineDatasource {
         const Poco::UInt64 project_id,
         const std::string project_guid);
 
+    error GetTimeEntryFromGUID(const std::string GUID, TimeEntry** timeEntry);
+
     error SetTimeEntryDate(
         const std::string GUID,
         const Poco::Int64 unix_timestamp);
