@@ -89,20 +89,15 @@ class TimelineData {
     }
 
     func changeFirstEntryStopTime(at entry: TimelineTimeEntry) {
-
-        // Get all conflicted entry in same group
-        let sameGroupEntries = timeEntries
-            .filter { $0 is TimelineTimeEntry && $0.group == entry.group }
-            .sorted { (lhs, rhs) -> Bool in
-                return lhs.col <= rhs.col
-            }
+        let group = getAllConflictedTimeEntries(at: entry)
 
         // If there is only 1 -> Skip
-        guard sameGroupEntries.count > 1,
-            let firstEntry = sameGroupEntries.first as? TimelineTimeEntry,
-            let stopAt = entry.timeEntry.startTimeString else { return }
+        guard group.count > 1,
+            let firstEntry = group.first,
+            let startAt = entry.timeEntry.startTimeString else { return }
 
-        DesktopLibraryBridge.shared().updateTimeEntry(withEndTime: stopAt,
+        // Set the start time as a stop time of First entry
+        DesktopLibraryBridge.shared().updateTimeEntry(withEndTime: startAt,
                                                       guid: firstEntry.timeEntry.guid)
     }
 
@@ -181,5 +176,17 @@ extension TimelineData {
             // Add
             timeEntries.append(contentsOf: emptyTimeEntries)
         }
+    }
+
+    fileprivate func getAllConflictedTimeEntries(at entry: TimelineTimeEntry) -> [TimelineTimeEntry] {
+        // Get all conflicted entry in same group
+        return timeEntries
+            .filter { $0 is TimelineTimeEntry && $0.group == entry.group }
+            .sorted { (lhs, rhs) -> Bool in
+                return lhs.col <= rhs.col
+            }
+            .compactMap { (entry) -> TimelineTimeEntry? in
+                return entry as? TimelineTimeEntry
+            }
     }
 }
