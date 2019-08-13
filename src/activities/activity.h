@@ -9,6 +9,7 @@ class Activity {
 public:
     Activity(Context *context);
     virtual void work() = 0;
+    virtual void start() = 0;
 
 private:
     Context *context_ { nullptr };

@@ -1,6 +1,7 @@
 #ifndef SRC_SYNCER_ACTIVITY_H_
 #define SRC_SYNCER_ACTIVITY_H_
 
+#include "https_client.h"
 #include "activity.h"
 #include "types.h"
 #include "error.h"
@@ -8,6 +9,8 @@
 #include <Poco/Activity.h>
 
 #include <vector>
+#include <map>
+#include <set>
 
 namespace toggl {
 
@@ -16,6 +19,8 @@ class TogglClient;
 class Client;
 class Project;
 class Workspace;
+class BaseModel;
+class TimeEntry;
 
 class SyncerActivity : public toggl::Activity {
 public:
@@ -27,8 +32,13 @@ public:
     void sync();
 
 private:
+    template<typename T>
+    void collectPushableModels(const std::set<T *> &list, std::vector<T *> *result, std::map<std::string, BaseModel *> *models = nullptr) const;
+
     error pullAllUserData(TogglClient *toggl_client);
     error pushChanges(TogglClient *toggl_client, bool *had_something_to_push);
+
+    error pushEntries(std::map<std::string, BaseModel *> models, std::vector<TimeEntry *> time_entries, std::string api_token, TogglClient toggl_client);
     error pushClients(std::vector<Client *> clients, std::string api_token, TogglClient toggl_client);
     error pushProjects(std::vector<Project *> projects, std::vector<Client *> clients, std::string api_token, TogglClient toggl_client);
     error pushObmAction();

@@ -36,8 +36,7 @@ void ReminderActivity::displayReminder() {
         return;
     }
 
-    {
-        Poco::Mutex::ScopedLock lock(user_m_);
+    context_->UserVisit([&](User *user_){
         if (!user_) {
             return;
         }
@@ -50,7 +49,7 @@ void ReminderActivity::displayReminder() {
                 < context_->settings()->reminder_minutes * 60) {
             return;
         }
-    }
+    });
 
     // Check if allowed to display reminder on this weekday
     Poco::LocalDateTime now;
@@ -111,8 +110,7 @@ void ReminderActivity::displayPomodoro() {
 
     Poco::UInt64 wid(0);
 
-    {
-        Poco::Mutex::ScopedLock lock(user_m_);
+    context_->UserVisit([&](User *user_) {
         if (!user_) {
             return;
         }
@@ -141,23 +139,25 @@ void ReminderActivity::displayPomodoro() {
         }
         const Poco::Int64 pomodoroDuration = context_->settings()->pomodoro_minutes * 60;
         wid = current_te->WID();
-        Stop(true);
+        context_->Stop(true);
         current_te->SetDurationInSeconds(pomodoroDuration);
         current_te->SetStop(current_te->Start() + pomodoroDuration);
-    }
+    });
+
     context_->UI()->DisplayPomodoro(context_->settings()->pomodoro_minutes);
 
     if (context_->settings()->pomodoro_break) {
         //  Start a new task with the tag "pomodoro-break"
-        pomodoro_break_entry_ = user_->Start("Pomodoro Break",  // description
-                                             "",  // duration
-                                             0,  // task_id
-                                             0,  // project_id
-                                             "",  // project_guid
-                                             "pomodoro-break").data();  // tags
-
-        // Set workspace id to same as the previous entry
-        pomodoro_break_entry_->SetWID(wid);
+        context_->UserVisit([&](User *user_){
+            pomodoro_break_entry_ = user_->Start("Pomodoro Break",  // description
+                                                 "",  // duration
+                                                 0,  // task_id
+                                                 0,  // project_id
+                                                 "",  // project_guid
+                                                 "pomodoro-break").data();  // tags
+            // Set workspace id to same as the previous entry
+            pomodoro_break_entry_->SetWID(wid);
+        });
     }
 }
 
@@ -166,8 +166,7 @@ void ReminderActivity::displayPomodoroBreak() {
         return;
     }
 
-    {
-        Poco::Mutex::ScopedLock lock(user_m_);
+    context_->UserVisit([&](User *user_){
         if (!user_) {
             return;
         }
@@ -189,13 +188,13 @@ void ReminderActivity::displayPomodoroBreak() {
             return;
         }
         const Poco::Int64 pomodoroDuration = context_->settings()->pomodoro_break_minutes * 60;
-        Stop(true);
+        context_->Stop(true);
         current_te->SetDurationInSeconds(pomodoroDuration);
         current_te->SetStop(current_te->Start() + pomodoroDuration);
-    }
+    });
     pomodoro_break_entry_ = nullptr;
 
-    UI()->DisplayPomodoroBreak(context_->settings()->pomodoro_break_minutes);
+    context_->UI()->DisplayPomodoroBreak(context_->settings()->pomodoro_break_minutes);
 }
 
 };

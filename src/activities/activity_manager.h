@@ -4,6 +4,7 @@
 #include "activity.h"
 #include "syncer_activity.h"
 #include "reminder_activity.h"
+#include "uiupdater_activity.h"
 
 #include <map>
 
@@ -19,6 +20,7 @@ public:
 
     ReminderActivity *reminder();
     SyncerActivity *syncer();
+    UiUpdaterActivity *uiUpdater();
 
 private:
     Context *context_ { nullptr };
@@ -27,8 +29,9 @@ private:
 
     SyncerActivity *syncer_ { nullptr };
     ReminderActivity *reminder_ { nullptr };
+    UiUpdaterActivity *uiUpdater_ { nullptr };
 };
 
-};
+}
 
 #endif // SRC_ACTIVITY_MANAGER_H

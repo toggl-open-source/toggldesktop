@@ -81,9 +81,6 @@ Context::Context(const std::string app_name, const std::string app_version)
 , trigger_sync_(false)
 , trigger_push_(false)
 , quit_(false)
-, ui_updater_(this, &Context::uiUpdaterActivity)
-, reminder_(this, &Context::reminderActivity)
-, syncer_(this, &Context::syncerActivity)
 , update_path_("")
 , overlay_visible_(false) {
     if (!Poco::URIStreamOpener::defaultOpener().supportsScheme("http")) {
@@ -110,13 +107,8 @@ Context::Context(const std::string app_name, const std::string app_version)
 
     startPeriodicSync();
 
-    if (!ui_updater_.isRunning()) {
-        ui_updater_.start();
-    }
-
-    if (!reminder_.isRunning()) {
-        reminder_.start();
-    }
+    activity_manager_->uiUpdater()->start();
+    activity_manager_->reminder()->start();
 
     resetLastTrackingReminderTime();
 }
@@ -161,26 +153,15 @@ Context::~Context() {
     Poco::Net::uninitializeSSL();
 }
 
+void Context::UserVisit(std::function<void (User *)> func) {
+    Poco::Mutex::ScopedLock lock(user_m_);
+    func(user_);
+}
+
 void Context::stopActivities() {
     try {
 
         activity_manager_->stopAll();
-
-        {
-            Poco::Mutex::ScopedLock lock(reminder_m_);
-            if (reminder_.isRunning()) {
-                reminder_.stop();
-                reminder_.wait(2000);
-            }
-        }
-
-        {
-            Poco::Mutex::ScopedLock lock(ui_updater_m_);
-            if (ui_updater_.isRunning()) {
-                ui_updater_.stop();
-                ui_updater_.wait(2000);
-            }
-        }
     } catch(const Poco::Exception& exc) {
         logger().debug(exc.displayText());
     } catch(const std::exception& ex) {
@@ -2332,13 +2313,8 @@ void Context::setUser(User *value, const bool logged_in) {
 
     fetchUpdates();
 
-    if (!ui_updater_.isRunning()) {
-        ui_updater_.start();
-    }
-
-    if (!reminder_.isRunning()) {
-        reminder_.start();
-    }
+    activity_manager_->uiUpdater()->start();
+    activity_manager_->reminder()->start();
 
     // Offer beta channel, if not offered yet
     bool did_offer_beta_channel(false);
@@ -4286,101 +4262,6 @@ error Context::updateEntryProjects(
     return noError;
 }
 
-error Context::pushEntries(
-    std::map<std::string, BaseModel *> models,
-    std::vector<TimeEntry *> time_entries,
-    std::string api_token,
-    TogglClient toggl_client) {
-
-    std::string entry_json("");
-    std::string error_message("");
-    bool error_found = false;
-    bool offline = false;
-
-    for (std::vector<TimeEntry *>::const_iterator it =
-        time_entries.begin();
-            it != time_entries.end(); it++) {
-        // Avoid trying to POST when we're offline
-        if (offline) {
-            // Mark the time entry as unsynced now
-            (*it)->SetUnsynced();
-            continue;
-        }
-
-        Json::Value entryJson = (*it)->SaveToJSON();
-
-        Json::StyledWriter writer;
-        entry_json = writer.write(entryJson);
-
-        // std::cout << entry_json;
-
-        HTTPSRequest req;
-        req.host = urls::API();
-        req.relative_url = (*it)->ModelURL();
-        req.payload = entry_json;
-        req.basic_auth_username = api_token;
-        req.basic_auth_password = "api_token";
-
-        HTTPSResponse resp;
-
-        if ((*it)->NeedsDELETE()) {
-            req.payload = "";
-            resp = toggl_client.Delete(req);
-        } else if ((*it)->ID()) {
-            resp = toggl_client.Put(req);
-        } else {
-            resp = toggl_client.Post(req);
-        }
-
-        if (resp.err != noError) {
-            // if we're able to solve the error
-            if ((*it)->ResolveError(resp.body)) {
-                displayError(save(false));
-            }
-
-            // Not found on server. Probably deleted already.
-            if ((*it)->isNotFound(resp.body)) {
-                (*it)->MarkAsDeletedOnServer();
-                continue;
-            }
-            error_found = true;
-            error_message = resp.body;
-            if (error_message == noError) {
-                error_message = resp.err;
-            }
-            // Mark the time entry as unsynced now
-            (*it)->SetUnsynced();
-
-            offline = IsNetworkingError(resp.err);
-
-            if (offline) {
-                trigger_sync_ = false;
-            }
-
-            continue;
-        }
-
-        if ((*it)->NeedsDELETE()) {
-            // Successfully deleted entry
-            (*it)->MarkAsDeletedOnServer();
-            continue;
-        }
-
-        Json::Value root;
-        Json::Reader reader;
-        if (!reader.parse(resp.body, root)) {
-            return error("error parsing time entry POST response");
-        }
-
-        (*it)->LoadFromJSON(root);
-    }
-
-    if (error_found) {
-        return error_message;
-    }
-    return noError;
-}
-
 error Context::pullObmExperiments() {
     try {
         if (HTTPSClient::Config.OBMExperimentNrs.empty()) {
@@ -4659,27 +4540,6 @@ error Context::PullCountries() {
         return ex;
     }
     return noError;
-}
-
-template<typename T>
-void Context::collectPushableModels(const std::set<T*> &list,
-    std::vector<T*> *result,
-    std::map<std::string, BaseModel *> *models) const {
-
-    poco_check_ptr(result);
-
-    for (auto it : list) {
-        T *model = it;
-        if (!model->NeedsPush()) {
-            continue;
-        }
-        user_->EnsureWID(*model);
-        model->EnsureGUID();
-        result->push_back(model);
-        if (models && !model->GUID().empty()) {
-            (*models)[model->GUID()] = model;
-        }
-    }
 }
 
 void on_websocket_message(

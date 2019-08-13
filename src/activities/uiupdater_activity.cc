@@ -19,17 +19,19 @@ void UiUpdaterActivity::uiUpdaterActivity() {
 
         locked<TimeEntry> te;
         Poco::Int64 duration(0);
-        {
-            Poco::Mutex::ScopedLock lock(user_m_);
+        bool gotDuration = true;
+        context_->UserVisit([&](User *user_){
             if (!user_) {
-                continue;
+                gotDuration = false;
             }
             te = user_->RunningTimeEntry();
             if (!te) {
-                continue;
+                gotDuration = false;
             }
             duration = user_->related.TotalDurationForDate(*te);
-        }
+        });
+        if (!gotDuration)
+            continue;
 
         std::string date_duration =
                 Formatter::FormatDurationForDateHeader(duration);

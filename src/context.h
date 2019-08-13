@@ -106,6 +106,10 @@ class Context : public TimelineDatasource {
         return &ui_;
     }
 
+    void updateUI(const UIElements &elements);
+
+    void UserVisit(std::function<void(User*)> func);
+
     // Check for logged in user etc, start up the app
     error StartEvents();
 
@@ -429,6 +433,7 @@ class Context : public TimelineDatasource {
     void osShutdown();
 
     void SetOnline();
+    void setOnline(const std::string reason);
 
     error AsyncOpenReportsInBrowser();
     error OpenReportsInBrowser();
@@ -482,6 +487,27 @@ class Context : public TimelineDatasource {
 
     error displayError(const error err);
 
+    static error signup(
+        TogglClient *https_client,
+        const std::string email,
+        const std::string password,
+        std::string *user_data_json,
+        const uint64_t country_id);
+    static error me(
+        TogglClient *https_client,
+        const std::string email,
+        const std::string password,
+        std::string *user_data,
+        const Poco::UInt64 since);
+
+    error save(const bool push_changes = true);
+
+    void resetLastTrackingReminderTime();
+
+    error updateEntryProjects(
+        std::vector<Project *> projects,
+        std::vector<TimeEntry *> time_entries);
+
  protected:
     void uiUpdaterActivity();
     void checkReminders();
@@ -500,8 +526,6 @@ class Context : public TimelineDatasource {
     Poco::Logger &logger() const;
 
     void sync(const bool full_sync);
-
-    error save(const bool push_changes = true);
 
     void fetchUpdates();
 
@@ -541,17 +565,12 @@ class Context : public TimelineDatasource {
                                 TimeEntry *te,
                                 const std::string focused_field_name);
     void displayReminder();
-    void resetLastTrackingReminderTime();
 
     void displayPomodoro();
 
     void displayPomodoroBreak();
 
-    void updateUI(const UIElements &elements);
-
     void scheduleSync();
-
-    void setOnline(const std::string reason);
 
     int nextSyncIntervalSeconds() const;
 
@@ -599,21 +618,6 @@ class Context : public TimelineDatasource {
         std::vector<TimeEntry *> time_entries,
         std::string api_token,
         TogglClient toggl_client);
-    error updateEntryProjects(
-        std::vector<Project *> projects,
-        std::vector<TimeEntry *> time_entries);
-    static error signup(
-        TogglClient *https_client,
-        const std::string email,
-        const std::string password,
-        std::string *user_data_json,
-        const uint64_t country_id);
-    static error me(
-        TogglClient *https_client,
-        const std::string email,
-        const std::string password,
-        std::string *user_data,
-        const Poco::UInt64 since);
 
     bool isTimeEntryLocked(TimeEntry* te);
     bool isTimeLockedInWorkspace(time_t t, Workspace* ws);
@@ -631,12 +635,6 @@ class Context : public TimelineDatasource {
     error pushObmAction();
 
     error pullObmExperiments();
-
-    template<typename T>
-    void collectPushableModels(
-        const std::set<T *> &list,
-        std::vector<T *> *result,
-        std::map<std::string, BaseModel *> *models = nullptr) const;
 
     Poco::Mutex db_m_;
     Database *db_;
