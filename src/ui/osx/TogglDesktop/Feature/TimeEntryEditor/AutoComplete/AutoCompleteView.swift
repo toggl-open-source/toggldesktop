@@ -109,8 +109,9 @@ final class AutoCompleteView: NSView {
     }
 
     func update(height: CGFloat) {
+        guard let window = self.window else { return }
         var height = height
-        let screenFrame = self.window!.convertToScreen(frame)
+        let screenFrame = window.convertToScreen(frame)
         let topLeftY = screenFrame.origin.y + screenFrame.size.height
         var offset: CGFloat = createNewItemContainerView.isHidden ? 0 : Constants.CreateButtonHeight
         offset += 10 // No collision with edge of the screen

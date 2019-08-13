@@ -176,6 +176,7 @@
 		BA7DB6E321F9C77A0059239B /* MASShortcut.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA7DB6D221F9C7660059239B /* MASShortcut.framework */; };
 		BA7DB6E421F9C77A0059239B /* MASShortcut.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA7DB6D221F9C7660059239B /* MASShortcut.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BA80BEB2221EAE6F00BDFD35 /* Array+ByGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA80BEB1221EAE6F00BDFD35 /* Array+ByGroup.swift */; };
+		BA81896A23016148000710EA /* NSColor+VisibleColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA81896923016148000710EA /* NSColor+VisibleColor.swift */; };
 		BA84363B22533A6600EF5830 /* DesktopLibraryBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = BA84363A22533A6600EF5830 /* DesktopLibraryBridge.m */; };
 		BA89CB392265EA4400D21584 /* String+Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA89CB382265EA4400D21584 /* String+Search.swift */; };
 		BA8B4C752251FAD500592BC7 /* WorkspaceCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA8B4C742251FAD500592BC7 /* WorkspaceCellView.swift */; };
@@ -743,6 +744,7 @@
 		BA7D335D2248B48000B953A8 /* AutoCompleteTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoCompleteTextField.swift; sourceTree = "<group>"; };
 		BA7DB6BB21F9C7660059239B /* MASShortcut.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MASShortcut.xcodeproj; path = ../../../../third_party/MASShortcut/MASShortcut.xcodeproj; sourceTree = "<group>"; };
 		BA80BEB1221EAE6F00BDFD35 /* Array+ByGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+ByGroup.swift"; sourceTree = "<group>"; };
+		BA81896923016148000710EA /* NSColor+VisibleColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSColor+VisibleColor.swift"; sourceTree = "<group>"; };
 		BA84363922533A6600EF5830 /* DesktopLibraryBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DesktopLibraryBridge.h; sourceTree = "<group>"; };
 		BA84363A22533A6600EF5830 /* DesktopLibraryBridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DesktopLibraryBridge.m; sourceTree = "<group>"; };
 		BA89CB382265EA4400D21584 /* String+Search.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Search.swift"; sourceTree = "<group>"; };
@@ -1225,6 +1227,7 @@
 				BAA260D0222D1DC70094F4E4 /* NSView+Shadow+Border.swift */,
 				BA08E011222E32C90075F68E /* NSView+LayoutConstraint.swift */,
 				BA89CB382265EA4400D21584 /* String+Search.swift */,
+				BA81896923016148000710EA /* NSColor+VisibleColor.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1995,6 +1998,7 @@
 				74098C331919899600CBDFB9 /* Utils.m in Sources */,
 				BA0F67B7224A32F700ED0F91 /* CursorButton.swift in Sources */,
 				BA9C2E0C224C8F58002AD2A1 /* KeyboardTableView.swift in Sources */,
+				BA81896A23016148000710EA /* NSColor+VisibleColor.swift in Sources */,
 				69FC180117E6534400B96425 /* main.m in Sources */,
 				74F1070118993FFE00E93BD5 /* FeedbackWindowController.m in Sources */,
 				BAB818E3228D594D008C2367 /* DescriptionTimeEntryStorage.swift in Sources */,
