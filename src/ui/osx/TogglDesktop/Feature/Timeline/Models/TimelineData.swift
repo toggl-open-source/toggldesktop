@@ -87,6 +87,28 @@ class TimelineData {
             return activities[safe: indexPath.item]?.timechunk()
         }
     }
+
+    func changeFirstEntryStopTime(at entry: TimelineTimeEntry) {
+
+        // Get all conflicted entry in same group
+        let sameGroupEntries = timeEntries
+            .filter { $0 is TimelineTimeEntry && $0.group == entry.group }
+            .sorted { (lhs, rhs) -> Bool in
+                return lhs.col <= rhs.col
+            }
+
+        // If there is only 1 -> Skip
+        guard sameGroupEntries.count > 1,
+            let firstEntry = sameGroupEntries.first as? TimelineTimeEntry,
+            let stopAt = entry.timeEntry.startTimeString else { return }
+
+        DesktopLibraryBridge.shared().updateTimeEntry(withEndTime: stopAt,
+                                                      guid: firstEntry.timeEntry.guid)
+    }
+
+    func changeLastEntryStartTime(at entry: TimelineTimeEntry) {
+        
+    }
 }
 
 // MARK: Private
@@ -108,7 +130,7 @@ extension TimelineData {
 
     fileprivate func calculateColumnsPositionForTimeline() {
         var calculatedEntries: [TimelineBaseTimeEntry] = []
-        var group = 0
+        var group = -1
         for entry in timeEntries {
 
             // Check if this time entry intersect with previous one

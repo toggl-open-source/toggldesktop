@@ -12,7 +12,7 @@ class TimelineBaseTimeEntry {
 
     let start: TimeInterval
     let end: TimeInterval
-    var group: Int = 0 // Group of overlap entries -> Help to resolve the overlap later
+    var group: Int = -1 // Group of overlap entries -> Help to resolve the overlap later
     var col: Int = 0
     var isOverlap: Bool {
         return col > 0

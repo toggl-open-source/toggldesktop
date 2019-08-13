@@ -212,4 +212,12 @@ extension TimelineDatasource: TimelineTimeEntryCellDelegate {
     func timeEntryCellMouseDidExited(_ sender: TimelineTimeEntryCell) {
         delegate?.shouldDismissTimeEntryHover()
     }
+
+    func timeEntryCellShouldChangeFirstEntryStopTime(for entry: TimelineTimeEntry, sender: TimelineTimeEntryCell) {
+        timeline?.changeFirstEntryStopTime(at: entry)
+    }
+
+    func timeEntryCellShouldChangeLastEntryStartTime(for entry: TimelineTimeEntry, sender: TimelineTimeEntryCell) {
+        timeline?.changeLastEntryStartTime(at: entry)
+    }
 }
