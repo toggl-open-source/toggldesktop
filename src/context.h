@@ -361,9 +361,15 @@ class Context : public TimelineDatasource {
         const std::string GUID,
         const std::string value);
 
+    error SetTimeEntryStart(const std::string GUID,
+                            const Poco::Int64 startAt);
+
     error SetTimeEntryStop(
         const std::string GUID,
         const std::string value);
+
+    error SetTimeEntryStop(const std::string GUID,
+                           const Poco::Int64 endAt);
 
     error SetTimeEntryTags(
         const std::string GUID,
