@@ -101,7 +101,7 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
 
 @implementation Reachability
 {
-	BOOL _alwaysReturnLocalWiFiStatus;                                                                                                                                                                                                                 // default is NO
+	BOOL _alwaysReturnLocalWiFiStatus;                                                                                                                                                                                                                                     // default is NO
 	SCNetworkReachabilityRef _reachabilityRef;
 }
 

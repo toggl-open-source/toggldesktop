@@ -96,13 +96,22 @@ class TimelineData {
             let firstEntry = group.first,
             let startAt = entry.timeEntry.startTimeString else { return }
 
-        // Set the start time as a stop time of First entry
+        // Set the end time as a start time of selected entry
         DesktopLibraryBridge.shared().updateTimeEntry(withEndTime: startAt,
                                                       guid: firstEntry.timeEntry.guid)
     }
 
     func changeLastEntryStartTime(at entry: TimelineTimeEntry) {
-        
+        let group = getAllConflictedTimeEntries(at: entry)
+
+        // If there is only 1 -> Skip
+        guard group.count > 1,
+            let firstEntry = group.first,
+            let endAt = firstEntry.timeEntry.endTimeString else { return }
+
+        // Set the start time as a stop time of First entry
+        DesktopLibraryBridge.shared().updateTimeEntry(withStartTime: endAt,
+                                                      guid: entry.timeEntry.guid)
     }
 }
 
@@ -165,8 +174,14 @@ extension TimelineData {
         if timeEntries.count >= 2 {
             var emptyTimeEntries: [TimelineBaseTimeEntry] = []
             for i in 0..<(timeEntries.count - 1) {
-                let current = timeEntries[i]
+                var current = timeEntries[i]
                 let next = timeEntries[i+1]
+
+                // Get the first column
+                if let previousCurrent = timeEntries[safe: i - 1], current.end < previousCurrent.end {
+                    current = previousCurrent
+                }
+
                 if (next.start - current.end) >= 600.0 { // Gap is 10 mins
                     let emptyTimeEntry = TimelineBaseTimeEntry(start: current.end, end: next.start, offset: 60.0)
                     emptyTimeEntries.append(emptyTimeEntry)
