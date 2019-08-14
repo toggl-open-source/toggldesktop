@@ -33,10 +33,12 @@ void UiUpdaterActivity::uiUpdaterActivity() {
         context_->UserVisit([&](User *user_){
             if (!user_) {
                 gotDuration = false;
+                return;
             }
             te = user_->RunningTimeEntry();
             if (!te) {
                 gotDuration = false;
+                return;
             }
             duration = user_->related.TotalDurationForDate(*te);
         });

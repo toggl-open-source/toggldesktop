@@ -221,15 +221,18 @@ error SyncerActivity::pushChanges(TogglClient *toggl_client, bool *had_something
 
         std::string api_token("");
 
+        error err = noError;
         context_->UserVisit([&](User *user_){
             if (!user_) {
                 logger().warning("cannot push changes when logged out");
-                return noError;
+                err = noError;
+                return;
             }
 
             api_token = user_->APIToken();
             if (api_token.empty()) {
-                return error("cannot push changes without API token");
+                err = error("cannot push changes without API token");
+                return;
             }
 
             collectPushableModels(
@@ -256,9 +259,12 @@ error SyncerActivity::pushChanges(TogglClient *toggl_client, bool *had_something
                     && projects.empty()
                     && clients.empty()) {
                 *had_something_to_push = false;
-                return noError;
+                err = noError;
+                return;
             }
         });
+        if (err != noError)
+            return err;
 
         std::stringstream ss;
         ss << "Sync success (";
@@ -537,21 +543,25 @@ error SyncerActivity::pushObmAction() {
         req.host = urls::API();
         req.basic_auth_password = "api_token";
 
+        error err = noError;
         // Get next OBM action for upload
         context_->UserVisit([&](User *user_) {
             if (!user_) {
                 logger().warning("cannot push changes when logged out");
-                return noError;
+                err = noError;
+                return;
             }
 
             auto obmActions = user_->related.ObmActions();
             if (obmActions->empty()) {
-                return noError;
+                err = noError;
+                return;
             }
 
             req.basic_auth_username = user_->APIToken();
             if (req.basic_auth_username.empty()) {
-                return error("cannot push OBM actions without API token");
+                err = error("cannot push OBM actions without API token");
+                return;
             }
 
             // find action that has not been uploaded yet
@@ -564,13 +574,16 @@ error SyncerActivity::pushObmAction() {
             }
 
             if (!for_upload) {
-                return noError;
+                err = noError;
+                return;
             }
 
             Json::Value root = for_upload->SaveToJSON();
             req.relative_url = for_upload->ModelURL();
             req.payload = Json::StyledWriter().write(root);
         });
+        if (err != noError)
+            return err;
 
         logger().debug(req.payload);
 

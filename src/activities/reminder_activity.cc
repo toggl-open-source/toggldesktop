@@ -46,20 +46,26 @@ void ReminderActivity::displayReminder() {
         return;
     }
 
+    bool shouldReturn = false;
     context_->UserVisit([&](User *user_){
         if (!user_) {
+            shouldReturn = true;
             return;
         }
 
         if (user_ && user_->RunningTimeEntry()) {
+            shouldReturn = true;
             return;
         }
 
         if (time(0) - last_tracking_reminder_time_
                 < context_->settings()->reminder_minutes * 60) {
+            shouldReturn = true;
             return;
         }
     });
+    if (shouldReturn)
+        return;
 
     // Check if allowed to display reminder on this weekday
     Poco::LocalDateTime now;
@@ -120,8 +126,10 @@ void ReminderActivity::displayPomodoro() {
 
     Poco::UInt64 wid(0);
 
+    bool shouldReturn = false;;
     context_->UserVisit([&](User *user_) {
         if (!user_) {
+            shouldReturn = true;
             return;
         }
 
@@ -133,17 +141,20 @@ void ReminderActivity::displayPomodoro() {
                 && !current_te->GUID().empty()
                 && current_te->GUID().compare(
                     pomodoro_break_entry_->GUID()) == 0) {
+            shouldReturn = true;
             return;
         }
 
         if (current_te->DurOnly() && current_te->LastStartAt() != 0) {
             if (time(0) - current_te->LastStartAt()
                     < context_->settings()->pomodoro_minutes * 60) {
+                shouldReturn = true;
                 return;
             }
         } else {
             if (time(0) - current_te->Start()
                     < context_->settings()->pomodoro_minutes * 60) {
+                shouldReturn = true;
                 return;
             }
         }
@@ -153,6 +164,8 @@ void ReminderActivity::displayPomodoro() {
         current_te->SetDurationInSeconds(pomodoroDuration);
         current_te->SetStop(current_te->Start() + pomodoroDuration);
     });
+    if (shouldReturn)
+        return;
 
     context_->UI()->DisplayPomodoro(context_->settings()->pomodoro_minutes);
 
@@ -176,25 +189,30 @@ void ReminderActivity::displayPomodoroBreak() {
         return;
     }
 
+    bool shouldReturn = false;
     context_->UserVisit([&](User *user_){
         if (!user_) {
+            shouldReturn = true;
             return;
         }
 
         auto current_te = user_->RunningTimeEntry();
 
         if (!current_te) {
+            shouldReturn = true;
             return;
         }
 
         if (pomodoro_break_entry_ == nullptr
                 || current_te->GUID().compare(
                     pomodoro_break_entry_->GUID()) != 0) {
+            shouldReturn = true;
             return;
         }
 
         if (time(0) - current_te->Start()
                 < context_->settings()->pomodoro_break_minutes * 60) {
+            shouldReturn = true;
             return;
         }
         const Poco::Int64 pomodoroDuration = context_->settings()->pomodoro_break_minutes * 60;
@@ -202,6 +220,9 @@ void ReminderActivity::displayPomodoroBreak() {
         current_te->SetDurationInSeconds(pomodoroDuration);
         current_te->SetStop(current_te->Start() + pomodoroDuration);
     });
+    if (shouldReturn)
+        return;
+
     pomodoro_break_entry_ = nullptr;
 
     context_->UI()->DisplayPomodoroBreak(context_->settings()->pomodoro_break_minutes);
