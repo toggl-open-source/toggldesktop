@@ -2841,7 +2841,7 @@ error Context::SetTimeEntryDuration(
     const std::string duration) {
     TimeEntry *te = nullptr;
     error findError = GetTimeEntryFromGUID(GUID, &te);
-    if (findError != noError && !te) {
+    if (findError != noError || !te) {
         return findError;
     }
 
@@ -2863,7 +2863,7 @@ error Context::SetTimeEntryProject(
     try {
         TimeEntry *te = nullptr;
         error findError = GetTimeEntryFromGUID(GUID, &te);
-        if (findError != noError && !te) {
+        if (findError != noError || !te) {
             return findError;
         }
 
@@ -2941,7 +2941,7 @@ error Context::SetTimeEntryDate(
     const Poco::Int64 unix_timestamp) {
     TimeEntry *te = nullptr;
     error findError = GetTimeEntryFromGUID(GUID, &te);
-    if (findError != noError && !te) {
+    if (findError != noError || !te) {
         return findError;
     }
 
@@ -2982,7 +2982,7 @@ error Context::SetTimeEntryStart(const std::string GUID,
                                  const Poco::Int64 startAt) {
     TimeEntry *te = nullptr;
     error findError = GetTimeEntryFromGUID(GUID, &te);
-    if (findError != noError && !te) {
+    if (findError != noError || !te) {
         return findError;
     }
 
@@ -2997,7 +2997,7 @@ error Context::SetTimeEntryStart(
     const std::string value) {
     TimeEntry *te = nullptr;
     error findError = GetTimeEntryFromGUID(GUID, &te);
-    if (findError != noError && !te) {
+    if (findError != noError || !te) {
         return findError;
     }
 
@@ -3037,7 +3037,7 @@ error Context::SetTimeEntryStop(const std::string GUID,
                                 const Poco::Int64 endAt) {
     TimeEntry *te = nullptr;
     error findError = GetTimeEntryFromGUID(GUID, &te);
-    if (findError != noError && !te) {
+    if (findError != noError || !te) {
         return findError;
     }
 
@@ -3052,7 +3052,7 @@ error Context::SetTimeEntryStop(
     const std::string value) {
     TimeEntry *te = nullptr;
     error findError = GetTimeEntryFromGUID(GUID, &te);
-    if (findError != noError && !te) {
+    if (findError != noError || !te) {
         return findError;
     }
 
@@ -3097,7 +3097,7 @@ error Context::SetTimeEntryTags(
     const std::string value) {
     TimeEntry *te = nullptr;
     error findError = GetTimeEntryFromGUID(GUID, &te);
-    if (findError != noError && !te) {
+    if (findError != noError || !te) {
         return findError;
     }
 
@@ -3116,7 +3116,7 @@ error Context::SetTimeEntryBillable(
     const bool value) {
     TimeEntry *te = nullptr;
     error findError = GetTimeEntryFromGUID(GUID, &te);
-    if (findError != noError && !te) {
+    if (findError != noError || !te) {
         return findError;
     }
 
@@ -3135,7 +3135,7 @@ error Context::SetTimeEntryDescription(
     const std::string value) {
     TimeEntry *te = nullptr;
     error findError = GetTimeEntryFromGUID(GUID, &te);
-    if (findError != noError && !te) {
+    if (findError != noError || !te) {
         return findError;
     }
 
