@@ -1074,7 +1074,8 @@ TEST(toggl_api, toggl_continue) {
     std::string json = loadTestData();
     ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
 
-    std::string guid("6c97dc31-582e-7662-1d6f-5e9d623b1685");
+    auto te = testing::testresult::time_entry_by_id(89833438);
+    std::string guid = te.GUID();
 
     testing::testresult::error = "";
     ASSERT_TRUE(toggl_continue(app.ctx(), to_char_t(guid)));
@@ -1091,7 +1092,8 @@ TEST(toggl_api, toggl_continue_in_manual_mode) {
     ASSERT_TRUE(toggl_set_settings_manual_mode(app.ctx(), true));
     ASSERT_TRUE(testing::testresult::settings.manual_mode);
 
-    std::string guid("6c97dc31-582e-7662-1d6f-5e9d623b1685");
+    auto te = testing::testresult::time_entry_by_id(89833438);
+    std::string guid = te.GUID();
 
     testing::testresult::error = "";
     testing::testresult::editor_state = TimeEntry();
@@ -1133,12 +1135,13 @@ TEST(toggl_api, toggl_edit) {
     testing::App app;
     std::string json = loadTestData();
     ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
-    auto guid = STR("6a958efd-0e9a-d777-7e19-001b2d7ced92");
+    auto te = testing::testresult::time_entry_by_id(89837259);
+    std::string guid = te.GUID();
     bool_t edit_running_time_entry = false;
     auto focused_field = STR("description");
-    toggl_edit(app.ctx(), guid, edit_running_time_entry,
+    toggl_edit(app.ctx(), to_char_t(guid), edit_running_time_entry,
                focused_field);
-    //ASSERT_EQ(guid, testing::testresult::editor_state.GUID());
+    ASSERT_EQ(guid, testing::testresult::editor_state.GUID());
     ASSERT_EQ("description", testing::testresult::editor_focused_field_name);
 }
 
