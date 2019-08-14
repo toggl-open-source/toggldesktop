@@ -1,5 +1,5 @@
 
-#include "syncer_activity.h"
+#include "pull_activity.h"
 
 #include "../context.h"
 #include "../https_client.h"
@@ -15,17 +15,17 @@
 
 namespace toggl {
 
-SyncerActivity::SyncerActivity(Context *context)
-    : toggl::Activity(context)
+PullActivity::PullActivity(ActivityManager *parent)
+    : toggl::Activity(parent)
 {
 
 }
 
-void SyncerActivity::work() {
+void PullActivity::work() {
     syncerActivity();
 }
 
-void SyncerActivity::syncerActivity() {
+void PullActivity::syncerActivity() {
     while (true) {
         // Sleep in increments for faster shutdown.
         for (int i = 0; i < 4; i++) {
@@ -39,25 +39,25 @@ void SyncerActivity::syncerActivity() {
             Poco::Mutex::ScopedLock lock(syncer_m_);
 
             if (trigger_sync_) {
-                TogglClient client(context_->UI());
+                TogglClient client(context()->UI());
 
                 error err = pullAllUserData(&client);
                 if (err != noError) {
-                    context_->displayError(err);
+                    context()->displayError(err);
                 }
 
-                context_->setOnline("Data pulled");
+                context()->setOnline("Data pulled");
 
                 err = pushChanges(&client, &trigger_sync_);
                 trigger_push_ = false;
                 if (err != noError) {
-                    context_->UserVisit([&](User *user_){
+                    context()->UserVisit([&](User *user_){
                         user_->ConfirmLoadedMore();
                     });
-                    context_->displayError(err);
+                    context()->displayError(err);
                     return;
                 } else {
-                    context_->setOnline("Data pushed");
+                    context()->setOnline("Data pushed");
                 }
                 trigger_sync_ = false;
 
@@ -68,7 +68,7 @@ void SyncerActivity::syncerActivity() {
                     logger().error("Error pushing OBM action: " + err);
                 }
 
-                context_->displayError(context_->save(false));
+                context()->displayError(context()->save(false));
             }
 
         }
@@ -77,16 +77,16 @@ void SyncerActivity::syncerActivity() {
             Poco::Mutex::ScopedLock lock(syncer_m_);
 
             if (trigger_push_) {
-                TogglClient client(context_->UI());
+                TogglClient client(context()->UI());
 
                 error err = pushChanges(&client, &trigger_sync_);
                 if (err != noError) {
-                    context_->UserVisit([&](User *user_){
+                    context()->UserVisit([&](User *user_){
                         user_->ConfirmLoadedMore();
                     });
-                    context_->displayError(err);
+                    context()->displayError(err);
                 } else {
-                    context_->setOnline("Data pushed");
+                    context()->setOnline("Data pushed");
                 }
                 trigger_push_ = false;
 
@@ -97,29 +97,29 @@ void SyncerActivity::syncerActivity() {
                     logger().error("Error pushing OBM action: " + err);
                 }
 
-                context_->displayError(context_->save(false));
+                context()->displayError(context()->save(false));
             }
         }
     }
 }
 
-void SyncerActivity::push() {
+void PullActivity::push() {
 
     trigger_push_ = true;
     activity_.start();
 }
 
-void SyncerActivity::sync() {
+void PullActivity::sync() {
 
     trigger_sync_ = true;
     activity_.start();
 }
 
-error SyncerActivity::pullAllUserData(TogglClient *toggl_client) {
+error PullActivity::pullAllUserData(TogglClient *toggl_client) {
     std::string api_token("");
     Poco::UInt64 since(0);
     bool finished = false;
-    context_->UserVisit([&](User *user_){
+    context()->UserVisit([&](User *user_){
         if (!user_) {
             logger().warning("cannot pull user data when logged out");
             finished = true;
@@ -141,7 +141,7 @@ error SyncerActivity::pullAllUserData(TogglClient *toggl_client) {
         stopwatch.start();
 
         std::string user_data_json("");
-        error err = context_->me(
+        error err = context()->me(
                     toggl_client,
                     api_token,
                     "api_token",
@@ -152,7 +152,7 @@ error SyncerActivity::pullAllUserData(TogglClient *toggl_client) {
         }
 
         err = noError;
-        context_->UserVisit([&](User *user_){
+        context()->UserVisit([&](User *user_){
             if (!user_) {
                 err = error("cannot load user data when logged out");
                 return;
@@ -171,7 +171,7 @@ error SyncerActivity::pullAllUserData(TogglClient *toggl_client) {
 
             // Reset reminder time when entry stopped by sync
             if (running_entry && !new_running_entry) {
-                context_->resetLastTrackingReminderTime();
+                context()->resetLastTrackingReminderTime();
             }
         });
         if (err != noError)
@@ -201,7 +201,7 @@ error SyncerActivity::pullAllUserData(TogglClient *toggl_client) {
     return noError;
 }
 
-error SyncerActivity::pushChanges(TogglClient *toggl_client, bool *had_something_to_push) {
+error PullActivity::pushChanges(TogglClient *toggl_client, bool *had_something_to_push) {
     try {
         Poco::Stopwatch stopwatch;
         stopwatch.start();
@@ -222,7 +222,7 @@ error SyncerActivity::pushChanges(TogglClient *toggl_client, bool *had_something
         std::string api_token("");
 
         error err = noError;
-        context_->UserVisit([&](User *user_){
+        context()->UserVisit([&](User *user_){
             if (!user_) {
                 logger().warning("cannot push changes when logged out");
                 err = noError;
@@ -301,7 +301,7 @@ error SyncerActivity::pushChanges(TogglClient *toggl_client, bool *had_something
             }
 
             // Update project id on time entries if needed
-            err = context_->updateEntryProjects(
+            err = context()->updateEntryProjects(
                         projects,
                         time_entries);
             if (err != noError) {
@@ -323,13 +323,13 @@ error SyncerActivity::pushChanges(TogglClient *toggl_client, bool *had_something
                         *toggl_client);
             if (err != noError) {
                 // Hide load more button when offline
-                context_->UserVisit([&](User *user_){
+                context()->UserVisit([&](User *user_){
                     user_->ConfirmLoadedMore();
                 });
                 // Reload list to show unsynced icons in items
                 UIElements render;
                 render.display_time_entries = true;
-                context_->updateUI(render);
+                context()->updateUI(render);
                 return err;
             }
 
@@ -351,7 +351,7 @@ error SyncerActivity::pushChanges(TogglClient *toggl_client, bool *had_something
     return noError;
 }
 
-error SyncerActivity::pushEntries(std::map<std::string, BaseModel *> models, std::vector<TimeEntry *> time_entries, std::string api_token, TogglClient toggl_client) {
+error PullActivity::pushEntries(std::map<std::string, BaseModel *> models, std::vector<TimeEntry *> time_entries, std::string api_token, TogglClient toggl_client) {
 
     std::string entry_json("");
     std::string error_message("");
@@ -396,7 +396,7 @@ error SyncerActivity::pushEntries(std::map<std::string, BaseModel *> models, std
         if (resp.err != noError) {
             // if we're able to solve the error
             if ((*it)->ResolveError(resp.body)) {
-                context_->displayError(context_->save(false));
+                context()->displayError(context()->save(false));
             }
 
             // Not found on server. Probably deleted already.
@@ -442,7 +442,7 @@ error SyncerActivity::pushEntries(std::map<std::string, BaseModel *> models, std
     return noError;
 }
 
-error SyncerActivity::pushClients(std::vector<Client *> clients, std::string api_token, TogglClient toggl_client) {
+error PullActivity::pushClients(std::vector<Client *> clients, std::string api_token, TogglClient toggl_client) {
     std::string client_json("");
     error err = noError;
     for (std::vector<Client *>::const_iterator it =
@@ -465,7 +465,7 @@ error SyncerActivity::pushClients(std::vector<Client *> clients, std::string api
         if (resp.err != noError) {
             // if we're able to solve the error
             if ((*it)->ResolveError(resp.body)) {
-                context_->displayError(context_->save(false));
+                context()->displayError(context()->save(false));
             }
             continue;
         }
@@ -483,7 +483,7 @@ error SyncerActivity::pushClients(std::vector<Client *> clients, std::string api
     return err;
 }
 
-error SyncerActivity::pushProjects(std::vector<Project *> projects, std::vector<Client *> clients, std::string api_token, TogglClient toggl_client) {
+error PullActivity::pushProjects(std::vector<Project *> projects, std::vector<Client *> clients, std::string api_token, TogglClient toggl_client) {
     error err = noError;
     std::string project_json("");
     for (std::vector<Project *>::const_iterator it =
@@ -518,7 +518,7 @@ error SyncerActivity::pushProjects(std::vector<Project *> projects, std::vector<
         if (resp.err != noError) {
             // if we're able to solve the error
             if ((*it)->ResolveError(resp.body)) {
-                context_->displayError(context_->save(false));
+                context()->displayError(context()->save(false));
             }
             continue;
         }
@@ -536,7 +536,7 @@ error SyncerActivity::pushProjects(std::vector<Project *> projects, std::vector<
     return err;
 }
 
-error SyncerActivity::pushObmAction() {
+error PullActivity::pushObmAction() {
     try {
         ObmAction *for_upload = nullptr;
         HTTPSRequest req;
@@ -545,7 +545,7 @@ error SyncerActivity::pushObmAction() {
 
         error err = noError;
         // Get next OBM action for upload
-        context_->UserVisit([&](User *user_) {
+        context()->UserVisit([&](User *user_) {
             if (!user_) {
                 logger().warning("cannot push changes when logged out");
                 err = noError;
@@ -610,9 +610,9 @@ error SyncerActivity::pushObmAction() {
     return noError;
 }
 
-error SyncerActivity::pullWorkspaces(TogglClient *toggl_client) {
+error PullActivity::pullWorkspaces(TogglClient *toggl_client) {
     std::string api_token;
-    context_->UserVisit([&](User *user_){
+    context()->UserVisit([&](User *user_){
         api_token = user_->APIToken();
     });
 
@@ -643,7 +643,7 @@ error SyncerActivity::pullWorkspaces(TogglClient *toggl_client) {
 
         json = resp.body;
 
-        context_->UserVisit([&](User *user_) {
+        context()->UserVisit([&](User *user_) {
             user_->LoadWorkspacesFromJSONString(json);
         });
     }
@@ -659,9 +659,9 @@ error SyncerActivity::pullWorkspaces(TogglClient *toggl_client) {
     return noError;
 }
 
-error SyncerActivity::pullWorkspacePreferences(TogglClient *toggl_client) {
+error PullActivity::pullWorkspacePreferences(TogglClient *toggl_client) {
     locked<std::vector<Workspace*>> workspaces;
-    context_->UserVisit([&](User *user_) {
+    context()->UserVisit([&](User *user_) {
         workspaces = user_->related.WorkspaceList();
     });
 
@@ -696,9 +696,9 @@ error SyncerActivity::pullWorkspacePreferences(TogglClient *toggl_client) {
     return noError;
 }
 
-error SyncerActivity::pullWorkspacePreferences(TogglClient *toggl_client, Workspace *workspace, std::string *json) {
+error PullActivity::pullWorkspacePreferences(TogglClient *toggl_client, Workspace *workspace, std::string *json) {
     std::string api_token;
-    context_->UserVisit([&](User *user_){
+    context()->UserVisit([&](User *user_){
         api_token = user_->APIToken();
     });
 
@@ -737,9 +737,9 @@ error SyncerActivity::pullWorkspacePreferences(TogglClient *toggl_client, Worksp
     return noError;
 }
 
-error SyncerActivity::pullUserPreferences(TogglClient *toggl_client) {
+error PullActivity::pullUserPreferences(TogglClient *toggl_client) {
     std::string api_token;
-    context_->UserVisit([&](User *user_) {
+    context()->UserVisit([&](User *user_) {
         api_token = user_->APIToken();
     });
 
@@ -774,13 +774,13 @@ error SyncerActivity::pullUserPreferences(TogglClient *toggl_client) {
             return error("Failed to load user preferences");
         }
 
-        context_->UserVisit([&](User *user_) {
+        context()->UserVisit([&](User *user_) {
             if (user_->LoadUserPreferencesFromJSON(root)) {
                 // Reload list if user preferences
                 // have changed (collapse time entries)
                 UIElements render;
                 render.display_time_entries = true;
-                context_->updateUI(render);
+                context()->updateUI(render);
             }
         });
 
@@ -788,7 +788,7 @@ error SyncerActivity::pullUserPreferences(TogglClient *toggl_client) {
         if (root.isMember("ToSAcceptNeeded") && root["ToSAcceptNeeded"].asBool()) {
             // OVERHAUL TODO
             //overlay_visible_ = true;
-            context_->UI()->DisplayTosAccept();
+            context()->UI()->DisplayTosAccept();
         }
     }
     catch (const Poco::Exception& exc) {
@@ -804,7 +804,7 @@ error SyncerActivity::pullUserPreferences(TogglClient *toggl_client) {
 }
 
 template<typename T>
-void SyncerActivity::collectPushableModels(const std::set<T *> &list, std::vector<T *> *result, std::map<std::string, BaseModel *> *models) const {
+void PullActivity::collectPushableModels(const std::set<T *> &list, std::vector<T *> *result, std::map<std::string, BaseModel *> *models) {
     poco_check_ptr(result);
 
     for (auto it : list) {
@@ -812,7 +812,7 @@ void SyncerActivity::collectPushableModels(const std::set<T *> &list, std::vecto
         if (!model->NeedsPush()) {
             continue;
         }
-        context_->UserVisit([&](User *user_){
+        context()->UserVisit([&](User *user_){
             user_->EnsureWID(*model);
         });
         model->EnsureGUID();

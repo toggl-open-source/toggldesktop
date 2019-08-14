@@ -108,8 +108,8 @@ Context::Context(const std::string app_name, const std::string app_version)
 
     startPeriodicSync();
 
-    activity_manager_->uiUpdater()->start();
-    activity_manager_->reminder()->start();
+    activity_manager_->start(ActivityManager::UI_UPDATER);
+    activity_manager_->start(ActivityManager::REMINDER);
 
     resetLastTrackingReminderTime();
 }
@@ -304,7 +304,7 @@ error Context::save(const bool push_changes) {
             logger().debug("onPushChanges executing");
 
             // Always sync asyncronously with syncerActivity
-            activity_manager_->syncer()->push();
+            activity_manager_->start(ActivityManager::PUSH);
         }
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
@@ -1015,7 +1015,7 @@ void Context::Sync() {
     last_sync_started_ = time(0);
 
     // Always sync asyncronously with syncerActivity
-    activity_manager_->syncer()->sync();
+    activity_manager_->start(ActivityManager::PULL);
 }
 
 void Context::onTimeEntryAutocompletes(Poco::Util::TimerTask& task) {  // NOLINT
@@ -2318,8 +2318,8 @@ void Context::setUser(User *value, const bool logged_in) {
 
     fetchUpdates();
 
-    activity_manager_->uiUpdater()->start();
-    activity_manager_->reminder()->start();
+    activity_manager_->start(ActivityManager::UI_UPDATER);
+    activity_manager_->start(ActivityManager::REMINDER);
 
     // Offer beta channel, if not offered yet
     bool did_offer_beta_channel(false);
@@ -3237,7 +3237,7 @@ locked<TimeEntry> Context::DiscardTimeAndContinue(
     const Poco::Int64 at) {
 
     // Reset reminder count when doing idle actions
-    activity_manager_->reminder()->resetLastReminderTime();
+    resetLastTrackingReminderTime();
 
     // Tracking action
     if ("production" == environment_) {
@@ -3990,7 +3990,8 @@ const bool Context::handleStopRunningEntry() {
 }
 
 void Context::resetLastTrackingReminderTime() {
-    activity_manager_->reminder()->resetLastReminderTime();
+    // OVERHAUL TODO
+    activity_manager_->restart(ActivityManager::REMINDER);
 }
 
 error Context::StartAutotrackerEvent(const TimelineEvent &event) {

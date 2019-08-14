@@ -12,9 +12,10 @@ class TimeEntry;
 
 class ReminderActivity : public toggl::Activity {
 public:
-    ReminderActivity(Context *context);
+    ReminderActivity(ActivityManager *parent);
 
     void work() override;
+    void restart() override;
 
     void resetLastReminderTime();
 

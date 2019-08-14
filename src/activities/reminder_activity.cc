@@ -7,14 +7,19 @@
 
 namespace toggl {
 
-ReminderActivity::ReminderActivity(Context *context)
-    : toggl::Activity(context)
+ReminderActivity::ReminderActivity(ActivityManager *parent)
+    : toggl::Activity(parent)
 {
 
 }
 
 void ReminderActivity::work() {
     reminderActivity();
+}
+
+void ReminderActivity::restart() {
+    resetLastReminderTime();
+    // OVERHAUL TODO
 }
 
 void ReminderActivity::resetLastReminderTime() {
@@ -42,12 +47,12 @@ void ReminderActivity::reminderActivity() {
 }
 
 void ReminderActivity::displayReminder() {
-    if (!context_->settings()->reminder) {
+    if (!context()->settings()->reminder) {
         return;
     }
 
     bool shouldReturn = false;
-    context_->UserVisit([&](User *user_){
+    context()->UserVisit([&](User *user_){
         if (!user_) {
             shouldReturn = true;
             return;
@@ -62,7 +67,7 @@ void ReminderActivity::displayReminder() {
         return;
 
     if (time(0) - last_tracking_reminder_time_
-            < context_->settings()->reminder_minutes * 60) {
+            < context()->settings()->reminder_minutes * 60) {
         shouldReturn = true;
         return;
     }
@@ -71,21 +76,21 @@ void ReminderActivity::displayReminder() {
     Poco::LocalDateTime now;
     int wday = now.dayOfWeek();
     if (
-            (Poco::DateTime::MONDAY == wday && !context_->settings()->remind_mon) ||
-            (Poco::DateTime::TUESDAY == wday && !context_->settings()->remind_tue) ||
-            (Poco::DateTime::WEDNESDAY == wday && !context_->settings()->remind_wed) ||
-            (Poco::DateTime::THURSDAY == wday && !context_->settings()->remind_thu) ||
-            (Poco::DateTime::FRIDAY == wday && !context_->settings()->remind_fri) ||
-            (Poco::DateTime::SATURDAY == wday && !context_->settings()->remind_sat) ||
-            (Poco::DateTime::SUNDAY == wday && !context_->settings()->remind_sun)) {
+            (Poco::DateTime::MONDAY == wday && !context()->settings()->remind_mon) ||
+            (Poco::DateTime::TUESDAY == wday && !context()->settings()->remind_tue) ||
+            (Poco::DateTime::WEDNESDAY == wday && !context()->settings()->remind_wed) ||
+            (Poco::DateTime::THURSDAY == wday && !context()->settings()->remind_thu) ||
+            (Poco::DateTime::FRIDAY == wday && !context()->settings()->remind_fri) ||
+            (Poco::DateTime::SATURDAY == wday && !context()->settings()->remind_sat) ||
+            (Poco::DateTime::SUNDAY == wday && !context()->settings()->remind_sun)) {
         logger().debug("reminder is not enabled on this weekday");
         return;
     }
 
     // Check if allowed to display reminder at this time
-    if (!context_->settings()->remind_starts.empty()) {
+    if (!context()->settings()->remind_starts.empty()) {
         int h(0), m(0);
-        if (toggl::Formatter::ParseTimeInput(context_->settings()->remind_starts, &h, &m)) {
+        if (toggl::Formatter::ParseTimeInput(context()->settings()->remind_starts, &h, &m)) {
             Poco::LocalDateTime start(
                         now.year(), now.month(), now.day(), h, m, now.second());
             if (now < start) {
@@ -98,9 +103,9 @@ void ReminderActivity::displayReminder() {
             }
         }
     }
-    if (!context_->settings()->remind_ends.empty()) {
+    if (!context()->settings()->remind_ends.empty()) {
         int h(0), m(0);
-        if (toggl::Formatter::ParseTimeInput(context_->settings()->remind_ends, &h, &m)) {
+        if (toggl::Formatter::ParseTimeInput(context()->settings()->remind_ends, &h, &m)) {
             Poco::LocalDateTime end(
                         now.year(), now.month(), now.day(), h, m, now.second());
             if (now > end) {
@@ -116,18 +121,18 @@ void ReminderActivity::displayReminder() {
 
     resetLastReminderTime();
 
-    context_->UI()->DisplayReminder();
+    context()->UI()->DisplayReminder();
 }
 
 void ReminderActivity::displayPomodoro() {
-    if (!context_->settings()->pomodoro) {
+    if (!context()->settings()->pomodoro) {
         return;
     }
 
     Poco::UInt64 wid(0);
 
     bool shouldReturn = false;;
-    context_->UserVisit([&](User *user_) {
+    context()->UserVisit([&](User *user_) {
         if (!user_) {
             shouldReturn = true;
             return;
@@ -147,31 +152,31 @@ void ReminderActivity::displayPomodoro() {
 
         if (current_te->DurOnly() && current_te->LastStartAt() != 0) {
             if (time(0) - current_te->LastStartAt()
-                    < context_->settings()->pomodoro_minutes * 60) {
+                    < context()->settings()->pomodoro_minutes * 60) {
                 shouldReturn = true;
                 return;
             }
         } else {
             if (time(0) - current_te->Start()
-                    < context_->settings()->pomodoro_minutes * 60) {
+                    < context()->settings()->pomodoro_minutes * 60) {
                 shouldReturn = true;
                 return;
             }
         }
-        const Poco::Int64 pomodoroDuration = context_->settings()->pomodoro_minutes * 60;
+        const Poco::Int64 pomodoroDuration = context()->settings()->pomodoro_minutes * 60;
         wid = current_te->WID();
-        context_->Stop(true);
+        context()->Stop(true);
         current_te->SetDurationInSeconds(pomodoroDuration);
         current_te->SetStop(current_te->Start() + pomodoroDuration);
     });
     if (shouldReturn)
         return;
 
-    context_->UI()->DisplayPomodoro(context_->settings()->pomodoro_minutes);
+    context()->UI()->DisplayPomodoro(context()->settings()->pomodoro_minutes);
 
-    if (context_->settings()->pomodoro_break) {
+    if (context()->settings()->pomodoro_break) {
         //  Start a new task with the tag "pomodoro-break"
-        context_->UserVisit([&](User *user_){
+        context()->UserVisit([&](User *user_){
             pomodoro_break_entry_ = user_->Start("Pomodoro Break",  // description
                                                  "",  // duration
                                                  0,  // task_id
@@ -185,12 +190,12 @@ void ReminderActivity::displayPomodoro() {
 }
 
 void ReminderActivity::displayPomodoroBreak() {
-    if (!context_->settings()->pomodoro_break) {
+    if (!context()->settings()->pomodoro_break) {
         return;
     }
 
     bool shouldReturn = false;
-    context_->UserVisit([&](User *user_){
+    context()->UserVisit([&](User *user_){
         if (!user_) {
             shouldReturn = true;
             return;
@@ -211,12 +216,12 @@ void ReminderActivity::displayPomodoroBreak() {
         }
 
         if (time(0) - current_te->Start()
-                < context_->settings()->pomodoro_break_minutes * 60) {
+                < context()->settings()->pomodoro_break_minutes * 60) {
             shouldReturn = true;
             return;
         }
-        const Poco::Int64 pomodoroDuration = context_->settings()->pomodoro_break_minutes * 60;
-        context_->Stop(true);
+        const Poco::Int64 pomodoroDuration = context()->settings()->pomodoro_break_minutes * 60;
+        context()->Stop(true);
         current_te->SetDurationInSeconds(pomodoroDuration);
         current_te->SetStop(current_te->Start() + pomodoroDuration);
     });
@@ -225,7 +230,7 @@ void ReminderActivity::displayPomodoroBreak() {
 
     pomodoro_break_entry_ = nullptr;
 
-    context_->UI()->DisplayPomodoroBreak(context_->settings()->pomodoro_break_minutes);
+    context()->UI()->DisplayPomodoroBreak(context()->settings()->pomodoro_break_minutes);
 }
 
 };

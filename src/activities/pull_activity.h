@@ -1,5 +1,5 @@
-#ifndef SRC_SYNCER_ACTIVITY_H_
-#define SRC_SYNCER_ACTIVITY_H_
+#ifndef SRC_PULL_ACTIVITY_H_
+#define SRC_PULL_ACTIVITY_H_
 
 #include "https_client.h"
 #include "activity.h"
@@ -22,9 +22,9 @@ class Workspace;
 class BaseModel;
 class TimeEntry;
 
-class SyncerActivity : public toggl::Activity {
+class PullActivity : public toggl::Activity {
 public:
-    SyncerActivity(Context *context);
+    PullActivity(ActivityManager *parent);
 
     void work() override;
 
@@ -35,7 +35,7 @@ public:
 
 private:
     template<typename T>
-    void collectPushableModels(const std::set<T *> &list, std::vector<T *> *result, std::map<std::string, BaseModel *> *models = nullptr) const;
+    void collectPushableModels(const std::set<T *> &list, std::vector<T *> *result, std::map<std::string, BaseModel *> *models = nullptr);
 
     error pullAllUserData(TogglClient *toggl_client);
     error pushChanges(TogglClient *toggl_client, bool *had_something_to_push);

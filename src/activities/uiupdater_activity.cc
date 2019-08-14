@@ -6,8 +6,8 @@
 
 namespace toggl {
 
-UiUpdaterActivity::UiUpdaterActivity(Context *context)
-    : toggl::Activity(context)
+UiUpdaterActivity::UiUpdaterActivity(ActivityManager *parent)
+    : toggl::Activity(parent)
 {
 
 }
@@ -30,7 +30,7 @@ void UiUpdaterActivity::uiUpdaterActivity() {
         locked<TimeEntry> te;
         Poco::Int64 duration(0);
         bool gotDuration = true;
-        context_->UserVisit([&](User *user_){
+        context()->UserVisit([&](User *user_){
             if (!user_) {
                 gotDuration = false;
                 return;
@@ -51,7 +51,7 @@ void UiUpdaterActivity::uiUpdaterActivity() {
         if (running_time != date_duration) {
             UIElements render;
             render.display_time_entries = true;
-            context_->updateUI(render);
+            context()->updateUI(render);
         }
 
         running_time = date_duration;

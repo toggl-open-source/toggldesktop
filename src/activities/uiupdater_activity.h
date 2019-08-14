@@ -11,7 +11,7 @@ class Context;
 
 class UiUpdaterActivity : public toggl::Activity {
 public:
-    UiUpdaterActivity(Context *context);
+    UiUpdaterActivity(ActivityManager *parent);
 
     void work() override;
 

@@ -34,8 +34,9 @@ include_directories(
 set(LIBRARY_SOURCE_FILES
     activities/activity.cc
     activities/activity_manager.cc
+    activities/pull_activity.cc
+    activities/push_activity.cc
     activities/reminder_activity.cc
-    activities/syncer_activity.cc
     activities/uiupdater_activity.cc
     base_model.cc
     batch_update_result.cc

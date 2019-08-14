@@ -4,14 +4,37 @@
 namespace toggl {
 
 toggl::ActivityManager::ActivityManager(toggl::Context *context)
-    : reminder_(new ReminderActivity(context))
-    , uiUpdater_(new UiUpdaterActivity(context))
-    , syncer_(new SyncerActivity(context))
+    : context_(context)
 {
 
 }
 
+void ActivityManager::schedule(ActivityType activity, int64_t at) {
+    lock_type l(mutex_);
+
+}
+
+void ActivityManager::start(ActivityManager::ActivityType activity) {
+    lock_type l(mutex_);
+    activities_[activity]->start();
+}
+
+void ActivityManager::stop(ActivityManager::ActivityType activity) {
+    lock_type l(mutex_);
+    activities_[activity]->stop();
+}
+
+void ActivityManager::restart(ActivityManager::ActivityType activity) {
+    lock_type l(mutex_);
+    activities_[activity]->restart();
+}
+
+int64_t ActivityManager::now() {
+
+}
+
 void toggl::ActivityManager::stopAll() {
+    lock_type l(mutex_);
     /*
 
         {
@@ -39,16 +62,8 @@ void toggl::ActivityManager::stopAll() {
     */
 }
 
-ReminderActivity *ActivityManager::reminder() {
-    return reminder_;
-}
-
-SyncerActivity *toggl::ActivityManager::syncer() {
-    return syncer_;
-}
-
-UiUpdaterActivity *ActivityManager::uiUpdater() {
-    return uiUpdater_;
+Context *ActivityManager::context() {
+    return context_;
 }
 
 };

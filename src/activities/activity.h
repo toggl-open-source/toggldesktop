@@ -6,16 +6,24 @@
 namespace toggl {
 
 class Context;
+class ActivityManager;
 
 class Activity {
 public:
-    Activity(Context *context);
+    Activity(ActivityManager *parent);
+
+    Context *context();
+
     virtual void work() = 0;
+    virtual void stop();
     virtual void start();
+    virtual void restart();
 
 protected:
     Poco::Activity<Activity> activity_;
-    Context *context_ { nullptr };
+
+private:
+    ActivityManager *manager_;
 };
 
 };
