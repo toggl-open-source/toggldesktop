@@ -57,15 +57,15 @@ void ReminderActivity::displayReminder() {
             shouldReturn = true;
             return;
         }
-
-        if (time(0) - last_tracking_reminder_time_
-                < context_->settings()->reminder_minutes * 60) {
-            shouldReturn = true;
-            return;
-        }
     });
     if (shouldReturn)
         return;
+
+    if (time(0) - last_tracking_reminder_time_
+            < context_->settings()->reminder_minutes * 60) {
+        shouldReturn = true;
+        return;
+    }
 
     // Check if allowed to display reminder on this weekday
     Poco::LocalDateTime now;
