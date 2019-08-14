@@ -1237,8 +1237,9 @@ TEST(toggl_api, toggl_delete_time_entry) {
     toggl_view_time_entry_list(app.ctx());
     ASSERT_EQ(std::size_t(5), testing::testresult::time_entries.size());
 
-    auto guid = STR("6a958efd-0e9a-d777-7e19-001b2d7ced92");
-    ASSERT_TRUE(toggl_delete_time_entry(app.ctx(), guid));
+    auto te = testing::testresult::time_entry_by_id(89837259);
+    std::string guid = te.GUID();
+    ASSERT_TRUE(toggl_delete_time_entry(app.ctx(), to_char_t(guid)));
 
     toggl_view_time_entry_list(app.ctx());
     ASSERT_EQ(std::size_t(4), testing::testresult::time_entries.size());
@@ -1248,14 +1249,15 @@ TEST(toggl_api, toggl_set_time_entry_duration) {
     testing::App app;
     std::string json = loadTestData();
     ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
-
-    std::string guid = "07fba193-91c4-0ec8-2894-820df0548a8f";
+    
+    auto te = testing::testresult::time_entry_by_id(89818605);
+    std::string guid = te.GUID();
 
     ASSERT_TRUE(toggl_set_time_entry_duration(app.ctx(),
                 to_char_t(guid), STR("2 hours")));
 
     toggl_view_time_entry_list(app.ctx());
-    TimeEntry te;
+
     for (std::size_t i = 0; i < testing::testresult::time_entries.size();
             i++) {
         if (testing::testresult::time_entries[i].GUID() == guid) {
@@ -1272,13 +1274,14 @@ TEST(toggl_api, toggl_set_time_entry_description) {
     std::string json = loadTestData();
     ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
 
-    std::string guid = "07fba193-91c4-0ec8-2894-820df0548a8f";
+    auto te = testing::testresult::time_entry_by_id(89818605);
+    std::string guid = te.GUID();
 
     ASSERT_TRUE(toggl_set_time_entry_description(app.ctx(),
                 to_char_t(guid), STR("this is a nuclear test")));
 
     toggl_view_time_entry_list(app.ctx());
-    TimeEntry te;
+
     for (std::size_t i = 0; i < testing::testresult::time_entries.size();
             i++) {
         if (testing::testresult::time_entries[i].GUID() == guid) {
@@ -1895,6 +1898,9 @@ TEST(toggl_api, toggl_set_time_entry_end_prefers_same_day) {
     ASSERT_TRUE(toggl_set_time_entry_start(app.ctx(), to_char_t(guid), STR("06:33")));
 
     ASSERT_TRUE(toggl_set_time_entry_end(app.ctx(), to_char_t(guid), STR("06:34")));
+
+    // take the updated time entry
+    te = testing::testresult::time_entry_by_id(89818605);
 
     Poco::DateTime start(Poco::Timestamp::fromEpochTime(te.Start()));
     Poco::DateTime end(Poco::Timestamp::fromEpochTime(te.Stop()));
