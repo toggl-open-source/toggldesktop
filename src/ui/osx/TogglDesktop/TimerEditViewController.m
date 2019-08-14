@@ -213,6 +213,7 @@ NSString *kInactiveTimerColor = @"#999999";
 	self.descriptionLabel.editable = NO;
 	[self clear];
 	[self showDefaultTimer];
+	[self focusTimer];
 }
 
 - (void)displayTimerState:(TimeEntryViewItem *)te
@@ -274,8 +275,6 @@ NSString *kInactiveTimerColor = @"#999999";
 
 		self.durationTextField.toolTip = [NSString stringWithFormat:@"Started: %@", self.time_entry.startTimeString];
 		self.descriptionLabel.editable = NO;
-
-		[self focusTimer];
 	}
 	else
 	{
