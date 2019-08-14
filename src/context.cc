@@ -2994,6 +2994,33 @@ error Context::SetTimeEntryDate(
     return displayError(save(true));
 }
 
+error Context::SetTimeEntryStart(const std::string GUID,
+                                 const Poco::Int64 startAt) {
+    TimeEntry *te = nullptr;
+
+    {
+        Poco::Mutex::ScopedLock lock(user_m_);
+        if (!user_) {
+            logger().warning("Cannot change start time, user logged out");
+            return noError;
+        }
+        te = user_->related.TimeEntryByGUID(GUID);
+
+        if (!te) {
+            logger().warning("Time entry not found: " + GUID);
+            return noError;
+        }
+
+        if (isTimeEntryLocked(te)) {
+            return logAndDisplayUserTriedEditingLockedEntry();
+        }
+
+        Poco::LocalDateTime start(Poco::Timestamp::fromEpochTime(startAt));
+        std::string s = Poco::DateTimeFormatter::format(start, Poco::DateTimeFormat::ISO8601_FORMAT);
+        te->SetStartUserInput(s, GetKeepEndTimeFixed());
+        return displayError(save(true));
+    }
+}
 
 error Context::SetTimeEntryStart(
     const std::string GUID,
@@ -3052,6 +3079,34 @@ error Context::SetTimeEntryStart(
     te->SetStartUserInput(s, GetKeepEndTimeFixed());
 
     return displayError(save(true));
+}
+
+error Context::SetTimeEntryStop(const std::string GUID,
+                                const Poco::Int64 endAt) {
+    TimeEntry *te = nullptr;
+
+    {
+        Poco::Mutex::ScopedLock lock(user_m_);
+        if (!user_) {
+            logger().warning("Cannot change stop time, user logged out");
+            return noError;
+        }
+        te = user_->related.TimeEntryByGUID(GUID);
+
+        if (!te) {
+            logger().warning("Time entry not found: " + GUID);
+            return noError;
+        }
+
+        if (isTimeEntryLocked(te)) {
+            return logAndDisplayUserTriedEditingLockedEntry();
+        }
+
+        Poco::LocalDateTime stop(Poco::Timestamp::fromEpochTime(endAt));
+        std::string s = Poco::DateTimeFormatter::format(stop, Poco::DateTimeFormat::ISO8601_FORMAT);
+        te->SetStopUserInput(s);
+        return displayError(save(true));
+    }
 }
 
 error Context::SetTimeEntryStop(

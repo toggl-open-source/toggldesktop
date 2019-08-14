@@ -8,7 +8,15 @@
 
 import Cocoa
 
+protocol TimelineTimeEntryMenuDelegate: class {
+
+    func shouldChangeFirstEntryStopTime()
+    func shouldChangeLastEntryStartTime()
+}
+
 final class TimelineTimeEntryMenu: NSMenu {
+
+    weak var menuDelegate: TimelineTimeEntryMenuDelegate?
 
     init() {
         super.init(title: "Menu")
@@ -35,10 +43,10 @@ extension TimelineTimeEntryMenu {
     }
 
     @objc private func changeFirstEntryStopTimeOnTap() {
-
+        menuDelegate?.shouldChangeFirstEntryStopTime()
     }
 
     @objc private func changeLastEntryStartTimeOnTap() {
-
+        menuDelegate?.shouldChangeLastEntryStartTime()
     }
 }

@@ -12,6 +12,8 @@ protocol TimelineTimeEntryCellDelegate: class {
 
     func timeEntryCellMouseDidEntered(_ sender: TimelineTimeEntryCell)
     func timeEntryCellMouseDidExited(_ sender: TimelineTimeEntryCell)
+    func timeEntryCellShouldChangeFirstEntryStopTime(for entry: TimelineTimeEntry, sender: TimelineTimeEntryCell)
+    func timeEntryCellShouldChangeLastEntryStartTime(for entry: TimelineTimeEntry, sender: TimelineTimeEntryCell)
 }
 
 final class CursorView: NSView {
@@ -105,9 +107,12 @@ final class TimelineTimeEntryCell: NSCollectionViewItem {
     }
 }
 
+// MARK: Private
+
 extension TimelineTimeEntryCell {
 
     fileprivate func initCommon() {
+        timeEntryMenu.menuDelegate = self
         if let cursorView = view as? CursorView {
             cursorView.cursor = NSCursor.pointingHand
         }
@@ -118,5 +123,20 @@ extension TimelineTimeEntryCell {
         self.trackingArea = tracking
         backgroundView.addTrackingArea(tracking)
         backgroundView.updateTrackingAreas()
+    }
+}
+
+// MARK: TimelineTimeEntryMenuDelegate
+
+extension TimelineTimeEntryCell: TimelineTimeEntryMenuDelegate {
+
+    func shouldChangeFirstEntryStopTime() {
+        guard let timeEntry = timeEntry else { return }
+        delegate?.timeEntryCellShouldChangeFirstEntryStopTime(for: timeEntry, sender: self)
+    }
+
+    func shouldChangeLastEntryStartTime() {
+        guard let timeEntry = timeEntry else { return }
+        delegate?.timeEntryCellShouldChangeLastEntryStartTime(for: timeEntry, sender: self)
     }
 }

@@ -755,12 +755,28 @@ bool_t toggl_set_time_entry_start(
            SetTimeEntryStart(to_string(guid), to_string(value));
 }
 
+bool_t toggl_set_time_entry_start_timestamp(
+    void *context,
+    const char_t *guid,
+    const int64_t start) {
+    return toggl::noError == app(context)->
+           SetTimeEntryStart(to_string(guid), start);
+}
+
 bool_t toggl_set_time_entry_end(
     void *context,
     const char_t *guid,
     const char_t *value) {
     return toggl::noError == app(context)->
            SetTimeEntryStop(to_string(guid), to_string(value));
+}
+
+bool_t toggl_set_time_entry_end_timestamp(
+    void *context,
+    const char_t *guid,
+    const int64_t end) {
+    return toggl::noError == app(context)->
+           SetTimeEntryStop(to_string(guid), end);
 }
 
 bool_t toggl_set_time_entry_tags(

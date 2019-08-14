@@ -12,7 +12,8 @@ class TimelineBaseTimeEntry {
 
     let start: TimeInterval
     let end: TimeInterval
-    private(set) var col: Int = 0
+    var group: Int = -1 // Group of overlap entries -> Help to resolve the overlap later
+    var col: Int = 0
     var isOverlap: Bool {
         return col > 0
     }
@@ -24,10 +25,6 @@ class TimelineBaseTimeEntry {
 
     func timechunk() -> TimeChunk {
         return TimeChunk(start: start, end: end)
-    }
-
-    func update(_ col: Int) {
-        self.col = col
     }
 
     func isIntersected(with entry: TimelineBaseTimeEntry) -> Bool {

@@ -125,12 +125,28 @@ void *ctx;
 							   [startTime UTF8String]);
 }
 
+- (void)updateTimeEntryWithStartAtTimestamp:(NSTimeInterval)timestamp
+									   guid:(NSString *)guid
+{
+	toggl_set_time_entry_start_timestamp(ctx,
+										 [guid UTF8String],
+										 timestamp);
+}
+
 - (void)updateTimeEntryWithEndTime:(NSString *)endTime
 							  guid:(NSString *)guid
 {
 	toggl_set_time_entry_end(ctx,
 							 [guid UTF8String],
 							 [endTime UTF8String]);
+}
+
+- (void)updateTimeEntryWithEndAtTimestamp:(NSTimeInterval)timestamp
+									 guid:(NSString *)guid
+{
+	toggl_set_time_entry_end_timestamp(ctx,
+									   [guid UTF8String],
+									   timestamp);
 }
 
 - (void)deleteTimeEntryImte:(TimeEntryViewItem *)item

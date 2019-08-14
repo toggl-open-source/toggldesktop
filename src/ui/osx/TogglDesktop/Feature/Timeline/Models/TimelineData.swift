@@ -87,6 +87,32 @@ class TimelineData {
             return activities[safe: indexPath.item]?.timechunk()
         }
     }
+
+    func changeFirstEntryStopTime(at entry: TimelineTimeEntry) {
+        let group = getAllConflictedTimeEntries(at: entry)
+
+        // If there is only 1 -> Skip
+        guard group.count > 1,
+            let firstEntry = group.first,
+            let started = entry.timeEntry.started else { return }
+
+        // Set the end time as a start time of selected entry
+        DesktopLibraryBridge.shared().updateTimeEntryWithEnd(atTimestamp: started.timeIntervalSince1970 - 1,
+                                                             guid: firstEntry.timeEntry.guid)
+    }
+
+    func changeLastEntryStartTime(at entry: TimelineTimeEntry) {
+        let group = getAllConflictedTimeEntries(at: entry)
+
+        // If there is only 1 -> Skip
+        guard group.count > 1,
+            let firstEntry = group.first,
+            let endAt = firstEntry.timeEntry.ended else { return }
+
+        // Set the start time as a stop time of First entry
+        DesktopLibraryBridge.shared().updateTimeEntryWithStart(atTimestamp: endAt.timeIntervalSince1970 + 1,
+                                                               guid: entry.timeEntry.guid)
+    }
 }
 
 // MARK: Private
@@ -108,6 +134,7 @@ extension TimelineData {
 
     fileprivate func calculateColumnsPositionForTimeline() {
         var calculatedEntries: [TimelineBaseTimeEntry] = []
+        var group = -1
         for entry in timeEntries {
 
             // Check if this time entry intersect with previous one
@@ -130,8 +157,15 @@ extension TimelineData {
                 }
             } while isOverlap
 
+            // Group of entry
+            // All overlap entries are same group
+            if col == 0 {
+                group += 1
+            }
+
             // Exit the loop
-            entry.update(col)
+            entry.col = col
+            entry.group = group
             calculatedEntries.append(entry)
         }
 
@@ -140,8 +174,14 @@ extension TimelineData {
         if timeEntries.count >= 2 {
             var emptyTimeEntries: [TimelineBaseTimeEntry] = []
             for i in 0..<(timeEntries.count - 1) {
-                let current = timeEntries[i]
+                var current = timeEntries[i]
                 let next = timeEntries[i+1]
+
+                // Get the first column
+                if let previousCurrent = timeEntries[safe: i - 1], current.end < previousCurrent.end {
+                    current = previousCurrent
+                }
+
                 if (next.start - current.end) >= 600.0 { // Gap is 10 mins
                     let emptyTimeEntry = TimelineBaseTimeEntry(start: current.end, end: next.start, offset: 60.0)
                     emptyTimeEntries.append(emptyTimeEntry)
@@ -151,5 +191,17 @@ extension TimelineData {
             // Add
             timeEntries.append(contentsOf: emptyTimeEntries)
         }
+    }
+
+    fileprivate func getAllConflictedTimeEntries(at entry: TimelineTimeEntry) -> [TimelineTimeEntry] {
+        // Get all conflicted entry in same group
+        return timeEntries
+            .filter { $0 is TimelineTimeEntry && $0.group == entry.group }
+            .sorted { (lhs, rhs) -> Bool in
+                return lhs.col <= rhs.col
+            }
+            .compactMap { (entry) -> TimelineTimeEntry? in
+                return entry as? TimelineTimeEntry
+            }
     }
 }
