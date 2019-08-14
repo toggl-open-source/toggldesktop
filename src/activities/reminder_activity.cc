@@ -7,6 +7,16 @@
 
 namespace toggl {
 
+ReminderActivity::ReminderActivity(Context *context)
+    : toggl::Activity(context)
+{
+
+}
+
+void ReminderActivity::work() {
+    reminderActivity();
+}
+
 void ReminderActivity::resetLastReminderTime() {
     last_tracking_reminder_time_ = time(0);
 }

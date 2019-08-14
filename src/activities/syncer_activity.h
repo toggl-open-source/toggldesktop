@@ -24,6 +24,8 @@ class TimeEntry;
 
 class SyncerActivity : public toggl::Activity {
 public:
+    SyncerActivity(Context *context);
+
     void work() override;
 
     void syncerActivity();
@@ -48,10 +50,7 @@ private:
     error pullWorkspacePreferences(TogglClient* toggl_client, Workspace* workspace, std::string* json);
     error pullUserPreferences(TogglClient* toggl_client);
 
-    Context *context_;
-
     Poco::Mutex syncer_m_;
-    Poco::Activity<SyncerActivity> activity_;
 
     bool trigger_push_ { false };
     bool trigger_sync_ { false };

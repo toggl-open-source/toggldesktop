@@ -4,6 +4,9 @@
 namespace toggl {
 
 toggl::ActivityManager::ActivityManager(toggl::Context *context)
+    : reminder_(new ReminderActivity(context))
+    , uiUpdater_(new UiUpdaterActivity(context))
+    , syncer_(new SyncerActivity(context))
 {
 
 }
@@ -42,6 +45,10 @@ ReminderActivity *ActivityManager::reminder() {
 
 SyncerActivity *toggl::ActivityManager::syncer() {
     return syncer_;
+}
+
+UiUpdaterActivity *ActivityManager::uiUpdater() {
+    return uiUpdater_;
 }
 
 };

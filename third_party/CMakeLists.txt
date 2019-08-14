@@ -7,6 +7,9 @@ set(BUGSNAG_INCLUDE_DIR
     ${CMAKE_CURRENT_SOURCE_DIR}/bugsnag-qt
     PARENT_SCOPE
 )
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTORCC ON)
 
 # And include dirs
 include_directories(

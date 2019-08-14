@@ -596,28 +596,7 @@ class Context : public TimelineDatasource {
 
     error applySettingsSaveResultToUI(const error err);
 
-    error pullAllUserData(TogglClient *https_client);
-    error pullChanges(TogglClient *https_client);
-    error pullUserPreferences(
-        TogglClient* toggl_client);
 
-    error pushChanges(
-        TogglClient *https_client,
-        bool *had_something_to_push);
-    error pushClients(
-        std::vector<Client *> clients,
-        std::string api_token,
-        TogglClient toggl_client);
-    error pushProjects(
-        std::vector<Project *> projects,
-        std::vector<Client *> clients,
-        std::string api_token,
-        TogglClient toggl_client);
-    error pushEntries(
-        std::map<std::string, BaseModel *> models,
-        std::vector<TimeEntry *> time_entries,
-        std::string api_token,
-        TogglClient toggl_client);
 
     bool isTimeEntryLocked(TimeEntry* te);
     bool isTimeLockedInWorkspace(time_t t, Workspace* ws);
@@ -625,12 +604,6 @@ class Context : public TimelineDatasource {
     bool canChangeProjectTo(TimeEntry* te, Project* p);
 
     error logAndDisplayUserTriedEditingLockedEntry();
-
-    error pullWorkspaces(TogglClient* toggl_client);
-
-    error pullWorkspacePreferences(TogglClient* https_client);
-    error pullWorkspacePreferences(TogglClient* https_client,
-                                   Workspace *workspace, std::string* json);
 
     error pushObmAction();
 

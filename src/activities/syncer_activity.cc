@@ -15,6 +15,16 @@
 
 namespace toggl {
 
+SyncerActivity::SyncerActivity(Context *context)
+    : toggl::Activity(context)
+{
+
+}
+
+void SyncerActivity::work() {
+    syncerActivity();
+}
+
 void SyncerActivity::syncerActivity() {
     while (true) {
         // Sleep in increments for faster shutdown.
@@ -106,19 +116,21 @@ void SyncerActivity::sync() {
 }
 
 error SyncerActivity::pullAllUserData(TogglClient *toggl_client) {
-
     std::string api_token("");
     Poco::UInt64 since(0);
+    bool finished = false;
     context_->UserVisit([&](User *user_){
         if (!user_) {
             logger().warning("cannot pull user data when logged out");
-            return noError;
+            finished = true;
         }
         api_token = user_->APIToken();
         if (user_->HasValidSinceDate()) {
             since = user_->Since();
         }
     });
+    if (finished)
+        return noError;
 
     if (api_token.empty()) {
         return error("cannot pull user data without API token");
@@ -139,16 +151,18 @@ error SyncerActivity::pullAllUserData(TogglClient *toggl_client) {
             return err;
         }
 
+        err = noError;
         context_->UserVisit([&](User *user_){
             if (!user_) {
-                return error("cannot load user data when logged out");
+                err = error("cannot load user data when logged out");
+                return;
             }
             auto running_entry = user_->RunningTimeEntry();
 
-            error err = user_->LoadUserAndRelatedDataFromJSONString(user_data_json, !since);
+            err = user_->LoadUserAndRelatedDataFromJSONString(user_data_json, !since);
 
             if (err != noError) {
-                return err;
+                return;
             }
 
             // OVERHAUL TODO
@@ -160,6 +174,8 @@ error SyncerActivity::pullAllUserData(TogglClient *toggl_client) {
                 context_->resetLastTrackingReminderTime();
             }
         });
+        if (err != noError)
+            return err;
 
         err = pullWorkspaces(toggl_client);
         if (err != noError) {

@@ -81,6 +81,7 @@ Context::Context(const std::string app_name, const std::string app_version)
 , trigger_sync_(false)
 , trigger_push_(false)
 , quit_(false)
+, activity_manager_(new ActivityManager(this))
 , update_path_("")
 , overlay_visible_(false) {
     if (!Poco::URIStreamOpener::defaultOpener().supportsScheme("http")) {
@@ -944,6 +945,7 @@ error Context::displayError(const error err) {
                   || (err.find(kForbiddenError) != std::string::npos))) {
         TogglClient toggl_client(UI());
 
+        /* OVERHAUL TODO
         error err = pullWorkspaces(&toggl_client);
         if (err != noError) {
             // Check for missing WS error and
@@ -953,6 +955,7 @@ error Context::displayError(const error err) {
                 return noError;
             }
         }
+        */
     }
 
     return UI()->DisplayError(err);
@@ -2183,6 +2186,7 @@ error Context::Login(
             return displayError(err);
         }
 
+        /* OVERHAUL TODO
         err = pullWorkspacePreferences(&client);
         if (err != noError) {
             return displayError(err);
@@ -2192,6 +2196,7 @@ error Context::Login(
         if (err != noError) {
             return displayError(err);
         }
+        */
 
         {
             Poco::Mutex::ScopedLock lock(user_m_);

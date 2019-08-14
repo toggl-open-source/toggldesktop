@@ -12,11 +12,11 @@ class TimeEntry;
 
 class ReminderActivity : public toggl::Activity {
 public:
+    ReminderActivity(Context *context);
+
     void work() override;
 
     void resetLastReminderTime();
-
-    ReminderActivity(Context *context);
 
 private:
     void checkReminders();
@@ -25,10 +25,7 @@ private:
     void displayPomodoro();
     void displayPomodoroBreak();
 
-    Context *context_ { nullptr };
-
     Poco::Mutex reminder_m_;
-    Poco::Activity<ReminderActivity> activity_;
 
     Poco::UInt64 last_tracking_reminder_time_;
     Poco::UInt64 last_pomodoro_reminder_time_;
@@ -36,7 +33,7 @@ private:
 
     // OVERHAUL_TODO - this SHOULD NOT be here, all time entries are protected with a mutex
     // currently solved with a hack (accessing the pointer directly)
-    TimeEntry *pomodoro_break_entry_;
+    TimeEntry *pomodoro_break_entry_ { nullptr };
 };
 
 };

@@ -6,12 +6,22 @@
 
 namespace toggl {
 
+UiUpdaterActivity::UiUpdaterActivity(Context *context)
+    : toggl::Activity(context)
+{
+
+}
+
+void UiUpdaterActivity::work() {
+    uiUpdaterActivity();
+}
+
 void UiUpdaterActivity::uiUpdaterActivity() {
     std::string running_time("");
-    while (!ui_updater_.isStopped()) {
+    while (!activity_.isStopped()) {
         // Sleep in increments for faster shutdown.
         for (unsigned int i = 0; i < 4*10; i++) {
-            if (ui_updater_.isStopped()) {
+            if (activity_.isStopped()) {
                 return;
             }
             Poco::Thread::sleep(250);

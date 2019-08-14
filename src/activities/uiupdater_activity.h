@@ -11,16 +11,14 @@ class Context;
 
 class UiUpdaterActivity : public toggl::Activity {
 public:
-    void work() override;
     UiUpdaterActivity(Context *context);
+
+    void work() override;
 
     void uiUpdaterActivity();
 
 private:
-    Context *context_ { nullptr };
-
     Poco::Mutex ui_updater_m_;
-    Poco::Activity<UiUpdaterActivity> ui_updater_;
 };
 
 }
