@@ -7,7 +7,6 @@
 //
 
 import Cocoa
-import Carbon.HIToolbox
 
 protocol AddTagButtonDelegate: class {
     func shouldOpenTagAutoComplete(with text: String)
@@ -18,9 +17,7 @@ final class AddTagButton: NSTextField {
     // MARK: Variables
 
     weak var keyboardDelegate: AddTagButtonDelegate?
-    private let ignoreKeys = [kVK_Tab,kVK_Space] // Tab and space
-
-    var cursor: NSCursor? {
+    private var cursor: NSCursor? {
         didSet {
             resetCursorRects()
         }
@@ -28,6 +25,7 @@ final class AddTagButton: NSTextField {
 
     override func awakeFromNib() {
         super.awakeFromNib()
+        delegate = self
         cursor = .pointingHand
     }
 
@@ -41,21 +39,30 @@ final class AddTagButton: NSTextField {
         }
     }
 
-    override func keyDown(with event: NSEvent) {
-        super.keyDown(with: event)
-
-        // Open the auto complete if the key isn't ignore key
-        guard let characters = event.characters, !ignoreKeys.contains(Int(event.keyCode)) else { return }
-
-        // Replace "enter" with empty string if need
-        let text = characters == "\r" ? "" : characters
-
-        // Notify
-        keyboardDelegate?.shouldOpenTagAutoComplete(with: text)
-    }
-
     override func mouseDown(with event: NSEvent) {
         super.mouseDown(with: event)
         keyboardDelegate?.shouldOpenTagAutoComplete(with: "")
+    }
+}
+
+// MARK: NSTextFieldDelegate
+
+extension AddTagButton: NSTextFieldDelegate {
+
+    func controlTextDidChange(_ obj: Notification) {
+
+        // Send the current key to auto complete
+        keyboardDelegate?.shouldOpenTagAutoComplete(with: stringValue)
+
+        // Reset to empty
+        stringValue = ""
+    }
+
+    func control(_ control: NSControl, textView: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
+        if (commandSelector == #selector(NSResponder.insertNewline(_:))) {
+            keyboardDelegate?.shouldOpenTagAutoComplete(with: "")
+            return true
+        }
+        return false
     }
 }
