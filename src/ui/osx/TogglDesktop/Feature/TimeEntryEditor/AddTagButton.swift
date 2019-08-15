@@ -7,31 +7,62 @@
 //
 
 import Cocoa
-import Carbon.HIToolbox
 
 protocol AddTagButtonDelegate: class {
     func shouldOpenTagAutoComplete(with text: String)
 }
 
-final class AddTagButton: NSButton {
+final class AddTagButton: NSTextField {
 
     // MARK: Variables
 
-    weak var delegate: AddTagButtonDelegate?
-    private let ignoreKeys = [kVK_Tab,kVK_Space] // Tab and space
+    weak var keyboardDelegate: AddTagButtonDelegate?
+    private var cursor: NSCursor? {
+        didSet {
+            resetCursorRects()
+        }
+    }
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        delegate = self
+        cursor = .pointingHand
+    }
 
     // MARK: Override
 
-    override func keyDown(with event: NSEvent) {
-        super.keyDown(with: event)
+    override func resetCursorRects() {
+        if let cursor = cursor {
+            addCursorRect(bounds, cursor: cursor)
+        } else {
+            super.resetCursorRects()
+        }
+    }
 
-        // Open the auto complete if the key isn't ignore key
-        guard let characters = event.characters, !ignoreKeys.contains(Int(event.keyCode)) else { return }
+    override func mouseDown(with event: NSEvent) {
+        super.mouseDown(with: event)
+        keyboardDelegate?.shouldOpenTagAutoComplete(with: "")
+    }
+}
 
-        // Replace "enter" with empty string if need
-        let text = characters == "\r" ? "" : characters
+// MARK: NSTextFieldDelegate
 
-        // Notify
-        delegate?.shouldOpenTagAutoComplete(with: text)
+extension AddTagButton: NSTextFieldDelegate {
+
+    func controlTextDidChange(_ obj: Notification) {
+
+        // Send the current key to auto complete
+        keyboardDelegate?.shouldOpenTagAutoComplete(with: stringValue)
+
+        // Reset to empty
+        stringValue = ""
+    }
+
+    func control(_ control: NSControl, textView: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
+        if (commandSelector == #selector(NSResponder.insertNewline(_:))) {
+            keyboardDelegate?.shouldOpenTagAutoComplete(with: "")
+            return true
+        }
+        return false
     }
 }

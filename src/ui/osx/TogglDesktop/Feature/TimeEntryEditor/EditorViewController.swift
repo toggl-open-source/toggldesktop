@@ -14,7 +14,6 @@ final class EditorViewController: NSViewController {
     private struct Constans {
 
         static let TokenViewSpacing: CGFloat = 5.0
-        static let MaximumTokenWidth: CGFloat = 260.0
         static let TimerNotification = NSNotification.Name("TimerForRunningTimeEntryOnTicket")
     }
 
@@ -31,6 +30,7 @@ final class EditorViewController: NSViewController {
     @IBOutlet weak var tagAutoCompleteContainerView: NSBox!
     @IBOutlet weak var tagStackView: NSStackView!
     @IBOutlet weak var tagAddButton: AddTagButton!
+    @IBOutlet weak var tagAddContainerView: NSBox!
     @IBOutlet weak var tagInputContainerView: NSBox!
     @IBOutlet weak var datePickerView: KeyboardDatePicker!
     @IBOutlet weak var dayNameButton: CursorButton!
@@ -109,15 +109,6 @@ final class EditorViewController: NSViewController {
 
     @IBAction func closeBtnOnTap(_ sender: Any) {
         DesktopLibraryBridge.shared().togglEditor()
-    }
-
-    @IBAction func tagAddButtonOnTap(_ sender: Any) {
-
-        // Reset
-        tagTextField.resetText()
-
-        // Expand the view
-        openTagAutoCompleteView()
     }
 
     @IBAction func nextDateBtnOnTap(_ sender: Any) {
@@ -235,7 +226,7 @@ extension EditorViewController {
         }
 
         // Tags
-        tagAddButton.delegate = self
+        tagAddButton.keyboardDelegate = self
     }
 
     fileprivate func initDatasource() {
@@ -287,7 +278,7 @@ extension EditorViewController {
         // Remove all
         tagStackView.subviews.forEach { $0.removeFromSuperview() }
         tagStackView.isHidden = true
-        tagAddButton.isHidden = false
+        tagAddContainerView.isHidden = false
         tagInputContainerView.borderColor = borderColor
 
         // Add tag token if need
@@ -298,6 +289,7 @@ extension EditorViewController {
             tagDatasource.updateSelectedTags(tags)
 
             // Render tag token
+            var visibleTokens: [TagTokenView] = []
             let tokens = tags.map { tag -> TagTokenView in
                 let view = TagTokenView.xibView() as TagTokenView
                 view.delegate = self
@@ -306,37 +298,40 @@ extension EditorViewController {
             }
 
             var width: CGFloat = 0
+            let maximunWidth = view.frame.size.width - 20
             for token in tokens {
                 let size = token.fittingSize
                 width += size.width + Constans.TokenViewSpacing
-                if width <= Constans.MaximumTokenWidth {
+                if width <= maximunWidth {
                     tagStackView.addArrangedSubview(token)
+                    visibleTokens.append(token)
                 } else {
                     let moreToken = TagTokenView.xibView() as TagTokenView
                     moreToken.delegate = self
                     moreToken.render(Tag.moreTag)
                     tagStackView.addArrangedSubview(moreToken)
+                    visibleTokens.append(moreToken)
                     break
                 }
             }
 
             tagStackView.isHidden = false
-            tagAddButton.isHidden = true
+            tagAddContainerView.isHidden = true
             tagInputContainerView.borderColor = .clear
 
             // Tab to move to each Token View
-            projectTextField.nextKeyView = tokens.first?.actionButton
+            projectTextField.nextKeyView = visibleTokens.first?.actionButton
 
             // Connection
-            var currentToken = tokens.first?.actionButton
-            for i in 1..<tokens.count {
-                let token = tokens[i]
+            var currentToken = visibleTokens.first?.actionButton
+            for i in 1..<visibleTokens.count {
+                let token = visibleTokens[i]
                 currentToken?.nextKeyView = token.actionButton
                 currentToken = token.actionButton
             }
 
             // Last to duration
-            tokens.last?.actionButton.nextKeyView = durationTextField
+            visibleTokens.last?.actionButton.nextKeyView = durationTextField
         }
         else {
             tagDatasource.updateSelectedTags([])
