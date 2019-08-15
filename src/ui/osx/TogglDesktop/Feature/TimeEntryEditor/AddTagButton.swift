@@ -13,14 +13,33 @@ protocol AddTagButtonDelegate: class {
     func shouldOpenTagAutoComplete(with text: String)
 }
 
-final class AddTagButton: NSButton {
+final class AddTagButton: NSTextField {
 
     // MARK: Variables
 
-    weak var delegate: AddTagButtonDelegate?
+    weak var keyboardDelegate: AddTagButtonDelegate?
     private let ignoreKeys = [kVK_Tab,kVK_Space] // Tab and space
 
+    var cursor: NSCursor? {
+        didSet {
+            resetCursorRects()
+        }
+    }
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        cursor = .pointingHand
+    }
+
     // MARK: Override
+
+    override func resetCursorRects() {
+        if let cursor = cursor {
+            addCursorRect(bounds, cursor: cursor)
+        } else {
+            super.resetCursorRects()
+        }
+    }
 
     override func keyDown(with event: NSEvent) {
         super.keyDown(with: event)
@@ -32,6 +51,11 @@ final class AddTagButton: NSButton {
         let text = characters == "\r" ? "" : characters
 
         // Notify
-        delegate?.shouldOpenTagAutoComplete(with: text)
+        keyboardDelegate?.shouldOpenTagAutoComplete(with: text)
+    }
+
+    override func mouseDown(with event: NSEvent) {
+        super.mouseDown(with: event)
+        keyboardDelegate?.shouldOpenTagAutoComplete(with: "")
     }
 }

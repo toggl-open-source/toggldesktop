@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14490.70"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -24,7 +24,8 @@
                 <outlet property="projectDotImageView" destination="gFc-aw-iMX" id="BEl-Tj-c8T"/>
                 <outlet property="projectTextField" destination="Doe-dQ-82A" id="cgo-cM-Mbh"/>
                 <outlet property="startAtTextField" destination="bCC-ON-SgR" id="cIO-X2-PfF"/>
-                <outlet property="tagAddButton" destination="fzH-q2-m3a" id="Z2u-zq-e9e"/>
+                <outlet property="tagAddButton" destination="TEs-AY-h6J" id="1vQ-mB-CXa"/>
+                <outlet property="tagAddContainerView" destination="ybL-Oh-zfH" id="8YX-uR-u51"/>
                 <outlet property="tagAutoCompleteContainerView" destination="mUe-Xn-xvP" id="cvg-Ii-7IT"/>
                 <outlet property="tagInputContainerView" destination="sts-eu-78s" id="Xu1-2S-B1m"/>
                 <outlet property="tagStackView" destination="qgG-HS-MvE" id="aDQ-6D-KtU"/>
@@ -130,61 +131,60 @@
                                 <color key="borderColor" name="upload-border-color"/>
                                 <color key="fillColor" name="editor-background-color"/>
                             </box>
-                            <box boxType="custom" cornerRadius="8" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="sts-eu-78s">
+                            <box boxType="custom" borderType="none" borderWidth="0.0" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="sts-eu-78s">
                                 <rect key="frame" x="10" y="227" width="254" height="30"/>
                                 <view key="contentView" id="GjA-gG-Fhy">
-                                    <rect key="frame" x="1" y="1" width="252" height="28"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="254" height="30"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <stackView hidden="YES" distribution="equalSpacing" orientation="horizontal" alignment="centerY" spacing="5" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qgG-HS-MvE">
-                                            <rect key="frame" x="0.0" y="0.0" width="0.0" height="28"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="0.0" height="30"/>
                                         </stackView>
-                                        <customView translatesAutoresizingMaskIntoConstraints="NO" id="Scx-li-Ewv">
-                                            <rect key="frame" x="0.0" y="0.0" width="252" height="28"/>
-                                            <subviews>
-                                                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="fzH-q2-m3a" customClass="AddTagButton" customModule="TogglDesktop" customModuleProvider="target">
-                                                    <rect key="frame" x="0.0" y="0.0" width="252" height="28"/>
-                                                    <buttonCell key="cell" type="bevel" title="Add tags" bezelStyle="rounded" alignment="left" imageScaling="proportionallyDown" inset="2" id="FrN-5J-6rF" customClass="VerticallyCenteredButtonCell" customModule="TogglDesktop" customModuleProvider="target">
-                                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                        <font key="font" metaFont="system" size="14"/>
-                                                        <userDefinedRuntimeAttributes>
-                                                            <userDefinedRuntimeAttribute type="number" keyPath="focusRingCornerRadius">
-                                                                <real key="value" value="8"/>
-                                                            </userDefinedRuntimeAttribute>
-                                                            <userDefinedRuntimeAttribute type="number" keyPath="leftPadding">
-                                                                <real key="value" value="10"/>
-                                                            </userDefinedRuntimeAttribute>
-                                                        </userDefinedRuntimeAttributes>
-                                                    </buttonCell>
-                                                    <connections>
-                                                        <action selector="tagAddButtonOnTap:" target="-2" id="Bfd-bb-wxi"/>
-                                                    </connections>
-                                                </button>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="fzH-q2-m3a" firstAttribute="leading" secondItem="Scx-li-Ewv" secondAttribute="leading" id="2Ap-96-clS"/>
-                                                <constraint firstAttribute="bottom" secondItem="fzH-q2-m3a" secondAttribute="bottom" id="7uf-bd-HJg"/>
-                                                <constraint firstItem="fzH-q2-m3a" firstAttribute="top" secondItem="Scx-li-Ewv" secondAttribute="top" id="Z9s-pO-4Gv"/>
-                                                <constraint firstAttribute="trailing" secondItem="fzH-q2-m3a" secondAttribute="trailing" id="vNW-Jk-62b"/>
-                                            </constraints>
-                                        </customView>
+                                        <box boxType="custom" cornerRadius="8" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="ybL-Oh-zfH">
+                                            <rect key="frame" x="0.0" y="0.0" width="254" height="30"/>
+                                            <view key="contentView" id="MVO-M3-O5k">
+                                                <rect key="frame" x="1" y="1" width="252" height="28"/>
+                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                <subviews>
+                                                    <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="TEs-AY-h6J" customClass="AddTagButton" customModule="TogglDesktop" customModuleProvider="target">
+                                                        <rect key="frame" x="-2" y="0.0" width="256" height="28"/>
+                                                        <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" alignment="left" placeholderString="Add tags" usesSingleLineMode="YES" id="yAk-86-67A" customClass="VerticallyCenteredTextFieldCell" customModule="TogglDesktop" customModuleProvider="target">
+                                                            <font key="font" metaFont="system" size="14"/>
+                                                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="number" keyPath="focusRingCornerRadius">
+                                                                    <real key="value" value="8"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                            </userDefinedRuntimeAttributes>
+                                                        </textFieldCell>
+                                                    </textField>
+                                                </subviews>
+                                                <constraints>
+                                                    <constraint firstItem="TEs-AY-h6J" firstAttribute="top" secondItem="MVO-M3-O5k" secondAttribute="top" id="Jt7-e4-xh1"/>
+                                                    <constraint firstAttribute="bottom" secondItem="TEs-AY-h6J" secondAttribute="bottom" id="KnR-k3-bmx"/>
+                                                    <constraint firstAttribute="trailing" secondItem="TEs-AY-h6J" secondAttribute="trailing" id="Wx5-3Z-uD7"/>
+                                                    <constraint firstItem="TEs-AY-h6J" firstAttribute="leading" secondItem="MVO-M3-O5k" secondAttribute="leading" id="wxw-CB-9h9"/>
+                                                </constraints>
+                                            </view>
+                                            <color key="borderColor" name="upload-border-color"/>
+                                            <color key="fillColor" name="editor-background-color"/>
+                                        </box>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstAttribute="trailing" secondItem="Scx-li-Ewv" secondAttribute="trailing" id="7uN-c2-g31"/>
+                                        <constraint firstAttribute="bottom" secondItem="ybL-Oh-zfH" secondAttribute="bottom" id="Buq-XW-8VL"/>
                                         <constraint firstAttribute="bottom" secondItem="qgG-HS-MvE" secondAttribute="bottom" id="JCc-fX-syf"/>
+                                        <constraint firstItem="ybL-Oh-zfH" firstAttribute="top" secondItem="GjA-gG-Fhy" secondAttribute="top" id="LsE-we-qs1"/>
                                         <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="qgG-HS-MvE" secondAttribute="trailing" id="N5a-Q5-H8g"/>
-                                        <constraint firstAttribute="bottom" secondItem="Scx-li-Ewv" secondAttribute="bottom" id="W8T-By-CMT"/>
-                                        <constraint firstItem="Scx-li-Ewv" firstAttribute="top" secondItem="GjA-gG-Fhy" secondAttribute="top" id="d78-9b-S6x"/>
                                         <constraint firstItem="qgG-HS-MvE" firstAttribute="leading" secondItem="GjA-gG-Fhy" secondAttribute="leading" id="f5V-sW-lys"/>
-                                        <constraint firstItem="Scx-li-Ewv" firstAttribute="leading" secondItem="GjA-gG-Fhy" secondAttribute="leading" id="fVD-Dt-0Bg"/>
+                                        <constraint firstItem="ybL-Oh-zfH" firstAttribute="leading" secondItem="GjA-gG-Fhy" secondAttribute="leading" id="gWH-oa-hvY"/>
+                                        <constraint firstAttribute="trailing" secondItem="ybL-Oh-zfH" secondAttribute="trailing" id="oQl-7M-T9h"/>
                                         <constraint firstItem="qgG-HS-MvE" firstAttribute="top" secondItem="GjA-gG-Fhy" secondAttribute="top" id="yEs-m5-WeO"/>
                                     </constraints>
                                 </view>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="AnT-nB-TSC"/>
                                 </constraints>
-                                <color key="borderColor" name="upload-border-color"/>
-                                <color key="fillColor" name="editor-background-color"/>
                             </box>
                             <box boxType="custom" cornerRadius="8" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="Qo9-rw-PRz">
                                 <rect key="frame" x="10" y="153" width="80" height="30"/>

@@ -31,6 +31,7 @@ final class EditorViewController: NSViewController {
     @IBOutlet weak var tagAutoCompleteContainerView: NSBox!
     @IBOutlet weak var tagStackView: NSStackView!
     @IBOutlet weak var tagAddButton: AddTagButton!
+    @IBOutlet weak var tagAddContainerView: NSBox!
     @IBOutlet weak var tagInputContainerView: NSBox!
     @IBOutlet weak var datePickerView: KeyboardDatePicker!
     @IBOutlet weak var dayNameButton: CursorButton!
@@ -109,15 +110,6 @@ final class EditorViewController: NSViewController {
 
     @IBAction func closeBtnOnTap(_ sender: Any) {
         DesktopLibraryBridge.shared().togglEditor()
-    }
-
-    @IBAction func tagAddButtonOnTap(_ sender: Any) {
-
-        // Reset
-        tagTextField.resetText()
-
-        // Expand the view
-        openTagAutoCompleteView()
     }
 
     @IBAction func nextDateBtnOnTap(_ sender: Any) {
@@ -235,7 +227,7 @@ extension EditorViewController {
         }
 
         // Tags
-        tagAddButton.delegate = self
+        tagAddButton.keyboardDelegate = self
     }
 
     fileprivate func initDatasource() {
@@ -287,7 +279,7 @@ extension EditorViewController {
         // Remove all
         tagStackView.subviews.forEach { $0.removeFromSuperview() }
         tagStackView.isHidden = true
-        tagAddButton.isHidden = false
+        tagAddContainerView.isHidden = false
         tagInputContainerView.borderColor = borderColor
 
         // Add tag token if need
@@ -321,7 +313,7 @@ extension EditorViewController {
             }
 
             tagStackView.isHidden = false
-            tagAddButton.isHidden = true
+            tagAddContainerView.isHidden = true
             tagInputContainerView.borderColor = .clear
 
             // Tab to move to each Token View
