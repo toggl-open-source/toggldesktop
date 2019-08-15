@@ -621,10 +621,10 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
         std::string *user_data_json,
         const uint64_t country_id);
     static error me(TogglClient *https_client,
-        const std::string email,
-        const std::string password,
-        std::string *user_data,
-        const Poco::Int64 since);
+                    const std::string email,
+                    const std::string password,
+                    std::string *user_data,
+                    const Poco::Int64 since);
 
     bool isTimeEntryLocked(TimeEntry* te);
     bool isTimeLockedInWorkspace(time_t t, Workspace* ws);

@@ -1226,7 +1226,7 @@ TEST(toggl_api, toggl_set_time_entry_duration) {
     testing::App app;
     std::string json = loadTestData();
     ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
-    
+
     auto te = testing::testresult::time_entry_by_id(89818605);
     std::string guid = te.GUID();
 
