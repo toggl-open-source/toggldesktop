@@ -34,11 +34,11 @@ namespace testing {
 class Database {
  public:
     Database() : db_(0) {
-        Poco::File f(TESTDB);
+        Poco::File f("test.db");
         if (f.exists()) {
             f.remove(false);
         }
-        db_ = new toggl::Database(TESTDB);
+        db_ = new toggl::Database("test.db");
     }
     ~Database() {
         if (db_) {
