@@ -4,6 +4,7 @@
 
 #include "gtest/gtest.h"
 
+#include "toggl_api_test.h"
 #include "./../https_client.h"
 #include "./../obm_action.h"
 #include "./../proxy.h"
@@ -28,18 +29,6 @@ namespace toggl {
 namespace testing {
 
 namespace testresult {
-
-#if defined(_WIN32) || defined(WIN32)
-#define STR(X) L ## X
-#else
-#define STR(X) X
-#endif
-
-#if defined(_WIN32) || defined(WIN32)
-#define SRCDIR "../../../../src/"
-#else
-#define SRCDIR "src/"
-#endif
 
 // on_url
 std::string url("");
@@ -85,19 +74,7 @@ std::vector<std::string> project_colors;
 
 // on_obm_experiment
 std::vector<ObmExperiment> obm_experiments;
-/*
-TimeEntry time_entry_by_guid(const std::string guid) {
-    TimeEntry te;
-    for (std::size_t i = 0; i < testing::testresult::time_entries.size();
-            i++) {
-        if (testing::testresult::time_entries[i].GUID() == guid) {
-            te = testing::testresult::time_entries[i];
-            break;
-        }
-    }
-    return te;
-}
-*/
+
 TimeEntry time_entry_by_id(uint64_t id) {
     TimeEntry te;
     std::cerr << "Looking for " << id << std::endl;
