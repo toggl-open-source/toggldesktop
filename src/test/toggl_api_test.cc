@@ -326,7 +326,7 @@ void on_display_idle_notification(
     const char_t *guid,
     const char_t *since,
     const char_t *duration,
-    const uint64_t started,
+    const int64_t started,
     const char_t *description) {
     testing::testresult::idle_since = to_string(since);
     testing::testresult::idle_started = started;
