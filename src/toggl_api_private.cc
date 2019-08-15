@@ -206,19 +206,6 @@ std::string to_string(const char_t *s) {
 #endif
 }
 
-std::string trim_whitespace(const std::string str)
-{
-    const std::string& whitespace = " \t";
-    const auto strBegin = str.find_first_not_of(whitespace);
-    if (strBegin == std::string::npos)
-        return ""; // no content
-
-    const auto strEnd = str.find_last_not_of(whitespace);
-    const auto strRange = strEnd - strBegin + 1;
-
-    return str.substr(strBegin, strRange);
-}
-
 char_t *copy_string(const std::string s) {
 #if defined(_WIN32) || defined(WIN32)
     std::wstring ws;
