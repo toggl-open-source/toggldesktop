@@ -1,6 +1,19 @@
 {
     "versions": [
         {
+            "version": "7.4.519",
+            "rows": [
+                "Fixed crashes during startup",
+                "Fixed crashes after modal windows were being closed with Alt+F4",
+                "Fixed issues when switching between different screen setups",
+                "Fixed issues with grouping similar time entries",
+                "Added a few shortcuts (Quit, Preferences, Delete, Expand/Collapse)"
+            ],
+            "date": "August 16th 2019",
+            "beta": "true",
+            "has64bit": "true"
+        },
+        {
             "version": "7.4.475",
             "rows": [
                 "Created a 64-bit version",
