@@ -94,10 +94,10 @@ extension ProjectAutoCompleteTextField: ProjectCreationViewDelegate {
 
     func projectCreationDidAdd(with name: String, color: String, projectGUID: String) {
         lastProjectGUID = projectGUID
-        closeSuggestion()
         stringValue = name
         layoutProject(with: name)
         applyColor(with: color)
+        closeSuggestion()
     }
 
     func projectCreationDidCancel() {

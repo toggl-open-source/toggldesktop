@@ -544,11 +544,14 @@ extension EditorViewController: AutoCompleteTextFieldDelegate {
             projectTextField.projectItem = nil
             projectTextField.closeSuggestion()
 
-            // Update
-            DesktopLibraryBridge.shared().setProjectForTimeEntryWithGUID(timeEntry.guid,
-                                                                         taskID: 0,
-                                                                         projectID: 0,
-                                                                         projectGUID: "")
+            // Clear project selection if leave the project text field empty
+            if let projectLabel = timeEntry.projectLabel,
+                !projectLabel.isEmpty, projectTextField.stringValue.isEmpty {
+                DesktopLibraryBridge.shared().setProjectForTimeEntryWithGUID(timeEntry.guid,
+                                                                             taskID: 0,
+                                                                             projectID: 0,
+                                                                             projectGUID: "")
+            }
         }
     }
 
