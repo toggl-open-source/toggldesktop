@@ -71,6 +71,8 @@ namespace TogglDesktop
             }
         }
 
+        public bool IsGroup => group;
+
         public Color GroupIconPath { get; set; }
 
         public bool SubItem
