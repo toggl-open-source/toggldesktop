@@ -109,12 +109,15 @@ final class AutoCompleteView: NSView {
     }
 
     func update(height: CGFloat) {
-        guard let window = self.window else { return }
+        guard let window = self.window,
+            let screen = NSScreen.main else { return }
+
         var height = height
         let screenFrame = window.convertToScreen(frame)
         let topLeftY = screenFrame.origin.y + screenFrame.size.height
+        let dockBarHeight = abs(screen.frame.height - screen.visibleFrame.height)
         var offset: CGFloat = createNewItemContainerView.isHidden ? 0 : Constants.CreateButtonHeight
-        offset += 10 // No collision with edge of the screen
+        offset += dockBarHeight // Exclude the bar height
 
         // Reduce the size if the height is greater than screen
         if (height + offset) > topLeftY {
