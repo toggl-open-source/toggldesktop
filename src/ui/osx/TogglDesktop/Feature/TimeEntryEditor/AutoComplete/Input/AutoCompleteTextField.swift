@@ -188,6 +188,19 @@ class AutoCompleteTextField: UndoTextField, NSTextFieldDelegate, AutoCompleteVie
     func didTapOnCreateButton() {
         autoCompleteDelegate?.autoCompleteDidTapOnCreateButton(self)
     }
+
+    override func performKeyEquivalent(with event: NSEvent) -> Bool {
+        // Prevent beep sound on return key
+        if let key = Key(rawValue: Int(event.keyCode)) {
+            switch key {
+                case .enter:
+                return true
+            default:
+                break
+            }
+        }
+        return super.performKeyEquivalent(with: event)
+    }
 }
 
 // MARK: Private
