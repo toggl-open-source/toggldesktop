@@ -120,6 +120,7 @@
 		BA19FC21226DA079006D8741 /* DateCellViewItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA13D20D2269BAA600EB3833 /* DateCellViewItem.xib */; };
 		BA1F9032229D19C000670E0B /* NoInteractionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA1F9031229D19C000670E0B /* NoInteractionView.swift */; };
 		BA276A142240F5B500810C51 /* FloatingErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA276A122240F5B500810C51 /* FloatingErrorView.swift */; };
+		BA2807E02306A2FA001A9E48 /* NSWindowController+Focusable.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2807DF2306A2FA001A9E48 /* NSWindowController+Focusable.swift */; };
 		BA2DA0C621A542E30027B7A5 /* NSTextField+Ext.m in Sources */ = {isa = PBXBuildFile; fileRef = BA2DA0C521A542E30027B7A5 /* NSTextField+Ext.m */; };
 		BA2DA12021A691FF0027B7A5 /* TrackingService.m in Sources */ = {isa = PBXBuildFile; fileRef = BA2DA11F21A691FF0027B7A5 /* TrackingService.m */; };
 		BA2E3F2C22375E640035D034 /* NSView+Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2E3F2B22375E640035D034 /* NSView+Appearance.swift */; };
@@ -684,6 +685,7 @@
 		BA1F9031229D19C000670E0B /* NoInteractionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoInteractionView.swift; sourceTree = "<group>"; };
 		BA276A122240F5B500810C51 /* FloatingErrorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatingErrorView.swift; sourceTree = "<group>"; };
 		BA276A132240F5B500810C51 /* FloatingErrorView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FloatingErrorView.xib; sourceTree = "<group>"; };
+		BA2807DF2306A2FA001A9E48 /* NSWindowController+Focusable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSWindowController+Focusable.swift"; sourceTree = "<group>"; };
 		BA2DA0C421A542E20027B7A5 /* NSTextField+Ext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSTextField+Ext.h"; sourceTree = "<group>"; };
 		BA2DA0C521A542E30027B7A5 /* NSTextField+Ext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSTextField+Ext.m"; sourceTree = "<group>"; };
 		BA2DA11E21A691FF0027B7A5 /* TrackingService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TrackingService.h; sourceTree = "<group>"; };
@@ -1228,6 +1230,7 @@
 				BA08E011222E32C90075F68E /* NSView+LayoutConstraint.swift */,
 				BA89CB382265EA4400D21584 /* String+Search.swift */,
 				BA81896923016148000710EA /* NSColor+VisibleColor.swift */,
+				BA2807DF2306A2FA001A9E48 /* NSWindowController+Focusable.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -2079,6 +2082,7 @@
 				BA403BAE2230CFBC008B202C /* BetterFocusAutoCompleteInput.m in Sources */,
 				BA50ED8522705F9E008323FA /* CalendarFlowLayout.swift in Sources */,
 				95C0707718CDB67300A34D0D /* NSCustomComboBoxCell.m in Sources */,
+				BA2807E02306A2FA001A9E48 /* NSWindowController+Focusable.swift in Sources */,
 				BAAF569E2223D4C7003D0D73 /* DotImageView.swift in Sources */,
 				BA014050225710FD000E5B91 /* TagAutoCompleteTextField.swift in Sources */,
 				BAE8E845224CA9AC006D534E /* ProjectAutoCompleteTextField.swift in Sources */,
