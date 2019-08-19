@@ -194,6 +194,8 @@ NSString *kInactiveTimerColor = @"#999999";
 
 - (void)windowDidBecomeKeyNotification:(NSNotification *)notification
 {
+	return;
+
 	// Only focus if the window is main
 	// Otherwise, shouldn't override the firstResponder
 	if (notification.object != self.view.window)

@@ -68,6 +68,7 @@ final class AutoCompleteViewWindow: NSWindow {
 protocol AutoCompleteViewDelegate: class {
 
     func didTapOnCreateButton()
+    func shouldClose()
 }
 
 final class AutoCompleteView: NSView {
@@ -183,6 +184,12 @@ extension AutoCompleteView {
         }
         tableView.clickedOnRow = {[weak self] clickedRow in
             self?.dataSource?.selectRow(at: clickedRow)
+        }
+
+        createNewItemBtn.didPressKey = { key in
+            if key == .tab {
+                self.delegate?.shouldClose()
+            }
         }
     }
 }
