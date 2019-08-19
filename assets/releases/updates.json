@@ -1,9 +1,9 @@
 {
     "win": {
         "dev": {
-            "version": "7.4.526",
-            "windows": "https://github.com/toggl/toggldesktop/releases/download/v7.4.526/TogglDesktopInstaller-7.4.526.exe",
-            "windows64": "https://github.com/toggl/toggldesktop/releases/download/v7.4.526/TogglDesktopInstaller-x64-7.4.526.exe"
+            "version": "7.4.519",
+            "windows": "https://github.com/toggl/toggldesktop/releases/download/v7.4.519/TogglDesktopInstaller-7.4.519.exe",
+            "windows64": "https://github.com/toggl/toggldesktop/releases/download/v7.4.519/TogglDesktopInstaller-x64-7.4.519.exe"
         },
         "beta": {
             "version": "7.4.519",
@@ -32,9 +32,9 @@
     },
     "linux": {
         "dev": {
-            "version": "7.4.510",
-            "linux_tar.gz": "https://github.com/toggl/toggldesktop/releases/download/v7.4.510/toggldesktop_linux_x86_64-7_4_510.tar.gz",
-            "linux_deb64": "https://github.com/toggl/toggldesktop/releases/download/v7.4.510/toggldesktop_7.4.510_amd64.deb"
+            "version": "7.4.526",
+            "linux_tar.gz": "https://github.com/toggl/toggldesktop/releases/download/v7.4.526/toggldesktop_linux_x86_64-7_4_526.tar.gz",
+            "linux_deb64": "https://github.com/toggl/toggldesktop/releases/download/v7.4.526/toggldesktop_7.4.526_amd64.deb"
         },
         "beta": {
             "version": "7.4.510",
