@@ -96,6 +96,7 @@
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
+    <OutDir>$(SolutionDir)\TogglDesktop\bin\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='StoreDebug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
@@ -110,6 +111,7 @@
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
+    <OutDir>$(SolutionDir)\TogglDesktop\bin\$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='StoreDebug|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
@@ -306,6 +308,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(ProjectDir)..\..\..\..\third_party\poco\Data\SQLite\obj64\SQLite\release_shared;$(ProjectDir)..\..\..\..\third_party\poco\lib64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>PocoFoundation.lib;PocoUtil.lib;PocoXML.lib;PocoNet.lib;PocoCrypto.lib;PocoNetSSL.lib;PocoData.lib;PocoDataSQLite.lib;sqlite3;%(AdditionalDependencies)</AdditionalDependencies>
+      <LinkTimeCodeGeneration>UseFastLinkTimeCodeGeneration</LinkTimeCodeGeneration>
     </Link>
     <PostBuildEvent>
       <Command>
@@ -342,7 +345,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <Optimization>MaxSpeed</Optimization>
+      <Optimization>Disabled</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;TOGGLDESKTOPDLL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -355,9 +358,10 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
+      <OptimizeReferences>false</OptimizeReferences>
       <AdditionalLibraryDirectories>$(ProjectDir)..\..\..\..\third_party\poco\Data\SQLite\obj\SQLite\release_shared;$(ProjectDir)..\..\..\..\third_party\poco\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>PocoFoundation.lib;PocoUtil.lib;PocoXML.lib;PocoNet.lib;PocoCrypto.lib;PocoNetSSL.lib;PocoData.lib;PocoDataSQLite.lib;sqlite3;%(AdditionalDependencies)</AdditionalDependencies>
+      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
     </Link>
     <PostBuildEvent>
       <Command>
@@ -368,7 +372,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <Optimization>MaxSpeed</Optimization>
+      <Optimization>Disabled</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;TOGGLDESKTOPDLL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -381,9 +385,10 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
+      <OptimizeReferences>false</OptimizeReferences>
       <AdditionalLibraryDirectories>$(ProjectDir)..\..\..\..\third_party\poco\Data\SQLite\obj\SQLite\release_shared;$(ProjectDir)..\..\..\..\third_party\poco\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>PocoFoundation.lib;PocoUtil.lib;PocoXML.lib;PocoNet.lib;PocoCrypto.lib;PocoNetSSL.lib;PocoData.lib;PocoDataSQLite.lib;sqlite3;%(AdditionalDependencies)</AdditionalDependencies>
+      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
     </Link>
     <PostBuildEvent>
       <Command>
@@ -394,7 +399,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <Optimization>MaxSpeed</Optimization>
+      <Optimization>Disabled</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;TOGGLDESKTOPDLL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -407,9 +412,10 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
+      <OptimizeReferences>false</OptimizeReferences>
       <AdditionalLibraryDirectories>$(ProjectDir)..\..\..\..\third_party\poco\Data\SQLite\obj64\SQLite\release_shared;$(ProjectDir)..\..\..\..\third_party\poco\lib64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>PocoFoundation.lib;PocoUtil.lib;PocoXML.lib;PocoNet.lib;PocoCrypto.lib;PocoNetSSL.lib;PocoData.lib;PocoDataSQLite.lib;sqlite3;%(AdditionalDependencies)</AdditionalDependencies>
+      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
     </Link>
     <PostBuildEvent>
       <Command>
@@ -420,7 +426,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <Optimization>MaxSpeed</Optimization>
+      <Optimization>Disabled</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;TOGGLDESKTOPDLL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -433,9 +439,10 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
+      <OptimizeReferences>false</OptimizeReferences>
       <AdditionalLibraryDirectories>$(ProjectDir)..\..\..\..\third_party\poco\Data\SQLite\obj64\SQLite\release_shared;$(ProjectDir)..\..\..\..\third_party\poco\lib64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>PocoFoundation.lib;PocoUtil.lib;PocoXML.lib;PocoNet.lib;PocoCrypto.lib;PocoNetSSL.lib;PocoData.lib;PocoDataSQLite.lib;sqlite3;%(AdditionalDependencies)</AdditionalDependencies>
+      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
     </Link>
     <PostBuildEvent>
       <Command>
