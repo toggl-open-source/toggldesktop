@@ -190,13 +190,15 @@ class AutoCompleteTextField: UndoTextField, NSTextFieldDelegate, AutoCompleteVie
     }
 
     override func performKeyEquivalent(with event: NSEvent) -> Bool {
-        // Prevent beep sound on return key
-        if let key = Key(rawValue: Int(event.keyCode)) {
-            switch key {
-                case .enter:
-                return true
-            default:
-                break
+        // Prevent beep sound
+        if currentEditor() != nil {
+            if let key = Key(rawValue: Int(event.keyCode)) {
+                switch key {
+                case .enter, .tab:
+                    return true
+                default:
+                    break
+                }
             }
         }
         return super.performKeyEquivalent(with: event)
