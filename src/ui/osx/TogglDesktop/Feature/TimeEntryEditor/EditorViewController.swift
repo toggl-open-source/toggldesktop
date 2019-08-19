@@ -672,4 +672,8 @@ extension EditorViewController: AddTagButtonDelegate {
         // because stringValue doesn't notify the delegate
         tagTextField.handleTextDidChange()
     }
+
+    func shouldCloseEditorPopover() {
+        closeBtnOnTap(self)
+    }
 }

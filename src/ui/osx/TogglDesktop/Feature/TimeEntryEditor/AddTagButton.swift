@@ -9,6 +9,8 @@
 import Cocoa
 
 protocol AddTagButtonDelegate: class {
+
+    func shouldCloseEditorPopover()
     func shouldOpenTagAutoComplete(with text: String)
 }
 
@@ -59,10 +61,16 @@ extension AddTagButton: NSTextFieldDelegate {
     }
 
     func control(_ control: NSControl, textView: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
-        if (commandSelector == #selector(NSResponder.insertNewline(_:))) {
+        if commandSelector == #selector(NSResponder.insertNewline(_:)) {
             keyboardDelegate?.shouldOpenTagAutoComplete(with: "")
             return true
         }
+
+        if commandSelector == #selector(NSResponder.cancelOperation(_:)) {
+            keyboardDelegate?.shouldCloseEditorPopover()
+            return true
+        }
+
         return false
     }
 }
