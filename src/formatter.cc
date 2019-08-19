@@ -313,8 +313,8 @@ int Formatter::parseDurationStringHoursMinutesSeconds(
     take("sec", &seconds, whatsleft);
     take("s", &seconds, whatsleft);
 
-    long period = static_cast<long>(hours) * 3600 +
-                  static_cast<long>(minutes) * 60 +
+    long period = static_cast<long>(hours * 3600.0) +
+                  static_cast<long>(minutes * 60.0) +
                   static_cast<long>(seconds);
     return Poco::Timespan(period, 0).totalSeconds();
 }
@@ -438,7 +438,7 @@ std::string Formatter::FormatDuration(
         // Following rounding up is needed
         // to be compatible with Toggl web site.
         double a = hours * 100.0;
-        int b = static_cast<int>(hours) * 100;
+        int b = static_cast<int>(a);
         double d = a - std::floor(a);
         if (d > 0.5) {
             b++;
