@@ -16,7 +16,7 @@ namespace TogglDesktop
             this.updateText.Text = "";
             this.restartButton.Visibility = Visibility.Collapsed;
 
-            this.versionText.Text = Program.Version() + (Environment.Is64BitProcess ? " (64-bit)" : " (32-bit)");
+            this.versionText.Text = Program.Version() + " " + Utils.Bitness();
 
             var isUpdatCheckDisabled = Toggl.IsUpdateCheckDisabled();
             this.releaseChannelComboBox.ShowOnlyIf(!isUpdatCheckDisabled, true);

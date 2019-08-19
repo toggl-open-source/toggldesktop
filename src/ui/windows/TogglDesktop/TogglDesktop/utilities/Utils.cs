@@ -337,4 +337,9 @@ public static class Utils
 
         #endregion
     }
+        #region environment
+
+        public static string Bitness() => Environment.Is64BitProcess ? "(64-bit)" : "(32-bit)";
+
+        #endregion environment
 }

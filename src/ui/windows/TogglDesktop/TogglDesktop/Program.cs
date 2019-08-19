@@ -80,7 +80,8 @@ static class Program
                 report.Event.User = new Bugsnag.Payload.User { Id = uid.ToString() };
                 report.Event.Metadata.Add("Details", new Dictionary<string, string>
                 {
-                    { "Channel", Toggl.UpdateChannel() }
+                    { "Channel", Toggl.UpdateChannel() },
+                    { "Bitness", Utils.Bitness() }
                 });
             });
 
