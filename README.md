@@ -7,8 +7,6 @@ Table of Contents
       * [Dependencies](#dependencies)
       * [Build the app](#build-the-app)
     * [Windows](#windows)
-      * [Dependencies](#dependencies-1)
-      * [Build the app](#build-the-app-1)
   * [Downloads](#downloads)
     * [macOS](#macos)
     * [Windows](#windows)
