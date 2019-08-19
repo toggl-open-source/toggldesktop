@@ -1136,7 +1136,7 @@ public static partial class Toggl
             var di = new DirectoryInfo(updatePath);
             foreach (var file in di.GetFiles("TogglDesktopInstaller*.exe", SearchOption.TopDirectoryOnly))
             {
-                file.Delete();
+                Utils.DeleteFile(file.FullName);
             }
 
             return;
@@ -1164,7 +1164,7 @@ public static partial class Toggl
             Debug("Multiple update installers found. Deleting.");
             foreach (var file in files)
             {
-                file.Delete();
+                Utils.DeleteFile(file.FullName);
             }
             return null;
         }

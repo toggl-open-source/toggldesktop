@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
@@ -336,10 +337,21 @@ public static class Utils
         }
 
         #endregion
-    }
+
+        #region file system
+
+        public static void DeleteFile(string fullPath)
+        {
+            File.SetAttributes(fullPath, FileAttributes.Normal);
+            File.Delete(fullPath);
+        }
+
+        #endregion file system
+
         #region environment
 
         public static string Bitness() => Environment.Is64BitProcess ? "(64-bit)" : "(32-bit)";
 
         #endregion environment
+}
 }
