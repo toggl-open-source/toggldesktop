@@ -197,66 +197,6 @@ error User::LoginToken(
     return noError;
 }
 
-
-std::string User::generateKey(const std::string password) {
-    Poco::SHA1Engine sha1;
-    Poco::DigestOutputStream outstr(sha1);
-    outstr << Email();
-    outstr << password;
-    outstr.flush();
-    const Poco::DigestEngine::Digest &digest = sha1.digest();
-    return Poco::DigestEngine::digestToHex(digest);
-}
-
-error User::SetAPITokenFromOfflineData(const std::string password) {
-    if (Email().empty()) {
-        return error("cannot decrypt offline data without an e-mail");
-    }
-    if (password.empty()) {
-        return error("cannot decrypt offline data without a password");
-    }
-    if (OfflineData().empty()) {
-        return error("cannot decrypt empty string");
-    }
-    try {
-        Poco::Crypto::CipherFactory& factory =
-            Poco::Crypto::CipherFactory::defaultFactory();
-
-        std::string key = generateKey(password);
-
-        Json::Value data;
-        Json::Reader reader;
-        if (!reader.parse(OfflineData(), data)) {
-            return error("failed to parse offline data");
-        }
-
-        std::istringstream istr(data["salt"].asString());
-        Poco::Base64Decoder decoder(istr);
-        std::string salt("");
-        decoder >> salt;
-
-        Poco::Crypto::CipherKey ckey("aes-256-cbc", key, salt);
-        Poco::Crypto::Cipher* pCipher = factory.createCipher(ckey);
-
-        std::string decrypted = pCipher->decryptString(
-            data["encrypted"].asString(),
-            Poco::Crypto::Cipher::ENC_BASE64);
-
-        delete pCipher;
-        pCipher = nullptr;
-
-        SetAPIToken(decrypted);
-    } catch(const Poco::Exception& exc) {
-        return exc.displayText();
-    } catch(const std::exception& ex) {
-        return ex.what();
-    } catch(const std::string& ex) {
-        return ex;
-    }
-    return noError;
-}
-
-
 std::string User::ModelName() const {
     return kModelUser;
 }

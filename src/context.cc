@@ -86,25 +86,9 @@ Context::Context(const std::string app_name, const std::string app_version)
 , syncer_(this, &Context::syncerActivity)
 , update_path_("")
 , overlay_visible_(false) {
-    if (!Poco::URIStreamOpener::defaultOpener().supportsScheme("http")) {
-        Poco::Net::HTTPStreamFactory::registerFactory();
-    }
-    if (!Poco::URIStreamOpener::defaultOpener().supportsScheme("https")) {
-        Poco::Net::HTTPSStreamFactory::registerFactory();
-    }
-
-#ifndef TOGGL_PRODUCTION_BUILD
-    urls::SetUseStagingAsBackend(
-        app_version.find("7.0.0") != std::string::npos);
-#endif
-
-    Poco::ErrorHandler::set(&error_handler_);
-    Poco::Net::initializeSSL();
 
     HTTPSClient::Config.AppName = app_name;
     HTTPSClient::Config.AppVersion = app_version;
-
-    Poco::Crypto::OpenSSLInitializer::initialize();
 
     startPeriodicUpdateCheck();
 
@@ -160,7 +144,6 @@ Context::~Context() {
         }
     }
 
-    Poco::Net::uninitializeSSL();
 }
 
 void Context::stopActivities() {

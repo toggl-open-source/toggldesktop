@@ -173,8 +173,6 @@ class User : public BaseModel {
         const std::string response_body,
         std::vector<BatchUpdateResult> *responses);
 
-    std::string generateKey(const std::string password);
-
     std::string api_token_;
     Poco::UInt64 default_wid_;
     // Unix timestamp of the user data; returned from API

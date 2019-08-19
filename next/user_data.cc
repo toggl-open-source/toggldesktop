@@ -6,8 +6,55 @@
 #include "model/time_entry.h"
 #include "model/timeline_event.h"
 
+#include <Poco/UTF8String.h>
+#include <Poco/Logger.h>
+#include <Poco/Crypto/CipherFactory.h>
+#include <Poco/RandomStream.h>
+#include <Poco/Base64Decoder.h>
+#include <Poco/Base64Encoder.h>
+#include <Poco/Crypto/Cipher.h>
+#include <Poco/SHA1Engine.h>
+#include <Poco/DigestStream.h>
+#include <Poco/Crypto/CipherKey.h>
+
 namespace toggl {
-#if 0
+
+template<class T>
+void UserData::deleteZombies(locked<std::vector<T>> &list, const std::set<Poco::UInt64> &alive) {
+    for (auto it = list->begin(); it != list->end(); ++it) {
+        BaseModel *model = *it;
+        if (!model->ID()) {
+            // If model has no server-assigned ID, it's not even
+            // pushed to server. So actually we don't know if it's
+            // a zombie or not. Ignore:
+            continue;
+        }
+        if (alive.end() == alive.find(model->ID())) {
+            model->MarkAsDeletedOnServer();
+        }
+    }
+}
+
+template <typename T>
+void UserData::deleteRelatedModelsWithWorkspace(const Poco::UInt64 wid, locked<std::vector<T *>> &list) {
+    for (auto it = list->begin(); it != list->end(); it++) {
+        T *model = *it;
+        if (model->WID() == wid) {
+            model->MarkAsDeletedOnServer();
+        }
+    }
+}
+
+template <typename T>
+void UserData::removeProjectFromRelatedModels(const Poco::UInt64 pid, locked<std::vector<T *>> &list) {
+    for (auto it = list->begin(); it != list->end(); it++) {
+        T *model = *it;
+        if (model->PID() == pid) {
+            model->SetPID(0);
+        }
+    }
+}
+
 
 Project *UserData::CreateProject(
     const Poco::UInt64 workspace_id,
@@ -44,9 +91,8 @@ void UserData::AddProjectToList(Project *p) {
 
     // We should push the project to correct alphabetical position
     // (since we try to avoid sorting the large list)
-    for (std::vector<Project *>::iterator it =
-        related.Projects.begin();
-            it != related.Projects.end(); it++) {
+    auto projects = Projects();
+    for (auto it = projects->begin(); it != projects->end(); it++) {
         Project *pr = *it;
         if (p->WID() == pr->WID()) {
             WIDMatch = true;
@@ -54,35 +100,35 @@ void UserData::AddProjectToList(Project *p) {
                 // Handle adding project without client
                 CIDMatch = true;
                 if (Poco::UTF8::icompare(p->Name(), pr->Name()) < 0) {
-                    related.Projects.insert(it, p);
+                    projects->insert(it, p);
                     return;
                 }
             } else if (Poco::UTF8::icompare(p->ClientName(), pr->ClientName()) == 0) {
                 // Handle adding project with client
                 CIDMatch = true;
                 if (Poco::UTF8::icompare(p->FullName(), pr->FullName()) < 0) {
-                    related.Projects.insert(it,p);
+                    projects->insert(it,p);
                     return;
                 }
             } else if (CIDMatch) {
                 // in case new project is last in client list
-                related.Projects.insert(it,p);
+                projects->insert(it,p);
                 return;
             } else if ((p->CID() != 0 || !p->ClientGUID().empty()) && pr->CID() != 0) {
                 if (Poco::UTF8::icompare(p->FullName(), pr->FullName()) < 0) {
-                    related.Projects.insert(it,p);
+                    projects->insert(it,p);
                     return;
                 }
             }
         } else if (WIDMatch) {
             //In case new project is last in workspace list
-            related.Projects.insert(it,p);
+            projects->insert(it,p);
             return;
         }
     }
 
     // if projects vector is empty or project should be added to the end
-    related.Projects.push_back(p);
+    projects->push_back(p);
 }
 
 Client *UserData::CreateClient(
@@ -103,29 +149,28 @@ void UserData::AddClientToList(Client *c) {
 
     // We should push the project to correct alphabetical position
     // (since we try to avoid sorting the large list)
-    for (std::vector<Client *>::iterator it =
-        related.Clients.begin();
-            it != related.Clients.end(); it++) {
+    auto clients = Clients();
+    for (auto it = clients->begin(); it != clients->end(); it++) {
         Client *cl = *it;
         if (c->WID() == cl->WID()) {
             foundMatch = true;
             if (Poco::UTF8::icompare(c->Name(), cl->Name()) < 0) {
-                related.Clients.insert(it,c);
+                clients->insert(it,c);
                 return;
             }
         } else if (foundMatch) {
-            related.Clients.insert(it,c);
+            clients->insert(it,c);
             return;
         }
     }
 
     // if clients vector is empty or client should be added to the end
-    related.Clients.push_back(c);
+    clients->push_back(c);
 }
 
 // Start a time entry, mark it as dirty and add to user time entry collection.
 // Do not save here, dirtyness will be handled outside of this module.
-TimeEntry *UserData::Start(
+locked<TimeEntry> UserData::Start(
     const std::string description,
     const std::string duration,
     const Poco::UInt64 task_id,
@@ -140,8 +185,9 @@ TimeEntry *UserData::Start(
     std::stringstream ss;
     ss << "UserData::Start now=" << now;
 
-    TimeEntry *te = new TimeEntry();
-    te->SetCreatedWith(HTTPSClient::Config.UserAgent());
+    auto te = TimeEntries.create();
+    // OVERHAUL TODO
+    //te->SetCreatedWith(HTTPSClient::Config.UserAgent());
     te->SetDescription(description);
     te->SetUID(ID());
     te->SetPID(project_id);
@@ -161,11 +207,11 @@ TimeEntry *UserData::Start(
     }
 
     // Try to set workspace ID from project
-    Project *p = nullptr;
+    locked<Project> p;
     if (te->PID()) {
-        p = related.ProjectByID(te->PID());
+        p = Projects.findByID(te->PID());
     } else if (!te->ProjectGUID().empty()) {
-        p = related.ProjectByGUID(te->ProjectGUID());
+        p = Projects.findByGUID(te->ProjectGUID());
     }
     if (p) {
         te->SetWID(p->WID());
@@ -174,7 +220,7 @@ TimeEntry *UserData::Start(
 
     // Try to set workspace ID from task
     if (!te->WID() && te->TID()) {
-        Task *t = related.TaskByID(te->TID());
+        auto t = Tasks.findByID(te->TID());
         if (t) {
             te->SetWID(t->WID());
         }
@@ -184,32 +230,31 @@ TimeEntry *UserData::Start(
 
     te->SetUIModified();
 
-    related.pushBackTimeEntry(te);
-
     return te;
 }
 
-TimeEntry *UserData::Continue(
+locked<TimeEntry> UserData::Continue(
     const std::string GUID,
     const bool manual_mode) {
 
-    TimeEntry *existing = related.TimeEntryByGUID(GUID);
+    auto existing = TimeEntries.findByGUID(GUID);
     if (!existing) {
         logger().warning("Time entry not found: " + GUID);
-        return nullptr;
+        return {};
     }
 
     if (existing->DeletedAt()) {
         logger().warning(kCannotContinueDeletedTimeEntry);
-        return nullptr;
+        return {};
     }
 
     Stop();
 
     time_t now = time(nullptr);
 
-    TimeEntry *result = new TimeEntry();
-    result->SetCreatedWith(HTTPSClient::Config.UserAgent());
+    auto result = TimeEntries.create();
+    // OVERHAUL TODO
+    //result->SetCreatedWith(HTTPSClient::Config.UserAgent());
     result->SetDescription(existing->Description());
     result->SetWID(existing->WID());
     result->SetPID(existing->PID());
@@ -224,9 +269,8 @@ TimeEntry *UserData::Continue(
         result->SetDurationInSeconds(-now);
     }
 
-    result->SetCreatedWith(HTTPSClient::Config.UserAgent());
-
-    related.pushBackTimeEntry(result);
+    // OVERHAUL TODO
+    //result->SetCreatedWith(HTTPSClient::Config.UserAgent());
 
     return result;
 }
@@ -234,10 +278,8 @@ TimeEntry *UserData::Continue(
 std::string UserData::DateDuration(TimeEntry * const te) const {
     Poco::Int64 date_duration(0);
     std::string date_header = Formatter::FormatDateHeader(te->Start());
-    for (std::vector<TimeEntry *>::const_iterator it =
-        related.TimeEntries.begin();
-            it != related.TimeEntries.end();
-            it++) {
+    auto timeEntries = TimeEntries();
+    for (auto it = timeEntries->begin(); it != timeEntries->end(); it++) {
         TimeEntry *n = *it;
         if (Formatter::FormatDateHeader(n->Start()) == date_header) {
             Poco::Int64 duration = n->DurationInSeconds();
@@ -251,10 +293,8 @@ std::string UserData::DateDuration(TimeEntry * const te) const {
 
 
 bool UserData::HasPremiumWorkspaces() const {
-    for (std::vector<Workspace *>::const_iterator it =
-        related.Workspaces.begin();
-            it != related.Workspaces.end();
-            it++) {
+    auto workspaces = Workspaces();
+    for (auto it = workspaces->begin(); it != workspaces->end(); it++) {
         Workspace *model = *it;
         if (model->Premium()) {
             return true;
@@ -264,10 +304,8 @@ bool UserData::HasPremiumWorkspaces() const {
 }
 
 bool UserData::CanAddProjects() const {
-    for (std::vector<Workspace *>::const_iterator it =
-        related.Workspaces.begin();
-            it != related.Workspaces.end();
-            it++) {
+    auto workspaces = Workspaces();
+    for (auto it = workspaces->begin(); it != workspaces->end(); it++) {
         Workspace *model = *it;
         if (model->OnlyAdminsMayCreateProjects()) {
             return false;
@@ -276,80 +314,152 @@ bool UserData::CanAddProjects() const {
     return true;
 }
 
+error UserData::SetAPITokenFromOfflineData(const std::string password) {
+    if (Email().empty()) {
+        return error("cannot decrypt offline data without an e-mail");
+    }
+    if (password.empty()) {
+        return error("cannot decrypt offline data without a password");
+    }
+    if (OfflineData().empty()) {
+        return error("cannot decrypt empty string");
+    }
+    try {
+        Poco::Crypto::CipherFactory& factory =
+                Poco::Crypto::CipherFactory::defaultFactory();
+
+        std::string key = generateKey(password);
+
+        Json::Value data;
+        Json::Reader reader;
+        if (!reader.parse(OfflineData(), data)) {
+            return error("failed to parse offline data");
+        }
+
+        std::istringstream istr(data["salt"].asString());
+        Poco::Base64Decoder decoder(istr);
+        std::string salt("");
+        decoder >> salt;
+
+        Poco::Crypto::CipherKey ckey("aes-256-cbc", key, salt);
+        Poco::Crypto::Cipher* pCipher = factory.createCipher(ckey);
+
+        std::string decrypted = pCipher->decryptString(
+                    data["encrypted"].asString(),
+                Poco::Crypto::Cipher::ENC_BASE64);
+
+        delete pCipher;
+        pCipher = nullptr;
+
+        SetAPIToken(decrypted);
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
+    }
+    return noError;
+}
+
 
 // Stop a time entry, mark it as dirty.
 // Note that there may be multiple TE-s running. If there are,
 // all of them are stopped (multi-tracking is not supported by Toggl).
 void UserData::Stop(std::vector<TimeEntry *> *stopped) {
-    TimeEntry *te = RunningTimeEntry();
+    auto te = RunningTimeEntry();
     while (te) {
         if (stopped) {
-            stopped->push_back(te);
+            // OVERHAUL TODO
+            //stopped->push_back(te);
         }
         te->StopTracking();
         te = RunningTimeEntry();
     }
 }
 
-TimeEntry *UserData::DiscardTimeAt(
-    const std::string guid,
-    const Poco::Int64 at,
-    const bool split_into_new_entry) {
+locked<TimeEntry> UserData::DiscardTimeAt(
+        const std::string guid,
+        const Poco::Int64 at,
+        const bool split_into_new_entry) {
 
     if (!(at > 0)) {
         logger().error("Cannot discard without valid timestamp");
-        return nullptr;
+        return {};
     }
 
     std::stringstream ss;
     ss << "User is discarding time entry " << guid << " at " << at;
     logger().debug(ss.str());
 
-    TimeEntry *te = related.TimeEntryByGUID(guid);
+    auto te = TimeEntries.findByGUID(guid);
     if (te) {
         te->DiscardAt(at);
     }
 
     if (te && split_into_new_entry) {
-        TimeEntry *split = new TimeEntry();
-        split->SetCreatedWith(HTTPSClient::Config.UserAgent());
+        auto split = TimeEntries.create();
+        // OVERHAUL TODO
+        //split->SetCreatedWith(HTTPSClient::Config.UserAgent());
         split->SetUID(ID());
         split->SetStart(at);
         split->SetDurationInSeconds(-at);
         split->SetUIModified();
         split->SetWID(te->WID());
-        related.pushBackTimeEntry(split);
         return split;
     }
 
-    return nullptr;
+    return {};
 }
 
-TimeEntry *UserData::RunningTimeEntry() const {
-    for (std::vector<TimeEntry *>::const_iterator it =
-        related.TimeEntries.begin();
-            it != related.TimeEntries.end();
-            it++) {
+locked<TimeEntry> UserData::RunningTimeEntry() {
+    auto timeEntries = TimeEntries();
+    for (auto it = timeEntries->begin(); it != timeEntries->end(); it++) {
         if ((*it)->DurationInSeconds() < 0) {
-            return *it;
+            return TimeEntries.make_locked(*it);
         }
     }
-    return nullptr;
+    return {};
+}
+
+locked<const TimeEntry> UserData::RunningTimeEntry() const {
+    auto timeEntries = TimeEntries();
+    for (auto it = timeEntries->begin(); it != timeEntries->end(); it++) {
+        if ((*it)->DurationInSeconds() < 0) {
+            return TimeEntries.make_locked(*it);
+        }
+    }
+    return {};
 }
 
 
 
 void UserData::DeleteRelatedModelsWithWorkspace(const Poco::UInt64 wid) {
-    deleteRelatedModelsWithWorkspace(wid, &related.Clients);
-    deleteRelatedModelsWithWorkspace(wid, &related.Projects);
-    deleteRelatedModelsWithWorkspace(wid, &related.Tasks);
-    deleteRelatedModelsWithWorkspace(wid, &related.TimeEntries);
-    deleteRelatedModelsWithWorkspace(wid, &related.Tags);
+    {
+        auto clients = Clients();
+        deleteRelatedModelsWithWorkspace(wid, clients);
+    }
+    {
+        auto projects = Projects();
+        deleteRelatedModelsWithWorkspace(wid, projects);
+    }
+    {
+        auto tasks = Tasks();
+        deleteRelatedModelsWithWorkspace(wid, tasks);
+    }
+    {
+        auto timeEntries = TimeEntries();
+        deleteRelatedModelsWithWorkspace(wid, timeEntries);
+    }
+    {
+        auto tags = Tags();
+        deleteRelatedModelsWithWorkspace(wid, tags);
+    }
 }
 
 void UserData::RemoveClientFromRelatedModels(const Poco::UInt64 cid) {
-    for (std::vector<Project *>::iterator it = related.Projects.begin();
-            it != related.Projects.end(); it++) {
+    auto projects = Projects();
+    for (auto it = projects->begin(); it != projects->end(); it++) {
         Project *model = *it;
         if (model->CID() == cid) {
             model->SetCID(0);
@@ -358,21 +468,17 @@ void UserData::RemoveClientFromRelatedModels(const Poco::UInt64 cid) {
 }
 
 void UserData::RemoveProjectFromRelatedModels(const Poco::UInt64 pid) {
-    removeProjectFromRelatedModels(pid, &related.Tasks);
-    removeProjectFromRelatedModels(pid, &related.TimeEntries);
+    {
+        auto tasks = Tasks();
+        removeProjectFromRelatedModels(pid, tasks);
+    }
+    {
+        auto timeEntries = TimeEntries();
+        removeProjectFromRelatedModels(pid, timeEntries);
+    }
 }
 
-void UserData::RemoveTaskFromRelatedModels(const Poco::UInt64 tid) {
-    related.forEachTimeEntries([&](TimeEntry *model) {
-        if (model->TID() == tid) {
-            model->SetTID(0);
-        }
-    });
-}
-
-void UserData::loadUserTagFromJSON(
-    Json::Value data,
-    std::set<Poco::UInt64> *alive) {
+void UserData::loadUserTagFromJSON(Json::Value data, std::set<Poco::UInt64> *alive) {
 
     // alive can be 0, dont assert/check it
 
@@ -382,10 +488,10 @@ void UserData::loadUserTagFromJSON(
         return;
     }
 
-    Tag *model = related.TagByID(id);
+    auto model = Tags.findByID(id);
 
     if (!model) {
-        model = related.TagByGUID(data["guid"].asString());
+        model = Tags.findByGUID(data["guid"].asString());
     }
 
     if (!data["server_deleted_at"].asString().empty()) {
@@ -396,8 +502,7 @@ void UserData::loadUserTagFromJSON(
     }
 
     if (!model) {
-        model = new Tag();
-        related.Tags.push_back(model);
+        model = Tags.create();
     }
     if (alive) {
         alive->insert(id);
@@ -406,9 +511,7 @@ void UserData::loadUserTagFromJSON(
     model->LoadFromJSON(data);
 }
 
-void UserData::loadUserTaskFromJSON(
-    Json::Value data,
-    std::set<Poco::UInt64> *alive) {
+void UserData::loadUserTaskFromJSON(Json::Value data, std::set<Poco::UInt64> *alive) {
 
     // alive can be 0, dont assert/check it
 
@@ -418,7 +521,7 @@ void UserData::loadUserTaskFromJSON(
         return;
     }
 
-    Task *model = related.TaskByID(id);
+    auto model = Tasks.findByID(id);
 
     // Tasks have no GUID
 
@@ -430,8 +533,7 @@ void UserData::loadUserTaskFromJSON(
     }
 
     if (!model) {
-        model = new Task();
-        related.Tasks.push_back(model);
+        model = Tasks.create();
     }
 
     if (alive) {
@@ -441,9 +543,7 @@ void UserData::loadUserTaskFromJSON(
     model->LoadFromJSON(data);
 }
 
-void UserData::loadUserWorkspaceFromJSON(
-    Json::Value data,
-    std::set<Poco::UInt64> *alive) {
+void UserData::loadUserWorkspaceFromJSON(Json::Value data, std::set<Poco::UInt64> *alive) {
 
     // alive can be 0, dont assert/check it
 
@@ -452,7 +552,7 @@ void UserData::loadUserWorkspaceFromJSON(
         logger().error("Backend is sending invalid data: ignoring update without an ID");  // NOLINT
         return;
     }
-    Workspace *model = related.WorkspaceByID(id);
+    auto model = Workspaces.findByID(id);
 
     // Workspaces have no GUID
 
@@ -464,8 +564,7 @@ void UserData::loadUserWorkspaceFromJSON(
     }
 
     if (!model) {
-        model = new Workspace();
-        related.Workspaces.push_back(model);
+        model = Workspaces.create();
     }
     if (alive) {
         alive->insert(id);
@@ -492,7 +591,8 @@ error UserData::LoadTimeEntriesFromJSONString(const std::string& json) {
         loadUserTimeEntryFromJSON(root[i], &alive);
     }
 
-    deleteZombies(related.TimeEntries, alive);
+    auto timeEntries = TimeEntries();
+    deleteZombies(timeEntries, alive);
 
     return noError;
 }
@@ -503,31 +603,26 @@ void UserData::loadObmExperimentFromJson(Json::Value const &obm) {
     if (!nr) {
         return;
     }
-    ObmExperiment *model = nullptr;
-    for (std::vector<ObmExperiment *>::const_iterator it =
-        related.ObmExperiments.begin();
-            it != related.ObmExperiments.end();
-            it++) {
+    locked<ObmExperiment> model;
+    auto obmExperiments = ObmExperiments();
+    for (auto it = obmExperiments->begin(); it != obmExperiments->end(); it++) {
         ObmExperiment *existing = *it;
         if (existing->Nr() == nr) {
-            model = existing;
+            model = ObmExperiments.make_locked(existing);
             break;
         }
     }
     if (!model) {
-        model = new ObmExperiment();
+        model = ObmExperiments.create();
         model->SetUID(ID());
         model->SetNr(nr);
-        related.ObmExperiments.push_back(model);
     }
     model->SetIncluded(obm["included"].asBool());
     model->SetActions(obm["actions"].asString());
 }
 
 
-void UserData::loadUserAndRelatedDataFromJSON(
-    Json::Value data,
-    const bool &including_related_data) {
+void UserData::loadUserAndRelatedDataFromJSON(Json::Value data, const bool &including_related_data) {
 
     if (!data["id"].asUInt64()) {
         logger().error("Backend is sending invalid data: ignoring update without an ID");  // NOLINT
@@ -556,7 +651,8 @@ void UserData::loadUserAndRelatedDataFromJSON(
         }
 
         if (including_related_data) {
-            deleteZombies(related.Workspaces, alive);
+            auto workspaces = Workspaces();
+            deleteZombies(workspaces, alive);
         }
     }
 
@@ -572,7 +668,8 @@ void UserData::loadUserAndRelatedDataFromJSON(
         }
 
         if (including_related_data) {
-            deleteZombies(related.Clients, alive);
+            auto clients = Clients();
+            deleteZombies(clients, alive);
         }
     }
 
@@ -588,7 +685,8 @@ void UserData::loadUserAndRelatedDataFromJSON(
         }
 
         if (including_related_data) {
-            deleteZombies(related.Projects, alive);
+            auto projects = Projects();
+            deleteZombies(projects, alive);
         }
     }
 
@@ -604,7 +702,8 @@ void UserData::loadUserAndRelatedDataFromJSON(
         }
 
         if (including_related_data) {
-            deleteZombies(related.Tasks, alive);
+            auto tasks = Tasks();
+            deleteZombies(tasks, alive);
         }
     }
 
@@ -620,7 +719,8 @@ void UserData::loadUserAndRelatedDataFromJSON(
         }
 
         if (including_related_data) {
-            deleteZombies(related.Tags, alive);
+            auto tags = Tags();
+            deleteZombies(tags, alive);
         }
     }
 
@@ -636,24 +736,22 @@ void UserData::loadUserAndRelatedDataFromJSON(
         }
 
         if (including_related_data) {
-            deleteZombies(related.TimeEntries, alive);
+            auto timeEntries = TimeEntries();
+            deleteZombies(timeEntries, alive);
         }
     }
 }
 
-void UserData::loadUserClientFromSyncJSON(
-    Json::Value data,
-    std::set<Poco::UInt64> *alive) {
-    bool addNew = false;
+void UserData::loadUserClientFromSyncJSON(Json::Value data, std::set<Poco::UInt64> *alive) {
     Poco::UInt64 id = data["id"].asUInt64();
     if (!id) {
         logger().error("Backend is sending invalid data: ignoring update without an ID");  // NOLINT
         return;
     }
-    Client *model = related.ClientByID(id);
+    auto model = Clients.findByID(id);
 
     if (!model) {
-        model = related.ClientByGUID(data["guid"].asString());
+        model = Clients.findByGUID(data["guid"].asString());
     }
 
     if (!data["server_deleted_at"].asString().empty()) {
@@ -664,24 +762,21 @@ void UserData::loadUserClientFromSyncJSON(
     }
 
     if (!model) {
-        model = new Client();
-        addNew = true;
+        auto c = new Client();
+        c->SetUID(ID());
+        c->LoadFromJSON(data);
+        AddClientToList(c);
+    }
+    else {
+        model->SetUID(ID());
+        model->LoadFromJSON(data);
     }
     if (alive) {
         alive->insert(id);
     }
-
-    model->SetUID(ID());
-    model->LoadFromJSON(data);
-
-    if (addNew) {
-        AddClientToList(model);
-    }
 }
 
-void UserData::loadUserClientFromJSON(
-    Json::Value data,
-    std::set<Poco::UInt64> *alive) {
+void UserData::loadUserClientFromJSON(Json::Value data, std::set<Poco::UInt64> *alive) {
 
     // alive can be 0, dont assert/check it
 
@@ -690,10 +785,10 @@ void UserData::loadUserClientFromJSON(
         logger().error("Backend is sending invalid data: ignoring update without an ID");  // NOLINT
         return;
     }
-    Client *model = related.ClientByID(id);
+    auto model = Clients.findByID(id);
 
     if (!model) {
-        model = related.ClientByGUID(data["guid"].asString());
+        model = Clients.findByGUID(data["guid"].asString());
     }
 
     if (!data["server_deleted_at"].asString().empty()) {
@@ -704,8 +799,7 @@ void UserData::loadUserClientFromJSON(
     }
 
     if (!model) {
-        model = new Client();
-        related.Clients.push_back(model);
+        model = Clients.create();
     }
     if (alive) {
         alive->insert(id);
@@ -714,9 +808,7 @@ void UserData::loadUserClientFromJSON(
     model->LoadFromJSON(data);
 }
 
-void UserData::loadUserProjectFromSyncJSON(
-    Json::Value data,
-    std::set<Poco::UInt64> *alive) {
+void UserData::loadUserProjectFromSyncJSON(Json::Value data, std::set<Poco::UInt64> *alive) {
     bool addNew = false;
     Poco::UInt64 id = data["id"].asUInt64();
     if (!id) {
@@ -724,10 +816,10 @@ void UserData::loadUserProjectFromSyncJSON(
         return;
     }
 
-    Project *model = related.ProjectByID(id);
+    auto model = Projects.findByID(id);
 
     if (!model) {
-        model = related.ProjectByGUID(data["guid"].asString());
+        model = Projects.findByGUID(data["guid"].asString());
     }
 
     if (!data["server_deleted_at"].asString().empty()) {
@@ -738,29 +830,33 @@ void UserData::loadUserProjectFromSyncJSON(
     }
 
     if (!model) {
-        model = new Project();
-        addNew = true;
+        auto p = new Project();
+        p->SetUID(ID());
+        p->LoadFromJSON(data);
+
+        auto c = clientByProject(p);
+        if (c) {
+            p->SetClientName(c->Name());
+        }
+
+        AddProjectToList(p);
+    }
+    else {
+        model->SetUID(ID());
+        model->LoadFromJSON(data);
+
+        auto c = clientByProject(model);
+        if (c) {
+            model->SetClientName(c->Name());
+        }
+
     }
     if (alive) {
         alive->insert(id);
     }
-
-    model->SetUID(ID());
-    model->LoadFromJSON(data);
-
-    Client *c = related.clientByProject(model);
-    if (c) {
-        model->SetClientName(c->Name());
-    }
-
-    if (addNew) {
-        AddProjectToList(model);
-    }
 }
 
-void UserData::loadUserProjectFromJSON(
-    Json::Value data,
-    std::set<Poco::UInt64> *alive) {
+void UserData::loadUserProjectFromJSON(Json::Value data, std::set<Poco::UInt64> *alive) {
 
     // alive can be 0, dont assert/check it
 
@@ -770,10 +866,10 @@ void UserData::loadUserProjectFromJSON(
         return;
     }
 
-    Project *model = related.ProjectByID(id);
+    auto model = Projects.findByID(id);
 
     if (!model) {
-        model = related.ProjectByGUID(data["guid"].asString());
+        model = Projects.findByGUID(data["guid"].asString());
     }
 
     if (!data["server_deleted_at"].asString().empty()) {
@@ -784,8 +880,7 @@ void UserData::loadUserProjectFromJSON(
     }
 
     if (!model) {
-        model = new Project();
-        related.Projects.push_back(model);
+        model = Projects.create();
     }
     if (alive) {
         alive->insert(id);
@@ -794,9 +889,7 @@ void UserData::loadUserProjectFromJSON(
     model->LoadFromJSON(data);
 }
 
-void UserData::loadUserTimeEntryFromJSON(
-    Json::Value data,
-    std::set<Poco::UInt64> *alive) {
+void UserData::loadUserTimeEntryFromJSON(Json::Value data, std::set<Poco::UInt64> *alive) {
 
     // alive can be 0, dont assert/check it
 
@@ -806,10 +899,10 @@ void UserData::loadUserTimeEntryFromJSON(
         return;
     }
 
-    TimeEntry *model = related.TimeEntryByID(id);
+    auto model = TimeEntries.findByID(id);
 
     if (!model) {
-        model = related.TimeEntryByGUID(data["guid"].asString());
+        model = TimeEntries.findByGUID(data["guid"].asString());
     }
 
     if (!data["server_deleted_at"].asString().empty()) {
@@ -820,8 +913,7 @@ void UserData::loadUserTimeEntryFromJSON(
     }
 
     if (!model) {
-        model = new TimeEntry();
-        related.pushBackTimeEntry(model);
+        model = TimeEntries.create();
     }
     if (alive) {
         alive->insert(id);
@@ -831,8 +923,7 @@ void UserData::loadUserTimeEntryFromJSON(
     model->EnsureGUID();
 }
 
-error UserData::EnableOfflineLogin(
-    const std::string password) {
+error UserData::EnableOfflineLogin(const std::string password) {
     if (Email().empty()) {
         return error("cannot enable offline login without an e-mail");
     }
@@ -906,11 +997,11 @@ bool UserData::CanSeeBillable(
 void UserData::MarkTimelineBatchAsUploaded(
     const std::vector<TimelineEvent> &events) {
 
-    for (std::vector<TimelineEvent>::const_iterator i = events.begin();
+    for (auto i = events.begin();
             i != events.end();
             ++i) {
         TimelineEvent event = *i;
-        TimelineEvent *uploaded = related.TimelineEventByGUID(event.GUID());
+        auto uploaded = TimelineEvents.findByGUID(event.GUID());
         if (!uploaded) {
             logger().error(
                 "Could not find timeline event to mark it as uploaded: "
@@ -942,15 +1033,13 @@ void UserData::CompressTimeline() {
         ss << "CompressTimeline "
            << " user_id=" << ID()
            << " chunk_up_to=" << chunk_up_to
-           << " number of events=" << related.TimelineEvents.size();
+           << " number of events=" << TimelineEvents.size();
 
         logger().debug(ss.str());
     }
 
-    for (std::vector<TimelineEvent *>::iterator i =
-        related.TimelineEvents.begin();
-            i != related.TimelineEvents.end();
-            ++i) {
+    auto timelineEvents = TimelineEvents();
+    for (auto i = timelineEvents->begin(); i != timelineEvents->end(); ++i) {
         TimelineEvent *event = *i;
 
         poco_check_ptr(event);
@@ -1022,7 +1111,7 @@ void UserData::CompressTimeline() {
         std::stringstream ss;
         ss << "CompressTimeline done in " << (time(nullptr) - start)
            << " seconds, "
-           << related.TimelineEvents.size()
+           << timelineEvents->size()
            << " compressed into "
            << compressed.size()
            << " chunks";
@@ -1032,10 +1121,8 @@ void UserData::CompressTimeline() {
 
 std::vector<TimelineEvent> UserData::CompressedTimeline() const {
     std::vector<TimelineEvent> list;
-    for (std::vector<TimelineEvent *>::const_iterator i =
-        related.TimelineEvents.begin();
-            i != related.TimelineEvents.end();
-            ++i) {
+    auto timelineEvents = TimelineEvents();
+    for (auto i = timelineEvents->begin(); i != timelineEvents->end(); ++i) {
         TimelineEvent *event = *i;
         poco_check_ptr(event);
         if (event->VisibleToUser()) {
@@ -1055,7 +1142,7 @@ error UserData::UpdateJSON(
     Json::Value c;
 
     // Time entries go last
-    for (std::vector<TimeEntry *>::const_iterator it =
+    for (auto it =
         time_entries->begin();
             it != time_entries->end(); it++) {
         Json::Value update;
@@ -1093,7 +1180,8 @@ error UserData::LoadWorkspacesFromJSONString(const std::string& json) {
     std::set<Poco::UInt64> alive;
 
     for (unsigned int i = 0; i < root.size(); i++) {
-        loadUserWorkspaceFromJSON(root[i]);
+        // OVERHAUL TODO
+        //loadUserWorkspaceFromJSON(root[i]);
     }
 
     return noError;
@@ -1110,9 +1198,7 @@ void UserData::LoadObmExperiments(Json::Value const &obm) {
 }
 
 
-error UserData::LoadUserAndRelatedDataFromJSONString(
-    const std::string &json,
-    const bool &including_related_data) {
+error UserData::LoadUserAndRelatedDataFromJSONString(const std::string &json, const bool &including_related_data) {
 
     if (json.empty()) {
         Poco::Logger &logger = Poco::Logger::get("json");
@@ -1140,8 +1226,7 @@ error UserData::LoadUserAndRelatedDataFromJSONString(
 
 
 
-void UserData::loadUserUpdateFromJSON(
-    Json::Value node) {
+void UserData::loadUserUpdateFromJSON(Json::Value node) {
 
     Json::Value data = node["data"];
     std::string model = node["model"].asString();
@@ -1178,8 +1263,7 @@ void UserData::loadUserUpdateFromJSON(
 
 
 
-error UserData::LoadUserUpdateFromJSONString(
-    const std::string json) {
+error UserData::LoadUserUpdateFromJSONString(const std::string json) {
 
     if (json.empty()) {
         return noError;
@@ -1196,50 +1280,586 @@ error UserData::LoadUserUpdateFromJSONString(
     return noError;
 }
 
+std::string UserData::generateKey(const std::string password) {
+    Poco::SHA1Engine sha1;
+    Poco::DigestOutputStream outstr(sha1);
+    outstr << Email();
+    outstr << password;
+    outstr.flush();
+    const Poco::DigestEngine::Digest &digest = sha1.digest();
+    return Poco::DigestEngine::digestToHex(digest);
+}
 
-template<class T>
-void deleteZombies(
-    const std::vector<T> &list,
-    const std::set<Poco::UInt64> &alive) {
-    for (size_t i = 0; i < list.size(); ++i) {
-        BaseModel *model = list[i];
-        if (!model->ID()) {
-            // If model has no server-assigned ID, it's not even
-            // pushed to server. So actually we don't know if it's
-            // a zombie or not. Ignore:
+void UserData::Clear() {
+    Workspaces()->clear();
+    Clients()->clear();
+    Projects()->clear();
+    Tasks()->clear();
+    Tags()->clear();
+    TimeEntries()->clear();
+    AutotrackerRules()->clear();
+    TimelineEvents()->clear();
+    ObmActions()->clear();
+    ObmExperiments()->clear();
+}
+
+error UserData::DeleteAutotrackerRule(const Poco::Int64 local_id) {
+    if (!local_id) {
+        return error("cannot delete rule without an ID");
+    }
+    auto autotrackerRules = AutotrackerRules();
+    for (auto it = autotrackerRules->begin(); it != autotrackerRules->end(); it++) {
+        AutotrackerRule *rule = *it;
+        // Autotracker settings are not saved to DB,
+        // so the ID will be 0 always. But will have local ID
+        if (rule->LocalID() == local_id) {
+            rule->MarkAsDeletedOnServer();
+            rule->Delete();
+            break;
+        }
+    }
+    return noError;
+}
+
+AutotrackerRule *UserData::FindAutotrackerRule(const TimelineEvent event) const {
+    auto autotrackerRules = AutotrackerRules();
+    for (auto it = autotrackerRules->begin(); it != autotrackerRules->end(); it++) {
+        AutotrackerRule *rule = *it;
+        if (rule->Matches(event)) {
+            return rule;
+        }
+    }
+    return nullptr;
+}
+
+bool UserData::HasMatchingAutotrackerRule(const std::string lowercase_term) const {
+    auto autotrackerRules = AutotrackerRules();
+    for (auto it = autotrackerRules->begin(); it != autotrackerRules->end(); it++) {
+        AutotrackerRule *rule = *it;
+        if (rule->Term() == lowercase_term) {
+            return true;
+        }
+    }
+    return false;
+}
+
+Poco::Int64 UserData::NumberOfUnsyncedTimeEntries() const {
+    Poco::Int64 count(0);
+    auto timeEntries = TimeEntries();
+    for (auto it = timeEntries->begin(); it != timeEntries->end(); it++) {
+        TimeEntry *te = *it;
+        if (te->NeedsPush()) {
+            count++;
+        }
+    }
+
+    return count;
+}
+
+std::vector<TimelineEvent *> UserData::VisibleTimelineEvents() const {
+    std::vector<TimelineEvent *> result;
+    auto timelineEvents = TimelineEvents();
+    for (auto i = timelineEvents->begin(); i != timelineEvents->end(); ++i) {
+        TimelineEvent *event = *i;
+        if (event && event->VisibleToUser()) {
+            result.push_back(event);
+        }
+    }
+    return result;
+}
+
+std::vector<TimeEntry *> UserData::VisibleTimeEntries() const {
+    std::vector<TimeEntry *> result;
+    auto timeEntries = TimeEntries();
+    for (auto it = timeEntries->begin(); it != timeEntries->end(); it++) {
+        TimeEntry *te = *it;
+        if (te->GUID().empty()) {
             continue;
         }
-        if (alive.end() == alive.find(model->ID())) {
-            model->MarkAsDeletedOnServer();
+        if (te->DeletedAt() > 0) {
+            continue;
+        }
+        result.push_back(te);
+    }
+    return result;
+}
+
+Poco::Int64 UserData::TotalDurationForDate(const TimeEntry *match) const {
+    std::string date_header = Formatter::FormatDateHeader(match->Start());
+    Poco::Int64 duration(0);
+    auto timeEntries = TimeEntries();
+    for (auto it = timeEntries->begin(); it != timeEntries->end(); it++) {
+        TimeEntry *te = *it;
+        if (te->GUID().empty()) {
+            continue;
+        }
+        if (te->DeletedAt() > 0) {
+            continue;
+        }
+        if (Formatter::FormatDateHeader(te->Start()) == date_header) {
+            duration += Formatter::AbsDuration(te->Duration());
+        }
+    }
+    return duration;
+}
+
+TimeEntry *UserData::LatestTimeEntry() const {
+    TimeEntry *latest = nullptr;
+    std::string pomodoro_decription("Pomodoro Break");
+    std::string pomodoro_tag("pomodoro-break");
+
+    // Find the time entry that was stopped most recently
+    auto timeEntries = TimeEntries();
+    for (auto it = timeEntries->begin(); it != timeEntries->end(); it++) {
+        TimeEntry *te = *it;
+
+        if (te->GUID().empty()) {
+            continue;
+        }
+        if (te->DurationInSeconds() < 0) {
+            continue;
+        }
+        if (te->DeletedAt() > 0) {
+            continue;
+        }
+        if (te->Description().compare(pomodoro_decription) == 0) {
+            continue;
+        }
+        if (te->Tags().find(pomodoro_tag) == 0) {
+            continue;
+        }
+
+        if (!latest || (te->Stop() > latest->Stop())) {
+            latest = te;
+        }
+    }
+
+    return latest;
+}
+
+void UserData::timeEntryAutocompleteItems(std::set<std::string> *unique_names, std::map<Poco::UInt64, std::string> *ws_names, std::vector<view::Autocomplete> *list, std::map<std::string, std::vector<view::Autocomplete> > *items) const {
+
+    poco_check_ptr(list);
+
+    auto timeEntries = TimeEntries();
+    for (auto it = timeEntries->begin(); it != timeEntries->end(); it++) {
+        TimeEntry *te = *it;
+
+        if (te->DeletedAt() || te->IsMarkedAsDeletedOnServer()
+                || te->Description().empty()) {
+            continue;
+        }
+
+        locked<const Task> t;
+        if (te->TID()) {
+            t = Tasks.findByID(te->TID());
+        }
+
+        locked<const Project> p;
+        if (t && t->PID()) {
+            p = Projects.findByID(t->PID());
+        } else if (te->PID()) {
+            p = Projects.findByID(te->PID());
+        }
+
+        if (p && !p->Active()) {
+            continue;
+        }
+
+        std::string project_task_label =
+                Formatter::JoinTaskName(t, p);
+
+        std::string description = te->Description();
+
+        std::stringstream search_parts;
+        search_parts << te->Description();
+        if (!project_task_label.empty()) {
+            search_parts << " - " << project_task_label;
+        }
+
+        std::string text = search_parts.str();
+        if (text.empty()) {
+            continue;
+        }
+
+        if (unique_names->find(text) != unique_names->end()) {
+            continue;
+        }
+        unique_names->insert(text);
+
+        view::Autocomplete autocomplete_item;
+        autocomplete_item.Text = text;
+        autocomplete_item.Description = description;
+        autocomplete_item.ProjectAndTaskLabel = project_task_label;
+        if (p) {
+            autocomplete_item.ProjectColor = p->ColorCode();
+            autocomplete_item.ProjectID = p->ID();
+            autocomplete_item.ProjectGUID = p->GUID();
+            autocomplete_item.ProjectLabel = p->Name();
+            if (p->CID()) {
+                autocomplete_item.ClientLabel = p->ClientName();
+                autocomplete_item.ClientID = p->CID();
+            }
+        }
+
+        if (t) {
+            autocomplete_item.TaskID = t->ID();
+            autocomplete_item.TaskLabel = t->Name();
+        }
+        autocomplete_item.WorkspaceID = te->WID();
+        if (ws_names) {
+            autocomplete_item.WorkspaceName = (*ws_names)[te->WID()];
+        }
+        autocomplete_item.Tags = te->Tags();
+        autocomplete_item.Type = kAutocompleteItemTE;
+        autocomplete_item.Billable = te->Billable();
+
+        if (items && !autocomplete_item.WorkspaceName.empty()) {
+            (*items)[autocomplete_item.WorkspaceName].push_back(autocomplete_item);
+        } else {
+            list->push_back(autocomplete_item);
         }
     }
 }
 
-template <typename T>
-void deleteRelatedModelsWithWorkspace(const Poco::UInt64 wid,
-                                      std::vector<T *> *list) {
-    typedef typename std::vector<T *>::iterator iterator;
-    for (iterator it = list->begin(); it != list->end(); it++) {
-        T *model = *it;
-        if (model->WID() == wid) {
-            model->MarkAsDeletedOnServer();
+void UserData::taskAutocompleteItems(std::set<std::string> *unique_names, std::map<Poco::UInt64, std::string> *ws_names, std::vector<view::Autocomplete> *list, std::map<Poco::UInt64, std::vector<view::Autocomplete> > *items) const {
+
+    poco_check_ptr(list);
+
+    auto tasks = Tasks();
+    for (auto it = tasks->begin(); it != tasks->end(); it++) {
+        auto t = Tasks.make_locked<const Task>(*it);
+
+        if (!t) {
+            continue;
+        }
+
+        if (t->IsMarkedAsDeletedOnServer()) {
+            continue;
+        }
+
+        if (!t->Active()) {
+            continue;
+        }
+
+        locked<const Project> p;
+        if (t->PID()) {
+            p = Projects.findByID(t->PID());
+        }
+
+        if (p && !p->Active()) {
+            continue;
+        }
+
+        std::string text = Formatter::JoinTaskName(t, p);
+        if (text.empty()) {
+            continue;
+        }
+
+        if (unique_names->find(text) != unique_names->end()) {
+            continue;
+        }
+        unique_names->insert(text);
+
+        view::Autocomplete autocomplete_item;
+        autocomplete_item.Text = t->Name();
+        autocomplete_item.ProjectAndTaskLabel = text;
+        autocomplete_item.TaskLabel = t->Name();
+        autocomplete_item.TaskID = t->ID();
+
+        if (p) {
+            autocomplete_item.ProjectColor = p->ColorCode();
+            autocomplete_item.ProjectID = p->ID();
+            autocomplete_item.ProjectGUID = p->GUID();
+            autocomplete_item.ProjectLabel = p->Name();
+            autocomplete_item.Billable = p->Billable();
+            if (p->CID()) {
+                autocomplete_item.ClientLabel = p->ClientName();
+                autocomplete_item.ClientID = p->CID();
+            }
+        }
+        if (ws_names) {
+            autocomplete_item.WorkspaceName = (*ws_names)[t->WID()];
+        }
+        autocomplete_item.WorkspaceID = t->WID();
+        autocomplete_item.Type = kAutocompleteItemTask;
+
+        if (items) {
+            (*items)[autocomplete_item.ProjectID].push_back(autocomplete_item);
+        } else {
+            list->push_back(autocomplete_item);
         }
     }
 }
 
-template <typename T>
-void removeProjectFromRelatedModels(const Poco::UInt64 pid,
-                                    std::vector<T *> *list) {
-    typedef typename std::vector<T *>::iterator iterator;
-    for (iterator it = list->begin(); it != list->end(); it++) {
-        T *model = *it;
-        if (model->PID() == pid) {
-            model->SetPID(0);
+void UserData::projectAutocompleteItems(std::set<std::string> *unique_names, std::map<Poco::UInt64, std::string> *ws_names, std::vector<view::Autocomplete> *list, std::map<std::string, std::vector<view::Autocomplete> > *items, std::map<Poco::UInt64, std::vector<view::Autocomplete> > *task_items) const {
+    poco_check_ptr(list);
+
+    auto projects = Projects();
+    for (auto it = projects->begin(); it != projects->end(); it++) {
+        auto p = Projects.make_locked<Project>(*it);
+
+        if (!p->Active()) {
+            continue;
+        }
+
+        auto c = clientByProject(p);
+
+        auto nullTask = locked<const Task>();
+        std::string text = Formatter::JoinTaskName(nullTask, p);
+        if (text.empty()) {
+            continue;
+        }
+
+        {
+            std::stringstream ss;
+            ss << p->WID() << "/" << text;
+            std::string uniq_name = ss.str();
+            if (unique_names->find(uniq_name) != unique_names->end()) {
+                continue;
+            }
+            unique_names->insert(uniq_name);
+        }
+
+        view::Autocomplete autocomplete_item;
+        autocomplete_item.Text = text;
+        autocomplete_item.ProjectAndTaskLabel = text;
+        autocomplete_item.ProjectLabel = p->Name();
+        if (c) {
+            autocomplete_item.ClientLabel = c->Name();
+            autocomplete_item.ClientID = c->ID();
+        }
+        autocomplete_item.ProjectID = p->ID();
+        autocomplete_item.ProjectGUID = p->GUID();
+        autocomplete_item.ProjectColor = p->ColorCode();
+        if (ws_names) {
+            autocomplete_item.WorkspaceName = (*ws_names)[p->WID()];
+        }
+        autocomplete_item.WorkspaceID = p->WID();
+        autocomplete_item.Type = kAutocompleteItemProject;
+
+        if (items && !autocomplete_item.WorkspaceName.empty()) {
+            (*items)[autocomplete_item.WorkspaceName].push_back(autocomplete_item);
+            if (task_items) {
+                for (std::vector<view::Autocomplete>::const_iterator it =
+                     (*task_items)[autocomplete_item.ProjectID].begin();
+                     it != (*task_items)[autocomplete_item.ProjectID].end(); it++) {
+                    view::Autocomplete ac = *it;
+                    (*items)[autocomplete_item.WorkspaceName].push_back(ac);
+                }
+            }
+        } else {
+            list->push_back(autocomplete_item);
+            if (task_items) {
+                for (std::vector<view::Autocomplete>::const_iterator it =
+                     (*task_items)[autocomplete_item.ProjectID].begin();
+                     it != (*task_items)[autocomplete_item.ProjectID].end(); it++) {
+                    view::Autocomplete ac = *it;
+                    list->push_back(ac);
+                }
+            }
         }
     }
 }
 
+void UserData::TimeEntryAutocompleteItems(std::vector<view::Autocomplete> *result) const {
+    std::set<std::string> unique_names;
+    std::map<Poco::UInt64, std::string> ws_names;
+    std::map<std::string, std::vector<view::Autocomplete> > items;
+    workspaceAutocompleteItems(&unique_names, &ws_names, result);
+    timeEntryAutocompleteItems(&unique_names, &ws_names, result, &items);
+    mergeGroupedAutocompleteItems(result, &items);
+}
 
-#endif
+void UserData::MinitimerAutocompleteItems(std::vector<view::Autocomplete> *result) const {
+    std::set<std::string> unique_names;
+    std::map<Poco::UInt64, std::string> ws_names;
+    std::map<std::string, std::vector<view::Autocomplete> > items;
+    std::map<Poco::UInt64, std::vector<view::Autocomplete> > task_items;
+
+    workspaceAutocompleteItems(&unique_names, &ws_names, result);
+    timeEntryAutocompleteItems(&unique_names, &ws_names, result, &items);
+    taskAutocompleteItems(&unique_names, &ws_names, result, &task_items);
+    projectAutocompleteItems(&unique_names, &ws_names, result, &items, &task_items);
+
+    mergeGroupedAutocompleteItems(result, &items);
+}
+
+void UserData::mergeGroupedAutocompleteItems(std::vector<view::Autocomplete> *result, std::map<std::string, std::vector<view::Autocomplete> > *items) const {
+    // Join created workspace maps to a single vector
+    Poco::UInt64 total_size = 0;
+    for(std::map<std::string, std::vector<view::Autocomplete> >::iterator iter =
+        items->begin(); iter != items->end(); ++iter)
+    {
+        total_size += iter->second.size();
+    }
+
+    result->reserve(total_size);
+
+    for(std::map<std::string, std::vector<view::Autocomplete> >::iterator iter =
+        items->begin(); iter != items->end(); ++iter)
+    {
+        result->insert(result->end(), iter->second.begin(), iter->second.end());
+    }
+}
+
+void UserData::ProjectAutocompleteItems(std::vector<view::Autocomplete> *result) const {
+    std::set<std::string> unique_names;
+    std::map<Poco::UInt64, std::string> ws_names;
+    std::map<Poco::UInt64, std::vector<view::Autocomplete> > task_items;
+    workspaceAutocompleteItems(&unique_names, &ws_names, result);
+    taskAutocompleteItems(&unique_names, &ws_names, result, &task_items);
+    projectAutocompleteItems(&unique_names, &ws_names, result, nullptr, &task_items);
+}
+
+void UserData::workspaceAutocompleteItems(std::set<std::string> *, std::map<Poco::UInt64, std::string> *ws_names, std::vector<view::Autocomplete> *) const {
+
+    // remember workspaces that have projects
+    std::set<Poco::UInt64> ws_ids_with_projects;
+
+    auto projects = Projects();
+    for (auto it = projects->begin(); it != projects->end(); it++) {
+        Project *p = *it;
+
+        if (p->Active()) {
+            ws_ids_with_projects.insert(p->WID());
+        }
+    }
+
+    auto workspaces = Workspaces();
+    for (auto it = workspaces->begin(); it != workspaces->end(); it++) {
+        Workspace *ws = *it;
+
+        if (ws_ids_with_projects.find(ws->ID()) == ws_ids_with_projects.end()) {
+            continue;
+        }
+
+        std::string ws_name = Poco::UTF8::toUpper(ws->Name());
+        (*ws_names)[ws->ID()] = ws_name;
+    }
+}
+
+void UserData::TagList(std::vector<std::string> *result, const Poco::UInt64 wid) const {
+    poco_check_ptr(result);
+    std::set<std::string> unique_names;
+
+    auto tags = Tags();
+    for (auto it = tags->begin(); it != tags->end(); it++) {
+        Tag *tag = *it;
+        if (wid && tag->WID() != wid) {
+            continue;
+        }
+        if (unique_names.find(tag->Name()) != unique_names.end()) {
+            continue;
+        }
+        unique_names.insert(tag->Name());
+        result->push_back(tag->Name());
+    }
+
+    std::sort(result->rbegin(), result->rend());
+}
+
+void UserData::WorkspaceList(std::vector<Workspace *> *result) const {
+    poco_check_ptr(result);
+
+    auto workspaces = Workspaces();
+    for (auto it = workspaces->begin(); it != workspaces->end(); it++) {
+        Workspace *ws = *it;
+        if (!ws->Admin() && ws->OnlyAdminsMayCreateProjects()) {
+            continue;
+        }
+        result->push_back(ws);
+    }
+    std::sort(result->rbegin(), result->rend(), CompareWorkspaceByName);
+}
+
+locked<std::vector<Client*>> UserData::ClientList() {
+    auto clients = Clients();
+    static thread_local std::vector<Client*> result;
+    result.clear();
+    result = *clients;
+    std::sort(result.rbegin(), result.rend(), CompareClientByName);
+    return Clients.make_locked<std::vector<Client*>>(&result);
+}
+
+void UserData::ProjectLabelAndColorCode(TimeEntry * const te, view::TimeEntry *view) const {
+
+    poco_check_ptr(te);
+    poco_check_ptr(view);
+
+    locked<const Workspace> ws;
+    if (te->WID()) {
+        ws = Workspaces.findByID(te->WID());
+    }
+    if (ws) {
+        view->WorkspaceName = ws->Name();
+    }
+
+    locked<const Task> t;
+    if (te->TID()) {
+        t = Tasks.findByID(te->TID());
+    }
+    if (t) {
+        view->TaskLabel = t->Name();
+    }
+
+    locked<const Project> p;
+    if (t && t->PID()) {
+        p = Projects.findByID(t->PID());
+    }
+    if (!p && te->PID()) {
+        p = Projects.findByID(te->PID());
+    }
+    if (!p && !te->ProjectGUID().empty()) {
+        p = Projects.findByGUID(te->ProjectGUID());
+    }
+
+    locked<const Client> c = clientByProject(p);
+
+    view->ProjectAndTaskLabel = Formatter::JoinTaskName(t, p);
+
+    if (p) {
+        view->Color = p->ColorCode();
+        view->ProjectLabel = p->Name();
+    }
+
+    if (c) {
+        view->ClientLabel = c->Name();
+    }
+}
+
+locked<const Client> UserData::clientByProject(const Project *p) const {
+    locked<const Client> c;
+    if (p && p->CID()) {
+        c = Clients.findByID(p->CID());
+    }
+    if (!c && p && !p->ClientGUID().empty()) {
+        c = Clients.findByGUID(p->ClientGUID());
+    }
+    return c;
+}
+
+locked<Client> UserData::clientByProject(locked<Project> &p) {
+    locked<Client> c;
+    if (p && p->CID()) {
+        c = Clients.findByID(p->CID());
+    }
+    if (!c && p && !p->ClientGUID().empty()) {
+        c = Clients.findByGUID(p->ClientGUID());
+    }
+    return c;
+}
+
+locked<const Client> UserData::clientByProject(locked<const Project> &p) const {
+    locked<const Client> c;
+    if (p && p->CID()) {
+        c = Clients.findByID(p->CID());
+    }
+    if (!c && p && !p->ClientGUID().empty()) {
+        c = Clients.findByGUID(p->ClientGUID());
+    }
+    return c;
+}
+
 
 }

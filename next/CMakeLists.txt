@@ -54,6 +54,6 @@ add_executable(TogglDesktopNext ${LIBRARY_SOURCE_FILES})
 target_link_libraries(TogglDesktopNext
     ${JSONCPP_LIBRARIES}
     ${LUA_LIBRARIES}
-    PocoCrypto PocoNetSSL PocoFoundation PocoData sqlite3 PocoDataSQLite
+    PocoCrypto PocoNetSSL PocoFoundation PocoData sqlite3 PocoDataSQLite PocoNet
 )
 

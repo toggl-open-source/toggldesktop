@@ -1,6 +1,16 @@
 
 #include "context.h"
 
+#include "urls.h"
+
+#include <Poco/Environment.h>
+#include <Poco/Logger.h>
+#include <Poco/URI.h>
+#include <Poco/URIStreamOpener.h>
+#include <Poco/Net/HTTPStreamFactory.h>
+#include <Poco/Net/HTTPSStreamFactory.h>
+#include <Poco/Crypto/OpenSSLInitializer.h>
+
 using namespace toggl;
 
 Context::Context(const std::string &appName, const std::string &appVersion, bool production, bool checkForUpdates)
@@ -9,11 +19,25 @@ Context::Context(const std::string &appName, const std::string &appVersion, bool
     , production_(production)
     , checkForUpdates_(checkForUpdates)
 {
-// TODO
+    if (!Poco::URIStreamOpener::defaultOpener().supportsScheme("http")) {
+        Poco::Net::HTTPStreamFactory::registerFactory();
+    }
+    if (!Poco::URIStreamOpener::defaultOpener().supportsScheme("https")) {
+        Poco::Net::HTTPSStreamFactory::registerFactory();
+    }
+    Poco::ErrorHandler::set(&error_handler_);
+    Poco::Net::initializeSSL();
+
+    Poco::Crypto::OpenSSLInitializer::initialize();
+
+    if (!production) {
+        urls::SetUseStagingAsBackend(true);
+    }
+
 }
 
 Context::~Context() {
-// TODO
+    Poco::Net::uninitializeSSL();
 }
 
 void Context::setCacertPath(const std::string &path) {
@@ -357,10 +381,6 @@ void Context::getProjectColors() {
 }
 
 void Context::getCountries() {
-// TODO
-}
-
-void Context::getCountriesAsync() {
 // TODO
 }
 

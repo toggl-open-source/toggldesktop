@@ -1,6 +1,10 @@
 
 #include "util.h"
 
+#include <iostream>
+
+namespace toggl {
+
 std::string trim_whitespace(const std::string str)
 {
     const std::string& whitespace = " \t";
@@ -13,3 +17,17 @@ std::string trim_whitespace(const std::string str)
 
     return str.substr(strBegin, strRange);
 }
+
+void CustomPocoErrorHandler::exception(const Poco::Exception &exc) {
+    std::cerr << "unhandled exception! " << exc.displayText() << std::endl;
+}
+
+void CustomPocoErrorHandler::exception(const std::exception &exc) {
+    std::cerr << "unhandled exception! " << exc.what() << std::endl;
+}
+
+void CustomPocoErrorHandler::exception() {
+    std::cerr << "unhandled exception! unknown exception" << std::endl;
+}
+
+} // namespace toggl

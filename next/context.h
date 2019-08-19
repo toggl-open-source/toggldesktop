@@ -2,6 +2,8 @@
 
 #include "toggl_api.h"
 
+#include "util.h"
+
 #include <string>
 
 namespace toggl {
@@ -170,6 +172,8 @@ private:
     std::string version_;
     bool production_;
     bool checkForUpdates_;
+
+    CustomPocoErrorHandler error_handler_;
 
     TogglCallbacks callbacks_;
 

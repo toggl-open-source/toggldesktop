@@ -32,20 +32,12 @@ include_directories(
 
 # TogglDesktopLibrary sources
 set(LIBRARY_SOURCE_FILES
-    base_model.cc
-    batch_update_result.cc
-    client.cc
     idle.cc
     analytics.cc
     help_article.cc
-    autotracker.cc
-    urls.cc
-    migrations.cc
     context.cc
     custom_error_handler.cc
-    database.cc
     feedback.cc
-    formatter.cc
     get_focused_window_linux.cc
     error.cc
     gui.cc
@@ -53,23 +45,12 @@ set(LIBRARY_SOURCE_FILES
     https_client.cc
     toggl_api.cc
     toggl_api_private.cc
-    model_change.cc
-    obm_action.cc
     platforminfo.cc
-    project.cc
-    proxy.cc
     rectangle.cc
     related_data.cc
-    settings.cc
-    tag.cc
-    task.cc
-    timeline_event.cc
-    time_entry.cc
     timeline_uploader.cc
-    user.cc
     websocket_client.cc
     window_change_recorder.cc
-    workspace.cc
 )
 
 # Set up compilation targets
