@@ -13,6 +13,7 @@ enum Key {
     case escape
     case space
     case enter
+    case tab
 
     init?(rawValue: Int) {
         switch rawValue {
@@ -22,6 +23,8 @@ enum Key {
             self = .space
         case kVK_Return:
             self = .enter
+        case kVK_Tab:
+            self = .tab
         default:
             return nil
         }

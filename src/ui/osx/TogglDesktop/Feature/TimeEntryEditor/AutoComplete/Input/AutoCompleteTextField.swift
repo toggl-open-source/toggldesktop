@@ -188,6 +188,25 @@ class AutoCompleteTextField: UndoTextField, NSTextFieldDelegate, AutoCompleteVie
     func didTapOnCreateButton() {
         autoCompleteDelegate?.autoCompleteDidTapOnCreateButton(self)
     }
+
+    func shouldClose() {
+        closeSuggestion()
+    }
+
+    override func performKeyEquivalent(with event: NSEvent) -> Bool {
+        // Prevent beep sound
+        if currentEditor() != nil {
+            if let key = Key(rawValue: Int(event.keyCode)) {
+                switch key {
+                case .enter, .tab:
+                    return true
+                default:
+                    break
+                }
+            }
+        }
+        return super.performKeyEquivalent(with: event)
+    }
 }
 
 // MARK: Private

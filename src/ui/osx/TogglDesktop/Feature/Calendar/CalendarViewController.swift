@@ -159,7 +159,7 @@ extension CalendarViewController: CalendarCollectionViewDelegate {
         switch key {
         case .enter, .space:
             dataSource.selectSelectedDate()
-        case .escape:
+        case .escape, .tab:
             break
         }
     }

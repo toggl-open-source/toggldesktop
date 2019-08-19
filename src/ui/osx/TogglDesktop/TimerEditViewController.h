@@ -18,5 +18,6 @@
 
 - (void)timerFired:(NSTimer *)timer;
 - (void)fillEntryFromAutoComplete:(AutocompleteItem *)item;
+- (void)focusTimer;
 
 @end

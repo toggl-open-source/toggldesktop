@@ -102,10 +102,6 @@ NSString *kInactiveTimerColor = @"#999999";
 													 name:kCommandStop
 												   object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(windowDidBecomeKeyNotification:)
-													 name:NSWindowDidBecomeKeyNotification
-												   object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(startNewShortcut:)
 													 name:kCommandNewShortcut
 												   object:nil];
@@ -190,17 +186,6 @@ NSString *kInactiveTimerColor = @"#999999";
 			}
 			break;
 	}
-}
-
-- (void)windowDidBecomeKeyNotification:(NSNotification *)notification
-{
-	// Only focus if the window is main
-	// Otherwise, shouldn't override the firstResponder
-	if (notification.object != self.view.window)
-	{
-		return;
-	}
-	[self focusTimer];
 }
 
 - (void)startDisplayTimerState:(NSNotification *)notification
