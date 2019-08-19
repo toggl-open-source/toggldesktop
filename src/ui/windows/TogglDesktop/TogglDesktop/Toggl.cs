@@ -1136,7 +1136,15 @@ public static partial class Toggl
             var di = new DirectoryInfo(updatePath);
             foreach (var file in di.GetFiles("TogglDesktopInstaller*.exe", SearchOption.TopDirectoryOnly))
             {
-                Utils.DeleteFile(file.FullName);
+                try
+                {
+                    Utils.DeleteFile(file.FullName);
+                }
+                catch (Exception e)
+                {
+                    Program.NotifyBugsnag(e);
+                    Toggl.OnError?.Invoke($"Unable to delete the file: {file.FullName}. Delete this file manually.", false);
+                }
             }
 
             return;
@@ -1164,7 +1172,15 @@ public static partial class Toggl
             Debug("Multiple update installers found. Deleting.");
             foreach (var file in files)
             {
-                Utils.DeleteFile(file.FullName);
+                try
+                {
+                    Utils.DeleteFile(file.FullName);
+                }
+                catch (Exception e)
+                {
+                    Program.NotifyBugsnag(e);
+                    Toggl.OnError?.Invoke($"Unable to delete the file: {file.FullName}. Delete this file manually.", false);
+                }
             }
             return null;
         }
