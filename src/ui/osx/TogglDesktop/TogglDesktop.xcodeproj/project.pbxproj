@@ -128,6 +128,8 @@
 		BA13E05C21C7BA6000835EC1 /* UserNotificationCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = BA13E05921C7B9D900835EC1 /* UserNotificationCenter.m */; };
 		BA19FC21226DA079006D8741 /* DateCellViewItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA13D20D2269BAA600EB3833 /* DateCellViewItem.xib */; };
 		BA24E772230BDBB800B1D4B2 /* TimelineBaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA24E771230BDBB800B1D4B2 /* TimelineBaseCell.swift */; };
+		BA24E793230BE50600B1D4B2 /* TimelineActivityHoverController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA24E791230BE50600B1D4B2 /* TimelineActivityHoverController.swift */; };
+		BA24E794230BE50600B1D4B2 /* TimelineActivityHoverController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA24E792230BE50600B1D4B2 /* TimelineActivityHoverController.xib */; };
 		BA276A142240F5B500810C51 /* FloatingErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA276A122240F5B500810C51 /* FloatingErrorView.swift */; };
 		BA2807E02306A2FA001A9E48 /* NSWindowController+Focusable.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2807DF2306A2FA001A9E48 /* NSWindowController+Focusable.swift */; };
 		BA2DA0C621A542E30027B7A5 /* NSTextField+Ext.m in Sources */ = {isa = PBXBuildFile; fileRef = BA2DA0C521A542E30027B7A5 /* NSTextField+Ext.m */; };
@@ -742,6 +744,8 @@
 		BA13E05921C7B9D900835EC1 /* UserNotificationCenter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = UserNotificationCenter.m; path = test2/UserNotificationCenter.m; sourceTree = SOURCE_ROOT; };
 		BA13E05A21C7B9D900835EC1 /* UserNotificationCenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = UserNotificationCenter.h; path = test2/UserNotificationCenter.h; sourceTree = SOURCE_ROOT; };
 		BA24E771230BDBB800B1D4B2 /* TimelineBaseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineBaseCell.swift; sourceTree = "<group>"; };
+		BA24E791230BE50600B1D4B2 /* TimelineActivityHoverController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineActivityHoverController.swift; sourceTree = "<group>"; };
+		BA24E792230BE50600B1D4B2 /* TimelineActivityHoverController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimelineActivityHoverController.xib; sourceTree = "<group>"; };
 		BA276A122240F5B500810C51 /* FloatingErrorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatingErrorView.swift; sourceTree = "<group>"; };
 		BA276A132240F5B500810C51 /* FloatingErrorView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FloatingErrorView.xib; sourceTree = "<group>"; };
 		BA2807DF2306A2FA001A9E48 /* NSWindowController+Focusable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSWindowController+Focusable.swift"; sourceTree = "<group>"; };
@@ -1567,6 +1571,8 @@
 				BA6F81E222C5FB1E009B6828 /* TimelineTimeEntryHoverViewController.swift */,
 				BA6F81E322C5FB1E009B6828 /* TimelineTimeEntryHoverViewController.xib */,
 				BAA0102A22CB4D5C007C1541 /* TimelineTimeEntryMenu.swift */,
+				BA24E791230BE50600B1D4B2 /* TimelineActivityHoverController.swift */,
+				BA24E792230BE50600B1D4B2 /* TimelineActivityHoverController.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2037,6 +2043,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BA24E794230BE50600B1D4B2 /* TimelineActivityHoverController.xib in Resources */,
 				BA7D33532248981200B953A8 /* ProjectHeaderCellView.xib in Resources */,
 				BA05369F225E239600C26E1F /* ProjectWorksapceCellView.xib in Resources */,
 				3C53D140224B3FEE00674DC8 /* TimelineChunkViewController.xib in Resources */,
@@ -2270,6 +2277,7 @@
 				BA053659225DDDBB00C26E1F /* CustomFocusRingButton.swift in Sources */,
 				BA75FF2B22BCC20D00D3F08C /* TimelineActivityCell.swift in Sources */,
 				BA7D335E2248B48000B953A8 /* AutoCompleteTextField.swift in Sources */,
+				BA24E793230BE50600B1D4B2 /* TimelineActivityHoverController.swift in Sources */,
 				3C07B75A193C88AE00ED6E6F /* NSCustomTimerComboBox.m in Sources */,
 				BA65A22422B7823200F895FD /* MainDashboardViewController.swift in Sources */,
 				BAD307D3229C1BD000C727DB /* KeyboardDatePicker.swift in Sources */,

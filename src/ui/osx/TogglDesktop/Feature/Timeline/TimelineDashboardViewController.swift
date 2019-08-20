@@ -37,12 +37,22 @@ final class TimelineDashboardViewController: NSViewController {
     private lazy var timeEntryHoverController: TimelineTimeEntryHoverViewController = {
         return TimelineTimeEntryHoverViewController(nibName: "TimelineTimeEntryHoverViewController", bundle: nil)
     }()
-    private lazy var hoverPopover: NSPopover = {
+    private lazy var timeEntryHoverPopover: NSPopover = {
         let popover = NSPopover()
         popover.animates = false
         popover.behavior = .semitransient
         popover.contentViewController = timeEntryHoverController
         timeEntryHoverController.popover = popover
+        return popover
+    }()
+    private lazy var activityHoverController: TimelineActivityHoverController = {
+        return TimelineActivityHoverController(nibName: "TimelineActivityHoverController", bundle: nil)
+    }()
+    private lazy var activityHoverPopover: NSPopover = {
+        let popover = NSPopover()
+        popover.animates = false
+        popover.behavior = .semitransient
+        popover.contentViewController = activityHoverController
         return popover
     }()
     private lazy var editorPopover: EditorPopover = {
@@ -214,14 +224,23 @@ extension TimelineDashboardViewController: DatePickerViewDelegate {
 extension TimelineDashboardViewController: TimelineDatasourceDelegate {
 
     func shouldPresentTimeEntryHover(in view: NSView, timeEntry: TimelineTimeEntry) {
-        // Dont' show hover if the user is editing
         guard !editorPopover.isShown else { return }
-        hoverPopover.show(relativeTo: view.bounds, of: view, preferredEdge: .maxX)
+        timeEntryHoverPopover.show(relativeTo: view.bounds, of: view, preferredEdge: .maxX)
         timeEntryHoverController.render(with: timeEntry)
     }
 
+    func shouldPresentActivityHover(in view: NSView, activity: TimelineActivity) {
+        guard !editorPopover.isShown else { return }
+        activityHoverPopover.show(relativeTo: view.bounds, of: view, preferredEdge: .maxX)
+        activityHoverController.render(activity)
+    }
+
     func shouldDismissTimeEntryHover() {
-        hoverPopover.close()
+        timeEntryHoverPopover.close()
+    }
+
+    func shouldDismissActivityHover() {
+        activityHoverPopover.close()
     }
 
     func shouldPresentTimeEntryEditor(in view: NSView, timeEntry: TimeEntryViewItem) {
