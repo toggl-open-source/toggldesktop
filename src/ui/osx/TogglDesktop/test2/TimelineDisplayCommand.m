@@ -9,10 +9,43 @@
 #import "TimelineDisplayCommand.h"
 #import "TimeEntryViewItem.h"
 
+@implementation TimelineEvent
+- (instancetype)initWithTitle:(NSString *)title fileName:(NSString *)filename duration:(NSTimeInterval)duration isHeader:(BOOL)isHeader
+{
+	self = [super init];
+	if (self)
+	{
+		self.title = title;
+		self.fileName = filename;
+		self.duration = duration;
+		self.isHeader = isHeader;
+	}
+	return self;
+}
+
+@end
+
+@implementation TimelineActivity
+
+- (instancetype)initWithStarted:(NSTimeInterval)started startedTimeString:(NSString *)startedTimeString events:(NSArray<TimelineEvent *> *)events
+{
+	self = [super init];
+	if (self)
+	{
+		self.started = started;
+		self.startedTimeString = startedTimeString;
+		self.events = events;
+	}
+	return self;
+}
+
+@end
+
 @implementation TimelineDisplayCommand
 
 - (instancetype)initWithOpen:(BOOL)open
 						date:(NSString *)date
+			   firstActivity:(TogglTimelineChunkView *)firstActivity
 				  firstEntry:(TogglTimeEntryView *)firstEntry
 					startDay:(NSTimeInterval)startDay
 					  endDay:(NSTimeInterval)endDay
