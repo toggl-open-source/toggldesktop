@@ -8,17 +8,13 @@
 
 import Cocoa
 
-final class TimelineActivityCell: NSCollectionViewItem {
-
-    // MARK: OUTLET
-
-    @IBOutlet weak var backgroundView: NSBox!
+final class TimelineActivityCell: TimelineBaseCell {
 
     // MARK: View
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        initTrackingArea()
     }
 
     // MARK: Public

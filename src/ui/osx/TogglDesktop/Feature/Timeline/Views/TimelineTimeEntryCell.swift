@@ -10,8 +10,6 @@ import Cocoa
 
 protocol TimelineTimeEntryCellDelegate: class {
 
-    func timeEntryCellMouseDidEntered(_ sender: TimelineTimeEntryCell)
-    func timeEntryCellMouseDidExited(_ sender: TimelineTimeEntryCell)
     func timeEntryCellShouldChangeFirstEntryStopTime(for entry: TimelineTimeEntry, sender: TimelineTimeEntryCell)
     func timeEntryCellShouldChangeLastEntryStartTime(for entry: TimelineTimeEntry, sender: TimelineTimeEntryCell)
 }
@@ -33,17 +31,12 @@ final class CursorView: NSView {
     }
 }
 
-final class TimelineTimeEntryCell: NSCollectionViewItem {
-
-    // MARK: OUTLET
-
-    @IBOutlet weak var backgroundView: NSBox!
+final class TimelineTimeEntryCell: TimelineBaseCell {
 
     // MARK: Variables
 
     weak var delegate: TimelineTimeEntryCellDelegate?
     private(set) var timeEntry: TimelineTimeEntry!
-    private var trackingArea: NSTrackingArea?
     private lazy var timeEntryMenu = TimelineTimeEntryMenu()
 
     // MARK: View
@@ -55,46 +48,20 @@ final class TimelineTimeEntryCell: NSCollectionViewItem {
         initTrackingArea()
     }
 
-    override func prepareForReuse() {
-        super.prepareForReuse()
-
-        if let trackingArea = trackingArea {
-            backgroundView.removeTrackingArea(trackingArea)
-            self.trackingArea = nil
-        }
-        initTrackingArea()
-    }
-
     // MARK: Public
 
     func config(for timeEntry: TimelineTimeEntry, at zoomLevel: TimelineDatasource.ZoomLevel) {
         self.timeEntry = timeEntry
-        backgroundView.fillColor = timeEntry.color
-        if timeEntry.isSmall {
-            backgroundView.cornerRadius = 1
-        } else {
-            // If the size is too smal
-            // It's better to reduce the corner radius
-            let height = view.frame.height
-            switch height {
-            case 0...2: backgroundView.cornerRadius = 1
-            case 2...5: backgroundView.cornerRadius = 2
-            case 5...20: backgroundView.cornerRadius = 5
-            default:
-                backgroundView.cornerRadius = 10
-            }
-        }
+        renderBackground(with: timeEntry.color, isSmallEntry: timeEntry.isSmall)
     }
 
     override func mouseEntered(with event: NSEvent) {
         super.mouseEntered(with: event)
-        delegate?.timeEntryCellMouseDidEntered(self)
         view.resetCursorRects()
     }
 
     override func mouseExited(with event: NSEvent) {
         super.mouseExited(with: event)
-        delegate?.timeEntryCellMouseDidExited(self)
         view.resetCursorRects()
     }
 
@@ -116,13 +83,6 @@ extension TimelineTimeEntryCell {
         if let cursorView = view as? CursorView {
             cursorView.cursor = NSCursor.pointingHand
         }
-    }
-
-    fileprivate func initTrackingArea() {
-        let tracking = NSTrackingArea(rect: view.bounds, options: [.mouseEnteredAndExited, .activeInActiveApp, .inVisibleRect], owner: self, userInfo: nil)
-        self.trackingArea = tracking
-        backgroundView.addTrackingArea(tracking)
-        backgroundView.updateTrackingAreas()
     }
 }
 
