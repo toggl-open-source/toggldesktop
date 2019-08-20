@@ -3,6 +3,7 @@
 #include "toggl_api.h"
 
 #include "util.h"
+#include "event_queue.h"
 
 #include <string>
 
@@ -178,6 +179,7 @@ private:
     TogglCallbacks callbacks_;
 
     UserData *user_;
+    EventQueue *events_;
 };
 
 }

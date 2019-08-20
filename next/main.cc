@@ -2,6 +2,7 @@
 #include "toggl_api.h"
 
 #include "event_queue.h"
+#include "https_client.h"
 
 void OnApp(void *context, bool open) {
     (void) context; (void) open;
@@ -150,9 +151,10 @@ int main(void) {
     toggl_ui_start(ctx);
     */
 
-    toggl::EventQueue *queue = new toggl::EventQueue();
+    toggl::EventQueue *queue = new toggl::EventQueue(nullptr);
 
-    toggl::Event *e = new toggl::Event();
+    toggl::Event *e = queue->create<toggl::Event>();
+    toggl::Event *h = queue->create<toggl::ServerStatus>();
 
     queue->schedule(e);
     queue->schedule(e, 2500);

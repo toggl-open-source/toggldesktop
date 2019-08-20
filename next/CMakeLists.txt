@@ -32,9 +32,10 @@ set(LIBRARY_SOURCE_FILES
     error.cc
     help_article.cc
     feedback.cc
-    #netconf.cc
+    netconf.cc
     platforminfo.cc
     rectangle.cc
+    https_client.cc
 
     model/base_model.cc
     model/model_change.cc

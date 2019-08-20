@@ -40,6 +40,18 @@ enum Promotion {
     PROMOTION_JOIN_BETA_CHANNEL = 1
 };
 
+#define kOnlineStateOnline ONLINESTATE_ONLINE
+#define kOnlineStateNoNetwork ONLINESTATE_NO_NETWORK
+#define kOnlineStateBackendDown ONLINESTATE_BACKEND_DOWN
+
+#define kSyncStateIdle SYNCSTATE_IDLE
+#define kSyncStateWork SYNCSTATE_WORK
+
+#define kDownloadStatusStarted DOWNLOADSTATUS_STARTED
+#define kDownloadStatusDone DOWNLOADSTATUS_DONE
+
+#define kPromotionJoinBetaChannel PROMOTION_JOIN_BETA_CHANNEL
+
 // Models
 typedef struct {
     int64_t DurationInSeconds;

@@ -3,6 +3,11 @@
 #ifndef SRC_HTTPS_CLIENT_H_
 #define SRC_HTTPS_CLIENT_H_
 
+#include "error.h"
+#include "proxy.h"
+#include "const.h"
+#include "event_queue.h"
+
 #include <map>
 #include <sstream>
 #include <string>
@@ -25,11 +30,10 @@ class HTMLForm;
 
 namespace toggl {
 
-class ServerStatus {
+class ServerStatus : public Event {
  public:
     ServerStatus()
         : gone_(false)
-    , checker_(this, &ServerStatus::runActivity)
     , fast_retry_(true) {}
 
     virtual ~ServerStatus() {
@@ -43,11 +47,11 @@ class ServerStatus {
     }
 
  protected:
-    void runActivity();
+    void requestSchedule(EventQueue *queue) override;
+    void execute() override;
 
  private:
     bool gone_;
-    Poco::Activity<ServerStatus> checker_;
     bool fast_retry_;
 
     void setGone(const bool value);
@@ -150,7 +154,10 @@ class HTTPSClient {
     HTTPSResponse Put(
         HTTPSRequest req);
 
-    static HTTPSClientConfig Config;
+    HTTPSClientConfig &Config();
+    const HTTPSClientConfig &Config() const;
+
+    std::map<std::string, Poco::Timestamp> &BannedUntil();
 
  protected:
     virtual HTTPSResponse request(
@@ -159,8 +166,9 @@ class HTTPSClient {
     virtual Poco::Logger &logger() const;
 
  private:
+    HTTPSClientConfig config_;
     // We only make requests if this timestamp lies in the past.
-    static std::map<std::string, Poco::Timestamp> banned_until_;
+    std::map<std::string, Poco::Timestamp> banned_until_;
 
     error statusCodeToError(const Poco::Int64 status_code) const;
 
@@ -182,7 +190,7 @@ class TogglClient : public HTTPSClient {
     explicit TogglClient(SyncStateMonitor *monitor = nullptr)
         : monitor_(monitor) {}
 
-    static ServerStatus TogglStatus;
+    ServerStatus &TogglStatus();
 
  protected:
     virtual HTTPSResponse request(
@@ -191,6 +199,7 @@ class TogglClient : public HTTPSClient {
     virtual Poco::Logger &logger() const;
 
  private:
+    ServerStatus toggl_status_;
     SyncStateMonitor *monitor_;
 };
 

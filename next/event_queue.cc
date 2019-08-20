@@ -5,8 +5,9 @@
 
 namespace toggl {
 
-EventQueue::EventQueue()
-    : thread_(std::thread(&EventQueue::execute, this))
+EventQueue::EventQueue(Context *context)
+    : context_(context)
+    , thread_(std::thread(&EventQueue::execute, this))
 {
     std::cerr << std::this_thread::get_id() << " " << __PRETTY_FUNCTION__<< std::endl;
 }
@@ -80,12 +81,17 @@ void EventQueue::wakeUp() {
     condition_.notify_one();
 }
 
-Event::Event() {
+Event::Event()
+{
     std::cerr << std::this_thread::get_id() << " " << __PRETTY_FUNCTION__<< std::endl;
 }
 
 Event::~Event() {
     std::cerr << std::this_thread::get_id() << " " << __PRETTY_FUNCTION__<< std::endl;
+}
+
+void Event::requestSchedule(EventQueue *queue) {
+
 }
 
 void Event::execute() {

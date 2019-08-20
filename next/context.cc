@@ -18,6 +18,7 @@ Context::Context(const std::string &appName, const std::string &appVersion, bool
     , version_(appVersion)
     , production_(production)
     , checkForUpdates_(checkForUpdates)
+    , events_(new EventQueue(this))
 {
     if (!Poco::URIStreamOpener::defaultOpener().supportsScheme("http")) {
         Poco::Net::HTTPStreamFactory::registerFactory();
