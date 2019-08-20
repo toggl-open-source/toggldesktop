@@ -16,14 +16,16 @@ final class TimelineEvent {
     let fileName: String
     let duration: TimeInterval
     let isHeader: Bool
+    let subEvents: [TimelineEvent]
 
     // MARK: Variables
 
-    init(title: String, fileName: String, duration: TimeInterval, isHeader: Bool) {
+    init(title: String, fileName: String, duration: TimeInterval, isHeader: Bool, subEvents: [TimelineEvent]) {
         self.title = title
         self.fileName = fileName
         self.duration = duration
         self.isHeader = isHeader
+        self.subEvents = subEvents
     }
 }
 
@@ -31,24 +33,26 @@ final class TimelineActivity {
 
     // MARK: Variables
 
-    static let DefaultDuration: TimeInterval = 60 * 15 // 15 mins
     let started: TimeInterval
+    let ended: TimeInterval
+    let duration: TimeInterval
     let startTimeStr: String
     let events: [TimelineEvent]
     var isSmall = false
 
     // MARK: Init
 
-    init(started: TimeInterval, startTimeStr: String, events: [TimelineEvent]) {
+    init(started: TimeInterval, duration: TimeInterval, startTimeStr: String, events: [TimelineEvent]) {
         self.started = started
+        self.duration = duration
         self.startTimeStr = startTimeStr
         self.events = events
+        self.ended = started + duration
     }
 
     // MARK: Public
 
     func timechunk() -> TimeChunk? {
-        return TimeChunk(start: started,
-                         end: started + TimelineActivity.DefaultDuration)
+        return TimeChunk(start: started, end: ended)
     }
 }
