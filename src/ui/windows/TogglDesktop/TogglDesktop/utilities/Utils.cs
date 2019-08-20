@@ -72,9 +72,9 @@ public static class Utils
         }
     }
 
-    private static bool ValidateWindowSettings(params long[] valuesToValidate)
+    private static bool ValidateWindowSettings(long x, long y, long h, long w)
     {
-        return valuesToValidate.All(v => v >= int.MinValue && v <= int.MaxValue);
+        return new[] {x, y, h, w}.All(v => v >= int.MinValue && v <= int.MaxValue) && h > 0 && w > 0;
     }
 
     public static void CheckMinitimerVisibility(MiniTimerWindow miniTimer)
