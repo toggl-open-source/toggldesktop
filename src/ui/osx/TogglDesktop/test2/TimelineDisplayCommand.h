@@ -13,21 +13,21 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class TimeEntryViewItem;
 
-@interface TimelineEvent : NSObject
+@interface TimelineDisplayEvent : NSObject
 @property (copy, nonatomic) NSString *title;
 @property (copy, nonatomic) NSString *fileName;
 @property (assign, nonatomic) NSTimeInterval duration;
 @property (assign, nonatomic) BOOL isHeader;
 
--(instancetype) initWithTitle:(NSString *) title fileName:(NSString *) filename duration:(NSTimeInterval) duration isHeader:(BOOL) isHeader;
+- (instancetype)initWithTitle:(NSString *)title fileName:(NSString *)filename duration:(NSTimeInterval)duration isHeader:(BOOL)isHeader;
 @end
 
-@interface TimelineActivity : NSObject
+@interface TimelineDisplayActivity : NSObject
 @property (assign, nonatomic) NSTimeInterval started;
 @property (copy, nonatomic) NSString *startedTimeString;
-@property (strong, nonatomic) NSArray<TimelineEvent* > *events;
+@property (strong, nonatomic) NSArray<TimelineDisplayEvent * > *events;
 
--(instancetype) initWithStarted:(NSTimeInterval) started startedTimeString:(NSString *) startedTimeString events:(NSArray<TimelineEvent *> *) events;
+- (instancetype)initWithStarted:(NSTimeInterval)started startedTimeString:(NSString *)startedTimeString events:(NSArray<TimelineDisplayEvent *> *)events;
 @end
 
 @interface TimelineDisplayCommand : NSObject
@@ -43,6 +43,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (assign, nonatomic) NSTimeInterval start;
 @property (assign, nonatomic) NSTimeInterval end;
 @property (strong, nonatomic) NSArray<TimeEntryViewItem *> *timeEntries;
+@property (strong, nonatomic) NSArray<TimelineDisplayActivity *> *activities;
 @property (copy, nonatomic) NSString *timelineDate;
 
 @end
