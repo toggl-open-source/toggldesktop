@@ -57,16 +57,16 @@ class Analytics : public Poco::TaskManager {
                          const std::string &os,
                          const toggl::Rectangle rect);
 
-    void TrackEditSize(const std::string client_id,
-                       const std::string os,
+    void TrackEditSize(const std::string &client_id,
+                       const std::string &os,
                        const toggl::Rectangle rect);
 
  private:
     Poco::LocalDateTime settings_sync_date;
 
-    void TrackSize(const std::string client_id,
-                   const std::string os,
-                   const std::string name,
+    void TrackSize(const std::string &client_id,
+                   const std::string &os,
+                   const std::string &name,
                    const toggl::Rectangle rect);
 };
 
