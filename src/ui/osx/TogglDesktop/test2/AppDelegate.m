@@ -1675,6 +1675,7 @@ void on_time_entry_list(const bool_t open,
 
 void on_timeline(const bool_t open,
 				 const char_t *date,
+				 TogglTimelineChunkView *first,
 				 TogglTimeEntryView *first_entry,
 				 long start_day,
 				 long end_day)
@@ -1682,6 +1683,7 @@ void on_timeline(const bool_t open,
 	TimelineDisplayCommand *cmd =
 		[[TimelineDisplayCommand alloc] initWithOpen:open
 												date:[NSString stringWithUTF8String:date]
+									   firstActivity:first
 										  firstEntry:first_entry
 											startDay:start_day
 											  endDay:end_day];
