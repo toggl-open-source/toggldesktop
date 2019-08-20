@@ -1,6 +1,7 @@
 
 #include "toggl_api.h"
 
+#include "event_queue.h"
 
 void OnApp(void *context, bool open) {
     (void) context; (void) open;
@@ -143,7 +144,24 @@ static TogglCallbacks callbacks {
 
 
 int main(void) {
+    /*
     void *ctx = toggl_context_init("Test", "7.90.0", false, false);
     toggl_register_callbacks(ctx, callbacks);
     toggl_ui_start(ctx);
+    */
+
+    toggl::EventQueue *queue = new toggl::EventQueue();
+
+    toggl::Event *e = new toggl::Event();
+
+    queue->schedule(e);
+    queue->schedule(e, 2500);
+    queue->schedule(e, 10000);
+    queue->schedule(e, 15000);
+
+    std::this_thread::sleep_for(std::chrono::seconds(5));
+
+    queue->wakeUp();
+
+    std::this_thread::sleep_for(std::chrono::seconds(15));
 }

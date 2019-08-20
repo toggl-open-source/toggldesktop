@@ -19,6 +19,8 @@ set(LIBRARY_SOURCE_FILES
     views.cc
     user_data.cc
 
+    event_queue.cc
+
     util.cc
 
     batch_update_result.cc
