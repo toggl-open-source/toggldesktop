@@ -43,14 +43,13 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         initCommon()
         initTrackingArea()
     }
 
     // MARK: Public
 
-    func config(for timeEntry: TimelineTimeEntry, at zoomLevel: TimelineDatasource.ZoomLevel) {
+    func config(for timeEntry: TimelineTimeEntry) {
         self.timeEntry = timeEntry
         renderBackground(with: timeEntry.color, isSmallEntry: timeEntry.isSmall)
     }

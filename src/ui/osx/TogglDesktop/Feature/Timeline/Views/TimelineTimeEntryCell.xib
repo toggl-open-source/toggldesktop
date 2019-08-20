@@ -6,11 +6,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <customObject id="-2" userLabel="File's Owner" customClass="TimelineTimeEntryCell" customModule="TogglDesktop" customModuleProvider="target">
-            <connections>
-                <outlet property="backgroundView" destination="ILd-N3-zAP" id="Jvv-XM-WF7"/>
-            </connections>
-        </customObject>
+        <customObject id="-2" userLabel="File's Owner" customClass="TimelineTimeEntryCell" customModule="TogglDesktop" customModuleProvider="target"/>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customView id="Hz6-mo-xeY" customClass="CursorView" customModule="TogglDesktop" customModuleProvider="target">
@@ -35,6 +31,7 @@
         </customView>
         <collectionViewItem identifier="TimelineTimeEntryCell" id="7AB-0R-5ZL" customClass="TimelineTimeEntryCell" customModule="TogglDesktop" customModuleProvider="target">
             <connections>
+                <outlet property="backgroundView" destination="ILd-N3-zAP" id="sR3-8k-Ucu"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="KyO-gv-pek"/>
             </connections>
         </collectionViewItem>

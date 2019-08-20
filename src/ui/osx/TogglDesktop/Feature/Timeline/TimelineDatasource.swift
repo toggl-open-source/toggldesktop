@@ -138,7 +138,7 @@ extension TimelineDatasource: NSCollectionViewDataSource, NSCollectionViewDelega
                 let cell = collectionView.makeItem(withIdentifier: Constants.TimeEntryCellID, for: indexPath) as! TimelineTimeEntryCell
                 cell.delegate = self
                 cell.mouseDelegate = self
-                cell.config(for: timeEntry, at: zoomLevel)
+                cell.config(for: timeEntry)
                 return cell
             case let emptyTimeEntry as TimelineBaseTimeEntry:
                 let cell = collectionView.makeItem(withIdentifier: Constants.EmptyTimeEntryCellID, for: indexPath) as! TimelineEmptyTimeEntryCell
