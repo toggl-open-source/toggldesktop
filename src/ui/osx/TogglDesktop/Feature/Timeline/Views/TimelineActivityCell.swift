@@ -20,7 +20,7 @@ final class TimelineActivityCell: TimelineBaseCell {
     // MARK: Public
 
     func config(for activity: TimelineActivity) {
-
+        renderBackground(with: NSColor.blue, isSmallEntry: activity.isSmall)
     }
 
     @IBAction func activityOnTap(_ sender: Any) {

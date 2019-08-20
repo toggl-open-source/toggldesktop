@@ -35,6 +35,7 @@ final class TimelineActivity {
     let started: TimeInterval
     let startTimeStr: String
     let events: [TimelineEvent]
+    var isSmall = false
 
     // MARK: Init
 
