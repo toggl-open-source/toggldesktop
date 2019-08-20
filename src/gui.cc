@@ -6,16 +6,7 @@
 #include <cstdlib>
 #include <sstream>
 
-#include "./client.h"
-#include "./const.h"
 #include "./error.h"
-#include "./formatter.h"
-#include "./project.h"
-#include "./related_data.h"
-#include "./task.h"
-#include "./time_entry.h"
-#include "./user.h"
-#include "./workspace.h"
 
 #include "Poco/Logger.h"
 #include "Poco/Stopwatch.h"

@@ -9,8 +9,6 @@
 
 #include "Poco/Activity.h"
 
-#include "./types.h"
-
 namespace Poco {
 class Logger;
 

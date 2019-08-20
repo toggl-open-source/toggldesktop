@@ -11,12 +11,7 @@
 
 #include <json/json.h>  // NOLINT
 
-#include "./const.h"
 #include "./https_client.h"
-#include "./platforminfo.h"
-#include "./settings.h"
-#include "./urls.h"
-#include "./user.h"
 
 #include "Poco/Logger.h"
 

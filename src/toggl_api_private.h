@@ -6,10 +6,6 @@
 #include <string>
 #include <vector>
 
-#include "./autotracker.h"
-#include "./help_article.h"
-#include "./proxy.h"
-#include "./settings.h"
 #include "./toggl_api.h"
 
 namespace Poco {

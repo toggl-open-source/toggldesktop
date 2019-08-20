@@ -27,6 +27,12 @@ set(LIBRARY_SOURCE_FILES
     migrations.cc
     proxy.cc
     urls.cc
+    error.cc
+    help_article.cc
+    feedback.cc
+    #netconf.cc
+    platforminfo.cc
+    rectangle.cc
 
     model/base_model.cc
     model/model_change.cc
@@ -55,5 +61,7 @@ target_link_libraries(TogglDesktopNext
     ${JSONCPP_LIBRARIES}
     ${LUA_LIBRARIES}
     PocoCrypto PocoNetSSL PocoFoundation PocoData sqlite3 PocoDataSQLite PocoNet
+    -pthread
+    -lX11
 )
 

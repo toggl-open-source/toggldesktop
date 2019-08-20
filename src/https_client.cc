@@ -7,9 +7,6 @@
 #include <string>
 #include <sstream>
 
-#include "./formatter.h"
-#include "./netconf.h"
-#include "./urls.h"
 #include "./toggl_api.h"
 
 #include "Poco/DeflatingStream.h"

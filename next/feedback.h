@@ -3,10 +3,10 @@
 #ifndef SRC_FEEDBACK_H_
 #define SRC_FEEDBACK_H_
 
-#include <string>
-#include <sstream>  // NOLINT
+#include "error.h"
 
-#include "./types.h"
+#include <string>
+#include <sstream>
 
 namespace toggl {
 

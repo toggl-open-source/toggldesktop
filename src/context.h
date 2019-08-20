@@ -12,14 +12,8 @@
 
 #include "./analytics.h"
 #include "./custom_error_handler.h"
-#include "./feedback.h"
 #include "./gui.h"
-#include "./help_article.h"
 #include "./idle.h"
-#include "./model_change.h"
-#include "./timeline_event.h"
-#include "./timeline_notifications.h"
-#include "./types.h"
 #include "./websocket_client.h"
 
 #include "Poco/Activity.h"

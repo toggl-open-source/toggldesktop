@@ -5,9 +5,6 @@
 
 #include <sstream>
 
-#include "./settings.h"
-#include "./user.h"
-
 #include "Poco/Types.h"
 
 namespace toggl {

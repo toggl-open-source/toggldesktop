@@ -34,20 +34,12 @@ include_directories(
 set(LIBRARY_SOURCE_FILES
     idle.cc
     analytics.cc
-    help_article.cc
     context.cc
-    custom_error_handler.cc
-    feedback.cc
     get_focused_window_linux.cc
-    error.cc
     gui.cc
-    netconf.cc
     https_client.cc
     toggl_api.cc
     toggl_api_private.cc
-    platforminfo.cc
-    rectangle.cc
-    related_data.cc
     timeline_uploader.cc
     websocket_client.cc
     window_change_recorder.cc

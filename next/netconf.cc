@@ -1,11 +1,9 @@
 // Copyright 2015 Toggl Desktop developers.
 
-#include "../src/netconf.h"
+#include "netconf.h"
 
 #include <string>
 #include <sstream>
-
-#include "./https_client.h"
 
 #include "Poco/Environment.h"
 #include "Poco/Logger.h"

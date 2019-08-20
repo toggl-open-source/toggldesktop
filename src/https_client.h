@@ -8,10 +8,6 @@
 #include <string>
 #include <vector>
 
-#include "./const.h"
-#include "./proxy.h"
-#include "./types.h"
-
 #include "Poco/Activity.h"
 #include "Poco/Timestamp.h"
 

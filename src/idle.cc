@@ -8,9 +8,7 @@
 
 #include "../src/idle.h"
 
-#include "./formatter.h"
 #include "./gui.h"
-#include "./time_entry.h"
 
 #include "Poco/Logger.h"
 
