@@ -10,6 +10,10 @@ import Cocoa
 
 final class TimelineActivityCell: TimelineBaseCell {
 
+    // MARK: Variables
+
+    private(set) var activity: TimelineActivity?
+
     // MARK: View
 
     override func viewDidLoad() {
@@ -20,6 +24,7 @@ final class TimelineActivityCell: TimelineBaseCell {
     // MARK: Public
 
     func config(for activity: TimelineActivity) {
+        self.activity = activity
         renderBackground(with: NSColor.blue, isSmallEntry: activity.isSmall)
     }
 
