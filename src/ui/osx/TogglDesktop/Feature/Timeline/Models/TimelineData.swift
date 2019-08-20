@@ -36,9 +36,18 @@ class TimelineData {
             return lhs.start < rhs.start
         })
         numberOfSections = Section.allCases.count
-        activities = cmd.activities.map { (activity) -> TimelineActivity in
-            let events = activity.events.map { TimelineEvent(title: $0.title, fileName: $0.fileName, duration: $0.duration, isHeader: $0.isHeader)}
-            return TimelineActivity(started: activity.started, startTimeStr: activity.startedTimeString, events: events)
+        activities = cmd.activities.compactMap { (activity) -> TimelineActivity? in
+            // Map event and sub event
+            let events = activity.events.map { event -> TimelineEvent in
+                let subEvents = event.subEvents.map { TimelineEvent(title: $0.title, fileName: $0.fileName, duration: $0.duration, isHeader: $0.isHeader, subEvents: [])}
+                return TimelineEvent(title: event.title, fileName: event.fileName, duration: event.duration, isHeader: event.isHeader, subEvents: subEvents)
+            }
+
+            // Ignore activity if there is no event inside
+            guard !events.isEmpty else { return nil }
+
+            // Get activity
+            return TimelineActivity(started: activity.started, duration: activity.duration, startTimeStr: activity.startedTimeString, events: events)
         }
         timeChunks = generateTimelineLabel(for: start,
                                            endDate: end,

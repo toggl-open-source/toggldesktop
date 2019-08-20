@@ -21,6 +21,7 @@ final class TimelineDashboardViewController: NSViewController {
     @IBOutlet weak var recordSwitcher: OGSwitch!
     @IBOutlet weak var collectionView: NSCollectionView!
     @IBOutlet weak var emptyLbl: NSTextField!
+    @IBOutlet weak var emptyActivityLbl: NSTextField!
     
     // MARK: Variables
 

@@ -11,6 +11,7 @@
             <connections>
                 <outlet property="collectionView" destination="hht-dC-mpO" id="9tS-ho-Ut6"/>
                 <outlet property="datePickerContainerView" destination="wlf-0e-ttW" id="86r-YF-M9C"/>
+                <outlet property="emptyActivityLbl" destination="3EE-on-mJF" id="KNp-LN-kiJ"/>
                 <outlet property="emptyLbl" destination="L7J-Lq-Z7U" id="x1D-xG-9dl"/>
                 <outlet property="recordSwitcher" destination="I6m-RA-gUy" id="Sef-EC-Cn6"/>
                 <outlet property="view" destination="c22-O7-iKe" id="D7F-6m-KJo"/>
@@ -148,6 +149,14 @@
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                         </textField>
+                        <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="3EE-on-mJF">
+                            <rect key="frame" x="244" y="212" width="252" height="17"/>
+                            <textFieldCell key="cell" alignment="center" title="Turn on activity recording to see results." id="PUb-OL-l5z">
+                                <font key="font" metaFont="system"/>
+                                <color key="textColor" name="timeline-time-label-color"/>
+                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                            </textFieldCell>
+                        </textField>
                     </subviews>
                     <constraints>
                         <constraint firstItem="DJx-ob-wM0" firstAttribute="top" secondItem="oFH-aL-e6h" secondAttribute="bottom" id="0Cw-bZ-Dqs"/>
@@ -157,8 +166,10 @@
                         <constraint firstAttribute="bottom" secondItem="DJx-ob-wM0" secondAttribute="bottom" id="Gm3-VA-gjl"/>
                         <constraint firstAttribute="trailing" secondItem="oFH-aL-e6h" secondAttribute="trailing" id="ayb-sU-fX8"/>
                         <constraint firstItem="oFH-aL-e6h" firstAttribute="leading" secondItem="Xu6-6s-ozI" secondAttribute="leading" id="bTG-wc-ODY"/>
+                        <constraint firstItem="3EE-on-mJF" firstAttribute="centerY" secondItem="Xu6-6s-ozI" secondAttribute="centerY" id="e92-LV-o1z"/>
                         <constraint firstAttribute="trailing" secondItem="DJx-ob-wM0" secondAttribute="trailing" id="kpN-Z8-B2J"/>
                         <constraint firstItem="DJx-ob-wM0" firstAttribute="leading" secondItem="Xu6-6s-ozI" secondAttribute="leading" id="nER-8p-YqV"/>
+                        <constraint firstAttribute="trailing" secondItem="3EE-on-mJF" secondAttribute="trailing" constant="-125" id="zCk-4t-jwC"/>
                     </constraints>
                 </customView>
                 <customView translatesAutoresizingMaskIntoConstraints="NO" id="CV9-Ue-zhq">

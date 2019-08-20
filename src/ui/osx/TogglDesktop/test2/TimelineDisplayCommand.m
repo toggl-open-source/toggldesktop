@@ -10,19 +10,6 @@
 #import "TimeEntryViewItem.h"
 
 @implementation TimelineDisplayEvent
-- (instancetype)initWithTitle:(NSString *)title fileName:(NSString *)filename duration:(NSTimeInterval)duration isHeader:(BOOL)isHeader
-{
-	self = [super init];
-	if (self)
-	{
-		self.title = title;
-		self.fileName = filename;
-		self.duration = duration;
-		self.isHeader = isHeader;
-	}
-	return self;
-}
-
 - (instancetype)initWithView:(TogglTimelineEventView *)view
 {
 	self = [super init];
@@ -46,6 +33,17 @@
 		}
 		self.duration = view->Duration;
 		self.isHeader = view->Header;
+
+		// Load app subevents
+		NSMutableArray<TimelineDisplayEvent *> *subEvents = [@[] mutableCopy];
+		TogglTimelineEventView *sub_it = view->Event;
+		while (sub_it)
+		{
+			TimelineDisplayEvent *event = [[TimelineDisplayEvent alloc] initWithView:sub_it];
+			[subEvents addObject:event];
+			sub_it = sub_it->Next;
+		}
+		self.subEvents = [subEvents copy];
 	}
 	return self;
 }
@@ -53,18 +51,6 @@
 @end
 
 @implementation TimelineDisplayActivity
-
-- (instancetype)initWithStarted:(NSTimeInterval)started startedTimeString:(NSString *)startedTimeString events:(NSArray<TimelineDisplayEvent *> *)events
-{
-	self = [super init];
-	if (self)
-	{
-		self.started = started;
-		self.startedTimeString = startedTimeString;
-		self.events = events;
-	}
-	return self;
-}
 
 - (instancetype)initWithView:(TogglTimelineChunkView *)view
 {
@@ -83,13 +69,16 @@
 
 		// Events
 		NSMutableArray<TimelineDisplayEvent *> *events = [@[] mutableCopy];
+		NSTimeInterval duration = 0;
 		TogglTimelineEventView *_event = view->FirstEvent;
 		while (_event)
 		{
 			TimelineDisplayEvent *event = [[TimelineDisplayEvent alloc] initWithView:_event];
+			duration += event.duration;
 			[events addObject:event];
 			_event = _event->Next;
 		}
+		self.duration = duration;
 		self.events = [events copy];
 	}
 	return self;
