@@ -968,6 +968,9 @@ TEST(toggl_api, toggl_add_project) {
     ASSERT_TRUE(res);
     free(res);
 
+    // TODO: remove this when we address async issues in tests
+    testing_sleep(1);
+
     bool found(false);
     for (std::size_t i = 0; i < testing::testresult::projects.size(); i++) {
         if (to_string(project_name) == testing::testresult::projects[i]) {
