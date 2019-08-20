@@ -137,6 +137,7 @@ extension TimelineDatasource: NSCollectionViewDataSource, NSCollectionViewDelega
             case let timeEntry as TimelineTimeEntry:
                 let cell = collectionView.makeItem(withIdentifier: Constants.TimeEntryCellID, for: indexPath) as! TimelineTimeEntryCell
                 cell.delegate = self
+                cell.mouseDelegate = self
                 cell.config(for: timeEntry, at: zoomLevel)
                 return cell
             case let emptyTimeEntry as TimelineBaseTimeEntry:
@@ -149,6 +150,7 @@ extension TimelineDatasource: NSCollectionViewDataSource, NSCollectionViewDelega
 
         case .activity:
             let cell = collectionView.makeItem(withIdentifier: Constants.ActivityCellID, for: indexPath) as! TimelineActivityCell
+            cell.mouseDelegate = self
             let activity = item as! TimelineActivity
             cell.config(for: activity)
             return cell
@@ -204,20 +206,32 @@ extension TimelineDatasource: TimelineFlowLayoutDelegate {
 
 extension TimelineDatasource: TimelineTimeEntryCellDelegate {
 
-    func timeEntryCellMouseDidEntered(_ sender: TimelineTimeEntryCell) {
-        guard let timeEntry = sender.timeEntry else { return }
-        delegate?.shouldPresentTimeEntryHover(in: sender.view, timeEntry: timeEntry)
-    }
-
-    func timeEntryCellMouseDidExited(_ sender: TimelineTimeEntryCell) {
-        delegate?.shouldDismissTimeEntryHover()
-    }
-
     func timeEntryCellShouldChangeFirstEntryStopTime(for entry: TimelineTimeEntry, sender: TimelineTimeEntryCell) {
         timeline?.changeFirstEntryStopTime(at: entry)
     }
 
     func timeEntryCellShouldChangeLastEntryStartTime(for entry: TimelineTimeEntry, sender: TimelineTimeEntryCell) {
         timeline?.changeLastEntryStartTime(at: entry)
+    }
+}
+
+// MARK: TimelineBaseCellDelegate
+
+extension TimelineDatasource: TimelineBaseCellDelegate {
+
+    func timelineCellMouseDidExited(_ sender: TimelineBaseCell) {
+        delegate?.shouldDismissTimeEntryHover()
+    }
+
+    func timelineCellMouseDidEntered(_ sender: TimelineBaseCell) {
+        switch sender {
+        case let timeEntryCell as TimelineTimeEntryCell:
+            guard let timeEntry = timeEntryCell.timeEntry else { return }
+            delegate?.shouldPresentTimeEntryHover(in: sender.view, timeEntry: timeEntry)
+        case let activityCell as TimelineActivityCell:
+            break
+        default:
+            break
+        }
     }
 }

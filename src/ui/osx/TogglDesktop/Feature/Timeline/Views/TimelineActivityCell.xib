@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14490.70"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <customObject id="-2" userLabel="File's Owner" customClass="TimelineActivityCell" customModule="TogglDesktop" customModuleProvider="target"/>
+        <customObject id="-2" userLabel="File's Owner" customClass="TimelineActivityCell" customModule="TogglDesktop" customModuleProvider="target">
+            <connections>
+                <outlet property="backgroundView" destination="3am-zX-gdl" id="ndf-P7-hrr"/>
+            </connections>
+        </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customView id="jva-K5-Pmb">
@@ -45,7 +49,6 @@
         </customView>
         <collectionViewItem identifier="TimelineActivityCell" id="a5X-y3-2ZH" customClass="TimelineActivityCell" customModule="TogglDesktop" customModuleProvider="target">
             <connections>
-                <outlet property="backgroundView" destination="3am-zX-gdl" id="sxI-9p-DV4"/>
                 <outlet property="view" destination="jva-K5-Pmb" id="eHp-m4-Yhn"/>
             </connections>
         </collectionViewItem>
