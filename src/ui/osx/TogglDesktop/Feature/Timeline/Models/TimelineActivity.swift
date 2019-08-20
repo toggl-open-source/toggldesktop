@@ -31,6 +31,7 @@ final class TimelineActivity {
 
     // MARK: Variables
 
+    static let DefaultDuration: TimeInterval = 60 * 15 // 15 mins
     let started: TimeInterval
     let startTimeStr: String
     let events: [TimelineEvent]
@@ -46,7 +47,7 @@ final class TimelineActivity {
     // MARK: Public
 
     func timechunk() -> TimeChunk? {
-        return TimeChunk(start: Date().timeIntervalSince1970 - 200,
-                         end: Date().timeIntervalSince1970)
+        return TimeChunk(start: started,
+                         end: started + TimelineActivity.DefaultDuration)
     }
 }
