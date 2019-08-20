@@ -1,6 +1,17 @@
 {
     "versions": [
         {
+            "version": "7.4.527",
+            "rows": [
+                "Fixed issue with decimal durations not displaying correctly",
+                "Fixed crash when locking PC while being logged out",
+                "Added handling of errors during auto-update"
+            ],
+            "date": "August 20th 2019",
+            "beta": "true",
+            "has64bit": "true"
+        },
+        {
             "version": "7.4.519",
             "rows": [
                 "Fixed crashes during startup",
