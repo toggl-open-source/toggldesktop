@@ -21,26 +21,12 @@
                     </view>
                     <color key="fillColor" name="linkColor" catalog="System" colorSpace="catalog"/>
                 </box>
-                <button horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="uIo-tP-L28">
-                    <rect key="frame" x="0.0" y="0.0" width="20" height="30"/>
-                    <buttonCell key="cell" type="bevel" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="ZVr-Z9-y0w">
-                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="system"/>
-                    </buttonCell>
-                    <connections>
-                        <action selector="activityOnTap:" target="a5X-y3-2ZH" id="UF9-I8-cyE"/>
-                    </connections>
-                </button>
             </subviews>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="uIo-tP-L28" secondAttribute="trailing" id="5fQ-FR-z45"/>
                 <constraint firstAttribute="trailing" secondItem="3am-zX-gdl" secondAttribute="trailing" id="8KR-v0-qbg"/>
-                <constraint firstAttribute="bottom" secondItem="uIo-tP-L28" secondAttribute="bottom" id="8Rt-Sm-TOo"/>
-                <constraint firstItem="uIo-tP-L28" firstAttribute="leading" secondItem="jva-K5-Pmb" secondAttribute="leading" id="HQa-Hv-Vz4"/>
                 <constraint firstItem="3am-zX-gdl" firstAttribute="top" secondItem="jva-K5-Pmb" secondAttribute="top" id="I9z-1N-Atc"/>
                 <constraint firstItem="3am-zX-gdl" firstAttribute="leading" secondItem="jva-K5-Pmb" secondAttribute="leading" id="a4h-yP-W4G"/>
                 <constraint firstAttribute="bottom" secondItem="3am-zX-gdl" secondAttribute="bottom" id="gd1-jX-NdO"/>
-                <constraint firstItem="uIo-tP-L28" firstAttribute="top" secondItem="jva-K5-Pmb" secondAttribute="top" id="tW6-dY-evQ"/>
             </constraints>
         </customView>
         <collectionViewItem identifier="TimelineActivityCell" id="a5X-y3-2ZH" customClass="TimelineActivityCell" customModule="TogglDesktop" customModuleProvider="target">

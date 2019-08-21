@@ -27,7 +27,4 @@ final class TimelineActivityCell: TimelineBaseCell {
         self.activity = activity
         renderBackground(with: NSColor.blue, isSmallEntry: activity.isSmall)
     }
-
-    @IBAction func activityOnTap(_ sender: Any) {
-    }
 }
