@@ -44,7 +44,7 @@ class Idle {
 
  private:
     void computeIdleState(const Poco::Int64 idle_seconds,
-        User *current_user);
+                          User *current_user);
 
     Poco::Logger &logger() const;
 

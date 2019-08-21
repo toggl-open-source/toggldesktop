@@ -36,7 +36,7 @@ class TimedEvent {
     virtual ~TimedEvent() {}
 
     virtual const Poco::Int64 &Start() const = 0;
-    virtual Poco::Int64 Duration() const = 0;
+    virtual const Poco::Int64 &Duration() const = 0;
 };
 
 class Formatter {

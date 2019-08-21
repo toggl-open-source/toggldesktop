@@ -133,7 +133,7 @@ class TimeEntry : public BaseModel, public TimedEvent {
 
     // Implement TimedEvent
 
-    virtual Poco::Int64 Duration() const {
+    virtual const Poco::Int64 &Duration() const {
         return DurationInSeconds();
     }
 

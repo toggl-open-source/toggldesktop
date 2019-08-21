@@ -7,7 +7,7 @@
 
 #include <sstream>
 #include <string>
-g
+
 #include "./base_model.h"
 #include "./formatter.h"
 

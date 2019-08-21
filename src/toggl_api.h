@@ -199,16 +199,6 @@ extern "C" {
 
     typedef struct {
         int64_t ID;
-        char_t *Title;
-        char_t *Filename;
-        int64_t StartTime;
-        int64_t EndTime;
-        bool_t Idle;
-        void *Next;
-    } TogglTimelineEventView;
-
-    typedef struct {
-        int64_t ID;
         char_t *Name;
         bool_t VatApplicable;
         char_t *VatRegex;
