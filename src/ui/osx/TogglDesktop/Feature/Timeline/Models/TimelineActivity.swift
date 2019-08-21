@@ -31,6 +31,9 @@ final class TimelineEvent {
 
 final class TimelineActivity {
 
+    private static let LightestBlueColor = NSColor(red:0.702, green:0.898, blue:0.988, alpha:1.0)
+    private static let DarkestBlueColor = NSColor(red:0.020, green:0.667, blue:0.961, alpha:1.0)
+
     // MARK: Variables
 
     let started: TimeInterval
@@ -39,6 +42,10 @@ final class TimelineActivity {
     let startTimeStr: String
     let events: [TimelineEvent]
     var isSmall = false
+    lazy var color: NSColor = {
+        let ratio = CGFloat(duration / 900.0)
+        return TimelineActivity.getColor(from: TimelineActivity.LightestBlueColor, darkest: TimelineActivity.DarkestBlueColor, ratio: ratio)
+    }()
 
     // MARK: Init
 
@@ -54,5 +61,12 @@ final class TimelineActivity {
 
     func timechunk() -> TimeChunk? {
         return TimeChunk(start: started, end: ended)
+    }
+
+    private static func getColor(from lightest: NSColor, darkest: NSColor, ratio: CGFloat) -> NSColor {
+        let red = darkest.redComponent + (lightest.redComponent - darkest.redComponent) * ratio
+        let blue = darkest.blueComponent + (lightest.blueComponent - darkest.blueComponent) * ratio
+        let green = darkest.greenComponent + (lightest.greenComponent - darkest.greenComponent) * ratio
+        return NSColor(red: red, green: green, blue: blue, alpha: 1.0)
     }
 }

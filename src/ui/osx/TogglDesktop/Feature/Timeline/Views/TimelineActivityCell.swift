@@ -25,6 +25,6 @@ final class TimelineActivityCell: TimelineBaseCell {
 
     func config(for activity: TimelineActivity) {
         self.activity = activity
-        renderBackground(with: NSColor.blue, isSmallEntry: activity.isSmall)
+        renderBackground(with: activity.color, isSmallEntry: activity.isSmall)
     }
 }
