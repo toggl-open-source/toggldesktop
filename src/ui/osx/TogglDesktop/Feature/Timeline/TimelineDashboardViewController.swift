@@ -99,8 +99,8 @@ final class TimelineDashboardViewController: NSViewController {
         let shouldScroll = datePickerView.currentDate != date
         datePickerView.currentDate = date
         datasource.render(timeline)
-        emptyLbl.isHidden = !timeline.timeEntries.isEmpty
         updatePositionOfEditorIfNeed()
+        handleEmptyState(timeline)
 
         if shouldScroll {
             datasource.scrollToVisibleItem()
@@ -132,6 +132,8 @@ extension TimelineDashboardViewController {
         datePickerView.edgesToSuperView()
         datePickerView.delegate = self
         datePickerView.setBackgroundForTimeline()
+        emptyActivityLbl.wantsLayer = true
+        emptyActivityLbl.layer?.sublayerTransform = CATransform3DMakeRotation(CGFloat(Float.pi / 2), 0, 0, 1)
     }
 
     fileprivate func initNotifications() {
@@ -184,6 +186,12 @@ extension TimelineDashboardViewController {
                 return
             }
         }
+    }
+
+    fileprivate func handleEmptyState(_ timeline: TimelineData) {
+        emptyLbl.isHidden = !timeline.timeEntries.isEmpty
+        emptyActivityLbl.isHidden = !timeline.activities.isEmpty
+//        emptyActivityLbl.stringValue = recordSwitcher.isOn ? "No activity was recorded yet..." : "Turn on activity\nrecording to see results."
     }
 }
 
