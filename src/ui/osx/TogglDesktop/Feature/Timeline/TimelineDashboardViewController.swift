@@ -22,6 +22,7 @@ final class TimelineDashboardViewController: NSViewController {
     @IBOutlet weak var collectionView: NSCollectionView!
     @IBOutlet weak var emptyLbl: NSTextField!
     @IBOutlet weak var emptyActivityLbl: NSTextField!
+    @IBOutlet weak var emptyActivityLblPadding: NSLayoutConstraint!
     
     // MARK: Variables
 
@@ -132,8 +133,7 @@ extension TimelineDashboardViewController {
         datePickerView.edgesToSuperView()
         datePickerView.delegate = self
         datePickerView.setBackgroundForTimeline()
-        emptyActivityLbl.wantsLayer = true
-        emptyActivityLbl.layer?.sublayerTransform = CATransform3DMakeRotation(CGFloat(Float.pi / 2), 0, 0, 1)
+        emptyActivityLbl.frameCenterRotation = -90
     }
 
     fileprivate func initNotifications() {
@@ -159,6 +159,7 @@ extension TimelineDashboardViewController {
         guard let cmd = noti.object as? DisplayCommand,
             let setting = cmd.settings else { return }
         recordSwitcher.setOn(isOn: setting.timeline_recording_enabled, animated: false)
+        updateEmptyActivityText()
     }
 
     @objc private func reloadTimeline() {
@@ -191,7 +192,12 @@ extension TimelineDashboardViewController {
     fileprivate func handleEmptyState(_ timeline: TimelineData) {
         emptyLbl.isHidden = !timeline.timeEntries.isEmpty
         emptyActivityLbl.isHidden = !timeline.activities.isEmpty
-//        emptyActivityLbl.stringValue = recordSwitcher.isOn ? "No activity was recorded yet..." : "Turn on activity\nrecording to see results."
+        updateEmptyActivityText()
+    }
+
+    private func updateEmptyActivityText() {
+        emptyActivityLbl.stringValue = recordSwitcher.isOn ? "No activity was recorded yet..." : "Turn on activity\nrecording to see results."
+        emptyActivityLblPadding.constant = recordSwitcher.isOn ? -40 : -50
     }
 }
 
