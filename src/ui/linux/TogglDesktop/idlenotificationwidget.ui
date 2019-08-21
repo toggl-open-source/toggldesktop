@@ -89,7 +89,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QPushButton" name="pushButton">
+    <widget class="QPushButton" name="addIdleTimeAsNewEntryButton">
      <property name="text">
       <string>Add idle time as a new time entry</string>
      </property>
