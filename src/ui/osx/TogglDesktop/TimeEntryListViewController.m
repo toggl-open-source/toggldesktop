@@ -136,6 +136,10 @@ extern void *ctx;
 											 selector:@selector(deselectAllTimeEntryNotification)
 												 name:kDeselectAllTimeEntryList
 											   object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(windowDidBecomeKeyNotification:)
+												 name:NSWindowDidBecomeKeyNotification
+											   object:nil];
 }
 
 - (void)initCollectionView
@@ -699,6 +703,23 @@ extern void *ctx;
 - (void)deselectAllTimeEntryNotification
 {
 	[self.collectionView deselectAll:self];
+}
+
+- (void)windowDidBecomeKeyNotification:(NSNotification *)notification
+{
+	// Don't focus on Timer Bar if the Editor is presented
+	if (self.timeEntrypopover.isShown)
+	{
+		return;
+	}
+
+	// Only focus if the window is main
+	// Otherwise, shouldn't override the firstResponder
+	if (notification.object != self.view.window)
+	{
+		return;
+	}
+	[self.timerEditViewController focusTimer];
 }
 
 @end

@@ -665,8 +665,8 @@ void Context::updateUI(const UIElements &what) {
 
             // Group data maps
             std::map<std::string, Poco::Int64> group_durations;
-            std::map<std::string, Poco::Int64> group_header_id;
-            std::map<std::string, std::vector<Poco::Int64> > group_items;
+            std::map<std::string, Poco::UInt64> group_header_id;
+            std::map<std::string, std::vector<Poco::UInt64> > group_items;
 
             for (unsigned int i = 0; i < time_entries.size(); i++) {
                 TimeEntry *te = time_entries[i];
@@ -1042,7 +1042,7 @@ error Context::displayError(const error err) {
 int Context::nextSyncIntervalSeconds() const {
     Poco::Random random;
     random.seed();
-    int n = random.next(kSyncIntervalRangeSeconds) + kSyncIntervalRangeSeconds;
+    int n = static_cast<int>(random.next(kSyncIntervalRangeSeconds)) + kSyncIntervalRangeSeconds;
     std::stringstream ss;
     ss << "Next autosync in " << n << " seconds";
     logger().trace(ss.str());
@@ -1050,7 +1050,7 @@ int Context::nextSyncIntervalSeconds() const {
 }
 
 void Context::scheduleSync() {
-    Poco::Int64 elapsed_seconds = Poco::Int64(time(0)) - last_sync_started_;
+    Poco::Int64 elapsed_seconds = Poco::Int64(time(nullptr)) - last_sync_started_;
 
     {
         std::stringstream ss;
@@ -1083,14 +1083,14 @@ void Context::Sync() {
 
     overlay_visible_ = false;
 
-    Poco::Int64 elapsed_seconds = Poco::Int64(time(0)) - last_sync_started_;
+    Poco::Int64 elapsed_seconds = Poco::Int64(time(nullptr)) - last_sync_started_;
 
     // 2 seconds backoff to avoid too many sync requests
     if (elapsed_seconds < kRequestThrottleSeconds) {
         return;
     }
 
-    last_sync_started_ = time(0);
+    last_sync_started_ = time(nullptr);
 
     // Always sync asyncronously with syncerActivity
     trigger_sync_ = true;
@@ -1099,7 +1099,7 @@ void Context::Sync() {
     }
 }
 
-void Context::onTimeEntryAutocompletes(Poco::Util::TimerTask& task) {  // NOLINT
+void Context::onTimeEntryAutocompletes(Poco::Util::TimerTask&) {  // NOLINT
     std::vector<view::Autocomplete> time_entry_autocompletes;
     if (user_) {
         user_->related.TimeEntryAutocompleteItems(&time_entry_autocompletes);
@@ -1107,7 +1107,7 @@ void Context::onTimeEntryAutocompletes(Poco::Util::TimerTask& task) {  // NOLINT
     UI()->DisplayTimeEntryAutocomplete(&time_entry_autocompletes);
 }
 
-void Context::onMiniTimerAutocompletes(Poco::Util::TimerTask& task) {  // NOLINT
+void Context::onMiniTimerAutocompletes(Poco::Util::TimerTask&) {  // NOLINT
     std::vector<view::Autocomplete> minitimer_autocompletes;
     if (user_) {
         user_->related.MinitimerAutocompleteItems(&minitimer_autocompletes);
@@ -1115,7 +1115,7 @@ void Context::onMiniTimerAutocompletes(Poco::Util::TimerTask& task) {  // NOLINT
     UI()->DisplayMinitimerAutocomplete(&minitimer_autocompletes);
 }
 
-void Context::onProjectAutocompletes(Poco::Util::TimerTask& task) {  // NOLINT
+void Context::onProjectAutocompletes(Poco::Util::TimerTask&) {  // NOLINT
     std::vector<view::Autocomplete> project_autocompletes;
     if (user_) {
         user_->related.ProjectAutocompleteItems(&project_autocompletes);
@@ -1148,7 +1148,7 @@ void Context::switchWebSocketOff() {
     timer_.schedule(ptask, Poco::Timestamp());
 }
 
-void Context::onSwitchWebSocketOff(Poco::Util::TimerTask& task) {  // NOLINT
+void Context::onSwitchWebSocketOff(Poco::Util::TimerTask&) {  // NOLINT
     logger().debug("onSwitchWebSocketOff");
 
     Poco::Mutex::ScopedLock lock(ws_client_m_);
@@ -1194,7 +1194,7 @@ void Context::switchWebSocketOn() {
     timer_.schedule(ptask, Poco::Timestamp());
 }
 
-void Context::onSwitchWebSocketOn(Poco::Util::TimerTask& task) {  // NOLINT
+void Context::onSwitchWebSocketOn(Poco::Util::TimerTask&) {  // NOLINT
     logger().debug("onSwitchWebSocketOn");
 
     std::string apitoken("");
@@ -1229,7 +1229,7 @@ void Context::switchTimelineOff() {
     timer_.schedule(ptask, Poco::Timestamp());
 }
 
-void Context::onSwitchTimelineOff(Poco::Util::TimerTask& task) {  // NOLINT
+void Context::onSwitchTimelineOff(Poco::Util::TimerTask&) {  // NOLINT
     logger().debug("onSwitchTimelineOff");
 
     {
@@ -1256,7 +1256,7 @@ void Context::switchTimelineOn() {
     timer_.schedule(ptask, Poco::Timestamp());
 }
 
-void Context::onSwitchTimelineOn(Poco::Util::TimerTask& task) {  // NOLINT
+void Context::onSwitchTimelineOn(Poco::Util::TimerTask&) {  // NOLINT
     logger().debug("onSwitchTimelineOn");
 
     if (quit_) {
@@ -1298,7 +1298,7 @@ void Context::fetchUpdates() {
     logger().debug(ss.str());
 }
 
-void Context::onFetchUpdates(Poco::Util::TimerTask& task) {  // NOLINT
+void Context::onFetchUpdates(Poco::Util::TimerTask&) {  // NOLINT
     if (isPostponed(next_fetch_updates_at_,
                     kRequestThrottleSeconds * kOneSecondInMicros)) {
         logger().debug("onFetchUpdates postponed");
@@ -1328,7 +1328,7 @@ void Context::startPeriodicSync() {
     logger().debug(ss.str());
 }
 
-void Context::onPeriodicSync(Poco::Util::TimerTask& task) {  // NOLINT
+void Context::onPeriodicSync(Poco::Util::TimerTask&) {  // NOLINT
     logger().debug("onPeriodicSync");
 
     scheduleSync();
@@ -1343,8 +1343,8 @@ void Context::startPeriodicUpdateCheck() {
         new Poco::Util::TimerTaskAdapter<Context>
     (*this, &Context::onPeriodicUpdateCheck);
 
-    Poco::UInt64 micros = kCheckUpdateIntervalSeconds *
-                          Poco::UInt64(kOneSecondInMicros);
+    Poco::Int64 micros = kCheckUpdateIntervalSeconds *
+                          Poco::Int64(kOneSecondInMicros);
     Poco::Timestamp next_periodic_check_at = Poco::Timestamp() + micros;
     Poco::Mutex::ScopedLock lock(timer_m_);
     timer_.schedule(ptask, next_periodic_check_at);
@@ -1355,7 +1355,7 @@ void Context::startPeriodicUpdateCheck() {
     logger().debug(ss.str());
 }
 
-void Context::onPeriodicUpdateCheck(Poco::Util::TimerTask& task) {  // NOLINT
+void Context::onPeriodicUpdateCheck(Poco::Util::TimerTask&) {  // NOLINT
     logger().debug("onPeriodicUpdateCheck");
 
     executeUpdateCheck();
@@ -1612,7 +1612,7 @@ void Context::TimelineUpdateServerSettings() {
 const std::string kRecordTimelineEnabledJSON = "{\"record_timeline\": true}";
 const std::string kRecordTimelineDisabledJSON = "{\"record_timeline\": false}";
 
-void Context::onTimelineUpdateServerSettings(Poco::Util::TimerTask& task) {  // NOLINT
+void Context::onTimelineUpdateServerSettings(Poco::Util::TimerTask&) {  // NOLINT
     if (isPostponed(next_update_timeline_settings_at_,
                     kRequestThrottleSeconds * kOneSecondInMicros)) {
         logger().debug("onTimelineUpdateServerSettings postponed");
@@ -1677,7 +1677,7 @@ error Context::SendFeedback(Feedback fb) {
     return noError;
 }
 
-void Context::onSendFeedback(Poco::Util::TimerTask& task) {  // NOLINT
+void Context::onSendFeedback(Poco::Util::TimerTask&) {  // NOLINT
     logger().debug("onSendFeedback");
 
     std::string api_token_value("");
@@ -1703,7 +1703,7 @@ void Context::onSendFeedback(Poco::Util::TimerTask& task) {  // NOLINT
     form.set("toggl_version", HTTPSClient::Config.AppVersion);
     form.set("details", Formatter::EscapeJSONString(feedback_.Details()));
     form.set("subject", Formatter::EscapeJSONString(feedback_.Subject()));
-    form.set("date", Formatter::Format8601(time(0)));
+    form.set("date", Formatter::Format8601(time(nullptr)));
     form.set("update_channel", Formatter::EscapeJSONString(update_channel));
 
     if (!feedback_.AttachmentPath().empty()) {
@@ -2294,7 +2294,6 @@ error Context::Login(
     } catch(const std::string& ex) {
         return displayError(ex);
     }
-    return noError;
 }
 
 error Context::AsyncSignup(const std::string email,
@@ -2531,7 +2530,6 @@ error Context::ClearCache() {
     } catch(const std::string& ex) {
         return displayError(ex);
     }
-    return noError;
 }
 
 TimeEntry *Context::Start(
@@ -3376,7 +3374,7 @@ TimeEntry *Context::DiscardTimeAndContinue(
     const Poco::Int64 at) {
 
     // Reset reminder count when doing idle actions
-    last_tracking_reminder_time_ = time(0);
+    last_tracking_reminder_time_ = time(nullptr);
 
     // Tracking action
     if ("production" == environment_) {
@@ -3514,7 +3512,6 @@ error Context::SetDefaultProject(
     } catch(const std::string& ex) {
         return displayError(ex);
     }
-    return noError;
 }
 
 error Context::DefaultProjectName(std::string *name) {
@@ -3887,7 +3884,9 @@ void Context::SetSleep() {
     if (!isHandled) {
         logger().debug("SetSleep");
         idle_.SetSleep();
-        window_change_recorder_->SetIsSleeping(true);
+        if (window_change_recorder_) {
+            window_change_recorder_->SetIsSleeping(true);
+        }
     }
 }
 
@@ -4075,7 +4074,7 @@ void Context::SetWake() {
     logger().debug(ss.str());
 }
 
-void Context::onWake(Poco::Util::TimerTask& task) {  // NOLINT
+void Context::onWake(Poco::Util::TimerTask&) {  // NOLINT
     if (isPostponed(next_wake_at_,
                     kRequestThrottleSeconds * kOneSecondInMicros)) {
         logger().debug("onWake postponed");
@@ -4094,7 +4093,9 @@ void Context::onWake(Poco::Util::TimerTask& task) {  // NOLINT
         }
 
         idle_.SetWake(user_);
-        window_change_recorder_->SetIsSleeping(false);
+        if (window_change_recorder_) {
+            window_change_recorder_->SetIsSleeping(false);
+        }
 
         Sync();
     }
@@ -4111,12 +4112,16 @@ void Context::onWake(Poco::Util::TimerTask& task) {  // NOLINT
 
 void Context::SetLocked() {
     logger().debug("SetLocked");
-    window_change_recorder_->SetIsLocked(true);
+    if (window_change_recorder_) {
+        window_change_recorder_->SetIsLocked(true);
+    }
 }
 
 void Context::SetUnlocked() {
     logger().debug("SetUnlocked");
-    window_change_recorder_->SetIsLocked(false);
+    if (window_change_recorder_) {
+        window_change_recorder_->SetIsLocked(false);
+    }
 }
 
 void Context::SetOnline() {
@@ -4154,7 +4159,7 @@ void Context::displayReminder() {
             return;
         }
 
-        if (time(0) - last_tracking_reminder_time_
+        if (time(nullptr) - last_tracking_reminder_time_
                 < settings_.reminder_minutes * 60) {
             return;
         }
@@ -4213,7 +4218,7 @@ void Context::displayReminder() {
 }
 
 void Context::resetLastTrackingReminderTime() {
-    last_tracking_reminder_time_ = time(0);
+    last_tracking_reminder_time_ = time(nullptr);
 }
 
 void Context::displayPomodoro() {
@@ -4241,12 +4246,12 @@ void Context::displayPomodoro() {
         }
 
         if (current_te->DurOnly() && current_te->LastStartAt() != 0) {
-            if (time(0) - current_te->LastStartAt()
+            if (time(nullptr) - current_te->LastStartAt()
                     < settings_.pomodoro_minutes * 60) {
                 return;
             }
         } else {
-            if (time(0) - current_te->Start()
+            if (time(nullptr) - current_te->Start()
                     < settings_.pomodoro_minutes * 60) {
                 return;
             }
@@ -4298,7 +4303,7 @@ void Context::displayPomodoroBreak() {
             return;
         }
 
-        if (time(0) - current_te->Start()
+        if (time(nullptr) - current_te->Start()
                 < settings_.pomodoro_break_minutes * 60) {
             return;
         }
@@ -4593,7 +4598,7 @@ void Context::LoadMore() {
     }
 }
 
-void Context::onLoadMore(Poco::Util::TimerTask& task) {
+void Context::onLoadMore(Poco::Util::TimerTask&) {
     bool needs_render = !user_->HasLoadedMore();
     std::string api_token;
     {
@@ -4698,7 +4703,7 @@ error Context::pullAllUserData(
     TogglClient *toggl_client) {
 
     std::string api_token("");
-    Poco::UInt64 since(0);
+    Poco::Int64 since(0);
     {
         Poco::Mutex::ScopedLock lock(user_m_);
         if (!user_) {
@@ -5033,7 +5038,7 @@ error Context::updateEntryProjects(
 }
 
 error Context::pushEntries(
-    std::map<std::string, BaseModel *> models,
+    std::map<std::string, BaseModel *>,
     std::vector<TimeEntry *> time_entries,
     std::string api_token,
     TogglClient toggl_client) {
@@ -5181,7 +5186,6 @@ error Context::pullObmExperiments() {
     } catch(const std::string& ex) {
         return ex;
     }
-    return noError;
 }
 
 error Context::pushObmAction() {
@@ -5259,7 +5263,7 @@ error Context::me(
     const std::string email,
     const std::string password,
     std::string *user_data_json,
-    const Poco::UInt64 since) {
+    const Poco::Int64 since) {
 
     if (email.empty()) {
         return "Empty email or API token";
@@ -5690,8 +5694,8 @@ error Context::PullCountries() {
 
         std::vector<TogglCountryView> countries;
 
-        for (int i = root.size() - 1; i >= 0; i--) {
-            TogglCountryView *item = country_view_item_init(root[i]);
+        for (unsigned int i = root.size(); i > 0; i--) {
+            TogglCountryView *item = country_view_item_init(root[i - 1]);
             countries.push_back(*item);
         }
 
@@ -5748,12 +5752,21 @@ void on_websocket_message(
     ctx->LoadUpdateFromJSONString(json);
 }
 
-void Context::TrackWindowSize(const Poco::Int64 width,
-                              const Poco::Int64 height) {
+void Context::TrackWindowSize(const Poco::UInt64 width,
+                              const Poco::UInt64 height) {
     if ("production" == environment_) {
         analytics_.TrackWindowSize(db_->AnalyticsClientID(),
                                    shortOSName(),
                                    toggl::Rectangle(width, height));
+    }
+}
+
+void Context::TrackEditSize(const Poco::Int64 width,
+                            const Poco::Int64 height) {
+    if ("production" == environment_) {
+        analytics_.TrackEditSize(db_->AnalyticsClientID(),
+                                 shortOSName(),
+                                 toggl::Rectangle(width, height));
     }
 }
 

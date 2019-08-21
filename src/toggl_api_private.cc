@@ -267,7 +267,7 @@ TogglCountryView *country_view_item_init(
     TogglCountryView *item = new TogglCountryView();
     poco_check_ptr(item);
 
-    item->ID = v["id"].asUInt64();
+    item->ID = v["id"].asInt64();
     item->Name = copy_string(v["name"].asString());
     item->VatApplicable = v["vat_applicable"].asBool();
     item->VatRegex = copy_string(v["vat_regex"].asString());

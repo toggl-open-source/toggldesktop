@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Media;
@@ -45,7 +44,13 @@ public static class Utils
             Toggl.Debug("Failed to retrieve window location and size");
         }
 
-        if (!visibleOnAnyScreen(mainWindow))
+        // First try to shift the window onto the bounding box of visible screens
+        if (ShiftWindowOntoVisibleArea(mainWindow))
+        {
+            Toggl.Debug("Shifted main window onto visible area");
+        }
+        // Then handle the case where the window is in the bounding box but not on any of the screens
+        if (!VisibleOnAnyScreen(mainWindow))
         {
             var location = Screen.PrimaryScreen.WorkingArea.Location;
             mainWindow.Left = location.X;
@@ -63,17 +68,25 @@ public static class Utils
             miniTimer.Width = w;
             Toggl.Debug("Retrieved mini timer location ({0}x{1} by {2})", x, y, w);
 
-            checkMinitimerVisibility(miniTimer);
+            CheckMinitimerVisibility(miniTimer);
         }
     }
 
-    private static bool ValidateWindowSettings(params long[] valuesToValidate)
+    private static bool ValidateWindowSettings(long x, long y, long h, long w)
     {
-        return valuesToValidate.All(v => v >= int.MinValue && v <= int.MaxValue);
+        return new[] {x, y, h, w}.All(v => v >= int.MinValue && v <= int.MaxValue) && h > 0 && w > 0;
     }
 
-    public static void checkMinitimerVisibility(MiniTimerWindow miniTimer) {
-        if (!visibleOnAnyScreen(miniTimer))
+    public static void CheckMinitimerVisibility(MiniTimerWindow miniTimer)
+    {
+        // First try to shift the window onto the bounding box of visible screens
+        if (ShiftWindowOntoVisibleArea(miniTimer))
+        {
+            Toggl.Debug("Shifted mini timer onto visible area");
+        }
+
+        // Then handle the case where the window is in the bounding box but not on any of the screens
+        if (!VisibleOnAnyScreen(miniTimer))
         {
             var location = Screen.PrimaryScreen.WorkingArea.Location;
             miniTimer.Left = location.X;
@@ -82,14 +95,45 @@ public static class Utils
         }
     }
 
-    private static bool visibleOnAnyScreen(Window f)
+    private static bool ShiftWindowOntoVisibleArea(Window window)
     {
-        var windowBounds = new Rectangle(
-            (int)f.Left, (int)f.Top, (int)f.Width, (int)f.Height
-        );
+        var shifted = false;
+        if (window.Top < SystemParameters.VirtualScreenTop)
+        {
+            window.Top = SystemParameters.VirtualScreenTop;
+            shifted = true;
+        }
 
-        return Screen.AllScreens
-               .Any(s => s.WorkingArea.IntersectsWith(windowBounds));
+        if (window.Left < SystemParameters.VirtualScreenLeft)
+        {
+            window.Left = SystemParameters.VirtualScreenLeft;
+            shifted = true;
+        }
+
+        if (window.Left + window.Width > SystemParameters.VirtualScreenLeft + SystemParameters.VirtualScreenWidth)
+        {
+            window.Left = SystemParameters.VirtualScreenWidth + SystemParameters.VirtualScreenLeft - window.Width;
+            shifted = true;
+        }
+
+        if (window.Top + window.Height > SystemParameters.VirtualScreenTop + SystemParameters.VirtualScreenHeight)
+        {
+            window.Top = SystemParameters.VirtualScreenHeight + SystemParameters.VirtualScreenTop - window.Height;
+            shifted = true;
+        }
+
+        return shifted;
+    }
+
+    private static bool VisibleOnAnyScreen(Window f)
+    {
+        var scalingRatio = Math.Max(Screen.PrimaryScreen.WorkingArea.Width / SystemParameters.PrimaryScreenWidth,
+            Screen.PrimaryScreen.WorkingArea.Height / SystemParameters.PrimaryScreenHeight);
+
+        var windowBounds = new Rectangle((int) (f.Left * scalingRatio), (int) (f.Top * scalingRatio),
+            (int) (f.Width * scalingRatio), (int) (f.Height * scalingRatio));
+
+        return Screen.AllScreens.Any(s => s.WorkingArea.IntersectsWith(windowBounds));
     }
 
     public static void SaveWindowLocation(Window mainWindow, EditViewPopup edit, MiniTimerWindow miniTimer)
@@ -293,5 +337,21 @@ public static class Utils
         }
 
         #endregion
-    }
+
+        #region file system
+
+        public static void DeleteFile(string fullPath)
+        {
+            File.SetAttributes(fullPath, FileAttributes.Normal);
+            File.Delete(fullPath);
+        }
+
+        #endregion file system
+
+        #region environment
+
+        public static string Bitness() => Environment.Is64BitProcess ? "(64-bit)" : "(32-bit)";
+
+        #endregion environment
+}
 }

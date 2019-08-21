@@ -167,9 +167,9 @@ extern "C" {
         bool_t OnTop;
         bool_t Reminder;
         bool_t RecordTimeline;
-        uint64_t IdleMinutes;
+        int64_t IdleMinutes;
         bool_t FocusOnShortcut;
-        uint64_t ReminderMinutes;
+        int64_t ReminderMinutes;
         bool_t ManualMode;
         bool_t AutodetectProxy;
         bool_t RemindMon;
@@ -185,8 +185,8 @@ extern "C" {
         bool_t OpenEditorOnShortcut;
         bool_t Pomodoro;
         bool_t PomodoroBreak;
-        uint64_t PomodoroMinutes;
-        uint64_t PomodoroBreakMinutes;
+        int64_t PomodoroMinutes;
+        int64_t PomodoroBreakMinutes;
         bool_t StopEntryOnShutdownSleep;
     } TogglSettingsView;
 
@@ -196,6 +196,16 @@ extern "C" {
         char_t *ProjectAndTaskLabel;
         void *Next;
     } TogglAutotrackerRuleView;
+
+    typedef struct {
+        int64_t ID;
+        char_t *Title;
+        char_t *Filename;
+        int64_t StartTime;
+        int64_t EndTime;
+        bool_t Idle;
+        void *Next;
+    } TogglTimelineEventView;
 
     typedef struct {
         int64_t ID;
@@ -297,7 +307,7 @@ extern "C" {
         const char_t *guid,
         const char_t *since,
         const char_t *duration,
-        const uint64_t started,
+        const int64_t started,
         const char_t *description);
 
     typedef void (*TogglDisplayUpdate)(
@@ -683,13 +693,13 @@ extern "C" {
     TOGGL_EXPORT bool_t toggl_discard_time_at(
         void *context,
         const char_t *guid,
-        const uint64_t at,
+        const int64_t at,
         const bool_t split_into_new_entry);
 
     TOGGL_EXPORT bool_t toggl_discard_time_and_continue(
         void *context,
         const char_t *guid,
-        const uint64_t at);
+        const int64_t at);
 
     TOGGL_EXPORT bool_t toggl_set_settings_remind_days(
         void *context,
@@ -1090,6 +1100,10 @@ extern "C" {
         const uint64_t width,
         const uint64_t height);
 
+    TOGGL_EXPORT void track_edit_size(
+        void *context,
+        const uint64_t width,
+        const uint64_t height);
 #undef TOGGL_EXPORT
 
 #ifdef __cplusplus

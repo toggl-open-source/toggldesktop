@@ -52,12 +52,12 @@ class BaseModel {
     }
     void SetID(const Poco::UInt64 value);
 
-    const Poco::UInt64 &UIModifiedAt() const {
+    const Poco::Int64 &UIModifiedAt() const {
         return ui_modified_at_;
     }
-    void SetUIModifiedAt(const Poco::UInt64 value);
+    void SetUIModifiedAt(const Poco::Int64 value);
     void SetUIModified() {
-        SetUIModifiedAt(time(0));
+        SetUIModifiedAt(time(nullptr));
     }
 
     const std::string &GUID() const {
@@ -88,15 +88,15 @@ class BaseModel {
 
     // Deleting a time entry hides it from
     // UI and flags it for removal from server:
-    const Poco::UInt64 &DeletedAt() const {
+    const Poco::Int64 &DeletedAt() const {
         return deleted_at_;
     }
-    void SetDeletedAt(const Poco::UInt64 value);
+    void SetDeletedAt(const Poco::Int64 value);
 
-    const Poco::UInt64 &UpdatedAt() const {
+    const Poco::Int64 &UpdatedAt() const {
         return updated_at_;
     }
-    void SetUpdatedAt(const Poco::UInt64 value);
+    void SetUpdatedAt(const Poco::Int64 value);
 
     std::string UpdatedAtString() const;
     void SetUpdatedAtString(const std::string value);
@@ -167,12 +167,12 @@ class BaseModel {
     Poco::Int64 local_id_;
     Poco::UInt64 id_;
     guid guid_;
-    Poco::UInt64 ui_modified_at_;
+    Poco::Int64 ui_modified_at_;
     Poco::UInt64 uid_;
     bool dirty_;
-    Poco::UInt64 deleted_at_;
+    Poco::Int64 deleted_at_;
     bool is_marked_as_deleted_on_server_;
-    Poco::UInt64 updated_at_;
+    Poco::Int64 updated_at_;
 
     // If model push to backend results in an error,
     // the error is attached to the model for later inspection.

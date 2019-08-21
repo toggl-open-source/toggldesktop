@@ -39,6 +39,8 @@ namespace TogglDesktop
             get { return this.cells[this.keyboardSelectedId].Item2; }
         }
 
+        private TimeEntryCell cellAt(int index) => this.cells[index].Item2;
+
         public TimeEntryList()
         {
             this.InitializeComponent();
@@ -294,13 +296,24 @@ namespace TogglDesktop
 
         private bool tryCollapseSelectedGroup()
         {
-            var collapsed = this.hasKeyboardSelection && this.keyboardHighlightedCell.TryCollapse();
-            if (collapsed)
+            if (!this.hasKeyboardSelection)
             {
-                this.refreshKeyboardHighlight();
+                return false;
             }
 
-            return collapsed;
+            var idToHighlight = keyboardSelectedId;
+            while (idToHighlight >= 0 && !cellAt(idToHighlight).IsGroup) // highlight the group that is being collapsed
+            {
+                idToHighlight--;
+            }
+
+            if (!this.keyboardHighlightedCell.TryCollapse())
+            {
+                return false;
+            }
+
+            this.tryHighlightKeyboard(idToHighlight);
+            return true;
         }
 
         private bool tryExpandSelectedGroup()

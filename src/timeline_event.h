@@ -7,7 +7,7 @@
 
 #include <sstream>
 #include <string>
-
+g
 #include "./base_model.h"
 #include "./formatter.h"
 
@@ -33,17 +33,17 @@ class TimelineEvent : public BaseModel, public TimedEvent {
     }
     void SetTitle(const std::string value);
 
-    const Poco::UInt64 &Start() const {
+    const Poco::Int64 &Start() const {
         return start_time_;
     }
-    void SetStart(const Poco::UInt64 value);
+    void SetStart(const Poco::Int64 value);
 
-    const Poco::UInt64 &EndTime() const {
+    const Poco::Int64 &EndTime() const {
         return end_time_;
     }
-    void SetEndTime(const Poco::UInt64 value);
+    void SetEndTime(const Poco::Int64 value);
 
-    const Poco::UInt64 &Duration() const {
+    const Poco::Int64 &Duration() const {
         return duration_;
     }
     void SetDuration(const Poco::UInt64 value);
@@ -82,9 +82,9 @@ class TimelineEvent : public BaseModel, public TimedEvent {
  private:
     std::string title_;
     std::string filename_;
-    Poco::UInt64 start_time_;
-    Poco::UInt64 end_time_;
-    Poco::UInt64 duration_;
+    Poco::Int64 start_time_;
+    Poco::Int64 end_time_;
+    Poco::Int64 duration_;
     bool idle_;
     bool chunked_;
     bool uploaded_;

@@ -662,8 +662,7 @@ void *ctx;
 	{
 		self.preferencesWindowController.originalCmd = cmd;
 		self.preferencesWindowController.user_id = self.lastKnownUserID;
-		[self.preferencesWindowController showWindow:self];
-		[NSApp activateIgnoringOtherApps:YES];
+		[self.preferencesWindowController showWindowAndFocus];
 	}
 
 	NSString *mode = kToggleTimerMode;
@@ -1041,7 +1040,7 @@ void *ctx;
 		self.consoleWindowController = [[ConsoleViewController alloc]
 										initWithWindowNibName:@"ConsoleViewController"];
 	}
-	[self.consoleWindowController showWindow:self];
+	[self.consoleWindowController showWindowAndFocus];
 }
 
 - (void)onNewMenuItem:(id)sender
@@ -1052,8 +1051,7 @@ void *ctx;
 
 - (void)onSendFeedbackMenuItem
 {
-	[self.feedbackWindowController showWindow:self];
-	[NSApp activateIgnoringOtherApps:YES];
+	[self.feedbackWindowController showWindowAndFocus];
 }
 
 - (void)onSendFeedbackMainMenuItem:(id)sender
@@ -1129,9 +1127,8 @@ void *ctx;
 
 - (IBAction)onAboutMenuItem:(id)sender
 {
-	[self.aboutWindowController showWindow:self];
+	[self.aboutWindowController showWindowAndFocus];
 	[self.aboutWindowController checkForUpdates];
-	[NSApp activateIgnoringOtherApps:YES];
 }
 
 - (IBAction)onViewChangelogMenuItem:(id)sender
@@ -1141,15 +1138,14 @@ void *ctx;
 
 - (IBAction)onShowMenuItem:(id)sender
 {
-	[self.mainWindowController showWindow:self];
+	[self.mainWindowController showWindowAndFocus];
 	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kFocusTimer
 																object:nil];
-	[NSApp activateIgnoringOtherApps:YES];
 }
 
 - (IBAction)onEditMenuItem:(id)sender
 {
-	[self.mainWindowController showWindow:self];
+	[self.mainWindowController showWindowAndFocus];
 	toggl_edit(ctx, "", true, "description");
 }
 

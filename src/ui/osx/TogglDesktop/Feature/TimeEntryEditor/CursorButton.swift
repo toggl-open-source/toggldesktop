@@ -11,7 +11,7 @@ import Foundation
 class CursorButton: NSButton {
 
     // MARK: - Variable
-
+    var didPressKey: ((Key) -> Void)?
     var cursor: NSCursor? {
         didSet {
             resetCursorRects()
@@ -23,6 +23,13 @@ class CursorButton: NSButton {
             addCursorRect(bounds, cursor: cursor)
         } else {
             super.resetCursorRects()
+        }
+    }
+
+    override func keyDown(with event: NSEvent) {
+        super.keyDown(with: event)
+        if let key = Key(rawValue: Int(event.keyCode)) {
+            didPressKey?(key)
         }
     }
 }

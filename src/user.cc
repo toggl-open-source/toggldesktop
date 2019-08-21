@@ -168,7 +168,7 @@ TimeEntry *User::Start(
 
     Stop();
 
-    time_t now = time(0);
+    time_t now = time(nullptr);
 
     std::stringstream ss;
     ss << "User::Start now=" << now;
@@ -246,7 +246,7 @@ TimeEntry *User::Continue(
 
     Stop();
 
-    time_t now = time(0);
+    time_t now = time(nullptr);
 
     TimeEntry *result = new TimeEntry();
     result->SetCreatedWith(HTTPSClient::Config.UserAgent());
@@ -372,7 +372,7 @@ void User::SetAPIToken(const std::string value) {
     api_token_ = value;
 }
 
-void User::SetSince(const Poco::UInt64 value) {
+void User::SetSince(const Poco::Int64 value) {
     if (since_ != value) {
         since_ = value;
         SetDirty();
@@ -474,9 +474,9 @@ bool User::HasValidSinceDate() const {
     }
 
     // too old
-    Poco::Timestamp ts = Poco::Timestamp::fromEpochTime(time(0))
+    Poco::Timestamp ts = Poco::Timestamp::fromEpochTime(time(nullptr))
                          - (60 * Poco::Timespan::DAYS);
-    Poco::UInt64 min_allowed = ts.epochTime();
+    Poco::Int64 min_allowed = ts.epochTime();
     if (Since() < min_allowed) {
         return false;
     }
@@ -696,7 +696,7 @@ error User::LoadUserAndRelatedDataFromJSONString(
         return error("Failed to LoadUserAndRelatedDataFromJSONString");
     }
 
-    SetSince(root["since"].asUInt64());
+    SetSince(root["since"].asInt64());
 
     Poco::Logger &logger = Poco::Logger::get("json");
     std::stringstream s;
@@ -1315,16 +1315,16 @@ void User::CompressTimeline() {
     std::map<std::string, TimelineEvent *> compressed;
 
     // Older events will be deleted
-    Poco::UInt64 minimum_time = time(0) - kTimelineSecondsToKeep;
+    Poco::Int64 minimum_time = time(nullptr) - kTimelineSecondsToKeep;
 
     // Find the chunk start time of current time.
     // then process only events that are older that this chunk start time.
     // Else we will have no full chunks to compress.
-    Poco::UInt64 chunk_up_to =
-        (time(0) / kTimelineChunkSeconds) * kTimelineChunkSeconds;
+    Poco::Int64 chunk_up_to =
+        (time(nullptr) / kTimelineChunkSeconds) * kTimelineChunkSeconds;
 
 
-    time_t start = time(0);
+    time_t start = time(nullptr);
 
     {
         std::stringstream ss;
@@ -1409,7 +1409,7 @@ void User::CompressTimeline() {
 
     {
         std::stringstream ss;
-        ss << "CompressTimeline done in " << (time(0) - start)
+        ss << "CompressTimeline done in " << (time(nullptr) - start)
            << " seconds, "
            << related.TimelineEvents.size()
            << " compressed into "

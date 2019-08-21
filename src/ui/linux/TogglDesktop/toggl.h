@@ -280,7 +280,7 @@ class TogglApi : public QObject {
         const QString guid,
         const QString since,
         const QString duration,
-        const uint64_t started,
+        const int64_t started,
         const QString description);
 
     void displayClientSelect(
@@ -374,7 +374,7 @@ void on_display_idle_notification(
     const char *guid,
     const char *since,
     const char *duration,
-    const uint64_t started);
+    const int64_t started);
 void on_project_colors(
     const char_t *list[],
     const uint64_t count);

@@ -114,18 +114,17 @@ class RelatedData {
         std::vector<view::Autocomplete> *list,
         std::map<std::string, std::vector<view::Autocomplete> > *items) const;
 
-    void taskAutocompleteItems(
-        std::set<std::string> *unique_names,
+    void taskAutocompleteItems(std::set<std::string> *unique_names,
         std::map<Poco::UInt64, std::string> *ws_names,
         std::vector<view::Autocomplete> *list,
-        std::map<Poco::Int64, std::vector<view::Autocomplete> > *items) const;
+        std::map<Poco::UInt64, std::vector<view::Autocomplete> > *items) const;
 
     void projectAutocompleteItems(
         std::set<std::string> *unique_names,
         std::map<Poco::UInt64, std::string> *ws_names,
         std::vector<view::Autocomplete> *list,
         std::map<std::string, std::vector<view::Autocomplete> > *items,
-        std::map<Poco::Int64, std::vector<view::Autocomplete> > *task_items) const;
+        std::map<Poco::UInt64, std::vector<view::Autocomplete> > *task_items) const;
 
     void workspaceAutocompleteItems(
         std::set<std::string> *unique_names,

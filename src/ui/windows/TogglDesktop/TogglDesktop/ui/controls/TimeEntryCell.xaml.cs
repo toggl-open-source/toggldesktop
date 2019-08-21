@@ -71,6 +71,8 @@ namespace TogglDesktop
             }
         }
 
+        public bool IsGroup => group;
+
         public Color GroupIconPath { get; set; }
 
         public bool SubItem
@@ -148,7 +150,6 @@ namespace TogglDesktop
             this.projectColor.Fill = projectColorBrush;
             this.labelProject.Foreground = projectColorBrush;
             this.labelProject.Text = "• " + item.ProjectLabel;
-            this.separatorLabel.ShowOnlyIf(!item.ClientLabel.IsNullOrEmpty());
             setOptionalTextBlockText(this.labelClient, item.ClientLabel);
             setOptionalTextBlockText(this.labelTask, item.TaskLabel.IsNullOrEmpty() ? "" : item.TaskLabel + " -");
             this.labelDuration.Text = item.Duration;

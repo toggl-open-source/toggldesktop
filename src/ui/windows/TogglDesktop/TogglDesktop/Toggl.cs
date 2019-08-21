@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -1037,6 +1038,7 @@ public static partial class Toggl
     {
         string path = Path.Combine(Environment.GetFolderPath(
             Environment.SpecialFolder.LocalApplicationData), "TogglDesktop");
+        Directory.CreateDirectory(path);
 
         if (null == LogPath)
         {
@@ -1134,7 +1136,15 @@ public static partial class Toggl
             var di = new DirectoryInfo(updatePath);
             foreach (var file in di.GetFiles("TogglDesktopInstaller*.exe", SearchOption.TopDirectoryOnly))
             {
-                file.Delete();
+                try
+                {
+                    Utils.DeleteFile(file.FullName);
+                }
+                catch (Exception e)
+                {
+                    Program.NotifyBugsnag(e);
+                    Toggl.OnError?.Invoke($"Unable to delete the file: {file.FullName}. Delete this file manually.", false);
+                }
             }
 
             return;
@@ -1162,7 +1172,15 @@ public static partial class Toggl
             Debug("Multiple update installers found. Deleting.");
             foreach (var file in files)
             {
-                file.Delete();
+                try
+                {
+                    Utils.DeleteFile(file.FullName);
+                }
+                catch (Exception e)
+                {
+                    Program.NotifyBugsnag(e);
+                    Toggl.OnError?.Invoke($"Unable to delete the file: {file.FullName}. Delete this file manually.", false);
+                }
             }
             return null;
         }
@@ -1176,14 +1194,27 @@ public static partial class Toggl
 
         return () =>
         {
-            var process = Process.Start(installerFullPath, "/S /U");
+            Process process;
+            try
+            {
+                process = Process.Start(installerFullPath, "/S /U");
+            }
+            catch (Win32Exception e)
+            {
+                Program.NotifyBugsnag(e);
+                Toggl.OnError?.Invoke("Unable to run the installer. Please update manually.", false);
+                return;
+            }
+
             if (process != null && !process.HasExited && process.Id != 0)
             {
                 // Update has started. Quit, installer will restart me.
                 Environment.Exit(0);
             }
-
-            Debug("Failed to start installer process");
+            else
+            {
+                Toggl.OnError?.Invoke("Unable to run the installer. Please update manually.", false);
+            }
         };
     }
 

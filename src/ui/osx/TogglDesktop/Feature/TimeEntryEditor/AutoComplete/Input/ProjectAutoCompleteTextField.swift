@@ -76,12 +76,13 @@ final class ProjectAutoCompleteTextField: AutoCompleteTextField {
 
     private func applyColor(with hex: String) {
         guard let color = ConvertHexColor.hexCode(toNSColor: hex) else { return }
-        dotImageView?.fill(with: color)
+        let visibleColor = color.visibleColor()
+        dotImageView?.fill(with: visibleColor)
         let font = self.font ?? NSFont.systemFont(ofSize: 14.0)
         let parap = NSMutableParagraphStyle()
         parap.lineBreakMode = .byTruncatingTail
         let att: [NSAttributedString.Key: Any] = [NSAttributedString.Key.font: font,
-                                                  NSAttributedString.Key.foregroundColor: color,
+                                                  NSAttributedString.Key.foregroundColor: visibleColor,
                                                   NSAttributedString.Key.paragraphStyle: parap]
         attributedStringValue = NSAttributedString(string: stringValue, attributes: att)
     }
@@ -93,10 +94,10 @@ extension ProjectAutoCompleteTextField: ProjectCreationViewDelegate {
 
     func projectCreationDidAdd(with name: String, color: String, projectGUID: String) {
         lastProjectGUID = projectGUID
-        closeSuggestion()
         stringValue = name
         layoutProject(with: name)
         applyColor(with: color)
+        closeSuggestion()
     }
 
     func projectCreationDidCancel() {

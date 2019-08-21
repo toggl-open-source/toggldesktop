@@ -255,6 +255,7 @@ void *ctx;
 {
 	toggl_set_window_edit_size_width(ctx, size.width);
 	toggl_set_window_edit_size_height(ctx, size.height);
+	track_edit_size(ctx, size.width, size.height);
 }
 
 - (CGSize)getEditorWindowSize

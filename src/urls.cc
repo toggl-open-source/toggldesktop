@@ -7,8 +7,13 @@ namespace toggl {
 namespace urls {
 
 // Whether requests are sent to staging backend
+static bool use_staging_as_backend = false;
 
-bool use_staging_as_backend = false;
+// Whether requests are allowed to Toggl backend
+static bool im_a_teapot_ = false;
+
+// Whether requests are allowed at all (like in tests)
+static bool requests_allowed_ = true;
 
 void SetUseStagingAsBackend(const bool value) {
     use_staging_as_backend = value;
@@ -35,9 +40,13 @@ std::string WebSocket() {
     return "https://stream.toggl.com";
 }
 
-// Whether requests are allowed at all (like in tests)
+bool ImATeapot() {
+    return im_a_teapot_;
+}
 
-bool requests_allowed_ = true;
+void SetImATeapot(const bool value) {
+    im_a_teapot_ = value;
+}
 
 bool RequestsAllowed() {
     return requests_allowed_;
@@ -47,17 +56,6 @@ void SetRequestsAllowed(const bool value) {
     requests_allowed_ = value;
 }
 
-// Whether requests are allowed to Toggl backend
-
-bool im_a_teapot_ = false;
-
-bool ImATeapot() {
-    return im_a_teapot_;
-}
-
-void SetImATeapot(const bool value) {
-    im_a_teapot_ = value;
-}
 
 }  // namespace urls
 

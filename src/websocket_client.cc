@@ -84,7 +84,7 @@ error WebSocketClient::createSession() {
 
     deleteSession();
 
-    last_connection_at_ = time(0);
+    last_connection_at_ = time(nullptr);
 
     error err = TogglClient::TogglStatus.Status();
     if (err != noError) {
@@ -113,7 +113,7 @@ error WebSocketClient::createSession() {
             verification_mode, 9, true, "ALL");
 
         Poco::Net::SSLManager::instance().initializeClient(
-            0, acceptCertHandler, context);
+            nullptr, acceptCertHandler, context);
 
         session_ = new Poco::Net::HTTPSClientSession(
             uri.getHost(),
@@ -189,7 +189,7 @@ error WebSocketClient::receiveWebSocketMessage(std::string *message) {
         char buf[kWebsocketBufSize];
         int n = ws_->receiveFrame(buf, kWebsocketBufSize, flags);
         if (n > 0) {
-            json.append(buf, n);
+            json.append(buf, static_cast<unsigned>(n));
         }
     } catch(const Poco::Exception& exc) {
         return error(exc.displayText());
@@ -223,7 +223,7 @@ error WebSocketClient::poll() {
         ss << "WebSocket message: " << json;
         logger().trace(ss.str());
 
-        last_connection_at_ = time(0);
+        last_connection_at_ = time(nullptr);
 
         std::string type = parseWebSocketMessageType(json);
 
@@ -271,7 +271,7 @@ void WebSocketClient::runActivity() {
             }
         }
 
-        if (time(0) - last_connection_at_ > restart_interval) {
+        if (time(nullptr) - last_connection_at_ > restart_interval) {
             restart_interval = nextWebsocketRestartInterval();
             logger().debug("restarting");
             error err = createSession();
@@ -324,7 +324,7 @@ Poco::Logger &WebSocketClient::logger() const {
 int WebSocketClient::nextWebsocketRestartInterval() {
     Poco::Random random;
     random.seed();
-    int res = random.next(kWebsocketRestartRangeSeconds) + 1;
+    int res = static_cast<int>(random.next(kWebsocketRestartRangeSeconds)) + 1;
     std::stringstream ss;
     ss << "Next websocket restart in " << res << " seconds";
     logger().trace(ss.str());

@@ -17,7 +17,8 @@ final class DotImageView: NSImageView {
     // MARK: Public
 
     @objc func fill(with tintColor: NSColor) {
-        let iconWithColor = icon.image(withTintColor: tintColor)
+        let visibleColor = tintColor.visibleColor()
+        let iconWithColor = icon.image(withTintColor: visibleColor)
         image = iconWithColor
     }
 }

@@ -7,8 +7,6 @@ Table of Contents
       * [Dependencies](#dependencies)
       * [Build the app](#build-the-app)
     * [Windows](#windows)
-      * [Dependencies](#dependencies-1)
-      * [Build the app](#build-the-app-1)
   * [Downloads](#downloads)
     * [macOS](#macos)
     * [Windows](#windows)
@@ -87,19 +85,9 @@ make -j8                                  # Build the app. The number defines th
 
 ## Windows
 
-### Dependencies
+Install Visual Studio 2019 with `.NET desktop development`, `Desktop development with C++` and `Universal Windows Platform development` components checked during installation. You can download free Visual Studio Community [here](https://visualstudio.microsoft.com/vs/community/).
 
-Install Visual Studio 2019 with `.NET desktop development` and `Desktop development with C++` components checked during installation. You can download free Visual Studio Community [here](https://visualstudio.microsoft.com/vs/community/).
-
-If you want to run tests or build the app using make, then install [Cygwin](https://www.cygwin.com/).
-
-### Build the app
-
-Now, select *Release_VS* from the Solution Configurations combobox in the Visual Studio toolbar, and build the solution.
-
-If you have Cygwin installed, you can also build the app from from Cygwin terminal, using make. (See macOS and Linux build instructions on above regarding make).
-
-If you want to build OpenSSL from sources, refer to [this page](docs/win/build-openSSL.md).
+The solution is using OpenSSL binaries. To rebuild OpenSSL from sources refer to [this page](docs/win/build-openSSL.md).
 
 # Downloads
 

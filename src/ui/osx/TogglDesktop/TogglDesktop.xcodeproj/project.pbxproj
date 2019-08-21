@@ -128,6 +128,7 @@
 		BA13E05C21C7BA6000835EC1 /* UserNotificationCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = BA13E05921C7B9D900835EC1 /* UserNotificationCenter.m */; };
 		BA19FC21226DA079006D8741 /* DateCellViewItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA13D20D2269BAA600EB3833 /* DateCellViewItem.xib */; };
 		BA276A142240F5B500810C51 /* FloatingErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA276A122240F5B500810C51 /* FloatingErrorView.swift */; };
+		BA2807E02306A2FA001A9E48 /* NSWindowController+Focusable.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2807DF2306A2FA001A9E48 /* NSWindowController+Focusable.swift */; };
 		BA2DA0C621A542E30027B7A5 /* NSTextField+Ext.m in Sources */ = {isa = PBXBuildFile; fileRef = BA2DA0C521A542E30027B7A5 /* NSTextField+Ext.m */; };
 		BA2DA12021A691FF0027B7A5 /* TrackingService.m in Sources */ = {isa = PBXBuildFile; fileRef = BA2DA11F21A691FF0027B7A5 /* TrackingService.m */; };
 		BA2E3F2C22375E640035D034 /* NSView+Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2E3F2B22375E640035D034 /* NSView+Appearance.swift */; };
@@ -216,6 +217,7 @@
 		BA7DB6E321F9C77A0059239B /* MASShortcut.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA7DB6D221F9C7660059239B /* MASShortcut.framework */; };
 		BA7DB6E421F9C77A0059239B /* MASShortcut.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA7DB6D221F9C7660059239B /* MASShortcut.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BA80BEB2221EAE6F00BDFD35 /* Array+ByGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA80BEB1221EAE6F00BDFD35 /* Array+ByGroup.swift */; };
+		BA81896A23016148000710EA /* NSColor+VisibleColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA81896923016148000710EA /* NSColor+VisibleColor.swift */; };
 		BA84363B22533A6600EF5830 /* DesktopLibraryBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = BA84363A22533A6600EF5830 /* DesktopLibraryBridge.m */; };
 		BA8B4C752251FAD500592BC7 /* WorkspaceCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA8B4C742251FAD500592BC7 /* WorkspaceCellView.swift */; };
 		BA8B4C772251FADF00592BC7 /* WorkspaceCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA8B4C762251FADF00592BC7 /* WorkspaceCellView.xib */; };
@@ -740,6 +742,7 @@
 		BA13E05A21C7B9D900835EC1 /* UserNotificationCenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = UserNotificationCenter.h; path = test2/UserNotificationCenter.h; sourceTree = SOURCE_ROOT; };
 		BA276A122240F5B500810C51 /* FloatingErrorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatingErrorView.swift; sourceTree = "<group>"; };
 		BA276A132240F5B500810C51 /* FloatingErrorView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FloatingErrorView.xib; sourceTree = "<group>"; };
+		BA2807DF2306A2FA001A9E48 /* NSWindowController+Focusable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSWindowController+Focusable.swift"; sourceTree = "<group>"; };
 		BA2DA0C421A542E20027B7A5 /* NSTextField+Ext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSTextField+Ext.h"; sourceTree = "<group>"; };
 		BA2DA0C521A542E30027B7A5 /* NSTextField+Ext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSTextField+Ext.m"; sourceTree = "<group>"; };
 		BA2DA11E21A691FF0027B7A5 /* TrackingService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TrackingService.h; sourceTree = "<group>"; };
@@ -833,6 +836,7 @@
 		BA7D335D2248B48000B953A8 /* AutoCompleteTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoCompleteTextField.swift; sourceTree = "<group>"; };
 		BA7DB6BB21F9C7660059239B /* MASShortcut.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MASShortcut.xcodeproj; path = ../../../../third_party/MASShortcut/MASShortcut.xcodeproj; sourceTree = "<group>"; };
 		BA80BEB1221EAE6F00BDFD35 /* Array+ByGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+ByGroup.swift"; sourceTree = "<group>"; };
+		BA81896923016148000710EA /* NSColor+VisibleColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSColor+VisibleColor.swift"; sourceTree = "<group>"; };
 		BA84363922533A6600EF5830 /* DesktopLibraryBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DesktopLibraryBridge.h; sourceTree = "<group>"; };
 		BA84363A22533A6600EF5830 /* DesktopLibraryBridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DesktopLibraryBridge.m; sourceTree = "<group>"; };
 		BA8B4C742251FAD500592BC7 /* WorkspaceCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceCellView.swift; sourceTree = "<group>"; };
@@ -1345,6 +1349,17 @@
 				BA4791EA22F0478900E24F79 /* String+Search.swift */,
 				BA6F1B3721EEE998009265E4 /* Theme+Notification.swift */,
 				BA2E3F2B22375E640035D034 /* NSView+Appearance.swift */,
+				BAF6319B21E6F868002DD6AB /* NotificationCenter+MainThread.swift */,
+				BA6F1B1921EEE258009265E4 /* NSColor+Utils.swift */,
+				BA03729C21FED85700FC277B /* NSView+Xib.swift */,
+				BA46E09E2226707F00C25763 /* Collection+Safe.swift */,
+				BA9D90B3222D14ED00D5EC0E /* NSView+Animation.swift */,
+				BA9D90D3222D155900D5EC0E /* NSView+Ext.swift */,
+				BAA260D0222D1DC70094F4E4 /* NSView+Shadow+Border.swift */,
+				BA08E011222E32C90075F68E /* NSView+LayoutConstraint.swift */,
+				BA89CB382265EA4400D21584 /* String+Search.swift */,
+				BA81896923016148000710EA /* NSColor+VisibleColor.swift */,
+				BA2807DF2306A2FA001A9E48 /* NSWindowController+Focusable.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -2200,6 +2215,7 @@
 				74098C331919899600CBDFB9 /* Utils.m in Sources */,
 				BA0F67B7224A32F700ED0F91 /* CursorButton.swift in Sources */,
 				BA9C2E0C224C8F58002AD2A1 /* KeyboardTableView.swift in Sources */,
+				BA81896A23016148000710EA /* NSColor+VisibleColor.swift in Sources */,
 				69FC180117E6534400B96425 /* main.m in Sources */,
 				3C53D14B224B416900674DC8 /* TimelineLines.m in Sources */,
 				74F1070118993FFE00E93BD5 /* FeedbackWindowController.m in Sources */,
@@ -2296,6 +2312,7 @@
 				BA6F81E422C5FB1E009B6828 /* TimelineTimeEntryHoverViewController.swift in Sources */,
 				BA75FF3C22BCE94100D3F08C /* TimelineDisplayCommand.m in Sources */,
 				95C0707718CDB67300A34D0D /* NSCustomComboBoxCell.m in Sources */,
+				BA2807E02306A2FA001A9E48 /* NSWindowController+Focusable.swift in Sources */,
 				BAAF569E2223D4C7003D0D73 /* DotImageView.swift in Sources */,
 				BA014050225710FD000E5B91 /* TagAutoCompleteTextField.swift in Sources */,
 				BAE8E845224CA9AC006D534E /* ProjectAutoCompleteTextField.swift in Sources */,

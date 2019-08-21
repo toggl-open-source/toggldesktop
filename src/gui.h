@@ -79,11 +79,11 @@ class TimeEntry {
     std::string GUID;
     bool Billable;
     std::string Tags;
-    uint64_t Started;
-    uint64_t Ended;
+    int64_t Started;
+    int64_t Ended;
     std::string StartTimeString;
     std::string EndTimeString;
-    uint64_t UpdatedAt;
+    int64_t UpdatedAt;
     bool DurOnly;
     // In case it's a header
     std::string DateHeader;
@@ -245,8 +245,8 @@ class Settings {
     , Autotrack(false)
     , OpenEditorOnShortcut(false)
     , Pomodoro(false)
-    , PomodoroMinutes(0)
     , PomodoroBreak(false)
+    , PomodoroMinutes(0)
     , PomodoroBreakMinutes(0)
     , StopEntryOnShutdownSleep(false) {}
 
@@ -413,9 +413,9 @@ class GUI : public SyncStateMonitor {
 
     void DisplayReminder();
 
-    void DisplayPomodoro(const Poco::UInt64 minutes);
+    void DisplayPomodoro(const Poco::Int64 minutes);
 
-    void DisplayPomodoroBreak(const Poco::UInt64 minutes);
+    void DisplayPomodoroBreak(const Poco::Int64 minutes);
 
     void DisplayAutotrackerNotification(
         toggl::Project *const p,
@@ -481,7 +481,7 @@ class GUI : public SyncStateMonitor {
     void DisplayIdleNotification(const std::string guid,
                                  const std::string since,
                                  const std::string duration,
-                                 const uint64_t started,
+                                 const int64_t started,
                                  const std::string description);
 
     void DisplayUpdate(const std::string URL);

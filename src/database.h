@@ -344,7 +344,7 @@ class Database {
 
     error deleteAllFromTableByUID(
         const std::string table_name,
-        const Poco::Int64 &UID);
+        const Poco::UInt64 &UID);
 
     error saveModel(
         ObmAction *model,

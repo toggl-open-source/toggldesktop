@@ -80,7 +80,8 @@ static class Program
                 report.Event.User = new Bugsnag.Payload.User { Id = uid.ToString() };
                 report.Event.Metadata.Add("Details", new Dictionary<string, string>
                 {
-                    { "Channel", Toggl.UpdateChannel() }
+                    { "Channel", Toggl.UpdateChannel() },
+                    { "Bitness", Utils.Bitness() }
                 });
             });
 
@@ -96,7 +97,7 @@ static class Program
                 {
                     if (!user_error && bugsnag.Configuration.ReleaseStage != "development")
                     {
-                        notifyBugsnag(new Exception(errmsg));
+                        NotifyBugsnag(new Exception(errmsg));
                     }
                 }
                 catch (Exception ex)
@@ -117,7 +118,7 @@ static class Program
         }
     }
 
-    static void notifyBugsnag(Exception e)
+    public static void NotifyBugsnag(Exception e)
     {
         Toggl.Debug("Notifying bugsnag: " + e);
         try
@@ -132,12 +133,12 @@ static class Program
 
     static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
     {
-        notifyBugsnag(e.ExceptionObject as Exception);
+        NotifyBugsnag(e.ExceptionObject as Exception);
     }
 
     static void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
     {
-        notifyBugsnag(e.Exception);
+        NotifyBugsnag(e.Exception);
     }
 
     public static void Shutdown(int exitCode)

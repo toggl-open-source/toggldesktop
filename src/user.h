@@ -111,10 +111,10 @@ class User : public BaseModel {
     void SetDefaultWID(Poco::UInt64 value);
 
     // Unix timestamp of the user data; returned from API
-    const Poco::UInt64 &Since() const {
+    const Poco::Int64 &Since() const {
         return since_;
     }
-    void SetSince(const Poco::UInt64 value);
+    void SetSince(const Poco::Int64 value);
 
     bool HasValidSinceDate() const;
 
@@ -316,7 +316,7 @@ class User : public BaseModel {
     std::string api_token_;
     Poco::UInt64 default_wid_;
     // Unix timestamp of the user data; returned from API
-    Poco::UInt64 since_;
+    Poco::Int64 since_;
     std::string fullname_;
     std::string email_;
     bool record_timeline_;

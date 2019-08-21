@@ -20,7 +20,7 @@ class Idle {
     virtual ~Idle() {}
 
     void SetIdleSeconds(
-        const Poco::UInt64 idle_seconds,
+        const Poco::Int64 idle_seconds,
         User *current_user);
 
     void SetSettings(const Settings settings) {
@@ -28,12 +28,12 @@ class Idle {
     }
 
     void SetSleep() {
-        last_sleep_started_ = time(0);
+        last_sleep_started_ = time(nullptr);
     }
 
     void SetWake(User *current_user) {
         if (last_sleep_started_) {
-            Poco::Int64 slept_seconds = time(0) - last_sleep_started_;
+            Poco::Int64 slept_seconds = time(nullptr) - last_sleep_started_;
             if (slept_seconds > 0) {
                 SetIdleSeconds(slept_seconds, current_user);
             }
@@ -43,15 +43,14 @@ class Idle {
     }
 
  private:
-    void computeIdleState(
-        const Poco::UInt64 idle_seconds,
+    void computeIdleState(const Poco::Int64 idle_seconds,
         User *current_user);
 
     Poco::Logger &logger() const;
 
     // Idle detection related values
-    Poco::UInt64 last_idle_seconds_reading_;
-    Poco::UInt64 last_idle_started_;
+    Poco::Int64 last_idle_seconds_reading_;
+    Poco::Int64 last_idle_started_;
     time_t last_sleep_started_;
 
     Settings settings_;
