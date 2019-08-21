@@ -112,7 +112,7 @@ void OnCountries(void *context, TogglCountryView *first) {
     (void) context; (void) first;
 }
 
-
+/*
 static TogglCallbacks callbacks {
     OnApp,
     OnSyncState,
@@ -142,6 +142,7 @@ static TogglCallbacks callbacks {
     OnProjectColors,
     OnCountries,
 };
+*/
 
 
 int main(void) {

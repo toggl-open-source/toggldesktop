@@ -36,6 +36,7 @@ set(LIBRARY_SOURCE_FILES
     platforminfo.cc
     rectangle.cc
     https_client.cc
+    gui.cc
 
     model/base_model.cc
     model/model_change.cc

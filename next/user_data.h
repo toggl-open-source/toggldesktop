@@ -17,6 +17,16 @@
 
 namespace toggl {
 
+namespace view {
+    class TimeEntry;
+    class Autocomplete;
+    class Generic;
+    class Settings;
+    class AutotrackerRule;
+    class TimelineEvent;
+    class Country;
+}
+
 class UserData : public User {
     ProtectedModel<Workspace> Workspaces;
     ProtectedModel<Client> Clients;
@@ -277,4 +287,4 @@ class UserData : public User {
 
 } // namespace toggl
 
-#endif SRC_USER_DATA_H_
+#endif  // SRC_USER_DATA_H_

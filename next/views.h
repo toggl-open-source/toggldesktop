@@ -1,9 +1,23 @@
+#ifndef SRC_VIEWS_H
+#define SRC_VIEWS_H
+
+#include "const.h"
+#include "error.h"
+
+#include "toggl_api.h"
+#include "user_data.h"
 
 #include <string>
 #include <cstdint>
 #include <sstream>
+#include <vector>
+#include <json/value.h>
 
 namespace toggl {
+
+class TimeEntry;
+class HelpArticle;
+class Proxy;
 
 namespace view {
 
@@ -85,7 +99,7 @@ class TimeEntry {
     std::string GroupDuration;
     uint64_t GroupItemCount;
 
-    void Fill(toggl::TimeEntry * const model);
+    void Fill(toggl::TimeEntry *model);
 
     bool operator == (const TimeEntry& other) const;
 };
@@ -316,6 +330,29 @@ class Country {
     bool operator == (const Country& other) const;
 };
 
+
+TogglAutocompleteView *autocomplete_item_init(const toggl::view::Autocomplete &item);
+void autocomplete_item_clear(TogglAutocompleteView *item);
+TogglGenericView *generic_to_view_item_list(const std::vector<toggl::view::Generic> &list);
+TogglGenericView *generic_to_view_item(const toggl::view::Generic &c);
+TogglAutotrackerRuleView *autotracker_rule_to_view_item(const toggl::view::AutotrackerRule &model);
+void autotracker_view_item_clear(TogglAutotrackerRuleView *view);
+void view_item_clear(TogglGenericView *item);
+void country_item_clear(TogglCountryView *item);
+TogglCountryView *country_list_init(std::vector<TogglCountryView> *items);
+TogglCountryView *country_view_item_init(const Json::Value v);
+TogglTimeEntryView *time_entry_view_item_init(const toggl::view::TimeEntry &te);
+void time_entry_view_item_clear(TogglTimeEntryView *item);
+TogglSettingsView *settings_view_item_init(const bool record_timeline, const toggl::Settings &settings, const bool use_proxy, const toggl::Proxy &proxy);
+void settings_view_item_clear(TogglSettingsView *view);
+TogglAutocompleteView *autocomplete_list_init(std::vector<toggl::view::Autocomplete> *items);
+TogglHelpArticleView *help_article_init(const HelpArticle *item);
+void help_article_clear(TogglHelpArticleView *item);
+TogglHelpArticleView *help_article_list_init(locked<const std::vector<HelpArticle *> > &items);
+
+
 }  // namespace view
 
 } // namespace toggl
+
+#endif // SRC_VIEWS_H_

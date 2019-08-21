@@ -354,9 +354,13 @@ typedef struct {
     TogglDisplayPromotion Promotion;
     TogglDisplayObmExperiment ObmExperiment;
     TogglDisplayTimeEntryList TimeEntryList;
-    TogglDisplayAutocomplete Autocomplete;
+    TogglDisplayAutocomplete TimeEntryAutocomplete;
+    TogglDisplayAutocomplete ProjectAutocomplete;
+    TogglDisplayAutocomplete MiniTimerAutocomplete;
     TogglDisplayHelpArticles HelpArticles;
-    TogglDisplayViewItems ViewItems;
+    TogglDisplayViewItems WorkspaceSelect;
+    TogglDisplayViewItems ClientSelect;
+    TogglDisplayViewItems Tags;
     TogglDisplayTimeEntryEditor TimeEntryEditor;
     TogglDisplaySettings Settings;
     TogglDisplayTimerState TimerState;

@@ -36,8 +36,6 @@ set(LIBRARY_SOURCE_FILES
     analytics.cc
     context.cc
     get_focused_window_linux.cc
-    gui.cc
-    https_client.cc
     toggl_api.cc
     toggl_api_private.cc
     timeline_uploader.cc

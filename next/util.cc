@@ -2,6 +2,7 @@
 #include "util.h"
 
 #include <iostream>
+#include <cstring>
 
 namespace toggl {
 
@@ -28,6 +29,24 @@ void CustomPocoErrorHandler::exception(const std::exception &exc) {
 
 void CustomPocoErrorHandler::exception() {
     std::cerr << "unhandled exception! unknown exception" << std::endl;
+}
+
+char *copy_string(const std::string s) {
+#if defined(_WIN32) || defined(WIN32)
+    std::wstring ws;
+    Poco::UnicodeConverter::toUTF16(s, ws);
+    return wcsdup(ws.c_str());
+#else
+    return strdup(s.c_str());
+#endif
+}
+
+int compare_string(const char *s1, const char *s2) {
+#if defined(_WIN32) || defined(WIN32)
+    return wcscmp(s1, s2);
+#else
+    return strcmp(s1, s2);
+#endif
 }
 
 } // namespace toggl
