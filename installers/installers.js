@@ -1,5 +1,7 @@
 var url = "https://github.com/toggl/toggldesktop/releases/download/v",
+apiUrl = "https://api.github.com/repos/toggl/toggldesktop/releases/tags/v",
 releases = {},
+ghReleases = {},
 defaultPath = "/toggldesktop/installers",
 downloadPath = "/toggldesktop/download",
 links = {
@@ -87,26 +89,59 @@ function fillHtml() {
       }
       // 7.3.0 ...
       cur = ch[ch.length-1];
-
+      if (!ghReleases[cur.version]) ghReleases[cur.version] = {};
+      
       for (var kb in cur.filename) {
-        link = downloadPath + "/" + cur.filename[kb].type + "-" + ka + "/";
         prev = ch[ch.length-2];
         if (!prev || !prev.filename[kb]) {
           prev = cur;
         }
+        if (!ghReleases[prev.version]) ghReleases[prev.version] = {};
+        
+        link = downloadPath + "/" + cur.filename[kb].type + "-" + ka + "/";
+        ghReleases[cur.version][cur.filename[kb].name] = 1;
+        ghReleases[prev.version][prev.filename[kb].name] = 1;
         tmp = "<tr><td><span class='os-icon " + k + "-icon'></span>" + cur.filename[kb].type + "</td><td>" + ka + "</td>" +
         "<td><a target='_blank' href='https://github.com/toggl/toggldesktop/releases/download/v" + 
         cur.version + "/" + cur.filename[kb].name + "' title='" + cur.timestamp + "'>" + cur.version + "</a>" +
+        "<td><span class=\"" + cur.version + "_" + cur.filename[kb].name + "\"></span></td>" +
         "<td><a target='_blank' href='https://github.com/toggl/toggldesktop/releases/download/v" + 
-        prev.version + "/" + prev.filename[kb].name + "' title='" + cur.timestamp + "'>" + prev.version + "</a>" +
+        prev.version + "/" + prev.filename[kb].name + "' title='" + prev.timestamp + "'>" + prev.version + "</a>" +
+        "<td><span class=\"" + prev.version + "_" + prev.filename[kb].name + "\"></span></td>" +
         "<td><a target='_blank' href='" + link + "'>link</a></td></tr>";
 
         lines.push(tmp);
       }
     }
   }
-
-  return document.querySelector("tbody").innerHTML = lines.join("");
+  
+  document.querySelector("tbody").innerHTML = lines.join("");
+  for (let version in ghReleases) {
+    let files = ghReleases[version];
+    let request = new XMLHttpRequest();
+    request.open('GET', apiUrl + version, true);
+    request.responseType = 'json';
+    request.onload = onReqLoad(version, files);
+    request.send();
+  }
+  return;
+}
+function onReqLoad(ver, fls){
+  return function(){
+    if (this.status == 200){
+      let release = this.response;
+      for (let file in fls) {
+        let asset = release.assets.find(a => a.name == file);
+        setDownloadCount(ver, file, !!asset ? asset.download_count : '-');
+      }
+    }
+  }
+}
+function setDownloadCount(ver, file, downloadCount){
+  var els = document.getElementsByClassName(ver+"_"+file);
+  for (var i = 0; i < els.length; i++){
+    els[i].innerHTML = downloadCount;
+  }
 }
 
 function showMessage(msg) {
@@ -123,7 +158,7 @@ function readJSON(path) {
           var fileReader = new FileReader();
           fileReader.addEventListener('load', function(){
                releases = JSON.parse(fileReader.result);
-                load();
+               load();
           });
           fileReader.readAsText(file);
       } else {
