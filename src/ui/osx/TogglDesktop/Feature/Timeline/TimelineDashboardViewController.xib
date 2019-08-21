@@ -150,7 +150,7 @@
                             </textFieldCell>
                         </textField>
                         <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="3EE-on-mJF">
-                            <rect key="frame" x="244" y="212" width="252" height="17"/>
+                            <rect key="frame" x="342" y="322" width="252" height="17"/>
                             <textFieldCell key="cell" alignment="center" title="Turn on activity recording to see results." id="PUb-OL-l5z">
                                 <font key="font" metaFont="system"/>
                                 <color key="textColor" name="timeline-time-label-color"/>
@@ -166,10 +166,10 @@
                         <constraint firstAttribute="bottom" secondItem="DJx-ob-wM0" secondAttribute="bottom" id="Gm3-VA-gjl"/>
                         <constraint firstAttribute="trailing" secondItem="oFH-aL-e6h" secondAttribute="trailing" id="ayb-sU-fX8"/>
                         <constraint firstItem="oFH-aL-e6h" firstAttribute="leading" secondItem="Xu6-6s-ozI" secondAttribute="leading" id="bTG-wc-ODY"/>
-                        <constraint firstItem="3EE-on-mJF" firstAttribute="centerY" secondItem="Xu6-6s-ozI" secondAttribute="centerY" id="e92-LV-o1z"/>
+                        <constraint firstItem="3EE-on-mJF" firstAttribute="centerY" secondItem="Xu6-6s-ozI" secondAttribute="centerY" multiplier="0.5" id="e92-LV-o1z"/>
                         <constraint firstAttribute="trailing" secondItem="DJx-ob-wM0" secondAttribute="trailing" id="kpN-Z8-B2J"/>
+                        <constraint firstItem="3EE-on-mJF" firstAttribute="leading" secondItem="DJx-ob-wM0" secondAttribute="trailing" constant="-25" id="ly2-AY-aiO"/>
                         <constraint firstItem="DJx-ob-wM0" firstAttribute="leading" secondItem="Xu6-6s-ozI" secondAttribute="leading" id="nER-8p-YqV"/>
-                        <constraint firstAttribute="trailing" secondItem="3EE-on-mJF" secondAttribute="trailing" constant="-125" id="zCk-4t-jwC"/>
                     </constraints>
                 </customView>
                 <customView translatesAutoresizingMaskIntoConstraints="NO" id="CV9-Ue-zhq">
