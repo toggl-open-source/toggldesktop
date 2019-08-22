@@ -28,6 +28,7 @@ namespace view {
 }
 
 class UserData : public User {
+public:
     ProtectedModel<Workspace> Workspaces;
     ProtectedModel<Client> Clients;
     ProtectedModel<Project> Projects;

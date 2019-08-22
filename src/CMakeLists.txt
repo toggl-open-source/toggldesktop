@@ -32,10 +32,8 @@ include_directories(
 
 # TogglDesktopLibrary sources
 set(LIBRARY_SOURCE_FILES
-    idle.cc
     analytics.cc
     context.cc
-    get_focused_window_linux.cc
     toggl_api.cc
     toggl_api_private.cc
     timeline_uploader.cc

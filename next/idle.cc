@@ -6,9 +6,10 @@
 // class, the ownership does not change and you
 // must not delete the pointers you got.
 
-#include "../src/idle.h"
+#include "idle.h"
 
-#include "./gui.h"
+#include "gui.h"
+#include "user_data.h"
 
 #include "Poco/Logger.h"
 
@@ -21,9 +22,7 @@ Idle::Idle(GUI *ui)
 , ui_(ui) {
 }
 
-void Idle::SetIdleSeconds(
-    const Poco::Int64 idle_seconds,
-    User *current_user) {
+void Idle::SetIdleSeconds(const Poco::Int64 idle_seconds, UserData *current_user) {
     /*
     {
         std::stringstream ss;
@@ -48,9 +47,7 @@ void Idle::SetIdleSeconds(
     last_idle_seconds_reading_ = idle_seconds;
 }
 
-void Idle::computeIdleState(
-    const Poco::Int64 idle_seconds,
-    User *current_user) {
+void Idle::computeIdleState(const Poco::Int64 idle_seconds, UserData *current_user) {
     if (settings_.idle_minutes &&
             (idle_seconds >= (settings_.idle_minutes*60)) &&
             !last_idle_started_) {
@@ -63,11 +60,10 @@ void Idle::computeIdleState(
         return;
     }
 
-    if (last_idle_started_ &&
-            idle_seconds < last_idle_seconds_reading_) {
+    if (last_idle_started_ && idle_seconds < last_idle_seconds_reading_) {
         time_t now = time(nullptr);
 
-        TimeEntry *te = current_user->RunningTimeEntry();
+        auto te = current_user->RunningTimeEntry();
         if (!te) {
             logger().warning("Time entry is not tracking, ignoring idleness");
         } else if (Formatter::AbsDuration(te->DurationInSeconds())
@@ -108,6 +104,25 @@ void Idle::computeIdleState(
 
 Poco::Logger &Idle::logger() const {
     return Poco::Logger::get("idle");
+}
+
+void Idle::SetSettings(const Settings &settings) {
+    settings_ = settings;
+}
+
+void Idle::SetSleep() {
+    last_sleep_started_ = time(nullptr);
+}
+
+void Idle::SetWake(UserData *current_user) {
+    if (last_sleep_started_) {
+        Poco::Int64 slept_seconds = time(nullptr) - last_sleep_started_;
+        if (slept_seconds > 0) {
+            SetIdleSeconds(slept_seconds, current_user);
+        }
+    }
+
+    last_sleep_started_ = 0;
 }
 
 }  // namespace toggl

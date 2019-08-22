@@ -37,6 +37,8 @@ set(LIBRARY_SOURCE_FILES
     rectangle.cc
     https_client.cc
     gui.cc
+    idle.cc
+    get_focused_window_linux.cc
 
     model/base_model.cc
     model/model_change.cc
