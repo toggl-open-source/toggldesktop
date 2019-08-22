@@ -1,6 +1,15 @@
 {
   "versions": [
     {
+        "version": "7.4.528",
+        "rows": [
+            "Setting decimal hour values works right again.",
+            "Idle notification behavior is more consistent."
+        ],
+        "date": "August 22nd 2019",
+        "beta": "true"
+    },
+    {
         "version": "7.4.510",
         "rows": [
           "Version string is now properly displayed in the About section of the app.",
