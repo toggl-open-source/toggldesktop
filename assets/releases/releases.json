@@ -2514,20 +2514,6 @@
     "linux": {
         "dev": [
             {
-                "version": "7.4.469",
-                "timestamp": "22-07-2019",
-                "filename": [
-                    {
-                        "type": "linux_tar.gz",
-                        "name": "toggldesktop_linux_x86_64-7_4_469.tar.gz"
-                    },
-                    {
-                        "type": "linux_flatpak",
-                        "name": "com.toggl.TogglDesktop_linux_x86_64-7_4_469.flatpak"
-                    }
-                ]
-            },
-            {
                 "version": "7.4.470",
                 "timestamp": "23-07-2019",
                 "filename": [
