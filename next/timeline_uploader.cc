@@ -1,6 +1,6 @@
 // Copyright 2014 Toggl Desktop developers.
 
-#include "../src/timeline_uploader.h"
+#include "timeline_uploader.h"
 
 #include <sstream>
 #include <string>
@@ -21,27 +21,7 @@ Poco::Logger &TimelineUploader::logger() const {
     return Poco::Logger::get("timeline_uploader");
 }
 
-void TimelineUploader::sleep() {
-    // Sleep in increments for faster shutdown.
-    for (unsigned int i = 0; i < current_upload_interval_seconds_*4; i++) {
-        if (uploading_.isStopped()) {
-            return;
-        }
-        Poco::Thread::sleep(250);
-    }
-}
-
-void TimelineUploader::upload_loop_activity() {
-    while (!uploading_.isStopped()) {
-        error err = process();
-        if (err != noError) {
-            logger().error(err);
-        }
-        sleep();
-    }
-}
-
-error TimelineUploader::process() {
+void TimelineUploader::execute() {
     {
         std::stringstream out;
         out << "upload_loop_activity (current interval "
@@ -49,29 +29,23 @@ error TimelineUploader::process() {
         logger().debug(out.str());
     }
 
-    if (uploading_.isStopped()) {
-        return noError;
-    }
-
     TimelineBatch batch;
-    error err = timeline_datasource_->CreateCompressedTimelineBatchForUpload(
-        &batch);
+    error err = timeline_datasource_->CreateCompressedTimelineBatchForUpload(&batch);
+
     if (err != noError) {
-        return err;
+        logger().warning(err);
+        return;
     }
 
     if (!batch.Events().size()) {
-        return noError;
-    }
-
-    if (uploading_.isStopped()) {
-        return noError;
+        return;
     }
 
     err = upload(&batch);
     if (err != noError) {
         backoff();
-        return err;
+        logger().warning(err);
+        return;
     }
 
     {
@@ -83,7 +57,12 @@ error TimelineUploader::process() {
 
     reset_backoff();
 
-    return timeline_datasource_->MarkTimelineBatchAsUploaded(batch.Events());
+    err = timeline_datasource_->MarkTimelineBatchAsUploaded(batch.Events());
+    if (err != noError) {
+        logger().warning(err);
+    }
+
+    schedule(current_upload_interval_seconds_);
 }
 
 error TimelineUploader::upload(TimelineBatch *batch) {
@@ -147,32 +126,11 @@ void TimelineUploader::reset_backoff() {
 }
 
 error TimelineUploader::start() {
-    try {
-        uploading_.start();
-    } catch(const Poco::Exception& exc) {
-        return exc.displayText();
-    } catch(const std::exception& ex) {
-        return ex.what();
-    } catch(const std::string& ex) {
-        return ex;
-    }
-    return noError;
+    schedule(0);
 }
 
 error TimelineUploader::Shutdown() {
-    try {
-        if (uploading_.isRunning()) {
-            uploading_.stop();
-            uploading_.wait();
-        }
-    } catch(const Poco::Exception& exc) {
-        return exc.displayText();
-    } catch(const std::exception& ex) {
-        return ex.what();
-    } catch(const std::string& ex) {
-        return ex;
-    }
-    return noError;
+    unschedule();
 }
 
 }  // namespace toggl

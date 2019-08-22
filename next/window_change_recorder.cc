@@ -1,6 +1,6 @@
 // Copyright 2014 Toggl Desktop developers.
 
-#include "../src/window_change_recorder.h"
+#include "window_change_recorder.h"
 
 #include <sstream>
 
@@ -26,7 +26,37 @@ bool WindowChangeRecorder::hasIdlenessChanged(const bool &idle) const {
     return last_idle_ != idle;
 }
 
-void WindowChangeRecorder::inspectFocusedWindow() {
+#define kWindowRecorderSleepMillis 250
+
+WindowChangeRecorder::WindowChangeRecorder(TimelineDatasource *datasource, EventQueue *queue)
+    : Event(queue)
+    , last_title_("")
+    , last_filename_("")
+    , last_event_started_at_(0)
+    , last_idle_(false)
+    , timeline_datasource_(datasource)
+    , last_autotracker_title_("")
+    , shutdown_(false)
+    , isLocked_(false)
+    , isSleeping_(false)
+    , timeline_errors_()
+{
+    schedule(kWindowRecorderSleepMillis);
+}
+
+WindowChangeRecorder::~WindowChangeRecorder() {}
+
+void WindowChangeRecorder::SetIsLocked(bool isLocked) {
+    Poco::Mutex::ScopedLock lock(isLocked_m_);
+    isLocked_ = isLocked;
+}
+
+void WindowChangeRecorder::SetIsSleeping(bool isSleeping) {
+    Poco::Mutex::ScopedLock lock(isSleeping_m_);
+    isSleeping_ = isSleeping;
+}
+
+void WindowChangeRecorder::execute() {
     std::string title("");
     std::string filename("");
     bool idle(false);
@@ -113,53 +143,18 @@ void WindowChangeRecorder::inspectFocusedWindow() {
     last_filename_ = filename;
     last_idle_ = idle;
     last_event_started_at_ = now;
+
+    schedule(kWindowRecorderSleepMillis);
 }
 
-#define kWindowRecorderSleepMillis 250
-
-void WindowChangeRecorder::recordLoop() {
-    while (!recording_.isStopped()) {
-        {
-            Poco::Mutex::ScopedLock lock(shutdown_m_);
-            if (shutdown_) {
-                break;
-            }
-        }
-
-        inspectFocusedWindow();
-
-        if (recording_.isStopped()) {
-            break;
-        }
-
-        Poco::Thread::sleep(kWindowRecorderSleepMillis);
-
-        if (recording_.isStopped()) {
-            break;
-        }
-
-        Poco::Thread::sleep(kWindowRecorderSleepMillis);
-    }
+bool WindowChangeRecorder::getIsLocked() {
+    Poco::Mutex::ScopedLock lock(isLocked_m_);
+    return isLocked_;
 }
 
-error WindowChangeRecorder::Shutdown() {
-    try {
-        {
-            Poco::Mutex::ScopedLock lock(shutdown_m_);
-            shutdown_ = true;
-        }
-        if (recording_.isRunning()) {
-            recording_.stop();
-            recording_.wait(5);
-        }
-    } catch(const Poco::Exception& exc) {
-        return exc.displayText();
-    } catch(const std::exception& ex) {
-        return ex.what();
-    } catch(const std::string& ex) {
-        return ex;
-    }
-    return noError;
+bool WindowChangeRecorder::getIsSleeping() {
+    Poco::Mutex::ScopedLock lock(isSleeping_m_);
+    return isSleeping_;
 }
 
 }  // namespace toggl

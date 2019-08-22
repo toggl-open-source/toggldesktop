@@ -1,6 +1,6 @@
 // Copyright 2014 Toggl Desktop developers.
 
-#include "../src/websocket_client.h"
+#include "websocket_client.h"
 
 #include <string>
 #include <sstream>
@@ -46,13 +46,7 @@ void WebSocketClient::Start(
         return;
     }
 
-    Poco::Mutex::ScopedLock lock(mutex_);
-
-    if (activity_.isRunning()) {
-        return;
-    }
-
-    activity_.start();
+    schedule(1000);
 
     ctx_ = ctx;
     on_websocket_message_ = on_websocket_message;
@@ -62,11 +56,7 @@ void WebSocketClient::Start(
 void WebSocketClient::Shutdown() {
     logger().debug("Shutdown");
 
-    if (!activity_.isRunning()) {
-        return;
-    }
-    activity_.stop();  // request stop
-    activity_.wait();  // wait until activity actually stops
+    unschedule();
 
     deleteSession();
 
@@ -76,17 +66,15 @@ void WebSocketClient::Shutdown() {
 error WebSocketClient::createSession() {
     logger().debug("createSession");
 
-    if (HTTPSClient::Config.CACertPath.empty()) {
+    if (https_client_->Config().CACertPath.empty()) {
         return error("Missing CA certifcate, cannot start Websocket");
     }
-
-    Poco::Mutex::ScopedLock lock(mutex_);
 
     deleteSession();
 
     last_connection_at_ = time(nullptr);
 
-    error err = TogglClient::TogglStatus.Status();
+    error err = https_client_->TogglStatus()->Status();
     if (err != noError) {
         std::stringstream ss;
         ss << "Will not start Websocket sessions, ";
@@ -104,12 +92,12 @@ error WebSocketClient::createSession() {
 
         Poco::Net::Context::VerificationMode verification_mode =
             Poco::Net::Context::VERIFY_RELAXED;
-        if (HTTPSClient::Config.IgnoreCert) {
+        if (https_client_->Config().IgnoreCert) {
             verification_mode = Poco::Net::Context::VERIFY_NONE;
         }
         Poco::Net::Context::Ptr context = new Poco::Net::Context(
             Poco::Net::Context::CLIENT_USE, "", "",
-            HTTPSClient::Config.CACertPath,
+            https_client_->Config().CACertPath,
             verification_mode, 9, true, "ALL");
 
         Poco::Net::SSLManager::instance().initializeClient(
@@ -120,13 +108,14 @@ error WebSocketClient::createSession() {
             uri.getPort(),
             context);
 
-        Netconf::ConfigureProxy(urls::WebSocket(), session_);
+        // OVERHAUL TODO
+        //Netconf::ConfigureProxy(urls::WebSocket(), session_);
 
         req_ = new Poco::Net::HTTPRequest(
             Poco::Net::HTTPRequest::HTTP_GET, "/ws",
             Poco::Net::HTTPMessage::HTTP_1_1);
         req_->set("Origin", "https://localhost");
-        req_->set("User-Agent", HTTPSClient::Config.UserAgent());
+        req_->set("User-Agent", https_client_->Config().UserAgent());
         res_ = new Poco::Net::HTTPResponse();
         ws_ = new Poco::Net::WebSocket(*session_, *req_, *res_);
         ws_->setBlocking(false);
@@ -227,10 +216,6 @@ error WebSocketClient::poll() {
 
         std::string type = parseWebSocketMessageType(json);
 
-        if (activity_.isStopped()) {
-            return noError;
-        }
-
         if ("ping" == type) {
             ws_->sendFrame(kPong.data(),
                            static_cast<int>(kPong.size()),
@@ -253,49 +238,49 @@ error WebSocketClient::poll() {
 
 void WebSocketClient::runActivity() {
     int restart_interval = nextWebsocketRestartInterval();
-    while (!activity_.isStopped()) {
-        if (ws_) {
-            error err = poll();
-            if (err != noError) {
-                logger().error(err);
-                logger().debug("encountered an error and will delete session");
-                deleteSession();
-                logger().debug("will sleep for 10 sec");
-                for (int i = 0; i < 20; i++) {
-                    if (activity_.isStopped()) {
-                        return;
-                    }
-                    Poco::Thread::sleep(500);
+    if (ws_) {
+        error err = poll();
+        if (err != noError) {
+            logger().error(err);
+            logger().debug("encountered an error and will delete session");
+            deleteSession();
+            logger().debug("will sleep for 10 sec");
+            for (int i = 0; i < 20; i++) {
+                /*
+                 * OVERHAUL TODO
+                if (activity_.isStopped()) {
+                    return;
                 }
-                logger().debug("sleep done");
+                Poco::Thread::sleep(500);
+                */
             }
+            logger().debug("sleep done");
         }
-
-        if (time(nullptr) - last_connection_at_ > restart_interval) {
-            restart_interval = nextWebsocketRestartInterval();
-            logger().debug("restarting");
-            error err = createSession();
-            if (err != noError) {
-                logger().error(err);
-                for (int i = 0; i < 20; i++) {
-                    if (activity_.isStopped()) {
-                        return;
-                    }
-                    Poco::Thread::sleep(500);
-                }
-            }
-        }
-
-        Poco::Thread::sleep(1000);
     }
 
-    logger().debug("activity finished");
+    if (time(nullptr) - last_connection_at_ > restart_interval) {
+        restart_interval = nextWebsocketRestartInterval();
+        logger().debug("restarting");
+        error err = createSession();
+        if (err != noError) {
+            logger().error(err);
+            for (int i = 0; i < 20; i++) {
+                /*
+                 * OVERHAUL TODO
+                if (activity_.isStopped()) {
+                    return;
+                }
+                Poco::Thread::sleep(500);
+                */
+            }
+        }
+    }
+
+    schedule(1000);
 }
 
 void WebSocketClient::deleteSession() {
     logger().debug("deleteSession");
-
-    Poco::Mutex::ScopedLock lock(mutex_);
 
     if (ws_) {
         delete ws_;

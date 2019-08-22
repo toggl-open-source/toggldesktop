@@ -76,22 +76,43 @@ void EventQueue::schedule(Event *event, const time_point &at) {
     }
 }
 
+void EventQueue::unschedule(Event *event) {
+    bool erasedFirst = false;
+    {
+        std::lock_guard<std::mutex> lock(mutex_);
+        for (auto it = queue_.begin(); it != queue_.end(); ++it) {
+            if (it->second == event) {
+                if (it == queue_.begin())
+                    erasedFirst = true;
+                it = queue_.erase(it);
+            }
+        }
+    }
+    if (erasedFirst)
+        wakeUp();
+}
+
 void EventQueue::wakeUp() {
     std::cerr << std::this_thread::get_id() << " " << __PRETTY_FUNCTION__<< std::endl;
     condition_.notify_one();
 }
 
-Event::Event()
+Event::Event(EventQueue *queue)
 {
     std::cerr << std::this_thread::get_id() << " " << __PRETTY_FUNCTION__<< std::endl;
 }
 
 Event::~Event() {
     std::cerr << std::this_thread::get_id() << " " << __PRETTY_FUNCTION__<< std::endl;
+    queue_->unschedule(this);
 }
 
-void Event::requestSchedule(EventQueue *queue) {
+void Event::schedule(int64_t in_ms) {
+    queue_->schedule(this, in_ms);
+}
 
+void Event::unschedule() {
+    queue_->unschedule(this);
 }
 
 void Event::execute() {

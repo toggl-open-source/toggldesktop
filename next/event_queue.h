@@ -16,14 +16,16 @@ class Context;
 class Event {
 public:
     friend class EventQueue;
+    Event(EventQueue *queue);
     virtual ~Event();
 
 protected:
-    Event();
-
-    virtual void requestSchedule(EventQueue *queue);
+    void schedule(int64_t in_ms);
+    void unschedule();
     virtual void execute();
 
+private:
+    EventQueue *queue_;
 };
 
 class EventQueue {
@@ -34,14 +36,6 @@ public:
 
     EventQueue(Context *context);
 
-    template<typename T>
-    T *create() {
-        T *t = new T();
-        managed_events_.insert(t);
-        Event *e = t;
-        e->requestSchedule(this);
-    }
-
     void clear();
 
     void wakeUp();
@@ -50,6 +44,7 @@ public:
 
     void schedule(Event *event, int64_t in_ms = 0);
     void schedule(Event *event, const time_point &at);
+    void unschedule(Event *event);
 
 private:
     [[noreturn]] void execute();

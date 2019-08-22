@@ -153,7 +153,7 @@ int main(void) {
     */
 
     toggl::EventQueue *queue = new toggl::EventQueue(nullptr);
-
+/*
     toggl::Event *e = queue->create<toggl::Event>();
     toggl::Event *h = queue->create<toggl::ServerStatus>();
 
@@ -167,4 +167,5 @@ int main(void) {
     queue->wakeUp();
 
     std::this_thread::sleep_for(std::chrono::seconds(15));
+    */
 }

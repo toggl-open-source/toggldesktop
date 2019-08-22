@@ -39,6 +39,9 @@ set(LIBRARY_SOURCE_FILES
     gui.cc
     idle.cc
     get_focused_window_linux.cc
+    window_change_recorder.cc
+    websocket_client.cc
+    timeline_uploader.cc
 
     model/base_model.cc
     model/model_change.cc

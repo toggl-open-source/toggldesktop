@@ -32,8 +32,9 @@ namespace toggl {
 
 class ServerStatus : public Event {
  public:
-    ServerStatus()
-        : gone_(false)
+    ServerStatus(EventQueue *queue)
+    : Event(queue)
+    , gone_(false)
     , fast_retry_(true) {}
 
     virtual ~ServerStatus() {
@@ -47,12 +48,13 @@ class ServerStatus : public Event {
     }
 
  protected:
-    void requestSchedule(EventQueue *queue) override;
     void execute() override;
 
  private:
     bool gone_;
     bool fast_retry_;
+
+    int delay_seconds_ { 60 * 3 };
 
     void setGone(const bool value);
     bool gone();
@@ -190,7 +192,7 @@ class TogglClient : public HTTPSClient {
     explicit TogglClient(SyncStateMonitor *monitor = nullptr)
         : monitor_(monitor) {}
 
-    ServerStatus &TogglStatus();
+    ServerStatus *TogglStatus();
 
  protected:
     virtual HTTPSResponse request(
@@ -199,7 +201,7 @@ class TogglClient : public HTTPSClient {
     virtual Poco::Logger &logger() const;
 
  private:
-    ServerStatus toggl_status_;
+    ServerStatus *toggl_status_;
     SyncStateMonitor *monitor_;
 };
 

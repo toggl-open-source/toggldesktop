@@ -6,11 +6,10 @@
 #include <string>
 #include <vector>
 
-#include "./timeline_event.h"
-#include "./timeline_notifications.h"
-#include "./types.h"
-
-#include "Poco/Activity.h"
+#include "model/timeline_event.h"
+#include "timeline_notifications.h"
+#include "types.h"
+#include "event_queue.h"
 
 namespace Poco {
 class Logger;
@@ -22,12 +21,13 @@ std::string convertTimelineToJSON(
     const std::vector<TimelineEvent> &timeline_events,
     const std::string &desktop_id);
 
-class TimelineUploader {
+class TimelineUploader : public Event {
  public:
-    explicit TimelineUploader(TimelineDatasource *ds)
-        : current_upload_interval_seconds_(kTimelineUploadIntervalSeconds)
+    explicit TimelineUploader(TimelineDatasource *ds, EventQueue *queue)
+        : Event(queue)
+        , current_upload_interval_seconds_(kTimelineUploadIntervalSeconds)
     , timeline_datasource_(ds)
-    , uploading_(this, &TimelineUploader::upload_loop_activity) {
+    {
         start();
     }
 
@@ -39,7 +39,7 @@ class TimelineUploader {
 
  protected:
     // Activity callback
-    void upload_loop_activity();
+    void execute() override;
 
  private:
     error start();
@@ -55,13 +55,8 @@ class TimelineUploader {
     Poco::Logger &logger() const;
 
     error process();
-    void sleep();
 
     TimelineDatasource *timeline_datasource_;
-
-    // An Activity is a possibly long running void/no arguments
-    // member function running in its own thread.
-    Poco::Activity<TimelineUploader> uploading_;
 };
 
 }  // namespace toggl

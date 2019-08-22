@@ -3,11 +3,13 @@
 #ifndef SRC_WEBSOCKET_CLIENT_H_
 #define SRC_WEBSOCKET_CLIENT_H_
 
+#include "error.h"
+
 #include <string>
 #include <vector>
 #include <ctime>
 
-#include "Poco/Activity.h"
+#include "event_queue.h"
 
 namespace Poco {
 class Logger;
@@ -22,14 +24,15 @@ class WebSocket;
 
 namespace toggl {
 
+class TogglClient;
+
 typedef void (*WebSocketMessageCallback)(
     void *callback,
     std::string json);
 
-class WebSocketClient {
+class WebSocketClient : public Event {
  public:
-    WebSocketClient() :
-    activity_(this, &WebSocketClient::runActivity),
+    WebSocketClient(EventQueue *queue) : Event(queue),
     session_(nullptr),
     req_(nullptr),
     res_(nullptr),
@@ -66,19 +69,17 @@ class WebSocketClient {
 
     Poco::Logger &logger() const;
 
-    Poco::Activity<WebSocketClient> activity_;
     Poco::Net::HTTPSClientSession *session_;
     Poco::Net::HTTPRequest *req_;
     Poco::Net::HTTPResponse *res_;
     Poco::Net::WebSocket *ws_;
     WebSocketMessageCallback on_websocket_message_;
     void *ctx_;
+    TogglClient *https_client_;
 
     std::time_t last_connection_at_;
 
     std::string api_token_;
-
-    Poco::Mutex mutex_;
 };
 }  // namespace toggl
 

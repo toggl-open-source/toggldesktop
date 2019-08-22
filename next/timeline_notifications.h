@@ -3,7 +3,7 @@
 #ifndef SRC_TIMELINE_NOTIFICATIONS_H_
 #define SRC_TIMELINE_NOTIFICATIONS_H_
 
-#include "./timeline_event.h"
+#include "model/timeline_event.h"
 
 #include <vector>
 #include <string>

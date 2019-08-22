@@ -36,9 +36,6 @@ set(LIBRARY_SOURCE_FILES
     context.cc
     toggl_api.cc
     toggl_api_private.cc
-    timeline_uploader.cc
-    websocket_client.cc
-    window_change_recorder.cc
 )
 
 # Set up compilation targets

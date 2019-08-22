@@ -41,6 +41,8 @@
 
 namespace toggl {
 
+// OVERHAUL TODO this may not work as original
+
 void ServerStatus::startStatusCheck() {
     std::stringstream ss;
     ss << "startStatusCheck fast_retry=" << fast_retry_;
@@ -52,6 +54,11 @@ void ServerStatus::startStatusCheck() {
     }
     checker_.start();
     */
+
+    if (!fast_retry_) {
+        delay_seconds_ = 60*15;
+    }
+    schedule(delay_seconds_);
 }
 
 void ServerStatus::stopStatusCheck(const std::string reason) {
@@ -71,18 +78,6 @@ void ServerStatus::stopStatusCheck(const std::string reason) {
 
 Poco::Logger &ServerStatus::logger() const {
     return Poco::Logger::get("ServerStatus");
-}
-
-void ServerStatus::requestSchedule(EventQueue *queue) {
-    int delay_seconds = 60*3;
-    if (!fast_retry_) {
-        delay_seconds = 60*15;
-    }
-    std::stringstream ss;
-    ss << "runActivity loop starting, delay_seconds=" << delay_seconds;
-    logger().debug(ss.str());
-
-    queue->schedule(this, delay_seconds * 1000);
 }
 
 void ServerStatus::execute() {
@@ -123,6 +118,7 @@ void ServerStatus::execute() {
     }
 
     stopStatusCheck("No error from backend");
+    schedule(delay_seconds_);
 }
 
 error ServerStatus::Status() {
@@ -519,14 +515,14 @@ Poco::Logger &TogglClient::logger() const {
     return Poco::Logger::get("TogglClient");
 }
 
-ServerStatus &TogglClient::TogglStatus() {
+ServerStatus *TogglClient::TogglStatus() {
     return toggl_status_;
 }
 
 HTTPSResponse TogglClient::request(
     HTTPSRequest req) {
 
-    error err = TogglStatus().Status();
+    error err = TogglStatus()->Status();
     if (err != noError) {
         std::stringstream ss;
         ss << "Will not connect, because of known bad Toggl status: " << err;
@@ -549,7 +545,7 @@ HTTPSResponse TogglClient::request(
     // We only update Toggl status from this
     // client, not websocket or regular http client,
     // as they are not critical.
-    TogglStatus().UpdateStatus(resp.status_code);
+    TogglStatus()->UpdateStatus(resp.status_code);
 
     return resp;
 }
