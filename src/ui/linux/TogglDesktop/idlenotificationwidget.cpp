@@ -20,11 +20,7 @@ IdleNotificationWidget::IdleNotificationWidget(QStackedWidget *parent)
 
     screensaver = new QDBusInterface("org.freedesktop.ScreenSaver", "/org/freedesktop/ScreenSaver", "org.freedesktop.ScreenSaver", QDBusConnection::sessionBus(), this);
 
-    connect(
-        TogglApi::instance,
-        SIGNAL(displayIdleNotification(QString,QString,QString,uint64_t,QString)),  // NOLINT
-        this,
-        SLOT(displayIdleNotification(QString,QString,QString,uint64_t,QString)));  // NOLINT
+    connect(TogglApi::instance, &TogglApi::displayIdleNotification, this, &IdleNotificationWidget::displayIdleNotification);
 
     connect(TogglApi::instance, SIGNAL(displaySettings(bool,SettingsView*)),  // NOLINT
             this, SLOT(displaySettings(bool,SettingsView*)));  // NOLINT
@@ -91,11 +87,13 @@ void IdleNotificationWidget::onScreensaverActiveChanged(bool active) {
 
 void IdleNotificationWidget::display() {
     auto sw = qobject_cast<QStackedWidget*>(parent());
-    if (sw->currentIndex() >= 0)
-        previousView = sw->currentWidget();
-    else
-        previousView = nullptr;
-    sw->setCurrentWidget(this);
+    if (sw->currentWidget() != this) {
+        if (sw->currentIndex() >= 0)
+            previousView = sw->currentWidget();
+        else
+            previousView = nullptr;
+        sw->setCurrentWidget(this);
+    }
 }
 
 void IdleNotificationWidget::hide() {
@@ -148,6 +146,11 @@ void IdleNotificationWidget::on_discardTimeAndContinueButton_clicked() {
     hide();
 }
 
+void IdleNotificationWidget::on_addIdleTimeAsNewEntryButton_clicked() {
+    TogglApi::instance->discardTimeAt(timeEntryGUID, idleStarted, true);
+    hide();
+}
+
 void IdleNotificationWidget::displayIdleNotification(
     const QString guid,
     const QString since,
@@ -163,9 +166,4 @@ void IdleNotificationWidget::displayIdleNotification(
     ui->timeEntryDescriptionLabel->setText(description);
 
     display();
-}
-
-void IdleNotificationWidget::on_pushButton_clicked() {
-    TogglApi::instance->discardTimeAt(timeEntryGUID, idleStarted, true);
-    hide();
 }
