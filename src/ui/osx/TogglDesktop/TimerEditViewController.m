@@ -133,8 +133,7 @@ NSString *kInactiveTimerColor = @"#999999";
 
 - (void)initCommon
 {
-	// Manual as default
-	self.displayMode = DisplayModeManual;
+	self.displayMode = DisplayModeInput;
 	self.projectTextField.isInTimerBar = YES;
 	self.autoCompleteInput.displayMode = AutoCompleteDisplayModeFullscreen;
 	self.liteAutocompleteDataSource.input = self.autoCompleteInput;
@@ -263,6 +262,7 @@ NSString *kInactiveTimerColor = @"#999999";
 	}
 	else
 	{
+		self.descriptionLabel.editable = YES;
 		[self showDefaultTimer];
 	}
 
@@ -441,7 +441,7 @@ NSString *kInactiveTimerColor = @"#999999";
 	self.autoCompleteInput.stringValue = self.time_entry.Description;
 
 	// Make descriptionLabel is editable and focus
-	self.descriptionLabel.editable = (item.Type != 0);
+	self.descriptionLabel.editable = YES;
 	self.descriptionLabel.stringValue = self.time_entry.Description;
 	self.displayMode = DisplayModeTimer;
 	[self.view.window makeFirstResponder:self.descriptionLabel];
