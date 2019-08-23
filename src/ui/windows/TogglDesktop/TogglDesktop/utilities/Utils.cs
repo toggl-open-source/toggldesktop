@@ -41,7 +41,9 @@ public static class Utils
         }
         else
         {
-            Toggl.Debug("Failed to retrieve window location and size");
+            mainWindow.Width = 330;
+            mainWindow.Height = 510;
+            Toggl.Debug("Failed to retrieve window location and size. Setting the default size.");
         }
 
         // First try to shift the window onto the bounding box of visible screens
