@@ -18,4 +18,7 @@
 @interface TimeEntryListViewController : NSViewController
 @property (weak, nonatomic) id<TimeEntryListViewControllerDelegate> delegate;
 @property (nonatomic, assign, readonly) BOOL isEditorOpen;
+
+- (void)loadMoreIfNeedAtDate:(NSDate *)date;
+
 @end

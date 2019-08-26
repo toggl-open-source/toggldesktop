@@ -8,6 +8,11 @@
 
 import Cocoa
 
+protocol TimelineDashboardViewControllerDelegate: class {
+
+    func timelineDidChangeDate(_ date: Date)
+}
+
 final class TimelineDashboardViewController: NSViewController {
 
     // MARK: OUTLET
@@ -19,6 +24,7 @@ final class TimelineDashboardViewController: NSViewController {
     
     // MARK: Variables
 
+    weak var delegate: TimelineDashboardViewControllerDelegate?
     private var selectedGUID: String?
     private var isFirstTime = true
     lazy var datePickerView: DatePickerView = DatePickerView.xibView()
@@ -177,6 +183,7 @@ extension TimelineDashboardViewController: DatePickerViewDelegate {
     func datePickerOnChanged(_ sender: DatePickerView, date: Date) {
         editorPopover.close()
         DesktopLibraryBridge.shared().timelineSetDate(date)
+        delegate?.timelineDidChangeDate(date)
     }
 
     func datePickerShouldClose(_ sender: DatePickerView) {
