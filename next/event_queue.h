@@ -51,9 +51,9 @@ private:
 
     Context *context_;
 
-    std::thread thread_;
-    std::mutex mutex_;
     std::condition_variable condition_;
+    std::mutex mutex_;
+    std::thread thread_;
     std::set<Event *> managed_events_;
     std::multimap<time_point, Event*, std::less<time_point>> queue_;
 };

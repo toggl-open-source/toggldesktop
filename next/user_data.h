@@ -232,6 +232,15 @@ public:
 
     error SetAPITokenFromOfflineData(const std::string password);
 
+    bool isTimeEntryLocked(TimeEntry* te);
+
+    bool canChangeStartTimeTo(TimeEntry* te, time_t t);
+
+    bool canChangeProjectTo(TimeEntry* te, Project* p);
+
+    bool isTimeLockedInWorkspace(time_t t, locked<Workspace> &ws);
+
+
 
     template <typename T>
     T *modelByGUID(const std::string &GUID, std::vector<T *> const *list) {

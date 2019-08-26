@@ -16,7 +16,7 @@ endif()
 
 add_definitions(-DTOGGL_BUILD_TYPE="${TOGGL_BUILD_TYPE}")
 
-set(TOGGLDESKTOPLIBRARY_INCLUDE_DIR
+set(TOGGLDESKTOPLIBRARYOLD_INCLUDE_DIR
     ${CMAKE_CURRENT_SOURCE_DIR}
     PARENT_SCOPE
 )
@@ -30,7 +30,7 @@ include_directories(
     ${POCO_INCLUDE_DIRS}
 )
 
-# TogglDesktopLibrary sources
+# TogglDesktopLibraryOld sources
 set(LIBRARY_SOURCE_FILES
     analytics.cc
     context.cc
@@ -39,13 +39,13 @@ set(LIBRARY_SOURCE_FILES
 )
 
 # Set up compilation targets
-add_library(TogglDesktopLibrary SHARED ${LIBRARY_SOURCE_FILES})
+add_library(TogglDesktopLibraryOld SHARED ${LIBRARY_SOURCE_FILES})
 
 # And list the dependencies between them (and system libraries)
-target_link_libraries(TogglDesktopLibrary PRIVATE
+target_link_libraries(TogglDesktopLibraryOld PRIVATE
     ${JSONCPP_LIBRARIES}
     ${LUA_LIBRARIES}
     PocoCrypto PocoDataSQLite PocoNetSSL
 )
 
-install(TARGETS TogglDesktopLibrary DESTINATION lib)
+install(TARGETS TogglDesktopLibraryOld DESTINATION lib)

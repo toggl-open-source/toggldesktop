@@ -10,6 +10,7 @@
 namespace toggl {
 
 class UserData;
+class GUI;
 
 class Context {
 public:
@@ -81,6 +82,7 @@ public:
     bool setTimeEntryDescription(const std::string &guid, const std::string &value);
     bool discardTimeAt(const std::string &guid, int64_t at, bool splitIntoNewEntry);
     bool discardTimeAndContinue(const std::string &guid, int64_t at);
+    void toggleEntriesGroup(const std::string &name);
 
     const std::string &createClient(uint64_t workspaceId, const std::string &clientName);
 
@@ -158,8 +160,8 @@ public:
     void setKeepEndTimeFixed(bool value);
     bool getKeepEndTimeFixed();
 
-    const std::string &formatTrackingTimeDuration(int64_t durationInSeconds);
-    const std::string &formatTrackedTimeDuration(int64_t durationInSeconds);
+    static const std::string &formatTrackingTimeDuration(int64_t durationInSeconds);
+    static const std::string &formatTrackedTimeDuration(int64_t durationInSeconds);
     int64_t parseDurationStringIntoSeconds(const std::string &durationString);
 
     const std::string &runScript(const std::string &script, int64_t *err);
@@ -180,6 +182,7 @@ private:
 
     UserData *user_;
     EventQueue *events_;
+    GUI *gui_;
 };
 
 }

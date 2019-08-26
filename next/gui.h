@@ -26,8 +26,10 @@ class Workspace;
 
 class GUI : public SyncStateMonitor {
  public:
-    GUI()
-    : lastSyncState(-1)
+    GUI(Context *context, TogglCallbacks callbacks)
+    : context_(context)
+    , callbacks_(callbacks)
+    , lastSyncState(-1)
     , lastUnsyncedItemsCount(-1)
     , lastDisplayLoginOpen(false)
     , lastDisplayLoginUserID(0)
@@ -36,6 +38,8 @@ class GUI : public SyncStateMonitor {
     , isFirstLaunch(true) {}
 
     ~GUI() {}
+
+    void SetCallbacks(TogglCallbacks callbacks);
 
     void DisplayApp();
 

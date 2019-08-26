@@ -484,6 +484,10 @@ TOGGL_EXPORT void toggl_search_help_articles(
 TOGGL_EXPORT void toggl_view_time_entry_list(
     void *context);
 
+TOGGL_EXPORT void toggl_toggle_entries_group(
+    void *context,
+    const char *name);
+
 TOGGL_EXPORT void toggl_edit(
     void *context,
     const char *guid,
@@ -858,13 +862,10 @@ TOGGL_EXPORT bool toggl_set_promotion_response(
 
 // You must free() the result
 TOGGL_EXPORT char *toggl_format_tracking_time_duration(
-    void *context,
     int64_t duration_in_seconds);
 
 // You must free() the result
-TOGGL_EXPORT char *toggl_format_tracked_time_duration(
-    void *context,
-    int64_t duration_in_seconds);
+TOGGL_EXPORT char *toggl_format_tracked_time_duration(int64_t duration_in_seconds);
 
 TOGGL_EXPORT int64_t toggl_parse_duration_string_into_seconds(
     void *context,

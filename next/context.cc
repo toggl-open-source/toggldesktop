@@ -1,6 +1,7 @@
 
 #include "context.h"
 
+#include "gui.h"
 #include "urls.h"
 
 #include <Poco/Environment.h>
@@ -19,6 +20,7 @@ Context::Context(const std::string &appName, const std::string &appVersion, bool
     , production_(production)
     , checkForUpdates_(checkForUpdates)
     , events_(new EventQueue(this))
+    , gui_(new GUI(this, callbacks_))
 {
     if (!Poco::URIStreamOpener::defaultOpener().supportsScheme("http")) {
         Poco::Net::HTTPStreamFactory::registerFactory();
@@ -71,6 +73,7 @@ void Context::showApp() {
 
 void Context::registerCallbacks(TogglCallbacks callbacks) {
     callbacks_ = callbacks;
+    gui_->SetCallbacks(callbacks);
 }
 
 bool Context::uiStart() {
@@ -186,7 +189,11 @@ bool Context::discardTimeAt(const std::string &guid, int64_t at, bool splitIntoN
 }
 
 bool Context::discardTimeAndContinue(const std::string &guid, int64_t at) {
-// TODO
+    // TODO
+}
+
+void Context::toggleEntriesGroup(const std::string &name) {
+    // TODO
 }
 
 bool Context::setSettingsRemindDays(bool remindMon, bool remindTue, bool remindWed, bool remindThu, bool remindFri, bool remindSat, bool remindSun) {

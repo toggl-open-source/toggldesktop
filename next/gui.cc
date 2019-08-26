@@ -17,6 +17,10 @@ namespace toggl {
 
 using namespace view;
 
+void GUI::SetCallbacks(TogglCallbacks callbacks) {
+    callbacks_ = callbacks;
+}
+
 void GUI::DisplayApp() {
     callbacks_.App(context_, true);
 }

@@ -13,11 +13,17 @@ include_directories(
     ${POCO_INCLUDE_DIRS}
 )
 
+set(TOGGLDESKTOPLIBRARY_INCLUDE_DIR
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    PARENT_SCOPE
+)
+
 # TogglDesktopLibrary sources
 set(LIBRARY_SOURCE_FILES
     context.cc
     views.cc
     user_data.cc
+    gui_update.cc
 
     event_queue.cc
 
@@ -58,19 +64,20 @@ set(LIBRARY_SOURCE_FILES
     model/workspace.cc
 
     toggl_api.cc
-
-    main.cc
 )
 
+
 # Set up compilation targets
-add_executable(TogglDesktopNext ${LIBRARY_SOURCE_FILES})
+add_library(TogglDesktopLibrary SHARED ${LIBRARY_SOURCE_FILES})
 
 # And list the dependencies between them (and system libraries)
-target_link_libraries(TogglDesktopNext
+target_link_libraries(TogglDesktopLibrary PRIVATE
     ${JSONCPP_LIBRARIES}
     ${LUA_LIBRARIES}
     PocoCrypto PocoNetSSL PocoFoundation PocoData sqlite3 PocoDataSQLite PocoNet
     -pthread
     -lX11
 )
+
+install(TARGETS TogglDesktopLibrary DESTINATION lib)
 

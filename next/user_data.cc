@@ -362,6 +362,34 @@ error UserData::SetAPITokenFromOfflineData(const std::string password) {
     return noError;
 }
 
+bool UserData::isTimeEntryLocked(TimeEntry *te) {
+    auto ws = Workspaces.findByID(te->WID());
+    return isTimeLockedInWorkspace(te->Start(), ws);
+}
+
+bool UserData::canChangeStartTimeTo(TimeEntry *te, time_t t) {
+    auto ws = Workspaces.findByID(te->WID());
+    return !isTimeLockedInWorkspace(t, ws);
+}
+
+bool UserData::canChangeProjectTo(TimeEntry *te, Project *p) {
+    auto ws = Workspaces.findByID(p->WID());
+    return !isTimeLockedInWorkspace(te->Start(), ws);
+}
+
+bool UserData::isTimeLockedInWorkspace(time_t t, locked<Workspace> &ws) {
+    if (!ws)
+        return false;
+    if (!ws->Business())
+        return false;
+    if (ws->Admin())
+        return false;
+    auto lockedTime = ws->LockedTime();
+    if (lockedTime == 0)
+        return false;
+    return t < lockedTime;
+}
+
 
 // Stop a time entry, mark it as dirty.
 // Note that there may be multiple TE-s running. If there are,

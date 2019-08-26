@@ -443,12 +443,12 @@ bool toggl_set_promotion_response(void *context, int64_t promotion_type, int64_t
     return reinterpret_cast<Context*>(context)->setPromotionResponse(promotion_type, promotion_response);
 }
 
-char *toggl_format_tracking_time_duration(void *context, int64_t duration_in_seconds) {
-    return convert(reinterpret_cast<Context*>(context)->formatTrackingTimeDuration(duration_in_seconds));
+char *toggl_format_tracking_time_duration(int64_t duration_in_seconds) {
+    return convert(Context::formatTrackingTimeDuration(duration_in_seconds));
 }
 
-char *toggl_format_tracked_time_duration(void *context, int64_t duration_in_seconds) {
-    return convert(reinterpret_cast<Context*>(context)->formatTrackedTimeDuration(duration_in_seconds));
+char *toggl_format_tracked_time_duration(int64_t duration_in_seconds) {
+    return convert(Context::formatTrackedTimeDuration(duration_in_seconds));
 }
 
 int64_t toggl_parse_duration_string_into_seconds(void *context, const char *duration_string) {
@@ -543,3 +543,7 @@ void track_edit_size(void *context, uint64_t width, uint64_t height) {
     reinterpret_cast<Context*>(context)->trackEditSize(width, height);
 }
 
+
+void toggl_toggle_entries_group(void *context, const char *name) {
+    reinterpret_cast<Context*>(context)->toggleEntriesGroup(name);
+}
