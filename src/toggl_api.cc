@@ -647,13 +647,11 @@ void toggl_view_timeline_data(void *context) {
 
 void toggl_view_timeline_prev_day(
     void *context) {
-    app(context)->LoadMore();
     app(context)->ViewTimelinePrevDay();
 }
 
 void toggl_view_timeline_next_day(
     void *context) {
-    app(context)->LoadMore();
     app(context)->ViewTimelineNextDay();
 }
 
@@ -663,7 +661,6 @@ void toggl_view_timeline_current_day(void *context) {
 
 void toggl_view_timeline_set_day(void *context,
                                  const int64_t unix_timestamp) {
-    app(context)->LoadMore();
     app(context)->ViewTimelineSetDate(unix_timestamp);
 }
 
