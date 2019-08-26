@@ -33,6 +33,7 @@ class TogglApplication : public SingleApplication {
 };
 
 bool TogglApplication::notify(QObject *receiver, QEvent *event) {
+    /*
     try {
         return SingleApplication::notify(receiver, event);
     } catch(std::exception &e) {
@@ -43,6 +44,8 @@ bool TogglApplication::notify(QObject *receiver, QEvent *event) {
                                 receiver->objectName());
     }
     return true;
+    */
+    return false;
 }
 
 int main(int argc, char *argv[]) try {
@@ -52,7 +55,6 @@ int main(int argc, char *argv[]) try {
 
     qRegisterMetaType<uint64_t>("uint64_t");
     qRegisterMetaType<int64_t>("int64_t");
-    qRegisterMetaType<bool_t>("bool_t");
     qRegisterMetaType<QVector<TimeEntryView*> >("QVector<TimeEntryView*>");
     qRegisterMetaType<QVector<AutocompleteView*> >("QVector<AutocompleteView*>");
     qRegisterMetaType<QVector<GenericView*> >("QVector<GenericView*>");

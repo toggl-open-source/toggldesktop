@@ -58,8 +58,8 @@ class TogglApi : public QObject {
         const QString duration,
         const uint64_t task_id,
         const uint64_t project_id,
-        const char_t *tags,
-        const bool_t billable);
+        const char *tags,
+        const bool billable);
 
     bool stop();
 
@@ -322,61 +322,85 @@ class TogglApi : public QObject {
 };
 
 // callbacks used internally by the app instance
-void on_display_app(const bool_t open);
+void on_display_app(
+    void *context,
+    const bool open);
 void on_display_error(
+    void *context,
     const char *errmsg,
-    const bool_t user_error);
-void on_overlay(const int64_t type);
+    const bool user_error);
+void on_overlay(
+    void *context,
+    const int64_t type);
 void on_display_update(
+    void *context,
     const char *url);
 void on_display_online_state(
+    void *context,
     const bool is_online,
     const char *reason);
 void on_display_url(
+    void *context,
     const char *url);
 void on_display_login(
-    const bool_t open,
+    void *context,
+    const bool open,
     const uint64_t user_id);
 void on_display_pomodoro(
+    void *context,
     const char *title,
     const char *informative_text);
 void on_display_pomodoro_break(
+    void *context,
     const char *title,
     const char *informative_text);
 void on_display_reminder(
+    void *context,
     const char *title,
     const char *informative_text);
 void on_display_time_entry_list(
-    const bool_t open,
+    void *context,
+    const bool open,
     TogglTimeEntryView *first);
 void on_display_time_entry_autocomplete(
+    void *context,
     TogglAutocompleteView *first);
 void on_display_mini_timer_autocomplete(
+    void *context,
     TogglAutocompleteView *first);
 void on_display_project_autocomplete(
+    void *context,
     TogglAutocompleteView *first);
 void on_display_workspace_select(
+    void *context,
     TogglGenericView *first);
 void on_display_client_select(
+    void *context,
     TogglGenericView *first);
 void on_display_tags(
+    void *context,
     TogglGenericView *first);
 void on_display_time_entry_editor(
-    const bool_t open,
+    void *context,
+    const bool open,
     TogglTimeEntryView *te,
     const char *focused_field_name);
 void on_display_settings(
-    const bool_t open,
+    void *context,
+    const bool open,
     TogglSettingsView *settings);
 void on_display_timer_state(
+    void *context,
     TogglTimeEntryView *te);
 void on_display_idle_notification(
+    void *context,
     const char *guid,
     const char *since,
     const char *duration,
     const int64_t started);
 void on_project_colors(
-    const char_t *list[],
+    void *context,
+    const char *list[],
     const uint64_t count);
 
 #endif  // SRC_UI_LINUX_TOGGLDESKTOP_TOGGL_H_

@@ -7,7 +7,7 @@
 #include <QVector>
 #include <QDebug>
 
-#include "./toggl_api.h"
+#include "toggl_api.h"
 
 enum AutocompleteType {
     AC_TIME_ENTRY = 0,
