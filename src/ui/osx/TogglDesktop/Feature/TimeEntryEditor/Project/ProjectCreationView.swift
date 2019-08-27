@@ -215,6 +215,7 @@ extension ProjectCreationView {
         // Default value
         selectedColor = ProjectColor.default
         displayMode = .normal
+        publicProjectCheckBox.state = .off
 
         // Delegate
         projectTextField.delegate = self
