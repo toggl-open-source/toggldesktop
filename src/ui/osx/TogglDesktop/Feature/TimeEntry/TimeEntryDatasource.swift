@@ -286,7 +286,7 @@ extension TimeEntryDatasource {
 
     fileprivate func lastDateInSections() -> Date? {
         let lastSection = sections.reversed().first { !$0.isLoadMore }
-        return lastSection?.entries.last?.ended
+        return lastSection?.entries.last?.started
     }
 }
 
