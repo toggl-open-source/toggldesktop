@@ -203,6 +203,9 @@ bool IsUserError(const error err) {
     if (err.find(kProjectNameAlreadyExists) != std::string::npos) {
         return true;
     }
+    if (err.find("This entry can't be saved - please add") != std::string::npos) {
+        return true;
+    }
     return false;
 }
 
