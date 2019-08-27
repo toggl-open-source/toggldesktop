@@ -1853,7 +1853,7 @@ error Database::loadTimeEntries(
                "SELECT local_id, id, uid, description, wid, guid, pid, "
                "tid, billable, duronly, ui_modified_at, start, stop, "
                "duration, tags, created_with, deleted_at, updated_at, "
-               "project_guid, validation_error "
+               "project_guid, validation_error, unsynced "
                "FROM time_entries "
                "WHERE uid = :uid "
                "ORDER BY start DESC",
@@ -1969,6 +1969,12 @@ error Database::loadTimeEntriesFromSQLStatement(
                 } else {
                     model->SetValidationError(rs[19].convert<std::string>());
                 }
+                if (rs[20].convert<bool>()) {
+                    model->SetUnsynced();
+                } else {
+                    model->ClearUnsynced();
+                }
+
                 model->ClearDirty();
                 list->push_back(model);
                 more = rs.moveNext();
