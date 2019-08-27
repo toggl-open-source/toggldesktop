@@ -2085,7 +2085,8 @@ error Database::saveModel(
                           "deleted_at = :deleted_at, "
                           "updated_at = :updated_at, "
                           "project_guid = :project_guid, "
-                          "validation_error = :validation_error "
+                          "validation_error = :validation_error, "
+                          "unsynced = :unsynced "
                           "where local_id = :local_id",
                           useRef(model->ID()),
                           useRef(model->UID()),
@@ -2106,6 +2107,7 @@ error Database::saveModel(
                           useRef(model->UpdatedAt()),
                           useRef(model->ProjectGUID()),
                           useRef(model->ValidationError()),
+                          useRef(model->Unsynced()),
                           useRef(model->LocalID()),
                           now;
             } else {
@@ -2121,7 +2123,8 @@ error Database::saveModel(
                           "deleted_at = :deleted_at, "
                           "updated_at = :updated_at, "
                           "project_guid = :project_guid, "
-                          "validation_error = :validation_error "
+                          "validation_error = :validation_error, "
+                          "unsynced = :unsynced "
                           "where local_id = :local_id",
                           useRef(model->UID()),
                           useRef(model->Description()),
@@ -2141,6 +2144,7 @@ error Database::saveModel(
                           useRef(model->UpdatedAt()),
                           useRef(model->ProjectGUID()),
                           useRef(model->ValidationError()),
+                          useRef(model->Unsynced()),
                           useRef(model->LocalID()),
                           now;
             }
@@ -2173,13 +2177,13 @@ error Database::saveModel(
                           "duronly, ui_modified_at, "
                           "start, stop, duration, "
                           "tags, created_with, deleted_at, updated_at, "
-                          "project_guid, validation_error) "
+                          "project_guid, validation_error, unsynced) "
                           "values(:id, :uid, :description, :wid, "
                           ":guid, :pid, :tid, :billable, "
                           ":duronly, :ui_modified_at, "
                           ":start, :stop, :duration, "
                           ":tags, :created_with, :deleted_at, :updated_at, "
-                          ":project_guid, :validation_error)",
+                          ":project_guid, :validation_error, :unsynced)",
                           useRef(model->ID()),
                           useRef(model->UID()),
                           useRef(model->Description()),
@@ -2199,6 +2203,7 @@ error Database::saveModel(
                           useRef(model->UpdatedAt()),
                           useRef(model->ProjectGUID()),
                           useRef(model->ValidationError()),
+                          useRef(model->Unsynced()),
                           now;
             } else {
                 *session_ <<
@@ -2207,14 +2212,14 @@ error Database::saveModel(
                           "duronly, ui_modified_at, "
                           "start, stop, duration, "
                           "tags, created_with, deleted_at, updated_at, "
-                          "project_guid, validation_error "
+                          "project_guid, validation_error, unsynced"
                           ") values ("
                           ":uid, :description, :wid, "
                           ":guid, :pid, :tid, :billable, "
                           ":duronly, :ui_modified_at, "
                           ":start, :stop, :duration, "
                           ":tags, :created_with, :deleted_at, :updated_at, "
-                          ":project_guid, :validation_error)",
+                          ":project_guid, :validation_error, :unsynced)",
                           useRef(model->UID()),
                           useRef(model->Description()),
                           useRef(model->WID()),
@@ -2233,6 +2238,7 @@ error Database::saveModel(
                           useRef(model->UpdatedAt()),
                           useRef(model->ProjectGUID()),
                           useRef(model->ValidationError()),
+                          useRef(model->Unsynced()),
                           now;
             }
             error err = last_error("saveTimeEntry");
