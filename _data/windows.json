@@ -1,27 +1,17 @@
 {
     "versions": [
         {
-            "version": "7.4.527",
+            "version": "7.4.529",
             "rows": [
-                "Fixed issue with decimal durations not displaying correctly",
                 "Fixed crash when locking PC while being logged out",
-                "Added handling of errors during auto-update"
-            ],
-            "date": "August 20th 2019",
-            "beta": "true",
-            "has64bit": "true"
-        },
-        {
-            "version": "7.4.519",
-            "rows": [
+                "Added handling of errors during auto-update",
                 "Fixed crashes during startup",
                 "Fixed crashes after modal windows were being closed with Alt+F4",
                 "Fixed issues when switching between different screen setups",
                 "Fixed issues with grouping similar time entries",
                 "Added a few shortcuts (Quit, Preferences, Delete, Expand/Collapse)"
             ],
-            "date": "August 16th 2019",
-            "beta": "true",
+            "date": "August 27th 2019",
             "has64bit": "true"
         },
         {
