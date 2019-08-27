@@ -271,4 +271,9 @@ void *ctx;
 	return CGSizeMake(width, height);
 }
 
+- (void)loadMoreTimeEntry
+{
+	toggl_load_more(ctx);
+}
+
 @end

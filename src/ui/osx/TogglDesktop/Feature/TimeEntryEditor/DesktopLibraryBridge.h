@@ -91,6 +91,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (CGSize)getEditorWindowSize;
 
+#pragma mark - Editor
+
+- (void)loadMoreTimeEntry;
+
 @end
 
 NS_ASSUME_NONNULL_END

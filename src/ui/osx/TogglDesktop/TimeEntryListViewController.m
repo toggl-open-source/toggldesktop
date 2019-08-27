@@ -700,4 +700,8 @@ extern void *ctx;
 	[self.collectionView deselectAll:self];
 }
 
+- (void)loadMoreIfNeedAtDate:(NSDate *)date;
+{
+	[self.dataSource loadMoreTimeEntryIfNeedAt:date];
+}
 @end

@@ -84,6 +84,7 @@ extension MainDashboardViewController {
         listBtn.isSelected = true
         timeEntryController.delegate = self
         headerContainerView.applyShadow(color: .black, opacity: 0.1, radius: 6.0)
+        timelineController.delegate = self
     }
 
     fileprivate func initNotification() {
@@ -161,5 +162,14 @@ extension MainDashboardViewController: TimeEntryListViewControllerDelegate {
 
     func containerViewForTimer() -> NSView! {
         return timerContainerView
+    }
+}
+
+// MARK: TimelineDashboardViewControllerDelegate
+
+extension MainDashboardViewController: TimelineDashboardViewControllerDelegate {
+
+    func timelineDidChangeDate(_ date: Date) {
+        timeEntryController.loadMoreIfNeed(at: date)
     }
 }
