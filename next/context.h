@@ -1,16 +1,25 @@
 // Copyright 2019 Toggl Desktop developers.
 
+#ifndef SRC_CONTEXT_H_
+#define SRC_CONTEXT_H_
+
 #include "toggl_api.h"
 
+#include "types.h"
 #include "util.h"
 #include "event_queue.h"
 
 #include <string>
 
+#include <Poco/Logger.h>
+
 namespace toggl {
 
 class UserData;
 class GUI;
+class GUIUpdate;
+class TogglClient;
+class Database;
 
 class Context {
 public:
@@ -171,6 +180,14 @@ public:
     const std::string &checkViewStructSize(int32_t timeEntryViewItemSize, int32_t autocompleteViewItemSize, int32_t viewItemSize, int32_t settingsSize, int32_t autotrackerViewItemSize);
 
 private:
+    Poco::Logger &logger() const;
+    error displayError(const error &err);
+    GUI *UI();
+    Database *DB();
+
+    UserData *user();
+    void setUser(UserData *user, bool logged_in = false);
+
     std::string appName_;
     std::string version_;
     bool production_;
@@ -180,9 +197,15 @@ private:
 
     TogglCallbacks callbacks_;
 
-    UserData *user_;
-    EventQueue *events_;
-    GUI *gui_;
+    UserData *user_ { nullptr };
+    EventQueue *events_ { nullptr };
+    GUI *gui_ { nullptr };
+    GUIUpdate *gui_update_ { nullptr };
+    TogglClient *https_client_ { nullptr };
+    Database *database_ { nullptr };
 };
 
 }
+
+
+#endif // SRC_CONTEXT_H_

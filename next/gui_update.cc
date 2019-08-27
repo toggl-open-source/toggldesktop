@@ -211,7 +211,7 @@ void GUIUpdate::update(const UIElements &what, UserData *user) {
             renderTimeEntryEditor(user, what);
 
         if (what.display_time_entries)
-            renderTimeEntries(user, what);
+            renderTimeEntries(user, what.open_time_entry_list);
 
         if (what.display_time_entry_autocomplete) {
             if (what.first_load) {
@@ -252,7 +252,7 @@ void GUIUpdate::update(const UIElements &what, UserData *user) {
             renderAutotrackerRules(user);
 
         if (what.display_settings)
-            renderSettings(user, what);
+            renderSettings(user, what.open_settings);
 
         // Apply autocomplete as last element,
         // as its depending on selects on Windows
@@ -416,10 +416,10 @@ void GUIUpdate::renderTimerState(UserData *user) {
     }
 }
 
-void GUIUpdate::renderTimeEntries(UserData *user, const UIElements &what) {
+void GUIUpdate::renderTimeEntries(UserData *user, bool open_time_entry_list) {
     std::vector<view::TimeEntry> time_entry_views;
 
-    if (what.open_time_entry_list) {
+    if (open_time_entry_list) {
         time_entry_editor_guid_ = "";
     }
 
@@ -541,13 +541,13 @@ void GUIUpdate::renderTimeEntries(UserData *user, const UIElements &what) {
     // RENDERING PART //
     link_vector(time_entry_views);
     UI()->DisplayTimeEntryList(
-        what.open_time_entry_list,
+        open_time_entry_list,
         time_entry_views,
         !user->HasLoadedMore());
     last_time_entry_list_render_at_ = Poco::LocalDateTime();
 }
 
-void GUIUpdate::renderSettings(UserData *user, const UIElements &what, Settings *settings) {
+void GUIUpdate::renderSettings(UserData *user, bool open_settings) {
     view::Settings settings_view;
 
     Proxy proxy;
@@ -610,8 +610,8 @@ void GUIUpdate::renderSettings(UserData *user, const UIElements &what, Settings 
 
     settings_view.RecordTimeline = record_timeline;
 
-    UI()->DisplaySettings(what.open_settings,
-                          &settings_view);
+    UI()->DisplaySettings(open_settings, &settings_view);
+
     // Tracking Settings
     if ("production" == environment_) {
         analytics_.TrackSettings(db_->AnalyticsClientID(),

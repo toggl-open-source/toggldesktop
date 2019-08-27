@@ -2,7 +2,10 @@
 #include "context.h"
 
 #include "gui.h"
+#include "gui_update.h"
 #include "urls.h"
+#include "database.h"
+#include "views.h"
 
 #include <Poco/Environment.h>
 #include <Poco/Logger.h>
@@ -77,19 +80,190 @@ void Context::registerCallbacks(TogglCallbacks callbacks) {
 }
 
 bool Context::uiStart() {
-// TODO
+    try {
+        if (user_) {
+            return noError == displayError("Cannot start UI, user already logged in!");
+        }
+
+        if (https_client_->Config().CACertPath.empty()) {
+            return noError == displayError("Missing CA cert bundle path!");
+        }
+
+        // Check that UI is wired up
+        error err = UI()->VerifyCallbacks();
+        if (err != noError) {
+            logger().error(err);
+            return noError == displayError("UI is not properly wired up!");
+        }
+
+        // OVERHAUL TODO: probably won't do anything, user is not logged in yet
+        gui_update_->renderSettings(user_);
+
+        // See if user was logged in into app previously
+        UserData *user = new UserData();
+        err = DB()->LoadCurrentUser(user);
+        if (err != noError) {
+            delete user;
+            setUser(nullptr);
+            return noError == displayError(err);
+        }
+        if (!user->ID()) {
+            delete user;
+            setUser(nullptr);
+            return true;
+        }
+        setUser(user);
+
+        // Set since param to 0 to force full sync on app start
+        user->SetSince(0);
+        logger().debug("fullSyncOnAppStart");
+
+
+        gui_update_->reset();
+
+        if (production_) {
+            std::string update_channel("");
+            UpdateChannel(&update_channel);
+
+            analytics_.TrackChannel(db_->AnalyticsClientID(), update_channel);
+
+            // Track user os version
+            std::stringstream os_info;
+            os_info << Poco::Environment::osDisplayName()
+                    << "_" << Poco::Environment::osVersion()
+                    << "_" << Poco::Environment::osArchitecture();
+
+            analytics_.TrackOs(db_->AnalyticsClientID(), os_info.str());
+            analytics_.TrackOSDetails(db_->AnalyticsClientID());
+        }
+
+    } catch(const Poco::Exception& exc) {
+        return noError == displayError(exc.displayText());
+    } catch(const std::exception& ex) {
+        return noError == displayError(ex.what());
+    } catch(const std::string& ex) {
+        return noError == displayError(ex);
+    }
+    return true;
 }
 
 bool Context::login(const std::string &email, const std::string &password) {
-// TODO
+    try {
+        std::string json("");
+        error err = me(&client, email, password, &json, 0);
+        if (err != noError) {
+            if (!IsNetworkingError(err)) {
+                return displayError(err);
+            }
+            // Indicate we're offline
+            displayError(err);
+
+            std::stringstream ss;
+            ss << "Got networking error " << err
+               << " will attempt offline login";
+            logger().debug(ss.str());
+
+            return displayError(attemptOfflineLogin(email, password));
+        }
+
+        err = SetLoggedInUserFromJSON(json);
+        if (err != noError) {
+            return displayError(err);
+        }
+
+        err = pullWorkspacePreferences(&client);
+        if (err != noError) {
+            return displayError(err);
+        }
+
+        err = pullUserPreferences(&client);
+        if (err != noError) {
+            return displayError(err);
+        }
+
+        {
+            Poco::Mutex::ScopedLock lock(user_m_);
+            if (!user_) {
+                logger().error("cannot enable offline login, no user");
+                return noError;
+            }
+
+            err = user_->EnableOfflineLogin(password);
+            if (err != noError) {
+                return displayError(err);
+            }
+        }
+        overlay_visible_ = false;
+        return displayError(save(false));
+    } catch(const Poco::Exception& exc) {
+        return displayError(exc.displayText());
+    } catch(const std::exception& ex) {
+        return displayError(ex.what());
+    } catch(const std::string& ex) {
+        return displayError(ex);
+    }
 }
 
 bool Context::signup(const std::string &email, const std::string &password, uint64_t countryId) {
-// TODO
+    std::string json("");
+    // OVERHAUL TODO: no lambda
+    error err = [&]() {
+        if (email.empty()) {
+            return "Empty email";
+        }
+
+        if (password.empty()) {
+            return "Empty password";
+        }
+
+        try {
+            poco_check_ptr(user_data_json);
+            poco_check_ptr(toggl_client);
+
+            Json::Value user;
+            user["email"] = email;
+            user["password"] = password;
+            user["created_with"] = Formatter::EscapeJSONString(
+                HTTPSClient::Config.UserAgent());
+            user["tos_accepted"] = true;
+            user["country_id"] = Json::UInt64(country_id);
+
+            Json::Value ws;
+            ws["initial_pricing_plan"] = 0;
+            user["workspace"] = ws;
+
+            HTTPSRequest req;
+            req.host = urls::API();
+            req.relative_url = "/api/v9/signup";
+            req.payload = Json::StyledWriter().write(user);
+
+            HTTPSResponse resp = toggl_client->Post(req);
+            if (resp.err != noError) {
+                if (kBadRequestError == resp.err) {
+                    return resp.body;
+                }
+                return resp.err;
+            }
+
+            *user_data_json = resp.body;
+        } catch(const Poco::Exception& exc) {
+            return exc.displayText();
+        } catch(const std::exception& ex) {
+            return ex.what();
+        } catch(const std::string& ex) {
+            return ex;
+        }
+    } ();
+
+    if (err != noError) {
+        return displayError(err);
+    }
+
+    return Login(email, password);
 }
 
 bool Context::googleLogin(const std::string &accessToken) {
-// TODO
+    return login(accessToken, "google_access_token");
 }
 
 void Context::passwordForgot() {
@@ -109,7 +283,36 @@ void Context::openInBrowser() {
 }
 
 bool Context::acceptTos() {
-// TODO
+    std::string api_token = user()->APIToken();
+
+    if (api_token.empty()) {
+        return error("cannot pull user data without API token");
+    }
+
+    try {
+        HTTPSRequest req;
+        req.host = urls::API();
+        req.relative_url = "/api/v9/me/accept_tos";
+        req.basic_auth_username = api_token;
+        req.basic_auth_password = "api_token";
+
+        HTTPSResponse resp = https_client_->Post(req);
+        if (resp.err != noError) {
+            return displayError(resp.err);
+        }
+        overlay_visible_ = false;
+        OpenTimeEntryList();
+    } catch(const Poco::Exception& exc) {
+        displayError(kCannotConnectError);
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        displayError(kCannotConnectError);
+        return ex.what();
+    } catch(const std::string& ex) {
+        displayError(kCannotConnectError);
+        return ex;
+    }
+    return noError;
 }
 
 void Context::getSupport(int32_t type) {
@@ -125,7 +328,10 @@ void Context::searchHelpArticles(const std::string &keywords) {
 }
 
 void Context::viewTimeEntryList() {
-// TODO
+    logger().debug("OpenTimeEntryList");
+
+    gui_update_->OpenTimeEntryList(user());
+    gui_update_->renderTimeEntries(user());
 }
 
 void Context::edit(const std::string &guid, bool editRunningTimeEntry, const std::string &focusedFieldName) {
@@ -389,7 +595,42 @@ void Context::getProjectColors() {
 }
 
 void Context::getCountries() {
-// TODO
+    try {
+        // OVERHAUL TODO: no return value
+        // OVERHAUL TODO: this whole thing should be in the syncer probably
+        HTTPSRequest req;
+        req.host = urls::API();
+        req.relative_url = "/api/v9/countries";
+        HTTPSResponse resp = https_client_->Get(req);
+        if (resp.err != noError) {
+            return; // resp.err;
+        }
+        Json::Value root;
+        Json::Reader reader;
+
+        if (!reader.parse(resp.body, root)) {
+            return; // error("Error parsing countries response body");
+        }
+
+        std::vector<TogglCountryView> countries;
+
+        for (unsigned int i = root.size(); i > 0; i--) {
+            TogglCountryView *item = country_view_item_init(root[i - 1]);
+            countries.push_back(*item);
+        }
+
+        // update country selectbox
+        UI()->DisplayCountries(&countries);
+
+        //country_item_clear(first);
+    } catch(const Poco::Exception& exc) {
+        return; //exc.displayText();
+    } catch(const std::exception& ex) {
+        return; //ex.what();
+    } catch(const std::string& ex) {
+        return; //ex;
+    }
+    return; //noError;
 }
 
 const std::string &Context::getDefaultProjectName() {
@@ -421,11 +662,38 @@ const std::string &Context::getUserEmail() {
 }
 
 void Context::sync() {
-// TODO
+    logger().debug("Sync");
+
+    if (!user_) {
+        return;
+    }
+
+    // OVERHAUL TODO
+    /*
+     overlay_visible_ = false;
+
+     Poco::Int64 elapsed_seconds = Poco::Int64(time(nullptr)) - last_sync_started_;
+
+    // 2 seconds backoff to avoid too many sync requests
+    if (elapsed_seconds < kRequestThrottleSeconds) {
+        return;
+    }
+
+    last_sync_started_ = time(nullptr);
+
+    // Always sync asyncronously with syncerActivity
+    trigger_sync_ = true;
+    if (!syncer_.isRunning()) {
+        syncer_.start();
+    }
+    */
 }
 
 void Context::fullsync() {
-// TODO
+    if (user_) {
+        user_->SetSince(0);
+    }
+    Sync();
 }
 
 bool Context::timelineToggleRecording(bool recordTimeline) {
@@ -485,11 +753,15 @@ void Context::debug(const std::string &text) {
 }
 
 const std::string &Context::checkViewStructSize(int32_t timeEntryViewItemSize, int32_t autocompleteViewItemSize, int32_t viewItemSize, int32_t settingsSize, int32_t autotrackerViewItemSize) {
-// TODO
+    // TODO
+}
+
+Poco::Logger &Context::logger() const {
+    return Poco::Logger::get("context");
 }
 
 const std::string &Context::runScript(const std::string &script, int64_t *err) {
-// TODO
+    // TODO
 }
 
 int64_t Context::autotrackerAddRule(const std::string &term, uint64_t projectId, uint64_t taskId) {
@@ -568,3 +840,47 @@ void Context::trackEditSize(uint64_t width, uint64_t height) {
 // TODO
 }
 
+
+
+error Context::displayError(const error &err) {
+    if ((err.find(kUnauthorizedError) != std::string::npos)) {
+        if (user_) {
+            user_ = nullptr;
+        }
+    }
+    if (err.find(kUnsupportedAppError) != std::string::npos) {
+        urls::SetImATeapot(true);
+    } else {
+        urls::SetImATeapot(false);
+    }
+
+    if (user_ && (err.find(kRequestIsNotPossible) != std::string::npos
+                  || (err.find(kForbiddenError) != std::string::npos))) {
+
+        /* OVERHAUL TODO
+        TogglClient toggl_client(UI());
+
+        error err = pullWorkspaces(&toggl_client);
+        if (err != noError) {
+            // Check for missing WS error and
+            if (err.find(kMissingWS) != std::string::npos) {
+                overlay_visible_ = true;
+                UI()->DisplayWSError();
+                return noError;
+            }
+        }
+        */
+    }
+
+    return UI()->DisplayError(err);
+}
+
+
+UserData *Context::user() {
+    return user_;
+}
+
+
+void Context::setUser(UserData *user, bool logged_in) {
+
+}

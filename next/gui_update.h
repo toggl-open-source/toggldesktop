@@ -79,8 +79,8 @@ public:
     void renderWorkspaceSelect(UserData *user);
     void renderClientSelect(UserData *user);
     void renderTimerState(UserData *user);
-    void renderTimeEntries(UserData *user, const UIElements &what);
-    void renderSettings(UserData *user, const UIElements &what);
+    void renderTimeEntries(UserData *user, bool open_time_entry_list = false);
+    void renderSettings(UserData *user, bool open_settings = false);
     void renderUnsyncedItems(UserData *user);
     void renderAutotrackerRules(UserData *user);
 
@@ -107,4 +107,4 @@ private:
 
 } // namespace toggl
 
-#ifndef SRC_GUI_UPDATE_H_
+#endif SRC_GUI_UPDATE_H_

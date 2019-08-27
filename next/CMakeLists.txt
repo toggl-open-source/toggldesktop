@@ -24,6 +24,8 @@ set(LIBRARY_SOURCE_FILES
     views.cc
     user_data.cc
     gui_update.cc
+    push_activity.cc
+    pull_activity.cc
 
     event_queue.cc
 
