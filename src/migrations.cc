@@ -816,6 +816,14 @@ error Migrations::migrateTimeEntries() {
         return err;
     }
 
+    err = db_->Migrate(
+        "time_entries.unsynced",
+        "ALTER TABLE time_entries "
+        "ADD COLUMN unsynced INTEGER NOT NULL DEFAULT 0;");
+    if (err != noError) {
+        return err;
+    }
+
     return noError;
 }
 
