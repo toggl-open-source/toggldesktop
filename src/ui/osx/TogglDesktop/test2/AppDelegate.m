@@ -36,6 +36,7 @@
 #import "AppIconFactory.h"
 #import <MASShortcut/Shortcut.h>
 #import "Reachability.h"
+#import <SafariServices/SafariServices.h>
 
 @interface AppDelegate ()
 @property (nonatomic, strong) MainWindowController *mainWindowController;
@@ -103,6 +104,11 @@
 
 void *ctx;
 
+- (IBAction)safariExtOnTap:(id)sender {
+	[SFSafariApplication showPreferencesForExtensionWithIdentifier:@"com.toggl.toggldesktop.TogglDesktop.TogglButton" completionHandler:^(NSError *_Nullable error) {
+		 NSLog(@"%@", error);
+	 }];
+}
 
 - (void)applicationWillFinishLaunching:(NSNotification *)not
 {

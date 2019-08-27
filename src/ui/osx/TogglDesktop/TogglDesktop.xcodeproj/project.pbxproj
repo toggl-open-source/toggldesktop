@@ -152,6 +152,14 @@
 		BA6572A8224DFA6F00BA4C60 /* CurrentColorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6572A2224DFA6F00BA4C60 /* CurrentColorView.swift */; };
 		BA6572A9224DFA6F00BA4C60 /* ColorGraphicsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6572A3224DFA6F00BA4C60 /* ColorGraphicsView.swift */; };
 		BA6572AA224DFA6F00BA4C60 /* HSV.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6572A4224DFA6F00BA4C60 /* HSV.swift */; };
+		BA665A1C23156AC0009E2CEA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69FC17F417E6534400B96425 /* Cocoa.framework */; };
+		BA665A1F23156AC0009E2CEA /* SafariExtensionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA665A1E23156AC0009E2CEA /* SafariExtensionHandler.swift */; };
+		BA665A2123156AC0009E2CEA /* SafariExtensionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA665A2023156AC0009E2CEA /* SafariExtensionViewController.swift */; };
+		BA665A2423156AC0009E2CEA /* SafariExtensionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA665A2223156AC0009E2CEA /* SafariExtensionViewController.xib */; };
+		BA665A2723156AC0009E2CEA /* script.js in Resources */ = {isa = PBXBuildFile; fileRef = BA665A2623156AC0009E2CEA /* script.js */; };
+		BA665A2923156AC0009E2CEA /* ToolbarItemIcon.pdf in Resources */ = {isa = PBXBuildFile; fileRef = BA665A2823156AC0009E2CEA /* ToolbarItemIcon.pdf */; };
+		BA665A2D23156AC0009E2CEA /* TogglButton.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = BA665A1B23156AC0009E2CEA /* TogglButton.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		BA665A5123156B6D009E2CEA /* SafariServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA665A5023156B6D009E2CEA /* SafariServices.framework */; };
 		BA6E873521DDC1E2005E2451 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA6E86B621DDB331005E2451 /* Sparkle.framework */; };
 		BA6E873621DDC1E2005E2451 /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA6E86B621DDB331005E2451 /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BA6EB8402248CBE3003BB8EF /* ProjectStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6EB83F2248CBE3003BB8EF /* ProjectStorage.swift */; };
@@ -353,6 +361,13 @@
 			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
 			remoteInfo = "CrashReporter-MacOSX";
 		};
+		BA665A2B23156AC0009E2CEA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 69FC17E917E6534400B96425 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BA665A1A23156AC0009E2CEA;
+			remoteInfo = TogglButton;
+		};
 		BA6E86B521DDB331005E2451 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BA6E86A521DDB331005E2451 /* Sparkle.xcodeproj */;
@@ -505,6 +520,17 @@
 				74213490195C50B5007EF78B /* CrashReporter.framework in CopyFiles */,
 				BA6E873621DDC1E2005E2451 /* Sparkle.framework in CopyFiles */,
 			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BA665A4F23156AC0009E2CEA /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				BA665A2D23156AC0009E2CEA /* TogglButton.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -721,6 +747,15 @@
 		BA6572A2224DFA6F00BA4C60 /* CurrentColorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrentColorView.swift; sourceTree = "<group>"; };
 		BA6572A3224DFA6F00BA4C60 /* ColorGraphicsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorGraphicsView.swift; sourceTree = "<group>"; };
 		BA6572A4224DFA6F00BA4C60 /* HSV.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HSV.swift; sourceTree = "<group>"; };
+		BA665A1B23156AC0009E2CEA /* TogglButton.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TogglButton.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		BA665A1E23156AC0009E2CEA /* SafariExtensionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariExtensionHandler.swift; sourceTree = "<group>"; };
+		BA665A2023156AC0009E2CEA /* SafariExtensionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariExtensionViewController.swift; sourceTree = "<group>"; };
+		BA665A2323156AC0009E2CEA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/SafariExtensionViewController.xib; sourceTree = "<group>"; };
+		BA665A2523156AC0009E2CEA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BA665A2623156AC0009E2CEA /* script.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = script.js; sourceTree = "<group>"; };
+		BA665A2823156AC0009E2CEA /* ToolbarItemIcon.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = ToolbarItemIcon.pdf; sourceTree = "<group>"; };
+		BA665A2A23156AC0009E2CEA /* TogglButton.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TogglButton.entitlements; sourceTree = "<group>"; };
+		BA665A5023156B6D009E2CEA /* SafariServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SafariServices.framework; path = System/Library/Frameworks/SafariServices.framework; sourceTree = SDKROOT; };
 		BA6E86A521DDB331005E2451 /* Sparkle.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Sparkle.xcodeproj; path = ../../../../third_party/Sparkle/Sparkle.xcodeproj; sourceTree = "<group>"; };
 		BA6EB83F2248CBE3003BB8EF /* ProjectStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectStorage.swift; sourceTree = "<group>"; };
 		BA6EB8752249DB33003BB8EF /* VerticallyCenteredTextFieldCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerticallyCenteredTextFieldCell.swift; sourceTree = "<group>"; };
@@ -839,6 +874,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		BA665A1823156AC0009E2CEA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BA665A5123156B6D009E2CEA /* SafariServices.framework in Frameworks */,
+				BA665A1C23156AC0009E2CEA /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -890,6 +934,7 @@
 				BA1B7FA122E5D52F001333D9 /* Swift */,
 				BA0CEC4C21BE516F00F1BF01 /* Other */,
 				69FC17FA17E6534400B96425 /* ui */,
+				BA665A1D23156AC0009E2CEA /* TogglButton */,
 				69FC17F317E6534400B96425 /* Frameworks */,
 				69FC17F217E6534400B96425 /* Products */,
 				3C1E013E19D2DAE300DBF9A5 /* dsa_pub.pem */,
@@ -900,6 +945,7 @@
 			isa = PBXGroup;
 			children = (
 				69FC17F117E6534400B96425 /* TogglDesktop.app */,
+				BA665A1B23156AC0009E2CEA /* TogglButton.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -907,6 +953,7 @@
 		69FC17F317E6534400B96425 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				BA665A5023156B6D009E2CEA /* SafariServices.framework */,
 				BAD858CB228EAE7C00226C71 /* libz.tbd */,
 				BAD858C5228EAE3000226C71 /* libc++.tbd */,
 				74FD8CDF18A8EF8300F7DB80 /* TFDatePicker.framework */,
@@ -1336,6 +1383,20 @@
 			path = ColorWheel;
 			sourceTree = "<group>";
 		};
+		BA665A1D23156AC0009E2CEA /* TogglButton */ = {
+			isa = PBXGroup;
+			children = (
+				BA665A1E23156AC0009E2CEA /* SafariExtensionHandler.swift */,
+				BA665A2023156AC0009E2CEA /* SafariExtensionViewController.swift */,
+				BA665A2223156AC0009E2CEA /* SafariExtensionViewController.xib */,
+				BA665A2523156AC0009E2CEA /* Info.plist */,
+				BA665A2623156AC0009E2CEA /* script.js */,
+				BA665A2823156AC0009E2CEA /* ToolbarItemIcon.pdf */,
+				BA665A2A23156AC0009E2CEA /* TogglButton.entitlements */,
+			);
+			path = TogglButton;
+			sourceTree = "<group>";
+		};
 		BA6E86A621DDB331005E2451 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -1558,6 +1619,7 @@
 				74A50AA818434D90006F37BB /* CopyFiles */,
 				7407F1F41AA80466000380C4 /* Run Script (Fix dynamic library paths in Frameworks) */,
 				BA6406F121C8FC690074BC96 /* Run Formatter */,
+				BA665A4F23156AC0009E2CEA /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
@@ -1567,11 +1629,29 @@
 				BA6E873821DDC1E2005E2451 /* PBXTargetDependency */,
 				BA7DB6E621F9C77A0059239B /* PBXTargetDependency */,
 				BAD858CA228EAE6500226C71 /* PBXTargetDependency */,
+				BA665A2C23156AC0009E2CEA /* PBXTargetDependency */,
 			);
 			name = TogglDesktop;
 			productName = test2;
 			productReference = 69FC17F117E6534400B96425 /* TogglDesktop.app */;
 			productType = "com.apple.product-type.application";
+		};
+		BA665A1A23156AC0009E2CEA /* TogglButton */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BA665A4E23156AC0009E2CEA /* Build configuration list for PBXNativeTarget "TogglButton" */;
+			buildPhases = (
+				BA665A1723156AC0009E2CEA /* Sources */,
+				BA665A1823156AC0009E2CEA /* Frameworks */,
+				BA665A1923156AC0009E2CEA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TogglButton;
+			productName = TogglButton;
+			productReference = BA665A1B23156AC0009E2CEA /* TogglButton.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -1579,12 +1659,18 @@
 		69FC17E917E6534400B96425 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 1020;
 				LastUpgradeCheck = 1020;
 				ORGANIZATIONNAME = Alari;
 				TargetAttributes = {
 					69FC17F017E6534400B96425 = {
 						DevelopmentTeam = B227VTMZ94;
 						LastSwiftMigration = 1020;
+						ProvisioningStyle = Automatic;
+					};
+					BA665A1A23156AC0009E2CEA = {
+						CreatedOnToolsVersion = 10.2.1;
+						DevelopmentTeam = B227VTMZ94;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -1629,6 +1715,7 @@
 				69FC17F017E6534400B96425 /* TogglDesktop */,
 				74607C1C18EDE6D800571BA6 /* poco */,
 				74607C2018EDE70C00571BA6 /* openssl */,
+				BA665A1A23156AC0009E2CEA /* TogglButton */,
 			);
 		};
 /* End PBXProject section */
@@ -1892,6 +1979,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		BA665A1923156AC0009E2CEA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BA665A2923156AC0009E2CEA /* ToolbarItemIcon.pdf in Resources */,
+				BA665A2423156AC0009E2CEA /* SafariExtensionViewController.xib in Resources */,
+				BA665A2723156AC0009E2CEA /* script.js in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
@@ -2108,6 +2205,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		BA665A1723156AC0009E2CEA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BA665A2123156AC0009E2CEA /* SafariExtensionViewController.swift in Sources */,
+				BA665A1F23156AC0009E2CEA /* SafariExtensionHandler.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -2120,6 +2226,11 @@
 			isa = PBXTargetDependency;
 			name = "CrashReporter-MacOSX";
 			targetProxy = 749A3A7218D89F23000AD2DB /* PBXContainerItemProxy */;
+		};
+		BA665A2C23156AC0009E2CEA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BA665A1A23156AC0009E2CEA /* TogglButton */;
+			targetProxy = BA665A2B23156AC0009E2CEA /* PBXContainerItemProxy */;
 		};
 		BA6E873821DDC1E2005E2451 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -2172,6 +2283,14 @@
 				743E584E1A775BB300F17CB0 /* et */,
 			);
 			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		BA665A2223156AC0009E2CEA /* SafariExtensionViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BA665A2323156AC0009E2CEA /* Base */,
+			);
+			name = SafariExtensionViewController.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -2466,6 +2585,74 @@
 			};
 			name = Release;
 		};
+		BA665A2E23156AC0009E2CEA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = TogglButton/TogglButton.entitlements;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = B227VTMZ94;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = TogglButton/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @executable_path/../../../../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.toggl.toggldesktop.TogglDesktop.TogglButton;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		BA665A2F23156AC0009E2CEA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = TogglButton/TogglButton.entitlements;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = B227VTMZ94;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = TogglButton/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @executable_path/../../../../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.toggl.toggldesktop.TogglDesktop.TogglButton;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -2501,6 +2688,15 @@
 			buildConfigurations = (
 				74607C2218EDE70C00571BA6 /* Debug */,
 				74607C2318EDE70C00571BA6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BA665A4E23156AC0009E2CEA /* Build configuration list for PBXNativeTarget "TogglButton" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BA665A2E23156AC0009E2CEA /* Debug */,
+				BA665A2F23156AC0009E2CEA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

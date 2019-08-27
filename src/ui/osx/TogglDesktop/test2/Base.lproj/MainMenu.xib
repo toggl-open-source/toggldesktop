@@ -253,6 +253,12 @@
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="Help" systemMenu="help" id="491">
                         <items>
+                            <menuItem title="Safari Ext" id="dsc-8C-72l">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="safariExtOnTap:" target="494" id="Vln-WE-aDw"/>
+                                </connections>
+                            </menuItem>
                             <menuItem title="Toggl Desktop Help" keyEquivalent="?" id="492">
                                 <connections>
                                     <action selector="onHelpMenuItem:" target="494" id="Yuo-YB-F1l"/>
