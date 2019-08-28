@@ -1,6 +1,6 @@
 <style>
   a.link {
-    border: 1px solid #e2e2e2;
+    border: 1px solid #000;
     display: block;
     width: 180px;
     height: 60px;
@@ -10,8 +10,7 @@
   }
   table.linktable {
     border:none;
-    width:100%;
-    margin: 0 auto;
+    display: table;
   }
   table.linktable tr {
     border: none;
@@ -19,7 +18,12 @@
   }
   table.linktable td {
     border:none;
-    width: 30%;
+  }
+  table.linktable td .win-link {
+    margin-top: 10px;
+  }
+  table.linktable td .mac-link {
+    margin-top: 6px;
   }
   table.linktable p {
     width: 180px;
@@ -94,14 +98,14 @@ Toggl built and signed apps for all platforms
       <br/>
       <a class="link" href="https://toggl.github.io/toggldesktop/download/windows64-stable/">64bit</a>
       <br/>
-      <!--a class="link disabled" href='#'><img src='https://assets.windowsphone.com/85864462-9c82-451e-9355-a3d5f874397a/English_get-it-from-MS_InvariantCulture_Default.png' alt='Download Toggl Desktop on Microsoft Store' width="180"/></a-->
+      <a class="link" href='//www.microsoft.com/store/apps/9nk3rf9nbjnp?cid=storebadge&ocid=badge'><img class="win-link" src='https://user-images.githubusercontent.com/842229/63852913-13779600-c9a2-11e9-87bd-9898ece07148.png' alt='Download Toggl Desktop on Microsoft Store'/></a>
     </td>
     <td valign="top">
       <p>Mac</p>
       <br>
       <a class="link" href="https://toggl.github.io/toggldesktop/download/macos-stable/">64bit</a>
       <br>
-      <a href='https://itunes.apple.com/ee/app/toggl-desktop/id957734279?mt=12'><img width='180' alt='Download Toggl Desktop on the App Store' src='https://user-images.githubusercontent.com/842229/63749496-3d528f00-c8b4-11e9-8072-b40f629563c3.png'/></a>
+      <a class="link" href='https://itunes.apple.com/ee/app/toggl-desktop/id957734279?mt=12'><img class="mac-link" alt='Download Toggl Desktop on the App Store' src='https://user-images.githubusercontent.com/842229/63853927-9863af00-c9a4-11e9-8c5d-c00f0c7b7536.png'/></a>
       <br/>
       <br/>
     </td>
