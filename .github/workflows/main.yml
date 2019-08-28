@@ -19,6 +19,7 @@ jobs:
     - uses: actions/checkout@v1
     - name: Build on Linux + tarball
       run: |
+        sudo apt install devscripts
         dch -D unstable --package "toggldesktop" -v $version "General bug fixes and improvements" -u low -M
 
         
@@ -28,6 +29,7 @@ jobs:
     - uses: actions/checkout@v1
     - name: Build on Linux + tarball
       run: |
+        sudo apt install devscripts
         dch -D unstable --package "toggldesktop" -v $version "General bug fixes and improvements" -u low -M
 
   build-mac:
