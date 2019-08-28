@@ -72,12 +72,12 @@ for i in $PLUGINS; do
     echo "========"
     ldd $newpath/$file | grep -e libQt -e ssl | sed 's/.* => \(.*\)[(]0x.*/\1/'
     echo "========"
-    CHECK cp -Lrn $(ldd $newpath/$file | grep -e libQt -e ssl | sed 's/.* => \(.*\)[(]0x.*/\1/') lib
+    CHECK cp -vLrn $(ldd $newpath/$file | grep -e libQt -e ssl | sed 's/.* => \(.*\)[(]0x.*/\1/') lib
 done
 
 for i in $(ls lib/*.so); do
     for j in $(ldd $i | grep -e libQt | sed 's/.* => \(.*\)[(]0x.*/\1/'); do
-        CHECK cp -Lrn $j lib
+        CHECK cp -vLrn $j lib
     done
 done
 
