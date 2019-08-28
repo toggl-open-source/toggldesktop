@@ -19,7 +19,7 @@ jobs:
     - uses: actions/checkout@v1
     - name: Build on Linux + tarball
       run: |
-        sudo apt install devscripts cmake debhelper (>= 10) pkg-config qtbase5-dev qtwebengine5-dev libqt5x11extras5-dev qtbase5-private-dev libssl-dev libxss-dev libxmu-dev
+        sudo apt install devscripts cmake debhelper pkg-config qtbase5-dev qtwebengine5-dev libqt5x11extras5-dev qtbase5-private-dev libssl-dev libxss-dev libxmu-dev
         dch -D unstable --package "toggldesktop" -v 7.4.999 "General bug fixes and improvements" -u low -M
         debuild
 
@@ -30,7 +30,7 @@ jobs:
     - uses: actions/checkout@v1
     - name: Build on Linux + tarball
       run: |
-        sudo apt install devscripts cmake debhelper (>= 10) pkg-config qtbase5-dev qtwebengine5-dev libqt5x11extras5-dev qtbase5-private-dev libssl-dev libxss-dev libxmu-dev
+        sudo apt install devscripts cmake debhelper pkg-config qtbase5-dev qtwebengine5-dev libqt5x11extras5-dev qtbase5-private-dev libssl-dev libxss-dev libxmu-dev
         dch -D unstable --package "toggldesktop" -v 7.4.999 "General bug fixes and improvements" -u low -M
         debuild
 
