@@ -20,7 +20,7 @@ jobs:
     - uses: actions/checkout@v1
     - name: Build for Snapcraft
       run: |
-        docker run -v "$PWD":/build -w /build snapcore/snapcraft:stable snapcraft
+        docker run -v "$PWD":/build -w /build snapcore/snapcraft:latest snapcraft
 
   build-mac:
     runs-on: macOS-10.14
