@@ -14,7 +14,8 @@ jobs:
         bash ./src/ui/linux/package.sh
         
   build-snap:
-    image: snapcore/snapcraft
+    container:
+      image: snapcore/snapcraft
     steps:
     - uses: actions/checkout@v1
     - name: Build for Snapcraft
