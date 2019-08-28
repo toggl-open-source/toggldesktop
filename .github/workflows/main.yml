@@ -3,7 +3,7 @@ name: Linux Build
 on: [push]
 
 jobs:
-  build:
+  build-linux:
     runs-on: ubuntu-latest  
     steps:
     - uses: actions/checkout@v1
@@ -13,7 +13,7 @@ jobs:
         sudo apt install cmake pkg-config qtbase5-dev qtwebengine5-dev libqt5x11extras5-dev  qtbase5-private-dev libssl-dev libxss-dev libxmu-dev
         bash ./src/ui/linux/package.sh
 
-  build:
+  build-mac:
     runs-on: macOS-10.14
     steps:
     - uses: actions/checkout@v1
@@ -22,7 +22,7 @@ jobs:
         make deps
         make
         
-  build:
+  build-win32:
     runs-on: windows-2019
     steps:
     - uses: actions/checkout@v1
@@ -30,7 +30,7 @@ jobs:
       run: |
         MSBuild.exe src/ui/windows/TogglDesktop/TogglDesktop.sln /property:Configuration=Release /p:Platform="x86" /t:Clean,Build /restore
         
-  build:
+  build-win64:
     runs-on: windows-2019
     steps:
     - uses: actions/checkout@v1
