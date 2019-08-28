@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14490.70"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -31,7 +31,7 @@
                     <color key="fillColor" name="auto-complete-cell-hover"/>
                 </box>
                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ZvV-w8-dCM">
-                    <rect key="frame" x="13" y="10" width="293" height="18"/>
+                    <rect key="frame" x="13" y="10" width="64" height="18"/>
                     <buttonCell key="cell" type="check" title="Check" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="cwN-gd-eAk">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system" size="14"/>
@@ -40,17 +40,30 @@
                         <action selector="checkButtonOnChanged:" target="kdV-QX-CmW" id="hDy-fk-cpy"/>
                     </connections>
                 </button>
+                <button horizontalHuggingPriority="200" verticalHuggingPriority="200" horizontalCompressionResistancePriority="200" verticalCompressionResistancePriority="200" translatesAutoresizingMaskIntoConstraints="NO" id="8iR-5i-Bzq">
+                    <rect key="frame" x="75" y="3" width="229" height="32"/>
+                    <buttonCell key="cell" type="bevel" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="M7T-dF-EL4">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="btnOnTap:" target="kdV-QX-CmW" id="8eg-P8-ur5"/>
+                    </connections>
+                </button>
             </subviews>
             <constraints>
                 <constraint firstItem="ZvV-w8-dCM" firstAttribute="centerY" secondItem="kdV-QX-CmW" secondAttribute="centerY" id="14C-gc-qDZ"/>
                 <constraint firstItem="P4q-6R-6o7" firstAttribute="trailing" secondItem="Ws3-BI-x3S" secondAttribute="trailing" id="Fis-0Y-MuK"/>
+                <constraint firstItem="8iR-5i-Bzq" firstAttribute="top" secondItem="kdV-QX-CmW" secondAttribute="top" constant="3" id="Jtd-ZR-gny"/>
                 <constraint firstItem="P4q-6R-6o7" firstAttribute="top" secondItem="Ws3-BI-x3S" secondAttribute="top" id="LLM-Tx-xnm"/>
                 <constraint firstItem="P4q-6R-6o7" firstAttribute="bottom" secondItem="Ws3-BI-x3S" secondAttribute="bottom" id="PKF-6h-dTu"/>
                 <constraint firstAttribute="trailing" secondItem="Ws3-BI-x3S" secondAttribute="trailing" constant="5" id="Pbh-rC-b5o"/>
+                <constraint firstAttribute="bottom" secondItem="8iR-5i-Bzq" secondAttribute="bottom" constant="3" id="Tpr-G9-DAF"/>
                 <constraint firstItem="P4q-6R-6o7" firstAttribute="leading" secondItem="Ws3-BI-x3S" secondAttribute="leading" id="bvN-Gi-jcg"/>
                 <constraint firstItem="Ws3-BI-x3S" firstAttribute="top" secondItem="kdV-QX-CmW" secondAttribute="top" constant="2" id="dKj-KO-ZfI"/>
                 <constraint firstAttribute="bottom" secondItem="Ws3-BI-x3S" secondAttribute="bottom" constant="2" id="fu0-8h-Pbb"/>
-                <constraint firstAttribute="trailing" secondItem="ZvV-w8-dCM" secondAttribute="trailing" constant="15" id="q9B-jY-sUX"/>
+                <constraint firstItem="8iR-5i-Bzq" firstAttribute="leading" secondItem="ZvV-w8-dCM" secondAttribute="trailing" id="kdU-CU-xNJ"/>
+                <constraint firstAttribute="trailing" secondItem="8iR-5i-Bzq" secondAttribute="trailing" constant="15" id="pwT-4j-Zl8"/>
                 <constraint firstItem="Ws3-BI-x3S" firstAttribute="leading" secondItem="kdV-QX-CmW" secondAttribute="leading" constant="5" id="vbw-jh-shF"/>
                 <constraint firstItem="ZvV-w8-dCM" firstAttribute="leading" secondItem="kdV-QX-CmW" secondAttribute="leading" constant="15" id="zEd-Vw-1OT"/>
             </constraints>

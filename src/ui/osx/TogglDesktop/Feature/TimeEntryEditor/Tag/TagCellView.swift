@@ -88,6 +88,12 @@ final class TagCellView: NSTableCellView {
         delegate?.tagSelectionStateOnChange(with: tagItem, isSelected: isSelected)
     }
 
+    @IBAction func btnOnTap(_ sender: Any) {
+        let newState: NSControl.StateValue = checkButton.state == .on ? .off : .on
+        checkButton.state = newState
+        checkButtonOnChanged(self)
+    }
+
     override func mouseExited(with event: NSEvent) {
         super.mouseExited(with: event)
         NSCursor.arrow.set()

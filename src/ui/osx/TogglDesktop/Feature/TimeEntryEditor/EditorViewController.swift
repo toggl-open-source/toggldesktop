@@ -527,6 +527,7 @@ extension EditorViewController: AutoCompleteTextFieldDelegate {
 
             // Focus on tag textfield agains, so user can continue typying
             sender.window?.makeFirstResponder(tagTextField)
+            tagTextField.resetText()
         }
     }
 
@@ -600,6 +601,7 @@ extension EditorViewController: TagDataSourceDelegate {
     func tagSelectionChanged(with selectedTags: [Tag]) {
         let tags = selectedTags.toNames()
         DesktopLibraryBridge.shared().updateTimeEntry(withTags: tags, guid: timeEntry.guid)
+        tagTextField.resetText()
     }
 }
 
