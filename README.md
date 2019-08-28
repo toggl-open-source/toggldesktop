@@ -83,7 +83,8 @@
 </tr>
 </table>
 
-Screenshot
+<img src="https://user-images.githubusercontent.com/842229/63856838-3a869580-c9ab-11e9-9e36-7db23059ce29.png"
+         alt="Toggl Desktop apps">
 
 ## Download
 
