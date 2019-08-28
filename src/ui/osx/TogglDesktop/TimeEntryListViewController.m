@@ -26,7 +26,6 @@ static NSString *kFrameKey = @"frame";
 @property (weak) IBOutlet NSBox *emptyViewContainerView;
 
 @property (nonatomic, strong) TimeEntryDatasource *dataSource;
-@property (nonatomic, strong) TimerEditViewController *timerEditViewController;
 @property (nonatomic, assign) NSInteger defaultPopupHeight;
 @property (nonatomic, assign) NSInteger defaultPopupWidth;
 @property (nonatomic, assign) NSInteger addedHeight;

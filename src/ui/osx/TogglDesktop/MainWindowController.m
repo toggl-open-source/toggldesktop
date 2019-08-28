@@ -16,6 +16,7 @@
 #import "DisplayCommand.h"
 #import "TrackingService.h"
 #import "TogglDesktop-Swift.h"
+#import "TimerEditViewController.h"
 
 @interface MainWindowController ()
 @property (weak) IBOutlet NSView *contentView;
@@ -85,6 +86,7 @@ extern void *ctx;
 
 	// Error View
 	[self initErrorView];
+	[self setInitialWindowSizeIfNeed];
 }
 
 - (void)initErrorView {
@@ -267,6 +269,19 @@ extern void *ctx;
 		case WindowModeDefault :
 			[self.window setLevel:NSNormalWindowLevel];
 			break;
+	}
+}
+
+- (void)setInitialWindowSizeIfNeed
+{
+	if (self.contentView == nil || self.timeEntryListViewController.timerEditViewController == nil)
+	{
+		return;
+	}
+
+	if (self.contentView.frame.size.height - 2 <= self.timeEntryListViewController.timerEditViewController.view.frame.size.height)
+	{
+		[self.window setContentSize:CGSizeMake(400, 600)];
 	}
 }
 

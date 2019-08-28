@@ -17,16 +17,16 @@
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <window title="Toggl Desktop" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" frameAutosaveName="MainWindow" animationBehavior="default" titlebarAppearsTransparent="YES" titleVisibility="hidden" id="1">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES" fullSizeContentView="YES"/>
-            <rect key="contentRect" x="196" y="240" width="300" height="398"/>
+            <rect key="contentRect" x="196" y="240" width="300" height="400"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
             <value key="minSize" type="size" width="240" height="20"/>
             <value key="maxSize" type="size" width="2500" height="2500"/>
             <view key="contentView" id="2">
-                <rect key="frame" x="0.0" y="0.0" width="300" height="398"/>
+                <rect key="frame" x="0.0" y="0.0" width="300" height="400"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <customView translatesAutoresizingMaskIntoConstraints="NO" id="av5-A6-9S5" userLabel="ContentView">
-                        <rect key="frame" x="0.0" y="0.0" width="300" height="398"/>
+                        <rect key="frame" x="0.0" y="0.0" width="300" height="400"/>
                     </customView>
                 </subviews>
                 <constraints>
