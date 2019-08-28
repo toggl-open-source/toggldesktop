@@ -50,7 +50,7 @@ corelib=$(ldd bin/TogglDesktop | grep -e libQt5Core  | sed 's/.* => \(.*\)[(]0x.
 echo "corelib: " $corelib
 libdir=$(dirname "$corelib")
 echo "libdir: " $libdir
-qmake=$(ls $libdir/../bin/{qmake,qmake-qt5} 2>/dev/null)
+qmake=$(ls $libdir/../bin/{qmake,qmake-qt5} $libdir/../../bin/{qmake,qmake-qt5} 2>/dev/null)
 echo "qmake: " $qmake
 
 CHECK cp -Lrn $(ldd bin/TogglDesktop | grep -e libQt -e ssl -e libicu | sed 's/.* => \(.*\)[(]0x.*/\1/') lib
