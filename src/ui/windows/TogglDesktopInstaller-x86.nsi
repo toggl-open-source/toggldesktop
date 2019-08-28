@@ -138,21 +138,14 @@
 
 Section
 
+  SetOutPath "$INSTDIR"
+
   ;Check if Old version of the app is still running and close it
-  StrCpy $0 "TogglDesktop.exe"
-  DetailPrint "Searching for processes called '$0'"
-  KillProc::FindProcesses
-  StrCmp $1 "-1" wooops
-  DetailPrint "-> Found $0 Toggl Desktop processes"
-
-  StrCmp $0 "0" completed
-
-  StrCpy $0 "TogglDesktop.exe"
-  DetailPrint "Closing all old '$0' processes"
-  KillProc::KillProcesses
-  Sleep 1500
-  StrCmp $1 "-1" wooops
-  DetailPrint "-> Killed $0 processes, failed to kill $1 processes"
+  DetailPrint "Closing all old TogglDesktop processes"
+  File "NSIS_plugins\KillProc.exe"
+  nsExec::Exec "$INSTDIR\KillProc.exe TogglDesktop"
+  Delete "$INSTDIR\KillProc.exe"
+  StrCmp $0 "-1" wooops
 
   Goto completed
 
@@ -168,9 +161,6 @@ Section
 
   ;Delete the old Bugsnag file on reboot
   Delete /REBOOTOK $INSTDIR\Bugsnag.1.2.dll
-
-
-  SetOutPath "$INSTDIR"
 
   ;ADD YOUR OWN FILES HERE...
   File "${redist}\concrt140.dll"
