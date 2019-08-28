@@ -16,7 +16,7 @@ jobs:
   build-snap:
     runs-on: ubuntu-latest  
     steps:
-    - uses: snapcore/snapcraft
+    - uses: snapcore/snapcraft@latest
     - uses: actions/checkout@v1
     - name: Build for Snapcraft
       run: |
