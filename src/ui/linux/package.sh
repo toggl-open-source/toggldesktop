@@ -67,7 +67,7 @@ for i in $PLUGINS; do
     file=$(basename $i)
     CHECK mkdir -p $newpath
     CHECK cp -Lrn $plugindir/$i $newpath
-    CHECK patchelf --set-rpath '\$ORIGIN/../../../' $newpath/$file >> ../patchelf.log
+    CHECK patchelf --set-rpath '\$ORIGIN/../../../' $newpath/$file
     CHECK cp -Lrn $(ldd $newpath/$file | grep -e libQt -e ssl | sed 's/.* => \(.*\)[(]0x.*/\1/') lib
 done
 
@@ -77,11 +77,11 @@ for i in $(ls lib/*.so); do
     done
 done
 
-CHECK patchelf --set-rpath '\$ORIGIN/../lib/' bin/TogglDesktop >> ../patchelf.log
-CHECK patchelf --set-rpath '\$ORIGIN/../lib/' bin/QtWebEngineProcess >> ../patchelf.log
+CHECK patchelf --set-rpath '\$ORIGIN/../lib/' bin/TogglDesktop
+CHECK patchelf --set-rpath '\$ORIGIN/../lib/' bin/QtWebEngineProcess
 
 for i in $(ls lib/*.so); do
-    CHECK patchelf --set-rpath '\$ORIGIN' $i >> ../patchelf.log
+    CHECK patchelf --set-rpath '\$ORIGIN' $i
 done
 
 CHECK mkdir -p lib/qt5/translations lib/qt5/resources
@@ -100,7 +100,7 @@ EOF
 
 echo "Stripping" >&2
 for i in bin/QtWebEngineProcess $(find . -name \*.so); do 
-    strip --strip-unneeded $i; 2>/dev/null >/dev/null
+    strip --strip-unneeded $i;
 done
 
 echo "Packaging" >&2
