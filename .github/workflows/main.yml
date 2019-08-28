@@ -30,7 +30,10 @@ jobs:
     - uses: actions/checkout@v1
     - name: Build on Windows x86
       run: |
-         "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe" src/ui/windows/TogglDesktop/TogglDesktop.sln /property:Configuration=Release /p:Platform="x86" /t:Clean,Build /restore
+        choco install nsis -y
+        "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe" src/ui/windows/TogglDesktop/TogglDesktop.sln /property:Configuration=Release /p:Platform="x86" /t:Clean,Build /restore
+	      cd src/ui/windows/
+        makensis TogglDesktopInstaller-x86.nsi
         
   build-win64:
     runs-on: windows-2019
@@ -38,4 +41,7 @@ jobs:
     - uses: actions/checkout@v1
     - name: Build on Windows x64
       run: |
+        choco install nsis -y
         "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe" src/ui/windows/TogglDesktop/TogglDesktop.sln /property:Configuration=Release /p:Platform="x64" /t:Clean,Build /restore
+	      cd src/ui/windows/
+        makensis TogglDesktopInstaller-x64.nsi
