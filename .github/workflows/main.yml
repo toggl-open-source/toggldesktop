@@ -19,6 +19,8 @@ jobs:
     - uses: actions/checkout@v1
     - name: Build on macOS
       run: |
+        sed -i.bak '/B227VTMZ94/d' src/lib/osx/TogglDesktopLibrary.xcodeproj/project.pbxproj
+        sed -i.bak '/B227VTMZ94/d' src/ui/osx/TogglDesktop/TogglDesktop.xcodeproj/project.pbxproj
         #make deps
         make
         
