@@ -20,7 +20,8 @@ jobs:
     - name: Build on Linux + tarball
       run: |
         sudo apt install devscripts
-        dch -D unstable --package "toggldesktop" -v $version "General bug fixes and improvements" -u low -M
+        dch -D unstable --package "toggldesktop" -v 7.4.999 "General bug fixes and improvements" -u low -M
+        debuild
 
         
   build-ubuntu1804:
@@ -30,7 +31,8 @@ jobs:
     - name: Build on Linux + tarball
       run: |
         sudo apt install devscripts
-        dch -D unstable --package "toggldesktop" -v $version "General bug fixes and improvements" -u low -M
+        dch -D unstable --package "toggldesktop" -v 7.4.999 "General bug fixes and improvements" -u low -M
+        debuild
 
   build-mac:
     runs-on: macOS-10.14
