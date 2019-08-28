@@ -19,8 +19,10 @@ jobs:
     - uses: actions/checkout@v1
     - name: Build on Linux + tarball
       run: |
+        sudo add-apt-repository ppa:nextcloud-devs/client
         sudo apt install devscripts cmake debhelper pkg-config qtbase5-dev qtwebengine5-dev libqt5x11extras5-dev qtbase5-private-dev libssl-dev libxss-dev libxmu-dev
         dch -D unstable --package "toggldesktop" -v 7.4.999 "General bug fixes and improvements" -u low -M
+        rm Makefile
         debuild
 
         
@@ -32,6 +34,7 @@ jobs:
       run: |
         sudo apt install devscripts cmake debhelper pkg-config qtbase5-dev qtwebengine5-dev libqt5x11extras5-dev qtbase5-private-dev libssl-dev libxss-dev libxmu-dev
         dch -D unstable --package "toggldesktop" -v 7.4.999 "General bug fixes and improvements" -u low -M
+        rm Makefile
         debuild
 
   build-mac:
