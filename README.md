@@ -95,16 +95,18 @@ Toggl built and signed apps for all platforms
     <td valign="top">
       <p>Windows</p>
       <br/>
-      <a class="link" href="https://toggl.github.io/toggldesktop/download/windows-stable/">32bit</a>
+      <a class="link" href="https://toggl.github.io/toggldesktop/download/windows-stable/">32bit installer</a>
       <br/>
-      <a class="link" href="https://toggl.github.io/toggldesktop/download/windows64-stable/">64bit</a>
+      <a class="link" href="https://toggl.github.io/toggldesktop/download/windows64-stable/">64bit installer</a>
+      <br/>
+      <a class="link" href="https://chocolatey.org/packages/toggl">Chocolatey</a>
       <br/>
       <a class="link" href='//www.microsoft.com/store/apps/9nk3rf9nbjnp?cid=storebadge&ocid=badge'><img class="win-link" src='https://user-images.githubusercontent.com/842229/63852913-13779600-c9a2-11e9-87bd-9898ece07148.png' alt='Download Toggl Desktop on Microsoft Store'/></a>
     </td>
     <td valign="top">
       <p>Mac</p>
       <br>
-      <a class="link" href="https://toggl.github.io/toggldesktop/download/macos-stable/">64bit</a>
+      <a class="link" href="https://toggl.github.io/toggldesktop/download/macos-stable/">64bit dmg</a>
       <br>
       <a class="link" href='https://itunes.apple.com/ee/app/toggl-desktop/id957734279?mt=12'><img class="mac-link" alt='Download Toggl Desktop on the App Store' src='https://user-images.githubusercontent.com/842229/63853927-9863af00-c9a4-11e9-8c5d-c00f0c7b7536.png'/></a>
       <br/>
