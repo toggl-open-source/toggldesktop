@@ -19,7 +19,7 @@ jobs:
     - uses: actions/checkout@v1
     - name: Build for Snapcraft
       run: |
-        sudo snap install snapcraft
+        sudo snap install --classic snapcraft
         snapcraft
 
   build-mac:
