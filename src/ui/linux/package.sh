@@ -19,8 +19,7 @@ function CHECK() {
     if eval $@ 2>> $errorlog ; then
         echo "OK" >&2
     else
-        echo "Build failed, see $errorlog for details." >&2
-        exit 1
+        echo "There was an error running $@"
     fi
     echo "" >> $errorlog
 }
