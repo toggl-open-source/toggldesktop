@@ -86,6 +86,7 @@
 #define kDatabaseDiskMalformed "The database disk image is malformed"
 #define kMissingWS "You no longer have access to your last workspace"
 #define kOutOfDatePleaseUpgrade "Your version of Toggl Desktop is out of date, please upgrade!"
+#define kThisEntryCantBeSavedPleaseAdd "This entry can't be saved - please add"
 
 #define kModelAutotrackerRule "autotracker_rule"
 #define kModelClient "client"
