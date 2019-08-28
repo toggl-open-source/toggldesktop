@@ -13,7 +13,7 @@
   ; Call makensis again against current file, defining INNER.  This writes an installer for us which, when
   ; it is invoked, will just write the uninstaller to some location, and then exit.
  
-  !execute 'makensis.exe /DINNER "${__FILE__}"' = 0
+  !execute 'makensis /DINNER "${__FILE__}"' = 0
  
   ; So now run that installer we just created as %TEMP%\tempinstaller.exe.  Since it
   ; calls quit the return value isn't zero.
