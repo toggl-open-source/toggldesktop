@@ -68,6 +68,10 @@ for i in $PLUGINS; do
     CHECK mkdir -p $newpath
     CHECK cp -Lrn $plugindir/$i $newpath
     CHECK patchelf --set-rpath '\$ORIGIN/../../../' $newpath/$file
+    ldd $newpath/$file | grep -e libQt -e ssl
+    echo "========"
+    ldd $newpath/$file | grep -e libQt -e ssl | sed 's/.* => \(.*\)[(]0x.*/\1/'
+    echo "========"
     CHECK cp -Lrn $(ldd $newpath/$file | grep -e libQt -e ssl | sed 's/.* => \(.*\)[(]0x.*/\1/') lib
 done
 
