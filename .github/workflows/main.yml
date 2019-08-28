@@ -1,6 +1,6 @@
 name: Build
 
-on: [push]
+on: [push,release]
 
 jobs:
   build-linux:
@@ -59,6 +59,7 @@ jobs:
         cd src/ui/windows/
         makensis TogglDesktopInstaller-x86.
     - name: Upload
+      if: github.event_name == 'release' 
       uses: skx/github-action-publish-binaries@master
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -76,6 +77,7 @@ jobs:
         cd src/ui/windows/
         makensis TogglDesktopInstaller-x64.nsi
     - name: Upload
+      if: github.event_name == 'release' 
       uses: skx/github-action-publish-binaries@master
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
