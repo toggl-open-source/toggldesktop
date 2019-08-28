@@ -45,9 +45,13 @@ if [ ! -z "$CMAKE_PREFIX_PATH" ]; then
     export LD_LIBRARY_PATH="$CMAKE_PREFIX_PATH/../"
 fi
 
+ldd bin/TogglDesktop
 corelib=$(ldd bin/TogglDesktop | grep -e libQt5Core  | sed 's/.* => \(.*\)[(]0x.*/\1/')
+echo "corelib: " $corelib
 libdir=$(dirname "$corelib")
+echo "libdir: " $libdir
 qmake=$(ls $libdir/../bin/{qmake,qmake-qt5} 2>/dev/null)
+echo "qmake: " $qmake
 
 CHECK cp -Lrn $(ldd bin/TogglDesktop | grep -e libQt -e ssl -e libicu | sed 's/.* => \(.*\)[(]0x.*/\1/') lib
 CHECK ls "$qmake" >/dev/null
