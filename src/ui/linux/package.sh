@@ -62,6 +62,7 @@ translationdir=$($qmake -query QT_INSTALL_TRANSLATIONS)
 datadir=$($qmake -query QT_INSTALL_DATA)
 
 CHECK cp "$libexecdir/QtWebEngineProcess" bin
+mkdir -p lib
 for i in $PLUGINS; do
     newpath=lib/qt5/plugins/$(dirname $i)/
     file=$(basename $i)
