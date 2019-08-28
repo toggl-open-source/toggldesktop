@@ -57,7 +57,13 @@ jobs:
         choco install nsis -y
         "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe" src/ui/windows/TogglDesktop/TogglDesktop.sln /property:Configuration=Release /p:Platform="x86" /t:Clean,Build /restore
         cd src/ui/windows/
-        makensis TogglDesktopInstaller-x86.nsi
+        makensis TogglDesktopInstaller-x86.
+    - name: Upload
+      uses: skx/github-action-publish-binaries@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        args: 'src/ui/windows/TogglDesktopInstaller.exe'
         
   build-win64:
     runs-on: windows-2019
@@ -69,3 +75,9 @@ jobs:
         "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe" src/ui/windows/TogglDesktop/TogglDesktop.sln /property:Configuration=Release /p:Platform="x64" /t:Clean,Build /restore
         cd src/ui/windows/
         makensis TogglDesktopInstaller-x64.nsi
+    - name: Upload
+      uses: skx/github-action-publish-binaries@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        args: 'src/ui/windows/TogglDesktopInstaller-x64.exe'
