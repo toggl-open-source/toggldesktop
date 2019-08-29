@@ -102,7 +102,10 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        args: 'src/ui/windows/TogglDesktopInstaller.exe'
+        args: 'src/ui/windows/TogglDesktopInstaller.exe
+    - name: Upload to GitHub
+      run: |
+        ./upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} owner=MartinBriza repo=toggldesktop tag=${{ release.name }} filename="src/ui/windows/TogglDesktopInstaller.exe"
         
   windows-64bit:
     runs-on: windows-2019
@@ -123,3 +126,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         args: 'src/ui/windows/TogglDesktopInstaller-x64.exe'
+    - name: Upload to GitHub
+      run: |
+        ./upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} owner=MartinBriza repo=toggldesktop tag=${{ release.name }} filename="src/ui/windows/TogglDesktopInstaller-x64.exe"
