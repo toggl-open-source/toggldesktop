@@ -1,48 +1,3 @@
-<style>
-  a.link {
-    border: 1px solid #000;
-    display: block;
-    width: 180px;
-    height: 60px;
-    border-radius: 9px;
-    line-height: 60px;
-    vertical-align: middle;
-  }
-  table.linktable {
-    border:none;
-    display: table;
-  }
-  table.linktable tr {
-    border: none;
-    background-color: #fff!important;
-  }
-  table.linktable td {
-    border:none;
-  }
-  table.linktable td .win-link {
-    margin-top: 10px;
-  }
-  table.linktable td .mac-link {
-    margin-top: 6px;
-  }
-  table.linktable p {
-    width: 180px;
-    position: relative;
-    bottom: 0;
-  }
-  .disabled:before {
-    content: 'Coming soon';
-    background-color: #9a9797c7;
-    color: white;
-    position: absolute;
-    height: 60px;
-    text-align: center;
-    vertical-align: bottom;
-    line-height: 60px;
-    width: 180px;
-  }
-</style>
-
 <h1 align="center">
   <a href="https://toggl.com"><img src="https://toggl.com/site/images/media-toolkit/logo_02-644bd26148b73c19d9c91e5baecd8e31.jpg" alt="Toggl" width="200"></a>
 </h1>
@@ -90,32 +45,33 @@
 
 Toggl built and signed apps for all platforms
 
-<table class="linktable">
-  <tr align="center">
-    <td valign="top">
-      <p>Windows</p>
-      <br/>
-      <a class="link" href="https://toggl.github.io/toggldesktop/download/windows-stable/">32bit installer</a>
-      <br/>
-      <a class="link" href="https://toggl.github.io/toggldesktop/download/windows64-stable/">64bit installer</a>
-      <br/>
-      <a class="link" href="https://chocolatey.org/packages/toggl">Chocolatey</a>
-      <br/>
-      <a class="link" href='//www.microsoft.com/store/apps/9nk3rf9nbjnp?cid=storebadge&ocid=badge'><img class="win-link" src='https://user-images.githubusercontent.com/842229/63852913-13779600-c9a2-11e9-87bd-9898ece07148.png' alt='Download Toggl Desktop on Microsoft Store'/></a>
-    </td>
-    <td valign="top">
+<table style="border:none;display: table;">
+  <tr align="center" style="border: none; background-color: #fff!important;">
+    <td valign="top" style="border:none;">
       <p>Mac</p>
       <br>
-      <a class="link" href="https://toggl.github.io/toggldesktop/download/macos-stable/">64bit dmg</a>
+      <a style="border: 1px solid #000;display: block;width: 180px;height: 60px;border-radius: 9px;line-height: 60px;vertical-align: middle;" href="https://toggl.github.io/toggldesktop/download/macos-stable/">64bit dmg</a>
       <br>
-      <a class="link" href='https://itunes.apple.com/ee/app/toggl-desktop/id957734279?mt=12'><img class="mac-link" alt='Download Toggl Desktop on the App Store' src='https://user-images.githubusercontent.com/842229/63853927-9863af00-c9a4-11e9-8c5d-c00f0c7b7536.png'/></a>
+      <a style="border: 1px solid #000;display: block;width: 180px;height: 60px;border-radius: 9px;line-height: 60px;vertical-align: middle;" href='https://itunes.apple.com/ee/app/toggl-desktop/id957734279?mt=12'>
+        <img style="margin-top: 6px;" alt='Download Toggl Desktop on the App Store' src='https://user-images.githubusercontent.com/842229/63853927-9863af00-c9a4-11e9-8c5d-c00f0c7b7536.png'/></a>
       <br/>
       <br/>
     </td>
-    <td valign="top">
+    <td valign="top" style="border:none;">
+      <p>Windows</p>
+      <br/>
+      <a style="border: 1px solid #000;display: block;width: 180px;height: 60px;border-radius: 9px;line-height: 60px;vertical-align: middle;" href="https://toggl.github.io/toggldesktop/download/windows-stable/">32bit installer</a>
+      <br/>
+      <a style="border: 1px solid #000;display: block;width: 180px;height: 60px;border-radius: 9px;line-height: 60px;vertical-align: middle;" href="https://toggl.github.io/toggldesktop/download/windows64-stable/">64bit installer</a>
+      <br/>
+      <a style="border: 1px solid #000;display: block;width: 180px;height: 60px;border-radius: 9px;line-height: 60px;vertical-align: middle;" href="https://chocolatey.org/packages/toggl">Chocolatey</a>
+      <br/>
+      <a style="border: 1px solid #000;display: block;width: 180px;height: 60px;border-radius: 9px;line-height: 60px;vertical-align: middle;" href='//www.microsoft.com/store/apps/9nk3rf9nbjnp?cid=storebadge&ocid=badge'><img style="margin-top: 10px;" src='https://user-images.githubusercontent.com/842229/63852913-13779600-c9a2-11e9-87bd-9898ece07148.png' alt='Download Toggl Desktop on Microsoft Store'/></a>
+    </td>
+    <td valign="top" style="border:none;">
       <p>Linux</p>
       <br>
-      <a class="link" href="https://toggl.github.io/toggldesktop/download/linux_tar.gz-stable//">Tarball</a>
+      <a style="border: 1px solid #000;display: block;width: 180px;height: 60px;border-radius: 9px;line-height: 60px;vertical-align: middle;" href="https://toggl.github.io/toggldesktop/download/linux_tar.gz-stable//">Tarball</a>
       <br>
       <a href='https://flathub.org/apps/details/com.toggl.TogglDesktop'><img width='180' alt='Download Toggl Desktop on Flathub' src='https://flathub.org/assets/badges/flathub-badge-i-en.svg'/></a>
       <br>
@@ -123,22 +79,22 @@ Toggl built and signed apps for all platforms
       <!--a href='#' class="disabled"><img width='180' alt='Download Toggl Desktop on Snapcraft' src='https://raw.githubusercontent.com/snapcore/snap-store-badges/master/EN/%5BEN%5D-snap-store-white%402x.png'/></a-->
     </td>
   </tr>
-  <tr align="center">
-    <td valign="top">
-      <p style="font-size:12px">
+  <tr align="center" style="border: none; background-color: #fff!important;">
+    <td valign="top" style="border:none;">
+      <p style="font-size:12px;width: 180px;position: relative;bottom: 0;">
+        Officially macOS 10.11 and newer stable macOS versions are supported.
+      </p>
+    </td>
+    <td valign="top" style="border:none;">
+      <p style="font-size:12px;width: 180px;position: relative;bottom: 0;">
         App has been tested on Windows 7, 8, 8.1 and 10
         </br>
         </br>
         <i>Toggl Desktop Windows app has not been tested on Surface type touchscreen environments.</i>
       </p>
     </td>
-    <td valign="top">
-      <p style="font-size:12px">
-        Officially macOS 10.11 and newer stable macOS versions are supported.
-      </p>
-    </td>
-    <td valign="top">
-      <p style="font-size:12px">
+    <td valign="top" style="border:none;">
+      <p style="font-size:12px;width: 180px;position: relative;bottom: 0;">
         Only 64bit is supported
       </p>
     </td>
