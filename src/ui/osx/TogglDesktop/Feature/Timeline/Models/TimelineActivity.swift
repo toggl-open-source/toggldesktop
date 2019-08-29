@@ -15,15 +15,17 @@ final class TimelineEvent {
     let title: String
     let fileName: String
     let duration: TimeInterval
+    let durationStr: String
     let isHeader: Bool
     let subEvents: [TimelineEvent]
 
     // MARK: Variables
 
-    init(title: String, fileName: String, duration: TimeInterval, isHeader: Bool, subEvents: [TimelineEvent]) {
+    init(title: String, fileName: String, duration: TimeInterval, durationStr: String, isHeader: Bool, subEvents: [TimelineEvent]) {
         self.title = title
         self.fileName = fileName
         self.duration = duration
+        self.durationStr = durationStr
         self.isHeader = isHeader
         self.subEvents = subEvents
     }
@@ -40,6 +42,7 @@ final class TimelineActivity {
     let ended: TimeInterval
     let duration: TimeInterval
     let startTimeStr: String
+    let endTimeStr: String
     let events: [TimelineEvent]
     var isSmall = false
     lazy var color: NSColor = {
@@ -49,10 +52,11 @@ final class TimelineActivity {
 
     // MARK: Init
 
-    init(started: TimeInterval, duration: TimeInterval, startTimeStr: String, events: [TimelineEvent]) {
+    init(started: TimeInterval, duration: TimeInterval, startTimeStr: String, endTimeStr: String, events: [TimelineEvent]) {
         self.started = started
         self.duration = duration
         self.startTimeStr = startTimeStr
+        self.endTimeStr = endTimeStr
         self.events = events
         self.ended = started + duration
     }

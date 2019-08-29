@@ -513,7 +513,7 @@ void GUI::DisplayTimeline(
 
         // Create new chunk
         TogglTimelineChunkView *chunk_view =
-            timeline_chunk_view_init(epoch_time);
+            timeline_chunk_view_init(epoch_time, epoch_time_end);
 
         // Attach matching events to chunk
         TogglTimelineEventView *first_event = nullptr;

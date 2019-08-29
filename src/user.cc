@@ -1428,7 +1428,7 @@ std::vector<TimelineEvent> User::CompressedTimeline(
             ++i) {
         TimelineEvent *event = *i;
         poco_check_ptr(event);
-        if (event->DeletedAt() > 0 || !event->Chunked()) {
+        if (event->DeletedAt() > 0) {
             continue;
         }
 
