@@ -35,7 +35,7 @@
                         </stackView>
                     </subviews>
                     <constraints>
-                        <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="rwS-sw-Itv" secondAttribute="bottom" constant="10" id="DSz-od-Zv9"/>
+                        <constraint firstAttribute="bottom" secondItem="rwS-sw-Itv" secondAttribute="bottom" constant="10" id="DSz-od-Zv9"/>
                         <constraint firstItem="yUv-wJ-ujD" firstAttribute="leading" secondItem="Yld-ky-HAR" secondAttribute="leading" constant="10" id="EJj-ho-ebO"/>
                         <constraint firstItem="yUv-wJ-ujD" firstAttribute="top" secondItem="Yld-ky-HAR" secondAttribute="top" constant="10" id="Sga-uc-ek4"/>
                         <constraint firstAttribute="trailing" secondItem="rwS-sw-Itv" secondAttribute="trailing" constant="10" id="iRy-Rm-4ac"/>

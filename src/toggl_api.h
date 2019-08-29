@@ -106,6 +106,7 @@ extern "C" {
 
     typedef struct {
         uint64_t Started;
+        uint64_t Ended;
         char_t *StartTimeString;
         char_t *EndTimeString;
         void *Next;

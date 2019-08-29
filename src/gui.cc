@@ -510,10 +510,11 @@ void GUI::DisplayTimeline(
             && datetime.day() == TimelineDateAt().day()) {
         time_t epoch_time = datetime.timestamp().epochTime();
         time_t epoch_time_end = epoch_time + 900;
+        time_t duration = 0;
 
         // Create new chunk
         TogglTimelineChunkView *chunk_view =
-            timeline_chunk_view_init(epoch_time, epoch_time_end);
+            timeline_chunk_view_init(epoch_time);
 
         // Attach matching events to chunk
         TogglTimelineEventView *first_event = nullptr;
@@ -577,6 +578,7 @@ void GUI::DisplayTimeline(
 
                     app_event_view->Next = first_event;
                     first_event = app_event_view;
+                    duration += event_view->Duration;
                 }
             }
         }
@@ -603,6 +605,8 @@ void GUI::DisplayTimeline(
         }
 
         chunk_view->Entry = first;
+        chunk_view->Ended = epoch_time + duration;
+        chunk_view->EndTimeString = copy_string(toggl::Formatter::FormatTimeForTimeEntryEditor(chunk_view->Ended));
 
         // Sort the list by duration descending
         if (first_event != NULL) {

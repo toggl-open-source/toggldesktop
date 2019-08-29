@@ -93,8 +93,7 @@ void help_article_clear(
     TogglHelpArticleView *first);
 
 TogglTimelineChunkView *timeline_chunk_view_init(
-    const time_t &start,
-    const time_t &end);
+    const time_t &start);
 
 void timeline_chunk_view_clear(
     TogglTimelineChunkView *first);
