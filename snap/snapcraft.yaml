@@ -1,6 +1,6 @@
 name: toggldesktop # you probably want to 'snapcraft register <name>'
 base: core18 # the base snap is the execution environment for this snap
-version: '7.4.411' # just for humans, typically '1.2+git' or '1.3.2'
+version: '7.4.991' # just for humans, typically '1.2+git' or '1.3.2'
 summary: Simple and Intuitive Time Tracking Software
 description: |
   Toggl Desktop is a desktop app for leading time tracking tool Toggl. The Desktop app is a great companion for time tracking and productivity as it has advanced features like:
@@ -71,11 +71,11 @@ parts:
   toggldesktop:
     source-type: git
     source: https://github.com/toggl/toggldesktop.git
-    source-commit: 'f9aeb36655b0da306d1551e27907d646029c2ee7'
+    source-commit: 'c0098d9bd6f2bbfbce1a0c9b2b276629dfbf806a'
     parse-info: [usr/share/metainfo/com.toggl.TogglDesktop.appdata.xml]
     plugin: cmake
     configflags: [
-      '-DTOGGL_VERSION=7.4.411',
+      '-DTOGGL_VERSION=7.4.991',
       '-DTOGGL_PRODUCTION_BUILD=ON',
       '-DTOGGL_ALLOW_UPDATE_CHECK=ON',
       '-DTOGGL_DATA_DIR=/bin'
