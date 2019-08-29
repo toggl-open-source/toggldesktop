@@ -58,7 +58,8 @@ static int fd_free(BIO *data);
 int BIO_fd_should_retry(int s);
 
 static const BIO_METHOD methods_fdp = {
-    BIO_TYPE_FD, "file descriptor",
+    BIO_TYPE_FD,
+    "file descriptor",
     fd_write,
     fd_read,
     fd_puts,
@@ -66,7 +67,7 @@ static const BIO_METHOD methods_fdp = {
     fd_ctrl,
     fd_new,
     fd_free,
-    NULL,
+    NULL,                       /* fd_callback_ctrl */
 };
 
 const BIO_METHOD *BIO_s_fd(void)

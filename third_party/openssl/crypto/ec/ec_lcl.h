@@ -1,5 +1,5 @@
 /*
- * Copyright 2001-2016 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 2001-2019 The OpenSSL Project Authors. All Rights Reserved.
  *
  * Licensed under the OpenSSL license (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
@@ -150,6 +150,13 @@ struct ec_method_st {
     int (*field_sqr) (const EC_GROUP *, BIGNUM *r, const BIGNUM *a, BN_CTX *);
     int (*field_div) (const EC_GROUP *, BIGNUM *r, const BIGNUM *a,
                       const BIGNUM *b, BN_CTX *);
+    /*-
+     * 'field_inv' computes the multipicative inverse of a in the field,
+     * storing the result in r.
+     *
+     * If 'a' is zero (or equivalent), you'll get an EC_R_CANNOT_INVERT error.
+     */
+    int (*field_inv) (const EC_GROUP *, BIGNUM *r, const BIGNUM *a, BN_CTX *);
     /* e.g. to Montgomery */
     int (*field_encode) (const EC_GROUP *, BIGNUM *r, const BIGNUM *a,
                          BN_CTX *);
@@ -169,6 +176,7 @@ struct ec_method_st {
     /* custom ECDH operation */
     int (*ecdh_compute_key)(unsigned char **pout, size_t *poutlen,
                             const EC_POINT *pub_key, const EC_KEY *ecdh);
+    int (*blind_coordinates)(const EC_GROUP *group, EC_POINT *p, BN_CTX *ctx);
 };
 
 /*
@@ -269,6 +277,8 @@ struct ec_key_st {
 
 struct ec_point_st {
     const EC_METHOD *meth;
+    /* NID for the curve if known */
+    int curve_name;
     /*
      * All members except 'meth' are handled by the method functions, even if
      * they appear generic
@@ -280,6 +290,20 @@ struct ec_point_st {
     int Z_is_one;               /* enable optimized point arithmetics for
                                  * special case */
 };
+
+
+static ossl_inline int ec_point_is_compat(const EC_POINT *point,
+                                          const EC_GROUP *group)
+{
+    if (group->meth != point->meth
+        || (group->curve_name != 0
+            && point->curve_name != 0
+            && group->curve_name != point->curve_name))
+        return 0;
+
+    return 1;
+}
+
 
 NISTP224_PRE_COMP *EC_nistp224_pre_comp_dup(NISTP224_PRE_COMP *);
 NISTP256_PRE_COMP *EC_nistp256_pre_comp_dup(NISTP256_PRE_COMP *);
@@ -359,6 +383,10 @@ int ec_GFp_simple_field_mul(const EC_GROUP *, BIGNUM *r, const BIGNUM *a,
                             const BIGNUM *b, BN_CTX *);
 int ec_GFp_simple_field_sqr(const EC_GROUP *, BIGNUM *r, const BIGNUM *a,
                             BN_CTX *);
+int ec_GFp_simple_field_inv(const EC_GROUP *, BIGNUM *r, const BIGNUM *a,
+                            BN_CTX *);
+int ec_GFp_simple_blind_coordinates(const EC_GROUP *group, EC_POINT *p,
+                                    BN_CTX *ctx);
 
 /* method functions in ecp_mont.c */
 int ec_GFp_mont_group_init(EC_GROUP *);
@@ -370,6 +398,8 @@ int ec_GFp_mont_group_copy(EC_GROUP *, const EC_GROUP *);
 int ec_GFp_mont_field_mul(const EC_GROUP *, BIGNUM *r, const BIGNUM *a,
                           const BIGNUM *b, BN_CTX *);
 int ec_GFp_mont_field_sqr(const EC_GROUP *, BIGNUM *r, const BIGNUM *a,
+                          BN_CTX *);
+int ec_GFp_mont_field_inv(const EC_GROUP *, BIGNUM *r, const BIGNUM *a,
                           BN_CTX *);
 int ec_GFp_mont_field_encode(const EC_GROUP *, BIGNUM *r, const BIGNUM *a,
                              BN_CTX *);
@@ -611,3 +641,5 @@ int X25519(uint8_t out_shared_key[32], const uint8_t private_key[32],
            const uint8_t peer_public_value[32]);
 void X25519_public_from_private(uint8_t out_public_value[32],
                                 const uint8_t private_key[32]);
+
+int ec_point_blind_coordinates(const EC_GROUP *group, EC_POINT *p, BN_CTX *ctx);

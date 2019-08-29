@@ -1,5 +1,5 @@
 /*
- * Copyright 1995-2016 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 1995-2018 The OpenSSL Project Authors. All Rights Reserved.
  *
  * Licensed under the OpenSSL license (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
@@ -246,7 +246,8 @@ typedef struct bio_method_st BIO_METHOD;
 const char *BIO_method_name(const BIO *b);
 int BIO_method_type(const BIO *b);
 
-typedef void bio_info_cb(BIO *, int, const char *, int, long, long);
+typedef int BIO_info_cb(BIO *, int, int);
+typedef BIO_info_cb bio_info_cb;  /* backward compatibility */
 
 DEFINE_STACK_OF(BIO)
 
@@ -547,8 +548,7 @@ int BIO_write(BIO *b, const void *data, int len);
 int BIO_puts(BIO *bp, const char *buf);
 int BIO_indent(BIO *b, int indent, int max);
 long BIO_ctrl(BIO *bp, int cmd, long larg, void *parg);
-long BIO_callback_ctrl(BIO *b, int cmd,
-                       void (*fp) (BIO *, int, const char *, int, long, long));
+long BIO_callback_ctrl(BIO *b, int cmd, BIO_info_cb *fp);
 void *BIO_ptr_ctrl(BIO *bp, int cmd, long larg);
 long BIO_int_ctrl(BIO *bp, int cmd, long larg, int iarg);
 BIO *BIO_push(BIO *b, BIO *append);
@@ -730,30 +730,30 @@ __bio_h__attr__((__format__(__printf__, 3, 0)));
 
 BIO_METHOD *BIO_meth_new(int type, const char *name);
 void BIO_meth_free(BIO_METHOD *biom);
-int (*BIO_meth_get_write(BIO_METHOD *biom)) (BIO *, const char *, int);
+int (*BIO_meth_get_write(const BIO_METHOD *biom)) (BIO *, const char *, int);
 int BIO_meth_set_write(BIO_METHOD *biom,
                        int (*write) (BIO *, const char *, int));
-int (*BIO_meth_get_read(BIO_METHOD *biom)) (BIO *, char *, int);
+int (*BIO_meth_get_read(const BIO_METHOD *biom)) (BIO *, char *, int);
 int BIO_meth_set_read(BIO_METHOD *biom,
                       int (*read) (BIO *, char *, int));
-int (*BIO_meth_get_puts(BIO_METHOD *biom)) (BIO *, const char *);
+int (*BIO_meth_get_puts(const BIO_METHOD *biom)) (BIO *, const char *);
 int BIO_meth_set_puts(BIO_METHOD *biom,
                       int (*puts) (BIO *, const char *));
-int (*BIO_meth_get_gets(BIO_METHOD *biom)) (BIO *, char *, int);
+int (*BIO_meth_get_gets(const BIO_METHOD *biom)) (BIO *, char *, int);
 int BIO_meth_set_gets(BIO_METHOD *biom,
                       int (*gets) (BIO *, char *, int));
-long (*BIO_meth_get_ctrl(BIO_METHOD *biom)) (BIO *, int, long, void *);
+long (*BIO_meth_get_ctrl(const BIO_METHOD *biom)) (BIO *, int, long, void *);
 int BIO_meth_set_ctrl(BIO_METHOD *biom,
                       long (*ctrl) (BIO *, int, long, void *));
-int (*BIO_meth_get_create(BIO_METHOD *bion)) (BIO *);
+int (*BIO_meth_get_create(const BIO_METHOD *bion)) (BIO *);
 int BIO_meth_set_create(BIO_METHOD *biom, int (*create) (BIO *));
-int (*BIO_meth_get_destroy(BIO_METHOD *biom)) (BIO *);
+int (*BIO_meth_get_destroy(const BIO_METHOD *biom)) (BIO *);
 int BIO_meth_set_destroy(BIO_METHOD *biom, int (*destroy) (BIO *));
-long (*BIO_meth_get_callback_ctrl(BIO_METHOD *biom))
-                                 (BIO *, int, bio_info_cb *);
+long (*BIO_meth_get_callback_ctrl(const BIO_METHOD *biom))
+                                 (BIO *, int, BIO_info_cb *);
 int BIO_meth_set_callback_ctrl(BIO_METHOD *biom,
                                long (*callback_ctrl) (BIO *, int,
-                                                      bio_info_cb *));
+                                                      BIO_info_cb *));
 
 /* BEGIN ERROR CODES */
 /*
@@ -781,6 +781,7 @@ int ERR_load_BIO_strings(void);
 # define BIO_F_BIO_LISTEN                                 139
 # define BIO_F_BIO_LOOKUP                                 135
 # define BIO_F_BIO_MAKE_PAIR                              121
+# define BIO_F_BIO_METH_NEW                               146
 # define BIO_F_BIO_NEW                                    108
 # define BIO_F_BIO_NEW_FILE                               109
 # define BIO_F_BIO_NEW_MEM_BUF                            126

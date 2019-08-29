@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2016 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 2011-2019 The OpenSSL Project Authors. All Rights Reserved.
  *
  * Licensed under the OpenSSL license (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
@@ -50,7 +50,6 @@ typedef __uint128_t uint128_t;  /* nonstandard; implemented by gcc on 64-bit
 
 typedef uint8_t u8;
 typedef uint64_t u64;
-typedef int64_t s64;
 
 /*
  * The underlying field. P521 operates over GF(2^521-1). We can serialise an
@@ -188,7 +187,7 @@ static int BN_to_felem(felem out, const BIGNUM *bn)
     /* BN_bn2bin eats leading zeroes */
     memset(b_out, 0, sizeof(b_out));
     num_bytes = BN_num_bytes(bn);
-    if (num_bytes > sizeof b_out) {
+    if (num_bytes > sizeof(b_out)) {
         ECerr(EC_F_BN_TO_FELEM, EC_R_BIGNUM_OUT_OF_RANGE);
         return 0;
     }
@@ -207,8 +206,8 @@ static BIGNUM *felem_to_BN(BIGNUM *out, const felem in)
 {
     felem_bytearray b_in, b_out;
     felem_to_bin66(b_in, in);
-    flip_endian(b_out, b_in, sizeof b_out);
-    return BN_bin2bn(b_out, sizeof b_out, out);
+    flip_endian(b_out, b_in, sizeof(b_out));
+    return BN_bin2bn(b_out, sizeof(b_out), out);
 }
 
 /*-
@@ -358,10 +357,15 @@ static void felem_diff64(felem out, const felem in)
 static void felem_diff_128_64(largefelem out, const felem in)
 {
     /*
-     * In order to prevent underflow, we add 0 mod p before subtracting.
+     * In order to prevent underflow, we add 64p mod p (which is equivalent
+     * to 0 mod p) before subtracting. p is 2^521 - 1, i.e. in binary a 521
+     * digit number with all bits set to 1. See "The representation of field
+     * elements" comment above for a description of how limbs are used to
+     * represent a number. 64p is represented with 8 limbs containing a number
+     * with 58 bits set and one limb with a number with 57 bits set.
      */
-    static const limb two63m6 = (((limb) 1) << 62) - (((limb) 1) << 5);
-    static const limb two63m5 = (((limb) 1) << 62) - (((limb) 1) << 4);
+    static const limb two63m6 = (((limb) 1) << 63) - (((limb) 1) << 6);
+    static const limb two63m5 = (((limb) 1) << 63) - (((limb) 1) << 5);
 
     out[0] += two63m6 - in[0];
     out[1] += two63m5 - in[1];
@@ -867,7 +871,7 @@ static limb felem_is_zero(const felem in)
      * We know that ftmp[i] < 2^63, therefore the only way that the top bit
      * can be set is if is_zero was 0 before the decrement.
      */
-    is_zero = ((s64) is_zero) >> 63;
+    is_zero = 0 - (is_zero >> 63);
 
     is_p = ftmp[0] ^ kPrime[0];
     is_p |= ftmp[1] ^ kPrime[1];
@@ -880,7 +884,7 @@ static limb felem_is_zero(const felem in)
     is_p |= ftmp[8] ^ kPrime[8];
 
     is_p--;
-    is_p = ((s64) is_p) >> 63;
+    is_p = 0 - (is_p >> 63);
 
     is_zero |= is_p;
     return is_zero;
@@ -951,7 +955,7 @@ static void felem_contract(felem out, const felem in)
     is_p &= is_p << 4;
     is_p &= is_p << 2;
     is_p &= is_p << 1;
-    is_p = ((s64) is_p) >> 63;
+    is_p = 0 - (is_p >> 63);
     is_p = ~is_p;
 
     /* is_p is 0 iff |out| == 2^521-1 and all ones otherwise */
@@ -977,7 +981,7 @@ static void felem_contract(felem out, const felem in)
     is_greater |= is_greater << 4;
     is_greater |= is_greater << 2;
     is_greater |= is_greater << 1;
-    is_greater = ((s64) is_greater) >> 63;
+    is_greater = 0 - (is_greater >> 63);
 
     out[0] -= kPrime[0] & is_greater;
     out[1] -= kPrime[1] & is_greater;
@@ -1632,6 +1636,7 @@ const EC_METHOD *EC_GFp_nistp521_method(void)
         ec_GFp_nist_field_mul,
         ec_GFp_nist_field_sqr,
         0 /* field_div */ ,
+        ec_GFp_simple_field_inv,
         0 /* field_encode */ ,
         0 /* field_decode */ ,
         0,                      /* field_set_to_one */
@@ -1643,7 +1648,8 @@ const EC_METHOD *EC_GFp_nistp521_method(void)
         ec_key_simple_generate_public_key,
         0, /* keycopy */
         0, /* keyfinish */
-        ecdh_simple_compute_key
+        ecdh_simple_compute_key,
+        0  /* blind_coordinates */
     };
 
     return &ret;

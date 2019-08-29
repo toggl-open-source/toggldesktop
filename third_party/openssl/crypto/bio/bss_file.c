@@ -1,5 +1,5 @@
 /*
- * Copyright 1995-2016 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 1995-2019 The OpenSSL Project Authors. All Rights Reserved.
  *
  * Licensed under the OpenSSL license (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
@@ -58,7 +58,7 @@ static const BIO_METHOD methods_filep = {
     file_ctrl,
     file_new,
     file_free,
-    NULL,
+    NULL,                      /* file_callback_ctrl */
 };
 
 BIO *BIO_new_file(const char *filename, const char *mode)
@@ -255,9 +255,7 @@ static long file_ctrl(BIO *b, int cmd, long num, void *ptr)
             }
 #  elif defined(OPENSSL_SYS_WIN32_CYGWIN)
             int fd = fileno((FILE *)ptr);
-            if (num & BIO_FP_TEXT)
-                setmode(fd, O_TEXT);
-            else
+            if (!(num & BIO_FP_TEXT))
                 setmode(fd, O_BINARY);
 #  endif
         }
@@ -267,25 +265,28 @@ static long file_ctrl(BIO *b, int cmd, long num, void *ptr)
         b->shutdown = (int)num & BIO_CLOSE;
         if (num & BIO_FP_APPEND) {
             if (num & BIO_FP_READ)
-                OPENSSL_strlcpy(p, "a+", sizeof p);
+                OPENSSL_strlcpy(p, "a+", sizeof(p));
             else
-                OPENSSL_strlcpy(p, "a", sizeof p);
+                OPENSSL_strlcpy(p, "a", sizeof(p));
         } else if ((num & BIO_FP_READ) && (num & BIO_FP_WRITE))
-            OPENSSL_strlcpy(p, "r+", sizeof p);
+            OPENSSL_strlcpy(p, "r+", sizeof(p));
         else if (num & BIO_FP_WRITE)
-            OPENSSL_strlcpy(p, "w", sizeof p);
+            OPENSSL_strlcpy(p, "w", sizeof(p));
         else if (num & BIO_FP_READ)
-            OPENSSL_strlcpy(p, "r", sizeof p);
+            OPENSSL_strlcpy(p, "r", sizeof(p));
         else {
             BIOerr(BIO_F_FILE_CTRL, BIO_R_BAD_FOPEN_MODE);
             ret = 0;
             break;
         }
-#  if defined(OPENSSL_SYS_MSDOS) || defined(OPENSSL_SYS_WINDOWS) || defined(OPENSSL_SYS_WIN32_CYGWIN)
+#  if defined(OPENSSL_SYS_MSDOS) || defined(OPENSSL_SYS_WINDOWS)
         if (!(num & BIO_FP_TEXT))
             strcat(p, "b");
         else
             strcat(p, "t");
+#  elif defined(OPENSSL_SYS_WIN32_CYGWIN)
+        if (!(num & BIO_FP_TEXT))
+            strcat(p, "b");
 #  endif
         fp = openssl_fopen(ptr, p);
         if (fp == NULL) {
@@ -406,7 +407,7 @@ static const BIO_METHOD methods_filep = {
     file_ctrl,
     file_new,
     file_free,
-    NULL,
+    NULL,                      /* file_callback_ctrl */
 };
 
 const BIO_METHOD *BIO_s_file(void)

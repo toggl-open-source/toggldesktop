@@ -1,5 +1,5 @@
 /*
- * Copyright 1998-2016 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 1998-2018 The OpenSSL Project Authors. All Rights Reserved.
  *
  * Licensed under the OpenSSL license (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
@@ -76,9 +76,13 @@ int rand_main(int argc, char **argv)
     }
     argc = opt_num_rest();
     argv = opt_rest();
-
-    if (argc != 1 || !opt_int(argv[0], &num) || num < 0)
+    if (argc == 1) {
+        if (!opt_int(argv[0], &num) || num <= 0)
+            goto end;
+    } else if (argc > 0) {
+        BIO_printf(bio_err, "Extra arguments given.\n");
         goto opthelp;
+    }
 
     app_RAND_load_file(NULL, (inrand != NULL));
     if (inrand != NULL)
@@ -102,7 +106,7 @@ int rand_main(int argc, char **argv)
 
         chunk = num;
         if (chunk > (int)sizeof(buf))
-            chunk = sizeof buf;
+            chunk = sizeof(buf);
         r = RAND_bytes(buf, chunk);
         if (r <= 0)
             goto end;

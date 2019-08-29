@@ -1,5 +1,5 @@
 /*
- * Copyright 2005-2016 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 2005-2018 The OpenSSL Project Authors. All Rights Reserved.
  *
  * Licensed under the OpenSSL license (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
@@ -285,14 +285,17 @@ static EVP_PKEY *b2i_dss(const unsigned char **in,
             goto memerr;
 
         BN_CTX_free(ctx);
+        ctx = NULL;
     }
     if (!DSA_set0_pqg(dsa, pbn, qbn, gbn))
         goto memerr;
     pbn = qbn = gbn = NULL;
     if (!DSA_set0_key(dsa, pub_key, priv_key))
         goto memerr;
+    pub_key = priv_key = NULL;
 
-    EVP_PKEY_set1_DSA(ret, dsa);
+    if (!EVP_PKEY_set1_DSA(ret, dsa))
+        goto memerr;
     DSA_free(dsa);
     *in = p;
     return ret;
@@ -345,12 +348,19 @@ static EVP_PKEY *b2i_rsa(const unsigned char **in,
             goto memerr;
         if (!read_lebn(&pin, nbyte, &d))
             goto memerr;
-        RSA_set0_factors(rsa, p, q);
-        RSA_set0_crt_params(rsa, dmp1, dmq1, iqmp);
+        if (!RSA_set0_factors(rsa, p, q))
+            goto memerr;
+        p = q = NULL;
+        if (!RSA_set0_crt_params(rsa, dmp1, dmq1, iqmp))
+            goto memerr;
+        dmp1 = dmq1 = iqmp = NULL;
     }
-    RSA_set0_key(rsa, n, e, d);
+    if (!RSA_set0_key(rsa, n, e, d))
+        goto memerr;
+    n = e = d = NULL;
 
-    EVP_PKEY_set1_RSA(ret, rsa);
+    if (!EVP_PKEY_set1_RSA(ret, rsa))
+        goto memerr;
     RSA_free(rsa);
     *in = pin;
     return ret;
@@ -665,17 +675,17 @@ static EVP_PKEY *do_PVK_body(const unsigned char **in,
     const unsigned char *p = *in;
     unsigned int magic;
     unsigned char *enctmp = NULL, *q;
+    unsigned char keybuf[20];
 
     EVP_CIPHER_CTX *cctx = EVP_CIPHER_CTX_new();
     if (saltlen) {
         char psbuf[PEM_BUFSIZE];
-        unsigned char keybuf[20];
         int enctmplen, inlen;
         if (cb)
             inlen = cb(psbuf, PEM_BUFSIZE, 0, u);
         else
             inlen = PEM_def_callback(psbuf, PEM_BUFSIZE, 0, u);
-        if (inlen <= 0) {
+        if (inlen < 0) {
             PEMerr(PEM_F_DO_PVK_BODY, PEM_R_BAD_PASSWORD_READ);
             goto err;
         }
@@ -709,7 +719,6 @@ static EVP_PKEY *do_PVK_body(const unsigned char **in,
             memset(keybuf + 5, 0, 11);
             if (!EVP_DecryptInit_ex(cctx, EVP_rc4(), NULL, keybuf, NULL))
                 goto err;
-            OPENSSL_cleanse(keybuf, 20);
             if (!EVP_DecryptUpdate(cctx, q, &enctmplen, p, inlen))
                 goto err;
             if (!EVP_DecryptFinal_ex(cctx, q + enctmplen, &enctmplen))
@@ -719,15 +728,17 @@ static EVP_PKEY *do_PVK_body(const unsigned char **in,
                 PEMerr(PEM_F_DO_PVK_BODY, PEM_R_BAD_DECRYPT);
                 goto err;
             }
-        } else
-            OPENSSL_cleanse(keybuf, 20);
+        }
         p = enctmp;
     }
 
     ret = b2i_PrivateKey(&p, keylen);
  err:
     EVP_CIPHER_CTX_free(cctx);
-    OPENSSL_free(enctmp);
+    if (enctmp != NULL) {
+        OPENSSL_cleanse(keybuf, sizeof(keybuf));
+        OPENSSL_free(enctmp);
+    }
     return ret;
 }
 

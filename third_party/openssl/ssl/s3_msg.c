@@ -1,5 +1,5 @@
 /*
- * Copyright 1995-2016 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 1995-2019 The OpenSSL Project Authors. All Rights Reserved.
  *
  * Licensed under the OpenSSL license (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
@@ -13,8 +13,6 @@
 int ssl3_do_change_cipher_spec(SSL *s)
 {
     int i;
-    const char *sender;
-    int slen;
 
     if (s->server)
         i = SSL3_CHANGE_CIPHER_SERVER_READ;
@@ -36,28 +34,7 @@ int ssl3_do_change_cipher_spec(SSL *s)
     if (!s->method->ssl3_enc->change_cipher_state(s, i))
         return (0);
 
-    /*
-     * we have to record the message digest at this point so we can get it
-     * before we read the finished message
-     */
-    if (!s->server) {
-        sender = s->method->ssl3_enc->server_finished_label;
-        slen = s->method->ssl3_enc->server_finished_label_len;
-    } else {
-        sender = s->method->ssl3_enc->client_finished_label;
-        slen = s->method->ssl3_enc->client_finished_label_len;
-    }
-
-    i = s->method->ssl3_enc->final_finish_mac(s,
-                                              sender, slen,
-                                              s->s3->tmp.peer_finish_md);
-    if (i == 0) {
-        SSLerr(SSL_F_SSL3_DO_CHANGE_CIPHER_SPEC, ERR_R_INTERNAL_ERROR);
-        return 0;
-    }
-    s->s3->tmp.peer_finish_md_len = i;
-
-    return (1);
+    return 1;
 }
 
 int ssl3_send_alert(SSL *s, int level, int desc)
@@ -69,9 +46,12 @@ int ssl3_send_alert(SSL *s, int level, int desc)
                                           * protocol_version alerts */
     if (desc < 0)
         return -1;
-    /* If a fatal one, remove from cache */
-    if ((level == SSL3_AL_FATAL) && (s->session != NULL))
-        SSL_CTX_remove_session(s->session_ctx, s->session);
+    /* If a fatal one, remove from cache and go into the error state */
+    if (level == SSL3_AL_FATAL) {
+        if (s->session != NULL)
+            SSL_CTX_remove_session(s->session_ctx, s->session);
+        ossl_statem_set_error(s);
+    }
 
     s->s3->alert_dispatch = 1;
     s->s3->send_alert[0] = level;
