@@ -47,7 +47,7 @@ jobs:
       run: |
         sudo apt install flatpak flatpak-builder
         sudo flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
-        sudo flatpak install --system -y flathub org.kde.Sdk//5.12
+        flatpak install --user -y flathub org.kde.Sdk//5.12
         flatpak-builder --repo=flatpak-repo --force-clean flatpak-build com.toggl.TogglDesktop.json
 
   build-mac:
