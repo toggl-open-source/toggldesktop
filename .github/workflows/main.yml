@@ -61,6 +61,7 @@ jobs:
         sed -i.bak s/B227VTMZ94/Z52EFCPL6D/ ./src/ui/osx/TogglDesktop/TogglDesktop.xcodeproj/project.pbxproj
         sed -i.bak s/B227VTMZ94/Z52EFCPL6D/ ./src/lib/osx/TogglDesktopLibrary.xcodeproj/project.pbxproj
         base64 -D <<<  ${{ secrets.CERT_MACOS_TEMPORARY }} > cert.cer
+        security list-keychains
         security import cert.cer "/Users/$USER/Library/Keychains/xcode.keychain-db"
         security unlock-keychain -p '' "/Users/$USER/Library/Keychains/xcode.keychain-db"
         security list-keychains
