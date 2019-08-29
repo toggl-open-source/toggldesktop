@@ -1,6 +1,6 @@
 name: Build
 
-on: create
+on: [create]
 
 jobs:
   linux-basic:
