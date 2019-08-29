@@ -96,6 +96,7 @@ extern "C" {
         char_t *Title;
         char_t *Filename;
         int64_t Duration;
+        char_t *DurationString;
         bool_t Header;
         // references subevents
         void *Event;
@@ -106,6 +107,7 @@ extern "C" {
     typedef struct {
         uint64_t Started;
         char_t *StartTimeString;
+        char_t *EndTimeString;
         void *Next;
         TogglTimelineEventView *FirstEvent;
         // Reference to Time entries in this Chunk

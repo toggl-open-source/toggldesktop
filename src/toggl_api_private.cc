@@ -534,11 +534,13 @@ TogglHelpArticleView *help_article_list_init(
 }
 
 TogglTimelineChunkView *timeline_chunk_view_init(
-    const time_t &start) {
+    const time_t &start,
+    const time_t &end) {
     TogglTimelineChunkView *chunk_view = new TogglTimelineChunkView();
     chunk_view->Started = static_cast<unsigned int>(start);
     chunk_view->StartTimeString = copy_string(
         toggl::Formatter::FormatTimeForTimeEntryEditor(start));
+    chunk_view->EndTimeString = copy_string(toggl::Formatter::FormatTimeForTimeEntryEditor(end));
     chunk_view->Next = nullptr;
     chunk_view->FirstEvent = nullptr;
     return chunk_view;
@@ -552,6 +554,10 @@ void timeline_chunk_view_clear(
     if (chunk_view->StartTimeString) {
         free(chunk_view->StartTimeString);
         chunk_view->StartTimeString = nullptr;
+    }
+    if (chunk_view->EndTimeString) {
+        free(chunk_view->EndTimeString);
+        chunk_view->EndTimeString = nullptr;
     }
     if (chunk_view->FirstEvent) {
         timeline_event_view_clear(chunk_view->FirstEvent);
@@ -572,6 +578,7 @@ TogglTimelineEventView *timeline_event_view_init(
     event_view->Title = copy_string(event.Title());
     event_view->Filename = copy_string(event.Filename());
     event_view->Duration = event.EndTime() - event.Start();
+    event_view->DurationString = copy_string(toggl::Formatter::FormatTimeForTimeEntryEditor(event_view->Duration));
     event_view->Header = false;
     event_view->Next = nullptr;
     return event_view;
@@ -589,6 +596,10 @@ void timeline_event_view_clear(
     if (event_view->Filename) {
         free(event_view->Filename);
         event_view->Filename = nullptr;
+    }
+    if (event_view->DurationString) {
+        free(event_view->DurationString);
+        event_view->DurationString = nullptr;
     }
     if (event_view->Next) {
         TogglTimelineEventView *next =

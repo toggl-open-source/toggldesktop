@@ -31,6 +31,14 @@
 		{
 			self.fileName = @"";
 		}
+		if (view->DurationString)
+		{
+			self.durationStr = [NSString stringWithUTF8String:view->DurationString];
+		}
+		else
+		{
+			self.durationStr = @"";
+		}
 		self.duration = view->Duration;
 		self.isHeader = view->Header;
 
@@ -65,6 +73,14 @@
 		else
 		{
 			self.startedTimeString = @"";
+		}
+		if (view->EndTimeString)
+		{
+			self.endedTimeString = [NSString stringWithUTF8String:view->EndTimeString];
+		}
+		else
+		{
+			self.endedTimeString = @"";
 		}
 
 		// Events

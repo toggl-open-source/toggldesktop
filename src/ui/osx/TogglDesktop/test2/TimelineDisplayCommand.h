@@ -17,6 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (copy, nonatomic) NSString *title;
 @property (copy, nonatomic) NSString *fileName;
 @property (assign, nonatomic) NSTimeInterval duration;
+@property (copy, nonatomic) NSString *durationStr;
 @property (assign, nonatomic) BOOL isHeader;
 @property (strong, nonatomic) NSArray<TimelineDisplayEvent *> *subEvents;
 @end
@@ -24,6 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface TimelineDisplayActivity : NSObject
 @property (assign, nonatomic) NSTimeInterval started;
 @property (copy, nonatomic) NSString *startedTimeString;
+@property (copy, nonatomic) NSString *endedTimeString;
 @property (strong, nonatomic) NSArray<TimelineDisplayEvent * > *events;
 @property (assign, nonatomic) NSTimeInterval duration;
 @end
