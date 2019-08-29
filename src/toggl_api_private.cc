@@ -582,6 +582,11 @@ TogglTimelineEventView *timeline_event_view_init(
     return event_view;
 }
 
+void timeline_event_view_update_duration(TogglTimelineEventView *event_view, const int64_t duration) {
+    event_view->Duration = duration;
+    event_view->DurationString = copy_string(toggl::Formatter::FormatDuration(duration, toggl::Format::ImprovedOnlyMinAndSec));
+}
+
 void timeline_event_view_clear(
     TogglTimelineEventView *event_view) {
     if (!event_view) {

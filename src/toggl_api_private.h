@@ -101,6 +101,8 @@ void timeline_chunk_view_clear(
 TogglTimelineEventView *timeline_event_view_init(
     const toggl::TimelineEvent &event);
 
+void timeline_event_view_update_duration(TogglTimelineEventView *event_view, const int64_t duration);
+
 void timeline_event_view_clear(
     TogglTimelineEventView *event_view);
 
