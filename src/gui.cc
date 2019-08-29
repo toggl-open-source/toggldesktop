@@ -566,7 +566,7 @@ void GUI::DisplayTimeline(
             if (!app_present) {
                 TogglTimelineEventView *app_event_view =
                     timeline_event_view_init(event);
-                if (event.Duration() > 0) {
+                if (event.Duration() >= 0) {
                     app_event_view->Header = true;
                     app_event_view->Title = copy_string("");
 
