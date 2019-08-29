@@ -1,6 +1,6 @@
 name: Build
 
-on: release
+on: create
 
 jobs:
   linux-basic:
@@ -16,7 +16,7 @@ jobs:
         bash ./src/ui/linux/package.sh
     - name: Upload to GitHub
       run: |
-        ./upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} owner=MartinBriza repo=toggldesktop tag=${{ release.name }} filename="toggldesktop_x86_64.tar.gz"
+        ./upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} owner=MartinBriza repo=toggldesktop tag="v7.4.993" filename="toggldesktop_x86_64.tar.gz"
         
   linux-ubuntu1604:
     runs-on: ubuntu-16.04
@@ -96,16 +96,6 @@ jobs:
         "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe" src/ui/windows/TogglDesktop/TogglDesktop.sln /property:Configuration=Release /p:Platform="x86" /t:Clean,Build /restore
         cd src/ui/windows/
         makensis TogglDesktopInstaller-x86.nsi
-    - name: Upload
-      if: github.event_name == 'release' 
-      uses: skx/github-action-publish-binaries@master
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        args: 'src/ui/windows/TogglDesktopInstaller.exe
-    - name: Upload to GitHub
-      run: |
-        ./upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} owner=MartinBriza repo=toggldesktop tag=${{ release.name }} filename="src/ui/windows/TogglDesktopInstaller.exe"
         
   windows-64bit:
     runs-on: windows-2019
@@ -119,13 +109,3 @@ jobs:
         "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe" src/ui/windows/TogglDesktop/TogglDesktop.sln /property:Configuration=Release /p:Platform="x64" /t:Clean,Build /restore
         cd src/ui/windows/
         makensis TogglDesktopInstaller-x64.nsi
-    - name: Upload
-      if: github.event_name == 'release' 
-      uses: skx/github-action-publish-binaries@master
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        args: 'src/ui/windows/TogglDesktopInstaller-x64.exe'
-    - name: Upload to GitHub
-      run: |
-        ./upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} owner=MartinBriza repo=toggldesktop tag=${{ release.name }} filename="src/ui/windows/TogglDesktopInstaller-x64.exe"
