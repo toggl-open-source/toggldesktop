@@ -92,4 +92,4 @@ jobs:
     - name: Build on Windows for Microsoft Store (no signing)
       run: |
         "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe" src/ui/windows/TogglDesktop/TogglDesktop.sln /p:Configuration=StoreRelease /p:Platform="x86" /p:AppxPackageSigningEnabled=false /t:Clean,Build /restore -m
-        "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe" src/ui/windows/TogglDesktop/TogglDesktop.sln /p:Configuration=StoreRelease /p:Platform="x64" /p:UapAppxPackageBuildMode=StoreUpload /p:AppxBundle=Always /p:AppxBundlePlatforms="x86|x64" /p:AppxPackageSigningEnabled=false /t:Clean,Build /restore -m
+        "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe" src/ui/windows/TogglDesktop/TogglDesktop.sln /p:Configuration=StoreRelease /p:Platform="x64" /p:UapAppxPackageBuildMode=CI /p:AppxBundle=Always /p:AppxBundlePlatforms="x86|x64" /p:AppxPackageSigningEnabled=false /t:Clean,Build /restore -m
