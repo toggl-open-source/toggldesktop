@@ -85,3 +85,11 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         args: 'src/ui/windows/TogglDesktopInstaller-x64.exe'
+  build-winstore:
+    runs-on: windows-2019
+    steps:
+    - uses: actions/checkout@v1
+    - name: Build on Windows for Microsoft Store (no signing)
+      run: |
+        MSBuild.exe src/ui/windows/TogglDesktop/TogglDesktop.sln /p:Configuration=StoreRelease /p:Platform="x86" /p:AppxPackageSigningEnabled=false /t:Clean,Build /restore -m
+        MSBuild.exe src/ui/windows/TogglDesktop/TogglDesktop.sln /p:Configuration=StoreRelease /p:Platform="x64" /p:UapAppxPackageBuildMode=StoreUpload /p:AppxBundle=Always /p:AppxBundlePlatforms="x86|x64" /p:AppxPackageSigningEnabled=false /t:Clean,Build /restore -m
