@@ -61,8 +61,9 @@ final class TimelineActivityHoverController: NSViewController {
         textField.isBordered = false
         textField.font = NSFont.systemFont(ofSize: 14.0)
         textField.textColor = isSubEvent ? NSColor.secondaryLabelColor : NSColor.labelColor
-        textField.stringValue = "\(event.duration) \(event.title)"
+        textField.stringValue = isSubEvent ? "\(event.duration) \(event.title)" : "\(event.duration) \(event.fileName)"
         textField.toolTip = "\(textField.stringValue) \(event.fileName)"
+        textField.lineBreakMode = .byTruncatingTail
         return textField
     }
 
