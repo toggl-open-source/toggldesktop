@@ -57,6 +57,8 @@ final class TimelineActivityHoverController: NSViewController {
 
     private func buildLabel(from event: TimelineEvent, isSubEvent: Bool) -> NSTextField {
         let textField = NSTextField(frame: NSRect.zero)
+        textField.drawsBackground = false
+        textField.isBordered = false
         textField.font = NSFont.systemFont(ofSize: 14.0)
         textField.textColor = isSubEvent ? NSColor.secondaryLabelColor : NSColor.labelColor
         textField.stringValue = "\(event.duration) \(event.title)"
