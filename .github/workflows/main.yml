@@ -38,6 +38,16 @@ jobs:
         dch -D unstable --package "toggldesktop" -v 7.4.999 "General bug fixes and improvements" -u low -M
         rm Makefile
         debuild
+        
+  build-flatpak-kde:
+    runs-on: ubuntu-18.04
+    steps:
+    - name: Build Linux Flatpak package - KDE based
+      run: |
+        sudo apt install flatpak flatpak-builder
+        flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+        flatpak install --system --noninteractive -y flathub org.kde.Sdk//5.12
+        flatpak-builder --repo=flatpak-repo --force-clean flatpak-build com.toggl.TogglDesktop.json
 
   build-mac:
     runs-on: macOS-10.14
