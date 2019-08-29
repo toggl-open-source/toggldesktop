@@ -23,6 +23,7 @@ class Format {
     static const std::string Classic;
     static const std::string Improved;
     static const std::string Decimal;
+    static const std::string ImprovedOnlyMinAndSec;
 };
 
 class Client;
