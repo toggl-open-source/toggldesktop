@@ -3,21 +3,21 @@ name: Build
 on: [push,release]
 
 jobs:
-  build-linux:
+  linux-basic:
     runs-on: ubuntu-latest  
     steps:
     - uses: actions/checkout@v1
-    - name: Build on Linux + tarball
+    - name: Build on Linux + Make a tarball
       run: |
         sudo apt install libxss1 libgstreamer-plugins-base1.0-0 libgstreamer1.0-0 qt5-default libqt5gui5 libqt5webengine5 libqt5webenginecore5 libqt5webenginewidgets5 libqt5printsupport5 libqt5quickwidgets5 libqt5x11extras5 libxss1 
         sudo apt install patchelf binutils cmake pkg-config qtbase5-dev qtwebengine5-dev libqt5x11extras5-dev  qtbase5-private-dev libssl-dev libxss-dev libxmu-dev
         bash ./src/ui/linux/package.sh
         
-  build-ubuntu1604:
+  linux-ubuntu1604:
     runs-on: ubuntu-16.04
     steps:
     - uses: actions/checkout@v1
-    - name: Build on Linux + tarball
+    - name: Build a Debian package
       run: |
         exit 0 # don't waste resources while it doesn't work
         sudo add-apt-repository ppa:nextcloud-devs/client
@@ -27,11 +27,11 @@ jobs:
         debuild
 
         
-  build-ubuntu1804:
+  linux-ubuntu1804:
     runs-on: ubuntu-18.04
     steps:
     - uses: actions/checkout@v1
-    - name: Build on Linux + tarball
+    - name: Build a Debian package
       run: |
         base64 -d <<< ${{ secrets.CERT_LINUX_DEB64 }} > key.asc
         gpg --import key.asc
@@ -40,7 +40,7 @@ jobs:
         rm Makefile
         debuild
         
-  build-flatpak-kde:
+  linux-flatpak-kde:
     runs-on: ubuntu-18.04
     steps:
     - uses: actions/checkout@v1
@@ -52,7 +52,7 @@ jobs:
         sudo flatpak install --system -y flathub org.kde.Sdk//5.12 
         sudo flatpak-builder --repo=flatpak-repo --force-clean flatpak-build com.toggl.TogglDesktop.json
 
-  build-mac:
+  mac:
     runs-on: macOS-10.14
     steps:
     - uses: actions/checkout@v1
@@ -71,7 +71,7 @@ jobs:
         make deps
         make
         
-  build-win32:
+  windows-32bit:
     runs-on: windows-2019
     steps:
     - uses: actions/checkout@v1
@@ -89,7 +89,7 @@ jobs:
       with:
         args: 'src/ui/windows/TogglDesktopInstaller.exe'
         
-  build-win64:
+  windows-64bit:
     runs-on: windows-2019
     steps:
     - uses: actions/checkout@v1
