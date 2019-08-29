@@ -12,6 +12,14 @@ jobs:
     - name: Build on Linux + Make a tarball
       run: |
         env
+        echo "========================================================"
+        cat "$GITHUB_EVENT_PATH"
+        echo "========================================================"
+        jq "$GITHUB_EVENT_PATH" -r "ref_type"
+        jq "$GITHUB_EVENT_PATH" -r "master_branch"
+        jq "$GITHUB_EVENT_PATH" -r "ref"
+        jq "$GITHUB_EVENT_PATH" -r "pusher_type"
+        echo "========================================================"
         sudo apt install libxss1 libgstreamer-plugins-base1.0-0 libgstreamer1.0-0 qt5-default libqt5gui5 libqt5webengine5 libqt5webenginecore5 libqt5webenginewidgets5 libqt5printsupport5 libqt5quickwidgets5 libqt5x11extras5 libxss1 
         sudo apt install patchelf binutils cmake pkg-config qtbase5-dev qtwebengine5-dev libqt5x11extras5-dev  qtbase5-private-dev libssl-dev libxss-dev libxmu-dev
         bash ./src/ui/linux/package.sh
