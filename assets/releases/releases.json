@@ -2,20 +2,6 @@
     "win": {
         "dev": [
             {
-                "version": "7.4.478",
-                "timestamp": "26-07-2019",
-                "filename": [
-                    {
-                        "type": "windows",
-                        "name": "TogglDesktopInstaller-7.4.478.exe"
-                    },
-                    {
-                        "type": "windows64",
-                        "name": "TogglDesktopInstaller-x64-7.4.478.exe"
-                    }
-                ]
-            },
-            {
                 "version": "7.4.479",
                 "timestamp": "26-07-2019",
                 "filename": [
