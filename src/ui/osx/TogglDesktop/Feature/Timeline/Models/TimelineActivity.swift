@@ -33,8 +33,8 @@ final class TimelineEvent {
 
 final class TimelineActivity {
 
-    private static let LightestBlueColor = NSColor(red:0.702, green:0.898, blue:0.988, alpha:1.0)
-    private static let DarkestBlueColor = NSColor(red:0.020, green:0.667, blue:0.961, alpha:1.0)
+    private static let LightestBlueColor = NSColor(red:0.020, green:0.667, blue:0.961, alpha:1.0)
+    private static let DarkestBlueColor = NSColor(red:0.702, green:0.898, blue:0.988, alpha:1.0)
 
     // MARK: Variables
 

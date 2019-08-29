@@ -542,13 +542,13 @@ void GUI::DisplayTimeline(
             while (event_app) {
                 if (compare_string(event_app->Filename,
                                    event.Filename().c_str()) == 0) {
-                    event_app->Duration = event_app->Duration + event.Duration();
+                    timeline_event_view_update_duration(event_app, event_app->Duration + event.Duration());
                     app_present = true;
                     item_present = false;
                     ev = reinterpret_cast<TogglTimelineEventView *>(event_app->Event);
                     while (ev) {
                         if (compare_string(ev->Title, event.Title().c_str()) == 0) {
-                            ev->Duration = ev->Duration + event.Duration();
+                            timeline_event_view_update_duration(ev, ev->Duration + event.Duration());
                             item_present = true;
                         }
                         ev = reinterpret_cast<TogglTimelineEventView *>(ev->Next);
@@ -567,7 +567,7 @@ void GUI::DisplayTimeline(
             if (!app_present) {
                 TogglTimelineEventView *app_event_view =
                     timeline_event_view_init(event);
-                if (event.Duration() >= 0) {
+                if (event.Duration() > 0) {
                     app_event_view->Header = true;
                     app_event_view->Title = copy_string("");
 
