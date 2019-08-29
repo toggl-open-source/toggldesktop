@@ -36,11 +36,11 @@ source_dirs=src/*.cc src/*.h src/test/*.cc src/test/*.h \
 xcodebuild_command=xcodebuild \
 				  -scheme TogglDesktop \
 				  -project src/ui/osx/TogglDesktop/TogglDesktop.xcodeproj  \
-				  -configuration Debug
+				  -configuration Debug CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
 xcodebuild_command_release=xcodebuild \
 				  -scheme TogglDesktop \
 				  -project src/ui/osx/TogglDesktop/TogglDesktop.xcodeproj  \
-				  -configuration Release
+				  -configuration Release CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
 
 ifeq ($(uname), Linux)
 executable=./build/src/ui/linux/TogglDesktop/TogglDesktop
@@ -154,9 +154,9 @@ endif
 app_release: lib_release ui_release
 
 lib:
-	xcodebuild -project src/lib/osx/TogglDesktopLibrary.xcodeproj -configuration Debug
+	xcodebuild -project src/lib/osx/TogglDesktopLibrary.xcodeproj -configuration Debug CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
 lib_release:
-	xcodebuild -project src/lib/osx/TogglDesktopLibrary.xcodeproj -configuration Release build
+	xcodebuild -project src/lib/osx/TogglDesktopLibrary.xcodeproj -configuration Release build CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
 
 ui:
 	$(xcodebuild_command)
