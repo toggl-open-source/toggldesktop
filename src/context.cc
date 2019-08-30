@@ -2273,6 +2273,29 @@ error Context::Signup(
     return Login(email, password);
 }
 
+error Context::GoogleSignup(
+    const std::string access_token,
+    const uint64_t country_id) {
+
+    TogglClient client(UI());
+    std::string json("");
+    error err = signupGoogle(&client, access_token, &json, country_id);
+    if (err != noError) {
+        return displayError(err);
+    }
+    return Login(access_token, "google_access_token");
+}
+
+error Context::AsyncGoogleSignup(
+    const std::string access_token,
+    const uint64_t country_id) {
+    std::thread backgroundThread([&](std::string access_token, uint64_t country_id) {
+        return this->GoogleSignup(access_token, country_id);
+    }, access_token, country_id);
+    backgroundThread.detach();
+    return noError;
+}
+
 void Context::setUser(User *value, const bool logged_in) {
     {
         std::stringstream ss;
@@ -5404,6 +5427,53 @@ error Context::pullUserPreferences(
             overlay_visible_ = true;
             UI()->DisplayTosAccept();
         }
+    }
+    catch (const Poco::Exception& exc) {
+        return exc.displayText();
+    }
+    catch (const std::exception& ex) {
+        return ex.what();
+    }
+    catch (const std::string& ex) {
+        return ex;
+    }
+    return noError;
+}
+
+error Context::signupGoogle(
+    TogglClient *toggl_client,
+    const std::string access_token,
+    std::string *user_data_json,
+    const uint64_t country_id) {
+    try {
+        poco_check_ptr(user_data_json);
+        poco_check_ptr(toggl_client);
+
+        Json::Value user;
+        user["google_access_token"] = access_token;
+        user["created_with"] = Formatter::EscapeJSONString(
+            HTTPSClient::Config.UserAgent());
+        user["tos_accepted"] = true;
+        user["country_id"] = Json::UInt64(country_id);
+
+        Json::Value ws;
+        ws["initial_pricing_plan"] = 0;
+        user["workspace"] = ws;
+
+        HTTPSRequest req;
+        req.host = urls::API();
+        req.relative_url = "/api/v9/signup?app_name=kopsik";
+        req.payload = Json::StyledWriter().write(user);
+
+        HTTPSResponse resp = toggl_client->Post(req);
+        if (resp.err != noError) {
+            if (kBadRequestError == resp.err) {
+                return resp.body;
+            }
+            return resp.err;
+        }
+
+        *user_data_json = resp.body;
     }
     catch (const Poco::Exception& exc) {
         return exc.displayText();
