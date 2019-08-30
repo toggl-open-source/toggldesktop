@@ -11,25 +11,15 @@ jobs:
         fetch-depth: 1
     - name: Build on Linux + Make a tarball
       run: |
-        env
-        echo "========================================================"
-        cat "$GITHUB_EVENT_PATH"
-        echo "========================================================"
-        cat "$GITHUB_EVENT_PATH" | jq -r ".ref_type"
-        cat "$GITHUB_EVENT_PATH" | jq -r ".master_branch"
-        cat "$GITHUB_EVENT_PATH" | jq -r ".ref"
-        cat "$GITHUB_EVENT_PATH" | jq -r ".pusher_type"
-        TEST_TAG_NAME=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref")
-        echo "========================================================"
         sudo apt install libxss1 libgstreamer-plugins-base1.0-0 libgstreamer1.0-0 qt5-default libqt5gui5 libqt5webengine5 libqt5webenginecore5 libqt5webenginewidgets5 libqt5printsupport5 libqt5quickwidgets5 libqt5x11extras5 libxss1 
         sudo apt install patchelf binutils cmake pkg-config qtbase5-dev qtwebengine5-dev libqt5x11extras5-dev  qtbase5-private-dev libssl-dev libxss-dev libxmu-dev
         bash ./src/ui/linux/package.sh
     - name: Upload to GitHub
       run: |
-        echo "TEST: " $TEST_TAG_NAME
-        TEST_TAG_NAME=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref")
-        echo "TEST2: " $TEST_TAG_NAME
-        ./upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} owner=MartinBriza repo=toggldesktop tag="v7.4.993" filename="toggldesktop_x86_64.tar.gz"
+        EVENT_TYPE=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref_type")
+        if [[ "$EVENT_TYPE" != "tag" ]]; then exit 0; fi
+        TAG_NAME=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref")
+        ./upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} owner=MartinBriza repo=toggldesktop tag="$TAG_NAME" filename="toggldesktop_x86_64.tar.gz"
         
   linux-ubuntu1604:
     runs-on: ubuntu-16.04
@@ -55,12 +45,19 @@ jobs:
         fetch-depth: 1
     - name: Build a Debian package
       run: |
+        TAG_NAME=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref")
         base64 -d <<< ${{ secrets.CERT_LINUX_DEB64 }} > key.asc
         gpg --import key.asc
         sudo apt install devscripts cmake debhelper pkg-config qtbase5-dev qtwebengine5-dev libqt5x11extras5-dev qtbase5-private-dev libssl-dev libxss-dev libxmu-dev
-        dch -D unstable --package "toggldesktop" -v 7.4.999 "General bug fixes and improvements" -u low -M
+        dch -D unstable --package "toggldesktop" -v ${TAG_NAME} "General bug fixes and improvements" -u low -M
         rm Makefile
         debuild
+    - name: Upload to GitHub
+      run: |
+        EVENT_TYPE=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref_type")
+        if [[ "$EVENT_TYPE" != "tag" ]]; then exit 0; fi
+        TAG_NAME=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref")
+        ./upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} owner=MartinBriza repo=toggldesktop tag="$TAG_NAME" filename="toggldesktop_${TAG_NAME/v/}_amd64.deb"
         
   linux-flatpak-kde:
     runs-on: ubuntu-18.04
@@ -84,16 +81,9 @@ jobs:
         fetch-depth: 1
     - name: Build on macOS
       run: |
-        sed -i.bak s/B227VTMZ94/Z52EFCPL6D/ ./src/ui/osx/TogglDesktop/TogglDesktop.xcodeproj/project.pbxproj
-        sed -i.bak s/B227VTMZ94/Z52EFCPL6D/ ./src/lib/osx/TogglDesktopLibrary.xcodeproj/project.pbxproj
         base64 -D <<<  ${{ secrets.CERT_MACOS_TEMPORARY }} > cert.cer
-        security list-keychains
         security import cert.cer "/Users/runner/Library/Keychains/login.keychain-db"
         security unlock-keychain -p '' "/Users/runner/Library/Keychains/login.keychain-db"
-        security list-keychains
-        security dump-keychain "/Users/runner/Library/Keychains/login.keychain-db"
-        #sed -i.bak "s/B227VTMZ94/''/" src/lib/osx/TogglDesktopLibrary.xcodeproj/project.pbxproj
-        #sed -i.bak "s/B227VTMZ94/''/" src/ui/osx/TogglDesktop/TogglDesktop.xcodeproj/project.pbxproj
         make deps
         make
         
@@ -109,6 +99,12 @@ jobs:
         "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe" src/ui/windows/TogglDesktop/TogglDesktop.sln /p:Configuration=Release /p:Platform="x86" /t:Clean,Build /restore
         cd src/ui/windows/
         makensis TogglDesktopInstaller-x86.nsi
+    - name: Upload to GitHub
+      run: |
+        EVENT_TYPE=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref_type")
+        if [[ "$EVENT_TYPE" != "tag" ]]; then exit 0; fi
+        TAG_NAME=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref")
+        ./upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} owner=MartinBriza repo=toggldesktop tag="$TAG_NAME" filename="src/ui/windows/TogglDesktopInstaller.exe"
         
   windows-64bit:
     runs-on: windows-2019
@@ -122,13 +118,12 @@ jobs:
         "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe" src/ui/windows/TogglDesktop/TogglDesktop.sln /p:Configuration=Release /p:Platform="x64" /t:Clean,Build /restore
         cd src/ui/windows/
         makensis TogglDesktopInstaller-x64.nsi
-    - name: Upload
-      if: github.event_name == 'release' 
-      uses: skx/github-action-publish-binaries@master
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        args: 'src/ui/windows/TogglDesktopInstaller-x64.exe'
+    - name: Upload to GitHub
+      run: |
+        EVENT_TYPE=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref_type")
+        if [[ "$EVENT_TYPE" != "tag" ]]; then exit 0; fi
+        TAG_NAME=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref")
+        ./upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} owner=MartinBriza repo=toggldesktop tag="$TAG_NAME" filename="src/ui/windows/TogglDesktopInstaller-x64.exe"
 
   build-winstore:
     runs-on: windows-2019
