@@ -32,7 +32,7 @@ jobs:
         exit 0 # don't waste resources while it doesn't work
         sudo add-apt-repository ppa:nextcloud-devs/client
         sudo apt install devscripts cmake debhelper pkg-config qtbase5-dev qtwebengine5-dev libqt5x11extras5-dev qtbase5-private-dev libssl-dev libxss-dev libxmu-dev
-        dch -D unstable --package "toggldesktop" -v 7.4.999 "General bug fixes and improvements" -u low -M
+        dch -D unstable --package "toggldesktop" -v ${TAG_NAME/v/} "General bug fixes and improvements" -u low -M
         rm Makefile
         debuild
 
@@ -49,7 +49,7 @@ jobs:
         base64 -d <<< ${{ secrets.CERT_LINUX_DEB64 }} > key.asc
         gpg --import key.asc
         sudo apt install devscripts cmake debhelper pkg-config qtbase5-dev qtwebengine5-dev libqt5x11extras5-dev qtbase5-private-dev libssl-dev libxss-dev libxmu-dev
-        dch -D unstable --package "toggldesktop" -v ${TAG_NAME} "General bug fixes and improvements" -u low -M
+        dch -D unstable --package "toggldesktop" -v ${TAG_NAME/v/} "General bug fixes and improvements" -u low -M
         rm Makefile
         debuild
     - name: Upload to GitHub
