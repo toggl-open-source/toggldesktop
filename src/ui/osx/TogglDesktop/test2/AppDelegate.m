@@ -1430,7 +1430,6 @@ const NSString *appName = @"osx_native_app";
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
 	[self.idleNotificationWindowController displayIdleEvent:idleEvent];
-	[NSApp activateIgnoringOtherApps:YES];
 }
 
 - (PLCrashReporter *)configuredCrashReporter
