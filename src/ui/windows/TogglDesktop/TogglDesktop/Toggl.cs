@@ -214,6 +214,11 @@ public static partial class Toggl
         return toggl_login(ctx, email, password);
     }
 
+    public static bool GoogleSignup(string access_token, long country_id)
+    {
+        return toggl_google_signup(ctx, access_token, Convert.ToUInt64(country_id));
+    }
+
     public static bool GoogleLogin(string access_token)
     {
         return toggl_google_login(ctx, access_token);

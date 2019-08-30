@@ -82,7 +82,6 @@ namespace TogglDesktop
             this.tryConfirm();
         }
 
-
         private void onSignupLoginToggleClick(object sender, RoutedEventArgs e)
         {
             switch (this.confirmAction)
@@ -100,7 +99,22 @@ namespace TogglDesktop
 
         private void onGoogleLoginClick(object sender, RoutedEventArgs e)
         {
-            this.googleLogin();
+            if (!validateGoogleLoginSignup())
+            {
+                return;
+            }
+
+            switch (this.confirmAction)
+            {
+                case ConfirmAction.LogIn:
+                    this.googleLogin();
+                    break;
+                case ConfirmAction.SignUp:
+                    this.googleSignup();
+                    break;
+                default:
+                    throw new ArgumentException(string.Format("Invalid action '{0}' in login form.", this.confirmAction));
+            }
         }
 
         private void onForgotPasswordButtonClick(object sender, RoutedEventArgs e)
@@ -119,7 +133,7 @@ namespace TogglDesktop
                 case ConfirmAction.LogIn:
                     this.confirmButtonText.Text = "LOG IN";
                     this.forgotPasswordButton.Visibility = Visibility.Visible;
-                    this.googleLoginButton.Visibility = Visibility.Visible;
+                    this.googleLoginButtonTextBlock.Text = "LOG IN WITH GOOGLE";
                     this.countryLabel.Visibility = Visibility.Collapsed;
                     this.countrySelect.Visibility = Visibility.Collapsed;
                     this.tosCheckbox.Visibility = Visibility.Collapsed;
@@ -128,7 +142,7 @@ namespace TogglDesktop
                 case ConfirmAction.SignUp:
                     this.confirmButtonText.Text = "SIGN UP";
                     this.forgotPasswordButton.Visibility = Visibility.Collapsed;
-                    this.googleLoginButton.Visibility = Visibility.Collapsed;
+                    this.googleLoginButtonTextBlock.Text = "SIGN UP WITH GOOGLE";
                     this.countryLabel.Visibility = Visibility.Visible;
                     this.countrySelect.Visibility = Visibility.Visible;
                     this.tosCheckbox.Visibility = Visibility.Visible;
@@ -158,7 +172,7 @@ namespace TogglDesktop
 
         private void tryConfirm()
         {
-            if (!this.validateFields())
+            if (!this.validateLoginSignup())
             {
                 return;
             }
@@ -225,7 +239,7 @@ namespace TogglDesktop
             this.confirmSpinnerAnimation.Begin();
         }
 
-        private bool validateFields()
+        private bool validateLoginSignup()
         {
             if (this.emailTextBox.Text == "")
             {
@@ -240,22 +254,42 @@ namespace TogglDesktop
                 return false;
             }
 
-            if (this.confirmAction == ConfirmAction.SignUp)
+            if (this.confirmAction == ConfirmAction.SignUp
+                && !validateMandatorySignupFields())
             {
-                if (this.selectedCountryID == -1)
-                {
-                    this.countrySelect.Focus();
-                    Toggl.NewError("Please select Country before signing up", true);
-                    return false;
-                }
-                if (!this.tosCheckbox.IsChecked.Value)
-                {
-                    this.tosCheckbox.Focus();
-                    Toggl.NewError("You must agree to the terms of service and privacy policy to use Toggl", true);
-
-                    return false;
-                }
+                return false;
             }
+
+            return true;
+        }
+
+        private bool validateMandatorySignupFields()
+        {
+            if (this.selectedCountryID == -1)
+            {
+                this.countrySelect.Focus();
+                Toggl.NewError("Please select Country before signing up", true);
+                return false;
+            }
+            if (!this.tosCheckbox.IsChecked.Value)
+            {
+                this.tosCheckbox.Focus();
+                Toggl.NewError("You must agree to the terms of service and privacy policy to use Toggl", true);
+
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool validateGoogleLoginSignup()
+        {
+            if (this.confirmAction == ConfirmAction.SignUp
+                && !validateMandatorySignupFields())
+            {
+                return false;
+            }
+
             return true;
         }
 
@@ -263,19 +297,7 @@ namespace TogglDesktop
         {
             try
             {
-                var credential = await GoogleWebAuthorizationBroker.AuthorizeAsync(
-                    new ClientSecrets
-                    {
-                        ClientId = "426090949585-uj7lka2mtanjgd7j9i6c4ik091rcv6n5.apps.googleusercontent.com",
-                        ClientSecret = "6IHWKIfTAMF7cPJsBvoGxYui"
-                    },
-                    new[]
-                    {
-                        Oauth2Service.Scope.UserinfoEmail,
-                        Oauth2Service.Scope.UserinfoProfile
-                    },
-                    "user",
-                    CancellationToken.None);
+                var credential = await obtainGoogleUserCredentialAsync();
                 Toggl.GoogleLogin(credential.Token.AccessToken);
                 await credential.RevokeTokenAsync(CancellationToken.None);
             }
@@ -291,6 +313,45 @@ namespace TogglDesktop
                     Toggl.NewError(ex.Message, false);
                 }
             }
+        }
+
+        private async void googleSignup()
+        {
+            try
+            {
+                var credential = await obtainGoogleUserCredentialAsync();
+                Toggl.GoogleSignup(credential.Token.AccessToken, selectedCountryID);
+                await credential.RevokeTokenAsync(CancellationToken.None);
+            }
+            catch (AggregateException ex)
+            {
+                if (ex.InnerException != null &&
+                    ex.InnerException.Message.Contains("access_denied"))
+                {
+                    Toggl.NewError("Signup process was canceled", true);
+                }
+                else
+                {
+                    Toggl.NewError(ex.Message, false);
+                }
+            }
+        }
+
+        private static async Task<UserCredential> obtainGoogleUserCredentialAsync()
+        {
+            return await GoogleWebAuthorizationBroker.AuthorizeAsync(
+                new ClientSecrets
+                {
+                    ClientId = "426090949585-uj7lka2mtanjgd7j9i6c4ik091rcv6n5.apps.googleusercontent.com",
+                    ClientSecret = "6IHWKIfTAMF7cPJsBvoGxYui"
+                },
+                new[]
+                {
+                    Oauth2Service.Scope.UserinfoEmail,
+                    Oauth2Service.Scope.UserinfoProfile
+                },
+                "user",
+                CancellationToken.None);
         }
 
         private void reset()
