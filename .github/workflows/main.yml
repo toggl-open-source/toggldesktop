@@ -106,7 +106,7 @@ jobs:
     - name: Build on Windows x86
       run: |
         choco install nsis -y
-        "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe" src/ui/windows/TogglDesktop/TogglDesktop.sln /property:Configuration=Release /p:Platform="x86" /t:Clean,Build /restore
+        "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe" src/ui/windows/TogglDesktop/TogglDesktop.sln /p:Configuration=Release /p:Platform="x86" /t:Clean,Build /restore
         cd src/ui/windows/
         makensis TogglDesktopInstaller-x86.nsi
         
@@ -119,6 +119,22 @@ jobs:
     - name: Build on Windows x64
       run: |
         choco install nsis -y
-        "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe" src/ui/windows/TogglDesktop/TogglDesktop.sln /property:Configuration=Release /p:Platform="x64" /t:Clean,Build /restore
+        "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe" src/ui/windows/TogglDesktop/TogglDesktop.sln /p:Configuration=Release /p:Platform="x64" /t:Clean,Build /restore
         cd src/ui/windows/
         makensis TogglDesktopInstaller-x64.nsi
+    - name: Upload
+      if: github.event_name == 'release' 
+      uses: skx/github-action-publish-binaries@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        args: 'src/ui/windows/TogglDesktopInstaller-x64.exe'
+
+  build-winstore:
+    runs-on: windows-2019
+    steps:
+    - uses: actions/checkout@v1
+    - name: Build on Windows for Microsoft Store (no signing)
+      run: |
+        "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe" src/ui/windows/TogglDesktop/TogglDesktop.sln /p:Configuration=StoreRelease /p:Platform="x86" /p:AppxPackageSigningEnabled=false /t:Clean,Build /restore -m
+        "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe" src/ui/windows/TogglDesktop/TogglDesktop.sln /p:Configuration=StoreRelease /p:Platform="x64" /p:UapAppxPackageBuildMode=CI /p:AppxBundle=Always /p:AppxBundlePlatforms="x86|x64" /p:AppxPackageSigningEnabled=false /t:Clean,Build /restore -m
