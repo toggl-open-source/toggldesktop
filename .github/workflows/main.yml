@@ -125,7 +125,7 @@ jobs:
         if [[ "$EVENT_TYPE" != "tag" ]]; then exit 0; fi
         TAG_NAME=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref")
         ./upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} owner=MartinBriza repo=toggldesktop tag="$TAG_NAME" filename="src/ui/windows/TogglDesktopInstaller-x64.exe"
-      run.shell: bash
+      shell: bash
 
   build-winstore:
     runs-on: windows-2019
@@ -135,4 +135,4 @@ jobs:
       run: |
         "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe" src/ui/windows/TogglDesktop/TogglDesktop.sln /p:Configuration=StoreRelease /p:Platform="x86" /p:AppxPackageSigningEnabled=false /t:Clean,Build /restore -m
         "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe" src/ui/windows/TogglDesktop/TogglDesktop.sln /p:Configuration=StoreRelease /p:Platform="x64" /p:UapAppxPackageBuildMode=CI /p:AppxBundle=Always /p:AppxBundlePlatforms="x86|x64" /p:AppxPackageSigningEnabled=false /t:Clean,Build /restore -m  
-      run.shell: bash
+      shell: bash
