@@ -8,6 +8,9 @@
 
 #import <Cocoa/Cocoa.h>
 
+@class TimerEditViewController;
+
 @interface TimeEntryListViewController : NSViewController
+@property (nonatomic, strong) TimerEditViewController *timerEditViewController;
 @property (nonatomic, assign, readonly) BOOL isEditorOpen;
 @end
