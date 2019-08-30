@@ -36,7 +36,8 @@ done
 # Define variables.
 GH_API="https://api.github.com"
 GH_REPO="$GH_API/repos/$owner/$repo"
-GH_TAGS="$GH_REPO/releases/tags/$tag"
+GH_RELEASES="$GH_REPO/releases"
+GH_TAGS="$GH_RELEASES/tags/$tag"
 AUTH="Authorization: token $github_api_token"
 WGET_ARGS="--content-disposition --auth-no-challenge --no-cookie"
 CURL_ARGS="-LJO#"
@@ -47,6 +48,8 @@ fi
 
 # Validate token.
 curl -o /dev/null -sH "$AUTH" $GH_REPO || { echo "Error: Invalid repo, token or network issue!";  exit 1; }
+
+curl -d '{ "tag_name": "'$tag'", "target_commitish": "", "name": "v1.0.0", "body": "This is an automatically created release for testing purposes.", "draft": false, "prerelease": true }' -H "Content-Type: application/json" -X POST -o /dev/null -sH "$AUTH" $GH_RELEASES
 
 # Read asset tags.
 response=$(curl -sH "$AUTH" $GH_TAGS)
