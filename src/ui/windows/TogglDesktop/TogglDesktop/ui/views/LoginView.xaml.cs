@@ -364,7 +364,7 @@ namespace TogglDesktop
 
         private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
         {
-            System.Diagnostics.Process.Start(e.Uri.ToString());
+            Toggl.OpenInBrowser(e.Uri.ToString());
         }
 
         private void countrySelect_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)

@@ -1417,6 +1417,17 @@ public static partial class Toggl
         OnError(errmsg, user_error);
     }
 
+    public static void OpenInBrowser(string url)
+    {
+        OnURL(url);
+    }
+
+    public static void ShowErrorAndNotify(string errmsg, Exception ex)
+    {
+        NewError(errmsg, true);
+        Program.NotifyBugsnag(ex);
+    }
+
     public static bool AskToDeleteEntry(string guid)
     {
         var result = MessageBox.Show(mainWindow, "Deleted time entries cannot be restored.", "Delete time entry?",
