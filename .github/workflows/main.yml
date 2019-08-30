@@ -54,12 +54,13 @@ jobs:
         debuild
         ls
         ls debian
+        ls ..
     - name: Upload to GitHub
       run: |
         EVENT_TYPE=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref_type")
         if [[ "$EVENT_TYPE" != "tag" ]]; then exit 0; fi
         TAG_NAME=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref")
-        ./upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} owner=MartinBriza repo=toggldesktop tag="$TAG_NAME" filename="toggldesktop_${TAG_NAME/v/}_amd64.deb"
+        ./upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} owner=MartinBriza repo=toggldesktop tag="$TAG_NAME" filename="../toggldesktop_${TAG_NAME/v/}_amd64.deb"
         
   linux-flatpak-kde:
     runs-on: ubuntu-18.04
@@ -74,7 +75,13 @@ jobs:
         sudo flatpak install --system -y flathub org.kde.Platform//5.12
         sudo flatpak install --system -y flathub org.kde.Sdk//5.12 
         sudo flatpak-builder --repo=flatpak-repo --force-clean flatpak-build com.toggl.TogglDesktop.json
-        ls
+        flatpak build-bundle flatpak-repo com.toggl.TogglDesktop.flatpak com.toggl.TogglDesktop
+    - name: Upload to GitHub
+      run: |
+        EVENT_TYPE=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref_type")
+        if [[ "$EVENT_TYPE" != "tag" ]]; then exit 0; fi
+        TAG_NAME=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref")
+        ./upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} owner=MartinBriza repo=toggldesktop tag="$TAG_NAME" filename="com.toggl.TogglDesktop.flatpak"
 
   mac:
     runs-on: macOS-10.14
