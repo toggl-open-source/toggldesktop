@@ -50,7 +50,7 @@ extern void *ctx;
 	[self styleCancelButton];
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(windowDidBecomeActiveNotification)
-												 name:NSApplicationDidBecomeActiveNotification
+												 name:NSWindowDidBecomeKeyNotification
 											   object:nil];
 }
 
@@ -64,7 +64,8 @@ extern void *ctx;
 	if (self.isWaiting && ![UserNotificationCenter share].isDoNotDisturbEnabled)
 	{
 		[self.window makeKeyAndOrderFront:nil];
-        self.isWaiting = NO;
+		[NSApp activateIgnoringOtherApps:YES];
+		self.isWaiting = NO;
 	}
 }
 
@@ -129,6 +130,7 @@ extern void *ctx;
 	else
 	{
 		[self.window makeKeyAndOrderFront:nil];
+		[NSApp activateIgnoringOtherApps:YES];
 	}
 }
 
