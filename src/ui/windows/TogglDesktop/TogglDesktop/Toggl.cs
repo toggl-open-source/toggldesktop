@@ -127,7 +127,7 @@ public static partial class Toggl
         string guid,
         string since,
         string duration,
-        UInt64 started,
+        Int64 started,
         string description);
 
     public delegate void DisplayAutotrackerRules(
@@ -366,12 +366,12 @@ public static partial class Toggl
         return toggl_stop(ctx, preventOnApp);
     }
 
-    public static bool DiscardTimeAt(string guid, UInt64 at, bool split)
+    public static bool DiscardTimeAt(string guid, Int64 at, bool split)
     {
         return toggl_discard_time_at(ctx, guid, at, split);
     }
 
-    public static bool DiscardTimeAndContinue(string guid, UInt64 at, bool split)
+    public static bool DiscardTimeAndContinue(string guid, Int64 at, bool split)
     {
         return toggl_discard_time_and_continue(ctx, guid, at);
     }
@@ -394,12 +394,12 @@ public static partial class Toggl
         }
 
         if (!toggl_set_settings_idle_minutes(ctx,
-                                             settings.IdleMinutes)) {
+                                             (ulong)settings.IdleMinutes)) {
             return false;
         }
 
         if (!toggl_set_settings_reminder_minutes(ctx,
-                settings.ReminderMinutes)) {
+                (ulong)settings.ReminderMinutes)) {
             return false;
         }
 
@@ -456,7 +456,7 @@ public static partial class Toggl
             return false;
         }
 
-        if (!toggl_set_settings_pomodoro_minutes(ctx, settings.PomodoroMinutes))
+        if (!toggl_set_settings_pomodoro_minutes(ctx, (ulong)settings.PomodoroMinutes))
         {
             return false;
         }
@@ -466,7 +466,7 @@ public static partial class Toggl
             return false;
         }
 
-        if (!toggl_set_settings_pomodoro_break_minutes(ctx, settings.PomodoroBreakMinutes))
+        if (!toggl_set_settings_pomodoro_break_minutes(ctx, (ulong)settings.PomodoroBreakMinutes))
         {
             return false;
         }

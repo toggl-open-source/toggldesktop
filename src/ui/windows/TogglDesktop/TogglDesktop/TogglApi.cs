@@ -225,10 +225,10 @@ public static partial class Toggl
         public         bool Reminder;
         [MarshalAs(UnmanagedType.I1)]
         public         bool RecordTimeline;
-        public         UInt64 IdleMinutes;
+        public         Int64 IdleMinutes;
         [MarshalAs(UnmanagedType.I1)]
         public         bool FocusOnShortcut;
-        public         UInt64 ReminderMinutes;
+        public         Int64 ReminderMinutes;
         [MarshalAs(UnmanagedType.I1)]
         public         bool ManualMode;
         [MarshalAs(UnmanagedType.I1)]
@@ -259,8 +259,8 @@ public static partial class Toggl
         public         bool Pomodoro;
         [MarshalAs(UnmanagedType.I1)]
         public         bool PomodoroBreak;
-        public         UInt64 PomodoroMinutes;
-        public         UInt64 PomodoroBreakMinutes;
+        public         Int64 PomodoroMinutes;
+        public         Int64 PomodoroBreakMinutes;
         [MarshalAs(UnmanagedType.I1)]
         public         bool StopEntryOnShutdownSleep;
 
@@ -296,8 +296,8 @@ public static partial class Toggl
         public         string Title;
         [MarshalAs(UnmanagedType.LPWStr)]
         public         string Filename;
-        public         UInt64 StartTime;
-        public         UInt64 EndTime;
+        public         Int64 StartTime;
+        public         Int64 EndTime;
         [MarshalAs(UnmanagedType.I1)]
         public         bool Idle;
         public         IntPtr Next;
@@ -459,7 +459,7 @@ public static partial class Toggl
         string since,
         [MarshalAs(UnmanagedType.LPWStr)]
         string duration,
-        UInt64 started,
+        Int64 started,
         [MarshalAs(UnmanagedType.LPWStr)]
         string description);
 
@@ -788,6 +788,22 @@ public static partial class Toggl
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return:MarshalAs(UnmanagedType.I1)]
+    private static extern bool toggl_google_signup(
+        IntPtr context,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string access_token,
+        UInt64 country_id);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    [return:MarshalAs(UnmanagedType.I1)]
+    private static extern bool toggl_google_signup_async(
+        IntPtr context,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string access_token,
+        UInt64 country_id);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    [return:MarshalAs(UnmanagedType.I1)]
     private static extern bool toggl_google_login(
         IntPtr context,
         [MarshalAs(UnmanagedType.LPWStr)]
@@ -969,7 +985,7 @@ public static partial class Toggl
         IntPtr context,
         [MarshalAs(UnmanagedType.LPWStr)]
         string guid,
-        UInt64 at,
+        Int64 at,
         [MarshalAs(UnmanagedType.I1)]
         bool split_into_new_entry);
 
@@ -979,7 +995,7 @@ public static partial class Toggl
         IntPtr context,
         [MarshalAs(UnmanagedType.LPWStr)]
         string guid,
-        UInt64 at);
+        Int64 at);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return:MarshalAs(UnmanagedType.I1)]
@@ -1564,6 +1580,11 @@ public static partial class Toggl
         UInt64 width,
         UInt64 height);
 
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern void track_edit_size(
+        IntPtr context,
+        UInt64 width,
+        UInt64 height);
 
 
 
