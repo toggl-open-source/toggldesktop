@@ -9,6 +9,8 @@ using Google.Apis.Oauth2.v2;
 using TogglDesktop.Diagnostics;
 using System.Collections.Generic;
 using System.Windows.Navigation;
+using Google.Apis.Auth.OAuth2.Responses;
+using Google.Apis.Util;
 
 namespace TogglDesktop
 {
@@ -339,7 +341,7 @@ namespace TogglDesktop
 
         private static async Task<UserCredential> obtainGoogleUserCredentialAsync()
         {
-            return await GoogleWebAuthorizationBroker.AuthorizeAsync(
+            var credential = await GoogleWebAuthorizationBroker.AuthorizeAsync(
                 new ClientSecrets
                 {
                     ClientId = "426090949585-uj7lka2mtanjgd7j9i6c4ik091rcv6n5.apps.googleusercontent.com",
@@ -352,6 +354,13 @@ namespace TogglDesktop
                 },
                 "user",
                 CancellationToken.None);
+            var isTokenExpired = credential.Token.IsExpired(SystemClock.Default);
+            if (isTokenExpired)
+            {
+                await credential.RefreshTokenAsync(CancellationToken.None);
+            }
+
+            return credential;
         }
 
         private void reset()
