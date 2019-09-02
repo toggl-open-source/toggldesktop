@@ -303,10 +303,11 @@ namespace TogglDesktop
                 Toggl.GoogleLogin(credential.Token.AccessToken);
                 await credential.RevokeTokenAsync(CancellationToken.None);
             }
-            catch (AggregateException ex)
+            catch (Exception ex)
             {
-                if (ex.InnerException != null &&
-                    ex.InnerException.Message.Contains("access_denied"))
+                if (ex.Message.Contains("access_denied") ||
+                    (ex.InnerException != null &&
+                     ex.InnerException.Message.Contains("access_denied")))
                 {
                     Toggl.NewError("Login process was canceled", true);
                 }
@@ -325,10 +326,11 @@ namespace TogglDesktop
                 Toggl.GoogleSignup(credential.Token.AccessToken, selectedCountryID);
                 await credential.RevokeTokenAsync(CancellationToken.None);
             }
-            catch (AggregateException ex)
+            catch (Exception ex)
             {
-                if (ex.InnerException != null &&
-                    ex.InnerException.Message.Contains("access_denied"))
+                if (ex.Message.Contains("access_denied") ||
+                    (ex.InnerException != null &&
+                    ex.InnerException.Message.Contains("access_denied")))
                 {
                     Toggl.NewError("Signup process was canceled", true);
                 }
