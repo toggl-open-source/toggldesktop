@@ -205,6 +205,7 @@
 		BA75FF3722BCC5FB00D3F08C /* TimelineFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA75FF3622BCC5FB00D3F08C /* TimelineFlowLayout.swift */; };
 		BA75FF3922BCC6F800D3F08C /* TimelineData.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA75FF3822BCC6F800D3F08C /* TimelineData.swift */; };
 		BA75FF3C22BCE94100D3F08C /* TimelineDisplayCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = BA75FF3B22BCE94100D3F08C /* TimelineDisplayCommand.m */; };
+		BA787D6D231E58C9003AD3AA /* Array+View.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA787D4E231E58C9003AD3AA /* Array+View.swift */; };
 		BA7B4BCB21C0EF8800B75B14 /* NSAlert+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = BA7B4BCA21C0EF8800B75B14 /* NSAlert+Utils.m */; };
 		BA7B4C3721C24B9D00B75B14 /* UndoTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = BA7B4C3621C24B9D00B75B14 /* UndoTextField.m */; };
 		BA7B4C7C21C293E700B75B14 /* String+Optional.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7B4C7B21C293E700B75B14 /* String+Optional.swift */; };
@@ -826,6 +827,7 @@
 		BA75FF3822BCC6F800D3F08C /* TimelineData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineData.swift; sourceTree = "<group>"; };
 		BA75FF3A22BCE94100D3F08C /* TimelineDisplayCommand.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TimelineDisplayCommand.h; sourceTree = "<group>"; };
 		BA75FF3B22BCE94100D3F08C /* TimelineDisplayCommand.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TimelineDisplayCommand.m; sourceTree = "<group>"; };
+		BA787D4E231E58C9003AD3AA /* Array+View.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Array+View.swift"; sourceTree = "<group>"; };
 		BA7B4BC921C0EF8800B75B14 /* NSAlert+Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSAlert+Utils.h"; sourceTree = "<group>"; };
 		BA7B4BCA21C0EF8800B75B14 /* NSAlert+Utils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSAlert+Utils.m"; sourceTree = "<group>"; };
 		BA7B4C3521C24B9D00B75B14 /* UndoTextField.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UndoTextField.h; sourceTree = "<group>"; };
@@ -1355,17 +1357,9 @@
 				BA4791EA22F0478900E24F79 /* String+Search.swift */,
 				BA6F1B3721EEE998009265E4 /* Theme+Notification.swift */,
 				BA2E3F2B22375E640035D034 /* NSView+Appearance.swift */,
-				BAF6319B21E6F868002DD6AB /* NotificationCenter+MainThread.swift */,
-				BA6F1B1921EEE258009265E4 /* NSColor+Utils.swift */,
-				BA03729C21FED85700FC277B /* NSView+Xib.swift */,
-				BA46E09E2226707F00C25763 /* Collection+Safe.swift */,
-				BA9D90B3222D14ED00D5EC0E /* NSView+Animation.swift */,
-				BA9D90D3222D155900D5EC0E /* NSView+Ext.swift */,
-				BAA260D0222D1DC70094F4E4 /* NSView+Shadow+Border.swift */,
-				BA08E011222E32C90075F68E /* NSView+LayoutConstraint.swift */,
-				BA89CB382265EA4400D21584 /* String+Search.swift */,
 				BA81896923016148000710EA /* NSColor+VisibleColor.swift */,
 				BA2807DF2306A2FA001A9E48 /* NSWindowController+Focusable.swift */,
+				BA787D4E231E58C9003AD3AA /* Array+View.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -2161,6 +2155,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				74C15796183A8CE600550613 /* AutocompleteItem.m in Sources */,
+				BA787D6D231E58C9003AD3AA /* Array+View.swift in Sources */,
 				7484F622191D92C30038885C /* Settings.m in Sources */,
 				95C0707A18CDB91500A34D0D /* NSCustomComboBox.m in Sources */,
 				3CC450E91A31ED540012440B /* NSTextFieldDuration.m in Sources */,
