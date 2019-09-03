@@ -485,6 +485,10 @@ void UIElements::ApplyChanges(
         if (ch.ModelType() == kModelSettings) {
             display_settings = true;
         }
+
+        if (ch.ModelType() == kModelTimelineEvent && ch.ChangeType() == kChangeTypeInsert) {
+            display_timeline = true;
+        }
     }
 }
 
