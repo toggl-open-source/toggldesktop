@@ -13,8 +13,6 @@ protocol TimelineDatasourceDelegate: class {
     func shouldPresentTimeEntryEditor(in view: NSView, timeEntry: TimeEntryViewItem)
     func shouldPresentTimeEntryHover(in view: NSView, timeEntry: TimelineTimeEntry)
     func shouldPresentActivityHover(in view: NSView, activity: TimelineActivity)
-    func shouldDismissTimeEntryHover()
-    func shouldDismissActivityHover()
     func startNewTimeEntry(at started: TimeInterval, ended: TimeInterval)
 }
 
@@ -221,17 +219,7 @@ extension TimelineDatasource: TimelineTimeEntryCellDelegate {
 
 extension TimelineDatasource: TimelineBaseCellDelegate {
 
-    func timelineCellMouseDidExited(_ sender: TimelineBaseCell) {
-
-        switch sender {
-        case let timeEntryCell as TimelineTimeEntryCell:
-            delegate?.shouldDismissTimeEntryHover()
-        case let activityCell as TimelineActivityCell:
-            delegate?.shouldDismissActivityHover()
-        default:
-            break
-        }
-    }
+    func timelineCellMouseDidExited(_ sender: TimelineBaseCell) {}
 
     func timelineCellMouseDidEntered(_ sender: TimelineBaseCell) {
         switch sender {

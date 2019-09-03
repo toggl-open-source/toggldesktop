@@ -250,16 +250,8 @@ extension TimelineDashboardViewController: TimelineDatasourceDelegate {
         activityHoverController.render(activity)
     }
 
-    func shouldDismissTimeEntryHover() {
-        timeEntryHoverPopover.close()
-    }
-
-    func shouldDismissActivityHover() {
-//        activityHoverPopover.close()
-    }
-
     func shouldPresentTimeEntryEditor(in view: NSView, timeEntry: TimeEntryViewItem) {
-        shouldDismissTimeEntryHover()
+        timeEntryHoverPopover.close()
         selectedGUID = timeEntry.guid
         editorPopover.show(relativeTo: view.bounds, of: view, preferredEdge: .maxX)
         editorPopover.setTimeEntry(timeEntry)
