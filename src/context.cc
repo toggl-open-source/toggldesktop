@@ -5460,9 +5460,12 @@ error Context::signupGoogle(
         ws["initial_pricing_plan"] = 0;
         user["workspace"] = ws;
 
+        std::stringstream ss;
+        ss << "/api/v9/signup?app_name=" << TogglClient::Config.AppName;
+
         HTTPSRequest req;
         req.host = urls::API();
-        req.relative_url = "/api/v9/signup?app_name=kopsik";
+        req.relative_url = ss.str();
         req.payload = Json::StyledWriter().write(user);
 
         HTTPSResponse resp = toggl_client->Post(req);
