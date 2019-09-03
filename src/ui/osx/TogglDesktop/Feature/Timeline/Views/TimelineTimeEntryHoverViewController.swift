@@ -62,6 +62,7 @@ final class TimelineTimeEntryHoverViewController: NSViewController {
                 projectLbl.textColor = NSColor.labelColor
             }
             projectLbl.stringValue = project
+            projectLbl.toolTip = project
         } else {
             dotImageView.isHidden = true
             projectLbl.stringValue = "No Project"
