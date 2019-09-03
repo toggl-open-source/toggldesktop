@@ -53,7 +53,7 @@ final class TimelineDashboardViewController: NSViewController {
     private lazy var activityHoverPopover: NSPopover = {
         let popover = NSPopover()
         popover.animates = false
-        popover.behavior = .semitransient
+        popover.behavior = .transient
         popover.contentViewController = activityHoverController
         return popover
     }()
@@ -255,7 +255,7 @@ extension TimelineDashboardViewController: TimelineDatasourceDelegate {
     }
 
     func shouldDismissActivityHover() {
-        activityHoverPopover.close()
+//        activityHoverPopover.close()
     }
 
     func shouldPresentTimeEntryEditor(in view: NSView, timeEntry: TimeEntryViewItem) {
