@@ -88,13 +88,10 @@ final class TimelineActivityHoverController: NSViewController {
     }
 
     private func updateContentSize() {
-        guard let popover = popover else { return }
 
         // Find bigest event text field
-        let max = eventStackView.arrangedSubviews.max { (lhs, rhs) -> Bool in
-            return lhs.frame.size.width >= rhs.frame.size.width
-        }
-        guard let biggestTextField = max else { return }
+        guard let popover = popover,
+            let biggestTextField = eventStackView.arrangedSubviews.viewWithMaxWidth() else { return }
 
         // Override
         var size = popover.contentSize
