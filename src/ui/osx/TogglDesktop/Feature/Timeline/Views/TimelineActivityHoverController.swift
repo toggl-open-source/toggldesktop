@@ -10,10 +10,18 @@ import Cocoa
 
 final class TimelineActivityHoverController: NSViewController {
 
+    private struct Constants {
+        static let LeftRightPadding: CGFloat = 20.0
+    }
+
     // MARK: OUTLET
 
     @IBOutlet weak var timeLbl: NSTextField!
     @IBOutlet weak var eventStackView: NSStackView!
+
+    // MARK: Variables
+
+    weak var popover: NSPopover?
 
     // MARK: View
 
@@ -53,6 +61,9 @@ final class TimelineActivityHoverController: NSViewController {
         eventLabels.forEach {
             eventStackView.addArrangedSubview($0)
         }
+
+        // Update size popover
+        updateContentSize()
     }
 
     private func buildLabel(from event: TimelineEvent, isSubEvent: Bool) -> NSTextField {
@@ -74,5 +85,20 @@ final class TimelineActivityHoverController: NSViewController {
         paddingView.translatesAutoresizingMaskIntoConstraints = false
         paddingView.heightAnchor.constraint(equalToConstant: 5).isActive = true
         return paddingView
+    }
+
+    private func updateContentSize() {
+        guard let popover = popover else { return }
+
+        // Find bigest event text field
+        let max = eventStackView.arrangedSubviews.max { (lhs, rhs) -> Bool in
+            return lhs.frame.size.width >= rhs.frame.size.width
+        }
+        guard let biggestTextField = max else { return }
+
+        // Override
+        var size = popover.contentSize
+        size.width = biggestTextField.frame.size.width + Constants.LeftRightPadding
+        popover.contentSize = size
     }
 }

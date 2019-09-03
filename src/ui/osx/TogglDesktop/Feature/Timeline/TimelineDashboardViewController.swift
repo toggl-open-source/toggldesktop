@@ -55,6 +55,7 @@ final class TimelineDashboardViewController: NSViewController {
         popover.animates = false
         popover.behavior = .transient
         popover.contentViewController = activityHoverController
+        activityHoverController.popover = popover
         return popover
     }()
     private lazy var editorPopover: EditorPopover = {
