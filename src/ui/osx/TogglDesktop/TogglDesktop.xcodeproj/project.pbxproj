@@ -127,6 +127,7 @@
 		BA13D21B2269E0B500EB3833 /* CalendarViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA13D2192269E0B500EB3833 /* CalendarViewController.xib */; };
 		BA13E05C21C7BA6000835EC1 /* UserNotificationCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = BA13E05921C7B9D900835EC1 /* UserNotificationCenter.m */; };
 		BA19FC21226DA079006D8741 /* DateCellViewItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA13D20D2269BAA600EB3833 /* DateCellViewItem.xib */; };
+		BA1FFE71231FB0F300EAD9DC /* PanelSwitcherButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA1FFE70231FB0F300EAD9DC /* PanelSwitcherButton.swift */; };
 		BA24E772230BDBB800B1D4B2 /* TimelineBaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA24E771230BDBB800B1D4B2 /* TimelineBaseCell.swift */; };
 		BA24E793230BE50600B1D4B2 /* TimelineActivityHoverController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA24E791230BE50600B1D4B2 /* TimelineActivityHoverController.swift */; };
 		BA24E794230BE50600B1D4B2 /* TimelineActivityHoverController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA24E792230BE50600B1D4B2 /* TimelineActivityHoverController.xib */; };
@@ -744,6 +745,7 @@
 		BA13D2192269E0B500EB3833 /* CalendarViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CalendarViewController.xib; sourceTree = "<group>"; };
 		BA13E05921C7B9D900835EC1 /* UserNotificationCenter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = UserNotificationCenter.m; path = test2/UserNotificationCenter.m; sourceTree = SOURCE_ROOT; };
 		BA13E05A21C7B9D900835EC1 /* UserNotificationCenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = UserNotificationCenter.h; path = test2/UserNotificationCenter.h; sourceTree = SOURCE_ROOT; };
+		BA1FFE70231FB0F300EAD9DC /* PanelSwitcherButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelSwitcherButton.swift; sourceTree = "<group>"; };
 		BA24E771230BDBB800B1D4B2 /* TimelineBaseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineBaseCell.swift; sourceTree = "<group>"; };
 		BA24E791230BE50600B1D4B2 /* TimelineActivityHoverController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineActivityHoverController.swift; sourceTree = "<group>"; };
 		BA24E792230BE50600B1D4B2 /* TimelineActivityHoverController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimelineActivityHoverController.xib; sourceTree = "<group>"; };
@@ -1567,6 +1569,7 @@
 				BAA0102A22CB4D5C007C1541 /* TimelineTimeEntryMenu.swift */,
 				BA24E791230BE50600B1D4B2 /* TimelineActivityHoverController.swift */,
 				BA24E792230BE50600B1D4B2 /* TimelineActivityHoverController.xib */,
+				BA1FFE70231FB0F300EAD9DC /* PanelSwitcherButton.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2259,6 +2262,7 @@
 				3C53D134224B3E9600674DC8 /* TDBarChart.m in Sources */,
 				BA4059B9221D53E7002969B8 /* TimeEntryDatasource.swift in Sources */,
 				BA3E75D62229356D009AD291 /* SystemMessageView.swift in Sources */,
+				BA1FFE71231FB0F300EAD9DC /* PanelSwitcherButton.swift in Sources */,
 				BA013FF5225705B6000E5B91 /* HoverTableCellView.swift in Sources */,
 				BA4791F622F0478A00E24F79 /* NSView+LayoutConstraint.swift in Sources */,
 				749BD0BD1833E28400980494 /* NSBoxClickable.m in Sources */,

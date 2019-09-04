@@ -27,8 +27,8 @@ final class MainDashboardViewController: NSViewController {
     @IBOutlet weak var tabView: NSTabView!
     @IBOutlet weak var timeEntryTabContainerView: NSView!
     @IBOutlet weak var timelineTabContainerView: NSView!
-    @IBOutlet weak var listBtn: FlatButton!
-    @IBOutlet weak var timelineBtn: FlatButton!
+    @IBOutlet weak var listBtn: PanelSwitcherButton!
+    @IBOutlet weak var timelineBtn: PanelSwitcherButton!
     @IBOutlet weak var tabButtonContainer: NSView!
     @IBOutlet weak var headerContainerView: NSView!
     
