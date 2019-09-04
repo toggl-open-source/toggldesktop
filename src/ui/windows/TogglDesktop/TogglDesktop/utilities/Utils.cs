@@ -341,6 +341,12 @@ public static class Utils
 
         public static bool TryOpenInDefaultBrowser(string url)
         {
+            return tryOpenInDefaultBrowserFromRegistry(url)
+                   || tryOpenInBuiltInBrowser(url);
+        }
+
+        private static bool tryOpenInDefaultBrowserFromRegistry(string url)
+        {
             try
             {
                 using (var browserKey = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\Shell\Associations\UrlAssociations\http\UserChoice", false))
@@ -361,6 +367,27 @@ public static class Utils
                         return true;
                     }
                 }
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        private static bool tryOpenInBuiltInBrowser(string url)
+        {
+            try
+            {
+                if (Environment.OSVersion.Version.Major >= 10)
+                {
+                    Process.Start(@"C:\WINDOWS\system32\LaunchWinApp.exe", url);
+                }
+                else
+                {
+                    Process.Start("iexplore.exe", url);
+                }
+
+                return true;
             }
             catch
             {
