@@ -358,7 +358,17 @@ namespace TogglDesktop
 
         private void onURL(string url)
         {
-            Process.Start(url);
+            try
+            {
+                Process.Start(url);
+            }
+            catch (Exception e)
+            {
+                if (!Utils.TryOpenInDefaultBrowser(url))
+                {
+                    Toggl.ShowErrorAndNotify("Wasn't able to open the browser", e);
+                }
+            }
         }
 
         private void onReminder(string title, string informativeText)

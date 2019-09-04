@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -335,6 +336,62 @@ public static class Utils
                 {
                     subKey.DeleteValue("TogglDesktop");
                 }
+            }
+        }
+
+        public static bool TryOpenInDefaultBrowser(string url)
+        {
+            return tryOpenInDefaultBrowserFromRegistry(url)
+                   || tryOpenInBuiltInBrowser(url);
+        }
+
+        private static bool tryOpenInDefaultBrowserFromRegistry(string url)
+        {
+            try
+            {
+                using (var browserKey = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\Shell\Associations\UrlAssociations\http\UserChoice", false))
+                {
+                    if (browserKey == null) return false;
+                    var browserKeyName = browserKey.GetValue("ProgId") as string;
+                    if (string.IsNullOrEmpty(browserKeyName)) return false;
+                    using (var openBrowserCmdKey = Registry.ClassesRoot.OpenSubKey(browserKeyName + @"\shell\open\command"))
+                    {
+                        if (openBrowserCmdKey == null) return false;
+                        var openBrowserCmdValue = openBrowserCmdKey.GetValue(null) as string;
+                        if (string.IsNullOrEmpty(openBrowserCmdValue)) return false;
+                        openBrowserCmdValue = openBrowserCmdValue.Replace("%1", url);
+                        var splitResult = openBrowserCmdValue.SplitByWhiteSpaceUnlessEnclosedInQuotes();
+                        var fileName = splitResult.First(); // take the file name
+                        var args = string.Join(" ", splitResult.Skip(1)); // merge the rest of args back
+                        Process.Start(fileName, args);
+                        return true;
+                    }
+                }
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        private static bool tryOpenInBuiltInBrowser(string url)
+        {
+            try
+            {
+                if (Environment.OSVersion.Version.Major >= 10)
+                {
+                    Process.Start(@"C:\WINDOWS\system32\LaunchWinApp.exe", url);
+                }
+                else
+                {
+                    Process.Start("iexplore.exe", url);
+                }
+
+                return true;
+            }
+            catch
+            {
+                return false;
             }
         }
 

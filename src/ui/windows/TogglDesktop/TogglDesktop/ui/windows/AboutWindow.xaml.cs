@@ -80,12 +80,12 @@ namespace TogglDesktop
 
         private void onGithubLinkClick(object sender, RoutedEventArgs e)
         {
-            Process.Start("https://github.com/toggl/toggldesktop");
+            Toggl.OpenInBrowser("https://github.com/toggl/toggldesktop");
         }
 
         private void onChangelogLinkClick(object sender, RoutedEventArgs e)
         {
-            Process.Start("http://toggl.github.io/toggldesktop");
+            Toggl.OpenInBrowser("http://toggl.github.io/toggldesktop");
         }
 
         private void onRestartButtonClick(object sender, RoutedEventArgs e)
