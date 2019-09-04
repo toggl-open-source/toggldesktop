@@ -10,7 +10,7 @@
 import Cocoa
 
 @IBDesignable
-final class FlatButton: NSButton {
+class FlatButton: NSButton {
 
     // MARK: IBInspectable
     @IBInspectable var bgColor: NSColor?
