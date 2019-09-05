@@ -32,7 +32,7 @@
 <tr>
 <td>
 
-  **Toggl Desktop** is a Toggl time tracking client with many helper functions that make tracking time more effortless and smooth. Features such as Idle detection, reminders to track and Pomodoro Timer make this app a great companion when productivity and efficiency is the goal
+  **Toggl Desktop** is a Toggl time tracking client with many helper functions that make tracking time more effortless and smooth. Features such as Idle detection, reminders to track and Pomodoro Timer make this app a great companion when productivity and efficiency is the goal.
 
 </td>
 </tr>
@@ -111,27 +111,38 @@ _By default the app builds for testing server. To use the compiled app with live
 ### Build using Makefile
 
 First, build dependencies:
-```
-make deps
+```bash
+$ make deps
 ```
 then the app itself:
-```
-make
+```bash
+$ make
 ```
 
 To build, then run the app:
-```
-make run
+```bash
+$ make run
 ```
 
 Run unit tests with
-```
-make test
+```bash
+$ make test
 ```
 and UI tests with
+```bash
+$ make uitest
 ```
-make uitest
+### macOS
+### Requirements
+- macOS 10.14+, Xcode 10.2+ and Swift 4+
+
+### Build
+- Build dependencies
+```bash
+$ make deps
 ```
+- Open `src/ui/osx/TogglDesktop/TogglDesktop.xcodeproj`
+- Select TogglDesktop scheme and build.
 
 ### Linux
 
@@ -145,8 +156,8 @@ These dependencies are mandatory:
  * libXScrnSaver (`libxss-dev` in deb-based distros and `libXScrnSaver-devel` in rpm-based)
 
  You can install them all in debian with a command:
- ```
- sudo apt install libxss-dev build-essential libgl-dev libreadline-dev
+```bash
+ $ sudo apt install libxss-dev build-essential libgl-dev libreadline-dev
 
  ```
  
@@ -163,7 +174,7 @@ These libraries will be bundled regardless of your system:
 #### Build the app
 
 *in the toggldesktop source tree root*
-```
+```bash
 mkdir -p build && pushd build             # Create build directory
 cmake ..                                  # Setup cmake configs
 make -j8                                  # Build the app. The number defines the count of parallel jobs (number of your CPU cores is a good value for that)
@@ -185,19 +196,19 @@ Change log can be viewed at [http://toggl.github.io/toggldesktop/](http://toggl.
 
 Before sending us a pull request, please format the source code:
 
-```
-make fmt
+```bash
+$ make fmt
 ```
 
 Also, please check for any cpplint issues:
 
-```
-make lint
+```bash
+$ make lint
 ```
 
 Check if unit tests continue to pass:
 
-```
-make test
+```bash
+$ make test
 ```
 
