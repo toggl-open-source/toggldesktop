@@ -1,60 +1,11 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using System.Text;
 // ReSharper disable InconsistentNaming
 
 namespace TogglDesktop
 {
 static class Win32
 {
-    [DllImport("user32.dll")]
-    [return: MarshalAs(UnmanagedType.Bool)]
-    private static extern bool EnumWindows(EnumWindowsProc lpEnumFunc, ref SearchData data);
-
-    [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-    private static extern int GetWindowText(IntPtr hWnd, StringBuilder lpString, int nMaxCount);
-
-    [DllImport("User32")]
-    public static extern int SetForegroundWindow(IntPtr hwnd);
-
-    [DllImport("User32")]
-    public static extern bool ShowWindow(IntPtr hwnd, int cmdshow);
-
-    public const int SW_RESTORE = 9;
-
-    private delegate bool EnumWindowsProc(IntPtr hWnd, ref SearchData data);
-
-    private static bool EnumProc(IntPtr hWnd, ref SearchData data)
-    {
-        var sb = new StringBuilder(1024);
-        GetWindowText(hWnd, sb, sb.Capacity);
-        if (sb.ToString().Contains(data.Title))
-        {
-            data.hWnd = hWnd;
-            return false;    // Found the window
-        }
-        return true;
-    }
-
-    [DllImport("kernel32.dll")]
-    public static extern bool AttachConsole(int dwProcessId);
-
-    public const int ATTACH_PARENT_PROCESS = -1;
-
-    public static IntPtr SearchForWindow(string wndclass, string title)
-    {
-        var sd = new SearchData { Wndclass = wndclass, Title = title };
-        EnumWindows(EnumProc, ref sd);
-        return sd.hWnd;
-    }
-
-    private class SearchData
-    {
-        public string Wndclass;
-        public string Title;
-        public IntPtr hWnd;
-    }
-
     [DllImport("user32.dll")]
     public static extern int SendMessage(IntPtr hwnd, int msg, int wparam, int lparam);
 

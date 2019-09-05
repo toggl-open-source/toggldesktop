@@ -135,6 +135,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -174,8 +175,10 @@
     <Compile Include="AutoCompletion\Implementation\TimerItem.cs" />
     <Compile Include="AutoCompletion\Implementation\WorkspaceCategory.cs" />
     <Compile Include="AutoCompletion\ListBoxItem.cs" />
+    <Compile Include="BugsnagService.cs" />
     <Compile Include="Diagnostics\IPerformanceToken.cs" />
     <Compile Include="Diagnostics\Performance.cs" />
+    <Compile Include="SingleInstanceManager.cs" />
     <Compile Include="ui\AutoCompleteControls\ProjectCategory.xaml.cs">
       <DependentUpon>ProjectCategory.xaml</DependentUpon>
     </Compile>
