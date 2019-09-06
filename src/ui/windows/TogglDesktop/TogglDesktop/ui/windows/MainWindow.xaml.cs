@@ -88,7 +88,9 @@ namespace TogglDesktop
 
         public TutorialManager TutorialManager { get; private set; }
 
-        public bool CanBeShown => !this.IsVisible || this.WindowState == WindowState.Minimized;
+        public bool CanBeShown => !this.IsVisible || !this.IsActive;
+
+        public bool CanBeHidden => this.IsVisible && this.WindowState != WindowState.Minimized;
 
         #endregion
 
@@ -521,7 +523,14 @@ namespace TogglDesktop
 
         private void onGlobalShowKeyPressed(object sender, KeyPressedEventArgs e)
         {
-            this.togglVisibility();
+            if (this.CanBeShown)
+            {
+                this.ShowOnTop();
+            }
+            else
+            {
+                this.MinimizeToTray();
+            }
         }
 
         private void onGlobalStartKeyPressed(object sender, KeyPressedEventArgs e)
@@ -550,7 +559,14 @@ namespace TogglDesktop
 
         private void onTaskbarLeftMouseUp(object sender, RoutedEventArgs e)
         {
-            this.togglVisibility();
+            if (this.CanBeHidden)
+            {
+                this.MinimizeToTray();
+            }
+            else
+            {
+                this.ShowOnTop();
+            }
         }
 
         private void onTrayBalloonTipClicked(object sender, RoutedEventArgs e)
@@ -659,18 +675,6 @@ namespace TogglDesktop
             if (!fromApi)
             {
                 Toggl.SetManualMode(manualMode);
-            }
-        }
-
-        private void togglVisibility()
-        {
-            if (this.CanBeShown)
-            {
-                this.ShowOnTop();
-            }
-            else
-            {
-                this.MinimizeToTray();
             }
         }
 

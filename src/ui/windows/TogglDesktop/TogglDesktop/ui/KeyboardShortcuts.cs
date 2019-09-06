@@ -146,7 +146,7 @@ namespace TogglDesktop
 
         private static void canExecuteHide(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = !mainWindow.CanBeShown;
+            e.CanExecute = mainWindow.CanBeHidden;
         }
 
         private static void onHide(object sender, ExecutedRoutedEventArgs e)
