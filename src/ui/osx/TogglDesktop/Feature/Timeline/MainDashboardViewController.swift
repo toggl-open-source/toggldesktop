@@ -68,6 +68,7 @@ final class MainDashboardViewController: NSViewController {
 
     @IBAction func timelineBtnOnTap(_ sender: Any) {
         currentTab = .timeline
+        timelineController.scrollToVisibleItem()
     }
 
     @objc func timelineDataNotification(_ noti: Notification) {
