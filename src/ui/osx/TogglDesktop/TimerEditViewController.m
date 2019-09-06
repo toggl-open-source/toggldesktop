@@ -733,4 +733,31 @@ NSString *kInactiveTimerColor = @"#999999";
 	}
 }
 
+- (void)mouseUp:(NSEvent *)event
+{
+    [super mouseUp:event];
+	if (!self.time_entry.isRunning && self.displayMode != DisplayModeTimer)
+	{
+		return;
+	}
+
+	NSPoint globalLocation = [NSEvent mouseLocation];
+	NSRect rect = [self.view.window convertRectFromScreen:NSMakeRect(globalLocation.x, globalLocation.y, 0, 0)];
+	NSPoint windowLocation = rect.origin;
+	NSPoint mouseLocation = [self.contentContainerView convertPoint:windowLocation fromView:nil];
+	NSString *GUID = self.time_entry.GUID;
+
+	if (NSPointInRect(mouseLocation, self.projectTextField.frame) || NSPointInRect(mouseLocation, self.dotImageView.frame))
+	{
+		toggl_edit(ctx, [GUID UTF8String], false, kFocusedFieldNameProject);
+		return;
+	}
+
+	if (NSPointInRect(mouseLocation, self.descriptionLabel.frame))
+	{
+		toggl_edit(ctx, [GUID UTF8String], false, kFocusedFieldNameDescription);
+		return;
+	}
+}
+
 @end
