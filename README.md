@@ -49,7 +49,7 @@ Toggl built and signed apps for all platforms
 
 <br>
 <a href="https://toggl.github.io/toggldesktop/download/macos-stable/">64bit dmg</a>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;<a href='https://itunes.apple.com/ee/app/toggl-desktop/id957734279?mt=12'>
-  <img alt='Download Toggl Desktop on the App Store' width="180" src='https://user-images.githubusercontent.com/842229/64422282-67723100-d0ac-11e9-9f60-55f5b151feb9.png'/></a>
+  Mac App Store</a>
 <br/>
 <br/>
 <i>Officially macOS 10.11 and newer stable macOS versions are supported.</i>
@@ -57,7 +57,7 @@ Toggl built and signed apps for all platforms
 ## Windows
 
 <br/>
-<a href="https://toggl.github.io/toggldesktop/download/windows-stable/">32bit installer</a>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://toggl.github.io/toggldesktop/download/windows64-stable/">64bit installer</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://chocolatey.org/packages/toggl">Chocolatey</a>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;<a href='//www.microsoft.com/store/apps/9nk3rf9nbjnp?cid=storebadge&ocid=badge'><img src='https://user-images.githubusercontent.com/842229/64422491-e7989680-d0ac-11e9-8006-91eb7f7e26f9.png' alt='Download Toggl Desktop on Microsoft Store'/></a>
+<a href="https://toggl.github.io/toggldesktop/download/windows-stable/">32Bit installer</a>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://toggl.github.io/toggldesktop/download/windows64-stable/">64Bit installer</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://chocolatey.org/packages/toggl">Chocolatey</a>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;<a href='//www.microsoft.com/store/apps/9nk3rf9nbjnp?cid=storebadge&ocid=badge'>Microsoft Store</a>
 <br/>
 <br/>
 <i>App has been tested on Windows 7, 8, 8.1 and 10. Toggl Desktop Windows app has not been tested on Surface type touchscreen environments.</i>
@@ -65,7 +65,7 @@ Toggl built and signed apps for all platforms
 ## Linux
 
 <br>
-<a href="https://toggl.github.io/toggldesktop/download/linux_tar.gz-stable//">Tarball</a>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;<a href='https://flathub.org/apps/details/com.toggl.TogglDesktop'><img width='180' alt='Download Toggl Desktop on Flathub' src='https://flathub.org/assets/badges/flathub-badge-i-en.svg'/></a>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;<a href='https://snapcraft.io/toggldesktop'><img width='180' alt='Download Toggl Desktop on Snapcraft' src='https://raw.githubusercontent.com/snapcore/snap-store-badges/master/EN/%5BEN%5D-snap-store-white%402x.png'/></a>
+<a href="https://toggl.github.io/toggldesktop/download/linux_tar.gz-stable//">Tarball</a>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;<a href='https://flathub.org/apps/details/com.toggl.TogglDesktop'>Flathub</a>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;<a href='https://snapcraft.io/toggldesktop'>Snap Store</a>
 <br/>
 <br/>
 <i>Only 64bit is supported</i>
