@@ -102,10 +102,26 @@ final class TimelineDatasource: NSObject {
     }
 
     func scrollToVisibleItem() {
-        guard let timeline = timeline,
-            !timeline.timeEntries.isEmpty else { return }
-        collectionView.scrollToItems(at: Set<IndexPath>(arrayLiteral: IndexPath(item: 0, section: TimelineData.Section.timeEntry.rawValue)),
-                                     scrollPosition: [.centeredHorizontally, .centeredVertically])
+        guard let timeline = timeline else { return }
+
+        // Skip if both are empty
+        if timeline.timeEntries.isEmpty && timeline.activities.isEmpty {
+            return
+        }
+
+        // Get the section should be presented
+        var section: TimelineData.Section?
+        if !timeline.timeEntries.isEmpty {
+            section = .timeEntry
+        } else if !timeline.activities.isEmpty {
+            section = .activity
+        }
+
+        // Scroll to visible item
+        if let section = section {
+            collectionView.scrollToItems(at: Set<IndexPath>(arrayLiteral: IndexPath(item: 0, section: section.rawValue)),
+                                         scrollPosition: [.centeredHorizontally, .centeredVertically])
+        }
     }
 }
 
