@@ -241,8 +241,13 @@ namespace TogglDesktop
 
         private static ulong toULong(string text)
         {
-            ulong ret;
-            ulong.TryParse(text, out ret);
+            ulong.TryParse(text, out var ret);
+            return ret;
+        }
+
+        private static long toLong(string text)
+        {
+            long.TryParse(text, out var ret);
             return ret;
         }
 
@@ -315,16 +320,16 @@ namespace TogglDesktop
                 #region general
 
                 UseIdleDetection = isChecked(this.idleDetectionCheckBox),
-                IdleMinutes = toULong(this.idleDetectionDurationTextBox.Text),
+                IdleMinutes = toLong(this.idleDetectionDurationTextBox.Text),
 
                 RecordTimeline = isChecked(this.recordTimelineCheckBox),
                 OnTop = isChecked(this.onTopCheckBox),
 
                 Pomodoro = isChecked(this.enablePomodoroCheckBox),
-                PomodoroMinutes = toULong(this.pomodoroTimerDuration.Text),
+                PomodoroMinutes = toLong(this.pomodoroTimerDuration.Text),
 
                 PomodoroBreak = isChecked(this.enablePomodoroBreakCheckBox),
-                PomodoroBreakMinutes = toULong(this.pomodoroBreakTimerDuration.Text),
+                PomodoroBreakMinutes = toLong(this.pomodoroBreakTimerDuration.Text),
 
                 StopEntryOnShutdownSleep = isChecked(this.onStopEntryCheckBox),
 
@@ -350,7 +355,7 @@ namespace TogglDesktop
                 #region reminder
 
                 Reminder = isChecked(this.remindToTrackCheckBox),
-                ReminderMinutes = toULong(this.remindToTrackIntervalTextBox.Text),
+                ReminderMinutes = toLong(this.remindToTrackIntervalTextBox.Text),
                 RemindStarts = this.reminderStartTimeTextBox.Text,
                 RemindEnds = this.reminderEndTimeTextBox.Text,
 

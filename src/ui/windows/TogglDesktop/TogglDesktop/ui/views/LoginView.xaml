@@ -101,12 +101,12 @@
                     </Grid>
                 </Button>
 
-                <Button Name="googleLoginButton" x:FieldModifier="private"
-                    Click="onGoogleLoginClick">
+                <Button Click="onGoogleLoginClick">
                     <StackPanel Orientation="Horizontal" Background="Transparent">
                         <Image Source="/TogglDesktop;component/Resources/icon-google.png"
                                Width="18" Height="18" Margin="0 4 8 4"/>
-                        <TextBlock Text="LOG IN WITH GOOGLE"
+                        <TextBlock Name="googleLoginButtonTextBlock"
+                                   Text="LOG IN WITH GOOGLE"
                                    VerticalAlignment="Center"/>
                     </StackPanel>
                 </Button>

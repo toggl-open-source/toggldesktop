@@ -433,6 +433,22 @@ bool_t toggl_signup_async(
             to_string(password), country_id);
 }
 
+bool_t toggl_google_signup(
+    void *context,
+    const char_t *access_token,
+    const uint64_t country_id) {
+    return toggl::noError == app(context)->GoogleSignup(to_string(access_token),
+            country_id);
+}
+
+bool_t toggl_google_signup_async(
+    void *context,
+    const char_t *access_token,
+    const uint64_t country_id) {
+    return toggl::noError == app(context)->AsyncGoogleSignup(to_string(access_token),
+            country_id);
+}
+
 bool_t toggl_google_login(
     void *context,
     const char_t *access_token) {

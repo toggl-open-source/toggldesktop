@@ -9,7 +9,7 @@ namespace TogglDesktop
     public partial class IdleNotificationWindow
     {
         private string guid;
-        private ulong started;
+        private long started;
 
         public event EventHandler AddedIdleTimeAsNewEntry;
 
@@ -21,7 +21,7 @@ namespace TogglDesktop
             Toggl.OnStoppedTimerState += this.onStoppedTimerState;
         }
 
-        private void onIdleNotification(string guid, string since, string duration, ulong started, string description)
+        private void onIdleNotification(string guid, string since, string duration, long started, string description)
         {
             if (this.TryBeginInvoke(this.onIdleNotification, guid, since, duration, started, description))
                 return;
