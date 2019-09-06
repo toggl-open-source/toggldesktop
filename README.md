@@ -28,15 +28,7 @@
 
 # About
 
-<table>
-<tr>
-<td>
-
   **Toggl Desktop** is a Toggl time tracking client with many helper functions that make tracking time more effortless and smooth. Features such as Idle detection, reminders to track and Pomodoro Timer make this app a great companion when productivity and efficiency is the goal.
-
-</td>
-</tr>
-</table>
 
 <img src="https://user-images.githubusercontent.com/842229/63856838-3a869580-c9ab-11e9-9e36-7db23059ce29.png"
          alt="Toggl Desktop apps">
