@@ -80,8 +80,12 @@ final class TimelineDashboardViewController: NSViewController {
         // Scroll to the first visible item at the first time open Timeline
         if isFirstTime {
             isFirstTime = false
-            datasource.scrollToVisibleItem()
+            scrollToVisibleItem()
         }
+    }
+
+    func scrollToVisibleItem() {
+        datasource.scrollToVisibleItem()
     }
 
     func updateNextKeyView() {
@@ -99,7 +103,7 @@ final class TimelineDashboardViewController: NSViewController {
         handleEmptyState(timeline)
 
         if shouldScroll {
-            datasource.scrollToVisibleItem()
+            scrollToVisibleItem()
         }
     }
     
