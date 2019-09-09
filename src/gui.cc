@@ -601,16 +601,8 @@ void GUI::DisplayTimeline(
             }
         }
 
-        // Get total duration
-        TogglTimelineEventView *first_duration_event = first_event;
-        time_t duration = 0;
-        while (first_duration_event) {
-            duration += first_duration_event->Duration;
-            first_duration_event = reinterpret_cast<TogglTimelineEventView *>(first_duration_event->Next);
-        }
-
         chunk_view->Entry = first;
-        chunk_view->Ended = epoch_time + duration;
+        chunk_view->Ended = epoch_time_end;
         chunk_view->EndTimeString = copy_string(toggl::Formatter::FormatTimeForTimeEntryEditor(chunk_view->Ended));
 
         // Sort the list by duration descending
