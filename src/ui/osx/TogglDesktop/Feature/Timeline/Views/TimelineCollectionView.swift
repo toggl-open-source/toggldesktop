@@ -42,6 +42,9 @@ extension TimelineCollectionView {
         guard event.clickCount == 1,
             indexPathForItem(at: clickedPoint) == nil else { return }
 
+        // Skip if the click is in Time Label and Activity section
+        guard flowLayout.isInTimeEntrySection(at: clickedPoint) else { return }
+
         // Get timestamp from click point, depend on zoom level and position
         let timestamp = flowLayout.convertTimestamp(from: clickedPoint)
         timelineDelegate?.timelineShouldCreateEmptyEntry(with: timestamp)
