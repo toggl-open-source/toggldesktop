@@ -145,6 +145,12 @@ final class TimelineFlowLayout: NSCollectionViewFlowLayout {
         let height = CGFloat(numberOfTimeLabels) * (verticalPaddingTimeLabel + Constants.TimeLabel.Size.height)
         return CGSize(width: width, height: height)
     }
+
+    func isInTimeEntrySection(at location: CGPoint) -> Bool {
+        guard let timeLabelDivider = dividerAttributes.first,
+            let activityDivider = dividerAttributes.last else { return false }
+        return timeLabelDivider.frame.origin.x < location.x && location.x < activityDivider.frame.origin.x
+    }
 }
 
 // MARK: Private
