@@ -140,7 +140,7 @@
 		self.start = startDay;
 		self.end = endDay;
 		self.timeEntries = [[timeEntries reverseObjectEnumerator] allObjects];
-		self.activities = [activities copy];
+		self.activities = [[activities reverseObjectEnumerator] allObjects];
 	}
 	return self;
 }

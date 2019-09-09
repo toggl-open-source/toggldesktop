@@ -53,7 +53,6 @@ class TimelineData {
                                     endTimeStr: activity.endedTimeString,
                                     events: events)
         }
-        .reversed()
         timeChunks = generateTimelineLabel(for: start,
                                            endDate: end,
                                            zoomLevel: zoomLevel)
