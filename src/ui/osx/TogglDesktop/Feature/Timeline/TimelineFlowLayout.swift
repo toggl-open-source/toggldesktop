@@ -44,6 +44,7 @@ final class TimelineFlowLayout: NSCollectionViewFlowLayout {
     // MARK: Variables
 
     weak var flowDelegate: TimelineFlowLayoutDelegate?
+    var currentDate = Date()
     private var zoomLevel: TimelineDatasource.ZoomLevel = .x1
     private var timeLablesAttributes: [NSCollectionViewLayoutAttributes] = []
     private var timeEntryAttributes: [NSCollectionViewLayoutAttributes] = []
@@ -150,8 +151,17 @@ final class TimelineFlowLayout: NSCollectionViewFlowLayout {
 
 extension TimelineFlowLayout {
 
+    private var ratio: CGFloat {
+        // The ratio
+        // From the design, the size of time label + padding prepresents 1 hours or 2 hours (depend on zoomLevel)
+        // Get the ratio for later calculations
+        return (Constants.TimeLabel.Size.height + verticalPaddingTimeLabel) / CGFloat(zoomLevel.span)
+    }
+
     public func convertTimestamp(from location: CGPoint) -> TimeInterval {
-        return 0
+        let beginDay = Date.startOfDay(from: currentDate.timeIntervalSince1970)
+        let start = TimeInterval((location.y / ratio)) + beginDay
+        return start
     }
 
     private func calculateBlockSize(at indexPath: IndexPath) -> (y: CGFloat, height: CGFloat)? {
@@ -163,11 +173,6 @@ extension TimelineFlowLayout {
 
         // Length of time entry
         let span = CGFloat(timestamp.end - timestamp.start)
-
-        // The ratio
-        // From the design, the size of time label + padding prepresents 1 hours or 2 hours (depend on zoomLevel)
-        // Get the ratio for later calculations
-        let ratio = (Constants.TimeLabel.Size.height + verticalPaddingTimeLabel) / CGFloat(zoomLevel.span)
 
         // Ex: To calculate the height of the entry with X timestamp
         // Height = X * ratio
