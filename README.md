@@ -1,21 +1,68 @@
-Table of Contents
-=================
+<h1 align="center">
+  <a href="https://toggl.com"><img src="https://toggl.com/site/images/media-toolkit/logo_02-644bd26148b73c19d9c91e5baecd8e31.jpg" alt="Toggl" width="200"></a>
+</h1>
 
-  * [Build instructions](#build-instructions)
-    * [Build using Makefile](#build-using-makefile)
-    * [Linux](#linux)
-      * [Dependencies](#dependencies)
-      * [Build the app](#build-the-app)
-    * [Windows](#windows)
-  * [Downloads](#downloads)
-    * [macOS](#macos)
-    * [Windows](#windows)
-    * [Linux (64 bit only)](#linux-64-bit-only)
-  * [Change log](#change-log)
-  * [Documentation](#documentation)
-  * [Contribute](#contribute)
+<h4 align="center">Native desktop applications for the leading time tracking tool <a href="https://toggl.com" target="_blank">Toggl</a>.</h4>
 
-# Build instructions
+<p align="center">
+    <a href="https://github.com/toggl/toggldesktop/commits/master">
+    <img src="https://img.shields.io/github/last-commit/toggl/toggldesktop.svg?style=flat&logo=github&logoColor=white"
+         alt="GitHub last commit">
+    <a href="https://github.com/toggl/toggldesktop/issues">
+    <img src="https://img.shields.io/github/issues-raw/toggl/toggldesktop.svg?style=flat&logo=github&logoColor=white"
+         alt="GitHub issues">
+    <a href="https://github.com/toggl/toggldesktop/pulls">
+    <img src="https://img.shields.io/github/issues-pr-raw/toggl/toggldesktop.svg?style=flat&logo=github&logoColor=white"
+         alt="GitHub pull requests">
+    <img src="https://img.shields.io/badge/licence-BSD--3-green"
+         alt="Licence BSD-3">
+</p>
+
+<p align="center">
+  <a href="#about">About</a> •
+  <a href="#download">Download</a> •
+  <a href="#build">Build</a> •
+  <a href="#change-log">Change log</a> •
+  <a href="#contribute">Contribute</a>
+</p>
+
+# About
+
+  **Toggl Desktop** is a Toggl time tracking client with many helper functions that make tracking time more effortless and smooth. Features such as Idle detection, reminders to track and Pomodoro Timer make this app a great companion when productivity and efficiency is the goal.
+
+<img src="https://user-images.githubusercontent.com/842229/63856838-3a869580-c9ab-11e9-9e36-7db23059ce29.png"
+         alt="Toggl Desktop apps">
+
+# Download
+
+Toggl built and signed apps for all platforms
+
+## Mac
+
+<br>
+<a href="https://toggl.github.io/toggldesktop/download/macos-stable/">64bit dmg</a>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;<a href='https://itunes.apple.com/ee/app/toggl-desktop/id957734279?mt=12'>
+  Mac App Store</a>
+<br/>
+<br/>
+<i>Officially macOS 10.11 and newer stable macOS versions are supported.</i>
+
+## Windows
+
+<br/>
+<a href="https://toggl.github.io/toggldesktop/download/windows64-stable/">64bit installer</a>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://toggl.github.io/toggldesktop/download/windows-stable/">32bit installer</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://chocolatey.org/packages/toggl">Chocolatey</a>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;<a href='//www.microsoft.com/store/apps/9nk3rf9nbjnp?cid=storebadge&ocid=badge'>Microsoft Store</a>
+<br/>
+<br/>
+<i>App has been tested on Windows 7, 8, 8.1 and 10. Toggl Desktop Windows app has not been tested on Surface type touchscreen environments.</i>
+
+## Linux
+
+<br>
+<a href="https://toggl.github.io/toggldesktop/download/linux_tar.gz-stable//">Tarball</a>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;<a href='https://flathub.org/apps/details/com.toggl.TogglDesktop'>Flathub</a>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;<a href='https://snapcraft.io/toggldesktop'>Snap Store</a>
+<br/>
+<br/>
+<i>Only 64bit is supported</i>
+
+# Build
 
 Please check OS specific requirements below.
 
@@ -24,27 +71,38 @@ _By default the app builds for testing server. To use the compiled app with live
 ## Build using Makefile
 
 First, build dependencies:
-```
-make deps
+```bash
+$ make deps
 ```
 then the app itself:
-```
-make
+```bash
+$ make
 ```
 
 To build, then run the app:
-```
-make run
+```bash
+$ make run
 ```
 
 Run unit tests with
-```
-make test
+```bash
+$ make test
 ```
 and UI tests with
+```bash
+$ make uitest
 ```
-make uitest
+## macOS
+### Requirements
+- macOS 10.14+, Xcode 10.2+ and Swift 4+
+
+### Build
+- Build dependencies
+```bash
+$ make deps
 ```
+- Open `src/ui/osx/TogglDesktop/TogglDesktop.xcodeproj`
+- Select TogglDesktop scheme and build.
 
 ## Linux
 
@@ -58,8 +116,8 @@ These dependencies are mandatory:
  * libXScrnSaver (`libxss-dev` in deb-based distros and `libXScrnSaver-devel` in rpm-based)
 
  You can install them all in debian with a command:
- ```
- sudo apt install libxss-dev build-essential libgl-dev libreadline-dev
+```bash
+ $ sudo apt install libxss-dev build-essential libgl-dev libreadline-dev
 
  ```
  
@@ -76,7 +134,7 @@ These libraries will be bundled regardless of your system:
 ### Build the app
 
 *in the toggldesktop source tree root*
-```
+```bash
 mkdir -p build && pushd build             # Create build directory
 cmake ..                                  # Setup cmake configs
 make -j8                                  # Build the app. The number defines the count of parallel jobs (number of your CPU cores is a good value for that)
@@ -89,49 +147,28 @@ Install Visual Studio 2019 with `.NET desktop development`, `Desktop development
 
 The solution is using OpenSSL binaries. To rebuild OpenSSL from sources refer to [this page](docs/win/build-openSSL.md).
 
-# Downloads
-
-## macOS
-
-Toggl built and signed app for macOS is [available for download](https://toggl.github.io/toggldesktop/download/macos-stable/). Officially macOS 10.11 and newer stable macOS versions are supported.
-
-## Windows
-
-Toggl built and signed app for Windows is [available for download](https://toggl.github.io/toggldesktop/download/windows-stable/). App has been tested on Windows 7, 8, 8.1 and 10.
-
-Toggl Desktop Windows app has not been tested on Surface type touchscreen environments.
-
-## Linux (64 bit only)
-
-* [flatpak(recommended)](https://flathub.org/apps/details/com.toggl.TogglDesktop)
-* [tarball](https://toggl.github.io/toggldesktop/download/linux_tar.gz-stable/)
-
 
 # Change log
 
 Change log can be viewed at [http://toggl.github.io/toggldesktop/](http://toggl.github.io/toggldesktop/)
 
-# Documentation
-
-The documentation of the code base is currently work in progress and can be found at [/docs/](https://github.com/toggl/toggldesktop/tree/master/docs/index.md).
-
 # Contribute
 
 Before sending us a pull request, please format the source code:
 
-```
-make fmt
+```bash
+$ make fmt
 ```
 
 Also, please check for any cpplint issues:
 
-```
-make lint
+```bash
+$ make lint
 ```
 
 Check if unit tests continue to pass:
 
-```
-make test
+```bash
+$ make test
 ```
 
