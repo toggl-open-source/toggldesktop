@@ -510,7 +510,6 @@ void GUI::DisplayTimeline(
             && datetime.day() == TimelineDateAt().day()) {
         time_t epoch_time = datetime.timestamp().epochTime();
         time_t epoch_time_end = epoch_time + 900;
-        time_t duration = 0;
 
         // Create new chunk
         TogglTimelineChunkView *chunk_view =
@@ -540,8 +539,7 @@ void GUI::DisplayTimeline(
             bool item_present = false;
             TogglTimelineEventView *event_app = first_event;
             while (event_app) {
-                if (compare_string(event_app->Filename,
-                                   event.Filename().c_str()) == 0) {
+                if (compare_string(event_app->Filename, event.Filename().c_str()) == 0) {
                     timeline_event_view_update_duration(event_app, event_app->Duration + event.Duration());
                     app_present = true;
                     item_present = false;
@@ -559,7 +557,6 @@ void GUI::DisplayTimeline(
                             timeline_event_view_init(event);
                         event_view->Next = event_app->Event;
                         event_app->Event = event_view;
-                        duration += event_app->Duration;
                     }
                 }
                 event_app = reinterpret_cast<TogglTimelineEventView *>(event_app->Next);
@@ -579,7 +576,6 @@ void GUI::DisplayTimeline(
 
                     app_event_view->Next = first_event;
                     first_event = app_event_view;
-                    duration += app_event_view->Duration;
                 }
             }
         }
@@ -603,6 +599,14 @@ void GUI::DisplayTimeline(
                 item->Next = first;
                 first = item;
             }
+        }
+
+        // Get total duration
+        TogglTimelineEventView *first_duration_event = first_event;
+        time_t duration = 0;
+        while (first_duration_event) {
+            duration += first_duration_event->Duration;
+            first_duration_event = reinterpret_cast<TogglTimelineEventView *>(first_duration_event->Next);
         }
 
         chunk_view->Entry = first;
