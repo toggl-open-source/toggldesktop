@@ -559,6 +559,7 @@ void GUI::DisplayTimeline(
                             timeline_event_view_init(event);
                         event_view->Next = event_app->Event;
                         event_app->Event = event_view;
+                        duration += event_app->Duration;
                     }
                 }
                 event_app = reinterpret_cast<TogglTimelineEventView *>(event_app->Next);
@@ -578,7 +579,7 @@ void GUI::DisplayTimeline(
 
                     app_event_view->Next = first_event;
                     first_event = app_event_view;
-                    duration += event_view->Duration;
+                    duration += app_event_view->Duration;
                 }
             }
         }
