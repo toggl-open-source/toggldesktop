@@ -53,7 +53,7 @@ final class TimelineDashboardViewController: NSViewController {
     private lazy var activityHoverPopover: NSPopover = {
         let popover = NSPopover()
         popover.animates = false
-        popover.behavior = .transient
+        popover.behavior = .semitransient
         popover.contentViewController = activityHoverController
         activityHoverController.popover = popover
         return popover
@@ -61,7 +61,7 @@ final class TimelineDashboardViewController: NSViewController {
     private lazy var editorPopover: EditorPopover = {
         let popover = EditorPopover()
         popover.animates = false
-        popover.behavior = .transient
+        popover.behavior = .semitransient
         popover.prepareViewController()
         return popover
     }()
@@ -321,6 +321,10 @@ extension TimelineDashboardViewController: TimelineDatasourceDelegate {
 extension TimelineDashboardViewController: TimelineCollectionViewDelegate {
 
     func timelineShouldCreateEmptyEntry(with startTime: TimeInterval) {
-        
+        // Don't create new TE if one of Popover is active
+        guard !editorPopover.isShown, !activityHoverPopover.isShown, !timeEntryHoverPopover.isShown else { return }
+
+        // Create
+        startNewTimeEntry(at: startTime, ended: startTime + 1)
     }
 }
