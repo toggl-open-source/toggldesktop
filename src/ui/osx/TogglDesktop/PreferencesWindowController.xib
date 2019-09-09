@@ -388,8 +388,8 @@
                                                         </connections>
                                                     </button>
                                                     <button translatesAutoresizingMaskIntoConstraints="NO" id="DRh-rC-B0a">
-                                                        <rect key="frame" x="8" y="8" width="337" height="18"/>
-                                                        <buttonCell key="cell" type="check" title="Open edit view when starting entry with shortcut" bezelStyle="regularSquare" imagePosition="left" inset="2" id="LFN-fL-iJI">
+                                                        <rect key="frame" x="8" y="8" width="291" height="18"/>
+                                                        <buttonCell key="cell" type="check" title="Open edit view when starting a time entry" bezelStyle="regularSquare" imagePosition="left" inset="2" id="LFN-fL-iJI">
                                                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                             <font key="font" metaFont="system" size="14"/>
                                                         </buttonCell>
