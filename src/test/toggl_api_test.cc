@@ -1590,10 +1590,8 @@ TEST(toggl_api, toggl_start_with_open_editor_on_shortcut_setting) {
 
     guid = toggl_start(app.ctx(), STR("test"), STR(""), 0, 0, 0, 0, false);
     ASSERT_TRUE(guid);
-    // It should *not* open the editor, unless a shortcut was used
-    // in the app, but this logic is driven from the UI instead of the lib.
-    // TODO: the following assert fails, #3211 should address this
-    // ASSERT_EQ(std::string(""), testing::testresult::editor_state.GUID());
+
+    ASSERT_EQ(to_string(guid), testing::testresult::editor_state.GUID());
     free(guid);
 }
 
