@@ -47,11 +47,6 @@
                           ItemsSource="{Binding}"
                           SelectedValuePath="Name"
                           VerticalAlignment="Center">
-                    <ComboBox.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <VirtualizingStackPanel />
-                        </ItemsPanelTemplate>
-                    </ComboBox.ItemsPanel>
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Foreground="#000000" Text="{Binding Name}" />
