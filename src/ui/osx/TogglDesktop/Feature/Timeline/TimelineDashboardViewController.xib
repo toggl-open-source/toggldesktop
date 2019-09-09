@@ -119,7 +119,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="369" height="410"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
-                                    <collectionView selectable="YES" id="hht-dC-mpO">
+                                    <collectionView selectable="YES" id="hht-dC-mpO" customClass="TimelineCollectionView" customModule="TogglDesktop" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="369" height="410"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                         <collectionViewFlowLayout key="collectionViewLayout" minimumInteritemSpacing="10" minimumLineSpacing="10" id="ZtE-Ms-OYm">

@@ -172,6 +172,7 @@
 		BA49912E22C0BA14008149D9 /* TimelineDateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA49912D22C0BA14008149D9 /* TimelineDateFormatter.swift */; };
 		BA4AEB9C22C217A4001A898D /* ResizablePopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4AEB9B22C217A4001A898D /* ResizablePopover.swift */; };
 		BA50ED8522705F9E008323FA /* CalendarFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA50ED8422705F9E008323FA /* CalendarFlowLayout.swift */; };
+		BA5AC61623264651007E6C91 /* TimelineCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5AC61523264651007E6C91 /* TimelineCollectionView.swift */; };
 		BA6572A6224DFA6F00BA4C60 /* RGB.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6572A0224DFA6E00BA4C60 /* RGB.swift */; };
 		BA6572A7224DFA6F00BA4C60 /* HSBGen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6572A1224DFA6E00BA4C60 /* HSBGen.swift */; };
 		BA6572A8224DFA6F00BA4C60 /* CurrentColorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6572A2224DFA6F00BA4C60 /* CurrentColorView.swift */; };
@@ -795,6 +796,7 @@
 		BA49912D22C0BA14008149D9 /* TimelineDateFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineDateFormatter.swift; sourceTree = "<group>"; };
 		BA4AEB9B22C217A4001A898D /* ResizablePopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResizablePopover.swift; sourceTree = "<group>"; };
 		BA50ED8422705F9E008323FA /* CalendarFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarFlowLayout.swift; sourceTree = "<group>"; };
+		BA5AC61523264651007E6C91 /* TimelineCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineCollectionView.swift; sourceTree = "<group>"; };
 		BA6572A0224DFA6E00BA4C60 /* RGB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RGB.swift; sourceTree = "<group>"; };
 		BA6572A1224DFA6E00BA4C60 /* HSBGen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HSBGen.swift; sourceTree = "<group>"; };
 		BA6572A2224DFA6F00BA4C60 /* CurrentColorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrentColorView.swift; sourceTree = "<group>"; };
@@ -1570,6 +1572,7 @@
 				BA24E791230BE50600B1D4B2 /* TimelineActivityHoverController.swift */,
 				BA24E792230BE50600B1D4B2 /* TimelineActivityHoverController.xib */,
 				BA1FFE70231FB0F300EAD9DC /* PanelSwitcherButton.swift */,
+				BA5AC61523264651007E6C91 /* TimelineCollectionView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2178,6 +2181,7 @@
 				BAD0E0BD22C49BAC009F5A83 /* TimelineDividerView.swift in Sources */,
 				BAB818C3228D5847008C2367 /* DescriptionAutoCompleteTextField.swift in Sources */,
 				BA13D2112269BE2F00EB3833 /* DateInfo.swift in Sources */,
+				BA5AC61623264651007E6C91 /* TimelineCollectionView.swift in Sources */,
 				BA13D20E2269BAA600EB3833 /* DateCellViewItem.swift in Sources */,
 				BA47920122F0479200E24F79 /* TimerContainerBox.swift in Sources */,
 				BA712EC821BF9F1200A2D8DD /* UndoStack.swift in Sources */,

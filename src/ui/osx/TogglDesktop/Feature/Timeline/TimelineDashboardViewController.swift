@@ -19,7 +19,7 @@ final class TimelineDashboardViewController: NSViewController {
 
     @IBOutlet weak var datePickerContainerView: NSView!
     @IBOutlet weak var recordSwitcher: OGSwitch!
-    @IBOutlet weak var collectionView: NSCollectionView!
+    @IBOutlet weak var collectionView: TimelineCollectionView!
     @IBOutlet weak var emptyLbl: NSTextField!
     @IBOutlet weak var emptyActivityLbl: NSTextField!
     @IBOutlet weak var emptyActivityLblPadding: NSLayoutConstraint!
@@ -157,7 +157,7 @@ extension TimelineDashboardViewController {
     }
 
     fileprivate func initCollectionView() {
-
+        collectionView.timelineDelegate = self
     }
 
     @objc private func handleDisplaySettingNotification(_ noti: Notification) {
@@ -313,5 +313,14 @@ extension TimelineDashboardViewController: TimelineDatasourceDelegate {
 
         editorPopover.animates = false
         editorPopover.show(relativeTo: cell.view.bounds, of: cell.view, preferredEdge: .maxX)
+    }
+}
+
+// MARK: TimelineCollectionViewDelegate
+
+extension TimelineDashboardViewController: TimelineCollectionViewDelegate {
+
+    func timelineShouldCreateEmptyEntry(with startTime: TimeInterval) {
+        
     }
 }
