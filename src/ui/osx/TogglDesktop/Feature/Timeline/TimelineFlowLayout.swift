@@ -150,6 +150,10 @@ final class TimelineFlowLayout: NSCollectionViewFlowLayout {
 
 extension TimelineFlowLayout {
 
+    public func convertTimestamp(from location: CGPoint) -> TimeInterval {
+        return 0
+    }
+
     private func calculateBlockSize(at indexPath: IndexPath) -> (y: CGFloat, height: CGFloat)? {
         guard let timestamp = flowDelegate?.timechunkForItem(at: indexPath) else {
             print("Missing timestamp for at \(indexPath)")
