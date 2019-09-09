@@ -42,18 +42,17 @@
 
                 <TextBlock Name="countryLabel" Text="Select Country:" Margin="0,10" Visibility="Collapsed"/>
                 <ComboBox Name="countrySelect" Height="30"
-                          IsEditable="True" Visibility="Collapsed"
+                          Visibility="Collapsed"
                           SelectionChanged="countrySelect_SelectionChanged"
-                          ItemsSource="{Binding}"
                           SelectedValuePath="Name"
-                          VerticalAlignment="Center">
-                    <ComboBox.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Foreground="#000000" Text="{Binding Name}" />
-                        </DataTemplate>
-                    </ComboBox.ItemTemplate>
+                          VerticalAlignment="Center"
+                          VerticalContentAlignment="Center"
+                          DisplayMemberPath="Name"
+                          Foreground="#000000"
+                          IsTextSearchEnabled="True"
+                          IsTextSearchCaseSensitive="False">
                 </ComboBox>
-                <CheckBox Name="tosCheckbox" Foreground="#ffffff" Visibility="Collapsed">
+                <CheckBox Name="tosCheckbox" Foreground="#ffffff" Visibility="Collapsed" Margin="0,10,0,5">
                     <WrapPanel>
                         <TextBlock Foreground="White" Name="TextBlockWithHyperlink" Margin="10,0,0,0">
                             I agree to  
