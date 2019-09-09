@@ -141,6 +141,17 @@
 		BA34F10122439C3000C27A15 /* EditorViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA34F0FF22439C3000C27A15 /* EditorViewController.xib */; };
 		BA35B21F22E6E95200FA560E /* CalendarCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA35B21E22E6E95200FA560E /* CalendarCollectionView.swift */; };
 		BA35B22122E6E9E200FA560E /* Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA35B22022E6E9E200FA560E /* Key.swift */; };
+		BA3BF86F2315457000721020 /* libPocoCrypto.60.dylib in Copy Files for Library in Debug mode */ = {isa = PBXBuildFile; fileRef = BAD2341921D612DE0039C742 /* libPocoCrypto.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BA3BF8702315457000721020 /* libPocoData.60.dylib in Copy Files for Library in Debug mode */ = {isa = PBXBuildFile; fileRef = BAD2341A21D612DE0039C742 /* libPocoData.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BA3BF8712315457000721020 /* libPocoDataSQLite.60.dylib in Copy Files for Library in Debug mode */ = {isa = PBXBuildFile; fileRef = BAD2341621D612DE0039C742 /* libPocoDataSQLite.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BA3BF8722315457000721020 /* libPocoFoundation.60.dylib in Copy Files for Library in Debug mode */ = {isa = PBXBuildFile; fileRef = BAD2341E21D612DF0039C742 /* libPocoFoundation.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BA3BF8732315457000721020 /* libPocoJSON.60.dylib in Copy Files for Library in Debug mode */ = {isa = PBXBuildFile; fileRef = BAD2341C21D612DF0039C742 /* libPocoJSON.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BA3BF8742315457000721020 /* libPocoNet.60.dylib in Copy Files for Library in Debug mode */ = {isa = PBXBuildFile; fileRef = BAD2341821D612DE0039C742 /* libPocoNet.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BA3BF8752315457000721020 /* libPocoNetSSL.60.dylib in Copy Files for Library in Debug mode */ = {isa = PBXBuildFile; fileRef = BAD2341721D612DE0039C742 /* libPocoNetSSL.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BA3BF8762315457000721020 /* libPocoUtil.60.dylib in Copy Files for Library in Debug mode */ = {isa = PBXBuildFile; fileRef = BAD2341D21D612DF0039C742 /* libPocoUtil.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BA3BF8772315457000721020 /* libPocoXML.60.dylib in Copy Files for Library in Debug mode */ = {isa = PBXBuildFile; fileRef = BAD2341B21D612DE0039C742 /* libPocoXML.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BA3BF8782315457000721020 /* libcrypto.1.1.dylib in Copy Files for Library in Debug mode */ = {isa = PBXBuildFile; fileRef = 3CFE546D201781A5006B673A /* libcrypto.1.1.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BA3BF8792315457000721020 /* libssl.1.1.dylib in Copy Files for Library in Debug mode */ = {isa = PBXBuildFile; fileRef = 3CFE547D201781A5006B673A /* libssl.1.1.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		BA3E75D422291CEB009AD291 /* SystemMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA3E75D322291CEB009AD291 /* SystemMessage.swift */; };
 		BA3E75D62229356D009AD291 /* SystemMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA3E75D52229356D009AD291 /* SystemMessageView.swift */; };
 		BA3E75D822293576009AD291 /* SystemMessageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA3E75D722293576009AD291 /* SystemMessageView.xib */; };
@@ -551,6 +562,27 @@
 				74213490195C50B5007EF78B /* CrashReporter.framework in CopyFiles */,
 				BA6E873621DDC1E2005E2451 /* Sparkle.framework in CopyFiles */,
 			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BA3BF8502315455B00721020 /* Copy Files for Library in Debug mode */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 16;
+			files = (
+				BA3BF86F2315457000721020 /* libPocoCrypto.60.dylib in Copy Files for Library in Debug mode */,
+				BA3BF8702315457000721020 /* libPocoData.60.dylib in Copy Files for Library in Debug mode */,
+				BA3BF8712315457000721020 /* libPocoDataSQLite.60.dylib in Copy Files for Library in Debug mode */,
+				BA3BF8722315457000721020 /* libPocoFoundation.60.dylib in Copy Files for Library in Debug mode */,
+				BA3BF8732315457000721020 /* libPocoJSON.60.dylib in Copy Files for Library in Debug mode */,
+				BA3BF8742315457000721020 /* libPocoNet.60.dylib in Copy Files for Library in Debug mode */,
+				BA3BF8752315457000721020 /* libPocoNetSSL.60.dylib in Copy Files for Library in Debug mode */,
+				BA3BF8762315457000721020 /* libPocoUtil.60.dylib in Copy Files for Library in Debug mode */,
+				BA3BF8772315457000721020 /* libPocoXML.60.dylib in Copy Files for Library in Debug mode */,
+				BA3BF8782315457000721020 /* libcrypto.1.1.dylib in Copy Files for Library in Debug mode */,
+				BA3BF8792315457000721020 /* libssl.1.1.dylib in Copy Files for Library in Debug mode */,
+			);
+			name = "Copy Files for Library in Debug mode";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -1752,6 +1784,7 @@
 				69FC17EF17E6534400B96425 /* Resources */,
 				74E3CDDA17FC37A500C3ADD3 /* Run Script (install bugsnag) */,
 				74A50AA818434D90006F37BB /* CopyFiles */,
+				BA3BF8502315455B00721020 /* Copy Files for Library in Debug mode */,
 				7407F1F41AA80466000380C4 /* Run Script (Fix dynamic library paths in Frameworks) */,
 				BA6406F121C8FC690074BC96 /* Run Formatter */,
 			);

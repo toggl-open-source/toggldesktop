@@ -381,6 +381,7 @@ const std::string TimeEntry::GroupHash() const {
     std::stringstream ss;
     ss << toggl::Formatter::FormatDateHeader(Start())
        << Description()
+       << WID()
        << PID()
        << TID()
        << ProjectGUID()

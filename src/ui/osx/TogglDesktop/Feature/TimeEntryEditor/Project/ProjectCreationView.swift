@@ -50,6 +50,7 @@ final class ProjectCreationView: NSView {
 
     var selectedTimeEntry: TimeEntryViewItem! {
         didSet {
+            getRandomColor()
             resetViews()
         }
     }
@@ -119,6 +120,7 @@ final class ProjectCreationView: NSView {
         super.awakeFromNib()
 
         initCommon()
+        getRandomColor()
         selecteFirstWorkspace()
         updateLayoutState()
     }
@@ -215,6 +217,7 @@ extension ProjectCreationView {
         // Default value
         selectedColor = ProjectColor.default
         displayMode = .normal
+        publicProjectCheckBox.state = .off
 
         // Delegate
         projectTextField.delegate = self
@@ -236,6 +239,12 @@ extension ProjectCreationView {
 
         // Hide color wheel for free workspace by default
         isPremiumWorkspace = false
+    }
+
+    fileprivate func getRandomColor() {
+        let color = ProjectColor.random()
+        originalColor = color
+        selectedColor = color
     }
 
     fileprivate func updateLayout() {
@@ -305,7 +314,7 @@ extension ProjectCreationView {
         selecteFirstWorkspace()
         clientAutoComplete.stringValue = ""
         selectedClient = nil
-        selectedColor = ProjectColor.default
+        selectedColor = originalColor
         updateLayoutState()
     }
 

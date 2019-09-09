@@ -27,4 +27,8 @@ struct ProjectColor: Equatable {
                                                 ProjectColor(colorHex: "#000000")]
 
     let colorHex: String
+
+    static func random() -> ProjectColor {
+        return defaultColors.randomElement() ?? .default
+    }
 }

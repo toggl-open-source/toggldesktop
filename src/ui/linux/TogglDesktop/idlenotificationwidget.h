@@ -58,7 +58,7 @@ private:
 
     void on_discardTimeAndContinueButton_clicked();
 
-    void on_pushButton_clicked();
+    void on_addIdleTimeAsNewEntryButton_clicked();
 
  private:
     Ui::IdleNotificationWidget *ui;

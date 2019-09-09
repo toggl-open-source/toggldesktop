@@ -182,7 +182,7 @@ clean_deps:
 	cd $(openssldir) && (make clean || true)
 	cd third_party/lua && make clean
 
-deps: clean_deps init_submodule openssl poco lua copy_libs
+deps: clean_deps init_submodule openssl poco lua
 
 init_submodule:
 	cd $(rootdir) && git submodule update --init --recursive
@@ -201,19 +201,6 @@ poco:
 	&& \
 	make clean && \
 	make $(LEGACYMACOSSDK)
-
-copy_libs:
-	cp $(pocodir)/lib/Darwin/x86_64/libPocoCrypto.$(pocoversion).dylib /usr/local/lib/
-	cp $(pocodir)/lib/Darwin/x86_64/libPocoData.$(pocoversion).dylib /usr/local/lib/
-	cp $(pocodir)/lib/Darwin/x86_64/libPocoDataSQLite.$(pocoversion).dylib /usr/local/lib/
-	cp $(pocodir)/lib/Darwin/x86_64/libPocoFoundation.$(pocoversion).dylib /usr/local/lib/
-	cp $(pocodir)/lib/Darwin/x86_64/libPocoNet.$(pocoversion).dylib /usr/local/lib/
-	cp $(pocodir)/lib/Darwin/x86_64/libPocoNetSSL.$(pocoversion).dylib /usr/local/lib/
-	cp $(pocodir)/lib/Darwin/x86_64/libPocoUtil.$(pocoversion).dylib /usr/local/lib/
-	cp $(pocodir)/lib/Darwin/x86_64/libPocoXML.$(pocoversion).dylib /usr/local/lib/
-	cp $(pocodir)/lib/Darwin/x86_64/libPocoJSON.$(pocoversion).dylib /usr/local/lib/
-	cp $(openssldir)/libssl.1.1.dylib /usr/local/lib/ 2>/dev/null || :
-	cp $(openssldir)/libcrypto.1.1.dylib /usr/local/lib/ 2>/dev/null || :
 
 third_party/google-astyle/build/google-astyle:
 	cd third_party/google-astyle && mkdir -p build && g++ *.cpp -o build/google-astyle

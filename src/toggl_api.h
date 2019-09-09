@@ -551,6 +551,16 @@ extern "C" {
         const char_t *password,
         const uint64_t country_id);
 
+    TOGGL_EXPORT bool_t toggl_google_signup(
+        void *context,
+        const char_t *access_token,
+        const uint64_t country_id);
+
+    TOGGL_EXPORT bool_t toggl_google_signup_async(
+        void *context,
+        const char_t *access_token,
+        const uint64_t country_id);
+
     TOGGL_EXPORT bool_t toggl_google_login(
         void *context,
         const char_t *access_token);

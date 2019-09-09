@@ -10,6 +10,7 @@
 #import "DisplayCommand.h"
 #import "TogglDesktop-Swift.h"
 #import "IdleEvent.h"
+#import "UserNotificationCenter.h"
 
 @interface IdleNotificationWindowController ()
 
@@ -20,6 +21,7 @@
 @property (weak) IBOutlet NSButton *cancelButton;
 @property (weak) IBOutlet FlatButton *discardAndContinueButton;
 @property (weak) IBOutlet FlatButton *keepIdleTimeButton;
+@property (assign, nonatomic) BOOL isWaiting;
 
 - (IBAction)stopButtonClicked:(id)sender;
 - (IBAction)ignoreButtonClicked:(id)sender;
@@ -46,6 +48,25 @@ extern void *ctx;
 	[self styleTransparentButton:self.discardAndContinueButton];
 	[self styleTransparentButton:self.keepIdleTimeButton];
 	[self styleCancelButton];
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(windowDidBecomeActiveNotification)
+												 name:NSWindowDidBecomeKeyNotification
+											   object:nil];
+}
+
+- (void)dealloc
+{
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)windowDidBecomeActiveNotification
+{
+	if (self.isWaiting && ![UserNotificationCenter share].isDoNotDisturbEnabled)
+	{
+		[self.window makeKeyAndOrderFront:nil];
+		[NSApp activateIgnoringOtherApps:YES];
+		self.isWaiting = NO;
+	}
 }
 
 - (void)styleTransparentButton:(FlatButton *)button
@@ -94,8 +115,6 @@ extern void *ctx;
 
 	self.idleEvent = idleEvent;
 
-	[self.window makeKeyAndOrderFront:nil];
-
 	self.idleSinceTextField.stringValue = self.idleEvent.since;
 	[self.idleSinceTextField setHidden:NO];
 
@@ -103,6 +122,16 @@ extern void *ctx;
 	[self.idleAmountTextField setHidden:NO];
 
 	self.timeentryDescriptionTextField.stringValue = self.idleEvent.timeEntryDescription;
+
+	if ([[UserNotificationCenter share] isDoNotDisturbEnabled])
+	{
+		self.isWaiting = YES;
+	}
+	else
+	{
+		[self.window makeKeyAndOrderFront:nil];
+		[NSApp activateIgnoringOtherApps:YES];
+	}
 }
 
 - (IBAction)stopButtonClicked:(id)sender

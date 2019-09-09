@@ -35,6 +35,13 @@
 	return self;
 }
 
+- (BOOL)isDoNotDisturbEnabled
+{
+	NSUserDefaults *defaults = [[NSUserDefaults alloc] initWithSuiteName:@"com.apple.notificationcenterui"];
+
+	return [defaults boolForKey:@"doNotDisturb"];
+}
+
 - (NSUserNotification *)defaultUserNotificationWithTitle:(NSString *)title informativeText:(NSString *)informativeText
 {
 	NSUserNotification *notification = [[NSUserNotification alloc] init];
