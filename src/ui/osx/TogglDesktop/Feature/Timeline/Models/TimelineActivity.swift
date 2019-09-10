@@ -64,7 +64,8 @@ final class TimelineActivity {
     // MARK: Public
 
     func timechunk() -> TimeChunk? {
-        return TimeChunk(start: started, end: ended)
+        let newEnded = min(started + 900, ended) // Draw at max 15 mins 
+        return TimeChunk(start: started, end: newEnded)
     }
 
     private static func getColor(from lightest: NSColor, darkest: NSColor, ratio: CGFloat) -> NSColor {
