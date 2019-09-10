@@ -149,10 +149,7 @@ namespace TogglDesktop
                     this.countrySelect.Visibility = Visibility.Visible;
                     this.tosCheckbox.Visibility = Visibility.Visible;
                     this.signupLoginToggle.Content = "Log in";
-                    Task.Factory.StartNew(() =>
-                    {
-                        getCountries();
-                    });
+                    Task.Run(getCountries);
                     break;
                 default:
                     throw new ArgumentException(string.Format("Invalid action '{0}' in login form.", action));
@@ -162,14 +159,11 @@ namespace TogglDesktop
 
         private void getCountries()
         {
-            Dispatcher.Invoke(() =>
+            if (!this.countriesLoaded)
             {
-                if (!this.countriesLoaded)
-                {
-                    Toggl.GetCountries();
-                    this.countriesLoaded = true;
-                }
-            });            
+                Toggl.GetCountries();
+                this.countriesLoaded = true;
+            }
         }
 
         private void tryConfirm()
