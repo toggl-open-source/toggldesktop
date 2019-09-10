@@ -27,6 +27,7 @@ final class TimelineDashboardViewController: NSViewController {
     // MARK: Variables
 
     weak var delegate: TimelineDashboardViewControllerDelegate?
+    private var isOpening = false
     private var selectedGUID: String?
     private var isFirstTime = true
     lazy var datePickerView: DatePickerView = DatePickerView.xibView()
@@ -82,12 +83,18 @@ final class TimelineDashboardViewController: NSViewController {
 
     override func viewDidAppear() {
         super.viewDidAppear()
+        isOpening = true
 
         // Scroll to the first visible item at the first time open Timeline
         if isFirstTime {
             isFirstTime = false
             scrollToVisibleItem()
         }
+    }
+
+    override func viewWillDisappear() {
+        super.viewWillDisappear()
+        isOpening = false
     }
 
     func scrollToVisibleItem() {
@@ -154,6 +161,10 @@ extension TimelineDashboardViewController {
                                                selector: #selector(self.didAddManualTimeNotification),
                                                name: NSNotification.Name.didAdddManualTime,
                                                object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(self.editorOnChangeNotification(_:)),
+                                               name: Notification.Name(kDisplayTimeEntryEditor),
+                                               object: nil)
     }
 
     fileprivate func initCollectionView() {
@@ -192,6 +203,13 @@ extension TimelineDashboardViewController {
                 return
             }
         }
+    }
+
+    @objc private func editorOnChangeNotification(_ noti: Notification) {
+        guard isOpening,
+            let cmd = noti.object as? DisplayCommand,
+            let timeEntry = cmd.timeEntry else { return }
+        editorPopover.setTimeEntry(timeEntry)
     }
 
     fileprivate func handleEmptyState(_ timeline: TimelineData) {
@@ -260,6 +278,7 @@ extension TimelineDashboardViewController: TimelineDatasourceDelegate {
         selectedGUID = timeEntry.guid
         editorPopover.show(relativeTo: view.bounds, of: view, preferredEdge: .maxX)
         editorPopover.setTimeEntry(timeEntry)
+        DesktopLibraryBridge.shared().startEditor(atGUID: timeEntry.guid)
     }
 
     func startNewTimeEntry(at started: TimeInterval, ended: TimeInterval) {

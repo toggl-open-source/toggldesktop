@@ -33,6 +33,7 @@ static NSString *kFrameKey = @"frame";
 @property (nonatomic, copy) NSString *lastSelectedGUID;
 @property (nonatomic, strong) TimeEntryEmptyView *emptyView;
 @property (nonatomic, strong) EditorPopover *timeEntrypopover;
+@property (nonatomic, assign) BOOL isOpening;
 @end
 
 @implementation TimeEntryListViewController
@@ -68,10 +69,19 @@ extern void *ctx;
 - (void)viewDidAppear
 {
 	[super viewDidAppear];
+	self.isOpening = YES;
 	[self.collectionView reloadData];
 }
 
-- (void)initCommon {
+- (void)viewWillDisappear
+{
+	[super viewWillDisappear];
+	self.isOpening = NO;
+}
+
+- (void)initCommon
+{
+	self.isOpening = YES;
 	self.addedHeight = 0;
 	self.runningEdit = NO;
 }
@@ -281,6 +291,12 @@ extern void *ctx;
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
 	NSLog(@"TimeEntryListViewController displayTimeEntryEditor, thread %@", [NSThread currentThread]);
+
+	// Skip render if need
+	if (!self.isOpening)
+	{
+		return;
+	}
 
 	TimeEntryViewItem *timeEntry = cmd.timeEntry;
 	if (cmd.open)
