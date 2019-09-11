@@ -1,6 +1,32 @@
 {
     "versions": [
         {
+            "version": "7.4.1000",
+            "rows": [
+                "New project color should be random",
+                "Minor UI improvement on new design",
+                "Bring Keep idle time button back",
+                "Fixed App crash if there are enormous tags",
+                "Fixed Invalid color space when reverting the project color",
+                "Fixed Respect notification center settings and Do not disturb when triggering notifications",
+                "Fixed Time entries list missing in Macos Desktop",
+                "Fixed Public projects created by Admins are being created as private projects",
+                "Fixed Editing time entries using Autocomplete doesn't contain Tags ",
+                "Fixed Running Time Entry clears if you've added a tag",
+                "Fixed Esc key does not work when focused on Add tags field",
+                "Fixed Beep sound when selecting the AutoComplete Item by hitting Enter",
+                "Fixed Choosing Edit From Menubar Does Not Focus App",
+                "Fixed Create Client/Project buttons hidden under long lists of clients/projects",
+                "Fixed Project name clears from time entry",
+                "Fixed Very hard to see dark project colours when using dark mode",
+                "Fixed Focus jumps when editing a running entry",
+                "Fixed Tabbing for Mac app, keyboard preference",
+                "Fixed Track usage of Edit view resize handle"
+            ],
+            "date": "September 11st 2019",
+            "beta": "true"
+        },
+        {
             "version": "7.4.484",
             "rows": [
                 "Fixed library rerefencing issues",
