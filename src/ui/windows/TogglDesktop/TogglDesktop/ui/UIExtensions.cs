@@ -95,6 +95,16 @@ static class UIExtensions
         window.Dispatcher.BeginInvoke(DispatcherPriority.Background, hideAction);
     }
 
+    public static void ShowOnTop(this Window window)
+    {
+        window.Show();
+        if (window.WindowState == WindowState.Minimized)
+        {
+            window.WindowState = WindowState.Normal;
+        }
+        window.Activate();
+    }
+
     public static void ClearUndoHistory(this TextBoxBase textBox)
     {
         textBox.IsUndoEnabled = false;
