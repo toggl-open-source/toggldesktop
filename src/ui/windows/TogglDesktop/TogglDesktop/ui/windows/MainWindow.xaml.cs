@@ -870,6 +870,12 @@ namespace TogglDesktop
             if (this.editPopup == null || (!forceUpdate && !this.editPopup.IsVisible))
                 return;
 
+            if (this.ActualHeight.DoubleEquals(0.0))
+            {
+                // make sure the window was shown at least once to be able to use ActualHeight and ActualWidth properties
+                this.Show();
+            }
+
             if (this.WindowState == WindowState.Maximized)
             {
                 Win32.Rectangle bounds;

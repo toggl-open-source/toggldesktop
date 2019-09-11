@@ -412,5 +412,14 @@ public static class Utils
         public static string Bitness() => Environment.Is64BitProcess ? "(64-bit)" : "(32-bit)";
 
         #endregion environment
-}
+
+        #region numeric
+
+        public static bool DoubleEquals(this double d1, double d2, double epsilon = 1e-6)
+        {
+            return Math.Abs(d1 - d2) < epsilon;
+        }
+
+        #endregion
+    }
 }
