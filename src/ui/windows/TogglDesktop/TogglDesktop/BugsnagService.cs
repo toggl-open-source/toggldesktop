@@ -37,7 +37,16 @@ namespace TogglDesktop
                     {
                         "Channel", Toggl.UpdateChannel()
                     },
-                    {"Bitness", Utils.Bitness()}
+                    {
+                        "Bitness", Utils.Bitness()
+                    },
+                    {
+                        "InstallationType",
+#if MS_STORE
+                        "Store",
+#else
+                        "Regular"
+                    }
                 });
             });
 
