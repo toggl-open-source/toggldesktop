@@ -43,7 +43,7 @@ namespace TogglDesktop
                     {
                         "InstallationType",
 #if MS_STORE
-                        "Store",
+                        "Store"
 #else
                         "Regular"
 #endif
