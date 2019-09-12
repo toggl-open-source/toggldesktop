@@ -8,8 +8,11 @@ using Google.Apis.Auth.OAuth2;
 using Google.Apis.Oauth2.v2;
 using TogglDesktop.Diagnostics;
 using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
 using System.Windows.Navigation;
-using Google.Apis.Auth.OAuth2.Responses;
+using Google.Apis.Auth.OAuth2.Flows;
+using Google.Apis.Http;
 using Google.Apis.Util;
 
 namespace TogglDesktop
@@ -33,6 +36,7 @@ namespace TogglDesktop
         private bool countriesLoaded = false;
         private long selectedCountryID = -1;
         private List<TogglDesktop.Toggl.TogglCountryView> countriesList;
+        private HttpClientFactory httpClientFactory;
 
         public LoginView()
         {
@@ -41,6 +45,35 @@ namespace TogglDesktop
 
             this.IsVisibleChanged += this.onIsVisibleChanged;
             Toggl.OnDisplayCountries += this.onDisplayCountries;
+            Toggl.OnSettings += this.onSettings;
+        }
+
+        private void onSettings(bool open, Toggl.TogglSettingsView settings)
+        {
+            this.httpClientFactory = HttpClientFactoryFromProxySettings(settings);
+        }
+
+        private static HttpClientFactory HttpClientFactoryFromProxySettings(Toggl.TogglSettingsView settings)
+        {
+            var proxyHttpClientFactory = new ProxySupportedHttpClientFactory
+            {
+                UseProxy = settings.UseProxy
+            };
+            if (settings.AutodetectProxy)
+            {
+                proxyHttpClientFactory.Proxy = WebRequest.DefaultWebProxy;
+            }
+            else if (settings.UseProxy)
+            {
+                var proxy = new WebProxy(settings.ProxyHost + ":" + settings.ProxyPort, true);
+                if (!string.IsNullOrEmpty(settings.ProxyUsername))
+                {
+                    proxy.Credentials = new NetworkCredential(settings.ProxyUsername, settings.ProxyPassword);
+                }
+                proxyHttpClientFactory.Proxy = proxy;
+            }
+
+            return proxyHttpClientFactory;
         }
 
         private void onDisplayCountries(List<TogglDesktop.Toggl.TogglCountryView> list)
@@ -341,14 +374,19 @@ namespace TogglDesktop
             }
         }
 
-        private static async Task<UserCredential> obtainGoogleUserCredentialAsync()
+        private async Task<UserCredential> obtainGoogleUserCredentialAsync()
         {
-            var credential = await GoogleWebAuthorizationBroker.AuthorizeAsync(
-                new ClientSecrets
+            var initializer = new GoogleAuthorizationCodeFlow.Initializer
+            {
+                ClientSecrets = new ClientSecrets
                 {
                     ClientId = "426090949585-uj7lka2mtanjgd7j9i6c4ik091rcv6n5.apps.googleusercontent.com",
                     ClientSecret = "6IHWKIfTAMF7cPJsBvoGxYui"
                 },
+                HttpClientFactory = httpClientFactory
+            };
+            var credential = await GoogleWebAuthorizationBroker.AuthorizeAsync(
+                initializer,
                 new[]
                 {
                     Oauth2Service.Scope.UserinfoEmail,
@@ -443,6 +481,26 @@ namespace TogglDesktop
         {
             TogglDesktop.Toggl.TogglCountryView item = this.countriesList[this.countrySelect.SelectedIndex];
             this.selectedCountryID = item.ID;
+        }
+
+        private class ProxySupportedHttpClientFactory : HttpClientFactory
+        {
+            public bool UseProxy { get; set; }
+            public IWebProxy Proxy { get; set; }
+            protected override HttpMessageHandler CreateHandler(CreateHttpClientArgs args)
+            {
+                var webRequestHandler = new WebRequestHandler
+                {
+                    UseProxy = this.UseProxy,
+                    UseCookies = false
+                };
+                if (webRequestHandler.UseProxy)
+                {
+                    webRequestHandler.Proxy = Proxy;
+                }
+
+                return webRequestHandler;
+            }
         }
     }
 
