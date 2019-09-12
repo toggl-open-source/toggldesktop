@@ -1,6 +1,22 @@
 {
     "versions": [
         {
+            "version": "7.4.1003",
+            "rows": [
+                "Added Signup with Google",
+                "Fixed issue with app window being stuck in the tray after PC restart",
+                "Fixed system proxy detection to make it work with proxies of apps like Fiddler, Freedom, etc.",
+                "Fixed various crashes when opening browser links or logging in with Google",
+                "Fixed issue when similar time entries on different workspaces were grouped together",
+                "Fixed occasional crash when displaying notification",
+                "Made 'Show/Hide Toggl' bring the window to the front if it has no focus",
+                "Tiny UI improvements to Login/Signup page"
+            ],
+            "date": "September 12nd 2019",
+            "beta": "true",
+            "has64bit": "true"
+        },
+        {
             "version": "7.4.529",
             "rows": [
                 "Fixed crash when locking PC while being logged out",
