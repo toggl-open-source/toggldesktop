@@ -46,6 +46,7 @@ namespace TogglDesktop
                         "Store",
 #else
                         "Regular"
+#endif
                     }
                 });
             });
