@@ -50,7 +50,13 @@ error Netconf::autodetectProxy(
         std::wstring proxy_url_wide(ie_config.lpszProxy);
         std::string s("");
         Poco::UnicodeConverter::toUTF8(proxy_url_wide, s);
-        proxy_strings->push_back(s);
+        s = Poco::replace(s, std::string("http="), std::string("http://"));
+        s = Poco::replace(s, std::string("https="), std::string("https://"));
+        std::stringstream ss(s);
+        std::string proxy_address;
+        while (std::getline(ss, proxy_address, ';')) {
+            proxy_strings->push_back(proxy_address);
+        }
     }
 #endif
 
