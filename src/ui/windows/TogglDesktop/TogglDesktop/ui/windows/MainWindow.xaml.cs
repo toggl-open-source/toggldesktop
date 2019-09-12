@@ -230,7 +230,6 @@ namespace TogglDesktop
             Toggl.OnTimeEntryEditor += this.onTimeEntryEditor;
             Toggl.OnTimeEntryList += this.onTimeEntryList;
             Toggl.OnOnlineState += this.onOnlineState;
-            //Toggl.OnReminder += this.onReminder;
             Toggl.OnURL += this.onURL;
             Toggl.OnUserTimeEntryStart += this.onUserTimeEntryStart;
             Toggl.OnRunningTimerState += this.onRunningTimerState;
@@ -364,14 +363,6 @@ namespace TogglDesktop
                     Toggl.ShowErrorAndNotify("Wasn't able to open the browser", e);
                 }
             }
-        }
-
-        private void onReminder(string title, string informativeText)
-        {
-            if (this.TryBeginInvoke(this.onReminder, title, informativeText))
-                return;
-
-            this.taskbarIcon.ShowBalloonTip(title, informativeText, Properties.Resources.toggl, largeIcon: true);
         }
 
         private void onOnlineState(Toggl.OnlineState state)
