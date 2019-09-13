@@ -101,14 +101,16 @@ function fillHtml() {
         link = downloadPath + "/" + cur.filename[kb].type + "-" + ka + "/";
         ghReleases[cur.version][cur.filename[kb].name] = 1;
         ghReleases[prev.version][prev.filename[kb].name] = 1;
-        tmp = "<tr><td><span class='os-icon " + k + "-icon'></span>" + cur.filename[kb].type + "</td><td>" + ka + "</td>" +
-        "<td><a target='_blank' href='https://github.com/toggl/toggldesktop/releases/download/v" + 
-        cur.version + "/" + cur.filename[kb].name + "' title='" + cur.timestamp + "'>" + cur.version + "</a>" +
-        "<td sorttable_customkey='" + cur.version.replace(".","") + "'><span class=\"" + cur.version + "_" + cur.filename[kb].name + "\"></span></td>" +
-        "<td><a target='_blank' href='https://github.com/toggl/toggldesktop/releases/download/v" + 
-        prev.version + "/" + prev.filename[kb].name + "' title='" + prev.timestamp + "'>" + prev.version + "</a>" +
-        "<td sorttable_customkey='" + prev.version.replace(".","") + "'><span class=\"" + prev.version + "_" + prev.filename[kb].name + "\"></span></td>" +
-        "<td><a target='_blank' href='" + link + "'>link</a></td></tr>";
+        tmp = "<tr>" +
+          "<td><span class='os-icon " + k + "-icon'></span>" + cur.filename[kb].type + "</td>" +
+          "<td>" + ka + "</td>" +
+          "<td sorttable_customkey='" + cur.version.split(".").join("") + "'><a target='_blank' href='https://github.com/toggl/toggldesktop/releases/download/v" + 
+        cur.version + "/" + cur.filename[kb].name + "' title='" + cur.timestamp + "'>" + cur.version + "</a></td>" +
+          "<td><span class=\"" + cur.version + "_" + cur.filename[kb].name + "\"></span></td>" +
+          "<td sorttable_customkey='" + prev.version.split(".").join("") + "'><a target='_blank' href='https://github.com/toggl/toggldesktop/releases/download/v" + 
+        prev.version + "/" + prev.filename[kb].name + "' title='" + prev.timestamp + "'>" + prev.version + "</a></td>" +
+          "<td><span class=\"" + prev.version + "_" + prev.filename[kb].name + "\"></span></td>" +
+          "<td><a target='_blank' href='" + link + "'>link</a></td></tr>";
 
         lines.push(tmp);
       }
@@ -134,6 +136,7 @@ function onReqLoad(ver, fls){
         let asset = release.assets.find(a => a.name == file);
         setDownloadCount(ver, file, !!asset ? asset.download_count : '-');
       }
+      loadSorttable();
     }
   }
 }
@@ -146,6 +149,13 @@ function setDownloadCount(ver, file, downloadCount){
 
 function showMessage(msg) {
   document.querySelector(".message").innerHTML = msg;
+}
+
+function loadSorttable() {
+  let fileref = document.createElement('script');
+  fileref.setAttribute("type","text/javascript");
+  fileref.setAttribute("src", "sorttable.js");
+  document.getElementsByTagName("head")[0].appendChild(fileref)
 }
 
 function readJSON(path) {
