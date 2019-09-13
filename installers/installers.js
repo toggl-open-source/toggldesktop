@@ -104,10 +104,10 @@ function fillHtml() {
         tmp = "<tr><td><span class='os-icon " + k + "-icon'></span>" + cur.filename[kb].type + "</td><td>" + ka + "</td>" +
         "<td><a target='_blank' href='https://github.com/toggl/toggldesktop/releases/download/v" + 
         cur.version + "/" + cur.filename[kb].name + "' title='" + cur.timestamp + "'>" + cur.version + "</a>" +
-        "<td><span class=\"" + cur.version + "_" + cur.filename[kb].name + "\"></span></td>" +
+        "<td sorttable_customkey='" + cur.version.replace(".","") + "'><span class=\"" + cur.version + "_" + cur.filename[kb].name + "\"></span></td>" +
         "<td><a target='_blank' href='https://github.com/toggl/toggldesktop/releases/download/v" + 
         prev.version + "/" + prev.filename[kb].name + "' title='" + prev.timestamp + "'>" + prev.version + "</a>" +
-        "<td><span class=\"" + prev.version + "_" + prev.filename[kb].name + "\"></span></td>" +
+        "<td sorttable_customkey='" + prev.version.replace(".","") + "'><span class=\"" + prev.version + "_" + prev.filename[kb].name + "\"></span></td>" +
         "<td><a target='_blank' href='" + link + "'>link</a></td></tr>";
 
         lines.push(tmp);
