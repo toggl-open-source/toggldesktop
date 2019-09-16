@@ -158,13 +158,15 @@ void view_item_clear(TogglGenericView *item) {
     free(item->WorkspaceName);
     item->WorkspaceName = nullptr;
 
-    if (item->Next) {
-        TogglGenericView *next =
-            reinterpret_cast<TogglGenericView *>(item->Next);
-        view_item_clear(next);
-    }
-
     delete item;
+}
+
+void view_list_clear(TogglGenericView *first) {
+    while (first) {
+        TogglGenericView *next = reinterpret_cast<TogglGenericView*>(first->Next);
+        view_item_clear(first);
+        first = next;
+    }
 }
 
 void country_item_clear(TogglCountryView *item) {

@@ -466,7 +466,7 @@ void GUI::DisplayTags(const std::vector<view::Generic> list) {
 
     TogglGenericView *first = generic_to_view_item_list(list);
     on_display_tags_(first);
-    view_item_clear(first);
+    view_list_clear(first);
 }
 
 void GUI::DisplayAutotrackerRules(
@@ -508,7 +508,7 @@ void GUI::DisplayClientSelect(
 
     TogglGenericView *first = generic_to_view_item_list(list);
     on_display_client_select_(first);
-    view_item_clear(first);
+    view_list_clear(first);
 }
 
 void GUI::DisplayWorkspaceSelect(
@@ -517,7 +517,7 @@ void GUI::DisplayWorkspaceSelect(
 
     TogglGenericView *first = generic_to_view_item_list(list);
     on_display_workspace_select_(first);
-    view_item_clear(first);
+    view_list_clear(first);
 }
 
 void GUI::DisplayTimeEntryEditor(
