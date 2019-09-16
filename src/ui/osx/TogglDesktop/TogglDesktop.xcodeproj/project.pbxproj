@@ -97,6 +97,7 @@
 		BA014050225710FD000E5B91 /* TagAutoCompleteTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA01404F225710FD000E5B91 /* TagAutoCompleteTextField.swift */; };
 		BA01405222571199000E5B91 /* TagTokenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA01405122571199000E5B91 /* TagTokenView.swift */; };
 		BA014054225711A3000E5B91 /* TagTokenView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA014053225711A3000E5B91 /* TagTokenView.xib */; };
+		BA01E8A1232F77B3006B93EC /* ClickableImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = BA01E8A0232F77B3006B93EC /* ClickableImageView.m */; };
 		BA03725521FE9FD400FC277B /* FlatButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA03725421FE9FD400FC277B /* FlatButton.swift */; };
 		BA03729D21FED85700FC277B /* NSView+Xib.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA03729C21FED85700FC277B /* NSView+Xib.swift */; };
 		BA053659225DDDBB00C26E1F /* CustomFocusRingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA053658225DDDBB00C26E1F /* CustomFocusRingButton.swift */; };
@@ -690,6 +691,8 @@
 		BA01404F225710FD000E5B91 /* TagAutoCompleteTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagAutoCompleteTextField.swift; sourceTree = "<group>"; };
 		BA01405122571199000E5B91 /* TagTokenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagTokenView.swift; sourceTree = "<group>"; };
 		BA014053225711A3000E5B91 /* TagTokenView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TagTokenView.xib; sourceTree = "<group>"; };
+		BA01E89F232F77B3006B93EC /* ClickableImageView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ClickableImageView.h; sourceTree = "<group>"; };
+		BA01E8A0232F77B3006B93EC /* ClickableImageView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ClickableImageView.m; sourceTree = "<group>"; };
 		BA03725421FE9FD400FC277B /* FlatButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlatButton.swift; sourceTree = "<group>"; };
 		BA03729C21FED85700FC277B /* NSView+Xib.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSView+Xib.swift"; sourceTree = "<group>"; };
 		BA053658225DDDBB00C26E1F /* CustomFocusRingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFocusRingButton.swift; sourceTree = "<group>"; };
@@ -1082,6 +1085,8 @@
 				BA08E086222E709C0075F68E /* ProjectTextField.m */,
 				745126B419A28AA500390F47 /* Reachability.h */,
 				745126B519A28AA600390F47 /* Reachability.m */,
+				BA01E89F232F77B3006B93EC /* ClickableImageView.h */,
+				BA01E8A0232F77B3006B93EC /* ClickableImageView.m */,
 			);
 			name = ui;
 			path = test2;
@@ -1988,6 +1993,7 @@
 				7424949E17F1E3D20030121C /* UIEvents.m in Sources */,
 				BA13D2152269C01500EB3833 /* Date+Utils.swift in Sources */,
 				BAAF56A02223DF9A003D0D73 /* VertificalTimeEntryFlowLayout.swift in Sources */,
+				BA01E8A1232F77B3006B93EC /* ClickableImageView.m in Sources */,
 				C5CB7F0417F43EE100A2AEB1 /* TimeEntryCell.m in Sources */,
 				C5DA1FBF17F1B08A001C4565 /* MainWindowController.m in Sources */,
 				BAE6379A22B225C70024DD08 /* AddTagButton.swift in Sources */,

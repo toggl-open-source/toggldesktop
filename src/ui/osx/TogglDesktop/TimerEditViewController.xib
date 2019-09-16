@@ -168,7 +168,7 @@
                                     <stackView distribution="equalSpacing" orientation="horizontal" alignment="centerY" spacing="5" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IPz-wJ-rvs">
                                         <rect key="frame" x="235" y="23" width="39" height="17"/>
                                         <subviews>
-                                            <imageView translatesAutoresizingMaskIntoConstraints="NO" id="5nL-Cd-iWe">
+                                            <imageView translatesAutoresizingMaskIntoConstraints="NO" id="5nL-Cd-iWe" customClass="ClickableImageView">
                                                 <rect key="frame" x="0.0" y="0.0" width="17" height="17"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="17" id="MC3-bx-7fi"/>

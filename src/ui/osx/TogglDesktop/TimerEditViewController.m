@@ -22,6 +22,7 @@
 #import "AutoCompleteTable.h"
 #import <Carbon/Carbon.h>
 #import "Utils.h"
+#import "ClickableImageView.h"
 
 typedef enum : NSUInteger
 {
@@ -30,7 +31,7 @@ typedef enum : NSUInteger
 	DisplayModeInput,
 } DisplayMode;
 
-@interface TimerEditViewController ()
+@interface TimerEditViewController () <ClickableImageViewDelegate>
 @property (weak) IBOutlet NSBoxClickable *manualBox;
 @property (weak) IBOutlet NSBoxClickable *mainBox;
 @property (weak) IBOutlet NSTextFieldDuration *durationTextField;
@@ -38,7 +39,7 @@ typedef enum : NSUInteger
 @property (weak) IBOutlet ProjectTextField *projectTextField;
 @property (weak) IBOutlet AutoCompleteInput *descriptionLabel;
 @property (weak) IBOutlet NSImageView *billableFlag;
-@property (weak) IBOutlet NSImageView *tagFlag;
+@property (weak) IBOutlet ClickableImageView *tagFlag;
 @property (weak) IBOutlet NSButton *addEntryBtn;
 @property (weak) IBOutlet NSView *contentContainerView;
 @property (weak) IBOutlet TimerContainerBox *autocompleteContainerView;
@@ -146,6 +147,7 @@ NSString *kInactiveTimerColor = @"#999999";
 	self.autoCompleteInput.responderDelegate = self.autocompleteContainerView;
 
 	self.descriptionLabel.delegate = self;
+	self.tagFlag.delegate = self;
 }
 
 - (void)viewDidAppear
@@ -338,6 +340,10 @@ NSString *kInactiveTimerColor = @"#999999";
 	else if (sender == self.durationTextField)
 	{
 		focusField = kFocusedFieldNameDuration;
+	}
+	else if (sender == self.tagFlag)
+	{
+		focusField = kFocusedFieldNameTag;
 	}
 
 	toggl_edit(ctx, [self.time_entry.GUID UTF8String], false, focusField);
@@ -733,31 +739,9 @@ NSString *kInactiveTimerColor = @"#999999";
 	}
 }
 
-- (void)mouseUp:(NSEvent *)event
+- (void)imageViewOnClick:(id)sender
 {
-    [super mouseUp:event];
-	if (!self.time_entry.isRunning && self.displayMode != DisplayModeTimer)
-	{
-		return;
-	}
-
-	NSPoint globalLocation = [NSEvent mouseLocation];
-	NSRect rect = [self.view.window convertRectFromScreen:NSMakeRect(globalLocation.x, globalLocation.y, 0, 0)];
-	NSPoint windowLocation = rect.origin;
-	NSPoint mouseLocation = [self.contentContainerView convertPoint:windowLocation fromView:nil];
-	NSString *GUID = self.time_entry.GUID;
-
-	if (NSPointInRect(mouseLocation, self.projectTextField.frame) || NSPointInRect(mouseLocation, self.dotImageView.frame))
-	{
-		toggl_edit(ctx, [GUID UTF8String], false, kFocusedFieldNameProject);
-		return;
-	}
-
-	if (NSPointInRect(mouseLocation, self.descriptionLabel.frame))
-	{
-		toggl_edit(ctx, [GUID UTF8String], false, kFocusedFieldNameDescription);
-		return;
-	}
+	[self textFieldClicked:sender];
 }
 
 @end
