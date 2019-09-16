@@ -60,6 +60,8 @@ TogglAutocompleteView *autocomplete_item_init(
 
 void view_item_clear(TogglGenericView *item);
 
+void view_list_clear(TogglGenericView *first);
+
 void autocomplete_item_clear(TogglAutocompleteView *item);
 
 TogglCountryView *country_list_init(
