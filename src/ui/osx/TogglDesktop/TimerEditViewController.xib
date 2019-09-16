@@ -13,6 +13,7 @@
                 <outlet property="autoCompleteInput" destination="8Fy-tG-odG" id="lyr-Zg-zFK"/>
                 <outlet property="autocompleteContainerView" destination="Cg4-tk-Y3a" id="0n7-hi-GLA"/>
                 <outlet property="billableFlag" destination="ppU-KI-YsG" id="fTv-LB-K8L"/>
+                <outlet property="cancelBtn" destination="1SK-Qe-78h" id="OvH-t7-CGa"/>
                 <outlet property="contentContainerView" destination="UVu-2D-59K" id="Ng2-3h-cZv"/>
                 <outlet property="descriptionLabel" destination="oaA-Wf-zkO" id="M12-Yr-8Nn"/>
                 <outlet property="dotImageView" destination="fQn-ym-gNM" id="3Kn-NT-GcJ"/>
@@ -246,6 +247,9 @@
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
                                     <font key="font" metaFont="systemBold" size="12"/>
                                 </buttonCell>
+                                <connections>
+                                    <action selector="cancelBtnOnTap:" target="-2" id="BLH-GV-d8g"/>
+                                </connections>
                             </button>
                             <box autoresizesSubviews="NO" boxType="custom" cornerRadius="15" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="Cg4-tk-Y3a" customClass="TimerContainerBox" customModule="TogglDesktop" customModuleProvider="target">
                                 <rect key="frame" x="10" y="16" width="351" height="30"/>

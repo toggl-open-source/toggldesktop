@@ -45,6 +45,7 @@ typedef enum : NSUInteger
 @property (weak) IBOutlet TimerContainerBox *autocompleteContainerView;
 @property (weak) IBOutlet DotImageView *dotImageView;
 @property (weak) IBOutlet NSLayoutConstraint *projectTextFieldLeading;
+@property (weak) IBOutlet NSButton *cancelBtn;
 
 - (IBAction)startButtonClicked:(id)sender;
 - (IBAction)durationFieldChanged:(id)sender;
@@ -283,6 +284,9 @@ NSString *kInactiveTimerColor = @"#999999";
 	{
 		self.durationTextField.stringValue = @"";
 	}
+
+	// Hide
+	self.cancelBtn.hidden = YES;
 }
 
 - (void)startDisplayTimeEntryEditor:(NSNotification *)notification
@@ -316,7 +320,7 @@ NSString *kInactiveTimerColor = @"#999999";
 	{
 		[self.view.window makeFirstResponder:self.autoCompleteInput];
 	}
-
+	self.cancelBtn.hidden = YES;
 	self.time_entry = [[TimeEntryViewItem alloc] init];
 }
 
@@ -608,6 +612,9 @@ NSString *kInactiveTimerColor = @"#999999";
 	[[self.descriptionLabel currentEditor] setSelectedRange:NSMakeRange(tRange.length, 0)];
 	[self.autoCompleteInput resetTable];
 	[self.liteAutocompleteDataSource clearFilter];
+
+	// Show cancel btn
+	self.cancelBtn.hidden = NO;
 }
 
 - (BOOL)control:(NSControl *)control textView:(NSTextView *)fieldEditor doCommandBySelector:(SEL)commandSelector
@@ -742,6 +749,11 @@ NSString *kInactiveTimerColor = @"#999999";
 - (void)imageViewOnClick:(id)sender
 {
 	[self textFieldClicked:sender];
+}
+
+- (IBAction)cancelBtnOnTap:(id)sender
+{
+	[self stop:nil];
 }
 
 @end
