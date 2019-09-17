@@ -28,21 +28,23 @@
 	<array>
 		<string>MacOSX</string>
 	</array>
-	<key>CFBundleURLTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleURLSchemes</key>
-            <array>
-                <string>com.googleusercontent.apps.toggl:/oauthredirect</string>
-            </array>
-		</dict>
-	</array>
 	<key>CFBundleVersion</key>
 	<string>7.0.0</string>
 	<key>DTCompiler</key>
 	<string>com.apple.compilers.llvm.clang.1_0</string>
 	<key>DTPlatformBuild</key>
 	<string>10B61</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.426090949585-uj7lka2mtanjgd7j9i6c4ik091rcv6n5</string>
+			</array>
+		</dict>
+	</array>
 	<key>DTPlatformVersion</key>
 	<string>GM</string>
 	<key>DTSDKBuild</key>

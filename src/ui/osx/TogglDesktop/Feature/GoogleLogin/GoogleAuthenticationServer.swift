@@ -18,7 +18,7 @@ final class GoogleAuthenticationServer {
         static let Issuer = "https://accounts.google.com"
         static let ClientID = "426090949585-uj7lka2mtanjgd7j9i6c4ik091rcv6n5.apps.googleusercontent.com"
         static let ClientSecret = "6IHWKIfTAMF7cPJsBvoGxYui"
-        static let RedirectURI = "com.googleusercontent.apps.toggl:/oauthredirect"
+        static let RedirectURI = "com.googleusercontent.apps.426090949585-uj7lka2mtanjgd7j9i6c4ik091rcv6n5:/oauthredirect"
         static let TogglAuthorizerKey = "toggldesktop-authorization"
         static let Scopes = [OIDScopeOpenID, OIDScopeProfile, OIDScopeEmail]
     }
