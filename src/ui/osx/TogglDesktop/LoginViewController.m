@@ -5,7 +5,6 @@
 //
 
 #import "LoginViewController.h"
-#import "GTMOAuth2WindowController.h"
 #import "Utils.h"
 #import "NSTextField+Ext.h"
 #import "TogglDesktop-Swift.h"
@@ -231,24 +230,24 @@ extern void *ctx;
 
 - (void)startGoogleAuthentication
 {
-	NSString *scope = @"profile email";
-	NSString *clientID = @"426090949585-uj7lka2mtanjgd7j9i6c4ik091rcv6n5.apps.googleusercontent.com";
-	// According to Google docs, in installed apps the client secret is not expected to stay secret:
-	NSString *clientSecret = @"6IHWKIfTAMF7cPJsBvoGxYui";
-
-	GTMOAuth2WindowController *windowController;
-
-	windowController = [[GTMOAuth2WindowController alloc] initWithScope:scope
-															   clientID:clientID
-														   clientSecret:clientSecret
-													   keychainItemName:nil
-														 resourceBundle:nil];
-
-	[windowController signInSheetModalForWindow:[[NSApplication sharedApplication] mainWindow]
-									   delegate:self
-							   finishedSelector:@selector(viewController:finishedWithAuth:error:)];
-	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kHideDisplayError
-																object:nil];
+//    NSString *scope = @"profile email";
+//    NSString *clientID = @"426090949585-uj7lka2mtanjgd7j9i6c4ik091rcv6n5.apps.googleusercontent.com";
+//    // According to Google docs, in installed apps the client secret is not expected to stay secret:
+//    NSString *clientSecret = @"6IHWKIfTAMF7cPJsBvoGxYui";
+//
+//    GTMOAuth2WindowController *windowController;
+//
+//    windowController = [[GTMOAuth2WindowController alloc] initWithScope:scope
+//                                                               clientID:clientID
+//                                                           clientSecret:clientSecret
+//                                                       keychainItemName:nil
+//                                                         resourceBundle:nil];
+//
+//    [windowController signInSheetModalForWindow:[[NSApplication sharedApplication] mainWindow]
+//                                       delegate:self
+//                               finishedSelector:@selector(viewController:finishedWithAuth:error:)];
+//    [[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kHideDisplayError
+//                                                                object:nil];
 }
 
 - (void)viewController:(GTMOAuth2WindowController *)viewController

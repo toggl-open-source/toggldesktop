@@ -64,12 +64,6 @@
 		749CB8CC18167D6E00814841 /* PreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 749CB8CA18167D6E00814841 /* PreferencesWindowController.m */; };
 		749CB8CD18167D6E00814841 /* PreferencesWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 749CB8CB18167D6E00814841 /* PreferencesWindowController.xib */; };
 		74A7346A18297DD100525BBC /* ConvertHexColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 74A7346918297DD100525BBC /* ConvertHexColor.m */; };
-		74AA9471180909F50000539F /* GTMHTTPFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 74AA9467180909F50000539F /* GTMHTTPFetcher.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		74AA9472180909F50000539F /* GTMHTTPFetchHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 74AA9469180909F50000539F /* GTMHTTPFetchHistory.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		74AA9473180909F50000539F /* GTMOAuth2Authentication.m in Sources */ = {isa = PBXBuildFile; fileRef = 74AA946B180909F50000539F /* GTMOAuth2Authentication.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		74AA9474180909F50000539F /* GTMOAuth2SignIn.m in Sources */ = {isa = PBXBuildFile; fileRef = 74AA946D180909F50000539F /* GTMOAuth2SignIn.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		74AA9475180909F50000539F /* GTMOAuth2Window.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74AA946E180909F50000539F /* GTMOAuth2Window.xib */; };
-		74AA9476180909F50000539F /* GTMOAuth2WindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74AA9470180909F50000539F /* GTMOAuth2WindowController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		74AA947818090A8E0000539F /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74AA947718090A8E0000539F /* Security.framework */; };
 		74BA5FCF18B6E770009DAA2D /* NSHoverButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BA5FCE18B6E770009DAA2D /* NSHoverButton.m */; };
 		74BAAA0B17F37B140079386F /* TimeEntryViewItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BAAA0A17F37B140079386F /* TimeEntryViewItem.m */; };
@@ -640,17 +634,6 @@
 		749CB8CB18167D6E00814841 /* PreferencesWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PreferencesWindowController.xib; sourceTree = SOURCE_ROOT; };
 		74A7346818297DD100525BBC /* ConvertHexColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConvertHexColor.h; sourceTree = "<group>"; };
 		74A7346918297DD100525BBC /* ConvertHexColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConvertHexColor.m; sourceTree = "<group>"; };
-		74AA9466180909F50000539F /* GTMHTTPFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GTMHTTPFetcher.h; path = "../../../../third_party/gtm-oauth2-read-only/HTTPFetcher/GTMHTTPFetcher.h"; sourceTree = "<group>"; };
-		74AA9467180909F50000539F /* GTMHTTPFetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GTMHTTPFetcher.m; path = "../../../../third_party/gtm-oauth2-read-only/HTTPFetcher/GTMHTTPFetcher.m"; sourceTree = "<group>"; };
-		74AA9468180909F50000539F /* GTMHTTPFetchHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GTMHTTPFetchHistory.h; path = "../../../../third_party/gtm-oauth2-read-only/HTTPFetcher/GTMHTTPFetchHistory.h"; sourceTree = "<group>"; };
-		74AA9469180909F50000539F /* GTMHTTPFetchHistory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GTMHTTPFetchHistory.m; path = "../../../../third_party/gtm-oauth2-read-only/HTTPFetcher/GTMHTTPFetchHistory.m"; sourceTree = "<group>"; };
-		74AA946A180909F50000539F /* GTMOAuth2Authentication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GTMOAuth2Authentication.h; path = "../../../../third_party/gtm-oauth2-read-only/Source/GTMOAuth2Authentication.h"; sourceTree = "<group>"; };
-		74AA946B180909F50000539F /* GTMOAuth2Authentication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GTMOAuth2Authentication.m; path = "../../../../third_party/gtm-oauth2-read-only/Source/GTMOAuth2Authentication.m"; sourceTree = "<group>"; };
-		74AA946C180909F50000539F /* GTMOAuth2SignIn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GTMOAuth2SignIn.h; path = "../../../../third_party/gtm-oauth2-read-only/Source/GTMOAuth2SignIn.h"; sourceTree = "<group>"; };
-		74AA946D180909F50000539F /* GTMOAuth2SignIn.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GTMOAuth2SignIn.m; path = "../../../../third_party/gtm-oauth2-read-only/Source/GTMOAuth2SignIn.m"; sourceTree = "<group>"; };
-		74AA946E180909F50000539F /* GTMOAuth2Window.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = GTMOAuth2Window.xib; path = "../../../../third_party/gtm-oauth2-read-only/Source/Mac/GTMOAuth2Window.xib"; sourceTree = "<group>"; };
-		74AA946F180909F50000539F /* GTMOAuth2WindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GTMOAuth2WindowController.h; path = "../../../../third_party/gtm-oauth2-read-only/Source/Mac/GTMOAuth2WindowController.h"; sourceTree = "<group>"; };
-		74AA9470180909F50000539F /* GTMOAuth2WindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GTMOAuth2WindowController.m; path = "../../../../third_party/gtm-oauth2-read-only/Source/Mac/GTMOAuth2WindowController.m"; sourceTree = "<group>"; };
 		74AA947718090A8E0000539F /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		74B680A8180759C300B697AA /* TogglDesktopLibrary.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TogglDesktopLibrary.xcodeproj; path = ../../../lib/osx/TogglDesktopLibrary.xcodeproj; sourceTree = "<group>"; };
 		74BA5FCD18B6E770009DAA2D /* NSHoverButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSHoverButton.h; sourceTree = "<group>"; };
@@ -921,7 +904,6 @@
 				74B680A8180759C300B697AA /* TogglDesktopLibrary.xcodeproj */,
 				BA6E86A521DDB331005E2451 /* Sparkle.xcodeproj */,
 				BA7DB6BB21F9C7660059239B /* MASShortcut.xcodeproj */,
-				74E1682E180F269F0026261C /* gtm */,
 				74E857AA194F8807007A88B9 /* ssl */,
 				BA712EAF21BF904E00A2D8DD /* Feature */,
 				BA1B7FA122E5D52F001333D9 /* Swift */,
@@ -1140,24 +1122,6 @@
 				749A3A6F18D889BE000AD2DB /* Fuzz Testing */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		74E1682E180F269F0026261C /* gtm */ = {
-			isa = PBXGroup;
-			children = (
-				74AA9466180909F50000539F /* GTMHTTPFetcher.h */,
-				74AA9467180909F50000539F /* GTMHTTPFetcher.m */,
-				74AA9468180909F50000539F /* GTMHTTPFetchHistory.h */,
-				74AA9469180909F50000539F /* GTMHTTPFetchHistory.m */,
-				74AA946A180909F50000539F /* GTMOAuth2Authentication.h */,
-				74AA946B180909F50000539F /* GTMOAuth2Authentication.m */,
-				74AA946C180909F50000539F /* GTMOAuth2SignIn.h */,
-				74AA946D180909F50000539F /* GTMOAuth2SignIn.m */,
-				74AA946E180909F50000539F /* GTMOAuth2Window.xib */,
-				74AA946F180909F50000539F /* GTMOAuth2WindowController.h */,
-				74AA9470180909F50000539F /* GTMOAuth2WindowController.m */,
-			);
-			name = gtm;
 			sourceTree = "<group>";
 		};
 		74E857AA194F8807007A88B9 /* ssl */ = {
@@ -1932,7 +1896,6 @@
 				3C0158F01C7B414E00FE63AA /* LoadMoreCell.xib in Resources */,
 				BA13D21B2269E0B500EB3833 /* CalendarViewController.xib in Resources */,
 				74D1D27417EB72D900E709B0 /* TimerEditViewController.xib in Resources */,
-				74AA9475180909F50000539F /* GTMOAuth2Window.xib in Resources */,
 				3C1E013F19D2DAE300DBF9A5 /* dsa_pub.pem in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2015,7 +1978,6 @@
 				BA13D2172269DE3400EB3833 /* NoVibrantPopoverView.swift in Sources */,
 				3C6B2488203E01D90063FC08 /* AutoCompleteTable.m in Sources */,
 				BA412C1D224E0D61003CA17A /* ClientDataSource.swift in Sources */,
-				74AA9472180909F50000539F /* GTMHTTPFetchHistory.m in Sources */,
 				BA6EB8402248CBE3003BB8EF /* ProjectStorage.swift in Sources */,
 				BAAF567E2223CAC5003D0D73 /* NSButton+TextColor.swift in Sources */,
 				BA6EB8942249DB33003BB8EF /* VerticallyCenteredTextFieldCell.swift in Sources */,
@@ -2069,7 +2031,6 @@
 				BA6F1B1A21EEE258009265E4 /* NSColor+Utils.swift in Sources */,
 				BA4059B7221D46F4002969B8 /* TimeEntryCollectionView.m in Sources */,
 				BA4059AF221D215A002969B8 /* TimeHeaderView.swift in Sources */,
-				74AA9476180909F50000539F /* GTMOAuth2WindowController.m in Sources */,
 				BA89CB392265EA4400D21584 /* String+Search.swift in Sources */,
 				BA9C2E08224C854C002AD2A1 /* ProjectColor.swift in Sources */,
 				BA01404622570805000E5B91 /* TagCellView.swift in Sources */,
@@ -2086,7 +2047,6 @@
 				BA7D334F224897FC00B953A8 /* ProjectHeaderCellView.swift in Sources */,
 				BAE49CAE222FC1C900773814 /* TimerContainerBox.swift in Sources */,
 				BA13D20A2269BA6500EB3833 /* CalendarDataSource.swift in Sources */,
-				74AA9474180909F50000539F /* GTMOAuth2SignIn.m in Sources */,
 				BA053659225DDDBB00C26E1F /* CustomFocusRingButton.swift in Sources */,
 				BA7D335E2248B48000B953A8 /* AutoCompleteTextField.swift in Sources */,
 				BA763B7B2268601700DC245A /* PopoverRootView.swift in Sources */,
@@ -2107,7 +2067,6 @@
 				3C3AF64E20ACC6280088A3A6 /* CountryViewItem.m in Sources */,
 				BA13D2062269B7C400EB3833 /* CalendarViewController.swift in Sources */,
 				BAF6319C21E6F868002DD6AB /* NotificationCenter+MainThread.swift in Sources */,
-				74AA9471180909F50000539F /* GTMHTTPFetcher.m in Sources */,
 				BAFBFCC821CD1D3C004B443F /* SystemService.m in Sources */,
 				BAF50DF821A2A18D0090BA95 /* AppIconFactory.m in Sources */,
 				74A7346A18297DD100525BBC /* ConvertHexColor.m in Sources */,
@@ -2137,7 +2096,6 @@
 				BA2E3F2C22375E640035D034 /* NSView+Appearance.swift in Sources */,
 				743D782A182791FA00978BCC /* idler.c in Sources */,
 				BA9C2DF8224C7E44002AD2A1 /* ProjectCreationView.swift in Sources */,
-				74AA9473180909F50000539F /* GTMOAuth2Authentication.m in Sources */,
 				BA412BFC224E0CBE003CA17A /* ClientStorage.swift in Sources */,
 				BA7B4C7C21C293E700B75B14 /* String+Optional.swift in Sources */,
 				BA6572A8224DFA6F00BA4C60 /* CurrentColorView.swift in Sources */,
