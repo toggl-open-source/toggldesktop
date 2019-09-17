@@ -28,6 +28,15 @@
 	<array>
 		<string>MacOSX</string>
 	</array>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+            <array>
+                <string>com.googleusercontent.apps.toggl:/oauthredirect</string>
+            </array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>7.0.0</string>
 	<key>DTCompiler</key>
