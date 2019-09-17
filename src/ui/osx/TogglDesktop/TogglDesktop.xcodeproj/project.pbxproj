@@ -12,7 +12,7 @@
 		3C1E013F19D2DAE300DBF9A5 /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = 3C1E013E19D2DAE300DBF9A5 /* dsa_pub.pem */; };
 		3C2F239D21A7B43400CBE6BC /* UnsupportedNotice.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C2F239C21A7B43300CBE6BC /* UnsupportedNotice.m */; };
 		3C3AF64E20ACC6280088A3A6 /* CountryViewItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C3AF64D20ACC6280088A3A6 /* CountryViewItem.m */; };
-		3C50BCAC1C1F0574004BAE9E /* (null) in Resources */ = {isa = PBXBuildFile; };
+		3C50BCAC1C1F0574004BAE9E /* BuildFile in Resources */ = {isa = PBXBuildFile; };
 		3C6B2486203E01D90063FC08 /* AutoCompleteTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C6B2480203E01D60063FC08 /* AutoCompleteTableCell.m */; };
 		3C6B2487203E01D90063FC08 /* AutoCompleteInput.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C6B2483203E01D90063FC08 /* AutoCompleteInput.m */; };
 		3C6B2488203E01D90063FC08 /* AutoCompleteTable.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C6B2484203E01D90063FC08 /* AutoCompleteTable.m */; };
@@ -29,6 +29,7 @@
 		3CE30E022052BD8B00AF2E2A /* AutoCompleteTableContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE30E012052BD8B00AF2E2A /* AutoCompleteTableContainer.m */; };
 		3CFE547E201781A7006B673A /* libcrypto.1.1.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3CFE546D201781A5006B673A /* libcrypto.1.1.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		3CFE547F201781A7006B673A /* libssl.1.1.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3CFE547D201781A5006B673A /* libssl.1.1.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		5B29B9409F01EC0E842DE86D /* Pods_TogglDesktop.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB480B234BC7336AAC1F952E /* Pods_TogglDesktop.framework */; };
 		69FC17F517E6534400B96425 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69FC17F417E6534400B96425 /* Cocoa.framework */; };
 		69FC17FF17E6534400B96425 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 69FC17FD17E6534400B96425 /* InfoPlist.strings */; };
 		69FC180117E6534400B96425 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 69FC180017E6534400B96425 /* main.m */; };
@@ -537,6 +538,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3A54C9591227E723FEC0DB85 /* Pods-TogglDesktop.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TogglDesktop.debug.xcconfig"; path = "Target Support Files/Pods-TogglDesktop/Pods-TogglDesktop.debug.xcconfig"; sourceTree = "<group>"; };
 		3C0158EF1C7B414E00FE63AA /* LoadMoreCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoadMoreCell.xib; sourceTree = "<group>"; };
 		3C07B758193C88AE00ED6E6F /* NSCustomTimerComboBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSCustomTimerComboBox.h; sourceTree = "<group>"; };
 		3C07B759193C88AE00ED6E6F /* NSCustomTimerComboBox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSCustomTimerComboBox.m; sourceTree = "<group>"; };
@@ -665,6 +667,7 @@
 		95C0707618CDB67300A34D0D /* NSCustomComboBoxCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSCustomComboBoxCell.m; sourceTree = "<group>"; };
 		95C0707818CDB91500A34D0D /* NSCustomComboBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSCustomComboBox.h; sourceTree = "<group>"; };
 		95C0707918CDB91500A34D0D /* NSCustomComboBox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSCustomComboBox.m; sourceTree = "<group>"; };
+		B671ACF75B3267B013176BD7 /* Pods-TogglDesktop.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TogglDesktop.release.xcconfig"; path = "Target Support Files/Pods-TogglDesktop/Pods-TogglDesktop.release.xcconfig"; sourceTree = "<group>"; };
 		BA013FF4225705B6000E5B91 /* HoverTableCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoverTableCellView.swift; sourceTree = "<group>"; };
 		BA01404522570805000E5B91 /* TagCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagCellView.swift; sourceTree = "<group>"; };
 		BA0140472257080F000E5B91 /* TagCellView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TagCellView.xib; sourceTree = "<group>"; };
@@ -835,6 +838,7 @@
 		C5DA1FC117F1B38B001C4565 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = SOURCE_ROOT; };
 		C5DA1FC217F1B38B001C4565 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = SOURCE_ROOT; };
 		C5DA1FC317F1B38B001C4565 /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = SOURCE_ROOT; };
+		EB480B234BC7336AAC1F952E /* Pods_TogglDesktop.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TogglDesktop.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -855,12 +859,23 @@
 				BAD858C7228EAE6500226C71 /* Bugsnag.framework in Frameworks */,
 				74033C9717EC1DE100CA53D3 /* libc++.dylib in Frameworks */,
 				69FC17F517E6534400B96425 /* Cocoa.framework in Frameworks */,
+				5B29B9409F01EC0E842DE86D /* Pods_TogglDesktop.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3A742A9261BE0A8B078F1749 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				3A54C9591227E723FEC0DB85 /* Pods-TogglDesktop.debug.xcconfig */,
+				B671ACF75B3267B013176BD7 /* Pods-TogglDesktop.release.xcconfig */,
+			);
+			name = Pods;
+			path = ../Pods;
+			sourceTree = "<group>";
+		};
 		3C6B246F203E01B70063FC08 /* AutoComplete */ = {
 			isa = PBXGroup;
 			children = (
@@ -912,6 +927,7 @@
 				69FC17F317E6534400B96425 /* Frameworks */,
 				69FC17F217E6534400B96425 /* Products */,
 				3C1E013E19D2DAE300DBF9A5 /* dsa_pub.pem */,
+				3A742A9261BE0A8B078F1749 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -940,6 +956,7 @@
 				69FC17F417E6534400B96425 /* Cocoa.framework */,
 				69FC181217E6534500B96425 /* SenTestingKit.framework */,
 				69FC17F617E6534400B96425 /* Other Frameworks */,
+				EB480B234BC7336AAC1F952E /* Pods_TogglDesktop.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1554,6 +1571,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 69FC182217E6534500B96425 /* Build configuration list for PBXNativeTarget "TogglDesktop" */;
 			buildPhases = (
+				1276406FB7B983D0C81B35AE /* [CP] Check Pods Manifest.lock */,
 				69FC17ED17E6534400B96425 /* Sources */,
 				69FC17EE17E6534400B96425 /* Frameworks */,
 				69FC17EF17E6534400B96425 /* Resources */,
@@ -1562,6 +1580,7 @@
 				BA3BF8502315455B00721020 /* Copy Files for Library in Debug mode */,
 				7407F1F41AA80466000380C4 /* Run Script (Fix dynamic library paths in Frameworks) */,
 				BA6406F121C8FC690074BC96 /* Run Formatter */,
+				CE4DD35122BF90B10398A0A6 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1888,7 +1907,7 @@
 				BA412C23224E11AC003CA17A /* ClientCellView.xib in Resources */,
 				BAF38FEF2241FF20009147D7 /* FloatingErrorView.xib in Resources */,
 				74D1D25817EB713F00E709B0 /* TimeEntryListViewController.xib in Resources */,
-				3C50BCAC1C1F0574004BAE9E /* (null) in Resources */,
+				3C50BCAC1C1F0574004BAE9E /* BuildFile in Resources */,
 				BA0140482257080F000E5B91 /* TagCellView.xib in Resources */,
 				BA9C2DFA224C7E77002AD2A1 /* ProjectCreationView.xib in Resources */,
 				BA412C29224E196D003CA17A /* NoClientCellView.xib in Resources */,
@@ -1903,6 +1922,28 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		1276406FB7B983D0C81B35AE /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-TogglDesktop-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 		7407F1F41AA80466000380C4 /* Run Script (Fix dynamic library paths in Frameworks) */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1948,6 +1989,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nset -e\n\nif ! which uncrustify > /dev/null; then\n    echo \"warning: Uncrustify is not installed.\"\nelse\n    cd $SRCROOT/../../../../\n    make fmt\nfi\n";
+		};
+		CE4DD35122BF90B10398A0A6 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-TogglDesktop/Pods-TogglDesktop-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/AppAuth/AppAuth.framework",
+				"${BUILT_PRODUCTS_DIR}/GTMAppAuth/GTMAppAuth.framework",
+				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AppAuth.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMAppAuth.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TogglDesktop/Pods-TogglDesktop-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -2276,6 +2339,7 @@
 		};
 		69FC182317E6534500B96425 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3A54C9591227E723FEC0DB85 /* Pods-TogglDesktop.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -2332,6 +2396,7 @@
 		};
 		69FC182417E6534500B96425 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B671ACF75B3267B013176BD7 /* Pods-TogglDesktop.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
