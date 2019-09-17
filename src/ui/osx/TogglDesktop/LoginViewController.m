@@ -230,6 +230,7 @@ extern void *ctx;
 
 - (void)startGoogleAuthentication
 {
+	[GoogleAuthenticationServerHelper authorize];
 //    NSString *scope = @"profile email";
 //    NSString *clientID = @"426090949585-uj7lka2mtanjgd7j9i6c4ik091rcv6n5.apps.googleusercontent.com";
 //    // According to Google docs, in installed apps the client secret is not expected to stay secret:

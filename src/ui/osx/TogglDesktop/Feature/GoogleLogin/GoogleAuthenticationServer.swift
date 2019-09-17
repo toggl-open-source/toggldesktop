@@ -78,7 +78,12 @@ extension GoogleAuthenticationServer {
 
         // Get service
         OIDAuthorizationService.discoverConfiguration(forIssuer: issuerURL) { (config, error) in
-            complete(config, .custom(error))
+            if let error = error {
+                complete(nil, .custom(error))
+                return
+            }
+
+            complete(config, nil)
         }
     }
 
