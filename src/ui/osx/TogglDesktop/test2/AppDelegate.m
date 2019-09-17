@@ -907,6 +907,21 @@ void *ctx;
 	[self.runningTimeEntryMenuItem setTitle:@"Timer is not tracking"];
 }
 
+- (NSMenu *)applicationDockMenu:(NSApplication *)sender {
+	NSMenu *menu = [[NSMenu alloc] init];
+
+	[menu addItemWithTitle:@"Start New"
+					action:@selector(onNewMenuItem:)
+			 keyEquivalent:@"n"].tag = kMenuItemTagNew;
+	[menu addItemWithTitle:@"Continue Latest"
+					action:@selector(onContinueMenuItem:)
+			 keyEquivalent:@"o"].tag = kMenuItemTagContinue;
+	[menu addItemWithTitle:@"Stop Timer"
+					action:@selector(onStopMenuItem:)
+			 keyEquivalent:@"s"].tag = kMenuItemTagStop;
+	return menu;
+}
+
 - (void)createStatusItem
 {
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
