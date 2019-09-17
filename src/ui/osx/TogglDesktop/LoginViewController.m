@@ -24,6 +24,12 @@ static NSString *const passwordMissingError = @"A password is required";
 static NSString *const countryNotSelectedError = @"Please select Country before signing up";
 static NSString *const tosAgreeError = @"You must agree to the terms of service and privacy policy to use Toggl";
 
+typedef NS_ENUM (NSUInteger, UserAction)
+{
+	UserActionLogin,
+	UserActionSignup,
+};
+
 @interface LoginViewController () <NSTextFieldDelegate, NSTableViewDataSource, NSComboBoxDataSource, NSComboBoxDelegate>
 @property (weak) IBOutlet NSTabView *tabView;
 @property (weak) IBOutlet NSTextField *email;
@@ -47,6 +53,7 @@ static NSString *const tosAgreeError = @"You must agree to the terms of service 
 @property (nonatomic, assign) BOOL countriesLoaded;
 @property (nonatomic, assign) NSInteger selectedCountryID;
 @property (nonatomic, assign) TabViewType currentTab;
+@property (nonatomic, assign) UserAction userAction;
 
 - (IBAction)clickLoginButton:(id)sender;
 - (IBAction)clickSignupButton:(id)sender;
@@ -102,6 +109,8 @@ extern void *ctx;
 
 	self.view.wantsLayer = YES;
 	self.view.layer.backgroundColor = [NSColor colorWithPatternImage:[NSImage imageNamed:@"background-pattern"]].CGColor;
+
+	self.userAction = UserActionLogin;
 }
 
 - (void)initCountryAutocomplete {
@@ -216,7 +225,7 @@ extern void *ctx;
 	}
 }
 
-- (void)startGoogleLogin
+- (void)startGoogleAuthentication
 {
 	NSString *scope = @"profile email";
 	NSString *clientID = @"426090949585-uj7lka2mtanjgd7j9i6c4ik091rcv6n5.apps.googleusercontent.com";
@@ -267,14 +276,15 @@ extern void *ctx;
 
 		NSLog(@"Login error: %@", errorStr);
 
+		// Skip if user cancel the process
+		if (error.code == -1000)
+		{
+			return;
+		}
+
 		if ([errorStr isEqualToString:@"access_denied"])
 		{
 			errorStr = @"Google login access was denied to app.";
-		}
-
-		if ([errorStr isEqualToString:@"The operation couldn’t be completed. (com.google.GTMOAuth2 error -1000.)"])
-		{
-			errorStr = @"Window was closed before login completed.";
 		}
 
 		[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayError
@@ -285,7 +295,17 @@ extern void *ctx;
 	// Show loader and disable text boxs
 	[self showLoaderView:YES];
 
-	toggl_google_login_async(ctx, [auth.accessToken UTF8String]);
+	switch (self.userAction)
+	{
+		case UserActionSignup :
+			toggl_google_signup_async(ctx, [auth.accessToken UTF8String], self.selectedCountryID);
+			break;
+		case UserActionLogin :
+			toggl_google_login_async(ctx, [auth.accessToken UTF8String]);
+			break;
+		default :
+			break;
+	}
 }
 
 - (BOOL)validateForm:(BOOL)signup
@@ -417,10 +437,12 @@ extern void *ctx;
 	return NO;
 }
 
-- (IBAction)loginGoogleOnTap:(id)sender {
+- (IBAction)loginGoogleOnTap:(id)sender
+{
 	// for empty State
+	self.userAction = UserActionLogin;
 	[self setUserSignUp:NO];
-	[self startGoogleLogin];
+	[self startGoogleAuthentication];
 }
 
 - (void)setUserSignUp:(BOOL)isSignUp
@@ -454,13 +476,17 @@ extern void *ctx;
 	self.signUpLink.enabled = !show;
 }
 
-- (void)resetLoader {
+- (void)resetLoader
+{
 	[self showLoaderView:NO];
 }
 
 - (IBAction)signupGoogleBtnOnTap:(id)sender
 {
-
+	// for empty State
+	self.userAction = UserActionSignup;
+	[self setUserSignUp:NO];
+	[self startGoogleAuthentication];
 }
 
 @end
