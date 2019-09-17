@@ -20,6 +20,14 @@ final class GoogleAuthenticationServer {
         static let ClientSecret = "6IHWKIfTAMF7cPJsBvoGxYui"
         static let RedirectURI = "com.googleusercontent.apps.toggl:/oauthredirect"
         static let TogglAuthorizerKey = "toggldesktop-authorization"
+        static let Scopes = [OIDScopeOpenID, OIDScopeProfile, OIDScopeEmail]
+    }
+
+    enum GoogleError: Error {
+        case invalidIssuerURL
+        case invalidRedirectURL
+        case missingConfig
+        case custom(Error?)
     }
 
     struct GoogleUser {
@@ -36,17 +44,72 @@ final class GoogleAuthenticationServer {
 
     // MARK: Public
 
-    func authenticate(_ complete: (GoogleUser?, Error?) -> Void) {
+    func authenticate(_ complete: @escaping (GoogleUser?, GoogleError?) -> Void) {
+        discoverService {[weak self] (config, error) in
+            guard let strongSelf = self else { return }
 
+            if let error = error {
+                complete(nil, error)
+                return
+            }
+
+            guard let config = config else {
+                complete(nil, .missingConfig)
+                return
+            }
+
+            // Authenticate with google
+            strongSelf.makeAuthenticationRequest(with: config, complete: complete)
+        }
     }
-
 }
 
 // MARK: Private
 
 extension GoogleAuthenticationServer {
 
-    fileprivate func discoverService() {
-        
+    fileprivate func discoverService(_ complete: @escaping (OIDServiceConfiguration?, GoogleError?) -> Void) {
+
+        // Double check the URL
+        guard let issuerURL = URL(string: Constants.Issuer) else {
+            complete(nil, .invalidIssuerURL)
+            return
+        }
+
+        // Get service
+        OIDAuthorizationService.discoverConfiguration(forIssuer: issuerURL) { (config, error) in
+            complete(config, .custom(error))
+        }
+    }
+
+    fileprivate func makeAuthenticationRequest(with config: OIDServiceConfiguration, complete: @escaping (GoogleUser?, GoogleError?) -> Void) {
+        guard let redirectURL = URL(string: Constants.RedirectURI) else {
+            complete(nil, .invalidRedirectURL)
+            return
+        }
+
+        // Request to service
+        let request = OIDAuthorizationRequest(configuration: config, clientId: Constants.ClientID,
+                                              clientSecret: Constants.ClientSecret,
+                                              scopes: Constants.Scopes,
+                                              redirectURL: redirectURL,
+                                              responseType: OIDResponseTypeCode,
+                                              additionalParameters: nil)
+
+        // Wait callback URL
+        let appDelegate = NSApp.delegate as! AppDelegate
+        appDelegate.currentAuthorizationFlow = OIDAuthState.authState(byPresenting: request, callback: { (authState, error) in
+            if let error = error {
+                complete(nil, .custom(error))
+                return
+            }
+
+            // Process auth state
+            if let authState = authState {
+                if let token = authState.lastTokenResponse?.tokenType {
+                    print(token)
+                }
+            }
+        })
     }
 }
