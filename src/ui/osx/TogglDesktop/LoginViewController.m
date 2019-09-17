@@ -26,8 +26,10 @@ static NSString *const tosAgreeError = @"You must agree to the terms of service 
 
 typedef NS_ENUM (NSUInteger, UserAction)
 {
-	UserActionLogin,
-	UserActionSignup,
+	UserActionAccountLogin,
+	UserActionAccountSignup,
+	UserActionGoogleLogin,
+	UserActionGoogleSignup,
 };
 
 @interface LoginViewController () <NSTextFieldDelegate, NSTableViewDataSource, NSComboBoxDataSource, NSComboBoxDelegate>
@@ -110,7 +112,7 @@ extern void *ctx;
 	self.view.wantsLayer = YES;
 	self.view.layer.backgroundColor = [NSColor colorWithPatternImage:[NSImage imageNamed:@"background-pattern"]].CGColor;
 
-	self.userAction = UserActionLogin;
+	self.userAction = UserActionAccountLogin;
 }
 
 - (void)initCountryAutocomplete {
@@ -136,8 +138,10 @@ extern void *ctx;
 
 - (IBAction)clickLoginButton:(id)sender
 {
+	self.userAction = UserActionAccountLogin;
+
 	// Validate all values inserted
-	if (![self validateForm:NO])
+	if (![self validateForm])
 	{
 		return;
 	}
@@ -297,10 +301,10 @@ extern void *ctx;
 
 	switch (self.userAction)
 	{
-		case UserActionSignup :
+		case UserActionGoogleSignup :
 			toggl_google_signup_async(ctx, [auth.accessToken UTF8String], self.selectedCountryID);
 			break;
-		case UserActionLogin :
+		case UserActionGoogleLogin :
 			toggl_google_login_async(ctx, [auth.accessToken UTF8String]);
 			break;
 		default :
@@ -308,61 +312,67 @@ extern void *ctx;
 	}
 }
 
-- (BOOL)validateForm:(BOOL)signup
+- (BOOL)validateForm
 {
-	// check if email is inserted
-	NSString *email = [self.email stringValue];
-
-	if (email == nil || !email.length)
+	switch (self.userAction)
 	{
-		[self.email.window makeFirstResponder:self.email];
-		[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayError
-																	object:emailMissingError];
-		return NO;
+		case UserActionAccountLogin :
+			if (![self isEmalValid])
+			{
+				return NO;
+			}
+			if (![self isPasswordValid])
+			{
+				return NO;
+			}
+			return YES;
+
+		case UserActionAccountSignup :
+			if (![self isEmalValid])
+			{
+				return NO;
+			}
+			if (![self isPasswordValid])
+			{
+				return NO;
+			}
+			if (![self isCountryValid])
+			{
+				return NO;
+			}
+			if (![self isTOSValid])
+			{
+				return NO;
+			}
+			return YES;
+
+		case UserActionGoogleLogin :
+			return YES;
+
+		case UserActionGoogleSignup :
+			if (![self isCountryValid])
+			{
+				return NO;
+			}
+			if (![self isTOSValid])
+			{
+				return NO;
+			}
+			return YES;
+
+		default :
+			break;
 	}
 
-	// check if password is inserted
-	NSString *pass = [self.password stringValue];
-
-	if (pass == nil || !pass.length)
-	{
-		[self.password.window makeFirstResponder:self.password];
-		[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayError
-																	object:passwordMissingError];
-		return NO;
-	}
-
-	if (!signup)
-	{
-		return YES;
-	}
-
-	// check if country is selected
-	if (self.selectedCountryID == -1 || self.countrySelect.stringValue.length == 0)
-	{
-		[self.countrySelect.window makeFirstResponder:self.countrySelect];
-		[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayError
-																	object:countryNotSelectedError];
-		return NO;
-	}
-
-	// check if tos and privacy policy is checked
-	BOOL tosChecked = [Utils stateToBool:[self.tosCheckbox state]];
-	if (!tosChecked)
-	{
-		[self.tosCheckbox.window makeFirstResponder:self.tosCheckbox];
-		[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayError
-																	object:tosAgreeError];
-		return NO;
-	}
-
-	return YES;
+	return NO;
 }
 
 - (IBAction)clickSignupButton:(id)sender
 {
+	self.userAction = UserActionAccountSignup;
+
 	// Validate all values inserted
-	if (![self validateForm:YES])
+	if (![self validateForm])
 	{
 		return;
 	}
@@ -440,7 +450,7 @@ extern void *ctx;
 - (IBAction)loginGoogleOnTap:(id)sender
 {
 	// for empty State
-	self.userAction = UserActionLogin;
+	self.userAction = UserActionGoogleLogin;
 	[self setUserSignUp:NO];
 	[self startGoogleAuthentication];
 }
@@ -484,9 +494,63 @@ extern void *ctx;
 - (IBAction)signupGoogleBtnOnTap:(id)sender
 {
 	// for empty State
-	self.userAction = UserActionSignup;
+	self.userAction = UserActionAccountSignup;
 	[self setUserSignUp:NO];
 	[self startGoogleAuthentication];
+}
+
+- (BOOL)isEmalValid
+{
+	NSString *email = [self.email stringValue];
+
+	if (email == nil || !email.length)
+	{
+		[self.email.window makeFirstResponder:self.email];
+		[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayError
+																	object:emailMissingError];
+		return NO;
+	}
+	return YES;
+}
+
+- (BOOL)isPasswordValid
+{
+	NSString *pass = [self.password stringValue];
+
+	if (pass == nil || !pass.length)
+	{
+		[self.password.window makeFirstResponder:self.password];
+		[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayError
+																	object:passwordMissingError];
+		return NO;
+	}
+	return YES;
+}
+
+- (BOOL)isCountryValid
+{
+	if (self.selectedCountryID == -1 || self.countrySelect.stringValue.length == 0)
+	{
+		[self.countrySelect.window makeFirstResponder:self.countrySelect];
+		[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayError
+																	object:countryNotSelectedError];
+		return NO;
+	}
+	return YES;
+}
+
+- (BOOL)isTOSValid
+{
+	BOOL tosChecked = [Utils stateToBool:[self.tosCheckbox state]];
+
+	if (!tosChecked)
+	{
+		[self.tosCheckbox.window makeFirstResponder:self.tosCheckbox];
+		[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayError
+																	object:tosAgreeError];
+		return NO;
+	}
+	return YES;
 }
 
 @end
