@@ -141,7 +141,7 @@ extern void *ctx;
 	self.userAction = UserActionAccountLogin;
 
 	// Validate all values inserted
-	if (![self validateForm])
+	if (![self validateFormForAction:self.userAction])
 	{
 		return;
 	}
@@ -312,9 +312,9 @@ extern void *ctx;
 	}
 }
 
-- (BOOL)validateForm
+- (BOOL)validateFormForAction:(UserAction)action
 {
-	switch (self.userAction)
+	switch (action)
 	{
 		case UserActionAccountLogin :
 			if (![self isEmalValid])
@@ -372,7 +372,7 @@ extern void *ctx;
 	self.userAction = UserActionAccountSignup;
 
 	// Validate all values inserted
-	if (![self validateForm])
+	if (![self validateFormForAction:self.userAction])
 	{
 		return;
 	}
@@ -493,8 +493,12 @@ extern void *ctx;
 
 - (IBAction)signupGoogleBtnOnTap:(id)sender
 {
-	// for empty State
-	self.userAction = UserActionAccountSignup;
+	self.userAction = UserActionGoogleSignup;
+	if (![self validateFormForAction:self.userAction])
+	{
+		return;
+	}
+
 	[self setUserSignUp:NO];
 	[self startGoogleAuthentication];
 }
