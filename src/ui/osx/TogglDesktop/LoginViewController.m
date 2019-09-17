@@ -41,6 +41,7 @@ static NSString *const tosAgreeError = @"You must agree to the terms of service 
 @property (weak) IBOutlet NSBox *boxView;
 @property (weak) IBOutlet NSProgressIndicator *loginLoaderView;
 @property (weak) IBOutlet NSProgressIndicator *signUpLoaderView;
+@property (weak) IBOutlet NSButton *signupGoogleBtn;
 
 @property (nonatomic, strong) AutocompleteDataSource *countryAutocompleteDataSource;
 @property (nonatomic, assign) BOOL countriesLoaded;
@@ -455,6 +456,11 @@ extern void *ctx;
 
 - (void)resetLoader {
 	[self showLoaderView:NO];
+}
+
+- (IBAction)signupGoogleBtnOnTap:(id)sender
+{
+
 }
 
 @end
