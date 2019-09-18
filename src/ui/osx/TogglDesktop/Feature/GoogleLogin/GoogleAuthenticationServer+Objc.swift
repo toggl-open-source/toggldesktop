@@ -10,9 +10,9 @@ import Foundation
 
 @objc class GoogleAuthenticationServerHelper: NSObject {
 
-    @objc class func authorize() {
+    @objc class func authorize(_ complete: @escaping (String?, Error?) -> Void) {
         GoogleAuthenticationServer.shared.authenticate { (user, error) in
-
+            complete(user?.accessToken, error)
         }
     }
 }

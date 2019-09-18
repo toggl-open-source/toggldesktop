@@ -230,30 +230,49 @@ extern void *ctx;
 
 - (void)startGoogleAuthentication
 {
-	[GoogleAuthenticationServerHelper authorize];
-//    NSString *scope = @"profile email";
-//    NSString *clientID = @"426090949585-uj7lka2mtanjgd7j9i6c4ik091rcv6n5.apps.googleusercontent.com";
-//    // According to Google docs, in installed apps the client secret is not expected to stay secret:
-//    NSString *clientSecret = @"6IHWKIfTAMF7cPJsBvoGxYui";
-//
-//    GTMOAuth2WindowController *windowController;
-//
-//    windowController = [[GTMOAuth2WindowController alloc] initWithScope:scope
-//                                                               clientID:clientID
-//                                                           clientSecret:clientSecret
-//                                                       keychainItemName:nil
-//                                                         resourceBundle:nil];
-//
-//    [windowController signInSheetModalForWindow:[[NSApplication sharedApplication] mainWindow]
-//                                       delegate:self
-//                               finishedSelector:@selector(viewController:finishedWithAuth:error:)];
-//    [[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kHideDisplayError
-//                                                                object:nil];
+	__weak typeof(self) weakSelf = self;
+	[GoogleAuthenticationServerHelper authorize:^(NSString *token, NSError *error) {
+		 typeof(self) strongSelf = weakSelf;
+		 if (error != nil)
+		 {
+			 [strongSelf handleGoogleError:error];
+		 }
+		 else if (token != nil)
+		 {
+			 [strongSelf handleGoogleToken:token];
+		 }
+	 }];
+	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kHideDisplayError
+																object:nil];
 }
 
-- (void)viewController:(GTMOAuth2WindowController *)viewController
-	  finishedWithAuth:(GTMOAuth2Authentication *)auth
-				 error:(NSError *)error
+- (void)handleGoogleError:(NSError *)error
+{
+	NSString *errorStr = [error localizedDescription];
+
+	NSLog(@"Login error: %@", errorStr);
+
+	if ([errorStr isEqualToString:@"access_denied"])
+	{
+		errorStr = @"Google login access was denied to app.";
+	}
+
+	if ([errorStr isEqualToString:@"The operation couldn’t be completed. (com.google.GTMOAuth2 error -1000.)"])
+	{
+		errorStr = @"Window was closed before login completed.";
+	}
+
+	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayError
+																object:errorStr];
+}
+
+- (void)handleGoogleToken:(NSString *)token
+{
+	[self showLoaderView:YES];
+	toggl_google_login_async(ctx, [token UTF8String]);
+}
+
+- (BOOL)validateForm:(BOOL)signup
 {
 	if (error != nil)
 	{

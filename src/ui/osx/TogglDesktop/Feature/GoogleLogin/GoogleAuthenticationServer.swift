@@ -20,20 +20,19 @@ final class GoogleAuthenticationServer {
         static let ClientSecret = "6IHWKIfTAMF7cPJsBvoGxYui"
         static let RedirectURI = "com.googleusercontent.apps.426090949585-uj7lka2mtanjgd7j9i6c4ik091rcv6n5:/oauthredirect"
         static let TogglAuthorizerKey = "toggldesktop-authorization"
-        static let Scopes = [OIDScopeOpenID, OIDScopeProfile, OIDScopeEmail]
+        static let Scopes = [OIDScopeOpenID]
     }
 
     enum GoogleError: Error {
         case invalidIssuerURL
         case invalidRedirectURL
         case missingConfig
+        case missingAccessToken
         case custom(Error?)
     }
 
     struct GoogleUser {
-
         let accessToken: String
-        let email: String
     }
 
     // MARK: Variables
@@ -111,10 +110,14 @@ extension GoogleAuthenticationServer {
 
             // Process auth state
             if let authState = authState {
-                if let token = authState.lastTokenResponse?.tokenType {
-                    print(token)
+                if let token = authState.lastTokenResponse?.accessToken {
+                    complete(GoogleUser(accessToken: token), nil)
+                    return
                 }
             }
+
+            // Otherwise
+            complete(nil, .missingAccessToken)
         })
     }
 }
