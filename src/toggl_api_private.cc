@@ -74,15 +74,15 @@ void autocomplete_item_clear(TogglAutocompleteView *item) {
     free(item->WorkspaceName);
     item->WorkspaceName = nullptr;
 
-    if (item->Next) {
-        TogglAutocompleteView *next =
-            reinterpret_cast<TogglAutocompleteView *>(item->Next);
-        poco_check_ptr(next);
-        autocomplete_item_clear(next);
-        item->Next = nullptr;
-    }
-
     delete item;
+}
+
+void autocomplete_list_clear(TogglAutocompleteView *first) {
+    while (first) {
+        TogglAutocompleteView *next = reinterpret_cast<TogglAutocompleteView *>(first->Next);
+        autocomplete_item_clear(first);
+        first = next;
+    }
 }
 
 TogglGenericView *generic_to_view_item_list(
@@ -135,13 +135,15 @@ void autotracker_view_item_clear(TogglAutotrackerRuleView *view) {
     free(view->ProjectAndTaskLabel);
     view->ProjectAndTaskLabel = nullptr;
 
-    if (view->Next) {
-        TogglAutotrackerRuleView *next =
-            reinterpret_cast<TogglAutotrackerRuleView *>(view->Next);
-        autotracker_view_item_clear(next);
-    }
-
     delete view;
+}
+
+void autotracker_view_list_clear(TogglAutotrackerRuleView *first) {
+    while (first) {
+        TogglAutotrackerRuleView *next = reinterpret_cast<TogglAutotrackerRuleView *>(first->Next);
+        autotracker_view_item_clear(first);
+        first = next;
+    }
 }
 
 void view_item_clear(TogglGenericView *item) {
@@ -185,13 +187,15 @@ void country_item_clear(TogglCountryView *item) {
     free(item->VatRegex);
     item->VatRegex = nullptr;
 
-    if (item->Next) {
-        TogglCountryView *next =
-            reinterpret_cast<TogglCountryView *>(item->Next);
-        country_item_clear(next);
-    }
-
     delete item;
+}
+
+void country_list_clear(TogglCountryView *first) {
+    while (first) {
+        TogglCountryView *next = reinterpret_cast<TogglCountryView *>(first->Next);
+        country_item_clear(first);
+        first = next;
+    }
 }
 
 std::string to_string(const char_t *s) {
@@ -392,13 +396,6 @@ void time_entry_view_item_clear(
         item->Error = nullptr;
     }
 
-    if (item->Next) {
-        TogglTimeEntryView *next =
-            reinterpret_cast<TogglTimeEntryView *>(item->Next);
-        time_entry_view_item_clear(next);
-        item->Next = nullptr;
-    }
-
     free(item->GroupName);
     item->GroupName = nullptr;
 
@@ -406,6 +403,14 @@ void time_entry_view_item_clear(
     item->GroupDuration = nullptr;
 
     delete item;
+}
+
+void time_entry_view_list_clear(TogglTimeEntryView *first) {
+    while (first) {
+        TogglTimeEntryView *next = reinterpret_cast<TogglTimeEntryView *>(first->Next);
+        time_entry_view_item_clear(first);
+        first = next;
+    }
 }
 
 TogglSettingsView *settings_view_item_init(
@@ -484,7 +489,7 @@ TogglAutocompleteView *autocomplete_list_init(
     return first;
 }
 
-TogglHelpArticleView *help_artice_init(
+TogglHelpArticleView *help_article_init(
     const toggl::HelpArticle item) {
     TogglHelpArticleView *result = new TogglHelpArticleView();
     result->Category = copy_string(item.Type);
@@ -494,28 +499,29 @@ TogglHelpArticleView *help_artice_init(
     return result;
 }
 
-void help_article_clear(TogglHelpArticleView *item) {
-    if (!item) {
+void help_article_item_clear(TogglHelpArticleView *view) {
+    if (!view) {
         return;
     }
 
-    free(item->Category);
-    item->Category = nullptr;
+    free(view->Category);
+    view->Category = nullptr;
 
-    free(item->Name);
-    item->Name = nullptr;
+    free(view->Name);
+    view->Name = nullptr;
 
-    free(item->URL);
-    item->URL = nullptr;
+    free(view->URL);
+    view->URL = nullptr;
 
-    if (item->Next) {
-        TogglHelpArticleView *next =
-            reinterpret_cast<TogglHelpArticleView *>(item->Next);
-        help_article_clear(next);
-        item->Next = nullptr;
+    delete view;
+}
+
+void help_article_list_clear(TogglHelpArticleView *first) {
+    while (first) {
+        TogglHelpArticleView *next = reinterpret_cast<TogglHelpArticleView *>(first->Next);
+        help_article_item_clear(first);
+        first = next;
     }
-
-    delete item;
 }
 
 TogglHelpArticleView *help_article_list_init(
@@ -525,7 +531,7 @@ TogglHelpArticleView *help_article_list_init(
         items.rbegin();
             it != items.rend();
             it++) {
-        TogglHelpArticleView *item = help_artice_init(*it);
+        TogglHelpArticleView *item = help_article_init(*it);
         item->Next = first;
         first = item;
     }

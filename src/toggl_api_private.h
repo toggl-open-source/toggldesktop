@@ -55,6 +55,8 @@ TogglAutotrackerRuleView *autotracker_rule_to_view_item(
 
 void autotracker_view_item_clear(TogglAutotrackerRuleView *view);
 
+void autotracker_view_list_clear(TogglAutotrackerRuleView *first);
+
 TogglAutocompleteView *autocomplete_item_init(
     const toggl::view::Autocomplete item);
 
@@ -64,10 +66,14 @@ void view_list_clear(TogglGenericView *first);
 
 void autocomplete_item_clear(TogglAutocompleteView *item);
 
+void autocomplete_list_clear(TogglAutocompleteView *first);
+
 TogglCountryView *country_list_init(
     std::vector<TogglCountryView> *items);
 
 void country_item_clear(TogglCountryView *item);
+
+void country_list_clear(TogglCountryView *first);
 
 TogglCountryView *country_view_item_init(
     const Json::Value v);
@@ -76,6 +82,8 @@ TogglTimeEntryView *time_entry_view_item_init(
     const toggl::view::TimeEntry &te);
 
 void time_entry_view_item_clear(TogglTimeEntryView *item);
+
+void time_entry_view_list_clear(TogglTimeEntryView *first);
 
 TogglSettingsView *settings_view_item_init(
     const bool_t record_timeline,
@@ -91,8 +99,9 @@ TogglAutocompleteView *autocomplete_list_init(
 TogglHelpArticleView *help_article_list_init(
     const std::vector<toggl::HelpArticle> items);
 
-void help_article_clear(
-    TogglHelpArticleView *first);
+void help_article_item_clear(TogglHelpArticleView *view);
+
+void help_article_list_clear(TogglHelpArticleView *first);
 
 Poco::Logger &logger();
 
