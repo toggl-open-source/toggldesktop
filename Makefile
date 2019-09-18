@@ -35,11 +35,11 @@ source_dirs=src/*.cc src/*.h src/test/*.cc src/test/*.h \
 
 xcodebuild_command=xcodebuild \
 				  -scheme TogglDesktop \
-				  -project src/ui/osx/TogglDesktop/TogglDesktop.xcodeproj  \
+				  -workspace src/ui/osx/TogglDesktop.xcworkspace  \
 				  -configuration Debug
 xcodebuild_command_release=xcodebuild \
 				  -scheme TogglDesktop \
-				  -project src/ui/osx/TogglDesktop/TogglDesktop.xcodeproj  \
+				  -workspace src/ui/osx/TogglDesktop.xcworkspace  \
 				  -configuration Release
 
 ifeq ($(uname), Linux)
@@ -148,7 +148,7 @@ ifeq ($(uname), Linux)
 app:
 	mkdir -p build && cd build && cmake .. && make
 else
-app: lib ui
+app: init_cocoapod lib ui
 endif
 
 app_release: lib_release ui_release
@@ -186,6 +186,9 @@ deps: clean_deps init_submodule openssl poco lua
 
 init_submodule:
 	cd $(rootdir) && git submodule update --init --recursive
+
+init_cocoapod:
+	pod install --project-directory=./src/ui/osx
 
 lua:
 	cd third_party/lua && make  $(LEGACYMACOSSDK) macosx && make $(LEGACYMACOSSDK) local
