@@ -100,7 +100,7 @@ void GUI::DisplayCountries(
     }
     TogglCountryView *first = country_list_init(items);
     on_display_countries_(first);
-    country_item_clear(first);
+    country_list_clear(first);
 }
 
 void GUI::DisplaySyncState(const Poco::Int64 state) {
@@ -370,7 +370,7 @@ void GUI::DisplayTimeEntryAutocomplete(
 
     TogglAutocompleteView *first = autocomplete_list_init(items);
     on_display_time_entry_autocomplete_(first);
-    autocomplete_item_clear(first);
+    autocomplete_list_clear(first);
 }
 
 void GUI::DisplayHelpArticles(
@@ -383,7 +383,7 @@ void GUI::DisplayHelpArticles(
 
     TogglHelpArticleView *first = help_article_list_init(articles);
     on_display_help_articles_(first);
-    help_article_clear(first);
+    help_article_list_clear(first);
 }
 
 void GUI::DisplayMinitimerAutocomplete(
@@ -392,7 +392,7 @@ void GUI::DisplayMinitimerAutocomplete(
 
     TogglAutocompleteView *first = autocomplete_list_init(items);
     on_display_mini_timer_autocomplete_(first);
-    autocomplete_item_clear(first);
+    autocomplete_list_clear(first);
 }
 
 void GUI::DisplayProjectAutocomplete(
@@ -401,7 +401,7 @@ void GUI::DisplayProjectAutocomplete(
 
     TogglAutocompleteView *first = autocomplete_list_init(items);
     on_display_project_autocomplete_(first);
-    autocomplete_item_clear(first);
+    autocomplete_list_clear(first);
 }
 
 void GUI::DisplayTimeEntryList(const bool open,
@@ -450,7 +450,7 @@ void GUI::DisplayTimeEntryList(const bool open,
 
     on_display_time_entry_list_(open, first, show_load_more_button);
 
-    time_entry_view_item_clear(first);
+    time_entry_view_list_clear(first);
 
     stopwatch.stop();
     {
@@ -499,7 +499,7 @@ void GUI::DisplayAutotrackerRules(
     }
     delete[] title_list;
 
-    autotracker_view_item_clear(first);
+    autotracker_view_list_clear(first);
 }
 
 void GUI::DisplayClientSelect(
@@ -534,7 +534,7 @@ void GUI::DisplayTimeEntryEditor(
     on_display_time_entry_editor_(open, view, field_s);
     free(field_s);
 
-    time_entry_view_item_clear(view);
+    time_entry_view_list_clear(view);
 }
 
 void GUI::DisplayURL(const std::string URL) {
@@ -595,7 +595,7 @@ void GUI::DisplayTimerState(
 
     TogglTimeEntryView *view = time_entry_view_item_init(te);
     on_display_timer_state_(view);
-    time_entry_view_item_clear(view);
+    time_entry_view_list_clear(view);
 
     logger().debug("DisplayTimerState");
 }
