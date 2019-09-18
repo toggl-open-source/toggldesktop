@@ -2274,7 +2274,7 @@ error Context::Signup(
 }
 
 error Context::GoogleSignup(
-    const std::string access_token,
+    const std::string &access_token,
     const uint64_t country_id) {
 
     TogglClient client(UI());
@@ -2286,8 +2286,7 @@ error Context::GoogleSignup(
     return Login(access_token, "google_access_token");
 }
 
-error Context::AsyncGoogleSignup(
-    const std::string access_token,
+error Context::AsyncGoogleSignup(const std::string &access_token,
     const uint64_t country_id) {
     std::thread backgroundThread([&](std::string access_token, uint64_t country_id) {
         return this->GoogleSignup(access_token, country_id);
@@ -5440,7 +5439,7 @@ error Context::pullUserPreferences(
 
 error Context::signupGoogle(
     TogglClient *toggl_client,
-    const std::string access_token,
+    const std::string &access_token,
     std::string *user_data_json,
     const uint64_t country_id) {
     try {

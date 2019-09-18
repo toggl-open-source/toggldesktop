@@ -293,11 +293,11 @@ class Context : public TimelineDatasource {
         const uint64_t country_id);
 
     error GoogleSignup(
-        const std::string access_token,
+        const std::string &access_token,
         const uint64_t country_id);
 
     error AsyncGoogleSignup(
-        const std::string access_token,
+        const std::string &access_token,
         const uint64_t country_id);
 
     error GoogleLogin(const std::string &access_token);
@@ -614,7 +614,7 @@ class Context : public TimelineDatasource {
         const uint64_t country_id);
     static error signupGoogle(
         TogglClient *toggl_client,
-        const std::string access_token,
+        const std::string &access_token,
         std::string *user_data_json,
         const uint64_t country_id);
     static error me(TogglClient *https_client,
