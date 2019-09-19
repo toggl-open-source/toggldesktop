@@ -1969,7 +1969,7 @@ error Database::loadTimeEntriesFromSQLStatement(
                 } else {
                     model->SetValidationError(rs[19].convert<std::string>());
                 }
-                if (model->UIModifiedAt() != model->UpdatedAt()) {
+                if (model->UIModifiedAt() > model->UpdatedAt()) {
                     model->SetUnsynced();
                     model->SetDirty();
                 } else {
