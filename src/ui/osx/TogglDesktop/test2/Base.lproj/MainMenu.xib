@@ -269,6 +269,13 @@
                                     <action selector="onSendFeedbackMainMenuItem:" target="494" id="Ezo-qQ-7mP"/>
                                 </connections>
                             </menuItem>
+                            <menuItem isSeparatorItem="YES" id="Mkh-p8-3ok"/>
+                            <menuItem title="Import Timeline Datasheet" id="oMz-uu-4fB">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="importTimelineOnTap:" target="494" id="1gX-5W-bY3"/>
+                                </connections>
+                            </menuItem>
                         </items>
                     </menu>
                 </menuItem>
