@@ -753,7 +753,19 @@ NSString *kInactiveTimerColor = @"#999999";
 
 - (IBAction)cancelBtnOnTap:(id)sender
 {
-	[self stop:nil];
+	self.time_entry.WorkspaceID = 0;
+	self.time_entry.ProjectID = 0;
+	self.time_entry.TaskID = 0;
+	self.time_entry.ProjectAndTaskLabel = nil;
+	self.time_entry.TaskLabel = nil;
+	self.time_entry.ProjectLabel = nil;
+	self.time_entry.ClientLabel = nil;
+	self.time_entry.ProjectColor = nil;
+	self.time_entry.tags = nil;
+	self.tagFlag.hidden = YES;
+	self.billableFlag.hidden = YES;
+	self.cancelBtn.hidden = YES;
+	[self renderProjectLabelWithViewItem:nil];
 }
 
 @end
