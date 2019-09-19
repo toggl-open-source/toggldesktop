@@ -41,6 +41,7 @@
 #import "Reachability.h"
 #import "MenuItemTags.h"
 #import <AppAuth/AppAuth.h>
+#import "NSAlert+Utils.h"
 
 @interface AppDelegate ()
 @property (nonatomic, strong) MainWindowController *mainWindowController;
@@ -322,6 +323,24 @@ void *ctx;
 
 	// Setup Google Service Callback
 	[self registerGoogleEventHandler];
+}
+
+- (void)runCommand:(NSString *)commandToRun
+{
+	NSTask *task = [[NSTask alloc] init];
+
+	[task setLaunchPath:@"/bin/sh"];
+
+	NSArray *arguments = [NSArray arrayWithObjects:
+						  @"-c",
+						  [NSString stringWithFormat:@"%@", commandToRun],
+						  nil];
+	NSLog(@"run command:%@", commandToRun);
+	[task setArguments:arguments];
+
+	NSPipe *pipe = [NSPipe pipe];
+	[task setStandardOutput:pipe];
+	[task launch];
 }
 
 - (void)systemWillPowerOff:(NSNotification *)aNotification
@@ -1918,6 +1937,50 @@ void on_countries(TogglCountryView *first)
 			[NSTouchBarItem removeSystemTrayItem:self.touchItem];
 			DFRElementSetControlStripPresenceForIdentifier([GlobalTouchbarButton ID], NO);
 		}
+	}
+}
+
+- (IBAction)importTimelineOnTap:(id)sender
+{
+	[self importTimelineDatasheet];
+}
+
+- (void)importTimelineDatasheet
+{
+	if (self.lastKnownUserID == 0)
+	{
+		[[NSAlert alertWithMessageText:@"Please login first."
+			 informativeTextWithFormat:@""] runModal];
+		return;
+	}
+
+	NSString *filePath = [[NSBundle mainBundle] pathForResource:@"timeline_dataset" ofType:@"csv"];
+	NSString *file = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil];
+	if (file != nil)
+	{
+		// Replace to current users
+		NSError *error;
+		NSString *editedContent = [file stringByReplacingOccurrencesOfString:@"4426117" withString:[NSString stringWithFormat:@"%lu", (unsigned long)self.lastKnownUserID]];
+		NSString *editedPath = [NSTemporaryDirectory() stringByAppendingPathComponent:@"timeline_dataset_user.csv"];
+		[editedContent writeToFile:editedPath atomically:YES encoding:NSUTF8StringEncoding error:&error];
+
+		if (error != nil)
+		{
+			[[NSAlert alertWithMessageText:@"Couldn't change the UID in Datasheet."
+				 informativeTextWithFormat:@"Please contact Toggl Team"] runModal];
+			return;
+		}
+
+		// Import
+		NSString *db = [self.db_path stringByReplacingOccurrencesOfString:@" " withString:@"\\ "];
+		NSString *truncateCmd = [NSString stringWithFormat:@"sqlite3 %@ \"delete from timeline_events\"", db];
+		[self runCommand:truncateCmd];
+
+		NSString *importCmd = [NSString stringWithFormat:@"(echo .separator ,; echo .import %@ timeline_events) | sqlite3 %@", editedPath, db];
+		[self runCommand:importCmd];
+
+		[[NSAlert alertWithMessageText:@"Import successfully."
+			 informativeTextWithFormat:@"Please re-open the app to get latest data"] runModal];
 	}
 }
 
