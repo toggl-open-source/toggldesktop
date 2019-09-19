@@ -457,8 +457,8 @@ void TimeEntry::LoadFromJSON(Json::Value data) {
     SetBillable(data["billable"].asBool());
     SetDurOnly(data["duronly"].asBool());
     SetUpdatedAtString(data["at"].asString());
+    SetUIModifiedAt(Formatter::Parse8601(data["at"].asString()));
 
-    SetUIModifiedAt(0);
     ClearUnsynced();
 }
 
