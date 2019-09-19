@@ -28,9 +28,9 @@
 
 namespace toggl {
 
-const std::string &Format::Classic = std::string("classic");
-const std::string &Format::Improved = std::string("improved");
-const std::string &Format::Decimal = std::string("decimal");
+const std::string Format::Classic = std::string("classic");
+const std::string Format::Improved = std::string("improved");
+const std::string Format::Decimal = std::string("decimal");
 
 std::string Formatter::TimeOfDayFormat = std::string("");
 std::string Formatter::DurationFormat = Format::Improved;

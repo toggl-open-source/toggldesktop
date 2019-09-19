@@ -202,7 +202,7 @@ error WebSocketClient::receiveWebSocketMessage(std::string *message) {
     return noError;
 }
 
-const std::string &kPong("{\"type\": \"pong\"}");
+const std::string kPong("{\"type\": \"pong\"}");
 
 error WebSocketClient::poll() {
     try {
