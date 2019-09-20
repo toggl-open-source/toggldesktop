@@ -269,62 +269,13 @@ extern void *ctx;
 - (void)handleGoogleToken:(NSString *)token
 {
 	[self showLoaderView:YES];
-	toggl_google_login_async(ctx, [token UTF8String]);
-}
-
-- (BOOL)validateForm:(BOOL)signup
-{
-	if (error != nil)
-	{
-		NSString *errorStr = [error localizedDescription];
-
-		NSData *responseData = [[error userInfo] objectForKey:kGTMHTTPFetcherStatusDataKey];
-		if ([responseData length] > 0)
-		{
-			// Show the body of the server's authentication failure response
-			errorStr = [[NSString alloc] initWithData:responseData
-											 encoding:NSUTF8StringEncoding];
-		}
-		else
-		{
-			NSString *str = [[error userInfo] objectForKey:kGTMOAuth2ErrorMessageKey];
-			if (str != nil)
-			{
-				if ([str length] > 0)
-				{
-					errorStr = str;
-				}
-			}
-		}
-
-		NSLog(@"Login error: %@", errorStr);
-
-		// Skip if user cancel the process
-		if (error.code == -1000)
-		{
-			return;
-		}
-
-		if ([errorStr isEqualToString:@"access_denied"])
-		{
-			errorStr = @"Google login access was denied to app.";
-		}
-
-		[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayError
-																	object:errorStr];
-		return;
-	}
-
-	// Show loader and disable text boxs
-	[self showLoaderView:YES];
-
 	switch (self.userAction)
 	{
 		case UserActionGoogleSignup :
-			toggl_google_signup_async(ctx, [auth.accessToken UTF8String], self.selectedCountryID);
+			toggl_google_signup_async(ctx, [token UTF8String], self.selectedCountryID);
 			break;
 		case UserActionGoogleLogin :
-			toggl_google_login_async(ctx, [auth.accessToken UTF8String]);
+			toggl_google_login_async(ctx, [token UTF8String]);
 			break;
 		default :
 			break;
