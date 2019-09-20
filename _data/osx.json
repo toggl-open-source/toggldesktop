@@ -16,22 +16,6 @@
             "beta": "true"
         },
         {
-            "version": "7.4.1012",
-            "rows": [
-                "Notarization for TogglDesktop build",
-                "Start/continue/stop menu items to dock menu",
-                "Sign with Google",
-                "New Google Libary for authentication",
-                "Add remove icon to project row in timer",
-                "Click to edit project/duration of the running entry",
-                "Fixed Cashed for large number of tags",
-                "Fixed Unsync state when the app launches",
-                "Fixed Clicking on New from the menu bar will stop the timer but not start the new one"
-            ],
-            "date": "September 20th 2019",
-            "beta": "true"
-        },
-        {
             "version": "7.4.1000",
             "rows": [
                 "New project color should be random",
