@@ -1010,7 +1010,7 @@ void *ctx;
 
 - (void)onNewMenuItem:(id)sender
 {
-	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kCommandNewShortcut
+	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kCommandNew
 																object:[[TimeEntryViewItem alloc] init]];
 }
 

@@ -103,10 +103,6 @@ NSString *kInactiveTimerColor = @"#999999";
 												 selector:@selector(stop:)
 													 name:kCommandStop
 												   object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(startNewShortcut:)
-													 name:kCommandNewShortcut
-												   object:nil];
 
 		self.time_entry = [[TimeEntryViewItem alloc] init];
 
