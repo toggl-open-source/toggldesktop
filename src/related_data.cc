@@ -72,7 +72,7 @@ error RelatedData::DeleteAutotrackerRule(const Poco::Int64 local_id) {
 }
 
 AutotrackerRule *RelatedData::FindAutotrackerRule(
-    const TimelineEvent event) const {
+    const TimelineEvent &event) const {
     for (std::vector<AutotrackerRule *>::const_iterator it =
         AutotrackerRules.begin();
             it != AutotrackerRules.end(); it++) {
@@ -85,7 +85,7 @@ AutotrackerRule *RelatedData::FindAutotrackerRule(
 }
 
 bool RelatedData::HasMatchingAutotrackerRule(
-    const std::string lowercase_term) const {
+    const std::string &lowercase_term) const {
     for (std::vector<AutotrackerRule *>::const_iterator it =
         AutotrackerRules.begin();
             it != AutotrackerRules.end(); it++) {

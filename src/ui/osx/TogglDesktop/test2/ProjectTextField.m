@@ -31,6 +31,11 @@
 	self.renderClient = YES;
 }
 
+- (void)mouseDown:(NSEvent *)theEvent
+{
+	[self sendAction:@selector(textFieldClicked:) to:[self delegate]];
+}
+
 - (void)setAttributedStringValue:(NSAttributedString *)attributedStringValue
 {
 	[super setAttributedStringValue:attributedStringValue];
@@ -127,6 +132,7 @@
 - (void)setTextColor:(NSColor *)textColor
 {
 	NSColor *visibleColor = [textColor visibleColor];
+
 	[super setTextColor:visibleColor];
 }
 

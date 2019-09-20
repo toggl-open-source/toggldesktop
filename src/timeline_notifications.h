@@ -33,21 +33,21 @@ class TimelineBatch {
     std::string &APIToken() {
         return api_token_;
     }
-    void SetAPIToken(const std::string value) {
+    void SetAPIToken(const std::string &value) {
         api_token_ = value;
     }
 
     std::vector<TimelineEvent> &Events() {
         return events_;
     }
-    void SetEvents(const std::vector<TimelineEvent> value) {
+    void SetEvents(const std::vector<TimelineEvent> &value) {
         events_ = value;
     }
 
     std::string &DesktopID() {
         return desktop_id_;
     }
-    void SetDesktopID(const std::string value) {
+    void SetDesktopID(const std::string &value) {
         desktop_id_ = value;
     }
 
@@ -63,7 +63,7 @@ class TimelineDatasource {
     virtual ~TimelineDatasource() {}
 
     // A autotracker event has started
-    virtual error StartAutotrackerEvent(const TimelineEvent event) = 0;
+    virtual error StartAutotrackerEvent(const TimelineEvent &event) = 0;
 
     // A timeline event is detected, window has changes
     // or there's an idle event.

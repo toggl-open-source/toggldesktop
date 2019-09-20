@@ -62,7 +62,7 @@ namespace toggl {
 
 std::string Context::log_path_ = "";
 
-Context::Context(const std::string app_name, const std::string app_version)
+Context::Context(const std::string &app_name, const std::string &app_version)
     : db_(nullptr)
 , user_(nullptr)
 , timeline_uploader_(nullptr)
@@ -192,7 +192,7 @@ void Context::stopActivities() {
         logger().debug(exc.displayText());
     } catch(const std::exception& ex) {
         logger().debug(ex.what());
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         logger().debug(ex);
     }
 
@@ -300,7 +300,7 @@ error Context::StartEvents() {
         return displayError(exc.displayText());
     } catch(const std::exception& ex) {
         return displayError(ex.what());
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return displayError(ex);
     }
     return noError;
@@ -338,7 +338,7 @@ error Context::save(const bool push_changes) {
         return exc.displayText();
     } catch(const std::exception& ex) {
         return ex.what();
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return ex;
     }
     return noError;
@@ -428,7 +428,7 @@ std::string UIElements::String() const {
 }
 
 void UIElements::ApplyChanges(
-    const std::string editor_guid,
+    const std::string &editor_guid,
     const std::vector<ModelChange> &changes) {
 
     time_entry_editor_guid = editor_guid;
@@ -1013,7 +1013,7 @@ bool Context::isPostponed(
     return true;
 }
 
-error Context::displayError(const error err) {
+error Context::displayError(const error &err) {
     if ((err.find(kUnauthorizedError) != std::string::npos)) {
         if (user_) {
             setUser(nullptr);
@@ -1127,7 +1127,7 @@ void Context::onProjectAutocompletes(Poco::Util::TimerTask&) {  // NOLINT
     UI()->DisplayProjectAutocomplete(&project_autocompletes);
 }
 
-void Context::setOnline(const std::string reason) {
+void Context::setOnline(const std::string &reason) {
     std::stringstream ss;
     ss << "setOnline, reason:" << reason;
     logger().debug(ss.str());
@@ -1159,7 +1159,7 @@ void Context::onSwitchWebSocketOff(Poco::Util::TimerTask&) {  // NOLINT
     ws_client_.Shutdown();
 }
 
-error Context::LoadUpdateFromJSONString(const std::string json) {
+error Context::LoadUpdateFromJSONString(const std::string &json) {
     std::stringstream ss;
     ss << "LoadUpdateFromJSONString json=" << json;
     logger().debug(ss.str());
@@ -1527,7 +1527,7 @@ error Context::downloadUpdate() {
         return exc.displayText();
     } catch(const std::exception& ex) {
         return ex.what();
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return ex;
     }
     return noError;
@@ -1656,7 +1656,7 @@ void Context::onTimelineUpdateServerSettings(Poco::Util::TimerTask&) {  // NOLIN
     }
 }
 
-error Context::SendFeedback(Feedback fb) {
+error Context::SendFeedback(const Feedback &fb) {
     if (!user_) {
         logger().warning("Cannot send feedback, user logged out");
         return noError;
@@ -1763,8 +1763,8 @@ void Context::onSendFeedback(Poco::Util::TimerTask&) {  // NOLINT
 }
 
 error Context::SetSettingsRemindTimes(
-    const std::string remind_starts,
-    const std::string remind_ends) {
+    const std::string &remind_starts,
+    const std::string &remind_ends) {
     return applySettingsSaveResultToUI(
         db()->SetSettingsRemindTimes(remind_starts, remind_ends));
 }
@@ -1798,7 +1798,7 @@ error Context::SetSettingsUseIdleDetection(const bool use_idle_detection) {
         db()->SetSettingsUseIdleDetection(use_idle_detection));
 }
 
-error Context::applySettingsSaveResultToUI(const error err) {
+error Context::applySettingsSaveResultToUI(const error &err) {
     if (err != noError) {
         return displayError(err);
     }
@@ -1880,7 +1880,7 @@ error Context::SetSettingsManualMode(const bool manual_mode) {
 }
 
 error Context::SetSettingsReminderMinutes(const Poco::UInt64 reminder_minutes) {
-    const error err = applySettingsSaveResultToUI(
+    const error &err = applySettingsSaveResultToUI(
         db()->SetSettingsReminderMinutes(reminder_minutes));
     if (err == noError) {
         resetLastTrackingReminderTime();
@@ -2039,7 +2039,7 @@ int64_t Context::GetWindowEditSizeWidth() {
 }
 
 void Context::SetKeyStart(
-    const std::string value) {
+    const std::string &value) {
     displayError(db()->SetKeyStart(value));
 }
 
@@ -2050,7 +2050,7 @@ std::string Context::GetKeyStart() {
 }
 
 void Context::SetKeyShow(
-    const std::string value) {
+    const std::string &value) {
     displayError(db()->SetKeyShow(value));
 }
 
@@ -2061,7 +2061,7 @@ std::string Context::GetKeyShow() {
 }
 
 void Context::SetKeyModifierShow(
-    const std::string value) {
+    const std::string &value) {
     displayError(db()->SetKeyModifierShow(value));
 }
 
@@ -2072,7 +2072,7 @@ std::string Context::GetKeyModifierShow() {
 }
 
 void Context::SetKeyModifierStart(
-    const std::string value) {
+    const std::string &value) {
     displayError(db()->SetKeyModifierStart(value));
 }
 
@@ -2084,7 +2084,7 @@ std::string Context::GetKeyModifierStart() {
 
 error Context::SetProxySettings(
     const bool use_proxy,
-    const Proxy proxy) {
+    const Proxy &proxy) {
 
     bool was_using_proxy(false);
     Proxy previous_proxy_settings;
@@ -2125,7 +2125,7 @@ void Context::OpenSettings() {
 }
 
 error Context::SetDBPath(
-    const std::string path) {
+    const std::string &path) {
     try {
         std::stringstream ss;
         ss << "SetDBPath " << path;
@@ -2142,13 +2142,13 @@ error Context::SetDBPath(
         return displayError(exc.displayText());
     } catch(const std::exception& ex) {
         return displayError(ex.what());
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return displayError(ex);
     }
     return noError;
 }
 
-void Context::SetEnvironment(const std::string value) {
+void Context::SetEnvironment(const std::string &value) {
     if (!("production" == value ||
             "development" == value ||
             "test" == value)) {
@@ -2169,16 +2169,16 @@ Database *Context::db() const {
     return db_;
 }
 
-error Context::GoogleLogin(const std::string access_token) {
+error Context::GoogleLogin(const std::string &access_token) {
     return Login(access_token, "google_access_token");
 }
 
-error Context::AsyncGoogleLogin(const std::string access_token) {
+error Context::AsyncGoogleLogin(const std::string &access_token) {
     return AsyncLogin(access_token, "google_access_token");
 }
 
-error Context::attemptOfflineLogin(const std::string email,
-                                   const std::string password) {
+error Context::attemptOfflineLogin(const std::string &email,
+                                   const std::string &password) {
     if (email.empty()) {
         return error("cannot login offline without an e-mail");
     }
@@ -2231,8 +2231,8 @@ error Context::attemptOfflineLogin(const std::string email,
     return save(false);
 }
 
-error Context::AsyncLogin(const std::string email,
-                          const std::string password) {
+error Context::AsyncLogin(const std::string &email,
+                          const std::string &password) {
     std::thread backgroundThread([&](std::string email, std::string password) {
         return this->Login(email, password);
     }, email, password);
@@ -2241,8 +2241,8 @@ error Context::AsyncLogin(const std::string email,
 }
 
 error Context::Login(
-    const std::string email,
-    const std::string password) {
+    const std::string &email,
+    const std::string &password) {
     try {
         TogglClient client(UI());
         std::string json("");
@@ -2295,13 +2295,13 @@ error Context::Login(
         return displayError(exc.displayText());
     } catch(const std::exception& ex) {
         return displayError(ex.what());
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return displayError(ex);
     }
 }
 
-error Context::AsyncSignup(const std::string email,
-                           const std::string password,
+error Context::AsyncSignup(const std::string &email,
+                           const std::string &password,
                            const uint64_t country_id) {
     std::thread backgroundThread([&](std::string email, std::string password, uint64_t country_id) {
         return this->Signup(email, password, country_id);
@@ -2311,8 +2311,8 @@ error Context::AsyncSignup(const std::string email,
 }
 
 error Context::Signup(
-    const std::string email,
-    const std::string password,
+    const std::string &email,
+    const std::string &password,
     const uint64_t country_id) {
 
     TogglClient client(UI());
@@ -2326,7 +2326,7 @@ error Context::Signup(
 }
 
 error Context::GoogleSignup(
-    const std::string access_token,
+    const std::string &access_token,
     const uint64_t country_id) {
 
     TogglClient client(UI());
@@ -2338,9 +2338,8 @@ error Context::GoogleSignup(
     return Login(access_token, "google_access_token");
 }
 
-error Context::AsyncGoogleSignup(
-    const std::string access_token,
-    const uint64_t country_id) {
+error Context::AsyncGoogleSignup(const std::string &access_token,
+                                 const uint64_t country_id) {
     std::thread backgroundThread([&](std::string access_token, uint64_t country_id) {
         return this->GoogleSignup(access_token, country_id);
     }, access_token, country_id);
@@ -2436,7 +2435,7 @@ void Context::setUser(User *value, const bool logged_in) {
 }
 
 error Context::SetLoggedInUserFromJSON(
-    const std::string json) {
+    const std::string &json) {
 
     if (json.empty()) {
         return displayError("empty JSON");
@@ -2520,7 +2519,7 @@ error Context::Logout() {
         return displayError(exc.displayText());
     } catch(const std::exception& ex) {
         return displayError(ex.what());
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return displayError(ex);
     }
     return noError;
@@ -2554,14 +2553,14 @@ error Context::ClearCache() {
         return displayError(exc.displayText());
     } catch(const std::exception& ex) {
         return displayError(ex.what());
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return displayError(ex);
     }
 }
 
 TimeEntry *Context::Start(
-    const std::string description,
-    const std::string duration,
+    const std::string &description,
+    const std::string &duration,
     const Poco::UInt64 task_id,
     const Poco::UInt64 project_id,
     const std::string project_guid,
@@ -2643,9 +2642,9 @@ TimeEntry *Context::Start(
 }
 
 void Context::OpenTimeEntryEditor(
-    const std::string GUID,
+    const std::string &GUID,
     const bool edit_running_entry,
-    const std::string focused_field_name) {
+    const std::string &focused_field_name) {
     if (!edit_running_entry && GUID.empty()) {
         logger().error("Cannot edit time entry without a GUID");
         return;
@@ -2761,7 +2760,7 @@ TimeEntry *Context::ContinueLatest(const bool prevent_on_app) {
 }
 
 TimeEntry *Context::Continue(
-    const std::string GUID) {
+    const std::string &GUID) {
 
     // Do not even allow to continue entries,
     // else they will linger around in the app
@@ -2814,7 +2813,7 @@ TimeEntry *Context::Continue(
     return result;
 }
 
-error Context::DeleteTimeEntryByGUID(const std::string GUID) {
+error Context::DeleteTimeEntryByGUID(const std::string &GUID) {
     // Do not even allow to delete time entries,
     // else they will linger around in the app
     // and the user can continue using the unsupported app.
@@ -2862,8 +2861,8 @@ error Context::DeleteTimeEntryByGUID(const std::string GUID) {
 }
 
 error Context::SetTimeEntryDuration(
-    const std::string GUID,
-    const std::string duration) {
+    const std::string &GUID,
+    const std::string &duration) {
     if (GUID.empty()) {
         return displayError(std::string(__FUNCTION__) + ": Missing GUID");
     }
@@ -2894,10 +2893,10 @@ error Context::SetTimeEntryDuration(
 }
 
 error Context::SetTimeEntryProject(
-    const std::string GUID,
+    const std::string &GUID,
     const Poco::UInt64 task_id,
     const Poco::UInt64 project_id,
-    const std::string project_guid) {
+    const std::string &project_guid) {
     try {
         if (GUID.empty()) {
             return displayError(std::string(__FUNCTION__) + ": Missing GUID");
@@ -2954,14 +2953,14 @@ error Context::SetTimeEntryProject(
         return displayError(exc.displayText());
     } catch(const std::exception& ex) {
         return displayError(ex.what());
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return displayError(ex);
     }
     return displayError(save(true));
 }
 
 error Context::SetTimeEntryDate(
-    const std::string GUID,
+    const std::string &GUID,
     const Poco::Int64 unix_timestamp) {
 
     if (GUID.empty()) {
@@ -3048,8 +3047,8 @@ error Context::SetTimeEntryStart(const std::string GUID,
 }
 
 error Context::SetTimeEntryStart(
-    const std::string GUID,
-    const std::string value) {
+    const std::string &GUID,
+    const std::string &value) {
     if (GUID.empty()) {
         return displayError(std::string(__FUNCTION__) + ": Missing GUID");
     }
@@ -3135,8 +3134,8 @@ error Context::SetTimeEntryStop(const std::string GUID,
 }
 
 error Context::SetTimeEntryStop(
-    const std::string GUID,
-    const std::string value) {
+    const std::string &GUID,
+    const std::string &value) {
     if (GUID.empty()) {
         return displayError(std::string(__FUNCTION__) + ": Missing GUID");
     }
@@ -3198,8 +3197,8 @@ error Context::SetTimeEntryStop(
 }
 
 error Context::SetTimeEntryTags(
-    const std::string GUID,
-    const std::string value) {
+    const std::string &GUID,
+    const std::string &value) {
     if (GUID.empty()) {
         return displayError(std::string(__FUNCTION__) + ": Missing GUID");
     }
@@ -3235,7 +3234,7 @@ error Context::SetTimeEntryTags(
 }
 
 error Context::SetTimeEntryBillable(
-    const std::string GUID,
+    const std::string &GUID,
     const bool value) {
     if (GUID.empty()) {
         return displayError(std::string(__FUNCTION__) + ": Missing GUID");
@@ -3272,8 +3271,8 @@ error Context::SetTimeEntryBillable(
 }
 
 error Context::SetTimeEntryDescription(
-    const std::string GUID,
-    const std::string value) {
+    const std::string &GUID,
+    const std::string &value) {
     if (GUID.empty()) {
         return displayError(std::string(__FUNCTION__) + ": Missing GUID");
     }
@@ -3347,7 +3346,7 @@ error Context::Stop(const bool prevent_on_app) {
 }
 
 error Context::DiscardTimeAt(
-    const std::string guid,
+    const std::string &guid,
     const Poco::Int64 at,
     const bool split_into_new_entry) {
 
@@ -3397,7 +3396,7 @@ error Context::DiscardTimeAt(
 }
 
 TimeEntry *Context::DiscardTimeAndContinue(
-    const std::string guid,
+    const std::string &guid,
     const Poco::Int64 at) {
 
     // Reset reminder count when doing idle actions
@@ -3465,13 +3464,13 @@ error Context::ToggleTimelineRecording(const bool record_timeline) {
         return displayError(exc.displayText());
     } catch(const std::exception& ex) {
         return displayError(ex.what());
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return displayError(ex);
     }
     return noError;
 }
 
-error Context::SetUpdateChannel(const std::string channel) {
+error Context::SetUpdateChannel(const std::string &channel) {
     error err = db()->SaveUpdateChannel(channel);
     if (err != noError) {
         return displayError(err);
@@ -3481,7 +3480,7 @@ error Context::SetUpdateChannel(const std::string channel) {
 }
 
 void Context::SearchHelpArticles(
-    const std::string keywords) {
+    const std::string &keywords) {
     UI()->DisplayHelpArticles(help_database_.GetArticles(keywords));
 }
 
@@ -3536,7 +3535,7 @@ error Context::SetDefaultProject(
         return displayError(exc.displayText());
     } catch(const std::exception& ex) {
         return displayError(ex.what());
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return displayError(ex);
     }
 }
@@ -3564,7 +3563,7 @@ error Context::DefaultProjectName(std::string *name) {
         return displayError(exc.displayText());
     } catch(const std::exception& ex) {
         return displayError(ex.what());
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return displayError(ex);
     }
     return noError;
@@ -3586,7 +3585,7 @@ error Context::DefaultPID(Poco::UInt64 *result) {
         return displayError(exc.displayText());
     } catch(const std::exception& ex) {
         return displayError(ex.what());
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return displayError(ex);
     }
     return noError;
@@ -3608,14 +3607,14 @@ error Context::DefaultTID(Poco::UInt64 *result) {
         return displayError(exc.displayText());
     } catch(const std::exception& ex) {
         return displayError(ex.what());
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return displayError(ex);
     }
     return noError;
 }
 
 error Context::AddAutotrackerRule(
-    const std::string term,
+    const std::string &term,
     const Poco::UInt64 pid,
     const Poco::UInt64 tid,
     Poco::Int64 *rule_id) {
@@ -3718,10 +3717,10 @@ error Context::DeleteAutotrackerRule(
 Project *Context::CreateProject(
     const Poco::UInt64 workspace_id,
     const Poco::UInt64 client_id,
-    const std::string client_guid,
-    const std::string project_name,
+    const std::string &client_guid,
+    const std::string &project_name,
     const bool is_private,
-    const std::string project_color) {
+    const std::string &project_color) {
 
     if (!workspace_id) {
         displayError(kPleaseSelectAWorkspace);
@@ -3814,8 +3813,8 @@ Project *Context::CreateProject(
 
 error Context::AddObmAction(
     const Poco::UInt64 experiment_id,
-    const std::string key,
-    const std::string value) {
+    const std::string &key,
+    const std::string &value) {
     // Check input
     if (!experiment_id) {
         return error("missing experiment_id");
@@ -3855,7 +3854,7 @@ error Context::AddObmAction(
 
 Client *Context::CreateClient(
     const Poco::UInt64 workspace_id,
-    const std::string client_name) {
+    const std::string &client_name) {
 
     if (!workspace_id) {
         displayError(kPleaseSelectAWorkspace);
@@ -4027,7 +4026,7 @@ error Context::offerBetaChannel(bool *did_offer) {
         return displayError(exc.displayText());
     } catch(const std::exception& ex) {
         return displayError(ex.what());
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return displayError(ex);
     }
     return noError;
@@ -4074,7 +4073,7 @@ error Context::runObmExperiments() {
         return displayError(exc.displayText());
     } catch(const std::exception& ex) {
         return displayError(ex.what());
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return displayError(ex);
     }
     return noError;
@@ -4132,7 +4131,7 @@ void Context::onWake(Poco::Util::TimerTask&) {  // NOLINT
     catch (const std::exception& ex) {
         logger().error(ex.what());
     }
-    catch (const std::string& ex) {
+    catch (const std::string & ex) {
         logger().error(ex);
     }
 }
@@ -4344,7 +4343,7 @@ void Context::displayPomodoroBreak() {
     UI()->DisplayPomodoroBreak(settings_.pomodoro_break_minutes);
 }
 
-error Context::StartAutotrackerEvent(const TimelineEvent event) {
+error Context::StartAutotrackerEvent(const TimelineEvent &event) {
     Poco::Mutex::ScopedLock lock(user_m_);
     if (!user_) {
         return noError;
@@ -4416,7 +4415,7 @@ error Context::CreateCompressedTimelineBatchForUpload(TimelineBatch *batch) {
         return displayError(exc.displayText());
     } catch(const std::exception& ex) {
         return displayError(ex.what());
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return displayError(ex);
     }
     return noError;
@@ -4440,7 +4439,7 @@ error Context::StartTimelineEvent(TimelineEvent *event) {
         return displayError(exc.displayText());
     } catch(const std::exception& ex) {
         return displayError(ex.what());
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return displayError(ex);
     }
     return noError;
@@ -4461,7 +4460,7 @@ error Context::MarkTimelineBatchAsUploaded(
         return displayError(exc.displayText());
     } catch(const std::exception& ex) {
         return displayError(ex.what());
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return displayError(ex);
     }
 }
@@ -4694,14 +4693,14 @@ void Context::onLoadMore(Poco::Util::TimerTask&) {
     catch (const std::exception& ex) {
         logger().warning(ex.what());
     }
-    catch (const std::string& ex) {
+    catch (const std::string & ex) {
         logger().warning(ex);
     }
 }
 
 
 
-void Context::SetLogPath(const std::string path) {
+void Context::SetLogPath(const std::string &path) {
     Poco::AutoPtr<Poco::SimpleFileChannel> simpleFileChannel(
         new Poco::SimpleFileChannel);
     simpleFileChannel->setProperty(
@@ -4801,7 +4800,7 @@ error Context::pullAllUserData(
         return exc.displayText();
     } catch(const std::exception& ex) {
         return ex.what();
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return ex;
     }
     return noError;
@@ -4935,15 +4934,15 @@ error Context::pushChanges(
         return exc.displayText();
     } catch(const std::exception& ex) {
         return ex.what();
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return ex;
     }
     return noError;
 }
 
 error Context::pushClients(
-    std::vector<Client *> clients,
-    std::string api_token,
+    const std::vector<Client *> &clients,
+    const std::string &api_token,
     TogglClient toggl_client) {
     std::string client_json("");
     error err = noError;
@@ -4985,11 +4984,10 @@ error Context::pushClients(
     return err;
 }
 
-error Context::pushProjects(
-    std::vector<Project *> projects,
-    std::vector<Client *> clients,
-    std::string api_token,
-    TogglClient toggl_client) {
+error Context::pushProjects(const std::vector<Project *> &projects,
+                            const std::vector<Client *> &clients,
+                            const std::string &api_token,
+                            TogglClient toggl_client) {
     error err = noError;
     std::string project_json("");
     for (std::vector<Project *>::const_iterator it =
@@ -5042,9 +5040,8 @@ error Context::pushProjects(
     return err;
 }
 
-error Context::updateEntryProjects(
-    std::vector<Project *> projects,
-    std::vector<TimeEntry *> time_entries) {
+error Context::updateEntryProjects(const std::vector<Project *> &projects,
+                                   const std::vector<TimeEntry *> &time_entries) {
     for (std::vector<TimeEntry *>::const_iterator it =
         time_entries.begin();
             it != time_entries.end(); it++) {
@@ -5065,9 +5062,9 @@ error Context::updateEntryProjects(
 }
 
 error Context::pushEntries(
-    std::map<std::string, BaseModel *>,
-    std::vector<TimeEntry *> time_entries,
-    std::string api_token,
+    const std::map<std::string, BaseModel *>&,
+    const std::vector<TimeEntry *> &time_entries,
+    const std::string &api_token,
     TogglClient toggl_client) {
 
     std::string entry_json("");
@@ -5210,7 +5207,7 @@ error Context::pullObmExperiments() {
         return exc.displayText();
     } catch(const std::exception& ex) {
         return ex.what();
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return ex;
     }
 }
@@ -5279,7 +5276,7 @@ error Context::pushObmAction() {
         return exc.displayText();
     } catch(const std::exception& ex) {
         return ex.what();
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return ex;
     }
     return noError;
@@ -5328,7 +5325,7 @@ error Context::me(
         return exc.displayText();
     } catch(const std::exception& ex) {
         return ex.what();
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return ex;
     }
     return noError;
@@ -5405,7 +5402,7 @@ error Context::pullWorkspaces(TogglClient* toggl_client) {
     catch (const std::exception& ex) {
         return ex.what();
     }
-    catch (const std::string& ex) {
+    catch (const std::string & ex) {
         return ex;
     }
     return noError;
@@ -5486,7 +5483,7 @@ error Context::pullWorkspacePreferences(
     catch (const std::exception& ex) {
         return ex.what();
     }
-    catch (const std::string& ex) {
+    catch (const std::string & ex) {
         return ex;
     }
     return noError;
@@ -5547,7 +5544,7 @@ error Context::pullUserPreferences(
     catch (const std::exception& ex) {
         return ex.what();
     }
-    catch (const std::string& ex) {
+    catch (const std::string & ex) {
         return ex;
     }
     return noError;
@@ -5555,7 +5552,7 @@ error Context::pullUserPreferences(
 
 error Context::signupGoogle(
     TogglClient *toggl_client,
-    const std::string access_token,
+    const std::string &access_token,
     std::string *user_data_json,
     const uint64_t country_id) {
     try {
@@ -5605,8 +5602,8 @@ error Context::signupGoogle(
 
 error Context::signup(
     TogglClient *toggl_client,
-    const std::string email,
-    const std::string password,
+    const std::string &email,
+    const std::string &password,
     std::string *user_data_json,
     const uint64_t country_id) {
 
@@ -5652,7 +5649,7 @@ error Context::signup(
         return exc.displayText();
     } catch(const std::exception& ex) {
         return ex.what();
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return ex;
     }
     return noError;
@@ -5730,7 +5727,7 @@ error Context::ToSAccept() {
     } catch(const std::exception& ex) {
         displayError(kCannotConnectError);
         return ex.what();
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         displayError(kCannotConnectError);
         return ex;
     }
@@ -5784,7 +5781,7 @@ error Context::PullCountries() {
         return exc.displayText();
     } catch(const std::exception& ex) {
         return ex.what();
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return ex;
     }
     return noError;
@@ -5792,7 +5789,7 @@ error Context::PullCountries() {
 
 template<typename T>
 void Context::collectPushableModels(
-    const std::vector<T *> list,
+    const std::vector<T *> &list,
     std::vector<T *> *result,
     std::map<std::string, BaseModel *> *models) const {
 

@@ -85,7 +85,7 @@ class RelatedData {
     Poco::Int64 TotalDurationForDate(const TimeEntry *match) const;
 
     // avoid duplicates
-    bool HasMatchingAutotrackerRule(const std::string lowercase_term) const;
+    bool HasMatchingAutotrackerRule(const std::string &lowercase_term) const;
 
     error DeleteAutotrackerRule(const Poco::Int64 local_id);
 
@@ -97,7 +97,7 @@ class RelatedData {
         TimeEntry * const te,
         view::TimeEntry *view) const;
 
-    AutotrackerRule *FindAutotrackerRule(const TimelineEvent event) const;
+    AutotrackerRule *FindAutotrackerRule(const TimelineEvent &event) const;
 
     Client *clientByProject(Project *p) const;
 

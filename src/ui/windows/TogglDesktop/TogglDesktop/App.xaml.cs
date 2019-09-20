@@ -16,9 +16,10 @@ partial class App
         base.OnStartup(e);
         var mainWindow = new MainWindow();
         var startMinimized = Environment.GetCommandLineArgs().Contains("--minimize");
-        if (!startMinimized)
+        mainWindow.Show();
+        if (startMinimized)
         {
-            mainWindow.Show();
+            mainWindow.Hide();
         }
     }
 }

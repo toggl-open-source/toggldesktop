@@ -25,14 +25,14 @@ void ObmAction::SetExperimentID(const Poco::UInt64 value) {
     }
 }
 
-void ObmAction::SetKey(const std::string value) {
+void ObmAction::SetKey(const std::string &value) {
     if (key_ != value) {
         key_ = value;
         SetDirty();
     }
 }
 
-void ObmAction::SetValue(const std::string value) {
+void ObmAction::SetValue(const std::string &value) {
     if (value_ != value) {
         value_ = value;
         SetDirty();
@@ -87,7 +87,7 @@ void ObmExperiment::SetIncluded(const bool value) {
     }
 }
 
-void ObmExperiment::SetActions(const std::string value) {
+void ObmExperiment::SetActions(const std::string &value) {
     if (actions_ != value) {
         actions_ = value;
         SetDirty();

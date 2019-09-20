@@ -40,20 +40,20 @@ class Project : public BaseModel {
     const std::string &ClientGUID() const {
         return client_guid_;
     }
-    void SetClientGUID(const std::string);
+    void SetClientGUID(const std::string &);
 
     const std::string &Name() const {
         return name_;
     }
-    void SetName(const std::string value);
+    void SetName(const std::string &value);
 
     const std::string &Color() const {
         return color_;
     }
-    void SetColor(const std::string value);
+    void SetColor(const std::string &value);
 
     std::string ColorCode() const;
-    error SetColorCode(const std::string color_code);
+    error SetColorCode(const std::string &color_code);
 
     const bool &Active() const {
         return active_;
@@ -73,7 +73,7 @@ class Project : public BaseModel {
     const std::string &ClientName() const {
         return client_name_;
     }
-    void SetClientName(const std::string value);
+    void SetClientName(const std::string &value);
 
     std::string FullName() const;
 
@@ -83,15 +83,15 @@ class Project : public BaseModel {
     std::string ModelURL() const;
     void LoadFromJSON(Json::Value value);
     Json::Value SaveToJSON() const;
-    bool DuplicateResource(const toggl::error) const;
-    bool ResourceCannotBeCreated(const toggl::error) const;
-    bool ResolveError(const toggl::error);
+    bool DuplicateResource(const toggl::error &err) const;
+    bool ResourceCannotBeCreated(const toggl::error &err) const;
+    bool ResolveError(const toggl::error &err);
 
     static std::vector<std::string> ColorCodes;
 
  private:
-    bool clientIsInAnotherWorkspace(const toggl::error) const;
-    bool onlyAdminsCanChangeProjectVisibility(const toggl::error err) const;
+    bool clientIsInAnotherWorkspace(const toggl::error &err) const;
+    bool onlyAdminsCanChangeProjectVisibility(const toggl::error &err) const;
 
     Poco::UInt64 wid_;
     Poco::UInt64 cid_;

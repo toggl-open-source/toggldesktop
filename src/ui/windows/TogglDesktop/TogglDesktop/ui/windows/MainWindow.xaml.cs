@@ -42,13 +42,9 @@ namespace TogglDesktop
         private MiniTimerWindow miniTimer;
 
         private IMainView activeView;
-        private bool isInManualMode;
-        private bool isMiniTimerVisible;
-        private bool isTracking;
         private bool isResizingWithHandle;
         private bool closing;
         private string trackingTitle;
-        private WindowState previousWindowState;
         private string todaysDuration = "0 h 00 min";
 
         #endregion
@@ -86,16 +82,15 @@ namespace TogglDesktop
 
         #region properties
 
-        public bool IsTracking { get { return this.isTracking; } }
-        public bool IsInManualMode { get { return this.isInManualMode; } }
-        public bool IsMiniTimerVisible { get { return this.isMiniTimerVisible; } }
+        public bool IsTracking { get; private set; }
+        public bool IsInManualMode { get; private set; }
+        public bool IsMiniTimerVisible { get; private set; }
 
         public TutorialManager TutorialManager { get; private set; }
 
-        public bool CanBeShown
-        {
-            get { return !this.IsVisible || this.WindowState == WindowState.Minimized; }
-        }
+        public bool CanBeShown => !this.IsVisible || !this.IsActive;
+
+        public bool CanBeHidden => this.IsVisible && this.WindowState != WindowState.Minimized;
 
         #endregion
 
@@ -235,7 +230,6 @@ namespace TogglDesktop
             Toggl.OnTimeEntryEditor += this.onTimeEntryEditor;
             Toggl.OnTimeEntryList += this.onTimeEntryList;
             Toggl.OnOnlineState += this.onOnlineState;
-            //Toggl.OnReminder += this.onReminder;
             Toggl.OnURL += this.onURL;
             Toggl.OnUserTimeEntryStart += this.onUserTimeEntryStart;
             Toggl.OnRunningTimerState += this.onRunningTimerState;
@@ -371,14 +365,6 @@ namespace TogglDesktop
             }
         }
 
-        private void onReminder(string title, string informativeText)
-        {
-            if (this.TryBeginInvoke(this.onReminder, title, informativeText))
-                return;
-
-            this.taskbarIcon.ShowBalloonTip(title, informativeText, Properties.Resources.toggl, largeIcon: true);
-        }
-
         private void onOnlineState(Toggl.OnlineState state)
         {
             if (this.TryBeginInvoke(this.onOnlineState, state))
@@ -512,24 +498,7 @@ namespace TogglDesktop
         protected override void OnStateChanged(EventArgs e)
         {
             this.resizeHandle.ShowOnlyIf(this.WindowState != WindowState.Maximized);
-
-            // fix for when maximised window is activated from a different process using ShowWindow()
-            if (this.fixWindowStateOnShowWindow())
-                return;
-
-            this.previousWindowState = this.WindowState;
-
             base.OnStateChanged(e);
-        }
-
-        protected override void OnActivated(EventArgs e)
-        {
-            // fix for when the window is activated from a different process using ShowWindow()
-            this.fixVisibilityOnShowWindow();
-
-            //Toggl.SetWake();
-
-            base.OnActivated(e);
         }
 
         protected override void OnClosing(CancelEventArgs e)
@@ -545,21 +514,28 @@ namespace TogglDesktop
 
         private void onGlobalShowKeyPressed(object sender, KeyPressedEventArgs e)
         {
-            this.togglVisibility();
+            if (this.CanBeShown)
+            {
+                this.ShowOnTop();
+            }
+            else
+            {
+                this.MinimizeToTray();
+            }
         }
 
         private void onGlobalStartKeyPressed(object sender, KeyPressedEventArgs e)
         {
-            if (this.isTracking)
+            if (this.IsTracking)
             {
-                using (Performance.Measure("stopping time entry from global short cut", this.isInManualMode))
+                using (Performance.Measure("stopping time entry from global short cut", this.IsInManualMode))
                 {
                     Toggl.Stop();
                 }
             }
             else
             {
-                using (Performance.Measure("starting time entry from global short cut, manual mode: {0}", this.isInManualMode))
+                using (Performance.Measure("starting time entry from global short cut, manual mode: {0}", this.IsInManualMode))
                 {
                     KeyboardShortcuts.StartTimeEntry(true);
                 }
@@ -574,7 +550,14 @@ namespace TogglDesktop
 
         private void onTaskbarLeftMouseUp(object sender, RoutedEventArgs e)
         {
-            this.togglVisibility();
+            if (this.CanBeHidden)
+            {
+                this.MinimizeToTray();
+            }
+            else
+            {
+                this.ShowOnTop();
+            }
         }
 
         private void onTrayBalloonTipClicked(object sender, RoutedEventArgs e)
@@ -653,7 +636,7 @@ namespace TogglDesktop
 
         public void SetMiniTimerVisible(bool visible, bool fromApi = false)
         {
-            this.isMiniTimerVisible = visible;
+            this.IsMiniTimerVisible = visible;
 
             this.togglMiniTimerVisibilityMenuItem.IsChecked = visible;
 
@@ -673,28 +656,16 @@ namespace TogglDesktop
 
         public void SetManualMode(bool manualMode, bool fromApi = false)
         {
-            this.isInManualMode = manualMode;
+            this.IsInManualMode = manualMode;
 
             this.togglManualModeMenuItem.IsChecked = manualMode;
 
-            this.timerEntryListView.SetManualMode(this.isInManualMode);
-            this.miniTimer.SetManualMode(this.isInManualMode);
+            this.timerEntryListView.SetManualMode(this.IsInManualMode);
+            this.miniTimer.SetManualMode(this.IsInManualMode);
 
             if (!fromApi)
             {
                 Toggl.SetManualMode(manualMode);
-            }
-        }
-
-        private void togglVisibility()
-        {
-            if (this.CanBeShown)
-            {
-                this.ShowOnTop();
-            }
-            else
-            {
-                this.MinimizeToTray();
             }
         }
 
@@ -728,16 +699,6 @@ namespace TogglDesktop
             {
                 Toggl.Debug("Could not register show hotkey: " + e);
             }
-        }
-
-        public void ShowOnTop()
-        {
-            this.Show();
-            if (this.WindowState == WindowState.Minimized)
-            {
-                this.WindowState = WindowState.Normal;
-            }
-            this.Activate();
         }
 
         public void shutdown(int exitCode)
@@ -797,7 +758,7 @@ namespace TogglDesktop
         {
             Icon icon;
 
-            if (this.isTracking)
+            if (this.IsTracking)
             {
                 icon = isOnline
                     ? Properties.Resources.toggltray
@@ -817,7 +778,7 @@ namespace TogglDesktop
         {
             var tracking = timeEntry != null;
 
-            this.isTracking = tracking;
+            this.IsTracking = tracking;
 
             if (tracking)
             {
@@ -842,7 +803,7 @@ namespace TogglDesktop
                 }
 
 
-                if (this.isInManualMode)
+                if (this.IsInManualMode)
                     this.SetManualMode(false);
             }
             else
@@ -959,29 +920,6 @@ namespace TogglDesktop
             this.MinHeight = this.WindowHeaderHeight + activeView.MinHeight;
             this.MinWidth = activeView.MinWidth;
         }
-
-        private bool fixWindowStateOnShowWindow()
-        {
-            if (this.Visibility != Visibility.Visible)
-            {
-                if (this.previousWindowState == WindowState.Maximized && this.WindowState != WindowState.Maximized)
-                {
-                    this.WindowState = WindowState.Maximized;
-                    this.Visibility = Visibility.Visible;
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        private void fixVisibilityOnShowWindow()
-        {
-            if (this.Visibility != Visibility.Visible)
-            {
-                this.Visibility = Visibility.Visible;
-            }
-        }
-
 
         #endregion
 

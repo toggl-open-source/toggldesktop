@@ -10,7 +10,6 @@
 
 // Commands, backend <- UI
 extern NSString *const kCommandNew;
-extern NSString *const kCommandNewShortcut;
 extern NSString *const kCommandStop;
 extern NSString *const kCommandContinue;
 

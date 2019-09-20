@@ -22,6 +22,7 @@
                 <outlet property="signUpLink" destination="vHA-Cd-ciE" id="IIF-Rc-Dys"/>
                 <outlet property="signUpLoaderView" destination="RjK-JO-aC4" id="Ags-gt-SEY"/>
                 <outlet property="signupButton" destination="ecN-Qd-Rfu" id="kAt-tp-tbN"/>
+                <outlet property="signupGoogleBtn" destination="BVp-V4-Mkm" id="dfR-ej-hWI"/>
                 <outlet property="tabView" destination="Zob-zi-6R9" id="9Bv-SQ-s56"/>
                 <outlet property="tosCheckbox" destination="p8r-V5-a0Z" id="Vwo-iN-cni"/>
                 <outlet property="tosLink" destination="fZp-Ag-MGC" id="HmT-m5-edl"/>
@@ -234,7 +235,7 @@
                                                             </userDefinedRuntimeAttributes>
                                                             <connections>
                                                                 <action selector="clickSignupButton:" target="-2" id="8ar-ch-RUX"/>
-                                                                <outlet property="nextKeyView" destination="KGi-ca-Yer" id="oXo-Ww-F4C"/>
+                                                                <outlet property="nextKeyView" destination="BVp-V4-Mkm" id="rbq-UZ-73X"/>
                                                             </connections>
                                                         </button>
                                                         <progressIndicator hidden="YES" wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="RjK-JO-aC4">
@@ -247,7 +248,25 @@
                                                                 <color key="textColor" name="login-text-color"/>
                                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                             </textFieldCell>
+                                                            <connections>
+                                                                <outlet property="nextKeyView" destination="KGi-ca-Yer" id="Vgg-6g-Iy3"/>
+                                                            </connections>
                                                         </textField>
+                                                        <button verticalHuggingPriority="750" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BVp-V4-Mkm">
+                                                            <rect key="frame" x="18" y="38" width="192" height="35"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="188" id="9PE-UU-lQW"/>
+                                                                <constraint firstAttribute="height" constant="30" id="ioV-ar-8C4"/>
+                                                            </constraints>
+                                                            <buttonCell key="cell" type="bevel" title="Sign up with Google" bezelStyle="regularSquare" image="google-logo" imagePosition="left" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="y5t-5i-06C">
+                                                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                                <font key="font" metaFont="system"/>
+                                                            </buttonCell>
+                                                            <connections>
+                                                                <action selector="signupGoogleBtnOnTap:" target="-2" id="KF3-lO-s2y"/>
+                                                                <outlet property="nextKeyView" destination="8Ya-xT-rzU" id="QMB-Wf-XFw"/>
+                                                            </connections>
+                                                        </button>
                                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="8ub-2k-VFz">
                                                             <rect key="frame" x="36" y="123" width="25" height="16"/>
                                                             <textFieldCell key="cell" lineBreakMode="clipping" title="and" id="6le-qK-Qps">
@@ -298,6 +317,7 @@
                                                         <constraint firstItem="IVx-73-aIM" firstAttribute="firstBaseline" secondItem="8ub-2k-VFz" secondAttribute="firstBaseline" id="N2g-kc-Xoe"/>
                                                         <constraint firstAttribute="bottom" secondItem="8Ya-xT-rzU" secondAttribute="bottom" constant="16" id="Oq9-p6-wnp"/>
                                                         <constraint firstItem="8ub-2k-VFz" firstAttribute="leading" secondItem="p8r-V5-a0Z" secondAttribute="leading" constant="18" id="Q26-wy-gT1"/>
+                                                        <constraint firstItem="BVp-V4-Mkm" firstAttribute="top" secondItem="ecN-Qd-Rfu" secondAttribute="bottom" constant="8" id="erN-dO-c1u"/>
                                                         <constraint firstItem="4Zx-Jg-kcg" firstAttribute="leading" secondItem="41Y-oV-0ee" secondAttribute="leading" constant="20" id="heV-uz-hSM"/>
                                                         <constraint firstItem="fZp-Ag-MGC" firstAttribute="leading" secondItem="p8r-V5-a0Z" secondAttribute="trailing" constant="2" id="mnc-hR-2WM"/>
                                                         <constraint firstItem="RjK-JO-aC4" firstAttribute="centerY" secondItem="ecN-Qd-Rfu" secondAttribute="centerY" id="q4M-4A-PVp"/>
@@ -305,6 +325,7 @@
                                                         <constraint firstAttribute="trailing" secondItem="4Zx-Jg-kcg" secondAttribute="trailing" constant="20" id="vne-ET-7Oc"/>
                                                         <constraint firstItem="fZp-Ag-MGC" firstAttribute="firstBaseline" secondItem="p8r-V5-a0Z" secondAttribute="firstBaseline" id="xOD-Ri-XS1"/>
                                                         <constraint firstItem="8Ya-xT-rzU" firstAttribute="centerX" secondItem="41Y-oV-0ee" secondAttribute="centerX" id="yAW-sN-L88"/>
+                                                        <constraint firstItem="BVp-V4-Mkm" firstAttribute="centerX" secondItem="41Y-oV-0ee" secondAttribute="centerX" id="yyn-eY-zUR"/>
                                                     </constraints>
                                                 </customView>
                                             </subviews>

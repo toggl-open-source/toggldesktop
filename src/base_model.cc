@@ -56,7 +56,7 @@ void BaseModel::ClearValidationError() {
     SetValidationError(noError);
 }
 
-void BaseModel::SetValidationError(const std::string value) {
+void BaseModel::SetValidationError(const std::string &value) {
     if (validation_error_ != value) {
         validation_error_ = value;
         SetDirty();
@@ -77,7 +77,7 @@ void BaseModel::SetUpdatedAt(const Poco::Int64 value) {
     }
 }
 
-void BaseModel::SetGUID(const std::string value) {
+void BaseModel::SetGUID(const std::string &value) {
     if (guid_ != value) {
         guid_ = value;
         SetDirty();
@@ -105,11 +105,11 @@ void BaseModel::SetID(const Poco::UInt64 value) {
     }
 }
 
-void BaseModel::SetUpdatedAtString(const std::string value) {
+void BaseModel::SetUpdatedAtString(const std::string &value) {
     SetUpdatedAt(Formatter::Parse8601(value));
 }
 
-error BaseModel::LoadFromDataString(const std::string data_string) {
+error BaseModel::LoadFromDataString(const std::string &data_string) {
     Json::Value root;
     Json::Reader reader;
     if (!reader.parse(data_string, root)) {
@@ -153,7 +153,7 @@ error BaseModel::ApplyBatchUpdateResult(
     return LoadFromDataString(update->Body);
 }
 
-bool BaseModel::userCannotAccessWorkspace(const toggl::error err) const {
+bool BaseModel::userCannotAccessWorkspace(const error &err) const {
     return (std::string::npos != std::string(err).find(
         kCannotAccessWorkspaceError));
 }

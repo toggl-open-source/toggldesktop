@@ -108,6 +108,7 @@
 		BA014050225710FD000E5B91 /* TagAutoCompleteTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA01404F225710FD000E5B91 /* TagAutoCompleteTextField.swift */; };
 		BA01405222571199000E5B91 /* TagTokenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA01405122571199000E5B91 /* TagTokenView.swift */; };
 		BA014054225711A3000E5B91 /* TagTokenView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA014053225711A3000E5B91 /* TagTokenView.xib */; };
+		BA01E8A1232F77B3006B93EC /* ClickableImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = BA01E8A0232F77B3006B93EC /* ClickableImageView.m */; };
 		BA03725521FE9FD400FC277B /* FlatButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA03725421FE9FD400FC277B /* FlatButton.swift */; };
 		BA053659225DDDBB00C26E1F /* CustomFocusRingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA053658225DDDBB00C26E1F /* CustomFocusRingButton.swift */; };
 		BA05367F225E238D00C26E1F /* ProjectWorksapceCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA05367E225E238D00C26E1F /* ProjectWorksapceCellView.swift */; };
@@ -756,6 +757,8 @@
 		BA01404F225710FD000E5B91 /* TagAutoCompleteTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagAutoCompleteTextField.swift; sourceTree = "<group>"; };
 		BA01405122571199000E5B91 /* TagTokenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagTokenView.swift; sourceTree = "<group>"; };
 		BA014053225711A3000E5B91 /* TagTokenView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TagTokenView.xib; sourceTree = "<group>"; };
+		BA01E89F232F77B3006B93EC /* ClickableImageView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ClickableImageView.h; sourceTree = "<group>"; };
+		BA01E8A0232F77B3006B93EC /* ClickableImageView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ClickableImageView.m; sourceTree = "<group>"; };
 		BA03725421FE9FD400FC277B /* FlatButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlatButton.swift; sourceTree = "<group>"; };
 		BA053658225DDDBB00C26E1F /* CustomFocusRingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFocusRingButton.swift; sourceTree = "<group>"; };
 		BA05367E225E238D00C26E1F /* ProjectWorksapceCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectWorksapceCellView.swift; sourceTree = "<group>"; };
@@ -902,6 +905,8 @@
 		BAA11AC02251F49E007F31D2 /* WorkspaceStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceStorage.swift; sourceTree = "<group>"; };
 		BAA11AC22251F4D6007F31D2 /* WorkspaceAutoCompleteTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceAutoCompleteTextField.swift; sourceTree = "<group>"; };
 		BAA11AC42251F502007F31D2 /* WorkspaceDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceDataSource.swift; sourceTree = "<group>"; };
+		BAA260D0222D1DC70094F4E4 /* NSView+Shadow+Border.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSView+Shadow+Border.swift"; sourceTree = "<group>"; };
+		BAAC931A22EEF92100E2EE1C /* TogglDesktop.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = TogglDesktop.entitlements; path = TogglDesktop/TogglDesktop.entitlements; sourceTree = "<group>"; };
 		BAAF567D2223CAC5003D0D73 /* NSButton+TextColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSButton+TextColor.swift"; sourceTree = "<group>"; };
 		BAAF569D2223D4C7003D0D73 /* DotImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotImageView.swift; sourceTree = "<group>"; };
 		BAAF569F2223DF9A003D0D73 /* VertificalTimeEntryFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VertificalTimeEntryFlowLayout.swift; sourceTree = "<group>"; };
@@ -1026,6 +1031,7 @@
 		69FC17E817E6534400B96425 = {
 			isa = PBXGroup;
 			children = (
+				BAAC931A22EEF92100E2EE1C /* TogglDesktop.entitlements */,
 				BAE007DD21FAF00D00404379 /* Media.xcassets */,
 				BAD2341921D612DE0039C742 /* libPocoCrypto.60.dylib */,
 				BAD2341A21D612DE0039C742 /* libPocoData.60.dylib */,
@@ -1214,6 +1220,8 @@
 				BA75FF3B22BCE94100D3F08C /* TimelineDisplayCommand.m */,
 				745126B419A28AA500390F47 /* Reachability.h */,
 				745126B519A28AA600390F47 /* Reachability.m */,
+				BA01E89F232F77B3006B93EC /* ClickableImageView.h */,
+				BA01E8A0232F77B3006B93EC /* ClickableImageView.m */,
 			);
 			name = ui;
 			path = test2;
@@ -1818,6 +1826,11 @@
 						DevelopmentTeam = B227VTMZ94;
 						LastSwiftMigration = 1020;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.HardenedRuntime = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -2204,6 +2217,7 @@
 				BA75FF2F22BCC56C00D3F08C /* TimelineTimestamp.swift in Sources */,
 				BA13D2152269C01500EB3833 /* Date+Utils.swift in Sources */,
 				BAAF56A02223DF9A003D0D73 /* VertificalTimeEntryFlowLayout.swift in Sources */,
+				BA01E8A1232F77B3006B93EC /* ClickableImageView.m in Sources */,
 				C5CB7F0417F43EE100A2AEB1 /* TimeEntryCell.m in Sources */,
 				C5DA1FBF17F1B08A001C4565 /* MainWindowController.m in Sources */,
 				BAE6379A22B225C70024DD08 /* AddTagButton.swift in Sources */,
@@ -2558,10 +2572,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = TogglDesktop/TogglDesktop.entitlements;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = B227VTMZ94;
+				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -2612,11 +2628,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = TogglDesktop/TogglDesktop.entitlements;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				DEVELOPMENT_TEAM = B227VTMZ94;
+				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",

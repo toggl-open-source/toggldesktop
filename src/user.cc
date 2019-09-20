@@ -43,11 +43,11 @@ User::~User() {
 Project *User::CreateProject(
     const Poco::UInt64 workspace_id,
     const Poco::UInt64 client_id,
-    const std::string client_guid,
-    const std::string client_name,
-    const std::string project_name,
+    const std::string &client_guid,
+    const std::string &client_name,
+    const std::string &project_name,
     const bool is_private,
-    const std::string project_color,
+    const std::string &project_color,
     const bool billable) {
 
     Project *p = new Project();
@@ -118,7 +118,7 @@ void User::AddProjectToList(Project *p) {
 
 Client *User::CreateClient(
     const Poco::UInt64 workspace_id,
-    const std::string client_name) {
+    const std::string &client_name) {
     Client *c = new Client();
     c->SetWID(workspace_id);
     c->SetName(client_name);
@@ -157,8 +157,8 @@ void User::AddClientToList(Client *c) {
 // Start a time entry, mark it as dirty and add to user time entry collection.
 // Do not save here, dirtyness will be handled outside of this module.
 TimeEntry *User::Start(
-    const std::string description,
-    const std::string duration,
+    const std::string &description,
+    const std::string &duration,
     const Poco::UInt64 task_id,
     const Poco::UInt64 project_id,
     const std::string project_guid,
@@ -230,7 +230,7 @@ TimeEntry *User::Start(
 }
 
 TimeEntry *User::Continue(
-    const std::string GUID,
+    const std::string &GUID,
     const bool manual_mode) {
 
     TimeEntry *existing = related.TimeEntryByGUID(GUID);
@@ -315,14 +315,14 @@ bool User::CanAddProjects() const {
     return true;
 }
 
-void User::SetFullname(const std::string value) {
+void User::SetFullname(const std::string &value) {
     if (fullname_ != value) {
         fullname_ = value;
         SetDirty();
     }
 }
 
-void User::SetTimeOfDayFormat(const std::string value) {
+void User::SetTimeOfDayFormat(const std::string &value) {
     Formatter::TimeOfDayFormat = value;
     if (timeofday_format_ != value) {
         timeofday_format_ = value;
@@ -330,7 +330,7 @@ void User::SetTimeOfDayFormat(const std::string value) {
     }
 }
 
-void User::SetDurationFormat(const std::string value) {
+void User::SetDurationFormat(const std::string &value) {
     Formatter::DurationFormat = value;
     if (duration_format_ != value) {
         duration_format_ = value;
@@ -338,7 +338,7 @@ void User::SetDurationFormat(const std::string value) {
     }
 }
 
-void User::SetOfflineData(const std::string value) {
+void User::SetOfflineData(const std::string &value) {
     if (offline_data_ != value) {
         offline_data_ = value;
         SetDirty();
@@ -359,14 +359,14 @@ void User::SetRecordTimeline(const bool value) {
     }
 }
 
-void User::SetEmail(const std::string value) {
+void User::SetEmail(const std::string &value) {
     if (email_ != value) {
         email_ = value;
         SetDirty();
     }
 }
 
-void User::SetAPIToken(const std::string value) {
+void User::SetAPIToken(const std::string &value) {
     // API token is not saved into DB, so no
     // no dirty checking needed for it.
     api_token_ = value;
@@ -422,7 +422,7 @@ void User::Stop(std::vector<TimeEntry *> *stopped) {
 }
 
 TimeEntry *User::DiscardTimeAt(
-    const std::string guid,
+    const std::string &guid,
     const Poco::Int64 at,
     const bool split_into_new_entry) {
 
@@ -598,7 +598,7 @@ void User::loadUserTaskFromJSON(
 }
 
 error User::LoadUserUpdateFromJSONString(
-    const std::string json) {
+    const std::string &json) {
 
     if (json.empty()) {
         return noError;
@@ -708,7 +708,7 @@ error User::LoadUserAndRelatedDataFromJSONString(
     return noError;
 }
 
-error User::LoadWorkspacesFromJSONString(const std::string& json) {
+error User::LoadWorkspacesFromJSONString(const std::string & json) {
     if (json.empty()) {
         return noError;
     }
@@ -734,7 +734,7 @@ error User::LoadWorkspacesFromJSONString(const std::string& json) {
     return noError;
 }
 
-error User::LoadTimeEntriesFromJSONString(const std::string& json) {
+error User::LoadTimeEntriesFromJSONString(const std::string & json) {
     if (json.empty()) {
         return noError;
     }
@@ -1110,7 +1110,7 @@ bool User::LoadUserPreferencesFromJSON(
 
 
 error User::UserID(
-    const std::string json_data_string,
+    const std::string &json_data_string,
     Poco::UInt64 *result) {
     *result = 0;
     Json::Value root;
@@ -1124,7 +1124,7 @@ error User::UserID(
 }
 
 error User::LoginToken(
-    const std::string json_data_string,
+    const std::string &json_data_string,
     std::string *result) {
     *result = "";
     Json::Value root;
@@ -1163,7 +1163,7 @@ error User::UpdateJSON(
     return noError;
 }
 
-std::string User::generateKey(const std::string password) {
+std::string User::generateKey(const std::string &password) {
     Poco::SHA1Engine sha1;
     Poco::DigestOutputStream outstr(sha1);
     outstr << Email();
@@ -1173,7 +1173,7 @@ std::string User::generateKey(const std::string password) {
     return Poco::DigestEngine::digestToHex(digest);
 }
 
-error User::SetAPITokenFromOfflineData(const std::string password) {
+error User::SetAPITokenFromOfflineData(const std::string &password) {
     if (Email().empty()) {
         return error("cannot decrypt offline data without an e-mail");
     }
@@ -1215,14 +1215,14 @@ error User::SetAPITokenFromOfflineData(const std::string password) {
         return exc.displayText();
     } catch(const std::exception& ex) {
         return ex.what();
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return ex;
     }
     return noError;
 }
 
 error User::EnableOfflineLogin(
-    const std::string password) {
+    const std::string &password) {
     if (Email().empty()) {
         return error("cannot enable offline login without an e-mail");
     }
@@ -1275,7 +1275,7 @@ error User::EnableOfflineLogin(
         return exc.displayText();
     } catch(const std::exception& ex) {
         return ex.what();
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return ex;
     }
     return noError;

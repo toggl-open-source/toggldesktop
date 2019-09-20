@@ -30,7 +30,7 @@ void Task::SetWID(const Poco::UInt64 value) {
     }
 }
 
-void Task::SetName(const std::string value) {
+void Task::SetName(const std::string &value) {
     if (name_ != value) {
         name_ = value;
         SetDirty();

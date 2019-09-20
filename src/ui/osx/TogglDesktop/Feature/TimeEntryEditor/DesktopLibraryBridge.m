@@ -185,7 +185,6 @@ void *ctx;
 									 [timeEntry.GUID UTF8String],
 									 [autocomplete.Description UTF8String]);
 	[self updateTimeEntryWithTags:autocomplete.tags guid:timeEntry.GUID];
-
 }
 
 - (NSString *)convertDuratonInSecond:(int64_t)durationInSecond

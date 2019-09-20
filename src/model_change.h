@@ -14,10 +14,10 @@ namespace toggl {
 class ModelChange {
  public:
     ModelChange(
-        const std::string model_type,
-        const std::string change_type,
+        const std::string &model_type,
+        const std::string &change_type,
         const Poco::UInt64 model_id,
-        const std::string GUID)
+        const std::string &GUID)
         : model_type_(model_type)
     , change_type_(change_type)
     , model_id_(model_id)

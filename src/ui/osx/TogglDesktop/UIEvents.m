@@ -9,7 +9,6 @@
 #import "UIEvents.h"
 
 NSString *const kCommandNew = @"New";
-NSString *const kCommandNewShortcut = @"NewShortcut";
 NSString *const kCommandStop = @"Stop";
 NSString *const kCommandContinue = @"Continue";
 

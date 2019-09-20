@@ -86,7 +86,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'StoreRelease|x64'">
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <OutputPath>bin\x64\StoreRelease\</OutputPath>
-    <DefineConstants>TRACE;TOGGL_PRODUCTION_BUILD</DefineConstants>
+    <DefineConstants>TRACE;TOGGL_PRODUCTION_BUILD;MS_STORE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>x64</PlatformTarget>
@@ -97,7 +97,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'StoreRelease|x86'">
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <OutputPath>bin\x86\StoreRelease\</OutputPath>
-    <DefineConstants>TRACE;TOGGL_PRODUCTION_BUILD</DefineConstants>
+    <DefineConstants>TRACE;TOGGL_PRODUCTION_BUILD;MS_STORE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>x86</PlatformTarget>
@@ -109,7 +109,7 @@
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\x64\StoreDebug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>DEBUG;TRACE;MS_STORE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x64</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
@@ -120,7 +120,7 @@
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\x86\StoreDebug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>DEBUG;TRACE;MS_STORE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
@@ -135,11 +135,14 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.WebRequest" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
@@ -174,8 +177,10 @@
     <Compile Include="AutoCompletion\Implementation\TimerItem.cs" />
     <Compile Include="AutoCompletion\Implementation\WorkspaceCategory.cs" />
     <Compile Include="AutoCompletion\ListBoxItem.cs" />
+    <Compile Include="BugsnagService.cs" />
     <Compile Include="Diagnostics\IPerformanceToken.cs" />
     <Compile Include="Diagnostics\Performance.cs" />
+    <Compile Include="SingleInstanceManager.cs" />
     <Compile Include="ui\AutoCompleteControls\ProjectCategory.xaml.cs">
       <DependentUpon>ProjectCategory.xaml</DependentUpon>
     </Compile>
@@ -225,6 +230,7 @@
     <Compile Include="ui\Experiments\ExperimentParameters.cs" />
     <Compile Include="ui\KeyboardShortcuts.cs" />
     <Compile Include="ui\Experiments\implementations\ExperimentHacks.cs" />
+    <Compile Include="ui\NotificationExtensions.cs" />
     <Compile Include="ui\Theme.cs" />
     <Compile Include="ui\ThemeResourceDictionary.cs" />
     <Compile Include="ui\ThemeTypes.cs" />

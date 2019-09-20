@@ -30,9 +30,14 @@ namespace TogglDesktop
 
             this.RemoveFromParent();
 
-            this.icon.ShowCustomBalloon(this, PopupAnimation.Slide, null);
-
-            System.Media.SystemSounds.Asterisk.Play();
+            if (!icon.ShowNotification(this, PopupAnimation.Slide, null))
+            {
+                icon.ShowBalloonTip(title, informativetext, Properties.Resources.toggl, largeIcon: true);
+            }
+            else
+            {
+                System.Media.SystemSounds.Asterisk.Play();
+            }
         }
 
         private void onDisplayPomodoroBreak(string title, string informativetext)
@@ -45,9 +50,14 @@ namespace TogglDesktop
 
             this.RemoveFromParent();
 
-            this.icon.ShowCustomBalloon(this, PopupAnimation.Slide, null);
-
-            System.Media.SystemSounds.Asterisk.Play();
+            if (!icon.ShowNotification(this, PopupAnimation.Slide, null))
+            {
+                icon.ShowBalloonTip(title, informativetext, Properties.Resources.toggl, largeIcon: true);
+            }
+            else
+            {
+                System.Media.SystemSounds.Asterisk.Play();
+            }
         }
 
         private void onNotificationMouseDown(object sender, MouseButtonEventArgs e)
