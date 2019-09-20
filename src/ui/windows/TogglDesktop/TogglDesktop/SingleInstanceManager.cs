@@ -23,7 +23,7 @@ namespace TogglDesktop
 
         protected override void OnStartupNextInstance(Microsoft.VisualBasic.ApplicationServices.StartupNextInstanceEventArgs e)
         {
-            app.MainWindow.ShowOnTop();
+            app.MainWindow?.ShowOnTop();
         }
     }
 }
