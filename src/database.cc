@@ -625,15 +625,6 @@ error Database::LoadProxySettings(
     return last_error("LoadProxySettings");
 }
 
-error Database::SetCompactMode(
-    const bool value) {
-    return setSettingsValue("compact_mode", value);
-}
-
-error Database::GetCompactMode(bool *result) {
-    return getSettingsValue("compact_mode", result);
-}
-
 error Database::SetMiniTimerVisible(
     const bool value) {
     return setSettingsValue("mini_timer_visible", value);

@@ -141,12 +141,6 @@ class Database {
     error LoadMigrations(
         std::vector<std::string> *);
 
-    error SetCompactMode(
-        const bool);
-
-    error GetCompactMode(
-        bool *);
-
     error SetMiniTimerVisible(
         const bool);
 
