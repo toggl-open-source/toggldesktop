@@ -64,27 +64,22 @@ static class UIExtensions
     public static void RemoveFromParent(this UIElement control)
     {
         var parent = VisualTreeHelper.GetParent(control);
-        if (parent == null)
-            return;
-
-        var parentAsPanel = parent as Panel;
-        if (parentAsPanel != null)
+        switch (parent)
         {
-            parentAsPanel.Children.Remove(control);
-            return;
-        }
-
-        var parentAsContentControl = parent as ContentControl;
-        if (parentAsContentControl != null)
-        {
-            parentAsContentControl.Content = null;
-            return;
-        }
-
-        var parentAsDecorator = parent as Decorator;
-        if (parentAsDecorator != null)
-        {
-            parentAsDecorator.Child = null;
+            case null:
+                return;
+            case Panel parentAsPanel:
+                parentAsPanel.Children.Remove(control);
+                return;
+            case Popup parentAsPopup:
+                parentAsPopup.Child = null;
+                return;
+            case ContentControl parentAsContentControl:
+                parentAsContentControl.Content = null;
+                return;
+            case Decorator parentAsDecorator:
+                parentAsDecorator.Child = null;
+                break;
         }
     }
 
