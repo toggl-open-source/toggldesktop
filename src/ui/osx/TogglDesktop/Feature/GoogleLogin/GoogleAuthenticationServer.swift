@@ -20,7 +20,7 @@ final class GoogleAuthenticationServer {
         static let ClientSecret = "6IHWKIfTAMF7cPJsBvoGxYui"
         static let RedirectURI = "com.googleusercontent.apps.426090949585-uj7lka2mtanjgd7j9i6c4ik091rcv6n5:/oauthredirect"
         static let TogglAuthorizerKey = "toggldesktop-authorization"
-        static let Scopes = [OIDScopeOpenID, OIDScopeProfile, OIDScopeEmail]
+        static let Scopes = [OIDScopeProfile, OIDScopeEmail]
     }
 
     enum GoogleError: Error, LocalizedError {
