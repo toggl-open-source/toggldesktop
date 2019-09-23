@@ -23,12 +23,27 @@ final class GoogleAuthenticationServer {
         static let Scopes = [OIDScopeOpenID, OIDScopeProfile, OIDScopeEmail]
     }
 
-    enum GoogleError: Error {
+    enum GoogleError: Error, LocalizedError {
         case invalidIssuerURL
         case invalidRedirectURL
         case missingConfig
         case missingAccessToken
         case custom(Error?)
+
+        var errorDescription: String? {
+            switch self {
+            case .invalidIssuerURL:
+                return "Invalid issuer URL"
+            case .invalidRedirectURL:
+                return "Invalid Redirect URL"
+            case .missingConfig:
+                return "Missing config from Google"
+            case .missingAccessToken:
+                return "Missing Access Token"
+            case .custom(let error):
+                return "\(String(describing: error))"
+            }
+        }
     }
 
     struct GoogleUser {
