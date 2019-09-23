@@ -10,7 +10,7 @@ pocodir=third_party/poco
 openssldir=third_party/openssl
 jsoncppdir=third_party/jsoncpp/dist
 pocoversion=$(shell cat third_party/poco/libversion)
-
+macosdir=src/ui/osx
 GTEST_ROOT=third_party/googletest-read-only
 
 source_dirs=src/*.cc src/*.h src/test/*.cc src/test/*.h \
@@ -188,7 +188,7 @@ init_submodule:
 	cd $(rootdir) && git submodule update --init --recursive
 
 init_cocoapod:
-	pod install --project-directory=./src/ui/osx
+	cd $(macosdir) && bundle install && bundle exec pod install && cd $(rootdir)
 
 lua:
 	cd third_party/lua && make  $(LEGACYMACOSSDK) macosx && make $(LEGACYMACOSSDK) local
