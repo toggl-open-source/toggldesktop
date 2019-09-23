@@ -24,7 +24,8 @@ namespace view {
 class TimeEntry {
  public:
     TimeEntry()
-        : DurationInSeconds(0)
+    : Next(nullptr)
+    , DurationInSeconds(0)
     , Description("")
     , ProjectAndTaskLabel("")
     , TaskLabel("")
@@ -59,6 +60,7 @@ class TimeEntry {
     , GroupDuration("")
     , GroupItemCount(0) {}
 
+    toggl::view::TimeEntry *Next;
     int64_t DurationInSeconds;
     std::string Description;
     std::string ProjectAndTaskLabel;
@@ -107,7 +109,8 @@ class TimeEntry {
 class Autocomplete {
  public:
     Autocomplete()
-        : Text("")
+    : Next(nullptr)
+    , Text("")
     , Description("")
     , ProjectAndTaskLabel("")
     , TaskLabel("")
@@ -157,6 +160,7 @@ class Autocomplete {
         return ss.str();
     }
 
+    toggl::view::Autocomplete *Next;
     // This is what is displayed to user, includes project and task.
     std::string Text;
     // This is copied to "time_entry.description" field if item is selected
@@ -185,13 +189,15 @@ class Autocomplete {
 class Generic {
  public:
     Generic()
-        : ID(0)
+    : Next(nullptr)
+    , ID(0)
     , WID(0)
     , GUID("")
     , Name("")
     , WorkspaceName("")
     , Premium(false) {}
 
+    toggl::view::Generic *Next;
     uint64_t ID;
     uint64_t WID;
     std::string GUID;
@@ -279,10 +285,12 @@ class Settings {
 class AutotrackerRule {
  public:
     AutotrackerRule()
-        : ID(0)
+    : Next(nullptr)
+    , ID(0)
     , Term("")
     , ProjectName("") {}
 
+    toggl::view::AutotrackerRule *Next;
     int64_t ID;
     std::string Term;
     std::string ProjectName;
@@ -293,13 +301,15 @@ class AutotrackerRule {
 class TimelineEvent {
  public:
     TimelineEvent()
-        : ID(0)
+    : Next(nullptr)
+    , ID(0)
     , Title("")
     , Filename("")
     , StartTime(0)
     , EndTime(0)
     , Idle(false) {}
 
+    toggl::view::TimelineEvent *Next;
     int64_t ID;
     std::string Title;
     std::string Filename;
@@ -313,13 +323,15 @@ class TimelineEvent {
 class Country {
  public:
     Country()
-        : ID(0)
+    : Next(nullptr)
+    , ID(0)
     , Name("")
     , VatApplicable(false)
     , VatRegex("")
     , VatPercentage("")
     , Code("") {}
 
+    toggl::view::Country *Next;
     uint64_t ID;
     std::string Name;
     bool VatApplicable;

@@ -144,40 +144,6 @@ class GUI : public SyncStateMonitor {
     Context *context_;
     TogglCallbacks callbacks_;
 
-    /*
-    TogglDisplayApp on_display_app_;
-    TogglDisplayError on_display_error_;
-    TogglDisplayOverlay on_display_overlay_;
-    TogglDisplayOnlineState on_display_online_state_;
-    TogglDisplayLogin on_display_login_;
-    TogglDisplayURL on_display_url_;
-    TogglDisplayReminder on_display_reminder_;
-    TogglDisplayPomodoro on_display_pomodoro_;
-    TogglDisplayPomodoroBreak on_display_pomodoro_break_;
-    TogglDisplayTimeEntryList on_display_time_entry_list_;
-    TogglDisplayAutocomplete on_display_time_entry_autocomplete_;
-    TogglDisplayAutocomplete on_display_project_autocomplete_;
-    TogglDisplayViewItems on_display_workspace_select_;
-    TogglDisplayViewItems on_display_client_select_;
-    TogglDisplayViewItems on_display_tags_;
-    TogglDisplayTimeEntryEditor on_display_time_entry_editor_;
-    TogglDisplaySettings on_display_settings_;
-    TogglDisplayTimerState on_display_timer_state_;
-    TogglDisplayIdleNotification on_display_idle_notification_;
-    TogglDisplayAutocomplete on_display_mini_timer_autocomplete_;
-    TogglDisplaySyncState on_display_sync_state_;
-    TogglDisplayUnsyncedItems on_display_unsynced_items_;
-    TogglDisplayUpdate on_display_update_;
-    TogglDisplayUpdateDownloadState on_display_update_download_state_;
-    TogglDisplayAutotrackerRules on_display_autotracker_rules_;
-    TogglDisplayAutotrackerNotification on_display_autotracker_notification_;
-    TogglDisplayPromotion on_display_promotion_;
-    TogglDisplayHelpArticles on_display_help_articles_;
-    TogglDisplayProjectColors on_display_project_colors_;
-    TogglDisplayCountries on_display_countries_;
-    TogglDisplayObmExperiment on_display_obm_experiment_;
-    */
-
     // Cached views
     Poco::Int64 lastSyncState;
     Poco::Int64 lastUnsyncedItemsCount;

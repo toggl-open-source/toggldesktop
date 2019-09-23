@@ -179,13 +179,15 @@ public:
 
     const std::string &checkViewStructSize(int32_t timeEntryViewItemSize, int32_t autocompleteViewItemSize, int32_t viewItemSize, int32_t settingsSize, int32_t autotrackerViewItemSize);
 
-private:
+    ////////////// not a part of the API //////////////
     Poco::Logger &logger() const;
     error displayError(const error &err);
     GUI *UI();
     Database *DB();
+    TogglClient *httpsClient();
 
     UserData *user();
+private:
     void setUser(UserData *user, bool logged_in = false);
 
     std::string appName_;

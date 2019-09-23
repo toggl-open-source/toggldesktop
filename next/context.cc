@@ -168,29 +168,29 @@ bool Context::login(const std::string &email, const std::string &password) {
 
         err = SetLoggedInUserFromJSON(json);
         if (err != noError) {
-            return displayError(err);
+            return displayError(err) == noError;
         }
 
         err = pullWorkspacePreferences(&client);
         if (err != noError) {
-            return displayError(err);
+            return displayError(err) == noError;
         }
 
         err = pullUserPreferences(&client);
         if (err != noError) {
-            return displayError(err);
+            return displayError(err) == noError;
         }
 
         {
             Poco::Mutex::ScopedLock lock(user_m_);
             if (!user_) {
                 logger().error("cannot enable offline login, no user");
-                return noError;
+                return true;
             }
 
             err = user_->EnableOfflineLogin(password);
             if (err != noError) {
-                return displayError(err);
+                return displayError(err) == noError;
             }
         }
         overlay_visible_ = false;
@@ -873,6 +873,10 @@ error Context::displayError(const error &err) {
     }
 
     return UI()->DisplayError(err);
+}
+
+TogglClient *Context::httpsClient() {
+    return https_client_;
 }
 
 

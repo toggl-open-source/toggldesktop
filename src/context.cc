@@ -216,44 +216,6 @@ void Context::Shutdown() {
     Poco::ThreadPool::defaultPool().stopAll();
 }
 
-error Context::save(const bool push_changes) {
-    logger().debug("save");
-    try {
-        std::vector<ModelChange> changes;
-
-        {
-            Poco::Mutex::ScopedLock lock(user_m_);
-            error err = db()->SaveUser(user_, true, &changes);
-            if (err != noError) {
-                return err;
-            }
-        }
-
-        UIElements render;
-        render.display_unsynced_items = true;
-        render.display_timer_state = true;
-        render.ApplyChanges(time_entry_editor_guid_, changes);
-        updateUI(render);
-
-        if (push_changes) {
-            logger().debug("onPushChanges executing");
-
-            // Always sync asyncronously with syncerActivity
-            trigger_push_ = true;
-            if (!syncer_.isRunning()) {
-                syncer_.start();
-            }
-        }
-    } catch(const Poco::Exception& exc) {
-        return exc.displayText();
-    } catch(const std::exception& ex) {
-        return ex.what();
-    } catch(const std::string& ex) {
-        return ex;
-    }
-    return noError;
-}
-
 Poco::Timestamp Context::postpone(
     const Poco::Timestamp::TimeDiff throttleMicros) const {
     return Poco::Timestamp() + throttleMicros;
@@ -3732,29 +3694,6 @@ void Context::SetLogPath(const std::string path) {
 
 Poco::Logger &Context::logger() const {
     return Poco::Logger::get("context");
-}
-
-
-error Context::updateEntryProjects(
-    std::vector<Project *> projects,
-    std::vector<TimeEntry *> time_entries) {
-    for (std::vector<TimeEntry *>::const_iterator it =
-        time_entries.begin();
-            it != time_entries.end(); it++) {
-        if (!(*it)->PID() && !(*it)->ProjectGUID().empty()) {
-            // Find project id
-            for (std::vector<Project *>::const_iterator itc =
-                projects.begin();
-                    itc != projects.end(); itc++) {
-                if ((*itc)->GUID().compare((*it)->ProjectGUID()) == 0) {
-                    (*it)->SetPID((*itc)->ID());
-                    break;
-                }
-            }
-        }
-    }
-
-    return noError;
 }
 
 
