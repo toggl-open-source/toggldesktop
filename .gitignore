@@ -13,6 +13,9 @@
 *.la
 *.a
 
+# Pod macOS
+src/ui/osx/Pods/
+
 tmp/*
 build/*
 src/lib/osx/build

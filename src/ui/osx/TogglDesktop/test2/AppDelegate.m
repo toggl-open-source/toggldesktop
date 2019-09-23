@@ -36,6 +36,7 @@
 #import "AppIconFactory.h"
 #import <MASShortcut/Shortcut.h>
 #import "Reachability.h"
+#import <AppAuth/AppAuth.h>
 
 @interface AppDelegate ()
 @property (nonatomic, strong) MainWindowController *mainWindowController;
@@ -315,6 +316,9 @@ void *ctx;
 	}
 
 	[self hideConsoleMenuIfNeed];
+
+	// Setup Google Service Callback
+	[self registerGoogleEventHandler];
 }
 
 - (void)systemWillPowerOff:(NSNotification *)aNotification
@@ -1837,6 +1841,27 @@ void on_countries(TogglCountryView *first)
 #else
 	[self.consoleMenuItem setHidden:YES];
 #endif
+}
+
+#pragma mark - Google Authentication
+
+- (void)registerGoogleEventHandler
+{
+	NSAppleEventManager *appleEventManager = [NSAppleEventManager sharedAppleEventManager];
+
+	[appleEventManager setEventHandler:self
+						   andSelector:@selector(handleGetURLEvent:withReplyEvent:)
+						 forEventClass:kInternetEventClass
+							andEventID:kAEGetURL];
+}
+
+- (void)handleGetURLEvent:(NSAppleEventDescriptor *)event
+		   withReplyEvent:(NSAppleEventDescriptor *)replyEvent
+{
+	NSString *URLString = [[event paramDescriptorForKeyword:keyDirectObject] stringValue];
+	NSURL *URL = [NSURL URLWithString:URLString];
+
+	[_currentAuthorizationFlow resumeExternalUserAgentFlowWithURL:URL];
 }
 
 @end

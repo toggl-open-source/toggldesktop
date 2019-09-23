@@ -99,9 +99,13 @@ $ make uitest
 ### Build
 - Build dependencies
 ```bash
+# Get cocoapod
+$ sudo gem install cocoapods
+
+# Build all dependencies
 $ make deps
 ```
-- Open `src/ui/osx/TogglDesktop/TogglDesktop.xcodeproj`
+- Open workspace at `src/ui/osx/TogglDesktop.xcworkspace`
 - Select TogglDesktop scheme and build.
 
 ## Linux
