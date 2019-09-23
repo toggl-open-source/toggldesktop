@@ -122,7 +122,7 @@
                                         <userDefinedRuntimeAttribute type="color" keyPath="bgColor">
                                             <color key="value" name="green-color"/>
                                         </userDefinedRuntimeAttribute>
-                                        <userDefinedRuntimeAttribute type="color" keyPath="textColor">
+                                        <userDefinedRuntimeAttribute type="color" keyPath="titleColor">
                                             <color key="value" name="login-button-foreground"/>
                                         </userDefinedRuntimeAttribute>
                                         <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">

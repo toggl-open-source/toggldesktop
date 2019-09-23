@@ -14,7 +14,7 @@ class FlatButton: NSButton {
 
     // MARK: IBInspectable
     @IBInspectable var bgColor: NSColor?
-    @IBInspectable var textColor: NSColor?
+    @IBInspectable var titleColor: NSColor?
     @IBInspectable var selectedTextColor: NSColor?
     @IBInspectable var cornerRadius: CGFloat = 0 {
         didSet {
@@ -49,11 +49,11 @@ class FlatButton: NSButton {
     }
 
     private func drawTextColor() {
-        if let textColor = textColor, let font = font {
+        if let titleColor = titleColor, let font = font {
             let style = NSMutableParagraphStyle()
             style.alignment = .center
-            let selectedColor = self.selectedTextColor ?? textColor
-            let drawTextColor = isSelected ? selectedColor : textColor
+            let selectedColor = self.selectedTextColor ?? titleColor
+            let drawTextColor = isSelected ? selectedColor : titleColor
             let attributes: [NSAttributedString.Key: Any] = [
                 NSAttributedString.Key.foregroundColor: drawTextColor,
                 NSAttributedString.Key.font: font,

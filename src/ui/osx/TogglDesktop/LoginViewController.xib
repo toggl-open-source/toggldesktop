@@ -205,7 +205,7 @@
                                                                 <font key="font" metaFont="cellTitle"/>
                                                             </buttonCell>
                                                             <userDefinedRuntimeAttributes>
-                                                                <userDefinedRuntimeAttribute type="color" keyPath="textColor">
+                                                                <userDefinedRuntimeAttribute type="color" keyPath="titleColor">
                                                                     <color key="value" name="login-text-color"/>
                                                                 </userDefinedRuntimeAttribute>
                                                             </userDefinedRuntimeAttributes>
@@ -226,7 +226,7 @@
                                                                 <userDefinedRuntimeAttribute type="color" keyPath="bgColor">
                                                                     <color key="value" name="login-button-background"/>
                                                                 </userDefinedRuntimeAttribute>
-                                                                <userDefinedRuntimeAttribute type="color" keyPath="textColor">
+                                                                <userDefinedRuntimeAttribute type="color" keyPath="titleColor">
                                                                     <color key="value" name="login-button-foreground"/>
                                                                 </userDefinedRuntimeAttribute>
                                                                 <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">

@@ -74,7 +74,7 @@
                                         <userDefinedRuntimeAttribute type="color" keyPath="selectedTextColor">
                                             <color key="value" name="labelColor" catalog="System" colorSpace="catalog"/>
                                         </userDefinedRuntimeAttribute>
-                                        <userDefinedRuntimeAttribute type="color" keyPath="textColor">
+                                        <userDefinedRuntimeAttribute type="color" keyPath="titleColor">
                                             <color key="value" name="tab-view-text-color"/>
                                         </userDefinedRuntimeAttribute>
                                     </userDefinedRuntimeAttributes>
@@ -95,7 +95,7 @@
                                         <font key="font" metaFont="system" size="14"/>
                                     </buttonCell>
                                     <userDefinedRuntimeAttributes>
-                                        <userDefinedRuntimeAttribute type="color" keyPath="textColor">
+                                        <userDefinedRuntimeAttribute type="color" keyPath="titleColor">
                                             <color key="value" name="tab-view-text-color"/>
                                         </userDefinedRuntimeAttribute>
                                         <userDefinedRuntimeAttribute type="color" keyPath="selectedTextColor">

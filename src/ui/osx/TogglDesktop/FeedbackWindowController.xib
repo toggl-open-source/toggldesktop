@@ -106,7 +106,7 @@
                             <font key="font" metaFont="system"/>
                         </buttonCell>
                         <userDefinedRuntimeAttributes>
-                            <userDefinedRuntimeAttribute type="color" keyPath="textColor">
+                            <userDefinedRuntimeAttribute type="color" keyPath="titleColor">
                                 <color key="value" name="black-text-color"/>
                             </userDefinedRuntimeAttribute>
                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -131,7 +131,7 @@
                             <userDefinedRuntimeAttribute type="color" keyPath="bgColor">
                                 <color key="value" name="green-color"/>
                             </userDefinedRuntimeAttribute>
-                            <userDefinedRuntimeAttribute type="color" keyPath="textColor">
+                            <userDefinedRuntimeAttribute type="color" keyPath="titleColor">
                                 <color key="value" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </userDefinedRuntimeAttribute>
                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
