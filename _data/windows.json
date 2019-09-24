@@ -1,6 +1,16 @@
 {
     "versions": [
         {
+            "version": "7.4.1015",
+            "rows": [
+                "Fixed crashes when having huge amount of tags",
+                "Fixed rare crashes when trying to open multiple instances of the application"
+            ],
+            "date": "September 24th 2019",
+            "beta": "true",
+            "has64bit": "true"
+        },
+        {
             "version": "7.4.1003",
             "rows": [
                 "Added Signup with Google",
