@@ -16,6 +16,10 @@ class PullActivity {
 public:
     PullActivity(Context *context);
 
+    error login(const std::string &email, const std::string &password);
+
+    error me(TogglClient *toggl_client, const std::string email, const std::string password, std::string *user_data_json, const Poco::Int64 since);
+
     error pullWorkspacePreferences(TogglClient* toggl_client);
     error pullWorkspacePreferences(TogglClient* toggl_client, Workspace* workspace, std::string* json);
     error pullUserPreferences(TogglClient* toggl_client);
@@ -27,7 +31,7 @@ private:
     Poco::Logger &logger() const;
     UserData *user();
     GUI *UI();
-    HTTPSClient *httpsClient();
+    TogglClient *httpsClient();
 
     Context *context_;
 

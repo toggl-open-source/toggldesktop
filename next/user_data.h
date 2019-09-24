@@ -40,8 +40,7 @@ public:
     ProtectedModel<ObmAction> ObmActions;
     ProtectedModel<ObmExperiment> ObmExperiments;
 
-    bool CanSeeBillable(
-        const Workspace *ws) const;
+    bool CanSeeBillable(locked<Workspace> &ws) const;
 
     //RelatedData related;
 
@@ -187,7 +186,7 @@ public:
 
     std::vector<TimeEntry *> VisibleTimeEntries() const;
 
-    Poco::Int64 TotalDurationForDate(const TimeEntry *match) const;
+    Poco::Int64 TotalDurationForDate(locked<TimeEntry> &match) const;
 
     TimeEntry *LatestTimeEntry() const;
 
@@ -220,7 +219,7 @@ public:
 
     locked<std::vector<Client *> > ClientList();
 
-    void ProjectLabelAndColorCode(TimeEntry * const te, view::TimeEntry *view) const;
+    void ProjectLabelAndColorCode(locked<TimeEntry> &te, view::TimeEntry *view) const;
 
     locked<const Client> clientByProject(const Project *p) const;
     locked<Client> clientByProject(locked<Project> &p);
@@ -232,14 +231,16 @@ public:
 
     error SetAPITokenFromOfflineData(const std::string password);
 
-    bool isTimeEntryLocked(TimeEntry* te);
+    bool canChangeStartTimeTo(locked<TimeEntry> &te, time_t t);
 
-    bool canChangeStartTimeTo(TimeEntry* te, time_t t);
-
-    bool canChangeProjectTo(TimeEntry* te, Project* p);
+    bool canChangeProjectTo(locked<TimeEntry> &te, Project* p);
 
     bool isTimeLockedInWorkspace(time_t t, locked<Workspace> &ws);
 
+    bool isTimeEntryLocked(locked<TimeEntry> &te);
+    bool isTimeEntryLocked(TimeEntry *te);
+    bool canChangeStartTimeTo(TimeEntry *te, time_t t);
+    bool canChangeProjectTo(TimeEntry *te, Project *p);
 
 
     template <typename T>

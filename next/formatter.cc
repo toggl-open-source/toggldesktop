@@ -67,6 +67,30 @@ std::string Formatter::JoinTaskName(locked<const Task> &t,
     return ss.str();
 }
 
+std::string Formatter::JoinTaskName(locked<Task> &t, locked<Project> &p) {
+    std::stringstream ss;
+    bool empty = true;
+    if (t) {
+        ss << t->Name();
+        empty = false;
+    }
+    if (p) {
+        if (!empty) {
+            ss << ". ";
+        }
+        ss << p->Name();
+        empty = false;
+        if (p->CID()) {
+            if (!empty) {
+                ss << ". ";
+            }
+            ss << p->ClientName();
+        }
+    }
+
+    return ss.str();
+}
+
 std::string Formatter::FormatTimeForTimeEntryEditor(time_t date) {
     if (!date) {
         return "";

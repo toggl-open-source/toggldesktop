@@ -6,6 +6,7 @@
 #include "urls.h"
 #include "database.h"
 #include "views.h"
+#include "analytics.h"
 
 #include <Poco/Environment.h>
 #include <Poco/Logger.h>
@@ -119,13 +120,15 @@ bool Context::uiStart() {
         logger().debug("fullSyncOnAppStart");
 
 
-        gui_update_->reset();
+        // OVERHAUL TODO
+        //gui_update_->reset();
 
         if (production_) {
             std::string update_channel("");
-            UpdateChannel(&update_channel);
+            // OVERHAUL TODO
+            //UpdateChannel(&update_channel);
 
-            analytics_.TrackChannel(db_->AnalyticsClientID(), update_channel);
+            analytics_->TrackChannel(database_->AnalyticsClientID(), update_channel);
 
             // Track user os version
             std::stringstream os_info;
@@ -133,8 +136,8 @@ bool Context::uiStart() {
                     << "_" << Poco::Environment::osVersion()
                     << "_" << Poco::Environment::osArchitecture();
 
-            analytics_.TrackOs(db_->AnalyticsClientID(), os_info.str());
-            analytics_.TrackOSDetails(db_->AnalyticsClientID());
+            analytics_->TrackOs(database_->AnalyticsClientID(), os_info.str());
+            analytics_->TrackOSDetails(database_->AnalyticsClientID());
         }
 
     } catch(const Poco::Exception& exc) {
@@ -148,66 +151,16 @@ bool Context::uiStart() {
 }
 
 bool Context::login(const std::string &email, const std::string &password) {
-    try {
-        std::string json("");
-        error err = me(&client, email, password, &json, 0);
-        if (err != noError) {
-            if (!IsNetworkingError(err)) {
-                return displayError(err);
-            }
-            // Indicate we're offline
-            displayError(err);
-
-            std::stringstream ss;
-            ss << "Got networking error " << err
-               << " will attempt offline login";
-            logger().debug(ss.str());
-
-            return displayError(attemptOfflineLogin(email, password));
-        }
-
-        err = SetLoggedInUserFromJSON(json);
-        if (err != noError) {
-            return displayError(err) == noError;
-        }
-
-        err = pullWorkspacePreferences(&client);
-        if (err != noError) {
-            return displayError(err) == noError;
-        }
-
-        err = pullUserPreferences(&client);
-        if (err != noError) {
-            return displayError(err) == noError;
-        }
-
-        {
-            Poco::Mutex::ScopedLock lock(user_m_);
-            if (!user_) {
-                logger().error("cannot enable offline login, no user");
-                return true;
-            }
-
-            err = user_->EnableOfflineLogin(password);
-            if (err != noError) {
-                return displayError(err) == noError;
-            }
-        }
-        overlay_visible_ = false;
-        return displayError(save(false));
-    } catch(const Poco::Exception& exc) {
-        return displayError(exc.displayText());
-    } catch(const std::exception& ex) {
-        return displayError(ex.what());
-    } catch(const std::string& ex) {
-        return displayError(ex);
-    }
+    /*
+     OVERHAUL TODO
+     pull_activity_->login(email, password);
+     */
 }
 
 bool Context::signup(const std::string &email, const std::string &password, uint64_t countryId) {
     std::string json("");
     // OVERHAUL TODO: no lambda
-    error err = [&]() {
+    error err = [&]() -> error {
         if (email.empty()) {
             return "Empty email";
         }
@@ -217,16 +170,17 @@ bool Context::signup(const std::string &email, const std::string &password, uint
         }
 
         try {
+            /*
             poco_check_ptr(user_data_json);
             poco_check_ptr(toggl_client);
+            */
 
             Json::Value user;
             user["email"] = email;
             user["password"] = password;
-            user["created_with"] = Formatter::EscapeJSONString(
-                HTTPSClient::Config.UserAgent());
+            user["created_with"] = Formatter::EscapeJSONString(https_client_->Config().UserAgent());
             user["tos_accepted"] = true;
-            user["country_id"] = Json::UInt64(country_id);
+            user["country_id"] = Json::UInt64(countryId);
 
             Json::Value ws;
             ws["initial_pricing_plan"] = 0;
@@ -237,7 +191,7 @@ bool Context::signup(const std::string &email, const std::string &password, uint
             req.relative_url = "/api/v9/signup";
             req.payload = Json::StyledWriter().write(user);
 
-            HTTPSResponse resp = toggl_client->Post(req);
+            HTTPSResponse resp = https_client_->Post(req);
             if (resp.err != noError) {
                 if (kBadRequestError == resp.err) {
                     return resp.body;
@@ -245,7 +199,7 @@ bool Context::signup(const std::string &email, const std::string &password, uint
                 return resp.err;
             }
 
-            *user_data_json = resp.body;
+            //*user_data_json = resp.body;
         } catch(const Poco::Exception& exc) {
             return exc.displayText();
         } catch(const std::exception& ex) {
@@ -256,10 +210,10 @@ bool Context::signup(const std::string &email, const std::string &password, uint
     } ();
 
     if (err != noError) {
-        return displayError(err);
+        return displayError(err) == noError;
     }
 
-    return Login(email, password);
+    return login(email, password);
 }
 
 bool Context::googleLogin(const std::string &accessToken) {
@@ -286,7 +240,8 @@ bool Context::acceptTos() {
     std::string api_token = user()->APIToken();
 
     if (api_token.empty()) {
-        return error("cannot pull user data without API token");
+        return false;
+        // return error("cannot pull user data without API token");
     }
 
     try {
@@ -298,21 +253,27 @@ bool Context::acceptTos() {
 
         HTTPSResponse resp = https_client_->Post(req);
         if (resp.err != noError) {
-            return displayError(resp.err);
+            return false;
+            //return displayError(resp.err);
         }
-        overlay_visible_ = false;
-        OpenTimeEntryList();
+        // OVERHAUL TODO
+        // overlay_visible_ = false;
+        // OpenTimeEntryList();
     } catch(const Poco::Exception& exc) {
         displayError(kCannotConnectError);
-        return exc.displayText();
+        //return exc.displayText();
+        return false;
     } catch(const std::exception& ex) {
         displayError(kCannotConnectError);
-        return ex.what();
+        //return ex.what();
+        return false;
     } catch(const std::string& ex) {
         displayError(kCannotConnectError);
-        return ex;
+        //return ex;
+        return false;
     }
-    return noError;
+    //return noError;
+    return true;
 }
 
 void Context::getSupport(int32_t type) {
@@ -615,7 +576,7 @@ void Context::getCountries() {
         std::vector<TogglCountryView> countries;
 
         for (unsigned int i = root.size(); i > 0; i--) {
-            TogglCountryView *item = country_view_item_init(root[i - 1]);
+            TogglCountryView *item = view::country_view_item_init(root[i - 1]);
             countries.push_back(*item);
         }
 
@@ -693,7 +654,7 @@ void Context::fullsync() {
     if (user_) {
         user_->SetSince(0);
     }
-    Sync();
+    sync();
 }
 
 bool Context::timelineToggleRecording(bool recordTimeline) {
@@ -887,4 +848,12 @@ UserData *Context::user() {
 
 void Context::setUser(UserData *user, bool logged_in) {
 
+}
+
+Database *Context::DB() {
+    return database_;
+}
+
+GUI *Context::UI() {
+    return gui_;
 }

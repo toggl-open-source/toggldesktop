@@ -47,20 +47,24 @@ error PushActivity::save(bool push_changes) {
             return err;
         }
 
+        /* OVERHAUL TODO
         UIElements render;
         render.display_unsynced_items = true;
         render.display_timer_state = true;
         render.ApplyChanges(time_entry_editor_guid_, changes);
         updateUI(render);
+        */
 
         if (push_changes) {
             logger().debug("onPushChanges executing");
 
             // Always sync asyncronously with syncerActivity
+            /* OVERHAUL TODO
             trigger_push_ = true;
             if (!syncer_.isRunning()) {
                 syncer_.start();
             }
+            */
         }
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
@@ -183,9 +187,11 @@ error PushActivity::pushChanges(TogglClient *toggl_client, bool *had_something_t
                 // Hide load more button when offline
                 user()->ConfirmLoadedMore();
                 // Reload list to show unsynced icons in items
+                /* OVERHAUL TODO
                 UIElements render;
                 render.display_time_entries = true;
                 updateUI(render);
+                */
                 return err;
             }
 
@@ -230,7 +236,8 @@ error PushActivity::pushClients(std::vector<Client *> clients, std::string api_t
         if (resp.err != noError) {
             // if we're able to solve the error
             if ((*it)->ResolveError(resp.body)) {
-                displayError(save(false));
+                // OVERHAUL TODO
+                // displayError(save(false));
             }
             continue;
         }
@@ -283,7 +290,8 @@ error PushActivity::pushProjects(std::vector<Project *> projects, std::vector<Cl
         if (resp.err != noError) {
             // if we're able to solve the error
             if ((*it)->ResolveError(resp.body)) {
-                displayError(save(false));
+                // OVERHAUL TODO
+                // displayError(save(false));
             }
             continue;
         }
@@ -346,7 +354,8 @@ error PushActivity::pushEntries(std::map<std::string, BaseModel *>, std::vector<
         if (resp.err != noError) {
             // if we're able to solve the error
             if ((*it)->ResolveError(resp.body)) {
-                displayError(save(false));
+                // OVERHAUL TODO
+                // displayError(save(false));
             }
 
             // Not found on server. Probably deleted already.
@@ -365,7 +374,8 @@ error PushActivity::pushEntries(std::map<std::string, BaseModel *>, std::vector<
             offline = IsNetworkingError(resp.err);
 
             if (offline) {
-                trigger_sync_ = false;
+                // OVERHAUL TODO
+                // trigger_sync_ = false;
             }
 
             continue;

@@ -138,6 +138,8 @@ class GUI : public SyncStateMonitor {
 
     void resetFirstLaunch();
 
+    bool CanDisplayAutotrackerRules() const;
+
  private:
     error findMissingCallbacks();
 

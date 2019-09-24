@@ -1,32 +1,31 @@
 
-// Copyright 2015 Toggl Desktop developers
+#include "analytics.h"
+#include "model/settings.h"
+#include "https_client.h"
+#include "platforminfo.h"
+#include "rectangle.h"
 
-// Collect Toggl Desktop usage using Google Analytics Measurement Protocol
-// https://developers.google.com/analytics/devguides/collection/protocol/v1/
-// or using Toggl's own backend when appropriate.
-
-#include "../src/analytics.h"
-
-#include <sstream>
-
-#include <json/json.h>  // NOLINT
-
-#include "./https_client.h"
-
-#include "Poco/Logger.h"
+#include <Poco/Logger.h>
 
 namespace toggl {
 
+Analytics::Analytics()
+    : settings_sync_date(Poco::LocalDateTime() - Poco::Timespan(24 * Poco::Timespan::HOURS))
+{}
 
-void Analytics::Track(const std::string client_id,
-                      const std::string category,
-                      const std::string action) {
+
+
+void Analytics::Track(const std::string &client_id,
+                      const std::string &category,
+                      const std::string &action) {
+    /* OVERHAUL TODO
     start(new GoogleAnalyticsEvent(
         client_id, category, action, "", 1));
+    */
 }
 
-void Analytics::TrackChannel(const std::string client_id,
-                             const std::string channel) {
+void Analytics::TrackChannel(const std::string &client_id,
+                             const std::string &channel) {
     std::stringstream ss;
     ss << "channel-"
        << channel;
@@ -34,8 +33,8 @@ void Analytics::TrackChannel(const std::string client_id,
     Track(client_id, "channel", ss.str());
 }
 
-void Analytics::TrackOs(const std::string client_id,
-                        const std::string os) {
+void Analytics::TrackOs(const std::string &client_id,
+                        const std::string &os) {
     std::stringstream ss;
     ss << "os-"
        << os;
@@ -43,7 +42,7 @@ void Analytics::TrackOs(const std::string client_id,
     Track(client_id, "os", ss.str());
 }
 
-void Analytics::TrackOSDetails(const std::string client_id) {
+void Analytics::TrackOSDetails(const std::string &client_id) {
     std::stringstream ss;
 
     RetrieveOsDetails(ss);
@@ -51,46 +50,48 @@ void Analytics::TrackOSDetails(const std::string client_id) {
     Track(client_id, "osdetails", ss.str());
 }
 
-void Analytics::TrackWindowSize(const std::string client_id,
-                                const std::string os,
-                                const toggl::Rectangle rect) {
+void Analytics::TrackWindowSize(const std::string &client_id,
+                                const std::string &os,
+                                const toggl::Rectangle &rect) {
     TrackSize(client_id, os, "mainsize", rect);
 }
 
-void Analytics::TrackEditSize(const std::string client_id,
-                              const std::string os,
-                              const toggl::Rectangle rect) {
+void Analytics::TrackEditSize(const std::string &client_id,
+                              const std::string &os,
+                              const toggl::Rectangle &rect) {
     TrackSize(client_id, os, "editsize", rect);
 }
 
-void Analytics::TrackSize(const std::string client_id,
-                          const std::string os,
-                          const std::string name,
-                          const toggl::Rectangle rect) {
+void Analytics::TrackSize(const std::string &client_id,
+                          const std::string &os,
+                          const std::string &name,
+                          const toggl::Rectangle &rect) {
     std::stringstream ss;
     ss << os << "/" << name << "-" << rect.str();
 
     Track(client_id, "stats", ss.str());
 }
 
-void Analytics::TrackSettings(const std::string client_id,
-                              const bool record_timeline,
-                              const Settings settings,
-                              const bool use_proxy,
-                              const Proxy proxy) {
+void Analytics::TrackSettings(const std::string &client_id,
+                              bool record_timeline,
+                              const Settings &settings,
+                              bool use_proxy,
+                              const Proxy &proxy) {
     Poco::LocalDateTime now;
     if (now.year() != settings_sync_date.year()
             || now.month() != settings_sync_date.month()
             || now.day() != settings_sync_date.day()) {
         settings_sync_date = Poco::LocalDateTime();
+        /* OVERHAUL TODO
         start(new GoogleAnalyticsSettingsEvent(
             client_id, "settings", record_timeline,
             settings, use_proxy, proxy));
+        */
     }
 }
 
-void Analytics::TrackIdleDetectionClick(const std::string client_id,
-                                        const std::string button) {
+void Analytics::TrackIdleDetectionClick(const std::string &client_id,
+                                        const std::string &button) {
     std::stringstream ss;
     ss << "reminder/"
        << button;
@@ -98,7 +99,7 @@ void Analytics::TrackIdleDetectionClick(const std::string client_id,
     Track(client_id, "reminder", ss.str());
 }
 
-void Analytics::TrackAutocompleteUsage(const std::string client_id,
+void Analytics::TrackAutocompleteUsage(const std::string &client_id,
                                        const bool was_using_autocomplete) {
     std::stringstream ss;
     ss << "timer/autocomplete-";
@@ -292,4 +293,4 @@ void GoogleAnalyticsSettingsEvent::makeReq() {
     }
 }
 
-}  // namespace toggl
+} // namespace toggl

@@ -84,7 +84,7 @@ public:
     void renderUnsyncedItems(UserData *user);
     void renderAutotrackerRules(UserData *user);
 
-    error ToggleEntriesGroup(std::string name);
+    error ToggleEntriesGroup(UserData *user, std::string name);
 
     void OpenTimeEntryList(UserData *user);
 

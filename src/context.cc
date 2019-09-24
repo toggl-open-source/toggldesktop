@@ -3697,54 +3697,6 @@ Poco::Logger &Context::logger() const {
 }
 
 
-error Context::me(
-    TogglClient *toggl_client,
-    const std::string email,
-    const std::string password,
-    std::string *user_data_json,
-    const Poco::Int64 since) {
-
-    if (email.empty()) {
-        return "Empty email or API token";
-    }
-
-    if (password.empty()) {
-        return "Empty password";
-    }
-
-    try {
-        poco_check_ptr(user_data_json);
-        poco_check_ptr(toggl_client);
-
-        std::stringstream ss;
-        ss << "/api/v8/me"
-           << "?app_name=" << TogglClient::Config.AppName
-           << "&with_related_data=true";
-        if (since) {
-            ss << "&since=" << since;
-        }
-
-        HTTPSRequest req;
-        req.host = urls::API();
-        req.relative_url = ss.str();
-        req.basic_auth_username = email;
-        req.basic_auth_password = password;
-
-        HTTPSResponse resp = toggl_client->Get(req);
-        if (resp.err != noError) {
-            return resp.err;
-        }
-
-        *user_data_json = resp.body;
-    } catch(const Poco::Exception& exc) {
-        return exc.displayText();
-    } catch(const std::exception& ex) {
-        return ex.what();
-    } catch(const std::string& ex) {
-        return ex;
-    }
-    return noError;
-}
 
 error Context::logAndDisplayUserTriedEditingLockedEntry() {
     logger().warning("User tried editing locked time entry");

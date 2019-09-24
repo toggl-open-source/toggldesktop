@@ -31,6 +31,7 @@ set(LIBRARY_SOURCE_FILES
 
     util.cc
 
+    analytics.cc
     batch_update_result.cc
     database.cc
     formatter.cc

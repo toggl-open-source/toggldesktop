@@ -14,7 +14,7 @@ bool TimeEntry::operator == (const TimeEntry&) const {
     return false;
 }
 
-void TimeEntry::Fill(toggl::TimeEntry *model) {
+void TimeEntry::Fill(locked<toggl::TimeEntry> &model) {
     model->EnsureGUID();
     DurationInSeconds = model->DurationInSeconds();
     Description = model->Description();

@@ -101,7 +101,7 @@ class TimeEntry {
     std::string GroupDuration;
     uint64_t GroupItemCount;
 
-    void Fill(toggl::TimeEntry *model);
+    void Fill(locked<toggl::TimeEntry> &model);
 
     bool operator == (const TimeEntry& other) const;
 };
@@ -352,7 +352,7 @@ void autotracker_view_item_clear(TogglAutotrackerRuleView *view);
 void view_item_clear(TogglGenericView *item);
 void country_item_clear(TogglCountryView *item);
 TogglCountryView *country_list_init(std::vector<TogglCountryView> *items);
-TogglCountryView *country_view_item_init(const Json::Value v);
+TogglCountryView *country_view_item_init(const Json::Value &v);
 TogglTimeEntryView *time_entry_view_item_init(const toggl::view::TimeEntry &te);
 void time_entry_view_item_clear(TogglTimeEntryView *item);
 TogglSettingsView *settings_view_item_init(const bool record_timeline, const toggl::Settings &settings, const bool use_proxy, const toggl::Proxy &proxy);

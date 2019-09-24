@@ -20,6 +20,7 @@ class GUI;
 class GUIUpdate;
 class TogglClient;
 class Database;
+class Analytics;
 
 class Context {
 public:
@@ -205,6 +206,7 @@ private:
     GUIUpdate *gui_update_ { nullptr };
     TogglClient *https_client_ { nullptr };
     Database *database_ { nullptr };
+    Analytics *analytics_ { nullptr };
 };
 
 }

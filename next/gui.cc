@@ -158,6 +158,11 @@ void GUI::resetFirstLaunch() {
     isFirstLaunch = true;
 }
 
+bool GUI::CanDisplayAutotrackerRules() const {
+    // OVERHAUL TODO
+    return true;
+}
+
 error GUI::findMissingCallbacks() {
     if (!callbacks_.App) {
         return error("!on_display_app_");

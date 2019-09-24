@@ -390,6 +390,11 @@ bool UserData::isTimeLockedInWorkspace(time_t t, locked<Workspace> &ws) {
     return t < lockedTime;
 }
 
+bool UserData::isTimeEntryLocked(locked<TimeEntry> &te) {
+    auto ws = Workspaces.findByID(te->WID());
+    return isTimeLockedInWorkspace(te->Start(), ws);
+}
+
 
 // Stop a time entry, mark it as dirty.
 // Note that there may be multiple TE-s running. If there are,
@@ -1011,8 +1016,7 @@ error UserData::EnableOfflineLogin(const std::string password) {
 }
 
 
-bool UserData::CanSeeBillable(
-    const Workspace *ws) const {
+bool UserData::CanSeeBillable(locked<Workspace> &ws) const {
     if (!HasPremiumWorkspaces()) {
         return false;
     }
@@ -1412,7 +1416,7 @@ std::vector<TimeEntry *> UserData::VisibleTimeEntries() const {
     return result;
 }
 
-Poco::Int64 UserData::TotalDurationForDate(const TimeEntry *match) const {
+Poco::Int64 UserData::TotalDurationForDate(locked<TimeEntry> &match) const {
     std::string date_header = Formatter::FormatDateHeader(match->Start());
     Poco::Int64 duration(0);
     auto timeEntries = TimeEntries();
@@ -1810,7 +1814,7 @@ locked<std::vector<Client*>> UserData::ClientList() {
     return Clients.make_locked<std::vector<Client*>>(&result);
 }
 
-void UserData::ProjectLabelAndColorCode(TimeEntry * const te, view::TimeEntry *view) const {
+void UserData::ProjectLabelAndColorCode(locked<TimeEntry> &te, view::TimeEntry *view) const {
 
     poco_check_ptr(te);
     poco_check_ptr(view);

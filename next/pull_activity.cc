@@ -11,6 +11,112 @@
 
 namespace toggl {
 
+error PullActivity::login(const std::string &email, const std::string &password) {
+    try {
+        std::string json("");
+        error err = me(httpsClient(), email, password, &json, 0);
+        if (err != noError) {
+            if (!IsNetworkingError(err)) {
+                return err;
+            }
+            // Indicate we're offline
+            /* OVERHAUL TODO
+            displayError(err);
+            */
+
+            std::stringstream ss;
+            ss << "Got networking error " << err
+               << " will attempt offline login";
+            logger().debug(ss.str());
+
+            // OVERHAUL TODO
+            return err;
+            //return displayError(attemptOfflineLogin(email, password));
+        }
+
+        // OVERHAUL TODO
+        //err = SetLoggedInUserFromJSON(json);
+        if (err != noError) {
+            return err;
+        }
+
+        err = pullWorkspacePreferences(httpsClient());
+        if (err != noError) {
+            return err;
+        }
+
+        err = pullUserPreferences(httpsClient());
+        if (err != noError) {
+            return err;
+        }
+
+        if (!user()) {
+            logger().error("cannot enable offline login, no user");
+            return noError;
+        }
+
+        err = user()->EnableOfflineLogin(password);
+        if (err != noError) {
+            return err;
+        }
+
+        // OVERHAUL TODO
+        // overlay_visible_ = false;
+        // return save(false);
+        return noError;
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
+    }
+}
+
+error PullActivity::me(TogglClient *toggl_client, const std::string email, const std::string password, std::string *user_data_json, const Poco::Int64 since) {
+
+    if (email.empty()) {
+        return "Empty email or API token";
+    }
+
+    if (password.empty()) {
+        return "Empty password";
+    }
+
+    try {
+        poco_check_ptr(user_data_json);
+        poco_check_ptr(toggl_client);
+
+        std::stringstream ss;
+        ss << "/api/v8/me"
+           << "?app_name=" << toggl_client->Config().AppName
+           << "&with_related_data=true";
+        if (since) {
+            ss << "&since=" << since;
+        }
+
+        HTTPSRequest req;
+        req.host = urls::API();
+        req.relative_url = ss.str();
+        req.basic_auth_username = email;
+        req.basic_auth_password = password;
+
+        HTTPSResponse resp = toggl_client->Get(req);
+        if (resp.err != noError) {
+            return resp.err;
+        }
+
+        *user_data_json = resp.body;
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string& ex) {
+        return ex;
+    }
+    return noError;
+}
+
 error PullActivity::pullWorkspacePreferences(TogglClient *toggl_client) {
     std::vector<Workspace*> workspaces;
     user()->WorkspaceList(&workspaces);
@@ -119,14 +225,18 @@ error PullActivity::pullUserPreferences(TogglClient *toggl_client) {
         if (user()->LoadUserPreferencesFromJSON(root)) {
             // Reload list if user preferences
             // have changed (collapse time entries)
+            /* OVERHAUL TODO
             UIElements render;
             render.display_time_entries = true;
             updateUI(render);
+            */
         }
 
         // Show tos accept overlay
         if (root.isMember("ToSAcceptNeeded") && root["ToSAcceptNeeded"].asBool()) {
+            /* OVERHAUL TODO
             overlay_visible_ = true;
+            */
             UI()->DisplayTosAccept();
         }
     }
@@ -282,12 +392,14 @@ error PullActivity::pullAllUserData(TogglClient *toggl_client) {
         if (err != noError) {
             return err;
         }
-        overlay_visible_ = false;
+        // OVERHAUL TODO
+        // overlay_visible_ = false;
         auto new_running_entry = user()->RunningTimeEntry();
 
         // Reset reminder time when entry stopped by sync
         if (running_entry && !new_running_entry) {
-            resetLastTrackingReminderTime();
+            // OVERHAUL TODO
+            // resetLastTrackingReminderTime();
         }
 
         err = pullWorkspaces(toggl_client);
@@ -326,7 +438,7 @@ GUI *PullActivity::UI() {
     return context_->UI();
 }
 
-HTTPSClient *PullActivity::httpsClient() {
+TogglClient *PullActivity::httpsClient() {
     return context_->httpsClient();
 }
 

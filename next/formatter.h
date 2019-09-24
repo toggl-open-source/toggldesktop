@@ -47,6 +47,7 @@ class Formatter {
     static std::string DurationFormat;
 
     static std::string JoinTaskName(locked<const Task> &t, locked<const Project> &p);
+    static std::string JoinTaskName(locked<Task> &t, locked<Project> &p);
 
     static std::string FormatDuration(int64_t value, const std::string &format_name, bool with_seconds = true);
 

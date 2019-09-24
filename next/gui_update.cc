@@ -297,9 +297,7 @@ void GUIUpdate::renderTimeEntryEditor(UserData *user, const UIElements &what) {
                     Formatter::DurationFormat);
         }
         editor_time_entry_view.DateDuration = Formatter::FormatDurationForDateHeader(user->TotalDurationForDate(editor_time_entry));
-        user->ProjectLabelAndColorCode(
-            editor_time_entry,
-            &editor_time_entry_view);
+        user->ProjectLabelAndColorCode(editor_time_entry, &editor_time_entry_view);
 
         // Various fields in TE editor related to workspace
         // and user permissions
@@ -370,11 +368,8 @@ void GUIUpdate::renderWorkspaceSelect(UserData *user) {
 void GUIUpdate::renderClientSelect(UserData *user) {
     std::vector<view::Generic> client_views;
 
-    std::vector<Client *> models;
-    user->ClientList(&models);
-    for (std::vector<Client *>::const_iterator it = models.begin();
-            it != models.end();
-            ++it) {
+    auto models = user->ClientList();
+    for (auto it = models->begin(); it != models->end(); ++it) {
         Client *c = *it;
         view::Generic view;
         view.GUID = c->GUID();
@@ -382,7 +377,7 @@ void GUIUpdate::renderClientSelect(UserData *user) {
         view.WID = c->WID();
         view.Name = c->Name();
         if (c->WID()) {
-            Workspace *ws = user->related.WorkspaceByID(c->WID());
+            auto ws = user->Workspaces.findByID(c->WID());
             if (ws) {
                 view.WorkspaceName = ws->Name();
                 view.Premium = ws->Premium();
@@ -474,7 +469,7 @@ void GUIUpdate::renderTimeEntries(UserData *user, bool open_time_entry_list) {
 
     // Assign the date durations we calculated previously
     for (unsigned int i = 0; i < time_entries.size(); i++) {
-        TimeEntry *te = time_entries[i];
+        locked<TimeEntry> te = user->TimeEntries.make_locked(time_entries[i]);
 
         // Dont render running entry in list,
         // although its calculated into totals per date.
@@ -493,8 +488,7 @@ void GUIUpdate::renderTimeEntries(UserData *user, bool open_time_entry_list) {
                     // If Group open add all entries in group
                     if (entry_groups[view.GroupName]) {
                         for (unsigned int j = 0; j < group_items[view.GroupName].size(); j++) {
-                            TimeEntry *group_entry =
-                                time_entries[group_items[view.GroupName][j]];
+                            locked<TimeEntry> group_entry = user->TimeEntries.make_locked(time_entries[group_items[view.GroupName][j]]);
 
                             view::TimeEntry group_entry_view;
                             group_entry_view.Fill(group_entry);
@@ -544,7 +538,8 @@ void GUIUpdate::renderTimeEntries(UserData *user, bool open_time_entry_list) {
         open_time_entry_list,
         time_entry_views,
         !user->HasLoadedMore());
-    last_time_entry_list_render_at_ = Poco::LocalDateTime();
+    // OVERHAUL TODO
+    //last_time_entry_list_render_at_ = Poco::LocalDateTime();
 }
 
 void GUIUpdate::renderSettings(UserData *user, bool open_settings) {
@@ -573,6 +568,7 @@ void GUIUpdate::renderSettings(UserData *user, bool open_settings) {
     */
 
     // TODO this is crazy, let's do something about it in the future
+    /*
     settings_view.UseIdleDetection = settings->use_idle_detection;
     settings_view.MenubarTimer = settings->menubar_timer;
     settings_view.MenubarProject = settings->menubar_project;
@@ -609,10 +605,12 @@ void GUIUpdate::renderSettings(UserData *user, bool open_settings) {
     settings_view.AutodetectProxy = settings->autodetect_proxy;
 
     settings_view.RecordTimeline = record_timeline;
+    */
 
-    UI()->DisplaySettings(open_settings, &settings_view);
+    //UI()->DisplaySettings(open_settings, &settings_view);
 
     // Tracking Settings
+    /*
     if ("production" == environment_) {
         analytics_.TrackSettings(db_->AnalyticsClientID(),
                                  settings_view.RecordTimeline,
@@ -620,6 +618,7 @@ void GUIUpdate::renderSettings(UserData *user, bool open_settings) {
                                  settings_view.UseProxy,
                                  proxy);
     }
+    */
 }
 
 void GUIUpdate::renderUnsyncedItems(UserData *user) {
@@ -665,9 +664,9 @@ void GUIUpdate::renderAutotrackerRules(UserData *user) {
     }
 }
 
-error GUIUpdate::ToggleEntriesGroup(std::string name) {
+error GUIUpdate::ToggleEntriesGroup(UserData *user, std::string name) {
     entry_groups[name] = !entry_groups[name];
-    OpenTimeEntryList();
+    OpenTimeEntryList(user);
     return noError;
 }
 
