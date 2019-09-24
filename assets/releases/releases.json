@@ -842,6 +842,20 @@
                         "name": "TogglDesktopInstaller-x64-7.4.1003.exe"
                     }
                 ]
+            },
+            {
+                "version": "7.4.1015",
+                "timestamp": "24-09-2019",
+                "filename": [
+                    {
+                        "type": "windows",
+                        "name": "TogglDesktopInstaller-7.4.1015.exe"
+                    },
+                    {
+                        "type": "windows64",
+                        "name": "TogglDesktopInstaller-x64-7.4.1015.exe"
+                    }
+                ]
             }
         ],
         "stable": [
@@ -2568,16 +2582,6 @@
                     {
                         "type": "macos",
                         "name": "TogglDesktop-7_4_484.dmg"
-                    }
-                ]
-            },
-            {
-                "version": "7.4.1012",
-                "timestamp": "24-09-2019",
-                "filename": [
-                    {
-                        "type": "macos",
-                        "name": "TogglDesktop-7_4_1012.dmg"
                     }
                 ]
             }
