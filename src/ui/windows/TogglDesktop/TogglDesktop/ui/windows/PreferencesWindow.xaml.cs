@@ -9,6 +9,7 @@ using System.Windows.Input;
 using TogglDesktop.AutoCompletion;
 using TogglDesktop.AutoCompletion.Implementation;
 using TogglDesktop.Diagnostics;
+using TogglDesktop.Win10;
 
 namespace TogglDesktop
 {
@@ -129,7 +130,7 @@ namespace TogglDesktop
             this.keepEndTimeFixedCheckbox.IsChecked = Toggl.GetKeepEndTimeFixed();
 
             this.onStopEntryCheckBox.IsChecked = settings.StopEntryOnShutdownSleep;
-            this.launchOnStartupCheckBox.IsChecked = Utils.GetLaunchOnStartupRegistry();
+            Task.Run(UpdateLaunchOnStartupCheckboxAsync);
 
             #endregion
 
@@ -184,6 +185,32 @@ namespace TogglDesktop
             this.shortcutErrorText.Text = "";
 
             #endregion
+        }
+
+        private static async Task<bool?> IsRunOnStartupEnabled()
+        {
+#if MS_STORE
+            return await RunOnStartup.IsRunOnStartupEnabled();
+#else
+            return Utils.GetLaunchOnStartupRegistry();
+#endif
+        }
+
+        private async Task UpdateLaunchOnStartupCheckboxAsync()
+        {
+            var isEnabled = await IsRunOnStartupEnabled();
+            this.TryBeginInvoke(() =>
+            {
+                if (isEnabled.HasValue == false)
+                {
+                    launchOnStartupCheckBox.Visibility = Visibility.Collapsed;
+                }
+                else
+                {
+                    launchOnStartupCheckBox.Visibility = Visibility.Visible;
+                    launchOnStartupCheckBox.IsChecked = isEnabled.Value;
+                }
+            });
         }
 
         private static void trySetHotKey(Func<string> getKeyCode, Func<ModifierKeys> getModifiers, ShortcutRecorder recorder)
@@ -291,7 +318,7 @@ namespace TogglDesktop
             }
         }
 
-        private bool save(Settings settings)
+        private async Task<bool> save(Settings settings)
         {
             using (Performance.Measure("saving global shortcuts"))
             {
@@ -300,8 +327,11 @@ namespace TogglDesktop
 
             Toggl.SetDefaultProject(settings.DefaultProject.ProjectID, settings.DefaultProject.TaskID);
             Toggl.SetKeepEndTimeFixed(settings.KeepEndTimeFixed);
+#if MS_STORE
+            await RunOnStartup.TrySetRunOnStartup(settings.LaunchOnStartup);
+#else
             Utils.SaveLaunchOnStartupRegistry(settings.LaunchOnStartup);
-
+#endif
             return Toggl.SetSettings(settings.TogglSettings);
         }
 
