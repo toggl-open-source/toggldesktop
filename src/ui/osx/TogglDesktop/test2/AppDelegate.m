@@ -13,7 +13,7 @@
 #import "AutotrackerRuleItem.h"
 #import <Bugsnag/Bugsnag.h>
 #import "ConsoleViewController.h"
-#import "CrashReporter.h"
+#import <CrashReporter/CrashReporter.h>
 #import "DisplayCommand.h"
 #import "FeedbackWindowController.h"
 #import "IdleEvent.h"
