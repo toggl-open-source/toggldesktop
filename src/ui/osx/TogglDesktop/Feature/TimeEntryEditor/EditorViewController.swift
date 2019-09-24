@@ -526,7 +526,7 @@ extension EditorViewController: AutoCompleteTextFieldDelegate {
             DesktopLibraryBridge.shared().updateTimeEntry(withTags: selectedTags.toNames(), guid: timeEntry.guid)
 
             // Focus on tag textfield agains, so user can continue typying
-            sender.window?.makeFirstResponder(tagTextField)
+            tagTextField.focus()
             tagTextField.resetText()
         }
     }
