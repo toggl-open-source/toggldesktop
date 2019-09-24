@@ -161,8 +161,6 @@
 		BA6572A8224DFA6F00BA4C60 /* CurrentColorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6572A2224DFA6F00BA4C60 /* CurrentColorView.swift */; };
 		BA6572A9224DFA6F00BA4C60 /* ColorGraphicsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6572A3224DFA6F00BA4C60 /* ColorGraphicsView.swift */; };
 		BA6572AA224DFA6F00BA4C60 /* HSV.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6572A4224DFA6F00BA4C60 /* HSV.swift */; };
-		BA6E873521DDC1E2005E2451 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA6E86B621DDB331005E2451 /* Sparkle.framework */; };
-		BA6E873621DDC1E2005E2451 /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA6E86B621DDB331005E2451 /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BA6EB8402248CBE3003BB8EF /* ProjectStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6EB83F2248CBE3003BB8EF /* ProjectStorage.swift */; };
 		BA6EB8942249DB33003BB8EF /* VerticallyCenteredTextFieldCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6EB8752249DB33003BB8EF /* VerticallyCenteredTextFieldCell.swift */; };
 		BA6F1B1A21EEE258009265E4 /* NSColor+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6F1B1921EEE258009265E4 /* NSColor+Utils.swift */; };
@@ -183,8 +181,6 @@
 		BA7D335722489BD000B953A8 /* AutoCompleteViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7D335622489BD000B953A8 /* AutoCompleteViewDataSource.swift */; };
 		BA7D335A22489C8000B953A8 /* ProjectDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7D335922489C8000B953A8 /* ProjectDataSource.swift */; };
 		BA7D335E2248B48000B953A8 /* AutoCompleteTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7D335D2248B48000B953A8 /* AutoCompleteTextField.swift */; };
-		BA7DB6E321F9C77A0059239B /* MASShortcut.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BA7DB6D221F9C7660059239B /* MASShortcut.framework */; };
-		BA7DB6E421F9C77A0059239B /* MASShortcut.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA7DB6D221F9C7660059239B /* MASShortcut.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BA80BEB2221EAE6F00BDFD35 /* Array+ByGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA80BEB1221EAE6F00BDFD35 /* Array+ByGroup.swift */; };
 		BA81896A23016148000710EA /* NSColor+VisibleColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA81896923016148000710EA /* NSColor+VisibleColor.swift */; };
 		BA84363B22533A6600EF5830 /* DesktopLibraryBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = BA84363A22533A6600EF5830 /* DesktopLibraryBridge.m */; };
@@ -230,8 +226,6 @@
 		BAD2342621D612DF0039C742 /* libPocoUtil.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BAD2341D21D612DF0039C742 /* libPocoUtil.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		BAD2342721D612DF0039C742 /* libPocoFoundation.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BAD2341E21D612DF0039C742 /* libPocoFoundation.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		BAD307D3229C1BD000C727DB /* KeyboardDatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD307D2229C1BD000C727DB /* KeyboardDatePicker.swift */; };
-		BAD858C7228EAE6500226C71 /* Bugsnag.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BAD858A3228EAE0E00226C71 /* Bugsnag.framework */; };
-		BAD858C8228EAE6500226C71 /* Bugsnag.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = BAD858A3228EAE0E00226C71 /* Bugsnag.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BAD858CC228EAE7C00226C71 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = BAD858CB228EAE7C00226C71 /* libz.tbd */; };
 		BAE007DE21FAF00D00404379 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BAE007DD21FAF00D00404379 /* Media.xcassets */; };
 		BAE49CAE222FC1C900773814 /* TimerContainerBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAE49CAD222FC1C900773814 /* TimerContainerBox.swift */; };
@@ -362,132 +356,6 @@
 			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
 			remoteInfo = "CrashReporter-MacOSX";
 		};
-		BA6E86B521DDB331005E2451 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BA6E86A521DDB331005E2451 /* Sparkle.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 8DC2EF5B0486A6940098B216;
-			remoteInfo = Sparkle;
-		};
-		BA6E86B721DDB331005E2451 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BA6E86A521DDB331005E2451 /* Sparkle.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 61B5F90209C4CEE200B25A18;
-			remoteInfo = "Sparkle Test App";
-		};
-		BA6E86B921DDB331005E2451 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BA6E86A521DDB331005E2451 /* Sparkle.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 612279D90DB5470200AB99EA;
-			remoteInfo = "Sparkle Unit Tests";
-		};
-		BA6E86BB21DDB331005E2451 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BA6E86A521DDB331005E2451 /* Sparkle.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 5D06E8D00FD68C7C005AE3F6;
-			remoteInfo = BinaryDelta;
-		};
-		BA6E86BD21DDB331005E2451 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BA6E86A521DDB331005E2451 /* Sparkle.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 55C14BB7136EEF1500649790;
-			remoteInfo = Autoupdate;
-		};
-		BA6E86BF21DDB331005E2451 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BA6E86A521DDB331005E2451 /* Sparkle.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 726B2B5D1C645FC900388755;
-			remoteInfo = "UI Tests";
-		};
-		BA6E86C121DDB331005E2451 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BA6E86A521DDB331005E2451 /* Sparkle.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 722954B41D04ADAF00ECF9CA;
-			remoteInfo = fileop;
-		};
-		BA6E86C321DDB331005E2451 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BA6E86A521DDB331005E2451 /* Sparkle.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 5AE13FB31E0D9E07000D2C2C;
-			remoteInfo = generate_appcast;
-		};
-		BA6E86C521DDB331005E2451 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BA6E86A521DDB331005E2451 /* Sparkle.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 5AB8F19F214DA72000A1187F;
-			remoteInfo = generate_keys;
-		};
-		BA6E86C721DDB331005E2451 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BA6E86A521DDB331005E2451 /* Sparkle.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 5A5ADED7214EDE4900DF0099;
-			remoteInfo = sign_update;
-		};
-		BA6E873721DDC1E2005E2451 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BA6E86A521DDB331005E2451 /* Sparkle.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
-			remoteInfo = Sparkle;
-		};
-		BA7DB6D121F9C7660059239B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BA7DB6BB21F9C7660059239B /* MASShortcut.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 0D827CD31990D4420010B8EF;
-			remoteInfo = MASShortcut;
-		};
-		BA7DB6D321F9C7660059239B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BA7DB6BB21F9C7660059239B /* MASShortcut.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 0D827D8319910AFF0010B8EF;
-			remoteInfo = MASShortcutTests;
-		};
-		BA7DB6D521F9C7660059239B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BA7DB6BB21F9C7660059239B /* MASShortcut.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 0D827D371990D5E70010B8EF;
-			remoteInfo = Demo;
-		};
-		BA7DB6E521F9C77A0059239B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BA7DB6BB21F9C7660059239B /* MASShortcut.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 0D827CD21990D4420010B8EF;
-			remoteInfo = MASShortcut;
-		};
-		BAD858A2228EAE0E00226C71 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BAD8589D228EAE0E00226C71 /* Bugsnag.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 8A2C8FA11C6BC1F700846019;
-			remoteInfo = Bugsnag;
-		};
-		BAD858A4228EAE0E00226C71 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BAD8589D228EAE0E00226C71 /* Bugsnag.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 8A2C8FAB1C6BC1F700846019;
-			remoteInfo = Tests;
-		};
-		BAD858C9228EAE6500226C71 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BAD8589D228EAE0E00226C71 /* Bugsnag.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 8A2C8FA01C6BC1F700846019;
-			remoteInfo = Bugsnag;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -499,12 +367,10 @@
 			files = (
 				3CFE547E201781A7006B673A /* libcrypto.1.1.dylib in CopyFiles */,
 				BAD2342121D612DF0039C742 /* libPocoNet.60.dylib in CopyFiles */,
-				BA7DB6E421F9C77A0059239B /* MASShortcut.framework in CopyFiles */,
 				BAD2342521D612DF0039C742 /* libPocoJSON.60.dylib in CopyFiles */,
 				BAD2342321D612DF0039C742 /* libPocoData.60.dylib in CopyFiles */,
 				BAD2342721D612DF0039C742 /* libPocoFoundation.60.dylib in CopyFiles */,
 				3CFE547F201781A7006B673A /* libssl.1.1.dylib in CopyFiles */,
-				BAD858C8228EAE6500226C71 /* Bugsnag.framework in CopyFiles */,
 				74456B9E1A774CB0002A6338 /* TogglDesktopLibrary.dylib in CopyFiles */,
 				BAD2341F21D612DF0039C742 /* libPocoDataSQLite.60.dylib in CopyFiles */,
 				BAD2342621D612DF0039C742 /* libPocoUtil.60.dylib in CopyFiles */,
@@ -512,7 +378,6 @@
 				BAD2342221D612DF0039C742 /* libPocoCrypto.60.dylib in CopyFiles */,
 				BAD2342421D612DF0039C742 /* libPocoXML.60.dylib in CopyFiles */,
 				74213490195C50B5007EF78B /* CrashReporter.framework in CopyFiles */,
-				BA6E873621DDC1E2005E2451 /* Sparkle.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -746,7 +611,6 @@
 		BA6572A2224DFA6F00BA4C60 /* CurrentColorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrentColorView.swift; sourceTree = "<group>"; };
 		BA6572A3224DFA6F00BA4C60 /* ColorGraphicsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorGraphicsView.swift; sourceTree = "<group>"; };
 		BA6572A4224DFA6F00BA4C60 /* HSV.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HSV.swift; sourceTree = "<group>"; };
-		BA6E86A521DDB331005E2451 /* Sparkle.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Sparkle.xcodeproj; path = ../../../../third_party/Sparkle/Sparkle.xcodeproj; sourceTree = "<group>"; };
 		BA6EB83F2248CBE3003BB8EF /* ProjectStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectStorage.swift; sourceTree = "<group>"; };
 		BA6EB8752249DB33003BB8EF /* VerticallyCenteredTextFieldCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerticallyCenteredTextFieldCell.swift; sourceTree = "<group>"; };
 		BA6F1B1921EEE258009265E4 /* NSColor+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSColor+Utils.swift"; sourceTree = "<group>"; };
@@ -769,7 +633,6 @@
 		BA7D335622489BD000B953A8 /* AutoCompleteViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoCompleteViewDataSource.swift; sourceTree = "<group>"; };
 		BA7D335922489C8000B953A8 /* ProjectDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectDataSource.swift; sourceTree = "<group>"; };
 		BA7D335D2248B48000B953A8 /* AutoCompleteTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoCompleteTextField.swift; sourceTree = "<group>"; };
-		BA7DB6BB21F9C7660059239B /* MASShortcut.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MASShortcut.xcodeproj; path = ../../../../third_party/MASShortcut/MASShortcut.xcodeproj; sourceTree = "<group>"; };
 		BA80BEB1221EAE6F00BDFD35 /* Array+ByGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+ByGroup.swift"; sourceTree = "<group>"; };
 		BA81896923016148000710EA /* NSColor+VisibleColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSColor+VisibleColor.swift"; sourceTree = "<group>"; };
 		BA84363922533A6600EF5830 /* DesktopLibraryBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DesktopLibraryBridge.h; sourceTree = "<group>"; };
@@ -817,7 +680,6 @@
 		BAD2341D21D612DF0039C742 /* libPocoUtil.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoUtil.60.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoUtil.60.dylib; sourceTree = "<group>"; };
 		BAD2341E21D612DF0039C742 /* libPocoFoundation.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoFoundation.60.dylib; path = ../../../../third_party/poco/lib/Darwin/x86_64/libPocoFoundation.60.dylib; sourceTree = "<group>"; };
 		BAD307D2229C1BD000C727DB /* KeyboardDatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardDatePicker.swift; sourceTree = "<group>"; };
-		BAD8589D228EAE0E00226C71 /* Bugsnag.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Bugsnag.xcodeproj; path = "../../../../third_party/bugsnag-cocoa/OSX/Bugsnag.xcodeproj"; sourceTree = "<group>"; };
 		BAD858C5228EAE3000226C71 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		BAD858CB228EAE7C00226C71 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		BAE007DD21FAF00D00404379 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
@@ -858,9 +720,6 @@
 				74E3CDD917FC369700C3ADD3 /* ExceptionHandling.framework in Frameworks */,
 				7421348F195C4F1A007EF78B /* CrashReporter.framework in Frameworks */,
 				74E3CDD717FBAE0800C3ADD3 /* SystemConfiguration.framework in Frameworks */,
-				BA6E873521DDC1E2005E2451 /* Sparkle.framework in Frameworks */,
-				BA7DB6E321F9C77A0059239B /* MASShortcut.framework in Frameworks */,
-				BAD858C7228EAE6500226C71 /* Bugsnag.framework in Frameworks */,
 				74033C9717EC1DE100CA53D3 /* libc++.dylib in Frameworks */,
 				69FC17F517E6534400B96425 /* Cocoa.framework in Frameworks */,
 				5B29B9409F01EC0E842DE86D /* Pods_TogglDesktop.framework in Frameworks */,
@@ -918,11 +777,8 @@
 				3CFE546D201781A5006B673A /* libcrypto.1.1.dylib */,
 				3CFE547D201781A5006B673A /* libssl.1.1.dylib */,
 				742134C3195C63AE007EF78B /* poco */,
-				BAD8589D228EAE0E00226C71 /* Bugsnag.xcodeproj */,
 				749A3A4318D889BD000AD2DB /* CrashReporter.xcodeproj */,
 				74B680A8180759C300B697AA /* TogglDesktopLibrary.xcodeproj */,
-				BA6E86A521DDB331005E2451 /* Sparkle.xcodeproj */,
-				BA7DB6BB21F9C7660059239B /* MASShortcut.xcodeproj */,
 				74E857AA194F8807007A88B9 /* ssl */,
 				BA712EAF21BF904E00A2D8DD /* Feature */,
 				BA1B7FA122E5D52F001333D9 /* Swift */,
@@ -1369,23 +1225,6 @@
 			path = ColorWheel;
 			sourceTree = "<group>";
 		};
-		BA6E86A621DDB331005E2451 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				BA6E86B621DDB331005E2451 /* Sparkle.framework */,
-				BA6E86B821DDB331005E2451 /* Sparkle Test App.app */,
-				BA6E86BA21DDB331005E2451 /* Sparkle Unit Tests.xctest */,
-				BA6E86BC21DDB331005E2451 /* BinaryDelta */,
-				BA6E86BE21DDB331005E2451 /* Autoupdate.app */,
-				BA6E86C021DDB331005E2451 /* UI Tests.xctest */,
-				BA6E86C221DDB331005E2451 /* fileop */,
-				BA6E86C421DDB331005E2451 /* generate_appcast */,
-				BA6E86C621DDB331005E2451 /* generate_keys */,
-				BA6E86C821DDB331005E2451 /* sign_update */,
-			);
-			name = Products;
-			sourceTree = "<unknown>";
-		};
 		BA6EB8202248CBD3003BB8EF /* Storage */ = {
 			isa = PBXGroup;
 			children = (
@@ -1466,16 +1305,6 @@
 			path = Input;
 			sourceTree = "<group>";
 		};
-		BA7DB6BC21F9C7660059239B /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				BA7DB6D221F9C7660059239B /* MASShortcut.framework */,
-				BA7DB6D421F9C7660059239B /* MASShortcutTests.xctest */,
-				BA7DB6D621F9C7660059239B /* Demo.app */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		BA8B4C522251FA6900592BC7 /* Workspace */ = {
 			isa = PBXGroup;
 			children = (
@@ -1516,15 +1345,6 @@
 				BAD15FFD223A530600A8CCC9 /* TimeEntryEmptyView.xib */,
 			);
 			path = TimeEntryEmptyView;
-			sourceTree = "<group>";
-		};
-		BAD8589E228EAE0E00226C71 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				BAD858A3228EAE0E00226C71 /* Bugsnag.framework */,
-				BAD858A5228EAE0E00226C71 /* Tests.xctest */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		BAF50DF521A2A16D0090BA95 /* IconFactory */ = {
@@ -1601,9 +1421,6 @@
 			dependencies = (
 				74456B9C1A77486B002A6338 /* PBXTargetDependency */,
 				749A3A7318D89F23000AD2DB /* PBXTargetDependency */,
-				BA6E873821DDC1E2005E2451 /* PBXTargetDependency */,
-				BA7DB6E621F9C77A0059239B /* PBXTargetDependency */,
-				BAD858CA228EAE6500226C71 /* PBXTargetDependency */,
 			);
 			name = TogglDesktop;
 			productName = test2;
@@ -1646,20 +1463,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = BAD8589E228EAE0E00226C71 /* Products */;
-					ProjectRef = BAD8589D228EAE0E00226C71 /* Bugsnag.xcodeproj */;
-				},
-				{
 					ProductGroup = 749A3A4418D889BD000AD2DB /* Products */;
 					ProjectRef = 749A3A4318D889BD000AD2DB /* CrashReporter.xcodeproj */;
-				},
-				{
-					ProductGroup = BA7DB6BC21F9C7660059239B /* Products */;
-					ProjectRef = BA7DB6BB21F9C7660059239B /* MASShortcut.xcodeproj */;
-				},
-				{
-					ProductGroup = BA6E86A621DDB331005E2451 /* Products */;
-					ProjectRef = BA6E86A521DDB331005E2451 /* Sparkle.xcodeproj */;
 				},
 				{
 					ProductGroup = 74456B871A774858002A6338 /* Products */;
@@ -1772,111 +1577,6 @@
 			fileType = "compiled.mach-o.executable";
 			path = "Fuzz Testing";
 			remoteRef = 749A3A6E18D889BE000AD2DB /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		BA6E86B621DDB331005E2451 /* Sparkle.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = Sparkle.framework;
-			remoteRef = BA6E86B521DDB331005E2451 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		BA6E86B821DDB331005E2451 /* Sparkle Test App.app */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.application;
-			path = "Sparkle Test App.app";
-			remoteRef = BA6E86B721DDB331005E2451 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		BA6E86BA21DDB331005E2451 /* Sparkle Unit Tests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = "Sparkle Unit Tests.xctest";
-			remoteRef = BA6E86B921DDB331005E2451 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		BA6E86BC21DDB331005E2451 /* BinaryDelta */ = {
-			isa = PBXReferenceProxy;
-			fileType = "compiled.mach-o.executable";
-			path = BinaryDelta;
-			remoteRef = BA6E86BB21DDB331005E2451 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		BA6E86BE21DDB331005E2451 /* Autoupdate.app */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.application;
-			path = Autoupdate.app;
-			remoteRef = BA6E86BD21DDB331005E2451 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		BA6E86C021DDB331005E2451 /* UI Tests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = "UI Tests.xctest";
-			remoteRef = BA6E86BF21DDB331005E2451 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		BA6E86C221DDB331005E2451 /* fileop */ = {
-			isa = PBXReferenceProxy;
-			fileType = "compiled.mach-o.executable";
-			path = fileop;
-			remoteRef = BA6E86C121DDB331005E2451 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		BA6E86C421DDB331005E2451 /* generate_appcast */ = {
-			isa = PBXReferenceProxy;
-			fileType = "compiled.mach-o.executable";
-			path = generate_appcast;
-			remoteRef = BA6E86C321DDB331005E2451 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		BA6E86C621DDB331005E2451 /* generate_keys */ = {
-			isa = PBXReferenceProxy;
-			fileType = "compiled.mach-o.executable";
-			path = generate_keys;
-			remoteRef = BA6E86C521DDB331005E2451 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		BA6E86C821DDB331005E2451 /* sign_update */ = {
-			isa = PBXReferenceProxy;
-			fileType = "compiled.mach-o.executable";
-			path = sign_update;
-			remoteRef = BA6E86C721DDB331005E2451 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		BA7DB6D221F9C7660059239B /* MASShortcut.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = MASShortcut.framework;
-			remoteRef = BA7DB6D121F9C7660059239B /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		BA7DB6D421F9C7660059239B /* MASShortcutTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = MASShortcutTests.xctest;
-			remoteRef = BA7DB6D321F9C7660059239B /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		BA7DB6D621F9C7660059239B /* Demo.app */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.application;
-			path = Demo.app;
-			remoteRef = BA7DB6D521F9C7660059239B /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		BAD858A3228EAE0E00226C71 /* Bugsnag.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = Bugsnag.framework;
-			remoteRef = BAD858A2228EAE0E00226C71 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		BAD858A5228EAE0E00226C71 /* Tests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = Tests.xctest;
-			remoteRef = BAD858A4228EAE0E00226C71 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -2012,14 +1712,22 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-TogglDesktop/Pods-TogglDesktop-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/AppAuth/AppAuth.framework",
+				"${BUILT_PRODUCTS_DIR}/Bugsnag/Bugsnag.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMAppAuth/GTMAppAuth.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
+				"${BUILT_PRODUCTS_DIR}/MASShortcut/MASShortcut.framework",
+				"${PODS_ROOT}/Sparkle/Sparkle.framework",
+				"${PODS_ROOT}/Sparkle/Sparkle.framework.dSYM",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AppAuth.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Bugsnag.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMAppAuth.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MASShortcut.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Sparkle.framework",
+				"${DWARF_DSYM_FOLDER_PATH}/Sparkle.framework.dSYM",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -2203,21 +1911,6 @@
 			isa = PBXTargetDependency;
 			name = "CrashReporter-MacOSX";
 			targetProxy = 749A3A7218D89F23000AD2DB /* PBXContainerItemProxy */;
-		};
-		BA6E873821DDC1E2005E2451 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = Sparkle;
-			targetProxy = BA6E873721DDC1E2005E2451 /* PBXContainerItemProxy */;
-		};
-		BA7DB6E621F9C77A0059239B /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = MASShortcut;
-			targetProxy = BA7DB6E521F9C77A0059239B /* PBXContainerItemProxy */;
-		};
-		BAD858CA228EAE6500226C71 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = Bugsnag;
-			targetProxy = BAD858C9228EAE6500226C71 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
