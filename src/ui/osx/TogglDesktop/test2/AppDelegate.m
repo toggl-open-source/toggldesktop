@@ -1777,4 +1777,13 @@ void on_countries(TogglCountryView *first)
 	[_currentAuthorizationFlow resumeExternalUserAgentFlowWithURL:URL];
 }
 
+- (NSString *)currentChannel
+{
+	char *str = toggl_get_update_channel(ctx);
+	NSString *channel = [NSString stringWithUTF8String:str];
+
+	free(str);
+	return channel;
+}
+
 @end
