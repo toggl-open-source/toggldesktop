@@ -10,28 +10,7 @@
                 "Click to edit project/duration of the running entry",
                 "Fixed Cashed for large number of tags",
                 "Fixed Unsync state when the app launches",
-                "Fixed Clicking on New from the menu bar will stop the timer but not start the new one"
-            ],
-            "date": "September 24th 2019"
-        },
-        {
-            "version": "7.4.1012",
-            "rows": [
-                "Notarization for TogglDesktop build",
-                "Start/continue/stop menu items to dock menu",
-                "Sign-in with Google",
-                "Add remove icon to project row in timer",
-                "Click to edit project/duration of the running entry",
-                "Fixed Cashed for large number of tags",
-                "Fixed Unsync state when the app launches",
-                "Fixed Clicking on New from the menu bar will stop the timer but not start the new one"
-            ],
-            "date": "September 20th 2019",
-            "beta": "true"
-        },
-        {
-            "version": "7.4.1000",
-            "rows": [
+                "Fixed Clicking on New from the menu bar will stop the timer but not start the new one",
                 "New project color should be random",
                 "Minor UI improvement on new design",
                 "Bring Keep idle time button back",
@@ -52,8 +31,7 @@
                 "Fixed Tabbing for Mac app, keyboard preference",
                 "Fixed Track usage of Edit view resize handle"
             ],
-            "date": "September 11st 2019",
-            "beta": "true"
+            "date": "September 24th 2019"
         },
         {
             "version": "7.4.484",
