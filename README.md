@@ -97,13 +97,13 @@ $ make uitest
 - macOS 10.14+, Xcode 10.2+ and Swift 4+
 
 ### Build
-- Build dependencies
 ```bash
-# Get cocoapod
-$ sudo gem install cocoapods
 
 # Build all dependencies
 $ make deps
+
+# Prepare cocoapod
+$ make init_cocoapod
 ```
 - Open workspace at `src/ui/osx/TogglDesktop.xcworkspace`
 - Select TogglDesktop scheme and build.
