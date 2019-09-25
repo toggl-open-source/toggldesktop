@@ -49,7 +49,7 @@
       <Extensions>
         <desktop:Extension
           Category="windows.startupTask"
-          Executable="TogglDesktop.exe"
+          Executable="TogglDesktop\TogglDesktop.exe"
           EntryPoint="Windows.FullTrustApplication">
           <desktop:StartupTask
               TaskId="TogglDesktopStartupTask"
