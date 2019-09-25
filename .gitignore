@@ -73,8 +73,6 @@ coverage
 
 third_party/TFDatePicker/TFDatePicker/build/
 
-xcshareddata
-
 *.obj
 *.tlog
 *.exe
