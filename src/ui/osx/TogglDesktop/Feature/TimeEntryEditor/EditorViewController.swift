@@ -536,6 +536,12 @@ extension EditorViewController: AutoCompleteTextFieldDelegate {
             tagTextField.removeFromSuperview()
             tagAutoCompleteContainerView.addSubview(tagTextField)
             tagTextField.edgesToSuperView()
+
+            // Since Tag Token appear -> There is no text field to be focus
+            // Focus on duration
+            if !tagStackView.isHidden && durationTextField.currentEditor() == nil {
+                view.window?.makeFirstResponder(durationTextField)
+            }
         }
     }
     
