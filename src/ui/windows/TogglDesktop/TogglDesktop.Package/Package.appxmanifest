@@ -53,7 +53,7 @@
           EntryPoint="Windows.FullTrustApplication">
           <desktop:StartupTask
               TaskId="TogglDesktopStartupTask"
-              Enabled="true"
+              Enabled="false"
               DisplayName="Toggl Desktop" />
         </desktop:Extension>
       </Extensions>
