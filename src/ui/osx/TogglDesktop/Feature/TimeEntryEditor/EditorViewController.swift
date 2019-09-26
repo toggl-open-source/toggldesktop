@@ -353,6 +353,11 @@ extension EditorViewController {
         durationTextField.stringValue = timeEntry.duration
         startAtTextField.stringValue = timeEntry.startTimeString
         endAtTextField.stringValue = timeEntry.endTimeString
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .none
+        dateFormatter.timeStyle = .medium
+        startAtTextField.toolTip = dateFormatter.string(from: timeEntry.started)
+        endAtTextField.toolTip = dateFormatter.string(from: timeEntry.ended)
     }
 
     fileprivate func updateNextKeyViews() {
