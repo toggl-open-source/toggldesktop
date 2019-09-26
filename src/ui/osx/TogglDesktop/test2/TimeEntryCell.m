@@ -75,7 +75,7 @@ extern void *ctx;
 	// We don't need to remove TrackingArea and create with new size after cell's size change
 	bounds.size.width = NSScreen.mainScreen.frame.size.width;
 	NSTrackingArea *tracking = [[NSTrackingArea alloc]initWithRect:bounds
-														   options:(NSTrackingMouseEnteredAndExited | NSTrackingActiveInKeyWindow)
+														   options:(NSTrackingMouseEnteredAndExited | NSTrackingActiveAlways)
 															 owner:self
 														  userInfo:nil];
 	[self.view addTrackingArea:tracking];
