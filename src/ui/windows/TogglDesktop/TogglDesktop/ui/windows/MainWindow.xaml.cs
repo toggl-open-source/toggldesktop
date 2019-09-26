@@ -133,8 +133,17 @@ namespace TogglDesktop
         private void initializeSessionNotification()
         {
             SystemEvents.SessionSwitch += SystemEvents_SessionSwitch;
-            SystemEvents.SessionEnded += SystemEventsSessionEndOnChanged;
+            SystemEvents.SessionEnding += SystemEventsOnSessionEnding;
             SystemEvents.PowerModeChanged += SystemEventsOnPowerModeChanged;
+        }
+
+        private void SystemEventsOnSessionEnding(object sender, SessionEndingEventArgs e)
+        {
+            if (e.Reason == SessionEndReasons.SystemShutdown ||
+                e.Reason == SessionEndReasons.Logoff)
+            {
+                Toggl.SetOSShutdown();
+            }
         }
 
         private void SystemEventsOnPowerModeChanged(object sender, PowerModeChangedEventArgs e)
@@ -158,15 +167,6 @@ namespace TogglDesktop
             else if (e.Reason == SessionSwitchReason.SessionUnlock)
             {
                 Toggl.SetUnlocked();
-            }
-        }
-
-        private void SystemEventsSessionEndOnChanged(object sender, SessionEndedEventArgs e)
-        {
-            if (e.Reason == SessionEndReasons.SystemShutdown ||
-                e.Reason == SessionEndReasons.Logoff)
-            {
-                Toggl.SetOSShutdown();
             }
         }
 
