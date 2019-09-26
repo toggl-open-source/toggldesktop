@@ -3,16 +3,6 @@
         {
             "version": "7.4.1015",
             "rows": [
-                "Fixed crashes when having huge amount of tags",
-                "Fixed rare crashes when trying to open multiple instances of the application"
-            ],
-            "date": "September 24th 2019",
-            "beta": "true",
-            "has64bit": "true"
-        },
-        {
-            "version": "7.4.1003",
-            "rows": [
                 "Added Signup with Google",
                 "Fixed issue with app window being stuck in the tray after PC restart",
                 "Fixed system proxy detection to make it work with proxies of apps like Fiddler, Freedom, etc.",
@@ -20,10 +10,10 @@
                 "Fixed issue when similar time entries on different workspaces were grouped together",
                 "Fixed occasional crash when displaying notification",
                 "Made 'Show/Hide Toggl' bring the window to the front if it has no focus",
-                "Tiny UI improvements to Login/Signup page"
+                "Tiny UI improvements to Login/Signup page",
+                "Fixed crashes when having huge amount of tags"
             ],
-            "date": "September 12nd 2019",
-            "beta": "true",
+            "date": "September 26th 2019",
             "has64bit": "true"
         },
         {
