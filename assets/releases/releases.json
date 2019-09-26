@@ -3108,6 +3108,10 @@
                     {
                         "type": "linux_tar.gz",
                         "name": "toggldesktop_linux_x86_64-7_4_528.tar.gz"
+                    },
+                    {
+                        "type": "linux_deb64",
+                        "name": "toggldesktop_7.4.528_amd64.deb"
                     }
                 ]
             }
@@ -3460,6 +3464,20 @@
                     {
                         "type": "linux_deb64",
                         "name": "toggldesktop_7.4.122_amd64.deb"
+                    }
+                ]
+            },
+            {
+                "version": "7.4.528",
+                "timestamp": "26-09-2019",
+                "filename": [
+                    {
+                        "type": "linux_tar.gz",
+                        "name": "toggldesktop_linux_x86_64-7_4_528.tar.gz"
+                    },
+                    {
+                        "type": "linux_deb64",
+                        "name": "toggldesktop_7.4.528_amd64.deb"
                     }
                 ]
             }

@@ -38,12 +38,13 @@
         },
         "beta": {
             "version": "7.4.528",
-            "linux_tar.gz": "https://github.com/toggl/toggldesktop/releases/download/v7.4.528/toggldesktop_linux_x86_64-7_4_528.tar.gz"
+            "linux_tar.gz": "https://github.com/toggl/toggldesktop/releases/download/v7.4.528/toggldesktop_linux_x86_64-7_4_528.tar.gz",
+            "linux_deb64": "https://github.com/toggl/toggldesktop/releases/download/v7.4.528/toggldesktop_7.4.528_amd64.deb"
         },
         "stable": {
-            "version": "7.4.122",
-            "linux_tar.gz": "https://github.com/toggl/toggldesktop/releases/download/v7.4.122/toggldesktop_linux_x86_64-7_4_122.tar.gz",
-            "linux_deb64": "https://github.com/toggl/toggldesktop/releases/download/v7.4.122/toggldesktop_7.4.122_amd64.deb"
+            "version": "7.4.528",
+            "linux_tar.gz": "https://github.com/toggl/toggldesktop/releases/download/v7.4.528/toggldesktop_linux_x86_64-7_4_528.tar.gz",
+            "linux_deb64": "https://github.com/toggl/toggldesktop/releases/download/v7.4.528/toggldesktop_7.4.528_amd64.deb"
         }
     }
 }
