@@ -31,4 +31,5 @@
 - (IBAction)onHideMenuItem:(id)sender;
 - (IBAction)onSendFeedbackMainMenuItem:(id)sender;
 - (IBAction)onConsoleMenuItem:(id)sender;
+- (NSString *)currentChannel;
 @end
