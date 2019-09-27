@@ -40,6 +40,7 @@
 		3CE30E022052BD8B00AF2E2A /* AutoCompleteTableContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE30E012052BD8B00AF2E2A /* AutoCompleteTableContainer.m */; };
 		3CFE547E201781A7006B673A /* libcrypto.1.1.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3CFE546D201781A5006B673A /* libcrypto.1.1.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		3CFE547F201781A7006B673A /* libssl.1.1.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3CFE547D201781A5006B673A /* libssl.1.1.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		5B29B9409F01EC0E842DE86D /* Pods_TogglDesktop.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB480B234BC7336AAC1F952E /* Pods_TogglDesktop.framework */; };
 		69FC17F517E6534400B96425 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69FC17F417E6534400B96425 /* Cocoa.framework */; };
 		69FC17FF17E6534400B96425 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 69FC17FD17E6534400B96425 /* InfoPlist.strings */; };
 		69FC180117E6534400B96425 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 69FC180017E6534400B96425 /* main.m */; };
@@ -75,12 +76,6 @@
 		749CB8CC18167D6E00814841 /* PreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 749CB8CA18167D6E00814841 /* PreferencesWindowController.m */; };
 		749CB8CD18167D6E00814841 /* PreferencesWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 749CB8CB18167D6E00814841 /* PreferencesWindowController.xib */; };
 		74A7346A18297DD100525BBC /* ConvertHexColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 74A7346918297DD100525BBC /* ConvertHexColor.m */; };
-		74AA9471180909F50000539F /* GTMHTTPFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 74AA9467180909F50000539F /* GTMHTTPFetcher.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		74AA9472180909F50000539F /* GTMHTTPFetchHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 74AA9469180909F50000539F /* GTMHTTPFetchHistory.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		74AA9473180909F50000539F /* GTMOAuth2Authentication.m in Sources */ = {isa = PBXBuildFile; fileRef = 74AA946B180909F50000539F /* GTMOAuth2Authentication.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		74AA9474180909F50000539F /* GTMOAuth2SignIn.m in Sources */ = {isa = PBXBuildFile; fileRef = 74AA946D180909F50000539F /* GTMOAuth2SignIn.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		74AA9475180909F50000539F /* GTMOAuth2Window.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74AA946E180909F50000539F /* GTMOAuth2Window.xib */; };
-		74AA9476180909F50000539F /* GTMOAuth2WindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74AA9470180909F50000539F /* GTMOAuth2WindowController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		74AA947818090A8E0000539F /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74AA947718090A8E0000539F /* Security.framework */; };
 		74BA5FCF18B6E770009DAA2D /* NSHoverButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BA5FCE18B6E770009DAA2D /* NSHoverButton.m */; };
 		74BAAA0B17F37B140079386F /* TimeEntryViewItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BAAA0A17F37B140079386F /* TimeEntryViewItem.m */; };
@@ -185,6 +180,8 @@
 		BA4AEB9C22C217A4001A898D /* ResizablePopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4AEB9B22C217A4001A898D /* ResizablePopover.swift */; };
 		BA50ED8522705F9E008323FA /* CalendarFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA50ED8422705F9E008323FA /* CalendarFlowLayout.swift */; };
 		BA5AC61623264651007E6C91 /* TimelineCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5AC61523264651007E6C91 /* TimelineCollectionView.swift */; };
+		BA5B0E4E2330E1C6008D1DED /* GoogleAuthenticationServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5B0E4D2330E1C6008D1DED /* GoogleAuthenticationServer.swift */; };
+		BA5B0E502330EA92008D1DED /* GoogleAuthenticationServer+Objc.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5B0E4F2330EA92008D1DED /* GoogleAuthenticationServer+Objc.swift */; };
 		BA6572A6224DFA6F00BA4C60 /* RGB.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6572A0224DFA6E00BA4C60 /* RGB.swift */; };
 		BA6572A7224DFA6F00BA4C60 /* HSBGen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6572A1224DFA6E00BA4C60 /* HSBGen.swift */; };
 		BA6572A8224DFA6F00BA4C60 /* CurrentColorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6572A2224DFA6F00BA4C60 /* CurrentColorView.swift */; };
@@ -590,6 +587,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3A54C9591227E723FEC0DB85 /* Pods-TogglDesktop.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TogglDesktop.debug.xcconfig"; path = "Target Support Files/Pods-TogglDesktop/Pods-TogglDesktop.debug.xcconfig"; sourceTree = "<group>"; };
 		3C0158EF1C7B414E00FE63AA /* LoadMoreCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoadMoreCell.xib; sourceTree = "<group>"; };
 		3C07B758193C88AE00ED6E6F /* NSCustomTimerComboBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSCustomTimerComboBox.h; sourceTree = "<group>"; };
 		3C07B759193C88AE00ED6E6F /* NSCustomTimerComboBox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSCustomTimerComboBox.m; sourceTree = "<group>"; };
@@ -706,17 +704,6 @@
 		749CB8CB18167D6E00814841 /* PreferencesWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PreferencesWindowController.xib; sourceTree = SOURCE_ROOT; };
 		74A7346818297DD100525BBC /* ConvertHexColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConvertHexColor.h; sourceTree = "<group>"; };
 		74A7346918297DD100525BBC /* ConvertHexColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConvertHexColor.m; sourceTree = "<group>"; };
-		74AA9466180909F50000539F /* GTMHTTPFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GTMHTTPFetcher.h; path = "../../../../third_party/gtm-oauth2-read-only/HTTPFetcher/GTMHTTPFetcher.h"; sourceTree = "<group>"; };
-		74AA9467180909F50000539F /* GTMHTTPFetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GTMHTTPFetcher.m; path = "../../../../third_party/gtm-oauth2-read-only/HTTPFetcher/GTMHTTPFetcher.m"; sourceTree = "<group>"; };
-		74AA9468180909F50000539F /* GTMHTTPFetchHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GTMHTTPFetchHistory.h; path = "../../../../third_party/gtm-oauth2-read-only/HTTPFetcher/GTMHTTPFetchHistory.h"; sourceTree = "<group>"; };
-		74AA9469180909F50000539F /* GTMHTTPFetchHistory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GTMHTTPFetchHistory.m; path = "../../../../third_party/gtm-oauth2-read-only/HTTPFetcher/GTMHTTPFetchHistory.m"; sourceTree = "<group>"; };
-		74AA946A180909F50000539F /* GTMOAuth2Authentication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GTMOAuth2Authentication.h; path = "../../../../third_party/gtm-oauth2-read-only/Source/GTMOAuth2Authentication.h"; sourceTree = "<group>"; };
-		74AA946B180909F50000539F /* GTMOAuth2Authentication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GTMOAuth2Authentication.m; path = "../../../../third_party/gtm-oauth2-read-only/Source/GTMOAuth2Authentication.m"; sourceTree = "<group>"; };
-		74AA946C180909F50000539F /* GTMOAuth2SignIn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GTMOAuth2SignIn.h; path = "../../../../third_party/gtm-oauth2-read-only/Source/GTMOAuth2SignIn.h"; sourceTree = "<group>"; };
-		74AA946D180909F50000539F /* GTMOAuth2SignIn.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GTMOAuth2SignIn.m; path = "../../../../third_party/gtm-oauth2-read-only/Source/GTMOAuth2SignIn.m"; sourceTree = "<group>"; };
-		74AA946E180909F50000539F /* GTMOAuth2Window.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = GTMOAuth2Window.xib; path = "../../../../third_party/gtm-oauth2-read-only/Source/Mac/GTMOAuth2Window.xib"; sourceTree = "<group>"; };
-		74AA946F180909F50000539F /* GTMOAuth2WindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GTMOAuth2WindowController.h; path = "../../../../third_party/gtm-oauth2-read-only/Source/Mac/GTMOAuth2WindowController.h"; sourceTree = "<group>"; };
-		74AA9470180909F50000539F /* GTMOAuth2WindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GTMOAuth2WindowController.m; path = "../../../../third_party/gtm-oauth2-read-only/Source/Mac/GTMOAuth2WindowController.m"; sourceTree = "<group>"; };
 		74AA947718090A8E0000539F /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		74B680A8180759C300B697AA /* TogglDesktopLibrary.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TogglDesktopLibrary.xcodeproj; path = ../../../lib/osx/TogglDesktopLibrary.xcodeproj; sourceTree = "<group>"; };
 		74BA5FCD18B6E770009DAA2D /* NSHoverButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSHoverButton.h; sourceTree = "<group>"; };
@@ -748,6 +735,7 @@
 		95C0707618CDB67300A34D0D /* NSCustomComboBoxCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSCustomComboBoxCell.m; sourceTree = "<group>"; };
 		95C0707818CDB91500A34D0D /* NSCustomComboBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSCustomComboBox.h; sourceTree = "<group>"; };
 		95C0707918CDB91500A34D0D /* NSCustomComboBox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSCustomComboBox.m; sourceTree = "<group>"; };
+		B671ACF75B3267B013176BD7 /* Pods-TogglDesktop.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TogglDesktop.release.xcconfig"; path = "Target Support Files/Pods-TogglDesktop/Pods-TogglDesktop.release.xcconfig"; sourceTree = "<group>"; };
 		BA013FF4225705B6000E5B91 /* HoverTableCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoverTableCellView.swift; sourceTree = "<group>"; };
 		BA01404522570805000E5B91 /* TagCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagCellView.swift; sourceTree = "<group>"; };
 		BA0140472257080F000E5B91 /* TagCellView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TagCellView.xib; sourceTree = "<group>"; };
@@ -832,6 +820,8 @@
 		BA4AEB9B22C217A4001A898D /* ResizablePopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResizablePopover.swift; sourceTree = "<group>"; };
 		BA50ED8422705F9E008323FA /* CalendarFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarFlowLayout.swift; sourceTree = "<group>"; };
 		BA5AC61523264651007E6C91 /* TimelineCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineCollectionView.swift; sourceTree = "<group>"; };
+		BA5B0E4D2330E1C6008D1DED /* GoogleAuthenticationServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleAuthenticationServer.swift; sourceTree = "<group>"; };
+		BA5B0E4F2330EA92008D1DED /* GoogleAuthenticationServer+Objc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GoogleAuthenticationServer+Objc.swift"; sourceTree = "<group>"; };
 		BA6572A0224DFA6E00BA4C60 /* RGB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RGB.swift; sourceTree = "<group>"; };
 		BA6572A1224DFA6E00BA4C60 /* HSBGen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HSBGen.swift; sourceTree = "<group>"; };
 		BA6572A2224DFA6F00BA4C60 /* CurrentColorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrentColorView.swift; sourceTree = "<group>"; };
@@ -956,6 +946,7 @@
 		C5DA1FC117F1B38B001C4565 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = SOURCE_ROOT; };
 		C5DA1FC217F1B38B001C4565 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = SOURCE_ROOT; };
 		C5DA1FC317F1B38B001C4565 /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = SOURCE_ROOT; };
+		EB480B234BC7336AAC1F952E /* Pods_TogglDesktop.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TogglDesktop.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -976,6 +967,7 @@
 				BAD858C7228EAE6500226C71 /* Bugsnag.framework in Frameworks */,
 				74033C9717EC1DE100CA53D3 /* libc++.dylib in Frameworks */,
 				69FC17F517E6534400B96425 /* Cocoa.framework in Frameworks */,
+				5B29B9409F01EC0E842DE86D /* Pods_TogglDesktop.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1006,6 +998,15 @@
 				3C53D14A224B416900674DC8 /* TimelineLines.m */,
 			);
 			path = Timeline;
+		};
+		3A742A9261BE0A8B078F1749 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				3A54C9591227E723FEC0DB85 /* Pods-TogglDesktop.debug.xcconfig */,
+				B671ACF75B3267B013176BD7 /* Pods-TogglDesktop.release.xcconfig */,
+			);
+			name = Pods;
+			path = ../Pods;
 			sourceTree = "<group>";
 		};
 		3C6B246F203E01B70063FC08 /* AutoComplete */ = {
@@ -1051,7 +1052,6 @@
 				74B680A8180759C300B697AA /* TogglDesktopLibrary.xcodeproj */,
 				BA6E86A521DDB331005E2451 /* Sparkle.xcodeproj */,
 				BA7DB6BB21F9C7660059239B /* MASShortcut.xcodeproj */,
-				74E1682E180F269F0026261C /* gtm */,
 				74E857AA194F8807007A88B9 /* ssl */,
 				BA712EAF21BF904E00A2D8DD /* Feature */,
 				BA1B7FA122E5D52F001333D9 /* Swift */,
@@ -1060,6 +1060,7 @@
 				69FC17F317E6534400B96425 /* Frameworks */,
 				69FC17F217E6534400B96425 /* Products */,
 				3C1E013E19D2DAE300DBF9A5 /* dsa_pub.pem */,
+				3A742A9261BE0A8B078F1749 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1088,6 +1089,7 @@
 				69FC17F417E6534400B96425 /* Cocoa.framework */,
 				69FC181217E6534500B96425 /* SenTestingKit.framework */,
 				69FC17F617E6534400B96425 /* Other Frameworks */,
+				EB480B234BC7336AAC1F952E /* Pods_TogglDesktop.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1273,24 +1275,6 @@
 				749A3A6F18D889BE000AD2DB /* Fuzz Testing */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		74E1682E180F269F0026261C /* gtm */ = {
-			isa = PBXGroup;
-			children = (
-				74AA9466180909F50000539F /* GTMHTTPFetcher.h */,
-				74AA9467180909F50000539F /* GTMHTTPFetcher.m */,
-				74AA9468180909F50000539F /* GTMHTTPFetchHistory.h */,
-				74AA9469180909F50000539F /* GTMHTTPFetchHistory.m */,
-				74AA946A180909F50000539F /* GTMOAuth2Authentication.h */,
-				74AA946B180909F50000539F /* GTMOAuth2Authentication.m */,
-				74AA946C180909F50000539F /* GTMOAuth2SignIn.h */,
-				74AA946D180909F50000539F /* GTMOAuth2SignIn.m */,
-				74AA946E180909F50000539F /* GTMOAuth2Window.xib */,
-				74AA946F180909F50000539F /* GTMOAuth2WindowController.h */,
-				74AA9470180909F50000539F /* GTMOAuth2WindowController.m */,
-			);
-			name = gtm;
 			sourceTree = "<group>";
 		};
 		74E857AA194F8807007A88B9 /* ssl */ = {
@@ -1498,6 +1482,15 @@
 			path = Cells;
 			sourceTree = "<group>";
 		};
+		BA5B0E2E2330E1A8008D1DED /* GoogleLogin */ = {
+			isa = PBXGroup;
+			children = (
+				BA5B0E4D2330E1C6008D1DED /* GoogleAuthenticationServer.swift */,
+				BA5B0E4F2330EA92008D1DED /* GoogleAuthenticationServer+Objc.swift */,
+			);
+			path = GoogleLogin;
+			sourceTree = "<group>";
+		};
 		BA657280224DFA4F00BA4C60 /* ColorWheel */ = {
 			isa = PBXGroup;
 			children = (
@@ -1569,6 +1562,7 @@
 			isa = PBXGroup;
 			children = (
 				BA65A1FE22B7807300F895FD /* Timeline */,
+				BA5B0E2E2330E1A8008D1DED /* GoogleLogin */,
 				BA13D1E42269B4F600EB3833 /* Calendar */,
 				BA657280224DFA4F00BA4C60 /* ColorWheel */,
 				BA34F0DB22439BF300C27A15 /* TimeEntryEditor */,
@@ -1790,6 +1784,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 69FC182217E6534500B96425 /* Build configuration list for PBXNativeTarget "TogglDesktop" */;
 			buildPhases = (
+				1276406FB7B983D0C81B35AE /* [CP] Check Pods Manifest.lock */,
 				69FC17ED17E6534400B96425 /* Sources */,
 				69FC17EE17E6534400B96425 /* Frameworks */,
 				69FC17EF17E6534400B96425 /* Resources */,
@@ -1798,6 +1793,7 @@
 				BA3BF8502315455B00721020 /* Copy Files for Library in Debug mode */,
 				7407F1F41AA80466000380C4 /* Run Script (Fix dynamic library paths in Frameworks) */,
 				BA6406F121C8FC690074BC96 /* Run Formatter */,
+				CE4DD35122BF90B10398A0A6 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -2144,7 +2140,6 @@
 				3C0158F01C7B414E00FE63AA /* LoadMoreCell.xib in Resources */,
 				BA13D21B2269E0B500EB3833 /* CalendarViewController.xib in Resources */,
 				74D1D27417EB72D900E709B0 /* TimerEditViewController.xib in Resources */,
-				74AA9475180909F50000539F /* GTMOAuth2Window.xib in Resources */,
 				3C1E013F19D2DAE300DBF9A5 /* dsa_pub.pem in Resources */,
 				BA75FF2422BCC1EA00D3F08C /* TimelineTimeLabelCell.xib in Resources */,
 			);
@@ -2153,6 +2148,28 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		1276406FB7B983D0C81B35AE /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-TogglDesktop-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 		7407F1F41AA80466000380C4 /* Run Script (Fix dynamic library paths in Frameworks) */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -2199,6 +2216,28 @@
 			shellPath = /bin/sh;
 			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nset -e\n\nif ! which uncrustify > /dev/null; then\n    echo \"warning: Uncrustify is not installed.\"\nelse\n    cd $SRCROOT/../../../../\n    make fmt\nfi\n";
 		};
+		CE4DD35122BF90B10398A0A6 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-TogglDesktop/Pods-TogglDesktop-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/AppAuth/AppAuth.framework",
+				"${BUILT_PRODUCTS_DIR}/GTMAppAuth/GTMAppAuth.framework",
+				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AppAuth.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMAppAuth.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TogglDesktop/Pods-TogglDesktop-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -2216,6 +2255,7 @@
 				BA65A21F22B7808700F895FD /* TimelineDashboardViewController.swift in Sources */,
 				BA75FF2F22BCC56C00D3F08C /* TimelineTimestamp.swift in Sources */,
 				BA13D2152269C01500EB3833 /* Date+Utils.swift in Sources */,
+				BA5B0E502330EA92008D1DED /* GoogleAuthenticationServer+Objc.swift in Sources */,
 				BAAF56A02223DF9A003D0D73 /* VertificalTimeEntryFlowLayout.swift in Sources */,
 				BA01E8A1232F77B3006B93EC /* ClickableImageView.m in Sources */,
 				C5CB7F0417F43EE100A2AEB1 /* TimeEntryCell.m in Sources */,
@@ -2237,7 +2277,6 @@
 				3C6B2488203E01D90063FC08 /* AutoCompleteTable.m in Sources */,
 				BA47920022F0479200E24F79 /* NoInteractionView.swift in Sources */,
 				BA412C1D224E0D61003CA17A /* ClientDataSource.swift in Sources */,
-				74AA9472180909F50000539F /* GTMHTTPFetchHistory.m in Sources */,
 				BA6EB8402248CBE3003BB8EF /* ProjectStorage.swift in Sources */,
 				BAAF567E2223CAC5003D0D73 /* NSButton+TextColor.swift in Sources */,
 				BA4791F722F0478A00E24F79 /* NotificationCenter+MainThread.swift in Sources */,
@@ -2304,6 +2343,7 @@
 				BA24E772230BDBB800B1D4B2 /* TimelineBaseCell.swift in Sources */,
 				BA4059AF221D215A002969B8 /* TimeHeaderView.swift in Sources */,
 				74AA9476180909F50000539F /* GTMOAuth2WindowController.m in Sources */,
+				BA89CB392265EA4400D21584 /* String+Search.swift in Sources */,
 				BA9C2E08224C854C002AD2A1 /* ProjectColor.swift in Sources */,
 				BA01404622570805000E5B91 /* TagCellView.swift in Sources */,
 				BA7D334B2248944C00B953A8 /* AutoCompleteView.swift in Sources */,
@@ -2347,6 +2387,7 @@
 				3C3AF64E20ACC6280088A3A6 /* CountryViewItem.m in Sources */,
 				BA13D2062269B7C400EB3833 /* CalendarViewController.swift in Sources */,
 				74AA9471180909F50000539F /* GTMHTTPFetcher.m in Sources */,
+				BAF6319C21E6F868002DD6AB /* NotificationCenter+MainThread.swift in Sources */,
 				BAFBFCC821CD1D3C004B443F /* SystemService.m in Sources */,
 				BAF50DF821A2A18D0090BA95 /* AppIconFactory.m in Sources */,
 				74A7346A18297DD100525BBC /* ConvertHexColor.m in Sources */,
@@ -2379,11 +2420,11 @@
 				BA014050225710FD000E5B91 /* TagAutoCompleteTextField.swift in Sources */,
 				BAE8E845224CA9AC006D534E /* ProjectAutoCompleteTextField.swift in Sources */,
 				BA6572A7224DFA6F00BA4C60 /* HSBGen.swift in Sources */,
+				BA5B0E4E2330E1C6008D1DED /* GoogleAuthenticationServer.swift in Sources */,
 				BA8B4C752251FAD500592BC7 /* WorkspaceCellView.swift in Sources */,
 				BA2E3F2C22375E640035D034 /* NSView+Appearance.swift in Sources */,
 				743D782A182791FA00978BCC /* idler.c in Sources */,
 				BA9C2DF8224C7E44002AD2A1 /* ProjectCreationView.swift in Sources */,
-				74AA9473180909F50000539F /* GTMOAuth2Authentication.m in Sources */,
 				BA412BFC224E0CBE003CA17A /* ClientStorage.swift in Sources */,
 				BA7B4C7C21C293E700B75B14 /* String+Optional.swift in Sources */,
 				BA6572A8224DFA6F00BA4C60 /* CurrentColorView.swift in Sources */,
@@ -2567,6 +2608,7 @@
 		};
 		69FC182317E6534500B96425 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3A54C9591227E723FEC0DB85 /* Pods-TogglDesktop.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -2623,6 +2665,7 @@
 		};
 		69FC182417E6534500B96425 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B671ACF75B3267B013176BD7 /* Pods-TogglDesktop.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;

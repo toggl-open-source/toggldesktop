@@ -625,15 +625,6 @@ error Database::LoadProxySettings(
     return last_error("LoadProxySettings");
 }
 
-error Database::SetCompactMode(
-    const bool value) {
-    return setSettingsValue("compact_mode", value);
-}
-
-error Database::GetCompactMode(bool *result) {
-    return getSettingsValue("compact_mode", result);
-}
-
 error Database::SetMiniTimerVisible(
     const bool value) {
     return setSettingsValue("mini_timer_visible", value);
@@ -2168,7 +2159,7 @@ error Database::saveModel(
             logger().debug(ss.str());
             if (model->ID()) {
                 *session_ <<
-                          "insert into time_entries(id, uid, description, "
+                          "insert or replace into time_entries(id, uid, description, "
                           "wid, guid, pid, tid, billable, "
                           "duronly, ui_modified_at, "
                           "start, stop, duration, "
@@ -2202,7 +2193,7 @@ error Database::saveModel(
                           now;
             } else {
                 *session_ <<
-                          "insert into time_entries(uid, description, wid, "
+                          "insert or replace into time_entries(uid, description, wid, "
                           "guid, pid, tid, billable, "
                           "duronly, ui_modified_at, "
                           "start, stop, duration, "

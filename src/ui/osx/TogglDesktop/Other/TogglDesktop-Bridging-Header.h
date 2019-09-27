@@ -22,3 +22,4 @@
 #import "ConvertHexColor.h"
 #import "BetterFocusAutoCompleteInput.h"
 #import "Settings.h"
+#import "AppDelegate.h"

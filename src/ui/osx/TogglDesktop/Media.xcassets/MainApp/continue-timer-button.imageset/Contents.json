@@ -2,12 +2,12 @@
   "images" : [
     {
       "idiom" : "mac",
-      "filename" : "continue.png",
+      "filename" : "aqua.png",
       "scale" : "1x"
     },
     {
       "idiom" : "mac",
-      "filename" : "continue@2x.png",
+      "filename" : "aqua@2x.png",
       "scale" : "2x"
     }
   ],

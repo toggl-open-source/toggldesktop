@@ -1213,14 +1213,6 @@ error Migrations::migrateSettings() {
     }
 
     err = db_->Migrate(
-        "settings.compact_mode",
-        "ALTER TABLE settings "
-        "ADD COLUMN compact_mode INTEGER NOT NULL DEFAULT 0;");
-    if (err != noError) {
-        return err;
-    }
-
-    err = db_->Migrate(
         "settings.keep_end_time_fixed",
         "ALTER TABLE settings "
         "ADD COLUMN keep_end_time_fixed INTEGER NOT NULL DEFAULT 0;");

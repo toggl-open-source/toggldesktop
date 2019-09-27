@@ -1961,17 +1961,6 @@ void Context::SetMiniTimerW(const int64_t y) {
     displayError(db()->SetMiniTimerW(y));
 }
 
-void Context::SetCompactMode(
-    const bool value) {
-    displayError(db()->SetCompactMode(value));
-}
-
-bool Context::GetCompactMode() {
-    bool value(false);
-    displayError(db()->GetCompactMode(&value));
-    return value;
-}
-
 void Context::SetMiniTimerVisible(
     const bool value) {
     displayError(db()->SetMiniTimerVisible(value));

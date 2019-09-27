@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14490.70"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -62,7 +62,7 @@
                             <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" image="time-entry-dot" id="vYQ-WX-2jd"/>
                         </imageView>
                         <textField horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="deS-e6-3Ui" customClass="ProjectTextField">
-                            <rect key="frame" x="14" y="14" width="237" height="18"/>
+                            <rect key="frame" x="14" y="14" width="236" height="18"/>
                             <textFieldCell key="cell" lineBreakMode="truncatingTail" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" alignment="left" title="NEW - TOGGL - project NEW - TOGGL - project NEW - TOGGL - project NEW - TOGGL - project" placeholderString="+ Add project" id="apI-Za-Hk2">
                                 <font key="font" metaFont="cellTitle"/>
                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -157,12 +157,12 @@
                     <rect key="frame" x="0.0" y="-2" width="400" height="5"/>
                 </box>
                 <button toolTip="Continue with this time entry" horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Gcj-ki-Hus">
-                    <rect key="frame" x="371" y="25" width="14" height="14"/>
+                    <rect key="frame" x="361" y="15" width="34" height="34"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="14" id="So6-zJ-3fL"/>
-                        <constraint firstAttribute="height" constant="14" id="a1q-cQ-frr"/>
+                        <constraint firstAttribute="width" constant="34" id="So6-zJ-3fL"/>
+                        <constraint firstAttribute="height" constant="34" id="a1q-cQ-frr"/>
                     </constraints>
-                    <buttonCell key="cell" type="bevel" bezelStyle="regularSquare" image="continue-timer-button" imagePosition="only" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="RwR-fM-rUm">
+                    <buttonCell key="cell" type="bevel" bezelStyle="regularSquare" image="continue-timer-button" imagePosition="only" alignment="center" inset="2" id="RwR-fM-rUm">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
@@ -187,7 +187,7 @@
             </subviews>
             <constraints>
                 <constraint firstItem="xwb-FG-Z4X" firstAttribute="centerY" secondItem="jHy-af-Yta" secondAttribute="centerY" id="0wK-iR-SBw"/>
-                <constraint firstAttribute="trailing" secondItem="Gcj-ki-Hus" secondAttribute="trailing" constant="15" id="4cj-kh-iQ7"/>
+                <constraint firstAttribute="trailing" secondItem="Gcj-ki-Hus" secondAttribute="trailing" constant="5" id="4cj-kh-iQ7"/>
                 <constraint firstItem="rE8-8i-mr7" firstAttribute="centerY" secondItem="jHy-af-Yta" secondAttribute="centerY" id="4xh-lx-h9r"/>
                 <constraint firstAttribute="trailing" secondItem="wve-Qj-t8r" secondAttribute="trailing" id="B02-AG-IS3"/>
                 <constraint firstItem="Gcj-ki-Hus" firstAttribute="centerY" secondItem="jHy-af-Yta" secondAttribute="centerY" id="Bn0-Rz-zD4"/>
@@ -201,7 +201,7 @@
                 <constraint firstAttribute="trailing" secondItem="Wbh-gk-Ywg" secondAttribute="trailing" id="dP9-nK-k9p"/>
                 <constraint firstItem="xwb-FG-Z4X" firstAttribute="leading" secondItem="rE8-8i-mr7" secondAttribute="trailing" constant="5" id="dyZ-rK-VoT"/>
                 <constraint firstItem="Uu2-26-kM4" firstAttribute="top" secondItem="jHy-af-Yta" secondAttribute="top" id="e3F-wU-zDY"/>
-                <constraint firstItem="Gcj-ki-Hus" firstAttribute="leading" secondItem="xwb-FG-Z4X" secondAttribute="trailing" constant="10" id="gWS-c5-fSx"/>
+                <constraint firstItem="Gcj-ki-Hus" firstAttribute="leading" secondItem="xwb-FG-Z4X" secondAttribute="trailing" id="gWS-c5-fSx"/>
                 <constraint firstItem="dmW-8k-lRI" firstAttribute="centerY" secondItem="jHy-af-Yta" secondAttribute="centerY" id="ifn-MJ-L9a"/>
                 <constraint firstItem="Uu2-26-kM4" firstAttribute="centerY" secondItem="jHy-af-Yta" secondAttribute="centerY" id="kif-Wu-VlX"/>
                 <constraint firstAttribute="bottom" secondItem="Uu2-26-kM4" secondAttribute="bottom" id="py3-hW-vJF"/>
@@ -213,7 +213,7 @@
         </customView>
     </objects>
     <resources>
-        <image name="continue-timer-button" width="10" height="10"/>
+        <image name="continue-timer-button" width="14" height="14"/>
         <image name="syncing-error" width="19" height="20"/>
         <image name="time-entry-billable" width="17" height="17"/>
         <image name="time-entry-dot" width="8" height="8"/>

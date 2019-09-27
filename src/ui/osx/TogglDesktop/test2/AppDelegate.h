@@ -11,7 +11,10 @@
 @class AutocompleteItem;
 @class Reachability;
 
+@protocol OIDExternalUserAgentSession;
+
 @interface AppDelegate : NSObject <NSApplicationDelegate, NSUserNotificationCenterDelegate>
+@property (strong, nonatomic) id<OIDExternalUserAgentSession> currentAuthorizationFlow;
 @property (strong, nonatomic) NSStatusItem *statusItem;
 @property (strong, nonatomic) Reachability *reach;
 - (IBAction)onPreferencesMenuItem:(id)sender;

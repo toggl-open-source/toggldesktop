@@ -57,7 +57,7 @@ Toggl built and signed apps for all platforms
 ## Linux
 
 <br>
-<a href="https://toggl.github.io/toggldesktop/download/linux_tar.gz-stable//">Tarball</a>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;<a href='https://flathub.org/apps/details/com.toggl.TogglDesktop'>Flathub</a>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;<a href='https://snapcraft.io/toggldesktop'>Snap Store</a>
+<a href="https://toggl.github.io/toggldesktop/download/linux_tar.gz-stable//">Tarball</a>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;<a href='https://flathub.org/apps/details/com.toggl.TogglDesktop'>Flathub</a>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;<a href='https://snapcraft.io/toggldesktop'>Snap Store</a> <i>(still in alpha phase)</i>
 <br/>
 <br/>
 <i>Only 64bit is supported</i>
@@ -97,11 +97,15 @@ $ make uitest
 - macOS 10.14+, Xcode 10.2+ and Swift 4+
 
 ### Build
-- Build dependencies
 ```bash
+
+# Build all dependencies
 $ make deps
+
+# Prepare cocoapod
+$ make init_cocoapod
 ```
-- Open `src/ui/osx/TogglDesktop/TogglDesktop.xcodeproj`
+- Open workspace at `src/ui/osx/TogglDesktop.xcworkspace`
 - Select TogglDesktop scheme and build.
 
 ## Linux

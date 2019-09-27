@@ -23,7 +23,7 @@ public class SingleInstanceManager<T> : Microsoft.VisualBasic.ApplicationService
 
     protected override void OnStartupNextInstance(Microsoft.VisualBasic.ApplicationServices.StartupNextInstanceEventArgs e)
     {
-        app.MainWindow.ShowOnTop();
+        app.MainWindow?.ShowOnTop();
     }
 }
 }
