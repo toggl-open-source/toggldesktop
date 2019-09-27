@@ -95,6 +95,10 @@ $ make uitest
 ## macOS
 ### Requirements
 - macOS 10.14+, Xcode 10.2+ and Swift 4+
+- Install Bundler
+```bash
+$ sudo gem install bundler
+```
 
 ### Build
 ```bash
