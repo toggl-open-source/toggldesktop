@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -108,11 +109,16 @@ namespace TogglDesktop
                 this.endTimeTextBox.IsEnabled = !isCurrentlyRunning;
                 this.startDatePicker.IsEnabled = !isCurrentlyRunning;
 
+                var startDateTime = Toggl.DateTimeFromUnix(timeEntry.Started);
+                var endDateTime = Toggl.DateTimeFromUnix(timeEntry.Ended);
+
                 setText(this.descriptionTextBox, timeEntry.Description, open);
                 setTime(this.durationTextBox, timeEntry.Duration, open);
                 setTime(this.startTimeTextBox, timeEntry.StartTimeString, open);
+                this.startTimeTextBox.ToolTip = startDateTime.ToString("T", CultureInfo.CurrentCulture);
                 setTime(this.endTimeTextBox, timeEntry.EndTimeString, open);
-                this.startDatePicker.SelectedDate = Toggl.DateTimeFromUnix(timeEntry.Started);
+                this.endTimeTextBox.ToolTip = endDateTime.ToString("T", CultureInfo.CurrentCulture);
+                this.startDatePicker.SelectedDate = startDateTime;
                 if (isDifferentTimeEntry)
                 {
                     this.clearUndoHistory();

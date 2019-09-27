@@ -86,6 +86,14 @@ final class EditorViewController: NSViewController {
                 NSAttributedString.Key.foregroundColor: NSColor.labelColor]
     }()
     fileprivate var isRegisterTimerNotification = false
+    private lazy var dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .none
+        formatter.timeStyle = .medium
+        formatter.timeZone = TimeZone.current
+        formatter.locale = Locale.current
+        return formatter
+    }()
 
     // MARK: View Cyclex
 
@@ -353,6 +361,8 @@ extension EditorViewController {
         durationTextField.stringValue = timeEntry.duration
         startAtTextField.stringValue = timeEntry.startTimeString
         endAtTextField.stringValue = timeEntry.endTimeString
+        startAtTextField.toolTip = dateFormatter.string(from: timeEntry.started)
+        endAtTextField.toolTip = dateFormatter.string(from: timeEntry.ended)
     }
 
     fileprivate func updateNextKeyViews() {
