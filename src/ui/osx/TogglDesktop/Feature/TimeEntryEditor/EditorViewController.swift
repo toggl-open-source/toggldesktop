@@ -90,6 +90,8 @@ final class EditorViewController: NSViewController {
         let formatter = DateFormatter()
         formatter.dateStyle = .none
         formatter.timeStyle = .medium
+        formatter.timeZone = TimeZone.current
+        formatter.locale = Locale.current
         return formatter
     }()
 
