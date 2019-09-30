@@ -72,6 +72,10 @@ parts:
     override-build: |
       snapcraftctl build
       mkdir -pv $SNAPCRAFT_PART_INSTALL/qt5-platform
+    override-prime: |
+      ls /usr/lib/x86_64-linux-gnu/libQt5Web*
+      execstack --clear-execstack /usr/lib/x86_64-linux-gnu/libQt5WebEngineCore.so.5.9.5
+      snapcraftctl prime
 
   toggldesktop:
     source-type: git
