@@ -232,6 +232,7 @@
 		BAE6379A22B225C70024DD08 /* AddTagButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAE6379922B225C70024DD08 /* AddTagButton.swift */; };
 		BAE8E845224CA9AC006D534E /* ProjectAutoCompleteTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAE8E844224CA9AC006D534E /* ProjectAutoCompleteTextField.swift */; };
 		BAF38FEF2241FF20009147D7 /* FloatingErrorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA276A132240F5B500810C51 /* FloatingErrorView.xib */; };
+		BAF3ACCC2341F8AC00E41B33 /* GlobalTouchbarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAF3ACCB2341F8AC00E41B33 /* GlobalTouchbarButton.swift */; };
 		BAF50DE521A29FED0090BA95 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BAF50DE421A29FED0090BA95 /* Images.xcassets */; };
 		BAF50DF821A2A18D0090BA95 /* AppIconFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = BAF50DF721A2A18D0090BA95 /* AppIconFactory.m */; };
 		BAF6319C21E6F868002DD6AB /* NotificationCenter+MainThread.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAF6319B21E6F868002DD6AB /* NotificationCenter+MainThread.swift */; };
@@ -590,6 +591,7 @@
 		BAE49CAD222FC1C900773814 /* TimerContainerBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerContainerBox.swift; sourceTree = "<group>"; };
 		BAE6379922B225C70024DD08 /* AddTagButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTagButton.swift; sourceTree = "<group>"; };
 		BAE8E844224CA9AC006D534E /* ProjectAutoCompleteTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectAutoCompleteTextField.swift; sourceTree = "<group>"; };
+		BAF3ACCB2341F8AC00E41B33 /* GlobalTouchbarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalTouchbarButton.swift; sourceTree = "<group>"; };
 		BAF50DE421A29FED0090BA95 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = TogglDesktop/Images.xcassets; sourceTree = "<group>"; };
 		BAF50DF621A2A18D0090BA95 /* AppIconFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppIconFactory.h; sourceTree = "<group>"; };
 		BAF50DF721A2A18D0090BA95 /* AppIconFactory.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppIconFactory.m; sourceTree = "<group>"; };
@@ -1127,6 +1129,7 @@
 		BA712EAF21BF904E00A2D8DD /* Feature */ = {
 			isa = PBXGroup;
 			children = (
+				BAF3ACCA2341F86300E41B33 /* TouchBar */,
 				BA5B0E2E2330E1A8008D1DED /* GoogleLogin */,
 				BA13D1E42269B4F600EB3833 /* Calendar */,
 				BA657280224DFA4F00BA4C60 /* ColorWheel */,
@@ -1232,6 +1235,14 @@
 				BAD15FFD223A530600A8CCC9 /* TimeEntryEmptyView.xib */,
 			);
 			path = TimeEntryEmptyView;
+			sourceTree = "<group>";
+		};
+		BAF3ACCA2341F86300E41B33 /* TouchBar */ = {
+			isa = PBXGroup;
+			children = (
+				BAF3ACCB2341F8AC00E41B33 /* GlobalTouchbarButton.swift */,
+			);
+			path = TouchBar;
 			sourceTree = "<group>";
 		};
 		BAF50DF521A2A16D0090BA95 /* IconFactory */ = {
@@ -1595,6 +1606,7 @@
 				7438B3D318253CD2002AE43C /* MenuItemTags.m in Sources */,
 				3CE1CAC11C774F2B00D0ADD5 /* LoadMoreCell.m in Sources */,
 				749CB8CC18167D6E00814841 /* PreferencesWindowController.m in Sources */,
+				BAF3ACCC2341F8AC00E41B33 /* GlobalTouchbarButton.swift in Sources */,
 				3C7B4E8D190FA6D200627DC3 /* NSTextFieldVerticallyAligned.m in Sources */,
 				BAB0027F22731248005ECC93 /* DayLabel.swift in Sources */,
 				3C7B4EB3190FB57A00627DC3 /* NSSecureTextFieldVerticallyAligned.m in Sources */,
