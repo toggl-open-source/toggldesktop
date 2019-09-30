@@ -53,6 +53,6 @@ final class GlobalTouchbarButton: NSCustomTouchBarItem {
 extension GlobalTouchbarButton {
 
     @objc fileprivate func buttonOnTap() {
-
+        NotificationCenter.default.post(name: NSNotification.Name(kStartTimer), object: nil)
     }
 }
