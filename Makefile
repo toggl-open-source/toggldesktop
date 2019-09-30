@@ -389,6 +389,8 @@ toggl_test: clean_test objects test_objects
 test_lib: lua toggl_test
 	cp src/ssl/cacert.pem test/.
 	cp -r $(pocolib)/* test/.
+	cp $(openssldir)/libssl.1.1.dylib test/.
+	cp $(openssldir)/libcrypto.1.1.dylib test/.
 	install_name_tool -change /usr/local/lib/libPocoCrypto.$(pocoversion).dylib @loader_path/libPocoCrypto.$(pocoversion).dylib test/libPocoNetSSL.$(pocoversion).dylib
 	install_name_tool -change /usr/local/lib/libPocoCrypto.$(pocoversion).dylib @loader_path/libPocoCrypto.$(pocoversion).dylib test/toggl_test
 	install_name_tool -change /usr/local/lib/libPocoData.$(pocoversion).dylib @loader_path/libPocoData.$(pocoversion).dylib test/libPocoDataSQLite.$(pocoversion).dylib
@@ -413,6 +415,8 @@ test_lib: lua toggl_test
 	install_name_tool -change /usr/local/lib/libPocoXML.$(pocoversion).dylib @loader_path/libPocoXML.$(pocoversion).dylib test/toggl_test
 	install_name_tool -change /usr/local/lib/libPocoXML.$(pocoversion).dylib @loader_path/libPocoXML.$(pocoversion).dylib test/libPocoUtil.$(pocoversion).dylib
 	install_name_tool -change /usr/local/lib/libPocoJSON.$(pocoversion).dylib @loader_path/libPocoJSON.$(pocoversion).dylib test/libPocoUtil.$(pocoversion).dylib
+	install_name_tool -change /usr/local/lib/libssl.1.1.dylib @loader_path/libssl.1.1.dylib test/toggl_test
+	install_name_tool -change /usr/local/lib/libcrypto.1.1.dylib @loader_path/libcrypto.1.1.dylib test/toggl_test
 	cd test && ./toggl_test --gtest_shuffle
 
 test: test_lib
