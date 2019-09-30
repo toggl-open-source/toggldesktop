@@ -301,6 +301,9 @@ build/timeline_event.o: src/timeline_event.cc
 build/context.o: src/context.cc
 	$(cxx) $(cflags) -c src/context.cc -o build/context.o
 
+build/rectangle.o: src/rectangle.cc
+	$(cxx) $(cflags) -c src/rectangle.cc -o build/rectangle.o
+
 build/settings.o: src/settings.cc
 	$(cxx) $(cflags) -c src/settings.cc -o build/settings.o
 
@@ -365,6 +368,7 @@ objects: build/jsoncpp.o \
 	build/timeline_event.o \
 	build/migrations.o \
 	build/context.o \
+	build/rectangle.o \
 	build/toggl_api_private.o \
 	build/toggl_api.o \
 	build/get_focused_window_$(osname).o \
