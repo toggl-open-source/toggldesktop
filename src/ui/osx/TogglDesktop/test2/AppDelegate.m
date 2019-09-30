@@ -48,6 +48,7 @@
 
 // Touch Bar items
 @property (nonatomic, strong) GlobalTouchbarButton *touchItem;
+@property (nonatomic, assign) BOOL isAddedTouchBar;
 
 // Remember some app state
 @property (nonatomic, strong) TimeEntryViewItem *lastKnownRunningTimeEntry;
@@ -157,8 +158,6 @@ void *ctx;
 									 initWithWindowNibName:@"FeedbackWindowController"];
 
 	[self createStatusItem];
-
-	[self setupTouchBar];
 
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(startDisplayIdleNotification:)
@@ -575,6 +574,9 @@ void *ctx;
 			self.idleTimer = nil;
 		}
 	}
+
+	// Touch Bar
+	[self handleTouchBarWithSettings:cmd.settings];
 
 	// Start menubar timer if its enabled
 	self.showMenuBarTimer = cmd.settings.menubar_timer;
@@ -993,14 +995,6 @@ void *ctx;
 	[self updateStatusItem];
 }
 
-- (void)setupTouchBar
-{
-	DFRSystemModalShowsCloseBoxWhenFrontMost(YES);
-	self.touchItem = [GlobalTouchbarButton makeDefault];
-	[NSTouchBarItem addSystemTrayItem:self.touchItem];
-	DFRElementSetControlStripPresenceForIdentifier([GlobalTouchbarButton ID], YES);
-}
-
 - (IBAction)onConsoleMenuItem:(id)sender
 {
 	if (!self.consoleWindowController)
@@ -1244,6 +1238,7 @@ const NSString *appName = @"osx_native_app";
 	self.log_path = [self.app_path stringByAppendingPathComponent:@"toggl_desktop.log"];
 	self.log_level = @"debug";
 	self.systemService = [[SystemService alloc] init];
+	self.isAddedTouchBar = NO;
 
 	[self parseCommandLineArguments];
 
@@ -1799,6 +1794,43 @@ void on_countries(TogglCountryView *first)
 
 	free(str);
 	return channel;
+}
+
+- (void)handleTouchBarWithSettings:(Settings *)settings
+{
+	if (@available(macOS 10.12.2, *))
+	{
+		// Show/Hide
+		if (settings.showTouchBar)
+		{
+			if (self.isAddedTouchBar)
+			{
+				return;
+			}
+
+			// Init if needd
+			if (!self.touchItem)
+			{
+				self.touchItem = [GlobalTouchbarButton makeDefault];
+			}
+
+			DFRSystemModalShowsCloseBoxWhenFrontMost(YES);
+			self.isAddedTouchBar = YES;
+			[NSTouchBarItem addSystemTrayItem:self.touchItem];
+			DFRElementSetControlStripPresenceForIdentifier([GlobalTouchbarButton ID], YES);
+		}
+		else
+		{
+			if (!self.isAddedTouchBar)
+			{
+				return;
+			}
+
+			self.isAddedTouchBar = NO;
+			[NSTouchBarItem removeSystemTrayItem:self.touchItem];
+			DFRElementSetControlStripPresenceForIdentifier([GlobalTouchbarButton ID], NO);
+		}
+	}
 }
 
 @end
