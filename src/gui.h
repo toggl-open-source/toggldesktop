@@ -239,7 +239,8 @@ class Settings {
     , PomodoroBreak(false)
     , PomodoroMinutes(0)
     , PomodoroBreakMinutes(0)
-    , StopEntryOnShutdownSleep(false) {}
+    , StopEntryOnShutdownSleep(false)
+    , ShowTouchBar(true) {}
 
     bool UseProxy;
     std::string ProxyHost;
@@ -274,6 +275,7 @@ class Settings {
     uint64_t PomodoroMinutes;
     uint64_t PomodoroBreakMinutes;
     bool StopEntryOnShutdownSleep;
+    bool ShowTouchBar;
 
     bool operator == (const Settings& other) const;
 };

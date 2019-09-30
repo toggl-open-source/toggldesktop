@@ -125,6 +125,8 @@ class Database {
 
     error SetSettingsAutodetectProxy(const bool &autodetect_proxy);
 
+    error SetSettingsShowTouchBar(const bool &show_touch_bar);
+
     error SetSettingsRemindTimes(
         const std::string &remind_starts,
         const std::string &remind_ends);
@@ -152,6 +154,8 @@ class Database {
 
     error GetKeepEndTimeFixed(
         bool *);
+
+    error GetShowTouchBar(bool *result);
 
     error SetWindowMaximized(
         const bool value);
