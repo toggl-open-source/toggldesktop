@@ -103,6 +103,10 @@ NSString *kInactiveTimerColor = @"#999999";
 												 selector:@selector(stop:)
 													 name:kCommandStop
 												   object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self
+												 selector:@selector(startTimerNotification:)
+													 name:kStartTimer
+												   object:nil];
 
 		self.time_entry = [[TimeEntryViewItem alloc] init];
 
@@ -711,7 +715,7 @@ NSString *kInactiveTimerColor = @"#999999";
 	}
 }
 
-- (void)startNewShortcut:(NSNotification *)notification
+- (void)startTimerNotification:(NSNotification *)notification
 {
 	[self startButtonClicked:self];
 }
