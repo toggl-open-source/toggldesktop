@@ -36,6 +36,7 @@ extern NSString *const kDisplayTimerState;
 extern NSString *const kDisplayUnsyncedItems;
 extern NSString *const kDisplayAutotrackerRules;
 extern NSString *const kDisplayPromotion;
+extern NSString *const kStartTimer;
 
 extern NSString *const kHideDisplayError;
 extern NSString *const kForceCloseEditPopover;
