@@ -207,7 +207,9 @@ extern void *ctx;
 	toggl_set_keep_end_time_fixed(ctx, [Utils stateToBool:[self.changeDurationButton state]]);
 }
 
-- (IBAction)touchBarButtonChanged:(id)sender {
+- (IBAction)touchBarButtonChanged:(id)sender
+{
+	toggl_set_settings_show_touch_bar(ctx, [Utils stateToBool:[self.showTouchBarButton state]]);
 }
 
 - (IBAction)proxyRadioChanged:(id)sender
@@ -499,6 +501,18 @@ const int kUseProxyToConnectToToggl = 2;
 	free(default_project_name);
 
 	[self.changeDurationButton setState:[Utils boolToState:toggl_get_keep_end_time_fixed(ctx)]];
+
+	if (@available(macOS 10.12.2, *))
+	{
+		self.showTouchBarButton.hidden = NO;
+		self.bottomContainerHeight.constant = 58;
+		[self.showTouchBarButton setState:[Utils boolToState:toggl_get_show_touch_bar(ctx)]];
+	}
+	else
+	{
+		self.showTouchBarButton.hidden = YES;
+		self.bottomContainerHeight.constant = 38;
+	}
 }
 
 - (void)selectProxyRadioWithTag:(NSInteger)tag
