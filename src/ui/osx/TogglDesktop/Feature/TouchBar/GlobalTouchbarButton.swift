@@ -9,20 +9,18 @@
 import Cocoa
 
 @available(OSX 10.12.2, *)
+@objcMembers
 final class GlobalTouchbarButton: NSCustomTouchBarItem {
-
-    private struct Constants {
-        static let IDTouchBar = NSTouchBarItem.Identifier("toggl.touchbar")
-    }
 
     // MARK: Variables
 
+    static let ID = NSTouchBarItem.Identifier("toggl.touchbar")
     private let button: NSButton
 
     // MARK: Init
 
     override init(identifier: NSTouchBarItem.Identifier) {
-        let image = NSImage(named: "on")!
+        let image = NSImage(named: "off")!
         image.isTemplate = true
         self.button = NSButton(image: image, target: nil, action: nil)
         self.button.imagePosition = .imageOnly
@@ -37,13 +35,16 @@ final class GlobalTouchbarButton: NSCustomTouchBarItem {
     }
 
     class func makeDefault() -> GlobalTouchbarButton {
-        let item = GlobalTouchbarButton(identifier: Constants.IDTouchBar)
-        return item
+        return GlobalTouchbarButton(identifier: GlobalTouchbarButton.ID)
     }
 
     // MARK: Public
 
-
+    func update(_ iconImage: NSImage) {
+        // This forces the icon to redraw
+        button.image = iconImage
+        button.imagePosition = .imageOnly
+    }
 }
 
 // MARK: Private
