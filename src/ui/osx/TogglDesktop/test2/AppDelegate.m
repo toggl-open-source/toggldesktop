@@ -995,6 +995,7 @@ void *ctx;
 
 - (void)setupTouchBar
 {
+	DFRSystemModalShowsCloseBoxWhenFrontMost(YES);
 	self.touchItem = [GlobalTouchbarButton makeDefault];
 	[NSTouchBarItem addSystemTrayItem:self.touchItem];
 	DFRElementSetControlStripPresenceForIdentifier([GlobalTouchbarButton ID], YES);

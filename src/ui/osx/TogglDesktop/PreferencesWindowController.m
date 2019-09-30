@@ -71,6 +71,8 @@ typedef enum : NSUInteger
 @property (weak) IBOutlet NSButton *changeDurationButton;
 @property (weak) IBOutlet NSSegmentedControl *tabSegment;
 @property (weak) IBOutlet NSTabView *tabView;
+@property (weak) IBOutlet NSButton *showTouchBarButton;
+@property (weak) IBOutlet NSLayoutConstraint *bottomContainerHeight;
 
 @property (nonatomic, assign) NSInteger selectedProxyIndex;
 @property (nonatomic, strong) NSArray<AutotrackerRuleItem *> *rules;
@@ -106,6 +108,7 @@ typedef enum : NSUInteger
 - (IBAction)openEditorOnShortcut:(id)sender;
 - (IBAction)defaultProjectSelected:(id)sender;
 - (IBAction)changeDurationButtonChanged:(id)sender;
+- (IBAction)touchBarButtonChanged:(id)sender;
 
 @end
 
@@ -202,6 +205,9 @@ extern void *ctx;
 - (IBAction)changeDurationButtonChanged:(id)sender
 {
 	toggl_set_keep_end_time_fixed(ctx, [Utils stateToBool:[self.changeDurationButton state]]);
+}
+
+- (IBAction)touchBarButtonChanged:(id)sender {
 }
 
 - (IBAction)proxyRadioChanged:(id)sender
