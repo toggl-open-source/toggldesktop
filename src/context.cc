@@ -1812,6 +1812,11 @@ error Context::SetSettingsStopEntryOnShutdownSleep(const bool stop_entry) {
         db()->SetSettingsStopEntryOnShutdownSleep(stop_entry));
 }
 
+error Context::SetSettingsShowTouchBar(const bool show_touch_bar) {
+    return applySettingsSaveResultToUI(
+        db()->SetSettingsShowTouchBar(show_touch_bar));
+}
+
 error Context::SetSettingsIdleMinutes(const Poco::UInt64 idle_minutes) {
     return applySettingsSaveResultToUI(
         db()->SetSettingsIdleMinutes(idle_minutes));
@@ -1928,6 +1933,12 @@ void Context::SetKeepEndTimeFixed
 bool Context::GetKeepEndTimeFixed() {
     bool value(false);
     displayError(db()->GetKeepEndTimeFixed(&value));
+    return value;
+}
+
+bool Context::GetShowTouchBar() {
+    bool value(false);
+    displayError(db()->GetShowTouchBar(&value));
     return value;
 }
 
@@ -2276,7 +2287,7 @@ error Context::GoogleSignup(
 }
 
 error Context::AsyncGoogleSignup(const std::string &access_token,
-    const uint64_t country_id) {
+                                 const uint64_t country_id) {
     std::thread backgroundThread([&](std::string access_token, uint64_t country_id) {
         return this->GoogleSignup(access_token, country_id);
     }, access_token, country_id);
@@ -4861,9 +4872,9 @@ error Context::pushClients(
 }
 
 error Context::pushProjects(const std::vector<Project *> &projects,
-    const std::vector<Client *> &clients,
-    const std::string &api_token,
-    TogglClient toggl_client) {
+                            const std::vector<Client *> &clients,
+                            const std::string &api_token,
+                            TogglClient toggl_client) {
     error err = noError;
     std::string project_json("");
     for (std::vector<Project *>::const_iterator it =
@@ -4917,7 +4928,7 @@ error Context::pushProjects(const std::vector<Project *> &projects,
 }
 
 error Context::updateEntryProjects(const std::vector<Project *> &projects,
-    const std::vector<TimeEntry *> &time_entries) {
+                                   const std::vector<TimeEntry *> &time_entries) {
     for (std::vector<TimeEntry *>::const_iterator it =
         time_entries.begin();
             it != time_entries.end(); it++) {
