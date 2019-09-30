@@ -38,8 +38,6 @@
 #import "Reachability.h"
 #import <AppAuth/AppAuth.h>
 
-static const NSTouchBarItemIdentifier touchIdentifier = @"toggl.touchbar";
-
 @interface AppDelegate ()
 @property (nonatomic, strong) MainWindowController *mainWindowController;
 @property (nonatomic, strong) PreferencesWindowController *preferencesWindowController;
@@ -49,9 +47,7 @@ static const NSTouchBarItemIdentifier touchIdentifier = @"toggl.touchbar";
 @property (nonatomic, strong) ConsoleViewController *consoleWindowController;
 
 // Touch Bar items
-@property NSCustomTouchBarItem *touchItem;
-@property NSButton *touchBarButton;
-@property NSImage *iconImage;
+@property (nonatomic, strong) GlobalTouchbarButton *touchItem;
 
 // Remember some app state
 @property (nonatomic, strong) TimeEntryViewItem *lastKnownRunningTimeEntry;
@@ -825,8 +821,8 @@ void *ctx;
 			key = @"offline_off";
 		}
 	}
-	self.iconImage = [self.statusImages objectForKey:key];
-	NSAssert(self.iconImage, @"status image not found!");
+	NSImage *image = [self.statusImages objectForKey:key];
+	NSAssert(image, @"status image not found!");
 
 	if (![title isEqualToString:self.statusItem.title])
 	{
@@ -838,13 +834,10 @@ void *ctx;
 		[self.statusItem setTitle:title];
 	}
 
-	if (self.iconImage != self.statusItem.image)
+	if (image != self.statusItem.image)
 	{
-		[self.statusItem setImage:self.iconImage];
-
-		// This forces the icon to redraw
-		[self.touchBarButton setImage:self.iconImage];
-		self.touchBarButton.imagePosition = NSImageOnly;
+		[self.statusItem setImage:image];
+		[self.touchItem update:image];
 	}
 }
 
@@ -1002,12 +995,9 @@ void *ctx;
 
 - (void)setupTouchBar
 {
-	self.touchItem = [[NSCustomTouchBarItem alloc] initWithIdentifier:touchIdentifier];
-	self.touchBarButton = [NSButton buttonWithImage:self.iconImage target:nil action:nil];
-	self.touchItem.view = self.touchBarButton;
-
+	self.touchItem = [GlobalTouchbarButton makeDefault];
 	[NSTouchBarItem addSystemTrayItem:self.touchItem];
-	DFRElementSetControlStripPresenceForIdentifier(touchIdentifier, YES);
+	DFRElementSetControlStripPresenceForIdentifier([GlobalTouchbarButton ID], YES);
 }
 
 - (IBAction)onConsoleMenuItem:(id)sender
