@@ -1,0 +1,139 @@
+name: toggldesktop # you probably want to 'snapcraft register <name>'
+base: core18 # the base snap is the execution environment for this snap
+version: 'git' # just for humans, typically '1.2+git' or '1.3.2'
+summary: Simple and Intuitive Time Tracking Software
+description: |
+  Toggl Desktop is a desktop app for leading time tracking tool Toggl. The Desktop app is a great companion for time tracking and productivity as it has advanced features like:
+  - Idle detection
+  - Tracking reminder
+  - Pomodoro timer
+  - Timeline
+  - Autotracker
+
+grade: stable
+confinement: strict
+adopt-info: toggldesktop
+
+architectures:
+  - build-on: [amd64, i386, armhf, arm64]
+    run-on: [amd64, i386, armhf, arm64]
+
+plugs:
+  browser-sandbox:
+    interface: browser-support
+    allow-sandbox: false
+  notifications:
+    interface: dbus
+    bus: session
+    name: org.freedesktop.Notifications
+  screensaver:
+    interface: dbus
+    bus: session
+    name: org.freedesktop.ScreenSaver
+  login1:
+    interface: dbus
+    bus: system
+    name: org.freedesktop.login1
+
+apps:
+  toggldesktop:
+    desktop: usr/share/applications/com.toggl.TogglDesktop.desktop
+    command: bin/desktop-launch $SNAP/bin/TogglDesktop.sh
+    common-id: com.toggl.TogglDesktop
+    environment:
+      QTWEBENGINE_DISABLE_SANDBOX: 1
+    plugs:
+      - desktop
+      - desktop-legacy
+      - x11
+      - wayland
+      - unity7
+      - opengl
+      - browser-sandbox
+      - network
+      - network-observe
+      - pulseaudio
+      - camera
+      - screen-inhibit-control
+      - notifications
+      - screensaver
+      - login1
+      - network-manager
+
+parts:
+  desktopqt5:
+    source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
+    source-subdir: qt
+    plugin: make
+    make-parameters: ["FLAVOR=qt5"]
+    build-packages:
+      - qtbase5-dev
+      - execstack
+    override-build: |
+      snapcraftctl build
+      mkdir -pv $SNAPCRAFT_PART_INSTALL/qt5-platform
+
+  toggldesktop:
+    source-type: git
+    source: https://github.com/toggl/toggldesktop.git
+    source-branch: 'master'
+    source-depth: 1
+    parse-info: [usr/share/metainfo/com.toggl.TogglDesktop.appdata.xml]
+    plugin: cmake
+    configflags: [
+      '-DTOGGL_PRODUCTION_BUILD=ON',
+      '-DTOGGL_ALLOW_UPDATE_CHECK=ON',
+      '-DTOGGL_DATA_DIR=/bin'
+    ]
+    override-prime: |
+      set -eu
+      snapcraftctl prime
+      # Fix-up application icon lookup
+      sed --in-place 's|^Icon=.*|Icon=\${SNAP}/usr/share/icons/hicolor/256x256/apps/toggldesktop.png|' usr/share/applications/com.toggl.TogglDesktop.desktop 
+
+    build-attributes: [keep-execstack]
+    build-packages:
+      - g++
+      - qtbase5-dev
+      - qtwebengine5-dev
+      - libqt5x11extras5-dev
+      - qtbase5-private-dev
+      - libssl-dev
+      - libpoco-dev
+      - libxss-dev
+      - libxmu-dev
+      - libjsoncpp-dev
+      - liblua50-dev
+    stage-packages:
+      - libqt5gui5
+      - libqt5webengine5
+      - libqt5webenginecore5
+      - libqt5webenginewidgets5
+      - libqt5printsupport5
+      - libqt5quickwidgets5
+      - libqt5x11extras5
+      - libpococrypto50
+      - libpocodata50
+      - libpocodatasqlite50
+      - libpocofoundation50
+      - libpocojson50
+      - libpoconet50
+      - libpoconetssl50
+      - libpocoutil50
+      - libpocoxml50
+      - libjsoncpp1
+      - liblua50
+      - libxss1
+    organize:
+      'usr/lib/x86_64-linux-gnu/qt5/libexec/QtWebEngineProcess': bin/QtWebEngineProcess
+      'share/': usr/share
+    after: [desktopqt5]
+  
+  qtconf:
+    source: 'snap/local/configuration'
+    plugin: dump
+    organize:
+      'webengine_qt.conf' : usr/lib/x86_64-linux-gnu/qt5/libexec/qt.conf
+      'base_qt.conf' : bin/qt.conf
+    after: [toggldesktop]
+
