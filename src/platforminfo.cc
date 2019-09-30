@@ -132,7 +132,7 @@ std::string getWMName() {
 
 std::string getDEName() {
     char *env = getenv("XDG_CURRENT_DESKTOP");
-    return std::string(env);
+    return env ? std::string(env) : "";
 }
 
 std::string getDistroName() {
