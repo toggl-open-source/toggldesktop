@@ -160,6 +160,8 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
 
     error SetSettingsStopEntryOnShutdownSleep(const bool stop_entry);
 
+    error SetSettingsShowTouchBar(const bool show_touch_bar);
+
     error SetSettingsIdleMinutes(const Poco::UInt64 idle_minutes);
 
     error SetSettingsFocusOnShortcut(const bool focus_on_shortcut);
@@ -197,6 +199,8 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
         const bool);
 
     bool GetKeepEndTimeFixed();
+
+    bool GetShowTouchBar();
 
     void SetWindowMaximized(
         const bool value);
@@ -241,7 +245,7 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     error ProxySettings(bool *use_proxy, Proxy *proxy);
 
     error SetProxySettings(const bool use_proxy,
-        const Proxy &proxy);
+                           const Proxy &proxy);
 
     error LoadWindowSettings(
         int64_t *window_x,
@@ -587,17 +591,17 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
         TogglClient *https_client,
         bool *had_something_to_push);
     error pushClients(const std::vector<Client *> &clients,
-        const std::string &api_token,
-        TogglClient toggl_client);
+                      const std::string &api_token,
+                      TogglClient toggl_client);
     error pushProjects(
         const std::vector<Project *> &projects,
         const std::vector<Client *> &clients,
         const std::string &api_token,
         TogglClient toggl_client);
     error pushEntries(const std::map<std::string, BaseModel *> &models,
-        const std::vector<TimeEntry *> &time_entries,
-        const std::string &api_token,
-        TogglClient toggl_client);
+                      const std::vector<TimeEntry *> &time_entries,
+                      const std::string &api_token,
+                      TogglClient toggl_client);
     error updateEntryProjects(
         const std::vector<Project *> &projects,
         const std::vector<TimeEntry *> &time_entries);
@@ -613,10 +617,10 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
         std::string *user_data_json,
         const uint64_t country_id);
     static error me(TogglClient *https_client,
-        const std::string &email,
-        const std::string &password,
-        std::string *user_data,
-        const Poco::Int64 since);
+                    const std::string &email,
+                    const std::string &password,
+                    std::string *user_data,
+                    const Poco::Int64 since);
 
     bool isTimeEntryLocked(TimeEntry* te);
     bool isTimeLockedInWorkspace(time_t t, Workspace* ws);

@@ -450,7 +450,7 @@ error Database::LoadSettings(Settings *settings) {
                   "remind_fri, remind_sat, remind_sun, autotrack, "
                   "open_editor_on_shortcut, has_seen_beta_offering, "
                   "pomodoro, pomodoro_minutes, "
-                  "pomodoro_break, pomodoro_break_minutes, stop_entry_on_shutdown_sleep "
+                  "pomodoro_break, pomodoro_break_minutes, stop_entry_on_shutdown_sleep, show_touch_bar "
                   "from settings "
                   "limit 1",
                   into(settings->use_idle_detection),
@@ -481,6 +481,7 @@ error Database::LoadSettings(Settings *settings) {
                   into(settings->pomodoro_break),
                   into(settings->pomodoro_break_minutes),
                   into(settings->stop_entry_on_shutdown_sleep),
+                  into(settings->show_touch_bar),
                   limit(1),
                   now;
     } catch(const Poco::Exception& exc) {
@@ -641,6 +642,10 @@ error Database::SetKeepEndTimeFixed(
 
 error Database::GetKeepEndTimeFixed(bool *result) {
     return getSettingsValue("keep_end_time_fixed", result);
+}
+
+error Database::GetShowTouchBar(bool *result) {
+    return getSettingsValue("show_touch_bar", result);
 }
 
 error Database::SetWindowMaximized(
@@ -853,6 +858,10 @@ error Database::SetSettingsManualMode(const bool &manual_mode) {
 
 error Database::SetSettingsAutodetectProxy(const bool &autodetect_proxy) {
     return setSettingsValue("autodetect_proxy", autodetect_proxy);
+}
+
+error Database::SetSettingsShowTouchBar(const bool &show_touch_bar) {
+    return setSettingsValue("show_touch_bar", show_touch_bar);
 }
 
 template<typename T>
