@@ -188,7 +188,7 @@ init_submodule:
 	cd $(rootdir) && git submodule update --init --recursive
 
 lua:
-	cd third_party/lua && make  $(LEGACYMACOSSDK) macosx && make $(LEGACYMACOSSDK) local
+	cd third_party/lua && make macosx && make local
 
 openssl:
 	cd $(openssldir) && ./config -fPIC no-shared no-dso && ./Configure darwin64-x86_64-cc && make $(LEGACYMACOSSDK)
