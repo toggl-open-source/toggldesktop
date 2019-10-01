@@ -1,6 +1,18 @@
 {
     "versions": [
         {
+            "version": "7.4.1022",
+            "rows": [
+                "New Google Authentication from default browsers",
+                "Improve the Start button on TimeEntry: Bigger and easier to tap",
+                "Attempt to resolve the SQL Constraint issues",
+                "Show precise time on tooltip of duration, start, stop time textbox",
+                "Remove CrashReporter",
+                "Fixed the sync issues when it makes a lot of request to the Toggl Server",
+            ],
+            "date": "October 1st 2019",
+        },
+        {
             "version": "7.4.1012",
             "rows": [
                 "Notarization for TogglDesktop build",
