@@ -98,9 +98,9 @@ jobs:
     - name: Install signing key
       run: |
         # this doesn't work
-        base64 -D <<<  ${{ secrets.CERT_MACOS_TEMPORARY }} > cert.cer
-        security import cert.cer "/Users/runner/Library/Keychains/login.keychain-db"
-        security unlock-keychain -p '' "/Users/runner/Library/Keychains/login.keychain-db"
+        # base64 -D <<<  ${{ secrets.CERT_MACOS_TEMPORARY }} > cert.cer
+        # security import cert.cer "/Users/runner/Library/Keychains/login.keychain-db"
+        # security unlock-keychain -p '' "/Users/runner/Library/Keychains/login.keychain-db"
     - name: Build macOS dependencies
       run: |
         make deps
