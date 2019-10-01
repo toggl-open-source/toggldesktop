@@ -77,7 +77,7 @@ jobs:
         sudo flatpak install --system -y flathub org.kde.Sdk//5.12
     - name: Build Linux Flatpak package - KDE based
       run: |
-        pushd dist/flatpak
+        pushd dist/linux/flatpak
         sudo flatpak-builder --repo=flatpak-repo --force-clean flatpak-build com.toggl.TogglDesktop.json
         flatpak build-bundle flatpak-repo com.toggl.TogglDesktop.flatpak com.toggl.TogglDesktop
         popd
