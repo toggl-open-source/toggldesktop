@@ -120,11 +120,11 @@ jobs:
         fetch-depth: 1
     - name: Install signing key
       run: |
-        echo "${{ secrets.CERT_WINDOWS_STANDALONE }}" > Certificate.b64
+        echo "${{ secrets.CERT_WINDOWS_STANDALONE }}=" > Certificate.b64
         base64 --help
         ls -l Certificate.b64
         file Certificate.b64
-        base64 -d - Certificate.b64 > Certificate.pfx
+        base64 -d Certificate.b64 > Certificate.pfx
       shell: bash
     - name: Install dependencies
       run: |
@@ -157,7 +157,7 @@ jobs:
         fetch-depth: 1
     - name: Install signing key
       run: |
-        echo "${{ secrets.CERT_WINDOWS_STANDALONE }}" > Certificate.b64
+        echo "${{ secrets.CERT_WINDOWS_STANDALONE }}==" > Certificate.b64
         base64 -d Certificate.b64 > Certificate.pfx
       shell: bash
     - name: Install dependencies
