@@ -25,7 +25,6 @@ static NSString *kFrameKey = @"frame";
 @property (weak) IBOutlet TimeEntryCollectionView *collectionView;
 @property (weak) IBOutlet NSBox *emptyViewContainerView;
 
-@property (nonatomic, strong) TimeEntryTouchBar *timeEntryTouchBar;
 @property (nonatomic, strong) TimeEntryDatasource *dataSource;
 @property (nonatomic, assign) NSInteger defaultPopupHeight;
 @property (nonatomic, assign) NSInteger defaultPopupWidth;
@@ -729,15 +728,6 @@ extern void *ctx;
 		return;
 	}
 	[self.timerEditViewController focusTimer];
-}
-
-- (NSTouchBar *)makeTouchBar
-{
-	if (!self.timeEntryTouchBar)
-	{
-		self.timeEntryTouchBar = [[TimeEntryTouchBar alloc] init];
-	}
-	return self.timeEntryTouchBar.touchBar;
 }
 
 @end
