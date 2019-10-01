@@ -44,14 +44,17 @@ jobs:
         sudo apt install devscripts cmake debhelper pkg-config qtbase5-dev qtwebengine5-dev libqt5x11extras5-dev qtbase5-private-dev libssl-dev libxss-dev libxmu-dev
     - name: Build a Debian package
       run: |
-        rm Makefile
         TAG_NAME=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref")
-        cd dist
-        ln -s ../src .
-        ln -s ../CMakeLists.txt .
-        ln -s ../third_party .
+        cd dist/linux
+        ln -s ../../src .
+        ln -s ../../CMakeLists.txt .
+        ln -s ../../third_party .
         dch -D unstable --package "toggldesktop" -v ${TAG_NAME/v/} "General bug fixes and improvements" -u low -M
         debuild
+        echo "ls:"
+        ls
+        echo "pwd:"
+        pwd
     - name: Upload to GitHub
       if: github.event == 'create'
       run: |
