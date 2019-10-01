@@ -1,7 +1,8 @@
 IF[{- !$disabled{tests} -}]
   PROGRAMS_NO_INST=\
+          versions \
           aborttest \
-          sanitytest exdatatest bntest \
+          sanitytest rsa_complex exdatatest bntest \
           ectest ecdsatest gmdifftest pbelutest ideatest \
           md2test md4test md5test \
           hmactest wp_test \
@@ -16,7 +17,12 @@ IF[{- !$disabled{tests} -}]
           packettest asynctest secmemtest srptest memleaktest \
           dtlsv1listentest ct_test threadstest afalgtest d2i_test \
           ssl_test_ctx_test ssl_test x509aux cipherlist_test asynciotest \
-          bioprinttest sslapitest dtlstest sslcorrupttest bio_enc_test
+          bioprinttest sslapitest dtlstest sslcorrupttest bio_enc_test \
+          ocspapitest fatalerrtest x509_time_test x509_dup_cert_test errtest
+
+  SOURCE[versions]=versions.c
+  INCLUDE[versions]=../include
+  DEPEND[versions]=../libcrypto
 
   SOURCE[aborttest]=aborttest.c
   INCLUDE[aborttest]=../include
@@ -25,6 +31,9 @@ IF[{- !$disabled{tests} -}]
   SOURCE[sanitytest]=sanitytest.c
   INCLUDE[sanitytest]=../include
   DEPEND[sanitytest]=../libcrypto
+
+  SOURCE[rsa_complex]=rsa_complex.c
+  INCLUDE[rsa_complex]=../include
 
   SOURCE[exdatatest]=exdatatest.c
   INCLUDE[exdatatest]=../include
@@ -145,6 +154,10 @@ IF[{- !$disabled{tests} -}]
   SOURCE[rsa_test]=rsa_test.c
   INCLUDE[rsa_test]=.. ../include
   DEPEND[rsa_test]=../libcrypto
+
+  SOURCE[fatalerrtest]=fatalerrtest.c ssltestlib.c testutil.c
+  INCLUDE[fatalerrtest]=../include ..
+  DEPEND[fatalerrtest]=../libcrypto ../libssl
 
   SOURCE[evp_test]=evp_test.c
   INCLUDE[evp_test]=../include
@@ -271,6 +284,10 @@ IF[{- !$disabled{tests} -}]
   INCLUDE[sslapitest]=../include ..
   DEPEND[sslapitest]=../libcrypto ../libssl
 
+  SOURCE[ocspapitest]=ocspapitest.c testutil.c
+  INCLUDE[ocspapitest]=../include ..
+  DEPEND[ocspapitest]=../libcrypto
+
   SOURCE[dtlstest]=dtlstest.c ssltestlib.c testutil.c
   INCLUDE[dtlstest]=../include .
   DEPEND[dtlstest]=../libcrypto ../libssl
@@ -283,17 +300,38 @@ IF[{- !$disabled{tests} -}]
   INCLUDE[bio_enc_test]=../include
   DEPEND[bio_enc_test]=../libcrypto
 
+  SOURCE[x509_time_test]=x509_time_test.c testutil.c
+  INCLUDE[x509_time_test]=.. ../include
+  DEPEND[x509_time_test]=../libcrypto
+
+  SOURCE[x509_dup_cert_test]=x509_dup_cert_test.c
+  INCLUDE[x509_dup_cert_test]=../include
+  DEPEND[x509_dup_cert_test]=../libcrypto
+
   IF[{- !$disabled{shared} -}]
     PROGRAMS_NO_INST=shlibloadtest
     SOURCE[shlibloadtest]=shlibloadtest.c
     INCLUDE[shlibloadtest]=../include
   ENDIF
+
+
+  IF[{- !$disabled{ec} -}]
+    PROGRAMS_NO_INST=ec_internal_test
+
+    SOURCE[ec_internal_test]=ec_internal_test.c testutil.c
+    INCLUDE[ec_internal_test]=.. ../include ../crypto/ec ../crypto/include
+    DEPEND[ec_internal_test]=../libcrypto
+  ENDIF
+
+  SOURCE[errtest]=errtest.c testutil.c
+  INCLUDE[errtest]=../include
+  DEPEND[errtest]=../libcrypto
 ENDIF
 
 {-
    use File::Spec::Functions;
    use File::Basename;
-   use if $^O ne "VMS", 'File::Glob' => qw/glob/;
+   use OpenSSL::Glob;
 
    my @nogo_headers = ( "asn1_mac.h",
                         "__decc_include_prologue.h",

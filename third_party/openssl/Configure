@@ -1,6 +1,6 @@
 #! /usr/bin/env perl
 # -*- mode: perl; -*-
-# Copyright 2016 The OpenSSL Project Authors. All Rights Reserved.
+# Copyright 2016-2018 The OpenSSL Project Authors. All Rights Reserved.
 #
 # Licensed under the OpenSSL license (the "License").  You may not use
 # this file except in compliance with the License.  You can obtain a copy
@@ -11,12 +11,17 @@
 
 use 5.10.0;
 use strict;
+use FindBin;
+use lib "$FindBin::Bin/util/perl";
 use File::Basename;
 use File::Spec::Functions qw/:DEFAULT abs2rel rel2abs/;
 use File::Path qw/mkpath/;
-use if $^O ne "VMS", 'File::Glob' => qw/glob/;
+use OpenSSL::Glob;
 
 # see INSTALL for instructions.
+
+my $orig_death_handler = $SIG{__DIE__};
+$SIG{__DIE__} = \&death_handler;
 
 my $usage="Usage: Configure [no-<cipher> ...] [enable-<cipher> ...] [-Dxxx] [-lxxx] [-Lxxx] [-fxxx] [-Kxxx] [no-hw-xxx|no-hw] [[no-]threads] [[no-]shared] [[no-]zlib|zlib-dynamic] [no-asm] [no-dso] [no-egd] [sctp] [386] [--prefix=DIR] [--openssldir=OPENSSLDIR] [--with-xxx[=vvv]] [--config=FILE] os/compiler[:flags]\n";
 
@@ -459,30 +464,9 @@ my @disable_cascades = (
     sub { 0 == scalar grep { !$disabled{$_} } @dtls }
 			=> [ "dtls" ],
 
-    # SSL 3.0, (D)TLS 1.0 and TLS 1.1 require MD5 and SHA
-    "md5"		=> [ "ssl", "tls1", "tls1_1", "dtls1" ],
-    "sha"		=> [ "ssl", "tls1", "tls1_1", "dtls1" ],
-
-    # Additionally, SSL 3.0 requires either RSA or DSA+DH
-    sub { $disabled{rsa}
-	  && ($disabled{dsa} || $disabled{dh}); }
-			=> [ "ssl" ],
-
-    # (D)TLS 1.0 and TLS 1.1 also require either RSA or DSA+DH
-    # or ECDSA + ECDH.  (D)TLS 1.2 has this requirement as well.
-    # (XXX: We don't support PSK-only builds).
-    sub { $disabled{rsa}
-	  && ($disabled{dsa} || $disabled{dh})
-	  && ($disabled{ecdsa} || $disabled{ecdh}); }
-			=> [ "tls1", "tls1_1", "tls1_2",
-			     "dtls1", "dtls1_2" ],
-
     "tls"		=> [ @tls ],
     sub { 0 == scalar grep { !$disabled{$_} } @tls }
 			=> [ "tls" ],
-
-    # SRP and HEARTBEATS require TLSEXT
-    "tlsext"		=> [ "srp", "heartbeats" ],
 
     "crypto-mdebug"     => [ "crypto-mdebug-backtrace" ],
 
@@ -526,8 +510,6 @@ while ((my $first, my $second) = (shift @list, shift @list)) {
 # Explicit "no-..." options will be collected in %disabled along with the defaults.
 # To remove something from %disabled, use "enable-foo".
 # For symmetry, "disable-foo" is a synonym for "no-foo".
-
-my $no_sse2=0;
 
 &usage if ($#ARGV < 0);
 
@@ -777,21 +759,21 @@ while (@argvcopy)
 		else
 			{ $config{options} .= " ".$_; }
 		}
+	}
 
-        if (defined($config{api}) && !exists $apitable->{$config{api}}) {
-		die "***** Unsupported api compatibility level: $config{api}\n",
-        }
+if (defined($config{api}) && !exists $apitable->{$config{api}}) {
+	die "***** Unsupported api compatibility level: $config{api}\n",
+}
 
-	if (keys %deprecated_options)
-		{
-		warn "***** Deprecated options: ",
-			join(", ", keys %deprecated_options), "\n";
-		}
-	if (keys %unsupported_options)
-		{
-		die "***** Unsupported options: ",
-			join(", ", keys %unsupported_options), "\n";
-		}
+if (keys %deprecated_options)
+	{
+	warn "***** Deprecated options: ",
+		join(", ", keys %deprecated_options), "\n";
+	}
+if (keys %unsupported_options)
+	{
+	die "***** Unsupported options: ",
+		join(", ", keys %unsupported_options), "\n";
 	}
 
 if ($libs =~ /(^|\s)-Wl,-rpath,/
@@ -878,7 +860,7 @@ foreach (sort (keys %disabled))
 	elsif (/^zlib-dynamic$/)
 		{ }
 	elsif (/^sse2$/)
-		{ $no_sse2 = 1; }
+		{ }
 	elsif (/^engine$/)
 		{
 		@{$config{dirs}} = grep !/^engines$/, @{$config{dirs}};
@@ -911,8 +893,6 @@ foreach (sort (keys %disabled))
 			{
 			push @{$config{openssl_other_defines}}, "OPENSSL_NO_$WHAT";
 			print " OPENSSL_NO_$WHAT";
-
-			if (/^err$/)	{ push @user_defines, "OPENSSL_NO_ERR"; }
 			}
 		}
 
@@ -931,10 +911,11 @@ if ($d) {
 	$target = $t;
     }
 }
+
+&usage if !$table{$target} || $table{$target}->{template};
+
 $config{target} = $target;
 my %target = resolve_config($target);
-
-&usage if (!%target || $target{template});
 
 my %conf_files = map { $_ => 1 } (@{$target{_conf_fname_int}});
 $config{conf_files} = [ sort keys %conf_files ];
@@ -1166,7 +1147,7 @@ unless ($disabled{asm}) {
 
     # bn-586 is the only one implementing bn_*_part_words
     push @{$config{defines}}, "OPENSSL_BN_ASM_PART_WORDS" if ($target{bn_asm_src} =~ /bn-586/);
-    push @{$config{defines}}, "OPENSSL_IA32_SSE2" if (!$no_sse2 && $target{bn_asm_src} =~ /86/);
+    push @{$config{defines}}, "OPENSSL_IA32_SSE2" if (!$disabled{sse2} && $target{bn_asm_src} =~ /86/);
 
     push @{$config{defines}}, "OPENSSL_BN_ASM_MONT" if ($target{bn_asm_src} =~ /-mont/);
     push @{$config{defines}}, "OPENSSL_BN_ASM_MONT5" if ($target{bn_asm_src} =~ /-mont5/);
@@ -1198,7 +1179,7 @@ unless ($disabled{asm}) {
 	push @{$config{defines}}, "AES_CTR_ASM" if ($target{aes_asm_src} =~ s/\s*aes-ctr\.fake//);
 	# aes-xts.fake indicates presence of AES_xts_[en|de]crypt...
 	push @{$config{defines}}, "AES_XTS_ASM" if ($target{aes_asm_src} =~ s/\s*aes-xts\.fake//);
-	$target{aes_asm_src} =~ s/\s*(vpaes|aesni)-x86\.s//g if ($no_sse2);
+	$target{aes_asm_src} =~ s/\s*(vpaes|aesni)-x86\.s//g if ($disabled{sse2});
 	push @{$config{defines}}, "VPAES_ASM" if ($target{aes_asm_src} =~ m/vpaes/);
 	push @{$config{defines}}, "BSAES_ASM" if ($target{aes_asm_src} =~ m/bsaes/);
     }
@@ -1238,8 +1219,10 @@ if ($^O ne "VMS") {
 
     if (!$disabled{makedepend}) {
 	# We know that GNU C version 3 and up as well as all clang
-	# versions support dependency generation
-	if ($predefined{__GNUC__} >= 3) {
+	# versions support dependency generation, but Xcode did not
+	# handle $cc -M before clang support (but claims __GNUC__ = 3)
+	if (($predefined{__GNUC__} // -1) >= 3
+		&& !($predefined{__APPLE_CC__} && !$predefined{__clang__})) {
 	    $config{makedepprog} = $cc;
 	} else {
 	    $config{makedepprog} = which('makedepend');
@@ -1353,7 +1336,6 @@ my %unified_info = ();
 
 my $buildinfo_debug = defined($ENV{CONFIGURE_DEBUG_BUILDINFO});
 if ($builder eq "unified") {
-    use lib catdir(dirname(__FILE__),"util");
     use with_fallback qw(Text::Template);
 
     sub cleandir {
@@ -1476,9 +1458,15 @@ if ($builder eq "unified") {
         my %sharednames = ();
         my %generate = ();
 
+        # We want to detect configdata.pm in the source tree, so we
+        # don't use it if the build tree is different.
+        my $src_configdata = cleanfile($srcdir, "configdata.pm", $blddir);
+
         push @{$config{build_infos}}, catfile(abs2rel($sourced, $blddir), $f);
-        my $template = Text::Template->new(TYPE => 'FILE',
-                                           SOURCE => catfile($sourced, $f));
+        my $template =
+            Text::Template->new(TYPE => 'FILE',
+                                SOURCE => catfile($sourced, $f),
+                                PREPEND => qq{use lib "$FindBin::Bin/util/perl";});
         die "Something went wrong with $sourced/$f: $!\n" unless $template;
         my @text =
             split /^/m,
@@ -1779,7 +1767,7 @@ EOF
 
                 # If it isn't in the source tree, we assume it's generated
                 # in the build tree
-                if (! -f $s) {
+                if ($s eq $src_configdata || ! -f $s || $generate{$_}) {
                     $s = cleanfile($buildd, $_, $blddir);
                 }
                 # We recognise C and asm files
@@ -1805,7 +1793,7 @@ EOF
 
                 # If it isn't in the source tree, we assume it's generated
                 # in the build tree
-                if (! -f $s) {
+                if ($s eq $src_configdata || ! -f $s || $generate{$_}) {
                     $s = cleanfile($buildd, $_, $blddir);
                 }
                 # We recognise C and asm files
@@ -1840,7 +1828,7 @@ EOF
 
             # If the destination doesn't exist in source, it can only be
             # a generated file in the build tree.
-            if ($ddest ne "" && ! -f $ddest) {
+            if ($ddest ne "" && ($ddest eq $src_configdata || ! -f $ddest)) {
                 $ddest = cleanfile($buildd, $_, $blddir);
                 if ($unified_info{rename}->{$ddest}) {
                     $ddest = $unified_info{rename}->{$ddest};
@@ -1854,7 +1842,8 @@ EOF
                 # in the build tree rather than the source tree, and assume
                 # and that there are lines to build it in a BEGINRAW..ENDRAW
                 # section or in the Makefile template.
-                if (! -f $d
+                if ($d eq $src_configdata
+                    || ! -f $d
                     || (grep { $d eq $_ }
                         map { cleanfile($srcdir, $_, $blddir) }
                         grep { /\.h$/ } keys %{$unified_info{generate}})) {
@@ -1865,13 +1854,6 @@ EOF
                     $d = $unified_info{rename}->{$d};
                 }
                 $unified_info{depends}->{$ddest}->{$d} = 1;
-                # If we depend on a header file or a perl module, let's make
-                # sure it can get included
-                if ($dest ne "" && $d =~ /\.(h|pm)$/) {
-                    my $i = dirname($d);
-                    push @{$unified_info{includes}->{$ddest}->{source}}, $i
-                        unless grep { $_ eq $i } @{$unified_info{includes}->{$ddest}->{source}};
-                }
             }
         }
 
@@ -1881,7 +1863,7 @@ EOF
 
             # If the destination doesn't exist in source, it can only be
             # a generated file in the build tree.
-            if (! -f $ddest) {
+            if ($ddest eq $src_configdata || ! -f $ddest) {
                 $ddest = cleanfile($buildd, $_, $blddir);
                 if ($unified_info{rename}->{$ddest}) {
                     $ddest = $unified_info{rename}->{$ddest};
@@ -1896,6 +1878,43 @@ EOF
                     unless grep { $_ eq $ib } @{$unified_info{includes}->{$ddest}->{build}};
             }
         }
+    }
+
+    # Massage the result
+
+    # If we depend on a header file or a perl module, add an inclusion of
+    # its directory to allow smoothe inclusion
+    foreach my $dest (keys %{$unified_info{depends}}) {
+        next if $dest eq "";
+        foreach my $d (keys %{$unified_info{depends}->{$dest}}) {
+            next unless $d =~ /\.(h|pm)$/;
+            my $i = dirname($d);
+            my $spot =
+                $d eq "configdata.pm" || defined($unified_info{generate}->{$d})
+                ? 'build' : 'source';
+            push @{$unified_info{includes}->{$dest}->{$spot}}, $i
+                unless grep { $_ eq $i } @{$unified_info{includes}->{$dest}->{$spot}};
+        }
+    }
+
+    # Trickle down includes placed on libraries, engines and programs to
+    # their sources (i.e. object files)
+    foreach my $dest (keys %{$unified_info{engines}},
+                      keys %{$unified_info{libraries}},
+                      keys %{$unified_info{programs}}) {
+        foreach my $k (("source", "build")) {
+            next unless defined($unified_info{includes}->{$dest}->{$k});
+            my @incs = reverse @{$unified_info{includes}->{$dest}->{$k}};
+            foreach my $obj (grep /\.o$/,
+                             (keys %{$unified_info{sources}->{$dest} // {}},
+                              keys %{$unified_info{shared_sources}->{$dest} // {}})) {
+                foreach my $inc (@incs) {
+                    unshift @{$unified_info{includes}->{$obj}->{$k}}, $inc
+                        unless grep { $_ eq $inc } @{$unified_info{includes}->{$obj}->{$k}};
+                }
+            }
+        }
+        delete $unified_info{includes}->{$dest};
     }
 
     ### Make unified_info a bit more efficient
@@ -1913,8 +1932,9 @@ EOF
     # Includes
     foreach my $dest (sort keys %{$unified_info{includes}}) {
         if (defined($unified_info{includes}->{$dest}->{build})) {
-            my @source_includes =
-                ( @{$unified_info{includes}->{$dest}->{source}} );
+            my @source_includes = ();
+            @source_includes = ( @{$unified_info{includes}->{$dest}->{source}} )
+                if defined($unified_info{includes}->{$dest}->{source});
             $unified_info{includes}->{$dest} =
                 [ @{$unified_info{includes}->{$dest}->{build}} ];
             foreach my $inc (@source_includes) {
@@ -2111,6 +2131,8 @@ my %builders = (
 
 $builders{$builder}->($builder_platform, @builder_opts);
 
+$SIG{__DIE__} = $orig_death_handler;
+
 print <<"EOF";
 
 Configured for $target.
@@ -2132,20 +2154,30 @@ or position independent code, please let us know (but please first make sure
 you have tried with a current version of OpenSSL).
 EOF
 
-print <<"EOF" if (-f catfile($srcdir, "configdata.pm") && $srcdir ne $blddir);
-
-WARNING: there are indications that another build was made in the source
-directory.  This build may have picked up artifacts from that build, the
-safest course of action is to clean the source directory and redo this
-configuration.
-EOF
-
 exit(0);
 
 ######################################################################
 #
 # Helpers and utility functions
 #
+
+# Death handler, to print a helpful message in case of failure #######
+#
+sub death_handler {
+    die @_ if $^S;              # To prevent the added message in eval blocks
+    my $build_file = $target{build_file} // "build file";
+    my @message = ( <<"_____", @_ );
+
+Failure!  $build_file wasn't produced.
+Please read INSTALL and associated NOTES files.  You may also have to look over
+your available compiler tool chain or change your configuration.
+
+_____
+
+    # Dying is terminal, so it's ok to reset the signal handler here.
+    $SIG{__DIE__} = $orig_death_handler;
+    die @message;
+}
 
 # Configuration file reading #########################################
 
@@ -2289,6 +2321,17 @@ sub read_config {
 	eval $content;
 	warn $@ if $@;
     }
+    my %preexisting = ();
+    foreach (sort keys %targets) {
+        $preexisting{$_} = 1 if $table{$_};
+    }
+    die <<"EOF",
+The following config targets from $fname
+shadow pre-existing config targets with the same name:
+EOF
+        map { "  $_\n" } sort keys %preexisting
+        if %preexisting;
+
 
     # For each target, check that it's configured with a hash table.
     foreach (keys %targets) {

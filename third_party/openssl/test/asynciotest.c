@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 2016-2018 The OpenSSL Project Authors. All Rights Reserved.
  *
  * Licensed under the OpenSSL licenses, (the "License");
  * you may not use this file except in compliance with the License.
@@ -255,6 +255,7 @@ int main(int argc, char *argv[])
     }
 
     if (!create_ssl_ctx_pair(TLS_server_method(), TLS_client_method(),
+                             TLS1_VERSION, TLS_MAX_VERSION,
                              &serverctx, &clientctx, argv[1], argv[2])) {
         printf("Failed to create SSL_CTX pair\n");
         goto end;
@@ -326,7 +327,7 @@ int main(int argc, char *argv[])
                 goto end;
             }
             /*
-             * Now read the test data. It may take more attemps here because
+             * Now read the test data. It may take more attempts here because
              * it could fail once for each byte read, including all overhead
              * bytes from the record header/padding etc.
              */

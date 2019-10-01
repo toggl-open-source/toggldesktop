@@ -1,5 +1,5 @@
 /*
- * Copyright 1995-2016 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 1995-2018 The OpenSSL Project Authors. All Rights Reserved.
  *
  * Licensed under the OpenSSL license (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
@@ -61,6 +61,7 @@ int version_main(int argc, char **argv)
         switch (o) {
         case OPT_EOF:
         case OPT_ERR:
+opthelp:
             BIO_printf(bio_err, "%s: Use -help for summary.\n", prog);
             goto end;
         case OPT_HELP:
@@ -89,9 +90,13 @@ int version_main(int argc, char **argv)
             dirty = version = 1;
             break;
         case OPT_A:
-            cflags = version = date = platform = dir = engdir = 1;
+            options = cflags = version = date = platform = dir = engdir = 1;
             break;
         }
+    }
+    if (opt_num_rest() != 0) {
+        BIO_printf(bio_err, "Extra parameters given.\n");
+        goto opthelp;
     }
     if (!dirty)
         version = 1;

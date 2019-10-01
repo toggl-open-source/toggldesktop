@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 2016-2018 The OpenSSL Project Authors. All Rights Reserved.
  *
  * Licensed under the OpenSSL license (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
@@ -49,8 +49,9 @@ static int test_dtls_unprocessed(int testidx)
 
     printf("Starting Test %d\n", testidx);
 
-    if (!create_ssl_ctx_pair(DTLS_server_method(), DTLS_client_method(), &sctx,
-                             &cctx, cert, privkey)) {
+    if (!create_ssl_ctx_pair(DTLS_server_method(), DTLS_client_method(),
+                             DTLS1_VERSION, DTLS_MAX_VERSION, &sctx, &cctx,
+                             cert, privkey)) {
         printf("Unable to create SSL_CTX pair\n");
         return 0;
     }
