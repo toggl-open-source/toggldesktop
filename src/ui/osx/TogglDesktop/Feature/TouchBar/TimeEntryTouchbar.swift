@@ -9,11 +9,12 @@
 import Foundation
 
 @available(OSX 10.12.2, *)
+@objcMembers
 final class TimeEntryTouchBar: NSObject {
 
     // MARK: Variables
 
-    private lazy var touchBar = NSTouchBar()
+    lazy var touchBar = NSTouchBar()
 
     // MARK: Init
 
@@ -28,7 +29,7 @@ final class TimeEntryTouchBar: NSObject {
 extension TimeEntryTouchBar {
 
     fileprivate func initCommon() {
-
+        NSApplication.shared.isAutomaticCustomizeTouchBarMenuItemEnabled = true
     }
 
     fileprivate func setup() {
@@ -43,6 +44,27 @@ extension TimeEntryTouchBar {
 @available(OSX 10.12.2, *)
 extension TimeEntryTouchBar: NSTouchBarDelegate {
 
+    func touchBar(_ touchBar: NSTouchBar, makeItemForIdentifier identifier: NSTouchBarItem.Identifier) -> NSTouchBarItem? {
+        switch identifier {
+        case NSTouchBarItem.Identifier.timeEntryItem:
+            let item = NSCustomTouchBarItem(identifier: identifier)
+            let button = NSButton(title: "TimeEntry 1", target: nil, action: nil)
+            item.view = button
+            return item
+        case NSTouchBarItem.Identifier.runningTimeEntry:
+            let item = NSCustomTouchBarItem(identifier: identifier)
+            let button = NSButton(title: "Running...", target: nil, action: nil)
+            item.view = button
+            return item
+        case NSTouchBarItem.Identifier.startStopItem:
+            let item = NSCustomTouchBarItem(identifier: identifier)
+            let button = NSButton(title: "Start", target: nil, action: nil)
+            item.view = button
+            return item
+        default:
+            return nil
+        }
+    }
 }
 
 @available(OSX 10.12.2, *)
