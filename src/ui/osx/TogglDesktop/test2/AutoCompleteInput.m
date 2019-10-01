@@ -36,6 +36,7 @@ static NSString *const upArrow = @"\u25B2";
 	self = [super initWithCoder:coder];
 	if (self)
 	{
+		self.automaticTextCompletionEnabled = NO;
 		self.posY = 0;
 		self.constraintsActive = NO;
 		self.itemHeight = 30.0;

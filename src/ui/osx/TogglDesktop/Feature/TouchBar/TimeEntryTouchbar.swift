@@ -12,6 +12,8 @@ import Foundation
 @objcMembers
 final class TimeEntryTouchBar: NSObject {
 
+    static let shared = TimeEntryTouchBar()
+    
     // MARK: Variables
 
     lazy var touchBar = NSTouchBar()
