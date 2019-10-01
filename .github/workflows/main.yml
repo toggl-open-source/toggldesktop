@@ -121,7 +121,8 @@ jobs:
     - name: Install signing key
       run: |
         echo "${{ secrets.CERT_WINDOWS_STANDALONE }}" > Certificate.b64
-        base64 -D -i Certificate.b64 -o Certificate.pfx
+        base64 -d Certificate.b64 > Certificate.pfx
+      shell: bash
       shell: bash
     - name: Install dependencies
       run: |
@@ -155,7 +156,7 @@ jobs:
     - name: Install signing key
       run: |
         echo "${{ secrets.CERT_WINDOWS_STANDALONE }}" > Certificate.b64
-        base64 -D -i Certificate.b64 -o Certificate.pfx
+        base64 -d Certificate.b64 > Certificate.pfx
       shell: bash
     - name: Install dependencies
       run: |
