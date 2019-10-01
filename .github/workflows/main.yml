@@ -36,7 +36,7 @@ jobs:
         fetch-depth: 1
     - name: Install signing key
       run: |
-        base64 -d <<< ${{ secrets.CERT_LINUX_DEB64 }} > key.asc
+        base64 -d <<< "${{ secrets.CERT_LINUX_DEB64 }}" > key.asc
         gpg --import key.asc
     - name: Install dependencies
       run: |
