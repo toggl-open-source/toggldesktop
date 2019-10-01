@@ -1,6 +1,17 @@
 {
     "versions": [
         {
+            "version": "7.4.1022",
+            "rows": [
+                "Show precise time on tooltip of duration, start, stop time textbox",
+                "Stop running entry on computer sleep/shutdown doesn't work on shutdown",
+                "Attempt to resolve the SQL Constraint issues",
+                "Fixed the sync issues when it makes a lot of request to the Toggl Server"
+            ],
+            "date": "October 1st 2019",
+            "has64bit": "true"
+        },
+        {
             "version": "7.4.1015",
             "rows": [
                 "Added Signup with Google",
