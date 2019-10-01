@@ -285,4 +285,9 @@ extern void *ctx;
 	}
 }
 
+- (NSTouchBar *)makeTouchBar
+{
+	return [self.timeEntryListViewController makeTouchBar];
+}
+
 @end
