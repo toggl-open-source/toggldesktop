@@ -123,7 +123,6 @@ jobs:
         echo "${{ secrets.CERT_WINDOWS_STANDALONE }}" > Certificate.b64
         base64 -d Certificate.b64 > Certificate.pfx
       shell: bash
-      shell: bash
     - name: Install dependencies
       run: |
         choco install nsis -y
