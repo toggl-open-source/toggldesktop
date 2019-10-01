@@ -30,6 +30,7 @@ jobs:
 
   linux-ubuntu1804:
     runs-on: ubuntu-18.04
+    if: github.event == 'create'
     steps:
     - uses: actions/checkout@v1
       with:
