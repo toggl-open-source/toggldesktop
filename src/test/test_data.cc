@@ -20,7 +20,7 @@ std::string loadFromTestDataDir(const char* filename) {
     return loadTestDataFile(std::string(TESTDATADIR) + filename);
 }
 
-std::string loadTestDataFile(const std::string filename) {
+std::string loadTestDataFile(const std::string &filename) {
     Poco::FileStream fis(filename, std::ios::binary);
     std::stringstream ss;
     ss << fis.rdbuf();

@@ -44,7 +44,7 @@ void Idle::SetIdleSeconds(
         logger().error(exc.displayText());
     } catch(const std::exception& ex) {
         return logger().error(ex.what());
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return logger().error(ex);
     }
     last_idle_seconds_reading_ = idle_seconds;

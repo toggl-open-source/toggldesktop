@@ -13,6 +13,7 @@
                 <outlet property="autoCompleteInput" destination="8Fy-tG-odG" id="lyr-Zg-zFK"/>
                 <outlet property="autocompleteContainerView" destination="Cg4-tk-Y3a" id="0n7-hi-GLA"/>
                 <outlet property="billableFlag" destination="ppU-KI-YsG" id="fTv-LB-K8L"/>
+                <outlet property="cancelBtn" destination="1SK-Qe-78h" id="OvH-t7-CGa"/>
                 <outlet property="contentContainerView" destination="UVu-2D-59K" id="Ng2-3h-cZv"/>
                 <outlet property="descriptionLabel" destination="oaA-Wf-zkO" id="M12-Yr-8Nn"/>
                 <outlet property="dotImageView" destination="fQn-ym-gNM" id="3Kn-NT-GcJ"/>
@@ -168,7 +169,7 @@
                                     <stackView distribution="equalSpacing" orientation="horizontal" alignment="centerY" spacing="5" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IPz-wJ-rvs">
                                         <rect key="frame" x="235" y="23" width="39" height="17"/>
                                         <subviews>
-                                            <imageView translatesAutoresizingMaskIntoConstraints="NO" id="5nL-Cd-iWe">
+                                            <imageView translatesAutoresizingMaskIntoConstraints="NO" id="5nL-Cd-iWe" customClass="ClickableImageView">
                                                 <rect key="frame" x="0.0" y="0.0" width="17" height="17"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="17" id="MC3-bx-7fi"/>
@@ -236,6 +237,20 @@
                                     <action selector="startButtonClicked:" target="-2" id="7eA-dH-3Kk"/>
                                 </connections>
                             </button>
+                            <button hidden="YES" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="1SK-Qe-78h">
+                                <rect key="frame" x="9" y="15" width="12" height="12"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="12" id="SGg-S5-feg"/>
+                                    <constraint firstAttribute="width" constant="12" id="dAf-r0-aJQ"/>
+                                </constraints>
+                                <buttonCell key="cell" type="recessed" bezelStyle="recessed" image="icon_cancel" imagePosition="only" alignment="center" state="on" imageScaling="proportionallyDown" inset="2" id="BkQ-8f-0KU">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
+                                    <font key="font" metaFont="systemBold" size="12"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="cancelBtnOnTap:" target="-2" id="BLH-GV-d8g"/>
+                                </connections>
+                            </button>
                             <box autoresizesSubviews="NO" boxType="custom" cornerRadius="15" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="Cg4-tk-Y3a" customClass="TimerContainerBox" customModule="TogglDesktop" customModuleProvider="target">
                                 <rect key="frame" x="10" y="16" width="351" height="30"/>
                                 <view key="contentView" id="WHR-Ck-cjy">
@@ -277,6 +292,7 @@
                         <constraints>
                             <constraint firstItem="UVu-2D-59K" firstAttribute="leading" secondItem="gK5-Lo-ktx" secondAttribute="leading" constant="25" id="02j-mw-99s"/>
                             <constraint firstItem="Cg4-tk-Y3a" firstAttribute="centerY" secondItem="gK5-Lo-ktx" secondAttribute="centerY" id="1fw-tX-TPT"/>
+                            <constraint firstItem="1SK-Qe-78h" firstAttribute="centerY" secondItem="fQn-ym-gNM" secondAttribute="centerY" id="492-uq-eya"/>
                             <constraint firstAttribute="bottom" secondItem="UVu-2D-59K" secondAttribute="bottom" id="5Y9-eH-oOq"/>
                             <constraint firstItem="Cg4-tk-Y3a" firstAttribute="leading" secondItem="gK5-Lo-ktx" secondAttribute="leading" constant="10" id="MK5-oB-vqQ"/>
                             <constraint firstItem="pBI-7b-vVj" firstAttribute="leading" secondItem="Cg4-tk-Y3a" secondAttribute="trailing" constant="10" id="Ohb-rm-zPf"/>
@@ -284,6 +300,7 @@
                             <constraint firstItem="pBI-7b-vVj" firstAttribute="leading" secondItem="UVu-2D-59K" secondAttribute="trailing" constant="10" id="Z1k-q1-bvm"/>
                             <constraint firstItem="UVu-2D-59K" firstAttribute="top" secondItem="gK5-Lo-ktx" secondAttribute="top" id="j3o-y0-Q4O"/>
                             <constraint firstItem="pBI-7b-vVj" firstAttribute="centerY" secondItem="gK5-Lo-ktx" secondAttribute="centerY" id="uXA-4e-O1V"/>
+                            <constraint firstItem="UVu-2D-59K" firstAttribute="leading" secondItem="1SK-Qe-78h" secondAttribute="trailing" constant="4" id="zvI-tu-Fum"/>
                         </constraints>
                     </view>
                     <color key="fillColor" name="white-background-color"/>
@@ -307,6 +324,7 @@
     </objects>
     <resources>
         <image name="add-icon" width="12" height="12"/>
+        <image name="icon_cancel" width="12" height="12"/>
         <image name="start-timer-button" width="45" height="45"/>
         <image name="stop-timer-button" width="30" height="30"/>
         <image name="time-entry-billable" width="17" height="17"/>

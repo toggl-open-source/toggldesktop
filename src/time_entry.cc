@@ -28,7 +28,7 @@
 
 namespace toggl {
 
-bool TimeEntry::ResolveError(const error err) {
+bool TimeEntry::ResolveError(const error &err) {
     if (durationTooLarge(err) && Stop() && Start()) {
         Poco::Int64 seconds =
             (std::min)(Stop() - Start(),
@@ -74,43 +74,43 @@ bool TimeEntry::ResolveError(const error err) {
     return false;
 }
 
-bool TimeEntry::isNotFound(const error err) const {
+bool TimeEntry::isNotFound(const error &err) const {
     return std::string::npos != std::string(err).find(
         "Time entry not found");
 }
-bool TimeEntry::isMissingCreatedWith(const error err) const {
+bool TimeEntry::isMissingCreatedWith(const error &err) const {
     return std::string::npos != std::string(err).find(
         "created_with needs to be provided an a valid string");
 }
 
 bool TimeEntry::userCannotAccessTheSelectedProject(
-    const error err) const {
+    const error &err) const {
     return (std::string::npos != std::string(err).find(
         "User cannot access the selected project"));
 }
 
 bool TimeEntry::userCannotAccessSelectedTask(
-    const error err) const {
+    const error &err) const {
     return (std::string::npos != std::string(err).find(
         "User cannot access selected task"));
 }
 
-bool TimeEntry::durationTooLarge(const error err) const {
+bool TimeEntry::durationTooLarge(const error &err) const {
     return (std::string::npos != std::string(err).find(
         "Max allowed duration per 1 time entry is 999 hours"));
 }
 
-bool TimeEntry::startTimeWrongYear(const error err) const {
+bool TimeEntry::startTimeWrongYear(const error &err) const {
     return (std::string::npos != std::string(err).find(
         "Start time year must be between 2006 and 2030"));
 }
 
-bool TimeEntry::stopTimeMustBeAfterStartTime(const error err) const {
+bool TimeEntry::stopTimeMustBeAfterStartTime(const error &err) const {
     return (std::string::npos != std::string(err).find(
         "Stop time must be after start time"));
 }
 
-bool TimeEntry::billableIsAPremiumFeature(const error err) const {
+bool TimeEntry::billableIsAPremiumFeature(const error &err) const {
     return (std::string::npos != std::string(err).find(
         "Billable is a premium feature"));
 }
@@ -198,19 +198,19 @@ void TimeEntry::SetStop(const Poco::Int64 value) {
     }
 }
 
-void TimeEntry::SetDescription(const std::string value) {
-    const std::string trimValue = trim_whitespace(value);
+void TimeEntry::SetDescription(const std::string &value) {
+    const std::string &trimValue = trim_whitespace(value);
     if (description_ != trimValue) {
         description_ = trimValue;
         SetDirty();
     }
 }
 
-void TimeEntry::SetStopString(const std::string value) {
+void TimeEntry::SetStopString(const std::string &value) {
     SetStop(Formatter::Parse8601(value));
 }
 
-void TimeEntry::SetCreatedWith(const std::string value) {
+void TimeEntry::SetCreatedWith(const std::string &value) {
     if (created_with_ != value) {
         created_with_ = value;
         SetDirty();
@@ -231,7 +231,7 @@ void TimeEntry::SetWID(const Poco::UInt64 value) {
     }
 }
 
-void TimeEntry::SetStopUserInput(const std::string value) {
+void TimeEntry::SetStopUserInput(const std::string &value) {
     SetStopString(value);
 
     if (Stop() < Start()) {
@@ -266,7 +266,7 @@ void TimeEntry::SetTID(const Poco::UInt64 value) {
 
 static const char kTagSeparator = '\t';
 
-void TimeEntry::SetTags(const std::string tags) {
+void TimeEntry::SetTags(const std::string &tags) {
     if (Tags() != tags) {
         TagNames.clear();
         if (!tags.empty()) {
@@ -295,7 +295,7 @@ void TimeEntry::SetDurationInSeconds(const Poco::Int64 value) {
     }
 }
 
-void TimeEntry::SetStartUserInput(const std::string value,
+void TimeEntry::SetStartUserInput(const std::string &value,
                                   const bool keepEndTimeFixed) {
     Poco::Int64 start = Formatter::Parse8601(value);
     if (IsTracking()) {
@@ -316,11 +316,11 @@ void TimeEntry::SetStartUserInput(const std::string value,
     }
 }
 
-void TimeEntry::SetStartString(const std::string value) {
+void TimeEntry::SetStartString(const std::string &value) {
     SetStart(Formatter::Parse8601(value));
 }
 
-void TimeEntry::SetDurationUserInput(const std::string value) {
+void TimeEntry::SetDurationUserInput(const std::string &value) {
     int seconds = Formatter::ParseDurationString(value);
     if (IsTracking()) {
         time_t now = time(nullptr);
@@ -338,7 +338,7 @@ void TimeEntry::SetDurationUserInput(const std::string value) {
     }
 }
 
-void TimeEntry::SetProjectGUID(const std::string value) {
+void TimeEntry::SetProjectGUID(const std::string &value) {
     if (project_guid_ != value) {
         project_guid_ = value;
         SetDirty();

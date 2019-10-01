@@ -37,7 +37,7 @@ class TOGGL_INTERNAL_EXPORT BatchUpdateResult {
     void LoadFromJSON(Json::Value value);
 
     static error ParseResponseArray(
-        const std::string response_body,
+        const std::string &response_body,
         std::vector<BatchUpdateResult> *responses);
     static void ProcessResponseArray(
         std::vector<BatchUpdateResult> * const results,

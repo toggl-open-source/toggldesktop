@@ -22,6 +22,7 @@
                 <outlet property="signUpLink" destination="vHA-Cd-ciE" id="IIF-Rc-Dys"/>
                 <outlet property="signUpLoaderView" destination="RjK-JO-aC4" id="Ags-gt-SEY"/>
                 <outlet property="signupButton" destination="ecN-Qd-Rfu" id="kAt-tp-tbN"/>
+                <outlet property="signupGoogleBtn" destination="BVp-V4-Mkm" id="dfR-ej-hWI"/>
                 <outlet property="tabView" destination="Zob-zi-6R9" id="9Bv-SQ-s56"/>
                 <outlet property="tosCheckbox" destination="p8r-V5-a0Z" id="Vwo-iN-cni"/>
                 <outlet property="tosLink" destination="fZp-Ag-MGC" id="HmT-m5-edl"/>
@@ -41,11 +42,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="THc-hA-qiD">
-                                <rect key="frame" x="50" y="173" width="128" height="128"/>
+                                <rect key="frame" x="89" y="285" width="50" height="16"/>
                                 <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" image="toggl-logo" id="RqX-fO-r2O"/>
                             </imageView>
                             <stackView distribution="equalSpacing" orientation="vertical" alignment="leading" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0Z5-Nq-p4o">
-                                <rect key="frame" x="20" y="83" width="188" height="70"/>
+                                <rect key="frame" x="20" y="195" width="188" height="70"/>
                                 <subviews>
                                     <textField focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="KGi-ca-Yer">
                                         <rect key="frame" x="0.0" y="40" width="188" height="30"/>
@@ -86,19 +87,19 @@
                                 </customSpacing>
                             </stackView>
                             <tabView drawsBackground="NO" allowsTruncatedLabels="NO" type="noTabsNoBorder" translatesAutoresizingMaskIntoConstraints="NO" id="Zob-zi-6R9">
-                                <rect key="frame" x="0.0" y="0.0" width="228" height="83"/>
+                                <rect key="frame" x="0.0" y="0.0" width="228" height="195"/>
                                 <font key="font" metaFont="system"/>
                                 <tabViewItems>
                                     <tabViewItem label="Login" identifier="" id="hPv-Je-QMk">
                                         <view key="view" id="Rv2-bS-MTQ">
-                                            <rect key="frame" x="0.0" y="0.0" width="228" height="83"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="228" height="195"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
                                                 <customView translatesAutoresizingMaskIntoConstraints="NO" id="ZIl-yh-uQ0">
-                                                    <rect key="frame" x="0.0" y="0.0" width="228" height="83"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="228" height="195"/>
                                                     <subviews>
                                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="dzR-Wz-TvW" customClass="NSTextFieldClickablePointer">
-                                                            <rect key="frame" x="18" y="57" width="108" height="16"/>
+                                                            <rect key="frame" x="18" y="169" width="108" height="16"/>
                                                             <textFieldCell key="cell" lineBreakMode="clipping" title="Forgot password?" id="X3a-gR-Caa">
                                                                 <font key="font" metaFont="systemMedium" size="12"/>
                                                                 <color key="textColor" name="login-text-color"/>
@@ -106,7 +107,7 @@
                                                             </textFieldCell>
                                                         </textField>
                                                         <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="IjV-dM-dEc" customClass="FlatButton" customModule="TogglDesktop" customModuleProvider="target">
-                                                            <rect key="frame" x="20" y="7" width="188" height="30"/>
+                                                            <rect key="frame" x="20" y="119" width="188" height="30"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="30" id="6Rk-yX-EJw"/>
                                                             </constraints>
@@ -134,7 +135,7 @@
                                                             </connections>
                                                         </button>
                                                         <button verticalHuggingPriority="750" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tJn-oc-LUz">
-                                                            <rect key="frame" x="18" y="-36" width="192" height="35"/>
+                                                            <rect key="frame" x="18" y="76" width="192" height="35"/>
                                                             <buttonCell key="cell" type="bevel" title="Log in with Google" bezelStyle="regularSquare" image="google-logo" imagePosition="left" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="hE5-JZ-Nlh">
                                                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                                 <font key="font" metaFont="system"/>
@@ -161,7 +162,7 @@
                                                             </textFieldCell>
                                                         </textField>
                                                         <progressIndicator hidden="YES" wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="BLv-g2-Q0z">
-                                                            <rect key="frame" x="144" y="14" width="16" height="16"/>
+                                                            <rect key="frame" x="144" y="126" width="16" height="16"/>
                                                         </progressIndicator>
                                                     </subviews>
                                                     <constraints>
@@ -194,14 +195,14 @@
                                     </tabViewItem>
                                     <tabViewItem label="Signup" identifier="" id="KMJ-Rd-V8x">
                                         <view key="view" id="nfe-ZO-kib">
-                                            <rect key="frame" x="0.0" y="0.0" width="228" height="83"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="228" height="195"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
                                                 <customView translatesAutoresizingMaskIntoConstraints="NO" id="41Y-oV-0ee">
-                                                    <rect key="frame" x="0.0" y="0.0" width="228" height="83"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="228" height="195"/>
                                                     <subviews>
                                                         <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="p8r-V5-a0Z" customClass="FlatButton" customModule="TogglDesktop" customModuleProvider="target">
-                                                            <rect key="frame" x="18" y="27" width="76" height="18"/>
+                                                            <rect key="frame" x="18" y="139" width="76" height="18"/>
                                                             <buttonCell key="cell" type="check" title="I agree to" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="qm8-nf-Dce">
                                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                                 <font key="font" metaFont="cellTitle"/>
@@ -219,7 +220,7 @@
                                                             </connections>
                                                         </button>
                                                         <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ecN-Qd-Rfu" customClass="FlatButton" customModule="TogglDesktop" customModuleProvider="target">
-                                                            <rect key="frame" x="20" y="-33" width="188" height="30"/>
+                                                            <rect key="frame" x="20" y="79" width="188" height="30"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="30" id="6y5-l6-bCL"/>
                                                             </constraints>
@@ -243,11 +244,11 @@
                                                             </userDefinedRuntimeAttributes>
                                                             <connections>
                                                                 <action selector="clickSignupButton:" target="-2" id="8ar-ch-RUX"/>
-                                                                <outlet property="nextKeyView" destination="KGi-ca-Yer" id="oXo-Ww-F4C"/>
+                                                                <outlet property="nextKeyView" destination="BVp-V4-Mkm" id="rbq-UZ-73X"/>
                                                             </connections>
                                                         </button>
                                                         <progressIndicator hidden="YES" wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="RjK-JO-aC4">
-                                                            <rect key="frame" x="144" y="-26" width="16" height="16"/>
+                                                            <rect key="frame" x="144" y="86" width="16" height="16"/>
                                                         </progressIndicator>
                                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="8Ya-xT-rzU" customClass="NSTextFieldClickablePointer">
                                                             <rect key="frame" x="71" y="16" width="86" height="16"/>
@@ -256,9 +257,27 @@
                                                                 <color key="textColor" name="login-text-color"/>
                                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                             </textFieldCell>
+                                                            <connections>
+                                                                <outlet property="nextKeyView" destination="KGi-ca-Yer" id="Vgg-6g-Iy3"/>
+                                                            </connections>
                                                         </textField>
+                                                        <button verticalHuggingPriority="750" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BVp-V4-Mkm">
+                                                            <rect key="frame" x="18" y="38" width="192" height="35"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="188" id="9PE-UU-lQW"/>
+                                                                <constraint firstAttribute="height" constant="30" id="ioV-ar-8C4"/>
+                                                            </constraints>
+                                                            <buttonCell key="cell" type="bevel" title="Sign up with Google" bezelStyle="regularSquare" image="google-logo" imagePosition="left" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="y5t-5i-06C">
+                                                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                                <font key="font" metaFont="system"/>
+                                                            </buttonCell>
+                                                            <connections>
+                                                                <action selector="signupGoogleBtnOnTap:" target="-2" id="KF3-lO-s2y"/>
+                                                                <outlet property="nextKeyView" destination="8Ya-xT-rzU" id="QMB-Wf-XFw"/>
+                                                            </connections>
+                                                        </button>
                                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="8ub-2k-VFz">
-                                                            <rect key="frame" x="36" y="11" width="25" height="16"/>
+                                                            <rect key="frame" x="36" y="123" width="25" height="16"/>
                                                             <textFieldCell key="cell" lineBreakMode="clipping" title="and" id="6le-qK-Qps">
                                                                 <font key="font" metaFont="cellTitle"/>
                                                                 <color key="textColor" name="login-text-color"/>
@@ -266,7 +285,7 @@
                                                             </textFieldCell>
                                                         </textField>
                                                         <comboBox focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="4Zx-Jg-kcg" customClass="NSCustomComboBox">
-                                                            <rect key="frame" x="20" y="49" width="191" height="26"/>
+                                                            <rect key="frame" x="20" y="161" width="191" height="26"/>
                                                             <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" focusRingType="none" placeholderString="Select country" drawsBackground="YES" completes="NO" usesDataSource="YES" numberOfVisibleItems="5" id="XOG-e3-OcV">
                                                                 <font key="font" metaFont="system"/>
                                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -278,7 +297,7 @@
                                                             </connections>
                                                         </comboBox>
                                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="fZp-Ag-MGC" customClass="NSTextFieldClickablePointer">
-                                                            <rect key="frame" x="92" y="28" width="109" height="17"/>
+                                                            <rect key="frame" x="92" y="140" width="109" height="17"/>
                                                             <textFieldCell key="cell" lineBreakMode="clipping" title="Terms of Service" id="yMx-7I-dta">
                                                                 <font key="font" metaFont="systemMedium" size="13"/>
                                                                 <color key="textColor" name="login-text-color"/>
@@ -286,7 +305,7 @@
                                                             </textFieldCell>
                                                         </textField>
                                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="IVx-73-aIM" customClass="NSTextFieldClickablePointer">
-                                                            <rect key="frame" x="59" y="11" width="94" height="17"/>
+                                                            <rect key="frame" x="59" y="123" width="94" height="17"/>
                                                             <textFieldCell key="cell" lineBreakMode="clipping" title="Privacy Policy." id="grP-VP-uk2">
                                                                 <font key="font" metaFont="systemMedium" size="13"/>
                                                                 <color key="textColor" name="login-text-color"/>
@@ -307,6 +326,7 @@
                                                         <constraint firstItem="IVx-73-aIM" firstAttribute="firstBaseline" secondItem="8ub-2k-VFz" secondAttribute="firstBaseline" id="N2g-kc-Xoe"/>
                                                         <constraint firstAttribute="bottom" secondItem="8Ya-xT-rzU" secondAttribute="bottom" constant="16" id="Oq9-p6-wnp"/>
                                                         <constraint firstItem="8ub-2k-VFz" firstAttribute="leading" secondItem="p8r-V5-a0Z" secondAttribute="leading" constant="18" id="Q26-wy-gT1"/>
+                                                        <constraint firstItem="BVp-V4-Mkm" firstAttribute="top" secondItem="ecN-Qd-Rfu" secondAttribute="bottom" constant="8" id="erN-dO-c1u"/>
                                                         <constraint firstItem="4Zx-Jg-kcg" firstAttribute="leading" secondItem="41Y-oV-0ee" secondAttribute="leading" constant="20" id="heV-uz-hSM"/>
                                                         <constraint firstItem="fZp-Ag-MGC" firstAttribute="leading" secondItem="p8r-V5-a0Z" secondAttribute="trailing" constant="2" id="mnc-hR-2WM"/>
                                                         <constraint firstItem="RjK-JO-aC4" firstAttribute="centerY" secondItem="ecN-Qd-Rfu" secondAttribute="centerY" id="q4M-4A-PVp"/>
@@ -314,6 +334,7 @@
                                                         <constraint firstAttribute="trailing" secondItem="4Zx-Jg-kcg" secondAttribute="trailing" constant="20" id="vne-ET-7Oc"/>
                                                         <constraint firstItem="fZp-Ag-MGC" firstAttribute="firstBaseline" secondItem="p8r-V5-a0Z" secondAttribute="firstBaseline" id="xOD-Ri-XS1"/>
                                                         <constraint firstItem="8Ya-xT-rzU" firstAttribute="centerX" secondItem="41Y-oV-0ee" secondAttribute="centerX" id="yAW-sN-L88"/>
+                                                        <constraint firstItem="BVp-V4-Mkm" firstAttribute="centerX" secondItem="41Y-oV-0ee" secondAttribute="centerX" id="yyn-eY-zUR"/>
                                                     </constraints>
                                                 </customView>
                                             </subviews>

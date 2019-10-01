@@ -1,0 +1,16 @@
+source 'https://github.com/CocoaPods/Specs.git'
+
+platform :osx, '10.11'
+use_frameworks!
+inhibit_all_warnings!
+
+# TogglDesktop
+target 'TogglDesktop' do
+    project 'TogglDesktop/TogglDesktop.xcodeproj'
+
+    pod 'GTMAppAuth'
+    pod 'AppAuth'
+    pod 'Sparkle'
+    pod 'MASShortcut'
+    pod 'Bugsnag'
+end

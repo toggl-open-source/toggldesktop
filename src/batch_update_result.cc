@@ -86,7 +86,7 @@ void BatchUpdateResult::ProcessResponseArray(
 }
 
 error BatchUpdateResult::ParseResponseArray(
-    const std::string response_body,
+    const std::string &response_body,
     std::vector<BatchUpdateResult> *responses) {
 
     poco_check_ptr(responses);

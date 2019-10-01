@@ -28,7 +28,7 @@ std::string TimelineEvent::ModelURL() const {
     return "";
 }
 
-void TimelineEvent::SetTitle(const std::string value) {
+void TimelineEvent::SetTitle(const std::string &value) {
     if (title_ != value) {
         title_ = value;
         SetDirty();
@@ -56,7 +56,7 @@ void TimelineEvent::SetIdle(const bool value) {
     }
 }
 
-void TimelineEvent::SetFilename(const std::string value) {
+void TimelineEvent::SetFilename(const std::string &value) {
     if (filename_ != value) {
         filename_ = value;
         SetDirty();

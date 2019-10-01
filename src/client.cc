@@ -31,7 +31,7 @@ std::string Client::String() const {
     return ss.str();
 }
 
-void Client::SetName(const std::string value) {
+void Client::SetName(const std::string &value) {
     if (name_ != value) {
         name_ = value;
         SetDirty();
@@ -63,7 +63,7 @@ Json::Value Client::SaveToJSON() const {
     return n;
 }
 
-bool Client::ResolveError(const toggl::error err) {
+bool Client::ResolveError(const toggl::error &err) {
     if (nameHasAlreadyBeenTaken(err)) {
         SetName(Name() + " 1");
         return true;
@@ -76,12 +76,12 @@ bool Client::ResolveError(const toggl::error err) {
     return false;
 }
 
-bool Client::nameHasAlreadyBeenTaken(const error err) {
+bool Client::nameHasAlreadyBeenTaken(const error &err) {
     return (std::string::npos != std::string(err).find(
         "Name has already been taken"));
 }
 
-bool Client::ResourceCannotBeCreated(const toggl::error err) const {
+bool Client::ResourceCannotBeCreated(const toggl::error &err) const {
     return (std::string::npos != std::string(err).find(
         "cannot add or edit clients in workspace"));
 }

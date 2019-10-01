@@ -36,7 +36,7 @@ std::string Formatter::TimeOfDayFormat = std::string("");
 std::string Formatter::DurationFormat = Format::Improved;
 
 std::string Formatter::togglTimeOfDayToPocoFormat(
-    const std::string toggl_format) {
+    const std::string &toggl_format) {
     if ("h:mm A" == toggl_format) {
         return "%h:%M %A";
     }
@@ -104,7 +104,7 @@ std::string Formatter::FormatDateHeader(const std::time_t date) {
     return Poco::DateTimeFormatter::format(datetime, "%w, %e %b");
 }
 
-bool Formatter::parseTimeInputAMPM(const std::string numbers,
+bool Formatter::parseTimeInputAMPM(const std::string &numbers,
                                    int *hours,
                                    int *minutes,
                                    const bool has_pm) {
@@ -143,9 +143,9 @@ bool Formatter::parseTimeInputAMPM(const std::string numbers,
 }
 
 bool Formatter::parseTimeInputAMPM(
-    const std::string value,
-    const std::string am_symbol,
-    const std::string pm_symbol,
+    const std::string &value,
+    const std::string &am_symbol,
+    const std::string &pm_symbol,
     int *hours,
     int *minutes) {
 
@@ -175,7 +175,7 @@ bool timeIsWithinLimits(int *hours, int *minutes) {
     return true;
 }
 
-bool Formatter::ParseTimeInput(const std::string input,
+bool Formatter::ParseTimeInput(const std::string &input,
                                int *hours,
                                int *minutes) {
     std::string value = Poco::replace(Poco::UTF8::toUpper(input), " ", "");
@@ -218,7 +218,7 @@ bool Formatter::ParseTimeInput(const std::string input,
     return timeIsWithinLimits(hours, minutes);
 }
 
-bool Formatter::parseDurationStringHHMMSS(const std::string value,
+bool Formatter::parseDurationStringHHMMSS(const std::string &value,
         int *parsed_seconds) {
     *parsed_seconds = 0;
 
@@ -246,7 +246,7 @@ bool Formatter::parseDurationStringHHMMSS(const std::string value,
     return true;
 }
 
-bool Formatter::parseDurationStringHHMM(const std::string value,
+bool Formatter::parseDurationStringHHMM(const std::string &value,
                                         int *parsed_seconds) {
     *parsed_seconds = 0;
 
@@ -270,7 +270,7 @@ bool Formatter::parseDurationStringHHMM(const std::string value,
 }
 
 void Formatter::take(
-    const std::string delimiter,
+    const std::string &delimiter,
     double *value,
     std::string *whatsleft) {
 
@@ -317,7 +317,7 @@ int Formatter::parseDurationStringHoursMinutesSeconds(
     return Poco::Timespan(period, 0).totalSeconds();
 }
 
-bool Formatter::parseDurationStringMMSS(const std::string value,
+bool Formatter::parseDurationStringMMSS(const std::string &value,
                                         int *parsed_seconds) {
     *parsed_seconds = 0;
 
@@ -340,7 +340,7 @@ bool Formatter::parseDurationStringMMSS(const std::string value,
     return true;
 }
 
-int Formatter::ParseDurationString(const std::string value) {
+int Formatter::ParseDurationString(const std::string &value) {
     std::string input = Poco::replace(value, " ", "");
     input = Poco::replace(input, ",", ".");
 
@@ -427,7 +427,7 @@ std::string Formatter::FormatDurationForDateHeader(
 
 std::string Formatter::FormatDuration(
     const Poco::Int64 value,
-    const std::string format_name,
+    const std::string &format_name,
     const bool with_seconds) {
     Poco::Int64 duration = AbsDuration(value);
 
@@ -487,7 +487,7 @@ std::string Formatter::FormatDuration(
     return ss.str();
 }
 
-std::time_t Formatter::Parse8601(const std::string iso_8601_formatted_date) {
+std::time_t Formatter::Parse8601(const std::string &iso_8601_formatted_date) {
     if ("null" == iso_8601_formatted_date) {
         return 0;
     }
@@ -540,7 +540,7 @@ std::string Formatter::Format8601(const Poco::Timestamp ts) {
         Poco::DateTimeFormat::ISO8601_FORMAT);
 }
 
-std::string Formatter::EscapeJSONString(const std::string input) {
+std::string Formatter::EscapeJSONString(const std::string &input) {
     std::ostringstream ss;
     for (std::string::const_iterator iter = input.begin();
             iter != input.end();

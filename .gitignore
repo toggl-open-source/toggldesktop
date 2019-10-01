@@ -13,6 +13,9 @@
 *.la
 *.a
 
+# Pod macOS
+src/ui/osx/Pods/
+
 tmp/*
 build/*
 src/lib/osx/build
@@ -69,8 +72,6 @@ TogglDesktop.app
 coverage
 
 third_party/TFDatePicker/TFDatePicker/build/
-
-xcshareddata
 
 *.obj
 *.tlog

@@ -14,3 +14,4 @@
 #import "UndoTextField.h"
 #import "TimeEntryCollectionView.h"
 #import "ConvertHexColor.h"
+#import "AppDelegate.h"

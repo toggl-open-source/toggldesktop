@@ -5,7 +5,6 @@
 //
 
 #import "LoginViewController.h"
-#import "GTMOAuth2WindowController.h"
 #import "Utils.h"
 #import "NSTextField+Ext.h"
 #import "TogglDesktop-Swift.h"
@@ -24,6 +23,14 @@ static NSString *const passwordMissingError = @"A password is required";
 static NSString *const countryNotSelectedError = @"Please select Country before signing up";
 static NSString *const tosAgreeError = @"You must agree to the terms of service and privacy policy to use Toggl";
 
+typedef NS_ENUM (NSUInteger, UserAction)
+{
+	UserActionAccountLogin,
+	UserActionAccountSignup,
+	UserActionGoogleLogin,
+	UserActionGoogleSignup,
+};
+
 @interface LoginViewController () <NSTextFieldDelegate, NSTableViewDataSource, NSComboBoxDataSource, NSComboBoxDelegate>
 @property (weak) IBOutlet NSTabView *tabView;
 @property (weak) IBOutlet NSTextField *email;
@@ -41,11 +48,13 @@ static NSString *const tosAgreeError = @"You must agree to the terms of service 
 @property (weak) IBOutlet NSBox *boxView;
 @property (weak) IBOutlet NSProgressIndicator *loginLoaderView;
 @property (weak) IBOutlet NSProgressIndicator *signUpLoaderView;
+@property (weak) IBOutlet NSButton *signupGoogleBtn;
 
 @property (nonatomic, strong) AutocompleteDataSource *countryAutocompleteDataSource;
 @property (nonatomic, assign) BOOL countriesLoaded;
 @property (nonatomic, assign) NSInteger selectedCountryID;
 @property (nonatomic, assign) TabViewType currentTab;
+@property (nonatomic, assign) UserAction userAction;
 
 - (IBAction)clickLoginButton:(id)sender;
 - (IBAction)clickSignupButton:(id)sender;
@@ -101,6 +110,8 @@ extern void *ctx;
 
 	self.view.wantsLayer = YES;
 	self.view.layer.backgroundColor = [NSColor colorWithPatternImage:[NSImage imageNamed:@"background-pattern"]].CGColor;
+
+	self.userAction = UserActionAccountLogin;
 }
 
 - (void)initCountryAutocomplete {
@@ -126,8 +137,10 @@ extern void *ctx;
 
 - (IBAction)clickLoginButton:(id)sender
 {
+	self.userAction = UserActionAccountLogin;
+
 	// Validate all values inserted
-	if (![self validateForm:NO])
+	if (![self validateFormForAction:self.userAction])
 	{
 		return;
 	}
@@ -215,133 +228,121 @@ extern void *ctx;
 	}
 }
 
-- (void)startGoogleLogin
+- (void)startGoogleAuthentication
 {
-	NSString *scope = @"profile email";
-	NSString *clientID = @"426090949585-uj7lka2mtanjgd7j9i6c4ik091rcv6n5.apps.googleusercontent.com";
-	// According to Google docs, in installed apps the client secret is not expected to stay secret:
-	NSString *clientSecret = @"6IHWKIfTAMF7cPJsBvoGxYui";
-
-	GTMOAuth2WindowController *windowController;
-
-	windowController = [[GTMOAuth2WindowController alloc] initWithScope:scope
-															   clientID:clientID
-														   clientSecret:clientSecret
-													   keychainItemName:nil
-														 resourceBundle:nil];
-
-	[windowController signInSheetModalForWindow:[[NSApplication sharedApplication] mainWindow]
-									   delegate:self
-							   finishedSelector:@selector(viewController:finishedWithAuth:error:)];
+	__weak typeof(self) weakSelf = self;
+	[GoogleAuthenticationServerHelper authorize:^(NSString *token, NSError *error) {
+		 typeof(self) strongSelf = weakSelf;
+		 if (error != nil)
+		 {
+			 [strongSelf handleGoogleError:error];
+		 }
+		 else if (token != nil)
+		 {
+			 [strongSelf handleGoogleToken:token];
+		 }
+	 }];
 	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kHideDisplayError
 																object:nil];
 }
 
-- (void)viewController:(GTMOAuth2WindowController *)viewController
-	  finishedWithAuth:(GTMOAuth2Authentication *)auth
-				 error:(NSError *)error
+- (void)handleGoogleError:(NSError *)error
 {
-	if (error != nil)
+	NSString *errorStr = [error localizedDescription];
+
+	NSLog(@"Login error: %@", errorStr);
+
+	if ([errorStr isEqualToString:@"access_denied"])
 	{
-		NSString *errorStr = [error localizedDescription];
-
-		NSData *responseData = [[error userInfo] objectForKey:kGTMHTTPFetcherStatusDataKey];
-		if ([responseData length] > 0)
-		{
-			// Show the body of the server's authentication failure response
-			errorStr = [[NSString alloc] initWithData:responseData
-											 encoding:NSUTF8StringEncoding];
-		}
-		else
-		{
-			NSString *str = [[error userInfo] objectForKey:kGTMOAuth2ErrorMessageKey];
-			if (str != nil)
-			{
-				if ([str length] > 0)
-				{
-					errorStr = str;
-				}
-			}
-		}
-
-		NSLog(@"Login error: %@", errorStr);
-
-		if ([errorStr isEqualToString:@"access_denied"])
-		{
-			errorStr = @"Google login access was denied to app.";
-		}
-
-		if ([errorStr isEqualToString:@"The operation couldn’t be completed. (com.google.GTMOAuth2 error -1000.)"])
-		{
-			errorStr = @"Window was closed before login completed.";
-		}
-
-		[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayError
-																	object:errorStr];
-		return;
+		errorStr = @"Google login access was denied to app.";
 	}
 
-	// Show loader and disable text boxs
-	[self showLoaderView:YES];
+	if ([errorStr isEqualToString:@"The operation couldn’t be completed. (com.google.GTMOAuth2 error -1000.)"])
+	{
+		errorStr = @"Window was closed before login completed.";
+	}
 
-	toggl_google_login_async(ctx, [auth.accessToken UTF8String]);
+	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayError
+																object:errorStr];
 }
 
-- (BOOL)validateForm:(BOOL)signup
+- (void)handleGoogleToken:(NSString *)token
 {
-	// check if email is inserted
-	NSString *email = [self.email stringValue];
-
-	if (email == nil || !email.length)
+	[self showLoaderView:YES];
+	switch (self.userAction)
 	{
-		[self.email.window makeFirstResponder:self.email];
-		[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayError
-																	object:emailMissingError];
-		return NO;
+		case UserActionGoogleSignup :
+			toggl_google_signup_async(ctx, [token UTF8String], self.selectedCountryID);
+			break;
+		case UserActionGoogleLogin :
+			toggl_google_login_async(ctx, [token UTF8String]);
+			break;
+		default :
+			break;
+	}
+}
+
+- (BOOL)validateFormForAction:(UserAction)action
+{
+	switch (action)
+	{
+		case UserActionAccountLogin :
+			if (![self isEmalValid])
+			{
+				return NO;
+			}
+			if (![self isPasswordValid])
+			{
+				return NO;
+			}
+			return YES;
+
+		case UserActionAccountSignup :
+			if (![self isEmalValid])
+			{
+				return NO;
+			}
+			if (![self isPasswordValid])
+			{
+				return NO;
+			}
+			if (![self isCountryValid])
+			{
+				return NO;
+			}
+			if (![self isTOSValid])
+			{
+				return NO;
+			}
+			return YES;
+
+		case UserActionGoogleLogin :
+			return YES;
+
+		case UserActionGoogleSignup :
+			if (![self isCountryValid])
+			{
+				return NO;
+			}
+			if (![self isTOSValid])
+			{
+				return NO;
+			}
+			return YES;
+
+		default :
+			break;
 	}
 
-	// check if password is inserted
-	NSString *pass = [self.password stringValue];
-
-	if (pass == nil || !pass.length)
-	{
-		[self.password.window makeFirstResponder:self.password];
-		[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayError
-																	object:passwordMissingError];
-		return NO;
-	}
-
-	if (!signup)
-	{
-		return YES;
-	}
-
-	// check if country is selected
-	if (self.selectedCountryID == -1 || self.countrySelect.stringValue.length == 0)
-	{
-		[self.countrySelect.window makeFirstResponder:self.countrySelect];
-		[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayError
-																	object:countryNotSelectedError];
-		return NO;
-	}
-
-	// check if tos and privacy policy is checked
-	BOOL tosChecked = [Utils stateToBool:[self.tosCheckbox state]];
-	if (!tosChecked)
-	{
-		[self.tosCheckbox.window makeFirstResponder:self.tosCheckbox];
-		[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayError
-																	object:tosAgreeError];
-		return NO;
-	}
-
-	return YES;
+	return NO;
 }
 
 - (IBAction)clickSignupButton:(id)sender
 {
+	self.userAction = UserActionAccountSignup;
+
 	// Validate all values inserted
-	if (![self validateForm:YES])
+	if (![self validateFormForAction:self.userAction])
 	{
 		return;
 	}
@@ -416,10 +417,12 @@ extern void *ctx;
 	return NO;
 }
 
-- (IBAction)loginGoogleOnTap:(id)sender {
+- (IBAction)loginGoogleOnTap:(id)sender
+{
 	// for empty State
+	self.userAction = UserActionGoogleLogin;
 	[self setUserSignUp:NO];
-	[self startGoogleLogin];
+	[self startGoogleAuthentication];
 }
 
 - (void)setUserSignUp:(BOOL)isSignUp
@@ -453,8 +456,75 @@ extern void *ctx;
 	self.signUpLink.enabled = !show;
 }
 
-- (void)resetLoader {
+- (void)resetLoader
+{
 	[self showLoaderView:NO];
+}
+
+- (IBAction)signupGoogleBtnOnTap:(id)sender
+{
+	self.userAction = UserActionGoogleSignup;
+	if (![self validateFormForAction:self.userAction])
+	{
+		return;
+	}
+
+	[self setUserSignUp:NO];
+	[self startGoogleAuthentication];
+}
+
+- (BOOL)isEmalValid
+{
+	NSString *email = [self.email stringValue];
+
+	if (email == nil || !email.length)
+	{
+		[self.email.window makeFirstResponder:self.email];
+		[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayError
+																	object:emailMissingError];
+		return NO;
+	}
+	return YES;
+}
+
+- (BOOL)isPasswordValid
+{
+	NSString *pass = [self.password stringValue];
+
+	if (pass == nil || !pass.length)
+	{
+		[self.password.window makeFirstResponder:self.password];
+		[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayError
+																	object:passwordMissingError];
+		return NO;
+	}
+	return YES;
+}
+
+- (BOOL)isCountryValid
+{
+	if (self.selectedCountryID == -1 || self.countrySelect.stringValue.length == 0)
+	{
+		[self.countrySelect.window makeFirstResponder:self.countrySelect];
+		[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayError
+																	object:countryNotSelectedError];
+		return NO;
+	}
+	return YES;
+}
+
+- (BOOL)isTOSValid
+{
+	BOOL tosChecked = [Utils stateToBool:[self.tosCheckbox state]];
+
+	if (!tosChecked)
+	{
+		[self.tosCheckbox.window makeFirstResponder:self.tosCheckbox];
+		[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayError
+																	object:tosAgreeError];
+		return NO;
+	}
+	return YES;
 }
 
 @end

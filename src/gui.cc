@@ -101,7 +101,7 @@ void GUI::DisplayCountries(
     }
     TogglCountryView *first = country_list_init(items);
     on_display_countries_(first);
-    country_item_clear(first);
+    country_list_clear(first);
 }
 
 void GUI::DisplaySyncState(const Poco::Int64 state) {
@@ -138,7 +138,7 @@ void GUI::DisplayLogin(const bool open, const uint64_t user_id) {
     lastDisplayLoginUserID = user_id;
 }
 
-error GUI::DisplayError(const error err) {
+error GUI::DisplayError(const error &err) {
     if (noError == err) {
         return noError;
     }
@@ -371,11 +371,11 @@ void GUI::DisplayTimeEntryAutocomplete(
 
     TogglAutocompleteView *first = autocomplete_list_init(items);
     on_display_time_entry_autocomplete_(first);
-    autocomplete_item_clear(first);
+    autocomplete_list_clear(first);
 }
 
 void GUI::DisplayHelpArticles(
-    std::vector<HelpArticle> articles) {
+    const std::vector<HelpArticle> &articles) {
     logger().debug("DisplayHelpArticles");
 
     if (!on_display_help_articles_) {
@@ -384,7 +384,7 @@ void GUI::DisplayHelpArticles(
 
     TogglHelpArticleView *first = help_article_list_init(articles);
     on_display_help_articles_(first);
-    help_article_clear(first);
+    help_article_list_clear(first);
 }
 
 void GUI::DisplayMinitimerAutocomplete(
@@ -393,7 +393,7 @@ void GUI::DisplayMinitimerAutocomplete(
 
     TogglAutocompleteView *first = autocomplete_list_init(items);
     on_display_mini_timer_autocomplete_(first);
-    autocomplete_item_clear(first);
+    autocomplete_list_clear(first);
 }
 
 void GUI::DisplayProjectAutocomplete(
@@ -402,11 +402,11 @@ void GUI::DisplayProjectAutocomplete(
 
     TogglAutocompleteView *first = autocomplete_list_init(items);
     on_display_project_autocomplete_(first);
-    autocomplete_item_clear(first);
+    autocomplete_list_clear(first);
 }
 
 void GUI::DisplayTimeEntryList(const bool open,
-                               const std::vector<view::TimeEntry> list,
+                               const std::vector<view::TimeEntry> &list,
                                const bool show_load_more_button) {
     Poco::Stopwatch stopwatch;
     auto renderList = std::vector<view::TimeEntry>();
@@ -451,7 +451,7 @@ void GUI::DisplayTimeEntryList(const bool open,
 
     on_display_time_entry_list_(open, first, show_load_more_button);
 
-    time_entry_view_item_clear(first);
+    time_entry_view_list_clear(first);
 
     stopwatch.stop();
     {
@@ -462,12 +462,12 @@ void GUI::DisplayTimeEntryList(const bool open,
     }
 }
 
-void GUI::DisplayTags(const std::vector<view::Generic> list) {
+void GUI::DisplayTags(const std::vector<view::Generic> &list) {
     logger().debug("DisplayTags");
 
     TogglGenericView *first = generic_to_view_item_list(list);
     on_display_tags_(first);
-    view_item_clear(first);
+    view_list_clear(first);
 }
 
 void GUI::DisplayAutotrackerRules(
@@ -500,31 +500,30 @@ void GUI::DisplayAutotrackerRules(
     }
     delete[] title_list;
 
-    autotracker_view_item_clear(first);
+    autotracker_view_list_clear(first);
 }
 
 void GUI::DisplayClientSelect(
-    const std::vector<view::Generic> list) {
+    const std::vector<view::Generic> &list) {
     logger().debug("DisplayClientSelect");
 
     TogglGenericView *first = generic_to_view_item_list(list);
     on_display_client_select_(first);
-    view_item_clear(first);
+    view_list_clear(first);
 }
 
 void GUI::DisplayWorkspaceSelect(
-    const std::vector<view::Generic> list) {
+    const std::vector<view::Generic> &list) {
     logger().debug("DisplayWorkspaceSelect");
 
     TogglGenericView *first = generic_to_view_item_list(list);
     on_display_workspace_select_(first);
-    view_item_clear(first);
+    view_list_clear(first);
 }
 
-void GUI::DisplayTimeEntryEditor(
-    const bool open,
-    const view::TimeEntry te,
-    const std::string focused_field_name) {
+void GUI::DisplayTimeEntryEditor(const bool open,
+    const view::TimeEntry &te,
+    const std::string &focused_field_name) {
 
     logger().debug(
         "DisplayTimeEntryEditor focused_field_name=" + focused_field_name);
@@ -535,10 +534,10 @@ void GUI::DisplayTimeEntryEditor(
     on_display_time_entry_editor_(open, view, field_s);
     free(field_s);
 
-    time_entry_view_item_clear(view);
+    time_entry_view_list_clear(view);
 }
 
-void GUI::DisplayURL(const std::string URL) {
+void GUI::DisplayURL(const std::string &URL) {
     logger().debug("DisplayURL " + URL);
 
     char_t *url = copy_string(URL);
@@ -546,7 +545,7 @@ void GUI::DisplayURL(const std::string URL) {
     free(url);
 }
 
-void GUI::DisplayUpdate(const std::string URL) {
+void GUI::DisplayUpdate(const std::string &URL) {
     logger().debug("DisplayUpdate " + URL);
 
     char_t *url = copy_string(URL);
@@ -555,7 +554,7 @@ void GUI::DisplayUpdate(const std::string URL) {
 }
 
 void GUI::DisplayUpdateDownloadState(
-    const std::string version,
+    const std::string &version,
     const Poco::Int64 download_state) {
 
     if (!CanDisplayUpdateDownloadState()) {
@@ -575,9 +574,9 @@ void GUI::DisplayUpdateDownloadState(
 
 void GUI::DisplaySettings(const bool open,
                           const bool record_timeline,
-                          const Settings settings,
+                          const Settings &settings,
                           const bool use_proxy,
-                          const Proxy proxy) {
+                          const Proxy &proxy) {
     logger().debug("DisplaySettings");
 
     TogglSettingsView *view = settings_view_item_init(
@@ -596,7 +595,7 @@ void GUI::DisplayTimerState(
 
     TogglTimeEntryView *view = time_entry_view_item_init(te);
     on_display_timer_state_(view);
-    time_entry_view_item_clear(view);
+    time_entry_view_list_clear(view);
 
     logger().debug("DisplayTimerState");
 }
@@ -606,11 +605,11 @@ void GUI::DisplayEmptyTimerState() {
     logger().debug("DisplayEmptyTimerState");
 }
 
-void GUI::DisplayIdleNotification(const std::string guid,
-                                  const std::string since,
-                                  const std::string duration,
+void GUI::DisplayIdleNotification(const std::string &guid,
+                                  const std::string &since,
+                                  const std::string &duration,
                                   const int64_t started,
-                                  const std::string description) {
+                                  const std::string &description) {
     char_t *guid_s = copy_string(guid);
     char_t *since_s = copy_string(since);
     char_t *duration_s = copy_string(duration);

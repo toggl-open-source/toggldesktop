@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using Hardcodet.Wpf.TaskbarNotification;
@@ -28,7 +29,10 @@ namespace TogglDesktop
 
             this.RemoveFromParent();
 
-            icon.ShowCustomBalloon(this, PopupAnimation.Slide, 6000);
+            if (!icon.ShowNotification(this, PopupAnimation.Slide, TimeSpan.FromSeconds(10)))
+            {
+                icon.ShowBalloonTip(title, informative_text, Properties.Resources.toggl, largeIcon: true);
+            }
         }
 
         private void onNotificationMouseDown(object sender, MouseButtonEventArgs e)

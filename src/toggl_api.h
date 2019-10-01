@@ -997,13 +997,6 @@ extern "C" {
         void *context,
         const char *json);
 
-    TOGGL_EXPORT void toggl_set_compact_mode(
-        void *context,
-        const bool_t value);
-
-    TOGGL_EXPORT bool_t toggl_get_compact_mode(
-        void *context);
-
     TOGGL_EXPORT void toggl_set_keep_end_time_fixed(
         void *context,
         const bool_t value);

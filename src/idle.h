@@ -23,7 +23,7 @@ class TOGGL_INTERNAL_EXPORT Idle {
         const Poco::Int64 idle_seconds,
         User *current_user);
 
-    void SetSettings(const Settings settings) {
+    void SetSettings(const Settings &settings) {
         settings_ = settings;
     }
 

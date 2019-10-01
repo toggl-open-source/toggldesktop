@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using Hardcodet.Wpf.TaskbarNotification;
@@ -26,13 +27,13 @@ namespace TogglDesktop
             if (this.TryBeginInvoke(this.onAutotrackerNotification, projectName, projectId, taskId))
                 return;
 
-            this.Message = string.Format("Track {0}?", projectName);
+            this.Message = $"Track {projectName}?";
             this.projectId = projectId;
             this.taskId = taskId;
 
             this.RemoveFromParent();
 
-            this.icon.ShowCustomBalloon(this, PopupAnimation.Slide, 6000);
+            this.icon.ShowNotification(this, PopupAnimation.Slide, TimeSpan.FromSeconds(6));
         }
 
         private void onStartButtonClick(object sender, RoutedEventArgs e)

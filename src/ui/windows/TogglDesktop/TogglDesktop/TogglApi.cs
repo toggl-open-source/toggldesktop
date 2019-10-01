@@ -1511,17 +1511,6 @@ public static partial class Toggl
         string json);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-    private static extern void toggl_set_compact_mode(
-        IntPtr context,
-        [MarshalAs(UnmanagedType.I1)]
-        bool value);
-
-    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-    [return:MarshalAs(UnmanagedType.I1)]
-    private static extern bool toggl_get_compact_mode(
-        IntPtr context);
-
-    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_set_keep_end_time_fixed(
         IntPtr context,
         [MarshalAs(UnmanagedType.I1)]

@@ -22,6 +22,7 @@
 #import "AutoCompleteTable.h"
 #import <Carbon/Carbon.h>
 #import "Utils.h"
+#import "ClickableImageView.h"
 
 typedef enum : NSUInteger
 {
@@ -30,7 +31,7 @@ typedef enum : NSUInteger
 	DisplayModeInput,
 } DisplayMode;
 
-@interface TimerEditViewController ()
+@interface TimerEditViewController () <ClickableImageViewDelegate>
 @property (weak) IBOutlet NSBoxClickable *manualBox;
 @property (weak) IBOutlet NSBoxClickable *mainBox;
 @property (weak) IBOutlet NSTextFieldDuration *durationTextField;
@@ -38,12 +39,13 @@ typedef enum : NSUInteger
 @property (weak) IBOutlet ProjectTextField *projectTextField;
 @property (weak) IBOutlet AutoCompleteInput *descriptionLabel;
 @property (weak) IBOutlet NSImageView *billableFlag;
-@property (weak) IBOutlet NSImageView *tagFlag;
+@property (weak) IBOutlet ClickableImageView *tagFlag;
 @property (weak) IBOutlet NSButton *addEntryBtn;
 @property (weak) IBOutlet NSView *contentContainerView;
 @property (weak) IBOutlet TimerContainerBox *autocompleteContainerView;
 @property (weak) IBOutlet DotImageView *dotImageView;
 @property (weak) IBOutlet NSLayoutConstraint *projectTextFieldLeading;
+@property (weak) IBOutlet NSButton *cancelBtn;
 
 - (IBAction)startButtonClicked:(id)sender;
 - (IBAction)durationFieldChanged:(id)sender;
@@ -101,10 +103,6 @@ NSString *kInactiveTimerColor = @"#999999";
 												 selector:@selector(stop:)
 													 name:kCommandStop
 												   object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(startNewShortcut:)
-													 name:kCommandNewShortcut
-												   object:nil];
 
 		self.time_entry = [[TimeEntryViewItem alloc] init];
 
@@ -146,6 +144,7 @@ NSString *kInactiveTimerColor = @"#999999";
 	self.autoCompleteInput.responderDelegate = self.autocompleteContainerView;
 
 	self.descriptionLabel.delegate = self;
+	self.tagFlag.delegate = self;
 }
 
 - (void)viewDidAppear
@@ -281,6 +280,9 @@ NSString *kInactiveTimerColor = @"#999999";
 	{
 		self.durationTextField.stringValue = @"";
 	}
+
+	// Hide
+	self.cancelBtn.hidden = YES;
 }
 
 - (void)startDisplayTimeEntryEditor:(NSNotification *)notification
@@ -314,7 +316,7 @@ NSString *kInactiveTimerColor = @"#999999";
 	{
 		[self.view.window makeFirstResponder:self.autoCompleteInput];
 	}
-
+	self.cancelBtn.hidden = YES;
 	self.time_entry = [[TimeEntryViewItem alloc] init];
 }
 
@@ -338,6 +340,10 @@ NSString *kInactiveTimerColor = @"#999999";
 	else if (sender == self.durationTextField)
 	{
 		focusField = kFocusedFieldNameDuration;
+	}
+	else if (sender == self.tagFlag)
+	{
+		focusField = kFocusedFieldNameTag;
 	}
 
 	toggl_edit(ctx, [self.time_entry.GUID UTF8String], false, focusField);
@@ -602,6 +608,9 @@ NSString *kInactiveTimerColor = @"#999999";
 	[[self.descriptionLabel currentEditor] setSelectedRange:NSMakeRange(tRange.length, 0)];
 	[self.autoCompleteInput resetTable];
 	[self.liteAutocompleteDataSource clearFilter];
+
+	// Show cancel btn
+	self.cancelBtn.hidden = NO;
 }
 
 - (BOOL)control:(NSControl *)control textView:(NSTextView *)fieldEditor doCommandBySelector:(SEL)commandSelector
@@ -731,6 +740,22 @@ NSString *kInactiveTimerColor = @"#999999";
 																		object:nil];
 		}
 	}
+}
+
+- (void)imageViewOnClick:(id)sender
+{
+	[self textFieldClicked:sender];
+}
+
+- (IBAction)cancelBtnOnTap:(id)sender
+{
+	NSString *description = self.time_entry.Description;
+	self.time_entry = [[TimeEntryViewItem alloc] init];
+	self.time_entry.Description = description;
+	self.tagFlag.hidden = YES;
+	self.billableFlag.hidden = YES;
+	self.cancelBtn.hidden = YES;
+	[self renderProjectLabelWithViewItem:nil];
 }
 
 @end

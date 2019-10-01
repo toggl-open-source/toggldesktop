@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <StoreAssociation xmlns="http://schemas.microsoft.com/appx/2010/storeassociation">
   <Publisher>CN=E1BE5469-4101-4334-A5A2-69B684F3BA70</Publisher>
-  <PublisherDisplayName>Toggl Oü</PublisherDisplayName>
+  <PublisherDisplayName>Toggl OÜ</PublisherDisplayName>
   <DeveloperAccountType>MSA</DeveloperAccountType>
   <GeneratePackageHash>http://www.w3.org/2001/04/xmlenc#sha256</GeneratePackageHash>
   <SupportedLocales>

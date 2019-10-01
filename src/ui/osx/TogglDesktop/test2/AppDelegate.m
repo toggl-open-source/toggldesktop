@@ -13,7 +13,6 @@
 #import "AutotrackerRuleItem.h"
 #import <Bugsnag/Bugsnag.h>
 #import "ConsoleViewController.h"
-#import "CrashReporter.h"
 #import "DisplayCommand.h"
 #import "FeedbackWindowController.h"
 #import "IdleEvent.h"
@@ -36,6 +35,7 @@
 #import "AppIconFactory.h"
 #import <MASShortcut/Shortcut.h>
 #import "Reachability.h"
+#import <AppAuth/AppAuth.h>
 
 @interface AppDelegate ()
 @property (nonatomic, strong) MainWindowController *mainWindowController;
@@ -129,21 +129,6 @@ void *ctx;
 
 	self.mainWindowController = [[MainWindowController alloc] initWithWindowNibName:@"MainWindowController"];
 	[self.mainWindowController.window setReleasedWhenClosed:NO];
-
-	PLCrashReporter *crashReporter = [self configuredCrashReporter];
-
-	// Check if we previously crashed
-	if ([crashReporter hasPendingCrashReport])
-	{
-		[self handleCrashReport];
-	}
-
-	// Enable the Crash Reporter
-	NSError *error;
-	if (![crashReporter enableCrashReporterAndReturnError:&error])
-	{
-		NSLog(@"Warning: Could not enable crash reporter: %@", error);
-	}
 
 	if (self.forceCrash)
 	{
@@ -315,6 +300,9 @@ void *ctx;
 	}
 
 	[self hideConsoleMenuIfNeed];
+
+	// Setup Google Service Callback
+	[self registerGoogleEventHandler];
 }
 
 - (void)systemWillPowerOff:(NSNotification *)aNotification
@@ -907,6 +895,21 @@ void *ctx;
 	[self.runningTimeEntryMenuItem setTitle:@"Timer is not tracking"];
 }
 
+- (NSMenu *)applicationDockMenu:(NSApplication *)sender {
+	NSMenu *menu = [[NSMenu alloc] init];
+
+	[menu addItemWithTitle:@"Start New"
+					action:@selector(onNewMenuItem:)
+			 keyEquivalent:@"n"].tag = kMenuItemTagNew;
+	[menu addItemWithTitle:@"Continue Latest"
+					action:@selector(onContinueMenuItem:)
+			 keyEquivalent:@"o"].tag = kMenuItemTagContinue;
+	[menu addItemWithTitle:@"Stop Timer"
+					action:@selector(onStopMenuItem:)
+			 keyEquivalent:@"s"].tag = kMenuItemTagStop;
+	return menu;
+}
+
 - (void)createStatusItem
 {
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
@@ -995,7 +998,7 @@ void *ctx;
 
 - (void)onNewMenuItem:(id)sender
 {
-	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kCommandNewShortcut
+	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kCommandNew
 																object:[[TimeEntryViewItem alloc] init]];
 }
 
@@ -1432,77 +1435,6 @@ const NSString *appName = @"osx_native_app";
 	[self.idleNotificationWindowController displayIdleEvent:idleEvent];
 }
 
-- (PLCrashReporter *)configuredCrashReporter
-{
-	PLCrashReporterConfig *config = [[PLCrashReporterConfig alloc]
-									 initWithSignalHandlerType:PLCrashReporterSignalHandlerTypeBSD
-										 symbolicationStrategy:PLCrashReporterSymbolicationStrategyAll];
-
-	return [[PLCrashReporter alloc] initWithConfiguration:config];
-}
-
-- (void)handleCrashReport
-{
-	PLCrashReporter *crashReporter = [self configuredCrashReporter];
-
-	NSError *error;
-	NSData *crashData = [crashReporter loadPendingCrashReportDataAndReturnError:&error];
-
-	if (crashData == nil)
-	{
-		NSLog(@"Could not load crash report: %@", error);
-		[crashReporter purgePendingCrashReport];
-		return;
-	}
-
-	PLCrashReport *report = [[PLCrashReport alloc] initWithData:crashData
-														  error:&error];
-	if (report == nil)
-	{
-		NSLog(@"Could not parse crash report");
-		[crashReporter purgePendingCrashReport];
-		return;
-	}
-
-	NSString *summary = [NSString stringWithFormat:@"Crashed with signal %@ (code %@)",
-						 report.signalInfo.name,
-						 report.signalInfo.code];
-
-	NSString *humanReadable = [PLCrashReportTextFormatter stringValueForCrashReport:report
-																	 withTextFormat:PLCrashReportTextFormatiOS];
-	NSLog(@"Crashed on %@", report.systemInfo.timestamp);
-	NSLog(@"Report: %@", humanReadable);
-
-	NSException *exception;
-	if (report.hasExceptionInfo)
-	{
-		exception = [NSException
-					 exceptionWithName:report.exceptionInfo.exceptionName
-								reason:report.exceptionInfo.exceptionReason
-							  userInfo:nil];
-	}
-	else
-	{
-		exception = [NSException
-					 exceptionWithName:summary
-								reason:humanReadable
-							  userInfo:nil];
-	}
-	char *str = toggl_get_update_channel(ctx);
-	NSString *channel = [NSString stringWithUTF8String:str];
-	free(str);
-
-	[Bugsnag notify:exception
-			  block:^(BugsnagCrashReport *report) {
-		 NSDictionary *data = @{
-				 @"channel": channel
-		 };
-		 [report addMetadata:data toTabWithName:@"metadata"];
-	 }];
-
-	[crashReporter purgePendingCrashReport];
-}
-
 - (void)reachabilityChanged:(NSNotification *)notice
 {
 	NetworkStatus remoteHostStatus = [self.reach currentReachabilityStatus];
@@ -1822,6 +1754,36 @@ void on_countries(TogglCountryView *first)
 #else
 	[self.consoleMenuItem setHidden:YES];
 #endif
+}
+
+#pragma mark - Google Authentication
+
+- (void)registerGoogleEventHandler
+{
+	NSAppleEventManager *appleEventManager = [NSAppleEventManager sharedAppleEventManager];
+
+	[appleEventManager setEventHandler:self
+						   andSelector:@selector(handleGetURLEvent:withReplyEvent:)
+						 forEventClass:kInternetEventClass
+							andEventID:kAEGetURL];
+}
+
+- (void)handleGetURLEvent:(NSAppleEventDescriptor *)event
+		   withReplyEvent:(NSAppleEventDescriptor *)replyEvent
+{
+	NSString *URLString = [[event paramDescriptorForKeyword:keyDirectObject] stringValue];
+	NSURL *URL = [NSURL URLWithString:URLString];
+
+	[_currentAuthorizationFlow resumeExternalUserAgentFlowWithURL:URL];
+}
+
+- (NSString *)currentChannel
+{
+	char *str = toggl_get_update_channel(ctx);
+	NSString *channel = [NSString stringWithUTF8String:str];
+
+	free(str);
+	return channel;
 }
 
 @end

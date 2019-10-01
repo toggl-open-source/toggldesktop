@@ -1147,7 +1147,7 @@ public static partial class Toggl
                 }
                 catch (Exception e)
                 {
-                    Program.NotifyBugsnag(e);
+                    BugsnagService.NotifyBugsnag(e);
                     Toggl.OnError?.Invoke($"Unable to delete the file: {file.FullName}. Delete this file manually.", false);
                 }
             }
@@ -1183,7 +1183,7 @@ public static partial class Toggl
                 }
                 catch (Exception e)
                 {
-                    Program.NotifyBugsnag(e);
+                    BugsnagService.NotifyBugsnag(e);
                     Toggl.OnError?.Invoke($"Unable to delete the file: {file.FullName}. Delete this file manually.", false);
                 }
             }
@@ -1206,7 +1206,7 @@ public static partial class Toggl
             }
             catch (Win32Exception e)
             {
-                Program.NotifyBugsnag(e);
+                BugsnagService.NotifyBugsnag(e);
                 Toggl.OnError?.Invoke("Unable to run the installer. Please update manually.", false);
                 return;
             }
@@ -1430,7 +1430,7 @@ public static partial class Toggl
     public static void ShowErrorAndNotify(string errmsg, Exception ex)
     {
         NewError(errmsg, true);
-        Program.NotifyBugsnag(ex);
+        BugsnagService.NotifyBugsnag(ex);
     }
 
     public static bool AskToDeleteEntry(string guid)

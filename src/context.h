@@ -71,7 +71,7 @@ class TOGGL_INTERNAL_EXPORT UIElements {
     std::string String() const;
 
     void ApplyChanges(
-        const std::string editor_guid,
+        const std::string &editor_guid,
         const std::vector<ModelChange> &changes);
 
     bool first_load;
@@ -96,8 +96,8 @@ class TOGGL_INTERNAL_EXPORT UIElements {
 class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
  public:
     Context(
-        const std::string app_name,
-        const std::string app_version);
+        const std::string &app_name,
+        const std::string &app_version);
     virtual ~Context();
 
     GUI *UI() {
@@ -113,23 +113,23 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     void FullSync();
     void Sync();
     void TimelineUpdateServerSettings();
-    error SendFeedback(Feedback);
+    error SendFeedback(const Feedback &);
 
     // Load model update from JSON string (from WebSocket)
-    error LoadUpdateFromJSONString(const std::string json);
+    error LoadUpdateFromJSONString(const std::string &json);
 
-    void SetWebSocketClientURL(const std::string value);
+    void SetWebSocketClientURL(const std::string &value);
 
-    error SetDBPath(const std::string path);
+    error SetDBPath(const std::string &path);
 
-    void SetUpdatePath(const std::string path) {
+    void SetUpdatePath(const std::string &path) {
         update_path_ = path;
     }
     const std::string &UpdatePath() {
         return update_path_;
     }
 
-    void SetEnvironment(const std::string environment);
+    void SetEnvironment(const std::string &environment);
     std::string Environment() const {
         return environment_;
     }
@@ -176,8 +176,8 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     error SetSettingsAutodetectProxy(const bool autodetect_proxy);
 
     error SetSettingsRemindTimes(
-        const std::string remind_starts,
-        const std::string remind_ends);
+        const std::string &remind_starts,
+        const std::string &remind_ends);
 
     error SetSettingsRemindDays(
         const bool remind_mon,
@@ -187,11 +187,6 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
         const bool remind_fri,
         const bool remind_sat,
         const bool remind_sun);
-
-    void SetCompactMode(
-        const bool);
-
-    bool GetCompactMode();
 
     void SetMiniTimerVisible(
         const bool);
@@ -224,30 +219,29 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     int64_t GetWindowEditSizeWidth();
 
     void SetKeyStart(
-        const std::string value);
+        const std::string &value);
 
     std::string GetKeyStart();
 
     void SetKeyShow(
-        const std::string value);
+        const std::string &value);
 
     std::string GetKeyShow();
 
     void SetKeyModifierShow(
-        const std::string value);
+        const std::string &value);
 
     std::string GetKeyModifierShow();
 
     void SetKeyModifierStart(
-        const std::string value);
+        const std::string &value);
 
     std::string GetKeyModifierStart();
 
     error ProxySettings(bool *use_proxy, Proxy *proxy);
 
-    error SetProxySettings(
-        const bool use_proxy,
-        const Proxy proxy);
+    error SetProxySettings(const bool use_proxy,
+        const Proxy &proxy);
 
     error LoadWindowSettings(
         int64_t *window_x,
@@ -276,108 +270,108 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     void SetMiniTimerW(
         const int64_t w);
 
-    error AsyncLogin(const std::string email,
-                     const std::string password);
+    error AsyncLogin(const std::string &email,
+                     const std::string &password);
 
     error Login(
-        const std::string email,
-        const std::string password);
+        const std::string &email,
+        const std::string &password);
 
     error AsyncSignup(
-        const std::string email,
-        const std::string password,
+        const std::string &email,
+        const std::string &password,
         const uint64_t country_id);
 
     error Signup(
-        const std::string email,
-        const std::string password,
+        const std::string &email,
+        const std::string &password,
         const uint64_t country_id);
 
     error GoogleSignup(
-        const std::string access_token,
+        const std::string &access_token,
         const uint64_t country_id);
 
     error AsyncGoogleSignup(
-        const std::string access_token,
+        const std::string &access_token,
         const uint64_t country_id);
 
-    error GoogleLogin(const std::string access_token);
-    error AsyncGoogleLogin(const std::string access_token);
+    error GoogleLogin(const std::string &access_token);
+    error AsyncGoogleLogin(const std::string &access_token);
 
     error Logout();
 
-    error SetLoggedInUserFromJSON(const std::string json);
+    error SetLoggedInUserFromJSON(const std::string &json);
 
     error ClearCache();
 
     TimeEntry *Start(
-        const std::string description,
-        const std::string duration,
+        const std::string &description,
+        const std::string &duration,
         const Poco::UInt64 task_id,
         const Poco::UInt64 project_id,
-        const std::string project_guid,
-        const std::string tags,
+        const std::string &project_guid,
+        const std::string &tags,
         const bool prevent_on_app);
 
     TimeEntry *ContinueLatest(const bool prevent_on_app);
 
     TimeEntry *Continue(
-        const std::string GUID);
+        const std::string &GUID);
 
     void OpenTimeEntryList();
 
     void OpenSettings();
 
     void OpenTimeEntryEditor(
-        const std::string GUID,
+        const std::string &GUID,
         const bool edit_running_entry = false,
-        const std::string focused_field_name = "");
+        const std::string &focused_field_name = "");
 
     error SetTimeEntryDuration(
-        const std::string GUID,
-        const std::string duration);
+        const std::string &GUID,
+        const std::string &duration);
 
-    error DeleteTimeEntryByGUID(const std::string GUID);
+    error DeleteTimeEntryByGUID(const std::string &GUID);
 
     error SetTimeEntryProject(
-        const std::string GUID,
+        const std::string &GUID,
         const Poco::UInt64 task_id,
         const Poco::UInt64 project_id,
-        const std::string project_guid);
+        const std::string &project_guid);
 
     error SetTimeEntryDate(
-        const std::string GUID,
+        const std::string &GUID,
         const Poco::Int64 unix_timestamp);
 
     error SetTimeEntryStart(
-        const std::string GUID,
-        const std::string value);
+        const std::string &GUID,
+        const std::string &value);
 
     error SetTimeEntryStop(
-        const std::string GUID,
-        const std::string value);
+        const std::string &GUID,
+        const std::string &value);
 
     error SetTimeEntryTags(
-        const std::string GUID,
-        const std::string value);
+        const std::string &GUID,
+        const std::string &value);
 
     error SetTimeEntryBillable(
-        const std::string GUID,
+        const std::string &GUID,
         const bool value);
 
     error SetTimeEntryDescription(
-        const std::string GUID,
-        const std::string value);
+        const std::string &GUID,
+        const std::string &value);
 
     error Stop(const bool prevent_on_app);
 
     error DiscardTimeAt(
-        const std::string GUID,
+        const std::string &GUID,
         const Poco::Int64 at,
         const bool split_into_new_entry);
 
     TimeEntry *DiscardTimeAndContinue(
-        const std::string GUID,
+        const std::string &GUID,
         const Poco::Int64 at);
 
     TimeEntry *RunningTimeEntry();
@@ -397,10 +391,10 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     error DefaultTID(Poco::UInt64 *result);
 
     void SearchHelpArticles(
-        const std::string keywords);
+        const std::string &keywords);
 
     error SetUpdateChannel(
-        const std::string channel);
+        const std::string &channel);
 
     error UpdateChannel(
         std::string *update_channel);
@@ -408,19 +402,19 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     Project *CreateProject(
         const Poco::UInt64 workspace_id,
         const Poco::UInt64 client_id,
-        const std::string client_guid,
-        const std::string project_name,
+        const std::string &client_guid,
+        const std::string &project_name,
         const bool is_private,
-        const std::string project_color);
+        const std::string &project_color);
 
     Client *CreateClient(
         const Poco::UInt64 workspace_id,
-        const std::string client_name);
+        const std::string &client_name);
 
     error AddObmAction(
         const Poco::UInt64 experiment_id,
-        const std::string key,
-        const std::string value);
+        const std::string &key,
+        const std::string &value);
 
     void SetSleep();
 
@@ -445,14 +439,14 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
 
     void LoadMore();
 
-    static void SetLogPath(const std::string path);
+    static void SetLogPath(const std::string &path);
 
     void SetQuit() {
         quit_ = true;
     }
 
     error AddAutotrackerRule(
-        const std::string term,
+        const std::string &term,
         const Poco::UInt64 pid,
         const Poco::UInt64 tid,
         Poco::Int64 *rule_id);
@@ -465,7 +459,7 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     std::string UserEmail();
 
     // Timeline datasource
-    error StartAutotrackerEvent(const TimelineEvent event);
+    error StartAutotrackerEvent(const TimelineEvent &event);
     error CreateCompressedTimelineBatchForUpload(TimelineBatch *batch);
     error StartTimelineEvent(TimelineEvent *event);
     error MarkTimelineBatchAsUploaded(
@@ -544,7 +538,7 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
 
     void displayTimeEntryEditor(const bool open,
                                 TimeEntry *te,
-                                const std::string focused_field_name);
+                                const std::string &focused_field_name);
     void displayReminder();
     void resetLastTrackingReminderTime();
 
@@ -554,11 +548,11 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
 
     void updateUI(const UIElements &elements);
 
-    error displayError(const error err);
+    error displayError(const error &err);
 
     void scheduleSync();
 
-    void setOnline(const std::string reason);
+    void setOnline(const std::string &reason);
 
     int nextSyncIntervalSeconds() const;
 
@@ -569,8 +563,8 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     Poco::Timestamp postpone(
         const Poco::Timestamp::TimeDiff throttleMicros) const;
 
-    error attemptOfflineLogin(const std::string email,
-                              const std::string password);
+    error attemptOfflineLogin(const std::string &email,
+                              const std::string &password);
 
     error downloadUpdate();
 
@@ -582,7 +576,7 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
 
     error compressTimeline();
 
-    error applySettingsSaveResultToUI(const error err);
+    error applySettingsSaveResultToUI(const error &err);
 
     error pullAllUserData(TogglClient *https_client);
     error pullChanges(TogglClient *https_client);
@@ -592,39 +586,37 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     error pushChanges(
         TogglClient *https_client,
         bool *had_something_to_push);
-    error pushClients(
-        std::vector<Client *> clients,
-        std::string api_token,
+    error pushClients(const std::vector<Client *> &clients,
+        const std::string &api_token,
         TogglClient toggl_client);
     error pushProjects(
-        std::vector<Project *> projects,
-        std::vector<Client *> clients,
-        std::string api_token,
+        const std::vector<Project *> &projects,
+        const std::vector<Client *> &clients,
+        const std::string &api_token,
         TogglClient toggl_client);
-    error pushEntries(
-        std::map<std::string, BaseModel *> models,
-        std::vector<TimeEntry *> time_entries,
-        std::string api_token,
+    error pushEntries(const std::map<std::string, BaseModel *> &models,
+        const std::vector<TimeEntry *> &time_entries,
+        const std::string &api_token,
         TogglClient toggl_client);
     error updateEntryProjects(
-        std::vector<Project *> projects,
-        std::vector<TimeEntry *> time_entries);
+        const std::vector<Project *> &projects,
+        const std::vector<TimeEntry *> &time_entries);
     static error signup(
         TogglClient *https_client,
-        const std::string email,
-        const std::string password,
+        const std::string &email,
+        const std::string &password,
         std::string *user_data_json,
         const uint64_t country_id);
     static error signupGoogle(
         TogglClient *toggl_client,
-        const std::string access_token,
+        const std::string &access_token,
         std::string *user_data_json,
         const uint64_t country_id);
     static error me(TogglClient *https_client,
-                    const std::string email,
-                    const std::string password,
-                    std::string *user_data,
-                    const Poco::Int64 since);
+        const std::string &email,
+        const std::string &password,
+        std::string *user_data,
+        const Poco::Int64 since);
 
     bool isTimeEntryLocked(TimeEntry* te);
     bool isTimeLockedInWorkspace(time_t t, Workspace* ws);
@@ -645,7 +637,7 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
 
     template<typename T>
     void collectPushableModels(
-        const std::vector<T *> list,
+        const std::vector<T *> &list,
         std::vector<T *> *result,
         std::map<std::string, BaseModel *> *models = nullptr) const;
 

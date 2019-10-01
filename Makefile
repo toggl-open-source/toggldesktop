@@ -10,7 +10,7 @@ pocodir=third_party/poco
 openssldir=third_party/openssl
 jsoncppdir=third_party/jsoncpp/dist
 pocoversion=$(shell cat third_party/poco/libversion)
-
+macosdir=src/ui/osx
 GTEST_ROOT=third_party/googletest-read-only
 
 source_dirs=src/*.cc src/*.h src/test/*.cc src/test/*.h \
@@ -35,11 +35,11 @@ source_dirs=src/*.cc src/*.h src/test/*.cc src/test/*.h \
 
 xcodebuild_command=xcodebuild \
 				  -scheme TogglDesktop \
-				  -project src/ui/osx/TogglDesktop/TogglDesktop.xcodeproj  \
+				  -workspace src/ui/osx/TogglDesktop.xcworkspace  \
 				  -configuration Debug
 xcodebuild_command_release=xcodebuild \
 				  -scheme TogglDesktop \
-				  -project src/ui/osx/TogglDesktop/TogglDesktop.xcodeproj  \
+				  -workspace src/ui/osx/TogglDesktop.xcworkspace  \
 				  -configuration Release
 
 ifeq ($(uname), Linux)
@@ -148,7 +148,7 @@ ifeq ($(uname), Linux)
 app:
 	mkdir -p build && cd build && cmake .. && make
 else
-app: lib ui
+app: init_cocoapod lib ui
 endif
 
 app_release: lib_release ui_release
@@ -182,10 +182,10 @@ clean_deps:
 	cd $(openssldir) && (make clean || true)
 	cd third_party/lua && make clean
 
-deps: clean_deps init_submodule openssl poco lua
+deps: clean_deps openssl poco lua
 
-init_submodule:
-	cd $(rootdir) && git submodule update --init --recursive
+init_cocoapod:
+	cd $(macosdir) && bundle install && bundle exec pod install && cd $(rootdir)
 
 lua:
 	cd third_party/lua && make macosx && make local

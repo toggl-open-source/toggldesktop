@@ -44,7 +44,7 @@ class TOGGL_INTERNAL_EXPORT WebSocketClient {
 
     virtual void Start(
         void *ctx,
-        const std::string api_token,
+        const std::string &api_token,
         WebSocketMessageCallback on_websocket_message);
     virtual void Shutdown();
 
@@ -58,7 +58,7 @@ class TOGGL_INTERNAL_EXPORT WebSocketClient {
 
     error poll();
 
-    std::string parseWebSocketMessageType(const std::string json);
+    std::string parseWebSocketMessageType(const std::string &json);
 
     error receiveWebSocketMessage(std::string *message);
 

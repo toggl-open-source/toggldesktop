@@ -15,8 +15,7 @@
 #include "Poco/Logger.h"
 #include "Poco/UnicodeConverter.h"
 
-TogglAutocompleteView *autocomplete_item_init(
-    const toggl::view::Autocomplete item) {
+TogglAutocompleteView *autocomplete_item_init(const toggl::view::Autocomplete &item) {
     TogglAutocompleteView *result = new TogglAutocompleteView();
     result->Description = copy_string(item.Description);
     result->Text = copy_string(item.Text);
@@ -74,19 +73,19 @@ void autocomplete_item_clear(TogglAutocompleteView *item) {
     free(item->WorkspaceName);
     item->WorkspaceName = nullptr;
 
-    if (item->Next) {
-        TogglAutocompleteView *next =
-            reinterpret_cast<TogglAutocompleteView *>(item->Next);
-        poco_check_ptr(next);
-        autocomplete_item_clear(next);
-        item->Next = nullptr;
-    }
-
     delete item;
 }
 
+void autocomplete_list_clear(TogglAutocompleteView *first) {
+    while (first) {
+        TogglAutocompleteView *next = reinterpret_cast<TogglAutocompleteView *>(first->Next);
+        autocomplete_item_clear(first);
+        first = next;
+    }
+}
+
 TogglGenericView *generic_to_view_item_list(
-    const std::vector<toggl::view::Generic> list) {
+    const std::vector<toggl::view::Generic> &list) {
     TogglGenericView *first = nullptr;
     for (std::vector<toggl::view::Generic>::const_iterator
             it = list.begin();
@@ -100,7 +99,7 @@ TogglGenericView *generic_to_view_item_list(
 }
 
 TogglGenericView *generic_to_view_item(
-    const toggl::view::Generic c) {
+    const toggl::view::Generic &c) {
     TogglGenericView *result = new TogglGenericView();
     result->ID = static_cast<unsigned int>(c.ID);
     result->WID = static_cast<unsigned int>(c.WID);
@@ -111,8 +110,7 @@ TogglGenericView *generic_to_view_item(
     return result;
 }
 
-TogglAutotrackerRuleView *autotracker_rule_to_view_item(
-    const toggl::view::AutotrackerRule model) {
+TogglAutotrackerRuleView *autotracker_rule_to_view_item(const toggl::view::AutotrackerRule &model) {
     TogglAutotrackerRuleView *view = new TogglAutotrackerRuleView();
     // Autotracker settings are not saved to DB,
     // so the ID will be 0 always. But will have local ID
@@ -135,13 +133,15 @@ void autotracker_view_item_clear(TogglAutotrackerRuleView *view) {
     free(view->ProjectAndTaskLabel);
     view->ProjectAndTaskLabel = nullptr;
 
-    if (view->Next) {
-        TogglAutotrackerRuleView *next =
-            reinterpret_cast<TogglAutotrackerRuleView *>(view->Next);
-        autotracker_view_item_clear(next);
-    }
-
     delete view;
+}
+
+void autotracker_view_list_clear(TogglAutotrackerRuleView *first) {
+    while (first) {
+        TogglAutotrackerRuleView *next = reinterpret_cast<TogglAutotrackerRuleView *>(first->Next);
+        autotracker_view_item_clear(first);
+        first = next;
+    }
 }
 
 void view_item_clear(TogglGenericView *item) {
@@ -158,13 +158,15 @@ void view_item_clear(TogglGenericView *item) {
     free(item->WorkspaceName);
     item->WorkspaceName = nullptr;
 
-    if (item->Next) {
-        TogglGenericView *next =
-            reinterpret_cast<TogglGenericView *>(item->Next);
-        view_item_clear(next);
-    }
-
     delete item;
+}
+
+void view_list_clear(TogglGenericView *first) {
+    while (first) {
+        TogglGenericView *next = reinterpret_cast<TogglGenericView*>(first->Next);
+        view_item_clear(first);
+        first = next;
+    }
 }
 
 void country_item_clear(TogglCountryView *item) {
@@ -183,13 +185,15 @@ void country_item_clear(TogglCountryView *item) {
     free(item->VatRegex);
     item->VatRegex = nullptr;
 
-    if (item->Next) {
-        TogglCountryView *next =
-            reinterpret_cast<TogglCountryView *>(item->Next);
-        country_item_clear(next);
-    }
-
     delete item;
+}
+
+void country_list_clear(TogglCountryView *first) {
+    while (first) {
+        TogglCountryView *next = reinterpret_cast<TogglCountryView *>(first->Next);
+        country_item_clear(first);
+        first = next;
+    }
 }
 
 std::string to_string(const char_t *s) {
@@ -206,9 +210,9 @@ std::string to_string(const char_t *s) {
 #endif
 }
 
-std::string trim_whitespace(const std::string str)
+std::string trim_whitespace(const std::string &str)
 {
-    const std::string& whitespace = " \t";
+    const std::string & whitespace = " \t";
     const auto strBegin = str.find_first_not_of(whitespace);
     if (strBegin == std::string::npos)
         return ""; // no content
@@ -219,7 +223,7 @@ std::string trim_whitespace(const std::string str)
     return str.substr(strBegin, strRange);
 }
 
-const char_t *to_char_t(const std::string s) {
+const char_t *to_char_t(const std::string &s) {
 #if defined(_WIN32) || defined(WIN32)
     std::wstring ws;
     Poco::UnicodeConverter::toUTF16(s, ws);
@@ -229,7 +233,7 @@ const char_t *to_char_t(const std::string s) {
 #endif
 }
 
-char_t *copy_string(const std::string s) {
+char_t *copy_string(const std::string &s) {
 #if defined(_WIN32) || defined(WIN32)
     std::wstring ws;
     Poco::UnicodeConverter::toUTF16(s, ws);
@@ -401,13 +405,6 @@ void time_entry_view_item_clear(
         item->Error = nullptr;
     }
 
-    if (item->Next) {
-        TogglTimeEntryView *next =
-            reinterpret_cast<TogglTimeEntryView *>(item->Next);
-        time_entry_view_item_clear(next);
-        item->Next = nullptr;
-    }
-
     free(item->GroupName);
     item->GroupName = nullptr;
 
@@ -417,11 +414,19 @@ void time_entry_view_item_clear(
     delete item;
 }
 
+void time_entry_view_list_clear(TogglTimeEntryView *first) {
+    while (first) {
+        TogglTimeEntryView *next = reinterpret_cast<TogglTimeEntryView *>(first->Next);
+        time_entry_view_item_clear(first);
+        first = next;
+    }
+}
+
 TogglSettingsView *settings_view_item_init(
     const bool_t record_timeline,
-    const toggl::Settings settings,
+    const toggl::Settings &settings,
     const bool_t use_proxy,
-    const toggl::Proxy proxy) {
+    const toggl::Proxy &proxy) {
     TogglSettingsView *view = new TogglSettingsView();
 
     view->RecordTimeline = record_timeline;
@@ -493,8 +498,8 @@ TogglAutocompleteView *autocomplete_list_init(
     return first;
 }
 
-TogglHelpArticleView *help_artice_init(
-    const toggl::HelpArticle item) {
+TogglHelpArticleView *help_article_init(
+    const toggl::HelpArticle &item) {
     TogglHelpArticleView *result = new TogglHelpArticleView();
     result->Category = copy_string(item.Type);
     result->Name = copy_string(item.Name);
@@ -503,38 +508,38 @@ TogglHelpArticleView *help_artice_init(
     return result;
 }
 
-void help_article_clear(TogglHelpArticleView *item) {
-    if (!item) {
+void help_article_item_clear(TogglHelpArticleView *view) {
+    if (!view) {
         return;
     }
 
-    free(item->Category);
-    item->Category = nullptr;
+    free(view->Category);
+    view->Category = nullptr;
 
-    free(item->Name);
-    item->Name = nullptr;
+    free(view->Name);
+    view->Name = nullptr;
 
-    free(item->URL);
-    item->URL = nullptr;
+    free(view->URL);
+    view->URL = nullptr;
 
-    if (item->Next) {
-        TogglHelpArticleView *next =
-            reinterpret_cast<TogglHelpArticleView *>(item->Next);
-        help_article_clear(next);
-        item->Next = nullptr;
-    }
-
-    delete item;
+    delete view;
 }
 
-TogglHelpArticleView *help_article_list_init(
-    const std::vector<toggl::HelpArticle> items) {
+void help_article_list_clear(TogglHelpArticleView *first) {
+    while (first) {
+        TogglHelpArticleView *next = reinterpret_cast<TogglHelpArticleView *>(first->Next);
+        help_article_item_clear(first);
+        first = next;
+    }
+}
+
+TogglHelpArticleView *help_article_list_init(const std::vector<toggl::HelpArticle> &items) {
     TogglHelpArticleView *first = nullptr;
     for (std::vector<toggl::HelpArticle>::const_reverse_iterator it =
         items.rbegin();
             it != items.rend();
             it++) {
-        TogglHelpArticleView *item = help_artice_init(*it);
+        TogglHelpArticleView *item = help_article_init(*it);
         item->Next = first;
         first = item;
     }

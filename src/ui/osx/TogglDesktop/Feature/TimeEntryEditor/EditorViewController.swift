@@ -86,6 +86,14 @@ final class EditorViewController: NSViewController {
                 NSAttributedString.Key.foregroundColor: NSColor.labelColor]
     }()
     fileprivate var isRegisterTimerNotification = false
+    private lazy var dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .none
+        formatter.timeStyle = .medium
+        formatter.timeZone = TimeZone.current
+        formatter.locale = Locale.current
+        return formatter
+    }()
 
     // MARK: View Cyclex
 
@@ -353,6 +361,8 @@ extension EditorViewController {
         durationTextField.stringValue = timeEntry.duration
         startAtTextField.stringValue = timeEntry.startTimeString
         endAtTextField.stringValue = timeEntry.endTimeString
+        startAtTextField.toolTip = dateFormatter.string(from: timeEntry.started)
+        endAtTextField.toolTip = dateFormatter.string(from: timeEntry.ended)
     }
 
     fileprivate func updateNextKeyViews() {
@@ -526,7 +536,7 @@ extension EditorViewController: AutoCompleteTextFieldDelegate {
             DesktopLibraryBridge.shared().updateTimeEntry(withTags: selectedTags.toNames(), guid: timeEntry.guid)
 
             // Focus on tag textfield agains, so user can continue typying
-            sender.window?.makeFirstResponder(tagTextField)
+            tagTextField.focus()
             tagTextField.resetText()
         }
     }
@@ -536,6 +546,12 @@ extension EditorViewController: AutoCompleteTextFieldDelegate {
             tagTextField.removeFromSuperview()
             tagAutoCompleteContainerView.addSubview(tagTextField)
             tagTextField.edgesToSuperView()
+
+            // Since Tag Token appear -> There is no text field to be focus
+            // Focus on duration
+            if !tagStackView.isHidden && durationTextField.currentEditor() == nil {
+                view.window?.makeFirstResponder(durationTextField)
+            }
         }
     }
     

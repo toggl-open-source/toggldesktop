@@ -156,7 +156,7 @@ error WindowChangeRecorder::Shutdown() {
         return exc.displayText();
     } catch(const std::exception& ex) {
         return ex.what();
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         return ex;
     }
     return noError;

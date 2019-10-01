@@ -52,7 +52,7 @@ void ServerStatus::startStatusCheck() {
     checker_.start();
 }
 
-void ServerStatus::stopStatusCheck(const std::string reason) {
+void ServerStatus::stopStatusCheck(const std::string &reason) {
     if (!checker_.isRunning() || checker_.isStopped()) {
         return;
     }
@@ -506,7 +506,7 @@ HTTPSResponse HTTPSClient::makeHttpRequest(
     } catch(const std::exception& ex) {
         resp.err = ex.what();
         return resp;
-    } catch(const std::string& ex) {
+    } catch(const std::string & ex) {
         resp.err = ex;
         return resp;
     }

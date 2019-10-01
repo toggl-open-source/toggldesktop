@@ -26,7 +26,7 @@ class TOGGL_INTERNAL_EXPORT Workspace : public BaseModel {
     const std::string &Name() const {
         return name_;
     }
-    void SetName(const std::string value);
+    void SetName(const std::string &value);
 
     const bool &Premium() const {
         return premium_;

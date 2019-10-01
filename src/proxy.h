@@ -27,7 +27,7 @@ class TOGGL_INTERNAL_EXPORT Proxy {
     const std::string &Host() const {
         return host_;
     }
-    void SetHost(const std::string value) {
+    void SetHost(const std::string &value) {
         host_ = value;
     }
 
@@ -41,14 +41,14 @@ class TOGGL_INTERNAL_EXPORT Proxy {
     const std::string &Username() const {
         return username_;
     }
-    void SetUsername(const std::string value) {
+    void SetUsername(const std::string &value) {
         username_ = value;
     }
 
     const std::string &Password() const {
         return password_;
     }
-    void SetPassword(const std::string value) {
+    void SetPassword(const std::string &value) {
         password_ = value;
     }
 
