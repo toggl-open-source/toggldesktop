@@ -1,13 +1,11 @@
 /*
- * Copyright 1995-2016 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 1995-2018 The OpenSSL Project Authors. All Rights Reserved.
  *
  * Licensed under the OpenSSL license (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
  * in the file LICENSE in the source distribution or at
  * https://www.openssl.org/source/license.html
  */
-
-#define NO_SHUTDOWN
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -28,22 +26,8 @@
 # include OPENSSL_UNISTD
 #endif
 
-#undef ioctl
-#define ioctl ioctlsocket
-
 #define SSL_CONNECT_NAME        "localhost:4433"
 
-/* no default cert. */
-/*
- * #define TEST_CERT "client.pem"
- */
-
-#undef min
-#undef max
-#define min(a,b) (((a) < (b)) ? (a) : (b))
-#define max(a,b) (((a) > (b)) ? (a) : (b))
-
-#undef SECONDS
 #define SECONDS 30
 #define SECONDSSTR "30"
 
@@ -185,21 +169,20 @@ int s_time_main(int argc, char **argv)
 
     if (cipher == NULL)
         cipher = getenv("SSL_CIPHER");
-    if (cipher == NULL) {
+    if (cipher == NULL)
         BIO_printf(bio_err, "No CIPHER specified\n");
-        goto end;
-    }
 
     if ((ctx = SSL_CTX_new(meth)) == NULL)
         goto end;
 
+    SSL_CTX_set_mode(ctx, SSL_MODE_AUTO_RETRY);
     SSL_CTX_set_quiet_shutdown(ctx, 1);
     if (SSL_CTX_set_max_proto_version(ctx, max_version) == 0)
         goto end;
 
     if (st_bugs)
         SSL_CTX_set_options(ctx, SSL_OP_ALL);
-    if (!SSL_CTX_set_cipher_list(ctx, cipher))
+    if (cipher != NULL && !SSL_CTX_set_cipher_list(ctx, cipher))
         goto end;
     if (!set_cert_stuff(ctx, certfile, keyfile))
         goto end;
@@ -225,20 +208,14 @@ int s_time_main(int argc, char **argv)
             goto end;
 
         if (www_path != NULL) {
-            buf_len = BIO_snprintf(buf, sizeof buf,
+            buf_len = BIO_snprintf(buf, sizeof(buf),
                                    fmt_http_get_cmd, www_path);
             if (SSL_write(scon, buf, buf_len) <= 0)
                 goto end;
-            while ((i = SSL_read(scon, buf, sizeof(buf))) > 0 ||
-                        SSL_get_error(scon, i) == SSL_ERROR_WANT_READ ||
-                        SSL_get_error(scon, i) == SSL_ERROR_WANT_WRITE)
-                if (i > 0) bytes_read += i;
+            while ((i = SSL_read(scon, buf, sizeof(buf))) > 0)
+                bytes_read += i;
         }
-#ifdef NO_SHUTDOWN
         SSL_set_shutdown(scon, SSL_SENT_SHUTDOWN | SSL_RECEIVED_SHUTDOWN);
-#else
-        SSL_shutdown(scon);
-#endif
         BIO_closesocket(SSL_get_fd(scon));
 
         nConn += 1;
@@ -285,20 +262,14 @@ int s_time_main(int argc, char **argv)
     }
 
     if (www_path != NULL) {
-        buf_len = BIO_snprintf(buf, sizeof buf,
+        buf_len = BIO_snprintf(buf, sizeof(buf),
                                fmt_http_get_cmd, www_path);
         if (SSL_write(scon, buf, buf_len) <= 0)
             goto end;
-        while ((i = SSL_read(scon, buf, sizeof(buf))) > 0 ||
-                    SSL_get_error(scon, i) == SSL_ERROR_WANT_READ ||
-                    SSL_get_error(scon, i) == SSL_ERROR_WANT_WRITE)
+        while ((i = SSL_read(scon, buf, sizeof(buf))) > 0)
             continue;
     }
-#ifdef NO_SHUTDOWN
     SSL_set_shutdown(scon, SSL_SENT_SHUTDOWN | SSL_RECEIVED_SHUTDOWN);
-#else
-    SSL_shutdown(scon);
-#endif
     BIO_closesocket(SSL_get_fd(scon));
 
     nConn = 0;
@@ -318,20 +289,14 @@ int s_time_main(int argc, char **argv)
             goto end;
 
         if (www_path) {
-            BIO_snprintf(buf, sizeof buf, "GET %s HTTP/1.0\r\n\r\n",
+            BIO_snprintf(buf, sizeof(buf), "GET %s HTTP/1.0\r\n\r\n",
                          www_path);
             if (SSL_write(scon, buf, strlen(buf)) <= 0)
                 goto end;
-            while ((i = SSL_read(scon, buf, sizeof(buf))) > 0 ||
-                        SSL_get_error(scon, i) == SSL_ERROR_WANT_READ ||
-                        SSL_get_error(scon, i) == SSL_ERROR_WANT_WRITE)
-                if (i > 0) bytes_read += i;
+            while ((i = SSL_read(scon, buf, sizeof(buf))) > 0)
+                bytes_read += i;
         }
-#ifdef NO_SHUTDOWN
         SSL_set_shutdown(scon, SSL_SENT_SHUTDOWN | SSL_RECEIVED_SHUTDOWN);
-#else
-        SSL_shutdown(scon);
-#endif
         BIO_closesocket(SSL_get_fd(scon));
 
         nConn += 1;
@@ -373,13 +338,13 @@ static SSL *doConnection(SSL *scon, const char *host, SSL_CTX *ctx)
 {
     BIO *conn;
     SSL *serverCon;
-    int width, i;
-    fd_set readfds;
+    int i;
 
     if ((conn = BIO_new(BIO_s_connect())) == NULL)
-        return (NULL);
+        return NULL;
 
     BIO_set_conn_hostname(conn, host);
+    BIO_set_conn_mode(conn, BIO_SOCK_NODELAY);
 
     if (scon == NULL)
         serverCon = SSL_new(ctx);
@@ -391,26 +356,7 @@ static SSL *doConnection(SSL *scon, const char *host, SSL_CTX *ctx)
     SSL_set_bio(serverCon, conn, conn);
 
     /* ok, lets connect */
-    for (;;) {
-        i = SSL_connect(serverCon);
-        if (BIO_sock_should_retry(i)) {
-            BIO_printf(bio_err, "DELAY\n");
-
-            i = SSL_get_fd(serverCon);
-            width = i + 1;
-            FD_ZERO(&readfds);
-            openssl_fdset(i, &readfds);
-            /*
-             * Note: under VMS with SOCKETSHR the 2nd parameter is currently
-             * of type (int *) whereas under other systems it is (void *) if
-             * you don't have a cast it will choke the compiler: if you do
-             * have a cast then you can either go for (int *) or (void *).
-             */
-            select(width, (void *)&readfds, NULL, NULL, NULL);
-            continue;
-        }
-        break;
-    }
+    i = SSL_connect(serverCon);
     if (i <= 0) {
         BIO_printf(bio_err, "ERROR\n");
         if (verify_args.error != X509_V_OK)
@@ -422,6 +368,17 @@ static SSL *doConnection(SSL *scon, const char *host, SSL_CTX *ctx)
             SSL_free(serverCon);
         return NULL;
     }
+
+#if defined(SOL_SOCKET) && defined(SO_LINGER)
+    {
+        struct linger no_linger;
+
+        no_linger.l_onoff  = 1;
+        no_linger.l_linger = 0;
+        (void) setsockopt(SSL_get_fd(serverCon), SOL_SOCKET, SO_LINGER,
+                          (char*)&no_linger, sizeof(no_linger));
+    }
+#endif
 
     return serverCon;
 }

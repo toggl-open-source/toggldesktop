@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2016 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 2006-2019 The OpenSSL Project Authors. All Rights Reserved.
  *
  * Licensed under the OpenSSL license (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
@@ -48,7 +48,7 @@ static int pkey_rsa_init(EVP_PKEY_CTX *ctx)
     rctx = OPENSSL_zalloc(sizeof(*rctx));
     if (rctx == NULL)
         return 0;
-    rctx->nbits = 1024;
+    rctx->nbits = 2048;
     rctx->pad_mode = RSA_PKCS1_PADDING;
     rctx->saltlen = -2;
     ctx->data = rctx;

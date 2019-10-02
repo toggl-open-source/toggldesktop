@@ -1,5 +1,5 @@
 /*
- * Copyright 1995-2016 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 1995-2018 The OpenSSL Project Authors. All Rights Reserved.
  *
  * Licensed under the OpenSSL license (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
@@ -1615,6 +1615,10 @@ int s_server_main(int argc, char *argv[])
     }
     if (sdebug)
         ssl_ctx_security_debug(ctx, sdebug);
+
+    if (!config_ctx(cctx, ssl_args, ctx))
+        goto end;
+
     if (ssl_config) {
         if (SSL_CTX_config(ctx, ssl_config) == 0) {
             BIO_printf(bio_err, "Error using configuration \"%s\"\n",
@@ -1623,9 +1627,11 @@ int s_server_main(int argc, char *argv[])
             goto end;
         }
     }
-    if (SSL_CTX_set_min_proto_version(ctx, min_version) == 0)
+    if (min_version != 0
+        && SSL_CTX_set_min_proto_version(ctx, min_version) == 0)
         goto end;
-    if (SSL_CTX_set_max_proto_version(ctx, max_version) == 0)
+    if (max_version != 0
+        && SSL_CTX_set_max_proto_version(ctx, max_version) == 0)
         goto end;
 
     if (session_id_prefix) {
@@ -1687,8 +1693,6 @@ int s_server_main(int argc, char *argv[])
     }
 
     ssl_ctx_add_crls(ctx, crls, 0);
-    if (!config_ctx(cctx, ssl_args, ctx))
-        goto end;
 
     if (!ssl_load_stores(ctx, vfyCApath, vfyCAfile, chCApath, chCAfile,
                          crls, crl_download)) {
@@ -1853,7 +1857,7 @@ int s_server_main(int argc, char *argv[])
     SSL_CTX_set_verify(ctx, s_server_verify, verify_callback);
     if (!SSL_CTX_set_session_id_context(ctx,
                                         (void *)&s_server_session_id_context,
-                                        sizeof s_server_session_id_context)) {
+                                        sizeof(s_server_session_id_context))) {
         BIO_printf(bio_err, "error setting session id context\n");
         ERR_print_errors(bio_err);
         goto end;
@@ -1867,7 +1871,7 @@ int s_server_main(int argc, char *argv[])
         SSL_CTX_set_verify(ctx2, s_server_verify, verify_callback);
         if (!SSL_CTX_set_session_id_context(ctx2,
                     (void *)&s_server_session_id_context,
-                    sizeof s_server_session_id_context)) {
+                    sizeof(s_server_session_id_context))) {
             BIO_printf(bio_err, "error setting session id context\n");
             ERR_print_errors(bio_err);
             goto end;
@@ -2008,9 +2012,7 @@ static int sv_body(int s, int stype, unsigned char *context)
     SSL *con = NULL;
     BIO *sbio;
     struct timeval timeout;
-#if defined(OPENSSL_SYS_WINDOWS) || defined(OPENSSL_SYS_MSDOS)
-    struct timeval tv;
-#else
+#if !(defined(OPENSSL_SYS_WINDOWS) || defined(OPENSSL_SYS_MSDOS))
     struct timeval *timeoutp;
 #endif
 
@@ -2145,26 +2147,23 @@ static int sv_body(int s, int stype, unsigned char *context)
              * second and check for any keypress. In a proper Windows
              * application we wouldn't do this because it is inefficient.
              */
-            tv.tv_sec = 1;
-            tv.tv_usec = 0;
-            i = select(width, (void *)&readfds, NULL, NULL, &tv);
+            timeout.tv_sec = 1;
+            timeout.tv_usec = 0;
+            i = select(width, (void *)&readfds, NULL, NULL, &timeout);
             if (has_stdin_waiting())
                 read_from_terminal = 1;
             if ((i < 0) || (!i && !read_from_terminal))
                 continue;
 #else
-            if ((SSL_version(con) == DTLS1_VERSION) &&
-                DTLSv1_get_timeout(con, &timeout))
+            if (SSL_is_dtls(con) && DTLSv1_get_timeout(con, &timeout))
                 timeoutp = &timeout;
             else
                 timeoutp = NULL;
 
             i = select(width, (void *)&readfds, NULL, NULL, timeoutp);
 
-            if ((SSL_version(con) == DTLS1_VERSION)
-                && DTLSv1_handle_timeout(con) > 0) {
+            if ((SSL_is_dtls(con)) && DTLSv1_handle_timeout(con) > 0)
                 BIO_printf(bio_err, "TIMEOUT occurred\n");
-            }
 
             if (i <= 0)
                 continue;
@@ -2535,15 +2534,15 @@ static int init_ssl_connection(SSL *con)
     if (peer != NULL) {
         BIO_printf(bio_s_out, "Client certificate\n");
         PEM_write_bio_X509(bio_s_out, peer);
-        X509_NAME_oneline(X509_get_subject_name(peer), buf, sizeof buf);
+        X509_NAME_oneline(X509_get_subject_name(peer), buf, sizeof(buf));
         BIO_printf(bio_s_out, "subject=%s\n", buf);
-        X509_NAME_oneline(X509_get_issuer_name(peer), buf, sizeof buf);
+        X509_NAME_oneline(X509_get_issuer_name(peer), buf, sizeof(buf));
         BIO_printf(bio_s_out, "issuer=%s\n", buf);
         X509_free(peer);
         peer = NULL;
     }
 
-    if (SSL_get_shared_ciphers(con, buf, sizeof buf) != NULL)
+    if (SSL_get_shared_ciphers(con, buf, sizeof(buf)) != NULL)
         BIO_printf(bio_s_out, "Shared ciphers:%s\n", buf);
     str = SSL_CIPHER_get_name(SSL_get_current_cipher(con));
     ssl_print_sigalgs(bio_s_out, con);
@@ -2575,6 +2574,9 @@ static int init_ssl_connection(SSL *con)
         BIO_printf(bio_s_out, "Reused session-id\n");
     BIO_printf(bio_s_out, "Secure Renegotiation IS%s supported\n",
                SSL_get_secure_renegotiation_support(con) ? "" : " NOT");
+    if ((SSL_get_options(con) & SSL_OP_NO_RENEGOTIATION))
+        BIO_printf(bio_s_out, "Renegotiation is DISABLED\n");
+
     if (keymatexportlabel != NULL) {
         BIO_printf(bio_s_out, "Keying material exporter:\n");
         BIO_printf(bio_s_out, "    Label: '%s'\n", keymatexportlabel);
@@ -2658,8 +2660,10 @@ static int www_body(int s, int stype, unsigned char *context)
 
     if (context
         && !SSL_set_session_id_context(con, context,
-                                       strlen((char *)context)))
+                                       strlen((char *)context))) {
+        SSL_free(con);
         goto err;
+    }
 
     sbio = BIO_new_socket(s, BIO_NOCLOSE);
     if (s_nbio_test) {
@@ -2671,7 +2675,7 @@ static int www_body(int s, int stype, unsigned char *context)
     SSL_set_bio(con, sbio, sbio);
     SSL_set_accept_state(con);
 
-    /* SSL_set_fd(con,s); */
+    /* No need to free |con| after this. Done by BIO_free(ssl_bio) */
     BIO_set_ssl(ssl_bio, con, BIO_CLOSE);
     BIO_push(io, ssl_bio);
 #ifdef CHARSET_EBCDIC
@@ -3028,6 +3032,7 @@ static int rev_body(int s, int stype, unsigned char *context)
     if (context
         && !SSL_set_session_id_context(con, context,
                                        strlen((char *)context))) {
+        SSL_free(con);
         ERR_print_errors(bio_err);
         goto err;
     }
@@ -3036,6 +3041,7 @@ static int rev_body(int s, int stype, unsigned char *context)
     SSL_set_bio(con, sbio, sbio);
     SSL_set_accept_state(con);
 
+    /* No need to free |con| after this. Done by BIO_free(ssl_bio) */
     BIO_set_ssl(ssl_bio, con, BIO_CLOSE);
     BIO_push(io, ssl_bio);
 #ifdef CHARSET_EBCDIC

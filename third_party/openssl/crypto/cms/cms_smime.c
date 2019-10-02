@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2016 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 2008-2019 The OpenSSL Project Authors. All Rights Reserved.
  *
  * Licensed under the OpenSSL license (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
@@ -631,6 +631,7 @@ int CMS_decrypt_set1_pkey(CMS_ContentInfo *cms, EVP_PKEY *pk, X509 *cert)
          * all.
          */
         else if (!cert || !CMS_RecipientInfo_ktri_cert_cmp(ri, cert)) {
+            EVP_PKEY_up_ref(pk);
             CMS_RecipientInfo_set0_pkey(ri, pk);
             r = CMS_RecipientInfo_decrypt(cms, ri);
             CMS_RecipientInfo_set0_pkey(ri, NULL);
@@ -742,6 +743,10 @@ int CMS_decrypt(CMS_ContentInfo *cms, EVP_PKEY *pk, X509 *cert,
         cms->d.envelopedData->encryptedContentInfo->debug = 1;
     else
         cms->d.envelopedData->encryptedContentInfo->debug = 0;
+    if (!cert)
+        cms->d.envelopedData->encryptedContentInfo->havenocert = 1;
+    else
+        cms->d.envelopedData->encryptedContentInfo->havenocert = 0;
     if (!pk && !cert && !dcont && !out)
         return 1;
     if (pk && !CMS_decrypt_set1_pkey(cms, pk, cert))

@@ -1,5 +1,5 @@
 /*
- * Copyright 1995-2016 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 1995-2018 The OpenSSL Project Authors. All Rights Reserved.
  *
  * Licensed under the OpenSSL license (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
@@ -54,28 +54,82 @@
 
 const char SSL_version_str[] = OPENSSL_VERSION_TEXT;
 
+static int ssl_undefined_function_1(SSL *ssl, SSL3_RECORD *r, unsigned int s,
+                                    int t)
+{
+    (void)r;
+    (void)s;
+    (void)t;
+    return ssl_undefined_function(ssl);
+}
+
+static int ssl_undefined_function_2(SSL *ssl, SSL3_RECORD *r, unsigned char *s,
+                                    int t)
+{
+    (void)r;
+    (void)s;
+    (void)t;
+    return ssl_undefined_function(ssl);
+}
+
+static int ssl_undefined_function_3(SSL *ssl, unsigned char *r,
+                                    unsigned char *s, int t)
+{
+    (void)r;
+    (void)s;
+    (void)t;
+    return ssl_undefined_function(ssl);
+}
+
+static int ssl_undefined_function_4(SSL *ssl, int r)
+{
+    (void)r;
+    return ssl_undefined_function(ssl);
+}
+
+static int ssl_undefined_function_5(SSL *ssl, const char *r, int s,
+                                    unsigned char *t)
+{
+    (void)r;
+    (void)s;
+    (void)t;
+    return ssl_undefined_function(ssl);
+}
+
+static int ssl_undefined_function_6(int r)
+{
+    (void)r;
+    return ssl_undefined_function(NULL);
+}
+
+static int ssl_undefined_function_7(SSL *ssl, unsigned char *r, size_t s,
+                                    const char *t, size_t u,
+                                    const unsigned char *v, size_t w, int x)
+{
+    (void)r;
+    (void)s;
+    (void)t;
+    (void)u;
+    (void)v;
+    (void)w;
+    (void)x;
+    return ssl_undefined_function(ssl);
+}
+
 SSL3_ENC_METHOD ssl3_undef_enc_method = {
-    /*
-     * evil casts, but these functions are only called if there's a library
-     * bug
-     */
-    (int (*)(SSL *, SSL3_RECORD *, unsigned int, int))ssl_undefined_function,
-    (int (*)(SSL *, SSL3_RECORD *, unsigned char *, int))ssl_undefined_function,
+    ssl_undefined_function_1,
+    ssl_undefined_function_2,
     ssl_undefined_function,
-    (int (*)(SSL *, unsigned char *, unsigned char *, int))
-        ssl_undefined_function,
-    (int (*)(SSL *, int))ssl_undefined_function,
-    (int (*)(SSL *, const char *, int, unsigned char *))
-        ssl_undefined_function,
+    ssl_undefined_function_3,
+    ssl_undefined_function_4,
+    ssl_undefined_function_5,
     0,                          /* finish_mac_length */
     NULL,                       /* client_finished_label */
     0,                          /* client_finished_label_len */
     NULL,                       /* server_finished_label */
     0,                          /* server_finished_label_len */
-    (int (*)(int))ssl_undefined_function,
-    (int (*)(SSL *, unsigned char *, size_t, const char *,
-             size_t, const unsigned char *, size_t,
-             int use_context))ssl_undefined_function,
+    ssl_undefined_function_6,
+    ssl_undefined_function_7,
 };
 
 struct ssl_async_args {
@@ -266,7 +320,7 @@ static const EVP_MD *tlsa_md_get(SSL_DANE *dane, uint8_t mtype)
 static int dane_tlsa_add(SSL_DANE *dane,
                          uint8_t usage,
                          uint8_t selector,
-                         uint8_t mtype, unsigned char *data, size_t dlen)
+                         uint8_t mtype, unsigned const char *data, size_t dlen)
 {
     danetls_record *t;
     const EVP_MD *md = NULL;
@@ -669,7 +723,7 @@ SSL *SSL_new(SSL_CTX *ctx)
     s->verify_mode = ctx->verify_mode;
     s->not_resumable_session_cb = ctx->not_resumable_session_cb;
     s->sid_ctx_length = ctx->sid_ctx_length;
-    OPENSSL_assert(s->sid_ctx_length <= sizeof s->sid_ctx);
+    OPENSSL_assert(s->sid_ctx_length <= sizeof(s->sid_ctx));
     memcpy(&s->sid_ctx, &ctx->sid_ctx, sizeof(s->sid_ctx));
     s->verify_callback = ctx->default_verify_callback;
     s->generate_session_id = ctx->generate_session_id;
@@ -793,7 +847,7 @@ int SSL_up_ref(SSL *s)
 int SSL_CTX_set_session_id_context(SSL_CTX *ctx, const unsigned char *sid_ctx,
                                    unsigned int sid_ctx_len)
 {
-    if (sid_ctx_len > sizeof ctx->sid_ctx) {
+    if (sid_ctx_len > sizeof(ctx->sid_ctx)) {
         SSLerr(SSL_F_SSL_CTX_SET_SESSION_ID_CONTEXT,
                SSL_R_SSL_SESSION_ID_CONTEXT_TOO_LONG);
         return 0;
@@ -846,7 +900,7 @@ int SSL_has_matching_session_id(const SSL *ssl, const unsigned char *id,
      */
     SSL_SESSION r, *p;
 
-    if (id_len > sizeof r.session_id)
+    if (id_len > sizeof(r.session_id))
         return 0;
 
     r.ssl_version = ssl->version;
@@ -1022,7 +1076,7 @@ SSL_DANE *SSL_get0_dane(SSL *s)
 }
 
 int SSL_dane_tlsa_add(SSL *s, uint8_t usage, uint8_t selector,
-                      uint8_t mtype, unsigned char *data, size_t dlen)
+                      uint8_t mtype, unsigned const char *data, size_t dlen)
 {
     return dane_tlsa_add(&s->dane, usage, selector, mtype, data, dlen);
 }
@@ -1739,6 +1793,11 @@ int SSL_shutdown(SSL *s)
 
 int SSL_renegotiate(SSL *s)
 {
+    if ((s->options & SSL_OP_NO_RENEGOTIATION)) {
+        SSLerr(SSL_F_SSL_RENEGOTIATE, SSL_R_NO_RENEGOTIATION);
+        return 0;
+    }
+
     if (s->renegotiate == 0)
         s->renegotiate = 1;
 
@@ -1749,6 +1808,11 @@ int SSL_renegotiate(SSL *s)
 
 int SSL_renegotiate_abbreviated(SSL *s)
 {
+    if ((s->options & SSL_OP_NO_RENEGOTIATION)) {
+        SSLerr(SSL_F_SSL_RENEGOTIATE_ABBREVIATED, SSL_R_NO_RENEGOTIATION);
+        return 0;
+    }
+
     if (s->renegotiate == 0)
         s->renegotiate = 1;
 
@@ -2149,28 +2213,37 @@ int SSL_set_cipher_list(SSL *s, const char *str)
     return 1;
 }
 
-char *SSL_get_shared_ciphers(const SSL *s, char *buf, int len)
+char *SSL_get_shared_ciphers(const SSL *s, char *buf, int size)
 {
     char *p;
-    STACK_OF(SSL_CIPHER) *sk;
+    STACK_OF(SSL_CIPHER) *clntsk, *srvrsk;
     const SSL_CIPHER *c;
     int i;
 
-    if ((s->session == NULL) || (s->session->ciphers == NULL) || (len < 2))
-        return (NULL);
-
-    p = buf;
-    sk = s->session->ciphers;
-
-    if (sk_SSL_CIPHER_num(sk) == 0)
+    if (!s->server
+            || s->session == NULL
+            || s->session->ciphers == NULL
+            || size < 2)
         return NULL;
 
-    for (i = 0; i < sk_SSL_CIPHER_num(sk); i++) {
+    p = buf;
+    clntsk = s->session->ciphers;
+    srvrsk = SSL_get_ciphers(s);
+    if (clntsk == NULL || srvrsk == NULL)
+        return NULL;
+
+    if (sk_SSL_CIPHER_num(clntsk) == 0 || sk_SSL_CIPHER_num(srvrsk) == 0)
+        return NULL;
+
+    for (i = 0; i < sk_SSL_CIPHER_num(clntsk); i++) {
         int n;
 
-        c = sk_SSL_CIPHER_value(sk, i);
+        c = sk_SSL_CIPHER_value(clntsk, i);
+        if (sk_SSL_CIPHER_find(srvrsk, c) < 0)
+            continue;
+
         n = strlen(c->name);
-        if (n + 1 > len) {
+        if (n + 1 > size) {
             if (p != buf)
                 --p;
             *p = '\0';
@@ -2179,7 +2252,7 @@ char *SSL_get_shared_ciphers(const SSL *s, char *buf, int len)
         memcpy(p, c->name, n + 1);
         p += n;
         *(p++) = ':';
-        len -= n + 1;
+        size -= n + 1;
     }
     p[-1] = '\0';
     return (buf);
@@ -2968,6 +3041,19 @@ void ssl_update_cache(SSL *s, int mode)
     if (s->session->session_id_length == 0)
         return;
 
+    /*
+     * If sid_ctx_length is 0 there is no specific application context
+     * associated with this session, so when we try to resume it and
+     * SSL_VERIFY_PEER is requested to verify the client identity, we have no
+     * indication that this is actually a session for the proper application
+     * context, and the *handshake* will fail, not just the resumption attempt.
+     * Do not cache (on the server) these sessions that are not resumable
+     * (clients can set SSL_VERIFY_PEER without needing a sid_ctx set).
+     */
+    if (s->server && s->session->sid_ctx_length == 0
+            && (s->verify_mode & SSL_VERIFY_PEER) != 0)
+        return;
+
     i = s->session_ctx->session_cache_mode;
     if ((i & mode) && (!s->hit)
         && ((i & SSL_SESS_CACHE_NO_INTERNAL_STORE)
@@ -3443,7 +3529,6 @@ void ssl_free_wbio_buffer(SSL *s)
         return;
 
     s->wbio = BIO_pop(s->wbio);
-    assert(s->wbio != NULL);
     BIO_free(s->bbio);
     s->bbio = NULL;
 }

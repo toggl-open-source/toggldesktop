@@ -1,5 +1,5 @@
 /*
- * Copyright 1995-2016 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 1995-2018 The OpenSSL Project Authors. All Rights Reserved.
  *
  * Licensed under the OpenSSL license (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
@@ -20,28 +20,42 @@
 #define MONT_WORD               /* use the faster word-based algorithm */
 
 #ifdef MONT_WORD
-static int BN_from_montgomery_word(BIGNUM *ret, BIGNUM *r, BN_MONT_CTX *mont);
+static int bn_from_montgomery_word(BIGNUM *ret, BIGNUM *r, BN_MONT_CTX *mont);
 #endif
 
 int BN_mod_mul_montgomery(BIGNUM *r, const BIGNUM *a, const BIGNUM *b,
                           BN_MONT_CTX *mont, BN_CTX *ctx)
 {
+    int ret = bn_mul_mont_fixed_top(r, a, b, mont, ctx);
+
+    bn_correct_top(r);
+    bn_check_top(r);
+
+    return ret;
+}
+
+int bn_mul_mont_fixed_top(BIGNUM *r, const BIGNUM *a, const BIGNUM *b,
+                          BN_MONT_CTX *mont, BN_CTX *ctx)
+{
     BIGNUM *tmp;
     int ret = 0;
-#if defined(OPENSSL_BN_ASM_MONT) && defined(MONT_WORD)
     int num = mont->N.top;
 
+#if defined(OPENSSL_BN_ASM_MONT) && defined(MONT_WORD)
     if (num > 1 && a->top == num && b->top == num) {
         if (bn_wexpand(r, num) == NULL)
             return (0);
         if (bn_mul_mont(r->d, a->d, b->d, mont->N.d, mont->n0, num)) {
             r->neg = a->neg ^ b->neg;
             r->top = num;
-            bn_correct_top(r);
+            r->flags |= BN_FLG_FIXED_TOP;
             return (1);
         }
     }
 #endif
+
+    if ((a->top + b->top) > 2 * num)
+        return 0;
 
     BN_CTX_start(ctx);
     tmp = BN_CTX_get(ctx);
@@ -50,21 +64,20 @@ int BN_mod_mul_montgomery(BIGNUM *r, const BIGNUM *a, const BIGNUM *b,
 
     bn_check_top(tmp);
     if (a == b) {
-        if (!BN_sqr(tmp, a, ctx))
+        if (!bn_sqr_fixed_top(tmp, a, ctx))
             goto err;
     } else {
-        if (!BN_mul(tmp, a, b, ctx))
+        if (!bn_mul_fixed_top(tmp, a, b, ctx))
             goto err;
     }
     /* reduce from aRR to aR */
 #ifdef MONT_WORD
-    if (!BN_from_montgomery_word(r, tmp, mont))
+    if (!bn_from_montgomery_word(r, tmp, mont))
         goto err;
 #else
     if (!BN_from_montgomery(r, tmp, mont, ctx))
         goto err;
 #endif
-    bn_check_top(r);
     ret = 1;
  err:
     BN_CTX_end(ctx);
@@ -72,11 +85,12 @@ int BN_mod_mul_montgomery(BIGNUM *r, const BIGNUM *a, const BIGNUM *b,
 }
 
 #ifdef MONT_WORD
-static int BN_from_montgomery_word(BIGNUM *ret, BIGNUM *r, BN_MONT_CTX *mont)
+static int bn_from_montgomery_word(BIGNUM *ret, BIGNUM *r, BN_MONT_CTX *mont)
 {
     BIGNUM *n;
     BN_ULONG *ap, *np, *rp, n0, v, carry;
     int nl, max, i;
+    unsigned int rtop;
 
     n = &(mont->N);
     nl = n->top;
@@ -93,14 +107,20 @@ static int BN_from_montgomery_word(BIGNUM *ret, BIGNUM *r, BN_MONT_CTX *mont)
     np = n->d;
     rp = r->d;
 
-    /* clear the top words of T */
-    i = max - r->top;
-    if (i)
-        memset(&rp[r->top], 0, sizeof(*rp) * i);
+    for (rtop = r->top, i = 0; i < max; i++) {
+        v = (BN_ULONG)0 - ((i - rtop) >> (8 * sizeof(rtop) - 1));
+        rp[i] &= v;
+    }
 
     r->top = max;
+    r->flags |= BN_FLG_FIXED_TOP;
     n0 = mont->n0[0];
 
+    /*
+     * Add multiples of |n| to |r| until R = 2^(nl * BN_BITS2) divides it. On
+     * input, we had |r| < |n| * R, so now |r| < 2 * |n| * R. Note that |r|
+     * includes |carry| which is stored separately.
+     */
     for (carry = 0, i = 0; i < nl; i++, rp++) {
         v = bn_mul_add_words(rp, np, nl, (rp[0] * n0) & BN_MASK2);
         v = (v + carry + rp[nl]) & BN_MASK2;
@@ -112,52 +132,27 @@ static int BN_from_montgomery_word(BIGNUM *ret, BIGNUM *r, BN_MONT_CTX *mont)
     if (bn_wexpand(ret, nl) == NULL)
         return (0);
     ret->top = nl;
+    ret->flags |= BN_FLG_FIXED_TOP;
     ret->neg = r->neg;
 
     rp = ret->d;
+
+    /*
+     * Shift |nl| words to divide by R. We have |ap| < 2 * |n|. Note that |ap|
+     * includes |carry| which is stored separately.
+     */
     ap = &(r->d[nl]);
 
-# define BRANCH_FREE 1
-# if BRANCH_FREE
-    {
-        BN_ULONG *nrp;
-        size_t m;
-
-        v = bn_sub_words(rp, ap, np, nl) - carry;
-        /*
-         * if subtraction result is real, then trick unconditional memcpy
-         * below to perform in-place "refresh" instead of actual copy.
-         */
-        m = (0 - (size_t)v);
-        nrp =
-            (BN_ULONG *)(((PTR_SIZE_INT) rp & ~m) | ((PTR_SIZE_INT) ap & m));
-
-        for (i = 0, nl -= 4; i < nl; i += 4) {
-            BN_ULONG t1, t2, t3, t4;
-
-            t1 = nrp[i + 0];
-            t2 = nrp[i + 1];
-            t3 = nrp[i + 2];
-            ap[i + 0] = 0;
-            t4 = nrp[i + 3];
-            ap[i + 1] = 0;
-            rp[i + 0] = t1;
-            ap[i + 2] = 0;
-            rp[i + 1] = t2;
-            ap[i + 3] = 0;
-            rp[i + 2] = t3;
-            rp[i + 3] = t4;
-        }
-        for (nl += 4; i < nl; i++)
-            rp[i] = nrp[i], ap[i] = 0;
+    carry -= bn_sub_words(rp, ap, np, nl);
+    /*
+     * |carry| is -1 if |ap| - |np| underflowed or zero if it did not. Note
+     * |carry| cannot be 1. That would imply the subtraction did not fit in
+     * |nl| words, and we know at most one subtraction is needed.
+     */
+    for (i = 0; i < nl; i++) {
+        rp[i] = (carry & ap[i]) | (~carry & rp[i]);
+        ap[i] = 0;
     }
-# else
-    if (bn_sub_words(rp, ap, np, nl) - carry)
-        memcpy(rp, ap, nl * sizeof(BN_ULONG));
-# endif
-    bn_correct_top(r);
-    bn_correct_top(ret);
-    bn_check_top(ret);
 
     return (1);
 }
@@ -166,13 +161,26 @@ static int BN_from_montgomery_word(BIGNUM *ret, BIGNUM *r, BN_MONT_CTX *mont)
 int BN_from_montgomery(BIGNUM *ret, const BIGNUM *a, BN_MONT_CTX *mont,
                        BN_CTX *ctx)
 {
+    int retn;
+
+    retn = bn_from_mont_fixed_top(ret, a, mont, ctx);
+    bn_correct_top(ret);
+    bn_check_top(ret);
+
+    return retn;
+}
+
+int bn_from_mont_fixed_top(BIGNUM *ret, const BIGNUM *a, BN_MONT_CTX *mont,
+                           BN_CTX *ctx)
+{
     int retn = 0;
 #ifdef MONT_WORD
     BIGNUM *t;
 
     BN_CTX_start(ctx);
-    if ((t = BN_CTX_get(ctx)) && BN_copy(t, a))
-        retn = BN_from_montgomery_word(ret, t, mont);
+    if ((t = BN_CTX_get(ctx)) && BN_copy(t, a)) {
+        retn = bn_from_montgomery_word(ret, t, mont);
+    }
     BN_CTX_end(ctx);
 #else                           /* !MONT_WORD */
     BIGNUM *t1, *t2;
@@ -208,6 +216,12 @@ int BN_from_montgomery(BIGNUM *ret, const BIGNUM *a, BN_MONT_CTX *mont,
     BN_CTX_end(ctx);
 #endif                          /* MONT_WORD */
     return (retn);
+}
+
+int bn_to_mont_fixed_top(BIGNUM *r, const BIGNUM *a, BN_MONT_CTX *mont,
+                         BN_CTX *ctx)
+{
+    return bn_mul_mont_fixed_top(r, a, &(mont->RR), mont, ctx);
 }
 
 BN_MONT_CTX *BN_MONT_CTX_new(void)
@@ -246,7 +260,7 @@ void BN_MONT_CTX_free(BN_MONT_CTX *mont)
 
 int BN_MONT_CTX_set(BN_MONT_CTX *mont, const BIGNUM *mod, BN_CTX *ctx)
 {
-    int ret = 0;
+    int i, ret = 0;
     BIGNUM *Ri, *R;
 
     if (BN_is_zero(mod))
@@ -258,6 +272,8 @@ int BN_MONT_CTX_set(BN_MONT_CTX *mont, const BIGNUM *mod, BN_CTX *ctx)
     R = &(mont->RR);            /* grab RR as a temp */
     if (!BN_copy(&(mont->N), mod))
         goto err;               /* Set N */
+    if (BN_get_flags(mod, BN_FLG_CONSTTIME) != 0)
+        BN_set_flags(&(mont->N), BN_FLG_CONSTTIME);
     mont->N.neg = 0;
 
 #ifdef MONT_WORD
@@ -293,7 +309,9 @@ int BN_MONT_CTX_set(BN_MONT_CTX *mont, const BIGNUM *mod, BN_CTX *ctx)
         if ((buf[1] = mod->top > 1 ? mod->d[1] : 0))
             tmod.top = 2;
 
-        if ((BN_mod_inverse(Ri, R, &tmod, ctx)) == NULL)
+        if (BN_is_one(&tmod))
+            BN_zero(Ri);
+        else if ((BN_mod_inverse(Ri, R, &tmod, ctx)) == NULL)
             goto err;
         if (!BN_lshift(Ri, Ri, 2 * BN_BITS2))
             goto err;           /* R*Ri */
@@ -326,7 +344,9 @@ int BN_MONT_CTX_set(BN_MONT_CTX *mont, const BIGNUM *mod, BN_CTX *ctx)
         buf[1] = 0;
         tmod.top = buf[0] != 0 ? 1 : 0;
         /* Ri = R^-1 mod N */
-        if ((BN_mod_inverse(Ri, R, &tmod, ctx)) == NULL)
+        if (BN_is_one(&tmod))
+            BN_zero(Ri);
+        else if ((BN_mod_inverse(Ri, R, &tmod, ctx)) == NULL)
             goto err;
         if (!BN_lshift(Ri, Ri, BN_BITS2))
             goto err;           /* R*Ri */
@@ -374,6 +394,11 @@ int BN_MONT_CTX_set(BN_MONT_CTX *mont, const BIGNUM *mod, BN_CTX *ctx)
         goto err;
     if (!BN_mod(&(mont->RR), &(mont->RR), &(mont->N), ctx))
         goto err;
+
+    for (i = mont->RR.top, ret = mont->N.top; i < ret; i++)
+        mont->RR.d[i] = 0;
+    mont->RR.top = ret;
+    mont->RR.flags |= BN_FLG_FIXED_TOP;
 
     ret = 1;
  err:

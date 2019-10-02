@@ -1,5 +1,5 @@
 /*
- * Copyright 1995-2016 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 1995-2019 The OpenSSL Project Authors. All Rights Reserved.
  *
  * Licensed under the OpenSSL license (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
@@ -509,8 +509,7 @@ int req_main(int argc, char **argv)
         if (pkey_type == EVP_PKEY_EC) {
             BIO_printf(bio_err, "Generating an EC private key\n");
         } else {
-            BIO_printf(bio_err, "Generating a %ld bit %s private key\n",
-                       newkey, keyalgstr);
+            BIO_printf(bio_err, "Generating a %s private key\n", keyalgstr);
         }
 
         EVP_PKEY_CTX_set_cb(genctx, genpkey_cb);
@@ -744,9 +743,19 @@ int req_main(int argc, char **argv)
 
     if (text) {
         if (x509)
-            X509_print_ex(out, x509ss, nmflag, reqflag);
+            ret = X509_print_ex(out, x509ss, nmflag, reqflag);
         else
-            X509_REQ_print_ex(out, req, nmflag, reqflag);
+            ret = X509_REQ_print_ex(out, req, nmflag, reqflag);
+
+        if (ret == 0) {
+            if (x509)
+                BIO_printf(bio_err, "Error printing certificate\n");
+            else
+                BIO_printf(bio_err, "Error printing certificate request\n");
+
+            ERR_print_errors(bio_err);
+            goto end;
+        }
     }
 
     if (subject) {
@@ -973,7 +982,7 @@ static int prompt_info(X509_REQ *req,
             /* If OBJ not recognised ignore it */
             if ((nid = OBJ_txt2nid(type)) == NID_undef)
                 goto start;
-            if (BIO_snprintf(buf, sizeof buf, "%s_default", v->name)
+            if (BIO_snprintf(buf, sizeof(buf), "%s_default", v->name)
                 >= (int)sizeof(buf)) {
                 BIO_printf(bio_err, "Name '%s' too long\n", v->name);
                 return 0;
@@ -984,19 +993,19 @@ static int prompt_info(X509_REQ *req,
                 def = "";
             }
 
-            BIO_snprintf(buf, sizeof buf, "%s_value", v->name);
+            BIO_snprintf(buf, sizeof(buf), "%s_value", v->name);
             if ((value = NCONF_get_string(req_conf, dn_sect, buf)) == NULL) {
                 ERR_clear_error();
                 value = NULL;
             }
 
-            BIO_snprintf(buf, sizeof buf, "%s_min", v->name);
+            BIO_snprintf(buf, sizeof(buf), "%s_min", v->name);
             if (!NCONF_get_number(req_conf, dn_sect, buf, &n_min)) {
                 ERR_clear_error();
                 n_min = -1;
             }
 
-            BIO_snprintf(buf, sizeof buf, "%s_max", v->name);
+            BIO_snprintf(buf, sizeof(buf), "%s_max", v->name);
             if (!NCONF_get_number(req_conf, dn_sect, buf, &n_max)) {
                 ERR_clear_error();
                 n_max = -1;
@@ -1032,7 +1041,7 @@ static int prompt_info(X509_REQ *req,
                 if ((nid = OBJ_txt2nid(type)) == NID_undef)
                     goto start2;
 
-                if (BIO_snprintf(buf, sizeof buf, "%s_default", type)
+                if (BIO_snprintf(buf, sizeof(buf), "%s_default", type)
                     >= (int)sizeof(buf)) {
                     BIO_printf(bio_err, "Name '%s' too long\n", v->name);
                     return 0;
@@ -1044,20 +1053,20 @@ static int prompt_info(X509_REQ *req,
                     def = "";
                 }
 
-                BIO_snprintf(buf, sizeof buf, "%s_value", type);
+                BIO_snprintf(buf, sizeof(buf), "%s_value", type);
                 if ((value = NCONF_get_string(req_conf, attr_sect, buf))
                     == NULL) {
                     ERR_clear_error();
                     value = NULL;
                 }
 
-                BIO_snprintf(buf, sizeof buf, "%s_min", type);
+                BIO_snprintf(buf, sizeof(buf), "%s_min", type);
                 if (!NCONF_get_number(req_conf, attr_sect, buf, &n_min)) {
                     ERR_clear_error();
                     n_min = -1;
                 }
 
-                BIO_snprintf(buf, sizeof buf, "%s_max", type);
+                BIO_snprintf(buf, sizeof(buf), "%s_max", type);
                 if (!NCONF_get_number(req_conf, attr_sect, buf, &n_max)) {
                     ERR_clear_error();
                     n_max = -1;
@@ -1155,13 +1164,13 @@ static int add_DN_object(X509_NAME *n, char *text, const char *def,
         BIO_printf(bio_err, "%s [%s]:", text, def);
     (void)BIO_flush(bio_err);
     if (value != NULL) {
-        OPENSSL_strlcpy(buf, value, sizeof buf);
-        OPENSSL_strlcat(buf, "\n", sizeof buf);
+        OPENSSL_strlcpy(buf, value, sizeof(buf));
+        OPENSSL_strlcat(buf, "\n", sizeof(buf));
         BIO_printf(bio_err, "%s\n", value);
     } else {
         buf[0] = '\0';
         if (!batch) {
-            if (!fgets(buf, sizeof buf, stdin))
+            if (!fgets(buf, sizeof(buf), stdin))
                 return 0;
         } else {
             buf[0] = '\n';
@@ -1174,8 +1183,8 @@ static int add_DN_object(X509_NAME *n, char *text, const char *def,
     else if (buf[0] == '\n') {
         if ((def == NULL) || (def[0] == '\0'))
             return (1);
-        OPENSSL_strlcpy(buf, def, sizeof buf);
-        OPENSSL_strlcat(buf, "\n", sizeof buf);
+        OPENSSL_strlcpy(buf, def, sizeof(buf));
+        OPENSSL_strlcat(buf, "\n", sizeof(buf));
     } else if ((buf[0] == '.') && (buf[1] == '\n'))
         return (1);
 
@@ -1214,13 +1223,13 @@ static int add_attribute_object(X509_REQ *req, char *text, const char *def,
         BIO_printf(bio_err, "%s [%s]:", text, def);
     (void)BIO_flush(bio_err);
     if (value != NULL) {
-        OPENSSL_strlcpy(buf, value, sizeof buf);
-        OPENSSL_strlcat(buf, "\n", sizeof buf);
+        OPENSSL_strlcpy(buf, value, sizeof(buf));
+        OPENSSL_strlcat(buf, "\n", sizeof(buf));
         BIO_printf(bio_err, "%s\n", value);
     } else {
         buf[0] = '\0';
         if (!batch) {
-            if (!fgets(buf, sizeof buf, stdin))
+            if (!fgets(buf, sizeof(buf), stdin))
                 return 0;
         } else {
             buf[0] = '\n';
@@ -1233,8 +1242,8 @@ static int add_attribute_object(X509_REQ *req, char *text, const char *def,
     else if (buf[0] == '\n') {
         if ((def == NULL) || (def[0] == '\0'))
             return (1);
-        OPENSSL_strlcpy(buf, def, sizeof buf);
-        OPENSSL_strlcat(buf, "\n", sizeof buf);
+        OPENSSL_strlcpy(buf, def, sizeof(buf));
+        OPENSSL_strlcat(buf, "\n", sizeof(buf));
     } else if ((buf[0] == '.') && (buf[1] == '\n'))
         return (1);
 
