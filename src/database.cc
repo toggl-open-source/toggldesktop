@@ -2154,7 +2154,7 @@ error Database::saveModel(
             logger().debug(ss.str());
             if (model->ID()) {
                 *session_ <<
-                          "insert or replace into time_entries(id, uid, description, "
+                          "insert into time_entries(id, uid, description, "
                           "wid, guid, pid, tid, billable, "
                           "duronly, ui_modified_at, "
                           "start, stop, duration, "
@@ -2188,7 +2188,7 @@ error Database::saveModel(
                           now;
             } else {
                 *session_ <<
-                          "insert or replace into time_entries(uid, description, wid, "
+                          "insert into time_entries(uid, description, wid, "
                           "guid, pid, tid, billable, "
                           "duronly, ui_modified_at, "
                           "start, stop, duration, "
