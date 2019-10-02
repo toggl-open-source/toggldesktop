@@ -18,6 +18,7 @@ jobs:
       run: |
         bash ./dist/linux/package.sh build
     - name: Package the binaries, create tarball
+      if: github.event == 'create'
       run: |
         bash ./dist/linux/package.sh compose
     - name: Upload to GitHub
@@ -52,10 +53,6 @@ jobs:
         ln -s ../../third_party .
         dch -D unstable --package "toggldesktop" -v ${TAG_NAME/v/} "General bug fixes and improvements" -u low -M
         debuild
-        echo "ls:"
-        ls
-        echo "pwd:"
-        pwd
     - name: Upload to GitHub
       if: github.event == 'create'
       run: |
@@ -66,6 +63,7 @@ jobs:
 
   linux-flatpak-kde:
     runs-on: ubuntu-18.04
+    if: github.event == 'create'
     steps:
     - uses: actions/checkout@v1
       with:
@@ -93,25 +91,6 @@ jobs:
         TAG_NAME=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref")
         ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} owner=MartinBriza repo=toggldesktop tag="$TAG_NAME" filename="com.toggl.TogglDesktop.flatpak"
 
-  mac:
-    runs-on: macOS-10.14
-    steps:
-    - uses: actions/checkout@v1
-      with:
-        fetch-depth: 1
-    - name: Install signing key
-      run: |
-        # this doesn't work
-        # base64 -D <<<  ${{ secrets.CERT_MACOS_TEMPORARY }} > cert.cer
-        # security import cert.cer "/Users/runner/Library/Keychains/login.keychain-db"
-        # security unlock-keychain -p '' "/Users/runner/Library/Keychains/login.keychain-db"
-    - name: Build macOS dependencies
-      run: |
-        make deps
-    - name: Build macOS app
-      run: |
-        make
-
   windows-32bit:
     runs-on: windows-2019
     steps:
@@ -131,14 +110,17 @@ jobs:
       run: |
         "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe" src/ui/windows/TogglDesktop/TogglDesktop.sln /p:Configuration=Release /p:Platform="x86" /t:Clean,Build /restore /m
     - name: Sign binaries
+      if: github.event == 'create'
       run: |
         ./dist/windows/scripts/sign.sh
       shell: bash
     - name: Create x86 installer
+      if: github.event == 'create'
       run: |
         cd dist/windows
         makensis TogglDesktopInstaller-x86.nsi
     - name: Sign the installer
+      if: github.event == 'create'
       run: |
         "C:\Program Files (x86)\Windows Kits\10\Tools\bin\i386\signtool.exe" sign -a -t http://timestamp.verisign.com/scripts/timestamp.dll -f Certificate.pfx dist\windows\TogglDesktopInstaller.exe
     - name: Upload to GitHub
@@ -169,14 +151,17 @@ jobs:
       run: |
         "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe" src/ui/windows/TogglDesktop/TogglDesktop.sln /p:Configuration=Release /p:Platform="x64" /t:Clean,Build /restore /m
     - name: Sign binaries
+      if: github.event == 'create'
       run: |
         ./dist/windows/scripts/sign.sh
       shell: bash
     - name: Make x64 installer
+      if: github.event == 'create'
       run: |
         cd dist/windows
         makensis TogglDesktopInstaller-x64.nsi
     - name: Sign the installer
+      if: github.event == 'create'
       run: |
         "C:\Program Files (x86)\Windows Kits\10\Tools\bin\i386\signtool.exe" sign -a -t http://timestamp.verisign.com/scripts/timestamp.dll -f Certificate.pfx dist\windows\TogglDesktopInstaller-x64.exe
     - name: Upload to GitHub
@@ -190,6 +175,7 @@ jobs:
 
   windows-store:
     runs-on: windows-2019
+    if: github.event == 'create'
     steps:
     - uses: actions/checkout@v1
       with:
