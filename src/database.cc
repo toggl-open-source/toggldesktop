@@ -2059,10 +2059,6 @@ error Database::saveModel(
             logger().debug(ss.str());
 
             if (model->ID()) {
-                std::stringstream ss;
-                ss << "Model ID present " << model->ID()
-                   << " in thread " << Poco::Thread::currentTid();
-                logger().debug(ss.str());
                 *session_ <<
                           "update time_entries set "
                           "id = :id, uid = :uid, description = :description, "
@@ -2076,7 +2072,7 @@ error Database::saveModel(
                           "updated_at = :updated_at, "
                           "project_guid = :project_guid, "
                           "validation_error = :validation_error "
-                          "where id = :id",
+                          "where local_id = :local_id",
                           useRef(model->ID()),
                           useRef(model->UID()),
                           useRef(model->Description()),
@@ -2096,13 +2092,9 @@ error Database::saveModel(
                           useRef(model->UpdatedAt()),
                           useRef(model->ProjectGUID()),
                           useRef(model->ValidationError()),
-                          useRef(model->ID()),
+                          useRef(model->LocalID()),
                           now;
             } else {
-                std::stringstream ss;
-                ss << "Model ID NOT present using local ID " << model->LocalID()
-                   << " in thread " << Poco::Thread::currentTid();
-                logger().debug(ss.str());
                 *session_ <<
                           "update time_entries set "
                           "uid = :uid, description = :description, wid = :wid, "
@@ -2161,9 +2153,6 @@ error Database::saveModel(
                << " in thread " << Poco::Thread::currentTid();
             logger().debug(ss.str());
             if (model->ID()) {
-                ss << "Model ID present " << model->ID()
-                   << " in thread " << Poco::Thread::currentTid();
-                logger().debug(ss.str());
                 *session_ <<
                           "insert or replace into time_entries(id, uid, description, "
                           "wid, guid, pid, tid, billable, "
@@ -2198,9 +2187,6 @@ error Database::saveModel(
                           useRef(model->ValidationError()),
                           now;
             } else {
-                ss << "Model ID NOT present using local ID " << model->LocalID()
-                   << " in thread " << Poco::Thread::currentTid();
-                logger().debug(ss.str());
                 *session_ <<
                           "insert or replace into time_entries(uid, description, wid, "
                           "guid, pid, tid, billable, "
