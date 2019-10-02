@@ -149,7 +149,8 @@ error GUI::DisplayError(const error &err) {
         ss << "You are offline (" << err << ")";
         if (kBackendIsDownError == err) {
             DisplayOnlineState(kOnlineStateBackendDown);
-        } else {
+        }
+        else {
             DisplayOnlineState(kOnlineStateNoNetwork);
         }
         return err;
