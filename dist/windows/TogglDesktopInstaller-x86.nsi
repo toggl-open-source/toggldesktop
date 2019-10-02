@@ -23,7 +23,8 @@
   ; That will have written an uninstaller binary for us.  Now we sign it with your
   ; favorite code signing tool.
  
-  !system "C:\Program^ Files^ ^(x86^)\Windows^ Kits\10\Tools\bin\i386\signtool.exe sign -a -t http://timestamp.verisign.com/scripts/timestamp.dll -f ..\..\Certificate.pfx $%TEMP%\Uninstall.exe" = 0
+  !system 'echo "C:\Program^ Files^ ^(x86^)\Windows^ Kits\10\Tools\bin\i386\signtool.exe sign -a -t http://timestamp.verisign.com/scripts/timestamp.dll -f Certificate.pfx $%TEMP%\Uninstall.exe"' = 0
+  !system "C:\Program^ Files^ ^(x86^)\Windows^ Kits\10\Tools\bin\i386\signtool.exe sign -a -t http://timestamp.verisign.com/scripts/timestamp.dll -f Certificate.pfx $%TEMP%\Uninstall.exe" = 0
  
   ; Good.  Now we can carry on writing the real installer.
  
