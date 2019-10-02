@@ -215,6 +215,9 @@ extern void *ctx;
 		case 2 :
 			[[SystemMessage shared] presentOffline:@"Error" subTitle:@"Offline, Toggl not responding"];
 			break;
+        case 3 :
+            [[SystemMessage shared] presentOffline:@"Error" subTitle:@"Too many requests, sync delayed by 1 minute"];
+            break;
 		default :
 			[self closeError];
 			break;

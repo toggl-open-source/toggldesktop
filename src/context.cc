@@ -4996,7 +4996,7 @@ error Context::pushEntries(
             }
             error_found = true;
             error_message = resp.body;
-            if (error_message == noError) {
+            if (error_message == noError || resp.status_code == 429) {
                 error_message = resp.err;
             }
             // Mark the time entry as unsynced now

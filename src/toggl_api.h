@@ -30,6 +30,7 @@ extern "C" {
 #define kOnlineStateOnline 0
 #define kOnlineStateNoNetwork 1
 #define kOnlineStateBackendDown 2
+#define kOnlineStateRateLimit 3
 
 #define kSyncStateIdle 0
 #define kSyncStateWork 1

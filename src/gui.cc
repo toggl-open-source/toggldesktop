@@ -149,6 +149,8 @@ error GUI::DisplayError(const error &err) {
         ss << "You are offline (" << err << ")";
         if (kBackendIsDownError == err) {
             DisplayOnlineState(kOnlineStateBackendDown);
+        } else if (kCannotConnectError == err) {
+            DisplayOnlineState(kOnlineStateRateLimit);
         } else {
             DisplayOnlineState(kOnlineStateNoNetwork);
         }
@@ -336,7 +338,8 @@ void GUI::DisplayOnlineState(const Poco::Int64 state) {
 
     if (!(kOnlineStateOnline == state
             || kOnlineStateNoNetwork == state
-            || kOnlineStateBackendDown == state)) {
+            || kOnlineStateBackendDown == state
+            || kOnlineStateRateLimit == state)) {
         std::stringstream ss;
         ss << "Invalid online state " << state;
         logger().error(ss.str());
@@ -355,6 +358,9 @@ void GUI::DisplayOnlineState(const Poco::Int64 state) {
         break;
     case kOnlineStateBackendDown:
         ss << "backend is down";
+        break;
+    case kOnlineStateRateLimit:
+        ss << "too many requests";
         break;
     }
     logger().debug(ss.str());
