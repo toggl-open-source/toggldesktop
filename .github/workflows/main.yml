@@ -140,14 +140,14 @@ jobs:
         makensis TogglDesktopInstaller-x86.nsi
     - name: Sign the installer
       run: |
-        "C:\Program Files (x86)\Windows Kits\10\Tools\bin\i386\signtool.exe" sign -a -t http://timestamp.verisign.com/scripts/timestamp.dll -f Certificate.pfx src\ui\windows\TogglDesktopInstaller.exe
+        "C:\Program Files (x86)\Windows Kits\10\Tools\bin\i386\signtool.exe" sign -a -t http://timestamp.verisign.com/scripts/timestamp.dll -f Certificate.pfx dist\windows\TogglDesktopInstaller.exe
     - name: Upload to GitHub
       if: github.event == 'create'
       run: |
         EVENT_TYPE=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref_type")
         if [[ "$EVENT_TYPE" != "tag" ]]; then exit 0; fi
         TAG_NAME=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref")
-        ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} owner=MartinBriza repo=toggldesktop tag="$TAG_NAME" filename="src/ui/windows/TogglDesktopInstaller.exe"
+        ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} owner=MartinBriza repo=toggldesktop tag="$TAG_NAME" filename="dist/windows/TogglDesktopInstaller.exe"
       shell: bash
 
   windows-64bit:
@@ -178,14 +178,14 @@ jobs:
         makensis TogglDesktopInstaller-x64.nsi
     - name: Sign the installer
       run: |
-        "C:\Program Files (x86)\Windows Kits\10\Tools\bin\i386\signtool.exe" sign -a -t http://timestamp.verisign.com/scripts/timestamp.dll -f Certificate.pfx src\ui\windows\TogglDesktopInstaller-x64.exe
+        "C:\Program Files (x86)\Windows Kits\10\Tools\bin\i386\signtool.exe" sign -a -t http://timestamp.verisign.com/scripts/timestamp.dll -f Certificate.pfx dist\windows\TogglDesktopInstaller-x64.exe
     - name: Upload to GitHub
       if: github.event == 'create'
       run: |
         EVENT_TYPE=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref_type")
         if [[ "$EVENT_TYPE" != "tag" ]]; then exit 0; fi
         TAG_NAME=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref")
-        ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} owner=MartinBriza repo=toggldesktop tag="$TAG_NAME" filename="src/ui/windows/TogglDesktopInstaller-x64.exe"
+        ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} owner=MartinBriza repo=toggldesktop tag="$TAG_NAME" filename="dist/windows/TogglDesktopInstaller-x64.exe"
       shell: bash
 
   windows-store:
