@@ -49,7 +49,8 @@ public static partial class Toggl
     {
         Online = kOnlineStateOnline,
         NoNetwork = kOnlineStateNoNetwork,
-        BackendDown = kOnlineStateBackendDown
+        BackendDown = kOnlineStateBackendDown,
+        RateLimit = kOnlineStateRateLimit
     }
 
     public enum SyncState

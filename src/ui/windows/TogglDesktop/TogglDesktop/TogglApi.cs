@@ -24,6 +24,7 @@ public static partial class Toggl
     private const int kOnlineStateOnline = 0;
     private const int kOnlineStateNoNetwork = 1;
     private const int kOnlineStateBackendDown = 2;
+    private const int kOnlineStateRateLimit = 3;
 
     private const int kSyncStateIdle = 0;
     private const int kSyncStateWork = 1;

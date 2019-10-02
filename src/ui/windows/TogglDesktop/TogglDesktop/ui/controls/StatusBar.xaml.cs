@@ -60,6 +60,11 @@ namespace TogglDesktop
                     this.statusText.Text = "Offline, Toggl not responding";
                     break;
                 }
+                case Toggl.OnlineState.RateLimit:
+                {
+                    this.statusText.Text = "Too many requests, sync delayed by 1 minute";
+                    break;
+                }
                 default:
                     throw new ArgumentOutOfRangeException();
             }
