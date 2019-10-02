@@ -1,5 +1,12 @@
 {
     "versions": [
+                {
+            "version": "7.4.1023",
+            "rows": [
+                "Hotfix: revert bug with duplicating entries introduced in the previous hotfix"
+            ],
+            "date": "October 2nd 2019",
+        },
         {
             "version": "7.4.1022",
             "rows": [
