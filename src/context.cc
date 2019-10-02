@@ -4995,10 +4995,8 @@ error Context::pushEntries(
                 continue;
             }
             error_found = true;
-            error_message = resp.body;
-            if (error_message == noError) {
-                error_message = resp.err;
-            }
+            error_message = resp.err;
+
             // Mark the time entry as unsynced now
             (*it)->SetUnsynced();
 
