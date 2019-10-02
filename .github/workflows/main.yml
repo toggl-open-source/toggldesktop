@@ -1,0 +1,229 @@
+name: Build
+
+on: [push, create]
+
+jobs:
+  linux-basic:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+      with:
+        fetch-depth: 1
+    - name: Install dependencies
+      run: |
+        sudo apt update
+        sudo apt install libxss1 libgstreamer-plugins-base1.0-0 libgstreamer1.0-0 qt5-default libqt5gui5 libqt5webengine5 libqt5webenginecore5 libqt5webenginewidgets5 libqt5printsupport5 libqt5quickwidgets5 libqt5x11extras5 libxss1 
+        sudo apt install patchelf binutils cmake pkg-config qtbase5-dev qtwebengine5-dev libqt5x11extras5-dev  qtbase5-private-dev libssl-dev libxss-dev libxmu-dev
+    - name: Build the Linux binary
+      run: |
+        bash ./dist/linux/package.sh build
+    - name: Package the binaries, create tarball
+      if: github.event_name == 'create'
+      run: |
+        bash ./dist/linux/package.sh compose
+    - name: Upload to GitHub
+      if: github.event_name == 'create'
+      run: |
+        EVENT_TYPE=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref_type")
+        if [[ "$EVENT_TYPE" != "tag" ]]; then exit 0; fi
+        TAG_NAME=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref")
+        ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} owner=toggl repo=toggldesktop tag="$TAG_NAME" filename="toggldesktop_x86_64.tar.gz"
+
+  linux-ubuntu1804:
+    runs-on: ubuntu-18.04
+    if: github.event_name == 'create'
+    steps:
+    - uses: actions/checkout@v1
+      with:
+        fetch-depth: 1
+    - name: Install signing key
+      run: |
+        gpg --import <<< "${{ secrets.CERT_LINUX_DEB64 }}"
+    - name: Install dependencies
+      run: |
+        sudo apt update
+        sudo apt install devscripts cmake debhelper pkg-config qtbase5-dev qtwebengine5-dev libqt5x11extras5-dev qtbase5-private-dev libssl-dev libxss-dev libxmu-dev
+    - name: Build a Debian package
+      run: |
+        TAG_NAME=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref")
+        cd dist/linux
+        ln -s ../../src .
+        ln -s ../../CMakeLists.txt .
+        ln -s ../../third_party .
+        dch -b -D unstable --package "toggldesktop" -v ${TAG_NAME/v/} "General bug fixes and improvements" -u low -M
+        debuild
+    - name: Upload to GitHub
+      if: github.event_name == 'create'
+      run: |
+        EVENT_TYPE=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref_type")
+        if [[ "$EVENT_TYPE" != "tag" ]]; then exit 0; fi
+        TAG_NAME=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref")
+        ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} owner=toggl repo=toggldesktop tag="$TAG_NAME" filename="toggldesktop_${TAG_NAME/v/}_amd64.deb"
+
+  linux-flatpak-kde:
+    runs-on: ubuntu-18.04
+    if: github.event_name == 'create'
+    steps:
+    - uses: actions/checkout@v1
+      with:
+        fetch-depth: 1
+    - name: Install Flatpak
+      run: |
+        sudo apt update
+        sudo apt install flatpak flatpak-builder
+    - name: Install Flatpak KDE SDK
+      run: |
+        sudo flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+        sudo flatpak install --system -y flathub org.kde.Platform//5.12
+        sudo flatpak install --system -y flathub org.kde.Sdk//5.12
+    - name: Build Linux Flatpak package - KDE based
+      run: |
+        pushd dist/linux/flatpak
+        sudo flatpak-builder --repo=flatpak-repo --force-clean flatpak-build com.toggl.TogglDesktop.json
+        flatpak build-bundle flatpak-repo com.toggl.TogglDesktop.flatpak com.toggl.TogglDesktop
+        mv com.toggl.TogglDesktop.flatpak ../../..
+        popd
+    - name: Upload to GitHub
+      if: github.event_name == 'create'
+      run: |
+        EVENT_TYPE=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref_type")
+        if [[ "$EVENT_TYPE" != "tag" ]]; then exit 0; fi
+        TAG_NAME=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref")
+        ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} owner=toggl repo=toggldesktop tag="$TAG_NAME" filename="com.toggl.TogglDesktop.flatpak"
+
+  windows-32bit:
+    runs-on: windows-2019
+    steps:
+    - uses: actions/checkout@v1
+      with:
+        fetch-depth: 1
+    - name: Install signing key
+      run: |
+        echo "${{ secrets.CERT_WINDOWS_STANDALONE }}" > Certificate.b64
+        base64 -d Certificate.b64 > Certificate.pfx
+        cp Certificate.pfx dist/windows
+      shell: bash
+    - name: Install dependencies
+      run: |
+        choco install nsis -y
+    - name: Set version
+      shell: bash
+      run: |
+        EVENT_TYPE=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref_type")
+        if [[ "$EVENT_TYPE" != "tag" ]]; then exit 0; fi
+        TAG_NAME=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref")
+        echo "Setting version to ${TAG_NAME/v/}"
+        bash dist/windows/scripts/set_version.sh "${TAG_NAME/v/}"
+    - name: Build on Windows x86
+      run: |
+        "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe" src/ui/windows/TogglDesktop/TogglDesktop.sln /p:Configuration=Release /p:Platform="x86" /t:Clean,Build /restore /m
+    - name: Sign binaries
+      if: github.event_name == 'create'
+      run: |
+        ./dist/windows/scripts/sign.sh
+      shell: bash
+    - name: Create x86 installer
+      if: github.event_name == 'create'
+      run: |
+        cd dist/windows
+        makensis TogglDesktopInstaller-x86.nsi
+    - name: Sign the installer
+      if: github.event_name == 'create'
+      run: |
+        "C:\Program Files (x86)\Windows Kits\10\Tools\bin\i386\signtool.exe" sign -a -t http://timestamp.verisign.com/scripts/timestamp.dll -f Certificate.pfx dist\windows\TogglDesktopInstaller.exe
+    - name: Upload to GitHub
+      if: github.event_name == 'create'
+      run: |
+        EVENT_TYPE=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref_type")
+        if [[ "$EVENT_TYPE" != "tag" ]]; then exit 0; fi
+        TAG_NAME=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref")
+        ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} owner=toggl repo=toggldesktop tag="$TAG_NAME" filename="dist/windows/TogglDesktopInstaller.exe"
+      shell: bash
+
+  windows-64bit:
+    runs-on: windows-2019
+    steps:
+    - uses: actions/checkout@v1
+      with:
+        fetch-depth: 1
+    - name: Install signing key
+      run: |
+        echo "${{ secrets.CERT_WINDOWS_STANDALONE }}" > Certificate.b64
+        base64 -d Certificate.b64 > Certificate.pfx
+        cp Certificate.pfx dist/windows
+      shell: bash
+    - name: Install dependencies
+      run: |
+        choco install nsis -y
+    - name: Set version
+      shell: bash
+      run: |
+        EVENT_TYPE=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref_type")
+        if [[ "$EVENT_TYPE" != "tag" ]]; then exit 0; fi
+        TAG_NAME=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref")
+        echo "Setting version to ${TAG_NAME/v/}"
+        bash dist/windows/scripts/set_version.sh "${TAG_NAME/v/}"
+    - name: Build on Windows x64
+      run: |
+        "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe" src/ui/windows/TogglDesktop/TogglDesktop.sln /p:Configuration=Release /p:Platform="x64" /t:Clean,Build /restore /m
+    - name: Sign binaries
+      if: github.event_name == 'create'
+      run: |
+        ./dist/windows/scripts/sign.sh
+      shell: bash
+    - name: Make x64 installer
+      if: github.event_name == 'create'
+      run: |
+        cd dist/windows
+        makensis TogglDesktopInstaller-x64.nsi
+    - name: Sign the installer
+      if: github.event_name == 'create'
+      run: |
+        "C:\Program Files (x86)\Windows Kits\10\Tools\bin\i386\signtool.exe" sign -a -t http://timestamp.verisign.com/scripts/timestamp.dll -f Certificate.pfx dist\windows\TogglDesktopInstaller-x64.exe
+    - name: Upload to GitHub
+      if: github.event_name == 'create'
+      run: |
+        EVENT_TYPE=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref_type")
+        if [[ "$EVENT_TYPE" != "tag" ]]; then exit 0; fi
+        TAG_NAME=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref")
+        ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} owner=toggl repo=toggldesktop tag="$TAG_NAME" filename="dist/windows/TogglDesktopInstaller-x64.exe"
+      shell: bash
+
+  windows-store:
+    runs-on: windows-2019
+    if: github.event_name == 'create'
+    steps:
+    - uses: actions/checkout@v1
+      with:
+        fetch-depth: 1
+    - name: Install signing key - Part 1
+      run: |
+        echo "${{ secrets.CERT_WINDOWS_STORE }}" > Certificate.b64
+        base64 -d Certificate.b64 > Certificate.pfx
+      shell: bash
+    - name: Install signing key - Part 2
+      run: |
+        $SecurePassword = "1" | ConvertTo-SecureString -AsPlainText -Force
+        Import-PfxCertificate -FilePath Certificate.pfx cert:\currentUser\My -Password $SecurePassword
+      shell: powershell
+    - name: Set version
+      shell: bash
+      run: |
+        EVENT_TYPE=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref_type")
+        if [[ "$EVENT_TYPE" != "tag" ]]; then exit 0; fi
+        TAG_NAME=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref")
+        echo "Setting version to ${TAG_NAME/v/}"
+        bash dist/windows/scripts/set_version.sh "${TAG_NAME/v/}"
+    - name: Build on Windows for Microsoft Store
+      run: |
+        "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe" src/ui/windows/TogglDesktop/TogglDesktop.sln /p:Configuration=StoreRelease /p:Platform="x86" /p:AppxPackageSigningEnabled=false /t:Clean,Build /restore -m
+        "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe" src/ui/windows/TogglDesktop/TogglDesktop.sln /p:Configuration=StoreRelease /p:Platform="x64" /p:UapAppxPackageBuildMode=CI /p:AppxBundle=Always /p:AppxBundlePlatforms="x86|x64" /p:AppxPackageSigningEnabled=true /p:PackageCertificateThumbprint="322D8592D0FDB01F1C8FCA56ED3FBFAF646D3739" /p:AppxPackageDir="..\\..\\..\\..\\..\\" /t:Clean,Build /restore -m
+        dir
+    - name: Upload to GitHub
+      if: github.event_name == 'create'
+      run: |
+        EVENT_TYPE=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref_type")
+        if [[ "$EVENT_TYPE" != "tag" ]]; then exit 0; fi
+        TAG_NAME=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref")
+        ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} owner=toggl repo=toggldesktop tag="$TAG_NAME" filename="TogglDesktop.Package_${TAG_NAME/v/}.0_x86_x64_bundle_StoreRelease.appxupload"
+      shell: bash
