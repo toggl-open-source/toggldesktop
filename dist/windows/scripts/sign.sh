@@ -13,6 +13,6 @@ arguments=$(sed 's/\</\*./g' <<< $EXTENSIONS | sed 's/\s/ -or -name /g' | sed 's
 
 for i in $(find $PATHS $arguments 2>/dev/null); do
     echo "Signing $i"
-    $SIGNTOOL sign -a -t http://timestamp.verisign.com/scripts/timestamp.dll -f "Certificate.pfx" $i
+    "$SIGNTOOL" sign -a -t http://timestamp.verisign.com/scripts/timestamp.dll -f "Certificate.pfx" $i
 done
 
