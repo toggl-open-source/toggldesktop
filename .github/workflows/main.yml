@@ -63,7 +63,7 @@ jobs:
         if [[ "$EVENT_TYPE" != "tag" ]]; then exit 0; fi
         TAG_NAME=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref")
         ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} owner=MartinBriza repo=toggldesktop tag="$TAG_NAME" filename="toggldesktop_${TAG_NAME/v/}_amd64.deb"
-        
+
   linux-flatpak-kde:
     runs-on: ubuntu-18.04
     steps:
@@ -111,7 +111,7 @@ jobs:
     - name: Build macOS app
       run: |
         make
-        
+
   windows-32bit:
     runs-on: windows-2019
     steps:
@@ -145,7 +145,7 @@ jobs:
         TAG_NAME=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref")
         ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} owner=MartinBriza repo=toggldesktop tag="$TAG_NAME" filename="src/ui/windows/TogglDesktopInstaller.exe"
       shell: bash
-        
+
   windows-64bit:
     runs-on: windows-2019
     steps:
