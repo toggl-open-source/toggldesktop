@@ -184,7 +184,20 @@ jobs:
     runs-on: windows-2019
     steps:
     - uses: actions/checkout@v1
-    - name: Build on Windows for Microsoft Store (no signing)
+      with:
+        fetch-depth: 1
+    - name: Install signing key - Part 1
+      run: |
+        echo "${{ secrets.CERT_WINDOWS_STORE }}" > Certificate.b64
+        base64 -d Certificate.b64 > Certificate.pfx
+      shell: bash
+    - name: Install signing key - Part 2
+      run: |
+        $SecurePassword = "1" | ConvertTo-SecureString -AsPlainText -Force
+        Import-PfxCertificate -FilePath Certificate.pfx cert:\currentUser\My -Password $SecurePassword
+      shell: powershell
+    - name: Build on Windows for Microsoft Store
       run: |
         "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe" src/ui/windows/TogglDesktop/TogglDesktop.sln /p:Configuration=StoreRelease /p:Platform="x86" /p:AppxPackageSigningEnabled=false /t:Clean,Build /restore -m
-        "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe" src/ui/windows/TogglDesktop/TogglDesktop.sln /p:Configuration=StoreRelease /p:Platform="x64" /p:UapAppxPackageBuildMode=CI /p:AppxBundle=Always /p:AppxBundlePlatforms="x86|x64" /p:AppxPackageSigningEnabled=false /t:Clean,Build /restore -m  
+        "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe" src/ui/windows/TogglDesktop/TogglDesktop.sln /p:Configuration=StoreRelease /p:Platform="x64" /p:UapAppxPackageBuildMode=CI /p:AppxBundle=Always /p:AppxBundlePlatforms="x86|x64" /p:AppxPackageSigningEnabled=true /p:PackageCertificateThumbprint="322D8592D0FDB01F1C8FCA56ED3FBFAF646D3739" /t:Clean,Build /restore -m
+        dir
