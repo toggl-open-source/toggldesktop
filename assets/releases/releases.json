@@ -870,6 +870,20 @@
                         "name": "TogglDesktopInstaller-x64-7.4.1022.exe"
                     }
                 ]
+            },
+            {
+                "version": "7.4.1023",
+                "timestamp": "02-10-2019",
+                "filename": [
+                    {
+                        "type": "windows",
+                        "name": "TogglDesktopInstaller-7.4.1023.exe"
+                    },
+                    {
+                        "type": "windows64",
+                        "name": "TogglDesktopInstaller-x64-7.4.1023.exe"
+                    }
+                ]
             }
         ],
         "stable": [
