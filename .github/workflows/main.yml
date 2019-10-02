@@ -120,7 +120,6 @@ jobs:
         fetch-depth: 1
     - name: Install signing key
       run: |
-        find "/c/Program Files (x86)/Windows Kits" -name "signtool.exe"
         echo "${{ secrets.CERT_WINDOWS_STANDALONE }}" > Certificate.b64
         base64 -d Certificate.b64 > Certificate.pfx
       shell: bash
