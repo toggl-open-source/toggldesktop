@@ -150,7 +150,7 @@ error GUI::DisplayError(const error &err) {
         if (kBackendIsDownError == err) {
             DisplayOnlineState(kOnlineStateBackendDown);
         }
-        else if (kRateLimit != err) {
+        else {
             DisplayOnlineState(kOnlineStateNoNetwork);
         }
         return err;
