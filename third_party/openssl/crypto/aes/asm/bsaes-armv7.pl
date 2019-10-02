@@ -1,5 +1,5 @@
 #! /usr/bin/env perl
-# Copyright 2012-2016 The OpenSSL Project Authors. All Rights Reserved.
+# Copyright 2012-2018 The OpenSSL Project Authors. All Rights Reserved.
 #
 # Licensed under the OpenSSL license (the "License").  You may not use
 # this file except in compliance with the License.  You can obtain a copy
@@ -744,9 +744,9 @@ $code.=<<___;
 .type	_bsaes_decrypt8,%function
 .align	4
 _bsaes_decrypt8:
-	adr	$const,_bsaes_decrypt8
+	adr	$const,.
 	vldmia	$key!, {@XMM[9]}		@ round 0 key
-#ifdef	__APPLE__
+#if defined(__thumb2__) || defined(__APPLE__)
 	adr	$const,.LM0ISR
 #else
 	add	$const,$const,#.LM0ISR-_bsaes_decrypt8
@@ -843,9 +843,9 @@ _bsaes_const:
 .type	_bsaes_encrypt8,%function
 .align	4
 _bsaes_encrypt8:
-	adr	$const,_bsaes_encrypt8
+	adr	$const,.
 	vldmia	$key!, {@XMM[9]}		@ round 0 key
-#ifdef	__APPLE__
+#if defined(__thumb2__) || defined(__APPLE__)
 	adr	$const,.LM0SR
 #else
 	sub	$const,$const,#_bsaes_encrypt8-.LM0SR
@@ -951,9 +951,9 @@ $code.=<<___;
 .type	_bsaes_key_convert,%function
 .align	4
 _bsaes_key_convert:
-	adr	$const,_bsaes_key_convert
+	adr	$const,.
 	vld1.8	{@XMM[7]},  [$inp]!		@ load round 0 key
-#ifdef	__APPLE__
+#if defined(__thumb2__) || defined(__APPLE__)
 	adr	$const,.LM0
 #else
 	sub	$const,$const,#_bsaes_key_convert-.LM0

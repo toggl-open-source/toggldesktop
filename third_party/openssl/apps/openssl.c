@@ -1,5 +1,5 @@
 /*
- * Copyright 1995-2016 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 1995-2018 The OpenSSL Project Authors. All Rights Reserved.
  *
  * Licensed under the OpenSSL license (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
@@ -69,8 +69,8 @@ static int apps_startup()
 #endif
 
     /* Set non-default library initialisation settings */
-    if (!OPENSSL_init_crypto(OPENSSL_INIT_ENGINE_ALL_BUILTIN
-                             | OPENSSL_INIT_LOAD_CONFIG, NULL))
+    if (!OPENSSL_init_ssl(OPENSSL_INIT_ENGINE_ALL_BUILTIN
+                          | OPENSSL_INIT_LOAD_CONFIG, NULL))
         return 0;
 
 #ifndef OPENSSL_NO_UI
@@ -188,7 +188,7 @@ int main(int argc, char *argv[])
     for (;;) {
         ret = 0;
         /* Read a line, continue reading if line ends with \ */
-        for (p = buf, n = sizeof buf, i = 0, first = 1; n > 0; first = 0) {
+        for (p = buf, n = sizeof(buf), i = 0, first = 1; n > 0; first = 0) {
             prompt = first ? "OpenSSL> " : "> ";
             p[0] = '\0';
 #ifndef READLINE
@@ -334,6 +334,7 @@ int list_main(int argc, char **argv)
         switch (o) {
         case OPT_EOF:  /* Never hit, but suppresses warning */
         case OPT_ERR:
+opthelp:
             BIO_printf(bio_err, "%s: Use -help for summary.\n", prog);
             return 1;
         case OPT_HELP:
@@ -363,11 +364,13 @@ int list_main(int argc, char **argv)
         }
         done = 1;
     }
-
-    if (!done) {
-        BIO_printf(bio_err, "%s: Use -help for summary.\n", prog);
-        return 1;
+    if (opt_num_rest() != 0) {
+        BIO_printf(bio_err, "Extra arguments given.\n");
+        goto opthelp;
     }
+
+    if (!done)
+        goto opthelp;
 
     return 0;
 }

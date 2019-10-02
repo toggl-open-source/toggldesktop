@@ -1,5 +1,5 @@
 /*
- * Copyright 1995-2016 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 1995-2018 The OpenSSL Project Authors. All Rights Reserved.
  *
  * Licensed under the OpenSSL license (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
@@ -1014,7 +1014,7 @@ int main(int argc, char *argv[])
         CRYPTO_set_mem_debug(1);
     CRYPTO_mem_ctrl(CRYPTO_MEM_CHECK_ON);
 
-    RAND_seed(rnd_seed, sizeof rnd_seed);
+    RAND_seed(rnd_seed, sizeof(rnd_seed));
 
     bio_stdout = BIO_new_fp(stdout, BIO_NOCLOSE | BIO_FP_TEXT);
 
@@ -1432,17 +1432,24 @@ int main(int argc, char *argv[])
     } else if (tls1) {
         min_version = TLS1_VERSION;
         max_version = TLS1_VERSION;
+    } else {
+        min_version = SSL3_VERSION;
+        max_version = TLS_MAX_VERSION;
     }
 #endif
 #ifndef OPENSSL_NO_DTLS
-    if (dtls || dtls1 || dtls12)
+    if (dtls || dtls1 || dtls12) {
         meth = DTLS_method();
-    if (dtls1) {
-        min_version = DTLS1_VERSION;
-        max_version = DTLS1_VERSION;
-    } else if (dtls12) {
-        min_version = DTLS1_2_VERSION;
-        max_version = DTLS1_2_VERSION;
+        if (dtls1) {
+            min_version = DTLS1_VERSION;
+            max_version = DTLS1_VERSION;
+        } else if (dtls12) {
+            min_version = DTLS1_2_VERSION;
+            max_version = DTLS1_2_VERSION;
+        } else {
+            min_version = DTLS_MIN_VERSION;
+            max_version = DTLS_MAX_VERSION;
+        }
     }
 #endif
 
@@ -1467,14 +1474,26 @@ int main(int argc, char *argv[])
         SSL_CTX_set_options(s_ctx, SSL_OP_NO_TICKET);
     }
 
-    if (SSL_CTX_set_min_proto_version(c_ctx, min_version) == 0)
+    if (SSL_CTX_set_min_proto_version(c_ctx, min_version) == 0) {
+        printf("Unable to set client min protocol version (0x%X)\n",
+               min_version);
         goto end;
-    if (SSL_CTX_set_max_proto_version(c_ctx, max_version) == 0)
+    }
+    if (SSL_CTX_set_max_proto_version(c_ctx, max_version) == 0) {
+        printf("Unable to set client max protocol version (0x%X)\n",
+               max_version);
         goto end;
-    if (SSL_CTX_set_min_proto_version(s_ctx, min_version) == 0)
+    }
+    if (SSL_CTX_set_min_proto_version(s_ctx, min_version) == 0) {
+        printf("Unable to set server min protocol version (0x%X)\n",
+               min_version);
         goto end;
-    if (SSL_CTX_set_max_proto_version(s_ctx, max_version) == 0)
+    }
+    if (SSL_CTX_set_max_proto_version(s_ctx, max_version) == 0) {
+        printf("Unable to set server max protocol version (0x%X)\n",
+               max_version);
         goto end;
+    }
 
     if (cipher != NULL) {
         if (!SSL_CTX_set_cipher_list(c_ctx, cipher)
@@ -1580,9 +1599,9 @@ int main(int argc, char *argv[])
     {
         int session_id_context = 0;
         if (!SSL_CTX_set_session_id_context(s_ctx, (void *)&session_id_context,
-                                            sizeof session_id_context) ||
+                                            sizeof(session_id_context)) ||
             !SSL_CTX_set_session_id_context(s_ctx2, (void *)&session_id_context,
-                                            sizeof session_id_context)) {
+                                            sizeof(session_id_context))) {
             ERR_print_errors(bio_err);
             goto end;
         }
@@ -2049,8 +2068,8 @@ int doit_localhost(SSL *s_ssl, SSL *c_ssl, int family, long count,
             if (cw_num > 0) {
                 /* Write to server. */
 
-                if (cw_num > (long)sizeof cbuf)
-                    i = sizeof cbuf;
+                if (cw_num > (long)sizeof(cbuf))
+                    i = sizeof(cbuf);
                 else
                     i = (int)cw_num;
                 r = BIO_write(c_ssl_bio, cbuf, i);
@@ -2128,8 +2147,8 @@ int doit_localhost(SSL *s_ssl, SSL *c_ssl, int family, long count,
             if (sw_num > 0) {
                 /* Write to client. */
 
-                if (sw_num > (long)sizeof sbuf)
-                    i = sizeof sbuf;
+                if (sw_num > (long)sizeof(sbuf))
+                    i = sizeof(sbuf);
                 else
                     i = (int)sw_num;
                 r = BIO_write(s_ssl_bio, sbuf, i);
@@ -2320,8 +2339,8 @@ int doit_biopair(SSL *s_ssl, SSL *c_ssl, long count,
             if (cw_num > 0) {
                 /* Write to server. */
 
-                if (cw_num > (long)sizeof cbuf)
-                    i = sizeof cbuf;
+                if (cw_num > (long)sizeof(cbuf))
+                    i = sizeof(cbuf);
                 else
                     i = (int)cw_num;
                 r = BIO_write(c_ssl_bio, cbuf, i);
@@ -2399,8 +2418,8 @@ int doit_biopair(SSL *s_ssl, SSL *c_ssl, long count,
             if (sw_num > 0) {
                 /* Write to client. */
 
-                if (sw_num > (long)sizeof sbuf)
-                    i = sizeof sbuf;
+                if (sw_num > (long)sizeof(sbuf))
+                    i = sizeof(sbuf);
                 else
                     i = (int)sw_num;
                 r = BIO_write(s_ssl_bio, sbuf, i);
@@ -2916,7 +2935,7 @@ static int verify_callback(int ok, X509_STORE_CTX *ctx)
     char *s, buf[256];
 
     s = X509_NAME_oneline(X509_get_subject_name(X509_STORE_CTX_get_current_cert(ctx)),
-                          buf, sizeof buf);
+                          buf, sizeof(buf));
     if (s != NULL) {
         if (ok)
             printf("depth=%d %s\n", X509_STORE_CTX_get_error_depth(ctx), buf);

@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2016 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 2015-2018 The OpenSSL Project Authors. All Rights Reserved.
  *
  * Licensed under the OpenSSL license (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
@@ -199,7 +199,7 @@ static int cname##_cfb##cbits##_cipher(EVP_CIPHER_CTX *ctx, unsigned char *out, 
         cprefix##_cfb##cbits##_encrypt(in, out, (long) \
             ((cbits == 1) \
                 && !EVP_CIPHER_CTX_test_flags(ctx, EVP_CIPH_FLAG_LENGTH_BITS) \
-                ? inl*8 : inl), \
+                ? chunk*8 : chunk), \
             &EVP_C_DATA(kstruct, ctx)->ksched, EVP_CIPHER_CTX_iv_noconst(ctx),\
             &num, EVP_CIPHER_CTX_encrypting(ctx));\
         EVP_CIPHER_CTX_set_num(ctx, num);\

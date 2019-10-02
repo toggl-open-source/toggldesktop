@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2016 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 2002-2019 The OpenSSL Project Authors. All Rights Reserved.
  *
  * Licensed under the OpenSSL license (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
@@ -138,7 +138,7 @@ int ecdh_simple_compute_key(unsigned char **pout, size_t *poutlen,
     ret = 1;
 
  err:
-    EC_POINT_free(tmp);
+    EC_POINT_clear_free(tmp);
     if (ctx)
         BN_CTX_end(ctx);
     BN_CTX_free(ctx);

@@ -1,5 +1,5 @@
 /*
- * Copyright 2001-2016 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 2001-2019 The OpenSSL Project Authors. All Rights Reserved.
  *
  * Licensed under the OpenSSL license (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
@@ -56,6 +56,7 @@ const EC_METHOD *EC_GFp_simple_method(void)
         ec_GFp_simple_field_mul,
         ec_GFp_simple_field_sqr,
         0 /* field_div */ ,
+        ec_GFp_simple_field_inv,
         0 /* field_encode */ ,
         0 /* field_decode */ ,
         0,                      /* field_set_to_one */
@@ -67,7 +68,8 @@ const EC_METHOD *EC_GFp_simple_method(void)
         ec_key_simple_generate_public_key,
         0, /* keycopy */
         0, /* keyfinish */
-        ecdh_simple_compute_key
+        ecdh_simple_compute_key,
+        ec_GFp_simple_blind_coordinates
     };
 
     return &ret;
@@ -352,6 +354,7 @@ int ec_GFp_simple_point_copy(EC_POINT *dest, const EC_POINT *src)
     if (!BN_copy(dest->Z, src->Z))
         return 0;
     dest->Z_is_one = src->Z_is_one;
+    dest->curve_name = src->curve_name;
 
     return 1;
 }
@@ -552,7 +555,7 @@ int ec_GFp_simple_point_get_affine_coordinates(const EC_GROUP *group,
             }
         }
     } else {
-        if (!BN_mod_inverse(Z_1, Z_, group->field, ctx)) {
+        if (!group->meth->field_inv(group, Z_1, Z_, ctx)) {
             ECerr(EC_F_EC_GFP_SIMPLE_POINT_GET_AFFINE_COORDINATES,
                   ERR_R_BN_LIB);
             goto err;
@@ -1221,7 +1224,7 @@ int ec_GFp_simple_points_make_affine(const EC_GROUP *group, size_t num,
     if (tmp == NULL || tmp_Z == NULL)
         goto err;
 
-    prod_Z = OPENSSL_malloc(num * sizeof prod_Z[0]);
+    prod_Z = OPENSSL_malloc(num * sizeof(prod_Z[0]));
     if (prod_Z == NULL)
         goto err;
     for (i = 0; i < num; i++) {
@@ -1265,7 +1268,7 @@ int ec_GFp_simple_points_make_affine(const EC_GROUP *group, size_t num,
      * points[i]->Z by its inverse.
      */
 
-    if (!BN_mod_inverse(tmp, prod_Z[num - 1], group->field, ctx)) {
+    if (!group->meth->field_inv(group, tmp, prod_Z[num - 1], ctx)) {
         ECerr(EC_F_EC_GFP_SIMPLE_POINTS_MAKE_AFFINE, ERR_R_BN_LIB);
         goto err;
     }
@@ -1367,3 +1370,101 @@ int ec_GFp_simple_field_sqr(const EC_GROUP *group, BIGNUM *r, const BIGNUM *a,
 {
     return BN_mod_sqr(r, a, group->field, ctx);
 }
+
+/*-
+ * Computes the multiplicative inverse of a in GF(p), storing the result in r.
+ * If a is zero (or equivalent), you'll get a EC_R_CANNOT_INVERT error.
+ * Since we don't have a Mont structure here, SCA hardening is with blinding.
+ */
+int ec_GFp_simple_field_inv(const EC_GROUP *group, BIGNUM *r, const BIGNUM *a,
+                            BN_CTX *ctx)
+{
+    BIGNUM *e = NULL;
+    BN_CTX *new_ctx = NULL;
+    int ret = 0;
+
+    if (ctx == NULL && (ctx = new_ctx = BN_CTX_secure_new()) == NULL)
+        return 0;
+
+    BN_CTX_start(ctx);
+    if ((e = BN_CTX_get(ctx)) == NULL)
+        goto err;
+
+    do {
+        if (!BN_rand_range(e, group->field))
+        goto err;
+    } while (BN_is_zero(e));
+
+    /* r := a * e */
+    if (!group->meth->field_mul(group, r, a, e, ctx))
+        goto err;
+    /* r := 1/(a * e) */
+    if (!BN_mod_inverse(r, r, group->field, ctx)) {
+        ECerr(EC_F_EC_GFP_SIMPLE_FIELD_INV, EC_R_CANNOT_INVERT);
+        goto err;
+    }
+    /* r := e/(a * e) = 1/a */
+    if (!group->meth->field_mul(group, r, r, e, ctx))
+        goto err;
+
+    ret = 1;
+
+ err:
+    BN_CTX_end(ctx);
+    BN_CTX_free(new_ctx);
+    return ret;
+}
+
+/*-
+ * Apply randomization of EC point projective coordinates:
+ *
+ *   (X, Y ,Z ) = (lambda^2*X, lambda^3*Y, lambda*Z)
+ *   lambda = [1,group->field)
+ *
+ */
+int ec_GFp_simple_blind_coordinates(const EC_GROUP *group, EC_POINT *p,
+                                    BN_CTX *ctx)
+{
+    int ret = 0;
+    BIGNUM *lambda = NULL;
+    BIGNUM *temp = NULL;
+
+    BN_CTX_start(ctx);
+    lambda = BN_CTX_get(ctx);
+    temp = BN_CTX_get(ctx);
+    if (temp == NULL) {
+        ECerr(EC_F_EC_GFP_SIMPLE_BLIND_COORDINATES, ERR_R_MALLOC_FAILURE);
+        goto err;
+    }
+
+    /* make sure lambda is not zero */
+    do {
+        if (!BN_rand_range(lambda, group->field)) {
+            ECerr(EC_F_EC_GFP_SIMPLE_BLIND_COORDINATES, ERR_R_BN_LIB);
+            goto err;
+        }
+    } while (BN_is_zero(lambda));
+
+    /* if field_encode defined convert between representations */
+    if (group->meth->field_encode != NULL
+        && !group->meth->field_encode(group, lambda, lambda, ctx))
+        goto err;
+    if (!group->meth->field_mul(group, p->Z, p->Z, lambda, ctx))
+        goto err;
+    if (!group->meth->field_sqr(group, temp, lambda, ctx))
+        goto err;
+    if (!group->meth->field_mul(group, p->X, p->X, temp, ctx))
+        goto err;
+    if (!group->meth->field_mul(group, temp, temp, lambda, ctx))
+        goto err;
+    if (!group->meth->field_mul(group, p->Y, p->Y, temp, ctx))
+        goto err;
+    p->Z_is_one = 0;
+
+    ret = 1;
+
+ err:
+     BN_CTX_end(ctx);
+     return ret;
+}
+

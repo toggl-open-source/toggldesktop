@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2016 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 2006-2018 The OpenSSL Project Authors. All Rights Reserved.
  *
  * Licensed under the OpenSSL license (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
@@ -773,7 +773,8 @@ static int rsa_cms_encrypt(CMS_RecipientInfo *ri)
     EVP_PKEY_CTX *pkctx = CMS_RecipientInfo_get0_pkey_ctx(ri);
     int pad_mode = RSA_PKCS1_PADDING, rv = 0, labellen;
     unsigned char *label;
-    CMS_RecipientInfo_ktri_get0_algs(ri, NULL, NULL, &alg);
+    if (CMS_RecipientInfo_ktri_get0_algs(ri, NULL, NULL, &alg) <= 0)
+        return 0;
     if (pkctx) {
         if (EVP_PKEY_CTX_get_rsa_padding(pkctx, &pad_mode) <= 0)
             return 0;

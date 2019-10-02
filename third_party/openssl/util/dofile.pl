@@ -1,5 +1,5 @@
 #! /usr/bin/env perl
-# Copyright 2016 The OpenSSL Project Authors. All Rights Reserved.
+# Copyright 2016-2018 The OpenSSL Project Authors. All Rights Reserved.
 #
 # Licensed under the OpenSSL license (the "License").  You may not use
 # this file except in compliance with the License.  You can obtain a copy
@@ -14,6 +14,7 @@
 use strict;
 use warnings;
 
+use FindBin;
 use Getopt::Std;
 
 # We actually expect to get the following hash tables from configdata:
@@ -38,8 +39,8 @@ package OpenSSL::Template;
 # a fallback in case it's not installed on the system
 use File::Basename;
 use File::Spec::Functions;
-use lib catdir(dirname(__FILE__));
-use with_fallback qw(Text::Template);
+use lib "$FindBin::Bin/perl";
+use with_fallback "Text::Template 1.46";
 
 #use parent qw/Text::Template/;
 use vars qw/@ISA/;
@@ -175,7 +176,10 @@ my $text =
 # Load the full template (combination of files) into Text::Template
 # and fill it up with our data.  Output goes directly to STDOUT
 
-my $template = OpenSSL::Template->new(TYPE => 'STRING', SOURCE => $text );
+my $template =
+    OpenSSL::Template->new(TYPE => 'STRING',
+                           SOURCE => $text,
+                           PREPEND => qq{use lib "$FindBin::Bin/perl";});
 
 sub output_reset_on {
     $template->output_reset_on();

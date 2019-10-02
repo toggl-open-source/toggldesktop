@@ -1,5 +1,5 @@
 /*
- * Copyright 1995-2016 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 1995-2018 The OpenSSL Project Authors. All Rights Reserved.
  *
  * Licensed under the OpenSSL license (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
@@ -415,7 +415,7 @@ int ssl_get_new_session(SSL *s, int session)
         ss->session_id_length = 0;
     }
 
-    if (s->sid_ctx_length > sizeof ss->sid_ctx) {
+    if (s->sid_ctx_length > sizeof(ss->sid_ctx)) {
         SSLerr(SSL_F_SSL_GET_NEW_SESSION, ERR_R_INTERNAL_ERROR);
         SSL_SESSION_free(ss);
         return 0;
@@ -734,11 +734,11 @@ static int remove_session_lock(SSL_CTX *ctx, SSL_SESSION *c, int lck)
         if (lck)
             CRYPTO_THREAD_unlock(ctx->lock);
 
-        if (ret)
-            SSL_SESSION_free(r);
-
         if (ctx->remove_session_cb != NULL)
             ctx->remove_session_cb(ctx, c);
+
+        if (ret)
+            SSL_SESSION_free(r);
     } else
         ret = 0;
     return (ret);
@@ -759,8 +759,8 @@ void SSL_SESSION_free(SSL_SESSION *ss)
 
     CRYPTO_free_ex_data(CRYPTO_EX_INDEX_SSL_SESSION, ss, &ss->ex_data);
 
-    OPENSSL_cleanse(ss->master_key, sizeof ss->master_key);
-    OPENSSL_cleanse(ss->session_id, sizeof ss->session_id);
+    OPENSSL_cleanse(ss->master_key, sizeof(ss->master_key));
+    OPENSSL_cleanse(ss->session_id, sizeof(ss->session_id));
     X509_free(ss->peer);
     sk_X509_pop_free(ss->peer_chain, X509_free);
     sk_SSL_CIPHER_free(ss->ciphers);

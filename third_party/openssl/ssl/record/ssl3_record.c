@@ -1,5 +1,5 @@
 /*
- * Copyright 1995-2016 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 1995-2018 The OpenSSL Project Authors. All Rights Reserved.
  *
  * Licensed under the OpenSSL license (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
@@ -947,7 +947,7 @@ int n_ssl3_mac(SSL *ssl, SSL3_RECORD *rec, unsigned char *md, int sending)
             || EVP_DigestUpdate(md_ctx, ssl3_pad_2, npad) <= 0
             || EVP_DigestUpdate(md_ctx, md, md_size) <= 0
             || EVP_DigestFinal_ex(md_ctx, md, &md_size_u) <= 0) {
-            EVP_MD_CTX_reset(md_ctx);
+            EVP_MD_CTX_free(md_ctx);
             return -1;
         }
         md_size = md_size_u;
@@ -988,8 +988,10 @@ int tls1_mac(SSL *ssl, SSL3_RECORD *rec, unsigned char *md, int sending)
         mac_ctx = hash;
     } else {
         hmac = EVP_MD_CTX_new();
-        if (hmac == NULL || !EVP_MD_CTX_copy(hmac, hash))
+        if (hmac == NULL || !EVP_MD_CTX_copy(hmac, hash)) {
+            EVP_MD_CTX_free(hmac);
             return -1;
+        }
         mac_ctx = hmac;
     }
 
@@ -1529,12 +1531,17 @@ int dtls1_get_record(SSL *s)
         p += 6;
 
         n2s(p, rr->length);
+        rr->read = 0;
 
-        /* Lets check version */
-        if (!s->first_packet) {
+        /*
+         * Lets check the version. We tolerate alerts that don't have the exact
+         * version number (e.g. because of protocol version errors)
+         */
+        if (!s->first_packet && rr->type != SSL3_RT_ALERT) {
             if (version != s->version) {
                 /* unexpected version, silently discard */
                 rr->length = 0;
+                rr->read = 1;
                 RECORD_LAYER_reset_packet_length(&s->rlayer);
                 goto again;
             }
@@ -1543,6 +1550,7 @@ int dtls1_get_record(SSL *s)
         if ((version & 0xff00) != (s->version & 0xff00)) {
             /* wrong version, silently discard record */
             rr->length = 0;
+            rr->read = 1;
             RECORD_LAYER_reset_packet_length(&s->rlayer);
             goto again;
         }
@@ -1550,10 +1558,10 @@ int dtls1_get_record(SSL *s)
         if (rr->length > SSL3_RT_MAX_ENCRYPTED_LENGTH) {
             /* record too long, silently discard it */
             rr->length = 0;
+            rr->read = 1;
             RECORD_LAYER_reset_packet_length(&s->rlayer);
             goto again;
         }
-
         /* now s->rlayer.rstate == SSL_ST_READ_BODY */
     }
 
@@ -1567,6 +1575,7 @@ int dtls1_get_record(SSL *s)
         /* this packet contained a partial record, dump it */
         if (n != i) {
             rr->length = 0;
+            rr->read = 1;
             RECORD_LAYER_reset_packet_length(&s->rlayer);
             goto again;
         }
@@ -1583,6 +1592,7 @@ int dtls1_get_record(SSL *s)
     bitmap = dtls1_get_bitmap(s, rr, &is_next_epoch);
     if (bitmap == NULL) {
         rr->length = 0;
+        rr->read = 1;
         RECORD_LAYER_reset_packet_length(&s->rlayer); /* dump this record */
         goto again;             /* get another record */
     }
@@ -1597,6 +1607,7 @@ int dtls1_get_record(SSL *s)
          */
         if (!dtls1_record_replay_check(s, bitmap)) {
             rr->length = 0;
+            rr->read = 1;
             RECORD_LAYER_reset_packet_length(&s->rlayer); /* dump this record */
             goto again;         /* get another record */
         }
@@ -1605,8 +1616,10 @@ int dtls1_get_record(SSL *s)
 #endif
 
     /* just read a 0 length packet */
-    if (rr->length == 0)
+    if (rr->length == 0) {
+        rr->read = 1;
         goto again;
+    }
 
     /*
      * If this record is from the next epoch (either HM or ALERT), and a
@@ -1621,12 +1634,14 @@ int dtls1_get_record(SSL *s)
                 return -1;
         }
         rr->length = 0;
+        rr->read = 1;
         RECORD_LAYER_reset_packet_length(&s->rlayer);
         goto again;
     }
 
     if (!dtls1_process_record(s, bitmap)) {
         rr->length = 0;
+        rr->read = 1;
         RECORD_LAYER_reset_packet_length(&s->rlayer); /* dump this record */
         goto again;             /* get another record */
     }
