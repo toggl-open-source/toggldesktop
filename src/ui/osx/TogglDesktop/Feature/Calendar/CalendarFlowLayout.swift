@@ -34,7 +34,7 @@ final class CalendarFlowLayout: NSCollectionViewFlowLayout {
         itemSize = CGSize(width: 31, height: 32)
         minimumLineSpacing = 20
         minimumInteritemSpacing = 2
-        sectionInset = NSEdgeInsets(top: 4, left: 4, bottom: 5, right: 5)
+        sectionInset = NSEdgeInsets(top: 4, left: 8, bottom: 5, right: 8)
         scrollDirection = .vertical
     }
 

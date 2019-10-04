@@ -10,12 +10,18 @@ import Cocoa
 
 final class DateCellViewItem: NSCollectionViewItem {
 
+    private struct Constants {
+        static let SmallSize: CGFloat = 26
+        static let BigSize: CGFloat = 32
+    }
+
     // MARK: OUTLET
 
     @IBOutlet weak var titleLbl: NSTextField!
     @IBOutlet weak var backgroundBox: NSBox!
     @IBOutlet weak var monthLbl: NSTextField!
     @IBOutlet weak var hoverView: NSBox!
+    @IBOutlet weak var backgroundBoxHeight: NSLayoutConstraint!
 
     // MARK: Variables
 
@@ -58,8 +64,10 @@ final class DateCellViewItem: NSCollectionViewItem {
         if info.isFirstDayOfMonth {
             monthLbl.isHidden = false
             monthLbl.stringValue = info.monthTitle.uppercased()
+            backgroundBoxHeight.constant = Constants.BigSize
         } else {
             monthLbl.isHidden = true
+            backgroundBoxHeight.constant = Constants.SmallSize
         }
 
         // Color for title
