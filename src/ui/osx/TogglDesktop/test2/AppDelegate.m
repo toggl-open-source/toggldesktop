@@ -13,7 +13,6 @@
 #import "AutotrackerRuleItem.h"
 #import <Bugsnag/Bugsnag.h>
 #import "ConsoleViewController.h"
-#import "CrashReporter.h"
 #import "DisplayCommand.h"
 #import "FeedbackWindowController.h"
 #import "IdleEvent.h"
@@ -137,21 +136,6 @@ void *ctx;
 
 	self.mainWindowController = [[MainWindowController alloc] initWithWindowNibName:@"MainWindowController"];
 	[self.mainWindowController.window setReleasedWhenClosed:NO];
-
-	PLCrashReporter *crashReporter = [self configuredCrashReporter];
-
-	// Check if we previously crashed
-	if ([crashReporter hasPendingCrashReport])
-	{
-		[self handleCrashReport];
-	}
-
-	// Enable the Crash Reporter
-	NSError *error;
-	if (![crashReporter enableCrashReporterAndReturnError:&error])
-	{
-		NSLog(@"Warning: Could not enable crash reporter: %@", error);
-	}
 
 	if (self.forceCrash)
 	{
@@ -1520,77 +1504,6 @@ const NSString *appName = @"osx_native_app";
 	[self.idleNotificationWindowController displayIdleEvent:idleEvent];
 }
 
-- (PLCrashReporter *)configuredCrashReporter
-{
-	PLCrashReporterConfig *config = [[PLCrashReporterConfig alloc]
-									 initWithSignalHandlerType:PLCrashReporterSignalHandlerTypeBSD
-										 symbolicationStrategy:PLCrashReporterSymbolicationStrategyAll];
-
-	return [[PLCrashReporter alloc] initWithConfiguration:config];
-}
-
-- (void)handleCrashReport
-{
-	PLCrashReporter *crashReporter = [self configuredCrashReporter];
-
-	NSError *error;
-	NSData *crashData = [crashReporter loadPendingCrashReportDataAndReturnError:&error];
-
-	if (crashData == nil)
-	{
-		NSLog(@"Could not load crash report: %@", error);
-		[crashReporter purgePendingCrashReport];
-		return;
-	}
-
-	PLCrashReport *report = [[PLCrashReport alloc] initWithData:crashData
-														  error:&error];
-	if (report == nil)
-	{
-		NSLog(@"Could not parse crash report");
-		[crashReporter purgePendingCrashReport];
-		return;
-	}
-
-	NSString *summary = [NSString stringWithFormat:@"Crashed with signal %@ (code %@)",
-						 report.signalInfo.name,
-						 report.signalInfo.code];
-
-	NSString *humanReadable = [PLCrashReportTextFormatter stringValueForCrashReport:report
-																	 withTextFormat:PLCrashReportTextFormatiOS];
-	NSLog(@"Crashed on %@", report.systemInfo.timestamp);
-	NSLog(@"Report: %@", humanReadable);
-
-	NSException *exception;
-	if (report.hasExceptionInfo)
-	{
-		exception = [NSException
-					 exceptionWithName:report.exceptionInfo.exceptionName
-								reason:report.exceptionInfo.exceptionReason
-							  userInfo:nil];
-	}
-	else
-	{
-		exception = [NSException
-					 exceptionWithName:summary
-								reason:humanReadable
-							  userInfo:nil];
-	}
-	char *str = toggl_get_update_channel(ctx);
-	NSString *channel = [NSString stringWithUTF8String:str];
-	free(str);
-
-	[Bugsnag notify:exception
-			  block:^(BugsnagCrashReport *report) {
-		 NSDictionary *data = @{
-				 @"channel": channel
-		 };
-		 [report addMetadata:data toTabWithName:@"metadata"];
-	 }];
-
-	[crashReporter purgePendingCrashReport];
-}
-
 - (void)reachabilityChanged:(NSNotification *)notice
 {
 	NetworkStatus remoteHostStatus = [self.reach currentReachabilityStatus];
@@ -1950,6 +1863,15 @@ void on_countries(TogglCountryView *first)
 	NSURL *URL = [NSURL URLWithString:URLString];
 
 	[_currentAuthorizationFlow resumeExternalUserAgentFlowWithURL:URL];
+}
+
+- (NSString *)currentChannel
+{
+	char *str = toggl_get_update_channel(ctx);
+	NSString *channel = [NSString stringWithUTF8String:str];
+
+	free(str);
+	return channel;
 }
 
 @end

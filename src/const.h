@@ -70,6 +70,7 @@
 #define kUnacceptableCertificate "Unacceptable certificate from www.toggl.com"
 #define kCannotUpgradeToWebSocketConnection "Cannot upgrade to WebSocket connection"  // NOLINT
 #define kSSLException "SSL Exception"
+#define kRateLimit "Too many requests, sync delayed by 1 minute"
 #define kCannotWriteFile "Cannot write file"
 #define kIsSuspended "is suspended"
 #define kRequestToServerFailedWithStatusCode403 "Request to server failed with status code: 403"  // NOLINT
