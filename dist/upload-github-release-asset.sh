@@ -54,7 +54,7 @@ fi
 # Validate token.
 curl -o /dev/null -sH "$AUTH" $GH_REPO || { echo "Error: Invalid repo, token or network issue!";  exit 1; }
 
-curl -d '{ "tag_name": "'$tag'", "target_commitish": "", "name": "'$tag'", "body": "This is an automatically created release for testing purposes.", "draft": false, "prerelease": true }' -H "Content-Type: application/json" -X POST -o /dev/null -sH "$AUTH" $GH_RELEASES
+curl -d '{ "tag_name": "'$tag'", "target_commitish": "", "name": "'$tag'", "body": "'$tag'", "draft": false, "prerelease": true }' -H "Content-Type: application/json" -X POST -o /dev/null -sH "$AUTH" $GH_RELEASES
 
 # Read asset tags.
 response=$(curl -sH "$AUTH" $GH_TAGS)
