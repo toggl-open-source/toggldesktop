@@ -10,12 +10,15 @@
         <customObject id="-2" userLabel="File's Owner" customClass="TimelineDashboardViewController" customModule="TogglDesktop" customModuleProvider="target">
             <connections>
                 <outlet property="collectionView" destination="hht-dC-mpO" id="9tS-ho-Ut6"/>
+                <outlet property="collectionViewContainerView" destination="DJx-ob-wM0" id="Mvz-Dl-Xx0"/>
                 <outlet property="datePickerContainerView" destination="wlf-0e-ttW" id="86r-YF-M9C"/>
                 <outlet property="emptyActivityLbl" destination="3EE-on-mJF" id="KNp-LN-kiJ"/>
                 <outlet property="emptyActivityLblPadding" destination="ly2-AY-aiO" id="mfW-cZ-gGQ"/>
                 <outlet property="emptyLbl" destination="L7J-Lq-Z7U" id="x1D-xG-9dl"/>
+                <outlet property="mainContainerView" destination="Xu6-6s-ozI" id="ZFI-ck-oSW"/>
                 <outlet property="recordSwitcher" destination="I6m-RA-gUy" id="Sef-EC-Cn6"/>
                 <outlet property="view" destination="c22-O7-iKe" id="D7F-6m-KJo"/>
+                <outlet property="zoomContainerView" destination="xXU-Yr-nTf" id="jDA-BO-CEK"/>
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>

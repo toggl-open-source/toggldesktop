@@ -23,7 +23,10 @@ final class TimelineDashboardViewController: NSViewController {
     @IBOutlet weak var emptyLbl: NSTextField!
     @IBOutlet weak var emptyActivityLbl: NSTextField!
     @IBOutlet weak var emptyActivityLblPadding: NSLayoutConstraint!
-    
+    @IBOutlet weak var zoomContainerView: NSView!
+    @IBOutlet weak var collectionViewContainerView: NSScrollView!
+    @IBOutlet weak var mainContainerView: NSView!
+
     // MARK: Variables
 
     weak var delegate: TimelineDashboardViewControllerDelegate?
@@ -75,6 +78,7 @@ final class TimelineDashboardViewController: NSViewController {
         initCommon()
         initNotifications()
         initCollectionView()
+        initTrackingArea()
     }
 
     deinit {
@@ -133,6 +137,16 @@ final class TimelineDashboardViewController: NSViewController {
         guard let previous = zoomLevel.previousLevel else { return }
         zoomLevel = previous
     }
+
+    override func mouseEntered(with event: NSEvent) {
+        super.mouseEntered(with: event)
+        zoomContainerView.animator().isHidden = false
+    }
+
+    override func mouseExited(with event: NSEvent) {
+        super.mouseExited(with: event)
+        zoomContainerView.animator().isHidden = true
+    }
 }
 
 // MARK: Private
@@ -165,6 +179,15 @@ extension TimelineDashboardViewController {
                                                selector: #selector(self.editorOnChangeNotification(_:)),
                                                name: Notification.Name(kDisplayTimeEntryEditor),
                                                object: nil)
+    }
+
+    private func initTrackingArea() {
+        let tracking = NSTrackingArea(rect: mainContainerView.bounds,
+                                      options: [.mouseEnteredAndExited, .activeInActiveApp, .inVisibleRect],
+                                      owner: mainContainerView,
+                                      userInfo: nil)
+        mainContainerView.addTrackingArea(tracking)
+        mainContainerView.updateTrackingAreas()
     }
 
     fileprivate func initCollectionView() {
