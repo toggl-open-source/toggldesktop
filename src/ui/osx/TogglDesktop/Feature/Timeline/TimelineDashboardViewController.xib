@@ -27,6 +27,57 @@
             <rect key="frame" x="0.0" y="0.0" width="369" height="526"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
+                <customView translatesAutoresizingMaskIntoConstraints="NO" id="CV9-Ue-zhq">
+                    <rect key="frame" x="0.0" y="440" width="369" height="86"/>
+                    <subviews>
+                        <box boxType="custom" borderWidth="0.0" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="sGN-8K-7IZ">
+                            <rect key="frame" x="0.0" y="0.0" width="369" height="86"/>
+                            <view key="contentView" id="fec-sY-eYm">
+                                <rect key="frame" x="0.0" y="0.0" width="369" height="86"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            </view>
+                            <color key="fillColor" name="timeline-top-view-background-color"/>
+                        </box>
+                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="oEw-Jd-lIP">
+                            <rect key="frame" x="8" y="55" width="101" height="18"/>
+                            <textFieldCell key="cell" lineBreakMode="clipping" title="Record activity" id="x0y-gM-oPn">
+                                <font key="font" metaFont="system" size="14"/>
+                                <color key="textColor" name="timeline-time-label-color"/>
+                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                            </textFieldCell>
+                        </textField>
+                        <customView translatesAutoresizingMaskIntoConstraints="NO" id="I6m-RA-gUy" customClass="OGSwitch" customModule="TogglDesktop" customModuleProvider="target">
+                            <rect key="frame" x="333" y="58" width="26" height="13"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="13" id="KZb-zk-hfP"/>
+                                <constraint firstAttribute="width" constant="26" id="hh6-kQ-Om4"/>
+                            </constraints>
+                            <connections>
+                                <action selector="recordSwitchOnChanged:" target="-2" id="yGC-CS-Z9N"/>
+                            </connections>
+                        </customView>
+                        <customView translatesAutoresizingMaskIntoConstraints="NO" id="wlf-0e-ttW">
+                            <rect key="frame" x="10" y="13" width="349" height="30"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="30" id="dza-G1-J0f"/>
+                            </constraints>
+                        </customView>
+                    </subviews>
+                    <constraints>
+                        <constraint firstItem="wlf-0e-ttW" firstAttribute="top" secondItem="oEw-Jd-lIP" secondAttribute="bottom" constant="12" id="0rH-e0-NUk"/>
+                        <constraint firstAttribute="trailing" secondItem="sGN-8K-7IZ" secondAttribute="trailing" id="8d7-zq-V41"/>
+                        <constraint firstItem="sGN-8K-7IZ" firstAttribute="leading" secondItem="CV9-Ue-zhq" secondAttribute="leading" id="GTe-dy-kVB"/>
+                        <constraint firstItem="I6m-RA-gUy" firstAttribute="centerY" secondItem="oEw-Jd-lIP" secondAttribute="centerY" id="aWn-ju-3Sc"/>
+                        <constraint firstItem="sGN-8K-7IZ" firstAttribute="top" secondItem="CV9-Ue-zhq" secondAttribute="top" id="eaq-AF-dtf"/>
+                        <constraint firstItem="oEw-Jd-lIP" firstAttribute="top" secondItem="CV9-Ue-zhq" secondAttribute="top" constant="13" id="igE-d4-QVd"/>
+                        <constraint firstAttribute="trailing" secondItem="wlf-0e-ttW" secondAttribute="trailing" constant="10" id="mPL-xl-8j9"/>
+                        <constraint firstAttribute="trailing" secondItem="I6m-RA-gUy" secondAttribute="trailing" constant="10" id="maq-iT-Fcc"/>
+                        <constraint firstItem="oEw-Jd-lIP" firstAttribute="leading" secondItem="CV9-Ue-zhq" secondAttribute="leading" constant="10" id="t9Q-Bm-qdd"/>
+                        <constraint firstAttribute="height" constant="86" id="wv3-y8-Rz9"/>
+                        <constraint firstAttribute="bottom" secondItem="sGN-8K-7IZ" secondAttribute="bottom" id="zqM-he-CUS"/>
+                        <constraint firstItem="wlf-0e-ttW" firstAttribute="leading" secondItem="CV9-Ue-zhq" secondAttribute="leading" constant="10" id="zxE-BA-Fdk"/>
+                    </constraints>
+                </customView>
                 <customView translatesAutoresizingMaskIntoConstraints="NO" id="Xu6-6s-ozI">
                     <rect key="frame" x="0.0" y="0.0" width="369" height="440"/>
                     <subviews>
@@ -174,57 +225,6 @@
                         <constraint firstAttribute="trailing" secondItem="DJx-ob-wM0" secondAttribute="trailing" id="kpN-Z8-B2J"/>
                         <constraint firstItem="3EE-on-mJF" firstAttribute="leading" secondItem="DJx-ob-wM0" secondAttribute="trailing" constant="-40" id="ly2-AY-aiO"/>
                         <constraint firstItem="DJx-ob-wM0" firstAttribute="leading" secondItem="Xu6-6s-ozI" secondAttribute="leading" id="nER-8p-YqV"/>
-                    </constraints>
-                </customView>
-                <customView translatesAutoresizingMaskIntoConstraints="NO" id="CV9-Ue-zhq">
-                    <rect key="frame" x="0.0" y="440" width="369" height="86"/>
-                    <subviews>
-                        <box boxType="custom" borderWidth="0.0" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="sGN-8K-7IZ">
-                            <rect key="frame" x="0.0" y="0.0" width="369" height="86"/>
-                            <view key="contentView" id="fec-sY-eYm">
-                                <rect key="frame" x="0.0" y="0.0" width="369" height="86"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                            </view>
-                            <color key="fillColor" name="timeline-top-view-background-color"/>
-                        </box>
-                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="oEw-Jd-lIP">
-                            <rect key="frame" x="8" y="55" width="101" height="18"/>
-                            <textFieldCell key="cell" lineBreakMode="clipping" title="Record activity" id="x0y-gM-oPn">
-                                <font key="font" metaFont="system" size="14"/>
-                                <color key="textColor" name="timeline-time-label-color"/>
-                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                            </textFieldCell>
-                        </textField>
-                        <customView translatesAutoresizingMaskIntoConstraints="NO" id="I6m-RA-gUy" customClass="OGSwitch" customModule="TogglDesktop" customModuleProvider="target">
-                            <rect key="frame" x="333" y="58" width="26" height="13"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="13" id="KZb-zk-hfP"/>
-                                <constraint firstAttribute="width" constant="26" id="hh6-kQ-Om4"/>
-                            </constraints>
-                            <connections>
-                                <action selector="recordSwitchOnChanged:" target="-2" id="yGC-CS-Z9N"/>
-                            </connections>
-                        </customView>
-                        <customView translatesAutoresizingMaskIntoConstraints="NO" id="wlf-0e-ttW">
-                            <rect key="frame" x="10" y="13" width="349" height="30"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="30" id="dza-G1-J0f"/>
-                            </constraints>
-                        </customView>
-                    </subviews>
-                    <constraints>
-                        <constraint firstItem="wlf-0e-ttW" firstAttribute="top" secondItem="oEw-Jd-lIP" secondAttribute="bottom" constant="12" id="0rH-e0-NUk"/>
-                        <constraint firstAttribute="trailing" secondItem="sGN-8K-7IZ" secondAttribute="trailing" id="8d7-zq-V41"/>
-                        <constraint firstItem="sGN-8K-7IZ" firstAttribute="leading" secondItem="CV9-Ue-zhq" secondAttribute="leading" id="GTe-dy-kVB"/>
-                        <constraint firstItem="I6m-RA-gUy" firstAttribute="centerY" secondItem="oEw-Jd-lIP" secondAttribute="centerY" id="aWn-ju-3Sc"/>
-                        <constraint firstItem="sGN-8K-7IZ" firstAttribute="top" secondItem="CV9-Ue-zhq" secondAttribute="top" id="eaq-AF-dtf"/>
-                        <constraint firstItem="oEw-Jd-lIP" firstAttribute="top" secondItem="CV9-Ue-zhq" secondAttribute="top" constant="13" id="igE-d4-QVd"/>
-                        <constraint firstAttribute="trailing" secondItem="wlf-0e-ttW" secondAttribute="trailing" constant="10" id="mPL-xl-8j9"/>
-                        <constraint firstAttribute="trailing" secondItem="I6m-RA-gUy" secondAttribute="trailing" constant="10" id="maq-iT-Fcc"/>
-                        <constraint firstItem="oEw-Jd-lIP" firstAttribute="leading" secondItem="CV9-Ue-zhq" secondAttribute="leading" constant="10" id="t9Q-Bm-qdd"/>
-                        <constraint firstAttribute="height" constant="86" id="wv3-y8-Rz9"/>
-                        <constraint firstAttribute="bottom" secondItem="sGN-8K-7IZ" secondAttribute="bottom" id="zqM-he-CUS"/>
-                        <constraint firstItem="wlf-0e-ttW" firstAttribute="leading" secondItem="CV9-Ue-zhq" secondAttribute="leading" constant="10" id="zxE-BA-Fdk"/>
                     </constraints>
                 </customView>
             </subviews>

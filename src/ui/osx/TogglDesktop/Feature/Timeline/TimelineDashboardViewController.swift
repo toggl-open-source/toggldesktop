@@ -187,7 +187,6 @@ extension TimelineDashboardViewController {
                                       owner: mainContainerView,
                                       userInfo: nil)
         mainContainerView.addTrackingArea(tracking)
-        mainContainerView.updateTrackingAreas()
     }
 
     fileprivate func initCollectionView() {
