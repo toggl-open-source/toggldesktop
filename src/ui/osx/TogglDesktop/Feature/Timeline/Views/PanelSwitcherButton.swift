@@ -13,13 +13,14 @@ final class PanelSwitcherButton: FlatButton {
     // MARK: Variables
 
     private var trackingArea: NSTrackingArea?
-    private lazy var backgroundColor: NSColor = {
+    private lazy var normalColor: NSColor = {
         if #available(OSX 10.13, *) {
-            return NSColor(named: NSColor.Name("white-background-hover-color"))!
+            return NSColor(named: NSColor.Name("tab-view-text-color"))!
         } else {
-            return ConvertHexColor.hexCode(toNSColor: "#F8F8F8")
+            return ConvertHexColor.hexCode(toNSColor: "#ACACAC")
         }
     }()
+    private let selectedColor = NSColor.labelColor
 
     // MARK: View Cycle
 
@@ -32,13 +33,13 @@ final class PanelSwitcherButton: FlatButton {
 
     override func mouseEntered(with event: NSEvent) {
         super.mouseEntered(with: event)
-        bgColor = backgroundColor
+        titleColor = selectedColor
         setNeedsDisplay()
     }
 
     override func mouseExited(with event: NSEvent) {
         super.mouseExited(with: event)
-        bgColor = nil
+        titleColor = normalColor
         setNeedsDisplay()
     }
 
