@@ -65,7 +65,7 @@ jobs:
         EVENT_TYPE=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref_type")
         if [[ "$EVENT_TYPE" != "tag" ]]; then exit 0; fi
         TAG_NAME=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref")
-        ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} owner=toggl repo=toggldesktop tag="$TAG_NAME" filename="toggldesktop_x86_64.tar.gz"
+        ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} owner=toggl repo=toggldesktop tag="$TAG_NAME" filename="toggldesktop_x86_64.tar.gz" renameto="toggldesktop_linux_${TAG_NAME/v/}_x86_64.tar.gz"
 
   linux-ubuntu1804:
     runs-on: ubuntu-18.04
@@ -96,7 +96,7 @@ jobs:
         EVENT_TYPE=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref_type")
         if [[ "$EVENT_TYPE" != "tag" ]]; then exit 0; fi
         TAG_NAME=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref")
-        ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} owner=toggl repo=toggldesktop tag="$TAG_NAME" filename="toggldesktop_${TAG_NAME/v/}_amd64.deb"
+        ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} owner=toggl repo=toggldesktop tag="$TAG_NAME" filename="dist/toggldesktop_${TAG_NAME/v/}_amd64.deb"
 
   linux-flatpak-kde:
     runs-on: ubuntu-18.04
@@ -127,7 +127,7 @@ jobs:
         EVENT_TYPE=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref_type")
         if [[ "$EVENT_TYPE" != "tag" ]]; then exit 0; fi
         TAG_NAME=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref")
-        ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} owner=toggl repo=toggldesktop tag="$TAG_NAME" filename="com.toggl.TogglDesktop.flatpak"
+        ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} owner=toggl repo=toggldesktop tag="$TAG_NAME" filename="com.toggl.TogglDesktop.flatpak" renameto="com.toggl.TogglDesktop-${TAG_NAME/v/}.flatpak"
 
   windows-32bit:
     runs-on: windows-2019
@@ -175,7 +175,7 @@ jobs:
         EVENT_TYPE=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref_type")
         if [[ "$EVENT_TYPE" != "tag" ]]; then exit 0; fi
         TAG_NAME=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref")
-        ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} owner=toggl repo=toggldesktop tag="$TAG_NAME" filename="dist/windows/TogglDesktopInstaller.exe"
+        ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} owner=toggl repo=toggldesktop tag="$TAG_NAME" filename="dist/windows/TogglDesktopInstaller.exe" renameto="TogglDesktopInstaller-${TAG_NAME/v/}.exe"
       shell: bash
 
   windows-64bit:
@@ -224,7 +224,7 @@ jobs:
         EVENT_TYPE=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref_type")
         if [[ "$EVENT_TYPE" != "tag" ]]; then exit 0; fi
         TAG_NAME=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref")
-        ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} owner=toggl repo=toggldesktop tag="$TAG_NAME" filename="dist/windows/TogglDesktopInstaller-x64.exe"
+        ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} owner=toggl repo=toggldesktop tag="$TAG_NAME" filename="dist/windows/TogglDesktopInstaller-x64.exe" renameto="TogglDesktopInstaller-${TAG_NAME/v/}-x64.exe"
       shell: bash
 
   windows-store:
