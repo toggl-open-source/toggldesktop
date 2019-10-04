@@ -1,10 +1,17 @@
 name: Build
 
-on: [push, create]
+on:
+  push:
+    branches:
+      - '**'
+  create:
+    tags:
+      - '**'
 
 jobs:
   linux-basic:
     runs-on: ubuntu-latest
+    if: github.event_name != 'create'
     steps:
     - uses: actions/checkout@v1
       with:
@@ -31,6 +38,7 @@ jobs:
 
   linux-tarball:
     runs-on: ubuntu-latest
+    if: github.event_name == 'create'
     steps:
     - uses: actions/checkout@v1
       with:
@@ -53,7 +61,6 @@ jobs:
         export CMAKE_PREFIX_PATH="${PWD}/Qt/5.12.4/gcc_64/lib/cmake/"
         bash ./dist/linux/package.sh compose
     - name: Upload to GitHub
-      if: github.event_name == 'create'
       run: |
         EVENT_TYPE=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref_type")
         if [[ "$EVENT_TYPE" != "tag" ]]; then exit 0; fi
