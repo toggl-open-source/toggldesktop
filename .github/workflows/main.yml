@@ -29,6 +29,37 @@ jobs:
         TAG_NAME=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref")
         ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} owner=toggl repo=toggldesktop tag="$TAG_NAME" filename="toggldesktop_x86_64.tar.gz"
 
+  linux-tarball:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+      with:
+        fetch-depth: 1
+    - name: Install dependencies
+      run: |
+        sudo apt update
+        sudo apt install libxss1 libgstreamer-plugins-base1.0-0 libgstreamer1.0-0
+        sudo apt install patchelf binutils cmake pkg-config libssl-dev libxss-dev libxmu-dev
+        sudo apt install dbus libfreetype6 fontconfig libx11-6 libx11-xcb1 libgl1-mesa-dev libnss3 libasound2 libxcomposite1 libxcursor1 libxi6 libxtst6 wget
+    - name: Fetch and install binary Qt
+      run: |
+        bash ./dist/linux/install-qt.sh 5.12.4
+    - name: Build the Linux binary
+      run: |
+        export CMAKE_PREFIX_PATH="${PWD}/Qt/5.12.4/gcc_64/lib/cmake/"
+        bash ./dist/linux/package.sh build
+    - name: Package the binaries, create tarball
+      run: |
+        export CMAKE_PREFIX_PATH="${PWD}/Qt/5.12.4/gcc_64/lib/cmake/"
+        bash ./dist/linux/package.sh compose
+    - name: Upload to GitHub
+      if: github.event_name == 'create'
+      run: |
+        EVENT_TYPE=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref_type")
+        if [[ "$EVENT_TYPE" != "tag" ]]; then exit 0; fi
+        TAG_NAME=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref")
+        ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} owner=toggl repo=toggldesktop tag="$TAG_NAME" filename="toggldesktop_x86_64.tar.gz"
+
   linux-ubuntu1804:
     runs-on: ubuntu-18.04
     if: github.event_name == 'create'
