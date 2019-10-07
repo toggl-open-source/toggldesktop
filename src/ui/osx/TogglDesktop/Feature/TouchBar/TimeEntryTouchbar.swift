@@ -13,7 +13,16 @@ import Foundation
 final class TimeEntryTouchBar: NSObject {
 
     static let shared = TimeEntryTouchBar()
-    
+
+    // MARK: OUTLET
+
+    private lazy var startButton: NSButton = {
+        let btn = NSButton(title: "Start", target: self, action: #selector(self.startBtnOnTap(_:)))
+        btn.title = "Start"
+        btn.alternateTitle = "Stop"
+        return btn
+    }()
+
     // MARK: Variables
 
     lazy var touchBar = NSTouchBar()
@@ -24,6 +33,7 @@ final class TimeEntryTouchBar: NSObject {
         super.init()
         initCommon()
         setup()
+        initNotification()
     }
 }
 
@@ -48,7 +58,10 @@ extension TimeEntryTouchBar {
     }
 
     @objc private func stateButtonTimerBarChangeNotification(_ noti: Notification) {
-        
+        guard let state = noti.object as? NSButton.StateValue else {
+            return
+        }
+        startButton.state = state
     }
 }
 
@@ -71,8 +84,7 @@ extension TimeEntryTouchBar: NSTouchBarDelegate {
             return item
         case NSTouchBarItem.Identifier.startStopItem:
             let item = NSCustomTouchBarItem(identifier: identifier)
-            let button = NSButton(title: "Start", target: nil, action: nil)
-            item.view = button
+            item.view = startButton
             return item
         default:
             return nil
@@ -91,4 +103,14 @@ extension NSTouchBarItem.Identifier {
     static let timeEntryItem = NSTouchBarItem.Identifier("com.toggl.toggldesktop.timeentrytouchbar.timeentryitems")
     static let runningTimeEntry = NSTouchBarItem.Identifier("com.toggl.toggldesktop.timeentrytouchbar.runningtimeentry")
     static let startStopItem = NSTouchBarItem.Identifier("com.toggl.toggldesktop.timeentrytouchbar.startstopbutton")
+}
+
+// MARK: Private
+
+@available(OSX 10.12.2, *)
+extension TimeEntryTouchBar {
+
+    @objc fileprivate func startBtnOnTap(_ sender: NSButton) {
+
+    }
 }
