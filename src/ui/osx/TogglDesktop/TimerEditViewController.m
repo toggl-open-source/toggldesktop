@@ -31,6 +31,9 @@ typedef enum : NSUInteger
 	DisplayModeInput,
 } DisplayMode;
 
+static void *XXContext = &XXContext;
+static NSString *kStateKey = @"state";
+
 @interface TimerEditViewController () <ClickableImageViewDelegate>
 @property (weak) IBOutlet NSBoxClickable *manualBox;
 @property (weak) IBOutlet NSBoxClickable *mainBox;
@@ -126,11 +129,13 @@ NSString *kInactiveTimerColor = @"#999999";
 	[super viewDidLoad];
 
 	[self initCommon];
+	[self initKVO];
 }
 
 - (void)dealloc
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[self.startButton removeObserver:self forKeyPath:kStateKey];
 }
 
 - (void)initCommon
@@ -146,6 +151,14 @@ NSString *kInactiveTimerColor = @"#999999";
 
 	self.descriptionLabel.delegate = self;
 	self.tagFlag.delegate = self;
+}
+
+- (void)initKVO
+{
+	[self.startButton addObserver:self
+					   forKeyPath:kStateKey
+						  options:NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew
+						  context:XXContext];
 }
 
 - (void)viewDidAppear
@@ -758,6 +771,19 @@ NSString *kInactiveTimerColor = @"#999999";
 	self.billableFlag.hidden = YES;
 	self.cancelBtn.hidden = YES;
 	[self renderProjectLabelWithViewItem:nil];
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+	if (context == XXContext)
+	{
+		id newValue = change[NSKeyValueChangeNewKey];
+		[[NSNotificationCenter defaultCenter] postNotificationName:kStartButtonStateChange object:newValue];
+	}
+	else
+	{
+		[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+	}
 }
 
 @end

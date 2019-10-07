@@ -39,6 +39,17 @@ extension TimeEntryTouchBar {
         touchBar.customizationIdentifier = .timeEntry
         touchBar.defaultItemIdentifiers = [.timeEntryItem, .flexibleSpace, .runningTimeEntry, .startStopItem]
     }
+
+    fileprivate func initNotification() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(self.stateButtonTimerBarChangeNotification(_:)),
+                                               name: NSNotification.Name(kStartButtonStateChange),
+                                               object: nil)
+    }
+
+    @objc private func stateButtonTimerBarChangeNotification(_ noti: Notification) {
+        
+    }
 }
 
 // MARK: NSTouchBarDelegate
