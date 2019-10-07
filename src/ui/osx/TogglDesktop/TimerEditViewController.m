@@ -777,8 +777,8 @@ NSString *kInactiveTimerColor = @"#999999";
 {
 	if (context == XXContext)
 	{
-		id newValue = change[NSKeyValueChangeNewKey];
-		[[NSNotificationCenter defaultCenter] postNotificationName:kStartButtonStateChange object:newValue];
+		[[NSNotificationCenter defaultCenter] postNotificationName:kStartButtonStateChange
+															object:[NSNumber numberWithInteger:self.startButton.state]];
 	}
 	else
 	{
