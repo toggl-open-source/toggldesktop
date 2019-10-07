@@ -283,6 +283,14 @@ extension TimelineDashboardViewController: DatePickerViewDelegate {
 
 extension TimelineDashboardViewController: TimelineDatasourceDelegate {
 
+    func shouldDismissActivityHover(in view: NSView, activity: TimelineActivity) {
+        activityHoverPopover.close()
+    }
+
+    func shouldDismissTimeEntryHover(in view: NSView, timeEntry: TimelineTimeEntry) {
+        timeEntryHoverPopover.close()
+    }
+
     func shouldPresentTimeEntryHover(in view: NSView, timeEntry: TimelineTimeEntry) {
         guard !editorPopover.isShown else { return }
         timeEntryHoverPopover.show(relativeTo: view.bounds, of: view, preferredEdge: .maxX)
