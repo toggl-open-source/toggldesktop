@@ -140,12 +140,12 @@ final class TimelineDashboardViewController: NSViewController {
 
     override func mouseEntered(with event: NSEvent) {
         super.mouseEntered(with: event)
-        zoomContainerView.animator().isHidden = false
+        zoomContainerView.isHidden = false
     }
 
     override func mouseExited(with event: NSEvent) {
         super.mouseExited(with: event)
-        zoomContainerView.animator().isHidden = true
+        zoomContainerView.isHidden = true
     }
 }
 
@@ -183,7 +183,7 @@ extension TimelineDashboardViewController {
 
     private func initTrackingArea() {
         let tracking = NSTrackingArea(rect: mainContainerView.bounds,
-                                      options: [.mouseEnteredAndExited, .activeInActiveApp, .inVisibleRect],
+                                      options: [.mouseEnteredAndExited, .activeAlways, .inVisibleRect],
                                       owner: mainContainerView,
                                       userInfo: nil)
         mainContainerView.addTrackingArea(tracking)

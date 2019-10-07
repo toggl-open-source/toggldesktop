@@ -38,12 +38,10 @@ class TimelineBaseCell: NSCollectionViewItem {
     }
 
     override func mouseEntered(with event: NSEvent) {
-        super.mouseEntered(with: event)
         mouseDelegate?.timelineCellMouseDidEntered(self)
     }
 
     override func mouseExited(with event: NSEvent) {
-        super.mouseExited(with: event)
         mouseDelegate?.timelineCellMouseDidExited(self)
     }
 
