@@ -205,7 +205,7 @@
                             </textFieldCell>
                         </textField>
                         <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="3EE-on-mJF">
-                            <rect key="frame" x="327" y="267" width="252" height="17"/>
+                            <rect key="frame" x="327" y="287" width="252" height="17"/>
                             <textFieldCell key="cell" alignment="center" title="Turn on activity recording to see results." id="PUb-OL-l5z">
                                 <font key="font" metaFont="system"/>
                                 <color key="textColor" name="timeline-time-label-color"/>
@@ -219,9 +219,9 @@
                         <constraint firstItem="oFH-aL-e6h" firstAttribute="top" secondItem="Xu6-6s-ozI" secondAttribute="top" id="8La-EB-bST"/>
                         <constraint firstItem="L7J-Lq-Z7U" firstAttribute="centerY" secondItem="DJx-ob-wM0" secondAttribute="centerY" id="8sZ-ui-KCW"/>
                         <constraint firstAttribute="bottom" secondItem="DJx-ob-wM0" secondAttribute="bottom" id="Gm3-VA-gjl"/>
+                        <constraint firstItem="3EE-on-mJF" firstAttribute="centerY" secondItem="DJx-ob-wM0" secondAttribute="centerY" constant="-90" id="NHR-TW-1a4"/>
                         <constraint firstAttribute="trailing" secondItem="oFH-aL-e6h" secondAttribute="trailing" id="ayb-sU-fX8"/>
                         <constraint firstItem="oFH-aL-e6h" firstAttribute="leading" secondItem="Xu6-6s-ozI" secondAttribute="leading" id="bTG-wc-ODY"/>
-                        <constraint firstItem="3EE-on-mJF" firstAttribute="centerY" secondItem="Xu6-6s-ozI" secondAttribute="centerY" multiplier="0.75" id="e92-LV-o1z"/>
                         <constraint firstAttribute="trailing" secondItem="DJx-ob-wM0" secondAttribute="trailing" id="kpN-Z8-B2J"/>
                         <constraint firstItem="3EE-on-mJF" firstAttribute="leading" secondItem="DJx-ob-wM0" secondAttribute="trailing" constant="-40" id="ly2-AY-aiO"/>
                         <constraint firstItem="DJx-ob-wM0" firstAttribute="leading" secondItem="Xu6-6s-ozI" secondAttribute="leading" id="nER-8p-YqV"/>
