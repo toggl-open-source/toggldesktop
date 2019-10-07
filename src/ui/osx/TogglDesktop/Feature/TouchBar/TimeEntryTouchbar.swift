@@ -18,8 +18,10 @@ final class TimeEntryTouchBar: NSObject {
 
     private lazy var startButton: NSButton = {
         let btn = NSButton(title: "Start", target: self, action: #selector(self.startBtnOnTap(_:)))
-        btn.title = "Start"
-        btn.alternateTitle = "Stop"
+        btn.image = NSImage(named: NSImage.touchBarPlayTemplateName)
+        btn.alternateImage = NSImage(named: NSImage.touchBarRecordStopTemplateName)
+        btn.imagePosition = .imageOnly
+        btn.setButtonType(.toggle)
         return btn
     }()
 
@@ -58,10 +60,10 @@ extension TimeEntryTouchBar {
     }
 
     @objc private func stateButtonTimerBarChangeNotification(_ noti: Notification) {
-        guard let state = noti.object as? NSButton.StateValue else {
+        guard let value = noti.object as? NSNumber else {
             return
         }
-        startButton.state = state
+        startButton.state = NSControl.StateValue(rawValue: value.intValue)
     }
 }
 
