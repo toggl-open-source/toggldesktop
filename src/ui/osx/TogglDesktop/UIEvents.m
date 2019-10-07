@@ -58,3 +58,5 @@ const char *kFocusedFieldNameDuration = "duration";
 const char *kFocusedFieldNameDescription = "description";
 const char *kFocusedFieldNameProject = "project";
 const char *kFocusedFieldNameTag = "tag";
+
+NSString *const kStartButtonStateChange = @"kStartButtonStateChange";

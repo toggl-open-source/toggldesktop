@@ -60,3 +60,5 @@ const char *kFocusedFieldNameDuration;
 const char *kFocusedFieldNameDescription;
 const char *kFocusedFieldNameProject;
 const char *kFocusedFieldNameTag;
+
+extern NSString *const kStartButtonStateChange;
