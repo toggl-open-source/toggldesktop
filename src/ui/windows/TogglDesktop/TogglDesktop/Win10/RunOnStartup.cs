@@ -1,10 +1,10 @@
-﻿using System;
+﻿#if MS_STORE
+using System;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 
 namespace TogglDesktop.Win10
 {
-#if MS_STORE
     public static class RunOnStartup
     {
         /// <returns>
@@ -72,5 +72,6 @@ namespace TogglDesktop.Win10
 
         private static async Task<StartupTask> GetStartupTask() => await StartupTask.GetAsync("TogglDesktopStartupTask");
     }
-#endif
+
 }
+#endif

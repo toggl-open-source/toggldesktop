@@ -9,8 +9,9 @@ using System.Windows.Input;
 using TogglDesktop.AutoCompletion;
 using TogglDesktop.AutoCompletion.Implementation;
 using TogglDesktop.Diagnostics;
+#if MS_STORE
 using TogglDesktop.Win10;
-
+#endif
 namespace TogglDesktop
 {
     partial class PreferencesWindow
