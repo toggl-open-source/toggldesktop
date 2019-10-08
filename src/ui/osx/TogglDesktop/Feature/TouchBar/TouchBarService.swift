@@ -1,5 +1,5 @@
 //
-//  TimeEntryTouchbar.swift
+//  TouchBarService.swift
 //  TogglDesktop
 //
 //  Created by Nghia Tran on 10/1/19.
@@ -8,11 +8,16 @@
 
 import Foundation
 
+@objc protocol TouchBarServiceDelegate: class {
+
+    func touchBarServiceStartTimeEntryOnTap()
+}
+
 @available(OSX 10.12.2, *)
 @objcMembers
-final class TimeEntryTouchBar: NSObject {
+final class TouchBarService: NSObject {
 
-    static let shared = TimeEntryTouchBar()
+    static let shared = TouchBarService()
 
     // MARK: OUTLET
 
@@ -28,6 +33,7 @@ final class TimeEntryTouchBar: NSObject {
     // MARK: Variables
 
     lazy var touchBar = NSTouchBar()
+    weak var delegate: TouchBarServiceDelegate?
 
     // MARK: Init
 
@@ -39,8 +45,10 @@ final class TimeEntryTouchBar: NSObject {
     }
 }
 
+// MARK: Private
+
 @available(OSX 10.12.2, *)
-extension TimeEntryTouchBar {
+extension TouchBarService {
 
     fileprivate func initCommon() {
         NSApplication.shared.isAutomaticCustomizeTouchBarMenuItemEnabled = true
@@ -70,7 +78,7 @@ extension TimeEntryTouchBar {
 // MARK: NSTouchBarDelegate
 
 @available(OSX 10.12.2, *)
-extension TimeEntryTouchBar: NSTouchBarDelegate {
+extension TouchBarService: NSTouchBarDelegate {
 
     func touchBar(_ touchBar: NSTouchBar, makeItemForIdentifier identifier: NSTouchBarItem.Identifier) -> NSTouchBarItem? {
         switch identifier {
@@ -94,25 +102,12 @@ extension TimeEntryTouchBar: NSTouchBarDelegate {
     }
 }
 
-@available(OSX 10.12.2, *)
-extension NSTouchBar.CustomizationIdentifier {
-    static let timeEntry = NSTouchBar.CustomizationIdentifier("com.toggl.toggldesktop.timeentrytouchbar")
-}
-
-@available(OSX 10.12.2, *)
-extension NSTouchBarItem.Identifier {
-
-    static let timeEntryItem = NSTouchBarItem.Identifier("com.toggl.toggldesktop.timeentrytouchbar.timeentryitems")
-    static let runningTimeEntry = NSTouchBarItem.Identifier("com.toggl.toggldesktop.timeentrytouchbar.runningtimeentry")
-    static let startStopItem = NSTouchBarItem.Identifier("com.toggl.toggldesktop.timeentrytouchbar.startstopbutton")
-}
-
 // MARK: Private
 
 @available(OSX 10.12.2, *)
-extension TimeEntryTouchBar {
+extension TouchBarService {
 
     @objc fileprivate func startBtnOnTap(_ sender: NSButton) {
-
+        delegate?.touchBarServiceStartTimeEntryOnTap()
     }
 }

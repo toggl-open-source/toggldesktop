@@ -16,6 +16,7 @@
 @property (strong, nonatomic) NSArray *projectComboConstraint;
 @property (strong, nonatomic) NSArray *projectLabelConstraint;
 
+- (IBAction)startButtonClicked:(id)sender;
 - (void)timerFired:(NSTimer *)timer;
 - (void)fillEntryFromAutoComplete:(AutocompleteItem *)item;
 - (void)focusTimer;

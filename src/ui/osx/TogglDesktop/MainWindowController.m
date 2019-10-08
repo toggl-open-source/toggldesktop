@@ -18,7 +18,7 @@
 #import "TogglDesktop-Swift.h"
 #import "TimerEditViewController.h"
 
-@interface MainWindowController ()
+@interface MainWindowController () <TouchBarServiceDelegate>
 @property (weak) IBOutlet NSView *contentView;
 @property (weak) IBOutlet NSView *mainView;
 @property (nonatomic, strong) LoginViewController *loginViewController;
@@ -87,6 +87,14 @@ extern void *ctx;
 	// Error View
 	[self initErrorView];
 	[self setInitialWindowSizeIfNeed];
+
+	// Touch bar
+	[self initTouchBar];
+}
+
+- (void)initTouchBar
+{
+	[TouchBarService shared].delegate = self;
 }
 
 - (void)initErrorView {
@@ -285,9 +293,16 @@ extern void *ctx;
 	}
 }
 
+#pragma mark - Touch Bar
+
 - (NSTouchBar *)makeTouchBar
 {
-	return [[TimeEntryTouchBar shared] touchBar];
+	return [[TouchBarService shared] touchBar];
+}
+
+- (void)touchBarServiceStartTimeEntryOnTap
+{
+	[self.timeEntryListViewController.timerEditViewController startButtonClicked:self];
 }
 
 @end
