@@ -52,8 +52,10 @@ final class TouchBarService: NSObject {
         view.delegate = self
         view.dataSource = self
         view.mode = NSScrubber.Mode.free
-//        view.itemAlignment = NSScrubber.Alignment.leading
         view.register(TimeEntryScrubberItem.self, forItemIdentifier: Constants.TimeEntryIdentifer)
+        let layout = NSScrubberFlowLayout()
+        layout.itemSize = CGSize(width: 200, height: 30)
+        view.scrubberLayout = layout
         return view
     }()
 
@@ -128,17 +130,16 @@ extension TouchBarService: NSTouchBarDelegate {
         switch identifier {
         case NSTouchBarItem.Identifier.timeEntryItem:
             let item = NSCustomTouchBarItem(identifier: identifier)
-            item.visibilityPriority = .high
             item.view = scrubberView
             return item
         case NSTouchBarItem.Identifier.runningTimeEntry:
             let item = NSCustomTouchBarItem(identifier: identifier)
-//            item.visibilityPriority = .high
+            item.visibilityPriority = .high
             item.view = runningTimeEntryBtn
             return item
         case NSTouchBarItem.Identifier.startStopItem:
             let item = NSCustomTouchBarItem(identifier: identifier)
-//            item.visibilityPriority = .high
+            item.visibilityPriority = .high
             item.view = startButton
             return item
         default:
