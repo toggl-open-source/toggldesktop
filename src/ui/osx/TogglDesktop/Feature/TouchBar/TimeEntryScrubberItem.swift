@@ -9,11 +9,23 @@
 import Cocoa
 
 @available(OSX 10.12.2, *)
-final class TimeEntryScrubberItem: NSScrubberTextItemView {
+final class TimeEntryScrubberItem: NSScrubberItemView {
 
+    lazy var titleBtn = NSButton(title: "", target: nil, action: nil)
+    override func awakeFromNib() {
+        super.awakeFromNib()
+
+        if titleBtn.superview == nil {
+            titleBtn.translatesAutoresizingMaskIntoConstraints = false
+            addSubview(titleBtn)
+            titleBtn.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+            titleBtn.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        }
+    }
     // MARK: Public
 
     func config(_ item: TimeEntryViewItem) {
-        title = item.touchBarTitle
+        titleBtn.title = item.touchBarTitle
+        titleBtn.setTextColor(NSColor.white)
     }
 }
