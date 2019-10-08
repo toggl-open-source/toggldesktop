@@ -102,24 +102,40 @@ void LoginWidget::on_login_clicked() {
 }
 
 void LoginWidget::on_googleLogin_linkActivated(const QString &link) {
-    Q_UNUSED(link);
+    Q_UNUSED(link)
     oauth2->startLogin(true);
 }
 
-void LoginWidget::loginDone() {
-    TogglApi::instance->googleLogin(oauth2->accessToken());
+void LoginWidget::on_googleSignup_linkActivated(const QString &link) {
+    Q_UNUSED(link)
+    if (validateFields(true, true)) {
+        oauth2->startLogin(true);
+    }
 }
 
-bool LoginWidget::validateFields(const bool signup) {
-    if (ui->email->text().isEmpty()) {
-        ui->email->setFocus();
-        TogglApi::instance->displayError(QString("Please enter valid email address"), true);
-        return false;
+void LoginWidget::loginDone() {
+    if (signupVisible) {
+        TogglApi::instance->googleSignup(oauth2->accessToken(), selectedCountryId);
     }
-    if (ui->password->text().isEmpty()) {
-        ui->password->setFocus();
-        TogglApi::instance->displayError(QString("A password is required"), true);
-        return false;
+    else {
+        TogglApi::instance->googleLogin(oauth2->accessToken());
+    }
+}
+
+bool LoginWidget::validateFields(bool signup, bool google) {
+    if (google)
+        signup = true;
+    if (!google) {
+        if (ui->email->text().isEmpty()) {
+            ui->email->setFocus();
+            TogglApi::instance->displayError(QString("Please enter valid email address"), true);
+            return false;
+        }
+        if (ui->password->text().isEmpty()) {
+            ui->password->setFocus();
+            TogglApi::instance->displayError(QString("A password is required"), true);
+            return false;
+        }
     }
     if (signup) {
         if (selectedCountryId == UINT64_MAX) {
@@ -140,8 +156,7 @@ void LoginWidget::on_signup_clicked() {
     if (!validateFields(true)) {
         return;
     }
-    TogglApi::instance->signup(ui->email->text(), ui->password->text(),
-                               selectedCountryId);
+    TogglApi::instance->signup(ui->email->text(), ui->password->text(), selectedCountryId);
 }
 
 void LoginWidget::setCountries(
@@ -155,7 +170,7 @@ void LoginWidget::setCountries(
 
 void LoginWidget::on_viewchangelabel_linkActivated(const QString &link)
 {
-    Q_UNUSED(link);
+    Q_UNUSED(link)
     if (signupVisible) {
         ui->signupWidget->hide();
         ui->loginWidget->show();
