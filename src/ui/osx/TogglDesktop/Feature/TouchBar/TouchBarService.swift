@@ -53,8 +53,9 @@ final class TouchBarService: NSObject {
         view.dataSource = self
         view.mode = NSScrubber.Mode.free
         view.register(TimeEntryScrubberItem.self, forItemIdentifier: Constants.TimeEntryIdentifer)
-        let layout = NSScrubberFlowLayout()
-        layout.itemSize = CGSize(width: 200, height: 30)
+        let layout = TimeEntryScrubberFlowLayout()
+        layout.itemSpacing = 4
+        layout.delegate = self
         view.scrubberLayout = layout
         return view
     }()
@@ -162,6 +163,8 @@ extension TouchBarService {
     }
 }
 
+// MARK: NSScrubberDataSource
+
 @available(OSX 10.12.2, *)
 extension TouchBarService: NSScrubberDelegate, NSScrubberDataSource {
 
@@ -179,5 +182,16 @@ extension TouchBarService: NSScrubberDelegate, NSScrubberDataSource {
 
     func scrubber(_ scrubber: NSScrubber, didSelectItemAt selectedIndex: Int) {
         print(selectedIndex)
+    }
+}
+
+// MARK: TimeEntryScrubberFlowLayoutDelegate
+
+@available(OSX 10.12.2, *)
+extension TouchBarService: TimeEntryScrubberFlowLayoutDelegate {
+
+    func timeEntryScrubberTitle(at index: Int) -> String {
+        let timeEntry = timeEntries[index]
+        return timeEntry.touchBarTitle
     }
 }
