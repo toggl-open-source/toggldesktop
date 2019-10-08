@@ -83,6 +83,7 @@
 		95C0707718CDB67300A34D0D /* NSCustomComboBoxCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 95C0707618CDB67300A34D0D /* NSCustomComboBoxCell.m */; };
 		95C0707A18CDB91500A34D0D /* NSCustomComboBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 95C0707918CDB91500A34D0D /* NSCustomComboBox.m */; };
 		BA00E9ED234C5A6C0011A703 /* TouchBarService+Name.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA00E9EC234C5A6C0011A703 /* TouchBarService+Name.swift */; };
+		BA00E9F0234C73990011A703 /* TimeEntryScrubberItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA00E9EF234C73990011A703 /* TimeEntryScrubberItem.swift */; };
 		BA013FF5225705B6000E5B91 /* HoverTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA013FF4225705B6000E5B91 /* HoverTableCellView.swift */; };
 		BA01404622570805000E5B91 /* TagCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA01404522570805000E5B91 /* TagCellView.swift */; };
 		BA0140482257080F000E5B91 /* TagCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA0140472257080F000E5B91 /* TagCellView.xib */; };
@@ -441,6 +442,7 @@
 		95C0707918CDB91500A34D0D /* NSCustomComboBox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSCustomComboBox.m; sourceTree = "<group>"; };
 		B671ACF75B3267B013176BD7 /* Pods-TogglDesktop.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TogglDesktop.release.xcconfig"; path = "Target Support Files/Pods-TogglDesktop/Pods-TogglDesktop.release.xcconfig"; sourceTree = "<group>"; };
 		BA00E9EC234C5A6C0011A703 /* TouchBarService+Name.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TouchBarService+Name.swift"; sourceTree = "<group>"; };
+		BA00E9EF234C73990011A703 /* TimeEntryScrubberItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeEntryScrubberItem.swift; sourceTree = "<group>"; };
 		BA013FF4225705B6000E5B91 /* HoverTableCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoverTableCellView.swift; sourceTree = "<group>"; };
 		BA01404522570805000E5B91 /* TagCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagCellView.swift; sourceTree = "<group>"; };
 		BA0140472257080F000E5B91 /* TagCellView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TagCellView.xib; sourceTree = "<group>"; };
@@ -1247,6 +1249,7 @@
 				BAF3ACCB2341F8AC00E41B33 /* GlobalTouchbarButton.swift */,
 				BAF3ACD22343325A00E41B33 /* TouchBarService.swift */,
 				BA00E9EC234C5A6C0011A703 /* TouchBarService+Name.swift */,
+				BA00E9EF234C73990011A703 /* TimeEntryScrubberItem.swift */,
 			);
 			path = TouchBar;
 			sourceTree = "<group>";
@@ -1727,6 +1730,7 @@
 				BA9C2DFC224C8235002AD2A1 /* ColorPickerView.swift in Sources */,
 				BA276A142240F5B500810C51 /* FloatingErrorView.swift in Sources */,
 				C5DA1FC417F1B38B001C4565 /* LoginViewController.m in Sources */,
+				BA00E9F0234C73990011A703 /* TimeEntryScrubberItem.swift in Sources */,
 				743D942F1827C633000E6F70 /* IdleEvent.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
