@@ -82,6 +82,7 @@
 		74F8FBA318313FA6000F09EE /* NSTextFieldClickable.m in Sources */ = {isa = PBXBuildFile; fileRef = 74F8FBA218313FA6000F09EE /* NSTextFieldClickable.m */; };
 		95C0707718CDB67300A34D0D /* NSCustomComboBoxCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 95C0707618CDB67300A34D0D /* NSCustomComboBoxCell.m */; };
 		95C0707A18CDB91500A34D0D /* NSCustomComboBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 95C0707918CDB91500A34D0D /* NSCustomComboBox.m */; };
+		BA00E9ED234C5A6C0011A703 /* TouchBarService+Name.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA00E9EC234C5A6C0011A703 /* TouchBarService+Name.swift */; };
 		BA013FF5225705B6000E5B91 /* HoverTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA013FF4225705B6000E5B91 /* HoverTableCellView.swift */; };
 		BA01404622570805000E5B91 /* TagCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA01404522570805000E5B91 /* TagCellView.swift */; };
 		BA0140482257080F000E5B91 /* TagCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA0140472257080F000E5B91 /* TagCellView.xib */; };
@@ -233,7 +234,7 @@
 		BAE8E845224CA9AC006D534E /* ProjectAutoCompleteTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAE8E844224CA9AC006D534E /* ProjectAutoCompleteTextField.swift */; };
 		BAF38FEF2241FF20009147D7 /* FloatingErrorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA276A132240F5B500810C51 /* FloatingErrorView.xib */; };
 		BAF3ACCC2341F8AC00E41B33 /* GlobalTouchbarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAF3ACCB2341F8AC00E41B33 /* GlobalTouchbarButton.swift */; };
-		BAF3ACD32343325A00E41B33 /* TimeEntryTouchbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAF3ACD22343325A00E41B33 /* TimeEntryTouchbar.swift */; };
+		BAF3ACD32343325A00E41B33 /* TouchBarService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAF3ACD22343325A00E41B33 /* TouchBarService.swift */; };
 		BAF50DE521A29FED0090BA95 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BAF50DE421A29FED0090BA95 /* Images.xcassets */; };
 		BAF50DF821A2A18D0090BA95 /* AppIconFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = BAF50DF721A2A18D0090BA95 /* AppIconFactory.m */; };
 		BAF6319C21E6F868002DD6AB /* NotificationCenter+MainThread.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAF6319B21E6F868002DD6AB /* NotificationCenter+MainThread.swift */; };
@@ -439,6 +440,7 @@
 		95C0707818CDB91500A34D0D /* NSCustomComboBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSCustomComboBox.h; sourceTree = "<group>"; };
 		95C0707918CDB91500A34D0D /* NSCustomComboBox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSCustomComboBox.m; sourceTree = "<group>"; };
 		B671ACF75B3267B013176BD7 /* Pods-TogglDesktop.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TogglDesktop.release.xcconfig"; path = "Target Support Files/Pods-TogglDesktop/Pods-TogglDesktop.release.xcconfig"; sourceTree = "<group>"; };
+		BA00E9EC234C5A6C0011A703 /* TouchBarService+Name.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TouchBarService+Name.swift"; sourceTree = "<group>"; };
 		BA013FF4225705B6000E5B91 /* HoverTableCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoverTableCellView.swift; sourceTree = "<group>"; };
 		BA01404522570805000E5B91 /* TagCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagCellView.swift; sourceTree = "<group>"; };
 		BA0140472257080F000E5B91 /* TagCellView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TagCellView.xib; sourceTree = "<group>"; };
@@ -593,7 +595,7 @@
 		BAE6379922B225C70024DD08 /* AddTagButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTagButton.swift; sourceTree = "<group>"; };
 		BAE8E844224CA9AC006D534E /* ProjectAutoCompleteTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectAutoCompleteTextField.swift; sourceTree = "<group>"; };
 		BAF3ACCB2341F8AC00E41B33 /* GlobalTouchbarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalTouchbarButton.swift; sourceTree = "<group>"; };
-		BAF3ACD22343325A00E41B33 /* TimeEntryTouchbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeEntryTouchbar.swift; sourceTree = "<group>"; };
+		BAF3ACD22343325A00E41B33 /* TouchBarService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchBarService.swift; sourceTree = "<group>"; };
 		BAF50DE421A29FED0090BA95 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = TogglDesktop/Images.xcassets; sourceTree = "<group>"; };
 		BAF50DF621A2A18D0090BA95 /* AppIconFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppIconFactory.h; sourceTree = "<group>"; };
 		BAF50DF721A2A18D0090BA95 /* AppIconFactory.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppIconFactory.m; sourceTree = "<group>"; };
@@ -1243,7 +1245,8 @@
 			isa = PBXGroup;
 			children = (
 				BAF3ACCB2341F8AC00E41B33 /* GlobalTouchbarButton.swift */,
-				BAF3ACD22343325A00E41B33 /* TimeEntryTouchbar.swift */,
+				BAF3ACD22343325A00E41B33 /* TouchBarService.swift */,
+				BA00E9EC234C5A6C0011A703 /* TouchBarService+Name.swift */,
 			);
 			path = TouchBar;
 			sourceTree = "<group>";
@@ -1586,6 +1589,7 @@
 				BA13D2112269BE2F00EB3833 /* DateInfo.swift in Sources */,
 				BA13D20E2269BAA600EB3833 /* DateCellViewItem.swift in Sources */,
 				BA712EC821BF9F1200A2D8DD /* UndoStack.swift in Sources */,
+				BA00E9ED234C5A6C0011A703 /* TouchBarService+Name.swift in Sources */,
 				BA13D2172269DE3400EB3833 /* NoVibrantPopoverView.swift in Sources */,
 				3C6B2488203E01D90063FC08 /* AutoCompleteTable.m in Sources */,
 				BA412C1D224E0D61003CA17A /* ClientDataSource.swift in Sources */,
@@ -1691,7 +1695,7 @@
 				7430750418204EFB009019CB /* AboutWindowController.m in Sources */,
 				74D1D27217EB72D900E709B0 /* TimerEditViewController.m in Sources */,
 				3C2F239D21A7B43400CBE6BC /* UnsupportedNotice.m in Sources */,
-				BAF3ACD32343325A00E41B33 /* TimeEntryTouchbar.swift in Sources */,
+				BAF3ACD32343325A00E41B33 /* TouchBarService.swift in Sources */,
 				741104BF18C7682700BC7A49 /* NSTextFieldWithBackground.m in Sources */,
 				BA80BEB2221EAE6F00BDFD35 /* Array+ByGroup.swift in Sources */,
 				BA067642233A492F00485C3C /* TogglApplication.m in Sources */,
