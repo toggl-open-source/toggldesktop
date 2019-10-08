@@ -3,12 +3,16 @@
 
 #include <QDebug>
 #include <QWebEngineView>
+#include <QWebEngineProfile>
+#include <QWebEngineCookieStore>
 
 LoginDialog::LoginDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::LoginDialog)
 {
     ui->setupUi(this);
+    ui->webView->page()->profile()->cookieStore()->deleteAllCookies();
+    ui->webView->page()->profile()->setPersistentCookiesPolicy(QWebEngineProfile::NoPersistentCookies);
     connect(ui->webView, SIGNAL(urlChanged(QUrl)), this, SLOT(urlChanged(QUrl)));
 }
 
@@ -46,5 +50,6 @@ QString LoginDialog::accessToken()
 
 void LoginDialog::setLoginUrl(const QString& url)
 {
-   ui->webView->setUrl(url);
+    ui->webView->page()->profile()->cookieStore()->deleteAllCookies();
+    ui->webView->setUrl(url);
 }
