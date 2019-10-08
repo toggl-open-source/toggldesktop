@@ -9,7 +9,7 @@
 import Cocoa
 
 @available(OSX 10.12.2, *)
-class TimeEntryScrubberItem: NSScrubberTextItemView {
+final class TimeEntryScrubberItem: NSScrubberTextItemView {
 
     // MARK: Public
 

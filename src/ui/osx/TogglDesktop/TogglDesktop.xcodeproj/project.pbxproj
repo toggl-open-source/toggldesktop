@@ -84,6 +84,8 @@
 		95C0707A18CDB91500A34D0D /* NSCustomComboBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 95C0707918CDB91500A34D0D /* NSCustomComboBox.m */; };
 		BA00E9ED234C5A6C0011A703 /* TouchBarService+Name.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA00E9EC234C5A6C0011A703 /* TouchBarService+Name.swift */; };
 		BA00E9F0234C73990011A703 /* TimeEntryScrubberItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA00E9EF234C73990011A703 /* TimeEntryScrubberItem.swift */; };
+		BA00E9F3234C7BB80011A703 /* TimeEntryScrubberFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA00E9F2234C7BB80011A703 /* TimeEntryScrubberFlowLayout.swift */; };
+		BA00E9F5234C848A0011A703 /* TimeEntryScrubberItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA00E9F4234C848A0011A703 /* TimeEntryScrubberItem.xib */; };
 		BA013FF5225705B6000E5B91 /* HoverTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA013FF4225705B6000E5B91 /* HoverTableCellView.swift */; };
 		BA01404622570805000E5B91 /* TagCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA01404522570805000E5B91 /* TagCellView.swift */; };
 		BA0140482257080F000E5B91 /* TagCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA0140472257080F000E5B91 /* TagCellView.xib */; };
@@ -443,6 +445,8 @@
 		B671ACF75B3267B013176BD7 /* Pods-TogglDesktop.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TogglDesktop.release.xcconfig"; path = "Target Support Files/Pods-TogglDesktop/Pods-TogglDesktop.release.xcconfig"; sourceTree = "<group>"; };
 		BA00E9EC234C5A6C0011A703 /* TouchBarService+Name.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TouchBarService+Name.swift"; sourceTree = "<group>"; };
 		BA00E9EF234C73990011A703 /* TimeEntryScrubberItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeEntryScrubberItem.swift; sourceTree = "<group>"; };
+		BA00E9F2234C7BB80011A703 /* TimeEntryScrubberFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeEntryScrubberFlowLayout.swift; sourceTree = "<group>"; };
+		BA00E9F4234C848A0011A703 /* TimeEntryScrubberItem.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimeEntryScrubberItem.xib; sourceTree = "<group>"; };
 		BA013FF4225705B6000E5B91 /* HoverTableCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoverTableCellView.swift; sourceTree = "<group>"; };
 		BA01404522570805000E5B91 /* TagCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagCellView.swift; sourceTree = "<group>"; };
 		BA0140472257080F000E5B91 /* TagCellView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TagCellView.xib; sourceTree = "<group>"; };
@@ -1250,6 +1254,8 @@
 				BAF3ACD22343325A00E41B33 /* TouchBarService.swift */,
 				BA00E9EC234C5A6C0011A703 /* TouchBarService+Name.swift */,
 				BA00E9EF234C73990011A703 /* TimeEntryScrubberItem.swift */,
+				BA00E9F4234C848A0011A703 /* TimeEntryScrubberItem.xib */,
+				BA00E9F2234C7BB80011A703 /* TimeEntryScrubberFlowLayout.swift */,
 			);
 			path = TouchBar;
 			sourceTree = "<group>";
@@ -1401,6 +1407,7 @@
 				BA7D33532248981200B953A8 /* ProjectHeaderCellView.xib in Resources */,
 				BA05369F225E239600C26E1F /* ProjectWorksapceCellView.xib in Resources */,
 				BAF50DE521A29FED0090BA95 /* Images.xcassets in Resources */,
+				BA00E9F5234C848A0011A703 /* TimeEntryScrubberItem.xib in Resources */,
 				BA34F10122439C3000C27A15 /* EditorViewController.xib in Resources */,
 				74E857BC194F8854007A88B9 /* cacert.pem in Resources */,
 				BAB818EB228D5AA8008C2367 /* DescriptionContentCellView.xib in Resources */,
@@ -1661,6 +1668,7 @@
 				BA3E75D62229356D009AD291 /* SystemMessageView.swift in Sources */,
 				BA013FF5225705B6000E5B91 /* HoverTableCellView.swift in Sources */,
 				749BD0BD1833E28400980494 /* NSBoxClickable.m in Sources */,
+				BA00E9F3234C7BB80011A703 /* TimeEntryScrubberFlowLayout.swift in Sources */,
 				BA08E087222E709C0075F68E /* ProjectTextField.m in Sources */,
 				BA2E5FB1223787C300EB866E /* EditorPopover.swift in Sources */,
 				BA7D334F224897FC00B953A8 /* ProjectHeaderCellView.swift in Sources */,
