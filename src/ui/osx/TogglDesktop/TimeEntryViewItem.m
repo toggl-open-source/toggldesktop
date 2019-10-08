@@ -161,7 +161,14 @@
 	}
 	else
 	{
-		self.touchBarTitle = self.ProjectLabel;
+		if (self.ProjectLabel.length != 0)
+		{
+			self.touchBarTitle = self.ProjectLabel;
+		}
+		else
+		{
+			self.touchBarTitle = @"(no description)";
+		}
 	}
 
 	[[UndoManager shared] storeWith:self];
