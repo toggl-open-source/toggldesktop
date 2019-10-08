@@ -10,7 +10,7 @@ import Foundation
 
 @available(OSX 10.12.2, *)
 extension NSTouchBar.CustomizationIdentifier {
-    static let timeEntry = NSTouchBar.CustomizationIdentifier("com.toggl.toggldesktop.timeentrytouchbar")
+    static let mainTouchBar = NSTouchBar.CustomizationIdentifier("com.toggl.toggldesktop.maintouchbar")
 }
 
 @available(OSX 10.12.2, *)

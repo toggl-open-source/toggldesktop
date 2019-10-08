@@ -155,6 +155,15 @@
 	self.GroupDuration = [NSString stringWithUTF8String:te->GroupDuration];
 	self.GroupItemCount = te->GroupItemCount;
 
+	if (self.descriptionName.length != 0)
+	{
+		self.touchBarTitle = self.descriptionName;
+	}
+	else
+	{
+		self.touchBarTitle = self.ProjectLabel;
+	}
+
 	[[UndoManager shared] storeWith:self];
 }
 

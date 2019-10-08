@@ -125,6 +125,11 @@ class TimeEntryDatasource: NSObject {
             sections.append(TimeEntrySection.loadMoreSection())
         }
 
+        // Touch bar
+        if #available(OSX 10.12.2, *) {
+            TouchBarService.shared.updateTimeEntryList(timeEntries)
+        }
+
         // Reload
         reload(with: sections)
     }
