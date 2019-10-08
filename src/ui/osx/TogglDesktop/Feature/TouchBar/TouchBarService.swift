@@ -24,6 +24,10 @@ final class TouchBarService: NSObject {
         case normal
     }
 
+    fileprivate struct Constants {
+        static let TimeEntryIdentifer = NSUserInterfaceItemIdentifier("TimeEntryScrubberItem")
+    }
+
     // MARK: OUTLET
 
     private lazy var startButton: NSButton = {
@@ -41,10 +45,15 @@ final class TouchBarService: NSObject {
 
     lazy var touchBar = NSTouchBar()
     weak var delegate: TouchBarServiceDelegate?
+    private var timeEntries: [TimeEntryViewItem] = []
     private var displayState = DisplayState.normal { didSet { updateDisplayState() }}
-    private lazy var stackView: NSStackView = {
-        let view = NSStackView(views: [])
-        view.spacing = 4
+    private lazy var scrubberView: NSScrubber = {
+        let view = NSScrubber(frame: .zero)
+        view.delegate = self
+        view.dataSource = self
+        view.mode = NSScrubber.Mode.free
+//        view.itemAlignment = NSScrubber.Alignment.leading
+        view.register(TimeEntryScrubberItem.self, forItemIdentifier: Constants.TimeEntryIdentifer)
         return view
     }()
 
@@ -64,21 +73,8 @@ final class TouchBarService: NSObject {
     }
 
     func updateTimeEntryList(_ timeEntries: [TimeEntryViewItem]) {
-        let lastTimeEntries = Array(timeEntries.prefix(5))
-
-        // Remove
-        if lastTimeEntries.isEmpty {
-            if let fistItem = touchBar.defaultItemIdentifiers.first, fistItem == .timeEntryItem {
-                touchBar.defaultItemIdentifiers.remove(at: 0)
-            }
-            return
-        }
-
-        // Add
-        let btns = lastTimeEntries.map { NSButton(title: $0.touchBarTitle, target: self, action: #selector(self.timeEntryBtnOnTap(_:))) }
-        stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
-        btns.forEach { stackView.addArrangedSubview($0) }
-        touchBar.defaultItemIdentifiers.insert(.timeEntryItem, at: 0)
+        self.timeEntries = Array(timeEntries.prefix(5))
+        scrubberView.reloadData()
     }
 }
 
@@ -88,13 +84,13 @@ final class TouchBarService: NSObject {
 extension TouchBarService {
 
     fileprivate func initCommon() {
-        NSApplication.shared.isAutomaticCustomizeTouchBarMenuItemEnabled = true
+        NSApplication.shared.isAutomaticCustomizeTouchBarMenuItemEnabled = false
     }
 
     fileprivate func setup() {
         touchBar.delegate = self
         touchBar.customizationIdentifier = .mainTouchBar
-        touchBar.defaultItemIdentifiers = [.flexibleSpace, .startStopItem]
+        touchBar.defaultItemIdentifiers = [.timeEntryItem, .startStopItem]
     }
 
     fileprivate func initNotification() {
@@ -132,17 +128,17 @@ extension TouchBarService: NSTouchBarDelegate {
         switch identifier {
         case NSTouchBarItem.Identifier.timeEntryItem:
             let item = NSCustomTouchBarItem(identifier: identifier)
-//            item.visibilityPriority = .high
-            item.view = stackView
+            item.visibilityPriority = .high
+            item.view = scrubberView
             return item
         case NSTouchBarItem.Identifier.runningTimeEntry:
             let item = NSCustomTouchBarItem(identifier: identifier)
-            item.visibilityPriority = .high
+//            item.visibilityPriority = .high
             item.view = runningTimeEntryBtn
             return item
         case NSTouchBarItem.Identifier.startStopItem:
             let item = NSCustomTouchBarItem(identifier: identifier)
-            item.visibilityPriority = .high
+//            item.visibilityPriority = .high
             item.view = startButton
             return item
         default:
@@ -162,5 +158,25 @@ extension TouchBarService {
 
     @objc fileprivate func timeEntryBtnOnTap(_ sender: NSButton) {
 
+    }
+}
+
+@available(OSX 10.12.2, *)
+extension TouchBarService: NSScrubberDelegate, NSScrubberDataSource {
+
+    func numberOfItems(for scrubber: NSScrubber) -> Int {
+        return timeEntries.count
+    }
+
+    func scrubber(_ scrubber: NSScrubber, viewForItemAt index: Int) -> NSScrubberItemView {
+        let timeEntry = timeEntries[index]
+        guard let cell = scrubber.makeItem(withIdentifier: Constants.TimeEntryIdentifer, owner: self) as? TimeEntryScrubberItem
+            else { return NSScrubberItemView() }
+        cell.config(timeEntry)
+        return cell
+    }
+
+    func scrubber(_ scrubber: NSScrubber, didSelectItemAt selectedIndex: Int) {
+        print(selectedIndex)
     }
 }
