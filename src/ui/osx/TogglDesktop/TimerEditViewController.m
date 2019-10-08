@@ -50,7 +50,6 @@ static NSString *kStateKey = @"state";
 @property (weak) IBOutlet NSLayoutConstraint *projectTextFieldLeading;
 @property (weak) IBOutlet NSButton *cancelBtn;
 
-- (IBAction)startButtonClicked:(id)sender;
 - (IBAction)durationFieldChanged:(id)sender;
 - (IBAction)autoCompleteChanged:(id)sender;
 - (IBAction)addEntryBtnOnTap:(id)sender;
