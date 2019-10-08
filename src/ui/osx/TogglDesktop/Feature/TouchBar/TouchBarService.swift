@@ -19,6 +19,11 @@ final class TouchBarService: NSObject {
 
     static let shared = TouchBarService()
 
+    enum DisplayState {
+        case tracking
+        case normal
+    }
+
     // MARK: OUTLET
 
     private lazy var startButton: NSButton = {
@@ -34,6 +39,7 @@ final class TouchBarService: NSObject {
 
     lazy var touchBar = NSTouchBar()
     weak var delegate: TouchBarServiceDelegate?
+    private var displayState = DisplayState.normal { didSet { updateDisplayState() }}
 
     // MARK: Init
 
@@ -57,7 +63,7 @@ extension TouchBarService {
     fileprivate func setup() {
         touchBar.delegate = self
         touchBar.customizationIdentifier = .timeEntry
-        touchBar.defaultItemIdentifiers = [.timeEntryItem, .flexibleSpace, .runningTimeEntry, .startStopItem]
+        touchBar.defaultItemIdentifiers = [.timeEntryItem, .flexibleSpace, .startStopItem]
     }
 
     fileprivate func initNotification() {
@@ -72,6 +78,17 @@ extension TouchBarService {
             return
         }
         startButton.state = NSControl.StateValue(rawValue: value.intValue)
+        displayState = startButton.state == .on ? .tracking : .normal
+    }
+
+    private func updateDisplayState() {
+        switch displayState {
+        case .normal:
+            touchBar.defaultItemIdentifiers.removeAll(where: { $0 == .runningTimeEntry })
+        case .tracking:
+            let count = touchBar.defaultItemIdentifiers.count
+            touchBar.defaultItemIdentifiers.insert(.runningTimeEntry, at: count - 1)
+        }
     }
 }
 
