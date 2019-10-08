@@ -35,6 +35,8 @@ final class TouchBarService: NSObject {
         return btn
     }()
 
+    private lazy var runningTimeEntryBtn = NSButton(title: "Running...", target: nil, action: nil)
+
     // MARK: Variables
 
     lazy var touchBar = NSTouchBar()
@@ -48,6 +50,16 @@ final class TouchBarService: NSObject {
         initCommon()
         setup()
         initNotification()
+    }
+
+    // MARK: Public
+
+    func updateRunningItem(_ timeEntry: TimeEntryViewItem) {
+        var title = timeEntry.descriptionName ?? ""
+        if title.isEmpty { title = "(no description)" }
+
+        // Update
+        runningTimeEntryBtn.title = title
     }
 }
 
@@ -101,16 +113,18 @@ extension TouchBarService: NSTouchBarDelegate {
         switch identifier {
         case NSTouchBarItem.Identifier.timeEntryItem:
             let item = NSCustomTouchBarItem(identifier: identifier)
+            item.visibilityPriority = .normal
             let button = NSButton(title: "TimeEntry 1", target: nil, action: nil)
             item.view = button
             return item
         case NSTouchBarItem.Identifier.runningTimeEntry:
             let item = NSCustomTouchBarItem(identifier: identifier)
-            let button = NSButton(title: "Running...", target: nil, action: nil)
-            item.view = button
+            item.visibilityPriority = .high
+            item.view = runningTimeEntryBtn
             return item
         case NSTouchBarItem.Identifier.startStopItem:
             let item = NSCustomTouchBarItem(identifier: identifier)
+            item.visibilityPriority = .high
             item.view = startButton
             return item
         default:
