@@ -42,6 +42,11 @@ final class TouchBarService: NSObject {
     lazy var touchBar = NSTouchBar()
     weak var delegate: TouchBarServiceDelegate?
     private var displayState = DisplayState.normal { didSet { updateDisplayState() }}
+    private lazy var stackView: NSStackView = {
+        let view = NSStackView(views: [])
+        view.spacing = 4
+        return view
+    }()
 
     // MARK: Init
 
@@ -55,11 +60,25 @@ final class TouchBarService: NSObject {
     // MARK: Public
 
     func updateRunningItem(_ timeEntry: TimeEntryViewItem) {
-        var title = timeEntry.descriptionName ?? ""
-        if title.isEmpty { title = "(no description)" }
+        runningTimeEntryBtn.title = timeEntry.touchBarTitle
+    }
 
-        // Update
-        runningTimeEntryBtn.title = title
+    func updateTimeEntryList(_ timeEntries: [TimeEntryViewItem]) {
+        let lastTimeEntries = Array(timeEntries.prefix(5))
+
+        // Remove
+        if lastTimeEntries.isEmpty {
+            if let fistItem = touchBar.defaultItemIdentifiers.first, fistItem == .timeEntryItem {
+                touchBar.defaultItemIdentifiers.remove(at: 0)
+            }
+            return
+        }
+
+        // Add
+        let btns = lastTimeEntries.map { NSButton(title: $0.touchBarTitle, target: self, action: #selector(self.timeEntryBtnOnTap(_:))) }
+        stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+        btns.forEach { stackView.addArrangedSubview($0) }
+        touchBar.defaultItemIdentifiers.insert(.timeEntryItem, at: 0)
     }
 }
 
@@ -74,8 +93,8 @@ extension TouchBarService {
 
     fileprivate func setup() {
         touchBar.delegate = self
-        touchBar.customizationIdentifier = .timeEntry
-        touchBar.defaultItemIdentifiers = [.timeEntryItem, .flexibleSpace, .startStopItem]
+        touchBar.customizationIdentifier = .mainTouchBar
+        touchBar.defaultItemIdentifiers = [.flexibleSpace, .startStopItem]
     }
 
     fileprivate func initNotification() {
@@ -113,9 +132,8 @@ extension TouchBarService: NSTouchBarDelegate {
         switch identifier {
         case NSTouchBarItem.Identifier.timeEntryItem:
             let item = NSCustomTouchBarItem(identifier: identifier)
-            item.visibilityPriority = .normal
-            let button = NSButton(title: "TimeEntry 1", target: nil, action: nil)
-            item.view = button
+//            item.visibilityPriority = .high
+            item.view = stackView
             return item
         case NSTouchBarItem.Identifier.runningTimeEntry:
             let item = NSCustomTouchBarItem(identifier: identifier)
@@ -140,5 +158,9 @@ extension TouchBarService {
 
     @objc fileprivate func startBtnOnTap(_ sender: NSButton) {
         delegate?.touchBarServiceStartTimeEntryOnTap()
+    }
+
+    @objc fileprivate func timeEntryBtnOnTap(_ sender: NSButton) {
+
     }
 }
