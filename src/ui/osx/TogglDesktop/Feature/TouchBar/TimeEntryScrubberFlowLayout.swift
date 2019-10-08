@@ -21,7 +21,6 @@ final class TimeEntryScrubberFlowLayout: NSScrubberFlowLayout {
     weak var delegate: TimeEntryScrubberFlowLayoutDelegate?
     private var itemAttributes: [NSScrubberLayoutAttributes] = []
     private var totalWidth: CGFloat = 0
-    private let templateBtn = NSButton(title: "", target: nil, action: nil)
 
     // MARK: Overriden
 
@@ -41,12 +40,15 @@ final class TimeEntryScrubberFlowLayout: NSScrubberFlowLayout {
             let attribute = NSScrubberLayoutAttributes(forItemAt: i)
 
             // Get the size depend on the length of text
+            let templateBtn = NSButton(title: "", target: nil, action: nil)
             templateBtn.title = title
             templateBtn.sizeToFit()
 
             // Override the size
-            let size = templateBtn.frame.size
-            let frame = CGRect(x: x, y: 0, width: size.width, height: size.height)
+            var size = templateBtn.frame.size
+            size.width += 20
+
+            let frame = CGRect(x: x, y: 0, width: size.width, height: 30)
             attribute.frame = frame
 
             //
