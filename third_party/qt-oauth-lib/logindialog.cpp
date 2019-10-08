@@ -2,6 +2,8 @@
 #include "ui_logindialog.h"
 
 #include <QDebug>
+#include <QKeyEvent>
+
 #include <QWebEngineView>
 #include <QWebEngineProfile>
 #include <QWebEngineCookieStore>
@@ -47,9 +49,16 @@ QString LoginDialog::accessToken()
     return m_strAccessToken;
 }
 
+void LoginDialog::keyPressEvent(QKeyEvent *e) {
+    if(ui->webView->hasFocus() && (e->key() == Qt::Key_Enter || e->key() == Qt::Key_Return))
+        return;
+    QDialog::keyPressEvent(e);
+}
+
 
 void LoginDialog::setLoginUrl(const QString& url)
 {
     ui->webView->page()->profile()->cookieStore()->deleteAllCookies();
     ui->webView->setUrl(url);
+    ui->webView->setFocus();
 }
