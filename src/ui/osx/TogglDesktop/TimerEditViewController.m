@@ -138,9 +138,6 @@ NSString *kInactiveTimerColor = @"#999999";
 	[self.liteAutocompleteDataSource setFilter:@""];
 
 	[self.startButton setHoverAlpha:0.75];
-
-	[self.autoCompleteInput.autocompleteTableView setTarget:self];
-	[self.autoCompleteInput.autocompleteTableView setAction:@selector(performClick:)];
 	self.autoCompleteInput.responderDelegate = self.autocompleteContainerView;
 
 	self.descriptionLabel.delegate = self;
@@ -541,6 +538,31 @@ NSString *kInactiveTimerColor = @"#999999";
 	return YES;
 }
 
+- (void)tableViewSelectionDidChange:(NSNotification *)notification
+{
+	NSInteger row = [self.autoCompleteInput.autocompleteTableView selectedRow];
+
+	if (row < 0)
+	{
+		return;
+	}
+
+	AutocompleteItem *item = [self.liteAutocompleteDataSource itemAtIndex:row];
+	// Category clicked
+	if (item == nil || item.Type < 0)
+	{
+		return;
+	}
+	[self fillEntryFromAutoComplete:item];
+	NSRange tRange = [[self.descriptionLabel currentEditor] selectedRange];
+	[[self.descriptionLabel currentEditor] setSelectedRange:NSMakeRange(tRange.length, 0)];
+	[self.autoCompleteInput resetTable];
+	[self.liteAutocompleteDataSource clearFilter];
+
+	// Show cancel btn
+	self.cancelBtn.hidden = NO;
+}
+
 - (NSView *) tableView:(NSTableView *)tableView
 	viewForTableColumn:(NSTableColumn *)tableColumn
 				   row:(NSInteger)row
@@ -586,31 +608,6 @@ NSString *kInactiveTimerColor = @"#999999";
 
 	// Other cells
 	return self.autoCompleteInput.itemHeight;
-}
-
-- (IBAction)performClick:(id)sender
-{
-	NSInteger row = [self.autoCompleteInput.autocompleteTableView clickedRow];
-
-	if (row < 0)
-	{
-		return;
-	}
-
-	AutocompleteItem *item = [self.liteAutocompleteDataSource itemAtIndex:row];
-	// Category clicked
-	if (item == nil || item.Type < 0)
-	{
-		return;
-	}
-	[self fillEntryFromAutoComplete:item];
-	NSRange tRange = [[self.descriptionLabel currentEditor] selectedRange];
-	[[self.descriptionLabel currentEditor] setSelectedRange:NSMakeRange(tRange.length, 0)];
-	[self.autoCompleteInput resetTable];
-	[self.liteAutocompleteDataSource clearFilter];
-
-	// Show cancel btn
-	self.cancelBtn.hidden = NO;
 }
 
 - (BOOL)control:(NSControl *)control textView:(NSTextView *)fieldEditor doCommandBySelector:(SEL)commandSelector
@@ -750,6 +747,7 @@ NSString *kInactiveTimerColor = @"#999999";
 - (IBAction)cancelBtnOnTap:(id)sender
 {
 	NSString *description = self.time_entry.Description;
+
 	self.time_entry = [[TimeEntryViewItem alloc] init];
 	self.time_entry.Description = description;
 	self.tagFlag.hidden = YES;

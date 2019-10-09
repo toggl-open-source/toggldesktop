@@ -34,6 +34,7 @@
 - (void)mouseDown:(NSEvent *)theEvent
 {
 	[self sendAction:@selector(textFieldClicked:) to:[self delegate]];
+	[super mouseDown:theEvent];
 }
 
 - (void)setAttributedStringValue:(NSAttributedString *)attributedStringValue
