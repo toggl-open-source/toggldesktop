@@ -23,7 +23,7 @@ namespace toggl {
 
 class BatchUpdateResult;
 
-class BaseModel {
+class TOGGL_INTERNAL_EXPORT BaseModel {
  public:
     BaseModel()
         : local_id_(0)

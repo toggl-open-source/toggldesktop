@@ -14,7 +14,7 @@
 
 namespace toggl {
 
-class TimeEntry : public BaseModel, public TimedEvent {
+class TOGGL_INTERNAL_EXPORT TimeEntry : public BaseModel, public TimedEvent {
  public:
     TimeEntry()
         : BaseModel()

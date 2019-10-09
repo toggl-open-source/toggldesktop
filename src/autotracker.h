@@ -14,7 +14,7 @@
 
 namespace toggl {
 
-class AutotrackerRule : public BaseModel {
+class TOGGL_INTERNAL_EXPORT AutotrackerRule : public BaseModel {
  public:
     AutotrackerRule()
         : BaseModel()

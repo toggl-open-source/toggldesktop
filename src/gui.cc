@@ -30,6 +30,7 @@ bool TimeEntry::operator == (const TimeEntry&) const {
 
 void TimeEntry::Fill(toggl::TimeEntry * const model) {
     model->EnsureGUID();
+    ID = model->ID();
     DurationInSeconds = model->DurationInSeconds();
     Description = model->Description();
     GUID = model->GUID();

@@ -14,7 +14,7 @@
 
 namespace toggl {
 
-class Settings : public BaseModel {
+class TOGGL_INTERNAL_EXPORT Settings : public BaseModel {
  public:
     Settings()
         : use_idle_detection(false)

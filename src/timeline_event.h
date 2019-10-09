@@ -13,7 +13,7 @@
 
 namespace toggl {
 
-class TimelineEvent : public BaseModel, public TimedEvent {
+class TOGGL_INTERNAL_EXPORT TimelineEvent : public BaseModel, public TimedEvent {
  public:
     TimelineEvent()
         : BaseModel()

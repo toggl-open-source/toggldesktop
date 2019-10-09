@@ -223,6 +223,16 @@ std::string trim_whitespace(const std::string &str)
     return str.substr(strBegin, strRange);
 }
 
+const char_t *to_char_t(const std::string &s) {
+#if defined(_WIN32) || defined(WIN32)
+    std::wstring ws;
+    Poco::UnicodeConverter::toUTF16(s, ws);
+    return ws.c_str();
+#else
+    return s.c_str();
+#endif
+}
+
 char_t *copy_string(const std::string &s) {
 #if defined(_WIN32) || defined(WIN32)
     std::wstring ws;
@@ -289,6 +299,7 @@ TogglTimeEntryView *time_entry_view_item_init(
     TogglTimeEntryView *view_item = new TogglTimeEntryView();
     poco_check_ptr(view_item);
 
+    view_item->ID = static_cast<unsigned int>(te.ID);
     view_item->DurationInSeconds = static_cast<int>(te.DurationInSeconds);
     view_item->Description = copy_string(te.Description);
     view_item->GUID = copy_string(te.GUID);

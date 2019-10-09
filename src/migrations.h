@@ -9,7 +9,7 @@ namespace toggl {
 
 class Database;
 
-class Migrations {
+class TOGGL_INTERNAL_EXPORT Migrations {
  public:
     explicit Migrations(Database *db)
         : db_(db) {}

@@ -188,7 +188,7 @@ init_cocoapod:
 	cd $(macosdir) && bundle install && bundle exec pod install && cd $(rootdir)
 
 lua:
-	cd third_party/lua && make  $(LEGACYMACOSSDK) macosx && make $(LEGACYMACOSSDK) local
+	cd third_party/lua && make macosx && make local
 
 openssl:
 	cd $(openssldir) && ./config -fPIC no-shared no-dso && ./Configure darwin64-x86_64-cc && make $(LEGACYMACOSSDK)
@@ -301,6 +301,9 @@ build/timeline_event.o: src/timeline_event.cc
 build/context.o: src/context.cc
 	$(cxx) $(cflags) -c src/context.cc -o build/context.o
 
+build/rectangle.o: src/rectangle.cc
+	$(cxx) $(cflags) -c src/rectangle.cc -o build/rectangle.o
+
 build/settings.o: src/settings.cc
 	$(cxx) $(cflags) -c src/settings.cc -o build/settings.o
 
@@ -365,6 +368,7 @@ objects: build/jsoncpp.o \
 	build/timeline_event.o \
 	build/migrations.o \
 	build/context.o \
+	build/rectangle.o \
 	build/toggl_api_private.o \
 	build/toggl_api.o \
 	build/get_focused_window_$(osname).o \
@@ -389,6 +393,8 @@ toggl_test: clean_test objects test_objects
 test_lib: lua toggl_test
 	cp src/ssl/cacert.pem test/.
 	cp -r $(pocolib)/* test/.
+	cp $(openssldir)/libssl.1.1.dylib test/.
+	cp $(openssldir)/libcrypto.1.1.dylib test/.
 	install_name_tool -change /usr/local/lib/libPocoCrypto.$(pocoversion).dylib @loader_path/libPocoCrypto.$(pocoversion).dylib test/libPocoNetSSL.$(pocoversion).dylib
 	install_name_tool -change /usr/local/lib/libPocoCrypto.$(pocoversion).dylib @loader_path/libPocoCrypto.$(pocoversion).dylib test/toggl_test
 	install_name_tool -change /usr/local/lib/libPocoData.$(pocoversion).dylib @loader_path/libPocoData.$(pocoversion).dylib test/libPocoDataSQLite.$(pocoversion).dylib
@@ -413,6 +419,8 @@ test_lib: lua toggl_test
 	install_name_tool -change /usr/local/lib/libPocoXML.$(pocoversion).dylib @loader_path/libPocoXML.$(pocoversion).dylib test/toggl_test
 	install_name_tool -change /usr/local/lib/libPocoXML.$(pocoversion).dylib @loader_path/libPocoXML.$(pocoversion).dylib test/libPocoUtil.$(pocoversion).dylib
 	install_name_tool -change /usr/local/lib/libPocoJSON.$(pocoversion).dylib @loader_path/libPocoJSON.$(pocoversion).dylib test/libPocoUtil.$(pocoversion).dylib
+	install_name_tool -change /usr/local/lib/libssl.1.1.dylib @loader_path/libssl.1.1.dylib test/toggl_test
+	install_name_tool -change /usr/local/lib/libcrypto.1.1.dylib @loader_path/libcrypto.1.1.dylib test/toggl_test
 	cd test && ./toggl_test --gtest_shuffle
 
 test: test_lib

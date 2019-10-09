@@ -14,7 +14,7 @@ namespace toggl {
 
 class GUI;
 
-class Idle {
+class TOGGL_INTERNAL_EXPORT Idle {
  public:
     explicit Idle(GUI *ui);
     virtual ~Idle() {}
@@ -44,7 +44,7 @@ class Idle {
 
  private:
     void computeIdleState(const Poco::Int64 idle_seconds,
-        User *current_user);
+                          User *current_user);
 
     Poco::Logger &logger() const;
 

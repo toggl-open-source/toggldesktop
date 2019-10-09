@@ -13,7 +13,7 @@
 
 namespace toggl {
 
-class Project : public BaseModel {
+class TOGGL_INTERNAL_EXPORT Project : public BaseModel {
  public:
     Project()
         : BaseModel()
