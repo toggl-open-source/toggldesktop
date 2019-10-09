@@ -342,7 +342,7 @@ TEST(User, DeletesZombies) {
     ASSERT_FALSE(te->IsMarkedAsDeletedOnServer());
 
     std::string json =
-        loadTestDataFile("../testdata/me_without_time_entries.json");
+        loadTestDataFile(std::string("../testdata/me_without_time_entries.json"));
 
     ASSERT_EQ(noError,
               user.LoadUserAndRelatedDataFromJSONString(json, true));
@@ -394,7 +394,7 @@ TEST(Database, AllowsSameEmail) {
     ASSERT_EQ(noError, db.instance()->SaveUser(&user, true, &changes));
 
     User user2;
-    std::string json = loadTestDataFile("../testdata/same_email.json");
+    std::string json = loadTestDataFile(std::string("../testdata/same_email.json"));
     ASSERT_EQ(noError,
               user2.LoadUserAndRelatedDataFromJSONString(json, true));
 
@@ -470,7 +470,7 @@ TEST(Database, SavesAndLoadsObmExperiments) {
     ASSERT_EQ(noError,
               user.LoadUserAndRelatedDataFromJSONString(loadTestData(), true));
 
-    std::string json = loadTestDataFile("../testdata/obm_response.json");
+    std::string json = loadTestDataFile(std::string("../testdata/obm_response.json"));
     Json::Value data = jsonStringToValue(json);
     user.LoadObmExperiments(data);
 
@@ -502,7 +502,7 @@ TEST(Database, SavesAndLoadsObmExperimentsArray) {
     ASSERT_EQ(noError,
               user.LoadUserAndRelatedDataFromJSONString(loadTestData(), true));
 
-    std::string json = loadTestDataFile("../testdata/obm_response_array.json");
+    std::string json = loadTestDataFile(std::string("../testdata/obm_response_array.json"));
     Json::Value data = jsonStringToValue(json);
     user.LoadObmExperiments(data);
 
@@ -1300,7 +1300,7 @@ TEST(User, Continue) {
 TEST(TimeEntry, SetDurationOnRunningTimeEntryWithDurOnlySetting) {
     testing::Database db;
 
-    std::string json = loadTestDataFile("../testdata/user_with_duronly.json");
+    std::string json = loadTestDataFile(std::string("../testdata/user_with_duronly.json"));
 
     User user;
     ASSERT_EQ(noError,

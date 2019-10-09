@@ -16,7 +16,7 @@ std::string loadTestData() {
     return loadFromTestDataDir("me.json");
 }
 
-std::string loadFromTestDataDir(const char* filename) {
+std::string loadFromTestDataDir(const std::string &filename) {
     return loadTestDataFile(std::string(TESTDATADIR) + filename);
 }
 
