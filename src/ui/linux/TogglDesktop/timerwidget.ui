@@ -77,7 +77,7 @@
          </sizepolicy>
         </property>
         <property name="styleSheet">
-         <string notr="true">color: rgb(200, 200, 200); combobox-popup: 0; font-size: 14px;</string>
+         <string notr="true">margin: 0 1px 0 0; border: 0; color: rgb(200, 200, 200); combobox-popup: 0; font-size: 14px;</string>
         </property>
         <property name="text">
          <string>TextLabel</string>
@@ -104,7 +104,7 @@
          </font>
         </property>
         <property name="styleSheet">
-         <string notr="true">background: rgb(22, 22, 22); color: rgb(200, 200, 200); combobox-popup: 0; font-size: 14px;</string>
+         <string notr="true">AutocompleteComboBox { margin: 1px; font-size: 14px; color: rgb(200, 200, 200); border: 0; } AutocompleteComboBox::down-arrow { margin: -3px; background-color: rgb(22, 22, 22); image: url(:/images/down_arrow.png); }</string>
         </property>
         <property name="editable">
          <bool>true</bool>
@@ -113,7 +113,7 @@
          <string/>
         </property>
         <property name="frame">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
        </widget>
       </item>
@@ -130,6 +130,9 @@
           <width>0</width>
           <height>16</height>
          </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">border: 0;</string>
         </property>
         <property name="frameShape">
          <enum>QFrame::StyledPanel</enum>
@@ -234,6 +237,9 @@
           <width>0</width>
           <height>16</height>
          </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">border: 0;</string>
         </property>
         <property name="frameShape">
          <enum>QFrame::StyledPanel</enum>
