@@ -1,5 +1,5 @@
 /*
- * Copyright 1995-2016 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 1995-2018 The OpenSSL Project Authors. All Rights Reserved.
  *
  * Licensed under the OpenSSL license (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
@@ -214,8 +214,8 @@ int set_cert_times(X509 *x, const char *startdate, const char *enddate,
         OPT_S_SERVERPREF, OPT_S_LEGACYRENEG, OPT_S_LEGACYCONN, \
         OPT_S_ONRESUMP, OPT_S_NOLEGACYCONN, OPT_S_STRICT, OPT_S_SIGALGS, \
         OPT_S_CLIENTSIGALGS, OPT_S_CURVES, OPT_S_NAMEDCURVE, OPT_S_CIPHER, \
-        OPT_S_DEBUGBROKE, OPT_S_COMP, \
-        OPT_S__LAST
+        OPT_S_DEBUGBROKE, OPT_S_COMP, OPT_S_MINPROTO, OPT_S_MAXPROTO, \
+        OPT_S_NO_RENEGOTIATION, OPT_S__LAST
 
 # define OPT_S_OPTIONS \
         {"no_ssl3", OPT_S_NOSSL3, '-',"Just disable SSLv3" }, \
@@ -230,6 +230,8 @@ int set_cert_times(X509 *x, const char *startdate, const char *enddate,
         {"serverpref", OPT_S_SERVERPREF, '-', "Use server's cipher preferences"}, \
         {"legacy_renegotiation", OPT_S_LEGACYRENEG, '-', \
             "Enable use of legacy renegotiation (dangerous)"}, \
+        {"no_renegotiation", OPT_S_NO_RENEGOTIATION, '-', \
+            "Disable all renegotiation."}, \
         {"legacy_server_connect", OPT_S_LEGACYCONN, '-', \
             "Allow initial connection to servers that don't support RI"}, \
         {"no_resumption_on_reneg", OPT_S_ONRESUMP, '-', \
@@ -248,6 +250,8 @@ int set_cert_times(X509 *x, const char *startdate, const char *enddate,
         {"named_curve", OPT_S_NAMEDCURVE, 's', \
             "Elliptic curve used for ECDHE (server-side only)" }, \
         {"cipher", OPT_S_CIPHER, 's', "Specify cipher list to be used"}, \
+        {"min_protocol", OPT_S_MINPROTO, 's', "Specify the minimum protocol version to be used"}, \
+        {"max_protocol", OPT_S_MAXPROTO, 's', "Specify the maximum protocol version to be used"}, \
         {"debug_broken_protocol", OPT_S_DEBUGBROKE, '-', \
             "Perform all sorts of protocol violations for testing purposes"}
 
@@ -272,6 +276,9 @@ int set_cert_times(X509 *x, const char *startdate, const char *enddate,
         case OPT_S_CURVES: \
         case OPT_S_NAMEDCURVE: \
         case OPT_S_CIPHER: \
+        case OPT_S_MINPROTO: \
+        case OPT_S_MAXPROTO: \
+        case OPT_S_NO_RENEGOTIATION: \
         case OPT_S_DEBUGBROKE
 
 #define IS_NO_PROT_FLAG(o) \

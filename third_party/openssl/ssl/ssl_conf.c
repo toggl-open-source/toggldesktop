@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2016 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 2012-2018 The OpenSSL Project Authors. All Rights Reserved.
  *
  * Licensed under the OpenSSL license (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
@@ -222,8 +222,9 @@ static int cmd_ECDHParameters(SSL_CONF_CTX *cctx, const char *value)
     int nid;
 
     /* Ignore values supported by 1.0.2 for the automatic selection */
-    if ((cctx->flags & SSL_CONF_FLAG_FILE) &&
-        strcasecmp(value, "+automatic") == 0)
+    if ((cctx->flags & SSL_CONF_FLAG_FILE)
+            && (strcasecmp(value, "+automatic") == 0
+                || strcasecmp(value, "automatic") == 0))
         return 1;
     if ((cctx->flags & SSL_CONF_FLAG_CMDLINE) &&
         strcmp(value, "auto") == 0)
@@ -358,6 +359,7 @@ static int cmd_Options(SSL_CONF_CTX *cctx, const char *value)
         SSL_FLAG_TBL("UnsafeLegacyRenegotiation",
                      SSL_OP_ALLOW_UNSAFE_LEGACY_RENEGOTIATION),
         SSL_FLAG_TBL_INV("EncryptThenMac", SSL_OP_NO_ENCRYPT_THEN_MAC),
+        SSL_FLAG_TBL("NoRenegotiation", SSL_OP_NO_RENEGOTIATION),
     };
     if (value == NULL)
         return -3;
@@ -543,6 +545,7 @@ static const ssl_conf_cmd_tbl ssl_conf_cmds[] = {
     SSL_CONF_CMD_SWITCH("serverpref", SSL_CONF_FLAG_SERVER),
     SSL_CONF_CMD_SWITCH("legacy_renegotiation", 0),
     SSL_CONF_CMD_SWITCH("legacy_server_connect", SSL_CONF_FLAG_SERVER),
+    SSL_CONF_CMD_SWITCH("no_renegotiation", 0),
     SSL_CONF_CMD_SWITCH("no_resumption_on_reneg", SSL_CONF_FLAG_SERVER),
     SSL_CONF_CMD_SWITCH("no_legacy_server_connect", SSL_CONF_FLAG_SERVER),
     SSL_CONF_CMD_SWITCH("strict", 0),
@@ -602,6 +605,8 @@ static const ssl_switch_tbl ssl_cmd_switches[] = {
     {SSL_OP_ALLOW_UNSAFE_LEGACY_RENEGOTIATION, 0},
     /* legacy_server_connect */
     {SSL_OP_LEGACY_SERVER_CONNECT, 0},
+    /* no_renegotiation */
+    {SSL_OP_NO_RENEGOTIATION, 0},
     /* no_resumption_on_reneg */
     {SSL_OP_NO_SESSION_RESUMPTION_ON_RENEGOTIATION, 0},
     /* no_legacy_server_connect */

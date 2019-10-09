@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2016 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 2015-2019 The OpenSSL Project Authors. All Rights Reserved.
  *
  * Licensed under the OpenSSL license (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
@@ -115,6 +115,7 @@ void ossl_statem_set_renegotiate(SSL *s)
  */
 void ossl_statem_set_error(SSL *s)
 {
+    s->statem.in_init = 1;
     s->statem.state = MSG_FLOW_ERROR;
 }
 
@@ -342,6 +343,14 @@ static int state_machine(SSL *s, int server)
         if (server) {
             if (st->state != MSG_FLOW_RENEGOTIATE) {
                 s->ctx->stats.sess_accept++;
+            } else if ((s->options & SSL_OP_NO_RENEGOTIATION)) {
+                /*
+                 * Shouldn't happen? The record layer should have prevented this
+                 */
+                SSLerr(SSL_F_STATE_MACHINE, ERR_R_INTERNAL_ERROR);
+                ssl3_send_alert(s, SSL3_AL_FATAL, SSL_AD_INTERNAL_ERROR);
+                ossl_statem_set_error(s);
+                goto end;
             } else if (!s->s3->send_connection_binding &&
                        !(s->options &
                          SSL_OP_ALLOW_UNSAFE_LEGACY_RENEGOTIATION)) {
@@ -548,10 +557,8 @@ static SUB_STATE_RETURN read_state_machine(SSL *s)
              * Validate that we are allowed to move to the new state and move
              * to that state if so
              */
-            if (!transition(s, mt)) {
-                ossl_statem_set_error(s);
+            if (!transition(s, mt))
                 return SUB_STATE_ERROR;
-            }
 
             if (s->s3->tmp.message_size > max_message_size(s)) {
                 ssl3_send_alert(s, SSL3_AL_FATAL, SSL_AD_ILLEGAL_PARAMETER);

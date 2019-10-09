@@ -1,5 +1,5 @@
 /*
- * Copyright 1995-2016 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 1995-2018 The OpenSSL Project Authors. All Rights Reserved.
  *
  * Licensed under the OpenSSL license (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
@@ -10,9 +10,9 @@
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
-#include "internal/numbers.h"
-#include "internal/cryptlib.h"
 #include <openssl/bio.h>
+#include "internal/cryptlib.h"
+#include "internal/numbers.h"
 
 /*
  * Copyright Patrick Powell 1995
@@ -665,7 +665,7 @@ fmtfp(char **sbuffer,
         iconvert[iplace++] = "0123456789"[intpart % 10];
         intpart = (intpart / 10);
     } while (intpart && (iplace < (int)sizeof(iconvert)));
-    if (iplace == sizeof iconvert)
+    if (iplace == sizeof(iconvert))
         iplace--;
     iconvert[iplace] = 0;
 
@@ -683,7 +683,7 @@ fmtfp(char **sbuffer,
         fracpart = (fracpart / 10);
     }
 
-    if (fplace == sizeof fconvert)
+    if (fplace == sizeof(fconvert))
         fplace--;
     fconvert[fplace] = 0;
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 1995-2016 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 1995-2017 The OpenSSL Project Authors. All Rights Reserved.
  *
  * Licensed under the OpenSSL license (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
@@ -22,7 +22,7 @@ static int ssl_puts(BIO *h, const char *str);
 static long ssl_ctrl(BIO *h, int cmd, long arg1, void *arg2);
 static int ssl_new(BIO *h);
 static int ssl_free(BIO *data);
-static long ssl_callback_ctrl(BIO *h, int cmd, bio_info_cb *fp);
+static long ssl_callback_ctrl(BIO *h, int cmd, BIO_info_cb *fp);
 typedef struct bio_ssl_st {
     SSL *ssl;                   /* The ssl handle :-) */
     /* re-negotiate every time the total number of bytes is this size */
@@ -34,11 +34,12 @@ typedef struct bio_ssl_st {
 } BIO_SSL;
 
 static const BIO_METHOD methods_sslp = {
-    BIO_TYPE_SSL, "ssl",
+    BIO_TYPE_SSL,
+    "ssl",
     ssl_write,
     ssl_read,
     ssl_puts,
-    NULL,                       /* ssl_gets, */
+    NULL,                       /* ssl_gets,      */
     ssl_ctrl,
     ssl_new,
     ssl_free,
@@ -393,14 +394,6 @@ static long ssl_ctrl(BIO *b, int cmd, long num, void *ptr)
 #endif
         }
         break;
-    case BIO_CTRL_GET_CALLBACK:
-        {
-            void (**fptr) (const SSL *xssl, int type, int val);
-
-            fptr = (void (**)(const SSL *xssl, int type, int val))ptr;
-            *fptr = SSL_get_info_callback(ssl);
-        }
-        break;
     default:
         ret = BIO_ctrl(ssl->rbio, cmd, num, ptr);
         break;
@@ -408,7 +401,7 @@ static long ssl_ctrl(BIO *b, int cmd, long num, void *ptr)
     return (ret);
 }
 
-static long ssl_callback_ctrl(BIO *b, int cmd, bio_info_cb *fp)
+static long ssl_callback_ctrl(BIO *b, int cmd, BIO_info_cb *fp)
 {
     SSL *ssl;
     BIO_SSL *bs;
@@ -418,16 +411,10 @@ static long ssl_callback_ctrl(BIO *b, int cmd, bio_info_cb *fp)
     ssl = bs->ssl;
     switch (cmd) {
     case BIO_CTRL_SET_CALLBACK:
-        {
-            /*
-             * FIXME: setting this via a completely different prototype seems
-             * like a crap idea
-             */
-            SSL_set_info_callback(ssl, (void (*)(const SSL *, int, int))fp);
-        }
+        ret = BIO_callback_ctrl(ssl->rbio, cmd, fp);
         break;
     default:
-        ret = BIO_callback_ctrl(ssl->rbio, cmd, fp);
+        ret = 0;
         break;
     }
     return (ret);

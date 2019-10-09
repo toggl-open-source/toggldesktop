@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2016 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 2002-2019 The OpenSSL Project Authors. All Rights Reserved.
  *
  * Licensed under the OpenSSL license (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
@@ -44,10 +44,13 @@
 #if (defined(__unix__) || defined(unix)) && !defined(USG) && \
         (defined(OpenBSD) || defined(__FreeBSD__))
 # include <sys/param.h>
-# if (OpenBSD >= 200112) || ((__FreeBSD_version >= 470101 && __FreeBSD_version < 500000) || __FreeBSD_version >= 500041)
+# if (defined(OpenBSD) && (OpenBSD >= 200112)) || \
+     (defined(__FreeBSD_version) && \
+      ((__FreeBSD_version >= 470101 && __FreeBSD_version < 500000) || \
+       __FreeBSD_version >= 500041))
 #  define HAVE_CRYPTODEV
 # endif
-# if (OpenBSD >= 200110)
+# if defined(OpenBSD) && (OpenBSD >= 200110)
 #  define HAVE_SYSLOG_R
 # endif
 #endif
@@ -1225,14 +1228,14 @@ static int bn2crparam(const BIGNUM *a, struct crparam *crp)
     crp->crp_p = (caddr_t) b;
     crp->crp_nbits = bits;
 
-    BN_bn2bin(a, b);
+    BN_bn2lebinpad(a, b, bytes);
     return (0);
 }
 
 /* Convert a /dev/crypto parameter to a BIGNUM */
 static int crparam2bn(struct crparam *crp, BIGNUM *a)
 {
-    u_int8_t *pd;
+    u_int8_t *b;
     int i, bytes;
 
     bytes = (crp->crp_nbits + 7) / 8;
@@ -1240,15 +1243,9 @@ static int crparam2bn(struct crparam *crp, BIGNUM *a)
     if (bytes == 0)
         return (-1);
 
-    if ((pd = OPENSSL_malloc(bytes)) == NULL)
-        return (-1);
+    b = (u_int8_t *)crp->crp_p;
 
-    for (i = 0; i < bytes; i++)
-        pd[i] = crp->crp_p[bytes - i - 1];
-
-    BN_bin2bn(pd, bytes, a);
-    free(pd);
-
+    BN_lebin2bn(b, bytes, a);
     return (0);
 }
 

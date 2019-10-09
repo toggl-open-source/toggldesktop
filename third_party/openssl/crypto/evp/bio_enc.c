@@ -25,7 +25,7 @@ static int enc_read(BIO *h, char *buf, int size);
 static long enc_ctrl(BIO *h, int cmd, long arg1, void *arg2);
 static int enc_new(BIO *h);
 static int enc_free(BIO *data);
-static long enc_callback_ctrl(BIO *h, int cmd, bio_info_cb *fps);
+static long enc_callback_ctrl(BIO *h, int cmd, BIO_info_cb *fps);
 #define ENC_BLOCK_SIZE  (1024*4)
 #define ENC_MIN_CHUNK   (256)
 #define BUF_OFFSET      (ENC_MIN_CHUNK + EVP_MAX_BLOCK_LENGTH)
@@ -46,7 +46,8 @@ typedef struct enc_struct {
 } BIO_ENC_CTX;
 
 static const BIO_METHOD methods_enc = {
-    BIO_TYPE_CIPHER, "cipher",
+    BIO_TYPE_CIPHER,
+    "cipher",
     enc_write,
     enc_read,
     NULL,                       /* enc_puts, */
@@ -386,7 +387,7 @@ static long enc_ctrl(BIO *b, int cmd, long num, void *ptr)
     return (ret);
 }
 
-static long enc_callback_ctrl(BIO *b, int cmd, bio_info_cb *fp)
+static long enc_callback_ctrl(BIO *b, int cmd, BIO_info_cb *fp)
 {
     long ret = 1;
     BIO *next = BIO_next(b);

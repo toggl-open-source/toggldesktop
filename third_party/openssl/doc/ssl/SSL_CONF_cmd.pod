@@ -110,6 +110,11 @@ Attempts to use the file B<value> as the set of temporary DH parameters for
 the appropriate context. This option is only supported if certificate
 operations are permitted.
 
+=item B<-no_renegotiation>
+
+Disables all attempts at renegotiation in TLSv1.2 and earlier, same as setting
+B<SSL_OP_NO_RENEGOTIATION>.
+
 =item B<-min_protocol>, B<-max_protocol>
 
 Sets the minimum and maximum supported protocol.
@@ -226,6 +231,11 @@ function SSL_CTX_use_serverinfo_file.
 Attempts to use the file B<value> as the set of temporary DH parameters for
 the appropriate context. This option is only supported if certificate
 operations are permitted.
+
+=item B<NoRenegotiation>
+
+Disables all attempts at renegotiation in TLSv1.2 and earlier, same as setting
+B<SSL_OP_NO_RENEGOTIATION>.
 
 =item B<SignatureAlgorithms>
 
@@ -424,7 +434,7 @@ SSLv3 is B<always> disabled and attempt to override this by the user are
 ignored.
 
 By checking the return code of SSL_CTX_cmd() it is possible to query if a
-given B<cmd> is recognised, this is useful is SSL_CTX_cmd() values are
+given B<cmd> is recognised, this is useful if SSL_CTX_cmd() values are
 mixed with additional application specific operations.
 
 For example an application might call SSL_CTX_cmd() and if it returns
@@ -496,10 +506,6 @@ Set supported curves to P-256, P-384:
 
  SSL_CONF_cmd(ctx, "Curves", "P-256:P-384");
 
-Set automatic support for any elliptic curve for key exchange:
-
- SSL_CONF_cmd(ctx, "ECDHParameters", "Automatic");
-
 =head1 RETURN VALUES
 
 SSL_CONF_cmd() returns 1 if the value of B<cmd> is recognised and B<value> is
@@ -543,7 +549,7 @@ B<MinProtocol> and B<MaxProtocol> where added in OpenSSL 1.1.0.
 
 =head1 COPYRIGHT
 
-Copyright 2012-2016 The OpenSSL Project Authors. All Rights Reserved.
+Copyright 2012-2018 The OpenSSL Project Authors. All Rights Reserved.
 
 Licensed under the OpenSSL license (the "License").  You may not use
 this file except in compliance with the License.  You can obtain a copy
