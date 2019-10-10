@@ -325,6 +325,8 @@ class TOGGL_INTERNAL_EXPORT User : public BaseModel {
 
     bool has_loaded_more_;
     bool collapse_entries_;
+
+    Poco::Mutex loadTimeEntries_m_;
 };
 
 template<class T>

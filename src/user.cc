@@ -1064,23 +1064,29 @@ void User::loadUserTimeEntryFromJSON(
         return;
     }
 
-    TimeEntry *model = related.TimeEntryByID(id);
+    TimeEntry* model;
+    {
+        Poco::Mutex::ScopedLock lock(loadTimeEntries_m_);
+        model = related.TimeEntryByID(id);
 
-    if (!model) {
-        model = related.TimeEntryByGUID(data["guid"].asString());
-    }
-
-    if (!data["server_deleted_at"].asString().empty()) {
-        if (model) {
-            model->MarkAsDeletedOnServer();
+        if (!model) {
+            model = related.TimeEntryByGUID(data["guid"].asString());
         }
-        return;
+
+        if (!data["server_deleted_at"].asString().empty()) {
+            if (model) {
+                model->MarkAsDeletedOnServer();
+            }
+            return;
+        }
+
+        if (!model) {
+            model = new TimeEntry();
+            model->SetID(id);
+            related.pushBackTimeEntry(model);
+        }
     }
 
-    if (!model) {
-        model = new TimeEntry();
-        related.pushBackTimeEntry(model);
-    }
     if (alive) {
         alive->insert(id);
     }
