@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Windows.Forms;
+using System.Windows.Threading;
 using Bugsnag;
 using Bugsnag.Payload;
 using Exception = System.Exception;
@@ -67,6 +68,12 @@ namespace TogglDesktop
 
             Application.ThreadException += Application_ThreadException;
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+            System.Windows.Application.Current.Dispatcher.UnhandledException += Dispatcher_UnhandledException;
+        }
+
+        private static void Dispatcher_UnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
+        {
+            NotifyBugsnag(e.Exception as Exception);
         }
 
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
