@@ -64,8 +64,8 @@ void autocomplete_item_clear(TogglAutocompleteView *item) {
     free(item->ProjectColor);
     item->ProjectColor = nullptr;
 
-    free(item->WorkspaceName);
-    item->WorkspaceName = nullptr;
+    free(item->ProjectGUID);
+    item->ProjectGUID = nullptr;
 
     free(item->Tags);
     item->Tags = nullptr;

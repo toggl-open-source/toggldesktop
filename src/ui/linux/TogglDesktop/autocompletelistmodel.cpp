@@ -13,6 +13,8 @@ void AutocompleteListModel::setList(QVector<AutocompleteView *> autocompletelist
     if (list == autocompletelist)
         return;
     beginResetModel();
+    for (auto i : list)
+        i->deleteLater();
     list = autocompletelist;
     endResetModel();
 }
