@@ -16,6 +16,10 @@ protocol TimeEntryScrubberFlowLayoutDelegate: class {
 @available(OSX 10.12.2, *)
 final class TimeEntryScrubberFlowLayout: NSScrubberFlowLayout {
 
+    private struct Constants {
+        static let BarItemHeight: CGFloat = 30
+    }
+
     // MARK: Variables
 
     weak var delegate: TimeEntryScrubberFlowLayoutDelegate?
@@ -40,15 +44,15 @@ final class TimeEntryScrubberFlowLayout: NSScrubberFlowLayout {
             let attribute = NSScrubberLayoutAttributes(forItemAt: i)
 
             // Get the size depend on the length of text
-            let templateBtn = NSButton(title: "", target: nil, action: nil)
-            templateBtn.title = title
-            templateBtn.sizeToFit()
+            let templateBtn = NSTextField(string: "")
+            templateBtn.stringValue = title
+            let width = templateBtn.cell!.cellSize(forBounds: CGRect(x: 0, y: 0, width: 1000.0, height: Constants.BarItemHeight)).width
 
             // Override the size
-            var size = templateBtn.frame.size
-            size.width += 20
+            var size = CGSize(width: width, height: Constants.BarItemHeight)
+            size.width += 30 // Padding for button
 
-            let frame = CGRect(x: x, y: 0, width: size.width, height: 30)
+            let frame = CGRect(x: x, y: 0, width: size.width, height: Constants.BarItemHeight)
             attribute.frame = frame
 
             //

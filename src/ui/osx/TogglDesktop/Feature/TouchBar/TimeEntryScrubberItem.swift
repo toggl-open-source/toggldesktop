@@ -11,17 +11,24 @@ import Cocoa
 @available(OSX 10.12.2, *)
 final class TimeEntryScrubberItem: NSScrubberItemView {
 
-    lazy var titleBtn = NSButton(title: "", target: nil, action: nil)
+    // MARK: OUTLET
+
+    private lazy var titleBtn = NSButton(title: "", target: nil, action: nil)
+
+    // MARK: View Cycle
+
     override func awakeFromNib() {
         super.awakeFromNib()
-
         if titleBtn.superview == nil {
             titleBtn.translatesAutoresizingMaskIntoConstraints = false
             addSubview(titleBtn)
             titleBtn.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
             titleBtn.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+            titleBtn.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 0).isActive = true
+            titleBtn.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 0).isActive = true
         }
     }
+
     // MARK: Public
 
     func config(_ item: TimeEntryViewItem) {
