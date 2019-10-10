@@ -1,0 +1,21 @@
+Source: toggldesktop
+Maintainer: Toggl <support@toggl.com>
+Section: misc
+Priority: optional
+Build-Depends: cmake, 
+    debhelper,    
+    pkg-config,
+    libssl-dev,
+    libxss-dev,
+    libxmu-dev
+Standards-Version: 4.1.2
+Homepage: https://github.com/toggl/toggldesktop
+
+Package: toggldesktop
+Architecture: any
+Depends: libxss1, 
+    libgstreamer-plugins-base1.0-0, 
+    libgstreamer1.0-0,
+    libxss1
+Description: Free Time Tracking Software
+ Simple time tracking tool and free timesheet alternative.

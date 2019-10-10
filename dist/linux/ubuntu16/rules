@@ -1,0 +1,36 @@
+#!/usr/bin/make -f
+DESTROOT=$(CURDIR)/debian/toggldesktop
+DEBVERS := $(shell dpkg-parsechangelog | sed -n -e 's/^Version: //p')
+VERSION := $(shell echo '$(DEBVERS)' | sed -e 's/^[[:digit:]]*://' -e 's/[~-].*//')
+#export LD_LIBRARY_PATH=toggldesktop/lib:$LD_LIBRARY_PATH
+
+%:
+	dh $@
+
+override_dh_shlibdeps:
+	export LD_LIBRARY_PATH=$(DEB_HOST_MULTIARCH)/toggldesktop:$LD_LIBRARY_PATH dh_shlibdeps
+
+override_dh_auto_configure:
+	#PREFIX="$(DESTROOT)/usr" ./package.sh build
+	#dh_auto_configure -- -DTOGGL_VERSION=$(VERSION) -DTOGGL_PRODUCTION_BUILD=ON -DUSE_BUNDLED_LIBRARIES=ON -DCMAKE_INSTALL_RPATH="/usr/lib;/usr/lib/toggldesktop"
+	exit 0
+
+override_dh_auto_build:
+	exit 0
+
+override_dh_auto_install:
+	#dh_auto_install
+	PREFIX="$(DESTROOT)/usr" ./package.sh build
+	mkdir -p $(DESTROOT)/usr/lib/toggldesktop/
+	ls -p -1 $(DESTROOT)/usr/lib/ | grep -v "^toggldesktop" | grep -v "^libTogglDesktopLibrary.so" | xargs printf -- "$(DESTROOT)/usr/lib/%s\n" | xargs -I{} mv {} $(DESTROOT)/usr/lib/toggldesktop/lib
+
+	PREFIX="$(DESTROOT)/usr" THIRDPARTYDIR="$(DESTROOT)/usr/lib/toggldesktop/lib" LIBEXECDIR="$(DESTROOT)/usr/lib/toggldesktop/bin" ./package.sh compose
+	exit 0
+	rm -fr $(DESTROOT)/usr/include
+	rm -fr $(DESTROOT)/usr/lib/cmake
+	mkdir -p $(DESTROOT)/usr/lib/toggldesktop/
+	#ls -p -1 $(DESTROOT)/usr/lib/
+	#ls -p -1 $(DESTROOT)/usr/lib/ | grep -v "^toggldesktop" | grep -v "^libTogglDesktopLibrary.so" | xargs printf -- "$(DESTROOT)/usr/lib/%s\n" | xargs -I{} mv {} $(DESTROOT)/usr/lib/toggldesktop/lib
+
+override_dh_strip:
+	exit 0
