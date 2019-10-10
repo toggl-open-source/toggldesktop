@@ -112,6 +112,7 @@ function compose() {
 
     patchelf --set-rpath '$ORIGIN/'$(relpath "$BINDIR/TogglDesktop" "$THIRDPARTYDIR") "$BINDIR/TogglDesktop"
     patchelf --set-rpath '$ORIGIN/'$(relpath "$LIBEXECDIR/QtWebEngineProcess" "$THIRDPARTYDIR") "$LIBEXECDIR/QtWebEngineProcess"
+    patchelf --set-rpath '$ORIGIN/'$(relpath "$LIBDIR/libTogglDesktopLibrary.so" "$THIRDPARTYDIR") "$LIBDIR/libTogglDesktopLibrary.so"
 
     for i in $(ls "$THIRDPARTYDIR"/*.so*); do
         patchelf --set-rpath '$ORIGIN' $i
