@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>427</width>
-    <height>483</height>
+    <height>556</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -289,19 +289,7 @@
          </item>
          <item>
           <widget class="QWidget" name="signupWidget" native="true">
-           <layout class="QVBoxLayout" name="singupFrame">
-            <property name="leftMargin">
-             <number>0</number>
-            </property>
-            <property name="topMargin">
-             <number>0</number>
-            </property>
-            <property name="rightMargin">
-             <number>0</number>
-            </property>
-            <property name="bottomMargin">
-             <number>0</number>
-            </property>
+           <layout class="QVBoxLayout" name="verticalLayout_4">
             <item>
              <widget class="QLabel" name="countryLabel">
               <property name="styleSheet">
@@ -426,6 +414,36 @@
               </property>
               <property name="flat">
                <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="googleSignup">
+              <property name="font">
+               <font>
+                <pointsize>-1</pointsize>
+               </font>
+              </property>
+              <property name="mouseTracking">
+               <bool>true</bool>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">color:#fff;padding-bottom:6px;</string>
+              </property>
+              <property name="text">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;#google_signup&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#fff;&quot;&gt;Sign up with Google Account&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+              <property name="textFormat">
+               <enum>Qt::RichText</enum>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignHCenter|Qt::AlignTop</set>
+              </property>
+              <property name="openExternalLinks">
+               <bool>false</bool>
+              </property>
+              <property name="textInteractionFlags">
+               <set>Qt::TextBrowserInteraction</set>
               </property>
              </widget>
             </item>

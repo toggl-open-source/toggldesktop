@@ -2,13 +2,19 @@
 #include "ui_logindialog.h"
 
 #include <QDebug>
+#include <QKeyEvent>
+
 #include <QWebEngineView>
+#include <QWebEngineProfile>
+#include <QWebEngineCookieStore>
 
 LoginDialog::LoginDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::LoginDialog)
 {
     ui->setupUi(this);
+    ui->webView->page()->profile()->cookieStore()->deleteAllCookies();
+    ui->webView->page()->profile()->setPersistentCookiesPolicy(QWebEngineProfile::NoPersistentCookies);
     connect(ui->webView, SIGNAL(urlChanged(QUrl)), this, SLOT(urlChanged(QUrl)));
 }
 
@@ -43,8 +49,16 @@ QString LoginDialog::accessToken()
     return m_strAccessToken;
 }
 
+void LoginDialog::keyPressEvent(QKeyEvent *e) {
+    if(ui->webView->hasFocus() && (e->key() == Qt::Key_Enter || e->key() == Qt::Key_Return))
+        return;
+    QDialog::keyPressEvent(e);
+}
+
 
 void LoginDialog::setLoginUrl(const QString& url)
 {
-   ui->webView->setUrl(url);
+    ui->webView->page()->profile()->cookieStore()->deleteAllCookies();
+    ui->webView->setUrl(url);
+    ui->webView->setFocus();
 }

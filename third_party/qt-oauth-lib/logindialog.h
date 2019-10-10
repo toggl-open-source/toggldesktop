@@ -19,6 +19,8 @@ public:
     void setLoginUrl(const QString& url);
     QString accessToken();
 
+    void keyPressEvent(QKeyEvent *e) override;
+
 signals:
     void accessTokenObtained();
 
