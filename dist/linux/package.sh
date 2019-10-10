@@ -45,7 +45,7 @@ function compose() {
     qmake=$(find $libdir/../bin/ $libdir/../../bin/ -name qmake -or -name qmake-qt5 | head -n1)
     echo "qmake: " $qmake
 
-    cp -Lrfu $(ldd bin/TogglDesktop | grep -e libQt -e ssl -e libicu -e double-conversion -e jpeg -e re2 -e avcodec -e avformat -e avutil -e webp | sed 's/.* => \(.*\)[(]0x.*/\1/') lib
+    cp -Lrfu $(ldd bin/TogglDesktop | grep -e libQt -e ssl -e crypto -e libicu -e double-conversion -e jpeg -e re2 -e avcodec -e avformat -e avutil -e webp | sed 's/.* => \(.*\)[(]0x.*/\1/') lib
     ls "$qmake" >/dev/null
 
     libexecdir=$($qmake -query QT_INSTALL_LIBEXECS)

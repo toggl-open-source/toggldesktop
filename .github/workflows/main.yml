@@ -37,7 +37,7 @@ jobs:
         ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} owner=toggl repo=toggldesktop tag="$TAG_NAME" filename="toggldesktop_x86_64.tar.gz"
 
   linux-tarball:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-16.04
     if: github.event_name == 'create'
     steps:
     - uses: actions/checkout@v1
@@ -51,14 +51,14 @@ jobs:
         sudo apt install dbus libfreetype6 fontconfig libx11-6 libx11-xcb1 libgl1-mesa-dev libnss3 libasound2 libxcomposite1 libxcursor1 libxi6 libxtst6 wget
     - name: Fetch and install binary Qt
       run: |
-        bash ./dist/linux/install-qt.sh 5.12.4
+        bash ./dist/linux/install-qt.sh 5.12.5
     - name: Build the Linux binary
       run: |
-        export CMAKE_PREFIX_PATH="${PWD}/Qt/5.12.4/gcc_64/lib/cmake/"
+        export CMAKE_PREFIX_PATH="${PWD}/Qt/5.12.5/gcc_64/lib/cmake/"
         bash ./dist/linux/package.sh build
     - name: Package the binaries, create tarball
       run: |
-        export CMAKE_PREFIX_PATH="${PWD}/Qt/5.12.4/gcc_64/lib/cmake/"
+        export CMAKE_PREFIX_PATH="${PWD}/Qt/5.12.5/gcc_64/lib/cmake/"
         bash ./dist/linux/package.sh compose
     - name: Upload to GitHub
       run: |
