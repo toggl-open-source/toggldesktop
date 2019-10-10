@@ -54,7 +54,7 @@ final class TouchBarService: NSObject {
         view.mode = NSScrubber.Mode.free
         view.register(NSNib(nibNamed: NSNib.Name("TimeEntryScrubberItem"), bundle: nil), forItemIdentifier: Constants.TimeEntryIdentifer)
         let layout = TimeEntryScrubberFlowLayout()
-        layout.itemSpacing = 4
+        layout.itemSpacing = 8
         layout.delegate = self
         view.scrubberLayout = layout
         return view
