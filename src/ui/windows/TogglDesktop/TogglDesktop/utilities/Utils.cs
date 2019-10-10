@@ -19,7 +19,11 @@ public static class Utils
     {
         if (editPopup != null)
         {
-            editPopup.Width = Toggl.GetEditViewWidth();
+            var editWidth = Toggl.GetEditViewWidth();
+            if (editWidth > 0 && editWidth < int.MaxValue)
+            {
+                editPopup.Width = editWidth;
+            }
         }
         if (Toggl.GetWindowMaximized())
         {
@@ -66,11 +70,14 @@ public static class Utils
             x = Toggl.GetMiniTimerX();
             y = Toggl.GetMiniTimerY();
             w = Toggl.GetMiniTimerW();
-            miniTimer.Left = x;
-            miniTimer.Top = y;
-            miniTimer.Width = w;
-            Toggl.Debug("Retrieved mini timer location ({0}x{1} by {2})", x, y, w);
-
+            if (ValidateMiniTimerSettings(x, y, w))
+            {
+                miniTimer.Left = x;
+                miniTimer.Top = y;
+                miniTimer.Width = w;
+                Toggl.Debug("Retrieved mini timer location ({0}x{1} by {2})", x, y, w);
+            }
+            
             CheckMinitimerVisibility(miniTimer);
         }
     }
@@ -78,6 +85,11 @@ public static class Utils
     private static bool ValidateWindowSettings(long x, long y, long h, long w)
     {
         return new[] {x, y, h, w}.All(v => v >= int.MinValue && v <= int.MaxValue) && h > 0 && w > 0;
+    }
+
+    private static bool ValidateMiniTimerSettings(long x, long y, long w)
+    {
+        return new[] { x, y, w }.All(v => v >= int.MinValue && v <= int.MaxValue) && w > 0;
     }
 
     public static void CheckMinitimerVisibility(MiniTimerWindow miniTimer)
