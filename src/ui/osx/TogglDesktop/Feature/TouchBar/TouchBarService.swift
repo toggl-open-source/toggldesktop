@@ -51,7 +51,7 @@ final class TouchBarService: NSObject {
         let view = NSScrubber(frame: .zero)
         view.delegate = self
         view.dataSource = self
-        view.mode = NSScrubber.Mode.free
+        view.mode = .free
         view.selectionBackgroundStyle = .outlineOverlay
         view.selectionOverlayStyle = .outlineOverlay
         view.showsAdditionalContentIndicators = true
@@ -76,6 +76,13 @@ final class TouchBarService: NSObject {
 
     func updateRunningItem(_ timeEntry: TimeEntryViewItem) {
         runningTimeEntryBtn.title = timeEntry.touchBarTitle
+        if let colorStr = timeEntry.projectColor,
+            !colorStr.isEmpty,
+            let color = ConvertHexColor.hexCode(toNSColor: colorStr) {
+            runningTimeEntryBtn.bezelColor = color
+        } else {
+            runningTimeEntryBtn.bezelColor = nil
+        }
     }
 
     func updateTimeEntryList(_ timeEntries: [TimeEntryViewItem]) {
@@ -180,11 +187,15 @@ extension TouchBarService: NSScrubberDelegate, NSScrubberDataSource {
     }
 
     func scrubber(_ scrubber: NSScrubber, didSelectItemAt selectedIndex: Int) {
-        guard let item = timeEntries[safe: selectedIndex] else { return }
+        continueTimeEntry(at: selectedIndex)
+    }
+
+    private func continueTimeEntry(at index: Int) {
+        guard let item = timeEntries[safe: index] else { return }
         NotificationCenter.default.post(name: NSNotification.Name(kCommandContinue), object: item.guid)
 
         // Deselect, so we can select it again
-        scrubber.selectedIndex = -1
+        scrubberView.selectedIndex = -1
     }
 }
 
