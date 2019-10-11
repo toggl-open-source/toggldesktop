@@ -52,6 +52,9 @@ final class TouchBarService: NSObject {
         view.delegate = self
         view.dataSource = self
         view.mode = NSScrubber.Mode.free
+        view.selectionBackgroundStyle = .outlineOverlay
+        view.selectionOverlayStyle = .outlineOverlay
+        view.showsAdditionalContentIndicators = true
         view.register(NSNib(nibNamed: NSNib.Name("TimeEntryScrubberItem"), bundle: nil), forItemIdentifier: Constants.TimeEntryIdentifer)
         let layout = TimeEntryScrubberFlowLayout()
         layout.itemSpacing = 8

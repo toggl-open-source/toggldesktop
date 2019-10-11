@@ -20,6 +20,7 @@ final class TimeEntryScrubberItem: NSScrubberItemView {
     override func awakeFromNib() {
         super.awakeFromNib()
         if titleBtn.superview == nil {
+            titleBtn.setButtonType(NSButton.ButtonType.momentaryChange)
             titleBtn.translatesAutoresizingMaskIntoConstraints = false
             addSubview(titleBtn)
             titleBtn.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
