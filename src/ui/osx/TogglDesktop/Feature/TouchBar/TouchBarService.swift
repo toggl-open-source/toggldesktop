@@ -157,10 +157,6 @@ extension TouchBarService {
     @objc fileprivate func startBtnOnTap(_ sender: NSButton) {
         delegate?.touchBarServiceStartTimeEntryOnTap()
     }
-
-    @objc fileprivate func timeEntryBtnOnTap(_ sender: NSButton) {
-
-    }
 }
 
 // MARK: NSScrubberDataSource
@@ -181,7 +177,11 @@ extension TouchBarService: NSScrubberDelegate, NSScrubberDataSource {
     }
 
     func scrubber(_ scrubber: NSScrubber, didSelectItemAt selectedIndex: Int) {
-        print(selectedIndex)
+        guard let item = timeEntries[safe: selectedIndex] else { return }
+        NotificationCenter.default.post(name: NSNotification.Name(kCommandContinue), object: item.guid)
+
+        // Deselect, so we can select it again
+        scrubber.selectedIndex = -1
     }
 }
 
