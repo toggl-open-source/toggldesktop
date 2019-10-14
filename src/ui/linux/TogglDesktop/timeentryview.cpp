@@ -28,7 +28,7 @@ TimeEntryView *TimeEntryView::importOne(TogglTimeEntryView *view) {
     result->StartTimeString = QString(view->StartTimeString);
     result->EndTimeString = QString(view->EndTimeString);
     result->UpdatedAt = view->UpdatedAt;
-    result->DateHeader = QString(view->DateHeader);
+    result->DateHeader = QString("<tr><td>%1</td><td align=right>%2</td></tr>").arg(view->DateHeader).arg(view->DateDuration);
     result->DateDuration = QString(view->DateDuration);
     result->IsHeader = view->IsHeader;
     result->CanSeeBillable = view->CanSeeBillable;
