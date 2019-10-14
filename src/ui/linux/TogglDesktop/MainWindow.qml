@@ -15,6 +15,23 @@ Window {
     property bool loggingIn: !loginSwitch.checked
     property bool signingUp: !loggingIn
 
+    property bool everythingFilled: signingUp ? (!signupWithEmail.checked || (username.text.length > 0 && password.text.length > 0)) &&
+                                                 country.currentIndex > -1 && termsAndConditions.checked
+                                              : username.text.length > 0 && password.text.length > 0
+
+    function act() {
+        if (!everythingFilled)
+            return
+        if (loggingIn)
+            toggl.login(username.text, password.text)
+        else if (signingUp) {
+            if (signupWithEmail.checked)
+                toggl.signup(username.text, password.text, country.currentIndex)
+            else if (signupWithGoogle.checked)
+                toggl.googleSignup(username.text, password.text, country.currentIndex)
+        }
+    }
+
     Rectangle {
         anchors.fill: parent
         color: "#202020"
@@ -103,6 +120,7 @@ Window {
             anchors.horizontalCenter: parent.horizontalCenter
             placeholderText: "Username"
             visible: loggingIn || !signupWithGoogle.checked
+            onAccepted: act()
         }
 
         TextField {
@@ -112,6 +130,7 @@ Window {
             placeholderText: "Password"
             echoMode: TextField.Password
             visible: loggingIn || !signupWithGoogle.checked
+                onAccepted: act()
         }
 
         ComboBox {
@@ -144,10 +163,16 @@ Window {
             width: parent.width
             anchors.horizontalCenter: parent.horizontalCenter
             text: signingUp ? "Sign up" : "Log in"
-            enabled: signingUp ? (!signupWithEmail.checked || (username.text.length > 0 && password.text.length > 0)) &&
-                                  country.currentIndex > -1 && termsAndConditions.checked
-                               : username.text.length > 0 && password.text.length > 0
-            onClicked: loggingIn ? toggl.login(username.text, password.text) : toggl.signup(username.text, password.text, country.currentIndex)
+            enabled: everythingFilled
+            onClicked: act()
+        }
+
+        Button {
+            width: parent.width
+            anchors.horizontalCenter: parent.horizontalCenter
+            text: "Log in with Google (not implemented)"
+            visible: loggingIn
+            enabled: false
         }
     }
 
