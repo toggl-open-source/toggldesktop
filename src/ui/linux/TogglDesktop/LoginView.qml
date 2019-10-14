@@ -73,7 +73,7 @@ Item {
                 Layout.fillWidth: true
                 horizontalAlignment: Text.AlignHCenter
                 text: "Sign up"
-                color: signingUp ? "white;" : "#9a9a9a"
+                color: signingUp ? "white" : "#9a9a9a"
             }
         }
 
