@@ -24,5 +24,6 @@
         <file>MainWindow.qml</file>
         <file>LoginView.qml</file>
         <file>ErrorOverlay.qml</file>
+        <file>TimeEntryListView.qml</file>
     </qresource>
 </RCC>

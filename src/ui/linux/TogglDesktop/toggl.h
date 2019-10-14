@@ -43,10 +43,14 @@ class TogglApi : public QObject {
     bool shutdown;
 
     QQmlListProperty<CountryView> countries();
+    QQmlListProperty<TimeEntryView> timeEntries();
+    void importTimeEntries(QVector<TimeEntryView *> list);
 signals:
     void countriesChanged();
+    void timeEntriesChanged();
 private:
     QList<CountryView*> countries_;
+    QList<TimeEntryView*> timeEntries_;
 
  public slots:
     void setCountries(QVector<CountryView *> list);
@@ -272,7 +276,6 @@ private:
     void aboutToDisplayTimeEntryList();
     void displayTimeEntryList(
         const bool open,
-        QVector<TimeEntryView *> list,
         const bool show_load_more_button);
 
     void aboutToDisplayTimeEntryEditor();
