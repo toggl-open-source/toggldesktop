@@ -232,7 +232,7 @@ private:
 
     bool runScriptFile(const QString filename);
 
-    static const QString formatDurationInSecondsHHMMSS(
+    Q_INVOKABLE static const QString formatDurationInSecondsHHMMSS(
         const int64_t duration);
 
     QRect const getWindowsFrameSetting();
