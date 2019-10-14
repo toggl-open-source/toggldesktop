@@ -33,10 +33,12 @@ Rectangle {
     RowLayout {
         id: timerContainer
         height: parent.height
-        width: parent.width - startButton.width
+        width: parent.width - startButton.width - 6
+        x: 6
         ColumnLayout {
             Layout.fillHeight: true
             Layout.fillWidth: true
+            spacing: 0
             Text {
                 visible: running
                 Layout.fillWidth: true
@@ -44,6 +46,7 @@ Rectangle {
                 verticalAlignment: Text.AlignVCenter
                 text: runningTimeEntry ? runningTimeEntry.Description : ""
                 color: "white"
+                font.pointSize: 12
             }
             TextField {
                 id: description
@@ -51,6 +54,37 @@ Rectangle {
                 visible: !running
                 Layout.fillWidth: true
                 onAccepted: start()
+            }
+            RowLayout {
+                visible: runningTimeEntry && runningTimeEntry.ProjectLabel.length > 0
+                Button {
+                    implicitWidth: 12
+                    implicitHeight: 12
+                    text: "x"
+                }
+                Text {
+                    text: runningTimeEntry ? runningTimeEntry.ProjectLabel : ""
+                    color: runningTimeEntry && runningTimeEntry.Color.length > 0 ? runningTimeEntry.Color : "white"
+                    font.pointSize: 8
+                }
+                Text {
+                    visible: runningTimeEntry && runningTimeEntry.TaskLabel.length > 0
+                    text: runningTimeEntry && runningTimeEntry.TaskLabel.length ? "• " + runningTimeEntry.TaskLabel : ""
+                    color: "white"
+                }
+            }
+            RowLayout {
+                visible: runningTimeEntry && runningTimeEntry.ClientLabel.length > 0
+                Button {
+                    implicitWidth: 12
+                    implicitHeight: 12
+                    text: "x"
+                }
+                Text {
+                    text: runningTimeEntry ? runningTimeEntry.ClientLabel : ""
+                    color: "white"
+                    font.pointSize: 8
+                }
             }
         }
         ColumnLayout {
