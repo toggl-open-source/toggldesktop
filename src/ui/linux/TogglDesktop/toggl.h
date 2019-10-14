@@ -257,7 +257,8 @@ private:
     bool discardTimeAndContinue(const QString guid,
                                 const uint64_t at);
 
-    static const QString formatDurationInSecondsHHMMSS(
+
+    Q_INVOKABLE static const QString formatDurationInSecondsHHMMSS(
         const int64_t duration);
 
     QRect const getWindowsFrameSetting();

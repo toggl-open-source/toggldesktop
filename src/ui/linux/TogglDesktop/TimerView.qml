@@ -3,6 +3,7 @@ import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12
 
 Rectangle {
+    id: root
     color: "black"
     height: 64
 
@@ -11,7 +12,9 @@ Rectangle {
 
     function start() {
         if (!running && description.text.length > 0) {
-            toggl.start(description.text, "", 0, 0, "", false)
+            var dur = duration.text === "00:00" ? "" : duration.text
+            toggl.start(description.text, dur, 0, 0, "", false)
+            description.text = ""
         }
     }
 
@@ -44,16 +47,40 @@ Rectangle {
             }
             TextField {
                 id: description
+                focus: true
                 visible: !running
                 Layout.fillWidth: true
                 onAccepted: start()
             }
         }
-        Text {
+        ColumnLayout {
             Layout.fillHeight: true
-            verticalAlignment: Text.AlignVCenter
-            text: running ? runningTimeEntry.Duration : "00:00"
-            color: "white"
+            Text {
+                visible: running
+                Layout.fillHeight: true
+                verticalAlignment: Text.AlignVCenter
+                text: runningTimeEntry ? runningTimeEntry.Duration : ""
+                Timer {
+                    running: root.running
+                    interval: 100
+                    repeat: true
+                    onTriggered: {
+                        parent.text = toggl.formatDurationInSecondsHHMMSS(new Date().getTime() / 1000 - runningTimeEntry.Started)
+                    }
+                }
+
+                color: "white"
+            }
+            TextField {
+                id: duration
+                visible: !running
+                Layout.preferredWidth: 64
+                text: "00:00"
+                onAccepted: start()
+                validator: RegExpValidator {
+                    regExp: /[0-9][0-9]:[0-9][0-9]/
+                }
+            }
         }
     }
     Rectangle {
