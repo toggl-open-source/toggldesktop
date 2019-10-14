@@ -28,17 +28,50 @@ Item {
                     color: "white"
                     RowLayout {
                         anchors.fill: parent
-                        Text {
+                        ColumnLayout {
                             Layout.fillHeight: true
                             Layout.fillWidth: true
-                            text: modelData.Description
-                            verticalAlignment: Text.AlignVCenter
+                            Text {
+                                Layout.fillWidth: true
+                                text: modelData.Description
+                                verticalAlignment: Text.AlignVCenter
+                            }
+                            RowLayout {
+                                Layout.fillWidth: true
+                                Text {
+                                    text: modelData.ClientLabel
+                                    font.pixelSize: 8
+                                }
+                                Text {
+                                    text: modelData.ProjectLabel
+                                    color: modelData.Color
+                                    font.pixelSize: 8
+                                }
+                                Text {
+                                    text: modelData.TaskLabel
+                                    font.pixelSize: 8
+                                }
+                                Item {
+                                    Layout.fillWidth: true
+                                }
+                            }
+                        }
+                        Button {
+                            visible: modelData.Group
+                            implicitWidth: implicitHeight
+                            text: modelData.GroupItemCount
+                            onClicked: toggl.toggleEntriesGroup(modelData.GroupName)
                         }
                         Button {
                             implicitWidth: implicitHeight
-                            contentItem: Image {
-                                source: "qrc:/images/continue.svg"
+                            contentItem: Text {
+                                anchors.centerIn: parent
+                                verticalAlignment: Text.AlignVCenter
+                                horizontalAlignment: Text.AlignHCenter
+                                text: "▸"
                             }
+                            onClicked: toggl.continueTimeEntry(modelData.GUID)
+
                         }
                     }
                 }
