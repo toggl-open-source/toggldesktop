@@ -23,5 +23,7 @@
         <file>images/down_arrow.png</file>
         <file>images/warning-icon.png</file>
         <file>MainWindow.qml</file>
+        <file>LoginView.qml</file>
+        <file>ErrorOverlay.qml</file>
     </qresource>
 </RCC>
