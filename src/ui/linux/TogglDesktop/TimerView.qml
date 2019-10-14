@@ -9,6 +9,12 @@ Rectangle {
     property bool running: false
     property var runningTimeEntry: null
 
+    function start() {
+        if (!running && description.text.length > 0) {
+            toggl.start(description.text, "", 0, 0, "", false)
+        }
+    }
+
     Connections {
         target: toggl
         onDisplayStoppedTimerState: {
@@ -40,6 +46,7 @@ Rectangle {
                 id: description
                 visible: !running
                 Layout.fillWidth: true
+                onAccepted: start()
             }
         }
         Text {
@@ -66,9 +73,8 @@ Rectangle {
                 if (running) {
                     toggl.stop()
                 }
-                else if (description.text.length > 0) {
-                    toggl.start(description.text, "00:00", 0, 0, "", false)
-                    description.text = ""
+                else {
+                    start()
                 }
             }
         }
