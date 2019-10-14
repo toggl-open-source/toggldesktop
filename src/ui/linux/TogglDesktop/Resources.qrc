@@ -22,5 +22,6 @@
         <file>images/group_icon_open.svg</file>
         <file>images/down_arrow.png</file>
         <file>images/warning-icon.png</file>
+        <file>MainWindow.qml</file>
     </qresource>
 </RCC>
