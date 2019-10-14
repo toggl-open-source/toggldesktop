@@ -60,7 +60,7 @@ class TimeEntryView : public QObject {
     PROPERTY(bool, GroupOpen)
     PROPERTY(QString, GroupName)
     PROPERTY(QString, GroupDuration)
-    PROPERTY(u_int64_t, GroupItemCount)
+    PROPERTY(quint64, GroupItemCount)
 };
 
 #endif  // SRC_UI_LINUX_TOGGLDESKTOP_TIMEENTRYVIEW_H_
