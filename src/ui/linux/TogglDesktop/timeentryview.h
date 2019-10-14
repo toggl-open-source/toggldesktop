@@ -8,6 +8,13 @@
 
 #include "./toggl_api.h"
 
+#define PROPERTY(type, name) \
+private: \
+    Q_PROPERTY(type name READ name ## Get CONSTANT) \
+public: \
+    type name; \
+    type name ## Get() const { return name; }
+
 class TimeEntryView : public QObject {
     Q_OBJECT
 
@@ -20,40 +27,40 @@ class TimeEntryView : public QObject {
     bool confirmlessDelete();
     const QString lastUpdate();
 
-    int64_t DurationInSeconds;
-    QString Description;
-    QString ProjectAndTaskLabel;
-    QString ProjectLabel;
-    QString TaskLabel;
-    QString ClientLabel;
-    uint64_t WID;
-    uint64_t PID;
-    uint64_t TID;
-    QString Duration;
-    QString Color;
-    QString GUID;
-    bool Billable;
-    QString Tags;
-    uint64_t Started;
-    uint64_t Ended;
-    QString StartTimeString;
-    QString EndTimeString;
-    uint64_t UpdatedAt;
-    QString DateHeader;
-    QString DateDuration;
-    bool IsHeader;
-    bool CanAddProjects;
-    bool CanSeeBillable;
-    uint64_t DefaultWID;
-    QString WorkspaceName;
-    QString Error;
-    bool Unsynced;
+    PROPERTY(int64_t, DurationInSeconds)
+    PROPERTY(QString, Description)
+    PROPERTY(QString, ProjectAndTaskLabel)
+    PROPERTY(QString, ProjectLabel)
+    PROPERTY(QString, TaskLabel)
+    PROPERTY(QString, ClientLabel)
+    PROPERTY(uint64_t, WID)
+    PROPERTY(uint64_t, PID)
+    PROPERTY(uint64_t, TID)
+    PROPERTY(QString, Duration)
+    PROPERTY(QString, Color)
+    PROPERTY(QString, GUID)
+    PROPERTY(bool, Billable)
+    PROPERTY(QString, Tags)
+    PROPERTY(uint64_t, Started)
+    PROPERTY(uint64_t, Ended)
+    PROPERTY(QString, StartTimeString)
+    PROPERTY(QString, EndTimeString)
+    PROPERTY(uint64_t, UpdatedAt)
+    PROPERTY(QString, DateHeader)
+    PROPERTY(QString, DateDuration)
+    PROPERTY(bool, IsHeader)
+    PROPERTY(bool, CanAddProjects)
+    PROPERTY(bool, CanSeeBillable)
+    PROPERTY(uint64_t, DefaultWID)
+    PROPERTY(QString, WorkspaceName)
+    PROPERTY(QString, Error)
+    PROPERTY(bool, Unsynced)
     // Group mode items
-    bool Group;
-    bool GroupOpen;
-    QString GroupName;
-    QString GroupDuration;
-    u_int64_t GroupItemCount;
+    PROPERTY(bool, Group)
+    PROPERTY(bool, GroupOpen)
+    PROPERTY(QString, GroupName)
+    PROPERTY(QString, GroupDuration)
+    PROPERTY(u_int64_t, GroupItemCount)
 };
 
 #endif  // SRC_UI_LINUX_TOGGLDESKTOP_TIMEENTRYVIEW_H_
