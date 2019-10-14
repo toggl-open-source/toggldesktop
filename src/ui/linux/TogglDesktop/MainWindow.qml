@@ -26,6 +26,10 @@ Window {
             if (open)
                 mainView.source = "LoginView.qml"
         }
+        onDisplayTimeEntryList: {
+            if (open)
+                mainView.source = "TimeEntryListView.qml"
+        }
     }
 
     Loader {
