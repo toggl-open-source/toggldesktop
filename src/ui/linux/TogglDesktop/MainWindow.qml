@@ -12,6 +12,10 @@ ApplicationWindow {
     minimumHeight: 640
     height: 640
 
+    SystemPalette {
+        id: palette
+    }
+
     menuBar: MenuBar {
         Menu {
             title: "Toggl Desktop"

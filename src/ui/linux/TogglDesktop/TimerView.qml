@@ -44,7 +44,7 @@ Rectangle {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
                 verticalAlignment: Text.AlignVCenter
-                text: runningTimeEntry ? " " + runningTimeEntry.Description : ""
+                text: runningTimeEntry && runningTimeEntry.Description.length > 0 ? " " + runningTimeEntry.Description : " (no description)"
                 color: "white"
                 font.pixelSize: 12
             }
@@ -56,7 +56,7 @@ Rectangle {
                 onAccepted: start()
                 background: Item {}
                 font.pixelSize: 12
-                placeholderText: "Placeholder"
+                placeholderText: "What are you doing?"
                 placeholderTextColor: "light gray"
                 color: "white"
             }
@@ -132,10 +132,13 @@ Rectangle {
         height: parent.height
         anchors.left: timerContainer.right
         anchors.leftMargin: 3
-        color: running ? "red" : "green"
+        color: running ? "#e20000" : "#47bc00"
         Text {
+            font.weight: Font.DemiBold
             text: running ? "Stop" : "Start"
             anchors.centerIn: parent
+            font.pixelSize: 12
+            color: "white"
         }
         MouseArea {
             anchors.fill: parent
