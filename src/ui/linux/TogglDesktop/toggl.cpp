@@ -100,10 +100,11 @@ void on_display_time_entry_list(
     if (open) {
         TogglApi::instance->aboutToDisplayTimeEntryList();
     }
+    TogglApi::instance->importTimeEntries(TimeEntryView::importAll(first));
     TogglApi::instance->displayTimeEntryList(
         open,
-        TimeEntryView::importAll(first),
         show_load_more_button);
+
 }
 
 void on_display_time_entry_autocomplete(
@@ -333,6 +334,19 @@ bool TogglApi::notifyBugsnag(
 
 QQmlListProperty<CountryView> TogglApi::countries() {
     return QQmlListProperty<CountryView>(this, countries_);
+}
+
+QQmlListProperty<TimeEntryView> TogglApi::timeEntries() {
+    return QQmlListProperty<TimeEntryView>(this, timeEntries_);
+}
+
+void TogglApi::importTimeEntries(QVector<TimeEntryView *> list) {
+    for (auto i : timeEntries_)
+        i->deleteLater();
+    timeEntries_.clear();
+    for (auto i : list)
+        timeEntries_.append(i);
+    emit timeEntriesChanged();
 }
 
 bool TogglApi::startEvents() {
