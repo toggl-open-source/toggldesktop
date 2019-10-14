@@ -61,7 +61,6 @@ set(BINARY_SOURCE_FILES
     timeentryeditorwidget.ui
     timeentrylistwidget.ui
     timerwidget.ui
-
 )
 
 # Set up compilation targets

@@ -21,5 +21,6 @@
         <file>images/group_icon_open.svg</file>
         <file>images/down_arrow.png</file>
         <file>../../windows/TogglDesktop/TogglDesktop/Resources/warning-icon.png</file>
+        <file>MainWindow.qml</file>
     </qresource>
 </RCC>
