@@ -6,6 +6,7 @@ Item {
     anchors.fill: parent
     ColumnLayout {
         anchors.fill: parent
+        spacing: 0
         TimerView {
             Layout.fillWidth: true
             height: 64
