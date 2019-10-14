@@ -156,11 +156,12 @@ Window {
         width: parent.width
         color: "red"
         height: 48
-        visible: false
+        y: -height
+        Behavior on y { NumberAnimation { duration: 120 } }
         Connections {
             target: toggl
             onDisplayError: {
-                errorOverlay.visible = true
+                errorOverlay.y = 0
                 errorText.text = errmsg
             }
         }
@@ -175,7 +176,7 @@ Window {
             }
             Button {
                 text: "x"
-                onClicked: errorOverlay.visible = false
+                onClicked: errorOverlay.y = -errorOverlay.height
                 implicitWidth: implicitHeight
             }
         }
