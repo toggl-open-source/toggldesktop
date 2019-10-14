@@ -21,6 +21,7 @@ class CountryView;
 class TogglApi : public QObject {
     Q_OBJECT
     Q_PROPERTY(QQmlListProperty<CountryView> countries READ countries NOTIFY countriesChanged)
+    Q_PROPERTY(QQmlListProperty<TimeEntryView> timeEntries READ timeEntries NOTIFY timeEntriesChanged)
 
  public:
     TogglApi(

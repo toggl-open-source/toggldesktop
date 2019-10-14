@@ -102,8 +102,10 @@ int main(int argc, char *argv[]) try {
     parser.process(a);
 
     QQmlApplicationEngine engine;
-    engine.load(QUrl(QStringLiteral("qrc:/MainWindow.qml")));
+    qmlRegisterType<CountryView>("toggl", 1, 0, "Country");
+    qmlRegisterType<TimeEntryView>("toggl", 1, 0, "TimeEntry");
     engine.rootContext()->setContextProperty("toggl", new TogglApi(nullptr));
+    engine.load(QUrl(QStringLiteral("qrc:/MainWindow.qml")));
     if (!TogglApi::instance->startEvents()) {
         QMessageBox(
             QMessageBox::Warning,
