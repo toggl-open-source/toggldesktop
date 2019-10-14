@@ -44,9 +44,9 @@ Rectangle {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
                 verticalAlignment: Text.AlignVCenter
-                text: runningTimeEntry ? runningTimeEntry.Description : ""
+                text: runningTimeEntry ? " " + runningTimeEntry.Description : ""
                 color: "white"
-                font.pointSize: 12
+                font.pixelSize: 12
             }
             TextField {
                 id: description
@@ -54,6 +54,11 @@ Rectangle {
                 visible: !running
                 Layout.fillWidth: true
                 onAccepted: start()
+                background: Item {}
+                font.pixelSize: 12
+                placeholderText: "Placeholder"
+                placeholderTextColor: "light gray"
+                color: "white"
             }
             RowLayout {
                 visible: runningTimeEntry && runningTimeEntry.ProjectLabel.length > 0
@@ -65,7 +70,7 @@ Rectangle {
                 Text {
                     text: runningTimeEntry ? runningTimeEntry.ProjectLabel : ""
                     color: runningTimeEntry && runningTimeEntry.Color.length > 0 ? runningTimeEntry.Color : "white"
-                    font.pointSize: 8
+                    font.pixelSize: 8
                 }
                 Text {
                     visible: runningTimeEntry && runningTimeEntry.TaskLabel.length > 0
@@ -83,7 +88,7 @@ Rectangle {
                 Text {
                     text: runningTimeEntry ? runningTimeEntry.ClientLabel : ""
                     color: "white"
-                    font.pointSize: 8
+                    font.pixelSize: 8
                 }
             }
         }
@@ -109,11 +114,15 @@ Rectangle {
                 id: duration
                 visible: !running
                 Layout.preferredWidth: 64
-                text: "00:00"
                 onAccepted: start()
                 validator: RegExpValidator {
                     regExp: /[0-9][0-9]:[0-9][0-9]/
                 }
+                font.pixelSize: 12
+                background: Item {}
+                placeholderText: "00:00"
+                placeholderTextColor: "light gray"
+                color: "white"
             }
         }
     }
