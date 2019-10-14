@@ -208,6 +208,16 @@ void on_countries(
         CountryView::importAll(first));
 }
 
+void TogglApi::setCountries(QVector<CountryView *> list) {
+    for (auto i : countries_)
+        i->deleteLater();
+    countries_.clear();
+    for (auto i : list) {
+        countries_.append(i);
+    }
+    emit countriesChanged();
+}
+
 TogglApi::TogglApi(
     QObject *parent,
     QString logPathOverride,
@@ -319,6 +329,10 @@ bool TogglApi::notifyBugsnag(
         metadata["release"]["channel"] = instance->updateChannel();
     }
     return Bugsnag::notify(errorClass, message, context, &metadata);
+}
+
+QQmlListProperty<CountryView> TogglApi::countries() {
+    return QQmlListProperty<CountryView>(this, countries_);
 }
 
 bool TogglApi::startEvents() {

@@ -5,6 +5,7 @@ import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12
 
 Window {
+    id: window
     visible: true
     minimumWidth: 360
     width: 360
@@ -71,7 +72,7 @@ Window {
                 Layout.fillWidth: true
                 horizontalAlignment: Text.AlignHCenter
                 text: "Sign up"
-                color: signingUp ? "white" : "#9a9a9a"
+                color: signingUp ? "white;" : "#9a9a9a"
             }
         }
 
@@ -146,6 +147,37 @@ Window {
             enabled: signingUp ? (!signupWithEmail.checked || (username.text.length > 0 && password.text.length > 0)) &&
                                   country.currentIndex > -1 && termsAndConditions.checked
                                : username.text.length > 0 && password.text.length > 0
+            onClicked: loggingIn ? toggl.login(username.text, password.text) : toggl.signup(username.text, password.text, country.currentIndex)
+        }
+    }
+
+    Rectangle {
+        id: errorOverlay
+        width: parent.width
+        color: "red"
+        height: 48
+        visible: false
+        Connections {
+            target: toggl
+            onDisplayError: {
+                errorOverlay.visible = true
+                errorText.text = errmsg
+            }
+        }
+        RowLayout {
+            anchors.fill: parent
+            anchors.margins: 6
+            Text {
+                id: errorText
+                Layout.fillHeight: true
+                Layout.fillWidth: true
+                verticalAlignment: Text.AlignVCenter
+            }
+            Button {
+                text: "x"
+                onClicked: errorOverlay.visible = false
+                implicitWidth: implicitHeight
+            }
         }
     }
 }

@@ -9,6 +9,7 @@
 #include <qtwebengineglobal.h>
 
 #include <QQmlApplicationEngine>
+#include <QQmlContext>
 
 #include <stdint.h>
 #include <stdbool.h>
@@ -101,9 +102,16 @@ int main(int argc, char *argv[]) try {
     parser.process(a);
 
     QQmlApplicationEngine engine;
-    qDebug() << "Load";
     engine.load(QUrl(QStringLiteral("qrc:/MainWindow.qml")));
-    qDebug() << "Loaded";
+    engine.rootContext()->setContextProperty("toggl", new TogglApi(nullptr));
+    if (!TogglApi::instance->startEvents()) {
+        QMessageBox(
+            QMessageBox::Warning,
+            "Error",
+            "The application could not start. Please inspect the log file.",
+            QMessageBox::Ok|QMessageBox::Cancel).exec();
+        return 1;
+    }
 
     return a.exec();
 } catch (std::exception &e) {  // NOLINT
