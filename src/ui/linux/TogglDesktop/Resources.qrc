@@ -22,5 +22,7 @@
         <file>images/down_arrow.png</file>
         <file>../../windows/TogglDesktop/TogglDesktop/Resources/warning-icon.png</file>
         <file>MainWindow.qml</file>
+        <file>LoginView.qml</file>
+        <file>ErrorOverlay.qml</file>
     </qresource>
 </RCC>
