@@ -6,34 +6,11 @@ Item {
     anchors.fill: parent
     ColumnLayout {
         anchors.fill: parent
-        Rectangle {
+        TimerView {
             Layout.fillWidth: true
-            color: "black"
             height: 64
-            ColumnLayout {
-                id: timerContainer
-                height: parent.height
-                width: parent.width - startButton.width
-                Text {
-                    Layout.fillWidth: true
-                    Layout.fillHeight: true
-                    verticalAlignment: Text.AlignVCenter
-                    text: "Current TE"
-                    color: "white"
-                }
-            }
-            Rectangle {
-                id: startButton
-                width: parent.height
-                height: parent.height
-                anchors.left: timerContainer.right
-                color: "green"
-                Text {
-                    text: "Start"
-                    anchors.centerIn: parent
-                }
-            }
         }
+
         ListView {
             id: timeEntryList
             Layout.fillWidth: true

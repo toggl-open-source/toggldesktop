@@ -7,8 +7,8 @@
 #include <QVector>
 #include <QFontDatabase>
 
-#include <QQmlApplicationEngine>
-#include <QQmlContext>
+#include <QtQml/QQmlApplicationEngine>
+#include <QtQml/QQmlContext>
 
 #include <stdint.h>
 #include <stdbool.h>

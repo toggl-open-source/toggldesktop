@@ -7,7 +7,7 @@
 #include <QUrl>
 #include <QVector>
 #include <QRect>
-#include <QQmlListProperty>
+#include <QtQml/QQmlListProperty>
 
 #include <stdint.h>
 
@@ -256,8 +256,6 @@ private:
 
     bool discardTimeAndContinue(const QString guid,
                                 const uint64_t at);
-
-    bool runScriptFile(const QString filename);
 
     static const QString formatDurationInSecondsHHMMSS(
         const int64_t duration);

@@ -53,6 +53,7 @@ find_package(Qt5Widgets CONFIG REQUIRED)
 find_package(Qt5DBus CONFIG REQUIRED)
 find_package(Qt5Network CONFIG REQUIRED)
 find_package(Qt5NetworkAuth CONFIG REQUIRED)
+find_package(Qt5Quick CONFIG REQUIRED)
 # We need to include private headers manually
 include_directories( ${Qt5Widgets_PRIVATE_INCLUDE_DIRS} )
 if (UNIX AND NOT APPLE)

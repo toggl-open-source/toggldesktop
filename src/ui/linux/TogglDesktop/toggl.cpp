@@ -354,7 +354,6 @@ void TogglApi::importTimeEntries(QVector<TimeEntryView *> list) {
         i->deleteLater();
     timeEntries_.clear();
     for (auto i : list) {
-        qDebug() << "Importing" << i->Description;
         timeEntries_.append(i);
     }
     emit timeEntriesChanged();
