@@ -20,7 +20,7 @@ class CountryView;
 
 class TogglApi : public QObject {
     Q_OBJECT
-    Q_PROPERTY(QQmlListProperty<CountryView> countries READ countries NOTIFY countriesChanged)
+    Q_PROPERTY(QList<QObject*> countries READ countries NOTIFY countriesChanged)
     Q_PROPERTY(QQmlListProperty<TimeEntryView> timeEntries READ timeEntries NOTIFY timeEntriesChanged)
 
  public:
@@ -43,14 +43,14 @@ class TogglApi : public QObject {
 
     bool shutdown;
 
-    QQmlListProperty<CountryView> countries();
+    QList<QObject*> countries();
     QQmlListProperty<TimeEntryView> timeEntries();
     void importTimeEntries(QVector<TimeEntryView *> list);
 signals:
     void countriesChanged();
     void timeEntriesChanged();
 private:
-    QList<CountryView*> countries_;
+    QList<QObject*> countries_;
     QList<TimeEntryView*> timeEntries_;
 
  public slots:

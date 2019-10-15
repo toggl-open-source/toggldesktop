@@ -7,13 +7,7 @@
 #include <QVector>
 
 #include "./toggl_api.h"
-
-#define PROPERTY(type, name) \
-private: \
-    Q_PROPERTY(type name READ name ## Get CONSTANT) \
-public: \
-    type name; \
-    type name ## Get() const { return name; }
+#include "./common.h"
 
 class TimeEntryView : public QObject {
     Q_OBJECT

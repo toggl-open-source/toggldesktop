@@ -20,9 +20,9 @@ Item {
             toggl.login(username.text, password.text)
         else if (signingUp) {
             if (signupWithEmail.checked)
-                toggl.signup(username.text, password.text, country.currentIndex)
+                toggl.signup(username.text, password.text, country.selectedID)
             else if (signupWithGoogle.checked)
-                toggl.googleSignup(username.text, password.text, country.currentIndex)
+                toggl.googleSignup(username.text, password.text, country.selectedID)
         }
     }
 
@@ -122,8 +122,10 @@ Item {
             width: parent.width
             anchors.horizontalCenter: parent.horizontalCenter
             visible: signingUp
-            model: [ "United States", "Estonia", "Czechia" ]
+            model: toggl.countries
+            textRole: "Text"
             currentIndex: -1
+            property int selectedID: toggl.countries[currentIndex].ID
             displayText: currentIndex < 0 ? "Please select your country" : currentText
         }
 
