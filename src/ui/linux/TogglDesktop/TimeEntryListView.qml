@@ -11,6 +11,7 @@ Rectangle {
         TimerView {
             Layout.fillWidth: true
             height: 64
+            z: 1
         }
 
         ScrollView {
