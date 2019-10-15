@@ -56,6 +56,11 @@ ApplicationWindow {
             if (open)
                 mainView.source = "TimeEntryListView.qml"
         }
+        onDisplayTimeEntryEditor: {
+            if (open) {
+                mainView.setSource("qrc:/TimeEntryEditView.qml", { timeEntry: view } )
+            }
+        }
     }
 
     Loader {

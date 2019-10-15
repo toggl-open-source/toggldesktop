@@ -39,6 +39,15 @@ Rectangle {
                         anchors.fill: parent
                         anchors.margins: 0.5
                         color: "white"
+                        MouseArea {
+                            anchors.fill: parent
+                            onClicked: {
+                                if (modelData.Group)
+                                    toggl.toggleEntriesGroup(modelData.GroupName)
+                                else
+                                    toggl.editTimeEntry(modelData.GUID, "description")
+                            }
+                        }
                         RowLayout {
                             anchors.fill: parent
                             Item { width: 1 }
