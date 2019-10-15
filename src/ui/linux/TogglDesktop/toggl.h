@@ -21,6 +21,9 @@ class CountryView;
 class TogglApi : public QObject {
     Q_OBJECT
     Q_PROPERTY(QList<QObject*> countries READ countries NOTIFY countriesChanged)
+    Q_PROPERTY(QList<QObject*> timeEntryAutocomplete READ timeEntryAutocomplete NOTIFY timeEntryAutocompleteChanged)
+    Q_PROPERTY(QList<QObject*> minitimerAutocomplete READ minitimerAutocomplete NOTIFY minitimerAutocompleteChanged)
+    Q_PROPERTY(QList<QObject*> projectAutocomplete READ projectAutocomplete NOTIFY projectAutocompleteChanged)
     Q_PROPERTY(QQmlListProperty<TimeEntryView> timeEntries READ timeEntries NOTIFY timeEntriesChanged)
 
  public:
@@ -44,17 +47,30 @@ class TogglApi : public QObject {
     bool shutdown;
 
     QList<QObject*> countries();
+    QList<QObject*> timeEntryAutocomplete();
+    QList<QObject*> minitimerAutocomplete();
+    QList<QObject*> projectAutocomplete();
     QQmlListProperty<TimeEntryView> timeEntries();
     void importTimeEntries(QVector<TimeEntryView *> list);
 signals:
     void countriesChanged();
+    void timeEntryAutocompleteChanged();
+    void minitimerAutocompleteChanged();
+    void projectAutocompleteChanged();
     void timeEntriesChanged();
 private:
     QList<QObject*> countries_;
+    QList<QObject*> timeEntryAutocomplete_;
+    QList<QObject*> minitimerAutocomplete_;
+    QList<QObject*> projectAutocomplete_;
     QList<TimeEntryView*> timeEntries_;
 
  public slots:
     void setCountries(QVector<CountryView *> list);
+
+    void displayTimeEntryAutocomplete(QVector<AutocompleteView *> list);
+    void displayMinitimerAutocomplete(QVector<AutocompleteView *> list);
+    void displayProjectAutocomplete(QVector<AutocompleteView *> list);
 
 ///////////////////////////////////////////////////////
     bool startEvents();
@@ -306,15 +322,6 @@ private:
 
     void displayTags(
         QVector<GenericView *> list);
-
-    void displayTimeEntryAutocomplete(
-        QVector<AutocompleteView *> list);
-
-    void displayMinitimerAutocomplete(
-        QVector<AutocompleteView *> list);
-
-    void displayProjectAutocomplete(
-        QVector<AutocompleteView *> list);
 
     void displayWorkspaceSelect(
         QVector<GenericView *> list);

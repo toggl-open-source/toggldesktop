@@ -10,7 +10,7 @@ class AutocompleteListModel : public QAbstractListModel
 {
     Q_OBJECT
 public:
-    AutocompleteListModel(QObject *parent = nullptr, QVector<AutocompleteView*> list = {}, uint64_t displayItem = AC_TIME_ENTRY);
+    AutocompleteListModel(QObject *parent = nullptr, QVector<AutocompleteView*> list = {}, uint64_t displayItem = AutocompleteView::AC_TIME_ENTRY);
     void setList(QVector<AutocompleteView *> autocompletelist);
 
     Qt::ItemFlags flags(const QModelIndex &index) const override;
