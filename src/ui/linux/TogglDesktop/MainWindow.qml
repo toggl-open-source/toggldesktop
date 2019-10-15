@@ -33,6 +33,12 @@ ApplicationWindow {
     Rectangle {
         anchors.fill: parent
         color: "#202020"
+        clip: true
+
+        ErrorOverlay {
+            width: parent.width
+            height: 48
+        }
     }
 
     TextMetrics {
@@ -55,10 +61,5 @@ ApplicationWindow {
     Loader {
         id: mainView
         anchors.fill: parent
-    }
-
-    ErrorOverlay {
-        width: parent.width
-        height: 48
     }
 }
