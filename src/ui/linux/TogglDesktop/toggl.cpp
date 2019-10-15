@@ -65,6 +65,7 @@ void on_display_login(
     if (open) {
         TogglApi::instance->aboutToDisplayLogin();
     }
+    TogglApi::instance->getCountries();
     TogglApi::instance->displayLogin(open, user_id);
     Bugsnag::user.id = QString("%1").arg(user_id);
 }
@@ -332,8 +333,8 @@ bool TogglApi::notifyBugsnag(
     return Bugsnag::notify(errorClass, message, context, &metadata);
 }
 
-QQmlListProperty<CountryView> TogglApi::countries() {
-    return QQmlListProperty<CountryView>(this, countries_);
+QList<QObject*> TogglApi::countries() {
+    return countries_;
 }
 
 QQmlListProperty<TimeEntryView> TogglApi::timeEntries() {
