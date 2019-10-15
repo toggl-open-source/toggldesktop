@@ -33,6 +33,20 @@ Rectangle {
                     color: palette.windowText
                 }
 
+                add: Transition {
+                    NumberAnimation {
+                        properties: "opacity"
+                        from: 0
+                        to: 1
+                    }
+                }
+
+                moveDisplaced: Transition {
+                    NumberAnimation {
+
+                    }
+                }
+
                 delegate: Item {
                     height: 74
                     width: timeEntryList.viewportWidth

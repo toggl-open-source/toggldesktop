@@ -74,7 +74,7 @@ Rectangle {
                 }
                 onTextEdited: {
                     if (focus) {
-                        autocomplete.visible = true
+                        //autocomplete.visible = true
                     }
                 }
                 onFocusChanged: if (!focus) autocomplete.visible = false
@@ -87,7 +87,7 @@ Rectangle {
                         right: parent.right
                     }
                     filter: description.text
-                    model: toggl.minitimerAutocomplete
+                    //model: toggl.minitimerAutocomplete
                 }
             }
             RowLayout {

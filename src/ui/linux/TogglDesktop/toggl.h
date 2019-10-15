@@ -13,6 +13,7 @@
 
 #include "toggl_api.h"
 #include "common.h"
+#include "qmlobjectlist.h"
 
 class AutocompleteView;
 class AutocompleteListModel;
@@ -55,7 +56,7 @@ class TogglApi : public QObject {
     Q_PROPERTY(AutocompleteProxyModel* timeEntryAutocomplete READ timeEntryAutocomplete CONSTANT)
     Q_PROPERTY(AutocompleteProxyModel* minitimerAutocomplete READ minitimerAutocomplete CONSTANT)
     Q_PROPERTY(AutocompleteProxyModel* projectAutocomplete READ projectAutocomplete CONSTANT)
-    Q_PROPERTY(QQmlListProperty<TimeEntryView> timeEntries READ timeEntries NOTIFY timeEntriesChanged)
+    Q_PROPERTY(QmlObjectList *timeEntries READ timeEntries CONSTANT)
 
  public:
     TogglApi(
@@ -81,14 +82,13 @@ class TogglApi : public QObject {
     AutocompleteProxyModel *timeEntryAutocomplete();
     AutocompleteProxyModel *minitimerAutocomplete();
     AutocompleteProxyModel *projectAutocomplete();
-    QQmlListProperty<TimeEntryView> timeEntries();
+    QmlObjectList *timeEntries();
     void importTimeEntries(QVector<TimeEntryView *> list);
 signals:
     void countriesChanged();
     void timeEntryAutocompleteChanged();
     void minitimerAutocompleteChanged();
     void projectAutocompleteChanged();
-    void timeEntriesChanged();
 private:
     QList<QObject*> countries_;
     AutocompleteListModel *timeEntryModel_;
@@ -97,7 +97,7 @@ private:
     AutocompleteProxyModel *timeEntryAutocomplete_;
     AutocompleteProxyModel *minitimerAutocomplete_;
     AutocompleteProxyModel *projectAutocomplete_;
-    QList<TimeEntryView*> timeEntries_;
+    QmlObjectList *timeEntries_;
 
  public slots:
     void setCountries(QVector<CountryView *> list);

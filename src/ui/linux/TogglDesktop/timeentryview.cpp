@@ -3,8 +3,47 @@
 #include "./timeentryview.h"
 
 #include <QDateTime>
+#include <QDebug>
 
 TimeEntryView::TimeEntryView(QObject *parent) : QObject(parent) {
+}
+
+bool TimeEntryView::operator==(const TimeEntryView &o) {
+    return this->DurationInSeconds == o.DurationInSeconds &&
+            this->Description == o.Description &&
+            this->ProjectAndTaskLabel == o.ProjectAndTaskLabel &&
+            this->ProjectLabel == o.ProjectLabel &&
+            this->TaskLabel == o.TaskLabel &&
+            this->ClientLabel == o.ClientLabel &&
+            this->WID == o.WID &&
+            this->PID == o.PID &&
+            this->TID == o.TID &&
+            this->Duration == o.Duration &&
+            this->Color == o.Color &&
+            this->GUID == o.GUID &&
+            this->Billable == o.Billable &&
+            this->Tags == o.Tags &&
+            this->Started == o.Started &&
+            this->Ended == o.Ended &&
+            this->StartTimeString == o.StartTimeString &&
+            this->EndTimeString == o.EndTimeString &&
+            this->DateHeader == o.DateHeader &&
+            this->DateDuration == o.DateDuration &&
+            this->CanAddProjects == o.CanAddProjects &&
+            this->CanSeeBillable == o.CanSeeBillable &&
+            this->DefaultWID == o.DefaultWID &&
+            this->WorkspaceName == o.WorkspaceName &&
+            this->Error == o.Error &&
+            this->Unsynced == o.Unsynced &&
+            this->Group == o.Group &&
+            this->GroupOpen == o.GroupOpen &&
+            this->GroupName == o.GroupName &&
+            this->GroupDuration == o.GroupDuration &&
+            this->GroupItemCount == o.GroupItemCount;
+}
+
+bool TimeEntryView::operator!=(const TimeEntryView &o) {
+    return ! (*this == o);
 }
 
 TimeEntryView *TimeEntryView::importOne(TogglTimeEntryView *view) {
