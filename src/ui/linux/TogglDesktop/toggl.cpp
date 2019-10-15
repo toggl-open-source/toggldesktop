@@ -324,6 +324,8 @@ TogglApi::TogglApi(QObject *parent, QString logPathOverride, QString dbPathOverr
     minitimerAutocomplete_->setSourceModel(minitimerModel_);
     projectAutocomplete_->setSourceModel(projectModel_);
 
+    timeEntries_ = QmlObjectList::create<TimeEntryView>(this);
+
     char *env = toggl_environment(ctx);
     if (env) {
         Bugsnag::releaseStage = QString(env);
@@ -377,13 +379,45 @@ AutocompleteProxyModel *TogglApi::projectAutocomplete() {
     return projectAutocomplete_;
 }
 
-QQmlListProperty<TimeEntryView> TogglApi::timeEntries() {
-    return QQmlListProperty<TimeEntryView>(this, timeEntries_);
+QmlObjectList *TogglApi::timeEntries() {
+    return timeEntries_;
 }
 
 void TogglApi::importTimeEntries(QVector<TimeEntryView *> list) {
-    replaceList(list, timeEntries_);
-    emit timeEntriesChanged();
+    bool reset = false;
+    if (list.count() - 1 != timeEntries_->count() && list.count() != timeEntries_->count()) {
+        reset = true;
+    }
+    if (!reset) {
+        bool areSame = true;
+        for (int i = 0; i < list.count(); i++) {
+            auto obj = qvariant_cast<QObjectPointer>(timeEntries_->at(i)).get();
+            auto view = qobject_cast<TimeEntryView*>(obj);
+            if (!view || *list[i] != *view) {
+                areSame = false;
+                break;
+            }
+        }
+        if (areSame)
+            return;
+        for (int i = 1; i < list.count(); i++) {
+            auto obj = qvariant_cast<QObjectPointer>(timeEntries_->at(i - 1)).get();
+            auto view = qobject_cast<TimeEntryView*>(obj);
+            if (!view || *list[i] != *view) {
+                reset = true;
+                break;
+            }
+        }
+    }
+    if (reset) {
+        timeEntries_->clear();
+        for (auto i : list) {
+            timeEntries()->append(i);
+        }
+    }
+    else {
+        timeEntries_->prepend(list.first());
+    }
 }
 
 bool TogglApi::startEvents() {

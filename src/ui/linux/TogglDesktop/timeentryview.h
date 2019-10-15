@@ -15,6 +15,9 @@ class TimeEntryView : public QObject {
  public:
     explicit TimeEntryView(QObject *parent = 0);
 
+    bool operator==(const TimeEntryView &o);
+    bool operator!=(const TimeEntryView &o);
+
     static TimeEntryView *importOne(TogglTimeEntryView *view);
     static QVector<TimeEntryView *> importAll(TogglTimeEntryView *first);
 
