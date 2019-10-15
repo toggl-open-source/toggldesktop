@@ -225,28 +225,32 @@ void TogglApi::setCountries(QVector<CountryView *> list) {
 }
 
 void TogglApi::displayTimeEntryAutocomplete(QVector<AutocompleteView *> list) {
-    replaceList(list, timeEntryAutocomplete_);
+    timeEntryModel_->setList(list);
     emit timeEntryAutocompleteChanged();
 }
 
 void TogglApi::displayMinitimerAutocomplete(QVector<AutocompleteView *> list) {
-    replaceList(list, minitimerAutocomplete_);
+    minitimerModel_->setList(list);
     emit minitimerAutocompleteChanged();
 
 }
 
 void TogglApi::displayProjectAutocomplete(QVector<AutocompleteView *> list) {
-    replaceList(list, projectAutocomplete_);
+    projectModel_->setList(list);
     emit projectAutocompleteChanged();
 }
 
-TogglApi::TogglApi(
-    QObject *parent,
-    QString logPathOverride,
-    QString dbPathOverride)
+TogglApi::TogglApi(QObject *parent, QString logPathOverride, QString dbPathOverride)
     : QObject(parent)
-, shutdown(false)
-, ctx(nullptr) {
+    , shutdown(false)
+    , ctx(nullptr)
+    , timeEntryModel_(new AutocompleteListModel(this))
+    , minitimerModel_(new AutocompleteListModel(this))
+    , projectModel_(new AutocompleteListModel(this, {}, AutocompleteView::AC_PROJECT))
+    , timeEntryAutocomplete_(new AutocompleteProxyModel(this))
+    , minitimerAutocomplete_(new AutocompleteProxyModel(this))
+    , projectAutocomplete_(new AutocompleteProxyModel(this))
+{
     QString version = QApplication::applicationVersion();
     ctx = toggl_context_init("linux_native_app",
                              version.toStdString().c_str());
@@ -316,6 +320,10 @@ TogglApi::TogglApi(
     toggl_on_project_colors(ctx, on_project_colors);
     toggl_on_countries(ctx, on_countries);
 
+    timeEntryAutocomplete_->setSourceModel(timeEntryModel_);
+    minitimerAutocomplete_->setSourceModel(minitimerModel_);
+    projectAutocomplete_->setSourceModel(projectModel_);
+
     char *env = toggl_environment(ctx);
     if (env) {
         Bugsnag::releaseStage = QString(env);
@@ -357,15 +365,15 @@ QList<QObject*> TogglApi::countries() {
     return countries_;
 }
 
-QList<QObject *> TogglApi::timeEntryAutocomplete() {
+AutocompleteProxyModel *TogglApi::timeEntryAutocomplete() {
     return timeEntryAutocomplete_;
 }
 
-QList<QObject *> TogglApi::minitimerAutocomplete() {
+AutocompleteProxyModel *TogglApi::minitimerAutocomplete() {
     return minitimerAutocomplete_;
 }
 
-QList<QObject *> TogglApi::projectAutocomplete() {
+AutocompleteProxyModel *TogglApi::projectAutocomplete() {
     return projectAutocomplete_;
 }
 

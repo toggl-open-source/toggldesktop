@@ -159,6 +159,10 @@ AutocompleteProxyModel::AutocompleteProxyModel(QObject *parent)
     setFilterRole(Qt::UserRole);
 }
 
+void AutocompleteProxyModel::setFilter(const QString &filter) {
+    setFilterRegExp(filter);
+}
+
 bool AutocompleteProxyModel::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const {
     QString input = filterRegExp().pattern();
     QStringList words = input.split(" ");

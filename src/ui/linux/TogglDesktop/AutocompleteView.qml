@@ -7,6 +7,9 @@ Rectangle {
     height: 500
 
     property string filter: ""
+    onFilterChanged: {
+        toggl.minitimerAutocomplete.setFilter(filter)
+    }
 
     ListView {
         anchors.fill: parent
@@ -19,8 +22,6 @@ Rectangle {
                              autocompleteData.Type === 11 ? headerDelegate :
                                                             regularDelegate
             property var autocompleteData: modelData
-
-            visible: autocompleteData.Description.includes(root.filter)
         }
     }
 

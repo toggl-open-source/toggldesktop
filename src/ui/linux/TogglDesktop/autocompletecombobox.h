@@ -64,6 +64,8 @@ class AutocompleteProxyModel : public QSortFilterProxyModel {
 public:
     AutocompleteProxyModel(QObject *parent = nullptr);
 
+    Q_INVOKABLE void setFilter(const QString &filter);
+
     bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const override;
 };
 
