@@ -31,13 +31,13 @@ public:
         return result;
     }
 
-    uint64_t ID;
-    QString Text;
-    QString Name;
-    bool VatApplicable;
-    QString VatPercentage;
-    QString VatRegex;
-    QString Code;
+    PROPERTY(uint64_t, ID)
+    PROPERTY(QString, Text)
+    PROPERTY(QString, Name)
+    PROPERTY(bool, VatApplicable)
+    PROPERTY(QString, VatPercentage)
+    PROPERTY(QString, VatRegex)
+    PROPERTY(QString, Code)
 
 signals:
 
