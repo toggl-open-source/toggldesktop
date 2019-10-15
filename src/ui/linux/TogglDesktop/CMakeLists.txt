@@ -34,6 +34,7 @@ set(BINARY_SOURCE_FILES
     overlaywidget.cpp
     powermanagement.cpp
     preferencesdialog.cpp
+    qmlobjectlist.cc
     settingsview.cpp
     singleapplication.cpp
     systemtray.cpp
