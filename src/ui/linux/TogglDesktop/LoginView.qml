@@ -21,8 +21,9 @@ Item {
         else if (signingUp) {
             if (signupWithEmail.checked)
                 toggl.signup(username.text, password.text, country.selectedID)
-            else if (signupWithGoogle.checked)
-                toggl.googleSignup(username.text, password.text, country.selectedID)
+            else if (signupWithGoogle.checked) {
+                // don't do anything in this case
+            }
         }
     }
 
