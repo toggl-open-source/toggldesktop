@@ -163,11 +163,22 @@ void AutocompleteProxyModel::setFilter(const QString &filter) {
     setFilterRegExp(filter);
 }
 
+AutocompleteView *AutocompleteProxyModel::get(int idx) {
+    if (idx >= 0 && idx < rowCount())
+        return qvariant_cast<AutocompleteView*>(data(index(idx, 0), Qt::UserRole));
+    return nullptr;
+}
+
 bool AutocompleteProxyModel::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const {
     QString input = filterRegExp().pattern();
     QStringList words = input.split(" ");
 
-    auto view = qvariant_cast<AutocompleteView*>(sourceModel()->data(sourceModel()->index(source_row, 0), Qt::UserRole));
+    auto variant = sourceModel()->data(sourceModel()->index(source_row, 0), Qt::UserRole);
+    if (!variant.isValid())
+        return false;
+    auto view = qvariant_cast<AutocompleteView*>(variant);
+    if (!view)
+        return false;
     for (auto word : words) {
         if (word.isEmpty() && words.count() > 1)
             continue;

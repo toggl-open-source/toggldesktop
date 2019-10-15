@@ -65,6 +65,7 @@ public:
     AutocompleteProxyModel(QObject *parent = nullptr);
 
     Q_INVOKABLE void setFilter(const QString &filter);
+    Q_INVOKABLE AutocompleteView *get(int idx);
 
     bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const override;
 };
