@@ -33,6 +33,10 @@ Qt::ItemFlags AutocompleteListModel::flags(const QModelIndex &index) const {
     }
 }
 
+QHash<int, QByteArray> AutocompleteListModel::roleNames() const {
+    return { { Qt::UserRole, "modelData" } };
+}
+
 int AutocompleteListModel::rowCount(const QModelIndex &parent) const {
     return list.count();
 }

@@ -11,6 +11,8 @@
 #include <stdint.h>
 
 #include "./toggl_api.h"
+#include "./autocompletelistmodel.h"
+#include "./autocompletecombobox.h"
 
 class AutocompleteView;
 class GenericView;
@@ -21,9 +23,9 @@ class CountryView;
 class TogglApi : public QObject {
     Q_OBJECT
     Q_PROPERTY(QList<QObject*> countries READ countries NOTIFY countriesChanged)
-    Q_PROPERTY(QList<QObject*> timeEntryAutocomplete READ timeEntryAutocomplete NOTIFY timeEntryAutocompleteChanged)
-    Q_PROPERTY(QList<QObject*> minitimerAutocomplete READ minitimerAutocomplete NOTIFY minitimerAutocompleteChanged)
-    Q_PROPERTY(QList<QObject*> projectAutocomplete READ projectAutocomplete NOTIFY projectAutocompleteChanged)
+    Q_PROPERTY(AutocompleteProxyModel* timeEntryAutocomplete READ timeEntryAutocomplete CONSTANT)
+    Q_PROPERTY(AutocompleteProxyModel* minitimerAutocomplete READ minitimerAutocomplete CONSTANT)
+    Q_PROPERTY(AutocompleteProxyModel* projectAutocomplete READ projectAutocomplete CONSTANT)
     Q_PROPERTY(QQmlListProperty<TimeEntryView> timeEntries READ timeEntries NOTIFY timeEntriesChanged)
 
  public:
@@ -47,9 +49,9 @@ class TogglApi : public QObject {
     bool shutdown;
 
     QList<QObject*> countries();
-    QList<QObject*> timeEntryAutocomplete();
-    QList<QObject*> minitimerAutocomplete();
-    QList<QObject*> projectAutocomplete();
+    AutocompleteProxyModel *timeEntryAutocomplete();
+    AutocompleteProxyModel *minitimerAutocomplete();
+    AutocompleteProxyModel *projectAutocomplete();
     QQmlListProperty<TimeEntryView> timeEntries();
     void importTimeEntries(QVector<TimeEntryView *> list);
 signals:
@@ -60,9 +62,12 @@ signals:
     void timeEntriesChanged();
 private:
     QList<QObject*> countries_;
-    QList<QObject*> timeEntryAutocomplete_;
-    QList<QObject*> minitimerAutocomplete_;
-    QList<QObject*> projectAutocomplete_;
+    AutocompleteListModel *timeEntryModel_;
+    AutocompleteListModel *minitimerModel_;
+    AutocompleteListModel *projectModel_;
+    AutocompleteProxyModel *timeEntryAutocomplete_;
+    AutocompleteProxyModel *minitimerAutocomplete_;
+    AutocompleteProxyModel *projectAutocomplete_;
     QList<TimeEntryView*> timeEntries_;
 
  public slots:
