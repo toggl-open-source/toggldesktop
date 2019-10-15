@@ -53,21 +53,41 @@ Rectangle {
                 focus: true
                 visible: !running
                 Layout.fillWidth: true
-                onAccepted: start()
                 background: Item {}
                 font.pixelSize: 12
                 placeholderText: "What are you doing?"
                 placeholderTextColor: "light gray"
                 color: "white"
-
+                Keys.onUpPressed: autocomplete.upPressed()
+                Keys.onDownPressed: autocomplete.downPressed()
+                Keys.onEscapePressed: autocomplete.visible = false
+                Keys.onReturnPressed: {
+                    if (autocomplete.visible && autocomplete.currentItem) {
+                        console.log("something")
+                        autocomplete.visible = false
+                    }
+                    else {
+                        if (acceptableInput) {
+                            start()
+                        }
+                    }
+                }
+                onTextEdited: {
+                    if (focus) {
+                        autocomplete.visible = true
+                    }
+                }
+                onFocusChanged: if (!focus) autocomplete.visible = false
                 AutocompleteView {
                     id: autocomplete
+                    visible: false
                     anchors{
                         top: parent.bottom
                         left: parent.left
                         right: parent.right
                     }
                     filter: description.text
+                    model: toggl.minitimerAutocomplete
                 }
             }
             RowLayout {
