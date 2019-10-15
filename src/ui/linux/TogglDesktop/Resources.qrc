@@ -27,5 +27,6 @@
         <file>TimeEntryListView.qml</file>
         <file>TimerView.qml</file>
         <file>TimeEntryEditView.qml</file>
+        <file>AutocompleteView.qml</file>
     </qresource>
 </RCC>

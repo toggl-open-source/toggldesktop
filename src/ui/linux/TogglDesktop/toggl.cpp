@@ -210,14 +210,34 @@ void on_countries(
         CountryView::importAll(first));
 }
 
-void TogglApi::setCountries(QVector<CountryView *> list) {
-    for (auto i : countries_)
+template<typename T, typename U>
+void replaceList(const QVector<T*> &from, QList<U*> &to) {
+    for (auto i : to)
         i->deleteLater();
-    countries_.clear();
-    for (auto i : list) {
-        countries_.append(i);
-    }
+    to.clear();
+    for (auto i : from)
+        to.append(i);
+}
+
+void TogglApi::setCountries(QVector<CountryView *> list) {
+    replaceList(list, countries_);
     emit countriesChanged();
+}
+
+void TogglApi::displayTimeEntryAutocomplete(QVector<AutocompleteView *> list) {
+    replaceList(list, timeEntryAutocomplete_);
+    emit timeEntryAutocompleteChanged();
+}
+
+void TogglApi::displayMinitimerAutocomplete(QVector<AutocompleteView *> list) {
+    replaceList(list, minitimerAutocomplete_);
+    emit minitimerAutocompleteChanged();
+
+}
+
+void TogglApi::displayProjectAutocomplete(QVector<AutocompleteView *> list) {
+    replaceList(list, projectAutocomplete_);
+    emit projectAutocompleteChanged();
 }
 
 TogglApi::TogglApi(
@@ -337,17 +357,24 @@ QList<QObject*> TogglApi::countries() {
     return countries_;
 }
 
+QList<QObject *> TogglApi::timeEntryAutocomplete() {
+    return timeEntryAutocomplete_;
+}
+
+QList<QObject *> TogglApi::minitimerAutocomplete() {
+    return minitimerAutocomplete_;
+}
+
+QList<QObject *> TogglApi::projectAutocomplete() {
+    return projectAutocomplete_;
+}
+
 QQmlListProperty<TimeEntryView> TogglApi::timeEntries() {
     return QQmlListProperty<TimeEntryView>(this, timeEntries_);
 }
 
 void TogglApi::importTimeEntries(QVector<TimeEntryView *> list) {
-    for (auto i : timeEntries_)
-        i->deleteLater();
-    timeEntries_.clear();
-    for (auto i : list) {
-        timeEntries_.append(i);
-    }
+    replaceList(list, timeEntries_);
     emit timeEntriesChanged();
 }
 

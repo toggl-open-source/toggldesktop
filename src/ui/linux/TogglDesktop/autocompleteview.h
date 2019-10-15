@@ -8,21 +8,23 @@
 #include <QDebug>
 
 #include "./toggl_api.h"
-
-enum AutocompleteType {
-    AC_TIME_ENTRY = 0,
-    AC_TASK = 1,
-    AC_PROJECT = 2,
-    AC_HEADER = 11,
-    AC_CLIENT = 12,
-    AC_WORKSPACE = 13
-};
+#include "./common.h"
 
 class AutocompleteView : public QObject {
     Q_OBJECT
 
  public:
     explicit AutocompleteView(QObject *parent = 0);
+
+    enum AutocompleteType {
+        AC_TIME_ENTRY = 0,
+        AC_TASK = 1,
+        AC_PROJECT = 2,
+        AC_HEADER = 11,
+        AC_CLIENT = 12,
+        AC_WORKSPACE = 13
+    };
+    Q_ENUMS(AutocompleteType)
 
     static QVector<AutocompleteView *> importAll(
         TogglAutocompleteView *first) {
@@ -50,13 +52,13 @@ class AutocompleteView : public QObject {
             view->ProjectID = it->ProjectID;
             view->WorkspaceID = it->WorkspaceID;
             view->WorkspaceName = QString(it->WorkspaceName);
-            view->Type = it->Type;
+            view->Type = AutocompleteType(it->Type);
             view->Billable = it->Billable;
             view->Tags = QString(it->Tags);
 
             if (!currentWorkspace || currentWorkspace->Description != view->WorkspaceName) {
                 currentWorkspace = new AutocompleteView();
-                currentWorkspace->Type = 13;
+                currentWorkspace->Type = AC_WORKSPACE;
                 currentWorkspace->Description = view->WorkspaceName;
                 result.push_back(currentWorkspace);
                 currentLevel1Header = nullptr;
@@ -74,7 +76,7 @@ class AutocompleteView : public QObject {
                     currentLevel3Header = nullptr;
                     currentLevel2Header = nullptr;
                     currentLevel1Header = new AutocompleteView();
-                    currentLevel1Header->Type = 11;
+                    currentLevel1Header->Type = AC_HEADER;
                     switch (view->Type) {
                     case 0:
                         currentLevel1Header->Description = "TIME ENTRIES";
@@ -96,7 +98,7 @@ class AutocompleteView : public QObject {
             if (view->Type == 2 && (!currentLevel2Header || currentLevel2Header->ClientLabel != view->ClientLabel)) {
                 currentLevel3Header = nullptr;
                 currentLevel2Header = new AutocompleteView();
-                currentLevel2Header->Type = 12;
+                currentLevel2Header->Type = AC_CLIENT;
                 currentLevel2Header->ClientLabel = view->ClientLabel;
                 if (view->ClientLabel.isEmpty())
                     currentLevel2Header->Description = "No client";
@@ -128,21 +130,21 @@ class AutocompleteView : public QObject {
         return result;
     }
 
-    QString Text {};
-    QString Description {};
-    QString ProjectAndTaskLabel {};
-    QString ProjectLabel {};
-    QString ClientLabel {};
-    QString TaskLabel {};
-    QString WorkspaceName {};
-    QString ProjectColor {};
-    uint64_t TaskID { 0 };
-    uint64_t ProjectID { 0 };
-    uint64_t ClientID { 0 };
-    uint64_t WorkspaceID { 0 };
-    uint64_t Type { 0 };
-    bool Billable { false };
-    QString Tags {};
+    PROPERTY(QString, Text)
+    PROPERTY(QString, Description)
+    PROPERTY(QString, ProjectAndTaskLabel)
+    PROPERTY(QString, ProjectLabel)
+    PROPERTY(QString, ClientLabel)
+    PROPERTY(QString, TaskLabel)
+    PROPERTY(QString, WorkspaceName)
+    PROPERTY(QString, ProjectColor)
+    PROPERTY(uint64_t, TaskID)
+    PROPERTY(uint64_t, ProjectID)
+    PROPERTY(uint64_t, ClientID)
+    PROPERTY(uint64_t, WorkspaceID)
+    PROPERTY(AutocompleteType, Type)
+    PROPERTY(bool, Billable)
+    PROPERTY(QString, Tags)
 
     QList<AutocompleteView*> _Children;
 };

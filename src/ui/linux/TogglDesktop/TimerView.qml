@@ -59,6 +59,16 @@ Rectangle {
                 placeholderText: "What are you doing?"
                 placeholderTextColor: "light gray"
                 color: "white"
+
+                AutocompleteView {
+                    id: autocomplete
+                    anchors{
+                        top: parent.bottom
+                        left: parent.left
+                        right: parent.right
+                    }
+                    filter: description.text
+                }
             }
             RowLayout {
                 visible: runningTimeEntry && runningTimeEntry.ProjectLabel.length > 0

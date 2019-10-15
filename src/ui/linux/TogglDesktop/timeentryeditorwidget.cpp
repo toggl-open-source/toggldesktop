@@ -29,7 +29,7 @@ timer(new QTimer(this)),
 duration(0),
 previousTagList(""),
 descriptionModel(new AutocompleteListModel(this, QVector<AutocompleteView*>())),
-projectModel(new AutocompleteListModel(this, QVector<AutocompleteView*>(), AC_PROJECT))
+projectModel(new AutocompleteListModel(this, QVector<AutocompleteView*>(), AutocompleteView::AC_PROJECT))
 {
     ui->setupUi(this);
 
