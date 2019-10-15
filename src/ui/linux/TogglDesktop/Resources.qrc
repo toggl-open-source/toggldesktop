@@ -26,5 +26,6 @@
         <file>ErrorOverlay.qml</file>
         <file>TimeEntryListView.qml</file>
         <file>TimerView.qml</file>
+        <file>TimeEntryEditView.qml</file>
     </qresource>
 </RCC>
