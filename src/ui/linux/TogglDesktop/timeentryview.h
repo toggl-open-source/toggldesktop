@@ -19,7 +19,7 @@ class TimeEntryView : public QObject {
     static QVector<TimeEntryView *> importAll(TogglTimeEntryView *first);
 
     bool confirmlessDelete();
-    const QString lastUpdate();
+    Q_INVOKABLE const QString lastUpdate();
 
     PROPERTY(int64_t, DurationInSeconds)
     PROPERTY(QString, Description)
