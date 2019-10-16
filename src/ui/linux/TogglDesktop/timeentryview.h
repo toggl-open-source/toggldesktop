@@ -5,9 +5,34 @@
 
 #include <QObject>
 #include <QVector>
+#include <QAbstractListModel>
 
 #include "./toggl_api.h"
 #include "./common.h"
+
+class TimeEntryView;
+
+class TimeEntryViewStorage : public QAbstractListModel {
+    Q_OBJECT
+public:
+    TimeEntryViewStorage(QObject *parent = nullptr);
+
+    void importList(TogglTimeEntryView *first);
+
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+
+    QHash<int, QByteArray> roleNames() const override;
+    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+
+private:
+    void remove(const QString &guid);
+    void move(const QString &guid, int to);
+
+    QList<QString> guidOrder_;
+    QMap<QString, TimeEntryView*> storage_;
+
+    QThread *uiThread;
+};
 
 class TimeEntryView : public QObject {
     Q_OBJECT
@@ -19,10 +44,13 @@ class TimeEntryView : public QObject {
     bool operator!=(const TimeEntryView &o);
 
     static TimeEntryView *importOne(TogglTimeEntryView *view);
-    static QVector<TimeEntryView *> importAll(TogglTimeEntryView *first);
+    //static QVector<TimeEntryView *> importAll(TogglTimeEntryView *first);
+    void update(const TogglTimeEntryView *view);
 
     bool confirmlessDelete();
     Q_INVOKABLE const QString lastUpdate();
+
+    mutable QMutex propertyMutex_;
 
     PROPERTY(int64_t, DurationInSeconds)
     PROPERTY(QString, Description)

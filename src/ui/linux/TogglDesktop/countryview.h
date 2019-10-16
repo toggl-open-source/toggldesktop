@@ -32,6 +32,8 @@ public:
         return result;
     }
 
+    mutable QMutex propertyMutex_;
+
     PROPERTY(uint64_t, ID)
     PROPERTY(QString, Text)
     PROPERTY(QString, Name)

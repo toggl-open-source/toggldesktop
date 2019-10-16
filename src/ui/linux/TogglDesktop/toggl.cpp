@@ -101,7 +101,7 @@ void on_display_time_entry_list(
     if (open) {
         TogglApi::instance->aboutToDisplayTimeEntryList();
     }
-    TogglApi::instance->importTimeEntries(TimeEntryView::importAll(first));
+    TogglApi::instance->importTimeEntries(first);
     TogglApi::instance->displayTimeEntryList(
         open,
         show_load_more_button);
@@ -168,8 +168,9 @@ void on_display_settings(
 void on_display_timer_state(
     TogglTimeEntryView *te) {
     if (te) {
-        TogglApi::instance->displayRunningTimerState(
-            TimeEntryView::importOne(te));
+        auto v = TimeEntryView::importOne(te);
+        v->moveToThread(TogglApi::instance->uiThread_);
+        TogglApi::instance->displayRunningTimerState(v);
         return;
     }
 
@@ -250,6 +251,7 @@ TogglApi::TogglApi(QObject *parent, QString logPathOverride, QString dbPathOverr
     , timeEntryAutocomplete_(new AutocompleteProxyModel(this))
     , minitimerAutocomplete_(new AutocompleteProxyModel(this))
     , projectAutocomplete_(new AutocompleteProxyModel(this))
+    , uiThread_(QThread::currentThread())
 {
     QString version = QApplication::applicationVersion();
     ctx = toggl_context_init("linux_native_app",
@@ -324,7 +326,7 @@ TogglApi::TogglApi(QObject *parent, QString logPathOverride, QString dbPathOverr
     minitimerAutocomplete_->setSourceModel(minitimerModel_);
     projectAutocomplete_->setSourceModel(projectModel_);
 
-    timeEntries_ = QmlObjectList::create<TimeEntryView>(this);
+    timeEntries_ = new TimeEntryViewStorage(this);
 
     char *env = toggl_environment(ctx);
     if (env) {
@@ -379,45 +381,12 @@ AutocompleteProxyModel *TogglApi::projectAutocomplete() {
     return projectAutocomplete_;
 }
 
-QmlObjectList *TogglApi::timeEntries() {
+TimeEntryViewStorage *TogglApi::timeEntries() {
     return timeEntries_;
 }
 
-void TogglApi::importTimeEntries(QVector<TimeEntryView *> list) {
-    bool reset = false;
-    if (list.count() - 1 != timeEntries_->count() && list.count() != timeEntries_->count()) {
-        reset = true;
-    }
-    if (!reset) {
-        bool areSame = true;
-        for (int i = 0; i < list.count(); i++) {
-            auto obj = qvariant_cast<QObjectPointer>(timeEntries_->at(i)).get();
-            auto view = qobject_cast<TimeEntryView*>(obj);
-            if (!view || *list[i] != *view) {
-                areSame = false;
-                break;
-            }
-        }
-        if (areSame)
-            return;
-        for (int i = 1; i < list.count(); i++) {
-            auto obj = qvariant_cast<QObjectPointer>(timeEntries_->at(i - 1)).get();
-            auto view = qobject_cast<TimeEntryView*>(obj);
-            if (!view || *list[i] != *view) {
-                reset = true;
-                break;
-            }
-        }
-    }
-    if (reset) {
-        timeEntries_->clear();
-        for (auto i : list) {
-            timeEntries()->append(i);
-        }
-    }
-    else {
-        timeEntries_->prepend(list.first());
-    }
+void TogglApi::importTimeEntries(TogglTimeEntryView *first) {
+    timeEntries_->importList(first);
 }
 
 bool TogglApi::startEvents() {

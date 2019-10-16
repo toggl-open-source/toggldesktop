@@ -106,6 +106,7 @@ int main(int argc, char *argv[]) try {
     QQmlApplicationEngine engine;
     qmlRegisterType<CountryView>("toggl", 1, 0, "Country");
     qmlRegisterType<TimeEntryView>("toggl", 1, 0, "TimeEntry");
+    qmlRegisterType<TimeEntryViewStorage>("toggl", 1, 0, "TimeEntryList");
     qmlRegisterType<AutocompleteView>("toggl", 1, 0, "Autocomplete");
     engine.rootContext()->setContextProperty("toggl", new TogglApi(nullptr));
     engine.load(QUrl(QStringLiteral("qrc:/MainWindow.qml")));
