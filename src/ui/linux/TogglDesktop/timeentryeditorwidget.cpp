@@ -252,7 +252,7 @@ void TimeEntryEditorWidget::displayTimeEntryEditor(
     }
 
     guid = view->GUID;
-    duration = view->DurationInSeconds;
+    duration = view->DurationInSecondsGet();
 
     if (duration < 0) {
         timer->start(1000);

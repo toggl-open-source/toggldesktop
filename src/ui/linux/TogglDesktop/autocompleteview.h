@@ -145,8 +145,11 @@ class AutocompleteView : public QObject {
     PROPERTY(AutocompleteType, Type)
     PROPERTY(bool, Billable)
     PROPERTY(QString, Tags)
-
     QList<AutocompleteView*> _Children;
+
+private:
+    mutable QMutex propertyMutex_;
+
 };
 
 #endif  // SRC_UI_LINUX_TOGGLDESKTOP_AUTOCOMPLETEVIEW_H_

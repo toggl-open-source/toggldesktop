@@ -7,6 +7,7 @@
 #include <QUrl>
 #include <QVector>
 #include <QQmlListProperty>
+#include <QThread>
 
 #include <stdint.h>
 
@@ -20,6 +21,7 @@ class GenericView;
 class SettingsView;
 class TimeEntryView;
 class CountryView;
+class TimeEntryViewStorage;
 
 class TogglApi : public QObject {
     Q_OBJECT
@@ -27,7 +29,7 @@ class TogglApi : public QObject {
     Q_PROPERTY(AutocompleteProxyModel* timeEntryAutocomplete READ timeEntryAutocomplete CONSTANT)
     Q_PROPERTY(AutocompleteProxyModel* minitimerAutocomplete READ minitimerAutocomplete CONSTANT)
     Q_PROPERTY(AutocompleteProxyModel* projectAutocomplete READ projectAutocomplete CONSTANT)
-    Q_PROPERTY(QmlObjectList *timeEntries READ timeEntries CONSTANT)
+    Q_PROPERTY(TimeEntryViewStorage *timeEntries READ timeEntries CONSTANT)
 
  public:
     TogglApi(
@@ -35,6 +37,8 @@ class TogglApi : public QObject {
         QString logPathOverride = "",
         QString dbPathOverride = "");
     ~TogglApi();
+
+    QThread *uiThread_;
 
     static TogglApi *instance;
 
@@ -53,8 +57,8 @@ class TogglApi : public QObject {
     AutocompleteProxyModel *timeEntryAutocomplete();
     AutocompleteProxyModel *minitimerAutocomplete();
     AutocompleteProxyModel *projectAutocomplete();
-    QmlObjectList *timeEntries();
-    void importTimeEntries(QVector<TimeEntryView *> list);
+    TimeEntryViewStorage *timeEntries();
+    void importTimeEntries(TogglTimeEntryView *first);
 signals:
     void countriesChanged();
     void timeEntryAutocompleteChanged();
@@ -68,7 +72,7 @@ private:
     AutocompleteProxyModel *timeEntryAutocomplete_;
     AutocompleteProxyModel *minitimerAutocomplete_;
     AutocompleteProxyModel *projectAutocomplete_;
-    QmlObjectList *timeEntries_;
+    TimeEntryViewStorage *timeEntries_;
 
  public slots:
     void setCountries(QVector<CountryView *> list);
