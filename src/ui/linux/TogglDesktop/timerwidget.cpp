@@ -223,7 +223,7 @@ void TimerWidget::displayRunningTimerState(
     ui->tags->setToolTip(QString("<p style='color:white;background-color:black;'>" +
                                  te->Tags + "</p>"));
 
-    duration = te->DurationInSeconds;
+    duration = te->DurationInSecondsGet();
 
     if (te->Description.length() > 0) {
         ui->description->setToolTip(
