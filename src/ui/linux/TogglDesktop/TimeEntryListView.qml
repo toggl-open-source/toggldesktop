@@ -22,7 +22,7 @@ Rectangle {
             ListView {
                 clip: true
                 model: toggl.timeEntries
-                section.property: "DateHeader"
+                section.property: "modelData.DateHeader"
                 section.delegate: Text {
                     y: 2
                     width: timeEntryList.viewportWidth
@@ -44,7 +44,21 @@ Rectangle {
 
                 moveDisplaced: Transition {
                     NumberAnimation {
+                        properties: "y"
+                    }
+                }
 
+                move: Transition {
+                    NumberAnimation {
+                        properties: "y"
+                    }
+                }
+
+                remove: Transition {
+                    NumberAnimation {
+                        properties: "opacity"
+                        from: 1
+                        to: 0
                     }
                 }
 

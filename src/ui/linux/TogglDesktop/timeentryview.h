@@ -9,13 +9,6 @@
 
 #include "toggl.h"
 
-#define PROPERTY(type, name) \
-private: \
-    Q_PROPERTY(type name READ name ## Get CONSTANT) \
-public: \
-    type name; \
-    type name ## Get() const { return name; }
-
 class TimeEntryView;
 
 class TimeEntryViewStorage : public QAbstractListModel {
@@ -31,6 +24,9 @@ public:
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 
 private:
+    QString uid(TogglTimeEntryView *view);
+    QString uid(TimeEntryView *view);
+
     void remove(const QString &guid);
     void move(const QString &guid, int to);
 
