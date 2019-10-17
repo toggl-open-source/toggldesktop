@@ -5,6 +5,25 @@
 
 #include <QMutex>
 
+#ifndef TOGGL_SAFE_PROPERTIES
+
+#define PROPERTY(type, name, ...) \
+private: Q_PROPERTY(type name READ name##Get WRITE name##Set NOTIFY name##Changed) \
+public: type name { __VA_ARGS__ }; \
+        type name##Get() const { \
+            auto value = name; \
+            return value; \
+        } \
+        Q_SLOT Q_INVOKABLE void name##Set(const type &val) { \
+            if (name != val) { \
+                name = val; \
+                emit name##Changed(); \
+            } \
+        } \
+        Q_SIGNAL void name##Changed();
+
+#else // TOGGL_SAFE_PROPERTIES
+
 #define PROPERTY(type, name, ...) \
 private: Q_PROPERTY(type name READ name##Get WRITE name##Set NOTIFY name##Changed) \
 public: type name { __VA_ARGS__ }; \
@@ -25,5 +44,7 @@ public: type name { __VA_ARGS__ }; \
                 propertyMutex_.unlock(); \
         } \
         Q_SIGNAL void name##Changed();
+
+#endif // TOGGL_SAFE_PROPERTIES
 
 #endif // SRC_COMMON_H_
