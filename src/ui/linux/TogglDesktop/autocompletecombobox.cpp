@@ -3,6 +3,7 @@
 #include "autocompletelistview.h"
 
 #include <QDebug>
+#include <QQmlEngine>
 
 AutocompleteComboBox::AutocompleteComboBox(QWidget *parent)
     : QComboBox(parent)
@@ -159,13 +160,25 @@ AutocompleteProxyModel::AutocompleteProxyModel(QObject *parent)
     setFilterRole(Qt::UserRole);
 }
 
+int AutocompleteProxyModel::count() {
+    return rowCount(QModelIndex());
+}
+
 void AutocompleteProxyModel::setFilter(const QString &filter) {
     setFilterRegExp(filter);
 }
 
 AutocompleteView *AutocompleteProxyModel::get(int idx) {
-    if (idx >= 0 && idx < rowCount())
-        return qvariant_cast<AutocompleteView*>(data(index(idx, 0), Qt::UserRole));
+    if (idx >= 0 && idx < rowCount()) {
+        auto d = data(index(idx, 0), Qt::UserRole);
+        if (!d.isValid())
+            return nullptr;
+        auto ptr = qvariant_cast<AutocompleteView*>(d);
+        if (!ptr)
+            return nullptr;
+        QQmlEngine::setObjectOwnership(ptr, QQmlEngine::CppOwnership);
+        return ptr;
+    }
     return nullptr;
 }
 

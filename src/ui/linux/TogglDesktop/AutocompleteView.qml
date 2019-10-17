@@ -18,22 +18,34 @@ Item {
     onVisibleChanged: list.currentIndex = -1
 
     function upPressed() {
+        console.log("==== START UP ====")
+        console.log("Current index: " + list.currentIndex)
+        console.log("There is " + list.count + " rows")
+        console.log("Model reports " + model.count() + " rows")
         for (var i = list.currentIndex - 1; i > 0 ; --i) {
             if (model.get(i).Type < 10) {
                 list.currentIndex = i
                 list.positionViewAtIndex(i, ListView.Center)
+                console.log("Current index: " + list.currentIndex)
                 return
             }
         }
+        console.log("Current index: " + list.currentIndex)
     }
     function downPressed() {
+        console.log("==== START DOWN ====")
+        console.log("Current index: " + list.currentIndex)
+        console.log("There is " + list.count + " rows")
+        console.log("Model reports " + model.count() + " rows")
         for (var i = list.currentIndex + 1; i < list.count; i++) {
             if (model.get(i).Type < 10) {
                 list.currentIndex = i
                 list.positionViewAtIndex(i, ListView.Center)
+                console.log("Current index: " + list.currentIndex)
                 return
             }
         }
+        console.log("Current index: " + list.currentIndex)
     }
 
     Rectangle {
@@ -50,8 +62,9 @@ Item {
         model: root.model
         currentIndex: -1
         onCurrentIndexChanged: {
-            root.currentItem = model.get(currentIndex)
+            console.log(currentIndex)
         }
+
         onCountChanged: {
             var base = list.visibleChildren[0]
             var listViewHeight = 0
@@ -59,15 +72,16 @@ Item {
                 listViewHeight += base.visibleChildren[i].height
             list.height = Math.min(listViewHeight, root.maximumHeight)
         }
+        highlightFollowsCurrentItem: true
         highlight: Rectangle {
             color: "red"
             width: root.width
+            height: 24
         }
-        highlightMoveDuration: 100
         delegate: Rectangle {
             width: root.width
             height: 24
-            color: palette.base
+            color: ListView.isCurrentItem ? "red" : palette.base
             property bool selectable: modelData.Type < 10
             Loader {
                 // TODO use the enum instead of magic values
@@ -76,7 +90,7 @@ Item {
                                  autocompleteData.Type === 11 ? headerDelegate :
                                                                 regularDelegate
                 property var autocompleteData: modelData
-                Component.onCompleted: console.log(index)
+                property int index: index
             }
         }
     }
@@ -120,9 +134,10 @@ Item {
     Component {
         id: regularDelegate
 
-        Rectangle {
+        Item {
             height: 24
             width: root.width
+
             Text {
                 anchors.fill: parent
                 verticalAlignment: Text.AlignVCenter
@@ -134,16 +149,13 @@ Item {
                                              ""
                 property string task: autocompleteData.TaskLabel.length > 0 ? " " + autocompleteData.TaskLabel : ""
                 property string client: autocompleteData.ClientLabel.length > 0 ? " " + autocompleteData.ClientLabel : ""
-                text: timeEntry + project + task + client
+                text: (ListView.isCurrentItem ? "HOVNO" : "") + timeEntry + project + task + client
             }
             MouseArea {
                 id: delegateMouse
                 anchors.fill: parent
                 hoverEnabled: true
                 onContainsMouseChanged: {
-                    if (containsMouse) {
-                        ListView.isCurrentItem = true
-                    }
                 }
             }
         }
