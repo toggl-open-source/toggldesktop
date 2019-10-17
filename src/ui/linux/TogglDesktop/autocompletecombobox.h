@@ -64,6 +64,8 @@ class AutocompleteProxyModel : public QSortFilterProxyModel {
 public:
     AutocompleteProxyModel(QObject *parent = nullptr);
 
+    Q_INVOKABLE int count();
+
     Q_INVOKABLE void setFilter(const QString &filter);
     Q_INVOKABLE AutocompleteView *get(int idx);
 
