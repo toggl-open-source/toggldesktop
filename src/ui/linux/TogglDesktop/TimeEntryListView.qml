@@ -36,14 +36,21 @@ Rectangle {
 
                 add: Transition {
                     NumberAnimation {
-                        properties: "opacity"
-                        from: 0
-                        to: 1
+                        properties: "y"
+                        from: -74 + 30
+                        duration: 120
+                    }
+                }
+                addDisplaced: Transition {
+                    NumberAnimation {
+                        properties: "y"
+                        duration: 120
                     }
                 }
 
                 moveDisplaced: Transition {
                     NumberAnimation {
+                        from: -height
                         properties: "y"
                     }
                 }
@@ -55,10 +62,24 @@ Rectangle {
                 }
 
                 remove: Transition {
+                    ParallelAnimation {
+                        NumberAnimation {
+                            duration: 120
+                            properties: "opacity"
+                            from: 1.0
+                            to: 0.0
+                        }
+                        NumberAnimation {
+                            duration: 120
+                            properties: "x"
+                            from: 0
+                            to: width
+                        }
+                    }
+                }
+                removeDisplaced: Transition {
                     NumberAnimation {
-                        properties: "opacity"
-                        from: 1
-                        to: 0
+                        properties: "y"
                     }
                 }
 
@@ -134,7 +155,7 @@ Rectangle {
                             }
                             Text {
                                 Layout.alignment: Qt.AlignVCenter
-                                text: "00:00:00"
+                                text: modelData.Duration
                             }
                             Item { width: 1 }
                         }
