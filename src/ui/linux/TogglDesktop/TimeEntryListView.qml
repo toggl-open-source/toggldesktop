@@ -32,7 +32,6 @@ Rectangle {
                     text: "<table width=100% cellpadding=6> " + section + "<tr><td colspan=2><font color=transparent>" + width + "</font></td></tr></table>"
                     color: palette.windowText
                 }
-                onCountChanged: console.log(count)
 
                 add: Transition {
                     NumberAnimation {
