@@ -25,6 +25,9 @@ public:
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 
 private:
+    QString uid(TogglTimeEntryView *view);
+    QString uid(TimeEntryView *view);
+
     void remove(const QString &guid);
     void move(const QString &guid, int to);
 

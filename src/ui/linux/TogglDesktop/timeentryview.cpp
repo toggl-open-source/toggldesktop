@@ -102,72 +102,39 @@ QVector<TimeEntryView *> TimeEntryView::importAll(
 */
 
 void TimeEntryView::update(const TogglTimeEntryView *view) {
-    int64_t DurationInSeconds_ = view->DurationInSeconds;
-    QMetaObject::invokeMethod(this, "DurationInSecondsSet", Qt::QueuedConnection, Q_ARG( const int64_t &, DurationInSeconds_ ));
-    QString Description_ = view->Description;
-    QMetaObject::invokeMethod(this, "DescriptionSet", Qt::QueuedConnection, Q_ARG( const QString &, Description_ ));
-    QString ProjectAndTaskLabel_ = view->ProjectAndTaskLabel;
-    QMetaObject::invokeMethod(this, "ProjectAndTaskLabelSet", Qt::QueuedConnection, Q_ARG( const QString &, ProjectAndTaskLabel_ ));
-    QString ProjectLabel_ = view->ProjectLabel;
-    QMetaObject::invokeMethod(this, "ProjectLabelSet", Qt::QueuedConnection, Q_ARG( const QString &, ProjectLabel_ ));
-    QString TaskLabel_ = view->TaskLabel;
-    QMetaObject::invokeMethod(this, "TaskLabelSet", Qt::QueuedConnection, Q_ARG( const QString &, TaskLabel_ ));
-    QString ClientLabel_ = view->ClientLabel;
-    QMetaObject::invokeMethod(this, "ClientLabelSet", Qt::QueuedConnection, Q_ARG( const QString &, ClientLabel_ ));
-    uint64_t WID_ = view->WID;
-    QMetaObject::invokeMethod(this, "WIDSet", Qt::QueuedConnection, Q_ARG( const uint64_t &, WID_ ));
-    uint64_t PID_ = view->PID;
-    QMetaObject::invokeMethod(this, "PIDSet", Qt::QueuedConnection, Q_ARG( const uint64_t &, PID_ ));
-    uint64_t TID_ = view->TID;
-    QMetaObject::invokeMethod(this, "TIDSet", Qt::QueuedConnection, Q_ARG( const uint64_t &, TID_ ));
-    QString Duration_ = view->Duration;
-    QMetaObject::invokeMethod(this, "DurationSet", Qt::QueuedConnection, Q_ARG( const QString &, Duration_ ));
-    QString Color_ = view->Color;
-    QMetaObject::invokeMethod(this, "ColorSet", Qt::QueuedConnection, Q_ARG( const QString &, Color_ ));
-    QString GUID_ = view->GUID;
-    QMetaObject::invokeMethod(this, "GUIDSet", Qt::QueuedConnection, Q_ARG( const QString &, GUID_ ));
-    bool Billable_ = view->Billable;
-    QMetaObject::invokeMethod(this, "BillableSet", Qt::QueuedConnection, Q_ARG( const bool &, Billable_ ));
-    QString Tags_ = view->Tags;
-    QMetaObject::invokeMethod(this, "TagsSet", Qt::QueuedConnection, Q_ARG( const QString &, Tags_ ));
-    uint64_t Started_ = view->Started;
-    QMetaObject::invokeMethod(this, "StartedSet", Qt::QueuedConnection, Q_ARG( const uint64_t &, Started_ ));
-    uint64_t Ended_ = view->Ended;
-    QMetaObject::invokeMethod(this, "EndedSet", Qt::QueuedConnection, Q_ARG( const uint64_t &, Ended_ ));
-    QString StartTimeString_ = view->StartTimeString;
-    QMetaObject::invokeMethod(this, "StartTimeStringSet", Qt::QueuedConnection, Q_ARG( const QString &, StartTimeString_ ));
-    QString EndTimeString_ = view->EndTimeString;
-    QMetaObject::invokeMethod(this, "EndTimeStringSet", Qt::QueuedConnection, Q_ARG( const QString &, EndTimeString_ ));
-    uint64_t UpdatedAt_ = view->UpdatedAt;
-    QMetaObject::invokeMethod(this, "UpdatedAtSet", Qt::QueuedConnection, Q_ARG( const uint64_t &, UpdatedAt_ ));
-    QString DateHeader_ = view->DateHeader;
-    QMetaObject::invokeMethod(this, "DateHeaderSet", Qt::QueuedConnection, Q_ARG( const QString &, DateHeader_ ));
-    QString DateDuration_ = view->DateDuration;
-    QMetaObject::invokeMethod(this, "DateDurationSet", Qt::QueuedConnection, Q_ARG( const QString &, DateDuration_ ));
-    bool IsHeader_ = view->IsHeader;
-    QMetaObject::invokeMethod(this, "IsHeaderSet", Qt::QueuedConnection, Q_ARG( const bool &, IsHeader_ ));
-    bool CanAddProjects_ = view->CanAddProjects;
-    QMetaObject::invokeMethod(this, "CanAddProjectsSet", Qt::QueuedConnection, Q_ARG( const bool &, CanAddProjects_ ));
-    bool CanSeeBillable_ = view->CanSeeBillable;
-    QMetaObject::invokeMethod(this, "CanSeeBillableSet", Qt::QueuedConnection, Q_ARG( const bool &, CanSeeBillable_ ));
-    uint64_t DefaultWID_ = view->DefaultWID;
-    QMetaObject::invokeMethod(this, "DefaultWIDSet", Qt::QueuedConnection, Q_ARG( const uint64_t &, DefaultWID_ ));
-    QString WorkspaceName_ = view->WorkspaceName;
-    QMetaObject::invokeMethod(this, "WorkspaceNameSet", Qt::QueuedConnection, Q_ARG( const QString &, WorkspaceName_ ));
-    QString Error_ = view->Error;
-    QMetaObject::invokeMethod(this, "ErrorSet", Qt::QueuedConnection, Q_ARG( const QString &, Error_ ));
-    bool Unsynced_ = view->Unsynced;
-    QMetaObject::invokeMethod(this, "UnsyncedSet", Qt::QueuedConnection, Q_ARG( const bool &, Unsynced_ ));
-    bool Group_ = view->Group;
-    QMetaObject::invokeMethod(this, "GroupSet", Qt::QueuedConnection, Q_ARG( const bool &, Group_ ));
-    bool GroupOpen_ = view->GroupOpen;
-    QMetaObject::invokeMethod(this, "GroupOpenSet", Qt::QueuedConnection, Q_ARG( const bool &, GroupOpen_ ));
-    QString GroupName_ = view->GroupName;
-    QMetaObject::invokeMethod(this, "GroupNameSet", Qt::QueuedConnection, Q_ARG( const QString &, GroupName_ ));
-    QString GroupDuration_ = view->GroupDuration;
-    QMetaObject::invokeMethod(this, "GroupDurationSet", Qt::QueuedConnection, Q_ARG( const QString &, GroupDuration_ ));
-    quint64 GroupItemCount_ = view->GroupItemCount;
-    QMetaObject::invokeMethod(this, "GroupItemCountSet", Qt::QueuedConnection, Q_ARG( const quint64 &, GroupItemCount_ ));
+    DurationInSecondsSet(view->DurationInSeconds);
+    DescriptionSet(view->Description);
+    ProjectAndTaskLabelSet(view->ProjectAndTaskLabel);
+    ProjectLabelSet(view->ProjectLabel);
+    TaskLabelSet(view->TaskLabel);
+    ClientLabelSet(view->ClientLabel);
+    WIDSet(view->WID);
+    PIDSet(view->PID);
+    TIDSet(view->TID);
+    DurationSet(view->Duration);
+    ColorSet(view->Color);
+    GUIDSet(view->GUID);
+    BillableSet(view->Billable);
+    TagsSet(view->Tags);
+    StartedSet(view->Started);
+    EndedSet(view->Ended);
+    StartTimeStringSet(view->StartTimeString);
+    EndTimeStringSet(view->EndTimeString);
+    UpdatedAtSet(view->UpdatedAt);
+    DateHeaderSet(QString("<tr><td>%1</td><td align=right>%2</td></tr>").arg(view->DateHeader).arg(view->DateDuration));
+    DateDurationSet(view->DateDuration);
+    IsHeaderSet(view->IsHeader);
+    CanAddProjectsSet(view->CanAddProjects);
+    CanSeeBillableSet(view->CanSeeBillable);
+    DefaultWIDSet(view->DefaultWID);
+    WorkspaceNameSet(view->WorkspaceName);
+    ErrorSet(view->Error);
+    UnsyncedSet(view->Unsynced);
+    GroupSet(view->Group);
+    GroupOpenSet(view->GroupOpen);
+    GroupNameSet(view->GroupName);
+    GroupDurationSet(view->GroupDuration);
+    GroupItemCountSet(view->GroupItemCount);
 }
 
 const QString TimeEntryView::lastUpdate() {
@@ -213,10 +180,10 @@ void TimeEntryViewStorage::importList(TogglTimeEntryView *first) {
             qCritical() << libraryView->Description << "Does not have a GUID!";
         }
         // build the order of the GUIDs in the new list
-        if (!newOrder.contains(libraryView->GUID))
-            newOrder.append(libraryView->GUID);
+        if (!newOrder.contains(uid(libraryView)))
+            newOrder.append(uid(libraryView));
         // and also build the set of the GUIDs now for easier comparison
-        newGuids.insert(libraryView->GUID);
+        newGuids.insert(uid(libraryView));
         // and create an addressable list of the new items (library, not qt structures, though)
         flattened.append(libraryView);
         libraryView = static_cast<TogglTimeEntryView*>(libraryView->Next);
@@ -231,83 +198,46 @@ void TimeEntryViewStorage::importList(TogglTimeEntryView *first) {
     // and here we have guids that are gone
     removed = oldGuids - newGuids;
 
-    qCritical() << "==================== NEW ROUND ====================";
-    qCritical() << "======== Storage";
-    qCritical() << storage_;
-    qCritical() << "======== added";
-    qCritical() << added;
-    qCritical() << "======== updated";
-    qCritical() << updated;
-    qCritical() << "======== removed";
-    qCritical() << removed;
-    qCritical() << "======== newGuids";
-    qCritical() << newGuids;
-    qCritical() << "======== oldGuids";
-    qCritical() << oldGuids;
-    qCritical() << "======== newOrder";
-    qCritical() << newOrder;
-    qCritical() << "======== flattened";
-    qCritical() << flattened;
-
     // first we remove all items with guids that are gone in the update
     for (auto i : removed) {
-        qCritical() << "BAZBAZ";
         remove(i);
     }
 
     // now pass through the list again to update the items we already have
     libraryView = first;
     while (libraryView) {
-        if (updated.contains(libraryView->GUID)) {
-            qCritical() << "BAZ";
-            qCritical() << "Current thread" << QThread::currentThread();
-            qCritical() << "UI thread" << uiThread;
-            storage_[libraryView->GUID]->update(libraryView);
+        if (updated.contains(uid(libraryView))) {
+            storage_[uid(libraryView)]->update(libraryView);
             // and also build the order of GUIDs we already had (before)
             reordered.append(libraryView);
-            updated.remove(libraryView->GUID);
+            updated.remove(uid(libraryView));
         }
         libraryView = static_cast<TogglTimeEntryView*>(libraryView->Next);
     }
 
-    qCritical() << "======== reordered";
-    qCritical() << reordered;
-
     // and then we take the new order of the current items and reorder them according to the new order
     for (int i = 0; i < reordered.count(); i++) {
-        if (reordered[i]->GUID != guidOrder_[i]) {
-            qCritical() << "BAR";
-            move(reordered[i]->GUID, i);
+        if (uid(reordered[i]) != guidOrder_[i]) {
+            move(uid(reordered[i]), i);
         }
     }
 
     // and finally, we insert newly added items into the reordered set of old items that stayed in the storage
     for (int i = 0; i < newOrder.count(); i++) {
         if (i >= guidOrder_.count() || guidOrder_[i] != newOrder[i]) {
-            qCritical() << "FOO";
             beginInsertRows(QModelIndex(), i, i);
             QString guid = newOrder[i];
             guidOrder_.insert(i, guid);
             auto v = TimeEntryView::importOne(flattened[i]);
-            qCritical() << "CREATED:" << v;
-            qCritical() << "Current thread" << QThread::currentThread();
-            qCritical() << "UI thread" << uiThread;
             v->moveToThread(uiThread);
             storage_.insert(guid, v);
-            qCritical() << "Storage:" << storage_;
             endInsertRows();
-            qCritical() << guidOrder_.count();
         }
     }
 }
 
 QVariant TimeEntryViewStorage::data(const QModelIndex &index, int role) const {
     if (index.isValid() && role == Qt::UserRole) {
-        qCritical() << "============== REQUEST =============";
-        qCritical() << "Looking for index" << index.row();
-        qCritical() << "Storage:" << storage_;
-        qCritical() << "Order:" << guidOrder_;
-        qCritical() << "Going to return" << storage_[guidOrder_[index.row()]];
         return QVariant::fromValue(storage_[guidOrder_[index.row()]]);
     }
     return QVariant();
@@ -319,6 +249,18 @@ QHash<int, QByteArray> TimeEntryViewStorage::roleNames() const {
 
 int TimeEntryViewStorage::rowCount(const QModelIndex &parent) const {
     return guidOrder_.count();
+}
+
+QString TimeEntryViewStorage::uid(TogglTimeEntryView *view) {
+    if (view->Group)
+        return QString("Group %1").arg(view->GUID);
+    return view->GUID;
+}
+
+QString TimeEntryViewStorage::uid(TimeEntryView *view) {
+    if (view->Group)
+        return QString("Group %1").arg(view->GUID);
+    return view->GUID;
 }
 
 void TimeEntryViewStorage::remove(const QString &guid) {
