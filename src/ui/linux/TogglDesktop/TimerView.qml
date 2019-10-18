@@ -11,7 +11,7 @@ Rectangle {
     property var runningTimeEntry: null
 
     function start() {
-        if (!running && description.text.length > 0) {
+        if (!running) {
             var dur = duration.text === "00:00" ? "" : duration.text
             toggl.start(description.text, dur, 0, 0, "", false)
             description.text = ""
@@ -27,6 +27,19 @@ Rectangle {
         onDisplayRunningTimerState: {
             running = true
             runningTimeEntry = view
+        }
+    }
+
+    MouseArea {
+        anchors.fill: timerContainer
+        onClicked: {
+            if (running) {
+                toggl.editRunningTimeEntry("description")
+                mouse.accepted = true
+            }
+            else {
+                mouse.accepted = false
+            }
         }
     }
 
