@@ -65,9 +65,6 @@ ApplicationWindow {
                 timeEntryEdit.timeEntry = view
                 timeEntryEdit.visible = true
             }
-            else {
-                timeEntryEdit.visible = false
-            }
         }
     }
 
