@@ -27,8 +27,129 @@ Item {
         }
     }
 
+    property real shadowWidth: 9
+
+    Rectangle {
+        anchors.fill: loginColumn
+        anchors.margins: -24
+
+
+        Rectangle {
+            anchors.left: parent.right
+            anchors.top: parent.bottom
+            anchors.margins: -shadowWidth
+            width: 2 * shadowWidth
+            height: 2 * shadowWidth
+            radius: shadowWidth
+            rotation: 45
+            z: -1
+            gradient: Gradient {
+                orientation: Gradient.Horizontal
+                GradientStop { position: 0.5; color: "light gray" }
+                GradientStop { position: 1.0; color: palette.alternateBase }
+            }
+        }
+
+        Rectangle {
+            anchors.right: parent.left
+            anchors.top: parent.bottom
+            anchors.margins: -shadowWidth
+            width: 2 * shadowWidth
+            height: 2 * shadowWidth
+            radius: shadowWidth
+            rotation: -45
+            z: -1
+            gradient: Gradient {
+                orientation: Gradient.Horizontal
+                GradientStop { position: 0.5; color: "light gray" }
+                GradientStop { position: 0.0; color: palette.alternateBase }
+            }
+        }
+
+        Rectangle {
+            anchors.left: parent.right
+            anchors.bottom: parent.top
+            anchors.margins: -shadowWidth
+            width: 2 * shadowWidth
+            height: 2 * shadowWidth
+            radius: shadowWidth
+            rotation: -45
+            z: -1
+            gradient: Gradient {
+                orientation: Gradient.Horizontal
+                GradientStop { position: 0.5; color: "light gray" }
+                GradientStop { position: 1.0; color: palette.alternateBase }
+            }
+        }
+
+        Rectangle {
+            anchors.right: parent.left
+            anchors.bottom: parent.top
+            anchors.margins: -shadowWidth
+            width: 2 * shadowWidth
+            height: 2 * shadowWidth
+            radius: shadowWidth
+            rotation: 45
+            z: -1
+            gradient: Gradient {
+                orientation: Gradient.Horizontal
+                GradientStop { position: 0.5; color: "light gray" }
+                GradientStop { position: 0.0; color: palette.alternateBase }
+            }
+        }
+
+        Rectangle {
+            anchors.right: parent.left
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+
+            width: shadowWidth
+            gradient: Gradient {
+                orientation: Gradient.Horizontal
+                GradientStop { position: 0.0; color: palette.alternateBase }
+                GradientStop { position: 1.0; color: "light gray" }
+            }
+        }
+
+        Rectangle {
+            anchors.left: parent.right
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+
+            width: shadowWidth
+            gradient: Gradient {
+                orientation: Gradient.Horizontal
+                GradientStop { position: 0.0; color: "light gray" }
+                GradientStop { position: 1.0; color: palette.alternateBase }
+            }
+        }
+        Rectangle {
+            anchors.top: parent.bottom
+            anchors.right: parent.right
+            anchors.left: parent.left
+
+            height: shadowWidth
+            gradient: Gradient {
+                GradientStop { position: 0.0; color: "light gray" }
+                GradientStop { position: 1.0; color: palette.alternateBase }
+            }
+        }
+        Rectangle {
+            anchors.bottom: parent.top
+            anchors.right: parent.right
+            anchors.left: parent.left
+
+            height: shadowWidth
+            gradient: Gradient {
+                GradientStop { position: 0.0; color: palette.alternateBase }
+                GradientStop { position: 1.0; color: "light gray" }
+            }
+        }
+    }
+
     Column {
-        y: parent.height / 5
+        id: loginColumn
+        y: parent.height / 6.7
         anchors.horizontalCenter: parent.horizontalCenter
         width: termsAndConditionsMetrics.width + 30
         spacing: 18
@@ -54,34 +175,42 @@ Item {
         Image {
             anchors.horizontalCenter: parent.horizontalCenter
             source: "qrc:/images/logo.png"
+            width: parent.width * 0.67
+            fillMode: Image.PreserveAspectFit
+            antialiasing: true
+            mipmap: true
         }
 
-        Item { height: 3; width: 1 }
-
-        RowLayout {
+        Item {
             width: parent.width
+            height: loginSwitch.height
+
             Text {
-                Layout.fillWidth: true
-                horizontalAlignment: Text.AlignHCenter
+                anchors.right: loginSwitch.left
+                anchors.rightMargin: 9
+                anchors.verticalCenter: parent.verticalCenter
                 text: "Login"
-                color: loggingIn ? "white" : "#9a9a9a"
+                color: loggingIn ? palette.text : disabledPalette.text
             }
-            Switch {
+            TogglSwitch {
                 id: loginSwitch
+                anchors.horizontalCenter: parent.horizontalCenter
+                Layout.alignment: Qt.AlignCenter
                 onCheckedChanged: username.forceActiveFocus()
             }
             Text {
-                Layout.fillWidth: true
-                horizontalAlignment: Text.AlignHCenter
+                anchors.left: loginSwitch.right
+                anchors.leftMargin: 9
+                anchors.verticalCenter: parent.verticalCenter
                 text: "Sign up"
-                color: signingUp ? "white" : "#9a9a9a"
+                color: signingUp ? palette.text : disabledPalette.text
             }
         }
 
         RowLayout {
             width: parent.width
             visible: signingUp
-            Button {
+            TogglButton {
                 id: signupWithEmail
                 Layout.fillWidth: true
                 checkable: true
@@ -89,7 +218,7 @@ Item {
                 checked: true
                 text: "With email"
             }
-            Button {
+            TogglButton {
                 id: signupWithGoogle
                 Layout.fillWidth: true
                 checkable: true
@@ -98,7 +227,7 @@ Item {
             }
         }
 
-        TextField {
+        TogglTextField {
             width: parent.width
             id: username
             focus: true
@@ -108,17 +237,17 @@ Item {
             onAccepted: act()
         }
 
-        TextField {
+        TogglTextField {
             width: parent.width
             id: password
             anchors.horizontalCenter: parent.horizontalCenter
             placeholderText: "Password"
             echoMode: TextField.Password
             visible: loggingIn || !signupWithGoogle.checked
-                onAccepted: act()
+            onAccepted: act()
         }
 
-        ComboBox {
+        TogglComboBox {
             id: country
             width: parent.width
             anchors.horizontalCenter: parent.horizontalCenter
@@ -126,27 +255,30 @@ Item {
             model: toggl.countries
             textRole: "Text"
             currentIndex: -1
-            property int selectedID: toggl.countries[currentIndex].ID
+            property int selectedID: toggl.countries && toggl.countries[currentIndex] ? toggl.countries[currentIndex].ID : -1
             displayText: currentIndex < 0 ? "Please select your country" : currentText
         }
 
-        Row {
+        RowLayout {
             id: termsAndConditionsRow
             width: parent.width
             visible: signingUp
             anchors.horizontalCenter: parent.horizontalCenter
-            CheckBox {
+            TogglCheckBox {
                 id: termsAndConditions
             }
             Text {
                 id: termsAndConditionsText
                 anchors.verticalCenter: parent.verticalCenter
-                text: "Agree to <a href=https://toggl.com>conditions and terms TBD</a>"
-                color: "#d2d2d2"
+                Layout.fillWidth: true
+                wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+                font.pointSize: 9
+                text: "I agree to <a href=\"https://toggl.com/legal/terms/\">terms of service</a> and <a href=\"https://toggl.com/legal/privacy/\">privacy policy</a>"
+                color: palette.text
             }
         }
 
-        Button {
+        TogglButton {
             width: parent.width
             anchors.horizontalCenter: parent.horizontalCenter
             text: signingUp ? "Sign up" : "Log in"
@@ -154,10 +286,10 @@ Item {
             onClicked: act()
         }
 
-        Button {
+        TogglButton {
             width: parent.width
             anchors.horizontalCenter: parent.horizontalCenter
-            text: "Log in with Google (not implemented)"
+            text: "Log in with Google"
             visible: loggingIn
             enabled: false
         }

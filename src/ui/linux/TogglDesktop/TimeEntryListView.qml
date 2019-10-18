@@ -287,7 +287,7 @@ Rectangle {
                     anchors.fill: parent
                     anchors.margins: 12
                     spacing: 9
-                    Button {
+                    TogglButton {
                         Layout.alignment: Qt.AlignVCenter
                         visible: modelData.Group
                         implicitWidth: implicitHeight
@@ -338,7 +338,7 @@ Rectangle {
                             }
                         }
                     }
-                    Button {
+                    TogglButton {
                         implicitWidth: implicitHeight
                         contentItem: Text {
                             anchors.centerIn: parent
