@@ -49,22 +49,50 @@ ApplicationWindow {
     Connections {
         target: toggl
         onDisplayLogin: {
-            if (open)
+            if (open) {
                 mainView.source = "LoginView.qml"
+                timeEntryEdit.visible = false
+            }
         }
         onDisplayTimeEntryList: {
-            if (open)
+            if (open) {
                 mainView.source = "TimeEntryListView.qml"
+                timeEntryEdit.visible = false
+            }
         }
         onDisplayTimeEntryEditor: {
             if (open) {
-                mainView.setSource("qrc:/TimeEntryEditView.qml", { timeEntry: view } )
+                timeEntryEdit.timeEntry = view
+                timeEntryEdit.visible = true
+            }
+            else {
+                timeEntryEdit.visible = false
             }
         }
     }
 
     Loader {
         id: mainView
-        anchors.fill: parent
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
+        anchors.left: parent.left
+        anchors.right: timeEntryEdit.visible ? timeEntryEdit.left : parent.right
     }
+
+    TimeEntryEditView {
+        id: timeEntryEdit
+        visible: false
+        anchors.right: parent.right
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
+
+        width: 360
+        onVisibleChanged: {
+            if (visible)
+                window.width += width
+            else
+                window.width -= width
+        }
+    }
+
 }

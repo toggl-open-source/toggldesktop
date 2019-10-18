@@ -3,7 +3,6 @@ import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12
 
 Rectangle {
-    anchors.fill: parent
     color: palette.window
 
     property var timeEntry: null
