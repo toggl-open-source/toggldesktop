@@ -3,25 +3,26 @@ import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12
 
 Rectangle {
-    color: palette.window
+    color: palette.alternateBase
 
     property var timeEntry: null
 
 
     ColumnLayout {
         anchors.fill: parent
-        anchors.margins: 3
+        anchors.margins: 12
+        spacing: 9
 
-        TextField {
+        TogglTextField {
             Layout.fillWidth: true
             text: timeEntry.Description
         }
-        TextField {
+        TogglTextField {
             Layout.fillWidth: true
             text: timeEntry.ClientLabel + " . " + timeEntry.ProjectLabel
         }
 
-        Button {
+        TogglButton {
             Layout.alignment: Qt.AlignRight
             text: "Add project"
         }
@@ -32,7 +33,7 @@ Rectangle {
             Text {
                 text: "Duration:"
             }
-            TextField {
+            TogglTextField {
                 Layout.fillWidth: true
                 Layout.columnSpan: 3
                 text: timeEntry.Duration
@@ -41,14 +42,14 @@ Rectangle {
             Text {
                 text: "Start-end time:"
             }
-            TextField {
+            TogglTextField {
                 Layout.fillWidth: true
                 text: timeEntry.StartTimeString
             }
             Text {
                 text: "-"
             }
-            TextField {
+            TogglTextField {
                 Layout.fillWidth: true
                 text: timeEntry.EndTimeString
             }
@@ -56,7 +57,7 @@ Rectangle {
             Text {
                 text: "Date:"
             }
-            TextField {
+            TogglTextField {
                 Layout.fillWidth: true
                 Layout.columnSpan: 3
                 text: new Date(Date(timeEntry.Started)).toLocaleDateString(Qt.locale(), Locale.ShortFormat)
@@ -212,7 +213,7 @@ Rectangle {
                             Text {
                                 text: "New:"
                             }
-                            TextField {
+                            TogglTextField {
                                 Layout.fillWidth: true
                                 id: newTagField
                                 onAccepted: {
@@ -224,7 +225,7 @@ Rectangle {
                                     }
                                 }
                             }
-                            Button {
+                            TogglButton {
                                 Layout.preferredWidth: 64
                                 text: "Add"
                                 onClicked: {
@@ -251,15 +252,15 @@ Rectangle {
             }
         }
         RowLayout {
-            Button {
+            TogglButton {
                 text: "Done"
                 onClicked: toggl.viewTimeEntryList()
             }
-            Button {
+            TogglButton {
                 text: "Delete"
                 onClicked: toggl.deleteTimeEntry(timeEntry.GUID)
             }
-            Button {
+            TogglButton {
                 text: "Cancel"
                 onClicked: toggl.viewTimeEntryList()
             }

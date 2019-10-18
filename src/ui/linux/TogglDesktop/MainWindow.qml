@@ -7,13 +7,26 @@ import QtQuick.Controls 1.4
 ApplicationWindow {
     id: window
     visible: true
-    minimumWidth: 360
-    width: 360
+    minimumWidth: 400
+    width: 400
     minimumHeight: 640
     height: 640
 
+    function mixColors(a, b, ratio) {
+        return Qt.rgba(
+            ratio * a.r + (1.0 - ratio) * b.r,
+            ratio * a.g + (1.0 - ratio) * b.g,
+            ratio * a.b + (1.0 - ratio) * b.b,
+            ratio * a.a + (1.0 - ratio) * b.a,
+        )
+    }
+
     SystemPalette {
         id: palette
+    }
+    SystemPalette {
+        id: disabledPalette
+        colorGroup: SystemPalette.Disabled
     }
 
     menuBar: MenuBar {
@@ -32,7 +45,7 @@ ApplicationWindow {
 
     Rectangle {
         anchors.fill: parent
-        color: "#202020"
+        color: palette.base
         clip: true
 
         ErrorOverlay {
@@ -43,7 +56,8 @@ ApplicationWindow {
 
     TextMetrics {
         id: termsAndConditionsMetrics
-        text: "Agree to conditions and terms TBD"
+        font.pointSize: 9
+        text: "I agree to terms of service and privacy policy"
     }
 
     Connections {
