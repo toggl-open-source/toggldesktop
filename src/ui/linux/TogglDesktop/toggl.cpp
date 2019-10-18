@@ -241,6 +241,14 @@ void TogglApi::displayProjectAutocomplete(QVector<AutocompleteView *> list) {
     emit projectAutocompleteChanged();
 }
 
+void TogglApi::displayTags(QVector<GenericView *> list) {
+    tags_.clear();
+    for (auto i : list) {
+        tags_.append(i->Name);
+    }
+    emit tagsChanged();
+}
+
 TogglApi::TogglApi(QObject *parent, QString logPathOverride, QString dbPathOverride)
     : QObject(parent)
     , shutdown(false)
@@ -387,6 +395,10 @@ TimeEntryViewStorage *TogglApi::timeEntries() {
 
 void TogglApi::importTimeEntries(TogglTimeEntryView *first) {
     timeEntries_->importList(first);
+}
+
+QStringList TogglApi::tags() {
+    return tags_;
 }
 
 bool TogglApi::startEvents() {

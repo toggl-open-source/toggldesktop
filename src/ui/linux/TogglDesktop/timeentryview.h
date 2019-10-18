@@ -68,7 +68,7 @@ class TimeEntryView : public QObject {
     PROPERTY(QString, Color)
     PROPERTY(QString, GUID)
     PROPERTY(bool, Billable)
-    PROPERTY(QString, Tags)
+    PROPERTY(QStringList, Tags)
     PROPERTY(uint64_t, Started)
     PROPERTY(uint64_t, Ended)
     PROPERTY(QString, StartTimeString)

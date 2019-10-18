@@ -63,7 +63,7 @@ TimeEntryView *TimeEntryView::importOne(TogglTimeEntryView *view) {
     result->Color = QString(view->Color);
     result->GUID = QString(view->GUID);
     result->Billable = view->Billable;
-    result->Tags = QString(view->Tags);
+    result->Tags = QString(view->Tags).split("\t", QString::SkipEmptyParts);
     result->Started = view->Started;
     result->Ended = view->Ended;
     result->StartTimeString = QString(view->StartTimeString);
@@ -115,7 +115,7 @@ void TimeEntryView::update(const TogglTimeEntryView *view) {
     ColorSet(view->Color);
     GUIDSet(view->GUID);
     BillableSet(view->Billable);
-    TagsSet(view->Tags);
+    TagsSet(QString(view->Tags).split("\t", QString::SkipEmptyParts));
     StartedSet(view->Started);
     EndedSet(view->Ended);
     StartTimeStringSet(view->StartTimeString);

@@ -30,6 +30,7 @@ class TogglApi : public QObject {
     Q_PROPERTY(AutocompleteProxyModel* minitimerAutocomplete READ minitimerAutocomplete CONSTANT)
     Q_PROPERTY(AutocompleteProxyModel* projectAutocomplete READ projectAutocomplete CONSTANT)
     Q_PROPERTY(TimeEntryViewStorage *timeEntries READ timeEntries CONSTANT)
+    Q_PROPERTY(QStringList tags READ tags NOTIFY tagsChanged)
 
  public:
     TogglApi(
@@ -59,11 +60,13 @@ class TogglApi : public QObject {
     AutocompleteProxyModel *projectAutocomplete();
     TimeEntryViewStorage *timeEntries();
     void importTimeEntries(TogglTimeEntryView *first);
+    QStringList tags();
 signals:
     void countriesChanged();
     void timeEntryAutocompleteChanged();
     void minitimerAutocompleteChanged();
     void projectAutocompleteChanged();
+    void tagsChanged();
 private:
     QList<QObject*> countries_;
     AutocompleteListModel *timeEntryModel_;
@@ -73,6 +76,7 @@ private:
     AutocompleteProxyModel *minitimerAutocomplete_;
     AutocompleteProxyModel *projectAutocomplete_;
     TimeEntryViewStorage *timeEntries_;
+    QStringList tags_;
 
  public slots:
     void setCountries(QVector<CountryView *> list);
@@ -80,6 +84,8 @@ private:
     void displayTimeEntryAutocomplete(QVector<AutocompleteView *> list);
     void displayMinitimerAutocomplete(QVector<AutocompleteView *> list);
     void displayProjectAutocomplete(QVector<AutocompleteView *> list);
+
+    void displayTags(QVector<GenericView *> list);
 
 ///////////////////////////////////////////////////////
     bool startEvents();
@@ -327,9 +333,6 @@ private:
         const QString description);
 
     void displayClientSelect(
-        QVector<GenericView *> list);
-
-    void displayTags(
         QVector<GenericView *> list);
 
     void displayWorkspaceSelect(
