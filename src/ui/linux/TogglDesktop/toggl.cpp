@@ -11,6 +11,8 @@
 #include <QStringList>
 #include <QDate>
 
+#include <QQmlEngine>
+
 #include <iostream>   // NOLINT
 
 #include "./../../../toggl_api.h"
@@ -207,8 +209,11 @@ void on_project_colors(
 
 void on_countries(
     TogglCountryView *first) {
-    TogglApi::instance->setCountries(
-        CountryView::importAll(first));
+    auto v = CountryView::importAll(first);
+    for (auto i : v) {
+        i->moveToThread(TogglApi::instance->uiThread_);
+    }
+    TogglApi::instance->setCountries(v);
 }
 
 template<typename T, typename U>
@@ -221,6 +226,9 @@ void replaceList(const QVector<T*> &from, QList<U*> &to) {
 }
 
 void TogglApi::setCountries(QVector<CountryView *> list) {
+    for (auto i : list) {
+        QQmlEngine::setObjectOwnership(i, QQmlEngine::CppOwnership);
+    }
     replaceList(list, countries_);
     emit countriesChanged();
 }
@@ -374,6 +382,9 @@ bool TogglApi::notifyBugsnag(
 }
 
 QList<QObject*> TogglApi::countries() {
+    for (auto i : countries_) {
+        QQmlEngine::setObjectOwnership(i, QQmlEngine::CppOwnership);
+    }
     return countries_;
 }
 
