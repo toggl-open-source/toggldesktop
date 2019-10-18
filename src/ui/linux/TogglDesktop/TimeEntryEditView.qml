@@ -77,6 +77,164 @@ Rectangle {
                         border.color: palette.dark
                         border.width: 1
                     }
+                    ColumnLayout {
+                        anchors.fill: parent
+                        ListView {
+                            clip: true
+                            Layout.fillHeight: true
+                            Layout.fillWidth: true
+                            model: timeEntry.Tags
+                            delegate: Item {
+                                width: childrenRect.width + 4
+                                height: childrenRect.height + 4
+                                Rectangle {
+                                    x: 2
+                                    y: 2
+                                    width: selectedTagLayout.width + 4
+                                    height: selectedTagLayout.height + 4
+                                    color: "white"
+                                    border.width: 1
+                                    border.color: "#d4d4d4"
+                                    radius: 2
+
+                                    RowLayout {
+                                        x: 2
+                                        y: 2
+                                        id: selectedTagLayout
+                                        Text {
+                                            id: selectedTagText
+                                            text: modelData
+                                            font.pixelSize: 10
+
+                                            Rectangle {
+                                                Behavior on opacity { NumberAnimation { } }
+                                                opacity: selectedTagMouse.containsMouse ? 1.0 : 0.0
+                                                visible: opacity > 0.0
+                                                width: 10
+                                                height: 10
+                                                radius: 3
+                                                anchors.centerIn: parent
+                                                color: "red"
+                                                Text {
+                                                    anchors.centerIn: parent
+                                                    text: "x"
+                                                    font.pointSize: 8
+                                                }
+                                            }
+                                        }
+                                    }
+                                    MouseArea {
+                                        id: selectedTagMouse
+                                        anchors.fill: parent
+                                        hoverEnabled: true
+                                        onClicked: {
+                                            var list = timeEntry.Tags
+                                            var index = list.indexOf(modelData);
+                                            if (index > -1) {
+                                                list.splice(index, 1);
+                                                toggl.setTimeEntryTags(timeEntry.GUID, list.sort().join("\t"))
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        Rectangle {
+                            Layout.fillWidth: true
+                            height: 1
+                            color: "#c3c3c3"
+                        }
+
+
+                        ListView {
+                            clip: true
+                            Layout.fillHeight: true
+                            Layout.fillWidth: true
+                            model: toggl.tags.filter(n => !timeEntry.Tags.includes(n))
+                            delegate: Item {
+                                width: childrenRect.width + 4
+                                height: childrenRect.height + 4
+                                Rectangle {
+                                    x: 2
+                                    y: 2
+                                    width: tagLayout.width + 4
+                                    height: tagLayout.height + 4
+                                    color: "white"
+                                    border.width: 1
+                                    border.color: "#d4d4d4"
+                                    radius: 2
+
+                                    RowLayout {
+                                        id: tagLayout
+                                        x: 2
+                                        y: 2
+                                        Text {
+                                            id: tagText
+                                            text: modelData
+                                            font.pixelSize: 10
+                                            Rectangle {
+                                                Behavior on opacity { NumberAnimation { } }
+                                                opacity: tagMouse.containsMouse ? 1.0 : 0.0
+                                                visible: opacity > 0.0
+                                                width: 10
+                                                height: 10
+                                                radius: 3
+                                                anchors.centerIn: parent
+                                                color: "green"
+                                                Text {
+                                                    anchors.centerIn: parent
+                                                    text: "+"
+                                                    font.pointSize: 8
+                                                }
+                                            }
+                                        }
+                                    }
+                                    MouseArea {
+                                        id: tagMouse
+                                        anchors.fill: parent
+                                        hoverEnabled: true
+                                        onClicked: {
+                                            var list = timeEntry.Tags
+                                            list.push(modelData)
+                                            toggl.setTimeEntryTags(timeEntry.GUID, list.sort().join("\t"))
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        RowLayout {
+                            Layout.fillWidth: true
+                            Text {
+                                text: "New:"
+                            }
+                            TextField {
+                                Layout.fillWidth: true
+                                id: newTagField
+                                onAccepted: {
+                                    if (text.length > 0) {
+                                        var list = timeEntry.Tags
+                                        list.push(newTagField.text)
+                                        toggl.setTimeEntryTags(timeEntry.GUID, list.sort().join("\t"))
+                                        newTagField.text = ""
+                                    }
+                                }
+                            }
+                            Button {
+                                Layout.preferredWidth: 64
+                                text: "Add"
+                                onClicked: {
+                                    if (text.length > 0) {
+                                        var list = timeEntry.Tags
+                                        list.push(newTagField.text)
+                                        toggl.setTimeEntryTags(timeEntry.GUID, list.sort().join("\t"))
+                                        newTagField.text = ""
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
 
