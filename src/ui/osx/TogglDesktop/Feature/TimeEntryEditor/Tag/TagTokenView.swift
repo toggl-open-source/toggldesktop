@@ -90,7 +90,7 @@ final class TagTokenView: NSView {
         case .delete, .backspace:
             deleteBtnOnTap(self)
         default:
-            break
+            super.keyDown(with: event)
         }
     }
 }

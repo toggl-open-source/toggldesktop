@@ -58,7 +58,6 @@
 @property (copy, nonatomic) NSString *GroupDuration;
 // Group Item Count
 @property (assign, nonatomic) uint64_t GroupItemCount;
-@property (assign, nonatomic) BOOL isFromSyncer;
 
 - (NSString *)descriptionEntry;
 // if item can be deleted without confirm

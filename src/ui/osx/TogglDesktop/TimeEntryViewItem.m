@@ -154,7 +154,7 @@
 	self.GroupName = [NSString stringWithUTF8String:te->GroupName];
 	self.GroupDuration = [NSString stringWithUTF8String:te->GroupDuration];
 	self.GroupItemCount = te->GroupItemCount;
-	self.isFromSyncer = NO;
+
 	[[UndoManager shared] storeWith:self];
 }
 

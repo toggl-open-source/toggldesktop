@@ -307,7 +307,7 @@ error Context::StartEvents() {
     return noError;
 }
 
-error Context::save(const bool push_changes, const bool is_from_syncer) {
+error Context::save(const bool push_changes) {
     logger().debug("save");
     try {
         std::vector<ModelChange> changes;
@@ -323,7 +323,6 @@ error Context::save(const bool push_changes, const bool is_from_syncer) {
         UIElements render;
         render.display_unsynced_items = true;
         render.display_timer_state = true;
-        render.is_from_syncer = is_from_syncer;
         render.ApplyChanges(time_entry_editor_guid_, changes);
         updateUI(render);
 
@@ -844,8 +843,7 @@ void Context::updateUI(const UIElements &what) {
         UI()->DisplayTimeEntryEditor(
             what.open_time_entry_editor,
             editor_time_entry_view,
-            what.time_entry_editor_field,
-            what.is_from_syncer);
+            what.time_entry_editor_field);
     }
 
     if (what.display_time_entries) {
@@ -2278,7 +2276,7 @@ error Context::GoogleSignup(
 }
 
 error Context::AsyncGoogleSignup(const std::string &access_token,
-                                 const uint64_t country_id) {
+    const uint64_t country_id) {
     std::thread backgroundThread([&](std::string access_token, uint64_t country_id) {
         return this->GoogleSignup(access_token, country_id);
     }, access_token, country_id);
@@ -4453,7 +4451,7 @@ void Context::syncerActivity() {
                     logger().error("Error pushing OBM action: " + err);
                 }
 
-                displayError(save(false, false));
+                displayError(save(false));
             }
 
         }
@@ -4480,7 +4478,7 @@ void Context::syncerActivity() {
                     logger().error("Error pushing OBM action: " + err);
                 }
 
-                displayError(save(false, true));
+                displayError(save(false));
             }
         }
     }
@@ -4863,9 +4861,9 @@ error Context::pushClients(
 }
 
 error Context::pushProjects(const std::vector<Project *> &projects,
-                            const std::vector<Client *> &clients,
-                            const std::string &api_token,
-                            TogglClient toggl_client) {
+    const std::vector<Client *> &clients,
+    const std::string &api_token,
+    TogglClient toggl_client) {
     error err = noError;
     std::string project_json("");
     for (std::vector<Project *>::const_iterator it =
@@ -4919,7 +4917,7 @@ error Context::pushProjects(const std::vector<Project *> &projects,
 }
 
 error Context::updateEntryProjects(const std::vector<Project *> &projects,
-                                   const std::vector<TimeEntry *> &time_entries) {
+    const std::vector<TimeEntry *> &time_entries) {
     for (std::vector<TimeEntry *>::const_iterator it =
         time_entries.begin();
             it != time_entries.end(); it++) {

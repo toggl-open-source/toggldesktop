@@ -46,6 +46,11 @@ final class EditorViewController: NSViewController {
 
     var timeEntry: TimeEntryViewItem! {
         didSet {
+            // If the TimeEntry is from the Syncer
+            // We shouldn't render since it causes the lost focus and the text is changed unexpectedly
+            if let timeEntry = timeEntry, timeEntry.isFromSyncer {
+                return
+            }
             fillData(oldValue)
             registerUndoForAllFields()
 
@@ -415,8 +420,6 @@ extension EditorViewController {
     }
 
     fileprivate func setFocusOnTextField(shouldFocusByDefault: Bool) {
-
-
         guard let timeEntry = timeEntry,
             let focusedFieldName = timeEntry.focusedFieldName else { return }
 
@@ -602,6 +605,9 @@ extension EditorViewController: TagTokenViewDelegate {
                 return tagName
             }
             DesktopLibraryBridge.shared().updateTimeEntry(withTags: remainingTags, guid: timeEntry.guid)
+            if let nextView = self.tagStackView.arrangedSubviews.first as? TagTokenView {
+                self.view.window?.makeFirstResponder(nextView.actionButton)
+            }
         }
     }
 
