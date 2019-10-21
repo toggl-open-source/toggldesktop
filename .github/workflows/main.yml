@@ -24,17 +24,6 @@ jobs:
     - name: Build the Linux binary
       run: |
         bash ./dist/linux/package.sh build
-    - name: Package the binaries, create tarball
-      if: github.event_name == 'create'
-      run: |
-        bash ./dist/linux/package.sh compose
-    - name: Upload to GitHub
-      if: github.event_name == 'create'
-      run: |
-        EVENT_TYPE=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref_type")
-        if [[ "$EVENT_TYPE" != "tag" ]]; then exit 0; fi
-        TAG_NAME=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref")
-        ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} owner=toggl repo=toggldesktop tag="$TAG_NAME" filename="toggldesktop_x86_64.tar.gz"
 
   linux-tarball:
     runs-on: ubuntu-16.04
