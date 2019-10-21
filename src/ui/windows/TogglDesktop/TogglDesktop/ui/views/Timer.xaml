@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:toggl="clr-namespace:TogglDesktop"
              mc:Ignorable="d" 
-             d:DesignWidth="500" Height="{DynamicResource TimerHeight}" MinWidth="256" Focusable="True"
+             d:DesignWidth="500" MinWidth="256" Focusable="True"
              Style="{StaticResource Timer}">
     
     <Grid>

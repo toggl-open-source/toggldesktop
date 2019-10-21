@@ -976,11 +976,5 @@ namespace TogglDesktop
         {
             return (T)this.views.FirstOrDefault(v => v is T);
         }
-
-        private void changeThemeTest(object sender, RoutedEventArgs e)
-        {
-            Theme.Activate(ThemeTypes.Layout, this.themeCheckBox.IsChecked ?? false ? "Compact" : "Comfortable");
-        }
-
     }
 }
