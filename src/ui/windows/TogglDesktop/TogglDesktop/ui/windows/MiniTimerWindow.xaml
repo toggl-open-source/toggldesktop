@@ -5,7 +5,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:toggl="clr-namespace:TogglDesktop"
         mc:Ignorable="d"
-        Height="{DynamicResource TimerHeight}"
+        Height="{StaticResource TimerHeight}"
         Width="360" MinWidth="360"
         IsToolWindow="True" Topmost="True"
         ShowInTaskbar="False"
