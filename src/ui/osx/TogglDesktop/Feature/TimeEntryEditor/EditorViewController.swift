@@ -537,7 +537,7 @@ extension EditorViewController: AutoCompleteTextFieldDelegate {
 
             // Focus on tag textfield agains, so user can continue typying
             tagTextField.focus()
-            tagTextField.resetText()
+            tagTextField.selectAllText()
         }
     }
 
@@ -617,7 +617,7 @@ extension EditorViewController: TagDataSourceDelegate {
     func tagSelectionChanged(with selectedTags: [Tag]) {
         let tags = selectedTags.toNames()
         DesktopLibraryBridge.shared().updateTimeEntry(withTags: tags, guid: timeEntry.guid)
-        tagTextField.resetText()
+        tagTextField.selectAllText()
     }
 }
 
