@@ -81,6 +81,7 @@
 		74EB0F1817F9A2600046ABC1 /* https_client.h in Headers */ = {isa = PBXBuildFile; fileRef = 74EB0F1617F9A2600046ABC1 /* https_client.h */; };
 		74F7CDDB18199FA300630BD0 /* window_change_recorder.cc in Sources */ = {isa = PBXBuildFile; fileRef = 74F7CDD918199FA300630BD0 /* window_change_recorder.cc */; };
 		74F7CDDC18199FA300630BD0 /* window_change_recorder.h in Headers */ = {isa = PBXBuildFile; fileRef = 74F7CDDA18199FA300630BD0 /* window_change_recorder.h */; };
+		BA1AB53E235DEAD4000433AE /* MacOSVersionChecker.mm in Sources */ = {isa = PBXBuildFile; fileRef = BA1AB53D235DEAD4000433AE /* MacOSVersionChecker.mm */; };
 		BA2DA11C21A6864D0027B7A5 /* rectangle.h in Headers */ = {isa = PBXBuildFile; fileRef = BA2DA11A21A6864D0027B7A5 /* rectangle.h */; };
 		BA2DA11D21A6864D0027B7A5 /* rectangle.cc in Sources */ = {isa = PBXBuildFile; fileRef = BA2DA11B21A6864D0027B7A5 /* rectangle.cc */; };
 		BAD233E321D60A4D0039C742 /* libPocoNet.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BAD233DA21D60A4D0039C742 /* libPocoNet.dylib */; };
@@ -176,6 +177,7 @@
 		74EB0F1617F9A2600046ABC1 /* https_client.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = https_client.h; path = ../../../https_client.h; sourceTree = "<group>"; };
 		74F7CDD918199FA300630BD0 /* window_change_recorder.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = window_change_recorder.cc; path = ../../../window_change_recorder.cc; sourceTree = "<group>"; };
 		74F7CDDA18199FA300630BD0 /* window_change_recorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = window_change_recorder.h; path = ../../../window_change_recorder.h; sourceTree = "<group>"; };
+		BA1AB53D235DEAD4000433AE /* MacOSVersionChecker.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = MacOSVersionChecker.mm; sourceTree = "<group>"; };
 		BA2DA11A21A6864D0027B7A5 /* rectangle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = rectangle.h; path = ../../../rectangle.h; sourceTree = "<group>"; };
 		BA2DA11B21A6864D0027B7A5 /* rectangle.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = rectangle.cc; path = ../../../rectangle.cc; sourceTree = "<group>"; };
 		BAD233DA21D60A4D0039C742 /* libPocoNet.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoNet.dylib; path = ../../../third_party/poco/lib/Darwin/x86_64/libPocoNet.dylib; sourceTree = "<group>"; };
@@ -347,6 +349,7 @@
 				C55DA59F17F06A3B00B42178 /* Supporting Files */,
 				BA2DA11A21A6864D0027B7A5 /* rectangle.h */,
 				BA2DA11B21A6864D0027B7A5 /* rectangle.cc */,
+				BA1AB53D235DEAD4000433AE /* MacOSVersionChecker.mm */,
 			);
 			name = lib;
 			path = Kopsik;
@@ -517,6 +520,7 @@
 				7408EDB818C51CEB00CBE8F1 /* feedback.cc in Sources */,
 				74E16831180F26D90026261C /* websocket_client.cc in Sources */,
 				74B587CA18BBC77E00E9F6CE /* client.cc in Sources */,
+				BA1AB53E235DEAD4000433AE /* MacOSVersionChecker.mm in Sources */,
 				7408EDB118C51CEB00CBE8F1 /* proxy.cc in Sources */,
 				C5DA1FAB17F18D7B001C4565 /* database.cc in Sources */,
 				748B7DA51AC5963B00FE01D2 /* custom_error_handler.cc in Sources */,
