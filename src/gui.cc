@@ -523,8 +523,9 @@ void GUI::DisplayWorkspaceSelect(
 }
 
 void GUI::DisplayTimeEntryEditor(const bool open,
-    const view::TimeEntry &te,
-    const std::string &focused_field_name) {
+                                 const view::TimeEntry &te,
+                                 const std::string &focused_field_name,
+                                 const bool is_from_syncer) {
 
     logger().debug(
         "DisplayTimeEntryEditor focused_field_name=" + focused_field_name);
@@ -532,7 +533,7 @@ void GUI::DisplayTimeEntryEditor(const bool open,
     TogglTimeEntryView *view = time_entry_view_item_init(te);
 
     char_t *field_s = copy_string(focused_field_name);
-    on_display_time_entry_editor_(open, view, field_s);
+    on_display_time_entry_editor_(open, view, field_s, is_from_syncer);
     free(field_s);
 
     time_entry_view_list_clear(view);

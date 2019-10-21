@@ -443,7 +443,8 @@ class TOGGL_INTERNAL_EXPORT GUI : public SyncStateMonitor {
     void DisplayTimeEntryEditor(
         const bool open,
         const view::TimeEntry &te,
-        const std::string &focused_field_name);
+        const std::string &focused_field_name,
+        const bool is_from_syncer);
 
     void DisplayURL(const std::string &);
 

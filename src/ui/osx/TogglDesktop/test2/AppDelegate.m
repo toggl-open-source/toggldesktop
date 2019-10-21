@@ -1631,7 +1631,8 @@ void on_workspace_select(TogglGenericView *first)
 
 void on_time_entry_editor(const bool_t open,
 						  TogglTimeEntryView *te,
-						  const char *focused_field_name)
+						  const char *focused_field_name,
+						  const bool_t is_from_syncer)
 {
 	TimeEntryViewItem *item = [[TimeEntryViewItem alloc] init];
 
@@ -1640,6 +1641,7 @@ void on_time_entry_editor(const bool_t open,
 	cmd.open = open;
 	cmd.timeEntry = item;
 	cmd.timeEntry.focusedFieldName = [NSString stringWithUTF8String:focused_field_name];
+	cmd.timeEntry.isFromSyncer = is_from_syncer;
 	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayTimeEntryEditor
 																object:cmd];
 }

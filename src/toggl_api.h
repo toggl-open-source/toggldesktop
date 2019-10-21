@@ -263,7 +263,8 @@ extern "C" {
     typedef void (*TogglDisplayTimeEntryEditor)(
         const bool_t open,
         TogglTimeEntryView *te,
-        const char_t *focused_field_name);
+        const char_t *focused_field_name,
+        const bool_t is_from_syncer);
 
     typedef void (*TogglDisplaySettings)(
         const bool_t open,
