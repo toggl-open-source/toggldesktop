@@ -1,7 +1,8 @@
 ﻿<ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:toggl="clr-namespace:TogglDesktop">
+    xmlns:toggl="clr-namespace:TogglDesktop"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
     <ImageBrush x:Key="ViewBackgroundDark"
         ImageSource="/TogglDesktop;component/Resources/timerDarkBg.png"
@@ -15,6 +16,11 @@
         Viewport="0 0 634 822" ViewportUnits="Absolute"/>
 
     <FontFamily x:Key="DefaultFont">/TogglDesktop;component/Resources/Fonts/#Roboto, Segoe UI</FontFamily>
+
+    <sys:Double x:Key="TimerHeight">50</sys:Double>
+
+    <sys:Double x:Key="EditViewMarginH">12</sys:Double>
+    <sys:Double x:Key="EditViewMarginV">40</sys:Double>
 
     <Style TargetType="Control">
         <Setter Property="FontFamily" Value="{StaticResource DefaultFont}" />
