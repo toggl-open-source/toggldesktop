@@ -10,6 +10,8 @@
 #include "Poco/Logger.h"
 #include "Poco/Thread.h"
 
+extern bool isScreenRecordingPermissionAvailable(void);
+
 namespace toggl {
 
 Poco::Logger &WindowChangeRecorder::logger() {
@@ -58,6 +60,11 @@ void WindowChangeRecorder::inspectFocusedWindow() {
 #if !defined(_WIN32) && !defined(WIN32)
         return;
 #endif
+    }
+
+    // Check if we need ScreenRecording permssion in order to the Window's title
+    if (isScreenRecordingPermissionAvailable()) {
+        return;
     }
 
     time_t now;
