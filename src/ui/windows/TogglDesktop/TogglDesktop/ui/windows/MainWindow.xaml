@@ -152,11 +152,5 @@
             </Rectangle.Fill>
         </Rectangle>
 
-        <Border Background="{DynamicResource LayoutTestBrush}"
-                HorizontalAlignment="Left" VerticalAlignment="Bottom"
-                Visibility="Collapsed">
-            <CheckBox Click="changeThemeTest" Name="themeCheckBox">Compact mode</CheckBox>
-        </Border>
-        
     </Grid>
 </toggl:TogglWindow>

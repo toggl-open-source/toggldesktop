@@ -22,12 +22,12 @@
             </Grid.RowDefinitions>
 
             <FrameworkElement Grid.Row="0" Grid.Column="0"
-                Width="{DynamicResource EditViewMarginH}"
-                Height="{DynamicResource EditViewMarginV}"
+                Width="{StaticResource EditViewMarginH}"
+                Height="{StaticResource EditViewMarginV}"
                 />
             <FrameworkElement Grid.Row="3" Grid.Column="2"
-                Width="{DynamicResource EditViewMarginH}"
-                Height="{DynamicResource EditViewMarginV}"
+                Width="{StaticResource EditViewMarginH}"
+                Height="{StaticResource EditViewMarginV}"
                 />
 
             <!-- content -->
