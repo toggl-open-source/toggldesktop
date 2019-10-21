@@ -22,7 +22,7 @@
                 <ResourceDictionary Source="ui/Resources/TogglWindowStyles.xaml" />
                 <ResourceDictionary Source="ui/Resources/TutorialStyles.xaml" />
                 
-                <toggl:ThemeResourceDictionary Source="ui/Resources/Themes/Layout/Compact.xaml" Type="Layout"/>
+                <!--<toggl:ThemeResourceDictionary Source="ui/Resources/Themes/Layout/Compact.xaml" Type="Layout"/>-->
                 
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
