@@ -62,9 +62,15 @@ void WindowChangeRecorder::inspectFocusedWindow() {
 #endif
     }
 
-    // Check if we need ScreenRecording permssion in order to the Window's title
+    // Check if we need ScreenRecording permission in order to receive the Window's title
     if (isScreenRecordingPermissionAvailable()) {
-        return;
+
+        // It's lite version of Timeline recording
+        // 10.15+ and title is empty
+        // Just set it as a filename
+        if (title.empty()) {
+            title = std::string(filename);
+        }
     }
 
     time_t now;
