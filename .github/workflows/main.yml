@@ -53,10 +53,8 @@ jobs:
         bash ./dist/linux/package.sh compose
     - name: Upload to GitHub
       run: |
-        EVENT_TYPE=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref_type")
-        if [[ "$EVENT_TYPE" != "tag" ]]; then exit 0; fi
-        TAG_NAME=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref")
-        ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} owner=toggl repo=toggldesktop tag="$TAG_NAME" filename="toggldesktop_x86_64.tar.gz" renameto="toggldesktop_linux_${TAG_NAME/v/}_x86_64.tar.gz"
+        TAG_NAME=$(./dist/get-tag-name.sh)
+        ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} tag="$TAG_NAME" filename="toggldesktop_x86_64.tar.gz" renameto="toggldesktop_linux_${TAG_NAME/v/}_x86_64.tar.gz"
 
   linux-ubuntu1804:
     runs-on: ubuntu-18.04
@@ -74,7 +72,7 @@ jobs:
         sudo apt install devscripts cmake debhelper pkg-config qtbase5-dev qtwebengine5-dev libqt5x11extras5-dev qtbase5-private-dev libssl-dev libxss-dev libxmu-dev
     - name: Build a Debian package
       run: |
-        TAG_NAME=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref")
+        TAG_NAME=$(./dist/get-tag-name.sh)
         cd dist/linux
         ln -s ../../src .
         ln -s ../../CMakeLists.txt .
@@ -84,10 +82,8 @@ jobs:
     - name: Upload to GitHub
       if: github.event_name == 'create'
       run: |
-        EVENT_TYPE=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref_type")
-        if [[ "$EVENT_TYPE" != "tag" ]]; then exit 0; fi
-        TAG_NAME=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref")
-        ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} owner=toggl repo=toggldesktop tag="$TAG_NAME" filename="dist/toggldesktop_${TAG_NAME/v/}_amd64.deb"
+        TAG_NAME=$(./dist/get-tag-name.sh)
+        ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} tag="$TAG_NAME" filename="dist/toggldesktop_${TAG_NAME/v/}_amd64.deb"
 
   linux-flatpak-kde:
     runs-on: ubuntu-18.04
@@ -115,10 +111,8 @@ jobs:
     - name: Upload to GitHub
       if: github.event_name == 'create'
       run: |
-        EVENT_TYPE=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref_type")
-        if [[ "$EVENT_TYPE" != "tag" ]]; then exit 0; fi
-        TAG_NAME=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref")
-        ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} owner=toggl repo=toggldesktop tag="$TAG_NAME" filename="com.toggl.TogglDesktop.flatpak" renameto="com.toggl.TogglDesktop-${TAG_NAME/v/}.flatpak"
+        TAG_NAME=$(./dist/get-tag-name.sh)
+        ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} tag="$TAG_NAME" filename="com.toggl.TogglDesktop.flatpak" renameto="com.toggl.TogglDesktop-${TAG_NAME/v/}.flatpak"
 
   windows-32bit:
     runs-on: windows-2019
@@ -138,9 +132,7 @@ jobs:
     - name: Set version
       shell: bash
       run: |
-        EVENT_TYPE=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref_type")
-        if [[ "$EVENT_TYPE" != "tag" ]]; then exit 0; fi
-        TAG_NAME=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref")
+        TAG_NAME=$(./dist/get-tag-name.sh)
         echo "Setting version to ${TAG_NAME/v/}"
         bash dist/windows/scripts/set_version.sh "${TAG_NAME/v/}"
     - name: Build on Windows x86
@@ -164,10 +156,8 @@ jobs:
     - name: Upload to GitHub
       if: github.event_name == 'create'
       run: |
-        EVENT_TYPE=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref_type")
-        if [[ "$EVENT_TYPE" != "tag" ]]; then exit 0; fi
-        TAG_NAME=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref")
-        ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} owner=toggl repo=toggldesktop tag="$TAG_NAME" filename="dist/windows/TogglDesktopInstaller.exe" renameto="TogglDesktopInstaller-${TAG_NAME/v/}.exe"
+        TAG_NAME=$(./dist/get-tag-name.sh)
+        ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} tag="$TAG_NAME" filename="dist/windows/TogglDesktopInstaller.exe" renameto="TogglDesktopInstaller-${TAG_NAME/v/}.exe"
       shell: bash
 
   windows-64bit:
@@ -188,9 +178,7 @@ jobs:
     - name: Set version
       shell: bash
       run: |
-        EVENT_TYPE=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref_type")
-        if [[ "$EVENT_TYPE" != "tag" ]]; then exit 0; fi
-        TAG_NAME=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref")
+        TAG_NAME=$(./dist/get-tag-name.sh)
         echo "Setting version to ${TAG_NAME/v/}"
         bash dist/windows/scripts/set_version.sh "${TAG_NAME/v/}"
     - name: Build on Windows x64
@@ -214,10 +202,8 @@ jobs:
     - name: Upload to GitHub
       if: github.event_name == 'create'
       run: |
-        EVENT_TYPE=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref_type")
-        if [[ "$EVENT_TYPE" != "tag" ]]; then exit 0; fi
-        TAG_NAME=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref")
-        ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} owner=toggl repo=toggldesktop tag="$TAG_NAME" filename="dist/windows/TogglDesktopInstaller-x64.exe" renameto="TogglDesktopInstaller-${TAG_NAME/v/}-x64.exe"
+        TAG_NAME=$(./dist/get-tag-name.sh)
+        ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} tag="$TAG_NAME" filename="dist/windows/TogglDesktopInstaller-x64.exe" renameto="TogglDesktopInstaller-${TAG_NAME/v/}-x64.exe"
       shell: bash
 
   windows-store:
@@ -240,9 +226,7 @@ jobs:
     - name: Set version
       shell: bash
       run: |
-        EVENT_TYPE=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref_type")
-        if [[ "$EVENT_TYPE" != "tag" ]]; then exit 0; fi
-        TAG_NAME=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref")
+        TAG_NAME=$(./dist/get-tag-name.sh)
         echo "Setting version to ${TAG_NAME/v/}"
         bash dist/windows/scripts/set_version.sh "${TAG_NAME/v/}"
     - name: Build on Windows for Microsoft Store
@@ -253,8 +237,6 @@ jobs:
     - name: Upload to GitHub
       if: github.event_name == 'create'
       run: |
-        EVENT_TYPE=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref_type")
-        if [[ "$EVENT_TYPE" != "tag" ]]; then exit 0; fi
-        TAG_NAME=$(cat "$GITHUB_EVENT_PATH" | jq -r ".ref")
-        ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} owner=toggl repo=toggldesktop tag="$TAG_NAME" filename="TogglDesktop.Package_${TAG_NAME/v/}.0_x86_x64_bundle_StoreRelease.appxupload"
+        TAG_NAME=$(./dist/get-tag-name.sh)
+        ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} tag="$TAG_NAME" filename="TogglDesktop.Package_${TAG_NAME/v/}.0_x86_x64_bundle_StoreRelease.appxupload"
       shell: bash
