@@ -4,16 +4,13 @@ on:
   push:
     branches:
       - '**'
-  create:
-    branches:
-      - 'master'
-    tags:
-      - '**'
+  release:
+    types: [ created ]
 
 jobs:
   linux-basic:
     runs-on: ubuntu-latest
-    if: github.event_name != 'create'
+    if: github.event_name != 'release'
     steps:
     - uses: actions/checkout@v1
       with:
@@ -29,7 +26,7 @@ jobs:
 
   linux-tarball:
     runs-on: ubuntu-16.04
-    if: github.event_name == 'create'
+    if: github.event_name == 'release'
     steps:
     - uses: actions/checkout@v1
       with:
@@ -58,7 +55,7 @@ jobs:
 
   linux-ubuntu1804:
     runs-on: ubuntu-18.04
-    if: github.event_name == 'create'
+    if: github.event_name == 'release'
     steps:
     - uses: actions/checkout@v1
       with:
@@ -80,14 +77,13 @@ jobs:
         dch -b -D unstable --package "toggldesktop" -v ${TAG_NAME/v/} "General bug fixes and improvements" -u low -M
         debuild
     - name: Upload to GitHub
-      if: github.event_name == 'create'
       run: |
         TAG_NAME=$(./dist/get-tag-name.sh)
         ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} tag="$TAG_NAME" filename="dist/toggldesktop_${TAG_NAME/v/}_amd64.deb"
 
   linux-flatpak-kde:
     runs-on: ubuntu-18.04
-    if: github.event_name == 'create'
+    if: github.event_name == 'release'
     steps:
     - uses: actions/checkout@v1
       with:
@@ -109,7 +105,6 @@ jobs:
         mv com.toggl.TogglDesktop.flatpak ../../..
         popd
     - name: Upload to GitHub
-      if: github.event_name == 'create'
       run: |
         TAG_NAME=$(./dist/get-tag-name.sh)
         ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} tag="$TAG_NAME" filename="com.toggl.TogglDesktop.flatpak" renameto="com.toggl.TogglDesktop-${TAG_NAME/v/}.flatpak"
@@ -140,21 +135,21 @@ jobs:
       run: |
         "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe" src/ui/windows/TogglDesktop/TogglDesktop.sln /p:Configuration=Release /p:Platform="x86" /t:Clean,Build /restore /m
     - name: Sign binaries
-      if: github.event_name == 'create'
+      if: github.event_name == 'release'
       run: |
         ./dist/windows/scripts/sign.sh
       shell: bash
     - name: Create x86 installer
-      if: github.event_name == 'create'
+      if: github.event_name == 'release'
       run: |
         cd dist/windows
         makensis TogglDesktopInstaller-x86.nsi
     - name: Sign the installer
-      if: github.event_name == 'create'
+      if: github.event_name == 'release'
       run: |
         "C:\Program Files (x86)\Windows Kits\10\Tools\bin\i386\signtool.exe" sign -a -t http://timestamp.verisign.com/scripts/timestamp.dll -f Certificate.pfx dist\windows\TogglDesktopInstaller.exe
     - name: Upload to GitHub
-      if: github.event_name == 'create'
+      if: github.event_name == 'release'
       run: |
         TAG_NAME=$(./dist/get-tag-name.sh)
         ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} tag="$TAG_NAME" filename="dist/windows/TogglDesktopInstaller.exe" renameto="TogglDesktopInstaller-${TAG_NAME/v/}.exe"
@@ -186,21 +181,21 @@ jobs:
       run: |
         "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe" src/ui/windows/TogglDesktop/TogglDesktop.sln /p:Configuration=Release /p:Platform="x64" /t:Clean,Build /restore /m
     - name: Sign binaries
-      if: github.event_name == 'create'
+      if: github.event_name == 'release'
       run: |
         ./dist/windows/scripts/sign.sh
       shell: bash
     - name: Make x64 installer
-      if: github.event_name == 'create'
+      if: github.event_name == 'release'
       run: |
         cd dist/windows
         makensis TogglDesktopInstaller-x64.nsi
     - name: Sign the installer
-      if: github.event_name == 'create'
+      if: github.event_name == 'release'
       run: |
         "C:\Program Files (x86)\Windows Kits\10\Tools\bin\i386\signtool.exe" sign -a -t http://timestamp.verisign.com/scripts/timestamp.dll -f Certificate.pfx dist\windows\TogglDesktopInstaller-x64.exe
     - name: Upload to GitHub
-      if: github.event_name == 'create'
+      if: github.event_name == 'release'
       run: |
         TAG_NAME=$(./dist/get-tag-name.sh)
         ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} tag="$TAG_NAME" filename="dist/windows/TogglDesktopInstaller-x64.exe" renameto="TogglDesktopInstaller-${TAG_NAME/v/}-x64.exe"
@@ -208,7 +203,7 @@ jobs:
 
   windows-store:
     runs-on: windows-2019
-    if: github.event_name == 'create'
+    if: github.event_name == 'release'
     steps:
     - uses: actions/checkout@v1
       with:
@@ -235,7 +230,6 @@ jobs:
         "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe" src/ui/windows/TogglDesktop/TogglDesktop.sln /p:Configuration=StoreRelease /p:Platform="x64" /p:UapAppxPackageBuildMode=CI /p:AppxBundle=Always /p:AppxBundlePlatforms="x86|x64" /p:AppxPackageSigningEnabled=true /p:PackageCertificateThumbprint="322D8592D0FDB01F1C8FCA56ED3FBFAF646D3739" /p:AppxPackageDir="..\\..\\..\\..\\..\\" /t:Clean,Build /restore -m
         dir
     - name: Upload to GitHub
-      if: github.event_name == 'create'
       run: |
         TAG_NAME=$(./dist/get-tag-name.sh)
         ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} tag="$TAG_NAME" filename="TogglDesktop.Package_${TAG_NAME/v/}.0_x86_x64_bundle_StoreRelease.appxupload"
