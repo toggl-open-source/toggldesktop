@@ -103,6 +103,13 @@ void WindowChangeRecorder::inspectFocusedWindow() {
         return;
     }
 
+    // Lite version of timeline recorder
+    // Since we don't have Screen Recording permission yet => title will be empty
+    // So we only track the primary timeline (treat title is filename)
+    if (is_catalina_OSX && last_title_ == title && last_filename_ == filename) {
+        return;
+    }
+
     // We actually record the *previous* event. Meaning, when
     // you have "terminal" open and then switch to "skype",
     // then "terminal" gets recorded here:
