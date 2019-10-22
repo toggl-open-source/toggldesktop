@@ -39,8 +39,7 @@ OSVersion* getProcessInfoVersion (void) {
     }
 }
 
-// Check if Screen Recording permission is needed in OS >= 10.15
-bool isScreenRecordingPermissionAvailable(void) {
+bool isCatalinaOSX(void) {
     OSVersion *version = getProcessInfoVersion();
     if (version == nullptr) {
         return false;
@@ -50,4 +49,3 @@ bool isScreenRecordingPermissionAvailable(void) {
     }
     return false;
 }
-

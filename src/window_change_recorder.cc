@@ -10,7 +10,7 @@
 #include "Poco/Logger.h"
 #include "Poco/Thread.h"
 
-extern bool isScreenRecordingPermissionAvailable(void);
+extern bool isCatalinaOSX(void);
 
 namespace toggl {
 
@@ -63,7 +63,7 @@ void WindowChangeRecorder::inspectFocusedWindow() {
     }
 
     // Check if we need ScreenRecording permission in order to receive the Window's title
-    if (isScreenRecordingPermissionAvailable()) {
+    if (is_catalina_OSX) {
 
         // It's lite version of Timeline recording
         // 10.15+ and title is empty
