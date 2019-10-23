@@ -16,8 +16,9 @@
 
 #include <json/json.h>  // NOLINT
 
-#include "./https_client.h"
 #include "./formatter.h"
+#include "./https_client.h"
+#include "./json_helper.h"
 
 #include "Poco/DateTime.h"
 #include "Poco/LocalDateTime.h"
@@ -356,7 +357,7 @@ const std::string TimeEntry::Tags() const {
     return ss.str();
 }
 
-const std::string TimeEntry::TagsHash() const {
+std::string TimeEntry::TagsHash() const {
     std::vector<std::string> sortedTagNames(TagNames);
     sort(sortedTagNames.begin(), sortedTagNames.end());
     std::stringstream ss;
@@ -377,7 +378,7 @@ std::string TimeEntry::StartString() const {
     return Formatter::Format8601(start_);
 }
 
-const std::string TimeEntry::GroupHash() const {
+std::string TimeEntry::GroupHash() const {
     std::stringstream ss;
     ss << toggl::Formatter::FormatDateHeader(Start())
        << Description()
@@ -512,8 +513,8 @@ Json::Value TimeEntry::SaveToJSON() const {
             tag_nodes.append(Json::Value(tag_name));
         }
     } else {
-        Json::Reader reader;
-        reader.parse("[]", tag_nodes);
+        auto reader = JsonHelper::reader();
+        reader->parse("[]", &tag_nodes);
     }
     n["tags"] = tag_nodes;
 

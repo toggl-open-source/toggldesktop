@@ -24,6 +24,7 @@
 
 #include "./const.h"
 #include "./https_client.h"
+#include "./json_helper.h"
 #include "./netconf.h"
 #include "./urls.h"
 
@@ -152,8 +153,8 @@ void WebSocketClient::authenticate() {
     c["type"] = "authenticate";
     c["api_token"] = api_token_;
 
-    Json::StyledWriter writer;
-    std::string payload = writer.write(c);
+    auto writer = JsonHelper::writer();
+    std::string payload = writer->write(c);
 
     ws_->sendFrame(payload.data(),
                    static_cast<int>(payload.size()),
@@ -168,8 +169,8 @@ std::string WebSocketClient::parseWebSocketMessageType(
     }
 
     Json::Value root;
-    Json::Reader reader;
-    if (!reader.parse(json, root)) {
+    auto reader = JsonHelper::reader();
+    if (!reader->parse(json, &root)) {
         return "";
     }
 
@@ -202,7 +203,7 @@ error WebSocketClient::receiveWebSocketMessage(std::string *message) {
     return noError;
 }
 
-const std::string kPong("{\"type\": \"pong\"}");
+const std::string &kPong("{\"type\": \"pong\"}");
 
 error WebSocketClient::poll() {
     try {

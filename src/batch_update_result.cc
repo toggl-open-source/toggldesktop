@@ -6,6 +6,7 @@
 #include <cstring>
 
 #include "./base_model.h"
+#include "./json_helper.h"
 
 #include "Poco/Logger.h"
 
@@ -103,8 +104,8 @@ error BatchUpdateResult::ParseResponseArray(
     logger.debug(response_body);
 
     Json::Value root;
-    Json::Reader reader;
-    if (!reader.parse(response_body, root)) {
+    auto reader = JsonHelper::reader();
+    if (!reader->parse(response_body, &root)) {
         return error("error parsing batch update response");
     }
 

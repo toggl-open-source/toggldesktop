@@ -7,6 +7,7 @@
 #include "./batch_update_result.h"
 #include "./database.h"
 #include "./formatter.h"
+#include "./json_helper.h"
 #include "./model_change.h"
 
 #include "Poco/Timestamp.h"
@@ -111,8 +112,8 @@ void BaseModel::SetUpdatedAtString(const std::string &value) {
 
 error BaseModel::LoadFromDataString(const std::string &data_string) {
     Json::Value root;
-    Json::Reader reader;
-    if (!reader.parse(data_string, root)) {
+    auto reader = JsonHelper::reader();
+    if (!reader->parse(data_string, &root)) {
         return error("Failed to parse data string");
     }
     LoadFromJSON(root["data"]);

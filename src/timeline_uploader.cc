@@ -7,6 +7,7 @@
 
 #include "./formatter.h"
 #include "./https_client.h"
+#include "./json_helper.h"
 #include "./urls.h"
 
 #include "Poco/Foundation.h"
@@ -125,8 +126,8 @@ std::string convertTimelineToJSON(
         root.append(n);
     }
 
-    Json::StyledWriter writer;
-    return writer.write(root);
+    auto writer = JsonHelper::writer();
+    return writer->write(root);
 }
 
 void TimelineUploader::backoff() {

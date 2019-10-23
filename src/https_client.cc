@@ -8,6 +8,7 @@
 #include <sstream>
 
 #include "./formatter.h"
+#include "./json_helper.h"
 #include "./netconf.h"
 #include "./urls.h"
 #include "./toggl_api.h"
@@ -495,8 +496,8 @@ HTTPSResponse HTTPSClient::makeHttpRequest(
         if (resp.err != noError &&
                 response.getContentType().find(kContentTypeApplicationJSON) != std::string::npos) {
             Json::Value root;
-            Json::Reader reader;
-            if (reader.parse(resp.body, root)) {
+            auto reader = JsonHelper::reader();
+            if (reader->parse(resp.body, &root)) {
                 resp.body = root["error_message"].asString();
             }
         }
