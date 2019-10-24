@@ -22,7 +22,7 @@
 
 # Check dependencies.
 set -e
-xargs=$(which gxargs || which xargs)
+set -x
 
 # Validate settings.
 [ "$TRACE" ] && set -x
