@@ -131,9 +131,8 @@ class AutoCompleteTextField: UndoTextField, NSTextFieldDelegate, AutoCompleteVie
         state = .collapse
     }
 
-    func resetText() {
-        stringValue = ""
-        handleTextDidChange()
+    func selectAllText() {
+        currentEditor()?.selectAll(nil)
     }
 
     func updateWindowContent(with view: NSView, height: CGFloat) {
