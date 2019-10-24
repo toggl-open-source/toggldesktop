@@ -46,11 +46,6 @@ final class EditorViewController: NSViewController {
 
     var timeEntry: TimeEntryViewItem! {
         didSet {
-            // If the TimeEntry is from the Syncer
-            // We shouldn't render since it causes the lost focus and the text is changed unexpectedly
-            if let timeEntry = timeEntry, timeEntry.isFromSyncer {
-                return
-            }
             fillData(oldValue)
             registerUndoForAllFields()
 
@@ -99,6 +94,7 @@ final class EditorViewController: NSViewController {
         formatter.locale = Locale.current
         return formatter
     }()
+    private var shouldRefocusTagTokens = false
 
     // MARK: View Cyclex
 
@@ -345,6 +341,13 @@ extension EditorViewController {
 
             // Last to duration
             visibleTokens.last?.actionButton.nextKeyView = durationTextField
+
+            if shouldRefocusTagTokens {
+                shouldRefocusTagTokens = false
+                if let first = visibleTokens.first {
+                    view.window?.makeFirstResponder(first.actionButton)
+                }
+            }
         }
         else {
             tagDatasource.updateSelectedTags([])
@@ -352,6 +355,11 @@ extension EditorViewController {
             // Tab
             projectTextField.nextKeyView = tagAddButton
             tagAddButton.nextKeyView = durationTextField
+
+            if shouldRefocusTagTokens {
+                shouldRefocusTagTokens = false
+                view.window?.makeFirstResponder(tagAddButton)
+            }
         }
     }
 
@@ -605,8 +613,11 @@ extension EditorViewController: TagTokenViewDelegate {
                 return tagName
             }
             DesktopLibraryBridge.shared().updateTimeEntry(withTags: remainingTags, guid: timeEntry.guid)
+            shouldRefocusTagTokens = true
             if let nextView = self.tagStackView.arrangedSubviews.first as? TagTokenView {
-                self.view.window?.makeFirstResponder(nextView.actionButton)
+                view.window?.makeFirstResponder(nextView.actionButton)
+            } else {
+                view.window?.makeFirstResponder(tagAddButton)
             }
         }
     }
