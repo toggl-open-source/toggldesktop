@@ -258,8 +258,8 @@ NSString *kInactiveTimerColor = @"#999999";
 	}
 	else
 	{
-		self.descriptionLabel.editable = YES;
 		[self showDefaultTimer];
+		self.descriptionLabel.editable = YES;
 	}
 
 	// Display project name
