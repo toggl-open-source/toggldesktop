@@ -358,11 +358,17 @@ extension EditorViewController {
     }
 
     private func renderTime() {
-        durationTextField.stringValue = timeEntry.duration
-        startAtTextField.stringValue = timeEntry.startTimeString
-        endAtTextField.stringValue = timeEntry.endTimeString
-        startAtTextField.toolTip = dateFormatter.string(from: timeEntry.started)
-        endAtTextField.toolTip = dateFormatter.string(from: timeEntry.ended)
+        if durationTextField.currentEditor() == nil {
+            durationTextField.stringValue = timeEntry.duration
+        }
+        if startAtTextField.currentEditor() == nil {
+            startAtTextField.stringValue = timeEntry.startTimeString
+            startAtTextField.toolTip = dateFormatter.string(from: timeEntry.started)
+        }
+        if endAtTextField.currentEditor() == nil {
+            endAtTextField.stringValue = timeEntry.endTimeString
+            endAtTextField.toolTip = dateFormatter.string(from: timeEntry.ended)
+        }
     }
 
     fileprivate func updateNextKeyViews() {
