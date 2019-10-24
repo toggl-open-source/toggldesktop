@@ -522,8 +522,8 @@ void GUI::DisplayWorkspaceSelect(
 }
 
 void GUI::DisplayTimeEntryEditor(const bool open,
-    const view::TimeEntry &te,
-    const std::string &focused_field_name) {
+                                 const view::TimeEntry &te,
+                                 const std::string &focused_field_name) {
 
     logger().debug(
         "DisplayTimeEntryEditor focused_field_name=" + focused_field_name);

@@ -750,6 +750,7 @@ NSString *kInactiveTimerColor = @"#999999";
 - (IBAction)cancelBtnOnTap:(id)sender
 {
 	NSString *description = self.time_entry.Description;
+
 	self.time_entry = [[TimeEntryViewItem alloc] init];
 	self.time_entry.Description = description;
 	self.tagFlag.hidden = YES;

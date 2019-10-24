@@ -12,7 +12,7 @@
 		3C1E013F19D2DAE300DBF9A5 /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = 3C1E013E19D2DAE300DBF9A5 /* dsa_pub.pem */; };
 		3C2F239D21A7B43400CBE6BC /* UnsupportedNotice.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C2F239C21A7B43300CBE6BC /* UnsupportedNotice.m */; };
 		3C3AF64E20ACC6280088A3A6 /* CountryViewItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C3AF64D20ACC6280088A3A6 /* CountryViewItem.m */; };
-		3C50BCAC1C1F0574004BAE9E /* (null) in Resources */ = {isa = PBXBuildFile; };
+		3C50BCAC1C1F0574004BAE9E /* BuildFile in Resources */ = {isa = PBXBuildFile; };
 		3C6B2486203E01D90063FC08 /* AutoCompleteTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C6B2480203E01D60063FC08 /* AutoCompleteTableCell.m */; };
 		3C6B2487203E01D90063FC08 /* AutoCompleteInput.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C6B2483203E01D90063FC08 /* AutoCompleteInput.m */; };
 		3C6B2488203E01D90063FC08 /* AutoCompleteTable.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C6B2484203E01D90063FC08 /* AutoCompleteTable.m */; };
@@ -1407,7 +1407,7 @@
 				BA412C23224E11AC003CA17A /* ClientCellView.xib in Resources */,
 				BAF38FEF2241FF20009147D7 /* FloatingErrorView.xib in Resources */,
 				74D1D25817EB713F00E709B0 /* TimeEntryListViewController.xib in Resources */,
-				3C50BCAC1C1F0574004BAE9E /* (null) in Resources */,
+				3C50BCAC1C1F0574004BAE9E /* BuildFile in Resources */,
 				BA0140482257080F000E5B91 /* TagCellView.xib in Resources */,
 				BA9C2DFA224C7E77002AD2A1 /* ProjectCreationView.xib in Resources */,
 				BA412C29224E196D003CA17A /* NoClientCellView.xib in Resources */,
@@ -1521,8 +1521,6 @@
 				"${BUILT_PRODUCTS_DIR}/GTMAppAuth/GTMAppAuth.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/MASShortcut/MASShortcut.framework",
-				"${PODS_ROOT}/Sparkle/Sparkle.framework",
-				"${PODS_ROOT}/Sparkle/Sparkle.framework.dSYM",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
@@ -1531,8 +1529,6 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMAppAuth.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MASShortcut.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Sparkle.framework",
-				"${DWARF_DSYM_FOLDER_PATH}/Sparkle.framework.dSYM",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;

@@ -10,7 +10,6 @@ target 'TogglDesktop' do
 
     pod 'GTMAppAuth'
     pod 'AppAuth'
-    pod 'Sparkle'
     pod 'MASShortcut'
     pod 'Bugsnag'
 end

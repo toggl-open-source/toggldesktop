@@ -1296,7 +1296,7 @@ void Context::startPeriodicUpdateCheck() {
     (*this, &Context::onPeriodicUpdateCheck);
 
     Poco::Int64 micros = kCheckUpdateIntervalSeconds *
-                          Poco::Int64(kOneSecondInMicros);
+                         Poco::Int64(kOneSecondInMicros);
     Poco::Timestamp next_periodic_check_at = Poco::Timestamp() + micros;
     Poco::Mutex::ScopedLock lock(timer_m_);
     timer_.schedule(ptask, next_periodic_check_at);
@@ -2276,7 +2276,7 @@ error Context::GoogleSignup(
 }
 
 error Context::AsyncGoogleSignup(const std::string &access_token,
-    const uint64_t country_id) {
+                                 const uint64_t country_id) {
     std::thread backgroundThread([&](std::string access_token, uint64_t country_id) {
         return this->GoogleSignup(access_token, country_id);
     }, access_token, country_id);
@@ -4861,9 +4861,9 @@ error Context::pushClients(
 }
 
 error Context::pushProjects(const std::vector<Project *> &projects,
-    const std::vector<Client *> &clients,
-    const std::string &api_token,
-    TogglClient toggl_client) {
+                            const std::vector<Client *> &clients,
+                            const std::string &api_token,
+                            TogglClient toggl_client) {
     error err = noError;
     std::string project_json("");
     for (std::vector<Project *>::const_iterator it =
@@ -4917,7 +4917,7 @@ error Context::pushProjects(const std::vector<Project *> &projects,
 }
 
 error Context::updateEntryProjects(const std::vector<Project *> &projects,
-    const std::vector<TimeEntry *> &time_entries) {
+                                   const std::vector<TimeEntry *> &time_entries) {
     for (std::vector<TimeEntry *>::const_iterator it =
         time_entries.begin();
             it != time_entries.end(); it++) {
