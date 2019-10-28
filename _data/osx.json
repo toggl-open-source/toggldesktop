@@ -1,5 +1,18 @@
 {
     "versions": [
+            {
+          "version":"7.4.1036",
+          "rows":[
+            "Highlight all tag text field after selection",
+            "Fixed Timeline Recording in Catalina: For Catalina users, Timeline is only capable of recording the app name, not Windows's title.",
+            "Fixed Continuing the time entry at the top starts the timer without description/project",
+            "Fixed Jump issues on duration, start time and end time text field during editing",
+            "Fixed Can't select a project from autocomplete popup",
+            "Fixed Cannot Create Tags Issue"
+          ],
+          "date": "October 28th 2019",
+          "beta": "true"
+        },
                 {
             "version": "7.4.1023",
             "rows": [
