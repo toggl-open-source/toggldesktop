@@ -12,7 +12,6 @@ namespace TogglDesktop
         }
 
         public event Action BeforeStartup;
-    public event Action BeforeStartup;
 
         protected override bool OnStartup(Microsoft.VisualBasic.ApplicationServices.StartupEventArgs e)
         {
