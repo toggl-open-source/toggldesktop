@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -8,6 +9,8 @@ namespace TogglDesktop
 {
     public partial class AboutWindow
     {
+        public string[] Channels { get; } = new[] {"Stable", "Beta", "Dev"};
+
         public AboutWindow()
         {
             this.InitializeComponent();
@@ -68,14 +71,14 @@ namespace TogglDesktop
             var value = this.releaseChannelComboBox.SelectedValue;
             if (value == null)
                 return;
-
-            Toggl.SetUpdateChannel(value.ToString());
+            var channel = value.ToString().ToLower();
+            Toggl.SetUpdateChannel(channel);
         }
 
         public void UpdateReleaseChannel()
         {
             var channel = Toggl.UpdateChannel();
-            this.releaseChannelComboBox.SelectedValue = channel;
+            this.releaseChannelComboBox.SelectedItem = Channels.First(x => x.Equals(channel, StringComparison.OrdinalIgnoreCase));
         }
 
         private void onGithubLinkClick(object sender, RoutedEventArgs e)
