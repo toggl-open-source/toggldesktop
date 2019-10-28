@@ -9,7 +9,10 @@
         KeyDown="windowKeyDown"
         IsToolWindow="True"
         Title="About"
-        >
+        DataContext="{Binding RelativeSource={RelativeSource Self}}">
+    <Window.Resources>
+        <ResourceDictionary Source="../Resources/DesignUpdate/Controls.xaml" />
+    </Window.Resources>
     
     <Grid Background="{StaticResource ViewBackgroundLight}">
         <Grid.RowDefinitions>
@@ -68,13 +71,10 @@
                    Grid.Row="1" Text="Release channel:"
                    Margin="16" HorizontalAlignment="Left" VerticalAlignment="Center"/>
         <ComboBox Name="releaseChannelComboBox" x:FieldModifier="private"
-                  Grid.Row="1" Margin="16" Width="120"
+                  Grid.Row="1" Margin="16" Height="24" Width="114"
+                  ItemsSource="{Binding Channels}"
                   HorizontalAlignment="Right"
-                  SelectionChanged="onReleaseChannelSelectionChanged"
-                  SelectedValuePath="Content">
-            <ComboBoxItem>stable</ComboBoxItem>
-            <ComboBoxItem>beta</ComboBoxItem>
-            <ComboBoxItem>dev</ComboBoxItem>
+                  SelectionChanged="onReleaseChannelSelectionChanged">
         </ComboBox>
     </Grid>
 </toggl:TogglWindow>
