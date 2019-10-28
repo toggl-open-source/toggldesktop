@@ -1,0 +1,8 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <SolidColorBrush x:Key="Toggl.PrimaryTextBrush" Color="{DynamicResource Toggl.PrimaryTextColor}" />
+    <SolidColorBrush x:Key="Toggl.DarkGrayBrush" Color="{DynamicResource Toggl.DarkGrayColor}" />
+    <SolidColorBrush x:Key="Toggl.TextBox.Border" Color="{StaticResource Toggl.DisabledTextColor}" />
+    <SolidColorBrush x:Key="Toggl.TextBox.FocusBorder" Color="{StaticResource Toggl.AccentColor}" />
+    <SolidColorBrush x:Key="Toggl.Background" Color="{DynamicResource Toggl.CardBackgroundColor}" />
+</ResourceDictionary>
