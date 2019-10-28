@@ -1,0 +1,35 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!-- Black -->
+    <Color x:Key="Toggl.PrimaryTextColor">#D6D6D6</Color>
+    <!-- Dark Gray -->
+    <Color x:Key="Toggl.DarkGrayColor">#B9B9BD</Color>
+    <!-- Gray -->
+    <Color x:Key="Toggl.SecondaryTextColor">#A5A5A8</Color>
+    <!-- Grayish -->
+    <Color x:Key="Toggl.DisabledTextColor">#5A5B5C</Color>
+    <!-- Grayish -->
+    <Color x:Key="Toggl.HoverElementColor">#858585</Color>
+    <!-- Light Gray -->
+    <Color x:Key="Toggl.DisabledElementColor">#3B3B3B</Color>
+    <!-- Off-white -->
+    <Color x:Key="Toggl.BackgroundColor">#1A1A1A</Color>
+    <!-- White -->
+    <Color x:Key="Toggl.CardBackgroundColor">#242424</Color>
+
+    <Color x:Key="Toggl.AccentColor">#4BC800</Color>
+    <Color x:Key="Toggl.AccentColorPlusOne">#81CF55</Color>
+    <Color x:Key="Toggl.AccentColorPlusTwo">#A9E386</Color>
+    <Color x:Key="Toggl.AccentColorPlusThree">#C9F2B1</Color>
+    <Color x:Key="Toggl.AccentColorMinusOne">#41AF00</Color>
+    <Color x:Key="Toggl.AccentColorMinusTwo">#15730D</Color>
+    <Color x:Key="Toggl.AccentColorMinusThree">#0F4D15</Color>
+
+    <Color x:Key="Toggl.SecondaryAccentColor">#FF2D55</Color>
+    <Color x:Key="Toggl.ErrorColor">#FF3B30</Color>
+
+    <SolidColorBrush x:Key="Toggl.SelectionElements.Background" Color="{StaticResource Toggl.BackgroundColor}" />
+    <SolidColorBrush x:Key="Toggl.TextBox.MouseOverBorder" Color="{DynamicResource Toggl.SecondaryTextColor}" />
+    <SolidColorBrush x:Key="Toggl.ComboBox.HoverBackground" Color="#0DD6D6D6" />
+
+</ResourceDictionary>
