@@ -657,6 +657,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ui\Resources\DesignUpdate\Brushes.xaml" />
+    <Page Include="ui\Resources\DesignUpdate\ComboBox.xaml" />
+    <Page Include="ui\Resources\DesignUpdate\Controls.xaml" />
+    <Page Include="ui\Resources\DesignUpdate\MahApps.Overrides.xaml" />
     <Page Include="ui\Resources\DialogStyles.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -937,9 +941,9 @@
     <PackageReference Include="Hardcodet.NotifyIcon.Wpf">
       <Version>1.0.8</Version>
     </PackageReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ui\Resources\Themes\Layout\" />
+    <PackageReference Include="MahApps.Metro">
+      <Version>1.6.5</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="Dependencies.targets" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
