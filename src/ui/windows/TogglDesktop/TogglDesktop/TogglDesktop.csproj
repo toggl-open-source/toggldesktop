@@ -658,9 +658,13 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ui\Resources\DesignUpdate\Brushes.xaml" />
+    <Page Include="ui\Resources\DesignUpdate\Button.xaml" />
     <Page Include="ui\Resources\DesignUpdate\ComboBox.xaml" />
     <Page Include="ui\Resources\DesignUpdate\Controls.xaml" />
+    <Page Include="ui\Resources\DesignUpdate\Hyperlink.xaml" />
     <Page Include="ui\Resources\DesignUpdate\MahApps.Overrides.xaml" />
+    <Page Include="ui\Resources\DesignUpdate\ToolWindow.xaml" />
+    <Page Include="ui\Resources\DesignUpdate\Typography.xaml" />
     <Page Include="ui\Resources\DialogStyles.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -944,6 +948,10 @@
     <PackageReference Include="MahApps.Metro">
       <Version>1.6.5</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\toggl-logo-dark.png" />
+    <Resource Include="Resources\toggl-logo-light.png" />
   </ItemGroup>
   <Import Project="Dependencies.targets" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
