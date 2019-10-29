@@ -19,7 +19,7 @@ namespace TogglDesktop
             this.updateText.Text = "";
             this.restartButton.Visibility = Visibility.Collapsed;
 
-            this.versionText.Text = Program.Version() + " " + Utils.Bitness();
+            this.versionText.Text = $"Version {Program.Version()} {Utils.Bitness()}";
 
             var isUpdatCheckDisabled = Toggl.IsUpdateCheckDisabled();
             this.releaseChannelComboBox.ShowOnlyIf(!isUpdatCheckDisabled, true);
@@ -38,13 +38,13 @@ namespace TogglDesktop
             {
                 case Toggl.DownloadStatus.Started:
                 {
-                    format = "Downloading version {0}";
+                    format = "Downloading version {0} ...";
                     this.restartButton.Visibility = Visibility.Collapsed;
                     break;
                 }
                 case Toggl.DownloadStatus.Done:
                 {
-                    format = "Version {0} available,\nrestart Toggl Desktop to upgrade.";
+                    format = "New version {0} available!";
                     this.restartButton.IsEnabled = true;
                     this.restartButton.Visibility = Visibility.Visible;
                     break;

@@ -1,80 +1,93 @@
-﻿<toggl:TogglWindow x:Class="TogglDesktop.AboutWindow"
+﻿<mah:MetroWindow x:Class="TogglDesktop.AboutWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:toggl="clr-namespace:TogglDesktop"
+        xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
         mc:Ignorable="d" 
-        Height="470" Width="370"
+        Height="460" Width="300"
         KeyDown="windowKeyDown"
-        IsToolWindow="True"
         Title="About"
         DataContext="{Binding RelativeSource={RelativeSource Self}}">
     <Window.Resources>
-        <ResourceDictionary Source="../Resources/DesignUpdate/Controls.xaml" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources/DesignUpdate/Controls.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Window.Resources>
-    
-    <Grid Background="{StaticResource ViewBackgroundLight}">
+    <mah:MetroWindow.Style>
+        <StaticResource ResourceKey="ToolWindow" />
+    </mah:MetroWindow.Style>
+    <Grid Background="{DynamicResource Toggl.Background}">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <toggl:TogglChromeDesignTimeConverter
-            Title="About" IsToolWindow="True" />
-
         <StackPanel Grid.Row="0" VerticalAlignment="Top">
-            <Image Source="/TogglDesktop;component/Resources/logo64.png"
-                   Height="64"
-                   Width="64"
-                   Margin="0 16 0 8"
+            <Image Source="{DynamicResource Toggl.LogoImage}"
+                   Margin="0 50 0 8"
+                   Height="19"
+                   Width="63"
+                   UseLayoutRounding="False"
+                   Stretch="Uniform"
                    />
             <TextBlock Text="Toggl Desktop" HorizontalAlignment="Center"
-                       FontSize="20" FontWeight="Black"
-                       Margin="0 0 0 8"/>
+                       Style="{StaticResource TitleText}"
+                       Margin="0 0 0 10"/>
             <TextBlock Name="versionText" x:FieldModifier="private"
+                       Style="{StaticResource CaptionText}"
                        Text="Version 1.33.7" HorizontalAlignment="Center"
-                       Margin="0 0 0 8"/>
+                       Margin="0 0 0 16"/>
             
             <TextBlock Name="updateText" x:FieldModifier="private"
-                       Text="Downloading version X&#10;This is a test" HorizontalAlignment="Center"
-                       FontWeight="Medium" Foreground="#318a40"
+                       Style="{StaticResource BaseText}"
+                       Foreground="{DynamicResource Toggl.AccentBrush}"
+                       Text="Downloading version X&#10;This is a test"
+                       HorizontalAlignment="Center"
                        TextAlignment="Center"
                        Margin="0 0 0 8"/>
 
             <Button Name="restartButton" x:FieldModifier="private"
                     Click="onRestartButtonClick"
-                    Content="RESTART NOW" Style="{StaticResource RaisedButton}"
+                    Content="Update &amp; restart" Style="{StaticResource RaisedButton}"
                     HorizontalAlignment="Center" />
         </StackPanel>
         
         <StackPanel Grid.Row="0" VerticalAlignment="Bottom">
-             <TextBlock HorizontalAlignment="Center" Text="View change log:"/>
-            <Label HorizontalAlignment="Center" 
-                       Margin="0 -5 0 16">
-                <Hyperlink NavigateUri="http://toggl.github.io/toggldesktop"
-                           Click="onChangelogLinkClick"
-                           >http://toggl.github.io/toggldesktop</Hyperlink>
-            </Label>
-
-            <TextBlock HorizontalAlignment="Center" Text="Toggl Desktop is an open source project."/>
-            <TextBlock HorizontalAlignment="Center" Text="You can find the source code at:"/>
-            <Label HorizontalAlignment="Center"
-                       Margin="0 -5 0 16">
+            <Canvas Width="21" Height="20">
+                <Path Data="M6.83 20a.45.45 0 0 1-.159-.029C2.681 18.462 0 14.583 0 10.318 0 4.628 4.628 0 10.318
+                            0c5.69 0 10.317 4.628 10.317 10.318 0 4.265-2.68 8.144-6.67 9.653a.441.441 0 0
+                            1-.344-.012.443.443 0 0 1-.235-.249l-2.22-5.88a.448.448 0 0 1 .26-.579 3.151 3.151 0 0 0
+                            2.032-2.933 3.144 3.144 0 0 0-3.14-3.14 3.144 3.144 0 0 0-3.14 3.14c0 1.296.816 2.476 2.03
+                             2.933a.448.448 0 0 1 .261.578l-2.22 5.88a.446.446 0 0 1-.419.29z"
+                      Fill="#ff7b7b7b" />
+            </Canvas>
+            <TextBlock HorizontalAlignment="Center"
+                       Margin="0,8,0,0"
+                       Style="{StaticResource CaptionText}"
+                       Text="An open source project"/>
+             <Label HorizontalAlignment="Center"
+                       Margin="0 -2 0 20">
                 <Hyperlink NavigateUri="https://github.com/toggl/toggldesktop"
+                           Style="{StaticResource Toggl.NormalHyperlink}"
                            Click="onGithubLinkClick"
-                           >https://github.com/toggl/toggldesktop</Hyperlink>
+                           >Find us on GitHub</Hyperlink>
             </Label>
         </StackPanel>
 
-        <TextBlock Name="releaseChannelLabel" x:FieldModifier="private"
-                   Grid.Row="1" Text="Release channel:"
-                   Margin="16" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-        <ComboBox Name="releaseChannelComboBox" x:FieldModifier="private"
-                  Grid.Row="1" Margin="16" Height="24" Width="114"
-                  ItemsSource="{Binding Channels}"
-                  HorizontalAlignment="Right"
-                  SelectionChanged="onReleaseChannelSelectionChanged">
-        </ComboBox>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top">
+            <TextBlock Name="releaseChannelLabel" x:FieldModifier="private"
+                       Style="{StaticResource CaptionBlackText}"
+                       Text="Release channel:"
+                       Margin="8,4,8,32" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <ComboBox Name="releaseChannelComboBox" x:FieldModifier="private"
+                      Margin="8,0,8,28" Height="24" Width="114"
+                      ItemsSource="{Binding Channels}"
+                      HorizontalAlignment="Right"
+                      SelectionChanged="onReleaseChannelSelectionChanged">
+            </ComboBox>
+        </StackPanel>
     </Grid>
-</toggl:TogglWindow>
+</mah:MetroWindow>
