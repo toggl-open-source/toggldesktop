@@ -1,5 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:po="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options">
     <!-- Black -->
     <Color x:Key="Toggl.PrimaryTextColor">#D6D6D6</Color>
     <!-- Dark Gray -->
@@ -28,8 +29,11 @@
     <Color x:Key="Toggl.SecondaryAccentColor">#FF2D55</Color>
     <Color x:Key="Toggl.ErrorColor">#FF3B30</Color>
 
-    <SolidColorBrush x:Key="Toggl.SelectionElements.Background" Color="{StaticResource Toggl.BackgroundColor}" />
-    <SolidColorBrush x:Key="Toggl.TextBox.MouseOverBorder" Color="{DynamicResource Toggl.SecondaryTextColor}" />
-    <SolidColorBrush x:Key="Toggl.ComboBox.HoverBackground" Color="#0DD6D6D6" />
+    <SolidColorBrush x:Key="Toggl.SelectionElements.Background" Color="{StaticResource Toggl.BackgroundColor}" po:Freeze="True" />
+    <SolidColorBrush x:Key="Toggl.TextBox.MouseOverBorder" Color="{DynamicResource Toggl.SecondaryTextColor}" po:Freeze="True" />
+    <SolidColorBrush x:Key="Toggl.ComboBox.HoverBackground" Color="#0DD6D6D6" po:Freeze="True" />
+    <SolidColorBrush x:Key="Toggl.TextBlock.TitleColor" Color="{StaticResource Toggl.PrimaryTextColor}" po:Freeze="True" />
+
+    <BitmapImage x:Key="Toggl.LogoImage" UriSource="/TogglDesktop;component/Resources/toggl-logo-dark.png" />
 
 </ResourceDictionary>
