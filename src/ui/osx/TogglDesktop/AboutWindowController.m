@@ -56,6 +56,8 @@ extern void *ctx;
 	[self.versionTextField setStringValue:[NSString stringWithFormat:@"Version %@", version]];
 
 	self.windowHasLoad = YES;
+
+#ifdef SPARKLE
 	self.restart = NO;
 
 	char *str = toggl_get_update_channel(ctx);
@@ -74,6 +76,7 @@ extern void *ctx;
 
 		[self displayUpdateStatus];
 	}
+#endif
 
 	[self initCommon];
 }
@@ -96,6 +99,11 @@ extern void *ctx;
 
 - (BOOL)updateCheckEnabled
 {
+#ifdef APP_STORE
+	return NO;
+
+#endif
+
 #ifdef DEBUG
 	return NO;
 
@@ -115,10 +123,13 @@ extern void *ctx;
 	{
 		return;
 	}
+#ifdef SPARKLE
 	[[SUUpdater sharedUpdater] resetUpdateCycle];
 	[[SUUpdater sharedUpdater] checkForUpdatesInBackground];
+#endif
 }
 
+#ifdef SPARKLE
 - (void)updater:(SUUpdater *)updater willInstallUpdateOnQuit:(SUAppcastItem *)item immediateInstallationInvocation:(NSInvocation *)invocation
 {
 	NSLog(@"Download finished: %@", item.displayVersionString);
@@ -144,9 +155,13 @@ extern void *ctx;
 	[Utils runClearCommand];
 }
 
+#endif
+
 - (void)displayUpdateStatus
 {
+#ifdef SPARKLE
 	NSLog(@"automaticallyDownloadsUpdates=%d", [[SUUpdater sharedUpdater] automaticallyDownloadsUpdates]);
+#endif
 
 	if (self.updateStatus)
 	{
@@ -185,6 +200,7 @@ extern void *ctx;
 	[[NSApplication sharedApplication] terminate:nil];
 }
 
+#ifdef SPARKLE
 - (void)updaterDidNotFindUpdate:(SUUpdater *)update
 {
 	NSLog(@"No update found");
@@ -205,6 +221,8 @@ extern void *ctx;
 	NSLog(@"willDownloadUpdate %@", item);
 	[self setDownloadState:DownloadStateDownloading];
 }
+
+#endif
 
 - (void)textFieldClicked:(id)sender
 {

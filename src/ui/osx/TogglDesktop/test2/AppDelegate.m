@@ -22,7 +22,6 @@
 #import "MenuItemTags.h"
 #import "PreferencesWindowController.h"
 #import "Settings.h"
-#import <Sparkle/Sparkle.h>
 #import "TimeEntryViewItem.h"
 #import "UIEvents.h"
 #import "Utils.h"
@@ -37,6 +36,10 @@
 #import <MASShortcut/Shortcut.h>
 #import "Reachability.h"
 #import <AppAuth/AppAuth.h>
+
+#ifdef SPARKLE
+#import <Sparkle/Sparkle.h>
+#endif
 
 @interface AppDelegate ()
 @property (nonatomic, strong) MainWindowController *mainWindowController;
@@ -265,6 +268,7 @@ void *ctx;
 	self.reach = [Reachability reachabilityForInternetConnection];
 	[self.reach startNotifier];
 
+#ifdef SPARKLE
 	if ([self updateCheckEnabled])
 	{
 		[[SUUpdater sharedUpdater] setAutomaticallyDownloadsUpdates:YES];
@@ -281,6 +285,7 @@ void *ctx;
 		[[SUUpdater sharedUpdater] setDelegate:self.aboutWindowController];
 		[[SUUpdater sharedUpdater] checkForUpdatesInBackground];
 	}
+#endif
 
 	// Listen for system shutdown, to automatically stop timer. Experimental feature.
 	[[[NSWorkspace sharedWorkspace] notificationCenter] addObserver:self
