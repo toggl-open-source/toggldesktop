@@ -58,7 +58,7 @@
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.productivity</string>
 	<key>LSMinimumSystemVersion</key>
-	<string>10.8</string>
+	<string>10.11</string>
 	<key>LSUIElement</key>
 	<true/>
 	<key>NSHumanReadableCopyright</key>
