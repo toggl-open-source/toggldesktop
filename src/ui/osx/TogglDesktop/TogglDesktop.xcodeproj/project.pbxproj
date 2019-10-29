@@ -890,6 +890,8 @@
 		BAE6379922B225C70024DD08 /* AddTagButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTagButton.swift; sourceTree = "<group>"; };
 		BAE64E4B2368334000244D2B /* TogglDesktop.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TogglDesktop.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BAE64E4C2368334000244D2B /* TogglDesktop copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "TogglDesktop copy-Info.plist"; path = "/Users/nghiatran/Documents/Work/Toggl/toggldesktop/src/ui/osx/TogglDesktop/TogglDesktop copy-Info.plist"; sourceTree = "<absolute>"; };
+		BAE64E4E23683E3F00244D2B /* TogglDesktop-AppStore.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; name = "TogglDesktop-AppStore.entitlements"; path = "TogglDesktop/TogglDesktop-AppStore.entitlements"; sourceTree = "<group>"; };
+		BAE64E4F23683F2C00244D2B /* TogglDesktop-AppStore-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "TogglDesktop-AppStore-Info.plist"; sourceTree = SOURCE_ROOT; };
 		BAE8E844224CA9AC006D534E /* ProjectAutoCompleteTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectAutoCompleteTextField.swift; sourceTree = "<group>"; };
 		BAF3ACCB2341F8AC00E41B33 /* GlobalTouchbarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalTouchbarButton.swift; sourceTree = "<group>"; };
 		BAF3ACD22343325A00E41B33 /* TouchBarService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchBarService.swift; sourceTree = "<group>"; };
@@ -987,6 +989,7 @@
 		69FC17E817E6534400B96425 = {
 			isa = PBXGroup;
 			children = (
+				BAE64E4E23683E3F00244D2B /* TogglDesktop-AppStore.entitlements */,
 				BAAC931A22EEF92100E2EE1C /* TogglDesktop.entitlements */,
 				BAE007DD21FAF00D00404379 /* Media.xcassets */,
 				BAD2341921D612DE0039C742 /* libPocoCrypto.60.dylib */,
@@ -1186,6 +1189,7 @@
 			isa = PBXGroup;
 			children = (
 				743E584F1A775BB300F17CB0 /* Localizable.strings */,
+				BAE64E4F23683F2C00244D2B /* TogglDesktop-AppStore-Info.plist */,
 				69FC17FC17E6534400B96425 /* TogglDesktop-Info.plist */,
 				69FC17FD17E6534400B96425 /* InfoPlist.strings */,
 				69FC180017E6534400B96425 /* main.m */,
@@ -1695,6 +1699,9 @@
 						SystemCapabilities = {
 							com.apple.HardenedRuntime = {
 								enabled = 1;
+							};
+							com.apple.Sandbox = {
+								enabled = 0;
 							};
 						};
 					};
@@ -2794,7 +2801,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = TogglDesktop/TogglDesktop.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "TogglDesktop/TogglDesktop-AppStore.entitlements";
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -2825,7 +2832,7 @@
 					"$(SRCROOT)/../../../../third_party/Sparkle/Sparkle.framework/**",
 					"$(SRCROOT)/../../../../third_party/openssl/include",
 				);
-				INFOPLIST_FILE = "TogglDesktop copy-Info.plist";
+				INFOPLIST_FILE = "TogglDesktop-AppStore-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2858,7 +2865,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = TogglDesktop/TogglDesktop.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "TogglDesktop/TogglDesktop-AppStore.entitlements";
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -2890,7 +2897,7 @@
 					"$(SRCROOT)/../../../../third_party/Sparkle/Sparkle.framework/**",
 					"$(SRCROOT)/../../../../third_party/openssl/include",
 				);
-				INFOPLIST_FILE = "TogglDesktop copy-Info.plist";
+				INFOPLIST_FILE = "TogglDesktop-AppStore-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
