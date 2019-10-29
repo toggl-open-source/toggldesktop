@@ -4,13 +4,22 @@ platform :osx, '10.11'
 use_frameworks!
 inhibit_all_warnings!
 
+def essential_pods
+  pod 'GTMAppAuth'
+  pod 'AppAuth'
+  pod 'MASShortcut'
+  pod 'Bugsnag'
+end
+
 # TogglDesktop
 target 'TogglDesktop' do
-    project 'TogglDesktop/TogglDesktop.xcodeproj'
+  project 'TogglDesktop/TogglDesktop.xcodeproj'
+  essential_pods
+  pod 'Sparkle'
+end
 
-    pod 'GTMAppAuth'
-    pod 'AppAuth'
-    pod 'Sparkle'
-    pod 'MASShortcut'
-    pod 'Bugsnag'
+# TogglDesktop-AppStore
+target 'TogglDesktop-AppStore' do
+  project 'TogglDesktop/TogglDesktop.xcodeproj'
+  essential_pods
 end

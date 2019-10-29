@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "69FC17F017E6534400B96425"
-               BuildableName = "TogglDesktop.app"
-               BlueprintName = "TogglDesktop"
+               BlueprintIdentifier = "BAE64D512368334000244D2B"
+               BuildableName = "TogglDesktop-AppStore.app"
+               BlueprintName = "TogglDesktop-AppStore"
                ReferencedContainer = "container:TogglDesktop.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -32,9 +32,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "69FC17F017E6534400B96425"
-            BuildableName = "TogglDesktop.app"
-            BlueprintName = "TogglDesktop"
+            BlueprintIdentifier = "BAE64D512368334000244D2B"
+            BuildableName = "TogglDesktop-AppStore.app"
+            BlueprintName = "TogglDesktop-AppStore"
             ReferencedContainer = "container:TogglDesktop.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -55,9 +55,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "69FC17F017E6534400B96425"
-            BuildableName = "TogglDesktop.app"
-            BlueprintName = "TogglDesktop"
+            BlueprintIdentifier = "BAE64D512368334000244D2B"
+            BuildableName = "TogglDesktop-AppStore.app"
+            BlueprintName = "TogglDesktop-AppStore"
             ReferencedContainer = "container:TogglDesktop.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -70,16 +70,15 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "69FC17F017E6534400B96425"
-            BuildableName = "TogglDesktop.app"
-            BlueprintName = "TogglDesktop"
+            BlueprintIdentifier = "BAE64D512368334000244D2B"
+            BuildableName = "TogglDesktop-AppStore.app"
+            BlueprintName = "TogglDesktop-AppStore"
             ReferencedContainer = "container:TogglDesktop.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
