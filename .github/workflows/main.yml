@@ -144,6 +144,7 @@ jobs:
         echo "Setting version to ${TAG_NAME/v/}"
         bash dist/windows/scripts/set_version.sh "${TAG_NAME/v/}"
     - name: Build on Windows x86
+      shell: cmd
       run: |
         "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe" src/ui/windows/TogglDesktop/TogglDesktop.sln /p:Configuration=Release /p:Platform="x86" /t:Clean,Build /restore /m
     - name: Sign binaries
@@ -193,6 +194,7 @@ jobs:
         echo "Setting version to ${TAG_NAME/v/}"
         bash dist/windows/scripts/set_version.sh "${TAG_NAME/v/}"
     - name: Build on Windows x64
+      shell: cmd
       run: |
         "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe" src/ui/windows/TogglDesktop/TogglDesktop.sln /p:Configuration=Release /p:Platform="x64" /t:Clean,Build /restore /m
     - name: Sign binaries
