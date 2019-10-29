@@ -11,6 +11,19 @@ on:
       - '**'
 
 jobs:
+  macos:
+    runs-on: macOS-latest
+    steps:
+    - uses: actions/checkout@v1
+      with:
+        fetch-depth: 1
+    - name: Build the dependencies
+      run: |
+        make deps
+    - name: Build the app
+      run: |
+        make
+
   linux-basic:
     runs-on: ubuntu-latest
     if: github.event_name != 'create'
