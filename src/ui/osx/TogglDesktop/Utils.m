@@ -7,8 +7,10 @@
 //
 
 #import "Utils.h"
-#import <Sparkle/Sparkle.h>
 #import "NSAlert+Utils.h"
+#ifdef SPARKLE
+#import <Sparkle/Sparkle.h>
+#endif
 
 extern void *ctx;
 
@@ -72,11 +74,13 @@ extern void *ctx;
 
 + (void)setUpdaterChannel:(NSString *)channel
 {
+#ifdef SPARKLE
 	NSString *url = [NSString stringWithFormat:@"https://assets.toggl.com/installers/darwin_%@_appcast.xml", channel];
 
 	NSAssert([SUUpdater sharedUpdater], @"No updater found");
 	NSLog(@"Setting updater feed URL to %@", url);
 	[[SUUpdater sharedUpdater] setFeedURL:[NSURL URLWithString:url]];
+#endif
 }
 
 + (NSInteger)boolToState:(BOOL)value
