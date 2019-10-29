@@ -10,7 +10,9 @@
 #include "Poco/Logger.h"
 #include "Poco/Thread.h"
 
+#if defined(__APPLE__)
 extern bool isCatalinaOSX(void);
+#endif
 
 namespace toggl {
 

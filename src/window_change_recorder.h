@@ -11,7 +11,9 @@
 
 #include "Poco/Activity.h"
 
+#if defined(__APPLE__)
 extern bool isCatalinaOSX(void);
+#endif
 
 namespace Poco {
 class Logger;
@@ -34,7 +36,11 @@ class TOGGL_INTERNAL_EXPORT WindowChangeRecorder {
     , isSleeping_(false)
     , is_catalina_OSX(false)
     , timeline_errors_() {
+#if defined(__APPLE__)
         is_catalina_OSX = isCatalinaOSX();
+#else
+        is_catalina_OSX = false;
+#endif
         recording_.start();
     }
 
