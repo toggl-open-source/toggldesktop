@@ -444,7 +444,6 @@
 				ORGANIZATIONNAME = Toggl;
 				TargetAttributes = {
 					C55DA59B17F06A3B00B42178 = {
-						DevelopmentTeam = B227VTMZ94;
 						ProvisioningStyle = Automatic;
 					};
 				};
