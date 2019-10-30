@@ -1,10 +1,8 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
-using System.Windows.Threading;
 
 namespace TogglDesktop
 {
@@ -86,13 +84,6 @@ static class UIExtensions
         {
             parentAsDecorator.Child = null;
         }
-    }
-
-    public static void HideWindowOnClosing(this Window window, object sender, CancelEventArgs e)
-    {
-        e.Cancel = true;
-        Action hideAction = window.Hide;
-        window.Dispatcher.BeginInvoke(DispatcherPriority.Background, hideAction);
     }
 
     public static void ShowOnTop(this Window window)
