@@ -12,7 +12,6 @@ namespace TogglDesktop
         public FeedbackWindow()
         {
             this.InitializeComponent();
-            this.Closing += this.HideWindowOnClosing;
             this.Closing += ResetOnClosing;
             this.reset();
         }
