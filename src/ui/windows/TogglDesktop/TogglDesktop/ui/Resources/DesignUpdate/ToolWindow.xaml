@@ -4,7 +4,7 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="Typography.xaml" />
     </ResourceDictionary.MergedDictionaries>
-    <Style TargetType="mah:MetroWindow" x:Key="ToolWindow">
+    <Style TargetType="mah:MetroWindow" x:Key="Toggl.ToolWindow">
         <Setter Property="ResizeMode" Value="NoResize" />
         <Setter Property="TitleCharacterCasing" Value="Normal" />
         <Setter Property="BorderThickness" Value="0" />

@@ -11,7 +11,7 @@
     <Thickness x:Key="ComboBoxPopupBorderThemeThickness">1</Thickness>
     <Thickness x:Key="ComboBoxPopupBorderThemePadding">0,5</Thickness>
 
-    <Style x:Key="MetroComboBoxDropDownToggleButtonStyle" TargetType="{x:Type ToggleButton}">
+    <Style x:Key="Toggl.ComboBoxDropDownToggleButton" TargetType="{x:Type ToggleButton}">
         <Setter Property="ClickMode" Value="Press" />
         <Setter Property="Focusable" Value="False" />
         <Setter Property="IsTabStop" Value="False" />
@@ -148,7 +148,7 @@
                                           IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
                                           KeyboardNavigation.IsTabStop="False"
                                           SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                          Style="{DynamicResource MetroComboBoxDropDownToggleButtonStyle}" />
+                                          Style="{DynamicResource Toggl.ComboBoxDropDownToggleButton}" />
 
                             <TextBox x:Name="PART_EditableTextBox"
                                      Grid.Row="1"
@@ -375,13 +375,6 @@
                             <Setter TargetName="PART_DropDownToggle" Property="Focusable" Value="False" />
                             <Setter TargetName="PART_EditableTextBox" Property="Visibility" Value="Visible" />
                         </Trigger>
-                        <!-- <MultiTrigger> -->
-                        <!--     <MultiTrigger.Conditions> -->
-                        <!--         <Condition Property="IsEditable" Value="False" /> -->
-                        <!--         <Condition Property="IsMouseOver" Value="True" /> -->
-                        <!--     </MultiTrigger.Conditions> -->
-                        <!--     <Setter Property="Background" Value="{DynamicResource GrayBrush9}" /> -->
-                        <!-- </MultiTrigger> -->
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="Border" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(Controls:ControlsHelper.MouseOverBorderBrush)}" />
                         </Trigger>
