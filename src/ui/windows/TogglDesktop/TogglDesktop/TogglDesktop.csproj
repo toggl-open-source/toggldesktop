@@ -657,7 +657,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ui\Resources\DesignUpdate\Brushes.xaml" />
     <Page Include="ui\Resources\DesignUpdate\Buttons.xaml" />
     <Page Include="ui\Resources\DesignUpdate\ComboBox.xaml" />
     <Page Include="ui\Resources\DesignUpdate\Controls.xaml" />

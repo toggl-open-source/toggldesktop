@@ -30,14 +30,25 @@
     <Color x:Key="Toggl.ErrorColor">#FF3B30</Color>
 
     <SolidColorBrush x:Key="Toggl.SelectionElements.Background" Color="{StaticResource Toggl.BackgroundColor}" po:Freeze="True" />
-    <SolidColorBrush x:Key="Toggl.TextBox.MouseOverBorder" Color="{DynamicResource Toggl.SecondaryTextColor}" po:Freeze="True" />
+    <SolidColorBrush x:Key="Toggl.TextBox.MouseOverBorder" Color="{StaticResource Toggl.SecondaryTextColor}" po:Freeze="True" />
     <SolidColorBrush x:Key="Toggl.ComboBox.HoverBackground" Color="#0DD6D6D6" po:Freeze="True" />
     <SolidColorBrush x:Key="Toggl.TextBlock.TitleColor" Color="{StaticResource Toggl.PrimaryTextColor}" po:Freeze="True" />
-    <!-- A combination of #D9D9D9 and #4D000000: -->
+    <!-- A combination of #D9D9D9 and #4D000000 : -->
     <SolidColorBrush x:Key="Toggl.Button.MouseOverBorder" Color="#6D6D6D" po:Freeze="True" />
-    <!-- A combination of Toggl.AccentColor and #4D000000: -->
+    <!-- A combination of Toggl.AccentColor and #4D000000 : -->
     <SolidColorBrush x:Key="Toggl.Button.Accent.MouseOverBorder" Color="#256400" po:Freeze="True" />
+    <SolidColorBrush x:Key="Toggl.PrimaryTextBrush" Color="{StaticResource Toggl.PrimaryTextColor}" po:Freeze="True" />
+    <SolidColorBrush x:Key="Toggl.DarkGrayBrush" Color="{StaticResource Toggl.DarkGrayColor}" po:Freeze="True" />
+    <SolidColorBrush x:Key="Toggl.SecondaryTextBrush" Color="{StaticResource Toggl.SecondaryTextColor}" po:Freeze="True" />
+    <SolidColorBrush x:Key="Toggl.DisabledTextBrush" Color="{StaticResource Toggl.DisabledTextColor}" po:Freeze="True" />
+    <SolidColorBrush x:Key="Toggl.DisabledElementBrush" Color="{StaticResource Toggl.DisabledElementColor}" po:Freeze="True" />
+    <SolidColorBrush x:Key="Toggl.HoverElementBrush" Color="{StaticResource Toggl.HoverElementColor}" po:Freeze="True" />
+    <SolidColorBrush x:Key="Toggl.TextBox.Border" Color="{StaticResource Toggl.DisabledTextColor}" po:Freeze="True" />
+    <SolidColorBrush x:Key="Toggl.AccentBrush" Color="{StaticResource Toggl.AccentColor}" po:Freeze="True" />
+    <SolidColorBrush x:Key="Toggl.Background" Color="{StaticResource Toggl.CardBackgroundColor}" po:Freeze="True" />
+    <SolidColorBrush x:Key="Toggl.PrimaryButtonBackground" Color="#D9D9D9" po:Freeze="True" />
+    <SolidColorBrush x:Key="Toggl.PrimaryHoverOrText" Color="{StaticResource Toggl.AccentColorMinusOne}" po:Freeze="True" />
+    <SolidColorBrush x:Key="Toggl.PrimaryButtonHoverBackground" Color="#ACACAC" po:Freeze="True" />
 
     <BitmapImage x:Key="Toggl.LogoImage" UriSource="/TogglDesktop;component/Resources/toggl-logo-dark.png" />
-
 </ResourceDictionary>
