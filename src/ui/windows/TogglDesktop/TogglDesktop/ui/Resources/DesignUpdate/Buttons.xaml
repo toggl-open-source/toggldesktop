@@ -80,14 +80,10 @@
         <Setter Property="Foreground" Value="White" />
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="BorderBrush" Value="{DynamicResource Toggl.Button.MouseOverBorder}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource Toggl.Button.Accent.MouseOverBorder}" />
             </Trigger>
             <Trigger Property="IsPressed" Value="True">
                 <Setter Property="Background" Value="{DynamicResource Toggl.PrimaryHoverOrText}" />
-            </Trigger>
-            <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="Foreground" Value="{DynamicResource Toggl.DisabledTextBrush}" />
-                <Setter Property="Background" Value="{DynamicResource Toggl.DisabledElementBrush}" />
             </Trigger>
         </Style.Triggers>
     </Style>
