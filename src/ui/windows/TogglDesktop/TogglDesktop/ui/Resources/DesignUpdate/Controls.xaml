@@ -9,7 +9,7 @@
         <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
         <ResourceDictionary Source="MahApps.Overrides.xaml" />
         <ResourceDictionary Source="ComboBox.xaml" />
-        <ResourceDictionary Source="Button.xaml" />
+        <ResourceDictionary Source="Buttons.xaml" />
         <ResourceDictionary Source="Hyperlink.xaml" />
         <ResourceDictionary Source="ToolWindow.xaml" />
     </ResourceDictionary.MergedDictionaries>
