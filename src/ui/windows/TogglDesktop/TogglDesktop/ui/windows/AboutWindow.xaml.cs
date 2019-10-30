@@ -86,11 +86,6 @@ namespace TogglDesktop
             Toggl.OpenInBrowser("https://github.com/toggl/toggldesktop");
         }
 
-        private void onChangelogLinkClick(object sender, RoutedEventArgs e)
-        {
-            Toggl.OpenInBrowser("http://toggl.github.io/toggldesktop");
-        }
-
         private void onRestartButtonClick(object sender, RoutedEventArgs e)
         {
             this.restartButton.IsEnabled = false;
