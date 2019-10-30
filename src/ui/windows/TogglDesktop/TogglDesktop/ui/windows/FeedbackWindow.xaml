@@ -4,12 +4,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:toggl="clr-namespace:TogglDesktop"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:behaviors="clr-namespace:TogglDesktop.Behaviors"
         mc:Ignorable="d" 
         Height="420" Width="350"
         Title="Send Feedback" IsToolWindow="True"
         Style="{StaticResource FeedbackWindow}">
-
-
+    <i:Interaction.Behaviors>
+        <behaviors:HideWindowOnClosingBehavior />
+    </i:Interaction.Behaviors>
     <Grid Background="{StaticResource ViewBackgroundLight}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
