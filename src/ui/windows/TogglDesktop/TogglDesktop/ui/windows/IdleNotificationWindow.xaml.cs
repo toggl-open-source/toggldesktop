@@ -16,7 +16,6 @@ namespace TogglDesktop
         public IdleNotificationWindow()
         {
             this.InitializeComponent();
-            this.Closing += this.HideWindowOnClosing;
             Toggl.OnIdleNotification += this.onIdleNotification;
             Toggl.OnStoppedTimerState += this.onStoppedTimerState;
         }
