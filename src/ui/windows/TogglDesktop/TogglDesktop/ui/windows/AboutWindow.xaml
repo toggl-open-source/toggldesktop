@@ -28,10 +28,8 @@
         <StackPanel Grid.Row="0" VerticalAlignment="Top">
             <Image Source="{DynamicResource Toggl.LogoImage}"
                    Margin="0 50 0 8"
-                   Height="19"
-                   Width="63"
-                   UseLayoutRounding="False"
-                   Stretch="Uniform"
+                   UseLayoutRounding="True"
+                   Stretch="None"
                    />
             <TextBlock Text="Toggl Desktop" HorizontalAlignment="Center"
                        Style="{StaticResource TitleText}"
