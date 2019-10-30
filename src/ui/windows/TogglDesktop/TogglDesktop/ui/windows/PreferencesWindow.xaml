@@ -5,6 +5,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:converters="clr-namespace:TogglDesktop.Converters"
         xmlns:toggl="clr-namespace:TogglDesktop"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:behaviors="clr-namespace:TogglDesktop.Behaviors"
         mc:Ignorable="d" 
         Height="554" Width="500"
         KeyDown="windowKeyDown"
@@ -15,6 +17,9 @@
     <toggl:TogglWindow.Resources>
         <converters:AndConverter x:Key="AndConverter" />
     </toggl:TogglWindow.Resources>
+    <i:Interaction.Behaviors>
+        <behaviors:HideWindowOnClosingBehavior />
+    </i:Interaction.Behaviors>
     <!-- content -->
     <Grid Background="{StaticResource ViewBackgroundLight}">
         <Grid.RowDefinitions>

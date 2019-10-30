@@ -14,7 +14,6 @@ namespace TogglDesktop
         public AboutWindow()
         {
             this.InitializeComponent();
-            this.Closing += this.HideWindowOnClosing;
 
             this.updateText.Text = "";
             this.restartButton.Visibility = Visibility.Collapsed;

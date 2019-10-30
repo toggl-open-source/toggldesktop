@@ -29,7 +29,6 @@ namespace TogglDesktop
         public PreferencesWindow()
         {
             this.InitializeComponent();
-            this.Closing += this.HideWindowOnClosing;
 
             Toggl.OnSettings += this.onSettings;
             Toggl.OnLogin += this.onLogin;
