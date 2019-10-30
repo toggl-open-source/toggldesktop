@@ -8,6 +8,12 @@
         <Setter Property="ResizeMode" Value="NoResize" />
         <Setter Property="TitleCharacterCasing" Value="Normal" />
         <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="GlowBrush" Value="Black" />
+        <Setter Property="NonActiveGlowBrush">
+            <Setter.Value>
+                <SolidColorBrush Opacity="0.3" Color="Black" />
+            </Setter.Value>
+        </Setter>
         <Setter Property="TitleTemplate">
             <Setter.Value>
                 <DataTemplate>
