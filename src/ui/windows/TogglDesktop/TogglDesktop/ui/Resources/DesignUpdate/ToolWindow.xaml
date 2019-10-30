@@ -25,5 +25,6 @@
                 </DataTemplate>
             </Setter.Value>
         </Setter>
+        <Setter Property="WindowTransitionsEnabled" Value="False" />
     </Style>
 </ResourceDictionary>
