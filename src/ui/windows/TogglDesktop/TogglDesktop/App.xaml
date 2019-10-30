@@ -6,8 +6,7 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <toggl:ThemeResourceDictionary Source="ui/Resources/Themes/ColorScheme/Dark.xaml" Type="ColorScheme"/>
-                <ResourceDictionary Source="ui/Resources/DesignUpdate/Brushes.xaml" />
+                <toggl:ThemeResourceDictionary Source="ui/Resources/Themes/ColorScheme/Light.xaml" Type="ColorScheme"/>
 
                 <ResourceDictionary Source="ui/Resources/SharedStyles.xaml" />
                 <ResourceDictionary Source="ui/Resources/ScrollBarStyles.xaml" />
