@@ -152,5 +152,13 @@
             </Rectangle.Fill>
         </Rectangle>
 
+        <Border Background="{DynamicResource Toggl.Background}"
+                Name="darkModeBorder"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Bottom"
+                Visibility="Collapsed">
+            <CheckBox Click="ToggleDarkMode" Name="darkModeCheckBox">Dark mode</CheckBox>
+        </Border>
+
     </Grid>
 </toggl:TogglWindow>
