@@ -50,8 +50,9 @@
                        Margin="0 0 0 8"/>
 
             <Button Name="restartButton" x:FieldModifier="private"
+                    Width="152"
                     Click="onRestartButtonClick"
-                    Content="Update &amp; restart" Style="{StaticResource RaisedButton}"
+                    Content="Update &amp; restart" Style="{StaticResource Toggl.AccentButton}"
                     HorizontalAlignment="Center" />
         </StackPanel>
         

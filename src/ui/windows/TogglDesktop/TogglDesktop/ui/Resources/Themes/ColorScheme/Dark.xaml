@@ -33,6 +33,10 @@
     <SolidColorBrush x:Key="Toggl.TextBox.MouseOverBorder" Color="{DynamicResource Toggl.SecondaryTextColor}" po:Freeze="True" />
     <SolidColorBrush x:Key="Toggl.ComboBox.HoverBackground" Color="#0DD6D6D6" po:Freeze="True" />
     <SolidColorBrush x:Key="Toggl.TextBlock.TitleColor" Color="{StaticResource Toggl.PrimaryTextColor}" po:Freeze="True" />
+    <!-- A combination of #D9D9D9 and #4D000000: -->
+    <SolidColorBrush x:Key="Toggl.Button.MouseOverBorder" Color="#6D6D6D" po:Freeze="True" />
+    <!-- A combination of Toggl.AccentColor and #4D000000: -->
+    <SolidColorBrush x:Key="Toggl.Button.Accent.MouseOverBorder" Color="#256400" po:Freeze="True" />
 
     <BitmapImage x:Key="Toggl.LogoImage" UriSource="/TogglDesktop;component/Resources/toggl-logo-dark.png" />
 
