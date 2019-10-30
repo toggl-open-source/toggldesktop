@@ -4,6 +4,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:behaviors="clr-namespace:TogglDesktop.Behaviors"
         mc:Ignorable="d" 
         Height="460" Width="300"
         KeyDown="windowKeyDown"
@@ -19,6 +21,9 @@
     <mah:MetroWindow.Style>
         <StaticResource ResourceKey="Toggl.ToolWindow" />
     </mah:MetroWindow.Style>
+    <i:Interaction.Behaviors>
+        <behaviors:HideWindowOnClosingBehavior />
+    </i:Interaction.Behaviors>
     <Grid Background="{DynamicResource Toggl.Background}">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
