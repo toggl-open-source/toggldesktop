@@ -2,30 +2,26 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
     <FontFamily x:Key="BaseFont">Segoe UI</FontFamily>
-    <Style TargetType="TextBlock" x:Key="TitleText">
+    <Style TargetType="TextBlock" x:Key="Toggl.Text">
         <Setter Property="FontFamily" Value="{StaticResource BaseFont}" />
+        <Setter Property="Foreground" Value="{DynamicResource Toggl.PrimaryTextBrush}" />
+    </Style>
+    <Style TargetType="TextBlock" x:Key="Toggl.TitleText" BasedOn="{StaticResource Toggl.Text}">
         <Setter Property="FontWeight" Value="Light" />
         <Setter Property="FontSize" Value="24" />
-        <Setter Property="Foreground" Value="{DynamicResource Toggl.TextBlock.TitleColor}" />
+        <Setter Property="Foreground" Value="{DynamicResource Toggl.TitleTextBrush}" />
     </Style>
-    <Style TargetType="TextBlock" x:Key="BaseText">
-        <Setter Property="FontFamily" Value="{StaticResource BaseFont}" />
+    <Style TargetType="TextBlock" x:Key="Toggl.BaseText" BasedOn="{StaticResource Toggl.Text}">
         <Setter Property="FontWeight" Value="SemiBold" />
         <Setter Property="FontSize" Value="14" />
-        <Setter Property="Foreground" Value="{DynamicResource Toggl.PrimaryTextBrush}" />
     </Style>
-    <Style TargetType="TextBlock" x:Key="BodyText">
-        <Setter Property="FontFamily" Value="{StaticResource BaseFont}" />
+    <Style TargetType="TextBlock" x:Key="BodyText" BasedOn="{StaticResource Toggl.Text}">
         <Setter Property="FontSize" Value="14" />
-        <Setter Property="Foreground" Value="{DynamicResource Toggl.PrimaryTextBrush}" />
     </Style>
-    <Style TargetType="TextBlock" x:Key="CaptionBlackText">
-        <Setter Property="FontFamily" Value="{StaticResource BaseFont}" />
+    <Style TargetType="TextBlock" x:Key="CaptionBlackText" BasedOn="{StaticResource Toggl.Text}">
         <Setter Property="FontSize" Value="12" />
-        <Setter Property="Foreground" Value="{DynamicResource Toggl.PrimaryTextBrush}" />
     </Style>
-    <Style TargetType="TextBlock" x:Key="CaptionText">
-        <Setter Property="FontFamily" Value="{StaticResource BaseFont}" />
+    <Style TargetType="TextBlock" x:Key="CaptionText" BasedOn="{StaticResource Toggl.Text}">
         <Setter Property="FontSize" Value="12" />
         <Setter Property="Foreground" Value="{DynamicResource Toggl.SecondaryTextBrush}" />
     </Style>
