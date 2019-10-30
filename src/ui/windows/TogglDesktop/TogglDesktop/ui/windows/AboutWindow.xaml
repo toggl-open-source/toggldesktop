@@ -10,6 +10,7 @@
         Height="460" Width="300"
         KeyDown="windowKeyDown"
         Title="About"
+        WindowStartupLocation="CenterOwner"
         DataContext="{Binding RelativeSource={RelativeSource Self}}">
     <Window.Resources>
         <ResourceDictionary>
