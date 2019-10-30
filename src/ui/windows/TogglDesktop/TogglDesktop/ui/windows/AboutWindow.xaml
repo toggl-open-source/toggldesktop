@@ -17,7 +17,7 @@
         </ResourceDictionary>
     </Window.Resources>
     <mah:MetroWindow.Style>
-        <StaticResource ResourceKey="ToolWindow" />
+        <StaticResource ResourceKey="Toggl.ToolWindow" />
     </mah:MetroWindow.Style>
     <Grid Background="{DynamicResource Toggl.Background}">
         <Grid.RowDefinitions>
@@ -32,7 +32,7 @@
                    Stretch="None"
                    />
             <TextBlock Text="Toggl Desktop" HorizontalAlignment="Center"
-                       Style="{StaticResource TitleText}"
+                       Style="{StaticResource Toggl.TitleText}"
                        Margin="0 0 0 10"/>
             <TextBlock Name="versionText" x:FieldModifier="private"
                        Style="{StaticResource CaptionText}"
@@ -40,7 +40,7 @@
                        Margin="0 0 0 16"/>
             
             <TextBlock Name="updateText" x:FieldModifier="private"
-                       Style="{StaticResource BaseText}"
+                       Style="{StaticResource Toggl.BaseText}"
                        Foreground="{DynamicResource Toggl.AccentBrush}"
                        Text="Downloading version X&#10;This is a test"
                        HorizontalAlignment="Center"
