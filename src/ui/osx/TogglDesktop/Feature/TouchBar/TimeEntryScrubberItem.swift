@@ -14,6 +14,8 @@ final class TimeEntryScrubberItem: NSScrubberItemView {
     // MARK: OUTLET
 
     private lazy var titleBtn = NSButton(title: "", target: nil, action: nil)
+    @IBOutlet weak var desciptionLbl: NSTextField!
+    @IBOutlet weak var projectLbl: NSTextField!
 
     // MARK: View Cycle
 
@@ -22,18 +24,20 @@ final class TimeEntryScrubberItem: NSScrubberItemView {
         if titleBtn.superview == nil {
             titleBtn.setButtonType(NSButton.ButtonType.momentaryChange)
             titleBtn.translatesAutoresizingMaskIntoConstraints = false
-            addSubview(titleBtn)
+            addSubview(titleBtn, positioned: NSWindow.OrderingMode.below, relativeTo: desciptionLbl)
             titleBtn.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
             titleBtn.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
             titleBtn.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 0).isActive = true
             titleBtn.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 0).isActive = true
+            titleBtn.title = ""
+            titleBtn.setTextColor(NSColor.white)
         }
     }
 
     // MARK: Public
 
     func config(_ item: TimeEntryViewItem) {
-        titleBtn.title = item.touchBarTitle
-        titleBtn.setTextColor(NSColor.white)
+        desciptionLbl.stringValue = item.descriptionName
+        projectLbl.stringValue = item.projectAndTaskLabel
     }
 }
