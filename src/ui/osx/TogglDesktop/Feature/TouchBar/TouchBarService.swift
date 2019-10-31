@@ -102,6 +102,17 @@ final class TouchBarService: NSObject {
         self.timeEntries = (touchBarEntries)
         scrubberView.reloadData()
     }
+
+    func reset() {
+        self.timeEntries = []
+        scrubberView.reloadData()
+        startButton.isHidden = true
+    }
+
+    func prepareForPresent() {
+        scrubberView.reloadData()
+        startButton.isHidden = false
+    }
 }
 
 // MARK: Private
