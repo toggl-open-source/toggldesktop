@@ -24,17 +24,17 @@ jobs:
         #!/usr/bin/env sh
 
         #create a keychain
-        security create-keychain -p password login.keychain
+        security create-keychain -p password build.keychain
 
         # Make the keychain the default so identities are found
-        security default-keychain -s login.keychain
+        security default-keychain -s build.keychain
 
         # Unlock the keychain
-        security unlock-keychain -p password login.keychain
+        security unlock-keychain -p password build.keychain
 
-        security import Bundle.p12 -k login.keychain -P ${{ secrets.CERT_MACOS_PASSWORD }} -T /usr/bin/codesign;
+        security import Bundle.p12 -k build.keychain -P ${{ secrets.CERT_MACOS_PASSWORD }} -T /usr/bin/codesign;
 
-        security set-key-partition-list -S apple-tool:,apple: -s -k password login.keychain
+        security set-key-partition-list -S apple-tool:,apple: -s -k password build.keychain
 
     - name: Build the dependencies
       run: |

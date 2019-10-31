@@ -46,7 +46,7 @@ function plist() {
 }
 
 function codesign() {
-    security unlock-keychain -p '' /Users/$USER/Library/Keychains/login.keychain
+    security unlock-keychain -p 'password' build.keychain
     APP=$(app_path)
     EXECUTABLE=$APP/Contents/MacOS/TogglDesktop
     CERTIFICATE="Developer ID Application: TOGGL OU"
