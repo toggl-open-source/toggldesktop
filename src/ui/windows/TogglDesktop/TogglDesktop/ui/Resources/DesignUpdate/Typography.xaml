@@ -15,16 +15,15 @@
         <Setter Property="FontWeight" Value="SemiBold" />
         <Setter Property="FontSize" Value="14" />
     </Style>
-    <Style TargetType="TextBlock" x:Key="BodyText" BasedOn="{StaticResource Toggl.Text}">
+    <Style TargetType="TextBlock" x:Key="Toggl.BodyText" BasedOn="{StaticResource Toggl.Text}">
         <Setter Property="FontSize" Value="14" />
     </Style>
-    <Style TargetType="TextBlock" x:Key="CaptionBlackText" BasedOn="{StaticResource Toggl.Text}">
+    <Style TargetType="TextBlock" x:Key="Toggl.CaptionBlackText" BasedOn="{StaticResource Toggl.Text}">
         <Setter Property="FontSize" Value="12" />
     </Style>
-    <Style TargetType="TextBlock" x:Key="CaptionText" BasedOn="{StaticResource Toggl.Text}">
+    <Style TargetType="TextBlock" x:Key="Toggl.CaptionText" BasedOn="{StaticResource Toggl.Text}">
         <Setter Property="FontSize" Value="12" />
         <Setter Property="Foreground" Value="{DynamicResource Toggl.SecondaryTextBrush}" />
     </Style>
-
-    <Style TargetType="TextBlock" BasedOn="{StaticResource BodyText}" />
+    <Style TargetType="TextBlock" BasedOn="{StaticResource Toggl.BodyText}" />
 </ResourceDictionary>
