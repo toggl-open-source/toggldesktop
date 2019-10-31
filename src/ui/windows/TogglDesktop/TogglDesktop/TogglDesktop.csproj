@@ -261,9 +261,9 @@
     <Compile Include="ui\KeyboardShortcuts.cs" />
     <Compile Include="ui\Experiments\implementations\ExperimentHacks.cs" />
     <Compile Include="ui\NotificationExtensions.cs" />
-    <Compile Include="ui\Theme.cs" />
-    <Compile Include="ui\ThemeResourceDictionary.cs" />
-    <Compile Include="ui\ThemeTypes.cs" />
+    <Compile Include="ui\Theming\Theme.cs" />
+    <Compile Include="ui\Theming\ThemeResourceDictionary.cs" />
+    <Compile Include="ui\Theming\ThemeType.cs" />
     <Compile Include="ui\Tutorial\BasicTutorialScreen7.xaml.cs">
       <DependentUpon>BasicTutorialScreen7.xaml</DependentUpon>
     </Compile>
