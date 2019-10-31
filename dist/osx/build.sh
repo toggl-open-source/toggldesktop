@@ -45,7 +45,7 @@ function plist() {
     rmdir tmp
 }
 
-function codesign() {
+function sign() {
     security unlock-keychain -p 'password' build.keychain
     APP=$(app_path)
     EXECUTABLE=$APP/Contents/MacOS/TogglDesktop
@@ -141,7 +141,7 @@ if [[ "$#" -ne 1 ]]; then
     cocoapods
     app
     plist
-    codesign
+    sign
     #notarize
     debuginfo
     dmg

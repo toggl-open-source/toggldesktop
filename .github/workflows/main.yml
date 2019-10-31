@@ -53,7 +53,7 @@ jobs:
         bash ./dist/osx/build.sh debuginfo
     - name: Codesign
       run: |
-        bash ./dist/osx/build.sh codesign
+        bash ./dist/osx/build.sh sign
     - name: Compose dmg
       run: |
         bash ./dist/osx/build.sh dmg
