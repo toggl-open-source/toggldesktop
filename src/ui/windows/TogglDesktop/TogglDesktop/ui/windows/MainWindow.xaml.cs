@@ -16,6 +16,7 @@ using System.Windows.Threading;
 using Microsoft.Win32;
 using TogglDesktop.Diagnostics;
 using TogglDesktop.Experiments;
+using TogglDesktop.Theming;
 using TogglDesktop.Tutorial;
 using MenuItem = System.Windows.Controls.MenuItem;
 using MouseEventArgs = System.Windows.Input.MouseEventArgs;
@@ -61,6 +62,7 @@ namespace TogglDesktop
 
             this.hideAllViews();
 
+            this.initializeColorScheme();
             this.initializeEvents();
             this.initializeContextMenu();
             this.initializeTaskbarIcon();
@@ -221,6 +223,12 @@ namespace TogglDesktop
             }
 
             this.IsVisibleChanged -= this.ownChildWindows;
+        }
+
+        private void initializeColorScheme()
+        {
+            var activatedColorScheme = Theme.ActivateDetectedColorSchemeOrDefault();
+            darkModeCheckBox.IsChecked = activatedColorScheme == ColorScheme.Dark;
         }
 
         private void initializeEvents()
@@ -982,7 +990,7 @@ namespace TogglDesktop
 
         void ToggleDarkMode(object sender, RoutedEventArgs e)
         {
-            Theme.Activate(ThemeTypes.ColorScheme, darkModeCheckBox.IsChecked.GetValueOrDefault() ? "Dark" : "Light");
+            Theme.ActivateColorScheme(darkModeCheckBox.IsChecked.GetValueOrDefault() ? ColorScheme.Dark : ColorScheme.Light);
         }
     }
 }
