@@ -133,6 +133,9 @@ extern void *ctx;
 
 		[self.timeEntryListViewController.view removeFromSuperview];
 		[self.overlayViewController.view removeFromSuperview];
+
+		// Reset the data
+		[[TouchBarService shared] reset];
 	}
 }
 
@@ -162,6 +165,9 @@ extern void *ctx;
 
 			[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kFocusTimer
 																		object:nil];
+
+			// Prepare the Touch bar
+			[[TouchBarService shared] prepareForPresent];
 		}
 	}
 }
@@ -297,6 +303,10 @@ extern void *ctx;
 
 - (NSTouchBar *)makeTouchBar
 {
+	if (self.loginViewController.view.superview != nil)
+	{
+		return nil;
+	}
 	return [[TouchBarService shared] touchBar];
 }
 
