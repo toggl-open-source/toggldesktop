@@ -57,7 +57,7 @@ Toggl built and signed apps for all platforms
 ## Linux
 
 <br>
-<a href="https://toggl.github.io/toggldesktop/download/linux_tar.gz-stable//">Tarball</a>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;<a href='https://flathub.org/apps/details/com.toggl.TogglDesktop'>Flathub</a>&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="https://toggl.github.io/toggldesktop/download/linux_tar.gz-stable/">Tarball</a>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;<a href='https://flathub.org/apps/details/com.toggl.TogglDesktop'>Flathub</a>&nbsp;&nbsp;&nbsp;&nbsp;
 <br/>
 <br/>
 <i>Only 64bit is supported</i>
