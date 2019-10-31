@@ -47,16 +47,71 @@ function plist() {
 
 function codesign() {
     security unlock-keychain -p '' /Users/$USER/Library/Keychains/login.keychain
-    ./src/branding/osx/codesign.sh $APP_PATH
+    APP=$(app_path)
+    EXECUTABLE=$APP/Contents/MacOS/TogglDesktop
+    CERTIFICATE="Developer ID Application: TOGGL OU"
+
+    echo "== check that gatekeeper is enabled =="
+    spctl --status|grep "disabled" && echo "cannot continue"
+
+    codesign --force --options runtime --deep --sign "${CERTIFICATE}" $APP/Contents/Frameworks/Sparkle.framework/Resources/Autoupdate.app
+    codesign --force --options runtime --deep --sign "${CERTIFICATE}" $APP/Contents/Frameworks/Sparkle.framework/Resources/Autoupdate.app/Contents/MacOS/fileop
+
+for filename in $APP/Contents/Frameworks/*; do
+        codesign -d --force --options runtime -vvvv --verify --strict -s "${CERTIFICATE}"  -r='designated => anchor apple generic and certificate leaf[subject.OU] = "B227VTMZ94"' $filename
+    done
+
+    codesign -d --force --options runtime -vvvv --verify --strict -s "${CERTIFICATE}" -r='designated => anchor apple generic and identifier "com.toggl.toggldesktop.TogglDesktop" and certificate leaf[subject.OU] = "B227VTMZ94"' $EXECUTABLE
+
+    codesign -d --force --options runtime -vvvv --verify --strict -s "${CERTIFICATE}" -r='designated => anchor apple generic and identifier "com.toggl.toggldesktop.TogglDesktop" and certificate leaf[subject.OU] = "B227VTMZ94"' $APP
+
+    codesign --deep --verify --strict --verbose=4 $APP
+}
+
+function wait_while_in_progress() {
+    while true; do \
+        /usr/bin/xcrun altool --notarization-info `/usr/libexec/PlistBuddy -c "Print :notarization-upload:RequestUUID" $(UPLOAD_INFO_PLIST)` -u $(DEVELOPER_USERNAME) -p $(DEVELOPER_PASSWORD) --output-format xml > $(REQUEST_INFO_PLIST) ;\
+        if [[ `/usr/libexec/PlistBuddy -c "Print :notarization-info:Status" $(REQUEST_INFO_PLIST)` != "in progress" ]]; then \
+            break ;\
+        fi ;\
+        echo '\n***** Notarization - waiting 60s' ;\
+        sleep 60 ;\
+    done
 }
 
 function notarize() {
     BUNDLE_APP=$(dirname $(app_path))
-    make -C ./src/branding/osx BUNDLE_APP="${BUNDLE_APP}" notarize
+    EXPORT_PATH=${BUNDLE_APP}/Submissions
+    APP_PATH=${BUNDLE_APP}/TogglDesktop.app
+    BUNDLE_ZIP=${EXPORT_PATH}/TogglDesktop.zip
+    UPLOAD_INFO_PLIST=${EXPORT_PATH}/UploadInfo.plist
+    REQUEST_INFO_PLIST=${EXPORT_PATH}/RequestInfo.plist
+    AUDIT_INFO_JSON=${EXPORT_PATH}/AuditInfo.json
+    DEVELOPER_USERNAME=${APPLE_APPID_USER}
+    DEVELOPER_PASSWORD=${APPLE_APPID_PASSWORD}
+
+    echo "Notarization" "Building a ZIP archive…"
+    /usr/bin/ditto -c -k --keepParent $(APP_PATH) $(BUNDLE_ZIP)
+    echo "Notarization" "Uploading for notarization…"
+    /usr/bin/xcrun altool --notarize-app --primary-bundle-id "com.toggl.toggldesktop.TogglDesktop.zip" -itc_provider "B227VTMZ94" -u $(DEVELOPER_USERNAME) -p $(DEVELOPER_PASSWORD) -f $(BUNDLE_ZIP) --output-format xml > $(UPLOAD_INFO_PLIST)
+    echo "Notarization" "Waiting while notarized…"
+        /usr/bin/xcrun altool --notarization-info `/usr/libexec/PlistBuddy -c "Print :notarization-upload:RequestUUID" $(UPLOAD_INFO_PLIST)` -u $(DEVELOPER_USERNAME) -p $(DEVELOPER_PASSWORD) --output-format xml > $(REQUEST_INFO_PLIST)
+    echo wait_while_in_progress
+    echo "Notarization" "Downloading log file…"
+    /usr/bin/curl -o $(AUDIT_INFO_JSON) `/usr/libexec/PlistBuddy -c "Print :notarization-info:LogFileURL" $(REQUEST_INFO_PLIST)`
+    if [ `/usr/libexec/PlistBuddy -c "Print :notarization-info:Status" $(REQUEST_INFO_PLIST)` != "success" ]; then \
+        false; \
+    fi
+    echo notify, "Notarization", "Stapling…"
+    /usr/bin/xcrun stapler staple $(APP_PATH)
+    echo notify, "Notarization", "✅ Done!"
 }
 
 function dmg() {
-    ./src/branding/osx/dmg.sh $APP_PATH
+    brew install npm
+    npm install create-dmg
+    create-dmg $APP_PATH
+    mv *.dmg TogglDesktop.dmg
 }
 
 function rename_dmg() {
@@ -81,15 +136,19 @@ function debuginfo() {
 }
 
 
-dependencies
-cocoapods
-app
-plist
-codesign
-#notarize
-dmg
-rename_dmg
-debuginfo
+if [[ "$#" -ne 1 ]]; then
+    dependencies
+    cocoapods
+    app
+    plist
+    codesign
+    #notarize
+    debuginfo
+    dmg
+    rename_dmg
+else
+    $1
+fi
 
 # Update AppCast
 # Upload the new version to Github releases
