@@ -46,9 +46,9 @@
     <SolidColorBrush x:Key="Toggl.TextBox.Border" Color="{StaticResource Toggl.DisabledTextColor}" po:Freeze="True" />
     <SolidColorBrush x:Key="Toggl.AccentBrush" Color="{StaticResource Toggl.AccentColor}" po:Freeze="True" />
     <SolidColorBrush x:Key="Toggl.Background" Color="{StaticResource Toggl.CardBackgroundColor}" po:Freeze="True" />
-    <SolidColorBrush x:Key="Toggl.PrimaryButtonBackground" Color="#D9D9D9" po:Freeze="True" />
+    <SolidColorBrush x:Key="Toggl.PrimaryButtonBackground" Color="{StaticResource Toggl.DisabledElementColor}" po:Freeze="True" />
     <SolidColorBrush x:Key="Toggl.PrimaryHoverOrText" Color="{StaticResource Toggl.AccentColorMinusOne}" po:Freeze="True" />
-    <SolidColorBrush x:Key="Toggl.PrimaryButtonHoverBackground" Color="#ACACAC" po:Freeze="True" />
+    <SolidColorBrush x:Key="Toggl.PrimaryButtonPressedBackground" Color="{StaticResource Toggl.DisabledTextColor}" po:Freeze="True" />
 
     <BitmapImage x:Key="Toggl.LogoImage" UriSource="/TogglDesktop;component/Resources/toggl-logo-dark.png" />
 </ResourceDictionary>
