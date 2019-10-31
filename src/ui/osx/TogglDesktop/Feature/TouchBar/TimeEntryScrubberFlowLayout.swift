@@ -46,7 +46,8 @@ final class TimeEntryScrubberFlowLayout: NSScrubberFlowLayout {
             // Get the size depend on the length of text
             let templateBtn = NSTextField(string: "")
             templateBtn.stringValue = title
-            let width = templateBtn.cell!.cellSize(forBounds: CGRect(x: 0, y: 0, width: 1000.0, height: Constants.BarItemHeight)).width
+            //let width = templateBtn.cell!.cellSize(forBounds: CGRect(x: 0, y: 0, width: 1000.0, height: Constants.BarItemHeight)).width
+            let width: CGFloat = 120
 
             // Override the size
             var size = CGSize(width: width, height: Constants.BarItemHeight)

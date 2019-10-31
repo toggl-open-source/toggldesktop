@@ -15,12 +15,14 @@ final class TimeEntryScrubberItem: NSScrubberItemView {
 
     private lazy var titleBtn = NSButton(title: "", target: nil, action: nil)
     @IBOutlet weak var desciptionLbl: NSTextField!
-    @IBOutlet weak var projectLbl: NSTextField!
+    @IBOutlet weak var projectLbl: ProjectTextField!
+    @IBOutlet weak var dotImageView: DotImageView!
 
     // MARK: View Cycle
 
     override func awakeFromNib() {
         super.awakeFromNib()
+        projectLbl.customClientTextColor = NSColor.secondaryLabelColor;
         if titleBtn.superview == nil {
             titleBtn.setButtonType(NSButton.ButtonType.momentaryChange)
             titleBtn.translatesAutoresizingMaskIntoConstraints = false
@@ -37,7 +39,21 @@ final class TimeEntryScrubberItem: NSScrubberItemView {
     // MARK: Public
 
     func config(_ item: TimeEntryViewItem) {
-        desciptionLbl.stringValue = item.descriptionName
-        projectLbl.stringValue = item.projectAndTaskLabel
+        if let descriptionName = item.descriptionName, !descriptionName.isEmpty {
+            desciptionLbl.stringValue = item.descriptionName
+        } else {
+            desciptionLbl.stringValue = "(No description)"
+        }
+        if let projectText = item.projectAndTaskLabel, !projectText.isEmpty {
+            projectLbl.setTitleWithTimeEntry(item)
+            dotImageView.isHidden = false
+            if let color = item.projectColor {
+                dotImageView.fill(with: ConvertHexColor.hexCode(toNSColor: color))
+            }
+        } else {
+            projectLbl.textColor = NSColor.secondaryLabelColor
+            projectLbl.stringValue = "(No Project)"
+            dotImageView.isHidden = true
+        }
     }
 }
