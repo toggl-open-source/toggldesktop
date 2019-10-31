@@ -21,7 +21,7 @@
     </Style>
 
     <DataTemplate x:Key="Toggl.Button.ContentTemplate">
-        <TextBlock Style="{StaticResource BodyText}" Text="{Binding}" Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"/>
+        <TextBlock Style="{StaticResource Toggl.BodyText}" Text="{Binding}" Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"/>
     </DataTemplate>
 
     <Style x:Key="Toggl.PrimaryButton" TargetType="{x:Type Button}">
@@ -32,7 +32,7 @@
         <Setter Property="FocusVisualStyle" Value="{StaticResource Toggl.ButtonFocusVisualStyle}" />
         <Setter Property="FontSize" Value="{DynamicResource NormalFontSize}" />
         <Setter Property="FontFamily" Value="{StaticResource BaseFont}" />
-        <Setter Property="Foreground" Value="Black" />
+        <Setter Property="Foreground" Value="{DynamicResource Toggl.PrimaryTextBrush}" />
         <Setter Property="Padding" Value="10 6 10 6" />
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="ContentTemplate" Value="{StaticResource Toggl.Button.ContentTemplate}" />
@@ -65,7 +65,7 @@
                 <Setter Property="BorderBrush" Value="{DynamicResource Toggl.Button.MouseOverBorder}" />
             </Trigger>
             <Trigger Property="IsPressed" Value="True">
-                <Setter Property="Background" Value="{DynamicResource Toggl.PrimaryButtonHoverBackground}" />
+                <Setter Property="Background" Value="{DynamicResource Toggl.PrimaryButtonPressedBackground}" />
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
                 <Setter Property="Foreground" Value="{DynamicResource Toggl.DisabledTextBrush}" />

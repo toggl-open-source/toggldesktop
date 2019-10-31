@@ -248,7 +248,7 @@
                                                   IsHitTestVisible="False"
                                                   SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
                                     <ContentPresenter.Resources>
-                                        <Style TargetType="TextBlock" BasedOn="{StaticResource BodyText}" />
+                                        <Style TargetType="TextBlock" BasedOn="{StaticResource Toggl.BodyText}" />
                                     </ContentPresenter.Resources>
                                 </ContentPresenter>
                             </Grid>
@@ -432,7 +432,7 @@
                                               VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                               SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
                                 <ContentPresenter.Resources>
-                                    <Style TargetType="TextBlock" BasedOn="{StaticResource BodyText}" />
+                                    <Style TargetType="TextBlock" BasedOn="{StaticResource Toggl.BodyText}" />
                                 </ContentPresenter.Resources>
                             </ContentPresenter>
                         </Grid>
