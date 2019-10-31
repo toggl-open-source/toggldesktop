@@ -12,7 +12,37 @@
         <customView identifier="TimeEntryScrubberItem" id="c22-O7-iKe" customClass="TimeEntryScrubberItem" customModule="TogglDesktop" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="92" height="25"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-            <point key="canvasLocation" x="-33" y="33"/>
+            <subviews>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="LPf-Zn-zKx">
+                    <rect key="frame" x="2" y="9" width="65" height="14"/>
+                    <textFieldCell key="cell" controlSize="small" lineBreakMode="truncatingTail" title="Description" usesSingleLineMode="YES" id="WiE-03-2mE">
+                        <font key="font" metaFont="controlContent" size="11"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="bOg-rk-NNg">
+                    <rect key="frame" x="2" y="2" width="42" height="14"/>
+                    <textFieldCell key="cell" controlSize="small" lineBreakMode="truncatingTail" title="Project" usesSingleLineMode="YES" id="9Mi-aX-45M">
+                        <font key="font" metaFont="controlContent" size="11"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+            </subviews>
+            <constraints>
+                <constraint firstItem="LPf-Zn-zKx" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="4" id="2zy-KV-ibl"/>
+                <constraint firstItem="bOg-rk-NNg" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="4" id="Arg-KK-EkE"/>
+                <constraint firstItem="LPf-Zn-zKx" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" constant="2" id="H8s-z0-gpg"/>
+                <constraint firstAttribute="bottom" secondItem="bOg-rk-NNg" secondAttribute="bottom" constant="2" id="O2E-Hf-k3N"/>
+                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="LPf-Zn-zKx" secondAttribute="trailing" id="wqF-T0-oMp"/>
+                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="bOg-rk-NNg" secondAttribute="trailing" id="zl5-jD-qDc"/>
+            </constraints>
+            <connections>
+                <outlet property="desciptionLbl" destination="LPf-Zn-zKx" id="SDR-NV-VvU"/>
+                <outlet property="projectLbl" destination="bOg-rk-NNg" id="TXf-x3-csg"/>
+            </connections>
+            <point key="canvasLocation" x="-33" y="32.5"/>
         </customView>
     </objects>
 </document>
