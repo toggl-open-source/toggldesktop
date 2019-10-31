@@ -663,6 +663,7 @@
     <Page Include="ui\Resources\DesignUpdate\Controls.xaml" />
     <Page Include="ui\Resources\DesignUpdate\Hyperlink.xaml" />
     <Page Include="ui\Resources\DesignUpdate\MahApps.Overrides.xaml" />
+    <Page Include="ui\Resources\DesignUpdate\TextBox.xaml" />
     <Page Include="ui\Resources\DesignUpdate\ToolWindow.xaml" />
     <Page Include="ui\Resources\DesignUpdate\Typography.xaml" />
     <Page Include="ui\Resources\DialogStyles.xaml">
