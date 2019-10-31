@@ -26,6 +26,7 @@ final class TouchBarService: NSObject {
 
     fileprivate struct Constants {
         static let TimeEntryIdentifer = NSUserInterfaceItemIdentifier("TimeEntryScrubberItem")
+        static let NumberTimeEntry = 5
     }
 
     // MARK: OUTLET
@@ -86,7 +87,19 @@ final class TouchBarService: NSObject {
     }
 
     func updateTimeEntryList(_ timeEntries: [TimeEntryViewItem]) {
-        self.timeEntries = Array(timeEntries.prefix(5))
+        // Only get unique Time Entry (Don't get the TE in the group)
+        var touchBarEntries: [TimeEntryViewItem] = []
+        for timeEntry in timeEntries {
+            // Ingore the time entry in the group
+            if timeEntry.groupOpen && !timeEntry.group {
+                continue
+            }
+            touchBarEntries.append(timeEntry)
+            if touchBarEntries.count >= Constants.NumberTimeEntry {
+                break
+            }
+        }
+        self.timeEntries = (touchBarEntries)
         scrubberView.reloadData()
     }
 }
