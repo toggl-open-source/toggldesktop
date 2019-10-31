@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 
-namespace TogglDesktop
+namespace TogglDesktop.Theming
 {
     sealed class ThemeResourceDictionary : ResourceDictionary
     {
-        private static readonly Dictionary<ThemeTypes,List<ThemeResourceDictionary>> loadedDictionaries
-            = new Dictionary<ThemeTypes, List<ThemeResourceDictionary>>();
+        private static readonly Dictionary<ThemeType,List<ThemeResourceDictionary>> loadedDictionaries
+            = new Dictionary<ThemeType, List<ThemeResourceDictionary>>();
 
-        private ThemeTypes type;
+        private ThemeType type;
 
-        public ThemeTypes Type
+        public ThemeType Type
         {
             get { return this.type; }
             set
@@ -41,7 +41,7 @@ namespace TogglDesktop
             themes.Add(this);
         }
 
-        public static ThemeResourceDictionary Load(ThemeTypes type, string name)
+        public static ThemeResourceDictionary Load(ThemeType type, string name)
         {
             var uri = new Uri(
                 string.Format("ui/Resources/Themes/{0}/{1}.xaml", type, name),
