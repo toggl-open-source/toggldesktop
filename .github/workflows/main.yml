@@ -48,9 +48,6 @@ jobs:
     - name: Insert version string
       run: |
         bash ./dist/osx/build.sh plist
-    - name: Extract debug info
-      run: |
-        bash ./dist/osx/build.sh debuginfo
     - name: Codesign
       run: |
         bash ./dist/osx/build.sh sign
