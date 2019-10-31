@@ -108,7 +108,6 @@ function notarize() {
 }
 
 function dmg() {
-    brew install npm
     npm install create-dmg
     create-dmg $APP_PATH
     mv *.dmg TogglDesktop.dmg
