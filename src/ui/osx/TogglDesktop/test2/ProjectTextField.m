@@ -120,6 +120,11 @@
 
 - (NSColor *)clientTextColor
 {
+	if (self.customClientTextColor != nil)
+	{
+		return self.customClientTextColor;
+	}
+
 	if (@available(macOS 10.13, *))
 	{
 		return [NSColor colorNamed:@"grey-text-color"];
