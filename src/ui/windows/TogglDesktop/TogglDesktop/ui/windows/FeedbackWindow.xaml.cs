@@ -27,14 +27,12 @@ namespace TogglDesktop
             this.messageTextBox.Text = "";
             this.attachedFileText.Text = "(maximum image size 5MB)";
             this.errorText.Visibility = Visibility.Hidden;
-            this.topicEmptyText.Visibility = Visibility.Visible;
             this.attachedFileName = null;
         }
 
         private void onTopicSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             this.errorText.Visibility = Visibility.Hidden;
-            this.topicEmptyText.Visibility = Visibility.Hidden;
         }
 
         private void onAttachImageClick(object sender, RoutedEventArgs e)

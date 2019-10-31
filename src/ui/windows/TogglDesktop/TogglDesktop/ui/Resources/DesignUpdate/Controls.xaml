@@ -8,6 +8,7 @@
         <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml" />
         <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
         <ResourceDictionary Source="MahApps.Overrides.xaml" />
+        <ResourceDictionary Source="TextBox.xaml" />
         <ResourceDictionary Source="ComboBox.xaml" />
         <ResourceDictionary Source="Buttons.xaml" />
         <ResourceDictionary Source="Hyperlink.xaml" />

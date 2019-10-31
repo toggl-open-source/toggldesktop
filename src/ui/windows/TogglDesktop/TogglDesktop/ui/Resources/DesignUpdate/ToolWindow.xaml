@@ -18,7 +18,7 @@
             <Setter.Value>
                 <DataTemplate>
                     <TextBlock Margin="10 0 1 0"
-                               Style="{StaticResource CaptionBlackText}"
+                               Style="{StaticResource Toggl.CaptionBlackText}"
                                VerticalAlignment="Center"
                                Text="{TemplateBinding Content}"
                                TextTrimming="CharacterEllipsis" />
