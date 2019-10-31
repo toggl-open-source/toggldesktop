@@ -157,7 +157,9 @@
                 HorizontalAlignment="Left"
                 VerticalAlignment="Bottom"
                 Visibility="Collapsed">
-            <CheckBox Click="ToggleDarkMode" Name="darkModeCheckBox">Dark mode</CheckBox>
+            <CheckBox Click="ToggleDarkMode" Name="darkModeCheckBox">
+                <TextBlock Foreground="{DynamicResource Toggl.PrimaryTextBrush}">Dark mode</TextBlock>
+            </CheckBox>
         </Border>
 
     </Grid>
