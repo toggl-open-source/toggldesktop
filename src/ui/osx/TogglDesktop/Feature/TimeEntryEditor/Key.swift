@@ -14,6 +14,8 @@ enum Key {
     case space
     case enter
     case tab
+    case backspace
+    case delete
 
     init?(rawValue: Int) {
         switch rawValue {
@@ -25,6 +27,10 @@ enum Key {
             self = .enter
         case kVK_Tab:
             self = .tab
+        case kBackspaceCharCode:
+            self = .backspace
+        case kVK_Delete:
+            self = .delete
         default:
             return nil
         }

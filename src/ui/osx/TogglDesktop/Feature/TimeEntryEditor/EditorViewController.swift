@@ -94,6 +94,7 @@ final class EditorViewController: NSViewController {
         formatter.locale = Locale.current
         return formatter
     }()
+    private var shouldRefocusTagTokens = false
 
     // MARK: View Cyclex
 
@@ -340,6 +341,13 @@ extension EditorViewController {
 
             // Last to duration
             visibleTokens.last?.actionButton.nextKeyView = durationTextField
+
+            if shouldRefocusTagTokens {
+                shouldRefocusTagTokens = false
+                if let first = visibleTokens.first {
+                    view.window?.makeFirstResponder(first.actionButton)
+                }
+            }
         }
         else {
             tagDatasource.updateSelectedTags([])
@@ -347,6 +355,11 @@ extension EditorViewController {
             // Tab
             projectTextField.nextKeyView = tagAddButton
             tagAddButton.nextKeyView = durationTextField
+
+            if shouldRefocusTagTokens {
+                shouldRefocusTagTokens = false
+                view.window?.makeFirstResponder(tagAddButton)
+            }
         }
     }
 
@@ -421,8 +434,6 @@ extension EditorViewController {
     }
 
     fileprivate func setFocusOnTextField(shouldFocusByDefault: Bool) {
-
-
         guard let timeEntry = timeEntry,
             let focusedFieldName = timeEntry.focusedFieldName else { return }
 
@@ -608,6 +619,12 @@ extension EditorViewController: TagTokenViewDelegate {
                 return tagName
             }
             DesktopLibraryBridge.shared().updateTimeEntry(withTags: remainingTags, guid: timeEntry.guid)
+            shouldRefocusTagTokens = true
+            if let nextView = self.tagStackView.arrangedSubviews.first as? TagTokenView {
+                view.window?.makeFirstResponder(nextView.actionButton)
+            } else {
+                view.window?.makeFirstResponder(tagAddButton)
+            }
         }
     }
 

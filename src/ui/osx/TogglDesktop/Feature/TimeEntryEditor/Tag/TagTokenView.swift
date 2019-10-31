@@ -44,6 +44,10 @@ final class TagTokenView: NSView {
         }
     }
 
+    override var acceptsFirstResponder: Bool {
+        return true
+    }
+
     func render(_ tag: Tag) {
         self.tagToken = tag
         titleLabel.stringValue = tag.name
@@ -80,12 +84,14 @@ final class TagTokenView: NSView {
         }
     }
 
-    fileprivate func initTracking() {
-        let trackingArea = NSTrackingArea(rect: bounds,
-                                          options: [.activeInActiveApp, .inVisibleRect, .mouseEnteredAndExited],
-                                          owner: self,
-                                          userInfo: nil)
-        addTrackingArea(trackingArea)
+    override func keyDown(with event: NSEvent) {
+        guard let key = Key(rawValue: Int(event.keyCode)) else { return }
+        switch key {
+        case .delete, .backspace:
+            deleteBtnOnTap(self)
+        default:
+            super.keyDown(with: event)
+        }
     }
 }
 
@@ -98,5 +104,13 @@ extension TagTokenView {
         closeButton.alphaValue = 0
         gradientView.alphaValue = 0
         closeButton.cursor = .pointingHand
+    }
+
+    fileprivate func initTracking() {
+        let trackingArea = NSTrackingArea(rect: bounds,
+                                          options: [.activeInActiveApp, .inVisibleRect, .mouseEnteredAndExited],
+                                          owner: self,
+                                          userInfo: nil)
+        addTrackingArea(trackingArea)
     }
 }
