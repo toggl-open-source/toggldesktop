@@ -4,7 +4,7 @@
         <Setter Property="FontFamily" Value="{DynamicResource BaseFont}" />
         <Setter Property="FontSize" Value="14" />
         <Setter Property="Foreground" Value="{DynamicResource Toggl.PrimaryTextBrush}" />
-        <Setter Property="Background" Value="{DynamicResource Toggl.Background}" />
+        <Setter Property="Background" Value="{DynamicResource Toggl.CardBackground}" />
         <Setter Property="BorderBrush" Value="{DynamicResource Toggl.TextBox.Border}" />
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">

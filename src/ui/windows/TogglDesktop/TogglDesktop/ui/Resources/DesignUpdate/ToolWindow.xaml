@@ -8,6 +8,8 @@
         <Setter Property="ResizeMode" Value="NoResize" />
         <Setter Property="TitleCharacterCasing" Value="Normal" />
         <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="WindowTitleBrush" Value="Transparent" />
+        <Setter Property="NonActiveWindowTitleBrush" Value="Transparent" />
         <Setter Property="GlowBrush" Value="Black" />
         <Setter Property="NonActiveGlowBrush">
             <Setter.Value>
