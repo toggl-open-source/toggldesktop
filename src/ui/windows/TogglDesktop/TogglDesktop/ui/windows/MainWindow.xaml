@@ -152,7 +152,7 @@
             </Rectangle.Fill>
         </Rectangle>
 
-        <Border Background="{DynamicResource Toggl.Background}"
+        <Border Background="{DynamicResource Toggl.CardBackground}"
                 Name="darkModeBorder"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Bottom"

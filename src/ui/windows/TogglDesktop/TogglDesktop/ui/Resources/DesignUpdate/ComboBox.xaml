@@ -276,7 +276,7 @@
                                 <Border x:Name="PopupBorder"
                                         Height="Auto"
                                         HorizontalAlignment="Stretch"
-                                        Background="{DynamicResource Toggl.Background}"
+                                        Background="{DynamicResource Toggl.CardBackground}"
                                         BorderBrush="{DynamicResource ComboBoxPopupBorderBrush}"
                                         BorderThickness="{DynamicResource ComboBoxPopupBorderThemeThickness}"
                                         SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
