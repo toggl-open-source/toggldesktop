@@ -32,7 +32,7 @@
         </Grid.RowDefinitions>
         
         <StackPanel Grid.Row="0">
-            <TextBlock Style="{DynamicResource Toggl.BodyText}" Text="Send us your feedback and questions"/>
+            <TextBlock Style="{DynamicResource Toggl.BodyText}" Text="Send us your feedback or questions"/>
             <ComboBox Name="topicComboBox" x:FieldModifier="private"
                       Margin="0,18,0,0"
                       SelectionChanged="onTopicSelectionChanged"
