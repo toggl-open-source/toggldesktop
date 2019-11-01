@@ -15,11 +15,14 @@ final class AlertTouchBar: NSObject {
 
     private lazy var cancelButton: NSButton = {
         let btn = NSButton(title: "Cancel", target: self, action: #selector(self.cancelBtnOnTap(_:)))
+        btn.setButtonType(.momentaryPushIn)
         return btn
     }()
 
     private lazy var deleteButton: NSButton = {
         let btn = NSButton(title: "Delete", target: self, action: #selector(self.deleteBtnOnTap(_:)))
+        btn.setButtonType(.momentaryPushIn)
+        btn.bezelColor = NSColor.systemRed
         return btn
     }()
 
