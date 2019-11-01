@@ -10,6 +10,7 @@
         Height="460" Width="300"
         KeyDown="windowKeyDown"
         Title="About"
+        Background="{DynamicResource Toggl.CardBackground}"
         WindowStartupLocation="CenterOwner"
         DataContext="{Binding RelativeSource={RelativeSource Self}}">
     <Window.Resources>
@@ -25,7 +26,7 @@
     <i:Interaction.Behaviors>
         <behaviors:HideWindowOnClosingBehavior />
     </i:Interaction.Behaviors>
-    <Grid Background="{DynamicResource Toggl.Background}">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
