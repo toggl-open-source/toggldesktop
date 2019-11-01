@@ -11,9 +11,12 @@
                     <Border BorderThickness="1"
                             BorderBrush="{DynamicResource Toggl.PrimaryHoverOrText}">
                         <Rectangle SnapsToDevicePixels="True"
-                                   Stroke="White"
                                    StrokeThickness="1"
-                                   UseLayoutRounding="True" />
+                                   UseLayoutRounding="True">
+                            <Rectangle.Stroke>
+                                <SolidColorBrush Color="{DynamicResource Toggl.SelectionElements.BackgroundColor}" Opacity="0.6" />
+                            </Rectangle.Stroke>
+                        </Rectangle>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
