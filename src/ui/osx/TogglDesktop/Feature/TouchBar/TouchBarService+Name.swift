@@ -19,4 +19,6 @@ extension NSTouchBarItem.Identifier {
     static let timeEntryItem = NSTouchBarItem.Identifier("com.toggl.toggldesktop.timeentrytouchbar.timeentryitems")
     static let runningTimeEntry = NSTouchBarItem.Identifier("com.toggl.toggldesktop.timeentrytouchbar.runningtimeentry")
     static let startStopItem = NSTouchBarItem.Identifier("com.toggl.toggldesktop.timeentrytouchbar.startstopbutton")
+    static let cancelItem = NSTouchBarItem.Identifier("com.toggl.toggldesktop.timeentrytouchbar.cancelactionbutton")
+    static let deleteItem = NSTouchBarItem.Identifier("com.toggl.toggldesktop.timeentrytouchbar.deletetimeentrybutton")
 }

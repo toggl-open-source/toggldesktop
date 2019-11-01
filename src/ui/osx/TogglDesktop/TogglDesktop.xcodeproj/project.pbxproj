@@ -125,6 +125,7 @@
 		BA2DA12021A691FF0027B7A5 /* TrackingService.m in Sources */ = {isa = PBXBuildFile; fileRef = BA2DA11F21A691FF0027B7A5 /* TrackingService.m */; };
 		BA2E3F2C22375E640035D034 /* NSView+Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2E3F2B22375E640035D034 /* NSView+Appearance.swift */; };
 		BA2E5FB1223787C300EB866E /* EditorPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2E5FB0223787C300EB866E /* EditorPopover.swift */; };
+		BA32134C236C1E1400D33367 /* AlertTouchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA32134B236C1E1400D33367 /* AlertTouchBar.swift */; };
 		BA34F10022439C3000C27A15 /* EditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA34F0FE22439C3000C27A15 /* EditorViewController.swift */; };
 		BA34F10122439C3000C27A15 /* EditorViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA34F0FF22439C3000C27A15 /* EditorViewController.xib */; };
 		BA35B21F22E6E95200FA560E /* CalendarCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA35B21E22E6E95200FA560E /* CalendarCollectionView.swift */; };
@@ -494,6 +495,7 @@
 		BA2DA11F21A691FF0027B7A5 /* TrackingService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TrackingService.m; sourceTree = "<group>"; };
 		BA2E3F2B22375E640035D034 /* NSView+Appearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSView+Appearance.swift"; sourceTree = "<group>"; };
 		BA2E5FB0223787C300EB866E /* EditorPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorPopover.swift; sourceTree = "<group>"; };
+		BA32134B236C1E1400D33367 /* AlertTouchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertTouchBar.swift; sourceTree = "<group>"; };
 		BA34F0FE22439C3000C27A15 /* EditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorViewController.swift; sourceTree = "<group>"; };
 		BA34F0FF22439C3000C27A15 /* EditorViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EditorViewController.xib; sourceTree = "<group>"; };
 		BA35B21E22E6E95200FA560E /* CalendarCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCollectionView.swift; sourceTree = "<group>"; };
@@ -1256,6 +1258,7 @@
 				BA00E9EF234C73990011A703 /* TimeEntryScrubberItem.swift */,
 				BA00E9F4234C848A0011A703 /* TimeEntryScrubberItem.xib */,
 				BA00E9F2234C7BB80011A703 /* TimeEntryScrubberFlowLayout.swift */,
+				BA32134B236C1E1400D33367 /* AlertTouchBar.swift */,
 			);
 			path = TouchBar;
 			sourceTree = "<group>";
@@ -1617,6 +1620,7 @@
 				74BA5FCF18B6E770009DAA2D /* NSHoverButton.m in Sources */,
 				BA3E75D422291CEB009AD291 /* SystemMessage.swift in Sources */,
 				BAA11AC32251F4D6007F31D2 /* WorkspaceAutoCompleteTextField.swift in Sources */,
+				BA32134C236C1E1400D33367 /* AlertTouchBar.swift in Sources */,
 				3C8979CA19235EA2007061E0 /* NSTextFieldClickablePointer.m in Sources */,
 				748B3A3419222DB100F31468 /* DisplayCommand.m in Sources */,
 				BA9C2E05224C84E7002AD2A1 /* ColorViewItem.swift in Sources */,
