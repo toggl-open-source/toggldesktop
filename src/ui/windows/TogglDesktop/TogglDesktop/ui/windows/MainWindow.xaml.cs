@@ -78,6 +78,9 @@ namespace TogglDesktop
 
             this.finalInitialisation();
             this.trackingWindowSize();
+#if DEBUG
+            this.darkModeBorder.Visibility = Visibility.Visible;
+#endif
         }
 
         #region properties
@@ -934,10 +937,9 @@ namespace TogglDesktop
             return (T)this.views.FirstOrDefault(v => v is T);
         }
 
-        private void changeThemeTest(object sender, RoutedEventArgs e)
+        void ToggleDarkMode(object sender, RoutedEventArgs e)
         {
-            Theme.Activate(ThemeTypes.Layout, this.themeCheckBox.IsChecked ?? false ? "Compact" : "Comfortable");
+            Theme.Activate(ThemeTypes.ColorScheme, darkModeCheckBox.IsChecked.GetValueOrDefault() ? "Dark" : "Light");
         }
-
     }
 }

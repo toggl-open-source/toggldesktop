@@ -1,0 +1,30 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Typography.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+    <Style TargetType="mah:MetroWindow" x:Key="Toggl.ToolWindow">
+        <Setter Property="ResizeMode" Value="NoResize" />
+        <Setter Property="TitleCharacterCasing" Value="Normal" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="GlowBrush" Value="Black" />
+        <Setter Property="NonActiveGlowBrush">
+            <Setter.Value>
+                <SolidColorBrush Opacity="0.3" Color="Black" />
+            </Setter.Value>
+        </Setter>
+        <Setter Property="TitleTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <TextBlock Margin="10 0 1 0"
+                               Style="{StaticResource CaptionBlackText}"
+                               VerticalAlignment="Center"
+                               Text="{TemplateBinding Content}"
+                               TextTrimming="CharacterEllipsis" />
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="WindowTransitionsEnabled" Value="False" />
+    </Style>
+</ResourceDictionary>

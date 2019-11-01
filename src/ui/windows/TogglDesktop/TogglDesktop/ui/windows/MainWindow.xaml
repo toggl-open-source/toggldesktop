@@ -148,11 +148,13 @@
             </Rectangle.Fill>
         </Rectangle>
 
-        <Border Background="{DynamicResource LayoutTestBrush}"
-                HorizontalAlignment="Left" VerticalAlignment="Bottom"
+        <Border Background="{DynamicResource Toggl.Background}"
+                Name="darkModeBorder"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Bottom"
                 Visibility="Collapsed">
-            <CheckBox Click="changeThemeTest" Name="themeCheckBox">Compact mode</CheckBox>
+            <CheckBox Click="ToggleDarkMode" Name="darkModeCheckBox">Dark mode</CheckBox>
         </Border>
-        
+
     </Grid>
 </toggl:TogglWindow>

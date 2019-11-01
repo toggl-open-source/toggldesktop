@@ -4,6 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <ProjectGuid>{27AC6261-3916-4683-B692-DC57E2FE0ABD}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -207,6 +208,7 @@
     <Compile Include="ui\AutoCompleteControls\TaskEntry.xaml.cs">
       <DependentUpon>TaskEntry.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ui\Behaviors\HideWindowOnClosingBehavior.cs" />
     <Compile Include="ui\chrome\ChromelessWindow.cs" />
     <Compile Include="ui\controls\ProgressBar.xaml.cs">
       <DependentUpon>ProgressBar.xaml</DependentUpon>
@@ -646,6 +648,13 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ui\Resources\DesignUpdate\Buttons.xaml" />
+    <Page Include="ui\Resources\DesignUpdate\ComboBox.xaml" />
+    <Page Include="ui\Resources\DesignUpdate\Controls.xaml" />
+    <Page Include="ui\Resources\DesignUpdate\Hyperlink.xaml" />
+    <Page Include="ui\Resources\DesignUpdate\MahApps.Overrides.xaml" />
+    <Page Include="ui\Resources\DesignUpdate\ToolWindow.xaml" />
+    <Page Include="ui\Resources\DesignUpdate\Typography.xaml" />
     <Page Include="ui\Resources\DialogStyles.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -654,13 +663,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ui\Resources\Themes\Layout\Compact.xaml">
-      <Generator>MSBuild:Compile</Generator>
+    <Page Include="ui\Resources\Themes\ColorScheme\Dark.xaml">
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ui\Resources\Themes\Layout\Comfortable.xaml">
-      <Generator>MSBuild:Compile</Generator>
+    <Page Include="ui\Resources\Themes\ColorScheme\Light.xaml">
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ui\Resources\TimerStyles.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -926,6 +935,13 @@
     <PackageReference Include="Hardcodet.NotifyIcon.Wpf">
       <Version>1.0.8</Version>
     </PackageReference>
+    <PackageReference Include="MahApps.Metro">
+      <Version>1.6.5</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\toggl-logo-dark.png" />
+    <Resource Include="Resources\toggl-logo-light.png" />
   </ItemGroup>
   <Import Project="Dependencies.targets" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
