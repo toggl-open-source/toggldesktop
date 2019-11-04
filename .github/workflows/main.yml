@@ -20,33 +20,20 @@ jobs:
         base64 -D <<< "${{ secrets.CERT_MACOS }}" > Bundle.p12
         #!/usr/bin/env sh
 
-        #create a keychain
-        # security create-keychain -p password build.keychain
+        # Create new keychian
+        security create-keychain -p password build.keychain
 
-        # # Make the keychain the default so identities are found
-        # security default-keychain -s build.keychain
+        # Make default keychain, so the xcodesign could find it
+        security default-keychain -s ~/Library/Keychains/build.keychain
 
-        # # Unlock the keychain
-        # security unlock-keychain -p password build.keychain
+        # Import
+        security import ./Bundle.p12 -k ~/Library/Keychains/build.keychain -P ${{ secrets.CERT_MACOS_PASSWORD }} -T /usr/bin/codesign
+        security list-keychain -s ~/Library/Keychains/build.keychain
 
-        # security import Bundle.p12 -k build.keychain -P ${{ secrets.CERT_MACOS_PASSWORD }} -T /usr/bin/codesign;
-
-        # security set-key-partition-list -S apple-tool:,apple: -s -k password build.keychain
-
-        # # Import
-        # security import ./Bundle.p12 -P ${{ secrets.CERT_MACOS_PASSWORD }}
-        
-        # # Find
-        # security find-certificate -a | grep "Mac Developer"
-
-        security create-keychain -p password ios-build.keychain
-        security default-keychain -s ~/Library/Keychains/ios-build.keychain
-        security import ./Bundle.p12 -k ~/Library/Keychains/ios-build.keychain -P ${{ secrets.CERT_MACOS_PASSWORD }} -T /usr/bin/codesign
-        security list-keychain -s ~/Library/Keychains/ios-build.keychain
-        security unlock-keychain -p password ~/Library/Keychains/ios-build.keychain
+        # Unlock
+        security unlock-keychain -p password ~/Library/Keychains/build.keychain
         security set-keychain-settings -lu
-        security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k password ~/Library/Keychains/ios-build.keychain
-
+        security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k password ~/Library/Keychains/build.keychain
 
     - name: Build the dependencies
       run: |

@@ -46,7 +46,7 @@ function plist() {
 }
 
 function sign() {
-    security unlock-keychain -p 'password' build.keychain
+    security unlock-keychain -p 'password' ~/Library/Keychains/build.keychain
     APP=$(app_path)
     EXECUTABLE=$APP/Contents/MacOS/TogglDesktop
     CERTIFICATE="Developer ID Application: TOGGL OU"
