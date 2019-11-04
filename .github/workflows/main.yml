@@ -17,7 +17,13 @@ jobs:
     - name: Import signing key
       run: |
         set -x
-        base64 -D <<< "${{ secrets.CERT_MACOS }}" > Bundle.p12
+
+        # For Development build (Mac Developer)
+        base64 -D <<< "${{ secrets.CERT_MACOS }}" > Bundle_cert_macos_development.p12
+
+        # For Distribution build (Developer ID Application Toggl OU (B227VTMZ94))
+        base64 -D <<< "${{ secrets.CERT_MACOS_APPLICATION }}" > Bundle_cert_macos_distribution.p12
+
         #!/usr/bin/env sh
 
         # Create new keychian
@@ -27,7 +33,10 @@ jobs:
         security default-keychain -s ~/Library/Keychains/build.keychain
 
         # Import
-        security import ./Bundle.p12 -k ~/Library/Keychains/build.keychain -P ${{ secrets.CERT_MACOS_PASSWORD }} -T /usr/bin/codesign
+        security import ./Bundle_cert_macos_development.p12 -k ~/Library/Keychains/build.keychain -P ${{ secrets.CERT_MACOS_PASSWORD }} -T /usr/bin/codesign
+        security import ./Bundle_cert_macos_distribution.p12 -k ~/Library/Keychains/build.keychain -P ${{ secrets.CERT_MACOS_APPLICATION_PASSWORD }} -T /usr/bin/codesign
+        
+        # List out for debugging
         security list-keychain -s ~/Library/Keychains/build.keychain
 
         # Unlock
