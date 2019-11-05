@@ -166,3 +166,28 @@ if(NOT QXT_CORE_FOUND)
     )
     install(TARGETS Qxt DESTINATION ${TOGGL_INTERNAL_LIB_DIR})
 endif()
+
+if(NOT GTEST_FOUND)
+    set(GTEST_SOURCE_FILES
+        googletest-read-only/src/gtest-all.cc
+    )
+    add_library(gtest SHARED ${GTEST_SOURCE_FILES})
+    target_include_directories(gtest PRIVATE
+        googletest-read-only
+        googletest-read-only/include
+    )
+    target_link_libraries(gtest pthread)
+    set(GTEST_MAIN_SOURCE_FILES
+        googletest-read-only/src/gtest_main.cc
+    )
+    add_library(gtest_main SHARED ${GTEST_MAIN_SOURCE_FILES})
+    target_include_directories(gtest_main PRIVATE
+        googletest-read-only
+        googletest-read-only/include
+    )
+    target_link_libraries(gtest_main pthread)
+    set(GTEST_INCLUDE_DIRS
+        ${CMAKE_CURRENT_SOURCE_DIR}/googletest-read-only/include
+        PARENT_SCOPE
+    )
+endif()

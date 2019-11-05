@@ -31,6 +31,9 @@ typedef enum : NSUInteger
 	DisplayModeInput,
 } DisplayMode;
 
+static void *XXContext = &XXContext;
+static NSString *kStateKey = @"state";
+
 @interface TimerEditViewController () <ClickableImageViewDelegate>
 @property (weak) IBOutlet NSBoxClickable *manualBox;
 @property (weak) IBOutlet NSBoxClickable *mainBox;
@@ -47,7 +50,6 @@ typedef enum : NSUInteger
 @property (weak) IBOutlet NSLayoutConstraint *projectTextFieldLeading;
 @property (weak) IBOutlet NSButton *cancelBtn;
 
-- (IBAction)startButtonClicked:(id)sender;
 - (IBAction)durationFieldChanged:(id)sender;
 - (IBAction)autoCompleteChanged:(id)sender;
 - (IBAction)addEntryBtnOnTap:(id)sender;
@@ -103,6 +105,10 @@ NSString *kInactiveTimerColor = @"#999999";
 												 selector:@selector(stop:)
 													 name:kCommandStop
 												   object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self
+												 selector:@selector(startTimerNotification:)
+													 name:kStartTimer
+												   object:nil];
 
 		self.time_entry = [[TimeEntryViewItem alloc] init];
 
@@ -122,11 +128,13 @@ NSString *kInactiveTimerColor = @"#999999";
 	[super viewDidLoad];
 
 	[self initCommon];
+	[self initKVO];
 }
 
 - (void)dealloc
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[self.startButton removeObserver:self forKeyPath:kStateKey];
 }
 
 - (void)initCommon
@@ -138,13 +146,18 @@ NSString *kInactiveTimerColor = @"#999999";
 	[self.liteAutocompleteDataSource setFilter:@""];
 
 	[self.startButton setHoverAlpha:0.75];
-
-	[self.autoCompleteInput.autocompleteTableView setTarget:self];
-	[self.autoCompleteInput.autocompleteTableView setAction:@selector(performClick:)];
 	self.autoCompleteInput.responderDelegate = self.autocompleteContainerView;
 
 	self.descriptionLabel.delegate = self;
 	self.tagFlag.delegate = self;
+}
+
+- (void)initKVO
+{
+	[self.startButton addObserver:self
+					   forKeyPath:kStateKey
+						  options:NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew
+						  context:XXContext];
 }
 
 - (void)viewDidAppear
@@ -261,8 +274,8 @@ NSString *kInactiveTimerColor = @"#999999";
 	}
 	else
 	{
-		self.descriptionLabel.editable = YES;
 		[self showDefaultTimer];
+		self.descriptionLabel.editable = YES;
 	}
 
 	// Display project name
@@ -283,6 +296,11 @@ NSString *kInactiveTimerColor = @"#999999";
 
 	// Hide
 	self.cancelBtn.hidden = YES;
+
+	if (self.time_entry != nil && self.time_entry.isRunning)
+	{
+		[[TouchBarService shared] updateRunningItem:self.time_entry];
+	}
 }
 
 - (void)startDisplayTimeEntryEditor:(NSNotification *)notification
@@ -545,6 +563,31 @@ NSString *kInactiveTimerColor = @"#999999";
 	return YES;
 }
 
+- (void)tableViewSelectionDidChange:(NSNotification *)notification
+{
+	NSInteger row = [self.autoCompleteInput.autocompleteTableView selectedRow];
+
+	if (row < 0)
+	{
+		return;
+	}
+
+	AutocompleteItem *item = [self.liteAutocompleteDataSource itemAtIndex:row];
+	// Category clicked
+	if (item == nil || item.Type < 0)
+	{
+		return;
+	}
+	[self fillEntryFromAutoComplete:item];
+	NSRange tRange = [[self.descriptionLabel currentEditor] selectedRange];
+	[[self.descriptionLabel currentEditor] setSelectedRange:NSMakeRange(tRange.length, 0)];
+	[self.autoCompleteInput resetTable];
+	[self.liteAutocompleteDataSource clearFilter];
+
+	// Show cancel btn
+	self.cancelBtn.hidden = NO;
+}
+
 - (NSView *) tableView:(NSTableView *)tableView
 	viewForTableColumn:(NSTableColumn *)tableColumn
 				   row:(NSInteger)row
@@ -590,31 +633,6 @@ NSString *kInactiveTimerColor = @"#999999";
 
 	// Other cells
 	return self.autoCompleteInput.itemHeight;
-}
-
-- (IBAction)performClick:(id)sender
-{
-	NSInteger row = [self.autoCompleteInput.autocompleteTableView clickedRow];
-
-	if (row < 0)
-	{
-		return;
-	}
-
-	AutocompleteItem *item = [self.liteAutocompleteDataSource itemAtIndex:row];
-	// Category clicked
-	if (item == nil || item.Type < 0)
-	{
-		return;
-	}
-	[self fillEntryFromAutoComplete:item];
-	NSRange tRange = [[self.descriptionLabel currentEditor] selectedRange];
-	[[self.descriptionLabel currentEditor] setSelectedRange:NSMakeRange(tRange.length, 0)];
-	[self.autoCompleteInput resetTable];
-	[self.liteAutocompleteDataSource clearFilter];
-
-	// Show cancel btn
-	self.cancelBtn.hidden = NO;
 }
 
 - (BOOL)control:(NSControl *)control textView:(NSTextView *)fieldEditor doCommandBySelector:(SEL)commandSelector
@@ -718,7 +736,7 @@ NSString *kInactiveTimerColor = @"#999999";
 	}
 }
 
-- (void)startNewShortcut:(NSNotification *)notification
+- (void)startTimerNotification:(NSNotification *)notification
 {
 	[self startButtonClicked:self];
 }
@@ -761,6 +779,19 @@ NSString *kInactiveTimerColor = @"#999999";
 	self.billableFlag.hidden = YES;
 	self.cancelBtn.hidden = YES;
 	[self renderProjectLabelWithViewItem:nil];
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+	if (context == XXContext)
+	{
+		[[NSNotificationCenter defaultCenter] postNotificationName:kStartButtonStateChange
+															object:[NSNumber numberWithInteger:self.startButton.state]];
+	}
+	else
+	{
+		[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+	}
 }
 
 @end

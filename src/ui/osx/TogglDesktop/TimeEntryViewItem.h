@@ -60,6 +60,7 @@
 @property (copy, nonatomic) NSString *GroupDuration;
 // Group Item Count
 @property (assign, nonatomic) uint64_t GroupItemCount;
+@property (copy, nonatomic) NSString *touchBarTitle;
 
 - (NSString *)descriptionEntry;
 // if item can be deleted without confirm

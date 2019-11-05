@@ -45,7 +45,7 @@ class Database;
 class TimelineUploader;
 class WindowChangeRecorder;
 
-class UIElements {
+class TOGGL_INTERNAL_EXPORT UIElements {
  public:
     UIElements()
         : first_load(false)
@@ -97,7 +97,7 @@ class UIElements {
     bool open_timeline;
 };
 
-class Context : public TimelineDatasource {
+class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
  public:
     Context(
         const std::string &app_name,
@@ -164,6 +164,8 @@ class Context : public TimelineDatasource {
 
     error SetSettingsStopEntryOnShutdownSleep(const bool stop_entry);
 
+    error SetSettingsShowTouchBar(const bool show_touch_bar);
+
     error SetSettingsIdleMinutes(const Poco::UInt64 idle_minutes);
 
     error SetSettingsFocusOnShortcut(const bool focus_on_shortcut);
@@ -201,6 +203,8 @@ class Context : public TimelineDatasource {
         const bool);
 
     bool GetKeepEndTimeFixed();
+
+    bool GetShowTouchBar();
 
     void SetWindowMaximized(
         const bool value);
@@ -635,8 +639,8 @@ class Context : public TimelineDatasource {
         std::string *user_data_json,
         const uint64_t country_id);
     static error me(TogglClient *https_client,
-                    const std::string email,
-                    const std::string password,
+                    const std::string &email,
+                    const std::string &password,
                     std::string *user_data,
                     const Poco::Int64 since);
 

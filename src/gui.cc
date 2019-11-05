@@ -30,6 +30,7 @@ bool TimeEntry::operator == (const TimeEntry&) const {
 
 void TimeEntry::Fill(toggl::TimeEntry * const model) {
     model->EnsureGUID();
+    ID = model->ID();
     DurationInSeconds = model->DurationInSeconds();
     Description = model->Description();
     GUID = model->GUID();
@@ -728,11 +729,10 @@ void GUI::DisplayWorkspaceSelect(
     view_list_clear(first);
 }
 
-void GUI::DisplayTimeEntryEditor(
-    const bool open,
-    const view::TimeEntry te,
-    const std::string focused_field_name) {
-    time_entry_editor_guid_ = te.GUID;
+void GUI::DisplayTimeEntryEditor(const bool open,
+                                 const view::TimeEntry &te,
+                                 const std::string &focused_field_name) {
+
     logger().debug(
         "DisplayTimeEntryEditor focused_field_name=" + focused_field_name);
 

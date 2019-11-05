@@ -34,11 +34,11 @@ namespace testing {
 class Database {
  public:
     Database() : db_(0) {
-        Poco::File f(TESTDB);
+        Poco::File f("test.db");
         if (f.exists()) {
             f.remove(false);
         }
-        db_ = new toggl::Database(TESTDB);
+        db_ = new toggl::Database("test.db");
     }
     ~Database() {
         if (db_) {
@@ -90,15 +90,11 @@ TEST(TimeEntry, SetDurationUserInput) {
 TEST(Project, ProjectsHaveColorCodes) {
     Project p;
     p.SetColor("1");
-    ASSERT_EQ("#bc85e6", p.ColorCode());
+    ASSERT_EQ("#c56bff", p.ColorCode());
     p.SetColor("");
-    ASSERT_EQ("#999999", p.ColorCode());
-    p.SetColor("-10");
-    ASSERT_EQ("#14a88e", p.ColorCode());
+    ASSERT_EQ("", p.ColorCode());
     p.SetColor("0");
-    ASSERT_EQ("#4dc3ff", p.ColorCode());
-    p.SetColor("999");
-    ASSERT_EQ("#a4506c", p.ColorCode());
+    ASSERT_EQ("#06aaf5", p.ColorCode());
 }
 
 TEST(Project, ResolveOnlyAdminsCanChangeProjectVisibility) {
@@ -300,10 +296,6 @@ TEST(User, Since) {
     u.SetSince(time(0));
     ASSERT_TRUE(u.HasValidSinceDate());
 
-    // future date should be wrong
-    u.SetSince(time(0) + 10);
-    ASSERT_FALSE(u.HasValidSinceDate());
-
     // 1 month ago should be fine
     u.SetSince(time(0) - 2.62974e6);
     ASSERT_TRUE(u.HasValidSinceDate());
@@ -350,7 +342,7 @@ TEST(User, DeletesZombies) {
     ASSERT_FALSE(te->IsMarkedAsDeletedOnServer());
 
     std::string json =
-        loadTestDataFile("../testdata/me_without_time_entries.json");
+        loadTestDataFile(std::string("../testdata/me_without_time_entries.json"));
 
     ASSERT_EQ(noError,
               user.LoadUserAndRelatedDataFromJSONString(json, true));
@@ -402,7 +394,7 @@ TEST(Database, AllowsSameEmail) {
     ASSERT_EQ(noError, db.instance()->SaveUser(&user, true, &changes));
 
     User user2;
-    std::string json = loadTestDataFile("../testdata/same_email.json");
+    std::string json = loadTestDataFile(std::string("../testdata/same_email.json"));
     ASSERT_EQ(noError,
               user2.LoadUserAndRelatedDataFromJSONString(json, true));
 
@@ -432,9 +424,8 @@ TEST(User, UpdatesTimeEntryFromFullUserJSON) {
 
     size_t n = json.find("Important things");
     ASSERT_TRUE(n);
-    json = json.replace(n,
-                        std::string("Important things").length(),
-                        "Even more important!");
+
+    te->SetDescription("Even more important!");
 
     ASSERT_EQ(noError,
               user.LoadUserAndRelatedDataFromJSONString(json, true));
@@ -479,7 +470,7 @@ TEST(Database, SavesAndLoadsObmExperiments) {
     ASSERT_EQ(noError,
               user.LoadUserAndRelatedDataFromJSONString(loadTestData(), true));
 
-    std::string json = loadTestDataFile("../testdata/obm_response.json");
+    std::string json = loadTestDataFile(std::string("../testdata/obm_response.json"));
     Json::Value data = jsonStringToValue(json);
     user.LoadObmExperiments(data);
 
@@ -511,7 +502,7 @@ TEST(Database, SavesAndLoadsObmExperimentsArray) {
     ASSERT_EQ(noError,
               user.LoadUserAndRelatedDataFromJSONString(loadTestData(), true));
 
-    std::string json = loadTestDataFile("../testdata/obm_response_array.json");
+    std::string json = loadTestDataFile(std::string("../testdata/obm_response_array.json"));
     Json::Value data = jsonStringToValue(json);
     user.LoadObmExperiments(data);
 
@@ -790,28 +781,27 @@ TEST(User, ParsesAndSavesData) {
     // Projects
     ASSERT_EQ(uint(2), user.related.Projects.size());
 
-    ASSERT_EQ(uint(2598305), user.related.Projects[0]->ID());
-    ASSERT_EQ("2f0b8f51-f898-d992-3e1a-6bc261fc41xf",
-              user.related.Projects[0]->GUID());
-    ASSERT_EQ(uint(123456789), user.related.Projects[0]->WID());
-    ASSERT_EQ("Testing stuff", user.related.Projects[0]->Name());
-    ASSERT_EQ("21", user.related.Projects[0]->Color());
+    ASSERT_EQ(Poco::UInt64(2567324), user.related.Projects[0]->ID());
+    //ASSERT_EQ("2f0b8f51-f898-d992-3e1a-6bc261fc41xf", user.related.Projects[0]->GUID());
+    ASSERT_EQ(Poco::UInt64(123456789), user.related.Projects[0]->WID());
+    ASSERT_EQ("Even more work", user.related.Projects[0]->Name());
+    ASSERT_EQ("#999999", user.related.Projects[0]->Color());
+    ASSERT_EQ(Poco::UInt64(1385144), user.related.Projects[0]->CID());
     ASSERT_EQ(user.ID(), user.related.Projects[0]->UID());
-    ASSERT_FALSE(user.related.Projects[0]->Active());
+    ASSERT_TRUE(user.related.Projects[0]->Active());
 
-    ASSERT_EQ(uint(2567324), user.related.Projects[1]->ID());
-    ASSERT_EQ(uint(123456789), user.related.Projects[1]->WID());
-    ASSERT_EQ("Even more work", user.related.Projects[1]->Name());
-    ASSERT_EQ(uint(1385144), user.related.Projects[1]->CID());
+    ASSERT_EQ(Poco::UInt64(2598305), user.related.Projects[1]->ID());
+    ASSERT_EQ(Poco::UInt64(123456789), user.related.Projects[1]->WID());
+    ASSERT_EQ("Testing stuff", user.related.Projects[1]->Name());
+    ASSERT_EQ("#fb8b14", user.related.Projects[1]->Color());
     ASSERT_EQ(user.ID(), user.related.Projects[1]->UID());
-    ASSERT_TRUE(user.related.Projects[1]->Active());
+    ASSERT_FALSE(user.related.Projects[1]->Active());
 
     // Time entries
     ASSERT_EQ(uint(5), user.related.TimeEntries.size());
 
-    ASSERT_EQ(uint(89818605), user.related.TimeEntries[0]->ID());
-    ASSERT_EQ("07fba193-91c4-0ec8-2894-820df0548a8f",
-              user.related.TimeEntries[0]->GUID());
+    ASSERT_EQ(Poco::UInt64(89818605), user.related.TimeEntries[0]->ID());
+    //ASSERT_EQ("07fba193-91c4-0ec8-2894-820df0548a8f", user.related.TimeEntries[0]->GUID());
     ASSERT_EQ(uint(2567324), user.related.TimeEntries[0]->PID());
     ASSERT_TRUE(user.related.TimeEntries[0]->Billable());
     ASSERT_EQ(uint(1378362830), user.related.TimeEntries[0]->Start());
@@ -838,14 +828,13 @@ TEST(User, ParsesAndSavesData) {
     ASSERT_EQ("billed", user.related.Tags[0]->Name());
     ASSERT_EQ(user.ID(), user.related.Tags[0]->UID());
     ASSERT_EQ(uint(123456788), user.related.Tags[0]->WID());
-    ASSERT_EQ("", user.related.Tags[0]->GUID());
+    //ASSERT_EQ("", user.related.Tags[0]->GUID());
 
     ASSERT_EQ(uint(36253522), user.related.Tags[1]->ID());
     ASSERT_EQ("create new", user.related.Tags[1]->Name());
     ASSERT_EQ(user.ID(), user.related.Tags[1]->UID());
     ASSERT_EQ(uint(123456788), user.related.Tags[1]->WID());
-    ASSERT_EQ("041390ba-ed9c-b477-b949-1a4ebb60a9ce",
-              user.related.Tags[1]->GUID());
+    //ASSERT_EQ("041390ba-ed9c-b477-b949-1a4ebb60a9ce", user.related.Tags[1]->GUID());
 
     // Workspaces
     ASSERT_EQ(uint(2), user.related.Workspaces.size());
@@ -867,8 +856,7 @@ TEST(User, ParsesAndSavesData) {
     ASSERT_EQ(uint(878318), user.related.Clients[0]->ID());
     ASSERT_EQ(uint(123456788), user.related.Clients[0]->WID());
     ASSERT_EQ("Big Client", user.related.Clients[0]->Name());
-    ASSERT_EQ("59b464cd-0f8e-e601-ff44-f135225a6738",
-              user.related.Clients[0]->GUID());
+    //ASSERT_EQ("59b464cd-0f8e-e601-ff44-f135225a6738", user.related.Clients[0]->GUID());
     ASSERT_EQ(user.ID(), user.related.Clients[0]->UID());
 
     testing::Database db;
@@ -1302,35 +1290,17 @@ TEST(User, Continue) {
     ASSERT_EQ(noError,
               user.LoadUserAndRelatedDataFromJSONString(loadTestData(), true));
 
-    // User wants to continue time entries,
-    // not create new ones
-    user.SetStoreStartAndStopTime(false);
-
-    // Change an old time entry and
-    // change its date to today. Continueing the
-    // entry should not create new record, but
-    // continue the old one.
     TimeEntry *te = user.related.TimeEntryByID(89818605);
     ASSERT_TRUE(te);
-    te->SetStart(time(0));
-    te->SetDurOnly(true);
-
     size_t count = user.related.TimeEntries.size();
     ASSERT_TRUE(user.Continue(te->GUID(), false));
-    ASSERT_EQ(count, user.related.TimeEntries.size());
-
-    // If the old time entry date is different than
-    // today, it should create a new entry when
-    // user continues it:
-    te->SetStartString("2013-01-25T01:05:15-22:00");
-    ASSERT_TRUE(user.Continue(te->GUID(), false));
-    ASSERT_EQ(count+1, user.related.TimeEntries.size());
+    ASSERT_EQ(count + 1, user.related.TimeEntries.size());
 }
 
 TEST(TimeEntry, SetDurationOnRunningTimeEntryWithDurOnlySetting) {
     testing::Database db;
 
-    std::string json = loadTestDataFile("../testdata/user_with_duronly.json");
+    std::string json = loadTestDataFile(std::string("../testdata/user_with_duronly.json"));
 
     User user;
     ASSERT_EQ(noError,
@@ -1468,7 +1438,7 @@ TEST(Formatter, FormatDateHeader) {
     //  Wed Oct  1 01:47:24 CEST 2014
     time_t t(1412120844);
     std::string res = Formatter::FormatDateHeader(t);
-    ASSERT_TRUE("Wed, 01 Oct" == res || "Tue, 30 Sep" == res);
+    ASSERT_TRUE("Wed, 1 Oct" == res || "Tue, 30 Sep" == res);
 
     t = time(0);
     ASSERT_EQ("Today", Formatter::FormatDateHeader(t));
@@ -1555,35 +1525,29 @@ TEST(Formatter, FormatDecimal) {
 }
 
 TEST(Formatter, JoinTaskName) {
-    std::string res = Formatter::JoinTaskName(0, 0, 0);
+    std::string res = Formatter::JoinTaskName(0, 0);
     ASSERT_EQ("", res);
 
     Task t;
     t.SetName("Task name");
-    res = Formatter::JoinTaskName(&t, 0, 0);
+    res = Formatter::JoinTaskName(&t, 0);
     ASSERT_EQ("Task name", res);
 
     Project p;
     p.SetName("Project name");
-    res = Formatter::JoinTaskName(0, &p, 0);
+    res = Formatter::JoinTaskName(0, &p);
     ASSERT_EQ(p.Name(), res);
 
-    res = Formatter::JoinTaskName(&t, &p, 0);
+    res = Formatter::JoinTaskName(&t, &p);
     ASSERT_EQ("Task name. Project name", res);
 
-    Client c;
-    c.SetName("Customer name");
-    res = Formatter::JoinTaskName(0, 0, &c);
-    ASSERT_EQ(c.Name(), res);
+    p.SetCID(1);
+    p.SetClientName("Client name");
+    res = Formatter::JoinTaskName(&t, &p);
+    ASSERT_EQ("Task name. Project name. Client name", res);
 
-    res = Formatter::JoinTaskName(&t, 0, &c);
-    ASSERT_EQ("Task name. Customer name", res);
-
-    res = Formatter::JoinTaskName(0, &p, &c);
-    ASSERT_EQ("Project name. Customer name", res);
-
-    res = Formatter::JoinTaskName(&t, &p, &c);
-    ASSERT_EQ("Task name. Project name. Customer name", res);
+    res = Formatter::JoinTaskName(0, &p);
+    ASSERT_EQ("Project name. Client name", res);
 }
 
 TEST(JSON, EscapeJSONString) {
@@ -1671,7 +1635,7 @@ TEST(JSON, Tag) {
     ASSERT_EQ(Poco::UInt64(36253522), t.ID());
     ASSERT_EQ(Poco::UInt64(123456788), t.WID());
     ASSERT_EQ("create new", t.Name());
-    ASSERT_EQ("041390ba-ed9c-b477-b949-1a4ebb60a9ce", t.GUID());
+    //ASSERT_EQ("041390ba-ed9c-b477-b949-1a4ebb60a9ce", t.GUID());
 }
 
 TEST(JSON, Workspace) {
@@ -1705,16 +1669,16 @@ TEST(JSON, Project) {
     ASSERT_EQ(Poco::UInt64(2598323), p.ID());
     ASSERT_EQ("A deleted project", p.Name());
     ASSERT_EQ(Poco::UInt64(123456789), p.WID());
-    ASSERT_EQ("2f0b8f11-f898-d992-3e1a-6bc261fc41ef", p.GUID());
+    //ASSERT_EQ("2f0b8f11-f898-d992-3e1a-6bc261fc41ef", p.GUID());
 
     Project p2;
     p2.LoadFromJSON(p.SaveToJSON());
     ASSERT_EQ(p.ID(), p2.ID());
     ASSERT_EQ(p.Name(), p2.Name());
     ASSERT_EQ(p.WID(), p2.WID());
-    ASSERT_EQ(p.GUID(), p2.GUID());
+    //ASSERT_EQ(p.GUID(), p2.GUID());
     ASSERT_EQ(p.CID(), p2.CID());
-    ASSERT_EQ(p.Billable(), p2.Billable());
+    //ASSERT_EQ(p.Billable(), p2.Billable());
     ASSERT_EQ(p.IsPrivate(), p2.IsPrivate());
     ASSERT_EQ(p.UIModifiedAt(), p2.UIModifiedAt());
 }
@@ -1727,14 +1691,14 @@ TEST(JSON, Client) {
     ASSERT_EQ(Poco::UInt64(878318), c.ID());
     ASSERT_EQ("Big Client", c.Name());
     ASSERT_EQ(Poco::UInt64(123456789), c.WID());
-    ASSERT_EQ("59b464cd-0f8e-e601-ff44-f135225a6738", c.GUID());
+    //ASSERT_EQ("59b464cd-0f8e-e601-ff44-f135225a6738", c.GUID());
 
     Client c2;
     c2.LoadFromJSON(c.SaveToJSON());
     ASSERT_EQ(c.ID(), c2.ID());
     ASSERT_EQ(c.Name(), c2.Name());
     ASSERT_EQ(c.WID(), c2.WID());
-    ASSERT_EQ(c.GUID(), c2.GUID());
+    //ASSERT_EQ(c.GUID(), c2.GUID());
 }
 
 TEST(JSON, TimeEntry) {
@@ -1745,7 +1709,7 @@ TEST(JSON, TimeEntry) {
     ASSERT_EQ(Poco::UInt64(89818612), t.ID());
     ASSERT_EQ(Poco::UInt64(2567324), t.PID());
     ASSERT_EQ(Poco::UInt64(123456789), t.WID());
-    ASSERT_EQ("07fba193-91c4-0ec8-2345-820df0548123", t.GUID());
+    //ASSERT_EQ("07fba193-91c4-0ec8-2345-820df0548123", t.GUID());
     ASSERT_TRUE(t.Billable());
     ASSERT_EQ(Poco::UInt64(1378362830000 / 1000), t.Start());
     ASSERT_EQ(Poco::UInt64(1378369186000 / 1000), t.Stop());
@@ -1759,7 +1723,7 @@ TEST(JSON, TimeEntry) {
     ASSERT_EQ(t.ID(), t2.ID());
     ASSERT_EQ(t.PID(), t2.PID());
     ASSERT_EQ(t.WID(), t2.WID());
-    ASSERT_EQ(t.GUID(), t2.GUID());
+    //ASSERT_EQ(t.GUID(), t2.GUID());
     ASSERT_EQ(t.Billable(), t2.Billable());
     ASSERT_EQ(t.Start(), t2.Start());
     ASSERT_EQ(t.Stop(), t2.Stop());

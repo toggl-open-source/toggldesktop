@@ -100,6 +100,7 @@ final class EditorViewController: NSViewController {
         formatter.locale = Locale.current
         return formatter
     }()
+    private var shouldRefocusTagTokens = false
 
     // MARK: View Cyclex
 
@@ -352,6 +353,13 @@ extension EditorViewController {
 
             // Last to duration
             visibleTokens.last?.actionButton.nextKeyView = durationTextField
+
+            if shouldRefocusTagTokens {
+                shouldRefocusTagTokens = false
+                if let first = visibleTokens.first {
+                    view.window?.makeFirstResponder(first.actionButton)
+                }
+            }
         }
         else {
             tagDatasource.updateSelectedTags([])
@@ -359,6 +367,11 @@ extension EditorViewController {
             // Tab
             projectTextField.nextKeyView = tagAddButton
             tagAddButton.nextKeyView = durationTextField
+
+            if shouldRefocusTagTokens {
+                shouldRefocusTagTokens = false
+                view.window?.makeFirstResponder(tagAddButton)
+            }
         }
     }
 
@@ -370,11 +383,17 @@ extension EditorViewController {
     }
 
     private func renderTime() {
-        durationTextField.stringValue = timeEntry.duration
-        startAtTextField.stringValue = timeEntry.startTimeString
-        endAtTextField.stringValue = timeEntry.endTimeString
-        startAtTextField.toolTip = dateFormatter.string(from: timeEntry.started)
-        endAtTextField.toolTip = dateFormatter.string(from: timeEntry.ended)
+        if durationTextField.currentEditor() == nil {
+            durationTextField.stringValue = timeEntry.duration
+        }
+        if startAtTextField.currentEditor() == nil {
+            startAtTextField.stringValue = timeEntry.startTimeString
+            startAtTextField.toolTip = dateFormatter.string(from: timeEntry.started)
+        }
+        if endAtTextField.currentEditor() == nil {
+            endAtTextField.stringValue = timeEntry.endTimeString
+            endAtTextField.toolTip = dateFormatter.string(from: timeEntry.ended)
+        }
     }
 
     fileprivate func updateNextKeyViews() {
@@ -427,8 +446,6 @@ extension EditorViewController {
     }
 
     fileprivate func setFocusOnTextField(shouldFocusByDefault: Bool) {
-
-
         guard let timeEntry = timeEntry,
             let focusedFieldName = timeEntry.focusedFieldName else { return }
 
@@ -549,7 +566,7 @@ extension EditorViewController: AutoCompleteTextFieldDelegate {
 
             // Focus on tag textfield agains, so user can continue typying
             tagTextField.focus()
-            tagTextField.resetText()
+            tagTextField.selectAllText()
         }
     }
 
@@ -614,6 +631,12 @@ extension EditorViewController: TagTokenViewDelegate {
                 return tagName
             }
             DesktopLibraryBridge.shared().updateTimeEntry(withTags: remainingTags, guid: timeEntry.guid)
+            shouldRefocusTagTokens = true
+            if let nextView = self.tagStackView.arrangedSubviews.first as? TagTokenView {
+                view.window?.makeFirstResponder(nextView.actionButton)
+            } else {
+                view.window?.makeFirstResponder(tagAddButton)
+            }
         }
     }
 
@@ -629,7 +652,7 @@ extension EditorViewController: TagDataSourceDelegate {
     func tagSelectionChanged(with selectedTags: [Tag]) {
         let tags = selectedTags.toNames()
         DesktopLibraryBridge.shared().updateTimeEntry(withTags: tags, guid: timeEntry.guid)
-        tagTextField.resetText()
+        tagTextField.selectAllText()
     }
 }
 

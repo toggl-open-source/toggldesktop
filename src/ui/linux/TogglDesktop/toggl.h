@@ -53,6 +53,8 @@ class TogglApi : public QObject {
 
     void googleLogin(const QString accessToken);
 
+    void googleSignup(const QString &accessToken, uint64_t countryID);
+
     QString start(
         const QString description,
         const QString duration,

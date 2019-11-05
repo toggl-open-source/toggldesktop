@@ -10,6 +10,10 @@
 #include "Poco/Logger.h"
 #include "Poco/Thread.h"
 
+#if defined(__APPLE__)
+extern bool isCatalinaOSX(void);
+#endif
+
 namespace toggl {
 
 Poco::Logger &WindowChangeRecorder::logger() {
@@ -60,6 +64,17 @@ void WindowChangeRecorder::inspectFocusedWindow() {
 #endif
     }
 
+    // Check if we need ScreenRecording permission in order to receive the Window's title
+    if (is_catalina_OSX) {
+
+        // It's lite version of Timeline recording
+        // 10.15+ and title is empty
+        // Just set it as a filename
+        if (title.empty()) {
+            title = std::string(filename);
+        }
+    }
+
     time_t now;
     time(&now);
 
@@ -87,6 +102,13 @@ void WindowChangeRecorder::inspectFocusedWindow() {
     }
 
     if (!idleChanged && !hasWindowChanged(title, filename)) {
+        return;
+    }
+
+    // Lite version of timeline recorder
+    // Since we don't have Screen Recording permission yet => title will be empty
+    // So we only track the primary timeline (treat title is filename)
+    if (is_catalina_OSX && last_title_ == title && last_filename_ == filename) {
         return;
     }
 

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14490.70"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -14,6 +14,7 @@
                 <outlet property="autotrackerProject" destination="TN9-Mx-4gf" id="94P-Mq-SHg"/>
                 <outlet property="autotrackerRulesTableView" destination="aw6-zQ-ZW8" id="3SU-TC-YlQ"/>
                 <outlet property="autotrackerTerm" destination="afg-Ty-RcE" id="KZ5-IU-C0e"/>
+                <outlet property="bottomContainerHeight" destination="i5y-AO-dds" id="qBO-oj-OAo"/>
                 <outlet property="changeDurationButton" destination="TkJ-tA-lDK" id="tZ1-lP-zjX"/>
                 <outlet property="defaultProject" destination="AQZ-NT-Pr8" id="Yug-eK-iIR"/>
                 <outlet property="dockIconCheckbox" destination="kR2-Ee-viZ" id="Nm7-te-1KH"/>
@@ -44,6 +45,7 @@
                 <outlet property="reminderCheckbox" destination="Spu-c6-dBl" id="rce-jc-2Cq"/>
                 <outlet property="reminderMinutesTextField" destination="R9v-BZ-yhR" id="OVt-ic-hzF"/>
                 <outlet property="showHideShortcutView" destination="DLB-Fw-7tX" id="T2o-mF-KXG"/>
+                <outlet property="showTouchBarButton" destination="uPL-ax-1Ux" id="eAl-AY-wbs"/>
                 <outlet property="startStopShortcutView" destination="Ft4-tk-xRA" id="5tb-G5-s2R"/>
                 <outlet property="stopOnShutdownCheckbox" destination="n3k-Br-KIY" id="guw-6w-Kef"/>
                 <outlet property="tabSegment" destination="2zJ-7y-OAc" id="qpb-67-EOV"/>
@@ -60,21 +62,21 @@
         <window title="Preferences" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" frameAutosaveName="Preferences" animationBehavior="default" id="1">
             <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="196" y="240" width="400" height="570"/>
+            <rect key="contentRect" x="196" y="240" width="400" height="590"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
-            <value key="minSize" type="size" width="400" height="570"/>
+            <value key="minSize" type="size" width="400" height="590"/>
             <view key="contentView" id="2">
-                <rect key="frame" x="0.0" y="0.0" width="412" height="570"/>
+                <rect key="frame" x="0.0" y="0.0" width="412" height="590"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <box boxType="custom" borderType="none" borderWidth="0.0" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="qdc-hR-YLw">
-                        <rect key="frame" x="0.0" y="0.0" width="412" height="570"/>
+                        <rect key="frame" x="0.0" y="0.0" width="412" height="590"/>
                         <view key="contentView" id="QZK-80-mX3">
-                            <rect key="frame" x="0.0" y="0.0" width="412" height="570"/>
+                            <rect key="frame" x="0.0" y="0.0" width="412" height="590"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="RqW-Eb-jQc">
-                                    <rect key="frame" x="166" y="551" width="81" height="17"/>
+                                    <rect key="frame" x="166" y="571" width="81" height="17"/>
                                     <textFieldCell key="cell" lineBreakMode="clipping" alignment="center" title="Preferences" id="DcZ-K3-JhQ">
                                         <font key="font" usesAppearanceFont="YES"/>
                                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -90,16 +92,16 @@
                         <color key="fillColor" name="preference-background-color"/>
                     </box>
                     <tabView drawsBackground="NO" allowsTruncatedLabels="NO" type="noTabsNoBorder" translatesAutoresizingMaskIntoConstraints="NO" id="ZDX-gA-MBn">
-                        <rect key="frame" x="0.0" y="0.0" width="412" height="540"/>
+                        <rect key="frame" x="0.0" y="0.0" width="412" height="560"/>
                         <font key="font" metaFont="system"/>
                         <tabViewItems>
                             <tabViewItem label="General" identifier="1" id="3dj-rq-0aF">
                                 <view key="view" id="7qY-5d-VHf">
-                                    <rect key="frame" x="0.0" y="0.0" width="412" height="540"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="412" height="560"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <box autoresizesSubviews="NO" boxType="custom" borderType="none" borderWidth="0.0" cornerRadius="4" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="KYJ-q7-LnW">
-                                            <rect key="frame" x="15" y="320" width="382" height="208"/>
+                                            <rect key="frame" x="15" y="340" width="382" height="208"/>
                                             <view key="contentView" id="a3O-tS-arC">
                                                 <rect key="frame" x="0.0" y="0.0" width="382" height="208"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -292,7 +294,7 @@
                                             <color key="fillColor" name="preference-box-background-color"/>
                                         </box>
                                         <box autoresizesSubviews="NO" boxType="custom" borderType="none" borderWidth="0.0" cornerRadius="4" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="brM-0V-2IH">
-                                            <rect key="frame" x="15" y="180" width="382" height="130"/>
+                                            <rect key="frame" x="15" y="200" width="382" height="130"/>
                                             <view key="contentView" id="vnT-py-ejH">
                                                 <rect key="frame" x="0.0" y="0.0" width="382" height="130"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -371,7 +373,7 @@
                                             <color key="fillColor" name="preference-box-background-color"/>
                                         </box>
                                         <box autoresizesSubviews="NO" boxType="custom" borderType="none" borderWidth="0.0" cornerRadius="4" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="zQS-pF-1EQ">
-                                            <rect key="frame" x="15" y="112" width="382" height="58"/>
+                                            <rect key="frame" x="15" y="132" width="382" height="58"/>
                                             <view key="contentView" id="Kte-rl-Tae">
                                                 <rect key="frame" x="0.0" y="0.0" width="382" height="58"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -412,7 +414,7 @@
                                             <color key="fillColor" name="preference-box-background-color"/>
                                         </box>
                                         <box autoresizesSubviews="NO" boxType="custom" borderType="none" borderWidth="0.0" cornerRadius="4" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="zez-BU-pHz">
-                                            <rect key="frame" x="15" y="56" width="382" height="46"/>
+                                            <rect key="frame" x="15" y="76" width="382" height="46"/>
                                             <view key="contentView" id="PaI-l4-AmI">
                                                 <rect key="frame" x="0.0" y="0.0" width="382" height="46"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -455,31 +457,55 @@
                                             <color key="fillColor" name="preference-box-background-color"/>
                                         </box>
                                         <box autoresizesSubviews="NO" boxType="custom" borderType="none" borderWidth="0.0" cornerRadius="4" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="4OJ-cM-plX">
-                                            <rect key="frame" x="15" y="8" width="382" height="38"/>
+                                            <rect key="frame" x="15" y="8" width="382" height="58"/>
                                             <view key="contentView" id="l4g-U3-2Pc">
-                                                <rect key="frame" x="0.0" y="0.0" width="382" height="38"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="382" height="58"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
-                                                    <button translatesAutoresizingMaskIntoConstraints="NO" id="TkJ-tA-lDK">
-                                                        <rect key="frame" x="8" y="11" width="297" height="16"/>
-                                                        <buttonCell key="cell" type="check" title="Change duration when changing start time" bezelStyle="regularSquare" imagePosition="left" inset="2" id="I1Q-IJ-dNX">
-                                                            <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                                            <font key="font" metaFont="system" size="14"/>
-                                                        </buttonCell>
-                                                        <connections>
-                                                            <action selector="changeDurationButtonChanged:" target="-2" id="7MA-Tq-Byc"/>
-                                                            <outlet property="nextKeyView" destination="DLB-Fw-7tX" id="fV4-6n-SEL"/>
-                                                        </connections>
-                                                    </button>
+                                                    <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kxD-OV-7on">
+                                                        <rect key="frame" x="10" y="10" width="362" height="38"/>
+                                                        <subviews>
+                                                            <button translatesAutoresizingMaskIntoConstraints="NO" id="TkJ-tA-lDK">
+                                                                <rect key="frame" x="-2" y="22" width="297" height="18"/>
+                                                                <buttonCell key="cell" type="check" title="Change duration when changing start time" bezelStyle="regularSquare" imagePosition="left" inset="2" id="I1Q-IJ-dNX">
+                                                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                                    <font key="font" metaFont="system" size="14"/>
+                                                                </buttonCell>
+                                                                <connections>
+                                                                    <action selector="changeDurationButtonChanged:" target="-2" id="7MA-Tq-Byc"/>
+                                                                    <outlet property="nextKeyView" destination="uPL-ax-1Ux" id="TX2-rh-CKg"/>
+                                                                </connections>
+                                                            </button>
+                                                            <button translatesAutoresizingMaskIntoConstraints="NO" id="uPL-ax-1Ux">
+                                                                <rect key="frame" x="-2" y="-2" width="181" height="18"/>
+                                                                <buttonCell key="cell" type="check" title="Show Toggl in Touch Bar" bezelStyle="regularSquare" imagePosition="left" inset="2" id="Ies-tN-a1z">
+                                                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                                    <font key="font" metaFont="system" size="14"/>
+                                                                </buttonCell>
+                                                                <connections>
+                                                                    <action selector="touchBarButtonChanged:" target="-2" id="0PY-k5-epN"/>
+                                                                    <outlet property="nextKeyView" destination="DLB-Fw-7tX" id="50c-bo-ok0"/>
+                                                                </connections>
+                                                            </button>
+                                                        </subviews>
+                                                        <visibilityPriorities>
+                                                            <integer value="1000"/>
+                                                            <integer value="1000"/>
+                                                        </visibilityPriorities>
+                                                        <customSpacing>
+                                                            <real value="3.4028234663852886e+38"/>
+                                                            <real value="3.4028234663852886e+38"/>
+                                                        </customSpacing>
+                                                    </stackView>
                                                 </subviews>
                                                 <constraints>
-                                                    <constraint firstItem="TkJ-tA-lDK" firstAttribute="leading" secondItem="l4g-U3-2Pc" secondAttribute="leading" constant="10" id="7ee-Qr-ikP"/>
-                                                    <constraint firstItem="TkJ-tA-lDK" firstAttribute="top" secondItem="l4g-U3-2Pc" secondAttribute="top" constant="13" id="RhY-kT-f2D"/>
-                                                    <constraint firstAttribute="bottom" secondItem="TkJ-tA-lDK" secondAttribute="bottom" constant="13" id="YxE-My-Mqw"/>
+                                                    <constraint firstAttribute="trailing" secondItem="kxD-OV-7on" secondAttribute="trailing" constant="10" id="7Sr-bV-ezI"/>
+                                                    <constraint firstItem="kxD-OV-7on" firstAttribute="top" secondItem="l4g-U3-2Pc" secondAttribute="top" constant="10" id="9ap-aJ-V6I"/>
+                                                    <constraint firstItem="kxD-OV-7on" firstAttribute="leading" secondItem="l4g-U3-2Pc" secondAttribute="leading" constant="10" id="f6y-qJ-EQ3"/>
                                                 </constraints>
                                             </view>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="38" id="i5y-AO-dds"/>
+                                                <constraint firstAttribute="height" constant="58" id="i5y-AO-dds"/>
                                             </constraints>
                                             <color key="fillColor" name="preference-box-background-color"/>
                                         </box>
@@ -1171,7 +1197,7 @@
                         </tabViewItems>
                     </tabView>
                     <box boxType="custom" borderType="none" borderWidth="0.0" cornerRadius="4" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="x8k-FT-alL">
-                        <rect key="frame" x="32" y="518" width="348" height="20"/>
+                        <rect key="frame" x="32" y="538" width="348" height="20"/>
                         <view key="contentView" id="6PL-X1-TWK">
                             <rect key="frame" x="0.0" y="0.0" width="348" height="20"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1179,7 +1205,7 @@
                         <color key="fillColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </box>
                     <segmentedControl verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="2zJ-7y-OAc">
-                        <rect key="frame" x="30" y="515" width="352" height="24"/>
+                        <rect key="frame" x="30" y="535" width="352" height="24"/>
                         <segmentedCell key="cell" borderStyle="border" alignment="left" style="rounded" trackingMode="selectOne" id="V97-Jh-edB">
                             <font key="font" metaFont="system"/>
                             <segments>

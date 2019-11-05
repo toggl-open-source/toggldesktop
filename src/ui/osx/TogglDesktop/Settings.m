@@ -52,6 +52,7 @@
 
 	self.open_editor_on_shortcut = data->OpenEditorOnShortcut;
 	self.stopWhenShutdown = data->StopEntryOnShutdownSleep;
+	self.showTouchBar = data->ShowTouchBar;
 }
 
 @end

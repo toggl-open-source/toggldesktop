@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>548</width>
-    <height>456</height>
+    <height>606</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,8 +15,11 @@
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
-    <widget class="QWebEngineView" name="webView" native="true">
-     <property name="url" stdset="0">
+    <widget class="QWebEngineView" name="webView">
+     <property name="focusPolicy">
+      <enum>Qt::StrongFocus</enum>
+     </property>
+     <property name="url">
       <url>
        <string>about:blank</string>
       </url>
@@ -39,7 +42,7 @@
   <customwidget>
    <class>QWebEngineView</class>
    <extends>QWidget</extends>
-   <header>QWebEngineView</header>
+   <header location="global">QtWebEngineWidgets/QWebEngineView</header>
   </customwidget>
  </customwidgets>
  <resources/>

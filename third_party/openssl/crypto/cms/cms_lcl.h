@@ -1,5 +1,5 @@
 /*
- * Copyright 2008-2016 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 2008-2019 The OpenSSL Project Authors. All Rights Reserved.
  *
  * Licensed under the OpenSSL license (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
@@ -129,6 +129,8 @@ struct CMS_EncryptedContentInfo_st {
     size_t keylen;
     /* Set to 1 if we are debugging decrypt and don't fake keys for MMA */
     int debug;
+    /* Set to 1 if we have no cert and need extra safety measures for MMA */
+    int havenocert;
 };
 
 struct CMS_RecipientInfo_st {

@@ -38,10 +38,10 @@ class LoginWidget : public QWidget {
         const uint64_t user_id);
 
     void on_googleLogin_linkActivated(const QString &link);
+    void on_googleSignup_linkActivated(const QString &link);
 
     void loginDone();
-    bool validateFields(
-        const bool signup);
+    bool validateFields(bool signup, bool google = false);
 
     void on_signup_clicked();
 

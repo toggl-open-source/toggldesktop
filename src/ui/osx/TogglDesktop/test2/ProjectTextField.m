@@ -34,6 +34,7 @@
 - (void)mouseDown:(NSEvent *)theEvent
 {
 	[self sendAction:@selector(textFieldClicked:) to:[self delegate]];
+	[super mouseDown:theEvent];
 }
 
 - (void)setAttributedStringValue:(NSAttributedString *)attributedStringValue
@@ -119,6 +120,11 @@
 
 - (NSColor *)clientTextColor
 {
+	if (self.customClientTextColor != nil)
+	{
+		return self.customClientTextColor;
+	}
+
 	if (@available(macOS 10.13, *))
 	{
 		return [NSColor colorNamed:@"grey-text-color"];

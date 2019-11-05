@@ -161,6 +161,8 @@ extension CalendarViewController: CalendarCollectionViewDelegate {
             dataSource.selectSelectedDate()
         case .escape, .tab:
             break
+        default:
+            break
         }
     }
 

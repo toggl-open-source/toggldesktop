@@ -11,7 +11,7 @@
 
 namespace toggl {
 
-class Tag : public BaseModel {
+class TOGGL_INTERNAL_EXPORT Tag : public BaseModel {
  public:
     Tag()
         : BaseModel()

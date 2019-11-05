@@ -42,6 +42,7 @@
 @property (nonatomic, assign) NSInteger pomodoro_minutes;
 @property (nonatomic, assign) NSInteger pomodoro_break_minutes;
 @property (nonatomic, assign) BOOL stopWhenShutdown;
+@property (nonatomic, assign) BOOL showTouchBar;
 
 - (void)load:(TogglSettingsView *)data;
 @end

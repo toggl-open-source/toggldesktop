@@ -527,4 +527,9 @@ extern void *ctx;
 	return YES;
 }
 
+- (NSTouchBar *)makeTouchBar
+{
+	return nil;
+}
+
 @end

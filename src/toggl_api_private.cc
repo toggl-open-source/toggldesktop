@@ -64,8 +64,8 @@ void autocomplete_item_clear(TogglAutocompleteView *item) {
     free(item->ProjectColor);
     item->ProjectColor = nullptr;
 
-    free(item->WorkspaceName);
-    item->WorkspaceName = nullptr;
+    free(item->ProjectGUID);
+    item->ProjectGUID = nullptr;
 
     free(item->Tags);
     item->Tags = nullptr;
@@ -223,6 +223,16 @@ std::string trim_whitespace(const std::string &str)
     return str.substr(strBegin, strRange);
 }
 
+const char_t *to_char_t(const std::string &s) {
+#if defined(_WIN32) || defined(WIN32)
+    std::wstring ws;
+    Poco::UnicodeConverter::toUTF16(s, ws);
+    return ws.c_str();
+#else
+    return s.c_str();
+#endif
+}
+
 char_t *copy_string(const std::string &s) {
 #if defined(_WIN32) || defined(WIN32)
     std::wstring ws;
@@ -289,6 +299,7 @@ TogglTimeEntryView *time_entry_view_item_init(
     TogglTimeEntryView *view_item = new TogglTimeEntryView();
     poco_check_ptr(view_item);
 
+    view_item->ID = static_cast<unsigned int>(te.ID);
     view_item->DurationInSeconds = static_cast<int>(te.DurationInSeconds);
     view_item->Description = copy_string(te.Description);
     view_item->GUID = copy_string(te.GUID);
@@ -460,6 +471,7 @@ TogglSettingsView *settings_view_item_init(
     view->PomodoroBreak = settings.pomodoro_break;
     view->PomodoroBreakMinutes = settings.pomodoro_break_minutes;
     view->StopEntryOnShutdownSleep = settings.stop_entry_on_shutdown_sleep;
+    view->ShowTouchBar = settings.show_touch_bar;
     return view;
 }
 

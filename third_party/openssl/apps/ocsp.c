@@ -1,5 +1,5 @@
 /*
- * Copyright 2001-2016 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 2001-2018 The OpenSSL Project Authors. All Rights Reserved.
  *
  * Licensed under the OpenSSL license (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
@@ -639,7 +639,6 @@ int ocsp_main(int argc, char **argv)
                    OCSP_response_status_str(i), i);
         if (ignore_err)
             goto redo_accept;
-        ret = 0;
         goto end;
     }
 
@@ -1074,7 +1073,7 @@ static int do_responder(OCSP_REQUEST **preq, BIO **pcbio, BIO *acbio)
     *pcbio = cbio;
 
     /* Read the request line. */
-    len = BIO_gets(cbio, reqbuf, sizeof reqbuf);
+    len = BIO_gets(cbio, reqbuf, sizeof(reqbuf));
     if (len <= 0)
         return 1;
     if (strncmp(reqbuf, "GET ", 4) == 0) {
@@ -1116,7 +1115,7 @@ static int do_responder(OCSP_REQUEST **preq, BIO **pcbio, BIO *acbio)
 
     /* Read and skip past the headers. */
     for (;;) {
-        len = BIO_gets(cbio, inbuf, sizeof inbuf);
+        len = BIO_gets(cbio, inbuf, sizeof(inbuf));
         if (len <= 0)
             return 1;
         if ((inbuf[0] == '\r') || (inbuf[0] == '\n'))

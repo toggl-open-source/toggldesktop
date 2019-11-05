@@ -1,0 +1,426 @@
+toggldesktop (7.4.528) unstable; urgency=low
+
+ * Setting decimal hour values works right again
+ * Idle notification behavior is more consistent
+
+-- Toggl <support@toggl.com> Thu, 22 Aug 2019 18:14:00 +0200
+
+toggldesktop (7.4.510) unstable; urgency=low
+
+ * Version string is now properly displayed in the About section of the app
+ * Application now longer crashes on exit
+
+-- Toggl <support@toggl.com> Mon, 12 Aug 2019 17:18:00 +0200
+
+toggldesktop (7.4.476) unstable; urgency=low
+
+ * You can control TogglDesktop using your keyboard entirely. If in doubt, use Ctrl+Enter to open a Time entry or Ctrl+Delete to delete it.
+ * Systemwide font, style and color palette settings are now used - the application should fit your environment a lot better.
+ * Idle and tracking reminder notifications now use system notifications instead of popup windows.
+ * Deleting a running time entry will prompt the user to confirm if it's running for more than 15 seconds.
+ * Idle time calculation now takes locked screen into account.
+ * Creating a client will automatically select and assign it to the project being created.
+ * Adding tags is now possible.
+ * When creating a new project, it gets created in the right workspace (the one of the time entry being edited).
+ * Automatic crash reports now contain better backtraces.
+ * Pressing Shift+Tab in the time entry editor now behaves as expected.
+ * The continue button in the time entry list now needs to be clicked only once every time.
+ * Creating a tab that already exists will select it in the list.
+ * Timer widget now displays the current task right even when the window is resized.
+ * The app now detects network state changes to represent the online/offline states appropriately.
+
+-- Toggl <support@toggl.com>  Thu, 25 Jul 2019 16:35:00 +0200
+
+toggldesktop (7.4.358) unstable; urgency=low
+
+  * Added confirmless delete for all items shorter than 15 seconds
+  * Added handling for 'no workspace' scenario
+  * Added overlay view logic and font fixes
+  * Added tooltip for tags icon in timer
+  * Added ToS Accept view
+  * Added error messages and filesize restriction to feedback form
+  * Added new custom autocomplete with grouping and colors
+  * Added tabs to Preferences view
+  * Added tracking reminder settings to Preferences
+  * Added support for system native notifications
+  * Added window size and position saving
+  * Added setting 'Stop timer on shutdown'
+  * Added a button to delete the selected project from timer
+  * Trim leading and trailing whitespace in Description of TimeEntry
+  * Instant sync after time entry stop
+  * Updated signup form to comply with GDPR
+  * Updated build framework to Qt 5.12.0
+  * Improved idle detection with screen lock/unlock
+  * Improved login view logic and field validation
+  * Improved app shutdown speed
+  * Improved the speed of data sorting
+  * Improved duplicate project name check
+  * Improved showing/hiding logic for different views
+  * Improved log file sending logic
+  * Improved syncing logic by moving all sync to background for non-freezing UI
+  * Fixes for different data handling issue that caused crashes
+  * Fixed multilevel tray icon menu issue
+  * Fixed pomodoro mode stopping entry with incorrect duration
+  * Fixed time entry editor tab order
+  * Fixed issue with reminder being show right after coming from Idle mode
+  * Fixed project create issues with certain scenarios
+  * Fixed issues with 'missing GUID'
+
+-- Toggl <support@toggl.com>  Thu, 21 Feb 2019 13:00:00 +0200
+
+toggldesktop (7.4.184) unstable; urgency=low
+
+  * Fixed duplicate project name check issue
+  * Fixed issue with tracking reminder being show right after coming from Idle mode
+  * Parse autocomplete data in background to not slow down UI
+  * Faster project and client creation
+  * Added 5mb file limit to feedback form attachements
+  * Updated signup view to comply with GDPR
+
+-- Toggl <support@toggl.com>  Thu, 7 Jun 2018 16:00:00 +0200
+
+toggldesktop (7.4.122) unstable; urgency=low
+
+  * Fixed login after signup
+  * Fixed login crash issues
+
+-- Toggl <support@toggl.com>  Mon, 12 Feb 2018 16:00:00 +0200
+
+toggldesktop (7.4.118) unstable; urgency=low
+
+  * Fixed wrong error message issue when backend is down
+  * Fixed invalid 'project name exists' error
+  * Updated OpenSSL to version 1.1.0g
+  * Updated Poco to version 1.8.0.1
+  * Close reminder popup when user starts tracking
+  * Improved popup window titles for more clarity
+  * Fixed long project name issue in timer
+
+-- Toggl <support@toggl.com>  Fri, 5 Feb 2018 16:00:00 +0200
+
+toggldesktop (7.4.71) unstable; urgency=low
+
+  * Added 'Missing workspace' screen
+  * Fixed workspace assignment with Pomodoro Break entry
+  * Fixed app freezing issue on logout
+  * Fixed 'data not valid' issue
+  * Added DBUS_SESSION_BUS_ADDRESS param to improve tray icon support
+  * Tray icon support for Budgie Desktop
+
+-- Toggl <support@toggl.com>  Thu, 19 Oct 2017 13:00:00 +0200
+
+toggldesktop (7.4.58) unstable; urgency=low
+
+  * Fixed issue with app freezing on quit
+
+-- Toggl <support@toggl.com>  Wed, 9 Aug 2017 19:00:00 +0200
+
+toggldesktop (7.4.52) unstable; urgency=low
+
+  * Fixes for syncing issues that caused user inputs to be overwritten
+
+-- Toggl <support@toggl.com>  Tue, 21 Jun 2017 13:00:00 +0200
+
+toggldesktop (7.4.47) unstable; urgency=low
+
+  * Fixed syncing issues that caused user inputs to be discarded
+  * Fixed issue with not being able to remove all tags from entry
+
+-- Toggl <support@toggl.com>  Tue, 13 Jun 2017 14:00:00 +0200
+
+toggldesktop (7.4.38) unstable; urgency=low
+
+  * Updated syncing logic to use api v9 in background
+  * Added dbus-launch support for LXDE
+
+-- Toggl <support@toggl.com>  Fri, 28 Apr 2017 14:00:00 +0200
+
+toggldesktop (7.4.31) unstable; urgency=low
+
+  * Avoid showing tracking reminder if entry is stopped elsewhere
+  * Fixed autocomplete not copying tags and billable
+
+-- Toggl <support@toggl.com>  Thu, 30 Mar 2017 13:00:00 +0200
+
+toggldesktop (7.4.24) unstable; urgency=low
+
+  * Fixed 'start app in background' command line arguments
+  * Fixed tray icon issues for most known window managers
+
+-- Toggl <support@toggl.com>  Fri, 24 Feb 2017 10:00:00 +0200
+
+toggldesktop (7.4.20) unstable; urgency=low
+
+  * Use user profile time format in group total time
+  * Clear old/synced timeline data on app start
+  * Open/Close app window when left clicking on tray icon
+  * Fixed support link to direct to linux article
+  * Fixed entries syncing issue when clients or projects fail to sync
+  * Account running timer to todays total time
+  * Added -b, --background command line argument to start the app minimized to tray
+  * Added support for workspace setting "Project Billable by Default"
+  * Fixed tray icon issue in Xubuntu
+
+-- Toggl <support@toggl.com>  Fri, 17 Feb 2017 13:30:00 +0200
+
+toggldesktop (7.4.7) unstable; urgency=low
+
+  * Sync last 9 days on app start
+  * Force list reload when collapse entries setting changes
+
+-- Toggl <support@toggl.com>  Tue, 20 Dec 2016 12:30:00 +0200
+
+toggldesktop (7.3.366) unstable; urgency=low
+
+  * Fixed project color select issue
+  * Removed all traces of duration only mode
+  * Added Load more button
+  * Added unsynced icon for entries in the list
+  * Fixed project creation time entry save
+
+-- Toggl <support@toggl.com>  Fri, 5 Dec 2016 14:30:00 +0200
+
+toggldesktop (7.3.353) unstable; urgency=low
+
+  * Added grouped entries mode
+  * Set input backgrounds to always be white
+  * Added text overflow ellipsis to description and project texts
+  * Tray icon fix for Elementary OS
+  * Tray icon script fixes
+
+-- Toggl <support@toggl.com>  Mon, 28 Nov 2016 13:30:00 +0200
+
+toggldesktop (7.3.350) unstable; urgency=low
+
+  * Fixed duration mode issue with new web UI users
+
+-- Toggl <support@toggl.com>  Thu, 10 Nov 2016 13:30:00 +0200
+
+toggldesktop (7.3.346) unstable; urgency=low
+
+ * Added Pomodoro Break functionality
+ * Increased local data kept to 30 days
+ * Load more gets last 60 days of data
+ * Added fast delete for entries without data
+ * Added duration only mode support to Pomodoro timer
+ * Fixed issue with entries being removed from list on app start
+ * Fixed default project task overwriting issue
+ * Updated About view design
+ * Fixed font color issue with darker themes
+ * Fixed font issues with HiDPI screens
+ * Added support for new colors
+ * Added color select to Add project form
+ * Fixed tray icon issues in Cinnamon and XFCE
+ * Fixed background color issues in dark themes
+ * Updated project color select with new color selection
+
+ -- Toggl <support@toggl.com>  Thu, 27 Oct 2016 10:30:00 +0200
+
+toggldesktop (7.3.326) unstable; urgency=low
+
+ * Fixed default project task overwriting issue
+
+ -- Toggl <support@toggl.com>  Mon, 12 Sep 2016 14:30:00 +0200
+
+toggldesktop (7.3.325) unstable; urgency=low
+
+ * Added "Discard and continue" button to idle popup
+ * Added Pomodoro Timer
+ * Added Global shortcuts for show/hide and continue/stop
+ * Fixes for icon docking issues
+ * Support for using symbolic link for Toggl Desktop start
+
+ -- Toggl <support@toggl.com>  Fri, 11 Jul 2016 14:30:00 +0200
+
+toggldesktop (7.3.247) unstable; urgency=low
+
+ * Added time entry description to idle notification
+ * Disabled workspace items in projects dropdown
+ * Show start time when hovering running duration
+ * Update startup script to run app in background
+ * Fixed removing project from time entry
+ * Fixed app closing when closing any window without main window opened
+
+ -- Toggl <support@toggl.com>  Thu, 31 Dec 2015 12:10:00 +0200
+
+toggldesktop (7.3.119) unstable; urgency=low
+
+ * Hide app when tray icon is present
+ * Added tray icon to menu bar
+ * Upgraded Qt version to 5.5
+ * Added Tags and Billable icon to timer
+ * Added logged in user to menubar menu
+ * Fixed app close popup behaviour
+ * Added 'Focus on shortcut' to preferences
+ * Added show item into tray menu
+
+ -- Toggl <support@toggl.com>  Thu, 3 Nov 2015 10:40:00 +0200
+
+toggldesktop (7.2.64) unstable; urgency=low
+
+ * Improved separation of Deb package and tar.gz
+ * Added tooltip to error message (linux)
+ * Fixes for About dialog
+ * Workspace dropdown is not visible if user has only one workspace, fixes #1256 (linux)
+ * Down show workspace name in project dropdown when there are no projects
+ * Better signup error text
+ * Show start/end time in duration tooltip
+
+ -- Toggl <support@toggl.com>  Fri, 10 Apr 2015 10:20:00 +0200
+
+toggldesktop (7.1.264) unstable; urgency=low
+
+ * Fixed tag ToopTip colors (linux)
+
+ -- Toggl <support@toggl.com>  Tue, 31 Mar 2015 21:45:00 +0300
+
+toggldesktop (7.1.260) unstable; urgency=low
+
+ * Don't show start/end tooltip if there are no start/end times (linux) ref: #1249
+ * Added Start Stop time tooltip to duration label (linux) ref: #1249
+ * Show '(no description)' placeholder when description is empty (linux)
+ * Added tooltips to timer (linux)
+ * Fixed tooltip showing and colors (linux)
+ * Fixed timer project name positioning (linux)
+ * Fixed timer project name alignment (linux)
+ * Fixed tab order in edit view (linux)
+ * Fixed gray line under error message (linux)
+ * Fixes for login view elements and positioning (linux)
+ * Fixed checkbox alignment (linux)
+ * Fixed start stop time field size with big font (linux)
+ * Fixed edit form for Hi DPI (linux)
+
+ -- Toggl <support@toggl.com>  Tue, 31 Mar 2015 16:15:00 +0300
+
+toggldesktop (7.1.253) unstable; urgency=low
+
+ * Fixed timer duration cutoff (linux) closes #1144
+ * Fixed entry cell duration cutoff in Hi DPI (linux)
+ * Fixed entry cell background color in HiDPI (linux)
+ * Fixed entry cell description in Hi DPI (linux)
+ * Fixed timer duration cutoff with high DPI (linux)
+ * fix linux build, again (linux)
+ * Fixed record timeline left margin in preferences (linux)
+ * Fixed window resizing after entry edit (linux), closes #1109
+ * Fixed timer project text wordwrap (linux)
+ * Fixed resizing issues for listing elements (linux), ref: #1184
+ * Fixed entry cell hidden duration issue (linux), closes #1184
+ * Resources file typo fix (linux)
+ * Linux non-silent in app updates (linux)
+ * enable non-silent updater callbacks for linux app (linux)
+ * enable update check without download (linux)
+ * Online state, fixes #1092 (linux)
+ * Use Roboto font (linux)
+ * Fix update callback (linux)
+ * Update callback (linux)
+ * disable self updater in linux app
+ * Set app font to Helvetica 10 (linux)
+ * add description to linux app idle notification
+ * Run uitests from linux, too
+ * Fix linux app build (linux)
+ * Link with Lua on linux too (lib)
+ * Add lua to linux lib
+ * Override log and db path from command line (linux)
+ * Parse command line params (linux)
+ * Set app name (linux)
+ * Enable uitests on linux too
+ * Attempt to fix lib loading (linux)
+
+ -- Toggl <support@toggl.com>  Tue, 31 Mar 2015 07:22:00 +0300
+
+toggldesktop (7.1.198) unstable; urgency=low
+
+  * Added missing libraries
+
+ -- Toggl <support@toggl.com>  Wed, 04 Feb 2015 19:44:00 +0300
+
+toggldesktop (7.1.192) unstable; urgency=low
+
+  * New JSON library
+  * Handle umlauts in timeline uploader
+  * Fixed Websocket updates
+  * Time calculations use local timezone
+  * Fix missing project colors
+  * Format time duration according to user settings
+  * Use user configured idle minutes setting
+  * Cleanup on shutdown, fixes #866
+  * App icons as resources, with scaling
+  * Fixed memory leaks
+  * Include OpenSSL libraries
+  * Embed Lua for UI scripting
+  * Duration change did not always propagate
+  * Exceptions are tracked using Bugsnag
+  * Use a less common character as tag separator
+  * UTF8 aware sorting in autocompletes
+  * Continue most recently stopped time entry
+  * User can add clients, fixes #217
+  * Use 2 places for decimal rounding, fixes #904
+  * Fix login dialog layout, fixes #933
+  * Confirm quit, fixes #932
+  * Fix error dialog, fixes #931
+  * Allow narrower window, fixes #926
+  * Group autocomplete items by workspace
+  * Append '1' to client name when its already taken
+  * Dont crash when asking data with 0 ID
+  * Check error uniqueness after massaging it, fixes #977
+  * Forward user to support upon receiving 410, fixes #957
+  * Open editor after starting a new time entry, fixes #807
+  * Dont delay initial sync, fixes #979
+  * Use sleep/wake for idle detection too. Fixes #923
+  * Randomize retry intervals, fixes #847
+  * Auto update total duration, fixes #915
+  * Remove time overview label and separate detail view
+  * Added Signup
+  * Only show TE history in TE autocomplete, fixes #973
+  * Show workspace name under tags
+  * Use user configured reminder minutes setting
+  * Fixed dropdown size, closes #1023
+  * POCO libraries version 1.6
+  * Moved timeline shutdown after ui rendering in Logout
+  * Show split time entry after idle dialog
+  * OpenSSL 1.0.2
+  * Improved project autocomplete item format, closes #1000
+  * Prefer same date when editing end time, fixes #1010
+  * Disallow starting very short time entries from UI, fixes #1036
+  * Dont attempt to push model until its validation error is cleared, fixes #1066
+  * Track autocomplete usage via Google Analytics, fixes #996
+  * toggl_desktop.log as log file name
+  * Dont display non-active tasks
+  * Handle server 5xx errors with retries
+
+ -- Toggl <support@toggl.com>  Tue, 29 Jan 2015 01:44:00 +0300
+
+toggldesktop (7.1.115) unstable; urgency=low
+
+  * Include running time entry in daily total
+  * Autocomplete dropdown fix, fixes #735
+  * Support czech AM/PM symbols, fixes #261
+  * Always change stop time when duration changes
+  * 'Certificate validation error' is a network error
+  * Use UTC to calculate date when using last date
+  * Stop timeline uploader faster
+  * Stop websocket client faster
+  * Dont use observers for timeline
+  * Fix race conditions
+  * OpenSSL 1.0.1j
+  * Start tracking on return, fixes #780
+  * Build shared, not static OpenSSL library on Linux
+  * Fix crash on Fedora when starting Google login
+
+ -- Toggl <support@toggl.com>  Wed, 22 Oct 2014 20:22:00 +0300
+
+toggldesktop (7.1.73) unstable; urgency=low
+
+  * Remove min size constraint, fixes #761
+  * Remove error widget from tab order
+  * Hide error window if login succeeds, fixes #764
+  * Linux app shortcuts, fixes #769
+  * parse "1h 25min" as "01:25:00", not "01:00:00"
+
+ -- Toggl <support@toggl.com>  Wed, 24 Sep 2014 14:50:00 +0300
+
+toggldesktop (7.1.71) UNRELEASED; urgency=low
+
+  * Initial release.
+
+ -- Toggl <support@toggl.com>  Wed, 18 Sep 2014 21:27:32 +0300

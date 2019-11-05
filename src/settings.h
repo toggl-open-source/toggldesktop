@@ -14,7 +14,7 @@
 
 namespace toggl {
 
-class Settings : public BaseModel {
+class TOGGL_INTERNAL_EXPORT Settings : public BaseModel {
  public:
     Settings()
         : use_idle_detection(false)
@@ -44,7 +44,8 @@ class Settings : public BaseModel {
     , pomodoro_break(false)
     , pomodoro_minutes(0)
     , pomodoro_break_minutes(0)
-    , stop_entry_on_shutdown_sleep(false) {}
+    , stop_entry_on_shutdown_sleep(false)
+    , show_touch_bar(true) {}
 
     virtual ~Settings() {}
 
@@ -76,6 +77,7 @@ class Settings : public BaseModel {
     Poco::Int64 pomodoro_minutes;
     Poco::Int64 pomodoro_break_minutes;
     bool stop_entry_on_shutdown_sleep;
+    bool show_touch_bar;
 
     bool IsSame(const Settings &other) const;
 

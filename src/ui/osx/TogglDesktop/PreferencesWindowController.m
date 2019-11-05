@@ -71,6 +71,8 @@ typedef enum : NSUInteger
 @property (weak) IBOutlet NSButton *changeDurationButton;
 @property (weak) IBOutlet NSSegmentedControl *tabSegment;
 @property (weak) IBOutlet NSTabView *tabView;
+@property (weak) IBOutlet NSButton *showTouchBarButton;
+@property (weak) IBOutlet NSLayoutConstraint *bottomContainerHeight;
 
 @property (nonatomic, assign) NSInteger selectedProxyIndex;
 @property (nonatomic, strong) NSArray<AutotrackerRuleItem *> *rules;
@@ -106,6 +108,7 @@ typedef enum : NSUInteger
 - (IBAction)openEditorOnShortcut:(id)sender;
 - (IBAction)defaultProjectSelected:(id)sender;
 - (IBAction)changeDurationButtonChanged:(id)sender;
+- (IBAction)touchBarButtonChanged:(id)sender;
 
 @end
 
@@ -202,6 +205,11 @@ extern void *ctx;
 - (IBAction)changeDurationButtonChanged:(id)sender
 {
 	toggl_set_keep_end_time_fixed(ctx, [Utils stateToBool:[self.changeDurationButton state]]);
+}
+
+- (IBAction)touchBarButtonChanged:(id)sender
+{
+	toggl_set_settings_show_touch_bar(ctx, [Utils stateToBool:[self.showTouchBarButton state]]);
 }
 
 - (IBAction)proxyRadioChanged:(id)sender
@@ -493,6 +501,18 @@ const int kUseProxyToConnectToToggl = 2;
 	free(default_project_name);
 
 	[self.changeDurationButton setState:[Utils boolToState:toggl_get_keep_end_time_fixed(ctx)]];
+
+	if (@available(macOS 10.12.2, *))
+	{
+		self.showTouchBarButton.hidden = NO;
+		self.bottomContainerHeight.constant = 58;
+		[self.showTouchBarButton setState:[Utils boolToState:toggl_get_show_touch_bar(ctx)]];
+	}
+	else
+	{
+		self.showTouchBarButton.hidden = YES;
+		self.bottomContainerHeight.constant = 38;
+	}
 }
 
 - (void)selectProxyRadioWithTag:(NSInteger)tag

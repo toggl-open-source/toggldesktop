@@ -169,6 +169,11 @@ bool_t toggl_set_settings_stop_entry_on_shutdown_sleep(
            SetSettingsStopEntryOnShutdownSleep(stop_entry);
 }
 
+bool_t toggl_set_settings_show_touch_bar(
+    void *context,
+    const bool_t show_touch_bar) {
+    return toggl::noError == app(context)->SetSettingsShowTouchBar(show_touch_bar);
+}
 
 bool_t toggl_set_settings_idle_minutes(
     void *context,
@@ -1396,6 +1401,10 @@ bool_t toggl_get_keep_end_time_fixed(
     return app(context)->GetKeepEndTimeFixed();
 }
 
+bool_t toggl_get_show_touch_bar(
+    void *context) {
+    return app(context)->GetShowTouchBar();
+}
 
 void toggl_set_mini_timer_x(
     void *context,

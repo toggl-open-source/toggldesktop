@@ -1864,6 +1864,11 @@ error Context::SetSettingsStopEntryOnShutdownSleep(const bool stop_entry) {
         db()->SetSettingsStopEntryOnShutdownSleep(stop_entry));
 }
 
+error Context::SetSettingsShowTouchBar(const bool show_touch_bar) {
+    return applySettingsSaveResultToUI(
+        db()->SetSettingsShowTouchBar(show_touch_bar));
+}
+
 error Context::SetSettingsIdleMinutes(const Poco::UInt64 idle_minutes) {
     return applySettingsSaveResultToUI(
         db()->SetSettingsIdleMinutes(idle_minutes));
@@ -1980,6 +1985,12 @@ void Context::SetKeepEndTimeFixed
 bool Context::GetKeepEndTimeFixed() {
     bool value(false);
     displayError(db()->GetKeepEndTimeFixed(&value));
+    return value;
+}
+
+bool Context::GetShowTouchBar() {
+    bool value(false);
+    displayError(db()->GetShowTouchBar(&value));
     return value;
 }
 
@@ -5274,8 +5285,8 @@ error Context::pushObmAction() {
 
 error Context::me(
     TogglClient *toggl_client,
-    const std::string email,
-    const std::string password,
+    const std::string &email,
+    const std::string &password,
     std::string *user_data_json,
     const Poco::Int64 since) {
 

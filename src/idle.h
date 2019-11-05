@@ -14,7 +14,7 @@ namespace toggl {
 
 class GUI;
 
-class Idle {
+class TOGGL_INTERNAL_EXPORT Idle {
  public:
     explicit Idle(GUI *ui);
     virtual ~Idle() {}

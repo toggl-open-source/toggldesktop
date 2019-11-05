@@ -20,7 +20,7 @@
 #import "TimelineDisplayCommand.h"
 #import "TimerEditViewController.h"
 
-@interface MainWindowController ()
+@interface MainWindowController () <TouchBarServiceDelegate>
 @property (weak) IBOutlet NSView *contentView;
 @property (weak) IBOutlet NSView *mainView;
 @property (nonatomic, strong) LoginViewController *loginViewController;
@@ -90,6 +90,14 @@ extern void *ctx;
 	// Error View
 	[self initErrorView];
 	[self setInitialWindowSizeIfNeed];
+
+	// Touch bar
+	[self initTouchBar];
+}
+
+- (void)initTouchBar
+{
+	[TouchBarService shared].delegate = self;
 }
 
 - (void)initErrorView {
@@ -128,6 +136,9 @@ extern void *ctx;
 
 		[self.mainDashboardViewController.view removeFromSuperview];
 		[self.overlayViewController.view removeFromSuperview];
+
+		// Reset the data
+		[[TouchBarService shared] reset];
 	}
 }
 
@@ -157,6 +168,9 @@ extern void *ctx;
 
 			[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kFocusTimer
 																		object:nil];
+
+			// Prepare the Touch bar
+			[[TouchBarService shared] prepareForPresent];
 		}
 	}
 }
@@ -300,6 +314,22 @@ extern void *ctx;
 	{
 		[self.window setContentSize:CGSizeMake(400, 600)];
 	}
+}
+
+#pragma mark - Touch Bar
+
+- (NSTouchBar *)makeTouchBar
+{
+	if (self.loginViewController.view.superview != nil)
+	{
+		return nil;
+	}
+	return [[TouchBarService shared] touchBar];
+}
+
+- (void)touchBarServiceStartTimeEntryOnTap
+{
+	[self.timeEntryListViewController.timerEditViewController startButtonClicked:self];
 }
 
 @end

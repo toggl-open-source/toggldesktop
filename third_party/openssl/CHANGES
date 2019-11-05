@@ -7,6 +7,280 @@
  https://github.com/openssl/openssl/commits/ and pick the appropriate
  release branch.
 
+ Changes between 1.1.0k and 1.1.0l [10 Sep 2019]
+
+  *) For built-in EC curves, ensure an EC_GROUP built from the curve name is
+     used even when parsing explicit parameters, when loading a serialized key
+     or calling `EC_GROUP_new_from_ecpkparameters()`/
+     `EC_GROUP_new_from_ecparameters()`.
+     This prevents bypass of security hardening and performance gains,
+     especially for curves with specialized EC_METHODs.
+     By default, if a key encoded with explicit parameters is loaded and later
+     serialized, the output is still encoded with explicit parameters, even if
+     internally a "named" EC_GROUP is used for computation.
+     [Nicola Tuveri]
+
+  *) Compute ECC cofactors if not provided during EC_GROUP construction. Before
+     this change, EC_GROUP_set_generator would accept order and/or cofactor as
+     NULL. After this change, only the cofactor parameter can be NULL. It also
+     does some minimal sanity checks on the passed order.
+     (CVE-2019-1547)
+     [Billy Bob Brumley]
+
+  *) Fixed a padding oracle in PKCS7_dataDecode and CMS_decrypt_set1_pkey.
+     An attack is simple, if the first CMS_recipientInfo is valid but the
+     second CMS_recipientInfo is chosen ciphertext. If the second
+     recipientInfo decodes to PKCS #1 v1.5 form plaintext, the correct
+     encryption key will be replaced by garbage, and the message cannot be
+     decoded, but if the RSA decryption fails, the correct encryption key is
+     used and the recipient will not notice the attack.
+     As a work around for this potential attack the length of the decrypted
+     key must be equal to the cipher default key length, in case the
+     certifiate is not given and all recipientInfo are tried out.
+     The old behaviour can be re-enabled in the CMS code by setting the
+     CMS_DEBUG_DECRYPT flag.
+     (CVE-2019-1563)
+     [Bernd Edlinger]
+
+  *) Use Windows installation paths in the mingw builds
+
+     Mingw isn't a POSIX environment per se, which means that Windows
+     paths should be used for installation.
+     (CVE-2019-1552)
+     [Richard Levitte]
+
+ Changes between 1.1.0j and 1.1.0k [28 May 2019]
+
+  *) Change the default RSA, DSA and DH size to 2048 bit instead of 1024.
+     This changes the size when using the genpkey app when no size is given. It
+     fixes an omission in earlier changes that changed all RSA, DSA and DH
+     generation apps to use 2048 bits by default.
+     [Kurt Roeckx]
+
+  *) Prevent over long nonces in ChaCha20-Poly1305.
+
+     ChaCha20-Poly1305 is an AEAD cipher, and requires a unique nonce input
+     for every encryption operation. RFC 7539 specifies that the nonce value
+     (IV) should be 96 bits (12 bytes). OpenSSL allows a variable nonce length
+     and front pads the nonce with 0 bytes if it is less than 12
+     bytes. However it also incorrectly allows a nonce to be set of up to 16
+     bytes. In this case only the last 12 bytes are significant and any
+     additional leading bytes are ignored.
+
+     It is a requirement of using this cipher that nonce values are
+     unique. Messages encrypted using a reused nonce value are susceptible to
+     serious confidentiality and integrity attacks. If an application changes
+     the default nonce length to be longer than 12 bytes and then makes a
+     change to the leading bytes of the nonce expecting the new value to be a
+     new unique nonce then such an application could inadvertently encrypt
+     messages with a reused nonce.
+
+     Additionally the ignored bytes in a long nonce are not covered by the
+     integrity guarantee of this cipher. Any application that relies on the
+     integrity of these ignored leading bytes of a long nonce may be further
+     affected. Any OpenSSL internal use of this cipher, including in SSL/TLS,
+     is safe because no such use sets such a long nonce value. However user
+     applications that use this cipher directly and set a non-default nonce
+     length to be longer than 12 bytes may be vulnerable.
+
+     This issue was reported to OpenSSL on 16th of March 2019 by Joran Dirk
+     Greef of Ronomon.
+     (CVE-2019-1543)
+     [Matt Caswell]
+
+  *) Added SCA hardening for modular field inversion in EC_GROUP through
+     a new dedicated field_inv() pointer in EC_METHOD.
+     This also addresses a leakage affecting conversions from projective
+     to affine coordinates.
+     [Billy Bob Brumley, Nicola Tuveri]
+
+  *) Fix a use after free bug in d2i_X509_PUBKEY when overwriting a
+     re-used X509_PUBKEY object if the second PUBKEY is malformed.
+     [Bernd Edlinger]
+
+  *) Move strictness check from EVP_PKEY_asn1_new() to EVP_PKEY_asn1_add0().
+     [Richard Levitte]
+
+  *) Remove the 'dist' target and add a tarball building script.  The
+     'dist' target has fallen out of use, and it shouldn't be
+     necessary to configure just to create a source distribution.
+     [Richard Levitte]
+
+ Changes between 1.1.0i and 1.1.0j [20 Nov 2018]
+
+  *) Timing vulnerability in DSA signature generation
+
+     The OpenSSL DSA signature algorithm has been shown to be vulnerable to a
+     timing side channel attack. An attacker could use variations in the signing
+     algorithm to recover the private key.
+
+     This issue was reported to OpenSSL on 16th October 2018 by Samuel Weiser.
+     (CVE-2018-0734)
+     [Paul Dale]
+
+  *) Timing vulnerability in ECDSA signature generation
+
+     The OpenSSL ECDSA signature algorithm has been shown to be vulnerable to a
+     timing side channel attack. An attacker could use variations in the signing
+     algorithm to recover the private key.
+
+     This issue was reported to OpenSSL on 25th October 2018 by Samuel Weiser.
+     (CVE-2018-0735)
+     [Paul Dale]
+
+  *) Add coordinate blinding for EC_POINT and implement projective
+     coordinate blinding for generic prime curves as a countermeasure to
+     chosen point SCA attacks.
+     [Sohaib ul Hassan, Nicola Tuveri, Billy Bob Brumley]
+
+ Changes between 1.1.0h and 1.1.0i [14 Aug 2018]
+
+  *) Client DoS due to large DH parameter
+
+     During key agreement in a TLS handshake using a DH(E) based ciphersuite a
+     malicious server can send a very large prime value to the client. This will
+     cause the client to spend an unreasonably long period of time generating a
+     key for this prime resulting in a hang until the client has finished. This
+     could be exploited in a Denial Of Service attack.
+
+     This issue was reported to OpenSSL on 5th June 2018 by Guido Vranken
+     (CVE-2018-0732)
+     [Guido Vranken]
+
+  *) Cache timing vulnerability in RSA Key Generation
+
+     The OpenSSL RSA Key generation algorithm has been shown to be vulnerable to
+     a cache timing side channel attack. An attacker with sufficient access to
+     mount cache timing attacks during the RSA key generation process could
+     recover the private key.
+
+     This issue was reported to OpenSSL on 4th April 2018 by Alejandro Cabrera
+     Aldaya, Billy Brumley, Cesar Pereida Garcia and Luis Manuel Alvarez Tapia.
+     (CVE-2018-0737)
+     [Billy Brumley]
+
+  *) Make EVP_PKEY_asn1_new() a bit stricter about its input.  A NULL pem_str
+     parameter is no longer accepted, as it leads to a corrupt table.  NULL
+     pem_str is reserved for alias entries only.
+     [Richard Levitte]
+
+  *) Revert blinding in ECDSA sign and instead make problematic addition
+     length-invariant. Switch even to fixed-length Montgomery multiplication.
+     [Andy Polyakov]
+
+  *) Change generating and checking of primes so that the error rate of not
+     being prime depends on the intended use based on the size of the input.
+     For larger primes this will result in more rounds of Miller-Rabin.
+     The maximal error rate for primes with more than 1080 bits is lowered
+     to 2^-128.
+     [Kurt Roeckx, Annie Yousar]
+
+  *) Increase the number of Miller-Rabin rounds for DSA key generating to 64.
+     [Kurt Roeckx]
+
+  *) Add blinding to ECDSA and DSA signatures to protect against side channel
+     attacks discovered by Keegan Ryan (NCC Group).
+     [Matt Caswell]
+
+  *) When unlocking a pass phrase protected PEM file or PKCS#8 container, we
+     now allow empty (zero character) pass phrases.
+     [Richard Levitte]
+
+  *) Certificate time validation (X509_cmp_time) enforces stricter
+     compliance with RFC 5280. Fractional seconds and timezone offsets
+     are no longer allowed.
+     [Emilia Käsper]
+
+  *) Fixed a text canonicalisation bug in CMS
+
+     Where a CMS detached signature is used with text content the text goes
+     through a canonicalisation process first prior to signing or verifying a
+     signature. This process strips trailing space at the end of lines, converts
+     line terminators to CRLF and removes additional trailing line terminators
+     at the end of a file. A bug in the canonicalisation process meant that
+     some characters, such as form-feed, were incorrectly treated as whitespace
+     and removed. This is contrary to the specification (RFC5485). This fix
+     could mean that detached text data signed with an earlier version of
+     OpenSSL 1.1.0 may fail to verify using the fixed version, or text data
+     signed with a fixed OpenSSL may fail to verify with an earlier version of
+     OpenSSL 1.1.0. A workaround is to only verify the canonicalised text data
+     and use the "-binary" flag (for the "cms" command line application) or set
+     the SMIME_BINARY/PKCS7_BINARY/CMS_BINARY flags (if using CMS_verify()).
+     [Matt Caswell]
+
+ Changes between 1.1.0g and 1.1.0h [27 Mar 2018]
+
+  *) Constructed ASN.1 types with a recursive definition could exceed the stack
+
+     Constructed ASN.1 types with a recursive definition (such as can be found
+     in PKCS7) could eventually exceed the stack given malicious input with
+     excessive recursion. This could result in a Denial Of Service attack. There
+     are no such structures used within SSL/TLS that come from untrusted sources
+     so this is considered safe.
+
+     This issue was reported to OpenSSL on 4th January 2018 by the OSS-fuzz
+     project.
+     (CVE-2018-0739)
+     [Matt Caswell]
+
+  *) Incorrect CRYPTO_memcmp on HP-UX PA-RISC
+
+     Because of an implementation bug the PA-RISC CRYPTO_memcmp function is
+     effectively reduced to only comparing the least significant bit of each
+     byte. This allows an attacker to forge messages that would be considered as
+     authenticated in an amount of tries lower than that guaranteed by the
+     security claims of the scheme. The module can only be compiled by the
+     HP-UX assembler, so that only HP-UX PA-RISC targets are affected.
+
+     This issue was reported to OpenSSL on 2nd March 2018 by Peter Waltenberg
+     (IBM).
+     (CVE-2018-0733)
+     [Andy Polyakov]
+
+  *) Add a build target 'build_all_generated', to build all generated files
+     and only that.  This can be used to prepare everything that requires
+     things like perl for a system that lacks perl and then move everything
+     to that system and do the rest of the build there.
+     [Richard Levitte]
+
+  *) Backport SSL_OP_NO_RENGOTIATION
+
+     OpenSSL 1.0.2 and below had the ability to disable renegotiation using the
+     (undocumented) SSL3_FLAGS_NO_RENEGOTIATE_CIPHERS flag. Due to the opacity
+     changes this is no longer possible in 1.1.0. Therefore the new
+     SSL_OP_NO_RENEGOTIATION option from 1.1.1-dev has been backported to
+     1.1.0 to provide equivalent functionality.
+
+     Note that if an application built against 1.1.0h headers (or above) is run
+     using an older version of 1.1.0 (prior to 1.1.0h) then the option will be
+     accepted but nothing will happen, i.e. renegotiation will not be prevented.
+     [Matt Caswell]
+
+  *) Removed the OS390-Unix config target.  It relied on a script that doesn't
+     exist.
+     [Rich Salz]
+
+  *) rsaz_1024_mul_avx2 overflow bug on x86_64
+
+     There is an overflow bug in the AVX2 Montgomery multiplication procedure
+     used in exponentiation with 1024-bit moduli. No EC algorithms are affected.
+     Analysis suggests that attacks against RSA and DSA as a result of this
+     defect would be very difficult to perform and are not believed likely.
+     Attacks against DH1024 are considered just feasible, because most of the
+     work necessary to deduce information about a private key may be performed
+     offline. The amount of resources required for such an attack would be
+     significant. However, for an attack on TLS to be meaningful, the server
+     would have to share the DH1024 private key among multiple clients, which is
+     no longer an option since CVE-2016-0701.
+
+     This only affects processors that support the AVX2 but not ADX extensions
+     like Intel Haswell (4th generation).
+
+     This issue was reported to OpenSSL by David Benjamin (Google). The issue
+     was originally found via the OSS-Fuzz project.
+     (CVE-2017-3738)
+     [Andy Polyakov]
+
  Changes between 1.1.0f and 1.1.0g [2 Nov 2017]
 
   *) bn_sqrx8x_internal carry bug on x86_64
@@ -2989,8 +3263,11 @@
      to work with OPENSSL_NO_SSL_INTERN defined.
      [Steve Henson]
 
-  *) Add SRP support.
-     [Tom Wu <tjw@cs.stanford.edu> and Ben Laurie]
+  *) A long standing patch to add support for SRP from EdelWeb (Peter
+     Sylvester and Christophe Renou) was integrated.
+     [Christophe Renou <christophe.renou@edelweb.fr>, Peter Sylvester
+     <peter.sylvester@edelweb.fr>, Tom Wu <tjw@cs.stanford.edu>, and
+     Ben Laurie]
 
   *) Add functions to copy EVP_PKEY_METHOD and retrieve flags and id.
      [Steve Henson]

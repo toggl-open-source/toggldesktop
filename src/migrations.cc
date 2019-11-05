@@ -1292,6 +1292,14 @@ error Migrations::migrateSettings() {
         return err;
     }
 
+    err = db_->Migrate(
+        "settings.show_touch_bar",
+        "ALTER TABLE settings "
+        "ADD COLUMN show_touch_bar INTEGER NOT NULL DEFAULT 1;");
+    if (err != noError) {
+        return err;
+    }
+
     return noError;
 }
 

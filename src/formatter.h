@@ -18,7 +18,7 @@ namespace view {
 class Autocomplete;
 }  // namespace view
 
-class Format {
+class TOGGL_INTERNAL_EXPORT Format {
  public:
     static const std::string Classic;
     static const std::string Improved;
@@ -31,7 +31,7 @@ class Project;
 class Task;
 class Workspace;
 
-class TimedEvent {
+class TOGGL_INTERNAL_EXPORT TimedEvent {
  public:
     TimedEvent() {}
     virtual ~TimedEvent() {}
@@ -40,7 +40,7 @@ class TimedEvent {
     virtual const Poco::Int64 &Duration() const = 0;
 };
 
-class Formatter {
+class TOGGL_INTERNAL_EXPORT Formatter {
  public:
     // Format
 

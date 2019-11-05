@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2016 The OpenSSL Project Authors. All Rights Reserved.
+ * Copyright 2014-2019 The OpenSSL Project Authors. All Rights Reserved.
  *
  * Licensed under the OpenSSL license (the "License").  You may not use
  * this file except in compliance with the License.  You can obtain a copy
@@ -158,11 +158,29 @@ static ossl_inline unsigned char constant_time_eq_int_8(int a, int b)
     return constant_time_eq_8((unsigned)(a), (unsigned)(b));
 }
 
+/*
+ * Returns the value unmodified, but avoids optimizations.
+ * The barriers prevent the compiler from narrowing down the
+ * possible value range of the mask and ~mask in the select
+ * statements, which avoids the recognition of the select
+ * and turning it into a conditional load or branch.
+ */
+static ossl_inline unsigned int value_barrier(unsigned int a)
+{
+#if !defined(OPENSSL_NO_ASM) && defined(__GNUC__)
+    unsigned int r;
+    __asm__("" : "=r"(r) : "0"(a));
+#else
+    volatile unsigned int r = a;
+#endif
+    return r;
+}
+
 static ossl_inline unsigned int constant_time_select(unsigned int mask,
                                                      unsigned int a,
                                                      unsigned int b)
 {
-    return (mask & a) | (~mask & b);
+    return (value_barrier(mask) & a) | (value_barrier(~mask) & b);
 }
 
 static ossl_inline unsigned char constant_time_select_8(unsigned char mask,
@@ -177,6 +195,12 @@ static ossl_inline int constant_time_select_int(unsigned int mask, int a,
 {
     return (int)(constant_time_select(mask, (unsigned)(a), (unsigned)(b)));
 }
+
+/*
+ * Expected usage pattern is to unconditionally set error and then
+ * wipe it if there was no actual error. |clear| is 1 or 0.
+ */
+void err_clear_last_constant_time(int clear);
 
 #ifdef __cplusplus
 }

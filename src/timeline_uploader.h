@@ -22,7 +22,7 @@ std::string convertTimelineToJSON(
     const std::vector<TimelineEvent> &timeline_events,
     const std::string &desktop_id);
 
-class TimelineUploader {
+class TOGGL_INTERNAL_EXPORT TimelineUploader {
  public:
     explicit TimelineUploader(TimelineDatasource *ds)
         : current_upload_interval_seconds_(kTimelineUploadIntervalSeconds)

@@ -37,6 +37,7 @@ extern NSString *const kDisplayUnsyncedItems;
 extern NSString *const kDisplayAutotrackerRules;
 extern NSString *const kDisplayPromotion;
 extern NSString *const kDisplayTimeline;
+extern NSString *const kStartTimer;
 
 extern NSString *const kHideDisplayError;
 extern NSString *const kForceCloseEditPopover;
@@ -61,3 +62,5 @@ const char *kFocusedFieldNameDuration;
 const char *kFocusedFieldNameDescription;
 const char *kFocusedFieldNameProject;
 const char *kFocusedFieldNameTag;
+
+extern NSString *const kStartButtonStateChange;

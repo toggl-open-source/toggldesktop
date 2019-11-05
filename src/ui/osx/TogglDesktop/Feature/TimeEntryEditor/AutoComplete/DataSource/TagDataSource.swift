@@ -47,29 +47,36 @@ final class TagDataSource: AutoCompleteViewDataSource {
 
         // show all
         if text.isEmpty {
-            render(with: TagStorage.shared.tags)
+            renderTagsAndCreateBtn(TagStorage.shared.tags, with: text)
             return
         }
 
         // Filter
         let filterItems = TagStorage.shared.filter(with: text)
-        render(with: filterItems)
-    }
-
-    override func render(with items: [Any]) {
-        super.render(with: items)
-
-        // Hide create if it's has content
-        if let first = items.first as? Tag, first.isEmptyTag {
-            autoCompleteView.setCreateButtonSectionHidden(false)
-            autoCompleteView.updateTitleForCreateButton(with: "Create new tag \"\(textField.stringValue)\"")
-        } else {
-            autoCompleteView.setCreateButtonSectionHidden(true)
-        }
+        renderTagsAndCreateBtn(filterItems, with: text)
     }
 
     func updateSelectedTags(_ tags: [Tag]) {
         self.selectedTags = tags
+    }
+
+    private func renderTagsAndCreateBtn(_ tags: [Tag], with text: String) {
+        render(with: tags)
+
+        // Determine if it should present the Create btn
+        var shouldShowCreateBtn = false
+        if let first = tags.first, first.isEmptyTag {
+            shouldShowCreateBtn = true
+        } else if !text.isEmpty && !tags.contains(where: { $0.name == text }) {
+            shouldShowCreateBtn = true
+        }
+
+        if shouldShowCreateBtn {
+            autoCompleteView.setCreateButtonSectionHidden(false)
+            autoCompleteView.updateTitleForCreateButton(with: "Create new tag \"\(text)\"")
+        } else {
+            autoCompleteView.setCreateButtonSectionHidden(true)
+        }
     }
 
     // MARK: Public

@@ -1,5 +1,5 @@
 #! /usr/bin/env perl
-# Copyright 2007-2016 The OpenSSL Project Authors. All Rights Reserved.
+# Copyright 2007-2018 The OpenSSL Project Authors. All Rights Reserved.
 #
 # Licensed under the OpenSSL license (the "License").  You may not use
 # this file except in compliance with the License.  You can obtain a copy
@@ -200,10 +200,10 @@ AES_encrypt:
 #ifndef	__thumb2__
 	sub	r3,pc,#8		@ AES_encrypt
 #else
-	adr	r3,AES_encrypt
+	adr	r3,.
 #endif
 	stmdb   sp!,{r1,r4-r12,lr}
-#ifdef	__APPLE__
+#if defined(__thumb2__) || defined(__APPLE__)
 	adr	$tbl,AES_Te
 #else
 	sub	$tbl,r3,#AES_encrypt-AES_Te	@ Te
@@ -450,7 +450,7 @@ _armv4_AES_set_encrypt_key:
 #ifndef	__thumb2__
 	sub	r3,pc,#8		@ AES_set_encrypt_key
 #else
-	adr	r3,AES_set_encrypt_key
+	adr	r3,.
 #endif
 	teq	r0,#0
 #ifdef	__thumb2__
@@ -481,7 +481,7 @@ _armv4_AES_set_encrypt_key:
 	mov	lr,r1			@ bits
 	mov	$key,r2			@ key
 
-#ifdef	__APPLE__
+#if defined(__thumb2__) || defined(__APPLE__)
 	adr	$tbl,AES_Te+1024				@ Te4
 #else
 	sub	$tbl,r3,#_armv4_AES_set_encrypt_key-AES_Te-1024	@ Te4
@@ -976,10 +976,10 @@ AES_decrypt:
 #ifndef	__thumb2__
 	sub	r3,pc,#8		@ AES_decrypt
 #else
-	adr	r3,AES_decrypt
+	adr	r3,.
 #endif
 	stmdb   sp!,{r1,r4-r12,lr}
-#ifdef	__APPLE__
+#if defined(__thumb2__) || defined(__APPLE__)
 	adr	$tbl,AES_Td
 #else
 	sub	$tbl,r3,#AES_decrypt-AES_Td	@ Td

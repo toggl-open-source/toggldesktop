@@ -379,6 +379,10 @@ void TogglApi::googleLogin(const QString accessToken) {
     toggl_google_login_async(ctx, accessToken.toStdString().c_str());
 }
 
+void TogglApi::googleSignup(const QString &accessToken, uint64_t countryID) {
+    toggl_google_signup_async(ctx, accessToken.toStdString().c_str(), countryID);
+}
+
 bool TogglApi::setProxySettings(
     const bool useProxy,
     const QString proxyHost,

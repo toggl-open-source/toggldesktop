@@ -251,6 +251,9 @@ void GoogleAnalyticsSettingsEvent::runTask() {
     setActionBool("stop_entry_on_shutdown_sleep-", settings.stop_entry_on_shutdown_sleep);
     makeReq();
 
+    setActionBool("show_touch_bar-", settings.show_touch_bar);
+    makeReq();
+
     if (settings.pomodoro_break) {
         setActionInt("pomodoro_break_minutes-",
                      settings.pomodoro_break_minutes);

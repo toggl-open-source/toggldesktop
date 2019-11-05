@@ -19,6 +19,7 @@
         <file>images/continue_light.svg</file>
         <file>images/group_icon_closed.svg</file>
         <file>images/group_icon_open.svg</file>
+        <file>images/down_arrow.png</file>
         <file>../../windows/TogglDesktop/TogglDesktop/Resources/warning-icon.png</file>
     </qresource>
 </RCC>

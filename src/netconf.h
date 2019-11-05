@@ -20,7 +20,7 @@ class HTTPSClientSession;
 
 namespace toggl {
 
-class Netconf {
+class TOGGL_INTERNAL_EXPORT Netconf {
  public:
     Netconf() {}
     virtual ~Netconf() {}

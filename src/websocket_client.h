@@ -28,7 +28,7 @@ typedef void (*WebSocketMessageCallback)(
     void *callback,
     std::string json);
 
-class WebSocketClient {
+class TOGGL_INTERNAL_EXPORT WebSocketClient {
  public:
     WebSocketClient() :
     activity_(this, &WebSocketClient::runActivity),

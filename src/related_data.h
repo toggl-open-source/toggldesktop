@@ -37,7 +37,7 @@ T *modelByID(const Poco::UInt64 id, std::vector<T *> const *list);
 template <typename T>
 T *modelByGUID(const guid GUID, std::vector<T *> const *list);
 
-class RelatedData {
+class TOGGL_INTERNAL_EXPORT RelatedData {
  public:
     std::vector<Workspace *> Workspaces;
     std::vector<Client *> Clients;

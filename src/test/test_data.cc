@@ -6,8 +6,18 @@
 
 #include "Poco/FileStream.h"
 
+#if defined(WIN32) || defined(_WIN32)
+#define TESTDATADIR "../../../../testdata/"
+#else
+#define TESTDATADIR "../testdata/"
+#endif
+
 std::string loadTestData() {
-    return loadTestDataFile("../testdata/me.json");
+    return loadFromTestDataDir("me.json");
+}
+
+std::string loadFromTestDataDir(const std::string &filename) {
+    return loadTestDataFile(std::string(TESTDATADIR) + filename);
 }
 
 std::string loadTestDataFile(const std::string &filename) {

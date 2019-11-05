@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14490.70"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner"/>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView identifier="TimeEntryScrubberItem" id="c22-O7-iKe" customClass="TimeEntryScrubberItem" customModule="TogglDesktop" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="133" height="44"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="LPf-Zn-zKx">
+                    <rect key="frame" x="4" y="27" width="69" height="16"/>
+                    <textFieldCell key="cell" controlSize="small" lineBreakMode="truncatingTail" title="Description" id="WiE-03-2mE">
+                        <font key="font" metaFont="system" size="12"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <stackView distribution="fill" orientation="horizontal" alignment="centerY" spacing="2" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CJZ-Nm-BPa">
+                    <rect key="frame" x="6" y="2" width="125" height="16"/>
+                    <subviews>
+                        <imageView horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="jV3-D3-rv6" customClass="DotImageView" customModule="TogglDesktop" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="5" width="6" height="6"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="6" id="2JI-g0-tkh"/>
+                                <constraint firstAttribute="height" constant="6" id="iGa-kr-ijj"/>
+                            </constraints>
+                            <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" image="time-entry-dot" id="ZvK-Hr-dZM"/>
+                        </imageView>
+                        <textField horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="7Td-j7-cbW" customClass="ProjectTextField">
+                            <rect key="frame" x="6" y="0.0" width="121" height="16"/>
+                            <textFieldCell key="cell" lineBreakMode="truncatingTail" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" alignment="left" title="NEW - TOGGL" placeholderString="+ Add project" id="SMR-gb-5FL">
+                                <font key="font" metaFont="system" size="12"/>
+                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                            </textFieldCell>
+                        </textField>
+                    </subviews>
+                    <visibilityPriorities>
+                        <integer value="1000"/>
+                        <integer value="1000"/>
+                    </visibilityPriorities>
+                    <customSpacing>
+                        <real value="3.4028234663852886e+38"/>
+                        <real value="3.4028234663852886e+38"/>
+                    </customSpacing>
+                </stackView>
+            </subviews>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="CJZ-Nm-BPa" secondAttribute="bottom" constant="2" id="04b-zC-uuA"/>
+                <constraint firstItem="LPf-Zn-zKx" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="6" id="2zy-KV-ibl"/>
+                <constraint firstItem="LPf-Zn-zKx" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" constant="1" id="H8s-z0-gpg"/>
+                <constraint firstItem="CJZ-Nm-BPa" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="6" id="HYd-V3-Jar"/>
+                <constraint firstAttribute="trailing" secondItem="CJZ-Nm-BPa" secondAttribute="trailing" constant="2" id="Szv-xR-stR"/>
+                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="LPf-Zn-zKx" secondAttribute="trailing" constant="2" id="wqF-T0-oMp"/>
+            </constraints>
+            <connections>
+                <outlet property="desciptionLbl" destination="LPf-Zn-zKx" id="SDR-NV-VvU"/>
+                <outlet property="dotImageView" destination="jV3-D3-rv6" id="Cuy-ZY-4lB"/>
+                <outlet property="projectLbl" destination="7Td-j7-cbW" id="vUP-NB-y7j"/>
+            </connections>
+            <point key="canvasLocation" x="-12.5" y="42"/>
+        </customView>
+    </objects>
+    <resources>
+        <image name="time-entry-dot" width="8" height="8"/>
+    </resources>
+</document>
