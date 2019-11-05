@@ -660,10 +660,6 @@ class TOGGL_INTERNAL_EXPORT GUI : public SyncStateMonitor {
         isFirstLaunch = true;
     }
 
-    const std::string &TimeEntryEditorGUID() {
-        return time_entry_editor_guid_;
-    }
-
     const Poco::LocalDateTime &TimelineDateAt() {
         return timeline_date_at_;
     }

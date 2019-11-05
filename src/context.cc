@@ -72,6 +72,7 @@ Context::Context(const std::string &app_name, const std::string &app_version)
 , next_fetch_updates_at_(0)
 , next_update_timeline_settings_at_(0)
 , next_wake_at_(0)
+, time_entry_editor_guid_("")
 , environment_(APP_ENVIRONMENT)
 , idle_(&ui_)
 , last_sync_started_(0)
@@ -322,7 +323,7 @@ error Context::save(const bool push_changes) {
         UIElements render;
         render.display_unsynced_items = true;
         render.display_timer_state = true;
-        render.ApplyChanges(UI()->TimeEntryEditorGUID(), changes);
+        render.ApplyChanges(time_entry_editor_guid_, changes);
         updateUI(render);
 
         if (push_changes) {
@@ -538,6 +539,10 @@ void Context::updateUI(const UIElements &what) {
             TimeEntry *editor_time_entry =
                 user_->related.TimeEntryByGUID(what.time_entry_editor_guid);
             if (editor_time_entry) {
+                if (what.open_time_entry_editor) {
+                    time_entry_editor_guid_ = editor_time_entry->GUID();
+                }
+
                 editor_time_entry_view.Fill(editor_time_entry);
                 if (editor_time_entry->IsTracking()) {
                     editor_time_entry_view.Duration =
@@ -655,7 +660,7 @@ void Context::updateUI(const UIElements &what) {
 
         if (what.display_time_entries && user_) {
             if (what.open_time_entry_list) {
-                UI()->resetTimeEntryGUID();
+                time_entry_editor_guid_ = "";
             }
 
             // Get a sorted list of time entries
@@ -2679,7 +2684,7 @@ void Context::OpenTimeEntryEditor(
 
     // If user is already editing the time entry, toggle the editor
     // instead of doing nothing
-    if (UI()->TimeEntryEditorGUID() == te->GUID()) {
+    if (time_entry_editor_guid_ == te->GUID()) {
         render.open_time_entry_editor = false;
         render.display_time_entry_editor = false;
         render.time_entry_editor_guid = "";

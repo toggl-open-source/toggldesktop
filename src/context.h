@@ -699,6 +699,8 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
 
     class GUI ui_;
 
+    std::string time_entry_editor_guid_;
+
     std::string environment_;
 
     Idle idle_;
