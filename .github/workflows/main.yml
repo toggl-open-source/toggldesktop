@@ -26,6 +26,14 @@ jobs:
     - name: Build the Linux binary
       run: |
         bash ./dist/linux/package.sh build
+    - name: Run App test
+      run: |
+        pushd build-tarball
+        ../dist/run-tests.sh test=./src/test/TogglAppTest name="App" slack_url=${{ secrets.SLACK_HOOK_URL }} slack_channel="#desktop-bots"
+    - name: Run API test
+      run: |
+        pushd build-tarball
+        ../dist/run-tests.sh test=./src/test/TogglApiTest name="API" slack_url=${{ secrets.SLACK_HOOK_URL }} slack_channel="#desktop-bots"
 
   linux-tarball:
     runs-on: ubuntu-16.04
