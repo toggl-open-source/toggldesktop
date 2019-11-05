@@ -141,6 +141,8 @@ class TOGGL_INTERNAL_EXPORT TimeEntry : public BaseModel, public TimedEvent {
 
     bool isNotFound(const error &err) const;
 
+    bool isLocked(const error& err) const;
+
     const std::string GroupHash() const;
 
  private:

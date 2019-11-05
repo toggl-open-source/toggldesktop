@@ -625,6 +625,7 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     error pullChanges(TogglClient *https_client);
     error pullUserPreferences(
         TogglClient* toggl_client);
+    error pullAllPreferencesData(TogglClient* toggl_client);
 
     error pushChanges(
         TogglClient *https_client,
@@ -734,6 +735,7 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
 
     bool trigger_sync_;
     bool trigger_push_;
+    bool trigger_full_sync_;
 
     Poco::LocalDateTime last_time_entry_list_render_at_;
 

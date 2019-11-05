@@ -78,6 +78,10 @@ bool TimeEntry::isNotFound(const error &err) const {
     return std::string::npos != std::string(err).find(
         "Time entry not found");
 }
+bool TimeEntry::isLocked(const error& err) const {
+    return std::string::npos != std::string(err).find(
+        "Entries can't be added or edited in this period");
+}
 bool TimeEntry::isMissingCreatedWith(const error &err) const {
     return std::string::npos != std::string(err).find(
         "created_with needs to be provided an a valid string");
