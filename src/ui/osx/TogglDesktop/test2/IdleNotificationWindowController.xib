@@ -40,7 +40,7 @@
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="sqC-ri-2J8">
                         <rect key="frame" x="36" y="352" width="229" height="18"/>
                         <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" title="You have been idle since 12:34:50" id="M7R-YX-LRb">
-                            <font key="font" metaFont="system" size="14"/>
+                            <font key="font" metaFont="menu" size="14"/>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
@@ -48,7 +48,7 @@
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="LfR-bu-tys">
                         <rect key="frame" x="109" y="329" width="82" height="18"/>
                         <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" title="(5 minutes)" id="xfZ-e6-g8a">
-                            <font key="font" metaFont="system" size="14"/>
+                            <font key="font" metaFont="menu" size="14"/>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
@@ -173,7 +173,7 @@
                             <outlet property="nextKeyView" destination="3DH-9w-EQH" id="5mK-lt-oyx"/>
                         </connections>
                     </button>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="QuW-zx-5VW">
+                    <textField horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="QuW-zx-5VW">
                         <rect key="frame" x="103" y="264" width="95" height="16"/>
                         <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" title="Doing the thing" id="nx5-lP-3u0">
                             <font key="font" metaFont="cellTitle"/>
@@ -194,6 +194,8 @@
                     </button>
                 </subviews>
                 <constraints>
+                    <constraint firstItem="QuW-zx-5VW" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="IAa-lP-ER3" secondAttribute="leading" constant="8" id="0t0-dK-4Pr"/>
+                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="QuW-zx-5VW" secondAttribute="trailing" constant="8" id="5VG-Gx-xiv"/>
                     <constraint firstItem="QuW-zx-5VW" firstAttribute="top" secondItem="upW-Uw-TwE" secondAttribute="bottom" constant="5" id="C1n-iA-xRY"/>
                     <constraint firstItem="wVL-xX-wZ5" firstAttribute="centerX" secondItem="IAa-lP-ER3" secondAttribute="centerX" id="E4L-6F-i4V"/>
                     <constraint firstItem="3DH-9w-EQH" firstAttribute="centerX" secondItem="IAa-lP-ER3" secondAttribute="centerX" id="HpV-0U-O5Y"/>
