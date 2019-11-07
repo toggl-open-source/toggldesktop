@@ -48,7 +48,7 @@ final class IdleNotificationTouchBar: NSObject {
     }()
 
     private lazy var addIdleTimeButton: NSButton = {
-        let btn = NSButton(title: "Add idle time as new time entry", target: self, action: #selector(self.btnOnTap(_:)))
+        let btn = NSButton(title: "Add idle time", target: self, action: #selector(self.btnOnTap(_:)))
         btn.setButtonType(.momentaryPushIn)
         return btn
     }()
