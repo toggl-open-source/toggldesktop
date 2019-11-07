@@ -54,7 +54,7 @@
                                             <constraint firstAttribute="height" constant="30" id="Ejy-Ap-HMe"/>
                                         </constraints>
                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" focusRingType="none" placeholderString="Email address" bezelStyle="round" id="pdv-fD-dZm">
-                                            <font key="font" metaFont="cellTitle"/>
+                                            <font key="font" metaFont="label" size="12"/>
                                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
@@ -68,7 +68,7 @@
                                             <constraint firstAttribute="height" constant="30" id="2h3-wv-XZC"/>
                                         </constraints>
                                         <secureTextFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" focusRingType="none" placeholderString="Password" usesSingleLineMode="YES" bezelStyle="round" id="Lvj-We-IDb">
-                                            <font key="font" metaFont="cellTitle"/>
+                                            <font key="font" metaFont="label" size="12"/>
                                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             <allowedInputSourceLocales>
@@ -148,7 +148,7 @@
                                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Nf5-yf-qTk">
                                                             <rect key="frame" x="46" y="36" width="137" height="16"/>
                                                             <textFieldCell key="cell" lineBreakMode="clipping" title="Don't have an account?" id="pfV-yA-7TC">
-                                                                <font key="font" metaFont="cellTitle"/>
+                                                                <font key="font" metaFont="label" size="12"/>
                                                                 <color key="textColor" name="login-text-color"/>
                                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                             </textFieldCell>
@@ -205,7 +205,7 @@
                                                             <rect key="frame" x="18" y="139" width="76" height="18"/>
                                                             <buttonCell key="cell" type="check" title="I agree to" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="qm8-nf-Dce">
                                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                                                <font key="font" metaFont="cellTitle"/>
+                                                                <font key="font" metaFont="label" size="12"/>
                                                             </buttonCell>
                                                             <userDefinedRuntimeAttributes>
                                                                 <userDefinedRuntimeAttribute type="color" keyPath="textColor">
@@ -279,7 +279,7 @@
                                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="8ub-2k-VFz">
                                                             <rect key="frame" x="36" y="123" width="25" height="16"/>
                                                             <textFieldCell key="cell" lineBreakMode="clipping" title="and" id="6le-qK-Qps">
-                                                                <font key="font" metaFont="cellTitle"/>
+                                                                <font key="font" metaFont="label" size="12"/>
                                                                 <color key="textColor" name="login-text-color"/>
                                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                             </textFieldCell>
