@@ -1,0 +1,110 @@
+//
+//  LoginSignupTouchBar.swift
+//  TogglDesktop
+//
+//  Created by Nghia Tran on 11/7/19.
+//  Copyright © 2019 Alari. All rights reserved.
+//
+
+import Foundation
+
+@available(OSX 10.12.2, *)
+final class LoginSignupTouchBar: NSObject {
+
+    @objc enum LoginSignupAction: Int {
+        case login
+        case loginGoogle
+        case signUp
+        case signUpGoogle
+    }
+
+    @objc enum Mode: Int {
+        case login
+        case signUp
+    }
+
+    // MARK: Variable
+
+//    @objc weak var delegate: IdleNotificationTouchBarDelegate?
+
+    private lazy var loginButton: NSButton = {
+        let btn = NSButton(title: "Log in", target: self, action: #selector(self.btnOnTap(_:)))
+        btn.setButtonType(.momentaryPushIn)
+        btn.bezelColor = NSColor.systemGreen
+        return btn
+    }()
+
+    private lazy var loginWithGoogleButton: NSButton = {
+        let btn = NSButton(title: "Log in with Google", target: self, action: #selector(self.btnOnTap(_:)))
+        btn.setButtonType(.momentaryPushIn)
+        return btn
+    }()
+
+    private lazy var signUpButton: NSButton = {
+        let btn = NSButton(title: "Sign up", target: self, action: #selector(self.btnOnTap(_:)))
+        btn.setButtonType(.momentaryPushIn)
+        return btn
+    }()
+
+    private lazy var signUpWithGoogleButton: NSButton = {
+        let btn = NSButton(title: "Sign up with Google", target: self, action: #selector(self.btnOnTap(_:)))
+        btn.setButtonType(.momentaryPushIn)
+        return btn
+    }()
+
+    // MARK: Public
+
+    @objc func makeTouchBar(for mode: Mode) -> NSTouchBar {
+        let touchBar = NSTouchBar()
+        touchBar.delegate = self
+        touchBar.customizationIdentifier = .loginSignUpTouchBar
+
+        switch mode {
+        case .login:
+            touchBar.defaultItemIdentifiers = [.flexibleSpace,
+                                               .loginItem,
+                                               .loginGoogleItem,
+                                               .flexibleSpace]
+        case .signUp:
+            touchBar.defaultItemIdentifiers = [.flexibleSpace,
+                                               .signUpItem,
+                                               .signUpGoogleItem,
+                                               .flexibleSpace]
+        }
+
+        return touchBar
+    }
+
+    @objc private func btnOnTap(_ sender: NSButton) {
+    }
+}
+
+
+// MARK: Private
+
+@available(OSX 10.12.2, *)
+extension LoginSignupTouchBar: NSTouchBarDelegate {
+
+    func touchBar(_ touchBar: NSTouchBar, makeItemForIdentifier identifier: NSTouchBarItem.Identifier) -> NSTouchBarItem? {
+        switch identifier {
+        case NSTouchBarItem.Identifier.loginItem:
+            let item = NSCustomTouchBarItem(identifier: identifier)
+            item.view = loginButton
+            return item
+        case NSTouchBarItem.Identifier.loginGoogleItem:
+            let item = NSCustomTouchBarItem(identifier: identifier)
+            item.view = loginWithGoogleButton
+            return item
+        case NSTouchBarItem.Identifier.signUpItem:
+            let item = NSCustomTouchBarItem(identifier: identifier)
+            item.view = signUpButton
+            return item
+        case NSTouchBarItem.Identifier.signUpGoogleItem:
+            let item = NSCustomTouchBarItem(identifier: identifier)
+            item.view = signUpWithGoogleButton
+            return item
+        default:
+            return nil
+        }
+    }
+}

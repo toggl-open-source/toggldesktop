@@ -109,6 +109,7 @@
 		BA0E38102225257D00D0121B /* BezierPath+Corner.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0E380F2225257D00D0121B /* BezierPath+Corner.swift */; };
 		BA0E38122225260B00D0121B /* TimeEntryCell+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0E38112225260B00D0121B /* TimeEntryCell+Ext.swift */; };
 		BA0F67B7224A32F700ED0F91 /* CursorButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0F67B6224A32F700ED0F91 /* CursorButton.swift */; };
+		BA133AC023740EA6003A6A3A /* LoginSignupTouchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA133ABF23740EA6003A6A3A /* LoginSignupTouchBar.swift */; };
 		BA13D2062269B7C400EB3833 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA13D2052269B7C400EB3833 /* CalendarViewController.swift */; };
 		BA13D20A2269BA6500EB3833 /* CalendarDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA13D2092269BA6500EB3833 /* CalendarDataSource.swift */; };
 		BA13D20E2269BAA600EB3833 /* DateCellViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA13D20C2269BAA600EB3833 /* DateCellViewItem.swift */; };
@@ -475,6 +476,7 @@
 		BA0E380F2225257D00D0121B /* BezierPath+Corner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BezierPath+Corner.swift"; sourceTree = "<group>"; };
 		BA0E38112225260B00D0121B /* TimeEntryCell+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TimeEntryCell+Ext.swift"; sourceTree = "<group>"; };
 		BA0F67B6224A32F700ED0F91 /* CursorButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CursorButton.swift; sourceTree = "<group>"; };
+		BA133ABF23740EA6003A6A3A /* LoginSignupTouchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginSignupTouchBar.swift; sourceTree = "<group>"; };
 		BA13D2052269B7C400EB3833 /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
 		BA13D2092269BA6500EB3833 /* CalendarDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarDataSource.swift; sourceTree = "<group>"; };
 		BA13D20C2269BAA600EB3833 /* DateCellViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateCellViewItem.swift; sourceTree = "<group>"; };
@@ -1259,6 +1261,7 @@
 				BA00E9F4234C848A0011A703 /* TimeEntryScrubberItem.xib */,
 				BA00E9F2234C7BB80011A703 /* TimeEntryScrubberFlowLayout.swift */,
 				BA32134B236C1E1400D33367 /* IdleNotificationTouchBar.swift */,
+				BA133ABF23740EA6003A6A3A /* LoginSignupTouchBar.swift */,
 			);
 			path = TouchBar;
 			sourceTree = "<group>";
@@ -1618,6 +1621,7 @@
 				BA0E38102225257D00D0121B /* BezierPath+Corner.swift in Sources */,
 				BA7D33512248980B00B953A8 /* ProjectContentCellView.swift in Sources */,
 				74BA5FCF18B6E770009DAA2D /* NSHoverButton.m in Sources */,
+				BA133AC023740EA6003A6A3A /* LoginSignupTouchBar.swift in Sources */,
 				BA3E75D422291CEB009AD291 /* SystemMessage.swift in Sources */,
 				BAA11AC32251F4D6007F31D2 /* WorkspaceAutoCompleteTextField.swift in Sources */,
 				BA32134C236C1E1400D33367 /* IdleNotificationTouchBar.swift in Sources */,
