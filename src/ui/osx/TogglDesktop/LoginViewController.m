@@ -31,7 +31,7 @@ typedef NS_ENUM (NSUInteger, UserAction)
 	UserActionGoogleSignup,
 };
 
-@interface LoginViewController () <NSTextFieldDelegate, NSTableViewDataSource, NSComboBoxDataSource, NSComboBoxDelegate>
+@interface LoginViewController () <NSTextFieldDelegate, NSTableViewDataSource, NSComboBoxDataSource, NSComboBoxDelegate, LoginSignupTouchBarDelegate>
 @property (weak) IBOutlet NSTabView *tabView;
 @property (weak) IBOutlet NSTextField *email;
 @property (weak) IBOutlet NSSecureTextField *password;
@@ -55,6 +55,7 @@ typedef NS_ENUM (NSUInteger, UserAction)
 @property (nonatomic, assign) NSInteger selectedCountryID;
 @property (nonatomic, assign) TabViewType currentTab;
 @property (nonatomic, assign) UserAction userAction;
+@property (nonatomic, strong) LoginSignupTouchBar *touchBar;
 
 - (IBAction)clickLoginButton:(id)sender;
 - (IBAction)clickSignupButton:(id)sender;
@@ -112,6 +113,9 @@ extern void *ctx;
 	self.view.layer.backgroundColor = [NSColor colorWithPatternImage:[NSImage imageNamed:@"background-pattern"]].CGColor;
 
 	self.userAction = UserActionAccountLogin;
+
+	self.touchBar = [[LoginSignupTouchBar alloc] init];
+	self.touchBar.delegate = self;
 }
 
 - (void)initCountryAutocomplete {
@@ -529,7 +533,37 @@ extern void *ctx;
 
 - (NSTouchBar *)makeTouchBar
 {
+    switch (self.currentTab)
+    {
+        case TabViewTypeLogin :
+            return [self.touchBar makeTouchBarFor:LoginSignupModeLogin];
+
+        case TabViewTypeSingup :
+            return [self.touchBar makeTouchBarFor:LoginSignupModeSignUp];
+    }
 	return nil;
+}
+
+- (void)loginSignupTouchBarOn:(enum LoginSignupAction)action
+{
+	switch (action)
+	{
+		case LoginSignupActionLogin :
+
+			break;
+		case LoginSignupActionLoginGoogle :
+
+			break;
+		case LoginSignupActionSignUp :
+
+			break;
+		case LoginSignupActionSignUpGoogle :
+
+			break;
+
+		default :
+			break;
+	}
 }
 
 @end
