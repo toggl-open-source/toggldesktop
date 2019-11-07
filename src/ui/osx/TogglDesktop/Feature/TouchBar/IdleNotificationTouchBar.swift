@@ -10,7 +10,7 @@ import Foundation
 
 @available(OSX 10.12.2, *)
 @objc protocol IdleNotificationTouchBarDelegate: class {
-    
+
     func idleTouchBarDidTap(for action: IdleNotificationTouchBar.Action)
 }
 
@@ -59,12 +59,10 @@ final class IdleNotificationTouchBar: NSObject {
         let touchBar = NSTouchBar()
         touchBar.delegate = self
         touchBar.customizationIdentifier = .idleNotificationTouchBar
-        touchBar.defaultItemIdentifiers = [.flexibleSpace,
-                                           .discardIdleItem,
+        touchBar.defaultItemIdentifiers = [.discardIdleItem,
                                            .discardIdleAndContinueItem,
                                            .keepIdleTimeItem,
-                                           .addIdleTimeItem,
-                                           .flexibleSpace]
+                                           .addIdleTimeItem]
         return touchBar
     }
 
@@ -96,22 +94,18 @@ extension IdleNotificationTouchBar: NSTouchBarDelegate {
         switch identifier {
         case NSTouchBarItem.Identifier.discardIdleItem:
             let item = NSCustomTouchBarItem(identifier: identifier)
-            item.visibilityPriority = .high
             item.view = discardButton
             return item
         case NSTouchBarItem.Identifier.discardIdleAndContinueItem:
             let item = NSCustomTouchBarItem(identifier: identifier)
-            item.visibilityPriority = .high
             item.view = discardAndContinueButton
             return item
         case NSTouchBarItem.Identifier.keepIdleTimeItem:
             let item = NSCustomTouchBarItem(identifier: identifier)
-            item.visibilityPriority = .high
             item.view = keepIdleButton
             return item
         case NSTouchBarItem.Identifier.addIdleTimeItem:
             let item = NSCustomTouchBarItem(identifier: identifier)
-            item.visibilityPriority = .high
             item.view = addIdleTimeButton
             return item
         default:

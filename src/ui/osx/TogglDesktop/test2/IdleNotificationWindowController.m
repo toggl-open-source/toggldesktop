@@ -21,6 +21,8 @@
 @property (weak) IBOutlet NSButton *cancelButton;
 @property (weak) IBOutlet FlatButton *discardAndContinueButton;
 @property (weak) IBOutlet FlatButton *keepIdleTimeButton;
+@property (strong, nonatomic) IdleNotificationTouchBar *touchbar;
+
 @property (assign, nonatomic) BOOL isWaiting;
 
 - (IBAction)stopButtonClicked:(id)sender;
@@ -52,6 +54,9 @@ extern void *ctx;
 											 selector:@selector(windowDidBecomeActiveNotification)
 												 name:NSWindowDidBecomeKeyNotification
 											   object:nil];
+
+	self.touchbar = [[IdleNotificationTouchBar alloc] init];
+	self.touchbar.delegate = self;
 }
 
 - (void)dealloc
@@ -172,10 +177,7 @@ extern void *ctx;
 }
 
 - (NSTouchBar *)makeTouchBar {
-	IdleNotificationTouchBar *touchbar = [[IdleNotificationTouchBar alloc] init];
-
-	touchbar.delegate = self;
-	return [touchbar makeTouchBar];
+	return [self.touchbar makeTouchBar];
 }
 
 - (void)idleTouchBarDidTapFor:(enum Action)action {
