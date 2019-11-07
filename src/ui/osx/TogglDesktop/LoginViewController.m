@@ -55,7 +55,7 @@ typedef NS_ENUM (NSUInteger, UserAction)
 @property (nonatomic, assign) NSInteger selectedCountryID;
 @property (nonatomic, assign) TabViewType currentTab;
 @property (nonatomic, assign) UserAction userAction;
-@property (nonatomic, strong) LoginSignupTouchBar *touchBar;
+@property (nonatomic, strong) LoginSignupTouchBar *loginTouchBar;
 
 - (IBAction)clickLoginButton:(id)sender;
 - (IBAction)clickSignupButton:(id)sender;
@@ -114,8 +114,8 @@ extern void *ctx;
 
 	self.userAction = UserActionAccountLogin;
 
-	self.touchBar = [[LoginSignupTouchBar alloc] init];
-	self.touchBar.delegate = self;
+	self.loginTouchBar = [[LoginSignupTouchBar alloc] init];
+	self.loginTouchBar.delegate = self;
 }
 
 - (void)initCountryAutocomplete {
@@ -230,6 +230,9 @@ extern void *ctx;
 			[self.signupButton setNextKeyView:self.email];
 			break;
 	}
+
+	// Reset touchbar
+	self.touchBar = nil;
 }
 
 - (void)startGoogleAuthentication
@@ -533,14 +536,14 @@ extern void *ctx;
 
 - (NSTouchBar *)makeTouchBar
 {
-    switch (self.currentTab)
-    {
-        case TabViewTypeLogin :
-            return [self.touchBar makeTouchBarFor:LoginSignupModeLogin];
+	switch (self.currentTab)
+	{
+		case TabViewTypeLogin :
+			return [self.loginTouchBar makeTouchBarFor:LoginSignupModeLogin];
 
-        case TabViewTypeSingup :
-            return [self.touchBar makeTouchBarFor:LoginSignupModeSignUp];
-    }
+		case TabViewTypeSingup :
+			return [self.loginTouchBar makeTouchBarFor:LoginSignupModeSignUp];
+	}
 	return nil;
 }
 
