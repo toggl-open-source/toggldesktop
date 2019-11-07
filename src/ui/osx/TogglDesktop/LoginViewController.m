@@ -552,18 +552,17 @@ extern void *ctx;
 	switch (action)
 	{
 		case LoginSignupActionLogin :
-
+			[self clickLoginButton:self];
 			break;
 		case LoginSignupActionLoginGoogle :
-
+			[self loginGoogleOnTap:self];
 			break;
 		case LoginSignupActionSignUp :
-
+			[self clickSignupButton:self];
 			break;
 		case LoginSignupActionSignUpGoogle :
-
+			[self signupGoogleBtnOnTap:self];
 			break;
-
 		default :
 			break;
 	}
