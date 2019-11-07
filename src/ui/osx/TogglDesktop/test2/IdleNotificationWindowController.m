@@ -12,7 +12,7 @@
 #import "IdleEvent.h"
 #import "UserNotificationCenter.h"
 
-@interface IdleNotificationWindowController ()
+@interface IdleNotificationWindowController () <IdleNotificationTouchBarDelegate>
 
 @property (weak) IBOutlet NSTextField *idleSinceTextField;
 @property (weak) IBOutlet NSTextField *idleAmountTextField;
@@ -169,6 +169,33 @@ extern void *ctx;
 									[self.idleEvent.guid UTF8String],
 									self.idleEvent.started);
 	[self.window orderOut:nil];
+}
+
+- (NSTouchBar *)makeTouchBar {
+	IdleNotificationTouchBar *touchbar = [[IdleNotificationTouchBar alloc] init];
+
+	touchbar.delegate = self;
+	return [touchbar makeTouchBar];
+}
+
+- (void)idleTouchBarDidTapFor:(enum Action)action {
+	switch (action)
+	{
+		case ActionDiscard :
+			[self stopButtonClicked:self];
+			break;
+		case ActionDiscardAndContinue :
+			[self discardAndConitnueButtonClicked:self];
+			break;
+		case ActionKeep :
+			[self ignoreButtonClicked:self];
+			break;
+		case ActionAdd :
+			[self addIdleTimeAsNewTimeEntry:self];
+			break;
+		default :
+			break;
+	}
 }
 
 @end
