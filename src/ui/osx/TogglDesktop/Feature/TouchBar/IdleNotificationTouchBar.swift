@@ -9,9 +9,24 @@
 import Foundation
 
 @available(OSX 10.12.2, *)
+@objc protocol IdleNotificationTouchBarDelegate: class {
+    
+    func idleTouchBarDidTap(for action: IdleNotificationTouchBar.Action)
+}
+
+@available(OSX 10.12.2, *)
 final class IdleNotificationTouchBar: NSObject {
 
+    @objc enum Action: Int {
+        case discard
+        case discardAndContinue
+        case keep
+        case add
+    }
+
     // MARK: Variable
+
+    @objc weak var delegate: IdleNotificationTouchBarDelegate?
 
     private lazy var discardButton: NSButton = {
         let btn = NSButton(title: "Discard idle time", target: self, action: #selector(self.btnOnTap(_:)))
@@ -40,7 +55,7 @@ final class IdleNotificationTouchBar: NSObject {
 
     // MARK: Public
 
-    func makeTouchBar() -> NSTouchBar {
+    @objc func makeTouchBar() -> NSTouchBar {
         let touchBar = NSTouchBar()
         touchBar.delegate = self
         touchBar.customizationIdentifier = .idleNotificationTouchBar
@@ -54,7 +69,21 @@ final class IdleNotificationTouchBar: NSObject {
     }
 
     @objc private func btnOnTap(_ sender: NSButton) {
-
+        var action: Action?
+        switch sender {
+        case discardButton:
+            action = .discard
+        case discardAndContinueButton:
+            action = .discardAndContinue
+        case keepIdleButton:
+            action = .keep
+        case addIdleTimeButton:
+            action = .add
+        default:
+            break
+        }
+        guard let triggerAction = action else { return }
+        delegate?.idleTouchBarDidTap(for: triggerAction)
     }
 }
 
