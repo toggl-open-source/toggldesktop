@@ -85,7 +85,18 @@ final class LoginSignupTouchBar: NSObject {
     }
 
     @objc private func btnOnTap(_ sender: NSButton) {
-
+        switch sender {
+        case loginButton:
+            delegate?.loginSignupTouchBar(on: .login)
+        case loginWithGoogleButton:
+            delegate?.loginSignupTouchBar(on: .loginGoogle)
+        case signUpButton:
+            delegate?.loginSignupTouchBar(on: .signUp)
+        case signUpWithGoogleButton:
+            delegate?.loginSignupTouchBar(on: .signUpGoogle)
+        default:
+            break
+        }
     }
 }
 

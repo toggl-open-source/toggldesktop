@@ -284,7 +284,7 @@
                                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                             </textFieldCell>
                                                         </textField>
-                                                        <comboBox focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="4Zx-Jg-kcg" customClass="NSCustomComboBox">
+                                                        <comboBox focusRingType="none" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Zx-Jg-kcg" customClass="NSCustomComboBox">
                                                             <rect key="frame" x="20" y="161" width="191" height="26"/>
                                                             <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" focusRingType="none" placeholderString="Select country" drawsBackground="YES" completes="NO" usesDataSource="YES" numberOfVisibleItems="5" id="XOG-e3-OcV">
                                                                 <font key="font" metaFont="system"/>
@@ -296,7 +296,7 @@
                                                                 <outlet property="nextKeyView" destination="p8r-V5-a0Z" id="GlM-hm-ruR"/>
                                                             </connections>
                                                         </comboBox>
-                                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="fZp-Ag-MGC" customClass="NSTextFieldClickablePointer">
+                                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fZp-Ag-MGC" customClass="NSTextFieldClickablePointer">
                                                             <rect key="frame" x="92" y="140" width="109" height="17"/>
                                                             <textFieldCell key="cell" lineBreakMode="clipping" title="Terms of Service" id="yMx-7I-dta">
                                                                 <font key="font" metaFont="systemMedium" size="13"/>
