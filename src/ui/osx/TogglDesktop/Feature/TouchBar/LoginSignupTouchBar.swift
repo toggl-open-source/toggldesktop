@@ -36,25 +36,32 @@ final class LoginSignupTouchBar: NSObject {
     private lazy var loginButton: NSButton = {
         let btn = NSButton(title: "Log in", target: self, action: #selector(self.btnOnTap(_:)))
         btn.setButtonType(.momentaryPushIn)
-        btn.bezelColor = NSColor.systemGreen
+        btn.bezelColor = getButtonColor()
         return btn
     }()
 
     private lazy var loginWithGoogleButton: NSButton = {
         let btn = NSButton(title: "Log in with Google", target: self, action: #selector(self.btnOnTap(_:)))
         btn.setButtonType(.momentaryPushIn)
+        btn.image = NSImage(named: "google-logo")
+        btn.imageHugsTitle = true
+        btn.imagePosition = .imageLeft
         return btn
     }()
 
     private lazy var signUpButton: NSButton = {
         let btn = NSButton(title: "Sign up", target: self, action: #selector(self.btnOnTap(_:)))
         btn.setButtonType(.momentaryPushIn)
+        btn.bezelColor = getButtonColor()
         return btn
     }()
 
     private lazy var signUpWithGoogleButton: NSButton = {
         let btn = NSButton(title: "Sign up with Google", target: self, action: #selector(self.btnOnTap(_:)))
         btn.setButtonType(.momentaryPushIn)
+        btn.image = NSImage(named: "google-logo")
+        btn.imageHugsTitle = true
+        btn.imagePosition = .imageLeft
         return btn
     }()
 
@@ -67,22 +74,18 @@ final class LoginSignupTouchBar: NSObject {
 
         switch mode {
         case .login:
-            touchBar.defaultItemIdentifiers = [.flexibleSpace,
-                                               .loginItem,
-                                               .loginGoogleItem,
-                                               .flexibleSpace]
+            touchBar.defaultItemIdentifiers = [.loginItem,
+                                               .loginGoogleItem]
         case .signUp:
-            touchBar.defaultItemIdentifiers = [.flexibleSpace,
-                                               .signUpItem,
-                                               .signUpGoogleItem,
-                                               .flexibleSpace]
+            touchBar.defaultItemIdentifiers = [.signUpItem,
+                                               .signUpGoogleItem]
         }
 
         return touchBar
     }
 
     @objc private func btnOnTap(_ sender: NSButton) {
-        
+
     }
 }
 
@@ -112,6 +115,14 @@ extension LoginSignupTouchBar: NSTouchBarDelegate {
             return item
         default:
             return nil
+        }
+    }
+
+    private func getButtonColor() -> NSColor? {
+        if #available(OSX 10.13, *) {
+            return NSColor(named: "login-button-background")
+        } else {
+            return ConvertHexColor.hexCode(toNSColor: "#FF2D55")!
         }
     }
 }

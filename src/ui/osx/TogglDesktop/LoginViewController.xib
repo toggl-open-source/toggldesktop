@@ -48,7 +48,7 @@
                             <stackView distribution="equalSpacing" orientation="vertical" alignment="leading" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0Z5-Nq-p4o">
                                 <rect key="frame" x="20" y="195" width="188" height="70"/>
                                 <subviews>
-                                    <textField focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="KGi-ca-Yer">
+                                    <textField focusRingType="none" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KGi-ca-Yer">
                                         <rect key="frame" x="0.0" y="40" width="188" height="30"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="Ejy-Ap-HMe"/>
@@ -62,7 +62,7 @@
                                             <outlet property="nextKeyView" destination="es4-S9-8Od" id="Ilt-Hb-uQK"/>
                                         </connections>
                                     </textField>
-                                    <secureTextField focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="es4-S9-8Od">
+                                    <secureTextField focusRingType="none" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="es4-S9-8Od">
                                         <rect key="frame" x="0.0" y="0.0" width="188" height="30"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="2h3-wv-XZC"/>
