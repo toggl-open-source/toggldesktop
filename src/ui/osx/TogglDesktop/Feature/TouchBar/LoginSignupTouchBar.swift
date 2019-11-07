@@ -9,6 +9,12 @@
 import Foundation
 
 @available(OSX 10.12.2, *)
+@objc protocol LoginSignupTouchBarDelegate: class {
+
+    func loginSignupTouchBar(on action: LoginSignupTouchBar.LoginSignupAction)
+}
+
+@available(OSX 10.12.2, *)
 final class LoginSignupTouchBar: NSObject {
 
     @objc enum LoginSignupAction: Int {
@@ -18,14 +24,14 @@ final class LoginSignupTouchBar: NSObject {
         case signUpGoogle
     }
 
-    @objc enum Mode: Int {
+    @objc enum LoginSignupMode: Int {
         case login
         case signUp
     }
 
     // MARK: Variable
 
-//    @objc weak var delegate: IdleNotificationTouchBarDelegate?
+    @objc weak var delegate: LoginSignupTouchBarDelegate?
 
     private lazy var loginButton: NSButton = {
         let btn = NSButton(title: "Log in", target: self, action: #selector(self.btnOnTap(_:)))
@@ -54,7 +60,7 @@ final class LoginSignupTouchBar: NSObject {
 
     // MARK: Public
 
-    @objc func makeTouchBar(for mode: Mode) -> NSTouchBar {
+    @objc func makeTouchBar(for mode: LoginSignupMode) -> NSTouchBar {
         let touchBar = NSTouchBar()
         touchBar.delegate = self
         touchBar.customizationIdentifier = .loginSignUpTouchBar
@@ -76,6 +82,7 @@ final class LoginSignupTouchBar: NSObject {
     }
 
     @objc private func btnOnTap(_ sender: NSButton) {
+        
     }
 }
 
