@@ -301,15 +301,6 @@ extern void *ctx;
 
 #pragma mark - Touch Bar
 
-- (NSTouchBar *)makeTouchBar
-{
-	if (self.loginViewController.view.superview != nil)
-	{
-		return nil;
-	}
-	return [[TouchBarService shared] touchBar];
-}
-
 - (void)touchBarServiceStartTimeEntryOnTap
 {
 	[self.timeEntryListViewController.timerEditViewController startButtonClicked:self];

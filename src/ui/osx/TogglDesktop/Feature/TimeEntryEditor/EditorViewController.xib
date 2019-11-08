@@ -63,7 +63,7 @@
                                         <textField verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EMT-i8-OD1" customClass="DescriptionAutoCompleteTextField" customModule="TogglDesktop" customModuleProvider="target">
                                             <rect key="frame" x="-2" y="0.0" width="256" height="28"/>
                                             <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" alignment="left" placeholderString="Description…" usesSingleLineMode="YES" id="0MM-Wa-hOG" customClass="VerticallyCenteredTextFieldCell" customModule="TogglDesktop" customModuleProvider="target">
-                                                <font key="font" metaFont="system" size="14"/>
+                                                <font key="font" metaFont="menu" size="14"/>
                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                 <userDefinedRuntimeAttributes>
@@ -97,7 +97,7 @@
                                         <textField verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Doe-dQ-82A" customClass="ProjectAutoCompleteTextField" customModule="TogglDesktop" customModuleProvider="target">
                                             <rect key="frame" x="-2" y="0.0" width="256" height="28"/>
                                             <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" alignment="left" placeholderString="Select project" usesSingleLineMode="YES" id="6po-73-koG" customClass="VerticallyCenteredTextFieldCell" customModule="TogglDesktop" customModuleProvider="target">
-                                                <font key="font" metaFont="system" size="14"/>
+                                                <font key="font" metaFont="menu" size="14"/>
                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                 <userDefinedRuntimeAttributes>
@@ -149,7 +149,7 @@
                                                     <textField verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TEs-AY-h6J" customClass="AddTagButton" customModule="TogglDesktop" customModuleProvider="target">
                                                         <rect key="frame" x="-2" y="0.0" width="256" height="28"/>
                                                         <textFieldCell key="cell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" alignment="left" placeholderString="Add tags" usesSingleLineMode="YES" id="yAk-86-67A" customClass="VerticallyCenteredTextFieldCell" customModule="TogglDesktop" customModuleProvider="target">
-                                                            <font key="font" metaFont="system" size="14"/>
+                                                            <font key="font" metaFont="menu" size="14"/>
                                                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                             <userDefinedRuntimeAttributes>
@@ -195,7 +195,7 @@
                                         <textField verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q9U-uY-bOj" customClass="UndoTextField">
                                             <rect key="frame" x="-2" y="0.0" width="82" height="28"/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" alignment="left" title="0:00:00" placeholderString="0:00:00" id="dJu-5a-D7u" customClass="VerticallyCenteredTextFieldCell" customModule="TogglDesktop" customModuleProvider="target">
-                                                <font key="font" metaFont="system" size="14"/>
+                                                <font key="font" metaFont="menu" size="14"/>
                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                 <userDefinedRuntimeAttributes>
@@ -238,7 +238,7 @@
                                         <rect key="frame" x="-2" y="24" width="69" height="18"/>
                                         <buttonCell key="cell" type="check" title="Billable" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="y28-TJ-qRF">
                                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                            <font key="font" metaFont="system" size="14"/>
+                                            <font key="font" metaFont="menu" size="14"/>
                                         </buttonCell>
                                         <connections>
                                             <action selector="billableCheckBoxOnChange:" target="-2" id="P99-UM-Dcd"/>
@@ -308,25 +308,25 @@
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <stackView distribution="equalSpacing" orientation="horizontal" alignment="centerY" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gKy-N8-5Oe">
-                                                        <rect key="frame" x="23" y="3" width="145" height="25"/>
+                                                        <rect key="frame" x="22" y="3" width="147" height="25"/>
                                                         <subviews>
                                                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="UYO-W1-uSI" customClass="CursorButton" customModule="TogglDesktop" customModuleProvider="target">
                                                                 <rect key="frame" x="0.0" y="3" width="61" height="18"/>
                                                                 <buttonCell key="cell" type="bevel" title="Tuesday," bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="DZ6-Ag-EuF">
                                                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                                    <font key="font" metaFont="system" size="14"/>
+                                                                    <font key="font" metaFont="menu" size="14"/>
                                                                 </buttonCell>
                                                                 <connections>
                                                                     <action selector="dayButtonOnTap:" target="-2" id="9Xi-H2-Cv0"/>
                                                                 </connections>
                                                             </button>
                                                             <datePicker verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="PKt-Ig-fee" customClass="KeyboardDatePicker" customModule="TogglDesktop" customModuleProvider="target">
-                                                                <rect key="frame" x="61" y="0.0" width="84" height="25"/>
+                                                                <rect key="frame" x="61" y="0.0" width="86" height="25"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="25" id="jpF-3X-qFm"/>
                                                                 </constraints>
                                                                 <datePickerCell key="cell" alignment="left" drawsBackground="NO" datePickerStyle="textField" id="eIj-kY-idV">
-                                                                    <font key="font" size="14" name=".SFNSText"/>
+                                                                    <font key="font" metaFont="menu" size="14"/>
                                                                     <date key="date" timeIntervalSinceReferenceDate="-569750400">
                                                                         <!--1982-12-12 16:00:00 +0000-->
                                                                     </date>
@@ -421,7 +421,7 @@
                                         <textField hidden="YES" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="aeq-aC-W8G" customClass="TagAutoCompleteTextField" customModule="TogglDesktop" customModuleProvider="target">
                                             <rect key="frame" x="-2" y="0.0" width="256" height="28"/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" alignment="left" placeholderString="Select tags" id="u0H-N9-7h5" customClass="VerticallyCenteredTextFieldCell" customModule="TogglDesktop" customModuleProvider="target">
-                                                <font key="font" metaFont="system" size="14"/>
+                                                <font key="font" metaFont="menu" size="14"/>
                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                 <userDefinedRuntimeAttributes>
@@ -451,7 +451,7 @@
                                     <textField horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bCC-ON-SgR" customClass="UndoTextField">
                                         <rect key="frame" x="-2" y="0.0" width="74" height="18"/>
                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" alignment="center" title="09:20 AM" id="XRL-p8-r7I">
-                                            <font key="font" metaFont="system" size="14"/>
+                                            <font key="font" metaFont="menu" size="14"/>
                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" name="editor-background-color"/>
                                         </textFieldCell>
@@ -475,7 +475,7 @@
                                             <constraint firstAttribute="width" constant="70" id="l2i-Ea-wbs"/>
                                         </constraints>
                                         <textFieldCell key="cell" lineBreakMode="clipping" selectable="YES" editable="YES" alignment="center" title="09:30 PM" id="m0O-Wy-5Cq">
-                                            <font key="font" metaFont="system" size="14"/>
+                                            <font key="font" metaFont="menu" size="14"/>
                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" name="editor-background-color"/>
                                         </textFieldCell>
