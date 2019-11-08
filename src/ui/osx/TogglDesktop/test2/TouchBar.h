@@ -9,6 +9,7 @@
 #ifndef TouchBar_h
 #define TouchBar_h
 
+#ifndef APP_STORE
 #import <AppKit/AppKit.h>
 
 extern void DFRElementSetControlStripPresenceForIdentifier(NSString *, BOOL);
@@ -26,5 +27,6 @@ extern void DFRSystemModalShowsCloseBoxWhenFrontMost(BOOL);
 + (void)presentSystemModalFunctionBar:(NSTouchBar *)touchBar systemTrayItemIdentifier:(NSString *)identifier;
 
 @end
+#endif
 
 #endif /* TouchBar_h */
