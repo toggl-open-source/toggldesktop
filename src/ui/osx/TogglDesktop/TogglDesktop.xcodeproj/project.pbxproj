@@ -159,6 +159,12 @@
 		BA412C27224E195C003CA17A /* NoClientCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA412C26224E195C003CA17A /* NoClientCellView.swift */; };
 		BA412C29224E196D003CA17A /* NoClientCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA412C28224E196D003CA17A /* NoClientCellView.xib */; };
 		BA46E09F2226707F00C25763 /* Collection+Safe.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA46E09E2226707F00C25763 /* Collection+Safe.swift */; };
+		BA4A7D5123755A3700A42095 /* TimeEntryScrubberFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA00E9F2234C7BB80011A703 /* TimeEntryScrubberFlowLayout.swift */; };
+		BA4A7D5223755A3D00A42095 /* TimeEntryScrubberItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA00E9F4234C848A0011A703 /* TimeEntryScrubberItem.xib */; };
+		BA4A7D5323755A4200A42095 /* GlobalTouchbarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAF3ACCB2341F8AC00E41B33 /* GlobalTouchbarButton.swift */; };
+		BA4A7D5423755A4200A42095 /* TouchBarService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAF3ACD22343325A00E41B33 /* TouchBarService.swift */; };
+		BA4A7D5523755A4200A42095 /* TouchBarService+Name.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA00E9EC234C5A6C0011A703 /* TouchBarService+Name.swift */; };
+		BA4A7D5623755A4200A42095 /* TimeEntryScrubberItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA00E9EF234C73990011A703 /* TimeEntryScrubberItem.swift */; };
 		BA4AEB9C22C217A4001A898D /* ResizablePopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4AEB9B22C217A4001A898D /* ResizablePopover.swift */; };
 		BA50ED8522705F9E008323FA /* CalendarFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA50ED8422705F9E008323FA /* CalendarFlowLayout.swift */; };
 		BA5B0E4E2330E1C6008D1DED /* GoogleAuthenticationServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5B0E4D2330E1C6008D1DED /* GoogleAuthenticationServer.swift */; };
@@ -1819,6 +1825,7 @@
 				BAE64DFE2368334000244D2B /* ProjectHeaderCellView.xib in Resources */,
 				BAE64DFF2368334000244D2B /* ProjectWorksapceCellView.xib in Resources */,
 				BAE64E002368334000244D2B /* Images.xcassets in Resources */,
+				BA4A7D5223755A3D00A42095 /* TimeEntryScrubberItem.xib in Resources */,
 				BAE64E012368334000244D2B /* EditorViewController.xib in Resources */,
 				BAE64E022368334000244D2B /* cacert.pem in Resources */,
 				BAE64E032368334000244D2B /* DescriptionContentCellView.xib in Resources */,
@@ -2317,6 +2324,7 @@
 				BAE64D7F2368334000244D2B /* LoadMoreCell.m in Sources */,
 				BAE64D802368334000244D2B /* PreferencesWindowController.m in Sources */,
 				BAE64D812368334000244D2B /* NSTextFieldVerticallyAligned.m in Sources */,
+				BA4A7D5623755A4200A42095 /* TimeEntryScrubberItem.swift in Sources */,
 				BAE64D822368334000244D2B /* DayLabel.swift in Sources */,
 				BAE64D832368334000244D2B /* NSSecureTextFieldVerticallyAligned.m in Sources */,
 				BAE64D842368334000244D2B /* TimeEntryCell+Ext.swift in Sources */,
@@ -2337,6 +2345,7 @@
 				BAE64D932368334000244D2B /* EditorViewController.swift in Sources */,
 				BAE64D942368334000244D2B /* AutoCompleteTableCell+Ext.swift in Sources */,
 				BAE64D952368334000244D2B /* LiteAutoCompleteDataSource.m in Sources */,
+				BA4A7D5323755A4200A42095 /* GlobalTouchbarButton.swift in Sources */,
 				BAE64D962368334000244D2B /* DescriptionDataSource.swift in Sources */,
 				BAE64D972368334000244D2B /* TagDataSource.swift in Sources */,
 				BAE64D982368334000244D2B /* ColorGraphicsView.swift in Sources */,
@@ -2378,6 +2387,7 @@
 				BAE64DBC2368334000244D2B /* NSView+LayoutConstraint.swift in Sources */,
 				BAE64DBD2368334000244D2B /* ProjectDataSource.swift in Sources */,
 				BAE64DBE2368334000244D2B /* AutoCompleteRowView.swift in Sources */,
+				BA4A7D5523755A4200A42095 /* TouchBarService+Name.swift in Sources */,
 				BAE64DBF2368334000244D2B /* NSView+Shadow+Border.swift in Sources */,
 				BAE64DC02368334000244D2B /* ResizablePopover.swift in Sources */,
 				BAE64DC12368334000244D2B /* UndoManager.swift in Sources */,
@@ -2410,6 +2420,7 @@
 				BAE64DDC2368334000244D2B /* DotImageView.swift in Sources */,
 				BAE64DDD2368334000244D2B /* TagAutoCompleteTextField.swift in Sources */,
 				BAE64DDE2368334000244D2B /* ProjectAutoCompleteTextField.swift in Sources */,
+				BA4A7D5423755A4200A42095 /* TouchBarService.swift in Sources */,
 				BAE64DDF2368334000244D2B /* HSBGen.swift in Sources */,
 				BAE64DE02368334000244D2B /* GoogleAuthenticationServer.swift in Sources */,
 				BAE64DE12368334000244D2B /* WorkspaceCellView.swift in Sources */,
@@ -2429,6 +2440,7 @@
 				BAE64DEF2368334000244D2B /* FloatingErrorView.swift in Sources */,
 				BAE64DF02368334000244D2B /* LoginViewController.m in Sources */,
 				BAE64DF12368334000244D2B /* IdleEvent.m in Sources */,
+				BA4A7D5123755A3700A42095 /* TimeEntryScrubberFlowLayout.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
