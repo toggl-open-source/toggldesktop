@@ -1804,6 +1804,9 @@ void on_countries(TogglCountryView *first)
 
 - (void)handleTouchBarWithSettings:(Settings *)settings
 {
+	[TouchBarService shared].isEnabled = settings.showTouchBar;
+	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kTouchBarSettingChanged object:@(settings.showTouchBar)];
+
 #ifndef APP_STORE
 	if (@available(macOS 10.12.2, *))
 	{
