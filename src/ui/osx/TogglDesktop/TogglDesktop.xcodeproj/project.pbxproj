@@ -198,7 +198,6 @@
 		BA65A24D22B79FEC00F895FD /* OGSwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA65A22D22B79FEC00F895FD /* OGSwitch.swift */; };
 		BA65A25022B7A65D00F895FD /* DatePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA65A24F22B7A65D00F895FD /* DatePickerView.swift */; };
 		BA65A25222B7A66A00F895FD /* DatePickerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA65A25122B7A66A00F895FD /* DatePickerView.xib */; };
-		BA6A5F5F2376ED2900F8EC5B /* timeline_dataset.csv in Resources */ = {isa = PBXBuildFile; fileRef = BA6A5F5E2376ED2900F8EC5B /* timeline_dataset.csv */; };
 		BA6EB8402248CBE3003BB8EF /* ProjectStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6EB83F2248CBE3003BB8EF /* ProjectStorage.swift */; };
 		BA6F1B3821EEE998009265E4 /* Theme+Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6F1B3721EEE998009265E4 /* Theme+Notification.swift */; };
 		BA6F81E422C5FB1E009B6828 /* TimelineTimeEntryHoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6F81E222C5FB1E009B6828 /* TimelineTimeEntryHoverViewController.swift */; };
@@ -206,6 +205,7 @@
 		BA712EC221BF907200A2D8DD /* UndoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA712EC121BF907200A2D8DD /* UndoManager.swift */; };
 		BA712EC621BF913800A2D8DD /* TimeEntrySnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA712EC521BF913800A2D8DD /* TimeEntrySnapshot.swift */; };
 		BA712EC821BF9F1200A2D8DD /* UndoStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA712EC721BF9F1200A2D8DD /* UndoStack.swift */; };
+		BA72AE8523770ADE00995536 /* timeline_dataset.csv in Resources */ = {isa = PBXBuildFile; fileRef = BA72AE8423770ADE00995536 /* timeline_dataset.csv */; };
 		BA75FF2322BCC1EA00D3F08C /* TimelineTimeLabelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA75FF2122BCC1EA00D3F08C /* TimelineTimeLabelCell.swift */; };
 		BA75FF2422BCC1EA00D3F08C /* TimelineTimeLabelCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA75FF2222BCC1EA00D3F08C /* TimelineTimeLabelCell.xib */; };
 		BA75FF2722BCC1FC00D3F08C /* TimelineTimeEntryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA75FF2522BCC1FC00D3F08C /* TimelineTimeEntryCell.swift */; };
@@ -614,7 +614,6 @@
 		BA65A22D22B79FEC00F895FD /* OGSwitch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OGSwitch.swift; sourceTree = "<group>"; };
 		BA65A24F22B7A65D00F895FD /* DatePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerView.swift; sourceTree = "<group>"; };
 		BA65A25122B7A66A00F895FD /* DatePickerView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DatePickerView.xib; sourceTree = "<group>"; };
-		BA6A5F5E2376ED2900F8EC5B /* timeline_dataset.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = timeline_dataset.csv; sourceTree = "<group>"; };
 		BA6EB83F2248CBE3003BB8EF /* ProjectStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectStorage.swift; sourceTree = "<group>"; };
 		BA6F1B3721EEE998009265E4 /* Theme+Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Theme+Notification.swift"; sourceTree = "<group>"; };
 		BA6F81E222C5FB1E009B6828 /* TimelineTimeEntryHoverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineTimeEntryHoverViewController.swift; sourceTree = "<group>"; };
@@ -622,6 +621,7 @@
 		BA712EC121BF907200A2D8DD /* UndoManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UndoManager.swift; sourceTree = "<group>"; };
 		BA712EC521BF913800A2D8DD /* TimeEntrySnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeEntrySnapshot.swift; sourceTree = "<group>"; };
 		BA712EC721BF9F1200A2D8DD /* UndoStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UndoStack.swift; sourceTree = "<group>"; };
+		BA72AE8423770ADE00995536 /* timeline_dataset.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = timeline_dataset.csv; sourceTree = "<group>"; };
 		BA75FF2122BCC1EA00D3F08C /* TimelineTimeLabelCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineTimeLabelCell.swift; sourceTree = "<group>"; };
 		BA75FF2222BCC1EA00D3F08C /* TimelineTimeLabelCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimelineTimeLabelCell.xib; sourceTree = "<group>"; };
 		BA75FF2522BCC1FC00D3F08C /* TimelineTimeEntryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineTimeEntryCell.swift; sourceTree = "<group>"; };
@@ -783,7 +783,7 @@
 		69FC17E817E6534400B96425 = {
 			isa = PBXGroup;
 			children = (
-				BA6A5F5E2376ED2900F8EC5B /* timeline_dataset.csv */,
+				BA72AE8423770ADE00995536 /* timeline_dataset.csv */,
 				BAAC931A22EEF92100E2EE1C /* TogglDesktop.entitlements */,
 				BAE007DD21FAF00D00404379 /* Media.xcassets */,
 				BAD2341921D612DE0039C742 /* libPocoCrypto.60.dylib */,
@@ -1606,7 +1606,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BA6A5F5F2376ED2900F8EC5B /* timeline_dataset.csv in Resources */,
 				BA24E794230BE50600B1D4B2 /* TimelineActivityHoverController.xib in Resources */,
 				BA7D33532248981200B953A8 /* ProjectHeaderCellView.xib in Resources */,
 				BA05369F225E239600C26E1F /* ProjectWorksapceCellView.xib in Resources */,
@@ -1639,6 +1638,7 @@
 				BAE007DE21FAF00D00404379 /* Media.xcassets in Resources */,
 				C5DA1FC517F1B38B001C4565 /* LoginViewController.xib in Resources */,
 				69FC180517E6534400B96425 /* Credits.rtf in Resources */,
+				BA72AE8523770ADE00995536 /* timeline_dataset.csv in Resources */,
 				BAAF56A42223E19C003D0D73 /* TimeDecoratorView.xib in Resources */,
 				74F1070218993FFE00E93BD5 /* FeedbackWindowController.xib in Resources */,
 				7423393D1829B99C00063FA9 /* IdleNotificationWindowController.xib in Resources */,
