@@ -1382,7 +1382,7 @@ void User::CompressTimeline() {
         std::string key = ss.str();
 
         // Calculate positive value of timeline event duration
-        time_t duration = event->Duration();
+        time_t duration = event->EndTime() - event->Start();
         if (duration < 0) {
             duration = 0;
         }
