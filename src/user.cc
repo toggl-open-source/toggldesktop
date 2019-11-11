@@ -1382,7 +1382,7 @@ void User::CompressTimeline() {
         std::string key = ss.str();
 
         // Calculate positive value of timeline event duration
-        time_t duration = event->EndTime() - event->Start();
+        time_t duration = event->Duration();
         if (duration < 0) {
             duration = 0;
         }
@@ -1442,8 +1442,6 @@ std::vector<TimelineEvent> User::CompressedTimeline(
                     event_date.day() != date->day()) {
                 continue;
             }
-            // Set Event Duration
-            event->SetDuration(event->EndTime() - event->Start());
         }
         // Make a copy of the timeline event
         list.push_back(*event);

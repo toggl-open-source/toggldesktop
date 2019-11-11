@@ -46,7 +46,6 @@ class TOGGL_INTERNAL_EXPORT TimelineEvent : public BaseModel, public TimedEvent 
     const Poco::Int64 &Duration() const {
         return duration_;
     }
-    void SetDuration(const Poco::UInt64 value);
 
     const bool &Idle() const {
         return idle_;
@@ -88,6 +87,8 @@ class TOGGL_INTERNAL_EXPORT TimelineEvent : public BaseModel, public TimedEvent 
     bool idle_;
     bool chunked_;
     bool uploaded_;
+
+    void updateDuration();
 };
 
 }  // namespace toggl
