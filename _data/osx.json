@@ -18,7 +18,7 @@
             "rows": [
                 "Hotfix: revert bug with duplicating entries introduced in the previous hotfix"
             ],
-            "date": "October 2nd 2019",
+            "date": "October 2nd 2019"
         },
         {
             "version": "7.4.1022",
@@ -29,9 +29,9 @@
                 "Show precise time on tooltip of duration, start, stop time textbox",
                 "Remove CrashReporter",
                 "Fixed Tags popup on macOS doesn't go away after creating a new tag",
-                "Fixed the sync issues when it makes a lot of request to the Toggl Server",
+                "Fixed the sync issues when it makes a lot of request to the Toggl Server"
             ],
-            "date": "October 1st 2019",
+            "date": "October 1st 2019"
         },
         {
             "version": "7.4.1012",
