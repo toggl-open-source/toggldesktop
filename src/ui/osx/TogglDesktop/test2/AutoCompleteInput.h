@@ -19,7 +19,14 @@ typedef NS_ENUM (NSUInteger, AutoCompleteDisplayMode)
 	AutoCompleteDisplayModeFullscreen,
 };
 
+@protocol AutoCompleteInputDelegate <NSObject>
+
+- (void)autoCompleteInputShouldResetFilter;
+
+@end
+
 @interface AutoCompleteInput : UndoTextField
+@property (weak, nonatomic) id<AutoCompleteInputDelegate> inputDelegate;
 @property (strong, nonatomic, readonly) AutoCompleteTable *autocompleteTableView;
 @property (strong, nonatomic, readonly) AutoCompleteTableContainer *autocompleteTableContainer;
 @property (assign, nonatomic, readonly) CGFloat itemHeight;

@@ -13,7 +13,7 @@
 #import "AutoCompleteInput.h"
 #import "AutocompleteItem.h"
 
-@interface LiteAutoCompleteDataSource () <NSTableViewDataSource>
+@interface LiteAutoCompleteDataSource () <NSTableViewDataSource, AutoCompleteInputDelegate>
 @property (assign, nonatomic) CGFloat itemHeight;
 @property (assign, nonatomic) CGFloat worksapceItemHeight;
 @property (nonatomic, strong) NSMutableArray *orderedKeys;
@@ -401,6 +401,19 @@ extern void *ctx;
 	NSLog(@"----- ROWS: %lu", (unsigned long)result);
 
 	return result;
+}
+
+- (void)setInput:(AutoCompleteInput *)input
+{
+	_input = input;
+	_input.inputDelegate = self;
+}
+
+#pragma mark - AutoCompleteInputDelegate
+
+- (void)autoCompleteInputShouldResetFilter
+{
+	[self clearFilter];
 }
 
 @end
