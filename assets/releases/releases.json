@@ -2714,6 +2714,16 @@
                         "name": "TogglDesktop-7_4_1023.dmg"
                     }
                 ]
+            },
+            {
+                "version": "7.4.1036",
+                "timestamp": "12-11-2019",
+                "filename": [
+                    {
+                        "type": "macos",
+                        "name": "TogglDesktop-7_4_1036.dmg"
+                    }
+                ]
             }
         ]
     },
