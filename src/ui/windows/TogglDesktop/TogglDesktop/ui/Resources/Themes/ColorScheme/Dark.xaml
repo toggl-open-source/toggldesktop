@@ -30,6 +30,7 @@
 
     <Color x:Key="Toggl.SecondaryAccentColor">#FF2D55</Color>
     <Color x:Key="Toggl.ErrorColor">#FF3B30</Color>
+    <Color x:Key="Toggl.ErrorMessageBackgroundColor">#E20505</Color>
 
     <SolidColorBrush x:Key="Toggl.SelectionElements.Background" Color="{StaticResource Toggl.SelectionElements.BackgroundColor}" po:Freeze="True" />
     <SolidColorBrush x:Key="Toggl.TextBox.MouseOverBorder" Color="{StaticResource Toggl.SecondaryTextColor}" po:Freeze="True" />
@@ -52,6 +53,7 @@
     <SolidColorBrush x:Key="Toggl.PrimaryButtonBackground" Color="{StaticResource Toggl.DisabledElementColor}" po:Freeze="True" />
     <SolidColorBrush x:Key="Toggl.PrimaryHoverOrText" Color="{StaticResource Toggl.AccentColorMinusOne}" po:Freeze="True" />
     <SolidColorBrush x:Key="Toggl.PrimaryButtonPressedBackground" Color="{StaticResource Toggl.DisabledTextColor}" po:Freeze="True" />
+    <SolidColorBrush x:Key="Toggl.ErrorMessageBackground" Color="{StaticResource Toggl.ErrorMessageBackgroundColor}" po:Freeze="True" />
 
     <BitmapImage x:Key="Toggl.LogoImage" UriSource="/TogglDesktop;component/Resources/toggl-logo-dark.png" />
 </ResourceDictionary>
