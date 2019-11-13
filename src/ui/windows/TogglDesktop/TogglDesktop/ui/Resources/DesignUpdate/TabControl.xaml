@@ -1,0 +1,12 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.TabControl.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <Style BasedOn="{StaticResource MetroTabControl}" TargetType="{x:Type TabControl}">
+        <Setter Property="mah:TabControlHelper.Underlined" Value="TabPanel" />
+    </Style>
+    <Style BasedOn="{StaticResource MetroTabItem}" TargetType="{x:Type TabItem}"></Style>
+</ResourceDictionary>
