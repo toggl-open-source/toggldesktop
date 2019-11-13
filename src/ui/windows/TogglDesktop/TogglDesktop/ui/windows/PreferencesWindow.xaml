@@ -1,4 +1,4 @@
-﻿<toggl:TogglWindow x:Class="TogglDesktop.PreferencesWindow"
+﻿<mah:MetroWindow x:Class="TogglDesktop.PreferencesWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -7,32 +7,37 @@
         xmlns:toggl="clr-namespace:TogglDesktop"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:behaviors="clr-namespace:TogglDesktop.Behaviors"
+        xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
         mc:Ignorable="d" 
-        Height="554" Width="500"
+        Height="760" Width="480"
         KeyDown="windowKeyDown"
-        IsToolWindow="True"
-        Title="Preferences"
-        Style="{StaticResource Preferences}"
-        >
-    <toggl:TogglWindow.Resources>
-        <converters:AndConverter x:Key="AndConverter" />
-    </toggl:TogglWindow.Resources>
+        WindowStartupLocation="CenterOwner"
+        Background="{DynamicResource Toggl.Background}"
+        Title="Preferences">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources/DesignUpdate/Controls.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <converters:AndConverter x:Key="AndConverter" />
+        </ResourceDictionary>
+    </Window.Resources>
+    <mah:MetroWindow.Style>
+        <StaticResource ResourceKey="Toggl.ToolWindow" />
+    </mah:MetroWindow.Style>
     <i:Interaction.Behaviors>
         <behaviors:HideWindowOnClosingBehavior />
     </i:Interaction.Behaviors>
     <!-- content -->
-    <Grid Background="{StaticResource ViewBackgroundLight}">
+    <Grid Background="{DynamicResource Toggl.Background}">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <toggl:TogglChromeDesignTimeConverter
-            Title="Preferences" IsToolWindow="True" />
-
         <!-- tabbed content -->
         <TabControl Grid.Row="0" TabStripPlacement="Top">
-            <TabItem Header="GENERAL">
+            <TabItem Header="General">
                 <StackPanel Margin="11">
                     <Grid Margin="0,0,0,2">
                         <Grid.ColumnDefinitions>
@@ -214,55 +219,8 @@
                               Margin="5"/>
                 </StackPanel>
             </TabItem>
-            <TabItem Header="PROXY">
-                <StackPanel Margin="11 11">
-                    <RadioButton Name="useNoProxyRadioButton" x:FieldModifier="private" GroupName="Proxy"
-                                         IsChecked="True"
-                                    Margin="5">Do not use proxy</RadioButton>
-                    <RadioButton Name="useSystemProxySettingsCheckBox" x:FieldModifier="private" GroupName="Proxy"
-                                    Margin="5">Use system proxy settings</RadioButton>
-                    <RadioButton Name="useProxyCheckBox" x:FieldModifier="private" GroupName="Proxy"
-                                      Margin="5">Use proxy to connect to Toggl</RadioButton>
-                    <GroupBox Header="Proxy Settings" IsEnabled="{Binding ElementName=useProxyCheckBox, Path=IsChecked}">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                            </Grid.RowDefinitions>
-                            <TextBlock Grid.Column="0" Grid.Row="0" Margin="5">Host</TextBlock>
-                            <TextBlock Grid.Column="0" Grid.Row="1" Margin="5">Port</TextBlock>
-                            <TextBlock Grid.Column="0" Grid.Row="2" Margin="5">Username</TextBlock>
-                            <TextBlock Grid.Column="0" Grid.Row="3" Margin="5">Password</TextBlock>
-                            <TextBox Name="proxyHostTextBox" x:FieldModifier="private"
-                                Grid.Column="1" Grid.Row="0" Margin="5 3">example.com</TextBox>
-                            <TextBox Name="proxyPortTextBox" x:FieldModifier="private"
-                                Grid.Column="1" Grid.Row="1" Margin="5 3">0</TextBox>
-                            <TextBox Name="proxyUsernameTextBox" x:FieldModifier="private"
-                                Grid.Column="1" Grid.Row="2" Margin="5 3">user</TextBox>
-                            <PasswordBox Name="proxyPasswordBox" x:FieldModifier="private"
-                                Grid.Column="1" Grid.Row="3" Password="password" Margin="5 3"></PasswordBox>
-                        </Grid>
-                    </GroupBox>
-                </StackPanel>
-            </TabItem>
-            <TabItem Header="AUTOTRACKER">
-                <Grid Margin="11 11">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-                    <CheckBox Name="enableAutotrackerCheckbox" x:FieldModifier="private"
-                              Grid.Row="0" Margin="5" Content="Enable autotracker"/>
-                    <toggl:AutotrackerSettings Grid.Row="1" Margin="5" IsEnabled="{Binding ElementName=enableAutotrackerCheckbox, Path=IsChecked}"/>
-                </Grid>
-            </TabItem>
-            <TabItem Header="REMINDER">
+
+            <TabItem Header="Reminder">
                 <Grid Margin="11 11">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
@@ -322,13 +280,68 @@
                     </StackPanel>
                 </Grid>
             </TabItem>
+
+            <TabItem Header="Autotracker">
+                <Grid Margin="11 11">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <CheckBox Name="enableAutotrackerCheckbox" x:FieldModifier="private"
+                              Grid.Row="0" Margin="5" Content="Enable autotracker"/>
+                    <toggl:AutotrackerSettings Grid.Row="1" Margin="5" IsEnabled="{Binding ElementName=enableAutotrackerCheckbox, Path=IsChecked}"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Proxy">
+                <StackPanel Margin="11 11">
+                    <RadioButton Name="useNoProxyRadioButton" x:FieldModifier="private" GroupName="Proxy"
+                                         IsChecked="True"
+                                    Margin="5">Do not use proxy</RadioButton>
+                    <RadioButton Name="useSystemProxySettingsCheckBox" x:FieldModifier="private" GroupName="Proxy"
+                                    Margin="5">Use system proxy settings</RadioButton>
+                    <RadioButton Name="useProxyCheckBox" x:FieldModifier="private" GroupName="Proxy"
+                                      Margin="5">Use proxy to connect to Toggl</RadioButton>
+                    <GroupBox Header="Proxy Settings" IsEnabled="{Binding ElementName=useProxyCheckBox, Path=IsChecked}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Column="0" Grid.Row="0" Margin="5">Host</TextBlock>
+                            <TextBlock Grid.Column="0" Grid.Row="1" Margin="5">Port</TextBlock>
+                            <TextBlock Grid.Column="0" Grid.Row="2" Margin="5">Username</TextBlock>
+                            <TextBlock Grid.Column="0" Grid.Row="3" Margin="5">Password</TextBlock>
+                            <TextBox Name="proxyHostTextBox" x:FieldModifier="private"
+                                Grid.Column="1" Grid.Row="0" Margin="5 3">example.com</TextBox>
+                            <TextBox Name="proxyPortTextBox" x:FieldModifier="private"
+                                Grid.Column="1" Grid.Row="1" Margin="5 3">0</TextBox>
+                            <TextBox Name="proxyUsernameTextBox" x:FieldModifier="private"
+                                Grid.Column="1" Grid.Row="2" Margin="5 3">user</TextBox>
+                            <PasswordBox Name="proxyPasswordBox" x:FieldModifier="private"
+                                Grid.Column="1" Grid.Row="3" Password="password" Margin="5 3"></PasswordBox>
+                        </Grid>
+                    </GroupBox>
+                </StackPanel>
+            </TabItem>
         </TabControl>
 
         <!-- save/cancel -->
-        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right"
-                            Margin="4">
-            <Button Click="saveButtonClicked">SAVE</Button>
-            <Button Click="cancelButtonClicked">CANCEL</Button>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="20,14">
+            <Button Click="saveButtonClicked"
+                    Style="{DynamicResource Toggl.AccentButton}"
+                    Width="92"
+                    Content="Save" />
+            <Button Click="cancelButtonClicked"
+                    Style="{DynamicResource Toggl.PrimaryButton}"
+                    Width="92"
+                    Margin="16,0,0,0"
+                    Content="Cancel"/>
         </StackPanel>
     </Grid>
-</toggl:TogglWindow>
+</mah:MetroWindow>
