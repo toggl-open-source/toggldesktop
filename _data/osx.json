@@ -22,7 +22,8 @@
                 "Fixed Can't select a project from autocomplete popup",
                 "Fixed Cannot Create Tags Issue"
             ],
-            "date": "November 12nd 2019"
+            "date": "November 1st 2019",
+            "beta": "true"
         },
         {
             "version": "7.4.1023",
