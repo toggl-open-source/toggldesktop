@@ -13,6 +13,7 @@
         <ResourceDictionary Source="Buttons.xaml" />
         <ResourceDictionary Source="Hyperlink.xaml" />
         <ResourceDictionary Source="ToolWindow.xaml" />
+        <ResourceDictionary Source="TabControl.xaml" />
     </ResourceDictionary.MergedDictionaries>
     <Style BasedOn="{StaticResource MahApps.Metro.Styles.WindowButtonCommands.Win10}" TargetType="mah:WindowButtonCommands" />
 </ResourceDictionary>
