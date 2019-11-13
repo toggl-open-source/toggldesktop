@@ -79,14 +79,33 @@
 
     <Style TargetType="Button" x:Key="Toggl.AccentButton" BasedOn="{StaticResource Toggl.PrimaryButton}">
         <Setter Property="Background" Value="{DynamicResource Toggl.AccentBrush}" />
-        <Setter Property="BorderBrush" Value="{DynamicResource Toggl.AccentBrush}" />
+        <Setter Property="BorderThickness" Value="0" />
         <Setter Property="Foreground" Value="White" />
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="BorderBrush" Value="{DynamicResource Toggl.Button.Accent.MouseOverBorder}" />
+                <Setter Property="BorderThickness" Value="1" />
             </Trigger>
             <Trigger Property="IsPressed" Value="True">
                 <Setter Property="Background" Value="{DynamicResource Toggl.PrimaryHoverOrText}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="Button" x:Key="Toggl.CrossButton" BasedOn="{StaticResource Toggl.PrimaryButton}">
+        <Setter Property="Foreground" Value="{DynamicResource Toggl.DarkGrayBrush}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Canvas Width="24" Height="24" Background="Transparent">
+                        <Path Fill="{TemplateBinding Foreground}" Data="M12 11.417L7.577 7 7 7.576l4.417 4.423L7 16.424l.576.576L12 12.583 16.422 17l.578-.576L12.58 12 17 7.576 16.422 7z"/>
+                    </Canvas>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Cursor" Value="Hand" />
             </Trigger>
         </Style.Triggers>
     </Style>
