@@ -7,15 +7,26 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:behaviors="clr-namespace:TogglDesktop.Behaviors"
         xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:viewModels="clr-namespace:TogglDesktop.ViewModels"
+        xmlns:converters="clr-namespace:TogglDesktop.Converters"
         mc:Ignorable="d" 
         Height="460" Width="400"
         Background="{DynamicResource Toggl.Background}"
-        Title="Feedback">
+        WindowStartupLocation="CenterOwner"
+        Title="Feedback"
+        d:DataContext="{d:DesignInstance viewModels:FeedbackWindowViewModel, IsDesignTimeCreatable=False}">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="../Resources/DesignUpdate/Controls.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <SolidColorBrush x:Key="AttachedFileBackground"
+                             Color="{DynamicResource Toggl.DisabledElementColor}"
+                             Opacity="0.5" />
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+            <converters:BytesToStringConverter x:Key="BytesToStringConverter" />
+            <converters:FileNameToIconConverter x:Key="FileNameToIconConverter" />
+            <converters:TrimPathConverter x:Key="TrimPathConverter" />
         </ResourceDictionary>
     </Window.Resources>
     <mah:MetroWindow.Style>
@@ -33,25 +44,26 @@
         
         <StackPanel Grid.Row="0">
             <TextBlock Style="{DynamicResource Toggl.BodyText}" Text="Send us your feedback or questions"/>
-            <ComboBox Name="topicComboBox" x:FieldModifier="private"
+            <ComboBox x:Name="topicComboBox" x:FieldModifier="private"
                       Margin="0,18,0,0"
-                      SelectionChanged="onTopicSelectionChanged"
                       mah:TextBoxHelper.Watermark="Please specify the topic"
-                      SelectedValuePath="Content">
-                <ComboBoxItem Content="Report bug"/>
-                <ComboBoxItem Content="Suggest a feature"/>
-                <ComboBoxItem Content="Other"/>
+                      ItemsSource="{Binding PossibleTopics}"
+                      SelectedItem="{Binding Topic, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"
+                      Validation.Error="OnTopicComboBoxValidationError"
+                      LostFocus="OnTopicComboBoxLostFocus">
             </ComboBox>
         </StackPanel>
 
-        <TextBox Grid.Row="1"
+        <TextBox x:Name="feedbackTextBox" x:FieldModifier="private"
+                 Grid.Row="1"
                  Style="{DynamicResource Toggl.TextBox}"
-                Name="messageTextBox" x:FieldModifier="private"
-                Height="104"
-                Margin="0 8"
-                TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" 
-                AcceptsReturn="True"
-                Text="This is example text!"/>
+                 Height="104"
+                 Margin="0 8"
+                 TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"
+                 AcceptsReturn="True"
+                 Text="{Binding FeedbackText, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True}"
+                 Validation.Error="OnFeedbackTextBoxValidationError"
+                 LostFocus="OnFeedbackTextBoxLostFocus"/>
 
         <Grid Grid.Row="2">
             <Grid.RowDefinitions>
@@ -63,7 +75,7 @@
                 <Button Style="{DynamicResource Toggl.PrimaryButton}"
                         VerticalAlignment="Top" HorizontalAlignment="Left"
                         Content="Browse for image ..."
-                        Click="onAttachImageClick"
+                        Command="{Binding AttachFileCommand}"
                         Width="152" />
                 <TextBlock Style="{DynamicResource Toggl.CaptionText}"
                            Foreground="{DynamicResource Toggl.DisabledTextBrush}"
@@ -71,49 +83,69 @@
                            Text="Maximum file size 5MB"
                            VerticalAlignment="Center" />
             </StackPanel>
-            <Rectangle Grid.Row="1" Margin="0 16" x:Name="placeholderForUploadedFile" Fill="{DynamicResource Toggl.DisabledElementBrush}" />
+            <StackPanel Grid.Row="1" Orientation="Vertical"
+                        Margin="0 8">
+                <TextBlock Style="{DynamicResource Toggl.CaptionText}"
+                           Background="{DynamicResource Toggl.ErrorMessageBackground}"
+                           Foreground="White"
+                           TextWrapping="Wrap"
+                           Padding="12 3 12 5"
+                           Text="Please check that the file size is not larger than 5MB and try uploading it again."
+                           Visibility="{Binding IsFileSizeError, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                <TextBlock Style="{DynamicResource Toggl.CaptionText}"
+                           Background="{DynamicResource Toggl.ErrorMessageBackground}"
+                           Foreground="White"
+                           TextWrapping="Wrap"
+                           Padding="12 3 12 5"
+                           Text="Server connection error. Feedback sending failed."
+                           Visibility="{Binding IsSendingError, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                <Border Margin="0 8"
+                        Background="{DynamicResource AttachedFileBackground}"
+                        Visibility="{Binding IsFileAttached, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="AUto" />
+                        </Grid.ColumnDefinitions>
+                        <Image Grid.Row="0" Grid.RowSpan="2"
+                               Grid.Column="0"
+                               Source="{Binding AttachedFileName, Converter={StaticResource FileNameToIconConverter}}"
+                               Margin="12"
+                               Height="32"
+                               Width="32" />
+                        <TextBlock Grid.Row="0" Grid.Column="1"
+                                   Margin="0 12 0 0"
+                                   Text="{Binding AttachedFileName, Converter={StaticResource TrimPathConverter}}"
+                                   Style="{DynamicResource Toggl.BodyText}" />
+                        <TextBlock Grid.Row="1" Grid.Column="1"
+                                   Margin="0 0 0 12"
+                                   Style="{DynamicResource Toggl.CaptionText}"
+                                   Text="{Binding AttachedFileSize, Converter={StaticResource BytesToStringConverter}}" />
+                        <Button Grid.Row="0" Grid.RowSpan="2" Grid.Column="2"
+                                Margin="12 16 16 16"
+                                Command="{Binding RemoveFileCommand}"
+                                Style="{DynamicResource Toggl.CrossButton}">
+                        </Button>
+                    </Grid>
+                </Border>
+            </StackPanel>
             <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
                 <Button Style="{DynamicResource Toggl.AccentButton}"
                         Width="92"
                         Content="Send"
-                        Click="onSendClick"/>
+                        Command="{Binding SendCommand}" />
                 <Button Style="{DynamicResource Toggl.PrimaryButton}"
                         Width="92"
                         Margin="8,0,0,0"
+                        Click="OnCancelClick"
                         Content="Cancel" />
 
             </StackPanel>
         </Grid>
-        <!-- <Grid Grid.Row="2"  Margin="7 4 4 4"> -->
-        <!--     <Grid.ColumnDefinitions> -->
-        <!--         <ColumnDefinition /> -->
-        <!--         <ColumnDefinition Width="120"/> -->
-        <!--     </Grid.ColumnDefinitions> -->
-        <!--     <Grid.RowDefinitions> -->
-        <!--         <RowDefinition /> -->
-        <!--         <RowDefinition /> -->
-        <!--     </Grid.RowDefinitions> -->
-        <!-- -->
-        <!--     <Button Grid.Row="0" Grid.Column="1" -->
-        <!--         Content="ATTACH IMAGE" -->
-        <!--         Click="onAttachImageClick"/> -->
-        <!--     <Button Grid.Row="1" Grid.Column="1" -->
-        <!--         Content="SEND" -->
-        <!--         Click="onSendClick"/> -->
-        <!-- -->
-        <TextBlock Grid.Row="0" Grid.Column="0"
-                   Visibility="Collapsed"
-            Name="attachedFileText" x:FieldModifier="private"
-            Margin="4" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"
-            Text="awesome.png"/>
-        <TextBlock Grid.Row="1" Grid.Column="0"
-                   Visibility="Collapsed"
-            Name="errorText" x:FieldModifier="private"
-            Text="Please select a topic."
-            Foreground="DarkRed"
-            Margin="4" VerticalAlignment="Center"/>
-        <!-- -->
-        <!-- </Grid> -->
-
     </Grid>
 </mah:MetroWindow>
