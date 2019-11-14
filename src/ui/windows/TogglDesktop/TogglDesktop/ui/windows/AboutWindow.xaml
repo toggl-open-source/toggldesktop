@@ -8,7 +8,6 @@
         xmlns:behaviors="clr-namespace:TogglDesktop.Behaviors"
         mc:Ignorable="d" 
         Height="460" Width="300"
-        KeyDown="windowKeyDown"
         Title="About"
         Background="{DynamicResource Toggl.CardBackground}"
         WindowStartupLocation="CenterOwner"
@@ -25,6 +24,7 @@
     </mah:MetroWindow.Style>
     <i:Interaction.Behaviors>
         <behaviors:HideWindowOnClosingBehavior />
+        <behaviors:CloseWindowOnEscBehavior />
     </i:Interaction.Behaviors>
     <Grid>
         <Grid.RowDefinitions>
