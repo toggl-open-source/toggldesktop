@@ -1,5 +1,5 @@
-var url = "https://github.com/toggl/toggldesktop/releases/download/v",
-apiUrl = "https://api.github.com/repos/toggl/toggldesktop/releases/tags/v",
+var url = "https://github.com/toggl-open-source/toggldesktop/releases/download/v",
+apiUrl = "https://api.github.com/repos/toggl-open-source/toggldesktop/releases/tags/v",
 releases = {},
 ghReleases = {},
 defaultPath = "/toggldesktop/installers",
