@@ -1,85 +1,64 @@
 ﻿using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
-using Microsoft.Win32;
+using TogglDesktop.ViewModels;
 
 namespace TogglDesktop
 {
     public partial class FeedbackWindow
     {
-        private string attachedFileName;
+        public FeedbackWindowViewModel ViewModel
+        {
+            get => (FeedbackWindowViewModel)DataContext;
+            private set => DataContext = value;
+        }
 
         public FeedbackWindow()
         {
             this.InitializeComponent();
             this.Closing += ResetOnClosing;
-            this.reset();
+            this.ResetState();
         }
 
         private void ResetOnClosing(object sender, CancelEventArgs e)
         {
-            this.reset();
+            this.ResetState();
         }
 
-        private void reset()
+        private void ResetState()
         {
-            this.topicComboBox.SelectedItem = null;
-            this.messageTextBox.Text = "";
-            this.attachedFileText.Text = "(maximum image size 5MB)";
-            this.errorText.Visibility = Visibility.Hidden;
-            this.topicEmptyText.Visibility = Visibility.Visible;
-            this.attachedFileName = null;
+            ViewModel = new FeedbackWindowViewModel(RefreshValidationBindings, OnFeedbackSent);
         }
 
-        private void onTopicSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void RefreshValidationBindings()
         {
-            this.errorText.Visibility = Visibility.Hidden;
-            this.topicEmptyText.Visibility = Visibility.Hidden;
+            RefreshTopicComboBoxBinding();
+            RefreshFeedbackTextBoxBinding();
         }
 
-        private void onAttachImageClick(object sender, RoutedEventArgs e)
+        private void OnFeedbackSent()
         {
-            var dialog = new OpenFileDialog();
-            if ((bool)dialog.ShowDialog(this))
+            MessageBox.Show(this, "Our support team will be notified.", "Feedback sent successfully!");
+            this.Close();
+        }
+
+        private void OnTopicComboBoxLostFocus(object sender, RoutedEventArgs e)
+        {
+            if (!topicComboBox.IsKeyboardFocusWithin)
             {
-                this.attachedFileName = dialog.FileName;
-                this.attachedFileText.Text = "Attached: " + dialog.SafeFileName;
+                RefreshTopicComboBoxBinding();
             }
         }
 
-        private void onSendClick(object sender, RoutedEventArgs e)
+        private void OnFeedbackTextBoxLostFocus(object sender, RoutedEventArgs e)
         {
-            if (this.topicComboBox.SelectedItem == null)
+            if (!feedbackTextBox.IsKeyboardFocusWithin && !topicComboBox.IsKeyboardFocusWithin)
             {
-                this.errorText.Text = "Please choose a topic!";
-                this.errorText.Visibility = Visibility.Visible;
-
-                this.topicComboBox.Focus();
-                return;
+                RefreshFeedbackTextBoxBinding();
             }
-
-            if (this.messageTextBox.Text == "")
-            {
-                this.errorText.Text = "Please type in your feedback!";
-                this.errorText.Visibility = Visibility.Visible;
-                this.messageTextBox.Focus();
-                return;
-            }
-
-            if (!Toggl.SendFeedback(
-                this.topicComboBox.Text,
-                this.messageTextBox.Text,
-                this.attachedFileName))
-            {
-                this.errorText.Text = "File upload failed! (check file size)";
-                this.errorText.Visibility = Visibility.Visible;
-                return;
-            }
-
-            MessageBox.Show(this, "Your feedback was sent successfully.", "Thank you!");
-            
-            this.reset();
-            this.Hide();
         }
+
+        private void RefreshFeedbackTextBoxBinding() => feedbackTextBox.GetBindingExpression(TextBox.TextProperty).UpdateSource();
+        private void RefreshTopicComboBoxBinding() => topicComboBox.GetBindingExpression(ComboBox.SelectedItemProperty).UpdateSource();
     }
 }
