@@ -8,7 +8,7 @@
         <item>
             <title>Version 7.4.1036</title>
             <pubDate>2019-11-12-10-49-48</pubDate>
-            <enclosure url="https://github.com/toggl/toggldesktop/releases/download/v7.4.1036/TogglDesktop-7_4_1036.dmg" sparkle:version="7.4.1036" length="17754918" type="application/octet-stream" sparkle:dsaSignature="MC4CFQCasYmrNsxAntXumXjNaQRZpIeVuQIVAM9h44VghThJOdG7ZOtpG2d02Bf5" />
+            <enclosure url="https://github.com/toggl-open-source/toggldesktop/releases/download/v7.4.1036/TogglDesktop-7_4_1036.dmg" sparkle:version="7.4.1036" length="17754918" type="application/octet-stream" sparkle:dsaSignature="MC4CFQCasYmrNsxAntXumXjNaQRZpIeVuQIVAM9h44VghThJOdG7ZOtpG2d02Bf5" />
             <description>
                 <![CDATA[
                     <ul>

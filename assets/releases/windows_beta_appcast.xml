@@ -8,7 +8,7 @@
         <item>
             <title>Version 7.4.475</title>
             <pubDate>2019-07-25-07-36-36</pubDate>
-            <enclosure url="https://github.com/toggl/toggldesktop/releases/download/v7.4.475/TogglDesktopInstaller-7.4.475.exe" sparkle:version="7.4.475" length="5414928" type="application/octet-stream" sparkle:dsaSignature="MC4CFQCsnHwcUb9BDbxIST7pcAzBLGUGIQIVAK/BoM2yLcbW8Yl8EfXQsJZsK7wX" />
+            <enclosure url="https://github.com/toggl-open-source/toggldesktop/releases/download/v7.4.475/TogglDesktopInstaller-7.4.475.exe" sparkle:version="7.4.475" length="5414928" type="application/octet-stream" sparkle:dsaSignature="MC4CFQCsnHwcUb9BDbxIST7pcAzBLGUGIQIVAK/BoM2yLcbW8Yl8EfXQsJZsK7wX" />
             <description>
                 <![CDATA[
                     <ul>
