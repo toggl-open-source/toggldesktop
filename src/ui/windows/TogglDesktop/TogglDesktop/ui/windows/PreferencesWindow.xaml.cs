@@ -278,11 +278,6 @@ namespace TogglDesktop
             return ret;
         }
 
-        private void cancelButtonClicked(object sender, RoutedEventArgs e)
-        {
-            this.Hide();
-        }
-
         #region saving
 
         private async void saveButtonClicked(object sender, RoutedEventArgs e)
