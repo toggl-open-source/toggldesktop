@@ -337,11 +337,11 @@
                     Style="{DynamicResource Toggl.AccentButton}"
                     Width="92"
                     Content="Save" />
-            <Button Click="cancelButtonClicked"
-                    Style="{DynamicResource Toggl.PrimaryButton}"
+            <Button Style="{DynamicResource Toggl.PrimaryButton}"
                     Width="92"
                     Margin="16,0,0,0"
-                    Content="Cancel"/>
+                    Content="Cancel"
+                    behaviors:ButtonBehavior.IsCloseWindowButton="True" />
         </StackPanel>
     </Grid>
 </mah:MetroWindow>
