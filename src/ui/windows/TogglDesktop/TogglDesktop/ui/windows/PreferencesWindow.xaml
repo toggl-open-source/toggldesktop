@@ -10,7 +10,6 @@
         xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
         mc:Ignorable="d" 
         Height="760" Width="480"
-        KeyDown="windowKeyDown"
         WindowStartupLocation="CenterOwner"
         Background="{DynamicResource Toggl.Background}"
         Title="Preferences">
@@ -27,6 +26,7 @@
     </mah:MetroWindow.Style>
     <i:Interaction.Behaviors>
         <behaviors:HideWindowOnClosingBehavior />
+        <behaviors:CloseWindowOnEscBehavior />
     </i:Interaction.Behaviors>
     <!-- content -->
     <Grid Background="{DynamicResource Toggl.Background}">
