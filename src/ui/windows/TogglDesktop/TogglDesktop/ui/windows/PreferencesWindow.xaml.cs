@@ -283,15 +283,6 @@ namespace TogglDesktop
             this.Hide();
         }
 
-        private void windowKeyDown(object sender, KeyEventArgs e)
-        {
-            if(e.Key == Key.Escape)
-            {
-                this.Hide();
-                e.Handled = true;
-            }
-        }
-
         #region saving
 
         private async void saveButtonClicked(object sender, RoutedEventArgs e)

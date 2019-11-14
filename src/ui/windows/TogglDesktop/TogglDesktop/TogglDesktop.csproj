@@ -206,6 +206,7 @@
       <DependentUpon>TaskEntry.xaml</DependentUpon>
     </Compile>
     <Compile Include="ui\Behaviors\ButtonBehavior.cs" />
+    <Compile Include="ui\Behaviors\CloseWindowOnEscBehavior.cs" />
     <Compile Include="ui\Behaviors\FocusBehavior.cs" />
     <Compile Include="ui\Behaviors\FocusParentWindowOnClosingBehavior.cs" />
     <Compile Include="ui\Behaviors\HideWindowOnClosingBehavior.cs" />
