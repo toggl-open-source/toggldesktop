@@ -56,15 +56,6 @@ namespace TogglDesktop
             this.updateText.Visibility = Visibility.Visible;
         }
 
-        private void windowKeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Escape)
-            {
-                this.Hide();
-                e.Handled = true;
-            }
-        }
-
         private void onReleaseChannelSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var value = this.releaseChannelComboBox.SelectedValue;
