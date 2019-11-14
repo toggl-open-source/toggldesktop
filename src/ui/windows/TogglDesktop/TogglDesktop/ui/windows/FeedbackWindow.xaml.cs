@@ -64,8 +64,22 @@ namespace TogglDesktop
             topicComboBox.Dispatcher.BeginInvoke(new Action(() => Keyboard.Focus(topicComboBox)), System.Windows.Threading.DispatcherPriority.Background);
         }
 
-        private void OnTopicComboBoxLostFocus(object sender, RoutedEventArgs e) => RefreshTopicComboBoxBinding();
-        private void OnFeedbackTextBoxLostFocus(object sender, RoutedEventArgs e) => RefreshFeedbackTextBoxBinding();
+        private void OnTopicComboBoxLostFocus(object sender, RoutedEventArgs e)
+        {
+            if (!topicComboBox.IsKeyboardFocusWithin)
+            {
+                RefreshTopicComboBoxBinding();
+            }
+        }
+
+        private void OnFeedbackTextBoxLostFocus(object sender, RoutedEventArgs e)
+        {
+            if (!feedbackTextBox.IsKeyboardFocusWithin && !topicComboBox.IsKeyboardFocusWithin)
+            {
+                RefreshFeedbackTextBoxBinding();
+            }
+        }
+
         private void RefreshFeedbackTextBoxBinding() => feedbackTextBox.GetBindingExpression(TextBox.TextProperty).UpdateSource();
         private void RefreshTopicComboBoxBinding() => topicComboBox.GetBindingExpression(ComboBox.SelectedItemProperty).UpdateSource();
     }
