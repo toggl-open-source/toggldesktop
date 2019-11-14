@@ -10,6 +10,7 @@
         Height="460" Width="300"
         KeyDown="windowKeyDown"
         Title="About"
+        Background="{DynamicResource Toggl.CardBackground}"
         WindowStartupLocation="CenterOwner"
         DataContext="{Binding RelativeSource={RelativeSource Self}}">
     <Window.Resources>
@@ -25,7 +26,7 @@
     <i:Interaction.Behaviors>
         <behaviors:HideWindowOnClosingBehavior />
     </i:Interaction.Behaviors>
-    <Grid Background="{DynamicResource Toggl.Background}">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
@@ -41,7 +42,7 @@
                        Style="{StaticResource Toggl.TitleText}"
                        Margin="0 0 0 10"/>
             <TextBlock Name="versionText" x:FieldModifier="private"
-                       Style="{StaticResource CaptionText}"
+                       Style="{StaticResource Toggl.CaptionText}"
                        Text="Version 1.33.7" HorizontalAlignment="Center"
                        Margin="0 0 0 16"/>
             
@@ -71,7 +72,7 @@
             </Canvas>
             <TextBlock HorizontalAlignment="Center"
                        Margin="0,8,0,0"
-                       Style="{StaticResource CaptionText}"
+                       Style="{StaticResource Toggl.CaptionText}"
                        Text="An open source project"/>
              <Label HorizontalAlignment="Center"
                        Margin="0 -2 0 20">
@@ -84,7 +85,7 @@
 
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top">
             <TextBlock Name="releaseChannelLabel" x:FieldModifier="private"
-                       Style="{StaticResource CaptionBlackText}"
+                       Style="{StaticResource Toggl.CaptionBlackText}"
                        Text="Release channel:"
                        Margin="8,4,8,32" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             <ComboBox Name="releaseChannelComboBox" x:FieldModifier="private"

@@ -10,7 +10,8 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TogglDesktop</RootNamespace>
     <AssemblyName>TogglDesktop</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <FileAlignment>512</FileAlignment>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
@@ -85,7 +86,6 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'StoreRelease|x64'">
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <OutputPath>bin\x64\StoreRelease\</OutputPath>
     <DefineConstants>TRACE;TOGGL_PRODUCTION_BUILD;MS_STORE</DefineConstants>
     <Optimize>true</Optimize>
@@ -96,7 +96,6 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'StoreRelease|x86'">
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <OutputPath>bin\x86\StoreRelease\</OutputPath>
     <DefineConstants>TRACE;TOGGL_PRODUCTION_BUILD;MS_STORE</DefineConstants>
     <Optimize>true</Optimize>
@@ -107,7 +106,6 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'StoreDebug|x64'">
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\x64\StoreDebug\</OutputPath>
     <DefineConstants>DEBUG;TRACE;MS_STORE</DefineConstants>
@@ -118,7 +116,6 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'StoreDebug|x86'">
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\x86\StoreDebug\</OutputPath>
     <DefineConstants>DEBUG;TRACE;MS_STORE</DefineConstants>
@@ -208,6 +205,9 @@
     <Compile Include="ui\AutoCompleteControls\TaskEntry.xaml.cs">
       <DependentUpon>TaskEntry.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ui\Behaviors\ButtonBehavior.cs" />
+    <Compile Include="ui\Behaviors\FocusBehavior.cs" />
+    <Compile Include="ui\Behaviors\FocusParentWindowOnClosingBehavior.cs" />
     <Compile Include="ui\Behaviors\HideWindowOnClosingBehavior.cs" />
     <Compile Include="ui\chrome\ChromelessWindow.cs" />
     <Compile Include="ui\controls\ProgressBar.xaml.cs">
@@ -227,7 +227,10 @@
       <DependentUpon>ReminderNotification.xaml</DependentUpon>
     </Compile>
     <Compile Include="ui\Converters\AndConverter.cs" />
+    <Compile Include="ui\Converters\BytesToStringConverter.cs" />
+    <Compile Include="ui\Converters\FileNameToIconConverter.cs" />
     <Compile Include="ui\Converters\StringToBrushConverter.cs" />
+    <Compile Include="ui\Converters\TrimPathConverter.cs" />
     <Compile Include="ui\Experiments\implementations\Experiment98.cs" />
     <Compile Include="ui\Experiments\implementations\Experiment98Screen2.xaml.cs">
       <DependentUpon>Experiment98Screen2.xaml</DependentUpon>
@@ -282,6 +285,7 @@
     </Compile>
     <Compile Include="ui\Tutorial\TutorialManager.cs" />
     <Compile Include="ui\Tutorial\TutorialScreen.cs" />
+    <Compile Include="ui\ViewModels\FeedbackWindowViewModel.cs" />
     <Compile Include="ui\views\IMainView.cs" />
     <Compile Include="ui\Experiments\ExperimentManager.cs" />
     <Compile Include="ui\views\OverlayView.xaml.cs">
@@ -653,6 +657,7 @@
     <Page Include="ui\Resources\DesignUpdate\Controls.xaml" />
     <Page Include="ui\Resources\DesignUpdate\Hyperlink.xaml" />
     <Page Include="ui\Resources\DesignUpdate\MahApps.Overrides.xaml" />
+    <Page Include="ui\Resources\DesignUpdate\TextBox.xaml" />
     <Page Include="ui\Resources\DesignUpdate\ToolWindow.xaml" />
     <Page Include="ui\Resources\DesignUpdate\Typography.xaml" />
     <Page Include="ui\Resources\DialogStyles.xaml">
@@ -937,6 +942,15 @@
     </PackageReference>
     <PackageReference Include="MahApps.Metro">
       <Version>1.6.5</Version>
+    </PackageReference>
+    <PackageReference Include="ReactiveUI.Validation">
+      <Version>1.4.1</Version>
+    </PackageReference>
+    <PackageReference Include="ReactiveUI.WPF">
+      <Version>10.5.7</Version>
+    </PackageReference>
+    <PackageReference Include="System.Reactive">
+      <Version>4.2.0</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
