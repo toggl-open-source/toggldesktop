@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:toggl="clr-namespace:TogglDesktop"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:behaviors="clr-namespace:TogglDesktop.Behaviors"
         xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
@@ -34,6 +33,7 @@
     </mah:MetroWindow.Style>
     <i:Interaction.Behaviors>
         <behaviors:HideWindowOnClosingBehavior />
+        <behaviors:FocusParentWindowOnClosingBehavior />
     </i:Interaction.Behaviors>
     <Grid Margin="20 30 20 20">
         <Grid.RowDefinitions>
@@ -49,8 +49,8 @@
                       mah:TextBoxHelper.Watermark="Please specify the topic"
                       ItemsSource="{Binding PossibleTopics}"
                       SelectedItem="{Binding Topic, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"
-                      Validation.Error="OnTopicComboBoxValidationError"
-                      LostFocus="OnTopicComboBoxLostFocus">
+                      LostFocus="OnTopicComboBoxLostFocus"
+                      behaviors:FocusBehavior.IsFocused="{Binding IsTopicFocused}">
             </ComboBox>
         </StackPanel>
 
@@ -62,8 +62,8 @@
                  TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"
                  AcceptsReturn="True"
                  Text="{Binding FeedbackText, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True}"
-                 Validation.Error="OnFeedbackTextBoxValidationError"
-                 LostFocus="OnFeedbackTextBoxLostFocus"/>
+                 LostFocus="OnFeedbackTextBoxLostFocus"
+                 behaviors:FocusBehavior.IsFocused="{Binding IsFeedbackTextFocused}"/>
 
         <Grid Grid.Row="2">
             <Grid.RowDefinitions>
@@ -138,13 +138,12 @@
                 <Button Style="{DynamicResource Toggl.AccentButton}"
                         Width="92"
                         Content="Send"
-                        Command="{Binding SendCommand}" />
+                        Command="{Binding SendCommand}"/>
                 <Button Style="{DynamicResource Toggl.PrimaryButton}"
                         Width="92"
                         Margin="8,0,0,0"
-                        Click="OnCancelClick"
-                        Content="Cancel" />
-
+                        Content="Cancel"
+                        behaviors:ButtonBehavior.IsCloseWindowButton="True" />
             </StackPanel>
         </Grid>
     </Grid>

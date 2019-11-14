@@ -1,8 +1,6 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 using TogglDesktop.ViewModels;
 
 namespace TogglDesktop
@@ -32,12 +30,6 @@ namespace TogglDesktop
             ViewModel = new FeedbackWindowViewModel(RefreshValidationBindings, OnFeedbackSent);
         }
 
-        private void OnCancelClick(object sender, RoutedEventArgs e)
-        {
-            this.ResetState();
-            this.Hide();
-        }
-
         private void RefreshValidationBindings()
         {
             RefreshTopicComboBoxBinding();
@@ -47,24 +39,7 @@ namespace TogglDesktop
         private void OnFeedbackSent()
         {
             MessageBox.Show(this, "Our support team will be notified.", "Feedback sent successfully!");
-            this.ResetState();
-            this.Hide();
-        }
-
-        private void OnFeedbackTextBoxValidationError(object sender, ValidationErrorEventArgs e)
-        {
-            feedbackTextBox.Dispatcher.BeginInvoke(new Action(() =>
-            {
-                if (!Equals(Keyboard.FocusedElement, topicComboBox))
-                {
-                    Keyboard.Focus(feedbackTextBox);
-                }
-            }), System.Windows.Threading.DispatcherPriority.Background);
-        }
-
-        private void OnTopicComboBoxValidationError(object sender, ValidationErrorEventArgs e)
-        {
-            topicComboBox.Dispatcher.BeginInvoke(new Action(() => Keyboard.Focus(topicComboBox)), System.Windows.Threading.DispatcherPriority.Background);
+            this.Close();
         }
 
         private void OnTopicComboBoxLostFocus(object sender, RoutedEventArgs e)
