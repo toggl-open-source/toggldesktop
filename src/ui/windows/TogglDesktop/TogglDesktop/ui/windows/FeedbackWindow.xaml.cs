@@ -53,10 +53,13 @@ namespace TogglDesktop
 
         private void OnFeedbackTextBoxValidationError(object sender, ValidationErrorEventArgs e)
         {
-            if (!Equals(Keyboard.FocusedElement, topicComboBox))
+            feedbackTextBox.Dispatcher.BeginInvoke(new Action(() =>
             {
-                feedbackTextBox.Dispatcher.BeginInvoke(new Action(() => Keyboard.Focus(feedbackTextBox)), System.Windows.Threading.DispatcherPriority.Background);
-            }
+                if (!Equals(Keyboard.FocusedElement, topicComboBox))
+                {
+                    Keyboard.Focus(feedbackTextBox);
+                }
+            }), System.Windows.Threading.DispatcherPriority.Background);
         }
 
         private void OnTopicComboBoxValidationError(object sender, ValidationErrorEventArgs e)
