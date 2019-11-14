@@ -97,7 +97,7 @@
                            Foreground="White"
                            TextWrapping="Wrap"
                            Padding="12 3 12 5"
-                           Text="Server connection error. Feedback sending failed."
+                           Text="Something went wrong. Please try again."
                            Visibility="{Binding IsSendingError, Converter={StaticResource BooleanToVisibilityConverter}}" />
                 <Border Margin="0 8"
                         Background="{DynamicResource AttachedFileBackground}"
