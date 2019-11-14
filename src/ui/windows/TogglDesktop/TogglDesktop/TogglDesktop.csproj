@@ -205,6 +205,9 @@
     <Compile Include="ui\AutoCompleteControls\TaskEntry.xaml.cs">
       <DependentUpon>TaskEntry.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ui\Behaviors\ButtonBehavior.cs" />
+    <Compile Include="ui\Behaviors\FocusBehavior.cs" />
+    <Compile Include="ui\Behaviors\FocusParentWindowOnClosingBehavior.cs" />
     <Compile Include="ui\Behaviors\HideWindowOnClosingBehavior.cs" />
     <Compile Include="ui\chrome\ChromelessWindow.cs" />
     <Compile Include="ui\controls\InAppNotification.xaml.cs">

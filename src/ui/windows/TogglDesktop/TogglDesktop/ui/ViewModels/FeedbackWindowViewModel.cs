@@ -12,12 +12,16 @@ namespace TogglDesktop.ViewModels
     {
         private readonly Action _refreshValidationBindings;
         private readonly Action _onFeedbackSent;
+        private readonly ValidationHelper _topicValidation;
+        private readonly ValidationHelper _feedbackTextValidation;
         private string _topic;
         private string _feedbackText;
         private string _attachedFileName;
-        private bool _isFileSizeError = false;
-        private bool _isFileAttached = false;
-        private bool _isSendingError = false;
+        private bool _isFileSizeError;
+        private bool _isFileAttached;
+        private bool _isSendingError;
+        private bool _isTopicFocused;
+        private bool _isFeedbackTextFocused;
         private long _attachedFileSize;
 
         public FeedbackWindowViewModel(Action refreshValidationBindings, Action onFeedbackSent)
@@ -27,7 +31,15 @@ namespace TogglDesktop.ViewModels
             SendCommand = ReactiveCommand.Create(Send);
             AttachFileCommand = ReactiveCommand.Create(AttachFile);
             RemoveFileCommand = ReactiveCommand.Create(RemoveFile);
-            ApplyValidationRules();
+
+            _topicValidation = this.ValidationRule(
+                x => x.Topic,
+                topic => !string.IsNullOrEmpty(topic),
+                "Please choose a topic");
+            _feedbackTextValidation = this.ValidationRule(
+                x => x.FeedbackText,
+                feedbackText => !string.IsNullOrEmpty(feedbackText),
+                "Please add your feedback");
         }
 
         public string[] PossibleTopics { get; } = {"Report bug", "Suggest a feature", "Other"};
@@ -74,6 +86,18 @@ namespace TogglDesktop.ViewModels
             set => this.RaiseAndSetIfChanged(ref _isFileSizeError, value);
         }
 
+        public bool IsTopicFocused
+        {
+            get => _isTopicFocused;
+            set => this.RaiseAndSetIfChanged(ref _isTopicFocused, value);
+        }
+
+        public bool IsFeedbackTextFocused
+        {
+            get => _isFeedbackTextFocused;
+            set => this.RaiseAndSetIfChanged(ref _isFeedbackTextFocused, value);
+        }
+
         public ReactiveCommand<Unit, Unit> SendCommand { get; }
 
         public ReactiveCommand<Unit, Unit> AttachFileCommand { get; }
@@ -84,11 +108,22 @@ namespace TogglDesktop.ViewModels
         {
             IsFileSizeError = false;
             IsSendingError = false;
+            IsTopicFocused = false;
+            IsFeedbackTextFocused = false;
 
             _refreshValidationBindings();
 
             if (this.HasErrors)
             {
+                if (!_topicValidation.IsValid)
+                {
+                    IsTopicFocused = true;
+                }
+                else if (!_feedbackTextValidation.IsValid)
+                {
+                    IsFeedbackTextFocused = true;
+                }
+
                 return;
             }
 
@@ -131,18 +166,6 @@ namespace TogglDesktop.ViewModels
             AttachedFileName = default;
             AttachedFileSize = default;
             IsSendingError = false;
-        }
-
-        private void ApplyValidationRules()
-        {
-            this.ValidationRule(
-                x => x.Topic,
-                topic => !string.IsNullOrEmpty(topic),
-                "Please choose a topic");
-            this.ValidationRule(
-                x => x.FeedbackText,
-                feedbackText => !string.IsNullOrEmpty(feedbackText),
-                "Please add your feedback");
         }
     }
 }
