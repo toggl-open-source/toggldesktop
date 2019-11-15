@@ -14,6 +14,7 @@
 #import "AutocompleteDataSource.h"
 #import "NSCustomComboBox.h"
 #import <MASShortcut/Shortcut.h>
+#import "TogglDesktop-Swift.h"
 
 NSString *const kPreferenceGlobalShortcutShowHide = @"TogglDesktopGlobalShortcutShowHide";
 NSString *const kPreferenceGlobalShortcutStartStop = @"TogglDesktopGlobalShortcutStartStop";
@@ -355,6 +356,12 @@ const int kUseProxyToConnectToToggl = 2;
 	BOOL record_timeline = [Utils stateToBool:[self.recordTimelineCheckbox state]];
 
 	toggl_timeline_toggle_recording(ctx, record_timeline);
+
+	// Try to grant permission
+	if (record_timeline)
+	{
+		[ObjcSystemPermissionManager tryGrantScreenRecordingPermission];
+	}
 }
 
 - (IBAction)menubarTimerCheckboxChanged:(id)sender
