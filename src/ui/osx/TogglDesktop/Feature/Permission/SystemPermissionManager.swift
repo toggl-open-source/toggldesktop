@@ -39,7 +39,7 @@ final class SystemPermissionManager {
         }
     }
 
-    func grant(_ permission: Permission, showInstruction: Bool) {
+    func grant(_ permission: Permission) {
         switch permission {
         case .screenRecording:
             // Show alert to instruct the user to manually grant the permission
