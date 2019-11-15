@@ -18,6 +18,14 @@
     <Style TargetType="TextBlock" x:Key="Toggl.BodyText" BasedOn="{StaticResource Toggl.Text}">
         <Setter Property="FontSize" Value="14" />
     </Style>
+    <Style TargetType="TextBlock" x:Key="Toggl.BodyText.Hoverable" BasedOn="{StaticResource Toggl.BodyText}">
+        <Setter Property="Foreground" Value="{DynamicResource Toggl.SecondaryTextBrush}" />
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Foreground" Value="{DynamicResource Toggl.PrimaryTextBrush}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
     <Style TargetType="TextBlock" x:Key="Toggl.CaptionBlackText" BasedOn="{StaticResource Toggl.Text}">
         <Setter Property="FontSize" Value="12" />
     </Style>

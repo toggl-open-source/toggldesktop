@@ -63,21 +63,19 @@
 
     </Style>
 
-    <Style TargetType="toggl:ExtendedTextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+    <Style TargetType="toggl:ExtendedTextBox" BasedOn="{StaticResource {x:Type TextBox}}" />
 
-    </Style>
-
-    <Style TargetType="TextBlock">
-        <Setter Property="FontFamily" Value="{StaticResource DefaultFont}" />
-        <Setter Property="FontSize" Value="13.3" />
-        <Setter Property="Foreground" Value="#252525"/>
-        <Setter Property="UseLayoutRounding" Value="True" />
-        <Style.Triggers>
-            <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="Foreground" Value="#B2252525"/>
-            </Trigger>
-        </Style.Triggers>
-    </Style>
+        <!-- <Style TargetType="TextBlock"> -->
+    <!--     <Setter Property="FontFamily" Value="{StaticResource DefaultFont}" /> -->
+    <!--     <Setter Property="FontSize" Value="13.3" /> -->
+    <!--     <Setter Property="Foreground" Value="#252525"/> -->
+    <!--     <Setter Property="UseLayoutRounding" Value="True" /> -->
+    <!--     <Style.Triggers> -->
+    <!--         <Trigger Property="IsEnabled" Value="False"> -->
+    <!--             <Setter Property="Foreground" Value="#B2252525"/> -->
+    <!--         </Trigger> -->
+    <!--     </Style.Triggers> -->
+    <!-- </Style> -->
 
     <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type Control}}">
         <Setter Property="BorderThickness" Value="1" />
