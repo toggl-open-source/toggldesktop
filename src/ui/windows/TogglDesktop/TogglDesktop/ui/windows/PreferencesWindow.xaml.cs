@@ -199,18 +199,18 @@ namespace TogglDesktop
         private async Task UpdateLaunchOnStartupCheckboxAsync()
         {
             var isEnabled = await IsRunOnStartupEnabled();
-            this.TryBeginInvoke(() =>
+            this.TryBeginInvoke((bool? isRunOnStartupEnabled, CheckBox checkBox) =>
             {
-                if (isEnabled.HasValue == false)
+                if (isRunOnStartupEnabled.HasValue == false)
                 {
-                    launchOnStartupCheckBox.Visibility = Visibility.Collapsed;
+                    checkBox.Visibility = Visibility.Collapsed;
                 }
                 else
                 {
-                    launchOnStartupCheckBox.Visibility = Visibility.Visible;
-                    launchOnStartupCheckBox.IsChecked = isEnabled.Value;
+                    checkBox.Visibility = Visibility.Visible;
+                    checkBox.IsChecked = isRunOnStartupEnabled.Value;
                 }
-            });
+            }, isEnabled, launchOnStartupCheckBox);
         }
 
         private static void trySetHotKey(Func<string> getKeyCode, Func<ModifierKeys> getModifiers, ShortcutRecorder recorder)
