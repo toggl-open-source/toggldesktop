@@ -8,9 +8,14 @@
 
 import Foundation
 
+// Objc bridge
 @objc final class ObjcSystemPermissionManager: NSObject {
 
     @objc class func tryGrantScreenRecordingPermission() {
         SystemPermissionManager.shared.grant(.screenRecording)
+    }
+
+    @objc class func isScreenRecordingPermissionGranted() -> Bool {
+        return SystemPermissionManager.shared.isGranted(.screenRecording)
     }
 }

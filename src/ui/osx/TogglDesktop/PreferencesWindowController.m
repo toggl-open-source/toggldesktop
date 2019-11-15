@@ -74,6 +74,7 @@ typedef enum : NSUInteger
 @property (weak) IBOutlet NSTabView *tabView;
 @property (weak) IBOutlet NSButton *showTouchBarButton;
 @property (weak) IBOutlet NSLayoutConstraint *bottomContainerHeight;
+@property (weak) IBOutlet NSButton *screenRecordingPermissionBtn;
 
 @property (nonatomic, assign) NSInteger selectedProxyIndex;
 @property (nonatomic, strong) NSArray<AutotrackerRuleItem *> *rules;
@@ -191,6 +192,9 @@ extern void *ctx;
 	[self.reminderMinutesTextField setDelegate:self];
 
 	self.renderTimeline.hidden = YES;
+
+	// Update the permission state
+	[self updatePermissionState];
 }
 
 - (void)enableLoggedInUserControls
@@ -757,6 +761,16 @@ const int kUseProxyToConnectToToggl = 2;
 - (IBAction)tabSegmentOnChange:(id)sender
 {
 	[self.tabView selectTabViewItemAtIndex:self.tabSegment.selectedSegment];
+}
+
+- (IBAction)screenRecordingPermissionOnTap:(id)sender
+{
+	[ObjcSystemPermissionManager tryGrantScreenRecordingPermission];
+}
+
+- (void)updatePermissionState
+{
+	[self.screenRecordingPermissionBtn setHidden:![ObjcSystemPermissionManager isScreenRecordingPermissionGranted]];
 }
 
 @end
