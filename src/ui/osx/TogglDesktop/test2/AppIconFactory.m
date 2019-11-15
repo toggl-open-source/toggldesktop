@@ -20,7 +20,7 @@
 			icon = [NSImage imageNamed:@"AppIconActive"];
 			break;
 		case AppIconTypeDefault :
-			icon = [NSImage imageNamed:NSImageNameApplicationIcon];
+			icon = [NSImage imageNamed:@"AppIcon"];
 			break;
 	}
 
