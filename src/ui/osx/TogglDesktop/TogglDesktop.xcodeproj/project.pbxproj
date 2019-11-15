@@ -223,6 +223,7 @@
 		BAAF56A42223E19C003D0D73 /* TimeDecoratorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BAAF56A32223E19C003D0D73 /* TimeDecoratorView.xib */; };
 		BAB0027F22731248005ECC93 /* DayLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB0027E22731248005ECC93 /* DayLabel.swift */; };
 		BAB0029F2273125C005ECC93 /* DayLabel.xib in Resources */ = {isa = PBXBuildFile; fileRef = BAB0029E2273125C005ECC93 /* DayLabel.xib */; };
+		BAB508E2237E8FBC00D3D468 /* SystemPermissionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB508E1237E8FBC00D3D468 /* SystemPermissionManager.swift */; };
 		BAB818C3228D5847008C2367 /* DescriptionAutoCompleteTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB818C2228D5847008C2367 /* DescriptionAutoCompleteTextField.swift */; };
 		BAB818E3228D594D008C2367 /* DescriptionTimeEntryStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB818E2228D594D008C2367 /* DescriptionTimeEntryStorage.swift */; };
 		BAB818E5228D5A17008C2367 /* DescriptionDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB818E4228D5A16008C2367 /* DescriptionDataSource.swift */; };
@@ -875,6 +876,7 @@
 		BAAF56A32223E19C003D0D73 /* TimeDecoratorView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimeDecoratorView.xib; sourceTree = "<group>"; };
 		BAB0027E22731248005ECC93 /* DayLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayLabel.swift; sourceTree = "<group>"; };
 		BAB0029E2273125C005ECC93 /* DayLabel.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DayLabel.xib; sourceTree = "<group>"; };
+		BAB508E1237E8FBC00D3D468 /* SystemPermissionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemPermissionManager.swift; sourceTree = "<group>"; };
 		BAB818C2228D5847008C2367 /* DescriptionAutoCompleteTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptionAutoCompleteTextField.swift; sourceTree = "<group>"; };
 		BAB818E2228D594D008C2367 /* DescriptionTimeEntryStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptionTimeEntryStorage.swift; sourceTree = "<group>"; };
 		BAB818E4228D5A16008C2367 /* DescriptionDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptionDataSource.swift; sourceTree = "<group>"; };
@@ -1465,6 +1467,7 @@
 		BA712EAF21BF904E00A2D8DD /* Feature */ = {
 			isa = PBXGroup;
 			children = (
+				BAB508E0237E8FAB00D3D468 /* Permission */,
 				BAF3ACCA2341F86300E41B33 /* TouchBar */,
 				BA5B0E2E2330E1A8008D1DED /* GoogleLogin */,
 				BA13D1E42269B4F600EB3833 /* Calendar */,
@@ -1553,6 +1556,14 @@
 				BA9C2E07224C854C002AD2A1 /* ProjectColor.swift */,
 			);
 			path = Project;
+			sourceTree = "<group>";
+		};
+		BAB508E0237E8FAB00D3D468 /* Permission */ = {
+			isa = PBXGroup;
+			children = (
+				BAB508E1237E8FBC00D3D468 /* SystemPermissionManager.swift */,
+			);
+			path = Permission;
 			sourceTree = "<group>";
 		};
 		BAB818E7228D5A66008C2367 /* Description */ = {
@@ -2209,6 +2220,7 @@
 				BA7D334F224897FC00B953A8 /* ProjectHeaderCellView.swift in Sources */,
 				BAE49CAE222FC1C900773814 /* TimerContainerBox.swift in Sources */,
 				BA13D20A2269BA6500EB3833 /* CalendarDataSource.swift in Sources */,
+				BAB508E2237E8FBC00D3D468 /* SystemPermissionManager.swift in Sources */,
 				BA053659225DDDBB00C26E1F /* CustomFocusRingButton.swift in Sources */,
 				BA7D335E2248B48000B953A8 /* AutoCompleteTextField.swift in Sources */,
 				BA763B7B2268601700DC245A /* PopoverRootView.swift in Sources */,
