@@ -42,14 +42,16 @@ final class SystemPermissionManager {
     func grant(_ permission: Permission) {
         switch permission {
         case .screenRecording:
-            // Show alert to instruct the user to manually grant the permission
-            if isAlreadyRequestSystemPermission(permission) {
-                presentScreenRecordingAlert {
-                    tryOpeningSystemPreference(for: permission)
+            if #available(OSX 10.15, *) {
+                // Show alert to instruct the user to manually grant the permission
+                if isAlreadyRequestSystemPermission(permission) {
+                    presentScreenRecordingAlert {
+                        tryOpeningSystemPreference(for: permission)
+                    }
+                } else {
+                    // Trigger the system alert once
+                    triggerScreenRecordingPermissionAlert()
                 }
-            } else {
-                // Trigger the system alert once
-                triggerScreenRecordingPermissionAlert()
             }
         }
     }
