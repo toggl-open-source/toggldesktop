@@ -11,7 +11,7 @@
         mc:Ignorable="d" 
         Height="760" Width="480"
         WindowStartupLocation="CenterOwner"
-        Background="{DynamicResource Toggl.Background}"
+        Background="{DynamicResource Toggl.CardBackground}"
         Title="Preferences">
     <Window.Resources>
         <ResourceDictionary>
@@ -27,9 +27,10 @@
     <i:Interaction.Behaviors>
         <behaviors:HideWindowOnClosingBehavior />
         <behaviors:CloseWindowOnEscBehavior />
+        <behaviors:FocusParentWindowOnClosingBehavior />
     </i:Interaction.Behaviors>
     <!-- content -->
-    <Grid Background="{DynamicResource Toggl.Background}">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
@@ -332,16 +333,18 @@
         </TabControl>
 
         <!-- save/cancel -->
-        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="20,14">
-            <Button Click="saveButtonClicked"
-                    Style="{DynamicResource Toggl.AccentButton}"
-                    Width="92"
-                    Content="Save" />
-            <Button Style="{DynamicResource Toggl.PrimaryButton}"
-                    Width="92"
-                    Margin="16,0,0,0"
-                    Content="Cancel"
-                    behaviors:ButtonBehavior.IsCloseWindowButton="True" />
-        </StackPanel>
+        <Border Grid.Row="1" BorderThickness="0 1 0 0" BorderBrush="{DynamicResource Toggl.DisabledElementBrush}">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="20,14">
+                <Button Click="saveButtonClicked"
+                        Style="{DynamicResource Toggl.AccentButton}"
+                        Width="92"
+                        Content="Save" />
+                <Button Style="{DynamicResource Toggl.PrimaryButton}"
+                        Width="92"
+                        Margin="16,0,0,0"
+                        Content="Cancel"
+                        behaviors:ButtonBehavior.IsCloseWindowButton="True" />
+            </StackPanel>
+        </Border>
     </Grid>
 </mah:MetroWindow>
