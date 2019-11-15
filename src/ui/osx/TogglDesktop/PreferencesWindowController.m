@@ -27,7 +27,7 @@ typedef enum : NSUInteger
 	TabIndexReminder
 } TabIndex;
 
-@interface PreferencesWindowController () <NSTextFieldDelegate, NSTableViewDataSource, NSComboBoxDataSource, NSComboBoxDelegate>
+@interface PreferencesWindowController () <NSTextFieldDelegate, NSTableViewDataSource, NSComboBoxDataSource, NSComboBoxDelegate, NSWindowDelegate>
 @property (weak) IBOutlet NSButton *stopOnShutdownCheckbox;
 @property (weak) IBOutlet NSTextField *hostTextField;
 @property (weak) IBOutlet NSTextField *portTextField;
@@ -141,6 +141,7 @@ extern void *ctx;
 	[super windowDidLoad];
 
 	// Clean window titlebar
+	self.window.delegate = self;
 	self.window.titleVisibility = NSWindowTitleHidden;
 	self.window.titlebarAppearsTransparent = YES;
 	self.window.styleMask |= NSFullSizeContentViewWindowMask;
@@ -192,9 +193,6 @@ extern void *ctx;
 	[self.reminderMinutesTextField setDelegate:self];
 
 	self.renderTimeline.hidden = YES;
-
-	// Update the permission state
-	[self updatePermissionState];
 }
 
 - (void)enableLoggedInUserControls
@@ -773,6 +771,11 @@ const int kUseProxyToConnectToToggl = 2;
 	BOOL isEnabled = [ObjcSystemPermissionManager isScreenRecordingPermissionGranted];
 
 	[self.screenRecordingPermissionBtn setHidden:isEnabled];
+}
+
+- (void)windowDidBecomeKey:(NSNotification *)notification
+{
+	[self updatePermissionState];
 }
 
 @end
