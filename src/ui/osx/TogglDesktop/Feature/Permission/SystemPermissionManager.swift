@@ -40,9 +40,13 @@ final class SystemPermissionManager {
     }
 
     func grant(_ permission: Permission) {
+        // Skip if it's already granted
+        guard !isGranted(permission) else { return }
+
         switch permission {
         case .screenRecording:
             if #available(OSX 10.15, *) {
+
                 // Show alert to instruct the user to manually grant the permission
                 if isAlreadyRequestSystemPermission(permission) {
                     presentScreenRecordingAlert {
@@ -105,7 +109,7 @@ extension SystemPermissionManager {
     private func canRecordScreen() -> Bool {
         // If we are able to extract the kCGWindowName from all windows
         // it means user enabled the Screen Recording permission
-        guard let windows = CGWindowListCopyWindowInfo([.optionAll], kCGNullWindowID) as? [[String: AnyObject]] else { return false }
+        guard let windows = CGWindowListCopyWindowInfo([.optionOnScreenOnly], kCGNullWindowID) as? [[String: AnyObject]] else { return false }
         return windows.allSatisfy({ window in
             let windowName = window[kCGWindowName as String] as? String
             return windowName != nil

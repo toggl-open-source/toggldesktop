@@ -770,7 +770,9 @@ const int kUseProxyToConnectToToggl = 2;
 
 - (void)updatePermissionState
 {
-	[self.screenRecordingPermissionBtn setHidden:![ObjcSystemPermissionManager isScreenRecordingPermissionGranted]];
+	BOOL isEnabled = [ObjcSystemPermissionManager isScreenRecordingPermissionGranted];
+
+	[self.screenRecordingPermissionBtn setHidden:isEnabled];
 }
 
 @end
