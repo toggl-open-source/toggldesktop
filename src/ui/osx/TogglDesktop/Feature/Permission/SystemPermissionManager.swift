@@ -33,7 +33,10 @@ final class SystemPermissionManager {
         switch permission {
         case .screenRecording:
             if #available(OSX 10.15, *) {
-                return canRecordScreen()
+                if isAlreadyRequestSystemPermission(permission) {
+                    return canRecordScreen()
+                }
+                return false
             }
             return true // macOS < 10.15 are granted by default
         }
@@ -106,14 +109,31 @@ extension SystemPermissionManager {
 
 extension SystemPermissionManager {
 
+    // CGWindowListCopyWindowInfo is not reliable because some windows has the name even the permission is OFF
+    // Reliable way to check whether the permission is enable or not
+    // However it would trigger the system alert too
     private func canRecordScreen() -> Bool {
-        // If we are able to extract the kCGWindowName from all windows
-        // it means user enabled the Screen Recording permission
-        guard let windows = CGWindowListCopyWindowInfo([.optionOnScreenOnly], kCGNullWindowID) as? [[String: AnyObject]] else { return false }
-        return windows.allSatisfy({ window in
-            let windowName = window[kCGWindowName as String] as? String
-            return windowName != nil
-        })
+        let mainDisplay    = CGMainDisplayID()
+        let displayBounds  = CGDisplayBounds(mainDisplay)
+        let recordingQueue = DispatchQueue.global(qos: .background)
+        let displayStreamProps : [CFString : Any] = [
+            CGDisplayStream.preserveAspectRatio: kCFBooleanTrue,
+            CGDisplayStream.showCursor:          kCFBooleanTrue,
+            CGDisplayStream.minimumFrameTime:    60,
+        ]
+
+        let displayStream = CGDisplayStream(
+            dispatchQueueDisplay: mainDisplay,
+            outputWidth:          Int(displayBounds.width),
+            outputHeight:         Int(displayBounds.height),
+            pixelFormat:          Int32(kCVPixelFormatType_32BGRA),
+            properties:           displayStreamProps as CFDictionary,
+            queue:                recordingQueue,
+            handler: { status, displayTime, frameSurface, updateRef in
+                print("is only called once")
+        }
+        )
+        return displayStream != nil
     }
 
     private func triggerScreenRecordingPermissionAlert() {
@@ -135,7 +155,7 @@ extension SystemPermissionManager {
 private final class CoreGraphicsApis {
 
     static func windows() -> [[String: AnyObject]]? {
-        return (CGWindowListCopyWindowInfo([.optionAll], kCGNullWindowID) as? [[String: AnyObject]])
+        return (CGWindowListCopyWindowInfo([.optionOnScreenOnly], kCGNullWindowID) as? [[String: AnyObject]])
     }
 
     static func value<T>(_ cgWindow: NSDictionary, _ key: CFString, _ fallback: T) -> T {
