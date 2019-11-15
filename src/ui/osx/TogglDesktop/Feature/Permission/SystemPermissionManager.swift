@@ -12,6 +12,13 @@ final class SystemPermissionManager {
 
     enum Permission {
         case screenRecording
+
+        var urlScheme: String {
+            switch self {
+            case .screenRecording:
+                return "x-apple.systempreferences:com.apple.preference.security?Privacy_ScreenCapture"
+            }
+        }
     }
 
     private struct Constants {
@@ -25,7 +32,10 @@ final class SystemPermissionManager {
     func isGranted(_ permission: Permission) -> Bool {
         switch permission {
         case .screenRecording:
-            return canRecordScreen()
+            if #available(OSX 10.15, *) {
+                return canRecordScreen()
+            }
+            return true // macOS < 10.15 are granted by default
         }
     }
 
@@ -33,18 +43,23 @@ final class SystemPermissionManager {
         switch permission {
         case .screenRecording:
             // Show alert to instruct the user to manually grant the permission
-            if isAlreadyPresentPermissionAlert(permission) {
-
+            if isAlreadyRequestSystemPermission(permission) {
+                presentScreenRecordingAlert {
+                    tryOpeningSystemPreference(for: permission)
+                }
             } else {
-
+                // Trigger the system alert once
+                triggerScreenRecordingPermissionAlert()
             }
         }
     }
 }
 
+// MARK: Private
+
 extension SystemPermissionManager {
 
-    private func buildAlert() {
+    private func presentScreenRecordingAlert(_ complete: () -> Void) {
         let alert = NSAlert()
         alert.messageText = "Screen Recording permission not granted!"
         alert.informativeText = "To get the Windows Name properly for the Timeline, TogglDesktop needs to be granted the Screen Recording permission in Security & Privacy in System Preferences .\n\nPlease open System Preferences -> Security & Privacy -> Privacy Tab -> Select Screen Recording and enable TogglDesktop app."
@@ -54,14 +69,11 @@ extension SystemPermissionManager {
 
         let result = alert.runModal()
         if result == .alertFirstButtonReturn {
-            if let url = URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_ScreenCapture") {
-                NSWorkspace.shared.open(url)
-            }
-
+            complete()
         }
     }
 
-    private func isAlreadyPresentPermissionAlert(_ permission: Permission) -> Bool {
+    private func isAlreadyRequestSystemPermission(_ permission: Permission) -> Bool {
         switch permission {
         case .screenRecording:
             return UserDefaults.standard.bool(forKey: Constants.ScreenRecordingPermissionGranted)
@@ -69,12 +81,18 @@ extension SystemPermissionManager {
     }
 
     private func tryOpeningSystemPreference(for permission: Permission) {
-        if let url = URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_ScreenCapture") {
+
+        // Open the Screen Recording tab
+        // https://stackoverflow.com/a/48139877/3127477
+        if let url = URL(string: permission.urlScheme) {
             NSWorkspace.shared.open(url)
-        } else {
-            let url = URL(fileURLWithPath: "/System/Library/PreferencePanes/Security.prefPane")
-            NSWorkspace.shared.open(url)
+            return
         }
+
+        // Old-fashioned way
+        // https://github.com/cho45/KeyCast/blob/master/KeyCast/Accessibility.swift
+        let url = URL(fileURLWithPath: "/System/Library/PreferencePanes/Security.prefPane")
+        NSWorkspace.shared.open(url)
     }
 }
 
@@ -85,7 +103,7 @@ extension SystemPermissionManager {
     private func canRecordScreen() -> Bool {
         // If we are able to extract the kCGWindowName from all windows
         // it means user enabled the Screen Recording permission
-        guard let windows = CGWindowListCopyWindowInfo([.optionOnScreenOnly], kCGNullWindowID) as? [[String: AnyObject]] else { return false }
+        guard let windows = CGWindowListCopyWindowInfo([.optionAll], kCGNullWindowID) as? [[String: AnyObject]] else { return false }
         return windows.allSatisfy({ window in
             let windowName = window[kCGWindowName as String] as? String
             return windowName != nil
@@ -93,12 +111,16 @@ extension SystemPermissionManager {
     }
 
     private func triggerScreenRecordingPermissionAlert() {
-        guard let firstWindow = CoreGraphicsApis.windows()?.last else { return }
-        let windowNumber = CoreGraphicsApis.value(firstWindow, kCGWindowNumber, UInt32(0))
+        guard let window = CoreGraphicsApis.windows()?.last else { return }
+        let windowNumber = (window[kCGWindowNumber as String] as? CGWindowID) ?? UInt32(0)
 
         // There is no func to explicit trigger the permission alert
         // Have to execute CGWindowListCreateImage -> OS will present the alert once
         CoreGraphicsApis.image(windowNumber)
+
+        // Save
+        UserDefaults.standard.set(true, forKey: Constants.ScreenRecordingPermissionGranted)
+        UserDefaults.standard.synchronize()
     }
 }
 
@@ -106,8 +128,8 @@ extension SystemPermissionManager {
 
 private final class CoreGraphicsApis {
 
-    static func windows() -> [NSDictionary]? {
-        return (CGWindowListCopyWindowInfo([.optionAll], kCGNullWindowID) as? [NSDictionary])
+    static func windows() -> [[String: AnyObject]]? {
+        return (CGWindowListCopyWindowInfo([.optionAll], kCGNullWindowID) as? [[String: AnyObject]])
     }
 
     static func value<T>(_ cgWindow: NSDictionary, _ key: CFString, _ fallback: T) -> T {
