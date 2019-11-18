@@ -39,7 +39,71 @@
         <!-- tabbed content -->
         <TabControl Grid.Row="0" TabStripPlacement="Top">
             <TabItem Header="General">
-                <StackPanel Margin="11">
+                <StackPanel Margin="24 32 24 48">
+                    <TextBlock Style="{DynamicResource Toggl.TitleText}" Text="Set up shortcuts" />
+                    <Grid Margin="0 16 0 0" HorizontalAlignment="Left">
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="200" />
+                            <ColumnDefinition Width="160"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" Text="Show/Hide Toggl application" />
+                        <TextBlock Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" Text="Continue/Stop timer" />
+
+                        <!-- <mah:HotKeyBox Grid.Column="1" Grid.Row="0" -->
+                        <!--                Margin="16 0 0 0" -->
+                        <!--                AreModifierKeysRequired="True" -->
+                        <!--                mah:TextBoxHelper.Watermark="Record shortcut" /> -->
+                        <!-- -->
+                        <!-- <mah:HotKeyBox Grid.Column="1" Grid.Row="1" -->
+                        <!--                Margin="16 8 0 0" -->
+                        <!--                AreModifierKeysRequired="True" -->
+                        <!--                mah:TextBoxHelper.Watermark="Record shortcut" /> -->
+
+
+                        <Border Grid.Column="1" Grid.Row="0"
+                                        Style="{StaticResource ShortcutRecordContainer}"
+                                        Margin="16 0 0 0">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Button Name="showHideShortcutRecordButton" x:FieldModifier="private"
+                                                Grid.Column="0" Style="{StaticResource ShortcutRecordButton}"
+                                                >Record shortcut</Button>
+                                <Button Name="showHideShortcutClearButton" x:FieldModifier="private"
+                                            Grid.Column="1" Style="{StaticResource ShortcutClearButton}"/>
+                            </Grid>
+                        </Border>
+
+                        <Border Grid.Column="1" Grid.Row="1"
+                                        Style="{StaticResource ShortcutRecordContainer}"
+                                        Margin="16 8 0 0">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Button Name="continueStopShortcutRecordButton" x:FieldModifier="private"
+                                                Grid.Column="0" Style="{StaticResource ShortcutRecordButton}"
+                                                >Record shortcut</Button>
+                                <Button Name="continueStopShortcutClearButton" x:FieldModifier="private"
+                                            Grid.Column="1" Style="{StaticResource ShortcutClearButton}"/>
+                            </Grid>
+                        </Border>
+
+                    </Grid>
+
+                    <TextBlock Name="shortcutErrorText" x:FieldModifier="private"
+                               TextAlignment="Right" Margin="0 -2 10 0"
+                               FontSize="12" Foreground="Red"
+                               Text="No error. Everything is ok." />
+
                     <Grid Margin="0,0,0,2">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
@@ -115,59 +179,6 @@
                                   Margin="5" Content="Run the app on Windows login"/>
 
                     </Grid>
-
-                    <GroupBox Header="Global Shortcuts">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition />
-                                <RowDefinition />
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition MinWidth="150" />
-                                <ColumnDefinition MaxWidth="200"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Grid.Row="0" Margin="5">Show/Hide Toggl</TextBlock>
-                            <TextBlock Grid.Column="0" Grid.Row="1" Margin="5">Continue/Stop timer</TextBlock>
-
-
-                            <Border Grid.Column="1" Grid.Row="0"
-                                            Style="{StaticResource ShortcutRecordContainer}">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition />
-                                        <ColumnDefinition Width="Auto"/>
-                                    </Grid.ColumnDefinitions>
-
-                                    <Button Name="showHideShortcutRecordButton" x:FieldModifier="private"
-                                                    Grid.Column="0" Style="{StaticResource ShortcutRecordButton}"
-                                                    >Record shortcut</Button>
-                                    <Button Name="showHideShortcutClearButton" x:FieldModifier="private"
-                                                Grid.Column="1" Style="{StaticResource ShortcutClearButton}"/>
-                                </Grid>
-                            </Border>
-
-                            <Border Grid.Column="1" Grid.Row="1"
-                                            Style="{StaticResource ShortcutRecordContainer}">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition />
-                                        <ColumnDefinition Width="Auto"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Button Name="continueStopShortcutRecordButton" x:FieldModifier="private"
-                                                    Grid.Column="0" Style="{StaticResource ShortcutRecordButton}"
-                                                    >Record shortcut</Button>
-                                    <Button Name="continueStopShortcutClearButton" x:FieldModifier="private"
-                                                Grid.Column="1" Style="{StaticResource ShortcutClearButton}"/>
-                                </Grid>
-                            </Border>
-
-                        </Grid>
-                    </GroupBox>
-
-                    <TextBlock Name="shortcutErrorText" x:FieldModifier="private"
-                               TextAlignment="Right" Margin="0 -2 10 0"
-                               FontSize="12" Foreground="Red"
-                               Text="No error. Everything is ok." />
 
                     <TextBlock Text="Default project" Margin="5 5 5 -5"
                                    />
