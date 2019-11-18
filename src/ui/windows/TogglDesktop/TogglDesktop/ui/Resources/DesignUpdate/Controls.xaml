@@ -16,6 +16,7 @@
         <ResourceDictionary Source="TabControl.xaml" />
         <ResourceDictionary Source="CheckBox.xaml" />
         <ResourceDictionary Source="PasswordBox.xaml" />
+        <ResourceDictionary Source="RadioButton.xaml" />
     </ResourceDictionary.MergedDictionaries>
     <Style BasedOn="{StaticResource MahApps.Metro.Styles.WindowButtonCommands.Win10}" TargetType="mah:WindowButtonCommands" />
 </ResourceDictionary>
