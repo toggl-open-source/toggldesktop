@@ -1,0 +1,227 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+                    xmlns:togglDesktop="clr-namespace:TogglDesktop">
+
+    <!--  ********************************** CheckBoxStyle **********************************  -->
+    <!--  adapted from http://brianlagunas.com/free-metro-light-and-dark-themes-for-wpf-and-silverlight-microsoft-controls/  -->
+
+    <!-- Win10 style taken from https://github.com/MahApps/MahApps.Metro/pull/3534 with custom modifications -->
+    <!-- to be removed when we can use Win10 style checkbox from the MahApps.Metro library directly -->
+
+    <Style x:Key="MahApps.Styles.CheckBox.Win10" TargetType="CheckBox">
+        <Setter Property="BorderBrush" Value="{DynamicResource Toggl.SelectionElements.Border}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="togglDesktop:CheckBoxHelper.CheckBoxSize" Value="20" />
+        <Setter Property="togglDesktop:CheckBoxHelper.CheckedBackgroundBrush" Value="{DynamicResource Toggl.AccentBrush}" />
+        <Setter Property="togglDesktop:CheckBoxHelper.CheckedBorderBrush" Value="{DynamicResource Toggl.AccentBrush}" />
+        <Setter Property="togglDesktop:CheckBoxHelper.CheckedGlyphTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <Path HorizontalAlignment="Center"
+                              VerticalAlignment="Center"
+                              Margin="1"
+                              Data="M90.890625,12.890625L95.109375,17.109375 30,82.265625 0.890625,53.109375 5.10937547683716,48.890625 30,73.734375 90.890625,12.890625z"
+                              Stretch="Uniform"
+                              Stroke="{DynamicResource Toggl.SelectionElements.Background}"
+                              UseLayoutRounding="False" />
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="togglDesktop:CheckBoxHelper.IntermediateBackgroundBrush" Value="{DynamicResource Toggl.SelectionElements.Background}" />
+        <Setter Property="togglDesktop:CheckBoxHelper.IntermediateBorderBrush" Value="{DynamicResource Toggl.SelectionElements.Border}" />
+        <Setter Property="togglDesktop:CheckBoxHelper.IntermediateGlyphTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <Rectangle Margin="4" Fill="#9D9D9D" /> <!-- TODO: fix when we start using Intermediate state -->
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="togglDesktop:CheckBoxHelper.UnCheckedBackgroundBrush" Value="{DynamicResource Toggl.SelectionElements.Background}" />
+        <Setter Property="togglDesktop:CheckBoxHelper.UnCheckedBorderBrush" Value="{DynamicResource Toggl.SelectionElements.Border}" />
+        <Setter Property="mah:ControlsHelper.FocusBorderBrush" Value="{DynamicResource Toggl.AccentBrush}" />
+        <Setter Property="mah:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource Toggl.TextBox.MouseOverBorder}" />
+        <Setter Property="FontFamily" Value="{DynamicResource BaseFont}" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="Foreground" Value="{DynamicResource Toggl.PrimaryTextBrush}" />
+        <Setter Property="HorizontalContentAlignment" Value="Left" />
+        <Setter Property="Padding" Value="8 0 0 0" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="CheckBox">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition x:Name="LeftCol" Width="Auto" />
+                            <ColumnDefinition x:Name="RightCol" Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid x:Name="PART_CHECKBOX">
+                            <Rectangle Margin="-6 0" Fill="Transparent" />
+                            <Border x:Name="CheckedBorder"
+                                    Width="{TemplateBinding togglDesktop:CheckBoxHelper.CheckBoxSize}"
+                                    Height="{TemplateBinding togglDesktop:CheckBoxHelper.CheckBoxSize}"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Background="{TemplateBinding togglDesktop:CheckBoxHelper.CheckedBackgroundBrush}"
+                                    BorderBrush="{TemplateBinding togglDesktop:CheckBoxHelper.CheckedBorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    CornerRadius="{TemplateBinding mah:ControlsHelper.CornerRadius}"
+                                    Opacity="0"
+                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                                <ContentControl Content="{TemplateBinding togglDesktop:CheckBoxHelper.CheckedGlyph}"
+                                                ContentTemplate="{TemplateBinding togglDesktop:CheckBoxHelper.CheckedGlyphTemplate}"
+                                                Focusable="False"
+                                                IsTabStop="False" />
+                            </Border>
+
+                            <Border x:Name="UnCheckedBorder"
+                                    Width="{TemplateBinding togglDesktop:CheckBoxHelper.CheckBoxSize}"
+                                    Height="{TemplateBinding togglDesktop:CheckBoxHelper.CheckBoxSize}"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Background="{TemplateBinding togglDesktop:CheckBoxHelper.UnCheckedBackgroundBrush}"
+                                    BorderBrush="{TemplateBinding togglDesktop:CheckBoxHelper.UnCheckedBorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    CornerRadius="{TemplateBinding mah:ControlsHelper.CornerRadius}"
+                                    Opacity="0"
+                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                                <ContentControl Content="{TemplateBinding togglDesktop:CheckBoxHelper.UnCheckedGlyph}"
+                                                ContentTemplate="{TemplateBinding togglDesktop:CheckBoxHelper.UnCheckedGlyphTemplate}"
+                                                Focusable="False"
+                                                IsTabStop="False" />
+                            </Border>
+
+                            <Border x:Name="IntermediateBorder"
+                                    Width="{TemplateBinding togglDesktop:CheckBoxHelper.CheckBoxSize}"
+                                    Height="{TemplateBinding togglDesktop:CheckBoxHelper.CheckBoxSize}"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Background="{TemplateBinding togglDesktop:CheckBoxHelper.IntermediateBackgroundBrush}"
+                                    BorderBrush="{TemplateBinding togglDesktop:CheckBoxHelper.IntermediateBorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    CornerRadius="{TemplateBinding mah:ControlsHelper.CornerRadius}"
+                                    Opacity="0"
+                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                                <ContentControl Content="{TemplateBinding togglDesktop:CheckBoxHelper.IntermediateGlyph}"
+                                                ContentTemplate="{TemplateBinding togglDesktop:CheckBoxHelper.IntermediateGlyphTemplate}"
+                                                Focusable="False"
+                                                IsTabStop="False" />
+                            </Border>
+
+                            <Border x:Name="disabled"
+                                    Width="{TemplateBinding togglDesktop:CheckBoxHelper.CheckBoxSize}"
+                                    Height="{TemplateBinding togglDesktop:CheckBoxHelper.CheckBoxSize}"
+                                    Background="{DynamicResource Toggl.SelectionElements.Disabled.Background}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    CornerRadius="{TemplateBinding mah:ControlsHelper.CornerRadius}"
+                                    Opacity="0"
+                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                        </Grid>
+                        <ContentPresenter x:Name="contentPresenter"
+                                          Grid.Column="1"
+                                          Margin="{TemplateBinding Padding}"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          Content="{TemplateBinding Content}"
+                                          ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                                          ContentTemplate="{TemplateBinding ContentTemplate}"
+                                          ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
+                                          RecognizesAccessKey="True" />
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="Disabled">
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="contentPresenter"
+                                                         Storyboard.TargetProperty="(UIElement.Opacity)"
+                                                         To=".55"
+                                                         Duration="0" />
+                                        <DoubleAnimation Storyboard.TargetName="disabled"
+                                                         Storyboard.TargetProperty="(UIElement.Opacity)"
+                                                         To="1"
+                                                         Duration="0" />
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="CheckStates">
+                                <VisualState x:Name="Checked">
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="CheckedBorder"
+                                                         Storyboard.TargetProperty="(UIElement.Opacity)"
+                                                         To="1"
+                                                         Duration="0" />
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Unchecked">
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="UnCheckedBorder"
+                                                         Storyboard.TargetProperty="(UIElement.Opacity)"
+                                                         To="1"
+                                                         Duration="0" />
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Indeterminate">
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="IntermediateBorder"
+                                                         Storyboard.TargetProperty="(UIElement.Opacity)"
+                                                         To="1"
+                                                         Duration="0" />
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="CheckedBorder" Property="BorderBrush" Value="{DynamicResource Toggl.Button.Accent.MouseOverBorder}" />
+                            <Setter TargetName="IntermediateBorder" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:ControlsHelper.MouseOverBorderBrush)}" />
+                            <Setter TargetName="UnCheckedBorder" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:ControlsHelper.MouseOverBorderBrush)}" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="CheckedBorder" Property="BorderBrush" Value="{DynamicResource Toggl.AccentBrush}" />
+                            <Setter TargetName="IntermediateBorder" Property="BorderBrush" Value="{DynamicResource Toggl.AccentBrush}" />
+                            <Setter TargetName="UnCheckedBorder" Property="BorderBrush" Value="{DynamicResource Toggl.AccentBrush}" />
+                        </Trigger>
+                        <Trigger Property="IsFocused" Value="True">
+                            <Setter TargetName="CheckedBorder" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:ControlsHelper.FocusBorderBrush)}" />
+                            <Setter TargetName="IntermediateBorder" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:ControlsHelper.FocusBorderBrush)}" />
+                            <Setter TargetName="UnCheckedBorder" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:ControlsHelper.FocusBorderBrush)}" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="CheckedBorder" Property="Background" Value="{DynamicResource Toggl.DisabledElementBrush}" />
+                            <Setter TargetName="CheckedBorder" Property="BorderBrush" Value="{DynamicResource Toggl.DisabledElementBrush}" />
+                            <Setter TargetName="UnCheckedBorder" Property="BorderBrush" Value="{DynamicResource Toggl.DisabledElementBrush}" />
+                        </Trigger>
+                        <Trigger Property="FlowDirection" Value="RightToLeft">
+                            <Setter TargetName="CheckedBorder" Property="LayoutTransform">
+                                <Setter.Value>
+                                    <ScaleTransform ScaleX="-1" />
+                                </Setter.Value>
+                            </Setter>
+                            <Setter TargetName="IntermediateBorder" Property="LayoutTransform">
+                                <Setter.Value>
+                                    <ScaleTransform ScaleX="-1" />
+                                </Setter.Value>
+                            </Setter>
+                            <Setter TargetName="UnCheckedBorder" Property="LayoutTransform">
+                                <Setter.Value>
+                                    <ScaleTransform ScaleX="-1" />
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                        <Trigger Property="mah:ToggleButtonHelper.ContentDirection" Value="RightToLeft">
+                            <Setter Property="Padding" Value="0 0 6 0" />
+                            <Setter TargetName="LeftCol" Property="Width" Value="*" />
+                            <Setter TargetName="PART_CHECKBOX" Property="Grid.Column" Value="1" />
+                            <Setter TargetName="RightCol" Property="Width" Value="Auto" />
+                            <Setter TargetName="contentPresenter" Property="Grid.Column" Value="0" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+    </Style>
+
+    <Style BasedOn="{StaticResource MahApps.Styles.CheckBox.Win10}" TargetType="CheckBox" />
+</ResourceDictionary>

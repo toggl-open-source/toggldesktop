@@ -33,6 +33,8 @@
     <Color x:Key="Toggl.ErrorMessageBackgroundColor">#E20505</Color>
 
     <SolidColorBrush x:Key="Toggl.SelectionElements.Background" Color="{StaticResource Toggl.SelectionElements.BackgroundColor}" po:Freeze="True" />
+    <SolidColorBrush x:Key="Toggl.SelectionElements.Border" Color="{StaticResource Toggl.DisabledTextColor}" po:Freeze="True" />
+    <SolidColorBrush x:Key="Toggl.SelectionElements.Disabled.Background" Color="{StaticResource Toggl.PrimaryTextColor}" Opacity="0.05" po:Freeze="True" />
     <SolidColorBrush x:Key="Toggl.TextBox.MouseOverBorder" Color="{StaticResource Toggl.SecondaryTextColor}" po:Freeze="True" />
     <SolidColorBrush x:Key="Toggl.ComboBox.HoverBackground" Color="#0DD6D6D6" po:Freeze="True" />
     <SolidColorBrush x:Key="Toggl.TitleTextBrush" Color="{StaticResource Toggl.PrimaryTextColor}" po:Freeze="True" />
