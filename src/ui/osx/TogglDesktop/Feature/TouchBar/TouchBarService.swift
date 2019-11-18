@@ -44,7 +44,8 @@ final class TouchBarService: NSObject {
 
     // MARK: Variables
 
-    lazy var touchBar = NSTouchBar()
+    var isEnabled = true
+    private var touchBar: NSTouchBar?
     weak var delegate: TouchBarServiceDelegate?
     private var timeEntries: [TimeEntryViewItem] = []
     private var displayState = DisplayState.normal { didSet { updateDisplayState() }}
@@ -69,11 +70,19 @@ final class TouchBarService: NSObject {
     override init() {
         super.init()
         initCommon()
-        setup()
         initNotification()
     }
 
     // MARK: Public
+
+    func makeTouchBar() -> NSTouchBar? {
+        guard isEnabled else { return nil }
+        touchBar = NSTouchBar()
+        touchBar?.delegate = self
+        touchBar?.customizationIdentifier = .mainTouchBar
+        touchBar?.defaultItemIdentifiers = [.timeEntryItem, .startStopItem]
+        return touchBar
+    }
 
     func updateRunningItem(_ timeEntry: TimeEntryViewItem) {
         runningTimeEntryBtn.title = timeEntry.touchBarTitle
@@ -124,12 +133,6 @@ extension TouchBarService {
         NSApplication.shared.isAutomaticCustomizeTouchBarMenuItemEnabled = false
     }
 
-    fileprivate func setup() {
-        touchBar.delegate = self
-        touchBar.customizationIdentifier = .mainTouchBar
-        touchBar.defaultItemIdentifiers = [.timeEntryItem, .startStopItem]
-    }
-
     fileprivate func initNotification() {
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(self.stateButtonTimerBarChangeNotification(_:)),
@@ -146,6 +149,7 @@ extension TouchBarService {
     }
 
     private func updateDisplayState() {
+        guard let touchBar = touchBar else { return }
         switch displayState {
         case .normal:
             touchBar.defaultItemIdentifiers.removeAll(where: { $0 == .runningTimeEntry })

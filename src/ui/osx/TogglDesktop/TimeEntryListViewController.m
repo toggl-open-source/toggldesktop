@@ -145,6 +145,14 @@ extern void *ctx;
 											 selector:@selector(deselectAllTimeEntryNotification)
 												 name:kDeselectAllTimeEntryList
 											   object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(windowDidBecomeKeyNotification:)
+												 name:NSWindowDidBecomeKeyNotification
+											   object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(touchBarSettingChangedNotification:)
+												 name:kTouchBarSettingChanged
+											   object:nil];
 }
 
 - (void)initCollectionView
@@ -720,4 +728,15 @@ extern void *ctx;
 {
 	[self.dataSource loadMoreTimeEntryIfNeedAt:date];
 }
+
+- (NSTouchBar *)makeTouchBar
+{
+	return [[TouchBarService shared] makeTouchBar];
+}
+
+- (void)touchBarSettingChangedNotification:(NSNotification *)noti
+{
+	self.touchBar = nil;
+}
+
 @end

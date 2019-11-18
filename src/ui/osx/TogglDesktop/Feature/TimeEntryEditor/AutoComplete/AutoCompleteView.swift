@@ -81,6 +81,7 @@ final class AutoCompleteView: NSView {
 
     @IBOutlet weak var tableView: KeyboardTableView!
     @IBOutlet weak var tableViewHeight: NSLayoutConstraint!
+    @IBOutlet weak var tableScrollView: NSScrollView!
     @IBOutlet weak var createNewItemBtn: CursorButton!
     @IBOutlet weak var createNewItemContainerView: NSBox!
     @IBOutlet weak var horizontalLine: NSBox!
@@ -128,8 +129,11 @@ final class AutoCompleteView: NSView {
         // Make sure >= 0
         height = CGFloat.maximum(height, 0)
 
-        // Overriden
-        tableViewHeight.constant = height
+        // Hide or show the ScrollView to prevent UI Constraints ambiguous
+        tableScrollView.isHidden = height == 0
+        if height > 0 {
+            tableViewHeight.constant = height
+        }
     }
 
     func setCreateButtonSectionHidden(_ isHidden: Bool) {
