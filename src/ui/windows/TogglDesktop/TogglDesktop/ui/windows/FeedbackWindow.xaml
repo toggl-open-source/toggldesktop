@@ -56,7 +56,6 @@
 
         <TextBox x:Name="feedbackTextBox" x:FieldModifier="private"
                  Grid.Row="1"
-                 Style="{DynamicResource Toggl.TextBox}"
                  Height="104"
                  Margin="0 8"
                  TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"
