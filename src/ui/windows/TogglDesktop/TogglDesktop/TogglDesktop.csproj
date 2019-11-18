@@ -671,6 +671,7 @@
     <Page Include="ui\Resources\DesignUpdate\CheckBox.xaml" />
     <Page Include="ui\Resources\DesignUpdate\MahApps.Overrides.xaml" />
     <Page Include="ui\Resources\DesignUpdate\PasswordBox.xaml" />
+    <Page Include="ui\Resources\DesignUpdate\RadioButton.xaml" />
     <Page Include="ui\Resources\DesignUpdate\TabControl.xaml" />
     <Page Include="ui\Resources\DesignUpdate\TextBox.xaml" />
     <Page Include="ui\Resources\DesignUpdate\ToolWindow.xaml" />
