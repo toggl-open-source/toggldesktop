@@ -5,7 +5,7 @@
         <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.TextBox.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
-    <Style TargetType="TextBox" x:Key="Toggl.TextBox" BasedOn="{StaticResource MetroTextBox}">
+    <Style TargetType="TextBox" BasedOn="{StaticResource MetroTextBox}">
         <Setter Property="FontFamily" Value="{DynamicResource BaseFont}" />
         <Setter Property="FontSize" Value="{DynamicResource NormalFontSize}" />
         <Setter Property="Foreground" Value="{DynamicResource Toggl.PrimaryTextBrush}" />
@@ -15,5 +15,11 @@
         <Setter Property="mah:ControlsHelper.FocusBorderBrush" Value="{DynamicResource Toggl.AccentBrush}" />
         <Setter Property="mah:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource Toggl.TextBox.MouseOverBorder}" />
         <Setter Property="Padding" Value="6 4" />
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="{DynamicResource Toggl.DisabledTextBrush}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource Toggl.DisabledElementBrush}" />
+            </Trigger>
+        </Style.Triggers>
     </Style>
 </ResourceDictionary>
