@@ -222,6 +222,7 @@ static NSString *const upArrow = @"\u25B2";
 
 - (void)resetTable
 {
+	[self.inputDelegate autoCompleteInputShouldResetFilter];
 	[self showAutoComplete:NO];
 	[self.autocompleteTableView resetSelected];
 }
