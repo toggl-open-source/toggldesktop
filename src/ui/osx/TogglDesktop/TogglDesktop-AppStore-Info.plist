@@ -67,13 +67,5 @@
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>TogglApplication</string>
-	<key>SUEnableAutomaticChecks</key>
-	<true/>
-	<key>SUFeedURL</key>
-	<string>https://assets.toggl.com/installers/darwin_stable_appcast.xml</string>
-	<key>SUPublicDSAKeyFile</key>
-	<string>dsa_pub.pem</string>
-	<key>SUShowReleaseNotes</key>
-	<false/>
 </dict>
 </plist>

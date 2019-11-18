@@ -31,7 +31,7 @@ typedef NS_ENUM (NSUInteger, UserAction)
 	UserActionGoogleSignup,
 };
 
-@interface LoginViewController () <NSTextFieldDelegate, NSTableViewDataSource, NSComboBoxDataSource, NSComboBoxDelegate>
+@interface LoginViewController () <NSTextFieldDelegate, NSTableViewDataSource, NSComboBoxDataSource, NSComboBoxDelegate, LoginSignupTouchBarDelegate>
 @property (weak) IBOutlet NSTabView *tabView;
 @property (weak) IBOutlet NSTextField *email;
 @property (weak) IBOutlet NSSecureTextField *password;
@@ -55,6 +55,7 @@ typedef NS_ENUM (NSUInteger, UserAction)
 @property (nonatomic, assign) NSInteger selectedCountryID;
 @property (nonatomic, assign) TabViewType currentTab;
 @property (nonatomic, assign) UserAction userAction;
+@property (nonatomic, strong) LoginSignupTouchBar *loginTouchBar;
 
 - (IBAction)clickLoginButton:(id)sender;
 - (IBAction)clickSignupButton:(id)sender;
@@ -112,6 +113,9 @@ extern void *ctx;
 	self.view.layer.backgroundColor = [NSColor colorWithPatternImage:[NSImage imageNamed:@"background-pattern"]].CGColor;
 
 	self.userAction = UserActionAccountLogin;
+
+	self.loginTouchBar = [[LoginSignupTouchBar alloc] init];
+	self.loginTouchBar.delegate = self;
 }
 
 - (void)initCountryAutocomplete {
@@ -226,6 +230,9 @@ extern void *ctx;
 			[self.signupButton setNextKeyView:self.email];
 			break;
 	}
+
+	// Reset touchbar
+	self.touchBar = nil;
 }
 
 - (void)startGoogleAuthentication
@@ -529,7 +536,36 @@ extern void *ctx;
 
 - (NSTouchBar *)makeTouchBar
 {
+	switch (self.currentTab)
+	{
+		case TabViewTypeLogin :
+			return [self.loginTouchBar makeTouchBarFor:LoginSignupModeLogin];
+
+		case TabViewTypeSingup :
+			return [self.loginTouchBar makeTouchBarFor:LoginSignupModeSignUp];
+	}
 	return nil;
+}
+
+- (void)loginSignupTouchBarOn:(enum LoginSignupAction)action
+{
+	switch (action)
+	{
+		case LoginSignupActionLogin :
+			[self clickLoginButton:self];
+			break;
+		case LoginSignupActionLoginGoogle :
+			[self loginGoogleOnTap:self];
+			break;
+		case LoginSignupActionSignUp :
+			[self clickSignupButton:self];
+			break;
+		case LoginSignupActionSignUpGoogle :
+			[self signupGoogleBtnOnTap:self];
+			break;
+		default :
+			break;
+	}
 }
 
 @end

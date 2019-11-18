@@ -12,7 +12,7 @@
 #import "IdleEvent.h"
 #import "UserNotificationCenter.h"
 
-@interface IdleNotificationWindowController ()
+@interface IdleNotificationWindowController () <IdleNotificationTouchBarDelegate>
 
 @property (weak) IBOutlet NSTextField *idleSinceTextField;
 @property (weak) IBOutlet NSTextField *idleAmountTextField;
@@ -21,6 +21,8 @@
 @property (weak) IBOutlet NSButton *cancelButton;
 @property (weak) IBOutlet FlatButton *discardAndContinueButton;
 @property (weak) IBOutlet FlatButton *keepIdleTimeButton;
+@property (strong, nonatomic) IdleNotificationTouchBar *touchbar;
+
 @property (assign, nonatomic) BOOL isWaiting;
 
 - (IBAction)stopButtonClicked:(id)sender;
@@ -52,6 +54,9 @@ extern void *ctx;
 											 selector:@selector(windowDidBecomeActiveNotification)
 												 name:NSWindowDidBecomeKeyNotification
 											   object:nil];
+
+	self.touchbar = [[IdleNotificationTouchBar alloc] init];
+	self.touchbar.delegate = self;
 }
 
 - (void)dealloc
@@ -169,6 +174,30 @@ extern void *ctx;
 									[self.idleEvent.guid UTF8String],
 									self.idleEvent.started);
 	[self.window orderOut:nil];
+}
+
+- (NSTouchBar *)makeTouchBar {
+	return [self.touchbar makeTouchBar];
+}
+
+- (void)idleTouchBarDidTapFor:(enum Action)action {
+	switch (action)
+	{
+		case ActionDiscard :
+			[self stopButtonClicked:self];
+			break;
+		case ActionDiscardAndContinue :
+			[self discardAndConitnueButtonClicked:self];
+			break;
+		case ActionKeep :
+			[self ignoreButtonClicked:self];
+			break;
+		case ActionAdd :
+			[self addIdleTimeAsNewTimeEntry:self];
+			break;
+		default :
+			break;
+	}
 }
 
 @end

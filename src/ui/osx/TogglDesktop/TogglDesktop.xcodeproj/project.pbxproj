@@ -12,7 +12,7 @@
 		3C1E013F19D2DAE300DBF9A5 /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = 3C1E013E19D2DAE300DBF9A5 /* dsa_pub.pem */; };
 		3C2F239D21A7B43400CBE6BC /* UnsupportedNotice.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C2F239C21A7B43300CBE6BC /* UnsupportedNotice.m */; };
 		3C3AF64E20ACC6280088A3A6 /* CountryViewItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C3AF64D20ACC6280088A3A6 /* CountryViewItem.m */; };
-		3C50BCAC1C1F0574004BAE9E /* (null) in Resources */ = {isa = PBXBuildFile; };
+		3C50BCAC1C1F0574004BAE9E /* BuildFile in Resources */ = {isa = PBXBuildFile; };
 		3C6B2486203E01D90063FC08 /* AutoCompleteTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C6B2480203E01D60063FC08 /* AutoCompleteTableCell.m */; };
 		3C6B2487203E01D90063FC08 /* AutoCompleteInput.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C6B2483203E01D90063FC08 /* AutoCompleteInput.m */; };
 		3C6B2488203E01D90063FC08 /* AutoCompleteTable.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C6B2484203E01D90063FC08 /* AutoCompleteTable.m */; };
@@ -30,7 +30,8 @@
 		3CE30E022052BD8B00AF2E2A /* AutoCompleteTableContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE30E012052BD8B00AF2E2A /* AutoCompleteTableContainer.m */; };
 		3CFE547E201781A7006B673A /* libcrypto.1.1.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3CFE546D201781A5006B673A /* libcrypto.1.1.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		3CFE547F201781A7006B673A /* libssl.1.1.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3CFE547D201781A5006B673A /* libssl.1.1.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		5B29B9409F01EC0E842DE86D /* Pods_TogglDesktop.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB480B234BC7336AAC1F952E /* Pods_TogglDesktop.framework */; };
+		5B29B9409F01EC0E842DE86D /* BuildFile in Frameworks */ = {isa = PBXBuildFile; };
+		622BBF654A6A958692A4633B /* Pods_TogglDesktop.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 776525112125F6AD81DF4DEF /* Pods_TogglDesktop.framework */; };
 		69FC17F517E6534400B96425 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69FC17F417E6534400B96425 /* Cocoa.framework */; };
 		69FC17FF17E6534400B96425 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 69FC17FD17E6534400B96425 /* InfoPlist.strings */; };
 		69FC180117E6534400B96425 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 69FC180017E6534400B96425 /* main.m */; };
@@ -108,6 +109,7 @@
 		BA0E38102225257D00D0121B /* BezierPath+Corner.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0E380F2225257D00D0121B /* BezierPath+Corner.swift */; };
 		BA0E38122225260B00D0121B /* TimeEntryCell+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0E38112225260B00D0121B /* TimeEntryCell+Ext.swift */; };
 		BA0F67B7224A32F700ED0F91 /* CursorButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0F67B6224A32F700ED0F91 /* CursorButton.swift */; };
+		BA133AC023740EA6003A6A3A /* LoginSignupTouchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA133ABF23740EA6003A6A3A /* LoginSignupTouchBar.swift */; };
 		BA13D2062269B7C400EB3833 /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA13D2052269B7C400EB3833 /* CalendarViewController.swift */; };
 		BA13D20A2269BA6500EB3833 /* CalendarDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA13D2092269BA6500EB3833 /* CalendarDataSource.swift */; };
 		BA13D20E2269BAA600EB3833 /* DateCellViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA13D20C2269BAA600EB3833 /* DateCellViewItem.swift */; };
@@ -127,6 +129,7 @@
 		BA2DA12021A691FF0027B7A5 /* TrackingService.m in Sources */ = {isa = PBXBuildFile; fileRef = BA2DA11F21A691FF0027B7A5 /* TrackingService.m */; };
 		BA2E3F2C22375E640035D034 /* NSView+Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2E3F2B22375E640035D034 /* NSView+Appearance.swift */; };
 		BA2E5FB1223787C300EB866E /* EditorPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2E5FB0223787C300EB866E /* EditorPopover.swift */; };
+		BA32134C236C1E1400D33367 /* IdleNotificationTouchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA32134B236C1E1400D33367 /* IdleNotificationTouchBar.swift */; };
 		BA34F10022439C3000C27A15 /* EditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA34F0FE22439C3000C27A15 /* EditorViewController.swift */; };
 		BA34F10122439C3000C27A15 /* EditorViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA34F0FF22439C3000C27A15 /* EditorViewController.xib */; };
 		BA35B21F22E6E95200FA560E /* CalendarCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA35B21E22E6E95200FA560E /* CalendarCollectionView.swift */; };
@@ -285,6 +288,238 @@
 		BAD858CC228EAE7C00226C71 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = BAD858CB228EAE7C00226C71 /* libz.tbd */; };
 		BAE007DE21FAF00D00404379 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BAE007DD21FAF00D00404379 /* Media.xcassets */; };
 		BAE6379A22B225C70024DD08 /* AddTagButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAE6379922B225C70024DD08 /* AddTagButton.swift */; };
+		BAE64D562368334000244D2B /* AutocompleteItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 74C15795183A8CE600550613 /* AutocompleteItem.m */; };
+		BAE64D572368334000244D2B /* Settings.m in Sources */ = {isa = PBXBuildFile; fileRef = 7484F621191D92C30038885C /* Settings.m */; };
+		BAE64D582368334000244D2B /* NSCustomComboBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 95C0707918CDB91500A34D0D /* NSCustomComboBox.m */; };
+		BAE64D592368334000244D2B /* NSTextFieldDuration.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CC450E81A31ED540012440B /* NSTextFieldDuration.m */; };
+		BAE64D5A2368334000244D2B /* UIEvents.m in Sources */ = {isa = PBXBuildFile; fileRef = 7424949D17F1E3D20030121C /* UIEvents.m */; };
+		BAE64D5B2368334000244D2B /* Date+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA13D2142269C01500EB3833 /* Date+Utils.swift */; };
+		BAE64D5C2368334000244D2B /* GoogleAuthenticationServer+Objc.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5B0E4F2330EA92008D1DED /* GoogleAuthenticationServer+Objc.swift */; };
+		BAE64D5D2368334000244D2B /* VertificalTimeEntryFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAAF569F2223DF9A003D0D73 /* VertificalTimeEntryFlowLayout.swift */; };
+		BAE64D5E2368334000244D2B /* ClickableImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = BA01E8A0232F77B3006B93EC /* ClickableImageView.m */; };
+		BAE64D5F2368334000244D2B /* TimeEntryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C5CB7F0317F43EE100A2AEB1 /* TimeEntryCell.m */; };
+		BAE64D602368334000244D2B /* MainWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5DA1FBD17F1B08A001C4565 /* MainWindowController.m */; };
+		BAE64D612368334000244D2B /* AddTagButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAE6379922B225C70024DD08 /* AddTagButton.swift */; };
+		BAE64D622368334000244D2B /* NSTextField+Ext.m in Sources */ = {isa = PBXBuildFile; fileRef = BA2DA0C521A542E30027B7A5 /* NSTextField+Ext.m */; };
+		BAE64D632368334000244D2B /* ConsoleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 747B74851A0AD28200BB3791 /* ConsoleViewController.m */; };
+		BAE64D642368334000244D2B /* NSView+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA9D90D3222D155900D5EC0E /* NSView+Ext.swift */; };
+		BAE64D652368334000244D2B /* TimeEntrySnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA712EC521BF913800A2D8DD /* TimeEntrySnapshot.swift */; };
+		BAE64D662368334000244D2B /* DescriptionAutoCompleteTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB818C2228D5847008C2367 /* DescriptionAutoCompleteTextField.swift */; };
+		BAE64D672368334000244D2B /* DateInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA13D2102269BE2F00EB3833 /* DateInfo.swift */; };
+		BAE64D682368334000244D2B /* DateCellViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA13D20C2269BAA600EB3833 /* DateCellViewItem.swift */; };
+		BAE64D692368334000244D2B /* UndoStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA712EC721BF9F1200A2D8DD /* UndoStack.swift */; };
+		BAE64D6A2368334000244D2B /* NoVibrantPopoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA13D2162269DE3400EB3833 /* NoVibrantPopoverView.swift */; };
+		BAE64D6B2368334000244D2B /* AutoCompleteTable.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C6B2484203E01D90063FC08 /* AutoCompleteTable.m */; };
+		BAE64D6C2368334000244D2B /* ClientDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA412C1C224E0D61003CA17A /* ClientDataSource.swift */; };
+		BAE64D6D2368334000244D2B /* ProjectStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6EB83F2248CBE3003BB8EF /* ProjectStorage.swift */; };
+		BAE64D6E2368334000244D2B /* NSButton+TextColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAAF567D2223CAC5003D0D73 /* NSButton+TextColor.swift */; };
+		BAE64D6F2368334000244D2B /* VerticallyCenteredTextFieldCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6EB8752249DB33003BB8EF /* VerticallyCenteredTextFieldCell.swift */; };
+		BAE64D702368334000244D2B /* TagTokenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA01405122571199000E5B91 /* TagTokenView.swift */; };
+		BAE64D712368334000244D2B /* Collection+Safe.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA46E09E2226707F00C25763 /* Collection+Safe.swift */; };
+		BAE64D722368334000244D2B /* ProjectWorksapceCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA05367E225E238D00C26E1F /* ProjectWorksapceCellView.swift */; };
+		BAE64D732368334000244D2B /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 745126B519A28AA600390F47 /* Reachability.m */; };
+		BAE64D742368334000244D2B /* ClientCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA412C20224E1189003CA17A /* ClientCellView.swift */; };
+		BAE64D752368334000244D2B /* AutocompleteDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 74C1579A183BA5DA00550613 /* AutocompleteDataSource.m */; };
+		BAE64D762368334000244D2B /* BezierPath+Corner.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0E380F2225257D00D0121B /* BezierPath+Corner.swift */; };
+		BAE64D772368334000244D2B /* ProjectContentCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7D33502248980B00B953A8 /* ProjectContentCellView.swift */; };
+		BAE64D782368334000244D2B /* NSHoverButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BA5FCE18B6E770009DAA2D /* NSHoverButton.m */; };
+		BAE64D792368334000244D2B /* SystemMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA3E75D322291CEB009AD291 /* SystemMessage.swift */; };
+		BAE64D7A2368334000244D2B /* WorkspaceAutoCompleteTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAA11AC22251F4D6007F31D2 /* WorkspaceAutoCompleteTextField.swift */; };
+		BAE64D7B2368334000244D2B /* NSTextFieldClickablePointer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C8979C919235EA2007061E0 /* NSTextFieldClickablePointer.m */; };
+		BAE64D7C2368334000244D2B /* DisplayCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 748B3A3319222DB100F31468 /* DisplayCommand.m */; };
+		BAE64D7D2368334000244D2B /* ColorViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA9C2E03224C84E7002AD2A1 /* ColorViewItem.swift */; };
+		BAE64D7E2368334000244D2B /* MenuItemTags.m in Sources */ = {isa = PBXBuildFile; fileRef = 7438B3D218253CD2002AE43C /* MenuItemTags.m */; };
+		BAE64D7F2368334000244D2B /* LoadMoreCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE1CAC01C774F2B00D0ADD5 /* LoadMoreCell.m */; };
+		BAE64D802368334000244D2B /* PreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 749CB8CA18167D6E00814841 /* PreferencesWindowController.m */; };
+		BAE64D812368334000244D2B /* NSTextFieldVerticallyAligned.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C7B4E8C190FA6D200627DC3 /* NSTextFieldVerticallyAligned.m */; };
+		BAE64D822368334000244D2B /* DayLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB0027E22731248005ECC93 /* DayLabel.swift */; };
+		BAE64D832368334000244D2B /* NSSecureTextFieldVerticallyAligned.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C7B4EB2190FB57A00627DC3 /* NSSecureTextFieldVerticallyAligned.m */; };
+		BAE64D842368334000244D2B /* TimeEntryCell+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0E38112225260B00D0121B /* TimeEntryCell+Ext.swift */; };
+		BAE64D852368334000244D2B /* NSView+Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA9D90B3222D14ED00D5EC0E /* NSView+Animation.swift */; };
+		BAE64D862368334000244D2B /* AutotrackerRuleItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 746947F91AF3FE3E0024BED7 /* AutotrackerRuleItem.m */; };
+		BAE64D872368334000244D2B /* AutoCompleteInput.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C6B2483203E01D90063FC08 /* AutoCompleteInput.m */; };
+		BAE64D882368334000244D2B /* UserNotificationCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = BA13E05921C7B9D900835EC1 /* UserNotificationCenter.m */; };
+		BAE64D892368334000244D2B /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 74098C321919899600CBDFB9 /* Utils.m */; };
+		BAE64D8A2368334000244D2B /* CursorButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0F67B6224A32F700ED0F91 /* CursorButton.swift */; };
+		BAE64D8B2368334000244D2B /* KeyboardTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA9C2E0B224C8F58002AD2A1 /* KeyboardTableView.swift */; };
+		BAE64D8C2368334000244D2B /* NSColor+VisibleColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA81896923016148000710EA /* NSColor+VisibleColor.swift */; };
+		BAE64D8D2368334000244D2B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 69FC180017E6534400B96425 /* main.m */; };
+		BAE64D8E2368334000244D2B /* FeedbackWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74F106FF18993FFE00E93BD5 /* FeedbackWindowController.m */; };
+		BAE64D8F2368334000244D2B /* DescriptionTimeEntryStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB818E2228D594D008C2367 /* DescriptionTimeEntryStorage.swift */; };
+		BAE64D902368334000244D2B /* FlatButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA03725421FE9FD400FC277B /* FlatButton.swift */; };
+		BAE64D912368334000244D2B /* HSV.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6572A4224DFA6F00BA4C60 /* HSV.swift */; };
+		BAE64D922368334000244D2B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 69FC180717E6534400B96425 /* AppDelegate.m */; };
+		BAE64D932368334000244D2B /* EditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA34F0FE22439C3000C27A15 /* EditorViewController.swift */; };
+		BAE64D942368334000244D2B /* AutoCompleteTableCell+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0C3A6622321FBC0081C6DE /* AutoCompleteTableCell+Ext.swift */; };
+		BAE64D952368334000244D2B /* LiteAutoCompleteDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C6B24A3203FC8200063FC08 /* LiteAutoCompleteDataSource.m */; };
+		BAE64D962368334000244D2B /* DescriptionDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB818E4228D5A16008C2367 /* DescriptionDataSource.swift */; };
+		BAE64D972368334000244D2B /* TagDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA01404D22571081000E5B91 /* TagDataSource.swift */; };
+		BAE64D982368334000244D2B /* ColorGraphicsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6572A3224DFA6F00BA4C60 /* ColorGraphicsView.swift */; };
+		BAE64D992368334000244D2B /* WorkspaceDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAA11AC42251F502007F31D2 /* WorkspaceDataSource.swift */; };
+		BAE64D9A2368334000244D2B /* OverlayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CD30F411F58B02C006FAA0D /* OverlayViewController.m */; };
+		BAE64D9B2368334000244D2B /* ClientAutoCompleteTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA412C24224E147A003CA17A /* ClientAutoCompleteTextField.swift */; };
+		BAE64D9C2368334000244D2B /* TimeEntryListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74D1D25417EB713F00E709B0 /* TimeEntryListViewController.m */; };
+		BAE64D9D2368334000244D2B /* TimeDecoratorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAAF56A12223E18B003D0D73 /* TimeDecoratorView.swift */; };
+		BAE64D9E2368334000244D2B /* TimeEntryEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD15FFB223A52D600A8CCC9 /* TimeEntryEmptyView.swift */; };
+		BAE64D9F2368334000244D2B /* NSColor+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6F1B1921EEE258009265E4 /* NSColor+Utils.swift */; };
+		BAE64DA02368334000244D2B /* TimeEntryCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = BA4059B6221D46F4002969B8 /* TimeEntryCollectionView.m */; };
+		BAE64DA12368334000244D2B /* TimeHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4059AE221D215A002969B8 /* TimeHeaderView.swift */; };
+		BAE64DA22368334000244D2B /* String+Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA89CB382265EA4400D21584 /* String+Search.swift */; };
+		BAE64DA32368334000244D2B /* ProjectColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA9C2E07224C854C002AD2A1 /* ProjectColor.swift */; };
+		BAE64DA42368334000244D2B /* TagCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA01404522570805000E5B91 /* TagCellView.swift */; };
+		BAE64DA52368334000244D2B /* AutoCompleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7D334A2248944C00B953A8 /* AutoCompleteView.swift */; };
+		BAE64DA62368334000244D2B /* NoInteractionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA1F9031229D19C000670E0B /* NoInteractionView.swift */; };
+		BAE64DA72368334000244D2B /* NSView+Xib.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA03729C21FED85700FC277B /* NSView+Xib.swift */; };
+		BAE64DA82368334000244D2B /* DesktopLibraryBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = BA84363A22533A6600EF5830 /* DesktopLibraryBridge.m */; };
+		BAE64DA92368334000244D2B /* TimeEntryDatasource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4059B8221D53E7002969B8 /* TimeEntryDatasource.swift */; };
+		BAE64DAA2368334000244D2B /* SystemMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA3E75D52229356D009AD291 /* SystemMessageView.swift */; };
+		BAE64DAB2368334000244D2B /* HoverTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA013FF4225705B6000E5B91 /* HoverTableCellView.swift */; };
+		BAE64DAC2368334000244D2B /* NSBoxClickable.m in Sources */ = {isa = PBXBuildFile; fileRef = 749BD0BC1833E28400980494 /* NSBoxClickable.m */; };
+		BAE64DAD2368334000244D2B /* ProjectTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = BA08E086222E709C0075F68E /* ProjectTextField.m */; };
+		BAE64DAE2368334000244D2B /* EditorPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2E5FB0223787C300EB866E /* EditorPopover.swift */; };
+		BAE64DAF2368334000244D2B /* ProjectHeaderCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7D334E224897FC00B953A8 /* ProjectHeaderCellView.swift */; };
+		BAE64DB02368334000244D2B /* TimerContainerBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAE49CAD222FC1C900773814 /* TimerContainerBox.swift */; };
+		BAE64DB12368334000244D2B /* CalendarDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA13D2092269BA6500EB3833 /* CalendarDataSource.swift */; };
+		BAE64DB22368334000244D2B /* CustomFocusRingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA053658225DDDBB00C26E1F /* CustomFocusRingButton.swift */; };
+		BAE64DB32368334000244D2B /* AutoCompleteTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7D335D2248B48000B953A8 /* AutoCompleteTextField.swift */; };
+		BAE64DB42368334000244D2B /* PopoverRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA763B7A2268601700DC245A /* PopoverRootView.swift */; };
+		BAE64DB52368334000244D2B /* NSCustomTimerComboBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C07B759193C88AE00ED6E6F /* NSCustomTimerComboBox.m */; };
+		BAE64DB62368334000244D2B /* KeyboardDatePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD307D2229C1BD000C727DB /* KeyboardDatePicker.swift */; };
+		BAE64DB72368334000244D2B /* AutoCompleteViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7D335622489BD000B953A8 /* AutoCompleteViewDataSource.swift */; };
+		BAE64DB82368334000244D2B /* TagStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA01404B22570967000E5B91 /* TagStorage.swift */; };
+		BAE64DB92368334000244D2B /* ViewItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BAD31D18BD7D83002FD4CF /* ViewItem.m */; };
+		BAE64DBA2368334000244D2B /* CalendarCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA35B21E22E6E95200FA560E /* CalendarCollectionView.swift */; };
+		BAE64DBB2368334000244D2B /* NSResize.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CD7AD6E19ED579700372797 /* NSResize.m */; };
+		BAE64DBC2368334000244D2B /* NSView+LayoutConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA08E011222E32C90075F68E /* NSView+LayoutConstraint.swift */; };
+		BAE64DBD2368334000244D2B /* ProjectDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7D335922489C8000B953A8 /* ProjectDataSource.swift */; };
+		BAE64DBE2368334000244D2B /* AutoCompleteRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAC4D398225470DA00254DAD /* AutoCompleteRowView.swift */; };
+		BAE64DBF2368334000244D2B /* NSView+Shadow+Border.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAA260D0222D1DC70094F4E4 /* NSView+Shadow+Border.swift */; };
+		BAE64DC02368334000244D2B /* ResizablePopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4AEB9B22C217A4001A898D /* ResizablePopover.swift */; };
+		BAE64DC12368334000244D2B /* UndoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA712EC121BF907200A2D8DD /* UndoManager.swift */; };
+		BAE64DC22368334000244D2B /* WorkspaceStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAA11AC02251F49E007F31D2 /* WorkspaceStorage.swift */; };
+		BAE64DC32368334000244D2B /* CountryViewItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C3AF64D20ACC6280088A3A6 /* CountryViewItem.m */; };
+		BAE64DC42368334000244D2B /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA13D2052269B7C400EB3833 /* CalendarViewController.swift */; };
+		BAE64DC52368334000244D2B /* NotificationCenter+MainThread.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAF6319B21E6F868002DD6AB /* NotificationCenter+MainThread.swift */; };
+		BAE64DC62368334000244D2B /* SystemService.m in Sources */ = {isa = PBXBuildFile; fileRef = BAFBFCC721CD1D3C004B443F /* SystemService.m */; };
+		BAE64DC72368334000244D2B /* AppIconFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = BAF50DF721A2A18D0090BA95 /* AppIconFactory.m */; };
+		BAE64DC82368334000244D2B /* ConvertHexColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 74A7346918297DD100525BBC /* ConvertHexColor.m */; };
+		BAE64DC92368334000244D2B /* TimeEntryViewItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BAAA0A17F37B140079386F /* TimeEntryViewItem.m */; };
+		BAE64DCA2368334000244D2B /* NoClientCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA412C26224E195C003CA17A /* NoClientCellView.swift */; };
+		BAE64DCB2368334000244D2B /* IdleNotificationWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7423393A1829B99C00063FA9 /* IdleNotificationWindowController.m */; };
+		BAE64DCC2368334000244D2B /* Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA01404922570893000E5B91 /* Tag.swift */; };
+		BAE64DCD2368334000244D2B /* DescriptionContentCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB818E8228D5A97008C2367 /* DescriptionContentCellView.swift */; };
+		BAE64DCE2368334000244D2B /* Theme+Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6F1B3721EEE998009265E4 /* Theme+Notification.swift */; };
+		BAE64DCF2368334000244D2B /* AboutWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7430750218204EFB009019CB /* AboutWindowController.m */; };
+		BAE64DD02368334000244D2B /* TimerEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74D1D27017EB72D900E709B0 /* TimerEditViewController.m */; };
+		BAE64DD12368334000244D2B /* UnsupportedNotice.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C2F239C21A7B43300CBE6BC /* UnsupportedNotice.m */; };
+		BAE64DD22368334000244D2B /* NSTextFieldWithBackground.m in Sources */ = {isa = PBXBuildFile; fileRef = 741104BE18C7682700BC7A49 /* NSTextFieldWithBackground.m */; };
+		BAE64DD32368334000244D2B /* Array+ByGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA80BEB1221EAE6F00BDFD35 /* Array+ByGroup.swift */; };
+		BAE64DD42368334000244D2B /* TogglApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = BA067641233A492F00485C3C /* TogglApplication.m */; };
+		BAE64DD52368334000244D2B /* NSTextFieldClickable.m in Sources */ = {isa = PBXBuildFile; fileRef = 74F8FBA218313FA6000F09EE /* NSTextFieldClickable.m */; };
+		BAE64DD62368334000244D2B /* Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA35B22022E6E9E200FA560E /* Key.swift */; };
+		BAE64DD72368334000244D2B /* NSAlert+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = BA7B4BCA21C0EF8800B75B14 /* NSAlert+Utils.m */; };
+		BAE64DD82368334000244D2B /* BetterFocusAutoCompleteInput.m in Sources */ = {isa = PBXBuildFile; fileRef = BA403BAD2230CFBC008B202C /* BetterFocusAutoCompleteInput.m */; };
+		BAE64DD92368334000244D2B /* CalendarFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA50ED8422705F9E008323FA /* CalendarFlowLayout.swift */; };
+		BAE64DDA2368334000244D2B /* NSCustomComboBoxCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 95C0707618CDB67300A34D0D /* NSCustomComboBoxCell.m */; };
+		BAE64DDB2368334000244D2B /* NSWindowController+Focusable.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2807DF2306A2FA001A9E48 /* NSWindowController+Focusable.swift */; };
+		BAE64DDC2368334000244D2B /* DotImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAAF569D2223D4C7003D0D73 /* DotImageView.swift */; };
+		BAE64DDD2368334000244D2B /* TagAutoCompleteTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA01404F225710FD000E5B91 /* TagAutoCompleteTextField.swift */; };
+		BAE64DDE2368334000244D2B /* ProjectAutoCompleteTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAE8E844224CA9AC006D534E /* ProjectAutoCompleteTextField.swift */; };
+		BAE64DDF2368334000244D2B /* HSBGen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6572A1224DFA6E00BA4C60 /* HSBGen.swift */; };
+		BAE64DE02368334000244D2B /* GoogleAuthenticationServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5B0E4D2330E1C6008D1DED /* GoogleAuthenticationServer.swift */; };
+		BAE64DE12368334000244D2B /* WorkspaceCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA8B4C742251FAD500592BC7 /* WorkspaceCellView.swift */; };
+		BAE64DE22368334000244D2B /* NSView+Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA2E3F2B22375E640035D034 /* NSView+Appearance.swift */; };
+		BAE64DE32368334000244D2B /* idler.c in Sources */ = {isa = PBXBuildFile; fileRef = 743D7829182791FA00978BCC /* idler.c */; };
+		BAE64DE42368334000244D2B /* ProjectCreationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA9C2DF7224C7E44002AD2A1 /* ProjectCreationView.swift */; };
+		BAE64DE52368334000244D2B /* ClientStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA412BFB224E0CBE003CA17A /* ClientStorage.swift */; };
+		BAE64DE62368334000244D2B /* String+Optional.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7B4C7B21C293E700B75B14 /* String+Optional.swift */; };
+		BAE64DE72368334000244D2B /* CurrentColorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6572A2224DFA6F00BA4C60 /* CurrentColorView.swift */; };
+		BAE64DE82368334000244D2B /* TrackingService.m in Sources */ = {isa = PBXBuildFile; fileRef = BA2DA11F21A691FF0027B7A5 /* TrackingService.m */; };
+		BAE64DE92368334000244D2B /* AutoCompleteTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C6B2480203E01D60063FC08 /* AutoCompleteTableCell.m */; };
+		BAE64DEA2368334000244D2B /* RGB.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6572A0224DFA6E00BA4C60 /* RGB.swift */; };
+		BAE64DEB2368334000244D2B /* AutoCompleteTableContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE30E012052BD8B00AF2E2A /* AutoCompleteTableContainer.m */; };
+		BAE64DEC2368334000244D2B /* AutoCompleteCellType.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0C3A64223219470081C6DE /* AutoCompleteCellType.swift */; };
+		BAE64DED2368334000244D2B /* UndoTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = BA7B4C3621C24B9D00B75B14 /* UndoTextField.m */; };
+		BAE64DEE2368334000244D2B /* ColorPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA9C2DFB224C8235002AD2A1 /* ColorPickerView.swift */; };
+		BAE64DEF2368334000244D2B /* FloatingErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA276A122240F5B500810C51 /* FloatingErrorView.swift */; };
+		BAE64DF02368334000244D2B /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5DA1FC217F1B38B001C4565 /* LoginViewController.m */; };
+		BAE64DF12368334000244D2B /* IdleEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 743D942E1827C633000E6F70 /* IdleEvent.m */; };
+		BAE64DF32368334000244D2B /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = BAD858CB228EAE7C00226C71 /* libz.tbd */; };
+		BAE64DF42368334000244D2B /* TogglDesktopLibrary.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 74456B9A1A774858002A6338 /* TogglDesktopLibrary.dylib */; };
+		BAE64DF52368334000244D2B /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 743D94271827929C000E6F70 /* Carbon.framework */; };
+		BAE64DF62368334000244D2B /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 743D942518279290000E6F70 /* IOKit.framework */; };
+		BAE64DF72368334000244D2B /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74AA947718090A8E0000539F /* Security.framework */; };
+		BAE64DF82368334000244D2B /* ExceptionHandling.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74E3CDD817FC369700C3ADD3 /* ExceptionHandling.framework */; };
+		BAE64DF92368334000244D2B /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74E3CDD617FBAE0800C3ADD3 /* SystemConfiguration.framework */; };
+		BAE64DFA2368334000244D2B /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 74033C9617EC1DE100CA53D3 /* libc++.dylib */; };
+		BAE64DFB2368334000244D2B /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69FC17F417E6534400B96425 /* Cocoa.framework */; };
+		BAE64DFE2368334000244D2B /* ProjectHeaderCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA7D33522248981200B953A8 /* ProjectHeaderCellView.xib */; };
+		BAE64DFF2368334000244D2B /* ProjectWorksapceCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA05369E225E239600C26E1F /* ProjectWorksapceCellView.xib */; };
+		BAE64E002368334000244D2B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BAF50DE421A29FED0090BA95 /* Images.xcassets */; };
+		BAE64E012368334000244D2B /* EditorViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA34F0FF22439C3000C27A15 /* EditorViewController.xib */; };
+		BAE64E022368334000244D2B /* cacert.pem in Resources */ = {isa = PBXBuildFile; fileRef = 74E857AB194F8807007A88B9 /* cacert.pem */; };
+		BAE64E032368334000244D2B /* DescriptionContentCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BAB818EA228D5AA8008C2367 /* DescriptionContentCellView.xib */; };
+		BAE64E042368334000244D2B /* AutoCompleteTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3C6B2485203E01D90063FC08 /* AutoCompleteTableCell.xib */; };
+		BAE64E052368334000244D2B /* SystemMessageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA3E75D722293576009AD291 /* SystemMessageView.xib */; };
+		BAE64E062368334000244D2B /* TimeEntryEmptyView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BAD15FFD223A530600A8CCC9 /* TimeEntryEmptyView.xib */; };
+		BAE64E072368334000244D2B /* DateCellViewItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA13D20D2269BAA600EB3833 /* DateCellViewItem.xib */; };
+		BAE64E082368334000244D2B /* ColorViewItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA9C2E04224C84E7002AD2A1 /* ColorViewItem.xib */; };
+		BAE64E092368334000244D2B /* OverlayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3CD30F421F58B02C006FAA0D /* OverlayViewController.xib */; };
+		BAE64E0A2368334000244D2B /* ProjectContentCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA7D3354224898E400B953A8 /* ProjectContentCellView.xib */; };
+		BAE64E0B2368334000244D2B /* TagTokenView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA014053225711A3000E5B91 /* TagTokenView.xib */; };
+		BAE64E0C2368334000244D2B /* AboutWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7430750318204EFB009019CB /* AboutWindowController.xib */; };
+		BAE64E0D2368334000244D2B /* TimeHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA4059B0221D2186002969B8 /* TimeHeaderView.xib */; };
+		BAE64E0E2368334000244D2B /* PreferencesWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 749CB8CB18167D6E00814841 /* PreferencesWindowController.xib */; };
+		BAE64E0F2368334000244D2B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 69FC17FD17E6534400B96425 /* InfoPlist.strings */; };
+		BAE64E102368334000244D2B /* DayLabel.xib in Resources */ = {isa = PBXBuildFile; fileRef = BAB0029E2273125C005ECC93 /* DayLabel.xib */; };
+		BAE64E112368334000244D2B /* ColorPickerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA9C2DFD224C823C002AD2A1 /* ColorPickerView.xib */; };
+		BAE64E122368334000244D2B /* ConsoleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 747B74861A0AD28200BB3791 /* ConsoleViewController.xib */; };
+		BAE64E132368334000244D2B /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 743E584F1A775BB300F17CB0 /* Localizable.strings */; };
+		BAE64E142368334000244D2B /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BAE007DD21FAF00D00404379 /* Media.xcassets */; };
+		BAE64E152368334000244D2B /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5DA1FC317F1B38B001C4565 /* LoginViewController.xib */; };
+		BAE64E162368334000244D2B /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 69FC180317E6534400B96425 /* Credits.rtf */; };
+		BAE64E172368334000244D2B /* TimeDecoratorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BAAF56A32223E19C003D0D73 /* TimeDecoratorView.xib */; };
+		BAE64E182368334000244D2B /* FeedbackWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74F1070018993FFE00E93BD5 /* FeedbackWindowController.xib */; };
+		BAE64E192368334000244D2B /* IdleNotificationWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7423393B1829B99C00063FA9 /* IdleNotificationWindowController.xib */; };
+		BAE64E1A2368334000244D2B /* WorkspaceCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA8B4C762251FADF00592BC7 /* WorkspaceCellView.xib */; };
+		BAE64E1B2368334000244D2B /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 69FC180917E6534500B96425 /* MainMenu.xib */; };
+		BAE64E1C2368334000244D2B /* AutoCompleteView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA7D334C2248945300B953A8 /* AutoCompleteView.xib */; };
+		BAE64E1D2368334000244D2B /* MainWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5DA1FBE17F1B08A001C4565 /* MainWindowController.xib */; };
+		BAE64E1E2368334000244D2B /* ClientCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA412C22224E11AC003CA17A /* ClientCellView.xib */; };
+		BAE64E1F2368334000244D2B /* FloatingErrorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA276A132240F5B500810C51 /* FloatingErrorView.xib */; };
+		BAE64E202368334000244D2B /* TimeEntryListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74D1D25517EB713F00E709B0 /* TimeEntryListViewController.xib */; };
+		BAE64E212368334000244D2B /* BuildFile in Resources */ = {isa = PBXBuildFile; };
+		BAE64E222368334000244D2B /* TagCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA0140472257080F000E5B91 /* TagCellView.xib */; };
+		BAE64E232368334000244D2B /* ProjectCreationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA9C2DF9224C7E77002AD2A1 /* ProjectCreationView.xib */; };
+		BAE64E242368334000244D2B /* NoClientCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA412C28224E196D003CA17A /* NoClientCellView.xib */; };
+		BAE64E252368334000244D2B /* TimeEntryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7498D2471888B226001390B9 /* TimeEntryCell.xib */; };
+		BAE64E262368334000244D2B /* LoadMoreCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3C0158EF1C7B414E00FE63AA /* LoadMoreCell.xib */; };
+		BAE64E272368334000244D2B /* CalendarViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA13D2192269E0B500EB3833 /* CalendarViewController.xib */; };
+		BAE64E282368334000244D2B /* TimerEditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 74D1D27117EB72D900E709B0 /* TimerEditViewController.xib */; };
+		BAE64E292368334000244D2B /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = 3C1E013E19D2DAE300DBF9A5 /* dsa_pub.pem */; };
+		BAE64E2C2368334000244D2B /* libcrypto.1.1.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3CFE546D201781A5006B673A /* libcrypto.1.1.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BAE64E2D2368334000244D2B /* libPocoNet.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BAD2341821D612DE0039C742 /* libPocoNet.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BAE64E2E2368334000244D2B /* libPocoJSON.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BAD2341C21D612DF0039C742 /* libPocoJSON.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BAE64E2F2368334000244D2B /* libPocoData.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BAD2341A21D612DE0039C742 /* libPocoData.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BAE64E302368334000244D2B /* libPocoFoundation.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BAD2341E21D612DF0039C742 /* libPocoFoundation.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BAE64E312368334000244D2B /* libssl.1.1.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3CFE547D201781A5006B673A /* libssl.1.1.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BAE64E322368334000244D2B /* TogglDesktopLibrary.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 74456B9A1A774858002A6338 /* TogglDesktopLibrary.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BAE64E332368334000244D2B /* libPocoDataSQLite.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BAD2341621D612DE0039C742 /* libPocoDataSQLite.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BAE64E342368334000244D2B /* libPocoUtil.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BAD2341D21D612DF0039C742 /* libPocoUtil.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BAE64E352368334000244D2B /* libPocoNetSSL.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BAD2341721D612DE0039C742 /* libPocoNetSSL.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BAE64E362368334000244D2B /* libPocoCrypto.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BAD2341921D612DE0039C742 /* libPocoCrypto.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BAE64E372368334000244D2B /* libPocoXML.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BAD2341B21D612DE0039C742 /* libPocoXML.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BAE64E392368334000244D2B /* libPocoCrypto.60.dylib in Copy Files for Library in Debug mode */ = {isa = PBXBuildFile; fileRef = BAD2341921D612DE0039C742 /* libPocoCrypto.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BAE64E3A2368334000244D2B /* libPocoData.60.dylib in Copy Files for Library in Debug mode */ = {isa = PBXBuildFile; fileRef = BAD2341A21D612DE0039C742 /* libPocoData.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BAE64E3B2368334000244D2B /* libPocoDataSQLite.60.dylib in Copy Files for Library in Debug mode */ = {isa = PBXBuildFile; fileRef = BAD2341621D612DE0039C742 /* libPocoDataSQLite.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BAE64E3C2368334000244D2B /* libPocoFoundation.60.dylib in Copy Files for Library in Debug mode */ = {isa = PBXBuildFile; fileRef = BAD2341E21D612DF0039C742 /* libPocoFoundation.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BAE64E3D2368334000244D2B /* libPocoJSON.60.dylib in Copy Files for Library in Debug mode */ = {isa = PBXBuildFile; fileRef = BAD2341C21D612DF0039C742 /* libPocoJSON.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BAE64E3E2368334000244D2B /* libPocoNet.60.dylib in Copy Files for Library in Debug mode */ = {isa = PBXBuildFile; fileRef = BAD2341821D612DE0039C742 /* libPocoNet.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BAE64E3F2368334000244D2B /* libPocoNetSSL.60.dylib in Copy Files for Library in Debug mode */ = {isa = PBXBuildFile; fileRef = BAD2341721D612DE0039C742 /* libPocoNetSSL.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BAE64E402368334000244D2B /* libPocoUtil.60.dylib in Copy Files for Library in Debug mode */ = {isa = PBXBuildFile; fileRef = BAD2341D21D612DF0039C742 /* libPocoUtil.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BAE64E412368334000244D2B /* libPocoXML.60.dylib in Copy Files for Library in Debug mode */ = {isa = PBXBuildFile; fileRef = BAD2341B21D612DE0039C742 /* libPocoXML.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BAE64E422368334000244D2B /* libcrypto.1.1.dylib in Copy Files for Library in Debug mode */ = {isa = PBXBuildFile; fileRef = 3CFE546D201781A5006B673A /* libcrypto.1.1.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BAE64E432368334000244D2B /* libssl.1.1.dylib in Copy Files for Library in Debug mode */ = {isa = PBXBuildFile; fileRef = 3CFE547D201781A5006B673A /* libssl.1.1.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		BAE8E845224CA9AC006D534E /* ProjectAutoCompleteTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAE8E844224CA9AC006D534E /* ProjectAutoCompleteTextField.swift */; };
 		BAF38FEF2241FF20009147D7 /* FloatingErrorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA276A132240F5B500810C51 /* FloatingErrorView.xib */; };
 		BAF3ACCC2341F8AC00E41B33 /* GlobalTouchbarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAF3ACCB2341F8AC00E41B33 /* GlobalTouchbarButton.swift */; };
@@ -297,6 +532,7 @@
 		C5DA1FC017F1B08A001C4565 /* MainWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5DA1FBE17F1B08A001C4565 /* MainWindowController.xib */; };
 		C5DA1FC417F1B38B001C4565 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5DA1FC217F1B38B001C4565 /* LoginViewController.m */; };
 		C5DA1FC517F1B38B001C4565 /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C5DA1FC317F1B38B001C4565 /* LoginViewController.xib */; };
+		F0251F5CD1D1B471144D5F1D /* Pods_TogglDesktop_AppStore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F76040E605C5D6E37B6F73B /* Pods_TogglDesktop_AppStore.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -308,6 +544,13 @@
 			remoteInfo = TogglDesktopLibrary;
 		};
 		74456B9B1A77486B002A6338 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 74B680A8180759C300B697AA /* TogglDesktopLibrary.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = C55DA59B17F06A3B00B42178;
+			remoteInfo = TogglDesktopLibrary;
+		};
+		BAE64D532368334000244D2B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 74B680A8180759C300B697AA /* TogglDesktopLibrary.xcodeproj */;
 			proxyType = 1;
@@ -359,6 +602,48 @@
 			name = "Copy Files for Library in Debug mode";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		BAE64E2B2368334000244D2B /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				BAE64E2C2368334000244D2B /* libcrypto.1.1.dylib in CopyFiles */,
+				BAE64E2D2368334000244D2B /* libPocoNet.60.dylib in CopyFiles */,
+				BAE64E2E2368334000244D2B /* libPocoJSON.60.dylib in CopyFiles */,
+				BAE64E2F2368334000244D2B /* libPocoData.60.dylib in CopyFiles */,
+				BAE64E302368334000244D2B /* libPocoFoundation.60.dylib in CopyFiles */,
+				BAE64E312368334000244D2B /* libssl.1.1.dylib in CopyFiles */,
+				BAE64E322368334000244D2B /* TogglDesktopLibrary.dylib in CopyFiles */,
+				BAE64E332368334000244D2B /* libPocoDataSQLite.60.dylib in CopyFiles */,
+				BAE64E342368334000244D2B /* libPocoUtil.60.dylib in CopyFiles */,
+				BAE64E352368334000244D2B /* libPocoNetSSL.60.dylib in CopyFiles */,
+				BAE64E362368334000244D2B /* libPocoCrypto.60.dylib in CopyFiles */,
+				BAE64E372368334000244D2B /* libPocoXML.60.dylib in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BAE64E382368334000244D2B /* Copy Files for Library in Debug mode */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 16;
+			files = (
+				BAE64E392368334000244D2B /* libPocoCrypto.60.dylib in Copy Files for Library in Debug mode */,
+				BAE64E3A2368334000244D2B /* libPocoData.60.dylib in Copy Files for Library in Debug mode */,
+				BAE64E3B2368334000244D2B /* libPocoDataSQLite.60.dylib in Copy Files for Library in Debug mode */,
+				BAE64E3C2368334000244D2B /* libPocoFoundation.60.dylib in Copy Files for Library in Debug mode */,
+				BAE64E3D2368334000244D2B /* libPocoJSON.60.dylib in Copy Files for Library in Debug mode */,
+				BAE64E3E2368334000244D2B /* libPocoNet.60.dylib in Copy Files for Library in Debug mode */,
+				BAE64E3F2368334000244D2B /* libPocoNetSSL.60.dylib in Copy Files for Library in Debug mode */,
+				BAE64E402368334000244D2B /* libPocoUtil.60.dylib in Copy Files for Library in Debug mode */,
+				BAE64E412368334000244D2B /* libPocoXML.60.dylib in Copy Files for Library in Debug mode */,
+				BAE64E422368334000244D2B /* libcrypto.1.1.dylib in Copy Files for Library in Debug mode */,
+				BAE64E432368334000244D2B /* libssl.1.1.dylib in Copy Files for Library in Debug mode */,
+			);
+			name = "Copy Files for Library in Debug mode";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
@@ -401,6 +686,9 @@
 		3CE30E012052BD8B00AF2E2A /* AutoCompleteTableContainer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AutoCompleteTableContainer.m; sourceTree = "<group>"; };
 		3CFE546D201781A5006B673A /* libcrypto.1.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcrypto.1.1.dylib; path = ../../../../third_party/openssl/libcrypto.1.1.dylib; sourceTree = "<group>"; };
 		3CFE547D201781A5006B673A /* libssl.1.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libssl.1.1.dylib; path = ../../../../third_party/openssl/libssl.1.1.dylib; sourceTree = "<group>"; };
+		4BCB2D1F3BD02A806D947C18 /* Pods-TogglDesktop-AppStore.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TogglDesktop-AppStore.release.xcconfig"; path = "Target Support Files/Pods-TogglDesktop-AppStore/Pods-TogglDesktop-AppStore.release.xcconfig"; sourceTree = "<group>"; };
+		523FD02C959288FBFA20F5B1 /* Pods-TogglDesktop-AppStore.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TogglDesktop-AppStore.debug.xcconfig"; path = "Target Support Files/Pods-TogglDesktop-AppStore/Pods-TogglDesktop-AppStore.debug.xcconfig"; sourceTree = "<group>"; };
+		5F76040E605C5D6E37B6F73B /* Pods_TogglDesktop_AppStore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TogglDesktop_AppStore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		69FC17F117E6534400B96425 /* TogglDesktop.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TogglDesktop.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		69FC17F417E6534400B96425 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		69FC17F717E6534400B96425 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -488,6 +776,7 @@
 		74F8FBA118313FA6000F09EE /* NSTextFieldClickable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSTextFieldClickable.h; sourceTree = "<group>"; };
 		74F8FBA218313FA6000F09EE /* NSTextFieldClickable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSTextFieldClickable.m; sourceTree = "<group>"; };
 		74FD8CDF18A8EF8300F7DB80 /* TFDatePicker.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TFDatePicker.framework; path = ../../../../third_party/TFDatePicker/TFDatePicker/build/Release/TFDatePicker.framework; sourceTree = "<group>"; };
+		776525112125F6AD81DF4DEF /* Pods_TogglDesktop.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TogglDesktop.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		95C0707518CDB67300A34D0D /* NSCustomComboBoxCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSCustomComboBoxCell.h; sourceTree = "<group>"; };
 		95C0707618CDB67300A34D0D /* NSCustomComboBoxCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSCustomComboBoxCell.m; sourceTree = "<group>"; };
 		95C0707818CDB91500A34D0D /* NSCustomComboBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSCustomComboBox.h; sourceTree = "<group>"; };
@@ -523,6 +812,7 @@
 		BA0E380F2225257D00D0121B /* BezierPath+Corner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BezierPath+Corner.swift"; sourceTree = "<group>"; };
 		BA0E38112225260B00D0121B /* TimeEntryCell+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TimeEntryCell+Ext.swift"; sourceTree = "<group>"; };
 		BA0F67B6224A32F700ED0F91 /* CursorButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CursorButton.swift; sourceTree = "<group>"; };
+		BA133ABF23740EA6003A6A3A /* LoginSignupTouchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginSignupTouchBar.swift; sourceTree = "<group>"; };
 		BA13D2052269B7C400EB3833 /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
 		BA13D2092269BA6500EB3833 /* CalendarDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarDataSource.swift; sourceTree = "<group>"; };
 		BA13D20C2269BAA600EB3833 /* DateCellViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateCellViewItem.swift; sourceTree = "<group>"; };
@@ -546,6 +836,7 @@
 		BA2DA11F21A691FF0027B7A5 /* TrackingService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TrackingService.m; sourceTree = "<group>"; };
 		BA2E3F2B22375E640035D034 /* NSView+Appearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSView+Appearance.swift"; sourceTree = "<group>"; };
 		BA2E5FB0223787C300EB866E /* EditorPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorPopover.swift; sourceTree = "<group>"; };
+		BA32134B236C1E1400D33367 /* IdleNotificationTouchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdleNotificationTouchBar.swift; sourceTree = "<group>"; };
 		BA34F0FE22439C3000C27A15 /* EditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorViewController.swift; sourceTree = "<group>"; };
 		BA34F0FF22439C3000C27A15 /* EditorViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EditorViewController.xib; sourceTree = "<group>"; };
 		BA35B21E22E6E95200FA560E /* CalendarCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCollectionView.swift; sourceTree = "<group>"; };
@@ -708,6 +999,10 @@
 		BAD858CB228EAE7C00226C71 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		BAE007DD21FAF00D00404379 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
 		BAE6379922B225C70024DD08 /* AddTagButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTagButton.swift; sourceTree = "<group>"; };
+		BAE64E4B2368334000244D2B /* TogglDesktop.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TogglDesktop.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		BAE64E4C2368334000244D2B /* TogglDesktop copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "TogglDesktop copy-Info.plist"; path = "/Users/nghiatran/Documents/Work/Toggl/toggldesktop/src/ui/osx/TogglDesktop/TogglDesktop copy-Info.plist"; sourceTree = "<absolute>"; };
+		BAE64E4E23683E3F00244D2B /* TogglDesktop-AppStore.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; name = "TogglDesktop-AppStore.entitlements"; path = "TogglDesktop/TogglDesktop-AppStore.entitlements"; sourceTree = "<group>"; };
+		BAE64E4F23683F2C00244D2B /* TogglDesktop-AppStore-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "TogglDesktop-AppStore-Info.plist"; sourceTree = SOURCE_ROOT; };
 		BAE8E844224CA9AC006D534E /* ProjectAutoCompleteTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectAutoCompleteTextField.swift; sourceTree = "<group>"; };
 		BAF3ACCB2341F8AC00E41B33 /* GlobalTouchbarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalTouchbarButton.swift; sourceTree = "<group>"; };
 		BAF3ACD22343325A00E41B33 /* TouchBarService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchBarService.swift; sourceTree = "<group>"; };
@@ -728,7 +1023,6 @@
 		C5DA1FC117F1B38B001C4565 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = SOURCE_ROOT; };
 		C5DA1FC217F1B38B001C4565 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = SOURCE_ROOT; };
 		C5DA1FC317F1B38B001C4565 /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = SOURCE_ROOT; };
-		EB480B234BC7336AAC1F952E /* Pods_TogglDesktop.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TogglDesktop.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -746,7 +1040,25 @@
 				74E3CDD717FBAE0800C3ADD3 /* SystemConfiguration.framework in Frameworks */,
 				74033C9717EC1DE100CA53D3 /* libc++.dylib in Frameworks */,
 				69FC17F517E6534400B96425 /* Cocoa.framework in Frameworks */,
-				5B29B9409F01EC0E842DE86D /* Pods_TogglDesktop.framework in Frameworks */,
+				5B29B9409F01EC0E842DE86D /* BuildFile in Frameworks */,
+				622BBF654A6A958692A4633B /* Pods_TogglDesktop.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BAE64DF22368334000244D2B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BAE64DF32368334000244D2B /* libz.tbd in Frameworks */,
+				BAE64DF42368334000244D2B /* TogglDesktopLibrary.dylib in Frameworks */,
+				BAE64DF52368334000244D2B /* Carbon.framework in Frameworks */,
+				BAE64DF62368334000244D2B /* IOKit.framework in Frameworks */,
+				BAE64DF72368334000244D2B /* Security.framework in Frameworks */,
+				BAE64DF82368334000244D2B /* ExceptionHandling.framework in Frameworks */,
+				BAE64DF92368334000244D2B /* SystemConfiguration.framework in Frameworks */,
+				BAE64DFA2368334000244D2B /* libc++.dylib in Frameworks */,
+				BAE64DFB2368334000244D2B /* Cocoa.framework in Frameworks */,
+				F0251F5CD1D1B471144D5F1D /* Pods_TogglDesktop_AppStore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -758,6 +1070,8 @@
 			children = (
 				3A54C9591227E723FEC0DB85 /* Pods-TogglDesktop.debug.xcconfig */,
 				B671ACF75B3267B013176BD7 /* Pods-TogglDesktop.release.xcconfig */,
+				523FD02C959288FBFA20F5B1 /* Pods-TogglDesktop-AppStore.debug.xcconfig */,
+				4BCB2D1F3BD02A806D947C18 /* Pods-TogglDesktop-AppStore.release.xcconfig */,
 			);
 			name = Pods;
 			path = ../Pods;
@@ -786,6 +1100,7 @@
 		69FC17E817E6534400B96425 = {
 			isa = PBXGroup;
 			children = (
+				BAE64E4E23683E3F00244D2B /* TogglDesktop-AppStore.entitlements */,
 				BAAC931A22EEF92100E2EE1C /* TogglDesktop.entitlements */,
 				BAE007DD21FAF00D00404379 /* Media.xcassets */,
 				BAD2341921D612DE0039C742 /* libPocoCrypto.60.dylib */,
@@ -811,6 +1126,7 @@
 				69FC17F217E6534400B96425 /* Products */,
 				3C1E013E19D2DAE300DBF9A5 /* dsa_pub.pem */,
 				3A742A9261BE0A8B078F1749 /* Pods */,
+				BAE64E4C2368334000244D2B /* TogglDesktop copy-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -818,6 +1134,7 @@
 			isa = PBXGroup;
 			children = (
 				69FC17F117E6534400B96425 /* TogglDesktop.app */,
+				BAE64E4B2368334000244D2B /* TogglDesktop.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -840,7 +1157,8 @@
 				69FC17F417E6534400B96425 /* Cocoa.framework */,
 				69FC181217E6534500B96425 /* SenTestingKit.framework */,
 				69FC17F617E6534400B96425 /* Other Frameworks */,
-				EB480B234BC7336AAC1F952E /* Pods_TogglDesktop.framework */,
+				5F76040E605C5D6E37B6F73B /* Pods_TogglDesktop_AppStore.framework */,
+				776525112125F6AD81DF4DEF /* Pods_TogglDesktop.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -986,6 +1304,7 @@
 			isa = PBXGroup;
 			children = (
 				743E584F1A775BB300F17CB0 /* Localizable.strings */,
+				BAE64E4F23683F2C00244D2B /* TogglDesktop-AppStore-Info.plist */,
 				69FC17FC17E6534400B96425 /* TogglDesktop-Info.plist */,
 				69FC17FD17E6534400B96425 /* InfoPlist.strings */,
 				69FC180017E6534400B96425 /* main.m */,
@@ -1476,6 +1795,8 @@
 				BA00E9EF234C73990011A703 /* TimeEntryScrubberItem.swift */,
 				BA00E9F4234C848A0011A703 /* TimeEntryScrubberItem.xib */,
 				BA00E9F2234C7BB80011A703 /* TimeEntryScrubberFlowLayout.swift */,
+				BA32134B236C1E1400D33367 /* IdleNotificationTouchBar.swift */,
+				BA133ABF23740EA6003A6A3A /* LoginSignupTouchBar.swift */,
 			);
 			path = TouchBar;
 			sourceTree = "<group>";
@@ -1561,6 +1882,32 @@
 			productReference = 69FC17F117E6534400B96425 /* TogglDesktop.app */;
 			productType = "com.apple.product-type.application";
 		};
+		BAE64D512368334000244D2B /* TogglDesktop-AppStore */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BAE64E482368334000244D2B /* Build configuration list for PBXNativeTarget "TogglDesktop-AppStore" */;
+			buildPhases = (
+				BAE64D542368334000244D2B /* [CP] Check Pods Manifest.lock */,
+				BAE64D552368334000244D2B /* Sources */,
+				BAE64DF22368334000244D2B /* Frameworks */,
+				BAE64DFD2368334000244D2B /* Resources */,
+				BAE64E2A2368334000244D2B /* Run Script (install bugsnag) */,
+				BAE64E2B2368334000244D2B /* CopyFiles */,
+				BAE64E382368334000244D2B /* Copy Files for Library in Debug mode */,
+				BAE64E442368334000244D2B /* Run Script (Fix dynamic library paths in Frameworks) */,
+				BAE64E452368334000244D2B /* Run Formatter */,
+				BAE64E462368334000244D2B /* [CP] Embed Pods Frameworks */,
+				BAE64E472368334000244D2B /* Upload Bugsnag dSYM */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				BAE64D522368334000244D2B /* PBXTargetDependency */,
+			);
+			name = "TogglDesktop-AppStore";
+			productName = test2;
+			productReference = BAE64E4B2368334000244D2B /* TogglDesktop.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -1576,6 +1923,18 @@
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.HardenedRuntime = {
+								enabled = 1;
+							};
+							com.apple.Sandbox = {
+								enabled = 0;
+							};
+						};
+					};
+					BAE64D512368334000244D2B = {
+						DevelopmentTeam = B227VTMZ94;
+						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Sandbox = {
 								enabled = 1;
 							};
 						};
@@ -1604,6 +1963,7 @@
 			projectRoot = "";
 			targets = (
 				69FC17F017E6534400B96425 /* TogglDesktop */,
+				BAE64D512368334000244D2B /* TogglDesktop-AppStore */,
 				74607C1C18EDE6D800571BA6 /* poco */,
 				74607C2018EDE70C00571BA6 /* openssl */,
 			);
@@ -1668,7 +2028,7 @@
 				BA412C23224E11AC003CA17A /* ClientCellView.xib in Resources */,
 				BAF38FEF2241FF20009147D7 /* FloatingErrorView.xib in Resources */,
 				74D1D25817EB713F00E709B0 /* TimeEntryListViewController.xib in Resources */,
-				3C50BCAC1C1F0574004BAE9E /* (null) in Resources */,
+				3C50BCAC1C1F0574004BAE9E /* BuildFile in Resources */,
 				BA0140482257080F000E5B91 /* TagCellView.xib in Resources */,
 				BA9C2DFA224C7E77002AD2A1 /* ProjectCreationView.xib in Resources */,
 				BA75FF2822BCC1FC00D3F08C /* TimelineTimeEntryCell.xib in Resources */,
@@ -1683,6 +2043,57 @@
 				BA415F41233DF50E00C2F888 /* TimelineViewController.xib in Resources */,
 				3C1E013F19D2DAE300DBF9A5 /* dsa_pub.pem in Resources */,
 				BA75FF2422BCC1EA00D3F08C /* TimelineTimeLabelCell.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BAE64DFD2368334000244D2B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BAE64DFE2368334000244D2B /* ProjectHeaderCellView.xib in Resources */,
+				BAE64DFF2368334000244D2B /* ProjectWorksapceCellView.xib in Resources */,
+				BAE64E002368334000244D2B /* Images.xcassets in Resources */,
+				BAE64E012368334000244D2B /* EditorViewController.xib in Resources */,
+				BAE64E022368334000244D2B /* cacert.pem in Resources */,
+				BAE64E032368334000244D2B /* DescriptionContentCellView.xib in Resources */,
+				BAE64E042368334000244D2B /* AutoCompleteTableCell.xib in Resources */,
+				BAE64E052368334000244D2B /* SystemMessageView.xib in Resources */,
+				BAE64E062368334000244D2B /* TimeEntryEmptyView.xib in Resources */,
+				BAE64E072368334000244D2B /* DateCellViewItem.xib in Resources */,
+				BAE64E082368334000244D2B /* ColorViewItem.xib in Resources */,
+				BAE64E092368334000244D2B /* OverlayViewController.xib in Resources */,
+				BAE64E0A2368334000244D2B /* ProjectContentCellView.xib in Resources */,
+				BAE64E0B2368334000244D2B /* TagTokenView.xib in Resources */,
+				BAE64E0C2368334000244D2B /* AboutWindowController.xib in Resources */,
+				BAE64E0D2368334000244D2B /* TimeHeaderView.xib in Resources */,
+				BAE64E0E2368334000244D2B /* PreferencesWindowController.xib in Resources */,
+				BAE64E0F2368334000244D2B /* InfoPlist.strings in Resources */,
+				BAE64E102368334000244D2B /* DayLabel.xib in Resources */,
+				BAE64E112368334000244D2B /* ColorPickerView.xib in Resources */,
+				BAE64E122368334000244D2B /* ConsoleViewController.xib in Resources */,
+				BAE64E132368334000244D2B /* Localizable.strings in Resources */,
+				BAE64E142368334000244D2B /* Media.xcassets in Resources */,
+				BAE64E152368334000244D2B /* LoginViewController.xib in Resources */,
+				BAE64E162368334000244D2B /* Credits.rtf in Resources */,
+				BAE64E172368334000244D2B /* TimeDecoratorView.xib in Resources */,
+				BAE64E182368334000244D2B /* FeedbackWindowController.xib in Resources */,
+				BAE64E192368334000244D2B /* IdleNotificationWindowController.xib in Resources */,
+				BAE64E1A2368334000244D2B /* WorkspaceCellView.xib in Resources */,
+				BAE64E1B2368334000244D2B /* MainMenu.xib in Resources */,
+				BAE64E1C2368334000244D2B /* AutoCompleteView.xib in Resources */,
+				BAE64E1D2368334000244D2B /* MainWindowController.xib in Resources */,
+				BAE64E1E2368334000244D2B /* ClientCellView.xib in Resources */,
+				BAE64E1F2368334000244D2B /* FloatingErrorView.xib in Resources */,
+				BAE64E202368334000244D2B /* TimeEntryListViewController.xib in Resources */,
+				BAE64E212368334000244D2B /* BuildFile in Resources */,
+				BAE64E222368334000244D2B /* TagCellView.xib in Resources */,
+				BAE64E232368334000244D2B /* ProjectCreationView.xib in Resources */,
+				BAE64E242368334000244D2B /* NoClientCellView.xib in Resources */,
+				BAE64E252368334000244D2B /* TimeEntryCell.xib in Resources */,
+				BAE64E262368334000244D2B /* LoadMoreCell.xib in Resources */,
+				BAE64E272368334000244D2B /* CalendarViewController.xib in Resources */,
+				BAE64E282368334000244D2B /* TimerEditViewController.xib in Resources */,
+				BAE64E292368334000244D2B /* dsa_pub.pem in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1776,6 +2187,119 @@
 			shellPath = /bin/sh;
 			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nset -e\n\nif ! which uncrustify > /dev/null; then\n    echo \"warning: Uncrustify is not installed.\"\nelse\n    cd $SRCROOT/../../../../\n    make fmt\nfi\n";
 		};
+		BAE64D542368334000244D2B /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-TogglDesktop-AppStore-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		BAE64E2A2368334000244D2B /* Run Script (install bugsnag) */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Run Script (install bugsnag)";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /usr/bin/ruby;
+			shellScript = "if ENV[\"DEBUG_INFORMATION_FORMAT\"] != \"dwarf-with-dsym\"\nexit\nend\n\nfork do\nProcess.setsid\nSTDIN.reopen(\"/dev/null\")\nSTDOUT.reopen(\"/dev/null\", \"a\")\nSTDERR.reopen(\"/dev/null\", \"a\")\n\nrequire 'shellwords'\n\nDir[\"#{ENV[\"DWARF_DSYM_FOLDER_PATH\"]}/#{ENV[\"DWARF_DSYM_FILE_NAME\"]}/Contents/Resources/DWARF/*\"].each do |dsym|\nsystem(\"curl -F dsym=@#{Shellwords.escape(dsym)} -F projectRoot=#{Shellwords.escape(ENV[\"PROJECT_DIR\"])} https://upload.bugsnag.com/\")\nend\nend";
+		};
+		BAE64E442368334000244D2B /* Run Script (Fix dynamic library paths in Frameworks) */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Run Script (Fix dynamic library paths in Frameworks)";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "fix() {\n    pocolib=$1\n    lib=$2\n    oldpath=$(otool -L $pocolib|fgrep $lib|awk -F' ' '{print $1}'|grep -v @loader_path|grep -v \":\")\n    if [ -z \"$oldpath\" ]; then\n    return\n    fi\n    install_name_tool -change $oldpath @loader_path/$lib $pocolib\n    \n    # get shared library id name\n    file=$(otool -D $pocolib |grep -v \":\")\n    # get base name of the path we got\n    basename=${file##*/}\n        # change shared library id name\n        install_name_tool -id @loader_path/$basename $pocolib\n    }\n    \n    fix_poco_paths() {\n        f=$1\n        fix $f libPocoUtil.60.dylib\n        fix $f libPocoData.60.dylib\n        fix $f libPocoNetSSL.60.dylib\n        fix $f libPocoXML.60.dylib\n        fix $f libPocoDataSQLite.60.dylib\n        fix $f libPocoNet.60.dylib\n        fix $f libPocoFoundation.60.dylib\n        fix $f libPocoCrypto.60.dylib\n        fix $f libPocoJSON.60.dylib\n        fix $f libcrypto.1.1.dylib\n        fix $f libssl.1.1.dylib\n    }\n    \n    # Change dylib references in all dylibs found in Frameworks\n    for f in $BUILT_PRODUCTS_DIR/TogglDesktop.app/Contents/Frameworks/*.dylib\n                                                                                        do\n                                                                                        fix_poco_paths $f\n                                                                                        done\n";
+		};
+		BAE64E452368334000244D2B /* Run Formatter */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Run Formatter";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nset -e\n\nif ! which uncrustify > /dev/null; then\n    echo \"warning: Uncrustify is not installed.\"\nelse\n    cd $SRCROOT/../../../../\n    make fmt\nfi\n";
+		};
+		BAE64E462368334000244D2B /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-TogglDesktop-AppStore/Pods-TogglDesktop-AppStore-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/AppAuth/AppAuth.framework",
+				"${BUILT_PRODUCTS_DIR}/Bugsnag/Bugsnag.framework",
+				"${BUILT_PRODUCTS_DIR}/GTMAppAuth/GTMAppAuth.framework",
+				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
+				"${BUILT_PRODUCTS_DIR}/MASShortcut/MASShortcut.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AppAuth.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Bugsnag.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMAppAuth.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MASShortcut.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TogglDesktop-AppStore/Pods-TogglDesktop-AppStore-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		BAE64E472368334000244D2B /* Upload Bugsnag dSYM */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Upload Bugsnag dSYM";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = "/usr/bin/env ruby";
+			shellScript = "# Bugsnag key\napi_key = \"aa13053a88d5133b688db0f25ec103b7\"\n\nfork do\n  Process.setsid\n  STDIN.reopen(\"/dev/null\")\n  STDOUT.reopen(\"/dev/null\", \"a\")\n  STDERR.reopen(\"/dev/null\", \"a\")\n\n  require 'shellwords'\n\n  Dir[\"#{ENV[\"DWARF_DSYM_FOLDER_PATH\"]}/*/Contents/Resources/DWARF/*\"].each do |dsym|\n    curl_command = \"curl -F dsym=@#{Shellwords.escape(dsym)} -F projectRoot=#{Shellwords.escape(ENV[\"PROJECT_DIR\"])} \"\n    curl_command += \"-F apiKey=#{Shellwords.escape(api_key)} \" if api_key\n    curl_command += \"https://upload.bugsnag.com/\"\n    system(curl_command)\n  end\nend\n";
+			showEnvVarsInLog = 0;
+		};
 		CE4DD35122BF90B10398A0A6 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1861,8 +2385,10 @@
 				BA0E38102225257D00D0121B /* BezierPath+Corner.swift in Sources */,
 				BA7D33512248980B00B953A8 /* ProjectContentCellView.swift in Sources */,
 				74BA5FCF18B6E770009DAA2D /* NSHoverButton.m in Sources */,
+				BA133AC023740EA6003A6A3A /* LoginSignupTouchBar.swift in Sources */,
 				BA3E75D422291CEB009AD291 /* SystemMessage.swift in Sources */,
 				BAA11AC32251F4D6007F31D2 /* WorkspaceAutoCompleteTextField.swift in Sources */,
+				BA32134C236C1E1400D33367 /* IdleNotificationTouchBar.swift in Sources */,
 				3C8979CA19235EA2007061E0 /* NSTextFieldClickablePointer.m in Sources */,
 				748B3A3419222DB100F31468 /* DisplayCommand.m in Sources */,
 				BA9C2E05224C84E7002AD2A1 /* ColorViewItem.swift in Sources */,
@@ -2013,6 +2539,169 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		BAE64D552368334000244D2B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BAE64D562368334000244D2B /* AutocompleteItem.m in Sources */,
+				BAE64D572368334000244D2B /* Settings.m in Sources */,
+				BAE64D582368334000244D2B /* NSCustomComboBox.m in Sources */,
+				BAE64D592368334000244D2B /* NSTextFieldDuration.m in Sources */,
+				BAE64D5A2368334000244D2B /* UIEvents.m in Sources */,
+				BAE64D5B2368334000244D2B /* Date+Utils.swift in Sources */,
+				BAE64D5C2368334000244D2B /* GoogleAuthenticationServer+Objc.swift in Sources */,
+				BAE64D5D2368334000244D2B /* VertificalTimeEntryFlowLayout.swift in Sources */,
+				BAE64D5E2368334000244D2B /* ClickableImageView.m in Sources */,
+				BAE64D5F2368334000244D2B /* TimeEntryCell.m in Sources */,
+				BAE64D602368334000244D2B /* MainWindowController.m in Sources */,
+				BAE64D612368334000244D2B /* AddTagButton.swift in Sources */,
+				BAE64D622368334000244D2B /* NSTextField+Ext.m in Sources */,
+				BAE64D632368334000244D2B /* ConsoleViewController.m in Sources */,
+				BAE64D642368334000244D2B /* NSView+Ext.swift in Sources */,
+				BAE64D652368334000244D2B /* TimeEntrySnapshot.swift in Sources */,
+				BAE64D662368334000244D2B /* DescriptionAutoCompleteTextField.swift in Sources */,
+				BAE64D672368334000244D2B /* DateInfo.swift in Sources */,
+				BAE64D682368334000244D2B /* DateCellViewItem.swift in Sources */,
+				BAE64D692368334000244D2B /* UndoStack.swift in Sources */,
+				BAE64D6A2368334000244D2B /* NoVibrantPopoverView.swift in Sources */,
+				BAE64D6B2368334000244D2B /* AutoCompleteTable.m in Sources */,
+				BAE64D6C2368334000244D2B /* ClientDataSource.swift in Sources */,
+				BAE64D6D2368334000244D2B /* ProjectStorage.swift in Sources */,
+				BAE64D6E2368334000244D2B /* NSButton+TextColor.swift in Sources */,
+				BAE64D6F2368334000244D2B /* VerticallyCenteredTextFieldCell.swift in Sources */,
+				BAE64D702368334000244D2B /* TagTokenView.swift in Sources */,
+				BAE64D712368334000244D2B /* Collection+Safe.swift in Sources */,
+				BAE64D722368334000244D2B /* ProjectWorksapceCellView.swift in Sources */,
+				BAE64D732368334000244D2B /* Reachability.m in Sources */,
+				BAE64D742368334000244D2B /* ClientCellView.swift in Sources */,
+				BAE64D752368334000244D2B /* AutocompleteDataSource.m in Sources */,
+				BAE64D762368334000244D2B /* BezierPath+Corner.swift in Sources */,
+				BAE64D772368334000244D2B /* ProjectContentCellView.swift in Sources */,
+				BAE64D782368334000244D2B /* NSHoverButton.m in Sources */,
+				BAE64D792368334000244D2B /* SystemMessage.swift in Sources */,
+				BAE64D7A2368334000244D2B /* WorkspaceAutoCompleteTextField.swift in Sources */,
+				BAE64D7B2368334000244D2B /* NSTextFieldClickablePointer.m in Sources */,
+				BAE64D7C2368334000244D2B /* DisplayCommand.m in Sources */,
+				BAE64D7D2368334000244D2B /* ColorViewItem.swift in Sources */,
+				BAE64D7E2368334000244D2B /* MenuItemTags.m in Sources */,
+				BAE64D7F2368334000244D2B /* LoadMoreCell.m in Sources */,
+				BAE64D802368334000244D2B /* PreferencesWindowController.m in Sources */,
+				BAE64D812368334000244D2B /* NSTextFieldVerticallyAligned.m in Sources */,
+				BAE64D822368334000244D2B /* DayLabel.swift in Sources */,
+				BAE64D832368334000244D2B /* NSSecureTextFieldVerticallyAligned.m in Sources */,
+				BAE64D842368334000244D2B /* TimeEntryCell+Ext.swift in Sources */,
+				BAE64D852368334000244D2B /* NSView+Animation.swift in Sources */,
+				BAE64D862368334000244D2B /* AutotrackerRuleItem.m in Sources */,
+				BAE64D872368334000244D2B /* AutoCompleteInput.m in Sources */,
+				BAE64D882368334000244D2B /* UserNotificationCenter.m in Sources */,
+				BAE64D892368334000244D2B /* Utils.m in Sources */,
+				BAE64D8A2368334000244D2B /* CursorButton.swift in Sources */,
+				BAE64D8B2368334000244D2B /* KeyboardTableView.swift in Sources */,
+				BAE64D8C2368334000244D2B /* NSColor+VisibleColor.swift in Sources */,
+				BAE64D8D2368334000244D2B /* main.m in Sources */,
+				BAE64D8E2368334000244D2B /* FeedbackWindowController.m in Sources */,
+				BAE64D8F2368334000244D2B /* DescriptionTimeEntryStorage.swift in Sources */,
+				BAE64D902368334000244D2B /* FlatButton.swift in Sources */,
+				BAE64D912368334000244D2B /* HSV.swift in Sources */,
+				BAE64D922368334000244D2B /* AppDelegate.m in Sources */,
+				BAE64D932368334000244D2B /* EditorViewController.swift in Sources */,
+				BAE64D942368334000244D2B /* AutoCompleteTableCell+Ext.swift in Sources */,
+				BAE64D952368334000244D2B /* LiteAutoCompleteDataSource.m in Sources */,
+				BAE64D962368334000244D2B /* DescriptionDataSource.swift in Sources */,
+				BAE64D972368334000244D2B /* TagDataSource.swift in Sources */,
+				BAE64D982368334000244D2B /* ColorGraphicsView.swift in Sources */,
+				BAE64D992368334000244D2B /* WorkspaceDataSource.swift in Sources */,
+				BAE64D9A2368334000244D2B /* OverlayViewController.m in Sources */,
+				BAE64D9B2368334000244D2B /* ClientAutoCompleteTextField.swift in Sources */,
+				BAE64D9C2368334000244D2B /* TimeEntryListViewController.m in Sources */,
+				BAE64D9D2368334000244D2B /* TimeDecoratorView.swift in Sources */,
+				BAE64D9E2368334000244D2B /* TimeEntryEmptyView.swift in Sources */,
+				BAE64D9F2368334000244D2B /* NSColor+Utils.swift in Sources */,
+				BAE64DA02368334000244D2B /* TimeEntryCollectionView.m in Sources */,
+				BAE64DA12368334000244D2B /* TimeHeaderView.swift in Sources */,
+				BAE64DA22368334000244D2B /* String+Search.swift in Sources */,
+				BAE64DA32368334000244D2B /* ProjectColor.swift in Sources */,
+				BAE64DA42368334000244D2B /* TagCellView.swift in Sources */,
+				BAE64DA52368334000244D2B /* AutoCompleteView.swift in Sources */,
+				BAE64DA62368334000244D2B /* NoInteractionView.swift in Sources */,
+				BAE64DA72368334000244D2B /* NSView+Xib.swift in Sources */,
+				BAE64DA82368334000244D2B /* DesktopLibraryBridge.m in Sources */,
+				BAE64DA92368334000244D2B /* TimeEntryDatasource.swift in Sources */,
+				BAE64DAA2368334000244D2B /* SystemMessageView.swift in Sources */,
+				BAE64DAB2368334000244D2B /* HoverTableCellView.swift in Sources */,
+				BAE64DAC2368334000244D2B /* NSBoxClickable.m in Sources */,
+				BAE64DAD2368334000244D2B /* ProjectTextField.m in Sources */,
+				BAE64DAE2368334000244D2B /* EditorPopover.swift in Sources */,
+				BAE64DAF2368334000244D2B /* ProjectHeaderCellView.swift in Sources */,
+				BAE64DB02368334000244D2B /* TimerContainerBox.swift in Sources */,
+				BAE64DB12368334000244D2B /* CalendarDataSource.swift in Sources */,
+				BAE64DB22368334000244D2B /* CustomFocusRingButton.swift in Sources */,
+				BAE64DB32368334000244D2B /* AutoCompleteTextField.swift in Sources */,
+				BAE64DB42368334000244D2B /* PopoverRootView.swift in Sources */,
+				BAE64DB52368334000244D2B /* NSCustomTimerComboBox.m in Sources */,
+				BAE64DB62368334000244D2B /* KeyboardDatePicker.swift in Sources */,
+				BAE64DB72368334000244D2B /* AutoCompleteViewDataSource.swift in Sources */,
+				BAE64DB82368334000244D2B /* TagStorage.swift in Sources */,
+				BAE64DB92368334000244D2B /* ViewItem.m in Sources */,
+				BAE64DBA2368334000244D2B /* CalendarCollectionView.swift in Sources */,
+				BAE64DBB2368334000244D2B /* NSResize.m in Sources */,
+				BAE64DBC2368334000244D2B /* NSView+LayoutConstraint.swift in Sources */,
+				BAE64DBD2368334000244D2B /* ProjectDataSource.swift in Sources */,
+				BAE64DBE2368334000244D2B /* AutoCompleteRowView.swift in Sources */,
+				BAE64DBF2368334000244D2B /* NSView+Shadow+Border.swift in Sources */,
+				BAE64DC02368334000244D2B /* ResizablePopover.swift in Sources */,
+				BAE64DC12368334000244D2B /* UndoManager.swift in Sources */,
+				BAE64DC22368334000244D2B /* WorkspaceStorage.swift in Sources */,
+				BAE64DC32368334000244D2B /* CountryViewItem.m in Sources */,
+				BAE64DC42368334000244D2B /* CalendarViewController.swift in Sources */,
+				BAE64DC52368334000244D2B /* NotificationCenter+MainThread.swift in Sources */,
+				BAE64DC62368334000244D2B /* SystemService.m in Sources */,
+				BAE64DC72368334000244D2B /* AppIconFactory.m in Sources */,
+				BAE64DC82368334000244D2B /* ConvertHexColor.m in Sources */,
+				BAE64DC92368334000244D2B /* TimeEntryViewItem.m in Sources */,
+				BAE64DCA2368334000244D2B /* NoClientCellView.swift in Sources */,
+				BAE64DCB2368334000244D2B /* IdleNotificationWindowController.m in Sources */,
+				BAE64DCC2368334000244D2B /* Tag.swift in Sources */,
+				BAE64DCD2368334000244D2B /* DescriptionContentCellView.swift in Sources */,
+				BAE64DCE2368334000244D2B /* Theme+Notification.swift in Sources */,
+				BAE64DCF2368334000244D2B /* AboutWindowController.m in Sources */,
+				BAE64DD02368334000244D2B /* TimerEditViewController.m in Sources */,
+				BAE64DD12368334000244D2B /* UnsupportedNotice.m in Sources */,
+				BAE64DD22368334000244D2B /* NSTextFieldWithBackground.m in Sources */,
+				BAE64DD32368334000244D2B /* Array+ByGroup.swift in Sources */,
+				BAE64DD42368334000244D2B /* TogglApplication.m in Sources */,
+				BAE64DD52368334000244D2B /* NSTextFieldClickable.m in Sources */,
+				BAE64DD62368334000244D2B /* Key.swift in Sources */,
+				BAE64DD72368334000244D2B /* NSAlert+Utils.m in Sources */,
+				BAE64DD82368334000244D2B /* BetterFocusAutoCompleteInput.m in Sources */,
+				BAE64DD92368334000244D2B /* CalendarFlowLayout.swift in Sources */,
+				BAE64DDA2368334000244D2B /* NSCustomComboBoxCell.m in Sources */,
+				BAE64DDB2368334000244D2B /* NSWindowController+Focusable.swift in Sources */,
+				BAE64DDC2368334000244D2B /* DotImageView.swift in Sources */,
+				BAE64DDD2368334000244D2B /* TagAutoCompleteTextField.swift in Sources */,
+				BAE64DDE2368334000244D2B /* ProjectAutoCompleteTextField.swift in Sources */,
+				BAE64DDF2368334000244D2B /* HSBGen.swift in Sources */,
+				BAE64DE02368334000244D2B /* GoogleAuthenticationServer.swift in Sources */,
+				BAE64DE12368334000244D2B /* WorkspaceCellView.swift in Sources */,
+				BAE64DE22368334000244D2B /* NSView+Appearance.swift in Sources */,
+				BAE64DE32368334000244D2B /* idler.c in Sources */,
+				BAE64DE42368334000244D2B /* ProjectCreationView.swift in Sources */,
+				BAE64DE52368334000244D2B /* ClientStorage.swift in Sources */,
+				BAE64DE62368334000244D2B /* String+Optional.swift in Sources */,
+				BAE64DE72368334000244D2B /* CurrentColorView.swift in Sources */,
+				BAE64DE82368334000244D2B /* TrackingService.m in Sources */,
+				BAE64DE92368334000244D2B /* AutoCompleteTableCell.m in Sources */,
+				BAE64DEA2368334000244D2B /* RGB.swift in Sources */,
+				BAE64DEB2368334000244D2B /* AutoCompleteTableContainer.m in Sources */,
+				BAE64DEC2368334000244D2B /* AutoCompleteCellType.swift in Sources */,
+				BAE64DED2368334000244D2B /* UndoTextField.m in Sources */,
+				BAE64DEE2368334000244D2B /* ColorPickerView.swift in Sources */,
+				BAE64DEF2368334000244D2B /* FloatingErrorView.swift in Sources */,
+				BAE64DF02368334000244D2B /* LoginViewController.m in Sources */,
+				BAE64DF12368334000244D2B /* IdleEvent.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -2020,6 +2709,11 @@
 			isa = PBXTargetDependency;
 			name = TogglDesktopLibrary;
 			targetProxy = 74456B9B1A77486B002A6338 /* PBXContainerItemProxy */;
+		};
+		BAE64D522368334000244D2B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = TogglDesktopLibrary;
+			targetProxy = BAE64D532368334000244D2B /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -2181,6 +2875,11 @@
 				GCC_NO_COMMON_BLOCKS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "test2/TogglDesktop-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"COCOAPODS=1",
+					"SPARKLE=1",
+				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
@@ -2200,11 +2899,13 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_SWIFT_FLAGS = "-DSPARKLE";
 				PRODUCT_BUNDLE_IDENTIFIER = com.toggl.toggldesktop.TogglDesktop;
 				PRODUCT_NAME = TogglDesktop;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
 				STRIP_INSTALLED_PRODUCT = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Other/TogglDesktop-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -2240,6 +2941,11 @@
 				GCC_NO_COMMON_BLOCKS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "test2/TogglDesktop-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"COCOAPODS=1",
+					"SPARKLE=1",
+				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
@@ -2259,11 +2965,13 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				ONLY_ACTIVE_ARCH = NO;
+				OTHER_SWIFT_FLAGS = "-DSPARKLE";
 				PRODUCT_BUNDLE_IDENTIFIER = com.toggl.toggldesktop.TogglDesktop;
 				PRODUCT_NAME = TogglDesktop;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
 				STRIP_INSTALLED_PRODUCT = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Other/TogglDesktop-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				SYSTEM_FRAMEWORK_SEARCH_PATHS = "$(inherited) $(SYSTEM_LIBRARY_DIR)/PrivateFrameworks";
@@ -2289,7 +2997,7 @@
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2308,7 +3016,7 @@
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2333,7 +3041,7 @@
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2352,10 +3060,138 @@
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		BAE64E492368334000244D2B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 523FD02C959288FBFA20F5B1 /* Pods-TogglDesktop-AppStore.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_CXX_LIBRARY = "compiler-default";
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = "TogglDesktop/TogglDesktop-AppStore.entitlements";
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = B227VTMZ94;
+				ENABLE_HARDENED_RUNTIME = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)",
+					"$(SRCROOT)/../../../../third_party/plcrashreporter/**",
+					"$(PROJECT_DIR)",
+					"$(SRCROOT)/../../../../third_party",
+					"$(SRCROOT)/../../../../third_party/Sparkle",
+					"$(SRCROOT)/../../../../third_party/poco/lib/Darwin/x86_64",
+				);
+				GCC_NO_COMMON_BLOCKS = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "test2/TogglDesktop-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"COCOAPODS=1",
+					"APP_STORE=1",
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(SRCROOT)/../../../../third_party/plcrashreporter/**",
+					"$(SRCROOT)/../../../lib/include",
+					"$(SRCROOT)/../../../../third_party/Sparkle/Sparkle.framework/**",
+					"$(SRCROOT)/../../../../third_party/openssl/include",
+				);
+				INFOPLIST_FILE = "TogglDesktop-AppStore-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)",
+					../../../lib/osx/build,
+					"$(SRCROOT)/../../../../third_party/poco/lib/Darwin/x86_64",
+					"$(SRCROOT)/../../../../third_party/openssl/",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_SWIFT_FLAGS = "$(inherited) -DAPP_STORE";
+				PRODUCT_BUNDLE_IDENTIFIER = com.toggl.toggldesktop.TogglDesktop;
+				PRODUCT_MODULE_NAME = TogglDesktop;
+				PRODUCT_NAME = TogglDesktop;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
+				STRIP_INSTALLED_PRODUCT = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "Other/TogglDesktop-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		BAE64E4A2368334000244D2B /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4BCB2D1F3BD02A806D947C18 /* Pods-TogglDesktop-AppStore.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_CXX_LIBRARY = "compiler-default";
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = "TogglDesktop/TogglDesktop-AppStore.entitlements";
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = B227VTMZ94;
+				ENABLE_HARDENED_RUNTIME = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)",
+					"$(SRCROOT)/../../../../third_party/plcrashreporter/**",
+					"$(PROJECT_DIR)",
+					"$(SRCROOT)/../../../../third_party",
+					"$(SRCROOT)/../../../../third_party/Sparkle",
+					"$(SRCROOT)/../../../../third_party/poco/lib/Darwin/x86_64",
+				);
+				GCC_NO_COMMON_BLOCKS = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "test2/TogglDesktop-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"COCOAPODS=1",
+					"APP_STORE=1",
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(SRCROOT)/../../../../third_party/plcrashreporter/**",
+					"$(SRCROOT)/../../../lib/include",
+					"$(SRCROOT)/../../../../third_party/Sparkle/Sparkle.framework/**",
+					"$(SRCROOT)/../../../../third_party/openssl/include",
+				);
+				INFOPLIST_FILE = "TogglDesktop-AppStore-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)",
+					../../../lib/osx/build,
+					"$(SRCROOT)/../../../../third_party/poco/lib/Darwin/x86_64",
+					"$(SRCROOT)/../../../../third_party/openssl/",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_SWIFT_FLAGS = "$(inherited) -DAPP_STORE";
+				PRODUCT_BUNDLE_IDENTIFIER = com.toggl.toggldesktop.TogglDesktop;
+				PRODUCT_MODULE_NAME = TogglDesktop;
+				PRODUCT_NAME = TogglDesktop;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
+				STRIP_INSTALLED_PRODUCT = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "Other/TogglDesktop-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
 		};
@@ -2394,6 +3230,15 @@
 			buildConfigurations = (
 				74607C2218EDE70C00571BA6 /* Debug */,
 				74607C2318EDE70C00571BA6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BAE64E482368334000244D2B /* Build configuration list for PBXNativeTarget "TogglDesktop-AppStore" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BAE64E492368334000244D2B /* Debug */,
+				BAE64E4A2368334000244D2B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

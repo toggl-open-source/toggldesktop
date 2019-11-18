@@ -1,0 +1,13 @@
+name: Bump version
+on:
+  push:
+    branches:
+      - master
+jobs:
+  bump:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: Bump version and push tag
+      run: |
+        ./dist/tag-and-release.sh github_api_token=${{ secrets.TAGGING_SECRET }} PATCH=1

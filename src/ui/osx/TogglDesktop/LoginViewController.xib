@@ -48,13 +48,13 @@
                             <stackView distribution="equalSpacing" orientation="vertical" alignment="leading" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0Z5-Nq-p4o">
                                 <rect key="frame" x="20" y="195" width="188" height="70"/>
                                 <subviews>
-                                    <textField focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="KGi-ca-Yer">
+                                    <textField focusRingType="none" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KGi-ca-Yer">
                                         <rect key="frame" x="0.0" y="40" width="188" height="30"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="Ejy-Ap-HMe"/>
                                         </constraints>
                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" focusRingType="none" placeholderString="Email address" bezelStyle="round" id="pdv-fD-dZm">
-                                            <font key="font" metaFont="cellTitle"/>
+                                            <font key="font" metaFont="label" size="12"/>
                                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
@@ -62,13 +62,13 @@
                                             <outlet property="nextKeyView" destination="es4-S9-8Od" id="Ilt-Hb-uQK"/>
                                         </connections>
                                     </textField>
-                                    <secureTextField focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="es4-S9-8Od">
+                                    <secureTextField focusRingType="none" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="es4-S9-8Od">
                                         <rect key="frame" x="0.0" y="0.0" width="188" height="30"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="2h3-wv-XZC"/>
                                         </constraints>
                                         <secureTextFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" focusRingType="none" placeholderString="Password" usesSingleLineMode="YES" bezelStyle="round" id="Lvj-We-IDb">
-                                            <font key="font" metaFont="cellTitle"/>
+                                            <font key="font" metaFont="label" size="12"/>
                                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             <allowedInputSourceLocales>
@@ -145,7 +145,7 @@
                                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Nf5-yf-qTk">
                                                             <rect key="frame" x="46" y="36" width="137" height="16"/>
                                                             <textFieldCell key="cell" lineBreakMode="clipping" title="Don't have an account?" id="pfV-yA-7TC">
-                                                                <font key="font" metaFont="cellTitle"/>
+                                                                <font key="font" metaFont="label" size="12"/>
                                                                 <color key="textColor" name="login-text-color"/>
                                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                             </textFieldCell>
@@ -202,7 +202,7 @@
                                                             <rect key="frame" x="18" y="139" width="76" height="18"/>
                                                             <buttonCell key="cell" type="check" title="I agree to" bezelStyle="regularSquare" imagePosition="left" alignment="left" inset="2" id="qm8-nf-Dce">
                                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                                                <font key="font" metaFont="cellTitle"/>
+                                                                <font key="font" metaFont="label" size="12"/>
                                                             </buttonCell>
                                                             <userDefinedRuntimeAttributes>
                                                                 <userDefinedRuntimeAttribute type="color" keyPath="titleColor">
@@ -270,12 +270,12 @@
                                                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="8ub-2k-VFz">
                                                             <rect key="frame" x="36" y="123" width="25" height="16"/>
                                                             <textFieldCell key="cell" lineBreakMode="clipping" title="and" id="6le-qK-Qps">
-                                                                <font key="font" metaFont="cellTitle"/>
+                                                                <font key="font" metaFont="label" size="12"/>
                                                                 <color key="textColor" name="login-text-color"/>
                                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                             </textFieldCell>
                                                         </textField>
-                                                        <comboBox focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="4Zx-Jg-kcg" customClass="NSCustomComboBox">
+                                                        <comboBox focusRingType="none" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Zx-Jg-kcg" customClass="NSCustomComboBox">
                                                             <rect key="frame" x="20" y="161" width="191" height="26"/>
                                                             <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" focusRingType="none" placeholderString="Select country" drawsBackground="YES" completes="NO" usesDataSource="YES" numberOfVisibleItems="5" id="XOG-e3-OcV">
                                                                 <font key="font" metaFont="system"/>
@@ -287,7 +287,7 @@
                                                                 <outlet property="nextKeyView" destination="p8r-V5-a0Z" id="GlM-hm-ruR"/>
                                                             </connections>
                                                         </comboBox>
-                                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="fZp-Ag-MGC" customClass="NSTextFieldClickablePointer">
+                                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fZp-Ag-MGC" customClass="NSTextFieldClickablePointer">
                                                             <rect key="frame" x="92" y="140" width="109" height="17"/>
                                                             <textFieldCell key="cell" lineBreakMode="clipping" title="Terms of Service" id="yMx-7I-dta">
                                                                 <font key="font" metaFont="systemMedium" size="13"/>

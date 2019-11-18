@@ -195,7 +195,7 @@ openssl:
 
 poco:
 	cd $(pocodir) && \
-	./configure --omit=Data/ODBC,Data/MySQL,Zip,JSON,MongoDB,PageCompiler,PageCompiler/File2Page,CppUnit --no-tests --no-samples \
+	./configure --config=Darwin64-clang-libc++ --omit=Data/ODBC,Data/MySQL,Zip,JSON,MongoDB,PageCompiler,PageCompiler/File2Page,CppUnit --no-tests --no-samples \
 	$(pococonfigure) \
 	$(opensslconfigure) \
 	&& \

@@ -7,22 +7,22 @@
 #
 # This script accepts the following parameters:
 #
-# * owner
-# * repo
 # * tag
 # * filename
 # * github_api_token
 #
 # Script to upload a release asset using the GitHub API v3.
 #
+# Expects $GITHUB_REPOSITORY in the environment (set by GitHub Actions)
+#
 # Example:
 #
-# upload-github-release-asset.sh github_api_token=TOKEN owner=stefanbuck repo=playground tag=v0.1.0 filename=./build.zip
+# upload-github-release-asset.sh github_api_token=TOKEN tag=v0.1.0 filename=./build.zip
 #
 
 # Check dependencies.
 set -e
-xargs=$(which gxargs || which xargs)
+set -x
 
 # Validate settings.
 [ "$TRACE" ] && set -x
@@ -34,8 +34,10 @@ for line in $CONFIG; do
 done
 
 # Define variables.
+OWNER=${GITHUB_REPOSITORY/\/*/}
+REPO=${GITHUB_REPOSITORY/*\//}
 GH_API="https://api.github.com"
-GH_REPO="$GH_API/repos/$owner/$repo"
+GH_REPO="$GH_API/repos/$OWNER/$REPO"
 GH_RELEASES="$GH_REPO/releases"
 GH_TAGS="$GH_RELEASES/tags/$tag"
 AUTH="Authorization: token $github_api_token"
@@ -67,7 +69,7 @@ eval $(echo "$response" | grep -m 1 "id.:" | grep -w id | tr : = | tr -cd '[[:al
 echo "Uploading asset... "
 
 # Construct url
-GH_ASSET="https://uploads.github.com/repos/$owner/$repo/releases/$id/assets?name=$(basename $filename)"
+GH_ASSET="https://uploads.github.com/repos/$OWNER/$REPO/releases/$id/assets?name=$(basename $filename)"
 
 curl "$GITHUB_OAUTH_BASIC" --data-binary @"$filename" -H "Authorization: token $github_api_token" -H "Content-Type: application/octet-stream" $GH_ASSET
 
