@@ -214,6 +214,7 @@
     <Compile Include="ui\controls\InAppNotification.xaml.cs">
       <DependentUpon>InAppNotification.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ui\controls\CheckBoxHelper.cs" />
     <Compile Include="ui\controls\ProgressBar.xaml.cs">
       <DependentUpon>ProgressBar.xaml</DependentUpon>
     </Compile>
@@ -667,6 +668,7 @@
     <Page Include="ui\Resources\DesignUpdate\ComboBox.xaml" />
     <Page Include="ui\Resources\DesignUpdate\Controls.xaml" />
     <Page Include="ui\Resources\DesignUpdate\Hyperlink.xaml" />
+    <Page Include="ui\Resources\DesignUpdate\CheckBox.xaml" />
     <Page Include="ui\Resources\DesignUpdate\MahApps.Overrides.xaml" />
     <Page Include="ui\Resources\DesignUpdate\TabControl.xaml" />
     <Page Include="ui\Resources\DesignUpdate\TextBox.xaml" />
