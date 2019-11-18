@@ -169,6 +169,8 @@
 		BA50ED8522705F9E008323FA /* CalendarFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA50ED8422705F9E008323FA /* CalendarFlowLayout.swift */; };
 		BA5B0E4E2330E1C6008D1DED /* GoogleAuthenticationServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5B0E4D2330E1C6008D1DED /* GoogleAuthenticationServer.swift */; };
 		BA5B0E502330EA92008D1DED /* GoogleAuthenticationServer+Objc.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5B0E4F2330EA92008D1DED /* GoogleAuthenticationServer+Objc.swift */; };
+		BA63ABEE238284D9004C70CF /* IdleNotificationTouchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA32134B236C1E1400D33367 /* IdleNotificationTouchBar.swift */; };
+		BA63ABEF238284DB004C70CF /* LoginSignupTouchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA133ABF23740EA6003A6A3A /* LoginSignupTouchBar.swift */; };
 		BA6572A6224DFA6F00BA4C60 /* RGB.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6572A0224DFA6E00BA4C60 /* RGB.swift */; };
 		BA6572A7224DFA6F00BA4C60 /* HSBGen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6572A1224DFA6E00BA4C60 /* HSBGen.swift */; };
 		BA6572A8224DFA6F00BA4C60 /* CurrentColorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6572A2224DFA6F00BA4C60 /* CurrentColorView.swift */; };
@@ -2318,6 +2320,7 @@
 				BAE64D792368334000244D2B /* SystemMessage.swift in Sources */,
 				BAE64D7A2368334000244D2B /* WorkspaceAutoCompleteTextField.swift in Sources */,
 				BAE64D7B2368334000244D2B /* NSTextFieldClickablePointer.m in Sources */,
+				BA63ABEE238284D9004C70CF /* IdleNotificationTouchBar.swift in Sources */,
 				BAE64D7C2368334000244D2B /* DisplayCommand.m in Sources */,
 				BAE64D7D2368334000244D2B /* ColorViewItem.swift in Sources */,
 				BAE64D7E2368334000244D2B /* MenuItemTags.m in Sources */,
@@ -2406,6 +2409,7 @@
 				BAE64DCE2368334000244D2B /* Theme+Notification.swift in Sources */,
 				BAE64DCF2368334000244D2B /* AboutWindowController.m in Sources */,
 				BAE64DD02368334000244D2B /* TimerEditViewController.m in Sources */,
+				BA63ABEF238284DB004C70CF /* LoginSignupTouchBar.swift in Sources */,
 				BAE64DD12368334000244D2B /* UnsupportedNotice.m in Sources */,
 				BAE64DD22368334000244D2B /* NSTextFieldWithBackground.m in Sources */,
 				BAE64DD32368334000244D2B /* Array+ByGroup.swift in Sources */,

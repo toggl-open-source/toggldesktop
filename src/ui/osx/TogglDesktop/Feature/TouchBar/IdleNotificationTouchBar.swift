@@ -15,6 +15,7 @@ import Foundation
 }
 
 @available(OSX 10.12.2, *)
+@objcMembers
 final class IdleNotificationTouchBar: NSObject {
 
     @objc enum Action: Int {
