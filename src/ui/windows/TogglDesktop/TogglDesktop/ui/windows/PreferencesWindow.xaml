@@ -39,197 +39,266 @@
         <!-- tabbed content -->
         <TabControl Grid.Row="0" TabStripPlacement="Top">
             <TabItem Header="General">
-                <StackPanel Margin="24 32 24 48">
-                    <TextBlock Style="{DynamicResource Toggl.TitleText}" Text="Set up shortcuts" />
-                    <Grid Margin="0 16 0 0" HorizontalAlignment="Left">
-                        <Grid.RowDefinitions>
-                            <RowDefinition />
-                            <RowDefinition />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="200" />
-                            <ColumnDefinition Width="160"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" Text="Show/Hide Toggl application" />
-                        <TextBlock Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" Text="Continue/Stop timer" />
+                <ScrollViewer>
+                    <StackPanel Margin="24 32 24 48">
+                        <TextBlock Style="{DynamicResource Toggl.TitleText}" Text="Set up shortcuts" />
+                        <Grid Margin="0 16 0 0" HorizontalAlignment="Left">
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="200" />
+                                <ColumnDefinition Width="160"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" Text="Show/Hide Toggl application" />
+                            <TextBlock Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" Text="Continue/Stop timer" />
 
-                        <!-- <mah:HotKeyBox Grid.Column="1" Grid.Row="0" -->
-                        <!--                Margin="16 0 0 0" -->
-                        <!--                AreModifierKeysRequired="True" -->
-                        <!--                mah:TextBoxHelper.Watermark="Record shortcut" /> -->
-                        <!-- -->
-                        <!-- <mah:HotKeyBox Grid.Column="1" Grid.Row="1" -->
-                        <!--                Margin="16 8 0 0" -->
-                        <!--                AreModifierKeysRequired="True" -->
-                        <!--                mah:TextBoxHelper.Watermark="Record shortcut" /> -->
+                            <!-- <mah:HotKeyBox Grid.Column="1" Grid.Row="0" -->
+                            <!--                Margin="16 0 0 0" -->
+                            <!--                AreModifierKeysRequired="True" -->
+                            <!--                mah:TextBoxHelper.Watermark="Record shortcut" /> -->
+                            <!-- -->
+                            <!-- <mah:HotKeyBox Grid.Column="1" Grid.Row="1" -->
+                            <!--                Margin="16 8 0 0" -->
+                            <!--                AreModifierKeysRequired="True" -->
+                            <!--                mah:TextBoxHelper.Watermark="Record shortcut" /> -->
 
 
-                        <Border Grid.Column="1" Grid.Row="0"
-                                        Style="{StaticResource ShortcutRecordContainer}"
-                                        Margin="16 0 0 0">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition />
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
+                            <Border Grid.Column="1" Grid.Row="0"
+                                            Style="{StaticResource ShortcutRecordContainer}"
+                                            Margin="16 0 0 0">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
 
-                                <Button Name="showHideShortcutRecordButton" x:FieldModifier="private"
-                                                Grid.Column="0" Style="{StaticResource ShortcutRecordButton}"
-                                                >Record shortcut</Button>
-                                <Button Name="showHideShortcutClearButton" x:FieldModifier="private"
-                                            Grid.Column="1" Style="{StaticResource ShortcutClearButton}"/>
-                            </Grid>
-                        </Border>
+                                    <Button Name="showHideShortcutRecordButton" x:FieldModifier="private"
+                                                    Grid.Column="0" Style="{StaticResource ShortcutRecordButton}"
+                                                    >Record shortcut</Button>
+                                    <Button Name="showHideShortcutClearButton" x:FieldModifier="private"
+                                                Grid.Column="1" Style="{StaticResource ShortcutClearButton}"/>
+                                </Grid>
+                            </Border>
 
-                        <Border Grid.Column="1" Grid.Row="1"
-                                        Style="{StaticResource ShortcutRecordContainer}"
-                                        Margin="16 8 0 0">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition />
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-                                <Button Name="continueStopShortcutRecordButton" x:FieldModifier="private"
-                                                Grid.Column="0" Style="{StaticResource ShortcutRecordButton}"
-                                                >Record shortcut</Button>
-                                <Button Name="continueStopShortcutClearButton" x:FieldModifier="private"
-                                            Grid.Column="1" Style="{StaticResource ShortcutClearButton}"/>
-                            </Grid>
-                        </Border>
+                            <Border Grid.Column="1" Grid.Row="1"
+                                            Style="{StaticResource ShortcutRecordContainer}"
+                                            Margin="16 8 0 0">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Button Name="continueStopShortcutRecordButton" x:FieldModifier="private"
+                                                    Grid.Column="0" Style="{StaticResource ShortcutRecordButton}"
+                                                    >Record shortcut</Button>
+                                    <Button Name="continueStopShortcutClearButton" x:FieldModifier="private"
+                                                Grid.Column="1" Style="{StaticResource ShortcutClearButton}"/>
+                                </Grid>
+                            </Border>
 
-                    </Grid>
+                        </Grid>
 
-                    <TextBlock Name="shortcutErrorText" x:FieldModifier="private"
-                               TextAlignment="Right" Margin="0 -2 10 0"
-                               FontSize="12" Foreground="Red"
-                               Text="No error. Everything is ok." />
+                        <TextBlock Name="shortcutErrorText" x:FieldModifier="private"
+                                   TextAlignment="Right" Margin="0 -2 10 0"
+                                   FontSize="12" Foreground="Red"
+                                   Text="No error. Everything is ok." />
 
-                    <Grid Margin="0,0,0,2">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
+                        <TextBlock Style="{DynamicResource Toggl.TitleText}" Margin="0 32 0 0"
+                                   Text="Set default project" />
 
-                        <CheckBox Grid.Column="0" Grid.Row="0"
-                            Name="idleDetectionCheckBox" x:FieldModifier="private"
-                            HorizontalContentAlignment="Stretch"
-                            Margin="5">Idle Detection</CheckBox>
-                        <StackPanel Margin="5" Grid.Column="1" Grid.Row="0"
-                                    Orientation="Horizontal">
-                            <TextBox Name="idleDetectionDurationTextBox" x:FieldModifier="private"
-                                    Width="30"  HorizontalContentAlignment="Right" 
-                                  IsEnabled="{Binding ElementName=idleDetectionCheckBox, Path=IsChecked}">5</TextBox>
-                            <TextBlock Margin="4 0 0 0"
-                                  IsEnabled="{Binding ElementName=idleDetectionCheckBox, Path=IsChecked}">minutes</TextBlock>
-                        </StackPanel>
+                        <TextBlock Style="{DynamicResource Toggl.CaptionText}" Margin="0 4 0 0"
+                                   Text="Default project will be selected when timer is started without a project" />
 
-                        <CheckBox Grid.Column="0" Grid.Row="1"
-                            Name="enablePomodoroCheckBox" x:FieldModifier="private"
-                            HorizontalContentAlignment="Stretch" 
-                            Margin="5">Pomodoro Timer</CheckBox>
-                        <StackPanel Margin="5" Grid.Column="1" Grid.Row="1"
-                                    Orientation="Horizontal">
-                            <TextBox Name="pomodoroTimerDuration" x:FieldModifier="private"
-                                    Width="30"  HorizontalContentAlignment="Right" 
-                                  IsEnabled="{Binding ElementName=enablePomodoroCheckBox, Path=IsChecked}">25</TextBox>
-                            <TextBlock Margin="4 0 0 0"
-                                  IsEnabled="{Binding ElementName=enablePomodoroCheckBox, Path=IsChecked}">minutes</TextBlock>
-                        </StackPanel>
+                        <Grid Height="50" Width="300" Margin="-3 5" HorizontalAlignment="Left">
 
-                        <CheckBox Grid.Column="0" Grid.Row="2"
-                            Name="enablePomodoroBreakCheckBox" x:FieldModifier="private"
-                            HorizontalContentAlignment="Stretch"
-                            Margin="5" 
-                            IsEnabled="{Binding ElementName=enablePomodoroCheckBox, Path=IsChecked}">Pomodoro Break Timer</CheckBox>
-                        <StackPanel Margin="5" Grid.Column="1" Grid.Row="2"
-                                    Orientation="Horizontal">
-                            <StackPanel.IsEnabled>
-                                <MultiBinding Converter="{StaticResource AndConverter}">
-                                    <Binding ElementName="enablePomodoroBreakCheckBox" Path="IsChecked"/>
-                                    <Binding ElementName="enablePomodoroCheckBox" Path="IsChecked"/>
-                                </MultiBinding>
-                            </StackPanel.IsEnabled>
-                            <TextBox Name="pomodoroBreakTimerDuration" x:FieldModifier="private"
-                                     Width="30"  HorizontalContentAlignment="Right" Text="5">
-                            </TextBox>
-                            <TextBlock Margin="4 0 0 0" Text="minutes">
+                            <toggl:ProjectTextBox
+                                x:Name="defaultProjectTextBox" x:FieldModifier="private"
+                                Padding="28, 0, 34, 0"
+                                LostKeyboardFocus="defaultProjectTextBox_OnLostKeyboardFocus"/>
+
+                            <ToggleButton
+                                x:Name="defaultProjectDropDownButton" x:FieldModifier="private"
+                                Style="{StaticResource AutoCompleteTextFieldButton}"/>
+
+                            <toggl:AutoCompletionPopup
+                                x:Name="defaultProjectAutoComplete" x:FieldModifier="private"
+                                Target="{Binding ElementName=defaultProjectTextBox}" TextBox="{Binding ElementName=defaultProjectTextBox}"
+                                EmptyText="No matching projects found." DropDownButton="{Binding ElementName=defaultProjectDropDownButton}"
+                                ConfirmCompletion="defaultProjectAutoComplete_OnConfirmCompletion"
+                                ConfirmWithoutCompletion="defaultProjectAutoComplete_OnConfirmWithoutCompletion"/>
+
+                            <Border
+                                Style="{StaticResource ProjectColorCircle}"
+                                Name="defaultProjectColorCircle" x:FieldModifier="private"
+                                Margin="18, 0, 0, 0"
+                                HorizontalAlignment="Left" />
+
+                            <TextBlock
+                                Margin="36, 0, 16, 0" Text="No project">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock" BasedOn="{StaticResource TextboxEmptyText}">
+                                        <Style.Triggers>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding ElementName=defaultProjectTextBox, Path=(Text)}" Value=""/>
+                                                    <Condition Binding="{Binding ElementName=defaultProjectTextBox, Path=(IsKeyboardFocused)}" Value="False"/>
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </MultiDataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
                             </TextBlock>
+
+                        </Grid>
+
+                        <TextBlock Style="{DynamicResource Toggl.TitleText}" Margin="0 32 0 16"
+                                   Text="Use time tracking helpers" />
+                        <TextBlock Style="{DynamicResource Toggl.BodyText}"
+                                   Text="Idle notification" />
+                        <TextBlock Style="{DynamicResource Toggl.CaptionText}"  Margin="0 4 0 0"
+                                   Text="You'll be notified when timer keeps running after you stopped working on your computer."
+                                   TextWrapping="Wrap" />
+                        <Grid Margin="0 8 0 0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="120" />
+                                <ColumnDefinition Width="96" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <mah:ToggleSwitch Grid.Column="0"
+                                              VerticalAlignment="Center"
+                                              Name="idleDetectionCheckBox" x:FieldModifier="private" />
+                            <TextBlock Grid.Column="1"
+                                       VerticalAlignment="Center"
+                                       Style="{DynamicResource Toggl.BodyText}"
+                                       Text="Notify after" />
+                            <TextBox Grid.Column="2"
+                                     Width="64"
+                                     Margin="8 0"
+                                     Name="idleDetectionDurationTextBox" x:FieldModifier="private"
+                                     IsEnabled="{Binding ElementName=idleDetectionCheckBox, Path=IsChecked}"
+                                     TextAlignment="Right">
+                                <i:Interaction.Behaviors>
+                                    <behaviors:NumericInputTextBoxBehavior />
+                                </i:Interaction.Behaviors>
+                            </TextBox>
+                            <TextBlock Grid.Column="3"
+                                       VerticalAlignment="Center"
+                                       Style="{DynamicResource Toggl.BodyText}"
+                                       Text="minutes" />
+                        </Grid>
+                        <TextBlock Style="{DynamicResource Toggl.BodyText}" Margin="0 24 0 0"
+                                   Text="Pomodoro timer" />
+                        <TextBlock Style="{DynamicResource Toggl.CaptionText}" Margin="0 4 0 0"
+                                   Text="When you start tracking time, pomodoro timer is launched. We'll remind you to take a break at the end of the interval."
+                                   TextWrapping="Wrap" />
+                        <Grid Margin="0 8 0 0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="120" />
+                                <ColumnDefinition Width="96" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <mah:ToggleSwitch Grid.Column="0"
+                                              VerticalAlignment="Center"
+                                              Name="enablePomodoroCheckBox" x:FieldModifier="private" />
+                            <TextBlock Grid.Column="1"
+                                       VerticalAlignment="Center"
+                                       Style="{DynamicResource Toggl.BodyText}"
+                                       Text="Interval" />
+                            <TextBox Grid.Column="2"
+                                     Width="64"
+                                     Margin="8 0"
+                                     Name="pomodoroTimerDuration" x:FieldModifier="private"
+                                     IsEnabled="{Binding ElementName=enablePomodoroCheckBox, Path=IsChecked}"
+                                     TextAlignment="Right">
+                                <i:Interaction.Behaviors>
+                                    <behaviors:NumericInputTextBoxBehavior />
+                                </i:Interaction.Behaviors>
+                            </TextBox>
+                            <TextBlock Grid.Column="3"
+                                       VerticalAlignment="Center"
+                                       Style="{DynamicResource Toggl.BodyText}"
+                                       Text="minutes" />
+                        </Grid>
+                        <TextBlock Style="{DynamicResource Toggl.BodyText}" Margin="0 8 0 0"
+                                   Text="Pomodoro break" />
+                        <Grid Margin="0 8 0 0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="120" />
+                                <ColumnDefinition Width="96" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <mah:ToggleSwitch Grid.Column="0"
+                                              VerticalAlignment="Center"
+                                              Name="enablePomodoroBreakCheckBox" x:FieldModifier="private"
+                                              IsEnabled="{Binding ElementName=enablePomodoroCheckBox, Path=IsChecked}"/>
+                            <TextBlock Grid.Column="1"
+                                       VerticalAlignment="Center"
+                                       Style="{DynamicResource Toggl.BodyText}"
+                                       Text="Interval" />
+                            <TextBox Grid.Column="2"
+                                     Width="64"
+                                     Margin="8 0"
+                                     Name="pomodoroBreakTimerDuration" x:FieldModifier="private"
+                                     TextAlignment="Right">
+                                <TextBox.IsEnabled>
+                                    <MultiBinding Converter="{StaticResource AndConverter}">
+                                        <Binding ElementName="enablePomodoroBreakCheckBox" Path="IsChecked"/>
+                                        <Binding ElementName="enablePomodoroCheckBox" Path="IsChecked"/>
+                                    </MultiBinding>
+                                </TextBox.IsEnabled>
+                                <i:Interaction.Behaviors>
+                                    <behaviors:NumericInputTextBoxBehavior />
+                                </i:Interaction.Behaviors>
+                            </TextBox>
+                            <TextBlock Grid.Column="3"
+                                       VerticalAlignment="Center"
+                                       Style="{DynamicResource Toggl.BodyText}"
+                                       Text="minutes" />
+                        </Grid>
+                        <TextBlock Style="{DynamicResource Toggl.BodyText}" Margin="0 24 0 0"
+                                   Text="Record activity" />
+                        <TextBlock Style="{DynamicResource Toggl.CaptionText}" Margin="0 4 0 0"
+                                   Text="You'll have a timeline of all activity on your computer with a breakdown of time spent on applications and websites. Only you can access this data."
+                                   TextWrapping="Wrap" />
+                        <mah:ToggleSwitch Margin="0 14 0 0"
+                                          Name="recordTimelineCheckBox" x:FieldModifier="private" />
+                        <TextBlock Style="{DynamicResource Toggl.BodyText}" Margin="0 24 0 0"
+                                   Text="Stop timer automatically" />
+                        <TextBlock Style="{DynamicResource Toggl.CaptionText}" Margin="0 4 0 0"
+                                   Text="When your computer is put to sleep or shut down, the timer will be stopped."
+                                   TextWrapping="Wrap" />
+                        <mah:ToggleSwitch Margin="0 14 0 0"
+                                          Name="onStopEntryCheckBox" x:FieldModifier="private" />
+                        <TextBlock Style="{DynamicResource Toggl.TitleText}" Margin="0 32 0 0"
+                                   Text="Toggl window settings" />
+                        <TextBlock Style="{DynamicResource Toggl.BodyText}" Margin="0 16 0 0"
+                                   Text="Run Toggl application on Windows login" />
+                        <mah:ToggleSwitch Margin="0 14 0 0"
+                                          x:Name="launchOnStartupCheckBox" x:FieldModifier="private" />
+                        <TextBlock Style="{DynamicResource Toggl.BodyText}" Margin="0 20 0 0"
+                                   Text="Keep Toggl on top of other windows" />
+                        <mah:ToggleSwitch Margin="0 14 0 0"
+                                          Name="onTopCheckBox" x:FieldModifier="private" />
+                        <TextBlock Style="{DynamicResource Toggl.TitleText}" Margin="0 32 0 0"
+                                   Text="Time editing settings" />
+                        <TextBlock Style="{DynamicResource Toggl.BodyText}" Margin="0 16 0 0"
+                                   Text="When start time of an entry is changed, modify:" />
+                        <StackPanel Orientation="Horizontal" Margin="0 8 0 0">
+                            <RadioButton Width="100"
+                                         GroupName="1"
+                                         Content="duration"
+                                         Name="keepEndTimeFixedCheckbox" x:FieldModifier="private"/>
+                            <RadioButton GroupName="1"
+                                         Content="end time" />
                         </StackPanel>
-
-                        <CheckBox Grid.Column="0" Grid.Row="3"
-                            Name="recordTimelineCheckBox" x:FieldModifier="private"
-                            Margin="5">Record timeline</CheckBox>
-                        <CheckBox Grid.Column="0" Grid.Row="4"
-                            Name="onTopCheckBox" x:FieldModifier="private"
-                            Margin="5">Keep Toggl on top of other windows</CheckBox>
-                        <CheckBox Grid.Column="0" Grid.Row="5"
-                            x:Name="onStopEntryCheckBox" x:FieldModifier="private"
-                            Margin="5" Content="Stop running entry on computer sleep/shutdown"/>
-                        <CheckBox Grid.Column="0" Grid.Row="6"
-                                  x:Name="launchOnStartupCheckBox" x:FieldModifier="private"
-                                  Margin="5" Content="Run the app on Windows login"/>
-
-                    </Grid>
-
-                    <TextBlock Text="Default project" Margin="5 5 5 -5"
-                                   />
-                    <!-- default project selection -->
-                    <Grid Height="50" Width="300" Margin="-3 5" HorizontalAlignment="Left">
-
-                        <toggl:ProjectTextBox
-                            x:Name="defaultProjectTextBox" x:FieldModifier="private"
-                            Padding="28, 0, 34, 0"
-                            LostKeyboardFocus="defaultProjectTextBox_OnLostKeyboardFocus"/>
-
-                        <ToggleButton
-                            x:Name="defaultProjectDropDownButton" x:FieldModifier="private"
-                            Style="{StaticResource AutoCompleteTextFieldButton}"/>
-
-                        <toggl:AutoCompletionPopup
-                            x:Name="defaultProjectAutoComplete" x:FieldModifier="private"
-                            Target="{Binding ElementName=defaultProjectTextBox}" TextBox="{Binding ElementName=defaultProjectTextBox}"
-                            EmptyText="No matching projects found." DropDownButton="{Binding ElementName=defaultProjectDropDownButton}"
-                            ConfirmCompletion="defaultProjectAutoComplete_OnConfirmCompletion"
-                            ConfirmWithoutCompletion="defaultProjectAutoComplete_OnConfirmWithoutCompletion"/>
-
-                        <Border
-                            Style="{StaticResource ProjectColorCircle}"
-                            Name="defaultProjectColorCircle" x:FieldModifier="private"
-                            Margin="18, 0, 0, 0"
-                            HorizontalAlignment="Left" />
-
-                        <TextBlock
-                            Margin="36, 0, 16, 0" Text="No project">
-                            <TextBlock.Style>
-                                <Style TargetType="TextBlock" BasedOn="{StaticResource TextboxEmptyText}">
-                                    <Style.Triggers>
-                                        <MultiDataTrigger>
-                                            <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding ElementName=defaultProjectTextBox, Path=(Text)}" Value=""/>
-                                                <Condition Binding="{Binding ElementName=defaultProjectTextBox, Path=(IsKeyboardFocused)}" Value="False"/>
-                                            </MultiDataTrigger.Conditions>
-                                            <Setter Property="Visibility" Value="Visible"/>
-                                        </MultiDataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
-
-                    </Grid>
-
-                    <CheckBox Name="keepEndTimeFixedCheckbox" x:FieldModifier="private"
-                        Content="Change duration when changing start time"
-                              Margin="5"/>
-                </StackPanel>
+                    </StackPanel>
+                </ScrollViewer>
             </TabItem>
 
             <TabItem Header="Reminder">
@@ -354,7 +423,7 @@
                         Width="92"
                         Margin="16,0,0,0"
                         Content="Cancel"
-                        behaviors:ButtonBehavior.IsCloseWindowButton="True" />
+                        behaviors:ButtonHelper.IsCloseWindowButton="True" />
             </StackPanel>
         </Border>
     </Grid>

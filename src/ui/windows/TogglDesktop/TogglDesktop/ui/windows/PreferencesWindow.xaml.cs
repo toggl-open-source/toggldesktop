@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+using MahApps.Metro.Controls;
 using TogglDesktop.AutoCompletion;
 using TogglDesktop.AutoCompletion.Implementation;
 using TogglDesktop.Diagnostics;
@@ -199,7 +200,7 @@ namespace TogglDesktop
         private async Task UpdateLaunchOnStartupCheckboxAsync()
         {
             var isEnabled = await IsRunOnStartupEnabled();
-            this.TryBeginInvoke((bool? isRunOnStartupEnabled, CheckBox checkBox) =>
+            this.TryBeginInvoke((bool? isRunOnStartupEnabled, ToggleSwitch checkBox) =>
             {
                 if (isRunOnStartupEnabled.HasValue == false)
                 {
@@ -262,6 +263,11 @@ namespace TogglDesktop
         }
 
         private static bool isChecked(ToggleButton checkBox)
+        {
+            return checkBox.IsChecked ?? false;
+        }
+
+        private static bool isChecked(ToggleSwitch checkBox)
         {
             return checkBox.IsChecked ?? false;
         }

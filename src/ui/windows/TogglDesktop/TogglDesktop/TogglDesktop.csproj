@@ -205,11 +205,13 @@
     <Compile Include="ui\AutoCompleteControls\TaskEntry.xaml.cs">
       <DependentUpon>TaskEntry.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ui\Behaviors\ButtonBehavior.cs" />
+    <Compile Include="ui\Behaviors\ButtonHelper.cs" />
     <Compile Include="ui\Behaviors\CloseWindowOnEscBehavior.cs" />
-    <Compile Include="ui\Behaviors\FocusBehavior.cs" />
+    <Compile Include="ui\Behaviors\FocusHelper.cs" />
     <Compile Include="ui\Behaviors\FocusParentWindowOnClosingBehavior.cs" />
     <Compile Include="ui\Behaviors\HideWindowOnClosingBehavior.cs" />
+    <Compile Include="ui\Behaviors\NumericInputTextBoxBehavior.cs" />
+    <Compile Include="ui\Behaviors\TextBoxHelper.cs" />
     <Compile Include="ui\chrome\ChromelessWindow.cs" />
     <Compile Include="ui\controls\InAppNotification.xaml.cs">
       <DependentUpon>InAppNotification.xaml</DependentUpon>
@@ -674,6 +676,7 @@
     <Page Include="ui\Resources\DesignUpdate\RadioButton.xaml" />
     <Page Include="ui\Resources\DesignUpdate\TabControl.xaml" />
     <Page Include="ui\Resources\DesignUpdate\TextBox.xaml" />
+    <Page Include="ui\Resources\DesignUpdate\ToggleSwitch.xaml" />
     <Page Include="ui\Resources\DesignUpdate\ToolWindow.xaml" />
     <Page Include="ui\Resources\DesignUpdate\Typography.xaml" />
     <Page Include="ui\Resources\DialogStyles.xaml">
