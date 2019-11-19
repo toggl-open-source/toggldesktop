@@ -3,13 +3,13 @@ using System.Windows.Controls.Primitives;
 
 namespace TogglDesktop.Behaviors
 {
-    public static class ButtonBehavior
+    public static class ButtonHelper
     {
         public static readonly DependencyProperty IsCloseWindowButtonProperty =
             DependencyProperty.RegisterAttached(
             "IsCloseWindowButton",
             typeof(bool),
-            typeof(ButtonBehavior),
+            typeof(ButtonHelper),
             new UIPropertyMetadata(default(bool), OnDefaultButtonPropertyChanged));
 
         public static void SetIsCloseWindowButton(DependencyObject element, bool value)
@@ -32,7 +32,7 @@ namespace TogglDesktop.Behaviors
                 }
                 else
                 {
-                    button.Click -= OnCloseButtonClick; ;
+                    button.Click -= OnCloseButtonClick;
                 }
             }
         }
