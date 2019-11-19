@@ -108,7 +108,9 @@ function notarize() {
 }
 
 function dmg() {
+    APP_PATH=$(app_path)
     npm install --global create-dmg
+    brew install graphicsmagick imagemagick
     create-dmg $APP_PATH
     mv *.dmg TogglDesktop.dmg
 }
