@@ -1,0 +1,54 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
+                    xmlns:po="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.toggleswitch.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <SolidColorBrush x:Key="MahApps.Metro.Brushes.ToggleSwitchButton.ThumbIndicatorMouseOverBrush.Win10"
+                     Color="{DynamicResource Toggl.SecondaryTextColor}" po:Freeze="True" />
+    <SolidColorBrush x:Key="MahApps.Metro.Brushes.ToggleSwitchButton.OffMouseOverBorderBrush.Win10"
+                     Color="{DynamicResource Toggl.SecondaryTextColor}" po:Freeze="True" />
+    <SolidColorBrush x:Key="MahApps.Metro.Brushes.ToggleSwitchButton.OnSwitchMouseOverBrush.Win10"
+                     Color="{DynamicResource Toggl.AccentColorPlusOne}" po:Freeze="True" />
+    <SolidColorBrush x:Key="MahApps.Metro.Brushes.ToggleSwitchButton.ThumbIndicatorCheckedBrush.Win10"
+                     Color="{DynamicResource Toggl.SelectionElements.BackgroundColor}" po:Freeze="True" />
+    <SolidColorBrush x:Key="MahApps.Metro.Brushes.ToggleSwitchButton.PressedBrush.Win10"
+                     Color="{DynamicResource Toggl.DisabledTextColor}" po:Freeze="True" />
+    <SolidColorBrush x:Key="MahApps.Metro.Brushes.ToggleSwitchButton.ThumbIndicatorPressedBrush.Win10"
+                     Color="{DynamicResource Toggl.SelectionElements.BackgroundColor}" po:Freeze="True" />
+    <SolidColorBrush x:Key="MahApps.Metro.Brushes.ToggleSwitchButton.OffDisabledBorderBrush.Win10"
+                     Color="{DynamicResource Toggl.DisabledElementColor}" po:Freeze="True" />
+    <SolidColorBrush x:Key="MahApps.Metro.Brushes.ToggleSwitchButton.OnSwitchDisabledBrush.Win10"
+                     Color="{DynamicResource Toggl.DisabledElementColor}" po:Freeze="True" />
+
+    <Style x:Key="Toggl.ToggleSwitchButton"
+           BasedOn="{StaticResource MahApps.Metro.Styles.ToggleSwitchButton.Win10}"
+           TargetType="{x:Type Controls:ToggleSwitchButton}">
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Toggl.SelectionElements.Border}" />
+        <Setter Property="OffSwitchBrush" Value="{DynamicResource Toggl.SelectionElements.Background}" />
+        <Setter Property="OnSwitchBrush" Value="{DynamicResource Toggl.AccentBrush}" />
+        <Setter Property="ThumbIndicatorBrush" Value="{DynamicResource Toggl.SecondaryTextBrush}" />
+        <Setter Property="ThumbIndicatorDisabledBrush" Value="{DynamicResource Toggl.DisabledTextBrush}" />
+    </Style>
+
+    <Style BasedOn="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}"
+           TargetType="{x:Type Controls:ToggleSwitch}">
+        <Setter Property="OffSwitchBrush" Value="{DynamicResource Toggl.SelectionElements.Background}" />
+        <Setter Property="OnSwitchBrush" Value="{DynamicResource Toggl.AccentBrush}" />
+        <Setter Property="ThumbIndicatorBrush" Value="{DynamicResource Toggl.SecondaryTextBrush}" />
+        <Setter Property="ThumbIndicatorDisabledBrush" Value="{DynamicResource Toggl.DisabledTextBrush}" />
+        <Setter Property="ToggleSwitchButtonStyle" Value="{StaticResource Toggl.ToggleSwitchButton}" />
+        <Setter Property="OffLabel" Value="Off" />
+        <Setter Property="OnLabel" Value="On" />
+        <Setter Property="ContentPadding" Value="0 0 8 0" />
+        <Style.Triggers>
+            <Trigger Property="ContentDirection" Value="RightToLeft">
+                <Setter Property="ContentPadding" Value="8 0 0 0" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+</ResourceDictionary>
