@@ -575,7 +575,9 @@ void timeline_chunk_view_clear(
         chunk_view->EndTimeString = nullptr;
     }
     if (chunk_view->FirstEvent) {
-        timeline_event_view_clear(chunk_view->FirstEvent);
+        TogglTimelineEventView *firstEvent =
+        reinterpret_cast<TogglTimelineEventView *>(chunk_view->FirstEvent);
+        timeline_event_view_clear(firstEvent);
         chunk_view->FirstEvent = nullptr;
     }
     if (chunk_view->Next) {

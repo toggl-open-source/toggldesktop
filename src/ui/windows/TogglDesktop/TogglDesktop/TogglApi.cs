@@ -927,8 +927,9 @@ public static partial class Toggl
         IntPtr context);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-    private static extern void context,
-            Int64 unix_timestamp);
+    private static extern void toggl_view_timeline_set_day(
+        IntPtr context,
+        Int64 unix_timestamp);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_edit(

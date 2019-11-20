@@ -601,8 +601,8 @@ char_t *toggl_start(
     const char_t *project_guid,
     const char_t *tags,
     const bool_t prevent_on_app,
-    const time_t started,
-    const time_t ended) {
+    const uint64_t started,
+    const uint64_t ended) {
 
     logger().debug("toggl_start");
 
