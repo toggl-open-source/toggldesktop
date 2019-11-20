@@ -27,14 +27,6 @@ static class Win32
     [DllImport("user32.dll")]
     public static extern bool GetLastInputInfo(out LASTINPUTINFO plii);
 
-    [DllImport("user32.dll")]
-    public static extern bool RegisterHotKey(IntPtr hWnd, int id, uint fsModifiers, uint vk);
-
-    [DllImport("user32.dll")]
-    public static extern bool UnregisterHotKey(IntPtr hWnd, int id);
-
-    public const int WM_HOTKEY = 0x0312;
-
     [StructLayout(LayoutKind.Sequential)]
     public struct Rectangle
     {
