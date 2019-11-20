@@ -14,6 +14,8 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Threading;
 using Microsoft.Win32;
+using NHotkey;
+using NHotkey.Wpf;
 using TogglDesktop.Diagnostics;
 using TogglDesktop.Experiments;
 using TogglDesktop.Theming;
@@ -29,8 +31,6 @@ namespace TogglDesktop
 
         private readonly DispatcherTimer idleDetectionTimer =
             new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
-        private readonly KeyboardHook startHook = new KeyboardHook();
-        private readonly KeyboardHook showHook = new KeyboardHook();
 
         private readonly WindowInteropHelper interopHelper;
         private readonly IMainView[] views;
@@ -73,8 +73,6 @@ namespace TogglDesktop
             this.initializeExperimentManager();
             this.initializeSessionNotification();
 
-            this.startHook.KeyPressed += this.onGlobalStartKeyPressed;
-            this.showHook.KeyPressed += this.onGlobalShowKeyPressed;
             this.idleDetectionTimer.Tick += this.onIdleDetectionTimerTick;
 
             this.finalInitialisation();
@@ -545,7 +543,7 @@ namespace TogglDesktop
             this.Chrome.CogButton.IsEnabled = true;
         }
 
-        private void onGlobalShowKeyPressed(object sender, KeyPressedEventArgs e)
+        private void onGlobalShowKeyPressed(object sender, HotkeyEventArgs args)
         {
             if (this.CanBeShown)
             {
@@ -557,7 +555,7 @@ namespace TogglDesktop
             }
         }
 
-        private void onGlobalStartKeyPressed(object sender, KeyPressedEventArgs e)
+        private void onGlobalStartKeyPressed(object sender, HotkeyEventArgs args)
         {
             if (this.IsTracking)
             {
@@ -717,9 +715,19 @@ namespace TogglDesktop
         {
             try
             {
-                this.startHook.ChangeTo(
-                    Toggl.GetKeyModifierStart(), Toggl.GetKeyStart()
-                    );
+                var keyStart = Toggl.GetKeyStart();
+                if (keyStart != Key.None)
+                {
+                    HotkeyManager.Current.AddOrReplace(
+                        "Toggl.ContinueOrStop",
+                        keyStart,
+                        Toggl.GetKeyModifierStart(),
+                        onGlobalStartKeyPressed);
+                }
+                else
+                {
+                    HotkeyManager.Current.Remove("Toggl.ContinueOrStop");
+                }
             }
             catch (Exception e)
             {
@@ -728,9 +736,19 @@ namespace TogglDesktop
 
             try
             {
-                this.showHook.ChangeTo(
-                    Toggl.GetKeyModifierShow(), Toggl.GetKeyShow()
-                    );
+                var keyShow = Toggl.GetKeyShow();
+                if (keyShow != Key.None)
+                {
+                    HotkeyManager.Current.AddOrReplace(
+                        "Toggl.ShowHideToggl",
+                        keyShow,
+                        Toggl.GetKeyModifierShow(),
+                        onGlobalShowKeyPressed);
+                }
+                else
+                {
+                    HotkeyManager.Current.Remove("Toggl.ShowHideToggl");
+                }
             }
             catch (Exception e)
             {
