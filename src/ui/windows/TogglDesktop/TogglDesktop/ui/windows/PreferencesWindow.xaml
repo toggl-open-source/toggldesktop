@@ -8,11 +8,13 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:behaviors="clr-namespace:TogglDesktop.Behaviors"
         xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:viewModels="clr-namespace:TogglDesktop.ViewModels"
         mc:Ignorable="d" 
         Height="760" Width="480"
         WindowStartupLocation="CenterOwner"
         Background="{DynamicResource Toggl.CardBackground}"
-        Title="Preferences">
+        Title="Preferences"
+        d:DataContext="{d:DesignInstance viewModels:PreferencesWindowViewModel, IsDesignTimeCreatable=False}">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -53,57 +55,17 @@
                             </Grid.ColumnDefinitions>
                             <TextBlock Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" Text="Show/Hide Toggl application" />
                             <TextBlock Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" Text="Continue/Stop timer" />
-
-                            <!-- <mah:HotKeyBox Grid.Column="1" Grid.Row="0" -->
-                            <!--                Margin="16 0 0 0" -->
-                            <!--                AreModifierKeysRequired="True" -->
-                            <!--                mah:TextBoxHelper.Watermark="Record shortcut" /> -->
-                            <!-- -->
-                            <!-- <mah:HotKeyBox Grid.Column="1" Grid.Row="1" -->
-                            <!--                Margin="16 8 0 0" -->
-                            <!--                AreModifierKeysRequired="True" -->
-                            <!--                mah:TextBoxHelper.Watermark="Record shortcut" /> -->
-
-
-                            <Border Grid.Column="1" Grid.Row="0"
-                                            Style="{StaticResource ShortcutRecordContainer}"
-                                            Margin="16 0 0 0">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition />
-                                        <ColumnDefinition Width="Auto"/>
-                                    </Grid.ColumnDefinitions>
-
-                                    <Button Name="showHideShortcutRecordButton" x:FieldModifier="private"
-                                                    Grid.Column="0" Style="{StaticResource ShortcutRecordButton}"
-                                                    >Record shortcut</Button>
-                                    <Button Name="showHideShortcutClearButton" x:FieldModifier="private"
-                                                Grid.Column="1" Style="{StaticResource ShortcutClearButton}"/>
-                                </Grid>
-                            </Border>
-
-                            <Border Grid.Column="1" Grid.Row="1"
-                                            Style="{StaticResource ShortcutRecordContainer}"
-                                            Margin="16 8 0 0">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition />
-                                        <ColumnDefinition Width="Auto"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Button Name="continueStopShortcutRecordButton" x:FieldModifier="private"
-                                                    Grid.Column="0" Style="{StaticResource ShortcutRecordButton}"
-                                                    >Record shortcut</Button>
-                                    <Button Name="continueStopShortcutClearButton" x:FieldModifier="private"
-                                                Grid.Column="1" Style="{StaticResource ShortcutClearButton}"/>
-                                </Grid>
-                            </Border>
-
+                            <mah:HotKeyBox Grid.Column="1" Grid.Row="0"
+                                           Margin="16 0 0 0"
+                                           AreModifierKeysRequired="True"
+                                           mah:TextBoxHelper.Watermark="Record shortcut"
+                                           HotKey="{Binding ShowHideToggl, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True}"/>
+                            <mah:HotKeyBox Grid.Column="1" Grid.Row="1"
+                                           Margin="16 8 0 0"
+                                           AreModifierKeysRequired="True"
+                                           mah:TextBoxHelper.Watermark="Record shortcut"
+                                           HotKey="{Binding ContinueStopTimer, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True}"/>
                         </Grid>
-
-                        <TextBlock Name="shortcutErrorText" x:FieldModifier="private"
-                                   TextAlignment="Right" Margin="0 -2 10 0"
-                                   FontSize="12" Foreground="Red"
-                                   Text="No error. Everything is ok." />
 
                         <TextBlock Style="{DynamicResource Toggl.TitleText}" Margin="0 32 0 0"
                                    Text="Set default project" />
