@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows;
+using System.Windows.Input;
 using TogglDesktop.Diagnostics;
 
 // ReSharper disable InconsistentNaming
@@ -1324,17 +1325,19 @@ public static partial class Toggl
     {
         toggl_set_key_start(ctx, key);
     }
-    public static string GetKeyStart()
+    public static Key GetKeyStart()
     {
-        return toggl_get_key_start(ctx);
+        var keyCode = toggl_get_key_start(ctx);
+        return getKey(keyCode);
     }
     public static void SetKeyShow(string key)
     {
         toggl_set_key_show(ctx, key);
     }
-    public static string GetKeyShow()
+    public static Key GetKeyShow()
     {
-        return toggl_get_key_show(ctx);
+        var keyCode = toggl_get_key_show(ctx);
+        return getKey(keyCode);
     }
     public static void SetKeyModifierShow(ModifierKeys mods)
     {
@@ -1343,9 +1346,9 @@ public static partial class Toggl
     public static ModifierKeys GetKeyModifierShow()
     {
         var s = toggl_get_key_modifier_show(ctx);
-        if (string.IsNullOrWhiteSpace(s))
+        if (string.IsNullOrWhiteSpace(s) || !Enum.TryParse(s, true, out ModifierKeys modifierKeys))
             return ModifierKeys.None;
-        return (ModifierKeys)Enum.Parse(typeof(ModifierKeys), s, true);
+        return modifierKeys;
     }
     public static void SetKeyModifierStart(ModifierKeys mods)
     {
@@ -1354,9 +1357,19 @@ public static partial class Toggl
     public static ModifierKeys GetKeyModifierStart()
     {
         var s = toggl_get_key_modifier_start(ctx);
-        if(string.IsNullOrWhiteSpace(s))
+        if (string.IsNullOrWhiteSpace(s) || !Enum.TryParse(s, true, out ModifierKeys modifierKeys))
             return ModifierKeys.None;
-        return (ModifierKeys)Enum.Parse(typeof(ModifierKeys), s, true);
+        return modifierKeys;
+    }
+
+    private static Key getKey(string keyCode)
+    {
+        if (string.IsNullOrEmpty(keyCode) || !Enum.TryParse(keyCode, out Key key))
+        {
+            return Key.None;
+        }
+
+        return key;
     }
 
     #endregion

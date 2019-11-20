@@ -298,6 +298,7 @@
     <Compile Include="ui\Tutorial\TutorialManager.cs" />
     <Compile Include="ui\Tutorial\TutorialScreen.cs" />
     <Compile Include="ui\ViewModels\FeedbackWindowViewModel.cs" />
+    <Compile Include="ui\ViewModels\PreferencesWindowViewModel.cs" />
     <Compile Include="ui\views\IMainView.cs" />
     <Compile Include="ui\Experiments\ExperimentManager.cs" />
     <Compile Include="ui\views\OverlayView.xaml.cs">
@@ -309,7 +310,6 @@
     <Compile Include="ui\controls\PomodoroNotification.xaml.cs">
       <DependentUpon>PomodoroNotification.xaml</DependentUpon>
     </Compile>
-    <Compile Include="utilities\GlobalShortcuts.cs" />
     <Compile Include="utilities\LinqExtensions.cs" />
     <Compile Include="utilities\StaticObjectPool.cs" />
     <Compile Include="TogglApi.cs" />
@@ -961,6 +961,9 @@
     </PackageReference>
     <PackageReference Include="MahApps.Metro">
       <Version>1.6.5</Version>
+    </PackageReference>
+    <PackageReference Include="NHotkey.Wpf">
+      <Version>1.2.1</Version>
     </PackageReference>
     <PackageReference Include="ReactiveUI.Validation">
       <Version>1.4.1</Version>
