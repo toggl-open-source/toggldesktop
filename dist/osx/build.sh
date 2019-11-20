@@ -7,7 +7,6 @@ export  LDFLAGS="-mmacosx-version-min=10.11"
 export   CFLAGS="$LDFLAGS"
 export CXXFLAGS="$LDFLAGS"
 
-export TAG_NAME="v7.9.99"
 version=${TAG_NAME/v/}
 
 function app_path() {
@@ -68,21 +67,10 @@ for filename in $APP/Contents/Frameworks/*; do
     codesign --deep --verify --strict --verbose=4 $APP
 }
 
-function wait_while_in_progress() {
-    while true; do \
-        /usr/bin/xcrun altool --notarization-info `/usr/libexec/PlistBuddy -c "Print :notarization-upload:RequestUUID" $(UPLOAD_INFO_PLIST)` -u $(DEVELOPER_USERNAME) -p $(DEVELOPER_PASSWORD) --output-format xml > $(REQUEST_INFO_PLIST) ;\
-        if [[ `/usr/libexec/PlistBuddy -c "Print :notarization-info:Status" $(REQUEST_INFO_PLIST)` != "in progress" ]]; then \
-            break ;\
-        fi ;\
-        echo '\n***** Notarization - waiting 60s' ;\
-        sleep 60 ;\
-    done
-}
-
 function notarize() {
-    BUNDLE_APP=$(dirname $(app_path))
+    APP_PATH=$(app_path)
+    BUNDLE_APP=$(dirname "${APP_PATH}")
     EXPORT_PATH=${BUNDLE_APP}/Submissions
-    APP_PATH=${BUNDLE_APP}/TogglDesktop.app
     BUNDLE_ZIP=${EXPORT_PATH}/TogglDesktop.zip
     UPLOAD_INFO_PLIST=${EXPORT_PATH}/UploadInfo.plist
     REQUEST_INFO_PLIST=${EXPORT_PATH}/RequestInfo.plist
@@ -91,20 +79,26 @@ function notarize() {
     DEVELOPER_PASSWORD=${APPLE_APPID_PASSWORD}
 
     echo "Notarization" "Building a ZIP archive…"
-    /usr/bin/ditto -c -k --keepParent $(APP_PATH) $(BUNDLE_ZIP)
+    /usr/bin/ditto -c -k --keepParent ${APP_PATH} ${BUNDLE_ZIP}
     echo "Notarization" "Uploading for notarization…"
-    /usr/bin/xcrun altool --notarize-app --primary-bundle-id "com.toggl.toggldesktop.TogglDesktop.zip" -itc_provider "B227VTMZ94" -u $(DEVELOPER_USERNAME) -p $(DEVELOPER_PASSWORD) -f $(BUNDLE_ZIP) --output-format xml > $(UPLOAD_INFO_PLIST)
+    /usr/bin/xcrun altool --notarize-app --primary-bundle-id "com.toggl.toggldesktop.TogglDesktop.zip" -itc_provider "B227VTMZ94" -u ${DEVELOPER_USERNAME} -p ${DEVELOPER_PASSWORD} -f ${BUNDLE_ZIP} --output-format xml > ${UPLOAD_INFO_PLIST} || cat ${UPLOAD_INFO_PLIST}
     echo "Notarization" "Waiting while notarized…"
-        /usr/bin/xcrun altool --notarization-info `/usr/libexec/PlistBuddy -c "Print :notarization-upload:RequestUUID" $(UPLOAD_INFO_PLIST)` -u $(DEVELOPER_USERNAME) -p $(DEVELOPER_PASSWORD) --output-format xml > $(REQUEST_INFO_PLIST)
-    echo wait_while_in_progress
+    while true; do
+        /usr/bin/xcrun altool --notarization-info `/usr/libexec/PlistBuddy -c "Print :notarization-upload:RequestUUID" ${UPLOAD_INFO_PLIST}` -u ${DEVELOPER_USERNAME} -p ${DEVELOPER_PASSWORD} --output-format xml > ${REQUEST_INFO_PLIST} || cat ${REQUEST_INFO_PLIST}
+        if [[ `/usr/libexec/PlistBuddy -c "Print :notarization-info:Status" ${REQUEST_INFO_PLIST}` != "in progress" ]]; then
+            break
+        fi
+        echo '\n***** Notarization - waiting 60s'
+        sleep 60
+    done
     echo "Notarization" "Downloading log file…"
-    /usr/bin/curl -o $(AUDIT_INFO_JSON) `/usr/libexec/PlistBuddy -c "Print :notarization-info:LogFileURL" $(REQUEST_INFO_PLIST)`
-    if [ `/usr/libexec/PlistBuddy -c "Print :notarization-info:Status" $(REQUEST_INFO_PLIST)` != "success" ]; then \
+    /usr/bin/curl -o ${AUDIT_INFO_JSON} `/usr/libexec/PlistBuddy -c "Print :notarization-info:LogFileURL" ${REQUEST_INFO_PLIST}`
+    if [ `/usr/libexec/PlistBuddy -c "Print :notarization-info:Status" ${REQUEST_INFO_PLIST}` != "success" ]; then \
         false; \
     fi
-    echo notify, "Notarization", "Stapling…"
-    /usr/bin/xcrun stapler staple $(APP_PATH)
-    echo notify, "Notarization", "✅ Done!"
+    echo "Notarization", "Stapling…"
+    /usr/bin/xcrun stapler staple ${APP_PATH}
+    echo "Notarization", "✅ Done!"
 }
 
 function dmg() {
@@ -113,15 +107,6 @@ function dmg() {
     brew install graphicsmagick imagemagick
     create-dmg $APP_PATH
     mv *.dmg TogglDesktop.dmg
-}
-
-function rename_dmg() {
-    export timestamp=$(date "+%Y-%m-%d-%H-%M-%S") 
-    export escaped_version=$(echo $version | sed 's/\./_/g') 
-    export installer=TogglDesktop-$escaped_version-$timestamp.dmg
-    export installer_name=TogglDesktop-$escaped_version.dmg
-
-    mv TogglDesktop.dmg $installer 
 }
 
 function debuginfo() {
@@ -143,10 +128,9 @@ if [[ "$#" -ne 1 ]]; then
     app
     plist
     sign
-    #notarize
+    notarize
     debuginfo
     dmg
-    rename_dmg
 else
     $1
 fi

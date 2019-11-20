@@ -16,34 +16,26 @@ jobs:
         fetch-depth: 1
     - name: Import signing key
       run: |
-        set -x
-
-        # For Development build (Mac Developer)
-        base64 -D <<< "${{ secrets.CERT_MACOS }}" > Bundle_cert_macos_development.p12
-
-        # For Distribution build (Developer ID Application Toggl OU (B227VTMZ94))
-        base64 -D <<< "${{ secrets.CERT_MACOS_APPLICATION }}" > Bundle_cert_macos_distribution.p12
-
-        #!/usr/bin/env sh
-
-        # Create new keychian
+        # Create a new keychian and make it default
         security create-keychain -p password build.keychain
-
-        # Make default keychain, so the xcodesign could find it
         security default-keychain -s ~/Library/Keychains/build.keychain
 
-        # Import
+        # Mac Developer Certificate
+        base64 -D <<< "${{ secrets.CERT_MACOS }}" > Bundle_cert_macos_development.p12
         security import ./Bundle_cert_macos_development.p12 -k ~/Library/Keychains/build.keychain -P ${{ secrets.CERT_MACOS_PASSWORD }} -T /usr/bin/codesign
+
+        # Application Certificate
+        base64 -D <<< "${{ secrets.CERT_MACOS_APPLICATION }}" > Bundle_cert_macos_distribution.p12
         security import ./Bundle_cert_macos_distribution.p12 -k ~/Library/Keychains/build.keychain -P ${{ secrets.CERT_MACOS_APPLICATION_PASSWORD }} -T /usr/bin/codesign
         
-        # List out for debugging
-        security list-keychain -s ~/Library/Keychains/build.keychain
+        # Installer Certificate
+        base64 -D <<< "${{ secrets.CERT_MACOS_INSTALLER }}" > Bundle_cert_macos_installer.p12
+        security import ./Bundle_cert_macos_installer.p12 -k ~/Library/Keychains/build.keychain -P ${{ secrets.CERT_MACOS_INSTALLER_PASSWORD }} -T /usr/bin/codesign
 
         # Unlock
         security unlock-keychain -p password ~/Library/Keychains/build.keychain
         security set-keychain-settings -lu
         security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k password ~/Library/Keychains/build.keychain
-
     - name: Build the dependencies
       run: |
         bash ./dist/osx/build.sh dependencies
@@ -54,18 +46,29 @@ jobs:
       run: |
         bash ./dist/osx/build.sh app
     - name: Insert version string
+      if: github.event_name == 'release'
       run: |
+        TAG_NAME=$(./dist/get-tag-name.sh)
         bash ./dist/osx/build.sh plist
     - name: Codesign
+      if: github.event_name == 'release'
       run: |
         bash ./dist/osx/build.sh sign
+    - name: Notarize
+      if: github.event_name == 'release'
+      run: |
+        export "APPLE_APPID_USER=${{ secrets.MACOS_APPID_USER }}"
+        export "APPLE_APPID_PASSWORD=${{ secrets.MACOS_APPID_PASSWORD }}"
+        bash ./dist/osx/build.sh notarize
     - name: Compose dmg
+      if: github.event_name == 'release'
       run: |
         bash ./dist/osx/build.sh dmg
     - name: Upload to GitHub Release
+      if: github.event_name == 'release'
       run: |
-        TAG_NAME="v7.5.20"
-        ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} owner=MartinBriza repo=toggldesktop tag="$TAG_NAME" filename="TogglDesktop.dmg"
+        TAG_NAME=$(./dist/get-tag-name.sh)
+        ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} owner=MartinBriza repo=toggldesktop tag="$TAG_NAME" filename="TogglDesktop.dmg" renameto="TogglDesktop-${TAG_NAME/v/}.dmg"
 
   linux-basic:
     runs-on: ubuntu-latest
