@@ -154,7 +154,7 @@ public static partial class Toggl
         [MarshalAs(UnmanagedType.LPWStr)]
         public         string EndTimeString;
         public         IntPtr Next;
-        TogglTimelineEventView *FirstEvent;
+        public         IntPtr FirstEvent;
         // Reference to Time entries in this Chunk
         public         IntPtr Entry;
 
@@ -1380,8 +1380,8 @@ public static partial class Toggl
         string tags,
         [MarshalAs(UnmanagedType.I1)]
         bool prevent_on_app,
-        time_t started,
-        time_t ended);
+        UInt64 started,
+        UInt64 ended);
 
     // returns GUID of the new project. you must free() the result
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
