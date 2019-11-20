@@ -1442,8 +1442,6 @@ std::vector<TimelineEvent> User::CompressedTimeline(
                     event_date.day() != date->day()) {
                 continue;
             }
-            // Set Event Duration
-            event->SetDuration(event->EndTime() - event->Start());
         }
         // Make a copy of the timeline event
         list.push_back(*event);
