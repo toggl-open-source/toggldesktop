@@ -26,7 +26,7 @@ final class TouchBarService: NSObject {
 
     fileprivate struct Constants {
         static let TimeEntryIdentifer = NSUserInterfaceItemIdentifier("TimeEntryScrubberItem")
-        static let NumberTimeEntry = 5
+        static let NumberTimeEntry = 10
     }
 
     // MARK: OUTLET
