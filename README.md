@@ -153,6 +153,8 @@ make -j8                                  # Build the app. The number defines th
 
 Install Visual Studio 2019 with `.NET desktop development`, `Desktop development with C++` and `Universal Windows Platform development` components checked during installation. You can download free Visual Studio Community [here](https://visualstudio.microsoft.com/vs/community/).
 
+Then open the solution file `src\ui\windows\TogglDesktop\TogglDesktop.sln` and run it in `Debug` mode.
+
 The solution is using OpenSSL binaries. To rebuild OpenSSL from sources refer to [this page](docs/win/build-openSSL.md).
 
 
