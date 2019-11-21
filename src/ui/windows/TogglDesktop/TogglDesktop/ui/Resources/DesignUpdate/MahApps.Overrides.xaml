@@ -9,6 +9,7 @@
     <SolidColorBrush x:Key="IdealForegroundColorBrush" Color="{DynamicResource Toggl.PrimaryTextColor}" po:Freeze="True" />
     <SolidColorBrush x:Key="WindowTitleColorBrush" Color="{DynamicResource Toggl.CardBackgroundColor}" po:Freeze="True" />
     <SolidColorBrush x:Key="NonActiveWindowTitleColorBrush" Color="{DynamicResource Toggl.CardBackgroundColor}" po:Freeze="True" />
+    <SolidColorBrush x:Key="ControlsDisabledBrush" Color="{DynamicResource Toggl.PrimaryTextColor}" Opacity="0.05" po:Freeze="True" />
     <system:Double x:Key="WindowTitleFontSize">12</system:Double>
     <system:Double x:Key="NormalFontSize">14</system:Double>
 </ResourceDictionary>

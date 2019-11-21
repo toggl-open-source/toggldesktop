@@ -50,20 +50,19 @@
                       ItemsSource="{Binding PossibleTopics}"
                       SelectedItem="{Binding Topic, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"
                       LostFocus="OnTopicComboBoxLostFocus"
-                      behaviors:FocusBehavior.IsFocused="{Binding IsTopicFocused}">
+                      behaviors:FocusHelper.IsFocused="{Binding IsTopicFocused}">
             </ComboBox>
         </StackPanel>
 
         <TextBox x:Name="feedbackTextBox" x:FieldModifier="private"
                  Grid.Row="1"
-                 Style="{DynamicResource Toggl.TextBox}"
                  Height="104"
                  Margin="0 8"
                  TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"
                  AcceptsReturn="True"
                  Text="{Binding FeedbackText, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True}"
                  LostFocus="OnFeedbackTextBoxLostFocus"
-                 behaviors:FocusBehavior.IsFocused="{Binding IsFeedbackTextFocused}"/>
+                 behaviors:FocusHelper.IsFocused="{Binding IsFeedbackTextFocused}"/>
 
         <Grid Grid.Row="2">
             <Grid.RowDefinitions>
@@ -143,7 +142,7 @@
                         Width="92"
                         Margin="8,0,0,0"
                         Content="Cancel"
-                        behaviors:ButtonBehavior.IsCloseWindowButton="True" />
+                        behaviors:ButtonHelper.IsCloseWindowButton="True" />
             </StackPanel>
         </Grid>
     </Grid>
