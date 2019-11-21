@@ -132,10 +132,10 @@
                                 <VisualState x:Name="Normal" />
                                 <VisualState x:Name="Disabled">
                                     <Storyboard>
-                                        <DoubleAnimation Storyboard.TargetName="contentPresenter"
-                                                         Storyboard.TargetProperty="(UIElement.Opacity)"
-                                                         To=".55"
-                                                         Duration="0" />
+                                        <!-- <DoubleAnimation Storyboard.TargetName="contentPresenter" -->
+                                        <!--                  Storyboard.TargetProperty="(UIElement.Opacity)" -->
+                                        <!--                  To=".55" -->
+                                        <!--                  Duration="0" /> -->
                                         <DoubleAnimation Storyboard.TargetName="disabled"
                                                          Storyboard.TargetProperty="(UIElement.Opacity)"
                                                          To="1"
@@ -191,6 +191,7 @@
                             <Setter TargetName="CheckedBorder" Property="Background" Value="{DynamicResource Toggl.DisabledElementBrush}" />
                             <Setter TargetName="CheckedBorder" Property="BorderBrush" Value="{DynamicResource Toggl.DisabledElementBrush}" />
                             <Setter TargetName="UnCheckedBorder" Property="BorderBrush" Value="{DynamicResource Toggl.DisabledElementBrush}" />
+                            <Setter Property="Foreground" Value="{DynamicResource Toggl.DisabledTextBrush}" />
                         </Trigger>
                         <Trigger Property="FlowDirection" Value="RightToLeft">
                             <Setter TargetName="CheckedBorder" Property="LayoutTransform">
