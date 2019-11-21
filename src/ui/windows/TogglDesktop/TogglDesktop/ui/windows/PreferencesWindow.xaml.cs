@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+using MahApps.Metro.Controls;
 using TogglDesktop.AutoCompletion;
 using TogglDesktop.AutoCompletion.Implementation;
 using TogglDesktop.Diagnostics;
@@ -199,18 +200,18 @@ namespace TogglDesktop
         private async Task UpdateLaunchOnStartupCheckboxAsync()
         {
             var isEnabled = await IsRunOnStartupEnabled();
-            this.TryBeginInvoke(() =>
+            this.TryBeginInvoke((bool? isRunOnStartupEnabled, ToggleSwitch checkBox) =>
             {
-                if (isEnabled.HasValue == false)
+                if (isRunOnStartupEnabled.HasValue == false)
                 {
-                    launchOnStartupCheckBox.Visibility = Visibility.Collapsed;
+                    checkBox.Visibility = Visibility.Collapsed;
                 }
                 else
                 {
-                    launchOnStartupCheckBox.Visibility = Visibility.Visible;
-                    launchOnStartupCheckBox.IsChecked = isEnabled.Value;
+                    checkBox.Visibility = Visibility.Visible;
+                    checkBox.IsChecked = isRunOnStartupEnabled.Value;
                 }
-            });
+            }, isEnabled, launchOnStartupCheckBox);
         }
 
         private static void trySetHotKey(Func<string> getKeyCode, Func<ModifierKeys> getModifiers, ShortcutRecorder recorder)
@@ -266,6 +267,11 @@ namespace TogglDesktop
             return checkBox.IsChecked ?? false;
         }
 
+        private static bool isChecked(ToggleSwitch checkBox)
+        {
+            return checkBox.IsChecked ?? false;
+        }
+
         private static ulong toULong(string text)
         {
             ulong.TryParse(text, out var ret);
@@ -276,20 +282,6 @@ namespace TogglDesktop
         {
             long.TryParse(text, out var ret);
             return ret;
-        }
-
-        private void cancelButtonClicked(object sender, RoutedEventArgs e)
-        {
-            this.Hide();
-        }
-
-        private void windowKeyDown(object sender, KeyEventArgs e)
-        {
-            if(e.Key == Key.Escape)
-            {
-                this.Hide();
-                e.Handled = true;
-            }
         }
 
         #region saving
