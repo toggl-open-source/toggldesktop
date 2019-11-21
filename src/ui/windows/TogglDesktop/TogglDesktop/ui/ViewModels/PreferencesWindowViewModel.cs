@@ -99,7 +99,13 @@ namespace TogglDesktop.ViewModels
 
         private void UpdateKnownShortcuts(HotKey previousValue, HotKey newValue, string hotKeyDescription)
         {
-            if (!previousValue.IsNullOrNone()) _knownShortcuts.Remove(previousValue);
+            if (!previousValue.IsNullOrNone())
+            {
+                if (_knownShortcuts[previousValue] == hotKeyDescription)
+                {
+                    _knownShortcuts.Remove(previousValue);
+                }
+            }
             if (!newValue.IsNullOrNone())
             {
                 if (!_knownShortcuts.ContainsKey(newValue))
