@@ -5,14 +5,14 @@
 <h4 align="center">Native desktop applications for the leading time tracking tool <a href="https://toggl.com" target="_blank">Toggl</a>.</h4>
 
 <p align="center">
-    <a href="https://github.com/toggl/toggldesktop/commits/master">
-    <img src="https://img.shields.io/github/last-commit/toggl/toggldesktop.svg?style=flat&logo=github&logoColor=white"
+    <a href="https://github.com/toggl-open-source/toggldesktop/commits/master">
+    <img src="https://img.shields.io/github/last-commit/toggl-open-source/toggldesktop.svg?style=flat&logo=github&logoColor=white"
          alt="GitHub last commit">
     <a href="https://github.com/toggl/toggldesktop/issues">
-    <img src="https://img.shields.io/github/issues-raw/toggl/toggldesktop.svg?style=flat&logo=github&logoColor=white"
+    <img src="https://img.shields.io/github/issues-raw/toggl-open-source/toggldesktop.svg?style=flat&logo=github&logoColor=white"
          alt="GitHub issues">
     <a href="https://github.com/toggl/toggldesktop/pulls">
-    <img src="https://img.shields.io/github/issues-pr-raw/toggl/toggldesktop.svg?style=flat&logo=github&logoColor=white"
+    <img src="https://img.shields.io/github/issues-pr-raw/toggl-open-source/toggldesktop.svg?style=flat&logo=github&logoColor=white"
          alt="GitHub pull requests">
     <img src="https://img.shields.io/badge/licence-BSD--3-green"
          alt="Licence BSD-3">
@@ -66,7 +66,7 @@ Toggl built and signed apps for all platforms
 
 Please check OS specific requirements below.
 
-_By default the app builds for testing server. To use the compiled app with live server see this guide [https://github.com/toggl/toggldesktop/wiki/Building-Toggl-Desktop-from-source-for-usage-with-live-servers](https://github.com/toggl/toggldesktop/wiki/Building-Toggl-Desktop-from-source-for-usage-with-live-servers)_
+_By default the app builds for testing server. To use the compiled app with live server see this guide [https://github.com/toggl-open-source/toggldesktop/wiki/Building-Toggl-Desktop-from-source-for-usage-with-live-servers](https://github.com/toggl-open-source/toggldesktop/wiki/Building-Toggl-Desktop-from-source-for-usage-with-live-servers)_
 
 ## Build using Makefile
 
