@@ -297,7 +297,8 @@
                                          Content="duration"
                                          Name="keepEndTimeFixedCheckbox" x:FieldModifier="private"/>
                             <RadioButton GroupName="1"
-                                         Content="end time" />
+                                         Content="end time"
+                                         Name="keepDurationFixedCheckbox" x:FieldModifier="private" />
                         </StackPanel>
                     </StackPanel>
                 </ScrollViewer>

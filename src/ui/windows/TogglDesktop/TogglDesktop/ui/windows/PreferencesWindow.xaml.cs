@@ -129,6 +129,7 @@ namespace TogglDesktop
             this.onTopCheckBox.IsChecked = settings.OnTop;
 
             this.keepEndTimeFixedCheckbox.IsChecked = Toggl.GetKeepEndTimeFixed();
+            this.keepDurationFixedCheckbox.IsChecked = !this.keepEndTimeFixedCheckbox.IsChecked;
 
             this.onStopEntryCheckBox.IsChecked = settings.StopEntryOnShutdownSleep;
             Task.Run(UpdateLaunchOnStartupCheckboxAsync);
