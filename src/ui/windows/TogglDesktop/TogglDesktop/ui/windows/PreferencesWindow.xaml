@@ -163,8 +163,8 @@
                                    TextWrapping="Wrap" />
                         <Grid Margin="0 8 0 0">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="120" />
-                                <ColumnDefinition Width="96" />
+                                <ColumnDefinition Width="136" />
+                                <ColumnDefinition Width="80" />
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
@@ -174,7 +174,8 @@
                             <TextBlock Grid.Column="1"
                                        VerticalAlignment="Center"
                                        Style="{DynamicResource Toggl.BodyText}"
-                                       Text="Notify after" />
+                                       Text="Notify after"
+                                       IsEnabled="{Binding ElementName=idleDetectionCheckBox, Path=IsChecked}"/>
                             <TextBox Grid.Column="2"
                                      Width="64"
                                      Margin="8 0"
@@ -188,7 +189,8 @@
                             <TextBlock Grid.Column="3"
                                        VerticalAlignment="Center"
                                        Style="{DynamicResource Toggl.BodyText}"
-                                       Text="minutes" />
+                                       Text="minutes"
+                                       IsEnabled="{Binding ElementName=idleDetectionCheckBox, Path=IsChecked}"/>
                         </Grid>
                         <TextBlock Style="{DynamicResource Toggl.BodyText}" Margin="0 24 0 0"
                                    Text="Pomodoro timer" />
@@ -197,8 +199,8 @@
                                    TextWrapping="Wrap" />
                         <Grid Margin="0 8 0 0">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="120" />
-                                <ColumnDefinition Width="96" />
+                                <ColumnDefinition Width="136" />
+                                <ColumnDefinition Width="80" />
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
@@ -208,7 +210,8 @@
                             <TextBlock Grid.Column="1"
                                        VerticalAlignment="Center"
                                        Style="{DynamicResource Toggl.BodyText}"
-                                       Text="Interval" />
+                                       Text="Interval"
+                                       IsEnabled="{Binding ElementName=enablePomodoroCheckBox, Path=IsChecked}"/>
                             <TextBox Grid.Column="2"
                                      Width="64"
                                      Margin="8 0"
@@ -219,47 +222,46 @@
                                     <behaviors:NumericInputTextBoxBehavior />
                                 </i:Interaction.Behaviors>
                             </TextBox>
-                            <TextBlock Grid.Column="3"
-                                       VerticalAlignment="Center"
+                            <TextBlock Grid.Column="3" VerticalAlignment="Center"
                                        Style="{DynamicResource Toggl.BodyText}"
-                                       Text="minutes" />
+                                       Text="minutes"
+                                       IsEnabled="{Binding ElementName=enablePomodoroCheckBox, Path=IsChecked}"/>
                         </Grid>
                         <TextBlock Style="{DynamicResource Toggl.BodyText}" Margin="0 8 0 0"
                                    Text="Pomodoro break" />
                         <Grid Margin="0 8 0 0">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="120" />
-                                <ColumnDefinition Width="96" />
-                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="136" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
                             <mah:ToggleSwitch Grid.Column="0"
                                               VerticalAlignment="Center"
                                               Name="enablePomodoroBreakCheckBox" x:FieldModifier="private"
                                               IsEnabled="{Binding ElementName=enablePomodoroCheckBox, Path=IsChecked}"/>
-                            <TextBlock Grid.Column="1"
-                                       VerticalAlignment="Center"
-                                       Style="{DynamicResource Toggl.BodyText}"
-                                       Text="Interval" />
-                            <TextBox Grid.Column="2"
-                                     Width="64"
-                                     Margin="8 0"
-                                     Name="pomodoroBreakTimerDuration" x:FieldModifier="private"
-                                     TextAlignment="Right">
-                                <TextBox.IsEnabled>
+                            <StackPanel Orientation="Horizontal"
+                                        Grid.Column="1">
+                                <StackPanel.IsEnabled>
                                     <MultiBinding Converter="{StaticResource AndConverter}">
                                         <Binding ElementName="enablePomodoroBreakCheckBox" Path="IsChecked"/>
                                         <Binding ElementName="enablePomodoroCheckBox" Path="IsChecked"/>
                                     </MultiBinding>
-                                </TextBox.IsEnabled>
-                                <i:Interaction.Behaviors>
-                                    <behaviors:NumericInputTextBoxBehavior />
-                                </i:Interaction.Behaviors>
-                            </TextBox>
-                            <TextBlock Grid.Column="3"
-                                       VerticalAlignment="Center"
-                                       Style="{DynamicResource Toggl.BodyText}"
-                                       Text="minutes" />
+                                </StackPanel.IsEnabled>
+                                <TextBlock Width="80"
+                                           VerticalAlignment="Center"
+                                           Style="{DynamicResource Toggl.BodyText}"
+                                           Text="Interval" />
+                                <TextBox Width="64"
+                                         Margin="8 0"
+                                         Name="pomodoroBreakTimerDuration" x:FieldModifier="private"
+                                         TextAlignment="Right">
+                                    <i:Interaction.Behaviors>
+                                        <behaviors:NumericInputTextBoxBehavior />
+                                    </i:Interaction.Behaviors>
+                                </TextBox>
+                                <TextBlock VerticalAlignment="Center"
+                                           Style="{DynamicResource Toggl.BodyText}"
+                                           Text="minutes" />
+                            </StackPanel>
                         </Grid>
                         <TextBlock Style="{DynamicResource Toggl.BodyText}" Margin="0 24 0 0"
                                    Text="Record activity" />
