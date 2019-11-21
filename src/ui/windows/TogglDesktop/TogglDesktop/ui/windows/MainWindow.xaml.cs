@@ -44,8 +44,6 @@ namespace TogglDesktop
         private IMainView activeView;
         private bool isResizingWithHandle;
         private bool closing;
-        private string trackingTitle;
-        private string todaysDuration = "0 h 00 min";
 
         #endregion
 
@@ -389,7 +387,7 @@ namespace TogglDesktop
             for (; i < list.Count; i++)
             {
                 if (list[i].DateHeader == "Today") {
-                    todaysDuration = list[i].DateDuration;
+                    this.trayToolTip.TotalToday = list[i].DateDuration;
                     return;
                 }
             }
@@ -615,7 +613,11 @@ namespace TogglDesktop
 
         private void updateTaskbarTooltip(object sender, string s)
         {
-            this.taskbarIcon.ToolTipText = this.trackingTitle + " (" + s + ") | Total today: " + todaysDuration;
+            this.trayToolTip.RunningEntryDuration = s;
+
+            // ToolTipText is required to be non-empty in order for trayToolTip to show up
+            // this is actually supposed to be shown only on very old systems (pre-Vista)
+            this.taskbarIcon.ToolTipText = $"Total today: {this.trayToolTip.TotalToday}";
         }
 
         #endregion
@@ -779,6 +781,7 @@ namespace TogglDesktop
             var tracking = timeEntry != null;
 
             this.IsTracking = tracking;
+            this.trayToolTip.IsTracking = tracking;
 
             if (tracking)
             {
@@ -788,20 +791,33 @@ namespace TogglDesktop
                 {
                     this.Title = "Toggl Desktop";
                     this.runningMenuText.Text = "Timer is tracking";
-                    this.trackingTitle = "";
+                    this.trayToolTip.Description = string.Empty;
                 }
                 else
                 {
                     this.Title = description + " - Toggl Desktop";
                     this.runningMenuText.Text = description;
-                    this.trackingTitle = description;
-
-                    if (timeEntry.Value.PID > 0)
-                    {
-                        this.trackingTitle += " - " + timeEntry.Value.ProjectAndTaskLabel;
-                    }
+                    this.trayToolTip.Description = description;
                 }
 
+                if (timeEntry.Value.PID > 0)
+                {
+                    this.trayToolTip.ProjectAndTask = $"● {timeEntry.Value.ProjectLabel}";
+                    if (!timeEntry.Value.TaskLabel.IsNullOrEmpty())
+                    {
+                        this.trayToolTip.ProjectAndTask += $" - {timeEntry.Value.TaskLabel}";
+                    }
+                    this.trayToolTip.ProjectColor = timeEntry.Value.Color;
+                    this.trayToolTip.Client =
+                        timeEntry.Value.ClientLabel.IsNullOrEmpty()
+                            ? string.Empty
+                            : $" · {timeEntry.Value.ClientLabel}";
+                }
+                else
+                {
+                    this.trayToolTip.ProjectAndTask = string.Empty;
+                    this.trayToolTip.Client = string.Empty;
+                }
 
                 if (this.IsInManualMode)
                     this.SetManualMode(false);
@@ -810,7 +826,10 @@ namespace TogglDesktop
             {
                 this.runningMenuText.Text = "Timer is not tracking";
                 this.Title = "Toggl Desktop";
-                this.taskbarIcon.ToolTipText = "Total today: " + todaysDuration;
+                this.trayToolTip.Description = string.Empty;
+                this.trayToolTip.ProjectAndTask = string.Empty;
+                this.trayToolTip.Client = string.Empty;
+                this.taskbarIcon.ToolTipText = "Total today: " + this.trayToolTip.TotalToday;
             }
 
             this.updateStatusIcons(true);

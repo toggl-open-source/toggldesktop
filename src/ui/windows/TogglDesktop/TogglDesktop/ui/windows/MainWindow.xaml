@@ -13,7 +13,6 @@
 
     <Window.Resources>
         <RoutedUICommand x:Key="EscapeCommand" />
-
         <BooleanToVisibilityConverter x:Key="BooleanToVisibility" />
     </Window.Resources>
 
@@ -121,7 +120,11 @@
         <tb:TaskbarIcon x:Name="taskbarIcon" x:FieldModifier="private"
                         TrayLeftMouseUp="onTaskbarLeftMouseUp"
                         TrayBalloonTipClicked="onTrayBalloonTipClicked"
-                        Visibility="Collapsed"/>
+                        Visibility="Collapsed">
+            <tb:TaskbarIcon.TrayToolTip>
+                <toggl:TrayToolTipControl x:Name="trayToolTip" x:FieldModifier="private" />
+            </tb:TaskbarIcon.TrayToolTip>
+        </tb:TaskbarIcon>
 
         <toggl:TimerEntryListView x:Name="timerEntryListView" x:FieldModifier="private" />
 
