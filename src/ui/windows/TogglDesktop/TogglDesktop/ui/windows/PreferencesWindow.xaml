@@ -374,40 +374,56 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Proxy">
-                <StackPanel Margin="11 11">
+                <StackPanel Margin="24 32 20 48">
+                    <TextBlock Style="{DynamicResource Toggl.TitleText}"
+                               Text="Proxy" />
                     <RadioButton Name="useNoProxyRadioButton" x:FieldModifier="private" GroupName="Proxy"
                                          IsChecked="True"
-                                    Margin="5">Do not use proxy</RadioButton>
+                                    Margin="0 18 0 0">Do not use proxy</RadioButton>
                     <RadioButton Name="useSystemProxySettingsCheckBox" x:FieldModifier="private" GroupName="Proxy"
-                                    Margin="5">Use system proxy settings</RadioButton>
+                                    Margin="0 12 0 0">Use system proxy settings</RadioButton>
                     <RadioButton Name="useProxyCheckBox" x:FieldModifier="private" GroupName="Proxy"
-                                      Margin="5">Use proxy to connect to Toggl</RadioButton>
-                    <GroupBox Header="Proxy Settings" IsEnabled="{Binding ElementName=useProxyCheckBox, Path=IsChecked}">
-                        <Grid>
+                                      Margin="0 12 0 0">Use proxy to connect to Toggl</RadioButton>
+                    <StackPanel Margin="0 30 0 0" IsEnabled="{Binding ElementName=useProxyCheckBox, Path=IsChecked}">
+                        <TextBlock Style="{DynamicResource Toggl.BodyText}"
+                                   Text="Proxy settings" />
+                        <Grid Margin="0 24 0 0">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="80" />
+                                <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
                             </Grid.RowDefinitions>
-                            <TextBlock Grid.Column="0" Grid.Row="0" Margin="5">Host</TextBlock>
-                            <TextBlock Grid.Column="0" Grid.Row="1" Margin="5">Port</TextBlock>
-                            <TextBlock Grid.Column="0" Grid.Row="2" Margin="5">Username</TextBlock>
-                            <TextBlock Grid.Column="0" Grid.Row="3" Margin="5">Password</TextBlock>
-                            <TextBox Name="proxyHostTextBox" x:FieldModifier="private"
-                                Grid.Column="1" Grid.Row="0" Margin="5 3">example.com</TextBox>
-                            <TextBox Name="proxyPortTextBox" x:FieldModifier="private"
-                                Grid.Column="1" Grid.Row="1" Margin="5 3">0</TextBox>
-                            <TextBox Name="proxyUsernameTextBox" x:FieldModifier="private"
-                                Grid.Column="1" Grid.Row="2" Margin="5 3">user</TextBox>
-                            <PasswordBox Name="proxyPasswordBox" x:FieldModifier="private"
-                                Grid.Column="1" Grid.Row="3" Password="password" Margin="5 3"></PasswordBox>
+                            <TextBlock Grid.Row="0" Grid.Column="0"
+                                       Style="{DynamicResource Toggl.BodyText}"
+                                       VerticalAlignment="Center"
+                                       Text="Host"/>
+                            <TextBlock Grid.Row="1" Grid.Column="0"
+                                       Style="{DynamicResource Toggl.BodyText}"
+                                       VerticalAlignment="Center"
+                                       Text="Port"/>
+                            <TextBlock Grid.Row="2" Grid.Column="0"
+                                       Style="{DynamicResource Toggl.BodyText}"
+                                       VerticalAlignment="Center"
+                                       Text="Username"/>
+                            <TextBlock Grid.Row="3" Grid.Column="0"
+                                       Style="{DynamicResource Toggl.BodyText}"
+                                       VerticalAlignment="Center"
+                                       Text="Password"/>
+                            <TextBox Grid.Row="0" Grid.Column="1"
+                                     Name="proxyHostTextBox" x:FieldModifier="private"/>
+                            <TextBox Grid.Row="1" Grid.Column="1" Margin="0 8 0 0"
+                                     Name="proxyPortTextBox" x:FieldModifier="private"/>
+                            <TextBox Grid.Row="2" Grid.Column="1" Margin="0 8 0 0"
+                                     Name="proxyUsernameTextBox" x:FieldModifier="private"/>
+                            <PasswordBox Grid.Row="3" Grid.Column="1" Margin="0 8 0 0"
+                                         Name="proxyPasswordBox" x:FieldModifier="private"/>
                         </Grid>
-                    </GroupBox>
+                    </StackPanel>
                 </StackPanel>
             </TabItem>
         </TabControl>
