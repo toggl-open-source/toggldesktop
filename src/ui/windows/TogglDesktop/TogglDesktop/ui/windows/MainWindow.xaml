@@ -28,6 +28,7 @@
         <KeyBinding Key="W" Modifiers="Control" Command="{x:Static toggl:KeyboardShortcuts.Hide}" />
         <KeyBinding Key="F4" Modifiers="Control" Command="{x:Static toggl:KeyboardShortcuts.Hide}" />
         <KeyBinding Key="R" Modifiers="Control" Command="{x:Static toggl:KeyboardShortcuts.Sync}" />
+        <KeyBinding Key="F5" Command="{x:Static toggl:KeyboardShortcuts.Sync}" />
         <KeyBinding Key="E" Modifiers="Control" Command="{x:Static toggl:KeyboardShortcuts.EditRunning}" />
         <KeyBinding Key="D" Modifiers="Control" Command="{x:Static toggl:KeyboardShortcuts.ToggleManualMode}" />
         <KeyBinding Key="V" Modifiers="Control" Command="{x:Static toggl:KeyboardShortcuts.NewFromPaste}" />
@@ -82,7 +83,7 @@
 "{Binding Path=IsEnabled, RelativeSource={RelativeSource Self}, Mode=OneWay, Converter={StaticResource BooleanToVisibility}}"
                       />
             <Separator />
-            <MenuItem Header="Sync" InputGestureText="Ctrl+R"
+            <MenuItem Header="Sync" InputGestureText="F5"
                       Command="{x:Static toggl:KeyboardShortcuts.Sync}"/>
             <MenuItem Header="Reports"
                       Command="{x:Static toggl:KeyboardShortcuts.Reports}"/>
