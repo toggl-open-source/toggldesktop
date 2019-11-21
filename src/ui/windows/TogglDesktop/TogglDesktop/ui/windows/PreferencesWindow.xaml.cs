@@ -199,6 +199,8 @@ namespace TogglDesktop
 
         private async void saveButtonClicked(object sender, RoutedEventArgs e)
         {
+            ViewModel.ResetPropsWithErrorsToPreviousValues();
+
             try
             {
                 this.isSaving = true;
