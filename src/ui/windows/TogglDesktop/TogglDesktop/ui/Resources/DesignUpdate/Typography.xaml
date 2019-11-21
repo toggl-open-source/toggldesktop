@@ -5,6 +5,11 @@
     <Style TargetType="TextBlock" x:Key="Toggl.Text">
         <Setter Property="FontFamily" Value="{StaticResource BaseFont}" />
         <Setter Property="Foreground" Value="{DynamicResource Toggl.PrimaryTextBrush}" />
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="{DynamicResource Toggl.DisabledTextBrush}" />
+            </Trigger>
+        </Style.Triggers>
     </Style>
     <Style TargetType="TextBlock" x:Key="Toggl.TitleText" BasedOn="{StaticResource Toggl.Text}">
         <Setter Property="FontWeight" Value="Light" />

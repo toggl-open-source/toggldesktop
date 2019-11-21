@@ -302,64 +302,83 @@
             </TabItem>
 
             <TabItem Header="Reminder">
-                <Grid Margin="11 11">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-                    <CheckBox Name="remindToTrackCheckBox" x:FieldModifier="private"
-                                      Grid.Column="0" Grid.Row="0" Margin="5">Remind me to track time every</CheckBox>
-
-                    <StackPanel Grid.Row="1"
-                                IsEnabled="{Binding ElementName=remindToTrackCheckBox, Path=IsChecked}">
-                        <TextBlock Margin="5">Reminder start time</TextBlock>
-                        <TextBlock Margin="5">Reminder end time</TextBlock>
-                        <TextBlock Margin="5">Reminder days</TextBlock>
-                    </StackPanel>
-
-                    <Grid Grid.Column="1" Grid.Row="0" Margin="5" HorizontalAlignment="Right"
-                                  IsEnabled="{Binding ElementName=remindToTrackCheckBox, Path=IsChecked}">
+                <StackPanel Margin="24 32 20 48">
+                    <TextBlock Style="{DynamicResource Toggl.TitleText}"
+                               Text="Remind me to track time" />
+                    <TextBlock Margin="0 12 0 0"
+                               Style="{DynamicResource Toggl.CaptionText}"
+                               Text="You'll get a notification if the timer hasn't been started during work hours." />
+                    <mah:ToggleSwitch Margin="0 14 0 0"
+                                      Name="remindToTrackCheckBox" x:FieldModifier="private" />
+                    <Grid Margin="0 42 0 0" IsEnabled="{Binding ElementName=remindToTrackCheckBox, Path=IsChecked}">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="30"/>
+                            <ColumnDefinition Width="160"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <TextBox Name="remindToTrackIntervalTextBox" x:FieldModifier="private"
-                                         Grid.Column="0" HorizontalContentAlignment="Right">5</TextBox>
-                        <TextBlock Grid.Column="1" Margin="4 0 0 0">minutes</TextBlock>
-                    </Grid>
-
-                    <StackPanel Grid.Row="1" Grid.Column="1"
-                                IsEnabled="{Binding ElementName=remindToTrackCheckBox, Path=IsChecked}">
-                        <TextBox Name="reminderStartTimeTextBox" x:FieldModifier="private"
-                                 Margin="5" Width="50"
-                                 HorizontalContentAlignment="Right"
-                                 HorizontalAlignment="Left">8:30</TextBox>
-                        <TextBox Name="reminderEndTimeTextBox" x:FieldModifier="private"
-                                 Margin="5" Width="50"
-                                 HorizontalContentAlignment="Right"
-                                 HorizontalAlignment="Left">16:30</TextBox>
-                        <StackPanel Margin="3">
-                            <CheckBox Name="remindOnMondayTextBox" x:FieldModifier="private"
-                                      Margin="2">Mon</CheckBox>
-                            <CheckBox Name="remindOnTuesdayTextBox" x:FieldModifier="private"
-                                      Margin="2">Tue</CheckBox>
-                            <CheckBox Name="remindOnWednesdayTextBox" x:FieldModifier="private"
-                                      Margin="2">Wed</CheckBox>
-                            <CheckBox Name="remindOnThursdayTextBox" x:FieldModifier="private"
-                                      Margin="2">Thu</CheckBox>
-                            <CheckBox Name="remindOnFridayTextBox" x:FieldModifier="private"
-                                      Margin="2">Fri</CheckBox>
-                            <CheckBox Name="remindOnSaturdayTextBox" x:FieldModifier="private"
-                                      Margin="2">Sat</CheckBox>
-                            <CheckBox Name="remindOnSundayTextBox" x:FieldModifier="private"
-                                      Margin="2">Sun</CheckBox>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" Grid.Column="0"
+                                   Style="{DynamicResource Toggl.BodyText}"
+                                   VerticalAlignment="Center"
+                                   Text="Remind me after" />
+                        <TextBlock Grid.Row="1" Grid.Column="0"
+                                   Style="{DynamicResource Toggl.BodyText}"
+                                   VerticalAlignment="Center"
+                                   Text="Remind me between" />
+                        <TextBlock Grid.Row="2" Grid.Column="0"
+                                   Style="{DynamicResource Toggl.BodyText}"
+                                   VerticalAlignment="Top"
+                                   Text="Remind me on days" />
+                        <StackPanel Orientation="Horizontal"
+                                    Grid.Row="0" Grid.Column="1">
+                            <TextBox Name="remindToTrackIntervalTextBox" x:FieldModifier="private"
+                                     Margin="0 0 8 0"
+                                     Width="64"
+                                     HorizontalContentAlignment="Right">
+                                <i:Interaction.Behaviors>
+                                    <behaviors:NumericInputTextBoxBehavior />
+                                </i:Interaction.Behaviors>
+                            </TextBox>
+                            <TextBlock Style="{DynamicResource Toggl.BodyText}"
+                                       Text="minutes"
+                                       VerticalAlignment="Center"/>
                         </StackPanel>
-                    </StackPanel>
-                </Grid>
+                        <StackPanel Orientation="Horizontal"
+                                    Grid.Row="1" Grid.Column="1"
+                                    Margin="0 8 0 14">
+                            <TextBox Name="reminderStartTimeTextBox" x:FieldModifier="private"
+                                     Margin="0 0 8 0" Width="64"
+                                     HorizontalContentAlignment="Right" />
+                            <Canvas Width="12" Height="7">
+                                <Path Fill="{DynamicResource Toggl.DisabledTextBrush}" Data="M7.812.16C7.363-.166 7 .023 7 .567v6.006c0 .55.36.735.812.407l3.876-2.82c.449-.326.451-.852 0-1.18L7.812.16z"/>
+                                <Path StrokeThickness="2" Stroke="{DynamicResource Toggl.DisabledTextBrush}" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round" Data="M8 3.57H1"/>
+                            </Canvas>
+                            <TextBox Name="reminderEndTimeTextBox" x:FieldModifier="private"
+                                     Margin="7 0 0 0" Width="64"
+                                     HorizontalContentAlignment="Right" />
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="2" Grid.Column="1">
+                            <CheckBox Name="remindOnMondayTextBox" x:FieldModifier="private"
+                                      >Monday</CheckBox>
+                            <CheckBox Name="remindOnTuesdayTextBox" x:FieldModifier="private"
+                                      Margin="0 12 0 0">Tuesday</CheckBox>
+                            <CheckBox Name="remindOnWednesdayTextBox" x:FieldModifier="private"
+                                      Margin="0 12 0 0">Wednesday</CheckBox>
+                            <CheckBox Name="remindOnThursdayTextBox" x:FieldModifier="private"
+                                      Margin="0 12 0 0">Thursday</CheckBox>
+                            <CheckBox Name="remindOnFridayTextBox" x:FieldModifier="private"
+                                      Margin="0 12 0 0">Friday</CheckBox>
+                            <CheckBox Name="remindOnSaturdayTextBox" x:FieldModifier="private"
+                                      Margin="0 12 0 0">Saturday</CheckBox>
+                            <CheckBox Name="remindOnSundayTextBox" x:FieldModifier="private"
+                                      Margin="0 12 0 0">Sunday</CheckBox>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
             </TabItem>
 
             <TabItem Header="Autotracker">
