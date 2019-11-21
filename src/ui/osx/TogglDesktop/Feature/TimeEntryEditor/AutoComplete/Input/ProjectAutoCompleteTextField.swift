@@ -17,7 +17,7 @@ final class ProjectAutoCompleteTextField: AutoCompleteTextField {
             guard let project = projectItem else { return }
             var label = project.name
             if project.item.taskID != 0 && project.item.projectID != 0 {
-                label = label + ": " + project.item.taskLabel
+                label = "\(label): \(project.item.taskLabel ?? "")"
             }
             stringValue = label
             layoutProject(with: project.name)
@@ -40,11 +40,11 @@ final class ProjectAutoCompleteTextField: AutoCompleteTextField {
         projectCreationView.selectedTimeEntry = timeEntry
 
         if currentEditor() == nil {
-            var label = timeEntry.projectLabel
+            var label = timeEntry.projectLabel ?? ""
             if timeEntry.taskID != 0 && timeEntry.projectID != 0 {
-                label = label! + ": " + timeEntry.taskLabel
+                label = "\(label): \(timeEntry.taskLabel ?? "")"
             }
-            stringValue = label ?? ""
+            stringValue = label
             layoutProject(with: stringValue)
             applyColor(with: timeEntry.projectColor)
         }
