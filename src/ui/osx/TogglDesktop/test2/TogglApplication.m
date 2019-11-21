@@ -15,6 +15,7 @@
 - (void)reportException:(NSException *)exception
 {
 	AppDelegate *appDelegate = (AppDelegate *)[NSApp delegate];
+
 	[Bugsnag notify:exception
 			  block:^(BugsnagCrashReport *report) {
 		 NSDictionary *data = @{
