@@ -45,7 +45,14 @@ final class TouchBarService: NSObject {
     // MARK: Variables
 
     var isEnabled = true
-    private var touchBar: NSTouchBar?
+    private lazy var touchBar: NSTouchBar = {
+        let touchBar = NSTouchBar()
+        touchBar.delegate = self
+        touchBar.customizationIdentifier = .mainTouchBar
+        touchBar.defaultItemIdentifiers = [.timeEntryItem, .startStopItem]
+        return touchBar
+    }()
+
     weak var delegate: TouchBarServiceDelegate?
     private var timeEntries: [TimeEntryViewItem] = []
     private var displayState = DisplayState.normal { didSet { updateDisplayState() }}
@@ -74,15 +81,6 @@ final class TouchBarService: NSObject {
     }
 
     // MARK: Public
-
-    func makeTouchBar() -> NSTouchBar? {
-        guard isEnabled else { return nil }
-        touchBar = NSTouchBar()
-        touchBar?.delegate = self
-        touchBar?.customizationIdentifier = .mainTouchBar
-        touchBar?.defaultItemIdentifiers = [.timeEntryItem, .startStopItem]
-        return touchBar
-    }
 
     func updateRunningItem(_ timeEntry: TimeEntryViewItem) {
         runningTimeEntryBtn.title = timeEntry.touchBarTitle
@@ -138,6 +136,10 @@ extension TouchBarService {
                                                selector: #selector(self.stateButtonTimerBarChangeNotification(_:)),
                                                name: NSNotification.Name(kStartButtonStateChange),
                                                object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(self.touchbarSettingChangedNoti(_:)),
+                                               name: NSNotification.Name(kTouchBarSettingChanged),
+                                               object: nil)
     }
 
     @objc private func stateButtonTimerBarChangeNotification(_ noti: Notification) {
@@ -148,8 +150,11 @@ extension TouchBarService {
         displayState = startButton.state == .on ? .tracking : .normal
     }
 
+    @objc private func touchbarSettingChangedNoti(_ noti: Notification) {
+
+    }
+
     private func updateDisplayState() {
-        guard let touchBar = touchBar else { return }
         switch displayState {
         case .normal:
             touchBar.defaultItemIdentifiers.removeAll(where: { $0 == .runningTimeEntry })

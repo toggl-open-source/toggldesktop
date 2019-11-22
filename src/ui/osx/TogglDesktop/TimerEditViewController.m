@@ -109,10 +109,6 @@ NSString *kInactiveTimerColor = @"#999999";
 												 selector:@selector(startTimerNotification:)
 													 name:kStartTimer
 												   object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(touchBarSettingChangedNotification:)
-													 name:kTouchBarSettingChanged
-												   object:nil];
 
 		self.time_entry = [[TimeEntryViewItem alloc] init];
 
@@ -797,16 +793,6 @@ NSString *kInactiveTimerColor = @"#999999";
 	{
 		[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
 	}
-}
-
-- (NSTouchBar *)makeTouchBar
-{
-	return [[TouchBarService shared] makeTouchBar];
-}
-
-- (void)touchBarSettingChangedNotification:(NSNotification *)noti
-{
-	self.touchBar = nil;
 }
 
 @end
