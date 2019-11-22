@@ -12,7 +12,7 @@
 #import "IdleEvent.h"
 #import "UserNotificationCenter.h"
 
-@interface IdleNotificationWindowController () <IdleNotificationTouchBarDelegate>
+@interface IdleNotificationWindowController () <IdleNotificationTouchBarDelegate, NSWindowDelegate>
 
 @property (weak) IBOutlet NSTextField *idleSinceTextField;
 @property (weak) IBOutlet NSTextField *idleAmountTextField;
@@ -45,6 +45,8 @@ extern void *ctx;
 
 - (void)initCommon
 {
+    self.window.delegate = self;
+
 	// Style buttons
 	[self styleTransparentButton:self.addIdleTimeButton];
 	[self styleTransparentButton:self.discardAndContinueButton];
@@ -200,4 +202,13 @@ extern void *ctx;
 	}
 }
 
+- (void)windowDidBecomeKey:(NSNotification *)notification
+{
+    [[TouchBarService shared] dismiss];
+}
+
+- (void)windowDidResignKey:(NSNotification *)notification
+{
+    [[TouchBarService shared] present];
+}
 @end
