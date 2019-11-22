@@ -28,6 +28,8 @@ extern void DFRSystemModalShowsCloseBoxWhenFrontMost(BOOL);
 
 + (void)dismissSystemModal:(NSTouchBar *)touchBar;
 
++ (void)minimizeSystemModal:(NSTouchBar *)touchBar;
+
 #endif
 
 @end

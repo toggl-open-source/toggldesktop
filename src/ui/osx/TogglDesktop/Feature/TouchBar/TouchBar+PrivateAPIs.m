@@ -68,4 +68,19 @@
     }
 }
 
++ (void)minimizeSystemModal:(NSTouchBar *)touchBar
+{
+    if ([NSTouchBar respondsToSelector:
+         @selector(minimizeSystemModalFunctionBar:)])
+    {
+        [NSTouchBar
+         minimizeSystemModalFunctionBar:touchBar];
+    }
+    else if ([NSTouchBar respondsToSelector:
+              @selector(minimizeSystemModalTouchBar:)])
+    {
+        [NSTouchBar
+         minimizeSystemModalTouchBar:touchBar];
+    }
+}
 @end

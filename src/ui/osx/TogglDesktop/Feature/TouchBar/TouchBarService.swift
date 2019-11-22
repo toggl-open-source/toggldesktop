@@ -79,7 +79,6 @@ final class TouchBarService: NSObject {
         super.init()
         initCommon()
         initNotification()
-        windowDidBecomeKey()
     }
 
     // MARK: Public
@@ -129,27 +128,40 @@ final class TouchBarService: NSObject {
         scrubberView.reloadData()
     }
 
-    func reset() {
+    func resetContent() {
         self.timeEntries = []
         scrubberView.reloadData()
         startButton.isHidden = true
     }
 
-    func prepareForPresent() {
+    func prepareContent() {
         scrubberView.reloadData()
         startButton.isHidden = false
     }
+}
 
-    func windowDidBecomeKey() {
+// MARK: Action
+
+@available(OSX 10.12.2, *)
+extension TouchBarService {
+
+    func present() {
         guard isEnabled && !isPresented else { return }
         if NSTouchBar.presentSystemModal(touchBar, systemTrayItemIdentifier: nil) {
             isPresented = true
         }
     }
 
-    func windowDidResignKey() {
+    func minimize() {
+        guard isEnabled && isPresented else { return }
+        NSTouchBar.minimizeSystemModal(touchBar)
+        isPresented = false
+    }
+
+    func dismiss() {
         guard isEnabled && isPresented else { return }
         NSTouchBar.dismissSystemModal(touchBar)
+        isPresented = false
     }
 }
 

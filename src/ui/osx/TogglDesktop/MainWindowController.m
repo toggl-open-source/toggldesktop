@@ -151,7 +151,7 @@ extern void *ctx;
 		[self.overlayViewController.view removeFromSuperview];
 
 		// Reset the data
-		[[TouchBarService shared] reset];
+		[[TouchBarService shared] resetContent];
 	}
 }
 
@@ -183,7 +183,7 @@ extern void *ctx;
 																		object:nil];
 
 			// Prepare the Touch bar
-			[[TouchBarService shared] prepareForPresent];
+			[[TouchBarService shared] prepareContent];
 		}
 	}
 }
@@ -355,14 +355,14 @@ extern void *ctx;
 
 #pragma mark - NSWindowDelegate
 
--(void)windowDidBecomeKey:(NSNotification *)notification
+-(void)windowDidBecomeMain:(NSNotification *)notification
 {
-//    [[TouchBarService shared] windowDidBecomeKey];
+    [[TouchBarService shared] present];
 }
 
-- (void)windowDidResignKey:(NSNotification *)notification
+- (void)windowDidResignMain:(NSNotification *)notification
 {
-//    [[TouchBarService shared] windowDidResignKey];
+    [[TouchBarService shared] minimize];
 }
 
 @end
