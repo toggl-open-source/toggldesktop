@@ -18,11 +18,7 @@
 #import "TogglDesktop-Swift.h"
 #import "TimerEditViewController.h"
 
-<<<<<<< HEAD
-@interface MainWindowController () <TouchBarServiceDelegate, InAppMessageViewControllerDelegate>
-=======
-@interface MainWindowController () <TouchBarServiceDelegate, NSWindowDelegate>
->>>>>>> c3800c241... Present the TimeEntry Touchbar by using private API (mac)
+@interface MainWindowController () <TouchBarServiceDelegate, NSWindowDelegate, InAppMessageViewControllerDelegate>
 @property (weak) IBOutlet NSView *contentView;
 @property (weak) IBOutlet NSView *mainView;
 @property (nonatomic, strong) LoginViewController *loginViewController;
@@ -359,15 +355,16 @@ extern void *ctx;
 
 -(void)windowDidBecomeMain:(NSNotification *)notification
 {
-    if ([self.timeEntryListViewController.view superview] != nil) {
+    if ([self.timeEntryListViewController.view superview] != nil)
+    {
         [[TouchBarService shared] present];
     }
-
 }
 
 - (void)windowDidResignMain:(NSNotification *)notification
 {
-    if ([self.timeEntryListViewController.view superview] != nil) {
+    if ([self.timeEntryListViewController.view superview] != nil)
+    {
         [[TouchBarService shared] minimize];
     }
 }
