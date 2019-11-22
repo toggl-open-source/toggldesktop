@@ -18,7 +18,11 @@
 #import "TogglDesktop-Swift.h"
 #import "TimerEditViewController.h"
 
+<<<<<<< HEAD
 @interface MainWindowController () <TouchBarServiceDelegate, InAppMessageViewControllerDelegate>
+=======
+@interface MainWindowController () <TouchBarServiceDelegate, NSWindowDelegate>
+>>>>>>> c3800c241... Present the TimeEntry Touchbar by using private API (mac)
 @property (weak) IBOutlet NSView *contentView;
 @property (weak) IBOutlet NSView *mainView;
 @property (nonatomic, strong) LoginViewController *loginViewController;
@@ -85,6 +89,7 @@ extern void *ctx;
 - (void)windowDidLoad
 {
 	[super windowDidLoad];
+    self.window.delegate = self;
 
 	// Tracking the size of window after loaded
 	[self trackWindowSize];
@@ -346,6 +351,18 @@ extern void *ctx;
 - (void)InAppMessageViewControllerShouldDismiss
 {
     [self.inappMessageView.view removeFromSuperview];
+}
+
+#pragma mark - NSWindowDelegate
+
+-(void)windowDidBecomeKey:(NSNotification *)notification
+{
+//    [[TouchBarService shared] windowDidBecomeKey];
+}
+
+- (void)windowDidResignKey:(NSNotification *)notification
+{
+//    [[TouchBarService shared] windowDidResignKey];
 }
 
 @end

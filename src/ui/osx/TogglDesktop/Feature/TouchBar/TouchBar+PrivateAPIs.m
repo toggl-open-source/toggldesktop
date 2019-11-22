@@ -29,25 +29,22 @@
 @end
 
 @implementation NSTouchBar (PrivateAPIs)
-+ (BOOL)presentSystemModal:(NSTouchBar *)touchBar
-                 placement:(long long)placement
-  systemTrayItemIdentifier:(NSTouchBarItemIdentifier)identifier
+
++ (BOOL)presentSystemModal:(NSTouchBar *)touchBar systemTrayItemIdentifier:(NSTouchBarItemIdentifier)identifier
 {
     if ([NSTouchBar respondsToSelector:
-         @selector(presentSystemModalFunctionBar:placement:systemTrayItemIdentifier:)])
+         @selector(presentSystemModalFunctionBar:systemTrayItemIdentifier:)])
     {
         [NSTouchBar
          presentSystemModalFunctionBar:touchBar
-         placement:placement
          systemTrayItemIdentifier:identifier];
         return YES;
     }
     else if ([NSTouchBar respondsToSelector:
-              @selector(presentSystemModalTouchBar:placement:systemTrayItemIdentifier:)])
+              @selector(presentSystemModalTouchBar:systemTrayItemIdentifier:)])
     {
         [NSTouchBar
          presentSystemModalTouchBar:touchBar
-         placement:placement
          systemTrayItemIdentifier:identifier];
         return YES;
     }

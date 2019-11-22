@@ -45,6 +45,7 @@ final class TouchBarService: NSObject {
     // MARK: Variables
 
     var isEnabled = true
+    private var isPresented = false
     private lazy var touchBar: NSTouchBar = {
         let touchBar = NSTouchBar()
         touchBar.delegate = self
@@ -78,6 +79,7 @@ final class TouchBarService: NSObject {
         super.init()
         initCommon()
         initNotification()
+        windowDidBecomeKey()
     }
 
     // MARK: Public
@@ -136,6 +138,18 @@ final class TouchBarService: NSObject {
     func prepareForPresent() {
         scrubberView.reloadData()
         startButton.isHidden = false
+    }
+
+    func windowDidBecomeKey() {
+        guard isEnabled && !isPresented else { return }
+        if NSTouchBar.presentSystemModal(touchBar, systemTrayItemIdentifier: nil) {
+            isPresented = true
+        }
+    }
+
+    func windowDidResignKey() {
+        guard isEnabled && isPresented else { return }
+        NSTouchBar.dismissSystemModal(touchBar)
     }
 }
 
