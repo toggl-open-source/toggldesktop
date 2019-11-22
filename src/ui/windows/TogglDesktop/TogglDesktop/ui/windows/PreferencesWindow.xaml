@@ -125,8 +125,8 @@
                                    TextWrapping="Wrap" />
                         <Grid Margin="0 8 0 0">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="120" />
-                                <ColumnDefinition Width="96" />
+                                <ColumnDefinition Width="136" />
+                                <ColumnDefinition Width="80" />
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
@@ -136,7 +136,8 @@
                             <TextBlock Grid.Column="1"
                                        VerticalAlignment="Center"
                                        Style="{DynamicResource Toggl.BodyText}"
-                                       Text="Notify after" />
+                                       Text="Notify after"
+                                       IsEnabled="{Binding ElementName=idleDetectionCheckBox, Path=IsChecked}"/>
                             <TextBox Grid.Column="2"
                                      Width="64"
                                      Margin="8 0"
@@ -150,7 +151,8 @@
                             <TextBlock Grid.Column="3"
                                        VerticalAlignment="Center"
                                        Style="{DynamicResource Toggl.BodyText}"
-                                       Text="minutes" />
+                                       Text="minutes"
+                                       IsEnabled="{Binding ElementName=idleDetectionCheckBox, Path=IsChecked}"/>
                         </Grid>
                         <TextBlock Style="{DynamicResource Toggl.BodyText}" Margin="0 24 0 0"
                                    Text="Pomodoro timer" />
@@ -159,8 +161,8 @@
                                    TextWrapping="Wrap" />
                         <Grid Margin="0 8 0 0">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="120" />
-                                <ColumnDefinition Width="96" />
+                                <ColumnDefinition Width="136" />
+                                <ColumnDefinition Width="80" />
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
@@ -170,7 +172,8 @@
                             <TextBlock Grid.Column="1"
                                        VerticalAlignment="Center"
                                        Style="{DynamicResource Toggl.BodyText}"
-                                       Text="Interval" />
+                                       Text="Interval"
+                                       IsEnabled="{Binding ElementName=enablePomodoroCheckBox, Path=IsChecked}"/>
                             <TextBox Grid.Column="2"
                                      Width="64"
                                      Margin="8 0"
@@ -181,47 +184,46 @@
                                     <behaviors:NumericInputTextBoxBehavior />
                                 </i:Interaction.Behaviors>
                             </TextBox>
-                            <TextBlock Grid.Column="3"
-                                       VerticalAlignment="Center"
+                            <TextBlock Grid.Column="3" VerticalAlignment="Center"
                                        Style="{DynamicResource Toggl.BodyText}"
-                                       Text="minutes" />
+                                       Text="minutes"
+                                       IsEnabled="{Binding ElementName=enablePomodoroCheckBox, Path=IsChecked}"/>
                         </Grid>
                         <TextBlock Style="{DynamicResource Toggl.BodyText}" Margin="0 8 0 0"
                                    Text="Pomodoro break" />
                         <Grid Margin="0 8 0 0">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="120" />
-                                <ColumnDefinition Width="96" />
-                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="136" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
                             <mah:ToggleSwitch Grid.Column="0"
                                               VerticalAlignment="Center"
                                               Name="enablePomodoroBreakCheckBox" x:FieldModifier="private"
                                               IsEnabled="{Binding ElementName=enablePomodoroCheckBox, Path=IsChecked}"/>
-                            <TextBlock Grid.Column="1"
-                                       VerticalAlignment="Center"
-                                       Style="{DynamicResource Toggl.BodyText}"
-                                       Text="Interval" />
-                            <TextBox Grid.Column="2"
-                                     Width="64"
-                                     Margin="8 0"
-                                     Name="pomodoroBreakTimerDuration" x:FieldModifier="private"
-                                     TextAlignment="Right">
-                                <TextBox.IsEnabled>
+                            <StackPanel Orientation="Horizontal"
+                                        Grid.Column="1">
+                                <StackPanel.IsEnabled>
                                     <MultiBinding Converter="{StaticResource AndConverter}">
                                         <Binding ElementName="enablePomodoroBreakCheckBox" Path="IsChecked"/>
                                         <Binding ElementName="enablePomodoroCheckBox" Path="IsChecked"/>
                                     </MultiBinding>
-                                </TextBox.IsEnabled>
-                                <i:Interaction.Behaviors>
-                                    <behaviors:NumericInputTextBoxBehavior />
-                                </i:Interaction.Behaviors>
-                            </TextBox>
-                            <TextBlock Grid.Column="3"
-                                       VerticalAlignment="Center"
-                                       Style="{DynamicResource Toggl.BodyText}"
-                                       Text="minutes" />
+                                </StackPanel.IsEnabled>
+                                <TextBlock Width="80"
+                                           VerticalAlignment="Center"
+                                           Style="{DynamicResource Toggl.BodyText}"
+                                           Text="Interval" />
+                                <TextBox Width="64"
+                                         Margin="8 0"
+                                         Name="pomodoroBreakTimerDuration" x:FieldModifier="private"
+                                         TextAlignment="Right">
+                                    <i:Interaction.Behaviors>
+                                        <behaviors:NumericInputTextBoxBehavior />
+                                    </i:Interaction.Behaviors>
+                                </TextBox>
+                                <TextBlock VerticalAlignment="Center"
+                                           Style="{DynamicResource Toggl.BodyText}"
+                                           Text="minutes" />
+                            </StackPanel>
                         </Grid>
                         <TextBlock Style="{DynamicResource Toggl.BodyText}" Margin="0 24 0 0"
                                    Text="Record activity" />
@@ -257,71 +259,91 @@
                                          Content="duration"
                                          Name="keepEndTimeFixedCheckbox" x:FieldModifier="private"/>
                             <RadioButton GroupName="1"
-                                         Content="end time" />
+                                         Content="end time"
+                                         Name="keepDurationFixedCheckbox" x:FieldModifier="private" />
                         </StackPanel>
                     </StackPanel>
                 </ScrollViewer>
             </TabItem>
 
             <TabItem Header="Reminder">
-                <Grid Margin="11 11">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-                    <CheckBox Name="remindToTrackCheckBox" x:FieldModifier="private"
-                                      Grid.Column="0" Grid.Row="0" Margin="5">Remind me to track time every</CheckBox>
-
-                    <StackPanel Grid.Row="1"
-                                IsEnabled="{Binding ElementName=remindToTrackCheckBox, Path=IsChecked}">
-                        <TextBlock Margin="5">Reminder start time</TextBlock>
-                        <TextBlock Margin="5">Reminder end time</TextBlock>
-                        <TextBlock Margin="5">Reminder days</TextBlock>
-                    </StackPanel>
-
-                    <Grid Grid.Column="1" Grid.Row="0" Margin="5" HorizontalAlignment="Right"
-                                  IsEnabled="{Binding ElementName=remindToTrackCheckBox, Path=IsChecked}">
+                <StackPanel Margin="24 32 20 48">
+                    <TextBlock Style="{DynamicResource Toggl.TitleText}"
+                               Text="Remind me to track time" />
+                    <TextBlock Margin="0 12 0 0"
+                               Style="{DynamicResource Toggl.CaptionText}"
+                               Text="You'll get a notification if the timer hasn't been started during work hours." />
+                    <mah:ToggleSwitch Margin="0 14 0 0"
+                                      Name="remindToTrackCheckBox" x:FieldModifier="private" />
+                    <Grid Margin="0 42 0 0" IsEnabled="{Binding ElementName=remindToTrackCheckBox, Path=IsChecked}">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="30"/>
+                            <ColumnDefinition Width="160"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <TextBox Name="remindToTrackIntervalTextBox" x:FieldModifier="private"
-                                         Grid.Column="0" HorizontalContentAlignment="Right">5</TextBox>
-                        <TextBlock Grid.Column="1" Margin="4 0 0 0">minutes</TextBlock>
-                    </Grid>
-
-                    <StackPanel Grid.Row="1" Grid.Column="1"
-                                IsEnabled="{Binding ElementName=remindToTrackCheckBox, Path=IsChecked}">
-                        <TextBox Name="reminderStartTimeTextBox" x:FieldModifier="private"
-                                 Margin="5" Width="50"
-                                 HorizontalContentAlignment="Right"
-                                 HorizontalAlignment="Left">8:30</TextBox>
-                        <TextBox Name="reminderEndTimeTextBox" x:FieldModifier="private"
-                                 Margin="5" Width="50"
-                                 HorizontalContentAlignment="Right"
-                                 HorizontalAlignment="Left">16:30</TextBox>
-                        <StackPanel Margin="3">
-                            <CheckBox Name="remindOnMondayTextBox" x:FieldModifier="private"
-                                      Margin="2">Mon</CheckBox>
-                            <CheckBox Name="remindOnTuesdayTextBox" x:FieldModifier="private"
-                                      Margin="2">Tue</CheckBox>
-                            <CheckBox Name="remindOnWednesdayTextBox" x:FieldModifier="private"
-                                      Margin="2">Wed</CheckBox>
-                            <CheckBox Name="remindOnThursdayTextBox" x:FieldModifier="private"
-                                      Margin="2">Thu</CheckBox>
-                            <CheckBox Name="remindOnFridayTextBox" x:FieldModifier="private"
-                                      Margin="2">Fri</CheckBox>
-                            <CheckBox Name="remindOnSaturdayTextBox" x:FieldModifier="private"
-                                      Margin="2">Sat</CheckBox>
-                            <CheckBox Name="remindOnSundayTextBox" x:FieldModifier="private"
-                                      Margin="2">Sun</CheckBox>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" Grid.Column="0"
+                                   Style="{DynamicResource Toggl.BodyText}"
+                                   VerticalAlignment="Center"
+                                   Text="Remind me after" />
+                        <TextBlock Grid.Row="1" Grid.Column="0"
+                                   Style="{DynamicResource Toggl.BodyText}"
+                                   VerticalAlignment="Center"
+                                   Text="Remind me between" />
+                        <TextBlock Grid.Row="2" Grid.Column="0"
+                                   Style="{DynamicResource Toggl.BodyText}"
+                                   VerticalAlignment="Top"
+                                   Text="Remind me on days" />
+                        <StackPanel Orientation="Horizontal"
+                                    Grid.Row="0" Grid.Column="1">
+                            <TextBox Name="remindToTrackIntervalTextBox" x:FieldModifier="private"
+                                     Margin="0 0 8 0"
+                                     Width="64"
+                                     HorizontalContentAlignment="Right">
+                                <i:Interaction.Behaviors>
+                                    <behaviors:NumericInputTextBoxBehavior />
+                                </i:Interaction.Behaviors>
+                            </TextBox>
+                            <TextBlock Style="{DynamicResource Toggl.BodyText}"
+                                       Text="minutes"
+                                       VerticalAlignment="Center"/>
                         </StackPanel>
-                    </StackPanel>
-                </Grid>
+                        <StackPanel Orientation="Horizontal"
+                                    Grid.Row="1" Grid.Column="1"
+                                    Margin="0 8 0 14">
+                            <TextBox Name="reminderStartTimeTextBox" x:FieldModifier="private"
+                                     Margin="0 0 8 0" Width="64"
+                                     HorizontalContentAlignment="Right" />
+                            <Canvas Width="12" Height="7">
+                                <Path Fill="{DynamicResource Toggl.DisabledTextBrush}" Data="M7.812.16C7.363-.166 7 .023 7 .567v6.006c0 .55.36.735.812.407l3.876-2.82c.449-.326.451-.852 0-1.18L7.812.16z"/>
+                                <Path StrokeThickness="2" Stroke="{DynamicResource Toggl.DisabledTextBrush}" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round" Data="M8 3.57H1"/>
+                            </Canvas>
+                            <TextBox Name="reminderEndTimeTextBox" x:FieldModifier="private"
+                                     Margin="7 0 0 0" Width="64"
+                                     HorizontalContentAlignment="Right" />
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="2" Grid.Column="1">
+                            <CheckBox Name="remindOnMondayTextBox" x:FieldModifier="private"
+                                      >Monday</CheckBox>
+                            <CheckBox Name="remindOnTuesdayTextBox" x:FieldModifier="private"
+                                      Margin="0 12 0 0">Tuesday</CheckBox>
+                            <CheckBox Name="remindOnWednesdayTextBox" x:FieldModifier="private"
+                                      Margin="0 12 0 0">Wednesday</CheckBox>
+                            <CheckBox Name="remindOnThursdayTextBox" x:FieldModifier="private"
+                                      Margin="0 12 0 0">Thursday</CheckBox>
+                            <CheckBox Name="remindOnFridayTextBox" x:FieldModifier="private"
+                                      Margin="0 12 0 0">Friday</CheckBox>
+                            <CheckBox Name="remindOnSaturdayTextBox" x:FieldModifier="private"
+                                      Margin="0 12 0 0">Saturday</CheckBox>
+                            <CheckBox Name="remindOnSundayTextBox" x:FieldModifier="private"
+                                      Margin="0 12 0 0">Sunday</CheckBox>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
             </TabItem>
 
             <TabItem Header="Autotracker">
@@ -336,40 +358,56 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Proxy">
-                <StackPanel Margin="11 11">
+                <StackPanel Margin="24 32 20 48">
+                    <TextBlock Style="{DynamicResource Toggl.TitleText}"
+                               Text="Proxy" />
                     <RadioButton Name="useNoProxyRadioButton" x:FieldModifier="private" GroupName="Proxy"
                                          IsChecked="True"
-                                    Margin="5">Do not use proxy</RadioButton>
+                                    Margin="0 18 0 0">Do not use proxy</RadioButton>
                     <RadioButton Name="useSystemProxySettingsCheckBox" x:FieldModifier="private" GroupName="Proxy"
-                                    Margin="5">Use system proxy settings</RadioButton>
+                                    Margin="0 12 0 0">Use system proxy settings</RadioButton>
                     <RadioButton Name="useProxyCheckBox" x:FieldModifier="private" GroupName="Proxy"
-                                      Margin="5">Use proxy to connect to Toggl</RadioButton>
-                    <GroupBox Header="Proxy Settings" IsEnabled="{Binding ElementName=useProxyCheckBox, Path=IsChecked}">
-                        <Grid>
+                                      Margin="0 12 0 0">Use proxy to connect to Toggl</RadioButton>
+                    <StackPanel Margin="0 30 0 0" IsEnabled="{Binding ElementName=useProxyCheckBox, Path=IsChecked}">
+                        <TextBlock Style="{DynamicResource Toggl.BodyText}"
+                                   Text="Proxy settings" />
+                        <Grid Margin="0 24 0 0">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="80" />
+                                <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
                             </Grid.RowDefinitions>
-                            <TextBlock Grid.Column="0" Grid.Row="0" Margin="5">Host</TextBlock>
-                            <TextBlock Grid.Column="0" Grid.Row="1" Margin="5">Port</TextBlock>
-                            <TextBlock Grid.Column="0" Grid.Row="2" Margin="5">Username</TextBlock>
-                            <TextBlock Grid.Column="0" Grid.Row="3" Margin="5">Password</TextBlock>
-                            <TextBox Name="proxyHostTextBox" x:FieldModifier="private"
-                                Grid.Column="1" Grid.Row="0" Margin="5 3">example.com</TextBox>
-                            <TextBox Name="proxyPortTextBox" x:FieldModifier="private"
-                                Grid.Column="1" Grid.Row="1" Margin="5 3">0</TextBox>
-                            <TextBox Name="proxyUsernameTextBox" x:FieldModifier="private"
-                                Grid.Column="1" Grid.Row="2" Margin="5 3">user</TextBox>
-                            <PasswordBox Name="proxyPasswordBox" x:FieldModifier="private"
-                                Grid.Column="1" Grid.Row="3" Password="password" Margin="5 3"></PasswordBox>
+                            <TextBlock Grid.Row="0" Grid.Column="0"
+                                       Style="{DynamicResource Toggl.BodyText}"
+                                       VerticalAlignment="Center"
+                                       Text="Host"/>
+                            <TextBlock Grid.Row="1" Grid.Column="0"
+                                       Style="{DynamicResource Toggl.BodyText}"
+                                       VerticalAlignment="Center"
+                                       Text="Port"/>
+                            <TextBlock Grid.Row="2" Grid.Column="0"
+                                       Style="{DynamicResource Toggl.BodyText}"
+                                       VerticalAlignment="Center"
+                                       Text="Username"/>
+                            <TextBlock Grid.Row="3" Grid.Column="0"
+                                       Style="{DynamicResource Toggl.BodyText}"
+                                       VerticalAlignment="Center"
+                                       Text="Password"/>
+                            <TextBox Grid.Row="0" Grid.Column="1"
+                                     Name="proxyHostTextBox" x:FieldModifier="private"/>
+                            <TextBox Grid.Row="1" Grid.Column="1" Margin="0 8 0 0"
+                                     Name="proxyPortTextBox" x:FieldModifier="private"/>
+                            <TextBox Grid.Row="2" Grid.Column="1" Margin="0 8 0 0"
+                                     Name="proxyUsernameTextBox" x:FieldModifier="private"/>
+                            <PasswordBox Grid.Row="3" Grid.Column="1" Margin="0 8 0 0"
+                                         Name="proxyPasswordBox" x:FieldModifier="private"/>
                         </Grid>
-                    </GroupBox>
+                    </StackPanel>
                 </StackPanel>
             </TabItem>
         </TabControl>
