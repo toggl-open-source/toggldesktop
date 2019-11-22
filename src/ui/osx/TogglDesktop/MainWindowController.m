@@ -152,6 +152,7 @@ extern void *ctx;
 
 		// Reset the data
 		[[TouchBarService shared] resetContent];
+        [[TouchBarService shared] minimize];
 	}
 }
 
@@ -184,6 +185,7 @@ extern void *ctx;
 
 			// Prepare the Touch bar
 			[[TouchBarService shared] prepareContent];
+            [[TouchBarService shared] present];
 		}
 	}
 }
@@ -357,12 +359,17 @@ extern void *ctx;
 
 -(void)windowDidBecomeMain:(NSNotification *)notification
 {
-    [[TouchBarService shared] present];
+    if ([self.timeEntryListViewController.view superview] != nil) {
+        [[TouchBarService shared] present];
+    }
+
 }
 
 - (void)windowDidResignMain:(NSNotification *)notification
 {
-    [[TouchBarService shared] minimize];
+    if ([self.timeEntryListViewController.view superview] != nil) {
+        [[TouchBarService shared] minimize];
+    }
 }
 
 @end
