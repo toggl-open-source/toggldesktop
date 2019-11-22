@@ -15,3 +15,4 @@
 #import "TimeEntryCollectionView.h"
 #import "ConvertHexColor.h"
 #import "AppDelegate.h"
+#import "TouchBar+PrivateAPIs.h"
