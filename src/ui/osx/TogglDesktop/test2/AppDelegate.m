@@ -7,8 +7,6 @@
 //
 
 #import "AppDelegate.h"
-
-#import "TouchBar.h"
 #import "AboutWindowController.h"
 #import "AutocompleteItem.h"
 #import "AutotrackerRuleItem.h"
@@ -39,6 +37,10 @@
 
 #ifdef SPARKLE
 #import <Sparkle/Sparkle.h>
+#endif
+
+#ifndef APP_STORE
+#import "TouchBar+PrivateAPIs.h"
 #endif
 
 @interface AppDelegate ()
