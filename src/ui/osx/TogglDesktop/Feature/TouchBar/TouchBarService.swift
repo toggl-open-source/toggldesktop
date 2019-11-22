@@ -146,22 +146,28 @@ final class TouchBarService: NSObject {
 extension TouchBarService {
 
     func present() {
+        #if !APP_STORE
         guard isEnabled && !isPresented else { return }
         if NSTouchBar.presentSystemModal(touchBar, systemTrayItemIdentifier: nil) {
             isPresented = true
         }
+        #endif
     }
 
     func minimize() {
+        #if !APP_STORE
         guard isEnabled && isPresented else { return }
         NSTouchBar.minimizeSystemModal(touchBar)
         isPresented = false
+        #endif
     }
 
     func dismiss() {
+        #if !APP_STORE
         guard isEnabled && isPresented else { return }
         NSTouchBar.dismissSystemModal(touchBar)
         isPresented = false
+        #endif
     }
 }
 
