@@ -121,8 +121,7 @@
                         <TextBlock Style="{DynamicResource Toggl.BodyText}"
                                    Text="Idle notification" />
                         <TextBlock Style="{DynamicResource Toggl.CaptionText}"  Margin="0 4 0 0"
-                                   Text="You'll be notified when timer keeps running after you stopped working on your computer."
-                                   TextWrapping="Wrap" />
+                                   Text="You'll be notified when timer keeps running after you stopped working on your computer." />
                         <Grid Margin="0 8 0 0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="136" />
@@ -157,8 +156,7 @@
                         <TextBlock Style="{DynamicResource Toggl.BodyText}" Margin="0 24 0 0"
                                    Text="Pomodoro timer" />
                         <TextBlock Style="{DynamicResource Toggl.CaptionText}" Margin="0 4 0 0"
-                                   Text="When you start tracking time, pomodoro timer is launched. We'll remind you to take a break at the end of the interval."
-                                   TextWrapping="Wrap" />
+                                   Text="When you start tracking time, pomodoro timer is launched. We'll remind you to take a break at the end of the interval."/>
                         <Grid Margin="0 8 0 0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="136" />
@@ -228,15 +226,13 @@
                         <TextBlock Style="{DynamicResource Toggl.BodyText}" Margin="0 24 0 0"
                                    Text="Record activity" />
                         <TextBlock Style="{DynamicResource Toggl.CaptionText}" Margin="0 4 0 0"
-                                   Text="You'll have a timeline of all activity on your computer with a breakdown of time spent on applications and websites. Only you can access this data."
-                                   TextWrapping="Wrap" />
+                                   Text="You'll have a timeline of all activity on your computer with a breakdown of time spent on applications and websites. Only you can access this data."/>
                         <mah:ToggleSwitch Margin="0 14 0 0"
                                           Name="recordTimelineCheckBox" x:FieldModifier="private" />
                         <TextBlock Style="{DynamicResource Toggl.BodyText}" Margin="0 24 0 0"
                                    Text="Stop timer automatically" />
                         <TextBlock Style="{DynamicResource Toggl.CaptionText}" Margin="0 4 0 0"
-                                   Text="When your computer is put to sleep or shut down, the timer will be stopped."
-                                   TextWrapping="Wrap" />
+                                   Text="When your computer is put to sleep or shut down, the timer will be stopped."/>
                         <mah:ToggleSwitch Margin="0 14 0 0"
                                           Name="onStopEntryCheckBox" x:FieldModifier="private" />
                         <TextBlock Style="{DynamicResource Toggl.TitleText}" Margin="0 32 0 0"
@@ -347,15 +343,16 @@
             </TabItem>
 
             <TabItem Header="Autotracker">
-                <Grid Margin="11 11">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-                    <CheckBox Name="enableAutotrackerCheckbox" x:FieldModifier="private"
-                              Grid.Row="0" Margin="5" Content="Enable autotracker"/>
-                    <toggl:AutotrackerSettings Grid.Row="1" Margin="5" IsEnabled="{Binding ElementName=enableAutotrackerCheckbox, Path=IsChecked}"/>
-                </Grid>
+                <StackPanel Margin="24 32 20 48">
+                    <TextBlock Style="{DynamicResource Toggl.TitleText}"
+                               Text="Autotracker" />
+                    <TextBlock Margin="0 12 0 0"
+                               Style="{DynamicResource Toggl.CaptionText}"
+                               Text="Autotracker helps to make time tracking faster by triggering customized suggestions. When a selected app is open in the foreground, you'll get one of the prefilled suggestions."/>
+                    <mah:ToggleSwitch x:Name="enableAutotrackerCheckbox" x:FieldModifier="private"
+                                      Margin="0 14 0 0" />
+                    <toggl:AutotrackerSettings Margin="0 40 0 0" IsEnabled="{Binding ElementName=enableAutotrackerCheckbox, Path=IsChecked}"/>
+                </StackPanel>
             </TabItem>
             <TabItem Header="Proxy">
                 <StackPanel Margin="24 32 20 48">

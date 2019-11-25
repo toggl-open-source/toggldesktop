@@ -37,6 +37,7 @@
     <Style TargetType="TextBlock" x:Key="Toggl.CaptionText" BasedOn="{StaticResource Toggl.Text}">
         <Setter Property="FontSize" Value="12" />
         <Setter Property="Foreground" Value="{DynamicResource Toggl.SecondaryTextBrush}" />
+        <Setter Property="TextWrapping" Value="Wrap" />
     </Style>
     <Style TargetType="TextBlock" BasedOn="{StaticResource Toggl.BodyText}" />
 </ResourceDictionary>

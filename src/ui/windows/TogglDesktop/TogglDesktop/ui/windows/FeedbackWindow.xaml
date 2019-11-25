@@ -87,14 +87,12 @@
                 <TextBlock Style="{DynamicResource Toggl.CaptionText}"
                            Background="{DynamicResource Toggl.ErrorMessageBackground}"
                            Foreground="White"
-                           TextWrapping="Wrap"
                            Padding="12 3 12 5"
                            Text="Please check that the file size is not larger than 5MB and try uploading it again."
                            Visibility="{Binding IsFileSizeError, Converter={StaticResource BooleanToVisibilityConverter}}" />
                 <TextBlock Style="{DynamicResource Toggl.CaptionText}"
                            Background="{DynamicResource Toggl.ErrorMessageBackground}"
                            Foreground="White"
-                           TextWrapping="Wrap"
                            Padding="12 3 12 5"
                            Text="Something went wrong. Please try again."
                            Visibility="{Binding IsSendingError, Converter={StaticResource BooleanToVisibilityConverter}}" />
