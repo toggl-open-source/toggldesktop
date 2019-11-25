@@ -47,5 +47,9 @@
         <Setter Property="FontSize" Value="12" />
         <Setter Property="Foreground" Value="{DynamicResource Toggl.SecondaryTextBrush}" />
     </Style>
+    <Style TargetType="TextBlock" x:Key="Toggl.GrayishSemiBoldText" BasedOn="{StaticResource Toggl.CaptionText}">
+        <Setter Property="Foreground" Value="{DynamicResource Toggl.DisabledTextBrush}" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+    </Style>
     <Style TargetType="TextBlock" BasedOn="{StaticResource Toggl.BodyText}" />
 </ResourceDictionary>
