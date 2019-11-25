@@ -444,8 +444,8 @@
 				ORGANIZATIONNAME = Toggl;
 				TargetAttributes = {
 					C55DA59B17F06A3B00B42178 = {
-						DevelopmentTeam = PQMN2KYD24;
-						ProvisioningStyle = Manual;
+						DevelopmentTeam = B227VTMZ94;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -664,7 +664,7 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = B227VTMZ94;
 				GCC_NO_COMMON_BLOCKS = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"NDEBUG=1",
@@ -706,7 +706,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = B227VTMZ94;
 				GCC_NO_COMMON_BLOCKS = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"TOGGL_ALLOW_UPDATE_CHECK=1",
