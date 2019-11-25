@@ -231,9 +231,11 @@
       <DependentUpon>ReminderNotification.xaml</DependentUpon>
     </Compile>
     <Compile Include="ui\Converters\AndConverter.cs" />
+    <Compile Include="ui\Converters\BindingProxy.cs" />
     <Compile Include="ui\Converters\BytesToStringConverter.cs" />
+    <Compile Include="ui\Converters\EmptyStringToHiddenConverter.cs" />
     <Compile Include="ui\Converters\FileNameToIconConverter.cs" />
-    <Compile Include="ui\Converters\StringToBrushConverter.cs" />
+    <Compile Include="ui\Converters\ColorsToBrushConverter.cs" />
     <Compile Include="ui\Converters\TrimPathConverter.cs" />
     <Compile Include="ui\Experiments\implementations\Experiment98.cs" />
     <Compile Include="ui\Experiments\implementations\Experiment98Screen2.xaml.cs">
