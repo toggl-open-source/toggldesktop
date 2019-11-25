@@ -102,4 +102,8 @@
 
     <SolidColorBrush x:Key="Toggl.BarelyVisibleSeparator" Color="Black" Opacity="0.15" />
     <DropShadowEffect x:Key="Toggl.SeparatorShadow" ShadowDepth="2" Color="Black" Opacity="1" BlurRadius="4"/>
+
+    <SolidColorBrush x:Key="Toggl.WorkspaceSeparator" Color="{StaticResource Toggl.BlackColor}" Opacity="0.05" po:Freeze="True"/>
+
+    <BitmapImage x:Key="Toggl.LogoImage" UriSource="/TogglDesktop;component/Resources/toggl-logo-dark.png" />
 </ResourceDictionary>

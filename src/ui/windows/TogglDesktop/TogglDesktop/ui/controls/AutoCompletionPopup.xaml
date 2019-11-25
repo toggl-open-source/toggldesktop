@@ -11,106 +11,99 @@
              Height="0" Width="0">
     
     <UserControl.Resources>
-        <togglautocompletion:AutocompleteTemplateSelector x:Key="autocompleteTemplateSelector"/>
-        <converters:StringToBrushConverter OnNullOrEmpty="Transparent" x:Key="ProjectColorConverter" />
-        <DataTemplate x:Key="project-item-template">
-            <StackPanel Height="25" Orientation="Horizontal">
-                <StackPanel.Style>
-                    <Style TargetType="StackPanel">
-                        <Setter Property="Background" Value="Transparent"></Setter>
-                        <Style.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#F4F4F4"></Setter>
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </StackPanel.Style>
-                <Border Name="projectColor"
-                CornerRadius="100" Width="8" Height="8" BorderThickness="0"
-                Margin="20,0,6,0" 
-                Background="{Binding ProjectColor}"/>
-                <TextBlock Name="project" VerticalAlignment="Center" Text="{Binding ProjectLabel}" ToolTip="{Binding Text}" Margin="0,0,10,0"/>
-            </StackPanel>
-        </DataTemplate>
-        <DataTemplate x:Key="task-item-template">
-            <StackPanel Height="25" Orientation="Horizontal">
-                <StackPanel.Style>
-                    <Style TargetType="StackPanel">
-                        <Setter Property="Background" Value="Transparent"></Setter>
-                        <Style.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#F4F4F4"></Setter>
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </StackPanel.Style>
-                <Border Name="padding" Width="10" Height="6" BorderThickness="0"/>
-                <TextBlock Name="task" VerticalAlignment="Center" Foreground="DimGray" Text="{Binding TaskLabel}" ToolTip="{Binding Text}" Margin="30,0,10,0"/>
-            </StackPanel>
-        </DataTemplate>
-        <DataTemplate x:Key="timer-item-template">
-            <StackPanel Height="25" Orientation="Horizontal">
-                <StackPanel.Style>
-                    <Style TargetType="StackPanel">
-                        <Setter Property="Background" Value="Transparent"></Setter>
-                        <Style.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#F4F4F4"></Setter>
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </StackPanel.Style>
-                <Border Name="padding" Width="10" Height="6" BorderThickness="0"/>
-                <TextBlock Name="description" VerticalAlignment="Center" Text="{Binding Description}" ToolTip="{Binding Text}"/>
-                <TextBlock Name="task" VerticalAlignment="Center" Foreground="DimGray" Text="{Binding TaskLabel}" ToolTip="{Binding Text}"/>
-                <Border Name="projectColor"
-                CornerRadius="100" Width="6" Height="6" BorderThickness="0"
-                Margin="6, 0, 6, 0" 
-                Background="{Binding ProjectColor, Converter={StaticResource ProjectColorConverter}}"/>
-                <TextBlock Name="project" VerticalAlignment="Center" Text="{Binding ProjectLabel}" ToolTip="{Binding Text}"/>
-                <TextBlock Name="client" Foreground="DimGray" VerticalAlignment="Center" Text="{Binding ClientLabel}" ToolTip="{Binding Text}" Margin="0,0,10,0"/>
-            </StackPanel>
-        </DataTemplate>
-        <DataTemplate x:Key="category-item-template">
-            <TextBlock Name="categoryName"
-               Foreground="#a1a1a1"
-               FontSize="12"
-               Margin="0, 5, 0, 2"
-               Text="{Binding Category}"/>
-        </DataTemplate>
-        <DataTemplate  x:Key="string-item-template">
-            <TextBlock Name="text" VerticalAlignment="Center"
-               Margin="10, 0, 10, 0"
-               Height="25"
-               Text="{Binding Text}"
-               ToolTip="{Binding Text}" />
-        </DataTemplate>
-        <DataTemplate x:Key="client-item-template">
-            <StackPanel Height="25" Orientation="Horizontal">
-                <Border 
-                 Width="0" Height="0" BorderThickness="0"
-                Margin="5,5,5,0" 
-                Background="Transparent"/>
-                <TextBlock Name="clientName"
-               VerticalAlignment="Center"
-               Foreground="#a1a1a1"
-               FontSize="12"
-               Text="{Binding Text}"/>
-            </StackPanel>
-        </DataTemplate>
-        <DataTemplate x:Key="workspace-item-template">
-            <StackPanel Height="25" Orientation="Vertical" HorizontalAlignment="Stretch"
-                        VerticalAlignment="Bottom">
-                <TextBlock Name="workspaceName"
-                    HorizontalAlignment="Center" Foreground="#a1a1a1"
-                    FontSize="13" Text="{Binding Text}" Margin="0,4"
-                    FontWeight="Medium"/>
-                <Border 
-                 HorizontalAlignment="Stretch" Height="1" BorderThickness="0,0,0,1"
-                 BorderBrush="#dbdbdb" 
-                 Background="Transparent"/>
-            </StackPanel>
-        </DataTemplate>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources/DesignUpdate/Controls.xaml" />
+                <ResourceDictionary Source="../Resources/DesignUpdate/Typography.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <converters:BindingProxy x:Key="NoProjectColorProxy" Data="{DynamicResource Toggl.SecondaryTextBrush}" />
+            <converters:ColorsToBrushConverter x:Key="ColorsToBrushMultiConverter" />
+            <converters:EmptyStringToHiddenConverter x:Key="EmptyStringToHiddenConverter" />
+            <togglautocompletion:AutocompleteTemplateSelector x:Key="autocompleteTemplateSelector"/>
+            <DataTemplate x:Key="project-item-template">
+                <StackPanel Height="32" Orientation="Horizontal">
+                    <Border Name="projectColor"
+                    CornerRadius="100" Width="6" Height="6" BorderThickness="0"
+                    Margin="16 14 8 12">
+                        <Border.Background>
+                            <MultiBinding Converter="{StaticResource ColorsToBrushMultiConverter}">
+                                <Binding Path="ProjectColor" />
+                                <Binding Source="{StaticResource NoProjectColorProxy}" Path="Data" />
+                            </MultiBinding>
+                        </Border.Background>
+                    </Border>
+                    <TextBlock Name="project" VerticalAlignment="Center"
+                               Style="{StaticResource Toggl.BodyText}"
+                               Text="{Binding ProjectLabel}" ToolTip="{Binding Text}" Margin="0 0 8 0">
+                        <TextBlock.Foreground>
+                            <MultiBinding Converter="{StaticResource ColorsToBrushMultiConverter}">
+                                <Binding Path="ProjectColor" />
+                                <Binding Source="{StaticResource NoProjectColorProxy}" Path="Data" />
+                            </MultiBinding>
+                        </TextBlock.Foreground>
+                    </TextBlock>
+                </StackPanel>
+            </DataTemplate>
+            <DataTemplate x:Key="task-item-template">
+                <StackPanel Height="32" Orientation="Horizontal">
+                    <TextBlock Name="task"
+                               VerticalAlignment="Center"
+                               Margin="32 8 8 8"
+                               Foreground="{Binding ProjectColor}" Text="{Binding TaskLabel}" ToolTip="{Binding Text}"/>
+                </StackPanel>
+            </DataTemplate>
+            <DataTemplate x:Key="timer-item-template">
+                <StackPanel Height="32" Orientation="Horizontal">
+                    <TextBlock Name="description" Margin="16 0 0 0" Style="{StaticResource Toggl.BodyText}" VerticalAlignment="Center" Text="{Binding Description}" ToolTip="{Binding Text}"/>
+                    <Border Name="projectColor"
+                            CornerRadius="100" Width="6" Height="6" BorderThickness="0" Margin="8 14 8 12"
+                            Visibility="{Binding ProjectColor, Converter={StaticResource EmptyStringToHiddenConverter}}"
+                            Background="{Binding ProjectColor}"/>
+                    <TextBlock Name="project" VerticalAlignment="Center" Style="{StaticResource Toggl.CaptionText}" Text="{Binding ProjectLabel}" Foreground="{Binding ProjectColor}" ToolTip="{Binding Text}"/>
+                    <TextBlock Name="task" VerticalAlignment="Center" Style="{StaticResource Toggl.CaptionText}" Text="{Binding TaskLabel}" Foreground="{Binding ProjectColor}" ToolTip="{Binding Text}"/>
+                </StackPanel>
+            </DataTemplate>
+            <DataTemplate x:Key="category-item-template">
+                <StackPanel Height="24" Margin="0 8 0 0">
+                    <TextBlock Name="categoryName"
+                               Style="{DynamicResource Toggl.GrayishSemiBoldText}"
+                               Margin="8 0"
+                               VerticalAlignment="Center"
+                               Text="{Binding Category}"/>
+                </StackPanel>
+            </DataTemplate>
+            <DataTemplate  x:Key="string-item-template">
+                <TextBlock Name="text" VerticalAlignment="Center"
+                           Style="{StaticResource Toggl.BodyText}"
+                           Foreground="{DynamicResource Toggl.SecondaryTextBrush}"
+                   Margin="10, 0, 10, 0"
+                   Height="32"
+                   Text="{Binding Text}"
+                   ToolTip="{Binding Text}" />
+            </DataTemplate>
+            <DataTemplate x:Key="client-item-template">
+                <StackPanel Height="24" Orientation="Horizontal">
+                    <TextBlock Name="clientName"
+                               Margin="11 0"
+                               Style="{StaticResource Toggl.GrayishSemiBoldText}"
+                               VerticalAlignment="Center"
+                               Text="{Binding Text}"/>
+                </StackPanel>
+            </DataTemplate>
+            <DataTemplate x:Key="workspace-item-template">
+                <StackPanel Height="40" Orientation="Vertical" HorizontalAlignment="Stretch"
+                            VerticalAlignment="Bottom">
+                    <TextBlock Name="workspaceName"
+                               Margin="16 10"
+                               Style="{StaticResource Toggl.BaseText}"
+                               HorizontalAlignment="Left"
+                               Text="{Binding Text}" />
+                    <Border HorizontalAlignment="Stretch" Height="1" BorderThickness="0,0,0,1" Background="Transparent"
+                            Margin="8 0"
+                            BorderBrush="{DynamicResource Toggl.WorkspaceSeparator}"/>
+                </StackPanel>
+            </DataTemplate>
+        </ResourceDictionary>
     </UserControl.Resources>
     
     <Popup Name="popup" x:FieldModifier="private"
@@ -126,6 +119,7 @@
                                 Margin="4"
                                 Text="Hello. Yes, this is list."/>
             <ListBox x:Name="listBox" HorizontalAlignment="Stretch" MinHeight="30" Height="Auto" Margin="10,0,10,10"
+                     Background="{DynamicResource Toggl.CardBackground}"
                 BorderThickness="0"
                 VerticalAlignment="Top"
                 Width="Auto"

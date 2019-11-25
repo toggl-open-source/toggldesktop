@@ -129,11 +129,15 @@ namespace TogglDesktop.AutoCompletion
                         // Add category title if needed
                         if (lastType != (int)it.Item.Type && (int)it.Item.Type != 1)
                         {
-                            items.Add(new ListBoxItem()
+                            // do not show 'Projects' item when auto completing projects
+                            if (autocompleteType != 3)
                             {
-                                Category = categories[(int)it.Item.Type],
-                                Type = -1
-                            });
+                                items.Add(new ListBoxItem()
+                                {
+                                    Category = categories[(int)it.Item.Type],
+                                    Type = -1
+                                });
+                            }
 
                             // if projects autocomplete show 'no project' item
                             if (autocompleteType == 3 && (int)it.Item.Type == 2
@@ -142,11 +146,11 @@ namespace TogglDesktop.AutoCompletion
                                 items.Add(new ListBoxItem()
                                 {
                                     Text = "No project",
-                                    Description = "No project",
-                                    ProjectLabel = "",
+                                    Description = "",
+                                    ProjectLabel = "No project",
                                     TaskLabel = "",
                                     ClientLabel = "",
-                                    Type = 0,
+                                    Type = 2,
                                     Index = -1
                                 });
                                 noProjectAdded = true;
