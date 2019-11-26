@@ -103,6 +103,14 @@
                             BorderBrush="{DynamicResource Toggl.WorkspaceSeparator}"/>
                 </StackPanel>
             </DataTemplate>
+            <DataTemplate x:Key="workspace-separator-item-template">
+                <StackPanel Orientation="Vertical">
+                    <Border HorizontalAlignment="Stretch" Height="10" BorderThickness="0,0,0,1" Background="{DynamicResource Toggl.CardBackground}"
+                            BorderBrush="{DynamicResource Toggl.WorkspaceSeparator}"/>
+                    <Border HorizontalAlignment="Stretch" Height="8" BorderThickness="0,0,0,1" Background="{DynamicResource Toggl.Background}"
+                            BorderBrush="{DynamicResource Toggl.SelectionElements.Disabled.Background}"/>
+                </StackPanel>
+            </DataTemplate>
         </ResourceDictionary>
     </UserControl.Resources>
     
@@ -119,6 +127,7 @@
                                 Margin="4"
                                 Text="Hello. Yes, this is list."/>
             <ListBox x:Name="listBox" HorizontalAlignment="Stretch" MinHeight="30" Height="Auto" Margin="10,0,10,10"
+                     Padding="0 0 0 8"
                      Background="{DynamicResource Toggl.CardBackground}"
                 BorderThickness="0"
                 VerticalAlignment="Top"
@@ -126,14 +135,7 @@
                 HorizontalContentAlignment="Stretch"
                 VirtualizingStackPanel.VirtualizationMode="Recycling"
                 ItemTemplateSelector="{StaticResource autocompleteTemplateSelector}"
-                PreviewMouseDown="listBox_PreviewMouseDown"
-                >
-                <ListBox.ItemContainerStyle>
-                    <Style TargetType="ListBoxItem">
-                        <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
-                    </Style>
-                </ListBox.ItemContainerStyle>
-                <!-- filled programatically -->
+                PreviewMouseDown="listBox_PreviewMouseDown">
             </ListBox>
         </Grid>
     </Popup>

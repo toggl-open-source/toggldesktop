@@ -44,10 +44,10 @@
                 Padding="28, 0, 34, 0"
                 LostKeyboardFocus="projectTextBox_OnLostKeyboardFocus"
                 KeyDown="onAnyTextBoxKeyDown"/>
-            
+
             <ToggleButton Grid.Column="1" Grid.Row="0"
-                x:Name="projectDropDownButton" x:FieldModifier="private"
-                Style="{StaticResource AutoCompleteTextFieldButton}"/>
+                          x:Name="projectDropDownButton" x:FieldModifier="private"
+                          Style="{StaticResource AutoCompleteTextFieldButton}"/>
             
             <toggl:AutoCompletionPopup Grid.Column="1" Grid.Row="0"
                 x:Name="projectAutoComplete" x:FieldModifier="private"
