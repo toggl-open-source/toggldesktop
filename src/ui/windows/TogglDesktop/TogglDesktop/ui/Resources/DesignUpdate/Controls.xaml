@@ -10,6 +10,7 @@
         <ResourceDictionary Source="MahApps.Overrides.xaml" />
         <ResourceDictionary Source="TextBox.xaml" />
         <ResourceDictionary Source="ComboBox.xaml" />
+        <ResourceDictionary Source="ListBox.xaml" />
         <ResourceDictionary Source="Buttons.xaml" />
         <ResourceDictionary Source="Hyperlink.xaml" />
         <ResourceDictionary Source="ToolWindow.xaml" />

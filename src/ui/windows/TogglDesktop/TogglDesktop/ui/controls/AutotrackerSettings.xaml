@@ -43,7 +43,7 @@
 
                 <ToggleButton Grid.Column="0" Grid.Row="0"
                     x:Name="termDropDownButton" x:FieldModifier="private"
-                    Style="{StaticResource AutoCompleteTextFieldButton}"/>
+                    Style="{StaticResource Toggl.AutoCompleteDropDownToggleButton}"/>
 
                 <toggl:AutoCompletionPopup Grid.Column="0" Grid.Row="0"
                     x:Name="termAutoComplete" x:FieldModifier="private"
@@ -59,7 +59,7 @@
 
                 <ToggleButton Grid.Column="1" Grid.Row="0"
                     x:Name="projectDropDownButton" x:FieldModifier="private"
-                    Style="{StaticResource AutoCompleteTextFieldButton}"/>
+                    Style="{StaticResource Toggl.AutoCompleteDropDownToggleButton}"/>
 
                 <toggl:AutoCompletionPopup Grid.Column="1" Grid.Row="0"
                     x:Name="projectAutoComplete" x:FieldModifier="private"

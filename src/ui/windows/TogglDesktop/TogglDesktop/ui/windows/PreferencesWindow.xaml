@@ -82,7 +82,7 @@
 
                             <ToggleButton
                                 x:Name="defaultProjectDropDownButton" x:FieldModifier="private"
-                                Style="{StaticResource AutoCompleteTextFieldButton}"/>
+                                Style="{StaticResource Toggl.AutoCompleteDropDownToggleButton}"/>
 
                             <toggl:AutoCompletionPopup
                                 x:Name="defaultProjectAutoComplete" x:FieldModifier="private"
