@@ -1,7 +1,8 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
-                    xmlns:behaviors="clr-namespace:TogglDesktop.Behaviors">
+                    xmlns:behaviors="clr-namespace:TogglDesktop.Behaviors"
+                    xmlns:togglDesktop="clr-namespace:TogglDesktop">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.TextBox.xaml" />
     </ResourceDictionary.MergedDictionaries>
@@ -23,5 +24,11 @@
                 <Setter Property="BorderBrush" Value="{DynamicResource Toggl.DisabledElementBrush}" />
             </Trigger>
         </Style.Triggers>
+    </Style>
+
+    <Style TargetType="togglDesktop:ExtendedTextBox" BasedOn="{StaticResource {x:Type TextBox}}" />
+    <Style TargetType="togglDesktop:ProjectTextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Height" Value="32" />
     </Style>
 </ResourceDictionary>
