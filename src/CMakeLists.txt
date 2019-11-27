@@ -58,6 +58,7 @@ set(LIBRARY_SOURCE_FILES
     platforminfo.cc
     project.cc
     proxy.cc
+    random.cc
     rectangle.cc
     related_data.cc
     settings.cc

@@ -82,6 +82,8 @@
 		74F7CDDB18199FA300630BD0 /* window_change_recorder.cc in Sources */ = {isa = PBXBuildFile; fileRef = 74F7CDD918199FA300630BD0 /* window_change_recorder.cc */; };
 		74F7CDDC18199FA300630BD0 /* window_change_recorder.h in Headers */ = {isa = PBXBuildFile; fileRef = 74F7CDDA18199FA300630BD0 /* window_change_recorder.h */; };
 		BA1AB53E235DEAD4000433AE /* MacOSVersionChecker.mm in Sources */ = {isa = PBXBuildFile; fileRef = BA1AB53D235DEAD4000433AE /* MacOSVersionChecker.mm */; };
+		B8470E4C2334C377000D88CE /* random.h in Headers */ = {isa = PBXBuildFile; fileRef = B8470E4A2334C377000D88CE /* random.h */; };
+		B8470E4D2334C377000D88CE /* random.cc in Sources */ = {isa = PBXBuildFile; fileRef = B8470E4B2334C377000D88CE /* random.cc */; };
 		BA2DA11C21A6864D0027B7A5 /* rectangle.h in Headers */ = {isa = PBXBuildFile; fileRef = BA2DA11A21A6864D0027B7A5 /* rectangle.h */; };
 		BA2DA11D21A6864D0027B7A5 /* rectangle.cc in Sources */ = {isa = PBXBuildFile; fileRef = BA2DA11B21A6864D0027B7A5 /* rectangle.cc */; };
 		BAD233E321D60A4D0039C742 /* libPocoNet.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BAD233DA21D60A4D0039C742 /* libPocoNet.dylib */; };
@@ -178,6 +180,8 @@
 		74F7CDD918199FA300630BD0 /* window_change_recorder.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = window_change_recorder.cc; path = ../../../window_change_recorder.cc; sourceTree = "<group>"; };
 		74F7CDDA18199FA300630BD0 /* window_change_recorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = window_change_recorder.h; path = ../../../window_change_recorder.h; sourceTree = "<group>"; };
 		BA1AB53D235DEAD4000433AE /* MacOSVersionChecker.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = MacOSVersionChecker.mm; sourceTree = "<group>"; };
+		B8470E4A2334C377000D88CE /* random.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = random.h; path = ../../../random.h; sourceTree = "<group>"; };
+		B8470E4B2334C377000D88CE /* random.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = random.cc; path = ../../../random.cc; sourceTree = "<group>"; };
 		BA2DA11A21A6864D0027B7A5 /* rectangle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = rectangle.h; path = ../../../rectangle.h; sourceTree = "<group>"; };
 		BA2DA11B21A6864D0027B7A5 /* rectangle.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = rectangle.cc; path = ../../../rectangle.cc; sourceTree = "<group>"; };
 		BAD233DA21D60A4D0039C742 /* libPocoNet.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libPocoNet.dylib; path = ../../../third_party/poco/lib/Darwin/x86_64/libPocoNet.dylib; sourceTree = "<group>"; };
@@ -268,6 +272,8 @@
 		C55DA59E17F06A3B00B42178 /* lib */ = {
 			isa = PBXGroup;
 			children = (
+				B8470E4B2334C377000D88CE /* random.cc */,
+				B8470E4A2334C377000D88CE /* random.h */,
 				7426535C1BEAD91900F0944C /* help_article.cc */,
 				7426535D1BEAD91900F0944C /* help_article.h */,
 				7497E9081BEA786A00517BAF /* obm_action.cc */,
@@ -404,6 +410,7 @@
 				7484A2A818887BEE0025A88B /* toggl_api_private.h in Headers */,
 				748A0F411B388CCA0001A41E /* urls.h in Headers */,
 				74EB0F1817F9A2600046ABC1 /* https_client.h in Headers */,
+				B8470E4C2334C377000D88CE /* random.h in Headers */,
 				7497E90B1BEA786A00517BAF /* obm_action.h in Headers */,
 				74BAD32A18BEC4FD002FD4CF /* base_model.h in Headers */,
 				7426535F1BEAD91900F0944C /* help_article.h in Headers */,
@@ -526,6 +533,7 @@
 				748B7DA51AC5963B00FE01D2 /* custom_error_handler.cc in Sources */,
 				74B587C618BBC77E00E9F6CE /* tag.cc in Sources */,
 				C5DA1FB617F1942A001C4565 /* toggl_api.cc in Sources */,
+				B8470E4D2334C377000D88CE /* random.cc in Sources */,
 				74CBDA3A19F97740008494FE /* jsoncpp.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
