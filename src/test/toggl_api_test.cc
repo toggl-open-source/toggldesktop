@@ -1956,3 +1956,8 @@ TEST(toggl_api, toggl_set_default_project) {
 }
 
 }  // namespace toggl
+
+int main(int argc, char **argv) {
+    ::testing::InitGoogleTest(&argc, argv);
+    return RUN_ALL_TESTS();
+}
