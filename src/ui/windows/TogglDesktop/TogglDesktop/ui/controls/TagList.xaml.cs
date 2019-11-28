@@ -56,7 +56,7 @@ namespace TogglDesktop
 
         private void textBoxOnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
-            this.textBox.SetText("");
+            this.textBox.Text = "";
         }
 
         private void focusTextBox()
@@ -72,7 +72,7 @@ namespace TogglDesktop
         private bool tryAddTagFromTextBox()
         {
             var tag = this.textBox.Text.Trim();
-            this.textBox.SetText("");
+            this.textBox.Text = "";
             if (string.IsNullOrWhiteSpace(tag))
                 return false;
             return this.tryAddTag(tag);
@@ -154,7 +154,7 @@ namespace TogglDesktop
             this.tags.Clear();
             this.orderedTags.Clear();
             if (clearTextBox)
-                this.textBox.SetText("");
+                this.textBox.Text = "";
         }
 
         private bool tryRemoveLastTag()
@@ -195,7 +195,7 @@ namespace TogglDesktop
 
             var tag = asStringItem.Text;
             this.tryAddTag(tag);
-            this.textBox.SetText("");
+            this.textBox.Text = "";
 
             if(this.autoComplete.IsOpen)
                 this.autoComplete.OpenAndShowAll();

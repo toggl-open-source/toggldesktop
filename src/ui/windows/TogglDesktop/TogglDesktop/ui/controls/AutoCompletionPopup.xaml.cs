@@ -150,7 +150,7 @@ namespace TogglDesktop
                 throw new Exception("Auto completion popup must have a valid text box.");
 
             this.textbox.PreviewKeyDown += this.textboxOnPreviewKeyDown;
-            this.textbox.TextChanged += this.textboxOnTextChanged;
+            this.textbox.TextChangedByUser += this.textboxOnTextChangedByUser;
             this.textbox.LostKeyboardFocus += (sender, args) =>
             {
                 if (this.textbox.Focusable && this.textbox.IsEnabled)
@@ -284,14 +284,8 @@ namespace TogglDesktop
             }
         }
 
-        private void textboxOnTextChanged(object sender, TextChangedEventArgs e)
+        private void textboxOnTextChangedByUser(object sender, TextChangedEventArgs e)
         {
-            if (!this.IsEnabled)
-                return;
-
-            if (this.textbox.IsTextChangingProgrammatically)
-                return;
-
             this.open(true);
         }
 
@@ -350,7 +344,7 @@ namespace TogglDesktop
 
             if (this.FillTextBoxOnComplete)
             {
-                this.textbox.SetText(item.Text);
+                this.textbox.Text = item.Text;
                 this.textbox.CaretIndex = this.textbox.Text.Length;
                 this.textbox.Focus();
             }

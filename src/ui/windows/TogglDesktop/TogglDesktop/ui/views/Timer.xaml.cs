@@ -160,7 +160,7 @@ namespace TogglDesktop
 
             var item = asItem.Item;
 
-            this.descriptionTextBox.SetText(item.Description);
+            this.descriptionTextBox.Text = item.Description;
 
             this.completedProject = new ProjectInfo(item);
 
@@ -368,8 +368,8 @@ namespace TogglDesktop
 
             this.isRunning = running;
             this.startStopButton.IsChecked = running;
-            this.descriptionTextBox.SetText("");
-            this.durationTextBox.SetText("");
+            this.descriptionTextBox.Text = "";
+            this.durationTextBox.Text = "";
             this.descriptionTextBox.ShowOnlyIf(!running);
             this.durationTextBox.ShowOnlyIf(!running);
             this.iconPanel.ShowOnlyIf(running);

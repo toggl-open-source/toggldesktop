@@ -5,8 +5,6 @@ namespace TogglDesktop
 {
     class ExtendedTextBox : TextBox
     {
-        public bool IsTextChangingProgrammatically { get; private set; }
-
         public bool SelectAllOnKeyboardFocus { get; set; }
 
         public ExtendedTextBox()
@@ -14,11 +12,28 @@ namespace TogglDesktop
             this.SelectAllOnKeyboardFocus = true;
         }
 
-        public void SetText(string text)
+        public event TextChangedEventHandler TextChangedByUser;
+
+        public new string Text
         {
-            this.IsTextChangingProgrammatically = true;
-            this.Text = text;
-            this.IsTextChangingProgrammatically = false;
+            get => base.Text;
+            set
+            {
+                this.IsTextChangingProgrammatically = true;
+                base.Text = value;
+                this.IsTextChangingProgrammatically = false;
+            }
+        }
+
+        protected bool IsTextChangingProgrammatically { get; private set; }
+
+        protected override void OnTextChanged(TextChangedEventArgs e)
+        {
+            base.OnTextChanged(e);
+            if (!IsTextChangingProgrammatically)
+            {
+                TextChangedByUser?.Invoke(this, e);
+            }
         }
 
         protected override void OnMouseDown(MouseButtonEventArgs e)

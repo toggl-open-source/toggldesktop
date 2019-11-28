@@ -29,7 +29,7 @@ namespace TogglDesktop
 
         public void SetText(string project, string task)
         {
-            this.SetText(project);
+            Text = project;
             this.setTask(task);
         }
 

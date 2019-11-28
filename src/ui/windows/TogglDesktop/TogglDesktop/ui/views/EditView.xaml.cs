@@ -198,7 +198,7 @@ namespace TogglDesktop
         {
             if (evenIfFocused || !textBox.IsKeyboardFocused)
             {
-                textBox.SetText(text);
+                textBox.Text = text;
             }
         }
 
@@ -209,7 +209,7 @@ namespace TogglDesktop
                 || textBox.Tag == null
                 || textBox.Text == (textBox.Tag as string))
             {
-                textBox.SetText(time);
+                textBox.Text = time;
                 textBox.Tag = time;
             }
         }
@@ -234,7 +234,7 @@ namespace TogglDesktop
 
             var caret = this.durationTextBox.CaretIndex;
 
-            this.durationTextBox.SetText(s);
+            this.durationTextBox.Text = s;
             this.durationTextBox.Tag = s;
 
             this.durationTextBox.CaretIndex = caret;
@@ -439,7 +439,7 @@ namespace TogglDesktop
 
             var item = asTimerItem.Item;
 
-            this.descriptionTextBox.SetText(item.Description);
+            this.descriptionTextBox.Text = item.Description;
 
             Toggl.SetTimeEntryDescription(this.timeEntry.GUID, item.Description);
 
@@ -715,13 +715,13 @@ namespace TogglDesktop
             this.selectedClientGUID = item.GUID;
             this.selectedClientId = item.ID;
             this.selectedClientName = item.Name;
-            this.clientTextBox.SetText(item.Name);
+            this.clientTextBox.Text = item.Name;
 
             if (item.WID != 0)
             {
                 this.selectedWorkspaceId = item.WID;
                 this.selectedWorkspaceName = this.workspaces.First(ws => ws.ID == item.WID).Name;
-                this.workspaceTextBox.SetText(this.selectedWorkspaceName);
+                this.workspaceTextBox.Text = this.selectedWorkspaceName;
             }
         }
 
@@ -759,7 +759,7 @@ namespace TogglDesktop
             {
                 // TODO: if only one entry is left in auto complete box, should it be selected?
 
-                this.clientTextBox.SetText(this.selectedClientName);
+                this.clientTextBox.Text = this.selectedClientName;
             }
 
         }
@@ -773,12 +773,12 @@ namespace TogglDesktop
         {
             this.disableNewClientMode();
             
-            this.clientTextBox.SetText(this.timeEntry.ClientLabel);
+            this.clientTextBox.Text = this.timeEntry.ClientLabel;
             if (!string.IsNullOrEmpty(this.timeEntry.ClientLabel))
             {
                 this.selectedWorkspaceId = this.timeEntry.WID;
                 this.selectedWorkspaceName = this.timeEntry.WorkspaceName;
-                this.workspaceTextBox.SetText(this.selectedWorkspaceName);
+                this.workspaceTextBox.Text = this.selectedWorkspaceName;
             }
 
             this.projectTextBox.Focus();
@@ -789,7 +789,7 @@ namespace TogglDesktop
 
         private void enableNewClientMode()
         {
-            this.clientTextBox.SetText("");
+            this.clientTextBox.Text = "";
 
             this.clientTextBox.SetValue(Grid.ColumnSpanProperty, 2);
             this.clientAutoComplete.IsEnabled = false;
@@ -806,7 +806,7 @@ namespace TogglDesktop
 
         private void disableNewClientMode()
         {
-            this.clientTextBox.SetText(this.selectedClientName);
+            this.clientTextBox.Text = this.selectedClientName;
 
             this.clientTextBox.SetValue(Grid.ColumnSpanProperty, 1);
             this.clientAutoComplete.IsEnabled = true;
@@ -913,7 +913,7 @@ namespace TogglDesktop
 
             this.selectedWorkspaceId = item.ID;
             this.selectedWorkspaceName = item.Name;
-            this.workspaceTextBox.SetText(item.Name);
+            this.workspaceTextBox.Text = item.Name;
         }
 
         private void workspaceAutoComplete_OnConfirmWithoutCompletion(object sender, string e)
@@ -923,7 +923,7 @@ namespace TogglDesktop
 
         private void workspaceTextBox_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
-            this.workspaceTextBox.SetText(this.selectedWorkspaceName);
+            this.workspaceTextBox.Text = this.selectedWorkspaceName;
         }
         #endregion
 
