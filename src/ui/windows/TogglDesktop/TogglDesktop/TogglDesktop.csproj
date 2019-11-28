@@ -33,6 +33,7 @@
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
     <TargetFrameworkProfile />
+    <LangVersion>8</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>TogglDesktop.Program</StartupObject>
@@ -219,6 +220,9 @@
     </Compile>
     <Compile Include="ui\controls\ProjectColorPicker.xaml.cs">
       <DependentUpon>ProjectColorPicker.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\controls\ProjectDropdown.xaml.cs">
+      <DependentUpon>ProjectDropdown.xaml</DependentUpon>
     </Compile>
     <Compile Include="ui\controls\ProjectTextBox.cs" />
     <Compile Include="ui\controls\TimeEntryCellContextMenuCommands.cs" />
@@ -614,6 +618,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ui\controls\ProjectDropdown.xaml" />
     <Page Include="ui\controls\SyncingIndicator.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
