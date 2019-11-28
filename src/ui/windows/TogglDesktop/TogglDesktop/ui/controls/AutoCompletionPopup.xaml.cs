@@ -77,6 +77,18 @@ namespace TogglDesktop
             set { this.emptyLabel.Text = value; }
         }
 
+        public AutoCompleteController Controller
+        {
+            get => this.controller;
+            set
+            {
+                this.controller = value;
+                this.needsToRefreshList = true;
+                if (this.popup.IsOpen)
+                    this.open(true);
+            }
+        }
+
         #endregion
 
         #region dependency properties
@@ -193,14 +205,6 @@ namespace TogglDesktop
         }
 
         #endregion
-
-        public void SetController(AutoCompleteController controller)
-        {
-            this.controller = controller;
-            this.needsToRefreshList = true;
-            if (this.popup.IsOpen)
-                this.open(true);
-        }
 
         public void OpenAndShowAll()
         {

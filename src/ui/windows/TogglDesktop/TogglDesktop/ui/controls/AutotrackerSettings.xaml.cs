@@ -36,7 +36,7 @@ namespace TogglDesktop
             if (this.TryBeginInvoke(this.onProjectAutocomplete, list))
                 return;
 
-            this.projectAutoComplete.SetController(AutoCompleteControllers.ForProjects(list));
+            this.projectAutoComplete.Controller = AutoCompleteControllers.ForProjects(list);
         }
 
         #endregion

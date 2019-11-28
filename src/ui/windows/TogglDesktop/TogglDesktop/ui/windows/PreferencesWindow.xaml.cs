@@ -82,7 +82,7 @@ namespace TogglDesktop
 
             this.knownProjects = list;
 
-            this.defaultProjectAutoComplete.SetController(AutoCompleteControllers.ForProjects(list));
+            this.defaultProjectAutoComplete.Controller = AutoCompleteControllers.ForProjects(list);
         }
 
 

@@ -251,7 +251,7 @@ namespace TogglDesktop
 
             using (Performance.Measure("building edit view entry auto complete controller, {0} items", list.Count))
             {
-                this.descriptionAutoComplete.SetController(AutoCompleteControllers.ForTimer(list));
+                this.descriptionAutoComplete.Controller = AutoCompleteControllers.ForTimer(list);
             }
         }
 
@@ -264,7 +264,7 @@ namespace TogglDesktop
 
             using (Performance.Measure("building edit view project auto complete controller, {0} items", this.projects.Count))
             {
-                this.projectAutoComplete.SetController(AutoCompleteControllers.ForProjects(list));
+                this.projectAutoComplete.Controller = AutoCompleteControllers.ForProjects(list);
             }
         }
 
@@ -277,7 +277,7 @@ namespace TogglDesktop
 
             using (Performance.Measure("building edit view client auto complete controller, {0} items", this.clients.Count))
             {
-                this.clientAutoComplete.SetController(AutoCompleteControllers.ForClients(list));
+                this.clientAutoComplete.Controller = AutoCompleteControllers.ForClients(list);
             }
         }
 
@@ -301,7 +301,7 @@ namespace TogglDesktop
 
             using (Performance.Measure("building edit view workspace auto complete controller, {0} items", list.Count))
             {
-                this.workspaceAutoComplete.SetController(AutoCompleteControllers.ForWorkspaces(list));
+                this.workspaceAutoComplete.Controller = AutoCompleteControllers.ForWorkspaces(list);
             }
         }
 
@@ -730,7 +730,7 @@ namespace TogglDesktop
             var list = this.clients.Where(c => c.WID == workspace_id).ToList();
             using (Performance.Measure("building Filtered edit view client auto complete controller, {0} items", this.clients.Count))
             {
-                this.clientAutoComplete.SetController(AutoCompleteControllers.ForClients(list));
+                this.clientAutoComplete.Controller = AutoCompleteControllers.ForClients(list);
             }
         }
 

@@ -92,7 +92,7 @@ namespace TogglDesktop
 
             using (Performance.Measure("timer building auto complete controller, {0} items", list.Count))
             {
-                this.descriptionAutoComplete.SetController(AutoCompleteControllers.ForTimer(list));
+                this.descriptionAutoComplete.Controller = AutoCompleteControllers.ForTimer(list);
             }
         }
 
