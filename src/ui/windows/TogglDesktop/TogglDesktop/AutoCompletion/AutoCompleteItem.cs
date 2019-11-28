@@ -2,7 +2,7 @@
 
 namespace TogglDesktop.AutoCompletion
 {
-    abstract class AutoCompleteItem : AutoCompleteListItem
+    public abstract class AutoCompleteItem : AutoCompleteListItem
     {
         private bool selected;
 

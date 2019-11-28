@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TogglDesktop.AutoCompletion
 {
-    class ListBoxItem
+    public class ListBoxItem
     {
         public string Text { get; set; }
         public string ProjectLabel { get; set; }

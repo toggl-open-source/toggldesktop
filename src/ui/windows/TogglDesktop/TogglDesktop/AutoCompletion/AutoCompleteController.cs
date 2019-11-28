@@ -13,7 +13,7 @@ using TogglDesktop.Diagnostics;
 
 namespace TogglDesktop.AutoCompletion
 {
-    class AutoCompleteController
+    public class AutoCompleteController
     {
         private static readonly char[] splitChars = { ' ' };
 

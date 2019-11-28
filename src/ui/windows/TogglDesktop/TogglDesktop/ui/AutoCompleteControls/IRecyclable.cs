@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace TogglDesktop.AutoCompleteControls
 {
-    interface IRecyclable
+    public interface IRecyclable
     {
         void Recycle();
     }

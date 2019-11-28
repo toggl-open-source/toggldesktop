@@ -5,7 +5,7 @@ using TogglDesktop.AutoCompleteControls;
 
 namespace TogglDesktop.AutoCompletion
 {
-    interface IAutoCompleteListItem
+    public interface IAutoCompleteListItem
     {
         string Text { get; }
         bool Visible { get; }
