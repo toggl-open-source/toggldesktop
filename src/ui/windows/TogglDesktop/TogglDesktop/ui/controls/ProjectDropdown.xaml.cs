@@ -32,6 +32,12 @@ namespace TogglDesktop
             set { SetValue(SelectedProjectProperty, value); }
         }
 
+        public AutoCompleteController AutoCompleteController
+        {
+            get => defaultProjectAutoComplete.Controller;
+            set => defaultProjectAutoComplete.Controller = value;
+        }
+
         private void defaultProjectTextBox_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
             if (this.defaultProjectTextBox.Text == "")

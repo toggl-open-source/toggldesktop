@@ -13,7 +13,7 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-    <Grid>
+    <Grid Height="50" Width="300" Margin="-3 5">
         <local:ProjectTextBox
             x:Name="defaultProjectTextBox" x:FieldModifier="private"
             Padding="28, 0, 34, 0"
