@@ -38,17 +38,9 @@
 
                 <!-- term selection -->
                 <toggl:ExtendedTextBox Grid.Column="0" Grid.Row="0"
+                                       Width="172" Height="32"
                     x:Name="termTextBox" x:FieldModifier="private"
                     Padding="8, 0, 34, 0" KeyDown="onAnyTextBoxKeyDown"/>
-
-                <ToggleButton Grid.Column="0" Grid.Row="0"
-                    x:Name="termDropDownButton" x:FieldModifier="private"
-                    Style="{StaticResource Toggl.AutoCompleteDropDownToggleButton}"/>
-
-                <toggl:AutoCompletionPopup Grid.Column="0" Grid.Row="0"
-                    x:Name="termAutoComplete" x:FieldModifier="private"
-                    Target="{Binding ElementName=termTextBox}" TextBox="{Binding ElementName=termTextBox}"
-                    EmptyText="No matching terms found." DropDownButton="{Binding ElementName=termDropDownButton}"/>
 
                 <!-- project selection -->
                 <toggl:ProjectTextBox Grid.Column="1" Grid.Row="0"

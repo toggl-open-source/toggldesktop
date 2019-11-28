@@ -45,8 +45,6 @@ namespace TogglDesktop
 
         private void fill(List<Toggl.TogglAutotrackerRuleView> rules, string[] terms)
         {
-            this.termAutoComplete.SetController(AutoCompleteControllers.ForStrings(terms));
-
             this.fillRules(rules);
         }
 
