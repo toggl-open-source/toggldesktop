@@ -4,9 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls.Primitives;
-using System.Windows.Input;
 using MahApps.Metro.Controls;
-using TogglDesktop.AutoCompletion;
 using TogglDesktop.AutoCompletion.Implementation;
 using TogglDesktop.Diagnostics;
 using TogglDesktop.ViewModels;
@@ -26,7 +24,6 @@ namespace TogglDesktop
 
         private bool isSaving;
 
-        private Toggl.TogglAutocompleteView selectedDefaultProject;
         private List<Toggl.TogglAutocompleteView> knownProjects;
 
         public PreferencesWindow()
@@ -81,10 +78,8 @@ namespace TogglDesktop
                 return;
 
             this.knownProjects = list;
-
-            this.defaultProjectAutoComplete.Controller = AutoCompleteControllers.ForProjects(list);
+            this.projectDropdown.AutoCompleteController = AutoCompleteControllers.ForProjects(list);
         }
-
 
         private void updateUI(Toggl.TogglSettingsView settings)
         {
@@ -302,7 +297,7 @@ namespace TogglDesktop
             return new Settings
             {
                 TogglSettings = settings,
-                DefaultProject = this.selectedDefaultProject,
+                DefaultProject = ViewModel.SelectedDefaultProject.GetValueOrDefault(),
                 KeepEndTimeFixed = isChecked(this.keepEndTimeFixedCheckbox),
                 LaunchOnStartup = isChecked(this.launchOnStartupCheckBox),
                 ContinueStopTimer = ViewModel.GetContinueStopTimerIfChanged(),
@@ -323,44 +318,6 @@ namespace TogglDesktop
         #endregion
 
         #region project auto completion
-
-        private void defaultProjectTextBox_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
-        {
-            if (this.defaultProjectTextBox.Text == "")
-            {
-                this.selectDefaultProject(null);
-            }
-            else if (!string.IsNullOrEmpty(this.selectedDefaultProject.ProjectLabel))
-            {
-                this.selectDefaultProject(this.selectedDefaultProject);
-            }
-        }
-
-        private void defaultProjectAutoComplete_OnConfirmCompletion(object sender, AutoCompleteItem e)
-        {
-            var asProjectItem = e as TimerItem;
-            if (asProjectItem == null)
-                return;
-
-            var item = asProjectItem.Item;
-
-            this.selectDefaultProject(item);
-        }
-
-        private void defaultProjectAutoComplete_OnConfirmWithoutCompletion(object sender, string e)
-        {
-            this.selectDefaultProject(null);
-        }
-
-
-        private void selectDefaultProject(Toggl.TogglAutocompleteView? item)
-        {
-            var project = item ?? default(Toggl.TogglAutocompleteView);
-            this.selectedDefaultProject = project;
-            this.defaultProjectTextBox.SetText(project.ProjectLabel, project.TaskLabel);
-            this.defaultProjectColorCircle.Background = Utils.ProjectColorBrushFromString(project.ProjectColor);
-            this.defaultProjectTextBox.CaretIndex = this.defaultProjectTextBox.Text.Length;
-        }
 
         private void selectDefaultProjectFromSettings()
         {
@@ -385,7 +342,7 @@ namespace TogglDesktop
                 }; 
             }
 
-            this.selectDefaultProject(project);
+            ViewModel.SelectedDefaultProject = project;
         }
 
         #endregion

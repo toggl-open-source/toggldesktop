@@ -35,6 +35,8 @@ namespace TogglDesktop.ViewModels
         private readonly ValidationHelper _showHideTogglValidation;
         private readonly ValidationHelper _continueStopTimerValidation;
 
+        private Toggl.TogglAutocompleteView? _selectedDefaultProject;
+
         public PreferencesWindowViewModel()
         {
             this.WhenAnyValue(x => x.ShowHideToggl)
@@ -52,6 +54,12 @@ namespace TogglDesktop.ViewModels
                 vm => vm.ContinueStopTimer,
                 hotKey => IsHotKeyValid(hotKey, ContinueStopTimerDescription),
                 hotKey => $"This shortcut is already taken by {_knownShortcuts[hotKey]}");
+        }
+
+        public Toggl.TogglAutocompleteView? SelectedDefaultProject
+        {
+            get => _selectedDefaultProject;
+            set => this.RaiseAndSetIfChanged(ref _selectedDefaultProject, value);
         }
 
         public HotKey ShowHideToggl
