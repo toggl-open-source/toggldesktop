@@ -45,8 +45,6 @@ private:
     AutocompleteCompleter *completer;
     AutocompleteProxyModel *proxyModel;
     AutocompleteListView *listView;
-
-    QString oldLabel {};
 };
 
 class AutocompleteCompleter : public QCompleter {
