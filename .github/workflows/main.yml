@@ -75,7 +75,7 @@ jobs:
         mkdir build
         cd build
         export CMAKE_PREFIX_PATH=/usr/local/opt/qt5/lib/
-        cmake 
+        cmake
 
   macos:
     runs-on: macOS-latest
@@ -259,7 +259,7 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt update
-        sudo apt install libxss1 libgstreamer-plugins-base1.0-0 libgstreamer1.0-0 qt5-default libqt5gui5 libqt5printsupport5 libqt5quickwidgets5 libqt5x11extras5 libqt5networkauth5 libxss1
+        sudo apt install libxss1 libgstreamer-plugins-base1.0-0 libgstreamer1.0-0 qt5-default libqt5gui5 libqt5printsupport5 libqt5quickwidgets5 libqt5x11extras5 libqt5networkauth5 libxss1 libqt5quickwidgets5
         sudo apt install patchelf binutils cmake pkg-config qtbase5-dev libqt5x11extras5-dev qtbase5-private-dev libqt5networkauth5-dev libssl-dev libxss-dev libxmu-dev
     - name: Build the Linux binary
       run: |
@@ -626,23 +626,3 @@ jobs:
         TAG_NAME=$(./dist/get-tag-name.sh)
         ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} tag="$TAG_NAME" filename="TogglDesktop.Package_${TAG_NAME/v/}.0_x86_x64_bundle_StoreRelease.appxupload"
       shell: bash
-name: Build
-
-on:
-  push:
-    branches:
-      - '**'
-  release:
-    types: [ created ]
-
-jobs:
-  macos-qt:
-    runs-on: macOS-latest
-    steps:
-    - uses: actions/checkout@v1
-      with:
-        fetch-depth: 1
-    - name: Import signing key
-      run: |
-        # Create a new keychian and make it default
-        security create-keychain -p password build.keychain
