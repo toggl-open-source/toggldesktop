@@ -74,8 +74,12 @@ target_link_libraries(TogglDesktop PRIVATE
     OAuth2
     ${QXT_LIBRARIES}
     Bugsnag
-    -lX11 -lXss
 )
+if(UNIX AND NOT APPLE)
+    target_link_libraries(TogglDesktop PRIVATE
+        -lX11 -lXss
+    )
+endif()
 
 configure_file(${PROJECT_SOURCE_DIR}/src/ssl/cacert.pem cacert.pem COPYONLY)
 

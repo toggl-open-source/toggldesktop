@@ -135,17 +135,27 @@ endif()
 
 if(NOT QXT_CORE_FOUND)
     set(QXT_SOURCE_FILES
-        #qxtglobalshortcut5/gui/qxtglobalshortcut_win.cpp
-        #qxtglobalshortcut5/gui/qxtwindowsystem_win.cpp
-        #qxtglobalshortcut5/gui/qxtglobalshortcut_mac.cpp
-        #qxtglobalshortcut5/gui/qxtwindowsystem_mac.cpp
         qxtglobalshortcut5/gui/qxtwindowsystem.cpp
-        qxtglobalshortcut5/gui/qxtglobalshortcut_x11.cpp
-        qxtglobalshortcut5/gui/x11info.cpp
-        qxtglobalshortcut5/gui/qxtwindowsystem_x11.cpp
         qxtglobalshortcut5/gui/qxtglobalshortcut.cpp
         qxtglobalshortcut5/core/qxtglobal.cpp
     )
+    if (UNIX AND NOT APPLE)
+        set(QXT_SOURCE_FILES ${QXT_SOURCE_FILES}
+            qxtglobalshortcut5/gui/qxtglobalshortcut_x11.cpp
+            qxtglobalshortcut5/gui/qxtwindowsystem_x11.cpp
+            qxtglobalshortcut5/gui/x11info.cpp
+        )
+    elseif(WIN32)
+        set(QXT_SOURCE_FILES ${QXT_SOURCE_FILES}
+            qxtglobalshortcut5/gui/qxtglobalshortcut_win.cpp
+            qxtglobalshortcut5/gui/qxtwindowsystem_win.cpp
+        )
+    else()
+        set(QXT_SOURCE_FILES ${QXT_SOURCE_FILES}
+            qxtglobalshortcut5/gui/qxtglobalshortcut_mac.cpp
+            qxtglobalshortcut5/gui/qxtwindowsystem_mac.cpp
+        )
+    endif()
     set(QXT_INCLUDE_DIRS
         ${CMAKE_CURRENT_SOURCE_DIR}/qxtglobalshortcut5/gui
         ${CMAKE_CURRENT_SOURCE_DIR}/qxtglobalshortcut5/core
@@ -154,8 +164,19 @@ if(NOT QXT_CORE_FOUND)
     add_library(Qxt SHARED ${QXT_SOURCE_FILES})
     target_link_libraries(Qxt
         Qt5::Widgets
-        Qt5::X11Extras
     )
+    if (UNIX AND NOT APPLE)
+        target_link_libraries(Qxt
+            Qt5::X11Extras
+        )
+    else()
+        target_link_libraries(Qxt
+            "-framework Foundation"
+            "-framework AppKit"
+            "-framework Carbon"
+        )
+    endif()
+    add_definitions(-DBUILD_QXT_GUI -DBUILD_QXT_CORE)
     target_include_directories(Qxt PRIVATE
         qxtglobalshortcut5/gui
         qxtglobalshortcut5/core
@@ -164,10 +185,10 @@ if(NOT QXT_CORE_FOUND)
         Qxt
         PARENT_SCOPE
     )
-    install(TARGETS Qxt DESTINATION ${TOGGL_INTERNAL_LIB_DIR})
+    install(TARGETS Qxt DESTINATION lib)
 endif()
 
-if(NOT GTEST_FOUND)
+if(NOT GTEST_FOUND AND TOGGL_BUILD_TESTS)
     set(GTEST_SOURCE_FILES
         googletest-read-only/src/gtest-all.cc
     )

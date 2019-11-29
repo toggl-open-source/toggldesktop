@@ -17,6 +17,9 @@ option(TOGGL_PRODUCTION_BUILD "Use production servers in the app" OFF)
 option(TOGGL_ALLOW_UPDATE_CHECK "Allow the app to check for updates" OFF)
 option(USE_BUNDLED_LIBRARIES "Prefer bundled libraries to bundled ones" OFF)
 option(INSTALL_HIRES_ICONS "Do not install icons over 512x512" OFF)
+option(TOGGL_BUILD_TESTS "Build the Toggl test suite" ON)
+
+set(ENV{OPENSSL_ROOT_DIR} ${OPENSSL_ROOT_DIR})
 
 if ("${TOGGL_VERSION}" STREQUAL "7.0.0")
     find_package (Git)
@@ -44,7 +47,9 @@ find_package(Qt5DBus CONFIG REQUIRED)
 find_package(Qt5Network CONFIG REQUIRED)
 find_package(Qt5WebEngine CONFIG REQUIRED)
 find_package(Qt5WebEngineWidgets CONFIG REQUIRED)
-find_package(Qt5X11Extras CONFIG REQUIRED)
+if(UNIX AND NOT APPLE)
+    find_package(Qt5X11Extras CONFIG REQUIRED)
+endif()
 # We need to include private headers manually
 include_directories( ${Qt5Widgets_PRIVATE_INCLUDE_DIRS} )
 
@@ -87,5 +92,7 @@ set(CMAKE_INSTALL_RPATH "${TOGGL_LIB_DIR};${TOGGL_INTERNAL_LIB_DIR}" CACHE STRIN
 
 add_subdirectory(third_party)
 add_subdirectory(src)
-add_subdirectory(src/test)
+if (TOGGL_BUILD_TESTS)
+    add_subdirectory(src/test)
+endif()
 add_subdirectory(src/ui/linux/TogglDesktop)
