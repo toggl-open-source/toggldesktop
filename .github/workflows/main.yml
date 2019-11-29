@@ -8,6 +8,46 @@ on:
     types: [ created ]
 
 jobs:
+  macos-qt:
+    runs-on: macOS-latest
+    steps:
+    - uses: actions/checkout@v1
+      with:
+        fetch-depth: 1
+    - name: Import signing key
+      run: |
+        # Create a new keychian and make it default
+        security create-keychain -p password build.keychain
+        security default-keychain -s ~/Library/Keychains/build.keychain
+
+        # Mac Developer Certificate
+        base64 -D <<< "${{ secrets.CERT_MACOS_DEVELOPMENT }}" > Bundle_cert_macos_development.p12
+        security import ./Bundle_cert_macos_development.p12 -k ~/Library/Keychains/build.keychain -P ${{ secrets.CERT_MACOS_DEVELOPMENT_PASSWORD }} -T /usr/bin/codesign
+
+        # Application Certificate
+        base64 -D <<< "${{ secrets.CERT_MACOS_APPLICATION }}" > Bundle_cert_macos_distribution.p12
+        security import ./Bundle_cert_macos_distribution.p12 -k ~/Library/Keychains/build.keychain -P ${{ secrets.CERT_MACOS_APPLICATION_PASSWORD }} -T /usr/bin/codesign
+
+        # Installer Certificate
+        base64 -D <<< "${{ secrets.CERT_MACOS_INSTALLER }}" > Bundle_cert_macos_installer.p12
+        security import ./Bundle_cert_macos_installer.p12 -k ~/Library/Keychains/build.keychain -P ${{ secrets.CERT_MACOS_INSTALLER_PASSWORD }} -T /usr/bin/codesign
+
+        # Unlock
+        security unlock-keychain -p password ~/Library/Keychains/build.keychain
+        security set-keychain-settings -lu
+        security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k password ~/Library/Keychains/build.keychain
+    - name: Install the dependencies
+      run: |
+        brew install qt
+        brew install openssl
+        brew install cmake
+    - name: Build the application
+      run: |
+        mkdir build
+        cd build
+        export CMAKE_PREFIX_PATH=/usr/local/opt/qt5/lib/
+        cmake 
+
   macos:
     runs-on: macOS-latest
     steps:
@@ -27,26 +67,6 @@ jobs:
         # Application Certificate
         base64 -D <<< "${{ secrets.CERT_MACOS_APPLICATION }}" > Bundle_cert_macos_distribution.p12
         security import ./Bundle_cert_macos_distribution.p12 -k ~/Library/Keychains/build.keychain -P ${{ secrets.CERT_MACOS_APPLICATION_PASSWORD }} -T /usr/bin/codesign
-        
-        # Installer Certificate
-        base64 -D <<< "${{ secrets.CERT_MACOS_INSTALLER }}" > Bundle_cert_macos_installer.p12
-        security import ./Bundle_cert_macos_installer.p12 -k ~/Library/Keychains/build.keychain -P ${{ secrets.CERT_MACOS_INSTALLER_PASSWORD }} -T /usr/bin/codesign
-
-        # Unlock
-        security unlock-keychain -p password ~/Library/Keychains/build.keychain
-        security set-keychain-settings -lu
-        security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k password ~/Library/Keychains/build.keychain
-    - name: Build the dependencies
-      run: |
-        bash ./dist/osx/build.sh dependencies
-    - name: Get cocoapods
-      run: |
-        bash ./dist/osx/build.sh cocoapods
-    - name: Build the application
-      run: |
-        bash ./dist/osx/build.sh app
-    - name: Insert version string
-      if: github.event_name == 'release'
       run: |
         TAG_NAME=$(./dist/get-tag-name.sh)
         bash ./dist/osx/build.sh plist
@@ -307,3 +327,23 @@ jobs:
         TAG_NAME=$(./dist/get-tag-name.sh)
         ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} tag="$TAG_NAME" filename="TogglDesktop.Package_${TAG_NAME/v/}.0_x86_x64_bundle_StoreRelease.appxupload"
       shell: bash
+name: Build
+
+on:
+  push:
+    branches:
+      - '**'
+  release:
+    types: [ created ]
+
+jobs:
+  macos-qt:
+    runs-on: macOS-latest
+    steps:
+    - uses: actions/checkout@v1
+      with:
+        fetch-depth: 1
+    - name: Import signing key
+      run: |
+        # Create a new keychian and make it default
+        security create-keychain -p password build.keychain
