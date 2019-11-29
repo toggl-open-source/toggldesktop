@@ -57,14 +57,16 @@
                     <ContextMenu Name="mainContextMenu" x:FieldModifier="private"
                                  Closed="onMainContextMenuClosed">
                         <ContextMenu.Resources>
-                            <Style TargetType="MenuItem">
-                                <Setter Property="Width" Value="280" />
-                            </Style>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="Foreground" Value="#707070" />
-                                <Setter Property="TextTrimming" Value="CharacterEllipsis" />
-                                <Setter Property="IsHitTestVisible" Value="False" />
-                            </Style>
+                        <Style TargetType="TextBlock" BasedOn="{StaticResource Toggl.CaptionText}">
+                            <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+                            <Setter Property="IsHitTestVisible" Value="False" />
+                            <Style.Triggers>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <!-- override grayed out color when it is disabled -->
+                                    <Setter Property="Foreground" Value="{DynamicResource Toggl.SecondaryTextBrush}" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
                         </ContextMenu.Resources>
                         <MenuItem IsEnabled="False">
                             <MenuItem.Header>
@@ -80,14 +82,14 @@
                                            Text="Running"/>
                             </MenuItem.Header>
                         </MenuItem>
-                        <Separator />
+                        <Separator Style="{StaticResource {x:Static MenuItem.SeparatorStyleKey}}"/>
                         <MenuItem Header="New" InputGestureText="Ctrl+N"
                                   Command="{x:Static toggl:KeyboardShortcuts.New}"/>
                         <MenuItem Header="Continue" InputGestureText="Ctrl+O"
                                   Command="{x:Static toggl:KeyboardShortcuts.Continue}"/>
                         <MenuItem Header="Stop" InputGestureText="Ctrl+S"
                                   Command="{x:Static toggl:KeyboardShortcuts.Stop}"/>
-                        <Separator />
+                        <Separator Style="{StaticResource {x:Static MenuItem.SeparatorStyleKey}}"/>
                         <MenuItem Header="Show"
                                   Command="{x:Static toggl:KeyboardShortcuts.Show}"
                                   Visibility=
@@ -98,7 +100,7 @@
                                   Visibility=
             "{Binding Path=IsEnabled, RelativeSource={RelativeSource Self}, Mode=OneWay, Converter={StaticResource BooleanToVisibility}}"
                                   />
-                        <Separator />
+                        <Separator Style="{StaticResource {x:Static MenuItem.SeparatorStyleKey}}"/>
                         <MenuItem Header="Sync" InputGestureText="F5"
                                   Command="{x:Static toggl:KeyboardShortcuts.Sync}"/>
                         <MenuItem Header="Reports"
@@ -113,7 +115,7 @@
                                   Name="togglMiniTimerVisibilityMenuItem" x:FieldModifier="private"
                                   Command="{x:Static toggl:KeyboardShortcuts.ToggleMiniTimerVisibility}"
                                   IsCheckable="True"/>
-                        <Separator />
+                        <Separator Style="{StaticResource {x:Static MenuItem.SeparatorStyleKey}}"/>
                         <MenuItem Header="Clear Cache"
                                   Command="{x:Static toggl:KeyboardShortcuts.ClearCache}"/>
                         <MenuItem Header="Toggl Desktop Tutorial"
@@ -132,10 +134,10 @@
             </Button>
         </mah:WindowCommands>
     </mah:MetroWindow.RightWindowCommands>
-    
+
     <!-- <Window.ContextMenu> -->
     <!-- </Window.ContextMenu> -->
-    
+
     
     <Grid x:Name="root" x:FieldModifier="private">
 

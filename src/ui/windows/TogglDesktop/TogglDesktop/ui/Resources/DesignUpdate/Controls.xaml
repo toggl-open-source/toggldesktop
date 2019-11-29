@@ -13,6 +13,7 @@
         <ResourceDictionary Source="Buttons.xaml" />
         <ResourceDictionary Source="Hyperlink.xaml" />
         <ResourceDictionary Source="Window.xaml" />
+        <ResourceDictionary Source="ContextMenu.xaml" />
         <ResourceDictionary Source="TabControl.xaml" />
         <ResourceDictionary Source="CheckBox.xaml" />
         <ResourceDictionary Source="PasswordBox.xaml" />
