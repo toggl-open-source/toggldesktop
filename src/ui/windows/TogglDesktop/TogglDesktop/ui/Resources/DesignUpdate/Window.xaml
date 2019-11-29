@@ -55,6 +55,7 @@
         </Setter>
         <Setter Property="WindowTransitionsEnabled" Value="False" />
         <Setter Property="Background" Value="{DynamicResource Toggl.CardBackground}" />
+        <Setter Property="ShowMaxRestoreButton" Value="False" />
     </Style>
 
 </ResourceDictionary>

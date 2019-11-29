@@ -122,7 +122,7 @@ namespace TogglDesktop
 
         private void initializeContextMenu()
         {
-            foreach (var item in this.ContextMenu.Items)
+            foreach (var item in mainContextMenu.Items)
             {
                 var asMenuItem = item as MenuItem;
                 if (asMenuItem != null)
@@ -470,12 +470,12 @@ namespace TogglDesktop
 
         protected void onCogButtonClick(object sender, RoutedEventArgs e)
         {
-            this.mainContextMenu.PlacementTarget = (FrameworkElement)sender;
+            var button = (FrameworkElement) sender;
+            this.mainContextMenu.PlacementTarget = button;
             this.mainContextMenu.Placement = PlacementMode.Bottom;
             this.mainContextMenu.HorizontalOffset = 0;
             this.mainContextMenu.VerticalOffset = 0;
-
-            // this.Chrome.CogButton.IsEnabled = false;
+            // this.cogButton.IsEnabled = false;
             this.mainContextMenu.IsOpen = true;
         }
 
@@ -501,7 +501,7 @@ namespace TogglDesktop
 
         private void onMainContextMenuClosed(object sender, RoutedEventArgs e)
         {
-            // this.Chrome.CogButton.IsEnabled = true;
+            // this.cogButton.IsEnabled = true;
         }
 
         private void onGlobalShowKeyPressed(object sender, HotkeyEventArgs args)
