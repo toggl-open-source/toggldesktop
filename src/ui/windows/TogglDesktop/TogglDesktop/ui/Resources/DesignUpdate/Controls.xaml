@@ -12,7 +12,7 @@
         <ResourceDictionary Source="ComboBox.xaml" />
         <ResourceDictionary Source="Buttons.xaml" />
         <ResourceDictionary Source="Hyperlink.xaml" />
-        <ResourceDictionary Source="ToolWindow.xaml" />
+        <ResourceDictionary Source="Window.xaml" />
         <ResourceDictionary Source="TabControl.xaml" />
         <ResourceDictionary Source="CheckBox.xaml" />
         <ResourceDictionary Source="PasswordBox.xaml" />

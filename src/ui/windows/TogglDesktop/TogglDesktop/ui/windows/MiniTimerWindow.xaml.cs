@@ -50,7 +50,7 @@ namespace TogglDesktop
 
         protected override void OnLocationChanged(EventArgs e)
         {
-            var screenRect = this.getCurrentScreenRectangle();
+            var screenRect = this.GetCurrentScreenRectangle();
 
             this.snapToEdges(screenRect);
 
