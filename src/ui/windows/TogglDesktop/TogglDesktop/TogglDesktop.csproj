@@ -678,7 +678,7 @@
     <Page Include="ui\Resources\DesignUpdate\TabControl.xaml" />
     <Page Include="ui\Resources\DesignUpdate\TextBox.xaml" />
     <Page Include="ui\Resources\DesignUpdate\ToggleSwitch.xaml" />
-    <Page Include="ui\Resources\DesignUpdate\ToolWindow.xaml" />
+    <Page Include="ui\Resources\DesignUpdate\Window.xaml" />
     <Page Include="ui\Resources\DesignUpdate\Typography.xaml" />
     <Page Include="ui\Resources\DialogStyles.xaml">
       <Generator>MSBuild:Compile</Generator>
