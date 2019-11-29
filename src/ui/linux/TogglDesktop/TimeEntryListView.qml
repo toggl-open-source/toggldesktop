@@ -8,9 +8,9 @@ Rectangle {
     anchors.fill: parent
     color: backgroundColor
 
-    property real sectionMargin: Math.max(2 * shadowWidth, 16)
+    property real sectionMargin: Math.max(2 * shadowWidth, 12)
     property real headerHeight: 32
-    property real itemHeight: 74
+    property real itemHeight: 64
 
     property real shadowWidth: palette.isDark ? 1 : 2
     property color shadowColor: palette.shadow
@@ -119,7 +119,7 @@ Rectangle {
                         Text {
                             anchors.fill: parent
                             anchors.leftMargin: 6
-                            anchors.rightMargin: 6
+                            anchors.rightMargin: 32
                             textFormat: Text.RichText
                             // this is actually rendering the width underneath so we force a repaint on each width change
                             text: "<table width=100% cellpadding=6> " + section + "<tr><td colspan=2><font color=transparent>" + width + "</font></td></tr></table>"
@@ -199,7 +199,7 @@ Rectangle {
                     rightMargin: anchors.leftMargin
                     topMargin: 0
                 }
-                color: palette.base
+                color: delegateMouse.containsMouse ? backgroundColor : modelData.GroupOpen ? backgroundColor : palette.base
 
                 Rectangle {
                     anchors.left: parent.right
@@ -275,10 +275,12 @@ Rectangle {
                     anchors.left: parent.left
                     anchors.right: parent.right
                     height: 1
-                    color: "#d4d4d4"
+                    color: backgroundColor
                 }
 
                 MouseArea {
+                    id: delegateMouse
+                    hoverEnabled: true
                     anchors.fill: parent
                     onClicked: {
                         if (modelData.Group)
@@ -291,26 +293,32 @@ Rectangle {
                     anchors.fill: parent
                     anchors.margins: 12
                     spacing: 9
-                    TogglButton {
+                    Rectangle {
                         Layout.alignment: Qt.AlignVCenter
                         visible: modelData.Group
-                        implicitWidth: implicitHeight
-                        contentItem: Text {
+                        width: 24
+                        height: 24
+                        radius: 4
+                        color: modelData.GroupOpen ? "dark green" : palette.base
+                        border {
+                            color: modelData.GroupOpen ? "transparent" : palette.alternateBase
+                            width: 0.5
+                        }
+                        Text {
+                            color: modelData.GroupOpen ? "light green" : palette.alternateBase
                             anchors.centerIn: parent
                             verticalAlignment: Text.AlignVCenter
                             horizontalAlignment: Text.AlignHCenter
-                            text: modelData.GroupOpen ? "▵" : modelData.GroupItemCount
+                            text: modelData.GroupItemCount
                         }
-                        checked: modelData.GroupOpen
-                        onClicked: toggl.toggleEntriesGroup(modelData.GroupName)
                     }
                     ColumnLayout {
                         Layout.fillHeight: true
                         Layout.fillWidth: true
                         Text {
                             Layout.fillWidth: true
-                            text: modelData.Description.length > 0 ? modelData.Description : "(no description)"
-                            color: palette.text
+                            text: modelData.Description.length > 0 ? modelData.Description : "+ Add description"
+                            color: modelData.Description.length > 0 ? palette.text : disabledPalette.text
                             wrapMode: Text.WrapAtWordBoundaryOrAnywhere
                             font.pixelSize: 12
                             verticalAlignment: Text.AlignVCenter
@@ -326,39 +334,104 @@ Rectangle {
                                 Layout.alignment: Qt.AlignVCenter
                             }
                             Text {
+                                visible: modelData.ClientLabel.length > 0
                                 text: modelData.ClientLabel
                                 color: modelData.Color.length > 0 ? modelData.Color : palette.text
-                                font.pixelSize: 8
+                                font.pixelSize: 12
                             }
                             Text {
-                                text: modelData.ProjectLabel
-                                color: palette.text
-                                font.pixelSize: 8
+                                text: modelData.ProjectLabel.length > 0 ? modelData.ProjectLabel : "+ Add project"
+                                color: modelData.ProjectLabel.length > 0 ? palette.text : disabledPalette.text
+                                font.pixelSize: 12
                             }
                             Text {
+                                visible: modelData.TaskLabel.length > 0
                                 text: modelData.TaskLabel
                                 color: palette.text
-                                font.pixelSize: 8
+                                font.pixelSize: 12
                             }
                             Item {
                                 Layout.fillWidth: true
                             }
                         }
                     }
-                    TogglButton {
-                        implicitWidth: implicitHeight
-                        contentItem: Text {
-                            anchors.centerIn: parent
-                            verticalAlignment: Text.AlignVCenter
-                            horizontalAlignment: Text.AlignHCenter
-                            text: "▸"
-                        }
-                        onClicked: toggl.continueTimeEntry(modelData.GUID)
-                    }
                     Text {
                         Layout.alignment: Qt.AlignVCenter
                         text: modelData.Duration
                         color: palette.text
+                    }
+                    Item {
+                        id: startButton
+                        opacity: delegateMouse.containsMouse ? 1.0 : 0.0
+                        width: 20
+                        height: 20
+                        MouseArea {
+                            anchors.fill: parent
+                            onClicked: toggl.continueTimeEntry(modelData.GUID)
+                        }
+
+                        Item {
+                            anchors.centerIn: parent
+                            scale: 1.5
+
+                            Item {
+                                x: -4.5
+                                y: -1
+                                /* Could be worth replacing with an actual picture eventually... */
+                                Rectangle {
+                                    y: -Math.sqrt(3)/6 * width + radius / 2
+                                    width: startButton.width / 2.7
+                                    height: radius
+                                    rotation: 30
+                                    radius: 2
+                                    color: "#47bc00"
+                                }
+                                Rectangle {
+                                    y: Math.sqrt(3)/6 * width - radius / 2
+                                    width: startButton.width / 2.7
+                                    height: radius
+                                    rotation: -30
+                                    radius: 2
+                                    color: "#47bc00"
+                                }
+                                Rectangle {
+                                    x: -Math.sqrt(3)/6 * width - radius / 2
+                                    width: startButton.width / 2.7
+                                    height: radius
+                                    rotation: 90
+                                    radius: 2
+                                    color: "#47bc00"
+                                }
+                                Rectangle {
+                                    x: -Math.sqrt(3)/6 * width + 1.6
+                                    width: startButton.width / 2.7 - 3
+                                    height: 2
+                                    rotation: 90
+                                    color: "#47bc00"
+                                }
+                                Rectangle {
+                                    x: -Math.sqrt(3)/6 * width + 3.6
+                                    width: startButton.width / 2.7 - 5
+                                    height: 2
+                                    rotation: 90
+                                    color: "#47bc00"
+                                }
+                                Rectangle {
+                                    x: -Math.sqrt(3)/6 * width + 5.6
+                                    width: startButton.width / 2.7 - 7
+                                    height: 2
+                                    rotation: 90
+                                    color: "#47bc00"
+                                }
+                                Rectangle {
+                                    x: -Math.sqrt(3)/6 * width + 7.6
+                                    width: startButton.width / 2.7 - 9
+                                    height: 2
+                                    rotation: 90
+                                    color: "#47bc00"
+                                }
+                            }
+                        }
                     }
                 }
             }
