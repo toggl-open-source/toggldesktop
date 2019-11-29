@@ -50,8 +50,9 @@
     </Window.InputBindings>
 
     <mah:MetroWindow.RightWindowCommands>
-        <mah:WindowCommands>
-            <Button x:Name="cogButton" Content="menu" Click="onCogButtonClick">
+        <mah:WindowCommands SeparatorHeight="0">
+            <Button x:Name="cogButton" Content="menu" Click="onCogButtonClick"
+                    Style="{StaticResource Toggl.CogwheelButton}">
                 <Button.ContextMenu>
                     <ContextMenu Name="mainContextMenu" x:FieldModifier="private"
                                  Closed="onMainContextMenuClosed">

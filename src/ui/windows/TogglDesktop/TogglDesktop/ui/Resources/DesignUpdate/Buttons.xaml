@@ -109,4 +109,44 @@
             </Trigger>
         </Style.Triggers>
     </Style>
+
+    <Style TargetType="Button" x:Key="Toggl.CogwheelButton">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ButtonBase">
+                    <Border Background="{TemplateBinding Background}"
+                            Height="{TemplateBinding Height}"
+                            Width="{TemplateBinding Width}">
+                        <Canvas Height="16" Width="16" VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <Path Stroke="{DynamicResource Toggl.TitleTextBrush}"
+                                  Data="M8 10.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5zm.3-10h-.6c-.171 0-.393.16-.448.324l-.613
+1.84-.247.075a5.463 5.463 0 0 0-.975.404l-.228.121-.23-.115-1.505-.752a.543.543 0 0 0-.545.087l-.425.425a.544.544 0 0 0-.087.545l.867
+1.735-.121.228c-.166.31-.301.637-.404.974l-.075.247-.245.081-1.595.533A.543.543 0 0 0 .5  7.7v.6c0 .171.16.393.324.448l1.84.613.075.247c.103.338.238.664.404.975l.121.228-.115.23-.752
+1.505a.543.543 0 0 0 .087.545l.425.425c.12.12.391.164.545.087l1.735-.867.228.121c.311.166.637.301.975.404l.247.076.081.244.532
+1.595a.543.543 0 0 0 .448.324h.6c.171 0 .393-.16.448-.324l.614-1.84.247-.075c.337-.103.663-.238.974-.404l.228-.121.23.115
+1.505.752a.543.543 0 0 0 .545-.087l.425-.425a.544.544 0 0 0 .087-.545l-.867-1.735.121-.228c.166-.31.301-.637.404-.974l.075-.247.245-.081
+ 1.595-.533A.543.543 0 0 0 15.5 8.3v-.6c0-.171-.16-.393-.324-.448l-1.84-.613-.075-.247a5.463 5.463 0 0 0-.404-.975l-.121-.228.115-.23.752-1.505a.543.543
+ 0 0 0-.087-.545l-.425-.425a.544.544 0 0 0-.545-.087l-1.735.867-.228-.121c-.31-.166-.637-.301-.974-.404l-.247-.075-.081-.245L8.748.824A.543.543 0 0 0 8.3.5z" />
+                        </Canvas>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True" />
+        <Setter Property="Height" Value="32"/>
+        <Setter Property="Width" Value="40"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="ToolTip" Value="Menu" />
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{DynamicResource Toggl.Button.Titlebar.MouseOver}" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="{DynamicResource Toggl.PrimaryButtonPressedBackground}" />
+                <Setter Property="Foreground" Value="White" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
 </ResourceDictionary>

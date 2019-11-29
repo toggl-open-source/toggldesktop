@@ -497,7 +497,8 @@ namespace TogglDesktop
             this.mainContextMenu.Placement = PlacementMode.Bottom;
             this.mainContextMenu.HorizontalOffset = 0;
             this.mainContextMenu.VerticalOffset = 0;
-            // this.cogButton.IsEnabled = false;
+            // disable button so that second button click in a row does not bring up context menu as soon as it's closed
+            this.cogButton.IsEnabled = false;
             this.mainContextMenu.IsOpen = true;
         }
 
@@ -523,7 +524,7 @@ namespace TogglDesktop
 
         private void onMainContextMenuClosed(object sender, RoutedEventArgs e)
         {
-            // this.cogButton.IsEnabled = true;
+            this.cogButton.IsEnabled = true;
         }
 
         private void onGlobalShowKeyPressed(object sender, HotkeyEventArgs args)
