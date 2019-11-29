@@ -48,82 +48,92 @@
         <KeyBinding Key="OemComma" Modifiers="Control" Command="{x:Static toggl:KeyboardShortcuts.Preferences}" />
         <KeyBinding Key="Escape" Command="{StaticResource EscapeCommand}" />
     </Window.InputBindings>
+
+    <mah:MetroWindow.RightWindowCommands>
+        <mah:WindowCommands>
+            <Button x:Name="cogButton" Content="menu" Click="onCogButtonClick">
+                <Button.ContextMenu>
+                    <ContextMenu Name="mainContextMenu" x:FieldModifier="private"
+                                 Closed="onMainContextMenuClosed">
+                        <ContextMenu.Resources>
+                            <Style TargetType="MenuItem">
+                                <Setter Property="Width" Value="280" />
+                            </Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Foreground" Value="#707070" />
+                                <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+                                <Setter Property="IsHitTestVisible" Value="False" />
+                            </Style>
+                        </ContextMenu.Resources>
+                        <MenuItem IsEnabled="False">
+                            <MenuItem.Header>
+                                <TextBlock Name="emailAddressMenuText"
+                                           x:FieldModifier="private"
+                                           Text="your email address"/>
+                            </MenuItem.Header>
+                        </MenuItem>
+                        <MenuItem IsEnabled="False">
+                            <MenuItem.Header>
+                                <TextBlock Name="runningMenuText"
+                                           x:FieldModifier="private"
+                                           Text="Running"/>
+                            </MenuItem.Header>
+                        </MenuItem>
+                        <Separator />
+                        <MenuItem Header="New" InputGestureText="Ctrl+N"
+                                  Command="{x:Static toggl:KeyboardShortcuts.New}"/>
+                        <MenuItem Header="Continue" InputGestureText="Ctrl+O"
+                                  Command="{x:Static toggl:KeyboardShortcuts.Continue}"/>
+                        <MenuItem Header="Stop" InputGestureText="Ctrl+S"
+                                  Command="{x:Static toggl:KeyboardShortcuts.Stop}"/>
+                        <Separator />
+                        <MenuItem Header="Show"
+                                  Command="{x:Static toggl:KeyboardShortcuts.Show}"
+                                  Visibility=
+            "{Binding Path=IsEnabled, RelativeSource={RelativeSource Self}, Mode=OneWay, Converter={StaticResource BooleanToVisibility}}"
+                                  />
+                        <MenuItem Header="Hide" InputGestureText="Ctrl+W"
+                                  Command="{x:Static toggl:KeyboardShortcuts.Hide}"
+                                  Visibility=
+            "{Binding Path=IsEnabled, RelativeSource={RelativeSource Self}, Mode=OneWay, Converter={StaticResource BooleanToVisibility}}"
+                                  />
+                        <Separator />
+                        <MenuItem Header="Sync" InputGestureText="F5"
+                                  Command="{x:Static toggl:KeyboardShortcuts.Sync}"/>
+                        <MenuItem Header="Reports"
+                                  Command="{x:Static toggl:KeyboardShortcuts.Reports}"/>
+                        <MenuItem Header="Preferences" InputGestureText="Ctrl+,"
+                                  Command="{x:Static toggl:KeyboardShortcuts.Preferences}"/>
+                        <MenuItem Header="Use manual mode" InputGestureText="Ctrl+D"
+                                  Name="togglManualModeMenuItem" x:FieldModifier="private"
+                                  Command="{x:Static toggl:KeyboardShortcuts.ToggleManualMode}"
+                                  IsCheckable="True"/>
+                        <MenuItem Header="Use mini timer"
+                                  Name="togglMiniTimerVisibilityMenuItem" x:FieldModifier="private"
+                                  Command="{x:Static toggl:KeyboardShortcuts.ToggleMiniTimerVisibility}"
+                                  IsCheckable="True"/>
+                        <Separator />
+                        <MenuItem Header="Clear Cache"
+                                  Command="{x:Static toggl:KeyboardShortcuts.ClearCache}"/>
+                        <MenuItem Header="Toggl Desktop Tutorial"
+                                  Command="{x:Static toggl:KeyboardShortcuts.BasicTutorial}"/>
+                        <MenuItem Header="Send Feedback"
+                                  Command="{x:Static toggl:KeyboardShortcuts.SendFeedback}"/>
+                        <MenuItem Header="About"
+                                  Command="{x:Static toggl:KeyboardShortcuts.About}"/>
+                        <MenuItem Header="Logout"
+                                  Command="{x:Static toggl:KeyboardShortcuts.Logout}"/>
+                        <MenuItem Header="Quit" InputGestureText="Ctrl+Q"
+                                  Command="{x:Static toggl:KeyboardShortcuts.Quit}"/>
+                    </ContextMenu>
+
+                </Button.ContextMenu>
+            </Button>
+        </mah:WindowCommands>
+    </mah:MetroWindow.RightWindowCommands>
     
-    <Window.ContextMenu>
-        <ContextMenu Name="mainContextMenu" x:FieldModifier="private"
-                     Closed="onMainContextMenuClosed">
-            <ContextMenu.Resources>
-                <Style TargetType="MenuItem">
-                    <Setter Property="Width" Value="280" />
-                </Style>
-                <Style TargetType="TextBlock">
-                    <Setter Property="Foreground" Value="#707070" />
-                    <Setter Property="TextTrimming" Value="CharacterEllipsis" />
-                    <Setter Property="IsHitTestVisible" Value="False" />
-                </Style>
-            </ContextMenu.Resources>
-            <MenuItem IsEnabled="False">
-                <MenuItem.Header>
-                    <TextBlock Name="emailAddressMenuText"
-                               x:FieldModifier="private"
-                               Text="your email address"/>
-                </MenuItem.Header>
-            </MenuItem>
-            <MenuItem IsEnabled="False">
-                <MenuItem.Header>
-                    <TextBlock Name="runningMenuText"
-                               x:FieldModifier="private"
-                               Text="Running"/>
-                </MenuItem.Header>
-            </MenuItem>
-            <Separator />
-            <MenuItem Header="New" InputGestureText="Ctrl+N"
-                      Command="{x:Static toggl:KeyboardShortcuts.New}"/>
-            <MenuItem Header="Continue" InputGestureText="Ctrl+O"
-                      Command="{x:Static toggl:KeyboardShortcuts.Continue}"/>
-            <MenuItem Header="Stop" InputGestureText="Ctrl+S"
-                      Command="{x:Static toggl:KeyboardShortcuts.Stop}"/>
-            <Separator />
-            <MenuItem Header="Show"
-                      Command="{x:Static toggl:KeyboardShortcuts.Show}"
-                      Visibility=
-"{Binding Path=IsEnabled, RelativeSource={RelativeSource Self}, Mode=OneWay, Converter={StaticResource BooleanToVisibility}}"
-                      />
-            <MenuItem Header="Hide" InputGestureText="Ctrl+W"
-                      Command="{x:Static toggl:KeyboardShortcuts.Hide}"
-                      Visibility=
-"{Binding Path=IsEnabled, RelativeSource={RelativeSource Self}, Mode=OneWay, Converter={StaticResource BooleanToVisibility}}"
-                      />
-            <Separator />
-            <MenuItem Header="Sync" InputGestureText="F5"
-                      Command="{x:Static toggl:KeyboardShortcuts.Sync}"/>
-            <MenuItem Header="Reports"
-                      Command="{x:Static toggl:KeyboardShortcuts.Reports}"/>
-            <MenuItem Header="Preferences" InputGestureText="Ctrl+,"
-                      Command="{x:Static toggl:KeyboardShortcuts.Preferences}"/>
-            <MenuItem Header="Use manual mode" InputGestureText="Ctrl+D"
-                      Name="togglManualModeMenuItem" x:FieldModifier="private"
-                      Command="{x:Static toggl:KeyboardShortcuts.ToggleManualMode}"
-                      IsCheckable="True"/>
-            <MenuItem Header="Use mini timer"
-                      Name="togglMiniTimerVisibilityMenuItem" x:FieldModifier="private"
-                      Command="{x:Static toggl:KeyboardShortcuts.ToggleMiniTimerVisibility}"
-                      IsCheckable="True"/>
-            <Separator />
-            <MenuItem Header="Clear Cache"
-                      Command="{x:Static toggl:KeyboardShortcuts.ClearCache}"/>
-            <MenuItem Header="Toggl Desktop Tutorial"
-                      Command="{x:Static toggl:KeyboardShortcuts.BasicTutorial}"/>
-            <MenuItem Header="Send Feedback"
-                      Command="{x:Static toggl:KeyboardShortcuts.SendFeedback}"/>
-            <MenuItem Header="About"
-                      Command="{x:Static toggl:KeyboardShortcuts.About}"/>
-            <MenuItem Header="Logout"
-                      Command="{x:Static toggl:KeyboardShortcuts.Logout}"/>
-            <MenuItem Header="Quit" InputGestureText="Ctrl+Q"
-                      Command="{x:Static toggl:KeyboardShortcuts.Quit}"/>
-        </ContextMenu>
-    </Window.ContextMenu>
+    <!-- <Window.ContextMenu> -->
+    <!-- </Window.ContextMenu> -->
     
     
     <Grid x:Name="root" x:FieldModifier="private">
