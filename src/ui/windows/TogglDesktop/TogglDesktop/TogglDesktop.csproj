@@ -668,6 +668,7 @@
     </Page>
     <Page Include="ui\Resources\DesignUpdate\Buttons.xaml" />
     <Page Include="ui\Resources\DesignUpdate\ComboBox.xaml" />
+    <Page Include="ui\Resources\DesignUpdate\ContextMenu.xaml" />
     <Page Include="ui\Resources\DesignUpdate\Controls.xaml" />
     <Page Include="ui\Resources\DesignUpdate\HotKeyBox.xaml" />
     <Page Include="ui\Resources\DesignUpdate\Hyperlink.xaml" />
