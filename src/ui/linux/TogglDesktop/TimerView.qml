@@ -4,7 +4,7 @@ import QtQuick.Controls 2.12
 
 Rectangle {
     id: root
-    color: "black"
+    color: mixColors(palette.window, palette.base, 0.9)
     height: 64
 
     property bool running: false
@@ -12,8 +12,7 @@ Rectangle {
 
     function start() {
         if (!running) {
-            var dur = duration.text === "00:00" ? "" : duration.text
-            toggl.start(description.text, dur, 0, 0, "", false)
+            toggl.start(description.text, "", 0, 0, "", false)
             description.text = ""
         }
     }
@@ -45,9 +44,9 @@ Rectangle {
 
     RowLayout {
         id: timerContainer
-        height: parent.height
-        width: parent.width - startButton.width - 6
         x: 6
+        height: parent.height
+        width: parent.width - 12
         ColumnLayout {
             Layout.fillHeight: true
             Layout.fillWidth: true
@@ -102,6 +101,14 @@ Rectangle {
                     filter: description.text
                     //model: toggl.minitimerAutocomplete
                 }
+                Rectangle {
+                    anchors.fill: parent
+                    anchors.topMargin: -1
+                    anchors.bottomMargin: -1
+                    radius: height / 2
+                    color: mixColors(palette.window, palette.alternateBase, 0.8)
+                    z: -1
+                }
             }
             RowLayout {
                 visible: runningTimeEntry && runningTimeEntry.ProjectLabel.length > 0
@@ -135,56 +142,27 @@ Rectangle {
                 }
             }
         }
-        ColumnLayout {
-            Layout.fillHeight: true
-            Text {
-                visible: running
-                Layout.fillHeight: true
-                verticalAlignment: Text.AlignVCenter
-                text: runningTimeEntry ? runningTimeEntry.Duration : ""
-                Timer {
-                    running: root.running
-                    interval: 100
-                    repeat: true
-                    onTriggered: {
-                        parent.text = toggl.formatDurationInSecondsHHMMSS(new Date().getTime() / 1000 - runningTimeEntry.Started)
-                    }
-                }
-
-                color: "white"
-            }
-            TextField {
-                id: duration
-                visible: !running
-                Layout.preferredWidth: 64
-                onAccepted: start()
-                validator: RegExpValidator {
-                    regExp: /[0-9][0-9]:[0-9][0-9]/
-                }
-                font.pixelSize: 12
-                background: Item {}
-                placeholderText: "00:00"
-                placeholderTextColor: "light gray"
-                color: "white"
-            }
-        }
-    }
-    Rectangle {
-        id: startButton
-        width: parent.height
-        height: parent.height
-        anchors.left: timerContainer.right
-        anchors.leftMargin: 3
-        color: running ? "#e20000" : "#47bc00"
         Text {
-            font.weight: Font.DemiBold
-            text: running ? "Stop" : "Start"
-            anchors.centerIn: parent
-            font.pixelSize: 12
+            visible: running
+            Layout.fillHeight: true
+            verticalAlignment: Text.AlignVCenter
+            text: runningTimeEntry ? runningTimeEntry.Duration : ""
+            Timer {
+                running: root.running
+                interval: 100
+                repeat: true
+                onTriggered: {
+                    parent.text = toggl.formatDurationInSecondsHHMMSS(new Date().getTime() / 1000 - runningTimeEntry.Started)
+                }
+            }
+
             color: "white"
         }
-        MouseArea {
-            anchors.fill: parent
+
+        StartButton {
+            id: startButton
+            running: root.running
+            Layout.alignment: Qt.AlignVCenter
             onClicked: {
                 if (running) {
                     toggl.stop()

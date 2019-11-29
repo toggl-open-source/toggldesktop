@@ -34,5 +34,6 @@
         <file>TogglCheckBox.qml</file>
         <file>TogglSwitch.qml</file>
         <file>TogglButtonBackground.qml</file>
+        <file>StartButton.qml</file>
     </qresource>
 </RCC>
