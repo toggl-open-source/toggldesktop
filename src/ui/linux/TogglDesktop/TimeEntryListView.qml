@@ -6,12 +6,15 @@ import QtGraphicalEffects 1.0
 Rectangle {
     id: root
     anchors.fill: parent
-    color: palette.alternateBase
+    color: backgroundColor
 
-    property real shadowWidth: 9
-    property real sectionMargin: 2 * shadowWidth
+    property real sectionMargin: Math.max(2 * shadowWidth, 16)
     property real headerHeight: 32
     property real itemHeight: 74
+
+    property real shadowWidth: palette.isDark ? 1 : 2
+    property color shadowColor: palette.shadow
+    property color backgroundColor: mixColors(palette.base, palette.alternateBase, 0.8)
 
     ColumnLayout {
         anchors.fill: parent
@@ -45,6 +48,7 @@ Rectangle {
                         x: 12
                         width: timeEntryList.viewportWidth - 24
                         height: headerHeight
+                        color: palette.base
 
                         Rectangle {
                             anchors.right: parent.left
@@ -57,8 +61,8 @@ Rectangle {
                             z: -1
                             gradient: Gradient {
                                 orientation: Gradient.Horizontal
-                                GradientStop { position: 0.0; color: palette.alternateBase }
-                                GradientStop { position: 0.5; color: "light gray" }
+                                GradientStop { position: 0.0; color: backgroundColor }
+                                GradientStop { position: 0.5; color: shadowColor }
                             }
                         }
                         Rectangle {
@@ -72,8 +76,8 @@ Rectangle {
                             z: -1
                             gradient: Gradient {
                                 orientation: Gradient.Horizontal
-                                GradientStop { position: 0.5; color: "light gray" }
-                                GradientStop { position: 1.0; color: palette.alternateBase }
+                                GradientStop { position: 0.5; color: shadowColor }
+                                GradientStop { position: 1.0; color: backgroundColor }
                             }
                         }
 
@@ -85,8 +89,8 @@ Rectangle {
                             width: shadowWidth
                             gradient: Gradient {
                                 orientation: Gradient.Horizontal
-                                GradientStop { position: 0.0; color: palette.alternateBase }
-                                GradientStop { position: 1.0; color: "light gray" }
+                                GradientStop { position: 0.0; color: backgroundColor }
+                                GradientStop { position: 1.0; color: shadowColor }
                             }
                         }
                         Rectangle {
@@ -97,8 +101,8 @@ Rectangle {
                             width: shadowWidth
                             gradient: Gradient {
                                 orientation: Gradient.Horizontal
-                                GradientStop { position: 0.0; color: "light gray" }
-                                GradientStop { position: 1.0; color: palette.alternateBase }
+                                GradientStop { position: 0.0; color: shadowColor }
+                                GradientStop { position: 1.0; color: backgroundColor }
                             }
                         }
                         Rectangle {
@@ -108,8 +112,8 @@ Rectangle {
 
                             height: shadowWidth
                             gradient: Gradient {
-                                GradientStop { position: 0.0; color: palette.alternateBase }
-                                GradientStop { position: 1.0; color: "light gray" }
+                                GradientStop { position: 0.0; color: backgroundColor }
+                                GradientStop { position: 1.0; color: shadowColor }
                             }
                         }
                         Text {
@@ -208,8 +212,8 @@ Rectangle {
                     z: -1
                     gradient: Gradient {
                         orientation: Gradient.Horizontal
-                        GradientStop { position: 0.5; color: "light gray" }
-                        GradientStop { position: 1.0; color: palette.alternateBase }
+                        GradientStop { position: 0.5; color: shadowColor }
+                        GradientStop { position: 1.0; color: backgroundColor }
                     }
                 }
 
@@ -224,8 +228,8 @@ Rectangle {
                     z: -1
                     gradient: Gradient {
                         orientation: Gradient.Horizontal
-                        GradientStop { position: 0.5; color: "light gray" }
-                        GradientStop { position: 0.0; color: palette.alternateBase }
+                        GradientStop { position: 0.5; color: shadowColor }
+                        GradientStop { position: 0.0; color: backgroundColor }
                     }
                 }
 
@@ -237,8 +241,8 @@ Rectangle {
                     width: shadowWidth
                     gradient: Gradient {
                         orientation: Gradient.Horizontal
-                        GradientStop { position: 0.0; color: palette.alternateBase }
-                        GradientStop { position: 1.0; color: "light gray" }
+                        GradientStop { position: 0.0; color: backgroundColor }
+                        GradientStop { position: 1.0; color: shadowColor }
                     }
                 }
 
@@ -250,8 +254,8 @@ Rectangle {
                     width: shadowWidth
                     gradient: Gradient {
                         orientation: Gradient.Horizontal
-                        GradientStop { position: 0.0; color: "light gray" }
-                        GradientStop { position: 1.0; color: palette.alternateBase }
+                        GradientStop { position: 0.0; color: shadowColor }
+                        GradientStop { position: 1.0; color: backgroundColor }
                     }
                 }
                 Rectangle {
@@ -261,8 +265,8 @@ Rectangle {
 
                     height: shadowWidth
                     gradient: Gradient {
-                        GradientStop { position: 0.0; color: "light gray" }
-                        GradientStop { position: 1.0; color: palette.alternateBase }
+                        GradientStop { position: 0.0; color: shadowColor }
+                        GradientStop { position: 1.0; color: backgroundColor }
                     }
                 }
 
@@ -306,6 +310,7 @@ Rectangle {
                         Text {
                             Layout.fillWidth: true
                             text: modelData.Description.length > 0 ? modelData.Description : "(no description)"
+                            color: palette.text
                             wrapMode: Text.WrapAtWordBoundaryOrAnywhere
                             font.pixelSize: 12
                             verticalAlignment: Text.AlignVCenter
@@ -322,15 +327,17 @@ Rectangle {
                             }
                             Text {
                                 text: modelData.ClientLabel
-                                color: modelData.Color
+                                color: modelData.Color.length > 0 ? modelData.Color : palette.text
                                 font.pixelSize: 8
                             }
                             Text {
                                 text: modelData.ProjectLabel
+                                color: palette.text
                                 font.pixelSize: 8
                             }
                             Text {
                                 text: modelData.TaskLabel
+                                color: palette.text
                                 font.pixelSize: 8
                             }
                             Item {
@@ -351,6 +358,7 @@ Rectangle {
                     Text {
                         Layout.alignment: Qt.AlignVCenter
                         text: modelData.Duration
+                        color: palette.text
                     }
                 }
             }

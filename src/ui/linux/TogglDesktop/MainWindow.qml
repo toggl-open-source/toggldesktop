@@ -23,6 +23,7 @@ ApplicationWindow {
 
     SystemPalette {
         id: palette
+        property bool isDark: (shadowColor.r + shadowColor.g + shadowColor.b) < 300
     }
     SystemPalette {
         id: disabledPalette
