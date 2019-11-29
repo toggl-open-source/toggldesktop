@@ -45,8 +45,10 @@ jobs:
       run: |
         mkdir build
         cd build
-        export CMAKE_PREFIX_PATH=/usr/local/opt/qt5/lib/
-        cmake
+        export CMAKE_PREFIX_PATH=/usr/local/opt/qt5/lib/cmake
+        export OPENSSL_ROOT_DIR=/usr/local/opt/openssl@1.1/
+        cmake -DTOGGL_BUILD_TESTS=OFF -DOPENSSL_ROOT_DIR=$OPENSSL_ROOT_DIR ..
+        make -j2
 
   macos:
     runs-on: macOS-latest
