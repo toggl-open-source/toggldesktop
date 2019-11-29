@@ -11,6 +11,7 @@ ApplicationWindow {
     width: 400
     minimumHeight: 640
     height: 640
+    title: "Toggl"
 
     function mixColors(a, b, ratio) {
         return Qt.rgba(
