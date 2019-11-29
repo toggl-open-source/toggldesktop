@@ -1,20 +1,33 @@
-﻿<toggl:TogglWindow x:Class="TogglDesktop.MainWindow"
+﻿<mah:MetroWindow x:Class="TogglDesktop.MainWindow"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:tb="http://www.hardcodet.net/taskbar"
              xmlns:toggl="clr-namespace:TogglDesktop"
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:behaviors="clr-namespace:TogglDesktop.Behaviors"
              mc:Ignorable="d" 
              d:DesignWidth="400"
-             Title="Toggl Desktop"
-             CanClickIcon="True"
-             MouseMove="onWindowMouseMove">
+             Title="Toggl Desktop">
 
     <Window.Resources>
-        <RoutedUICommand x:Key="EscapeCommand" />
-        <BooleanToVisibilityConverter x:Key="BooleanToVisibility" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources/DesignUpdate/Controls.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <RoutedUICommand x:Key="EscapeCommand" />
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibility" />
+        </ResourceDictionary>
     </Window.Resources>
+    <mah:MetroWindow.Style>
+        <StaticResource ResourceKey="Toggl.MainWindow" />
+    </mah:MetroWindow.Style>
+
+    <i:Interaction.Behaviors>
+        <behaviors:HideWindowOnClosingBehavior />
+    </i:Interaction.Behaviors>
 
     <Window.CommandBindings>
         <CommandBinding Command="{StaticResource EscapeCommand}" Executed="onEscapeCommand"/>
@@ -140,18 +153,6 @@
         <toggl:StatusBar x:Name="statusBar" x:FieldModifier="private"
                          VerticalAlignment="Bottom"/>
 
-        <Rectangle x:Name="resizeHandle" x:FieldModifier="private"
-                VerticalAlignment="Bottom" HorizontalAlignment="Right"
-                Width="15" Height="15" Cursor="SizeNWSE"
-                IsHitTestVisible="True"
-                MouseLeftButtonDown="onResizeHandleLeftButtonDown"
-                MouseLeftButtonUp="onResizeHandleLeftButtonUp"
-                WindowChrome.IsHitTestVisibleInChrome="True">
-            <Rectangle.Fill>
-                <ImageBrush ImageSource="/TogglDesktop;component/Resources/resize.png"/>
-            </Rectangle.Fill>
-        </Rectangle>
-
         <Border Background="{DynamicResource Toggl.CardBackground}"
                 Name="darkModeBorder"
                 HorizontalAlignment="Left"
@@ -163,4 +164,4 @@
         </Border>
 
     </Grid>
-</toggl:TogglWindow>
+</mah:MetroWindow>
