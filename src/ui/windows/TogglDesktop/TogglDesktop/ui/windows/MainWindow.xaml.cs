@@ -29,6 +29,7 @@ namespace TogglDesktop
     {
         #region fields
 
+        private const int WindowHeaderHeight = 32;
         private readonly DispatcherTimer idleDetectionTimer =
             new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
 
@@ -43,7 +44,6 @@ namespace TogglDesktop
         private MiniTimerWindow miniTimer;
 
         private IMainView activeView;
-        private bool isResizingWithHandle;
         private bool closing;
         private string trackingTitle;
         private string todaysDuration = "0 h 00 min";
@@ -111,7 +111,6 @@ namespace TogglDesktop
         private void initializeSyncingIndicator()
         {
             this.syncingIndicator = new SyncingIndicator();
-            this.Chrome.AddToHeaderButtons(this.syncingIndicator);
         }
 
         private void initializeCustomNotifications()
@@ -469,25 +468,15 @@ namespace TogglDesktop
 
         #region ui events
 
-        protected override void onCloseButtonClick(object sender, RoutedEventArgs e)
-        {
-            this.MinimizeToTray();
-        }
-
-        protected override void onCogButtonClick(object sender, RoutedEventArgs e)
+        protected void onCogButtonClick(object sender, RoutedEventArgs e)
         {
             this.mainContextMenu.PlacementTarget = (FrameworkElement)sender;
             this.mainContextMenu.Placement = PlacementMode.Bottom;
             this.mainContextMenu.HorizontalOffset = 0;
             this.mainContextMenu.VerticalOffset = 0;
 
-            this.Chrome.CogButton.IsEnabled = false;
+            // this.Chrome.CogButton.IsEnabled = false;
             this.mainContextMenu.IsOpen = true;
-        }
-
-        protected override void onIconButtonClick(object sender, RoutedEventArgs e)
-        {
-            Toggl.OpenInBrowser();
         }
 
         protected override void OnLocationChanged(EventArgs e)
@@ -504,12 +493,6 @@ namespace TogglDesktop
             base.OnRenderSizeChanged(sizeInfo);
         }
 
-        protected override void OnStateChanged(EventArgs e)
-        {
-            this.resizeHandle.ShowOnlyIf(this.WindowState != WindowState.Maximized);
-            base.OnStateChanged(e);
-        }
-
         protected override void OnClosing(CancelEventArgs e)
         {
             e.Cancel = true;
@@ -518,7 +501,7 @@ namespace TogglDesktop
 
         private void onMainContextMenuClosed(object sender, RoutedEventArgs e)
         {
-            this.Chrome.CogButton.IsEnabled = true;
+            // this.Chrome.CogButton.IsEnabled = true;
         }
 
         private void onGlobalShowKeyPressed(object sender, HotkeyEventArgs args)
@@ -572,37 +555,6 @@ namespace TogglDesktop
         private void onTrayBalloonTipClicked(object sender, RoutedEventArgs e)
         {
             this.ShowOnTop();
-        }
-
-        private void onResizeHandleLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            if (this.isResizingWithHandle)
-                return;
-
-            const int htBottomRight = 17;
-
-            Mouse.Capture(null);
-
-            Win32.SendMessage(this.interopHelper.Handle,
-                Win32.wmNcLButtonDown,
-                htBottomRight,
-                0);
-
-            this.resizeHandle.CaptureMouse();
-            this.isResizingWithHandle = true;
-        }
-
-        private void onResizeHandleLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            this.endHandleResizing();
-        }
-
-        private void onWindowMouseMove(object sender, MouseEventArgs e)
-        {
-            if (e.LeftButton == MouseButtonState.Released)
-            {
-                this.endHandleResizing();
-            }
         }
 
         private void onIdleDetectionTimerTick(object sender, EventArgs e)
@@ -843,7 +795,7 @@ namespace TogglDesktop
             }
 
             this.updateStatusIcons(true);
-            this.SetIconState(tracking);
+            // this.SetIconState(tracking);
         }
 
         private void closeEditPopup(bool focusTimeEntryList = false, bool skipAnimation = false)
@@ -863,15 +815,6 @@ namespace TogglDesktop
         #endregion
 
         #region window size, position and state handling
-
-        private void endHandleResizing()
-        {
-            if (!this.isResizingWithHandle)
-                return;
-
-            Mouse.Capture(null);
-            this.isResizingWithHandle = false;
-        }
 
         private void updateEntriesListWidth()
         {
@@ -898,7 +841,7 @@ namespace TogglDesktop
                 var x = (double)bounds.Left;
                 var y = (double)bounds.Top;
 
-                var headerHeight = this.WindowHeaderHeight + this.timerEntryListView.TimerHeight;
+                var headerHeight = WindowHeaderHeight + this.timerEntryListView.TimerHeight;
 
                 y += headerHeight;
                 x += this.ActualWidth;
@@ -908,7 +851,7 @@ namespace TogglDesktop
             }
             else
             {
-                var s = this.getCurrentScreenRectangle();
+                var s = this.GetCurrentScreenRectangle();
                 bool left = s.Right - (this.Left + this.ActualWidth) < this.editPopup.Width;
 
                 var x = this.Left;
@@ -946,7 +889,7 @@ namespace TogglDesktop
 
         private void updateMinimumSize(IMainView activeView)
         {
-            this.MinHeight = this.WindowHeaderHeight + activeView.MinHeight;
+            this.MinHeight = WindowHeaderHeight + activeView.MinHeight;
             this.MinWidth = activeView.MinWidth;
         }
 
