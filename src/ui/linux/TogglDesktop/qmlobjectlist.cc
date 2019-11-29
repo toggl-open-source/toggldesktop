@@ -67,7 +67,7 @@ QVariant QmlObjectList::data(const QModelIndex &index, int role) const
         qWarning()<<__FUNCTION__<<"data is null";
         return QVariant();
     }
-    return QVariant::fromValue(data.get());
+    return QVariant::fromValue(data.data());
 }
 
 QHash<int, QByteArray> QmlObjectList::roleNames() const

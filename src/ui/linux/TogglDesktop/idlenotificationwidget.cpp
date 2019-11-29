@@ -6,7 +6,7 @@
 #include "./toggl.h"
 #include "./settingsview.h"
 
-#ifdef __linux__
+#ifdef __linux
 #include <X11/extensions/scrnsaver.h>  // NOLINT
 #endif
 
@@ -20,8 +20,10 @@ IdleNotificationWidget::IdleNotificationWidget(QStackedWidget *parent)
   idleHintTimer(new QTimer(this)) {
     ui->setupUi(this);
 
+#ifdef __linux
     screensaver = new QDBusInterface("org.freedesktop.ScreenSaver", "/org/freedesktop/ScreenSaver", "org.freedesktop.ScreenSaver", QDBusConnection::sessionBus(), this);
-
+    connect(screensaver, SIGNAL(ActiveChanged(bool)), this, SLOT(onScreensaverActiveChanged(bool)));
+#endif
     connect(TogglApi::instance, &TogglApi::displayIdleNotification, this, &IdleNotificationWidget::displayIdleNotification);
 
     connect(TogglApi::instance, SIGNAL(displaySettings(bool,SettingsView*)),  // NOLINT
@@ -33,7 +35,6 @@ IdleNotificationWidget::IdleNotificationWidget(QStackedWidget *parent)
     connect(TogglApi::instance, SIGNAL(displayLogin(bool,uint64_t)),  // NOLINT
             this, SLOT(displayLogin(bool,uint64_t)));  // NOLINT
 
-    connect(screensaver, SIGNAL(ActiveChanged(bool)), this, SLOT(onScreensaverActiveChanged(bool)));
 
     connect(idleHintTimer, &QTimer::timeout, this, &IdleNotificationWidget::requestIdleHint);
     idleHintTimer->setInterval(5000);
@@ -49,13 +50,13 @@ void IdleNotificationWidget::displaySettings(const bool open, SettingsView *sett
 }
 
 void IdleNotificationWidget::requestIdleHint() {
+#ifdef __linux
     if (dbusApiAvailable) {
         auto pendingCall = screensaver->asyncCall("GetSessionIdleTime");
         auto watcher = new QDBusPendingCallWatcher(pendingCall, this);
         connect(watcher, &QDBusPendingCallWatcher::finished, this, &IdleNotificationWidget::idleHintReceived);
     }
     else {
-#ifdef __linux__
         Display *display = XOpenDisplay(NULL);
         if (!display) {
             return;
@@ -67,11 +68,13 @@ void IdleNotificationWidget::requestIdleHint() {
         }
         XFree(info);
         XCloseDisplay(display);
-#endif // __linux__
     }
+#endif
 }
 
+#ifdef __linux
 void IdleNotificationWidget::idleHintReceived(QDBusPendingCallWatcher *watcher) {
+
     QDBusPendingReply<uint> reply = *watcher;
     if (reply.isError()) {
         dbusApiAvailable = false;
@@ -84,6 +87,7 @@ void IdleNotificationWidget::idleHintReceived(QDBusPendingCallWatcher *watcher) 
     }
     watcher->deleteLater();
 }
+#endif
 
 void IdleNotificationWidget::onScreensaverActiveChanged(bool active) {
     screenLocked = active;

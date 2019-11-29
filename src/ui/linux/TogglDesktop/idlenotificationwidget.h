@@ -33,7 +33,9 @@ private:
 
  private slots:  // NOLINT
     void requestIdleHint();
+#ifdef __linux
     void idleHintReceived(QDBusPendingCallWatcher *watcher);
+#endif
 
     void onScreensaverActiveChanged(bool active);
 
@@ -65,7 +67,9 @@ private:
     QWidget *previousView;
 
     uint64_t idleStarted;
+#ifdef __linux
     QDBusInterface *screensaver;
+#endif
     bool dbusApiAvailable;
     bool screenLocked;
     uint64_t lastActiveTime;
