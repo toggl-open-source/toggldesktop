@@ -1,8 +1,12 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
+using System.Windows.Forms;
 using System.Windows.Media;
+using Control = System.Windows.Controls.Control;
+using Panel = System.Windows.Controls.Panel;
+using TextBoxBase = System.Windows.Controls.Primitives.TextBoxBase;
 
 namespace TogglDesktop
 {
@@ -94,6 +98,39 @@ static class UIExtensions
             window.WindowState = WindowState.Normal;
         }
         window.Activate();
+    }
+
+    public static Rect GetCurrentScreenRectangle(this Window window)
+    {
+        if (window == null)
+        {
+            throw new ArgumentNullException(nameof(window), "Window cannot be null");
+        }
+
+        var screen = Screen.FromRectangle(new Rectangle(
+            (int)window.Left, (int)window.Top,
+            (int)window.Width, (int)window.Height
+        ));
+
+        var area = screen.WorkingArea;
+
+        var topLeft = new System.Windows.Point(area.Left, area.Top);
+        var bottomRight = new System.Windows.Point(area.Right, area.Bottom);
+
+        var presentationSource = PresentationSource.FromVisual(window);
+        if (presentationSource != null)
+        {
+            var compositionTarget = presentationSource.CompositionTarget;
+            if (compositionTarget != null)
+            {
+                var t = compositionTarget.TransformFromDevice;
+
+                topLeft = t.Transform(topLeft);
+                bottomRight = t.Transform(bottomRight);
+            }
+        }
+
+        return new Rect(topLeft, bottomRight);
     }
 
     public static void ClearUndoHistory(this TextBoxBase textBox)

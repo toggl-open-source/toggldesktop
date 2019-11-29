@@ -147,42 +147,10 @@ namespace TogglDesktop
 
         private void updateMaximumSize()
         {
-            var screenRect = this.getCurrentScreenRectangle();
+            var screenRect = this.GetCurrentScreenRectangle();
 
             this.MaxWidth = screenRect.Width;
             this.MaxHeight = screenRect.Height;
-        }
-
-        private Screen getCurrentScreen()
-        {
-            return Screen.FromRectangle(new Rectangle(
-                (int)this.Left, (int)this.Top,
-                (int)this.Width, (int)this.Height
-                ));
-        }
-
-        protected Rect getCurrentScreenRectangle()
-        {
-            var screen = this.getCurrentScreen();
-            var area = screen.WorkingArea;
-
-            var topleft = new System.Windows.Point(area.Left, area.Top);
-            var bottomRight = new System.Windows.Point(area.Right, area.Bottom);
-
-            var presentationSource = PresentationSource.FromVisual(this);
-            if (presentationSource != null)
-            {
-                var compositionTarget = presentationSource.CompositionTarget;
-                if (compositionTarget != null)
-                {
-                    var t = compositionTarget.TransformFromDevice;
-
-                    topleft = t.Transform(topleft);
-                    bottomRight = t.Transform(bottomRight);
-                }
-            }
-
-            return new Rect(topleft, bottomRight);
         }
 
         #endregion
