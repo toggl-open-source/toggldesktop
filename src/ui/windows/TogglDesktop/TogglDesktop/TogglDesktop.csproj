@@ -983,6 +983,9 @@
     <Resource Include="Resources\toggl-logo-dark.png" />
     <Resource Include="Resources\toggl-logo-light.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\bg-pattern.png" />
+  </ItemGroup>
   <Import Project="Dependencies.targets" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

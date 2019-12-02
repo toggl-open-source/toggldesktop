@@ -6,13 +6,17 @@
              xmlns:toggl="clr-namespace:TogglDesktop"
              xmlns:viewModels="clr-namespace:TogglDesktop.ViewModels"
              xmlns:converters="clr-namespace:TogglDesktop.Converters"
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d" 
-             MinHeight="470" MinWidth="330"
-             d:DataContext="{d:DesignInstance viewModels:LoginViewModel, IsDesignTimeCreatable=False}"
-             Style="{StaticResource LoginView}">
+             MinHeight="456" MinWidth="300"
+             Background="{DynamicResource Toggl.CardBackground}"
+             d:DataContext="{d:DesignInstance viewModels:LoginViewModel, IsDesignTimeCreatable=False}">
 
     <UserControl.Resources>
         <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources/DesignUpdate/Controls.xaml" />
+            </ResourceDictionary.MergedDictionaries>
             <!-- ReSharper disable once Xaml.RedundantResource -->
             <Storyboard x:Key="RotateConfirmSpinner" BeginTime="00:00:00.000"
                         Duration="00:00:1.000" RepeatBehavior="Forever">
@@ -33,100 +37,124 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Grid Background="{StaticResource ViewBackgroundDark}">
-        <StackPanel Width="250" Margin="0 35 0 0">
-            
-            <Image Source="/TogglDesktop;component/Resources/toggl-logo-white.png"
-                   Width="120" Height="36" Margin="0 20"/>
-            
-            <StackPanel x:Name="formPanel" x:FieldModifier="private">
+    <Grid Background="{StaticResource ViewBackground}">
+        <Border BorderThickness="1" BorderBrush="{DynamicResource Toggl.LoginView.Border}"
+            Width="300" Height="460"
+            Background="{DynamicResource Toggl.CardBackground}"
+            VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <StackPanel>
+                <Image Source="{DynamicResource Toggl.LogoImage}"
+                       Margin="0 50 0 0"
+                       SnapsToDevicePixels="True"
+                       Stretch="None" />
+                <StackPanel x:Name="formPanel" x:FieldModifier="private">
+                    <TextBox x:Name="emailTextBox" x:FieldModifier="private"
+                             Margin="0 20 0 0"
+                             Width="200"
+                             mah:TextBoxHelper.Watermark="Email address"/>
+                    <PasswordBox x:Name="passwordBox" x:FieldModifier="private"
+                                 PasswordChar="*"
+                                 Margin="0 8 0 0"
+                                 Width="200"
+                                 mah:TextBoxHelper.Watermark="Password"/>
 
-                <toggl:LoginTextBox
-                    x:Name="emailTextBox" x:FieldModifier="private"
-                    Margin="0 15" EmptyText="Your email address"/>
-                <toggl:LoginPasswordBox
-                    x:Name="passwordBox" x:FieldModifier="private"
-                    EmptyText="Password"/>
+                    <Label HorizontalAlignment="Left"
+                           Margin="48 12 0 0"
+                           Visibility="{Binding SelectedConfirmAction, Converter={StaticResource ShowOnLogIn}}">
+                        <Hyperlink Style="{StaticResource Toggl.NormalHyperlink}"
+                                   Click="onForgotPasswordLinkClick">Forgot password?</Hyperlink>
+                    </Label>
 
-                <Button Visibility="{Binding SelectedConfirmAction, Converter={StaticResource ShowOnLogIn}}"
-                    Content="Forgot password?"
-                    Margin="0 5 0 15" HorizontalAlignment="Right"
-                    Click="onForgotPasswordButtonClick"/>
+                    <ComboBox Name="countrySelect"
+                              Margin="0 8 0 0"
+                              Width="200"
+                              Height="32"
+                              ItemsSource="{Binding Countries}"
+                              SelectedItem="{Binding SelectedCountry}"
+                              Visibility="{Binding SelectedConfirmAction, Converter={StaticResource ShowOnSignUp}}"
+                              SelectedValuePath="Name"
+                              DisplayMemberPath="Name"
+                              VerticalAlignment="Center"
+                              VerticalContentAlignment="Center"
+                              Foreground="#000000"
+                              IsTextSearchEnabled="True"
+                              IsTextSearchCaseSensitive="False"
+                              TextSearch.TextPath="Name"
+                              mah:TextBoxHelper.Watermark="Select country" />
+                    <CheckBox Name="tosCheckbox" Foreground="#ffffff" Margin="50 16 0 0"
+                              HorizontalAlignment="Left"
+                              Visibility="{Binding SelectedConfirmAction, Converter={StaticResource ShowOnSignUp}}">
+                        <WrapPanel Margin="8 -8 0 0" HorizontalAlignment="Left">
+                            <TextBlock Style="{DynamicResource Toggl.CaptionText}">
+                                I agree to
+                                <Hyperlink
+                                    NavigateUri="https://toggl.com/legal/terms"
+                                    RequestNavigate="Hyperlink_RequestNavigate"
+                                    Style="{StaticResource Toggl.NormalHyperlink}">
+                                    Terms of Service
+                                </Hyperlink>
+                                <LineBreak/> and
+                                <Hyperlink
+                                    NavigateUri="https://toggl.com/legal/privacy"
+                                    RequestNavigate="Hyperlink_RequestNavigate"
+                                    Style="{StaticResource Toggl.NormalHyperlink}">
+                                    Privacy Policy
+                                </Hyperlink>
+                            </TextBlock>
+                        </WrapPanel>
+                    </CheckBox>
 
-                <ComboBox Name="countrySelect"
-                          Height="30"
-                          ItemsSource="{Binding Countries}"
-                          SelectedItem="{Binding SelectedCountry}"
-                          Visibility="{Binding SelectedConfirmAction, Converter={StaticResource ShowOnSignUp}}"
-                          SelectedValuePath="Name"
-                          DisplayMemberPath="Name"
-                          VerticalAlignment="Center"
-                          VerticalContentAlignment="Center"
-                          Foreground="#000000"
-                          IsTextSearchEnabled="True"
-                          IsTextSearchCaseSensitive="False"
-                          TextSearch.TextPath="Name">
-                </ComboBox>
-                <CheckBox Name="tosCheckbox" Foreground="#ffffff" Margin="0,10,0,5"
-                          Visibility="{Binding SelectedConfirmAction, Converter={StaticResource ShowOnSignUp}}">
-                    <WrapPanel>
-                        <TextBlock Foreground="White" Name="TextBlockWithHyperlink" Margin="10,0,0,0">
-                            I agree to  
-                            <Hyperlink 
-                                NavigateUri="https://toggl.com/legal/terms"
-                                RequestNavigate="Hyperlink_RequestNavigate"
-                                Foreground="White">
-                                terms of service
-                            </Hyperlink>
-                            <LineBreak/> and 
-                            <Hyperlink 
-                                NavigateUri="https://toggl.com/legal/privacy"
-                                RequestNavigate="Hyperlink_RequestNavigate"
-                                Foreground="White">
-                                privacy policy
-                            </Hyperlink>
-                        </TextBlock>
-                    </WrapPanel>
-                </CheckBox>
+                    <Button Style="{StaticResource RaisedButton}"
+                            Margin="0 20 0 0"
+                            Height="32"
+                            Width="200"
+                            HorizontalAlignment="Center"
+                            Click="onConfirmButtonClick">
+                        <Grid Height="24" Width="160">
+                            <Image Source="/TogglDesktop;component/Resources/login-spinner.png"
+                                Name="confirmButtonSpinner" x:FieldModifier="private"
+                                Stretch="Fill" Width="16" Height="16"
+                                VerticalAlignment="Center" HorizontalAlignment="Center"
+                                Visibility="Collapsed" Opacity="0.5"
+                                UseLayoutRounding="False">
+                                <Image.LayoutTransform>
+                                    <RotateTransform Angle="00"/>
+                                </Image.LayoutTransform>
+                            </Image>
+                            <TextBlock Name="confirmButtonText" x:FieldModifier="private"
+                                VerticalAlignment="Center" HorizontalAlignment="Center"
+                                Foreground="#333333"
+                                Text="{Binding ConfirmButtonText}"/>
+                        </Grid>
+                    </Button>
 
-                <Button
-                    Style="{StaticResource RaisedButton}"
-                    Margin="0 10" HorizontalAlignment="Center"
-                    Click="onConfirmButtonClick">
-                    <Grid Height="24" Width="160">
-                        <Image Source="/TogglDesktop;component/Resources/login-spinner.png"
-                            Name="confirmButtonSpinner" x:FieldModifier="private"
-                            Stretch="Fill" Width="16" Height="16"
-                            VerticalAlignment="Center" HorizontalAlignment="Center"
-                            Visibility="Collapsed" Opacity="0.5"
-                            UseLayoutRounding="False">
-                            <Image.LayoutTransform>
-                                <RotateTransform Angle="00"/>
-                            </Image.LayoutTransform>
-                        </Image>
-                        <TextBlock Name="confirmButtonText" x:FieldModifier="private"
-                            VerticalAlignment="Center" HorizontalAlignment="Center"
-                            Foreground="#333333"
-                            Text="{Binding ConfirmButtonText}"/>
-                    </Grid>
-                </Button>
+                    <Button Margin="0 10 0 0" Click="onGoogleLoginClick" Height="32" Width="200">
+                        <StackPanel Orientation="Horizontal" Background="Transparent">
+                            <Image Source="/TogglDesktop;component/Resources/icon-google.png"
+                                   Width="18" Height="18" Margin="0 4 8 4"/>
+                            <TextBlock Text="{Binding GoogleLoginButtonText}"
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
 
-                <Button Click="onGoogleLoginClick">
-                    <StackPanel Orientation="Horizontal" Background="Transparent">
-                        <Image Source="/TogglDesktop;component/Resources/icon-google.png"
-                               Width="18" Height="18" Margin="0 4 8 4"/>
-                        <TextBlock Text="{Binding GoogleLoginButtonText}"
-                                   VerticalAlignment="Center"/>
-                    </StackPanel>
-                </Button>
+                    <TextBlock Text="Don't have an account?"
+                               Margin="0 82 0 0"
+                               Style="{DynamicResource Toggl.CaptionBlackText}"
+                               HorizontalAlignment="Center"
+                               Visibility="{Binding SelectedConfirmAction, Converter={StaticResource ShowOnLogIn}}"/>
+                    <!-- TODO: when implementing new validation UI, make it DockPanel.Dock="Bottom" with a Bottom margin instead -->
 
-                <TextBlock Text="or you can"
-                           Margin="0 40 0 0"/>
-
-                <Button Content="{Binding SignupLoginToggleText}"
-                        FontWeight="Regular"
-                        Click="onSignupLoginToggleClick"/>
+                    <Label HorizontalAlignment="Center"
+                           Margin="0 1 0 24">
+                        <Hyperlink Style="{StaticResource Toggl.NormalHyperlink}"
+                                   Click="onSignupLoginToggleClick">
+                            <Hyperlink.Inlines>
+                                <Run Text="{Binding SignupLoginToggleText, Mode=OneWay}" />
+                            </Hyperlink.Inlines>
+                        </Hyperlink>
+                    </Label>
+                </StackPanel>
             </StackPanel>
-        </StackPanel>
+        </Border>
     </Grid>
 </UserControl>
