@@ -91,7 +91,7 @@ namespace TogglDesktop
             }
         }
 
-        private void onForgotPasswordButtonClick(object sender, RoutedEventArgs e)
+        private void onForgotPasswordLinkClick(object sender, RoutedEventArgs e)
         {
             Toggl.PasswordForgot();
         }
@@ -155,7 +155,7 @@ namespace TogglDesktop
                     this.disableForm();
 
                     var email = this.emailTextBox.Text;
-                    var password = this.passwordBox.Text;
+                    var password = this.passwordBox.Password;
                     var selectedCountryId = ViewModel.SelectedCountry?.ID ?? -1;
 
                     success = await Task.Run(() => confirmAction(email, password, selectedCountryId));
@@ -203,7 +203,7 @@ namespace TogglDesktop
                 Toggl.NewError("Please enter valid email address", true);
                 return false;
             }
-            if (this.passwordBox.Text == "")
+            if (this.passwordBox.Password == "")
             {
                 this.passwordBox.Focus();
                 Toggl.NewError("A password is required", true);

@@ -78,7 +78,7 @@ namespace TogglDesktop
             this.finalInitialisation();
             this.trackingWindowSize();
 #if DEBUG
-            this.darkModeBorder.Visibility = Visibility.Visible;
+            // this.darkModeBorder.Visibility = Visibility.Visible;
 #endif
         }
 
