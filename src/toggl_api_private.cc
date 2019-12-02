@@ -225,7 +225,7 @@ std::string trim_whitespace(const std::string &str)
 
 const char_t *to_char_t(const std::string &s) {
 #if defined(_WIN32) || defined(WIN32)
-    std::wstring ws;
+    static thread_local std::wstring ws;
     Poco::UnicodeConverter::toUTF16(s, ws);
     return ws.c_str();
 #else
