@@ -4,11 +4,11 @@
     xmlns:toggl="clr-namespace:TogglDesktop"
     xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
-    <ImageBrush x:Key="ViewBackgroundDark"
-        ImageSource="/TogglDesktop;component/Resources/timerDarkBg.png"
+    <ImageBrush x:Key="ViewBackground"
+        ImageSource="/TogglDesktop;component/Resources/bg-pattern.png"
         AlignmentX="Left" AlignmentY="Top"
         TileMode="Tile" Stretch="UniformToFill"
-        Viewport="0 0 634 822" ViewportUnits="Absolute"/>
+        Viewport="0 0 600 800" ViewportUnits="Absolute"/>
     <ImageBrush x:Key="ViewBackgroundLight"
         ImageSource="/TogglDesktop;component/Resources/timerLightBg.png"
         AlignmentX="Left" AlignmentY="Top"

@@ -23,7 +23,7 @@
                 </LinearGradientBrush>
             </Rectangle.Fill>
         </Rectangle>
-        <Grid Background="{StaticResource ViewBackgroundDark}"
+        <Grid Background="{StaticResource ViewBackground}"
               Height="30">
             <TextBlock x:Name="statusText" x:FieldModifier="private"
                        Text="Status: No status."/>
