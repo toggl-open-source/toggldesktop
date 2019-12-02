@@ -551,7 +551,7 @@ std::string Formatter::EscapeJSONString(const std::string &input) {
     std::ostringstream ss;
     for (std::string::const_iterator iter = input.begin();
             iter != input.end();
-            iter++) {
+            ++iter) {
         switch (*iter) {
         case '"':
             ss << "\"";
@@ -581,7 +581,7 @@ error Formatter::CollectErrors(std::vector<error> * const errors) {
     std::set<error> unique;
     for (std::vector<error>::const_iterator it = errors->begin();
             it != errors->end();
-            it++) {
+            ++it) {
         error err = *it;
         if (!err.empty() && err[err.size() - 1] == '\n') {
             err[err.size() - 1] = '.';

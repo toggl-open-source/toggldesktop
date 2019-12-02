@@ -291,10 +291,12 @@ NSString *kInactiveTimerColor = @"#999999";
 	// Display duration
 	if (self.time_entry.duration != nil)
 	{
+		self.durationTextField.hidden = NO;
 		self.durationTextField.stringValue = self.time_entry.duration;
 	}
 	else
 	{
+		self.durationTextField.hidden = YES;
 		self.durationTextField.stringValue = @"";
 	}
 
@@ -369,6 +371,7 @@ NSString *kInactiveTimerColor = @"#999999";
 
 - (void)clear
 {
+	self.durationTextField.hidden = YES;
 	self.durationTextField.stringValue = @"";
 	self.autoCompleteInput.stringValue = @"";
 	[self.autoCompleteInput resetTable];
@@ -424,6 +427,7 @@ NSString *kInactiveTimerColor = @"#999999";
 	NSString *newValue = [NSString stringWithUTF8String:str];
 	free(str);
 	[self.durationTextField setStringValue:newValue];
+	self.durationTextField.hidden = newValue.length == 0;
 }
 
 - (IBAction)autoCompleteChanged:(id)sender
@@ -510,6 +514,7 @@ NSString *kInactiveTimerColor = @"#999999";
 	free(str);
 
 	[self.durationTextField setStringValue:newValue];
+	self.durationTextField.hidden = newValue.length == 0;
 
 	// Update
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"TimerForRunningTimeEntryOnTicket" object:nil];

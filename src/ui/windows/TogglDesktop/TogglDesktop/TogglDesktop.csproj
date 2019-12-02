@@ -4,6 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <ProjectGuid>{27AC6261-3916-4683-B692-DC57E2FE0ABD}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -224,7 +225,11 @@
     <Compile Include="ui\controls\ReminderNotification.xaml.cs">
       <DependentUpon>ReminderNotification.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ui\controls\TrayToolTipControl.xaml.cs">
+      <DependentUpon>TrayToolTipControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ui\Converters\AndConverter.cs" />
+    <Compile Include="ui\Converters\EmptyStringToCollapsedConverter.cs" />
     <Compile Include="ui\Converters\StringToBrushConverter.cs" />
     <Compile Include="ui\Experiments\implementations\Experiment98.cs" />
     <Compile Include="ui\Experiments\implementations\Experiment98Screen2.xaml.cs">
@@ -614,6 +619,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ui\controls\TrayToolTipControl.xaml" />
     <Page Include="ui\Experiments\implementations\Experiment87Screen.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

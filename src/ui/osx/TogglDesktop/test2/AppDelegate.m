@@ -327,7 +327,6 @@ void *ctx;
 
 	// Setup Google Service Callback
 	[self registerGoogleEventHandler];
-
 }
 
 - (void)systemWillPowerOff:(NSNotification *)aNotification

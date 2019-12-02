@@ -14,6 +14,7 @@
 #import "AutocompleteDataSource.h"
 #import "NSCustomComboBox.h"
 #import <MASShortcut/Shortcut.h>
+#import "TogglDesktop-Swift.h"
 
 NSString *const kPreferenceGlobalShortcutShowHide = @"TogglDesktopGlobalShortcutShowHide";
 NSString *const kPreferenceGlobalShortcutStartStop = @"TogglDesktopGlobalShortcutStartStop";
@@ -26,7 +27,7 @@ typedef enum : NSUInteger
 	TabIndexReminder
 } TabIndex;
 
-@interface PreferencesWindowController () <NSTextFieldDelegate, NSTableViewDataSource, NSComboBoxDataSource, NSComboBoxDelegate>
+@interface PreferencesWindowController () <NSTextFieldDelegate, NSTableViewDataSource, NSComboBoxDataSource, NSComboBoxDelegate, NSWindowDelegate>
 @property (weak) IBOutlet NSButton *stopOnShutdownCheckbox;
 @property (weak) IBOutlet NSTextField *hostTextField;
 @property (weak) IBOutlet NSTextField *portTextField;
@@ -73,6 +74,7 @@ typedef enum : NSUInteger
 @property (weak) IBOutlet NSTabView *tabView;
 @property (weak) IBOutlet NSButton *showTouchBarButton;
 @property (weak) IBOutlet NSLayoutConstraint *bottomContainerHeight;
+@property (weak) IBOutlet NSButton *screenRecordingPermissionBtn;
 
 @property (nonatomic, assign) NSInteger selectedProxyIndex;
 @property (nonatomic, strong) NSArray<AutotrackerRuleItem *> *rules;
@@ -139,6 +141,7 @@ extern void *ctx;
 	[super windowDidLoad];
 
 	// Clean window titlebar
+	self.window.delegate = self;
 	self.window.titleVisibility = NSWindowTitleHidden;
 	self.window.titlebarAppearsTransparent = YES;
 	self.window.styleMask |= NSFullSizeContentViewWindowMask;
@@ -355,6 +358,12 @@ const int kUseProxyToConnectToToggl = 2;
 	BOOL record_timeline = [Utils stateToBool:[self.recordTimelineCheckbox state]];
 
 	toggl_timeline_toggle_recording(ctx, record_timeline);
+
+	// Try to grant permission
+	if (record_timeline)
+	{
+		[ObjcSystemPermissionManager tryGrantScreenRecordingPermission];
+	}
 }
 
 - (IBAction)menubarTimerCheckboxChanged:(id)sender
@@ -750,6 +759,23 @@ const int kUseProxyToConnectToToggl = 2;
 - (IBAction)tabSegmentOnChange:(id)sender
 {
 	[self.tabView selectTabViewItemAtIndex:self.tabSegment.selectedSegment];
+}
+
+- (IBAction)screenRecordingPermissionOnTap:(id)sender
+{
+	[ObjcSystemPermissionManager tryGrantScreenRecordingPermission];
+}
+
+- (void)updatePermissionState
+{
+	BOOL isEnabled = [ObjcSystemPermissionManager isScreenRecordingPermissionGranted];
+
+	[self.screenRecordingPermissionBtn setHidden:isEnabled];
+}
+
+- (void)windowDidBecomeKey:(NSNotification *)notification
+{
+	[self updatePermissionState];
 }
 
 @end

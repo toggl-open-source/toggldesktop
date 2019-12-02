@@ -90,7 +90,7 @@ TogglGenericView *generic_to_view_item_list(
     for (std::vector<toggl::view::Generic>::const_iterator
             it = list.begin();
             it != list.end();
-            it++) {
+            ++it) {
         TogglGenericView *item = generic_to_view_item(*it);
         item->Next = first;
         first = item;
@@ -258,7 +258,7 @@ TogglCountryView *country_list_init(
     for (std::vector<TogglCountryView>::const_iterator
             it = items->begin();
             it != items->end();
-            it++) {
+            ++it) {
         TogglCountryView *item = new TogglCountryView();
         poco_check_ptr(item);
 
@@ -494,7 +494,7 @@ TogglAutocompleteView *autocomplete_list_init(
     for (std::vector<toggl::view::Autocomplete>::const_reverse_iterator it =
         items->rbegin();
             it != items->rend();
-            it++) {
+            ++it) {
         TogglAutocompleteView *item = autocomplete_item_init(*it);
         item->Next = first;
         first = item;
@@ -542,7 +542,7 @@ TogglHelpArticleView *help_article_list_init(const std::vector<toggl::HelpArticl
     for (std::vector<toggl::HelpArticle>::const_reverse_iterator it =
         items.rbegin();
             it != items.rend();
-            it++) {
+            ++it) {
         TogglHelpArticleView *item = help_article_init(*it);
         item->Next = first;
         first = item;

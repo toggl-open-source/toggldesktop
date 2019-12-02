@@ -22,6 +22,7 @@
 #include "./https_client.h"
 #include "./obm_action.h"
 #include "./project.h"
+#include "./random.h"
 #include "./settings.h"
 #include "./task.h"
 #include "./time_entry.h"
@@ -46,7 +47,6 @@
 #include "Poco/Net/StringPartSource.h"
 #include "Poco/Path.h"
 #include "Poco/PatternFormatter.h"
-#include "Poco/Random.h"
 #include "Poco/SimpleFileChannel.h"
 #include "Poco/Stopwatch.h"
 #include "Poco/StreamCopier.h"
@@ -438,7 +438,7 @@ void UIElements::ApplyChanges(
     for (std::vector<ModelChange>::const_iterator it =
         changes.begin();
             it != changes.end();
-            it++) {
+            ++it) {
         ModelChange ch = *it;
 
         if (ch.ModelType() == kModelWorkspace
@@ -590,7 +590,7 @@ void Context::updateUI(const UIElements &what) {
                 for (std::vector<std::string>::const_iterator
                         it = tags.begin();
                         it != tags.end();
-                        it++) {
+                        ++it) {
                     view::Generic view;
                     view.Name = *it;
                     tag_views.push_back(view);
@@ -604,7 +604,7 @@ void Context::updateUI(const UIElements &what) {
             for (std::vector<Workspace *>::const_iterator
                     it = workspaces.begin();
                     it != workspaces.end();
-                    it++) {
+                    ++it) {
                 Workspace *ws = *it;
                 view::Generic view;
                 view.GUID = ws->GUID();
@@ -622,7 +622,7 @@ void Context::updateUI(const UIElements &what) {
             user_->related.ClientList(&models);
             for (std::vector<Client *>::const_iterator it = models.begin();
                     it != models.end();
-                    it++) {
+                    ++it) {
                 Client *c = *it;
                 view::Generic view;
                 view.GUID = c->GUID();
@@ -825,7 +825,7 @@ void Context::updateUI(const UIElements &what) {
                 for (std::vector<toggl::AutotrackerRule *>::const_iterator
                         it = user_->related.AutotrackerRules.begin();
                         it != user_->related.AutotrackerRules.end();
-                        it++) {
+                        ++it) {
                     AutotrackerRule *model = *it;
                     Project *p = user_->related.ProjectByID(model->PID());
                     Task *t = user_->related.TaskByID(model->TID());
@@ -1049,9 +1049,7 @@ error Context::displayError(const error &err) {
 }
 
 int Context::nextSyncIntervalSeconds() const {
-    Poco::Random random;
-    random.seed();
-    int n = static_cast<int>(random.next(kSyncIntervalRangeSeconds)) + kSyncIntervalRangeSeconds;
+    int n = static_cast<int>(Random::next(kSyncIntervalRangeSeconds)) + kSyncIntervalRangeSeconds;
     std::stringstream ss;
     ss << "Next autosync in " << n << " seconds";
     logger().trace(ss.str());
@@ -3753,7 +3751,7 @@ Project *Context::CreateProject(
         }
         for (std::vector<Project *>::iterator it =
             user_->related.Projects.begin();
-                it != user_->related.Projects.end(); it++) {
+                it != user_->related.Projects.end(); ++it) {
             Project *p = *it;
 
             bool clientIsSame = false;
@@ -3887,7 +3885,7 @@ Client *Context::CreateClient(
         }
         for (std::vector<Client *>::iterator it =
             user_->related.Clients.begin();
-                it != user_->related.Clients.end(); it++) {
+                it != user_->related.Clients.end(); ++it) {
             Client *c = *it;
             if (c->WID() == workspace_id && c->Name() == trimmed_client_name) {
                 displayError(kClientNameAlreadyExists);
@@ -4050,7 +4048,7 @@ error Context::runObmExperiments() {
             for (std::vector<ObmExperiment *>::const_iterator it =
                 user_->related.ObmExperiments.begin();
                     it != user_->related.ObmExperiments.end();
-                    it++) {
+                    ++it) {
                 ObmExperiment *model = *it;
                 if (!model->DeletedAt()) {
                     experiments[model->Nr()] = *model;
@@ -4067,7 +4065,7 @@ error Context::runObmExperiments() {
         for (std::map<Poco::UInt64, ObmExperiment>::const_iterator
                 it = experiments.begin();
                 it != experiments.end();
-                it++) {
+                ++it) {
             ObmExperiment experiment = it->second;
             UI()->DisplayObmExperiment(
                 experiment.Nr(),
@@ -4948,12 +4946,12 @@ error Context::pushChanges(
 error Context::pushClients(
     const std::vector<Client *> &clients,
     const std::string &api_token,
-    TogglClient toggl_client) {
+    const TogglClient &toggl_client) {
     std::string client_json("");
     error err = noError;
     for (std::vector<Client *>::const_iterator it =
         clients.begin();
-            it != clients.end(); it++) {
+            it != clients.end(); ++it) {
         Json::Value clientJson = (*it)->SaveToJSON();
 
         Json::StyledWriter writer;
@@ -4989,20 +4987,21 @@ error Context::pushClients(
     return err;
 }
 
-error Context::pushProjects(const std::vector<Project *> &projects,
-                            const std::vector<Client *> &clients,
-                            const std::string &api_token,
-                            TogglClient toggl_client) {
+error Context::pushProjects(
+    const std::vector<Project *> &projects,
+    const std::vector<Client *> &clients,
+    const std::string &api_token,
+    const TogglClient &toggl_client) {
     error err = noError;
     std::string project_json("");
     for (std::vector<Project *>::const_iterator it =
         projects.begin();
-            it != projects.end(); it++) {
+            it != projects.end(); ++it) {
         if (!(*it)->CID() && !(*it)->ClientGUID().empty()) {
             // Find client id
             for (std::vector<Client *>::const_iterator itc =
                 clients.begin();
-                    itc != clients.end(); itc++) {
+                    itc != clients.end(); ++itc) {
                 if ((*itc)->GUID().compare((*it)->ClientGUID()) == 0) {
                     (*it)->SetCID((*itc)->ID());
                     break;
@@ -5049,12 +5048,12 @@ error Context::updateEntryProjects(const std::vector<Project *> &projects,
                                    const std::vector<TimeEntry *> &time_entries) {
     for (std::vector<TimeEntry *>::const_iterator it =
         time_entries.begin();
-            it != time_entries.end(); it++) {
+            it != time_entries.end(); ++it) {
         if (!(*it)->PID() && !(*it)->ProjectGUID().empty()) {
             // Find project id
             for (std::vector<Project *>::const_iterator itc =
                 projects.begin();
-                    itc != projects.end(); itc++) {
+                    itc != projects.end(); ++itc) {
                 if ((*itc)->GUID().compare((*it)->ProjectGUID()) == 0) {
                     (*it)->SetPID((*itc)->ID());
                     break;
@@ -5070,7 +5069,7 @@ error Context::pushEntries(
     const std::map<std::string, BaseModel *>&,
     const std::vector<TimeEntry *> &time_entries,
     const std::string &api_token,
-    TogglClient toggl_client) {
+    const TogglClient &toggl_client) {
 
     std::string entry_json("");
     std::string error_message("");
@@ -5079,7 +5078,7 @@ error Context::pushEntries(
 
     for (std::vector<TimeEntry *>::const_iterator it =
         time_entries.begin();
-            it != time_entries.end(); it++) {
+            it != time_entries.end(); ++it) {
         // Avoid trying to POST when we're offline
         if (offline) {
             // Mark the time entry as unsynced now
@@ -5246,7 +5245,7 @@ error Context::pushObmAction() {
             for (std::vector<ObmAction *>::iterator it =
                 user_->related.ObmActions.begin();
                     it != user_->related.ObmActions.end();
-                    it++) {
+                    ++it) {
                 ObmAction *model = *it;
                 if (!model->IsMarkedAsDeletedOnServer()) {
                     for_upload = model;
@@ -5425,7 +5424,7 @@ error Context::pullWorkspacePreferences(TogglClient* toggl_client) {
     for (std::vector<Workspace*>::const_iterator
             it = workspaces.begin();
             it != workspaces.end();
-            it++) {
+            ++it) {
         Workspace* ws = *it;
 
         if (!ws->Business())
@@ -5804,7 +5803,7 @@ void Context::collectPushableModels(
     for (typename std::vector<T *>::const_iterator it =
         list.begin();
             it != list.end();
-            it++) {
+            ++it) {
         T *model = *it;
         if (!model->NeedsPush()) {
             continue;

@@ -691,7 +691,7 @@ void GUI::DisplayAutotrackerRules(
     for (std::vector<view::AutotrackerRule>::const_iterator
             it = autotracker_rules.begin();
             it != autotracker_rules.end();
-            it++) {
+            ++it) {
         TogglAutotrackerRuleView *item = autotracker_rule_to_view_item(*it);
         item->Next = first;
         first = item;

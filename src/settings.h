@@ -83,10 +83,10 @@ class TOGGL_INTERNAL_EXPORT Settings : public BaseModel {
 
     // Override BaseModel
 
-    std::string String() const;
-    std::string ModelName() const;
-    std::string ModelURL() const;
-    Json::Value SaveToJSON() const;
+    std::string String() const override;
+    std::string ModelName() const override;
+    std::string ModelURL() const override;
+    Json::Value SaveToJSON() const override;
 };
 
 }  // namespace toggl

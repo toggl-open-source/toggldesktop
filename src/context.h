@@ -485,11 +485,11 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     std::string UserEmail();
 
     // Timeline datasource
-    error StartAutotrackerEvent(const TimelineEvent &event);
-    error CreateCompressedTimelineBatchForUpload(TimelineBatch *batch);
-    error StartTimelineEvent(TimelineEvent *event);
+    error StartAutotrackerEvent(const TimelineEvent &event) override;
+    error CreateCompressedTimelineBatchForUpload(TimelineBatch *batch) override;
+    error StartTimelineEvent(TimelineEvent *event) override;
     error MarkTimelineBatchAsUploaded(
-        const std::vector<TimelineEvent> &events);
+        const std::vector<TimelineEvent> &events) override;
 
     error SetPromotionResponse(
         const int64_t promotion_type,
@@ -612,18 +612,20 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     error pushChanges(
         TogglClient *https_client,
         bool *had_something_to_push);
-    error pushClients(const std::vector<Client *> &clients,
-                      const std::string &api_token,
-                      TogglClient toggl_client);
+    error pushClients(
+        const std::vector<Client *> &clients,
+        const std::string &api_token,
+        const TogglClient &toggl_client);
     error pushProjects(
         const std::vector<Project *> &projects,
         const std::vector<Client *> &clients,
         const std::string &api_token,
-        TogglClient toggl_client);
-    error pushEntries(const std::map<std::string, BaseModel *> &models,
-                      const std::vector<TimeEntry *> &time_entries,
-                      const std::string &api_token,
-                      TogglClient toggl_client);
+        const TogglClient &toggl_client);
+    error pushEntries(
+        const std::map<std::string, BaseModel *> &models,
+        const std::vector<TimeEntry *> &time_entries,
+        const std::string &api_token,
+        const TogglClient &toggl_client);
     error updateEntryProjects(
         const std::vector<Project *> &projects,
         const std::vector<TimeEntry *> &time_entries);

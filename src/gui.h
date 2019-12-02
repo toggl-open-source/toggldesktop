@@ -358,6 +358,7 @@ class TOGGL_INTERNAL_EXPORT GUI : public SyncStateMonitor {
     GUI()
         : on_display_app_(nullptr)
     , on_display_error_(nullptr)
+    , on_display_overlay_(nullptr)
     , on_display_online_state_(nullptr)
     , on_display_login_(nullptr)
     , on_display_url_(nullptr)
@@ -385,6 +386,7 @@ class TOGGL_INTERNAL_EXPORT GUI : public SyncStateMonitor {
     , on_display_timeline_(nullptr)
     , on_display_help_articles_(nullptr)
     , on_display_project_colors_(nullptr)
+    , on_display_countries_(nullptr)
     , on_display_obm_experiment_(nullptr)
     , lastSyncState(-1)
     , lastUnsyncedItemsCount(-1)
@@ -409,7 +411,7 @@ class TOGGL_INTERNAL_EXPORT GUI : public SyncStateMonitor {
     void DisplayHelpArticles(
         const std::vector<HelpArticle> &articles);
 
-    void DisplaySyncState(const Poco::Int64 state);
+    void DisplaySyncState(const Poco::Int64 state) override;
 
     void DisplayOnlineState(const Poco::Int64 state);
 
