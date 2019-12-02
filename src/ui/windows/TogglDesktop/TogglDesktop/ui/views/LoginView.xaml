@@ -111,7 +111,7 @@
                                    Name="confirmButtonSpinner" x:FieldModifier="private"
                                    Stretch="Fill" Width="16" Height="16"
                                    VerticalAlignment="Center" HorizontalAlignment="Center"
-                                   Opacity="0.5"
+                                   Opacity="0.6"
                                    UseLayoutRounding="False">
                                 <Image.LayoutTransform>
                                     <RotateTransform Angle="00"/>
