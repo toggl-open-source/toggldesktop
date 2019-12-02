@@ -14,7 +14,7 @@
         <FrameworkElement Grid.Row="0" Height="{DynamicResource TimerHeight}"/>
 
         <Grid Grid.Row="1" Background="White">
-            <Grid Background="{StaticResource ViewBackgroundDark}" Opacity="0.75" />
+            <Grid Background="{StaticResource ViewBackground}" Opacity="0.75" />
         </Grid>
         <Grid Grid.Row="1" >
             

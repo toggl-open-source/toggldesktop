@@ -35,7 +35,7 @@
 
     <Style TargetType="UserControl" x:Key="Timer" BasedOn="{StaticResource {x:Type Control}}">
         <Setter Property="Height" Value="{StaticResource TimerHeight}" />
-        <Setter Property="Background" Value="{StaticResource ViewBackgroundDark}" />
+        <Setter Property="Background" Value="{StaticResource ViewBackground}" />
         <Style.Resources>
 
             <Style TargetType="TextBlock" BasedOn="{StaticResource TimerTextBlockBase}" />
