@@ -3,6 +3,7 @@ import QtQuick.Window 2.12
 import QtQuick.Layouts 1.12
 
 import QtQuick.Controls 1.4
+import QtQuick.Dialogs 1.2
 
 ApplicationWindow {
     id: window
@@ -25,6 +26,9 @@ ApplicationWindow {
     SystemPalette {
         id: palette
         property bool isDark: (shadowColor.r + shadowColor.g + shadowColor.b) < 300
+
+        property color itemShadow: palette.shadow
+        property color listBackground: mixColors(palette.base, palette.alternateBase, 0.8)
     }
     SystemPalette {
         id: disabledPalette
@@ -90,6 +94,18 @@ ApplicationWindow {
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.right: timeEntryEdit.visible ? timeEntryEdit.left : parent.right
+    }
+
+    Dialog {
+        //visible: true
+        //flags: Qt.WA_TranslucentBackground | Qt.FramelessWindowHint | Qt.ToolTip | Qt.WindowStaysOnTopHint
+            Rectangle {
+                anchors.centerIn: parent
+                width: parent.width
+                height: parent.height
+                radius: height / 2
+                color: "red"
+            }
     }
 
     TimeEntryEditView {

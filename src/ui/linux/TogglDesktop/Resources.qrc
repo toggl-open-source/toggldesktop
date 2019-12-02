@@ -35,5 +35,8 @@
         <file>TogglSwitch.qml</file>
         <file>TogglButtonBackground.qml</file>
         <file>StartButton.qml</file>
+        <file>TimeEntryListItem.qml</file>
+        <file>TogglShadowBox.qml</file>
+        <file>TimeEntryListHeader.qml</file>
     </qresource>
 </RCC>
