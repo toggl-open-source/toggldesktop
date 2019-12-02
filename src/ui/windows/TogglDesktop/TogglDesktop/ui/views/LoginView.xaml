@@ -4,8 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:toggl="clr-namespace:TogglDesktop"
+             xmlns:viewModels="clr-namespace:TogglDesktop.ViewModels"
+             xmlns:converters="clr-namespace:TogglDesktop.Converters"
              mc:Ignorable="d" 
              MinHeight="470" MinWidth="330"
+             d:DataContext="{d:DesignInstance viewModels:LoginViewModel, IsDesignTimeCreatable=False}"
              Style="{StaticResource LoginView}">
 
     <UserControl.Resources>
@@ -17,6 +20,16 @@
                 Storyboard.TargetProperty="(FrameworkElement.LayoutTransform).(RotateTransform.Angle)" 
                 From="0" To="360" BeginTime="00:00:00.000" Duration="00:00:01.000"/>
             </Storyboard>
+            <converters:EqualToVisibilityConverter x:Key="ShowOnLogIn">
+                <converters:EqualToVisibilityConverter.ExpectedValue>
+                    <viewModels:ConfirmAction>LogIn</viewModels:ConfirmAction>
+                </converters:EqualToVisibilityConverter.ExpectedValue>
+            </converters:EqualToVisibilityConverter>
+            <converters:EqualToVisibilityConverter x:Key="ShowOnSignUp">
+                <converters:EqualToVisibilityConverter.ExpectedValue>
+                    <viewModels:ConfirmAction>SignUp</viewModels:ConfirmAction>
+                </converters:EqualToVisibilityConverter.ExpectedValue>
+            </converters:EqualToVisibilityConverter>
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -35,24 +48,27 @@
                     x:Name="passwordBox" x:FieldModifier="private"
                     EmptyText="Password"/>
 
-                <Button Name="forgotPasswordButton" x:FieldModifier="private"
+                <Button Visibility="{Binding SelectedConfirmAction, Converter={StaticResource ShowOnLogIn}}"
                     Content="Forgot password?"
                     Margin="0 5 0 15" HorizontalAlignment="Right"
                     Click="onForgotPasswordButtonClick"/>
 
-                <TextBlock Name="countryLabel" Text="Select Country:" Margin="0,10" Visibility="Collapsed"/>
-                <ComboBox Name="countrySelect" Height="30"
-                          Visibility="Collapsed"
-                          SelectionChanged="countrySelect_SelectionChanged"
+                <ComboBox Name="countrySelect"
+                          Height="30"
+                          ItemsSource="{Binding Countries}"
+                          SelectedItem="{Binding SelectedCountry}"
+                          Visibility="{Binding SelectedConfirmAction, Converter={StaticResource ShowOnSignUp}}"
                           SelectedValuePath="Name"
+                          DisplayMemberPath="Name"
                           VerticalAlignment="Center"
                           VerticalContentAlignment="Center"
-                          DisplayMemberPath="Name"
                           Foreground="#000000"
                           IsTextSearchEnabled="True"
-                          IsTextSearchCaseSensitive="False">
+                          IsTextSearchCaseSensitive="False"
+                          TextSearch.TextPath="Name">
                 </ComboBox>
-                <CheckBox Name="tosCheckbox" Foreground="#ffffff" Visibility="Collapsed" Margin="0,10,0,5">
+                <CheckBox Name="tosCheckbox" Foreground="#ffffff" Margin="0,10,0,5"
+                          Visibility="{Binding SelectedConfirmAction, Converter={StaticResource ShowOnSignUp}}">
                     <WrapPanel>
                         <TextBlock Foreground="White" Name="TextBlockWithHyperlink" Margin="10,0,0,0">
                             I agree to  
@@ -91,7 +107,7 @@
                         <TextBlock Name="confirmButtonText" x:FieldModifier="private"
                             VerticalAlignment="Center" HorizontalAlignment="Center"
                             Foreground="#333333"
-                            Text="LOG IN"/>
+                            Text="{Binding ConfirmButtonText}"/>
                     </Grid>
                 </Button>
 
@@ -99,18 +115,15 @@
                     <StackPanel Orientation="Horizontal" Background="Transparent">
                         <Image Source="/TogglDesktop;component/Resources/icon-google.png"
                                Width="18" Height="18" Margin="0 4 8 4"/>
-                        <TextBlock Name="googleLoginButtonTextBlock"
-                                   Text="LOG IN WITH GOOGLE"
+                        <TextBlock Text="{Binding GoogleLoginButtonText}"
                                    VerticalAlignment="Center"/>
                     </StackPanel>
                 </Button>
 
-
                 <TextBlock Text="or you can"
                            Margin="0 40 0 0"/>
 
-                <Button Name="signupLoginToggle" x:FieldModifier="private"
-                        Content="Sign up for free"
+                <Button Content="{Binding SignupLoginToggleText}"
                         FontWeight="Regular"
                         Click="onSignupLoginToggleClick"/>
             </StackPanel>
