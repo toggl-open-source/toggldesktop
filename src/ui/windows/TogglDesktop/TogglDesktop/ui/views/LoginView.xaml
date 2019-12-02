@@ -108,7 +108,7 @@
                                 Visibility="Collapsed">
                             <Image Source="/TogglDesktop;component/Resources/login-spinner.png"
                                    Name="confirmButtonSpinner" x:FieldModifier="private"
-                                   Stretch="Fill" Width="16" Height="16"
+                                   Stretch="Fill" Width="24" Height="24"
                                    VerticalAlignment="Center" HorizontalAlignment="Center"
                                    Opacity="0.6"
                                    UseLayoutRounding="False">
