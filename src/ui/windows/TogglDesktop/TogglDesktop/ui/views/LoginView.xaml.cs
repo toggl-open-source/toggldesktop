@@ -5,16 +5,23 @@ using System.Windows.Input;
 using System.Windows.Media.Animation;
 using TogglDesktop.Diagnostics;
 using System.Windows.Navigation;
+using ReactiveUI;
 using TogglDesktop.ViewModels;
 
 namespace TogglDesktop
 {
-    public partial class LoginView : IMainView
+    public partial class LoginView : IMainView, IViewFor<LoginViewModel>
     {
         public LoginViewModel ViewModel
         {
             get => (LoginViewModel)DataContext;
-            private set => DataContext = value;
+            set => DataContext = value;
+        }
+
+        object IViewFor.ViewModel
+        {
+            get => ViewModel;
+            set => ViewModel = (LoginViewModel) value;
         }
 
         private readonly Storyboard confirmSpinnerAnimation;
@@ -181,8 +188,8 @@ namespace TogglDesktop
         {
             this.formPanel.IsEnabled = true;
             this.formPanel.Opacity = 1;
-            this.confirmButtonText.Visibility = Visibility.Visible;
-            this.confirmButtonSpinner.Visibility = Visibility.Collapsed;
+            this.confirmButton.Visibility = Visibility.Visible;
+            this.loadingButtonRectangle.Visibility = Visibility.Collapsed;
             this.confirmSpinnerAnimation.Stop();
         }
 
@@ -190,8 +197,8 @@ namespace TogglDesktop
         {
             this.formPanel.IsEnabled = false;
             this.formPanel.Opacity = 0.5;
-            this.confirmButtonText.Visibility = Visibility.Collapsed;
-            this.confirmButtonSpinner.Visibility = Visibility.Visible;
+            this.confirmButton.Visibility = Visibility.Collapsed;
+            this.loadingButtonRectangle.Visibility = Visibility.Visible;
             this.confirmSpinnerAnimation.Begin();
         }
 
@@ -252,7 +259,8 @@ namespace TogglDesktop
         private void reset()
         {
             this.enableForm();
-            this.passwordBox.Clear();
+            emailTextBox.Clear();
+            passwordBox.Clear();
         }
 
         #endregion
