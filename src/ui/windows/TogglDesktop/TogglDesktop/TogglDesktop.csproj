@@ -232,6 +232,7 @@
     </Compile>
     <Compile Include="ui\Converters\AndConverter.cs" />
     <Compile Include="ui\Converters\BytesToStringConverter.cs" />
+    <Compile Include="ui\Converters\EqualToVisibilityConverter.cs" />
     <Compile Include="ui\Converters\FileNameToIconConverter.cs" />
     <Compile Include="ui\Converters\StringToBrushConverter.cs" />
     <Compile Include="ui\Converters\TrimPathConverter.cs" />
@@ -290,6 +291,7 @@
     <Compile Include="ui\Tutorial\TutorialManager.cs" />
     <Compile Include="ui\Tutorial\TutorialScreen.cs" />
     <Compile Include="ui\ViewModels\FeedbackWindowViewModel.cs" />
+    <Compile Include="ui\ViewModels\LoginViewModel.cs" />
     <Compile Include="ui\ViewModels\PreferencesWindowViewModel.cs" />
     <Compile Include="ui\views\IMainView.cs" />
     <Compile Include="ui\Experiments\ExperimentManager.cs" />
