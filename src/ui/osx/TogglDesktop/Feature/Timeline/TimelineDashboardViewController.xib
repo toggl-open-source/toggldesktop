@@ -41,7 +41,7 @@
                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="oEw-Jd-lIP">
                             <rect key="frame" x="8" y="55" width="101" height="18"/>
                             <textFieldCell key="cell" lineBreakMode="clipping" title="Record activity" id="x0y-gM-oPn">
-                                <font key="font" metaFont="system" size="14"/>
+                                <font key="font" metaFont="menu" size="14"/>
                                 <color key="textColor" name="timeline-time-label-color"/>
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
@@ -100,7 +100,7 @@
                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
                                 </textField>
-                                <customView translatesAutoresizingMaskIntoConstraints="NO" id="xXU-Yr-nTf">
+                                <customView toolTip="Zoom In (⌘+)" translatesAutoresizingMaskIntoConstraints="NO" id="xXU-Yr-nTf">
                                     <rect key="frame" x="0.0" y="0.0" width="54" height="30"/>
                                     <subviews>
                                         <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="CK9-W6-FLX">
@@ -113,7 +113,7 @@
                                                 <action selector="zoomLevelIncreaseOnChange:" target="-2" id="QsV-0i-5La"/>
                                             </connections>
                                         </button>
-                                        <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="rZq-Fq-a8f">
+                                        <button toolTip="Zoom Out (⌘-)" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="rZq-Fq-a8f">
                                             <rect key="frame" x="10" y="9" width="11" height="11"/>
                                             <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="NSRemoveTemplate" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="kr9-Ry-BUy">
                                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
