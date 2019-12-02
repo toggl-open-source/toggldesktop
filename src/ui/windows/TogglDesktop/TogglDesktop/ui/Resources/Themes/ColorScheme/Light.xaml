@@ -45,6 +45,8 @@
     <SolidColorBrush x:Key="Toggl.Button.Accent.MouseOverBorder" Color="#256400" po:Freeze="True" />
     <!-- A combination of Toggl.SecondaryAccentColor and #4D000000: -->
     <SolidColorBrush x:Key="Toggl.Button.Accent.Red.MouseOverBorder" Color="#B21F3B" po:Freeze="True" />
+    <SolidColorBrush x:Key="Toggl.Button.Outlined.HoverBackground" Color="Black" Opacity="0.05" po:Freeze="True" />
+    <SolidColorBrush x:Key="Toggl.Button.Outlined.HoverBorder" Color="Black" Opacity="0.3" po:Freeze="True" />
     <SolidColorBrush x:Key="Toggl.PrimaryTextBrush" Color="{StaticResource Toggl.PrimaryTextColor}" po:Freeze="True" />
     <SolidColorBrush x:Key="Toggl.DarkGrayBrush" Color="{StaticResource Toggl.DarkGrayColor}" po:Freeze="True" />
     <SolidColorBrush x:Key="Toggl.SecondaryTextBrush" Color="{StaticResource Toggl.SecondaryTextColor}" po:Freeze="True" />
