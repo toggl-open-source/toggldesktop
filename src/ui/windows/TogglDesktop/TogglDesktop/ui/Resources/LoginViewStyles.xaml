@@ -38,44 +38,44 @@
 
     </Style>
     
-    <Style TargetType="UserControl" x:Key="LoginView">
-        <Style.Resources>
-            
-            <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
-                <Setter Property="Foreground" Value="White" />
-                <Setter Property="HorizontalAlignment" Value="Center" />
-                <Style.Triggers>
-                    <Trigger Property="IsEnabled" Value="False">
-                        <Setter Property="Foreground" Value="White"/>
-                    </Trigger>
-                </Style.Triggers>
-            </Style>
-            
-            <Style TargetType="Button" BasedOn="{StaticResource {x:Type Control}}">
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="Button">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center">
-                                <ContentPresenter.Style>
-                                    <Style TargetType="ContentPresenter">
-                                        <Style.Resources>
-                                            <Style TargetType="TextBlock">
-                                                <Setter Property="Foreground" Value="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}} }" />
-                                            </Style>
-                                        </Style.Resources>
-                                    </Style>
-                                </ContentPresenter.Style>
-                            </ContentPresenter>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-                <Setter Property="Cursor" Value="Hand" />
-                <Setter Property="Background" Value="Transparent" />
-                <Setter Property="HorizontalAlignment" Value="Center" />
-                <Setter Property="Foreground" Value="White" />
-            </Style>
-        </Style.Resources>
-    </Style>
+    <!-- <Style TargetType="UserControl" x:Key="LoginView"> -->
+    <!--     <Style.Resources> -->
+    <!--          -->
+    <!--         <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}"> -->
+    <!--             <Setter Property="Foreground" Value="White" /> -->
+    <!--             <Setter Property="HorizontalAlignment" Value="Center" /> -->
+    <!--             <Style.Triggers> -->
+    <!--                 <Trigger Property="IsEnabled" Value="False"> -->
+    <!--                     <Setter Property="Foreground" Value="White"/> -->
+    <!--                 </Trigger> -->
+    <!--             </Style.Triggers> -->
+    <!--         </Style> -->
+    <!--          -->
+    <!--         <Style TargetType="Button" BasedOn="{StaticResource {x:Type Control}}"> -->
+    <!--             <Setter Property="Template"> -->
+    <!--                 <Setter.Value> -->
+    <!--                     <ControlTemplate TargetType="Button"> -->
+    <!--                         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"> -->
+    <!--                             <ContentPresenter.Style> -->
+    <!--                                 <Style TargetType="ContentPresenter"> -->
+    <!--                                     <Style.Resources> -->
+    <!--                                         <Style TargetType="TextBlock"> -->
+    <!--                                             <Setter Property="Foreground" Value="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}} }" /> -->
+    <!--                                         </Style> -->
+    <!--                                     </Style.Resources> -->
+    <!--                                 </Style> -->
+    <!--                             </ContentPresenter.Style> -->
+    <!--                         </ContentPresenter> -->
+    <!--                     </ControlTemplate> -->
+    <!--                 </Setter.Value> -->
+    <!--             </Setter> -->
+    <!--             <Setter Property="Cursor" Value="Hand" /> -->
+    <!--             <Setter Property="Background" Value="Transparent" /> -->
+    <!--             <Setter Property="HorizontalAlignment" Value="Center" /> -->
+    <!--             <Setter Property="Foreground" Value="White" /> -->
+    <!--         </Style> -->
+    <!--     </Style.Resources> -->
+    <!-- </Style> -->
     
     
 </ResourceDictionary>
