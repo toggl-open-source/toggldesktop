@@ -541,20 +541,17 @@ void GUI::DisplayTimeline(
             bool item_present = false;
             TogglTimelineEventView *event_app = first_event;
             while (event_app) {
-                char_t *filename = copy_string(event.Filename().c_str());
-                if (compare_string(event_app->Filename, filename) == 0) {
+                if (compare_string(event_app->Filename, to_char_t(event.Filename())) == 0) {
                     timeline_event_view_update_duration(event_app, event_app->Duration + event.Duration());
                     app_present = true;
                     item_present = false;
                     ev = reinterpret_cast<TogglTimelineEventView *>(event_app->Event);
                     while (ev) {
-                        char_t *title = copy_string(event.Title().c_str());
-                        if (compare_string(ev->Title, title) == 0) {
+                        if (compare_string(ev->Title, to_char_t(event.Title())) == 0) {
                             timeline_event_view_update_duration(ev, ev->Duration + event.Duration());
                             item_present = true;
                         }
                         ev = reinterpret_cast<TogglTimelineEventView *>(ev->Next);
-                        free(title);
                     }
 
                     if (!item_present) {
@@ -565,7 +562,6 @@ void GUI::DisplayTimeline(
                     }
                 }
                 event_app = reinterpret_cast<TogglTimelineEventView *>(event_app->Next);
-                free(filename);
             }
 
             if (!app_present) {
