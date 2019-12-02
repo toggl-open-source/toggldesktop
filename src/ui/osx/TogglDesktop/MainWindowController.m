@@ -323,4 +323,15 @@ extern void *ctx;
 	[self.timeEntryListViewController.timerEditViewController startButtonClicked:self];
 }
 
+#pragma mark - Timeline Menu
+
+- (IBAction)zoomInBtnOnTap:(id)sender
+{
+    [self.mainDashboardViewController.timelineController zoomLevelIncreaseOnChange:sender];
+}
+
+- (IBAction)zoomOutBtnOnTap:(id)sender
+{
+    [self.mainDashboardViewController.timelineController zoomLevelDecreaseOnChange:sender];
+}
 @end
