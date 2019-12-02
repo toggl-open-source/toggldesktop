@@ -658,6 +658,7 @@
     </Page>
     <Page Include="ui\Resources\DesignUpdate\Buttons.xaml" />
     <Page Include="ui\Resources\DesignUpdate\ComboBox.xaml" />
+    <Page Include="ui\Resources\DesignUpdate\ContextMenu.xaml" />
     <Page Include="ui\Resources\DesignUpdate\Controls.xaml" />
     <Page Include="ui\Resources\DesignUpdate\HotKeyBox.xaml" />
     <Page Include="ui\Resources\DesignUpdate\Hyperlink.xaml" />
@@ -668,7 +669,7 @@
     <Page Include="ui\Resources\DesignUpdate\TabControl.xaml" />
     <Page Include="ui\Resources\DesignUpdate\TextBox.xaml" />
     <Page Include="ui\Resources\DesignUpdate\ToggleSwitch.xaml" />
-    <Page Include="ui\Resources\DesignUpdate\ToolWindow.xaml" />
+    <Page Include="ui\Resources\DesignUpdate\Window.xaml" />
     <Page Include="ui\Resources\DesignUpdate\Typography.xaml" />
     <Page Include="ui\Resources\DialogStyles.xaml">
       <Generator>MSBuild:Compile</Generator>
