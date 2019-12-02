@@ -374,15 +374,6 @@
       <DependentUpon>EditViewPopup.xaml</DependentUpon>
     </Compile>
     <Compile Include="ui\controls\ExtendedTextBox.cs" />
-    <Compile Include="ui\controls\LoginConfirmButton.xaml.cs">
-      <DependentUpon>LoginConfirmButton.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ui\controls\LoginPasswordBox.xaml.cs">
-      <DependentUpon>LoginPasswordBox.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ui\controls\LoginTextBox.xaml.cs">
-      <DependentUpon>LoginTextBox.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -799,18 +790,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ui\controls\LoginConfirmButton.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ui\controls\LoginPasswordBox.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ui\controls\LoginTextBox.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="ui\windows\FeedbackWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -852,10 +831,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="ui\Resources\TimeEntryCellStyles.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ui\Resources\LoginViewStyles.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
