@@ -76,7 +76,6 @@
                               DisplayMemberPath="Name"
                               VerticalAlignment="Center"
                               VerticalContentAlignment="Center"
-                              Foreground="#000000"
                               IsTextSearchEnabled="True"
                               IsTextSearchCaseSensitive="False"
                               TextSearch.TextPath="Name"
