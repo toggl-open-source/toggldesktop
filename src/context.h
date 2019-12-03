@@ -222,6 +222,11 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
 
     int64_t GetWindowEditSizeWidth();
 
+    void SetMessageSeen(
+        const int64_t value);
+
+    int64_t GetMessageSeen();
+
     void SetKeyStart(
         const std::string &value);
 

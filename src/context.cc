@@ -1984,6 +1984,17 @@ int64_t Context::GetWindowEditSizeWidth() {
     return value;
 }
 
+void Context::SetMessageSeen(
+    const int64_t value) {
+    displayError(db()->SetSettingsMessageSeen(value));
+}
+
+int64_t Context::GetMessageSeen() {
+    Poco::Int64 value(0);
+    displayError(db()->GetMessageSeen(&value));
+    return value;
+}
+
 void Context::SetKeyStart(
     const std::string &value) {
     displayError(db()->SetKeyStart(value));

@@ -88,6 +88,8 @@ class TOGGL_INTERNAL_EXPORT Database {
 
     error SetSettingsHasSeenBetaOffering(const bool &value);
 
+    error SetSettingsMessageSeen(const Poco::UInt64 message_id);
+
     error SetSettingsUseIdleDetection(const bool &use_idle_detection);
 
     error SetSettingsAutotrack(const bool &value);
@@ -196,6 +198,8 @@ class TOGGL_INTERNAL_EXPORT Database {
         const std::string &value);
 
     error GetKeyModifierStart(std::string *result);
+
+    error GetMessageSeen(Poco::Int64 *result);
 
     error LoadProxySettings(
         bool *use_proxy,
