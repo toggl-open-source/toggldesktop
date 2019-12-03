@@ -52,6 +52,7 @@ NSString *const kDisplayCountries = @"kDisplayCountries";
 NSString *const kUpdateIconTooltip = @"kUpdateIconTooltip";
 NSString *const kUserHasBeenSignup = @"kUserHasBeenSignup";
 NSString *const kTouchBarSettingChanged = @"kTouchBarSettingChanged";
+NSString *const kStartDisplayInAppMessage = @"kStartDisplayInAppMessage";
 
 NSString *const kDeselectAllTimeEntryList = @"kDeselectAllTimeEntryList";
 

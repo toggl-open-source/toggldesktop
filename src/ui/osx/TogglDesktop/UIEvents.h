@@ -56,6 +56,7 @@ extern NSString *const kUpdateIconTooltip;
 extern NSString *const kUserHasBeenSignup;
 extern NSString *const kDeselectAllTimeEntryList;
 extern NSString *const kTouchBarSettingChanged;
+extern NSString *const kStartDisplayInAppMessage;
 
 const char *kFocusedFieldNameDuration;
 const char *kFocusedFieldNameDescription;

@@ -25,6 +25,7 @@
 @property (nonatomic, strong) TimeEntryListViewController *timeEntryListViewController;
 @property (nonatomic, strong) OverlayViewController *overlayViewController;
 @property (nonatomic, strong) SystemMessageView *messageView;
+@property (nonatomic, strong) InAppMessageViewController *inappMessageView;
 @property (nonatomic, assign) CGFloat troubleBoxDefaultHeight;
 @end
 
@@ -73,6 +74,10 @@ extern void *ctx;
 												 selector:@selector(startDisplayOnlineState:)
 													 name:kDisplayOnlineState
 												   object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(startDisplayInAppMessage:)
+                                                     name:kStartDisplayInAppMessage
+                                                   object:nil];
 	}
 	return self;
 }
@@ -115,6 +120,11 @@ extern void *ctx;
 
 	// Register
 	[self.messageView registerToSystemMessage];
+}
+
+- (void) initInAppMessageView
+{
+    self.inappMessageView = [InAppMessageViewController initFromXib];
 }
 
 - (void)startDisplayLogin:(NSNotification *)notification
@@ -306,4 +316,13 @@ extern void *ctx;
 	[self.timeEntryListViewController.timerEditViewController startButtonClicked:self];
 }
 
+#pragma mark - In app message
+
+- (void) startDisplayInAppMessage:(NSNotification *)notification
+{
+    if (!self.inappMessageView)
+    {
+        [self initInAppMessageView];
+    }
+}
 @end
