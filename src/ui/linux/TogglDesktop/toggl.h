@@ -13,7 +13,6 @@
 
 #include "./toggl_api.h"
 #include "./autocompletelistmodel.h"
-#include "./autocompletecombobox.h"
 #include "./qmlobjectlist.h"
 
 class AutocompleteView;

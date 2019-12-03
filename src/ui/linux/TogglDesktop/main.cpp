@@ -7,6 +7,7 @@
 #include <QVector>
 #include <QFontDatabase>
 #include <qtwebengineglobal.h>
+#include <QMessageBox>
 
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
@@ -22,8 +23,9 @@
 #include "./autocompleteview.h"
 #include "./bugsnag.h"
 #include "./genericview.h"
-#include "./mainwindowcontroller.h"
 #include "./toggl.h"
+#include "./timeentryview.h"
+#include "./countryview.h"
 
 class TogglApplication : public SingleApplication {
  public:

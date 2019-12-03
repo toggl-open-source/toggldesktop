@@ -6,16 +6,13 @@
 #include <QSystemTrayIcon>
 #include <QtDBus/QtDBus>
 
-class MainWindowController;
 class SettingsView;
 
 class SystemTray : public QSystemTrayIcon
 {
     Q_OBJECT
 public:
-    SystemTray(MainWindowController *parent = nullptr, QIcon defaultIcon = QIcon());
-
-    MainWindowController *mainWindow();
+    SystemTray(QObject *parent = nullptr, QIcon defaultIcon = QIcon());
 
     bool isVisible() const;
     bool notificationsAvailable();

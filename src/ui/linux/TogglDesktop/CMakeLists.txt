@@ -15,53 +15,26 @@ include_directories(
 
 # TogglDesktop sources
 set(BINARY_SOURCE_FILES
-    aboutdialog.cpp
-    autocompletecombobox.cpp
-    autocompletelistview.cpp
     autocompletelistmodel.cpp
     autocompleteview.cpp
-    clickablelabel.cpp
-    colorpicker.cpp
     countryview.cpp
-    errorviewcontroller.cpp
-    feedbackdialog.cpp
     genericview.cpp
     idlenotificationwidget.cpp
-    loginwidget.cpp
     main.cpp
-    mainwindowcontroller.cpp
     networkmanagement.cpp
-    overlaywidget.cpp
     powermanagement.cpp
-    preferencesdialog.cpp
     qmlobjectlist.cc
     settingsview.cpp
     singleapplication.cpp
     systemtray.cpp
-    timeentrycellwidget.cpp
-    timeentryeditorwidget.cpp
-    timeentrylistwidget.cpp
     timeentryview.cpp
-    timerwidget.cpp
     toggl.cpp
 
     # Resources have to be listed
     Resources.qrc
 
     # it's better to list UI files
-    aboutdialog.ui
-    colorpicker.ui
-    errorviewcontroller.ui
-    feedbackdialog.ui
     idlenotificationwidget.ui
-    loginwidget.ui
-    mainwindowcontroller.ui
-    overlaywidget.ui
-    preferencesdialog.ui
-    timeentrycellwidget.ui
-    timeentryeditorwidget.ui
-    timeentrylistwidget.ui
-    timerwidget.ui
 )
 
 # Set up compilation targets
