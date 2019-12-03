@@ -4,7 +4,7 @@ import QtQuick.Controls 2.12
 
 Rectangle {
     id: root
-    color: mixColors(palette.window, palette.base, 0.9)
+    color: palette.base
     height: 64
 
     property bool running: false
@@ -44,21 +44,18 @@ Rectangle {
 
     RowLayout {
         id: timerContainer
-        x: 6
+        x: 12
+        clip: true
         height: parent.height
-        width: parent.width - 12
+        width: parent.width - 24
+
         ColumnLayout {
             Layout.fillHeight: true
             Layout.fillWidth: true
-            spacing: 0
-            Text {
-                visible: running
-                Layout.fillWidth: true
+            spacing: 6
+
+            Item {
                 Layout.fillHeight: true
-                verticalAlignment: Text.AlignVCenter
-                text: runningTimeEntry && runningTimeEntry.Description.length > 0 ? " " + runningTimeEntry.Description : " (no description)"
-                color: "white"
-                font.pixelSize: 12
             }
             TextField {
                 id: description
@@ -110,36 +107,15 @@ Rectangle {
                     z: -1
                 }
             }
-            RowLayout {
-                visible: runningTimeEntry && runningTimeEntry.ProjectLabel.length > 0
-                Button {
-                    implicitWidth: 12
-                    implicitHeight: 12
-                    text: "x"
-                }
-                Text {
-                    text: runningTimeEntry ? runningTimeEntry.ProjectLabel : ""
-                    color: runningTimeEntry && runningTimeEntry.Color.length > 0 ? runningTimeEntry.Color : "white"
-                    font.pixelSize: 8
-                }
-                Text {
-                    visible: runningTimeEntry && runningTimeEntry.TaskLabel.length > 0
-                    text: runningTimeEntry && runningTimeEntry.TaskLabel.length ? "• " + runningTimeEntry.TaskLabel : ""
-                    color: "white"
-                }
+            TimeEntryLabel {
+                Layout.fillHeight: true
+                Layout.fillWidth: true
+                timeEntry: runningTimeEntry
+                visible: runningTimeEntry
             }
-            RowLayout {
-                visible: runningTimeEntry && runningTimeEntry.ClientLabel.length > 0
-                Button {
-                    implicitWidth: 12
-                    implicitHeight: 12
-                    text: "x"
-                }
-                Text {
-                    text: runningTimeEntry ? runningTimeEntry.ClientLabel : ""
-                    color: "white"
-                    font.pixelSize: 8
-                }
+
+            Item {
+                Layout.fillHeight: true
             }
         }
         Text {
@@ -171,6 +147,21 @@ Rectangle {
                     start()
                 }
             }
+        }
+    }
+
+    Rectangle {
+        anchors {
+            left: parent.left
+            right: parent.right
+            top: parent.bottom
+        }
+        height: 12
+
+        gradient: Gradient {
+            orientation: Gradient.Vertical
+            GradientStop { position: 0.0; color: "#33888888" }
+            GradientStop { position: 1.0; color: "#00888888" }
         }
     }
 }

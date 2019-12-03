@@ -4,14 +4,11 @@ import QtQuick.Layouts 1.12
 
 import QtQuick.Controls 1.4
 
-ApplicationWindow {
+Rectangle {
     id: window
     visible: true
-    minimumWidth: 400
     width: 400
-    minimumHeight: 640
     height: 640
-    title: "Toggl"
 
     function mixColors(a, b, ratio) {
         return Qt.rgba(
@@ -24,28 +21,15 @@ ApplicationWindow {
 
     SystemPalette {
         id: palette
-        property bool isDark: (itemShadow.r + itemShadow.g + itemShadow.b) < 300
+        property bool isDark: (itemShadow.r + itemShadow.g + itemShadow.b) < 1
 
-        property color itemShadow: palette.shadow
+        property int itemShadowSize: palette.isDark ? 1 : 9
+        property color itemShadow: mixColors(palette.shadow, palette.listBackground, 0.2)
         property color listBackground: mixColors(palette.base, palette.alternateBase, 0.8)
     }
     SystemPalette {
         id: disabledPalette
         colorGroup: SystemPalette.Disabled
-    }
-
-    menuBar: MenuBar {
-        Menu {
-            title: "Toggl Desktop"
-            MenuItem {
-                text: "Log out"
-                onTriggered: toggl.logout()
-            }
-            MenuItem {
-                text: "Exit"
-                onTriggered: Qt.quit()
-            }
-        }
     }
 
     Rectangle {
