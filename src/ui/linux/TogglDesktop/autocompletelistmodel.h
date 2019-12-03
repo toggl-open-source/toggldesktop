@@ -25,4 +25,19 @@ private:
     uint64_t displayItem;
 };
 
+class AutocompleteProxyModel : public QSortFilterProxyModel {
+    Q_OBJECT
+    friend class AutocompleteComboBox;
+public:
+    AutocompleteProxyModel(QObject *parent = nullptr);
+
+    Q_INVOKABLE int count();
+
+    Q_INVOKABLE void setFilter(const QString &filter);
+    Q_INVOKABLE AutocompleteView *get(int idx);
+
+    bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const override;
+};
+
+
 #endif // AUTOCOMPLETELISTMODEL_H

@@ -23,7 +23,6 @@
 #include "./countryview.h"
 #include "./autocompleteview.h"
 #include "./autocompletelistmodel.h"
-#include "./autocompletecombobox.h"
 #include "./settingsview.h"
 #include "./bugsnag.h"
 
