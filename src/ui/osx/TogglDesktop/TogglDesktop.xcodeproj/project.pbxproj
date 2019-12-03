@@ -159,6 +159,10 @@
 		BA412C27224E195C003CA17A /* NoClientCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA412C26224E195C003CA17A /* NoClientCellView.swift */; };
 		BA412C29224E196D003CA17A /* NoClientCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA412C28224E196D003CA17A /* NoClientCellView.xib */; };
 		BA46E09F2226707F00C25763 /* Collection+Safe.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA46E09E2226707F00C25763 /* Collection+Safe.swift */; };
+		BA47DEB223966F9C005216AD /* InAppMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA47DEB023966F9C005216AD /* InAppMessageViewController.swift */; };
+		BA47DEB323966F9C005216AD /* InAppMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA47DEB023966F9C005216AD /* InAppMessageViewController.swift */; };
+		BA47DEB423966F9C005216AD /* InAppMessageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA47DEB123966F9C005216AD /* InAppMessageViewController.xib */; };
+		BA47DEB523966F9C005216AD /* InAppMessageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA47DEB123966F9C005216AD /* InAppMessageViewController.xib */; };
 		BA4A7D5123755A3700A42095 /* TimeEntryScrubberFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA00E9F2234C7BB80011A703 /* TimeEntryScrubberFlowLayout.swift */; };
 		BA4A7D5223755A3D00A42095 /* TimeEntryScrubberItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA00E9F4234C848A0011A703 /* TimeEntryScrubberItem.xib */; };
 		BA4A7D5323755A4200A42095 /* GlobalTouchbarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAF3ACCB2341F8AC00E41B33 /* GlobalTouchbarButton.swift */; };
@@ -816,6 +820,8 @@
 		BA412C26224E195C003CA17A /* NoClientCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoClientCellView.swift; sourceTree = "<group>"; };
 		BA412C28224E196D003CA17A /* NoClientCellView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NoClientCellView.xib; sourceTree = "<group>"; };
 		BA46E09E2226707F00C25763 /* Collection+Safe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collection+Safe.swift"; sourceTree = "<group>"; };
+		BA47DEB023966F9C005216AD /* InAppMessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InAppMessageViewController.swift; sourceTree = "<group>"; };
+		BA47DEB123966F9C005216AD /* InAppMessageViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InAppMessageViewController.xib; sourceTree = "<group>"; };
 		BA4A7D502375527B00A42095 /* TouchBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TouchBar.h; path = test2/TouchBar.h; sourceTree = SOURCE_ROOT; };
 		BA4AEB9B22C217A4001A898D /* ResizablePopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResizablePopover.swift; sourceTree = "<group>"; };
 		BA50ED8422705F9E008323FA /* CalendarFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarFlowLayout.swift; sourceTree = "<group>"; };
@@ -1433,6 +1439,15 @@
 			path = Cells;
 			sourceTree = "<group>";
 		};
+		BA47DEAF23966F80005216AD /* InAppMessage */ = {
+			isa = PBXGroup;
+			children = (
+				BA47DEB023966F9C005216AD /* InAppMessageViewController.swift */,
+				BA47DEB123966F9C005216AD /* InAppMessageViewController.xib */,
+			);
+			path = InAppMessage;
+			sourceTree = "<group>";
+		};
 		BA5B0E2E2330E1A8008D1DED /* GoogleLogin */ = {
 			isa = PBXGroup;
 			children = (
@@ -1469,6 +1484,7 @@
 		BA712EAF21BF904E00A2D8DD /* Feature */ = {
 			isa = PBXGroup;
 			children = (
+				BA47DEAF23966F80005216AD /* InAppMessage */,
 				BAB508E0237E8FAB00D3D468 /* Permission */,
 				BAF3ACCA2341F86300E41B33 /* TouchBar */,
 				BA5B0E2E2330E1A8008D1DED /* GoogleLogin */,
@@ -1801,6 +1817,7 @@
 				3CD30F441F58B02C006FAA0D /* OverlayViewController.xib in Resources */,
 				BA7D3355224898E400B953A8 /* ProjectContentCellView.xib in Resources */,
 				BA014054225711A3000E5B91 /* TagTokenView.xib in Resources */,
+				BA47DEB423966F9C005216AD /* InAppMessageViewController.xib in Resources */,
 				7430750518204EFB009019CB /* AboutWindowController.xib in Resources */,
 				BA4059B1221D2186002969B8 /* TimeHeaderView.xib in Resources */,
 				749CB8CD18167D6E00814841 /* PreferencesWindowController.xib in Resources */,
@@ -1853,6 +1870,7 @@
 				BAE64E092368334000244D2B /* OverlayViewController.xib in Resources */,
 				BAE64E0A2368334000244D2B /* ProjectContentCellView.xib in Resources */,
 				BAE64E0B2368334000244D2B /* TagTokenView.xib in Resources */,
+				BA47DEB523966F9C005216AD /* InAppMessageViewController.xib in Resources */,
 				BAE64E0C2368334000244D2B /* AboutWindowController.xib in Resources */,
 				BAE64E0D2368334000244D2B /* TimeHeaderView.xib in Resources */,
 				BAE64E0E2368334000244D2B /* PreferencesWindowController.xib in Resources */,
@@ -2156,6 +2174,7 @@
 				BA01405222571199000E5B91 /* TagTokenView.swift in Sources */,
 				BA46E09F2226707F00C25763 /* Collection+Safe.swift in Sources */,
 				BA05367F225E238D00C26E1F /* ProjectWorksapceCellView.swift in Sources */,
+				BA47DEB223966F9C005216AD /* InAppMessageViewController.swift in Sources */,
 				745126B619A28AA600390F47 /* Reachability.m in Sources */,
 				BA412C21224E1189003CA17A /* ClientCellView.swift in Sources */,
 				74C1579B183BA5DA00550613 /* AutocompleteDataSource.m in Sources */,
@@ -2336,6 +2355,7 @@
 				BAE64D792368334000244D2B /* SystemMessage.swift in Sources */,
 				BAE64D7A2368334000244D2B /* WorkspaceAutoCompleteTextField.swift in Sources */,
 				BAE64D7B2368334000244D2B /* NSTextFieldClickablePointer.m in Sources */,
+				BA47DEB323966F9C005216AD /* InAppMessageViewController.swift in Sources */,
 				BA63ABEE238284D9004C70CF /* IdleNotificationTouchBar.swift in Sources */,
 				BAE64D7C2368334000244D2B /* DisplayCommand.m in Sources */,
 				BAE64D7D2368334000244D2B /* ColorViewItem.swift in Sources */,
