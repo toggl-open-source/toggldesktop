@@ -20,6 +20,7 @@ set(BINARY_SOURCE_FILES
     genericview.cpp
     idlenotificationwidget.cpp
     main.cpp
+    mainwindow.cpp
     networkmanagement.cpp
     powermanagement.cpp
     qmlobjectlist.cc
@@ -34,21 +35,22 @@ set(BINARY_SOURCE_FILES
 
     # it's better to list UI files
     idlenotificationwidget.ui
+    mainwindow.ui
 )
 
-if (UNIX AND NOT APPLE)
-    set (TOGGLDESKTOP_ADDITIONAL_LIBS
-        -lX11 -lXss
+if (APPLE)
+    set(BINARY_SOURCE_FILES ${BINARY_SOURCE_FILES}
+        macosSpecific.mm
     )
 endif()
 
 # Set up compilation targets
-add_executable(TogglDesktop ${BINARY_SOURCE_FILES})
+add_executable(TogglDesktop ${BINARY_SOURCE_FILES} ${PLATFORM_SPECIFIC_FILES})
 
 # And list the dependencies between them (and system libraries)
 target_link_libraries(TogglDesktop PRIVATE
     TogglDesktopLibrary
-    Qt5::Widgets Qt5::DBus Qt5::NetworkAuth Qt5::Qml Qt5::Quick
+    Qt5::Widgets Qt5::DBus Qt5::NetworkAuth Qt5::Qml Qt5::Quick Qt5::QuickWidgets
     ${QXT_LIBRARIES}
     Bugsnag
     ${TOGGLDESKTOP_ADDITIONAL_LIBS}

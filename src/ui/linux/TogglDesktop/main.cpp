@@ -31,6 +31,8 @@
 #include "./countryview.h"
 #include "./autocompletelistmodel.h"
 
+#include "mainwindow.h"
+
 class TogglApplication : public SingleApplication {
  public:
     TogglApplication(int &argc, char **argv)
@@ -106,6 +108,8 @@ int main(int argc, char *argv[]) try {
     Bugsnag::apiKey = "aa13053a88d5133b688db0f25ec103b7";
     Bugsnag::app.version = APP_VERSION;
 
+    qputenv("QML_DISABLE_DISTANCEFIELD", "1");
+
     TogglApplication::setQuitOnLastWindowClosed(false);
     QApplication::setApplicationName("Toggl Desktop");
     QApplication::setOrganizationName("Toggl");
@@ -119,10 +123,14 @@ int main(int argc, char *argv[]) try {
     setOptions(a);
 
     qputenv("QML_DISABLE_DISTANCEFIELD", "1");
+    /*
     QQmlApplicationEngine engine;
-    registerTypes();
     engine.rootContext()->setContextProperty("toggl", new TogglApi(nullptr));
     engine.load(QUrl(QStringLiteral("qrc:/MainWindow.qml")));
+    */
+
+    auto w = new MainWindow();
+    w->show();
 
     if (!TogglApi::instance->startEvents()) {
         QMessageBox(QMessageBox::Warning,

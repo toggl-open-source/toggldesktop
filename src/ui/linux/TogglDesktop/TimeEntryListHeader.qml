@@ -16,7 +16,7 @@ Item {
 
         TogglShadowBox {
             anchors.fill: parent
-            shadowWidth: 9
+            shadowWidth: palette.itemShadowSize
             shadowColor: palette.itemShadow
             backgroundColor: palette.listBackground
             sides: TogglShadowBox.Side.Left | TogglShadowBox.Side.Right | TogglShadowBox.Side.Top

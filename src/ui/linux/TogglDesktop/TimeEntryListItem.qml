@@ -16,7 +16,7 @@ Item {
 
         TogglShadowBox {
             anchors.fill: parent
-            shadowWidth: 9
+            shadowWidth: palette.itemShadowSize
             shadowColor: palette.itemShadow
             backgroundColor: palette.listBackground
             sides: TogglShadowBox.Side.Left | TogglShadowBox.Side.Right | TogglShadowBox.Side.Bottom
@@ -64,49 +64,14 @@ Item {
                     text: modelData.GroupItemCount
                 }
             }
-            ColumnLayout {
+
+            TimeEntryLabel {
                 Layout.fillHeight: true
                 Layout.fillWidth: true
-                Text {
-                    Layout.fillWidth: true
-                    text: modelData.Description.length > 0 ? modelData.Description : "+ Add description"
-                    color: modelData.Description.length > 0 ? palette.text : disabledPalette.text
-                    wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-                    font.pixelSize: 12
-                    verticalAlignment: Text.AlignVCenter
-                }
-                RowLayout {
-                    Layout.fillWidth: true
-                    Rectangle {
-                        height: 3
-                        width: height
-                        radius: height / 2
-                        visible: modelData.ClientLabel.length > 0
-                        color: modelData.Color
-                        Layout.alignment: Qt.AlignVCenter
-                    }
-                    Text {
-                        visible: modelData.ClientLabel.length > 0
-                        text: modelData.ClientLabel
-                        color: modelData.Color.length > 0 ? modelData.Color : palette.text
-                        font.pixelSize: 12
-                    }
-                    Text {
-                        text: modelData.ProjectLabel.length > 0 ? modelData.ProjectLabel : "+ Add project"
-                        color: modelData.ProjectLabel.length > 0 ? palette.text : disabledPalette.text
-                        font.pixelSize: 12
-                    }
-                    Text {
-                        visible: modelData.TaskLabel.length > 0
-                        text: modelData.TaskLabel
-                        color: palette.text
-                        font.pixelSize: 12
-                    }
-                    Item {
-                        Layout.fillWidth: true
-                    }
-                }
+
+                timeEntry: modelData
             }
+
             Text {
                 Layout.alignment: Qt.AlignVCenter
                 text: modelData.Duration
