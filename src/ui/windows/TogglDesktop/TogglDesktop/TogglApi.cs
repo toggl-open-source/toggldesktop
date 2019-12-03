@@ -19,6 +19,7 @@ public static partial class Toggl
 
 
 
+
 // Constants
 
     private const int kOnlineStateOnline = 0;
@@ -106,12 +107,60 @@ public static partial class Toggl
         [MarshalAs(UnmanagedType.LPWStr)]
         public         string GroupDuration;
         public         UInt64 GroupItemCount;
+        // To categorize to 15-minute batches
+        public         UInt64 RoundedStart;
+        public         UInt64 RoundedEnd;
         // Next in list
         public         IntPtr Next;
 
         public override string ToString()
         {
             return GroupDuration;
+        }
+
+    }
+
+    [StructLayout(LayoutKind.Sequential, Pack = structPackingBytes, CharSet = CharSet.Unicode)]
+    public struct    TogglTimelineEventView
+    {
+        [MarshalAs(UnmanagedType.LPWStr)]
+        public         string Title;
+        [MarshalAs(UnmanagedType.LPWStr)]
+        public         string Filename;
+        public         Int64 Duration;
+        [MarshalAs(UnmanagedType.LPWStr)]
+        public         string DurationString;
+        [MarshalAs(UnmanagedType.I1)]
+        public         bool Header;
+        // references subevents
+        public         IntPtr Event;
+        // Next in list
+        public         IntPtr Next;
+
+        public override string ToString()
+        {
+            return DurationString;
+        }
+
+    }
+
+    [StructLayout(LayoutKind.Sequential, Pack = structPackingBytes, CharSet = CharSet.Unicode)]
+    public struct    TogglTimelineChunkView
+    {
+        public         UInt64 Started;
+        public         UInt64 Ended;
+        [MarshalAs(UnmanagedType.LPWStr)]
+        public         string StartTimeString;
+        [MarshalAs(UnmanagedType.LPWStr)]
+        public         string EndTimeString;
+        public         IntPtr Next;
+        public         IntPtr FirstEvent;
+        // Reference to Time entries in this Chunk
+        public         IntPtr Entry;
+
+        public override string ToString()
+        {
+            return EndTimeString;
         }
 
     }
@@ -264,6 +313,8 @@ public static partial class Toggl
         public         Int64 PomodoroBreakMinutes;
         [MarshalAs(UnmanagedType.I1)]
         public         bool StopEntryOnShutdownSleep;
+        [MarshalAs(UnmanagedType.I1)]
+        public         bool ShowTouchBar;
 
         public override string ToString()
         {
@@ -285,27 +336,6 @@ public static partial class Toggl
         public override string ToString()
         {
             return ProjectAndTaskLabel;
-        }
-
-    }
-
-    [StructLayout(LayoutKind.Sequential, Pack = structPackingBytes, CharSet = CharSet.Unicode)]
-    public struct    TogglTimelineEventView
-    {
-        public         Int64 ID;
-        [MarshalAs(UnmanagedType.LPWStr)]
-        public         string Title;
-        [MarshalAs(UnmanagedType.LPWStr)]
-        public         string Filename;
-        public         Int64 StartTime;
-        public         Int64 EndTime;
-        [MarshalAs(UnmanagedType.I1)]
-        public         bool Idle;
-        public         IntPtr Next;
-
-        public override string ToString()
-        {
-            return Filename;
         }
 
     }
@@ -421,6 +451,17 @@ public static partial class Toggl
         IntPtr first,
         [MarshalAs(UnmanagedType.I1)]
         bool show_load_more_button);
+
+    [UnmanagedFunctionPointer(convention)]
+    private delegate void     TogglDisplayTimeline(
+        [MarshalAs(UnmanagedType.I1)]
+        bool open,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string date,
+        IntPtr first,
+        IntPtr first_entry,
+        long start_day,
+        long end_day);
 
     [UnmanagedFunctionPointer(convention)]
     private delegate void     TogglDisplayAutocomplete(
@@ -661,6 +702,11 @@ public static partial class Toggl
         string name);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern void toggl_on_timeline(
+        IntPtr context,
+        TogglDisplayTimeline cb);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_on_mini_timer_autocomplete(
         IntPtr context,
         TogglDisplayAutocomplete cb);
@@ -865,6 +911,27 @@ public static partial class Toggl
         IntPtr context);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern void toggl_view_timeline_data(
+        IntPtr context);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern void toggl_view_timeline_prev_day(
+        IntPtr context);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern void toggl_view_timeline_next_day(
+        IntPtr context);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern void toggl_view_timeline_current_day(
+        IntPtr context);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern void toggl_view_timeline_set_day(
+        IntPtr context,
+        Int64 unix_timestamp);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_edit(
         IntPtr context,
         [MarshalAs(UnmanagedType.LPWStr)]
@@ -938,12 +1005,28 @@ public static partial class Toggl
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return:MarshalAs(UnmanagedType.I1)]
+    private static extern bool toggl_set_time_entry_start_timestamp(
+        IntPtr context,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string guid,
+        Int64 start);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    [return:MarshalAs(UnmanagedType.I1)]
     private static extern bool toggl_set_time_entry_end(
         IntPtr context,
         [MarshalAs(UnmanagedType.LPWStr)]
         string guid,
         [MarshalAs(UnmanagedType.LPWStr)]
         string value);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    [return:MarshalAs(UnmanagedType.I1)]
+    private static extern bool toggl_set_time_entry_end_timestamp(
+        IntPtr context,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string guid,
+        Int64 end);
 
     // value is '\t' separated tag list
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
@@ -1109,6 +1192,13 @@ public static partial class Toggl
         IntPtr context,
         [MarshalAs(UnmanagedType.I1)]
         bool stop_entry);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    [return:MarshalAs(UnmanagedType.I1)]
+    private static extern bool toggl_set_settings_show_touch_bar(
+        IntPtr context,
+        [MarshalAs(UnmanagedType.I1)]
+        bool show_touch_bar);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return:MarshalAs(UnmanagedType.I1)]
@@ -1289,7 +1379,9 @@ public static partial class Toggl
         [MarshalAs(UnmanagedType.LPWStr)]
         string tags,
         [MarshalAs(UnmanagedType.I1)]
-        bool prevent_on_app);
+        bool prevent_on_app,
+        UInt64 started,
+        UInt64 ended);
 
     // returns GUID of the new project. you must free() the result
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
@@ -1521,6 +1613,10 @@ public static partial class Toggl
     private static extern bool toggl_get_keep_end_time_fixed(
         IntPtr context);
 
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    [return:MarshalAs(UnmanagedType.I1)]
+    private static extern bool toggl_get_show_touch_bar(
+        IntPtr context);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_set_mini_timer_x(

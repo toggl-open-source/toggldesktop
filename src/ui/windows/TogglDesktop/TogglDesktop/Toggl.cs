@@ -521,7 +521,9 @@ public static partial class Toggl
                            project_id,
                            project_guid,
                            tags,
-                           preventOnApp);
+                           preventOnApp,
+                           0,
+                           0);
     }
 
     public static string AddProject(

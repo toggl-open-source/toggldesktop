@@ -579,7 +579,9 @@ QString TogglApi::start(
                              project_id,
                              nullptr /* project guid */,
                              tags /* tags */,
-                             false);
+                             false,
+                             0,
+                             0);
     QString res("");
     if (guid) {
         res = QString(guid);

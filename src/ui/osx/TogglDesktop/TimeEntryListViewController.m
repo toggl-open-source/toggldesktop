@@ -724,21 +724,6 @@ extern void *ctx;
 	[self.collectionView deselectAll:self];
 }
 
-- (void)loadMoreIfNeedAtDate:(NSDate *)date;
-{
-	[self.dataSource loadMoreTimeEntryIfNeedAt:date];
-}
-
-- (NSTouchBar *)makeTouchBar
-{
-	return [[TouchBarService shared] makeTouchBar];
-}
-
-- (void)touchBarSettingChangedNotification:(NSNotification *)noti
-{
-	self.touchBar = nil;
-}
-
 - (void)windowDidBecomeKeyNotification:(NSNotification *)notification
 {
     // Don't focus on Timer Bar if the Editor is presented
@@ -754,6 +739,21 @@ extern void *ctx;
         return;
     }
     [self.timerEditViewController focusTimer];
+}
+
+- (void)loadMoreIfNeedAtDate:(NSDate *)date;
+{
+	[self.dataSource loadMoreTimeEntryIfNeedAt:date];
+}
+
+- (NSTouchBar *)makeTouchBar
+{
+	return [[TouchBarService shared] makeTouchBar];
+}
+
+- (void)touchBarSettingChangedNotification:(NSNotification *)noti
+{
+	self.touchBar = nil;
 }
 
 @end

@@ -541,13 +541,13 @@ void GUI::DisplayTimeline(
             bool item_present = false;
             TogglTimelineEventView *event_app = first_event;
             while (event_app) {
-                if (compare_string(event_app->Filename, event.Filename().c_str()) == 0) {
+                if (compare_string(event_app->Filename, to_char_t(event.Filename())) == 0) {
                     timeline_event_view_update_duration(event_app, event_app->Duration + event.Duration());
                     app_present = true;
                     item_present = false;
                     ev = reinterpret_cast<TogglTimelineEventView *>(event_app->Event);
                     while (ev) {
-                        if (compare_string(ev->Title, event.Title().c_str()) == 0) {
+                        if (compare_string(ev->Title, to_char_t(event.Title())) == 0) {
                             timeline_event_view_update_duration(ev, ev->Duration + event.Duration());
                             item_present = true;
                         }
@@ -618,8 +618,10 @@ void GUI::DisplayTimeline(
     }
 
     std::string formatted_date = Formatter::FormatDateHeader(TimelineDateAt());
-    on_display_timeline_(open, formatted_date.c_str(), first_chunk, first_entry, start_day, end_day);
+    char_t *date = copy_string(formatted_date.c_str());
+    on_display_timeline_(open, date, first_chunk, first_entry, start_day, end_day);
     delete first_entry;
+    free(date);
 }
 
 TogglTimelineEventView* GUI::SortList(TogglTimelineEventView *head) {

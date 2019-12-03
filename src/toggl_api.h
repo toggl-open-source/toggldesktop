@@ -111,7 +111,7 @@ extern "C" {
         char_t *StartTimeString;
         char_t *EndTimeString;
         void *Next;
-        TogglTimelineEventView *FirstEvent;
+        void *FirstEvent;
         // Reference to Time entries in this Chunk
         void *Entry;
     } TogglTimelineChunkView;
@@ -615,8 +615,9 @@ extern "C" {
     TOGGL_EXPORT void toggl_view_timeline_current_day(
         void *context);
 
-    TOGGL_EXPORT void toggl_view_timeline_set_day(void *context,
-            const int64_t unix_timestamp);
+    TOGGL_EXPORT void toggl_view_timeline_set_day(
+        void *context,
+        const int64_t unix_timestamp);
 
     TOGGL_EXPORT void toggl_edit(
         void *context,
@@ -896,8 +897,8 @@ extern "C" {
         const char_t *project_guid,
         const char_t *tags,
         const bool_t prevent_on_app,
-        const time_t started,
-        const time_t ended);
+        const uint64_t started,
+        const uint64_t ended);
 
     // returns GUID of the new project. you must free() the result
     TOGGL_EXPORT char_t *toggl_add_project(
