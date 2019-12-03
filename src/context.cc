@@ -1376,10 +1376,18 @@ error Context::downloadUpdate() {
         {
             HTTPSRequest req;
             req.host = "https://toggl.github.io";
-            req.relative_url = "/toggldesktop/assets/releases/updates.json";
+            req.relative_url = "/toggldesktop/assets/updates-link.txt";
 
             TogglClient client;
             HTTPSResponse resp = client.Get(req);
+            if (resp.err != noError) {
+                return resp.err;
+            }
+
+            Poco::URI uri(resp.body);
+            req.host = uri.getScheme() + "://" + uri.getHost();
+            req.relative_url = uri.getPathEtc();
+            resp = client.Get(req);
             if (resp.err != noError) {
                 return resp.err;
             }
