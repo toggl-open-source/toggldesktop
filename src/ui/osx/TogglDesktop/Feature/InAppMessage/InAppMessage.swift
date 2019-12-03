@@ -12,14 +12,14 @@ import Cocoa
 final class InAppMessage: NSObject {
 
     let title: String
-    let desciption: String
+    let subTitle: String
     let buttonTitle: String
     let urlAction: String
 
     @objc
-    init(title: String, desciption: String, buttonTitle: String, urlAction: String) {
+    init(title: String, subTitle: String, buttonTitle: String, urlAction: String) {
         self.title = title
-        self.desciption = desciption
+        self.subTitle = subTitle
         self.buttonTitle = buttonTitle
         self.urlAction = urlAction
     }
