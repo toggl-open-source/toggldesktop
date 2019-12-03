@@ -198,4 +198,9 @@ void *ctx;
 	return CGSizeMake(width, height);
 }
 
+- (void)setSeenInAppMessageWithID:(NSString *) IDMessage
+{
+    
+}
+
 @end

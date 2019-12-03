@@ -163,6 +163,8 @@
 		BA47DEB323966F9C005216AD /* InAppMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA47DEB023966F9C005216AD /* InAppMessageViewController.swift */; };
 		BA47DEB423966F9C005216AD /* InAppMessageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA47DEB123966F9C005216AD /* InAppMessageViewController.xib */; };
 		BA47DEB523966F9C005216AD /* InAppMessageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA47DEB123966F9C005216AD /* InAppMessageViewController.xib */; };
+		BA47DEB823969EAC005216AD /* InAppMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA47DEB723969EAC005216AD /* InAppMessage.swift */; };
+		BA47DEB923969EAC005216AD /* InAppMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA47DEB723969EAC005216AD /* InAppMessage.swift */; };
 		BA4A7D5123755A3700A42095 /* TimeEntryScrubberFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA00E9F2234C7BB80011A703 /* TimeEntryScrubberFlowLayout.swift */; };
 		BA4A7D5223755A3D00A42095 /* TimeEntryScrubberItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA00E9F4234C848A0011A703 /* TimeEntryScrubberItem.xib */; };
 		BA4A7D5323755A4200A42095 /* GlobalTouchbarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAF3ACCB2341F8AC00E41B33 /* GlobalTouchbarButton.swift */; };
@@ -822,6 +824,7 @@
 		BA46E09E2226707F00C25763 /* Collection+Safe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collection+Safe.swift"; sourceTree = "<group>"; };
 		BA47DEB023966F9C005216AD /* InAppMessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InAppMessageViewController.swift; sourceTree = "<group>"; };
 		BA47DEB123966F9C005216AD /* InAppMessageViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InAppMessageViewController.xib; sourceTree = "<group>"; };
+		BA47DEB723969EAC005216AD /* InAppMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InAppMessage.swift; sourceTree = "<group>"; };
 		BA4A7D502375527B00A42095 /* TouchBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TouchBar.h; path = test2/TouchBar.h; sourceTree = SOURCE_ROOT; };
 		BA4AEB9B22C217A4001A898D /* ResizablePopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResizablePopover.swift; sourceTree = "<group>"; };
 		BA50ED8422705F9E008323FA /* CalendarFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarFlowLayout.swift; sourceTree = "<group>"; };
@@ -1444,6 +1447,7 @@
 			children = (
 				BA47DEB023966F9C005216AD /* InAppMessageViewController.swift */,
 				BA47DEB123966F9C005216AD /* InAppMessageViewController.xib */,
+				BA47DEB723969EAC005216AD /* InAppMessage.swift */,
 			);
 			path = InAppMessage;
 			sourceTree = "<group>";
@@ -2266,6 +2270,7 @@
 				BAFBFCC821CD1D3C004B443F /* SystemService.m in Sources */,
 				BAF50DF821A2A18D0090BA95 /* AppIconFactory.m in Sources */,
 				74A7346A18297DD100525BBC /* ConvertHexColor.m in Sources */,
+				BA47DEB823969EAC005216AD /* InAppMessage.swift in Sources */,
 				74BAAA0B17F37B140079386F /* TimeEntryViewItem.m in Sources */,
 				BA412C27224E195C003CA17A /* NoClientCellView.swift in Sources */,
 				7423393C1829B99C00063FA9 /* IdleNotificationWindowController.m in Sources */,
@@ -2350,6 +2355,7 @@
 				BAE64D742368334000244D2B /* ClientCellView.swift in Sources */,
 				BAE64D752368334000244D2B /* AutocompleteDataSource.m in Sources */,
 				BAE64D762368334000244D2B /* BezierPath+Corner.swift in Sources */,
+				BA47DEB923969EAC005216AD /* InAppMessage.swift in Sources */,
 				BAE64D772368334000244D2B /* ProjectContentCellView.swift in Sources */,
 				BAE64D782368334000244D2B /* NSHoverButton.m in Sources */,
 				BAE64D792368334000244D2B /* SystemMessage.swift in Sources */,
