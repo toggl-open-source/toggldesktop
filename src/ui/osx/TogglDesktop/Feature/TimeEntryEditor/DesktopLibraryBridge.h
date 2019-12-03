@@ -64,8 +64,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)setEditorWindowSize:(CGSize)size;
 - (CGSize)getEditorWindowSize;
 
-- (void)setSeenInAppMessageWithID:(NSString *) IDMessage;
-
 @end
 
 NS_ASSUME_NONNULL_END

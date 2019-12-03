@@ -10,6 +10,7 @@
         <customObject id="-2" userLabel="File's Owner" customClass="InAppMessageViewController" customModule="TogglDesktop" customModuleProvider="target">
             <connections>
                 <outlet property="actionBtn" destination="rxC-bp-Klf" id="yDx-zG-Nx1"/>
+                <outlet property="bottomContraint" destination="38f-IF-VVw" id="o4x-vS-Wa2"/>
                 <outlet property="containerView" destination="nDz-FO-iVv" id="t4m-XO-aNe"/>
                 <outlet property="descriptionLbl" destination="IDE-mu-IVm" id="fnp-NS-qVC"/>
                 <outlet property="titleLbl" destination="yDl-bB-gh4" id="mKR-5J-Vde"/>

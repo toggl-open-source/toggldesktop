@@ -18,7 +18,7 @@
 #import "TogglDesktop-Swift.h"
 #import "TimerEditViewController.h"
 
-@interface MainWindowController () <TouchBarServiceDelegate>
+@interface MainWindowController () <TouchBarServiceDelegate, InAppMessageViewControllerDelegate>
 @property (weak) IBOutlet NSView *contentView;
 @property (weak) IBOutlet NSView *mainView;
 @property (nonatomic, strong) LoginViewController *loginViewController;
@@ -125,6 +125,7 @@ extern void *ctx;
 - (void) initInAppMessageView
 {
     self.inappMessageView = [InAppMessageViewController initFromXib];
+    self.inappMessageView.delegate = self;
 }
 
 - (void)startDisplayLogin:(NSNotification *)notification
@@ -318,11 +319,20 @@ extern void *ctx;
 
 #pragma mark - In app message
 
-- (void) startDisplayInAppMessage:(NSNotification *)notification
+- (void)startDisplayInAppMessage:(NSNotification *)notification
 {
     if (!self.inappMessageView)
     {
         [self initInAppMessageView];
     }
+    [self.inappMessageView prepareForAnimation];
+    [self.contentView addSubview:self.inappMessageView.view];
+    [self.inappMessageView present];
 }
+
+- (void)InAppMessageViewControllerShouldDismiss
+{
+    [self.inappMessageView removeFromParentViewController];
+}
+
 @end

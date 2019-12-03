@@ -8,7 +8,7 @@
 
 import Cocoa
 
-protocol InAppMessageViewControllerDelegate: class {
+@objc protocol InAppMessageViewControllerDelegate: class {
 
     func InAppMessageViewControllerShouldDismiss()
 }
@@ -21,17 +21,18 @@ final class InAppMessageViewController: NSViewController {
     @IBOutlet weak var titleLbl: NSTextField!
     @IBOutlet weak var descriptionLbl: NSTextField!
     @IBOutlet weak var actionBtn: FlatButton!
+    @IBOutlet weak var bottomContraint: NSLayoutConstraint!
 
     // MARK: Variables
 
-    weak var delegate: InAppMessageViewControllerDelegate?
+    @objc weak var delegate: InAppMessageViewControllerDelegate?
     private var message: InAppMessage?
 
     // MARK: View
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do view setup here.
+        initCommon()
     }
 
     @objc class func initFromXib() -> InAppMessageViewController {
@@ -39,8 +40,12 @@ final class InAppMessageViewController: NSViewController {
     }
 
     @IBAction func closeBtnOnTap(_ sender: Any) {
-        DesktopLibraryBridge.shared().setSeenInAppMessageWithID("0")
-        delegate?.InAppMessageViewControllerShouldDismiss()
+        animate(with: {[weak self] in
+            guard let strongSelf = self else { return }
+            strongSelf.bottomContraint.animator().constant = -strongSelf.containerView.frame.height
+        }, complete: {[weak self] in
+                self?.delegate?.InAppMessageViewControllerShouldDismiss()
+        })
     }
 
     @IBAction func actionBtnOnTap(_ sender: Any) {
@@ -55,6 +60,17 @@ final class InAppMessageViewController: NSViewController {
         descriptionLbl.stringValue = message.subTitle
         actionBtn.title = message.buttonTitle
     }
+
+    @objc func prepareForAnimation() {
+        bottomContraint.constant = -containerView.frame.height
+    }
+
+    @objc func present() {
+        animate(with: {[weak self] in
+            guard let strongSelf = self else { return }
+            strongSelf.bottomContraint.animator().constant = 0
+        })
+    }
 }
 
 // MARK: Private
@@ -65,5 +81,13 @@ extension InAppMessageViewController {
         actionBtn.wantsLayer = true
         actionBtn.layer?.borderWidth = 1
         actionBtn.layer?.borderColor = NSColor.white.cgColor
+    }
+
+    private func animate(with block: () -> Void, complete: (() -> Void)? = nil) {
+        NSAnimationContext.runAnimationGroup({(context) in
+            context.duration = 0.3
+            context.timingFunction = CAMediaTimingFunction(name: .easeOut)
+            block()
+        }, completionHandler: complete)
     }
 }
