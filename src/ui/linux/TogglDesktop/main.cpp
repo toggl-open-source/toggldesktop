@@ -33,8 +33,9 @@
 
 class TogglApplication : public SingleApplication {
  public:
-    TogglApplication(int &argc, char **argv)  // NOLINT
-        : SingleApplication(argc, argv) {}
+    TogglApplication(int &argc, char **argv)
+        : SingleApplication(argc, argv)
+    {}
 
     virtual bool notify(QObject *receiver, QEvent *event);
 };
@@ -43,54 +44,23 @@ bool TogglApplication::notify(QObject *receiver, QEvent *event) {
     try {
         return SingleApplication::notify(receiver, event);
     } catch(std::exception &e) {
-        TogglApi::notifyBugsnag("std::exception", e.what(),
-                                receiver->objectName());
+        TogglApi::notifyBugsnag("std::exception", e.what(), receiver->objectName());
     } catch(...) {
-        TogglApi::notifyBugsnag("unspecified", "exception",
-                                receiver->objectName());
+        TogglApi::notifyBugsnag("unspecified", "exception", receiver->objectName());
     }
     return true;
 }
 
-int main(int argc, char *argv[]) try {
-    Bugsnag::apiKey = "aa13053a88d5133b688db0f25ec103b7";
-
-    TogglApplication::setQuitOnLastWindowClosed(false);
-
-    qRegisterMetaType<uint64_t>("uint64_t");
-    qRegisterMetaType<int64_t>("int64_t");
-    qRegisterMetaType<bool_t>("bool_t");
-    qRegisterMetaType<QVector<TimeEntryView*> >("QVector<TimeEntryView*>");
-    qRegisterMetaType<QVector<AutocompleteView*> >("QVector<AutocompleteView*>");
-    qRegisterMetaType<QVector<GenericView*> >("QVector<GenericView*>");
-
-    QApplication::setApplicationName("Toggl Desktop");
-    QApplication::setOrganizationName("Toggl");
-
-    TogglApplication a(argc, argv);
-    if (a.isRunning()) {
-        qDebug() << "An instance of the app is already running";
-        return 0;
-    }
-
-    a.setApplicationVersion(APP_VERSION);
-    Bugsnag::app.version = APP_VERSION;
-
+void setOptions(const TogglApplication &a) {
     QCommandLineParser parser;
     parser.setApplicationDescription("Toggl Track");
     parser.addHelpOption();
     parser.addVersionOption();
 
-    QCommandLineOption logPathOption(
-        QStringList() << "log-path",
-        "<path> of the app log file",
-        "path");
+    QCommandLineOption logPathOption("log-path", "<path> of the app log file", "path");
     parser.addOption(logPathOption);
 
-    QCommandLineOption dbPathOption(
-        QStringList() << "db-path",
-        "<path> of the app DB file",
-        "path");
+    QCommandLineOption dbPathOption("db-path", "<path> of the app DB file", "path");
     parser.addOption(dbPathOption);
 
     QCommandLineOption scriptPathOption(
@@ -105,42 +75,69 @@ int main(int argc, char *argv[]) try {
     parser.addOption(forceStagingOption);
 
     // A boolean option with multiple names (-b, --background)
-    QCommandLineOption forceOption(QStringList() << "b" << "background",
-                                   QCoreApplication::translate("main", "Start app in background."));
+    QCommandLineOption forceOption({ "b", "background" }, "Start app in background.");
     parser.addOption(forceOption);
-
-    parser.process(a);
 
     if (parser.isSet(forceStagingOption)) {
         toggl_set_staging_override(true);
     }
 
-    qputenv("QML_DISABLE_DISTANCEFIELD", "1");
+    parser.process(a);
+}
 
-    QQmlApplicationEngine engine;
+void registerTypes() {
+    qRegisterMetaType<uint64_t>("uint64_t");
+    qRegisterMetaType<int64_t>("int64_t");
+    qRegisterMetaType<bool_t>("bool_t");
+    qRegisterMetaType<QVector<TimeEntryView*> >("QVector<TimeEntryView*>");
+    qRegisterMetaType<QVector<AutocompleteView*> >("QVector<AutocompleteView*>");
+    qRegisterMetaType<QVector<GenericView*> >("QVector<GenericView*>");
+
     qmlRegisterUncreatableType<CountryView>("toggl", 1, 0, "Country", "Created by backend code");
     qmlRegisterUncreatableType<TimeEntryView>("toggl", 1, 0, "TimeEntry", "Created by backend code");
     qmlRegisterUncreatableType<TimeEntryViewStorage>("toggl", 1, 0, "TimeEntryList", "Created by backend code");
     qmlRegisterUncreatableType<AutocompleteView>("toggl", 1, 0, "Autocomplete", "Created by backend code");
     qmlRegisterUncreatableType<AutocompleteListModel>("toggl", 1, 0, "AutocompleteListModel", "Created by backend code");
     qmlRegisterUncreatableType<AutocompleteProxyModel>("toggl", 1, 0, "AutocompleteProxyModel", "Created by backend code");
+}
 
+
+int main(int argc, char *argv[]) try {
+    Bugsnag::apiKey = "aa13053a88d5133b688db0f25ec103b7";
+    Bugsnag::app.version = APP_VERSION;
+
+    TogglApplication::setQuitOnLastWindowClosed(false);
+    QApplication::setApplicationName("Toggl Desktop");
+    QApplication::setOrganizationName("Toggl");
+
+    TogglApplication a(argc, argv);
+    if (a.isRunning()) {
+        qDebug() << "An instance of the app is already running";
+        return 0;
+    }
+    a.setApplicationVersion(APP_VERSION);
+    setOptions(a);
+
+    qputenv("QML_DISABLE_DISTANCEFIELD", "1");
+    QQmlApplicationEngine engine;
+    registerTypes();
     engine.rootContext()->setContextProperty("toggl", new TogglApi(nullptr));
     engine.load(QUrl(QStringLiteral("qrc:/MainWindow.qml")));
+
     if (!TogglApi::instance->startEvents()) {
-        QMessageBox(
-            QMessageBox::Warning,
-            "Error",
-            "The application could not start. Please inspect the log file.",
-            QMessageBox::Ok|QMessageBox::Cancel).exec();
+        QMessageBox(QMessageBox::Warning,
+                    "Error",
+                    "The application could not start. Please inspect the log file.",
+                    QMessageBox::Ok|QMessageBox::Cancel)
+            .exec();
         return 1;
     }
 
     return a.exec();
-} catch (std::exception &e) {  // NOLINT
+} catch (std::exception &e) {
     TogglApi::notifyBugsnag("std::exception", e.what(), "main");
     return 1;
-} catch (...) {  // NOLINT
+} catch (...) {
     TogglApi::notifyBugsnag("unspecified", "exception", "main");
     return 1;
 }
