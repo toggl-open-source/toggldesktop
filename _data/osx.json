@@ -1,6 +1,20 @@
 {
     "versions": [
         {
+            "version": "7.4.1061",
+            "rows": [
+                "Support Screen Recording Permission on Catalina for Recording and Auto-Tracker",
+                "Improve how the Timer layout work",
+                "Update 10 unique TE in Touch Bar",
+                "Fixed The edit popup closing right after open when clicking on project label",
+                "Fixed Show selected task name in edit view project input",
+                "Fixex The AutoComplete appears unexpectedly when editing the TimeEntry",
+                "Fixed UI constrains issues when the list is empty"
+            ],
+            "date": "December 3rd 2019",
+            "beta": "true"
+        },
+        {
             "version": "7.4.1041",
             "rows": [
                 "Introduce new Toggl Touch Bar",
