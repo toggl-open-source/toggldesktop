@@ -30,8 +30,9 @@
 
 class TogglApplication : public SingleApplication {
  public:
-    TogglApplication(int &argc, char **argv)  // NOLINT
-        : SingleApplication(argc, argv) {}
+    TogglApplication(int &argc, char **argv)
+        : SingleApplication(argc, argv)
+    {}
 
     virtual bool notify(QObject *receiver, QEvent *event);
 };
@@ -40,20 +41,33 @@ bool TogglApplication::notify(QObject *receiver, QEvent *event) {
     try {
         return SingleApplication::notify(receiver, event);
     } catch(std::exception &e) {
-        TogglApi::notifyBugsnag("std::exception", e.what(),
-                                receiver->objectName());
+        TogglApi::notifyBugsnag("std::exception", e.what(), receiver->objectName());
     } catch(...) {
-        TogglApi::notifyBugsnag("unspecified", "exception",
-                                receiver->objectName());
+        TogglApi::notifyBugsnag("unspecified", "exception", receiver->objectName());
     }
     return true;
 }
 
-int main(int argc, char *argv[]) try {
-    Bugsnag::apiKey = "aa13053a88d5133b688db0f25ec103b7";
+void setOptions(const TogglApplication &a) {
+    QCommandLineParser parser;
+    parser.setApplicationDescription("Toggl Desktop");
+    parser.addHelpOption();
+    parser.addVersionOption();
 
-    TogglApplication::setQuitOnLastWindowClosed(false);
+    QCommandLineOption logPathOption("log-path", "<path> of the app log file", "path");
+    parser.addOption(logPathOption);
 
+    QCommandLineOption dbPathOption("db-path", "<path> of the app DB file", "path");
+    parser.addOption(dbPathOption);
+
+    // A boolean option with multiple names (-b, --background)
+    QCommandLineOption forceOption({ "b", "background" }, "Start app in background.");
+    parser.addOption(forceOption);
+
+    parser.process(a);
+}
+
+void registerTypes() {
     qRegisterMetaType<uint64_t>("uint64_t");
     qRegisterMetaType<int64_t>("int64_t");
     qRegisterMetaType<bool_t>("bool_t");
@@ -61,6 +75,20 @@ int main(int argc, char *argv[]) try {
     qRegisterMetaType<QVector<AutocompleteView*> >("QVector<AutocompleteView*>");
     qRegisterMetaType<QVector<GenericView*> >("QVector<GenericView*>");
 
+    qmlRegisterUncreatableType<CountryView>("toggl", 1, 0, "Country", "Created by backend code");
+    qmlRegisterUncreatableType<TimeEntryView>("toggl", 1, 0, "TimeEntry", "Created by backend code");
+    qmlRegisterUncreatableType<TimeEntryViewStorage>("toggl", 1, 0, "TimeEntryList", "Created by backend code");
+    qmlRegisterUncreatableType<AutocompleteView>("toggl", 1, 0, "Autocomplete", "Created by backend code");
+    qmlRegisterUncreatableType<AutocompleteListModel>("toggl", 1, 0, "AutocompleteListModel", "Created by backend code");
+    qmlRegisterUncreatableType<AutocompleteProxyModel>("toggl", 1, 0, "AutocompleteProxyModel", "Created by backend code");
+}
+
+
+int main(int argc, char *argv[]) try {
+    Bugsnag::apiKey = "aa13053a88d5133b688db0f25ec103b7";
+    Bugsnag::app.version = APP_VERSION;
+
+    TogglApplication::setQuitOnLastWindowClosed(false);
     QApplication::setApplicationName("Toggl Desktop");
     QApplication::setOrganizationName("Toggl");
 
@@ -69,67 +97,31 @@ int main(int argc, char *argv[]) try {
         qDebug() << "An instance of the app is already running";
         return 0;
     }
+    a.setApplicationVersion(APP_VERSION);
+    setOptions(a);
 
     QtWebEngine::initialize();
-    a.setApplicationVersion(APP_VERSION);
-    Bugsnag::app.version = APP_VERSION;
-
-    QCommandLineParser parser;
-    parser.setApplicationDescription("Toggl Desktop");
-    parser.addHelpOption();
-    parser.addVersionOption();
-
-    QCommandLineOption logPathOption(
-        QStringList() << "log-path",
-        "<path> of the app log file",
-        "path");
-    parser.addOption(logPathOption);
-
-    QCommandLineOption dbPathOption(
-        QStringList() << "db-path",
-        "<path> of the app DB file",
-        "path");
-    parser.addOption(dbPathOption);
-
-    QCommandLineOption scriptPathOption(
-        QStringList() << "script-path",
-        "<path> of a Lua script to run",
-        "path");
-    parser.addOption(scriptPathOption);
-
-    // A boolean option with multiple names (-b, --background)
-    QCommandLineOption forceOption(QStringList() << "b" << "background",
-                                   QCoreApplication::translate("main", "Start app in background."));
-    parser.addOption(forceOption);
-
-    parser.process(a);
 
     qputenv("QML_DISABLE_DISTANCEFIELD", "1");
-
     QQmlApplicationEngine engine;
-    qmlRegisterUncreatableType<CountryView>("toggl", 1, 0, "Country", "Created by backend code");
-    qmlRegisterUncreatableType<TimeEntryView>("toggl", 1, 0, "TimeEntry", "Created by backend code");
-    qmlRegisterUncreatableType<TimeEntryViewStorage>("toggl", 1, 0, "TimeEntryList", "Created by backend code");
-    qmlRegisterUncreatableType<AutocompleteView>("toggl", 1, 0, "Autocomplete", "Created by backend code");
-    qmlRegisterUncreatableType<AutocompleteListModel>("toggl", 1, 0, "AutocompleteListModel", "Created by backend code");
-    qmlRegisterUncreatableType<AutocompleteProxyModel>("toggl", 1, 0, "AutocompleteProxyModel", "Created by backend code");
-
+    registerTypes();
     engine.rootContext()->setContextProperty("toggl", new TogglApi(nullptr));
     engine.load(QUrl(QStringLiteral("qrc:/MainWindow.qml")));
+
     if (!TogglApi::instance->startEvents()) {
-        QMessageBox(
-            QMessageBox::Warning,
-            "Error",
-            "The application could not start. Please inspect the log file.",
-            QMessageBox::Ok|QMessageBox::Cancel).exec();
+        QMessageBox(QMessageBox::Warning,
+                    "Error",
+                    "The application could not start. Please inspect the log file.",
+                    QMessageBox::Ok|QMessageBox::Cancel)
+            .exec();
         return 1;
     }
 
     return a.exec();
-} catch (std::exception &e) {  // NOLINT
+} catch (std::exception &e) {
     TogglApi::notifyBugsnag("std::exception", e.what(), "main");
     return 1;
-} catch (...) {  // NOLINT
+} catch (...) {
     TogglApi::notifyBugsnag("unspecified", "exception", "main");
     return 1;
 }
