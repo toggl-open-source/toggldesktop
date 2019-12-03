@@ -65,5 +65,5 @@
 - (BOOL)confirmlessDelete;
 - (BOOL)isRunning;
 - (void)load:(TogglTimeEntryView *)data;
-
+- (BOOL) isSameContentWithTimeEntryViewItem:(TimeEntryViewItem *) item;
 @end
