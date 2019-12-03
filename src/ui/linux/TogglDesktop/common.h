@@ -4,6 +4,54 @@
 #define SRC_COMMON_H_
 
 #include <QMutex>
+#include <QString>
+
+
+inline QString toQString(const char_t *cStr) {
+#ifdef _WIN32
+    return QString::fromWCharArray(cStr);
+#else
+    return QString(cStr);
+#endif
+}
+
+inline const char_t *toCStr(const QString &qStr) {
+    // We need to cache a few returned results because sometimes this function gets called a few times for a single API call
+#ifdef _WIN32
+    thread_local static int idx = 0;
+    thread_local static std::vector<std::wstring> cache { 16 };
+    cache[idx] = qStr.toStdWString();
+    auto &ret = cache[idx];
+    idx = (idx + 1) % 16;
+    return ret.c_str();
+#else
+    thread_local static int idx = 0;
+    thread_local static std::vector<std::string> cache { 16 };
+    cache[idx] = qStr.toStdString();
+    auto &ret = cache[idx];
+    idx = (idx + 1) % 16;
+    return ret.c_str();
+#endif
+}
+
+#if 0
+inline QString toQString(const wchar_t *s) {
+    return QString::fromWCharArray(s);
+}
+inline const wchar_t *toLocalString(const QString &s) {
+    return s.toStdWString().c_str();
+}
+#define strLiteral(x) L"" x
+#endif
+#if 0
+inline QString toQString(const char_t *s) {
+    return QString::fromLocal8Bit(s);
+}
+inline const char_t *toLocalString(const QString &s) {
+    return s.toStdString().c_str();
+}
+#define strLiteral(x) x
+#endif
 
 #ifndef TOGGL_SAFE_PROPERTIES
 

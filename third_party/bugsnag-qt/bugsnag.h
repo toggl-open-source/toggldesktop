@@ -18,7 +18,7 @@
 #include <QDebug>
 #include <QNetworkReply>
 
-#ifdef __linux__
+#ifndef _WIN32
 #include <execinfo.h>
 #include <unistd.h>
 #endif
@@ -280,7 +280,7 @@ class BUGSNAGQTSHARED_EXPORT Bugsnag : public QObject {
         char **strings;
         int size;
 
-#ifdef __linux__
+#ifdef __linux
         size = backtrace(buffer, 64);
         strings = backtrace_symbols(buffer, size);
         if (strings) {

@@ -25,6 +25,7 @@
 #include "./autocompletelistmodel.h"
 #include "./settingsview.h"
 #include "./bugsnag.h"
+#include "./common.h"
 
 TogglApi *TogglApi::instance = nullptr;
 
@@ -274,6 +275,7 @@ TogglApi::TogglApi(QObject *parent, QString logPathOverride, QString dbPathOverr
     , uiThread_(QThread::currentThread())
 {
     QString version = QApplication::applicationVersion();
+    ctx = toggl_context_init(toCStr("linux_native_app"), toCStr(version));
 
     QString appDirPath =
         QStandardPaths::writableLocation(
@@ -631,7 +633,6 @@ QString TogglApi::start(
     const uint64_t project_id,
     const QString &tags,
     const bool_t billable) {
-
     char_t *guid = toggl_start(ctx,
                                toCStr(description),
                                toCStr(duration),

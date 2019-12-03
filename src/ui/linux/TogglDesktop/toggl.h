@@ -25,33 +25,6 @@ class TimeEntryView;
 class CountryView;
 class TimeEntryViewStorage;
 
-inline QString toQString(const char_t *cStr) {
-#ifdef _WIN32
-    return QString::fromWCharArray(cStr);
-#else
-    return QString(cStr);
-#endif
-}
-
-inline const char_t *toCStr(const QString &qStr) {
-    // We need to cache a few returned results because sometimes this function gets called a few times for a single API call
-#ifdef _WIN32
-    thread_local static int idx = 0;
-    thread_local static std::vector<std::wstring> cache { 16 };
-    cache[idx] = qStr.toStdWString();
-    auto &ret = cache[idx];
-    idx = (idx + 1) % 16;
-    return ret.c_str();
-#else
-    thread_local static int idx = 0;
-    thread_local static std::vector<std::string> cache { 16 };
-    cache[idx] = qStr.toStdString();
-    auto &ret = cache[idx];
-    idx = (idx + 1) % 16;
-    return ret.c_str();
-#endif
-}
-
 class TogglApi : public QObject {
     Q_OBJECT
     Q_PROPERTY(QList<QObject*> countries READ countries NOTIFY countriesChanged)
@@ -391,15 +364,19 @@ void on_overlay(const int64_t type);
 void on_display_update(const char_t *url);
 void on_display_online_state(
     const bool is_online);
-void on_display_url(const char_t *url);
+void on_display_url(
+    const char_t *url);
 void on_display_login(
     const bool_t open,
     const uint64_t user_id);
-void on_display_pomodoro(const char_t *title,
+void on_display_pomodoro(
+    const char_t *title,
     const char_t *informative_text);
-void on_display_pomodoro_break(const char_t *title,
+void on_display_pomodoro_break(
+    const char_t *title,
     const char_t *informative_text);
-void on_display_reminder(const char_t *title,
+void on_display_reminder(
+    const char_t *title,
     const char_t *informative_text);
 void on_display_time_entry_list(
     const bool_t open,
