@@ -5,7 +5,7 @@ import QtQuick.Layouts 1.12
 import QtQuick.Controls 1.4
 
 Rectangle {
-    id: window
+    id: mainWindow
     visible: true
     width: 400
     height: 640
@@ -17,6 +17,10 @@ Rectangle {
             ratio * a.b + (1.0 - ratio) * b.b,
             ratio * a.a + (1.0 - ratio) * b.a,
         )
+    }
+
+    function setAlpha(color, alpha) {
+        return Qt.rgba(color.r, color.g, color.b, alpha)
     }
 
     SystemPalette {
