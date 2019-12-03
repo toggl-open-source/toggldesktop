@@ -1017,6 +1017,12 @@ void toggl_on_update_download_state(
     app(context)->UI()->OnDisplayUpdateDownloadState(cb);
 }
 
+void toggl_on_message(
+    void *context,
+    TogglDisplayMessage cb) {
+    app(context)->UI()->OnDisplayMessage(cb);
+}
+
 void toggl_on_url(
     void *context,
     TogglDisplayURL cb) {
