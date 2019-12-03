@@ -12,7 +12,7 @@ Item {
             rightMargin: anchors.leftMargin
             topMargin: 0
         }
-        color: delegateMouse.containsMouse ? backgroundColor : modelData.GroupOpen ? backgroundColor : palette.base
+        color: delegateMouse.containsMouse ? palette.listBackground : modelData.GroupOpen ? palette.listBackground : palette.base
 
         TogglShadowBox {
             anchors.fill: parent
@@ -27,7 +27,7 @@ Item {
             anchors.left: parent.left
             anchors.right: parent.right
             height: 1
-            color: backgroundColor
+            color: palette.listBackground
         }
 
         MouseArea {
