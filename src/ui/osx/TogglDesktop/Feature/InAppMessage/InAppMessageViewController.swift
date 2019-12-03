@@ -20,11 +20,12 @@ final class InAppMessageViewController: NSViewController {
     @IBOutlet weak var containerView: NSView!
     @IBOutlet weak var titleLbl: NSTextField!
     @IBOutlet weak var descriptionLbl: NSTextField!
-    @IBOutlet weak var actionBtn: NSButton!
+    @IBOutlet weak var actionBtn: FlatButton!
 
     // MARK: Variables
 
     weak var delegate: InAppMessageViewControllerDelegate?
+    private var message: InAppMessage?
 
     // MARK: View
 
@@ -38,15 +39,21 @@ final class InAppMessageViewController: NSViewController {
     }
 
     @IBAction func closeBtnOnTap(_ sender: Any) {
-        
+        DesktopLibraryBridge.shared().setSeenInAppMessageWithID("0")
+        delegate?.InAppMessageViewControllerShouldDismiss()
     }
 
     @IBAction func actionBtnOnTap(_ sender: Any) {
-        
+        guard let message = message,
+            let url = URL(string: message.urlAction) else { return }
+        NSWorkspace.shared.open(url)
     }
 
-    func update(message: InAppMessage) {
-        
+    func update(_ message: InAppMessage) {
+        self.message = message
+        titleLbl.stringValue = message.title
+        descriptionLbl.stringValue = message.subTitle
+        actionBtn.title = message.buttonTitle
     }
 }
 
@@ -54,4 +61,9 @@ final class InAppMessageViewController: NSViewController {
 
 extension InAppMessageViewController {
 
+    private func initCommon() {
+        actionBtn.wantsLayer = true
+        actionBtn.layer?.borderWidth = 1
+        actionBtn.layer?.borderColor = NSColor.white.cgColor
+    }
 }
