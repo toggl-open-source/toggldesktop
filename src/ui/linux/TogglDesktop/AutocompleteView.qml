@@ -1,5 +1,6 @@
 import QtQuick 2.12
 import QtQuick.Layouts 1.12
+import QtQuick.Controls 1.4
 
 Item {
     id: root
@@ -49,41 +50,40 @@ Item {
     }
 
     Rectangle {
-        anchors.fill: list
-        anchors.margins: -1
-        color: palette.dark
+        z: -1
+        anchors.fill: parent
+        color: setAlpha(palette.shadow, 0.5)
     }
 
-    ListView {
-        id: list
+    ScrollView {
+        id: scrollArea
         width: parent.width
         height: root.maximumHeight
         clip: true
-        model: root.model
-        currentIndex: -1
-        onCurrentIndexChanged: {
-            console.log(currentIndex)
-        }
+        ListView {
+            id: list
+            model: root.model
+            currentIndex: -1
+            onCurrentIndexChanged: {
+                console.log(currentIndex)
+            }
 
-        onCountChanged: {
-            var base = list.visibleChildren[0]
-            var listViewHeight = 0
-            for (var i = 0; i < base.visibleChildren.length; i++)
-                listViewHeight += base.visibleChildren[i].height
-            list.height = Math.min(listViewHeight, root.maximumHeight)
-        }
-        highlightFollowsCurrentItem: true
-        highlight: Rectangle {
-            color: "red"
-            width: root.width
-            height: 24
-        }
-        delegate: Rectangle {
-            width: root.width
-            height: 24
-            color: ListView.isCurrentItem ? "red" : palette.base
-            property bool selectable: modelData.Type < 10
-            Loader {
+            onCountChanged: {
+                var base = list.visibleChildren[0]
+                var listViewHeight = 0
+                if (!base)
+                    return
+                for (var i = 0; i < base.visibleChildren.length; i++)
+                    listViewHeight += base.visibleChildren[i].height
+                list.height = Math.min(listViewHeight, root.maximumHeight)
+            }
+            highlightFollowsCurrentItem: true
+            highlight: Rectangle {
+                color: "red"
+                width: root.width
+                height: 24
+            }
+            delegate: Loader {
                 // TODO use the enum instead of magic values
                 sourceComponent: autocompleteData.Type === 13 ? workspaceDelegate :
                                  autocompleteData.Type === 12 ? clientDelegate :
@@ -98,48 +98,79 @@ Item {
     Component {
         id: workspaceDelegate
 
-        Text {
-            height: 24
+        Rectangle {
+            height: 40
             width: root.width
-            font.bold: true
-            horizontalAlignment: Text.AlignHCenter
-            color: "#9e9e9e"
+            color: palette.base
+            Text {
+                anchors.centerIn: parent
+                color: "#9e9e9e"
 
-            text: autocompleteData.Description
+                text: autocompleteData.Description
+                font.pointSize: 14
+            }
+            Rectangle {
+                anchors {
+                    left: parent.left
+                    bottom: parent.bottom
+                    right: parent.right
+                }
+                height: 1
+                color: palette.alternateBase
+            }
         }
     }
 
     Component {
         id: clientDelegate
 
-        Text {
-            height: 24
-            x: 9
-            color: "#9e9e9e"
 
-            text: autocompleteData.Description
+        Rectangle {
+            height: 30
+            width: root.width
+            color: palette.base
+            Text {
+                anchors.left: parent.left
+                anchors.leftMargin: 12
+                anchors.verticalCenter: parent.verticalCenter
+                height: 24
+                x: 9
+                color: "#9e9e9e"
+
+                text: autocompleteData.Description
+            }
         }
     }
 
     Component {
         id: headerDelegate
 
-        Text {
-            height: 24
-            text: autocompleteData.Description
-            color: "#9e9e9e"
+        Rectangle {
+            height: 30
+            width: root.width
+            color: palette.base
+            Text {
+                anchors.left: parent.left
+                anchors.leftMargin: 12
+                anchors.verticalCenter: parent.verticalCenter
+                text: autocompleteData.Description
+                color: "#9e9e9e"
+                font.pointSize: 11
+            }
         }
     }
 
     Component {
         id: regularDelegate
 
-        Item {
-            height: 24
+        Rectangle {
+            height: 30
             width: root.width
 
             Text {
                 anchors.fill: parent
+                anchors.left: parent.left
+                anchors.leftMargin: 18
                 verticalAlignment: Text.AlignVCenter
                 x: 9
                 textFormat: Text.RichText
@@ -148,8 +179,8 @@ Item {
                                              "<font color=" + autocompleteData.ProjectColor + "> • " + autocompleteData.ProjectLabel + "</font>" :
                                              ""
                 property string task: autocompleteData.TaskLabel.length > 0 ? " " + autocompleteData.TaskLabel : ""
-                property string client: autocompleteData.ClientLabel.length > 0 ? " " + autocompleteData.ClientLabel : ""
-                text: (ListView.isCurrentItem ? "HOVNO" : "") + timeEntry + project + task + client
+                text: (ListView.isCurrentItem ? "Iscurrent" : "") + timeEntry + project + task
+                font.pointSize: 12
             }
             MouseArea {
                 id: delegateMouse

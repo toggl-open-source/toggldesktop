@@ -45,7 +45,6 @@ Rectangle {
     RowLayout {
         id: timerContainer
         x: 12
-        clip: true
         height: parent.height
         width: parent.width - 24
 
@@ -83,21 +82,10 @@ Rectangle {
                 }
                 onTextEdited: {
                     if (focus) {
-                        //autocomplete.visible = true
+                        autocomplete.visible = true
                     }
                 }
                 onFocusChanged: if (!focus) autocomplete.visible = false
-                AutocompleteView {
-                    id: autocomplete
-                    visible: false
-                    anchors{
-                        top: parent.bottom
-                        left: parent.left
-                        right: parent.right
-                    }
-                    filter: description.text
-                    //model: toggl.minitimerAutocomplete
-                }
                 Rectangle {
                     anchors.fill: parent
                     anchors.topMargin: -1
@@ -163,5 +151,18 @@ Rectangle {
             GradientStop { position: 0.0; color: "#33888888" }
             GradientStop { position: 1.0; color: "#00888888" }
         }
+    }
+
+    AutocompleteView {
+        id: autocomplete
+        visible: false
+        anchors{
+            top: parent.bottom
+            left: parent.left
+            right: parent.right
+        }
+        maximumHeight: mainWindow.height - parent.height
+        filter: description.text
+        model: toggl.minitimerAutocomplete
     }
 }
