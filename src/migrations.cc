@@ -1297,6 +1297,14 @@ error Migrations::migrateSettings() {
         return err;
     }
 
+    err = db_->Migrate(
+        "settings.message_seen",
+        "ALTER TABLE settings "
+        "ADD COLUMN message_seen INTEGER NOT NULL DEFAULT 0;");
+    if (err != noError) {
+        return err;
+    }
+
     return noError;
 }
 
