@@ -26,6 +26,7 @@
 #include "./toggl.h"
 #include "./timeentryview.h"
 #include "./countryview.h"
+#include "./autocompletelistmodel.h"
 
 class TogglApplication : public SingleApplication {
  public:
@@ -106,10 +107,13 @@ int main(int argc, char *argv[]) try {
     qputenv("QML_DISABLE_DISTANCEFIELD", "1");
 
     QQmlApplicationEngine engine;
-    qmlRegisterType<CountryView>("toggl", 1, 0, "Country");
-    qmlRegisterType<TimeEntryView>("toggl", 1, 0, "TimeEntry");
-    qmlRegisterType<TimeEntryViewStorage>("toggl", 1, 0, "TimeEntryList");
-    qmlRegisterType<AutocompleteView>("toggl", 1, 0, "Autocomplete");
+    qmlRegisterUncreatableType<CountryView>("toggl", 1, 0, "Country", "Created by backend code");
+    qmlRegisterUncreatableType<TimeEntryView>("toggl", 1, 0, "TimeEntry", "Created by backend code");
+    qmlRegisterUncreatableType<TimeEntryViewStorage>("toggl", 1, 0, "TimeEntryList", "Created by backend code");
+    qmlRegisterUncreatableType<AutocompleteView>("toggl", 1, 0, "Autocomplete", "Created by backend code");
+    qmlRegisterUncreatableType<AutocompleteListModel>("toggl", 1, 0, "AutocompleteListModel", "Created by backend code");
+    qmlRegisterUncreatableType<AutocompleteProxyModel>("toggl", 1, 0, "AutocompleteProxyModel", "Created by backend code");
+
     engine.rootContext()->setContextProperty("toggl", new TogglApi(nullptr));
     engine.load(QUrl(QStringLiteral("qrc:/MainWindow.qml")));
     if (!TogglApi::instance->startEvents()) {
