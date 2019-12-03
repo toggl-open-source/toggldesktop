@@ -45,9 +45,11 @@ Item {
             anchors.fill: parent
             anchors.margins: 12
             spacing: 9
+
             Rectangle {
                 Layout.alignment: Qt.AlignVCenter
-                visible: modelData.Group
+                visible: modelData.Group | modelData.GroupOpen
+                opacity: modelData.GroupOpen ? 0.0 : 1.0
                 width: 24
                 height: 24
                 radius: 4
