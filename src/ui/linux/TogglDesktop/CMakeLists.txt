@@ -39,7 +39,7 @@ set(BINARY_SOURCE_FILES
     mainwindow.ui
 )
 
-if (UNIX AND NOT LINUX)
+if (APPLE)
     set(PLATFORM_SPECIFIC_FILES
         macosSpecific.mm
     )
