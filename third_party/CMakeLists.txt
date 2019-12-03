@@ -19,6 +19,7 @@ set(OAUTH2_SOURCE_FILES
     qt-oauth-lib/logindialog.cpp
     qt-oauth-lib/oauth2.cpp
 )
+add_definitions(-DOAUTH2_BUILD_DLL)
 add_library(OAuth2 SHARED ${OAUTH2_SOURCE_FILES})
 target_link_libraries(OAuth2 PRIVATE
     Qt5::Widgets Qt5::WebEngine Qt5::WebEngineWidgets
@@ -26,6 +27,7 @@ target_link_libraries(OAuth2 PRIVATE
 install(TARGETS OAuth2 DESTINATION ${TOGGL_INTERNAL_LIB_DIR})
 
 # Bugsnag has to be bundled
+add_definitions(-DBUGSNAGQT_LIBRARY)
 set(BUGSNAG_SOURCE_FILES
     bugsnag-qt/bugsnag.cpp
 )
@@ -99,9 +101,20 @@ if(NOT LUA_FOUND)
         lua/src/lvm.c
         lua/src/lzio.c
     )
+    if (WIN32)
+        set(LUA_SOURCE_FILES ${LUA_SOURCE_FILES}
+            luafar/ustring.c
+        )
+        add_definitions(-DLUA_BUILD_AS_DLL)
+    endif()
     add_library(Lua SHARED ${LUA_SOURCE_FILES})
+    target_include_directories(Lua PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/lua/src
+        ${CMAKE_CURRENT_SOURCE_DIR}/luafar
+    )
     set(LUA_INCLUDE_DIRS
         ${CMAKE_CURRENT_SOURCE_DIR}/lua/src
+        ${CMAKE_CURRENT_SOURCE_DIR}/luafar
         PARENT_SCOPE
     )
     set(LUA_LIBRARIES
@@ -117,6 +130,7 @@ if(NOT jsoncpp_FOUND)
         jsoncpp/src/lib_json/json_value.cpp
         jsoncpp/src/lib_json/json_writer.cpp
     )
+    add_definitions(-DJSON_DLL_BUILD)
     add_library(jsoncpp SHARED ${JSON_SOURCE_FILES})
     target_include_directories(jsoncpp PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/jsoncpp/include
@@ -169,7 +183,7 @@ if(NOT QXT_CORE_FOUND)
         target_link_libraries(Qxt
             Qt5::X11Extras
         )
-    else()
+    elseif(APPLE)
         target_link_libraries(Qxt
             "-framework Foundation"
             "-framework AppKit"
@@ -197,8 +211,9 @@ if(NOT GTEST_FOUND AND TOGGL_BUILD_TESTS)
         googletest-read-only
         googletest-read-only/include
     )
-    target_link_libraries(gtest pthread)
+    target_link_libraries(gtest)
     set(GTEST_MAIN_SOURCE_FILES
+        googletest-read-only/src/gtest-all.cc
         googletest-read-only/src/gtest_main.cc
     )
     add_library(gtest_main SHARED ${GTEST_MAIN_SOURCE_FILES})
@@ -206,7 +221,7 @@ if(NOT GTEST_FOUND AND TOGGL_BUILD_TESTS)
         googletest-read-only
         googletest-read-only/include
     )
-    target_link_libraries(gtest_main pthread)
+    target_link_libraries(gtest_main PRIVATE)
     set(GTEST_INCLUDE_DIRS
         ${CMAKE_CURRENT_SOURCE_DIR}/googletest-read-only/include
         PARENT_SCOPE

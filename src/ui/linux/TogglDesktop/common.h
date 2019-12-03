@@ -4,6 +4,25 @@
 #define SRC_COMMON_H_
 
 #include <QMutex>
+#include <QString>
+
+#ifdef _WIN32
+inline QString toQString(const wchar_t *s) {
+    return QString::fromWCharArray(s);
+}
+inline const wchar_t *toLocalString(const QString &s) {
+    return s.toStdWString().c_str();
+}
+#define strLiteral(x) L"" x
+#else
+inline QString toQString(const char_t *s) {
+    return QString::fromLocal8Bit(s);
+}
+inline const char_t *toLocalString(const QString &s) {
+    return s.toStdString().c_str();
+}
+#define strLiteral(x) x
+#endif
 
 #ifndef TOGGL_SAFE_PROPERTIES
 

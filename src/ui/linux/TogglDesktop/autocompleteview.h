@@ -40,21 +40,21 @@ class AutocompleteView : public QObject {
 
         while (it) {
             AutocompleteView *view = new AutocompleteView();
-            view->Text = QString(it->Text);
-            view->Description = QString(it->Description);
-            view->ProjectAndTaskLabel = QString(it->ProjectAndTaskLabel);
-            view->ProjectLabel = QString(it->ProjectLabel);
-            view->ClientLabel = QString(it->ClientLabel);
-            view->ProjectColor = QString(it->ProjectColor);
+            view->Text = toQString(it->Text);
+            view->Description = toQString(it->Description);
+            view->ProjectAndTaskLabel = toQString(it->ProjectAndTaskLabel);
+            view->ProjectLabel = toQString(it->ProjectLabel);
+            view->ClientLabel = toQString(it->ClientLabel);
+            view->ProjectColor = toQString(it->ProjectColor);
             view->ClientID = it->ClientID;
             view->TaskID = it->TaskID;
-            view->TaskLabel = it->TaskLabel;
+            view->TaskLabel = toQString(it->TaskLabel);
             view->ProjectID = it->ProjectID;
             view->WorkspaceID = it->WorkspaceID;
-            view->WorkspaceName = QString(it->WorkspaceName);
+            view->WorkspaceName = toQString(it->WorkspaceName);
             view->Type = AutocompleteType(it->Type);
             view->Billable = it->Billable;
-            view->Tags = QString(it->Tags);
+            view->Tags = toQString(it->Tags);
 
             if (!currentWorkspace || currentWorkspace->Description != view->WorkspaceName) {
                 currentWorkspace = new AutocompleteView();

@@ -144,7 +144,7 @@ private:
 
     void viewTimeEntryList();
 
-    void setIdleSeconds(u_int64_t idleSeconds);
+    void setIdleSeconds(uint64_t idleSeconds);
 
     bool setTimeEntryProject(
         const QString guid,
@@ -342,7 +342,7 @@ private:
     void updateContinueStopShortcut();
 
     void setProjectColors(
-        QVector<char *> list);
+        QVector<char_t *> list);
 
  private:
     void *ctx;
@@ -357,28 +357,27 @@ private:
 // callbacks used internally by the app instance
 void on_display_app(const bool_t open);
 void on_display_error(
-    const char *errmsg,
+    const char_t *errmsg,
     const bool_t user_error);
 void on_overlay(const int64_t type);
-void on_display_update(
-    const char *url);
+void on_display_update(const char_t *url);
 void on_display_online_state(
     const bool is_online,
-    const char *reason);
+    const char_t *reason);
 void on_display_url(
-    const char *url);
+    const char_t *url);
 void on_display_login(
     const bool_t open,
     const uint64_t user_id);
 void on_display_pomodoro(
-    const char *title,
-    const char *informative_text);
+    const char_t *title,
+    const char_t *informative_text);
 void on_display_pomodoro_break(
-    const char *title,
-    const char *informative_text);
+    const char_t *title,
+    const char_t *informative_text);
 void on_display_reminder(
-    const char *title,
-    const char *informative_text);
+    const char_t *title,
+    const char_t *informative_text);
 void on_display_time_entry_list(
     const bool_t open,
     TogglTimeEntryView *first);
@@ -397,16 +396,16 @@ void on_display_tags(
 void on_display_time_entry_editor(
     const bool_t open,
     TogglTimeEntryView *te,
-    const char *focused_field_name);
+    const char_t *focused_field_name);
 void on_display_settings(
     const bool_t open,
     TogglSettingsView *settings);
 void on_display_timer_state(
     TogglTimeEntryView *te);
 void on_display_idle_notification(
-    const char *guid,
-    const char *since,
-    const char *duration,
+    const char_t *guid,
+    const char_t *since,
+    const char_t *duration,
     const int64_t started);
 void on_project_colors(
     const char_t *list[],

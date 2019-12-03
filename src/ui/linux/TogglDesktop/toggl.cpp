@@ -24,6 +24,7 @@
 #include "./autocompleteview.h"
 #include "./settingsview.h"
 #include "./bugsnag.h"
+#include "./common.h"
 
 TogglApi *TogglApi::instance = nullptr;
 
@@ -35,15 +36,15 @@ void on_display_app(const bool_t open) {
     TogglApi::instance->displayApp(open);
 }
 
-void on_display_update(const char *url) {
-    TogglApi::instance->displayUpdate(QString(url));
+void on_display_update(const char_t *url) {
+    TogglApi::instance->displayUpdate(toQString(url));
 }
 
 void on_display_error(
-    const char *errmsg,
+    const char_t *errmsg,
     const bool_t user_error) {
     TogglApi::instance->aboutToDisplayError();
-    TogglApi::instance->displayError(QString(errmsg), user_error);
+    TogglApi::instance->displayError(toQString(errmsg), user_error);
 }
 
 void on_overlay(const int64_t type) {
@@ -57,8 +58,8 @@ void on_display_online_state(
 }
 
 void on_display_url(
-    const char *url) {
-    QDesktopServices::openUrl(QUrl(url));
+    const char_t*url) {
+    QDesktopServices::openUrl(QUrl(toQString(url)));
 }
 
 void on_display_login(
@@ -73,27 +74,27 @@ void on_display_login(
 }
 
 void on_display_pomodoro(
-    const char *title,
-    const char *informative_text) {
+    const char_t*title,
+    const char_t*informative_text) {
     TogglApi::instance->displayPomodoro(
-        QString(title),
-        QString(informative_text));
+        toQString(title),
+        toQString(informative_text));
 }
 
 void on_display_pomodoro_break(
-    const char *title,
-    const char *informative_text) {
+    const char_t*title,
+    const char_t*informative_text) {
     TogglApi::instance->displayPomodoroBreak(
-        QString(title),
-        QString(informative_text));
+        toQString(title),
+        toQString(informative_text));
 }
 
 void on_display_reminder(
-    const char *title,
-    const char *informative_text) {
+    const char_t*title,
+    const char_t*informative_text) {
     TogglApi::instance->displayReminder(
-        QString(title),
-        QString(informative_text));
+        toQString(title),
+        toQString(informative_text));
 }
 
 void on_display_time_entry_list(
@@ -149,14 +150,14 @@ void on_display_tags(
 void on_display_time_entry_editor(
     const bool_t open,
     TogglTimeEntryView *te,
-    const char *focused_field_name) {
+    const char_t*focused_field_name) {
     if (open) {
         TogglApi::instance->aboutToDisplayTimeEntryEditor();
     }
     TogglApi::instance->displayTimeEntryEditor(
         open,
         TimeEntryView::importOne(te),
-        QString(focused_field_name));
+        toQString(focused_field_name));
 }
 
 void on_display_settings(
@@ -180,28 +181,28 @@ void on_display_timer_state(
 }
 
 void on_display_idle_notification(
-    const char *guid,
-    const char *since,
-    const char *duration,
+    const char_t*guid,
+    const char_t*since,
+    const char_t*duration,
     const int64_t started,
-    const char *description) {
+    const char_t*description) {
     TogglApi::instance->displayIdleNotification(
-        QString(guid),
-        QString(since),
-        QString(duration),
+        toQString(guid),
+        toQString(since),
+        toQString(duration),
         started,
-        QString(description));
+        toQString(description));
 }
 
 
 void on_project_colors(
-    char *list[],
+    char_t *list[],
     const uint64_t count)
 {
-    QVector<char *> result;
+    QVector<char_t *> result;
     for (uint i = 0; i < count; i++)
     {
-        char *c = list[i];
+        auto c = list[i];
         result.push_back(c);
     }
     TogglApi::instance->setProjectColors(result);
@@ -270,8 +271,7 @@ TogglApi::TogglApi(QObject *parent, QString logPathOverride, QString dbPathOverr
     , uiThread_(QThread::currentThread())
 {
     QString version = QApplication::applicationVersion();
-    ctx = toggl_context_init("linux_native_app",
-                             version.toStdString().c_str());
+    ctx = toggl_context_init(strLiteral("linux_native_app"), toLocalString(version));
 
     QString appDirPath =
         QStandardPaths::writableLocation(
@@ -287,10 +287,10 @@ TogglApi::TogglApi(QObject *parent, QString logPathOverride, QString dbPathOverr
     } else {
         logPath = logPathOverride;
     }
-    toggl_set_log_path(logPath.toUtf8().constData());
+    toggl_set_log_path(toLocalString(logPath));
     qDebug() << "Log path " << logPath;
 
-    toggl_set_log_level("debug");
+    toggl_set_log_level(strLiteral("debug"));
 
     QString dbPath("");
     if (dbPathOverride.isEmpty()) {
@@ -298,7 +298,7 @@ TogglApi::TogglApi(QObject *parent, QString logPathOverride, QString dbPathOverr
     } else {
         dbPath = dbPathOverride;
     }
-    toggl_set_db_path(ctx, dbPath.toUtf8().constData());
+    toggl_set_db_path(ctx, toLocalString(dbPath));
     qDebug() << "DB path " << dbPath;
 
     QString executablePath = QCoreApplication::applicationDirPath();
@@ -312,7 +312,7 @@ TogglApi::TogglApi(QObject *parent, QString logPathOverride, QString dbPathOverr
         cacertPath = QString("%1/cacert.pem").arg(TOGGL_DATA_DIR);
     }
 #endif // TOGGL_DATA_DIR
-    toggl_set_cacert_path(ctx, cacertPath.toUtf8().constData());
+    toggl_set_cacert_path(ctx, toLocalString(cacertPath));
 
     toggl_on_show_app(ctx, on_display_app);
     toggl_on_update(ctx, on_display_update);
@@ -344,9 +344,9 @@ TogglApi::TogglApi(QObject *parent, QString logPathOverride, QString dbPathOverr
 
     timeEntries_ = new TimeEntryViewStorage(this);
 
-    char *env = toggl_environment(ctx);
+    auto env = toggl_environment(ctx);
     if (env) {
-        Bugsnag::releaseStage = QString(env);
+        Bugsnag::releaseStage = toQString(env);
         free(env);
     }
 
@@ -425,20 +425,20 @@ void TogglApi::clear() {
 
 void TogglApi::login(const QString email, const QString password) {
     toggl_login_async(ctx,
-                      email.toStdString().c_str(),
-                      password.toStdString().c_str());
+                      toLocalString(email),
+                      toLocalString(password));
 }
 
 void TogglApi::signup(const QString email, const QString password,
                       const uint64_t countryID) {
     toggl_signup_async(ctx,
-                       email.toStdString().c_str(),
-                       password.toStdString().c_str(),
+                       toLocalString(email),
+                       toLocalString(password),
                        countryID);
 }
 
 void TogglApi::setEnvironment(const QString environment) {
-    toggl_set_environment(ctx, environment.toStdString().c_str());
+    toggl_set_environment(ctx, toLocalString(environment));
     Bugsnag::releaseStage = environment;
 }
 
@@ -446,7 +446,7 @@ bool TogglApi::setTimeEntryDate(
     const QString guid,
     const int64_t unix_timestamp) {
     return toggl_set_time_entry_date(ctx,
-                                     guid.toStdString().c_str(),
+                                     toLocalString(guid),
                                      unix_timestamp);
 }
 
@@ -454,24 +454,24 @@ bool TogglApi::setTimeEntryStart(
     const QString guid,
     const QString value) {
     return toggl_set_time_entry_start(ctx,
-                                      guid.toStdString().c_str(),
-                                      value.toStdString().c_str());
+                                      toLocalString(guid),
+                                      toLocalString(value));
 }
 
 bool TogglApi::setTimeEntryStop(
     const QString guid,
     const QString value) {
     return toggl_set_time_entry_end(ctx,
-                                    guid.toStdString().c_str(),
-                                    value.toStdString().c_str());
+                                    toLocalString(guid),
+                                    toLocalString(value));
 }
 
 void TogglApi::googleLogin(const QString accessToken) {
-    toggl_google_login_async(ctx, accessToken.toStdString().c_str());
+    toggl_google_login_async(ctx, toLocalString(accessToken));
 }
 
 void TogglApi::googleSignup(const QString &accessToken, uint64_t countryID) {
-    toggl_google_signup_async(ctx, accessToken.toStdString().c_str(), countryID);
+    toggl_google_signup_async(ctx, toLocalString(accessToken), countryID);
 }
 
 bool TogglApi::setProxySettings(
@@ -482,24 +482,24 @@ bool TogglApi::setProxySettings(
     const QString proxyPassword) {
     return toggl_set_proxy_settings(ctx,
                                     useProxy,
-                                    proxyHost.toStdString().c_str(),
+                                    toLocalString(proxyHost),
                                     proxyPort,
-                                    proxyUsername.toStdString().c_str(),
-                                    proxyPassword.toStdString().c_str());
+                                    toLocalString(proxyUsername),
+                                    toLocalString(proxyPassword));
 }
 
 bool TogglApi::discardTimeAt(const QString guid,
                              const uint64_t at,
                              const bool split_into_new_time_entry) {
     return toggl_discard_time_at(ctx,
-                                 guid.toStdString().c_str(),
+                                 toLocalString(guid),
                                  at,
                                  split_into_new_time_entry);
 }
 
 bool TogglApi::discardTimeAndContinue(const QString guid,
                                       const uint64_t at) {
-    return toggl_discard_time_and_continue(ctx, guid.toStdString().c_str(), at);
+    return toggl_discard_time_and_continue(ctx, toLocalString(guid), at);
 }
 
 // Returns true if script file was successfully
@@ -528,11 +528,11 @@ bool TogglApi::runScriptFile(const QString filename) {
 
     int64_t err(0);
     QString textOutput("");
-    char_t *result = toggl_run_script(
+    auto result = toggl_run_script(
         ctx,
-        code.toUtf8().constData(),
+        toLocalString(code),
         &err);
-    textOutput = QString(result);
+    textOutput = toQString(result);
     free(result);
 
     if (err) {
@@ -544,7 +544,7 @@ bool TogglApi::runScriptFile(const QString filename) {
     return !err;
 }
 
-void TogglApi::setIdleSeconds(u_int64_t idleSeconds) {
+void TogglApi::setIdleSeconds(uint64_t idleSeconds) {
     toggl_set_idle_seconds(ctx, idleSeconds);
 }
 
@@ -617,7 +617,7 @@ bool TogglApi::setSettingsRemindDays(
 }
 
 bool TogglApi::setSettingsRemindTimes(const QTime &remind_starts, const QTime &remind_ends) {
-    return toggl_set_settings_remind_times(ctx, qPrintable(remind_starts.toString("HH:mm")), qPrintable(remind_ends.toString("HH:mm")));
+    return toggl_set_settings_remind_times(ctx, toLocalString(remind_starts.toString("HH:mm")), toLocalString(remind_ends.toString("HH:mm")));
 }
 
 void TogglApi::toggleTimelineRecording(const bool recordTimeline) {
@@ -625,7 +625,7 @@ void TogglApi::toggleTimelineRecording(const bool recordTimeline) {
 }
 
 bool TogglApi::setUpdateChannel(const QString channel) {
-    return toggl_set_update_channel(ctx, channel.toStdString().c_str());
+    return toggl_set_update_channel(ctx, toLocalString(channel));
 }
 
 bool TogglApi::setSettingsStopEntryOnShutdown(const bool stop_entry) {
@@ -637,20 +637,20 @@ void TogglApi::stopEntryOnShutdown() {
 }
 
 QString TogglApi::updateChannel() {
-    char *channel = toggl_get_update_channel(ctx);
+    auto channel = toggl_get_update_channel(ctx);
     QString res;
     if (channel) {
-        res = QString(channel);
+        res = toQString(channel);
         free(channel);
     }
     return res;
 }
 
 QString TogglApi::userEmail() {
-    char *email = toggl_get_user_email(ctx);
+    auto email = toggl_get_user_email(ctx);
     QString res;
     if (email) {
-        res = QString(email);
+        res = toQString(email);
         free(email);
     }
     return res;
@@ -662,21 +662,21 @@ QString TogglApi::start(const QString description,
     const uint64_t project_id,
     const QString tags,
     const bool_t billable) {
-    char *guid = toggl_start(ctx,
-                             description.toStdString().c_str(),
-                             duration.toStdString().c_str(),
+    auto guid = toggl_start(ctx,
+                             toLocalString(description),
+                             toLocalString(duration),
                              task_id,
                              project_id,
                              nullptr /* project guid */,
-                             tags.toStdString().c_str() /* tags */,
+                             toLocalString(tags) /* tags */,
                              false);
     QString res("");
     if (guid) {
-        res = QString(guid);
+        res = toQString(guid);
         free(guid);
         if (billable) {
             toggl_set_time_entry_billable(ctx,
-                                          res.toStdString().c_str(),
+                                          toLocalString(res),
                                           billable);
         }
     }
@@ -689,14 +689,14 @@ bool TogglApi::stop() {
 
 const QString TogglApi::formatDurationInSecondsHHMMSS(
     const int64_t duration) {
-    char *buf = toggl_format_tracking_time_duration(duration);
-    QString res = QString(buf);
+    auto buf = toggl_format_tracking_time_duration(duration);
+    QString res = toQString(buf);
     free(buf);
     return res;
 }
 
 bool TogglApi::continueTimeEntry(const QString guid) {
-    return toggl_continue(ctx, guid.toStdString().c_str());
+    return toggl_continue(ctx, toLocalString(guid));
 }
 
 bool TogglApi::continueLatestTimeEntry() {
@@ -736,15 +736,15 @@ void TogglApi::setOnline() {
 }
 
 void TogglApi::toggleEntriesGroup(const QString groupName) {
-    toggl_toggle_entries_group(ctx, groupName.toStdString().c_str());
+    toggl_toggle_entries_group(ctx, toLocalString(groupName));
 }
 
 void TogglApi::editTimeEntry(const QString guid,
                              const QString focusedFieldName) {
     toggl_edit(ctx,
-               guid.toStdString().c_str(),
+               toLocalString(guid),
                false,
-               focusedFieldName.toStdString().c_str());
+               toLocalString(focusedFieldName));
 }
 
 bool TogglApi::setTimeEntryProject(
@@ -753,41 +753,41 @@ bool TogglApi::setTimeEntryProject(
     const uint64_t project_id,
     const QString project_guid) {
     return toggl_set_time_entry_project(ctx,
-                                        guid.toStdString().c_str(),
+                                        toLocalString(guid),
                                         task_id,
                                         project_id,
-                                        project_guid.toStdString().c_str());
+                                        toLocalString(project_guid));
 }
 
 bool TogglApi::setTimeEntryDescription(
     const QString guid,
     const QString value) {
     return toggl_set_time_entry_description(ctx,
-                                            guid.toStdString().c_str(),
-                                            value.toStdString().c_str());
+                                            toLocalString(guid),
+                                            toLocalString(value));
 }
 
 bool TogglApi::setTimeEntryTags(
     const QString guid,
     const QString tags) {
     return toggl_set_time_entry_tags(ctx,
-                                     guid.toStdString().c_str(),
-                                     tags.toStdString().c_str());
+                                     toLocalString(guid),
+                                     toLocalString(tags));
 }
 
 void TogglApi::editRunningTimeEntry(
     const QString focusedFieldName) {
     toggl_edit(ctx,
-               "",
+               strLiteral(""),
                true,
-               focusedFieldName.toStdString().c_str());
+               toLocalString(focusedFieldName));
 }
 
 bool TogglApi::setTimeEntryBillable(
     const QString guid,
     const bool billable) {
     return toggl_set_time_entry_billable(ctx,
-                                         guid.toStdString().c_str(),
+                                         toLocalString(guid),
                                          billable);
 }
 
@@ -800,17 +800,17 @@ QString TogglApi::addProject(
     const bool is_private,
     const QString project_color) {
 
-    char *guid = toggl_add_project(ctx,
-                                   time_entry_guid.toStdString().c_str(),
+    auto guid = toggl_add_project(ctx,
+                                   toLocalString(time_entry_guid),
                                    workspace_id,
                                    client_id,
-                                   client_guid.toStdString().c_str(),
-                                   project_name.toStdString().c_str(),
+                                   toLocalString(client_guid),
+                                   toLocalString(project_name),
                                    is_private,
-                                   project_color.toStdString().c_str());
+                                   toLocalString(project_color));
     QString res("");
     if (guid) {
-        res = QString(guid);
+        res = toQString(guid);
         free(guid);
     }
     return res;
@@ -819,12 +819,12 @@ QString TogglApi::addProject(
 QString TogglApi::createClient(
     const uint64_t wid,
     const QString name) {
-    char *guid = toggl_create_client(ctx,
+    auto guid = toggl_create_client(ctx,
                                      wid,
-                                     name.toStdString().c_str());
+                                     toLocalString(name));
     QString res("");
     if (guid) {
-        res = QString(guid);
+        res = toQString(guid);
         free(guid);
     }
     return res;
@@ -835,46 +835,46 @@ void TogglApi::viewTimeEntryList() {
 }
 
 bool TogglApi::deleteTimeEntry(const QString guid) {
-    return toggl_delete_time_entry(ctx, guid.toStdString().c_str());
+    return toggl_delete_time_entry(ctx, toLocalString(guid));
 }
 
 bool TogglApi::setTimeEntryDuration(
     const QString guid,
     const QString value) {
     return toggl_set_time_entry_duration(ctx,
-                                         guid.toStdString().c_str(),
-                                         value.toStdString().c_str());
+                                         toLocalString(guid),
+                                         toLocalString(value));
 }
 
 bool TogglApi::sendFeedback(const QString topic,
                             const QString details,
                             const QString filename) {
     return toggl_feedback_send(ctx,
-                               topic.toStdString().c_str(),
-                               details.toStdString().c_str(),
-                               filename.toStdString().c_str());
+                               toLocalString(topic),
+                               toLocalString(details),
+                               toLocalString(filename));
 }
 
 void TogglApi::setShowHideKey(const QString keys) {
-    toggl_set_key_show(ctx, keys.toStdString().c_str());
+    toggl_set_key_show(ctx, toLocalString(keys));
     TogglApi::instance->updateShowHideShortcut();
 }
 
 void TogglApi::setContinueStopKey(const QString keys) {
-    toggl_set_key_start(ctx, keys.toStdString().c_str());
+    toggl_set_key_start(ctx, toLocalString(keys));
     TogglApi::instance->updateContinueStopShortcut();
 }
 
 QString TogglApi::getShowHideKey() {
-    char *buf = toggl_get_key_show(ctx);
-    QString res = QString(buf);
+    auto buf = toggl_get_key_show(ctx);
+    QString res = toQString(buf);
     free(buf);
     return res;
 }
 
 QString TogglApi::getContinueStopKey() {
-    char *buf = toggl_get_key_start(ctx);
-    QString res = QString(buf);
+    auto buf = toggl_get_key_start(ctx);
+    QString res = toQString(buf);
     free(buf);
     return res;
 }

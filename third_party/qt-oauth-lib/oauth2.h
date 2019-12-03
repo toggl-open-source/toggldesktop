@@ -4,9 +4,19 @@
 #include <QString>
 #include <QObject>
 
+#if defined(_WIN32) || defined(WIN32)
+# ifdef OAUTH2_BUILD_DLL
+#  define OAUTH2_INTERNAL_EXPORT __declspec(dllexport)
+# else
+#  define OAUTH2_INTERNAL_EXPORT __declspec(dllimport)
+# endif
+#else
+# define OAUTH2_INTERNAL_EXPORT
+#endif // _WIN32 || WIN32
+
 class LoginDialog;
 
-class OAuth2 : public QObject
+class OAUTH2_INTERNAL_EXPORT OAuth2 : public QObject
 {
     Q_OBJECT
 

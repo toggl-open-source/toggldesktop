@@ -18,10 +18,12 @@
 #include <QDebug>
 #include <QNetworkReply>
 
+#ifndef _WIN32
 #include <execinfo.h>
+#include <unistd.h>
+#endif
 #include <signal.h>
 #include <stdlib.h>
-#include <unistd.h>
 
 class Notifier {
  public:
@@ -277,7 +279,7 @@ class BUGSNAGQTSHARED_EXPORT Bugsnag : public QObject {
         void *buffer[64];
         char **strings;
         int size;
-
+#ifdef __linux
         size = backtrace(buffer, 64);
         strings = backtrace_symbols(buffer, size);
         if (strings) {
@@ -288,6 +290,7 @@ class BUGSNAGQTSHARED_EXPORT Bugsnag : public QObject {
             }
             free(strings);
         }
+#endif
 
         Event event;
         event.context = context;

@@ -7,6 +7,7 @@
 #include <QTime>
 
 #include "./toggl_api.h"
+#include "./common.h"
 
 class SettingsView : public QObject {
     Q_OBJECT
@@ -18,10 +19,10 @@ class SettingsView : public QObject {
         SettingsView *result = new SettingsView();
         result->AutodetectProxy = view->AutodetectProxy;
         result->UseProxy = view->UseProxy;
-        result->ProxyHost = QString(view->ProxyHost);
+        result->ProxyHost = toQString(view->ProxyHost);
         result->ProxyPort = view->ProxyPort;
-        result->ProxyUsername = QString(view->ProxyUsername);
-        result->ProxyPassword = QString(view->ProxyPassword);
+        result->ProxyUsername = toQString(view->ProxyUsername);
+        result->ProxyPassword = toQString(view->ProxyPassword);
         result->UseIdleDetection = view->UseIdleDetection;
         result->MenubarTimer = view->MenubarTimer;
         result->DockIcon = view->DockIcon;
@@ -43,8 +44,8 @@ class SettingsView : public QObject {
         result->RemindOnFriday = view->RemindFri;
         result->RemindOnSaturday = view->RemindSat;
         result->RemindOnSunday = view->RemindSun;
-        result->RemindStartTime = QTime::fromString(view->RemindStarts, "HH:mm");
-        result->RemindEndTime = QTime::fromString(view->RemindEnds, "HH:mm");
+        result->RemindStartTime = QTime::fromString(toQString(view->RemindStarts), "HH:mm");
+        result->RemindEndTime = QTime::fromString(toQString(view->RemindEnds), "HH:mm");
         result->StopEntryOnShutdownSleep = view->StopEntryOnShutdownSleep;
         return result;
     }

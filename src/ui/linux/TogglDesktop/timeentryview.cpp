@@ -51,38 +51,38 @@ bool TimeEntryView::operator!=(const TimeEntryView &o) {
 TimeEntryView *TimeEntryView::importOne(TogglTimeEntryView *view) {
     TimeEntryView *result = new TimeEntryView();
     result->DurationInSeconds = view->DurationInSeconds;
-    result->ProjectAndTaskLabel = view->ProjectAndTaskLabel;
-    result->Description = QString(view->Description);
-    result->ProjectLabel = QString(view->ProjectLabel);
-    result->TaskLabel = QString(view->TaskLabel);
-    result->ClientLabel = QString(view->ClientLabel);
+    result->ProjectAndTaskLabel = toQString(view->ProjectAndTaskLabel);
+    result->Description = toQString(view->Description);
+    result->ProjectLabel = toQString(view->ProjectLabel);
+    result->TaskLabel = toQString(view->TaskLabel);
+    result->ClientLabel = toQString(view->ClientLabel);
     result->WID = view->WID;
     result->PID = view->PID;
     result->TID = view->TID;
-    result->Duration = QString(view->Duration);
-    result->Color = QString(view->Color);
-    result->GUID = QString(view->GUID);
+    result->Duration = toQString(view->Duration);
+    result->Color = toQString(view->Color);
+    result->GUID = toQString(view->GUID);
     result->Billable = view->Billable;
-    result->Tags = QString(view->Tags).split("\t", QString::SkipEmptyParts);
+    result->Tags = toQString(view->Tags).split("\t", QString::SkipEmptyParts);
     result->Started = view->Started;
     result->Ended = view->Ended;
-    result->StartTimeString = QString(view->StartTimeString);
-    result->EndTimeString = QString(view->EndTimeString);
+    result->StartTimeString = toQString(view->StartTimeString);
+    result->EndTimeString = toQString(view->EndTimeString);
     result->UpdatedAt = view->UpdatedAt;
     result->DateHeader = QString("<tr><td>%1</td><td align=right>%2</td></tr>").arg(view->DateHeader).arg(view->DateDuration);
-    result->DateDuration = QString(view->DateDuration);
+    result->DateDuration = toQString(view->DateDuration);
     result->IsHeader = view->IsHeader;
     result->CanSeeBillable = view->CanSeeBillable;
     result->CanAddProjects = view->CanAddProjects;
     result->DefaultWID = view->DefaultWID;
-    result->WorkspaceName = QString(view->WorkspaceName);
-    result->Error = QString(view->Error);
+    result->WorkspaceName = toQString(view->WorkspaceName);
+    result->Error = toQString(view->Error);
     result->Unsynced = view->Unsynced;
     // Grouped entries mode
     result->Group = view->Group;
     result->GroupOpen = view->GroupOpen;
-    result->GroupName = QString(view->GroupName);
-    result->GroupDuration = QString(view->GroupDuration);
+    result->GroupName = toQString(view->GroupName);
+    result->GroupDuration = toQString(view->GroupDuration);
     result->GroupItemCount = view->GroupItemCount;
 
     return result;
@@ -103,37 +103,37 @@ QVector<TimeEntryView *> TimeEntryView::importAll(
 
 void TimeEntryView::update(const TogglTimeEntryView *view) {
     DurationInSecondsSet(view->DurationInSeconds);
-    DescriptionSet(view->Description);
-    ProjectAndTaskLabelSet(view->ProjectAndTaskLabel);
-    ProjectLabelSet(view->ProjectLabel);
-    TaskLabelSet(view->TaskLabel);
-    ClientLabelSet(view->ClientLabel);
+    DescriptionSet(toQString(view->Description));
+    ProjectAndTaskLabelSet(toQString(view->ProjectAndTaskLabel));
+    ProjectLabelSet(toQString(view->ProjectLabel));
+    TaskLabelSet(toQString(view->TaskLabel));
+    ClientLabelSet(toQString(view->ClientLabel));
     WIDSet(view->WID);
     PIDSet(view->PID);
     TIDSet(view->TID);
-    DurationSet(view->Duration);
-    ColorSet(view->Color);
-    GUIDSet(view->GUID);
+    DurationSet(toQString(view->Duration));
+    ColorSet(toQString(view->Color));
+    GUIDSet(toQString(view->GUID));
     BillableSet(view->Billable);
-    TagsSet(QString(view->Tags).split("\t", QString::SkipEmptyParts));
+    TagsSet(toQString(view->Tags).split("\t", QString::SkipEmptyParts));
     StartedSet(view->Started);
     EndedSet(view->Ended);
-    StartTimeStringSet(view->StartTimeString);
-    EndTimeStringSet(view->EndTimeString);
+    StartTimeStringSet(toQString(view->StartTimeString));
+    EndTimeStringSet(toQString(view->EndTimeString));
     UpdatedAtSet(view->UpdatedAt);
     DateHeaderSet(QString("<tr><td>%1</td><td align=right>%2</td></tr>").arg(view->DateHeader).arg(view->DateDuration));
-    DateDurationSet(view->DateDuration);
+    DateDurationSet(toQString(view->DateDuration));
     IsHeaderSet(view->IsHeader);
     CanAddProjectsSet(view->CanAddProjects);
     CanSeeBillableSet(view->CanSeeBillable);
     DefaultWIDSet(view->DefaultWID);
-    WorkspaceNameSet(view->WorkspaceName);
-    ErrorSet(view->Error);
+    WorkspaceNameSet(toQString(view->WorkspaceName));
+    ErrorSet(toQString(view->Error));
     UnsyncedSet(view->Unsynced);
     GroupSet(view->Group);
     GroupOpenSet(view->GroupOpen);
-    GroupNameSet(view->GroupName);
-    GroupDurationSet(view->GroupDuration);
+    GroupNameSet(toQString(view->GroupName));
+    GroupDurationSet(toQString(view->GroupDuration));
     GroupItemCountSet(view->GroupItemCount);
 }
 
@@ -254,7 +254,7 @@ int TimeEntryViewStorage::rowCount(const QModelIndex &parent) const {
 QString TimeEntryViewStorage::uid(TogglTimeEntryView *view) {
     if (view->Group)
         return QString("Group %1").arg(view->GUID);
-    return view->GUID;
+    return toQString(view->GUID);
 }
 
 QString TimeEntryViewStorage::uid(TimeEntryView *view) {

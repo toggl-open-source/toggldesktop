@@ -5,11 +5,13 @@
 #include <QString>
 #include <QUrl>
 
+#include "oauth2.h"
+
 namespace Ui {
     class LoginDialog;
 }
 
-class LoginDialog : public QDialog
+class OAUTH2_INTERNAL_EXPORT LoginDialog : public QDialog
 {
     Q_OBJECT
 
