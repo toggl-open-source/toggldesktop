@@ -6,7 +6,7 @@ import QtGraphicalEffects 1.0
 Rectangle {
     id: root
     anchors.fill: parent
-    color: backgroundColor
+    color: palette.listBackground
 
     property real sectionMargin: Math.max(2 * shadowWidth, 12)
     property real headerHeight: 32
