@@ -8,9 +8,10 @@ ColumnLayout {
     property QtObject timeEntry: null
 
     Text {
+        visible: timeEntry
         Layout.fillWidth: true
-        text: timeEntry.Description.length > 0 ? timeEntry.Description : "+ Add description"
-        color: timeEntry.Description.length > 0 ? palette.text : disabledPalette.text
+        text: timeEntry && timeEntry.Description.length > 0 ? timeEntry.Description : "+ Add description"
+        color: timeEntry && timeEntry.Description.length > 0 ? palette.text : disabledPalette.text
         wrapMode: Text.WrapAtWordBoundaryOrAnywhere
         font.pixelSize: 12
         verticalAlignment: Text.AlignVCenter
@@ -18,27 +19,28 @@ ColumnLayout {
     RowLayout {
         Layout.fillWidth: true
         Rectangle {
+            visible: timeEntry && timeEntry.ClientLabel.length > 0
             height: 3
             width: height
             radius: height / 2
-            visible: timeEntry.ClientLabel.length > 0
-            color: timeEntry.Color
+            color: timeEntry ? timeEntry.Color : palette.text
             Layout.alignment: Qt.AlignVCenter
         }
         Text {
-            visible: timeEntry.ClientLabel.length > 0
-            text: timeEntry.ClientLabel
-            color: timeEntry.Color.length > 0 ? timeEntry.Color : palette.text
+            visible: timeEntry && timeEntry.ClientLabel.length > 0
+            text: timeEntry ? timeEntry.ClientLabel : ""
+            color: timeEntry && timeEntry.Color.length > 0 ? timeEntry.Color : palette.text
             font.pixelSize: 12
         }
         Text {
-            text: timeEntry.ProjectLabel.length > 0 ? timeEntry.ProjectLabel : "+ Add project"
-            color: timeEntry.ProjectLabel.length > 0 ? palette.text : disabledPalette.text
+            visible: timeEntry
+            text: timeEntry && timeEntry.ProjectLabel.length > 0 ? timeEntry.ProjectLabel : "+ Add project"
+            color: timeEntry && timeEntry.ProjectLabel.length > 0 ? palette.text : disabledPalette.text
             font.pixelSize: 12
         }
         Text {
-            visible: timeEntry.TaskLabel.length > 0
-            text: timeEntry.TaskLabel
+            visible: timeEntry && timeEntry.TaskLabel.length > 0
+            text: timeEntry ? timeEntry.TaskLabel : ""
             color: palette.text
             font.pixelSize: 12
         }
