@@ -577,6 +577,8 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
 
     error downloadUpdate();
 
+    error fetchMessage();
+
     void stopActivities();
 
     error offerBetaChannel(bool *did_offer);

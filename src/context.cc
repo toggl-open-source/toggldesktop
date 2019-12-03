@@ -1481,6 +1481,149 @@ error Context::downloadUpdate() {
     return noError;
 }
 
+error Context::fetchMessage() {
+    try {
+
+        // To test updater in development, comment this block out:
+        /* Remove this before merge
+        if ("production" != environment_) {
+            logger().debug("Not in production, will not fetch in-app messages");
+            return noError;
+        }
+         */
+
+        // Load last showed message id
+        Poco::Int64 old_id(0);
+        error err = db()->GetMessageSeen(&old_id);
+        if (err != noError) {
+            return err;
+        }
+
+        if (HTTPSClient::Config.AppVersion.empty()) {
+            return error("AppVersion missing!");
+        }
+
+        // Fetch latest message
+        std::string title("");
+        std::string text("");
+        std::string button("");
+        std::string url("");
+        std::string version_number("");
+        {
+            HTTPSRequest req;
+            //req.host = "https://raw.githubusercontent.com/";
+            //req.relative_url = "/toggl/toggldesktop/release/message.json";
+
+            // testing location, remove before merge
+            req.host = "https://indrekv.github.io";
+            req.relative_url = "/message.json";
+
+            TogglClient client;
+            HTTPSResponse resp = client.Get(req);
+            if (resp.err != noError) {
+                return resp.err;
+            }
+
+            Json::Value root;
+            Json::Reader reader;
+            if (!reader.parse(resp.body, root)) {
+                return error("Error parsing update check response body");
+            }
+            auto messageID = root["id"].asInt64();
+            auto type = root["type"].asInt64();
+            auto days = root["days"].asInt64();
+            version_number = root["appversion"].asString();
+
+
+            std::stringstream ss;
+            ss << "\n\t(in-app Message)\n"
+               << "\t id: " << messageID << "\n"
+               << "\t appversion: " << version_number << "\n"
+               << "\t type: " << root["type"].asString() << "\n"
+               << "\t days: " << root["days"].asString() << "\n"
+               << "\t title: " << root["title"].asString() << "\n"
+               << "\t text: " << root["text"].asString() << "\n"
+               << "\t button: " << root["button"].asString() << "\n"
+               << "\t url: " << root["url"].asString() << "\n";
+
+            logger().debug(ss.str());
+
+            // check if message id is bigger than the saved one
+            if (old_id >= messageID) {
+                return noError;
+            }
+
+            // check appversion and version compare type
+            if (type == 0) {
+                // exactly same version as in message
+                if (version_number.compare(HTTPSClient::Config.AppVersion) != 0) {
+                    return noError;
+                }
+
+            } else if (type == 1) {
+                // we need older version to message
+                if (!lessThanVersion(HTTPSClient::Config.AppVersion, version_number)) {
+                    return noError;
+                }
+
+            } else if (type == 2) {
+                // we need newer version to show message
+                if (lessThanVersion(HTTPSClient::Config.AppVersion, version_number)) {
+                    return noError;
+                }
+            }
+
+            // check date (if certain days have passed since timestamp)
+            if (days != 0) {
+                Poco::LocalDateTime dt(
+                    Poco::Timestamp::fromEpochTime(root["datetime"].asInt64()));
+
+                Poco::LocalDateTime now;
+
+                Poco::LocalDateTime until_date =
+                    dt + Poco::Timespan(days * Poco::Timespan::DAYS);
+
+
+                // check if more days has passed than allowed by the message
+                if (until_date.utcTime() > now.utcTime()) {
+                    return noError;
+                }
+            }
+
+            // update message id in database
+            err = db()->SetSettingsMessageSeen(messageID);
+            if (err != noError) {
+                return err;
+            }
+
+            title = root["title"].asString();
+            text = root["text"].asString();
+            button = root["button"].asString();
+            url = root["url"].asString();
+        }
+
+        // Check if in-app messaging is supported and show
+        if (UI()->CanDisplayMessage()) {
+            UI()->DisplayMessage(
+                title,
+                text,
+                button,
+                url);
+            return noError;
+        }
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string & ex) {
+        return ex;
+    }
+    return noError;
+}
+
+
+
+
 const std::string Context::linuxPlatformName() {
     if (kDebianPackage) {
         return "deb64";
