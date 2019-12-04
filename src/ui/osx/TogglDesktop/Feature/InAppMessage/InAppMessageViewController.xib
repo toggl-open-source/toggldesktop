@@ -41,7 +41,7 @@
                                         </constraints>
                                         <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="in-app-message-close-btn" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="VcU-VZ-VuV">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                            <font key="font" metaFont="system"/>
+                                            <font key="font" metaFont="label" size="13"/>
                                         </buttonCell>
                                         <connections>
                                             <action selector="closeBtnOnTap:" target="-2" id="YnC-iU-q9p"/>
@@ -55,7 +55,7 @@
                                         </constraints>
                                         <buttonCell key="cell" type="bevel" title="Get a discount now!" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="hg5-vE-8UN">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                            <font key="font" metaFont="system"/>
+                                            <font key="font" metaFont="label" size="13"/>
                                         </buttonCell>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">

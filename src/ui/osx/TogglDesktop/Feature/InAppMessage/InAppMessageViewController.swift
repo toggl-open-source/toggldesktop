@@ -81,6 +81,7 @@ extension InAppMessageViewController {
         actionBtn.wantsLayer = true
         actionBtn.layer?.borderWidth = 1
         actionBtn.layer?.borderColor = NSColor.white.cgColor
+        containerView.applyShadow(offset: CGSize(width: 0, height: 3))
     }
 
     private func animate(with block: () -> Void, complete: (() -> Void)? = nil) {

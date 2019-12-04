@@ -12,13 +12,14 @@ extension NSView {
 
     @objc func applyShadow(color: NSColor = NSColor.black,
                      opacity: Float = 0.13,
-                     radius: CGFloat = 6.0) {
+                     radius: CGFloat = 6.0,
+                     offset: CGSize = CGSize(width: 0, height: -2)) {
         wantsLayer = true
         layer?.masksToBounds = false
         shadow = NSShadow()
         layer?.shadowOpacity = opacity
         layer?.shadowColor = color.cgColor
-        layer?.shadowOffset = NSMakeSize(0, -2)
+        layer?.shadowOffset = offset
         layer?.shadowRadius = radius
     }
 
