@@ -37,5 +37,5 @@ fetch_releases
 timestamp=$(date +"%d-%m-%Y")
 release_cmd="OS=$os CHANNEL=$channel VERSION=$version TIMESTAMP=$timestamp node update-releases-json.js"
 eval $release_cmd
-./update_updates.sh
+node update-updates-json.js
 copy_releases_to_main_repo
