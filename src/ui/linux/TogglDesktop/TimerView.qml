@@ -4,7 +4,7 @@ import QtQuick.Controls 2.12
 
 Rectangle {
     id: root
-    color: palette.base
+    color: mainPalette.base
     height: 64
 
     property bool running: false
@@ -91,7 +91,7 @@ Rectangle {
                     anchors.topMargin: -1
                     anchors.bottomMargin: -1
                     radius: height / 2
-                    color: mixColors(palette.window, palette.alternateBase, 0.8)
+                    color: mixColors(mainPalette.window, mainPalette.alternateBase, 0.8)
                     z: -1
                 }
             }

@@ -25,7 +25,7 @@ ComboBox {
             context.lineTo(width, 0);
             context.lineTo(width / 2, height);
             context.closePath();
-            context.fillStyle = palette.buttonText;
+            context.fillStyle = mainPalette.buttonText;
             context.fill();
         }
     }
@@ -35,7 +35,7 @@ ComboBox {
 
         text: control.displayText
         font: control.font
-        color: control.currentIndex < 0 ? disabledPalette.buttonText : palette.buttonText
+        color: control.currentIndex < 0 ? disabledPalette.buttonText : mainPalette.buttonText
         verticalAlignment: Text.AlignVCenter
         elide: Text.ElideRight
     }

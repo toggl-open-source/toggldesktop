@@ -15,13 +15,13 @@ Item {
             rightMargin: anchors.leftMargin
             topMargin: 0
         }
-        color: delegateMouse.containsMouse ? palette.listBackground : timeEntry.GroupOpen ? palette.listBackground : palette.base
+        color: delegateMouse.containsMouse ? mainPalette.listBackground : timeEntry.GroupOpen ? mainPalette.listBackground : mainPalette.base
 
         TogglShadowBox {
             anchors.fill: parent
-            shadowWidth: palette.itemShadowSize
-            shadowColor: palette.itemShadow
-            backgroundColor: palette.listBackground
+            shadowWidth: mainPalette.itemShadowSize
+            shadowColor: mainPalette.itemShadow
+            backgroundColor: mainPalette.listBackground
             sides: TogglShadowBox.Side.Left | TogglShadowBox.Side.Right | TogglShadowBox.Side.Bottom
         }
 
@@ -30,7 +30,7 @@ Item {
             anchors.left: parent.left
             anchors.right: parent.right
             height: 1
-            color: palette.listBackground
+            color: mainPalette.listBackground
         }
 
         MouseArea {
@@ -56,13 +56,13 @@ Item {
                 width: 24
                 height: 24
                 radius: 4
-                color: timeEntry.GroupOpen ? "dark green" : palette.base
+                color: timeEntry.GroupOpen ? "dark green" : mainPalette.base
                 border {
-                    color: timeEntry.GroupOpen ? "transparent" : palette.alternateBase
+                    color: timeEntry.GroupOpen ? "transparent" : mainPalette.alternateBase
                     width: 0.5
                 }
                 Text {
-                    color: timeEntry.GroupOpen ? "light green" : palette.alternateBase
+                    color: timeEntry.GroupOpen ? "light green" : mainPalette.alternateBase
                     anchors.centerIn: parent
                     verticalAlignment: Text.AlignVCenter
                     horizontalAlignment: Text.AlignHCenter
@@ -80,7 +80,7 @@ Item {
             Text {
                 Layout.alignment: Qt.AlignVCenter
                 text: timeEntry.Duration
-                color: palette.text
+                color: mainPalette.text
             }
             Item {
                 id: startButton

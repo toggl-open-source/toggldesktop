@@ -12,13 +12,13 @@ Item {
         x: 12
         width: timeEntryList.viewportWidth - 24
         height: headerHeight
-        color: palette.base
+        color: mainPalette.base
 
         TogglShadowBox {
             anchors.fill: parent
-            shadowWidth: palette.itemShadowSize
-            shadowColor: palette.itemShadow
-            backgroundColor: palette.listBackground
+            shadowWidth: mainPalette.itemShadowSize
+            shadowColor: mainPalette.itemShadow
+            backgroundColor: mainPalette.listBackground
             sides: TogglShadowBox.Side.Left | TogglShadowBox.Side.Right | TogglShadowBox.Side.Top
         }
 
@@ -29,7 +29,7 @@ Item {
             textFormat: Text.RichText
             // this is actually rendering the width underneath so we force a repaint on each width change
             text: "<table width=100% cellpadding=6> " + section + "<tr><td colspan=2><font color=transparent>" + width + "</font></td></tr></table>"
-            color: palette.windowText
+            color: mainPalette.windowText
         }
     }
 }
