@@ -24,7 +24,58 @@ MainWindow::MainWindow(QWidget *parent) :
 #endif
 }
 
-MainWindow::~MainWindow()
-{
+MainWindow::~MainWindow() {
     delete ui;
+}
+
+void MainWindow::on_actionAbout_trigggered() {
+    // TODO
+}
+
+void MainWindow::on_actionHelp_triggered() {
+    TogglApi::instance->getSupport();
+}
+
+void MainWindow::on_actionUpdateCheck_triggered() {
+    // TODO
+}
+
+void MainWindow::on_actionPreferences_triggered() {
+    // TODO
+}
+
+void MainWindow::on_actionQuit_triggered() {
+    qApp->quit();
+}
+
+void MainWindow::on_actionNew_triggered() {
+    TogglApi::instance->start("", "", 0, 0, nullptr, false);
+}
+
+void MainWindow::on_actionContinue_triggered() {
+    TogglApi::instance->continueLatestTimeEntry();
+}
+
+void MainWindow::on_actionStop_triggered() {
+    TogglApi::instance->stop();
+}
+
+void MainWindow::on_actionShow_triggered() {
+    // TODO
+}
+
+void MainWindow::on_actionEdit_triggered() {
+    TogglApi::instance->editRunningTimeEntry("description");
+}
+
+void MainWindow::on_actionSync_triggered() {
+    TogglApi::instance->sync();
+}
+
+void MainWindow::on_actionClearCache_triggered() {
+    // TODO
+}
+
+void MainWindow::on_actionLogout_triggered() {
+    TogglApi::instance->logout();
 }
