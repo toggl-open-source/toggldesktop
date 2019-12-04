@@ -1,6 +1,6 @@
 import QtQuick 2.12
 import QtQuick.Layouts 1.12
-import QtQuick.Controls 2.12
+import QtQuick.Controls 1.4
 import QtGraphicalEffects 1.0
 
 Rectangle {
@@ -24,16 +24,20 @@ Rectangle {
 
         ScrollView {
             id: timeEntryList
+            clip: true
             Layout.fillWidth: true
             Layout.fillHeight: true
-            property real viewportWidth: width - ScrollBar.vertical.width
+            property real viewportWidth: viewport.width
             ListView {
-                clip: true
                 model: toggl.timeEntries
                 section.property: "modelData.DateHeader"
                 section.delegate: TimeEntryListHeader {
                     height: headerHeight + sectionMargin
                     width: parent.width
+                }
+
+                delegate: TimeEntryListItem {
+                    timeEntry: modelData
                 }
 
                 add: Transition {
@@ -87,10 +91,6 @@ Rectangle {
                         properties: "y"
                         duration: 120
                     }
-                }
-
-                delegate: TimeEntryListItem {
-
                 }
             }
         }

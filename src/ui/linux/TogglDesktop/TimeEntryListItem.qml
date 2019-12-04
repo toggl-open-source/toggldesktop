@@ -5,6 +5,9 @@ Item {
     z: index
     height: visible ? itemHeight : 0
     width: timeEntryList.viewportWidth
+
+    property QtObject timeEntry: null
+
     Rectangle {
         anchors {
             fill: parent
@@ -12,7 +15,7 @@ Item {
             rightMargin: anchors.leftMargin
             topMargin: 0
         }
-        color: delegateMouse.containsMouse ? palette.listBackground : modelData.GroupOpen ? palette.listBackground : palette.base
+        color: delegateMouse.containsMouse ? palette.listBackground : timeEntry.GroupOpen ? palette.listBackground : palette.base
 
         TogglShadowBox {
             anchors.fill: parent
@@ -35,10 +38,10 @@ Item {
             hoverEnabled: true
             anchors.fill: parent
             onClicked: {
-                if (modelData.Group)
-                    toggl.toggleEntriesGroup(modelData.GroupName)
+                if (timeEntry.Group)
+                    toggl.toggleEntriesGroup(timeEntry.GroupName)
                 else
-                    toggl.editTimeEntry(modelData.GUID, "description")
+                    toggl.editTimeEntry(timeEntry.GUID, "description")
             }
         }
         RowLayout {
@@ -48,22 +51,22 @@ Item {
 
             Rectangle {
                 Layout.alignment: Qt.AlignVCenter
-                visible: modelData.Group | modelData.GroupOpen
-                opacity: modelData.GroupOpen ? 0.0 : 1.0
+                visible: timeEntry.Group | timeEntry.GroupOpen
+                opacity: timeEntry.GroupOpen ? 0.0 : 1.0
                 width: 24
                 height: 24
                 radius: 4
-                color: modelData.GroupOpen ? "dark green" : palette.base
+                color: timeEntry.GroupOpen ? "dark green" : palette.base
                 border {
-                    color: modelData.GroupOpen ? "transparent" : palette.alternateBase
+                    color: timeEntry.GroupOpen ? "transparent" : palette.alternateBase
                     width: 0.5
                 }
                 Text {
-                    color: modelData.GroupOpen ? "light green" : palette.alternateBase
+                    color: timeEntry.GroupOpen ? "light green" : palette.alternateBase
                     anchors.centerIn: parent
                     verticalAlignment: Text.AlignVCenter
                     horizontalAlignment: Text.AlignHCenter
-                    text: modelData.GroupItemCount
+                    text: timeEntry.GroupItemCount
                 }
             }
 
@@ -76,7 +79,7 @@ Item {
 
             Text {
                 Layout.alignment: Qt.AlignVCenter
-                text: modelData.Duration
+                text: timeEntry.Duration
                 color: palette.text
             }
             Item {
@@ -86,7 +89,7 @@ Item {
                 height: 20
                 MouseArea {
                     anchors.fill: parent
-                    onClicked: toggl.continueTimeEntry(modelData.GUID)
+                    onClicked: toggl.continueTimeEntry(timeEntry.GUID)
                 }
 
                 Item {
