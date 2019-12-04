@@ -470,12 +470,15 @@ void *ctx;
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 	NSAssert(new_time_entry != nil, @"new time entry details cannot be nil");
 
+    // Start or create empty TE from Timer mode
+    NSString *duration = self.manualMode ? @"0" : new_time_entry.Description;
+
 	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 		const char *tag_list = [[new_time_entry.tags componentsJoinedByString:@"\t"] UTF8String];
 
 		char *guid = toggl_start(ctx,
 								 [new_time_entry.Description UTF8String],
-								 [new_time_entry.duration UTF8String],
+								 [duration UTF8String],
 								 new_time_entry.TaskID,
 								 new_time_entry.ProjectID,
 								 0,
@@ -486,8 +489,14 @@ void *ctx;
 		{
 			toggl_set_time_entry_billable(ctx, guid, new_time_entry.billable);
 		}
+        NSString *GUID = [NSString stringWithUTF8String:guid];
 		free(guid);
-	});
+
+        // Focus on the created one
+        if (self.manualMode) {
+            toggl_edit(ctx, [GUID UTF8String], false, kFocusedFieldNameDescription);
+        }
+    });
 }
 
 - (void)startContinueTimeEntry:(NSNotification *)notification
