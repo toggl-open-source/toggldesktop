@@ -50,7 +50,7 @@ final class InAppMessageViewController: NSViewController {
         NSWorkspace.shared.open(url)
     }
 
-    func update(_ message: InAppMessage) {
+    @objc func update(_ message: InAppMessage) {
         self.message = message
         titleLbl.stringValue = message.title
         descriptionLbl.stringValue = message.subTitle

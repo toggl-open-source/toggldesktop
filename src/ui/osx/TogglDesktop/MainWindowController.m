@@ -321,6 +321,10 @@ extern void *ctx;
 
 - (void)startDisplayInAppMessage:(NSNotification *)notification
 {
+    if (![notification.object isKindOfClass:[InAppMessage class]]) {
+        return;
+    }
+
     if (!self.inappMessageView)
     {
         [self initInAppMessageView];
@@ -328,6 +332,10 @@ extern void *ctx;
     self.inappMessageView.view.hidden = YES;
     [self.contentView addSubview:self.inappMessageView.view];
     [self.inappMessageView.view edgesToSuperView];
+
+    // Update UI
+    InAppMessage *message = (InAppMessage *) notification.object;
+    [self.inappMessageView update:message];
 
     // Prepare for animation
     [self.inappMessageView prepareForAnimation];
