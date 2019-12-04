@@ -46,7 +46,7 @@ Item {
             gradient: Gradient {
                 orientation: Gradient.Horizontal
                 GradientStop { position: 0.5; color: "light gray" }
-                GradientStop { position: 1.0; color: palette.alternateBase }
+                GradientStop { position: 1.0; color: mainPalette.alternateBase }
             }
         }
 
@@ -62,7 +62,7 @@ Item {
             gradient: Gradient {
                 orientation: Gradient.Horizontal
                 GradientStop { position: 0.5; color: "light gray" }
-                GradientStop { position: 0.0; color: palette.alternateBase }
+                GradientStop { position: 0.0; color: mainPalette.alternateBase }
             }
         }
 
@@ -78,7 +78,7 @@ Item {
             gradient: Gradient {
                 orientation: Gradient.Horizontal
                 GradientStop { position: 0.5; color: "light gray" }
-                GradientStop { position: 1.0; color: palette.alternateBase }
+                GradientStop { position: 1.0; color: mainPalette.alternateBase }
             }
         }
 
@@ -94,7 +94,7 @@ Item {
             gradient: Gradient {
                 orientation: Gradient.Horizontal
                 GradientStop { position: 0.5; color: "light gray" }
-                GradientStop { position: 0.0; color: palette.alternateBase }
+                GradientStop { position: 0.0; color: mainPalette.alternateBase }
             }
         }
 
@@ -106,7 +106,7 @@ Item {
             width: shadowWidth
             gradient: Gradient {
                 orientation: Gradient.Horizontal
-                GradientStop { position: 0.0; color: palette.alternateBase }
+                GradientStop { position: 0.0; color: mainPalette.alternateBase }
                 GradientStop { position: 1.0; color: "light gray" }
             }
         }
@@ -120,7 +120,7 @@ Item {
             gradient: Gradient {
                 orientation: Gradient.Horizontal
                 GradientStop { position: 0.0; color: "light gray" }
-                GradientStop { position: 1.0; color: palette.alternateBase }
+                GradientStop { position: 1.0; color: mainPalette.alternateBase }
             }
         }
         Rectangle {
@@ -131,7 +131,7 @@ Item {
             height: shadowWidth
             gradient: Gradient {
                 GradientStop { position: 0.0; color: "light gray" }
-                GradientStop { position: 1.0; color: palette.alternateBase }
+                GradientStop { position: 1.0; color: mainPalette.alternateBase }
             }
         }
         Rectangle {
@@ -141,7 +141,7 @@ Item {
 
             height: shadowWidth
             gradient: Gradient {
-                GradientStop { position: 0.0; color: palette.alternateBase }
+                GradientStop { position: 0.0; color: mainPalette.alternateBase }
                 GradientStop { position: 1.0; color: "light gray" }
             }
         }
@@ -190,7 +190,7 @@ Item {
                 anchors.rightMargin: 9
                 anchors.verticalCenter: parent.verticalCenter
                 text: "Login"
-                color: loggingIn ? palette.text : disabledPalette.text
+                color: loggingIn ? mainPalette.text : disabledPalette.text
             }
             TogglSwitch {
                 id: loginSwitch
@@ -203,7 +203,7 @@ Item {
                 anchors.leftMargin: 9
                 anchors.verticalCenter: parent.verticalCenter
                 text: "Sign up"
-                color: signingUp ? palette.text : disabledPalette.text
+                color: signingUp ? mainPalette.text : disabledPalette.text
             }
         }
 
@@ -274,7 +274,7 @@ Item {
                 wrapMode: Text.WrapAtWordBoundaryOrAnywhere
                 font.pointSize: 9
                 text: "I agree to <a href=\"https://toggl.com/legal/terms/\">terms of service</a> and <a href=\"https://toggl.com/legal/privacy/\">privacy policy</a>"
-                color: palette.text
+                color: mainPalette.text
             }
         }
 

@@ -13,7 +13,7 @@ Item {
 
     Rectangle {
         anchors.fill: parent
-        color: palette.base
+        color: mainPalette.base
         opacity: 0.5
     }
 
@@ -22,7 +22,7 @@ Item {
         anchors.margins: 9
         radius: 6
 
-        color: palette.base
+        color: mainPalette.base
         opacity: visible ? 1.0 : 0.0
         Behavior on opacity {
             NumberAnimation {
@@ -32,7 +32,7 @@ Item {
 
         border {
             width: 1
-            color: palette.shadow
+            color: mainPalette.shadow
         }
 
         ColumnLayout {
@@ -59,7 +59,7 @@ Item {
                 columns: 4
                 Text {
                     text: "Duration:"
-                    color: palette.text
+                    color: mainPalette.text
                 }
                 TogglTextField {
                     Layout.fillWidth: true
@@ -69,7 +69,7 @@ Item {
 
                 Text {
                     text: "Start-end time:"
-                    color: palette.text
+                    color: mainPalette.text
                 }
                 TogglTextField {
                     Layout.fillWidth: true
@@ -77,7 +77,7 @@ Item {
                 }
                 Text {
                     text: "-"
-                    color: palette.text
+                    color: mainPalette.text
                 }
                 TogglTextField {
                     Layout.fillWidth: true
@@ -86,7 +86,7 @@ Item {
 
                 Text {
                     text: "Date:"
-                    color: palette.text
+                    color: mainPalette.text
                 }
                 TogglTextField {
                     Layout.fillWidth: true
@@ -97,7 +97,7 @@ Item {
                 Text {
                     text: "Tags"
                     Layout.fillHeight: true
-                    color: palette.text
+                    color: mainPalette.text
                 }
                 ListView {
                     Layout.fillWidth: true
@@ -106,8 +106,8 @@ Item {
                     Frame {
                         anchors.fill: parent
                         background: Rectangle {
-                            color: palette.base
-                            border.color: palette.dark
+                            color: mainPalette.base
+                            border.color: mainPalette.dark
                             border.width: 1
                         }
                         ColumnLayout {
@@ -244,7 +244,7 @@ Item {
                                 Layout.fillWidth: true
                                 Text {
                                     text: "New:"
-                                    color: palette.text
+                                    color: mainPalette.text
                                 }
                                 TogglTextField {
                                     Layout.fillWidth: true
@@ -277,13 +277,13 @@ Item {
 
                 Text {
                     text: "Workspace:"
-                    color: palette.text
+                    color: mainPalette.text
                 }
                 Text {
                     Layout.fillWidth: true
                     Layout.columnSpan: 3
                     text: timeEntry ? timeEntry.WorkspaceName : ""
-                    color: palette.text
+                    color: mainPalette.text
                 }
             }
             RowLayout {
@@ -302,7 +302,7 @@ Item {
             }
             Text {
                 text: timeEntry ? timeEntry.lastUpdate() : ""
-                color: palette.text
+                color: mainPalette.text
             }
         }
     }

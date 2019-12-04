@@ -7,16 +7,16 @@ Rectangle {
     implicitHeight: 40
     radius: 2
 
-    property color borderColor: mixColors(palette.base, palette.text, 0.33)
+    property color borderColor: mixColors(palette.base, mainPalette.text, 0.33)
     //property color shadowColor: control.enabled ? control.checked ? "#595959" : control.hovered ? "#e5e5e5" : "#d4d4d4" : baseColor
     //property color baseColor: control.enabled ? control.checked ? "#7a7a7a" : control.hovered ? "#d4d4d4" : "#c3c3c3" : "#b2b2b2"
-    property color shadowColor: control.enabled ? control.pressed | control.checked ? mixColors(palette.button, palette.buttonText, 0.5)
-                                                                  : control.hovered ? mixColors(palette.button, palette.light, 0.5)
-                                                                                    : mixColors(palette.button, palette.light, 0.5)
+    property color shadowColor: control.enabled ? control.pressed | control.checked ? mixColors(palette.button, mainPalette.buttonText, 0.5)
+                                                                  : control.hovered ? mixColors(palette.button, mainPalette.light, 0.5)
+                                                                                    : mixColors(palette.button, mainPalette.light, 0.5)
                                                 : baseColor
-    property color baseColor: control.enabled ? control.pressed | control.checked ? mixColors(palette.buttonText, palette.button, 0.66)
-                                                                : control.hovered ? mixColors(palette.button, palette.light, 0.5)
-                                                                                  : palette.button
+    property color baseColor: control.enabled ? control.pressed | control.checked ? mixColors(palette.buttonText, mainPalette.button, 0.66)
+                                                                : control.hovered ? mixColors(palette.button, mainPalette.light, 0.5)
+                                                                                  : mainPalette.button
                                               : disabledPalette.button
 
     Behavior on shadowColor { ColorAnimation { duration: 120 } }

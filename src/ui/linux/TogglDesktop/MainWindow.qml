@@ -24,12 +24,12 @@ Rectangle {
     }
 
     SystemPalette {
-        id: palette
+        id: mainPalette
         property bool isDark: (itemShadow.r + itemShadow.g + itemShadow.b) < 1
 
-        property int itemShadowSize: palette.isDark ? 1 : 9
-        property color itemShadow: mixColors(palette.shadow, palette.listBackground, 0.2)
-        property color listBackground: mixColors(palette.base, palette.alternateBase, 0.8)
+        property int itemShadowSize: mainPalette.isDark ? 1 : 9
+        property color itemShadow: mixColors(mainPalette.shadow, mainPalette.listBackground, 0.2)
+        property color listBackground: mixColors(mainPalette.base, mainPalette.alternateBase, 0.8)
     }
     SystemPalette {
         id: disabledPalette
@@ -38,7 +38,7 @@ Rectangle {
 
     Rectangle {
         anchors.fill: parent
-        color: palette.base
+        color: mainPalette.base
         clip: true
 
         ErrorOverlay {

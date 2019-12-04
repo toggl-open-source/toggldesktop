@@ -52,7 +52,7 @@ Item {
     Rectangle {
         z: -1
         anchors.fill: parent
-        color: setAlpha(palette.shadow, 0.5)
+        color: setAlpha(mainPalette.shadow, 0.5)
     }
 
     ScrollView {
@@ -101,10 +101,10 @@ Item {
         Rectangle {
             height: 40
             width: root.width
-            color: palette.base
+            color: mainPalette.base
             Text {
                 anchors.centerIn: parent
-                color: "#9e9e9e"
+                color: mainPalette.text
 
                 text: autocompleteData.Description
                 font.pointSize: 14
@@ -116,7 +116,7 @@ Item {
                     right: parent.right
                 }
                 height: 1
-                color: palette.alternateBase
+                color: mainPalette.alternateBase
             }
         }
     }
@@ -128,14 +128,14 @@ Item {
         Rectangle {
             height: 30
             width: root.width
-            color: palette.base
+            color: mainPalette.base
             Text {
                 anchors.left: parent.left
                 anchors.leftMargin: 12
                 anchors.verticalCenter: parent.verticalCenter
                 height: 24
                 x: 9
-                color: "#9e9e9e"
+                color: mainPalette.text
 
                 text: autocompleteData.Description
             }
@@ -148,13 +148,13 @@ Item {
         Rectangle {
             height: 30
             width: root.width
-            color: palette.base
+            color: mainPalette.base
             Text {
                 anchors.left: parent.left
                 anchors.leftMargin: 12
                 anchors.verticalCenter: parent.verticalCenter
                 text: autocompleteData.Description
-                color: "#9e9e9e"
+                color: mainPalette.text
                 font.pointSize: 11
             }
         }
@@ -166,6 +166,7 @@ Item {
         Rectangle {
             height: 30
             width: root.width
+            color: mainPalette.base
 
             Text {
                 anchors.fill: parent
@@ -181,6 +182,7 @@ Item {
                 property string task: autocompleteData.TaskLabel.length > 0 ? " " + autocompleteData.TaskLabel : ""
                 text: (ListView.isCurrentItem ? "Iscurrent" : "") + timeEntry + project + task
                 font.pointSize: 12
+                color: mainPalette.text
             }
             MouseArea {
                 id: delegateMouse

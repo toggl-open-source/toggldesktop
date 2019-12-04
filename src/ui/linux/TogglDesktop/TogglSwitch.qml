@@ -10,9 +10,9 @@ Switch {
         x: control.leftPadding
         y: parent.height / 2 - height / 2
         radius: 13
-        color: palette.base
+        color: mainPalette.base
         border.width: 1
-        border.color: mixColors(palette.base, palette.text, 0.33)
+        border.color: mixColors(palette.base, mainPalette.text, 0.33)
 
         Rectangle {
             x: control.checked ? parent.width - width - 1 : 1
@@ -22,14 +22,14 @@ Switch {
             height: parent.height - 2
             radius: parent.height / 2 - 1
 
-            color: palette.button
+            color: mainPalette.button
 
             Behavior on x {
                 NumberAnimation {
                     duration: 120
                 }
             }
-            border.color: mixColors(palette.base, palette.text, 0.33)
+            border.color: mixColors(palette.base, mainPalette.text, 0.33)
         }
     }
 }

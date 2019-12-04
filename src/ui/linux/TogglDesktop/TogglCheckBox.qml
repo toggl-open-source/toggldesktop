@@ -9,8 +9,8 @@ CheckBox {
         x: control.leftPadding
         y: parent.height / 2 - height / 2
         radius: 3
-        color: palette.base
-        border.color: mixColors(palette.base, palette.text, 0.33)
+        color: mainPalette.base
+        border.color: mixColors(palette.base, mainPalette.text, 0.33)
         border.width: 1
 
         Rectangle {
@@ -20,7 +20,7 @@ CheckBox {
             y: 4
             radius: 1
             antialiasing: true
-            color: palette.text
+            color: mainPalette.text
             opacity: control.checked ? 1.0 : 0.0
             Behavior on opacity { NumberAnimation { duration: 120 } }
             visible: opacity > 0.0
