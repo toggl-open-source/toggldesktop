@@ -275,6 +275,9 @@ NSString *kInactiveTimerColor = @"#999999";
 
 		self.durationTextField.toolTip = [NSString stringWithFormat:@"Started: %@", self.time_entry.startTimeString];
 		self.descriptionLabel.editable = NO;
+
+        // Switch to timer mode in setting
+        toggl_set_settings_manual_mode(ctx, false);
 	}
 	else
 	{
