@@ -30,6 +30,8 @@ Rectangle {
         property int itemShadowSize: mainPalette.isDark ? 1 : 9
         property color itemShadow: mixColors(mainPalette.shadow, mainPalette.listBackground, 0.2)
         property color listBackground: mixColors(mainPalette.base, mainPalette.alternateBase, 0.8)
+
+        property color borderColor: mixColors(mainPalette.text, mainPalette.base, 0.33)
     }
     SystemPalette {
         id: disabledPalette

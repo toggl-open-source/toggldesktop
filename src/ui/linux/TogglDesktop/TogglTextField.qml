@@ -6,8 +6,8 @@ TextField {
     color: mainPalette.text
     background: Rectangle {
         border.width: 1
-        radius: 2
-        border.color: mixColors(palette.base, mainPalette.text, 0.33)
+        radius: 6
+        border.color: mainPalette.borderColor
         color: "transparent"
     }
 }
