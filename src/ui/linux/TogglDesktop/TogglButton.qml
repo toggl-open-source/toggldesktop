@@ -9,9 +9,9 @@ Button {
     contentItem: Text {
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
-        color: control.enabled ? control.pressed | control.checked ? mainPalette.button
-                                                                   : mainPalette.buttonText
-                               : disabledPalette.buttonText
+        color: control.enabled ? control.pressed | control.checked ? mainPalette.text
+                                                                   : mainPalette.text
+                               : disabledPalette.text
         text: control.text
     }
 }
