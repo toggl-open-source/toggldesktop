@@ -20,49 +20,41 @@
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customView id="Hz6-mo-xeY">
-            <rect key="frame" x="0.0" y="0.0" width="360" height="552"/>
+            <rect key="frame" x="0.0" y="0.0" width="300" height="552"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <customView horizontalHuggingPriority="200" verticalHuggingPriority="200" horizontalCompressionResistancePriority="200" verticalCompressionResistancePriority="200" translatesAutoresizingMaskIntoConstraints="NO" id="nDz-FO-iVv">
-                    <rect key="frame" x="0.0" y="0.0" width="360" height="161"/>
+                    <rect key="frame" x="0.0" y="0.0" width="300" height="184"/>
                     <subviews>
                         <box horizontalHuggingPriority="200" verticalHuggingPriority="200" horizontalCompressionResistancePriority="200" verticalCompressionResistancePriority="200" boxType="custom" borderWidth="0.0" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="Qhk-1x-OQQ">
-                            <rect key="frame" x="0.0" y="0.0" width="360" height="161"/>
+                            <rect key="frame" x="0.0" y="0.0" width="300" height="184"/>
                             <view key="contentView" id="imI-Xb-rTF">
-                                <rect key="frame" x="0.0" y="0.0" width="360" height="161"/>
+                                <rect key="frame" x="0.0" y="0.0" width="300" height="184"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
                                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="e67-AM-WSP">
-                                        <rect key="frame" x="325" y="126" width="30" height="30"/>
+                                        <rect key="frame" x="265" y="149" width="30" height="30"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="30" id="QcD-ht-A6c"/>
                                             <constraint firstAttribute="height" constant="30" id="oqt-7I-pnM"/>
                                         </constraints>
                                         <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="in-app-message-close-btn" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="VcU-VZ-VuV">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                            <font key="font" metaFont="label" size="13"/>
+                                            <font key="font" metaFont="system"/>
                                         </buttonCell>
                                         <connections>
                                             <action selector="closeBtnOnTap:" target="-2" id="YnC-iU-q9p"/>
                                         </connections>
                                     </button>
-                                    <textField horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="IDE-mu-IVm">
-                                        <rect key="frame" x="56" y="66" width="248" height="36"/>
-                                        <textFieldCell key="cell" selectable="YES" alignment="center" title="Upgrade to Premium by January 15th to get 20% off" id="QAN-LX-DP6">
-                                            <font key="font" metaFont="menu" size="14"/>
-                                            <color key="textColor" name="white"/>
-                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                        </textFieldCell>
-                                    </textField>
                                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="rxC-bp-Klf" customClass="FlatButton" customModule="TogglDesktop" customModuleProvider="target">
-                                        <rect key="frame" x="80" y="15" width="200" height="36"/>
+                                        <rect key="frame" x="50" y="15" width="200" height="36"/>
                                         <constraints>
                                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="200" id="ANq-0O-dMF"/>
                                             <constraint firstAttribute="height" constant="36" id="FFi-RO-Xrr"/>
                                         </constraints>
                                         <buttonCell key="cell" type="bevel" title="Get a discount now!" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="hg5-vE-8UN">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                            <font key="font" metaFont="label" size="13"/>
+                                            <font key="font" metaFont="system"/>
                                         </buttonCell>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -76,27 +68,46 @@
                                             <action selector="actionBtnOnTap:" target="-2" id="4CA-Yk-esK"/>
                                         </connections>
                                     </button>
-                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="yDl-bB-gh4">
-                                        <rect key="frame" x="113" y="117" width="135" height="24"/>
-                                        <textFieldCell key="cell" lineBreakMode="clipping" title="20% discount" id="ySx-yX-KOZ">
-                                            <font key="font" metaFont="systemBold" size="20"/>
-                                            <color key="textColor" name="white"/>
-                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                        </textFieldCell>
-                                    </textField>
+                                    <stackView distribution="fill" orientation="vertical" alignment="centerX" spacing="15" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="80F-7G-drb">
+                                        <rect key="frame" x="10" y="71" width="280" height="93"/>
+                                        <subviews>
+                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="yDl-bB-gh4">
+                                                <rect key="frame" x="71" y="69" width="139" height="24"/>
+                                                <textFieldCell key="cell" alignment="center" title="20% discount" id="ySx-yX-KOZ">
+                                                    <font key="font" metaFont="systemBold" size="20"/>
+                                                    <color key="textColor" name="white"/>
+                                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                </textFieldCell>
+                                            </textField>
+                                            <textField horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="IDE-mu-IVm">
+                                                <rect key="frame" x="-2" y="0.0" width="284" height="54"/>
+                                                <textFieldCell key="cell" selectable="YES" alignment="center" title="Upgrade to Premium by January 15th to get 20% off Upgrade to Premium by January 15th to get 20% off" id="QAN-LX-DP6">
+                                                    <font key="font" metaFont="menu" size="14"/>
+                                                    <color key="textColor" name="white"/>
+                                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                </textFieldCell>
+                                            </textField>
+                                        </subviews>
+                                        <visibilityPriorities>
+                                            <integer value="1000"/>
+                                            <integer value="1000"/>
+                                        </visibilityPriorities>
+                                        <customSpacing>
+                                            <real value="3.4028234663852886e+38"/>
+                                            <real value="3.4028234663852886e+38"/>
+                                        </customSpacing>
+                                    </stackView>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstItem="IDE-mu-IVm" firstAttribute="top" secondItem="yDl-bB-gh4" secondAttribute="bottom" constant="15" id="3gm-LF-Dy9"/>
-                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="IDE-mu-IVm" secondAttribute="trailing" constant="10" id="5ir-PC-gzg"/>
-                                    <constraint firstItem="yDl-bB-gh4" firstAttribute="top" secondItem="imI-Xb-rTF" secondAttribute="top" constant="20" id="GgI-TM-aIm"/>
+                                    <constraint firstAttribute="trailing" secondItem="80F-7G-drb" secondAttribute="trailing" constant="10" id="0aL-P6-LMr"/>
+                                    <constraint firstItem="80F-7G-drb" firstAttribute="top" secondItem="imI-Xb-rTF" secondAttribute="top" constant="20" id="1ZK-nS-cxW"/>
                                     <constraint firstAttribute="bottom" secondItem="rxC-bp-Klf" secondAttribute="bottom" constant="15" id="InD-cj-K6n"/>
-                                    <constraint firstItem="IDE-mu-IVm" firstAttribute="centerX" secondItem="imI-Xb-rTF" secondAttribute="centerX" id="Lfx-Jg-2nA"/>
+                                    <constraint firstItem="rxC-bp-Klf" firstAttribute="top" secondItem="80F-7G-drb" secondAttribute="bottom" constant="20" id="Lnz-T9-7wK"/>
+                                    <constraint firstItem="80F-7G-drb" firstAttribute="centerX" secondItem="imI-Xb-rTF" secondAttribute="centerX" id="N0o-t4-OgS"/>
                                     <constraint firstItem="rxC-bp-Klf" firstAttribute="centerX" secondItem="imI-Xb-rTF" secondAttribute="centerX" id="O2k-UU-V57"/>
                                     <constraint firstItem="e67-AM-WSP" firstAttribute="top" secondItem="imI-Xb-rTF" secondAttribute="top" constant="5" id="QvD-Tg-ePA"/>
-                                    <constraint firstItem="rxC-bp-Klf" firstAttribute="top" secondItem="IDE-mu-IVm" secondAttribute="bottom" constant="15" id="eEQ-PM-hGO"/>
                                     <constraint firstAttribute="trailing" secondItem="e67-AM-WSP" secondAttribute="trailing" constant="5" id="jJm-CV-E8d"/>
-                                    <constraint firstItem="IDE-mu-IVm" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="imI-Xb-rTF" secondAttribute="leading" constant="10" id="y0M-mC-ISe"/>
-                                    <constraint firstItem="yDl-bB-gh4" firstAttribute="centerX" secondItem="imI-Xb-rTF" secondAttribute="centerX" id="zL4-qL-tku"/>
+                                    <constraint firstItem="80F-7G-drb" firstAttribute="leading" secondItem="imI-Xb-rTF" secondAttribute="leading" constant="10" id="oq3-vi-3qw"/>
                                 </constraints>
                             </view>
                             <color key="fillColor" name="in-app-message-background-color"/>
@@ -105,9 +116,9 @@
                     <constraints>
                         <constraint firstAttribute="trailing" secondItem="Qhk-1x-OQQ" secondAttribute="trailing" id="IVG-YR-f6I"/>
                         <constraint firstItem="Qhk-1x-OQQ" firstAttribute="top" secondItem="nDz-FO-iVv" secondAttribute="top" id="NeI-MF-e4b"/>
+                        <constraint firstAttribute="width" priority="750" constant="300" id="ToS-Pd-t0B"/>
                         <constraint firstAttribute="bottom" secondItem="Qhk-1x-OQQ" secondAttribute="bottom" id="Xah-4R-W75"/>
                         <constraint firstItem="Qhk-1x-OQQ" firstAttribute="leading" secondItem="nDz-FO-iVv" secondAttribute="leading" id="YB3-Jv-KHB"/>
-                        <constraint firstAttribute="height" relation="greaterThanOrEqual" priority="750" constant="161" id="k1e-lm-gnW"/>
                     </constraints>
                 </customView>
             </subviews>
@@ -116,7 +127,7 @@
                 <constraint firstItem="nDz-FO-iVv" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="I6t-dz-f3a"/>
                 <constraint firstAttribute="trailing" secondItem="nDz-FO-iVv" secondAttribute="trailing" id="a9z-cL-dIX"/>
             </constraints>
-            <point key="canvasLocation" x="5" y="102"/>
+            <point key="canvasLocation" x="-49" y="30"/>
         </customView>
     </objects>
     <resources>
