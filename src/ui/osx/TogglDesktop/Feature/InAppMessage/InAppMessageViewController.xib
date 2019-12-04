@@ -12,6 +12,7 @@
                 <outlet property="actionBtn" destination="rxC-bp-Klf" id="yDx-zG-Nx1"/>
                 <outlet property="bottomContraint" destination="38f-IF-VVw" id="o4x-vS-Wa2"/>
                 <outlet property="containerView" destination="nDz-FO-iVv" id="t4m-XO-aNe"/>
+                <outlet property="containerWidthConstraint" destination="ToS-Pd-t0B" id="ip2-id-cXl"/>
                 <outlet property="descriptionLbl" destination="IDE-mu-IVm" id="fnp-NS-qVC"/>
                 <outlet property="titleLbl" destination="yDl-bB-gh4" id="mKR-5J-Vde"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
@@ -79,7 +80,7 @@
                                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                 </textFieldCell>
                                             </textField>
-                                            <textField horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="IDE-mu-IVm">
+                                            <textField horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="IDE-mu-IVm">
                                                 <rect key="frame" x="-2" y="0.0" width="284" height="54"/>
                                                 <textFieldCell key="cell" selectable="YES" alignment="center" title="Upgrade to Premium by January 15th to get 20% off Upgrade to Premium by January 15th to get 20% off" id="QAN-LX-DP6">
                                                     <font key="font" metaFont="menu" size="14"/>
@@ -99,7 +100,7 @@
                                     </stackView>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="80F-7G-drb" secondAttribute="trailing" constant="10" id="0aL-P6-LMr"/>
+                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="80F-7G-drb" secondAttribute="trailing" priority="750" constant="10" id="0aL-P6-LMr"/>
                                     <constraint firstItem="80F-7G-drb" firstAttribute="top" secondItem="imI-Xb-rTF" secondAttribute="top" constant="20" id="1ZK-nS-cxW"/>
                                     <constraint firstAttribute="bottom" secondItem="rxC-bp-Klf" secondAttribute="bottom" constant="15" id="InD-cj-K6n"/>
                                     <constraint firstItem="rxC-bp-Klf" firstAttribute="top" secondItem="80F-7G-drb" secondAttribute="bottom" constant="20" id="Lnz-T9-7wK"/>
@@ -107,7 +108,7 @@
                                     <constraint firstItem="rxC-bp-Klf" firstAttribute="centerX" secondItem="imI-Xb-rTF" secondAttribute="centerX" id="O2k-UU-V57"/>
                                     <constraint firstItem="e67-AM-WSP" firstAttribute="top" secondItem="imI-Xb-rTF" secondAttribute="top" constant="5" id="QvD-Tg-ePA"/>
                                     <constraint firstAttribute="trailing" secondItem="e67-AM-WSP" secondAttribute="trailing" constant="5" id="jJm-CV-E8d"/>
-                                    <constraint firstItem="80F-7G-drb" firstAttribute="leading" secondItem="imI-Xb-rTF" secondAttribute="leading" constant="10" id="oq3-vi-3qw"/>
+                                    <constraint firstItem="80F-7G-drb" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="imI-Xb-rTF" secondAttribute="leading" priority="750" constant="10" id="oq3-vi-3qw"/>
                                 </constraints>
                             </view>
                             <color key="fillColor" name="in-app-message-background-color"/>
@@ -127,7 +128,7 @@
                 <constraint firstItem="nDz-FO-iVv" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="I6t-dz-f3a"/>
                 <constraint firstAttribute="trailing" secondItem="nDz-FO-iVv" secondAttribute="trailing" id="a9z-cL-dIX"/>
             </constraints>
-            <point key="canvasLocation" x="-49" y="30"/>
+            <point key="canvasLocation" x="-318" y="39"/>
         </customView>
     </objects>
     <resources>

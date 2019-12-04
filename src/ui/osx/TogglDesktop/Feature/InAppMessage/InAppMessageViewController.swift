@@ -22,7 +22,8 @@ final class InAppMessageViewController: NSViewController {
     @IBOutlet weak var descriptionLbl: NSTextField!
     @IBOutlet weak var actionBtn: FlatButton!
     @IBOutlet weak var bottomContraint: NSLayoutConstraint!
-
+    @IBOutlet weak var containerWidthConstraint: NSLayoutConstraint!
+    
     // MARK: Variables
 
     @objc weak var delegate: InAppMessageViewControllerDelegate?
@@ -59,6 +60,9 @@ final class InAppMessageViewController: NSViewController {
 
     @objc func prepareForAnimation() {
         bottomContraint.constant = -containerView.frame.height
+        if let superview = view.superview {
+            containerWidthConstraint.constant = superview.frame.width
+        }
     }
 
     @objc func present() {
