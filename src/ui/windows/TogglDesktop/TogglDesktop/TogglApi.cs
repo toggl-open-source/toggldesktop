@@ -264,6 +264,8 @@ public static partial class Toggl
         public         Int64 PomodoroBreakMinutes;
         [MarshalAs(UnmanagedType.I1)]
         public         bool StopEntryOnShutdownSleep;
+        [MarshalAs(UnmanagedType.I1)]
+        public         bool ShowTouchBar;
 
         public override string ToString()
         {
@@ -475,6 +477,17 @@ public static partial class Toggl
         string version,
         Int64 download_state);
 
+    [UnmanagedFunctionPointer(convention)]
+    private delegate void     TogglDisplayMessage(
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string title,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string text,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string button,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string url);
+
 
     [UnmanagedFunctionPointer(convention)]
     private delegate void     TogglDisplayAutotrackerRules(
@@ -613,6 +626,11 @@ public static partial class Toggl
     private static extern void toggl_on_update_download_state(
         IntPtr context,
         TogglDisplayUpdateDownloadState cb);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern void toggl_on_message(
+        IntPtr context,
+        TogglDisplayMessage cb);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_on_online_state(
@@ -1112,6 +1130,13 @@ public static partial class Toggl
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     [return:MarshalAs(UnmanagedType.I1)]
+    private static extern bool toggl_set_settings_show_touch_bar(
+        IntPtr context,
+        [MarshalAs(UnmanagedType.I1)]
+        bool show_touch_bar);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    [return:MarshalAs(UnmanagedType.I1)]
     private static extern bool toggl_set_settings_idle_minutes(
         IntPtr context,
         UInt64 idle_minutes);
@@ -1521,6 +1546,10 @@ public static partial class Toggl
     private static extern bool toggl_get_keep_end_time_fixed(
         IntPtr context);
 
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    [return:MarshalAs(UnmanagedType.I1)]
+    private static extern bool toggl_get_show_touch_bar(
+        IntPtr context);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_set_mini_timer_x(
