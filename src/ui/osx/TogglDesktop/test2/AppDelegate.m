@@ -471,7 +471,7 @@ void *ctx;
 	NSAssert(new_time_entry != nil, @"new time entry details cannot be nil");
 
     // Start or create empty TE from Timer mode
-    NSString *duration = self.manualMode ? @"0" : new_time_entry.Description;
+    NSString *duration = self.manualMode ? @"0" : new_time_entry.duration;
 
 	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 		const char *tag_list = [[new_time_entry.tags componentsJoinedByString:@"\t"] UTF8String];
