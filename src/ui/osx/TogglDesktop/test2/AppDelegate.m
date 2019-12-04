@@ -1860,7 +1860,11 @@ void on_display_message(const char *title,
                         const char *button,
                         const char *url)
 {
+    InAppMessage *message = [[InAppMessage alloc] initWithTitle:[NSString stringWithUTF8String:title]
+                                                       subTitle:[NSString stringWithUTF8String:text]
+                                                    buttonTitle:[NSString stringWithUTF8String:button]
+                                                      urlAction:[NSString stringWithUTF8String:url]];
+    [[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kStartDisplayInAppMessage object:message];
 
 }
-
 @end
