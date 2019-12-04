@@ -1530,8 +1530,8 @@ error Context::fetchMessage() {
                 return error("Error parsing update check response body");
             }
             auto messageID = root["id"].asInt64();
-            auto type = root["type"].asInt64();
-            auto days = root["days"].asInt64();
+            auto type = stoi(root["type"].asString());
+            auto days = stoi(root["days"].asString());
             version_number = root["appversion"].asString();
 
 
