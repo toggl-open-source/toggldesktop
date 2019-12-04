@@ -124,7 +124,7 @@ extern void *ctx;
 
 - (void) initInAppMessageView
 {
-    self.inappMessageView = [InAppMessageViewController initFromXib];
+    self.inappMessageView = [[InAppMessageViewController alloc] initWithNibName:@"InAppMessageViewController" bundle:nil];
     self.inappMessageView.delegate = self;
 }
 
@@ -325,14 +325,19 @@ extern void *ctx;
     {
         [self initInAppMessageView];
     }
-    [self.inappMessageView prepareForAnimation];
+    self.inappMessageView.view.hidden = YES;
     [self.contentView addSubview:self.inappMessageView.view];
+    [self.inappMessageView.view edgesToSuperView];
+
+    // Prepare for animation
+    [self.inappMessageView prepareForAnimation];
+    self.inappMessageView.view.hidden = NO;
     [self.inappMessageView present];
 }
 
 - (void)InAppMessageViewControllerShouldDismiss
 {
-    [self.inappMessageView removeFromParentViewController];
+    [self.inappMessageView.view removeFromSuperview];
 }
 
 @end

@@ -35,10 +35,6 @@ final class InAppMessageViewController: NSViewController {
         initCommon()
     }
 
-    @objc class func initFromXib() -> InAppMessageViewController {
-        return InAppMessageViewController.xibView()
-    }
-
     @IBAction func closeBtnOnTap(_ sender: Any) {
         animate(with: {[weak self] in
             guard let strongSelf = self else { return }
