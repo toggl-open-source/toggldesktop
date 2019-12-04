@@ -4,10 +4,10 @@ Rectangle {
     property Item control
     clip: true
     implicitWidth: 100
-    implicitHeight: 40
-    radius: 2
+    implicitHeight: 32
+    radius: 6
 
-    property color borderColor: mainPalette.borderColor
+    property color borderColor: control.enabled ? mainPalette.borderColor : disabledPalette.button
     //property color shadowColor: control.enabled ? control.checked ? "#595959" : control.hovered ? "#e5e5e5" : "#d4d4d4" : baseColor
     //property color baseColor: control.enabled ? control.checked ? "#7a7a7a" : control.hovered ? "#d4d4d4" : "#c3c3c3" : "#b2b2b2"
     property color shadowColor: control.enabled ? control.pressed | control.checked ? mixColors(palette.button, mainPalette.buttonText, 0.5)

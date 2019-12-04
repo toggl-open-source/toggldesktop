@@ -6,12 +6,10 @@ import QtQuick.Controls 2.12
 Item {
     anchors.fill: parent
 
-    property bool loggingIn: !loginSwitch.checked
+    property bool loggingIn: true
     property bool signingUp: !loggingIn
 
-    property bool everythingFilled: signingUp ? (!signupWithEmail.checked || (username.text.length > 0 && password.text.length > 0)) &&
-                                                 country.currentIndex > -1 && termsAndConditions.checked
-                                              : username.text.length > 0 && password.text.length > 0
+    property bool everythingFilled: false
 
     function act() {
         if (!everythingFilled)
@@ -30,129 +28,23 @@ Item {
     property real shadowWidth: 9
 
     Rectangle {
+        anchors.fill: parent
+        color: "white" // TODO
+    }
+
+    Rectangle {
         anchors.fill: loginColumn
-        anchors.margins: -24
-
-
-        Rectangle {
-            anchors.left: parent.right
-            anchors.top: parent.bottom
-            anchors.margins: -shadowWidth
-            width: 2 * shadowWidth
-            height: 2 * shadowWidth
-            radius: shadowWidth
-            rotation: 45
-            z: -1
-            gradient: Gradient {
-                orientation: Gradient.Horizontal
-                GradientStop { position: 0.5; color: "light gray" }
-                GradientStop { position: 1.0; color: mainPalette.alternateBase }
-            }
-        }
-
-        Rectangle {
-            anchors.right: parent.left
-            anchors.top: parent.bottom
-            anchors.margins: -shadowWidth
-            width: 2 * shadowWidth
-            height: 2 * shadowWidth
-            radius: shadowWidth
-            rotation: -45
-            z: -1
-            gradient: Gradient {
-                orientation: Gradient.Horizontal
-                GradientStop { position: 0.5; color: "light gray" }
-                GradientStop { position: 0.0; color: mainPalette.alternateBase }
-            }
-        }
-
-        Rectangle {
-            anchors.left: parent.right
-            anchors.bottom: parent.top
-            anchors.margins: -shadowWidth
-            width: 2 * shadowWidth
-            height: 2 * shadowWidth
-            radius: shadowWidth
-            rotation: -45
-            z: -1
-            gradient: Gradient {
-                orientation: Gradient.Horizontal
-                GradientStop { position: 0.5; color: "light gray" }
-                GradientStop { position: 1.0; color: mainPalette.alternateBase }
-            }
-        }
-
-        Rectangle {
-            anchors.right: parent.left
-            anchors.bottom: parent.top
-            anchors.margins: -shadowWidth
-            width: 2 * shadowWidth
-            height: 2 * shadowWidth
-            radius: shadowWidth
-            rotation: 45
-            z: -1
-            gradient: Gradient {
-                orientation: Gradient.Horizontal
-                GradientStop { position: 0.5; color: "light gray" }
-                GradientStop { position: 0.0; color: mainPalette.alternateBase }
-            }
-        }
-
-        Rectangle {
-            anchors.right: parent.left
-            anchors.top: parent.top
-            anchors.bottom: parent.bottom
-
-            width: shadowWidth
-            gradient: Gradient {
-                orientation: Gradient.Horizontal
-                GradientStop { position: 0.0; color: mainPalette.alternateBase }
-                GradientStop { position: 1.0; color: "light gray" }
-            }
-        }
-
-        Rectangle {
-            anchors.left: parent.right
-            anchors.top: parent.top
-            anchors.bottom: parent.bottom
-
-            width: shadowWidth
-            gradient: Gradient {
-                orientation: Gradient.Horizontal
-                GradientStop { position: 0.0; color: "light gray" }
-                GradientStop { position: 1.0; color: mainPalette.alternateBase }
-            }
-        }
-        Rectangle {
-            anchors.top: parent.bottom
-            anchors.right: parent.right
-            anchors.left: parent.left
-
-            height: shadowWidth
-            gradient: Gradient {
-                GradientStop { position: 0.0; color: "light gray" }
-                GradientStop { position: 1.0; color: mainPalette.alternateBase }
-            }
-        }
-        Rectangle {
-            anchors.bottom: parent.top
-            anchors.right: parent.right
-            anchors.left: parent.left
-
-            height: shadowWidth
-            gradient: Gradient {
-                GradientStop { position: 0.0; color: mainPalette.alternateBase }
-                GradientStop { position: 1.0; color: "light gray" }
-            }
-        }
+        anchors.margins: -18
+        color: mainPalette.base
+        radius: 8
     }
 
     Column {
         id: loginColumn
         y: parent.height / 6.7
         anchors.horizontalCenter: parent.horizontalCenter
-        width: termsAndConditionsMetrics.width + 30
-        spacing: 18
+        width: 196
+        spacing: 12
         add: Transition {
             NumberAnimation {
                 properties: "opacity"
@@ -175,12 +67,13 @@ Item {
         Image {
             anchors.horizontalCenter: parent.horizontalCenter
             source: "qrc:/images/logo.png"
-            width: parent.width * 0.67
+            width: parent.width * 0.33
             fillMode: Image.PreserveAspectFit
             antialiasing: true
             mipmap: true
         }
 
+        /*
         Item {
             width: parent.width
             height: loginSwitch.height
@@ -226,25 +119,42 @@ Item {
                 text: "With Google"
             }
         }
+        */
 
         TogglTextField {
             width: parent.width
             id: username
             focus: true
             anchors.horizontalCenter: parent.horizontalCenter
-            placeholderText: "Username"
-            visible: loggingIn || !signupWithGoogle.checked
+            placeholderText: qsTr("Email address")
             onAccepted: act()
         }
 
-        TogglTextField {
+        Column {
             width: parent.width
-            id: password
-            anchors.horizontalCenter: parent.horizontalCenter
-            placeholderText: "Password"
-            echoMode: TextField.Password
-            visible: loggingIn || !signupWithGoogle.checked
-            onAccepted: act()
+            spacing: 6
+            TogglTextField {
+                width: parent.width
+                id: password
+                anchors.horizontalCenter: parent.horizontalCenter
+                placeholderText: "Password"
+                echoMode: TextField.Password
+                onAccepted: act()
+            }
+
+            Text {
+                visible: loggingIn
+                width: parent.width
+                text: qsTr("Forgot password?")
+                font.underline: true
+                color: mainPalette.borderColor
+                MouseArea {
+                    anchors.fill: parent
+                    anchors.margins: -2
+                    cursorShape: Qt.PointingHandCursor
+                    hoverEnabled: true
+                }
+            }
         }
 
         TogglComboBox {
@@ -269,7 +179,7 @@ Item {
             }
             Text {
                 id: termsAndConditionsText
-                anchors.verticalCenter: parent.verticalCenter
+                Layout.alignment: Qt.AlignVCenter
                 Layout.fillWidth: true
                 wrapMode: Text.WrapAtWordBoundaryOrAnywhere
                 font.pointSize: 9
@@ -282,6 +192,8 @@ Item {
             width: parent.width
             anchors.horizontalCenter: parent.horizontalCenter
             text: signingUp ? "Sign up" : "Log in"
+            color: Qt.rgba(229/255.0, 85/255.0, 98/255.0, 1.0)
+            textColor: "white"
             enabled: everythingFilled
             onClicked: act()
         }
@@ -289,9 +201,36 @@ Item {
         TogglButton {
             width: parent.width
             anchors.horizontalCenter: parent.horizontalCenter
-            text: "Log in with Google"
+            text: signingUp ? "Sign up with Google" : "Log in with Google"
             visible: loggingIn
             enabled: false
+        }
+
+        Column {
+            spacing: 0
+            width: parent.width
+            Text {
+                width: parent.width
+                horizontalAlignment: Text.AlignHCenter
+                visible: loggingIn
+                text: "Don't have an account?"
+                color: mainPalette.borderColor
+            }
+
+            Text {
+                width: parent.width
+                horizontalAlignment: Text.AlignHCenter
+                font.underline: true
+                text: loggingIn ? "Sign up for free" : "Back to Log in"
+                color: mainPalette.borderColor
+                MouseArea {
+                    anchors.fill: parent
+                    anchors.margins: -2
+                    hoverEnabled: true
+                    cursorShape: Qt.PointingHandCursor
+                    onClicked: loggingIn = !loggingIn
+                }
+            }
         }
     }
 }

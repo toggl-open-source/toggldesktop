@@ -30,12 +30,12 @@ ComboBox {
         }
     }
     contentItem: Text {
-        leftPadding: 0
+        leftPadding: 9
         rightPadding: control.indicator.width + control.spacing
 
         text: control.displayText
         font: control.font
-        color: control.currentIndex < 0 ? disabledPalette.buttonText : mainPalette.buttonText
+        color: control.currentIndex < 0 ? mainPalette.borderColor : mainPalette.text
         verticalAlignment: Text.AlignVCenter
         elide: Text.ElideRight
     }
