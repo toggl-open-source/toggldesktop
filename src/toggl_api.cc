@@ -1428,3 +1428,11 @@ void track_edit_size(void *context,
     }
     app(context)->TrackEditSize(width, height);
 }
+
+void toggl_iam_click(void *context,
+                     const uint64_t type) {
+    if (!context) {
+        return;
+    }
+    app(context)->TrackInAppMessage(type);
+}
