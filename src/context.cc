@@ -1315,6 +1315,31 @@ void Context::onPeriodicUpdateCheck(Poco::Util::TimerTask&) {  // NOLINT
     startPeriodicUpdateCheck();
 }
 
+void Context::startPeriodicInAppMessageCheck() {
+    logger().debug("startPeriodicInAppMessageCheck");
+
+    Poco::Util::TimerTask::Ptr ptask =
+        new Poco::Util::TimerTaskAdapter<Context>
+    (*this, &Context::onPeriodicInAppMessageCheck);
+
+    Poco::Int64 micros = kCheckInAppMessageIntervalSeconds *
+                         Poco::Int64(kOneSecondInMicros);
+    Poco::Timestamp next_periodic_check_at = Poco::Timestamp() + micros;
+    Poco::Mutex::ScopedLock lock(timer_m_);
+    timer_.schedule(ptask, next_periodic_check_at);
+
+    std::stringstream ss;
+    ss << "Next periodic in-app message check at "
+       << Formatter::Format8601(next_periodic_check_at);
+    logger().debug(ss.str());
+}
+
+void Context::onPeriodicInAppMessageCheck(Poco::Util::TimerTask&) {  // NOLINT
+    logger().debug("onPeriodicInAppMessageChec");
+
+    fetchMessage(1);
+}
+
 error Context::UpdateChannel(
     std::string *update_channel) {
     poco_check_ptr(update_channel);
@@ -1612,6 +1637,7 @@ error Context::fetchMessage(const bool periodic) {
                                              periodic);
             }
 
+            startPeriodicInAppMessageCheck();
 
             UI()->DisplayMessage(
                 title,
