@@ -3,7 +3,7 @@ import QtQuick.Layouts 1.12
 
 Item {
     z: index
-    height: visible ? expanded ? itemHeight * 4 : itemHeight : 0
+    height: visible ? expanded ? contentLayout.height + 16 : itemHeight : 0
     Behavior on height { NumberAnimation { duration: 120 } }
     width: timeEntryList.viewportWidth
 
@@ -91,6 +91,7 @@ Item {
             }
 
             ColumnLayout {
+                id: contentLayout
                 Layout.fillHeight: true
                 Layout.fillWidth: true
                 spacing: 3
@@ -123,39 +124,56 @@ Item {
                     color: mainPalette.windowText
                     font.capitalization: Font.AllUppercase
                 }
-                RowLayout {
+                Item {
+                    id: timeContainer
                     visible: expanded
                     Layout.fillWidth: true
+                    property bool separate: timeContainer.width < (durationField.implicitWidth + startTimeField.implicitWidth + timeArrow.implicitWidth + endTimeField.implicitWidth + 12)
+                    Layout.preferredHeight: durationField.height + (timeContainer.separate ? startTimeField.height + 3 : 0)
                     TextMetrics {
                         id: timeMetrics
-                        text: "00:00:00 AM"
+                        text: "+00:00 AM "
                     }
 
                     TogglTextField {
-                        implicitWidth: timeMetrics.width
-                        //Layout.minimumWidth: timeMetrics.width
+                        id: durationField
+                        width: timeContainer.separate ? parent.width : timeMetrics.width + 3
+                        height: implicitHeight
+                        implicitWidth: timeMetrics.width + 3
                         text: timeEntry ? timeEntry.Duration : ""
                     }
-                    Item {
-                        height: 1
-                        Layout.fillWidth: true
-                    }
 
-                    TogglTextField {
-                        width: timeMetrics.width
-                        implicitWidth: timeMetrics.width
-                        //Layout.minimumWidth: timeMetrics.width
-                        text: timeEntry ? timeEntry.StartTimeString : ""
-                    }
-                    Text {
-                        text: "→"
-                        color: mainPalette.text
-                    }
-                    TogglTextField {
-                        width: timeMetrics.width
-                        implicitWidth: timeMetrics.width
-                        //Layout.minimumWidth: timeMetrics.width
-                        text: timeEntry ? timeEntry.EndTimeString : ""
+                    RowLayout {
+                        id: startEndTimeLayout
+                        anchors {
+                            top: timeContainer.separate ? durationField.bottom : parent.top
+                            topMargin: timeContainer.separate ? 3 : 0
+                            left: timeContainer.separate ? parent.left : durationField.right
+                            right: parent.right
+                        }
+                        Item {
+                            visible: !timeContainer.separate
+                            Layout.fillWidth: true
+                        }
+                        TogglTextField {
+                            id: startTimeField
+                            implicitWidth: timeMetrics.width + 3
+                            //Layout.minimumWidth: timeMetrics.width
+                            Layout.fillWidth: timeContainer.separate
+                            text: timeEntry ? timeEntry.StartTimeString : ""
+                        }
+                        Text {
+                            id: timeArrow
+                            text: "→"
+                            color: mainPalette.text
+                        }
+                        TogglTextField {
+                            id: endTimeField
+                            implicitWidth: timeMetrics.width + 3
+                            Layout.fillWidth: timeContainer.separate
+                            //Layout.minimumWidth: timeMetrics.width
+                            text: timeEntry ? timeEntry.EndTimeString : ""
+                        }
                     }
                 }
 
