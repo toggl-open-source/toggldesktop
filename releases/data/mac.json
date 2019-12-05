@@ -1,6 +1,15 @@
 {
     "versions": [
         {
+            "version": "7.4.1065",
+            "rows": [
+                "Fixed Duplicated Time Entry in Touch Bar",
+                "Fixed Clicking Play (Continue) just created a 0 second time entry"
+            ],
+            "date": "December 5th 2019",
+            "beta": "true"
+        },
+        {
             "version": "7.4.1061",
             "rows": [
                 "Support Screen Recording Permission on Catalina for Recording and Auto-Tracker",
