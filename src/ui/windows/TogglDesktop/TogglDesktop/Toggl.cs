@@ -721,6 +721,16 @@ public static partial class Toggl
     {
         return toggl_get_mini_timer_visible(ctx);
     }
+
+    public static void TrackClickCloseButtonInAppMessage()
+    {
+        toggl_iam_click(ctx, 2);
+    }
+
+    public static void TrackClickActionButtonInAppMessage()
+    {
+        toggl_iam_click(ctx, 3);
+    }
     #endregion
 
     #region callback events
