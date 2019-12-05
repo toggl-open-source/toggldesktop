@@ -37,12 +37,7 @@ final class InAppMessageViewController: NSViewController {
     }
 
     @IBAction func closeBtnOnTap(_ sender: Any) {
-        animate(with: {[weak self] in
-            guard let strongSelf = self else { return }
-            strongSelf.bottomContraint.animator().constant = -strongSelf.containerView.frame.height
-        }, complete: {[weak self] in
-                self?.delegate?.InAppMessageViewControllerShouldDismiss()
-        })
+        hide();
         DesktopLibraryBridge.shared().setClickCloseBtnInAppMessage()
     }
 
@@ -50,7 +45,7 @@ final class InAppMessageViewController: NSViewController {
         guard let message = message,
             let url = URL(string: message.urlAction) else { return }
         NSWorkspace.shared.open(url)
-        closeBtnOnTap(self)
+        hide()
         DesktopLibraryBridge.shared().setClickActionBtnInAppMessage()
     }
 
@@ -74,6 +69,15 @@ final class InAppMessageViewController: NSViewController {
         animate(with: {[weak self] in
             guard let strongSelf = self else { return }
             strongSelf.bottomContraint.animator().constant = 0
+        })
+    }
+
+    @objc func hide() {
+        animate(with: {[weak self] in
+            guard let strongSelf = self else { return }
+            strongSelf.bottomContraint.animator().constant = -strongSelf.containerView.frame.height
+        }, complete: {[weak self] in
+                self?.delegate?.InAppMessageViewControllerShouldDismiss()
         })
     }
 }
