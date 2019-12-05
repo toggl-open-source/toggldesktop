@@ -1604,19 +1604,25 @@ error Context::fetchMessage(const bool periodic) {
                 }
             }
 
-            // check date (if certain days have passed since timestamp)
-            if (days != 0) {
-                Poco::LocalDateTime dt(
-                    Poco::Timestamp::fromEpochTime(root["datetime"].asInt64()));
+            // check if message is active (current time is between from and to)
+            Poco::LocalDateTime now;
 
-                Poco::LocalDateTime now;
+            if (root.isMember("from")) {
+                Poco::LocalDateTime from(
+                    Poco::Timestamp::fromEpochTime(root["from"].asInt64()));
 
-                Poco::LocalDateTime until_date =
-                    dt + Poco::Timespan(days * Poco::Timespan::DAYS);
+                // message is not active yet
+                if (from.utcTime() > now.utcTime()) {
+                    return noError;
+                }
+            }
 
+            if (root.isMember("to")) {
+                Poco::LocalDateTime to(
+                    Poco::Timestamp::fromEpochTime(root["to"].asInt64()));
 
-                // check if more days has passed than allowed by the message
-                if (until_date.utcTime() > now.utcTime()) {
+                // message is alread out dated
+                if (now.utcTime() > to.utcTime()) {
                     return noError;
                 }
             }
