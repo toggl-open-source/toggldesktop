@@ -69,7 +69,7 @@
                                             <action selector="actionBtnOnTap:" target="-2" id="4CA-Yk-esK"/>
                                         </connections>
                                     </button>
-                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="yDl-bB-gh4">
+                                    <textField horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="yDl-bB-gh4">
                                         <rect key="frame" x="81" y="140" width="139" height="24"/>
                                         <textFieldCell key="cell" alignment="center" title="20% discount" id="ySx-yX-KOZ">
                                             <font key="font" metaFont="systemBold" size="20"/>
@@ -109,7 +109,7 @@
                     <constraints>
                         <constraint firstAttribute="trailing" secondItem="Qhk-1x-OQQ" secondAttribute="trailing" id="IVG-YR-f6I"/>
                         <constraint firstItem="Qhk-1x-OQQ" firstAttribute="top" secondItem="nDz-FO-iVv" secondAttribute="top" id="NeI-MF-e4b"/>
-                        <constraint firstAttribute="width" priority="750" constant="300" id="ToS-Pd-t0B"/>
+                        <constraint firstAttribute="width" priority="250" constant="300" id="ToS-Pd-t0B"/>
                         <constraint firstAttribute="bottom" secondItem="Qhk-1x-OQQ" secondAttribute="bottom" id="Xah-4R-W75"/>
                         <constraint firstItem="Qhk-1x-OQQ" firstAttribute="leading" secondItem="nDz-FO-iVv" secondAttribute="leading" id="YB3-Jv-KHB"/>
                     </constraints>
