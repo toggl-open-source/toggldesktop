@@ -29,15 +29,44 @@ Rectangle {
             Layout.fillHeight: true
             property real viewportWidth: viewport.width
             ListView {
+                id: timeEntryListView
                 model: toggl.timeEntries
                 section.property: "modelData.DateHeader"
                 section.delegate: TimeEntryListHeader {
                     height: headerHeight + sectionMargin
                     width: parent.width
+                    Rectangle {
+                        z: 1
+                        anchors.fill: parent
+                        visible: opacity > 0.0
+                        opacity: timeEntryListView.itemExpanded ? 0.5 : 0.0
+                        Behavior on opacity { NumberAnimation { duration: 120 } }
+                        color: "dark gray"
+                        MouseArea { anchors.fill: parent }
+                    }
                 }
+
+                function gotoIndex(idx) {
+                    anim.running = false;
+
+                    var pos = timeEntryListView.contentY;
+                    var destPos;
+
+                    timeEntryListView.positionViewAtIndex(idx, ListView.Beginning);
+                    destPos = timeEntryListView.contentY;
+
+                    anim.from = pos;
+                    anim.to = destPos;
+                    anim.running = true;
+                }
+                NumberAnimation { id: anim; target: timeEntryListView; property: "contentY"; duration: 120 }
+
+                property bool itemExpanded: false
 
                 delegate: TimeEntryListItem {
                     timeEntry: modelData
+                    listView: timeEntryListView
+                    //index: index
                 }
 
                 add: Transition {
