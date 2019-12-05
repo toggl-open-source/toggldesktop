@@ -43,6 +43,7 @@ final class InAppMessageViewController: NSViewController {
         }, complete: {[weak self] in
                 self?.delegate?.InAppMessageViewControllerShouldDismiss()
         })
+        DesktopLibraryBridge.shared().setClickCloseBtnInAppMessage()
     }
 
     @IBAction func actionBtnOnTap(_ sender: Any) {
@@ -50,6 +51,7 @@ final class InAppMessageViewController: NSViewController {
             let url = URL(string: message.urlAction) else { return }
         NSWorkspace.shared.open(url)
         closeBtnOnTap(self)
+        DesktopLibraryBridge.shared().setClickActionBtnInAppMessage()
     }
 
     @objc func update(_ message: InAppMessage) {
