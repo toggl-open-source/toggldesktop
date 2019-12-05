@@ -3,10 +3,24 @@ import QtQuick.Layouts 1.12
 
 Item {
     z: index
-    height: visible ? itemHeight : 0
+    height: visible ? expanded ? itemHeight * 4 : itemHeight : 0
+    Behavior on height { NumberAnimation { duration: 120 } }
     width: timeEntryList.viewportWidth
 
+    property bool expanded: false
+    onExpandedChanged: listView.itemExpanded = expanded
+    property var listView
     property QtObject timeEntry: null
+
+    Rectangle {
+        z: 99999999
+        anchors.fill: parent
+        visible: opacity > 0.0
+        opacity: listView.itemExpanded && !expanded ? 0.5 : 0.0
+        Behavior on opacity { NumberAnimation { duration: 120 } }
+        color: "dark gray"
+        MouseArea { anchors.fill: parent }
+    }
 
     Rectangle {
         anchors {
@@ -15,7 +29,7 @@ Item {
             rightMargin: anchors.leftMargin
             topMargin: 0
         }
-        color: delegateMouse.containsMouse ? mainPalette.listBackground : timeEntry.GroupOpen ? mainPalette.listBackground : mainPalette.base
+        color:  delegateMouse.containsMouse ? mainPalette.listBackground : timeEntry.GroupOpen ? mainPalette.listBackground : mainPalette.base
 
         TogglShadowBox {
             anchors.fill: parent
@@ -38,10 +52,16 @@ Item {
             hoverEnabled: true
             anchors.fill: parent
             onClicked: {
+                console.log("B")
+                console.log("AAA " + index)
+                expanded = !expanded
+                listView.gotoIndex(index)
+                /*
                 if (timeEntry.Group)
                     toggl.toggleEntriesGroup(timeEntry.GroupName)
                 else
                     toggl.editTimeEntry(timeEntry.GUID, "description")
+                */
             }
         }
         RowLayout {
@@ -70,19 +90,106 @@ Item {
                 }
             }
 
-            TimeEntryLabel {
+            ColumnLayout {
                 Layout.fillHeight: true
                 Layout.fillWidth: true
+                spacing: 3
+                Text {
+                    text: "Details"
+                    visible: expanded
+                    color: mainPalette.windowText
+                    font.capitalization: Font.AllUppercase
+                }
+                TimeEntryLabel {
+                    Layout.fillWidth: true
 
-                timeEntry: modelData
+                    Behavior on width { NumberAnimation { duration: 120 } }
+
+                    timeEntry: modelData
+                    editable: expanded
+                }
+
+                TogglTextField {
+                    Layout.fillWidth: true
+                    opacity: expanded ? 1.0 : 0.0
+                    Behavior on opacity { NumberAnimation { duration: 120 } }
+                    visible: opacity > 0.0
+                    placeholderText: qsTr("Add tags")
+                }
+
+                Text {
+                    visible: expanded
+                    text: qsTr("Duration")
+                    color: mainPalette.windowText
+                    font.capitalization: Font.AllUppercase
+                }
+                RowLayout {
+                    visible: expanded
+                    Layout.fillWidth: true
+                    TextMetrics {
+                        id: timeMetrics
+                        text: "00:00:00 AM"
+                    }
+
+                    TogglTextField {
+                        implicitWidth: timeMetrics.width
+                        //Layout.minimumWidth: timeMetrics.width
+                        text: timeEntry ? timeEntry.Duration : ""
+                    }
+                    Item {
+                        height: 1
+                        Layout.fillWidth: true
+                    }
+
+                    TogglTextField {
+                        width: timeMetrics.width
+                        implicitWidth: timeMetrics.width
+                        //Layout.minimumWidth: timeMetrics.width
+                        text: timeEntry ? timeEntry.StartTimeString : ""
+                    }
+                    Text {
+                        text: "→"
+                        color: mainPalette.text
+                    }
+                    TogglTextField {
+                        width: timeMetrics.width
+                        implicitWidth: timeMetrics.width
+                        //Layout.minimumWidth: timeMetrics.width
+                        text: timeEntry ? timeEntry.EndTimeString : ""
+                    }
+                }
+
+                TogglTextField {
+                    visible: expanded
+                    Layout.fillWidth: true
+                    Layout.columnSpan: 3
+                    text: timeEntry ? (new Date(Date(timeEntry.Started)).toLocaleDateString(Qt.locale(), Locale.ShortFormat)) : ""
+                }
+
+
+                Text {
+                    visible: expanded
+                    Layout.fillWidth: true
+                    Layout.columnSpan: 3
+                    text: timeEntry ? timeEntry.WorkspaceName : ""
+                    color: mainPalette.windowText
+                }
+
+                Item {
+                    visible: expanded
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
+                }
             }
 
             Text {
+                visible: !expanded
                 Layout.alignment: Qt.AlignVCenter
                 text: timeEntry.Duration
                 color: mainPalette.text
             }
             Item {
+                visible: !expanded
                 id: startButton
                 opacity: delegateMouse.containsMouse ? 1.0 : 0.0
                 width: 20
