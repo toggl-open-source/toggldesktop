@@ -1597,7 +1597,7 @@ error Context::fetchMessage(const bool periodic) {
                 }
 
             } else if (type == 1) {
-                // we need older version to message
+                // we need older version to show message
                 if (!lessThanVersion(HTTPSClient::Config.AppVersion, version_number)) {
                     return noError;
                 }
