@@ -113,20 +113,26 @@ void on_display_time_entry_list(
 
 void on_display_time_entry_autocomplete(
     TogglAutocompleteView *first) {
-    TogglApi::instance->displayTimeEntryAutocomplete(
-        AutocompleteView::importAll(first));
+    auto v = AutocompleteView::importAll(first);
+    for (auto i : v)
+        i->moveToThread(TogglApi::instance->uiThread_);
+    TogglApi::instance->displayTimeEntryAutocomplete(v);
 }
 
 void on_display_mini_timer_autocomplete(
     TogglAutocompleteView *first) {
-    TogglApi::instance->displayMinitimerAutocomplete(
-        AutocompleteView::importAll(first));
+    auto v = AutocompleteView::importAll(first);
+    for (auto i : v)
+        i->moveToThread(TogglApi::instance->uiThread_);
+    TogglApi::instance->displayMinitimerAutocomplete(v);
 }
 
 void on_display_project_autocomplete(
     TogglAutocompleteView *first) {
-    TogglApi::instance->displayProjectAutocomplete(
-        AutocompleteView::importAll(first));
+    auto v = AutocompleteView::importAll(first);
+    for (auto i : v)
+        i->moveToThread(TogglApi::instance->uiThread_);
+    TogglApi::instance->displayProjectAutocomplete(v);
 }
 
 void on_display_workspace_select(
