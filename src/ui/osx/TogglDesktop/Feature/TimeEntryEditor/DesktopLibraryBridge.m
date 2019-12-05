@@ -198,4 +198,13 @@ void *ctx;
 	return CGSizeMake(width, height);
 }
 
+- (void)setClickCloseBtnInAppMessage
+{
+    toggl_iam_click(ctx, 2);
+}
+
+- (void)setClickActionBtnInAppMessage
+{
+    toggl_iam_click(ctx, 3);
+}
 @end
