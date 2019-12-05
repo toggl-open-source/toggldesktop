@@ -56,22 +56,22 @@ Rectangle {
             Item {
                 Layout.fillHeight: true
             }
-            TextField {
+            TogglTextField {
                 id: description
                 focus: true
+                flat: true
                 visible: !running
                 Layout.fillWidth: true
                 background: Item {}
                 font.pixelSize: 12
                 placeholderText: "What are you doing?"
-                placeholderTextColor: "light gray"
-                color: "white"
                 Keys.onUpPressed: autocomplete.upPressed()
                 Keys.onDownPressed: autocomplete.downPressed()
                 Keys.onEscapePressed: autocomplete.visible = false
                 Keys.onReturnPressed: {
                     if (autocomplete.visible && autocomplete.currentItem) {
-                        console.log("something")
+                        if (autocomplete.currentItem.Description)
+                            toggl.start(autocomplete.currentItem.Description, "", autocomplete.currentItem.TaskID, autocomplete.currentItem.ProjectID, autocomplete.currentItem.Tags, false)
                         autocomplete.visible = false
                     }
                     else {
@@ -90,6 +90,7 @@ Rectangle {
                     anchors.fill: parent
                     anchors.topMargin: -1
                     anchors.bottomMargin: -1
+                    anchors.leftMargin: -3
                     radius: height / 2
                     color: mixColors(mainPalette.window, mainPalette.alternateBase, 0.8)
                     z: -1
