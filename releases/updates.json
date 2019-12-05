@@ -18,12 +18,12 @@
     },
     "mac": {
         "dev": {
-            "version": "7.4.1062",
-            "macos": "https://github.com/toggl-open-source/toggldesktop/releases/download/v7.4.1062/TogglDesktop-7_4_1062.dmg"
+            "version": "7.4.1065",
+            "macos": "https://github.com/toggl-open-source/toggldesktop/releases/download/v7.4.1065/TogglDesktop-7_4_1065.dmg"
         },
         "beta": {
-            "version": "7.4.1061",
-            "macos": "https://github.com/toggl-open-source/toggldesktop/releases/download/v7.4.1061/TogglDesktop-7_4_1061.dmg"
+            "version": "7.4.1065",
+            "macos": "https://github.com/toggl-open-source/toggldesktop/releases/download/v7.4.1065/TogglDesktop-7_4_1065.dmg"
         },
         "stable": {
             "version": "7.4.1041",
