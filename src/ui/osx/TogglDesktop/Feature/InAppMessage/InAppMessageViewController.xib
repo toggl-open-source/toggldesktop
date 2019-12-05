@@ -70,7 +70,7 @@
                                         </connections>
                                     </button>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="yDl-bB-gh4">
-                                        <rect key="frame" x="13" y="140" width="274" height="24"/>
+                                        <rect key="frame" x="81" y="140" width="139" height="24"/>
                                         <textFieldCell key="cell" alignment="center" title="20% discount" id="ySx-yX-KOZ">
                                             <font key="font" metaFont="systemBold" size="20"/>
                                             <color key="textColor" name="white"/>
@@ -87,10 +87,10 @@
                                     </textField>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="IDE-mu-IVm" secondAttribute="trailing" constant="15" id="7Ik-uO-jxr"/>
+                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="IDE-mu-IVm" secondAttribute="trailing" constant="15" id="7Ik-uO-jxr"/>
                                     <constraint firstItem="IDE-mu-IVm" firstAttribute="centerX" secondItem="imI-Xb-rTF" secondAttribute="centerX" id="7oy-6t-6id"/>
-                                    <constraint firstAttribute="trailing" secondItem="yDl-bB-gh4" secondAttribute="trailing" constant="15" id="9BD-Qf-Crt"/>
-                                    <constraint firstItem="yDl-bB-gh4" firstAttribute="leading" secondItem="imI-Xb-rTF" secondAttribute="leading" constant="15" id="C9A-jq-Eed"/>
+                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="yDl-bB-gh4" secondAttribute="trailing" constant="15" id="9BD-Qf-Crt"/>
+                                    <constraint firstItem="yDl-bB-gh4" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="imI-Xb-rTF" secondAttribute="leading" constant="15" id="C9A-jq-Eed"/>
                                     <constraint firstItem="yDl-bB-gh4" firstAttribute="centerX" secondItem="imI-Xb-rTF" secondAttribute="centerX" id="Fd0-Ew-YOi"/>
                                     <constraint firstAttribute="bottom" secondItem="rxC-bp-Klf" secondAttribute="bottom" constant="15" id="InD-cj-K6n"/>
                                     <constraint firstItem="IDE-mu-IVm" firstAttribute="centerX" secondItem="imI-Xb-rTF" secondAttribute="centerX" id="MdB-Oi-QlU"/>
@@ -98,7 +98,7 @@
                                     <constraint firstItem="e67-AM-WSP" firstAttribute="top" secondItem="imI-Xb-rTF" secondAttribute="top" constant="5" id="QvD-Tg-ePA"/>
                                     <constraint firstItem="IDE-mu-IVm" firstAttribute="top" secondItem="yDl-bB-gh4" secondAttribute="bottom" constant="15" id="R4m-dw-Lj2"/>
                                     <constraint firstItem="rxC-bp-Klf" firstAttribute="top" secondItem="IDE-mu-IVm" secondAttribute="bottom" constant="20" id="WYR-Qc-Ou3"/>
-                                    <constraint firstItem="IDE-mu-IVm" firstAttribute="leading" secondItem="imI-Xb-rTF" secondAttribute="leading" constant="15" id="jDA-jU-1iH"/>
+                                    <constraint firstItem="IDE-mu-IVm" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="imI-Xb-rTF" secondAttribute="leading" constant="15" id="jDA-jU-1iH"/>
                                     <constraint firstAttribute="trailing" secondItem="e67-AM-WSP" secondAttribute="trailing" constant="5" id="jJm-CV-E8d"/>
                                     <constraint firstItem="yDl-bB-gh4" firstAttribute="top" secondItem="imI-Xb-rTF" secondAttribute="top" constant="30" id="q3p-D5-9KT"/>
                                 </constraints>
