@@ -49,7 +49,7 @@ Item {
 
         MouseArea {
             id: delegateMouse
-            hoverEnabled: true
+            hoverEnabled: !expanded
             anchors.fill: parent
             onClicked: {
                 console.log("B")
