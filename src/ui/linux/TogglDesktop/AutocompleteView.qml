@@ -9,7 +9,7 @@ Item {
     property real maximumHeight: 500
 
     property var model: null
-    property var currentItem: null
+    property QtObject currentItem: list.currentItem ? list.currentItem.autocompleteData : null
 
     property string filter: ""
     onFilterChanged: {
@@ -19,7 +19,6 @@ Item {
     onVisibleChanged: list.currentIndex = -1
 
     function upPressed() {
-        console.log("==== START UP ====")
         console.log("Current index: " + list.currentIndex)
         console.log("There is " + list.count + " rows")
         console.log("Model reports " + model.count() + " rows")
@@ -34,7 +33,6 @@ Item {
         console.log("Current index: " + list.currentIndex)
     }
     function downPressed() {
-        console.log("==== START DOWN ====")
         console.log("Current index: " + list.currentIndex)
         console.log("There is " + list.count + " rows")
         console.log("Model reports " + model.count() + " rows")
@@ -47,6 +45,11 @@ Item {
             }
         }
         console.log("Current index: " + list.currentIndex)
+    }
+
+    Text {
+        z: 20
+        text: list.currentItem ? list.currentItem.autocompleteData.Description : ""
     }
 
     Rectangle {
@@ -79,7 +82,9 @@ Item {
             }
             highlightFollowsCurrentItem: true
             highlight: Rectangle {
-                color: "red"
+                z: 30
+                color: "light gray"
+                opacity: 0.5
                 width: root.width
                 height: 24
             }
