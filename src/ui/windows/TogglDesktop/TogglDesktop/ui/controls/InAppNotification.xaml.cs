@@ -1,5 +1,7 @@
+using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media.Animation;
 
 namespace TogglDesktop
 {
@@ -46,17 +48,51 @@ namespace TogglDesktop
             set { SetValue(UrlProperty, value); }
         }
 
+        public void RunAppearAnimation(double maxHeight)
+        {
+            var sb = new Storyboard();
+            var slideAnimation = new DoubleAnimation
+            {
+                Duration = TimeSpan.FromSeconds(1),
+                From = 0,
+                To = maxHeight,
+                DecelerationRatio = 0.3f
+            };
+            Storyboard.SetTargetProperty(slideAnimation, new PropertyPath("MaxHeight"));
+            sb.Children.Add(slideAnimation);
+            this.MaxHeight = 0;
+            this.Visibility = Visibility.Visible;
+            this.BeginStoryboard(sb);
+        }
+
         private void CloseButton_OnClick(object sender, RoutedEventArgs e)
         {
-            this.Visibility = Visibility.Collapsed;
+            CloseWithAnimation();
             Toggl.TrackClickCloseButtonInAppMessage();
         }
 
         private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
         {
             Toggl.OpenInBrowser(Url);
-            this.Visibility = Visibility.Collapsed;
+            CloseWithAnimation();
             Toggl.TrackClickActionButtonInAppMessage();
+        }
+
+        private void CloseWithAnimation()
+        {
+            var sb = new Storyboard();
+            var slideAnimation = new DoubleAnimation
+            {
+                Duration = TimeSpan.FromSeconds(0.3),
+                From = this.ActualHeight,
+                To = 0,
+                DecelerationRatio = 0.3f
+            };
+            Storyboard.SetTargetProperty(slideAnimation, new PropertyPath("MaxHeight"));
+            sb.Children.Add(slideAnimation);
+            this.MaxHeight = this.ActualHeight;
+            this.BeginStoryboard(sb);
+            slideAnimation.Completed += (sender, args) => this.Visibility = Visibility.Collapsed;
         }
     }
 }
