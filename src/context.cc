@@ -85,7 +85,8 @@ Context::Context(const std::string &app_name, const std::string &app_version)
 , reminder_(this, &Context::reminderActivity)
 , syncer_(this, &Context::syncerActivity)
 , update_path_("")
-, overlay_visible_(false) {
+, overlay_visible_(false)
+, last_message_id_("") {
     if (!Poco::URIStreamOpener::defaultOpener().supportsScheme("http")) {
         Poco::Net::HTTPStreamFactory::registerFactory();
     }
@@ -296,9 +297,8 @@ error Context::StartEvents() {
 
             analytics_.TrackOs(db_->AnalyticsClientID(), os_info.str());
             analytics_.TrackOSDetails(db_->AnalyticsClientID());
+            fetchMessage(0);
         }
-
-        fetchMessage();
     } catch(const Poco::Exception& exc) {
         return displayError(exc.displayText());
     } catch(const std::exception& ex) {
@@ -1481,7 +1481,7 @@ error Context::downloadUpdate() {
     return noError;
 }
 
-error Context::fetchMessage() {
+error Context::fetchMessage(const bool periodic) {
     try {
 
         // To test updater in development, comment this block out:
@@ -1600,10 +1600,19 @@ error Context::fetchMessage() {
             text = root["text"].asString();
             button = root["button"].asString();
             url = root["url"].asString();
+
+            last_message_id_ = root["id"].asString();
         }
 
         // Check if in-app messaging is supported and show
         if (UI()->CanDisplayMessage()) {
+            if ("production" == environment_) {
+                analytics_.TrackInAppMessage(db_->AnalyticsClientID(),
+                                             last_message_id_,
+                                             periodic);
+            }
+
+
             UI()->DisplayMessage(
                 title,
                 text,
@@ -5839,6 +5848,14 @@ void Context::TrackEditSize(const Poco::Int64 width,
         analytics_.TrackEditSize(db_->AnalyticsClientID(),
                                  shortOSName(),
                                  toggl::Rectangle(width, height));
+    }
+}
+
+void Context::TrackInAppMessage(const Poco::Int64 type) {
+    if ("production" == environment_) {
+        analytics_.TrackInAppMessage(db_->AnalyticsClientID(),
+                                     last_message_id_,
+                                     type);
     }
 }
 

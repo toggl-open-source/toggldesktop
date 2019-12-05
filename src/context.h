@@ -490,6 +490,8 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     void TrackEditSize(const Poco::Int64 width,
                        const Poco::Int64 height);
 
+    void TrackInAppMessage(const Poco::Int64 type);
+
  protected:
     void uiUpdaterActivity();
     void checkReminders();
@@ -577,7 +579,7 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
 
     error downloadUpdate();
 
-    error fetchMessage();
+    error fetchMessage(const bool periodic);
 
     void stopActivities();
 
@@ -734,6 +736,8 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     std::map<std::string, bool_t> entry_groups;
 
     bool overlay_visible_;
+
+    std::string last_message_id_;
 
     const bool handleStopRunningEntry();
 };
