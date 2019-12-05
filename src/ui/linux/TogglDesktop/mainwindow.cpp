@@ -28,7 +28,7 @@ MainWindow::~MainWindow() {
     delete ui;
 }
 
-void MainWindow::on_actionAbout_trigggered() {
+void MainWindow::on_actionAbout_triggered() {
     // TODO
 }
 

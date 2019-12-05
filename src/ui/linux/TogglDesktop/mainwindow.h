@@ -16,7 +16,7 @@ public:
     ~MainWindow();
 
 private slots:
-    void on_actionAbout_trigggered();
+    void on_actionAbout_triggered();
     void on_actionHelp_triggered();
     void on_actionUpdateCheck_triggered();
     void on_actionPreferences_triggered();
