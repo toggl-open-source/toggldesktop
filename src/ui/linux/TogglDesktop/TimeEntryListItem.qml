@@ -71,7 +71,7 @@ Item {
 
             Rectangle {
                 Layout.alignment: Qt.AlignVCenter
-                visible: timeEntry.Group | timeEntry.GroupOpen
+                visible: (timeEntry.Group | timeEntry.GroupOpen) && ! expanded
                 opacity: timeEntry.GroupOpen ? 0.0 : 1.0
                 width: 24
                 height: 24
