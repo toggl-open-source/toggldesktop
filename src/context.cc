@@ -1516,12 +1516,10 @@ error Context::fetchMessage(const bool periodic) {
         }
 
         // To test in-app message fetch in development, comment this block out:
-        /* Remove this before merge
         if ("production" != environment_) {
             logger().debug("Not in production, will not fetch in-app messages");
             return noError;
         }
-         */
 
         // Load last showed message id
         Poco::Int64 old_id(0);
