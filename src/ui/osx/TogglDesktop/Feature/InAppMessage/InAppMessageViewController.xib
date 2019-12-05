@@ -25,23 +25,23 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <customView horizontalHuggingPriority="200" verticalHuggingPriority="200" horizontalCompressionResistancePriority="200" verticalCompressionResistancePriority="200" translatesAutoresizingMaskIntoConstraints="NO" id="nDz-FO-iVv">
-                    <rect key="frame" x="0.0" y="0.0" width="300" height="184"/>
+                    <rect key="frame" x="0.0" y="0.0" width="300" height="194"/>
                     <subviews>
                         <box horizontalHuggingPriority="200" verticalHuggingPriority="200" horizontalCompressionResistancePriority="200" verticalCompressionResistancePriority="200" boxType="custom" borderWidth="0.0" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="Qhk-1x-OQQ">
-                            <rect key="frame" x="0.0" y="0.0" width="300" height="184"/>
+                            <rect key="frame" x="0.0" y="0.0" width="300" height="194"/>
                             <view key="contentView" id="imI-Xb-rTF">
-                                <rect key="frame" x="0.0" y="0.0" width="300" height="184"/>
+                                <rect key="frame" x="0.0" y="0.0" width="300" height="194"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
                                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="e67-AM-WSP">
-                                        <rect key="frame" x="265" y="149" width="30" height="30"/>
+                                        <rect key="frame" x="265" y="159" width="30" height="30"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="30" id="QcD-ht-A6c"/>
                                             <constraint firstAttribute="height" constant="30" id="oqt-7I-pnM"/>
                                         </constraints>
                                         <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="in-app-message-close-btn" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="VcU-VZ-VuV">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                            <font key="font" metaFont="label" size="13"/>
+                                            <font key="font" metaFont="system"/>
                                         </buttonCell>
                                         <connections>
                                             <action selector="closeBtnOnTap:" target="-2" id="YnC-iU-q9p"/>
@@ -55,7 +55,7 @@
                                         </constraints>
                                         <buttonCell key="cell" type="bevel" title="Get a discount now!" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="hg5-vE-8UN">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                            <font key="font" metaFont="label" size="13"/>
+                                            <font key="font" metaFont="system"/>
                                         </buttonCell>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -69,46 +69,38 @@
                                             <action selector="actionBtnOnTap:" target="-2" id="4CA-Yk-esK"/>
                                         </connections>
                                     </button>
-                                    <stackView distribution="fill" orientation="vertical" alignment="centerX" spacing="15" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="80F-7G-drb">
-                                        <rect key="frame" x="10" y="71" width="280" height="93"/>
-                                        <subviews>
-                                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="yDl-bB-gh4">
-                                                <rect key="frame" x="71" y="69" width="139" height="24"/>
-                                                <textFieldCell key="cell" alignment="center" title="20% discount" id="ySx-yX-KOZ">
-                                                    <font key="font" metaFont="systemBold" size="20"/>
-                                                    <color key="textColor" name="white"/>
-                                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                </textFieldCell>
-                                            </textField>
-                                            <textField horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="IDE-mu-IVm">
-                                                <rect key="frame" x="-2" y="0.0" width="284" height="54"/>
-                                                <textFieldCell key="cell" selectable="YES" alignment="center" title="Upgrade to Premium by January 15th to get 20% off Upgrade to Premium by January 15th to get 20% off" id="QAN-LX-DP6">
-                                                    <font key="font" metaFont="menu" size="14"/>
-                                                    <color key="textColor" name="white"/>
-                                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                </textFieldCell>
-                                            </textField>
-                                        </subviews>
-                                        <visibilityPriorities>
-                                            <integer value="1000"/>
-                                            <integer value="1000"/>
-                                        </visibilityPriorities>
-                                        <customSpacing>
-                                            <real value="3.4028234663852886e+38"/>
-                                            <real value="3.4028234663852886e+38"/>
-                                        </customSpacing>
-                                    </stackView>
+                                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="yDl-bB-gh4">
+                                        <rect key="frame" x="13" y="140" width="274" height="24"/>
+                                        <textFieldCell key="cell" alignment="center" title="20% discount" id="ySx-yX-KOZ">
+                                            <font key="font" metaFont="systemBold" size="20"/>
+                                            <color key="textColor" name="white"/>
+                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                        </textFieldCell>
+                                    </textField>
+                                    <textField horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="IDE-mu-IVm">
+                                        <rect key="frame" x="13" y="71" width="274" height="54"/>
+                                        <textFieldCell key="cell" selectable="YES" alignment="center" title="Upgrade to Premium by January 15th to get 20% off Upgrade to Premium by January 15th to get 20% off" id="QAN-LX-DP6">
+                                            <font key="font" metaFont="menu" size="14"/>
+                                            <color key="textColor" name="white"/>
+                                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                        </textFieldCell>
+                                    </textField>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="80F-7G-drb" secondAttribute="trailing" priority="750" constant="10" id="0aL-P6-LMr"/>
-                                    <constraint firstItem="80F-7G-drb" firstAttribute="top" secondItem="imI-Xb-rTF" secondAttribute="top" constant="20" id="1ZK-nS-cxW"/>
+                                    <constraint firstAttribute="trailing" secondItem="IDE-mu-IVm" secondAttribute="trailing" constant="15" id="7Ik-uO-jxr"/>
+                                    <constraint firstItem="IDE-mu-IVm" firstAttribute="centerX" secondItem="imI-Xb-rTF" secondAttribute="centerX" id="7oy-6t-6id"/>
+                                    <constraint firstAttribute="trailing" secondItem="yDl-bB-gh4" secondAttribute="trailing" constant="15" id="9BD-Qf-Crt"/>
+                                    <constraint firstItem="yDl-bB-gh4" firstAttribute="leading" secondItem="imI-Xb-rTF" secondAttribute="leading" constant="15" id="C9A-jq-Eed"/>
+                                    <constraint firstItem="yDl-bB-gh4" firstAttribute="centerX" secondItem="imI-Xb-rTF" secondAttribute="centerX" id="Fd0-Ew-YOi"/>
                                     <constraint firstAttribute="bottom" secondItem="rxC-bp-Klf" secondAttribute="bottom" constant="15" id="InD-cj-K6n"/>
-                                    <constraint firstItem="rxC-bp-Klf" firstAttribute="top" secondItem="80F-7G-drb" secondAttribute="bottom" constant="20" id="Lnz-T9-7wK"/>
-                                    <constraint firstItem="80F-7G-drb" firstAttribute="centerX" secondItem="imI-Xb-rTF" secondAttribute="centerX" id="N0o-t4-OgS"/>
+                                    <constraint firstItem="IDE-mu-IVm" firstAttribute="centerX" secondItem="imI-Xb-rTF" secondAttribute="centerX" id="MdB-Oi-QlU"/>
                                     <constraint firstItem="rxC-bp-Klf" firstAttribute="centerX" secondItem="imI-Xb-rTF" secondAttribute="centerX" id="O2k-UU-V57"/>
                                     <constraint firstItem="e67-AM-WSP" firstAttribute="top" secondItem="imI-Xb-rTF" secondAttribute="top" constant="5" id="QvD-Tg-ePA"/>
+                                    <constraint firstItem="IDE-mu-IVm" firstAttribute="top" secondItem="yDl-bB-gh4" secondAttribute="bottom" constant="15" id="R4m-dw-Lj2"/>
+                                    <constraint firstItem="rxC-bp-Klf" firstAttribute="top" secondItem="IDE-mu-IVm" secondAttribute="bottom" constant="20" id="WYR-Qc-Ou3"/>
+                                    <constraint firstItem="IDE-mu-IVm" firstAttribute="leading" secondItem="imI-Xb-rTF" secondAttribute="leading" constant="15" id="jDA-jU-1iH"/>
                                     <constraint firstAttribute="trailing" secondItem="e67-AM-WSP" secondAttribute="trailing" constant="5" id="jJm-CV-E8d"/>
-                                    <constraint firstItem="80F-7G-drb" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="imI-Xb-rTF" secondAttribute="leading" priority="750" constant="10" id="oq3-vi-3qw"/>
+                                    <constraint firstItem="yDl-bB-gh4" firstAttribute="top" secondItem="imI-Xb-rTF" secondAttribute="top" constant="30" id="q3p-D5-9KT"/>
                                 </constraints>
                             </view>
                             <color key="fillColor" name="in-app-message-background-color"/>

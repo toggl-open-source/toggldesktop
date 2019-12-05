@@ -55,7 +55,9 @@ final class InAppMessageViewController: NSViewController {
     @objc func update(_ message: InAppMessage) {
         self.message = message
         titleLbl.stringValue = message.title
+        titleLbl.toolTip = message.title
         descriptionLbl.stringValue = message.subTitle
+        descriptionLbl.toolTip = message.subTitle
         actionBtn.title = message.buttonTitle
     }
 
