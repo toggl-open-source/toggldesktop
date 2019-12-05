@@ -1509,7 +1509,13 @@ error Context::downloadUpdate() {
 error Context::fetchMessage(const bool periodic) {
     try {
 
-        // To test updater in development, comment this block out:
+        // Check if in-app messaging is supported and show
+        if (UI()->CanDisplayMessage()) {
+            logger().debug("In-app messages not supported on this platform");
+            return noError;
+        }
+
+        // To test in-app message fetch in development, comment this block out:
         /* Remove this before merge
         if ("production" != environment_) {
             logger().debug("Not in production, will not fetch in-app messages");
@@ -1629,23 +1635,17 @@ error Context::fetchMessage(const bool periodic) {
             last_message_id_ = root["id"].asString();
         }
 
-        // Check if in-app messaging is supported and show
-        if (UI()->CanDisplayMessage()) {
-            if ("production" == environment_) {
-                analytics_.TrackInAppMessage(db_->AnalyticsClientID(),
-                                             last_message_id_,
-                                             periodic);
-            }
+        analytics_.TrackInAppMessage(db_->AnalyticsClientID(),
+                                     last_message_id_,
+                                     periodic);
 
-            startPeriodicInAppMessageCheck();
+        startPeriodicInAppMessageCheck();
 
-            UI()->DisplayMessage(
-                title,
-                text,
-                button,
-                url);
-            return noError;
-        }
+        UI()->DisplayMessage(
+            title,
+            text,
+            button,
+            url);
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {
