@@ -49,6 +49,7 @@ final class InAppMessageViewController: NSViewController {
         guard let message = message,
             let url = URL(string: message.urlAction) else { return }
         NSWorkspace.shared.open(url)
+        closeBtnOnTap(self)
     }
 
     @objc func update(_ message: InAppMessage) {
