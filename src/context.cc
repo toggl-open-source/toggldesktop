@@ -1559,8 +1559,7 @@ error Context::fetchMessage(const bool periodic) {
                 return error("Error parsing update check response body");
             }
             auto messageID = root["id"].asInt64();
-            auto type = stoi(root["type"].asString());
-            auto days = stoi(root["days"].asString());
+            auto type = root["type"].asInt64();
             version_number = root["appversion"].asString();
 
 
