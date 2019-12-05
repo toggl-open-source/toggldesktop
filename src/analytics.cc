@@ -56,6 +56,30 @@ void Analytics::TrackOSDetails(const std::string &client_id) {
     Track(client_id, "osdetails", ss.str());
 }
 
+void Analytics::TrackInAppMessage(const std::string &client_id,
+                                  const std::string &id,
+                                  const Poco::Int64 type) {
+    std::stringstream ss;
+    ss << "message/" << id << "/";
+
+    if (type == 0) {
+        // in-app message shown on app start
+        ss << "show/appstart";
+    } else if (type == 1) {
+        // in-app message shown with periodic trigger
+        ss << "show/periodic";
+    } else if (type == 2) {
+        // in-app message close clicked
+        ss << "click/close";
+    } else {
+        // in-app message cta clicked
+        ss << "click/cta";
+    }
+
+    Track(client_id, "in-app-message", ss.str());
+}
+
+
 void Analytics::TrackWindowSize(const std::string &client_id,
                                 const std::string &os,
                                 const toggl::Rectangle rect) {

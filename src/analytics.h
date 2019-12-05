@@ -38,6 +38,11 @@ class Analytics : public Poco::TaskManager {
     void TrackOSDetails(
         const std::string &client_id);
 
+    void TrackInAppMessage(
+        const std::string &client_id,
+        const std::string &id,
+        const Poco::Int64 type);
+
     void TrackSettings(
         const std::string &client_id,
         const bool record_timeline,

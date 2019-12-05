@@ -10,6 +10,7 @@
 #define kSyncIntervalRangeSeconds 900
 #define kWebsocketRestartRangeSeconds 45
 #define kCheckUpdateIntervalSeconds 86400
+#define kCheckInAppMessageIntervalSeconds 14400
 #define kRequestThrottleSeconds 2
 #define kTimerStartInterval 10
 #define kTimelineSecondsToKeep 604800

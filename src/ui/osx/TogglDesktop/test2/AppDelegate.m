@@ -1294,6 +1294,7 @@ const NSString *appName = @"osx_native_app";
 	toggl_on_promotion(ctx, on_promotion);
 	toggl_on_project_colors(ctx, on_project_colors);
 	toggl_on_countries(ctx, on_countries);
+    toggl_on_message(ctx, on_display_message);
 
 	NSLog(@"Version %@", self.version);
 
@@ -1850,6 +1851,16 @@ void on_countries(TogglCountryView *first)
 		}
 	}
 #endif
+}
+
+#pragma mark - In app message
+
+void on_display_message(const char *title,
+                        const char *text,
+                        const char *button,
+                        const char *url)
+{
+
 }
 
 @end

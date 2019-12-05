@@ -85,7 +85,8 @@ Context::Context(const std::string &app_name, const std::string &app_version)
 , reminder_(this, &Context::reminderActivity)
 , syncer_(this, &Context::syncerActivity)
 , update_path_("")
-, overlay_visible_(false) {
+, overlay_visible_(false)
+, last_message_id_("") {
     if (!Poco::URIStreamOpener::defaultOpener().supportsScheme("http")) {
         Poco::Net::HTTPStreamFactory::registerFactory();
     }
@@ -296,9 +297,8 @@ error Context::StartEvents() {
 
             analytics_.TrackOs(db_->AnalyticsClientID(), os_info.str());
             analytics_.TrackOSDetails(db_->AnalyticsClientID());
+            fetchMessage(0);
         }
-
-        fetchMessage();
     } catch(const Poco::Exception& exc) {
         return displayError(exc.displayText());
     } catch(const std::exception& ex) {
@@ -1315,6 +1315,31 @@ void Context::onPeriodicUpdateCheck(Poco::Util::TimerTask&) {  // NOLINT
     startPeriodicUpdateCheck();
 }
 
+void Context::startPeriodicInAppMessageCheck() {
+    logger().debug("startPeriodicInAppMessageCheck");
+
+    Poco::Util::TimerTask::Ptr ptask =
+        new Poco::Util::TimerTaskAdapter<Context>
+    (*this, &Context::onPeriodicInAppMessageCheck);
+
+    Poco::Int64 micros = kCheckInAppMessageIntervalSeconds *
+                         Poco::Int64(kOneSecondInMicros);
+    Poco::Timestamp next_periodic_check_at = Poco::Timestamp() + micros;
+    Poco::Mutex::ScopedLock lock(timer_m_);
+    timer_.schedule(ptask, next_periodic_check_at);
+
+    std::stringstream ss;
+    ss << "Next periodic in-app message check at "
+       << Formatter::Format8601(next_periodic_check_at);
+    logger().debug(ss.str());
+}
+
+void Context::onPeriodicInAppMessageCheck(Poco::Util::TimerTask&) {  // NOLINT
+    logger().debug("onPeriodicInAppMessageChec");
+
+    fetchMessage(1);
+}
+
 error Context::UpdateChannel(
     std::string *update_channel) {
     poco_check_ptr(update_channel);
@@ -1489,16 +1514,20 @@ error Context::downloadUpdate() {
     return noError;
 }
 
-error Context::fetchMessage() {
+error Context::fetchMessage(const bool periodic) {
     try {
 
-        // To test updater in development, comment this block out:
-        /* Remove this before merge
+        // Check if in-app messaging is supported and show
+        if (!UI()->CanDisplayMessage()) {
+            logger().debug("In-app messages not supported on this platform");
+            return noError;
+        }
+
+        // To test in-app message fetch in development, comment this block out:
         if ("production" != environment_) {
             logger().debug("Not in production, will not fetch in-app messages");
             return noError;
         }
-         */
 
         // Load last showed message id
         Poco::Int64 old_id(0);
@@ -1539,7 +1568,6 @@ error Context::fetchMessage() {
             }
             auto messageID = root["id"].asInt64();
             auto type = root["type"].asInt64();
-            auto days = root["days"].asInt64();
             version_number = root["appversion"].asString();
 
 
@@ -1581,19 +1609,25 @@ error Context::fetchMessage() {
                 }
             }
 
-            // check date (if certain days have passed since timestamp)
-            if (days != 0) {
-                Poco::LocalDateTime dt(
-                    Poco::Timestamp::fromEpochTime(root["datetime"].asInt64()));
+            // check if message is active (current time is between from and to)
+            Poco::LocalDateTime now;
 
-                Poco::LocalDateTime now;
+            if (root.isMember("from")) {
+                Poco::LocalDateTime from(
+                    Poco::Timestamp::fromEpochTime(root["from"].asInt64()));
 
-                Poco::LocalDateTime until_date =
-                    dt + Poco::Timespan(days * Poco::Timespan::DAYS);
+                // message is not active yet
+                if (from.utcTime() > now.utcTime()) {
+                    return noError;
+                }
+            }
 
+            if (root.isMember("to")) {
+                Poco::LocalDateTime to(
+                    Poco::Timestamp::fromEpochTime(root["to"].asInt64()));
 
-                // check if more days has passed than allowed by the message
-                if (until_date.utcTime() > now.utcTime()) {
+                // message is alread out dated
+                if (now.utcTime() > to.utcTime()) {
                     return noError;
                 }
             }
@@ -1608,17 +1642,21 @@ error Context::fetchMessage() {
             text = root["text"].asString();
             button = root["button"].asString();
             url = root["url"].asString();
+
+            last_message_id_ = root["id"].asString();
         }
 
-        // Check if in-app messaging is supported and show
-        if (UI()->CanDisplayMessage()) {
-            UI()->DisplayMessage(
-                title,
-                text,
-                button,
-                url);
-            return noError;
-        }
+        analytics_.TrackInAppMessage(db_->AnalyticsClientID(),
+                                     last_message_id_,
+                                     periodic);
+
+        startPeriodicInAppMessageCheck();
+
+        UI()->DisplayMessage(
+            title,
+            text,
+            button,
+            url);
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {
@@ -5847,6 +5885,14 @@ void Context::TrackEditSize(const Poco::Int64 width,
         analytics_.TrackEditSize(db_->AnalyticsClientID(),
                                  shortOSName(),
                                  toggl::Rectangle(width, height));
+    }
+}
+
+void Context::TrackInAppMessage(const Poco::Int64 type) {
+    if ("production" == environment_) {
+        analytics_.TrackInAppMessage(db_->AnalyticsClientID(),
+                                     last_message_id_,
+                                     type);
     }
 }
 
