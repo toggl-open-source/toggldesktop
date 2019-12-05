@@ -1605,6 +1605,11 @@ public static partial class Toggl
         UInt64 width,
         UInt64 height);
 
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern void toggl_iam_click(
+        IntPtr context,
+        UInt64 type);
+
 
 
 }
