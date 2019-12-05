@@ -152,13 +152,6 @@
             </Rectangle.Fill>
         </Rectangle>
 
-        <toggl:InAppNotification Title="20% discount!"
-                                 Text="Upgrade to Premium by January 15th to get 20% off"
-                                 Button="Get a discount now!"
-                                 Url="basket.com.ua"
-                                 HorizontalAlignment="Stretch"
-                                 VerticalAlignment="Bottom"/>
-
         <Border Background="{DynamicResource LayoutTestBrush}"
                 HorizontalAlignment="Left" VerticalAlignment="Bottom"
                 Visibility="Collapsed">

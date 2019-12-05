@@ -7,35 +7,44 @@
              xmlns:converters="clr-namespace:TogglDesktop.Converters"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300"
+             HorizontalAlignment="Stretch"
+             VerticalAlignment="Bottom"
              x:Name="me" x:FieldModifier="private">
     <UserControl.Resources>
         <converters:StringToUpperConverter x:Key="StringToUpperConverter" />
+        <Style TargetType="Button" x:Key="CloseButtonStyle">
+            <Setter Property="Height" Value="20" />
+            <Setter Property="Width" Value="20" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ButtonBase">
+                        <Border Background="{TemplateBinding Background}">
+                            <Image Source="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}}"
+                                   Margin="{Binding Path=Padding, RelativeSource={RelativeSource TemplatedParent}}"
+                                   Stretch="Fill" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#33FFFFFF" />
+                    <Setter Property="Cursor" Value="Hand" />
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="#66FFFFFF" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </UserControl.Resources>
     <StackPanel Background="#06AAF5">
-        <Button x:Name="closeButton"
-                Height="20" Width="20"
-                Background="Transparent"
-                BorderThickness="0"
-                HorizontalAlignment="Right"
+        <Button HorizontalAlignment="Right"
                 VerticalAlignment="Top"
-                Foreground="White"
-                Click="CloseButton_OnClick">
-            <Button.Style>
-                <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="Button">
-                    <Style.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="#33FFFFFF" />
-                            <Setter Property="Cursor" Value="Hand" />
-                        </Trigger>
-                        <Trigger Property="IsPressed" Value="True">
-                            <Setter Property="Background" Value="#66FFFFFF" />
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </Button.Style>
-
-            <Image Source="/TogglDesktop;component/Resources/ic_close_white600_36dp.png"
-                   Height="20" VerticalAlignment="Top" />
+                Click="CloseButton_OnClick"
+                Content="/TogglDesktop;component/Resources/ic_close_white600_36dp.png"
+                Style="{StaticResource CloseButtonStyle}">
         </Button>
         <TextBlock Text="{Binding ElementName=me, Path=Title}"
                    FontWeight="Bold"

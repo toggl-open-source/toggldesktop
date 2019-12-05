@@ -54,6 +54,7 @@ namespace TogglDesktop
         private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
         {
             Toggl.OpenInBrowser(Url);
+            this.Visibility = Visibility.Collapsed;
         }
     }
 }
