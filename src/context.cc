@@ -1510,7 +1510,7 @@ error Context::fetchMessage(const bool periodic) {
     try {
 
         // Check if in-app messaging is supported and show
-        if (UI()->CanDisplayMessage()) {
+        if (!UI()->CanDisplayMessage()) {
             logger().debug("In-app messages not supported on this platform");
             return noError;
         }
