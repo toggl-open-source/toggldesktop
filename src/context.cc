@@ -1545,7 +1545,7 @@ error Context::fetchMessage(const bool periodic) {
         std::string text("");
         std::string button("");
         std::string url("");
-        std::string version_number("");
+        std::string appversion("");
         {
             HTTPSRequest req;
             //req.host = "https://raw.githubusercontent.com/";
@@ -1564,25 +1564,26 @@ error Context::fetchMessage(const bool periodic) {
             Json::Value root;
             Json::Reader reader;
             if (!reader.parse(resp.body, root)) {
-                return error("Error parsing update check response body");
+                return error("Error parsing in-app message response body");
             }
+
+            // check all required fields
+            if (!root.isMember("id") ||
+                    !root.isMember("from") ||
+                    !root.isMember("type") ||
+                    !root.isMember("title") ||
+                    !root.isMember("text") ||
+                    !root.isMember("button") ||
+                    !root.isMember("url-mac") ||
+                    !root.isMember("url-win") ||
+                    !root.isMember("url-linux")) {
+                logger().debug("Required fields are missing in in-app message JSON");
+                return noError;
+            }
+
             auto messageID = root["id"].asInt64();
             auto type = root["type"].asInt64();
-            version_number = root["appversion"].asString();
-
-
-            std::stringstream ss;
-            ss << "\n\t(in-app Message)\n"
-               << "\t id: " << messageID << "\n"
-               << "\t appversion: " << version_number << "\n"
-               << "\t type: " << root["type"].asString() << "\n"
-               << "\t days: " << root["days"].asString() << "\n"
-               << "\t title: " << root["title"].asString() << "\n"
-               << "\t text: " << root["text"].asString() << "\n"
-               << "\t button: " << root["button"].asString() << "\n"
-               << "\t url: " << root["url"].asString() << "\n";
-
-            logger().debug(ss.str());
+            appversion = root["appversion"].asString();
 
             // check if message id is bigger than the saved one
             if (old_id >= messageID) {
@@ -1590,43 +1591,42 @@ error Context::fetchMessage(const bool periodic) {
             }
 
             // check appversion and version compare type
-            if (type == 0) {
-                // exactly same version as in message
-                if (version_number.compare(HTTPSClient::Config.AppVersion) != 0) {
-                    return noError;
-                }
+            if (!appversion.empty()) {
+                if (type == 0) {
+                    // exactly same version as in message
+                    if (appversion.compare(HTTPSClient::Config.AppVersion) != 0) {
+                        return noError;
+                    }
 
-            } else if (type == 1) {
-                // we need older version to show message
-                if (!lessThanVersion(HTTPSClient::Config.AppVersion, version_number)) {
-                    return noError;
-                }
+                } else if (type == 1) {
+                    // we need older version to show message
+                    if (!lessThanVersion(HTTPSClient::Config.AppVersion, appversion)) {
+                        return noError;
+                    }
 
-            } else if (type == 2) {
-                // we need newer version to show message
-                if (lessThanVersion(HTTPSClient::Config.AppVersion, version_number)) {
-                    return noError;
+                } else if (type == 2) {
+                    // we need newer version to show message
+                    if (lessThanVersion(HTTPSClient::Config.AppVersion, appversion)) {
+                        return noError;
+                    }
                 }
             }
 
             // check if message is active (current time is between from and to)
             Poco::LocalDateTime now;
+            Poco::LocalDateTime from(
+                Poco::Timestamp::fromEpochTime(root["from"].asInt64()));
 
-            if (root.isMember("from")) {
-                Poco::LocalDateTime from(
-                    Poco::Timestamp::fromEpochTime(root["from"].asInt64()));
-
-                // message is not active yet
-                if (from.utcTime() > now.utcTime()) {
-                    return noError;
-                }
+            // message is not active yet
+            if (from.utcTime() > now.utcTime()) {
+                return noError;
             }
 
             if (root.isMember("to")) {
                 Poco::LocalDateTime to(
                     Poco::Timestamp::fromEpochTime(root["to"].asInt64()));
 
-                // message is alread out dated
+                // message is already out of date
                 if (now.utcTime() > to.utcTime()) {
                     return noError;
                 }
