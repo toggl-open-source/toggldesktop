@@ -157,6 +157,9 @@ public static partial class Toggl
     public delegate void DisplayPomodoroBreak(
         string title, string informativeText);
 
+    public delegate void DisplayInAppNotification(
+        string title, string text, string button, string url);
+
     #endregion
 
     #region api calls
@@ -718,6 +721,16 @@ public static partial class Toggl
     {
         return toggl_get_mini_timer_visible(ctx);
     }
+
+    public static void TrackClickCloseButtonInAppMessage()
+    {
+        toggl_iam_click(ctx, 2);
+    }
+
+    public static void TrackClickActionButtonInAppMessage()
+    {
+        toggl_iam_click(ctx, 3);
+    }
     #endregion
 
     #region callback events
@@ -752,6 +765,7 @@ public static partial class Toggl
     public static event DisplayObmExperiment OnDisplayObmExperiment = delegate { };
     public static event DisplayPomodoro OnDisplayPomodoro = delegate { };
     public static event DisplayPomodoroBreak OnDisplayPomodoroBreak = delegate { };
+    public static event DisplayInAppNotification OnDisplayInAppNotification = delegate { };
 
     private static void listenToLibEvents()
     {
@@ -991,6 +1005,13 @@ public static partial class Toggl
             using (Performance.Measure("Calling OnDisplayPomodoroBreak"))
             {
                 OnDisplayPomodoroBreak(title, text);
+            }
+        });
+        toggl_on_message(ctx, (title, text, button, url) =>
+        {
+            using (Performance.Measure("Calling OnDisplayInAppNotification"))
+            {
+                OnDisplayInAppNotification(title, text, button, url);
             }
         });
     }

@@ -209,6 +209,9 @@
       <DependentUpon>TaskEntry.xaml</DependentUpon>
     </Compile>
     <Compile Include="ui\chrome\ChromelessWindow.cs" />
+    <Compile Include="ui\controls\InAppNotification.xaml.cs">
+      <DependentUpon>InAppNotification.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ui\controls\ProgressBar.xaml.cs">
       <DependentUpon>ProgressBar.xaml</DependentUpon>
     </Compile>
@@ -231,6 +234,7 @@
     <Compile Include="ui\Converters\AndConverter.cs" />
     <Compile Include="ui\Converters\EmptyStringToCollapsedConverter.cs" />
     <Compile Include="ui\Converters\StringToBrushConverter.cs" />
+    <Compile Include="ui\Converters\StringToUpperConverter.cs" />
     <Compile Include="ui\Experiments\implementations\Experiment98.cs" />
     <Compile Include="ui\Experiments\implementations\Experiment98Screen2.xaml.cs">
       <DependentUpon>Experiment98Screen2.xaml</DependentUpon>
@@ -599,6 +603,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ui\controls\InAppNotification.xaml" />
     <Page Include="ui\controls\ProgressBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -40,6 +40,7 @@ namespace TogglDesktop
         private SyncingIndicator syncingIndicator;
         private ExperimentManager experimentManager;
         private MiniTimerWindow miniTimer;
+        private InAppNotification inAppNotification;
 
         private IMainView activeView;
         private bool isResizingWithHandle;
@@ -233,6 +234,7 @@ namespace TogglDesktop
             Toggl.OnRunningTimerState += this.onRunningTimerState;
             Toggl.OnStoppedTimerState += this.onStoppedTimerState;
             Toggl.OnSettings += this.onSettings;
+            Toggl.OnDisplayInAppNotification += this.onDisplayInAppNotification;
         }
 
         private void finalInitialisation()
@@ -452,6 +454,28 @@ namespace TogglDesktop
             this.idleDetectionTimer.IsEnabled = settings.UseIdleDetection;
             this.Topmost = settings.OnTop;
             this.SetManualMode(settings.ManualMode, true);
+        }
+
+        private void onDisplayInAppNotification(string title, string text, string button, string url)
+        {
+            if (this.TryBeginInvoke(this.onDisplayInAppNotification, title, text, button, url))
+                return;
+
+            if (inAppNotification == null)
+            {
+                inAppNotification = new InAppNotification
+                {
+                    Visibility = Visibility.Collapsed
+                };
+                root.Children.Add(inAppNotification);
+            }
+
+            inAppNotification.Title = title;
+            inAppNotification.Text = text;
+            inAppNotification.Button = button;
+            inAppNotification.Url = url;
+
+            inAppNotification.RunAppearAnimation(this.Height);
         }
 
         #endregion
