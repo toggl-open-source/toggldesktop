@@ -12,13 +12,13 @@
 #ifndef APP_STORE
 #import <AppKit/AppKit.h>
 
-extern void DFRElementSetControlStripPresenceForIdentifier(NSString *, BOOL);
-extern void DFRSystemModalShowsCloseBoxWhenFrontMost(BOOL);
+extern void DFRElementSetControlStripPresenceForIdentifier(NSString *, BOOL) __OSX_AVAILABLE_STARTING(__MAC_10_12_2,__IPHONE_NA);
+extern void DFRSystemModalShowsCloseBoxWhenFrontMost(BOOL) __OSX_AVAILABLE_STARTING(__MAC_10_12_2,__IPHONE_NA);
 
 @interface NSTouchBarItem ()
 
-+ (void)addSystemTrayItem:(NSTouchBarItem *)item;
-+ (void)removeSystemTrayItem:(NSTouchBarItem *)item;
++ (void)addSystemTrayItem:(NSTouchBarItem *)item __OSX_AVAILABLE_STARTING(__MAC_10_12_2,__IPHONE_NA);
++ (void)removeSystemTrayItem:(NSTouchBarItem *)item __OSX_AVAILABLE_STARTING(__MAC_10_12_2,__IPHONE_NA);
 
 @end
 
@@ -34,3 +34,4 @@ extern void DFRSystemModalShowsCloseBoxWhenFrontMost(BOOL);
 
 #endif
 #endif /* TouchBar_h */
+
