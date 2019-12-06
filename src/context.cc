@@ -1553,7 +1553,7 @@ error Context::fetchMessage(const bool periodic) {
                 req.host = "https://indrekv.github.io";
                 req.relative_url = "/message.json";
             } else {
-                req.host = "https://raw.githubusercontent.com/";
+                req.host = "https://raw.githubusercontent.com";
                 req.relative_url = "/toggl-open-source/toggldesktop/master/releases/message.json";
             }
 
