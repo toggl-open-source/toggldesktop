@@ -1,6 +1,15 @@
 {
     "versions": [
         {
+            "version": "7.4.1080",
+            "rows": [
+                "Introduce In-App Message",
+                "Fixed Add project form closes when clicking on Add client"
+            ],
+            "date": "December 6th 2019",
+            "beta": "true"
+        },
+        {
             "version": "7.4.1065",
             "rows": [
                 "Fixed Duplicated Time Entry in Touch Bar",
