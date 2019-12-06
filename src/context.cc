@@ -1641,7 +1641,7 @@ error Context::fetchMessage(const bool periodic) {
             title = root["title"].asString();
             text = root["text"].asString();
             button = root["button"].asString();
-            url = root["url"].asString();
+            url = root["url-" + shortOSName()].asString();
 
             last_message_id_ = root["id"].asString();
         }
