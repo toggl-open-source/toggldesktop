@@ -11,20 +11,24 @@ Button {
         id: background
         control: control
     }
-    contentItem: RowLayout {
+    contentItem: Rectangle {
         anchors.fill: parent
-        spacing: icon.status == Image.Ready ? 3 : 0
-        Image {
-            id: icon
-            Layout.alignment: Qt.AlignCenter
-        }
-        Text {
-            id: text
-            Layout.alignment: Qt.AlignCenter
-            color: control.enabled ? control.pressed | control.checked ? mainPalette.text
-                                                                       : mainPalette.text
-                                   : disabledPalette.text
-            text: control.text
+        color: "blue"
+        RowLayout {
+            anchors.fill: parent
+            spacing: icon.status == Image.Ready ? 3 : 0
+            Image {
+                id: icon
+                Layout.alignment: Qt.AlignCenter
+            }
+            Text {
+                id: text
+                Layout.alignment: Qt.AlignCenter
+                color: control.enabled ? control.pressed | control.checked ? mainPalette.text
+                                                                           : mainPalette.text
+                                       : disabledPalette.text
+                text: control.text
+            }
         }
     }
 }

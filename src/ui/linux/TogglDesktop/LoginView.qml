@@ -9,7 +9,14 @@ Item {
     property bool loggingIn: true
     property bool signingUp: !loggingIn
 
-    property bool everythingFilled: false
+    property bool everythingFilled: {
+        if (loggingIn) {
+            return username.filled && password.filled
+        }
+        else {
+            return username.filled && password.filled && country.filled && termsAndConditions.filled
+        }
+    }
 
     function act() {
         if (!everythingFilled)
@@ -17,11 +24,7 @@ Item {
         if (loggingIn)
             toggl.login(username.text, password.text)
         else if (signingUp) {
-            if (signupWithEmail.checked)
-                toggl.signup(username.text, password.text, country.selectedID)
-            else if (signupWithGoogle.checked) {
-                // don't do anything in this case
-            }
+            toggl.signup(username.text, password.text, country.selectedID)
         }
     }
 
@@ -127,6 +130,7 @@ Item {
             focus: true
             anchors.horizontalCenter: parent.horizontalCenter
             placeholderText: qsTr("Email address")
+            property bool filled: text.length > 0 // change this to a regexp eventually
             onAccepted: act()
         }
 
@@ -139,6 +143,7 @@ Item {
                 anchors.horizontalCenter: parent.horizontalCenter
                 placeholderText: "Password"
                 echoMode: TextField.Password
+                property bool filled: text.length > 0
                 onAccepted: act()
             }
 
@@ -166,6 +171,7 @@ Item {
             textRole: "Text"
             currentIndex: -1
             property int selectedID: toggl.countries && toggl.countries[currentIndex] ? toggl.countries[currentIndex].ID : -1
+            property bool filled: selectedID >= 0
             displayText: currentIndex < 0 ? "Please select your country" : currentText
         }
 
@@ -176,13 +182,14 @@ Item {
             anchors.horizontalCenter: parent.horizontalCenter
             TogglCheckBox {
                 id: termsAndConditions
+                property bool acceptable: checked
             }
             Text {
                 id: termsAndConditionsText
                 Layout.alignment: Qt.AlignVCenter
                 Layout.fillWidth: true
                 wrapMode: Text.WrapAtWordBoundaryOrAnywhere
-                font.pointSize: 9
+                font.pixelSize: 9
                 text: "I agree to <a href=\"https://toggl.com/legal/terms/\">terms of service</a> and <a href=\"https://toggl.com/legal/privacy/\">privacy policy</a>"
                 color: mainPalette.text
             }
