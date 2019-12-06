@@ -137,9 +137,9 @@ Item {
 
                     TogglTextField {
                         id: durationField
-                        width: timeContainer.separate ? parent.width : timeMetrics.width + 3
+                        width: timeContainer.separate ? parent.width : timeMetrics.width + 6
                         height: implicitHeight
-                        implicitWidth: timeMetrics.width + 3
+                        implicitWidth: timeMetrics.width + 6
                         text: timeEntry ? timeEntry.Duration : ""
                     }
 
@@ -157,7 +157,7 @@ Item {
                         }
                         TogglTextField {
                             id: startTimeField
-                            implicitWidth: timeMetrics.width + 3
+                            implicitWidth: timeMetrics.width + 6
                             //Layout.minimumWidth: timeMetrics.width
                             Layout.fillWidth: timeContainer.separate
                             text: timeEntry ? timeEntry.StartTimeString : ""
@@ -169,7 +169,7 @@ Item {
                         }
                         TogglTextField {
                             id: endTimeField
-                            implicitWidth: timeMetrics.width + 3
+                            implicitWidth: timeMetrics.width + 6
                             Layout.fillWidth: timeContainer.separate
                             //Layout.minimumWidth: timeMetrics.width
                             text: timeEntry ? timeEntry.EndTimeString : ""
@@ -177,11 +177,58 @@ Item {
                     }
                 }
 
-                TogglTextField {
+                TogglButtonBackground {
                     visible: expanded
                     Layout.fillWidth: true
                     Layout.columnSpan: 3
-                    text: timeEntry ? (new Date(Date(timeEntry.Started)).toLocaleDateString(Qt.locale(), Locale.ShortFormat)) : ""
+
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: console.log("This would open a calendar")
+                    }
+                    MouseArea {
+                        anchors {
+                            right: leftSeparator.left
+                            top: parent.top
+                            bottom: parent.bottom
+                            left: parent.left
+                        }
+                        onClicked: console.log("Date--")
+                    }
+                    MouseArea {
+                        anchors {
+                            left: rightSeparator.right
+                            top: parent.top
+                            bottom: parent.bottom
+                            right: parent.right
+                        }
+                        onClicked: console.log("Date++")
+                    }
+
+                    Rectangle {
+                        id: leftSeparator
+                        anchors.top: parent.top
+                        anchors.bottom: parent.bottom
+                        anchors.left: parent.left
+                        anchors.leftMargin: 32
+                        width: 1
+                        color: parent.borderColor
+                    }
+                    Rectangle {
+                        id: rightSeparator
+                        anchors.top: parent.top
+                        anchors.bottom: parent.bottom
+                        anchors.right: parent.right
+                        anchors.rightMargin: 32
+                        width: 1
+                        color: parent.borderColor
+                    }
+
+                    Text {
+                        color: mainPalette.text
+                        anchors.centerIn: parent
+                        text: timeEntry ? (new Date(Date(timeEntry.Started)).toLocaleDateString(Qt.locale(), Locale.ShortFormat)) : ""
+                    }
                 }
 
 
