@@ -29,6 +29,7 @@ extern void DFRSystemModalShowsCloseBoxWhenFrontMost(BOOL) __OSX_AVAILABLE_START
 + (void)dismissSystemModal:(NSTouchBar *)touchBar;
 
 + (void)minimizeSystemModal:(NSTouchBar *)touchBar;
++ (void)presentSystemModalFunctionBar:(NSTouchBar *)touchBar systemTrayItemIdentifier:(NSString *)identifier __OSX_AVAILABLE_STARTING(__MAC_10_12_2,__IPHONE_NA);
 
 @end
 
