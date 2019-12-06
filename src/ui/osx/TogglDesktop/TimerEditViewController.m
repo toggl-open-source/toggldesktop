@@ -531,7 +531,11 @@ NSString *kInactiveTimerColor = @"#999999";
 {
 	[self.mainBox setHidden:NO];
 	[self.manualBox setHidden:YES];
-	[self.view.window makeFirstResponder:self.autoCompleteInput];
+
+    // Don't focus if the timer is running
+    if (![self.time_entry isRunning]) {
+        [self.view.window makeFirstResponder:self.autoCompleteInput];
+    }
 }
 
 - (void)toggleManual:(NSNotification *)notification
