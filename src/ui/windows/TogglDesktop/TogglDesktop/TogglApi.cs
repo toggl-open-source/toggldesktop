@@ -516,6 +516,17 @@ public static partial class Toggl
         string version,
         Int64 download_state);
 
+    [UnmanagedFunctionPointer(convention)]
+    private delegate void     TogglDisplayMessage(
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string title,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string text,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string button,
+        [MarshalAs(UnmanagedType.LPWStr)]
+        string url);
+
 
     [UnmanagedFunctionPointer(convention)]
     private delegate void     TogglDisplayAutotrackerRules(
@@ -654,6 +665,11 @@ public static partial class Toggl
     private static extern void toggl_on_update_download_state(
         IntPtr context,
         TogglDisplayUpdateDownloadState cb);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern void toggl_on_message(
+        IntPtr context,
+        TogglDisplayMessage cb);
 
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern void toggl_on_online_state(
@@ -1671,6 +1687,11 @@ public static partial class Toggl
         IntPtr context,
         UInt64 width,
         UInt64 height);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern void toggl_iam_click(
+        IntPtr context,
+        UInt64 type);
 
 
 

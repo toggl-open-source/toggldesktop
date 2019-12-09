@@ -58,6 +58,7 @@ extern NSString *const kUserHasBeenSignup;
 extern NSString *const kDeselectAllTimeEntryList;
 extern NSString *const kDidAdddManualTimeNotification;
 extern NSString *const kTouchBarSettingChanged;
+extern NSString *const kStartDisplayInAppMessage;
 
 const char *kFocusedFieldNameDuration;
 const char *kFocusedFieldNameDescription;

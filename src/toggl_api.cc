@@ -1060,6 +1060,12 @@ void toggl_on_update_download_state(
     app(context)->UI()->OnDisplayUpdateDownloadState(cb);
 }
 
+void toggl_on_message(
+    void *context,
+    TogglDisplayMessage cb) {
+    app(context)->UI()->OnDisplayMessage(cb);
+}
+
 void toggl_on_url(
     void *context,
     TogglDisplayURL cb) {
@@ -1470,4 +1476,12 @@ void track_edit_size(void *context,
         return;
     }
     app(context)->TrackEditSize(width, height);
+}
+
+void toggl_iam_click(void *context,
+                     const uint64_t type) {
+    if (!context) {
+        return;
+    }
+    app(context)->TrackInAppMessage(type);
 }

@@ -66,10 +66,23 @@ public static class Utils
             x = Toggl.GetMiniTimerX();
             y = Toggl.GetMiniTimerY();
             w = Toggl.GetMiniTimerW();
-            miniTimer.Left = x;
-            miniTimer.Top = y;
-            miniTimer.Width = w;
-            Toggl.Debug("Retrieved mini timer location ({0}x{1} by {2})", x, y, w);
+            if (ValidateMiniTimerWindowSettings(x, y, w))
+            {
+                miniTimer.Left = x;
+                miniTimer.Top = y;
+                miniTimer.Width = w;
+                Toggl.Debug("Retrieved mini timer location ({0}x{1} by {2})", x, y, w);
+            }
+            else
+            {
+                const int defaultX = 0;
+                const int defaultY = 0;
+                const int defaultWidth = 360;
+                miniTimer.Left = defaultX;
+                miniTimer.Top = defaultY;
+                miniTimer.Width = defaultWidth;
+                Toggl.Debug($"Set default mini-timer position and size: ({defaultX}x{defaultY} by {defaultWidth}");
+            }
 
             CheckMinitimerVisibility(miniTimer);
         }
@@ -78,6 +91,11 @@ public static class Utils
     private static bool ValidateWindowSettings(long x, long y, long h, long w)
     {
         return new[] {x, y, h, w}.All(v => v >= int.MinValue && v <= int.MaxValue) && h > 0 && w > 0;
+    }
+
+    private static bool ValidateMiniTimerWindowSettings(long x, long y, long w)
+    {
+        return new[] {x, y, w}.All(v => v >= int.MinValue && v <= int.MaxValue) && w > 0;
     }
 
     public static void CheckMinitimerVisibility(MiniTimerWindow miniTimer)

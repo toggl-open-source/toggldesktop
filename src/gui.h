@@ -380,6 +380,7 @@ class TOGGL_INTERNAL_EXPORT GUI : public SyncStateMonitor {
     , on_display_unsynced_items_(nullptr)
     , on_display_update_(nullptr)
     , on_display_update_download_state_(nullptr)
+    , on_display_message_(nullptr)
     , on_display_autotracker_rules_(nullptr)
     , on_display_autotracker_notification_(nullptr)
     , on_display_promotion_(nullptr)
@@ -496,10 +497,20 @@ class TOGGL_INTERNAL_EXPORT GUI : public SyncStateMonitor {
         const std::string &version,
         const Poco::Int64 download_state);
 
+    void DisplayMessage(
+        const std::string &title,
+        const std::string &text,
+        const std::string &button,
+        const std::string &url);
+
     error VerifyCallbacks();
 
     void OnDisplayUpdate(TogglDisplayUpdate cb) {
         on_display_update_ = cb;
+    }
+
+    void OnDisplayMessage(TogglDisplayMessage cb) {
+        on_display_message_ = cb;
     }
 
     void OnDisplayHelpArticles(TogglDisplayHelpArticles cb) {
@@ -635,6 +646,10 @@ class TOGGL_INTERNAL_EXPORT GUI : public SyncStateMonitor {
         return !!on_display_update_download_state_;
     }
 
+    bool CanDisplayMessage() const {
+        return !!on_display_message_;
+    }
+
     bool CanDisplayAutotrackerRules() const {
         return !!on_display_autotracker_rules_;
     }
@@ -701,6 +716,7 @@ class TOGGL_INTERNAL_EXPORT GUI : public SyncStateMonitor {
     TogglDisplayUnsyncedItems on_display_unsynced_items_;
     TogglDisplayUpdate on_display_update_;
     TogglDisplayUpdateDownloadState on_display_update_download_state_;
+    TogglDisplayMessage on_display_message_;
     TogglDisplayAutotrackerRules on_display_autotracker_rules_;
     TogglDisplayAutotrackerNotification on_display_autotracker_notification_;
     TogglDisplayPromotion on_display_promotion_;

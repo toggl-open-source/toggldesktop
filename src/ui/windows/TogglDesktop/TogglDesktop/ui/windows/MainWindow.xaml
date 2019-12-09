@@ -113,7 +113,7 @@
     </Window.ContextMenu>
     
     
-    <Grid>
+    <Grid x:Name="root" x:FieldModifier="private">
 
         <toggl:TogglChromeDesignTimeConverter Title="Toggl Desktop" />
 

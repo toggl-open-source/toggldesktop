@@ -68,5 +68,5 @@
 - (BOOL)isRunning;
 + (NSColor *)defaultProjectColor;
 - (void)load:(TogglTimeEntryView *)data;
-
+- (BOOL) isSameContentWithTimeEntryViewItem:(TimeEntryViewItem *) item;
 @end

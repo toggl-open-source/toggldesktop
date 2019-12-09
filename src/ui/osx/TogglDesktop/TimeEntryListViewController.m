@@ -84,6 +84,9 @@ extern void *ctx;
 	self.isOpening = YES;
 	self.addedHeight = 0;
 	self.runningEdit = NO;
+
+	// Shadow for Header
+    [self.headerView applyShadowWithColor:[NSColor blackColor] opacity:0.1 radius:6.0 offset:CGSizeMake(0, -2)];
 }
 
 - (void)initNotifications

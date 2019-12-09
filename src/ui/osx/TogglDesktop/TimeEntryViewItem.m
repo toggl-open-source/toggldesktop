@@ -213,7 +213,8 @@
 	return self.duration_in_seconds < 0;
 }
 
-+ (NSColor *)defaultProjectColor {
++ (NSColor *)defaultProjectColor 
+{
 	if (@available(macOS 10.13, *))
 	{
 		return [NSColor colorNamed:@"timeline-time-entry-default-color"];
@@ -224,4 +225,10 @@
 	}
 }
 
+- (BOOL) isSameContentWithTimeEntryViewItem:(TimeEntryViewItem *) item
+{
+    return [self.descriptionName isEqualToString:item.descriptionName] &&
+    [self.ProjectAndTaskLabel isEqualToString:item.ProjectAndTaskLabel] &&
+    [self.ProjectColor isEqualToString:item.ProjectColor];
+}
 @end

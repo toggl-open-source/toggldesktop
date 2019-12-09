@@ -270,7 +270,7 @@ jobs:
       if: github.event_name == 'release'
       run: |
         TAG_NAME=$(./dist/get-tag-name.sh)
-        ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} tag="$TAG_NAME" filename="dist/windows/TogglDesktopInstaller-x64.exe" renameto="TogglDesktopInstaller-${TAG_NAME/v/}-x64.exe"
+        ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} tag="$TAG_NAME" filename="dist/windows/TogglDesktopInstaller-x64.exe" renameto="TogglDesktopInstaller-x64-${TAG_NAME/v/}.exe"
       shell: bash
 
   windows-store:

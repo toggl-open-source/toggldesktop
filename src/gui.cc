@@ -782,6 +782,29 @@ void GUI::DisplayUpdateDownloadState(
     free(version_string);
 }
 
+void GUI::DisplayMessage(const std::string &title,
+                         const std::string &text,
+                         const std::string &button,
+                         const std::string &url) {
+    logger().debug("DisplayMessage: " + title);
+
+    char_t *tmp_title = copy_string(title);
+    char_t *tmp_text = copy_string(text);
+    char_t *tmp_button = copy_string(button);
+    char_t *tmp_url = copy_string(url);
+    on_display_message_(
+        tmp_title,
+        tmp_text,
+        tmp_button,
+        tmp_url);
+
+    free(tmp_title);
+    free(tmp_text);
+    free(tmp_button);
+    free(tmp_url);
+}
+
+
 void GUI::DisplaySettings(const bool open,
                           const bool record_timeline,
                           const Settings &settings,

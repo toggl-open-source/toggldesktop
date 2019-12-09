@@ -720,6 +720,10 @@ error Database::GetKeyModifierStart(std::string *result) {
     return getSettingsValue("key_modifier_start", result);
 }
 
+error Database::GetMessageSeen(Poco::Int64 *result) {
+    return getSettingsValue("message_seen", result);
+}
+
 error Database::SetSettingsRemindTimes(
     const std::string &remind_starts,
     const std::string &remind_ends) {
@@ -791,6 +795,11 @@ error Database::SetSettingsRemindDays(
 
 error Database::SetSettingsHasSeenBetaOffering(const bool &value) {
     return setSettingsValue("has_seen_beta_offering", value);
+}
+
+error Database::SetSettingsMessageSeen(
+    const Poco::UInt64 message_id) {
+    return setSettingsValue("message_seen",message_id);
 }
 
 error Database::SetSettingsUseIdleDetection(

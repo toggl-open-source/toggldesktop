@@ -226,6 +226,11 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
 
     int64_t GetWindowEditSizeWidth();
 
+    void SetMessageSeen(
+        const int64_t value);
+
+    int64_t GetMessageSeen();
+
     void SetKeyStart(
         const std::string &value);
 
@@ -507,6 +512,8 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     void TrackEditSize(const Poco::Int64 width,
                        const Poco::Int64 height);
 
+    void TrackInAppMessage(const Poco::Int64 type);
+
  protected:
     void uiUpdaterActivity();
     void checkReminders();
@@ -537,6 +544,7 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     void onSwitchTimelineOn(Poco::Util::TimerTask& task);  // NOLINT
     void onFetchUpdates(Poco::Util::TimerTask& task);  // NOLINT
     void onPeriodicUpdateCheck(Poco::Util::TimerTask& task);  // NOLINT
+    void onPeriodicInAppMessageCheck(Poco::Util::TimerTask& task);  // NOLINT
     void onTimelineUpdateServerSettings(Poco::Util::TimerTask& task);  // NOLINT
     void onSendFeedback(Poco::Util::TimerTask& task);  // NOLINT
     void onPeriodicSync(Poco::Util::TimerTask& task);  // NOLINT
@@ -550,6 +558,8 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
 
     void startPeriodicUpdateCheck();
     void executeUpdateCheck();
+
+    void startPeriodicInAppMessageCheck();
 
     void startPeriodicSync();
 
@@ -593,6 +603,8 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
                               const std::string &password);
 
     error downloadUpdate();
+
+    error fetchMessage(const bool periodic);
 
     void stopActivities();
 
@@ -749,6 +761,8 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     std::map<std::string, bool_t> entry_groups;
 
     bool overlay_visible_;
+
+    std::string last_message_id_;
 
     const bool handleStopRunningEntry();
 };

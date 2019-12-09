@@ -275,6 +275,9 @@ NSString *kInactiveTimerColor = @"#999999";
 
 		self.durationTextField.toolTip = [NSString stringWithFormat:@"Started: %@", self.time_entry.startTimeString];
 		self.descriptionLabel.editable = NO;
+
+        // Switch to timer mode in setting
+        toggl_set_settings_manual_mode(ctx, false);
 	}
 	else
 	{
@@ -524,7 +527,11 @@ NSString *kInactiveTimerColor = @"#999999";
 {
 	[self.mainBox setHidden:NO];
 	[self.manualBox setHidden:YES];
-	[self.view.window makeFirstResponder:self.autoCompleteInput];
+
+    // Don't focus if the timer is running
+    if (![self.time_entry isRunning]) {
+        [self.view.window makeFirstResponder:self.autoCompleteInput];
+    }
 }
 
 - (void)toggleManual:(NSNotification *)notification

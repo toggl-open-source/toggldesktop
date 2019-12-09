@@ -103,7 +103,12 @@ final class TouchBarService: NSObject {
             if timeEntry.groupOpen && !timeEntry.group {
                 continue
             }
-            touchBarEntries.append(timeEntry)
+
+            // Only add unique TE
+            if touchBarEntries.first(where: { $0.isSameContent(with: timeEntry)}) == nil {
+                touchBarEntries.append(timeEntry)
+            }
+
             if touchBarEntries.count >= Constants.NumberTimeEntry {
                 break
             }

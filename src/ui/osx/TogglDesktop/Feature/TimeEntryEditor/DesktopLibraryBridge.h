@@ -94,6 +94,8 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - Editor
 
 - (void)loadMoreTimeEntry;
+- (void)setClickCloseBtnInAppMessage;
+- (void)setClickActionBtnInAppMessage;
 
 @end
 

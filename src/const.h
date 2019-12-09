@@ -10,6 +10,7 @@
 #define kSyncIntervalRangeSeconds 900
 #define kWebsocketRestartRangeSeconds 45
 #define kCheckUpdateIntervalSeconds 86400
+#define kCheckInAppMessageIntervalSeconds 14400
 #define kRequestThrottleSeconds 2
 #define kTimerStartInterval 10
 #define kTimelineSecondsToKeep 604800
@@ -27,6 +28,7 @@
 #define kMinimumAllowedYear 2006
 #define kMaximumAllowedYear 2030
 #define kMaximumDescriptionLength 3000
+#define kTimeComparisonEpsilonMicroSeconds 100000 // 100 ms
 
 #define kLostPasswordURL "https://toggl.com/forgot-password?desktop=true"
 #define kGeneralSupportURL "https://support.toggl.com/toggl-on-my-desktop/"

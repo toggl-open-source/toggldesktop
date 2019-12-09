@@ -313,6 +313,12 @@ extern "C" {
         const char_t *version,
         const int64_t download_state);
 
+    typedef void (*TogglDisplayMessage)(
+        const char_t *title,
+        const char_t *text,
+        const char_t *button,
+        const char_t *url);
+
     typedef char_t * string_list_t[];
 
     typedef void (*TogglDisplayAutotrackerRules)(
@@ -419,6 +425,10 @@ extern "C" {
     TOGGL_EXPORT void toggl_on_update_download_state(
         void *context,
         TogglDisplayUpdateDownloadState cb);
+
+    TOGGL_EXPORT void toggl_on_message(
+        void *context,
+        TogglDisplayMessage cb);
 
     TOGGL_EXPORT void toggl_on_online_state(
         void *context,
@@ -1110,6 +1120,10 @@ extern "C" {
         void *context,
         const uint64_t width,
         const uint64_t height);
+
+    TOGGL_EXPORT void toggl_iam_click(
+        void *context,
+        const uint64_t type);
 #undef TOGGL_EXPORT
 
 #ifdef __cplusplus

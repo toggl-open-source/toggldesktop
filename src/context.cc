@@ -85,7 +85,8 @@ Context::Context(const std::string &app_name, const std::string &app_version)
 , reminder_(this, &Context::reminderActivity)
 , syncer_(this, &Context::syncerActivity)
 , update_path_("")
-, overlay_visible_(false) {
+, overlay_visible_(false)
+, last_message_id_("") {
     if (!Poco::URIStreamOpener::defaultOpener().supportsScheme("http")) {
         Poco::Net::HTTPStreamFactory::registerFactory();
     }
@@ -296,6 +297,7 @@ error Context::StartEvents() {
 
             analytics_.TrackOs(db_->AnalyticsClientID(), os_info.str());
             analytics_.TrackOSDetails(db_->AnalyticsClientID());
+            fetchMessage(0);
         }
     } catch(const Poco::Exception& exc) {
         return displayError(exc.displayText());
@@ -1006,7 +1008,10 @@ bool Context::isPostponed(
     const Poco::Timestamp value,
     const Poco::Timestamp::TimeDiff throttleMicros) const {
     Poco::Timestamp now;
-    if (now > value) {
+    
+    // if `value` is only slighly smaller than `now` it's probably the same task and not postponed
+    // hence perform comparison using epsilon = `kTimeComparisonEpsilonMicroSeconds`
+    if (now > value + kTimeComparisonEpsilonMicroSeconds) {
         return false;
     }
     Poco::Timestamp::TimeDiff diff = value - now;
@@ -1370,6 +1375,31 @@ void Context::onPeriodicUpdateCheck(Poco::Util::TimerTask&) {  // NOLINT
     startPeriodicUpdateCheck();
 }
 
+void Context::startPeriodicInAppMessageCheck() {
+    logger().debug("startPeriodicInAppMessageCheck");
+
+    Poco::Util::TimerTask::Ptr ptask =
+        new Poco::Util::TimerTaskAdapter<Context>
+    (*this, &Context::onPeriodicInAppMessageCheck);
+
+    Poco::Int64 micros = kCheckInAppMessageIntervalSeconds *
+                         Poco::Int64(kOneSecondInMicros);
+    Poco::Timestamp next_periodic_check_at = Poco::Timestamp() + micros;
+    Poco::Mutex::ScopedLock lock(timer_m_);
+    timer_.schedule(ptask, next_periodic_check_at);
+
+    std::stringstream ss;
+    ss << "Next periodic in-app message check at "
+       << Formatter::Format8601(next_periodic_check_at);
+    logger().debug(ss.str());
+}
+
+void Context::onPeriodicInAppMessageCheck(Poco::Util::TimerTask&) {  // NOLINT
+    logger().debug("onPeriodicInAppMessageChec");
+
+    fetchMessage(1);
+}
+
 error Context::UpdateChannel(
     std::string *update_channel) {
     poco_check_ptr(update_channel);
@@ -1433,10 +1463,18 @@ error Context::downloadUpdate() {
         {
             HTTPSRequest req;
             req.host = "https://toggl.github.io";
-            req.relative_url = "/toggldesktop/assets/releases/updates.json";
+            req.relative_url = "/toggldesktop/assets/updates-link.txt";
 
             TogglClient client;
             HTTPSResponse resp = client.Get(req);
+            if (resp.err != noError) {
+                return resp.err;
+            }
+
+            Poco::URI uri(resp.body);
+            req.host = uri.getScheme() + "://" + uri.getHost();
+            req.relative_url = uri.getPathEtc();
+            resp = client.Get(req);
             if (resp.err != noError) {
                 return resp.err;
             }
@@ -1535,6 +1573,164 @@ error Context::downloadUpdate() {
     }
     return noError;
 }
+
+error Context::fetchMessage(const bool periodic) {
+    try {
+
+        // Check if in-app messaging is supported and show
+        if (!UI()->CanDisplayMessage()) {
+            logger().debug("In-app messages not supported on this platform");
+            return noError;
+        }
+
+        // To test in-app message fetch in development, comment this block out:
+        if ("production" != environment_) {
+            logger().debug("Not in production, will not fetch in-app messages");
+            return noError;
+        }
+
+        // Load last showed message id
+        Poco::Int64 old_id(0);
+        error err = db()->GetMessageSeen(&old_id);
+        if (err != noError) {
+            return err;
+        }
+
+        if (HTTPSClient::Config.AppVersion.empty()) {
+            return error("AppVersion missing!");
+        }
+
+        // Fetch latest message
+        std::string title("");
+        std::string text("");
+        std::string button("");
+        std::string url("");
+        std::string appversion("");
+        {
+            HTTPSRequest req;
+            if ("production" != environment_) {
+                // testing location
+                req.host = "https://indrekv.github.io";
+                req.relative_url = "/message.json";
+            } else {
+                req.host = "https://raw.githubusercontent.com";
+                req.relative_url = "/toggl-open-source/toggldesktop/master/releases/message.json";
+            }
+
+            TogglClient client;
+            HTTPSResponse resp = client.Get(req);
+            if (resp.err != noError) {
+                return resp.err;
+            }
+
+            Json::Value root;
+            Json::Reader reader;
+            if (!reader.parse(resp.body, root)) {
+                return error("Error parsing in-app message response body");
+            }
+
+            // check all required fields
+            if (!root.isMember("id") ||
+                    !root.isMember("from") ||
+                    !root.isMember("type") ||
+                    !root.isMember("title") ||
+                    !root.isMember("text") ||
+                    !root.isMember("button") ||
+                    !root.isMember("url-mac") ||
+                    !root.isMember("url-win") ||
+                    !root.isMember("url-linux")) {
+                logger().debug("Required fields are missing in in-app message JSON");
+                return noError;
+            }
+
+            auto messageID = root["id"].asInt64();
+            auto type = root["type"].asInt64();
+            appversion = root["appversion"].asString();
+
+            // check if message id is bigger than the saved one
+            if (old_id >= messageID) {
+                return noError;
+            }
+
+            // check appversion and version compare type
+            if (!appversion.empty()) {
+                if (type == 0) {
+                    // exactly same version as in message
+                    if (appversion.compare(HTTPSClient::Config.AppVersion) != 0) {
+                        return noError;
+                    }
+
+                } else if (type == 1) {
+                    // we need older version to show message
+                    if (!lessThanVersion(HTTPSClient::Config.AppVersion, appversion)) {
+                        return noError;
+                    }
+
+                } else if (type == 2) {
+                    // we need newer version to show message
+                    if (lessThanVersion(HTTPSClient::Config.AppVersion, appversion)) {
+                        return noError;
+                    }
+                }
+            }
+
+            // check if message is active (current time is between from and to)
+            Poco::LocalDateTime now;
+            Poco::LocalDateTime from(
+                Poco::Timestamp::fromEpochTime(root["from"].asInt64()));
+
+            // message is not active yet
+            if (from.utcTime() > now.utcTime()) {
+                return noError;
+            }
+
+            if (root.isMember("to")) {
+                Poco::LocalDateTime to(
+                    Poco::Timestamp::fromEpochTime(root["to"].asInt64()));
+
+                // message is already out of date
+                if (now.utcTime() > to.utcTime()) {
+                    return noError;
+                }
+            }
+
+            // update message id in database
+            err = db()->SetSettingsMessageSeen(messageID);
+            if (err != noError) {
+                return err;
+            }
+
+            title = root["title"].asString();
+            text = root["text"].asString();
+            button = root["button"].asString();
+            url = root["url-" + shortOSName()].asString();
+
+            last_message_id_ = root["id"].asString();
+        }
+
+        analytics_.TrackInAppMessage(db_->AnalyticsClientID(),
+                                     last_message_id_,
+                                     periodic);
+
+        startPeriodicInAppMessageCheck();
+
+        UI()->DisplayMessage(
+            title,
+            text,
+            button,
+            url);
+    } catch(const Poco::Exception& exc) {
+        return exc.displayText();
+    } catch(const std::exception& ex) {
+        return ex.what();
+    } catch(const std::string & ex) {
+        return ex;
+    }
+    return noError;
+}
+
+
+
 
 const std::string Context::linuxPlatformName() {
     if (kDebianPackage) {
@@ -2038,6 +2234,17 @@ void Context::SetWindowEditSizeWidth(
 int64_t Context::GetWindowEditSizeWidth() {
     Poco::Int64 value(0);
     displayError(db()->GetWindowEditSizeWidth(&value));
+    return value;
+}
+
+void Context::SetMessageSeen(
+    const int64_t value) {
+    displayError(db()->SetSettingsMessageSeen(value));
+}
+
+int64_t Context::GetMessageSeen() {
+    Poco::Int64 value(0);
+    displayError(db()->GetMessageSeen(&value));
     return value;
 }
 
@@ -5846,6 +6053,14 @@ void Context::TrackEditSize(const Poco::Int64 width,
         analytics_.TrackEditSize(db_->AnalyticsClientID(),
                                  shortOSName(),
                                  toggl::Rectangle(width, height));
+    }
+}
+
+void Context::TrackInAppMessage(const Poco::Int64 type) {
+    if ("production" == environment_) {
+        analytics_.TrackInAppMessage(db_->AnalyticsClientID(),
+                                     last_message_id_,
+                                     type);
     }
 }
 

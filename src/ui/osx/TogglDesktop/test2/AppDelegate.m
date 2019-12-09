@@ -484,12 +484,15 @@ void *ctx;
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 	NSAssert(new_time_entry != nil, @"new time entry details cannot be nil");
 
+    // Start or create empty TE from Timer mode
+    NSString *duration = self.manualMode ? @"0" : new_time_entry.duration;
+
 	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 		const char *tag_list = [[new_time_entry.tags componentsJoinedByString:@"\t"] UTF8String];
 
 		char *guid = toggl_start(ctx,
 								 [new_time_entry.Description UTF8String],
-								 [new_time_entry.duration UTF8String],
+								 [duration UTF8String],
 								 new_time_entry.TaskID,
 								 new_time_entry.ProjectID,
 								 0,
@@ -502,8 +505,14 @@ void *ctx;
 		{
 			toggl_set_time_entry_billable(ctx, guid, new_time_entry.billable);
 		}
+        NSString *GUID = [NSString stringWithUTF8String:guid];
 		free(guid);
-	});
+
+        // Focus on the created one
+        if (self.manualMode) {
+            toggl_edit(ctx, [GUID UTF8String], false, kFocusedFieldNameDescription);
+        }
+    });
 }
 
 - (void)startContinueTimeEntry:(NSNotification *)notification
@@ -1350,6 +1359,7 @@ const NSString *appName = @"osx_native_app";
 	toggl_on_project_colors(ctx, on_project_colors);
 	toggl_on_countries(ctx, on_countries);
 	toggl_on_timeline(ctx, on_timeline);
+    toggl_on_message(ctx, on_display_message);
 
 	NSLog(@"Version %@", self.version);
 
@@ -1931,4 +1941,18 @@ void on_countries(TogglCountryView *first)
 #endif
 }
 
+#pragma mark - In app message
+
+void on_display_message(const char *title,
+                        const char *text,
+                        const char *button,
+                        const char *url)
+{
+    InAppMessage *message = [[InAppMessage alloc] initWithTitle:[NSString stringWithUTF8String:title]
+                                                       subTitle:[NSString stringWithUTF8String:text]
+                                                    buttonTitle:[NSString stringWithUTF8String:button]
+                                                      urlAction:[NSString stringWithUTF8String:url]];
+    [[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kStartDisplayInAppMessage object:message];
+
+}
 @end

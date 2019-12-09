@@ -20,7 +20,7 @@
 #import "TimelineDisplayCommand.h"
 #import "TimerEditViewController.h"
 
-@interface MainWindowController () <TouchBarServiceDelegate>
+@interface MainWindowController () <TouchBarServiceDelegate, InAppMessageViewControllerDelegate>
 @property (weak) IBOutlet NSView *contentView;
 @property (weak) IBOutlet NSView *mainView;
 @property (nonatomic, strong) LoginViewController *loginViewController;
@@ -28,6 +28,7 @@
 @property (nonatomic, strong) OverlayViewController *overlayViewController;
 @property (nonatomic, strong) MainDashboardViewController *mainDashboardViewController;
 @property (nonatomic, strong) SystemMessageView *messageView;
+@property (nonatomic, strong) InAppMessageViewController *inappMessageView;
 @property (nonatomic, assign) CGFloat troubleBoxDefaultHeight;
 @end
 
@@ -76,6 +77,10 @@ extern void *ctx;
 												 selector:@selector(startDisplayTimeline:)
 													 name:kDisplayTimeline
 												   object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(startDisplayInAppMessage:)
+                                                     name:kStartDisplayInAppMessage
+                                                   object:nil];
 	}
 	return self;
 }
@@ -118,6 +123,12 @@ extern void *ctx;
 
 	// Register
 	[self.messageView registerToSystemMessage];
+}
+
+- (void) initInAppMessageView
+{
+    self.inappMessageView = [[InAppMessageViewController alloc] initWithNibName:@"InAppMessageViewController" bundle:nil];
+    self.inappMessageView.delegate = self;
 }
 
 - (void)startDisplayLogin:(NSNotification *)notification
@@ -334,4 +345,36 @@ extern void *ctx;
 {
     [self.mainDashboardViewController.timelineController zoomLevelDecreaseOnChange:sender];
 }
+
+#pragma mark - In app message
+
+- (void)startDisplayInAppMessage:(NSNotification *)notification
+{
+    if (![notification.object isKindOfClass:[InAppMessage class]]) {
+        return;
+    }
+
+    if (!self.inappMessageView)
+    {
+        [self initInAppMessageView];
+    }
+    self.inappMessageView.view.hidden = YES;
+    [self.contentView addSubview:self.inappMessageView.view];
+    [self.inappMessageView.view edgesToSuperView];
+
+    // Update UI
+    InAppMessage *message = (InAppMessage *) notification.object;
+    [self.inappMessageView update:message];
+
+    // Prepare for animation
+    [self.inappMessageView prepareForAnimation];
+    self.inappMessageView.view.hidden = NO;
+    [self.inappMessageView present];
+}
+
+- (void)InAppMessageViewControllerShouldDismiss
+{
+    [self.inappMessageView.view removeFromSuperview];
+}
+
 @end
