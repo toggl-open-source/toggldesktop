@@ -19,32 +19,32 @@ Item {
     onVisibleChanged: list.currentIndex = -1
 
     function upPressed() {
-        console.log("Current index: " + list.currentIndex)
-        console.log("There is " + list.count + " rows")
-        console.log("Model reports " + model.count() + " rows")
+        //console.log("Current index: " + list.currentIndex)
+        //console.log("There is " + list.count + " rows")
+        //console.log("Model reports " + model.count() + " rows")
         for (var i = list.currentIndex - 1; i > 0 ; --i) {
             if (model.get(i).Type < 10) {
                 list.currentIndex = i
                 list.positionViewAtIndex(i, ListView.Center)
-                console.log("Current index: " + list.currentIndex)
+                //console.log("Current index: " + list.currentIndex)
                 return
             }
         }
-        console.log("Current index: " + list.currentIndex)
+        //console.log("Current index: " + list.currentIndex)
     }
     function downPressed() {
-        console.log("Current index: " + list.currentIndex)
-        console.log("There is " + list.count + " rows")
-        console.log("Model reports " + model.count() + " rows")
+        //console.log("Current index: " + list.currentIndex)
+        //console.log("There is " + list.count + " rows")
+        //console.log("Model reports " + model.count() + " rows")
         for (var i = list.currentIndex + 1; i < list.count; i++) {
             if (model.get(i).Type < 10) {
                 list.currentIndex = i
                 list.positionViewAtIndex(i, ListView.Center)
-                console.log("Current index: " + list.currentIndex)
+                //console.log("Current index: " + list.currentIndex)
                 return
             }
         }
-        console.log("Current index: " + list.currentIndex)
+        //console.log("Current index: " + list.currentIndex)
     }
 
     Text {
@@ -90,9 +90,9 @@ Item {
             }
             delegate: Loader {
                 // TODO use the enum instead of magic values
-                sourceComponent: autocompleteData.Type === 13 ? workspaceDelegate :
-                                 autocompleteData.Type === 12 ? clientDelegate :
-                                 autocompleteData.Type === 11 ? headerDelegate :
+                sourceComponent: autocompleteData && autocompleteData.Type === 13 ? workspaceDelegate :
+                                 autocompleteData && autocompleteData.Type === 12 ? clientDelegate :
+                                 autocompleteData && autocompleteData.Type === 11 ? headerDelegate :
                                                                 regularDelegate
                 property var autocompleteData: modelData
                 property int index: index
@@ -111,7 +111,7 @@ Item {
                 anchors.centerIn: parent
                 color: mainPalette.text
 
-                text: autocompleteData.Description
+                text: autocompleteData && autocompleteData.Description
                 font.pointSize: 14
             }
             Rectangle {
@@ -142,7 +142,7 @@ Item {
                 x: 9
                 color: mainPalette.text
 
-                text: autocompleteData.Description
+                text: autocompleteData && autocompleteData.Description
             }
         }
     }
@@ -158,7 +158,7 @@ Item {
                 anchors.left: parent.left
                 anchors.leftMargin: 12
                 anchors.verticalCenter: parent.verticalCenter
-                text: autocompleteData.Description
+                text: autocompleteData && autocompleteData.Description
                 color: mainPalette.text
                 font.pointSize: 11
             }
@@ -180,11 +180,11 @@ Item {
                 verticalAlignment: Text.AlignVCenter
                 x: 9
                 textFormat: Text.RichText
-                property string timeEntry: autocompleteData.Description
-                property string project: autocompleteData.ProjectLabel.length > 0 ?
+                property string timeEntry: autocompleteData ? autocompleteData.Description : ""
+                property string project: autocompleteData && autocompleteData.ProjectLabel.length > 0 ?
                                              "<font color=" + autocompleteData.ProjectColor + "> • " + autocompleteData.ProjectLabel + "</font>" :
                                              ""
-                property string task: autocompleteData.TaskLabel.length > 0 ? " " + autocompleteData.TaskLabel : ""
+                property string task: autocompleteData && autocompleteData.TaskLabel.length > 0 ? " " + autocompleteData.TaskLabel : ""
                 text: (ListView.isCurrentItem ? "Iscurrent" : "") + timeEntry + project + task
                 font.pointSize: 12
                 color: mainPalette.text
