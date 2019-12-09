@@ -187,13 +187,13 @@ Item {
                     }
                 }
 
-                TogglCalendarEdit {
+                Loader {
                     id: calendarComponent
-                    visible: expanded
+                    source: expanded ? "TogglCalendarEdit.qml" : ""
                     width: parent.width
                     clip: true
+                    visible: expanded
                 }
-
 
                 Text {
                     visible: expanded
