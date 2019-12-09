@@ -170,6 +170,7 @@ Section
   File "${redist}\msvcp140_2.dll"
   File "${redist}\vccorlib140.dll"
   File "${redist}\vcruntime140.dll"
+  File "${redist}\vcruntime140_1.dll"
   File "${srcdir}\*.dll"
   File "${srcdir}\*.exe"
   File "${srcdir}\cacert.pem"
