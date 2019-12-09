@@ -33,6 +33,7 @@
 #define kMinimumAllowedYear 2006
 #define kMaximumAllowedYear 2030
 #define kMaximumDescriptionLength 3000
+#define kTimeComparisonEpsilonMicroSeconds 100000 // 100 ms
 
 #define kLostPasswordURL "https://toggl.com/forgot-password?desktop=true"
 #define kGeneralSupportURL "https://support.toggl.com/toggl-on-my-desktop/"
