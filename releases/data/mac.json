@@ -1,6 +1,14 @@
 {
     "versions": [
         {
+            "version": "7.4.1092",
+            "rows": [
+                "Fixed the issue with auto-update"
+            ],
+            "date": "December 9th 2019",
+            "beta": "true"
+        },
+        {
             "version": "7.4.1080",
             "rows": [
                 "Introduce In-App Message",

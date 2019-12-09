@@ -1,6 +1,20 @@
 {
     "versions": [
         {
+            "version": "7.4.1092",
+            "rows": [
+                "Fixed failure to sync after coming back from sleep",
+                "Introduced in-app messaging functionality",
+                "Fixed failure to run Store app on startup",
+                "Added F5 as Sync hotkey",
+                "Added nicer tray icon tooltip",
+                "Stability improvements"
+            ],
+            "date": "December 9th 2019",
+            "beta": "true",
+            "has64bit": "true"
+        },
+        {
             "version": "7.4.1023",
             "rows": [
                 "Hotfix: revert bug with duplicating entries introduced in the previous hotfix"
