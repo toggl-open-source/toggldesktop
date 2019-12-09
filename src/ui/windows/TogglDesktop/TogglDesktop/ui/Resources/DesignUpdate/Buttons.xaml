@@ -23,6 +23,26 @@
         </Setter>
     </Style>
 
+    <Style x:Key="Toggl.SecondaryAccentButtonFocusVisualStyle">
+        <Setter Property="Control.Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Border BorderThickness="1"
+                            BorderBrush="{DynamicResource Toggl.Button.Accent.Red.PressedBackground}">
+                        <Rectangle SnapsToDevicePixels="True"
+                                   StrokeThickness="1"
+                                   UseLayoutRounding="True">
+                            <Rectangle.Stroke>
+                                <SolidColorBrush Color="{DynamicResource Toggl.SelectionElements.BackgroundColor}" Opacity="0.6" />
+                            </Rectangle.Stroke>
+                        </Rectangle>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
     <Style x:Key="Toggl.PrimaryButton" TargetType="{x:Type Button}">
         <Setter Property="Background" Value="{DynamicResource Toggl.Button.Primary.Background}" />
         <Setter Property="BorderThickness" Value="1" />
@@ -108,6 +128,7 @@
 
     <Style TargetType="Button" x:Key="Toggl.SecondaryAccentButton" BasedOn="{StaticResource Toggl.AccentButton}">
         <Setter Property="Background" Value="{DynamicResource Toggl.SecondaryAccentBrush}" />
+        <Setter Property="FocusVisualStyle" Value="{StaticResource Toggl.SecondaryAccentButtonFocusVisualStyle}" />
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="BorderBrush" Value="{DynamicResource Toggl.Button.Accent.Red.MouseOverBorder}" />
