@@ -40,5 +40,7 @@
         <file>TimeEntryListHeader.qml</file>
         <file>TimeEntryLabel.qml</file>
         <file>Arrow.qml</file>
+        <file>TogglCalendarEdit.qml</file>
+        <file>TogglCalendarEditMonth.qml</file>
     </qresource>
 </RCC>
