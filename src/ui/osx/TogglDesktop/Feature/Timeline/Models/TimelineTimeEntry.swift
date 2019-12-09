@@ -10,6 +10,10 @@ import Foundation
 
 class TimelineBaseTimeEntry {
 
+    struct Constant {
+        static let MinimumSecondOverlap: Double = 60 // seconds
+    }
+
     let start: TimeInterval
     let end: TimeInterval
     var group: Int = -1 // Group of overlap entries -> Help to resolve the overlap later
@@ -28,9 +32,17 @@ class TimelineBaseTimeEntry {
     }
 
     func isIntersected(with entry: TimelineBaseTimeEntry) -> Bool {
-        return (start >= entry.start && start <= entry.end)
-            || (end >= entry.start && end <= entry.end)
-            || (start >= entry.start && end <= entry.end)
+
+        // Skip overlap if the diff is less than 60s
+        if abs(entry.start - end) <= Constant.MinimumSecondOverlap ||
+            abs(entry.end - start) <= Constant.MinimumSecondOverlap {
+            return false
+        }
+
+        // Convert to rect to easier check intersects
+        let currentRect = CGRect(x: 1, y: start, width: 1, height: abs(end - start))
+        let entryRect = CGRect(x: 1, y: entry.start, width: 1, height: abs(entry.end - entry.start))
+        return currentRect.intersects(entryRect)
     }
 }
 
