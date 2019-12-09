@@ -163,12 +163,7 @@ Section
   Delete /REBOOTOK $INSTDIR\Bugsnag.1.2.dll
 
   ;ADD YOUR OWN FILES HERE...
-  File "${redist}\concrt140.dll"
-  File "${redist}\msvcp140.dll"
-  File "${redist}\msvcp140_1.dll"
-  File "${redist}\msvcp140_2.dll"
-  File "${redist}\vccorlib140.dll"
-  File "${redist}\vcruntime140.dll"
+  File "${redist}\*.dll"
   File "${srcdir}\*.dll"
   File "${srcdir}\*.exe"
   File "${srcdir}\cacert.pem"
