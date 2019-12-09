@@ -42,11 +42,30 @@
             Width="300" Height="460"
             Background="{DynamicResource Toggl.CardBackground}"
             VerticalAlignment="Center" HorizontalAlignment="Center">
-                        <StackPanel>
+            <DockPanel>
                 <Image Source="{DynamicResource Toggl.LogoImage}"
+                       DockPanel.Dock="Top"
                        Margin="0 50 0 0"
                        SnapsToDevicePixels="True"
                        Stretch="None" />
+                <StackPanel Orientation="Vertical"
+                            DockPanel.Dock="Bottom"
+                            Margin="0 44 0 0">
+                    <TextBlock Text="Don't have an account?"
+                               Style="{DynamicResource Toggl.CaptionBlackText}"
+                               HorizontalAlignment="Center"
+                               Visibility="{Binding SelectedConfirmAction, Converter={StaticResource ShowOnLogIn}}"/>
+
+                    <Label HorizontalAlignment="Center"
+                           Margin="0 1 0 24">
+                        <Hyperlink Style="{StaticResource Toggl.NormalHyperlink}"
+                                   Click="onSignupLoginToggleClick">
+                            <Hyperlink.Inlines>
+                                <Run Text="{Binding SignupLoginToggleText, Mode=OneWay}" />
+                            </Hyperlink.Inlines>
+                        </Hyperlink>
+                    </Label>
+                </StackPanel>
                 <StackPanel x:Name="formPanel" x:FieldModifier="private">
                     <TextBox x:Name="emailTextBox" x:FieldModifier="private"
                              Margin="0 20 0 0"
@@ -134,25 +153,8 @@
                                        VerticalAlignment="Center"/>
                         </StackPanel>
                     </Button>
-
-                    <TextBlock Text="Don't have an account?"
-                               Margin="0 82 0 0"
-                               Style="{DynamicResource Toggl.CaptionBlackText}"
-                               HorizontalAlignment="Center"
-                               Visibility="{Binding SelectedConfirmAction, Converter={StaticResource ShowOnLogIn}}"/>
-                    <!-- TODO: when implementing new validation UI, make it DockPanel.Dock="Bottom" with a Bottom margin instead -->
-
-                    <Label HorizontalAlignment="Center"
-                           Margin="0 1 0 24">
-                        <Hyperlink Style="{StaticResource Toggl.NormalHyperlink}"
-                                   Click="onSignupLoginToggleClick">
-                            <Hyperlink.Inlines>
-                                <Run Text="{Binding SignupLoginToggleText, Mode=OneWay}" />
-                            </Hyperlink.Inlines>
-                        </Hyperlink>
-                    </Label>
                 </StackPanel>
-            </StackPanel>
+            </DockPanel>
         </Border>
     </Grid>
 </UserControl>
