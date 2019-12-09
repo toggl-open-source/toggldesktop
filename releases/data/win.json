@@ -1,7 +1,7 @@
 {
     "versions": [
         {
-            "version": "7.4.1087",
+            "version": "7.4.1092",
             "rows": [
                 "Fixed failure to sync after coming back from sleep",
                 "Introduced in-app messaging functionality",
