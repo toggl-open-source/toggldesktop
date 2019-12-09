@@ -19,7 +19,7 @@ Item {
         opacity: listView.itemExpanded && !expanded ? 0.5 : 0.0
         Behavior on opacity { NumberAnimation { duration: 120 } }
         color: "dark gray"
-        MouseArea { anchors.fill: parent }
+        //MouseArea { anchors.fill: parent }
     }
 
     Rectangle {
@@ -52,27 +52,29 @@ Item {
             hoverEnabled: !expanded
             anchors.fill: parent
             onClicked: {
-                console.log("B")
-                console.log("AAA " + index)
-                expanded = !expanded
-                listView.gotoIndex(index)
-                /*
-                if (timeEntry.Group)
+                if (timeEntry.Group) {
                     toggl.toggleEntriesGroup(timeEntry.GroupName)
-                else
-                    toggl.editTimeEntry(timeEntry.GUID, "description")
-                */
+                }
+                else {
+                    expanded = !expanded
+                    listView.gotoIndex(index)
+                }
             }
         }
-        RowLayout {
-            anchors.fill: parent
-            anchors.margins: 12
+        Row {
+            anchors {
+                top: parent.top
+                left: parent.left
+                right: parent.right
+                margins: 12
+            }
             spacing: 9
 
             Rectangle {
-                Layout.alignment: Qt.AlignVCenter
+                id: groupContainer
                 visible: (timeEntry.Group | timeEntry.GroupOpen) && ! expanded
                 opacity: timeEntry.GroupOpen ? 0.0 : 1.0
+                anchors.verticalCenter: parent.verticalCenter
                 width: 24
                 height: 24
                 radius: 4
@@ -90,11 +92,19 @@ Item {
                 }
             }
 
-            ColumnLayout {
+            Column {
                 id: contentLayout
-                Layout.fillHeight: true
-                Layout.fillWidth: true
-                spacing: 3
+                width: {
+                    if (expanded)
+                        return parent.width
+                    else {
+                        if (groupContainer.visible)
+                            return parent.width - groupContainer.width - durationText.width - startButton.width - 27
+                        else
+                            return parent.width - durationText.width - startButton.width - 18
+                    }
+                }
+                spacing: 6
                 Text {
                     text: "Details"
                     visible: expanded
@@ -102,7 +112,7 @@ Item {
                     font.capitalization: Font.AllUppercase
                 }
                 TimeEntryLabel {
-                    Layout.fillWidth: true
+                    width: parent.width
 
                     Behavior on width { NumberAnimation { duration: 120 } }
 
@@ -111,7 +121,7 @@ Item {
                 }
 
                 TogglTextField {
-                    Layout.fillWidth: true
+                    width: parent.width
                     opacity: expanded ? 1.0 : 0.0
                     Behavior on opacity { NumberAnimation { duration: 120 } }
                     visible: opacity > 0.0
@@ -127,9 +137,9 @@ Item {
                 Item {
                     id: timeContainer
                     visible: expanded
-                    Layout.fillWidth: true
+                    width: parent.width
                     property bool separate: timeContainer.width < (durationField.implicitWidth + startTimeField.implicitWidth + timeArrow.implicitWidth + endTimeField.implicitWidth + 12)
-                    Layout.preferredHeight: durationField.height + (timeContainer.separate ? startTimeField.height + 3 : 0)
+                    height: durationField.height + (timeContainer.separate ? startTimeField.height + 3 : 0)
                     TextMetrics {
                         id: timeMetrics
                         text: "+00:00 AM "
@@ -177,72 +187,17 @@ Item {
                     }
                 }
 
-                TogglButtonBackground {
+                TogglCalendarEdit {
+                    id: calendarComponent
                     visible: expanded
-                    Layout.fillWidth: true
-                    Layout.columnSpan: 3
-
-                    MouseArea {
-                        anchors.fill: parent
-                        onClicked: console.log("This would open a calendar")
-                    }
-                    MouseArea {
-                        anchors {
-                            right: leftSeparator.left
-                            top: parent.top
-                            bottom: parent.bottom
-                            left: parent.left
-                        }
-                        onClicked: console.log("Date--")
-                        Arrow {
-                            anchors.centerIn: parent
-                            rotation: 90
-                        }
-                    }
-                    MouseArea {
-                        anchors {
-                            left: rightSeparator.right
-                            top: parent.top
-                            bottom: parent.bottom
-                            right: parent.right
-                        }
-                        onClicked: console.log("Date++")
-                        Arrow {
-                            anchors.centerIn: parent
-                            rotation: -90
-                        }
-                    }
-
-                    Rectangle {
-                        id: leftSeparator
-                        anchors.top: parent.top
-                        anchors.bottom: parent.bottom
-                        anchors.left: parent.left
-                        anchors.leftMargin: 32
-                        width: 1
-                        color: parent.borderColor
-                    }
-                    Rectangle {
-                        id: rightSeparator
-                        anchors.top: parent.top
-                        anchors.bottom: parent.bottom
-                        anchors.right: parent.right
-                        anchors.rightMargin: 32
-                        width: 1
-                        color: parent.borderColor
-                    }
-
-                    Text {
-                        color: mainPalette.text
-                        anchors.centerIn: parent
-                        text: timeEntry ? (new Date(Date(timeEntry.Started)).toLocaleDateString(Qt.locale(), Locale.ShortFormat)) : ""
-                    }
+                    width: parent.width
+                    clip: true
                 }
 
 
                 Text {
                     visible: expanded
-                    Layout.fillWidth: true
+                    width: parent.width
                     Layout.columnSpan: 3
                     text: timeEntry ? timeEntry.WorkspaceName : ""
                     color: mainPalette.windowText
@@ -250,14 +205,15 @@ Item {
 
                 Item {
                     visible: expanded
-                    Layout.fillHeight: true
-                    Layout.fillWidth: true
+                    width: parent.width
+                    height: 3
                 }
             }
 
             Text {
+                id: durationText
                 visible: !expanded
-                Layout.alignment: Qt.AlignVCenter
+                anchors.verticalCenter: parent.verticalCenter
                 text: timeEntry.Duration
                 color: mainPalette.text
             }
@@ -265,6 +221,7 @@ Item {
                 visible: !expanded
                 id: startButton
                 opacity: delegateMouse.containsMouse ? 1.0 : 0.0
+                anchors.verticalCenter: parent.verticalCenter
                 width: 20
                 height: 20
                 MouseArea {

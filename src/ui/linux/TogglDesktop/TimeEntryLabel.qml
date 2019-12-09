@@ -4,7 +4,8 @@ import QtQuick.Layouts 1.12
 Item {
     property QtObject timeEntry: null
     property bool editable: false
-    Layout.preferredHeight: editable ? timeEntryField.height * 2 + 12 : timeEntryText.height * 2 + 12
+    Layout.preferredHeight: height
+    height: editable ? timeEntryField.height * 2 + 6 : timeEntryText.height * 2 + 6
 
     Text {
         id: timeEntryText
