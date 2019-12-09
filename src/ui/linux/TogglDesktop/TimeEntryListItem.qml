@@ -194,6 +194,10 @@ Item {
                             left: parent.left
                         }
                         onClicked: console.log("Date--")
+                        Arrow {
+                            anchors.centerIn: parent
+                            rotation: 90
+                        }
                     }
                     MouseArea {
                         anchors {
@@ -203,6 +207,10 @@ Item {
                             right: parent.right
                         }
                         onClicked: console.log("Date++")
+                        Arrow {
+                            anchors.centerIn: parent
+                            rotation: -90
+                        }
                     }
 
                     Rectangle {

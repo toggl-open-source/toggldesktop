@@ -39,5 +39,6 @@
         <file>TogglShadowBox.qml</file>
         <file>TimeEntryListHeader.qml</file>
         <file>TimeEntryLabel.qml</file>
+        <file>Arrow.qml</file>
     </qresource>
 </RCC>

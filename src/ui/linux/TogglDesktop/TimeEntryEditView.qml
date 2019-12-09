@@ -55,25 +55,10 @@ Item {
                 placeholderText: qsTr("Select project")
                 text: timeEntry && (timeEntry.ClientLabel.length > 0 || timeEntry.ProjectLabel.length > 0) ? (timeEntry.ClientLabel + " . " + timeEntry.ProjectLabel) : ""
 
-                Rectangle {
-                    smooth: true
-                    opacity: 0.5
-                    width: 4
-                    height: 1
-                    rotation: 45
+                Arrow {
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.right: parent.right
-                    anchors.rightMargin: 14.5
-                }
-                Rectangle {
-                    smooth: true
-                    opacity: 0.5
-                    width: 4
-                    height: 1
-                    rotation: -45
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.right: parent.right
-                    anchors.rightMargin: 11.5
+                    anchors.rightMargin: 12
                 }
             }
             TogglTextField {
