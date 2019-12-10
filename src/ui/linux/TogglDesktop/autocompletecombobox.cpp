@@ -14,6 +14,7 @@ AutocompleteComboBox::AutocompleteComboBox(QWidget *parent)
     completer->installEventFilter(this);
     listView->installEventFilter(this);
     lineEdit()->installEventFilter(this);
+    lineEdit()->setFrame(false);
     completer->setModel(proxyModel);
     setCompleter(completer);
     disconnect(completer, SIGNAL(highlighted(QString)), lineEdit(), nullptr);
@@ -33,8 +34,13 @@ void AutocompleteComboBox::showPopup() {
 bool AutocompleteComboBox::eventFilter(QObject *o, QEvent *e) {
     // this is an ugly hack, this SHOULD happen in the FocusIn event but that actually never occurs
     if (o == lineEdit()) {
-        QComboBox::eventFilter(o, e);
+        auto retval = QComboBox::eventFilter(o, e);
         disconnect(completer, SIGNAL(highlighted(QString)), lineEdit(), nullptr);
+        // there were text rendering glitches, this fixes the issue by forcing a repaint on every keypress
+        if (e->type() == QEvent::KeyPress) {
+            lineEdit()->repaint();
+        }
+        return retval;
     }
     else if (e->type() == QEvent::KeyPress) {
         auto ke = reinterpret_cast<QKeyEvent*>(e);
