@@ -48,11 +48,9 @@
             Background="{DynamicResource Toggl.CardBackground}"
             VerticalAlignment="Center" HorizontalAlignment="Center">
             <DockPanel>
-                <Image Source="{DynamicResource Toggl.LogoImage}"
-                       DockPanel.Dock="Top"
-                       Margin="0 50 0 0"
-                       SnapsToDevicePixels="True"
-                       Stretch="None" />
+                <Viewbox Width="63" Height="19" DockPanel.Dock="Top" Margin="0 50 0 0">
+                    <ContentControl Content="{StaticResource Toggl.LogoSvg}" />
+                </Viewbox>
                 <StackPanel Orientation="Vertical"
                             DockPanel.Dock="Bottom"
                             Margin="0 44 0 0">

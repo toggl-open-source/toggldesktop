@@ -33,11 +33,9 @@
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="0" VerticalAlignment="Top">
-            <Image Source="{DynamicResource Toggl.LogoImage}"
-                   Margin="0 50 0 8"
-                   UseLayoutRounding="True"
-                   Stretch="None"
-                   />
+            <Viewbox Width="63" Height="19" Margin="0 50 0 8">
+                <ContentControl Content="{StaticResource Toggl.LogoSvg}" />
+            </Viewbox>
             <TextBlock Text="Toggl Desktop" HorizontalAlignment="Center"
                        Style="{StaticResource Toggl.TitleText}"
                        Margin="0 0 0 10"/>
