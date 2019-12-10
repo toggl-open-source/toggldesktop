@@ -185,10 +185,6 @@ extension TouchBarService {
                                                selector: #selector(self.stateButtonTimerBarChangeNotification(_:)),
                                                name: NSNotification.Name(kStartButtonStateChange),
                                                object: nil)
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(self.touchbarSettingChangedNoti(_:)),
-                                               name: NSNotification.Name(kTouchBarSettingChanged),
-                                               object: nil)
     }
 
     @objc private func stateButtonTimerBarChangeNotification(_ noti: Notification) {
@@ -197,10 +193,6 @@ extension TouchBarService {
         }
         startButton.state = NSControl.StateValue(rawValue: value.intValue)
         displayState = startButton.state == .on ? .tracking : .normal
-    }
-
-    @objc private func touchbarSettingChangedNoti(_ noti: Notification) {
-
     }
 
     private func updateDisplayState() {
