@@ -227,6 +227,7 @@ Section "Uninstall"
   Delete "$INSTDIR\*.exe"
   Delete "$INSTDIR\TogglDesktop.exe.config"
   Delete "$INSTDIR\toggl.ico"
+  RMDir "$INSTDIR\updates"
 
   ;Delete desktop shortcut
   Delete "$DESKTOP\TogglDesktop.lnk"
