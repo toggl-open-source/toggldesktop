@@ -134,6 +134,9 @@ final class AutoCompleteView: NSView {
         if height > 0 {
             tableViewHeight.constant = height
         }
+
+        // Hack to workaround the blur text
+        fixBlurTextOnNonRetinaScreen()
     }
 
     func setCreateButtonSectionHidden(_ isHidden: Bool) {
@@ -193,6 +196,19 @@ extension AutoCompleteView {
         createNewItemBtn.didPressKey = { key in
             if key == .tab {
                 self.delegate?.shouldClose()
+            }
+        }
+    }
+
+    private func fixBlurTextOnNonRetinaScreen() {
+        // Ref: https://github.com/toggl-open-source/toggldesktop/issues/3313
+        if #available(OSX 10.12, *) {
+            if let screenScale = NSScreen.main?.backingScaleFactor, screenScale == 1.0 {
+                createNewItemBtn.image = nil
+                createNewItemBtn.imageHugsTitle = false
+            } else {
+                createNewItemBtn.image = NSImage(named: "add-icon")
+                createNewItemBtn.imageHugsTitle = true
             }
         }
     }
