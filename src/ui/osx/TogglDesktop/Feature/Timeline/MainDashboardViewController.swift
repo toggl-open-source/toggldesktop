@@ -173,4 +173,8 @@ extension MainDashboardViewController: TimelineDashboardViewControllerDelegate {
     func timelineDidChangeDate(_ date: Date) {
         timeEntryController.loadMoreIfNeed(at: date)
     }
+
+    func timelineTimerView() -> NSView {
+        return timerContainerView
+    }
 }

@@ -11,6 +11,7 @@ import Cocoa
 protocol TimelineDashboardViewControllerDelegate: class {
 
     func timelineDidChangeDate(_ date: Date)
+    func timelineTimerView() -> NSView
 }
 
 final class TimelineDashboardViewController: NSViewController {
@@ -168,7 +169,7 @@ extension TimelineDashboardViewController {
                                                name: NSNotification.Name(kDisplaySettings),
                                                object: nil)
         NotificationCenter.default.addObserver(self,
-                                               selector: #selector(self.reloadTimeline),
+                                               selector: #selector(self.reloadTimelineNotification(_:)),
                                                name: Notification.Name(kDisplayTimeEntryList),
                                                object: nil)
         NotificationCenter.default.addObserver(self,
@@ -200,8 +201,13 @@ extension TimelineDashboardViewController {
         updateEmptyActivityText()
     }
 
-    @objc private func reloadTimeline() {
+    @objc private func reloadTimelineNotification(_ noti: Notification) {
+        guard let cmd = noti.object as? DisplayCommand else { return }
         DesktopLibraryBridge.shared().timelineGetCurrentDate()
+
+        if cmd.open && editorPopover.isShown {
+            editorPopover.performClose(self)
+        }
     }
 
     @objc private func didAddManualTimeNotification() {
@@ -231,7 +237,20 @@ extension TimelineDashboardViewController {
         guard isOpening,
             let cmd = noti.object as? DisplayCommand,
             let timeEntry = cmd.timeEntry else { return }
+
+
+        //
+        guard cmd.open else {
+            return
+        }
+
         editorPopover.setTimeEntry(timeEntry)
+
+        if let timeEntry = cmd.timeEntry, timeEntry.isRunning() {
+            guard let timerView = self.delegate?.timelineTimerView() else { return }
+            let position = timerView.bounds
+            editorPopover.present(from: position, of: timerView, preferredEdge: .maxX)
+        }
     }
 
     fileprivate func handleEmptyState(_ timeline: TimelineData) {
@@ -285,6 +304,7 @@ extension TimelineDashboardViewController: TimelineDatasourceDelegate {
 
     func shouldPresentTimeEntryHover(in view: NSView, timeEntry: TimelineTimeEntry) {
         guard !editorPopover.isShown else { return }
+
         timeEntryHoverPopover.show(relativeTo: view.bounds, of: view, preferredEdge: .maxX)
         timeEntryHoverController.render(with: timeEntry)
     }
@@ -296,6 +316,7 @@ extension TimelineDashboardViewController: TimelineDatasourceDelegate {
     }
 
     func shouldPresentTimeEntryEditor(in view: NSView, timeEntry: TimeEntryViewItem) {
+        print("shouldPresentTimeEntryEditor on Timeline")
         timeEntryHoverPopover.close()
         selectedGUID = timeEntry.guid
         editorPopover.show(relativeTo: view.bounds, of: view, preferredEdge: .maxX)
