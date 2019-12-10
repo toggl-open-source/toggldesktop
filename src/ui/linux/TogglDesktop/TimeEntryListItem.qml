@@ -29,7 +29,7 @@ Item {
             rightMargin: anchors.leftMargin
             topMargin: 0
         }
-        color:  delegateMouse.containsMouse ? mainPalette.listBackground : timeEntry.GroupOpen ? mainPalette.listBackground : mainPalette.base
+        color:  delegateMouse.containsMouse ? mainPalette.listBackground : timeEntry && timeEntry.GroupOpen ? mainPalette.listBackground : mainPalette.base
 
         TogglShadowBox {
             anchors.fill: parent
@@ -72,23 +72,23 @@ Item {
 
             Rectangle {
                 id: groupContainer
-                visible: (timeEntry.Group | timeEntry.GroupOpen) && ! expanded
-                opacity: timeEntry.GroupOpen ? 0.0 : 1.0
+                visible: timeEntry && (timeEntry.Group | timeEntry.GroupOpen) && ! expanded
+                opacity: timeEntry && timeEntry.GroupOpen ? 0.0 : 1.0
                 anchors.verticalCenter: parent.verticalCenter
                 width: 24
                 height: 24
                 radius: 4
-                color: timeEntry.GroupOpen ? "dark green" : mainPalette.base
+                color: timeEntry && timeEntry.GroupOpen ? "dark green" : mainPalette.base
                 border {
-                    color: timeEntry.GroupOpen ? "transparent" : mainPalette.alternateBase
+                    color: timeEntry && timeEntry.GroupOpen ? "transparent" : mainPalette.alternateBase
                     width: 0.5
                 }
                 Text {
-                    color: timeEntry.GroupOpen ? "light green" : mainPalette.alternateBase
+                    color: timeEntry && timeEntry.GroupOpen ? "light green" : mainPalette.alternateBase
                     anchors.centerIn: parent
                     verticalAlignment: Text.AlignVCenter
                     horizontalAlignment: Text.AlignHCenter
-                    text: timeEntry.GroupItemCount
+                    text: timeEntry ? timeEntry.GroupItemCount : ""
                 }
             }
 
@@ -214,7 +214,7 @@ Item {
                 id: durationText
                 visible: !expanded
                 anchors.verticalCenter: parent.verticalCenter
-                text: timeEntry.Duration
+                text: timeEntry && timeEntry.Duration
                 color: mainPalette.text
             }
             Item {
