@@ -303,12 +303,6 @@ extern void *ctx;
 
 	NSLog(@"TimeEntryListViewController displayTimeEntryEditor, thread %@", [NSThread currentThread]);
 
-	// Skip render if need
-	if (!self.isOpening)
-	{
-		return;
-	}
-
 	TimeEntryViewItem *timeEntry = cmd.timeEntry;
 	if (cmd.open)
 	{
@@ -343,7 +337,9 @@ extern void *ctx;
 		}
 
 		// Show popover
-		[self.timeEntrypopover presentFrom:positionRect of:ofView preferredEdge:NSRectEdgeMaxX];
+        if (self.runningEdit || self.isOpening) {
+            [self.timeEntrypopover presentFrom:positionRect of:ofView preferredEdge:NSRectEdgeMaxX];
+        }
 	}
 
 	// Update time entry for editor
