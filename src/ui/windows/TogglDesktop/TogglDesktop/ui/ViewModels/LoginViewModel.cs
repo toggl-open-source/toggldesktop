@@ -21,6 +21,8 @@ namespace TogglDesktop.ViewModels
 {
     public class LoginViewModel : ReactiveValidationObject<LoginViewModel>
     {
+        private readonly Action _refreshLoginBindings;
+        private readonly Action _refreshSignupBindings;
         private IList<CountryViewModel> _countries;
         private CountryViewModel _selectedCountry;
         private ConfirmAction _confirmAction;
@@ -42,8 +44,10 @@ namespace TogglDesktop.ViewModels
         private readonly ObservableAsPropertyHelper<bool> _isLoading;
         private readonly ObservableAsPropertyHelper<bool> _isViewDisabled;
 
-        public LoginViewModel()
+        public LoginViewModel(Action refreshLoginBindings, Action refreshSignupBindings)
         {
+            _refreshLoginBindings = refreshLoginBindings;
+            _refreshSignupBindings = refreshSignupBindings;
             Toggl.OnDisplayCountries += OnDisplayCountries;
             Toggl.OnSettings += OnSettings;
             this.WhenAnyValue(x => x.SelectedConfirmAction,
@@ -55,8 +59,13 @@ namespace TogglDesktop.ViewModels
             this.WhenAnyValue(x => x.SelectedConfirmAction,
                     x => x == ConfirmAction.LogIn ? "Sign up for free" : "Back to Log in")
                 .ToProperty(this, x => x.SignupLoginToggleText, out _signupLoginToggleText);
+            this.ObservableForProperty(x => x.SelectedConfirmAction)
+                .Where(x => x.Value == ConfirmAction.SignUp)
+                .Take(1)
+                .ObserveOn(RxApp.TaskpoolScheduler)
+                .Subscribe(_ => Toggl.GetCountries());
             ConfirmLoginSignupCommand = ReactiveCommand.CreateFromTask(ConfirmLoginSignupAsync);
-            ConfirmGoogleLoginSignupCommand = ReactiveCommand.CreateFromTask(ConfirmGoogleLoginSignupAsync);
+            ConfirmGoogleLoginSignupCommand = ReactiveCommand.Create(ConfirmGoogleLoginSignup);
             IsLoginSignupExecuting = ConfirmLoginSignupCommand.IsExecuting
                 .CombineLatest(ConfirmGoogleLoginSignupCommand.IsExecuting,
                     (isExecuting1, isExecuting2) => isExecuting1 || isExecuting2);
@@ -180,6 +189,15 @@ namespace TogglDesktop.ViewModels
                 return true;
             }
 
+            if (SelectedConfirmAction == ConfirmAction.LogIn)
+            {
+                _refreshLoginBindings();
+            }
+            else
+            {
+                _refreshSignupBindings();
+            }
+
             return false;
         }
 
@@ -206,7 +224,7 @@ namespace TogglDesktop.ViewModels
             return success;
         }
 
-        private async Task ConfirmGoogleLoginSignupAsync()
+        private async void ConfirmGoogleLoginSignup()
         {
             if (!PerformValidation(isGoogleLogin: true))
             {
