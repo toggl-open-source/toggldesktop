@@ -57,8 +57,11 @@ extern void *ctx;
 												 name:NSWindowDidBecomeKeyNotification
 											   object:nil];
 
-	self.touchbar = [[IdleNotificationTouchBar alloc] init];
-	self.touchbar.delegate = self;
+    if (@available(macOS 10.12.2, *))
+    {
+        self.touchbar = [[IdleNotificationTouchBar alloc] init];
+        self.touchbar.delegate = self;
+    }
 }
 
 - (void)dealloc

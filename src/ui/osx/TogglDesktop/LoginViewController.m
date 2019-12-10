@@ -232,7 +232,10 @@ extern void *ctx;
 	}
 
 	// Reset touchbar
-	self.touchBar = nil;
+    if (@available(macOS 10.12.2, *))
+    {
+        self.touchBar = nil;
+    }
 }
 
 - (void)startGoogleAuthentication

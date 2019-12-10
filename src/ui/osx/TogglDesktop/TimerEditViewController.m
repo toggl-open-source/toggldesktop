@@ -813,7 +813,10 @@ NSString *kInactiveTimerColor = @"#999999";
 
 - (void)touchBarSettingChangedNotification:(NSNotification *)noti
 {
-	self.touchBar = nil;
+    if (@available(macOS 10.12.2, *))
+    {
+        self.touchBar = nil;
+    }
 }
 
 @end
