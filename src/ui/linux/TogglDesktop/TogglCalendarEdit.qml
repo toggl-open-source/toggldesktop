@@ -9,6 +9,7 @@ TogglButtonBackground {
     clip: true
     Behavior on height { NumberAnimation { duration: 120 } }
 
+    property bool calendarOpen: false
     height: calendar.visible ? implicitHeight + calendar.height + 12: implicitHeight
 
     property var date: timeEntry ? new Date(Date(timeEntry.Started)) : null
@@ -19,7 +20,7 @@ TogglButtonBackground {
 
     Item {
         id: calendar
-        visible: false
+        visible: calendarOpen
         y: parent.implicitHeight + 6
         width: parent.width
         height: childrenRect.height
@@ -93,7 +94,7 @@ TogglButtonBackground {
             bottom: calendar.top
             bottomMargin: 6
         }
-        visible: calendar.visible
+        visible: calendarOpen
         height: 1
         color: parent.borderColor
     }
@@ -108,7 +109,7 @@ TogglButtonBackground {
 
         onClicked: {
             console.log("This would open a calendar")
-            calendar.visible = !calendar.visible
+            calendarOpen = !calendarOpen
         }
     }
 

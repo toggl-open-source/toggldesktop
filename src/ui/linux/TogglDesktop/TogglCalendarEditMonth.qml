@@ -26,7 +26,7 @@ MonthGrid {
         TextMetrics {
             id: dateDelegateMetrics
             text: "00"
-            font.pointSize: 12
+            font.pixelSize: 12
         }
         Column {
             id: dateColumn
@@ -35,7 +35,7 @@ MonthGrid {
             Text {
                 color: (calendarComponent.month - 1) === model.month ? mainPalette.text : mainPalette.borderColor
                 anchors.horizontalCenter: parent.horizontalCenter
-                font.pointSize: 12
+                font.pixelSize: 12
                 font.bold: model.today
                 text: model.day
             }
@@ -43,7 +43,7 @@ MonthGrid {
                 visible: model.day === 1
                 color: "red"
                 text: monthGrid.title.slice(0, 3).toUpperCase()
-                font.pointSize: 12
+                font.pixelSize: 12
             }
         }
         Rectangle {
