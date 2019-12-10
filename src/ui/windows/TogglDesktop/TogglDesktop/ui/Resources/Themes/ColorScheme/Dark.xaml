@@ -65,9 +65,8 @@
     <SolidColorBrush x:Key="Toggl.ErrorMessageBackground" Color="{StaticResource Toggl.ErrorMessageBackgroundColor}" po:Freeze="True" />
     <SolidColorBrush x:Key="Toggl.Button.Titlebar.MouseOver" Color="{StaticResource Toggl.HoverElementColor}" Opacity="0.5" po:Freeze="True" />
     <SolidColorBrush x:Key="Toggl.LoginView.Border" Color="{StaticResource Toggl.PrimaryTextColor}" Opacity="0.1" po:Freeze="True" />
+    <SolidColorBrush x:Key="Toggl.Logo.Letters" Color="#FFFFFF" po:Freeze="True" />
 
     <SolidColorBrush x:Key="Toggl.BarelyVisibleSeparator" Color="Black" Opacity="0.15" />
     <DropShadowEffect x:Key="Toggl.SeparatorShadow" ShadowDepth="2" Color="Black" Opacity="1" BlurRadius="4"/>
-
-    <BitmapImage x:Key="Toggl.LogoImage" UriSource="/TogglDesktop;component/Resources/toggl-logo-dark.png" />
 </ResourceDictionary>

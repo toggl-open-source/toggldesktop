@@ -666,6 +666,7 @@
     <Page Include="ui\Resources\DesignUpdate\HotKeyBox.xaml" />
     <Page Include="ui\Resources\DesignUpdate\Hyperlink.xaml" />
     <Page Include="ui\Resources\DesignUpdate\CheckBox.xaml" />
+    <Page Include="ui\Resources\DesignUpdate\Logos.xaml" />
     <Page Include="ui\Resources\DesignUpdate\MahApps.Overrides.xaml" />
     <Page Include="ui\Resources\DesignUpdate\PasswordBox.xaml" />
     <Page Include="ui\Resources\DesignUpdate\RadioButton.xaml" />
@@ -953,10 +954,6 @@
     <PackageReference Include="System.Reactive">
       <Version>4.2.0</Version>
     </PackageReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\toggl-logo-dark.png" />
-    <Resource Include="Resources\toggl-logo-light.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\bg-pattern.png" />
