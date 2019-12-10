@@ -21,7 +21,7 @@
 @property (weak) IBOutlet NSButton *cancelButton;
 @property (weak) IBOutlet FlatButton *discardAndContinueButton;
 @property (weak) IBOutlet FlatButton *keepIdleTimeButton;
-@property (strong, nonatomic) IdleNotificationTouchBar *touchbar;
+@property (strong, nonatomic) IdleNotificationTouchBar *touchbar __OSX_AVAILABLE_STARTING(__MAC_10_12_2,__IPHONE_NA);
 
 @property (assign, nonatomic) BOOL isWaiting;
 

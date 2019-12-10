@@ -55,7 +55,7 @@ typedef NS_ENUM (NSUInteger, UserAction)
 @property (nonatomic, assign) NSInteger selectedCountryID;
 @property (nonatomic, assign) TabViewType currentTab;
 @property (nonatomic, assign) UserAction userAction;
-@property (nonatomic, strong) LoginSignupTouchBar *loginTouchBar;
+@property (nonatomic, strong) LoginSignupTouchBar *loginTouchBar __OSX_AVAILABLE_STARTING(__MAC_10_12_2,__IPHONE_NA);
 
 - (IBAction)clickLoginButton:(id)sender;
 - (IBAction)clickSignupButton:(id)sender;
@@ -114,8 +114,11 @@ extern void *ctx;
 
 	self.userAction = UserActionAccountLogin;
 
-	self.loginTouchBar = [[LoginSignupTouchBar alloc] init];
-	self.loginTouchBar.delegate = self;
+    if (@available(macOS 10.12.2, *))
+    {
+        self.loginTouchBar = [[LoginSignupTouchBar alloc] init];
+        self.loginTouchBar.delegate = self;
+    }
 }
 
 - (void)initCountryAutocomplete {
@@ -539,15 +542,18 @@ extern void *ctx;
 
 - (NSTouchBar *)makeTouchBar
 {
-	switch (self.currentTab)
-	{
-		case TabViewTypeLogin :
-			return [self.loginTouchBar makeTouchBarFor:LoginSignupModeLogin];
+    if (@available(macOS 10.12.2, *))
+    {
+        switch (self.currentTab)
+        {
+            case TabViewTypeLogin :
+                return [self.loginTouchBar makeTouchBarFor:LoginSignupModeLogin];
 
-		case TabViewTypeSingup :
-			return [self.loginTouchBar makeTouchBarFor:LoginSignupModeSignUp];
-	}
-	return nil;
+            case TabViewTypeSingup :
+                return [self.loginTouchBar makeTouchBarFor:LoginSignupModeSignUp];
+        }
+    }
+    return nil;
 }
 
 - (void)loginSignupTouchBarOn:(enum LoginSignupAction)action

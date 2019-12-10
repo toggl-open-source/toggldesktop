@@ -100,7 +100,9 @@ extern void *ctx;
 
 - (void)initTouchBar
 {
-	[TouchBarService shared].delegate = self;
+    if (@available(macOS 10.12.2, *)) {
+        [TouchBarService shared].delegate = self;
+    }
 }
 
 - (void)initErrorView {
@@ -146,9 +148,12 @@ extern void *ctx;
 		[self.timeEntryListViewController.view removeFromSuperview];
 		[self.overlayViewController.view removeFromSuperview];
 
-		// Reset the data
-		[[TouchBarService shared] resetContent];
-        [[TouchBarService shared] minimize];
+		// Reset
+        if (@available(macOS 10.12.2, *)) 
+		{
+            [[TouchBarService shared] resetContent];
+        	[[TouchBarService shared] minimize];
+        }
 	}
 }
 
@@ -180,8 +185,10 @@ extern void *ctx;
 																		object:nil];
 
 			// Prepare the Touch bar
-			[[TouchBarService shared] prepareContent];
-            [[TouchBarService shared] present];
+            if (@available(macOS 10.12.2, *)) {
+                [[TouchBarService shared] prepareContent];
+            	[[TouchBarService shared] present];
+            }
 		}
 	}
 }

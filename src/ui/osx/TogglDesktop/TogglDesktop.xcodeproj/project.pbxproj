@@ -2707,6 +2707,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				SYSTEM_FRAMEWORK_SEARCH_PATHS = "$(inherited) $(SYSTEM_LIBRARY_DIR)/PrivateFrameworks";
+				WARNING_CFLAGS = "-Wpartial-availability";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
