@@ -132,8 +132,9 @@
                         </WrapPanel>
                     </CheckBox>
 
-                    <Grid Margin="0 20 0 0" Height="32" Width="200">
-                        <Border Background="{DynamicResource Toggl.SecondaryAccentBrush}"
+                    <Grid Margin="0 20 0 0">
+                        <Border Height="32" Width="200"
+                                Background="{DynamicResource Toggl.SecondaryAccentBrush}"
                                 Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}">
                             <Image Source="/TogglDesktop;component/Resources/login-spinner.png"
                                    Name="confirmButtonSpinner" x:FieldModifier="private"
@@ -146,7 +147,8 @@
                                 </Image.LayoutTransform>
                             </Image>
                         </Border>
-                        <Button Style="{StaticResource Toggl.SecondaryAccentButton}"
+                        <Button Height="32" Width="200"
+                                Style="{StaticResource Toggl.SecondaryAccentButton}"
                                 Command="{Binding ConfirmLoginSignupCommand}"
                                 Content="{Binding ConfirmButtonText}"
                                 Visibility="{Binding IsViewEnabled, Converter={StaticResource BooleanToVisibilityConverter}}"/>
