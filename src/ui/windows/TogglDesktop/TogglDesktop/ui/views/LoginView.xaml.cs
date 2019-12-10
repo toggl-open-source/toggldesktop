@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Reactive.Disposables;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Input;
+using System.Windows.Controls;
 using System.Windows.Media.Animation;
-using TogglDesktop.Diagnostics;
 using System.Windows.Navigation;
+using MahApps.Metro.Behaviours;
 using ReactiveUI;
 using TogglDesktop.ViewModels;
 
@@ -29,7 +28,6 @@ namespace TogglDesktop
         private Action onLogin;
         private object opacityAnimationToken;
         private bool isLoggingIn = false;
-        private bool countriesLoaded = false;
 
         private CompositeDisposable _disposable = new CompositeDisposable();
 
@@ -38,29 +36,17 @@ namespace TogglDesktop
             this.InitializeComponent();
             this.confirmSpinnerAnimation = (Storyboard)this.Resources["RotateConfirmSpinner"];
             this.Reset();
-            this.IsVisibleChanged += this.onIsVisibleChanged;
         }
-
-        private void onIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            if (this.IsVisible)
-                this.setConfirmAction(ConfirmAction.LogIn);
-        }
-
-        #region events
 
         private void onSignupLoginToggleClick(object sender, RoutedEventArgs e)
         {
-            switch (ViewModel.SelectedConfirmAction)
+            if (ViewModel.SelectedConfirmAction == ConfirmAction.LogIn)
             {
-                case ConfirmAction.LogIn:
-                    this.setConfirmAction(ConfirmAction.SignUp);
-                    break;
-                case ConfirmAction.SignUp:
-                    this.setConfirmAction(ConfirmAction.LogIn);
-                    break;
-                default:
-                    throw new ArgumentException($"Invalid action '{ViewModel.SelectedConfirmAction}' in login form.");
+                ViewModel.SelectedConfirmAction = ConfirmAction.SignUp;
+            }
+            else if (ViewModel.SelectedConfirmAction == ConfirmAction.SignUp)
+            {
+                ViewModel.SelectedConfirmAction = ConfirmAction.LogIn;
             }
         }
 
@@ -69,40 +55,11 @@ namespace TogglDesktop
             Toggl.PasswordForgot();
         }
 
-        #endregion
-
-        #region controlling
-
-        private void setConfirmAction(ConfirmAction action)
-        {
-            switch (action)
-            {
-                case ConfirmAction.LogIn:
-                    break;
-                case ConfirmAction.SignUp:
-                    Task.Run(getCountries);
-                    break;
-                default:
-                    throw new ArgumentException($"Invalid action '{action}' in login form.");
-            }
-
-            ViewModel.SelectedConfirmAction = action;
-        }
-
-        private void getCountries()
-        {
-            if (!this.countriesLoaded)
-            {
-                Toggl.GetCountries();
-                this.countriesLoaded = true;
-            }
-        }
-
         private void Reset()
         {
             _disposable?.Dispose();
             _disposable = new CompositeDisposable();
-            ViewModel = new LoginViewModel();
+            ViewModel = new LoginViewModel(RefreshLoginBindings, RefreshSignupBindings);
             ViewModel.IsLoginSignupExecuting.Subscribe(isExecuting =>
             {
                 if (isExecuting)
@@ -127,8 +84,6 @@ namespace TogglDesktop
             _disposable.Add(subscription);
         }
 
-        #endregion
-
         #region fade in/out
 
         private const double opacityFadeTime = 0.25;
@@ -147,9 +102,9 @@ namespace TogglDesktop
                 this.BeginAnimation(OpacityProperty, null);
             }
 
-            this.Reset();
             this.IsEnabled = true;
             this.Visibility = Visibility.Visible;
+            this.ViewModel.IsEmailFocused = true;
         }
 
         public void Deactivate(bool allowAnimation)
@@ -193,5 +148,23 @@ namespace TogglDesktop
         {
             Toggl.OpenInBrowser(e.Uri.ToString());
         }
+
+        private void RefreshLoginBindings()
+        {
+            RefreshEmailTextBoxBinding();
+            RefreshPasswordBoxBinding();
+        }
+
+        private void RefreshSignupBindings()
+        {
+            RefreshCountryComboBoxBinding();
+            RefreshTosCheckBoxBinding();
+        }
+
+        private void RefreshEmailTextBoxBinding() => emailTextBox.GetBindingExpression(TextBox.TextProperty).UpdateSource();
+        private void RefreshPasswordBoxBinding() => passwordBox.GetBindingExpression(PasswordBoxBindingBehavior.PasswordProperty).UpdateSource();
+
+        private void RefreshCountryComboBoxBinding() => countryComboBox.GetBindingExpression(ComboBox.SelectedItemProperty).UpdateSource();
+        private void RefreshTosCheckBoxBinding() => tosCheckBox.GetBindingExpression(CheckBox.IsCheckedProperty).UpdateSource();
     }
 }
