@@ -1156,7 +1156,9 @@ void *ctx;
 	ctx = 0;
 
 #ifndef APP_STORE
-    [[TouchBarService shared] dismiss];
+    if (@available(macOS 10.12.2, *)) {
+        [[TouchBarService shared] dismiss];
+    }
 #endif
 
 	if (self.aboutWindowController.restart == YES)

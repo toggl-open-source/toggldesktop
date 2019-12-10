@@ -207,11 +207,15 @@ extern void *ctx;
 
 - (void)windowDidBecomeKey:(NSNotification *)notification
 {
-    [[TouchBarService shared] dismiss];
+    if (@available(macOS 10.12.2, *)) {
+        [[TouchBarService shared] dismiss];
+    }
 }
 
 - (void)windowDidResignKey:(NSNotification *)notification
 {
-    [[TouchBarService shared] present];
+    if (@available(macOS 10.12.2, *)) {
+        [[TouchBarService shared] present];
+    }
 }
 @end

@@ -362,17 +362,24 @@ extern void *ctx;
 
 -(void)windowDidBecomeMain:(NSNotification *)notification
 {
-    if ([self.timeEntryListViewController.view superview] != nil)
-    {
-        [[TouchBarService shared] present];
-    }
+     if (@available(macOS 10.12.2, *))
+     {
+         if ([self.timeEntryListViewController.view superview] != nil)
+         {
+             [[TouchBarService shared] present];
+         }
+     }
+
 }
 
 - (void)windowDidResignMain:(NSNotification *)notification
 {
-    if ([self.timeEntryListViewController.view superview] != nil)
+    if (@available(macOS 10.12.2, *))
     {
-        [[TouchBarService shared] minimize];
+        if ([self.timeEntryListViewController.view superview] != nil)
+        {
+            [[TouchBarService shared] minimize];
+        }
     }
 }
 
