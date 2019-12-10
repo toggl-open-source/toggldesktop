@@ -52,7 +52,7 @@
 @property (nonatomic, strong) ConsoleViewController *consoleWindowController;
 
 // Touch Bar items
-@property (nonatomic, strong) GlobalTouchbarButton *touchItem;
+@property (nonatomic, strong) GlobalTouchbarButton *touchItem __OSX_AVAILABLE_STARTING(__MAC_10_12_2,__IPHONE_NA);
 @property (nonatomic, assign) BOOL isAddedTouchBar;
 
 // Remember some app state
@@ -855,7 +855,9 @@ void *ctx;
 	if (image != self.statusItem.image)
 	{
 		[self.statusItem setImage:image];
-		[self.touchItem update:image];
+        if (@available(macOS 10.12.2, *)) {
+            [self.touchItem update:image];
+        }
 	}
 }
 
@@ -1154,7 +1156,9 @@ void *ctx;
 	ctx = 0;
 
 #ifndef APP_STORE
-    [[TouchBarService shared] dismiss];
+    if (@available(macOS 10.12.2, *)) {
+        [[TouchBarService shared] dismiss];
+    }
 #endif
 
 	if (self.aboutWindowController.restart == YES)
@@ -1819,7 +1823,9 @@ void on_countries(TogglCountryView *first)
 
 - (void)handleTouchBarWithSettings:(Settings *)settings
 {
-	[TouchBarService shared].isEnabled = settings.showTouchBar;
+    if (@available(macOS 10.12.2, *)) {
+        [TouchBarService shared].isEnabled = settings.showTouchBar;
+    }
 	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kTouchBarSettingChanged object:@(settings.showTouchBar)];
 
 #ifndef APP_STORE

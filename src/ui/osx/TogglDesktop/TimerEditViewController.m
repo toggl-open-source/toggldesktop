@@ -306,10 +306,14 @@ NSString *kInactiveTimerColor = @"#999999";
 	// Hide
 	self.cancelBtn.hidden = YES;
 
-	if (self.time_entry != nil && self.time_entry.isRunning)
-	{
-		[[TouchBarService shared] updateRunningItem:self.time_entry];
-	}
+    if (@available(macOS 10.12.2, *))
+    {
+        if (self.time_entry != nil && self.time_entry.isRunning)
+        {
+            [[TouchBarService shared] updateRunningItem:self.time_entry];
+        }
+    }
+
 }
 
 - (void)startDisplayTimeEntryEditor:(NSNotification *)notification
@@ -813,7 +817,10 @@ NSString *kInactiveTimerColor = @"#999999";
 
 - (void)touchBarSettingChangedNotification:(NSNotification *)noti
 {
-	self.touchBar = nil;
+    if (@available(macOS 10.12.2, *))
+    {
+        self.touchBar = nil;
+    }
 }
 
 @end
