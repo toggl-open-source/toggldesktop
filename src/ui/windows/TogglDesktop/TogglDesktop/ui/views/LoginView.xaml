@@ -72,17 +72,19 @@
                     </Label>
                 </StackPanel>
                 <StackPanel IsEnabled="{Binding IsViewEnabled}">
-                    <TextBox Margin="0 20 0 0"
+                    <TextBox x:Name="emailTextBox" x:FieldModifier="private"
+                             Margin="0 20 0 0"
                              Width="200"
                              mah:TextBoxHelper.Watermark="Email address"
-                             Text="{Binding Email, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"
-                             behaviors:FocusHelper.IsFocused="{Binding IsEmailFocused}" />
-                    <PasswordBox PasswordChar="*"
+                             Text="{Binding Email, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"
+                             behaviors:FocusHelper.IsFocused="{Binding IsEmailFocused}"/>
+                    <PasswordBox x:Name="passwordBox" x:FieldModifier="private"
+                                 PasswordChar="*"
                                  Margin="0 8 0 0"
                                  Width="200"
                                  mah:TextBoxHelper.Watermark="Password"
                                  behaviours:PasswordBoxBindingBehavior.Password="{Binding Password, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"
-                                 behaviors:FocusHelper.IsFocused="{Binding IsPasswordFocused}" />
+                                 behaviors:FocusHelper.IsFocused="{Binding IsPasswordFocused}"/>
 
                     <Label HorizontalAlignment="Left"
                            Margin="48 12 0 0"
@@ -91,12 +93,12 @@
                                    Click="onForgotPasswordLinkClick">Forgot password?</Hyperlink>
                     </Label>
 
-                    <ComboBox Name="countrySelect"
+                    <ComboBox Name="countryComboBox"
                               Margin="0 8 0 0"
                               Width="200"
                               Height="32"
                               ItemsSource="{Binding Countries}"
-                              SelectedItem="{Binding SelectedCountry}"
+                              SelectedItem="{Binding SelectedCountry, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"
                               Visibility="{Binding SelectedConfirmAction, Converter={StaticResource ShowOnSignUp}}"
                               SelectedValuePath="Name"
                               DisplayMemberPath="Name"
@@ -105,10 +107,13 @@
                               IsTextSearchEnabled="True"
                               IsTextSearchCaseSensitive="False"
                               TextSearch.TextPath="Name"
-                              mah:TextBoxHelper.Watermark="Select country" />
-                    <CheckBox Name="tosCheckbox" Foreground="#ffffff" Margin="50 16 0 0"
+                              mah:TextBoxHelper.Watermark="Select country"
+                              behaviors:FocusHelper.IsFocused="{Binding IsCountrySelectionFocused}"/>
+                    <CheckBox Name="tosCheckBox" Margin="50 16 0 0"
                               HorizontalAlignment="Left"
-                              Visibility="{Binding SelectedConfirmAction, Converter={StaticResource ShowOnSignUp}}">
+                              Visibility="{Binding SelectedConfirmAction, Converter={StaticResource ShowOnSignUp}}"
+                              IsChecked="{Binding IsTosChecked, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"
+                              behaviors:FocusHelper.IsFocused="{Binding IsTosCheckboxFocused}">
                         <WrapPanel Margin="8 -8 0 0" HorizontalAlignment="Left">
                             <TextBlock Style="{DynamicResource Toggl.CaptionText}">
                                 I agree to
