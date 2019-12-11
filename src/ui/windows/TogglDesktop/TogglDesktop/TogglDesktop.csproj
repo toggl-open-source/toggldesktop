@@ -382,6 +382,7 @@
     <Compile Include="Toggl.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="utilities\StringExtensions.cs" />
     <Compile Include="utilities\Utils.cs" />
     <Compile Include="utilities\Win32.cs" />
     <Compile Include="ui\windows\FeedbackWindow.xaml.cs">
