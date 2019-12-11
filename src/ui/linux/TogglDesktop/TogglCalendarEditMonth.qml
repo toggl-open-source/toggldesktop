@@ -68,6 +68,10 @@ MonthGrid {
                 cursorShape: Qt.PointingHandCursor
                 onClicked: {
                     console.log("Day " + model.day + " clicked")
+                    var date = String(model.year)+"."+String(model.month+1).padStart(2, '0')+"."+String(model.day).padStart(2, '0')
+                    console.warn((new Date(date).getTime() / 1000).toFixed(0))
+                    var timestamp = (new Date(date).getTime() / 1000).toFixed(0)
+                    toggl.setTimeEntryDate(modelData.GUID, timestamp)
                 }
             }
         }

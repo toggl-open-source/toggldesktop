@@ -12,7 +12,7 @@ TogglButtonBackground {
     property bool calendarOpen: false
     height: calendar.visible ? implicitHeight + calendar.height + 12: implicitHeight
 
-    property var date: timeEntry ? new Date(Date(timeEntry.Started)) : null
+    property var date: timeEntry ? new Date(timeEntry.Started * 1000) : null
     property string dayOfWeek: date ? date.toLocaleDateString(Qt.locale(), "dddd") : 0
     property int day: date ? date.toLocaleDateString(Qt.locale(), "dd") : 0
     property int month: date ? date.toLocaleDateString(Qt.locale(), "MM") : 0
