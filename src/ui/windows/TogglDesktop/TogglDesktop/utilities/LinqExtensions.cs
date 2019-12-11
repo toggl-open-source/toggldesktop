@@ -60,14 +60,5 @@ static class LinqExtensions
         }
         return current;
     }
-
-    public static string[] SplitByWhiteSpaceUnlessEnclosedInQuotes(this string str)
-    {
-        return str.Split('"')
-            .Select((element, index) => index % 2 == 0  // If even index
-                ? element.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)  // Split the item
-                : new[] { element })  // Keep the entire item
-            .SelectMany(element => element).ToArray();
-    }
 }
 }
