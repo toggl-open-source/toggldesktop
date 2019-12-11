@@ -85,6 +85,9 @@ Item {
         Behavior on opacity { NumberAnimation { duration: 120 } }
         text: timeEntry && timeEntry.Description.length > 0 ? timeEntry.Description : ""
         placeholderText: qsTr("Add description")
+        onAccepted: {
+            toggl.setTimeEntryDescription(timeEntry.GUID, timeEntryField.text)
+        }
     }
 
 
