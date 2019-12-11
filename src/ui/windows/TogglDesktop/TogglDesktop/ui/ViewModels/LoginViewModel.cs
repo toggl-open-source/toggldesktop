@@ -77,7 +77,7 @@ namespace TogglDesktop.ViewModels
 
             _emailValidation = this.ValidationRule(
                 x => x.Email,
-                email => !string.IsNullOrEmpty(email),
+                email => email.IsValidEmailAddress(),
                 "Please enter a valid email");
             _passwordValidation = this.ValidationRule(
                 x => x.Password,
