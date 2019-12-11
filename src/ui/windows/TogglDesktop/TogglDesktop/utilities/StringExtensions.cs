@@ -50,5 +50,24 @@ namespace TogglDesktop
                     : new[] { element })  // Keep the entire item
                 .SelectMany(element => element).ToArray();
         }
+        
+        public static bool IsValidEmailAddress(this string email)
+        {
+            if (string.IsNullOrEmpty(email))
+            {
+                return false;
+            }
+
+            try
+            {
+                var mailAddress = new MailAddress(email);
+            }
+            catch (FormatException)
+            {
+                return false;
+            }
+
+            return true;
+        }
     }
 }
