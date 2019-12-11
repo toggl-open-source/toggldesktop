@@ -50,6 +50,7 @@ final class TimelineFlowLayout: NSCollectionViewFlowLayout {
     private var timeEntryAttributes: [NSCollectionViewLayoutAttributes] = []
     private var activityAttributes: [NSCollectionViewLayoutAttributes] = []
     private var dividerAttributes: [NSCollectionViewLayoutAttributes] = []
+    private var backgroundAttributes: [NSCollectionViewLayoutAttributes] = []
     private var verticalPaddingTimeLabel: CGFloat {
         switch zoomLevel {
         case .x1:
@@ -109,6 +110,7 @@ final class TimelineFlowLayout: NSCollectionViewFlowLayout {
         calculateTimeLabelAttributes()
         calculateTimeEntryAttributes()
         calculateActivityAttributes()
+        calculateBackgroundAttributes()
     }
 
     override func layoutAttributesForElements(in rect: NSRect) -> [NSCollectionViewLayoutAttributes] {
@@ -225,6 +227,34 @@ extension TimelineFlowLayout {
                                width: size.width,
                                height: size.height)
             timeLablesAttributes.append(att)
+        }
+    }
+
+    private func calculateBackgroundAttributes() {
+        let width = collectionViewContentSize.width
+
+        timeLablesAttributes.enumerated().forEach { (value) in
+            let i = value.offset
+            let currentTimeLabel = value.element
+            let indexPath = IndexPath(item: 1, section: i)
+            let y = currentTimeLabel.frame.origin.y
+            var height: CGFloat = 0
+
+            // calculate height from current y to next label
+            if let nextTimeLabel = timeLablesAttributes[safe: i + 1] {
+                height = nextTimeLabel.frame.origin.y - y
+            } else {
+                height = collectionViewContentSize.height - y
+            }
+
+            // Init
+            let frame = CGRect(x: 0,
+                               y: y,
+                               width: width,
+                               height: height)
+            let view = NSCollectionViewLayoutAttributes(forSupplementaryViewOfKind: NSCollectionView.elementKindSectionHeader, with: indexPath)
+            view.frame = frame
+            backgroundAttributes.append(view)
         }
     }
 
