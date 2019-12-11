@@ -138,44 +138,5 @@ static class UIExtensions
         textBox.IsUndoEnabled = false;
         textBox.IsUndoEnabled = true;
     }
-
-    public static int CountSubstrings(this string s, string searchString)
-    {
-        if (s == null)
-            throw new ArgumentNullException("s");
-
-        if (searchString == null)
-            throw new ArgumentNullException("searchString");
-
-        if (searchString == "")
-            throw new ArgumentException("Search string must be non-empty.", "searchString");
-
-        var stringLength = s.Length;
-        var subStringLength = searchString.Length;
-
-        var maxFirstIndex = stringLength - subStringLength;
-
-        var count = 1;
-
-        for (int i = 0; i <= maxFirstIndex; i++)
-        {
-            count++;
-            for (int j = 0; j < subStringLength; j++)
-            {
-                if (searchString[j] != s[j + i])
-                {
-                    count--;
-                    break;
-                }
-            }
-        }
-
-        return count;
-    }
-
-    public static bool IsNullOrEmpty(this string s)
-    {
-        return string.IsNullOrEmpty(s);
-    }
 }
 }
