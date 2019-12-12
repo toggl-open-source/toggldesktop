@@ -8,6 +8,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <theming:ThemeResourceDictionary Source="ui/Resources/Themes/ColorScheme/Light.xaml" Type="ColorScheme"/>
+                <ResourceDictionary Source="ui/Resources/DesignUpdate/Notifications.xaml" />
 
                 <ResourceDictionary Source="ui/Resources/SharedStyles.xaml" />
                 <ResourceDictionary Source="ui/Resources/ScrollBarStyles.xaml" />
@@ -19,7 +20,6 @@
                 <ResourceDictionary Source="ui/Resources/EditViewControllerStyles.xaml"/>
                 <ResourceDictionary Source="ui/Resources/PreferencesWindowStyles.xaml"/>
                 <ResourceDictionary Source="ui/Resources/TutorialStyles.xaml" />
-                <ResourceDictionary Source="ui/Resources/DesignUpdate/Notifications.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
