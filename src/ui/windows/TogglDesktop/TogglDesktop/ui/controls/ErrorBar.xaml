@@ -34,6 +34,8 @@
                 Click="onCloseButtonClick"
                 Style="{DynamicResource Toggl.CrossButton}"
                 Margin="4"
+                Width="32"
+                Height="32"
                 VerticalAlignment="Top"
                 Foreground="White" />
     </Grid>
