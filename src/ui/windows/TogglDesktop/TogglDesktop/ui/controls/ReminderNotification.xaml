@@ -6,5 +6,5 @@
              xmlns:togglDesktop="clr-namespace:TogglDesktop"
              mc:Ignorable="d"
              MouseDown="onNotificationMouseDown">
-    <Button Content="START" Click="onStartButtonClick" />
+    <Button Style="{DynamicResource Toggl.PrimaryButton}" Content="Start tracking now" Click="onStartButtonClick" />
 </togglDesktop:TogglNotification>

@@ -27,7 +27,7 @@ namespace TogglDesktop
             if (this.TryBeginInvoke(this.onAutotrackerNotification, projectName, projectId, taskId))
                 return;
 
-            this.Message = $"Track {projectName}?";
+            this.Message = @$"Start tracking ""{projectName}""?";
             this.projectId = projectId;
             this.taskId = taskId;
 

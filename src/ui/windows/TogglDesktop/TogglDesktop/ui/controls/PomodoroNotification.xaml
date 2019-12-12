@@ -7,17 +7,18 @@
              mc:Ignorable="d"
              MouseDown="onNotificationMouseDown">
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition />
-            <RowDefinition Height="1"/>
-            <RowDefinition />
-        </Grid.RowDefinitions>
-        <Button Grid.Row="0"
-                Content="CONTINUE"
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="8"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Button Grid.Column="0"
+                Style="{DynamicResource Toggl.PrimaryButton}"
+                Content="Continue"
                 Click="onContinueButtonClick"/>
-        <Rectangle Grid.Row="1" Fill="#22000000" />
-        <Button Grid.Row="2"
-                Content="START NEW"
+        <Button Grid.Column="2"
+                Style="{DynamicResource Toggl.PrimaryButton}"
+                Content="Start new"
                 Click="onStartNewButtonClick"/>
     </Grid>
 </togglDesktop:TogglNotification>
