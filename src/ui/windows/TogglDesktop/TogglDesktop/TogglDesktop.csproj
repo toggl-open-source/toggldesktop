@@ -688,6 +688,7 @@
     <Page Include="ui\Resources\DesignUpdate\Icons.xaml" />
     <Page Include="ui\Resources\DesignUpdate\ListBox.xaml" />
     <Page Include="ui\Resources\DesignUpdate\MahApps.Overrides.xaml" />
+    <Page Include="ui\Resources\DesignUpdate\Notifications.xaml" />
     <Page Include="ui\Resources\DesignUpdate\PasswordBox.xaml" />
     <Page Include="ui\Resources\DesignUpdate\RadioButton.xaml" />
     <Page Include="ui\Resources\DesignUpdate\TabControl.xaml" />
@@ -695,10 +696,6 @@
     <Page Include="ui\Resources\DesignUpdate\ToggleSwitch.xaml" />
     <Page Include="ui\Resources\DesignUpdate\Window.xaml" />
     <Page Include="ui\Resources\DesignUpdate\Typography.xaml" />
-    <Page Include="ui\Resources\DialogStyles.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="ui\Resources\ComboBoxStyles.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
