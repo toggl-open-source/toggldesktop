@@ -3,15 +3,13 @@
         {
             "version": "7.4.1092",
             "rows": [
-                "Fixed failure to sync after coming back from sleep",
                 "Introduced in-app messaging functionality",
                 "Fixed failure to run Store app on startup",
                 "Added F5 as Sync hotkey",
                 "Added nicer tray icon tooltip",
                 "Stability improvements"
             ],
-            "date": "December 9th 2019",
-            "beta": "true",
+            "date": "December 12th 2019",
             "has64bit": "true"
         },
         {
