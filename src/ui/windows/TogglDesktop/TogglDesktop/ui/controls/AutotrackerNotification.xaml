@@ -5,8 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:togglDesktop="clr-namespace:TogglDesktop"
              mc:Ignorable="d"
-             Title="Autotracker"
+             Title="Toggl Desktop Autotracker"
              MouseDown="onNotificationMouseDown">
-    <Button Content="START"
+    <Button Style="{DynamicResource Toggl.PrimaryButton}"
+            Content="Yes, start tracking"
             Click="onStartButtonClick"/>
 </togglDesktop:TogglNotification>
