@@ -5,6 +5,13 @@
             "rows": [
                 "Fixed the issue with auto-update"
             ],
+            "date": "December 12nd 2019"
+        },
+        {
+            "version": "7.4.1092",
+            "rows": [
+                "Fixed the issue with auto-update"
+            ],
             "date": "December 9th 2019",
             "beta": "true"
         },
