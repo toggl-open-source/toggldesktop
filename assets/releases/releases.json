@@ -2966,6 +2966,20 @@
                         "name": "toggldesktop_7.4.528_amd64.deb"
                     }
                 ]
+            },
+            {
+                "version": "v7.4.1102",
+                "timestamp": "12-12-2019",
+                "filename": [
+                    {
+                        "type": "linux_tar.gz",
+                        "name": "toggldesktop_linux_x86_64-v7_4_1102.tar.gz"
+                    },
+                    {
+                        "type": "linux_deb64",
+                        "name": "toggldesktop_v7.4.1102_amd64.deb"
+                    }
+                ]
             }
         ],
         "beta": [
