@@ -38,17 +38,6 @@ Rectangle {
         colorGroup: SystemPalette.Disabled
     }
 
-    Rectangle {
-        anchors.fill: parent
-        color: mainPalette.base
-        clip: true
-
-        ErrorOverlay {
-            width: parent.width
-            height: 48
-        }
-    }
-
     TextMetrics {
         id: termsAndConditionsMetrics
         font.pointSize: 9
@@ -86,5 +75,12 @@ Rectangle {
         id: timeEntryEdit
         visible: false
         anchors.fill: parent
+    }
+
+    ErrorBubble {
+        anchors.bottom: parent.bottom
+        anchors.right: parent.right
+        anchors.margins: 16
+        maximumWidth: parent.width - 32
     }
 }
