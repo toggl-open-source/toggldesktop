@@ -28,6 +28,7 @@ final class TimelineDatasource: NSObject {
         static let ActivityCellID = NSUserInterfaceItemIdentifier("TimelineActivityCell")
         static let ActivityCellXIB = NSNib.Name("TimelineActivityCell")
         static let DividerViewID = NSUserInterfaceItemIdentifier("DividerViewID")
+        static let BackgroundViewID = NSUserInterfaceItemIdentifier("BackgroundViewID")
     }
 
     enum ZoomLevel: Int {
@@ -86,6 +87,7 @@ final class TimelineDatasource: NSObject {
         collectionView.register(NSNib(nibNamed: Constants.ActivityCellXIB, bundle: nil), forItemWithIdentifier: Constants.ActivityCellID)
         collectionView.register(NSNib(nibNamed: Constants.EmptyTimeEntryCellXIB, bundle: nil), forItemWithIdentifier: Constants.EmptyTimeEntryCellID)
         collectionView.register(TimelineDividerView.self, forSupplementaryViewOfKind: NSCollectionView.elementKindSectionFooter, withIdentifier: Constants.DividerViewID)
+        collectionView.register(NSView.self, forSupplementaryViewOfKind: NSCollectionView.elementKindSectionHeader, withIdentifier: Constants.BackgroundViewID)
     }
 
     func render(_ timeline: TimelineData) {
@@ -176,10 +178,21 @@ extension TimelineDatasource: NSCollectionViewDataSource, NSCollectionViewDelega
 
     func collectionView(_ collectionView: NSCollectionView, viewForSupplementaryElementOfKind kind: NSCollectionView.SupplementaryElementKind, at indexPath: IndexPath) -> NSView {
         guard let section = TimelineData.Section(rawValue: indexPath.section) else { return NSView() }
-        let view = collectionView.makeSupplementaryView(ofKind: NSCollectionView.elementKindSectionFooter,
-                                                        withIdentifier: Constants.DividerViewID, for: indexPath) as! TimelineDividerView
-        view.draw(for: section)
-        return view
+        if kind == NSCollectionView.elementKindSectionFooter {
+            let view = collectionView.makeSupplementaryView(ofKind: kind,
+                                                            withIdentifier: Constants.DividerViewID,
+                                                            for: indexPath) as! TimelineDividerView
+            view.draw(for: section)
+            return view
+        } else if kind == NSCollectionView.elementKindSectionHeader {
+            let view = collectionView.makeSupplementaryView(ofKind: kind,
+                                                            withIdentifier: Constants.DividerViewID,
+                                                            for: indexPath)
+            view.wantsLayer = true
+            view.layer?.backgroundColor = NSColor.brown.cgColor
+            return view
+        }
+        return NSView()
     }
 
     func collectionView(_ collectionView: NSCollectionView, didSelectItemsAt indexPaths: Set<IndexPath>) {

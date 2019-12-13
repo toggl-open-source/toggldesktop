@@ -232,10 +232,11 @@ extension TimelineFlowLayout {
 
     private func calculateBackgroundAttributes() {
         let width = collectionViewContentSize.width
+        for (i, currentTimeLabel) in timeLablesAttributes.enumerated() {
+            if i % 2 == 0 {
+                continue
+            }
 
-        timeLablesAttributes.enumerated().forEach { (value) in
-            let i = value.offset
-            let currentTimeLabel = value.element
             let indexPath = IndexPath(item: 1, section: i)
             let y = currentTimeLabel.frame.origin.y
             var height: CGFloat = 0
@@ -256,6 +257,7 @@ extension TimelineFlowLayout {
             view.frame = frame
             backgroundAttributes.append(view)
         }
+        print(backgroundAttributes)
     }
 
     func calculateTimeEntryAttributes() {
