@@ -279,6 +279,8 @@
 		BAA0104F22CB66D0007C1541 /* TimelineEmptyTimeEntryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAA0104D22CB66D0007C1541 /* TimelineEmptyTimeEntryCell.swift */; };
 		BAA0105022CB66D0007C1541 /* TimelineEmptyTimeEntryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BAA0104E22CB66D0007C1541 /* TimelineEmptyTimeEntryCell.xib */; };
 		BAA0105222CB72E4007C1541 /* TimelineDashedCornerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAA0105122CB72E4007C1541 /* TimelineDashedCornerView.swift */; };
+		BAA0F5A323A38CB300F04654 /* TimelineBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAA0F5A223A38CB300F04654 /* TimelineBackgroundView.swift */; };
+		BAA0F5A423A38CB300F04654 /* TimelineBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAA0F5A223A38CB300F04654 /* TimelineBackgroundView.swift */; };
 		BAA11AC12251F49E007F31D2 /* WorkspaceStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAA11AC02251F49E007F31D2 /* WorkspaceStorage.swift */; };
 		BAA11AC32251F4D6007F31D2 /* WorkspaceAutoCompleteTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAA11AC22251F4D6007F31D2 /* WorkspaceAutoCompleteTextField.swift */; };
 		BAA11AC52251F502007F31D2 /* WorkspaceDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAA11AC42251F502007F31D2 /* WorkspaceDataSource.swift */; };
@@ -921,7 +923,6 @@
 		BA47DEB123966F9C005216AD /* InAppMessageViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InAppMessageViewController.xib; sourceTree = "<group>"; };
 		BA47DEB723969EAC005216AD /* InAppMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InAppMessage.swift; sourceTree = "<group>"; };
 		BA49912D22C0BA14008149D9 /* TimelineDateFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineDateFormatter.swift; sourceTree = "<group>"; };
-		BA4A7D502375527B00A42095 /* TouchBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TouchBar.h; path = test2/TouchBar.h; sourceTree = SOURCE_ROOT; };
 		BA4A7D502375527B00A42095 /* TouchBar+PrivateAPIs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "TouchBar+PrivateAPIs.h"; path = "test2/TouchBar+PrivateAPIs.h"; sourceTree = SOURCE_ROOT; };
 		BA4AEB9B22C217A4001A898D /* ResizablePopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResizablePopover.swift; sourceTree = "<group>"; };
 		BA50ED8422705F9E008323FA /* CalendarFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarFlowLayout.swift; sourceTree = "<group>"; };
@@ -997,6 +998,7 @@
 		BAA0104D22CB66D0007C1541 /* TimelineEmptyTimeEntryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineEmptyTimeEntryCell.swift; sourceTree = "<group>"; };
 		BAA0104E22CB66D0007C1541 /* TimelineEmptyTimeEntryCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimelineEmptyTimeEntryCell.xib; sourceTree = "<group>"; };
 		BAA0105122CB72E4007C1541 /* TimelineDashedCornerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineDashedCornerView.swift; sourceTree = "<group>"; };
+		BAA0F5A223A38CB300F04654 /* TimelineBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineBackgroundView.swift; sourceTree = "<group>"; };
 		BAA11AC02251F49E007F31D2 /* WorkspaceStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceStorage.swift; sourceTree = "<group>"; };
 		BAA11AC22251F4D6007F31D2 /* WorkspaceAutoCompleteTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceAutoCompleteTextField.swift; sourceTree = "<group>"; };
 		BAA11AC42251F502007F31D2 /* WorkspaceDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceDataSource.swift; sourceTree = "<group>"; };
@@ -1717,6 +1719,7 @@
 				BA75FF2922BCC20D00D3F08C /* TimelineActivityCell.swift */,
 				BA75FF2A22BCC20D00D3F08C /* TimelineActivityCell.xib */,
 				BAD0E0BC22C49BAC009F5A83 /* TimelineDividerView.swift */,
+				BAA0F5A223A38CB300F04654 /* TimelineBackgroundView.swift */,
 				BAA0105122CB72E4007C1541 /* TimelineDashedCornerView.swift */,
 				BA6F81E222C5FB1E009B6828 /* TimelineTimeEntryHoverViewController.swift */,
 				BA6F81E322C5FB1E009B6828 /* TimelineTimeEntryHoverViewController.xib */,
@@ -2553,6 +2556,7 @@
 				74D1D27217EB72D900E709B0 /* TimerEditViewController.m in Sources */,
 				3C2F239D21A7B43400CBE6BC /* UnsupportedNotice.m in Sources */,
 				BAF3ACD32343325A00E41B33 /* TouchBarService.swift in Sources */,
+				BAA0F5A323A38CB300F04654 /* TimelineBackgroundView.swift in Sources */,
 				741104BF18C7682700BC7A49 /* NSTextFieldWithBackground.m in Sources */,
 				BA80BEB2221EAE6F00BDFD35 /* Array+ByGroup.swift in Sources */,
 				BA067642233A492F00485C3C /* TogglApplication.m in Sources */,
@@ -2644,6 +2648,7 @@
 				BAE64D7A2368334000244D2B /* WorkspaceAutoCompleteTextField.swift in Sources */,
 				BAE64D7B2368334000244D2B /* NSTextFieldClickablePointer.m in Sources */,
 				BA47DEB323966F9C005216AD /* InAppMessageViewController.swift in Sources */,
+				BAA0F5A423A38CB300F04654 /* TimelineBackgroundView.swift in Sources */,
 				BA63ABEE238284D9004C70CF /* IdleNotificationTouchBar.swift in Sources */,
 				BAE64D7C2368334000244D2B /* DisplayCommand.m in Sources */,
 				BAE64D7D2368334000244D2B /* ColorViewItem.swift in Sources */,
@@ -2692,8 +2697,8 @@
 				BAE64DA42368334000244D2B /* TagCellView.swift in Sources */,
 				BAE64DA52368334000244D2B /* AutoCompleteView.swift in Sources */,
 				BABB85AA23882D7C0084DEAC /* SystemPermissionManager.swift in Sources */,
-				BAE64DA62368334000244D2B /* NoInteractionView.swift in Sources */,
-				BAE64DA72368334000244D2B /* NSView+Xib.swift in Sources */,
+				BAE64DA62368334000244D2B /* (null) in Sources */,
+				BAE64DA72368334000244D2B /* (null) in Sources */,
 				BAE64DA82368334000244D2B /* DesktopLibraryBridge.m in Sources */,
 				BAE64DA92368334000244D2B /* TimeEntryDatasource.swift in Sources */,
 				BAE64DAA2368334000244D2B /* SystemMessageView.swift in Sources */,

@@ -87,7 +87,7 @@ final class TimelineDatasource: NSObject {
         collectionView.register(NSNib(nibNamed: Constants.ActivityCellXIB, bundle: nil), forItemWithIdentifier: Constants.ActivityCellID)
         collectionView.register(NSNib(nibNamed: Constants.EmptyTimeEntryCellXIB, bundle: nil), forItemWithIdentifier: Constants.EmptyTimeEntryCellID)
         collectionView.register(TimelineDividerView.self, forSupplementaryViewOfKind: NSCollectionView.elementKindSectionFooter, withIdentifier: Constants.DividerViewID)
-        collectionView.register(NSView.self, forSupplementaryViewOfKind: NSCollectionView.elementKindSectionHeader, withIdentifier: Constants.BackgroundViewID)
+        collectionView.register(TimelineBackgroundView.self, forSupplementaryViewOfKind: NSCollectionView.elementKindSectionHeader, withIdentifier: Constants.BackgroundViewID)
     }
 
     func render(_ timeline: TimelineData) {
@@ -186,7 +186,7 @@ extension TimelineDatasource: NSCollectionViewDataSource, NSCollectionViewDelega
             return view
         } else if kind == NSCollectionView.elementKindSectionHeader {
             let view = collectionView.makeSupplementaryView(ofKind: kind,
-                                                            withIdentifier: Constants.DividerViewID,
+                                                            withIdentifier: Constants.BackgroundViewID,
                                                             for: indexPath)
             view.wantsLayer = true
             view.layer?.backgroundColor = NSColor.brown.cgColor
