@@ -100,6 +100,7 @@ final class TimelineFlowLayout: NSCollectionViewFlowLayout {
         timeEntryAttributes = []
         dividerAttributes = []
         activityAttributes = []
+        backgroundAttributes = []
         numberOfTimeLabels = dataSource.collectionView(collectionView, numberOfItemsInSection: TimelineData.Section.timeLabel.rawValue)
         numberOfTimeEntry = dataSource.collectionView(collectionView, numberOfItemsInSection: TimelineData.Section.timeEntry.rawValue)
         numberOfActivity = dataSource.collectionView(collectionView, numberOfItemsInSection: TimelineData.Section.activity.rawValue)
@@ -114,7 +115,7 @@ final class TimelineFlowLayout: NSCollectionViewFlowLayout {
     }
 
     override func layoutAttributesForElements(in rect: NSRect) -> [NSCollectionViewLayoutAttributes] {
-        let allAttributes = timeLablesAttributes + timeEntryAttributes + activityAttributes + dividerAttributes + activityAttributes
+        let allAttributes = timeLablesAttributes + timeEntryAttributes + activityAttributes + dividerAttributes + backgroundAttributes
         return allAttributes.compactMap({ (att) -> NSCollectionViewLayoutAttributes? in
             if att.frame.intersects(rect) {
                 return att
@@ -138,6 +139,9 @@ final class TimelineFlowLayout: NSCollectionViewFlowLayout {
     override func layoutAttributesForSupplementaryView(ofKind elementKind: NSCollectionView.SupplementaryElementKind, at indexPath: IndexPath) -> NSCollectionViewLayoutAttributes? {
         if elementKind == NSCollectionView.elementKindSectionFooter {
             return dividerAttributes[safe: indexPath.section]
+        }
+        if elementKind == NSCollectionView.elementKindSectionHeader {
+            return backgroundAttributes[safe: indexPath.section]
         }
         return nil
     }
@@ -212,6 +216,7 @@ extension TimelineFlowLayout {
             let frame = CGRect(x: x, y: 0, width: 1, height: collectionViewContentSize.height)
             let view = NSCollectionViewLayoutAttributes(forSupplementaryViewOfKind: NSCollectionView.elementKindSectionFooter, with: indexPath)
             view.frame = frame
+            view.zIndex = 1
             dividerAttributes.append(view)
         }
     }
@@ -226,18 +231,20 @@ extension TimelineFlowLayout {
                                y: y,
                                width: size.width,
                                height: size.height)
+            att.zIndex = 2
             timeLablesAttributes.append(att)
         }
     }
 
     private func calculateBackgroundAttributes() {
         let width = collectionViewContentSize.width
+        var backgroundIndex = 0
         for (i, currentTimeLabel) in timeLablesAttributes.enumerated() {
             if i % 2 == 0 {
                 continue
             }
 
-            let indexPath = IndexPath(item: 1, section: i)
+            let indexPath = IndexPath(item: 0, section: backgroundIndex)
             let y = currentTimeLabel.frame.origin.y
             var height: CGFloat = 0
 
@@ -255,9 +262,13 @@ extension TimelineFlowLayout {
                                height: height)
             let view = NSCollectionViewLayoutAttributes(forSupplementaryViewOfKind: NSCollectionView.elementKindSectionHeader, with: indexPath)
             view.frame = frame
+            view.zIndex = 0
             backgroundAttributes.append(view)
+            backgroundIndex += 1
         }
-        print(backgroundAttributes)
+        for att in backgroundAttributes {
+            print("index \(att.indexPath?.section) frame \(att.frame)")
+        }
     }
 
     func calculateTimeEntryAttributes() {
@@ -286,6 +297,7 @@ extension TimelineFlowLayout {
 
             // Finalize
             att.frame = frame
+            att.zIndex = 3
             timeEntryAttributes.append(att)
         }
 
@@ -318,6 +330,7 @@ extension TimelineFlowLayout {
                                y: y,
                                width: Constants.Activity.Width,
                                height: height)
+            att.zIndex = 4
             activityAttributes.append(att)
         }
     }
