@@ -74,6 +74,7 @@ Item {
             fillMode: Image.PreserveAspectFit
             antialiasing: true
             mipmap: true
+            smooth: true
         }
 
         /*
@@ -199,7 +200,7 @@ Item {
             width: parent.width
             anchors.horizontalCenter: parent.horizontalCenter
             text: signingUp ? "Sign up" : "Log in"
-            color: Qt.rgba(229/255.0, 85/255.0, 98/255.0, 1.0)
+            color: Qt.rgba(255/255.0, 45/255.0, 85/255.0, 1.0)
             textColor: "white"
             enabled: everythingFilled
             onClicked: act()

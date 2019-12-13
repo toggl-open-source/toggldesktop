@@ -7,7 +7,7 @@ TextField {
     property bool flat: false
     background: Rectangle {
         border.width: flat ? 0 : 1
-        radius: 6
+        radius: 4
         border.color: mainPalette.borderColor
         color: "transparent"
     }

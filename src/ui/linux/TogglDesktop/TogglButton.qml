@@ -11,9 +11,8 @@ Button {
         id: background
         control: control
     }
-    contentItem: Rectangle {
+    contentItem: Item {
         anchors.fill: parent
-        color: "blue"
         RowLayout {
             anchors.fill: parent
             spacing: icon.status == Image.Ready ? 3 : 0
