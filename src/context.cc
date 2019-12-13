@@ -1572,7 +1572,7 @@ error Context::fetchMessage(const bool periodic) {
             // check all required fields
             if (!root.isMember("id") ||
                     !root.isMember("from") ||
-                    !root.isMember("type") ||
+                    (root.isMember("appversion") && !root.isMember("type")) ||
                     !root.isMember("title") ||
                     !root.isMember("text") ||
                     !root.isMember("button") ||
