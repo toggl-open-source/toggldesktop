@@ -36,7 +36,6 @@ static NSString *const upArrow = @"\u25B2";
 	self = [super initWithCoder:coder];
 	if (self)
 	{
-		self.automaticTextCompletionEnabled = NO;
 		self.posY = 0;
 		self.constraintsActive = NO;
 		self.itemHeight = 30.0;
@@ -46,6 +45,10 @@ static NSString *const upArrow = @"\u25B2";
 		self.layer.masksToBounds = NO;
 		self.displayMode = AutoCompleteDisplayModeCompact;
 		[self initBackgroundView];
+        if (@available(macOS 10.12.2, *))
+        {
+            self.automaticTextCompletionEnabled = NO;
+        }
 	}
 	return self;
 }

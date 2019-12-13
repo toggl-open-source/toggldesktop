@@ -21,7 +21,7 @@
 		3C7B4E8D190FA6D200627DC3 /* NSTextFieldVerticallyAligned.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C7B4E8C190FA6D200627DC3 /* NSTextFieldVerticallyAligned.m */; };
 		3C7B4EB3190FB57A00627DC3 /* NSSecureTextFieldVerticallyAligned.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C7B4EB2190FB57A00627DC3 /* NSSecureTextFieldVerticallyAligned.m */; };
 		3C8979CA19235EA2007061E0 /* NSTextFieldClickablePointer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C8979C919235EA2007061E0 /* NSTextFieldClickablePointer.m */; };
-		3CB7CFF82222033B00A9C806 /* DFRFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CB7CFD92222033B00A9C806 /* DFRFoundation.framework */; };
+		3CB7CFF82222033B00A9C806 /* DFRFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CB7CFD92222033B00A9C806 /* DFRFoundation.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		3CC450E91A31ED540012440B /* NSTextFieldDuration.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CC450E81A31ED540012440B /* NSTextFieldDuration.m */; };
 		3CD30F431F58B02C006FAA0D /* OverlayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CD30F411F58B02C006FAA0D /* OverlayViewController.m */; };
 		3CD30F441F58B02C006FAA0D /* OverlayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3CD30F421F58B02C006FAA0D /* OverlayViewController.xib */; };
@@ -226,6 +226,7 @@
 		BA65A24D22B79FEC00F895FD /* OGSwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA65A22D22B79FEC00F895FD /* OGSwitch.swift */; };
 		BA65A25022B7A65D00F895FD /* DatePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA65A24F22B7A65D00F895FD /* DatePickerView.swift */; };
 		BA65A25222B7A66A00F895FD /* DatePickerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA65A25122B7A66A00F895FD /* DatePickerView.xib */; };
+		BA6D554A2387912C004D068B /* TouchBar+PrivateAPIs.m in Sources */ = {isa = PBXBuildFile; fileRef = BA6D55492387912C004D068B /* TouchBar+PrivateAPIs.m */; };
 		BA6EB8402248CBE3003BB8EF /* ProjectStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6EB83F2248CBE3003BB8EF /* ProjectStorage.swift */; };
 		BA6F1B3821EEE998009265E4 /* Theme+Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6F1B3721EEE998009265E4 /* Theme+Notification.swift */; };
 		BA6F81E422C5FB1E009B6828 /* TimelineTimeEntryHoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6F81E222C5FB1E009B6828 /* TimelineTimeEntryHoverViewController.swift */; };
@@ -295,6 +296,8 @@
 		BAB818E5228D5A17008C2367 /* DescriptionDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB818E4228D5A16008C2367 /* DescriptionDataSource.swift */; };
 		BAB818E9228D5A97008C2367 /* DescriptionContentCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB818E8228D5A97008C2367 /* DescriptionContentCellView.swift */; };
 		BAB818EB228D5AA8008C2367 /* DescriptionContentCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BAB818EA228D5AA8008C2367 /* DescriptionContentCellView.xib */; };
+		BABB85A923882CEE0084DEAC /* ObjcSystemPermissionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB508E3237EA54500D3D468 /* ObjcSystemPermissionManager.swift */; };
+		BABB85AA23882D7C0084DEAC /* SystemPermissionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB508E1237E8FBC00D3D468 /* SystemPermissionManager.swift */; };
 		BAC4D399225470DA00254DAD /* AutoCompleteRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAC4D398225470DA00254DAD /* AutoCompleteRowView.swift */; };
 		BAD0E0BD22C49BAC009F5A83 /* TimelineDividerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD0E0BC22C49BAC009F5A83 /* TimelineDividerView.swift */; };
 		BAD15FFC223A52D600A8CCC9 /* TimeEntryEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD15FFB223A52D600A8CCC9 /* TimeEntryEmptyView.swift */; };
@@ -919,6 +922,7 @@
 		BA47DEB723969EAC005216AD /* InAppMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InAppMessage.swift; sourceTree = "<group>"; };
 		BA49912D22C0BA14008149D9 /* TimelineDateFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineDateFormatter.swift; sourceTree = "<group>"; };
 		BA4A7D502375527B00A42095 /* TouchBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TouchBar.h; path = test2/TouchBar.h; sourceTree = SOURCE_ROOT; };
+		BA4A7D502375527B00A42095 /* TouchBar+PrivateAPIs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "TouchBar+PrivateAPIs.h"; path = "test2/TouchBar+PrivateAPIs.h"; sourceTree = SOURCE_ROOT; };
 		BA4AEB9B22C217A4001A898D /* ResizablePopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResizablePopover.swift; sourceTree = "<group>"; };
 		BA50ED8422705F9E008323FA /* CalendarFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarFlowLayout.swift; sourceTree = "<group>"; };
 		BA5AC61523264651007E6C91 /* TimelineCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineCollectionView.swift; sourceTree = "<group>"; };
@@ -936,6 +940,7 @@
 		BA65A22D22B79FEC00F895FD /* OGSwitch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OGSwitch.swift; sourceTree = "<group>"; };
 		BA65A24F22B7A65D00F895FD /* DatePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerView.swift; sourceTree = "<group>"; };
 		BA65A25122B7A66A00F895FD /* DatePickerView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DatePickerView.xib; sourceTree = "<group>"; };
+		BA6D55492387912C004D068B /* TouchBar+PrivateAPIs.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "TouchBar+PrivateAPIs.m"; sourceTree = "<group>"; };
 		BA6EB83F2248CBE3003BB8EF /* ProjectStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectStorage.swift; sourceTree = "<group>"; };
 		BA6F1B3721EEE998009265E4 /* Theme+Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Theme+Notification.swift"; sourceTree = "<group>"; };
 		BA6F81E222C5FB1E009B6828 /* TimelineTimeEntryHoverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineTimeEntryHoverViewController.swift; sourceTree = "<group>"; };
@@ -1831,7 +1836,8 @@
 		BAF3ACCA2341F86300E41B33 /* TouchBar */ = {
 			isa = PBXGroup;
 			children = (
-				BA4A7D502375527B00A42095 /* TouchBar.h */,
+				BA4A7D502375527B00A42095 /* TouchBar+PrivateAPIs.h */,
+				BA6D55492387912C004D068B /* TouchBar+PrivateAPIs.m */,
 				BAF3ACCB2341F8AC00E41B33 /* GlobalTouchbarButton.swift */,
 				BAF3ACD22343325A00E41B33 /* TouchBarService.swift */,
 				BA00E9EC234C5A6C0011A703 /* TouchBarService+Name.swift */,
@@ -2516,6 +2522,7 @@
 				BA01404C22570967000E5B91 /* TagStorage.swift in Sources */,
 				74BAD31E18BD7D83002FD4CF /* ViewItem.m in Sources */,
 				BAA0104F22CB66D0007C1541 /* TimelineEmptyTimeEntryCell.swift in Sources */,
+				BA6D554A2387912C004D068B /* TouchBar+PrivateAPIs.m in Sources */,
 				BA35B21F22E6E95200FA560E /* CalendarCollectionView.swift in Sources */,
 				3CD7AD6F19ED579700372797 /* NSResize.m in Sources */,
 				BA7D335A22489C8000B953A8 /* ProjectDataSource.swift in Sources */,
@@ -2684,8 +2691,9 @@
 				BAE64DA32368334000244D2B /* ProjectColor.swift in Sources */,
 				BAE64DA42368334000244D2B /* TagCellView.swift in Sources */,
 				BAE64DA52368334000244D2B /* AutoCompleteView.swift in Sources */,
-				BAE64DA62368334000244D2B /* (null) in Sources */,
-				BAE64DA72368334000244D2B /* (null) in Sources */,
+				BABB85AA23882D7C0084DEAC /* SystemPermissionManager.swift in Sources */,
+				BAE64DA62368334000244D2B /* NoInteractionView.swift in Sources */,
+				BAE64DA72368334000244D2B /* NSView+Xib.swift in Sources */,
 				BAE64DA82368334000244D2B /* DesktopLibraryBridge.m in Sources */,
 				BAE64DA92368334000244D2B /* TimeEntryDatasource.swift in Sources */,
 				BAE64DAA2368334000244D2B /* SystemMessageView.swift in Sources */,
@@ -2767,6 +2775,7 @@
 				BAE64DEE2368334000244D2B /* ColorPickerView.swift in Sources */,
 				BAE64DEF2368334000244D2B /* FloatingErrorView.swift in Sources */,
 				BAE64DF02368334000244D2B /* LoginViewController.m in Sources */,
+				BABB85A923882CEE0084DEAC /* ObjcSystemPermissionManager.swift in Sources */,
 				BAE64DF12368334000244D2B /* IdleEvent.m in Sources */,
 				BA4A7D5123755A3700A42095 /* TimeEntryScrubberFlowLayout.swift in Sources */,
 			);
@@ -2969,6 +2978,35 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-l\"c++\"",
+					"-l\"z\"",
+					"-framework",
+					"\"AppAuth\"",
+					"-framework",
+					"\"AppKit\"",
+					"-framework",
+					"\"Bugsnag\"",
+					"-framework",
+					"\"Carbon\"",
+					"-framework",
+					"\"Foundation\"",
+					"-framework",
+					"\"GTMAppAuth\"",
+					"-framework",
+					"\"GTMSessionFetcher\"",
+					"-framework",
+					"\"MASShortcut\"",
+					"-framework",
+					"\"Security\"",
+					"-framework",
+					"\"Sparkle\"",
+					"-framework",
+					"\"SystemConfiguration\"",
+					"-weak_framework",
+					"\"DFRFoundation\"",
+				);
 				OTHER_SWIFT_FLAGS = "-DSPARKLE";
 				PRODUCT_BUNDLE_IDENTIFIER = com.toggl.toggldesktop.TogglDesktop;
 				PRODUCT_NAME = TogglDesktop;
@@ -2980,6 +3018,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				SYSTEM_FRAMEWORK_SEARCH_PATHS = "$(inherited) $(SYSTEM_LIBRARY_DIR)/PrivateFrameworks";
+				WARNING_CFLAGS = "-Wpartial-availability";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -3035,6 +3074,35 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-l\"c++\"",
+					"-l\"z\"",
+					"-framework",
+					"\"AppAuth\"",
+					"-framework",
+					"\"AppKit\"",
+					"-framework",
+					"\"Bugsnag\"",
+					"-framework",
+					"\"Carbon\"",
+					"-framework",
+					"\"Foundation\"",
+					"-framework",
+					"\"GTMAppAuth\"",
+					"-framework",
+					"\"GTMSessionFetcher\"",
+					"-framework",
+					"\"MASShortcut\"",
+					"-framework",
+					"\"Security\"",
+					"-framework",
+					"\"Sparkle\"",
+					"-framework",
+					"\"SystemConfiguration\"",
+					"-weak_framework",
+					"\"DFRFoundation\"",
+				);
 				OTHER_SWIFT_FLAGS = "-DSPARKLE";
 				PRODUCT_BUNDLE_IDENTIFIER = com.toggl.toggldesktop.TogglDesktop;
 				PRODUCT_NAME = TogglDesktop;

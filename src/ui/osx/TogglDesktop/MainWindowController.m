@@ -20,7 +20,7 @@
 #import "TimelineDisplayCommand.h"
 #import "TimerEditViewController.h"
 
-@interface MainWindowController () <TouchBarServiceDelegate, InAppMessageViewControllerDelegate>
+@interface MainWindowController () <TouchBarServiceDelegate, NSWindowDelegate, InAppMessageViewControllerDelegate>
 @property (weak) IBOutlet NSView *contentView;
 @property (weak) IBOutlet NSView *mainView;
 @property (nonatomic, strong) LoginViewController *loginViewController;
@@ -88,6 +88,7 @@ extern void *ctx;
 - (void)windowDidLoad
 {
 	[super windowDidLoad];
+    self.window.delegate = self;
 
 	// Tracking the size of window after loaded
 	[self trackWindowSize];
@@ -102,7 +103,9 @@ extern void *ctx;
 
 - (void)initTouchBar
 {
-	[TouchBarService shared].delegate = self;
+    if (@available(macOS 10.12.2, *)) {
+        [TouchBarService shared].delegate = self;
+    }
 }
 
 - (void)initErrorView {
@@ -148,8 +151,12 @@ extern void *ctx;
 		[self.mainDashboardViewController.view removeFromSuperview];
 		[self.overlayViewController.view removeFromSuperview];
 
-		// Reset the data
-		[[TouchBarService shared] reset];
+		// Reset
+        if (@available(macOS 10.12.2, *)) 
+		{
+            [[TouchBarService shared] resetContent];
+        	[[TouchBarService shared] minimize];
+        }
 	}
 }
 
@@ -181,7 +188,10 @@ extern void *ctx;
 																		object:nil];
 
 			// Prepare the Touch bar
-			[[TouchBarService shared] prepareForPresent];
+            if (@available(macOS 10.12.2, *)) {
+                [[TouchBarService shared] prepareContent];
+            	[[TouchBarService shared] present];
+            }
 		}
 	}
 }
@@ -375,6 +385,31 @@ extern void *ctx;
 - (void)InAppMessageViewControllerShouldDismiss
 {
     [self.inappMessageView.view removeFromSuperview];
+}
+
+#pragma mark - NSWindowDelegate
+
+-(void)windowDidBecomeMain:(NSNotification *)notification
+{
+     if (@available(macOS 10.12.2, *))
+     {
+         if ([self.timeEntryListViewController.view superview] != nil)
+         {
+             [[TouchBarService shared] present];
+         }
+     }
+
+}
+
+- (void)windowDidResignMain:(NSNotification *)notification
+{
+    if (@available(macOS 10.12.2, *))
+    {
+        if ([self.timeEntryListViewController.view superview] != nil)
+        {
+            [[TouchBarService shared] minimize];
+        }
+    }
 }
 
 @end

@@ -113,7 +113,7 @@
          <string/>
         </property>
         <property name="frame">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
        </widget>
       </item>

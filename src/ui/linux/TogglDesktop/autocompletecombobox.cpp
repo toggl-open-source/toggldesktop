@@ -13,8 +13,11 @@ AutocompleteComboBox::AutocompleteComboBox(QWidget *parent)
     setEditable(true);
     completer->installEventFilter(this);
     listView->installEventFilter(this);
+    lineEdit()->installEventFilter(this);
+    lineEdit()->setFrame(false);
     completer->setModel(proxyModel);
     setCompleter(completer);
+    disconnect(completer, SIGNAL(highlighted(QString)), lineEdit(), nullptr);
     connect(listView, &AutocompleteListView::visibleChanged, this, &AutocompleteComboBox::onDropdownVisibleChanged);
     connect(lineEdit(), &QLineEdit::textEdited, proxyModel, &AutocompleteProxyModel::setFilterFixedString);
     connect(listView, &AutocompleteListView::selected, this, &AutocompleteComboBox::onDropdownSelected);
@@ -29,7 +32,17 @@ void AutocompleteComboBox::showPopup() {
 }
 
 bool AutocompleteComboBox::eventFilter(QObject *o, QEvent *e) {
-    if (e->type() == QEvent::KeyPress) {
+    // this is an ugly hack, this SHOULD happen in the FocusIn event but that actually never occurs
+    if (o == lineEdit()) {
+        auto retval = QComboBox::eventFilter(o, e);
+        disconnect(completer, SIGNAL(highlighted(QString)), lineEdit(), nullptr);
+        // there were text rendering glitches, this fixes the issue by forcing a repaint on every keypress
+        if (e->type() == QEvent::KeyPress) {
+            lineEdit()->repaint();
+        }
+        return retval;
+    }
+    else if (e->type() == QEvent::KeyPress) {
         auto ke = reinterpret_cast<QKeyEvent*>(e);
         switch (ke->key()) {
         case Qt::Key_Tab:
@@ -52,8 +65,6 @@ bool AutocompleteComboBox::eventFilter(QObject *o, QEvent *e) {
             }
             return true;
         }
-        case Qt::Key_Home:
-        case Qt::Key_End:
         case Qt::Key_PageDown:
         case Qt::Key_PageUp:
         case Qt::Key_Up:
@@ -69,7 +80,9 @@ bool AutocompleteComboBox::eventFilter(QObject *o, QEvent *e) {
             return true;
         }
     }
-    return QComboBox::eventFilter(o, e);
+    else {
+        return QComboBox::eventFilter(o, e);
+    }
 }
 
 AutocompleteView *AutocompleteComboBox::currentView() {
@@ -86,8 +99,6 @@ void AutocompleteComboBox::keyPressEvent(QKeyEvent *event) {
         }
         emit returnPressed();
         break;
-    case Qt::Key_Home:
-    case Qt::Key_End:
     case Qt::Key_PageDown:
     case Qt::Key_PageUp:
     case Qt::Key_Down:
@@ -104,7 +115,6 @@ void AutocompleteComboBox::keyPressEvent(QKeyEvent *event) {
 
 void AutocompleteComboBox::onDropdownVisibleChanged() {
     if (listView->isVisible()) {
-        oldLabel = currentText();
         proxyModel->setFilterFixedString(currentText());
     }
 }
@@ -117,13 +127,16 @@ void AutocompleteComboBox::onDropdownSelected(AutocompleteView *item) {
             emit billableChanged(item->Billable);
             emit tagsChanged(item->Tags);
             emit timeEntrySelected(item->Text);
+            setCurrentText(item->Description);
             break;
         case 1:
             emit projectSelected(item->ProjectLabel, item->ProjectID, item->ProjectColor, item->TaskLabel, item->TaskID);
             emit billableChanged(item->Billable);
+            setCurrentText(QString());
             break;
         case 2:
             emit projectSelected(item->Text, item->ProjectID, item->ProjectColor, QString(), 0);
+            setCurrentText(QString());
             break;
         default:
             break;
@@ -133,8 +146,6 @@ void AutocompleteComboBox::onDropdownSelected(AutocompleteView *item) {
 }
 
 void AutocompleteComboBox::cancelSelection() {
-    setCurrentText(oldLabel);
-    oldLabel = QString();
     listView->setVisible(false);
 }
 

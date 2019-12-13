@@ -20,7 +20,13 @@
 			icon = [NSImage imageNamed:@"AppIconActive"];
 			break;
 		case AppIconTypeDefault :
-			icon = [NSImage imageNamed:@"AppIcon"];
+            if (@available(macOS 10.12.0, *))
+            {
+                icon = [NSImage imageNamed:@"AppIcon"];
+            } else {
+                icon = [NSImage imageNamed:NSImageNameApplicationIcon];
+            }
+
 			break;
 	}
 

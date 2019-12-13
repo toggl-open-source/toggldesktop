@@ -12,7 +12,7 @@
 #import "IdleEvent.h"
 #import "UserNotificationCenter.h"
 
-@interface IdleNotificationWindowController () <IdleNotificationTouchBarDelegate>
+@interface IdleNotificationWindowController () <IdleNotificationTouchBarDelegate, NSWindowDelegate>
 
 @property (weak) IBOutlet NSTextField *idleSinceTextField;
 @property (weak) IBOutlet NSTextField *idleAmountTextField;
@@ -21,7 +21,7 @@
 @property (weak) IBOutlet NSButton *cancelButton;
 @property (weak) IBOutlet FlatButton *discardAndContinueButton;
 @property (weak) IBOutlet FlatButton *keepIdleTimeButton;
-@property (strong, nonatomic) IdleNotificationTouchBar *touchbar;
+@property (strong, nonatomic) IdleNotificationTouchBar *touchbar __OSX_AVAILABLE_STARTING(__MAC_10_12_2,__IPHONE_NA);
 
 @property (assign, nonatomic) BOOL isWaiting;
 
@@ -45,6 +45,8 @@ extern void *ctx;
 
 - (void)initCommon
 {
+    self.window.delegate = self;
+
 	// Style buttons
 	[self styleTransparentButton:self.addIdleTimeButton];
 	[self styleTransparentButton:self.discardAndContinueButton];
@@ -55,8 +57,11 @@ extern void *ctx;
 												 name:NSWindowDidBecomeKeyNotification
 											   object:nil];
 
-	self.touchbar = [[IdleNotificationTouchBar alloc] init];
-	self.touchbar.delegate = self;
+    if (@available(macOS 10.12.2, *))
+    {
+        self.touchbar = [[IdleNotificationTouchBar alloc] init];
+        self.touchbar.delegate = self;
+    }
 }
 
 - (void)dealloc
@@ -200,4 +205,17 @@ extern void *ctx;
 	}
 }
 
+- (void)windowDidBecomeKey:(NSNotification *)notification
+{
+    if (@available(macOS 10.12.2, *)) {
+        [[TouchBarService shared] dismiss];
+    }
+}
+
+- (void)windowDidResignKey:(NSNotification *)notification
+{
+    if (@available(macOS 10.12.2, *)) {
+        [[TouchBarService shared] present];
+    }
+}
 @end

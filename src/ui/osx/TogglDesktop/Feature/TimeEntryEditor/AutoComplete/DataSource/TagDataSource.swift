@@ -30,6 +30,13 @@ final class TagDataSource: AutoCompleteViewDataSource {
 
     // MARK: Override
 
+    override func render(with items: [Any]) {
+        let selection = tableView.selectedRowIndexes
+        super.render(with: items)
+        // Re-select previous selection because reloadData causes lost the user selection
+        tableView.selectRowIndexes(selection, byExtendingSelection: false)
+    }
+
     override func setup(with textField: AutoCompleteTextField) {
         super.setup(with: textField)
         tableView.allowsEmptySelection = true
