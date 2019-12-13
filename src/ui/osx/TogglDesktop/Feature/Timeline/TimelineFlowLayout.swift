@@ -267,9 +267,6 @@ extension TimelineFlowLayout {
             backgroundAttributes.append(view)
             backgroundIndex += 1
         }
-        for att in backgroundAttributes {
-            print("index \(att.indexPath?.section) frame \(att.frame)")
-        }
     }
 
     func calculateTimeEntryAttributes() {
