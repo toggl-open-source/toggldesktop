@@ -11,9 +11,10 @@
 #include "macosSpecific.h"
 #endif
 
-MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow)
+MainWindow::MainWindow(QWidget *parent)
+    : QMainWindow(parent)
+    , ui(new Ui::MainWindow)
+    , preferences_(new PreferencesDialog(this))
 {
     ui->setupUi(this);
     ui->centralwidget->engine()->rootContext()->setContextProperty("toggl", new TogglApi(nullptr));
@@ -41,7 +42,7 @@ void MainWindow::on_actionUpdateCheck_triggered() {
 }
 
 void MainWindow::on_actionPreferences_triggered() {
-    // TODO
+    preferences_->show();
 }
 
 void MainWindow::on_actionQuit_triggered() {

@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 
+#include "preferencesdialog.h"
+
 namespace Ui {
 class MainWindow;
 }
@@ -33,6 +35,8 @@ private slots:
     void on_actionLogout_triggered();
 private:
     Ui::MainWindow *ui;
+
+    PreferencesDialog *preferences_;
 };
 
 #endif // MAINWINDOW_H

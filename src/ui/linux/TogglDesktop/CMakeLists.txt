@@ -24,6 +24,7 @@ set(BINARY_SOURCE_FILES
     mainwindow.cpp
     networkmanagement.cpp
     powermanagement.cpp
+    preferencesdialog.cpp
     qmlobjectlist.cc
     settingsview.cpp
     singleapplication.cpp
@@ -37,6 +38,7 @@ set(BINARY_SOURCE_FILES
     # it's better to list UI files
     idlenotificationwidget.ui
     mainwindow.ui
+    preferencesdialog.ui
 )
 
 if (APPLE)
