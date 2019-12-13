@@ -188,8 +188,6 @@ extension TimelineDatasource: NSCollectionViewDataSource, NSCollectionViewDelega
             let view = collectionView.makeSupplementaryView(ofKind: kind,
                                                             withIdentifier: Constants.BackgroundViewID,
                                                             for: indexPath)
-            view.wantsLayer = true
-            view.layer?.backgroundColor = NSColor.brown.cgColor
             return view
         }
         return NSView()
