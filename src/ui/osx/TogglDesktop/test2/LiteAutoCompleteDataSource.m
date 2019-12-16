@@ -224,9 +224,9 @@ extern void *ctx;
 								}
 
 			                    // Add category title
-								if (item.Type != self.lastType)
+								int64_t itemType = (item.Type == 1) ? 2 : item.Type;
+								if (itemType != self.lastType)
 								{
-									int64_t itemType = (item.Type == 1) ? 2 : item.Type;
 									AutocompleteItem *it = [[AutocompleteItem alloc] init];
 									it.Type = -1;
 									it.Text = self.types[itemType];
@@ -295,9 +295,9 @@ extern void *ctx;
 						}
 
 			            // Add category title
-						if (item.Type != self.lastType)
+						int64_t itemType = (item.Type == 1) ? 2 : item.Type;
+						if (itemType != self.lastType)
 						{
-							int64_t itemType = (item.Type == 1) ? 2 : item.Type;
 							AutocompleteItem *it = [[AutocompleteItem alloc] init];
 							it.Type = -1;
 							it.Text = self.types[itemType];
