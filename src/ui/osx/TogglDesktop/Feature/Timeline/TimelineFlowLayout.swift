@@ -141,8 +141,7 @@ final class TimelineFlowLayout: NSCollectionViewFlowLayout {
             return dividerAttributes[safe: indexPath.section]
         }
         if elementKind == NSCollectionView.elementKindSectionHeader {
-            let index = (indexPath.item / 2) + 1
-            return backgroundAttributes[safe: index]
+            return backgroundAttributes[safe: indexPath.item]
         }
         return nil
     }
