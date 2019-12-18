@@ -490,10 +490,11 @@ void GUI::DisplayTimeline(
         TimelineDateAt().year(),
         TimelineDateAt().month(),
         TimelineDateAt().day());
+    int tzd = datetime.tzd();
 
     // Get all entires in this day (no chunk, no overlap)
     TogglTimeEntryView *first_entry = nullptr;
-    time_t start_day = datetime.timestamp().epochTime();
+    time_t start_day = datetime.timestamp().epochTime() - tzd;
     time_t end_day = start_day + 86400; // one day
     for (unsigned int i = 0; i < entries_list.size(); i++) {
         view::TimeEntry te = entries_list.at(i);
@@ -510,7 +511,7 @@ void GUI::DisplayTimeline(
     while (datetime.year() == TimelineDateAt().year()
             && datetime.month() == TimelineDateAt().month()
             && datetime.day() == TimelineDateAt().day()) {
-        time_t epoch_time = datetime.timestamp().epochTime();
+        time_t epoch_time = datetime.timestamp().epochTime() - tzd;
         time_t epoch_time_end = epoch_time + 900;
 
         // Create new chunk

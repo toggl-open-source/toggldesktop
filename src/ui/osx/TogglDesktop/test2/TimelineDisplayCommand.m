@@ -135,11 +135,10 @@
 			[activities addObject:activity];
 			_activity = _activity->Next;
 		}
-        NSInteger tzd = [NSTimeZone localTimeZone].secondsFromGMT;
 		self.open = open;
 		self.timelineDate = date;
-		self.start = startDay - tzd;
-		self.end = endDay - tzd;
+		self.start = startDay;
+		self.end = endDay;
 		self.timeEntries = [[timeEntries reverseObjectEnumerator] allObjects];
 		self.activities = [[activities reverseObjectEnumerator] allObjects];
 	}
