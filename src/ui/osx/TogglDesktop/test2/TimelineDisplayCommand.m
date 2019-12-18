@@ -65,8 +65,7 @@
 	self = [super init];
 	if (self)
 	{
-        NSInteger tzd = [NSTimeZone localTimeZone].secondsFromGMT;
-		self.started = view->Started + tzd;
+		self.started = view->Started;
 		if (view->StartTimeString)
 		{
 			self.startedTimeString = [NSString stringWithUTF8String:view->StartTimeString];

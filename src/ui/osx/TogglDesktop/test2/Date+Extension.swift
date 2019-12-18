@@ -13,7 +13,7 @@ extension Date {
     static func startOfDay(from timestamp: TimeInterval) -> TimeInterval {
         let date = Date(timeIntervalSince1970: timestamp)
         var calendar = Calendar.current
-        calendar.timeZone = TimeZone(abbreviation: "UTC")!
+        calendar.timeZone = TimeZone.current
         return calendar.startOfDay(for: date).timeIntervalSince1970
     }
 }

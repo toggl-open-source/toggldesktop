@@ -69,8 +69,7 @@ final class TimelineTimeEntry: TimelineBaseTimeEntry {
         } else {
             self.color = TimeEntryViewItem.defaultProjectColor()
         }
-        let tzd = Double(TimeZone.current.secondsFromGMT())
-        super.init(start: timeEntry.started.timeIntervalSince1970 + tzd,
-                   end: timeEntry.ended.timeIntervalSince1970 + tzd)
+        super.init(start: timeEntry.started.timeIntervalSince1970,
+                   end: timeEntry.ended.timeIntervalSince1970)
     }
 }
