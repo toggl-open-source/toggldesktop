@@ -4,6 +4,7 @@ set(CMAKE_CXX_FLAGS
 if(TOGGL_PRODUCTION_BUILD)
     add_definitions(
         -DAPP_ENVIRONMENT="production"
+        -DTOGGL_BUILD_TYPE="${TOGGL_BUILD_TYPE}"
         -DTOGGL_PRODUCTION_BUILD=1
     )
 else()

@@ -3,6 +3,11 @@
 #ifndef SRC_CONST_H_
 #define SRC_CONST_H_
 
+// used later in the file
+#ifndef TOGGL_BUILD_TYPE
+#define TOGGL_BUILD_TYPE ""
+#endif
+
 #define kOneSecondInMicros 1000000
 
 #define kMaxTimeEntryDurationSeconds 3596400
@@ -19,7 +24,7 @@
 #define kBetaChannelPercentage 25
 #define kTimelineChunkSeconds 900
 #define kEnterpriseInstall false
-#define kDebianPackage false
+#define kDebianPackage (TOGGL_BUILD_TYPE == std::string("deb"))
 #define kTimelineUploadIntervalSeconds 60
 #define kTimelineUploadMaxBackoffSeconds (kTimelineUploadIntervalSeconds * 10)  // NOLINT
 #define kMaxFileSize 5242880  // 5MB
