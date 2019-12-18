@@ -145,7 +145,7 @@ extension TimelineData {
             times.append(current)
             current += span
         }
-        return times.map { TimelineTimestamp($0) }
+        return times.map { TimelineTimestamp($0) }.dropLast() // don't render the last hour of next day
     }
 
     fileprivate func calculateColumnsPositionForTimeline() {
