@@ -65,7 +65,8 @@
 	self = [super init];
 	if (self)
 	{
-		self.started = view->Started;
+        NSInteger tzd = [NSTimeZone localTimeZone].secondsFromGMT;
+		self.started = view->Started + tzd;
 		if (view->StartTimeString)
 		{
 			self.startedTimeString = [NSString stringWithUTF8String:view->StartTimeString];
@@ -134,11 +135,11 @@
 			[activities addObject:activity];
 			_activity = _activity->Next;
 		}
-
+        NSInteger tzd = [NSTimeZone localTimeZone].secondsFromGMT;
 		self.open = open;
 		self.timelineDate = date;
-		self.start = startDay;
-		self.end = endDay;
+		self.start = startDay - tzd;
+		self.end = endDay - tzd;
 		self.timeEntries = [[timeEntries reverseObjectEnumerator] allObjects];
 		self.activities = [[activities reverseObjectEnumerator] allObjects];
 	}
