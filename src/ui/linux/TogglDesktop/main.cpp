@@ -107,10 +107,9 @@ int main(int argc, char *argv[]) try {
 
     a.w = w;
 
+    w->show();
     if (parser.isSet(forceOption)) {
-        w->hide();
-    } else {
-        w->show();
+        QTimer::singleShot(1, w, &MainWindowController::hide);
     }
     return a.exec();
 } catch (std::exception &e) {  // NOLINT
