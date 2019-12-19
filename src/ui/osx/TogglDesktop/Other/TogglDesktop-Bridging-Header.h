@@ -15,8 +15,6 @@
 #import "TimeEntryListViewController.h"
 #import "TimerEditViewController.h"
 #import "DisplayCommand.h"
-#import "TimelineChunkView.h"
-#import "TimelineEventView.h"
 #import "TimelineDisplayCommand.h"
 #import "TimeEntryCollectionView.h"
 #import "ConvertHexColor.h"

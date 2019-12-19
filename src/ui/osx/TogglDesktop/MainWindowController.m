@@ -10,7 +10,6 @@
 #import <Carbon/Carbon.h>
 #import "LoginViewController.h"
 #import "OverlayViewController.h"
-#import "TimelineViewController.h"
 #import "TimeEntryViewItem.h"
 #import "UIEvents.h"
 #import "DisplayCommand.h"

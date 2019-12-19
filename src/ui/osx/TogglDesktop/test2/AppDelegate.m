@@ -21,8 +21,6 @@
 #import "PreferencesWindowController.h"
 #import "Settings.h"
 #import "TimeEntryViewItem.h"
-#import "TimelineChunkView.h"
-#import "TimelineEventView.h"
 #import "UIEvents.h"
 #import "Utils.h"
 #import "ViewItem.h"

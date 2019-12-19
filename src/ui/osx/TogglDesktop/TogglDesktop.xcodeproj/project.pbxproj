@@ -119,28 +119,6 @@
 		BA13E05C21C7BA6000835EC1 /* UserNotificationCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = BA13E05921C7B9D900835EC1 /* UserNotificationCenter.m */; };
 		BA19FC21226DA079006D8741 /* DateCellViewItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA13D20D2269BAA600EB3833 /* DateCellViewItem.xib */; };
 		BA1FFE71231FB0F300EAD9DC /* PanelSwitcherButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA1FFE70231FB0F300EAD9DC /* PanelSwitcherButton.swift */; };
-		BA22EA00239E24EE003551B1 /* TimelineEventsListItem.m in Sources */ = {isa = PBXBuildFile; fileRef = BA22E9ED239E24EE003551B1 /* TimelineEventsListItem.m */; };
-		BA22EA01239E24EE003551B1 /* TimelineEventsListItem.m in Sources */ = {isa = PBXBuildFile; fileRef = BA22E9ED239E24EE003551B1 /* TimelineEventsListItem.m */; };
-		BA22EA02239E24EE003551B1 /* TimelineChunkViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA22E9F1239E24EE003551B1 /* TimelineChunkViewController.xib */; };
-		BA22EA03239E24EE003551B1 /* TimelineChunkViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA22E9F1239E24EE003551B1 /* TimelineChunkViewController.xib */; };
-		BA22EA04239E24EE003551B1 /* TimelineLines.m in Sources */ = {isa = PBXBuildFile; fileRef = BA22E9F2239E24EE003551B1 /* TimelineLines.m */; };
-		BA22EA05239E24EE003551B1 /* TimelineLines.m in Sources */ = {isa = PBXBuildFile; fileRef = BA22E9F2239E24EE003551B1 /* TimelineLines.m */; };
-		BA22EA06239E24EE003551B1 /* TimelineChunkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BA22E9F4239E24EE003551B1 /* TimelineChunkViewController.m */; };
-		BA22EA07239E24EE003551B1 /* TimelineChunkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BA22E9F4239E24EE003551B1 /* TimelineChunkViewController.m */; };
-		BA22EA08239E24EE003551B1 /* TimelineChunkView.m in Sources */ = {isa = PBXBuildFile; fileRef = BA22E9F5239E24EE003551B1 /* TimelineChunkView.m */; };
-		BA22EA09239E24EE003551B1 /* TimelineChunkView.m in Sources */ = {isa = PBXBuildFile; fileRef = BA22E9F5239E24EE003551B1 /* TimelineChunkView.m */; };
-		BA22EA0A239E24EE003551B1 /* TimelineChunkCircle.m in Sources */ = {isa = PBXBuildFile; fileRef = BA22E9F6239E24EE003551B1 /* TimelineChunkCircle.m */; };
-		BA22EA0B239E24EE003551B1 /* TimelineChunkCircle.m in Sources */ = {isa = PBXBuildFile; fileRef = BA22E9F6239E24EE003551B1 /* TimelineChunkCircle.m */; };
-		BA22EA0C239E24EE003551B1 /* TimelineEventView.m in Sources */ = {isa = PBXBuildFile; fileRef = BA22E9F9239E24EE003551B1 /* TimelineEventView.m */; };
-		BA22EA0D239E24EE003551B1 /* TimelineEventView.m in Sources */ = {isa = PBXBuildFile; fileRef = BA22E9F9239E24EE003551B1 /* TimelineEventView.m */; };
-		BA22EA0E239E24EE003551B1 /* TDBarChart.m in Sources */ = {isa = PBXBuildFile; fileRef = BA22E9FA239E24EE003551B1 /* TDBarChart.m */; };
-		BA22EA0F239E24EE003551B1 /* TDBarChart.m in Sources */ = {isa = PBXBuildFile; fileRef = BA22E9FA239E24EE003551B1 /* TDBarChart.m */; };
-		BA22EA10239E24EE003551B1 /* TimelineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BA22E9FB239E24EE003551B1 /* TimelineViewController.m */; };
-		BA22EA11239E24EE003551B1 /* TimelineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BA22E9FB239E24EE003551B1 /* TimelineViewController.m */; };
-		BA22EA12239E24EE003551B1 /* TimelineEventsListItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA22E9FD239E24EE003551B1 /* TimelineEventsListItem.xib */; };
-		BA22EA13239E24EE003551B1 /* TimelineEventsListItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA22E9FD239E24EE003551B1 /* TimelineEventsListItem.xib */; };
-		BA22EA14239E24EE003551B1 /* TimelineViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA22E9FF239E24EE003551B1 /* TimelineViewController.xib */; };
-		BA22EA15239E24EE003551B1 /* TimelineViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA22E9FF239E24EE003551B1 /* TimelineViewController.xib */; };
 		BA24E772230BDBB800B1D4B2 /* TimelineBaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA24E771230BDBB800B1D4B2 /* TimelineBaseCell.swift */; };
 		BA24E793230BE50600B1D4B2 /* TimelineActivityHoverController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA24E791230BE50600B1D4B2 /* TimelineActivityHoverController.swift */; };
 		BA24E794230BE50600B1D4B2 /* TimelineActivityHoverController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA24E792230BE50600B1D4B2 /* TimelineActivityHoverController.xib */; };
@@ -860,25 +838,6 @@
 		BA13E05921C7B9D900835EC1 /* UserNotificationCenter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = UserNotificationCenter.m; path = test2/UserNotificationCenter.m; sourceTree = SOURCE_ROOT; };
 		BA13E05A21C7B9D900835EC1 /* UserNotificationCenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = UserNotificationCenter.h; path = test2/UserNotificationCenter.h; sourceTree = SOURCE_ROOT; };
 		BA1FFE70231FB0F300EAD9DC /* PanelSwitcherButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PanelSwitcherButton.swift; sourceTree = "<group>"; };
-		BA22E9ED239E24EE003551B1 /* TimelineEventsListItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimelineEventsListItem.m; sourceTree = "<group>"; };
-		BA22E9EE239E24EE003551B1 /* TimelineChunkCircle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimelineChunkCircle.h; sourceTree = "<group>"; };
-		BA22E9EF239E24EE003551B1 /* TDBarChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDBarChart.h; sourceTree = "<group>"; };
-		BA22E9F0239E24EE003551B1 /* TimelineEventView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimelineEventView.h; sourceTree = "<group>"; };
-		BA22E9F1239E24EE003551B1 /* TimelineChunkViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimelineChunkViewController.xib; sourceTree = "<group>"; };
-		BA22E9F2239E24EE003551B1 /* TimelineLines.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimelineLines.m; sourceTree = "<group>"; };
-		BA22E9F3239E24EE003551B1 /* TimelineViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimelineViewController.h; sourceTree = "<group>"; };
-		BA22E9F4239E24EE003551B1 /* TimelineChunkViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimelineChunkViewController.m; sourceTree = "<group>"; };
-		BA22E9F5239E24EE003551B1 /* TimelineChunkView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimelineChunkView.m; sourceTree = "<group>"; };
-		BA22E9F6239E24EE003551B1 /* TimelineChunkCircle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimelineChunkCircle.m; sourceTree = "<group>"; };
-		BA22E9F7239E24EE003551B1 /* TimelineEventsListItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimelineEventsListItem.h; sourceTree = "<group>"; };
-		BA22E9F8239E24EE003551B1 /* TimelineLines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimelineLines.h; sourceTree = "<group>"; };
-		BA22E9F9239E24EE003551B1 /* TimelineEventView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimelineEventView.m; sourceTree = "<group>"; };
-		BA22E9FA239E24EE003551B1 /* TDBarChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDBarChart.m; sourceTree = "<group>"; };
-		BA22E9FB239E24EE003551B1 /* TimelineViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimelineViewController.m; sourceTree = "<group>"; };
-		BA22E9FC239E24EE003551B1 /* TimelineChunkView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimelineChunkView.h; sourceTree = "<group>"; };
-		BA22E9FD239E24EE003551B1 /* TimelineEventsListItem.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimelineEventsListItem.xib; sourceTree = "<group>"; };
-		BA22E9FE239E24EE003551B1 /* TimelineChunkViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimelineChunkViewController.h; sourceTree = "<group>"; };
-		BA22E9FF239E24EE003551B1 /* TimelineViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TimelineViewController.xib; sourceTree = "<group>"; };
 		BA24E771230BDBB800B1D4B2 /* TimelineBaseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineBaseCell.swift; sourceTree = "<group>"; };
 		BA24E791230BE50600B1D4B2 /* TimelineActivityHoverController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineActivityHoverController.swift; sourceTree = "<group>"; };
 		BA24E792230BE50600B1D4B2 /* TimelineActivityHoverController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimelineActivityHoverController.xib; sourceTree = "<group>"; };
@@ -1224,7 +1183,6 @@
 		69FC17FA17E6534400B96425 /* ui */ = {
 			isa = PBXGroup;
 			children = (
-				BA22E9EC239E24EE003551B1 /* Timeline */,
 				BA13E05B21C7B9F800835EC1 /* UserNotification */,
 				BAF87DDB21A3E1E700624EBE /* Extension */,
 				BAF50DF521A2A16D0090BA95 /* IconFactory */,
@@ -1491,32 +1449,6 @@
 				BA787D4E231E58C9003AD3AA /* Array+View.swift */,
 			);
 			path = Extensions;
-			sourceTree = "<group>";
-		};
-		BA22E9EC239E24EE003551B1 /* Timeline */ = {
-			isa = PBXGroup;
-			children = (
-				BA22E9ED239E24EE003551B1 /* TimelineEventsListItem.m */,
-				BA22E9EE239E24EE003551B1 /* TimelineChunkCircle.h */,
-				BA22E9EF239E24EE003551B1 /* TDBarChart.h */,
-				BA22E9F0239E24EE003551B1 /* TimelineEventView.h */,
-				BA22E9F1239E24EE003551B1 /* TimelineChunkViewController.xib */,
-				BA22E9F2239E24EE003551B1 /* TimelineLines.m */,
-				BA22E9F3239E24EE003551B1 /* TimelineViewController.h */,
-				BA22E9F4239E24EE003551B1 /* TimelineChunkViewController.m */,
-				BA22E9F5239E24EE003551B1 /* TimelineChunkView.m */,
-				BA22E9F6239E24EE003551B1 /* TimelineChunkCircle.m */,
-				BA22E9F7239E24EE003551B1 /* TimelineEventsListItem.h */,
-				BA22E9F8239E24EE003551B1 /* TimelineLines.h */,
-				BA22E9F9239E24EE003551B1 /* TimelineEventView.m */,
-				BA22E9FA239E24EE003551B1 /* TDBarChart.m */,
-				BA22E9FB239E24EE003551B1 /* TimelineViewController.m */,
-				BA22E9FC239E24EE003551B1 /* TimelineChunkView.h */,
-				BA22E9FD239E24EE003551B1 /* TimelineEventsListItem.xib */,
-				BA22E9FE239E24EE003551B1 /* TimelineChunkViewController.h */,
-				BA22E9FF239E24EE003551B1 /* TimelineViewController.xib */,
-			);
-			path = Timeline;
 			sourceTree = "<group>";
 		};
 		BA34F0DB22439BF300C27A15 /* TimeEntryEditor */ = {
@@ -2099,7 +2031,6 @@
 				3C50BCAC1C1F0574004BAE9E /* (null) in Resources */,
 				BA0140482257080F000E5B91 /* TagCellView.xib in Resources */,
 				BA9C2DFA224C7E77002AD2A1 /* ProjectCreationView.xib in Resources */,
-				BA22EA14239E24EE003551B1 /* TimelineViewController.xib in Resources */,
 				BA75FF2822BCC1FC00D3F08C /* TimelineTimeEntryCell.xib in Resources */,
 				BA412C29224E196D003CA17A /* NoClientCellView.xib in Resources */,
 				BA75FF2C22BCC20D00D3F08C /* TimelineActivityCell.xib in Resources */,
@@ -2107,9 +2038,7 @@
 				BA65A22122B7809300F895FD /* TimelineDashboardViewController.xib in Resources */,
 				7498D2481888B226001390B9 /* TimeEntryCell.xib in Resources */,
 				3C0158F01C7B414E00FE63AA /* LoadMoreCell.xib in Resources */,
-				BA22EA12239E24EE003551B1 /* TimelineEventsListItem.xib in Resources */,
 				BA13D21B2269E0B500EB3833 /* CalendarViewController.xib in Resources */,
-				BA22EA02239E24EE003551B1 /* TimelineChunkViewController.xib in Resources */,
 				74D1D27417EB72D900E709B0 /* TimerEditViewController.xib in Resources */,
 				3C1E013F19D2DAE300DBF9A5 /* dsa_pub.pem in Resources */,
 				BA75FF2422BCC1EA00D3F08C /* TimelineTimeLabelCell.xib in Resources */,
@@ -2122,7 +2051,6 @@
 			files = (
 				BAE64DFE2368334000244D2B /* ProjectHeaderCellView.xib in Resources */,
 				BAE64DFF2368334000244D2B /* ProjectWorksapceCellView.xib in Resources */,
-				BA22EA13239E24EE003551B1 /* TimelineEventsListItem.xib in Resources */,
 				BAE64E002368334000244D2B /* Images.xcassets in Resources */,
 				BA4A7D5223755A3D00A42095 /* TimeEntryScrubberItem.xib in Resources */,
 				BAE64E012368334000244D2B /* EditorViewController.xib in Resources */,
@@ -2157,8 +2085,6 @@
 				BAE64E1C2368334000244D2B /* AutoCompleteView.xib in Resources */,
 				BAE64E1D2368334000244D2B /* MainWindowController.xib in Resources */,
 				BAE64E1E2368334000244D2B /* ClientCellView.xib in Resources */,
-				BA22EA15239E24EE003551B1 /* TimelineViewController.xib in Resources */,
-				BA22EA03239E24EE003551B1 /* TimelineChunkViewController.xib in Resources */,
 				BAE64E1F2368334000244D2B /* FloatingErrorView.xib in Resources */,
 				BAE64E202368334000244D2B /* TimeEntryListViewController.xib in Resources */,
 				BAE64E212368334000244D2B /* (null) in Resources */,
@@ -2423,7 +2349,6 @@
 				BA65A21F22B7808700F895FD /* TimelineDashboardViewController.swift in Sources */,
 				BA75FF2F22BCC56C00D3F08C /* TimelineTimestamp.swift in Sources */,
 				BA13D2152269C01500EB3833 /* Date+Utils.swift in Sources */,
-				BA22EA0A239E24EE003551B1 /* TimelineChunkCircle.m in Sources */,
 				BA5B0E502330EA92008D1DED /* GoogleAuthenticationServer+Objc.swift in Sources */,
 				BAAF56A02223DF9A003D0D73 /* VertificalTimeEntryFlowLayout.swift in Sources */,
 				BA01E8A1232F77B3006B93EC /* ClickableImageView.m in Sources */,
@@ -2498,7 +2423,6 @@
 				BA0C3A6722321FBC0081C6DE /* AutoCompleteTableCell+Ext.swift in Sources */,
 				3C6B24A4203FC8200063FC08 /* LiteAutoCompleteDataSource.m in Sources */,
 				BAB818E5228D5A17008C2367 /* DescriptionDataSource.swift in Sources */,
-				BA22EA08239E24EE003551B1 /* TimelineChunkView.m in Sources */,
 				BA01404E22571081000E5B91 /* TagDataSource.swift in Sources */,
 				BAA0104C22CB59ED007C1541 /* Date+Extension.swift in Sources */,
 				BA6572A9224DFA6F00BA4C60 /* ColorGraphicsView.swift in Sources */,
@@ -2521,7 +2445,6 @@
 				BA84363B22533A6600EF5830 /* DesktopLibraryBridge.m in Sources */,
 				BA4059B9221D53E7002969B8 /* TimeEntryDatasource.swift in Sources */,
 				BA3E75D62229356D009AD291 /* SystemMessageView.swift in Sources */,
-				BA22EA10239E24EE003551B1 /* TimelineViewController.m in Sources */,
 				BA1FFE71231FB0F300EAD9DC /* PanelSwitcherButton.swift in Sources */,
 				BA013FF5225705B6000E5B91 /* HoverTableCellView.swift in Sources */,
 				BA4791F622F0478A00E24F79 /* NSView+LayoutConstraint.swift in Sources */,
@@ -2566,7 +2489,6 @@
 				BA412C27224E195C003CA17A /* NoClientCellView.swift in Sources */,
 				7423393C1829B99C00063FA9 /* IdleNotificationWindowController.m in Sources */,
 				BA4791F522F0478A00E24F79 /* NSView+Ext.swift in Sources */,
-				BA22EA06239E24EE003551B1 /* TimelineChunkViewController.m in Sources */,
 				BA01404A22570893000E5B91 /* Tag.swift in Sources */,
 				BA75FF3322BCC58000D3F08C /* TimelineActivity.swift in Sources */,
 				BAB818E9228D5A97008C2367 /* DescriptionContentCellView.swift in Sources */,
@@ -2587,7 +2509,6 @@
 				BA50ED8522705F9E008323FA /* CalendarFlowLayout.swift in Sources */,
 				BA6F81E422C5FB1E009B6828 /* TimelineTimeEntryHoverViewController.swift in Sources */,
 				BA75FF3C22BCE94100D3F08C /* TimelineDisplayCommand.m in Sources */,
-				BA22EA00239E24EE003551B1 /* TimelineEventsListItem.m in Sources */,
 				95C0707718CDB67300A34D0D /* NSCustomComboBoxCell.m in Sources */,
 				BA2807E02306A2FA001A9E48 /* NSWindowController+Focusable.swift in Sources */,
 				BAAF569E2223D4C7003D0D73 /* DotImageView.swift in Sources */,
@@ -2603,13 +2524,10 @@
 				BA412BFC224E0CBE003CA17A /* ClientStorage.swift in Sources */,
 				BA7B4C7C21C293E700B75B14 /* String+Optional.swift in Sources */,
 				BA6572A8224DFA6F00BA4C60 /* CurrentColorView.swift in Sources */,
-				BA22EA0E239E24EE003551B1 /* TDBarChart.m in Sources */,
 				BA4791F922F0478A00E24F79 /* Collection+Safe.swift in Sources */,
 				BA2DA12021A691FF0027B7A5 /* TrackingService.m in Sources */,
-				BA22EA0C239E24EE003551B1 /* TimelineEventView.m in Sources */,
 				3C6B2486203E01D90063FC08 /* AutoCompleteTableCell.m in Sources */,
 				BA4791FF22F0479200E24F79 /* VerticallyCenteredTextFieldCell.swift in Sources */,
-				BA22EA04239E24EE003551B1 /* TimelineLines.m in Sources */,
 				BA6572A6224DFA6F00BA4C60 /* RGB.swift in Sources */,
 				3CE30E022052BD8B00AF2E2A /* AutoCompleteTableContainer.m in Sources */,
 				BAB508E4237EA54500D3D468 /* ObjcSystemPermissionManager.swift in Sources */,
@@ -2630,7 +2548,6 @@
 			files = (
 				BAE64D562368334000244D2B /* AutocompleteItem.m in Sources */,
 				BAE64D572368334000244D2B /* Settings.m in Sources */,
-				BA22EA11239E24EE003551B1 /* TimelineViewController.m in Sources */,
 				BAE64D582368334000244D2B /* NSCustomComboBox.m in Sources */,
 				BAE64D592368334000244D2B /* NSTextFieldDuration.m in Sources */,
 				BAE64D5A2368334000244D2B /* UIEvents.m in Sources */,
@@ -2679,10 +2596,8 @@
 				BAE64D802368334000244D2B /* PreferencesWindowController.m in Sources */,
 				BAE64D812368334000244D2B /* NSTextFieldVerticallyAligned.m in Sources */,
 				BA4A7D5623755A4200A42095 /* TimeEntryScrubberItem.swift in Sources */,
-				BA22EA09239E24EE003551B1 /* TimelineChunkView.m in Sources */,
 				BAE64D822368334000244D2B /* DayLabel.swift in Sources */,
 				BAE64D832368334000244D2B /* NSSecureTextFieldVerticallyAligned.m in Sources */,
-				BA22EA0D239E24EE003551B1 /* TimelineEventView.m in Sources */,
 				BAE64D842368334000244D2B /* TimeEntryCell+Ext.swift in Sources */,
 				BAE64D852368334000244D2B /* (null) in Sources */,
 				BAE64D862368334000244D2B /* AutotrackerRuleItem.m in Sources */,
@@ -2745,7 +2660,6 @@
 				BAE64DBD2368334000244D2B /* ProjectDataSource.swift in Sources */,
 				BAE64DBE2368334000244D2B /* AutoCompleteRowView.swift in Sources */,
 				BA4A7D5523755A4200A42095 /* TouchBarService+Name.swift in Sources */,
-				BA22EA07239E24EE003551B1 /* TimelineChunkViewController.m in Sources */,
 				BAE64DBF2368334000244D2B /* (null) in Sources */,
 				BAE64DC02368334000244D2B /* ResizablePopover.swift in Sources */,
 				BAE64DC12368334000244D2B /* UndoManager.swift in Sources */,
@@ -2753,7 +2667,6 @@
 				BAE64DC32368334000244D2B /* CountryViewItem.m in Sources */,
 				BAE64DC42368334000244D2B /* CalendarViewController.swift in Sources */,
 				BAE64DC52368334000244D2B /* (null) in Sources */,
-				BA22EA0B239E24EE003551B1 /* TimelineChunkCircle.m in Sources */,
 				BAE64DC62368334000244D2B /* SystemService.m in Sources */,
 				BAE64DC72368334000244D2B /* AppIconFactory.m in Sources */,
 				BAE64DC82368334000244D2B /* ConvertHexColor.m in Sources */,
@@ -2781,13 +2694,11 @@
 				BAE64DDC2368334000244D2B /* DotImageView.swift in Sources */,
 				BAE64DDD2368334000244D2B /* TagAutoCompleteTextField.swift in Sources */,
 				BAE64DDE2368334000244D2B /* ProjectAutoCompleteTextField.swift in Sources */,
-				BA22EA05239E24EE003551B1 /* TimelineLines.m in Sources */,
 				BA4A7D5423755A4200A42095 /* TouchBarService.swift in Sources */,
 				BAE64DDF2368334000244D2B /* HSBGen.swift in Sources */,
 				BAA3107323CC476D008F2893 /* LayerBackedViewController.swift in Sources */,
 				BAE64DE02368334000244D2B /* GoogleAuthenticationServer.swift in Sources */,
 				BAE64DE12368334000244D2B /* WorkspaceCellView.swift in Sources */,
-				BA22EA01239E24EE003551B1 /* TimelineEventsListItem.m in Sources */,
 				BAE64DE22368334000244D2B /* NSView+Appearance.swift in Sources */,
 				BAE64DE32368334000244D2B /* idler.c in Sources */,
 				BAE64DE42368334000244D2B /* ProjectCreationView.swift in Sources */,
@@ -2800,7 +2711,6 @@
 				BAE64DEB2368334000244D2B /* AutoCompleteTableContainer.m in Sources */,
 				BAE64DEC2368334000244D2B /* AutoCompleteCellType.swift in Sources */,
 				BAE64DED2368334000244D2B /* UndoTextField.m in Sources */,
-				BA22EA0F239E24EE003551B1 /* TDBarChart.m in Sources */,
 				BAE64DEE2368334000244D2B /* ColorPickerView.swift in Sources */,
 				BAE64DEF2368334000244D2B /* FloatingErrorView.swift in Sources */,
 				BAE64DF02368334000244D2B /* LoginViewController.m in Sources */,
