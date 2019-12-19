@@ -303,8 +303,10 @@ extern void *ctx;
 
 	NSLog(@"TimeEntryListViewController displayTimeEntryEditor, thread %@", [NSThread currentThread]);
 
+    self.runningEdit = cmd.timeEntry.isRunning;
+
 	// Skip render if need
-	if (!self.isOpening)
+	if (!self.isOpening && !self.runningEdit)
 	{
 		return;
 	}
@@ -312,8 +314,6 @@ extern void *ctx;
 	TimeEntryViewItem *timeEntry = cmd.timeEntry;
 	if (cmd.open)
 	{
-		self.runningEdit = (cmd.timeEntry.duration_in_seconds < 0);
-
 		NSView *ofView = self.view;
 		TimeEntryCell *selectedCell = [self.collectionView getSelectedEntryCells].firstObject;
 		CGRect positionRect = [self positionRectForItem:selectedCell];
