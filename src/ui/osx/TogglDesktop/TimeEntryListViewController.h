@@ -9,6 +9,7 @@
 #import <Cocoa/Cocoa.h>
 
 @class TimerEditViewController;
+@class EditorPopover;
 
 @protocol TimeEntryListViewControllerDelegate <NSObject>
 
@@ -20,6 +21,7 @@
 @interface TimeEntryListViewController : NSViewController
 @property (weak, nonatomic) id<TimeEntryListViewControllerDelegate> delegate;
 @property (nonatomic, strong) TimerEditViewController *timerEditViewController;
+@property (nonatomic, strong) EditorPopover *timeEntrypopover;
 @property (nonatomic, assign, readonly) BOOL isEditorOpen;
 
 - (void)loadMoreIfNeedAtDate:(NSDate *)date;

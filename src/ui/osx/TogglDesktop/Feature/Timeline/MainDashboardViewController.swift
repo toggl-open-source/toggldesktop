@@ -37,7 +37,14 @@ final class MainDashboardViewController: NSViewController {
     @objc lazy var timeEntryController = TimeEntryListViewController(nibName: Constants.TimeEntryXibName, bundle: nil)
     @objc lazy var timelineController = TimelineDashboardViewController(nibName: Constants.TimelineXibName, bundle: nil)
     @objc lazy var timerController = TimerEditViewController(nibName: Constants.TimerXibName, bundle: nil)
-    
+    private lazy var editorPopover: EditorPopover = {
+        let popover = EditorPopover()
+        popover.animates = true
+//        popover.behavior = .semitransient
+        popover.prepareViewController()
+        return popover
+    }()
+
     // MARK: Variables
 
     private var currentTab = Tab.timeEntryList {
@@ -86,6 +93,8 @@ extension MainDashboardViewController {
         timeEntryController.delegate = self
         headerContainerView.applyShadow(color: .black, opacity: 0.1, radius: 6.0)
         timelineController.delegate = self
+        timeEntryController.timeEntrypopover = editorPopover
+        timelineController.editorPopover = editorPopover
     }
 
     fileprivate func initNotification() {

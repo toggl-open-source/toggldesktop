@@ -32,7 +32,6 @@ static NSString *kFrameKey = @"frame";
 @property (nonatomic, assign) BOOL runningEdit;
 @property (nonatomic, copy) NSString *lastSelectedGUID;
 @property (nonatomic, strong) TimeEntryEmptyView *emptyView;
-@property (nonatomic, strong) EditorPopover *timeEntrypopover;
 @property (nonatomic, assign) BOOL isOpening;
 @end
 
@@ -60,7 +59,6 @@ extern void *ctx;
 	[super viewDidLoad];
 
 	[self initCommon];
-	[self initEditorPopover];
 	[self initCollectionView];
 	[self initEmptyView];
 	[self initNotifications];
@@ -206,11 +204,6 @@ extern void *ctx;
 	[self.emptyViewContainerView addSubview:self.emptyView];
 	[self.emptyView edgesToSuperView];
 	self.emptyViewContainerView.hidden = YES;
-}
-
-- (void)initEditorPopover {
-	self.timeEntrypopover = [[EditorPopover alloc] init];
-	[self.timeEntrypopover prepareViewController];
 }
 
 - (void)startDisplayTimeEntryList:(NSNotification *)notification

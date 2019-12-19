@@ -63,13 +63,7 @@ final class TimelineDashboardViewController: NSViewController {
         activityHoverController.popover = popover
         return popover
     }()
-    private lazy var editorPopover: EditorPopover = {
-        let popover = EditorPopover()
-        popover.animates = false
-        popover.behavior = .semitransient
-        popover.prepareViewController()
-        return popover
-    }()
+    var editorPopover: EditorPopover!
 
     // MARK: View
     
@@ -117,7 +111,7 @@ final class TimelineDashboardViewController: NSViewController {
         let shouldScroll = datePickerView.currentDate != date
         datePickerView.currentDate = date
         datasource.render(timeline)
-        updatePositionOfEditorIfNeed()
+        //updatePositionOfEditorIfNeed()
         handleEmptyState(timeline)
 
         if shouldScroll {
@@ -236,19 +230,12 @@ extension TimelineDashboardViewController {
     @objc private func editorOnChangeNotification(_ noti: Notification) {
         guard isOpening,
             let cmd = noti.object as? DisplayCommand,
-            let timeEntry = cmd.timeEntry else { return }
-
-
-        //
-        guard cmd.open else {
-            return
-        }
-
-        editorPopover.setTimeEntry(timeEntry)
+            cmd.open else { return }
 
         if let timeEntry = cmd.timeEntry, timeEntry.isRunning() {
             guard let timerView = self.delegate?.timelineTimerView() else { return }
             let position = timerView.bounds
+            editorPopover.setTimeEntry(timeEntry)
             editorPopover.present(from: position, of: timerView, preferredEdge: .maxX)
         }
     }
