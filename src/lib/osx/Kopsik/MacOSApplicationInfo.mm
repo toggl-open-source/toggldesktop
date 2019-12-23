@@ -6,8 +6,6 @@
 //  Copyright © 2019 Toggl. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import <Foundation/NSProcessInfo.h>
 #import <AppKit/AppKit.h>
 #include <string.h>
 #include <iostream>
