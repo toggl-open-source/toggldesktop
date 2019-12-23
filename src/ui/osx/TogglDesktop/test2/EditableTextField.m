@@ -16,11 +16,13 @@
 
 - (void)textDidChange:(NSNotification *)notification
 {
+    [super textDidChange:notification];
     self.isTextChanged = YES;
 }
 
 - (void)textDidEndEditing:(NSNotification *)notification
 {
+    [super textDidEndEditing:notification];
     self.isTextChanged = NO;
 }
 
