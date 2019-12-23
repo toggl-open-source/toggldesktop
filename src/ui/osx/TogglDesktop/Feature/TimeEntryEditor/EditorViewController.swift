@@ -508,7 +508,7 @@ extension EditorViewController: NSTextFieldDelegate {
         guard let textField = obj.object as? NSTextField else { return }
 
         // Duration
-        if textField == durationTextField {
+        if textField == durationTextField && durationTextField.isTextChanged {
             durationTextFieldOnChange(self)
             return
         }

@@ -7,7 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "EditableTextField.h"
 
-@interface UndoTextField : NSTextField
+@interface UndoTextField : EditableTextField
 - (void)registerUndoWithValue:(NSString *_Nullable)value;
 @end
