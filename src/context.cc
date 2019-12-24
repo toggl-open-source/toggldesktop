@@ -3134,7 +3134,8 @@ error Context::SetTimeEntryProject(
     const std::string &GUID,
     const Poco::UInt64 task_id,
     const Poco::UInt64 project_id,
-    const std::string &project_guid) {
+    const std::string &project_guid,
+    const bool_t update_ui) {
     try {
         if (GUID.empty()) {
             return displayError(std::string(__FUNCTION__) + ": Missing GUID");

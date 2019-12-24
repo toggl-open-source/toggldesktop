@@ -1544,3 +1544,20 @@ void track_expand_all_days(void *context) {
     }
     app(context)->TrackExpandAllDays();
 }
+
+bool_t toggl_set_time_entry(
+    void *context,
+    const char_t *guid,
+    const char_t *description,
+    const uint64_t task_id,
+    const uint64_t project_id,
+    const char_t *project_guid,
+    const char_t *tags) {
+    if (app(context)->SetTimeEntryProject(to_string(guid), task_id, project_id, to_string(project_guid), false) != toggl::noError) {
+        return false;
+    }
+    if (app(context)->SetTimeEntryTags(to_string(guid), to_string(tags)) != toggl::noError) {
+        return false;
+    }
+    return toggl::noError == app(context)->SetTimeEntryDescription(to_string(guid), to_string(description));
+}
