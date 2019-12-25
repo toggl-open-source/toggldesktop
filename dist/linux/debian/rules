@@ -11,7 +11,7 @@ override_dh_shlibdeps:
 	export LD_LIBRARY_PATH=$(DEB_HOST_MULTIARCH)/toggldesktop:$LD_LIBRARY_PATH dh_shlibdeps
 
 override_dh_auto_configure:
-	dh_auto_configure -- -DTOGGL_VERSION=$(VERSION) -DTOGGL_PRODUCTION_BUILD=ON -DUSE_BUNDLED_LIBRARIES=ON -DCMAKE_INSTALL_RPATH="/usr/lib;/usr/lib/toggldesktop"
+	dh_auto_configure -- -DTOGGL_BUILD_TYPE="deb" -DTOGGL_VERSION=$(VERSION) -DTOGGL_PRODUCTION_BUILD=ON -DUSE_BUNDLED_LIBRARIES=ON -DCMAKE_INSTALL_RPATH="/usr/lib;/usr/lib/toggldesktop"
 
 override_dh_auto_install:
 	dh_auto_install

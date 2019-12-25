@@ -1212,7 +1212,7 @@ error Migrations::migrateSettings() {
     err = db_->Migrate(
         "settings.keep_end_time_fixed",
         "ALTER TABLE settings "
-        "ADD COLUMN keep_end_time_fixed INTEGER NOT NULL DEFAULT 0;");
+        "ADD COLUMN keep_end_time_fixed INTEGER NOT NULL DEFAULT 1;");
     if (err != noError) {
         return err;
     }

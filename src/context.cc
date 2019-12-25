@@ -1731,9 +1731,9 @@ error Context::fetchMessage(const bool periodic) {
 
 const std::string Context::linuxPlatformName() {
     if (kDebianPackage) {
-        return "deb64";
+        return "linux_deb64";
     }
-    return std::string("linux");
+    return std::string("linux_tar.gz");
 }
 
 const std::string Context::windowsPlatformName() {

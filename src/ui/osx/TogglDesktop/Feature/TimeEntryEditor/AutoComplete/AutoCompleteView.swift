@@ -116,10 +116,20 @@ final class AutoCompleteView: NSView {
 
         var height = height
         let screenFrame = window.convertToScreen(frame)
-        let topLeftY = screenFrame.origin.y + screenFrame.size.height
+
+        // Get the top left
+        // As screenFrame.origin.y is a bottom-left
+        var topLeftY = screenFrame.origin.y + screenFrame.size.height
+
+        // Add the offset in external monitor
+        // Because there is only one origin coordinate system, so in some external screen, the bottom-left origin could be negative value
+        // https://github.com/toggl-open-source/toggldesktop/issues/3524
+        topLeftY -= screen.frame.origin.y
+
+        // Exclude the system bar height
         let dockBarHeight = abs(screen.frame.height - screen.visibleFrame.height)
         var offset: CGFloat = createNewItemContainerView.isHidden ? 0 : Constants.CreateButtonHeight
-        offset += dockBarHeight // Exclude the bar height
+        offset += dockBarHeight
 
         // Reduce the size if the height is greater than screen
         if (height + offset) > topLeftY {
