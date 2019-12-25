@@ -12,6 +12,7 @@
 #import "AutocompleteItem.h"
 #import "Utils.h"
 #import "UIEvents.h"
+#import "TogglDesktop-Swift.h"
 
 @implementation DesktopLibraryBridge
 
@@ -201,6 +202,12 @@ void *ctx;
 - (void)enableTimelineRecord:(BOOL)isEnabled
 {
 	toggl_timeline_toggle_recording(ctx, isEnabled);
+
+    // Try to grant permission
+    if (isEnabled)
+    {
+        [ObjcSystemPermissionManager tryGrantScreenRecordingPermission];
+    }
 }
 
 - (void)timelineSetPreviousDate
