@@ -1108,8 +1108,8 @@ void *ctx;
 
 - (IBAction)onToggleRecordTimeline:(id)sender
 {
-	toggl_timeline_toggle_recording(ctx,
-									!toggl_timeline_is_recording_enabled(ctx));
+    BOOL isEnabled = !toggl_timeline_is_recording_enabled(ctx);
+    [[DesktopLibraryBridge shared] enableTimelineRecord:isEnabled];
 }
 
 - (IBAction)onModeChange:(id)sender
