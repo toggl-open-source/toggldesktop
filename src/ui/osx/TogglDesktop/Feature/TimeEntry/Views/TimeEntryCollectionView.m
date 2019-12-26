@@ -272,24 +272,17 @@ extern void *ctx;
 		return;
 	}
 
-    [self.undoManager registerUndoWithTarget:self selector:@selector(undoDeletedItem:) object:cell.item];
-    [self.undoManager setActionName:@"Undo delete Time Entry"];
-
 	// If description is empty and duration is less than 15 seconds delete without confirmation
 	if (cell.confirmless_delete)
 	{
-		if (toggl_delete_time_entry(ctx, [cell.GUID UTF8String]))
-		{
-			[self selectPreviousRowFromIndexPath:self.latestSelectedIndexPath];
-		}
+        [[DesktopLibraryBridge shared] deleteTimeEntryItem:cell.item undoManager:self.undoManager];
+        [self selectPreviousRowFromIndexPath:self.latestSelectedIndexPath];
 		return;
 	}
 
 	// Delete and select preview cell
-	if ([Utils deleteTimeEntryWithConfirmationWithGUID:cell.GUID title:cell.descriptionString])
-	{
-		[self selectPreviousRowFromIndexPath:self.latestSelectedIndexPath];
-	}
+    [[DesktopLibraryBridge shared] deleteTimeEntryItem:cell.item undoManager:self.undoManager];
+    [self selectPreviousRowFromIndexPath:self.latestSelectedIndexPath];
 }
 
 - (void)selectPreviousRowFromIndexPath:(NSIndexPath *)indexPath
@@ -342,11 +335,5 @@ extern void *ctx;
 							 scrollPosition:NSCollectionViewScrollPositionTop];
 		}
 	}
-}
-
-- (void) undoDeletedItem:(TimeEntryViewItem *) item
-{
-    // Create new item
-    
 }
 @end

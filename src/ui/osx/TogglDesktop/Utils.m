@@ -148,25 +148,6 @@ extern void *ctx;
 	return path;
 }
 
-+ (BOOL)deleteTimeEntryWithConfirmationWithGUID:(NSString *)guid title:(NSString *)title
-{
-	NSString *msg = [NSString stringWithFormat:@"Delete time entry \"%@\"?", title];
-
-	NSAlert *alert = [[NSAlert alloc] init];
-
-	[alert addButtonWithTitle:@"OK"];
-	[alert addButtonWithTitle:@"Cancel"];
-	[alert setMessageText:msg];
-	[alert setInformativeText:@"Deleted time entries cannot be restored."];
-	[alert setAlertStyle:NSWarningAlertStyle];
-	if ([alert runModal] != NSAlertFirstButtonReturn)
-	{
-		return NO;
-	}
-
-	return toggl_delete_time_entry(ctx, [guid UTF8String]);
-}
-
 /*
  * Returns whether or not an NSString represents a numeric value.
  * For more info see:  http://appliedsoftwaredesign.com/blog/iphone-sdk-nsstring-numeric/
