@@ -260,7 +260,7 @@ extern void *ctx;
 {
 	for (TimeEntryCell *cell in cells)
 	{
-		toggl_delete_time_entry(ctx, [cell.GUID UTF8String]);
+        [[DesktopLibraryBridge shared] deleteTimeEntryItem:cell.item undoManager:self.undoManager];
 	}
 	[self selectPreviousRowFromIndexPath:self.latestSelectedIndexPath];
 }
