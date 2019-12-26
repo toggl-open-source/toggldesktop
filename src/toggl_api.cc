@@ -1485,3 +1485,22 @@ void toggl_iam_click(void *context,
     }
     app(context)->TrackInAppMessage(type);
 }
+
+char_t *toggl_create_time_entry(void *context,
+                                const char_t *description,
+                                const char_t *duration,
+                                const uint64_t task_id,
+                                const uint64_t project_id,
+                                const char_t *project_guid,
+                                const char_t *tags,
+                                const char_t *start_time,
+                                const char_t *end_time,
+                                const int64_t start_date) {
+    char_t *guid = toggl_start(context, description, duration, task_id, project_id, project_guid, tags, false);
+    if (guid) {
+        toggl_set_time_entry_date(context, guid, start_date);
+        toggl_set_time_entry_start(context, guid, start_time);
+        toggl_set_time_entry_end(context, guid, end_time);
+    }
+    return nullptr;
+}
