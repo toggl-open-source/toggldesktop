@@ -309,18 +309,25 @@ void *ctx;
 - (NSString *)createNewTimeEntryWithOldTimeEntry:(TimeEntryViewItem *) item
 {
     NSString *tags = [item.tags componentsJoinedByString:@"\t"];
+    if (tags == nil) {
+        tags = @"";
+    }
     char *guid = toggl_create_time_entry(ctx,
                                          [item.Description UTF8String],
                                          [item.duration UTF8String],
                                          item.TaskID,
-                                         item.ProjectID, 0,
+                                         item.ProjectID,
+                                         0,
                                          [tags UTF8String],
                                          [item.startTimeString UTF8String],
                                          [item.endTimeString UTF8String],
                                          [item.started timeIntervalSince1970]);
-    NSString *GUID = [NSString stringWithUTF8String:guid];
-    free(guid);
-    return GUID;
+    if (guid != nil) {
+        NSString *GUID = [NSString stringWithUTF8String:guid];
+        free(guid);
+        return GUID;
+    }
+    return nil;
 }
 
 @end

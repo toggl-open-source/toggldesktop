@@ -1501,6 +1501,7 @@ char_t *toggl_create_time_entry(void *context,
         toggl_set_time_entry_date(context, guid, start_date);
         toggl_set_time_entry_start(context, guid, start_time);
         toggl_set_time_entry_end(context, guid, end_time);
+        return guid;
     }
     return nullptr;
 }
