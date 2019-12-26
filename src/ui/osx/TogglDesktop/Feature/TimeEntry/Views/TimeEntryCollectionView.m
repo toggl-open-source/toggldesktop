@@ -272,6 +272,9 @@ extern void *ctx;
 		return;
 	}
 
+    [self.undoManager registerUndoWithTarget:self selector:@selector(undoDeletedItem:) object:cell.item];
+    [self.undoManager setActionName:@"Undo delete Time Entry"];
+
 	// If description is empty and duration is less than 15 seconds delete without confirmation
 	if (cell.confirmless_delete)
 	{
@@ -341,4 +344,9 @@ extern void *ctx;
 	}
 }
 
+- (void) undoDeletedItem:(TimeEntryViewItem *) item
+{
+    // Create new item
+    
+}
 @end
