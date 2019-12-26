@@ -123,7 +123,7 @@
 	self.CanSeeBillable = te->CanSeeBillable;
 	if (te->WorkspaceName)
 	{
-		self.WorkspaceName = [NSString stringWithUTF8String:te->WorkspaceName];
+		self.WorkspaceName = [[NSString stringWithUTF8String:te->WorkspaceName] capitalizedString];
 	}
 	else
 	{
