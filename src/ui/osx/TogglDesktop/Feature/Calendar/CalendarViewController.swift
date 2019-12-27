@@ -11,6 +11,7 @@ import Cocoa
 protocol CalendarViewControllerDelegate: class {
 
     func calendarViewControllerDidSelect(date: Date)
+    func calendarViewControllerDoneBtnOnTap()
 }
 
 final class CalendarViewController: NSViewController {
@@ -103,11 +104,12 @@ final class CalendarViewController: NSViewController {
     }
 
     @IBAction func todayBtnOnTap(_ sender: Any) {
+        calendarDidSelect(Date())
     }
     
     @IBAction func doneBtnOnTap(_ sender: Any) {
+        delegate?.calendarViewControllerDoneBtnOnTap()
     }
-
 }
 
 // MARK: Private

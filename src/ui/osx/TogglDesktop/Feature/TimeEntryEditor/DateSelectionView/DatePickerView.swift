@@ -145,5 +145,9 @@ extension DatePickerView: CalendarViewControllerDelegate {
     func calendarViewControllerDidSelect(date: Date) {
         delegate?.datePickerOnChanged(self, date: date)
     }
+
+    func calendarViewControllerDoneBtnOnTap() {
+        calendarPopover.performClose(self)
+    }
 }
 
