@@ -22,6 +22,8 @@ final class CalendarViewController: NSViewController {
     @IBOutlet weak var clipView: NSClipView!
     @IBOutlet weak var stackViewTrailing: NSLayoutConstraint!
     @IBOutlet weak var dayStackView: NSStackView!
+    @IBOutlet weak var todayBtn: NSButton!
+    @IBOutlet weak var doneBtn: NSButton!
 
     // MARK: Variables
 
@@ -99,6 +101,13 @@ final class CalendarViewController: NSViewController {
             }
         }
     }
+
+    @IBAction func todayBtnOnTap(_ sender: Any) {
+    }
+    
+    @IBAction func doneBtnOnTap(_ sender: Any) {
+    }
+
 }
 
 // MARK: Private
