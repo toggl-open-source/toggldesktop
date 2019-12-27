@@ -4554,6 +4554,13 @@ void Context::displayPomodoro() {
                 return;
             }
         }
+
+        // At this state, the total duration > pomodoro time
+        // but we should skip if the user manually update start / duration time
+        if (current_te->ManualUpdateFromUser()) {
+            return;
+        }
+
         const Poco::Int64 pomodoroDuration = settings_.pomodoro_minutes * 60;
         wid = current_te->WID();
         Stop(true);

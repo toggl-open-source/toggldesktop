@@ -30,7 +30,8 @@ class TOGGL_INTERNAL_EXPORT TimeEntry : public BaseModel, public TimedEvent {
     , created_with_("")
     , project_guid_("")
     , unsynced_(false)
-    , last_start_at_(0) {}
+    , last_start_at_(0)
+    , manualUpdateFromUser(false) {}
 
     virtual ~TimeEntry() {}
 
@@ -106,6 +107,10 @@ class TOGGL_INTERNAL_EXPORT TimeEntry : public BaseModel, public TimedEvent {
 
     bool IsToday() const;
 
+    const bool &ManualUpdateFromUser() const {
+        return manualUpdateFromUser;
+    }
+
     const std::string &ProjectGUID() const {
         return project_guid_;
     }
@@ -157,6 +162,7 @@ class TOGGL_INTERNAL_EXPORT TimeEntry : public BaseModel, public TimedEvent {
     std::string project_guid_;
     bool unsynced_;
     Poco::Int64 last_start_at_;
+    bool manualUpdateFromUser;
 
     bool setDurationStringHHMMSS(const std::string &value);
     bool setDurationStringHHMM(const std::string &value);
