@@ -663,6 +663,10 @@ extension EditorViewController: CalendarViewControllerDelegate {
     func calendarViewControllerDidSelect(date: Date) {
         DesktopLibraryBridge.shared().updateTimeEntry(withStart: date, guid: timeEntry.guid)
     }
+
+    func calendarViewControllerDoneBtnOnTap() {
+        calendarPopover.performClose(self)
+    }
 }
 
 // MARK: Undo
