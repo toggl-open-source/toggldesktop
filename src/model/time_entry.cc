@@ -297,9 +297,6 @@ void TimeEntry::SetDurationInSeconds(const Poco::Int64 value) {
 
 void TimeEntry::SetStartUserInput(const std::string &value,
                                   const bool keepEndTimeFixed) {
-    // For skip Pomodoro
-    manualUpdateFromUser = true;
-
     Poco::Int64 start = Formatter::Parse8601(value);
     if (IsTracking()) {
         SetDurationInSeconds(-start);
@@ -324,9 +321,6 @@ void TimeEntry::SetStartString(const std::string &value) {
 }
 
 void TimeEntry::SetDurationUserInput(const std::string &value) {
-    // For skip Pomodoro
-    manualUpdateFromUser = true;
-
     int seconds = Formatter::ParseDurationString(value);
     if (IsTracking()) {
         time_t now = time(nullptr);
@@ -553,6 +547,10 @@ std::string TimeEntry::ModelURL() const {
     }
 
     return relative_url.str();
+}
+
+void TimeEntry::SetSkipPomodoro(const bool value) {
+    skipPomodoro = value;
 }
 
 }   // namespace toggl
