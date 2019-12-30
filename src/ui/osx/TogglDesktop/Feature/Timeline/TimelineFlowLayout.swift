@@ -33,6 +33,7 @@ final class TimelineFlowLayout: NSCollectionViewFlowLayout {
             static let LeftPadding: CGFloat = 65.0
             static let RightPadding: CGFloat = 10.0
             static let Width: CGFloat = 20.0
+            static let TrailingPadding: CGFloat = 8.0
         }
 
         struct Activity {
@@ -287,9 +288,10 @@ extension TimelineFlowLayout {
             // If overlap, increase the number of columns
             let col = flowDelegate?.columnForItem(at: indexPath) ?? 0
             let x = Constants.TimeEntry.LeftPadding + CGFloat(col) * (Constants.TimeEntry.Width + Constants.TimeEntry.RightPadding)
+            let width = getXDivider(at: TimelineData.Section.timeEntry) - x - Constants.TimeEntry.TrailingPadding
             frame = CGRect(x: x,
                            y: y,
-                           width: Constants.TimeEntry.Width,
+                           width: width,
                            height: height)
 
             // Finalize

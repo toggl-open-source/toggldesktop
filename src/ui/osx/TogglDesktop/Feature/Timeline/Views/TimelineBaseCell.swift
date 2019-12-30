@@ -30,7 +30,8 @@ class TimelineBaseCell: NSCollectionViewItem {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        backgroundBox.alphaValue = 0.8
+//        backgroundBox.wantsLayer = true
+//        backgroundBox.layer?.opacity = 0.4
     }
 
     override func prepareForReuse() {
@@ -53,7 +54,7 @@ class TimelineBaseCell: NSCollectionViewItem {
 
     func renderColor(with foregroundColor: NSColor, isSmallEntry: Bool) {
         foregroundBox.fillColor = foregroundColor
-        backgroundBox.fillColor = foregroundColor
+        backgroundBox.fillColor = foregroundColor.lighten(by: 0.1)
 
         let cornerRadius = suitableCornerRadius(isSmallEntry)
         foregroundBox.cornerRadius = cornerRadius
@@ -83,4 +84,15 @@ class TimelineBaseCell: NSCollectionViewItem {
         foregroundBox.addTrackingArea(tracking)
         foregroundBox.updateTrackingAreas()
     }
+}
+
+extension NSColor {
+    public func lighten(by percentage: CGFloat = 1.0) -> NSColor {
+         var r: CGFloat = 0, g: CGFloat = 0, b: CGFloat = 0, a: CGFloat = 0
+         self.getRed(&r, green: &g, blue: &b, alpha: &a)
+         return NSColor(red: r,
+                      green: g,
+                      blue: b,
+                      alpha: percentage)
+     }
 }
