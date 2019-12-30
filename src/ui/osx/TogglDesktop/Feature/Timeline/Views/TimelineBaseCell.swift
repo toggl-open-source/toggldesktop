@@ -18,7 +18,8 @@ class TimelineBaseCell: NSCollectionViewItem {
 
     // MARK: OUTLET
 
-    @IBOutlet weak var backgroundView: NSBox!
+    @IBOutlet weak var backgroundBox: NSBox!
+    @IBOutlet weak var foregroundBox: NSBox!
 
     // MARK: Variables
 
@@ -31,7 +32,7 @@ class TimelineBaseCell: NSCollectionViewItem {
         super.prepareForReuse()
 
         if let trackingArea = trackingArea {
-            backgroundView.removeTrackingArea(trackingArea)
+            foregroundBox.removeTrackingArea(trackingArea)
             self.trackingArea = nil
         }
         initTrackingArea()
@@ -45,28 +46,36 @@ class TimelineBaseCell: NSCollectionViewItem {
         mouseDelegate?.timelineCellMouseDidExited(self)
     }
 
-    func renderBackground(with color: NSColor, isSmallEntry: Bool) {
-        backgroundView.fillColor = color
+    func renderColor(with foregroundColor: NSColor, isSmallEntry: Bool) {
+        foregroundBox.fillColor = foregroundColor
+        backgroundBox.fillColor = foregroundColor
+
+        let cornerRadius = suitableCornerRadius(isSmallEntry)
+        foregroundBox.cornerRadius = cornerRadius
+        backgroundBox.cornerRadius = cornerRadius
+    }
+
+    private func suitableCornerRadius(_ isSmallEntry: Bool) -> CGFloat {
         if isSmallEntry {
-            backgroundView.cornerRadius = 1
-        } else {
-            // If the size is too smal
-            // It's better to reduce the corner radius
-            let height = view.frame.height
-            switch height {
-            case 0...2: backgroundView.cornerRadius = 1
-            case 2...5: backgroundView.cornerRadius = 2
-            case 5...20: backgroundView.cornerRadius = 5
-            default:
-                backgroundView.cornerRadius = 10
-            }
+            return 1
+        }
+
+        // If the size is too smal
+        // It's better to reduce the corner radius
+        let height = view.frame.height
+        switch height {
+        case 0...2: return 1
+        case 2...5: return 2
+        case 5...20: return 5
+        default:
+            return 10
         }
     }
 
     func initTrackingArea() {
         let tracking = NSTrackingArea(rect: view.bounds, options: [.mouseEnteredAndExited, .activeInActiveApp, .inVisibleRect], owner: self, userInfo: nil)
         self.trackingArea = tracking
-        backgroundView.addTrackingArea(tracking)
-        backgroundView.updateTrackingAreas()
+        foregroundBox.addTrackingArea(tracking)
+        foregroundBox.updateTrackingAreas()
     }
 }

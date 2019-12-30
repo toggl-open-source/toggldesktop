@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="15702" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14490.70"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15702"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -10,28 +10,47 @@
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customView id="Hz6-mo-xeY" customClass="CursorView" customModule="TogglDesktop" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="20" height="30"/>
+            <rect key="frame" x="0.0" y="0.0" width="190" height="30"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
+                <box horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" boxType="custom" borderType="none" borderWidth="0.0" cornerRadius="10" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="xE9-Ie-UP3">
+                    <rect key="frame" x="0.0" y="0.0" width="190" height="30"/>
+                    <view key="contentView" id="r80-dl-MpV">
+                        <rect key="frame" x="0.0" y="0.0" width="190" height="30"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    </view>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="190" id="JMq-e0-VVy"/>
+                    </constraints>
+                    <color key="fillColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                </box>
                 <box horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" boxType="custom" borderType="none" borderWidth="0.0" cornerRadius="10" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="ILd-N3-zAP">
                     <rect key="frame" x="0.0" y="0.0" width="20" height="30"/>
                     <view key="contentView" id="R5g-bh-G9v">
                         <rect key="frame" x="0.0" y="0.0" width="20" height="30"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     </view>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="20" id="kI4-ty-z79"/>
+                    </constraints>
                     <color key="fillColor" name="systemOrangeColor" catalog="System" colorSpace="catalog"/>
                 </box>
             </subviews>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="ILd-N3-zAP" secondAttribute="bottom" priority="750" id="1Mm-Za-otm"/>
-                <constraint firstAttribute="trailing" secondItem="ILd-N3-zAP" secondAttribute="trailing" priority="750" id="AaW-oM-uPq"/>
+                <constraint firstItem="xE9-Ie-UP3" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" priority="750" id="1VM-YB-XHD"/>
+                <constraint firstAttribute="trailing" secondItem="xE9-Ie-UP3" secondAttribute="trailing" priority="750" id="44W-4X-N3n"/>
+                <constraint firstItem="xE9-Ie-UP3" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" priority="750" id="Jj8-O9-hu6"/>
                 <constraint firstItem="ILd-N3-zAP" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" priority="750" id="ibj-8F-oO2"/>
+                <constraint firstAttribute="bottom" secondItem="xE9-Ie-UP3" secondAttribute="bottom" priority="750" id="pyj-Y7-31G"/>
                 <constraint firstItem="ILd-N3-zAP" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" priority="750" id="zP1-Vu-Sgm"/>
             </constraints>
+            <point key="canvasLocation" x="-8" y="133"/>
         </customView>
         <collectionViewItem identifier="TimelineTimeEntryCell" id="7AB-0R-5ZL" customClass="TimelineTimeEntryCell" customModule="TogglDesktop" customModuleProvider="target">
             <connections>
-                <outlet property="backgroundView" destination="ILd-N3-zAP" id="sR3-8k-Ucu"/>
+                <outlet property="backgroundBox" destination="xE9-Ie-UP3" id="VlS-Kl-W1W"/>
+                <outlet property="foregroundBox" destination="ILd-N3-zAP" id="FYH-LJ-fYB"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="KyO-gv-pek"/>
             </connections>
         </collectionViewItem>
