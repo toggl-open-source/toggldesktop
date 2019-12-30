@@ -31,6 +31,10 @@ class TimelineBaseTimeEntry {
         return col > 0
     }
 
+    var hasDetailInfo: Bool {
+        return col == 0 && group == 1
+    }
+
     init(start: TimeInterval, end: TimeInterval, offset: TimeInterval = 0) {
         self.start = start + offset
         self.end = end - offset

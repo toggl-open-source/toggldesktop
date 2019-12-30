@@ -63,6 +63,7 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
     func config(for timeEntry: TimelineTimeEntry) {
         self.timeEntry = timeEntry
         renderColor(with: timeEntry.color, isSmallEntry: timeEntry.isSmall)
+        populateInfo()
     }
 
     override func mouseEntered(with event: NSEvent) {
@@ -82,6 +83,46 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
             NSMenu.popUpContextMenu(timeEntryMenu, with: event, for: self.view)
         }
     }
+
+    private func populateInfo() {
+        guard let timeEntry = timeEntry else { return }
+        backgroundBox.isHidden = !timeEntry.hasDetailInfo
+        if timeEntry.hasDetailInfo {
+            let item = timeEntry.timeEntry
+
+            tagImageView.isHidden = item.tags?.isEmpty ?? true
+            billableImageView.isHidden = !item.billable
+            if let description = item.descriptionName, !description.isEmpty {
+                titleLbl.stringValue = description
+                titleLbl.toolTip = description
+            } else {
+                titleLbl.stringValue = "No Description"
+                titleLbl.toolTip = nil
+            }
+
+            // Projects
+            if let project = item.projectLabel, !project.isEmpty {
+                if let color = ConvertHexColor.hexCode(toNSColor: item.projectColor) {
+                    dotColorBox.isHidden = false
+                    dotColorBox.fill(with: color)
+                    projectLbl.textColor = color
+                } else {
+                    dotColorBox.isHidden = true
+                    projectLbl.textColor = NSColor.labelColor
+                }
+                projectLbl.stringValue = project
+                projectLbl.toolTip = project
+            } else {
+                dotColorBox.isHidden = true
+                projectLbl.stringValue = "No Project"
+                projectLbl.textColor = NSColor.labelColor
+                projectLbl.toolTip = nil
+            }
+
+            // Client
+            clientNameLbl.stringValue = item.clientLabel.isEmpty ? "No Client" : item.clientLabel
+        }
+     }
 }
 
 // MARK: Private
