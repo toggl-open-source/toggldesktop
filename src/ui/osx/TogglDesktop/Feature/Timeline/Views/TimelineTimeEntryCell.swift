@@ -51,7 +51,7 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
 
     func config(for timeEntry: TimelineTimeEntry) {
         self.timeEntry = timeEntry
-        renderBackground(with: timeEntry.color, isSmallEntry: timeEntry.isSmall)
+        renderColor(with: timeEntry.color, isSmallEntry: timeEntry.isSmall)
     }
 
     override func mouseEntered(with event: NSEvent) {
