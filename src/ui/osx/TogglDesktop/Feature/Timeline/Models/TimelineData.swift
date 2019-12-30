@@ -156,22 +156,28 @@ extension TimelineData {
             // Check if this time entry intersect with previous one
             // If overlap, increase the number of columns
             var col = 0
-            var isOverlap = false
+            var overlappedTimeEntry: TimelineBaseTimeEntry? = nil
             repeat {
 
                 // Travesal all previous TimeEntry, if it's overlapped -> return
                 // O(n) = n
                 // It's reasonal since the number of items is small
-                isOverlap = calculatedEntries.contains { timeEntry -> Bool in
+                overlappedTimeEntry = calculatedEntries.first { timeEntry -> Bool in
                     let isIntersected = entry.isIntersected(with: timeEntry)
                     return isIntersected && (timeEntry.col == col)
                 }
 
-                // If overlap -> Move to next column
-                if isOverlap {
+                // If overlap
+                if overlappedTimeEntry != nil {
+
+                    // Move to next column
                     col += 1
+
+                    // Set this TE is not a last column
+                    overlappedTimeEntry?.setIsLastColumn(false)
                 }
-            } while isOverlap
+
+            } while overlappedTimeEntry != nil
 
             // Group of entry
             // All overlap entries are same group
@@ -180,8 +186,8 @@ extension TimelineData {
             }
 
             // Exit the loop
-            entry.col = col
-            entry.group = group
+            entry.setColumn(col)
+            entry.setGroup(group)
             calculatedEntries.append(entry)
         }
 

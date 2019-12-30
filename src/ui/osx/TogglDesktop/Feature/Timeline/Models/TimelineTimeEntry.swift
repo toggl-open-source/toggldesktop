@@ -16,8 +16,17 @@ class TimelineBaseTimeEntry {
 
     let start: TimeInterval
     let end: TimeInterval
-    var group: Int = -1 // Group of overlap entries -> Help to resolve the overlap later
-    var col: Int = 0
+
+    // Group of overlap entries -> Help to resolve the overlap later
+    private(set) var group: Int = -1
+
+    // The number column of the Timeline Entry. The first col is 0
+    private(set) var col: Int = 0
+
+    // Determine if the TE is nearest the Right Column of Timeline view.
+    // To draw the More Info bubble
+    private(set) var isLastColumn = true
+
     var isOverlap: Bool {
         return col > 0
     }
@@ -43,6 +52,20 @@ class TimelineBaseTimeEntry {
         let currentRect = CGRect(x: 1, y: start, width: 1, height: abs(end - start))
         let entryRect = CGRect(x: 1, y: entry.start, width: 1, height: abs(entry.end - entry.start))
         return currentRect.intersects(entryRect)
+    }
+
+    // MARK: Setter
+
+    func setGroup(_ group: Int) {
+        self.group = group
+    }
+
+    func setColumn(_ col: Int) {
+        self.col = col
+    }
+
+    func setIsLastColumn(_ isLastColumn: Bool) {
+        self.isLastColumn = isLastColumn
     }
 }
 
