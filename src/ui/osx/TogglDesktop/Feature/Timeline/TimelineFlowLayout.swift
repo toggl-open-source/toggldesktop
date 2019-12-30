@@ -13,6 +13,7 @@ protocol TimelineFlowLayoutDelegate: class {
     func isEmptyTimeEntry(at indexPath: IndexPath) -> Bool
     func timechunkForItem(at indexPath: IndexPath) -> TimeChunk?
     func columnForItem(at indexPath: IndexPath) -> Int
+    func shouldDrawDetailBubble(at indexPath: IndexPath) -> Bool
 }
 
 final class TimelineFlowLayout: NSCollectionViewFlowLayout {
@@ -288,7 +289,13 @@ extension TimelineFlowLayout {
             // If overlap, increase the number of columns
             let col = flowDelegate?.columnForItem(at: indexPath) ?? 0
             let x = Constants.TimeEntry.LeftPadding + CGFloat(col) * (Constants.TimeEntry.Width + Constants.TimeEntry.RightPadding)
-            let width = getXDivider(at: TimelineData.Section.timeEntry) - x - Constants.TimeEntry.TrailingPadding
+            var width: CGFloat = 0
+            if let shouldDrawBubble = flowDelegate?.shouldDrawDetailBubble(at: indexPath), shouldDrawBubble == true {
+                width = getXDivider(at: TimelineData.Section.timeEntry) - x - Constants.TimeEntry.TrailingPadding
+            } else {
+                width = Constants.TimeEntry.Width
+            }
+
             frame = CGRect(x: x,
                            y: y,
                            width: width,

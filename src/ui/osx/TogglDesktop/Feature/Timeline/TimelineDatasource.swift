@@ -228,6 +228,11 @@ extension TimelineDatasource: TimelineFlowLayoutDelegate {
         guard let item = timeline?.item(at: indexPath) as? TimelineBaseTimeEntry else { return 0 }
         return item.col
     }
+
+    func shouldDrawDetailBubble(at indexPath: IndexPath) -> Bool {
+        guard let item = timeline?.item(at: indexPath) as? TimelineBaseTimeEntry else { return false }
+        return item.col == 0 && item.group == 1
+    }
 }
 
 // MARK: TimelineTimeEntryCellDelegate
