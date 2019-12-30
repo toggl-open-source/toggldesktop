@@ -39,6 +39,17 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
     private(set) var timeEntry: TimelineTimeEntry!
     private lazy var timeEntryMenu = TimelineTimeEntryMenu()
 
+    // MARK: OUTLET
+
+    @IBOutlet weak var titleLbl: NSTextField!
+    @IBOutlet weak var projectStackView: NSStackView!
+    @IBOutlet weak var dotColorBox: DotImageView!
+    @IBOutlet weak var projectLbl: ProjectTextField!
+    @IBOutlet weak var bottomStackView: NSStackView!
+    @IBOutlet weak var clientNameLbl: NSTextField!
+    @IBOutlet weak var billableImageView: NSImageView!
+    @IBOutlet weak var tagImageView: NSImageView!
+
     // MARK: View
 
     override func viewDidLoad() {
