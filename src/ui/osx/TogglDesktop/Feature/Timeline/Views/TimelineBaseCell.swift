@@ -88,11 +88,10 @@ class TimelineBaseCell: NSCollectionViewItem {
 
 extension NSColor {
     public func lighten(by percentage: CGFloat = 1.0) -> NSColor {
-         var r: CGFloat = 0, g: CGFloat = 0, b: CGFloat = 0, a: CGFloat = 0
-         self.getRed(&r, green: &g, blue: &b, alpha: &a)
-         return NSColor(red: r,
-                      green: g,
-                      blue: b,
+        guard let components = self.getRGBComponents() else { return self }
+        return NSColor(red: components.red,
+                       green: components.green,
+                       blue: components.blue,
                       alpha: percentage)
      }
 }
