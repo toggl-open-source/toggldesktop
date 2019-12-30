@@ -28,6 +28,11 @@ class TimelineBaseCell: NSCollectionViewItem {
 
     // MARK: Public
 
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        backgroundBox.alphaValue = 0.8
+    }
+
     override func prepareForReuse() {
         super.prepareForReuse()
 
