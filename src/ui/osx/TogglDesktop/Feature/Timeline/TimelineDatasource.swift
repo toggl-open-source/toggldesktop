@@ -208,6 +208,16 @@ extension TimelineDatasource: NSCollectionViewDataSource, NSCollectionViewDelega
             break
         }
     }
+
+    func collectionView(_ collectionView: NSCollectionView, willDisplay item: NSCollectionViewItem, forRepresentedObjectAt indexPath: IndexPath) {
+        switch item {
+        case let item as TimelineTimeEntryCell:
+            item.hideLabelComponents()
+
+        default:
+            break
+        }
+    }
 }
 
 // MARK: TimelineFlowLayoutDelegate
