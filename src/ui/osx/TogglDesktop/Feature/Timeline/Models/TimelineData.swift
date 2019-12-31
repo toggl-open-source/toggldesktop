@@ -191,6 +191,16 @@ extension TimelineData {
             calculatedEntries.append(entry)
         }
 
+        // Determine if the TE should has Detail Info
+        if group >= 0 {
+            for i in 0...group {
+                let entriesInSameGroup = timeEntries.filter { $0 is TimelineTimeEntry && $0.group == i }
+                if entriesInSameGroup.count == 1 {
+                    entriesInSameGroup.first?.setHasDetailInfo(true)
+                }
+            }
+        }
+
         // Add empty time entry
         // Only add if there is a gap between two entries
         if timeEntries.count >= 2 {
