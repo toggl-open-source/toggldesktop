@@ -31,9 +31,7 @@ class TimelineBaseTimeEntry {
         return col > 0
     }
 
-    var hasDetailInfo: Bool {
-        return col == 0 && group == 1
-    }
+    private(set) var hasDetailInfo = false
 
     init(start: TimeInterval, end: TimeInterval, offset: TimeInterval = 0) {
         self.start = start + offset
@@ -70,6 +68,10 @@ class TimelineBaseTimeEntry {
 
     func setIsLastColumn(_ isLastColumn: Bool) {
         self.isLastColumn = isLastColumn
+    }
+
+    func setHasDetailInfo(_ hasDetailInfo: Bool) {
+        self.hasDetailInfo = hasDetailInfo
     }
 }
 
