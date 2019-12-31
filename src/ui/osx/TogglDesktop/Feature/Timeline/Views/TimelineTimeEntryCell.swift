@@ -14,7 +14,7 @@ protocol TimelineTimeEntryCellDelegate: class {
     func timeEntryCellShouldChangeLastEntryStartTime(for entry: TimelineTimeEntry, sender: TimelineTimeEntryCell)
 }
 
-final class CursorView: NSView {
+final class CursorView: NSBox {
 
     var cursor: NSCursor? {
         didSet {
@@ -68,12 +68,12 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
 
     override func mouseEntered(with event: NSEvent) {
         super.mouseEntered(with: event)
-        view.resetCursorRects()
+        foregroundBox.resetCursorRects()
     }
 
     override func mouseExited(with event: NSEvent) {
         super.mouseExited(with: event)
-        view.resetCursorRects()
+        foregroundBox.resetCursorRects()
     }
 
     override func rightMouseDown(with event: NSEvent) {
@@ -131,7 +131,7 @@ extension TimelineTimeEntryCell {
 
     fileprivate func initCommon() {
         timeEntryMenu.menuDelegate = self
-        if let cursorView = view as? CursorView {
+        if let cursorView = foregroundBox as? CursorView {
             cursorView.cursor = NSCursor.pointingHand
         }
     }
