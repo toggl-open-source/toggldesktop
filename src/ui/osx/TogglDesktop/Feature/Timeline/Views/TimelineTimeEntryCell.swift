@@ -49,6 +49,7 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
     @IBOutlet weak var clientNameLbl: NSTextField!
     @IBOutlet weak var billableImageView: NSImageView!
     @IBOutlet weak var tagImageView: NSImageView!
+    @IBOutlet weak var iconStackView: NSStackView!
 
     // MARK: View
 
@@ -56,6 +57,13 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
         super.viewDidLoad()
         initCommon()
         initTrackingArea()
+    }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        titleLbl.isHidden = false
+        projectStackView.isHidden = false
+        bottomStackView.isHidden = false
     }
 
     // MARK: Public
@@ -87,42 +95,56 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
     private func populateInfo() {
         guard let timeEntry = timeEntry else { return }
         backgroundBox.isHidden = !timeEntry.hasDetailInfo
+
         if timeEntry.hasDetailInfo {
             let item = timeEntry.timeEntry
-
-            tagImageView.isHidden = item.tags?.isEmpty ?? true
-            billableImageView.isHidden = !item.billable
-            if let description = item.descriptionName, !description.isEmpty {
-                titleLbl.stringValue = description
-                titleLbl.toolTip = description
-            } else {
-                titleLbl.stringValue = "No Description"
-                titleLbl.toolTip = nil
-            }
-
-            // Projects
-            if let project = item.projectLabel, !project.isEmpty {
-                if let color = ConvertHexColor.hexCode(toNSColor: item.projectColor) {
-                    dotColorBox.isHidden = false
-                    dotColorBox.fill(with: color)
-                    projectLbl.textColor = color
-                } else {
-                    dotColorBox.isHidden = true
-                    projectLbl.textColor = NSColor.labelColor
-                }
-                projectLbl.stringValue = project
-                projectLbl.toolTip = project
-            } else {
-                dotColorBox.isHidden = true
-                projectLbl.stringValue = "No Project"
-                projectLbl.textColor = NSColor.labelColor
-                projectLbl.toolTip = nil
-            }
-
-            // Client
-            clientNameLbl.stringValue = item.clientLabel.isEmpty ? "No Client" : item.clientLabel
+            updateLabels(item)
+            hideLabelComponents()
         }
      }
+
+    private func hideLabelComponents() {
+        let components: [NSView] = [titleLbl, projectStackView, bottomStackView]
+        for view in components {
+            let bottomFrame = CGRect(x: 0, y: 0, width: view.frame.width, height: 12)
+            let isContain = view.frame.intersects(bottomFrame)
+            view.isHidden = isContain
+        }
+    }
+
+    private func updateLabels(_ item: TimeEntryViewItem) {
+        tagImageView.isHidden = item.tags?.isEmpty ?? true
+        billableImageView.isHidden = !item.billable
+        if let description = item.descriptionName, !description.isEmpty {
+            titleLbl.stringValue = description
+            titleLbl.toolTip = description
+        } else {
+            titleLbl.stringValue = "No Description"
+            titleLbl.toolTip = nil
+        }
+
+        // Projects
+        if let project = item.projectLabel, !project.isEmpty {
+            if let color = ConvertHexColor.hexCode(toNSColor: item.projectColor) {
+                dotColorBox.isHidden = false
+                dotColorBox.fill(with: color)
+                projectLbl.textColor = color
+            } else {
+                dotColorBox.isHidden = true
+                projectLbl.textColor = NSColor.labelColor
+            }
+            projectLbl.stringValue = project
+            projectLbl.toolTip = project
+        } else {
+            dotColorBox.isHidden = true
+            projectLbl.stringValue = "No Project"
+            projectLbl.textColor = NSColor.labelColor
+            projectLbl.toolTip = nil
+        }
+
+        // Client
+        clientNameLbl.stringValue = item.clientLabel.isEmpty ? "No Client" : item.clientLabel
+    }
 }
 
 // MARK: Private
