@@ -61,9 +61,9 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
 
     override func prepareForReuse() {
         super.prepareForReuse()
-        titleLbl.isHidden = false
-        projectStackView.isHidden = false
-        bottomStackView.isHidden = false
+//        titleLbl.isHidden = false
+//        projectStackView.isHidden = false
+//        bottomStackView.isHidden = false
     }
 
     // MARK: Public
@@ -99,15 +99,25 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
         if timeEntry.hasDetailInfo {
             let item = timeEntry.timeEntry
             updateLabels(item)
-            hideLabelComponents()
         }
      }
 
-    private func hideLabelComponents() {
+    func hideLabelComponents() {
+        guard let timeEntry = timeEntry,
+            timeEntry.hasDetailInfo else { return }
+
+        // Force update frame
+        view.setNeedsDisplay(view.frame)
+        view.displayIfNeeded()
+
+        // Hide if it too small
+        backgroundBox.isHidden = view.frame.height <= 10
+
+        // Hide if some views is out of bounds
         let components: [NSView] = [titleLbl, projectStackView, bottomStackView]
         for view in components {
-            let bottomFrame = CGRect(x: 0, y: 0, width: view.frame.width, height: 12)
-            let isContain = view.frame.intersects(bottomFrame)
+            let bottomFrame = CGRect(x: 0, y: 0, width: view.frame.width, height: 5)
+            let isContain = view.frame.intersects(bottomFrame) || view.frame.origin.y < 0
             view.isHidden = isContain
         }
     }
