@@ -149,6 +149,7 @@
                 <outlet property="clientNameLbl" destination="Ypi-B4-1IQ" id="CWd-5X-D9a"/>
                 <outlet property="dotColorBox" destination="IRd-GO-o1l" id="e83-2k-O8A"/>
                 <outlet property="foregroundBox" destination="ILd-N3-zAP" id="FYH-LJ-fYB"/>
+                <outlet property="iconStackView" destination="PyM-uW-hFa" id="iwc-5a-pK9"/>
                 <outlet property="projectLbl" destination="euI-fo-hqA" id="tZs-ru-phr"/>
                 <outlet property="projectStackView" destination="Azu-a1-gfT" id="MiD-AE-fBP"/>
                 <outlet property="tagImageView" destination="qtZ-fn-lLE" id="36s-n9-HL8"/>
