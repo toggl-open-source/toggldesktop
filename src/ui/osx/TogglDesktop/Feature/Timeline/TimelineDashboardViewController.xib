@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="15702" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14490.70"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15702"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -39,7 +39,7 @@
                             <color key="fillColor" name="timeline-top-view-background-color"/>
                         </box>
                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="oEw-Jd-lIP">
-                            <rect key="frame" x="8" y="55" width="101" height="18"/>
+                            <rect key="frame" x="8" y="56" width="101" height="17"/>
                             <textFieldCell key="cell" lineBreakMode="clipping" title="Record activity" id="x0y-gM-oPn">
                                 <font key="font" metaFont="menu" size="14"/>
                                 <color key="textColor" name="timeline-time-label-color"/>
@@ -57,7 +57,7 @@
                             </connections>
                         </customView>
                         <customView translatesAutoresizingMaskIntoConstraints="NO" id="wlf-0e-ttW">
-                            <rect key="frame" x="10" y="13" width="349" height="30"/>
+                            <rect key="frame" x="10" y="14" width="349" height="30"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="30" id="dza-G1-J0f"/>
                             </constraints>
@@ -194,7 +194,7 @@
                             </scroller>
                         </scrollView>
                         <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="L7J-Lq-Z7U">
-                            <rect key="frame" x="113" y="180" width="144" height="51"/>
+                            <rect key="frame" x="113" y="181" width="144" height="48"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="140" id="mdj-ct-y7d"/>
                             </constraints>
@@ -205,7 +205,7 @@
                             </textFieldCell>
                         </textField>
                         <textField hidden="YES" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="3EE-on-mJF">
-                            <rect key="frame" x="327" y="287" width="252" height="17"/>
+                            <rect key="frame" x="327" y="287" width="252" height="16"/>
                             <textFieldCell key="cell" alignment="center" title="Turn on activity recording to see results." id="PUb-OL-l5z">
                                 <font key="font" metaFont="system"/>
                                 <color key="textColor" name="timeline-time-label-color"/>
@@ -244,7 +244,7 @@
         <image name="NSAddTemplate" width="11" height="11"/>
         <image name="NSRemoveTemplate" width="11" height="11"/>
         <namedColor name="timeline-background-color">
-            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.98039215686274506" green="0.98431372549019602" blue="0.9882352941176471" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="timeline-label-color">
             <color red="0.67450980392156867" green="0.67450980392156867" blue="0.67450980392156867" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
