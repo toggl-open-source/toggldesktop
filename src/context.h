@@ -622,7 +622,6 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     error applySettingsSaveResultToUI(const error &err);
 
     error pullAllUserData(TogglClient *https_client);
-    error pullChanges(TogglClient *https_client);
     error pullUserPreferences(
         const TogglClient& toggl_client);
     error pullAllPreferencesData(const TogglClient& toggl_client);
