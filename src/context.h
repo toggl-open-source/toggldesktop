@@ -624,8 +624,8 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     error pullAllUserData(TogglClient *https_client);
     error pullChanges(TogglClient *https_client);
     error pullUserPreferences(
-        TogglClient* toggl_client);
-    error pullAllPreferencesData(TogglClient* toggl_client);
+        const TogglClient& toggl_client);
+    error pullAllPreferencesData(const TogglClient& toggl_client);
 
     error pushChanges(
         TogglClient *https_client,
@@ -673,8 +673,8 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
 
     error pullWorkspaces(TogglClient* toggl_client);
 
-    error pullWorkspacePreferences(TogglClient* https_client);
-    error pullWorkspacePreferences(TogglClient* https_client,
+    error pullWorkspacePreferences(const TogglClient& https_client);
+    error pullWorkspacePreferences(const TogglClient& toggl_client,
                                    Workspace *workspace, std::string* json);
 
     error pushObmAction();

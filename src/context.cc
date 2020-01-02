@@ -2451,12 +2451,12 @@ error Context::Login(
             return displayError(err);
         }
 
-        err = pullWorkspacePreferences(&client);
+        err = pullWorkspacePreferences(client);
         if (err != noError) {
             return displayError(err);
         }
 
-        err = pullUserPreferences(&client);
+        err = pullUserPreferences(client);
         if (err != noError) {
             return displayError(err);
         }
@@ -4743,7 +4743,7 @@ void Context::syncerActivity() {
                 }
 
                 if (trigger_full_sync_) {
-                    err = pullAllPreferencesData(&client);
+                    err = pullAllPreferencesData(client);
                     if (err != noError) {
                         displayError(err);
                     }
@@ -4915,7 +4915,7 @@ void Context::SetLogPath(const std::string &path) {
 }
 
 error Context::pullAllPreferencesData(
-    TogglClient* toggl_client) {
+    const TogglClient& toggl_client) {
     {
         Poco::Mutex::ScopedLock lock(user_m_);
         if (!user_) {
@@ -5318,7 +5318,7 @@ error Context::pushEntries(
 
             // if time entry is locked pull the updated info about locked reports in the workspaces
             if ((*it)->isLocked(resp.body)) {
-                pullWorkspacePreferences(&toggl_client);
+                pullWorkspacePreferences(toggl_client);
                 displayError(save(false));
             }
 
@@ -5631,7 +5631,7 @@ error Context::pullWorkspaces(TogglClient* toggl_client) {
     return noError;
 }
 
-error Context::pullWorkspacePreferences(TogglClient* toggl_client) {
+error Context::pullWorkspacePreferences(const TogglClient& toggl_client) {
     std::vector<Workspace*> workspaces;
     {
         Poco::Mutex::ScopedLock lock(user_m_);
@@ -5671,7 +5671,7 @@ error Context::pullWorkspacePreferences(TogglClient* toggl_client) {
 }
 
 error Context::pullWorkspacePreferences(
-    TogglClient* toggl_client,
+    const TogglClient& toggl_client,
     Workspace* workspace,
     std::string* json) {
 
@@ -5693,7 +5693,7 @@ error Context::pullWorkspacePreferences(
         req.basic_auth_username = api_token;
         req.basic_auth_password = "api_token";
 
-        HTTPSResponse resp = toggl_client->Get(req);
+        HTTPSResponse resp = toggl_client.Get(req);
         if (resp.err != noError) {
             return resp.err;
         }
@@ -5713,7 +5713,7 @@ error Context::pullWorkspacePreferences(
 }
 
 error Context::pullUserPreferences(
-    TogglClient* toggl_client) {
+    const TogglClient& toggl_client) {
     std::string api_token = user_->APIToken();
 
     if (api_token.empty()) {
@@ -5729,7 +5729,7 @@ error Context::pullUserPreferences(
         req.basic_auth_username = api_token;
         req.basic_auth_password = "api_token";
 
-        HTTPSResponse resp = toggl_client->Get(req);
+        HTTPSResponse resp = toggl_client.Get(req);
         if (resp.err != noError) {
             return resp.err;
         }
