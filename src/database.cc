@@ -51,7 +51,7 @@ Database::Database(const std::string &db_path)
     session_ = new Poco::Data::Session("SQLite", db_path);
 
     {
-        int is_sqlite_threadsafe = sqlite3_threadsafe();
+        int is_sqlite_threadsafe = Poco::Data::SQLite::Utility::isThreadSafe();
 
         std::stringstream ss;
         ss << "sqlite3_threadsafe()=" << is_sqlite_threadsafe;
