@@ -77,7 +77,7 @@ extension NSColor {
     }
 
     public func lighten(by percentage: CGFloat = 1.0) -> NSColor {
-        guard let components = self.getRGBComponents() else { return self }
+        guard let components = self.getRGBComponents() else { return NSColor(deviceWhite: 0, alpha: percentage) }
         return NSColor(red: components.red,
                        green: components.green,
                        blue: components.blue,

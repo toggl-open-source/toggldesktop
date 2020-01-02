@@ -38,6 +38,8 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
     weak var delegate: TimelineTimeEntryCellDelegate?
     private(set) var timeEntry: TimelineTimeEntry!
     private lazy var timeEntryMenu = TimelineTimeEntryMenu()
+    private var hasClient = false
+    private var hasProject = false
 
     // MARK: OUTLET
 
@@ -45,12 +47,10 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
     @IBOutlet weak var projectStackView: NSStackView!
     @IBOutlet weak var dotColorBox: DotImageView!
     @IBOutlet weak var projectLbl: ProjectTextField!
-    @IBOutlet weak var timeStackView: NSView!
     @IBOutlet weak var clientNameLbl: NSTextField!
     @IBOutlet weak var billableImageView: NSImageView!
     @IBOutlet weak var tagImageView: NSImageView!
     @IBOutlet weak var iconStackView: NSStackView!
-    @IBOutlet weak var dateLbl: NSTextField!
     @IBOutlet weak var durationLbl: NSTextField!
     @IBOutlet weak var mainStackView: NSStackView!
 
@@ -95,11 +95,11 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
         if timeEntry.hasDetailInfo {
             let item = timeEntry.timeEntry
             updateLabels(item)
-            hideLabelComponents()
+            hideOutOfBoundControls()
         }
      }
 
-    func hideLabelComponents() {
+    func hideOutOfBoundControls() {
         guard let timeEntry = timeEntry,
             timeEntry.hasDetailInfo else { return }
 
@@ -107,13 +107,13 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
         backgroundBox.isHidden = view.frame.height <= 10
 
         // Set initial state
-        let topPadding: CGFloat = 10
+        let topPadding: CGFloat = 5
         let bottomBarHeight: CGFloat = 5
         let bubbleHeight = self.view.frame.height
-        let components: [NSView] = [titleLbl, projectStackView, clientNameLbl, iconStackView, timeStackView]
-        for view in components {
-            view.isHidden = false
-        }
+        let components: [NSView] = [titleLbl, projectStackView, clientNameLbl, iconStackView]
+//        for view in components {
+//            view.isHidden = false
+//        }
 
         // Force update frame
         view.setNeedsDisplay(view.frame)
@@ -123,17 +123,27 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
         for view in components {
             let bottomFrame = CGRect(x: 0, y: mainStackView.frame.height - bubbleHeight + topPadding, width: self.view.frame.width, height: bottomBarHeight)
             let isContain = view.frame.intersects(bottomFrame) || view.frame.origin.y <= bottomFrame.origin.y
-            view.isHidden = isContain
+
+            if view === projectStackView {
+                if hasProject {
+                    view.isHidden = isContain
+                }
+            } else if view === clientNameLbl {
+                if hasClient {
+                    view.isHidden = isContain
+                }
+            } else {
+                view.isHidden = isContain
+            }
         }
     }
 
     private func updateLabels(_ item: TimeEntryViewItem) {
-        dateLbl.stringValue = "\(item.startTimeString ?? "") - \(item.endTimeString ?? "")"
         durationLbl.stringValue = item.duration
         tagImageView.isHidden = item.tags?.isEmpty ?? true
         billableImageView.isHidden = !item.billable
-        iconStackView.isHidden = !(tagImageView.isHidden && billableImageView.isHidden)
 
+        // Desciption
         if let description = item.descriptionName, !description.isEmpty {
             titleLbl.stringValue = description
             titleLbl.toolTip = description
@@ -144,6 +154,7 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
 
         // Projects
         if let project = item.projectLabel, !project.isEmpty {
+            projectStackView.isHidden = false
             if let color = ConvertHexColor.hexCode(toNSColor: item.projectColor) {
                 dotColorBox.isHidden = false
                 dotColorBox.fill(with: color)
@@ -155,14 +166,18 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
             projectLbl.stringValue = project
             projectLbl.toolTip = project
         } else {
-            dotColorBox.isHidden = true
-            projectLbl.stringValue = "No Project"
-            projectLbl.textColor = NSColor.labelColor
-            projectLbl.toolTip = nil
+            projectStackView.isHidden = true
         }
 
         // Client
-        clientNameLbl.stringValue = item.clientLabel.isEmpty ? "No Client" : item.clientLabel
+        if let client = item.clientLabel, !client.isEmpty {
+            clientNameLbl.stringValue = client
+            clientNameLbl.isHidden = false
+        } else {
+            clientNameLbl.isHidden = true
+        }
+        hasClient = !clientNameLbl.isHidden
+        hasProject = !projectStackView.isHidden
     }
 }
 
