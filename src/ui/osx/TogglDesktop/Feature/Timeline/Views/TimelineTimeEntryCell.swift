@@ -50,6 +50,8 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
     @IBOutlet weak var billableImageView: NSImageView!
     @IBOutlet weak var tagImageView: NSImageView!
     @IBOutlet weak var iconStackView: NSStackView!
+    @IBOutlet weak var dateLbl: NSTextField!
+    @IBOutlet weak var durationLbl: NSTextField!
 
     // MARK: View
 
@@ -57,13 +59,6 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
         super.viewDidLoad()
         initCommon()
         initTrackingArea()
-    }
-
-    override func prepareForReuse() {
-        super.prepareForReuse()
-//        titleLbl.isHidden = false
-//        projectStackView.isHidden = false
-//        bottomStackView.isHidden = false
     }
 
     // MARK: Public
@@ -114,7 +109,7 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
         backgroundBox.isHidden = view.frame.height <= 10
 
         // Hide if some views is out of bounds
-        let components: [NSView] = [titleLbl, projectStackView, bottomStackView]
+        let components: [NSView] = [titleLbl, projectStackView, bottomStackView, dateLbl, durationLbl]
         for view in components {
             let bottomFrame = CGRect(x: 0, y: 0, width: view.frame.width, height: 5)
             let isContain = view.frame.intersects(bottomFrame) || view.frame.origin.y < 0
@@ -123,6 +118,8 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
     }
 
     private func updateLabels(_ item: TimeEntryViewItem) {
+        dateLbl.stringValue = "\(item.startTimeString ?? "") - \(item.endTimeString ?? "")"
+        durationLbl.stringValue = item.duration
         tagImageView.isHidden = item.tags?.isEmpty ?? true
         billableImageView.isHidden = !item.billable
         if let description = item.descriptionName, !description.isEmpty {
