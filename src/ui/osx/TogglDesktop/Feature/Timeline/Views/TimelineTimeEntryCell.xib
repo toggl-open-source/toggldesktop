@@ -178,7 +178,6 @@
                 <outlet property="projectLbl" destination="euI-fo-hqA" id="tZs-ru-phr"/>
                 <outlet property="projectStackView" destination="Azu-a1-gfT" id="MiD-AE-fBP"/>
                 <outlet property="tagImageView" destination="qtZ-fn-lLE" id="36s-n9-HL8"/>
-                <outlet property="timeStackView" destination="8dq-AH-3f2" id="y8S-eL-rbb"/>
                 <outlet property="titleLbl" destination="xXs-or-rIk" id="dxH-Qt-9kv"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="KyO-gv-pek"/>
             </connections>
