@@ -172,9 +172,6 @@ extension TimelineData {
 
                     // Move to next column
                     col += 1
-
-                    // Set this TE is not a last column
-                    overlappedTimeEntry?.setIsLastColumn(false)
                 }
 
             } while overlappedTimeEntry != nil

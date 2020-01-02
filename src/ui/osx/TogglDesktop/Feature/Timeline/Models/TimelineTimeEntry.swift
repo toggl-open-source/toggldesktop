@@ -23,10 +23,6 @@ class TimelineBaseTimeEntry {
     // The number column of the Timeline Entry. The first col is 0
     private(set) var col: Int = 0
 
-    // Determine if the TE is nearest the Right Column of Timeline view.
-    // To draw the More Info bubble
-    private(set) var isLastColumn = true
-
     var isOverlap: Bool {
         return col > 0
     }
@@ -64,10 +60,6 @@ class TimelineBaseTimeEntry {
 
     func setColumn(_ col: Int) {
         self.col = col
-    }
-
-    func setIsLastColumn(_ isLastColumn: Bool) {
-        self.isLastColumn = isLastColumn
     }
 
     func setHasDetailInfo(_ hasDetailInfo: Bool) {

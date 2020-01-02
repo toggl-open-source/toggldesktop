@@ -79,13 +79,3 @@ class TimelineBaseCell: NSCollectionViewItem {
         foregroundBox.updateTrackingAreas()
     }
 }
-
-extension NSColor {
-    public func lighten(by percentage: CGFloat = 1.0) -> NSColor {
-        guard let components = self.getRGBComponents() else { return self }
-        return NSColor(red: components.red,
-                       green: components.green,
-                       blue: components.blue,
-                      alpha: percentage)
-     }
-}
