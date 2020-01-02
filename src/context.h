@@ -621,13 +621,13 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
 
     error applySettingsSaveResultToUI(const error &err);
 
-    error pullAllUserData(TogglClient *https_client);
+    error pullAllUserData(const TogglClient &https_client);
     error pullUserPreferences(
-        const TogglClient& toggl_client);
-    error pullAllPreferencesData(const TogglClient& toggl_client);
+        const TogglClient &toggl_client);
+    error pullAllPreferencesData(const TogglClient &toggl_client);
 
     error pushChanges(
-        TogglClient *https_client,
+        const TogglClient &https_client,
         bool *had_something_to_push);
     error pushClients(
         const std::vector<Client *> &clients,
@@ -647,17 +647,17 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
         const std::vector<Project *> &projects,
         const std::vector<TimeEntry *> &time_entries);
     error signup(
-        TogglClient *https_client,
+        const TogglClient &https_client,
         const std::string &email,
         const std::string &password,
         std::string *user_data_json,
         const uint64_t country_id);
     error signupGoogle(
-        TogglClient *toggl_client,
+        const TogglClient &toggl_client,
         const std::string &access_token,
         std::string *user_data_json,
         const uint64_t country_id);
-    static error me(TogglClient *https_client,
+    static error me(const TogglClient &https_client,
                     const std::string &email,
                     const std::string &password,
                     std::string *user_data,
@@ -670,10 +670,10 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
 
     error logAndDisplayUserTriedEditingLockedEntry();
 
-    error pullWorkspaces(TogglClient* toggl_client);
+    error pullWorkspaces(const TogglClient &toggl_client);
 
-    error pullWorkspacePreferences(const TogglClient& https_client);
-    error pullWorkspacePreferences(const TogglClient& toggl_client,
+    error pullWorkspacePreferences(const TogglClient &https_client);
+    error pullWorkspacePreferences(const TogglClient &toggl_client,
                                    Workspace *workspace, std::string* json);
 
     error pushObmAction();

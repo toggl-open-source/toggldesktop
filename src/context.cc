@@ -1040,7 +1040,7 @@ error Context::displayError(const error &err) {
                   || (err.find(kForbiddenError) != std::string::npos))) {
         TogglClient toggl_client(UI());
 
-        error err = pullWorkspaces(&toggl_client);
+        error err = pullWorkspaces(toggl_client);
         if (err != noError) {
             // Check for missing WS error and
             if (err.find(kMissingWS) != std::string::npos) {
@@ -2433,7 +2433,7 @@ error Context::Login(
     try {
         TogglClient client(UI());
         std::string json("");
-        error err = me(&client, email, password, &json, 0);
+        error err = me(client, email, password, &json, 0);
         if (err != noError) {
             if (!IsNetworkingError(err)) {
                 return displayError(err);
@@ -2510,7 +2510,7 @@ error Context::Signup(
 
     TogglClient client(UI());
     std::string json("");
-    error err = signup(&client, email, password, &json, country_id);
+    error err = signup(client, email, password, &json, country_id);
     if (err != noError) {
         return displayError(err);
     }
@@ -2524,7 +2524,7 @@ error Context::GoogleSignup(
 
     TogglClient client(UI());
     std::string json("");
-    error err = signupGoogle(&client, access_token, &json, country_id);
+    error err = signupGoogle(client, access_token, &json, country_id);
     if (err != noError) {
         return displayError(err);
     }
@@ -4737,7 +4737,7 @@ void Context::syncerActivity() {
             if (trigger_sync_) {
                 TogglClient client(UI());
 
-                error err = pullAllUserData(&client);
+                error err = pullAllUserData(client);
                 if (err != noError) {
                     displayError(err);
                 }
@@ -4752,7 +4752,7 @@ void Context::syncerActivity() {
 
                 setOnline("Data pulled");
 
-                err = pushChanges(&client, &trigger_sync_);
+                err = pushChanges(client, &trigger_sync_);
                 trigger_push_ = false;
                 if (err != noError) {
                     user_->ConfirmLoadedMore();
@@ -4781,7 +4781,7 @@ void Context::syncerActivity() {
             if (trigger_push_) {
                 TogglClient client(UI());
 
-                error err = pushChanges(&client, &trigger_sync_);
+                error err = pushChanges(client, &trigger_sync_);
                 if (err != noError) {
                     user_->ConfirmLoadedMore();
                     displayError(err);
@@ -4935,7 +4935,7 @@ error Context::pullAllPreferencesData(
 }
 
 error Context::pullAllUserData(
-    TogglClient *toggl_client) {
+    const TogglClient &toggl_client) {
 
     std::string api_token("");
     Poco::Int64 since(0);
@@ -5009,7 +5009,7 @@ error Context::pullAllUserData(
 }
 
 error Context::pushChanges(
-    TogglClient *toggl_client,
+    const TogglClient &toggl_client,
     bool *had_something_to_push) {
     try {
         Poco::Stopwatch stopwatch;
@@ -5069,7 +5069,7 @@ error Context::pushChanges(
             error err = pushClients(
                 clients,
                 api_token,
-                *toggl_client);
+                toggl_client);
             if (err != noError &&
                     err.find(kClientNameAlreadyExists) == std::string::npos) {
                 return err;
@@ -5087,7 +5087,7 @@ error Context::pushChanges(
                 projects,
                 clients,
                 api_token,
-                *toggl_client);
+                toggl_client);
             if (err != noError &&
                     err.find(kProjectNameAlready) == std::string::npos) {
                 return err;
@@ -5113,7 +5113,7 @@ error Context::pushChanges(
                 models,
                 time_entries,
                 api_token,
-                *toggl_client);
+                toggl_client);
             if (err != noError) {
                 // Hide load more button when offline
                 user_->ConfirmLoadedMore();
@@ -5509,7 +5509,7 @@ error Context::pushObmAction() {
 }
 
 error Context::me(
-    TogglClient *toggl_client,
+    const TogglClient &toggl_client,
     const std::string &email,
     const std::string &password,
     std::string *user_data_json,
@@ -5525,7 +5525,6 @@ error Context::me(
 
     try {
         poco_check_ptr(user_data_json);
-        poco_check_ptr(toggl_client);
 
         std::stringstream ss;
         ss << "/api/v8/me"
@@ -5541,7 +5540,7 @@ error Context::me(
         req.basic_auth_username = email;
         req.basic_auth_password = password;
 
-        HTTPSResponse resp = toggl_client->Get(req);
+        HTTPSResponse resp = toggl_client.Get(req);
         if (resp.err != noError) {
             return resp.err;
         }
@@ -5589,7 +5588,7 @@ bool Context::isTimeLockedInWorkspace(time_t t, Workspace* ws) {
     return t < lockedTime;
 }
 
-error Context::pullWorkspaces(TogglClient* toggl_client) {
+error Context::pullWorkspaces(const TogglClient &toggl_client) {
     std::string api_token = user_->APIToken();
 
     if (api_token.empty()) {
@@ -5605,7 +5604,7 @@ error Context::pullWorkspaces(TogglClient* toggl_client) {
         req.basic_auth_username = api_token;
         req.basic_auth_password = "api_token";
 
-        HTTPSResponse resp = toggl_client->Get(req);
+        HTTPSResponse resp = toggl_client.Get(req);
         if (resp.err != noError) {
             if (resp.err.find(kForbiddenError) != std::string::npos) {
                 // User has no workspaces
@@ -5772,13 +5771,12 @@ error Context::pullUserPreferences(
 }
 
 error Context::signupGoogle(
-    TogglClient *toggl_client,
+    const TogglClient &toggl_client,
     const std::string &access_token,
     std::string *user_data_json,
     const uint64_t country_id) {
     try {
         poco_check_ptr(user_data_json);
-        poco_check_ptr(toggl_client);
 
         Json::Value user;
         user["google_access_token"] = access_token;
@@ -5799,7 +5797,7 @@ error Context::signupGoogle(
         req.relative_url = ss.str();
         req.payload = Json::StyledWriter().write(user);
 
-        HTTPSResponse resp = toggl_client->Post(req);
+        HTTPSResponse resp = toggl_client.Post(req);
         if (resp.err != noError) {
             if (kBadRequestError == resp.err) {
                 return resp.body;
@@ -5826,7 +5824,7 @@ error Context::signupGoogle(
 }
 
 error Context::signup(
-    TogglClient *toggl_client,
+    const TogglClient &toggl_client,
     const std::string &email,
     const std::string &password,
     std::string *user_data_json,
@@ -5842,7 +5840,6 @@ error Context::signup(
 
     try {
         poco_check_ptr(user_data_json);
-        poco_check_ptr(toggl_client);
 
         Json::Value user;
         user["email"] = email;
@@ -5861,7 +5858,7 @@ error Context::signup(
         req.relative_url = "/api/v9/signup";
         req.payload = Json::StyledWriter().write(user);
 
-        HTTPSResponse resp = toggl_client->Post(req);
+        HTTPSResponse resp = toggl_client.Post(req);
         if (resp.err != noError) {
             if (kBadRequestError == resp.err) {
                 return resp.body;
