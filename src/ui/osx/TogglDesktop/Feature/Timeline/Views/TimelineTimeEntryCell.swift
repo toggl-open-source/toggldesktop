@@ -45,13 +45,14 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
     @IBOutlet weak var projectStackView: NSStackView!
     @IBOutlet weak var dotColorBox: DotImageView!
     @IBOutlet weak var projectLbl: ProjectTextField!
-    @IBOutlet weak var bottomStackView: NSStackView!
+    @IBOutlet weak var timeStackView: NSView!
     @IBOutlet weak var clientNameLbl: NSTextField!
     @IBOutlet weak var billableImageView: NSImageView!
     @IBOutlet weak var tagImageView: NSImageView!
     @IBOutlet weak var iconStackView: NSStackView!
     @IBOutlet weak var dateLbl: NSTextField!
     @IBOutlet weak var durationLbl: NSTextField!
+    @IBOutlet weak var mainStackView: NSStackView!
 
     // MARK: View
 
@@ -94,6 +95,7 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
         if timeEntry.hasDetailInfo {
             let item = timeEntry.timeEntry
             updateLabels(item)
+            hideLabelComponents()
         }
      }
 
@@ -101,18 +103,26 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
         guard let timeEntry = timeEntry,
             timeEntry.hasDetailInfo else { return }
 
+        // Hide if it too small
+        backgroundBox.isHidden = view.frame.height <= 10
+
+        // Set initial state
+        let topPadding: CGFloat = 10
+        let bottomBarHeight: CGFloat = 5
+        let bubbleHeight = self.view.frame.height
+        let components: [NSView] = [titleLbl, projectStackView, clientNameLbl, iconStackView, timeStackView]
+        for view in components {
+            view.isHidden = false
+        }
+
         // Force update frame
         view.setNeedsDisplay(view.frame)
         view.displayIfNeeded()
 
-        // Hide if it too small
-        backgroundBox.isHidden = view.frame.height <= 10
-
         // Hide if some views is out of bounds
-        let components: [NSView] = [titleLbl, projectStackView, bottomStackView, dateLbl, durationLbl]
         for view in components {
-            let bottomFrame = CGRect(x: 0, y: 0, width: view.frame.width, height: 5)
-            let isContain = view.frame.intersects(bottomFrame) || view.frame.origin.y < 0
+            let bottomFrame = CGRect(x: 0, y: mainStackView.frame.height - bubbleHeight + topPadding, width: self.view.frame.width, height: bottomBarHeight)
+            let isContain = view.frame.intersects(bottomFrame) || view.frame.origin.y <= bottomFrame.origin.y
             view.isHidden = isContain
         }
     }
@@ -122,6 +132,8 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
         durationLbl.stringValue = item.duration
         tagImageView.isHidden = item.tags?.isEmpty ?? true
         billableImageView.isHidden = !item.billable
+        iconStackView.isHidden = !(tagImageView.isHidden && billableImageView.isHidden)
+
         if let description = item.descriptionName, !description.isEmpty {
             titleLbl.stringValue = description
             titleLbl.toolTip = description
