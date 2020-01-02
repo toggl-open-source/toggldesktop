@@ -204,6 +204,10 @@ class TOGGL_INTERNAL_EXPORT User : public BaseModel {
     bool LoadUserPreferencesFromJSON(
         Json::Value data);
 
+    bool SetTimeEntryID(
+        Poco::UInt64 id,
+        TimeEntry* timeEntry);
+
     template<typename T>
     void EnsureWID(T *model) const {
         // Do nothing if TE already has WID assigned

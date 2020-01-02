@@ -1052,6 +1052,33 @@ void User::loadUserProjectFromJSON(
     model->LoadFromJSON(data);
 }
 
+bool User::SetTimeEntryID(
+    Poco::UInt64 id,
+    TimeEntry* timeEntry) {
+
+    poco_check_ptr(timeEntry);
+
+    {
+        Poco::Mutex::ScopedLock lock(loadTimeEntries_m_);
+        auto otherTimeEntry = related.TimeEntryByID(id);
+        if (otherTimeEntry) {
+            // this means that somehow we already have a time entry with the ID
+            // that was just returned from a response to time entry creation request
+            logger().error("There is already a newer version of this entry");
+
+            // clearing the GUID to make sure there's no GUID conflict
+            timeEntry->SetGUID("");
+
+            // deleting the duplicate entry
+            // this entry has no ID so the corresponding server entry will not be deleted
+            timeEntry->Delete();
+            return false;
+        }
+        timeEntry->SetID(id);
+        return true;
+    }
+}
+
 void User::loadUserTimeEntryFromJSON(
     Json::Value data,
     std::set<Poco::UInt64> *alive) {
@@ -1084,6 +1111,11 @@ void User::loadUserTimeEntryFromJSON(
             model = new TimeEntry();
             model->SetID(id);
             related.pushBackTimeEntry(model);
+        }
+
+        if (!model->ID()) {
+            // case where model was matched by GUID
+            model->SetID(id);
         }
     }
 

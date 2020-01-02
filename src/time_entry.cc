@@ -410,10 +410,6 @@ void TimeEntry::LoadFromJSON(Json::Value data) {
         updated_at = at.asInt64();
     }
 
-    if (data.isMember("id")) {
-        SetID(data["id"].asUInt64());
-    }
-
     if (updated_at != 0 &&
             (UIModifiedAt() >= updated_at ||
              UpdatedAt() >= updated_at)) {

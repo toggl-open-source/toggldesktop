@@ -5238,6 +5238,22 @@ error Context::pushEntries(
             return error("error parsing time entry POST response");
         }
 
+        auto id = root["id"].asUInt64();
+        if (!id) {
+            logger().error("Backend is sending invalid data: ignoring update without an ID");
+            continue;
+        }
+
+        if (!(*it)->ID()) {
+            if (!(user_->SetTimeEntryID(id, (*it)))) {
+                continue;
+            }
+        }
+
+        if ((*it)->ID() != id) {
+            return error("Backend has changed the ID of the entry");
+        }
+
         (*it)->LoadFromJSON(root);
     }
 
