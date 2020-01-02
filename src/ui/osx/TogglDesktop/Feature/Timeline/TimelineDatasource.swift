@@ -122,6 +122,9 @@ final class TimelineDatasource: NSObject {
 
         // Scroll to visible item
         if let section = section {
+            // Force render with correct frame then scrolling to desire item
+            collectionView.setNeedsDisplay(collectionView.frame)
+            collectionView.displayIfNeeded()
             collectionView.scrollToItems(at: Set<IndexPath>(arrayLiteral: IndexPath(item: 0, section: section.rawValue)),
                                          scrollPosition: [.centeredHorizontally, .centeredVertically])
         }
