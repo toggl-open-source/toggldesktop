@@ -8,10 +8,17 @@
 
 import Cocoa
 
+protocol HoverImageViewDelegate: class {
+
+    func hoverImageViewDidMouseEnter(_ sender: HoverImageView)
+    func hoverImageViewDidMouseExit(_ sender: HoverImageView)
+}
+
 final class HoverImageView: NSImageView {
 
     // MARK: Variables
 
+    weak var delegate: HoverImageViewDelegate?
 
     // MARK: View
 
@@ -24,10 +31,12 @@ final class HoverImageView: NSImageView {
 
     override func mouseEntered(with event: NSEvent) {
         image = NSImage(named: "timeline-activity-recorder-info-icon-hover")
+        delegate?.hoverImageViewDidMouseEnter(self)
     }
 
     override func mouseExited(with event: NSEvent) {
         image = NSImage(named: "timeline-activity-recorder-info-icon")
+        delegate?.hoverImageViewDidMouseExit(self)
     }
 }
 
