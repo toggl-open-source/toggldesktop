@@ -38,8 +38,6 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
     weak var delegate: TimelineTimeEntryCellDelegate?
     private(set) var timeEntry: TimelineTimeEntry!
     private lazy var timeEntryMenu = TimelineTimeEntryMenu()
-    private var hasClient = false
-    private var hasProject = false
 
     // MARK: OUTLET
 
@@ -99,7 +97,7 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
         }
      }
 
-    func hideOutOfBoundControls() {
+    private func hideOutOfBoundControls() {
         guard let timeEntry = timeEntry,
             timeEntry.hasDetailInfo else { return }
 
@@ -110,12 +108,14 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
         let topPadding: CGFloat = 5
         let bottomBarHeight: CGFloat = 5
         let bubbleHeight = self.view.frame.height
-        let components: [NSView] = [titleLbl, projectStackView, clientNameLbl, iconStackView]
-//        for view in components {
-//            view.isHidden = false
-//        }
 
-        // Force update frame
+        // Prepare controls need to check
+        var components: [NSView] = [titleLbl]
+        if !projectStackView.isHidden { components.append(projectStackView) }
+        if !clientNameLbl.isHidden { components.append(clientNameLbl) }
+        components.append(iconStackView)
+
+        // Force drawing to get the latest frame
         view.setNeedsDisplay(view.frame)
         view.displayIfNeeded()
 
@@ -123,22 +123,12 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
         for view in components {
             let bottomFrame = CGRect(x: 0, y: mainStackView.frame.height - bubbleHeight + topPadding, width: self.view.frame.width, height: bottomBarHeight)
             let isContain = view.frame.intersects(bottomFrame) || view.frame.origin.y <= bottomFrame.origin.y
-
-            if view === projectStackView {
-                if hasProject {
-                    view.isHidden = isContain
-                }
-            } else if view === clientNameLbl {
-                if hasClient {
-                    view.isHidden = isContain
-                }
-            } else {
-                view.isHidden = isContain
-            }
+            view.isHidden = isContain
         }
     }
 
     private func updateLabels(_ item: TimeEntryViewItem) {
+        iconStackView.isHidden = false
         durationLbl.stringValue = item.dateDuration
         tagImageView.isHidden = item.tags?.isEmpty ?? true
         billableImageView.isHidden = !item.billable
@@ -176,8 +166,6 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
         } else {
             clientNameLbl.isHidden = true
         }
-        hasClient = !clientNameLbl.isHidden
-        hasProject = !projectStackView.isHidden
     }
 }
 
