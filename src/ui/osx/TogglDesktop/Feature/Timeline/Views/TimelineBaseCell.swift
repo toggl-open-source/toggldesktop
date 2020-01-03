@@ -21,6 +21,10 @@ class TimelineBaseCell: NSCollectionViewItem {
     @IBOutlet weak var backgroundBox: NSBox!
     @IBOutlet weak var foregroundBox: NSBox!
 
+    var popoverView: NSView {
+        return backgroundBox.isHidden ? foregroundBox : view
+    }
+    
     // MARK: Variables
 
     weak var mouseDelegate: TimelineBaseCellDelegate?

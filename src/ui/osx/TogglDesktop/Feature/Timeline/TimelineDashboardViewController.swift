@@ -221,7 +221,7 @@ extension TimelineDashboardViewController {
             // Present editor
             if let item = itemView as? TimelineTimeEntryCell {
                 collectionView.scrollToItems(at: Set<IndexPath>(arrayLiteral: indexPath), scrollPosition: .centeredVertically)
-                shouldPresentTimeEntryEditor(in: item.view, timeEntry: item.timeEntry.timeEntry)
+                shouldPresentTimeEntryEditor(in: item.popoverView, timeEntry: item.timeEntry.timeEntry)
                 return
             }
         }
@@ -325,8 +325,8 @@ extension TimelineDashboardViewController: TimelineDatasourceDelegate {
         guard let index = foundIndex else { return }
         let indexPath = IndexPath(item:index, section: TimelineData.Section.timeEntry.rawValue)
         guard let item = datasource.timeline?.item(at: indexPath) as? TimelineTimeEntry,
-            let cell = collectionView.item(at: indexPath) else { return }
-        shouldPresentTimeEntryEditor(in: cell.view, timeEntry: item.timeEntry)
+            let cell = collectionView.item(at: indexPath) as? TimelineTimeEntryCell else { return }
+        shouldPresentTimeEntryEditor(in: cell.popoverView, timeEntry: item.timeEntry)
     }
 
     fileprivate func updatePositionOfEditorIfNeed() {
