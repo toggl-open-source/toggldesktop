@@ -39,6 +39,18 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
     private(set) var timeEntry: TimelineTimeEntry!
     private lazy var timeEntryMenu = TimelineTimeEntryMenu()
 
+    private var isSmallSize: Bool {
+        return view.frame.height <= 10
+    }
+
+    var popoverView: NSView {
+        if isSmallSize {
+            return foregroundBox
+        }
+        guard let backgroundBox = backgroundBox else { return view }
+        return backgroundBox.isHidden ? foregroundBox : view
+    }
+
     // MARK: OUTLET
 
     @IBOutlet weak var titleLbl: NSTextField!
@@ -102,7 +114,7 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
             timeEntry.hasDetailInfo else { return }
 
         // Hide if it too small
-        backgroundBox?.isHidden = view.frame.height <= 10
+        backgroundBox?.isHidden = isSmallSize
 
         // Set initial state
         let topPadding: CGFloat = 5
