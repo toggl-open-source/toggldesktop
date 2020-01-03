@@ -21,8 +21,8 @@ final class TimelineCollectionView: NSCollectionView {
 
     // MARK: View
 
-    override func mouseUp(with event: NSEvent) {
-        super.mouseUp(with: event)
+    override func mouseDown(with event: NSEvent) {
+        super.mouseDown(with: event)
         handleMouseClick(with: event)
     }
 
