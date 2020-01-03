@@ -24,17 +24,11 @@ class TimelineBaseCell: NSCollectionViewItem {
     // MARK: Variables
 
     weak var mouseDelegate: TimelineBaseCellDelegate?
-    private var trackingArea: NSTrackingArea?
 
     // MARK: Public
 
-    override func prepareForReuse() {
-        super.prepareForReuse()
-
-        if let trackingArea = trackingArea {
-            foregroundBox.removeTrackingArea(trackingArea)
-            self.trackingArea = nil
-        }
+    override func awakeFromNib() {
+        super.awakeFromNib()
         initTrackingArea()
     }
 
@@ -74,7 +68,6 @@ class TimelineBaseCell: NSCollectionViewItem {
 
     func initTrackingArea() {
         let tracking = NSTrackingArea(rect: view.bounds, options: [.mouseEnteredAndExited, .activeInActiveApp, .inVisibleRect], owner: self, userInfo: nil)
-        self.trackingArea = tracking
         foregroundBox.addTrackingArea(tracking)
         foregroundBox.updateTrackingAreas()
     }
