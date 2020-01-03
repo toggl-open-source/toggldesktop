@@ -17,18 +17,7 @@ namespace TogglDesktop.AutoCompletion
         public string TaskLabel { get; set; }
         public string ClientLabel { get; set; }
         public string Category { get; set; }
-        private string _workspaceName = "";
-        public string WorkspaceName
-        {
-            get
-            {
-                return this._workspaceName;
-            }
-            set
-            {
-                this._workspaceName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(value);
-            }
-        }
+        public string WorkspaceName { get; set; }
         public int Type { get; set; }
         public int Index { get; set; }
     }

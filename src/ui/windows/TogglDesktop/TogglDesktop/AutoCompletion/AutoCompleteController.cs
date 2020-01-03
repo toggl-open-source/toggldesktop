@@ -118,7 +118,7 @@ namespace TogglDesktop.AutoCompletion
                         {
                             items.Add(new ListBoxItem()
                             {
-                                Text = it.Item.WorkspaceName,
+                                Text = it.Item.WorkspaceName.ToUpper(),
                                 Type = -3
                             });
                             lastWID = (int)it.Item.WorkspaceID;
@@ -187,7 +187,7 @@ namespace TogglDesktop.AutoCompletion
                             TaskLabel = taskLabel,
                             ClientLabel = clientLabel,
                             Type = (int)it.Item.Type,
-                            WorkspaceName = it.Item.WorkspaceName,
+                            WorkspaceName = it.Item.WorkspaceName.ToUpper(),
                             Index = count
                         });
                     }
