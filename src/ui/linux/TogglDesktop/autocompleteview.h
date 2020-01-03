@@ -49,7 +49,7 @@ class AutocompleteView : public QObject {
             view->TaskLabel = it->TaskLabel;
             view->ProjectID = it->ProjectID;
             view->WorkspaceID = it->WorkspaceID;
-            view->WorkspaceName = QString(it->WorkspaceName);
+            view->WorkspaceName = QString(it->WorkspaceName).toUpper();
             view->Type = it->Type;
             view->Billable = it->Billable;
             view->Tags = QString(it->Tags);
