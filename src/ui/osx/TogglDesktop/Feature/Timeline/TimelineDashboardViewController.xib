@@ -39,13 +39,17 @@
                             <color key="fillColor" name="timeline-top-view-background-color"/>
                         </box>
                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="oEw-Jd-lIP">
-                            <rect key="frame" x="8" y="56" width="101" height="17"/>
+                            <rect key="frame" x="34" y="56" width="101" height="17"/>
                             <textFieldCell key="cell" lineBreakMode="clipping" title="Record activity" id="x0y-gM-oPn">
                                 <font key="font" metaFont="menu" size="14"/>
                                 <color key="textColor" name="timeline-time-label-color"/>
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                         </textField>
+                        <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="mVu-t2-GXP" customClass="HoverImageView" customModule="TogglDesktop" customModuleProvider="target">
+                            <rect key="frame" x="10" y="54" width="20" height="20"/>
+                            <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="timeline-activity-recorder-info-icon" id="Tcf-ph-vyh"/>
+                        </imageView>
                         <customView translatesAutoresizingMaskIntoConstraints="NO" id="I6m-RA-gUy" customClass="OGSwitch" customModule="TogglDesktop" customModuleProvider="target">
                             <rect key="frame" x="333" y="58" width="26" height="13"/>
                             <constraints>
@@ -64,15 +68,17 @@
                         </customView>
                     </subviews>
                     <constraints>
+                        <constraint firstItem="oEw-Jd-lIP" firstAttribute="leading" secondItem="mVu-t2-GXP" secondAttribute="trailing" constant="6" id="0gk-pQ-hvy"/>
                         <constraint firstItem="wlf-0e-ttW" firstAttribute="top" secondItem="oEw-Jd-lIP" secondAttribute="bottom" constant="12" id="0rH-e0-NUk"/>
                         <constraint firstAttribute="trailing" secondItem="sGN-8K-7IZ" secondAttribute="trailing" id="8d7-zq-V41"/>
                         <constraint firstItem="sGN-8K-7IZ" firstAttribute="leading" secondItem="CV9-Ue-zhq" secondAttribute="leading" id="GTe-dy-kVB"/>
+                        <constraint firstItem="mVu-t2-GXP" firstAttribute="top" secondItem="CV9-Ue-zhq" secondAttribute="top" constant="12" id="OCz-Wk-a2y"/>
+                        <constraint firstItem="mVu-t2-GXP" firstAttribute="leading" secondItem="CV9-Ue-zhq" secondAttribute="leading" constant="10" id="Qv6-J5-pRj"/>
                         <constraint firstItem="I6m-RA-gUy" firstAttribute="centerY" secondItem="oEw-Jd-lIP" secondAttribute="centerY" id="aWn-ju-3Sc"/>
                         <constraint firstItem="sGN-8K-7IZ" firstAttribute="top" secondItem="CV9-Ue-zhq" secondAttribute="top" id="eaq-AF-dtf"/>
                         <constraint firstItem="oEw-Jd-lIP" firstAttribute="top" secondItem="CV9-Ue-zhq" secondAttribute="top" constant="13" id="igE-d4-QVd"/>
                         <constraint firstAttribute="trailing" secondItem="wlf-0e-ttW" secondAttribute="trailing" constant="10" id="mPL-xl-8j9"/>
                         <constraint firstAttribute="trailing" secondItem="I6m-RA-gUy" secondAttribute="trailing" constant="10" id="maq-iT-Fcc"/>
-                        <constraint firstItem="oEw-Jd-lIP" firstAttribute="leading" secondItem="CV9-Ue-zhq" secondAttribute="leading" constant="10" id="t9Q-Bm-qdd"/>
                         <constraint firstAttribute="height" constant="86" id="wv3-y8-Rz9"/>
                         <constraint firstAttribute="bottom" secondItem="sGN-8K-7IZ" secondAttribute="bottom" id="zqM-he-CUS"/>
                         <constraint firstItem="wlf-0e-ttW" firstAttribute="leading" secondItem="CV9-Ue-zhq" secondAttribute="leading" constant="10" id="zxE-BA-Fdk"/>
@@ -243,6 +249,7 @@
     <resources>
         <image name="NSAddTemplate" width="11" height="11"/>
         <image name="NSRemoveTemplate" width="11" height="11"/>
+        <image name="timeline-activity-recorder-info-icon" width="20" height="20"/>
         <namedColor name="timeline-background-color">
             <color red="0.98039215686274506" green="0.98431372549019602" blue="0.9882352941176471" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
