@@ -882,6 +882,7 @@ void Context::updateUI(const UIElements &what) {
                     view.Duration = toggl::Formatter::FormatDuration(
                         view.DurationInSeconds,
                         Formatter::DurationFormat);
+                    view.DateDuration = Formatter::FormatDurationForDateHeader(view.DurationInSeconds);
                     user_->related.ProjectLabelAndColorCode(
                         te,
                         &view);
