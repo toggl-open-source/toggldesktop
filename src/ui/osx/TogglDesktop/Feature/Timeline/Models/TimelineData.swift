@@ -189,13 +189,11 @@ extension TimelineData {
         }
 
         // Determine if the TE should has Detail Info
-        if group >= 0 {
-            for i in 0...group {
-                let entriesInSameGroup = timeEntries.filter { $0 is TimelineTimeEntry && $0.group == i }
-                if entriesInSameGroup.count == 1 {
-                    entriesInSameGroup.first?.setHasDetailInfo(true)
-                }
-            }
+        let firstRowTEs = timeEntries.filter { $0.col == 0 }
+        let otherRowTEs = timeEntries.filter { $0.col > 0 }
+        for item in firstRowTEs {
+            let isOverlaped = otherRowTEs.contains { $0.isIntersected(with: item) }
+            item.setHasDetailInfo(!isOverlaped)
         }
 
         // Add empty time entry
