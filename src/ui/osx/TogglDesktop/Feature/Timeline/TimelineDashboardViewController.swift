@@ -26,6 +26,7 @@ final class TimelineDashboardViewController: NSViewController {
     @IBOutlet weak var zoomContainerView: NSView!
     @IBOutlet weak var collectionViewContainerView: NSScrollView!
     @IBOutlet weak var mainContainerView: NSView!
+    @IBOutlet weak var activityRecorderInfoImageView: HoverImageView!
 
     // MARK: Variables
 
@@ -74,6 +75,18 @@ final class TimelineDashboardViewController: NSViewController {
         popover.behavior = .transient
         popover.prepareViewController()
         popover.delegate = self
+        return popover
+    }()
+    private lazy var activityRecorderController: TimelineActivityRecorderViewController = {
+        let controller = TimelineActivityRecorderViewController(nibName: "TimelineActivityRecorderViewController", bundle: nil)
+        controller.delegate = self
+        return controller
+    }()
+    private lazy var activityRecorderPopover: NoVibrantPopoverView = {
+        let popover = NoVibrantPopoverView()
+        popover.animates = false
+        popover.behavior = .semitransient
+        popover.contentViewController = activityRecorderController
         return popover
     }()
 
@@ -174,6 +187,7 @@ extension TimelineDashboardViewController {
         datePickerView.delegate = self
         datePickerView.setBackgroundForTimeline()
         emptyActivityLbl.frameCenterRotation = -90
+        activityRecorderInfoImageView.delegate = self
     }
 
     fileprivate func initNotifications() {
@@ -411,5 +425,29 @@ extension TimelineDashboardViewController: NSPopoverDelegate {
             return
         }
         selectedGUID = nil
+    }
+}
+
+// MARK: TimelineActivityRecorderViewControllerDelegate
+
+extension TimelineDashboardViewController: TimelineActivityRecorderViewControllerDelegate {
+
+    func timelineActivityRecorderShouldDidClickOnCloseBtn(_ sender: Any) {
+        activityHoverPopover.performClose(self)
+    }
+}
+
+// MARK: HoverImageViewDelegate
+
+extension TimelineDashboardViewController: HoverImageViewDelegate {
+
+    func hoverImageViewDidMouseExit(_ sender: HoverImageView) {
+        guard activityHoverPopover.isShown else { return }
+        activityRecorderPopover.performClose(self)
+    }
+
+    func hoverImageViewDidMouseEnter(_ sender: HoverImageView) {
+        guard !activityHoverPopover.isShown else { return }
+        activityRecorderPopover.show(relativeTo: sender.bounds, of: sender, preferredEdge: .minY)
     }
 }

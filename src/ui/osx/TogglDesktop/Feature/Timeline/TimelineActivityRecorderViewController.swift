@@ -8,11 +8,36 @@
 
 import Cocoa
 
-class TimelineActivityRecorderViewController: NSViewController {
+protocol TimelineActivityRecorderViewControllerDelegate: class {
+
+    func timelineActivityRecorderShouldDidClickOnCloseBtn(_ sender: Any)
+}
+
+final class TimelineActivityRecorderViewController: NSViewController {
+
+    // MARK: OUTLET
+
+    @IBOutlet weak var titleLbl: NSTextField!
+    @IBOutlet weak var descriptionLbl: NSTextField!
+
+    // MARK: Variables
+
+    weak var delegate: TimelineActivityRecorderViewControllerDelegate?
+
+    // MARK: View
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do view setup here.
     }
-    
+
+    // MARK: Public
+
+    @IBAction func learnMoreBtnOnTap(_ sender: Any) {
+        
+    }
+
+    @IBAction func closeBtnOnTap(_ sender: Any) {
+        delegate?.timelineActivityRecorderShouldDidClickOnCloseBtn(self)
+    }
+
 }

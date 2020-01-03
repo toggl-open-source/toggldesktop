@@ -9,6 +9,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="TimelineDashboardViewController" customModule="TogglDesktop" customModuleProvider="target">
             <connections>
+                <outlet property="activityRecorderInfoImageView" destination="mVu-t2-GXP" id="xO6-01-A5k"/>
                 <outlet property="collectionView" destination="hht-dC-mpO" id="9tS-ho-Ut6"/>
                 <outlet property="collectionViewContainerView" destination="DJx-ob-wM0" id="Mvz-Dl-Xx0"/>
                 <outlet property="datePickerContainerView" destination="wlf-0e-ttW" id="86r-YF-M9C"/>
