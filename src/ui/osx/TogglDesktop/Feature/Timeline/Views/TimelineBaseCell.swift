@@ -67,8 +67,10 @@ class TimelineBaseCell: NSCollectionViewItem {
     }
 
     func initTrackingArea() {
-        let tracking = NSTrackingArea(rect: view.bounds, options: [.mouseEnteredAndExited, .activeInActiveApp, .inVisibleRect], owner: self, userInfo: nil)
-        foregroundBox.addTrackingArea(tracking)
-        foregroundBox.updateTrackingAreas()
+        if foregroundBox.trackingAreas.isEmpty {
+            let tracking = NSTrackingArea(rect: view.bounds, options: [.mouseEnteredAndExited, .activeInActiveApp, .inVisibleRect], owner: self, userInfo: nil)
+            foregroundBox.addTrackingArea(tracking)
+            foregroundBox.updateTrackingAreas()
+        }
     }
 }
