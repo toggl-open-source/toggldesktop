@@ -348,13 +348,13 @@ extension TimelineDashboardViewController: TimelineDatasourceDelegate {
             return
         }
         let indexPath = IndexPath(item: item, section: TimelineData.Section.timeEntry.rawValue)
-        guard let cell = collectionView.item(at: indexPath) else {
+        guard let cell = collectionView.item(at: indexPath) as? TimelineTimeEntryCell else {
             editorPopover.close()
             return
         }
 
         editorPopover.animates = false
-        editorPopover.show(relativeTo: cell.view.bounds, of: cell.view, preferredEdge: .maxX)
+        editorPopover.show(relativeTo: cell.popoverView.bounds, of: cell.popoverView, preferredEdge: .maxX)
     }
 }
 
