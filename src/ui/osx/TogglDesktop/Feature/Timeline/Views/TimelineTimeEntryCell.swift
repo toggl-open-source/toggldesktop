@@ -88,7 +88,7 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
 
     private func populateInfo() {
         guard let timeEntry = timeEntry else { return }
-        backgroundBox.isHidden = !timeEntry.hasDetailInfo
+        backgroundBox?.isHidden = !timeEntry.hasDetailInfo
 
         if timeEntry.hasDetailInfo {
             let item = timeEntry.timeEntry
@@ -102,7 +102,7 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
             timeEntry.hasDetailInfo else { return }
 
         // Hide if it too small
-        backgroundBox.isHidden = view.frame.height <= 10
+        backgroundBox?.isHidden = view.frame.height <= 10
 
         // Set initial state
         let topPadding: CGFloat = 5
