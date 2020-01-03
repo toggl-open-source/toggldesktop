@@ -139,7 +139,7 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
     }
 
     private func updateLabels(_ item: TimeEntryViewItem) {
-        durationLbl.stringValue = item.duration
+        durationLbl.stringValue = item.dateDuration
         tagImageView.isHidden = item.tags?.isEmpty ?? true
         billableImageView.isHidden = !item.billable
 
