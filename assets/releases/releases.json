@@ -3380,6 +3380,20 @@
                         "name": "toggldesktop_7.4.1102_amd64.deb"
                     }
                 ]
+            },
+            {
+                "version": "7.4.1111",
+                "timestamp": "03-01-2020",
+                "filename": [
+                    {
+                        "type": "linux_tar.gz",
+                        "name": "toggldesktop_linux_x86_64-7_4_1111.tar.gz"
+                    },
+                    {
+                        "type": "linux_deb64",
+                        "name": "toggldesktop_7.4.1111_amd64.deb"
+                    }
+                ]
             }
         ],
         "stable": [
