@@ -1,6 +1,16 @@
 {
     "versions": [
         {
+            "version": "7.4.1111",
+            "rows": [
+                "Idle notification now makes the main window focused",
+                "Linux update notifications are now fixed",
+                "When started in the background, synchronization works as expected"
+            ],
+            "date": "January 3rd 2020",
+            "beta": "true"
+        },
+        {
             "version": "7.4.1102",
             "rows": [
                 "Memory management is now improved, some memory leaks have been plugged",
