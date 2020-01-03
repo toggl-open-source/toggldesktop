@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="15702" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14490.70"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15702"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -28,10 +28,11 @@
                 <constraint firstItem="3am-zX-gdl" firstAttribute="leading" secondItem="jva-K5-Pmb" secondAttribute="leading" id="a4h-yP-W4G"/>
                 <constraint firstAttribute="bottom" secondItem="3am-zX-gdl" secondAttribute="bottom" id="gd1-jX-NdO"/>
             </constraints>
+            <point key="canvasLocation" x="139" y="154"/>
         </customView>
         <collectionViewItem identifier="TimelineActivityCell" id="a5X-y3-2ZH" customClass="TimelineActivityCell" customModule="TogglDesktop" customModuleProvider="target">
             <connections>
-                <outlet property="backgroundView" destination="3am-zX-gdl" id="FYg-rV-xbe"/>
+                <outlet property="foregroundBox" destination="3am-zX-gdl" id="AHt-GI-SwM"/>
                 <outlet property="view" destination="jva-K5-Pmb" id="eHp-m4-Yhn"/>
             </connections>
         </collectionViewItem>
