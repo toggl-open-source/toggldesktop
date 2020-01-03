@@ -94,6 +94,10 @@ final class TimelineDashboardViewController: NSViewController {
             isFirstTime = false
             scrollToVisibleItem()
         }
+
+        // Re-draw the layout when the view did appear
+        // because the NSScollerBar appears later -> Mis-position some controls
+        collectionView.collectionViewLayout?.invalidateLayout()
     }
 
     override func viewWillDisappear() {
