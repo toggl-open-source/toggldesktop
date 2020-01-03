@@ -40,7 +40,7 @@ final class TimelineTimeEntryHoverViewController: NSViewController {
         let item = timeEntry.timeEntry
 
         startEndTimeLbl.stringValue = "\(item.startTimeString ?? "") - \(item.endTimeString ?? "")"
-        durationLbl.stringValue = item.duration
+        durationLbl.stringValue = item.dateDuration
         tagImageView.isHidden = item.tags?.isEmpty ?? true
         billableImageView.isHidden = !item.billable
         if let description = item.descriptionName, !description.isEmpty {
