@@ -43,6 +43,7 @@ class TimelineBaseCell: NSCollectionViewItem {
     func renderColor(with foregroundColor: NSColor, isSmallEntry: Bool) {
         foregroundBox.fillColor = foregroundColor
         backgroundBox?.fillColor = foregroundColor.lighten(by: 0.1)
+        backgroundBox?.borderColor = foregroundColor
 
         let cornerRadius = suitableCornerRadius(isSmallEntry)
         foregroundBox.cornerRadius = cornerRadius

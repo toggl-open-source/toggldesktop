@@ -13,7 +13,7 @@
             <rect key="frame" x="0.0" y="0.0" width="197" height="107"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <box horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" boxType="custom" borderType="none" borderWidth="0.0" cornerRadius="10" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="xE9-Ie-UP3">
+                <box horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" boxType="custom" borderType="line" borderWidth="0.0" cornerRadius="10" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="xE9-Ie-UP3">
                     <rect key="frame" x="0.0" y="0.0" width="197" height="107"/>
                     <view key="contentView" id="r80-dl-MpV">
                         <rect key="frame" x="0.0" y="0.0" width="197" height="107"/>

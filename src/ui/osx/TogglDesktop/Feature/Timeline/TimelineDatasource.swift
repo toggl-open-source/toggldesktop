@@ -10,7 +10,7 @@ import Cocoa
 
 protocol TimelineDatasourceDelegate: class {
 
-    func shouldPresentTimeEntryEditor(in view: NSView, timeEntry: TimeEntryViewItem)
+    func shouldPresentTimeEntryEditor(in view: NSView, timeEntry: TimeEntryViewItem, cell: TimelineTimeEntryCell)
     func shouldPresentTimeEntryHover(in view: NSView, timeEntry: TimelineTimeEntry)
     func shouldPresentActivityHover(in view: NSView, activity: TimelineActivity)
     func startNewTimeEntry(at started: TimeInterval, ended: TimeInterval)
@@ -203,7 +203,7 @@ extension TimelineDatasource: NSCollectionViewDataSource, NSCollectionViewDelega
         switch item {
         case let timeEntry as TimelineTimeEntry:
             if let cell = cell as? TimelineTimeEntryCell {
-                delegate?.shouldPresentTimeEntryEditor(in: cell.popoverView, timeEntry: timeEntry.timeEntry)
+                delegate?.shouldPresentTimeEntryEditor(in: cell.popoverView, timeEntry: timeEntry.timeEntry, cell: cell)
                 collectionView.deselectItems(at: indexPaths)
             }
         case let item as TimelineBaseTimeEntry:

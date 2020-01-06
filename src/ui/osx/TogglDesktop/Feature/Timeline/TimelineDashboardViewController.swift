@@ -33,6 +33,11 @@ final class TimelineDashboardViewController: NSViewController {
     private var isOpening = false
     private var selectedGUID: String?
     private var isFirstTime = true
+    private var hightlightCell: TimelineTimeEntryCell? {
+        didSet {
+            oldValue?.isHighlight = false
+        }
+    }
     lazy var datePickerView: DatePickerView = DatePickerView.xibView()
     private lazy var datasource = TimelineDatasource(collectionView)
     private var zoomLevel: TimelineDatasource.ZoomLevel = .x1 {
@@ -67,6 +72,7 @@ final class TimelineDashboardViewController: NSViewController {
         popover.animates = false
         popover.behavior = .transient
         popover.prepareViewController()
+        popover.delegate = self
         return popover
     }()
 
@@ -225,7 +231,7 @@ extension TimelineDashboardViewController {
             // Present editor
             if let item = itemView as? TimelineTimeEntryCell {
                 collectionView.scrollToItems(at: Set<IndexPath>(arrayLiteral: indexPath), scrollPosition: .centeredVertically)
-                shouldPresentTimeEntryEditor(in: item.popoverView, timeEntry: item.timeEntry.timeEntry)
+                shouldPresentTimeEntryEditor(in: item.popoverView, timeEntry: item.timeEntry.timeEntry, cell: item)
                 return
             }
         }
@@ -299,12 +305,14 @@ extension TimelineDashboardViewController: TimelineDatasourceDelegate {
         activityHoverController.render(activity)
     }
 
-    func shouldPresentTimeEntryEditor(in view: NSView, timeEntry: TimeEntryViewItem) {
+    func shouldPresentTimeEntryEditor(in view: NSView, timeEntry: TimeEntryViewItem, cell: TimelineTimeEntryCell) {
+        hightlightCell = cell
         timeEntryHoverPopover.close()
         selectedGUID = timeEntry.guid
         editorPopover.show(relativeTo: view.bounds, of: view, preferredEdge: .maxX)
         editorPopover.setTimeEntry(timeEntry)
         DesktopLibraryBridge.shared().startEditor(atGUID: timeEntry.guid)
+        cell.isHighlight = true
     }
 
     func startNewTimeEntry(at started: TimeInterval, ended: TimeInterval) {
@@ -331,7 +339,7 @@ extension TimelineDashboardViewController: TimelineDatasourceDelegate {
         let indexPath = IndexPath(item:index, section: TimelineData.Section.timeEntry.rawValue)
         guard let item = datasource.timeline?.item(at: indexPath) as? TimelineTimeEntry,
             let cell = collectionView.item(at: indexPath) as? TimelineTimeEntryCell else { return }
-        shouldPresentTimeEntryEditor(in: cell.popoverView, timeEntry: item.timeEntry)
+        shouldPresentTimeEntryEditor(in: cell.popoverView, timeEntry: item.timeEntry, cell: cell)
     }
 
     fileprivate func updatePositionOfEditorIfNeed() {
@@ -372,5 +380,16 @@ extension TimelineDashboardViewController: TimelineCollectionViewDelegate {
 
         // Create
         startNewTimeEntry(at: startTime, ended: startTime + 1)
+    }
+}
+
+extension TimelineDashboardViewController: NSPopoverDelegate {
+
+    func popoverDidClose(_ notification: Notification) {
+        guard let popover = notification.object as? NSPopover,
+            popover === editorPopover else {
+            return
+        }
+        hightlightCell = nil
     }
 }
