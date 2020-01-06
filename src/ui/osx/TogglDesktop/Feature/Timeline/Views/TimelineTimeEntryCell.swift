@@ -51,6 +51,13 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
         return backgroundBox.isHidden ? foregroundBox : view
     }
 
+    var isHighlight: Bool = false {
+        didSet {
+            print("--- isHighlight \(isHighlight)")
+            backgroundBox?.borderWidth = isHighlight ? 1 : 0
+        }
+    }
+
     // MARK: OUTLET
 
     @IBOutlet weak var titleLbl: NSTextField!
