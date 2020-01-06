@@ -102,6 +102,7 @@
                               DisplayMemberPath="Name"
                               VerticalAlignment="Center"
                               VerticalContentAlignment="Center"
+                              IsEditable="True"
                               IsTextSearchEnabled="True"
                               IsTextSearchCaseSensitive="False"
                               TextSearch.TextPath="Name"

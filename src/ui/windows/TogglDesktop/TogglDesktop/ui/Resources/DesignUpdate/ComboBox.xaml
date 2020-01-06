@@ -170,6 +170,7 @@
                                      Controls:TextBoxHelper.WatermarkTrimming="{TemplateBinding Controls:TextBoxHelper.WatermarkTrimming}"
                                      Background="{x:Null}"
                                      BorderThickness="0"
+                                     CaretBrush="{DynamicResource Toggl.PrimaryTextBrush}"
                                      CharacterCasing="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(Controls:ComboBoxHelper.CharacterCasing), Mode=OneWay}"
                                      Focusable="True"
                                      FontFamily="{TemplateBinding FontFamily}"
