@@ -15,6 +15,10 @@ protocol TimelineActivityRecorderViewControllerDelegate: class {
 
 final class TimelineActivityRecorderViewController: NSViewController {
 
+    private struct Constants {
+        static let LearnMoreURL = "https://toggl.com"
+    }
+
     // MARK: OUTLET
 
     @IBOutlet weak var titleLbl: NSTextField!
@@ -33,7 +37,7 @@ final class TimelineActivityRecorderViewController: NSViewController {
     // MARK: Public
 
     @IBAction func learnMoreBtnOnTap(_ sender: Any) {
-        
+        NSWorkspace.shared.open(URL(string: Constants.LearnMoreURL)!)
     }
 
     @IBAction func closeBtnOnTap(_ sender: Any) {
