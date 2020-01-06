@@ -113,7 +113,7 @@
 
     <Style TargetType="Button" x:Key="Toggl.AccentButton" BasedOn="{StaticResource Toggl.PrimaryButton}">
         <Setter Property="Background" Value="{DynamicResource Toggl.AccentBrush}" />
-        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Toggl.AccentBrush}" />
         <Setter Property="Foreground" Value="White" />
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
@@ -128,6 +128,7 @@
 
     <Style TargetType="Button" x:Key="Toggl.SecondaryAccentButton" BasedOn="{StaticResource Toggl.AccentButton}">
         <Setter Property="Background" Value="{DynamicResource Toggl.SecondaryAccentBrush}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Toggl.SecondaryAccentBrush}" />
         <Setter Property="FocusVisualStyle" Value="{StaticResource Toggl.SecondaryAccentButtonFocusVisualStyle}" />
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
