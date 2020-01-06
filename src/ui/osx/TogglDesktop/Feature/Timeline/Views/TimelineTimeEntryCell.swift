@@ -112,6 +112,7 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
     private func populateInfo() {
         guard let timeEntry = timeEntry else { return }
         backgroundBox?.isHidden = !timeEntry.hasDetailInfo
+        isHighlight = false
 
         if timeEntry.hasDetailInfo {
             let item = timeEntry.timeEntry

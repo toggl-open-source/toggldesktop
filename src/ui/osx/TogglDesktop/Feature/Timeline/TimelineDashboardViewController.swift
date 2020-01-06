@@ -73,7 +73,7 @@ final class TimelineDashboardViewController: NSViewController {
 
     private var hightlightItemGUID: String? {
         didSet {
-            resetAllHighlightCells(with: oldValue)
+            resetHighlightCells(with: oldValue)
         }
     }
 
@@ -133,6 +133,9 @@ final class TimelineDashboardViewController: NSViewController {
         if shouldScroll {
             scrollToVisibleItem()
         }
+
+        // After the reload finishes, we hightlight a cell again
+        highlightCells()
     }
     
     @IBAction func recordSwitchOnChanged(_ sender: Any) {
@@ -256,10 +259,16 @@ extension TimelineDashboardViewController {
         emptyActivityLblPadding.constant = recordSwitcher.isOn ? -40 : -50
     }
 
-    private func resetAllHighlightCells(with guid: String?) {
+    private func resetHighlightCells(with guid: String?) {
         guard let guid = guid,
             let cell = datasource.timeEntryCell(for: guid) else { return }
         cell.isHighlight = false
+    }
+
+    private func highlightCells() {
+        guard let guid = hightlightItemGUID,
+            let cell = datasource.timeEntryCell(for: guid) else { return }
+        cell.isHighlight = true
     }
 }
 
