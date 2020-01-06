@@ -31,7 +31,13 @@ final class TimelineDashboardViewController: NSViewController {
 
     weak var delegate: TimelineDashboardViewControllerDelegate?
     private var isOpening = false
-    private var selectedGUID: String?
+    private var selectedGUID: String? {
+        didSet {
+            if selectedGUID == nil {
+                resetHighlightCells()
+            }
+        }
+    }
     private var isFirstTime = true
     lazy var datePickerView: DatePickerView = DatePickerView.xibView()
     private lazy var datasource = TimelineDatasource(collectionView)
@@ -70,14 +76,6 @@ final class TimelineDashboardViewController: NSViewController {
         popover.delegate = self
         return popover
     }()
-
-    private var hightlightItemGUID: String? {
-        didSet {
-            if hightlightItemGUID == nil {
-                resetHighlightCells()
-            }
-        }
-    }
 
     // MARK: View
     
@@ -270,7 +268,7 @@ extension TimelineDashboardViewController {
     }
 
     private func highlightCells() {
-        guard let guid = hightlightItemGUID else { return }
+        guard let guid = selectedGUID else { return }
         for item in collectionView.visibleItems() {
             if let itemCell = item as? TimelineTimeEntryCell {
                 itemCell.isHighlight = itemCell.timeEntry.timeEntry.guid == guid
@@ -329,7 +327,6 @@ extension TimelineDashboardViewController: TimelineDatasourceDelegate {
     }
 
     func shouldPresentTimeEntryEditor(in view: NSView, timeEntry: TimeEntryViewItem, cell: TimelineTimeEntryCell) {
-        hightlightItemGUID = timeEntry.guid
         cell.isHighlight = true
         timeEntryHoverPopover.close()
         selectedGUID = timeEntry.guid
@@ -413,6 +410,6 @@ extension TimelineDashboardViewController: NSPopoverDelegate {
             popover === editorPopover else {
             return
         }
-        hightlightItemGUID = nil
+        selectedGUID = nil
     }
 }
