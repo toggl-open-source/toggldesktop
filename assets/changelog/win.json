@@ -1,6 +1,16 @@
 {
     "versions": [
         {
+            "version": "7.4.1112",
+            "rows": [
+                "Fixed crash when displaying in-app notification",
+                "Delete updates directory during uninstallation",
+                "'Change duration when changing start time' is now checked by default"
+            ],
+            "date": "January 6th 2020",
+            "has64bit": "true"
+        },
+        {
             "version": "7.4.1092",
             "rows": [
                 "Introduced in-app messaging functionality",
