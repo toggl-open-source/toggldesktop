@@ -82,10 +82,6 @@ NSString *kInactiveTimerColor = @"#999999";
 													 name:kDisplayTimerState
 												   object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(startDisplayTimeEntryEditor:)
-													 name:kDisplayTimeEntryEditor
-												   object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(focusTimer)
 													 name:kFocusTimer
 												   object:nil];
@@ -314,18 +310,6 @@ NSString *kInactiveTimerColor = @"#999999";
         }
     }
 
-}
-
-- (void)startDisplayTimeEntryEditor:(NSNotification *)notification
-{
-	[self displayTimeEntryEditor:notification.object];
-}
-
-- (void)displayTimeEntryEditor:(DisplayCommand *)cmd
-{
-	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
-
-	NSLog(@"TimeEntryListViewController displayTimeEntryEditor, thread %@", [NSThread currentThread]);
 }
 
 - (void)showDefaultTimer

@@ -33,11 +33,6 @@ final class TimelineDashboardViewController: NSViewController {
     private var isOpening = false
     private var selectedGUID: String?
     private var isFirstTime = true
-    private var hightlightCell: TimelineTimeEntryCell? {
-        didSet {
-            oldValue?.isHighlight = false
-        }
-    }
     lazy var datePickerView: DatePickerView = DatePickerView.xibView()
     private lazy var datasource = TimelineDatasource(collectionView)
     private var zoomLevel: TimelineDatasource.ZoomLevel = .x1 {
@@ -75,6 +70,12 @@ final class TimelineDashboardViewController: NSViewController {
         popover.delegate = self
         return popover
     }()
+
+    private var hightlightItemGUID: String? {
+        didSet {
+            resetAllHighlightCells(with: oldValue)
+        }
+    }
 
     // MARK: View
     
@@ -254,6 +255,12 @@ extension TimelineDashboardViewController {
         emptyActivityLbl.stringValue = recordSwitcher.isOn ? "No activity was recorded yet..." : "Turn on activity\nrecording to see results."
         emptyActivityLblPadding.constant = recordSwitcher.isOn ? -40 : -50
     }
+
+    private func resetAllHighlightCells(with guid: String?) {
+        guard let guid = guid,
+            let cell = datasource.timeEntryCell(for: guid) else { return }
+        cell.isHighlight = false
+    }
 }
 
 // MARK: DatePickerViewDelegate
@@ -306,7 +313,7 @@ extension TimelineDashboardViewController: TimelineDatasourceDelegate {
     }
 
     func shouldPresentTimeEntryEditor(in view: NSView, timeEntry: TimeEntryViewItem, cell: TimelineTimeEntryCell) {
-        hightlightCell = cell
+        hightlightItemGUID = timeEntry.guid
         timeEntryHoverPopover.close()
         selectedGUID = timeEntry.guid
         editorPopover.show(relativeTo: view.bounds, of: view, preferredEdge: .maxX)
@@ -390,6 +397,6 @@ extension TimelineDashboardViewController: NSPopoverDelegate {
             popover === editorPopover else {
             return
         }
-        hightlightCell = nil
+        hightlightItemGUID = nil
     }
 }

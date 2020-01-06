@@ -53,7 +53,6 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
 
     var isHighlight: Bool = false {
         didSet {
-            print("--- isHighlight \(isHighlight)")
             backgroundBox?.borderWidth = isHighlight ? 1 : 0
         }
     }
@@ -77,6 +76,11 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
         super.viewDidLoad()
         initCommon()
         initTrackingArea()
+    }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        isHighlight = false
     }
 
     // MARK: Public
