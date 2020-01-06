@@ -13,14 +13,14 @@
             <rect key="frame" x="0.0" y="0.0" width="197" height="107"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <box horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" boxType="custom" borderType="line" borderWidth="0.0" cornerRadius="10" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="xE9-Ie-UP3">
+                <box horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" boxType="custom" borderType="line" cornerRadius="10" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="xE9-Ie-UP3">
                     <rect key="frame" x="0.0" y="0.0" width="197" height="107"/>
                     <view key="contentView" id="r80-dl-MpV">
-                        <rect key="frame" x="0.0" y="0.0" width="197" height="107"/>
+                        <rect key="frame" x="1" y="1" width="195" height="105"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="4" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Dpe-7G-baj">
-                                <rect key="frame" x="30" y="21" width="167" height="81"/>
+                                <rect key="frame" x="30" y="20" width="165" height="81"/>
                                 <subviews>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="xXs-or-rIk">
                                         <rect key="frame" x="-2" y="66" width="77" height="15"/>
@@ -68,7 +68,7 @@
                                         </textFieldCell>
                                     </textField>
                                     <stackView distribution="fill" orientation="horizontal" alignment="bottom" spacing="5" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PyM-uW-hFa">
-                                        <rect key="frame" x="0.0" y="0.0" width="167" height="24"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="165" height="24"/>
                                         <subviews>
                                             <imageView translatesAutoresizingMaskIntoConstraints="NO" id="qtZ-fn-lLE">
                                                 <rect key="frame" x="0.0" y="0.0" width="17" height="17"/>
@@ -87,10 +87,10 @@
                                                 <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyDown" image="time-entry-billable" id="WjC-yn-K4V"/>
                                             </imageView>
                                             <customView horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="8dq-AH-3f2">
-                                                <rect key="frame" x="44" y="0.0" width="123" height="16"/>
+                                                <rect key="frame" x="44" y="0.0" width="121" height="16"/>
                                                 <subviews>
                                                     <textField horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="fa0-T9-1iU">
-                                                        <rect key="frame" x="96" y="1" width="24" height="15"/>
+                                                        <rect key="frame" x="94" y="1" width="24" height="15"/>
                                                         <textFieldCell key="cell" lineBreakMode="truncatingTail" alignment="right" title="12h" id="k25-lb-1QZ">
                                                             <font key="font" metaFont="label" size="12"/>
                                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -137,7 +137,7 @@
                         <constraints>
                             <constraint firstItem="Dpe-7G-baj" firstAttribute="leading" secondItem="r80-dl-MpV" secondAttribute="leading" constant="30" id="ci9-bO-9hN"/>
                             <constraint firstAttribute="trailing" secondItem="Dpe-7G-baj" secondAttribute="trailing" id="iiK-Hr-LDk"/>
-                            <constraint firstItem="Dpe-7G-baj" firstAttribute="top" secondItem="r80-dl-MpV" secondAttribute="top" constant="5" id="uJq-SO-k3o"/>
+                            <constraint firstItem="Dpe-7G-baj" firstAttribute="top" secondItem="r80-dl-MpV" secondAttribute="top" constant="4" id="uJq-SO-k3o"/>
                         </constraints>
                     </view>
                     <color key="fillColor" name="tertiaryLabelColor" catalog="System" colorSpace="catalog"/>
