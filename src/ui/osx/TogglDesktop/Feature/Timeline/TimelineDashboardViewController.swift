@@ -73,7 +73,9 @@ final class TimelineDashboardViewController: NSViewController {
 
     private var hightlightItemGUID: String? {
         didSet {
-            resetHighlightCells(with: oldValue)
+            if hightlightItemGUID == nil {
+                resetHighlightCells()
+            }
         }
     }
 
@@ -259,16 +261,21 @@ extension TimelineDashboardViewController {
         emptyActivityLblPadding.constant = recordSwitcher.isOn ? -40 : -50
     }
 
-    private func resetHighlightCells(with guid: String?) {
-        guard let guid = guid,
-            let cell = datasource.timeEntryCell(for: guid) else { return }
-        cell.isHighlight = false
+    private func resetHighlightCells() {
+        for item in collectionView.visibleItems() {
+            if let itemCell = item as? TimelineTimeEntryCell {
+                itemCell.isHighlight = false
+            }
+        }
     }
 
     private func highlightCells() {
-        guard let guid = hightlightItemGUID,
-            let cell = datasource.timeEntryCell(for: guid) else { return }
-        cell.isHighlight = true
+        guard let guid = hightlightItemGUID else { return }
+        for item in collectionView.visibleItems() {
+            if let itemCell = item as? TimelineTimeEntryCell {
+                itemCell.isHighlight = itemCell.timeEntry.timeEntry.guid == guid
+            }
+        }
     }
 }
 
@@ -323,12 +330,12 @@ extension TimelineDashboardViewController: TimelineDatasourceDelegate {
 
     func shouldPresentTimeEntryEditor(in view: NSView, timeEntry: TimeEntryViewItem, cell: TimelineTimeEntryCell) {
         hightlightItemGUID = timeEntry.guid
+        cell.isHighlight = true
         timeEntryHoverPopover.close()
         selectedGUID = timeEntry.guid
         editorPopover.show(relativeTo: view.bounds, of: view, preferredEdge: .maxX)
         editorPopover.setTimeEntry(timeEntry)
         DesktopLibraryBridge.shared().startEditor(atGUID: timeEntry.guid)
-        cell.isHighlight = true
     }
 
     func startNewTimeEntry(at started: TimeInterval, ended: TimeInterval) {
