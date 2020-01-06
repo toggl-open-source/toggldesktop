@@ -26,7 +26,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="280" height="194"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     </view>
-                    <color key="fillColor" name="editor-background-color"/>
+                    <color key="fillColor" name="timeline-record-activity-tooltip-background-color"/>
                 </box>
                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="Kql-9K-WpU">
                     <rect key="frame" x="13" y="147" width="237" height="32"/>
@@ -39,7 +39,7 @@
                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="hbg-8k-tad">
                     <rect key="frame" x="13" y="42" width="237" height="90"/>
                     <textFieldCell key="cell" selectable="YES" id="MGI-u3-Rge">
-                        <font key="font" metaFont="system" size="12"/>
+                        <font key="font" metaFont="controlContent"/>
                         <string key="title">Record your computer activity and revisit it later in the day to fill in gaps in your Timeline.
 
 All data is private. Only you can see it.
@@ -61,7 +61,7 @@ All data is private. Only you can see it.
                 </button>
                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="k1d-FN-xrL">
                     <rect key="frame" x="263" y="177" width="7" height="7"/>
-                    <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="close-button" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="JTV-CN-vZU">
+                    <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="close-button" imagePosition="only" alignment="center" refusesFirstResponder="YES" imageScaling="proportionallyDown" inset="2" id="JTV-CN-vZU">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
@@ -105,11 +105,11 @@ All data is private. Only you can see it.
     </objects>
     <resources>
         <image name="close-button" width="7" height="7"/>
-        <namedColor name="editor-background-color">
-            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
         <namedColor name="green-color">
             <color red="0.15700000524520874" green="0.80400002002716064" blue="0.25499999523162842" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="timeline-record-activity-tooltip-background-color">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>
