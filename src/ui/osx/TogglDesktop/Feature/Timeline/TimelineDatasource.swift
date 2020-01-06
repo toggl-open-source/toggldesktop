@@ -129,6 +129,17 @@ final class TimelineDatasource: NSObject {
                                          scrollPosition: [.centeredHorizontally, .centeredVertically])
         }
     }
+
+    func timeEntryCell(for guid: String) -> TimelineTimeEntryCell? {
+        let cell = collectionView.visibleItems().first { item -> Bool in
+            if let cell = item as? TimelineTimeEntryCell,
+                cell.timeEntry.timeEntry.guid == guid {
+                return true
+            }
+            return false
+        }
+        return cell as? TimelineTimeEntryCell
+    }
 }
 
 extension TimelineDatasource: NSCollectionViewDataSource, NSCollectionViewDelegateFlowLayout, NSCollectionViewDelegate {
