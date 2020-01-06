@@ -53,7 +53,7 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
 
     var isHighlight: Bool = false {
         didSet {
-            backgroundBox?.borderWidth = isHighlight ? 1 : 0
+            backgroundBox?.borderColor = (isHighlight ? foregroundBox.fillColor : backgroundColor) ?? foregroundBox.fillColor
         }
     }
 

@@ -24,6 +24,7 @@ class TimelineBaseCell: NSCollectionViewItem {
     // MARK: Variables
 
     weak var mouseDelegate: TimelineBaseCellDelegate?
+    private(set) var backgroundColor: NSColor?
 
     // MARK: Public
 
@@ -41,9 +42,11 @@ class TimelineBaseCell: NSCollectionViewItem {
     }
 
     func renderColor(with foregroundColor: NSColor, isSmallEntry: Bool) {
+        backgroundColor = foregroundColor.lighten(by: 0.1)
+
         foregroundBox.fillColor = foregroundColor
-        backgroundBox?.fillColor = foregroundColor.lighten(by: 0.1)
-        backgroundBox?.borderColor = foregroundColor
+        backgroundBox?.fillColor = backgroundColor ?? foregroundColor
+        backgroundBox?.borderColor = backgroundColor ?? foregroundColor
 
         let cornerRadius = suitableCornerRadius(isSmallEntry)
         foregroundBox.cornerRadius = cornerRadius
