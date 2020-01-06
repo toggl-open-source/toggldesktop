@@ -50,7 +50,7 @@ All data is private. Only you can see it.
                 </textField>
                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="nLv-32-T4U">
                     <rect key="frame" x="15" y="15" width="70" height="15"/>
-                    <buttonCell key="cell" type="bevel" title="Learn more" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="m5o-jP-szP">
+                    <buttonCell key="cell" type="bevel" title="Learn more" bezelStyle="rounded" alignment="center" refusesFirstResponder="YES" imageScaling="proportionallyDown" inset="2" id="m5o-jP-szP">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="systemMedium" size="12"/>
                     </buttonCell>
@@ -60,7 +60,11 @@ All data is private. Only you can see it.
                     </connections>
                 </button>
                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="k1d-FN-xrL">
-                    <rect key="frame" x="263" y="177" width="7" height="7"/>
+                    <rect key="frame" x="252" y="166" width="24" height="24"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="24" id="gxo-Am-YFc"/>
+                        <constraint firstAttribute="width" constant="24" id="qWv-fW-ukB"/>
+                    </constraints>
                     <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="close-button" imagePosition="only" alignment="center" refusesFirstResponder="YES" imageScaling="proportionallyDown" inset="2" id="JTV-CN-vZU">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
@@ -86,9 +90,9 @@ All data is private. Only you can see it.
                 <constraint firstItem="T3n-pW-blV" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="2SY-g4-Y5P"/>
                 <constraint firstItem="7Hw-10-QYc" firstAttribute="top" secondItem="nLv-32-T4U" secondAttribute="bottom" id="59S-hl-IgM"/>
                 <constraint firstItem="hbg-8k-tad" firstAttribute="top" secondItem="Kql-9K-WpU" secondAttribute="bottom" constant="15" id="9QX-vb-wqx"/>
-                <constraint firstAttribute="trailing" secondItem="k1d-FN-xrL" secondAttribute="trailing" constant="10" id="HtM-g3-1tC"/>
+                <constraint firstAttribute="trailing" secondItem="k1d-FN-xrL" secondAttribute="trailing" constant="4" id="HtM-g3-1tC"/>
                 <constraint firstAttribute="trailing" secondItem="hbg-8k-tad" secondAttribute="trailing" constant="32" id="Jkz-kq-Q79"/>
-                <constraint firstItem="k1d-FN-xrL" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="10" id="LDE-3T-j7D"/>
+                <constraint firstItem="k1d-FN-xrL" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="4" id="LDE-3T-j7D"/>
                 <constraint firstItem="Kql-9K-WpU" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="15" id="LUE-jU-Njj"/>
                 <constraint firstItem="hbg-8k-tad" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="15" id="OmT-hQ-aJ2"/>
                 <constraint firstItem="nLv-32-T4U" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="15" id="Swh-BY-SBi"/>
