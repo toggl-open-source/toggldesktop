@@ -48,14 +48,14 @@ namespace TogglDesktop
             set { SetValue(UrlProperty, value); }
         }
 
-        public void RunAppearAnimation(double maxHeight)
+        public void RunAppearAnimation()
         {
             var sb = new Storyboard();
             var slideAnimation = new DoubleAnimation
             {
                 Duration = TimeSpan.FromSeconds(1),
                 From = 0,
-                To = maxHeight,
+                To = 300,
                 DecelerationRatio = 0.3f
             };
             Storyboard.SetTargetProperty(slideAnimation, new PropertyPath("MaxHeight"));

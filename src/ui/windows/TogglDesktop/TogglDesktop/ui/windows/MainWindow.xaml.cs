@@ -475,7 +475,7 @@ namespace TogglDesktop
             inAppNotification.Button = button;
             inAppNotification.Url = url;
 
-            inAppNotification.RunAppearAnimation(this.Height);
+            inAppNotification.RunAppearAnimation();
         }
 
         #endregion
