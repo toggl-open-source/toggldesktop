@@ -90,6 +90,13 @@ final class TimelineDashboardViewController: NSViewController {
         return popover
     }()
 
+    private var isAllPopoverClosed: Bool {
+        return !editorPopover.isShown &&
+            !activityHoverPopover.isShown &&
+            !timeEntryHoverPopover.isShown &&
+            !activityRecorderPopover.isShown
+    }
+
     // MARK: View
     
     override func viewDidLoad() {
@@ -410,7 +417,7 @@ extension TimelineDashboardViewController: TimelineCollectionViewDelegate {
 
     func timelineShouldCreateEmptyEntry(with startTime: TimeInterval) {
         // Don't create new TE if one of Popover is active
-        guard !editorPopover.isShown, !activityHoverPopover.isShown, !timeEntryHoverPopover.isShown else { return }
+        guard isAllPopoverClosed else { return }
 
         // Create
         startNewTimeEntry(at: startTime, ended: startTime + 1)
@@ -433,7 +440,7 @@ extension TimelineDashboardViewController: NSPopoverDelegate {
 extension TimelineDashboardViewController: TimelineActivityRecorderViewControllerDelegate {
 
     func timelineActivityRecorderShouldDidClickOnCloseBtn(_ sender: Any) {
-        activityHoverPopover.performClose(self)
+        activityRecorderPopover.performClose(self)
     }
 }
 
