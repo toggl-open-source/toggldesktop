@@ -74,6 +74,7 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         initCommon()
         initTrackingArea()
     }
@@ -101,14 +102,6 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
         foregroundBox.resetCursorRects()
     }
 
-    override func rightMouseDown(with event: NSEvent) {
-        super.rightMouseDown(with: event)
-
-        if let timeEntry = timeEntry, timeEntry.isOverlap {
-            NSMenu.popUpContextMenu(timeEntryMenu, with: event, for: self.view)
-        }
-    }
-
     private func populateInfo() {
         guard let timeEntry = timeEntry else { return }
         backgroundBox?.isHidden = !timeEntry.hasDetailInfo
@@ -119,6 +112,9 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
             updateLabels(item)
             hideOutOfBoundControls()
         }
+
+        // Enable menu if it's overlap Time Entry
+        view.menu = timeEntry.isOverlap ? timeEntryMenu : nil
      }
 
     private func hideOutOfBoundControls() {
