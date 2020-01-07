@@ -38,6 +38,7 @@ void TimelineEvent::SetTitle(const std::string &value) {
 void TimelineEvent::SetStart(const Poco::Int64 value) {
     if (start_time_ != value) {
         start_time_ = value;
+        updateDuration();
         SetDirty();
     }
 }
@@ -45,6 +46,7 @@ void TimelineEvent::SetStart(const Poco::Int64 value) {
 void TimelineEvent::SetEndTime(const Poco::Int64 value) {
     if (end_time_ != value) {
         end_time_ = value;
+        updateDuration();
         SetDirty();
     }
 }
@@ -86,6 +88,11 @@ Json::Value TimelineEvent::SaveToJSON() const {
     n["end_time"] = Json::Int64(EndTime());
     n["created_with"] = "timeline";
     return n;
+}
+
+void TimelineEvent::updateDuration() {
+    Poco::Int64 value = end_time_ - start_time_;
+    duration_ = value < 0 ? 0 : value;
 }
 
 }   // namespace toggl

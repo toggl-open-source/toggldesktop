@@ -64,7 +64,9 @@ class TOGGL_INTERNAL_EXPORT UIElements {
     , display_settings(false)
     , time_entry_editor_guid("")
     , time_entry_editor_field("")
-    , display_unsynced_items(false) {}
+    , display_unsynced_items(false)
+    , display_timeline(false)
+    , open_timeline(false) {}
 
     static UIElements Reset();
 
@@ -91,6 +93,8 @@ class TOGGL_INTERNAL_EXPORT UIElements {
     std::string time_entry_editor_guid;
     std::string time_entry_editor_field;
     bool display_unsynced_items;
+    bool display_timeline;
+    bool open_timeline;
 };
 
 class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
@@ -318,9 +322,11 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
         const std::string &duration,
         const Poco::UInt64 task_id,
         const Poco::UInt64 project_id,
-        const std::string &project_guid,
-        const std::string &tags,
-        const bool prevent_on_app);
+        const std::string project_guid,
+        const std::string tags,
+        const bool prevent_on_app,
+        const time_t started,
+        const time_t ended);
 
     TimeEntry *ContinueLatest(const bool prevent_on_app);
 
@@ -328,6 +334,16 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
         const std::string &GUID);
 
     void OpenTimeEntryList();
+
+    void OpenTimelineDataView();
+
+    void ViewTimelinePrevDay();
+
+    void ViewTimelineCurrentDay();
+
+    void ViewTimelineNextDay();
+
+    void ViewTimelineSetDate(const Poco::Int64 unix_timestamp);
 
     void OpenSettings();
 
@@ -356,9 +372,15 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
         const std::string &GUID,
         const std::string &value);
 
+    error SetTimeEntryStart(const std::string GUID,
+                            const Poco::Int64 startAt);
+
     error SetTimeEntryStop(
         const std::string &GUID,
         const std::string &value);
+
+    error SetTimeEntryStop(const std::string GUID,
+                           const Poco::Int64 endAt);
 
     error SetTimeEntryTags(
         const std::string &GUID,

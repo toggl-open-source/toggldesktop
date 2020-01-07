@@ -68,6 +68,11 @@
                                     <action selector="onModeChange:" target="494" id="SoP-VP-yqv"/>
                                 </connections>
                             </menuItem>
+                            <menuItem title="Show Timeline" keyEquivalent="l" id="cRQ-QS-A1h">
+                                <connections>
+                                    <action selector="onShowTimelineDataMenuItem:" target="494" id="SwG-Wr-lyw"/>
+                                </connections>
+                            </menuItem>
                             <menuItem isSeparatorItem="YES" id="149">
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                             </menuItem>
@@ -215,6 +220,23 @@
                         </items>
                     </menu>
                 </menuItem>
+                <menuItem title="Timeline" id="YHj-AQ-2TJ">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <menu key="submenu" title="Timeline" id="8ah-bF-5q6">
+                        <items>
+                            <menuItem title="Zoom In" tag="3" keyEquivalent="+" id="XUZ-S2-QCm">
+                                <connections>
+                                    <action selector="zoomInBtnOnTap:" target="-1" id="RZ3-A4-bxc"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Zoom Out" tag="3" keyEquivalent="-" id="zgY-fo-tDy">
+                                <connections>
+                                    <action selector="zoomOutBtnOnTap:" target="-1" id="Q5Y-dr-37M"/>
+                                </connections>
+                            </menuItem>
+                        </items>
+                    </menu>
+                </menuItem>
                 <menuItem title="Window" id="19">
                     <menu key="submenu" title="Window" systemMenu="window" id="24">
                         <items>
@@ -279,7 +301,7 @@
             <rect key="frame" x="0.0" y="0.0" width="164" height="23"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <segmentedCell key="cell" borderStyle="border" alignment="left" style="smallSquare" trackingMode="selectOne" id="1459">
-                <font key="font" metaFont="miniSystem"/>
+                <font key="font" metaFont="menu" size="9"/>
                 <segments>
                     <segment label="Weekly log" width="81"/>
                     <segment label="Quick selection" width="81" selected="YES" tag="1"/>

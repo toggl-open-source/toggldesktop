@@ -279,7 +279,7 @@ error Database::deleteAllSyncedTimelineEventsByDate(
 
         *session_ <<
                   "delete from timeline_events where "
-                  "uploaded = 1 OR end_time < :end_time",
+                  "uploaded = 1 AND end_time < :end_time",
                   useRef(endTime),
                   now;
     } catch(const Poco::Exception& exc) {

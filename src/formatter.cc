@@ -31,6 +31,7 @@ namespace toggl {
 const std::string Format::Classic = std::string("classic");
 const std::string Format::Improved = std::string("improved");
 const std::string Format::Decimal = std::string("decimal");
+const std::string Format::ImprovedOnlyMinAndSec = std::string("improvedOnlyMinAndSec");
 
 std::string Formatter::TimeOfDayFormat = std::string("");
 std::string Formatter::DurationFormat = Format::Improved;
@@ -86,6 +87,10 @@ std::string Formatter::FormatDateHeader(const std::time_t date) {
     Poco::Timestamp ts = Poco::Timestamp::fromEpochTime(date);
     Poco::LocalDateTime datetime(ts);
 
+    return FormatDateHeader(datetime);
+}
+
+std::string Formatter::FormatDateHeader(const Poco::LocalDateTime datetime) {
     Poco::LocalDateTime today;
     if (today.year() == datetime.year() &&
             today.month() == datetime.month() &&
@@ -476,8 +481,10 @@ std::string Formatter::FormatDuration(
     // So format hours by hand:
     std::stringstream ss;
     Poco::Int64 hours = duration / 3600;
-    ss << hours;
-    ss << ":";
+    if (Format::ImprovedOnlyMinAndSec != format_name) {
+        ss << hours;
+        ss << ":";
+    }
     Poco::Timespan span(duration * Poco::Timespan::SECONDS);
     if (with_seconds) {
         ss << Poco::DateTimeFormatter::format(span, "%M:%S");

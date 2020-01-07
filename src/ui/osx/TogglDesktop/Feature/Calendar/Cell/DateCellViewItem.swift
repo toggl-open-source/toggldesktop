@@ -10,12 +10,18 @@ import Cocoa
 
 final class DateCellViewItem: NSCollectionViewItem {
 
+    private struct Constants {
+        static let SmallSize: CGFloat = 26
+        static let BigSize: CGFloat = 32
+    }
+
     // MARK: OUTLET
 
     @IBOutlet weak var titleLbl: NSTextField!
     @IBOutlet weak var backgroundBox: NSBox!
     @IBOutlet weak var monthLbl: NSTextField!
     @IBOutlet weak var hoverView: NSBox!
+    @IBOutlet weak var backgroundBoxHeight: NSLayoutConstraint!
 
     // MARK: Variables
 
@@ -44,11 +50,6 @@ final class DateCellViewItem: NSCollectionViewItem {
         initTracking()
     }
 
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        initCommon()
-    }
-
     func render(with info: DateInfo, highlight: Bool, isCurrentMonth: Bool) {
         isHightlight = highlight
         titleLbl.stringValue = "\(info.day)"
@@ -58,8 +59,10 @@ final class DateCellViewItem: NSCollectionViewItem {
         if info.isFirstDayOfMonth {
             monthLbl.isHidden = false
             monthLbl.stringValue = info.monthTitle.uppercased()
+            backgroundBoxHeight.constant = Constants.BigSize
         } else {
             monthLbl.isHidden = true
+            backgroundBoxHeight.constant = Constants.SmallSize
         }
 
         // Color for title
@@ -89,8 +92,9 @@ final class DateCellViewItem: NSCollectionViewItem {
     }
 
     private func initTracking() {
+        guard view.trackingAreas.isEmpty else { return }
         let trackingArea = NSTrackingArea(rect: view.bounds,
-                                          options: [.activeInKeyWindow, .mouseEnteredAndExited],
+                                          options: [.activeInKeyWindow, .mouseEnteredAndExited, .inVisibleRect],
                                           owner: self,
                                           userInfo: nil)
         view.addTrackingArea(trackingArea)

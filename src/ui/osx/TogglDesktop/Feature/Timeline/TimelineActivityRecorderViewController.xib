@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="15702" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15702"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="TimelineActivityRecorderViewController" customModule="TogglDesktop" customModuleProvider="target">
+            <connections>
+                <outlet property="descriptionLbl" destination="hbg-8k-tad" id="OHq-Dz-D9d"/>
+                <outlet property="titleLbl" destination="Kql-9K-WpU" id="ozN-Yt-dJm"/>
+                <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView id="Hz6-mo-xeY">
+            <rect key="frame" x="0.0" y="0.0" width="280" height="152"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <box boxType="custom" borderWidth="0.0" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="T3n-pW-blV">
+                    <rect key="frame" x="0.0" y="0.0" width="280" height="152"/>
+                    <view key="contentView" id="1AW-eL-rXq">
+                        <rect key="frame" x="0.0" y="0.0" width="280" height="152"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    </view>
+                    <color key="fillColor" name="timeline-record-activity-tooltip-background-color"/>
+                </box>
+                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="Kql-9K-WpU">
+                    <rect key="frame" x="13" y="105" width="237" height="32"/>
+                    <textFieldCell key="cell" selectable="YES" title="Having troubles recalling what you were working on?" id="OwG-GB-Vwe">
+                        <font key="font" metaFont="systemBold"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="hbg-8k-tad">
+                    <rect key="frame" x="13" y="15" width="237" height="75"/>
+                    <textFieldCell key="cell" selectable="YES" id="MGI-u3-Rge">
+                        <font key="font" metaFont="controlContent"/>
+                        <string key="title">Record your computer activity and revisit it later in the day to fill in gaps in your Timeline.
+
+All data is private. Only you can see it.</string>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <button hidden="YES" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="nLv-32-T4U">
+                    <rect key="frame" x="15" y="15" width="70" height="15"/>
+                    <buttonCell key="cell" type="bevel" title="Learn more" bezelStyle="rounded" alignment="center" refusesFirstResponder="YES" imageScaling="proportionallyDown" inset="2" id="m5o-jP-szP">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="systemMedium" size="12"/>
+                    </buttonCell>
+                    <color key="contentTintColor" name="green-color"/>
+                    <connections>
+                        <action selector="learnMoreBtnOnTap:" target="-2" id="fG6-dz-n6g"/>
+                    </connections>
+                </button>
+                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="k1d-FN-xrL">
+                    <rect key="frame" x="252" y="124" width="24" height="24"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="24" id="gxo-Am-YFc"/>
+                        <constraint firstAttribute="width" constant="24" id="qWv-fW-ukB"/>
+                    </constraints>
+                    <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="close-button" imagePosition="only" alignment="center" refusesFirstResponder="YES" imageScaling="proportionallyDown" inset="2" id="JTV-CN-vZU">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="closeBtnOnTap:" target="-2" id="Icf-Jw-Vms"/>
+                    </connections>
+                </button>
+                <box hidden="YES" boxType="custom" borderType="none" borderWidth="0.0" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="7Hw-10-QYc">
+                    <rect key="frame" x="17" y="14" width="66" height="1"/>
+                    <view key="contentView" id="Zk6-MG-H0T">
+                        <rect key="frame" x="0.0" y="0.0" width="66" height="1"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    </view>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="66" id="e5n-IJ-u67"/>
+                        <constraint firstAttribute="height" constant="1" id="xfy-qE-KYH"/>
+                    </constraints>
+                    <color key="fillColor" name="green-color"/>
+                </box>
+            </subviews>
+            <constraints>
+                <constraint firstItem="T3n-pW-blV" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="2SY-g4-Y5P"/>
+                <constraint firstItem="7Hw-10-QYc" firstAttribute="top" secondItem="nLv-32-T4U" secondAttribute="bottom" id="59S-hl-IgM"/>
+                <constraint firstItem="hbg-8k-tad" firstAttribute="top" secondItem="Kql-9K-WpU" secondAttribute="bottom" constant="15" id="9QX-vb-wqx"/>
+                <constraint firstAttribute="trailing" secondItem="k1d-FN-xrL" secondAttribute="trailing" constant="4" id="HtM-g3-1tC"/>
+                <constraint firstAttribute="trailing" secondItem="hbg-8k-tad" secondAttribute="trailing" constant="32" id="Jkz-kq-Q79"/>
+                <constraint firstItem="k1d-FN-xrL" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="4" id="LDE-3T-j7D"/>
+                <constraint firstItem="Kql-9K-WpU" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="15" id="LUE-jU-Njj"/>
+                <constraint firstItem="hbg-8k-tad" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="15" id="OmT-hQ-aJ2"/>
+                <constraint firstItem="nLv-32-T4U" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="15" id="Swh-BY-SBi"/>
+                <constraint firstAttribute="bottom" secondItem="T3n-pW-blV" secondAttribute="bottom" id="VmW-km-Els"/>
+                <constraint firstAttribute="bottom" secondItem="hbg-8k-tad" secondAttribute="bottom" constant="15" id="Xh3-my-t8M"/>
+                <constraint firstItem="T3n-pW-blV" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" id="aLt-Jn-GFz"/>
+                <constraint firstAttribute="trailing" secondItem="T3n-pW-blV" secondAttribute="trailing" id="g3e-w7-gKz"/>
+                <constraint firstAttribute="trailing" secondItem="Kql-9K-WpU" secondAttribute="trailing" constant="32" id="iQt-Zt-T9U"/>
+                <constraint firstItem="7Hw-10-QYc" firstAttribute="centerX" secondItem="nLv-32-T4U" secondAttribute="centerX" id="kWe-EZ-Dzv"/>
+                <constraint firstAttribute="bottom" secondItem="nLv-32-T4U" secondAttribute="bottom" constant="15" id="pRW-cj-Ibt"/>
+                <constraint firstItem="Kql-9K-WpU" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="15" id="w1x-kM-L2M"/>
+            </constraints>
+            <point key="canvasLocation" x="139" y="154"/>
+        </customView>
+    </objects>
+    <resources>
+        <image name="close-button" width="7" height="7"/>
+        <namedColor name="green-color">
+            <color red="0.15700000524520874" green="0.80400002002716064" blue="0.25499999523162842" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="timeline-record-activity-tooltip-background-color">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

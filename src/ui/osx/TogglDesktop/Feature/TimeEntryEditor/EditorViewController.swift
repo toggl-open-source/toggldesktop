@@ -9,6 +9,11 @@
 import Cocoa
 import Carbon.HIToolbox
 
+protocol EditorViewControllerDelegate: class {
+
+    func editorShouldClose()
+}
+
 final class EditorViewController: NSViewController {
 
     private struct Constans {
@@ -44,6 +49,7 @@ final class EditorViewController: NSViewController {
 
     // MARK: Variables
 
+    weak var delegate: EditorViewControllerDelegate?
     var timeEntry: TimeEntryViewItem! {
         didSet {
             fillData(oldValue)
@@ -117,7 +123,7 @@ final class EditorViewController: NSViewController {
     }
 
     @IBAction func closeBtnOnTap(_ sender: Any) {
-        DesktopLibraryBridge.shared().togglEditor()
+        delegate?.editorShouldClose()
     }
 
     @IBAction func nextDateBtnOnTap(_ sender: Any) {
@@ -196,6 +202,12 @@ final class EditorViewController: NSViewController {
         if event.keyCode == UInt16(kVK_Escape) {
             closeBtnOnTap(self)
         }
+    }
+
+    func closeCalendarPopover() {
+        calendarPopover.animates = false
+        calendarPopover.close()
+        calendarPopover.animates = true
     }
 }
 
@@ -650,6 +662,10 @@ extension EditorViewController: CalendarViewControllerDelegate {
 
     func calendarViewControllerDidSelect(date: Date) {
         DesktopLibraryBridge.shared().updateTimeEntry(withStart: date, guid: timeEntry.guid)
+    }
+
+    func calendarViewControllerDoneBtnOnTap() {
+        calendarPopover.performClose(self)
     }
 }
 

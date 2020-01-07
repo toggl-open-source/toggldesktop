@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="15702" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14490.70"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15702"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -12,62 +12,64 @@
                 <outlet property="clipView" destination="8dq-zD-FLg" id="s5C-Ra-Nfp"/>
                 <outlet property="collectionView" destination="V4G-fh-5PF" id="5Qh-9C-5s5"/>
                 <outlet property="dayStackView" destination="wcm-Z5-oER" id="zJx-5J-8cZ"/>
+                <outlet property="doneBtn" destination="gFx-zY-L0H" id="pjQ-rm-wpX"/>
                 <outlet property="popverWidth" destination="liD-Se-PEq" id="tM4-mp-9NE"/>
                 <outlet property="stackViewTrailing" destination="ik1-Gd-lGm" id="ktw-rv-8Tx"/>
+                <outlet property="todayBtn" destination="Syb-hE-Omd" id="tdL-40-oW0"/>
                 <outlet property="view" destination="B5d-J5-SqN" id="WMb-Ev-b1E"/>
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customView id="B5d-J5-SqN">
-            <rect key="frame" x="0.0" y="0.0" width="240" height="313"/>
+            <rect key="frame" x="0.0" y="0.0" width="254" height="350"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <box boxType="custom" borderType="none" borderWidth="0.0" title="Box" translatesAutoresizingMaskIntoConstraints="NO" id="Xdh-0I-8Jz">
-                    <rect key="frame" x="0.0" y="0.0" width="240" height="313"/>
+                    <rect key="frame" x="0.0" y="0.0" width="254" height="350"/>
                     <view key="contentView" id="K3e-rx-Ngb">
-                        <rect key="frame" x="0.0" y="0.0" width="240" height="313"/>
+                        <rect key="frame" x="0.0" y="0.0" width="254" height="350"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="E9x-BN-aaU">
-                                <rect key="frame" x="0.0" y="274" width="240" height="39"/>
+                                <rect key="frame" x="0.0" y="312" width="254" height="38"/>
                                 <subviews>
                                     <box boxType="custom" borderType="none" borderWidth="0.0" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="HZ0-06-ZeH">
-                                        <rect key="frame" x="0.0" y="0.0" width="240" height="39"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="254" height="38"/>
                                         <view key="contentView" id="vWx-UJ-mvk">
-                                            <rect key="frame" x="0.0" y="0.0" width="240" height="39"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="254" height="38"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         </view>
                                         <color key="fillColor" name="calendar-background-color"/>
                                     </box>
                                     <stackView distribution="equalSpacing" orientation="horizontal" alignment="centerY" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wcm-Z5-oER">
-                                        <rect key="frame" x="5" y="0.0" width="230" height="39"/>
+                                        <rect key="frame" x="5" y="0.0" width="244" height="38"/>
                                     </stackView>
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="HZ0-06-ZeH" firstAttribute="top" secondItem="E9x-BN-aaU" secondAttribute="top" id="048-iN-Fog"/>
-                                    <constraint firstAttribute="height" constant="39" id="E6f-ZN-K4M"/>
+                                    <constraint firstAttribute="height" constant="38" id="E6f-ZN-K4M"/>
                                     <constraint firstAttribute="trailing" secondItem="HZ0-06-ZeH" secondAttribute="trailing" id="F3I-UG-ie8"/>
                                     <constraint firstAttribute="bottom" secondItem="wcm-Z5-oER" secondAttribute="bottom" id="FBs-6g-VhN"/>
                                     <constraint firstItem="wcm-Z5-oER" firstAttribute="top" secondItem="E9x-BN-aaU" secondAttribute="top" id="hSc-qG-rPs"/>
                                     <constraint firstAttribute="trailing" secondItem="wcm-Z5-oER" secondAttribute="trailing" constant="5" id="ik1-Gd-lGm"/>
-                                    <constraint firstAttribute="width" constant="240" id="liD-Se-PEq"/>
+                                    <constraint firstAttribute="width" constant="254" id="liD-Se-PEq"/>
                                     <constraint firstItem="wcm-Z5-oER" firstAttribute="leading" secondItem="E9x-BN-aaU" secondAttribute="leading" constant="5" id="lzM-1H-fKF"/>
                                     <constraint firstItem="HZ0-06-ZeH" firstAttribute="leading" secondItem="E9x-BN-aaU" secondAttribute="leading" id="n0C-UM-lAn"/>
                                     <constraint firstAttribute="bottom" secondItem="HZ0-06-ZeH" secondAttribute="bottom" id="rTy-sz-JN3"/>
                                 </constraints>
                             </customView>
                             <box verticalHuggingPriority="750" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="C0K-Lf-4GI">
-                                <rect key="frame" x="0.0" y="271" width="240" height="5"/>
+                                <rect key="frame" x="0.0" y="309" width="254" height="5"/>
                             </box>
                             <scrollView wantsLayer="YES" borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" horizontalScrollElasticity="none" verticalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="Upb-gx-L0v">
-                                <rect key="frame" x="0.0" y="0.0" width="240" height="273"/>
+                                <rect key="frame" x="0.0" y="39" width="254" height="272"/>
                                 <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="8dq-zD-FLg">
-                                    <rect key="frame" x="0.0" y="0.0" width="240" height="273"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="254" height="272"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <collectionView selectable="YES" allowsEmptySelection="NO" id="V4G-fh-5PF" customClass="CalendarCollectionView" customModule="TogglDesktop" customModuleProvider="target">
-                                            <rect key="frame" x="0.0" y="0.0" width="240" height="273"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="254" height="272"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                             <collectionViewFlowLayout key="collectionViewLayout" minimumInteritemSpacing="10" minimumLineSpacing="10" id="OPE-W1-KLS">
                                                 <size key="itemSize" width="50" height="50"/>
@@ -76,27 +78,80 @@
                                         </collectionView>
                                     </subviews>
                                 </clipView>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="272" id="DzE-D0-GSA"/>
+                                </constraints>
                                 <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="r1Z-7j-H7U">
                                     <rect key="frame" x="-100" y="-100" width="227" height="16"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                                 <scroller key="verticalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="cVi-K4-cFC">
-                                    <rect key="frame" x="224" y="0.0" width="16" height="273"/>
+                                    <rect key="frame" x="238" y="0.0" width="16" height="272"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                             </scrollView>
+                            <box verticalHuggingPriority="750" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="j5F-3E-WQJ">
+                                <rect key="frame" x="0.0" y="36" width="254" height="5"/>
+                            </box>
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="sD9-HD-7XG">
+                                <rect key="frame" x="0.0" y="0.0" width="254" height="38"/>
+                                <subviews>
+                                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Syb-hE-Omd">
+                                        <rect key="frame" x="6" y="0.0" width="50" height="38"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="50" id="j50-v8-Vqn"/>
+                                        </constraints>
+                                        <buttonCell key="cell" type="bevel" title="Today" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="eCa-Iv-fmt">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" metaFont="system" size="12"/>
+                                        </buttonCell>
+                                        <connections>
+                                            <action selector="todayBtnOnTap:" target="-2" id="J1q-Ko-sHI"/>
+                                        </connections>
+                                    </button>
+                                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="gFx-zY-L0H">
+                                        <rect key="frame" x="198" y="0.0" width="50" height="38"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="50" id="gOo-de-Vsw"/>
+                                        </constraints>
+                                        <buttonCell key="cell" type="bevel" title="Done" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="oKr-Tt-Chy">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" metaFont="system" size="12"/>
+                                        </buttonCell>
+                                        <color key="contentTintColor" name="green-color"/>
+                                        <connections>
+                                            <action selector="doneBtnOnTap:" target="-2" id="JfX-oj-Tej"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="Syb-hE-Omd" secondAttribute="bottom" id="5rt-ml-Fqh"/>
+                                    <constraint firstItem="Syb-hE-Omd" firstAttribute="leading" secondItem="sD9-HD-7XG" secondAttribute="leading" constant="6" id="9ZO-t8-xpV"/>
+                                    <constraint firstAttribute="height" constant="38" id="CFZ-1u-Jex"/>
+                                    <constraint firstItem="gFx-zY-L0H" firstAttribute="top" secondItem="sD9-HD-7XG" secondAttribute="top" id="e5T-l8-iWl"/>
+                                    <constraint firstAttribute="bottom" secondItem="gFx-zY-L0H" secondAttribute="bottom" id="gXe-jw-LpO"/>
+                                    <constraint firstAttribute="trailing" secondItem="gFx-zY-L0H" secondAttribute="trailing" constant="6" id="v4s-aq-WzR"/>
+                                    <constraint firstItem="Syb-hE-Omd" firstAttribute="top" secondItem="sD9-HD-7XG" secondAttribute="top" id="zGm-hd-Tsm"/>
+                                </constraints>
+                            </customView>
                         </subviews>
                         <constraints>
                             <constraint firstItem="Upb-gx-L0v" firstAttribute="leading" secondItem="K3e-rx-Ngb" secondAttribute="leading" id="1PT-JM-Fa1"/>
                             <constraint firstItem="C0K-Lf-4GI" firstAttribute="leading" secondItem="K3e-rx-Ngb" secondAttribute="leading" id="4id-6X-C6z"/>
+                            <constraint firstItem="sD9-HD-7XG" firstAttribute="top" secondItem="j5F-3E-WQJ" secondAttribute="bottom" id="7UU-Lj-YaA"/>
                             <constraint firstAttribute="trailing" secondItem="Upb-gx-L0v" secondAttribute="trailing" id="7h9-mL-lII"/>
+                            <constraint firstAttribute="trailing" secondItem="j5F-3E-WQJ" secondAttribute="trailing" id="8bR-FF-pOQ"/>
+                            <constraint firstAttribute="trailing" secondItem="sD9-HD-7XG" secondAttribute="trailing" id="CdO-YE-hfy"/>
                             <constraint firstItem="E9x-BN-aaU" firstAttribute="leading" secondItem="K3e-rx-Ngb" secondAttribute="leading" id="K3Q-ap-kNz"/>
                             <constraint firstAttribute="trailing" secondItem="C0K-Lf-4GI" secondAttribute="trailing" id="Nqg-cv-XbY"/>
+                            <constraint firstItem="j5F-3E-WQJ" firstAttribute="top" secondItem="Upb-gx-L0v" secondAttribute="bottom" id="T0v-Ea-IZ3"/>
+                            <constraint firstItem="sD9-HD-7XG" firstAttribute="leading" secondItem="K3e-rx-Ngb" secondAttribute="leading" id="dLH-MB-4Gl"/>
+                            <constraint firstItem="j5F-3E-WQJ" firstAttribute="leading" secondItem="K3e-rx-Ngb" secondAttribute="leading" id="dsk-uH-4kD"/>
                             <constraint firstAttribute="trailing" secondItem="E9x-BN-aaU" secondAttribute="trailing" id="hju-VG-Dfv"/>
                             <constraint firstItem="C0K-Lf-4GI" firstAttribute="top" secondItem="E9x-BN-aaU" secondAttribute="bottom" id="lqp-u8-zaS"/>
+                            <constraint firstAttribute="bottom" secondItem="sD9-HD-7XG" secondAttribute="bottom" id="oaw-Xe-b7E"/>
                             <constraint firstItem="Upb-gx-L0v" firstAttribute="top" secondItem="C0K-Lf-4GI" secondAttribute="bottom" id="vr4-bV-aL8"/>
                             <constraint firstItem="E9x-BN-aaU" firstAttribute="top" secondItem="K3e-rx-Ngb" secondAttribute="top" id="win-s2-zZj"/>
-                            <constraint firstAttribute="bottom" secondItem="Upb-gx-L0v" secondAttribute="bottom" id="zBp-sf-bx6"/>
                         </constraints>
                     </view>
                     <color key="fillColor" name="calendar-background-color"/>
@@ -108,12 +163,15 @@
                 <constraint firstItem="Xdh-0I-8Jz" firstAttribute="top" secondItem="B5d-J5-SqN" secondAttribute="top" id="hJZ-dy-S1J"/>
                 <constraint firstAttribute="trailing" secondItem="Xdh-0I-8Jz" secondAttribute="trailing" id="pbb-LY-68s"/>
             </constraints>
-            <point key="canvasLocation" x="-4" y="37.5"/>
+            <point key="canvasLocation" x="-4" y="55.5"/>
         </customView>
     </objects>
     <resources>
         <namedColor name="calendar-background-color">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="green-color">
+            <color red="0.15700000524520874" green="0.80400002002716064" blue="0.25499999523162842" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>

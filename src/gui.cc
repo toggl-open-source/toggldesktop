@@ -56,6 +56,19 @@ void TimeEntry::Fill(toggl::TimeEntry * const model) {
     GroupName = model->GroupHash();
 }
 
+void TimeEntry::GenerateRoundedTimes() {
+    int quarter = 900;
+    int tmp_rounded;
+
+    tmp_rounded = ((int)(Started / quarter) * quarter);
+    // gets the percentage that is used to set margin from top
+    RoundedStart = (Started - tmp_rounded) / 9;
+
+    tmp_rounded = (((int)(Ended / quarter)) * quarter) + quarter;
+    // gets the percentage that is used to set margin from bottom
+    RoundedEnd = (tmp_rounded - Ended) / 9;
+}
+
 bool Autocomplete::operator == (const Autocomplete&) const {
     return false;
 }
@@ -463,7 +476,204 @@ void GUI::DisplayTimeEntryList(const bool open,
     }
 }
 
-void GUI::DisplayTags(const std::vector<view::Generic> &list) {
+void GUI::DisplayTimeline(
+    const bool open,
+    const std::vector<TimelineEvent> list,
+    const std::vector<view::TimeEntry> entries_list) {
+
+    if (!on_display_timeline_) {
+        return;
+    }
+
+    TogglTimelineChunkView *first_chunk = nullptr;
+    Poco::LocalDateTime datetime(
+        TimelineDateAt().year(),
+        TimelineDateAt().month(),
+        TimelineDateAt().day());
+    int tzd = datetime.tzd();
+
+    // Get all entires in this day (no chunk, no overlap)
+    TogglTimeEntryView *first_entry = nullptr;
+    time_t start_day = datetime.timestamp().epochTime() - tzd;
+    time_t end_day = start_day + 86400; // one day
+    for (unsigned int i = 0; i < entries_list.size(); i++) {
+        view::TimeEntry te = entries_list.at(i);
+        TogglTimeEntryView *item = time_entry_view_item_init(te);
+        time_t start_time_entry = Poco::Timestamp::fromEpochTime(item->Started).epochTime();
+
+        if (start_time_entry >= start_day && start_time_entry <= end_day) {
+            item->Next = first_entry;
+            first_entry = item;
+        }
+    }
+
+    // Get activity
+    while (datetime.year() == TimelineDateAt().year()
+            && datetime.month() == TimelineDateAt().month()
+            && datetime.day() == TimelineDateAt().day()) {
+        time_t epoch_time = datetime.timestamp().epochTime() - tzd;
+        time_t epoch_time_end = epoch_time + 900;
+
+        // Create new chunk
+        TogglTimelineChunkView *chunk_view =
+            timeline_chunk_view_init(epoch_time);
+
+        // Attach matching events to chunk
+        TogglTimelineEventView *first_event = nullptr;
+        TogglTimelineEventView *ev = nullptr;
+        for (std::vector<TimelineEvent>::const_iterator it = list.begin();
+                it != list.end(); it++) {
+            const TimelineEvent event = *it;
+
+            // Calculate the start time of the chunk
+            // that fits this timeline event
+            time_t chunk_start_time =
+                (event.Start() / kTimelineChunkSeconds)
+                * kTimelineChunkSeconds;
+
+            if (epoch_time != chunk_start_time) {
+                // Skip event if does not match chunk
+                continue;
+            }
+
+            // Grouping the items to parent-event and sub-events
+
+            bool app_present = false;
+            bool item_present = false;
+            TogglTimelineEventView *event_app = first_event;
+            while (event_app) {
+                if (compare_string(event_app->Filename, to_char_t(event.Filename())) == 0) {
+                    timeline_event_view_update_duration(event_app, event_app->Duration + event.Duration());
+                    app_present = true;
+                    item_present = false;
+                    ev = reinterpret_cast<TogglTimelineEventView *>(event_app->Event);
+                    while (ev) {
+                        if (compare_string(ev->Title, to_char_t(event.Title())) == 0) {
+                            timeline_event_view_update_duration(ev, ev->Duration + event.Duration());
+                            item_present = true;
+                        }
+                        ev = reinterpret_cast<TogglTimelineEventView *>(ev->Next);
+                    }
+
+                    if (!item_present) {
+                        TogglTimelineEventView *event_view =
+                            timeline_event_view_init(event);
+                        event_view->Next = event_app->Event;
+                        event_app->Event = event_view;
+                    }
+                }
+                event_app = reinterpret_cast<TogglTimelineEventView *>(event_app->Next);
+            }
+
+            if (!app_present) {
+                TogglTimelineEventView *app_event_view =
+                    timeline_event_view_init(event);
+                if (event.Duration() > 0) {
+                    app_event_view->Header = true;
+                    app_event_view->Title = copy_string("");
+
+                    TogglTimelineEventView *event_view =
+                        timeline_event_view_init(event);
+                    //                app_event_view->event = first_event->event;
+                    app_event_view->Event = event_view;
+
+                    app_event_view->Next = first_event;
+                    first_event = app_event_view;
+                }
+            }
+        }
+
+        // Attach Time entries to chunk
+        // Sort time entries and add only the entries of selected date
+
+        TogglTimeEntryView *first = nullptr;
+        for (unsigned int i = 0; i < entries_list.size(); i++) {
+            view::TimeEntry te = entries_list.at(i);
+            TogglTimeEntryView *item = time_entry_view_item_init(te);
+            time_t start_time = Poco::Timestamp::fromEpochTime(item->Started).epochTime();
+            time_t end_time = Poco::Timestamp::fromEpochTime(item->Ended).epochTime();
+            if ((start_time >= epoch_time
+                    && start_time < epoch_time_end)
+                    || (end_time > epoch_time
+                        && end_time <= epoch_time_end)
+                    || (start_time <= epoch_time
+                        && end_time >= epoch_time_end)) {
+
+                item->Next = first;
+                first = item;
+            }
+        }
+
+        chunk_view->Entry = first;
+        chunk_view->Ended = epoch_time_end;
+        chunk_view->EndTimeString = copy_string(toggl::Formatter::FormatTimeForTimeEntryEditor(chunk_view->Ended));
+
+        // Sort the list by duration descending
+        if (first_event != NULL) {
+            chunk_view->FirstEvent = SortList(first_event);
+        }
+
+        chunk_view->Next = first_chunk;
+        first_chunk = chunk_view;
+        datetime += Poco::Timespan(15 * Poco::Timespan::MINUTES);
+    }
+
+    std::string formatted_date = Formatter::FormatDateHeader(TimelineDateAt());
+    char_t *date = copy_string(formatted_date.c_str());
+    on_display_timeline_(open, date, first_chunk, first_entry, start_day, end_day);
+    delete first_entry;
+    free(date);
+}
+
+TogglTimelineEventView* GUI::SortList(TogglTimelineEventView *head) {
+    TogglTimelineEventView *top = nullptr;  // first Node we will return this value
+    TogglTimelineEventView *current = nullptr;
+    bool sorted = false;
+    while (sorted == false) {
+        // we are going to look for the lowest value in the list
+        TogglTimelineEventView *parent = head;
+        TogglTimelineEventView *lowparent = head;  // we need this because list is only linked forward
+        TogglTimelineEventView *low = head;  // this will end up with the lowest Node
+        sorted = true;
+        while (parent->Next != nullptr) {
+            // Sort sub events
+            if (parent->Event != nullptr) {
+                parent->Event = SortList(reinterpret_cast<TogglTimelineEventView *>(parent->Event));
+            }
+            // find the lowest valued event
+            TogglTimelineEventView *next = reinterpret_cast<TogglTimelineEventView *>(parent->Next);
+            if (parent->Duration < next->Duration) {
+                lowparent = parent;
+                low = next;
+                sorted = false;
+            }
+            parent = reinterpret_cast<TogglTimelineEventView *>(parent->Next);
+        }
+        // Sort sub events
+        if (parent->Event != nullptr) {
+            parent->Event = SortList(reinterpret_cast<TogglTimelineEventView *>(parent->Event));
+        }
+        if (current != nullptr) {  // first time current == nullptr
+            current->Next = low;
+        }
+        // remove the lowest item from the list and reconnect the list
+        // we keep two lists, one with the sorted Nodes
+        // and one with the remaining unsorted Nodes
+        current = low;
+        if (current == head) {
+            head = reinterpret_cast<TogglTimelineEventView *>(current->Next);
+        }
+        lowparent->Next = low->Next;
+        current->Next = nullptr;
+        if (top == nullptr) {
+            top = current;
+        }
+    }
+    current->Next = head;
+    return top;
+}
+
+void GUI::DisplayTags(const std::vector<view::Generic> list) {
     logger().debug("DisplayTags");
 
     TogglGenericView *first = generic_to_view_item_list(list);

@@ -33,6 +33,7 @@ NSString *const kDisplayTimerState = @"kDisplayTimerState";
 NSString *const kDisplayUnsyncedItems = @"kDisplayUnsyncedItems";
 NSString *const kDisplayAutotrackerRules = @"kDisplayAutotrackerRules";
 NSString *const kDisplayPromotion = @"kDisplayPromotion";
+NSString *const kDisplayTimeline = @"kDisplayTimeline";
 NSString *const kStartTimer = @"kStartTimer";
 
 NSString *const kHideDisplayError = @"kHideDisplayError";
@@ -55,6 +56,7 @@ NSString *const kTouchBarSettingChanged = @"kTouchBarSettingChanged";
 NSString *const kStartDisplayInAppMessage = @"kStartDisplayInAppMessage";
 
 NSString *const kDeselectAllTimeEntryList = @"kDeselectAllTimeEntryList";
+NSString *const kDidAdddManualTimeNotification = @"kDidAdddManualTimeNotification";
 
 const char *kFocusedFieldNameDuration = "duration";
 const char *kFocusedFieldNameDescription = "description";

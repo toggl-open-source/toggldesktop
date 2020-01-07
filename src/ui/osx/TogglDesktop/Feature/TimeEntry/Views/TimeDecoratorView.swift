@@ -21,7 +21,7 @@ final class TimeDecoratorView: NSView {
         backgroundBox.layer?.masksToBounds = false
         backgroundBox.shadow = NSShadow()
         backgroundBox.layer?.shadowColor = NSColor.init(white: 0, alpha: 0.2).cgColor
-        backgroundBox.layer?.shadowOpacity = 1.0
+        backgroundBox.layer?.shadowOpacity = 0.5
         backgroundBox.layer?.shadowOffset = CGSize(width: 0, height: -2)
         backgroundBox.layer?.shadowRadius = 8
         backgroundBox.layer?.cornerRadius = 4

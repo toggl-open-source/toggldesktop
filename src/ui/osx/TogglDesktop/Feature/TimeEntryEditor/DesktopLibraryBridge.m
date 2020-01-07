@@ -10,6 +10,9 @@
 #import "TimeEntryViewItem.h"
 #import "toggl_api.h"
 #import "AutocompleteItem.h"
+#import "Utils.h"
+#import "UIEvents.h"
+#import "TogglDesktop-Swift.h"
 
 @implementation DesktopLibraryBridge
 
@@ -123,12 +126,28 @@ void *ctx;
 							   [startTime UTF8String]);
 }
 
+- (void)updateTimeEntryWithStartAtTimestamp:(NSTimeInterval)timestamp
+									   guid:(NSString *)guid
+{
+	toggl_set_time_entry_start_timestamp(ctx,
+										 [guid UTF8String],
+										 timestamp);
+}
+
 - (void)updateTimeEntryWithEndTime:(NSString *)endTime
 							  guid:(NSString *)guid
 {
 	toggl_set_time_entry_end(ctx,
 							 [guid UTF8String],
 							 [endTime UTF8String]);
+}
+
+- (void)updateTimeEntryWithEndAtTimestamp:(NSTimeInterval)timestamp
+									 guid:(NSString *)guid
+{
+	toggl_set_time_entry_end_timestamp(ctx,
+									   [guid UTF8String],
+									   timestamp);
 }
 
 - (void)deleteTimeEntryImte:(TimeEntryViewItem *)item
@@ -178,6 +197,68 @@ void *ctx;
 	return [newValue copy];
 }
 
+#pragma mark - Timeline
+
+- (void)enableTimelineRecord:(BOOL)isEnabled
+{
+	toggl_timeline_toggle_recording(ctx, isEnabled);
+
+    // Try to grant permission
+    if (isEnabled)
+    {
+        [ObjcSystemPermissionManager tryGrantScreenRecordingPermission];
+    }
+}
+
+- (void)timelineSetPreviousDate
+{
+	toggl_view_timeline_prev_day(ctx);
+}
+
+- (void)timelineSetNextDate
+{
+	toggl_view_timeline_next_day(ctx);
+}
+
+- (void)timelineSetDate:(NSDate *)date
+{
+	toggl_view_timeline_set_day(ctx, date.timeIntervalSince1970);
+}
+
+- (void)fetchTimelineData
+{
+	toggl_view_timeline_data(ctx);
+}
+
+- (void)timelineGetCurrentDate
+{
+	toggl_view_timeline_current_day(ctx);
+}
+
+- (NSString *)starNewTimeEntryAtStarted:(NSTimeInterval)started ended:(NSTimeInterval)ended
+{
+	char *guid = toggl_start(ctx,
+							 @"".UTF8String,
+							 "0",
+							 0,
+							 0,
+							 0,
+							 NULL,
+							 false,
+							 started,
+							 ended
+							 );
+	NSString *GUID = [NSString stringWithUTF8String:guid];
+
+	free(guid);
+	return GUID;
+}
+
+- (void)startEditorAtGUID:(NSString *)GUID
+{
+	toggl_edit(ctx, [GUID UTF8String], false, kFocusedFieldNameDescription);
+}
+
 - (void)setEditorWindowSize:(CGSize)size
 {
 	toggl_set_window_edit_size_width(ctx, size.width);
@@ -196,6 +277,11 @@ void *ctx;
 	width = MAX(minimumSize.width, width);
 	height = MAX(minimumSize.height, height);
 	return CGSizeMake(width, height);
+}
+
+- (void)loadMoreTimeEntry
+{
+	toggl_load_more(ctx);
 }
 
 - (void)setClickCloseBtnInAppMessage

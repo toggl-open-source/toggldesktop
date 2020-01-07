@@ -600,7 +600,9 @@ char_t *toggl_start(
     const uint64_t project_id,
     const char_t *project_guid,
     const char_t *tags,
-    const bool_t prevent_on_app) {
+    const bool_t prevent_on_app,
+    const uint64_t started,
+    const uint64_t ended) {
 
     logger().debug("toggl_start");
 
@@ -631,7 +633,9 @@ char_t *toggl_start(
         project_id,
         p_guid,
         tag_list,
-        prevent_on_app);
+        prevent_on_app,
+        started,
+        ended);
     if (te) {
         return copy_string(te->GUID());
     }
@@ -656,6 +660,29 @@ bool_t toggl_continue(
 
 void toggl_view_time_entry_list(void *context) {
     app(context)->OpenTimeEntryList();
+}
+
+void toggl_view_timeline_data(void *context) {
+    app(context)->OpenTimelineDataView();
+}
+
+void toggl_view_timeline_prev_day(
+    void *context) {
+    app(context)->ViewTimelinePrevDay();
+}
+
+void toggl_view_timeline_next_day(
+    void *context) {
+    app(context)->ViewTimelineNextDay();
+}
+
+void toggl_view_timeline_current_day(void *context) {
+    app(context)->ViewTimelineCurrentDay();
+}
+
+void toggl_view_timeline_set_day(void *context,
+                                 const int64_t unix_timestamp) {
+    app(context)->ViewTimelineSetDate(unix_timestamp);
 }
 
 void toggl_edit(
@@ -749,12 +776,28 @@ bool_t toggl_set_time_entry_start(
            SetTimeEntryStart(to_string(guid), to_string(value));
 }
 
+bool_t toggl_set_time_entry_start_timestamp(
+    void *context,
+    const char_t *guid,
+    const int64_t start) {
+    return toggl::noError == app(context)->
+           SetTimeEntryStart(to_string(guid), start);
+}
+
 bool_t toggl_set_time_entry_end(
     void *context,
     const char_t *guid,
     const char_t *value) {
     return toggl::noError == app(context)->
            SetTimeEntryStop(to_string(guid), to_string(value));
+}
+
+bool_t toggl_set_time_entry_end_timestamp(
+    void *context,
+    const char_t *guid,
+    const int64_t end) {
+    return toggl::noError == app(context)->
+           SetTimeEntryStop(to_string(guid), end);
 }
 
 bool_t toggl_set_time_entry_tags(
@@ -1144,6 +1187,12 @@ void toggl_on_time_entry_list(
     void *context,
     TogglDisplayTimeEntryList cb) {
     app(context)->UI()->OnDisplayTimeEntryList(cb);
+}
+
+void toggl_on_timeline(
+    void *context,
+    TogglDisplayTimeline cb) {
+    app(context)->UI()->OnDisplayTimeline(cb);
 }
 
 void toggl_on_mini_timer_autocomplete(

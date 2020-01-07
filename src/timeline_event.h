@@ -21,6 +21,7 @@ class TOGGL_INTERNAL_EXPORT TimelineEvent : public BaseModel, public TimedEvent 
     , filename_("")
     , start_time_(0)
     , end_time_(0)
+    , duration_(0)
     , idle_(false)
     , chunked_(false)
     , uploaded_(false) {}
@@ -41,6 +42,10 @@ class TOGGL_INTERNAL_EXPORT TimelineEvent : public BaseModel, public TimedEvent 
         return end_time_;
     }
     void SetEndTime(const Poco::Int64 value);
+
+    const Poco::Int64 &Duration() const {
+        return duration_;
+    }
 
     const bool &Idle() const {
         return idle_;
@@ -73,20 +78,17 @@ class TOGGL_INTERNAL_EXPORT TimelineEvent : public BaseModel, public TimedEvent 
     std::string ModelURL() const override;
     Json::Value SaveToJSON() const override;
 
-    // Implement TimedEvent
-
-    virtual Poco::Int64 Duration() const override {
-        return EndTime() - Start();
-    }
-
  private:
     std::string title_;
     std::string filename_;
     Poco::Int64 start_time_;
     Poco::Int64 end_time_;
+    Poco::Int64 duration_;
     bool idle_;
     bool chunked_;
     bool uploaded_;
+
+    void updateDuration();
 };
 
 }  // namespace toggl

@@ -8,7 +8,6 @@
 
 #import "TimeEntryListViewController.h"
 #import "TimeEntryViewItem.h"
-#import "TimerEditViewController.h"
 #import "TimeEntryCell.h"
 #import "DisplayCommand.h"
 #import "ConvertHexColor.h"
@@ -34,6 +33,7 @@ static NSString *kFrameKey = @"frame";
 @property (nonatomic, copy) NSString *lastSelectedGUID;
 @property (nonatomic, strong) TimeEntryEmptyView *emptyView;
 @property (nonatomic, strong) EditorPopover *timeEntrypopover;
+@property (nonatomic, assign) BOOL isOpening;
 @end
 
 @implementation TimeEntryListViewController
@@ -45,8 +45,6 @@ extern void *ctx;
 	self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
 	if (self)
 	{
-		self.timerEditViewController = [[TimerEditViewController alloc]
-										initWithNibName:@"TimerEditViewController" bundle:nil];
 	}
 	return self;
 }
@@ -71,12 +69,19 @@ extern void *ctx;
 - (void)viewDidAppear
 {
 	[super viewDidAppear];
+	self.isOpening = YES;
 	[self.collectionView reloadData];
 }
 
-- (void)initCommon {
-	[self.headerView addSubview:self.timerEditViewController.view];
-	[self.timerEditViewController.view edgesToSuperView];
+- (void)viewWillDisappear
+{
+	[super viewWillDisappear];
+	self.isOpening = NO;
+}
+
+- (void)initCommon
+{
+	self.isOpening = YES;
 	self.addedHeight = 0;
 	self.runningEdit = NO;
 
@@ -130,7 +135,6 @@ extern void *ctx;
 											 selector:@selector(escapeListing:)
 												 name:kEscapeListing
 											   object:nil];
-
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(effectiveAppearanceChangedNotification)
 												 name:NSNotification.EffectiveAppearanceChanged
@@ -299,18 +303,24 @@ extern void *ctx;
 
 	NSLog(@"TimeEntryListViewController displayTimeEntryEditor, thread %@", [NSThread currentThread]);
 
+    self.runningEdit = cmd.timeEntry.isRunning;
+
+	// Skip render if need
+	if (!self.isOpening && !self.runningEdit)
+	{
+		return;
+	}
+
 	TimeEntryViewItem *timeEntry = cmd.timeEntry;
 	if (cmd.open)
 	{
-		self.runningEdit = (cmd.timeEntry.duration_in_seconds < 0);
-
 		NSView *ofView = self.view;
 		TimeEntryCell *selectedCell = [self.collectionView getSelectedEntryCells].firstObject;
 		CGRect positionRect = [self positionRectForItem:selectedCell];
 
 		if (self.runningEdit)
 		{
-			ofView = self.headerView;
+			ofView = [self.delegate containerViewForTimer];
 			positionRect = [ofView bounds];
 			self.lastSelectedGUID = nil;
 		}
@@ -719,19 +729,24 @@ extern void *ctx;
 
 - (void)windowDidBecomeKeyNotification:(NSNotification *)notification
 {
-	// Don't focus on Timer Bar if the Editor is presented
-	if (self.timeEntrypopover.isShown)
-	{
-		return;
-	}
+    // Don't focus on Timer Bar if the Editor is presented
+    if (self.timeEntrypopover.isShown)
+    {
+        return;
+    }
 
-	// Only focus if the window is main
-	// Otherwise, shouldn't override the firstResponder
-	if (notification.object != self.view.window)
-	{
-		return;
-	}
-	[self.timerEditViewController focusTimer];
+    // Only focus if the window is main
+    // Otherwise, shouldn't override the firstResponder
+    if (notification.object != self.view.window)
+    {
+        return;
+    }
+    [self.timerEditViewController focusTimer];
+}
+
+- (void)loadMoreIfNeedAtDate:(NSDate *)date;
+{
+	[self.dataSource loadMoreTimeEntryIfNeedAt:date];
 }
 
 - (NSTouchBar *)makeTouchBar

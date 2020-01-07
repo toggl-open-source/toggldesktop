@@ -161,8 +161,10 @@ TimeEntry *User::Start(
     const std::string &duration,
     const Poco::UInt64 task_id,
     const Poco::UInt64 project_id,
-    const std::string &project_guid,
-    const std::string &tags) {
+    const std::string project_guid,
+    const std::string tags,
+    const time_t started,
+    const time_t ended) {
 
     Stop();
 
@@ -180,15 +182,22 @@ TimeEntry *User::Start(
     te->SetTID(task_id);
     te->SetTags(tags);
 
-    if (!duration.empty()) {
-        int seconds = Formatter::ParseDurationString(duration);
-        te->SetDurationInSeconds(seconds);
-        te->SetStop(now);
-        te->SetStart(te->Stop() - te->DurationInSeconds());
+    if (started == 0 && ended == 0) {
+        if (!duration.empty()) {
+            int seconds = Formatter::ParseDurationString(duration);
+            te->SetDurationInSeconds(seconds);
+            te->SetStop(now);
+            te->SetStart(te->Stop() - te->DurationInSeconds());
+        } else {
+            te->SetDurationInSeconds(-now);
+            // dont set Stop, TE is running
+            te->SetStart(now);
+        }
     } else {
-        te->SetDurationInSeconds(-now);
-        // dont set Stop, TE is running
-        te->SetStart(now);
+        int seconds = int(ended - started);
+        te->SetDurationInSeconds(seconds);
+        te->SetStop(ended);
+        te->SetStart(started);
     }
 
     // Try to set workspace ID from project
@@ -1410,7 +1419,8 @@ void User::CompressTimeline() {
     }
 }
 
-std::vector<TimelineEvent> User::CompressedTimeline() const {
+std::vector<TimelineEvent> User::CompressedTimeline(
+    const Poco::LocalDateTime *date) const {
     std::vector<TimelineEvent> list;
     for (std::vector<TimelineEvent *>::const_iterator i =
         related.TimelineEvents.begin();
@@ -1418,10 +1428,23 @@ std::vector<TimelineEvent> User::CompressedTimeline() const {
             ++i) {
         TimelineEvent *event = *i;
         poco_check_ptr(event);
-        if (event->VisibleToUser()) {
-            // Make a copy of the timeline event
-            list.push_back(*event);
+        if (event->DeletedAt() > 0) {
+            continue;
         }
+
+        if (date) {
+            // Check if timeline event occured on the
+            // required date:
+            Poco::LocalDateTime event_date(
+                Poco::Timestamp::fromEpochTime(event->Start()));
+            if (event_date.year() != date->year() ||
+                    event_date.month() != date->month() ||
+                    event_date.day() != date->day()) {
+                continue;
+            }
+        }
+        // Make a copy of the timeline event
+        list.push_back(*event);
     }
     return list;
 }

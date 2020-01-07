@@ -105,7 +105,7 @@
                             </userDefinedRuntimeAttributes>
                         </buttonCell>
                         <userDefinedRuntimeAttributes>
-                            <userDefinedRuntimeAttribute type="color" keyPath="textColor">
+                            <userDefinedRuntimeAttribute type="color" keyPath="titleColor">
                                 <color key="value" name="black-text-color"/>
                             </userDefinedRuntimeAttribute>
                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -133,7 +133,7 @@
                             </userDefinedRuntimeAttributes>
                         </buttonCell>
                         <userDefinedRuntimeAttributes>
-                            <userDefinedRuntimeAttribute type="color" keyPath="textColor">
+                            <userDefinedRuntimeAttribute type="color" keyPath="titleColor">
                                 <color key="value" name="black-text-color"/>
                             </userDefinedRuntimeAttribute>
                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -161,7 +161,7 @@
                             </userDefinedRuntimeAttributes>
                         </buttonCell>
                         <userDefinedRuntimeAttributes>
-                            <userDefinedRuntimeAttribute type="color" keyPath="textColor">
+                            <userDefinedRuntimeAttribute type="color" keyPath="titleColor">
                                 <color key="value" name="black-text-color"/>
                             </userDefinedRuntimeAttribute>
                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">

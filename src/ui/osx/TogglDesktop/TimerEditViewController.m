@@ -82,10 +82,6 @@ NSString *kInactiveTimerColor = @"#999999";
 													 name:kDisplayTimerState
 												   object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(startDisplayTimeEntryEditor:)
-													 name:kDisplayTimeEntryEditor
-												   object:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(focusTimer)
 													 name:kFocusTimer
 												   object:nil];
@@ -316,18 +312,6 @@ NSString *kInactiveTimerColor = @"#999999";
 
 }
 
-- (void)startDisplayTimeEntryEditor:(NSNotification *)notification
-{
-	[self displayTimeEntryEditor:notification.object];
-}
-
-- (void)displayTimeEntryEditor:(DisplayCommand *)cmd
-{
-	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
-
-	NSLog(@"TimeEntryListViewController displayTimeEntryEditor, thread %@", [NSThread currentThread]);
-}
-
 - (void)showDefaultTimer
 {
 	if (!self.descriptionLabel.isEditable)
@@ -342,10 +326,6 @@ NSString *kInactiveTimerColor = @"#999999";
 	if ([self.autoCompleteInput currentEditor] == nil)
 	{
 		self.autoCompleteInput.stringValue = @"";
-	}
-	if (self.displayMode == DisplayModeTimer)
-	{
-		[self.view.window makeFirstResponder:self.autoCompleteInput];
 	}
 	self.cancelBtn.hidden = YES;
 	self.time_entry = [[TimeEntryViewItem alloc] init];
@@ -558,7 +538,10 @@ NSString *kInactiveTimerColor = @"#999999";
 							 self.time_entry.ProjectID,
 							 0,
 							 tag_list,
-							 false);
+							 false,
+							 0,
+							 0
+							 );
 
 	[self clear];
 	self.time_entry = [[TimeEntryViewItem alloc] init];
@@ -566,6 +549,11 @@ NSString *kInactiveTimerColor = @"#999999";
 	free(guid);
 
 	toggl_edit(ctx, [GUID UTF8String], false, kFocusedFieldNameDescription);
+
+	// Focus on Timeline if need
+	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+		[[NSNotificationCenter defaultCenter] postNotificationName:kDidAdddManualTimeNotification object:nil];
+	});
 }
 
 #pragma AutocompleteTableView Delegate

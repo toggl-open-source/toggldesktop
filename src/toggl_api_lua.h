@@ -332,7 +332,9 @@ static int l_toggl_start(lua_State *L) {
                                lua_tointeger(L, 4),
                                checkstring(L, 5),
                                checkstring(L, 6),
-                               false);
+                               false,
+                               lua_tonumber(L, 0),
+                               lua_tonumber(L, 0));
     pushstring(L, guid);
     free(guid);
     return 1;

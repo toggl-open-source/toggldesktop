@@ -133,7 +133,7 @@ class TOGGL_INTERNAL_EXPORT TimeEntry : public BaseModel, public TimedEvent {
 
     // Implement TimedEvent
 
-    virtual Poco::Int64 Duration() const override {
+    virtual const Poco::Int64 &Duration() const {
         return DurationInSeconds();
     }
 

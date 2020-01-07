@@ -11,6 +11,7 @@ import Cocoa
 protocol CalendarViewControllerDelegate: class {
 
     func calendarViewControllerDidSelect(date: Date)
+    func calendarViewControllerDoneBtnOnTap()
 }
 
 final class CalendarViewController: NSViewController {
@@ -22,6 +23,8 @@ final class CalendarViewController: NSViewController {
     @IBOutlet weak var clipView: NSClipView!
     @IBOutlet weak var stackViewTrailing: NSLayoutConstraint!
     @IBOutlet weak var dayStackView: NSStackView!
+    @IBOutlet weak var todayBtn: NSButton!
+    @IBOutlet weak var doneBtn: NSButton!
 
     // MARK: Variables
 
@@ -98,6 +101,14 @@ final class CalendarViewController: NSViewController {
                 stackViewTrailing.constant = 20
             }
         }
+    }
+
+    @IBAction func todayBtnOnTap(_ sender: Any) {
+        calendarDidSelect(Date())
+    }
+    
+    @IBAction func doneBtnOnTap(_ sender: Any) {
+        delegate?.calendarViewControllerDoneBtnOnTap()
     }
 }
 

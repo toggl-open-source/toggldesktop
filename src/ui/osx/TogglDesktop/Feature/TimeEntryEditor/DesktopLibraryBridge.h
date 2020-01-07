@@ -17,6 +17,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (instancetype)shared;
 
+#pragma mark - Editor
+
 - (NSString *)convertDuratonInSecond:(int64_t)durationInSecond;
 
 - (NSString *)createClientWithWorkspaceID:(uint64_t)workspaceID
@@ -53,17 +55,45 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)updateTimeEntryWithStartTime:(NSString *)startTime
 								guid:(NSString *)guid;
 
+- (void)updateTimeEntryWithStartAtTimestamp:(NSTimeInterval)timestamp
+									   guid:(NSString *)guid;
+
 - (void)updateTimeEntryWithEndTime:(NSString *)endTime
 							  guid:(NSString *)guid;
+
+- (void)updateTimeEntryWithEndAtTimestamp:(NSTimeInterval)timestamp
+									 guid:(NSString *)guid;
 
 - (void)deleteTimeEntryImte:(TimeEntryViewItem *)item;
 
 - (void)updateDescriptionForTimeEntry:(TimeEntryViewItem *)timeEntry
 						 autocomplete:(AutocompleteItem *)autocomplete;
 
+#pragma mark - Timeline
+
+- (void)enableTimelineRecord:(BOOL)isEnabled;
+
+- (void)fetchTimelineData;
+
+- (void)timelineSetPreviousDate;
+
+- (void)timelineSetNextDate;
+
+- (void)timelineSetDate:(NSDate *)date;
+
+- (void)timelineGetCurrentDate;
+
+- (NSString *_Nullable)starNewTimeEntryAtStarted:(NSTimeInterval)started ended:(NSTimeInterval)ended;
+
+- (void)startEditorAtGUID:(NSString *)GUID;
+
 - (void)setEditorWindowSize:(CGSize)size;
+
 - (CGSize)getEditorWindowSize;
 
+#pragma mark - Editor
+
+- (void)loadMoreTimeEntry;
 - (void)setClickCloseBtnInAppMessage;
 - (void)setClickActionBtnInAppMessage;
 

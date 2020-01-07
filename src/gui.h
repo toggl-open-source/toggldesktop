@@ -15,6 +15,8 @@
 #include "./toggl_api_private.h"
 #include "./types.h"
 
+#include "Poco/LocalDateTime.h"
+
 namespace Poco {
 class Logger;
 }
@@ -60,7 +62,9 @@ class TOGGL_INTERNAL_EXPORT TimeEntry {
     , GroupOpen(false)
     , GroupName("")
     , GroupDuration("")
-    , GroupItemCount(0) {}
+    , GroupItemCount(0)
+    , RoundedStart(0)
+    , RoundedEnd(0) {}
 
     uint64_t ID;
     int64_t DurationInSeconds;
@@ -102,6 +106,11 @@ class TOGGL_INTERNAL_EXPORT TimeEntry {
     std::string GroupName;
     std::string GroupDuration;
     uint64_t GroupItemCount;
+    // To show time entry properly in timeline view
+    uint64_t RoundedStart;
+    uint64_t RoundedEnd;
+
+    void GenerateRoundedTimes();
 
     void Fill(toggl::TimeEntry * const model);
 
@@ -375,6 +384,7 @@ class TOGGL_INTERNAL_EXPORT GUI : public SyncStateMonitor {
     , on_display_autotracker_rules_(nullptr)
     , on_display_autotracker_notification_(nullptr)
     , on_display_promotion_(nullptr)
+    , on_display_timeline_(nullptr)
     , on_display_help_articles_(nullptr)
     , on_display_project_colors_(nullptr)
     , on_display_countries_(nullptr)
@@ -385,7 +395,9 @@ class TOGGL_INTERNAL_EXPORT GUI : public SyncStateMonitor {
     , lastDisplayLoginUserID(0)
     , lastOnlineState(-1)
     , lastErr(noError)
-    , isFirstLaunch(true) {}
+    , isFirstLaunch(true)
+    , time_entry_editor_guid_("")
+    , timeline_date_at_(Poco::LocalDateTime()) {}
 
     ~GUI() {}
 
@@ -429,6 +441,13 @@ class TOGGL_INTERNAL_EXPORT GUI : public SyncStateMonitor {
 
     void DisplayProjectColors();
 
+    void DisplayTimeline(
+        const bool open,
+        const std::vector<TimelineEvent> list,
+        const std::vector<view::TimeEntry> entries_list);
+
+    TogglTimelineEventView* SortList(TogglTimelineEventView *head);
+
     void DisplayCountries(
         std::vector<TogglCountryView> *items);
 
@@ -439,7 +458,7 @@ class TOGGL_INTERNAL_EXPORT GUI : public SyncStateMonitor {
         const std::vector<view::Generic> &list);
 
     void DisplayTags(
-        const std::vector<view::Generic> &list);
+        const std::vector<view::Generic> list);
 
     void DisplayAutotrackerRules(
         const std::vector<view::AutotrackerRule> &autotracker_rules,
@@ -555,6 +574,10 @@ class TOGGL_INTERNAL_EXPORT GUI : public SyncStateMonitor {
         on_display_time_entry_list_ = cb;
     }
 
+    void OnDisplayTimeline(TogglDisplayTimeline cb) {
+        on_display_timeline_ = cb;
+    }
+
     void OnDisplayWorkspaceSelect(TogglDisplayViewItems cb) {
         on_display_workspace_select_ = cb;
     }
@@ -654,6 +677,18 @@ class TOGGL_INTERNAL_EXPORT GUI : public SyncStateMonitor {
         isFirstLaunch = true;
     }
 
+    const Poco::LocalDateTime &TimelineDateAt() {
+        return timeline_date_at_;
+    }
+
+    void SetTimelineDateAt(const Poco::LocalDateTime &value) {
+        timeline_date_at_ = value;
+    }
+
+    void resetTimeEntryGUID() {
+        time_entry_editor_guid_ = "";
+    }
+
  private:
     error findMissingCallbacks();
 
@@ -685,6 +720,7 @@ class TOGGL_INTERNAL_EXPORT GUI : public SyncStateMonitor {
     TogglDisplayAutotrackerRules on_display_autotracker_rules_;
     TogglDisplayAutotrackerNotification on_display_autotracker_notification_;
     TogglDisplayPromotion on_display_promotion_;
+    TogglDisplayTimeline on_display_timeline_;
     TogglDisplayHelpArticles on_display_help_articles_;
     TogglDisplayProjectColors on_display_project_colors_;
     TogglDisplayCountries on_display_countries_;
@@ -698,6 +734,12 @@ class TOGGL_INTERNAL_EXPORT GUI : public SyncStateMonitor {
     Poco::Int64 lastOnlineState;
     error lastErr;
     bool isFirstLaunch;
+
+    // UI state
+    std::string time_entry_editor_guid_;
+
+    Poco::LocalDateTime timeline_date_at_;
+
     Poco::Logger &logger() const;
 };
 

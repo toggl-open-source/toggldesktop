@@ -10,7 +10,18 @@
 
 @class TimerEditViewController;
 
+@protocol TimeEntryListViewControllerDelegate <NSObject>
+
+- (BOOL)isTimerFocusing;
+- (NSView *)containerViewForTimer;
+
+@end
+
 @interface TimeEntryListViewController : NSViewController
+@property (weak, nonatomic) id<TimeEntryListViewControllerDelegate> delegate;
 @property (nonatomic, strong) TimerEditViewController *timerEditViewController;
 @property (nonatomic, assign, readonly) BOOL isEditorOpen;
+
+- (void)loadMoreIfNeedAtDate:(NSDate *)date;
+
 @end

@@ -363,6 +363,7 @@ UIElements UIElements::Reset() {
     render.display_unsynced_items = true;
 
     render.open_time_entry_list = true;
+    render.display_timeline = true;
 
     return render;
 }
@@ -419,6 +420,12 @@ std::string UIElements::String() const {
     }
     if (display_unsynced_items) {
         ss << "display_unsynced_items ";
+    }
+    if (display_timeline) {
+        ss << " display_timeline=" << display_timeline;
+    }
+    if (open_timeline) {
+        ss << " open_timeline=" << open_timeline;
     }
     return ss.str();
 }
@@ -481,6 +488,10 @@ void UIElements::ApplyChanges(
         if (ch.ModelType() == kModelSettings) {
             display_settings = true;
         }
+
+        if (ch.ModelType() == kModelTimelineEvent && ch.ChangeType() == kChangeTypeInsert) {
+            display_timeline = true;
+        }
     }
 }
 
@@ -502,6 +513,9 @@ void Context::updateUI(const UIElements &what) {
     std::vector<view::Autocomplete> minitimer_autocompletes;
     std::vector<view::Autocomplete> project_autocompletes;
 
+    // For timeline UI view data
+    std::vector<TimelineEvent> timeline;
+
     bool use_proxy(false);
     bool record_timeline(false);
     Poco::Int64 unsynced_item_count(0);
@@ -510,6 +524,7 @@ void Context::updateUI(const UIElements &what) {
     view::TimeEntry running_entry_view;
 
     std::vector<view::TimeEntry> time_entry_views;
+    std::vector<view::TimeEntry> timeline_views;
 
     std::vector<view::Generic> client_views;
     std::vector<view::Generic> workspace_views;
@@ -836,6 +851,45 @@ void Context::updateUI(const UIElements &what) {
                           CompareAutotrackerTitles);
             }
         }
+
+        if (what.display_timeline && user_) {
+            // Get Timeline data
+            Poco::LocalDateTime date(UI()->TimelineDateAt());
+            timeline = user_->CompressedTimeline(&date);
+
+            // Get a sorted list of time entries
+            std::vector<TimeEntry *> time_entries =
+                user_->related.VisibleTimeEntries();
+            std::sort(time_entries.begin(), time_entries.end(),
+                      CompareByStart);
+
+            // Collect the time entries into a list
+            for (unsigned int i = 0; i < time_entries.size(); i++) {
+                TimeEntry *te = time_entries[i];
+                if (te->Duration() < 0) {
+                    // Don't account running entries
+                    continue;
+                }
+
+                Poco::LocalDateTime te_date(Poco::Timestamp::fromEpochTime(te->Start()));
+                if (te_date.year() == UI()->TimelineDateAt().year()
+                        && te_date.month() == UI()->TimelineDateAt().month()
+                        && te_date.day() == UI()->TimelineDateAt().day()) {
+
+                    view::TimeEntry view;
+                    view.Fill(te);
+                    view.GenerateRoundedTimes();
+                    view.Duration = toggl::Formatter::FormatDuration(
+                        view.DurationInSeconds,
+                        Formatter::DurationFormat);
+                    view.DateDuration = Formatter::FormatDurationForDateHeader(view.DurationInSeconds);
+                    user_->related.ProjectLabelAndColorCode(
+                        te,
+                        &view);
+                    timeline_views.push_back(view);
+                }
+            }
+        }
     }
 
     // Render data
@@ -854,6 +908,10 @@ void Context::updateUI(const UIElements &what) {
             time_entry_views,
             !user_->HasLoadedMore());
         last_time_entry_list_render_at_ = Poco::LocalDateTime();
+    }
+
+    if (what.display_timeline) {
+        UI()->DisplayTimeline(what.open_timeline, timeline, timeline_views);
     }
 
     if (what.display_time_entry_autocomplete) {
@@ -2713,9 +2771,11 @@ TimeEntry *Context::Start(
     const std::string &duration,
     const Poco::UInt64 task_id,
     const Poco::UInt64 project_id,
-    const std::string &project_guid,
-    const std::string &tags,
-    const bool prevent_on_app) {
+    const std::string project_guid,
+    const std::string tags,
+    const bool prevent_on_app,
+    const time_t started,
+    const time_t ended) {
 
     // Do not even allow to add new time entries,
     // else they will linger around in the app
@@ -2754,7 +2814,9 @@ TimeEntry *Context::Start(
                           tid,
                           pid,
                           project_guid,
-                          tags);
+                          tags,
+                          started,
+                          ended);
     }
 
     error err = save(true);
@@ -3164,6 +3226,33 @@ error Context::SetTimeEntryDate(
     return displayError(save(true));
 }
 
+error Context::SetTimeEntryStart(const std::string GUID,
+                                 const Poco::Int64 startAt) {
+    TimeEntry *te = nullptr;
+
+    {
+        Poco::Mutex::ScopedLock lock(user_m_);
+        if (!user_) {
+            logger().warning("Cannot change start time, user logged out");
+            return noError;
+        }
+        te = user_->related.TimeEntryByGUID(GUID);
+
+        if (!te) {
+            logger().warning("Time entry not found: " + GUID);
+            return noError;
+        }
+
+        if (isTimeEntryLocked(te)) {
+            return logAndDisplayUserTriedEditingLockedEntry();
+        }
+
+        Poco::LocalDateTime start(Poco::Timestamp::fromEpochTime(startAt));
+        std::string s = Poco::DateTimeFormatter::format(start, Poco::DateTimeFormat::ISO8601_FORMAT);
+        te->SetStartUserInput(s, GetKeepEndTimeFixed());
+        return displayError(save(true));
+    }
+}
 
 error Context::SetTimeEntryStart(
     const std::string &GUID,
@@ -3222,6 +3311,34 @@ error Context::SetTimeEntryStart(
     te->SetStartUserInput(s, GetKeepEndTimeFixed());
 
     return displayError(save(true));
+}
+
+error Context::SetTimeEntryStop(const std::string GUID,
+                                const Poco::Int64 endAt) {
+    TimeEntry *te = nullptr;
+
+    {
+        Poco::Mutex::ScopedLock lock(user_m_);
+        if (!user_) {
+            logger().warning("Cannot change stop time, user logged out");
+            return noError;
+        }
+        te = user_->related.TimeEntryByGUID(GUID);
+
+        if (!te) {
+            logger().warning("Time entry not found: " + GUID);
+            return noError;
+        }
+
+        if (isTimeEntryLocked(te)) {
+            return logAndDisplayUserTriedEditingLockedEntry();
+        }
+
+        Poco::LocalDateTime stop(Poco::Timestamp::fromEpochTime(endAt));
+        std::string s = Poco::DateTimeFormatter::format(stop, Poco::DateTimeFormat::ISO8601_FORMAT);
+        te->SetStopUserInput(s);
+        return displayError(save(true));
+    }
 }
 
 error Context::SetTimeEntryStop(
@@ -4388,7 +4505,9 @@ void Context::displayPomodoro() {
                                              0,  // task_id
                                              0,  // project_id
                                              "",  // project_guid
-                                             "pomodoro-break");  // tags
+                                             "pomodoro-break",
+                                             0,
+                                             0);  // tags
 
         // Set workspace id to same as the previous entry
         pomodoro_break_entry_->SetWID(wid);
@@ -5744,6 +5863,51 @@ error Context::signup(
         return ex;
     }
     return noError;
+}
+
+void Context::OpenTimelineDataView() {
+    logger().debug("OpenTimelineDataView");
+
+    UI()->SetTimelineDateAt(Poco::LocalDateTime());
+
+    UIElements render;
+    render.open_timeline = true;
+    render.display_timeline = true;
+    updateUI(render);
+}
+
+void Context::ViewTimelineCurrentDay() {
+    UI()->SetTimelineDateAt(UI()->TimelineDateAt());
+    UIElements render;
+    render.display_timeline = true;
+    updateUI(render);
+}
+
+void Context::ViewTimelinePrevDay() {
+    UI()->SetTimelineDateAt(
+        UI()->TimelineDateAt() - Poco::Timespan(1 * Poco::Timespan::DAYS));
+
+    UIElements render;
+    render.display_timeline = true;
+    updateUI(render);
+}
+
+void Context::ViewTimelineNextDay() {
+    UI()->SetTimelineDateAt(
+        UI()->TimelineDateAt() + Poco::Timespan(1 * Poco::Timespan::DAYS));
+
+    UIElements render;
+    render.display_timeline = true;
+    updateUI(render);
+}
+
+void Context::ViewTimelineSetDate(const Poco::Int64 unix_timestamp) {
+    Poco::LocalDateTime date(Poco::Timestamp::fromEpochTime(unix_timestamp));
+    UI()->SetTimelineDateAt(date);
+
+    UIElements render;
+    render.display_timeline = true;
+    updateUI(render);
 }
 
 error Context::ToSAccept() {

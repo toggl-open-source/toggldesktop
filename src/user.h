@@ -16,6 +16,7 @@
 #include "./types.h"
 #include "./workspace.h"
 
+#include "Poco/LocalDateTime.h"
 #include "Poco/Types.h"
 
 namespace toggl {
@@ -61,8 +62,10 @@ class TOGGL_INTERNAL_EXPORT User : public BaseModel {
         const std::string &duration,
         const Poco::UInt64 task_id,
         const Poco::UInt64 project_id,
-        const std::string &project_guid,
-        const std::string &tags);
+        const std::string project_guid,
+        const std::string tags,
+        const time_t started,
+        const time_t ended);
 
     TimeEntry *Continue(
         const std::string &GUID,
@@ -193,7 +196,8 @@ class TOGGL_INTERNAL_EXPORT User : public BaseModel {
     void MarkTimelineBatchAsUploaded(
         const std::vector<TimelineEvent> &events);
     void CompressTimeline();
-    std::vector<TimelineEvent> CompressedTimeline() const;
+    std::vector<TimelineEvent> CompressedTimeline(
+        const Poco::LocalDateTime *date = nullptr) const;
 
     error UpdateJSON(
         std::vector<TimeEntry *> * const,

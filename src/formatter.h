@@ -7,6 +7,7 @@
 #include <ctime>
 #include <vector>
 
+#include "Poco/LocalDateTime.h"
 #include "Poco/Timestamp.h"
 
 #include "./types.h"
@@ -22,6 +23,7 @@ class TOGGL_INTERNAL_EXPORT Format {
     static const std::string Classic;
     static const std::string Improved;
     static const std::string Decimal;
+    static const std::string ImprovedOnlyMinAndSec;
 };
 
 class Client;
@@ -35,7 +37,7 @@ class TOGGL_INTERNAL_EXPORT TimedEvent {
     virtual ~TimedEvent() {}
 
     virtual const Poco::Int64 &Start() const = 0;
-    virtual Poco::Int64 Duration() const = 0;
+    virtual const Poco::Int64 &Duration() const = 0;
 };
 
 class TOGGL_INTERNAL_EXPORT Formatter {
@@ -65,6 +67,9 @@ class TOGGL_INTERNAL_EXPORT Formatter {
 
     static std::string FormatDateHeader(
         const std::time_t date);
+
+    static std::string FormatDateHeader(
+        const Poco::LocalDateTime datetime);
 
     static std::string FormatTimeForTimeEntryEditor(
         const std::time_t date);

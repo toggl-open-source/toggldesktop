@@ -98,6 +98,17 @@ class TimeEntryDatasource: NSObject {
     
     // MARK: Public
 
+    @objc func loadMoreTimeEntryIfNeed(at date: Date) {
+        guard isShowLoadMore,
+            let lastDate = lastDateInSections() else { return }
+
+        // If the date of timeline is before the last day and the Load More btn is showing
+        // We should load more item
+        if date < lastDate {
+            DesktopLibraryBridge.shared().loadMoreTimeEntry()
+        }
+    }
+
     func selectFirstItem() {
         // Check if there is a least 1 item
         guard sections.first?.entries.first != nil else { return }
@@ -276,6 +287,11 @@ extension TimeEntryDatasource {
         collectionView.register(NSNib(nibNamed: Constants.TimeHeaderNibName, bundle: nil),
                                 forSupplementaryViewOfKind:NSCollectionView.elementKindSectionHeader,
                                 withIdentifier: Constants.TimeHeaderID)
+    }
+
+    fileprivate func lastDateInSections() -> Date? {
+        let lastSection = sections.reversed().first { !$0.isLoadMore }
+        return lastSection?.entries.last?.started
     }
 }
 

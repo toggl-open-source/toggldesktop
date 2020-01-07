@@ -1,0 +1,12 @@
+{
+    "files.associations": {
+        "__functional_03": "cpp",
+        "__string": "cpp",
+        "deque": "cpp",
+        "functional": "cpp",
+        "list": "cpp",
+        "string": "cpp",
+        "system_error": "cpp",
+        "vector": "cpp"
+    }
+}

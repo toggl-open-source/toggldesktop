@@ -10,7 +10,10 @@ namespace TogglDesktop
 static class Program
 {
     private static SingleInstanceManager<App> singleInstanceManager;
-    public static ulong UserId { get; private set; }
+    public static ulong UserId {
+        get;
+        private set;
+    }
     public static bool IsLoggedIn => UserId > 0;
 
     [STAThread]
@@ -26,7 +29,9 @@ static class Program
 
     private static void OnBeforeStartup()
     {
-        Toggl.OnLogin += delegate (bool open, ulong user_id) { UserId = user_id; };
+        Toggl.OnLogin += delegate (bool open, ulong user_id) {
+            UserId = user_id;
+        };
         BugsnagService.Init();
         singleInstanceManager.BeforeStartup -= OnBeforeStartup;
     }
