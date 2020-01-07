@@ -50,11 +50,6 @@ final class DateCellViewItem: NSCollectionViewItem {
         initTracking()
     }
 
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        initCommon()
-    }
-
     func render(with info: DateInfo, highlight: Bool, isCurrentMonth: Bool) {
         isHightlight = highlight
         titleLbl.stringValue = "\(info.day)"
@@ -97,8 +92,9 @@ final class DateCellViewItem: NSCollectionViewItem {
     }
 
     private func initTracking() {
+        guard view.trackingAreas.isEmpty else { return }
         let trackingArea = NSTrackingArea(rect: view.bounds,
-                                          options: [.activeInKeyWindow, .mouseEnteredAndExited],
+                                          options: [.activeInKeyWindow, .mouseEnteredAndExited, .inVisibleRect],
                                           owner: self,
                                           userInfo: nil)
         view.addTrackingArea(trackingArea)
