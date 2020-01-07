@@ -298,6 +298,11 @@ extension TimelineDashboardViewController {
             }
         }
     }
+
+    private func closeAllPopovers() {
+        let popovers: [NSPopover] = [editorPopover, activityHoverPopover, activityRecorderPopover, timeEntryHoverPopover]
+        popovers.forEach { $0.performClose(self) }
+    }
 }
 
 // MARK: DatePickerViewDelegate
@@ -331,6 +336,10 @@ extension TimelineDashboardViewController: DatePickerViewDelegate {
         editorPopover.close()
         DesktopLibraryBridge.shared().timelineSetNextDate()
     }
+
+    func datePickerWillOpen(_ sender: DatePickerView) {
+        closeAllPopovers()
+    }
 }
 
 // MARK: TimelineDatasourceDelegate
@@ -350,8 +359,8 @@ extension TimelineDashboardViewController: TimelineDatasourceDelegate {
     }
 
     func shouldPresentTimeEntryEditor(in view: NSView, timeEntry: TimeEntryViewItem, cell: TimelineTimeEntryCell) {
+        closeAllPopovers()
         cell.isHighlight = true
-        timeEntryHoverPopover.close()
         selectedGUID = timeEntry.guid
         editorPopover.show(relativeTo: view.bounds, of: view, preferredEdge: .maxX)
         editorPopover.setTimeEntry(timeEntry)
