@@ -14,11 +14,12 @@ protocol TimelineFlowLayoutDelegate: class {
     func timechunkForItem(at indexPath: IndexPath) -> TimeChunk?
     func columnForItem(at indexPath: IndexPath) -> Int
     func shouldDrawDetailBubble(at indexPath: IndexPath) -> Bool
+    func flowLayoutDidUpdateLayout(with activityFrame: CGRect)
 }
 
 final class TimelineFlowLayout: NSCollectionViewFlowLayout {
 
-    private struct Constants {
+    struct Constants {
         static let MinimumHeight: CGFloat = 2.0
 
         struct TimeLabel {
@@ -114,6 +115,11 @@ final class TimelineFlowLayout: NSCollectionViewFlowLayout {
         calculateTimeEntryAttributes()
         calculateActivityAttributes()
         calculateBackgroundAttributes()
+
+        // Update the position of labels
+        if let activitySection = dividerAttributes.last {
+            flowDelegate?.flowLayoutDidUpdateLayout(with: activitySection.frame)
+        }
     }
 
     override func layoutAttributesForElements(in rect: NSRect) -> [NSCollectionViewLayoutAttributes] {

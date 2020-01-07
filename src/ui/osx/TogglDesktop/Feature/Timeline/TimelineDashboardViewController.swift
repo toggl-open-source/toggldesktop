@@ -27,6 +27,8 @@ final class TimelineDashboardViewController: NSViewController {
     @IBOutlet weak var collectionViewContainerView: NSScrollView!
     @IBOutlet weak var mainContainerView: NSView!
     @IBOutlet weak var activityRecorderInfoImageView: HoverImageView!
+    @IBOutlet weak var activityPanelWidth: NSLayoutConstraint!
+    @IBOutlet weak var activityLabelRight: NSLayoutConstraint!
 
     // MARK: Variables
 
@@ -408,6 +410,11 @@ extension TimelineDashboardViewController: TimelineDatasourceDelegate {
 
         editorPopover.animates = false
         editorPopover.show(relativeTo: cell.popoverView.bounds, of: cell.popoverView, preferredEdge: .maxX)
+    }
+
+    func shouldUpdatePanelSize(with activityFrame: CGRect) {
+        // Adjust the Activity label to make it center alignment
+        activityLabelRight.constant = view.frame.width - activityFrame.origin.x - TimelineFlowLayout.Constants.Divider.SeconDividerRightPadding
     }
 }
 

@@ -14,6 +14,7 @@ protocol TimelineDatasourceDelegate: class {
     func shouldPresentTimeEntryHover(in view: NSView, timeEntry: TimelineTimeEntry)
     func shouldPresentActivityHover(in view: NSView, activity: TimelineActivity)
     func startNewTimeEntry(at started: TimeInterval, ended: TimeInterval)
+    func shouldUpdatePanelSize(with activityFrame: CGRect)
 }
 
 final class TimelineDatasource: NSObject {
@@ -249,6 +250,10 @@ extension TimelineDatasource: TimelineFlowLayoutDelegate {
     func shouldDrawDetailBubble(at indexPath: IndexPath) -> Bool {
         guard let item = timeline?.item(at: indexPath) as? TimelineBaseTimeEntry else { return false }
         return item.hasDetailInfo
+    }
+
+    func flowLayoutDidUpdateLayout(with activityFrame: CGRect) {
+        delegate?.shouldUpdatePanelSize(with: activityFrame)
     }
 }
 
