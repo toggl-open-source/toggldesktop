@@ -59,6 +59,7 @@ final class DatePickerView: NSView {
             datePickerView.isEnabled = isEnabled
         }
     }
+    var isShown: Bool { return calendarPopover.isShown }
 
     // MARK: View
 

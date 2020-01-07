@@ -96,7 +96,8 @@ final class TimelineDashboardViewController: NSViewController {
         return !editorPopover.isShown &&
             !activityHoverPopover.isShown &&
             !timeEntryHoverPopover.isShown &&
-            !activityRecorderPopover.isShown
+            !activityRecorderPopover.isShown &&
+            !datePickerView.isShown
     }
 
     // MARK: View
