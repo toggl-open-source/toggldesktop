@@ -741,7 +741,7 @@ extern void *ctx;
     {
         return;
     }
-    [self.timerEditViewController focusTimer];
+    [self.delegate shouldFocusTimer];
 }
 
 - (void)loadMoreIfNeedAtDate:(NSDate *)date;
