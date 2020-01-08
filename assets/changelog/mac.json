@@ -9,24 +9,6 @@
             "date": "January 8th 2020"
         },
         {
-            "version": "7.4.1106",
-            "rows": [
-                "Fixed Touch Bar is dismissed and do not present when focusing on the Timer Bar",
-                "Fixed crashed due to missing Touch Bar APIs in OS X 10.11"
-            ],
-            "date": "January 8th 2020",
-            "beta": "true"
-        },
-        {
-            "version": "7.4.1106",
-            "rows": [
-                "Fixed Touch Bar is dismissed and do not present when focusing on the Timer Bar",
-                "Fixed crashed due to missing Touch Bar APIs in OS X 10.11"
-            ],
-            "date": "December 13rd 2019",
-            "beta": "true"
-        },
-        {
             "version": "7.4.1092",
             "rows": [
                 "Introduce In-App Message",
