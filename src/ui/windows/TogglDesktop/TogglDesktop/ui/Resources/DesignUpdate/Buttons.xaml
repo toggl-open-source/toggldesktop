@@ -80,10 +80,12 @@
         </Setter>
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="BorderBrush" Value="{DynamicResource Toggl.Button.MouseOverBorder}" />
+                <Setter Property="Background" Value="{DynamicResource Toggl.Button.Primary.MouseOverBackground}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource Toggl.Button.Primary.MouseOverBorder}" />
             </Trigger>
             <Trigger Property="IsPressed" Value="True">
                 <Setter Property="Background" Value="{DynamicResource Toggl.Button.Primary.PressedBackground}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource Toggl.Button.Primary.PressedBorder}" />
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
                 <Setter Property="Foreground" Value="{DynamicResource Toggl.DisabledTextBrush}" />
@@ -94,19 +96,15 @@
 
     <Style TargetType="Button" x:Key="Toggl.OutlinedButton" BasedOn="{StaticResource Toggl.PrimaryButton}">
         <Setter Property="Background" Value="{DynamicResource Toggl.Background}" />
-        <Setter Property="BorderThickness" Value="1" />
         <Setter Property="BorderBrush" Value="{DynamicResource Toggl.SelectionElements.Border}" />
         <Style.Triggers>
-            <Trigger Property="IsKeyboardFocused" Value="True">
-                <Setter Property="Background" Value="{DynamicResource Toggl.Button.Outlined.HoverBackground}" />
-            </Trigger>
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="Background" Value="{DynamicResource Toggl.Button.Outlined.HoverBackground}" />
                 <Setter Property="BorderBrush" Value="{DynamicResource Toggl.Button.Outlined.HoverBorder}" />
             </Trigger>
             <Trigger Property="IsPressed" Value="True">
-                <Setter Property="Background" Value="{DynamicResource Toggl.Button.Primary.Background}" />
-                <Setter Property="BorderBrush" Value="{DynamicResource Toggl.SelectionElements.Border}" />
+                <Setter Property="Background" Value="{DynamicResource Toggl.Button.Outlined.PressedBackground}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource Toggl.Button.Outlined.PressedBorder}" />
             </Trigger>
         </Style.Triggers>
     </Style>
@@ -118,9 +116,10 @@
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="BorderBrush" Value="{DynamicResource Toggl.Button.Accent.MouseOverBorder}" />
-                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="Background" Value="{DynamicResource Toggl.Button.Accent.MouseOverBackground}" />
             </Trigger>
             <Trigger Property="IsPressed" Value="True">
+                <Setter Property="BorderBrush" Value="{DynamicResource Toggl.Button.Accent.PressedBorder}" />
                 <Setter Property="Background" Value="{DynamicResource Toggl.Button.Accent.PressedBackground}" />
             </Trigger>
         </Style.Triggers>
@@ -133,9 +132,10 @@
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="BorderBrush" Value="{DynamicResource Toggl.Button.Accent.Red.MouseOverBorder}" />
-                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="Background" Value="{DynamicResource Toggl.Button.Accent.Red.MouseOverBackground}" />
             </Trigger>
             <Trigger Property="IsPressed" Value="True">
+                <Setter Property="BorderBrush" Value="{DynamicResource Toggl.Button.Accent.Red.PressedBorder}" />
                 <Setter Property="Background" Value="{DynamicResource Toggl.Button.Accent.Red.PressedBackground}" />
             </Trigger>
         </Style.Triggers>
