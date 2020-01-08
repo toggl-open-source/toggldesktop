@@ -20,7 +20,7 @@
                 <ResourceDictionary Source="../Resources/DesignUpdate/Controls.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <SolidColorBrush x:Key="AttachedFileBackground"
-                             Color="{DynamicResource Toggl.DisabledElementColor}"
+                             Color="{DynamicResource Toggl.LightGrayColor}"
                              Opacity="0.5" />
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
             <converters:BytesToStringConverter x:Key="BytesToStringConverter" />
