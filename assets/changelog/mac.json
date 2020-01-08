@@ -1,6 +1,14 @@
 {
     "versions": [
         {
+            "version": "7.5.3",
+            "rows": [
+                "Introduce Brand-new Timeline feature"
+            ],
+            "date": "January 8th 2020",
+            "beta": "true"
+        },
+        {
             "version": "7.4.1106",
             "rows": [
                 "Fixed Touch Bar is dismissed and do not present when focusing on the Timer Bar",
