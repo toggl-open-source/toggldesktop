@@ -43,10 +43,11 @@
         <KeyBinding Key="Enter" Command="{Binding ConfirmLoginSignupCommand}" />
     </UserControl.InputBindings>
     <Grid Background="{StaticResource ViewBackground}">
-        <Border BorderThickness="1" BorderBrush="{DynamicResource Toggl.LoginView.Border}"
-            Width="300" Height="460"
-            Background="{DynamicResource Toggl.CardBackground}"
-            VerticalAlignment="Center" HorizontalAlignment="Center">
+        <Border BorderThickness="1"
+                BorderBrush="{DynamicResource Toggl.LoginView.Border}"
+                Width="300" Height="460"
+                Background="{DynamicResource Toggl.CardBackground}"
+                VerticalAlignment="Center" HorizontalAlignment="Center">
             <DockPanel>
                 <Viewbox Width="63" Height="19" DockPanel.Dock="Top" Margin="0 50 0 0">
                     <ContentControl Content="{StaticResource Toggl.LogoSvg}" />
@@ -75,7 +76,8 @@
                              Width="200"
                              mah:TextBoxHelper.Watermark="Email address"
                              Text="{Binding Email, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"
-                             behaviors:FocusHelper.IsFocused="{Binding IsEmailFocused}"/>
+                             behaviors:FocusHelper.IsFocused="{Binding IsEmailFocused}"
+                             LostFocus="EmailTextBox_OnLostFocus"/>
                     <PasswordBox x:Name="passwordBox" x:FieldModifier="private"
                                  PasswordChar="*"
                                  Margin="0 8 0 0"
