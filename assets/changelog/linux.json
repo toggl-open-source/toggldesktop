@@ -36,7 +36,7 @@
             "version": "7.4.510",
             "rows": [
                 "Version string is now properly displayed in the About section of the app.",
-                "Application now longer crashes on exit."
+                "Application no longer crashes on exit."
             ],
             "date": "August 12th 2019",
             "beta": "true"
@@ -55,7 +55,7 @@
                 "Automatic crash reports now contain better backtraces.",
                 "Pressing Shift+Tab in the time entry editor now behaves as expected.",
                 "The continue button in the time entry list now needs to be clicked only once every time.",
-                "Creating a tab that already exists will select it in the list.",
+                "Creating a tag that already exists will select it in the list.",
                 "Timer widget now displays the current task right even when the window is resized.",
                 "The app now detects network state changes to represent the online/offline states appropriately."
             ],
