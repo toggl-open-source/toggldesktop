@@ -86,7 +86,6 @@ extension MainDashboardViewController {
         timeEntryController.delegate = self
         headerContainerView.applyShadow(color: .black, opacity: 0.1, radius: 6.0)
         timelineController.delegate = self
-        timeEntryController.timerEditViewController = timerController
     }
 
     fileprivate func initNotification() {
@@ -164,6 +163,10 @@ extension MainDashboardViewController: TimeEntryListViewControllerDelegate {
 
     func containerViewForTimer() -> NSView! {
         return timerContainerView
+    }
+
+    func shouldFocusTimer() {
+        timerController.focusTimer()
     }
 }
 
