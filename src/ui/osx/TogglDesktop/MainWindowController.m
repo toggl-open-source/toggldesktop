@@ -393,10 +393,7 @@ extern void *ctx;
 {
      if (@available(macOS 10.12.2, *))
      {
-         if ([self.timeEntryListViewController.view superview] != nil)
-         {
-             [[TouchBarService shared] present];
-         }
+         [[TouchBarService shared] present];
      }
 
 }
@@ -405,10 +402,7 @@ extern void *ctx;
 {
     if (@available(macOS 10.12.2, *))
     {
-        if ([self.timeEntryListViewController.view superview] != nil)
-        {
-            [[TouchBarService shared] minimize];
-        }
+        [[TouchBarService shared] minimize];
     }
 }
 
