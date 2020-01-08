@@ -318,16 +318,16 @@ void *ctx;
     if (tags == nil) {
         tags = @"";
     }
-    char *guid = toggl_create_time_entry(ctx,
-                                         [item.Description UTF8String],
-                                         [item.duration UTF8String],
-                                         item.TaskID,
-                                         item.ProjectID,
-                                         0,
-                                         [tags UTF8String],
-                                         [item.startTimeString UTF8String],
-                                         [item.endTimeString UTF8String],
-                                         [item.started timeIntervalSince1970]);
+    char *guid = toggl_start(ctx,
+                             [item.Description UTF8String],
+                             [item.duration UTF8String],
+                             item.TaskID,
+                             item.ProjectID,
+                             0,
+                             [tags UTF8String],
+                             false,
+                             [item.started timeIntervalSince1970],
+                             [item.ended timeIntervalSince1970]);
     if (guid != nil) {
         NSString *GUID = [NSString stringWithUTF8String:guid];
         free(guid);
