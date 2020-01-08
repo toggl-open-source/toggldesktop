@@ -50,8 +50,8 @@
 
     </Style>
 
-    <SolidColorBrush x:Key="MenuItemSelectionFill" Color="{DynamicResource Toggl.DisabledElementColor}" po:Freeze="True"/>
-    <SolidColorBrush x:Key="MenuItemSelectionStroke" Color="{DynamicResource Toggl.DisabledElementColor}" po:Freeze="True"/>
-    <SolidColorBrush x:Key="DisabledMenuItemForeground" Color="{DynamicResource Toggl.DisabledTextColor}" po:Freeze="True"/>
+    <SolidColorBrush x:Key="MenuItemSelectionFill" Color="{DynamicResource Toggl.LightGrayColor}" po:Freeze="True"/>
+    <SolidColorBrush x:Key="MenuItemSelectionStroke" Color="{DynamicResource Toggl.LightGrayColor}" po:Freeze="True"/>
+    <SolidColorBrush x:Key="DisabledMenuItemForeground" Color="{DynamicResource Toggl.Grayish1Color}" po:Freeze="True"/>
 
 </ResourceDictionary>
