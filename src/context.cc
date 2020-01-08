@@ -4179,7 +4179,7 @@ error Context::OpenReportsInBrowser() {
 
     // Not implemented in v9 as of 12.05.2017
     std::stringstream ss;
-    ss  << urls::API() << "/api/v8/desktop_login"
+    ss  << urls::Main() << "/api/v8/desktop_login"
         << "?login_token=" << login_token
         << "&goto=reports";
     UI()->DisplayURL(ss.str());

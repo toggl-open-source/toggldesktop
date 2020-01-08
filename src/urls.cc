@@ -19,6 +19,13 @@ void SetUseStagingAsBackend(const bool value) {
     use_staging_as_backend = value;
 }
 
+std::string Main() {
+    if (use_staging_as_backend) {
+        return "https://toggl.space";
+    }
+    return "https://toggl.com";
+}
+
 std::string API() {
     if (use_staging_as_backend) {
         return "https://toggl.space";
