@@ -9,7 +9,6 @@
 #import "MainWindowController.h"
 #import <Carbon/Carbon.h>
 #import "LoginViewController.h"
-#import "TimeEntryListViewController.h"
 #import "OverlayViewController.h"
 #import "TimelineViewController.h"
 #import "TimeEntryViewItem.h"
@@ -24,7 +23,6 @@
 @property (weak) IBOutlet NSView *contentView;
 @property (weak) IBOutlet NSView *mainView;
 @property (nonatomic, strong) LoginViewController *loginViewController;
-@property (nonatomic, strong) TimeEntryListViewController *timeEntryListViewController;
 @property (nonatomic, strong) OverlayViewController *overlayViewController;
 @property (nonatomic, strong) MainDashboardViewController *mainDashboardViewController;
 @property (nonatomic, strong) SystemMessageView *messageView;
@@ -326,12 +324,12 @@ extern void *ctx;
 
 - (void)setInitialWindowSizeIfNeed
 {
-	if (self.contentView == nil || self.timeEntryListViewController.timerEditViewController == nil)
+	if (self.contentView == nil || self.mainDashboardViewController.timerController == nil)
 	{
 		return;
 	}
 
-	if (self.contentView.frame.size.height - 2 <= self.timeEntryListViewController.timerEditViewController.view.frame.size.height)
+	if (self.contentView.frame.size.height - 2 <= self.mainDashboardViewController.timerController.view.frame.size.height)
 	{
 		[self.window setContentSize:CGSizeMake(400, 600)];
 	}
@@ -341,7 +339,7 @@ extern void *ctx;
 
 - (void)touchBarServiceStartTimeEntryOnTap
 {
-	[self.timeEntryListViewController.timerEditViewController startButtonClicked:self];
+	[self.mainDashboardViewController.timerController startButtonClicked:self];
 }
 
 #pragma mark - Timeline Menu
