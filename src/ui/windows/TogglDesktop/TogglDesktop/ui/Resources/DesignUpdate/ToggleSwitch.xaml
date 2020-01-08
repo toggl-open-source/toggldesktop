@@ -7,21 +7,21 @@
     </ResourceDictionary.MergedDictionaries>
 
     <SolidColorBrush x:Key="MahApps.Metro.Brushes.ToggleSwitchButton.ThumbIndicatorMouseOverBrush.Win10"
-                     Color="{DynamicResource Toggl.SecondaryTextColor}" po:Freeze="True" />
+                     Color="{DynamicResource Toggl.GrayColor}" po:Freeze="True" />
     <SolidColorBrush x:Key="MahApps.Metro.Brushes.ToggleSwitchButton.OffMouseOverBorderBrush.Win10"
-                     Color="{DynamicResource Toggl.SecondaryTextColor}" po:Freeze="True" />
+                     Color="{DynamicResource Toggl.GrayColor}" po:Freeze="True" />
     <SolidColorBrush x:Key="MahApps.Metro.Brushes.ToggleSwitchButton.OnSwitchMouseOverBrush.Win10"
                      Color="{DynamicResource Toggl.AccentColorPlusOne}" po:Freeze="True" />
     <SolidColorBrush x:Key="MahApps.Metro.Brushes.ToggleSwitchButton.ThumbIndicatorCheckedBrush.Win10"
                      Color="{DynamicResource Toggl.SelectionElements.BackgroundColor}" po:Freeze="True" />
     <SolidColorBrush x:Key="MahApps.Metro.Brushes.ToggleSwitchButton.PressedBrush.Win10"
-                     Color="{DynamicResource Toggl.DisabledTextColor}" po:Freeze="True" />
+                     Color="{DynamicResource Toggl.Grayish1Color}" po:Freeze="True" />
     <SolidColorBrush x:Key="MahApps.Metro.Brushes.ToggleSwitchButton.ThumbIndicatorPressedBrush.Win10"
                      Color="{DynamicResource Toggl.SelectionElements.BackgroundColor}" po:Freeze="True" />
     <SolidColorBrush x:Key="MahApps.Metro.Brushes.ToggleSwitchButton.OffDisabledBorderBrush.Win10"
-                     Color="{DynamicResource Toggl.DisabledElementColor}" po:Freeze="True" />
+                     Color="{DynamicResource Toggl.LightGrayColor}" po:Freeze="True" />
     <SolidColorBrush x:Key="MahApps.Metro.Brushes.ToggleSwitchButton.OnSwitchDisabledBrush.Win10"
-                     Color="{DynamicResource Toggl.DisabledElementColor}" po:Freeze="True" />
+                     Color="{DynamicResource Toggl.LightGrayColor}" po:Freeze="True" />
 
     <Style x:Key="Toggl.ToggleSwitchButton"
            BasedOn="{StaticResource MahApps.Metro.Styles.ToggleSwitchButton.Win10}"
