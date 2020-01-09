@@ -2,6 +2,42 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
                     xmlns:togglDesktop="clr-namespace:TogglDesktop">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="ErrorTemplate.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <ControlTemplate x:Key="CheckBoxValidationErrorTemplate">
+        <AdornedElementPlaceholder x:Name="placeholder">
+            <Grid SnapsToDevicePixels="True">
+                <Rectangle x:Name="PopupTargetElement"
+                           Margin="-2 0"
+                           DataContext="{Binding ElementName=placeholder}"
+                           StrokeThickness="0" />
+                <Border x:Name="ValidationErrorElement"
+                        DataContext="{Binding ElementName=placeholder}">
+                </Border>
+
+                <mah:CustomValidationPopup x:Name="ValidationPopup"
+                                           Placement="Top"
+                                           AllowsTransparency="True"
+                                           IsOpen="False"
+                                           PlacementTarget="{Binding ElementName=PopupTargetElement, Mode=OneWay}"
+                                           Child="{StaticResource ValidationPopupRoot}">
+                </mah:CustomValidationPopup>
+            </Grid>
+        </AdornedElementPlaceholder>
+
+        <ControlTemplate.Triggers>
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                    <Condition Binding="{Binding ElementName=placeholder, Path=AdornedElement.IsKeyboardFocusWithin, Mode=OneWay}" Value="True" />
+                    <Condition Binding="{Binding ElementName=placeholder, Path=AdornedElement.(Validation.HasError), Mode=OneWay}" Value="True" />
+                </MultiDataTrigger.Conditions>
+                <Setter TargetName="ValidationPopup" Property="IsOpen" Value="True" />
+            </MultiDataTrigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
 
     <!--  ********************************** CheckBoxStyle **********************************  -->
     <!--  adapted from http://brianlagunas.com/free-metro-light-and-dark-themes-for-wpf-and-silverlight-microsoft-controls/  -->
@@ -12,6 +48,7 @@
     <Style x:Key="MahApps.Styles.CheckBox.Win10" TargetType="CheckBox">
         <Setter Property="BorderBrush" Value="{DynamicResource Toggl.SelectionElements.Border}" />
         <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Validation.ErrorTemplate" Value="{DynamicResource CheckBoxValidationErrorTemplate}" />
         <Setter Property="togglDesktop:CheckBoxHelper.CheckBoxSize" Value="20" />
         <Setter Property="togglDesktop:CheckBoxHelper.CheckedBackgroundBrush" Value="{DynamicResource Toggl.AccentBrush}" />
         <Setter Property="togglDesktop:CheckBoxHelper.CheckedBorderBrush" Value="{DynamicResource Toggl.AccentBrush}" />
@@ -186,6 +223,11 @@
                             <Setter TargetName="CheckedBorder" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:ControlsHelper.FocusBorderBrush)}" />
                             <Setter TargetName="IntermediateBorder" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:ControlsHelper.FocusBorderBrush)}" />
                             <Setter TargetName="UnCheckedBorder" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(mah:ControlsHelper.FocusBorderBrush)}" />
+                        </Trigger>
+                        <Trigger Property="Validation.HasError" Value="True">
+                            <Setter TargetName="CheckedBorder" Property="BorderBrush" Value="{DynamicResource Toggl.ErrorMessageBackground}" />
+                            <Setter TargetName="IntermediateBorder" Property="BorderBrush" Value="{DynamicResource Toggl.ErrorMessageBackground}" />
+                            <Setter TargetName="UnCheckedBorder" Property="BorderBrush" Value="{DynamicResource Toggl.ErrorMessageBackground}" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter TargetName="CheckedBorder" Property="Background" Value="{DynamicResource Toggl.DisabledElementBrush}" />
