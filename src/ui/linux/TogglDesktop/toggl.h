@@ -6,6 +6,7 @@
 #include <QObject>
 #include <QUrl>
 #include <QVector>
+#include <QRect>
 
 #include <stdint.h>
 
