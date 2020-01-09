@@ -42,7 +42,8 @@
     <UserControl.InputBindings>
         <KeyBinding Key="Enter" Command="{Binding ConfirmLoginSignupCommand}" />
     </UserControl.InputBindings>
-    <Grid Background="{StaticResource ViewBackground}">
+    <Grid Background="{StaticResource ViewBackground}"
+          Margin="1">
         <Border BorderThickness="1"
                 BorderBrush="{DynamicResource Toggl.LoginView.Border}"
                 Width="300" Height="460"
