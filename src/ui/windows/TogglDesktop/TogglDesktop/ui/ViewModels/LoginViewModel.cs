@@ -33,6 +33,7 @@ namespace TogglDesktop.ViewModels
         private bool _isCountrySelectionFocused;
         private bool _isTosCheckboxFocused;
         private bool _isTosChecked;
+        private bool _showLoginError;
         private ValidationHelper _emailValidation;
         private ValidationHelper _passwordValidation;
         private ValidationHelper _selectedCountryValidation;
@@ -162,6 +163,12 @@ namespace TogglDesktop.ViewModels
             set => this.RaiseAndSetIfChanged(ref _isTosChecked, value);
         }
 
+        public bool ShowLoginError
+        {
+            get => _showLoginError;
+            set => this.RaiseAndSetIfChanged(ref _showLoginError, value);
+        }
+
         public string ConfirmButtonText => _confirmButtonText.Value;
         public string GoogleLoginButtonText => _googleLoginButtonText.Value;
         public string SignupLoginToggleText => _signupLoginToggleText.Value;
@@ -170,6 +177,7 @@ namespace TogglDesktop.ViewModels
 
         private bool PerformValidation(bool isGoogleLogin = false)
         {
+            ShowLoginError = false;
             EnsureValidationApplied();
             IsEmailFocused = false;
             IsPasswordFocused = false;
@@ -230,6 +238,7 @@ namespace TogglDesktop.ViewModels
                     throw new ArgumentOutOfRangeException();
             }
 
+            ShowLoginError = !success;
             return success;
         }
 
