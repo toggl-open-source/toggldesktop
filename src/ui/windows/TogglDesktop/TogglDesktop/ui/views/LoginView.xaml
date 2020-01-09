@@ -109,12 +109,14 @@
                               TextSearch.TextPath="Name"
                               mah:TextBoxHelper.Watermark="Select country"
                               behaviors:FocusHelper.IsFocused="{Binding IsCountrySelectionFocused}"/>
-                    <CheckBox Name="tosCheckBox" Margin="50 8 0 0"
+                    <CheckBox Name="tosCheckBox"
+                              Margin="50 16 0 12"
                               HorizontalAlignment="Left"
+                              Width="200"
                               Visibility="{Binding SelectedConfirmAction, Converter={StaticResource ShowOnSignUp}}"
                               IsChecked="{Binding IsTosChecked, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"
                               behaviors:FocusHelper.IsFocused="{Binding IsTosCheckboxFocused}">
-                        <WrapPanel Margin="0 8 0 0" HorizontalAlignment="Left">
+                        <WrapPanel Margin="0 0 0 -12" HorizontalAlignment="Left">
                             <TextBlock Style="{DynamicResource Toggl.CaptionText}">
                                 I agree to
                                 <Hyperlink
