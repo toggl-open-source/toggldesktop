@@ -170,10 +170,5 @@ namespace TogglDesktop
 
         private void RefreshCountryComboBoxBinding() => countryComboBox.GetBindingExpression(ComboBox.SelectedItemProperty).UpdateSource();
         private void RefreshTosCheckBoxBinding() => tosCheckBox.GetBindingExpression(CheckBox.IsCheckedProperty).UpdateSource();
-
-        private void EmailTextBox_OnLostFocus(object sender, RoutedEventArgs e)
-        {
-            ViewModel.EnsureEmailAndPasswordValidation();
-        }
     }
 }
