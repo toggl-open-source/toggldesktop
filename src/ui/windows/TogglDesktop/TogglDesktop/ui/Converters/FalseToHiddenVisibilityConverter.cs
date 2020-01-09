@@ -4,14 +4,14 @@ using System.Windows.Data;
 
 namespace TogglDesktop.Converters
 {
-    class BooleanToVisibilityConverter : IValueConverter
+    class FalseToHiddenVisibilityConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             var input = (null == parameter)
                 ? (bool)value :
                 !((bool)value);
-            return input ? Visibility.Visible : Visibility.Collapsed;
+            return input ? Visibility.Visible : Visibility.Hidden;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
