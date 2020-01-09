@@ -10,7 +10,7 @@
                            DataContext="{Binding ElementName=placeholder}"
                            StrokeThickness="0" />
                 <Border x:Name="ValidationErrorElement"
-                        BorderBrush="{DynamicResource ControlsValidationBrush}"
+                        BorderBrush="{DynamicResource Toggl.ValidationErrorBackground}"
                         BorderThickness="1"
                         DataContext="{Binding ElementName=placeholder}">
                 </Border>
@@ -20,7 +20,7 @@
                                            AllowsTransparency="True"
                                            IsOpen="False"
                                            PlacementTarget="{Binding ElementName=PopupTargetElement, Mode=OneWay}">
-                    <Grid x:Name="Root" Margin="2">
+                    <Grid x:Name="Root" Margin="5">
                         <Grid.Resources>
                             <Style TargetType="Border">
                                 <Style.Triggers>
@@ -47,7 +47,16 @@
                                 </Style.Triggers>
                             </Style>
                         </Grid.Resources>
-                        <Border Background="{DynamicResource Toggl.ValidationErrorBackground}">
+                        <Border Background="{DynamicResource Toggl.ValidationErrorBackground}"
+                                Margin="0 0 0 -1"
+                                Width="{Binding ElementName=ValidationErrorElement, Path=ActualWidth, Mode=OneWay}">
+                            <Border.Effect>
+                                <DropShadowEffect ShadowDepth="2"
+                                                  BlurRadius="3"
+                                                  Direction="270"
+                                                  Color="Black"
+                                                  Opacity="0.2"/>
+                            </Border.Effect>
                             <!--
                                 from Josh Smith
 
