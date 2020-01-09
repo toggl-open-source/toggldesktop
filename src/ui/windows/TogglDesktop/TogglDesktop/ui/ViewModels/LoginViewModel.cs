@@ -199,11 +199,12 @@ namespace TogglDesktop.ViewModels
                 return true;
             }
 
-            if (SelectedConfirmAction == ConfirmAction.LogIn)
+            if (!isGoogleLogin)
             {
                 _refreshLoginBindings();
             }
-            else
+
+            if (SelectedConfirmAction == ConfirmAction.SignUp)
             {
                 _refreshSignupBindings();
             }
