@@ -77,8 +77,7 @@
                              Width="200"
                              mah:TextBoxHelper.Watermark="Email address"
                              Text="{Binding Email, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"
-                             behaviors:FocusHelper.IsFocused="{Binding IsEmailFocused}"
-                             LostFocus="EmailTextBox_OnLostFocus"/>
+                             behaviors:FocusHelper.IsFocused="{Binding IsEmailFocused}"/>
                     <PasswordBox x:Name="passwordBox" x:FieldModifier="private"
                                  PasswordChar="*"
                                  Margin="0 8 0 0"
