@@ -27,6 +27,7 @@
                 From="0" To="360" BeginTime="00:00:00.000" Duration="00:00:01.000"/>
             </Storyboard>
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+            <converters:FalseToHiddenVisibilityConverter x:Key="FalseToHiddenVisibilityConverter" />
             <converters:EqualToVisibilityConverter x:Key="ShowOnLogIn">
                 <converters:EqualToVisibilityConverter.ExpectedValue>
                     <viewModels:ConfirmAction>LogIn</viewModels:ConfirmAction>
@@ -86,11 +87,30 @@
                                  behaviors:FocusHelper.IsFocused="{Binding IsPasswordFocused}"/>
 
                     <Label HorizontalAlignment="Left"
-                           Margin="48 16 0 16"
+                           Margin="48 16 0 0"
                            Visibility="{Binding SelectedConfirmAction, Converter={StaticResource ShowOnLogIn}}">
                         <Hyperlink Style="{StaticResource Toggl.NormalHyperlink}"
                                    Click="onForgotPasswordLinkClick">Forgot password?</Hyperlink>
                     </Label>
+
+                    <Grid Margin="0 4 0 12"
+                          Height="24"
+                          Width="200"
+                          Visibility="{Binding SelectedConfirmAction, Converter={StaticResource ShowOnLogIn}}">
+                        <Border Background="{StaticResource Toggl.ValidationErrorBackground}"
+                                Visibility="{Binding ShowLoginError, Converter={StaticResource FalseToHiddenVisibilityConverter}}">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="3"
+                                                  ShadowDepth="2"
+                                                  Direction="270"
+                                                  Opacity="0.2" />
+                            </Border.Effect>
+                        </Border>
+                        <TextBlock Style="{StaticResource Toggl.CaptionWhiteText}"
+                                   Text="Incorrect email or password"
+                                   Padding="8 3 5 8"
+                                   Visibility="{Binding ShowLoginError, Converter={StaticResource FalseToHiddenVisibilityConverter}}"/>
+                    </Grid>
 
                     <ComboBox Name="countryComboBox"
                               Margin="0 12 0 0"
@@ -110,7 +130,7 @@
                               mah:TextBoxHelper.Watermark="Select country"
                               behaviors:FocusHelper.IsFocused="{Binding IsCountrySelectionFocused}"/>
                     <CheckBox Name="tosCheckBox"
-                              Margin="50 16 0 12"
+                              Margin="50 16 0 36"
                               HorizontalAlignment="Left"
                               Width="200"
                               Visibility="{Binding SelectedConfirmAction, Converter={StaticResource ShowOnSignUp}}"
@@ -136,7 +156,7 @@
                         </WrapPanel>
                     </CheckBox>
 
-                    <Grid Margin="0 24 0 0">
+                    <Grid>
                         <Border Height="32" Width="200"
                                 Background="{DynamicResource Toggl.SecondaryAccentBrush}"
                                 Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}">

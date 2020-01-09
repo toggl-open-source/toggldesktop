@@ -316,7 +316,7 @@
     <Compile Include="utilities\StaticObjectPool.cs" />
     <Compile Include="TogglApi.cs" />
     <Compile Include="ui\UIExtensions.cs" />
-    <Compile Include="ui\Converters\BooleanToVisibilityConverter.cs" />
+    <Compile Include="ui\Converters\FalseToHiddenVisibilityConverter.cs" />
     <Compile Include="ui\controls\AutotrackerNotification.xaml.cs">
       <DependentUpon>AutotrackerNotification.xaml</DependentUpon>
     </Compile>
