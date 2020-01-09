@@ -230,5 +230,10 @@ namespace TogglDesktop
         {
             this.IsEnabled = false;
         }
+
+        public bool HandlesError(string errorMessage)
+        {
+            return false;
+        }
     }
 }
