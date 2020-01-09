@@ -35,8 +35,8 @@ namespace TogglDesktop.ViewModels
         private bool _isTosChecked;
         private ValidationHelper _emailValidation;
         private ValidationHelper _passwordValidation;
-        private readonly ValidationHelper _selectedCountryValidation;
-        private readonly ValidationHelper _isTosCheckedValidation;
+        private ValidationHelper _selectedCountryValidation;
+        private ValidationHelper _isTosCheckedValidation;
         private readonly ObservableAsPropertyHelper<string> _confirmButtonText;
         private readonly ObservableAsPropertyHelper<string> _googleLoginButtonText;
         private readonly ObservableAsPropertyHelper<string> _signupLoginToggleText;
@@ -75,21 +75,12 @@ namespace TogglDesktop.ViewModels
             IsLoginSignupExecuting
                 .Select(x => !x)
                 .ToProperty(this, x => x.IsViewEnabled, out _isViewDisabled);
-
-            _selectedCountryValidation = this.ValidationRule(
-                x => x.SelectedCountry,
-                selectedCountry => selectedCountry != null,
-                "Please select country");
-            _isTosCheckedValidation = this.ValidationRule(
-                x => x.IsTosChecked,
-                isTosChecked => isTosChecked,
-                "Please accept the terms");
         }
         public ReactiveCommand<Unit, bool> ConfirmLoginSignupCommand { get; }
         public ReactiveCommand<Unit, Unit> ConfirmGoogleLoginSignupCommand { get; }
         public IObservable<bool> IsLoginSignupExecuting { get; }
 
-        public void EnsureEmailAndPasswordValidation()
+        public void EnsureValidationApplied()
         {
             if (_emailValidation == null)
             {
@@ -97,11 +88,18 @@ namespace TogglDesktop.ViewModels
                     x => x.Email,
                     email => email.IsValidEmailAddress(),
                     "Please enter a valid email");
-                _refreshLoginBindings();
                 _passwordValidation = this.ValidationRule(
                     x => x.Password,
                     password => !string.IsNullOrEmpty(password),
                     "A password is required");
+                _selectedCountryValidation = this.ValidationRule(
+                    x => x.SelectedCountry,
+                    selectedCountry => selectedCountry != null,
+                    "Please select country");
+                _isTosCheckedValidation = this.ValidationRule(
+                    x => x.IsTosChecked,
+                    isTosChecked => isTosChecked,
+                    "Please accept the terms");
             }
         }
 
@@ -172,7 +170,7 @@ namespace TogglDesktop.ViewModels
 
         private bool PerformValidation(bool isGoogleLogin = false)
         {
-            EnsureEmailAndPasswordValidation();
+            EnsureValidationApplied();
             IsEmailFocused = false;
             IsPasswordFocused = false;
             IsCountrySelectionFocused = false;
