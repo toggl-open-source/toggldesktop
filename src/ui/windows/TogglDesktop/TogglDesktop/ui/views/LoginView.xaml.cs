@@ -147,7 +147,7 @@ namespace TogglDesktop
 
         public bool HandlesError(string errorMessage)
         {
-            return errorMessage == "Invalid e-mail or password!";
+            return errorMessage == "Invalid e-mail or password!" && ViewModel.SelectedConfirmAction == ConfirmAction.LogIn;
         }
 
         #endregion
