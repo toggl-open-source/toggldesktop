@@ -72,6 +72,7 @@
 
     <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource MetroComboBox}">
         <Setter Property="Padding" Value="5 3" />
+        <Setter Property="Height" Value="32" />
         <Setter Property="Foreground" Value="{DynamicResource Toggl.PrimaryTextBrush}" />
         <Setter Property="Background" Value="{DynamicResource Toggl.SelectionElements.Background}" />
         <Setter Property="BorderThickness" Value="1" />
