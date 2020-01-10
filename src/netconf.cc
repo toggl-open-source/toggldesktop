@@ -10,7 +10,7 @@
 #include "Poco/Environment.h"
 #include "Poco/Logger.h"
 #include "Poco/Net/HTTPCredentials.h"
-#include "Poco/Net/HTTPSClientSession.h"
+#include "Poco/Net/HTTPClientSession.h"
 #include "Poco/URI.h"
 #include "Poco/UnicodeConverter.h"
 
@@ -96,12 +96,12 @@ error Netconf::autodetectProxy(
 
 error Netconf::ConfigureProxy(
     const std::string &encoded_url,
-    Poco::Net::HTTPSClientSession *session) {
+    Poco::Net::HTTPClientSession *session) {
 
     Poco::Logger &logger = Poco::Logger::get("ConfigureProxy");
 
     std::string proxy_url("");
-    if (HTTPSClient::Config.AutodetectProxy) {
+    if (HTTPClient::Config.AutodetectProxy) {
         if (Poco::Environment::has("HTTPS_PROXY")) {
             proxy_url = Poco::Environment::get("HTTPS_PROXY");
         }
@@ -155,26 +155,26 @@ error Netconf::ConfigureProxy(
     }
 
     // Try to use user-configured proxy
-    if (proxy_url.empty() && HTTPSClient::Config.UseProxy &&
-            HTTPSClient::Config.ProxySettings.IsConfigured()) {
+    if (proxy_url.empty() && HTTPClient::Config.UseProxy &&
+            HTTPClient::Config.ProxySettings.IsConfigured()) {
         session->setProxy(
-            HTTPSClient::Config.ProxySettings.Host(),
+            HTTPClient::Config.ProxySettings.Host(),
             static_cast<Poco::UInt16>(
-                HTTPSClient::Config.ProxySettings.Port()));
+                HTTPClient::Config.ProxySettings.Port()));
 
         std::stringstream ss;
         ss << "Proxy configured "
-           << " host=" << HTTPSClient::Config.ProxySettings.Host()
-           << " port=" << HTTPSClient::Config.ProxySettings.Port();
+           << " host=" << HTTPClient::Config.ProxySettings.Host()
+           << " port=" << HTTPClient::Config.ProxySettings.Port();
         logger.debug(ss.str());
 
-        if (HTTPSClient::Config.ProxySettings.HasCredentials()) {
+        if (HTTPClient::Config.ProxySettings.HasCredentials()) {
             session->setProxyCredentials(
-                HTTPSClient::Config.ProxySettings.Username(),
-                HTTPSClient::Config.ProxySettings.Password());
+                HTTPClient::Config.ProxySettings.Username(),
+                HTTPClient::Config.ProxySettings.Password());
 
             logger.debug("Proxy credentials configured username="
-                         + HTTPSClient::Config.ProxySettings.Username());
+                         + HTTPClient::Config.ProxySettings.Username());
         }
     }
 

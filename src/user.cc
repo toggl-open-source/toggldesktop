@@ -174,7 +174,7 @@ TimeEntry *User::Start(
     ss << "User::Start now=" << now;
 
     TimeEntry *te = new TimeEntry();
-    te->SetCreatedWith(HTTPSClient::Config.UserAgent());
+    te->SetCreatedWith(HTTPClient::Config.UserAgent());
     te->SetDescription(description);
     te->SetUID(ID());
     te->SetPID(project_id);
@@ -249,7 +249,7 @@ TimeEntry *User::Continue(
     time_t now = time(nullptr);
 
     TimeEntry *result = new TimeEntry();
-    result->SetCreatedWith(HTTPSClient::Config.UserAgent());
+    result->SetCreatedWith(HTTPClient::Config.UserAgent());
     result->SetDescription(existing->Description());
     result->SetWID(existing->WID());
     result->SetPID(existing->PID());
@@ -264,7 +264,7 @@ TimeEntry *User::Continue(
         result->SetDurationInSeconds(-now);
     }
 
-    result->SetCreatedWith(HTTPSClient::Config.UserAgent());
+    result->SetCreatedWith(HTTPClient::Config.UserAgent());
 
     related.pushBackTimeEntry(result);
 
@@ -442,7 +442,7 @@ TimeEntry *User::DiscardTimeAt(
 
     if (te && split_into_new_entry) {
         TimeEntry *split = new TimeEntry();
-        split->SetCreatedWith(HTTPSClient::Config.UserAgent());
+        split->SetCreatedWith(HTTPClient::Config.UserAgent());
         split->SetUID(ID());
         split->SetStart(at);
         split->SetDurationInSeconds(-at);

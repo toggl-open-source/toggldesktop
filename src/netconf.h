@@ -12,7 +12,7 @@ namespace Poco {
 
 namespace Net {
 
-class HTTPSClientSession;
+class HTTPClientSession;
 
 }  // namespace Net
 
@@ -27,7 +27,7 @@ class TOGGL_INTERNAL_EXPORT Netconf {
 
     static error ConfigureProxy(
         const std::string &encoded_url,
-        Poco::Net::HTTPSClientSession *session);
+        Poco::Net::HTTPClientSession *session);
 
  private:
     static error autodetectProxy(

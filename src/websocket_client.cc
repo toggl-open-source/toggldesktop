@@ -76,7 +76,7 @@ void WebSocketClient::Shutdown() {
 error WebSocketClient::createSession() {
     logger().debug("createSession");
 
-    if (HTTPSClient::Config.CACertPath.empty()) {
+    if (HTTPClient::Config.CACertPath.empty()) {
         return error("Missing CA certifcate, cannot start Websocket");
     }
 
@@ -104,21 +104,23 @@ error WebSocketClient::createSession() {
 
         Poco::Net::Context::VerificationMode verification_mode =
             Poco::Net::Context::VERIFY_RELAXED;
-        if (HTTPSClient::Config.IgnoreCert) {
+        if (HTTPClient::Config.IgnoreCert) {
             verification_mode = Poco::Net::Context::VERIFY_NONE;
         }
         Poco::Net::Context::Ptr context = new Poco::Net::Context(
             Poco::Net::Context::CLIENT_USE, "", "",
-            HTTPSClient::Config.CACertPath,
+            HTTPClient::Config.CACertPath,
             verification_mode, 9, true, "ALL");
 
         Poco::Net::SSLManager::instance().initializeClient(
             nullptr, acceptCertHandler, context);
 
-        session_ = new Poco::Net::HTTPSClientSession(
-            uri.getHost(),
-            uri.getPort(),
-            context);
+        if (uri.getScheme() == "http") {
+            session_ = new Poco::Net::HTTPClientSession(uri.getHost(), uri.getPort());
+        }
+        else {
+            session_ = new Poco::Net::HTTPSClientSession(uri.getHost(), uri.getPort(), context);
+        }
 
         Netconf::ConfigureProxy(urls::WebSocket(), session_);
 
@@ -126,7 +128,7 @@ error WebSocketClient::createSession() {
             Poco::Net::HTTPRequest::HTTP_GET, "/ws",
             Poco::Net::HTTPMessage::HTTP_1_1);
         req_->set("Origin", "https://localhost");
-        req_->set("User-Agent", HTTPSClient::Config.UserAgent());
+        req_->set("User-Agent", HTTPClient::Config.UserAgent());
         res_ = new Poco::Net::HTTPResponse();
         ws_ = new Poco::Net::WebSocket(*session_, *req_, *res_);
         ws_->setBlocking(false);
