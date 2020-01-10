@@ -143,6 +143,8 @@
 
     <Style TargetType="Button" x:Key="Toggl.CrossButton" BasedOn="{StaticResource Toggl.PrimaryButton}">
         <Setter Property="Foreground" Value="{DynamicResource Toggl.DarkGrayBrush}" />
+        <Setter Property="Height" Value="32" />
+        <Setter Property="Width" Value="32" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate>
