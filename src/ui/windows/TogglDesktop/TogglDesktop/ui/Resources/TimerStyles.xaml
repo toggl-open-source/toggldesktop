@@ -39,13 +39,6 @@
 
             <Style TargetType="TextBlock" BasedOn="{StaticResource TimerTextBlockBase}" />
 
-            <Style TargetType="toggl:ExtendedTextBox" BasedOn="{StaticResource {x:Type Control}}">
-                <Setter Property="VerticalContentAlignment" Value="Center"/>
-                <Setter Property="Padding" Value="0, 0, 6, 0"/>
-                <Setter Property="Background" Value="Transparent"/>
-                <Setter Property="Foreground" Value="White"/>
-                <Setter Property="CaretBrush" Value="#dddddd"></Setter>
-            </Style>
         </Style.Resources>
     </Style>
 
