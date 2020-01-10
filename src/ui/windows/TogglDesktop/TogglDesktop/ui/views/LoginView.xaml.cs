@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
 using System.Windows.Navigation;
+using System.Windows.Threading;
 using MahApps.Metro.Behaviours;
 using ReactiveUI;
 using TogglDesktop.ViewModels;
@@ -104,7 +105,10 @@ namespace TogglDesktop
 
             this.IsEnabled = true;
             this.Visibility = Visibility.Visible;
-            this.ViewModel.IsEmailFocused = true;
+
+            // this isn't guaranteed to work when running without dispatcher:
+            var focusEmailFieldAction = new Action(() => { this.ViewModel.IsEmailFocused = true; });
+            this.Dispatcher.BeginInvoke(DispatcherPriority.SystemIdle, focusEmailFieldAction);
         }
 
         public void Deactivate(bool allowAnimation)

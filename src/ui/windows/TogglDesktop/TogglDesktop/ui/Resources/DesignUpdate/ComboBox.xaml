@@ -7,7 +7,7 @@
         <ResourceDictionary Source="Typography.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
-    <SolidColorBrush x:Key="ComboBoxPopupBorderBrush" Color="{DynamicResource Toggl.DisabledElementColor}" />
+    <SolidColorBrush x:Key="ComboBoxPopupBorderBrush" Color="{DynamicResource Toggl.LightGrayColor}" />
     <Thickness x:Key="ComboBoxPopupBorderThemeThickness">1</Thickness>
     <Thickness x:Key="ComboBoxPopupBorderThemePadding">0,5</Thickness>
 
@@ -170,6 +170,7 @@
                                      Controls:TextBoxHelper.WatermarkTrimming="{TemplateBinding Controls:TextBoxHelper.WatermarkTrimming}"
                                      Background="{x:Null}"
                                      BorderThickness="0"
+                                     CaretBrush="{DynamicResource Toggl.PrimaryTextBrush}"
                                      CharacterCasing="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(Controls:ComboBoxHelper.CharacterCasing), Mode=OneWay}"
                                      Focusable="True"
                                      FontFamily="{TemplateBinding FontFamily}"

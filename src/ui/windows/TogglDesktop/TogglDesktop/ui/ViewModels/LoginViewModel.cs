@@ -33,10 +33,10 @@ namespace TogglDesktop.ViewModels
         private bool _isCountrySelectionFocused;
         private bool _isTosCheckboxFocused;
         private bool _isTosChecked;
-        private readonly ValidationHelper _emailValidation;
-        private readonly ValidationHelper _passwordValidation;
-        private readonly ValidationHelper _selectedCountryValidation;
-        private readonly ValidationHelper _isTosCheckedValidation;
+        private ValidationHelper _emailValidation;
+        private ValidationHelper _passwordValidation;
+        private ValidationHelper _selectedCountryValidation;
+        private ValidationHelper _isTosCheckedValidation;
         private readonly ObservableAsPropertyHelper<string> _confirmButtonText;
         private readonly ObservableAsPropertyHelper<string> _googleLoginButtonText;
         private readonly ObservableAsPropertyHelper<string> _signupLoginToggleText;
@@ -45,6 +45,7 @@ namespace TogglDesktop.ViewModels
         private readonly ObservableAsPropertyHelper<bool> _isViewDisabled;
 
         public LoginViewModel(Action refreshLoginBindings, Action refreshSignupBindings)
+            : base(RxApp.TaskpoolScheduler)
         {
             _refreshLoginBindings = refreshLoginBindings;
             _refreshSignupBindings = refreshSignupBindings;
@@ -74,27 +75,33 @@ namespace TogglDesktop.ViewModels
             IsLoginSignupExecuting
                 .Select(x => !x)
                 .ToProperty(this, x => x.IsViewEnabled, out _isViewDisabled);
-
-            _emailValidation = this.ValidationRule(
-                x => x.Email,
-                email => email.IsValidEmailAddress(),
-                "Please enter a valid email");
-            _passwordValidation = this.ValidationRule(
-                x => x.Password,
-                password => !string.IsNullOrEmpty(password),
-                "A password is required");
-            _selectedCountryValidation = this.ValidationRule(
-                x => x.SelectedCountry,
-                selectedCountry => selectedCountry != null,
-                "Please select country");
-            _isTosCheckedValidation = this.ValidationRule(
-                x => x.IsTosChecked,
-                isTosChecked => isTosChecked,
-                "Please accept the terms");
         }
         public ReactiveCommand<Unit, bool> ConfirmLoginSignupCommand { get; }
         public ReactiveCommand<Unit, Unit> ConfirmGoogleLoginSignupCommand { get; }
         public IObservable<bool> IsLoginSignupExecuting { get; }
+
+        public void EnsureValidationApplied()
+        {
+            if (_emailValidation == null)
+            {
+                _emailValidation = this.ValidationRule(
+                    x => x.Email,
+                    email => email.IsValidEmailAddress(),
+                    "Please enter a valid email");
+                _passwordValidation = this.ValidationRule(
+                    x => x.Password,
+                    password => !string.IsNullOrEmpty(password),
+                    "A password is required");
+                _selectedCountryValidation = this.ValidationRule(
+                    x => x.SelectedCountry,
+                    selectedCountry => selectedCountry != null,
+                    "Please select country");
+                _isTosCheckedValidation = this.ValidationRule(
+                    x => x.IsTosChecked,
+                    isTosChecked => isTosChecked,
+                    "Please accept the terms");
+            }
+        }
 
         public IList<CountryViewModel> Countries
         {
@@ -163,6 +170,7 @@ namespace TogglDesktop.ViewModels
 
         private bool PerformValidation(bool isGoogleLogin = false)
         {
+            EnsureValidationApplied();
             IsEmailFocused = false;
             IsPasswordFocused = false;
             IsCountrySelectionFocused = false;
@@ -189,11 +197,12 @@ namespace TogglDesktop.ViewModels
                 return true;
             }
 
-            if (SelectedConfirmAction == ConfirmAction.LogIn)
+            if (!isGoogleLogin)
             {
                 _refreshLoginBindings();
             }
-            else
+
+            if (SelectedConfirmAction == ConfirmAction.SignUp)
             {
                 _refreshSignupBindings();
             }
