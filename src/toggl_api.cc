@@ -365,7 +365,7 @@ void toggl_set_cacert_path(
     void *,
     const char_t *path) {
 
-    toggl::HTTPSClient::Config.CACertPath = to_string(path);
+    toggl::HTTPClient::Config.CACertPath = to_string(path);
 }
 
 bool_t toggl_set_db_path(
@@ -517,7 +517,7 @@ bool_t toggl_add_obm_action(
 void toggl_add_obm_experiment_nr(
     const uint64_t nr) {
 
-    toggl::HTTPSClient::Config.OBMExperimentNrs.push_back(nr);
+    toggl::HTTPClient::Config.OBMExperimentNrs.push_back(nr);
 }
 
 char_t *toggl_create_client(

@@ -68,7 +68,7 @@ bool TimeEntry::ResolveError(const error &err) {
         return true;
     }
     if (isMissingCreatedWith(err)) {
-        SetCreatedWith(HTTPSClient::Config.UserAgent());
+        SetCreatedWith(HTTPClient::Config.UserAgent());
         return true;
     }
     return false;
