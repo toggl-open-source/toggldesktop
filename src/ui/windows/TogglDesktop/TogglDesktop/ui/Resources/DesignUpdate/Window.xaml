@@ -31,7 +31,7 @@
     </Style>
 
     <Style TargetType="mah:MetroWindow" x:Key="Toggl.MainWindow">
-        <Setter Property="ResizeMode" Value="CanResizeWithGrip" />
+        <Setter Property="ResizeMode" Value="CanResize" />
         <Setter Property="TitleCharacterCasing" Value="Normal" />
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="WindowTitleBrush" Value="Transparent" />
