@@ -11,7 +11,7 @@
              xmlns:behaviors="clr-namespace:TogglDesktop.Behaviors"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              mc:Ignorable="d" 
-             MinHeight="456" MinWidth="300"
+             MinHeight="428" MinWidth="300"
              Background="{DynamicResource Toggl.CardBackground}"
              d:DataContext="{d:DesignInstance viewModels:LoginViewModel, IsDesignTimeCreatable=False}">
     <UserControl.Resources>
@@ -27,6 +27,7 @@
                 From="0" To="360" BeginTime="00:00:00.000" Duration="00:00:01.000"/>
             </Storyboard>
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+            <converters:FalseToHiddenVisibilityConverter x:Key="FalseToHiddenVisibilityConverter" />
             <converters:EqualToVisibilityConverter x:Key="ShowOnLogIn">
                 <converters:EqualToVisibilityConverter.ExpectedValue>
                     <viewModels:ConfirmAction>LogIn</viewModels:ConfirmAction>
@@ -42,27 +43,26 @@
     <UserControl.InputBindings>
         <KeyBinding Key="Enter" Command="{Binding ConfirmLoginSignupCommand}" />
     </UserControl.InputBindings>
-    <Grid Background="{StaticResource ViewBackground}"
-          Margin="1">
+    <Grid Background="{StaticResource ViewBackground}">
         <Border BorderThickness="1"
                 BorderBrush="{DynamicResource Toggl.LoginView.Border}"
-                Width="300" Height="460"
+                Width="300" Height="432"
                 Background="{DynamicResource Toggl.CardBackground}"
                 VerticalAlignment="Center" HorizontalAlignment="Center">
             <DockPanel>
-                <Viewbox Width="63" Height="19" DockPanel.Dock="Top" Margin="0 50 0 0">
+                <Viewbox Width="63" Height="19" DockPanel.Dock="Top" Margin="0 40 0 0">
                     <ContentControl Content="{StaticResource Toggl.LogoSvg}" />
                 </Viewbox>
-                <StackPanel Orientation="Vertical"
-                            DockPanel.Dock="Bottom"
-                            Margin="0 44 0 0">
+                <StackPanel DockPanel.Dock="Bottom"
+                            Orientation="Vertical"
+                            Margin="0 21 0 0">
                     <TextBlock Text="Don't have an account?"
                                Style="{DynamicResource Toggl.CaptionBlackText}"
                                HorizontalAlignment="Center"
                                Visibility="{Binding SelectedConfirmAction, Converter={StaticResource ShowOnLogIn}}"/>
 
                     <Label HorizontalAlignment="Center"
-                           Margin="0 1 0 24">
+                           Margin="0 1 0 22">
                         <Hyperlink Style="{StaticResource Toggl.NormalHyperlink}"
                                    Click="onSignupLoginToggleClick">
                             <Hyperlink.Inlines>
@@ -73,28 +73,47 @@
                 </StackPanel>
                 <StackPanel IsEnabled="{Binding IsViewEnabled}">
                     <TextBox x:Name="emailTextBox" x:FieldModifier="private"
-                             Margin="0 20 0 0"
+                             Margin="0 32 0 0"
                              Width="200"
                              mah:TextBoxHelper.Watermark="Email address"
                              Text="{Binding Email, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"
                              behaviors:FocusHelper.IsFocused="{Binding IsEmailFocused}"/>
                     <PasswordBox x:Name="passwordBox" x:FieldModifier="private"
                                  PasswordChar="*"
-                                 Margin="0 8 0 0"
+                                 Margin="0 12 0 0"
                                  Width="200"
                                  mah:TextBoxHelper.Watermark="Password"
                                  behaviours:PasswordBoxBindingBehavior.Password="{Binding Password, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"
                                  behaviors:FocusHelper.IsFocused="{Binding IsPasswordFocused}"/>
 
                     <Label HorizontalAlignment="Left"
-                           Margin="48 12 0 0"
+                           Margin="48 16 0 0"
                            Visibility="{Binding SelectedConfirmAction, Converter={StaticResource ShowOnLogIn}}">
                         <Hyperlink Style="{StaticResource Toggl.NormalHyperlink}"
                                    Click="onForgotPasswordLinkClick">Forgot password?</Hyperlink>
                     </Label>
 
+                    <Grid Margin="0 4 0 12"
+                          Height="24"
+                          Width="200"
+                          Visibility="{Binding SelectedConfirmAction, Converter={StaticResource ShowOnLogIn}}">
+                        <Border Background="{StaticResource Toggl.ValidationErrorBackground}"
+                                Visibility="{Binding ShowLoginError, Converter={StaticResource FalseToHiddenVisibilityConverter}}">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="3"
+                                                  ShadowDepth="2"
+                                                  Direction="270"
+                                                  Opacity="0.2" />
+                            </Border.Effect>
+                        </Border>
+                        <TextBlock Style="{StaticResource Toggl.CaptionWhiteText}"
+                                   Text="Incorrect email or password"
+                                   Padding="8 3 5 8"
+                                   Visibility="{Binding ShowLoginError, Converter={StaticResource FalseToHiddenVisibilityConverter}}"/>
+                    </Grid>
+
                     <ComboBox Name="countryComboBox"
-                              Margin="0 8 0 0"
+                              Margin="0 12 0 0"
                               Width="200"
                               Height="32"
                               ItemsSource="{Binding Countries}"
@@ -110,12 +129,14 @@
                               TextSearch.TextPath="Name"
                               mah:TextBoxHelper.Watermark="Select country"
                               behaviors:FocusHelper.IsFocused="{Binding IsCountrySelectionFocused}"/>
-                    <CheckBox Name="tosCheckBox" Margin="50 8 0 0"
+                    <CheckBox Name="tosCheckBox"
+                              Margin="50 16 0 36"
                               HorizontalAlignment="Left"
+                              Width="200"
                               Visibility="{Binding SelectedConfirmAction, Converter={StaticResource ShowOnSignUp}}"
                               IsChecked="{Binding IsTosChecked, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"
                               behaviors:FocusHelper.IsFocused="{Binding IsTosCheckboxFocused}">
-                        <WrapPanel Margin="8 0 0 0" HorizontalAlignment="Left">
+                        <WrapPanel Margin="0 0 0 -12" HorizontalAlignment="Left">
                             <TextBlock Style="{DynamicResource Toggl.CaptionText}">
                                 I agree to
                                 <Hyperlink
@@ -135,7 +156,7 @@
                         </WrapPanel>
                     </CheckBox>
 
-                    <Grid Margin="0 20 0 0">
+                    <Grid>
                         <Border Height="32" Width="200"
                                 Background="{DynamicResource Toggl.SecondaryAccentBrush}"
                                 Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}">
@@ -157,7 +178,7 @@
                                 Visibility="{Binding IsViewEnabled, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                     </Grid>
 
-                    <Button Margin="0 10 0 0"
+                    <Button Margin="0 8 0 0"
                             Width="200"
                             Command="{Binding ConfirmGoogleLoginSignupCommand}"
                             Style="{StaticResource Toggl.OutlinedButton}">
