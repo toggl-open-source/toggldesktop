@@ -209,6 +209,10 @@
 		BA4A7D5623755A4200A42095 /* TimeEntryScrubberItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA00E9EF234C73990011A703 /* TimeEntryScrubberItem.swift */; };
 		BA4AEB9C22C217A4001A898D /* ResizablePopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4AEB9B22C217A4001A898D /* ResizablePopover.swift */; };
 		BA50ED8522705F9E008323FA /* CalendarFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA50ED8422705F9E008323FA /* CalendarFlowLayout.swift */; };
+		BA5A11FB23C883C400F3F482 /* EscButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5A11FA23C883C400F3F482 /* EscButton.swift */; };
+		BA5A11FC23C883C400F3F482 /* EscButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5A11FA23C883C400F3F482 /* EscButton.swift */; };
+		BA5A11FE23C884DD00F3F482 /* KeySender.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5A11FD23C884DD00F3F482 /* KeySender.swift */; };
+		BA5A11FF23C884DD00F3F482 /* KeySender.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5A11FD23C884DD00F3F482 /* KeySender.swift */; };
 		BA5AC61623264651007E6C91 /* TimelineCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5AC61523264651007E6C91 /* TimelineCollectionView.swift */; };
 		BA5B0E4E2330E1C6008D1DED /* GoogleAuthenticationServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5B0E4D2330E1C6008D1DED /* GoogleAuthenticationServer.swift */; };
 		BA5B0E502330EA92008D1DED /* GoogleAuthenticationServer+Objc.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5B0E4F2330EA92008D1DED /* GoogleAuthenticationServer+Objc.swift */; };
@@ -932,6 +936,8 @@
 		BA4A7D502375527B00A42095 /* TouchBar+PrivateAPIs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "TouchBar+PrivateAPIs.h"; path = "test2/TouchBar+PrivateAPIs.h"; sourceTree = SOURCE_ROOT; };
 		BA4AEB9B22C217A4001A898D /* ResizablePopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResizablePopover.swift; sourceTree = "<group>"; };
 		BA50ED8422705F9E008323FA /* CalendarFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarFlowLayout.swift; sourceTree = "<group>"; };
+		BA5A11FA23C883C400F3F482 /* EscButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EscButton.swift; sourceTree = "<group>"; };
+		BA5A11FD23C884DD00F3F482 /* KeySender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeySender.swift; sourceTree = "<group>"; };
 		BA5AC61523264651007E6C91 /* TimelineCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineCollectionView.swift; sourceTree = "<group>"; };
 		BA5B0E4D2330E1C6008D1DED /* GoogleAuthenticationServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleAuthenticationServer.swift; sourceTree = "<group>"; };
 		BA5B0E4F2330EA92008D1DED /* GoogleAuthenticationServer+Objc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GoogleAuthenticationServer+Objc.swift"; sourceTree = "<group>"; };
@@ -1861,6 +1867,8 @@
 				BA00E9F2234C7BB80011A703 /* TimeEntryScrubberFlowLayout.swift */,
 				BA32134B236C1E1400D33367 /* IdleNotificationTouchBar.swift */,
 				BA133ABF23740EA6003A6A3A /* LoginSignupTouchBar.swift */,
+				BA5A11FA23C883C400F3F482 /* EscButton.swift */,
+				BA5A11FD23C884DD00F3F482 /* KeySender.swift */,
 			);
 			path = TouchBar;
 			sourceTree = "<group>";
@@ -2442,6 +2450,7 @@
 				BA13D2172269DE3400EB3833 /* NoVibrantPopoverView.swift in Sources */,
 				3C6B2488203E01D90063FC08 /* AutoCompleteTable.m in Sources */,
 				BA47920022F0479200E24F79 /* NoInteractionView.swift in Sources */,
+				BA5A11FB23C883C400F3F482 /* EscButton.swift in Sources */,
 				BA412C1D224E0D61003CA17A /* ClientDataSource.swift in Sources */,
 				BA6EB8402248CBE3003BB8EF /* ProjectStorage.swift in Sources */,
 				BAAF567E2223CAC5003D0D73 /* NSButton+TextColor.swift in Sources */,
@@ -2474,6 +2483,7 @@
 				BAB0027F22731248005ECC93 /* DayLabel.swift in Sources */,
 				3C7B4EB3190FB57A00627DC3 /* NSSecureTextFieldVerticallyAligned.m in Sources */,
 				BA75FF3122BCC57700D3F08C /* TimelineTimeEntry.swift in Sources */,
+				BA5A11FE23C884DD00F3F482 /* KeySender.swift in Sources */,
 				BA0E38122225260B00D0121B /* TimeEntryCell+Ext.swift in Sources */,
 				746947FA1AF3FE3E0024BED7 /* AutotrackerRuleItem.m in Sources */,
 				3C6B2487203E01D90063FC08 /* AutoCompleteInput.m in Sources */,
@@ -2679,6 +2689,7 @@
 				BAE64D832368334000244D2B /* NSSecureTextFieldVerticallyAligned.m in Sources */,
 				BA22EA0D239E24EE003551B1 /* TimelineEventView.m in Sources */,
 				BAE64D842368334000244D2B /* TimeEntryCell+Ext.swift in Sources */,
+				BA5A11FF23C884DD00F3F482 /* KeySender.swift in Sources */,
 				BAE64D852368334000244D2B /* (null) in Sources */,
 				BAE64D862368334000244D2B /* AutotrackerRuleItem.m in Sources */,
 				BAE64D872368334000244D2B /* AutoCompleteInput.m in Sources */,
@@ -2736,6 +2747,7 @@
 				BAE64DB92368334000244D2B /* ViewItem.m in Sources */,
 				BAE64DBA2368334000244D2B /* CalendarCollectionView.swift in Sources */,
 				BAE64DBB2368334000244D2B /* NSResize.m in Sources */,
+				BA5A11FC23C883C400F3F482 /* EscButton.swift in Sources */,
 				BAE64DBC2368334000244D2B /* NSView+LayoutConstraint.swift in Sources */,
 				BAE64DBD2368334000244D2B /* ProjectDataSource.swift in Sources */,
 				BAE64DBE2368334000244D2B /* AutoCompleteRowView.swift in Sources */,
