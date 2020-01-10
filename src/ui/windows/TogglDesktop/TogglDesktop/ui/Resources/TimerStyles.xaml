@@ -47,30 +47,6 @@
                 <Setter Property="Foreground" Value="White"/>
                 <Setter Property="CaretBrush" Value="#dddddd"></Setter>
             </Style>
-
-            <Style TargetType="ToggleButton" BasedOn="{StaticResource TimerButtonBase}">
-                <Setter Property="Background" Value="#4dd965"/>
-                <Setter Property="FontSize" Value="24" />
-                <Setter Property="Foreground" Value="White"/>
-                <Setter Property="FontWeight" Value="UltraLight"/>
-                <Setter Property="Content" Value="Start"/>
-                <Style.Triggers>
-                    <Trigger Property="IsMouseOver" Value="True">
-                        <Setter Property="Background" Value="#3eb052"/>
-                    </Trigger>
-                    <Trigger Property="IsChecked" Value="True">
-                        <Setter Property="Background" Value="#ff3d32"/>
-                        <Setter Property="Content" Value="Stop"/>
-                    </Trigger>
-                    <MultiTrigger>
-                        <MultiTrigger.Conditions>
-                            <Condition Property="IsChecked" Value="True"/>
-                            <Condition Property="IsMouseOver" Value="True"/>
-                        </MultiTrigger.Conditions>
-                        <Setter Property="Background" Value="#cf1115"/>
-                    </MultiTrigger>
-                </Style.Triggers>
-            </Style>
         </Style.Resources>
     </Style>
 
