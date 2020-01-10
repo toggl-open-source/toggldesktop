@@ -7,6 +7,47 @@
              mc:Ignorable="d" 
              d:DesignWidth="500" MinWidth="300" Focusable="True"
              Style="{StaticResource Timer}">
+    <UserControl.Resources>
+        <Style x:Key="Toggl.StartStopButton" TargetType="{x:Type ToggleButton}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+                        <Grid>
+                            <Canvas Name="StartButton"
+                                    Width="36"
+                                    Height="36">
+                                <Path Fill="{DynamicResource Toggl.AccentBrush}" Data="M 18 0 C 27.941406 0 36 8.058594 36 18 C 36 27.941406 27.941406 36 18 36 C 8.058594 36 0 27.941406 0 18 C 0 8.058594 8.058594 0 18 0 Z M 18 0 "/>
+                                <Path Fill="White" Data="M 13 12.394531 C 13 11.074219 13.941406 10.539062 15.082031 11.1875 L 24.917969 16.808594 C 26.070312 17.46875 26.058594 18.535156 24.917969 19.1875 L 15.082031 24.8125 C 13.933594 25.46875 13 24.925781 13 23.605469 Z M 13 12.394531 "/>
+                            </Canvas>
+                            <Canvas Name="StopButton"
+                                    Width="36"
+                                    Height="36"
+                                    Visibility="Collapsed">
+                                <Path Fill="{DynamicResource Toggl.ValidationErrorBackground}" Data="M0 18c0 9.943 8.059 18 18 18 9.942 0 18-8.057 18-18S27.942 0 18 0C8.06 0 0 8.057 0 18z"/>
+                                <Path Fill="White" Data="M24 22.504C24 23.33 23.32 24 22.504 24h-9.008C12.67 24 12 23.32 12 22.504v-9.008c0-.826.68-1.496 1.496-1.496h9.008c.826 0 1.496.68 1.496 1.496v9.008z"/>
+                            </Canvas>
+                            <Ellipse Name="OverlayEllipse"
+                                     Width="36"
+                                     Height="36"
+                                     Fill="Transparent" />
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="StopButton" Property="Visibility" Value="Visible" />
+                                <Setter TargetName="StartButton" Property="Visibility" Value="Collapsed" />
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="OverlayEllipse" Property="Fill" Value="#0D000000" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="OverlayEllipse" Property="Fill" Value="#19000000" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
     <Grid>
         <Grid Name="manualPanel" x:FieldModifier="private" Visibility="Collapsed">
             <Button Name="manualAddButton" x:FieldModifier="private"
@@ -147,7 +188,10 @@
                 FontSize="24" HorizontalContentAlignment="Right" FontWeight="Light"/>
 
             <!-- start/stop button -->
-            <ToggleButton Grid.Column="4" Name="startStopButton" x:FieldModifier="private" Click="startStopButtonOnClick"/>
+            <ToggleButton Grid.Column="4" Name="startStopButton" x:FieldModifier="private"
+                          Style="{StaticResource Toggl.StartStopButton}"
+                          Margin="12 16"
+                          Click="startStopButtonOnClick"/>
         </Grid>
     </Grid>
 </UserControl>
