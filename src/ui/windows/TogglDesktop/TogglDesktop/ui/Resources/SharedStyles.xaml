@@ -17,7 +17,7 @@
 
     <FontFamily x:Key="DefaultFont">/TogglDesktop;component/Resources/Fonts/#Roboto, Segoe UI</FontFamily>
 
-    <sys:Double x:Key="TimerHeight">50</sys:Double>
+    <sys:Double x:Key="TimerHeight">68</sys:Double>
 
     <sys:Double x:Key="EditViewMarginH">12</sys:Double>
     <sys:Double x:Key="EditViewMarginV">40</sys:Double>
