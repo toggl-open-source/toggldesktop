@@ -71,13 +71,13 @@
                 <ColumnDefinition Width="20"/>
                 <ColumnDefinition />
                 <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="120"/>
-                <ColumnDefinition Width="84"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
             <!-- description and project-->
             <Grid Grid.Column="1"
-            Margin="-20, 4, 0, 4">
+                Margin="-20, 4, 0, 4">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="20"/>
                     <ColumnDefinition />
@@ -160,37 +160,18 @@
 
             <!-- time placeholder/display -->
             <Grid Grid.Column="3" VerticalAlignment="Center"
-                  Name="timeDisplayGrid" x:FieldModifier="private">
-                <Grid.Style>
-                    <Style TargetType="Grid">
-                        <Setter Property="Visibility" Value="Collapsed"/>
-                        <Style.Triggers>
-                            <MultiDataTrigger>
-                                <MultiDataTrigger.Conditions>
-                                    <Condition Binding="{Binding ElementName=durationTextBox, Path=Text}" Value=""/>
-                                    <Condition Binding="{Binding ElementName=durationTextBox, Path=IsKeyboardFocused}" Value="False"/>
-                                </MultiDataTrigger.Conditions>
-                                <Setter Property="Visibility" Value="Visible"/>
-                            </MultiDataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Grid.Style>
-                
+                  Name="timeDisplayGrid" x:FieldModifier="private"
+                  Visibility="Collapsed">
                 <TextBlock Name="durationLabelRight" x:FieldModifier="private"
-                    FontSize="24" HorizontalAlignment="Right" FontWeight="Light"
-                    Margin="0, 0, 12, 0"
-                    MouseLeftButtonDown="onTimeLabelMouseDown" Text="00:00:00" />
-
+                           Style="{DynamicResource Toggl.BaseText}"
+                           Margin="8"
+                           MouseLeftButtonDown="onTimeLabelMouseDown" Text="00:00:00" />
             </Grid>
-
-            <!-- time textbox -->
-            <toggl:ExtendedTextBox Grid.Column="3" x:Name="durationTextBox" x:FieldModifier="private"
-                FontSize="24" HorizontalContentAlignment="Right" FontWeight="Light"/>
 
             <!-- start/stop button -->
             <ToggleButton Grid.Column="4" Name="startStopButton" x:FieldModifier="private"
                           Style="{StaticResource Toggl.StartStopButton}"
-                          Margin="12 16"
+                          Margin="0 16 12 16"
                           Click="startStopButtonOnClick"/>
         </Grid>
     </Grid>
