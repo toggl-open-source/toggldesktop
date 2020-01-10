@@ -276,7 +276,6 @@ namespace TogglDesktop
         {
             using (Performance.Measure("starting time entry from timer"))
             {
-                var durationText = this.durationTextBox.Text;
                 var billable = (this.billabeIcon.Visibility == Visibility.Visible);
                 var tagsString = (this.tagsIcon.Tag != null) ? this.tagsIcon.Tag.ToString() : "";
 
@@ -289,11 +288,6 @@ namespace TogglDesktop
                     tagsString,
                     this.PreventOnApp
                     );
-
-                if (!string.IsNullOrEmpty(guid))
-                {
-                    Toggl.SetTimeEntryDuration(guid, durationText);
-                }
 
                 if (billable)
                 {
@@ -369,9 +363,8 @@ namespace TogglDesktop
             this.isRunning = running;
             this.startStopButton.IsChecked = running;
             this.descriptionTextBox.SetText("");
-            this.durationTextBox.SetText("");
             this.descriptionTextBox.ShowOnlyIf(!running);
-            this.durationTextBox.ShowOnlyIf(!running);
+            this.timeDisplayGrid.ShowOnlyIf(running);
             this.iconPanel.ShowOnlyIf(running);
             this.projectGridRow.Height = new GridLength(0);
             this.completedProject = new ProjectInfo();
