@@ -20,6 +20,9 @@
         <Setter Property="FontWeight" Value="SemiBold" />
         <Setter Property="FontSize" Value="14" />
     </Style>
+    <Style TargetType="TextBlock" x:Key="Toggl.BaseWhiteText" BasedOn="{StaticResource Toggl.BaseText}">
+        <Setter Property="Foreground" Value="White" />
+    </Style>
     <Style TargetType="TextBlock" x:Key="Toggl.BodyText" BasedOn="{StaticResource Toggl.Text}">
         <Setter Property="FontSize" Value="14" />
     </Style>
