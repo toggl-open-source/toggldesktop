@@ -160,8 +160,7 @@
 
         <toggl:LoginView x:Name="loginView" x:FieldModifier="private"/>
 
-        <toggl:ErrorBar x:Name="errorBar" x:FieldModifier="private"
-            VerticalAlignment="Top"/>
+        <toggl:ErrorBar x:Name="errorBar" x:FieldModifier="private" />
 
         <toggl:StatusBar x:Name="statusBar" x:FieldModifier="private"
                          VerticalAlignment="Bottom"/>
