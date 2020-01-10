@@ -222,7 +222,7 @@ namespace TogglDesktop
 
             if (this.manualPanel.IsVisible)
             {
-                this.manuelAddButton.Focus();
+                this.manualAddButton.Focus();
             }
             else if (this.descriptionTextBox.IsVisible)
             {

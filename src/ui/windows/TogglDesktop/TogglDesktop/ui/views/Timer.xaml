@@ -5,14 +5,24 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:toggl="clr-namespace:TogglDesktop"
              mc:Ignorable="d" 
-             d:DesignWidth="500" MinWidth="256" Focusable="True"
+             d:DesignWidth="500" MinWidth="300" Focusable="True"
              Style="{StaticResource Timer}">
-    
     <Grid>
         <Grid Name="manualPanel" x:FieldModifier="private" Visibility="Collapsed">
-            <Button Name="manuelAddButton" x:FieldModifier="private"
-                Style="{StaticResource TimerManualAddButton}"
-                    Click="onManualAddButtonClick" Content="+ Add time entry"/>
+            <Button Name="manualAddButton" x:FieldModifier="private"
+                    Style="{DynamicResource Toggl.AccentButton}"
+                    Height="36"
+                    Padding="10 7 10 10"
+                    Margin="17 17 16 15"
+                    Click="onManualAddButtonClick">
+                <StackPanel Orientation="Horizontal">
+                    <Canvas Width="24" Height="24" Margin="4 -2 4 4">
+                        <Path Fill="Transparent" Data="M0 0h24v24H0z"/>
+                        <Path Fill="White" Data="M12.5 6v5.5H18v1h-5.5V18h-1v-5.5H6v-1h5.5V6h1z" />
+                    </Canvas>
+                    <TextBlock Text="Add Time Entry" />
+                </StackPanel>
+            </Button>
         </Grid>
         <Grid Name="timerPanel" x:FieldModifier="private"  Visibility="Visible"
     MouseLeftButtonDown="onGridMouseDown" IsHitTestVisible="True" Background="Transparent" KeyDown="onGridKeyDown">

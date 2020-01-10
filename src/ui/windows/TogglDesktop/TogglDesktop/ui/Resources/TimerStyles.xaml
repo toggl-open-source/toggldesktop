@@ -74,23 +74,6 @@
         </Style.Resources>
     </Style>
 
-    <Style TargetType="Button" x:Key="TimerManualAddButton" BasedOn="{StaticResource TimerButtonBase}">
-        <Setter Property="Background" Value="Transparent" />
-        <Setter Property="Foreground" Value="#999999" />
-        <Setter Property="FontSize" Value="16.6" />
-        <Setter Property="Padding" Value="30 10" />
-        <Setter Property="HorizontalAlignment" Value="Center" />
-        <Setter Property="VerticalAlignment" Value="Center" />
-        <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Foreground" Value="White"/>
-            </Trigger>
-            <Trigger Property="IsPressed" Value="True">
-                <Setter Property="Foreground" Value="#BBBBBB"/>
-            </Trigger>
-        </Style.Triggers>
-    </Style>
-
     <Style  TargetType="Button" x:Key="TimerProjectRemoveButton" BasedOn="{StaticResource TimerButtonBase}">
         <Setter Property="Background">
             <Setter.Value>
