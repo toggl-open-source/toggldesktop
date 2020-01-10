@@ -50,7 +50,16 @@ final class TouchBarService: NSObject {
         let touchBar = NSTouchBar()
         touchBar.delegate = self
         touchBar.customizationIdentifier = .mainTouchBar
-        touchBar.defaultItemIdentifiers = [.timeEntryItem, .startStopItem]
+        var items: [NSTouchBarItem.Identifier] = [.timeEntryItem, .startStopItem]
+
+        // Add Esc button since Touch Bar (PrivateAPI) will override the system ESC key
+        // Based on https://github.com/pigigaldi/Pock/blob/master/Pock/TouchBar/PockMainController/PockMainController.swift#L57
+        #if !APP_STORE
+        items.insert(.escButtonItem, at: 0)
+        #endif
+
+        // Set all touch bar buttons
+        touchBar.defaultItemIdentifiers = items
         return touchBar
     }()
 
@@ -226,6 +235,11 @@ extension TouchBarService: NSTouchBarDelegate {
             let item = NSCustomTouchBarItem(identifier: identifier)
             item.visibilityPriority = .high
             item.view = startButton
+            return item
+        case .escButtonItem:
+            let item = NSCustomTouchBarItem(identifier: identifier)
+            item.visibilityPriority = .high
+            item.view = EscButton()
             return item
         default:
             return nil

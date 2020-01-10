@@ -18,6 +18,7 @@ extension NSTouchBar.CustomizationIdentifier {
 @available(OSX 10.12.2, *)
 extension NSTouchBarItem.Identifier {
 
+    static let escButtonItem = NSTouchBarItem.Identifier("com.toggl.toggldesktop.timeentrytouchbar.escButtonItem")
     static let timeEntryItem = NSTouchBarItem.Identifier("com.toggl.toggldesktop.timeentrytouchbar.timeentryitems")
     static let runningTimeEntry = NSTouchBarItem.Identifier("com.toggl.toggldesktop.timeentrytouchbar.runningtimeentry")
     static let startStopItem = NSTouchBarItem.Identifier("com.toggl.toggldesktop.timeentrytouchbar.startstopbutton")

@@ -12,8 +12,8 @@ final class EscButton: NSButton {
 
     private let key = ESCKeySender()
 
-    override init(frame frameRect: NSRect) {
-        super.init(frame: frameRect)
+    init() {
+        super.init(frame: .zero)
         initCommon()
     }
 
@@ -33,7 +33,10 @@ final class EscButton: NSButton {
     }
 
     private func initCommon() {
+        title = "esc"
         target = self
         action = #selector(self.tap)
+        self.bezelStyle = .rounded
+        setButtonType(.momentaryLight)
     }
 }
