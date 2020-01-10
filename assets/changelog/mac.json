@@ -5,6 +5,13 @@
             "rows": [
                 "Introduce Brand-new Timeline feature"
             ],
+            "date": "January 10th 2020"
+        },
+        {
+            "version": "7.5.3",
+            "rows": [
+                "Introduce Brand-new Timeline feature"
+            ],
             "date": "January 8th 2020",
             "beta": "true"
         },
