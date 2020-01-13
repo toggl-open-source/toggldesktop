@@ -74,7 +74,7 @@ final class TimelineDashboardViewController: NSViewController {
     private lazy var editorPopover: EditorPopover = {
         let popover = EditorPopover()
         popover.animates = false
-        popover.behavior = .transient
+        popover.behavior = .semitransient
         popover.prepareViewController()
         popover.delegate = self
         return popover
@@ -150,7 +150,7 @@ final class TimelineDashboardViewController: NSViewController {
         let shouldScroll = datePickerView.currentDate != date
         datePickerView.currentDate = date
         datasource.render(timeline)
-        updatePositionOfEditorIfNeed()
+
         handleEmptyState(timeline)
 
         if shouldScroll {
@@ -158,7 +158,8 @@ final class TimelineDashboardViewController: NSViewController {
         }
 
         // After the reload finishes, we hightlight a cell again
-        highlightCells()
+//        highlightCells()
+        updatePositionOfEditorIfNeed()
     }
     
     @IBAction func recordSwitchOnChanged(_ sender: Any) {
@@ -363,9 +364,16 @@ extension TimelineDashboardViewController: TimelineDatasourceDelegate {
         closeAllPopovers()
         cell.isHighlight = true
         selectedGUID = timeEntry.guid
-        editorPopover.show(relativeTo: view.bounds, of: view, preferredEdge: .maxX)
         editorPopover.setTimeEntry(timeEntry)
         DesktopLibraryBridge.shared().startEditor(atGUID: timeEntry.guid)
+
+        for item in collectionView.visibleItems() {
+            if let itemCell = item as? TimelineTimeEntryCell,
+                itemCell.timeEntry.timeEntry.guid == selectedGUID {
+                editorPopover.show(relativeTo: itemCell.popoverView.bounds, of: itemCell.popoverView, preferredEdge: .maxX)
+                return
+            }
+        }
     }
 
     func startNewTimeEntry(at started: TimeInterval, ended: TimeInterval) {
@@ -399,27 +407,14 @@ extension TimelineDashboardViewController: TimelineDatasourceDelegate {
         guard editorPopover.isShown,
             let selectedGUID = selectedGUID else { return }
 
-        // Search the last index for GUID
-        // Since everytime we change the Time entry data
-        // New Entry will come from Library
-        let index = datasource.timeline?.timeEntries.firstIndex(where: { (entry) -> Bool in
-            if let timeEntry = entry as? TimelineTimeEntry {
-                return timeEntry.timeEntry.guid == selectedGUID
+        for item in collectionView.visibleItems() {
+            if let itemCell = item as? TimelineTimeEntryCell,
+                itemCell.timeEntry.timeEntry.guid == selectedGUID {
+                itemCell.isHighlight = true
+                editorPopover.positioningRect = itemCell.popoverView.bounds
+                return
             }
-            return false
-        })
-        guard let item = index else {
-            editorPopover.close()
-            return
         }
-        let indexPath = IndexPath(item: item, section: TimelineData.Section.timeEntry.rawValue)
-        guard let cell = collectionView.item(at: indexPath) as? TimelineTimeEntryCell else {
-            editorPopover.close()
-            return
-        }
-
-        editorPopover.animates = false
-        editorPopover.show(relativeTo: cell.popoverView.bounds, of: cell.popoverView, preferredEdge: .maxX)
     }
 
     func shouldUpdatePanelSize(with activityFrame: CGRect) {
