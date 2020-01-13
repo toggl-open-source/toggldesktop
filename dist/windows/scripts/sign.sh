@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [[ -z "$SIGNTOOL" ]]; then
-    SIGNTOOL="/c/Program Files (x86)/Windows Kits/10/Tools/bin/i386/signtool.exe"
+    SIGNTOOL="/c/Program Files (x86)/Windows Kits/10/Tools/App Certification Kit/signtool.exe"
 fi
 
 PATHS="src/ui/windows/TogglDesktop/TogglDesktop/bin/Release
