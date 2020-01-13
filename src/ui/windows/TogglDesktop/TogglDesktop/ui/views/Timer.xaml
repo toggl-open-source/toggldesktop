@@ -14,6 +14,7 @@
             </ResourceDictionary.MergedDictionaries>
             <Style TargetType="{x:Type toggl:ExtendedTextBox}" BasedOn="{StaticResource {x:Type TextBox}}" />
             <Style x:Key="Toggl.StartStopButton" TargetType="{x:Type ToggleButton}">
+                <Setter Property="Cursor" Value="Hand" />
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="{x:Type ToggleButton}">
