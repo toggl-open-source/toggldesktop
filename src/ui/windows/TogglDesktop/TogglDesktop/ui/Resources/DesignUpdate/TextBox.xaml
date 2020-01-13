@@ -26,6 +26,7 @@
         <Setter Property="Padding" Value="5 3" />
         <Setter Property="Height" Value="32" />
         <Setter Property="behaviors:TextBoxHelper.IsPaddingClickable" Value="True" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
         <Style.Triggers>
             <Trigger Property="IsEnabled" Value="False">
                 <Setter Property="Foreground" Value="{DynamicResource Toggl.DisabledTextBrush}" />
