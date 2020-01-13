@@ -40,6 +40,9 @@
     <Style TargetType="TextBlock" x:Key="Toggl.CaptionWhiteText" BasedOn="{StaticResource Toggl.CaptionBlackText}">
         <Setter Property="Foreground" Value="White" />
     </Style>
+    <Style TargetType="TextBlock" x:Key="Toggl.CaptionGrayishText" BasedOn="{StaticResource Toggl.CaptionBlackText}">
+        <Setter Property="Foreground" Value="{DynamicResource Toggl.DisabledTextBrush}" />
+    </Style>
     <Style TargetType="TextBlock" x:Key="Toggl.CaptionText" BasedOn="{StaticResource Toggl.Text}">
         <Setter Property="FontSize" Value="12" />
         <Setter Property="Foreground" Value="{DynamicResource Toggl.SecondaryTextBrush}" />
