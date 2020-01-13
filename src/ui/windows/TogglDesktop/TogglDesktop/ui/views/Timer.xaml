@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:toggl="clr-namespace:TogglDesktop"
+             xmlns:converters="clr-namespace:TogglDesktop.Converters"
              mc:Ignorable="d" 
              d:DesignWidth="500" MinWidth="300" Focusable="True"
              Style="{StaticResource Timer}">
@@ -71,7 +72,7 @@
                     Margin="17 17 16 15"
                     Click="onManualAddButtonClick">
                 <StackPanel Orientation="Horizontal">
-                    <Canvas Width="24" Height="24" Margin="4 -2 4 4">
+                    <Canvas Width="24" Height="24" Margin="4 -3 4 0">
                         <Path Fill="White" Data="M12.5 6v5.5H18v1h-5.5V18h-1v-5.5H6v-1h5.5V6h1z" />
                     </Canvas>
                     <TextBlock Text="Add Time Entry" />
@@ -79,113 +80,123 @@
             </Button>
         </Grid>
         <Grid Name="timerPanel" x:FieldModifier="private"  Visibility="Visible"
-    MouseLeftButtonDown="onGridMouseDown" IsHitTestVisible="True" Background="Transparent" KeyDown="onGridKeyDown">
+              Margin="0 16 0 14"
+    MouseLeftButtonDown="onGridMouseDown" IsHitTestVisible="True" KeyDown="onGridKeyDown">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="20"/>
                 <ColumnDefinition />
-                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
             <!-- description and project-->
-            <Grid Grid.Column="1"
-                Margin="-20, 4, 0, 4">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="20"/>
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
+            <Grid Grid.ColumnSpan="2"
+                  Margin="16 0 0 0">
                 <Grid.RowDefinitions>
                     <RowDefinition/>
-                    <RowDefinition Name="projectGridRow" x:FieldModifier="private"/>
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
-                <Button Name="cancelProjectSelectionButton" x:FieldModifier="private"
-                        Style="{StaticResource TimerProjectRemoveButton}"
-                        Grid.Row="1" Grid.Column="0"
-                        Width="16" Height="16" Padding="2"
-                        IsTabStop="False" Click="cancelProjectSelectionButtonClick"/>
+                <TextBlock Grid.Row="0" Name="descriptionLabel" x:FieldModifier="private"
+                           Margin="0 0 0 2"
+                           MouseLeftButtonDown="onDescriptionLabelMouseDown"
+                           Style="{DynamicResource Toggl.BaseText}" />
+                <TextBlock Grid.Row="0" Name="noDescriptionLabel" x:FieldModifier="private"
+                           Style="{DynamicResource Toggl.CaptionGrayishText}"
+                           Text="+ Add description"
+                           Margin="0 0 0 2"
+                           VerticalAlignment="Center"
+                           MouseLeftButtonDown="onDescriptionLabelMouseDown"/>
 
-                <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" MouseLeftButtonDown="onProjectLabelMouseDown">
+                <toggl:ProjectLabel Grid.Row="1" x:Name="projectLabel" x:FieldModifier="private"
+                                    Margin="0 2 0 0"
+                                    ShowAddProjectCaption="True"
+                                    MouseLeftButtonDown="onProjectLabelMouseDown" />
 
-                    <TextBlock Name="projectLabel" x:FieldModifier="private"
-                               Text="Project"/>
-                    <TextBlock Foreground="#dddddd"
-                               Visibility="{Binding ElementName=clientLabel, Path=Visibility}"
-                               Text="·" />
-                    <TextBlock Name="clientLabel" x:FieldModifier="private"
-                            Foreground="#dddddd" Text="Client"/>
-                    
+                <Grid Grid.Row="0" Grid.RowSpan="2" Name="editModeGrid" x:FieldModifier="private"
+                      Margin="0 -16 0 -14">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <toggl:ExtendedTextBox x:Name="descriptionTextBox" x:FieldModifier="private"
+                                           Grid.Row="0"
+                                           Padding="5 1"
+                                           Margin="0 6"
+                                           Height="Auto"
+                                           MinHeight="28"
+                                           MaxHeight="32"
+                                           Style="{StaticResource Toggl.Timer.DescriptionTextBox}"
+                                           TextChanged="onDescriptionTextBoxTextChanged"/>
+                    <toggl:AutoCompletionPopup x:Name="descriptionAutoComplete" x:FieldModifier="private"
+                                               Grid.Row="0"
+                                               TextBox="{Binding ElementName=descriptionTextBox}"
+                                               Target="{Binding ElementName=editModeGrid}"
+                                               EmptyText="No previous entries found." StaysOpen="False"
+                                               ConfirmCompletion="descriptionAutoComplete_OnConfirmCompletion"/>
+                    <Grid Grid.Row="1" x:Name="editProjectPanel" x:FieldModifier="private"
+                               Margin="0 -2 0 6"
+                               Background="{DynamicResource Toggl.SelectionElements.Disabled.Background}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="8"/>
+                            <ColumnDefinition Width="24"/>
+                        </Grid.ColumnDefinitions>
+                        <toggl:ProjectLabel x:Name="editModeProjectLabel" x:FieldModifier="private"
+                                            Grid.ColumnSpan="2"
+                                            Margin="8 0 0 0"/>
+                        <Grid Grid.Column="1" ColumnSpan="2">
+                            <Grid.Background>
+                                <LinearGradientBrush StartPoint="0 0.5" EndPoint="1 0.5">
+                                    <GradientStop Offset="0" Color="{DynamicResource Toggl.TransparentBlackColor}" />
+                                    <GradientStop Offset="0.16" Color="{DynamicResource Toggl.FivePercentBlackColor}" />
+                                </LinearGradientBrush>
+                            </Grid.Background>
+                            <Button Style="{DynamicResource Toggl.CrossButton}"
+                                    Width="24" Height="24"
+                                    HorizontalAlignment="Right"
+                                    IsTabStop="False" Click="cancelProjectSelectionButtonClick"/>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Grid>
+
+            <StackPanel x:Name="runningEntryInfoPanel" x:FieldModifier="private"
+                        Grid.Column="1" Orientation="Horizontal">
+                <StackPanel.Background>
+                    <LinearGradientBrush MappingMode="Absolute" StartPoint="0 10" EndPoint="20 10">
+                        <GradientStop Offset="0" Color="{DynamicResource Toggl.TransparentWhiteColor}" />
+                        <GradientStop Offset="0.5" Color="{DynamicResource Toggl.WhiteColor.70PercentOpacity}" />
+                        <GradientStop Offset="0.7" Color="{DynamicResource Toggl.WhiteColor}" />
+                    </LinearGradientBrush>
+                </StackPanel.Background>
+                <Separator Visibility="Hidden" Width="14" />
+                <!-- billable, tags -->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 0 3 0">
+                    <Canvas Name="tagsIcon" Height="24" Width="24">
+                        <Path Fill="{DynamicResource Toggl.DisabledTextBrush}"
+                              Data="M10.796 7c.947 0 2.256.543 2.926 1.213l4.773 4.774c.672.672.671 1.755.003 2.423l-3.09 3.092c-.661.66-1.753.666-2.423-.004l-4.772-4.774C7.54 13.052 7 11.744 7 10.798V8.714C7 7.766 7.767 7 8.713 7zM9.755 8.378a1.378 1.378 0 1 0 0 2.755 1.378 1.378 0 0 0 0-2.755z"/>
+                    </Canvas>
+                    <Canvas Name="billableIcon" Height="24" Width="24">
+                        <Path Fill="{DynamicResource Toggl.DisabledTextBrush}"
+                              Data="M12.042 4.5c.487 0 .882.316.882.706v2.017c1.513.27 2.647 1.242 2.647 2.697a.7.7 0 0 1-.706.693.7.7 0 0 1-.706-.693c0-.815-.873-1.386-2.117-1.386-1.245 0-2.118.571-2.118 1.386 0 .686.488.965 2.289 1.407 2.434.598 3.358 1.127 3.358 2.753 0 1.455-1.134 2.427-2.647 2.697v2.017c0 .39-.395.706-.882.706-.488 0-.883-.316-.883-.706v-2.017c-1.513-.27-2.647-1.242-2.647-2.697a.7.7 0 0 1 .706-.693.7.7 0 0 1 .706.693c0 .815.873 1.386 2.118 1.386 1.244 0 2.117-.571 2.117-1.386 0-.686-.488-.965-2.289-1.407-2.434-.598-3.358-1.127-3.358-2.753 0-1.455 1.134-2.427 2.647-2.697V5.206c0-.39.395-.706.883-.706z"/>
+                    </Canvas>
                 </StackPanel>
 
-                <Grid Grid.Row="0" Grid.Column="1" MouseLeftButtonDown="onDescriptionLabelMouseDown"
-                      Name="taskDescriptionGrid" x:FieldModifier="private">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
-
-                    <TextBlock Grid.Column="0" Name="taskLabel" x:FieldModifier="private"
-                            Foreground="#bbbbbb" Text="Task -" />
-
-                    <!-- description placeholder/display -->
-                    <TextBlock Grid.Column="1" Name="descriptionLabel" x:FieldModifier="private"
-                               Text="What are you doing?">
-                        <TextBlock.Style>
-                            <Style TargetType="TextBlock" BasedOn="{StaticResource TimerTextBlockBase}">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                                <Style.Triggers>
-                                    <MultiDataTrigger>
-                                        <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding ElementName=descriptionTextBox, Path=Text}" Value=""/>
-                                            <Condition Binding="{Binding ElementName=descriptionTextBox, Path=IsKeyboardFocused}" Value="False"/>
-                                        </MultiDataTrigger.Conditions>
-                                        <Setter Property="Visibility" Value="Visible"/>
-                                    </MultiDataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
-
-                    <toggl:ExtendedTextBox Grid.Column="1"  x:Name="descriptionTextBox" x:FieldModifier="private"
-                                           Style="{StaticResource Toggl.Timer.DescriptionTextBox}"
-                                           TextChanged="onDescriptionTextBoxTextChanged"
-                                Margin="-2, 0, 6, 0"/>
-
+                <Grid x:Name="durationLabelPanel" x:FieldModifier="private"
+                      Width="64">
+                    <TextBlock Name="durationLabel" x:FieldModifier="private"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Style="{DynamicResource Toggl.BaseText}"
+                               MouseLeftButtonDown="onTimeLabelMouseDown" Text="00:00:00" />
                 </Grid>
-
-                <toggl:AutoCompletionPopup Grid.Row="0" Grid.Column="1"  x:Name="descriptionAutoComplete" x:FieldModifier="private"
-                                TextBox="{Binding ElementName=descriptionTextBox}"
-                                Target="{Binding ElementName=taskDescriptionGrid}"
-                                EmptyText="No previous entries found." StaysOpen="False"
-                                ConfirmCompletion="descriptionAutoComplete_OnConfirmCompletion"/>
-            </Grid>
-
-            <!-- billable, tags -->
-            <StackPanel Grid.Column="2" Name="iconPanel" x:FieldModifier="private"
-                    Orientation="Horizontal" HorizontalAlignment="Right">
-
-                <Image Name="tagsIcon" Source="/TogglDesktop;component/Resources/icon-tags.png"
-                    Stretch="UniformToFill" Margin="3, 0, 3, 0" Height="16"/>
-                <Image Name="billabeIcon" Source="/TogglDesktop;component/Resources/icon-billable.png"
-                    Stretch="UniformToFill" Margin="3, 0, 3, 0" Height="20"/>
-
             </StackPanel>
 
-            <!-- time placeholder/display -->
-            <Grid Grid.Column="3" VerticalAlignment="Center"
-                  Name="timeDisplayGrid" x:FieldModifier="private"
-                  Visibility="Collapsed">
-                <TextBlock Name="durationLabelRight" x:FieldModifier="private"
-                           Style="{DynamicResource Toggl.BaseText}"
-                           Margin="8"
-                           MouseLeftButtonDown="onTimeLabelMouseDown" Text="00:00:00" />
-            </Grid>
-
             <!-- start/stop button -->
-            <ToggleButton Grid.Column="4" Name="startStopButton" x:FieldModifier="private"
+            <ToggleButton Name="startStopButton" x:FieldModifier="private"
+                          Grid.Column="2"
                           Style="{StaticResource Toggl.StartStopButton}"
-                          Margin="0 16 12 16"
+                          Margin="8 0 12 0"
                           Click="startStopButtonOnClick"/>
         </Grid>
     </Grid>
