@@ -43,7 +43,7 @@
                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="oEw-Jd-lIP">
                             <rect key="frame" x="34" y="56" width="101" height="17"/>
                             <textFieldCell key="cell" lineBreakMode="clipping" title="Record activity" id="x0y-gM-oPn">
-                                <font key="font" metaFont="menu" size="14"/>
+                                <font key="font" metaFont="system" size="14"/>
                                 <color key="textColor" name="timeline-time-label-color"/>
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
