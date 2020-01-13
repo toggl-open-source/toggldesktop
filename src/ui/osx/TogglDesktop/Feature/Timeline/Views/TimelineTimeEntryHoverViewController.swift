@@ -8,7 +8,7 @@
 
 import Cocoa
 
-final class TimelineTimeEntryHoverViewController: NSViewController {
+final class TimelineTimeEntryHoverViewController: LayerBackedViewController {
 
     // MARK: OUTLET
 

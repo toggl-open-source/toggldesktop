@@ -8,7 +8,7 @@
 
 import Cocoa
 
-final class TimelineActivityHoverController: NSViewController {
+final class TimelineActivityHoverController: LayerBackedViewController {
 
     private struct Constants {
         static let LeftRightPadding: CGFloat = 20.0

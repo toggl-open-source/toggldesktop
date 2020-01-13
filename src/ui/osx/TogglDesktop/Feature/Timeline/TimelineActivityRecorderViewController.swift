@@ -13,7 +13,7 @@ protocol TimelineActivityRecorderViewControllerDelegate: class {
     func timelineActivityRecorderShouldDidClickOnCloseBtn(_ sender: Any)
 }
 
-final class TimelineActivityRecorderViewController: NSViewController {
+final class TimelineActivityRecorderViewController: LayerBackedViewController {
 
     private struct Constants {
         static let LearnMoreURL = "https://toggl.com"

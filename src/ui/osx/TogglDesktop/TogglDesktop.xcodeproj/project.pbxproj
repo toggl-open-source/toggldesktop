@@ -290,6 +290,8 @@
 		BAA11AC12251F49E007F31D2 /* WorkspaceStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAA11AC02251F49E007F31D2 /* WorkspaceStorage.swift */; };
 		BAA11AC32251F4D6007F31D2 /* WorkspaceAutoCompleteTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAA11AC22251F4D6007F31D2 /* WorkspaceAutoCompleteTextField.swift */; };
 		BAA11AC52251F502007F31D2 /* WorkspaceDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAA11AC42251F502007F31D2 /* WorkspaceDataSource.swift */; };
+		BAA3107223CC476D008F2893 /* LayerBackedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAA3107123CC476D008F2893 /* LayerBackedViewController.swift */; };
+		BAA3107323CC476D008F2893 /* LayerBackedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAA3107123CC476D008F2893 /* LayerBackedViewController.swift */; };
 		BAAF567E2223CAC5003D0D73 /* NSButton+TextColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAAF567D2223CAC5003D0D73 /* NSButton+TextColor.swift */; };
 		BAAF569E2223D4C7003D0D73 /* DotImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAAF569D2223D4C7003D0D73 /* DotImageView.swift */; };
 		BAAF56A02223DF9A003D0D73 /* VertificalTimeEntryFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAAF569F2223DF9A003D0D73 /* VertificalTimeEntryFlowLayout.swift */; };
@@ -1011,6 +1013,7 @@
 		BAA11AC02251F49E007F31D2 /* WorkspaceStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceStorage.swift; sourceTree = "<group>"; };
 		BAA11AC22251F4D6007F31D2 /* WorkspaceAutoCompleteTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceAutoCompleteTextField.swift; sourceTree = "<group>"; };
 		BAA11AC42251F502007F31D2 /* WorkspaceDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceDataSource.swift; sourceTree = "<group>"; };
+		BAA3107123CC476D008F2893 /* LayerBackedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerBackedViewController.swift; sourceTree = "<group>"; };
 		BAAC931A22EEF92100E2EE1C /* TogglDesktop.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = TogglDesktop.entitlements; path = TogglDesktop/TogglDesktop.entitlements; sourceTree = "<group>"; };
 		BAAF567D2223CAC5003D0D73 /* NSButton+TextColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSButton+TextColor.swift"; sourceTree = "<group>"; };
 		BAAF569D2223D4C7003D0D73 /* DotImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotImageView.swift; sourceTree = "<group>"; };
@@ -1661,6 +1664,7 @@
 				BA49912D22C0BA14008149D9 /* TimelineDateFormatter.swift */,
 				BA5E988B23BF4A6E0089A2C7 /* TimelineActivityRecorderViewController.swift */,
 				BA5E988C23BF4A6E0089A2C7 /* TimelineActivityRecorderViewController.xib */,
+				BAA3107123CC476D008F2893 /* LayerBackedViewController.swift */,
 			);
 			path = Timeline;
 			sourceTree = "<group>";
@@ -2425,6 +2429,7 @@
 				BA01E8A1232F77B3006B93EC /* ClickableImageView.m in Sources */,
 				C5CB7F0417F43EE100A2AEB1 /* TimeEntryCell.m in Sources */,
 				C5DA1FBF17F1B08A001C4565 /* MainWindowController.m in Sources */,
+				BAA3107223CC476D008F2893 /* LayerBackedViewController.swift in Sources */,
 				BAE6379A22B225C70024DD08 /* AddTagButton.swift in Sources */,
 				BA2DA0C621A542E30027B7A5 /* NSTextField+Ext.m in Sources */,
 				747B74871A0AD28200BB3791 /* ConsoleViewController.m in Sources */,
@@ -2779,6 +2784,7 @@
 				BA22EA05239E24EE003551B1 /* TimelineLines.m in Sources */,
 				BA4A7D5423755A4200A42095 /* TouchBarService.swift in Sources */,
 				BAE64DDF2368334000244D2B /* HSBGen.swift in Sources */,
+				BAA3107323CC476D008F2893 /* LayerBackedViewController.swift in Sources */,
 				BAE64DE02368334000244D2B /* GoogleAuthenticationServer.swift in Sources */,
 				BAE64DE12368334000244D2B /* WorkspaceCellView.swift in Sources */,
 				BA22EA01239E24EE003551B1 /* TimelineEventsListItem.m in Sources */,
