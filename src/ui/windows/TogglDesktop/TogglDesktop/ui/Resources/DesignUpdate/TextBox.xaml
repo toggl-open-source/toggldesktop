@@ -4,7 +4,15 @@
                     xmlns:behaviors="clr-namespace:TogglDesktop.Behaviors">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.TextBox.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.TextBlock.xaml" />
     </ResourceDictionary.MergedDictionaries>
+
+    <Style x:Key="MahApps.Metro.Styles.MetroWatermarkTextBlock"
+           BasedOn="{StaticResource MetroTextBlock}"
+           TargetType="{x:Type TextBlock}">
+        <Setter Property="IsHitTestVisible" Value="False" />
+        <Setter Property="Opacity" Value="0.33" />
+    </Style>
 
     <Style TargetType="TextBox" BasedOn="{StaticResource MetroTextBox}">
         <Setter Property="FontFamily" Value="{DynamicResource BaseFont}" />
@@ -22,6 +30,17 @@
             <Trigger Property="IsEnabled" Value="False">
                 <Setter Property="Foreground" Value="{DynamicResource Toggl.DisabledTextBrush}" />
                 <Setter Property="BorderBrush" Value="{DynamicResource Toggl.DisabledElementBrush}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="Toggl.Timer.DescriptionTextBox" TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="Background" Value="{DynamicResource Toggl.Background}" />
+        <Setter Property="mah:TextBoxHelper.Watermark" Value="What are you working on?" />
+        <Style.Triggers>
+            <Trigger Property="IsKeyboardFocused" Value="True">
+                <Setter Property="Background" Value="{DynamicResource Toggl.SelectionElements.Background}" />
             </Trigger>
         </Style.Triggers>
     </Style>
