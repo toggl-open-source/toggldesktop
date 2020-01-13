@@ -158,7 +158,6 @@ final class TimelineDashboardViewController: NSViewController {
         }
 
         // After the reload finishes, we hightlight a cell again
-//        highlightCells()
         updatePositionOfEditorIfNeed()
     }
     
@@ -305,6 +304,17 @@ extension TimelineDashboardViewController {
         let popovers: [NSPopover] = [editorPopover, activityHoverPopover, activityRecorderPopover, timeEntryHoverPopover]
         popovers.forEach { $0.performClose(self) }
     }
+
+    private func getSelectedCell() -> TimelineTimeEntryCell? {
+        guard let selectedGUID = selectedGUID else { return nil }
+        for item in collectionView.visibleItems() {
+            if let itemCell = item as? TimelineTimeEntryCell,
+                itemCell.timeEntry.timeEntry.guid == selectedGUID {
+                return itemCell
+            }
+        }
+        return nil
+    }
 }
 
 // MARK: DatePickerViewDelegate
@@ -362,17 +372,14 @@ extension TimelineDashboardViewController: TimelineDatasourceDelegate {
 
     func shouldPresentTimeEntryEditor(in view: NSView, timeEntry: TimeEntryViewItem, cell: TimelineTimeEntryCell) {
         closeAllPopovers()
-        cell.isHighlight = true
         selectedGUID = timeEntry.guid
         editorPopover.setTimeEntry(timeEntry)
         DesktopLibraryBridge.shared().startEditor(atGUID: timeEntry.guid)
 
-        for item in collectionView.visibleItems() {
-            if let itemCell = item as? TimelineTimeEntryCell,
-                itemCell.timeEntry.timeEntry.guid == selectedGUID {
-                editorPopover.show(relativeTo: itemCell.popoverView.bounds, of: itemCell.popoverView, preferredEdge: .maxX)
-                return
-            }
+        if let cell = getSelectedCell() {
+            cell.isHighlight = true
+            let frame = collectionView.convert(cell.popoverView.bounds, from: cell.popoverView)
+            editorPopover.show(relativeTo: frame, of: collectionView, preferredEdge: .maxX)
         }
     }
 
@@ -405,16 +412,10 @@ extension TimelineDashboardViewController: TimelineDatasourceDelegate {
 
     fileprivate func updatePositionOfEditorIfNeed() {
         guard editorPopover.isShown,
-            let selectedGUID = selectedGUID else { return }
-
-        for item in collectionView.visibleItems() {
-            if let itemCell = item as? TimelineTimeEntryCell,
-                itemCell.timeEntry.timeEntry.guid == selectedGUID {
-                itemCell.isHighlight = true
-                editorPopover.positioningRect = itemCell.popoverView.bounds
-                return
-            }
-        }
+            let cell = getSelectedCell() else { return }
+        cell.isHighlight = true
+        let frame = collectionView.convert(cell.popoverView.bounds, from: cell.popoverView)
+        editorPopover.positioningRect = frame
     }
 
     func shouldUpdatePanelSize(with activityFrame: CGRect) {
