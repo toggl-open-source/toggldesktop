@@ -12,7 +12,6 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="../Resources/DesignUpdate/TextBox.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            <Style TargetType="{x:Type toggl:ExtendedTextBox}" BasedOn="{StaticResource {x:Type TextBox}}" />
             <Style x:Key="Toggl.StartStopButton" TargetType="{x:Type ToggleButton}">
                 <Setter Property="Cursor" Value="Hand" />
                 <Setter Property="Template">
@@ -73,7 +72,6 @@
                     Click="onManualAddButtonClick">
                 <StackPanel Orientation="Horizontal">
                     <Canvas Width="24" Height="24" Margin="4 -2 4 4">
-                        <Path Fill="Transparent" Data="M0 0h24v24H0z"/>
                         <Path Fill="White" Data="M12.5 6v5.5H18v1h-5.5V18h-1v-5.5H6v-1h5.5V6h1z" />
                     </Canvas>
                     <TextBlock Text="Add Time Entry" />
@@ -150,6 +148,7 @@
                     </TextBlock>
 
                     <toggl:ExtendedTextBox Grid.Column="1"  x:Name="descriptionTextBox" x:FieldModifier="private"
+                                           Style="{StaticResource Toggl.Timer.DescriptionTextBox}"
                                            TextChanged="onDescriptionTextBoxTextChanged"
                                 Margin="-2, 0, 6, 0"/>
 
