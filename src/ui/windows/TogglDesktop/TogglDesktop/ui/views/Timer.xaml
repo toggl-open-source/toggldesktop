@@ -43,10 +43,18 @@
                                     <Setter TargetName="StartButton" Property="Visibility" Value="Collapsed" />
                                 </Trigger>
                                 <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter TargetName="OverlayEllipse" Property="Fill" Value="#0D000000" />
+                                    <Setter TargetName="OverlayEllipse" Property="Fill">
+                                        <Setter.Value>
+                                            <SolidColorBrush Color="Black" Opacity="0.1" />
+                                        </Setter.Value>
+                                    </Setter>
                                 </Trigger>
                                 <Trigger Property="IsPressed" Value="True">
-                                    <Setter TargetName="OverlayEllipse" Property="Fill" Value="#19000000" />
+                                    <Setter TargetName="OverlayEllipse" Property="Fill">
+                                        <Setter.Value>
+                                            <SolidColorBrush Color="Black" Opacity="0.2" />
+                                        </Setter.Value>
+                                    </Setter>
                                 </Trigger>
                             </ControlTemplate.Triggers>
                         </ControlTemplate>
