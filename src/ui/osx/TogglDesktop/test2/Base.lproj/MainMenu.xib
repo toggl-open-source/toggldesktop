@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="15702" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14490.70"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15702"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -224,9 +224,9 @@
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="Timeline" id="8ah-bF-5q6">
                         <items>
-                            <menuItem title="Zoom In" tag="3" keyEquivalent="+" id="XUZ-S2-QCm">
+                            <menuItem title="Zoom In" tag="3" keyEquivalent="+" id="7fU-3T-9nR">
                                 <connections>
-                                    <action selector="zoomInBtnOnTap:" target="-1" id="RZ3-A4-bxc"/>
+                                    <action selector="zoomInBtnOnTap:" target="-1" id="UTY-rg-Vkx"/>
                                 </connections>
                             </menuItem>
                             <menuItem title="Zoom Out" tag="3" keyEquivalent="-" id="zgY-fo-tDy">
@@ -240,6 +240,17 @@
                 <menuItem title="Window" id="19">
                     <menu key="submenu" title="Window" systemMenu="window" id="24">
                         <items>
+                            <menuItem title="Show Time Entry Tab" tag="3" keyEquivalent="1" id="KNi-Lb-k3k">
+                                <connections>
+                                    <action selector="showTimeEntryTabBtnOnTap:" target="-1" id="dMt-Zv-OZR"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Show Timeline Tab" tag="3" keyEquivalent="2" id="X5i-M7-Ccl">
+                                <connections>
+                                    <action selector="showTimelineTabBtnOnTap:" target="-1" id="dEZ-hf-7ib"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="8qb-je-u7S"/>
                             <menuItem title="Minimize" keyEquivalent="m" id="23">
                                 <connections>
                                     <action selector="performMiniaturize:" target="-1" id="37"/>
@@ -250,7 +261,7 @@
                                     <action selector="performZoom:" target="-1" id="240"/>
                                 </connections>
                             </menuItem>
-                            <menuItem isSeparatorItem="YES" id="8qb-je-u7S"/>
+                            <menuItem isSeparatorItem="YES" id="dfp-Zh-saR"/>
                             <menuItem title="Close Window" keyEquivalent="w" id="O2e-Kb-cHX">
                                 <connections>
                                     <action selector="onHideMenuItem:" target="494" id="dJX-ZW-bid"/>
@@ -290,6 +301,7 @@
                     </menu>
                 </menuItem>
             </items>
+            <point key="canvasLocation" x="139" y="154"/>
         </menu>
         <customObject id="494" customClass="AppDelegate">
             <connections>
