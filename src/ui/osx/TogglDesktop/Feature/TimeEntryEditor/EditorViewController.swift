@@ -180,6 +180,7 @@ final class EditorViewController: NSViewController {
 
     @IBAction func deleteBtnOnTap(_ sender: Any) {
         DesktopLibraryBridge.shared().deleteTimeEntryImte(timeEntry)
+        delegate?.editorShouldClose()
     }
 
     override func mouseDown(with event: NSEvent) {

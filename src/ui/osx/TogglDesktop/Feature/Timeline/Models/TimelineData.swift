@@ -85,6 +85,15 @@ class TimelineData {
         }
     }
 
+    func indexPathForItem(with guid: String) -> IndexPath? {
+        for (index, item) in timeEntries.enumerated() {
+            if let timeEntry = item as? TimelineTimeEntry, timeEntry.timeEntry.guid == guid {
+                return IndexPath(item: index, section: Section.timeEntry.rawValue)
+            }
+        }
+        return nil
+    }
+
     func render(with zoomLevel: TimelineDatasource.ZoomLevel) {
         self.zoomLevel = zoomLevel
         timeChunks = generateTimelineLabel(for: start, endDate: end, zoomLevel: zoomLevel)

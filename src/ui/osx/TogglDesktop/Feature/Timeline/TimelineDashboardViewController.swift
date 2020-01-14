@@ -304,15 +304,15 @@ extension TimelineDashboardViewController {
         popovers.forEach { $0.performClose(self) }
     }
 
+    private func closeAllPopoverExceptEditor() {
+        let popovers: [NSPopover] = [activityHoverPopover, activityRecorderPopover, timeEntryHoverPopover]
+        popovers.forEach { $0.performClose(self) }
+    }
+
     private func getSelectedCell() -> TimelineTimeEntryCell? {
         guard let selectedGUID = selectedGUID else { return nil }
-        for item in collectionView.visibleItems() {
-            if let itemCell = item as? TimelineTimeEntryCell,
-                itemCell.timeEntry.timeEntry.guid == selectedGUID {
-                return itemCell
-            }
-        }
-        return nil
+        guard let indexPath = datasource.timeline?.indexPathForItem(with: selectedGUID) else { return nil }
+        return collectionView.item(at: indexPath) as? TimelineTimeEntryCell
     }
 }
 
@@ -370,11 +370,24 @@ extension TimelineDashboardViewController: TimelineDatasourceDelegate {
     }
 
     func shouldPresentTimeEntryEditor(in view: NSView, timeEntry: TimeEntryViewItem, cell: TimelineTimeEntryCell) {
-        closeAllPopovers()
+        // Make sure all are closed
+        closeAllPopoverExceptEditor()
+
+        // Close the Editor if we select the same
+        let isSameEntry = timeEntry.guid == selectedGUID
+        if isSameEntry {
+            selectedGUID = nil
+            editorPopover.performClose(self)
+            return
+        }
+
+        // Or present the Popover
         selectedGUID = timeEntry.guid
         editorPopover.setTimeEntry(timeEntry)
         DesktopLibraryBridge.shared().startEditor(atGUID: timeEntry.guid)
 
+        // Find the cell and present to get the correct position
+        // since the toggl_edit causes the Timeline completely reloads -> The cell is reused.
         if let cell = getSelectedCell() {
             cell.isHighlight = true
             let frame = collectionView.convert(cell.popoverView.bounds, from: cell.popoverView)
