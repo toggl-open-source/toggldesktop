@@ -372,7 +372,8 @@ extension TimelineDashboardViewController: TimelineDatasourceDelegate {
     func shouldPresentTimeEntryEditor(in view: NSView, timeEntry: TimeEntryViewItem, cell: TimelineTimeEntryCell) {
         // Make sure all are closed
         closeAllPopoverExceptEditor()
-
+        resetHighlightCells()
+        
         // Close the Editor if we select the same
         let isSameEntry = timeEntry.guid == selectedGUID
         if isSameEntry {
