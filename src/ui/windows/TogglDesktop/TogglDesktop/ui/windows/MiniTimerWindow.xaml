@@ -7,10 +7,7 @@
         xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
         mc:Ignorable="d"
         Width="360"
-        MinWidth="136"
-        MinHeight="44"
         Height="44"
-        MaxHeight="52"
         Topmost="True"
         ShowInTaskbar="False"
         ResizeMode="CanResize"
@@ -25,7 +22,7 @@
         WindowTransitionsEnabled="False"
         SizeToContent="Height"
         WindowStartupLocation="Manual"
-        ResizeBorderThickness="2 0">
+        ResizeBorderThickness="4 0">
     <Grid>
         <toggl:MiniTimer x:Name="timer" x:FieldModifier="private" PreventOnApp="true" />
     </Grid>
