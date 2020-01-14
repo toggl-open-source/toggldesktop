@@ -4,10 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:toggl="clr-namespace:TogglDesktop"
-             xmlns:converters="clr-namespace:TogglDesktop.Converters"
              mc:Ignorable="d" 
-             d:DesignWidth="500" MinWidth="300" Focusable="True"
-             Style="{StaticResource Timer}">
+             d:DesignWidth="500"
+             MinWidth="300"
+             Height="{StaticResource TimerHeight}"
+             Focusable="True">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
