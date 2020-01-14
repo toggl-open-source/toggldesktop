@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows;
-using System.Windows.Threading;
 using TogglDesktop.Diagnostics;
 
 namespace TogglDesktop
@@ -217,9 +216,6 @@ namespace TogglDesktop
         public void Activate(bool allowAnimation)
         {
             this.IsEnabled = true;
-            // this isn't guaranteed to work when running without dispatcher:
-            var focusTimerAction = new Action(() => { this.Timer.Focus(); });
-            this.Dispatcher.BeginInvoke(DispatcherPriority.SystemIdle, focusTimerAction);
         }
 
         public void Deactivate(bool allowAnimation)
