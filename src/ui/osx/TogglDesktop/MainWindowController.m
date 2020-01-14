@@ -354,6 +354,16 @@ extern void *ctx;
     [self.mainDashboardViewController.timelineController zoomLevelDecreaseOnChange:sender];
 }
 
+- (IBAction)showTimeEntryTabBtnOnTap:(id)sender
+{
+    [self.mainDashboardViewController listBtnOnTap:sender];
+}
+
+- (IBAction)showTimelineTabBtnOnTap:(id)sender
+{
+    [self.mainDashboardViewController timelineBtnOnTap:sender];
+}
+
 #pragma mark - In app message
 
 - (void)startDisplayInAppMessage:(NSNotification *)notification
