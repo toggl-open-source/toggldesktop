@@ -6,7 +6,6 @@
              xmlns:toggl="clr-namespace:TogglDesktop"
              mc:Ignorable="d" 
              d:DesignWidth="500"
-             MinWidth="136"
              MinHeight="44"
              MaxHeight="52"
              Focusable="True">
