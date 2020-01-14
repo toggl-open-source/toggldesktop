@@ -74,7 +74,6 @@ final class TimelineDashboardViewController: NSViewController {
     private lazy var editorPopover: EditorPopover = {
         let popover = EditorPopover()
         popover.animates = false
-        popover.behavior = .semitransient
         popover.prepareViewController()
         popover.delegate = self
         return popover
@@ -430,7 +429,10 @@ extension TimelineDashboardViewController: TimelineCollectionViewDelegate {
 
     func timelineShouldCreateEmptyEntry(with startTime: TimeInterval) {
         // Don't create new TE if one of Popover is active
-        guard isAllPopoverClosed else { return }
+        guard isAllPopoverClosed else {
+            closeAllPopovers()
+            return
+        }
 
         // Create
         startNewTimeEntry(at: startTime, ended: startTime + 1)
