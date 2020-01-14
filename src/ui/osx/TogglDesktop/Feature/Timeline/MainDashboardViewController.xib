@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="15702" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14490.70"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15702"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -64,11 +64,11 @@
                                     </view>
                                     <color key="fillColor" name="white-background-color"/>
                                 </box>
-                                <button horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="Ezz-Na-3Er" customClass="PanelSwitcherButton" customModule="TogglDesktop" customModuleProvider="target">
+                                <button toolTip="Time Entry Tab (⌘1)" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="Ezz-Na-3Er" customClass="PanelSwitcherButton" customModule="TogglDesktop" customModuleProvider="target">
                                     <rect key="frame" x="0.0" y="0.0" width="192" height="40"/>
                                     <buttonCell key="cell" type="bevel" title="List" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="lc5-kV-hsA">
                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                        <font key="font" metaFont="system" size="14"/>
+                                        <font key="font" metaFont="menu" size="14"/>
                                     </buttonCell>
                                     <userDefinedRuntimeAttributes>
                                         <userDefinedRuntimeAttribute type="color" keyPath="selectedTextColor">
@@ -88,11 +88,11 @@
                                         <constraint firstAttribute="height" constant="20" id="u7t-Xu-ij7"/>
                                     </constraints>
                                 </box>
-                                <button horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="Ph1-05-Qce" customClass="PanelSwitcherButton" customModule="TogglDesktop" customModuleProvider="target">
+                                <button toolTip="Timeline Tab (⌘2)" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="Ph1-05-Qce" customClass="PanelSwitcherButton" customModule="TogglDesktop" customModuleProvider="target">
                                     <rect key="frame" x="193" y="0.0" width="192" height="40"/>
                                     <buttonCell key="cell" type="bevel" title="Timeline" bezelStyle="rounded" alignment="center" imageScaling="proportionallyDown" inset="2" id="O2U-sp-dei">
                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                        <font key="font" metaFont="system" size="14"/>
+                                        <font key="font" metaFont="menu" size="14"/>
                                     </buttonCell>
                                     <userDefinedRuntimeAttributes>
                                         <userDefinedRuntimeAttribute type="color" keyPath="titleColor">

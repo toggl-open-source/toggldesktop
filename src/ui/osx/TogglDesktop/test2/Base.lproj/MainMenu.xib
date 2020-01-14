@@ -240,6 +240,7 @@
                 <menuItem title="Window" id="19">
                     <menu key="submenu" title="Window" systemMenu="window" id="24">
                         <items>
+                            <menuItem isSeparatorItem="YES" id="8qb-je-u7S"/>
                             <menuItem title="Show Time Entry Tab" tag="3" keyEquivalent="1" id="KNi-Lb-k3k">
                                 <connections>
                                     <action selector="showTimeEntryTabBtnOnTap:" target="-1" id="dMt-Zv-OZR"/>
@@ -250,7 +251,7 @@
                                     <action selector="showTimelineTabBtnOnTap:" target="-1" id="dEZ-hf-7ib"/>
                                 </connections>
                             </menuItem>
-                            <menuItem isSeparatorItem="YES" id="8qb-je-u7S"/>
+                            <menuItem isSeparatorItem="YES" id="x5X-Qf-2pm"/>
                             <menuItem title="Minimize" keyEquivalent="m" id="23">
                                 <connections>
                                     <action selector="performMiniaturize:" target="-1" id="37"/>
