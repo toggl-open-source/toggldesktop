@@ -82,7 +82,9 @@
         </Grid>
         <Grid Name="timerPanel" x:FieldModifier="private"  Visibility="Visible"
               Margin="0 16 0 14"
-    MouseLeftButtonDown="onGridMouseDown" IsHitTestVisible="True" KeyDown="onGridKeyDown">
+              MouseLeftButtonDown="onGridMouseDown"
+              KeyDown="onGridKeyDown"
+              Background="Transparent">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition Width="Auto"/>
