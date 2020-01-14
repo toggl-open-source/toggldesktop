@@ -380,17 +380,6 @@ namespace TogglDesktop
             this.tagsIcon.Tag = "";
         }
 
-        #region display helpers
-
-
-        private static void setOptionalTextBlockText(TextBlock textBlock, string text)
-        {
-            textBlock.Text = text;
-            textBlock.ShowOnlyIf(!string.IsNullOrEmpty(text));
-        }
-
-        #endregion
-
         #endregion
 
         private struct ProjectInfo
