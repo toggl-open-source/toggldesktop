@@ -69,19 +69,11 @@
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
-        <Grid Name="manualPanel" x:FieldModifier="private" Visibility="Collapsed">
+        <Grid Name="manualPanel" x:FieldModifier="private" Visibility="Collapsed"
+              Margin="13 13 12 11">
             <Button Name="manualAddButton" x:FieldModifier="private"
-                    Style="{DynamicResource Toggl.AccentButton}"
-                    Height="36"
-                    Padding="10 7 10 10"
-                    Margin="17 17 16 15"
+                    Style="{DynamicResource Toggl.AddTimeEntryButton}"
                     Click="onManualAddButtonClick">
-                <StackPanel Orientation="Horizontal">
-                    <Canvas Width="24" Height="24" Margin="4 -3 4 0">
-                        <Path Fill="White" Data="M12.5 6v5.5H18v1h-5.5V18h-1v-5.5H6v-1h5.5V6h1z" />
-                    </Canvas>
-                    <TextBlock Text="Add Time Entry" Foreground="White" />
-                </StackPanel>
             </Button>
         </Grid>
         <Grid Name="timerPanel" x:FieldModifier="private"  Visibility="Visible"
