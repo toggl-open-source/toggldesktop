@@ -1305,6 +1305,14 @@ error Migrations::migrateSettings() {
         return err;
     }
 
+    err = db_->Migrate(
+        "settings.active_tab",
+        "ALTER TABLE settings "
+        "ADD COLUMN active_tab INTEGER NOT NULL DEFAULT 0;");
+    if (err != noError) {
+        return err;
+    }
+
     return noError;
 }
 

@@ -193,6 +193,7 @@ extern "C" {
         int64_t PomodoroBreakMinutes;
         bool_t StopEntryOnShutdownSleep;
         bool_t ShowTouchBar;
+        int8_t ActiveTab;
     } TogglSettingsView;
 
     typedef struct {
@@ -1078,6 +1079,9 @@ extern "C" {
         void *context);
 
     TOGGL_EXPORT bool_t toggl_get_show_touch_bar(
+        void *context);
+
+    TOGGL_EXPORT int8_t toggl_get_active_tab(
         void *context);
 
     TOGGL_EXPORT void toggl_set_mini_timer_x(

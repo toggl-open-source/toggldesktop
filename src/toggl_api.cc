@@ -1412,6 +1412,11 @@ bool_t toggl_get_show_touch_bar(
     return app(context)->GetShowTouchBar();
 }
 
+int8_t toggl_get_active_tab(
+    void *context) {
+    return app(context)->GetActiveTab();
+}
+
 void toggl_set_mini_timer_x(
     void *context,
     const int64_t value) {
