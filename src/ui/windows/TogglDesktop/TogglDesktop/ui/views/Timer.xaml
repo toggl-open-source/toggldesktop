@@ -111,7 +111,8 @@
                 <toggl:ProjectLabel Grid.Row="1" x:Name="projectLabel" x:FieldModifier="private"
                                     Margin="0 2 0 0"
                                     ShowAddProjectCaption="True"
-                                    MouseLeftButtonDown="onProjectLabelMouseDown" />
+                                    MouseLeftButtonDown="onProjectLabelMouseDown"
+                                    Background="Transparent"/>
 
                 <Grid Grid.Row="0" Grid.RowSpan="2" Name="editModeGrid" x:FieldModifier="private"
                       Margin="0 -16 0 -14">
@@ -184,12 +185,14 @@
                 </StackPanel>
 
                 <Grid x:Name="durationLabelPanel" x:FieldModifier="private"
-                      Width="64">
+                      Width="64"
+                      Background="Transparent"
+                      MouseLeftButtonDown="onTimeLabelMouseDown">
                     <TextBlock Name="durationLabel" x:FieldModifier="private"
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"
                                Style="{DynamicResource Toggl.BaseText}"
-                               MouseLeftButtonDown="onTimeLabelMouseDown" Text="00:00:00" />
+                               Text="00:00:00" />
                 </Grid>
             </StackPanel>
 
