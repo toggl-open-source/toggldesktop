@@ -373,7 +373,7 @@ extension TimelineDashboardViewController: TimelineDatasourceDelegate {
         // Make sure all are closed
         closeAllPopoverExceptEditor()
         resetHighlightCells()
-        
+
         // Close the Editor if we select the same
         let isSameEntry = timeEntry.guid == selectedGUID
         if isSameEntry {
@@ -403,24 +403,13 @@ extension TimelineDashboardViewController: TimelineDatasourceDelegate {
     }
 
     fileprivate func showEditorForTimeEntry(with guid: String) {
-        guard let timeEntries = datasource.timeline?.timeEntries else { return }
-
-        // Get the index for item with guid
-        let foundIndex = timeEntries.firstIndex(where: { entry -> Bool in
-            if let timeEntry = entry as? TimelineTimeEntry,
-                let timeEntryGUID = timeEntry.timeEntry.guid,
-                timeEntryGUID == guid {
-                return true
-            }
-            return false
-        })
-
-        // Get all essential data to present Editor
-        guard let index = foundIndex else { return }
-        let indexPath = IndexPath(item:index, section: TimelineData.Section.timeEntry.rawValue)
-        guard let item = datasource.timeline?.item(at: indexPath) as? TimelineTimeEntry,
-            let cell = collectionView.item(at: indexPath) as? TimelineTimeEntryCell else { return }
-        shouldPresentTimeEntryEditor(in: cell.popoverView, timeEntry: item.timeEntry, cell: cell)
+        selectedGUID = guid
+        if let cell = getSelectedCell() {
+            cell.isHighlight = true
+            let frame = collectionView.convert(cell.popoverView.bounds, from: cell.popoverView)
+            editorPopover.setTimeEntry(cell.timeEntry.timeEntry)
+            editorPopover.show(relativeTo: frame, of: collectionView, preferredEdge: .maxX)
+        }
     }
 
     fileprivate func updatePositionOfEditorIfNeed() {
