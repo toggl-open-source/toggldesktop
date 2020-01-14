@@ -5,17 +5,15 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:toggl="clr-namespace:TogglDesktop"
         mc:Ignorable="d"
-        Height="{StaticResource TimerHeight}"
-        Width="360" MinWidth="360"
+        Width="360" MinWidth="136"
         IsToolWindow="True" Topmost="True"
         ShowInTaskbar="False"
         ResizeMode="NoResize" WindowStyle="None"
+        SizeToContent="Height"
         WindowStartupLocation="Manual"
-        MouseMove="onWindowMouseMove"
-        >
-    
+        MouseMove="onWindowMouseMove">
     <Grid>
-        <toggl:Timer x:Name="timer" x:FieldModifier="private" PreventOnApp="true" />
+        <toggl:MiniTimer x:Name="timer" x:FieldModifier="private" PreventOnApp="true" />
         <Rectangle Width="10"  HorizontalAlignment="Left" Fill="Transparent"
                    Cursor="SizeWE" IsHitTestVisible="True"
                    WindowChrome.IsHitTestVisibleInChrome="True"

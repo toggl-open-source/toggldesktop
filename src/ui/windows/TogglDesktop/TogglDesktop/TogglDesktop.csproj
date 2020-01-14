@@ -232,6 +232,9 @@
       <DependentUpon>TimeEntryCellDayHeader.xaml</DependentUpon>
     </Compile>
     <Compile Include="ui\controls\TimeEntryCellDragImposter.cs" />
+    <Compile Include="ui\controls\MiniTimer.xaml.cs">
+      <DependentUpon>MiniTimer.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ui\controls\TogglNotification.cs" />
     <Compile Include="ui\controls\ReminderNotification.xaml.cs">
       <DependentUpon>ReminderNotification.xaml</DependentUpon>
@@ -629,6 +632,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ui\controls\ReminderNotification.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ui\controls\MiniTimer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
