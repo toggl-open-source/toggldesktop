@@ -23,14 +23,6 @@ namespace TogglDesktop
 
         public double TimerHeight { get { return this.Timer.Height; } }
 
-        protected override void OnInitialized(EventArgs e)
-        {
-            this.MinHeight = this.Timer.Height;
-            this.MinWidth = this.Timer.MinWidth;
-
-            base.OnInitialized(e);
-        }
-
         #region toggl events
 
         private void onLogin(bool open, ulong userID)
