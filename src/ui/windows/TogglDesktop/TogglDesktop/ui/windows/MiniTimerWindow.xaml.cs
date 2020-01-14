@@ -20,7 +20,7 @@ namespace TogglDesktop
 
         public MiniTimerWindow(MainWindow mainWindow)
         {
-            this.contextMenu = mainWindow.ContextMenu;
+            this.contextMenu = mainWindow.cogButton.ContextMenu;
             this.InitializeComponent();
             this.Closing += OnClosing;
             this.WindowStyle = WindowStyle.SingleBorderWindow;
