@@ -95,7 +95,7 @@
                                   ProjectLabelMouseDown="onProjectLabelMouseDown" />
 
             <Grid Grid.Column="0" Grid.ColumnSpan="2" Name="editModeGrid" x:FieldModifier="private"
-                  Margin="0 -16 0 -14">
+                  Margin="16 -16 0 -14">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
                     <RowDefinition Height="Auto" />
