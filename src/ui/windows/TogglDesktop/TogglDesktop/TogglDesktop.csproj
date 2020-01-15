@@ -235,6 +235,9 @@
     <Compile Include="ui\controls\MiniTimer.xaml.cs">
       <DependentUpon>MiniTimer.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ui\controls\TimeEntryLabel.xaml.cs">
+      <DependentUpon>TimeEntryLabel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ui\controls\TogglNotification.cs" />
     <Compile Include="ui\controls\ReminderNotification.xaml.cs">
       <DependentUpon>ReminderNotification.xaml</DependentUpon>
@@ -639,6 +642,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ui\controls\TimeEntryLabel.xaml" />
     <Page Include="ui\controls\TrayToolTipControl.xaml" />
     <Page Include="ui\Experiments\implementations\Experiment87Screen.xaml">
       <Generator>MSBuild:Compile</Generator>
