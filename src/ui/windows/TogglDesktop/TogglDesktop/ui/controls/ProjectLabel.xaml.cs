@@ -65,5 +65,13 @@ namespace TogglDesktop
             ClientName = string.Empty;
             Color = default;
         }
+
+        public void SetProject(Toggl.TogglTimeEntryView item)
+        {
+            ProjectName = item.ProjectLabel;
+            TaskName = item.TaskLabel;
+            ClientName = item.ClientLabel;
+            Color = Utils.ProjectColorBrushFromString(item.Color);
+        }
     }
 }

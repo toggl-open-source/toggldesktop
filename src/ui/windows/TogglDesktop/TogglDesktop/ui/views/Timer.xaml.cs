@@ -190,7 +190,7 @@ namespace TogglDesktop
         private void clearSelectedProject()
         {
             this.completedProject = new ProjectInfo();
-            this.projectLabel.Clear();
+            this.timeEntryLabel.ClearProject();
             this.editProjectPanel.Visibility = Visibility.Collapsed;
         }
 
@@ -308,31 +308,10 @@ namespace TogglDesktop
         private void setUIToRunningState(Toggl.TogglTimeEntryView item)
         {
             this.resetUIState(true);
-
-            this.descriptionLabel.Text = item.Description;
-            this.noDescriptionLabel.ShowOnlyIf(descriptionLabel.Text.IsNullOrEmpty());
-
-            this.projectLabel.ProjectName = item.ProjectLabel;
-            this.projectLabel.TaskName = item.TaskLabel;
-            this.projectLabel.ClientName = item.ClientLabel;
-            this.projectLabel.Color = Utils.ProjectColorBrushFromString(item.Color);
-
-            if (item.Description.IsNullOrEmpty() && item.ProjectLabel.IsNullOrEmpty())
-            {
-                this.projectLabel.Visibility = Visibility.Collapsed;
-                this.noDescriptionLabel.Text = "+ Add details";
-            }
-            else
-            {
-                this.projectLabel.Visibility = Visibility.Visible;
-                this.noDescriptionLabel.Text = "+ Add description";
-            }
-
+            this.timeEntryLabel.SetTimeEntry(item);
             this.durationLabelPanel.ToolTip = "started at " + item.StartTimeString;
-
             this.billableIcon.ShowOnlyIf(item.Billable);
             this.tagsIcon.ShowOnlyIf(!string.IsNullOrEmpty(item.Tags));
-
             this.setRunningDurationLabels();
         }
 
@@ -368,10 +347,7 @@ namespace TogglDesktop
             this.startStopButton.IsChecked = running;
             this.descriptionTextBox.SetText("");
             this.descriptionTextBox.ShowOnlyIf(!running);
-            this.projectLabel.ShowOnlyIf(running);
-            this.descriptionLabel.ShowOnlyIf(running);
-            this.noDescriptionLabel.Text = "+ Add description";
-            this.noDescriptionLabel.ShowOnlyIf(running && descriptionLabel.Text.IsNullOrEmpty());
+            this.timeEntryLabel.ResetUIState(running);
             this.runningEntryInfoPanel.ShowOnlyIf(running);
             this.completedProject = new ProjectInfo();
             this.editProjectPanel.Visibility = Visibility.Collapsed;
