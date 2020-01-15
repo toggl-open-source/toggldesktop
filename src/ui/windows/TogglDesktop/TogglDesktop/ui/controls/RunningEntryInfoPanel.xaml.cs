@@ -29,10 +29,6 @@ namespace TogglDesktop
             this.billableIcon.Visibility = Visibility.Collapsed;
             this.tagsIcon.Visibility = Visibility.Collapsed;
             this.tagsIcon.Tag = "";
-        }
-
-        public void ClearDurationLabel()
-        {
             this.durationLabelPanel.ToolTip = null;
             this.durationLabel.Text = "00:00:00";
         }
