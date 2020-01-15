@@ -32,6 +32,7 @@ final class TimelineTimeEntryMenu: NSMenu {
 
     init() {
         super.init(title: "Menu")
+        initCommon()
         initSubmenu()
     }
 
@@ -44,8 +45,11 @@ final class TimelineTimeEntryMenu: NSMenu {
 
 extension TimelineTimeEntryMenu {
 
-    fileprivate func initSubmenu() {
+    private func initCommon() {
+        autoenablesItems = false
+    }
 
+    private func initSubmenu() {
         let continueMenu = NSMenuItem(title: "Continue this entry", action: #selector(self.continueMenuOnTap), keyEquivalent: "")
         let startNewMenu = NSMenuItem(title: "Start entry from the end of this entry", action: #selector(self.startEntryOnTap), keyEquivalent: "")
         let deleteMenu = NSMenuItem(title: "Delete", action: #selector(self.deleteEntryOnTap), keyEquivalent: "")
