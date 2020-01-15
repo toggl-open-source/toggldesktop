@@ -5,9 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:toggl="clr-namespace:TogglDesktop"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="400"
-             MinWidth="{Binding ElementName=Timer, Path=MinWidth}"
-             MinHeight="{Binding ElementName=Timer, Path=Height}">
+             d:DesignHeight="300" d:DesignWidth="400">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
