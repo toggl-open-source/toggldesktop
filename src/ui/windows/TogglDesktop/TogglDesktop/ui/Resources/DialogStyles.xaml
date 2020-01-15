@@ -10,23 +10,6 @@
         </Style.Resources>
     </Style>
 
-    <Style TargetType="Window" x:Key="IdleNotification">
-        <Style.Resources>
-            <Style TargetType="Button" BasedOn="{StaticResource RaisedButton}" />
-        </Style.Resources>
-    </Style>
-    
-    <Style TargetType="Window" x:Key="FeedbackWindow">
-        <Style.Resources>
-            <Style TargetType="Button" BasedOn="{StaticResource FlatButton}" />
-
-            <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type Control}}">
-                <Setter Property="BorderThickness" Value="1"/>
-                <Setter Property="Padding" Value="3"/>
-            </Style>
-        </Style.Resources>
-    </Style>
-
     <Style TargetType="{x:Type togglDesktop:TogglNotification}">
         <Setter Property="Template">
             <Setter.Value>
