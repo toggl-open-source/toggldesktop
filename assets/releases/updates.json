@@ -22,8 +22,8 @@
             "macos": "https://github.com/toggl-open-source/toggldesktop/releases/download/v7.5.15/TogglDesktop-7_5_15.dmg"
         },
         "beta": {
-            "version": "7.5.3",
-            "macos": "https://github.com/toggl-open-source/toggldesktop/releases/download/v7.5.3/TogglDesktop-7_5_3.dmg"
+            "version": "7.5.15",
+            "macos": "https://github.com/toggl-open-source/toggldesktop/releases/download/v7.5.15/TogglDesktop-7_5_15.dmg"
         },
         "stable": {
             "version": "7.5.3",
