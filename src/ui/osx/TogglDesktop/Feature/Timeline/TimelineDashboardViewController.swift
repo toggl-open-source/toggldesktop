@@ -217,6 +217,10 @@ extension TimelineDashboardViewController {
                                                selector: #selector(self.editorOnChangeNotification(_:)),
                                                name: Notification.Name(kDisplayTimeEntryEditor),
                                                object: nil)
+        NotificationCenter.default.addObserver(self,
+                                       selector: #selector(startTimeEntryNoti(_:)),
+                                       name: Notification.Name(kStarTimeEntryWithStartTime),
+                                       object: nil)
     }
 
     private func initTrackingArea() {
@@ -314,6 +318,11 @@ extension TimelineDashboardViewController {
         guard let selectedGUID = selectedGUID else { return nil }
         guard let indexPath = datasource.timeline?.indexPathForItem(with: selectedGUID) else { return nil }
         return collectionView.item(at: indexPath) as? TimelineTimeEntryCell
+    }
+
+    @objc private func startTimeEntryNoti(_ noti: Notification) {
+        guard let startTime = noti.object as? Date else { return }
+        timelineShouldCreateEmptyEntry(with: startTime.timeIntervalSince1970)
     }
 }
 
