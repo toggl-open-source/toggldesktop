@@ -10,11 +10,11 @@ import Cocoa
 
 protocol TimelineTimeEntryMenuDelegate: class {
 
-    func timelineMenuContinue()
-    func timelineMenuStartEntry()
-    func timelineMenuDelete()
-    func timelineMenuChangeFirstEntryStopTime()
-    func timelineMenuChangeLastEntryStartTime()
+    func timelineMenuContinue(_ timeEntry: TimelineTimeEntry)
+    func timelineMenuStartEntry(_ timeEntry: TimelineTimeEntry)
+    func timelineMenuDelete(_ timeEntry: TimelineTimeEntry)
+    func timelineMenuChangeFirstEntryStopTime(_ timeEntry: TimelineTimeEntry)
+    func timelineMenuChangeLastEntryStartTime(_ timeEntry: TimelineTimeEntry)
 }
 
 final class TimelineTimeEntryMenu: NSMenu {
@@ -22,6 +22,7 @@ final class TimelineTimeEntryMenu: NSMenu {
     // MARK: Variables
 
     weak var menuDelegate: TimelineTimeEntryMenuDelegate?
+    var timeEntry: TimelineTimeEntry?
     private var conflictChangeFirstMenu: NSMenuItem!
     private var conflictChangeLastMenu: NSMenuItem!
     var isOverlapMenu = false {
@@ -73,22 +74,27 @@ extension TimelineTimeEntryMenu {
     }
 
     @objc private func continueMenuOnTap() {
-        menuDelegate?.timelineMenuContinue()
+        guard let timeEntry = timeEntry else { return }
+        menuDelegate?.timelineMenuContinue(timeEntry)
     }
 
     @objc private func startEntryOnTap() {
-        menuDelegate?.timelineMenuStartEntry()
+        guard let timeEntry = timeEntry else { return }
+        menuDelegate?.timelineMenuStartEntry(timeEntry)
     }
 
     @objc private func deleteEntryOnTap() {
-        menuDelegate?.timelineMenuDelete()
+        guard let timeEntry = timeEntry else { return }
+        menuDelegate?.timelineMenuDelete(timeEntry)
     }
 
     @objc private func changeFirstEntryStopTimeOnTap() {
-        menuDelegate?.timelineMenuChangeFirstEntryStopTime()
+        guard let timeEntry = timeEntry else { return }
+        menuDelegate?.timelineMenuChangeFirstEntryStopTime(timeEntry)
     }
 
     @objc private func changeLastEntryStartTimeOnTap() {
-        menuDelegate?.timelineMenuChangeLastEntryStartTime()
+        guard let timeEntry = timeEntry else { return }
+        menuDelegate?.timelineMenuChangeLastEntryStartTime(timeEntry)
     }
 }

@@ -207,28 +207,23 @@ extension TimelineTimeEntryCell {
 
 extension TimelineTimeEntryCell: TimelineTimeEntryMenuDelegate {
     
-    func timelineMenuContinue() {
-        guard let timeEntry = timeEntry else { return }
+    func timelineMenuContinue(_ timeEntry: TimelineTimeEntry) {
         delegate?.timeEntryCellShouldContinue(for: timeEntry, sender: self)
     }
 
-    func timelineMenuStartEntry() {
-        guard let timeEntry = timeEntry else { return }
+    func timelineMenuStartEntry(_ timeEntry: TimelineTimeEntry) {
         delegate?.timeEntryCellShouldStartNew(for: timeEntry, sender: self)
     }
 
-    func timelineMenuDelete() {
-        guard let timeEntry = timeEntry else { return }
+    func timelineMenuDelete(_ timeEntry: TimelineTimeEntry) {
         delegate?.timeEntryCellShouldDelete(for: timeEntry, sender: self)
     }
 
-    func timelineMenuChangeFirstEntryStopTime() {
-        guard let timeEntry = timeEntry else { return }
+    func timelineMenuChangeFirstEntryStopTime(_ timeEntry: TimelineTimeEntry) {
         delegate?.timeEntryCellShouldChangeFirstEntryStopTime(for: timeEntry, sender: self)
     }
 
-    func timelineMenuChangeLastEntryStartTime() {
-        guard let timeEntry = timeEntry else { return }
+    func timelineMenuChangeLastEntryStartTime(_ timeEntry: TimelineTimeEntry) {
         delegate?.timeEntryCellShouldChangeLastEntryStartTime(for: timeEntry, sender: self)
     }
 }
@@ -240,6 +235,7 @@ extension TimelineTimeEntryCell: NSMenuDelegate {
     func menuWillOpen(_ menu: NSMenu) {
         guard let timeEntry = timeEntry else { return }
         // disable some menu if it's overlapped item
+        timeEntryMenu.timeEntry = timeEntry
         timeEntryMenu.isOverlapMenu = timeEntry.isOverlap
         isHighlight = true
     }
