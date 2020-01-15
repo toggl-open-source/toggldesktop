@@ -878,7 +878,7 @@ error Database::SetSettingsShowTouchBar(const bool &show_touch_bar) {
     return setSettingsValue("show_touch_bar", show_touch_bar);
 }
 
-error Database::SetSettingsActiveTab(const bool &active_tab) {
+error Database::SetSettingsActiveTab(const int8_t &active_tab) {
     return setSettingsValue("active_tab", active_tab);
 }
 

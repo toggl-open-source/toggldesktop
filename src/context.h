@@ -166,7 +166,7 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
 
     error SetSettingsShowTouchBar(const bool show_touch_bar);
 
-    error SetSettingsActiveTab(const bool active_tab);
+    error SetSettingsActiveTab(const int8_t active_tab);
 
     error SetSettingsIdleMinutes(const Poco::UInt64 idle_minutes);
 

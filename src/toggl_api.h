@@ -786,6 +786,10 @@ extern "C" {
         void *context,
         const bool_t show_touch_bar);
 
+    TOGGL_EXPORT bool_t toggl_set_settings_active_tab(
+        void *context,
+        const int8_t active_tab);
+
     TOGGL_EXPORT bool_t toggl_set_settings_idle_minutes(
         void *context,
         const uint64_t idle_minutes);
