@@ -241,5 +241,10 @@ extension TimelineTimeEntryCell: NSMenuDelegate {
         guard let timeEntry = timeEntry else { return }
         // disable some menu if it's overlapped item
         timeEntryMenu.isOverlapMenu = timeEntry.isOverlap
+        isHighlight = true
+    }
+
+    func menuDidClose(_ menu: NSMenu) {
+        isHighlight = false
     }
 }
