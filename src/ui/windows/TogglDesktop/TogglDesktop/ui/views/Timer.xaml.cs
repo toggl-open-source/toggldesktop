@@ -36,7 +36,6 @@ namespace TogglDesktop
             this.RunningTimeEntrySecondPulse += this.timerTick;
 
             this.resetUIState(false, true);
-            this.setUIToStoppedState();
         }
 
         public bool PreventOnApp { get; set; }
@@ -67,7 +66,7 @@ namespace TogglDesktop
             using (Performance.Measure("timer responding to OnStoppedTimerState"))
             {
                 this.secondsTimer.IsEnabled = false;
-                this.setUIToStoppedState();
+                this.resetUIState(false);
                 this.runningTimeEntry = default(Toggl.TogglTimeEntryView);
             }
         }
@@ -307,12 +306,6 @@ namespace TogglDesktop
             this.runningEntryInfoPanel.SetUIToRunningState(item);
         }
 
-        private void setUIToStoppedState()
-        {
-            this.resetUIState(false);
-            this.runningEntryInfoPanel.ClearDurationLabel();
-        }
-
         private void resetUIState(bool running, bool forceUpdate = false)
         {
             var changedState = this.isRunning != running;
@@ -336,16 +329,13 @@ namespace TogglDesktop
 
         private struct ProjectInfo
         {
-            private readonly ulong projectId;
-            private readonly ulong taskId;
-
-            public ulong ProjectId { get { return this.projectId; } }
-            public ulong TaskId { get { return this.taskId; } }
+            public ulong ProjectId { get; }
+            public ulong TaskId { get; }
 
             public ProjectInfo(Toggl.TogglAutocompleteView item)
             {
-                this.projectId = item.ProjectID;
-                this.taskId = item.TaskID;
+                this.ProjectId = item.ProjectID;
+                this.TaskId = item.TaskID;
             }
         }
 
