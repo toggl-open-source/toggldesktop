@@ -3,17 +3,18 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:toggl="clr-namespace:TogglDesktop"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:behaviors="clr-namespace:TogglDesktop.Behaviors"
         xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
         mc:Ignorable="d" 
-        Height="350" Width="280"
-        MinHeight="350" MinWidth="280"
+        Width="340"
+        MinWidth="340"
+        SizeToContent="Height"
         KeyDown="windowKeyDown"
-        Title="Idle Notification"
+        Title="Toggl idle notification"
         WindowStartupLocation="CenterScreen"
-        Topmost="True">
+        Topmost="True"
+        Background="{DynamicResource Toggl.Background}">
     <mah:MetroWindow.Resources>
         <ResourceDictionary Source="../Resources/DesignUpdate/Controls.xaml" />
     </mah:MetroWindow.Resources>
@@ -23,35 +24,44 @@
     <i:Interaction.Behaviors>
         <behaviors:HideWindowOnClosingBehavior />
     </i:Interaction.Behaviors>
-    <Grid Background="{StaticResource ViewBackgroundLight}">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-
-        <StackPanel Grid.Row="0" Margin="10">
-            <TextBlock Text="You have been idle since 12:34:56"
-                       Name="timeText" x:FieldModifier="private"
-                       HorizontalAlignment="Center"/>
-            <TextBlock Text="(5 minutes)"
-                       Name="durationText" x:FieldModifier="private"
-                       HorizontalAlignment="Center"/>
-            <TextBlock Text="Running time entry:"
-                       HorizontalAlignment="Center" Margin="0 15 0 5"/>
-            <TextBlock Text="Doing the thing"
-                       Name="descriptionText" x:FieldModifier="private"
-                       HorizontalAlignment="Center" FontWeight="Regular"/>
-        </StackPanel>
-        
-        <StackPanel Grid.Row="1" Margin="8" HorizontalAlignment="Center">
-            <Button Content="KEEP TIME"
-                    Click="onKeepTimeClick"/>
-            <Button Content="DISCARD TIME"
-                    Click="onDiscardTimeClick"/>
-            <Button Content="ADD TIME AS NEW ENTRY"
-                    Click="onAddAsNewClick"/>
-            <Button Content="DISCARD TIME AND CONTINUE"
-                    Click="onDiscardContinueClick"/>
-        </StackPanel>
-    </Grid>
+    <StackPanel Orientation="Vertical"
+                Margin="24 30 24 24">
+        <TextBlock Style="{StaticResource Toggl.SubtitleText}"
+                   Name="timeText" x:FieldModifier="private" />
+        <TextBlock Margin="0 4 0 0"
+                   Style="{StaticResource Toggl.CaptionText}"
+                   Name="durationText" x:FieldModifier="private" />
+        <TextBlock Margin="0 24 0 0"
+                   Style="{StaticResource Toggl.BodyText}"
+                   Text="Running time entry:" />
+        <TextBlock Margin="0 8 0 0"
+                   Style="{StaticResource Toggl.BaseText}"
+                   Name="descriptionText" x:FieldModifier="private" />
+        <TextBlock Margin="0 24 0 0"
+                   Style="{StaticResource Toggl.BodyText}"
+                   Text="What do you want to do with the idle time?" />
+        <Button Margin="0 8 0 0"
+                Style="{StaticResource Toggl.PrimaryButton}"
+                x:Name="keepTimeButton"
+                Content="Keep time"
+                Click="onKeepTimeClick" />
+        <Button Margin="0 8 0 0"
+                Style="{StaticResource Toggl.PrimaryButton}"
+                Content="Discard time"
+                Click="onDiscardTimeClick" />
+        <DockPanel Margin="0 8 0 0">
+            <Button DockPanel.Dock="Left"
+                    HorizontalAlignment="Left"
+                    Style="{StaticResource Toggl.OutlinedButton}"
+                    Width="143"
+                    Content="Discard &amp; continue"
+                    Click="onDiscardContinueClick" />
+            <Button DockPanel.Dock="Right"
+                    HorizontalAlignment="Right"
+                    Style="{StaticResource Toggl.OutlinedButton}"
+                    Width="143"
+                    Content="Add as new entry"
+                    Click="onAddAsNewClick" />
+        </DockPanel>
+    </StackPanel>
 </mah:MetroWindow>
