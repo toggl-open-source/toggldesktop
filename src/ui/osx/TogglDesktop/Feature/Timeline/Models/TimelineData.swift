@@ -138,6 +138,18 @@ class TimelineData {
         DesktopLibraryBridge.shared().updateTimeEntryWithStart(atTimestamp: endAt.timeIntervalSince1970 + 1,
                                                                guid: entry.timeEntry.guid)
     }
+
+    func continueTimeEntry(_ timeEntry: TimelineTimeEntry) {
+        NotificationCenter.default.post(name: NSNotification.Name(kCommandContinue), object: timeEntry.timeEntry.guid)
+    }
+
+    func startNewFromEnd(_ timeEntry: TimelineTimeEntry) {
+        
+    }
+
+    func delete(_ timeEntry: TimelineTimeEntry) {
+        DesktopLibraryBridge.shared().deleteTimeEntryImte(timeEntry.timeEntry)
+    }
 }
 
 // MARK: Private
