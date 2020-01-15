@@ -1,8 +1,7 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Threading;
+using ControlzEx;
 
 namespace TogglDesktop
 {
@@ -35,6 +34,7 @@ namespace TogglDesktop
             this.Show();
             this.Topmost = true;
             this.Activate();
+            KeyboardNavigationEx.Focus(this.keepTimeButton);
         }
 
         protected override void OnDeactivated(EventArgs e)
