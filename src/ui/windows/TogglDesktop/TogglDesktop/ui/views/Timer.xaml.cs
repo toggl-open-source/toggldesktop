@@ -38,7 +38,7 @@ namespace TogglDesktop
             this.resetUIState(false, true);
         }
 
-        public bool PreventOnApp { get; set; }
+        private static bool IsMiniTimer => false;
 
         private void setupSecondsTimer()
         {
@@ -193,7 +193,7 @@ namespace TogglDesktop
 
         private void onManualAddButtonClick(object sender, RoutedEventArgs e)
         {
-            var guid = Toggl.Start("", "0", 0, 0, "", "", this.PreventOnApp);
+            var guid = Toggl.Start("", "0", 0, 0, "", "", IsMiniTimer);
             Toggl.Edit(guid, false, Toggl.Duration);
         }
 
@@ -253,11 +253,6 @@ namespace TogglDesktop
         {
             if (this.isRunning)
             {
-                if (this.PreventOnApp && e.ClickCount != 2)
-                {
-                    e.Handled = true;
-                    return;
-                }
                 using (Performance.Measure("opening edit view from timer, focussing " + focusedField))
                 {
                     Toggl.Edit(this.runningTimeEntry.GUID, false, focusedField);
@@ -277,7 +272,7 @@ namespace TogglDesktop
                     this.completedProject.ProjectId,
                     "",
                     this.runningEntryInfoPanel.TagsString,
-                    this.PreventOnApp
+                    IsMiniTimer
                     );
 
                 if (this.runningEntryInfoPanel.IsBillable)
@@ -291,7 +286,7 @@ namespace TogglDesktop
         {
             using (Performance.Measure("stopping time entry from timer"))
             {
-                Toggl.Stop(this.PreventOnApp);
+                Toggl.Stop(IsMiniTimer);
             }
         }
 

@@ -24,6 +24,6 @@
         WindowStartupLocation="Manual"
         ResizeBorderThickness="4 0">
     <Grid>
-        <toggl:MiniTimer x:Name="timer" x:FieldModifier="private" PreventOnApp="true" />
+        <toggl:MiniTimer x:Name="timer" x:FieldModifier="private" />
     </Grid>
 </mah:MetroWindow>
