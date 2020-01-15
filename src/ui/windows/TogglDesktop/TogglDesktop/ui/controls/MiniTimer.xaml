@@ -83,30 +83,10 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-            <!-- description and project-->
-            <Grid Grid.ColumnSpan="2" Margin="16 4 0 6">
-                <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-
-                <TextBlock Grid.Row="0" Name="descriptionLabel" x:FieldModifier="private"
-                           Margin="0 0 0 1"
-                           MouseLeftButtonDown="onDescriptionLabelMouseDown"
-                           Style="{DynamicResource Toggl.BodyText}" />
-                <TextBlock Grid.Row="0" Name="noDescriptionLabel" x:FieldModifier="private"
-                           Style="{DynamicResource Toggl.CaptionGrayishText}"
-                           Text="+ Add description"
-                           Margin="0 0 0 1"
-                           VerticalAlignment="Center"
-                           MouseLeftButtonDown="onDescriptionLabelMouseDown"/>
-
-                <toggl:ProjectLabel Grid.Row="1" x:Name="projectLabel" x:FieldModifier="private"
-                                    Margin="0 1 0 0"
-                                    ShowAddProjectCaption="True"
-                                    MouseLeftButtonDown="onProjectLabelMouseDown"
-                                    Background="Transparent"/>
-            </Grid>
+            <toggl:TimeEntryLabel x:Name="timeEntryLabel" x:FieldModifier="private"
+                                  Grid.ColumnSpan="2"
+                                  Margin="16 4 0 6"
+                                  VerticalPadding="1"/>
 
             <DockPanel Grid.Column="0" Grid.ColumnSpan="2" Name="editModeGrid" x:FieldModifier="private"
                   Margin="0 0 -8 0">
