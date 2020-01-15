@@ -144,7 +144,7 @@ class TimelineData {
     }
 
     func startNewFromEnd(_ timeEntry: TimelineTimeEntry) {
-        
+        NotificationCenter.default.post(name: Notification.Name(kStarTimeEntryWithStartTime), object: timeEntry.timeEntry.ended)
     }
 
     func delete(_ timeEntry: TimelineTimeEntry) {
