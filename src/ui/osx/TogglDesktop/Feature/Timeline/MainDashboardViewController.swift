@@ -87,6 +87,9 @@ extension MainDashboardViewController {
         timeEntryController.delegate = self
         headerContainerView.applyShadow(color: .black, opacity: 0.1, radius: 6.0)
         timelineController.delegate = self
+        if let tab = Tab(rawValue: DesktopLibraryBridge.shared().getActiveTabIndex()) {
+            currentTab = tab
+        }
     }
 
     fileprivate func initNotification() {
@@ -128,13 +131,13 @@ extension MainDashboardViewController {
     fileprivate func updateNextKeyView() {
         switch currentTab {
         case .timeline:
-            timerController.autoCompleteInput.nextKeyView = listBtn
+            timerController.autoCompleteInput?.nextKeyView = listBtn
             listBtn.nextKeyView = timelineBtn
             timelineBtn.nextKeyView = timelineController.recordSwitcher
             timelineController.updateNextKeyView()
             timelineController.datePickerView.nextDateBtn.nextKeyView = timerController.autoCompleteInput
         case .timeEntryList:
-            timerController.autoCompleteInput.nextKeyView = listBtn
+            timerController.autoCompleteInput?.nextKeyView = listBtn
         }
     }
 

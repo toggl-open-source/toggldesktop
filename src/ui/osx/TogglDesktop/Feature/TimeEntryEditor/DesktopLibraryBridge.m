@@ -298,4 +298,9 @@ void *ctx;
 {
     toggl_set_settings_active_tab(ctx, index);
 }
+
+- (NSInteger)getActiveTabIndex
+{
+    return toggl_get_active_tab(ctx);
+}
 @end

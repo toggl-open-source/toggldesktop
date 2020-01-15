@@ -100,6 +100,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - Settings
 
 - (void)setActiveTabAtIndex:(NSInteger) index;
+- (NSInteger)getActiveTabIndex;
 
 @end
 
