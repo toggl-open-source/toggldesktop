@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
 using TogglDesktop.AutoCompletion;
@@ -18,11 +17,6 @@ namespace TogglDesktop
         private bool isRunning;
         private bool acceptNextUpdate;
 
-        public event EventHandler StartStopClick;
-        public event EventHandler<string> RunningTimeEntrySecondPulse;
-        public event EventHandler FocusTimeEntryList;
-        public event EventHandler<string> DescriptionTextBoxTextChanged;
-
         public MiniTimer()
         {
             this.InitializeComponent();
@@ -33,12 +27,10 @@ namespace TogglDesktop
             Toggl.OnRunningTimerState += this.onRunningTimerState;
             Toggl.OnStoppedTimerState += this.onStoppedTimerState;
 
-            this.RunningTimeEntrySecondPulse += this.timerTick;
-
             this.resetUIState(false, true);
         }
 
-        public bool PreventOnApp { get; set; }
+        private static bool IsMiniTimer => true;
 
         private void setupSecondsTimer()
         {
@@ -49,9 +41,7 @@ namespace TogglDesktop
                     return;
 
                 var s = Toggl.FormatDurationInSecondsHHMMSS(this.runningTimeEntry.DurationInSeconds);
-
-                if (this.RunningTimeEntrySecondPulse != null)
-                    this.RunningTimeEntrySecondPulse(this, s);
+                this.runningEntryInfoPanel.SetDurationLabel(s);
             };
         }
 
@@ -193,20 +183,8 @@ namespace TogglDesktop
 
         private void onManualAddButtonClick(object sender, RoutedEventArgs e)
         {
-            var guid = Toggl.Start("", "0", 0, 0, "", "", this.PreventOnApp);
+            var guid = Toggl.Start("", "0", 0, 0, "", "", IsMiniTimer);
             Toggl.Edit(guid, false, Toggl.Duration);
-        }
-
-        protected override void OnPreviewKeyDown(KeyEventArgs e)
-        {
-            if (e.Key == Key.Down && Keyboard.Modifiers == System.Windows.Input.ModifierKeys.Shift)
-            {
-                if (this.FocusTimeEntryList != null)
-                    this.FocusTimeEntryList(this, e);
-                e.Handled = true;
-            }
-
-            base.OnPreviewKeyDown(e);
         }
 
         protected override void OnGotKeyboardFocus(KeyboardFocusChangedEventArgs e)
@@ -234,9 +212,6 @@ namespace TogglDesktop
 
         private void startStop()
         {
-            if (this.StartStopClick != null)
-                this.StartStopClick(this, EventArgs.Empty);
-
             this.acceptNextUpdate = true;
 
             if (this.isRunning)
@@ -253,14 +228,12 @@ namespace TogglDesktop
         {
             if (this.isRunning)
             {
-                if (this.PreventOnApp && e.ClickCount != 2)
+                if (e.ClickCount == 2)
                 {
-                    e.Handled = true;
-                    return;
-                }
-                using (Performance.Measure("opening edit view from timer, focussing " + focusedField))
-                {
-                    Toggl.Edit(this.runningTimeEntry.GUID, false, focusedField);
+                    using (Performance.Measure("opening edit view from timer, focussing " + focusedField))
+                    {
+                        Toggl.Edit(this.runningTimeEntry.GUID, false, focusedField);
+                    }
                 }
                 e.Handled = true;
             }
@@ -277,7 +250,7 @@ namespace TogglDesktop
                     this.completedProject.ProjectId,
                     "",
                     this.runningEntryInfoPanel.TagsString,
-                    this.PreventOnApp
+                    IsMiniTimer
                     );
 
                 if (this.runningEntryInfoPanel.IsBillable)
@@ -291,7 +264,7 @@ namespace TogglDesktop
         {
             using (Performance.Measure("stopping time entry from timer"))
             {
-                Toggl.Stop(this.PreventOnApp);
+                Toggl.Stop(IsMiniTimer);
             }
         }
 
@@ -343,14 +316,6 @@ namespace TogglDesktop
         {
             this.manualPanel.ShowOnlyIf(manualMode);
             this.timerPanel.ShowOnlyIf(!manualMode);
-        }
-
-        private void onDescriptionTextBoxTextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (this.DescriptionTextBoxTextChanged != null)
-            {
-                this.DescriptionTextBoxTextChanged(sender, this.descriptionTextBox.Text);
-            }
         }
     }
 }
