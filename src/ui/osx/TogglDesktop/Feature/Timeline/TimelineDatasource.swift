@@ -262,15 +262,15 @@ extension TimelineDatasource: TimelineFlowLayoutDelegate {
 extension TimelineDatasource: TimelineTimeEntryCellDelegate {
 
     func timeEntryCellShouldContinue(for entry: TimelineTimeEntry, sender: TimelineTimeEntryCell) {
-
+        timeline?.continueTimeEntry(entry)
     }
 
     func timeEntryCellShouldStartNew(for entry: TimelineTimeEntry, sender: TimelineTimeEntryCell) {
-
+        timeline?.startNewFromEnd(entry)
     }
 
     func timeEntryCellShouldDelete(for entry: TimelineTimeEntry, sender: TimelineTimeEntryCell) {
-
+        timeline?.delete(entry)
     }
 
     func timeEntryCellShouldChangeFirstEntryStopTime(for entry: TimelineTimeEntry, sender: TimelineTimeEntryCell) {
