@@ -114,7 +114,7 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
         }
 
         // Enable menu if it's overlap Time Entry
-        view.menu = timeEntry.isOverlap ? timeEntryMenu : nil
+        timeEntryMenu.isOverlapMenu = timeEntry.isOverlap
      }
 
     private func hideOutOfBoundControls() {
@@ -195,6 +195,7 @@ extension TimelineTimeEntryCell {
 
     fileprivate func initCommon() {
         timeEntryMenu.menuDelegate = self
+        view.menu = timeEntryMenu
         if let cursorView = foregroundBox as? CursorView {
             cursorView.cursor = NSCursor.pointingHand
         }
