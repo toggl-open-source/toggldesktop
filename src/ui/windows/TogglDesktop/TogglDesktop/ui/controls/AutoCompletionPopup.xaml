@@ -20,6 +20,10 @@
             <converters:ColorsToBrushConverter x:Key="ColorsToBrushMultiConverter" />
             <converters:EmptyStringToHiddenConverter x:Key="EmptyStringToHiddenConverter" />
             <togglautocompletion:AutocompleteTemplateSelector x:Key="autocompleteTemplateSelector"/>
+            <converters:IsNotNegativeConverter x:Key="IsNotNegativeConverter" />
+            <Style x:Key="AutoCompleteItem" BasedOn="{StaticResource {x:Type ListBoxItem}}" TargetType="ListBoxItem">
+                <Setter Property="IsEnabled" Value="{Binding Type, Converter={StaticResource IsNotNegativeConverter}}" />
+            </Style>
             <DataTemplate x:Key="project-item-template">
                 <StackPanel Height="32" Orientation="Horizontal">
                     <Border Name="projectColor"
@@ -130,13 +134,14 @@
             <ListBox x:Name="listBox" HorizontalAlignment="Stretch" MinHeight="30" Height="Auto" Margin="10,0,10,10"
                      Padding="0 0 0 8"
                      Background="{DynamicResource Toggl.CardBackground}"
-                BorderThickness="0"
-                VerticalAlignment="Top"
-                Width="Auto"
-                HorizontalContentAlignment="Stretch"
-                VirtualizingStackPanel.VirtualizationMode="Recycling"
-                ItemTemplateSelector="{StaticResource autocompleteTemplateSelector}"
-                PreviewMouseDown="listBox_PreviewMouseDown">
+                     ItemContainerStyle="{StaticResource AutoCompleteItem}"
+                     BorderThickness="0"
+                     VerticalAlignment="Top"
+                     Width="Auto"
+                     HorizontalContentAlignment="Stretch"
+                     VirtualizingStackPanel.VirtualizationMode="Recycling"
+                     ItemTemplateSelector="{StaticResource autocompleteTemplateSelector}"
+                     PreviewMouseDown="listBox_PreviewMouseDown">
             </ListBox>
         </Grid>
     </Popup>
