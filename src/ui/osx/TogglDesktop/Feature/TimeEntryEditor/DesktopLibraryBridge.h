@@ -97,6 +97,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)setClickCloseBtnInAppMessage;
 - (void)setClickActionBtnInAppMessage;
 
+#pragma mark - Settings
+
+- (void)setActiveTabAtIndex:(NSInteger) index;
+
 @end
 
 NS_ASSUME_NONNULL_END

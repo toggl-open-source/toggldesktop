@@ -293,4 +293,9 @@ void *ctx;
 {
     toggl_iam_click(ctx, 3);
 }
+
+- (void)setActiveTabAtIndex:(NSInteger) index
+{
+    toggl_set_settings_active_tab(ctx, index);
+}
 @end

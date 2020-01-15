@@ -44,6 +44,7 @@ final class MainDashboardViewController: NSViewController {
         didSet {
             guard currentTab != oldValue else { return }
             updateTabLayout()
+            saveTabState()
         }
     }
 
@@ -149,6 +150,10 @@ extension MainDashboardViewController {
             return
         }
         timerController.focusTimer()
+    }
+
+    private func saveTabState() {
+        DesktopLibraryBridge.shared().setActiveTabAt(currentTab.rawValue)
     }
 }
 
