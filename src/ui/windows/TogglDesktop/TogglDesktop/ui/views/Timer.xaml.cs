@@ -102,7 +102,7 @@ namespace TogglDesktop
 
         private void timerTick(object sender, string t)
         {
-            this.setRunningDurationLabels(t);
+            this.runningEntryInfoPanel.SetDurationLabel(t);
         }
 
         private void startStopButtonOnClick(object sender, RoutedEventArgs e)
@@ -177,9 +177,7 @@ namespace TogglDesktop
                 this.clearSelectedProject();
             }
 
-            this.billableIcon.ShowOnlyIf(item.Billable);
-            this.tagsIcon.ShowOnlyIf(!string.IsNullOrEmpty(item.Tags));
-            this.tagsIcon.Tag = item.Tags;
+            this.runningEntryInfoPanel.OnConfirmCompletion(item);
         }
 
         private void cancelProjectSelectionButtonClick(object sender, RoutedEventArgs e)
@@ -273,22 +271,19 @@ namespace TogglDesktop
         {
             using (Performance.Measure("starting time entry from timer"))
             {
-                var billable = (this.billableIcon.Visibility == Visibility.Visible);
-                var tagsString = (this.tagsIcon.Tag != null) ? this.tagsIcon.Tag.ToString() : "";
-
                 var guid = Toggl.Start(
                     this.descriptionTextBox.Text,
                     "",
                     this.completedProject.TaskId,
                     this.completedProject.ProjectId,
                     "",
-                    tagsString,
+                    this.runningEntryInfoPanel.TagsString,
                     this.PreventOnApp
                     );
 
-                if (billable)
+                if (this.runningEntryInfoPanel.IsBillable)
                 {
-                    Toggl.SetTimeEntryBillable(guid, billable);
+                    Toggl.SetTimeEntryBillable(guid, true);
                 }
             }
         }
@@ -309,29 +304,13 @@ namespace TogglDesktop
         {
             this.resetUIState(true);
             this.timeEntryLabel.SetTimeEntry(item);
-            this.durationLabelPanel.ToolTip = "started at " + item.StartTimeString;
-            this.billableIcon.ShowOnlyIf(item.Billable);
-            this.tagsIcon.ShowOnlyIf(!string.IsNullOrEmpty(item.Tags));
-            this.setRunningDurationLabels();
+            this.runningEntryInfoPanel.SetUIToRunningState(item);
         }
 
-        private void setRunningDurationLabels()
-        {
-            var s = Toggl.FormatDurationInSecondsHHMMSS(this.runningTimeEntry.DurationInSeconds);
-            this.setRunningDurationLabels(s);
-        }
-
-        private void setRunningDurationLabels(string s)
-        {
-            this.durationLabel.Text = s;
-        }
-        
         private void setUIToStoppedState()
         {
             this.resetUIState(false);
-
-            this.durationLabelPanel.ToolTip = null;
-            this.durationLabel.Text = "00:00:00";
+            this.runningEntryInfoPanel.ClearDurationLabel();
         }
 
         private void resetUIState(bool running, bool forceUpdate = false)
@@ -348,12 +327,9 @@ namespace TogglDesktop
             this.descriptionTextBox.SetText("");
             this.descriptionTextBox.ShowOnlyIf(!running);
             this.timeEntryLabel.ResetUIState(running);
-            this.runningEntryInfoPanel.ShowOnlyIf(running);
+            this.runningEntryInfoPanel.ResetUIState(running);
             this.completedProject = new ProjectInfo();
             this.editProjectPanel.Visibility = Visibility.Collapsed;
-            this.billableIcon.Visibility = Visibility.Collapsed;
-            this.tagsIcon.Visibility = Visibility.Collapsed;
-            this.tagsIcon.Tag = "";
         }
 
         #endregion

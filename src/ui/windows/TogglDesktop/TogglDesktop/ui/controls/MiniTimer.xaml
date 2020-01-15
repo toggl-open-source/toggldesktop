@@ -86,7 +86,9 @@
             <toggl:TimeEntryLabel x:Name="timeEntryLabel" x:FieldModifier="private"
                                   Grid.ColumnSpan="2"
                                   Margin="16 4 0 6"
-                                  VerticalPadding="1"/>
+                                  VerticalPadding="1"
+                                  DescriptionLabelMouseDown="onDescriptionLabelMouseDown"
+                                  ProjectLabelMouseDown="onProjectLabelMouseDown" />
 
             <DockPanel Grid.Column="0" Grid.ColumnSpan="2" Name="editModeGrid" x:FieldModifier="private"
                   Margin="0 0 -8 0">
@@ -128,39 +130,9 @@
                                        TextChanged="onDescriptionTextBoxTextChanged"/>
             </DockPanel>
 
-            <StackPanel x:Name="runningEntryInfoPanel" x:FieldModifier="private"
-                        Grid.Column="1" Orientation="Horizontal">
-                <StackPanel.Background>
-                    <LinearGradientBrush MappingMode="Absolute" StartPoint="0 10" EndPoint="20 10">
-                        <GradientStop Offset="0" Color="{DynamicResource Toggl.TransparentWhiteColor}" />
-                        <GradientStop Offset="0.5" Color="{DynamicResource Toggl.WhiteColor.70PercentOpacity}" />
-                        <GradientStop Offset="0.7" Color="{DynamicResource Toggl.WhiteColor}" />
-                    </LinearGradientBrush>
-                </StackPanel.Background>
-                <Separator Visibility="Hidden" Width="14" />
-                <!-- billable, tags -->
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0 0 3 0">
-                    <Canvas Name="tagsIcon" Height="24" Width="24">
-                        <Path Fill="{DynamicResource Toggl.DisabledTextBrush}"
-                              Data="M10.796 7c.947 0 2.256.543 2.926 1.213l4.773 4.774c.672.672.671 1.755.003 2.423l-3.09 3.092c-.661.66-1.753.666-2.423-.004l-4.772-4.774C7.54 13.052 7 11.744 7 10.798V8.714C7 7.766 7.767 7 8.713 7zM9.755 8.378a1.378 1.378 0 1 0 0 2.755 1.378 1.378 0 0 0 0-2.755z"/>
-                    </Canvas>
-                    <Canvas Name="billableIcon" Height="24" Width="24">
-                        <Path Fill="{DynamicResource Toggl.DisabledTextBrush}"
-                              Data="M12.042 4.5c.487 0 .882.316.882.706v2.017c1.513.27 2.647 1.242 2.647 2.697a.7.7 0 0 1-.706.693.7.7 0 0 1-.706-.693c0-.815-.873-1.386-2.117-1.386-1.245 0-2.118.571-2.118 1.386 0 .686.488.965 2.289 1.407 2.434.598 3.358 1.127 3.358 2.753 0 1.455-1.134 2.427-2.647 2.697v2.017c0 .39-.395.706-.882.706-.488 0-.883-.316-.883-.706v-2.017c-1.513-.27-2.647-1.242-2.647-2.697a.7.7 0 0 1 .706-.693.7.7 0 0 1 .706.693c0 .815.873 1.386 2.118 1.386 1.244 0 2.117-.571 2.117-1.386 0-.686-.488-.965-2.289-1.407-2.434-.598-3.358-1.127-3.358-2.753 0-1.455 1.134-2.427 2.647-2.697V5.206c0-.39.395-.706.883-.706z"/>
-                    </Canvas>
-                </StackPanel>
-
-                <Grid x:Name="durationLabelPanel" x:FieldModifier="private"
-                      Width="64"
-                      Background="Transparent"
-                      MouseLeftButtonDown="onTimeLabelMouseDown">
-                    <TextBlock Name="durationLabel" x:FieldModifier="private"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center"
-                               Style="{DynamicResource Toggl.BaseText}"
-                               Text="00:00:00" />
-                </Grid>
-            </StackPanel>
+            <toggl:RunningEntryInfoPanel x:Name="runningEntryInfoPanel" x:FieldModifier="private"
+                                         Grid.Column="1"
+                                         DurationLabelMouseDown="onTimeLabelMouseDown"/>
 
             <!-- start/stop button -->
             <ToggleButton Name="startStopButton" x:FieldModifier="private"
