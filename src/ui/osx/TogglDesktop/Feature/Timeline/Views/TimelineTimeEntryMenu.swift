@@ -10,8 +10,11 @@ import Cocoa
 
 protocol TimelineTimeEntryMenuDelegate: class {
 
-    func shouldChangeFirstEntryStopTime()
-    func shouldChangeLastEntryStartTime()
+    func timelineMenuContinue()
+    func timelineMenuStartEntry()
+    func timelineMenuDelete()
+    func timelineMenuChangeFirstEntryStopTime()
+    func timelineMenuChangeLastEntryStartTime()
 }
 
 final class TimelineTimeEntryMenu: NSMenu {
@@ -70,19 +73,22 @@ extension TimelineTimeEntryMenu {
     }
 
     @objc private func continueMenuOnTap() {
+        menuDelegate?.timelineMenuContinue()
     }
 
     @objc private func startEntryOnTap() {
+        menuDelegate?.timelineMenuStartEntry()
     }
 
     @objc private func deleteEntryOnTap() {
+        menuDelegate?.timelineMenuDelete()
     }
 
     @objc private func changeFirstEntryStopTimeOnTap() {
-        menuDelegate?.shouldChangeFirstEntryStopTime()
+        menuDelegate?.timelineMenuChangeFirstEntryStopTime()
     }
 
     @objc private func changeLastEntryStartTimeOnTap() {
-        menuDelegate?.shouldChangeLastEntryStartTime()
+        menuDelegate?.timelineMenuChangeLastEntryStartTime()
     }
 }
