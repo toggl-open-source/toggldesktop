@@ -10,6 +10,9 @@ import Cocoa
 
 protocol TimelineTimeEntryCellDelegate: class {
 
+    func timeEntryCellShouldContinue(for entry: TimelineTimeEntry, sender: TimelineTimeEntryCell)
+    func timeEntryCellShouldStartNew(for entry: TimelineTimeEntry, sender: TimelineTimeEntryCell)
+    func timeEntryCellShouldDelete(for entry: TimelineTimeEntry, sender: TimelineTimeEntryCell)
     func timeEntryCellShouldChangeFirstEntryStopTime(for entry: TimelineTimeEntry, sender: TimelineTimeEntryCell)
     func timeEntryCellShouldChangeLastEntryStartTime(for entry: TimelineTimeEntry, sender: TimelineTimeEntryCell)
 }
@@ -203,13 +206,28 @@ extension TimelineTimeEntryCell {
 // MARK: TimelineTimeEntryMenuDelegate
 
 extension TimelineTimeEntryCell: TimelineTimeEntryMenuDelegate {
+    
+    func timelineMenuContinue() {
+        guard let timeEntry = timeEntry else { return }
+        delegate?.timeEntryCellShouldContinue(for: timeEntry, sender: self)
+    }
 
-    func shouldChangeFirstEntryStopTime() {
+    func timelineMenuStartEntry() {
+        guard let timeEntry = timeEntry else { return }
+        delegate?.timeEntryCellShouldStartNew(for: timeEntry, sender: self)
+    }
+
+    func timelineMenuDelete() {
+        guard let timeEntry = timeEntry else { return }
+        delegate?.timeEntryCellShouldDelete(for: timeEntry, sender: self)
+    }
+
+    func timelineMenuChangeFirstEntryStopTime() {
         guard let timeEntry = timeEntry else { return }
         delegate?.timeEntryCellShouldChangeFirstEntryStopTime(for: timeEntry, sender: self)
     }
 
-    func shouldChangeLastEntryStartTime() {
+    func timelineMenuChangeLastEntryStartTime() {
         guard let timeEntry = timeEntry else { return }
         delegate?.timeEntryCellShouldChangeLastEntryStartTime(for: timeEntry, sender: self)
     }
@@ -220,6 +238,7 @@ extension TimelineTimeEntryCell: TimelineTimeEntryMenuDelegate {
 extension TimelineTimeEntryCell: NSMenuDelegate {
 
     func menuWillOpen(_ menu: NSMenu) {
+        guard let timeEntry = timeEntry else { return }
         // disable some menu if it's overlapped item
         timeEntryMenu.isOverlapMenu = timeEntry.isOverlap
     }
