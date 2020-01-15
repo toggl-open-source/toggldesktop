@@ -1,4 +1,4 @@
-﻿<toggl:TogglWindow x:Class="TogglDesktop.IdleNotificationWindow"
+﻿<mah:MetroWindow x:Class="TogglDesktop.IdleNotificationWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -6,15 +6,20 @@
         xmlns:toggl="clr-namespace:TogglDesktop"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:behaviors="clr-namespace:TogglDesktop.Behaviors"
+        xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
         mc:Ignorable="d" 
         Height="350" Width="280"
         MinHeight="350" MinWidth="280"
         KeyDown="windowKeyDown"
-        IsToolWindow="True"
         Title="Idle Notification"
         WindowStartupLocation="CenterScreen"
-        Topmost="True"
-        Style="{StaticResource IdleNotification}">
+        Topmost="True">
+    <mah:MetroWindow.Resources>
+        <ResourceDictionary Source="../Resources/DesignUpdate/Controls.xaml" />
+    </mah:MetroWindow.Resources>
+    <mah:MetroWindow.Style>
+        <StaticResource ResourceKey="Toggl.ToolWindow" />
+    </mah:MetroWindow.Style>
     <i:Interaction.Behaviors>
         <behaviors:HideWindowOnClosingBehavior />
     </i:Interaction.Behaviors>
@@ -23,9 +28,6 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-
-        <toggl:TogglChromeDesignTimeConverter
-            Title="Idle Notification" IsToolWindow="True" />
 
         <StackPanel Grid.Row="0" Margin="10">
             <TextBlock Text="You have been idle since 12:34:56"
@@ -52,4 +54,4 @@
                     Click="onDiscardContinueClick"/>
         </StackPanel>
     </Grid>
-</toggl:TogglWindow>
+</mah:MetroWindow>
