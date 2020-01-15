@@ -126,8 +126,7 @@
                                        Height="Auto"
                                        MinHeight="28"
                                        MaxHeight="44"
-                                       Style="{StaticResource Toggl.Timer.DescriptionTextBox}"
-                                       TextChanged="onDescriptionTextBoxTextChanged"/>
+                                       Style="{StaticResource Toggl.Timer.DescriptionTextBox}"/>
             </DockPanel>
 
             <toggl:RunningEntryInfoPanel x:Name="runningEntryInfoPanel" x:FieldModifier="private"
