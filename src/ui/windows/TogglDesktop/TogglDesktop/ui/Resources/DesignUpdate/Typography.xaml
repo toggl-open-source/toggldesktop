@@ -16,6 +16,9 @@
         <Setter Property="FontSize" Value="24" />
         <Setter Property="Foreground" Value="{DynamicResource Toggl.TitleTextBrush}" />
     </Style>
+    <Style TargetType="TextBlock" x:Key="Toggl.SubtitleText" BasedOn="{StaticResource Toggl.Text}">
+        <Setter Property="FontSize" Value="20" />
+    </Style>
     <Style TargetType="TextBlock" x:Key="Toggl.BaseText" BasedOn="{StaticResource Toggl.Text}">
         <Setter Property="FontWeight" Value="SemiBold" />
         <Setter Property="FontSize" Value="14" />
