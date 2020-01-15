@@ -177,7 +177,7 @@ bool_t toggl_set_settings_show_touch_bar(
 
 bool_t toggl_set_settings_active_tab(
     void *context,
-    const int8_t active_tab) {
+    const uint8_t active_tab) {
     return toggl::noError == app(context)->SetSettingsActiveTab(active_tab);
 }
 
@@ -1418,7 +1418,7 @@ bool_t toggl_get_show_touch_bar(
     return app(context)->GetShowTouchBar();
 }
 
-int8_t toggl_get_active_tab(
+uint8_t toggl_get_active_tab(
     void *context) {
     return app(context)->GetActiveTab();
 }

@@ -129,7 +129,7 @@ class TOGGL_INTERNAL_EXPORT Database {
 
     error SetSettingsShowTouchBar(const bool &show_touch_bar);
 
-    error SetSettingsActiveTab(const int8_t &active_tab);
+    error SetSettingsActiveTab(const uint8_t &active_tab);
 
     error SetSettingsRemindTimes(
         const std::string &remind_starts,
@@ -161,7 +161,7 @@ class TOGGL_INTERNAL_EXPORT Database {
 
     error GetShowTouchBar(bool *result);
 
-    error GetActiveTab(int8_t *result);
+    error GetActiveTab(uint8_t *result);
 
     error SetWindowMaximized(
         const bool value);

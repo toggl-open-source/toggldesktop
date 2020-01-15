@@ -79,7 +79,7 @@ class TOGGL_INTERNAL_EXPORT Settings : public BaseModel {
     Poco::Int64 pomodoro_break_minutes;
     bool stop_entry_on_shutdown_sleep;
     bool show_touch_bar;
-    Poco::Int8 active_tab;
+    Poco::UInt8 active_tab;
 
     bool IsSame(const Settings &other) const;
 

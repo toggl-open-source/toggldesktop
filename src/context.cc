@@ -2066,7 +2066,7 @@ error Context::SetSettingsShowTouchBar(const bool show_touch_bar) {
         db()->SetSettingsShowTouchBar(show_touch_bar));
 }
 
-error Context::SetSettingsActiveTab(const int8_t active_tab) {
+error Context::SetSettingsActiveTab(const uint8_t active_tab) {
     return applySettingsSaveResultToUI(
         db()->SetSettingsActiveTab(active_tab));
 }
@@ -2196,8 +2196,8 @@ bool Context::GetShowTouchBar() {
     return value;
 }
 
-int8_t Context::GetActiveTab() {
-    int8_t value(0);
+uint8_t Context::GetActiveTab() {
+    uint8_t value(0);
     displayError(db()->GetActiveTab(&value));
     return value;
 }

@@ -649,7 +649,7 @@ error Database::GetShowTouchBar(bool *result) {
     return getSettingsValue("show_touch_bar", result);
 }
 
-error Database::GetActiveTab(int8_t *result) {
+error Database::GetActiveTab(uint8_t *result) {
     return getSettingsValue("active_tab", result);
 }
 
@@ -878,7 +878,7 @@ error Database::SetSettingsShowTouchBar(const bool &show_touch_bar) {
     return setSettingsValue("show_touch_bar", show_touch_bar);
 }
 
-error Database::SetSettingsActiveTab(const int8_t &active_tab) {
+error Database::SetSettingsActiveTab(const uint8_t &active_tab) {
     return setSettingsValue("active_tab", active_tab);
 }
 
