@@ -144,7 +144,15 @@ class TimelineData {
     }
 
     func startNewFromEnd(_ timeEntry: TimelineTimeEntry) {
-        NotificationCenter.default.post(name: Notification.Name(kStarTimeEntryWithStartTime), object: timeEntry.timeEntry.ended)
+        // Start a running TE if the TE is today
+        if timeEntry.isToday() {
+            let startTime = timeEntry.end + 1
+            guard let guid = DesktopLibraryBridge.shared().starNewTimeEntry(atStarted: 0, ended: 0) else { return }
+            DesktopLibraryBridge.shared().updateTimeEntryWithStart(atTimestamp: startTime, guid: guid)
+        } else {
+            // Create entry and open Editor
+            NotificationCenter.default.post(name: Notification.Name(kStarTimeEntryWithStartTime), object: timeEntry.timeEntry.ended)
+        }
     }
 
     func delete(_ timeEntry: TimelineTimeEntry) {
