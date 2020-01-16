@@ -223,6 +223,9 @@
     <Compile Include="ui\controls\ProjectColorPicker.xaml.cs">
       <DependentUpon>ProjectColorPicker.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ui\controls\ProjectLabel.xaml.cs">
+      <DependentUpon>ProjectLabel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ui\controls\ProjectTextBox.cs" />
     <Compile Include="ui\controls\TimeEntryCellContextMenuCommands.cs" />
     <Compile Include="ui\controls\TimeEntryCellDayHeader.xaml.cs">
@@ -238,6 +241,7 @@
     </Compile>
     <Compile Include="ui\Converters\AndConverter.cs" />
     <Compile Include="ui\Converters\EmptyStringToCollapsedConverter.cs" />
+    <Compile Include="ui\Converters\StringPrependConverter.cs" />
     <Compile Include="ui\Converters\StringToBrushConverter.cs" />
     <Compile Include="ui\Converters\StringToUpperConverter.cs" />
     <Compile Include="ui\Converters\BytesToStringConverter.cs" />
@@ -615,6 +619,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ui\controls\ProjectLabel.xaml" />
     <Page Include="ui\controls\SyncingIndicator.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -668,7 +673,7 @@
     <Page Include="ui\Resources\DesignUpdate\HotKeyBox.xaml" />
     <Page Include="ui\Resources\DesignUpdate\Hyperlink.xaml" />
     <Page Include="ui\Resources\DesignUpdate\CheckBox.xaml" />
-    <Page Include="ui\Resources\DesignUpdate\Logos.xaml" />
+    <Page Include="ui\Resources\DesignUpdate\Icons.xaml" />
     <Page Include="ui\Resources\DesignUpdate\MahApps.Overrides.xaml" />
     <Page Include="ui\Resources\DesignUpdate\PasswordBox.xaml" />
     <Page Include="ui\Resources\DesignUpdate\RadioButton.xaml" />
@@ -692,10 +697,6 @@
     <Page Include="ui\Resources\Themes\ColorScheme\Light.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ui\Resources\TimerStyles.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="ui\Resources\SharedStyles.xaml">
       <Generator>MSBuild:Compile</Generator>

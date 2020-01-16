@@ -41,9 +41,16 @@
     <Color x:Key="Toggl.ErrorColor">#FF3B30</Color>
     <Color x:Key="Toggl.ErrorMessageBackgroundColor">#E20505</Color>
 
+    <!-- derived colors: -->
+    <Color x:Key="Toggl.WhiteColor.70PercentOpacity">#B2242424</Color>
+    <Color x:Key="Toggl.TransparentWhiteColor">#00242424</Color>
+    <Color x:Key="Toggl.FivePercentBlackColor">#2D2D2D</Color>
+    <Color x:Key="Toggl.TransparentBlackColor">#002D2D2D</Color>
+
     <SolidColorBrush x:Key="Toggl.SelectionElements.Background" Color="{StaticResource Toggl.SelectionElements.BackgroundColor}" po:Freeze="True" />
     <SolidColorBrush x:Key="Toggl.SelectionElements.Border" Color="{StaticResource Toggl.Grayish1Color}" po:Freeze="True" />
-    <SolidColorBrush x:Key="Toggl.SelectionElements.Disabled.Background" Color="{StaticResource Toggl.BlackColor}" Opacity="0.05" po:Freeze="True" />
+    <!-- <SolidColorBrush x:Key="Toggl.SelectionElements.Disabled.Background" Color="{StaticResource Toggl.BlackColor}" Opacity="0.05" po:Freeze="True" /> -->
+    <SolidColorBrush x:Key="Toggl.SelectionElements.Disabled.Background" Color="{StaticResource Toggl.FivePercentBlackColor}" po:Freeze="True" />
     <SolidColorBrush x:Key="Toggl.TextBox.MouseOverBorder" Color="{StaticResource Toggl.GrayColor}" po:Freeze="True" />
     <SolidColorBrush x:Key="Toggl.ComboBox.HoverBackground" Color="#0DD6D6D6" po:Freeze="True" />
     <SolidColorBrush x:Key="Toggl.TitleTextBrush" Color="{StaticResource Toggl.BlackColor}" po:Freeze="True" />

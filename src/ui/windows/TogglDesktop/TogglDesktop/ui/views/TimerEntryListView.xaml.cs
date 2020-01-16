@@ -25,6 +25,8 @@ namespace TogglDesktop
 
         protected override void OnInitialized(EventArgs e)
         {
+            // need to use code behind because binding to child elements won't work
+            // TODO: find a way to express this in XAML
             this.MinHeight = this.Timer.Height;
             this.MinWidth = this.Timer.MinWidth;
 

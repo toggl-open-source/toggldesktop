@@ -166,21 +166,18 @@ namespace TogglDesktop
 
             if (item.ProjectID != 0)
             {
-                this.projectLabel.Text = string.IsNullOrEmpty(item.ProjectLabel) ? "" : "• " + item.ProjectLabel;
-                this.projectLabel.Foreground = Utils.ProjectColorBrushFromString(item.ProjectColor);
-
-                setOptionalTextBlockText(this.taskLabel, string.IsNullOrEmpty(item.TaskLabel) ? "" : item.TaskLabel + " -");
-                setOptionalTextBlockText(this.clientLabel, item.ClientLabel);
-
-                this.projectGridRow.Height = new GridLength(1, GridUnitType.Star);
-                this.cancelProjectSelectionButton.Visibility = Visibility.Visible;
+                this.editProjectPanel.Visibility = Visibility.Visible;
+                this.editModeProjectLabel.ProjectName = item.ProjectLabel;
+                this.editModeProjectLabel.Color = Utils.ProjectColorBrushFromString(item.ProjectColor);
+                this.editModeProjectLabel.TaskName = item.TaskLabel;
+                this.editModeProjectLabel.ClientName = item.ClientLabel;
             }
             else
             {
                 this.clearSelectedProject();
             }
 
-            this.billabeIcon.ShowOnlyIf(item.Billable);
+            this.billableIcon.ShowOnlyIf(item.Billable);
             this.tagsIcon.ShowOnlyIf(!string.IsNullOrEmpty(item.Tags));
             this.tagsIcon.Tag = item.Tags;
         }
@@ -192,9 +189,9 @@ namespace TogglDesktop
 
         private void clearSelectedProject()
         {
-            this.projectGridRow.Height = new GridLength(0);
             this.completedProject = new ProjectInfo();
-            this.taskLabel.Visibility = Visibility.Collapsed;
+            this.projectLabel.Clear();
+            this.editProjectPanel.Visibility = Visibility.Collapsed;
         }
 
         private void onManualAddButtonClick(object sender, RoutedEventArgs e)
@@ -222,7 +219,7 @@ namespace TogglDesktop
 
             if (this.manualPanel.IsVisible)
             {
-                this.manuelAddButton.Focus();
+                this.manualAddButton.Focus();
             }
             else if (this.descriptionTextBox.IsVisible)
             {
@@ -276,8 +273,7 @@ namespace TogglDesktop
         {
             using (Performance.Measure("starting time entry from timer"))
             {
-                var durationText = this.durationTextBox.Text;
-                var billable = (this.billabeIcon.Visibility == Visibility.Visible);
+                var billable = (this.billableIcon.Visibility == Visibility.Visible);
                 var tagsString = (this.tagsIcon.Tag != null) ? this.tagsIcon.Tag.ToString() : "";
 
                 var guid = Toggl.Start(
@@ -289,11 +285,6 @@ namespace TogglDesktop
                     tagsString,
                     this.PreventOnApp
                     );
-
-                if (!string.IsNullOrEmpty(guid))
-                {
-                    Toggl.SetTimeEntryDuration(guid, durationText);
-                }
 
                 if (billable)
                 {
@@ -318,20 +309,29 @@ namespace TogglDesktop
         {
             this.resetUIState(true);
 
-            this.descriptionLabel.Text = item.Description == "" ? "(no description)" : item.Description;
-            this.projectLabel.Text = string.IsNullOrEmpty(item.ProjectLabel) ? "" : "• " + item.ProjectLabel;
-            setOptionalTextBlockText(this.clientLabel, item.ClientLabel);
-            setOptionalTextBlockText(this.taskLabel, string.IsNullOrEmpty(item.TaskLabel) ? "" : item.TaskLabel + " -");
+            this.descriptionLabel.Text = item.Description;
+            this.noDescriptionLabel.ShowOnlyIf(descriptionLabel.Text.IsNullOrEmpty());
 
-            this.timeDisplayGrid.ToolTip = "started at " + item.StartTimeString;
+            this.projectLabel.ProjectName = item.ProjectLabel;
+            this.projectLabel.TaskName = item.TaskLabel;
+            this.projectLabel.ClientName = item.ClientLabel;
+            this.projectLabel.Color = Utils.ProjectColorBrushFromString(item.Color);
 
-            this.projectLabel.Foreground = Utils.ProjectColorBrushFromString(item.Color);
+            if (item.Description.IsNullOrEmpty() && item.ProjectLabel.IsNullOrEmpty())
+            {
+                this.projectLabel.Visibility = Visibility.Collapsed;
+                this.noDescriptionLabel.Text = "+ Add details";
+            }
+            else
+            {
+                this.projectLabel.Visibility = Visibility.Visible;
+                this.noDescriptionLabel.Text = "+ Add description";
+            }
 
-            this.billabeIcon.ShowOnlyIf(item.Billable);
+            this.durationLabelPanel.ToolTip = "started at " + item.StartTimeString;
+
+            this.billableIcon.ShowOnlyIf(item.Billable);
             this.tagsIcon.ShowOnlyIf(!string.IsNullOrEmpty(item.Tags));
-
-            if (!string.IsNullOrEmpty(item.ProjectLabel))
-                this.projectGridRow.Height = new GridLength(1, GridUnitType.Star);
 
             this.setRunningDurationLabels();
         }
@@ -339,22 +339,20 @@ namespace TogglDesktop
         private void setRunningDurationLabels()
         {
             var s = Toggl.FormatDurationInSecondsHHMMSS(this.runningTimeEntry.DurationInSeconds);
-
             this.setRunningDurationLabels(s);
         }
 
         private void setRunningDurationLabels(string s)
         {
-            this.durationLabelRight.Text = s;
+            this.durationLabel.Text = s;
         }
         
         private void setUIToStoppedState()
         {
             this.resetUIState(false);
 
-            this.timeDisplayGrid.ToolTip = null;
-            this.descriptionLabel.Text = "What are you doing?";
-            this.durationLabelRight.Text = "00:00:00";
+            this.durationLabelPanel.ToolTip = null;
+            this.durationLabel.Text = "00:00:00";
         }
 
         private void resetUIState(bool running, bool forceUpdate = false)
@@ -369,16 +367,15 @@ namespace TogglDesktop
             this.isRunning = running;
             this.startStopButton.IsChecked = running;
             this.descriptionTextBox.SetText("");
-            this.durationTextBox.SetText("");
             this.descriptionTextBox.ShowOnlyIf(!running);
-            this.durationTextBox.ShowOnlyIf(!running);
-            this.iconPanel.ShowOnlyIf(running);
-            this.projectGridRow.Height = new GridLength(0);
+            this.projectLabel.ShowOnlyIf(running);
+            this.descriptionLabel.ShowOnlyIf(running);
+            this.noDescriptionLabel.Text = "+ Add description";
+            this.noDescriptionLabel.ShowOnlyIf(running && descriptionLabel.Text.IsNullOrEmpty());
+            this.runningEntryInfoPanel.ShowOnlyIf(running);
             this.completedProject = new ProjectInfo();
-            this.cancelProjectSelectionButton.Visibility = Visibility.Collapsed;
-            this.taskLabel.Visibility = Visibility.Collapsed;
-
-            this.billabeIcon.Visibility = Visibility.Collapsed;
+            this.editProjectPanel.Visibility = Visibility.Collapsed;
+            this.billableIcon.Visibility = Visibility.Collapsed;
             this.tagsIcon.Visibility = Visibility.Collapsed;
             this.tagsIcon.Tag = "";
         }

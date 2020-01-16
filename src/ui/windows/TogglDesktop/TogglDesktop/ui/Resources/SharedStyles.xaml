@@ -15,9 +15,9 @@
         TileMode="Tile" Stretch="UniformToFill"
         Viewport="0 0 634 822" ViewportUnits="Absolute"/>
 
-    <FontFamily x:Key="DefaultFont">/TogglDesktop;component/Resources/Fonts/#Roboto, Segoe UI</FontFamily>
+    <FontFamily x:Key="DefaultFont">Segoe UI</FontFamily>
 
-    <sys:Double x:Key="TimerHeight">50</sys:Double>
+    <sys:Double x:Key="TimerHeight">68</sys:Double>
 
     <sys:Double x:Key="EditViewMarginH">12</sys:Double>
     <sys:Double x:Key="EditViewMarginV">40</sys:Double>
