@@ -1419,8 +1419,15 @@ void User::CompressTimeline() {
     }
 }
 
-std::vector<TimelineEvent> User::CompressedTimeline(
-    const Poco::LocalDateTime *date) const {
+std::vector<TimelineEvent> User::CompressedTimelineForUI(const Poco::LocalDateTime *date) const {
+    return CompressedTimeline(date, false);
+}
+
+std::vector<TimelineEvent> User::CompressedTimelineForUpload(const Poco::LocalDateTime *date) const {
+    return CompressedTimeline(date, true);
+}
+
+std::vector<TimelineEvent> User::CompressedTimeline(const Poco::LocalDateTime *date, bool is_for_upload) const {
     std::vector<TimelineEvent> list;
     for (std::vector<TimelineEvent *>::const_iterator i =
         related.TimelineEvents.begin();
@@ -1428,7 +1435,13 @@ std::vector<TimelineEvent> User::CompressedTimeline(
             ++i) {
         TimelineEvent *event = *i;
         poco_check_ptr(event);
+
+        // Skip if this event is deleted or uploaded
         if (event->DeletedAt() > 0) {
+            continue;
+        }
+
+        if (is_for_upload && event->Uploaded()) {
             continue;
         }
 

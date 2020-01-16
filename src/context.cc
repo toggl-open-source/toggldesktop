@@ -855,7 +855,7 @@ void Context::updateUI(const UIElements &what) {
         if (what.display_timeline && user_) {
             // Get Timeline data
             Poco::LocalDateTime date(UI()->TimelineDateAt());
-            timeline = user_->CompressedTimeline(&date);
+            timeline = user_->CompressedTimelineForUI(&date);
 
             // Get a sorted list of time entries
             std::vector<TimeEntry *> time_entries =
@@ -4615,7 +4615,7 @@ error Context::CreateCompressedTimelineBatchForUpload(TimelineBatch *batch) {
             return displayError(err);
         }
 
-        batch->SetEvents(user_->CompressedTimeline());
+        batch->SetEvents(user_->CompressedTimelineForUpload(nullptr));
         batch->SetUserID(user_->ID());
         batch->SetAPIToken(user_->APIToken());
         batch->SetDesktopID(db_->DesktopID());
