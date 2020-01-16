@@ -93,4 +93,11 @@ final class TimelineTimeEntry: TimelineBaseTimeEntry {
         super.init(start: timeEntry.started.timeIntervalSince1970,
                    end: timeEntry.ended.timeIntervalSince1970)
     }
+
+    // MARK: Public
+
+    func isToday() -> Bool {
+        guard let date = timeEntry.ended else { return false }
+        return Calendar.current.isDateInToday(date)
+    }
 }
