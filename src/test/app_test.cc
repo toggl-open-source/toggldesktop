@@ -174,7 +174,7 @@ TEST(User, CreateCompressedTimelineBatchForUpload) {
     db.instance()->SaveUser(&user, true, &changes);
 
     user.CompressTimeline();
-    std::vector<TimelineEvent> timeline_events = user.CompressedTimeline();
+    std::vector<TimelineEvent> timeline_events = user.CompressedTimelineForUpload();
 
     if (timeline_events.size() != 1) {
         std::cerr << "user.related.TimelineEvents:" << std::endl;
@@ -185,7 +185,7 @@ TEST(User, CreateCompressedTimelineBatchForUpload) {
             std::cerr << ev->String() << std::endl;
         }
 
-        std::cerr << "user.CompressedTimeline:" << std::endl;
+        std::cerr << "user.CompressedTimelineForUpload:" << std::endl;
         for (std::vector<TimelineEvent>::const_iterator it =
             timeline_events.begin();
                 it != timeline_events.end(); it++) {
@@ -199,7 +199,7 @@ TEST(User, CreateCompressedTimelineBatchForUpload) {
     // Compress some more, for fun and profit
     for (int i = 0; i < 100; i++) {
         user.CompressTimeline();
-        timeline_events = user.CompressedTimeline();
+        timeline_events = user.CompressedTimelineForUpload();
     }
 
     ASSERT_EQ(size_t(1), timeline_events.size());
@@ -226,7 +226,7 @@ TEST(User, CreateCompressedTimelineBatchForUpload) {
     user.MarkTimelineBatchAsUploaded(timeline_events);
 
     // Now, no more events should exist for upload
-    std::vector<TimelineEvent> left_for_upload = user.CompressedTimeline();
+    std::vector<TimelineEvent> left_for_upload = user.CompressedTimelineForUpload();
     ASSERT_EQ(std::size_t(0), left_for_upload.size());
 }
 
