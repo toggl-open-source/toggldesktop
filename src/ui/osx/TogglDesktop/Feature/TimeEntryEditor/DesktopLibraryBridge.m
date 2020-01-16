@@ -238,8 +238,8 @@ void *ctx;
 - (NSString *)starNewTimeEntryAtStarted:(NSTimeInterval)started ended:(NSTimeInterval)ended
 {
 	char *guid = toggl_start(ctx,
-							 @"".UTF8String,
-							 "0",
+							 "",
+							 "",
 							 0,
 							 0,
 							 0,
