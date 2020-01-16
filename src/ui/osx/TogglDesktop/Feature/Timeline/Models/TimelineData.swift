@@ -148,7 +148,12 @@ class TimelineData {
         if timeEntry.isToday() {
             let startTime = timeEntry.end + 1
             guard let guid = DesktopLibraryBridge.shared().starNewTimeEntry(atStarted: 0, ended: 0) else { return }
-            DesktopLibraryBridge.shared().updateTimeEntryWithStart(atTimestamp: startTime, guid: guid)
+
+            // Only set start time if it's not the future
+            // Otherwise, the library code gets buggy
+            if startTime < Date().timeIntervalSince1970 {
+                DesktopLibraryBridge.shared().updateTimeEntryWithStart(atTimestamp: startTime, guid: guid)
+            }
         } else {
             // Create entry and open Editor
             NotificationCenter.default.post(name: Notification.Name(kStarTimeEntryWithStartTime), object: timeEntry.timeEntry.ended)
