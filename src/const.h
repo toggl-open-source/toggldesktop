@@ -25,7 +25,7 @@
 #define kTimelineChunkSeconds 900
 #define kEnterpriseInstall false
 #define kDebianPackage (TOGGL_BUILD_TYPE == std::string("deb"))
-#define kTimelineUploadIntervalSeconds 300
+#define kTimelineUploadIntervalSeconds 60
 #define kTimelineUploadMaxBackoffSeconds (kTimelineUploadIntervalSeconds * 10)  // NOLINT
 #define kMaxFileSize 5242880  // 5MB
 #define kMaxDurationSeconds (999 * 3600)
