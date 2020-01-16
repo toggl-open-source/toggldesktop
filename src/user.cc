@@ -1441,7 +1441,7 @@ std::vector<TimelineEvent> User::CompressedTimeline(const Poco::LocalDateTime *d
             continue;
         }
 
-        if (is_for_upload && event->Uploaded()) {
+        if (is_for_upload && !event->VisibleToUser()) {
             continue;
         }
 
