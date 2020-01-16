@@ -198,7 +198,7 @@ class TOGGL_INTERNAL_EXPORT User : public BaseModel {
     void CompressTimeline();
 
     std::vector<TimelineEvent> CompressedTimelineForUI(const Poco::LocalDateTime *date) const;
-    std::vector<TimelineEvent> CompressedTimelineForUpload(const Poco::LocalDateTime *date) const;
+    std::vector<TimelineEvent> CompressedTimelineForUpload(const Poco::LocalDateTime *date = nullptr) const;
 
     error UpdateJSON(
         std::vector<TimeEntry *> * const,

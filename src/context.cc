@@ -4615,7 +4615,7 @@ error Context::CreateCompressedTimelineBatchForUpload(TimelineBatch *batch) {
             return displayError(err);
         }
 
-        batch->SetEvents(user_->CompressedTimelineForUpload(nullptr));
+        batch->SetEvents(user_->CompressedTimelineForUpload());
         batch->SetUserID(user_->ID());
         batch->SetAPIToken(user_->APIToken());
         batch->SetDesktopID(db_->DesktopID());
