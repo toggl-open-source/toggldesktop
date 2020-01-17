@@ -87,6 +87,7 @@
                                   Grid.ColumnSpan="2"
                                   Margin="16 4 0 6"
                                   VerticalPadding="1"
+                                  CompactDescription="True"
                                   DescriptionLabelMouseDown="onDescriptionLabelMouseDown"
                                   ProjectLabelMouseDown="onProjectLabelMouseDown" />
 
