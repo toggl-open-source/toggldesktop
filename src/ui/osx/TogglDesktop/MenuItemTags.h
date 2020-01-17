@@ -18,5 +18,4 @@ static NSInteger const kMenuItemTagEdit = 10;
 static NSInteger const kMenuItemTagRecordTimeline = 11;
 static NSInteger const kMenuItemTagMode = 12;
 static NSInteger const kMenuItemTagSendFeedBack = 13;
-static NSInteger const kMenuItemTagShowTimelineData = 14;
 static NSInteger const kMenuItemTagHideTimelineData = 15;
