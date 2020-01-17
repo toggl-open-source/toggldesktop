@@ -5,8 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:toggl="clr-namespace:TogglDesktop"
              mc:Ignorable="d"  
-             d:DesignHeight="300" d:DesignWidth="300">
-    <StackPanel Background="{StaticResource ViewBackgroundLight}">
+             d:DesignHeight="300" d:DesignWidth="300"
+             Background="{StaticResource ViewBackgroundLight}">
+    <StackPanel>
         <TextBlock TextWrapping="Wrap"
                    Name="TopText"
                    Margin="20,40,20,0"

@@ -8,7 +8,8 @@
              d:DesignWidth="500"
              MinWidth="300"
              Height="{StaticResource TimerHeight}"
-             Focusable="True">
+             Focusable="True"
+             Background="{DynamicResource Toggl.CardBackground}">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
