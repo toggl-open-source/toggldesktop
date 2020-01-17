@@ -27,6 +27,21 @@ namespace TogglDesktop
             }
         }
 
+        private bool _compactDescription;
+
+        public bool CompactDescription
+        {
+            get => _compactDescription;
+            set
+            {
+                _compactDescription = value;
+                descriptionLabel.LineHeight = 16;
+                descriptionLabel.LineStackingStrategy = LineStackingStrategy.BlockLineHeight;
+                noDescriptionLabel.LineHeight = 16;
+                noDescriptionLabel.LineStackingStrategy = LineStackingStrategy.BlockLineHeight;
+            }
+        }
+
         public void SetTimeEntry(Toggl.TogglTimeEntryView item)
         {
             this.descriptionLabel.Text = item.Description;
