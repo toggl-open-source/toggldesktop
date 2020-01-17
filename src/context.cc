@@ -2511,6 +2511,15 @@ error Context::Login(
                 return displayError(err);
             }
         }
+
+        if ("production" == environment_) {
+            if (password.compare("google_access_token") == 0) {
+                analytics_.TrackLoginWithGoogle(db_->AnalyticsClientID());
+            } else {
+                analytics_.TrackLoginWithUsernamePassword(db_->AnalyticsClientID());
+            }
+        }
+
         overlay_visible_ = false;
         return displayError(save(false));
     } catch(const Poco::Exception& exc) {
@@ -2842,6 +2851,7 @@ TimeEntry *Context::Start(
     if ("production" == environment_) {
         analytics_.TrackAutocompleteUsage(db_->AnalyticsClientID(),
                                           task_id || project_id);
+        analytics_.TrackStartTimeEntry(db_->AnalyticsClientID());
     }
 
     OpenTimeEntryList();
@@ -2909,6 +2919,10 @@ void Context::OpenTimeEntryEditor(
 
         render.open_time_entry_list = true;
         render.display_time_entries = true;
+    }
+
+    if ("production" == environment_) {
+        analytics_.TrackEditTimeEntry(db_->AnalyticsClientID());
     }
 
     updateUI(render);
@@ -3079,6 +3093,11 @@ error Context::DeleteTimeEntryByGUID(const std::string &GUID) {
     }
     te->ClearValidationError();
     te->Delete();
+
+    if ("production" == environment_) {
+        analytics_.TrackDeleteTimeEntry(db_->AnalyticsClientID());
+    }
+
     return displayError(save(true));
 }
 
