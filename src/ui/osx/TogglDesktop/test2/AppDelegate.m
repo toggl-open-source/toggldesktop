@@ -977,9 +977,6 @@ void *ctx;
 	[menu addItemWithTitle:@"Preferences"
 					action:@selector(onPreferencesMenuItem:)
 			 keyEquivalent:@""];
-	[menu addItemWithTitle:@"Record Timeline"
-					action:@selector(onToggleRecordTimeline:)
-			 keyEquivalent:@""].tag = kMenuItemTagRecordTimeline;
 	self.manualModeMenuItem = [menu addItemWithTitle:@"Use manual mode"
 											  action:@selector(onModeChange:)
 									   keyEquivalent:@"d"];
@@ -1057,12 +1054,6 @@ void *ctx;
 - (IBAction)onSyncMenuItem:(id)sender
 {
 	toggl_sync(ctx);
-}
-
-- (IBAction)onToggleRecordTimeline:(id)sender
-{
-    BOOL isEnabled = !toggl_timeline_is_recording_enabled(ctx);
-    [[DesktopLibraryBridge shared] enableTimelineRecord:isEnabled];
 }
 
 - (IBAction)onModeChange:(id)sender
@@ -1438,24 +1429,6 @@ const NSString *appName = @"osx_native_app";
 			if (!self.lastKnownUserID)
 			{
 				return NO;
-			}
-			break;
-		case kMenuItemTagRecordTimeline :
-			if (!self.lastKnownUserID)
-			{
-				NSMenuItem *menuItem = (NSMenuItem *)anItem;
-				[menuItem setState:NSOffState];
-				return NO;
-			}
-			if (toggl_timeline_is_recording_enabled(ctx))
-			{
-				NSMenuItem *menuItem = (NSMenuItem *)anItem;
-				[menuItem setState:NSOnState];
-			}
-			else
-			{
-				NSMenuItem *menuItem = (NSMenuItem *)anItem;
-				[menuItem setState:NSOffState];
 			}
 			break;
 		default :
