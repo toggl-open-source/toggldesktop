@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" d:DesignWidth="300"
              Background="#F7F7F7"
+             Margin="4"
              AllowDrop="True">
 
     <StackPanel>

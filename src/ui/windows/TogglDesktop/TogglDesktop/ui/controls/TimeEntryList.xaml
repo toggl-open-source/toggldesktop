@@ -62,16 +62,16 @@
                       HorizontalScrollBarVisibility="Disabled"
                       HorizontalAlignment="Stretch"
                       SizeChanged="onSizeChanged"
-                      Background="#f7f7f7"
+                      Background="Transparent"
                       Style="{StaticResource CustomSrollViewer}"
                       >
-            <Grid Background="{StaticResource ViewBackgroundLight}"> 
+            <Grid Background="Transparent">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 
-                <VirtualizingStackPanel Name="panel" x:FieldModifier="private" HorizontalAlignment="Stretch" Grid.Row="0" Margin="0 0 0 10">
+                <VirtualizingStackPanel Name="panel" x:FieldModifier="private" HorizontalAlignment="Stretch" Grid.Row="0" Margin="4">
 
                 </VirtualizingStackPanel>
                 <Rectangle x:Name="highlightRectangleTop" x:FieldModifier="private" Grid.Row="0"
