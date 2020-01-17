@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -13,6 +14,7 @@ using System.Windows.Media.Animation;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Oauth2.v2;
 using TogglDesktop.Diagnostics;
+using Brush = System.Windows.Media.Brush;
 
 namespace TogglDesktop
 {
@@ -28,6 +30,8 @@ namespace TogglDesktop
         {
             InitializeComponent();
         }
+
+        public Brush TitleBarBrush => this.Background;
         #region setup
         public void setType(int type)
         {

@@ -20,6 +20,7 @@ using TogglDesktop.Diagnostics;
 using TogglDesktop.Experiments;
 using TogglDesktop.Theming;
 using TogglDesktop.Tutorial;
+using Control = System.Windows.Controls.Control;
 using MenuItem = System.Windows.Controls.MenuItem;
 using MouseEventArgs = System.Windows.Input.MouseEventArgs;
 
@@ -932,12 +933,19 @@ namespace TogglDesktop
             this.closeEditPopup();
 
             this.updateMinimumSize(activeView);
+            this.updateTitleBarBackground(activeView);
         }
 
         private void updateMinimumSize(IMainView activeView)
         {
             this.MinHeight = WindowHeaderHeight + activeView.MinHeight;
             this.MinWidth = activeView.MinWidth;
+        }
+
+        private void updateTitleBarBackground(IMainView activeView)
+        {
+            this.WindowTitleBrush = activeView.TitleBarBrush;
+            this.NonActiveWindowTitleBrush = activeView.TitleBarBrush;
         }
 
         #endregion
