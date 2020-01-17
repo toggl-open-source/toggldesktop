@@ -54,7 +54,8 @@
             </Setter.Value>
         </Setter>
         <Setter Property="WindowTransitionsEnabled" Value="False" />
-        <Setter Property="Background" Value="{DynamicResource Toggl.CardBackground}" />
+        <Setter Property="AllowsTransparency" Value="True" />
+        <Setter Property="Background" Value="Transparent" />
         <Setter Property="ShowMaxRestoreButton" Value="False" />
     </Style>
 

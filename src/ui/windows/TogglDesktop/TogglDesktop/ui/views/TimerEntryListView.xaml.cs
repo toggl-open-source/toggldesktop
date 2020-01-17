@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Media;
 using TogglDesktop.Diagnostics;
 
 namespace TogglDesktop
@@ -21,7 +22,8 @@ namespace TogglDesktop
             Toggl.OnLogin += this.onLogin;
         }
 
-        public double TimerHeight { get { return this.Timer.Height; } }
+        public Brush TitleBarBrush => this.Timer.Background;
+        public double TimerHeight => this.Timer.Height;
 
         protected override void OnInitialized(EventArgs e)
         {
