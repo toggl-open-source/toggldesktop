@@ -8,12 +8,16 @@
 
 import Foundation
 
-class TimelineData {
+final class TimelineData {
 
     enum Section: Int, CaseIterable {
         case timeLabel = 0
         case timeEntry
         case activity
+    }
+
+    struct Constants {
+        static let FillEntryGapMinimum: Double = 600.0 // 10 mins
     }
 
     // MARK: Variables
@@ -232,22 +236,33 @@ extension TimelineData {
 
         // Add empty time entry
         // Only add if there is a gap between two entries
-        if firstRowTEs.count >= 2 {
-            var emptyTimeEntries: [TimelineBaseTimeEntry] = []
-            for (i, item) in firstRowTEs.enumerated() {
+        let sortedFirstRowEntries = firstRowTEs.sorted { (first, second) -> Bool in
+            return first.start < second.start
+        }
+
+        if sortedFirstRowEntries.count >= 2 {
+            var gapEntries: [TimelineBaseTimeEntry] = []
+            for (i, item) in sortedFirstRowEntries.enumerated() {
                 // Stop if the index is end
-                if i == (firstRowTEs.count - 1) {
+                if i == (sortedFirstRowEntries.count - 1) {
                     break
                 }
-                let next = timeEntries[i+1]
-                if (next.start - item.end) >= 600.0 { // Gap is 10 mins
-                    let emptyTimeEntry = TimelineBaseTimeEntry(start: item.end, end: next.start, offset: 60.0)
-                    emptyTimeEntries.append(emptyTimeEntry)
+
+                // Get the next TE
+                let next = sortedFirstRowEntries[i+1]
+
+                // Make sure the gap is bigger the minimum
+                let distance = next.start - item.end
+                if abs(distance) >= Constants.FillEntryGapMinimum {
+                    let start = distance >= 0 ? item.end : next.end
+                    let end = distance >= 0 ? next.start : item.start
+                    let gapEntry = TimelineBaseTimeEntry(start: start, end: end, offset: 60.0)
+                    gapEntries.append(gapEntry)
                 }
             }
 
             // Add
-            timeEntries.append(contentsOf: emptyTimeEntries)
+            timeEntries.append(contentsOf: gapEntries)
         }
     }
 
