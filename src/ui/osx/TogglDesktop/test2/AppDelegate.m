@@ -1425,7 +1425,6 @@ const NSString *appName = @"osx_native_app";
 		case kMenuItemTagOpenBrowser :
 		case kMenuItemTagNew :
 		case kMenuItemTagSendFeedBack :
-		case kMenuItemTagHideTimelineData :
 			if (!self.lastKnownUserID)
 			{
 				return NO;

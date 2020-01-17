@@ -17,4 +17,3 @@ static NSInteger const kMenuItemTagOpenBrowser = 9;
 static NSInteger const kMenuItemTagEdit = 10;
 static NSInteger const kMenuItemTagMode = 12;
 static NSInteger const kMenuItemTagSendFeedBack = 13;
-static NSInteger const kMenuItemTagHideTimelineData = 15;
