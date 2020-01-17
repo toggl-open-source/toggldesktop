@@ -1,6 +1,14 @@
 {
     "versions": [
         {
+            "version": "7.5.16",
+            "rows": [
+                "Fix A Large number of TimelineEvent upload requests hit to Toggl's server"
+            ],
+            "date": "January 17th 2020",
+            "beta": "true"
+        },
+        {
             "version": "7.5.15",
             "rows": [
                 "Fixed crash and unstable Timeline in macOS 10.11 and 10.12",
