@@ -340,11 +340,19 @@ void Analytics::TrackDeleteTimeEntry(const std::string &client_id) {
 }
 
 void Analytics::TrackLoginWithUsernamePassword(const std::string &client_id) {
-    TrackUserAuthentication(client_id, "username_password");
+    TrackUserAuthentication(client_id, "login", "username_password");
 }
 
 void Analytics::TrackLoginWithGoogle(const std::string &client_id) {
-    TrackUserAuthentication(client_id, "google");
+    TrackUserAuthentication(client_id, "login", "google");
+}
+
+void Analytics::TrackSignupWithUsernamePassword(const std::string &client_id) {
+    TrackUserAuthentication(client_id, "signup", "username_password");
+}
+
+void Analytics::TrackSignupWithGoogle(const std::string &client_id) {
+    TrackUserAuthentication(client_id, "signup", "google");
 }
 
 void Analytics::TrackTimeEntryActiity(const std::string &client_id, const std::string &action) {
@@ -353,9 +361,9 @@ void Analytics::TrackTimeEntryActiity(const std::string &client_id, const std::s
     Track(client_id, "time_entry", ss.str());
 }
 
-void Analytics::TrackUserAuthentication(const std::string &client_id, const std::string &action) {
+void Analytics::TrackUserAuthentication(const std::string &client_id, const std::string &action, const std::string &from) {
     std::stringstream ss;
-    ss << "login" << "/" << action;
+    ss << action << "/" << from;
     Track(client_id, "user", ss.str());
 }
 
