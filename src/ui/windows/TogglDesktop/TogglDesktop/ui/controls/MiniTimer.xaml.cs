@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
 using TogglDesktop.AutoCompletion;
@@ -10,7 +9,7 @@ using TogglDesktop.Diagnostics;
 
 namespace TogglDesktop
 {
-    public partial class Timer
+    public partial class MiniTimer
     {
         private readonly DispatcherTimer secondsTimer = new DispatcherTimer();
         private Toggl.TogglTimeEntryView runningTimeEntry;
@@ -18,12 +17,7 @@ namespace TogglDesktop
         private bool isRunning;
         private bool acceptNextUpdate;
 
-        public event EventHandler StartStopClick;
-        public event EventHandler<string> RunningTimeEntrySecondPulse;
-        public event EventHandler FocusTimeEntryList;
-        public event EventHandler<string> DescriptionTextBoxTextChanged;
-
-        public Timer()
+        public MiniTimer()
         {
             this.InitializeComponent();
 
@@ -33,12 +27,10 @@ namespace TogglDesktop
             Toggl.OnRunningTimerState += this.onRunningTimerState;
             Toggl.OnStoppedTimerState += this.onStoppedTimerState;
 
-            this.RunningTimeEntrySecondPulse += this.timerTick;
-
             this.resetUIState(false, true);
         }
 
-        private static bool IsMiniTimer => false;
+        private static bool IsMiniTimer => true;
 
         private void setupSecondsTimer()
         {
@@ -49,9 +41,7 @@ namespace TogglDesktop
                     return;
 
                 var s = Toggl.FormatDurationInSecondsHHMMSS(this.runningTimeEntry.DurationInSeconds);
-
-                if (this.RunningTimeEntrySecondPulse != null)
-                    this.RunningTimeEntrySecondPulse(this, s);
+                this.runningEntryInfoPanel.SetDurationLabel(s);
             };
         }
 
@@ -197,18 +187,6 @@ namespace TogglDesktop
             Toggl.Edit(guid, false, Toggl.Duration);
         }
 
-        protected override void OnPreviewKeyDown(KeyEventArgs e)
-        {
-            if (e.Key == Key.Down && Keyboard.Modifiers == System.Windows.Input.ModifierKeys.Shift)
-            {
-                if (this.FocusTimeEntryList != null)
-                    this.FocusTimeEntryList(this, e);
-                e.Handled = true;
-            }
-
-            base.OnPreviewKeyDown(e);
-        }
-
         protected override void OnGotKeyboardFocus(KeyboardFocusChangedEventArgs e)
         {
             if (!this.IsKeyboardFocused)
@@ -234,9 +212,6 @@ namespace TogglDesktop
 
         private void startStop()
         {
-            if (this.StartStopClick != null)
-                this.StartStopClick(this, EventArgs.Empty);
-
             this.acceptNextUpdate = true;
 
             if (this.isRunning)
@@ -253,9 +228,12 @@ namespace TogglDesktop
         {
             if (this.isRunning)
             {
-                using (Performance.Measure("opening edit view from timer, focussing " + focusedField))
+                if (e.ClickCount == 2)
                 {
-                    Toggl.Edit(this.runningTimeEntry.GUID, false, focusedField);
+                    using (Performance.Measure("opening edit view from timer, focussing " + focusedField))
+                    {
+                        Toggl.Edit(this.runningTimeEntry.GUID, false, focusedField);
+                    }
                 }
                 e.Handled = true;
             }
@@ -290,7 +268,7 @@ namespace TogglDesktop
             }
         }
 
-        #endregion 
+        #endregion
 
         #region updating ui
 
@@ -338,14 +316,6 @@ namespace TogglDesktop
         {
             this.manualPanel.ShowOnlyIf(manualMode);
             this.timerPanel.ShowOnlyIf(!manualMode);
-        }
-
-        private void onDescriptionTextBoxTextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (this.DescriptionTextBoxTextChanged != null)
-            {
-                this.DescriptionTextBoxTextChanged(sender, this.descriptionTextBox.Text);
-            }
         }
     }
 }

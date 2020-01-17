@@ -227,11 +227,20 @@
       <DependentUpon>ProjectLabel.xaml</DependentUpon>
     </Compile>
     <Compile Include="ui\controls\ProjectTextBox.cs" />
+    <Compile Include="ui\controls\RunningEntryInfoPanel.xaml.cs">
+      <DependentUpon>RunningEntryInfoPanel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ui\controls\TimeEntryCellContextMenuCommands.cs" />
     <Compile Include="ui\controls\TimeEntryCellDayHeader.xaml.cs">
       <DependentUpon>TimeEntryCellDayHeader.xaml</DependentUpon>
     </Compile>
     <Compile Include="ui\controls\TimeEntryCellDragImposter.cs" />
+    <Compile Include="ui\controls\MiniTimer.xaml.cs">
+      <DependentUpon>MiniTimer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\controls\TimeEntryLabel.xaml.cs">
+      <DependentUpon>TimeEntryLabel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ui\controls\TogglNotification.cs" />
     <Compile Include="ui\controls\ReminderNotification.xaml.cs">
       <DependentUpon>ReminderNotification.xaml</DependentUpon>
@@ -620,6 +629,7 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ui\controls\ProjectLabel.xaml" />
+    <Page Include="ui\controls\RunningEntryInfoPanel.xaml" />
     <Page Include="ui\controls\SyncingIndicator.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -632,6 +642,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ui\controls\MiniTimer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ui\controls\TimeEntryLabel.xaml" />
     <Page Include="ui\controls\TrayToolTipControl.xaml" />
     <Page Include="ui\Experiments\implementations\Experiment87Screen.xaml">
       <Generator>MSBuild:Compile</Generator>

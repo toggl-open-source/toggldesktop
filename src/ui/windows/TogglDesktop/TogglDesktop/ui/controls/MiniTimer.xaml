@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="TogglDesktop.Timer"
+﻿<UserControl x:Class="TogglDesktop.MiniTimer"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -6,14 +6,13 @@
              xmlns:toggl="clr-namespace:TogglDesktop"
              mc:Ignorable="d" 
              d:DesignWidth="500"
-             MinWidth="300"
-             Height="{StaticResource TimerHeight}"
+             MinHeight="44"
+             MaxHeight="52"
              Focusable="True">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../Resources/DesignUpdate/TextBox.xaml" />
-                <ResourceDictionary Source="../Resources/DesignUpdate/Icons.xaml" />
+                <ResourceDictionary Source="../Resources/DesignUpdate/Controls.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <Style x:Key="Toggl.StartStopButton" TargetType="{x:Type ToggleButton}">
                 <Setter Property="Cursor" Value="Hand" />
@@ -21,10 +20,9 @@
                     <Setter.Value>
                         <ControlTemplate TargetType="{x:Type ToggleButton}">
                             <Grid>
-                                <Ellipse Name="BackgroundEllipse"
-                                         Fill="{DynamicResource Toggl.AccentBrush}"
-                                         Width="36"
-                                         Height="36" />
+                                <Rectangle Name="BackgroundRectangle"
+                                           Fill="{DynamicResource Toggl.AccentBrush}"
+                                           Width="44"/>
                                 <Path Name="StartButton"
                                       Width="36"
                                       Height="36"
@@ -36,26 +34,25 @@
                                       Visibility="Collapsed"
                                       Fill="White"
                                       Data="{StaticResource StopButtonGeometry}"/>
-                                <Ellipse Name="OverlayEllipse"
-                                         Width="36"
-                                         Height="36"
+                                <Rectangle Name="OverlayRectangle"
+                                         Width="44"
                                          Fill="Transparent" />
                             </Grid>
                             <ControlTemplate.Triggers>
                                 <Trigger Property="IsChecked" Value="True">
                                     <Setter TargetName="StopButton" Property="Visibility" Value="Visible" />
                                     <Setter TargetName="StartButton" Property="Visibility" Value="Collapsed" />
-                                    <Setter TargetName="BackgroundEllipse" Property="Fill" Value="{DynamicResource Toggl.ValidationErrorBackground}" />
+                                    <Setter TargetName="BackgroundRectangle" Property="Fill" Value="{DynamicResource Toggl.ValidationErrorBackground}" />
                                 </Trigger>
                                 <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter TargetName="OverlayEllipse" Property="Fill">
+                                    <Setter TargetName="OverlayRectangle" Property="Fill">
                                         <Setter.Value>
                                             <SolidColorBrush Color="Black" Opacity="0.1" />
                                         </Setter.Value>
                                     </Setter>
                                 </Trigger>
                                 <Trigger Property="IsPressed" Value="True">
-                                    <Setter TargetName="OverlayEllipse" Property="Fill">
+                                    <Setter TargetName="OverlayRectangle" Property="Fill">
                                         <Setter.Value>
                                             <SolidColorBrush Color="Black" Opacity="0.2" />
                                         </Setter.Value>
@@ -68,16 +65,15 @@
             </Style>
         </ResourceDictionary>
     </UserControl.Resources>
-    <Grid>
+    <Grid Background="{DynamicResource Toggl.CardBackground}">
         <Grid Name="manualPanel" x:FieldModifier="private" Visibility="Collapsed"
-              Margin="13 13 12 11">
+              Margin="13 0 12 0">
             <Button Name="manualAddButton" x:FieldModifier="private"
                     Style="{DynamicResource Toggl.AddTimeEntryButton}"
                     Click="onManualAddButtonClick">
             </Button>
         </Grid>
         <Grid Name="timerPanel" x:FieldModifier="private"  Visibility="Visible"
-              Margin="0 16 0 14"
               MouseLeftButtonDown="onGridMouseDown"
               KeyDown="onGridKeyDown"
               Background="Transparent">
@@ -89,35 +85,17 @@
 
             <toggl:TimeEntryLabel x:Name="timeEntryLabel" x:FieldModifier="private"
                                   Grid.ColumnSpan="2"
-                                  Margin="16 0 0 0"
-                                  VerticalPadding="2"
+                                  Margin="16 4 0 6"
+                                  VerticalPadding="1"
+                                  CompactDescription="True"
                                   DescriptionLabelMouseDown="onDescriptionLabelMouseDown"
                                   ProjectLabelMouseDown="onProjectLabelMouseDown" />
 
-            <Grid Grid.Column="0" Grid.ColumnSpan="2" Name="editModeGrid" x:FieldModifier="private"
-                  Margin="16 -16 0 -14">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <toggl:ExtendedTextBox x:Name="descriptionTextBox" x:FieldModifier="private"
-                                       Grid.Row="0"
-                                       Padding="5 1"
-                                       Margin="0 6"
-                                       Height="Auto"
-                                       MinHeight="28"
-                                       MaxHeight="32"
-                                       Style="{StaticResource Toggl.Timer.DescriptionTextBox}"
-                                       TextChanged="onDescriptionTextBoxTextChanged"/>
-                <toggl:AutoCompletionPopup x:Name="descriptionAutoComplete" x:FieldModifier="private"
-                                           Grid.Row="0"
-                                           TextBox="{Binding ElementName=descriptionTextBox}"
-                                           Target="{Binding ElementName=editModeGrid}"
-                                           EmptyText="No previous entries found." StaysOpen="False"
-                                           ConfirmCompletion="descriptionAutoComplete_OnConfirmCompletion"/>
-                <Grid Grid.Row="1" x:Name="editProjectPanel" x:FieldModifier="private"
-                           Margin="0 -2 0 6"
-                           Background="{DynamicResource Toggl.SelectionElements.Disabled.Background}">
+            <DockPanel Grid.Column="0" Grid.ColumnSpan="2" Name="editModeGrid" x:FieldModifier="private"
+                  Margin="0 0 -8 0">
+                <Grid x:Name="editProjectPanel" x:FieldModifier="private"
+                      DockPanel.Dock="Bottom"
+                      Background="{DynamicResource Toggl.SelectionElements.Disabled.Background}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
                         <ColumnDefinition Width="8"/>
@@ -139,7 +117,18 @@
                                 IsTabStop="False" Click="cancelProjectSelectionButtonClick"/>
                     </Grid>
                 </Grid>
-            </Grid>
+                <toggl:AutoCompletionPopup x:Name="descriptionAutoComplete" x:FieldModifier="private"
+                                           TextBox="{Binding ElementName=descriptionTextBox}"
+                                           Target="{Binding ElementName=editModeGrid}"
+                                           EmptyText="No previous entries found." StaysOpen="False"
+                                           ConfirmCompletion="descriptionAutoComplete_OnConfirmCompletion"/>
+                <toggl:ExtendedTextBox x:Name="descriptionTextBox" x:FieldModifier="private"
+                                       Padding="5 1"
+                                       Height="Auto"
+                                       MinHeight="28"
+                                       MaxHeight="44"
+                                       Style="{StaticResource Toggl.Timer.DescriptionTextBox}"/>
+            </DockPanel>
 
             <toggl:RunningEntryInfoPanel x:Name="runningEntryInfoPanel" x:FieldModifier="private"
                                          Grid.Column="1"
@@ -148,8 +137,8 @@
             <!-- start/stop button -->
             <ToggleButton Name="startStopButton" x:FieldModifier="private"
                           Grid.Column="2"
+                          Margin="8 0 0 0"
                           Style="{StaticResource Toggl.StartStopButton}"
-                          Margin="8 0 12 0"
                           Click="startStopButtonOnClick"/>
         </Grid>
     </Grid>
