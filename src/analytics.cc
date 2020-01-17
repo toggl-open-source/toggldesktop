@@ -327,4 +327,36 @@ void GoogleAnalyticsSettingsEvent::makeReq() {
     }
 }
 
+void Analytics::TrackStartTimeEntry(const std::string &client_id) {
+    TrackTimeEntryActiity(client_id, "start");
+}
+
+void Analytics::TrackEditTimeEntry(const std::string &client_id) {
+    TrackTimeEntryActiity(client_id, "edit");
+}
+
+void Analytics::TrackDeleteTimeEntry(const std::string &client_id) {
+    TrackTimeEntryActiity(client_id, "delete");
+}
+
+void Analytics::TrackLoginWithUsernamePassword(const std::string &client_id) {
+    TrackUserAuthentication(client_id, "username_password");
+}
+
+void Analytics::TrackLoginWithGoogle(const std::string &client_id) {
+    TrackUserAuthentication(client_id, "google");
+}
+
+void Analytics::TrackTimeEntryActiity(const std::string &client_id, const std::string &action) {
+    std::stringstream ss;
+    ss << "time_entry" << "/" << action;
+    Track(client_id, "time_entry", ss.str());
+}
+
+void Analytics::TrackUserAuthentication(const std::string &client_id, const std::string &action) {
+    std::stringstream ss;
+    ss << "login" << "/" << action;
+    Track(client_id, "user", ss.str());
+}
+
 }  // namespace toggl

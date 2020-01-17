@@ -66,6 +66,12 @@ class Analytics : public Poco::TaskManager {
                        const std::string &os,
                        const toggl::Rectangle rect);
 
+    void TrackStartTimeEntry(const std::string &client_id);
+    void TrackEditTimeEntry(const std::string &client_id);
+    void TrackDeleteTimeEntry(const std::string &client_id);
+    void TrackLoginWithUsernamePassword(const std::string &client_id);
+    void TrackLoginWithGoogle(const std::string &client_id);
+
  private:
     Poco::LocalDateTime settings_sync_date;
 
@@ -73,6 +79,13 @@ class Analytics : public Poco::TaskManager {
                    const std::string &os,
                    const std::string &name,
                    const toggl::Rectangle rect);
+
+    void TrackTimeEntryActiity(const std::string &client_id,
+                               const std::string &action);
+
+
+    void TrackUserAuthentication(const std::string &client_id,
+                                 const std::string &action);
 };
 
 class GoogleAnalyticsEvent : public Poco::Task {
