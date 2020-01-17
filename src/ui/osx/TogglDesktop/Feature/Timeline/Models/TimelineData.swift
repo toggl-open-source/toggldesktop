@@ -207,19 +207,16 @@ extension TimelineData {
 
         // Add empty time entry
         // Only add if there is a gap between two entries
-        if timeEntries.count >= 2 {
+        if firstRowTEs.count >= 2 {
             var emptyTimeEntries: [TimelineBaseTimeEntry] = []
-            for i in 0..<(timeEntries.count - 1) {
-                var current = timeEntries[i]
-                let next = timeEntries[i+1]
-
-                // Get the first column
-                if let previousCurrent = timeEntries[safe: i - 1], current.end < previousCurrent.end {
-                    current = previousCurrent
+            for (i, item) in firstRowTEs.enumerated() {
+                // Stop if the index is end
+                if i == (firstRowTEs.count - 1) {
+                    break
                 }
-
-                if (next.start - current.end) >= 600.0 { // Gap is 10 mins
-                    let emptyTimeEntry = TimelineBaseTimeEntry(start: current.end, end: next.start, offset: 60.0)
+                let next = timeEntries[i+1]
+                if (next.start - item.end) >= 600.0 { // Gap is 10 mins
+                    let emptyTimeEntry = TimelineBaseTimeEntry(start: item.end, end: next.start, offset: 60.0)
                     emptyTimeEntries.append(emptyTimeEntry)
                 }
             }
