@@ -2,6 +2,7 @@
 using System.Reactive.Disposables;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Navigation;
 using System.Windows.Threading;
@@ -149,6 +150,8 @@ namespace TogglDesktop
         {
             return errorMessage == "Invalid e-mail or password!" && ViewModel.SelectedConfirmAction == ConfirmAction.LogIn;
         }
+
+        public Brush TitleBarBrush => this.Background;
 
         #endregion
 
