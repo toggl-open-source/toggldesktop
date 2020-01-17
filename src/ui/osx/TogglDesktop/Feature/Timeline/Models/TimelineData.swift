@@ -235,38 +235,12 @@ extension TimelineData {
         }
 
         // Add empty time entry
-        // Only add if there is a gap between two entries
-        let sortedFirstRowEntries = firstRowTEs.sorted { (first, second) -> Bool in
-            return first.start < second.start
-        }
-
-        if sortedFirstRowEntries.count >= 2 {
-            var gapEntries: [TimelineBaseTimeEntry] = []
-            for (i, item) in sortedFirstRowEntries.enumerated() {
-                // Stop if the index is end
-                if i == (sortedFirstRowEntries.count - 1) {
-                    break
-                }
-
-                // Get the next TE
-                let next = sortedFirstRowEntries[i+1]
-
-                // Make sure the gap is bigger the minimum
-                let distance = next.start - item.end
-                if abs(distance) >= Constants.FillEntryGapMinimum {
-                    let start = distance >= 0 ? item.end : next.end
-                    let end = distance >= 0 ? next.start : item.start
-                    let gapEntry = TimelineBaseTimeEntry(start: start, end: end, offset: 60.0)
-                    gapEntries.append(gapEntry)
-                }
-            }
-
-            // Add
+        if let gapEntries = calculateGapEntry(from: firstRowTEs), !gapEntries.isEmpty {
             timeEntries.append(contentsOf: gapEntries)
         }
     }
 
-    fileprivate func getAllConflictedTimeEntries(at entry: TimelineTimeEntry) -> [TimelineTimeEntry] {
+    private func getAllConflictedTimeEntries(at entry: TimelineTimeEntry) -> [TimelineTimeEntry] {
         // Get all conflicted entry in same group
         return timeEntries
             .filter { $0 is TimelineTimeEntry && $0.group == entry.group }
@@ -276,5 +250,37 @@ extension TimelineData {
             .compactMap { (entry) -> TimelineTimeEntry? in
                 return entry as? TimelineTimeEntry
             }
+    }
+
+    private func calculateGapEntry(from firstRowEntries: [TimelineBaseTimeEntry]) -> [TimelineBaseTimeEntry]? {
+        guard firstRowEntries.count > 1 else { return nil }
+
+        // Sort ASC to make sure it's correct order
+        let sortedEntry = firstRowEntries.sorted { (first, second) -> Bool in
+            return first.start < second.start
+        }
+
+        // Calculate the gap
+        var gapEntries: [TimelineBaseTimeEntry] = []
+        for (i, item) in sortedEntry.enumerated() {
+
+            // Stop if the index is end
+            if i == (sortedEntry.count - 1) {
+                break
+            }
+
+            // Get the next TE
+            let next = sortedEntry[i+1]
+
+            // Make sure the gap is bigger the minimum
+            let distance = next.start - item.end
+            if abs(distance) >= Constants.FillEntryGapMinimum {
+                let start = distance >= 0 ? item.end : next.end
+                let end = distance >= 0 ? next.start : item.start
+                let gapEntry = TimelineBaseTimeEntry(start: start, end: end, offset: 60.0)
+                gapEntries.append(gapEntry)
+            }
+        }
+        return gapEntries
     }
 }
