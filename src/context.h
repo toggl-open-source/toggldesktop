@@ -645,13 +645,13 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     error updateEntryProjects(
         const std::vector<Project *> &projects,
         const std::vector<TimeEntry *> &time_entries);
-    static error signup(
+    error signup(
         TogglClient *https_client,
         const std::string &email,
         const std::string &password,
         std::string *user_data_json,
         const uint64_t country_id);
-    static error signupGoogle(
+    error signupGoogle(
         TogglClient *toggl_client,
         const std::string &access_token,
         std::string *user_data_json,

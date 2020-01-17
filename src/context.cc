@@ -5846,6 +5846,10 @@ error Context::signupGoogle(
         }
 
         *user_data_json = resp.body;
+
+        if ("production" == environment_) {
+            analytics_.TrackSignupWithGoogle(db_->AnalyticsClientID());
+        }
     }
     catch (const Poco::Exception& exc) {
         return exc.displayText();
@@ -5904,6 +5908,10 @@ error Context::signup(
         }
 
         *user_data_json = resp.body;
+
+        if ("production" == environment_) {
+            analytics_.TrackSignupWithUsernamePassword(db_->AnalyticsClientID());
+        }
     } catch(const Poco::Exception& exc) {
         return exc.displayText();
     } catch(const std::exception& ex) {
