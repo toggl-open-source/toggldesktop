@@ -229,6 +229,17 @@
                                     <action selector="zoomOutBtnOnTap:" target="-1" id="Q5Y-dr-37M"/>
                                 </connections>
                             </menuItem>
+                            <menuItem isSeparatorItem="YES" id="KUm-TA-aKU"/>
+                            <menuItem title="Next Day" tag="3" keyEquivalent="" toolTip="Change a current Timeliine day to next day" id="HEB-2o-715">
+                                <connections>
+                                    <action selector="nextDayMenuOnClick:" target="-1" id="uVN-Lv-UoP"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Previous Day" tag="3" keyEquivalent="" toolTip="Change a current Timeliine day to previous day" id="kdC-8f-3ea">
+                                <connections>
+                                    <action selector="previouosDayMenuOnClick:" target="-1" id="kIq-Tb-6ik"/>
+                                </connections>
+                            </menuItem>
                         </items>
                     </menu>
                 </menuItem>
@@ -309,7 +320,7 @@
             <rect key="frame" x="0.0" y="0.0" width="164" height="23"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <segmentedCell key="cell" borderStyle="border" alignment="left" style="smallSquare" trackingMode="selectOne" id="1459">
-                <font key="font" metaFont="menu" size="9"/>
+                <font key="font" metaFont="label" size="9"/>
                 <segments>
                     <segment label="Weekly log" width="81"/>
                     <segment label="Quick selection" width="81" selected="YES" tag="1"/>

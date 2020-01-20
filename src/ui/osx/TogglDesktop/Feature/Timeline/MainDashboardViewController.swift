@@ -75,6 +75,16 @@ final class MainDashboardViewController: NSViewController {
         guard let cmd = noti.object as? TimelineDisplayCommand else { return }
         timelineController.render(with: cmd)
     }
+
+    @objc func nextDay() {
+        currentTab = .timeline
+        timelineController.nextDay()
+    }
+
+    @objc func previousDay() {
+        currentTab = .timeline
+        timelineController.previousDay()
+    }
 }
 
 // MARK: Private
