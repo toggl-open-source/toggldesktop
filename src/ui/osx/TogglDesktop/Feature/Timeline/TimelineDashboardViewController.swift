@@ -29,6 +29,7 @@ final class TimelineDashboardViewController: NSViewController {
     @IBOutlet weak var activityRecorderInfoImageView: HoverImageView!
     @IBOutlet weak var activityPanelWidth: NSLayoutConstraint!
     @IBOutlet weak var activityLabelRight: NSLayoutConstraint!
+    @IBOutlet weak var permissionBtn: NSButton!
 
     // MARK: Variables
 
@@ -175,6 +176,10 @@ final class TimelineDashboardViewController: NSViewController {
         zoomLevel = previous
     }
 
+    @IBAction func permissionBtnOnClicked(_ sender: Any) {
+        SystemPermissionManager.shared.grant(.screenRecording)
+    }
+
     override func mouseEntered(with event: NSEvent) {
         super.mouseEntered(with: event)
         zoomContainerView.isHidden = false
@@ -247,6 +252,7 @@ extension TimelineDashboardViewController {
         guard let cmd = noti.object as? DisplayCommand,
             let setting = cmd.settings else { return }
         recordSwitcher.setOn(isOn: setting.timeline_recording_enabled, animated: false)
+        permissionBtn.isHidden = SystemPermissionManager.shared.isGranted(.screenRecording)
         updateEmptyActivityText()
     }
 
