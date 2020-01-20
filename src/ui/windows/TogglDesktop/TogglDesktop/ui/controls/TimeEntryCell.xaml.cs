@@ -1,12 +1,9 @@
 ﻿using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using TogglDesktop.Diagnostics;
 
 namespace TogglDesktop
@@ -55,7 +52,6 @@ namespace TogglDesktop
                 if (value == false)
                     return;
 
-                this.entrySeperator.Visibility = Visibility.Collapsed;
                 this.entryGrid.Height = 59;
             }
         }
@@ -110,7 +106,6 @@ namespace TogglDesktop
         {
             this.guid = cell.guid;
             this.labelDescription.Text = cell.labelDescription.Text;
-            this.projectColor.Fill = cell.projectColor.Fill;
 
             this.labelProject.Foreground = cell.labelProject.Foreground;
             this.labelProject.Text = cell.labelProject.Text;
@@ -144,7 +139,6 @@ namespace TogglDesktop
 
             var projectColorBrush = Utils.ProjectColorBrushFromString(item.Color);
 
-            this.projectColor.Fill = projectColorBrush;
             this.labelProject.Foreground = projectColorBrush;
             this.labelProject.Text = "• " + item.ProjectLabel;
             setOptionalTextBlockText(this.labelClient, item.ClientLabel);
@@ -164,8 +158,6 @@ namespace TogglDesktop
             }
 
             this.projectRow.Height = item.ProjectLabel == "" ? new GridLength(0) : GridLength.Auto;
-
-            this.entrySeperator.ShowOnlyIf(!item.IsHeader);
 
             this.entryHoverColor = hoverColor;
             this.EntryBackColor = idleBackColor;
