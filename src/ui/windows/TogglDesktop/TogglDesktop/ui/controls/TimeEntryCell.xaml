@@ -12,10 +12,6 @@
 
     <StackPanel Style="{StaticResource TimeEntryCell}"
                 Background="White" x:Name="MainBack">
-        
-        <!-- seperator -->
-        <Rectangle Name="entrySeperator" x:FieldModifier="private" Fill="#F7F7F7" Height="2"/>
-
         <!-- Entry -->
         <Grid Name="entryGrid" x:FieldModifier="private"
             Height="{StaticResource TimeEntryHeight}" MouseLeftButtonDown="entry_MouseDown" MouseEnter="entryMouseEnter" MouseLeave="entryMouseLeave">
@@ -25,29 +21,12 @@
             </Grid.Background>
             
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="4"/>
                 <ColumnDefinition Width="4*"/>
                 <ColumnDefinition Width="*" MaxWidth="105" MinWidth="75"/>
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
 
-            <Rectangle Name="projectColor" x:FieldModifier="private" Grid.Column="0"
-                       Fill="#999999"/>
-
-            <StackPanel HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1">
-                <Image Name="unsyncedIcon" x:FieldModifier="private" 
-                       ToolTip="Unsynced time entry."
-                       Width="16" Height="16"
-                       Source="/TogglDesktop;component/Resources/warning-icon.png"
-                       Stretch="UniformToFill"/>
-                <Image Name="lockedIcon" x:FieldModifier="private" 
-                       ToolTip="Time entry locked."
-                       Width="16" Height="16"
-                       Source="/TogglDesktop;component/Resources/locked-icon.png"
-                       Stretch="UniformToFill"/>
-            </StackPanel>
-
-            <Grid Grid.Column="1" Margin="16, 0, 0, 0" Height="37" x:Name="descriptionGrid">
+            <Grid Grid.Column="0" Margin="16, 0, 0, 0" Height="37" x:Name="descriptionGrid">
 
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
@@ -74,7 +53,7 @@
 
             </Grid>
 
-            <StackPanel Grid.Column="1" HorizontalAlignment="Right" Orientation="Horizontal">
+            <StackPanel Grid.Column="0" HorizontalAlignment="Right" Orientation="Horizontal">
                 <Rectangle Width="30" HorizontalAlignment="Right">
                     <Rectangle.Fill>
                         <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
@@ -123,13 +102,25 @@
                 </StackPanel>
             </StackPanel>
 
-            <TextBlock Grid.Column="2" Name="labelDuration" x:FieldModifier="private" Width="68"
+            <TextBlock Grid.Column="1" Name="labelDuration" x:FieldModifier="private" Width="68"
                         HorizontalAlignment="Left" FontSize="14.7" TextAlignment="Right"
                             Margin="4,1,0,0" MouseLeftButtonDown="labelDuration_MouseDown">0 h 23 min</TextBlock>
 
-            <Button Grid.Column="3" Width="36" Height="36" Margin="0, 0, 4, 1"
+            <Button Grid.Column="2" Width="36" Height="36" Margin="0, 0, 4, 1"
                     Focusable="False" Click="buttonContinue_Click"/>
 
+            <StackPanel HorizontalAlignment="Right" VerticalAlignment="Bottom" Grid.Column="2">
+                <Image Name="unsyncedIcon" x:FieldModifier="private"
+                       ToolTip="Unsynced time entry."
+                       Width="16" Height="16"
+                       Source="/TogglDesktop;component/Resources/warning-icon.png"
+                       Stretch="UniformToFill"/>
+                <Image Name="lockedIcon" x:FieldModifier="private"
+                       ToolTip="Time entry locked."
+                       Width="16" Height="16"
+                       Source="/TogglDesktop;component/Resources/locked-icon.png"
+                       Stretch="UniformToFill"/>
+            </StackPanel>
         </Grid>
     </StackPanel>
 </UserControl>
