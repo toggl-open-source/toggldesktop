@@ -98,9 +98,6 @@ namespace TogglDesktop
         private readonly ToolTip durationToolTip = new ToolTip();
         private readonly ToolTip tagsToolTip = new ToolTip();
         private bool selected;
-        private Point mouseDownPosition;
-        private bool isMouseDown;
-        private bool dragging;
         private long durationInSeconds;
 
         public TimeEntryCell()
@@ -343,24 +340,6 @@ namespace TogglDesktop
 
         #endregion
 
-        #region drag drop
-
-        protected override void OnMouseDown(MouseButtonEventArgs e)
-        {
-            this.mouseDownPosition = e.GetPosition(null);
-            this.isMouseDown = true;
-        }
-
-        protected override void OnMouseMove(MouseEventArgs e)
-        {
-            this.tryStartDrag(e);
-        }
-
-        public void MoveToDay(DateTime date)
-        {
-            Toggl.SetTimeEntryDate(this.guid, date);
-        }
-
         public void DeleteTimeEntry()
         {
             if (this.confirmlessDelete())
@@ -385,40 +364,6 @@ namespace TogglDesktop
             }
         }
 
-        private void tryStartDrag(MouseEventArgs e, bool ignoreDistance = false)
-        {
-            if (!this.group && this.IsEnabled && this.isMouseDown && e.LeftButton == MouseButtonState.Pressed)
-            {
-                var d = e.GetPosition(null) - this.mouseDownPosition;
-
-                if (!ignoreDistance)
-                {
-                    if (Math.Abs(d.X) < SystemParameters.MinimumHorizontalDragDistance ||
-                        Math.Abs(d.Y) < SystemParameters.MinimumVerticalDragDistance)
-                        return;
-                }
-
-                this.EntryBackColor = this.entryHoverColor;
-                this.dragging = true;
-                TimeEntryCellDragImposter.Start(this);
-                DragDrop.DoDragDrop(this, new DataObject("time-entry-cell", this), DragDropEffects.Move);
-                TimeEntryCellDragImposter.Stop();
-                this.dragging = false;
-                this.EntryBackColor = idleBackColor;
-
-                e.Handled = true;
-            }
-
-            this.isMouseDown = false;
-        }
-
-        protected override void OnGiveFeedback(GiveFeedbackEventArgs e)
-        {
-            TimeEntryCellDragImposter.Update();
-        }
-
-        #endregion
-
         private void buttonContinue_Click(object sender, RoutedEventArgs e)
         {
             using (Performance.Measure("continuing time entry from cell"))
@@ -434,10 +379,6 @@ namespace TogglDesktop
 
         private void entryMouseLeave(object sender, MouseEventArgs e)
         {
-            if (this.dragging)
-                return;
-
-            this.tryStartDrag(e, true);
             if (SubItem)
             {
                 this.EntryBackColor = subItemBackColor;
@@ -446,8 +387,6 @@ namespace TogglDesktop
             {
                 this.EntryBackColor = idleBackColor;
             }
-            this.isMouseDown = false;
         }
-
     }
 }
