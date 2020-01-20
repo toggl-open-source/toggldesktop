@@ -59,6 +59,7 @@
                  Height="104"
                  Margin="0 8"
                  TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"
+                 VerticalContentAlignment="Top"
                  AcceptsReturn="True"
                  Text="{Binding FeedbackText, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True}"
                  LostFocus="OnFeedbackTextBoxLostFocus"
