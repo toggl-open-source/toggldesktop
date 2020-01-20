@@ -234,7 +234,6 @@
     <Compile Include="ui\controls\TimeEntryCellDayHeader.xaml.cs">
       <DependentUpon>TimeEntryCellDayHeader.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ui\controls\TimeEntryCellDragImposter.cs" />
     <Compile Include="ui\controls\MiniTimer.xaml.cs">
       <DependentUpon>MiniTimer.xaml</DependentUpon>
     </Compile>

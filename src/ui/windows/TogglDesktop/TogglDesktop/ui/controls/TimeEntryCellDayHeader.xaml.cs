@@ -156,15 +156,5 @@ namespace TogglDesktop
                 this.isSelected ? Color.FromRgb(200, 200, 200) : Color.FromRgb(247, 247, 247)
                 );
         }
-
-
-        protected override void OnDrop(DragEventArgs e)
-        {
-            if (e.Data.GetDataPresent("time-entry-cell"))
-            {
-                var cell = (TimeEntryCell)e.Data.GetData("time-entry-cell");
-                cell.MoveToDay(this.date);
-            }
-        }
     }
 }
