@@ -227,6 +227,7 @@ namespace TogglDesktop
         {
             var activatedColorScheme = Theme.ActivateDetectedColorSchemeOrDefault();
             darkModeCheckBox.IsChecked = activatedColorScheme == ColorScheme.Dark;
+            Theme.CurrentColorScheme.Subscribe(x => this.updateTitleBarBackground(activeView));
         }
 
         private void initializeEvents()
@@ -944,6 +945,10 @@ namespace TogglDesktop
 
         private void updateTitleBarBackground(IMainView activeView)
         {
+            if (activeView == null)
+            {
+                return;
+            }
             this.WindowTitleBrush = activeView.TitleBarBrush;
             this.NonActiveWindowTitleBrush = activeView.TitleBarBrush;
         }
