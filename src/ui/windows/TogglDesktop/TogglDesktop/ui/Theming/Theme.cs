@@ -1,5 +1,8 @@
 using System;
 using System.Linq;
+using System.Reactive;
+using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using System.Windows;
 using Microsoft.Win32;
 
@@ -7,6 +10,9 @@ namespace TogglDesktop.Theming
 {
     static class Theme
     {
+        private static readonly Subject<ColorScheme> currentColorSchemeSubject = new Subject<ColorScheme>();
+        public static IObservable<ColorScheme> CurrentColorScheme => currentColorSchemeSubject.AsObservable();
+
         /// <returns>Activated color scheme.</returns>
         public static ColorScheme ActivateDetectedColorSchemeOrDefault(ColorScheme defaultColorScheme = ColorScheme.Light)
         {
@@ -18,6 +24,7 @@ namespace TogglDesktop.Theming
         public static void ActivateColorScheme(ColorScheme colorScheme)
         {
             Activate(ThemeType.ColorScheme, colorScheme.ToString());
+            currentColorSchemeSubject.OnNext(colorScheme);
         }
 
         private static void Activate(ThemeType type, string name)
