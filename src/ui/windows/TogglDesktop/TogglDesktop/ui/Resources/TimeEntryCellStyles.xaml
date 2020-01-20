@@ -4,8 +4,8 @@
     xmlns:sys="clr-namespace:System;assembly=mscorlib"
     xmlns:toggl="clr-namespace:TogglDesktop">
 
-    <sys:Double x:Key="TimeEntryHeight">53</sys:Double>
-    <sys:Double x:Key="TimeEntryDayHeaderHeight">45</sys:Double>
+    <sys:Double x:Key="TimeEntryHeight">60</sys:Double>
+    <sys:Double x:Key="TimeEntryDayHeaderHeight">40</sys:Double>
 
     <ContextMenu x:Key="TimeEntryContextMenu">
         <MenuItem Header="Delete time entry"
