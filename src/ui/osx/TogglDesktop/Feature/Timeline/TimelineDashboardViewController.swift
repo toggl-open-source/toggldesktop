@@ -184,6 +184,14 @@ final class TimelineDashboardViewController: NSViewController {
         super.mouseExited(with: event)
         zoomContainerView.isHidden = true
     }
+
+    func nextDay() {
+        datePickerView.nextDateBtnOnTap(self)
+    }
+
+    func previousDay() {
+        datePickerView.previousDateBtnOnTap(self)
+    }
 }
 
 // MARK: Private

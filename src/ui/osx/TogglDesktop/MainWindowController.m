@@ -363,6 +363,16 @@ extern void *ctx;
     [self.mainDashboardViewController timelineBtnOnTap:sender];
 }
 
+- (IBAction)nextDayMenuOnClick:(id)sender
+{
+    [self.mainDashboardViewController nextDay];
+}
+
+- (IBAction)previouosDayMenuOnClick:(id)sender
+{
+    [self.mainDashboardViewController previousDay];
+}
+
 #pragma mark - In app message
 
 - (void)startDisplayInAppMessage:(NSNotification *)notification
