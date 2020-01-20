@@ -99,7 +99,7 @@
     <SolidColorBrush x:Key="Toggl.Button.Titlebar.MouseOver" Color="{StaticResource Toggl.Grayish2Color}" Opacity="0.5" po:Freeze="True" />
     <SolidColorBrush x:Key="Toggl.LoginView.Border" Color="#353535" po:Freeze="True" />
     <SolidColorBrush x:Key="Toggl.Logo.Letters" Color="#FFFFFF" po:Freeze="True" />
-    <SolidColorBrush x:Key="Toggl.TimeEntryListBackground" Color="{StaticResource Toggl.WhiteColor}" Opacity="0.8" />
+    <SolidColorBrush x:Key="Toggl.TimeEntryListBackground" Color="{StaticResource Toggl.OffWhiteColor}" Opacity="0.8" />
 
     <SolidColorBrush x:Key="Toggl.BarelyVisibleSeparator" Color="Black" Opacity="0.15" />
     <DropShadowEffect x:Key="Toggl.SeparatorShadow" ShadowDepth="2" Color="Black" Opacity="1" BlurRadius="4"/>

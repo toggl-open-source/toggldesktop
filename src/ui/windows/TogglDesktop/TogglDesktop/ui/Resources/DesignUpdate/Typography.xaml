@@ -40,6 +40,10 @@
     <Style TargetType="TextBlock" x:Key="Toggl.CaptionBlackText" BasedOn="{StaticResource Toggl.Text}">
         <Setter Property="FontSize" Value="12" />
     </Style>
+    <Style TargetType="TextBlock" x:Key="Toggl.CaptionSemiBoldText" BasedOn="{StaticResource Toggl.CaptionBlackText}">
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="LineHeight" Value="16" />
+    </Style>
     <Style TargetType="TextBlock" x:Key="Toggl.CaptionWhiteText" BasedOn="{StaticResource Toggl.CaptionBlackText}">
         <Setter Property="Foreground" Value="White" />
     </Style>
