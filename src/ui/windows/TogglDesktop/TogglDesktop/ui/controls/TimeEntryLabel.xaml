@@ -14,7 +14,13 @@
 
         <TextBlock Grid.Row="0" Name="descriptionLabel" x:FieldModifier="private"
                    MouseLeftButtonDown="onDescriptionLabelMouseDown"
-                   Style="{DynamicResource Toggl.BodyText}" />
+                   Style="{DynamicResource Toggl.BodyText}" >
+            <TextBlock.ToolTip>
+                <ToolTip DataContext="{Binding Path=PlacementTarget, RelativeSource={x:Static RelativeSource.Self}}">
+                    <TextBlock Text="{Binding Text}"/>
+                </ToolTip>
+            </TextBlock.ToolTip>
+        </TextBlock>
         <TextBlock Grid.Row="0" Name="noDescriptionLabel" x:FieldModifier="private"
                    Style="{DynamicResource Toggl.CaptionGrayishText}"
                    Text="+ Add description"
