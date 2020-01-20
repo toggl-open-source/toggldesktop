@@ -37,7 +37,6 @@ typedef enum : NSUInteger
 @property (weak) IBOutlet NSButton *useIdleDetectionButton;
 @property (weak) IBOutlet NSButton *usePomodoroButton;
 @property (weak) IBOutlet NSButton *usePomodoroBreakButton;
-@property (weak) IBOutlet NSButton *recordTimelineCheckbox;
 @property (weak) IBOutlet NSButton *menubarTimerCheckbox;
 @property (weak) IBOutlet NSButton *menubarProjectCheckbox;
 @property (weak) IBOutlet NSButton *dockIconCheckbox;
@@ -65,7 +64,6 @@ typedef enum : NSUInteger
 @property (weak) IBOutlet NSTextField *remindEnds;
 @property (weak) IBOutlet NSButton *autotrack;
 @property (weak) IBOutlet NSButton *openEditorOnShortcut;
-@property (weak) IBOutlet NSButton *renderTimeline;
 @property (weak) IBOutlet NSButton *proxyDoNot;
 @property (weak) IBOutlet NSButton *proxySystem;
 @property (weak) IBOutlet NSButton *proxyToggl;
@@ -75,7 +73,6 @@ typedef enum : NSUInteger
 @property (weak) IBOutlet NSTabView *tabView;
 @property (weak) IBOutlet NSButton *showTouchBarButton;
 @property (weak) IBOutlet NSLayoutConstraint *bottomContainerHeight;
-@property (weak) IBOutlet NSButton *screenRecordingPermissionBtn;
 
 @property (nonatomic, assign) NSInteger selectedProxyIndex;
 @property (nonatomic, strong) NSArray<AutotrackerRuleItem *> *rules;
@@ -95,7 +92,6 @@ typedef enum : NSUInteger
 - (IBAction)useIdleDetectionButtonChanged:(id)sender;
 - (IBAction)usePomodoroButtonChanged:(id)sender;
 - (IBAction)usePomodoroBreakButtonChanged:(id)sender;
-- (IBAction)recordTimelineCheckboxChanged:(id)sender;
 - (IBAction)menubarTimerCheckboxChanged:(id)sender;
 - (IBAction)menubarProjectCheckboxChanged:(id)sender;
 - (IBAction)dockIconCheckboxChanged:(id)sender;
@@ -192,13 +188,10 @@ extern void *ctx;
 	[self.pomodoroMinutesTextField setDelegate:self];
 	[self.pomodoroBreakMinutesTextField setDelegate:self];
 	[self.reminderMinutesTextField setDelegate:self];
-
-	self.renderTimeline.hidden = YES;
 }
 
 - (void)enableLoggedInUserControls
 {
-	[self.recordTimelineCheckbox setEnabled:self.user_id != 0];
 	[self.defaultProject setEnabled:self.user_id != 0];
 	[self.autotrack setEnabled:self.user_id != 0];
 	[self.autotrackerTerm setEnabled:self.user_id != 0];
@@ -354,12 +347,6 @@ const int kUseProxyToConnectToToggl = 2;
 									[self.remindEnds.stringValue UTF8String]);
 }
 
-- (IBAction)recordTimelineCheckboxChanged:(id)sender
-{
-	BOOL record_timeline = [Utils stateToBool:[self.recordTimelineCheckbox state]];
-    [[DesktopLibraryBridge shared] enableTimelineRecord:record_timeline];
-}
-
 - (IBAction)menubarTimerCheckboxChanged:(id)sender
 {
 	toggl_set_settings_menubar_timer(ctx,
@@ -436,10 +423,7 @@ const int kUseProxyToConnectToToggl = 2;
 	[self.ontopCheckbox setState:[Utils boolToState:settings.on_top]];
 	[self.reminderCheckbox setState:[Utils boolToState:settings.reminder]];
 	[self.focusOnShortcutCheckbox setState:[Utils boolToState:settings.focus_on_shortcut]];
-	[self.renderTimeline setState:[Utils boolToState:settings.render_timeline]];
 	[self.stopOnShutdownCheckbox setState:[Utils boolToState:settings.stopWhenShutdown]];
-	[self.recordTimelineCheckbox setEnabled:self.user_id != 0];
-	[self.recordTimelineCheckbox setState:[Utils boolToState:settings.timeline_recording_enabled]];
 
 	if (!settings.use_proxy && !settings.autodetect_proxy)
 	{
@@ -754,22 +738,4 @@ const int kUseProxyToConnectToToggl = 2;
 {
 	[self.tabView selectTabViewItemAtIndex:self.tabSegment.selectedSegment];
 }
-
-- (IBAction)screenRecordingPermissionOnTap:(id)sender
-{
-	[ObjcSystemPermissionManager tryGrantScreenRecordingPermission];
-}
-
-- (void)updatePermissionState
-{
-	BOOL isEnabled = [ObjcSystemPermissionManager isScreenRecordingPermissionGranted];
-
-	[self.screenRecordingPermissionBtn setHidden:isEnabled];
-}
-
-- (void)windowDidBecomeKey:(NSNotification *)notification
-{
-	[self updatePermissionState];
-}
-
 @end
