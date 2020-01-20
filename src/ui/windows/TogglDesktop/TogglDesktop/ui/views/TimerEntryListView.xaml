@@ -19,6 +19,7 @@
         
         <toggl:TimeEntryList Grid.Row="1"
             x:Name="Entries"
-            FocusTimer="onFocusTimer"/>
+            FocusTimer="onFocusTimer"
+            Background="{DynamicResource Toggl.TimeEntryListBackground}"/>
     </Grid>
 </UserControl>
