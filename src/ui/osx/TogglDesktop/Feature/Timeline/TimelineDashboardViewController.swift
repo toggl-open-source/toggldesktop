@@ -244,7 +244,12 @@ extension TimelineDashboardViewController {
         guard let cmd = noti.object as? DisplayCommand,
             let setting = cmd.settings else { return }
         recordSwitcher.setOn(isOn: setting.timeline_recording_enabled, animated: false)
-        permissionBtn.isHidden = SystemPermissionManager.shared.isGranted(.screenRecording)
+        if setting.timeline_recording_enabled {
+            permissionBtn.isHidden = SystemPermissionManager.shared.isGranted(.screenRecording)
+        } else {
+            permissionBtn.isHidden = true
+        }
+
         updateEmptyActivityText()
     }
 
