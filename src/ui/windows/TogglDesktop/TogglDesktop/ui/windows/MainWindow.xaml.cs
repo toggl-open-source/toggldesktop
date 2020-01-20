@@ -78,6 +78,7 @@ namespace TogglDesktop
 
             this.finalInitialisation();
             this.trackingWindowSize();
+            this.Loaded += onMainWindowLoaded;
 #if DEBUG
             this.darkModeBorder.Visibility = Visibility.Visible;
 #endif
@@ -951,6 +952,21 @@ namespace TogglDesktop
             }
             this.WindowTitleBrush = activeView.TitleBarBrush;
             this.NonActiveWindowTitleBrush = activeView.TitleBarBrush;
+        }
+
+        private void onMainWindowLoaded(object sender, EventArgs args)
+        {
+            this.Loaded -= onMainWindowLoaded;
+            this.enableBlurBehindIfSupported();
+        }
+
+        private void enableBlurBehindIfSupported()
+        {
+            var isBlurBehindSupported = Environment.OSVersion.Version >= new Version(10, 0, 17134);
+            if (isBlurBehindSupported)
+            {
+                Win32.EnableBlurBehind(this.interopHelper.Handle);
+            }
         }
 
         #endregion
