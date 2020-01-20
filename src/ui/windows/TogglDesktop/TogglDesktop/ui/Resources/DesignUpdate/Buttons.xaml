@@ -217,4 +217,18 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <Style TargetType="Button" x:Key="Toggl.TimeEntryDayHeaderButton" BasedOn="{StaticResource Toggl.PrimaryButton}">
+        <Setter Property="Background" Value="{DynamicResource Toggl.CardBackground}" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Padding" Value="0" />
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{DynamicResource Toggl.Button.Outlined.HoverBackground}" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="{DynamicResource Toggl.Button.Outlined.PressedBackground}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
 </ResourceDictionary>
