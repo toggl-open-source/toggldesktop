@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using ReactiveUI;
 using TogglDesktop.ViewModels;
 
@@ -42,14 +43,16 @@ namespace TogglDesktop
             ViewModel = new DayHeaderViewModel(dateText, durationText);
         }
 
-        public void Display(List<Toggl.TogglTimeEntryView> items, Action<string, TimeEntryCell> registerCellByGUID, bool collapsed)
+        public void Display(List<Toggl.TogglTimeEntryView> items, bool isExpanded)
         {
             ViewModel = items[0].ToDayHeaderViewModel();
-            ViewModel.IsExpanded = !collapsed;
-            this.fillCells(items, registerCellByGUID);
+            ViewModel.IsExpanded = isExpanded;
+            this.fillCells(items);
         }
 
-        private void fillCells(List<Toggl.TogglTimeEntryView> list, Action<string, TimeEntryCell> registerCellByGUID)
+        public IEnumerable<TimeEntryCell> Children => this.panel.Children.Cast<TimeEntryCell>();
+
+        private void fillCells(List<Toggl.TogglTimeEntryView> list)
         {
             var children = this.panel.Children;
             string guidString;
@@ -68,12 +71,6 @@ namespace TogglDesktop
 
                 var cell = (TimeEntryCell)children[i];
                 cell.Display(entry, this);
-                guidString = entry.GUID;
-                if (entry.Group)
-                {
-                    guidString += entry.Group.ToString();
-                }
-                registerCellByGUID(guidString, cell);
             }
 
             // add additional cells
@@ -83,13 +80,6 @@ namespace TogglDesktop
 
                 var cell = new TimeEntryCell();
                 cell.Display(entry, this);
-
-                guidString = entry.GUID;
-                if (entry.Group)
-                {
-                    guidString += entry.Group.ToString();
-                }
-                registerCellByGUID(guidString, cell);
 
                 children.Add(cell);
             }
