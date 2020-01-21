@@ -270,7 +270,7 @@ extension TimelineDatasource: TimelineTimeEntryCellDelegate {
     }
 
     func timeEntryCellShouldDelete(for entry: TimelineTimeEntry, sender: TimelineTimeEntryCell) {
-        timeline?.delete(entry)
+        timeline?.delete(entry, undoManager: collectionView.undoManager)
     }
 
     func timeEntryCellShouldChangeFirstEntryStopTime(for entry: TimelineTimeEntry, sender: TimelineTimeEntryCell) {

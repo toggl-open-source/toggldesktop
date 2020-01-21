@@ -160,8 +160,8 @@ class TimelineData {
         }
     }
 
-    func delete(_ timeEntry: TimelineTimeEntry) {
-        DesktopLibraryBridge.shared().deleteTimeEntryImte(timeEntry.timeEntry)
+    func delete(_ timeEntry: TimelineTimeEntry, undoManager: Foundation.UndoManager?) {
+        DesktopLibraryBridge.shared().deleteTimeEntryItem(timeEntry.timeEntry, undoManager: undoManager)
     }
 }
 
