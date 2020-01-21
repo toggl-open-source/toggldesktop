@@ -329,7 +329,7 @@ TEST(User, UpdatesTimeEntryIDFromJSONEvenIfUpdatedByUserMeanwhile) {
     ss << "{{\"id\":123,\"description\":\"Changed\",\"ui_modified_at\":" <<
        older_change << "}}";
     
-    user.LoadTimeEntriesFromJSONString(jsonStringToValue(ss.str()));
+    user.LoadTimeEntriesFromJSONString(ss.str());
     ASSERT_EQ(static_cast<Poco::UInt64>(123), te->ID());
 }
 
