@@ -311,10 +311,12 @@ extension TimelineDatasource: TimelineBaseCellDelegate {
         case let timeEntryCell as TimelineTimeEntryCell:
             guard let timeEntry = timeEntryCell.timeEntry else { return }
             let point = collectionView.convert(event.locationInWindow, from: nil)
-            let timestampe = flow.convertTimestamp(from: point)
+            let endedAt = flow.convertTimestamp(from: point)
 
             // Update in libray
-            delegate?.shouldUpdateEndTime(timestampe, for: timeEntry)
+            if endedAt > timeEntry.start {
+                delegate?.shouldUpdateEndTime(endedAt, for: timeEntry)
+            }
         default:
             break
         }
@@ -326,11 +328,13 @@ extension TimelineDatasource: TimelineBaseCellDelegate {
         case let timeEntryCell as TimelineTimeEntryCell:
             guard let timeEntry = timeEntryCell.timeEntry else { return }
             let point = collectionView.convert(event.locationInWindow, from: nil)
-            let timestampe = flow.convertTimestamp(from: point)
+            let endedAt = flow.convertTimestamp(from: point)
 
             // Update the end time and re-draw
-            timeEntry.end = timestampe
-            flow.invalidateLayout()
+            if endedAt > timeEntry.start {
+                timeEntry.end = endedAt
+                flow.invalidateLayout()
+            }
         default:
             break
         }
