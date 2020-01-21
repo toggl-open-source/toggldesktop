@@ -45,49 +45,35 @@ class TimelineBaseCell: NSCollectionViewItem {
     private var trackBottom: NSView.TrackingRectTag?
     private var trackMiddle: NSView.TrackingRectTag?
 
-    // MARK: Public
+    // MARK: View cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
     }
 
+    // MARK: Mouse activity
+
     override func mouseEntered(with event: NSEvent) {
-        mouseDelegate?.timelineCellMouseDidEntered(self)
-
-        // Determine which drag position is
-        switch event.trackingNumber {
-        case trackTop:
-            if isResizable {
-                mousePosition = .top
-            }
-        case trackBottom:
-            if isResizable {
-                mousePosition = .bottom
-            }
-        case trackMiddle:
-            if isClickable {
-                mousePosition = .middle
-            }
-        default:
-            mousePosition = .none
-        }
-
-        // Set cursor
-        updateCursor()
+        handleMouseEntered(event)
     }
 
     override func mouseExited(with event: NSEvent) {
-        super.mouseExited(with: event)
-        mouseDelegate?.timelineCellMouseDidExited(self)
-
-        // Only Reset if the mouse is out of the foreground box
-        let position = event.locationInWindow
-        let localPosition = foregroundBox.convert(position, from: nil)
-        if !foregroundBox.frame.contains(localPosition) {
-            mousePosition = .none
-            updateCursor()
-        }
+        handleMouseExit(event)
     }
+
+    override func mouseDown(with event: NSEvent) {
+        handleMouseDownForResize(event)
+    }
+
+    override func mouseDragged(with event: NSEvent) {
+        handleMouseDraggedForResize(event)
+    }
+
+    override func mouseUp(with event: NSEvent) {
+        handleMouseUpForResize(event)
+    }
+
+    // MARK: Public
 
     func renderColor(with foregroundColor: NSColor, isSmallEntry: Bool) {
         backgroundColor = foregroundColor.lighten(by: 0.1)
@@ -100,6 +86,18 @@ class TimelineBaseCell: NSCollectionViewItem {
         foregroundBox.cornerRadius = cornerRadius
         backgroundBox?.cornerRadius = cornerRadius
     }
+
+    func initAllTracking() {
+        // Clear and init
+        clearResizeTrackers()
+        initHoverTrackers()
+        initResizeTrackers()
+    }
+}
+
+// MARK: Private
+
+extension TimelineBaseCell {
 
     private func suitableCornerRadius(_ isSmallEntry: Bool) -> CGFloat {
         if isSmallEntry {
@@ -116,13 +114,6 @@ class TimelineBaseCell: NSCollectionViewItem {
         default:
             return 10
         }
-    }
-
-    func initAllTracking() {
-        // Clear and init
-        clearResizeTrackers()
-        initHoverTrackers()
-        initResizeTrackers()
     }
 }
 
@@ -168,5 +159,54 @@ extension TimelineBaseCell {
         case .none:
             NSCursor.arrow.set()
         }
+    }
+
+    private func handleMouseEntered(_ event: NSEvent) {
+        mouseDelegate?.timelineCellMouseDidEntered(self)
+
+        // Determine which drag position is
+        switch event.trackingNumber {
+        case trackTop:
+            if isResizable {
+                mousePosition = .top
+            }
+        case trackBottom:
+            if isResizable {
+                mousePosition = .bottom
+            }
+        case trackMiddle:
+            if isClickable {
+                mousePosition = .middle
+            }
+        default:
+            mousePosition = .none
+        }
+
+        // Set cursor
+        updateCursor()
+    }
+
+    private func handleMouseExit(_ event: NSEvent) {
+        mouseDelegate?.timelineCellMouseDidExited(self)
+
+        // Only Reset if the mouse is out of the foreground box
+        let position = event.locationInWindow
+        let localPosition = foregroundBox.convert(position, from: nil)
+        if !foregroundBox.frame.contains(localPosition) {
+            mousePosition = .none
+            updateCursor()
+        }
+    }
+
+    private func handleMouseDownForResize(_ event: NSEvent) {
+        guard isResizable else { return }
+    }
+
+    private func handleMouseDraggedForResize(_ event: NSEvent) {
+        guard isResizable else { return }
+    }
+
+    private func handleMouseUpForResize(_ event: NSEvent) {
+        guard isResizable else { return }
     }
 }
