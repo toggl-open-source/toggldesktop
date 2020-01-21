@@ -56,10 +56,12 @@ class TimelineBaseCell: NSCollectionViewItem {
     // MARK: Mouse activity
 
     override func mouseEntered(with event: NSEvent) {
+        print("mouseEntered")
         handleMouseEntered(event)
     }
 
     override func mouseExited(with event: NSEvent) {
+        print("mouseExited")
         handleMouseExit(event)
     }
 
@@ -69,10 +71,12 @@ class TimelineBaseCell: NSCollectionViewItem {
     }
 
     override func mouseDragged(with event: NSEvent) {
+        print("mouseDragged")
         handleMouseDraggedForResize(event)
     }
 
     override func mouseUp(with event: NSEvent) {
+        print("mouseUp")
         handleMouseUpForResize(event)
     }
 
@@ -192,6 +196,11 @@ extension TimelineBaseCell {
     private func handleMouseExit(_ event: NSEvent) {
         mouseDelegate?.timelineCellMouseDidExited(self)
 
+        // Skip exit if the user is resizing
+        if isResizing && mouseDownPoint != nil {
+            return
+        }
+
         // Only Reset if the mouse is out of the foreground box
         let position = event.locationInWindow
         let localPosition = foregroundBox.convert(position, from: nil)
@@ -208,8 +217,8 @@ extension TimelineBaseCell {
 
     private func handleMouseDraggedForResize(_ event: NSEvent) {
         guard isResizable, isResizing else { return }
-
         guard let mouseDownPoint = mouseDownPoint else { return }
+        
         let distance = event.locationInWindow.y - mouseDownPoint.y
         print("distance \(distance)")
     }
@@ -217,5 +226,7 @@ extension TimelineBaseCell {
     private func handleMouseUpForResize(_ event: NSEvent) {
         guard isResizable, isResizing else { return }
         mouseDownPoint = nil
+        mousePosition = .none
+        updateCursor()
     }
 }
