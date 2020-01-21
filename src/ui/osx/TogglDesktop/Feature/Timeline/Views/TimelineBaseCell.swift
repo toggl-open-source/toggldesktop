@@ -40,7 +40,7 @@ class TimelineBaseCell: NSCollectionViewItem {
     var isClickable: Bool { return false }
 
     // Resizable tracker
-    private var dragPoisition = MousePosition.none { didSet { print("dragPoisition = \(dragPoisition)") }}
+    private var mousePosition = MousePosition.none { didSet { print("dragPoisition = \(mousePosition)") }}
     private var trackTop: NSView.TrackingRectTag?
     private var trackBottom: NSView.TrackingRectTag?
     private var trackMiddle: NSView.TrackingRectTag?
@@ -58,18 +58,18 @@ class TimelineBaseCell: NSCollectionViewItem {
         switch event.trackingNumber {
         case trackTop:
             if isResizable {
-                dragPoisition = .top
+                mousePosition = .top
             }
         case trackBottom:
             if isResizable {
-                dragPoisition = .bottom
+                mousePosition = .bottom
             }
         case trackMiddle:
             if isClickable {
-                dragPoisition = .middle
+                mousePosition = .middle
             }
         default:
-            dragPoisition = .none
+            mousePosition = .none
         }
 
         // Set cursor
@@ -80,9 +80,13 @@ class TimelineBaseCell: NSCollectionViewItem {
         super.mouseExited(with: event)
         mouseDelegate?.timelineCellMouseDidExited(self)
 
-        // Reset
-        dragPoisition = .none
-        updateCursor()
+        // Only Reset if the mouse is out of the foreground box
+        let position = event.locationInWindow
+        let localPosition = foregroundBox.convert(position, from: nil)
+        if !foregroundBox.frame.contains(localPosition) {
+            mousePosition = .none
+            updateCursor()
+        }
     }
 
     func renderColor(with foregroundColor: NSColor, isSmallEntry: Bool) {
@@ -115,8 +119,8 @@ class TimelineBaseCell: NSCollectionViewItem {
     }
 
     func initAllTracking() {
+        // Clear and init
         clearResizeTrackers()
-
         initHoverTrackers()
         initResizeTrackers()
     }
@@ -155,7 +159,7 @@ extension TimelineBaseCell {
     }
 
     private func updateCursor() {
-        switch dragPoisition {
+        switch mousePosition {
         case .top,
              .bottom:
             NSCursor.resizeUpDown.set()
