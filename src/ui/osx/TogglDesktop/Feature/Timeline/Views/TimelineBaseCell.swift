@@ -16,6 +16,16 @@ protocol TimelineBaseCellDelegate: class {
 
 class TimelineBaseCell: NSCollectionViewItem {
 
+    private struct Constants {
+        static let SideHit: CGFloat = 5.0
+    }
+
+    private enum DragPosition {
+        case top
+        case bottom
+        case none
+    }
+
     // MARK: OUTLET
 
     @IBOutlet weak var backgroundBox: NSBox?
@@ -27,6 +37,11 @@ class TimelineBaseCell: NSCollectionViewItem {
     private(set) var backgroundColor: NSColor?
     var isResizable: Bool { return false }
 
+    // Resizable tracker
+    private var dragPoisition = DragPosition.none
+    private var trackTop: NSView.TrackingRectTag?
+    private var trackBottom: NSView.TrackingRectTag?
+
     // MARK: Public
 
     override func viewDidLoad() {
@@ -36,10 +51,40 @@ class TimelineBaseCell: NSCollectionViewItem {
 
     override func mouseEntered(with event: NSEvent) {
         mouseDelegate?.timelineCellMouseDidEntered(self)
+
+        // Skip if it's not resizable
+        guard isResizable else {
+            super.mouseEntered(with: event)
+            return
+        }
+
+        // Determine which drag position is
+        guard dragPoisition == .none else { return }
+        switch event.trackingNumber {
+        case trackTop:
+            dragPoisition = .top
+        case trackBottom:
+            dragPoisition = .bottom
+        default:
+            dragPoisition = .none
+        }
+
+        // Set cursor
+        updateCursor()
     }
 
     override func mouseExited(with event: NSEvent) {
         mouseDelegate?.timelineCellMouseDidExited(self)
+
+        // Skip if it's not resizable
+        guard isResizable else {
+            super.mouseEntered(with: event)
+            return
+        }
+
+        // Reset
+        dragPoisition = .none
+        updateCursor()
     }
 
     func renderColor(with foregroundColor: NSColor, isSmallEntry: Bool) {
@@ -76,6 +121,43 @@ class TimelineBaseCell: NSCollectionViewItem {
             let tracking = NSTrackingArea(rect: view.bounds, options: [.mouseEnteredAndExited, .activeInActiveApp, .inVisibleRect], owner: self, userInfo: nil)
             foregroundBox.addTrackingArea(tracking)
             foregroundBox.updateTrackingAreas()
+        }
+    }
+}
+
+// MARK: Resizable
+
+extension TimelineBaseCell {
+
+    private func initResizeTrackers() {
+        guard let view = foregroundBox, isResizable else { return }
+        clearResizeTrackers()
+
+        var bounds = NSRect(x: 0, y: Constants.SideHit, width: view.bounds.width, height: Constants.SideHit)
+        trackTop = view.addTrackingRect(bounds, owner: self, userData: nil, assumeInside: false)
+
+        bounds = NSRect(x: 0, y: view.bounds.width - Constants.SideHit, width: view.bounds.width, height: Constants.SideHit)
+        trackBottom = view.addTrackingRect(bounds, owner: self, userData: nil, assumeInside: false)
+    }
+
+    private func clearResizeTrackers() {
+        guard let view = foregroundBox,
+            let trackTop = trackTop,
+            let trackBottom = trackBottom else {
+            return
+        }
+        view.removeTrackingRect(trackTop)
+        view.removeTrackingRect(trackBottom)
+    }
+
+    private func updateCursor() {
+        switch dragPoisition {
+        case .top:
+            NSCursor.resizeUp.set()
+        case .bottom:
+            NSCursor.resizeDown.set()
+        default:
+            NSCursor.arrow.set()
         }
     }
 }
