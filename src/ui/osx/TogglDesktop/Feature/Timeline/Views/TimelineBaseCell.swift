@@ -25,11 +25,12 @@ class TimelineBaseCell: NSCollectionViewItem {
 
     weak var mouseDelegate: TimelineBaseCellDelegate?
     private(set) var backgroundColor: NSColor?
+    var isResizable: Bool { return false }
 
     // MARK: Public
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
+    override func viewDidLoad() {
+        super.viewDidLoad()
         initTrackingArea()
     }
 

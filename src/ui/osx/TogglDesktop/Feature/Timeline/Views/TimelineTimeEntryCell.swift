@@ -60,6 +60,8 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
         }
     }
 
+    override var isResizable: Bool { return true }
+
     // MARK: OUTLET
 
     @IBOutlet weak var titleLbl: NSTextField!

@@ -14,13 +14,6 @@ final class TimelineActivityCell: TimelineBaseCell {
 
     private(set) var activity: TimelineActivity?
 
-    // MARK: View
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        initTrackingArea()
-    }
-
     // MARK: Public
 
     func config(for activity: TimelineActivity) {
