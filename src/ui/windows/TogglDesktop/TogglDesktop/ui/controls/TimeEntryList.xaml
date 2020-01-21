@@ -95,25 +95,26 @@
                 </Border>
 
                 
-                <Button Grid.Row="1" Style="{StaticResource FlatButton}"
-                        Margin="10" HorizontalAlignment="Center" Focusable="False"
+                <Button Grid.Row="1" Style="{DynamicResource Toggl.OutlinedButton}"
+                        Margin="8" HorizontalAlignment="Center" Focusable="False"
                         Name="loadMoreButton" x:FieldModifier="private"
+                        Height="32" Width="96"
                         Click="onLoadMoreButtonClick">
-                    <Grid Height="24" Width="120">
+                    <Grid>
                         <Image Source="/TogglDesktop;component/Resources/login-spinner.png"
                             Name="loadMoreSpinner" x:FieldModifier="private"
-                            Stretch="Fill" Width="16" Height="16"
+                            Stretch="Fill" Width="24" Height="24"
                             VerticalAlignment="Center" HorizontalAlignment="Center"
-                            Visibility="Collapsed" Opacity="0.5"
+                            Visibility="Collapsed" Opacity="0.6"
                             UseLayoutRounding="False">
                             <Image.LayoutTransform>
                                 <RotateTransform Angle="00"/>
                             </Image.LayoutTransform>
                         </Image>
                         <TextBlock Name="loadMoreButtonText" x:FieldModifier="private"
-                            VerticalAlignment="Center" HorizontalAlignment="Center"
-                            Foreground="#333333"
-                            Text="LOAD MORE"/>
+                                   Style="{DynamicResource Toggl.BodyText}"
+                                   VerticalAlignment="Center" HorizontalAlignment="Center"
+                                   Text="Load more"/>
                     </Grid>
                 </Button>
             </Grid>
