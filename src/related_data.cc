@@ -527,7 +527,7 @@ void RelatedData::workspaceAutocompleteItems(
             continue;
         }
 
-        std::string ws_name = Poco::UTF8::toUpper(ws->Name());
+        std::string ws_name = ws->Name();
         (*ws_names)[ws->ID()] = ws_name;
     }
 }
