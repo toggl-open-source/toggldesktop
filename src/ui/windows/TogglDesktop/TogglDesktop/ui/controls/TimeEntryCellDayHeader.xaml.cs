@@ -1,45 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Windows;
-using System.Windows.Media;
+using ReactiveUI;
+using TogglDesktop.ViewModels;
 
 namespace TogglDesktop
 {
-    public partial class TimeEntryCellDayHeader
+    public partial class TimeEntryCellDayHeader : IViewFor<DayHeaderViewModel>
     {
-        private bool isSelected;
-        private DateTime date;
-        public string dateHeader;
-
-        public bool IsDummy
+        public DayHeaderViewModel ViewModel
         {
-            set
-            {
-                if (value == false)
-                    return;
-
-                this.IsEnabled = false;
-            }
+            get => (DayHeaderViewModel)DataContext;
+            set => DataContext = value;
         }
 
-        public bool IsCollapsed
+        object IViewFor.ViewModel
         {
-            get { return this.panel.Visibility == Visibility.Collapsed; }
-            private set { this.panel.Visibility = value ? Visibility.Collapsed : Visibility.Visible; }
-        }
-       
-        public bool IsSelected
-        {
-            get { return this.isSelected; }
-            set
-            {
-                if (this.isSelected == value)
-                    return;
-                this.isSelected = value;
-
-                this.updateBackground();
-            }
+            get => ViewModel;
+            set => ViewModel = (DayHeaderViewModel) value;
         }
 
         public TimeEntryCellDayHeader()
@@ -47,33 +24,28 @@ namespace TogglDesktop
             this.InitializeComponent();
         }
 
+        public bool IsDummy
+        {
+            set => this.IsEnabled = !value;
+        }
+
+        public bool IsCollapsed => !this.ViewModel.IsExpanded;
+
+        public bool IsSelected
+        {
+            get => ViewModel.IsSelected;
+            set => ViewModel.IsSelected = value;
+        }
+
         public void DisplayDummy(string dateText, string durationText = "")
         {
-            this.labelFormattedDate.Text = dateText;
-            this.labelDateDuration.Text = durationText;
+            ViewModel = new DayHeaderViewModel(dateText, durationText);
         }
 
         public void Display(List<Toggl.TogglTimeEntryView> items, Action<string, TimeEntryCell> registerCellByGUID, bool collapsed)
         {
-            var item = items[0];
-
-            if (!item.IsHeader)
-            {
-                throw new InvalidDataException("Can only create day header from header time entry view.");
-            }
-
-            this.date = Toggl.DateTimeFromUnix(item.Started);
-            this.dateHeader = item.DateHeader;
-            this.IsCollapsed = collapsed;
-
-            if (!collapsed)
-            {
-                this.panel.Visibility = Visibility.Visible;
-            }
-
-            this.labelFormattedDate.Text = item.DateHeader;
-            this.labelDateDuration.Text = item.DateDuration;
-
+            ViewModel = items[0].ToDayHeaderViewModel();
+            ViewModel.IsExpanded = !collapsed;
             this.fillCells(items, registerCellByGUID);
         }
 
@@ -123,38 +95,7 @@ namespace TogglDesktop
             }
         }
 
-        private void onHeaderClick(object sender, RoutedEventArgs e)
-        {
-            this.IsCollapsed = !this.IsCollapsed;
-            Toggl.ViewTimeEntryList();
-        }
-
-        public void Expand(bool supressTimeEntryListEvent = false)
-        {
-            if (!this.IsCollapsed)
-                return;
-
-            this.IsCollapsed = false;
-
-            if(!supressTimeEntryListEvent)
-                Toggl.ViewTimeEntryList();
-        }
-        public void Collapse(bool supressTimeEntryListEvent = false)
-        {
-            if (this.IsCollapsed)
-                return;
-
-            this.IsCollapsed = true;
-
-            if (!supressTimeEntryListEvent)
-                Toggl.ViewTimeEntryList();
-        }
-
-        private void updateBackground()
-        {
-            this.Background = new SolidColorBrush(
-                this.isSelected ? Color.FromRgb(200, 200, 200) : Color.FromRgb(247, 247, 247)
-                );
-        }
+        public void Expand() => ViewModel.Expand();
+        public void Collapse() => ViewModel.Collapse();
     }
 }
