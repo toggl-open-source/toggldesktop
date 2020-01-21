@@ -46,9 +46,6 @@ namespace TogglDesktop
             this.InitializeComponent();
 
             this.loadMoreSpinnerAnimation = (Storyboard)this.Resources["RotateLoadMoreSpinner"];
-
-            this.resizeBackground.Width = SystemParameters.VerticalScrollBarWidth;
-            this.resizeBackground.Height = SystemParameters.VerticalScrollBarWidth;
         }
 
         public UIElementCollection Children
