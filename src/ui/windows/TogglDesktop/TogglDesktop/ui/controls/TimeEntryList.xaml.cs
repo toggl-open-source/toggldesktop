@@ -342,7 +342,7 @@ namespace TogglDesktop
         {
             foreach (var day in this.Children.Cast<TimeEntryCellDayHeader>())
             {
-                day.Collapse(true);
+                day.Collapse();
             }
             this.refreshKeyboardHighlight();
             Toggl.ViewTimeEntryList();
@@ -352,7 +352,7 @@ namespace TogglDesktop
         {
             foreach (var day in this.Children.Cast<TimeEntryCellDayHeader>())
             {
-                day.Expand(true);
+                day.Expand();
             }
             this.refreshKeyboardHighlight();
             Toggl.ViewTimeEntryList();

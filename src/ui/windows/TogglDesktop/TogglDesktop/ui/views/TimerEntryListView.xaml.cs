@@ -122,7 +122,7 @@ namespace TogglDesktop
                 for (; i < children.Count; i++)
                 {
                     var header = (TimeEntryCellDayHeader)children[i];
-                    isCollapsed.Add(header.dateHeader, header.IsCollapsed);
+                    isCollapsed.Add(header.ViewModel.DateHeader, header.IsCollapsed);
                 }
             }
 
