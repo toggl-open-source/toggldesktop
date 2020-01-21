@@ -23,7 +23,7 @@ namespace TogglDesktop
 
         private Color entryHoverColor = hoverColor;
 
-        private string guid { get; set; }
+        public string GUID { get; private set; }
         private string groupName { get; set; }
         private bool group = false;
         private bool groupOpen = false;
@@ -104,7 +104,7 @@ namespace TogglDesktop
 
         public void Imitate(TimeEntryCell cell)
         {
-            this.guid = cell.guid;
+            this.GUID = cell.GUID;
             this.labelDescription.Text = cell.labelDescription.Text;
 
             this.labelProject.Foreground = cell.labelProject.Foreground;
@@ -132,7 +132,7 @@ namespace TogglDesktop
 
         public void Display(Toggl.TogglTimeEntryView item, TimeEntryCellDayHeader dayHeader)
         {
-            this.guid = item.GUID;
+            this.GUID = item.GUID;
             this.DayHeader = dayHeader;
 
             this.labelDescription.Text = item.Description == "" ? "(no description)" : item.Description;
@@ -325,7 +325,7 @@ namespace TogglDesktop
             }
             using (Performance.Measure("opening edit view from cell, focussing " + focusedField))
             {
-                Toggl.Edit(this.guid, false, focusedField);
+                Toggl.Edit(this.GUID, false, focusedField);
             }
             e.Handled = true;
         }
@@ -336,10 +336,10 @@ namespace TogglDesktop
         {
             if (this.confirmlessDelete())
             {
-                Toggl.DeleteTimeEntry(this.guid);
+                Toggl.DeleteTimeEntry(this.GUID);
                 return;
             }
-            Toggl.AskToDeleteEntry(this.guid);
+            Toggl.AskToDeleteEntry(this.GUID);
         }
 
         public bool confirmlessDelete()
@@ -360,7 +360,7 @@ namespace TogglDesktop
         {
             using (Performance.Measure("continuing time entry from cell"))
             {
-                Toggl.Continue(this.guid);
+                Toggl.Continue(this.GUID);
             }
         }
 

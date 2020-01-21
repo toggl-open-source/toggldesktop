@@ -283,6 +283,7 @@
     <Compile Include="ui\Experiments\ExperimentParameters.cs" />
     <Compile Include="ui\KeyboardShortcuts.cs" />
     <Compile Include="ui\Experiments\implementations\ExperimentHacks.cs" />
+    <Compile Include="ui\ModelExtensions.cs" />
     <Compile Include="ui\NotificationExtensions.cs" />
     <Compile Include="ui\Theming\Theme.cs" />
     <Compile Include="ui\Theming\ThemeResourceDictionary.cs" />
