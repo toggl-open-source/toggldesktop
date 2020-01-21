@@ -17,7 +17,7 @@ protocol TimelineBaseCellDelegate: class {
 class TimelineBaseCell: NSCollectionViewItem {
 
     private struct Constants {
-        static let SideHit: CGFloat = 10.0
+        static let SideHit: CGFloat = 20.0
     }
 
     private enum MousePosition {
@@ -44,6 +44,8 @@ class TimelineBaseCell: NSCollectionViewItem {
     private var trackTop: NSView.TrackingRectTag?
     private var trackBottom: NSView.TrackingRectTag?
     private var trackMiddle: NSView.TrackingRectTag?
+    private var mouseDownPoint: CGPoint?
+    private var isResizing: Bool { return mousePosition == .top || mousePosition == .bottom }
 
     // MARK: View cycle
 
@@ -62,6 +64,7 @@ class TimelineBaseCell: NSCollectionViewItem {
     }
 
     override func mouseDown(with event: NSEvent) {
+        print("mouseDown")
         handleMouseDownForResize(event)
     }
 
@@ -199,14 +202,20 @@ extension TimelineBaseCell {
     }
 
     private func handleMouseDownForResize(_ event: NSEvent) {
-        guard isResizable else { return }
+        guard isResizable, isResizing else { return }
+        mouseDownPoint = event.locationInWindow
     }
 
     private func handleMouseDraggedForResize(_ event: NSEvent) {
-        guard isResizable else { return }
+        guard isResizable, isResizing else { return }
+
+        guard let mouseDownPoint = mouseDownPoint else { return }
+        let distance = event.locationInWindow.y - mouseDownPoint.y
+        print("distance \(distance)")
     }
 
     private func handleMouseUpForResize(_ event: NSEvent) {
-        guard isResizable else { return }
+        guard isResizable, isResizing else { return }
+        mouseDownPoint = nil
     }
 }

@@ -214,10 +214,11 @@ extension TimelineDatasource: NSCollectionViewDataSource, NSCollectionViewDelega
             let item = timeline?.item(at: indexPath) else { return }
         switch item {
         case let timeEntry as TimelineTimeEntry:
-            if let cell = cell as? TimelineTimeEntryCell {
-                delegate?.shouldPresentTimeEntryEditor(in: cell.popoverView, timeEntry: timeEntry.timeEntry, cell: cell)
-                collectionView.deselectItems(at: indexPaths)
-            }
+            break
+//            if let cell = cell as? TimelineTimeEntryCell {
+//                delegate?.shouldPresentTimeEntryEditor(in: cell.popoverView, timeEntry: timeEntry.timeEntry, cell: cell)
+//                collectionView.deselectItems(at: indexPaths)
+//            }
         case let item as TimelineBaseTimeEntry:
             delegate?.startNewTimeEntry(at: item.start, ended: item.end)
             collectionView.deselectItems(at: indexPaths)

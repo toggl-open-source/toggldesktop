@@ -10,6 +10,12 @@ import Cocoa
 
 final class TimelineBackgroundView: NSView {
 
+    // It's crucial to pass the mouse action to the above view
+    // If not, the Timeline Entry couldn't receive the MouseDown for example
+    override func hitTest(_ point: NSPoint) -> NSView? {
+        return nil
+    }
+
     private var highlightColor: NSColor {
         if #available(OSX 10.13, *) {
             return NSColor(named: NSColor.Name("timeline-background-highlight-color"))!

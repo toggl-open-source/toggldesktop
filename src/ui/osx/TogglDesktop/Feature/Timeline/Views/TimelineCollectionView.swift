@@ -21,12 +21,12 @@ final class TimelineCollectionView: NSCollectionView {
 
     // MARK: View
 
-    override func mouseDown(with event: NSEvent) {
-        super.mouseDown(with: event)
-        if #available(OSX 10.13, *) {
-            handleMouseClick(with: event)
-        }
-    }
+//    override func mouseDown(with event: NSEvent) {
+//        super.mouseDown(with: event)
+//        if #available(OSX 10.13, *) {
+//            handleMouseClick(with: event)
+//        }
+//    }
 }
 
 // MARK: Private
