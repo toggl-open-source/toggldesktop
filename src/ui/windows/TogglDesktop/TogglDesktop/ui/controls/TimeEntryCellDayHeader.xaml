@@ -2,40 +2,37 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:viewModels="clr-namespace:TogglDesktop.ViewModels"
              mc:Ignorable="d" d:DesignWidth="300"
+             d:DataContext="{d:DesignInstance viewModels:DayHeaderViewModel}"
              Margin="4"
              AllowDrop="True"
              Background="{DynamicResource Toggl.CardBackground}">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </UserControl.Resources>
     <StackPanel>
-        <Button Height="{StaticResource TimeEntryDayHeaderHeight}"
-                Style="{DynamicResource Toggl.TimeEntryDayHeaderButton}"
-                HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
-                Click="onHeaderClick" Focusable="False"
+        <ToggleButton Height="{StaticResource TimeEntryDayHeaderHeight}"
+                Style="{DynamicResource Toggl.TimeEntryDayHeaderToggleButton}"
+                IsChecked="{Binding IsExpanded}"
+                Focusable="False"
                 ContextMenu="{StaticResource TimeEntryHeaderContextMenu}">
             <DockPanel VerticalAlignment="Center">
-                <TextBlock Name="labelFormattedDate" x:FieldModifier="private"
-                           DockPanel.Dock="Left"
+                <TextBlock DockPanel.Dock="Left"
                            Style="{DynamicResource Toggl.BaseText}"
                            Margin="12 0 0 0"
                            VerticalAlignment="Center"
-                           HorizontalAlignment="Left"/>
-                <ToggleButton DockPanel.Dock="Right"
-                              Margin="0 0 8 0"
-                              Style="{DynamicResource Toggl.AutoCompleteDropDownToggleButton}"
-                              IsHitTestVisible="False"
-                              IsChecked="{Binding ElementName=panel, Path=IsVisible, Mode=OneWay}"/>
-                <TextBlock Name="labelDateDuration" x:FieldModifier="private"
-                           DockPanel.Dock="Right"
+                           HorizontalAlignment="Left"
+                           Text="{Binding DateHeader}"/>
+                <TextBlock DockPanel.Dock="Right"
                            Style="{DynamicResource Toggl.CaptionSemiBoldText}"
-                           Margin="0 0 4 0"
                            VerticalAlignment="Center"
-                           HorizontalAlignment="Right"/>
+                           HorizontalAlignment="Right"
+                           Text="{Binding DateDuration}"/>
             </DockPanel>
-        </Button>
-        <StackPanel Name="panel" x:FieldModifier="private">
-            
-        </StackPanel>
+        </ToggleButton>
+        <StackPanel Name="panel" x:FieldModifier="private"
+                    Visibility="{Binding IsExpanded, Converter={StaticResource BooleanToVisibilityConverter}}"/>
     </StackPanel>
-
 </UserControl>
