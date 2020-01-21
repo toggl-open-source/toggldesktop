@@ -20,9 +20,10 @@ class TimelineBaseCell: NSCollectionViewItem {
         static let SideHit: CGFloat = 10.0
     }
 
-    private enum DragPosition {
+    private enum MousePosition {
         case top
         case bottom
+        case middle
         case none
     }
 
@@ -39,45 +40,40 @@ class TimelineBaseCell: NSCollectionViewItem {
     var isClickable: Bool { return false }
 
     // Resizable tracker
-    private var dragPoisition = DragPosition.none { didSet { print("dragPoisition = \(dragPoisition)") }}
+    private var dragPoisition = MousePosition.none { didSet { print("dragPoisition = \(dragPoisition)") }}
     private var trackTop: NSView.TrackingRectTag?
     private var trackBottom: NSView.TrackingRectTag?
+    private var trackMiddle: NSView.TrackingRectTag?
 
     // MARK: Public
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        initTrackingArea()
     }
 
     override func mouseEntered(with event: NSEvent) {
         mouseDelegate?.timelineCellMouseDidEntered(self)
 
-        if isClickable {
-            NSCursor.pointingHand.set()
-        }
-
-        // Skip if it's not resizable
-        guard isResizable else {
-            super.mouseEntered(with: event)
-            return
-        }
-
         // Determine which drag position is
-        guard dragPoisition == .none else { return }
         switch event.trackingNumber {
         case trackTop:
-            dragPoisition = .top
+            if isResizable {
+                dragPoisition = .top
+            }
         case trackBottom:
-            dragPoisition = .bottom
+            if isResizable {
+                dragPoisition = .bottom
+            }
+        case trackMiddle:
+            if isClickable {
+                dragPoisition = .middle
+            }
         default:
-            break
+            dragPoisition = .none
         }
 
         // Set cursor
-        if dragPoisition != .none {
-            updateCursor()
-        }
+        updateCursor()
     }
 
     override func mouseExited(with event: NSEvent) {
@@ -118,12 +114,11 @@ class TimelineBaseCell: NSCollectionViewItem {
         }
     }
 
-    func initTrackingArea() {
-        if foregroundBox.trackingAreas.isEmpty {
-            let tracking = NSTrackingArea(rect: view.bounds, options: [.mouseEnteredAndExited, .activeInActiveApp, .inVisibleRect], owner: self, userInfo: nil)
-            foregroundBox.addTrackingArea(tracking)
-            foregroundBox.updateTrackingAreas()
-        }
+    func initAllTracking() {
+        clearResizeTrackers()
+
+        initHoverTrackers()
+        initResizeTrackers()
     }
 }
 
@@ -131,25 +126,32 @@ class TimelineBaseCell: NSCollectionViewItem {
 
 extension TimelineBaseCell {
 
-    func initResizeTrackers() {
-        guard let view = foregroundBox, isResizable else { return }
-        clearResizeTrackers()
+    private func initHoverTrackers() {
+        guard let view = foregroundBox, isClickable else { return }
+        let bounds = NSRect(x: 0, y: Constants.SideHit, width: view.frame.width, height: view.frame.height - Constants.SideHit * 2)
+        trackMiddle = view.addTrackingRect(bounds, owner: self, userData: nil, assumeInside: false)
+    }
 
-        var bounds = NSRect(x: 0, y: view.bounds.height - Constants.SideHit, width: view.bounds.width, height: Constants.SideHit)
+    private func initResizeTrackers() {
+        guard let view = foregroundBox, isResizable else { return }
+
+        var bounds = NSRect(x: 0, y: view.frame.height - Constants.SideHit, width: view.frame.width, height: Constants.SideHit)
         trackTop = view.addTrackingRect(bounds, owner: self, userData: nil, assumeInside: false)
 
-        bounds = NSRect(x: 0, y: 0, width: view.bounds.width, height: Constants.SideHit)
+        bounds = NSRect(x: 0, y: 0, width: view.frame.width, height: Constants.SideHit)
         trackBottom = view.addTrackingRect(bounds, owner: self, userData: nil, assumeInside: false)
     }
 
     private func clearResizeTrackers() {
-        guard let view = foregroundBox,
-            let trackTop = trackTop,
-            let trackBottom = trackBottom else {
-            return
+        if let trackTop = trackTop {
+            view.removeTrackingRect(trackTop)
         }
-        view.removeTrackingRect(trackTop)
-        view.removeTrackingRect(trackBottom)
+        if let trackBottom = trackBottom {
+            view.removeTrackingRect(trackBottom)
+        }
+        if let trackMiddle = trackMiddle {
+            view.removeTrackingRect(trackMiddle)
+        }
     }
 
     private func updateCursor() {
@@ -157,6 +159,8 @@ extension TimelineBaseCell {
         case .top,
              .bottom:
             NSCursor.resizeUpDown.set()
+        case .middle:
+            NSCursor.pointingHand.set()
         case .none:
             NSCursor.arrow.set()
         }

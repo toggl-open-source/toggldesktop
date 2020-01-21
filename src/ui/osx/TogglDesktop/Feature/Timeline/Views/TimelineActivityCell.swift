@@ -19,5 +19,6 @@ final class TimelineActivityCell: TimelineBaseCell {
     func config(for activity: TimelineActivity) {
         self.activity = activity
         renderColor(with: activity.color, isSmallEntry: activity.isSmall)
+        initAllTracking()
     }
 }

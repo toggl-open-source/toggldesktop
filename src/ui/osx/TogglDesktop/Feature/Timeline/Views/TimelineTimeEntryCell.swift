@@ -82,7 +82,6 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
         super.viewDidLoad()
 
         initCommon()
-        initTrackingArea()
     }
 
     override func prepareForReuse() {
@@ -109,7 +108,7 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
             hideOutOfBoundControls()
         }
 
-        initResizeTrackers()
+        initAllTracking()
      }
 
     private func hideOutOfBoundControls() {
