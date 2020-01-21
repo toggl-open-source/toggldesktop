@@ -454,6 +454,11 @@ extension TimelineDashboardViewController: TimelineDatasourceDelegate {
         // Adjust the Activity label to make it center alignment
         activityLabelRight.constant = view.frame.width - activityFrame.origin.x - TimelineFlowLayout.Constants.Divider.SeconDividerRightPadding
     }
+
+    func shouldUpdateEndTime(_ endtime: TimeInterval, for entry: TimelineTimeEntry) {
+        guard let guid = entry.timeEntry.guid else { return }
+        DesktopLibraryBridge.shared().updateTimeEntryWithEnd(atTimestamp: endtime, guid: guid)
+    }
 }
 
 // MARK: TimelineCollectionViewDelegate

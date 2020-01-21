@@ -15,6 +15,7 @@ protocol TimelineDatasourceDelegate: class {
     func shouldPresentActivityHover(in view: NSView, activity: TimelineActivity)
     func startNewTimeEntry(at started: TimeInterval, ended: TimeInterval)
     func shouldUpdatePanelSize(with activityFrame: CGRect)
+    func shouldUpdateEndTime(_ endtime: TimeInterval, for entry: TimelineTimeEntry)
 }
 
 final class TimelineDatasource: NSObject {
@@ -72,7 +73,8 @@ final class TimelineDatasource: NSObject {
     private let flow: TimelineFlowLayout
     private(set) var timeline: TimelineData?
     private var zoomLevel: ZoomLevel = .x1
-    
+    private var isUserResizing = false
+
     // MARK: Init
 
     init(_ collectionView: NSCollectionView) {
@@ -92,6 +94,8 @@ final class TimelineDatasource: NSObject {
     }
 
     func render(_ timeline: TimelineData) {
+        // Skip reload if the user is resizing
+        guard !isUserResizing else { return }
         self.timeline = timeline
         flow.currentDate = Date(timeIntervalSince1970: timeline.start)
         collectionView.reloadData()
@@ -214,11 +218,10 @@ extension TimelineDatasource: NSCollectionViewDataSource, NSCollectionViewDelega
             let item = timeline?.item(at: indexPath) else { return }
         switch item {
         case let timeEntry as TimelineTimeEntry:
-            break
-//            if let cell = cell as? TimelineTimeEntryCell {
-//                delegate?.shouldPresentTimeEntryEditor(in: cell.popoverView, timeEntry: timeEntry.timeEntry, cell: cell)
-//                collectionView.deselectItems(at: indexPaths)
-//            }
+            if let cell = cell as? TimelineTimeEntryCell {
+                delegate?.shouldPresentTimeEntryEditor(in: cell.popoverView, timeEntry: timeEntry.timeEntry, cell: cell)
+                collectionView.deselectItems(at: indexPaths)
+            }
         case let item as TimelineBaseTimeEntry:
             delegate?.startNewTimeEntry(at: item.start, ended: item.end)
             collectionView.deselectItems(at: indexPaths)
@@ -297,6 +300,37 @@ extension TimelineDatasource: TimelineBaseCellDelegate {
         case let activityCell as TimelineActivityCell:
             guard let activity = activityCell.activity else { return }
             delegate?.shouldPresentActivityHover(in: sender.view, activity: activity)
+        default:
+            break
+        }
+    }
+
+    func timelineCellUpdateEndTime(with event: NSEvent, sender: TimelineBaseCell) {
+        isUserResizing = false
+        switch sender {
+        case let timeEntryCell as TimelineTimeEntryCell:
+            guard let timeEntry = timeEntryCell.timeEntry else { return }
+            let point = collectionView.convert(event.locationInWindow, from: nil)
+            let timestampe = flow.convertTimestamp(from: point)
+
+            // Update in libray
+            delegate?.shouldUpdateEndTime(timestampe, for: timeEntry)
+        default:
+            break
+        }
+    }
+
+    func timelineCellRedrawEndTime(with event: NSEvent, sender: TimelineBaseCell) {
+        isUserResizing = true
+        switch sender {
+        case let timeEntryCell as TimelineTimeEntryCell:
+            guard let timeEntry = timeEntryCell.timeEntry else { return }
+            let point = collectionView.convert(event.locationInWindow, from: nil)
+            let timestampe = flow.convertTimestamp(from: point)
+
+            // Update the end time and re-draw
+            timeEntry.end = timestampe
+            flow.invalidateLayout()
         default:
             break
         }

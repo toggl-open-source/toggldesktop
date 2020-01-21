@@ -12,6 +12,8 @@ protocol TimelineBaseCellDelegate: class {
 
     func timelineCellMouseDidEntered(_ sender: TimelineBaseCell)
     func timelineCellMouseDidExited(_ sender: TimelineBaseCell)
+    func timelineCellRedrawEndTime(with event: NSEvent, sender: TimelineBaseCell)
+    func timelineCellUpdateEndTime(with event: NSEvent, sender: TimelineBaseCell)
 }
 
 class TimelineBaseCell: NSCollectionViewItem {
@@ -63,6 +65,7 @@ class TimelineBaseCell: NSCollectionViewItem {
     override func mouseExited(with event: NSEvent) {
         print("mouseExited")
         handleMouseExit(event)
+
     }
 
     override func mouseDown(with event: NSEvent) {
@@ -217,14 +220,16 @@ extension TimelineBaseCell {
 
     private func handleMouseDraggedForResize(_ event: NSEvent) {
         guard isResizable, isResizing else { return }
-        guard let mouseDownPoint = mouseDownPoint else { return }
-        
-        let distance = event.locationInWindow.y - mouseDownPoint.y
-        print("distance \(distance)")
+        guard mouseDownPoint != nil else { return }
+        mouseDelegate?.timelineCellRedrawEndTime(with: event, sender: self)
     }
 
     private func handleMouseUpForResize(_ event: NSEvent) {
         guard isResizable, isResizing else { return }
+        if mouseDownPoint != nil {
+            mouseDelegate?.timelineCellUpdateEndTime(with: event, sender: self)
+        }
+
         mouseDownPoint = nil
         mousePosition = .none
         updateCursor()

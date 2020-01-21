@@ -14,8 +14,8 @@ class TimelineBaseTimeEntry {
         static let MinimumSecondOverlap: Double = 60 // seconds
     }
 
-    let start: TimeInterval
-    let end: TimeInterval
+    var start: TimeInterval
+    var end: TimeInterval
 
     // Group of overlap entries -> Help to resolve the overlap later
     private(set) var group: Int = -1
