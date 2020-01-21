@@ -61,6 +61,7 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
     }
 
     override var isResizable: Bool { return true }
+    override var isClickable: Bool { return true }
 
     // MARK: OUTLET
 
@@ -97,16 +98,6 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
         populateInfo()
     }
 
-    override func mouseEntered(with event: NSEvent) {
-        super.mouseEntered(with: event)
-        foregroundBox.resetCursorRects()
-    }
-
-    override func mouseExited(with event: NSEvent) {
-        super.mouseExited(with: event)
-        foregroundBox.resetCursorRects()
-    }
-
     private func populateInfo() {
         guard let timeEntry = timeEntry else { return }
         backgroundBox?.isHidden = !timeEntry.hasDetailInfo
@@ -117,6 +108,8 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
             updateLabels(item)
             hideOutOfBoundControls()
         }
+
+        initResizeTrackers()
      }
 
     private func hideOutOfBoundControls() {
@@ -199,9 +192,6 @@ extension TimelineTimeEntryCell {
         timeEntryMenu.menuDelegate = self
         view.menu = timeEntryMenu
         view.menu?.delegate = self
-        if let cursorView = foregroundBox as? CursorView {
-            cursorView.cursor = NSCursor.pointingHand
-        }
     }
 }
 
