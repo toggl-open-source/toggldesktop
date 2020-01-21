@@ -119,9 +119,6 @@
                 </Button>
             </Grid>
         </ScrollViewer>
-        <Rectangle Name="resizeBackground" x:FieldModifier="private"
-            VerticalAlignment="Bottom" HorizontalAlignment="Right"
-                Width="17" Height="17" Fill="#f0f0f0" IsHitTestVisible="True"/>
 
         <Button Name="emptyListText" x:FieldModifier="private" Visibility="Hidden"
                         FontSize="14" Foreground="Gray" Cursor="Hand"
