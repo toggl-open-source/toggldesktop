@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 using TogglDesktop.Diagnostics;
@@ -92,39 +93,33 @@ namespace TogglDesktop
             {
                 this.cellsByGUID.Clear();
 
-                Action<string, TimeEntryCell> registerCellByGUID = (guid, cell) =>
-                {
-                    this.cellsByGUID.Add(guid, cell);
-                    cells.Add(Tuple.Create(guid, cell));
-                };
-
                 var days = groupByDays(list);
-
-                this.fillDays(days, registerCellByGUID);
+                this.fillDays(days);
+                this.Entries.Children
+                    .Cast<TimeEntryCellDayHeader>()
+                    .SelectMany(header => header.Children)
+                    .ForEach(cell =>
+                    {
+                        var guid = cell.GetGUID();
+                        this.cellsByGUID.Add(guid, cell);
+                        cells.Add(Tuple.Create(guid, cell));
+                    });
 
                 this.Entries.FinishedFillingList();
                 this.Entries.SetTimeEntryCellList(cells);
                 this.refreshHighLight();
             }
-
         }
 
-        private void fillDays(List<List<Toggl.TogglTimeEntryView>> days, Action<string, TimeEntryCell> registerCellByGUID)
+        private void fillDays(List<List<Toggl.TogglTimeEntryView>> days)
         {
             var children = this.Entries.Children;
 
-            Dictionary<string, bool> isCollapsed =
-                new Dictionary<string, bool>();
-            var i = 0;
-            // remember which days were collapsed
-            if (children.Count > 0)
-            {
-                for (; i < children.Count; i++)
-                {
-                    var header = (TimeEntryCellDayHeader)children[i];
-                    isCollapsed.Add(header.ViewModel.DateHeader, header.IsCollapsed);
-                }
-            }
+            // remember which days were expanded
+            var isExpandedDictionary = children
+                .Cast<TimeEntryCellDayHeader>()
+                .Select(h => h.ViewModel)
+                .ToDictionary(vm => vm.DateHeader, vm => vm.IsExpanded);
 
             // remove superfluous days
             if (children.Count > days.Count)
@@ -133,27 +128,22 @@ namespace TogglDesktop
             }
 
             // update existing days
-            i = 0;
+            var i = 0;
             for (; i < children.Count; i++)
             {
-                var collapsed = false;
                 var day = days[i];
-                var item = (Toggl.TogglTimeEntryView)day[0];
-
-                isCollapsed.TryGetValue(item.DateHeader, out collapsed);
-
+                isExpandedDictionary.TryGetValue(day[0].DateHeader, out var isExpanded);
                 var header = (TimeEntryCellDayHeader)children[i];
-                header.Display(day, registerCellByGUID, collapsed);
+                header.Display(day, isExpanded);
             }
 
             // add additional days
             for (; i < days.Count; i++)
             {
                 var day = days[i];
-
+                isExpandedDictionary.TryGetValue(day[0].DateHeader, out var isExpanded);
                 var header = new TimeEntryCellDayHeader();
-                header.Display(day, registerCellByGUID, false);
-
+                header.Display(day, isExpanded);
                 children.Add(header);
             }
         }
