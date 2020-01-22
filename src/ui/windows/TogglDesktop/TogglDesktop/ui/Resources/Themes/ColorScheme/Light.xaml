@@ -50,7 +50,8 @@
     <SolidColorBrush x:Key="Toggl.SelectionElements.Background" Color="{StaticResource Toggl.SelectionElements.BackgroundColor}" po:Freeze="True" />
     <SolidColorBrush x:Key="Toggl.SelectionElements.Border" Color="{StaticResource Toggl.Grayish1Color}" po:Freeze="True" />
     <SolidColorBrush x:Key="Toggl.SelectionElements.Disabled.Background" Color="{StaticResource Toggl.FivePercentBlackColor}" po:Freeze="True" />
-    <SolidColorBrush x:Key="Toggl.TextBox.MouseOverBorder" Color="{StaticResource Toggl.BlackColor}" po:Freeze="True" />
+    <SolidColorBrush x:Key="Toggl.TextBox.MouseOverBorder" Color="{StaticResource Toggl.GrayColor}" po:Freeze="True" />
+    <SolidColorBrush x:Key="Toggl.TextBox.Timer.MouseOverBackground" Color="#F3F3F3" po:Freeze="True" />
     <SolidColorBrush x:Key="Toggl.ComboBox.HoverBackground" Color="#0D000000" po:Freeze="True" />
     <SolidColorBrush x:Key="Toggl.TitleTextBrush" Color="{StaticResource Toggl.DarkGrayColor}" po:Freeze="True" />
     <!-- A combination of #D9D9D9 and #4D000000: -->
@@ -100,8 +101,10 @@
     <SolidColorBrush x:Key="Toggl.Logo.Letters" Color="#424242" po:Freeze="True" />
 
     <SolidColorBrush x:Key="Toggl.BarelyVisibleSeparator" Color="{StaticResource Toggl.LightGrayColor}" Opacity="0.15" />
-    <DropShadowEffect x:Key="Toggl.SeparatorShadow" ShadowDepth="2" Color="{StaticResource Toggl.Grayish2Color}" Opacity="1" BlurRadius="4"/>
     <SolidColorBrush x:Key="Toggl.WorkspaceSeparator" Color="{StaticResource Toggl.BlackColor}" Opacity="0.1" po:Freeze="True"/>
+
+    <DropShadowEffect x:Key="Toggl.SeparatorShadow" ShadowDepth="2" BlurRadius="4" Opacity="1" Color="{StaticResource Toggl.Grayish2Color}" />
+    <DropShadowEffect x:Key="Toggl.DropDownShadow" ShadowDepth="1" BlurRadius="4" Direction="270" Opacity="0.1" Color="{DynamicResource Toggl.BlackColor}" />
 
     <BitmapImage x:Key="Toggl.LogoImage" UriSource="/TogglDesktop;component/Resources/toggl-logo-light.png" />
 </ResourceDictionary>

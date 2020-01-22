@@ -56,7 +56,7 @@
 
         <TextBox x:Name="feedbackTextBox" x:FieldModifier="private"
                  Grid.Row="1"
-                 Height="104"
+                 Height="108"
                  Margin="0 8"
                  TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"
                  VerticalContentAlignment="Top"
