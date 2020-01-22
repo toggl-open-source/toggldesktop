@@ -407,7 +407,7 @@ namespace TogglDesktop
         {
             this.keyboardHighlight.Visibility = Visibility.Collapsed;
             this.imposterVisible = false;
-            this.cellAboutToKeyboardHighlight = null;   
+            this.cellAboutToKeyboardHighlight = null;
         }
 
         private void setKeyboardHighlight(bool async)
@@ -485,7 +485,7 @@ namespace TogglDesktop
         #endregion
 
         #region load more
-        
+
         private void onLoadMoreButtonClick(object sender, RoutedEventArgs e)
         {
             this.loadMore();
