@@ -82,7 +82,7 @@ class Analytics : public Poco::TaskManager {
                    const std::string &name,
                    const toggl::Rectangle rect);
 
-    void TrackTimeEntryActiity(const std::string &client_id,
+    void TrackTimeEntryActivity(const std::string &client_id,
                                const std::string &action);
 
 
