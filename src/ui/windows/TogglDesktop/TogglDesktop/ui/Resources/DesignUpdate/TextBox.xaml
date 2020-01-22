@@ -36,11 +36,15 @@
     </Style>
 
     <Style x:Key="Toggl.Timer.DescriptionTextBox" TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
-        <Setter Property="BorderBrush" Value="Transparent" />
         <Setter Property="Background" Value="{DynamicResource Toggl.Background}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Toggl.Background}" />
+        <Setter Property="mah:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource Toggl.TextBox.Timer.MouseOverBackground}" />
         <Setter Property="mah:TextBoxHelper.Watermark" Value="What are you working on?" />
         <Style.Triggers>
-            <Trigger Property="IsKeyboardFocused" Value="True">
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{DynamicResource Toggl.TextBox.Timer.MouseOverBackground}" />
+            </Trigger>
+            <Trigger Property="IsFocused" Value="True">
                 <Setter Property="Background" Value="{DynamicResource Toggl.SelectionElements.Background}" />
             </Trigger>
         </Style.Triggers>
