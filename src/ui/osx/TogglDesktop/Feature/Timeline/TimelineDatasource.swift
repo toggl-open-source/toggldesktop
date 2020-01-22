@@ -16,6 +16,7 @@ protocol TimelineDatasourceDelegate: class {
     func startNewTimeEntry(at started: TimeInterval, ended: TimeInterval)
     func shouldUpdatePanelSize(with activityFrame: CGRect)
     func shouldUpdateEndTime(_ endtime: TimeInterval, for entry: TimelineTimeEntry)
+    func shouldUpdateStartTime(_ start: TimeInterval, for entry: TimelineTimeEntry)
 }
 
 final class TimelineDatasource: NSObject {
@@ -334,6 +335,41 @@ extension TimelineDatasource: TimelineBaseCellDelegate {
             if endedAt > timeEntry.start {
                 timeEntry.end = endedAt
                 flow.invalidateLayout()
+            }
+        default:
+            break
+        }
+    }
+
+    func timelineCellRedrawStartTime(with event: NSEvent, sender: TimelineBaseCell) {
+        isUserResizing = true
+        switch sender {
+        case let timeEntryCell as TimelineTimeEntryCell:
+            guard let timeEntry = timeEntryCell.timeEntry else { return }
+            let point = collectionView.convert(event.locationInWindow, from: nil)
+            let start = flow.convertTimestamp(from: point)
+
+            // Update the end time and re-draw
+            if start <= timeEntry.end {
+                timeEntry.start = start
+                flow.invalidateLayout()
+            }
+        default:
+            break
+        }
+    }
+
+    func timelineCellUpdateStartTime(with event: NSEvent, sender: TimelineBaseCell) {
+        isUserResizing = false
+        switch sender {
+        case let timeEntryCell as TimelineTimeEntryCell:
+            guard let timeEntry = timeEntryCell.timeEntry else { return }
+            let point = collectionView.convert(event.locationInWindow, from: nil)
+            let start = flow.convertTimestamp(from: point)
+
+            // Update in libray
+            if start <= timeEntry.end {
+                delegate?.shouldUpdateStartTime(start, for: timeEntry)
             }
         default:
             break

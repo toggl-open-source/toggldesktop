@@ -14,6 +14,8 @@ protocol TimelineBaseCellDelegate: class {
     func timelineCellMouseDidExited(_ sender: TimelineBaseCell)
     func timelineCellRedrawEndTime(with event: NSEvent, sender: TimelineBaseCell)
     func timelineCellUpdateEndTime(with event: NSEvent, sender: TimelineBaseCell)
+    func timelineCellRedrawStartTime(with event: NSEvent, sender: TimelineBaseCell)
+    func timelineCellUpdateStartTime(with event: NSEvent, sender: TimelineBaseCell)
 }
 
 class TimelineBaseCell: NSCollectionViewItem {
@@ -27,6 +29,12 @@ class TimelineBaseCell: NSCollectionViewItem {
         case top
         case bottom
         case middle
+        case none
+    }
+
+    private enum UserAction {
+        case resizeTop
+        case resizeBottom
         case none
     }
 
@@ -47,8 +55,8 @@ class TimelineBaseCell: NSCollectionViewItem {
     private var trackTop: NSView.TrackingRectTag?
     private var trackBottom: NSView.TrackingRectTag?
     private var trackMiddle: NSView.TrackingRectTag?
-    private var mouseDownPoint: CGPoint?
-    private var isResizing: Bool { return mousePosition == .top || mousePosition == .bottom }
+    private var userAction = UserAction.none
+    private var isUserResizing: Bool { return mousePosition == .top || mousePosition == .bottom }
 
     // MARK: View cycle
 
@@ -201,7 +209,7 @@ extension TimelineBaseCell {
         mouseDelegate?.timelineCellMouseDidExited(self)
 
         // Skip exit if the user is resizing
-        if isResizing && mouseDownPoint != nil {
+        if isUserResizing && userAction != .none {
             return
         }
 
@@ -215,23 +223,51 @@ extension TimelineBaseCell {
     }
 
     private func handleMouseDownForResize(_ event: NSEvent) {
-        guard isResizable, isResizing else { return }
-        mouseDownPoint = event.locationInWindow
+        guard isResizable, isUserResizing else { return }
+
+        // Calculate the user action
+        switch event.trackingNumber {
+        case trackTop:
+            userAction = .resizeTop
+        case trackBottom:
+            userAction = .resizeBottom
+        default:
+            userAction = .none
+        }
     }
 
     private func handleMouseDraggedForResize(_ event: NSEvent) {
-        guard isResizable, isResizing else { return }
-        guard mouseDownPoint != nil else { return }
-        mouseDelegate?.timelineCellRedrawEndTime(with: event, sender: self)
+        guard isResizable, isUserResizing else { return }
+        guard userAction != .none else { return }
+
+        // Update start / end depend on the user action
+        switch userAction {
+        case .resizeBottom:
+            mouseDelegate?.timelineCellRedrawEndTime(with: event, sender: self)
+        case .resizeTop:
+            mouseDelegate?.timelineCellRedrawStartTime(with: event, sender: self)
+        case .none:
+            break
+        }
     }
 
     private func handleMouseUpForResize(_ event: NSEvent) {
-        guard isResizable, isResizing else { return }
-        if mouseDownPoint != nil {
+        guard isResizable, isUserResizing else { return }
+
+        guard userAction != .none else { return }
+
+        // Update the real value of start / end
+        switch userAction {
+        case .resizeBottom:
             mouseDelegate?.timelineCellUpdateEndTime(with: event, sender: self)
+        case .resizeTop:
+            mouseDelegate?.timelineCellUpdateStartTime(with: event, sender: self)
+        case .none:
+            break
         }
 
-        mouseDownPoint = nil
+        // Reset
+        userAction = .none
         mousePosition = .none
         updateCursor()
     }

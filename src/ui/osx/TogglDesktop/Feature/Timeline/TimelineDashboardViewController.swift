@@ -459,6 +459,11 @@ extension TimelineDashboardViewController: TimelineDatasourceDelegate {
         guard let guid = entry.timeEntry.guid else { return }
         DesktopLibraryBridge.shared().updateTimeEntryWithEnd(atTimestamp: endtime, guid: guid)
     }
+
+    func shouldUpdateStartTime(_ start: TimeInterval, for entry: TimelineTimeEntry) {
+        guard let guid = entry.timeEntry.guid else { return }
+        DesktopLibraryBridge.shared().updateTimeEntryWithStart(atTimestamp: start, guid: guid)
+    }
 }
 
 // MARK: TimelineCollectionViewDelegate
