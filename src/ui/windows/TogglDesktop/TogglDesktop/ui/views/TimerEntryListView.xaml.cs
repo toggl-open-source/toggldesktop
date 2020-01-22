@@ -132,7 +132,7 @@ namespace TogglDesktop
             for (; i < children.Count; i++)
             {
                 var day = days[i];
-                isExpandedDictionary.TryGetValue(day[0].DateHeader, out var isExpanded);
+                var isExpanded = isExpandedDictionary.GetValueOrDefault(day[0].DateHeader, true);
                 var header = (TimeEntryCellDayHeader)children[i];
                 header.Display(day, isExpanded);
             }
@@ -141,7 +141,7 @@ namespace TogglDesktop
             for (; i < days.Count; i++)
             {
                 var day = days[i];
-                isExpandedDictionary.TryGetValue(day[0].DateHeader, out var isExpanded);
+                var isExpanded = isExpandedDictionary.GetValueOrDefault(day[0].DateHeader, true);
                 var header = new TimeEntryCellDayHeader();
                 header.Display(day, isExpanded);
                 children.Add(header);

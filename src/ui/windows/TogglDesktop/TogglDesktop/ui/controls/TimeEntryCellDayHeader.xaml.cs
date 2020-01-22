@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
+using System.Windows.Input;
 using ReactiveUI;
 using TogglDesktop.ViewModels;
 
@@ -34,8 +36,8 @@ namespace TogglDesktop
 
         public bool IsSelected
         {
-            get => ViewModel.IsSelected;
-            set => ViewModel.IsSelected = value;
+            get => ViewModel.IsFocused;
+            set => ViewModel.IsFocused = value;
         }
 
         public void DisplayDummy(string dateText, string durationText = "")
@@ -87,5 +89,41 @@ namespace TogglDesktop
 
         public void Expand() => ViewModel.Expand();
         public void Collapse() => ViewModel.Collapse();
+
+        private void TimeEntryCellDayHeader_OnKeyDown(object sender, KeyEventArgs e)
+        {
+            var isShiftPressed = (Keyboard.Modifiers & ModifierKeys.Shift) == ModifierKeys.Shift;
+            var direction = e.Key switch
+            {
+                Key.Down when isShiftPressed => FocusNavigationDirection.Down,
+                Key.Down => FocusNavigationDirection.Next,
+                Key.Up when isShiftPressed => FocusNavigationDirection.Up,
+                Key.Up => FocusNavigationDirection.Previous,
+                _ => (FocusNavigationDirection?)null
+            };
+            if (direction != null)
+            {
+                var request = new TraversalRequest(direction.Value);
+                var sourceElement = e.OriginalSource as FrameworkElement;
+                sourceElement?.MoveFocus(request);
+                e.Handled = true;
+            }
+            else
+            {
+                switch (e.Key)
+                {
+                    case Key.Right when !isShiftPressed:
+                        ViewModel.IsExpanded = true;
+                        this.panel.Children[0].Focus();
+                        e.Handled = true;
+                        break;
+                    case Key.Left when !isShiftPressed:
+                        ViewModel.IsExpanded = false;
+                        ViewModel.IsFocused = true;
+                        e.Handled = true;
+                        break;
+                }
+            }
+        }
     }
 }

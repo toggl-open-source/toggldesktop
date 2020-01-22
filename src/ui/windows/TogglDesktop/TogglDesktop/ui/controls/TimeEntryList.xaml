@@ -62,14 +62,16 @@
                       HorizontalScrollBarVisibility="Disabled"
                       HorizontalAlignment="Stretch"
                       SizeChanged="onSizeChanged"
-                      Style="{StaticResource CustomSrollViewer}">
+                      Style="{StaticResource CustomSrollViewer}"
+                      Focusable="False">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 
-                <VirtualizingStackPanel Name="panel" x:FieldModifier="private" HorizontalAlignment="Stretch" Grid.Row="0" Margin="4">
+                <VirtualizingStackPanel Name="panel" x:FieldModifier="private" HorizontalAlignment="Stretch" Grid.Row="0" Margin="4"
+                                        KeyboardNavigation.TabNavigation="Contained">
 
                 </VirtualizingStackPanel>
                 <Rectangle x:Name="highlightRectangleTop" x:FieldModifier="private" Grid.Row="0"

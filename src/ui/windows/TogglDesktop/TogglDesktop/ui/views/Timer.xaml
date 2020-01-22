@@ -151,7 +151,8 @@
                           Grid.Column="2"
                           Style="{StaticResource Toggl.StartStopButton}"
                           Margin="8 0 12 0"
-                          Click="startStopButtonOnClick"/>
+                          Click="startStopButtonOnClick"
+                          Focusable="False"/>
         </Grid>
     </Grid>
 </UserControl>
