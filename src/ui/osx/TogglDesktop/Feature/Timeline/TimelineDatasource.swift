@@ -311,14 +311,10 @@ extension TimelineDatasource: TimelineBaseCellDelegate {
         switch sender {
         case let timeEntryCell as TimelineTimeEntryCell:
             guard let timeEntry = timeEntryCell.timeEntry else { return }
-            let point = collectionView.convert(event.locationInWindow, from: nil)
-            let endedAt = flow.convertTimestamp(from: point)
-
-            // Make sure the end time is proper
-            let at = endedAt > timeEntry.start ? endedAt : timeEntry.start + 1
+            let endAt = convertPointForEndTime(with: event, startTime: timeEntry.start)
 
             // Update in libray
-            delegate?.shouldUpdateEndTime(at, for: timeEntry)
+            delegate?.shouldUpdateEndTime(endAt, for: timeEntry)
         default:
             break
         }
@@ -329,14 +325,10 @@ extension TimelineDatasource: TimelineBaseCellDelegate {
         switch sender {
         case let timeEntryCell as TimelineTimeEntryCell:
             guard let timeEntry = timeEntryCell.timeEntry else { return }
-            let point = collectionView.convert(event.locationInWindow, from: nil)
-            let endedAt = flow.convertTimestamp(from: point)
-
-            // Make sure the end time is proper
-            let at = endedAt > timeEntry.start ? endedAt : timeEntry.start + 1
+            let endAt = convertPointForEndTime(with: event, startTime: timeEntry.start)
 
             // Update the end time and re-draw
-            timeEntry.end = at
+            timeEntry.end = endAt
             flow.invalidateLayout()
         default:
             break
@@ -348,11 +340,10 @@ extension TimelineDatasource: TimelineBaseCellDelegate {
         switch sender {
         case let timeEntryCell as TimelineTimeEntryCell:
             guard let timeEntry = timeEntryCell.timeEntry else { return }
-            let point = collectionView.convert(event.locationInWindow, from: nil)
-            let start = flow.convertTimestamp(from: point)
-            let at = start < timeEntry.end ? start : timeEntry.end - 1
+            let startTime = convertPointForStartTime(with: event, endTime: timeEntry.end)
 
-            timeEntry.start = at
+            // Update and re-draw
+            timeEntry.start = startTime
             flow.invalidateLayout()
         default:
             break
@@ -364,12 +355,10 @@ extension TimelineDatasource: TimelineBaseCellDelegate {
         switch sender {
         case let timeEntryCell as TimelineTimeEntryCell:
             guard let timeEntry = timeEntryCell.timeEntry else { return }
-            let point = collectionView.convert(event.locationInWindow, from: nil)
-            let start = flow.convertTimestamp(from: point)
+            let startTime = convertPointForStartTime(with: event, endTime: timeEntry.end)
 
-            // Update in libray
-            let at = start < timeEntry.end ? start : timeEntry.end - 1
-            delegate?.shouldUpdateStartTime(at, for: timeEntry)
+            // Update library
+            delegate?.shouldUpdateStartTime(startTime, for: timeEntry)
         default:
             break
         }
@@ -379,5 +368,23 @@ extension TimelineDatasource: TimelineBaseCellDelegate {
         if let cell = sender as? TimelineTimeEntryCell {
             delegate?.shouldPresentTimeEntryEditor(in: cell.popoverView, timeEntry: cell.timeEntry.timeEntry, cell: cell)
         }
+    }
+
+    private func convertPointForStartTime(with event: NSEvent, endTime: TimeInterval) -> TimeInterval {
+        // Convert point to timestamp, depend on the zoom
+        let point = collectionView.convert(event.locationInWindow, from: nil)
+        let start = flow.convertTimestamp(from: point)
+
+        // Get safe value
+        return start < endTime ? start : endTime - 1
+    }
+
+    private func convertPointForEndTime(with event: NSEvent, startTime: TimeInterval) -> TimeInterval {
+        // Convert point to timestamp, depend on the zoom
+        let point = collectionView.convert(event.locationInWindow, from: nil)
+        let endedAt = flow.convertTimestamp(from: point)
+
+        // Get safe value
+        return endedAt > startTime ? endedAt : startTime + 1
     }
 }
