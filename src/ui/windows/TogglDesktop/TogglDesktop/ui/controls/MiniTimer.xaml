@@ -95,7 +95,8 @@
                   Margin="0 0 -8 0">
                 <Grid x:Name="editProjectPanel" x:FieldModifier="private"
                       DockPanel.Dock="Bottom"
-                      Background="{DynamicResource Toggl.SelectionElements.Disabled.Background}">
+                      Background="{DynamicResource Toggl.SelectionElements.Disabled.Background}"
+                      Margin="0 0 -1 0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
                         <ColumnDefinition Width="8"/>

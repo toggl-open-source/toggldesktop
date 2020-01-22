@@ -273,15 +273,19 @@
                                Focusable="False"
                                IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}"
                                Placement="Bottom"
-                               PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}">
-                            <Grid MinWidth="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}" MaxHeight="{Binding MaxDropDownHeight, RelativeSource={RelativeSource TemplatedParent}}">
+                               PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}"
+                               HorizontalOffset="-8">
+                            <Grid Background="Transparent">
                                 <Border x:Name="PopupBorder"
                                         Height="Auto"
+                                        MinWidth="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}" MaxHeight="{Binding MaxDropDownHeight, RelativeSource={RelativeSource TemplatedParent}}"
                                         HorizontalAlignment="Stretch"
                                         Background="{DynamicResource Toggl.CardBackground}"
                                         BorderBrush="{DynamicResource ComboBoxPopupBorderBrush}"
                                         BorderThickness="{DynamicResource ComboBoxPopupBorderThemeThickness}"
-                                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                        Effect="{DynamicResource Toggl.DropDownShadow}"
+                                        Margin="8 0 8 8">
                                     <ScrollViewer Padding="{DynamicResource ComboBoxPopupBorderThemePadding}" BorderThickness="0"
                                                   SnapsToDevicePixels="True">
                                         <ItemsPresenter x:Name="ItemsPresenter" KeyboardNavigation.DirectionalNavigation="Contained" />
@@ -407,6 +411,7 @@
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="Foreground" Value="{DynamicResource Toggl.PrimaryTextBrush}" />
         <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="Height" Value="32" />
         <Setter Property="Controls:ItemHelper.ActiveSelectionBackgroundBrush">
             <Setter.Value>
                 <SolidColorBrush Color="{StaticResource Toggl.AccentColor}" Opacity="0.4" />
