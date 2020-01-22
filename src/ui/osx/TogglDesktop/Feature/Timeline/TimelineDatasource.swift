@@ -175,8 +175,8 @@ extension TimelineDatasource: NSCollectionViewDataSource, NSCollectionViewDelega
             switch item {
             case let timeEntry as TimelineTimeEntry:
                 let cell = collectionView.makeItem(withIdentifier: Constants.TimeEntryCellID, for: indexPath) as! TimelineTimeEntryCell
+                cell.menuDelegate = self
                 cell.delegate = self
-                cell.mouseDelegate = self
                 cell.config(for: timeEntry)
                 return cell
             case let emptyTimeEntry as TimelineBaseTimeEntry:
@@ -189,7 +189,7 @@ extension TimelineDatasource: NSCollectionViewDataSource, NSCollectionViewDelega
 
         case .activity:
             let cell = collectionView.makeItem(withIdentifier: Constants.ActivityCellID, for: indexPath) as! TimelineActivityCell
-            cell.mouseDelegate = self
+            cell.delegate = self
             let activity = item as! TimelineActivity
             cell.config(for: activity)
             return cell
@@ -291,16 +291,11 @@ extension TimelineDatasource: TimelineTimeEntryCellDelegate {
 
 extension TimelineDatasource: TimelineBaseCellDelegate {
 
-    func timelineCellMouseDidExited(_ sender: TimelineBaseCell) {}
-
     func timelineCellMouseDidEntered(_ sender: TimelineBaseCell) {
         switch sender {
         case let timeEntryCell as TimelineTimeEntryCell:
             guard let timeEntry = timeEntryCell.timeEntry else { return }
             delegate?.shouldPresentTimeEntryHover(in: timeEntryCell.popoverView, timeEntry: timeEntry)
-        case let activityCell as TimelineActivityCell:
-            guard let activity = activityCell.activity else { return }
-            delegate?.shouldPresentActivityHover(in: sender.view, activity: activity)
         default:
             break
         }
@@ -386,5 +381,15 @@ extension TimelineDatasource: TimelineBaseCellDelegate {
 
         // Get safe value
         return endedAt > startTime ? endedAt : startTime + 1
+    }
+}
+
+// MARK: TimelineActivityCellDelegate
+
+extension TimelineDatasource: TimelineActivityCellDelegate {
+
+    func timelineActivityPresentPopover(_ sender: TimelineActivityCell) {
+        guard let activity = sender.activity else { return }
+        delegate?.shouldPresentActivityHover(in: sender.view, activity: activity)
     }
 }

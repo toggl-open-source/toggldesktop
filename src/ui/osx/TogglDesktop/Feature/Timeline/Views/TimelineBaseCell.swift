@@ -11,7 +11,6 @@ import Cocoa
 protocol TimelineBaseCellDelegate: class {
 
     func timelineCellMouseDidEntered(_ sender: TimelineBaseCell)
-    func timelineCellMouseDidExited(_ sender: TimelineBaseCell)
     func timelineCellRedrawEndTime(with event: NSEvent, sender: TimelineBaseCell)
     func timelineCellUpdateEndTime(with event: NSEvent, sender: TimelineBaseCell)
     func timelineCellRedrawStartTime(with event: NSEvent, sender: TimelineBaseCell)
@@ -46,7 +45,7 @@ class TimelineBaseCell: NSCollectionViewItem {
     
     // MARK: Variables
 
-    weak var mouseDelegate: TimelineBaseCellDelegate?
+    weak var delegate: TimelineBaseCellDelegate?
     private(set) var backgroundColor: NSColor?
     var isResizable: Bool { return false }
     var isHoverable: Bool { return false }
@@ -102,7 +101,7 @@ class TimelineBaseCell: NSCollectionViewItem {
         backgroundBox?.fillColor = backgroundColor ?? foregroundColor
         backgroundBox?.borderColor = backgroundColor ?? foregroundColor
 
-        let cornerRadius = suitableCornerRadius(isSmallEntry)
+        let cornerRadius = TimelineBaseCell.suitableCornerRadius(isSmallEntry, height: view.frame.height)
         foregroundBox.cornerRadius = cornerRadius
         backgroundBox?.cornerRadius = cornerRadius
     }
@@ -119,14 +118,13 @@ class TimelineBaseCell: NSCollectionViewItem {
 
 extension TimelineBaseCell {
 
-    private func suitableCornerRadius(_ isSmallEntry: Bool) -> CGFloat {
+    class func suitableCornerRadius(_ isSmallEntry: Bool, height: CGFloat) -> CGFloat {
         if isSmallEntry {
             return 1
         }
 
         // If the size is too smal
         // It's better to reduce the corner radius
-        let height = view.frame.height
         switch height {
         case 0...2: return 1
         case 2...5: return 2
@@ -182,7 +180,7 @@ extension TimelineBaseCell {
     }
 
     private func handleMouseEntered(_ event: NSEvent) {
-        mouseDelegate?.timelineCellMouseDidEntered(self)
+        delegate?.timelineCellMouseDidEntered(self)
 
         // Determine which drag position is
         switch event.trackingNumber {
@@ -207,7 +205,6 @@ extension TimelineBaseCell {
     }
 
     private func handleMouseExit(_ event: NSEvent) {
-        mouseDelegate?.timelineCellMouseDidExited(self)
 
         // Skip exit if the user is resizing
         if isUserResizing && userAction != .none {
@@ -244,9 +241,9 @@ extension TimelineBaseCell {
         // Update start / end depend on the user action
         switch userAction {
         case .resizeBottom:
-            mouseDelegate?.timelineCellRedrawEndTime(with: event, sender: self)
+            delegate?.timelineCellRedrawEndTime(with: event, sender: self)
         case .resizeTop:
-            mouseDelegate?.timelineCellRedrawStartTime(with: event, sender: self)
+            delegate?.timelineCellRedrawStartTime(with: event, sender: self)
         case .none:
             break
         }
@@ -257,14 +254,14 @@ extension TimelineBaseCell {
         // Click action
         if userAction == .none {
             print("Show Editor")
-            mouseDelegate?.timelineCellOpenEditor(self)
+            delegate?.timelineCellOpenEditor(self)
         } else {
             // Dragging
             switch userAction {
             case .resizeBottom:
-                mouseDelegate?.timelineCellUpdateEndTime(with: event, sender: self)
+                delegate?.timelineCellUpdateEndTime(with: event, sender: self)
             case .resizeTop:
-                mouseDelegate?.timelineCellUpdateStartTime(with: event, sender: self)
+                delegate?.timelineCellUpdateStartTime(with: event, sender: self)
             case .none:
                 break
             }

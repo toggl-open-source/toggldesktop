@@ -38,7 +38,7 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
 
     // MARK: Variables
 
-    weak var delegate: TimelineTimeEntryCellDelegate?
+    weak var menuDelegate: TimelineTimeEntryCellDelegate?
     private(set) var timeEntry: TimelineTimeEntry!
     private lazy var timeEntryMenu = TimelineTimeEntryMenu()
 
@@ -199,23 +199,23 @@ extension TimelineTimeEntryCell {
 extension TimelineTimeEntryCell: TimelineTimeEntryMenuDelegate {
     
     func timelineMenuContinue(_ timeEntry: TimelineTimeEntry) {
-        delegate?.timeEntryCellShouldContinue(for: timeEntry, sender: self)
+        menuDelegate?.timeEntryCellShouldContinue(for: timeEntry, sender: self)
     }
 
     func timelineMenuStartEntry(_ timeEntry: TimelineTimeEntry) {
-        delegate?.timeEntryCellShouldStartNew(for: timeEntry, sender: self)
+        menuDelegate?.timeEntryCellShouldStartNew(for: timeEntry, sender: self)
     }
 
     func timelineMenuDelete(_ timeEntry: TimelineTimeEntry) {
-        delegate?.timeEntryCellShouldDelete(for: timeEntry, sender: self)
+        menuDelegate?.timeEntryCellShouldDelete(for: timeEntry, sender: self)
     }
 
     func timelineMenuChangeFirstEntryStopTime(_ timeEntry: TimelineTimeEntry) {
-        delegate?.timeEntryCellShouldChangeFirstEntryStopTime(for: timeEntry, sender: self)
+        menuDelegate?.timeEntryCellShouldChangeFirstEntryStopTime(for: timeEntry, sender: self)
     }
 
     func timelineMenuChangeLastEntryStartTime(_ timeEntry: TimelineTimeEntry) {
-        delegate?.timeEntryCellShouldChangeLastEntryStartTime(for: timeEntry, sender: self)
+        menuDelegate?.timeEntryCellShouldChangeLastEntryStartTime(for: timeEntry, sender: self)
     }
 }
 
