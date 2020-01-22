@@ -16,6 +16,7 @@ protocol TimelineBaseCellDelegate: class {
     func timelineCellUpdateEndTime(with event: NSEvent, sender: TimelineBaseCell)
     func timelineCellRedrawStartTime(with event: NSEvent, sender: TimelineBaseCell)
     func timelineCellUpdateStartTime(with event: NSEvent, sender: TimelineBaseCell)
+    func timelineCellOpenEditor(_ sender: TimelineBaseCell)
 }
 
 class TimelineBaseCell: NSCollectionViewItem {
@@ -226,10 +227,10 @@ extension TimelineBaseCell {
         guard isResizable, isUserResizing else { return }
 
         // Calculate the user action
-        switch event.trackingNumber {
-        case trackTop:
+        switch mousePosition {
+        case .top:
             userAction = .resizeTop
-        case trackBottom:
+        case .bottom:
             userAction = .resizeBottom
         default:
             userAction = .none
@@ -252,18 +253,21 @@ extension TimelineBaseCell {
     }
 
     private func handleMouseUpForResize(_ event: NSEvent) {
-        guard isResizable, isUserResizing else { return }
 
-        guard userAction != .none else { return }
-
-        // Update the real value of start / end
-        switch userAction {
-        case .resizeBottom:
-            mouseDelegate?.timelineCellUpdateEndTime(with: event, sender: self)
-        case .resizeTop:
-            mouseDelegate?.timelineCellUpdateStartTime(with: event, sender: self)
-        case .none:
-            break
+        // Click action
+        if userAction == .none {
+            print("Show Editor")
+            mouseDelegate?.timelineCellOpenEditor(self)
+        } else {
+            // Dragging
+            switch userAction {
+            case .resizeBottom:
+                mouseDelegate?.timelineCellUpdateEndTime(with: event, sender: self)
+            case .resizeTop:
+                mouseDelegate?.timelineCellUpdateStartTime(with: event, sender: self)
+            case .none:
+                break
+            }
         }
 
         // Reset

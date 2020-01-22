@@ -375,4 +375,10 @@ extension TimelineDatasource: TimelineBaseCellDelegate {
             break
         }
     }
+
+    func timelineCellOpenEditor(_ sender: TimelineBaseCell) {
+        if let cell = sender as? TimelineTimeEntryCell {
+            delegate?.shouldPresentTimeEntryEditor(in: cell.popoverView, timeEntry: cell.timeEntry.timeEntry, cell: cell)
+        }
+    }
 }
