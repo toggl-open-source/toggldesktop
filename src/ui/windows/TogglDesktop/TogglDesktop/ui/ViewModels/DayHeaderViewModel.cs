@@ -8,6 +8,8 @@ namespace TogglDesktop.ViewModels
         {
             DateHeader = dateHeader;
             DateDuration = dateDuration;
+            this.WhenAnyValue(x => x.IsExpanded, x => !x)
+                .ToProperty(this, nameof(IsCollapsed), out _isCollapsed);
         }
 
         public string DateHeader { get; }
@@ -20,11 +22,14 @@ namespace TogglDesktop.ViewModels
             set => this.RaiseAndSetIfChanged(ref _isExpanded, value);
         }
 
-        private bool _isSelected;
-        public bool IsSelected
+        private readonly ObservableAsPropertyHelper<bool> _isCollapsed;
+        public bool IsCollapsed => _isCollapsed.Value;
+
+        private bool _isFocused;
+        public bool IsFocused
         {
-            get => _isSelected;
-            set => this.RaiseAndSetIfChanged(ref _isSelected, value);
+            get => _isFocused;
+            set => this.RaiseAndSetIfChanged(ref _isFocused, value);
         }
 
         public void Expand() => IsExpanded = true;

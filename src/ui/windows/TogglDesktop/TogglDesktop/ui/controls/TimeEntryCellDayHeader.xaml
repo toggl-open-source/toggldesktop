@@ -4,11 +4,19 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:viewModels="clr-namespace:TogglDesktop.ViewModels"
+             xmlns:behaviors="clr-namespace:TogglDesktop.Behaviors"
+             xmlns:controlzex="urn:controlzex"
              mc:Ignorable="d" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance viewModels:DayHeaderViewModel}"
              Margin="4"
              AllowDrop="True"
-             Background="{DynamicResource Toggl.CardBackground}">
+             Background="{DynamicResource Toggl.CardBackground}"
+             FocusVisualStyle="{DynamicResource Toggl.ButtonFocusVisualStyle}"
+             Focusable="{Binding IsCollapsed}"
+             IsTabStop="{Binding IsCollapsed}"
+             behaviors:FocusHelper.IsFocused="{Binding IsFocused}"
+             controlzex:KeyboardNavigationEx.AlwaysShowFocusVisual="True"
+             KeyDown="TimeEntryCellDayHeader_OnKeyDown">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </UserControl.Resources>

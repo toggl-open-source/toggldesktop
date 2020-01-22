@@ -4,7 +4,9 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using ReactiveUI;
 using TogglDesktop.Diagnostics;
+using TogglDesktop.ViewModels;
 
 namespace TogglDesktop
 {
@@ -13,8 +15,19 @@ namespace TogglDesktop
         public Color EntryBackColor { get { return Color.FromRgb(255, 255, 255); } }
     }
 
-    public partial class TimeEntryCell
+    public partial class TimeEntryCell : IViewFor<TimeEntryCellViewModel>
     {
+        public TimeEntryCellViewModel ViewModel
+        {
+            get => (TimeEntryCellViewModel)DataContext;
+            set => DataContext = value;
+        }
+
+        object IViewFor.ViewModel
+        {
+            get => ViewModel;
+            set => ViewModel = (TimeEntryCellViewModel) value;
+        }
         private static readonly Color idleBackColor = Color.FromRgb(255, 255, 255);
         private static readonly Color hoverColor = Color.FromRgb(244, 244, 244);
         private static readonly Color hoverColorSelected = Color.FromRgb(255, 255, 255);
@@ -100,6 +113,7 @@ namespace TogglDesktop
         {
             this.DataContext = this;
             this.InitializeComponent();
+            ViewModel = new TimeEntryCellViewModel();
         }
 
         public void Imitate(TimeEntryCell cell)
