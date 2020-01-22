@@ -314,10 +314,11 @@ extension TimelineDatasource: TimelineBaseCellDelegate {
             let point = collectionView.convert(event.locationInWindow, from: nil)
             let endedAt = flow.convertTimestamp(from: point)
 
+            // Make sure the end time is proper
+            let at = endedAt > timeEntry.start ? endedAt : timeEntry.start + 1
+
             // Update in libray
-            if endedAt > timeEntry.start {
-                delegate?.shouldUpdateEndTime(endedAt, for: timeEntry)
-            }
+            delegate?.shouldUpdateEndTime(at, for: timeEntry)
         default:
             break
         }
@@ -331,11 +332,12 @@ extension TimelineDatasource: TimelineBaseCellDelegate {
             let point = collectionView.convert(event.locationInWindow, from: nil)
             let endedAt = flow.convertTimestamp(from: point)
 
+            // Make sure the end time is proper
+            let at = endedAt > timeEntry.start ? endedAt : timeEntry.start + 1
+
             // Update the end time and re-draw
-            if endedAt > timeEntry.start {
-                timeEntry.end = endedAt
-                flow.invalidateLayout()
-            }
+            timeEntry.end = at
+            flow.invalidateLayout()
         default:
             break
         }
@@ -348,12 +350,10 @@ extension TimelineDatasource: TimelineBaseCellDelegate {
             guard let timeEntry = timeEntryCell.timeEntry else { return }
             let point = collectionView.convert(event.locationInWindow, from: nil)
             let start = flow.convertTimestamp(from: point)
+            let at = start < timeEntry.end ? start : timeEntry.end - 1
 
-            // Update the end time and re-draw
-            if start <= timeEntry.end {
-                timeEntry.start = start
-                flow.invalidateLayout()
-            }
+            timeEntry.start = at
+            flow.invalidateLayout()
         default:
             break
         }
@@ -368,9 +368,8 @@ extension TimelineDatasource: TimelineBaseCellDelegate {
             let start = flow.convertTimestamp(from: point)
 
             // Update in libray
-            if start <= timeEntry.end {
-                delegate?.shouldUpdateStartTime(start, for: timeEntry)
-            }
+            let at = start < timeEntry.end ? start : timeEntry.end - 1
+            delegate?.shouldUpdateStartTime(at, for: timeEntry)
         default:
             break
         }
