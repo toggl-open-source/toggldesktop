@@ -13,6 +13,7 @@ final class TimelineActivityCell: TimelineBaseCell {
     // MARK: Variables
 
     private(set) var activity: TimelineActivity?
+    override var isHoverable: Bool { return true }
 
     // MARK: Public
 

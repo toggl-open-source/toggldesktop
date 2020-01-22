@@ -19,7 +19,8 @@ protocol TimelineBaseCellDelegate: class {
 class TimelineBaseCell: NSCollectionViewItem {
 
     private struct Constants {
-        static let SideHit: CGFloat = 20.0
+        static let SideHit: CGFloat = 10.0
+        static let SideHideSmall: CGFloat = 4
     }
 
     private enum MousePosition {
@@ -39,7 +40,7 @@ class TimelineBaseCell: NSCollectionViewItem {
     weak var mouseDelegate: TimelineBaseCellDelegate?
     private(set) var backgroundColor: NSColor?
     var isResizable: Bool { return false }
-    var isClickable: Bool { return false }
+    var isHoverable: Bool { return false }
 
     // Resizable tracker
     private var mousePosition = MousePosition.none { didSet { print("dragPoisition = \(mousePosition)") }}
@@ -132,8 +133,8 @@ extension TimelineBaseCell {
 extension TimelineBaseCell {
 
     private func initHoverTrackers() {
-        guard let view = foregroundBox, isClickable else { return }
-        let bounds = NSRect(x: 0, y: Constants.SideHit, width: view.frame.width, height: view.frame.height - Constants.SideHit * 2)
+        guard let view = foregroundBox, isHoverable else { return }
+        let bounds = suitableHoverRect()
         trackMiddle = view.addTrackingRect(bounds, owner: self, userData: nil, assumeInside: false)
     }
 
@@ -185,7 +186,7 @@ extension TimelineBaseCell {
                 mousePosition = .bottom
             }
         case trackMiddle:
-            if isClickable {
+            if isHoverable {
                 mousePosition = .middle
             }
         default:
@@ -233,5 +234,29 @@ extension TimelineBaseCell {
         mouseDownPoint = nil
         mousePosition = .none
         updateCursor()
+    }
+
+    private var isSmallEntry: Bool {
+        return (view.frame.height - Constants.SideHit * 3)  <= 0
+    }
+
+    private func suitableHoverRect() -> CGRect {
+        if isResizing {
+            if isSmallEntry {
+                return CGRect(x: 0, y: Constants.SideHideSmall, width: foregroundBox.frame.width, height: foregroundBox.frame.height - Constants.SideHideSmall * 2)
+            }
+            return NSRect(x: 0, y: Constants.SideHit, width: foregroundBox.frame.width, height: foregroundBox.frame.height - Constants.SideHit * 2)
+        }
+        return foregroundBox.bounds
+    }
+
+    private func suitableResizeRect(forTop: Bool) -> CGRect {
+        if isResizing {
+            if isSmallEntry {
+                return CGRect(x: 0, y: Constants.SideHideSmall, width: foregroundBox.frame.width, height: foregroundBox.frame.height - Constants.SideHideSmall * 2)
+            }
+            return NSRect(x: 0, y: Constants.SideHit, width: foregroundBox.frame.width, height: foregroundBox.frame.height - Constants.SideHit * 2)
+        }
+        return foregroundBox.bounds
     }
 }

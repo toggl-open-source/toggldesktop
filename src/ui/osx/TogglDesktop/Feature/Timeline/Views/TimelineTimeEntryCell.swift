@@ -61,7 +61,7 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
     }
 
     override var isResizable: Bool { return true }
-    override var isClickable: Bool { return true }
+    override var isHoverable: Bool { return true }
 
     // MARK: OUTLET
 
