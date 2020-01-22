@@ -64,7 +64,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)updateTimeEntryWithEndAtTimestamp:(NSTimeInterval)timestamp
 									 guid:(NSString *)guid;
 
-- (void)deleteTimeEntryImte:(TimeEntryViewItem *)item;
+- (void)deleteTimeEntryItem:(TimeEntryViewItem *)item undoManager:(NSUndoManager *_Nullable) undoManager;
 
 - (void)updateDescriptionForTimeEntry:(TimeEntryViewItem *)timeEntry
 						 autocomplete:(AutocompleteItem *)autocomplete;
@@ -96,6 +96,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)loadMoreTimeEntry;
 - (void)setClickCloseBtnInAppMessage;
 - (void)setClickActionBtnInAppMessage;
+
+- (NSString *)createNewTimeEntryWithOldTimeEntry:(TimeEntryViewItem *) item;
 
 @end
 

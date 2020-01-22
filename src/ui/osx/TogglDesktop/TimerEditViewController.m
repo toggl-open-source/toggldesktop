@@ -757,8 +757,7 @@ NSString *kInactiveTimerColor = @"#999999";
 		}
 		else if (event.keyCode == kVK_Delete)
 		{
-			[Utils deleteTimeEntryWithConfirmationWithGUID:self.time_entry.GUID
-													 title:self.descriptionLabel.stringValue];
+            [[DesktopLibraryBridge shared] deleteTimeEntryItem:self.time_entry undoManager:self.undoManager];
 		}
 		else if (event.keyCode == kVK_Space)
 		{

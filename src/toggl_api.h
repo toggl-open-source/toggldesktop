@@ -1124,6 +1124,7 @@ extern "C" {
     TOGGL_EXPORT void toggl_iam_click(
         void *context,
         const uint64_t type);
+
 #undef TOGGL_EXPORT
 
 #ifdef __cplusplus
