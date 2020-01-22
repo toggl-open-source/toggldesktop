@@ -141,10 +141,10 @@ extension TimelineBaseCell {
     private func initResizeTrackers() {
         guard let view = foregroundBox, isResizable else { return }
 
-        var bounds = NSRect(x: 0, y: view.frame.height - Constants.SideHit, width: view.frame.width, height: Constants.SideHit)
+        var bounds = suitableTopResizeRect()
         trackTop = view.addTrackingRect(bounds, owner: self, userData: nil, assumeInside: false)
 
-        bounds = NSRect(x: 0, y: 0, width: view.frame.width, height: Constants.SideHit)
+        bounds = suitableBottomResizeRect()
         trackBottom = view.addTrackingRect(bounds, owner: self, userData: nil, assumeInside: false)
     }
 
@@ -241,7 +241,7 @@ extension TimelineBaseCell {
     }
 
     private func suitableHoverRect() -> CGRect {
-        if isResizing {
+        if isResizable {
             if isSmallEntry {
                 return CGRect(x: 0, y: Constants.SideHideSmall, width: foregroundBox.frame.width, height: foregroundBox.frame.height - Constants.SideHideSmall * 2)
             }
@@ -250,13 +250,19 @@ extension TimelineBaseCell {
         return foregroundBox.bounds
     }
 
-    private func suitableResizeRect(forTop: Bool) -> CGRect {
-        if isResizing {
-            if isSmallEntry {
-                return CGRect(x: 0, y: Constants.SideHideSmall, width: foregroundBox.frame.width, height: foregroundBox.frame.height - Constants.SideHideSmall * 2)
-            }
-            return NSRect(x: 0, y: Constants.SideHit, width: foregroundBox.frame.width, height: foregroundBox.frame.height - Constants.SideHit * 2)
+    private func suitableTopResizeRect() -> CGRect {
+        guard isResizable else { return .zero }
+        if isSmallEntry {
+            return NSRect(x: 0, y: foregroundBox.frame.height - Constants.SideHideSmall, width: foregroundBox.frame.width, height: Constants.SideHideSmall)
         }
-        return foregroundBox.bounds
+        return NSRect(x: 0, y: foregroundBox.frame.height - Constants.SideHit, width: foregroundBox.frame.width, height: Constants.SideHit)
+    }
+
+    private func suitableBottomResizeRect() -> CGRect {
+        guard isResizable else { return .zero }
+        if isSmallEntry {
+            return NSRect(x: 0, y: 0, width: foregroundBox.frame.width, height: Constants.SideHideSmall)
+        }
+        return NSRect(x: 0, y: 0, width: foregroundBox.frame.width, height: Constants.SideHit)
     }
 }
