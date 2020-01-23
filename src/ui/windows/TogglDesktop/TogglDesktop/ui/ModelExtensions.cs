@@ -1,15 +1,32 @@
+using System;
+using TogglDesktop.ViewModels;
+
 namespace TogglDesktop
 {
     public static class ModelExtensions
     {
-        public static string GetGUID(this Toggl.TogglTimeEntryView item)
+        public static bool ConfirmlessDelete(this TimeEntryCellViewModel cell)
         {
-            return item.GUID + (item.Group ? "true" : "");
+            if (cell.DurationInSeconds < 0)
+            {
+                var epoch = (int)(DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalSeconds;
+                var actualDuration = cell.DurationInSeconds + epoch;
+                return actualDuration < 15;
+            }
+            else
+            {
+                return cell.DurationInSeconds < 15;
+            }
         }
 
-        public static string GetGUID(this TimeEntryCell cell)
+        public static void DeleteTimeEntry(this TimeEntryCellViewModel cell)
         {
-            return cell.GUID + (cell.IsGroup ? "true" : "");
+            if (cell.ConfirmlessDelete())
+            {
+                Toggl.DeleteTimeEntry(cell.Guid);
+                return;
+            }
+            Toggl.AskToDeleteEntry(cell.Guid);
         }
     }
 }

@@ -73,5 +73,14 @@ static class LinqExtensions
     {
         return dictionary.TryGetValue(key, out var value) ? value : defaultValue;
     }
+
+    public static IEnumerable<(T item, int index)> WithIndex<T>(this IEnumerable<T> enumerable)
+    {
+        var i = 0;
+        foreach (var item in enumerable)
+        {
+            yield return (item, i++);
+        }
+    }
 }
 }

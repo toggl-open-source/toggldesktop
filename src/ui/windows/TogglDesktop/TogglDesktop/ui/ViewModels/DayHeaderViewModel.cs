@@ -1,3 +1,9 @@
+using System;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Reactive.Linq;
+using DynamicData;
+using DynamicData.Binding;
 using ReactiveUI;
 
 namespace TogglDesktop.ViewModels
@@ -10,10 +16,23 @@ namespace TogglDesktop.ViewModels
             DateDuration = dateDuration;
             this.WhenAnyValue(x => x.IsExpanded, x => !x)
                 .ToProperty(this, nameof(IsCollapsed), out _isCollapsed);
+            _cells.Connect()
+                .ObserveOnDispatcher()
+                .Bind(out var daysReadOnlyObservableCollection)
+                .DisposeMany()
+                .Subscribe();
+            Cells = daysReadOnlyObservableCollection;
         }
 
         public string DateHeader { get; }
         public string DateDuration { get; }
+
+        private readonly SourceList<TimeEntryCellViewModel> _cells = new SourceList<TimeEntryCellViewModel>();
+        public ReadOnlyObservableCollection<TimeEntryCellViewModel> Cells { get; }
+        public ISourceList<TimeEntryCellViewModel> CellsMutable => _cells;
+
+        public TimeEntryCellViewModel GetCell(int cellIndex) => _cells.Items.ElementAt(cellIndex);
+        public int CellsCount => _cells.Count;
 
         private bool _isExpanded;
         public bool IsExpanded
@@ -29,7 +48,12 @@ namespace TogglDesktop.ViewModels
         public bool IsFocused
         {
             get => _isFocused;
-            set => this.RaiseAndSetIfChanged(ref _isFocused, value);
+            private set => this.RaiseAndSetIfChanged(ref _isFocused, value);
+        }
+        public void Focus()
+        {
+            IsFocused = false;
+            IsFocused = true;
         }
 
         public void Expand() => IsExpanded = true;

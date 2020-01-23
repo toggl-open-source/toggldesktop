@@ -4,15 +4,13 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 using TogglDesktop.Diagnostics;
+using TogglDesktop.ViewModels;
 
 namespace TogglDesktop
 {
     public partial class TimerEntryListView : IMainView
     {
-        private readonly Dictionary<string, TimeEntryCell> cellsByGUID =
-            new Dictionary<string, TimeEntryCell>();
-
-        private string highlightedGUID;
+        // private string highlightedGUID;
 
         public TimerEntryListView()
         {
@@ -60,7 +58,9 @@ namespace TogglDesktop
             if (open)
             {
                 this.Entries.Focus(false);
-                this.DisableHighlight();
+                //this.Entries.RemoveFocus();
+                // this.DisableHighlight();
+                this.Entries.DeselectCells();
             }
         }
 
@@ -71,47 +71,41 @@ namespace TogglDesktop
 
             using (Performance.Measure("highlighting cell in list"))
             {
-                this.highlightEntry(te.GUID);
-                if (open)
-                {
-                    this.Entries.HighlightKeyboard(te.GUID);
-                }
+                this.Entries.SelectEntry(te.GUID);
+                // this.selectEntry(te.GUID);
+                // this.highlightEntry(te.GUID);
+                // if (open)
+                // {
+                //     this.Entries.HighlightKeyboard(te.GUID);
+                // }
             }
         }
-
 
         #endregion
 
         private void fillTimeEntryList(List<Toggl.TogglTimeEntryView> list)
         {
-            var previousCount = this.cellsByGUID.Count;
+            var previousCount = this.Entries.EntriesCount;
             var newCount = list.Count;
-
-            var cells = new List<Tuple<string, TimeEntryCell>>(newCount);
 
             using (Performance.Measure("rendering time entry list, previous count: {0}, new count: {1}", previousCount, newCount))
             {
-                this.cellsByGUID.Clear();
-
                 var days = groupByDays(list);
-                this.fillDays(days);
-                this.Entries.Children
-                    .Cast<TimeEntryCellDayHeader>()
-                    .SelectMany(header => header.Children)
-                    .ForEach(cell =>
-                    {
-                        var guid = cell.GetGUID();
-                        this.cellsByGUID.Add(guid, cell);
-                        cells.Add(Tuple.Create(guid, cell));
-                    });
+                var dayHeaderViewModels = this.fillDays(days);
 
                 this.Entries.FinishedFillingList();
-                this.Entries.SetTimeEntryCellList(cells);
-                this.refreshHighLight();
+                // this.Entries.SetTimeEntryCellList(cells);
+                this.Entries.SetDayHeaderViewModels(dayHeaderViewModels);
+                // this.refreshHighLight();
             }
         }
 
-        private void fillDays(List<List<Toggl.TogglTimeEntryView>> days)
+        public IEnumerable<DayHeaderViewModel> GetDays() =>
+            this.Entries.Children
+                .Cast<TimeEntryCellDayHeader>()
+                .Select(h => h.ViewModel);
+
+        private DayHeaderViewModel[] fillDays(List<List<Toggl.TogglTimeEntryView>> days)
         {
             var children = this.Entries.Children;
 
@@ -124,28 +118,30 @@ namespace TogglDesktop
             // remove superfluous days
             if (children.Count > days.Count)
             {
-                children.RemoveRange(days.Count, children.Count - days.Count);
+                var daysToRemoveCount = children.Count - days.Count;
+                children.RemoveRange(days.Count, daysToRemoveCount);
+            }
+            else
+            {
+                var daysToAddCount = days.Count - children.Count;
+                for (var i = 0; i < daysToAddCount; i++)
+                    children.Add(new TimeEntryCellDayHeader());
             }
 
-            // update existing days
-            var i = 0;
-            for (; i < children.Count; i++)
+            var viewModels = days.Select(day =>
             {
-                var day = days[i];
+                var vm = day[0].ToDayHeaderViewModel();
                 var isExpanded = isExpandedDictionary.GetValueOrDefault(day[0].DateHeader, true);
-                var header = (TimeEntryCellDayHeader)children[i];
-                header.Display(day, isExpanded);
+                vm.IsExpanded = isExpanded;
+                return vm;
+            }).ToArray();
+
+            for (var i = 0; i < children.Count; i++)
+            {
+                ((TimeEntryCellDayHeader)children[i]).Display(viewModels[i], days[i]);
             }
 
-            // add additional days
-            for (; i < days.Count; i++)
-            {
-                var day = days[i];
-                var isExpanded = isExpandedDictionary.GetValueOrDefault(day[0].DateHeader, true);
-                var header = new TimeEntryCellDayHeader();
-                header.Display(day, isExpanded);
-                children.Add(header);
-            }
+            return viewModels;
         }
 
         private static List<List<Toggl.TogglTimeEntryView>> groupByDays(List<Toggl.TogglTimeEntryView> list)
@@ -167,27 +163,30 @@ namespace TogglDesktop
             return days;
         }
 
-        private void refreshHighLight()
-        {
-            this.highlightEntry(this.highlightedGUID);
-        }
+        // private void refreshHighLight()
+        // {
+        //     this.highlightEntry(this.highlightedGUID);
+        // }
 
-        private void highlightEntry(string guid)
-        {
-            this.highlightedGUID = guid;
+        // private void selectEntry(string guid)
+        // {
+        //     TimeEntryCell cell = null;
+        //     if (guid != null)
+        //         this.cellsByGUID.TryGetValue(guid, out cell);
+        //
+        //     this.Entries.SelectCell(cell);
+        // }
 
-            TimeEntryCell cell = null;
-            if (guid != null)
-                this.cellsByGUID.TryGetValue(guid, out cell);
-
-            this.Entries.HighlightCell(cell);
-        }
-
-        public void DisableHighlight()
-        {
-            this.highlightedGUID = null;
-            this.Entries.DisableHighlight();
-        }
+        // private void highlightEntry(string guid)
+        // {
+        //     this.highlightedGUID = guid;
+        //
+        //     TimeEntryCell cell = null;
+        //     if (guid != null)
+        //         this.cellsByGUID.TryGetValue(guid, out cell);
+        //
+        //     this.Entries.HighlightCell(cell);
+        // }
 
         public void SetListWidth(double width)
         {

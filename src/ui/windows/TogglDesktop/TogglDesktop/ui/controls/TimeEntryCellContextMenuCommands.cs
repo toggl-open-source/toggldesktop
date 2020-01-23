@@ -36,7 +36,7 @@ namespace TogglDesktop
             if (cell == null)
                 return;
 
-            cell.DeleteTimeEntry();
+            cell.ViewModel.DeleteTimeEntry();
         }
 
         #endregion
