@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
+using TogglDesktop.ViewModels;
 
 namespace TogglDesktop
 {
@@ -16,30 +18,43 @@ namespace TogglDesktop
 
         private readonly Storyboard loadMoreSpinnerAnimation;
 
-        private TimeEntryCell highlightedCell;
+        // private TimeEntryCell highlightedCell;
 
-        private List<Tuple<string, TimeEntryCell>> cells;
-        private int keyboardSelectedId;
-        private TimeEntryCell cellAboutToKeyboardHighlight;
-        private TimeEntryCellDayHeader selectedDay;
-        private bool imposterVisible;
+        // private TimeEntryCell focusedCell;
+        // private TimeEntryCell selectedCell;
+
+        // private List<Tuple<string, TimeEntryCell>> cells;
+        // private int keyboardSelectedId;
+        // private TimeEntryCell cellAboutToKeyboardHighlight;
+        // private TimeEntryCellDayHeader selectedDay;
+        // private bool imposterVisible;
         private EditViewPopup editPopup;
 
-        private bool hasKeyboardSelection
+        private TimeEntryCellViewModel _selectedCell;
+
+        // private bool hasKeyboardSelection
+        // {
+        //     get { return this.keyboardSelectedId != -1; }
+        // }
+
+        private bool IsAnyCellFocused => _focusedCellIndex >= 0;
+
+        private TimeEntryCellViewModel GetFocusedCell()
         {
-            get { return this.keyboardSelectedId != -1 && this.imposterVisible; }
+            Debug.Assert(IsAnyCellFocused);
+            return GetCell((_focusedDayIndex, _focusedCellIndex));
         }
 
-        private string keyboardHighlightedGUID
-        {
-            get { return this.cells[this.keyboardSelectedId].Item1; }
-        }
-        private TimeEntryCell keyboardHighlightedCell
-        {
-            get { return this.cells[this.keyboardSelectedId].Item2; }
-        }
+        // private string keyboardHighlightedGUID
+        // {
+        //     get { return this.cells[this.keyboardSelectedId].Item1; }
+        // }
+        // private TimeEntryCell keyboardHighlightedCell
+        // {
+        //     get { return this.cells[this.keyboardSelectedId].Item2; }
+        // }
 
-        private TimeEntryCell cellAt(int index) => this.cells[index].Item2;
+        // private TimeEntryCell cellAt(int index) => this.cells[index].Item2;
 
         public TimeEntryList()
         {
@@ -68,63 +83,94 @@ namespace TogglDesktop
             Toggl.OpenInBrowser();
         }
 
-        private void onSizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            if (this.highlightedCell != null)
-                this.refreshHighLight();
-        }
+        public int EntriesCount => _cellsDictionary2.Count;
 
         #region editing highlight
 
-        private void refreshHighLight()
+        // private void refreshHighLight()
+        // {
+        //     this.HighlightCell(this.highlightedCell);
+        // }
+
+        public void DeselectCells() => SelectCell(null);
+        // public void SelectCell(TimeEntryCell cell)
+        // {
+        //     if (cell != null && !this.panel.IsAncestorOf(cell))
+        //     {
+        //         // the time entry list hasnt rendered yet
+        //         cell = null;
+        //     }
+        //
+        //     if (this.selectedCell != cell)
+        //     {
+        //         if (this.selectedCell != null)
+        //         {
+        //             this.selectedCell.ViewModel.IsSelected = false;
+        //         }
+        //
+        //         this.selectedCell = cell;
+        //         if (this.selectedCell != null)
+        //         {
+        //             this.selectedCell.ViewModel.IsSelected = true;
+        //         }
+        //     }
+        // }
+
+        public void SelectCell(TimeEntryCellViewModel cell)
         {
-            this.HighlightCell(this.highlightedCell);
+            if (_selectedCell != null)
+            {
+                _selectedCell.IsSelected = false;
+            }
+
+            _selectedCell = cell;
+            if (_selectedCell != null)
+            {
+                _selectedCell.IsSelected = true;
+            }
         }
 
-        public void HighlightCell(TimeEntryCell cell)
+        public void SelectEntry(string guid)
         {
-            if (cell != null && this.panel.IsAncestorOf(cell))
-            {
-                // y will be 0 if the time entry list hasnt rendered yet
-                var y = cell.TransformToAncestor(this.panel).Transform(new Point(0, 0)).Y + cell.ActualHeight;
-                this.highlightRectangleTop.Height = Math.Max(0, y - 53);
-                this.highlightRectangleBottom.Height = Math.Max(0, this.panel.ActualHeight - y);
-                this.highlightRectangleTop.Visibility = Visibility.Visible;
-                this.highlightRectangleBottom.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                this.highlightRectangleTop.Height = 0;
-                this.highlightRectangleBottom.Height = 0;
-                this.highlightRectangleTop.Visibility = Visibility.Collapsed;
-                this.highlightRectangleBottom.Visibility = Visibility.Collapsed;
-                cell = null;
-            }
+            if (guid == null)
+                SelectCell(null);
+            if (!_cellsDictionary2.TryGetValue(guid, out var cellPosition))
+                SelectCell(null);
 
-            if (this.highlightedCell != null)
-            {
-                this.highlightedCell.Selected = false;
-                if (this.highlightedCell == this.keyboardHighlightCellImposter)
-                {
-                    this.keyboardHighlightCellImposter.Selected = false;
-                }
-            }
-            this.highlightedCell = cell;
-            if (this.highlightedCell != null)
-            {
-                this.highlightedCell.Selected = true;
-                if (this.highlightedCell == this.keyboardHighlightCellImposter)
-                {
-                    this.keyboardHighlightCellImposter.Selected = true;
-                }
-            }
+            var cell = GetCell(cellPosition);
+            SelectCell(cell);
         }
 
-        public void DisableHighlight()
-        {
-            this.HighlightCell(null);
-            this.hideSelection();
-        }
+        private TimeEntryCellViewModel GetCell((int dayIndex, int cellIndex) cellPosition) =>
+            _dayHeaderViewModels[cellPosition.dayIndex].GetCell(cellPosition.cellIndex);
+
+        // public void HighlightCell(TimeEntryCell cell)
+        // {
+        //     if (cell != null && !this.panel.IsAncestorOf(cell))
+        //     {
+        //         // the time entry list hasnt rendered yet
+        //         cell = null;
+        //     }
+        //
+        //     if (this.highlightedCell != cell)
+        //     {
+        //         if (this.highlightedCell != null)
+        //         {
+        //             this.highlightedCell.ViewModel.IsFocused = false;
+        //         }
+        //         this.highlightedCell = cell;
+        //         if (this.highlightedCell != null)
+        //         {
+        //             this.highlightedCell.ViewModel.IsFocused = true;
+        //         }
+        //     }
+        // }
+
+        // public void DisableHighlight()
+        // {
+        //     this.HighlightCell(null);
+        //     this.cellAboutToKeyboardHighlight = null;
+        // }
 
         #endregion
 
@@ -133,98 +179,326 @@ namespace TogglDesktop
         public void Focus(bool selectKeyboard)
         {
             this.Focus();
-            if (selectKeyboard && !this.hasKeyboardSelection)
+            if (selectKeyboard && _focusedDayIndex < 0)
             {
-                this.highlightKeyboard(0);
+                FocusFirst();
             }
+            // if (selectKeyboard && !this.hasKeyboardSelection)
+            // {
+            //     this.highlightKeyboard(0);
+            //     if (hasKeyboardSelection)
+            //         HighlightCell(this.keyboardHighlightedCell);
+            // }
         }
 
-        public void SetTimeEntryCellList(List<Tuple<string, TimeEntryCell>> cells)
+        // public void SetTimeEntryCellList(List<Tuple<string, TimeEntryCell>> cells)
+        // {
+        //     if (!this.hasKeyboardSelection || this.cells == null)
+        //     {
+        //         this.cells = cells;
+        //         return;
+        //     }
+        //
+        //     var guid = this.keyboardHighlightedGUID;
+        //
+        //     this.cells = cells;
+        //
+        //     this.HighlightKeyboard(guid, true);
+        // }
+
+        private int _focusedDayIndex = -1;
+        private int _focusedCellIndex = -1;
+        private DayHeaderViewModel[] _dayHeaderViewModels = new DayHeaderViewModel[0];
+
+        private Dictionary<string, (int dayIndex, int cellIndex)> _cellsDictionary2 = new Dictionary<string, (int dayIndex, int cellIndex)>();
+
+        private Dictionary<string, int> _daysDictionary2 = new Dictionary<string, int>();
+
+        // private (string focusedEntryGuid, string focusedDayHeader) RemoveFocus()
+        // {
+        //     string focusedEntryGuid = null;
+        //     string focusedDayHeader = null;
+        //     if (_focusedDayIndex >= 0)
+        //     {
+        //         var focusedDay = _dayHeaderViewModels[_focusedDayIndex];
+        //         if (_focusedCellIndex >= 0)
+        //         {
+        //             var focusedEntry = focusedDay.CellsBindable[_focusedCellIndex];
+        //             focusedEntry.IsFocused = false;
+        //             focusedEntryGuid = focusedEntry.Guid;
+        //         }
+        //         else
+        //         {
+        //             focusedDay.IsFocused = false;
+        //             focusedDayHeader = focusedDay.DateHeader;
+        //         }
+        //     }
+        //
+        //     return (focusedEntryGuid, focusedDayHeader);
+        // }
+        private (string focusedEntryGuid, string focusedDayHeader) GetCurrentFocusedItemGuid()
         {
-            if (!this.hasKeyboardSelection || this.cells == null)
+            string focusedEntryGuid = null;
+            string focusedDayHeader = null;
+            if (_focusedDayIndex >= 0)
             {
-                this.cells = cells;
-                return;
+                var focusedDay = _dayHeaderViewModels[_focusedDayIndex];
+                if (_focusedCellIndex >= 0)
+                {
+                    var focusedEntry = focusedDay.GetCell(_focusedCellIndex);
+                    focusedEntryGuid = focusedEntry.Guid;
+                }
+                else
+                {
+                    focusedDayHeader = focusedDay.DateHeader;
+                }
             }
 
-            var guid = this.keyboardHighlightedGUID;
-
-            this.cells = cells;
-
-            this.HighlightKeyboard(guid, true);
+            return (focusedEntryGuid, focusedDayHeader);
         }
 
-        protected override void OnLostKeyboardFocus(KeyboardFocusChangedEventArgs e)
+        public void RemoveFocus()
         {
-            base.OnLostKeyboardFocus(e);
-
-            if(this.highlightedCell == null)
-                this.highlightKeyboard(-1);
+            _focusedCellIndex = -1;
+            _focusedDayIndex = -1;
         }
 
-        private void onHighlightDown(object sender, ExecutedRoutedEventArgs e)
+        public void SetDayHeaderViewModels(DayHeaderViewModel[] dayHeaderViewModels)
         {
-            if (this.selectedDay != null)
+            // remove focus from old day header or cell
+            var (focusedEntryGuid, focusedDayHeader) = GetCurrentFocusedItemGuid();
+
+            _dayHeaderViewModels = dayHeaderViewModels;
+            _cellsDictionary2 = dayHeaderViewModels
+                .WithIndex()
+                .SelectMany(tuple => tuple.item.CellsMutable.Items
+                    .Select((cell, cellIndex) => (cell.Guid, dayIndex: tuple.index, cellIndex)))
+                .ToDictionary(tuple => tuple.Guid, tuple => (tuple.dayIndex, tuple.cellIndex));
+            _daysDictionary2 = dayHeaderViewModels
+                .WithIndex()
+                .ToDictionary(tuple => tuple.item.DateHeader, tuple => tuple.index);
+
+            // set the focus back
+            if (focusedEntryGuid != null && _cellsDictionary2.TryGetValue(focusedEntryGuid, out var focusedCellPosition))
             {
-                this.trySelectAfterCurrentDay();
+                FocusCell(focusedCellPosition.dayIndex, focusedCellPosition.cellIndex);
+            }
+            else if (focusedDayHeader != null && _daysDictionary2.TryGetValue(focusedDayHeader, out var focusedDayIndex))
+            {
+                FocusDay(focusedDayIndex);
             }
             else
             {
-                this.tryHighlightKeyboard(this.keyboardSelectedId + 1);
+                RemoveFocus();
             }
+        }
+
+        private void FocusFirst()
+        {
+            if (_dayHeaderViewModels.Any())
+            {
+                FocusDayOrItsFirstCell(0);
+            }
+        }
+
+        private void FocusDayOrItsFirstCell(int dayIndex)
+        {
+            Debug.Assert(dayIndex >= 0);
+            Debug.Assert(dayIndex < _dayHeaderViewModels.Length);
+            var dayViewModel = _dayHeaderViewModels[dayIndex];
+            if (dayViewModel.IsExpanded)
+            {
+                FocusCell(dayIndex, 0);
+            }
+            else
+            {
+                FocusDay(dayIndex);
+            }
+        }
+
+        private void FocusDayOrItsLastCell(int dayIndex)
+        {
+            Debug.Assert(dayIndex >= 0);
+            Debug.Assert(dayIndex < _dayHeaderViewModels.Length);
+            var dayViewModel = _dayHeaderViewModels[dayIndex];
+            if (dayViewModel.IsExpanded)
+            {
+                FocusCell(dayIndex, dayViewModel.CellsCount - 1);
+            }
+            else
+            {
+                FocusDay(dayIndex);
+            }
+        }
+
+        private void FocusDay(int dayIndex)
+        {
+            if (_focusedCellIndex < 0 && _focusedDayIndex == dayIndex)
+            {
+                return;
+            }
+            Debug.Assert(dayIndex >= 0);
+            Debug.Assert(dayIndex < _dayHeaderViewModels.Length);
+            var dayViewModel = _dayHeaderViewModels[dayIndex];
+            Debug.Assert(dayViewModel.IsCollapsed);
+
+            _focusedDayIndex = dayIndex;
+            _focusedCellIndex = -1;
+            dayViewModel.Focus();
+        }
+
+        private void FocusCell(int dayIndex, int cellIndex)
+        {
+            if (_focusedCellIndex == cellIndex && _focusedDayIndex == dayIndex)
+            {
+                return;
+            }
+
+            Debug.Assert(dayIndex >= 0);
+            Debug.Assert(dayIndex < _dayHeaderViewModels.Length);
+            Debug.Assert(cellIndex >= 0);
+            var dayViewModel = _dayHeaderViewModels[dayIndex];
+            Debug.Assert(dayViewModel.IsExpanded);
+            if (cellIndex >= dayViewModel.CellsCount)
+            {
+                Debug.Assert(cellIndex < dayViewModel.CellsCount);
+            }
+            var cellViewModel = dayViewModel.GetCell(cellIndex);
+
+            _focusedDayIndex = dayIndex;
+            _focusedCellIndex = cellIndex;
+            cellViewModel.Focus();
+        }
+
+        // protected override void OnLostKeyboardFocus(KeyboardFocusChangedEventArgs e)
+        // {
+        //     base.OnLostKeyboardFocus(e);
+        //
+        //     if(this.highlightedCell == null)
+        //         this.highlightKeyboard(-1);
+        // }
+
+        private void onHighlightDown(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (_focusedDayIndex < 0)
+            {
+                FocusFirst();
+            }
+            else
+            {
+                if (_focusedCellIndex >= 0 && _focusedCellIndex + 1 < _dayHeaderViewModels[_focusedDayIndex].CellsCount)
+                {
+                    FocusCell(_focusedDayIndex, _focusedCellIndex + 1);
+                }
+                else if (_focusedDayIndex + 1 < _dayHeaderViewModels.Length)
+                {
+                    FocusDayOrItsFirstCell(_focusedDayIndex + 1);
+                }
+            }
+            // if (this.selectedDay != null)
+            // {
+            //     this.trySelectAfterCurrentDay();
+            // }
+            // else
+            // {
+            //     this.tryHighlightKeyboard(this.keyboardSelectedId + 1);
+            // }
         }
 
         private void onHighlightUp(object sender, ExecutedRoutedEventArgs e)
         {
-            if (this.selectedDay != null)
+            if (_focusedDayIndex < 0)
             {
-                this.trySelectBeforeCurrentDay();
+                FocusFirst();
             }
             else
             {
-                this.tryHighlightKeyboard(this.keyboardSelectedId - 1);
+                if (_focusedCellIndex >= 1)
+                {
+                    FocusCell(_focusedDayIndex, _focusedCellIndex - 1);
+                }
+                else if (_focusedDayIndex >= 1)
+                {
+                    FocusDayOrItsLastCell(_focusedDayIndex - 1);
+                }
             }
+            // if (this.selectedDay != null)
+            // {
+            //     this.trySelectBeforeCurrentDay();
+            // }
+            // else
+            // {
+            //     this.tryHighlightKeyboard(this.keyboardSelectedId - 1);
+            // }
         }
 
-        private void trySelectBeforeCurrentDay()
-        {
-            var i = this.cells.FindIndex(t => t.Item2.DayHeader == this.selectedDay);
-            this.tryHighlightKeyboard(i - 1);
-        }
+        // private void trySelectBeforeCurrentDay()
+        // {
+        //     var i = this.cells.FindIndex(t => t.Item2.DayHeader == this.selectedDay);
+        //     this.tryHighlightKeyboard(i - 1);
+        // }
+        //
+        // private void trySelectAfterCurrentDay()
+        // {
+        //     var i = this.cells.FindLastIndex(t => t.Item2.DayHeader == this.selectedDay);
+        //     this.tryHighlightKeyboard(i + 1);
+        // }
 
-        private void trySelectAfterCurrentDay()
+        private bool TryExpandFocusedDay()
         {
-            var i = this.cells.FindLastIndex(t => t.Item2.DayHeader == this.selectedDay);
-            this.tryHighlightKeyboard(i + 1);
+            if (_focusedCellIndex >= 0) return false; // cell is selected
+            if (_focusedDayIndex < 0) return false; // nothing is selected
+            var dayToExpand = _dayHeaderViewModels[_focusedDayIndex];
+            dayToExpand.Expand();
+            FocusCell(_focusedDayIndex, 0);
+            return true;
         }
 
         private void onHighlightEdit(object sender, ExecutedRoutedEventArgs e)
         {
-            if (this.tryExpandSelectedDay())
+            if (TryExpandFocusedDay())
                 return;
 
-            if (!this.hasKeyboardSelection)
+            if (!IsAnyCellFocused)
                 return;
 
-            Toggl.Edit(this.keyboardHighlightedGUID, false, "");
+            var guidOfCellToEdit = GetFocusedCell().Guid;
+
+            Toggl.Edit(guidOfCellToEdit, false, "");
+
+            // if (this.tryExpandSelectedDay())
+            //     return;
+            //
+            // if (!this.hasKeyboardSelection)
+            //     return;
+
+            // Toggl.Edit(this.keyboardHighlightedGUID, false, "");
         }
 
         private void onExpandSelectedItem(object sender, ExecutedRoutedEventArgs e)
         {
-            var expandedSelectedGroup = this.tryExpandSelectedGroup();
-            if (!expandedSelectedGroup)
+            if (!TryExpandFocusedGroup())
             {
-                this.tryExpandSelectedDay();
+                TryExpandFocusedDay();
             }
+            // var expandedSelectedGroup = this.tryExpandSelectedGroup();
+            // if (!expandedSelectedGroup)
+            // {
+            //     this.tryExpandSelectedDay();
+            // }
         }
 
         private void onCollapseSelectedItem(object sender, ExecutedRoutedEventArgs e)
         {
-            var collapsedSelectedGroup = this.tryCollapseSelectedGroup();
-            if (!collapsedSelectedGroup)
+            if (!TryCollapseFocusedGroup())
             {
-                this.tryCollapseCurrentDay();
+                TryCollapseFocusedDay();
             }
+            // var collapsedSelectedGroup = this.tryCollapseSelectedGroup();
+            // if (!collapsedSelectedGroup)
+            // {
+            //     this.tryCollapseCurrentDay();
+            // }
         }
 
         private void onExpandAllDays(object sender, ExecutedRoutedEventArgs e)
@@ -239,26 +513,36 @@ namespace TogglDesktop
 
         private void onHighlightContinue(object sender, ExecutedRoutedEventArgs e)
         {
-            if (!this.hasKeyboardSelection)
-                return;
-
-            Toggl.Continue(this.keyboardHighlightedGUID);
+            if (IsAnyCellFocused)
+            {
+                Toggl.Continue(GetFocusedCell().Guid);
+            }
+            // if (!this.hasKeyboardSelection)
+            //     return;
+            //
+            // Toggl.Continue(this.keyboardHighlightedGUID);
         }
 
         private void onHighlightDelete(object sender, ExecutedRoutedEventArgs e)
         {
-            if (!this.hasKeyboardSelection)
-                return;
-
-            TimeEntryCell item = this.cells[this.keyboardSelectedId].Item2;
-
-            if (item.confirmlessDelete())
+            if (IsAnyCellFocused)
             {
-                Toggl.DeleteTimeEntry(this.keyboardHighlightedGUID);
-                return;
+                var cell = GetFocusedCell();
+                cell.DeleteTimeEntry();
             }
 
-            Toggl.AskToDeleteEntry(this.keyboardHighlightedGUID);
+            // if (!this.hasKeyboardSelection)
+            //     return;
+            //
+            // TimeEntryCell item = this.cells[this.keyboardSelectedId].Item2;
+            //
+            // if (item.confirmlessDelete())
+            // {
+            //     Toggl.DeleteTimeEntry(this.keyboardHighlightedGUID);
+            //     return;
+            // }
+            //
+            // Toggl.AskToDeleteEntry(this.keyboardHighlightedGUID);
         }
 
         private void onFocusTimer(object sender, ExecutedRoutedEventArgs e)
@@ -275,210 +559,244 @@ namespace TogglDesktop
             }
         }
 
+        // private bool tryCollapseSelectedGroup()
+        // {
+        //     if (!this.hasKeyboardSelection)
+        //     {
+        //         return false;
+        //     }
+        //
+        //     var idToHighlight = keyboardSelectedId;
+        //     while (idToHighlight >= 0 && !cellAt(idToHighlight).IsGroup) // highlight the group that is being collapsed
+        //     {
+        //         idToHighlight--;
+        //     }
+        //
+        //     if (!this.keyboardHighlightedCell.ViewModel.TryCollapse())
+        //     {
+        //         return false;
+        //     }
+        //
+        //     this.tryHighlightKeyboard(idToHighlight);
+        //     return true;
+        // }
 
-        private bool tryCollapseCurrentDay()
+        private bool TryExpandFocusedGroup()
         {
-            if (this.selectedDay != null)
-                return false;
+            return IsAnyCellFocused && GetFocusedCell().TryExpand();
+        }
 
-            if (this.keyboardSelectedId >= 0 && this.keyboardSelectedId < cells.Count)
+        private bool TryCollapseFocusedGroup()
+        {
+            if (!IsAnyCellFocused)
             {
-                this.keyboardHighlightedCell.DayHeader.Collapse();
+                return false;
             }
 
-            this.refreshKeyboardHighlight();
+            var dayIndex = _focusedDayIndex;
+            var focusedDay = _dayHeaderViewModels[_focusedDayIndex];
+            var cellIndex = _focusedCellIndex;
+            var focusedCell = focusedDay.GetCell(cellIndex);
+            if (!focusedCell.IsGroup && !focusedCell.IsSubItem)
+            {
+                return false;
+            }
 
+            while (!focusedDay.GetCell(cellIndex).IsGroup)
+            {
+                cellIndex--;
+            }
+
+            var groupToCollapse = focusedDay.GetCell(cellIndex);
+            if (!groupToCollapse.TryCollapse())
+            {
+                return false;
+            }
+
+            FocusCell(dayIndex, cellIndex);
             return true;
         }
 
-        private bool tryCollapseSelectedGroup()
+        // private bool tryCollapseCurrentDay()
+        // {
+        //     if (this.selectedDay != null)
+        //         return false;
+        //
+        //     if (this.keyboardSelectedId >= 0 && this.keyboardSelectedId < cells.Count)
+        //     {
+        //         this.keyboardHighlightedCell.DayHeader.Collapse();
+        //     }
+        //
+        //     this.refreshKeyboardHighlight();
+        //
+        //     return true;
+        // }
+
+        private bool TryCollapseFocusedDay()
         {
-            if (!this.hasKeyboardSelection)
-            {
+            if (_focusedDayIndex < 0)
                 return false;
-            }
-
-            var idToHighlight = keyboardSelectedId;
-            while (idToHighlight >= 0 && !cellAt(idToHighlight).IsGroup) // highlight the group that is being collapsed
-            {
-                idToHighlight--;
-            }
-
-            if (!this.keyboardHighlightedCell.TryCollapse())
-            {
-                return false;
-            }
-
-            this.tryHighlightKeyboard(idToHighlight);
+            _dayHeaderViewModels[_focusedDayIndex].Collapse();
+            FocusDay(_focusedDayIndex);
             return true;
         }
 
-        private bool tryExpandSelectedGroup()
-        {
-            var expanded = this.hasKeyboardSelection && this.keyboardHighlightedCell.TryExpand();
-            if (expanded)
-            {
-                this.refreshKeyboardHighlight();
-            }
-
-            return expanded;
-        }
-
-        private bool tryExpandSelectedDay()
-        {
-            if (this.selectedDay == null)
-                return false;
-
-            this.selectedDay.Expand();
-            this.tryHighlightKeyboard(this.cells.FindIndex(t => t.Item2.DayHeader == this.selectedDay));
-
-            return true;
-        }
+        // private bool tryExpandSelectedGroup()
+        // {
+        //     var expanded = this.hasKeyboardSelection && this.keyboardHighlightedCell.ViewModel.TryExpand();
+        //     if (expanded)
+        //     {
+        //         this.refreshKeyboardHighlight();
+        //     }
+        //
+        //     return expanded;
+        // }
+        //
+        // private bool tryExpandSelectedDay()
+        // {
+        //     if (this.selectedDay == null)
+        //         return false;
+        //
+        //     this.selectedDay.Expand();
+        //     this.tryHighlightKeyboard(this.cells.FindIndex(t => t.Item2.DayHeader == this.selectedDay));
+        //
+        //     return true;
+        // }
 
         public void CollapseAllDays()
         {
-            foreach (var day in this.Children.Cast<TimeEntryCellDayHeader>())
+            _dayHeaderViewModels.ForEach(day => day.Collapse());
+            if (_focusedDayIndex >= 0)
             {
-                day.Collapse();
+                FocusDay(_focusedDayIndex);
             }
-            this.refreshKeyboardHighlight();
+            // foreach (var day in this.Children.Cast<TimeEntryCellDayHeader>())
+            // {
+            //     day.Collapse();
+            // }
+            // this.refreshKeyboardHighlight();
             Toggl.ViewTimeEntryList();
         }
 
         public void ExpandAllDays()
         {
-            foreach (var day in this.Children.Cast<TimeEntryCellDayHeader>())
+            _dayHeaderViewModels.ForEach(day => day.Expand());
+            if (_focusedDayIndex >= 0)
             {
-                day.Expand();
+                FocusCell(_focusedDayIndex, 0);
             }
-            this.refreshKeyboardHighlight();
+            // foreach (var day in this.Children.Cast<TimeEntryCellDayHeader>())
+            // {
+            //     day.Expand();
+            // }
+            // this.refreshKeyboardHighlight();
             Toggl.ViewTimeEntryList();
         }
 
-        private void refreshKeyboardHighlight()
-        {
-            this.tryHighlightKeyboard(this.keyboardSelectedId);
-        }
+        // private void refreshKeyboardHighlight()
+        // {
+        //     this.tryHighlightKeyboard(this.keyboardSelectedId);
+        // }
 
         #region updating highlight
 
-        private void tryHighlightKeyboard(int id)
-        {
-            if (id < 0)
-            {
-                if(!this.hasKeyboardSelection)
-                    this.highlightKeyboard(0);
-                return;
-            }
+        // private void tryHighlightKeyboard(int id)
+        // {
+        //     if (id < 0)
+        //     {
+        //         if(!this.hasKeyboardSelection)
+        //             this.highlightKeyboard(0);
+        //         return;
+        //     }
+        //
+        //     if (id >= this.cells.Count)
+        //     {
+        //         if (!this.hasKeyboardSelection)
+        //             this.highlightKeyboard(this.cells.Count - 1);
+        //         return;
+        //     }
+        //
+        //     this.highlightKeyboard(id);
+        // }
 
-            if (id >= this.cells.Count)
-            {
-                if (!this.hasKeyboardSelection)
-                    this.highlightKeyboard(this.cells.Count - 1);
-                return;
-            }
+        // public void HighlightKeyboard(string guid, bool async = false)
+        // {
+        //     this.highlightKeyboard(
+        //         this.cells.FindIndex(t => t.Item1 == guid),
+        //         async
+        //         );
+        // }
 
-            this.highlightKeyboard(id);
-        }
+        // private void highlightKeyboard(int id, bool async = false)
+        // {
+        //     if (id < 0 || id >= this.cells.Count)
+        //     {
+        //         this.cellAboutToKeyboardHighlight = null;
+        //         this.keyboardSelectedId = -1;
+        //         return;
+        //     }
+        //
+        //     this.keyboardSelectedId = id;
+        //
+        //     this.setKeyboardHighlight(async);
+        // }
 
-        public void HighlightKeyboard(string guid, bool async = false)
-        {
-            this.highlightKeyboard(
-                this.cells.FindIndex(t => t.Item1 == guid),
-                async
-                );
-        }
+        // private void setKeyboardHighlight(bool async)
+        // {
+        //     var cell = this.keyboardHighlightedCell;
+        //     this.cellAboutToKeyboardHighlight = cell ?? throw new InvalidOperationException();
+        //
+        //     if (async)
+        //     {
+        //         this.Dispatcher.BeginInvoke(
+        //             new Action(this.updateKeyboardHighlightImposter),
+        //             DispatcherPriority.Background
+        //             );
+        //     }
+        //     else
+        //     {
+        //         this.updateKeyboardHighlightImposter();
+        //
+        //     }
+        // }
 
-        private void highlightKeyboard(int id, bool async = false)
-        {
-            if (id < 0 || id >= this.cells.Count)
-            {
-                this.hideSelection();
-                this.keyboardSelectedId = -1;
-                return;
-            }
+        // private void updateKeyboardHighlightImposter()
+        // {
+        //     var cell = this.cellAboutToKeyboardHighlight;
+        //     this.cellAboutToKeyboardHighlight = null;
+        //
+        //     if (cell == null || !this.panel.IsAncestorOf(cell))
+        //     {
+        //         return;
+        //     }
+        //
+        //     if (cell.DayHeader.IsCollapsed)
+        //     {
+        //         this.selectDay(cell.DayHeader);
+        //         return;
+        //     }
+        //     this.selectDay(null);
+        //     cell.BringIntoView();
+        // }
 
-            this.keyboardSelectedId = id;
-
-            this.setKeyboardHighlight(async);
-        }
-
-        private void hideSelection()
-        {
-            this.keyboardHighlight.Visibility = Visibility.Collapsed;
-            this.imposterVisible = false;
-            this.cellAboutToKeyboardHighlight = null;
-        }
-
-        private void setKeyboardHighlight(bool async)
-        {
-            var cell = this.keyboardHighlightedCell;
-
-            this.cellAboutToKeyboardHighlight = cell;
-
-            if (async)
-            {
-                this.Dispatcher.BeginInvoke(
-                    new Action(this.updateKeyboardHighlightImposter),
-                    DispatcherPriority.Background
-                    );
-            }
-            else
-            {
-                this.updateKeyboardHighlightImposter();
-
-            }
-        }
-
-        private void updateKeyboardHighlightImposter()
-        {
-            var cell = this.cellAboutToKeyboardHighlight;
-            this.cellAboutToKeyboardHighlight = null;
-
-            if (cell == null || !this.panel.IsAncestorOf(cell))
-            {
-                return;
-            }
-
-            if (cell.DayHeader.IsCollapsed)
-            {
-                this.selectDay(cell.DayHeader);
-                return;
-            }
-            this.selectDay(null);
-
-            this.keyboardHighlightCellImposter.Imitate(cell);
-
-            var cellYTop = cell.TransformToAncestor(this.panel).Transform(new Point(0, 0)).Y;
-
-            var y = Math.Max(0, cellYTop + cell.ActualHeight - 53 - 3);
-
-            this.keyboardHighlight.Margin = new Thickness(-10, y, -10, 0);
-            this.keyboardHighlight.Visibility = Visibility.Visible;
-            this.imposterVisible = true;
-
-            cell.BringIntoView();
-        }
-
-        private void selectDay(TimeEntryCellDayHeader dayHeader)
-        {
-            if (this.selectedDay != null)
-            {
-                this.selectedDay.IsSelected = false;
-            }
-
-            this.selectedDay = dayHeader;
-
-            if (dayHeader == null)
-            {
-                return;
-            }
-
-
-            dayHeader.IsSelected = true;
-            dayHeader.BringIntoView();
-            this.hideSelection();
-        }
+        // private void selectDay(TimeEntryCellDayHeader dayHeader)
+        // {
+        //     if (this.selectedDay != null)
+        //     {
+        //         this.selectedDay.IsSelected = false;
+        //     }
+        //
+        //     this.selectedDay = dayHeader;
+        //
+        //     if (dayHeader == null)
+        //     {
+        //         return;
+        //     }
+        //
+        //     dayHeader.IsSelected = true;
+        //     dayHeader.BringIntoView();
+        //     this.cellAboutToKeyboardHighlight = null;
+        // }
 
         #endregion
 
@@ -536,5 +854,17 @@ namespace TogglDesktop
         }
 
         #endregion
+
+        private void UIElement_OnPreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (!e.Handled)
+            {
+                e.Handled = true;
+                var args = new KeyEventArgs(e.KeyboardDevice, e.InputSource, e.Timestamp, e.Key);
+                args.RoutedEvent = KeyDownEvent;
+                args.Source = sender;
+                this.RaiseEvent(args);
+            }
+        }
     }
 }

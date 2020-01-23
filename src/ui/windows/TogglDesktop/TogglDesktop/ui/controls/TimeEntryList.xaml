@@ -61,9 +61,10 @@
         <ScrollViewer VerticalScrollBarVisibility="Visible"
                       HorizontalScrollBarVisibility="Disabled"
                       HorizontalAlignment="Stretch"
-                      SizeChanged="onSizeChanged"
                       Style="{StaticResource CustomSrollViewer}"
-                      Focusable="False">
+                      Focusable="False"
+                      IsTabStop="False"
+                      PreviewKeyDown="UIElement_OnPreviewKeyDown">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -71,31 +72,7 @@
                 </Grid.RowDefinitions>
                 
                 <VirtualizingStackPanel Name="panel" x:FieldModifier="private" HorizontalAlignment="Stretch" Grid.Row="0" Margin="4"
-                                        KeyboardNavigation.TabNavigation="Contained">
-
-                </VirtualizingStackPanel>
-                <Rectangle x:Name="highlightRectangleTop" x:FieldModifier="private" Grid.Row="0"
-                           Fill="#f7f7f7" Opacity="0.7" HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="0"
-                           IsHitTestVisible="False"/>
-                <Rectangle x:Name="highlightRectangleBottom" x:FieldModifier="private" Grid.Row="0"
-                           Fill="#f7f7f7" Opacity="0.7" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Height="0"
-                           IsHitTestVisible="False"/>
-
-                <Border x:Name="keyboardHighlight" x:FieldModifier="private" Grid.Row="0" Visibility="Visible"
-                        HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="59" Margin="-10 20"
-                        Background="White">
-                    <Border.Effect>
-                        <DropShadowEffect
-                            Direction="270"
-                            ShadowDepth="1"
-                            BlurRadius="10"
-                            Opacity="0.5"/>
-                    </Border.Effect>
-                    <toggl:TimeEntryCell x:Name="keyboardHighlightCellImposter" x:FieldModifier="private"
-                        Margin="10 0" IsFloating="True" VerticalAlignment="Center" Height="59"
-                        />
-                </Border>
-
+                                        KeyboardNavigation.TabNavigation="Contained" />
                 
                 <Button Grid.Row="1" Style="{DynamicResource Toggl.OutlinedButton}"
                         Margin="8" HorizontalAlignment="Center" Focusable="False"

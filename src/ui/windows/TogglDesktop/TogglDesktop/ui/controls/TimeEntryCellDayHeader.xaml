@@ -14,7 +14,7 @@
              FocusVisualStyle="{DynamicResource Toggl.ButtonFocusVisualStyle}"
              Focusable="{Binding IsCollapsed}"
              IsTabStop="{Binding IsCollapsed}"
-             behaviors:FocusHelper.IsFocused="{Binding IsFocused}"
+             behaviors:FocusHelper.IsFocused="{Binding IsFocused, Mode=OneWay}"
              controlzex:KeyboardNavigationEx.AlwaysShowFocusVisual="True"
              KeyDown="TimeEntryCellDayHeader_OnKeyDown">
     <UserControl.Resources>
@@ -42,5 +42,7 @@
         </ToggleButton>
         <StackPanel Name="panel" x:FieldModifier="private"
                     Visibility="{Binding IsExpanded, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+        <!-- <ItemsControl Visibility="{Binding IsExpanded, Converter={StaticResource BooleanToVisibilityConverter}}" -->
+        <!--               Items="{Binding DaysBindable}" /> -->
     </StackPanel>
 </UserControl>
