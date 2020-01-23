@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -10,11 +11,6 @@ using TogglDesktop.ViewModels;
 
 namespace TogglDesktop
 {
-    sealed class TimeEntryCellSample
-    {
-        public Color EntryBackColor { get { return Color.FromRgb(255, 255, 255); } }
-    }
-
     public partial class TimeEntryCell : IViewFor<TimeEntryCellViewModel>
     {
         public TimeEntryCellViewModel ViewModel
@@ -30,44 +26,10 @@ namespace TogglDesktop
         }
         private static readonly Color idleBackColor = Color.FromRgb(255, 255, 255);
         private static readonly Color hoverColor = Color.FromRgb(244, 244, 244);
-        private static readonly Color hoverColorSelected = Color.FromRgb(255, 255, 255);
         private static readonly Color subItemBackColor = Color.FromRgb(240, 240, 240);
         private static readonly Color defaultForegroundColor = Color.FromRgb(0, 0, 0);
 
         private Color entryHoverColor = hoverColor;
-
-        public string GUID { get; private set; }
-        private string groupName { get; set; }
-        private bool group = false;
-        private bool groupOpen = false;
-
-        public bool Selected
-        {
-            get { return this.selected; }
-            set
-            {
-                if (value == this.selected)
-                    return;
-                var color = value ? hoverColorSelected : hoverColor;
-                this.entryHoverColor = color;
-                if (this.IsMouseOver)
-                {
-                    this.EntryBackColor = color;
-                }
-                this.selected = value;
-            }
-        }
-
-        public bool IsFloating
-        {
-            set
-            {
-                if (value == false)
-                    return;
-
-                this.entryGrid.Height = 59;
-            }
-        }
 
         public bool IsDummy
         {
@@ -79,10 +41,6 @@ namespace TogglDesktop
                 this.IsEnabled = false;
             }
         }
-
-        public bool IsGroup => group;
-
-        public Color GroupIconPath { get; set; }
 
         public bool SubItem
         {
@@ -100,54 +58,27 @@ namespace TogglDesktop
         public static readonly DependencyProperty EntryBackColorProperty = DependencyProperty
             .Register("EntryBackColor", typeof(Color), typeof(TimeEntryCell), new FrameworkPropertyMetadata(idleBackColor));
 
-        public TimeEntryCellDayHeader DayHeader { get; private set; }
-
         private readonly ToolTip descriptionToolTip = new ToolTip();
         private readonly ToolTip taskProjectClientToolTip = new ToolTip();
         private readonly ToolTip durationToolTip = new ToolTip();
         private readonly ToolTip tagsToolTip = new ToolTip();
-        private bool selected;
-        private long durationInSeconds;
 
         public TimeEntryCell()
         {
-            this.DataContext = this;
             this.InitializeComponent();
+            this.SetupKeyboardFocusedReverseBinding(nameof(ViewModel.IsFocused));
             ViewModel = new TimeEntryCellViewModel();
-        }
-
-        public void Imitate(TimeEntryCell cell)
-        {
-            this.GUID = cell.GUID;
-            this.labelDescription.Text = cell.labelDescription.Text;
-
-            this.labelProject.Foreground = cell.labelProject.Foreground;
-            this.labelProject.Text = cell.labelProject.Text;
-            setOptionalTextBlockText(this.labelClient, cell.labelClient.Text);
-            setOptionalTextBlockText(this.labelTask, cell.labelTask.Text);
-            this.labelDuration.Text = cell.labelDuration.Text;
-            this.billabeIcon.Visibility = cell.billabeIcon.Visibility;
-            this.tagsIcon.Visibility = cell.tagsIcon.Visibility;
-            this.tagsCount.Text = cell.tagsCount.Text;
-
-            this.projectRow.Height = cell.projectRow.Height;
-
-            this.entryHoverColor = cell.entryHoverColor;
-            this.EntryBackColor = cell.EntryBackColor;
-
-            this.unsyncedIcon.Visibility = cell.unsyncedIcon.Visibility;
-            this.lockedIcon.Visibility = cell.lockedIcon.Visibility;
-            this.groupItemsBack.Visibility = cell.groupItemsBack.Visibility;
-            this.groupImage.Source = cell.groupImage.Source;
-            this.groupItems.Text = cell.groupItems.Text;
-
-            this.imitateTooltips(cell);
         }
 
         public void Display(Toggl.TogglTimeEntryView item, TimeEntryCellDayHeader dayHeader)
         {
-            this.GUID = item.GUID;
-            this.DayHeader = dayHeader;
+            ViewModel.Guid = item.Group ? item.GroupName : item.GUID;
+            ViewModel.IsGroup = item.Group;
+            ViewModel.IsGroupExpanded = item.GroupOpen;
+            ViewModel.GroupName = item.GroupName;
+            ViewModel.IsSubItem = !item.Group && item.GroupItemCount == 0;
+            ViewModel.DurationInSeconds = item.DurationInSeconds;
+            ViewModel.ParentDay = dayHeader;
 
             this.labelDescription.Text = item.Description == "" ? "(no description)" : item.Description;
 
@@ -158,7 +89,6 @@ namespace TogglDesktop
             setOptionalTextBlockText(this.labelClient, item.ClientLabel);
             setOptionalTextBlockText(this.labelTask, item.TaskLabel.IsNullOrEmpty() ? "" : item.TaskLabel + " -");
             this.labelDuration.Text = item.Duration;
-            this.durationInSeconds = item.DurationInSeconds;
             this.billabeIcon.ShowOnlyIf(item.Billable);
 
             if (string.IsNullOrEmpty(item.Tags))
@@ -184,22 +114,6 @@ namespace TogglDesktop
             this.setupGroupedMode(item);
         }
 
-        public bool TryCollapse()
-        {
-            var canCollapse = this.groupOpen;
-            if (!canCollapse) return false;
-            Toggl.ToggleEntriesGroup(groupName);
-            return true;
-        }
-
-        public bool TryExpand()
-        {
-            var canExpand = this.group && !this.groupOpen;
-            if (!canExpand) return false;
-            Toggl.ToggleEntriesGroup(groupName);
-            return true;
-        }
-
         private void setupGroupedMode(Toggl.TogglTimeEntryView item)
         {
             String groupItemsText = "";
@@ -208,9 +122,6 @@ namespace TogglDesktop
             Color color = defaultForegroundColor;
             int lead = 16;
             Visibility visibility = Visibility.Collapsed;
-            group = item.Group;
-            groupName = item.GroupName;
-            groupOpen = item.GroupOpen;
             SubItem = (item.GroupItemCount == 0 && !item.Group);
             // subitem that is open
             if (SubItem)
@@ -242,22 +153,6 @@ namespace TogglDesktop
             this.groupImage.Source = new BitmapImage(new Uri("pack://application:,,,/TogglDesktop;component/Resources/" + groupIcon));
             // leading margin
             descriptionGrid.Margin = new Thickness(lead, 0, 0, 0);
-        }
-
-        private void imitateTooltips(TimeEntryCell cell)
-        {
-            setToolTipIfNotEmpty(this.labelDescription, this.descriptionToolTip, cell.descriptionToolTip.Content as string);
-            setToolTipIfNotEmpty(this.labelTask, this.taskProjectClientToolTip, cell.taskProjectClientToolTip.Content as string);
-            setToolTipIfNotEmpty(this.labelProject, this.taskProjectClientToolTip, cell.taskProjectClientToolTip.Content as string);
-            setToolTipIfNotEmpty(this.labelClient, this.taskProjectClientToolTip, cell.taskProjectClientToolTip.Content as string);
-
-            setToolTipIfNotEmpty(this.labelDuration, this.durationToolTip, cell.durationToolTip.Content as string);
-
-            if (this.tagsIcon.Visibility == Visibility.Visible)
-            {
-                this.tagsToolTip.Content = cell.tagsToolTip.Content;
-                this.tagsIcon.ToolTip = this.tagsToolTip;
-            }
         }
 
         private void updateToolTips(Toggl.TogglTimeEntryView item)
@@ -331,50 +226,26 @@ namespace TogglDesktop
 
         private void openEditView(MouseButtonEventArgs e, string focusedField)
         {
-            if (group)
+            if (ViewModel.IsGroup)
             {
-                Toggl.ToggleEntriesGroup(groupName);
+                Toggl.ToggleEntriesGroup(ViewModel.GroupName);
                 e.Handled = true;
                 return;
             }
             using (Performance.Measure("opening edit view from cell, focussing " + focusedField))
             {
-                Toggl.Edit(this.GUID, false, focusedField);
+                Toggl.Edit(ViewModel.Guid, false, focusedField);
             }
             e.Handled = true;
         }
 
         #endregion
 
-        public void DeleteTimeEntry()
-        {
-            if (this.confirmlessDelete())
-            {
-                Toggl.DeleteTimeEntry(this.GUID);
-                return;
-            }
-            Toggl.AskToDeleteEntry(this.GUID);
-        }
-
-        public bool confirmlessDelete()
-        {
-            if (this.durationInSeconds < 0)
-            {
-                int epoch = (int)(DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalSeconds;
-                Int64 actual_duration = this.durationInSeconds + epoch;
-                return actual_duration < 15;
-            }
-            else
-            {
-                return this.durationInSeconds < 15;
-            }
-        }
-
         private void buttonContinue_Click(object sender, RoutedEventArgs e)
         {
             using (Performance.Measure("continuing time entry from cell"))
             {
-                Toggl.Continue(this.GUID);
+                Toggl.Continue(ViewModel.Guid);
             }
         }
 

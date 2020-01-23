@@ -21,6 +21,9 @@
                 <ResourceDictionary Source="ui/Resources/PreferencesWindowStyles.xaml"/>
                 <ResourceDictionary Source="ui/Resources/TutorialStyles.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverterGlobal" />
+
         </ResourceDictionary>
     </Application.Resources>
 </Application>
