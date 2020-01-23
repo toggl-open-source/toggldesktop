@@ -1,4 +1,5 @@
 using System.Windows;
+using System.Windows.Input;
 
 namespace TogglDesktop.Behaviors
 {
@@ -26,5 +27,10 @@ namespace TogglDesktop.Behaviors
             {
                 uie.Focus();
             }
+            // else
+            // {
+            //     Keyboard.ClearFocus(); // removes the keyboard focus
+            //     // the logical focus remains intact
+            // }
         }
     }}
