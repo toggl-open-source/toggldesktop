@@ -208,7 +208,7 @@ namespace TogglDesktop
             group = item.Group;
             groupName = item.GroupName;
             groupOpen = item.GroupOpen;
-            SubItem = (item.GroupItemCount > 0 && item.GroupOpen && !item.Group);
+            SubItem = (item.GroupItemCount == 0 && !item.Group);
             // subitem that is open
             if (SubItem)
             {
