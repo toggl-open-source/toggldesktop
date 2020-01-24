@@ -165,11 +165,8 @@ namespace TogglDesktop
 
             if (item.ProjectID != 0)
             {
+                this.editModeProjectLabel.SetProject(item);
                 this.editProjectPanel.Visibility = Visibility.Visible;
-                this.editModeProjectLabel.ProjectName = item.ProjectLabel;
-                this.editModeProjectLabel.Color = Utils.ProjectColorBrushFromString(item.ProjectColor);
-                this.editModeProjectLabel.TaskName = item.TaskLabel;
-                this.editModeProjectLabel.ClientName = item.ClientLabel;
             }
             else
             {
