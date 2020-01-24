@@ -47,7 +47,7 @@ namespace TogglDesktop
             this.descriptionLabel.Text = item.Description;
             this.noDescriptionLabel.ShowOnlyIf(descriptionLabel.Text.IsNullOrEmpty());
 
-            this.projectLabel.SetProject(item);
+            this.projectLabel.ViewModel.SetProject(item);
 
             if (item.Description.IsNullOrEmpty() && item.ProjectLabel.IsNullOrEmpty())
             {
@@ -71,7 +71,7 @@ namespace TogglDesktop
 
         public void ClearProject()
         {
-            this.projectLabel.Clear();
+            this.projectLabel.ViewModel.Clear();
         }
 
         private void onDescriptionLabelMouseDown(object sender, MouseButtonEventArgs e)

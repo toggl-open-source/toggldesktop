@@ -155,7 +155,7 @@ namespace TogglDesktop
 
             if (item.ProjectID != 0)
             {
-                this.editModeProjectLabel.SetProject(item);
+                this.editModeProjectLabel.ViewModel.SetProject(item);
                 this.editProjectPanel.Visibility = Visibility.Visible;
             }
             else
