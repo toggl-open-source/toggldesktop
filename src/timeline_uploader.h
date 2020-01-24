@@ -9,12 +9,9 @@
 #include "timeline_event.h"
 #include "timeline_notifications.h"
 #include "types.h"
+#include "util/logger.h"
 
 #include <Poco/Activity.h>
-
-namespace Poco {
-class Logger;
-}
 
 namespace toggl {
 
@@ -52,7 +49,7 @@ class TOGGL_INTERNAL_EXPORT TimelineUploader {
     void backoff();
     void reset_backoff();
 
-    Poco::Logger &logger() const;
+    Logger logger() const;
 
     error process();
     void sleep();

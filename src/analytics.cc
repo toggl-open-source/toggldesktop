@@ -17,8 +17,7 @@
 #include "settings.h"
 #include "urls.h"
 #include "user.h"
-
-#include <Poco/Logger.h>
+#include "util/logger.h"
 
 namespace toggl {
 
@@ -162,7 +161,7 @@ void GoogleAnalyticsEvent::runTask() {
     HTTPSClient client;
     HTTPSResponse resp = client.Get(req);
     if (resp.err != noError) {
-        Poco::Logger::get("Analytics").error(resp.err);
+        Logger("Analytics").error(resp.err);
         return;
     }
 }
@@ -322,7 +321,7 @@ void GoogleAnalyticsSettingsEvent::makeReq() {
     HTTPSClient client;
     HTTPSResponse resp = client.Get(req);
     if (resp.err != noError) {
-        Poco::Logger::get("Analytics").error(resp.err);
+        Logger("Analytics").error(resp.err);
         return;
     }
 }

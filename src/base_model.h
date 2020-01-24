@@ -12,12 +12,9 @@
 
 #include "const.h"
 #include "types.h"
+#include "util/logger.h"
 
 #include <Poco/Types.h>
-
-namespace Poco {
-class Logger;
-}
 
 namespace toggl {
 
@@ -156,7 +153,7 @@ class TOGGL_INTERNAL_EXPORT BaseModel {
     error BatchUpdateJSON(Json::Value *result) const;
 
  protected:
-    Poco::Logger &logger() const;
+    Logger logger() const;
 
     bool userCannotAccessWorkspace(const toggl::error &err) const;
 
