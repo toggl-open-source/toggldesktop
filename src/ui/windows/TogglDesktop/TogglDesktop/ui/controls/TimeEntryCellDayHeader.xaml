@@ -5,7 +5,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:viewModels="clr-namespace:TogglDesktop.ViewModels"
              xmlns:behaviors="clr-namespace:TogglDesktop.Behaviors"
-             xmlns:controlzex="urn:controlzex"
              mc:Ignorable="d" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance viewModels:DayHeaderViewModel}"
              Margin="4"
@@ -14,9 +13,7 @@
              FocusVisualStyle="{DynamicResource Toggl.ButtonFocusVisualStyle}"
              Focusable="{Binding IsCollapsed}"
              IsTabStop="{Binding IsCollapsed}"
-             behaviors:FocusHelper.IsFocused="{Binding IsFocused, Mode=OneWay}"
-             controlzex:KeyboardNavigationEx.AlwaysShowFocusVisual="True"
-             KeyDown="TimeEntryCellDayHeader_OnKeyDown">
+             behaviors:FocusHelper.IsFocused="{Binding IsFocused, Mode=OneWay}">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </UserControl.Resources>

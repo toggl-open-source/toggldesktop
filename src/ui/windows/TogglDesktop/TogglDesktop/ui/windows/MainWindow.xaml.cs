@@ -854,7 +854,7 @@ namespace TogglDesktop
             {
                 // TODO: consider saving popup open state and restoring when window is shown
                 this.editPopup.ClosePopup(skipAnimation);
-                this.timerEntryListView.Entries.RemoveFocus();
+                this.timerEntryListView.Entries.ClearSavedFocus();
                 if (focusTimeEntryList)
                 {
                     Toggl.ViewTimeEntryList();

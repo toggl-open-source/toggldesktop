@@ -5,7 +5,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:toggl="clr-namespace:TogglDesktop"
              xmlns:converters="clr-namespace:TogglDesktop.Converters"
-             xmlns:controlzex="urn:controlzex"
              xmlns:behaviors="clr-namespace:TogglDesktop.Behaviors"
              xmlns:viewModels="clr-namespace:TogglDesktop.ViewModels"
              mc:Ignorable="d"
@@ -15,8 +14,7 @@
              FocusVisualStyle="{DynamicResource Toggl.ButtonFocusVisualStyle}"
              Focusable="True"
              IsTabStop="True"
-             behaviors:FocusHelper.IsFocused="{Binding IsFocused, Mode=OneWay}"
-             controlzex:KeyboardNavigationEx.AlwaysShowFocusVisual="True">
+             behaviors:FocusHelper.IsFocused="{Binding IsFocused, Mode=OneWay}">
 
     <Grid Name="entryGrid" x:FieldModifier="private"
           Height="{StaticResource TimeEntryHeight}" MouseLeftButtonDown="entry_MouseDown" MouseEnter="entryMouseEnter" MouseLeave="entryMouseLeave"

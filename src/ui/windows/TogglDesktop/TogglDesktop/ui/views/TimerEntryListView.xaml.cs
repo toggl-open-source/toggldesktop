@@ -163,31 +163,6 @@ namespace TogglDesktop
             return days;
         }
 
-        // private void refreshHighLight()
-        // {
-        //     this.highlightEntry(this.highlightedGUID);
-        // }
-
-        // private void selectEntry(string guid)
-        // {
-        //     TimeEntryCell cell = null;
-        //     if (guid != null)
-        //         this.cellsByGUID.TryGetValue(guid, out cell);
-        //
-        //     this.Entries.SelectCell(cell);
-        // }
-
-        // private void highlightEntry(string guid)
-        // {
-        //     this.highlightedGUID = guid;
-        //
-        //     TimeEntryCell cell = null;
-        //     if (guid != null)
-        //         this.cellsByGUID.TryGetValue(guid, out cell);
-        //
-        //     this.Entries.HighlightCell(cell);
-        // }
-
         public void SetListWidth(double width)
         {
             this.Entries.HorizontalAlignment = HorizontalAlignment.Left;
