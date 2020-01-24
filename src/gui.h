@@ -7,15 +7,15 @@
 #include <string>
 #include <vector>
 
-#include "./help_article.h"
-#include "./https_client.h"
-#include "./proxy.h"
-#include "./settings.h"
-#include "./toggl_api.h"
-#include "./toggl_api_private.h"
-#include "./types.h"
+#include "help_article.h"
+#include "https_client.h"
+#include "proxy.h"
+#include "settings.h"
+#include "toggl_api.h"
+#include "toggl_api_private.h"
+#include "types.h"
 
-#include "Poco/LocalDateTime.h"
+#include <Poco/LocalDateTime.h>
 
 namespace Poco {
 class Logger;

@@ -5,7 +5,7 @@
 
 #include <string>
 
-#include "./types.h"
+#include "types.h"
 
 namespace toggl {
 

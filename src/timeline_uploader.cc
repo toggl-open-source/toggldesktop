@@ -1,17 +1,17 @@
 // Copyright 2014 Toggl Desktop developers.
 
-#include "../src/timeline_uploader.h"
+#include "timeline_uploader.h"
 
 #include <sstream>
 #include <string>
 
-#include "./formatter.h"
-#include "./https_client.h"
-#include "./urls.h"
+#include "formatter.h"
+#include "https_client.h"
+#include "urls.h"
 
-#include "Poco/Foundation.h"
-#include "Poco/Thread.h"
-#include "Poco/Util/Application.h"
+#include <Poco/Foundation.h>
+#include <Poco/Thread.h>
+#include <Poco/Util/Application.h>
 
 #include <json/json.h>  // NOLINT
 

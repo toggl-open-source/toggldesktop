@@ -1,10 +1,10 @@
 // Copyright 2015 Toggl Desktop developers.
 
-#include "../src/obm_action.h"
+#include "obm_action.h"
 
 #include <sstream>
 
-#include "../src/formatter.h"
+#include "formatter.h"
 
 namespace toggl {
 

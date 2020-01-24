@@ -1,14 +1,14 @@
 // Copyright 2014 Toggl Desktop developers.
 
-#include "../src/window_change_recorder.h"
+#include "window_change_recorder.h"
 
 #include <sstream>
 
-#include "./get_focused_window.h"
-#include "./const.h"
+#include "get_focused_window.h"
+#include "const.h"
 
-#include "Poco/Logger.h"
-#include "Poco/Thread.h"
+#include <Poco/Logger.h>
+#include <Poco/Thread.h>
 
 #if defined(__APPLE__)
 extern bool isCatalinaOSX(void);

@@ -1,38 +1,38 @@
 // Copyright 2014 Toggl Desktop developers.
 
-#include "../src/user.h"
+#include "user.h"
 
 #include <time.h>
 
 #include <sstream>
 
-#include "./client.h"
-#include "./const.h"
-#include "./formatter.h"
-#include "./https_client.h"
-#include "./obm_action.h"
-#include "./project.h"
-#include "./tag.h"
-#include "./task.h"
-#include "./time_entry.h"
-#include "./timeline_event.h"
-#include "./urls.h"
+#include "client.h"
+#include "const.h"
+#include "formatter.h"
+#include "https_client.h"
+#include "obm_action.h"
+#include "project.h"
+#include "tag.h"
+#include "task.h"
+#include "time_entry.h"
+#include "timeline_event.h"
+#include "urls.h"
 
-#include "Poco/Base64Decoder.h"
-#include "Poco/Base64Encoder.h"
-#include "Poco/Crypto/Cipher.h"
-#include "Poco/Crypto/CipherFactory.h"
-#include "Poco/Crypto/CipherKey.h"
-#include "Poco/Crypto/CryptoStream.h"
-#include "Poco/DigestStream.h"
-#include "Poco/Logger.h"
-#include "Poco/Random.h"
-#include "Poco/RandomStream.h"
-#include "Poco/SHA1Engine.h"
-#include "Poco/Stopwatch.h"
-#include "Poco/Timestamp.h"
-#include "Poco/Timespan.h"
-#include "Poco/UTF8String.h"
+#include <Poco/Base64Decoder.h>
+#include <Poco/Base64Encoder.h>
+#include <Poco/Crypto/Cipher.h>
+#include <Poco/Crypto/CipherFactory.h>
+#include <Poco/Crypto/CipherKey.h>
+#include <Poco/Crypto/CryptoStream.h>
+#include <Poco/DigestStream.h>
+#include <Poco/Logger.h>
+#include <Poco/Random.h>
+#include <Poco/RandomStream.h>
+#include <Poco/SHA1Engine.h>
+#include <Poco/Stopwatch.h>
+#include <Poco/Timestamp.h>
+#include <Poco/Timespan.h>
+#include <Poco/UTF8String.h>
 
 namespace toggl {
 
