@@ -11,21 +11,16 @@
 #include "const.h"
 #include "proxy.h"
 #include "types.h"
+#include "util/logger.h"
 
 #include <Poco/Activity.h>
 #include <Poco/Timestamp.h>
 
 namespace Poco {
-
-class Logger;
-
-namespace Net {
-
-class HTMLForm;
-
-}
-
-}  // namespace Poco
+    namespace Net {
+        class HTMLForm;
+    } // namespace Poco::Net
+} // namespace Poco
 
 namespace toggl {
 
@@ -61,7 +56,7 @@ class TOGGL_INTERNAL_EXPORT ServerStatus {
     void stopStatusCheck(const std::string &reason);
     bool checkingStatus();
 
-    Poco::Logger &logger() const;
+    Logger logger() const;
 };
 
 class TOGGL_INTERNAL_EXPORT HTTPSClientConfig {
@@ -160,7 +155,7 @@ class TOGGL_INTERNAL_EXPORT HTTPSClient {
     virtual HTTPSResponse request(
         HTTPSRequest req) const;
 
-    virtual Poco::Logger &logger() const;
+    virtual Logger logger() const;
 
  private:
     // We only make requests if this timestamp lies in the past.
@@ -192,7 +187,7 @@ class TOGGL_INTERNAL_EXPORT TogglClient : public HTTPSClient {
     virtual HTTPSResponse request(
         HTTPSRequest req) const override;
 
-    virtual Poco::Logger &logger() const override;
+    virtual Logger logger() const override;
 
  private:
     SyncStateMonitor *monitor_;

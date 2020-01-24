@@ -16,6 +16,7 @@
 #include "gui.h"
 #include "help_article.h"
 #include "idle.h"
+#include "util/logger.h"
 #include "model_change.h"
 #include "timeline_event.h"
 #include "timeline_notifications.h"
@@ -529,7 +530,7 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     static void parseVersion(int result[4], const std::string& input);
     static bool lessThanVersion(const std::string& version1, const std::string& version2);
 
-    Poco::Logger &logger() const;
+    Logger logger { "context" };
 
     void sync(const bool full_sync);
 

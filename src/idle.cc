@@ -12,8 +12,6 @@
 #include "gui.h"
 #include "time_entry.h"
 
-#include <Poco/Logger.h>
-
 namespace toggl {
 
 Idle::Idle(GUI *ui)
@@ -30,7 +28,7 @@ void Idle::SetIdleSeconds(
     {
         std::stringstream ss;
         ss << "SetIdleSeconds idle_seconds=" << idle_seconds;
-        logger().debug(ss.str());
+        logger.debug(ss.str());
     }
     */
     if (!current_user) {
@@ -41,11 +39,11 @@ void Idle::SetIdleSeconds(
             computeIdleState(idle_seconds, current_user);
         }
     } catch(const Poco::Exception& exc) {
-        logger().error(exc.displayText());
+        logger.error(exc.displayText());
     } catch(const std::exception& ex) {
-        return logger().error(ex.what());
+        return logger.error(ex.what());
     } catch(const std::string & ex) {
-        return logger().error(ex);
+        return logger.error(ex);
     }
     last_idle_seconds_reading_ = idle_seconds;
 }
@@ -58,9 +56,7 @@ void Idle::computeIdleState(
             !last_idle_started_) {
         last_idle_started_ = time(nullptr) - idle_seconds;
 
-        std::stringstream ss;
-        ss << "User is idle since " << last_idle_started_;
-        logger().debug(ss.str());
+        logger.debug("User is idle since ", last_idle_started_);
 
         return;
     }
@@ -71,10 +67,10 @@ void Idle::computeIdleState(
 
         TimeEntry *te = current_user->RunningTimeEntry();
         if (!te) {
-            logger().warning("Time entry is not tracking, ignoring idleness");
+            logger.warning("Time entry is not tracking, ignoring idleness");
         } else if (Formatter::AbsDuration(te->DurationInSeconds())
                    < last_idle_seconds_reading_) {
-            logger().warning("Time entry duration is less than idle, ignoring");
+            logger.warning("Time entry duration is less than idle, ignoring");
         } else if (settings_.use_idle_detection) {
             std::stringstream since;
             since << "You have been idle since "
@@ -89,8 +85,8 @@ void Idle::computeIdleState(
             }
             duration << ")";
 
-            logger().debug(since.str());
-            logger().debug(duration.str());
+            logger.debug(since.str());
+            logger.debug(duration.str());
 
             poco_check_ptr(ui_);
             ui_->DisplayIdleNotification(te->GUID(),
@@ -100,16 +96,10 @@ void Idle::computeIdleState(
                                          te->Description());
         }
 
-        std::stringstream ss;
-        ss << "User is not idle since " << now;
-        logger().debug(ss.str());
+        logger.debug("User is not idle since ", now);
 
         last_idle_started_ = 0;
     }
-}
-
-Poco::Logger &Idle::logger() const {
-    return Poco::Logger::get("idle");
 }
 
 }  // namespace toggl

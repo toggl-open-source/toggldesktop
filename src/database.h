@@ -17,14 +17,13 @@
 #include "model_change.h"
 #include "timeline_event.h"
 #include "types.h"
+#include "util/logger.h"
 
 namespace Poco {
-class Logger;
-
-namespace Data {
-class Session;
-class Statement;
-}
+    namespace Data {
+        class Session;
+        class Statement;
+    }
 }
 
 namespace toggl {
@@ -401,7 +400,7 @@ class TOGGL_INTERNAL_EXPORT Database {
         const Poco::UInt64 &user_id,
         std::vector<TimelineEvent> *timeline_events);
 
-    Poco::Logger &logger() const;
+    Logger logger { "database" };
 
     Poco::Mutex session_m_;
     Poco::Data::Session *session_;

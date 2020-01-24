@@ -14,12 +14,9 @@
 #include "toggl_api.h"
 #include "toggl_api_private.h"
 #include "types.h"
+#include "util/logger.h"
 
 #include <Poco/LocalDateTime.h>
-
-namespace Poco {
-class Logger;
-}
 
 namespace toggl {
 
@@ -740,7 +737,7 @@ class TOGGL_INTERNAL_EXPORT GUI : public SyncStateMonitor {
 
     Poco::LocalDateTime timeline_date_at_;
 
-    Poco::Logger &logger() const;
+    Logger logger { "ui" };
 };
 
 }  // namespace toggl

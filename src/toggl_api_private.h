@@ -11,10 +11,7 @@
 #include "proxy.h"
 #include "settings.h"
 #include "toggl_api.h"
-
-namespace Poco {
-class Logger;
-}
+#include "util/logger.h"
 
 namespace toggl {
 class Client;
@@ -118,7 +115,7 @@ void timeline_event_view_update_duration(TogglTimelineEventView *event_view, con
 void timeline_event_view_clear(
     TogglTimelineEventView *event_view);
 
-Poco::Logger &logger();
+toggl::Logger logger();
 
 toggl::Context *app(void *context);
 

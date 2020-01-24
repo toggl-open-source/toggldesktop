@@ -33,6 +33,8 @@ include_directories(
 
 # TogglDesktopLibrary sources
 set(LIBRARY_SOURCE_FILES
+    util/logger.cc
+
     base_model.cc
     batch_update_result.cc
     client.cc

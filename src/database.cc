@@ -29,7 +29,6 @@
 #include <Poco/Data/SQLite/Utility.h>
 #include <Poco/Data/Statement.h>
 #include <Poco/FileStream.h>
-#include <Poco/Logger.h>
 #include <Poco/Stopwatch.h>
 #include <Poco/StreamCopier.h>
 #include <Poco/UUID.h>
@@ -53,37 +52,31 @@ Database::Database(const std::string &db_path)
     {
         int is_sqlite_threadsafe = Poco::Data::SQLite::Utility::isThreadSafe();
 
-        std::stringstream ss;
-        ss << "sqlite3_threadsafe()=" << is_sqlite_threadsafe;
-        logger().debug(ss.str());
+        logger.debug("sqlite3_threadsafe()=", is_sqlite_threadsafe);
 
         if (!is_sqlite_threadsafe) {
-            logger().error("Database is not thread safe!");
+            logger.error("Database is not thread safe!");
             return;
         }
     }
 
     error err = setJournalMode("wal");
     if (err != noError) {
-        logger().error("Failed to set journal mode to wal!");
+        logger.error("Failed to set journal mode to wal!");
         return;
     }
 
     std::string mode("");
     err = journalMode(&mode);
     if (err != noError) {
-        logger().error("Could not detect journal mode!");
+        logger.error("Could not detect journal mode!");
         return;
     }
 
-    {
-        std::stringstream ss;
-        ss << "PRAGMA journal_mode=" << mode;
-        logger().debug(ss.str());
-    }
+    logger.debug("PRAGMA journal_mode=", mode);
 
     if ("wal" != mode) {
-        logger().error("Failed to enable wal journal mode!");
+        logger.error("Failed to enable wal journal mode!");
         return;
     }
 
@@ -97,7 +90,7 @@ Database::Database(const std::string &db_path)
         "time_entries", start.timestamp());
 
     if (err != noError) {
-        logger().error("failed to clean Up Time Entries Data: " + err);
+        logger.error("failed to clean Up Time Entries Data: " + err);
         // but will continue, its not vital
     }
 
@@ -109,13 +102,13 @@ Database::Database(const std::string &db_path)
         timeline_start.timestamp());
 
     if (err != noError) {
-        logger().error("failed to clean Up Timeline Events Data: " + err);
+        logger.error("failed to clean Up Timeline Events Data: " + err);
         // but will continue, its not vital
     }
 
     err = vacuum();
     if (err != noError) {
-        logger().error("failed to vacuum: " + err);
+        logger.error("failed to vacuum: " + err);
         // but will continue, its not vital
     }
 
@@ -124,19 +117,14 @@ Database::Database(const std::string &db_path)
 
     err = initialize_tables();
     if (err != noError) {
-        logger().error(err);
+        logger.error(err);
         // We're doomed now; cannot continue without a DB
         throw(err);
     }
 
     stopwatch.stop();
 
-    {
-        std::stringstream ss;
-        ss  << "Migrated in "
-            << stopwatch.elapsed() / 1000 << " ms";
-        logger().debug(ss.str());
-    }
+    logger.debug("Migrated in ", stopwatch.elapsed() / 1000, " ms");
 }
 
 Database::~Database() {
@@ -354,10 +342,6 @@ error Database::vacuum() {
     return last_error("vacuum");
 }
 
-Poco::Logger &Database::logger() const {
-    return Poco::Logger::get("database");
-}
-
 error Database::DeleteFromTable(
     const std::string &table_name,
     const Poco::Int64 &local_id) {
@@ -370,11 +354,7 @@ error Database::DeleteFromTable(
         return noError;
     }
 
-
-    std::stringstream ss;
-    ss << "Deleting from table " << table_name
-       << ", local ID: " << local_id;
-    logger().debug(ss.str());
+    logger.debug( "Deleting from table ", table_name, ", local ID: ", local_id);
 
     try {
         Poco::Mutex::ScopedLock lock(session_m_);
@@ -416,7 +396,7 @@ std::string Database::GenerateGUID() {
 error Database::LoadCurrentUser(User *user) {
     poco_check_ptr(user);
 
-    logger().debug("LoadCurrentUser");
+    logger.debug("LoadCurrentUser");
 
     std::string api_token("");
     Poco::UInt64 uid(0);
@@ -1265,9 +1245,7 @@ error Database::LoadUserByID(
     }
 
     stopwatch.stop();
-    std::stringstream ss;
-    ss << "User loaded in " << stopwatch.elapsed() / 1000 << " ms";
-    logger().debug(ss.str());
+    logger.debug("User loaded in ", stopwatch.elapsed() / 1000, " ms");
 
     return noError;
 }
@@ -2071,10 +2049,7 @@ error Database::saveModel(
         poco_check_ptr(session_);
 
         if (model->LocalID()) {
-            std::stringstream ss;
-            ss << "Updating time entry " + model->String()
-               << " in thread " << Poco::Thread::currentTid();
-            logger().debug(ss.str());
+            logger.debug("Updating time entry ", model->String(), " in thread ", Poco::Thread::currentTid());
 
             if (model->ID()) {
                 *session_ <<
@@ -2166,10 +2141,7 @@ error Database::saveModel(
                     model->GUID()));
             }
         } else {
-            std::stringstream ss;
-            ss << "Inserting time entry " + model->String()
-               << " in thread " << Poco::Thread::currentTid();
-            logger().debug(ss.str());
+            logger.debug("Inserting time entry ", model->String(), " in thread ", Poco::Thread::currentTid());
             if (model->ID()) {
                 *session_ <<
                           "insert into time_entries(id, uid, description, "
@@ -2313,10 +2285,7 @@ error Database::saveModel(
         Poco::Int64 end_time(model->EndTime());
 
         if (model->LocalID()) {
-            std::stringstream ss;
-            ss << "Updating timeline event " + model->String()
-               << " in thread " << Poco::Thread::currentTid();
-            logger().trace(ss.str());
+            logger.trace("Updating timeline event ", model->String(), " in thread ", Poco::Thread::currentTid());
 
             *session_ <<
                       "update timeline_events set "
@@ -2360,10 +2329,7 @@ error Database::saveModel(
                     model->GUID()));
             }
         } else {
-            std::stringstream ss;
-            ss << "Inserting timeline event " + model->String()
-               << " in thread " << Poco::Thread::currentTid();
-            logger().trace(ss.str());
+            logger.trace("Inserting timeline event ", model->String(), " in thread ", Poco::Thread::currentTid());
 
             *session_ <<
                       "insert into timeline_events("
@@ -2444,10 +2410,7 @@ error Database::saveModel(
         poco_check_ptr(session_);
 
         if (model->LocalID()) {
-            std::stringstream ss;
-            ss << "Updating autotracker rule " + model->String()
-               << " in thread " << Poco::Thread::currentTid();
-            logger().trace(ss.str());
+            logger.trace("Updating autotracker rule ", model->String(), " in thread ", Poco::Thread::currentTid());
 
             *session_ <<
                       "update autotracker_settings set "
@@ -2479,10 +2442,7 @@ error Database::saveModel(
             }
 
         } else {
-            std::stringstream ss;
-            ss << "Inserting autotracker rule " + model->String()
-               << " in thread " << Poco::Thread::currentTid();
-            logger().trace(ss.str());
+            logger.trace("Inserting autotracker rule ", model->String(), " in thread ", Poco::Thread::currentTid());
             *session_ <<
                       "insert into autotracker_settings(uid, term, pid, tid) "
                       "values(:uid, :term, :pid, :tid)",
@@ -2538,10 +2498,7 @@ error Database::saveModel(
         poco_check_ptr(session_);
 
         if (model->LocalID()) {
-            std::stringstream ss;
-            ss << "Updating OBM action " + model->String()
-               << " in thread " << Poco::Thread::currentTid();
-            logger().trace(ss.str());
+            logger.trace("Updating OBM action ", model->String(), " in thread ", Poco::Thread::currentTid());
 
             *session_ <<
                       "update obm_actions set "
@@ -2575,10 +2532,7 @@ error Database::saveModel(
             }
 
         } else {
-            std::stringstream ss;
-            ss << "Inserting OBM action " + model->String()
-               << " in thread " << Poco::Thread::currentTid();
-            logger().trace(ss.str());
+            logger.trace("Inserting OBM action ", model->String(), " in thread ", Poco::Thread::currentTid());
             *session_ <<
                       "insert into obm_actions(uid, experiment_id, key, value) "
                       "values(:uid, :experiment_id, :key, :value)",
@@ -2635,10 +2589,7 @@ error Database::saveModel(
         poco_check_ptr(session_);
 
         if (model->LocalID()) {
-            std::stringstream ss;
-            ss << "Updating workspace " + model->String()
-               << " in thread " << Poco::Thread::currentTid();
-            logger().trace(ss.str());
+            logger.trace("Updating workspace ", model->String(), " in thread ", Poco::Thread::currentTid());
 
             *session_ <<
                       "update workspaces set "
@@ -2669,10 +2620,7 @@ error Database::saveModel(
                 model->ModelName(), kChangeTypeUpdate, model->ID(), ""));
 
         } else {
-            std::stringstream ss;
-            ss << "Inserting workspace " + model->String()
-               << " in thread " << Poco::Thread::currentTid();
-            logger().trace(ss.str());
+            logger.trace("Inserting workspace ", model->String(), " in thread ", Poco::Thread::currentTid());
             *session_ <<
                       "insert into workspaces(id, uid, name, premium, "
                       "only_admins_may_create_projects, admin, "
@@ -2745,10 +2693,7 @@ error Database::saveModel(
         poco_check_ptr(session_);
 
         if (model->LocalID()) {
-            std::stringstream ss;
-            ss << "Updating client " + model->String()
-               << " in thread " << Poco::Thread::currentTid();
-            logger().trace(ss.str());
+            logger.trace("Updating client ", model->String(), " in thread ", Poco::Thread::currentTid());
 
             if (model->GUID().empty()) {
                 *session_ <<
@@ -2786,10 +2731,7 @@ error Database::saveModel(
                 model->GUID()));
 
         } else {
-            std::stringstream ss;
-            ss << "Inserting client " + model->String()
-               << " in thread " << Poco::Thread::currentTid();
-            logger().trace(ss.str());
+            logger.trace("Inserting client ", model->String(), " in thread ", Poco::Thread::currentTid());
             if (model->GUID().empty()) {
                 *session_ <<
                           "insert into clients(id, uid, name, wid) "
@@ -2866,10 +2808,7 @@ error Database::saveModel(
         poco_check_ptr(session_);
 
         if (model->LocalID()) {
-            std::stringstream ss;
-            ss << "Updating project " + model->String()
-               << " in thread " << Poco::Thread::currentTid();
-            logger().debug(ss.str());
+            logger.debug("Updating project ", model->String(), " in thread ", Poco::Thread::currentTid());
 
             if (model->ID()) {
                 if (model->GUID().empty()) {
@@ -2964,10 +2903,7 @@ error Database::saveModel(
                 model->GUID()));
 
         } else {
-            std::stringstream ss;
-            ss << "Inserting project " + model->String()
-               << " in thread " << Poco::Thread::currentTid();
-            logger().debug(ss.str());
+            logger.debug("Inserting project ", model->String(), " in thread ", Poco::Thread::currentTid());
             if (model->ID()) {
                 if (model->GUID().empty()) {
                     *session_ <<
@@ -3103,10 +3039,7 @@ error Database::saveModel(
         poco_check_ptr(session_);
 
         if (model->LocalID()) {
-            std::stringstream ss;
-            ss << "Updating task " + model->String()
-               << " in thread " << Poco::Thread::currentTid();
-            logger().trace(ss.str());
+            logger.trace("Updating task ", model->String(), " in thread ", Poco::Thread::currentTid());
 
             *session_ <<
                       "update tasks set "
@@ -3129,10 +3062,7 @@ error Database::saveModel(
                 model->ModelName(), kChangeTypeUpdate, model->ID(), ""));
 
         } else {
-            std::stringstream ss;
-            ss << "Inserting task " + model->String()
-               << " in thread " << Poco::Thread::currentTid();
-            logger().trace(ss.str());
+            logger.trace("Inserting task ", model->String(), " in thread ", Poco::Thread::currentTid());
             *session_ <<
                       "insert into tasks(id, uid, name, wid, pid, active) "
                       "values(:id, :uid, :name, :wid, :pid, :active)",
@@ -3186,10 +3116,7 @@ error Database::saveModel(
         poco_check_ptr(session_);
 
         if (model->LocalID()) {
-            std::stringstream ss;
-            ss << "Updating tag " + model->String()
-               << " in thread " << Poco::Thread::currentTid();
-            logger().trace(ss.str());
+            logger.trace("Updating tag ", model->String(), " in thread ", Poco::Thread::currentTid());
 
             if (model->GUID().empty()) {
                 *session_ <<
@@ -3227,10 +3154,7 @@ error Database::saveModel(
                 model->GUID()));
 
         } else {
-            std::stringstream ss;
-            ss << "Inserting tag " + model->String()
-               << " in thread " << Poco::Thread::currentTid();
-            logger().trace(ss.str());
+            logger.trace("Inserting tag ", model->String(), " in thread ", Poco::Thread::currentTid());
             if (model->GUID().empty()) {
                 *session_ <<
                           "insert into tags(id, uid, name, wid) "
@@ -3291,7 +3215,7 @@ error Database::SaveUser(
 
     // Do nothing, if user has already logged out
     if (!user) {
-        logger().warning("Cannot save user, user is logged out");
+        logger.warning("Cannot save user, user is logged out");
         return noError;
     }
 
@@ -3319,10 +3243,7 @@ error Database::SaveUser(
     if (!user->LocalID() || user->Dirty()) {
         try {
             if (user->LocalID()) {
-                std::stringstream ss;
-                ss << "Updating user " + user->String()
-                   << " in thread " << Poco::Thread::currentTid();
-                logger().trace(ss.str());
+                logger.trace("Updating user ", user->String(), " in thread ", Poco::Thread::currentTid());
 
                 *session_ <<
                           "update users set "
@@ -3361,10 +3282,7 @@ error Database::SaveUser(
                 changes->push_back(ModelChange(
                     user->ModelName(), kChangeTypeUpdate, user->ID(), ""));
             } else {
-                std::stringstream ss;
-                ss << "Inserting user " + user->String()
-                   << " in thread " << Poco::Thread::currentTid();
-                logger().trace(ss.str());
+                logger.trace("Inserting user ", user->String(), " in thread ", Poco::Thread::currentTid());
                 *session_ <<
                           "insert into users("
                           "id, default_wid, since, fullname, email, "
@@ -3576,13 +3494,7 @@ error Database::SaveUser(
 
     stopwatch.stop();
 
-    {
-        std::stringstream ss;
-        ss  << "User with_related_data=" << with_related_data << " saved in "
-            << stopwatch.elapsed() / 1000 << " ms in thread "
-            << Poco::Thread::currentTid();
-        logger().debug(ss.str());
-    }
+    logger.debug("User with_related_data=", with_related_data, " saved in ", stopwatch.elapsed() / 1000, " ms in thread ", Poco::Thread::currentTid());
 
     return noError;
 }
@@ -3896,11 +3808,7 @@ error Database::Migrate(
             return noError;
         }
 
-        std::stringstream ss;
-        ss  << "Migrating" << "\n"
-            << name << "\n"
-            << sql << "\n";
-        logger().debug(ss.str());
+        logger.debug("Migrating", "\n", name, "\n", sql, "\n");
 
         err = execute(sql);
         if (err != noError) {
@@ -4047,10 +3955,7 @@ error Database::saveModel(
         poco_check_ptr(session_);
 
         if (model->LocalID()) {
-            std::stringstream ss;
-            ss << "Updating OBM experiment " + model->String()
-               << " in thread " << Poco::Thread::currentTid();
-            logger().trace(ss.str());
+            logger.trace("Updating OBM experiment ", model->String(), " in thread ", Poco::Thread::currentTid());
 
             *session_ <<
                       "update obm_experiments set "
@@ -4086,10 +3991,7 @@ error Database::saveModel(
             }
 
         } else {
-            std::stringstream ss;
-            ss << "Inserting OBM action " + model->String()
-               << " in thread " << Poco::Thread::currentTid();
-            logger().trace(ss.str());
+            logger.trace("Inserting OBM action ", model->String(), " in thread ", Poco::Thread::currentTid());
             *session_ <<
                       "insert into obm_experiments("
                       "uid, nr, included, has_seen, actions "

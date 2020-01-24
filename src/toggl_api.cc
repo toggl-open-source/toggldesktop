@@ -646,9 +646,7 @@ bool_t toggl_continue(
     void *context,
     const char_t *guid) {
 
-    std::stringstream ss;
-    ss << "toggl_continue guid=" << guid;
-    logger().debug(ss.str());
+    logger().debug("toggl_continue guid=", guid);
 
     toggl::TimeEntry *result = app(context)->Continue(to_string(guid));
     if (!result) {
@@ -691,11 +689,7 @@ void toggl_edit(
     const bool_t edit_running_entry,
     const char_t *focused_field_name) {
 
-    std::stringstream ss;
-    ss << "toggl_edit guid=" << guid
-       << ", edit_running_entry = " << edit_running_entry
-       << ", focused_field_name = " << focused_field_name;
-    logger().debug(ss.str());
+    logger().debug("toggl_edit guid=", guid, ", edit_running_entry = ", edit_running_entry, ", focused_field_name = ", focused_field_name);
 
     app(context)->OpenTimeEntryEditor(
         to_string(guid),
@@ -724,9 +718,7 @@ bool_t toggl_delete_time_entry(
     void *context,
     const char_t *guid) {
 
-    std::stringstream ss;
-    ss << "toggl_delete_time_entry guid=" << guid;
-    logger().debug(ss.str());
+    logger().debug("toggl_delete_time_entry guid=", guid);
 
     return toggl::noError == app(context)->
            DeleteTimeEntryByGUID(to_string(guid));
@@ -737,10 +729,7 @@ bool_t toggl_set_time_entry_duration(
     const char_t *guid,
     const char_t *value) {
 
-    std::stringstream ss;
-    ss  << "toggl_set_time_entry_duration guid=" << guid
-        << ", value=" << value;
-    logger().debug(ss.str());
+    logger().debug("toggl_set_time_entry_duration guid=", guid, ", value=", value);
 
     return toggl::noError == app(context)->SetTimeEntryDuration(
         to_string(guid),
