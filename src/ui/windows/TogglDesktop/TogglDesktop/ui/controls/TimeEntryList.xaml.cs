@@ -367,7 +367,13 @@ namespace TogglDesktop
             if (!IsAnyCellFocused)
                 return;
 
-            var guidOfCellToEdit = GetFocusedCell().Guid;
+            var focusedCell = GetFocusedCell();
+            if (focusedCell.TryToggleExpandCollapse())
+            {
+                return;
+            }
+
+            var guidOfCellToEdit = focusedCell.Guid;
             Toggl.Edit(guidOfCellToEdit, false, "");
         }
 
