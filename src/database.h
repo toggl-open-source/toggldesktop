@@ -12,11 +12,11 @@
 #include <string>
 #include <vector>
 
-#include <Poco/Data/SQLite/Connector.h>
+#include "Poco/Data/SQLite/Connector.h"
 
-#include "model_change.h"
-#include "timeline_event.h"
-#include "types.h"
+#include "./model_change.h"
+#include "./timeline_event.h"
+#include "./types.h"
 
 namespace Poco {
 class Logger;

@@ -9,10 +9,10 @@
 #ifndef Rectangle_h
 #define Rectangle_h
 
-#include "types.h"
+#include "./types.h"
 
 #include <string>
-#include <Poco/Types.h>
+#include "Poco/Types.h"
 
 namespace toggl {
 

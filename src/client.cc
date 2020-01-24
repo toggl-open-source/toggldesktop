@@ -1,11 +1,11 @@
 // Copyright 2014 Toggl Desktop developers.
 
-#include "client.h"
+#include "../src/client.h"
 
 #include <sstream>
 #include <cstring>
 
-#include "formatter.h"
+#include "./formatter.h"
 
 namespace toggl {
 

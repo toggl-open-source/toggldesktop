@@ -1,18 +1,18 @@
 // Copyright 2015 Toggl Desktop developers.
 
-#include "netconf.h"
+#include "../src/netconf.h"
 
 #include <string>
 #include <sstream>
 
-#include "https_client.h"
+#include "./https_client.h"
 
-#include <Poco/Environment.h>
-#include <Poco/Logger.h>
-#include <Poco/Net/HTTPCredentials.h>
-#include <Poco/Net/HTTPSClientSession.h>
-#include <Poco/URI.h>
-#include <Poco/UnicodeConverter.h>
+#include "Poco/Environment.h"
+#include "Poco/Logger.h"
+#include "Poco/Net/HTTPCredentials.h"
+#include "Poco/Net/HTTPSClientSession.h"
+#include "Poco/URI.h"
+#include "Poco/UnicodeConverter.h"
 
 #ifdef __MACH__
 #include <CoreFoundation/CoreFoundation.h>  // NOLINT

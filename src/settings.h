@@ -8,9 +8,9 @@
 
 #include <json/json.h>  // NOLINT
 
-#include "base_model.h"
+#include "./base_model.h"
 
-#include <Poco/Types.h>
+#include "Poco/Types.h"
 
 namespace toggl {
 

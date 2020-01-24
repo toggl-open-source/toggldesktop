@@ -6,10 +6,10 @@
 #include <string>
 #include <map>
 
-#include "timeline_notifications.h"
-#include "types.h"
+#include "./timeline_notifications.h"
+#include "./types.h"
 
-#include <Poco/Activity.h>
+#include "Poco/Activity.h"
 
 #if defined(__APPLE__)
 extern bool isCatalinaOSX(void);

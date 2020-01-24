@@ -6,10 +6,10 @@
 #include <string>
 #include <vector>
 
-#include "base_model.h"
-#include "types.h"
+#include "./base_model.h"
+#include "./types.h"
 
-#include <Poco/Types.h>
+#include "Poco/Types.h"
 
 namespace toggl {
 

@@ -6,7 +6,7 @@
 //  Copyright © 2019 Toggl. All rights reserved.
 //
 
-#include "random.h"
+#include "./random.h"
 
 namespace toggl {
 

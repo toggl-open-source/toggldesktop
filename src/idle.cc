@@ -6,13 +6,13 @@
 // class, the ownership does not change and you
 // must not delete the pointers you got.
 
-#include "idle.h"
+#include "../src/idle.h"
 
-#include "formatter.h"
-#include "gui.h"
-#include "time_entry.h"
+#include "./formatter.h"
+#include "./gui.h"
+#include "./time_entry.h"
 
-#include <Poco/Logger.h>
+#include "Poco/Logger.h"
 
 namespace toggl {
 

@@ -19,7 +19,7 @@
 #include <string>
 #include <typeinfo>
 
-#include "get_focused_window.h"
+#include "./get_focused_window.h"
 
 #define HANDLE_EINTR(x) ({ \
   __typeof__(x) __eintr_result__; \

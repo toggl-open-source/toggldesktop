@@ -1,24 +1,24 @@
 
 // Copyright 2014 Toggl Desktop developers.
 
-#include "gui.h"
+#include "../src/gui.h"
 
 #include <cstdlib>
 #include <sstream>
 
-#include "client.h"
-#include "const.h"
-#include "error.h"
-#include "formatter.h"
-#include "project.h"
-#include "related_data.h"
-#include "task.h"
-#include "time_entry.h"
-#include "user.h"
-#include "workspace.h"
+#include "./client.h"
+#include "./const.h"
+#include "./error.h"
+#include "./formatter.h"
+#include "./project.h"
+#include "./related_data.h"
+#include "./task.h"
+#include "./time_entry.h"
+#include "./user.h"
+#include "./workspace.h"
 
-#include <Poco/Logger.h>
-#include <Poco/Stopwatch.h>
+#include "Poco/Logger.h"
+#include "Poco/Stopwatch.h"
 
 namespace toggl {
 

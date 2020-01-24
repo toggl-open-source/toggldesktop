@@ -2,38 +2,38 @@
 
 // All session access should be locked.
 
-#include "database.h"
+#include "../src/database.h"
 
 #include <limits>
 #include <string>
 #include <vector>
 
-#include "autotracker.h"
-#include "client.h"
-#include "const.h"
-#include "migrations.h"
-#include "obm_action.h"
-#include "project.h"
-#include "proxy.h"
-#include "settings.h"
-#include "tag.h"
-#include "task.h"
-#include "time_entry.h"
-#include "user.h"
-#include "workspace.h"
+#include "./autotracker.h"
+#include "./client.h"
+#include "./const.h"
+#include "./migrations.h"
+#include "./obm_action.h"
+#include "./project.h"
+#include "./proxy.h"
+#include "./settings.h"
+#include "./tag.h"
+#include "./task.h"
+#include "./time_entry.h"
+#include "./user.h"
+#include "./workspace.h"
 
-#include <Poco/Data/Binding.h>
-#include <Poco/Data/RecordSet.h>
-#include <Poco/Data/SessionImpl.h>
-#include <Poco/Data/SQLite/SessionImpl.h>
-#include <Poco/Data/SQLite/Utility.h>
-#include <Poco/Data/Statement.h>
-#include <Poco/FileStream.h>
-#include <Poco/Logger.h>
-#include <Poco/Stopwatch.h>
-#include <Poco/StreamCopier.h>
-#include <Poco/UUID.h>
-#include <Poco/UUIDGenerator.h>
+#include "Poco/Data/Binding.h"
+#include "Poco/Data/RecordSet.h"
+#include "Poco/Data/SessionImpl.h"
+#include "Poco/Data/SQLite/SessionImpl.h"
+#include "Poco/Data/SQLite/Utility.h"
+#include "Poco/Data/Statement.h"
+#include "Poco/FileStream.h"
+#include "Poco/Logger.h"
+#include "Poco/Stopwatch.h"
+#include "Poco/StreamCopier.h"
+#include "Poco/UUID.h"
+#include "Poco/UUIDGenerator.h"
 
 namespace toggl {
 

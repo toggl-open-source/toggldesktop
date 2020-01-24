@@ -7,10 +7,10 @@
 #include <sstream>
 #include <vector>
 
-#include <Poco/Types.h>
+#include "Poco/Types.h"
 
-#include "base_model.h"
-#include "timeline_event.h"
+#include "./base_model.h"
+#include "./timeline_event.h"
 
 namespace toggl {
 

@@ -3,7 +3,7 @@
 #ifndef SRC_HELP_ARTICLE_H_
 #define SRC_HELP_ARTICLE_H_
 
-#include "types.h"
+#include "./types.h"
 
 #include <sstream>
 #include <string>

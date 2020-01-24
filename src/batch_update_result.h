@@ -7,11 +7,11 @@
 #include <vector>
 #include <map>
 
-#include "types.h"
+#include "./types.h"
 
 #include <json/json.h>  // NOLINT
 
-#include <Poco/Types.h>
+#include "Poco/Types.h"
 
 namespace toggl {
 

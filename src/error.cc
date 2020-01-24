@@ -1,11 +1,11 @@
 
 // Copyright 2014 Toggl Desktop developers.
 
-#include "error.h"
+#include "../src/error.h"
 
 #include <string>
 
-#include "const.h"
+#include "./const.h"
 
 namespace toggl {
 

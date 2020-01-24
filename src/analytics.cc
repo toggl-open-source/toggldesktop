@@ -5,20 +5,20 @@
 // https://developers.google.com/analytics/devguides/collection/protocol/v1/
 // or using Toggl's own backend when appropriate.
 
-#include "analytics.h"
+#include "../src/analytics.h"
 
 #include <sstream>
 
 #include <json/json.h>  // NOLINT
 
-#include "const.h"
-#include "https_client.h"
-#include "platforminfo.h"
-#include "settings.h"
-#include "urls.h"
-#include "user.h"
+#include "./const.h"
+#include "./https_client.h"
+#include "./platforminfo.h"
+#include "./settings.h"
+#include "./urls.h"
+#include "./user.h"
 
-#include <Poco/Logger.h>
+#include "Poco/Logger.h"
 
 namespace toggl {
 

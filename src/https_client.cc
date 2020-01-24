@@ -1,43 +1,43 @@
 // Copyright 2014 Toggl Desktop developers.
 
-#include "https_client.h"
+#include "../src/https_client.h"
 
 #include <json/json.h>
 
 #include <string>
 #include <sstream>
 
-#include "formatter.h"
-#include "netconf.h"
-#include "urls.h"
-#include "toggl_api.h"
+#include "./formatter.h"
+#include "./netconf.h"
+#include "./urls.h"
+#include "./toggl_api.h"
 
-#include <Poco/DeflatingStream.h>
-#include <Poco/Environment.h>
-#include <Poco/Exception.h>
-#include <Poco/FileStream.h>
-#include <Poco/InflatingStream.h>
-#include <Poco/Logger.h>
-#include <Poco/Net/AcceptCertificateHandler.h>
-#include <Poco/Net/Context.h>
-#include <Poco/Net/HTMLForm.h>
-#include <Poco/Net/HTTPBasicCredentials.h>
-#include <Poco/Net/HTTPCredentials.h>
-#include <Poco/Net/HTTPMessage.h>
-#include <Poco/Net/HTTPRequest.h>
-#include <Poco/Net/HTTPResponse.h>
-#include <Poco/Net/HTTPSClientSession.h>
-#include <Poco/Net/InvalidCertificateHandler.h>
-#include <Poco/Net/NameValueCollection.h>
-#include <Poco/Net/PrivateKeyPassphraseHandler.h>
-#include <Poco/Net/SecureStreamSocket.h>
-#include <Poco/Net/Session.h>
-#include <Poco/Net/SSLManager.h>
-#include <Poco/NumberParser.h>
-#include <Poco/StreamCopier.h>
-#include <Poco/TextEncoding.h>
-#include <Poco/URI.h>
-#include <Poco/UTF8Encoding.h>
+#include "Poco/DeflatingStream.h"
+#include "Poco/Environment.h"
+#include "Poco/Exception.h"
+#include "Poco/FileStream.h"
+#include "Poco/InflatingStream.h"
+#include "Poco/Logger.h"
+#include "Poco/Net/AcceptCertificateHandler.h"
+#include "Poco/Net/Context.h"
+#include "Poco/Net/HTMLForm.h"
+#include "Poco/Net/HTTPBasicCredentials.h"
+#include "Poco/Net/HTTPCredentials.h"
+#include "Poco/Net/HTTPMessage.h"
+#include "Poco/Net/HTTPRequest.h"
+#include "Poco/Net/HTTPResponse.h"
+#include "Poco/Net/HTTPSClientSession.h"
+#include "Poco/Net/InvalidCertificateHandler.h"
+#include "Poco/Net/NameValueCollection.h"
+#include "Poco/Net/PrivateKeyPassphraseHandler.h"
+#include "Poco/Net/SecureStreamSocket.h"
+#include "Poco/Net/Session.h"
+#include "Poco/Net/SSLManager.h"
+#include "Poco/NumberParser.h"
+#include "Poco/StreamCopier.h"
+#include "Poco/TextEncoding.h"
+#include "Poco/URI.h"
+#include "Poco/UTF8Encoding.h"
 
 namespace toggl {
 

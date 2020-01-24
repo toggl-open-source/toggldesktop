@@ -10,14 +10,14 @@
 
 #include <json/json.h>  // NOLINT
 
-#include "base_model.h"
-#include "batch_update_result.h"
-#include "related_data.h"
-#include "types.h"
-#include "workspace.h"
+#include "./base_model.h"
+#include "./batch_update_result.h"
+#include "./related_data.h"
+#include "./types.h"
+#include "./workspace.h"
 
-#include <Poco/LocalDateTime.h>
-#include <Poco/Types.h>
+#include "Poco/LocalDateTime.h"
+#include "Poco/Types.h"
 
 namespace toggl {
 

@@ -1,30 +1,30 @@
 // Copyright 2014 Toggl Desktop developers.
 
-#include "formatter.h"
+#include "../src/formatter.h"
 
 #include <time.h>
 #include <sstream>
 #include <cctype>
 #include <set>
 
-#include "client.h"
-#include "gui.h"
-#include "project.h"
-#include "task.h"
-#include "time_entry.h"
-#include "workspace.h"
+#include "./client.h"
+#include "./gui.h"
+#include "./project.h"
+#include "./task.h"
+#include "./time_entry.h"
+#include "./workspace.h"
 
-#include <Poco/DateTimeFormat.h>
-#include <Poco/DateTimeFormatter.h>
-#include <Poco/DateTimeParser.h>
-#include <Poco/LocalDateTime.h>
-#include <Poco/Logger.h>
-#include <Poco/NumberFormatter.h>
-#include <Poco/NumberParser.h>
-#include <Poco/String.h>
-#include <Poco/StringTokenizer.h>
-#include <Poco/Types.h>
-#include <Poco/UTF8String.h>
+#include "Poco/DateTimeFormat.h"
+#include "Poco/DateTimeFormatter.h"
+#include "Poco/DateTimeParser.h"
+#include "Poco/LocalDateTime.h"
+#include "Poco/Logger.h"
+#include "Poco/NumberFormatter.h"
+#include "Poco/NumberParser.h"
+#include "Poco/String.h"
+#include "Poco/StringTokenizer.h"
+#include "Poco/Types.h"
+#include "Poco/UTF8String.h"
 
 namespace toggl {
 

@@ -1,9 +1,9 @@
 // Copyright 2014 Toggl Desktop developers.
 
-#include "workspace.h"
+#include "../src/workspace.h"
 
 #include <sstream>
-#include "formatter.h"
+#include "./formatter.h"
 
 namespace toggl {
 

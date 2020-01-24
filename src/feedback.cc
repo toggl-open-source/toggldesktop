@@ -1,13 +1,13 @@
 // Copyright 2014 Toggl Desktop developers.
 
-#include "feedback.h"
+#include "../src/feedback.h"
 
 #include <sstream>
 
-#include "formatter.h"
-#include "https_client.h"
+#include "./formatter.h"
+#include "./https_client.h"
 
-#include <Poco/Path.h>
+#include "Poco/Path.h"
 
 namespace toggl {
 

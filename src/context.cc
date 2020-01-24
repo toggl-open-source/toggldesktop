@@ -9,52 +9,52 @@
 // All public methods should start with an uppercase name.
 // All public methods should catch their exceptions.
 
-#include "context.h"
+#include "../src/context.h"
 
 #include <iostream>  // NOLINT
 
-#include "autotracker.h"
-#include "client.h"
-#include "const.h"
-#include "database.h"
-#include "error.h"
-#include "formatter.h"
-#include "https_client.h"
-#include "obm_action.h"
-#include "project.h"
-#include "random.h"
-#include "settings.h"
-#include "task.h"
-#include "time_entry.h"
-#include "timeline_uploader.h"
-#include "urls.h"
-#include "window_change_recorder.h"
-#include "workspace.h"
+#include "./autotracker.h"
+#include "./client.h"
+#include "./const.h"
+#include "./database.h"
+#include "./error.h"
+#include "./formatter.h"
+#include "./https_client.h"
+#include "./obm_action.h"
+#include "./project.h"
+#include "./random.h"
+#include "./settings.h"
+#include "./task.h"
+#include "./time_entry.h"
+#include "./timeline_uploader.h"
+#include "./urls.h"
+#include "./window_change_recorder.h"
+#include "./workspace.h"
 
-#include <Poco/Crypto/OpenSSLInitializer.h>
-#include <Poco/DateTimeFormat.h>
-#include <Poco/DateTimeFormatter.h>
-#include <Poco/Environment.h>
-#include <Poco/File.h>
-#include <Poco/FileStream.h>
-#include <Poco/FormattingChannel.h>
-#include <Poco/Logger.h>
-#include <Poco/Net/FilePartSource.h>
-#include <Poco/Net/HTMLForm.h>
-#include <Poco/Net/HTTPStreamFactory.h>
-#include <Poco/Net/HTTPSStreamFactory.h>
-#include <Poco/Net/NetSSL.h>
-#include <Poco/Net/StringPartSource.h>
-#include <Poco/Path.h>
-#include <Poco/PatternFormatter.h>
-#include <Poco/SimpleFileChannel.h>
-#include <Poco/Stopwatch.h>
-#include <Poco/StreamCopier.h>
-#include <Poco/URI.h>
-#include <Poco/UTF8String.h>
-#include <Poco/URIStreamOpener.h>
-#include <Poco/Util/TimerTask.h>
-#include <Poco/Util/TimerTaskAdapter.h>
+#include "Poco/Crypto/OpenSSLInitializer.h"
+#include "Poco/DateTimeFormat.h"
+#include "Poco/DateTimeFormatter.h"
+#include "Poco/Environment.h"
+#include "Poco/File.h"
+#include "Poco/FileStream.h"
+#include "Poco/FormattingChannel.h"
+#include "Poco/Logger.h"
+#include "Poco/Net/FilePartSource.h"
+#include "Poco/Net/HTMLForm.h"
+#include "Poco/Net/HTTPStreamFactory.h"
+#include "Poco/Net/HTTPSStreamFactory.h"
+#include "Poco/Net/NetSSL.h"
+#include "Poco/Net/StringPartSource.h"
+#include "Poco/Path.h"
+#include "Poco/PatternFormatter.h"
+#include "Poco/SimpleFileChannel.h"
+#include "Poco/Stopwatch.h"
+#include "Poco/StreamCopier.h"
+#include "Poco/URI.h"
+#include "Poco/UTF8String.h"
+#include "Poco/URIStreamOpener.h"
+#include "Poco/Util/TimerTask.h"
+#include "Poco/Util/TimerTaskAdapter.h"
 #include <mutex> // NOLINT
 #include <thread>
 

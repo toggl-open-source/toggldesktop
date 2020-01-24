@@ -1,11 +1,11 @@
 
 // Copyright 2015 Toggl Desktop developers
 
-#include "autotracker.h"
+#include "../src/autotracker.h"
 
-#include <Poco/UTF8String.h>
+#include "Poco/UTF8String.h"
 
-#include "const.h"
+#include "./const.h"
 
 namespace toggl {
 

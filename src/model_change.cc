@@ -1,3 +1,3 @@
 // Copyright 2014 Toggl Desktop developers.
 
-#include "model_change.h"
+#include "../src/model_change.h"

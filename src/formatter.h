@@ -7,10 +7,10 @@
 #include <ctime>
 #include <vector>
 
-#include <Poco/LocalDateTime.h>
-#include <Poco/Timestamp.h>
+#include "Poco/LocalDateTime.h"
+#include "Poco/Timestamp.h"
 
-#include "types.h"
+#include "./types.h"
 
 namespace toggl {
 

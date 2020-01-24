@@ -7,9 +7,9 @@
 #include <vector>
 #include <ctime>
 
-#include <Poco/Activity.h>
+#include "Poco/Activity.h"
 
-#include "types.h"
+#include "./types.h"
 
 namespace Poco {
 class Logger;
