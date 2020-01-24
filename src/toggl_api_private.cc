@@ -1,19 +1,19 @@
 // Copyright 2014 Toggl Desktop developers.
 
-#include "../src/toggl_api_private.h"
+#include "toggl_api_private.h"
 
 #include <cstdlib>
 
-#include "./client.h"
-#include "./context.h"
-#include "./formatter.h"
-#include "./project.h"
-#include "./time_entry.h"
-#include "./timeline_event.h"
-#include "./workspace.h"
+#include "client.h"
+#include "context.h"
+#include "formatter.h"
+#include "project.h"
+#include "time_entry.h"
+#include "timeline_event.h"
+#include "workspace.h"
 
-#include "Poco/Logger.h"
-#include "Poco/UnicodeConverter.h"
+#include <Poco/Logger.h>
+#include <Poco/UnicodeConverter.h>
 
 TogglAutocompleteView *autocomplete_item_init(const toggl::view::Autocomplete &item) {
     TogglAutocompleteView *result = new TogglAutocompleteView();

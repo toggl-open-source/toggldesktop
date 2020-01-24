@@ -9,21 +9,21 @@
 // from context, using specific functions, not
 // setters.
 
-#include "../src/time_entry.h"
+#include "time_entry.h"
 
 #include <sstream>
 #include <algorithm>
 
 #include <json/json.h>  // NOLINT
 
-#include "./https_client.h"
-#include "./formatter.h"
+#include "https_client.h"
+#include "formatter.h"
 
-#include "Poco/DateTime.h"
-#include "Poco/LocalDateTime.h"
-#include "Poco/Logger.h"
-#include "Poco/NumberParser.h"
-#include "Poco/Timestamp.h"
+#include <Poco/DateTime.h>
+#include <Poco/LocalDateTime.h>
+#include <Poco/Logger.h>
+#include <Poco/NumberParser.h>
+#include <Poco/Timestamp.h>
 #include "toggl_api_private.h"
 
 namespace toggl {

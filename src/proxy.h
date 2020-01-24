@@ -3,11 +3,11 @@
 #ifndef SRC_PROXY_H_
 #define SRC_PROXY_H_
 
-#include "./types.h"
+#include "types.h"
 
 #include <string>
 
-#include "Poco/Types.h"
+#include <Poco/Types.h>
 
 namespace toggl {
 

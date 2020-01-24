@@ -10,22 +10,22 @@
 #include <memory>
 #include <iostream> // NOLINT
 
-#include "./analytics.h"
-#include "./custom_error_handler.h"
-#include "./feedback.h"
-#include "./gui.h"
-#include "./help_article.h"
-#include "./idle.h"
-#include "./model_change.h"
-#include "./timeline_event.h"
-#include "./timeline_notifications.h"
-#include "./types.h"
-#include "./websocket_client.h"
+#include "analytics.h"
+#include "custom_error_handler.h"
+#include "feedback.h"
+#include "gui.h"
+#include "help_article.h"
+#include "idle.h"
+#include "model_change.h"
+#include "timeline_event.h"
+#include "timeline_notifications.h"
+#include "types.h"
+#include "websocket_client.h"
 
-#include "Poco/Activity.h"
-#include "Poco/LocalDateTime.h"
-#include "Poco/Timestamp.h"
-#include "Poco/Util/Timer.h"
+#include <Poco/Activity.h>
+#include <Poco/LocalDateTime.h>
+#include <Poco/Timestamp.h>
+#include <Poco/Util/Timer.h>
 
 #ifdef TOGGL_ALLOW_UPDATE_CHECK
 # define UPDATE_CHECK_DISABLED false

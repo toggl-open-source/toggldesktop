@@ -9,10 +9,10 @@
 #include <map>
 #include <functional>
 
-#include "./timeline_event.h"
-#include "./types.h"
+#include "timeline_event.h"
+#include "types.h"
 
-#include "Poco/Mutex.h"
+#include <Poco/Mutex.h>
 #include <functional>
 
 namespace toggl {
