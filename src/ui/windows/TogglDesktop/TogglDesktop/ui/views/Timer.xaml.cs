@@ -302,7 +302,7 @@ namespace TogglDesktop
             this.startStopButton.IsChecked = running;
             this.descriptionTextBox.SetText("");
             this.descriptionTextBox.ShowOnlyIf(!running);
-            this.timeEntryLabel.ResetUIState(running);
+            this.timeEntryLabel.ShowOnlyIf(running);
             this.runningEntryInfoPanel.ResetUIState(running);
             this.editModeProjectLabel.ViewModel.Clear();
             this.editProjectPanel.Visibility = Visibility.Collapsed;
