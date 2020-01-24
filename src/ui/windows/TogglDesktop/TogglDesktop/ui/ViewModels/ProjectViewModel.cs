@@ -33,12 +33,17 @@ namespace TogglDesktop.ViewModels
             set => this.RaiseAndSetIfChanged(ref _color, value);
         }
 
+        public ProjectInfo ProjectInfo { get; private set; }
+
+        public bool HasProject => ProjectInfo.ProjectId != default;
+
         public void Clear()
         {
             ProjectName = string.Empty;
             TaskName = string.Empty;
             ClientName = string.Empty;
             Color = default;
+            ProjectInfo = default;
         }
 
         public void SetProject(Toggl.TogglTimeEntryView item)
@@ -47,6 +52,7 @@ namespace TogglDesktop.ViewModels
             TaskName = item.TaskLabel;
             ClientName = item.ClientLabel;
             Color = Utils.ProjectColorBrushFromString(item.Color);
+            ProjectInfo = new ProjectInfo(item.PID, item.TID);
         }
 
         public void SetProject(Toggl.TogglAutocompleteView item)
@@ -55,6 +61,19 @@ namespace TogglDesktop.ViewModels
             TaskName = item.TaskLabel;
             ClientName = item.ClientLabel;
             Color = Utils.ProjectColorBrushFromString(item.ProjectColor);
+            ProjectInfo = new ProjectInfo(item.ProjectID, item.TaskID);
+        }
+    }
+
+    public struct ProjectInfo
+    {
+        public ulong ProjectId { get; }
+        public ulong TaskId { get; }
+
+        public ProjectInfo(ulong projectId, ulong taskId)
+        {
+            this.ProjectId = projectId;
+            this.TaskId = taskId;
         }
     }
 }
