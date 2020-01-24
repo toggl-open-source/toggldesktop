@@ -11,6 +11,7 @@
     <UserControl.Resources>
         <converters:StringPrependConverter x:Key="StringPrependConverter" />
         <converters:EmptyStringToCollapsedConverter x:Key="EmptyStringToCollapsedConverter" />
+        <converters:EmptyStringToCollapsedConverter x:Key="EmptyStringToVisibleConverter" Inverse="True" />
         <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
             <Setter Property="FontSize" Value="12" />
             <Setter Property="VerticalAlignment" Value="Center" />
@@ -36,6 +37,6 @@
         </StackPanel>
         <TextBlock Style="{DynamicResource Toggl.CaptionGrayishText}"
                    Text="+ Add project"
-                   Visibility="{Binding ProjectName, Converter={StaticResource EmptyStringToCollapsedConverter}}"/>
+                   Visibility="{Binding ProjectName, Converter={StaticResource EmptyStringToVisibleConverter}}"/>
     </Grid>
 </UserControl>

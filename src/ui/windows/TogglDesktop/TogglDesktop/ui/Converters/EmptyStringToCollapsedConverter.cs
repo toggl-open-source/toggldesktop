@@ -6,10 +6,11 @@ namespace TogglDesktop.Converters
 {
     public class EmptyStringToCollapsedConverter : IValueConverter
     {
+        public bool Inverse { get; set; }
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             var stringValue = value as string;
-            return string.IsNullOrEmpty(stringValue)
+            return (string.IsNullOrEmpty(stringValue) ^ Inverse)
                 ? Visibility.Collapsed
                 : Visibility.Visible;
         }
