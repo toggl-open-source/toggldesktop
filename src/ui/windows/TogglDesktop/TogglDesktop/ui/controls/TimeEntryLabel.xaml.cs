@@ -61,11 +61,6 @@ namespace TogglDesktop
             }
         }
 
-        public void ClearProject()
-        {
-            this.projectLabel.ViewModel.Clear();
-        }
-
         private void onDescriptionLabelMouseDown(object sender, MouseButtonEventArgs e)
         {
             DescriptionLabelMouseDown?.Invoke(sender, e);

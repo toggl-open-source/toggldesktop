@@ -173,7 +173,6 @@ namespace TogglDesktop
 
         private void clearSelectedProject()
         {
-            this.timeEntryLabel.ClearProject();
             this.editProjectPanel.Visibility = Visibility.Collapsed;
             this.editModeProjectLabel.ViewModel.Clear();
         }
