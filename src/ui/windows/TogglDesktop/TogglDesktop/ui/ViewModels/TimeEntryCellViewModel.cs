@@ -81,5 +81,13 @@ namespace TogglDesktop.ViewModels
             Toggl.ToggleEntriesGroup(GroupName);
             return true;
         }
+
+        public bool TryToggleExpandCollapse()
+        {
+            var canToggleExpandCollapse = IsGroup;
+            if (!canToggleExpandCollapse) return false;
+            Toggl.ToggleEntriesGroup(GroupName);
+            return true;
+        }
     }
 }
