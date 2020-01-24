@@ -61,14 +61,6 @@ namespace TogglDesktop
             }
         }
 
-        public void ResetUIState(bool running)
-        {
-            this.projectLabel.ShowOnlyIf(running);
-            this.descriptionLabel.ShowOnlyIf(running);
-            this.noDescriptionLabel.Text = "+ Add description";
-            this.noDescriptionLabel.ShowOnlyIf(running && descriptionLabel.Text.IsNullOrEmpty());
-        }
-
         public void ClearProject()
         {
             this.projectLabel.ViewModel.Clear();
