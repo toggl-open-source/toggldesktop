@@ -28,7 +28,6 @@
                    MouseLeftButtonDown="onDescriptionLabelMouseDown"/>
 
         <local:ProjectLabel Grid.Row="1" x:Name="projectLabel" x:FieldModifier="private"
-                            ShowAddProjectCaption="True"
                             MouseLeftButtonDown="onProjectLabelMouseDown"
                             Background="Transparent"/>
     </Grid></UserControl>
