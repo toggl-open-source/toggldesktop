@@ -1,6 +1,6 @@
 // Copyright 2015 Toggl Desktop developers
 
-#include "../src/urls.h"
+#include "urls.h"
 
 namespace toggl {
 

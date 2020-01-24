@@ -5,9 +5,9 @@
 
 #include <string>
 
-#include "Poco/Types.h"
+#include <Poco/Types.h>
 
-#include "./const.h"
+#include "const.h"
 
 namespace toggl {
 
