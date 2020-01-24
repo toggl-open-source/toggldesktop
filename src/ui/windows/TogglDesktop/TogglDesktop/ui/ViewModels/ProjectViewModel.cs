@@ -32,5 +32,29 @@ namespace TogglDesktop.ViewModels
             get => _color;
             set => this.RaiseAndSetIfChanged(ref _color, value);
         }
+
+        public void Clear()
+        {
+            ProjectName = string.Empty;
+            TaskName = string.Empty;
+            ClientName = string.Empty;
+            Color = default;
+        }
+
+        public void SetProject(Toggl.TogglTimeEntryView item)
+        {
+            ProjectName = item.ProjectLabel;
+            TaskName = item.TaskLabel;
+            ClientName = item.ClientLabel;
+            Color = Utils.ProjectColorBrushFromString(item.Color);
+        }
+
+        public void SetProject(Toggl.TogglAutocompleteView item)
+        {
+            ProjectName = item.ProjectLabel;
+            TaskName = item.TaskLabel;
+            ClientName = item.ClientLabel;
+            Color = Utils.ProjectColorBrushFromString(item.ProjectColor);
+        }
     }
 }
