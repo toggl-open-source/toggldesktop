@@ -318,6 +318,7 @@
     <Compile Include="ui\ViewModels\FeedbackWindowViewModel.cs" />
     <Compile Include="ui\ViewModels\LoginViewModel.cs" />
     <Compile Include="ui\ViewModels\PreferencesWindowViewModel.cs" />
+    <Compile Include="ui\ViewModels\ProjectViewModel.cs" />
     <Compile Include="ui\ViewModels\TimeEntryCellViewModel.cs" />
     <Compile Include="ui\ViewModels\ViewModelExtensions.cs" />
     <Compile Include="ui\views\IMainView.cs" />
