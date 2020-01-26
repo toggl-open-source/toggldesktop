@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -58,8 +57,6 @@ namespace TogglDesktop
         public static readonly DependencyProperty EntryBackColorProperty = DependencyProperty
             .Register("EntryBackColor", typeof(Color), typeof(TimeEntryCell), new FrameworkPropertyMetadata(idleBackColor));
 
-        private readonly ToolTip descriptionToolTip = new ToolTip();
-        private readonly ToolTip taskProjectClientToolTip = new ToolTip();
         private readonly ToolTip durationToolTip = new ToolTip();
         private readonly ToolTip tagsToolTip = new ToolTip();
 
@@ -67,10 +64,10 @@ namespace TogglDesktop
         {
             this.InitializeComponent();
             this.SetupKeyboardFocusedReverseBinding(nameof(ViewModel.IsFocused));
-            ViewModel = new TimeEntryCellViewModel();
+            ViewModel = new TimeEntryCellViewModel(timeEntryLabel.ViewModel);
         }
 
-        public void Display(Toggl.TogglTimeEntryView item, TimeEntryCellDayHeader dayHeader)
+        public void Display(Toggl.TogglTimeEntryView item)
         {
             ViewModel.Guid = item.Group ? item.GroupName : item.GUID;
             ViewModel.IsGroup = item.Group;
@@ -78,16 +75,8 @@ namespace TogglDesktop
             ViewModel.GroupName = item.GroupName;
             ViewModel.IsSubItem = !item.Group && item.GroupItemCount == 0;
             ViewModel.DurationInSeconds = item.DurationInSeconds;
-            ViewModel.ParentDay = dayHeader;
+            ViewModel.TimeEntryLabel.SetTimeEntry(item);
 
-            this.labelDescription.Text = item.Description == "" ? "(no description)" : item.Description;
-
-            var projectColorBrush = Utils.ProjectColorBrushFromString(item.Color);
-
-            this.labelProject.Foreground = projectColorBrush;
-            this.labelProject.Text = "• " + item.ProjectLabel;
-            setOptionalTextBlockText(this.labelClient, item.ClientLabel);
-            setOptionalTextBlockText(this.labelTask, item.TaskLabel.IsNullOrEmpty() ? "" : item.TaskLabel + " -");
             this.labelDuration.Text = item.Duration;
             this.billabeIcon.ShowOnlyIf(item.Billable);
 
@@ -100,8 +89,6 @@ namespace TogglDesktop
                 this.tagsIcon.Visibility = Visibility.Visible;
                 this.tagsCount.Text = item.Tags.CountSubstrings(Toggl.TagSeparator).ToString();
             }
-
-            this.projectRow.Height = item.ProjectLabel == "" ? new GridLength(0) : GridLength.Auto;
 
             this.entryHoverColor = hoverColor;
             this.EntryBackColor = idleBackColor;
@@ -122,7 +109,7 @@ namespace TogglDesktop
             Color color = defaultForegroundColor;
             int lead = 16;
             Visibility visibility = Visibility.Collapsed;
-            SubItem = (item.GroupItemCount > 0 && item.GroupOpen && !item.Group);
+            SubItem = (item.GroupItemCount == 0 && !item.Group);
             // subitem that is open
             if (SubItem)
             {
@@ -145,23 +132,17 @@ namespace TogglDesktop
                 }
                 visibility = Visibility.Visible;
             }
-            labelDescription.Foreground = new System.Windows.Media.SolidColorBrush(color);
             labelDuration.Foreground = new System.Windows.Media.SolidColorBrush(color);
             this.EntryBackColor = backColor;
             this.groupItemsBack.Visibility = visibility;
             groupItems.Text = groupItemsText;
             this.groupImage.Source = new BitmapImage(new Uri("pack://application:,,,/TogglDesktop;component/Resources/" + groupIcon));
             // leading margin
-            descriptionGrid.Margin = new Thickness(lead, 0, 0, 0);
+            // timeEntryLabel.Margin = new Thickness(lead, 0, 0, 0);
         }
 
         private void updateToolTips(Toggl.TogglTimeEntryView item)
         {
-            setToolTipIfNotEmpty(this.labelDescription, this.descriptionToolTip, item.Description);
-            setToolTipIfNotEmpty(this.labelTask, this.taskProjectClientToolTip, item.ProjectAndTaskLabel);
-            setToolTipIfNotEmpty(this.labelProject, this.taskProjectClientToolTip, item.ProjectAndTaskLabel);
-            setToolTipIfNotEmpty(this.labelClient, this.taskProjectClientToolTip, item.ProjectAndTaskLabel);
-
             if (item.DurOnly)
             {
                 this.labelDuration.ToolTip = null;
@@ -178,29 +159,6 @@ namespace TogglDesktop
                 this.tagsIcon.ToolTip = this.tagsToolTip;
             }
         }
-
-        private static void setToolTipIfNotEmpty(FrameworkElement element, ToolTip tooltip, string content)
-        {
-            if (string.IsNullOrEmpty(content))
-            {
-                element.ToolTip = null;
-            }
-            else
-            {
-                tooltip.Content = content;
-                element.ToolTip = tooltip;
-            }
-        }
-
-        #region display helpers
-
-        private static void setOptionalTextBlockText(TextBlock textBlock, string text)
-        {
-            textBlock.Text = text;
-            textBlock.ShowOnlyIf(!string.IsNullOrEmpty(text));
-        }
-
-        #endregion
 
         #region open edit window event handlers
 
