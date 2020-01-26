@@ -44,7 +44,6 @@ namespace TogglDesktop
             };
         }
 
-
         #region toggl events
 
         private void onStoppedTimerState()
@@ -262,7 +261,7 @@ namespace TogglDesktop
         private void setUIToRunningState(Toggl.TogglTimeEntryView item)
         {
             this.resetUIState(true);
-            this.timeEntryLabel.SetTimeEntry(item);
+            this.timeEntryLabel.ViewModel.SetTimeEntry(item);
             this.runningEntryInfoPanel.SetUIToRunningState(item);
         }
 

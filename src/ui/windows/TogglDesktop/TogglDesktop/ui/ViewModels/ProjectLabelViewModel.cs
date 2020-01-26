@@ -3,7 +3,7 @@ using ReactiveUI;
 
 namespace TogglDesktop.ViewModels
 {
-    public class ProjectViewModel : ReactiveObject
+    public class ProjectLabelViewModel : ReactiveObject
     {
         private string _projectName;
         public string ProjectName

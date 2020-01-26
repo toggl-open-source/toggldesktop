@@ -6,7 +6,6 @@
              x:Name="me" x:FieldModifier="private">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-        <converters:EmptyStringToCollapsedConverter x:Key="EmptyStringToCollapsedConverter" />
     </UserControl.Resources>
     <Grid Margin="16 8 8 8">
         <Grid.RowDefinitions>

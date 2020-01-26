@@ -5,16 +5,16 @@ namespace TogglDesktop
 {
     public partial class ProjectLabel : UserControl
     {
-        public ProjectViewModel ViewModel
+        public ProjectLabelViewModel ViewModel
         {
-            get => (ProjectViewModel)DataContext;
+            get => (ProjectLabelViewModel)DataContext;
             set => DataContext = value;
         }
 
         public ProjectLabel()
         {
             InitializeComponent();
-            ViewModel = new ProjectViewModel();
+            ViewModel = new ProjectLabelViewModel();
         }
     }
 }
