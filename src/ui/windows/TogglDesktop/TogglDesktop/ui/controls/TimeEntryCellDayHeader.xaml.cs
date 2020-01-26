@@ -60,7 +60,7 @@ namespace TogglDesktop
                 var entry = list[i];
 
                 var cell = (TimeEntryCell)children[i];
-                cell.Display(entry, this);
+                cell.Display(entry);
                 // maybe also update ViewModel.DaysMutable here?
             }
 
@@ -70,7 +70,7 @@ namespace TogglDesktop
                 var entry = list[i];
 
                 var cell = new TimeEntryCell();
-                cell.Display(entry, this);
+                cell.Display(entry);
                 children.Add(cell);
             }
         }

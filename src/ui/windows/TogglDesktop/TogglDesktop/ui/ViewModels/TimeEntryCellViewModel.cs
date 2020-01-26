@@ -4,6 +4,17 @@ namespace TogglDesktop.ViewModels
 {
     public class TimeEntryCellViewModel : ReactiveObject
     {
+        public TimeEntryCellViewModel(TimeEntryLabelViewModel timeEntryLabel)
+        {
+            TimeEntryLabel = timeEntryLabel;
+        }
+        private TimeEntryLabelViewModel _timeEntryLabel;
+        public TimeEntryLabelViewModel TimeEntryLabel
+        {
+            get => _timeEntryLabel;
+            set => this.RaiseAndSetIfChanged(ref _timeEntryLabel, value);
+        }
+
         private bool _isFocused;
         public bool IsFocused
         {
@@ -64,7 +75,6 @@ namespace TogglDesktop.ViewModels
         }
 
         public long DurationInSeconds { get; set; }
-        public TimeEntryCellDayHeader ParentDay { get; set; }
 
         public bool TryExpand()
         {
