@@ -4,8 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:TogglDesktop"
+             xmlns:viewModels="clr-namespace:TogglDesktop.ViewModels"
              mc:Ignorable="d"
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="300"
+             d:DataContext="{d:DesignInstance viewModels:TimeEntryLabelViewModel}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -14,20 +16,26 @@
 
         <TextBlock Grid.Row="0" Name="descriptionLabel" x:FieldModifier="private"
                    MouseLeftButtonDown="onDescriptionLabelMouseDown"
-                   Style="{DynamicResource Toggl.BodyText}" >
-            <TextBlock.ToolTip>
-                <ToolTip DataContext="{Binding Path=PlacementTarget, RelativeSource={x:Static RelativeSource.Self}}">
-                    <TextBlock Text="{Binding Text}"/>
-                </ToolTip>
-            </TextBlock.ToolTip>
+                   Style="{DynamicResource Toggl.BodyText}"
+                   Text="{Binding Description}"
+                   ToolTip="{Binding Description}">
         </TextBlock>
-        <TextBlock Grid.Row="0" Name="noDescriptionLabel" x:FieldModifier="private"
+        <TextBlock Grid.Row="0" Name="addDescriptionLabel" x:FieldModifier="private"
                    Style="{DynamicResource Toggl.CaptionGrayishText}"
-                   Text="+ Add description"
+                   Text="{Binding AddDescriptionLabelText}"
                    VerticalAlignment="Center"
+                   Visibility="{Binding Description, Converter={StaticResource EmptyStringToVisibleConverter}}"
                    MouseLeftButtonDown="onDescriptionLabelMouseDown"/>
 
         <local:ProjectLabel Grid.Row="1" x:Name="projectLabel" x:FieldModifier="private"
                             MouseLeftButtonDown="onProjectLabelMouseDown"
-                            Background="Transparent"/>
-    </Grid></UserControl>
+                            Background="Transparent"
+                            Visibility="{Binding ProjectName, Converter={StaticResource EmptyStringToCollapsedConverter}}"/>
+
+        <TextBlock Grid.Row="1"
+                   Style="{DynamicResource Toggl.CaptionGrayishText}"
+                   Text="+ Add project"
+                   MouseLeftButtonDown="onProjectLabelMouseDown"
+                   Visibility="{Binding IsAddProjectLabelVisible, Converter={StaticResource BooleanToVisibilityConverterGlobal}}"/>
+    </Grid>
+</UserControl>

@@ -7,36 +7,29 @@
              xmlns:viewModels="clr-namespace:TogglDesktop.ViewModels"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300"
-             d:DataContext="{d:DesignInstance viewModels:ProjectViewModel}">
+             d:DataContext="{d:DesignInstance viewModels:ProjectLabelViewModel}">
     <UserControl.Resources>
         <converters:StringPrependConverter x:Key="StringPrependConverter" />
-        <converters:EmptyStringToCollapsedConverter x:Key="EmptyStringToCollapsedConverter" />
-        <converters:EmptyStringToCollapsedConverter x:Key="EmptyStringToVisibleConverter" Inverse="True" />
         <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
             <Setter Property="FontSize" Value="12" />
             <Setter Property="VerticalAlignment" Value="Center" />
         </Style>
     </UserControl.Resources>
-    <Grid>
-        <StackPanel Orientation="Horizontal">
-            <Ellipse Width="6" Height="6"
-                     Margin="0 0 5 0"
-                     VerticalAlignment="Center"
-                     Fill="{Binding Color}"
-                     Visibility="{Binding ProjectName, Converter={StaticResource EmptyStringToCollapsedConverter}}"/>
-            <TextBlock Foreground="{Binding Color}"
-                       Text="{Binding ProjectName}"/>
-            <TextBlock Foreground="{Binding Color}"
-                       Padding="4 0 0 0"
-                       Text="{Binding TaskName, Converter={StaticResource StringPrependConverter}, ConverterParameter='- '}"
-                       Visibility="{Binding TaskName, Converter={StaticResource EmptyStringToCollapsedConverter}}"/>
-            <TextBlock Foreground="{DynamicResource Toggl.SecondaryTextBrush}"
-                       Padding="4 0 0 0"
-                       Text="{Binding ClientName, Converter={StaticResource StringPrependConverter}, ConverterParameter='- '}"
-                       Visibility="{Binding ClientName, Converter={StaticResource EmptyStringToCollapsedConverter}}"/>
-        </StackPanel>
-        <TextBlock Style="{DynamicResource Toggl.CaptionGrayishText}"
-                   Text="+ Add project"
-                   Visibility="{Binding ProjectName, Converter={StaticResource EmptyStringToVisibleConverter}}"/>
-    </Grid>
+    <StackPanel Orientation="Horizontal">
+        <Ellipse Width="6" Height="6"
+                 Margin="0 0 5 0"
+                 VerticalAlignment="Center"
+                 Fill="{Binding Color}"
+                 Visibility="{Binding ProjectName, Converter={StaticResource EmptyStringToCollapsedConverter}}"/>
+        <TextBlock Foreground="{Binding Color}"
+                   Text="{Binding ProjectName}"/>
+        <TextBlock Foreground="{Binding Color}"
+                   Padding="4 0 0 0"
+                   Text="{Binding TaskName, Converter={StaticResource StringPrependConverter}, ConverterParameter='- '}"
+                   Visibility="{Binding TaskName, Converter={StaticResource EmptyStringToCollapsedConverter}}"/>
+        <TextBlock Foreground="{DynamicResource Toggl.SecondaryTextBrush}"
+                   Padding="4 0 0 0"
+                   Text="{Binding ClientName, Converter={StaticResource StringPrependConverter}, ConverterParameter='- '}"
+                   Visibility="{Binding ClientName, Converter={StaticResource EmptyStringToCollapsedConverter}}"/>
+    </StackPanel>
 </UserControl>
