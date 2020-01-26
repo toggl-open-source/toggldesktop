@@ -14,7 +14,8 @@
              FocusVisualStyle="{DynamicResource Toggl.ButtonFocusVisualStyle}"
              Focusable="True"
              IsTabStop="True"
-             behaviors:FocusHelper.IsFocused="{Binding IsFocused, Mode=OneWay}">
+             behaviors:FocusHelper.IsFocused="{Binding IsFocused, Mode=OneWay}"
+             Height="64">
 
     <Grid Name="entryGrid" x:FieldModifier="private"
           Height="{StaticResource TimeEntryHeight}" MouseLeftButtonDown="entry_MouseDown" MouseEnter="entryMouseEnter" MouseLeave="entryMouseLeave"
@@ -34,32 +35,9 @@
                    Fill="#3300FF00"
                    Visibility="{Binding IsSelected, Converter={StaticResource BooleanToVisibilityConverterGlobal}}"/>
 
-        <Grid Grid.Column="0" Margin="16, 0, 0, 0" Height="37" x:Name="descriptionGrid">
-
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*" Name="projectRow" x:FieldModifier="private"/>
-            </Grid.RowDefinitions>
-
-            <StackPanel Orientation="Horizontal" Grid.Row="1">
-                <TextBlock Name="labelProject" x:FieldModifier="private" MouseLeftButtonDown="labelProject_MouseDown">Project</TextBlock>
-                <TextBlock Foreground="DimGray"
-                           Visibility="{Binding ElementName=labelClient, Path=Visibility}"
-                           Text="·" />
-                <TextBlock Name="labelClient" x:FieldModifier="private" Foreground="DimGray">Client</TextBlock>
-
-            </StackPanel>
-
-            <StackPanel Orientation="Horizontal" Grid.Row="0">
-
-                <TextBlock Name="labelTask" x:FieldModifier="private"
-                            Foreground="Gray">Task</TextBlock>
-                <TextBlock Name="labelDescription" x:FieldModifier="private" MouseLeftButtonDown="labelDescription_MouseDown"
-                        HorizontalAlignment="Left">This is a description</TextBlock>
-
-            </StackPanel>
-
-        </Grid>
+        <toggl:TimeEntryLabel Grid.Column="0" Margin="12 10 0 15" x:Name="timeEntryLabel" x:FieldModifier="private"
+                              DescriptionLabelMouseDown="labelDescription_MouseDown"
+                              ProjectLabelMouseDown="labelProject_MouseDown"/>
 
         <StackPanel Grid.Column="0" HorizontalAlignment="Right" Orientation="Horizontal">
             <Rectangle Width="30" HorizontalAlignment="Right">
