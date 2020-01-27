@@ -58,6 +58,8 @@ namespace TogglDesktop.ViewModels
             set => this.RaiseAndSetIfChanged(ref _guid, value);
         }
 
+        public string Id => IsGroup ? GroupName : Guid;
+
         private string _groupName;
         // immutable per Guid
         public string GroupName
