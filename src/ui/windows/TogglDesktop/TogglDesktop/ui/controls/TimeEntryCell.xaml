@@ -26,71 +26,25 @@
         </Grid.Background>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="4*"/>
-            <ColumnDefinition Width="*" MaxWidth="105" MinWidth="75"/>
-            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
         <Rectangle Grid.ColumnSpan="3"
                    Fill="#3300FF00"
                    Visibility="{Binding IsSelected, Converter={StaticResource BooleanToVisibilityConverterGlobal}}"/>
 
-        <toggl:TimeEntryLabel Grid.Column="0" Margin="12 10 0 15" x:Name="timeEntryLabel" x:FieldModifier="private"
+        <toggl:TimeEntryLabel Grid.Column="0" Grid.ColumnSpan="2" Margin="12 10 0 11"
+                              x:Name="timeEntryLabel" x:FieldModifier="private"
+                              VerticalPadding="2"
                               DescriptionLabelMouseDown="labelDescription_MouseDown"
                               ProjectLabelMouseDown="labelProject_MouseDown"/>
 
-        <StackPanel Grid.Column="0" HorizontalAlignment="Right" Orientation="Horizontal">
-            <Rectangle Width="30" HorizontalAlignment="Right">
-                <Rectangle.Fill>
-                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
-                        <GradientStop Color="Transparent" Offset="0.0" />
-                        <GradientStop Color="{Binding Path=EntryBackColor}" Offset="1" />
-                    </LinearGradientBrush>
-                </Rectangle.Fill>
-            </Rectangle>
-            <StackPanel Orientation="Horizontal" x:Name="groupItemsBack">
-                <StackPanel.Background>
-                    <SolidColorBrush Color="{Binding EntryBackColor}"/>
-                </StackPanel.Background>
-
-                <Canvas Width="42" Height="36" UseLayoutRounding="false">
-                    <Image x:Name="groupImage" x:FieldModifier="private" Source="/TogglDesktop;component/Resources/group_icon_closed.png"
-                           Stretch="UniformToFill" Height="36" Margin="3,0"/>
-                    <TextBlock x:Name="groupItems" x:FieldModifier="private" Width="36" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" FontSize="14" Foreground="#FFA4A4A4" Margin="3,9,3,0"/>
-                </Canvas>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-
-                <StackPanel.Background>
-                    <SolidColorBrush Color="{Binding EntryBackColor}"/>
-                </StackPanel.Background>
-
-                <Canvas Width="26" Height="26" Name="tagsIcon" x:FieldModifier="private" UseLayoutRounding="false">
-                    <Image Source="/TogglDesktop;component/Resources/icon-tags.png"
-                           Stretch="UniformToFill" Margin="3, 5, 3, 5" Height="16"/>
-                    <Border Width="12" Height="12" Background="#ddd"
-                            CornerRadius="100" Margin="14 0 0 0"
-                            BorderThickness="1">
-
-                        <Border.BorderBrush>
-                            <SolidColorBrush Color="White"/>
-                        </Border.BorderBrush>
-
-                        <TextBlock Text="9" FontSize="8" HorizontalAlignment="Stretch" VerticalAlignment="Center"
-                                   TextAlignment="Center" FontWeight="Medium" Foreground="DimGray"
-                                   Margin="0"
-                                   Name="tagsCount" x:FieldModifier="private"/>
-                    </Border>
-                </Canvas>
-                <Image Name="billabeIcon" Source="/TogglDesktop;component/Resources/icon-billable.png"
-                       Stretch="UniformToFill" Margin="3, 0, 3, 0" Height="20" UseLayoutRounding="false"/>
-
-            </StackPanel>
-        </StackPanel>
-
-        <TextBlock Grid.Column="1" Name="labelDuration" x:FieldModifier="private" Width="68"
-                    HorizontalAlignment="Left" FontSize="14.7" TextAlignment="Right"
-                        Margin="4,1,0,0" MouseLeftButtonDown="labelDuration_MouseDown">0 h 23 min</TextBlock>
+        <toggl:TimeEntryInfoPanel x:Name="timeEntryInfoPanel" x:FieldModifier="private"
+                                     Grid.Column="1"
+                                     DurationTextBlockStyle="{DynamicResource Toggl.CaptionBlackText}"
+                                     DurationLabelMouseDown="labelDuration_MouseDown"/>
 
         <Button Grid.Column="2" Width="36" Height="36" Margin="0, 0, 4, 1"
                 Focusable="False" Click="buttonContinue_Click"/>

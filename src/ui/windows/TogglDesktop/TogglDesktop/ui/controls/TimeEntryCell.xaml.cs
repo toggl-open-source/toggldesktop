@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using ReactiveUI;
 using TogglDesktop.Diagnostics;
 using TogglDesktop.ViewModels;
@@ -57,9 +55,6 @@ namespace TogglDesktop
         public static readonly DependencyProperty EntryBackColorProperty = DependencyProperty
             .Register("EntryBackColor", typeof(Color), typeof(TimeEntryCell), new FrameworkPropertyMetadata(idleBackColor));
 
-        private readonly ToolTip durationToolTip = new ToolTip();
-        private readonly ToolTip tagsToolTip = new ToolTip();
-
         public TimeEntryCell()
         {
             this.InitializeComponent();
@@ -76,27 +71,13 @@ namespace TogglDesktop
             ViewModel.IsSubItem = !item.Group && item.GroupItemCount == 0;
             ViewModel.DurationInSeconds = item.DurationInSeconds;
             ViewModel.TimeEntryLabel.SetTimeEntry(item);
-
-            this.labelDuration.Text = item.Duration;
-            this.billabeIcon.ShowOnlyIf(item.Billable);
-
-            if (string.IsNullOrEmpty(item.Tags))
-            {
-                this.tagsIcon.Visibility = Visibility.Collapsed;
-            }
-            else
-            {
-                this.tagsIcon.Visibility = Visibility.Visible;
-                this.tagsCount.Text = item.Tags.CountSubstrings(Toggl.TagSeparator).ToString();
-            }
+            timeEntryInfoPanel.SetTimeEntry(item);
 
             this.entryHoverColor = hoverColor;
             this.EntryBackColor = idleBackColor;
 
             this.unsyncedIcon.ShowOnlyIf(item.Unsynced);
             this.lockedIcon.ShowOnlyIf(item.Locked);
-
-            this.updateToolTips(item);
 
             this.setupGroupedMode(item);
         }
@@ -132,32 +113,7 @@ namespace TogglDesktop
                 }
                 visibility = Visibility.Visible;
             }
-            labelDuration.Foreground = new System.Windows.Media.SolidColorBrush(color);
             this.EntryBackColor = backColor;
-            this.groupItemsBack.Visibility = visibility;
-            groupItems.Text = groupItemsText;
-            this.groupImage.Source = new BitmapImage(new Uri("pack://application:,,,/TogglDesktop;component/Resources/" + groupIcon));
-            // leading margin
-            // timeEntryLabel.Margin = new Thickness(lead, 0, 0, 0);
-        }
-
-        private void updateToolTips(Toggl.TogglTimeEntryView item)
-        {
-            if (item.DurOnly)
-            {
-                this.labelDuration.ToolTip = null;
-            }
-            else
-            {
-                this.labelDuration.ToolTip = this.durationToolTip;
-                this.durationToolTip.Content = item.StartTimeString + " - " + item.EndTimeString;
-            }
-
-            if (this.tagsIcon.Visibility == Visibility.Visible)
-            {
-                this.tagsToolTip.Content = item.Tags.Replace(Toggl.TagSeparator, ", ");
-                this.tagsIcon.ToolTip = this.tagsToolTip;
-            }
         }
 
         #region open edit window event handlers
