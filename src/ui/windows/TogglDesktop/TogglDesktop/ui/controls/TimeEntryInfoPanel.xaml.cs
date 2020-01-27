@@ -54,7 +54,7 @@ namespace TogglDesktop
             this.tagsIcon.ToolTip =
                 string.IsNullOrEmpty(item.Tags)
                 ? null
-                : item.Tags.Replace(Toggl.TagSeparator, ", ");
+                : item.Tags.Replace(Toggl.TagSeparator, " • ");
         }
 
         public void SetDurationLabel(string s)
