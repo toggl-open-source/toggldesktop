@@ -42,8 +42,13 @@ namespace TogglDesktop
         {
             ViewModel.Guid = item.Group ? item.GroupName : item.GUID;
             ViewModel.IsGroup = item.Group;
-            ViewModel.IsGroupExpanded = item.GroupOpen;
-            ViewModel.GroupName = item.GroupName;
+            if (ViewModel.IsGroup)
+            {
+                ViewModel.IsGroupExpanded = item.GroupOpen;
+                ViewModel.GroupName = item.GroupName;
+                ViewModel.GroupItemCount = item.GroupItemCount;
+            }
+
             ViewModel.IsSubItem = !item.Group && item.GroupItemCount == 0;
             ViewModel.DurationInSeconds = item.DurationInSeconds;
             ViewModel.TimeEntryLabel.SetTimeEntry(item);
