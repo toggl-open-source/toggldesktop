@@ -19,7 +19,6 @@
                 <ResourceDictionary Source="ui/Resources/EditViewControllerStyles.xaml"/>
                 <ResourceDictionary Source="ui/Resources/PreferencesWindowStyles.xaml"/>
                 <ResourceDictionary Source="ui/Resources/DialogStyles.xaml" />
-                <ResourceDictionary Source="ui/Resources/TogglWindowStyles.xaml" />
                 <ResourceDictionary Source="ui/Resources/TutorialStyles.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
