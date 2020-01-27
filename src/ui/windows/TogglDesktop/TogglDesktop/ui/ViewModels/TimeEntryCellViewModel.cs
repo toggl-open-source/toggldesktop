@@ -74,6 +74,13 @@ namespace TogglDesktop.ViewModels
             set => this.RaiseAndSetIfChanged(ref _isSubItem, value);
         }
 
+        private ulong _groupItemCount;
+        public ulong GroupItemCount
+        {
+            get => _groupItemCount;
+            set => this.RaiseAndSetIfChanged(ref _groupItemCount, value);
+        }
+
         public long DurationInSeconds { get; set; }
 
         public bool TryExpand()
