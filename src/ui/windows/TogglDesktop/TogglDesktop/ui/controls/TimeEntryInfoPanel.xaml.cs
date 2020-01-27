@@ -4,11 +4,20 @@ using System.Windows.Input;
 
 namespace TogglDesktop
 {
-    public partial class RunningEntryInfoPanel : UserControl
+    public partial class TimeEntryInfoPanel : UserControl
     {
-        public RunningEntryInfoPanel()
+        public TimeEntryInfoPanel()
         {
             InitializeComponent();
+        }
+
+        public static readonly DependencyProperty DurationTextBlockStyleProperty = DependencyProperty.Register(
+            "DurationTextBlockStyle", typeof(Style), typeof(TimeEntryInfoPanel), new PropertyMetadata(default(Style)));
+
+        public Style DurationTextBlockStyle
+        {
+            get { return (Style) GetValue(DurationTextBlockStyleProperty); }
+            set { SetValue(DurationTextBlockStyleProperty, value); }
         }
 
         public event MouseButtonEventHandler DurationLabelMouseDown;
@@ -33,12 +42,19 @@ namespace TogglDesktop
             this.durationLabel.Text = "00:00:00";
         }
 
-        public void SetUIToRunningState(Toggl.TogglTimeEntryView item)
+        public void SetTimeEntry(Toggl.TogglTimeEntryView item)
         {
-            this.durationLabelPanel.ToolTip = "started at " + item.StartTimeString;
             this.billableIcon.ShowOnlyIf(item.Billable);
             this.tagsIcon.ShowOnlyIf(!string.IsNullOrEmpty(item.Tags));
             this.durationLabel.Text = Toggl.FormatDurationInSecondsHHMMSS(item.DurationInSeconds);
+            this.durationLabelPanel.ToolTip =
+                item.Ended > item.Started
+                ? item.StartTimeString + " - " + item.EndTimeString
+                : "started at " + item.StartTimeString;
+            this.tagsIcon.ToolTip =
+                string.IsNullOrEmpty(item.Tags)
+                ? null
+                : item.Tags.Replace(Toggl.TagSeparator, ", ");
         }
 
         public void SetDurationLabel(string s)
