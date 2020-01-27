@@ -28,40 +28,52 @@
         </Grid.Style>
 
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
-        <toggl:TimeEntryLabel Grid.Column="0" Grid.ColumnSpan="2" Margin="12 10 0 11"
+        <ToggleButton Grid.Column="0"
+                      Style="{DynamicResource Toggl.GroupIcon}"
+                      Visibility="{Binding IsGroup, Converter={StaticResource BooleanToVisibilityConverterGlobal}}"
+                      Margin="12 0 0 0"
+                      VerticalAlignment="Center"
+                      Content="{Binding GroupItemCount}"
+                      IsChecked="{Binding IsGroupExpanded}" />
+
+        <FrameworkElement Grid.Column="0" Width="38"
+                          Visibility="{Binding IsSubItem, Converter={StaticResource BooleanToVisibilityConverterGlobal}}" />
+
+        <toggl:TimeEntryLabel Grid.Column="1" Grid.ColumnSpan="2" Margin="12 10 0 11"
                               x:Name="timeEntryLabel" x:FieldModifier="private"
                               VerticalPadding="2"
                               DescriptionLabelMouseDown="labelDescription_MouseDown"
                               ProjectLabelMouseDown="labelProject_MouseDown"/>
 
         <toggl:TimeEntryInfoPanel x:Name="timeEntryInfoPanel" x:FieldModifier="private"
-                                     Grid.Column="1"
+                                     Grid.Column="2"
                                      DurationTextBlockStyle="{DynamicResource Toggl.CaptionBlackText}"
                                      DurationLabelMouseDown="labelDuration_MouseDown"/>
 
-        <Rectangle Grid.Column="0" Grid.ColumnSpan="3"
+        <Rectangle Grid.Column="0" Grid.ColumnSpan="4"
                    Fill="{DynamicResource Toggl.AccentBrush}"
                    Opacity="0.1"
                    Visibility="{Binding IsSelected, Converter={StaticResource BooleanToVisibilityConverterGlobal}}"/>
 
-        <Rectangle Grid.Column="0" Grid.ColumnSpan="3"
+        <Rectangle Grid.Column="0" Grid.ColumnSpan="4"
                    Name="HoverPressedOverlay"
                    Fill="{DynamicResource Toggl.PrimaryTextBrush}"
                    Opacity="0.05"
                    Visibility="{Binding ElementName=rootGrid, Path=IsMouseOver, Converter={StaticResource BooleanToVisibilityConverterGlobal}}"/>
 
-        <Button Grid.Column="2" Margin="1 0 3 0"
+        <Button Grid.Column="3" Margin="0 0 4 0"
                 VerticalAlignment="Center"
                 Style="{DynamicResource Toggl.ContinueButton}"
                 Focusable="False" Click="buttonContinue_Click"
                 Visibility="{Binding ElementName=rootGrid, Path=IsMouseOver, Converter={StaticResource FalseToHiddenVisibilityConverter}}"/>
 
-        <StackPanel HorizontalAlignment="Right" VerticalAlignment="Bottom" Grid.Column="2">
+        <StackPanel HorizontalAlignment="Right" VerticalAlignment="Bottom" Grid.Column="3">
             <Image Name="unsyncedIcon" x:FieldModifier="private"
                    ToolTip="Unsynced time entry."
                    Width="16" Height="16"
