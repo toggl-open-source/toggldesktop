@@ -42,8 +42,6 @@
     <Color x:Key="Toggl.ErrorMessageBackgroundColor">#E20505</Color>
 
     <!-- derived colors: -->
-    <Color x:Key="Toggl.WhiteColor.70PercentOpacity">#B2FFFFFF</Color>
-    <Color x:Key="Toggl.TransparentWhiteColor">#00FFFFFF</Color>
     <Color x:Key="Toggl.FivePercentBlackColor">#F2F2F2</Color>
     <Color x:Key="Toggl.TransparentBlackColor">#00F2F2F2</Color>
 
