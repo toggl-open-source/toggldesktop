@@ -1,7 +1,5 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
 using ReactiveUI;
 using TogglDesktop.Diagnostics;
 using TogglDesktop.ViewModels;
@@ -21,12 +19,6 @@ namespace TogglDesktop
             get => ViewModel;
             set => ViewModel = (TimeEntryCellViewModel) value;
         }
-        private static readonly Color idleBackColor = Color.FromRgb(255, 255, 255);
-        private static readonly Color hoverColor = Color.FromRgb(244, 244, 244);
-        private static readonly Color subItemBackColor = Color.FromRgb(240, 240, 240);
-        private static readonly Color defaultForegroundColor = Color.FromRgb(0, 0, 0);
-
-        private Color entryHoverColor = hoverColor;
 
         public bool IsDummy
         {
@@ -38,22 +30,6 @@ namespace TogglDesktop
                 this.IsEnabled = false;
             }
         }
-
-        public bool SubItem
-        {
-            get { return (bool)this.GetValue(SubItemProperty); }
-            set { this.SetValue(SubItemProperty, value); }
-        }
-        public static readonly DependencyProperty SubItemProperty = DependencyProperty
-            .Register("SubItem", typeof(bool), typeof(TimeEntryCell), new FrameworkPropertyMetadata(false));
-
-        public Color EntryBackColor
-        {
-            get { return (Color)this.GetValue(EntryBackColorProperty); }
-            set { this.SetValue(EntryBackColorProperty, value); }
-        }
-        public static readonly DependencyProperty EntryBackColorProperty = DependencyProperty
-            .Register("EntryBackColor", typeof(Color), typeof(TimeEntryCell), new FrameworkPropertyMetadata(idleBackColor));
 
         public TimeEntryCell()
         {
@@ -73,47 +49,8 @@ namespace TogglDesktop
             ViewModel.TimeEntryLabel.SetTimeEntry(item);
             timeEntryInfoPanel.SetTimeEntry(item);
 
-            this.entryHoverColor = hoverColor;
-            this.EntryBackColor = idleBackColor;
-
             this.unsyncedIcon.ShowOnlyIf(item.Unsynced);
             this.lockedIcon.ShowOnlyIf(item.Locked);
-
-            this.setupGroupedMode(item);
-        }
-
-        private void setupGroupedMode(Toggl.TogglTimeEntryView item)
-        {
-            String groupItemsText = "";
-            String groupIcon = "group_icon_closed.png";
-            Color backColor = idleBackColor;
-            Color color = defaultForegroundColor;
-            int lead = 16;
-            Visibility visibility = Visibility.Collapsed;
-            SubItem = (item.GroupItemCount == 0 && !item.Group);
-            // subitem that is open
-            if (SubItem)
-            {
-                lead = 26;
-                backColor = subItemBackColor;
-                color = (Color)ColorConverter.ConvertFromString("#FF696969");
-            }
-
-            if (item.Group)
-            {
-                if (item.GroupOpen)
-                {
-                    // Change group icon to green arrow
-                     groupIcon = "group_icon_open.png";
-                }
-                else
-                {
-                    // Show count
-                    groupItemsText = Convert.ToString(item.GroupItemCount);
-                }
-                visibility = Visibility.Visible;
-            }
-            this.EntryBackColor = backColor;
         }
 
         #region open edit window event handlers
@@ -160,23 +97,6 @@ namespace TogglDesktop
             using (Performance.Measure("continuing time entry from cell"))
             {
                 Toggl.Continue(ViewModel.Guid);
-            }
-        }
-
-        private void entryMouseEnter(object sender, MouseEventArgs e)
-        {
-            this.EntryBackColor = this.entryHoverColor;
-        }
-
-        private void entryMouseLeave(object sender, MouseEventArgs e)
-        {
-            if (SubItem)
-            {
-                this.EntryBackColor = subItemBackColor;
-            }
-            else
-            {
-                this.EntryBackColor = idleBackColor;
             }
         }
     }
