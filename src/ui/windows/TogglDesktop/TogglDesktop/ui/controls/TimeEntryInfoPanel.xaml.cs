@@ -46,7 +46,10 @@ namespace TogglDesktop
         {
             this.billableIcon.ShowOnlyIf(item.Billable);
             this.tagsIcon.ShowOnlyIf(!string.IsNullOrEmpty(item.Tags));
-            this.durationLabel.Text = Toggl.FormatDurationInSecondsHHMMSS(item.DurationInSeconds);
+            this.durationLabel.Text =
+                item.Ended > item.Started
+                ? item.Duration
+                : Toggl.FormatDurationInSecondsHHMMSS(item.DurationInSeconds);
             this.durationLabelPanel.ToolTip =
                 item.Ended > item.Started
                 ? item.StartTimeString + " - " + item.EndTimeString
