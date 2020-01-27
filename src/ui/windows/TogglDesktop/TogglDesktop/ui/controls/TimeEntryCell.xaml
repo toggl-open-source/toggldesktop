@@ -4,7 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:toggl="clr-namespace:TogglDesktop"
-             xmlns:converters="clr-namespace:TogglDesktop.Converters"
              xmlns:behaviors="clr-namespace:TogglDesktop.Behaviors"
              xmlns:viewModels="clr-namespace:TogglDesktop.ViewModels"
              mc:Ignorable="d"
@@ -14,26 +13,25 @@
              FocusVisualStyle="{DynamicResource Toggl.ButtonFocusVisualStyle}"
              Focusable="True"
              IsTabStop="True"
-             behaviors:FocusHelper.IsFocused="{Binding IsFocused, Mode=OneWay}"
-             Height="64">
+             behaviors:FocusHelper.IsFocused="{Binding IsFocused, Mode=OneWay}">
 
-    <Grid Name="entryGrid" x:FieldModifier="private"
-          Height="{StaticResource TimeEntryHeight}" MouseLeftButtonDown="entry_MouseDown" MouseEnter="entryMouseEnter" MouseLeave="entryMouseLeave"
-          Style="{StaticResource TimeEntryCell}">
-
-        <Grid.Background>
-            <SolidColorBrush Color="{Binding EntryBackColor}"/>
-        </Grid.Background>
+    <Grid Name="rootGrid" Height="{StaticResource TimeEntryHeight}" MouseLeftButtonDown="entry_MouseDown">
+        <Grid.Style>
+            <Style TargetType="Grid">
+                <Setter Property="Background" Value="{DynamicResource Toggl.CardBackground}" />
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding IsSubItem}" Value="True">
+                        <Setter Property="Background" Value="{DynamicResource Toggl.Background}" />
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </Grid.Style>
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
-
-        <Rectangle Grid.ColumnSpan="3"
-                   Fill="#3300FF00"
-                   Visibility="{Binding IsSelected, Converter={StaticResource BooleanToVisibilityConverterGlobal}}"/>
 
         <toggl:TimeEntryLabel Grid.Column="0" Grid.ColumnSpan="2" Margin="12 10 0 11"
                               x:Name="timeEntryLabel" x:FieldModifier="private"
@@ -46,8 +44,22 @@
                                      DurationTextBlockStyle="{DynamicResource Toggl.CaptionBlackText}"
                                      DurationLabelMouseDown="labelDuration_MouseDown"/>
 
-        <Button Grid.Column="2" Width="36" Height="36" Margin="0, 0, 4, 1"
-                Focusable="False" Click="buttonContinue_Click"/>
+        <Rectangle Grid.Column="0" Grid.ColumnSpan="3"
+                   Fill="{DynamicResource Toggl.AccentBrush}"
+                   Opacity="0.1"
+                   Visibility="{Binding IsSelected, Converter={StaticResource BooleanToVisibilityConverterGlobal}}"/>
+
+        <Rectangle Grid.Column="0" Grid.ColumnSpan="3"
+                   Name="HoverPressedOverlay"
+                   Fill="{DynamicResource Toggl.PrimaryTextBrush}"
+                   Opacity="0.05"
+                   Visibility="{Binding ElementName=rootGrid, Path=IsMouseOver, Converter={StaticResource BooleanToVisibilityConverterGlobal}}"/>
+
+        <Button Grid.Column="2" Margin="1 0 3 0"
+                VerticalAlignment="Center"
+                Style="{DynamicResource Toggl.ContinueButton}"
+                Focusable="False" Click="buttonContinue_Click"
+                Visibility="{Binding ElementName=rootGrid, Path=IsMouseOver, Converter={StaticResource FalseToHiddenVisibilityConverter}}"/>
 
         <StackPanel HorizontalAlignment="Right" VerticalAlignment="Bottom" Grid.Column="2">
             <Image Name="unsyncedIcon" x:FieldModifier="private"

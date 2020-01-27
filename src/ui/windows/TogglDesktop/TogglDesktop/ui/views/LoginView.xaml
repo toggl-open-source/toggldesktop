@@ -27,7 +27,6 @@
                 From="0" To="360" BeginTime="00:00:00.000" Duration="00:00:01.000"/>
             </Storyboard>
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-            <converters:FalseToHiddenVisibilityConverter x:Key="FalseToHiddenVisibilityConverter" />
             <converters:EqualToVisibilityConverter x:Key="ShowOnLogIn">
                 <converters:EqualToVisibilityConverter.ExpectedValue>
                     <viewModels:ConfirmAction>LogIn</viewModels:ConfirmAction>

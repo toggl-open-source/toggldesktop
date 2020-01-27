@@ -3,6 +3,7 @@
                     xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="Typography.xaml" />
+        <ResourceDictionary Source="Icons.xaml" />
     </ResourceDictionary.MergedDictionaries>
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     <Style x:Key="Toggl.ButtonFocusVisualStyle">
@@ -145,8 +146,7 @@
     <Style TargetType="Button" x:Key="Toggl.CrossButton" BasedOn="{StaticResource Toggl.PrimaryButton}">
         <Setter Property="Foreground" Value="{DynamicResource Toggl.DarkGrayBrush}" />
         <Setter Property="Padding" Value="0" />
-        <Setter Property="Width" Value="Auto" />
-        <Setter Property="Height" Value="Auto" />
+        <Setter Property="Cursor" Value="Hand" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate>
@@ -156,9 +156,32 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+    </Style>
+
+    <Style TargetType="Button" x:Key="Toggl.ContinueButton">
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Foreground" Value="{DynamicResource Toggl.DisabledTextBrush}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid Background="Transparent"
+                          Height="32"
+                          Width="32"
+                          Margin="-2 -2 2 0">
+                        <!-- Grid Margin is to adjust to StartButtonGeometry which is centered for 36x36 size -->
+                        <Path Name="ContinueIcon"
+                              Fill="{TemplateBinding Foreground}"
+                              Data="{StaticResource StartButtonGeometry}"/>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Cursor" Value="Hand" />
+                <Setter Property="Foreground" Value="{DynamicResource Toggl.HoverElementBrush}" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Foreground" Value="{DynamicResource Toggl.AccentBrush}" />
             </Trigger>
         </Style.Triggers>
     </Style>
