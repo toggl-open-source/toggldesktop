@@ -137,11 +137,8 @@
 
     <!-- <Window.ContextMenu> -->
     <!-- </Window.ContextMenu> -->
-
     
     <Grid x:Name="root" x:FieldModifier="private">
-
-        <toggl:TogglChromeDesignTimeConverter Title="Toggl Desktop" />
 
         <tb:TaskbarIcon x:Name="taskbarIcon" x:FieldModifier="private"
                         TrayLeftMouseUp="onTaskbarLeftMouseUp"
