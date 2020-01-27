@@ -142,9 +142,10 @@
                 </Grid>
             </Grid>
 
-            <toggl:RunningEntryInfoPanel x:Name="runningEntryInfoPanel" x:FieldModifier="private"
+            <toggl:TimeEntryInfoPanel x:Name="runningEntryInfoPanel" x:FieldModifier="private"
                                          Grid.Column="1"
-                                         DurationLabelMouseDown="onTimeLabelMouseDown"/>
+                                         DurationLabelMouseDown="onTimeLabelMouseDown"
+                                         DurationTextBlockStyle="{DynamicResource Toggl.BaseText}"/>
 
             <!-- start/stop button -->
             <ToggleButton Name="startStopButton" x:FieldModifier="private"
