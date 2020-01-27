@@ -73,7 +73,7 @@ namespace TogglDesktop
             if (_selectedCell != null)
             {
                 _selectedCell.IsSelected = true;
-                if (_cellsDictionary.TryGetValue(cell.Guid, out var focusedCellPosition))
+                if (_cellsDictionary.TryGetValue(cell.Id, out var focusedCellPosition))
                 {
                     FocusCell(focusedCellPosition.dayIndex, focusedCellPosition.cellIndex);
                 }
@@ -174,9 +174,9 @@ namespace TogglDesktop
 
         private Dictionary<string, int> _daysDictionary = new Dictionary<string, int>();
 
-        private (string focusedEntryGuid, string focusedDayHeader) GetCurrentFocusedItemGuid()
+        private (string focusedEntryId, string focusedDayHeader) GetCurrentFocusedItemId()
         {
-            string focusedEntryGuid = null;
+            string focusedEntryId = null;
             string focusedDayHeader = null;
             if (FocusedDayIndex >= 0)
             {
@@ -184,7 +184,7 @@ namespace TogglDesktop
                 if (FocusedCellIndex >= 0)
                 {
                     var focusedEntry = focusedDay.GetCell(FocusedCellIndex);
-                    focusedEntryGuid = focusedEntry.Guid;
+                    focusedEntryId = focusedEntry.Id;
                 }
                 else
                 {
@@ -192,7 +192,7 @@ namespace TogglDesktop
                 }
             }
 
-            return (focusedEntryGuid, focusedDayHeader);
+            return (focusedEntryId, focusedDayHeader);
         }
 
         public void ClearSavedFocus()
@@ -203,20 +203,20 @@ namespace TogglDesktop
 
         public void SetDayHeaderViewModels(DayHeaderViewModel[] dayHeaderViewModels)
         {
-            var (focusedEntryGuid, focusedDayHeader) = GetCurrentFocusedItemGuid();
+            var (focusedEntryId, focusedDayHeader) = GetCurrentFocusedItemId();
 
             _days = dayHeaderViewModels;
             _cellsDictionary = dayHeaderViewModels
                 .WithIndex()
                 .SelectMany(tuple => tuple.item.CellsMutable.Items
-                    .Select((cell, cellIndex) => (cell.Guid, dayIndex: tuple.index, cellIndex)))
-                .ToDictionary(tuple => tuple.Guid, tuple => (tuple.dayIndex, tuple.cellIndex));
+                    .Select((cell, cellIndex) => (cell.Id, dayIndex: tuple.index, cellIndex)))
+                .ToDictionary(tuple => tuple.Id, tuple => (tuple.dayIndex, tuple.cellIndex));
             _daysDictionary = dayHeaderViewModels
                 .WithIndex()
                 .ToDictionary(tuple => tuple.item.DateHeader, tuple => tuple.index);
 
             ClearSavedFocus();
-            if (focusedEntryGuid != null && _cellsDictionary.TryGetValue(focusedEntryGuid, out var focusedCellPosition))
+            if (focusedEntryId != null && _cellsDictionary.TryGetValue(focusedEntryId, out var focusedCellPosition))
             {
                 FocusCell(focusedCellPosition.dayIndex, focusedCellPosition.cellIndex);
             }
