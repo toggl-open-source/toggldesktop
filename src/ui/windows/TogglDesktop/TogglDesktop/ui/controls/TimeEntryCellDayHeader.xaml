@@ -9,7 +9,6 @@
              d:DataContext="{d:DesignInstance viewModels:DayHeaderViewModel}"
              Margin="4"
              AllowDrop="True"
-             Background="{DynamicResource Toggl.CardBackground}"
              FocusVisualStyle="{DynamicResource Toggl.ButtonFocusVisualStyle}"
              Focusable="{Binding IsCollapsed}"
              IsTabStop="{Binding IsCollapsed}"
