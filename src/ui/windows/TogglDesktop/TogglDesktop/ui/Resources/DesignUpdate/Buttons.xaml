@@ -311,4 +311,35 @@
         </Style.Triggers>
     </Style>
 
+    <Style TargetType="ToggleButton" x:Key="Toggl.GroupIcon">
+        <Setter Property="IsHitTestVisible" Value="False" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Toggl.TextBox.Border}" />
+        <Setter Property="Foreground" Value="{DynamicResource Toggl.SecondaryTextBrush}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ToggleButton}">
+                    <Border Height="24" Width="24"
+                            BorderThickness="1"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            Background="{TemplateBinding Background}">
+                        <TextBlock Style="{StaticResource Toggl.CaptionText}"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Center"
+                                   LineHeight="16"
+                                   Text="{Binding Content, RelativeSource={RelativeSource TemplatedParent}}"
+                                   Foreground="{TemplateBinding Foreground}"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsChecked" Value="True">
+                <Setter Property="Background" Value="{DynamicResource Toggl.GroupIcon.ExpandedBackground}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource Toggl.GroupIcon.ExpandedBackground}" />
+                <Setter Property="Foreground" Value="{DynamicResource Toggl.AccentPlusOneBrush}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
 </ResourceDictionary>
