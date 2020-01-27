@@ -3,13 +3,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:togglDesktop="clr-namespace:TogglDesktop">
 
-
-    <Style TargetType="Window" x:Key="Dialog">
-        <Style.Resources>
-            <Style TargetType="Button" BasedOn="{StaticResource FlatButton}" />
-        </Style.Resources>
-    </Style>
-
     <Style TargetType="{x:Type togglDesktop:TogglNotification}">
         <Setter Property="Template">
             <Setter.Value>
