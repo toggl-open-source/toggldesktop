@@ -24,6 +24,7 @@
             </ResourceDictionary.MergedDictionaries>
 
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverterGlobal" />
+            <converters:FalseToHiddenVisibilityConverter x:Key="FalseToHiddenVisibilityConverter" />
             <converters:EmptyStringToCollapsedConverter x:Key="EmptyStringToCollapsedConverter" />
             <converters:EmptyStringToCollapsedConverter x:Key="EmptyStringToVisibleConverter" Inverse="True" />
 
