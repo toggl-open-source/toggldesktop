@@ -36,7 +36,7 @@
                    HorizontalAlignment="Left"
                    x:Name="titleTextBlock" x:FieldModifier="private" />
         <TextBlock Style="{StaticResource Toggl.BodyText}"
-                   Margin="0 8 0 28"
+                   Margin="0 8 0 32"
                    Width="272"
                    TextWrapping="Wrap"
                    x:Name="messageTextBlock" x:FieldModifier="private" />
