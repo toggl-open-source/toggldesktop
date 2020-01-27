@@ -54,7 +54,8 @@
         <toggl:TimeEntryInfoPanel x:Name="timeEntryInfoPanel" x:FieldModifier="private"
                                      Grid.Column="2"
                                      DurationTextBlockStyle="{DynamicResource Toggl.CaptionBlackText}"
-                                     DurationLabelMouseDown="labelDuration_MouseDown"/>
+                                     DurationLabelMouseDown="labelDuration_MouseDown"
+                                     Background="{Binding ElementName=rootGrid, Path=Background}"/>
 
         <Rectangle Grid.Column="0" Grid.ColumnSpan="4"
                    IsHitTestVisible="False"
