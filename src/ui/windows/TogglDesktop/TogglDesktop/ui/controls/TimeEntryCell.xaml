@@ -13,7 +13,8 @@
              FocusVisualStyle="{DynamicResource Toggl.ButtonFocusVisualStyle}"
              Focusable="True"
              IsTabStop="True"
-             behaviors:FocusHelper.IsFocused="{Binding IsFocused, Mode=OneWay}">
+             behaviors:FocusHelper.IsFocused="{Binding IsFocused, Mode=OneWay}"
+             Margin="0 0 0 1">
 
     <Grid Name="rootGrid" Height="{StaticResource TimeEntryHeight}" MouseLeftButtonDown="entry_MouseDown">
         <Grid.Style>
