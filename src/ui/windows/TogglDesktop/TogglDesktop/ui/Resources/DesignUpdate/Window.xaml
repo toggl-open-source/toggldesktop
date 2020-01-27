@@ -58,4 +58,18 @@
         <Setter Property="ShowMaxRestoreButton" Value="False" />
     </Style>
 
+    <Style TargetType="mah:MetroWindow" x:Key="Toggl.MessageBox">
+        <Setter Property="ResizeMode" Value="NoResize" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="ShowTitleBar" Value="False" />
+        <Setter Property="ShowCloseButton" Value="False" />
+        <Setter Property="GlowBrush" Value="Black" />
+        <Setter Property="NonActiveGlowBrush">
+            <Setter.Value>
+                <SolidColorBrush Opacity="0.3" Color="Black" />
+            </Setter.Value>
+        </Setter>
+        <Setter Property="WindowTransitionsEnabled" Value="False" />
+    </Style>
+
 </ResourceDictionary>

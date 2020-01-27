@@ -229,7 +229,7 @@ namespace TogglDesktop
             var result = MessageBox.Show(mainWindow,
                 "This will remove your Toggl user data from this PC and log you out of the Toggl Desktop app. " +
                 "Any unsynced data will be lost.\n\nDo you want to continue?", "Clear Cache",
-                MessageBoxButton.OKCancel, "CLEAR CACHE");
+                MessageBoxButton.OKCancel, "Clear cache");
 
             if (result == MessageBoxResult.OK)
             {
