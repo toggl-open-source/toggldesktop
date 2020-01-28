@@ -66,6 +66,7 @@ namespace TogglDesktop
                 this.secondsTimer.IsEnabled = false;
                 this.resetUIState(false);
                 this.runningTimeEntry = default(Toggl.TogglTimeEntryView);
+                FocusFirstInput();
             }
         }
 
@@ -196,6 +197,11 @@ namespace TogglDesktop
 
         protected override void OnGotKeyboardFocus(KeyboardFocusChangedEventArgs e)
         {
+            FocusFirstInput();
+        }
+
+        private void FocusFirstInput()
+        {
             if (!this.IsKeyboardFocused)
                 return;
 
@@ -206,10 +212,6 @@ namespace TogglDesktop
             else if (this.descriptionTextBox.IsVisible)
             {
                 this.descriptionTextBox.Focus();
-            }
-            else
-            {
-                this.startStopButton.Focus();
             }
         }
 
