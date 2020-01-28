@@ -2,7 +2,6 @@
 using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Forms;
 using System.Windows.Media;
 using Control = System.Windows.Controls.Control;
@@ -138,14 +137,6 @@ static class UIExtensions
     {
         textBox.IsUndoEnabled = false;
         textBox.IsUndoEnabled = true;
-    }
-
-    public static void SetupKeyboardFocusedReverseBinding(this FrameworkElement uiElement, string propertyPath)
-    {
-        // var binding = new System.Windows.Data.Binding();
-        // binding.Path = new PropertyPath(propertyPath);
-        // binding.Mode = BindingMode.OneWayToSource;
-        // uiElement.SetBinding(UIElement.IsKeyboardFocusedProperty, binding);
     }
 }
 }

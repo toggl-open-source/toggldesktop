@@ -92,11 +92,6 @@ namespace TogglDesktop
             }
         }
 
-        public IEnumerable<DayHeaderViewModel> GetDays() =>
-            this.Entries.Children
-                .Cast<TimeEntryCellDayHeader>()
-                .Select(h => h.ViewModel);
-
         private DayHeaderViewModel[] fillDays(List<List<Toggl.TogglTimeEntryView>> days)
         {
             var children = this.Entries.Children;
