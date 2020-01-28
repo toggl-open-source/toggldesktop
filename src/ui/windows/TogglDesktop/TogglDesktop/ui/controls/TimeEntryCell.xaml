@@ -78,11 +78,18 @@
                 Visibility="{Binding ElementName=rootGrid, Path=IsMouseOver, Converter={StaticResource FalseToHiddenVisibilityConverter}}"/>
 
         <StackPanel HorizontalAlignment="Right" VerticalAlignment="Bottom" Grid.Column="3">
-            <Image Name="unsyncedIcon" x:FieldModifier="private"
-                   ToolTip="Unsynced entry"
-                   Width="16" Height="16"
-                   Source="/TogglDesktop;component/Resources/warning-icon.png"
-                   Stretch="UniformToFill"/>
+            <Canvas Width="24" Height="25"
+                    Name="unsyncedIcon" x:FieldModifier="private"
+                    ToolTip="Unsynced entry">
+                <Polygon Points="24,0 24,24 0,24" Fill="{DynamicResource Toggl.ErrorMessageBackground}" Opacity="0.3" />
+                <Path Fill="{DynamicResource Toggl.ErrorMessageBackground}" Data="m 12 11 c 0 -0.552 0.444 -1 1 -1 0.552 0 1 0.444 1 1 v 3 c 0 0.552 -0.444 1 -1 1 -0.552 0 -1 -0.444 -1 -1 z m 0 6 c 0 -0.552 0.444 -1 1 -1 0.552 0 1 0.444 1 1 0 0.552 -0.444 1 -1 1 -0.552 0 -1 -0.444 -1 -1 z"
+                      Canvas.Top="-1"
+                      Canvas.Left="1">
+                    <Path.RenderTransform>
+                        <ScaleTransform ScaleX="1.2" ScaleY="1.2"/>
+                    </Path.RenderTransform>
+                </Path>
+            </Canvas>
             <Image Name="lockedIcon" x:FieldModifier="private"
                    ToolTip="Time entry locked."
                    Width="16" Height="16"
