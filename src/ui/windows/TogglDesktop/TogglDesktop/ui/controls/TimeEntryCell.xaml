@@ -10,7 +10,7 @@
              d:DataContext="{d:DesignInstance Type=viewModels:TimeEntryCellViewModel}"
              d:DesignWidth="455"
              ContextMenu="{StaticResource TimeEntryContextMenu}"
-             FocusVisualStyle="{DynamicResource Toggl.ButtonFocusVisualStyle}"
+             FocusVisualStyle="{x:Null}"
              Focusable="True"
              IsTabStop="True"
              behaviors:FocusHelper.IsFocused="{Binding IsFocused, Mode=OneWay}"
@@ -90,5 +90,19 @@
                    Source="/TogglDesktop;component/Resources/locked-icon.png"
                    Stretch="UniformToFill"/>
         </StackPanel>
+
+        <Border Grid.Column="0" Grid.ColumnSpan="4"
+                IsHitTestVisible="False"
+                BorderThickness="1"
+                BorderBrush="{DynamicResource Toggl.Button.Accent.PressedBackground}"
+                Visibility="{Binding RelativeSource={RelativeSource AncestorType=toggl:TimeEntryCell}, Path=IsKeyboardFocused, Converter={StaticResource BooleanToVisibilityConverterGlobal}}">
+            <Rectangle SnapsToDevicePixels="True"
+                       StrokeThickness="1"
+                       UseLayoutRounding="True">
+                <Rectangle.Stroke>
+                    <SolidColorBrush Color="{DynamicResource Toggl.SelectionElements.BackgroundColor}" Opacity="0.6" />
+                </Rectangle.Stroke>
+            </Rectangle>
+        </Border>
     </Grid>
 </UserControl>
