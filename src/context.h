@@ -166,6 +166,8 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
 
     error SetSettingsShowTouchBar(const bool show_touch_bar);
 
+    error SetSettingsActiveTab(const uint8_t active_tab);
+
     error SetSettingsIdleMinutes(const Poco::UInt64 idle_minutes);
 
     error SetSettingsFocusOnShortcut(const bool focus_on_shortcut);
@@ -206,6 +208,8 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
 
     bool GetShowTouchBar();
 
+    uint8_t GetActiveTab();
+    
     void SetWindowMaximized(
         const bool value);
 

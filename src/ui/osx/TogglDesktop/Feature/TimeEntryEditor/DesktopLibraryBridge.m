@@ -312,6 +312,16 @@ void *ctx;
     toggl_iam_click(ctx, 3);
 }
 
+- (void)setActiveTabAtIndex:(NSInteger) index
+{
+    toggl_set_settings_active_tab(ctx, index);
+}
+
+- (NSInteger)getActiveTabIndex
+{
+    return toggl_get_active_tab(ctx);
+}
+
 - (NSString *)createNewTimeEntryWithOldTimeEntry:(TimeEntryViewItem *) item
 {
     NSString *tags = [item.tags componentsJoinedByString:@"\t"];

@@ -2069,6 +2069,11 @@ error Context::SetSettingsShowTouchBar(const bool show_touch_bar) {
         db()->SetSettingsShowTouchBar(show_touch_bar));
 }
 
+error Context::SetSettingsActiveTab(const uint8_t active_tab) {
+    return applySettingsSaveResultToUI(
+        db()->SetSettingsActiveTab(active_tab));
+}
+
 error Context::SetSettingsIdleMinutes(const Poco::UInt64 idle_minutes) {
     return applySettingsSaveResultToUI(
         db()->SetSettingsIdleMinutes(idle_minutes));
@@ -2191,6 +2196,12 @@ bool Context::GetKeepEndTimeFixed() {
 bool Context::GetShowTouchBar() {
     bool value(false);
     displayError(db()->GetShowTouchBar(&value));
+    return value;
+}
+
+uint8_t Context::GetActiveTab() {
+    uint8_t value(0);
+    displayError(db()->GetActiveTab(&value));
     return value;
 }
 

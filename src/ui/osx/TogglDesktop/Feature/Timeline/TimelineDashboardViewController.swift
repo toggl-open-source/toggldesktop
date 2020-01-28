@@ -141,6 +141,7 @@ final class TimelineDashboardViewController: NSViewController {
     }
 
     func updateNextKeyView() {
+        guard isViewLoaded else { return }
         recordSwitcher.nextKeyView = datePickerView.previousDateBtn
         datePickerView.updateNextKeyView()
     }

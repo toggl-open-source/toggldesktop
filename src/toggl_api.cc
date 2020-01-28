@@ -175,6 +175,12 @@ bool_t toggl_set_settings_show_touch_bar(
     return toggl::noError == app(context)->SetSettingsShowTouchBar(show_touch_bar);
 }
 
+bool_t toggl_set_settings_active_tab(
+    void *context,
+    const uint8_t active_tab) {
+    return toggl::noError == app(context)->SetSettingsActiveTab(active_tab);
+}
+
 bool_t toggl_set_settings_idle_minutes(
     void *context,
     const uint64_t idle_minutes) {
@@ -1410,6 +1416,11 @@ bool_t toggl_get_keep_end_time_fixed(
 bool_t toggl_get_show_touch_bar(
     void *context) {
     return app(context)->GetShowTouchBar();
+}
+
+uint8_t toggl_get_active_tab(
+    void *context) {
+    return app(context)->GetActiveTab();
 }
 
 void toggl_set_mini_timer_x(

@@ -251,7 +251,8 @@ class TOGGL_INTERNAL_EXPORT Settings {
     , PomodoroMinutes(0)
     , PomodoroBreakMinutes(0)
     , StopEntryOnShutdownSleep(false)
-    , ShowTouchBar(true) {}
+    , ShowTouchBar(true)
+    , ActiveTab(0) {}
 
     bool UseProxy;
     std::string ProxyHost;
@@ -287,7 +288,8 @@ class TOGGL_INTERNAL_EXPORT Settings {
     uint64_t PomodoroBreakMinutes;
     bool StopEntryOnShutdownSleep;
     bool ShowTouchBar;
-
+    uint8_t ActiveTab;
+    
     bool operator == (const Settings& other) const;
 };
 
