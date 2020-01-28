@@ -34,7 +34,6 @@ namespace TogglDesktop
         public TimeEntryCell()
         {
             this.InitializeComponent();
-            this.SetupKeyboardFocusedReverseBinding(nameof(ViewModel.IsFocused));
             ViewModel = new TimeEntryCellViewModel(timeEntryLabel.ViewModel);
         }
 

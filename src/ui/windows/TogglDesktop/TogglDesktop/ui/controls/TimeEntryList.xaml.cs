@@ -196,7 +196,7 @@ namespace TogglDesktop
             return (focusedEntryId, focusedDayHeader);
         }
 
-        public void ClearSavedFocus()
+        private void ClearSavedFocus()
         {
             FocusedCellIndex = -1;
             FocusedDayIndex = -1;

@@ -23,7 +23,6 @@ namespace TogglDesktop
         public TimeEntryCellDayHeader()
         {
             this.InitializeComponent();
-            this.SetupKeyboardFocusedReverseBinding(nameof(ViewModel.IsFocused));
         }
 
         public bool IsDummy
