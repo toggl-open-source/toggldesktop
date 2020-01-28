@@ -254,7 +254,7 @@ error Context::StartEvents() {
             logger.error(err);
             std::cerr << err << std::endl;
             std::cout << err << std::endl;
-            return displayError("UI is not properly wired up!");
+            return displayError(err);
         }
 
         UIElements render;
@@ -337,11 +337,11 @@ error Context::save(const bool push_changes) {
             }
         }
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     return noError;
 }
@@ -1024,25 +1024,25 @@ bool Context::isPostponed(
 }
 
 error Context::displayError(const error &err) {
-    if ((err.find(kUnauthorizedError) != std::string::npos)) {
+    if (err == error::kUnauthorizedError) {
         if (user_) {
             setUser(nullptr);
         }
     }
-    if (err.find(kUnsupportedAppError) != std::string::npos) {
+    if (err == error::kUnsupportedAppError) {
         urls::SetImATeapot(true);
     } else {
         urls::SetImATeapot(false);
     }
 
-    if (user_ && (err.find(kRequestIsNotPossible) != std::string::npos
-                  || (err.find(kForbiddenError) != std::string::npos))) {
+    if (user_ && (err == error::kRequestIsNotPossible
+                  || (err == error::kForbiddenError))) {
         TogglClient toggl_client(UI());
 
         error err = pullWorkspaces(&toggl_client);
         if (err != noError) {
             // Check for missing WS error and
-            if (err.find(kMissingWS) != std::string::npos) {
+            if (err == error::kMissingWS) {
                 overlay_visible_ = true;
                 UI()->DisplayWSError();
                 return noError;
@@ -1051,6 +1051,10 @@ error Context::displayError(const error &err) {
     }
 
     return UI()->DisplayError(err);
+}
+
+error Context::displayError(const std::string &err, bool is_user_error) {
+    return UI()->DisplayError(err, is_user_error);
 }
 
 int Context::nextSyncIntervalSeconds() const {
@@ -1380,7 +1384,7 @@ error Context::UpdateChannel(
 
     error err = db()->LoadUpdateChannel(update_channel);
 
-    if (err.find(kDatabaseDiskMalformed) != std::string::npos) {
+    if (err == error::kDatabaseDiskMalformed) {
         err = noError;
     }
     return displayError(err);
@@ -1428,7 +1432,7 @@ error Context::downloadUpdate() {
         }
 
         if (HTTPSClient::Config.AppVersion.empty()) {
-            return error("This version cannot check for updates. This has been probably already fixed. Please check https://toggl.com/toggl-desktop/ for a newer version.");
+            return error::kCannotCheckForUpdates;
         }
 
         // Ask Toggl server if we have updates
@@ -1456,13 +1460,14 @@ error Context::downloadUpdate() {
             Json::Value root;
             Json::Reader reader;
             if (!reader.parse(resp.body, root)) {
-                return error("Error parsing update check response body");
+                return error::kFailedToParseData;
             }
             auto latestVersion = root[shortOSName()][update_channel];
             url = latestVersion[installerPlatform()].asString();
             auto versionNumberJsonToken = latestVersion["version"];
             if (versionNumberJsonToken.empty()) {
-                return error("No versions found for OS " + shortOSName() + ", platform " + installerPlatform() + ", channel " + update_channel);
+                logger.warning("No versions found for OS " + shortOSName() + ", platform " + installerPlatform() + ", channel " + update_channel);
+                return error::kCannotCheckForUpdates;
             }
             version_number = versionNumberJsonToken.asString();
 
@@ -1486,7 +1491,8 @@ error Context::downloadUpdate() {
 
         // we need a path to download to, when going this way
         if (update_path_.empty()) {
-            return error("update path is empty, cannot download update");
+            logger.log("update path is empty, cannot download update");
+            return error::kCannotCheckForUpdates;
         }
 
         // Ignore update if not compatible with this client version
@@ -1536,11 +1542,11 @@ error Context::downloadUpdate() {
             }
         }
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     return noError;
 }
@@ -1568,7 +1574,7 @@ error Context::fetchMessage(const bool periodic) {
         }
 
         if (HTTPSClient::Config.AppVersion.empty()) {
-            return error("AppVersion missing!");
+            return error::kCannotCheckForUpdates;
         }
 
         // Fetch latest message
@@ -1597,7 +1603,7 @@ error Context::fetchMessage(const bool periodic) {
             Json::Value root;
             Json::Reader reader;
             if (!reader.parse(resp.body, root)) {
-                return error("Error parsing in-app message response body");
+                return error::kFailedToParseData;
             }
 
             // check all required fields
@@ -1691,11 +1697,11 @@ error Context::fetchMessage(const bool periodic) {
             button,
             url);
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     return noError;
 }
@@ -1922,7 +1928,7 @@ void Context::onSendFeedback(Poco::Util::TimerTask&) {  // NOLINT
 
     TogglClient client(UI());
     HTTPSResponse resp = client.Post(req);
-    logger.debug("Feedback result: " + resp.err);
+    logger.debug("Feedback result: " + resp.err.String());
     if (resp.err != noError) {
         displayError(resp.err);
         return;
@@ -2354,11 +2360,11 @@ error Context::AsyncGoogleLogin(const std::string &access_token) {
 error Context::attemptOfflineLogin(const std::string &email,
                                    const std::string &password) {
     if (email.empty()) {
-        return error("cannot login offline without an e-mail");
+        return error::kOfflineLoginMissingEmail;
     }
 
     if (password.empty()) {
-        return error("cannot login offline without a password");
+        return error::kOfflineLoginMissingPassword;
     }
 
     User *user = new User();
@@ -2372,21 +2378,17 @@ error Context::attemptOfflineLogin(const std::string &email,
     if (!user->ID()) {
         delete user;
         logger.debug("User data not found in local database for " + email);
-        return error(kEmailNotFoundCannotLogInOffline);
+        return error::kEmailNotFoundCannotLogInOffline;
     }
 
     if (user->OfflineData().empty()) {
         delete user;
         logger.debug("Offline data not found in local database for "
                        + email);
-        return error(kEmailNotFoundCannotLogInOffline);
+        return error::kEmailNotFoundCannotLogInOffline;
     }
 
     err = user->SetAPITokenFromOfflineData(password);
-    if ("I/O error" == err || err.find("bad decrypt") != std::string::npos) {
-        delete user;
-        return error(kInvalidPassword);
-    }
     if (err != noError) {
         delete user;
         return err;
@@ -2422,7 +2424,7 @@ error Context::Login(
         std::string json("");
         error err = me(&client, email, password, &json, 0);
         if (err != noError) {
-            if (!IsNetworkingError(err)) {
+            if (err.IsNetworkingError()) {
                 return displayError(err);
             }
             // Indicate we're offline
@@ -2650,13 +2652,13 @@ error Context::SetLoggedInUserFromJSON(
     // Fetch OBM experiments..
     err = pullObmExperiments();
     if (err != noError) {
-        logger.error("Error pulling OBM experiments: " + err);
+        logger.error("Error pulling OBM experiments: ",  err);
     }
 
     // ..and run the OBM experiments
     err = runObmExperiments();
     if (err != noError) {
-        logger.error("Error running OBM experiments: " + err);
+        logger.error("Error running OBM experiments: ",  err);
     }
 
     return noError;
@@ -2740,7 +2742,7 @@ TimeEntry *Context::Start(
     // else they will linger around in the app
     // and the user can continue using the unsupported app.
     if (urls::ImATeapot()) {
-        displayError(kUnsupportedAppError);
+        displayError(error::kUnsupportedAppError);
         return nullptr;
     }
 
@@ -2864,7 +2866,7 @@ TimeEntry *Context::ContinueLatest(const bool prevent_on_app) {
     // else they will linger around in the app
     // and the user can continue using the unsupported app.
     if (urls::ImATeapot()) {
-        displayError(kUnsupportedAppError);
+        displayError(error::kUnsupportedAppError);
         return nullptr;
     }
 
@@ -2933,7 +2935,7 @@ TimeEntry *Context::Continue(
     // else they will linger around in the app
     // and the user can continue using the unsupported app.
     if (urls::ImATeapot()) {
-        displayError(kUnsupportedAppError);
+        displayError(error::kUnsupportedAppError);
         return nullptr;
     }
 
@@ -2985,7 +2987,7 @@ error Context::DeleteTimeEntryByGUID(const std::string &GUID) {
     // else they will linger around in the app
     // and the user can continue using the unsupported app.
     if (urls::ImATeapot()) {
-        return displayError(kUnsupportedAppError);
+        return displayError(error::kUnsupportedAppError);
     }
 
     if (GUID.empty()) {
@@ -3008,7 +3010,7 @@ error Context::DeleteTimeEntryByGUID(const std::string &GUID) {
         }
 
         if (te->DeletedAt()) {
-            return displayError(kCannotDeleteDeletedTimeEntry);
+            return displayError(error::kCannotDeleteDeletedTimeEntry);
         }
 
         if (isTimeEntryLocked(te)) {
@@ -3052,7 +3054,7 @@ error Context::SetTimeEntryDuration(
     // validate the value
     int seconds = Formatter::ParseDurationString(duration);
     if (seconds >= kMaxDurationSeconds) {
-        return displayError(error(kOverMaxDurationError));
+        return displayError(error::kOverMaxDurationError);
     }
 
     te->SetDurationUserInput(duration);
@@ -3094,8 +3096,7 @@ error Context::SetTimeEntryProject(
         }
 
         if (p && !canChangeProjectTo(te, p)) {
-            return displayError(error(
-                "Cannot change project: would end up with locked time entry"));
+            return displayError(error::kTimeEntryWouldBeLockedAfterProjectChange);
         }
 
         if (p) {
@@ -3151,7 +3152,7 @@ error Context::SetTimeEntryDate(
         }
 
         if (isTimeEntryLocked(te)) {
-            return displayError(error("Cannot change locked time entry."));
+            return displayError(error::kCannotChangeLockedTE);
         }
 
         Poco::LocalDateTime date_part(
@@ -3162,7 +3163,7 @@ error Context::SetTimeEntryDate(
 
         // Validate date input
         if (date_part.year() < kMinimumAllowedYear || date_part.year() > kMaximumAllowedYear) {
-            return displayError(error(kInvalidDateError));
+            return displayError(error::kInvalidDateError);
         }
 
         dt = Poco::LocalDateTime(
@@ -3170,9 +3171,7 @@ error Context::SetTimeEntryDate(
             time_part.hour(), time_part.minute(), time_part.second());
 
         if (!canChangeStartTimeTo(te, dt.timestamp().epochTime())) {
-            return displayError(
-                error(
-                    "Failed to change time entry date: workspace is locked."));
+            return displayError("Failed to change time entry date: workspace is locked.", true);
         }
     }
 
@@ -3245,12 +3244,12 @@ error Context::SetTimeEntryStart(
 
     // Validate time input
     if (local.year() < kMinimumAllowedYear || local.year() > kMaximumAllowedYear) {
-        return displayError(error(kInvalidStartTimeError));
+        return displayError(error::kInvalidStartTimeError);
     }
 
     int hours(0), minutes(0);
     if (!toggl::Formatter::ParseTimeInput(value, &hours, &minutes)) {
-        return error("invalid time format");
+        return error::kInvalidTimeFormat;
     }
 
     Poco::LocalDateTime dt(
@@ -3332,7 +3331,7 @@ error Context::SetTimeEntryStop(
 
     int hours(0), minutes(0);
     if (!toggl::Formatter::ParseTimeInput(value, &hours, &minutes)) {
-        return error("invalid time format");
+        return error::kInvalidTimeFormat;
     }
 
 // By default, keep end date, only change hour && minute
@@ -3466,7 +3465,7 @@ error Context::SetTimeEntryDescription(
 
     // Validate description length
     if (value.length() > kMaximumDescriptionLength) {
-        return displayError(error(kMaximumDescriptionLengthError));
+        return displayError(error::kMaximumDescriptionLengthError);
     }
 
     te->SetDescription(value);
@@ -3808,7 +3807,7 @@ error Context::AddAutotrackerRule(
         }
         if (user_->related.HasMatchingAutotrackerRule(lowercase)) {
             // avoid duplicates
-            return displayError(kErrorRuleAlreadyExists);
+            return displayError(error::kErrorRuleAlreadyExists);
         }
 
         Task *t = nullptr;
@@ -3890,7 +3889,7 @@ Project *Context::CreateProject(
     const std::string &project_color) {
 
     if (!workspace_id) {
-        displayError(kPleaseSelectAWorkspace);
+        displayError(error::kPleaseSelectAWorkspace);
         return nullptr;
     }
 
@@ -3901,7 +3900,7 @@ Project *Context::CreateProject(
         return nullptr;
     }
     if (trimmed_project_name.empty()) {
-        displayError(kProjectNameMustNotBeEmpty);
+        displayError(error::kProjectNameMustNotBeEmpty);
         return nullptr;
     }
 
@@ -3928,7 +3927,7 @@ Project *Context::CreateProject(
             }
 
             if (clientIsSame && p->Name() == trimmed_project_name) {
-                displayError(kProjectNameAlreadyExists);
+                displayError(error::kProjectNameAlreadyExists);
                 return nullptr;
             }
         }
@@ -3984,7 +3983,8 @@ error Context::AddObmAction(
     const std::string &value) {
     // Check input
     if (!experiment_id) {
-        return error("missing experiment_id");
+        logger.log(__FUNCTION__, "missing experiment_id");
+        return error::kCannotCreateObmAction;
     }
     std::string trimmed_key("");
     error err = db_->Trim(key, &trimmed_key);
@@ -3992,7 +3992,8 @@ error Context::AddObmAction(
         return displayError(err);
     }
     if (trimmed_key.empty()) {
-        return error("missing key");
+        logger.log(__FUNCTION__, "missing trimmed_key");
+        return error::kCannotCreateObmAction;
     }
     std::string trimmed_value("");
     err = db_->Trim(value, &trimmed_value);
@@ -4000,7 +4001,8 @@ error Context::AddObmAction(
         return displayError(err);
     }
     if (trimmed_value.empty()) {
-        return error("missing value");
+        logger.log(__FUNCTION__, "missing trimmed_value");
+        return error::kCannotCreateObmAction;
     }
     // Add OBM action and save
     {
@@ -4024,7 +4026,7 @@ Client *Context::CreateClient(
     const std::string &client_name) {
 
     if (!workspace_id) {
-        displayError(kPleaseSelectAWorkspace);
+        displayError(error::kPleaseSelectAWorkspace);
         return nullptr;
     }
 
@@ -4035,7 +4037,7 @@ Client *Context::CreateClient(
         return nullptr;
     }
     if (trimmed_client_name.empty()) {
-        displayError(kClientNameMustNotBeEmpty);
+        displayError(error::kClientNameMustNotBeEmpty);
         return nullptr;
     }
 
@@ -4052,7 +4054,7 @@ Client *Context::CreateClient(
                 it != user_->related.Clients.end(); ++it) {
             Client *c = *it;
             if (c->WID() == workspace_id && c->Name() == trimmed_client_name) {
-                displayError(kClientNameAlreadyExists);
+                displayError(error::kClientNameAlreadyExists);
                 return nullptr;
             }
         }
@@ -4096,7 +4098,7 @@ error Context::OpenReportsInBrowser() {
     // else they will linger around in the app
     // and the user can continue using the unsupported app.
     if (urls::ImATeapot()) {
-        return displayError(kUnsupportedAppError);
+        return displayError(error::kUnsupportedAppError);
     }
 
     std::string apitoken("");
@@ -4522,7 +4524,8 @@ error Context::StartAutotrackerEvent(const TimelineEvent &event) {
         p = user_->related.ProjectByID(rule->PID());
     }
     if (rule->PID() && !p) {
-        return error("autotracker project not found");
+        logger.log(__FUNCTION__, "autotracker project not found");
+        return error::kCannotStartAutotrackerEvent;
     }
 
     Task *t = nullptr;
@@ -4530,11 +4533,13 @@ error Context::StartAutotrackerEvent(const TimelineEvent &event) {
         t = user_->related.TaskByID(rule->TID());
     }
     if (rule->TID() && !t) {
-        return error("autotracker task not found");
+        logger.log(__FUNCTION__, "autotracker task not found");
+        return error::kCannotStartAutotrackerEvent;
     }
 
     if (!p && !t) {
-        return error("no project or task specified in autotracker rule");
+        logger.log(__FUNCTION__, "no project or task specified in autotracker rule");
+        return error::kCannotStartAutotrackerEvent;
     }
 
     UI()->DisplayAutotrackerNotification(p, t);
@@ -4727,7 +4732,7 @@ void Context::syncerActivity() {
                 err = pushObmAction();
                 if (err != noError) {
                     std::cout << "SYNC: sync-pushObm ERROR\n";
-                    logger.error("Error pushing OBM action: " + err);
+                    logger.error("Error pushing OBM action: ", err);
                 }
 
                 displayError(save(false));
@@ -4754,7 +4759,7 @@ void Context::syncerActivity() {
                 err = pushObmAction();
                 if (err != noError) {
                     std::cout << "SYNC: pushObm ERROR\n";
-                    logger.error("Error pushing OBM action: " + err);
+                    logger.error("Error pushing OBM action: ", err);
                 }
 
                 displayError(save(false));
@@ -4892,7 +4897,7 @@ error Context::pullAllUserData(
     }
 
     if (api_token.empty()) {
-        return error("cannot pull user data without API token");
+        return error::kCannotLoadUserDataWithoutApiToken;
     }
 
     try {
@@ -4913,7 +4918,7 @@ error Context::pullAllUserData(
         {
             Poco::Mutex::ScopedLock lock(user_m_);
             if (!user_) {
-                return error("cannot load user data when logged out");
+                return error::kCannotLoadUserDataWhenLoggedOut;
             }
             TimeEntry *running_entry = user_->RunningTimeEntry();
 
@@ -4943,11 +4948,11 @@ error Context::pullAllUserData(
         stopwatch.stop();
         logger.debug("User with related data JSON fetched and parsed in ", stopwatch.elapsed() / 1000, " ms");
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     return noError;
 }
@@ -4980,7 +4985,7 @@ error Context::pushChanges(
 
             api_token = user_->APIToken();
             if (api_token.empty()) {
-                return error("cannot push changes without API token");
+                return error::kCannotSaveUserDataWithoutApiToken;
             }
 
             collectPushableModels(
@@ -5014,8 +5019,7 @@ error Context::pushChanges(
                 clients,
                 api_token,
                 *toggl_client);
-            if (err != noError &&
-                    err.find(kClientNameAlreadyExists) == std::string::npos) {
+            if (err == error::kClientNameAlreadyExists) {
                 return err;
             }
             client_stopwatch.stop();
@@ -5032,8 +5036,7 @@ error Context::pushChanges(
                 clients,
                 api_token,
                 *toggl_client);
-            if (err != noError &&
-                    err.find(kProjectNameAlready) == std::string::npos) {
+            if (err == error::kProjectNameAlreadyExists) {
                 return err;
             }
 
@@ -5077,11 +5080,11 @@ error Context::pushChanges(
         ss << ") Total = " << stopwatch.elapsed() / 1000 << " ms";
         logger.debug(ss.str());
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     return noError;
 }
@@ -5111,7 +5114,7 @@ error Context::pushClients(
 
         if (resp.err != noError) {
             // if we're able to solve the error
-            if ((*it)->ResolveError(resp.body)) {
+            if ((*it)->ResolveError(Error::fromServerError(resp.body))) {
                 displayError(save(false));
             }
             continue;
@@ -5120,7 +5123,7 @@ error Context::pushClients(
         Json::Value root;
         Json::Reader reader;
         if (!reader.parse(resp.body, root)) {
-            err = error("error parsing client POST response");
+            err = error::kFailedToParseData;
             continue;
         }
 
@@ -5168,7 +5171,7 @@ error Context::pushProjects(
 
         if (resp.err != noError) {
             // if we're able to solve the error
-            if ((*it)->ResolveError(resp.body)) {
+            if ((*it)->ResolveError(Error::fromServerError(resp.body))) {
                 displayError(save(false));
             }
             continue;
@@ -5177,7 +5180,7 @@ error Context::pushProjects(
         Json::Value root;
         Json::Reader reader;
         if (!reader.parse(resp.body, root)) {
-            err = error("error parsing project POST response");
+            err = error::kFailedToParseData;
             continue;
         }
 
@@ -5256,25 +5259,25 @@ error Context::pushEntries(
 
         if (resp.err != noError) {
             // if we're able to solve the error
-            if ((*it)->ResolveError(resp.body)) {
+            if ((*it)->ResolveError(Error::fromServerError(resp.body))) {
                 displayError(save(false));
             }
 
             // Not found on server. Probably deleted already.
-            if ((*it)->isNotFound(resp.body)) {
+            if ((*it)->isNotFound(Error::fromServerError(resp.body))) {
                 (*it)->MarkAsDeletedOnServer();
                 continue;
             }
             error_found = true;
-            error_message = resp.err;
+            error_message = resp.err.String();
             if (resp.status_code == 429) {
-                error_message = error(kRateLimit);
+                error_message = error::kRateLimit;
             }
 
             // Mark the time entry as unsynced now
             (*it)->SetUnsynced();
 
-            offline = IsNetworkingError(resp.err);
+            offline = resp.err.IsNetworkingError();
 
             if (offline) {
                 trigger_sync_ = false;
@@ -5292,7 +5295,7 @@ error Context::pushEntries(
         Json::Value root;
         Json::Reader reader;
         if (!reader.parse(resp.body, root)) {
-            return error("error parsing time entry POST response");
+            return error::kFailedToParseData;
         }
 
         auto id = root["id"].asUInt64();
@@ -5308,14 +5311,14 @@ error Context::pushEntries(
         }
 
         if ((*it)->ID() != id) {
-            return error("Backend has changed the ID of the entry");
+            return error::kBackendChangedTheID;
         }
 
         (*it)->LoadFromJSON(root);
     }
 
     if (error_found) {
-        return error_message;
+        return error::REMOVE_LATER_NETWORK_RESPONSE;
     }
     return noError;
 }
@@ -5354,7 +5357,7 @@ error Context::pullObmExperiments() {
         Json::Value json;
         Json::Reader reader;
         if (!reader.parse(resp.body, json)) {
-            return error("Error in OBM experiments response body");
+            return error::kFailedToParseData;
         }
 
         {
@@ -5368,11 +5371,11 @@ error Context::pullObmExperiments() {
 
         return noError;
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
 }
 
@@ -5397,7 +5400,7 @@ error Context::pushObmAction() {
 
             req.basic_auth_username = user_->APIToken();
             if (req.basic_auth_username.empty()) {
-                return error("cannot push OBM actions without API token");
+                return error::kCannotSaveUserDataWithoutApiToken;
             }
 
             // find action that has not been uploaded yet
@@ -5437,11 +5440,11 @@ error Context::pushObmAction() {
         for_upload->MarkAsDeletedOnServer();
         for_upload->Delete();
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     return noError;
 }
@@ -5454,11 +5457,7 @@ error Context::me(
     const Poco::Int64 since) {
 
     if (email.empty()) {
-        return "Empty email or API token";
-    }
-
-    if (password.empty()) {
-        return "Empty password";
+        return error::kMissingArgument;
     }
 
     try {
@@ -5486,11 +5485,11 @@ error Context::me(
 
         *user_data_json = resp.body;
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     return noError;
 }
@@ -5511,7 +5510,7 @@ bool Context::canChangeProjectTo(TimeEntry* te, Project* p) {
 
 error Context::logAndDisplayUserTriedEditingLockedEntry() {
     logger.warning("User tried editing locked time entry");
-    return displayError(error("Cannot change locked time entry"));
+    return displayError(error::kCannotChangeLockedTE);
 }
 
 bool Context::isTimeLockedInWorkspace(time_t t, Workspace* ws) {
@@ -5531,7 +5530,7 @@ error Context::pullWorkspaces(TogglClient* toggl_client) {
     std::string api_token = user_->APIToken();
 
     if (api_token.empty()) {
-        return error("cannot pull user data without API token");
+        return error::kCannotLoadUserDataWithoutApiToken;
     }
 
     std::string json("");
@@ -5545,9 +5544,9 @@ error Context::pullWorkspaces(TogglClient* toggl_client) {
 
         HTTPSResponse resp = toggl_client->Get(req);
         if (resp.err != noError) {
-            if (resp.err.find(kForbiddenError) != std::string::npos) {
+            if (resp.err == error::kForbiddenError) {
                 // User has no workspaces
-                return error(kMissingWS); // NOLINT
+                return error::kMissingWS; // NOLINT
             }
             return resp.err;
         }
@@ -5558,13 +5557,13 @@ error Context::pullWorkspaces(TogglClient* toggl_client) {
 
     }
     catch (const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     catch (const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     catch (const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     return noError;
 }
@@ -5599,7 +5598,7 @@ error Context::pullWorkspacePreferences(TogglClient* toggl_client) {
         Json::Value root;
         Json::Reader reader;
         if (!reader.parse(json, root)) {
-            return error("Failed to load workspace preferences");
+            return error::kFailedToParseData;
         }
 
         ws->LoadSettingsFromJson(root);
@@ -5616,7 +5615,7 @@ error Context::pullWorkspacePreferences(
     std::string api_token = user_->APIToken();
 
     if (api_token.empty()) {
-        return error("cannot pull user data without API token");
+        return error::kCannotLoadUserDataWithoutApiToken;
     }
 
     try {
@@ -5639,13 +5638,13 @@ error Context::pullWorkspacePreferences(
         *json = resp.body;
     }
     catch (const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     catch (const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     catch (const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     return noError;
 }
@@ -5655,7 +5654,7 @@ error Context::pullUserPreferences(
     std::string api_token = user_->APIToken();
 
     if (api_token.empty()) {
-        return error("cannot pull user data without API token");
+        return error::kCannotLoadUserDataWithoutApiToken;
     }
 
     try {
@@ -5680,7 +5679,7 @@ error Context::pullUserPreferences(
         Json::Value root;
         Json::Reader reader;
         if (!reader.parse(json, root)) {
-            return error("Failed to load user preferences");
+            return error::kFailedToParseData;
         }
 
         if (user_->LoadUserPreferencesFromJSON(root)) {
@@ -5698,13 +5697,13 @@ error Context::pullUserPreferences(
         }
     }
     catch (const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     catch (const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     catch (const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     return noError;
 }
@@ -5739,8 +5738,9 @@ error Context::signupGoogle(
 
         HTTPSResponse resp = toggl_client->Post(req);
         if (resp.err != noError) {
-            if (kBadRequestError == resp.err) {
-                return resp.body;
+            if (resp.err == error::kBadRequestError) {
+                //return resp.body;
+                return error::REMOVE_LATER_NETWORK_RESPONSE;
             }
             return resp.err;
         }
@@ -5748,13 +5748,13 @@ error Context::signupGoogle(
         *user_data_json = resp.body;
     }
     catch (const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     catch (const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     catch (const std::string& ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     return noError;
 }
@@ -5767,11 +5767,11 @@ error Context::signup(
     const uint64_t country_id) {
 
     if (email.empty()) {
-        return "Empty email";
+        return error::kEmptyEmail;
     }
 
     if (password.empty()) {
-        return "Empty password";
+        return error::kEmptyPassword;
     }
 
     try {
@@ -5797,19 +5797,20 @@ error Context::signup(
 
         HTTPSResponse resp = toggl_client->Post(req);
         if (resp.err != noError) {
-            if (kBadRequestError == resp.err) {
-                return resp.body;
+            if (resp.err == error::kBadRequestError) {
+                //return resp.body;
+                return error::REMOVE_LATER_NETWORK_RESPONSE;
             }
             return resp.err;
         }
 
         *user_data_json = resp.body;
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     return noError;
 }
@@ -5863,7 +5864,7 @@ error Context::ToSAccept() {
     std::string api_token = user_->APIToken();
 
     if (api_token.empty()) {
-        return error("cannot pull user data without API token");
+        return error::kMissingApiToken;
     }
 
     TogglClient toggl_client(UI());
@@ -5881,14 +5882,14 @@ error Context::ToSAccept() {
         overlay_visible_ = false;
         OpenTimeEntryList();
     } catch(const Poco::Exception& exc) {
-        displayError(kCannotConnectError);
-        return exc.displayText();
+        displayError(error::kCannotConnectError);
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        displayError(kCannotConnectError);
-        return ex.what();
+        displayError(error::kCannotConnectError);
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        displayError(kCannotConnectError);
-        return ex;
+        displayError(error::kCannotConnectError);
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     return noError;
 }
@@ -5922,7 +5923,7 @@ error Context::PullCountries() {
         Json::Reader reader;
 
         if (!reader.parse(resp.body, root)) {
-            return error("Error parsing countries response body");
+            return error::kFailedToParseData;
         }
 
         std::vector<TogglCountryView> countries;
@@ -5937,11 +5938,11 @@ error Context::PullCountries() {
 
         //country_item_clear(first);
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     return noError;
 }

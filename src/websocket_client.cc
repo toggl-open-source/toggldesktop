@@ -77,7 +77,7 @@ error WebSocketClient::createSession() {
     logger().debug("createSession");
 
     if (HTTPSClient::Config.CACertPath.empty()) {
-        return error("Missing CA certifcate, cannot start Websocket");
+        return error::kMissingCACertificate;
     }
 
     Poco::Mutex::ScopedLock lock(mutex_);
@@ -132,11 +132,11 @@ error WebSocketClient::createSession() {
 
         authenticate();
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
 
     return noError;
@@ -189,11 +189,11 @@ error WebSocketClient::receiveWebSocketMessage(std::string *message) {
             json.append(buf, static_cast<unsigned>(n));
         }
     } catch(const Poco::Exception& exc) {
-        return error(exc.displayText());
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        return error(ex.what());
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        return error(ex);
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     *message = json;
     return noError;
@@ -214,7 +214,7 @@ error WebSocketClient::poll() {
             return err;
         }
         if (json.empty()) {
-            return error("WebSocket closed the connection");
+            return error::kWebsocketClosedConnection;
         }
         logger().trace("WebSocket message: ", json);
 
@@ -237,11 +237,11 @@ error WebSocketClient::poll() {
             on_websocket_message_(ctx_, json);
         }
     } catch(const Poco::Exception& exc) {
-        return error(exc.displayText());
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        return error(ex.what());
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        return error(ex);
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     return noError;
 }

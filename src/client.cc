@@ -68,7 +68,7 @@ bool Client::ResolveError(const toggl::error &err) {
         SetName(Name() + " 1");
         return true;
     }
-    if (err.find(kClientNameAlreadyExists) != std::string::npos) {
+    if (err == error::kClientNameAlreadyExists) {
         // remove duplicate from db
         MarkAsDeletedOnServer();
         return true;
@@ -77,13 +77,11 @@ bool Client::ResolveError(const toggl::error &err) {
 }
 
 bool Client::nameHasAlreadyBeenTaken(const error &err) {
-    return (std::string::npos != std::string(err).find(
-        "Name has already been taken"));
+    return err == error::kNameAlreadyTaken;
 }
 
 bool Client::ResourceCannotBeCreated(const toggl::error &err) const {
-    return (std::string::npos != std::string(err).find(
-        "cannot add or edit clients in workspace"));
+    return err == error::kCannotModifyWorkspaceData;
 }
 
 }   // namespace toggl

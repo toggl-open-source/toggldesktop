@@ -45,57 +45,6 @@
 #define kContentTypeMultipartFormData "multipart/form-data"
 #define kContentTypeApplicationJSON "application/json"
 
-// Data validation errors
-#define kOverMaxDurationError "Max allowed duration per 1 time entry is 999 hours"
-#define kMaxTagsPerTimeEntryError "Tags are limited to 50 per task"
-#define kInvalidStartTimeError "Start time year must be between 2006 and 2030"
-#define kInvalidStopTimeError "Stop time year must be between 2006 and 2030"
-#define kInvalidDateError "Date year must be between 2006 and 2030"
-#define kStartNotBeforeStopError "Stop time must be after start time"
-#define kMaximumDescriptionLengthError "Maximum length for description (3000 chars) exceeded"
-
-#define kCheckYourSignupError "Signup failed - please check your details. The e-mail might be already taken."  // NOLINT
-#define kEndpointGoneError "The API endpoint used by this app is gone. Please contact Toggl support!"  // NOLINT
-#define kForbiddenError "Invalid e-mail or password!"
-#define kUnsupportedAppError "This version of the app is not supported any more. Please visit Toggl website to download a supported app." // NOLINT
-#define kUnauthorizedError "Unauthorized! Please login again."
-#define kCannotConnectError "Cannot connect to Toggl"
-#define kCannotSyncInTestEnv "Cannot sync in test env"
-#define kBackendIsDownError "Backend is down"
-#define kBadRequestError "Data that you are sending is not valid/acceptable"
-#define kRequestIsNotPossible "Request is not possible"
-#define kPaymentRequiredError "Requested action allowed only for Non-Free workspaces. Please upgrade!"  // NOLINT
-#define kCannotAccessWorkspaceError "cannot access workspace"
-#define kEmailNotFoundCannotLogInOffline "Login failed. Are you online?"  // NOLINT
-#define kInvalidPassword "Invalid password"
-#define kCannotEstablishProxyConnection "Cannot establish proxy connection"
-#define kCertificateVerifyFailed "certificate verify failed"
-#define kCheckYourProxySetup "Check your proxy setup"
-#define kCheckYourFirewall "Check your firewall"
-#define kProxyAuthenticationRequired "Proxy Authentication Required"
-#define kCertificateValidationError "Certificate validation error"
-#define kUnacceptableCertificate "Unacceptable certificate from www.toggl.com"
-#define kCannotUpgradeToWebSocketConnection "Cannot upgrade to WebSocket connection"  // NOLINT
-#define kSSLException "SSL Exception"
-#define kRateLimit "Too many requests, sync delayed by 1 minute"
-#define kCannotWriteFile "Cannot write file"
-#define kIsSuspended "is suspended"
-#define kRequestToServerFailedWithStatusCode403 "Request to server failed with status code: 403"  // NOLINT
-#define kMissingWorkspaceID "Missing workspace ID"
-#define kCannotContinueDeletedTimeEntry "Cannot continue deleted time entry"
-#define kCannotDeleteDeletedTimeEntry "Cannot delete deleted time entry"
-#define kErrorRuleAlreadyExists "rule already exists"
-#define kPleaseSelectAWorkspace "Please select a workspace"
-#define kClientNameMustNotBeEmpty "Client name must not be empty"
-#define kProjectNameMustNotBeEmpty "Project name must not be empty"
-#define kProjectNameAlready "Project name already"
-#define kProjectNameAlreadyExists "Project name already exists"
-#define kClientNameAlreadyExists "Client name already exists"
-#define kDatabaseDiskMalformed "The database disk image is malformed"
-#define kMissingWS "You no longer have access to your last workspace"
-#define kOutOfDatePleaseUpgrade "Your version of Toggl Desktop is out of date, please upgrade!"
-#define kThisEntryCantBeSavedPleaseAdd "This entry can't be saved - please add"
-
 #define kModelAutotrackerRule "autotracker_rule"
 #define kModelClient "client"
 #define kModelProject "project"

@@ -24,6 +24,7 @@
 #include <Poco/Crypto/CipherFactory.h>
 #include <Poco/Crypto/CipherKey.h>
 #include <Poco/Crypto/CryptoStream.h>
+#include <Poco/Crypto/CryptoException.h>
 #include <Poco/DigestStream.h>
 #include <Poco/Random.h>
 #include <Poco/RandomStream.h>
@@ -239,7 +240,7 @@ TimeEntry *User::Continue(
     }
 
     if (existing->DeletedAt()) {
-        logger().warning(kCannotContinueDeletedTimeEntry);
+        logger().warning(error::kCannotContinueDeletedTimeEntry);
         return nullptr;
     }
 
@@ -604,7 +605,7 @@ error User::LoadUserUpdateFromJSONString(
     Json::Value root;
     Json::Reader reader;
     if (!reader.parse(json, root)) {
-        return error("Failed to LoadUserUpdateFromJSONString");
+        return error::kFailedToParseData;
     }
 
     loadUserUpdateFromJSON(root);
@@ -685,7 +686,7 @@ error User::LoadUserAndRelatedDataFromJSONString(
     Json::Value root;
     Json::Reader reader;
     if (!reader.parse(json, root)) {
-        return error("Failed to LoadUserAndRelatedDataFromJSONString");
+        return error::kFailedToParseData;
     }
 
     SetSince(root["since"].asInt64());
@@ -703,13 +704,13 @@ error User::LoadWorkspacesFromJSONString(const std::string & json) {
     Json::Value root;
     Json::Reader reader;
     if (!reader.parse(json, root)) {
-        return error("Failed to LoadWorkspacessFromJSONString");
+        return error::kFailedToParseData;
     }
 
     if (root.size() == 0) {
         // Handle missing workspace issue.
         // If default wid is missing there are no workspaces
-        return error(kMissingWS); // NOLINT
+        return error::kMissingWS;
     }
 
     std::set<Poco::UInt64> alive;
@@ -729,7 +730,7 @@ error User::LoadTimeEntriesFromJSONString(const std::string & json) {
     Json::Value root;
     Json::Reader reader;
     if (!reader.parse(json, root)) {
-        return error("Failed to LoadTimeEntriesFromJSONString");
+        return error::kFailedToParseData;
     }
 
     std::set<Poco::UInt64> alive;
@@ -1142,7 +1143,7 @@ error User::UserID(
     Json::Reader reader;
     bool ok = reader.parse(json_data_string, root);
     if (!ok) {
-        return error("error parsing UserID JSON");
+        return error::kFailedToParseData;
     }
     *result = root["data"]["id"].asUInt64();
     return noError;
@@ -1156,7 +1157,7 @@ error User::LoginToken(
     Json::Reader reader;
     bool ok = reader.parse(json_data_string, root);
     if (!ok) {
-        return error("error parsing UserID JSON");
+        return error::kFailedToParseData;
     }
     *result = root["login_token"].asString();
     return noError;
@@ -1200,13 +1201,13 @@ std::string User::generateKey(const std::string &password) {
 
 error User::SetAPITokenFromOfflineData(const std::string &password) {
     if (Email().empty()) {
-        return error("cannot decrypt offline data without an e-mail");
+        return error::kCannotDecryptOfflineDataWithoutEmail;
     }
     if (password.empty()) {
-        return error("cannot decrypt offline data without a password");
+        return error::kCannotDecryptOfflineDataWithoutPassword;
     }
     if (OfflineData().empty()) {
-        return error("cannot decrypt empty string");
+        return error::kCannotDecryptOfflineDataWhenEmpty;
     }
     try {
         Poco::Crypto::CipherFactory& factory =
@@ -1217,7 +1218,7 @@ error User::SetAPITokenFromOfflineData(const std::string &password) {
         Json::Value data;
         Json::Reader reader;
         if (!reader.parse(OfflineData(), data)) {
-            return error("failed to parse offline data");
+            return error::kFailedToParseData;
         }
 
         std::istringstream istr(data["salt"].asString());
@@ -1236,26 +1237,29 @@ error User::SetAPITokenFromOfflineData(const std::string &password) {
         pCipher = nullptr;
 
         SetAPIToken(decrypted);
+    } catch(const Poco::IOException &) {
+        return error::kInvalidPassword;
+    } catch(const Poco::Crypto::OpenSSLException &) {
+        return error::kInvalidPassword;
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     return noError;
 }
 
-error User::EnableOfflineLogin(
-    const std::string &password) {
+error User::EnableOfflineLogin(const std::string &password) {
     if (Email().empty()) {
-        return error("cannot enable offline login without an e-mail");
+        return error::kCannotEnableOfflineLoginWithoutEmail;
     }
     if (password.empty()) {
-        return error("cannot enable offline login without a password");
+        return error::kCannotEnableOfflineLoginWithoutPassword;
     }
     if (APIToken().empty()) {
-        return error("cannot enable offline login without an API token");
+        return error::kCannotEnableOfflineLoginWithoutApiToken;
     }
     try {
         Poco::Crypto::CipherFactory& factory =
@@ -1294,14 +1298,14 @@ error User::EnableOfflineLogin(
             return err;
         }
         if (token != APIToken()) {
-            return error("offline login encryption failed");
+            return error::kOfflineDecryptionFailed;
         }
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     return noError;
 }

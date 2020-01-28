@@ -32,7 +32,7 @@ class TOGGL_INTERNAL_EXPORT BaseModel {
     , deleted_at_(0)
     , is_marked_as_deleted_on_server_(false)
     , updated_at_(0)
-    , validation_error_("")
+    , validation_error_(error::kNoError)
     , unsynced_(false) {}
 
     virtual ~BaseModel() {}
@@ -119,8 +119,8 @@ class TOGGL_INTERNAL_EXPORT BaseModel {
     void EnsureGUID();
 
     void ClearValidationError();
-    void SetValidationError(const std::string &value);
-    const std::string &ValidationError() const {
+    void SetValidationError(const error &value);
+    const error &ValidationError() const {
         return validation_error_;
     }
 
@@ -173,7 +173,7 @@ class TOGGL_INTERNAL_EXPORT BaseModel {
 
     // If model push to backend results in an error,
     // the error is attached to the model for later inspection.
-    std::string validation_error_;
+    error validation_error_;
 
     // Flag is set only when sync fails.
     // Its for viewing purposes only. It should not

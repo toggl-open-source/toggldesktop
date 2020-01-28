@@ -586,6 +586,7 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     void updateUI(const UIElements &elements);
 
     error displayError(const error &err);
+    error displayError(const std::string &err, bool is_user_error = false);
 
     void scheduleSync();
 

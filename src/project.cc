@@ -162,26 +162,20 @@ Json::Value Project::SaveToJSON() const {
 }
 
 bool Project::DuplicateResource(const toggl::error &err) const {
-    return (std::string::npos !=
-            std::string(err).find("Name has already been taken"));
+    return err == error::kNameAlreadyTaken;
 }
 
 bool Project::ResourceCannotBeCreated(const toggl::error &err) const {
-    return (std::string::npos != std::string(err).find(
-        "User cannot add or edit projects in workspace"));
+    return err == error::kCannotModifyWorkspaceData;
 }
 
 bool Project::clientIsInAnotherWorkspace(const toggl::error &err) const {
-    return (std::string::npos != std::string(err).find(
-        "client is in another workspace")
-            || (std::string::npos != std::string(err).find("Client with the ID")
-                && std::string::npos != std::string(err).find("isn't present in workspace")));
+    //(std::string::npos != std::string(err).find("Client with the ID") && std::string::npos != std::string(err).find("isn't present in workspace")));
+    return err == error::kClientIsNotPresentInWorkspace || err == error::REMOVE_LATER_CLIENT_NOT_PRESENT_WITH_ID;
 }
 
-bool Project::onlyAdminsCanChangeProjectVisibility(
-    const toggl::error &err) const {
-    return (std::string::npos != std::string(err).find(
-        "Only admins can change project visibility"));
+bool Project::onlyAdminsCanChangeProjectVisibility(const toggl::error &err) const {
+    return err == error::kOnlyAdminsCanChangeVisibility;
 }
 
 bool Project::ResolveError(const toggl::error &err) {
@@ -197,7 +191,7 @@ bool Project::ResolveError(const toggl::error &err) {
         SetPrivate(true);
         return true;
     }
-    if (err.find(kProjectNameAlready) != std::string::npos) {
+    if (err == error::kProjectNameAlreadyExists) {
         // remove duplicate from db
         MarkAsDeletedOnServer();
         return true;

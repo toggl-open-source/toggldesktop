@@ -21,8 +21,7 @@ bool BaseModel::NeedsPush() const {
     // pushed again unless the error is somehow fixed by user.
     // We will assume that if user modifies the model, the error
     // will go away. But until then, don't push the errored data.
-    return ValidationError().empty() &&
-           (NeedsPOST() || NeedsPUT() || NeedsDELETE());
+    return ValidationError() == noError && (NeedsPOST() || NeedsPUT() || NeedsDELETE());
 }
 
 bool BaseModel::NeedsPOST() const {
@@ -55,7 +54,7 @@ void BaseModel::ClearValidationError() {
     SetValidationError(noError);
 }
 
-void BaseModel::SetValidationError(const std::string &value) {
+void BaseModel::SetValidationError(const error &value) {
     if (validation_error_ != value) {
         validation_error_ = value;
         SetDirty();
@@ -112,7 +111,7 @@ error BaseModel::LoadFromDataString(const std::string &data_string) {
     Json::Value root;
     Json::Reader reader;
     if (!reader.parse(data_string, root)) {
-        return error("Failed to parse data string");
+        return error(error::kFailedToParseData);
     }
     LoadFromJSON(root["data"]);
     return noError;
@@ -153,8 +152,7 @@ error BaseModel::ApplyBatchUpdateResult(
 }
 
 bool BaseModel::userCannotAccessWorkspace(const error &err) const {
-    return (std::string::npos != std::string(err).find(
-        kCannotAccessWorkspaceError));
+    return err == error::kCannotAccessWorkspaceError;
 }
 
 std::string BaseModel::batchUpdateRelativeURL() const {
@@ -182,7 +180,7 @@ std::string BaseModel::batchUpdateMethod() const {
 // Convert model JSON into batch update format.
 error BaseModel::BatchUpdateJSON(Json::Value *result) const {
     if (GUID().empty()) {
-        return error("Cannot export model to batch update without a GUID");
+        return error::kExportWithoutGUID;
     }
 
     Json::Value body;

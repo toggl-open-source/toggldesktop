@@ -95,7 +95,7 @@ class TOGGL_INTERNAL_EXPORT TimeEntry {
     bool Unsynced;
     // If syncing a time entry ended with an error,
     // the error is attached to the time entry
-    std::string Error;
+    error Error;
     bool Locked;
     bool Group;
     bool GroupOpen;
@@ -401,6 +401,7 @@ class TOGGL_INTERNAL_EXPORT GUI : public SyncStateMonitor {
     void DisplayApp();
 
     error DisplayError(const error &err);
+    error DisplayError(const std::string &err, bool is_user_error);
 
     // Overlay screen triggers
     error DisplayWSError();
@@ -687,7 +688,7 @@ class TOGGL_INTERNAL_EXPORT GUI : public SyncStateMonitor {
     }
 
  private:
-    error findMissingCallbacks();
+    std::string findMissingCallbacks();
 
     TogglDisplayApp on_display_app_;
     TogglDisplayError on_display_error_;

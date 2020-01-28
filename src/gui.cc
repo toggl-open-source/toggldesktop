@@ -155,9 +155,9 @@ error GUI::DisplayError(const error &err) {
 
     logger.error(err);
 
-    if (IsNetworkingError(err)) {
+    if (err.IsNetworkingError()) {
         logger.debug("You are offline (", err, ")");
-        if (kBackendIsDownError == err) {
+        if (err == error::kBackendIsDownError) {
             DisplayOnlineState(kOnlineStateBackendDown);
         }
         else {
@@ -166,18 +166,20 @@ error GUI::DisplayError(const error &err) {
         return err;
     }
 
-    std::string actionable = MakeErrorActionable(err);
-    bool is_user_error = IsUserError(err);
+    std::string actionable = err.MakeErrorActionable();
+    bool is_user_error = err.IsUserError();
 
-    logger.debug("DisplayError err=", err, " actionable=", actionable, " is_user_error=", is_user_error);
-
-    char_t *err_s = copy_string(actionable);
-    on_display_error_(err_s, is_user_error);
-    free(err_s);
-
-    lastErr = err;
+    DisplayError(actionable, is_user_error);
 
     return err;
+}
+
+error GUI::DisplayError(const std::string &err, bool is_user_error) {
+    logger.debug("DisplayError err=", err, " actionable=", err, " is_user_error=", is_user_error);
+
+    char_t *err_s = copy_string(err.c_str());
+    on_display_error_(err_s, is_user_error);
+    free(err_s);
 }
 
 error GUI::DisplayWSError() {
@@ -192,72 +194,74 @@ error GUI::DisplayTosAccept() {
 
 error GUI::VerifyCallbacks() {
     logger.debug("VerifyCallbacks");
-    error err = findMissingCallbacks();
-    if (err != noError) {
-        logger.error(err);
-    }
-    return err;
-}
-
-error GUI::findMissingCallbacks() {
-    if (!on_display_app_) {
-        return error("!on_display_app_");
-    }
-    if (!on_display_error_) {
-        return error("!on_display_error_");
-    }
-    if (!on_display_online_state_) {
-        return error("!on_display_online_state_");
-    }
-    if (!on_display_login_) {
-        return error("!on_display_login_");
-    }
-    if (!on_display_url_) {
-        return error("!on_display_url_");
-    }
-    if (!on_display_reminder_) {
-        return error("!on_display_reminder_");
-    }
-    if (!on_display_time_entry_list_) {
-        return error("!on_display_time_entry_list_");
-    }
-    if (!on_display_time_entry_autocomplete_) {
-        return error("!on_display_time_entry_autocomplete_");
-    }
-    if (!on_display_project_autocomplete_) {
-        return error("!on_display_project_autocomplete_");
-    }
-    if (!on_display_workspace_select_) {
-        return error("!on_display_workspace_select_");
-    }
-    if (!on_display_client_select_) {
-        return error("!on_display_client_select_");
-    }
-    if (!on_display_tags_) {
-        return error("!on_display_tags_");
-    }
-    if (!on_display_time_entry_editor_) {
-        return error("!on_display_time_entry_editor_");
-    }
-    if (!on_display_settings_) {
-        return error("!on_display_settings_");
-    }
-    if (!on_display_timer_state_) {
-        return error("!on_display_timer_state_");
-    }
-    if (!on_display_idle_notification_) {
-        return error("!on_display_idle_notification_");
-    }
-    if (!on_display_mini_timer_autocomplete_) {
-        return error("!on_display_mini_timer_autocomplete_");
-    }
-    if (!on_display_pomodoro_) {
-        return error("!on_display_pomodoro_");
-    }
-    if (!on_display_pomodoro_break_) {
-        return error("!on_display_pomodoro_break_");
+    std::string missing = findMissingCallbacks();
+    if (!missing.empty()) {
+        logger.error(missing);
+        return error::kMissingUICallbacks;
     }
     return noError;
+}
+
+std::string GUI::findMissingCallbacks() {
+    std::stringstream ss;
+    if (!on_display_app_) {
+        ss << "!on_display_app_ ";
+    }
+    if (!on_display_error_) {
+        ss << "!on_display_error_ ";
+    }
+    if (!on_display_online_state_) {
+        ss << "!on_display_online_state_ ";
+    }
+    if (!on_display_login_) {
+        ss << "!on_display_login_ ";
+    }
+    if (!on_display_url_) {
+        ss << "!on_display_url_ ";
+    }
+    if (!on_display_reminder_) {
+        ss << "!on_display_reminder_ ";
+    }
+    if (!on_display_time_entry_list_) {
+        ss << "!on_display_time_entry_list_ ";
+    }
+    if (!on_display_time_entry_autocomplete_) {
+        ss << "!on_display_time_entry_autocomplete_ ";
+    }
+    if (!on_display_project_autocomplete_) {
+        ss << "!on_display_project_autocomplete_ ";
+    }
+    if (!on_display_workspace_select_) {
+        ss << "!on_display_workspace_select_ ";
+    }
+    if (!on_display_client_select_) {
+        ss << "!on_display_client_select_ ";
+    }
+    if (!on_display_tags_) {
+        ss << "!on_display_tags_ ";
+    }
+    if (!on_display_time_entry_editor_) {
+        ss << "!on_display_time_entry_editor_ ";
+    }
+    if (!on_display_settings_) {
+        ss << "!on_display_settings_ ";
+    }
+    if (!on_display_timer_state_) {
+        ss << "!on_display_timer_state_ ";
+    }
+    if (!on_display_idle_notification_) {
+        ss << "!on_display_idle_notification_ ";
+    }
+    if (!on_display_mini_timer_autocomplete_) {
+        ss << "!on_display_mini_timer_autocomplete_ ";
+    }
+    if (!on_display_pomodoro_) {
+        ss << "!on_display_pomodoro_ ";
+    }
+    if (!on_display_pomodoro_break_) {
+        ss << "!on_display_pomodoro_break_ ";
+    }
+    return ss.str();
 }
 
 void GUI::DisplayReminder() {

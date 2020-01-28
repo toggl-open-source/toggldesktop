@@ -336,7 +336,7 @@ TogglTimeEntryView *time_entry_view_item_init(
     view_item->Locked = te.Locked;
 
     if (te.Error != toggl::noError) {
-        view_item->Error = copy_string(te.Error);
+        view_item->Error = copy_string(te.Error.String());
     } else {
         view_item->Error = nullptr;
     }

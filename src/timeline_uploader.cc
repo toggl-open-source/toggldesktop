@@ -135,11 +135,11 @@ error TimelineUploader::start() {
     try {
         uploading_.start();
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     return noError;
 }
@@ -151,11 +151,11 @@ error TimelineUploader::Shutdown() {
             uploading_.wait();
         }
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     return noError;
 }

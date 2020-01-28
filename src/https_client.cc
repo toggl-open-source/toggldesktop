@@ -11,6 +11,7 @@
 #include "netconf.h"
 #include "urls.h"
 #include "toggl_api.h"
+#include "util/error.h"
 
 #include <Poco/DeflatingStream.h>
 #include <Poco/Environment.h>
@@ -118,10 +119,10 @@ void ServerStatus::runActivity() {
 
 error ServerStatus::Status() {
     if (gone_) {
-        return kEndpointGoneError;
+        return error::kEndpointGoneError;
     }
     if (checker_.isRunning() && !checker_.isStopped()) {
-        return kBackendIsDownError;
+        return error::kBackendIsDownError;
     }
     return noError;
 }
@@ -149,51 +150,6 @@ Logger HTTPSClient::logger() const {
 
 bool HTTPSClient::isRedirect(const Poco::Int64 status_code) const {
     return (status_code >= 300 && status_code < 400);
-}
-
-error HTTPSClient::statusCodeToError(const Poco::Int64 status_code) const {
-    switch (status_code) {
-    case 200:
-    case 201:
-    case 202:
-        return noError;
-    case 400:
-        // data that you sending is not valid/acceptable
-        return kBadRequestError;
-    case 401:
-        // ask user to enter login again, do not obtain new token automatically
-        return kUnauthorizedError;
-    case 402:
-        // requested action allowed only for pro workspace show user upsell
-        // page / ask for workspace pro upgrade. do not retry same request
-        // unless known that client is pro
-        return kPaymentRequiredError;
-    case 403:
-        // client has no right to perform given request. Server
-        return kForbiddenError;
-    case 404:
-        // request is not possible
-        // (or not allowed and server does not tell why)
-        return kRequestIsNotPossible;
-    case 410:
-        return kEndpointGoneError;
-    case 418:
-        return kUnsupportedAppError;
-    case 429:
-        return kCannotConnectError;
-    case 500:
-        return kBackendIsDownError;
-    case 501:
-    case 502:
-    case 503:
-    case 504:
-    case 505:
-        return kBackendIsDownError;
-    }
-
-    logger().error("Unexpected HTTP status code: ", status_code);
-
-    return kCannotConnectError;
 }
 
 HTTPSResponse HTTPSClient::Post(
@@ -231,7 +187,7 @@ HTTPSResponse HTTPSClient::request(
     HTTPSRequest req) const {
     HTTPSResponse resp = makeHttpRequest(req);
 
-    if (kCannotConnectError == resp.err && isRedirect(resp.status_code)) {
+    if (resp.err == error::kCannotConnectError && isRedirect(resp.status_code)) {
         // Reattempt request to the given location.
         Poco::URI uri(resp.body);
 
@@ -250,12 +206,12 @@ HTTPSResponse HTTPSClient::makeHttpRequest(
     HTTPSResponse resp;
 
     if (!urls::RequestsAllowed()) {
-        resp.err = error(kCannotSyncInTestEnv);
+        resp.err = error::kCannotSyncInTestEnv;
         return resp;
     }
 
     if (urls::ImATeapot()) {
-        resp.err = error(kUnsupportedAppError);
+        resp.err = error::kUnsupportedAppError;
         return resp;
     }
 
@@ -265,25 +221,25 @@ HTTPSResponse HTTPSClient::makeHttpRequest(
         if (cit->second >= Poco::Timestamp()) {
             logger().warning(
                 "Cannot connect, because we made too many requests");
-            resp.err = kCannotConnectError;
+            resp.err = error::kCannotConnectError;
             return resp;
         }
     }
 
     if (req.host.empty()) {
-        resp.err = error("Cannot make a HTTP request without a host");
+        resp.err = error::kMissingArgument;
         return resp;
     }
     if (req.method.empty()) {
-        resp.err = error("Cannot make a HTTP request without a method");
+        resp.err = error::kMissingArgument;
         return resp;
     }
     if (req.relative_url.empty()) {
-        resp.err = error("Cannot make a HTTP request without a relative URL");
+        resp.err = error::kMissingArgument;
         return resp;
     }
     if (HTTPSClient::Config.CACertPath.empty()) {
-        resp.err = error("Cannot make a HTTP request without certificates");
+        resp.err = error::kMissingArgument;
         return resp;
     }
 
@@ -321,7 +277,8 @@ HTTPSResponse HTTPSClient::makeHttpRequest(
 
         error err = Netconf::ConfigureProxy(req.host + encoded_url, &session);
         if (err != noError) {
-            resp.err = error("Error while configuring proxy: " + err);
+            logger().log("Error while configuring proxy: ", err.String());
+            resp.err = err;
             logger().error(resp.err);
             return resp;
         }
@@ -443,7 +400,7 @@ HTTPSResponse HTTPSClient::makeHttpRequest(
                            ". So we cannot make new requests until ", Formatter::Format8601(ts));
         }
 
-        resp.err = statusCodeToError(resp.status_code);
+        resp.err = Error::fromHttpStatus(resp.status_code);
 
         // Parse human-readable error message from response if Content Type JSON
         if (resp.err != noError &&
@@ -455,13 +412,13 @@ HTTPSResponse HTTPSClient::makeHttpRequest(
             }
         }
     } catch(const Poco::Exception& exc) {
-        resp.err = exc.displayText();
+        resp.err = error::REMOVE_LATER_EXCEPTION_HANDLER;
         return resp;
     } catch(const std::exception& ex) {
-        resp.err = ex.what();
+        resp.err = error::REMOVE_LATER_EXCEPTION_HANDLER;
         return resp;
     } catch(const std::string & ex) {
-        resp.err = ex;
+        resp.err = error::REMOVE_LATER_EXCEPTION_HANDLER;
         return resp;
     }
     return resp;

@@ -54,7 +54,7 @@ void RelatedData::Clear() {
 
 error RelatedData::DeleteAutotrackerRule(const Poco::Int64 local_id) {
     if (!local_id) {
-        return error("cannot delete rule without an ID");
+        return error::kDeleteRuleWithoutID;
     }
     for (std::vector<AutotrackerRule *>::iterator it =
         AutotrackerRules.begin();

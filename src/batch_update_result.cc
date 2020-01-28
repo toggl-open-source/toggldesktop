@@ -14,12 +14,12 @@ error BatchUpdateResult::Error() const {
         return noError;
     }
     if ("null" != Body) {
-        return Body;
+        return error::REMOVE_LATER_BATCH_UPDATE_ERROR;
     }
     std::stringstream ss;
     ss  << "Request failed with status code "
         << StatusCode;
-    return ss.str();
+    return error::REMOVE_LATER_BATCH_UPDATE_ERROR;
 }
 
 std::string BatchUpdateResult::String() const {
@@ -101,7 +101,7 @@ error BatchUpdateResult::ParseResponseArray(
     Json::Value root;
     Json::Reader reader;
     if (!reader.parse(response_body, root)) {
-        return error("error parsing batch update response");
+        return error::kFailedToParseData;
     }
 
     for (unsigned int i = 0; i < root.size(); i++) {

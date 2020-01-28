@@ -90,7 +90,7 @@ Database::Database(const std::string &db_path)
         "time_entries", start.timestamp());
 
     if (err != noError) {
-        logger.error("failed to clean Up Time Entries Data: " + err);
+        logger.error("failed to clean Up Time Entries Data: " + err.String());
         // but will continue, its not vital
     }
 
@@ -102,13 +102,13 @@ Database::Database(const std::string &db_path)
         timeline_start.timestamp());
 
     if (err != noError) {
-        logger.error("failed to clean Up Timeline Events Data: " + err);
+        logger.error("failed to clean Up Timeline Events Data: " + err.String());
         // but will continue, its not vital
     }
 
     err = vacuum();
     if (err != noError) {
-        logger.error("failed to vacuum: " + err);
+        logger.error("failed to vacuum: " + err.String());
         // but will continue, its not vital
     }
 
@@ -199,12 +199,8 @@ error Database::deleteAllFromTableByUID(
     const std::string &table_name,
     const Poco::UInt64 &UID) {
 
-
-    if (!UID) {
-        return error("Cannot delete user data without user ID");
-    }
-    if (table_name.empty()) {
-        return error("Cannot delete from table without table name");
+    if (!UID || table_name.empty()) {
+        return error::kMissingArgument;
     }
 
     try {
@@ -217,11 +213,11 @@ error Database::deleteAllFromTableByUID(
                   useRef(UID),
                   now;
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     return last_error("deleteAllFromTableByUID");
 }
@@ -231,7 +227,7 @@ error Database::deleteAllFromTableByDate(
     const Poco::Timestamp &time) {
 
     if (table_name.empty()) {
-        return error("Cannot delete from table without table name");
+        return error::kMissingArgument;
     }
 
     const Poco::Int64 stopTime = time.epochTime();
@@ -247,11 +243,11 @@ error Database::deleteAllFromTableByDate(
                   useRef(stopTime),
                   now;
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     return last_error("deleteAllFromTableByDate");
 }
@@ -271,11 +267,11 @@ error Database::deleteAllSyncedTimelineEventsByDate(
                   useRef(endTime),
                   now;
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     return last_error("deleteAllSyncedTimelineEventsByDate");
 }
@@ -293,18 +289,18 @@ error Database::journalMode(std::string *mode) {
                   into(*mode),
                   now;
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     return last_error("journalMode");
 }
 
 error Database::setJournalMode(const std::string &mode) {
     if (mode.empty()) {
-        return error("Cannot set journal mode without a mode");
+        return error::kMissingArgument;
     }
 
 
@@ -316,11 +312,11 @@ error Database::setJournalMode(const std::string &mode) {
                   "PRAGMA journal_mode=" << mode,
                   now;
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     return last_error("setJournalMode");
 }
@@ -333,11 +329,11 @@ error Database::vacuum() {
         *session_ <<
                   "VACUUM;" << now;
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     return last_error("vacuum");
 }
@@ -347,7 +343,7 @@ error Database::DeleteFromTable(
     const Poco::Int64 &local_id) {
 
     if (table_name.empty()) {
-        return error("Cannot delete from table without table name");
+        return error::kMissingArgument;
     }
 
     if (!local_id) {
@@ -366,11 +362,11 @@ error Database::DeleteFromTable(
                   useRef(local_id),
                   now;
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     return last_error("DeleteFromTable");
 }
@@ -382,7 +378,8 @@ error Database::last_error(const std::string &was_doing) {
 
     std::string last = Poco::Data::SQLite::Utility::lastError(*session_);
     if (last != "not an error" && last != "unknown error") {
-        return error(was_doing + ": " + last);
+        //return error(was_doing + ": " + last);
+        return error::REMOVE_LATER_DATABASE_LAST_ERROR;
     }
     return noError;
 }
@@ -465,11 +462,11 @@ error Database::LoadSettings(Settings *settings) {
                   limit(1),
                   now;
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     return last_error("LoadSettings");
 }
@@ -497,11 +494,11 @@ error Database::SaveWindowSettings(
                   useRef(window_width),
                   now;
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
 
     return last_error("SaveWindowSettings");
@@ -559,11 +556,11 @@ error Database::LoadWindowSettings(
         *window_height = height;
         *window_width = width;
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     return last_error("LoadWindowSettings");
 }
@@ -597,11 +594,11 @@ error Database::LoadProxySettings(
         proxy->SetUsername(username);
         proxy->SetPassword(password);
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     return last_error("LoadProxySettings");
 }
@@ -721,11 +718,11 @@ error Database::SetSettingsRemindTimes(
                   useRef(remind_ends),
                   now;
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
 
     return last_error("SetSettingsRemindTimes");
@@ -763,11 +760,11 @@ error Database::SetSettingsRemindDays(
                   useRef(remind_sun),
                   now;
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
 
     return last_error("SetSettingsRemindDays");
@@ -868,11 +865,11 @@ error Database::setSettingsValue(
                   useRef(value),
                   now;
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     return last_error("setSettingsValue");
 }
@@ -894,11 +891,11 @@ error Database::getSettingsValue(
                   limit(1),
                   now;
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     return last_error("getSettingsValue");
 }
@@ -953,11 +950,11 @@ error Database::SaveProxySettings(
                   useRef(proxy.Password()),
                   now;
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     return last_error("SaveProxySettings");
 }
@@ -978,11 +975,11 @@ error Database::Trim(const std::string &text, std::string *result) {
                   limit(1),
                   now;
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     return last_error("Trim");
 }
@@ -1008,11 +1005,11 @@ error Database::ResetWindow() {
                   "mini_timer_w = 0",
                   now;
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     return last_error("ResetWindow");
 }
@@ -1032,11 +1029,11 @@ error Database::LoadUpdateChannel(
                   limit(1),
                   now;
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     return last_error("LoadUpdateChannel");
 }
@@ -1047,7 +1044,7 @@ error Database::SaveUpdateChannel(
     if (update_channel != "stable" &&
             update_channel != "beta" &&
             update_channel != "dev") {
-        return error("Invalid update channel");
+        return error::kInvalidUpdateChannel;
     }
 
     return setSettingsValue("update_channel", update_channel);
@@ -1058,7 +1055,7 @@ error Database::LoadUserByEmail(
     User *model) {
 
     if (email.empty()) {
-        return error("Cannot load user by email token without an email");
+        return error::kMissingArgument;
     }
 
     Poco::UInt64 uid(0);
@@ -1088,11 +1085,11 @@ error Database::LoadUserByEmail(
             return noError;
         }
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     return LoadUserByID(uid, model);
 }
@@ -1156,7 +1153,7 @@ error Database::LoadUserByID(
     User *user) {
 
     if (!UID) {
-        return error("Cannot load user by ID without an ID");
+        return error::kMissingArgument;
     }
 
     Poco::Stopwatch stopwatch;
@@ -1233,11 +1230,11 @@ error Database::LoadUserByID(
         user->SetDefaultTID(default_tid);
         user->SetCollapseEntries(collapse_entries);
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     error err = loadUsersRelatedData(user);
     if (err != noError) {
@@ -1255,7 +1252,7 @@ error Database::loadWorkspaces(
     std::vector<Workspace *> *list) {
 
     if (!UID) {
-        return error("Cannot load user workspaces without an user ID");
+        return error::kMissingArgument;
     }
 
     try {
@@ -1301,11 +1298,11 @@ error Database::loadWorkspaces(
             }
         }
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     return last_error("loadWorkspaces");
 }
@@ -1315,7 +1312,7 @@ error Database::loadClients(
     std::vector<Client *> *list) {
 
     if (!UID) {
-        return error("Cannot load user clients without an user ID");
+        return error::kMissingArgument;
     }
 
     try {
@@ -1363,11 +1360,11 @@ error Database::loadClients(
             }
         }
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     return last_error("loadClients");
 }
@@ -1377,7 +1374,7 @@ error Database::loadProjects(
     std::vector<Project *> *list) {
 
     if (!UID) {
-        return error("Cannot load user projects without an user ID");
+        return error::kMissingArgument;
     }
 
     try {
@@ -1453,11 +1450,11 @@ error Database::loadProjects(
             }
         }
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     return last_error("loadProjects");
 }
@@ -1467,7 +1464,7 @@ error Database::loadTasks(
     std::vector<Task *> *list) {
 
     if (!UID) {
-        return error("Cannot load user tasks without an user ID");
+        return error::kMissingArgument;
     }
 
     try {
@@ -1515,11 +1512,11 @@ error Database::loadTasks(
             }
         }
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     return last_error("loadTasks");
 }
@@ -1529,7 +1526,7 @@ error Database::loadTags(
     std::vector<Tag *> *list) {
 
     if (!UID) {
-        return error("Cannot load user tags without an user ID");
+        return error::kMissingArgument;
     }
 
     try {
@@ -1576,11 +1573,11 @@ error Database::loadTags(
             }
         }
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     return last_error("loadTags");
 }
@@ -1590,7 +1587,7 @@ error Database::loadAutotrackerRules(
     std::vector<AutotrackerRule *> *list) {
 
     if (!UID) {
-        return error("Cannot load autotracker rules without an user ID");
+        return error::kMissingArgument;
     }
 
     try {
@@ -1630,11 +1627,11 @@ error Database::loadAutotrackerRules(
             }
         }
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     return last_error("loadAutotrackerRules");
 }
@@ -1644,7 +1641,7 @@ error Database::loadObmActions(
     std::vector<ObmAction *> *list) {
 
     if (!UID) {
-        return error("Cannot load OBM actions without an user ID");
+        return error::kMissingArgument;
     }
 
     try {
@@ -1682,11 +1679,11 @@ error Database::loadObmActions(
             }
         }
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     return last_error("loadObmActions");
 }
@@ -1696,7 +1693,7 @@ error Database::loadObmExperiments(
     std::vector<ObmExperiment *> *list) {
 
     if (!UID) {
-        return error("Cannot load OBM experiments without an user ID");
+        return error::kMissingArgument;
     }
 
     try {
@@ -1735,11 +1732,11 @@ error Database::loadObmExperiments(
             }
         }
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     return last_error("loadObmExperiments");
 }
@@ -1749,7 +1746,7 @@ error Database::loadTimelineEvents(
     std::vector<TimelineEvent *> *list) {
 
     if (!UID) {
-        return error("Cannot load user timeline without an user ID");
+        return error::kMissingArgument;
     }
 
     try {
@@ -1811,11 +1808,11 @@ error Database::loadTimelineEvents(
             model->EnsureGUID();
         }
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     return noError;
 }
@@ -1825,7 +1822,7 @@ error Database::loadTimeEntries(
     std::vector<TimeEntry *> *list) {
 
     if (!UID) {
-        return error("Cannot load user time entries without an user ID");
+        return error::kMissingArgument;
     }
 
     try {
@@ -1865,11 +1862,11 @@ error Database::loadTimeEntries(
             }
         }
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     return noError;
 }
@@ -1952,9 +1949,9 @@ error Database::loadTimeEntriesFromSQLStatement(
                     model->SetProjectGUID(rs[18].convert<std::string>());
                 }
                 if (rs[19].isEmpty()) {
-                    model->SetValidationError("");
+                    model->SetValidationError(error::kNoError);
                 } else {
-                    model->SetValidationError(rs[19].convert<std::string>());
+                    model->SetValidationError(error::fromString(rs[19].convert<std::string>()));
                 }
                 model->ClearDirty();
 
@@ -1963,11 +1960,11 @@ error Database::loadTimeEntriesFromSQLStatement(
             }
         }
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     return noError;
 }
@@ -1980,7 +1977,7 @@ error Database::saveRelatedModels(
     std::vector<ModelChange> *changes) {
 
     if (!UID) {
-        return error("Cannot save user related data without an user ID");
+        return error::kMissingArgument;
     }
 
     poco_check_ptr(list);
@@ -2037,9 +2034,6 @@ error Database::saveModel(
         // Time entries need to have a GUID,
         // we expect it everywhere in the UI
         model->EnsureGUID();
-        if (model->GUID().empty()) {
-            return error("Cannot save time entry without a GUID");
-        }
 
         if (!model->NeedsToBeSaved()) {
             return noError;
@@ -2084,7 +2078,7 @@ error Database::saveModel(
                           useRef(model->DeletedAt()),
                           useRef(model->UpdatedAt()),
                           useRef(model->ProjectGUID()),
-                          useRef(model->ValidationError()),
+                          model->ValidationError().String(),
                           useRef(model->LocalID()),
                           now;
             } else {
@@ -2119,7 +2113,7 @@ error Database::saveModel(
                           useRef(model->DeletedAt()),
                           useRef(model->UpdatedAt()),
                           useRef(model->ProjectGUID()),
-                          useRef(model->ValidationError()),
+                          model->ValidationError().String(),
                           useRef(model->LocalID()),
                           now;
             }
@@ -2174,7 +2168,7 @@ error Database::saveModel(
                           useRef(model->DeletedAt()),
                           useRef(model->UpdatedAt()),
                           useRef(model->ProjectGUID()),
-                          useRef(model->ValidationError()),
+                          model->ValidationError().String(),
                           now;
             } else {
                 *session_ <<
@@ -2208,7 +2202,7 @@ error Database::saveModel(
                           useRef(model->DeletedAt()),
                           useRef(model->UpdatedAt()),
                           useRef(model->ProjectGUID()),
-                          useRef(model->ValidationError()),
+                          model->ValidationError().String(),
                           now;
             }
             error err = last_error("saveTimeEntry");
@@ -2233,11 +2227,11 @@ error Database::saveModel(
         }
         model->ClearDirty();
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     return noError;
 }
@@ -2272,13 +2266,16 @@ error Database::saveModel(
         }
 
         if (!model->UID()) {
-            return error("Cannot save timeline event without an user ID");
+            //return error("Cannot save timeline event without an user ID");
+            return error::REMOVE_LATER_DATABASE_STORE_ERROR;
         }
         if (!model->Start()) {
-            return error("Cannot save timeline event without start time");
+            //return error("Cannot save timeline event without start time");
+            return error::REMOVE_LATER_DATABASE_STORE_ERROR;
         }
         if (!model->EndTime()) {
-            return error("Cannot save timeline event without end time");
+            //return error("Cannot save timeline event without end time");
+            return error::REMOVE_LATER_DATABASE_STORE_ERROR;
         }
 
         Poco::Int64 start_time(model->Start());
@@ -2386,11 +2383,11 @@ error Database::saveModel(
 
         model->ClearDirty();
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     return noError;
 }
@@ -2474,11 +2471,11 @@ error Database::saveModel(
 
         model->ClearDirty();
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     return noError;
 }
@@ -2564,11 +2561,11 @@ error Database::saveModel(
 
         model->ClearDirty();
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     return noError;
 }
@@ -2659,11 +2656,11 @@ error Database::saveModel(
         }
         model->ClearDirty();
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     return noError;
 }
@@ -2681,7 +2678,8 @@ error Database::saveModel(
         if (!model->ID()) {
             model->EnsureGUID();
             if (model->GUID().empty()) {
-                return error("Cannot save new cient without a GUID");
+                //return error("Cannot save new cient without a GUID");
+                return error::REMOVE_LATER_DATABASE_STORE_ERROR;
             }
         }
 
@@ -2774,11 +2772,11 @@ error Database::saveModel(
         }
         model->ClearDirty();
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     return noError;
 }
@@ -2796,7 +2794,8 @@ error Database::saveModel(
         if (!model->ID()) {
             model->EnsureGUID();
             if (model->GUID().empty()) {
-                return error("Cannot save project without a GUID");
+                //return error("Cannot save project without a GUID");
+                return error::REMOVE_LATER_DATABASE_STORE_ERROR;
             }
         }
 
@@ -3015,11 +3014,11 @@ error Database::saveModel(
         }
         model->ClearDirty();
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     return noError;
 }
@@ -3092,11 +3091,11 @@ error Database::saveModel(
         }
         model->ClearDirty();
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     return noError;
 }
@@ -3197,11 +3196,11 @@ error Database::saveModel(
         }
         model->ClearDirty();
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     return noError;
 }
@@ -3226,13 +3225,16 @@ error Database::SaveUser(
     stopwatch.start();
 
     if (user->Email().empty()) {
-        return error("Missing user e-mail, cannot save user");
+        //return error("Missing user e-mail, cannot save user");
+        return error::REMOVE_LATER_DATABASE_STORE_ERROR;
     }
     if (user->APIToken().empty()) {
-        return error("Missing user API token, cannot save user");
+        //return error("Missing user API token, cannot save user");
+        return error::REMOVE_LATER_DATABASE_STORE_ERROR;
     }
     if (!user->ID()) {
-        return error("Missing user ID, cannot save user");
+        //return error("Missing user ID, cannot save user");
+        return error::REMOVE_LATER_DATABASE_STORE_ERROR;
     }
 
     session_->begin();
@@ -3334,13 +3336,13 @@ error Database::SaveUser(
             user->ClearDirty();
         } catch(const Poco::Exception& exc) {
             session_->rollback();
-            return exc.displayText();
+            return error::REMOVE_LATER_EXCEPTION_HANDLER;
         } catch(const std::exception& ex) {
             session_->rollback();
-            return ex.what();
+            return error::REMOVE_LATER_EXCEPTION_HANDLER;
         } catch(const std::string & ex) {
             session_->rollback();
-            return ex;
+            return error::REMOVE_LATER_EXCEPTION_HANDLER;
         }
     }
 
@@ -3575,11 +3577,11 @@ error Database::CurrentAPIToken(
                   limit(1),
                   now;
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     return last_error("CurrentAPIToken");
 }
@@ -3593,11 +3595,11 @@ error Database::ClearCurrentAPIToken() {
         *session_ <<
                   "delete from sessions", now;
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     return last_error("ClearCurrentAPIToken");
 }
@@ -3608,11 +3610,8 @@ error Database::SetCurrentAPIToken(
     try {
         Poco::Mutex::ScopedLock lock(session_m_);
 
-        if (token.empty()) {
-            return error("cannot start session without API token");
-        }
-        if (!uid) {
-            return error("cannot start session without user ID");
+        if (token.empty() || !uid) {
+            return error::kMissingArgument;
         }
 
         poco_check_ptr(session_);
@@ -3629,11 +3628,11 @@ error Database::SetCurrentAPIToken(
                   useRef(uid),
                   now;
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     return last_error("SetCurrentAPIToken");
 }
@@ -3672,11 +3671,11 @@ error Database::EnsureTimelineGUIDS() {
             }
         }
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
 }
 
@@ -3731,11 +3730,11 @@ error Database::saveAnalyticsClientID() {
                   useRef(analytics_client_id_),
                   now;
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     return last_error("saveAnalyticsClientID");
 }
@@ -3768,11 +3767,11 @@ error Database::LoadMigrations(
             }
         }
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     return last_error("LoadMigrations");
 }
@@ -3781,11 +3780,8 @@ error Database::Migrate(
     const std::string &name,
     const std::string &sql) {
 
-    if (name.empty()) {
-        return error("Cannot run a migration without name");
-    }
-    if (sql.empty()) {
-        return error("Cannot run a migration without SQL");
+    if (name.empty() || sql.empty()) {
+        return error::kMissingArgument;
     }
 
     try {
@@ -3824,21 +3820,18 @@ error Database::Migrate(
             return err;
         }
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     return noError;
 }
 
-error Database::execute(
-    const std::string &sql) {
-
-
+error Database::execute(const std::string &sql) {
     if (sql.empty()) {
-        return error("Cannot execute empty SQL");
+        return error::kMissingArgument;
     }
 
     try {
@@ -3852,11 +3845,11 @@ error Database::execute(
             return err;
         }
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     return noError;
 }
@@ -3866,7 +3859,7 @@ error Database::String(
     std::string *result) {
 
     if (sql.empty()) {
-        return error("Cannot select from database with empty SQL");
+        return error::kMissingArgument;
     }
 
     try {
@@ -3881,21 +3874,18 @@ error Database::String(
         now;
         *result = value;
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     return last_error("String");
 }
 
-error Database::UInt(
-    const std::string &sql,
-    Poco::UInt64 *result) {
-
+error Database::UInt(const std::string &sql, Poco::UInt64 *result) {
     if (sql.empty()) {
-        return error("Cannot select a numeric from database with empty SQL");
+        return error::kMissingArgument;
     }
 
     try {
@@ -3910,11 +3900,11 @@ error Database::UInt(
         now;
         *result = value;
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     return last_error("UInt");
 }
@@ -3931,11 +3921,11 @@ error Database::saveDesktopID() {
                   useRef(desktop_id_),
                   now;
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     return last_error("saveDesktopID");
 }
@@ -4027,11 +4017,11 @@ error Database::saveModel(
 
         model->ClearDirty();
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     return noError;
 }
