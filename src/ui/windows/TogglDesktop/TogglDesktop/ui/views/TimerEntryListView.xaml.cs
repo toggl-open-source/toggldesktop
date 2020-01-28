@@ -192,6 +192,8 @@ namespace TogglDesktop
         public void Activate(bool allowAnimation)
         {
             this.IsEnabled = true;
+            var focusTimerAction = new Action(() => { this.Timer.Focus(); });
+            this.Dispatcher.BeginInvoke(DispatcherPriority.SystemIdle, focusTimerAction);
         }
 
         public void Deactivate(bool allowAnimation)
