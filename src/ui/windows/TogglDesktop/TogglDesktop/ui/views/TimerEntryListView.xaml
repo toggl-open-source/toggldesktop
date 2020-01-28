@@ -12,21 +12,21 @@
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <Border Grid.Row="0" Height="1" HorizontalAlignment="Stretch" VerticalAlignment="Bottom"
+        <toggl:TimeEntryList Grid.Row="1"
+                             x:Name="Entries"
+                             FocusTimer="onFocusTimer"
+                             Background="{DynamicResource Toggl.TimeEntryListBackground}"/>
+
+        <Border Grid.Row="0" Height="1" VerticalAlignment="Bottom"
                 Background="{Binding ElementName=Timer, Path=Background}">
             <Border.Effect>
-                <DropShadowEffect Direction="270" Color="{DynamicResource Toggl.BlackColor}" Opacity="1"
+                <DropShadowEffect Direction="270" Color="{DynamicResource Toggl.BlackColor}" Opacity="0.2"
                                   BlurRadius="4" ShadowDepth="1" />
             </Border.Effect>
         </Border>
 
         <toggl:Timer Grid.Row="0"
-            x:Name="Timer"
-            FocusTimeEntryList="onFocusTimeEntryList" />
-
-        <toggl:TimeEntryList Grid.Row="1"
-                             x:Name="Entries"
-                             FocusTimer="onFocusTimer"
-                             Background="{DynamicResource Toggl.TimeEntryListBackground}"/>
+                     x:Name="Timer"
+                     FocusTimeEntryList="onFocusTimeEntryList" />
     </Grid>
 </UserControl>
