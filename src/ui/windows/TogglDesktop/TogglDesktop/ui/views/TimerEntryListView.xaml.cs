@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media;
+using System.Windows.Threading;
 using TogglDesktop.Diagnostics;
 using TogglDesktop.ViewModels;
 
@@ -10,8 +11,6 @@ namespace TogglDesktop
 {
     public partial class TimerEntryListView : IMainView
     {
-        // private string highlightedGUID;
-
         public TimerEntryListView()
         {
             this.InitializeComponent();
@@ -57,10 +56,11 @@ namespace TogglDesktop
 
             if (open)
             {
-                this.Entries.Focus(false);
-                //this.Entries.RemoveFocus();
-                // this.DisableHighlight();
-                this.Entries.DeselectCells();
+                if (this.Entries.IsAnyCellSelected)
+                {
+                    this.Entries.Focus(false);
+                    this.Entries.DeselectCells();
+                }
             }
         }
 
@@ -72,12 +72,6 @@ namespace TogglDesktop
             using (Performance.Measure("highlighting cell in list"))
             {
                 this.Entries.SelectEntry(te.GUID);
-                // this.selectEntry(te.GUID);
-                // this.highlightEntry(te.GUID);
-                // if (open)
-                // {
-                //     this.Entries.HighlightKeyboard(te.GUID);
-                // }
             }
         }
 
@@ -94,9 +88,7 @@ namespace TogglDesktop
                 var dayHeaderViewModels = this.fillDays(days);
 
                 this.Entries.FinishedFillingList();
-                // this.Entries.SetTimeEntryCellList(cells);
                 this.Entries.SetDayHeaderViewModels(dayHeaderViewModels);
-                // this.refreshHighLight();
             }
         }
 

@@ -23,6 +23,7 @@ namespace TogglDesktop
         private TimeEntryCellViewModel _selectedCell;
 
         private bool IsAnyCellFocused => FocusedCellIndex >= 0;
+        public bool IsAnyCellSelected => _selectedCell != null;
 
         private TimeEntryCellViewModel GetFocusedCell()
         {
@@ -354,8 +355,7 @@ namespace TogglDesktop
         {
             if (FocusedCellIndex >= 0) return false; // cell is selected
             if (FocusedDayIndex < 0) return false; // nothing is selected
-            var dayToExpand = _days[FocusedDayIndex];
-            dayToExpand.Expand();
+            _days[FocusedDayIndex].Expand();
             return true;
         }
 
@@ -373,8 +373,7 @@ namespace TogglDesktop
                 return;
             }
 
-            var guidOfCellToEdit = focusedCell.Guid;
-            Toggl.Edit(guidOfCellToEdit, false, "");
+            Toggl.Edit(focusedCell.Guid, false, "");
         }
 
         private void onExpandSelectedItem(object sender, ExecutedRoutedEventArgs e)
