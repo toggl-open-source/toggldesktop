@@ -920,17 +920,20 @@ namespace TogglDesktop
         private void setActiveView(IMainView activeView)
         {
             if (activeView == null)
-                throw new ArgumentNullException("activeView");
+                throw new ArgumentNullException(nameof(activeView));
 
-            var hadActiveView = this.activeView != null;
-            if (hadActiveView)
+            if (this.activeView != activeView)
             {
-                this.activeView.Deactivate(true);
+                var hadActiveView = this.activeView != null;
+
+                if (hadActiveView)
+                {
+                    this.activeView.Deactivate(true);
+                }
+
+                this.activeView = activeView;
+                this.activeView.Activate(hadActiveView);
             }
-
-            this.activeView = activeView;
-
-            this.activeView.Activate(hadActiveView);
 
             this.closeEditPopup();
 
