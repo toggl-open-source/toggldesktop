@@ -16,7 +16,7 @@ protocol TimelineActivityRecorderViewControllerDelegate: class {
 final class TimelineActivityRecorderViewController: LayerBackedViewController {
 
     private struct Constants {
-        static let LearnMoreURL = "https://toggl.com"
+        static let LearnMoreURL = "https://support.toggl.com/en/articles/2410817-toggl-desktop-for-mac#timeline"
     }
 
     // MARK: OUTLET

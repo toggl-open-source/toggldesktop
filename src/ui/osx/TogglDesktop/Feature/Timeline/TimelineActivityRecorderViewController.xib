@@ -17,19 +17,19 @@
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customView id="Hz6-mo-xeY">
-            <rect key="frame" x="0.0" y="0.0" width="280" height="152"/>
+            <rect key="frame" x="0.0" y="0.0" width="280" height="194"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <box boxType="custom" borderWidth="0.0" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="T3n-pW-blV">
-                    <rect key="frame" x="0.0" y="0.0" width="280" height="152"/>
+                    <rect key="frame" x="0.0" y="0.0" width="280" height="194"/>
                     <view key="contentView" id="1AW-eL-rXq">
-                        <rect key="frame" x="0.0" y="0.0" width="280" height="152"/>
+                        <rect key="frame" x="0.0" y="0.0" width="280" height="194"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     </view>
                     <color key="fillColor" name="timeline-record-activity-tooltip-background-color"/>
                 </box>
                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="Kql-9K-WpU">
-                    <rect key="frame" x="13" y="105" width="237" height="32"/>
+                    <rect key="frame" x="13" y="147" width="237" height="32"/>
                     <textFieldCell key="cell" selectable="YES" title="Having troubles recalling what you were working on?" id="OwG-GB-Vwe">
                         <font key="font" metaFont="systemBold"/>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -37,17 +37,18 @@
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="hbg-8k-tad">
-                    <rect key="frame" x="13" y="15" width="237" height="75"/>
+                    <rect key="frame" x="13" y="42" width="237" height="90"/>
                     <textFieldCell key="cell" selectable="YES" id="MGI-u3-Rge">
                         <font key="font" metaFont="controlContent"/>
                         <string key="title">Record your computer activity and revisit it later in the day to fill in gaps in your Timeline.
 
-All data is private. Only you can see it.</string>
+All data is private. Only you can see it.
+</string>
                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <button hidden="YES" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="nLv-32-T4U">
+                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="nLv-32-T4U">
                     <rect key="frame" x="15" y="15" width="70" height="15"/>
                     <buttonCell key="cell" type="bevel" title="Learn more" bezelStyle="rounded" alignment="center" refusesFirstResponder="YES" imageScaling="proportionallyDown" inset="2" id="m5o-jP-szP">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -59,7 +60,7 @@ All data is private. Only you can see it.</string>
                     </connections>
                 </button>
                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="k1d-FN-xrL">
-                    <rect key="frame" x="252" y="124" width="24" height="24"/>
+                    <rect key="frame" x="252" y="166" width="24" height="24"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="24" id="gxo-Am-YFc"/>
                         <constraint firstAttribute="width" constant="24" id="qWv-fW-ukB"/>
@@ -72,7 +73,7 @@ All data is private. Only you can see it.</string>
                         <action selector="closeBtnOnTap:" target="-2" id="Icf-Jw-Vms"/>
                     </connections>
                 </button>
-                <box hidden="YES" boxType="custom" borderType="none" borderWidth="0.0" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="7Hw-10-QYc">
+                <box boxType="custom" borderType="none" borderWidth="0.0" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="7Hw-10-QYc">
                     <rect key="frame" x="17" y="14" width="66" height="1"/>
                     <view key="contentView" id="Zk6-MG-H0T">
                         <rect key="frame" x="0.0" y="0.0" width="66" height="1"/>
@@ -96,7 +97,6 @@ All data is private. Only you can see it.</string>
                 <constraint firstItem="hbg-8k-tad" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="15" id="OmT-hQ-aJ2"/>
                 <constraint firstItem="nLv-32-T4U" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="15" id="Swh-BY-SBi"/>
                 <constraint firstAttribute="bottom" secondItem="T3n-pW-blV" secondAttribute="bottom" id="VmW-km-Els"/>
-                <constraint firstAttribute="bottom" secondItem="hbg-8k-tad" secondAttribute="bottom" constant="15" id="Xh3-my-t8M"/>
                 <constraint firstItem="T3n-pW-blV" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" id="aLt-Jn-GFz"/>
                 <constraint firstAttribute="trailing" secondItem="T3n-pW-blV" secondAttribute="trailing" id="g3e-w7-gKz"/>
                 <constraint firstAttribute="trailing" secondItem="Kql-9K-WpU" secondAttribute="trailing" constant="32" id="iQt-Zt-T9U"/>
