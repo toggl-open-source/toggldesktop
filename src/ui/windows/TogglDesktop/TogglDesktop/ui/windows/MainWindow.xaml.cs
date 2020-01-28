@@ -434,7 +434,7 @@ namespace TogglDesktop
                 return;
 
             this.overlayView.setType((int)type);
-            this.setActiveView(this.overlayView);   
+            this.setActiveView(this.overlayView);
         }
 
         private void onError(string errmsg, bool userError)
@@ -854,10 +854,13 @@ namespace TogglDesktop
             {
                 // TODO: consider saving popup open state and restoring when window is shown
                 this.editPopup.ClosePopup(skipAnimation);
-                this.timerEntryListView.Entries.ClearSavedFocus();
                 if (focusTimeEntryList)
                 {
                     Toggl.ViewTimeEntryList();
+                }
+                else if (this.activeView == this.timerEntryListView && !this.timerEntryListView.Entries.IsKeyboardFocusWithin)
+                {
+                    this.timerEntryListView.Timer.Focus();
                 }
             }
         }
