@@ -7,7 +7,7 @@
 
     <UserControl.Resources>
         <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
-            <Setter Property="Foreground" Value="white"/>
+            <Setter Property="Foreground" Value="{DynamicResource Toggl.PrimaryTextBrush}"/>
             <Setter Property="Margin" Value="14 2 6 2"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
