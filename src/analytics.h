@@ -5,12 +5,12 @@
 
 #include <string>
 
-#include "Poco/Task.h"
-#include "Poco/TaskManager.h"
-#include "Poco/LocalDateTime.h"
-#include "./proxy.h"
-#include "./settings.h"
-#include "./rectangle.h"
+#include <Poco/Task.h>
+#include <Poco/TaskManager.h>
+#include <Poco/LocalDateTime.h>
+#include "proxy.h"
+#include "settings.h"
+#include "rectangle.h"
 
 namespace toggl {
 

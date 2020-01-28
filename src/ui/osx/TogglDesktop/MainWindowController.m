@@ -10,7 +10,6 @@
 #import <Carbon/Carbon.h>
 #import "LoginViewController.h"
 #import "OverlayViewController.h"
-#import "TimelineViewController.h"
 #import "TimeEntryViewItem.h"
 #import "UIEvents.h"
 #import "DisplayCommand.h"
@@ -362,6 +361,16 @@ extern void *ctx;
 - (IBAction)showTimelineTabBtnOnTap:(id)sender
 {
     [self.mainDashboardViewController timelineBtnOnTap:sender];
+}
+
+- (IBAction)nextDayMenuOnClick:(id)sender
+{
+    [self.mainDashboardViewController nextDay];
+}
+
+- (IBAction)previouosDayMenuOnClick:(id)sender
+{
+    [self.mainDashboardViewController previousDay];
 }
 
 #pragma mark - In app message

@@ -3,7 +3,7 @@
 #ifndef SRC_CUSTOM_ERROR_HANDLER_H_
 #define SRC_CUSTOM_ERROR_HANDLER_H_
 
-#include "Poco/ErrorHandler.h"
+#include <Poco/ErrorHandler.h>
 #include <iostream> // NOLINT
 
 class custom_error_handler : public Poco::ErrorHandler {

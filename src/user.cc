@@ -1,38 +1,38 @@
 // Copyright 2014 Toggl Desktop developers.
 
-#include "../src/user.h"
+#include "user.h"
 
 #include <time.h>
 
 #include <sstream>
 
-#include "./client.h"
-#include "./const.h"
-#include "./formatter.h"
-#include "./https_client.h"
-#include "./obm_action.h"
-#include "./project.h"
-#include "./tag.h"
-#include "./task.h"
-#include "./time_entry.h"
-#include "./timeline_event.h"
-#include "./urls.h"
+#include "client.h"
+#include "const.h"
+#include "formatter.h"
+#include "https_client.h"
+#include "obm_action.h"
+#include "project.h"
+#include "tag.h"
+#include "task.h"
+#include "time_entry.h"
+#include "timeline_event.h"
+#include "urls.h"
 
-#include "Poco/Base64Decoder.h"
-#include "Poco/Base64Encoder.h"
-#include "Poco/Crypto/Cipher.h"
-#include "Poco/Crypto/CipherFactory.h"
-#include "Poco/Crypto/CipherKey.h"
-#include "Poco/Crypto/CryptoStream.h"
-#include "Poco/DigestStream.h"
-#include "Poco/Logger.h"
-#include "Poco/Random.h"
-#include "Poco/RandomStream.h"
-#include "Poco/SHA1Engine.h"
-#include "Poco/Stopwatch.h"
-#include "Poco/Timestamp.h"
-#include "Poco/Timespan.h"
-#include "Poco/UTF8String.h"
+#include <Poco/Base64Decoder.h>
+#include <Poco/Base64Encoder.h>
+#include <Poco/Crypto/Cipher.h>
+#include <Poco/Crypto/CipherFactory.h>
+#include <Poco/Crypto/CipherKey.h>
+#include <Poco/Crypto/CryptoStream.h>
+#include <Poco/DigestStream.h>
+#include <Poco/Logger.h>
+#include <Poco/Random.h>
+#include <Poco/RandomStream.h>
+#include <Poco/SHA1Engine.h>
+#include <Poco/Stopwatch.h>
+#include <Poco/Timestamp.h>
+#include <Poco/Timespan.h>
+#include <Poco/UTF8String.h>
 
 namespace toggl {
 
@@ -1061,6 +1061,33 @@ void User::loadUserProjectFromJSON(
     model->LoadFromJSON(data);
 }
 
+bool User::SetTimeEntryID(
+    Poco::UInt64 id,
+    TimeEntry* timeEntry) {
+
+    poco_check_ptr(timeEntry);
+
+    {
+        Poco::Mutex::ScopedLock lock(loadTimeEntries_m_);
+        auto otherTimeEntry = related.TimeEntryByID(id);
+        if (otherTimeEntry) {
+            // this means that somehow we already have a time entry with the ID
+            // that was just returned from a response to time entry creation request
+            logger().error("There is already a newer version of this entry");
+
+            // clearing the GUID to make sure there's no GUID conflict
+            timeEntry->SetGUID("");
+
+            // deleting the duplicate entry
+            // this entry has no ID so the corresponding server entry will not be deleted
+            timeEntry->Delete();
+            return false;
+        }
+        timeEntry->SetID(id);
+        return true;
+    }
+}
+
 void User::loadUserTimeEntryFromJSON(
     Json::Value data,
     std::set<Poco::UInt64> *alive) {
@@ -1073,23 +1100,34 @@ void User::loadUserTimeEntryFromJSON(
         return;
     }
 
-    TimeEntry *model = related.TimeEntryByID(id);
+    TimeEntry* model;
+    {
+        Poco::Mutex::ScopedLock lock(loadTimeEntries_m_);
+        model = related.TimeEntryByID(id);
 
-    if (!model) {
-        model = related.TimeEntryByGUID(data["guid"].asString());
-    }
-
-    if (!data["server_deleted_at"].asString().empty()) {
-        if (model) {
-            model->MarkAsDeletedOnServer();
+        if (!model) {
+            model = related.TimeEntryByGUID(data["guid"].asString());
         }
-        return;
+
+        if (!data["server_deleted_at"].asString().empty()) {
+            if (model) {
+                model->MarkAsDeletedOnServer();
+            }
+            return;
+        }
+
+        if (!model) {
+            model = new TimeEntry();
+            model->SetID(id);
+            related.pushBackTimeEntry(model);
+        }
+
+        if (!model->ID()) {
+            // case where model was matched by GUID
+            model->SetID(id);
+        }
     }
 
-    if (!model) {
-        model = new TimeEntry();
-        related.pushBackTimeEntry(model);
-    }
     if (alive) {
         alive->insert(id);
     }
@@ -1419,8 +1457,15 @@ void User::CompressTimeline() {
     }
 }
 
-std::vector<TimelineEvent> User::CompressedTimeline(
-    const Poco::LocalDateTime *date) const {
+std::vector<TimelineEvent> User::CompressedTimelineForUI(const Poco::LocalDateTime *date) const {
+    return CompressedTimeline(date, false);
+}
+
+std::vector<TimelineEvent> User::CompressedTimelineForUpload(const Poco::LocalDateTime *date) const {
+    return CompressedTimeline(date, true);
+}
+
+std::vector<TimelineEvent> User::CompressedTimeline(const Poco::LocalDateTime *date, bool is_for_upload) const {
     std::vector<TimelineEvent> list;
     for (std::vector<TimelineEvent *>::const_iterator i =
         related.TimelineEvents.begin();
@@ -1428,7 +1473,13 @@ std::vector<TimelineEvent> User::CompressedTimeline(
             ++i) {
         TimelineEvent *event = *i;
         poco_check_ptr(event);
+
+        // Skip if this event is deleted or uploaded
         if (event->DeletedAt() > 0) {
+            continue;
+        }
+
+        if (is_for_upload && !event->VisibleToUser()) {
             continue;
         }
 

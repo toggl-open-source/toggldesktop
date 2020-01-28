@@ -138,6 +138,31 @@ class TimelineData {
         DesktopLibraryBridge.shared().updateTimeEntryWithStart(atTimestamp: endAt.timeIntervalSince1970 + 1,
                                                                guid: entry.timeEntry.guid)
     }
+
+    func continueTimeEntry(_ timeEntry: TimelineTimeEntry) {
+        NotificationCenter.default.post(name: NSNotification.Name(kCommandContinue), object: timeEntry.timeEntry.guid)
+    }
+
+    func startNewFromEnd(_ timeEntry: TimelineTimeEntry) {
+        // Start a running TE if the TE is today
+        if timeEntry.isToday() {
+            let startTime = timeEntry.end + 1
+            guard let guid = DesktopLibraryBridge.shared().starNewTimeEntry(atStarted: 0, ended: 0) else { return }
+
+            // Only set start time if it's not the future
+            // Otherwise, the library code gets buggy
+            if startTime < Date().timeIntervalSince1970 {
+                DesktopLibraryBridge.shared().updateTimeEntryWithStart(atTimestamp: startTime, guid: guid)
+            }
+        } else {
+            // Create entry and open Editor
+            NotificationCenter.default.post(name: Notification.Name(kStarTimeEntryWithStartTime), object: timeEntry.timeEntry.ended)
+        }
+    }
+
+    func delete(_ timeEntry: TimelineTimeEntry, undoManager: Foundation.UndoManager?) {
+        DesktopLibraryBridge.shared().deleteTimeEntryItem(timeEntry.timeEntry, undoManager: undoManager)
+    }
 }
 
 // MARK: Private

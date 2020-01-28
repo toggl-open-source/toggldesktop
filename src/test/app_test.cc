@@ -174,7 +174,7 @@ TEST(User, CreateCompressedTimelineBatchForUpload) {
     db.instance()->SaveUser(&user, true, &changes);
 
     user.CompressTimeline();
-    std::vector<TimelineEvent> timeline_events = user.CompressedTimeline();
+    std::vector<TimelineEvent> timeline_events = user.CompressedTimelineForUpload();
 
     if (timeline_events.size() != 1) {
         std::cerr << "user.related.TimelineEvents:" << std::endl;
@@ -185,7 +185,7 @@ TEST(User, CreateCompressedTimelineBatchForUpload) {
             std::cerr << ev->String() << std::endl;
         }
 
-        std::cerr << "user.CompressedTimeline:" << std::endl;
+        std::cerr << "user.CompressedTimelineForUpload:" << std::endl;
         for (std::vector<TimelineEvent>::const_iterator it =
             timeline_events.begin();
                 it != timeline_events.end(); it++) {
@@ -199,7 +199,7 @@ TEST(User, CreateCompressedTimelineBatchForUpload) {
     // Compress some more, for fun and profit
     for (int i = 0; i < 100; i++) {
         user.CompressTimeline();
-        timeline_events = user.CompressedTimeline();
+        timeline_events = user.CompressedTimelineForUpload();
     }
 
     ASSERT_EQ(size_t(1), timeline_events.size());
@@ -226,7 +226,7 @@ TEST(User, CreateCompressedTimelineBatchForUpload) {
     user.MarkTimelineBatchAsUploaded(timeline_events);
 
     // Now, no more events should exist for upload
-    std::vector<TimelineEvent> left_for_upload = user.CompressedTimeline();
+    std::vector<TimelineEvent> left_for_upload = user.CompressedTimelineForUpload();
     ASSERT_EQ(std::size_t(0), left_for_upload.size());
 }
 
@@ -312,24 +312,6 @@ TEST(User, UpdatesTimeEntryFromJSON) {
     std::string json = "{\"id\":89818605,\"description\":\"Changed\"}";
     te->LoadFromJSON(jsonStringToValue(json));
     ASSERT_EQ("Changed", te->Description());
-}
-
-TEST(User, UpdatesTimeEntryIDFromJSONEvenIfUpdatedByUserMeanwhile) {
-    User user;
-    ASSERT_EQ(noError,
-              user.LoadUserAndRelatedDataFromJSONString(loadTestData(), true));
-
-    TimeEntry *te = user.related.TimeEntryByID(89818605);
-    ASSERT_TRUE(te);
-
-    time_t older_change = time(0) - 10;
-    te->SetUIModifiedAt(time(0));
-
-    std::stringstream ss;
-    ss << "{\"id\":123,\"description\":\"Changed\",\"ui_modified_at\":" <<
-       older_change << "}";
-    te->LoadFromJSON(jsonStringToValue(ss.str()));
-    ASSERT_EQ(static_cast<Poco::UInt64>(123), te->ID());
 }
 
 TEST(User, DeletesZombies) {
@@ -1706,7 +1688,7 @@ TEST(JSON, TimeEntry) {
 
     TimeEntry t;
     t.LoadFromJSON(jsonStringToValue(json));
-    ASSERT_EQ(Poco::UInt64(89818612), t.ID());
+    ASSERT_EQ(Poco::UInt64(0), t.ID()); // ID can only be updated from User class
     ASSERT_EQ(Poco::UInt64(2567324), t.PID());
     ASSERT_EQ(Poco::UInt64(123456789), t.WID());
     //ASSERT_EQ("07fba193-91c4-0ec8-2345-820df0548123", t.GUID());

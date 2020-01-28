@@ -1,10 +1,10 @@
 // Copyright 2014 Toggl Desktop developers.
 
-#include "../src/tag.h"
+#include "tag.h"
 
 #include <sstream>
 
-#include "./const.h"
+#include "const.h"
 
 namespace toggl {
 

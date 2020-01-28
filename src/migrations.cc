@@ -1,10 +1,10 @@
 // Copyright 2015 Toggl Desktop developers.
 
-#include "../src/migrations.h"
+#include "migrations.h"
 
-#include "./const.h"
-#include "./database.h"
-#include "./random.h"
+#include "const.h"
+#include "database.h"
+#include "random.h"
 
 namespace toggl {
 

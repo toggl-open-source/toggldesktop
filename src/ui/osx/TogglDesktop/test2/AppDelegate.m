@@ -21,8 +21,6 @@
 #import "PreferencesWindowController.h"
 #import "Settings.h"
 #import "TimeEntryViewItem.h"
-#import "TimelineChunkView.h"
-#import "TimelineEventView.h"
 #import "UIEvents.h"
 #import "Utils.h"
 #import "ViewItem.h"
@@ -76,9 +74,6 @@
 
 // We'll add user email once userdata has been loaded
 @property (nonatomic, strong) NSMenuItem *currentUserEmailMenuItem;
-
-// We'll change "show timeline" caption when needed
-@property (strong) IBOutlet NSMenuItem *showTimelineMenuitem;
 
 // Where logs are written and db is kept
 @property (nonatomic, copy) NSString *app_path;
@@ -226,14 +221,7 @@ void *ctx;
 											 selector:@selector(startUpdateIconTooltip:)
 												 name:kUpdateIconTooltip
 											   object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(startDisplayTimeline:)
-												 name:kDisplayTimeline
-											   object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(startDisplayTimeEntryList:)
-												 name:kDisplayTimeEntryList
-											   object:nil];
+
 	if (@available(macOS 10.14, *))
 	{
 		self.effectiveAppearanceObs = [self.mainWindowController.window observerEffectiveAppearanceNotification];
@@ -733,36 +721,6 @@ void *ctx;
 	toggl_set_promotion_response(ctx, promotion_type.intValue, NSAlertFirstButtonReturn == result);
 }
 
-- (void)startDisplayTimeline:(NSNotification *)notification
-{
-	[self displayTimeline:notification.object];
-}
-
-- (void)displayTimeline:(DisplayCommand *)cmd
-{
-	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
-	if (cmd.open)
-	{
-		[self.showTimelineMenuitem setTitle:@"Hide timeline data"];
-		[self.showTimelineMenuitem setTag:kMenuItemTagHideTimelineData];
-	}
-}
-
-- (void)startDisplayTimeEntryList:(NSNotification *)notification
-{
-	[self displayTimeEntryList:notification.object];
-}
-
-- (void)displayTimeEntryList:(DisplayCommand *)cmd
-{
-	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
-	if (cmd.open)
-	{
-		[self.showTimelineMenuitem setTitle:@"Show timeline data"];
-		[self.showTimelineMenuitem setTag:kMenuItemTagShowTimelineData];
-	}
-}
-
 - (void)startDisplayLogin:(NSNotification *)notification
 {
 	[self displayLogin:notification.object];
@@ -1009,10 +967,6 @@ void *ctx;
 	[menu addItemWithTitle:@"Edit"
 					action:@selector(onEditMenuItem:)
 			 keyEquivalent:@"e"].tag = kMenuItemTagEdit;
-	self.showTimelineMenuitem = [menu addItemWithTitle:@"Show timeline data"
-												action:@selector(onShowTimelineDataMenuItem:)
-										 keyEquivalent:@"l"];
-	self.showTimelineMenuitem.tag = kMenuItemTagShowTimelineData;
 	[menu addItem:[NSMenuItem separatorItem]];
 	[menu addItemWithTitle:@"Sync"
 					action:@selector(onSyncMenuItem:)
@@ -1023,9 +977,6 @@ void *ctx;
 	[menu addItemWithTitle:@"Preferences"
 					action:@selector(onPreferencesMenuItem:)
 			 keyEquivalent:@""];
-	[menu addItemWithTitle:@"Record Timeline"
-					action:@selector(onToggleRecordTimeline:)
-			 keyEquivalent:@""].tag = kMenuItemTagRecordTimeline;
 	self.manualModeMenuItem = [menu addItemWithTitle:@"Use manual mode"
 											  action:@selector(onModeChange:)
 									   keyEquivalent:@"d"];
@@ -1105,12 +1056,6 @@ void *ctx;
 	toggl_sync(ctx);
 }
 
-- (IBAction)onToggleRecordTimeline:(id)sender
-{
-    BOOL isEnabled = !toggl_timeline_is_recording_enabled(ctx);
-    [[DesktopLibraryBridge shared] enableTimelineRecord:isEnabled];
-}
-
 - (IBAction)onModeChange:(id)sender
 {
 	self.manualMode = !self.manualMode;
@@ -1176,20 +1121,6 @@ void *ctx;
 {
 	[self.mainWindowController showWindowAndFocus];
 	toggl_edit(ctx, "", true, "description");
-}
-
-- (IBAction)onShowTimelineDataMenuItem:(id)sender
-{
-	[self.mainWindowController showWindow:self];
-	switch (self.showTimelineMenuitem.tag)
-	{
-		case kMenuItemTagShowTimelineData :
-			toggl_view_timeline_data(ctx);
-			break;
-		case kMenuItemTagHideTimelineData :
-			toggl_view_time_entry_list(ctx);
-			break;
-	}
 }
 
 - (IBAction)onPreferencesMenuItem:(id)sender
@@ -1494,29 +1425,9 @@ const NSString *appName = @"osx_native_app";
 		case kMenuItemTagOpenBrowser :
 		case kMenuItemTagNew :
 		case kMenuItemTagSendFeedBack :
-		case kMenuItemTagShowTimelineData :
-		case kMenuItemTagHideTimelineData :
 			if (!self.lastKnownUserID)
 			{
 				return NO;
-			}
-			break;
-		case kMenuItemTagRecordTimeline :
-			if (!self.lastKnownUserID)
-			{
-				NSMenuItem *menuItem = (NSMenuItem *)anItem;
-				[menuItem setState:NSOffState];
-				return NO;
-			}
-			if (toggl_timeline_is_recording_enabled(ctx))
-			{
-				NSMenuItem *menuItem = (NSMenuItem *)anItem;
-				[menuItem setState:NSOnState];
-			}
-			else
-			{
-				NSMenuItem *menuItem = (NSMenuItem *)anItem;
-				[menuItem setState:NSOffState];
 			}
 			break;
 		default :
@@ -1835,7 +1746,7 @@ void on_idle_notification(
 	const char *guid,
 	const char *since,
 	const char *duration,
-	const uint64_t started,
+	const int64_t started,
 	const char *description)
 {
 	IdleEvent *idleEvent = [[IdleEvent alloc] init];

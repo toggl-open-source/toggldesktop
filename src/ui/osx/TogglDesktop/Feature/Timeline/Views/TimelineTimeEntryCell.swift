@@ -10,6 +10,9 @@ import Cocoa
 
 protocol TimelineTimeEntryCellDelegate: class {
 
+    func timeEntryCellShouldContinue(for entry: TimelineTimeEntry, sender: TimelineTimeEntryCell)
+    func timeEntryCellShouldStartNew(for entry: TimelineTimeEntry, sender: TimelineTimeEntryCell)
+    func timeEntryCellShouldDelete(for entry: TimelineTimeEntry, sender: TimelineTimeEntryCell)
     func timeEntryCellShouldChangeFirstEntryStopTime(for entry: TimelineTimeEntry, sender: TimelineTimeEntryCell)
     func timeEntryCellShouldChangeLastEntryStartTime(for entry: TimelineTimeEntry, sender: TimelineTimeEntryCell)
 }
@@ -112,9 +115,6 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
             updateLabels(item)
             hideOutOfBoundControls()
         }
-
-        // Enable menu if it's overlap Time Entry
-        view.menu = timeEntry.isOverlap ? timeEntryMenu : nil
      }
 
     private func hideOutOfBoundControls() {
@@ -195,6 +195,8 @@ extension TimelineTimeEntryCell {
 
     fileprivate func initCommon() {
         timeEntryMenu.menuDelegate = self
+        view.menu = timeEntryMenu
+        view.menu?.delegate = self
         if let cursorView = foregroundBox as? CursorView {
             cursorView.cursor = NSCursor.pointingHand
         }
@@ -204,14 +206,41 @@ extension TimelineTimeEntryCell {
 // MARK: TimelineTimeEntryMenuDelegate
 
 extension TimelineTimeEntryCell: TimelineTimeEntryMenuDelegate {
+    
+    func timelineMenuContinue(_ timeEntry: TimelineTimeEntry) {
+        delegate?.timeEntryCellShouldContinue(for: timeEntry, sender: self)
+    }
 
-    func shouldChangeFirstEntryStopTime() {
-        guard let timeEntry = timeEntry else { return }
+    func timelineMenuStartEntry(_ timeEntry: TimelineTimeEntry) {
+        delegate?.timeEntryCellShouldStartNew(for: timeEntry, sender: self)
+    }
+
+    func timelineMenuDelete(_ timeEntry: TimelineTimeEntry) {
+        delegate?.timeEntryCellShouldDelete(for: timeEntry, sender: self)
+    }
+
+    func timelineMenuChangeFirstEntryStopTime(_ timeEntry: TimelineTimeEntry) {
         delegate?.timeEntryCellShouldChangeFirstEntryStopTime(for: timeEntry, sender: self)
     }
 
-    func shouldChangeLastEntryStartTime() {
-        guard let timeEntry = timeEntry else { return }
+    func timelineMenuChangeLastEntryStartTime(_ timeEntry: TimelineTimeEntry) {
         delegate?.timeEntryCellShouldChangeLastEntryStartTime(for: timeEntry, sender: self)
+    }
+}
+
+// MARK: NSMenuDelegate
+
+extension TimelineTimeEntryCell: NSMenuDelegate {
+
+    func menuWillOpen(_ menu: NSMenu) {
+        guard let timeEntry = timeEntry else { return }
+        // disable some menu if it's overlapped item
+        timeEntryMenu.timeEntry = timeEntry
+        timeEntryMenu.isOverlapMenu = timeEntry.isOverlap
+        isHighlight = true
+    }
+
+    func menuDidClose(_ menu: NSMenu) {
+        isHighlight = false
     }
 }

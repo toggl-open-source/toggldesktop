@@ -3,7 +3,7 @@
 #ifndef SRC_TOGGL_API_LUA_H_
 #define SRC_TOGGL_API_LUA_H_
 
-#include "./toggl_api.h"
+#include "toggl_api.h"
 
 #include <lua.hpp>
 

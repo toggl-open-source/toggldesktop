@@ -14,6 +14,10 @@
 #import "UIEvents.h"
 #import "TogglDesktop-Swift.h"
 
+@interface DesktopLibraryBridge ()
+@property (strong, nonatomic) NSUndoManager *undoManager;
+@end
+
 @implementation DesktopLibraryBridge
 
 void *ctx;
@@ -150,12 +154,14 @@ void *ctx;
 									   timestamp);
 }
 
-- (void)deleteTimeEntryImte:(TimeEntryViewItem *)item
+- (void)deleteTimeEntryItem:(TimeEntryViewItem *)item undoManager:(NSUndoManager *) undoManager
 {
+    self.undoManager = undoManager;
+
 	// If description is empty and duration is less than 15 seconds delete without confirmation
 	if ([item confirmlessDelete])
 	{
-		toggl_delete_time_entry(ctx, [item.GUID UTF8String]);
+        [self deleteItem:item];
 		return;
 	}
 	NSString *msg = [NSString stringWithFormat:@"Delete time entry \"%@\"?", item.Description];
@@ -172,7 +178,19 @@ void *ctx;
 	}
 
 	// Delete
-	toggl_delete_time_entry(ctx, [item.GUID UTF8String]);
+    [self deleteItem:item];
+}
+
+- (void) deleteItem:(TimeEntryViewItem *) item
+{
+    [self registerUndoDeleteItem:item];
+    toggl_delete_time_entry(ctx, [item.GUID UTF8String]);
+}
+
+- (void) registerUndoDeleteItem:(TimeEntryViewItem *)item
+{
+    [self.undoManager registerUndoWithTarget:self selector:@selector(createNewTimeEntryWithOldTimeEntry:) object:item];
+    [self.undoManager setActionName:@"Undo Delete Time Entry"];
 }
 
 - (void)updateDescriptionForTimeEntry:(TimeEntryViewItem *)timeEntry autocomplete:(AutocompleteItem *)autocomplete
@@ -238,8 +256,8 @@ void *ctx;
 - (NSString *)starNewTimeEntryAtStarted:(NSTimeInterval)started ended:(NSTimeInterval)ended
 {
 	char *guid = toggl_start(ctx,
-							 @"".UTF8String,
-							 "0",
+							 "",
+							 "",
 							 0,
 							 0,
 							 0,
@@ -303,4 +321,31 @@ void *ctx;
 {
     return toggl_get_active_tab(ctx);
 }
+
+- (NSString *)createNewTimeEntryWithOldTimeEntry:(TimeEntryViewItem *) item
+{
+    NSString *tags = [item.tags componentsJoinedByString:@"\t"];
+    if (tags == nil) {
+        tags = @"";
+    }
+    char *guid = toggl_start(ctx,
+                             [item.Description UTF8String],
+                             [item.duration UTF8String],
+                             item.TaskID,
+                             item.ProjectID,
+                             0,
+                             [tags UTF8String],
+                             false,
+                             [item.started timeIntervalSince1970],
+                             [item.ended timeIntervalSince1970]);
+    if (guid != nil) {
+        NSString *GUID = [NSString stringWithUTF8String:guid];
+        free(guid);
+        // Don't support redo
+        [self.undoManager removeAllActions];
+        return GUID;
+    }
+    return nil;
+}
+
 @end

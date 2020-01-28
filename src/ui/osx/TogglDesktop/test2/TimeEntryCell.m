@@ -30,6 +30,7 @@
 @property (weak) IBOutlet NSBox *horizontalLine;
 @property (weak) IBOutlet NSTextField *descriptionTextField;
 
+@property (nonatomic, strong) TimeEntryViewItem *item;
 @property (strong, nonatomic) NSColor *backgroundColor;
 @property (strong, nonatomic) NSColor *selectedSubItemBackgroundColor;
 @property (nonatomic, copy) NSString *GUID;
@@ -179,6 +180,7 @@ extern void *ctx;
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
 	self.confirmless_delete = [view_item confirmlessDelete];
+    self.item = view_item;
 
 	self.GUID = view_item.GUID;
 	self.durationTextField.stringValue = view_item.duration;

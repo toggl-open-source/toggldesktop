@@ -29,6 +29,7 @@ final class TimelineDashboardViewController: NSViewController {
     @IBOutlet weak var activityRecorderInfoImageView: HoverImageView!
     @IBOutlet weak var activityPanelWidth: NSLayoutConstraint!
     @IBOutlet weak var activityLabelRight: NSLayoutConstraint!
+    @IBOutlet weak var permissionBtn: NSButton!
 
     // MARK: Variables
 
@@ -176,6 +177,10 @@ final class TimelineDashboardViewController: NSViewController {
         zoomLevel = previous
     }
 
+    @IBAction func permissionBtnOnClicked(_ sender: Any) {
+        SystemPermissionManager.shared.grant(.screenRecording)
+    }
+
     override func mouseEntered(with event: NSEvent) {
         super.mouseEntered(with: event)
         zoomContainerView.isHidden = false
@@ -184,6 +189,14 @@ final class TimelineDashboardViewController: NSViewController {
     override func mouseExited(with event: NSEvent) {
         super.mouseExited(with: event)
         zoomContainerView.isHidden = true
+    }
+
+    func nextDay() {
+        datePickerView.nextDateBtnOnTap(self)
+    }
+
+    func previousDay() {
+        datePickerView.previousDateBtnOnTap(self)
     }
 }
 
@@ -218,6 +231,10 @@ extension TimelineDashboardViewController {
                                                selector: #selector(self.editorOnChangeNotification(_:)),
                                                name: Notification.Name(kDisplayTimeEntryEditor),
                                                object: nil)
+        NotificationCenter.default.addObserver(self,
+                                       selector: #selector(startTimeEntryNoti(_:)),
+                                       name: Notification.Name(kStarTimeEntryWithStartTime),
+                                       object: nil)
     }
 
     private func initTrackingArea() {
@@ -236,6 +253,12 @@ extension TimelineDashboardViewController {
         guard let cmd = noti.object as? DisplayCommand,
             let setting = cmd.settings else { return }
         recordSwitcher.setOn(isOn: setting.timeline_recording_enabled, animated: false)
+        if setting.timeline_recording_enabled {
+            permissionBtn.isHidden = SystemPermissionManager.shared.isGranted(.screenRecording)
+        } else {
+            permissionBtn.isHidden = true
+        }
+
         updateEmptyActivityText()
     }
 
@@ -315,6 +338,11 @@ extension TimelineDashboardViewController {
         guard let selectedGUID = selectedGUID else { return nil }
         guard let indexPath = datasource.timeline?.indexPathForItem(with: selectedGUID) else { return nil }
         return collectionView.item(at: indexPath) as? TimelineTimeEntryCell
+    }
+
+    @objc private func startTimeEntryNoti(_ noti: Notification) {
+        guard let startTime = noti.object as? Date else { return }
+        timelineShouldCreateEmptyEntry(with: startTime.timeIntervalSince1970)
     }
 }
 
