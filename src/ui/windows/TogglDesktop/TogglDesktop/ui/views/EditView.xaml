@@ -5,9 +5,13 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:toggl="clr-namespace:TogglDesktop"
              xmlns:behaviors="clr-namespace:TogglDesktop.Behaviors"
-             mc:Ignorable="d" MinWidth="370"
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+             mc:Ignorable="d" MinWidth="300"
              Style="{StaticResource EditView}"
              >
+    <UserControl.Resources>
+        <ResourceDictionary Source="../Resources/DesignUpdate/Controls.xaml" />
+    </UserControl.Resources>
     <Grid Background="{DynamicResource Toggl.CardBackground}">
         <Grid Name="contentGrid" x:FieldModifier="private">
             <Grid.ColumnDefinitions>
@@ -34,32 +38,20 @@
             <!-- content -->
             <StackPanel Orientation="Vertical" Grid.Column="1" Grid.Row="1">
 
+                <TextBlock Style="{DynamicResource Toggl.BodyText}" Text="Details" />
                 <!-- description -->
-                <Grid Height="50">
+                <Grid Margin="0 8 0 0">
                     <toggl:ExtendedTextBox x:Name="descriptionTextBox" x:FieldModifier="private"
+                                           Style="{StaticResource {x:Type TextBox}}"
+                                           mah:TextBoxHelper.Watermark="Description"
                         LostKeyboardFocus="descriptionTextBox_OnLostKeyboardFocus"
                                            SelectAllOnKeyboardFocus="False"
                                            KeyDown="descriptionTextBox_OnKeyDown"/>
-                    <TextBlock>No description
-                        <TextBlock.Style>
-                            <Style TargetType="TextBlock" BasedOn="{StaticResource TextboxEmptyText}">
-                                <Style.Triggers>
-                                    <MultiDataTrigger>
-                                        <MultiDataTrigger.Conditions>
-                                            <Condition Binding="{Binding ElementName=descriptionTextBox, Path=(Text)}" Value=""/>
-                                            <Condition Binding="{Binding ElementName=descriptionTextBox, Path=(IsKeyboardFocused)}" Value="False"/>
-                                        </MultiDataTrigger.Conditions>
-                                        <Setter Property="Visibility" Value="Visible"/>
-                                    </MultiDataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
                     <toggl:AutoCompletionPopup x:Name="descriptionAutoComplete" x:FieldModifier="private"
-                        Target="{Binding ElementName=descriptionTextBox}" TextBox="{Binding ElementName=descriptionTextBox}"
-                        EmptyText="No matching entries found."
-                        ConfirmCompletion="descriptionAutoComplete_OnConfirmCompletion"
-                        ConfirmWithoutCompletion="descriptionAutoComplete_OnConfirmWithoutCompletion"/>
+                                               Target="{Binding ElementName=descriptionTextBox}" TextBox="{Binding ElementName=descriptionTextBox}"
+                                               EmptyText="No matching entries found."
+                                               ConfirmCompletion="descriptionAutoComplete_OnConfirmCompletion"
+                                               ConfirmWithoutCompletion="descriptionAutoComplete_OnConfirmWithoutCompletion"/>
                 </Grid>
 
                 <!-- project, client, workspace -->
@@ -205,33 +197,45 @@
                         <Button Click="projectCancelButton_Click">CANCEL</Button>
                     </StackPanel>
                 </Grid>
+
+                <!-- billable? -->
+                <CheckBox Name="billableCheckBox" x:FieldModifier="private"
+                          Click="billableCheckBox_OnClick" Content="Billable" />
             
                 <!-- times, duration -->
-                <Grid>
+                <Grid Margin="0 22 0 0">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="50"/>
-                        <RowDefinition Height="22"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="2*"/>
-                        <ColumnDefinition Width="3*"/>
-                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <toggl:ExtendedTextBox x:Name="startTimeTextBox" x:FieldModifier="private" Grid.Column="0" Grid.Row="0"
-                             Style="{StaticResource TimeBox}"
-                             LostKeyboardFocus="startTimeTextBox_OnLostKeyboardFocus"
-                             KeyDown="startTimeTextBox_OnKeyDown">12:45</toggl:ExtendedTextBox>
-                    <toggl:ExtendedTextBox x:Name="durationTextBox" x:FieldModifier="private"  Grid.Column="1" Grid.Row="0"
-                             Style="{StaticResource DurationBox}"
-                             LostKeyboardFocus="durationTextBox_OnLostKeyboardFocus"
-                             KeyDown="durationTextBox_OnKeyDown">10:12 min</toggl:ExtendedTextBox>
-                    <toggl:ExtendedTextBox x:Name="endTimeTextBox" x:FieldModifier="private"  Grid.Column="2" Grid.Row="0"
-                             Style="{StaticResource TimeBox}"
-                             LostKeyboardFocus="endTimeTextBox_OnLostKeyboardFocus"
-                             KeyDown="endTimeTextBox_OnKeyDown">12:55</toggl:ExtendedTextBox>
-
-                    <DatePicker Name="startDatePicker" x:FieldModifier="private" Grid.Column="1" Grid.Row="0" Grid.RowSpan="2"
-                             Height="20" VerticalAlignment="Bottom" SelectedDate="05.01.2015" SelectedDateChanged="startDatePicker_SelectedDateChanged"/>
+                    <TextBlock Style="{DynamicResource Toggl.BodyText}" Margin="0 0 0 8" Text="Duration" />
+                    <toggl:ExtendedTextBox x:Name="durationTextBox" x:FieldModifier="private" Grid.Row="1" Grid.Column="0"
+                                           Margin="0 0 12 0"
+                                           Style="{StaticResource {x:Type TextBox}}"
+                                           LostKeyboardFocus="durationTextBox_OnLostKeyboardFocus"
+                                           KeyDown="durationTextBox_OnKeyDown">10:12 min</toggl:ExtendedTextBox>
+                    <StackPanel Orientation="Horizontal"
+                                Grid.Row="1" Grid.Column="1">
+                        <toggl:ExtendedTextBox x:Name="startTimeTextBox" x:FieldModifier="private"
+                                               Style="{StaticResource {x:Type TextBox}}"
+                                               Margin="0 0 8 0" Width="64"
+                                               LostKeyboardFocus="startTimeTextBox_OnLostKeyboardFocus"
+                                               KeyDown="startTimeTextBox_OnKeyDown">12:45</toggl:ExtendedTextBox>
+                        <ContentControl Focusable="False" Content="{StaticResource Toggl.ArrowIcon}" />
+                        <toggl:ExtendedTextBox x:Name="endTimeTextBox" x:FieldModifier="private"
+                                               Style="{StaticResource {x:Type TextBox}}"
+                                               Margin="7 0 0 0" Width="64"
+                                               LostKeyboardFocus="endTimeTextBox_OnLostKeyboardFocus"
+                                               KeyDown="endTimeTextBox_OnKeyDown">12:55</toggl:ExtendedTextBox>
+                    </StackPanel>
+                    <DatePicker Name="startDatePicker" x:FieldModifier="private" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+                                Margin="0 8 0 0"
+                             Height="32" SelectedDate="05.01.2015" SelectedDateChanged="startDatePicker_SelectedDateChanged"/>
                 </Grid>
             
                 <!-- tags -->
@@ -245,19 +249,6 @@
                     <TextBlock x:Name="emptyTagListText" x:FieldModifier="private"
                                Style="{StaticResource TextboxEmptyText}">No tags</TextBlock>
                 </Grid>
-            
-            
-            
-                <!-- billable? -->
-                <CheckBox Name="billableCheckBox" x:FieldModifier="private"
-                          Click="billableCheckBox_OnClick">
-                    <StackPanel Orientation="Horizontal" Margin="0 -1 0 1">
-                    <Image Source="/TogglDesktop;component/Resources/icon-billable.png"
-                           Stretch="UniformToFill" Margin="1, -1, 3, -1" Height="18"/>
-                        <TextBlock>Billable</TextBlock>
-                    </StackPanel>
-                </CheckBox>
-            
             </StackPanel>
         
             <TextBlock Name="lastUpdatedText" x:FieldModifier="private"
@@ -273,7 +264,7 @@
                     Click="deleteButton_OnClick"/>
 
         </Grid>
-        <Button Style="{DynamicResource Toggl.CrossButton}"
+        <Button Style="{StaticResource Toggl.CrossButton}"
                 HorizontalAlignment="Right" VerticalAlignment="Top"
                 Width="32" Height="32"
                 Focusable="False"
