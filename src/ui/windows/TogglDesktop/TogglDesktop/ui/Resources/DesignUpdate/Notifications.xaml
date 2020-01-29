@@ -24,18 +24,13 @@
                                        Height="40"
                                        Width="40"
                                        Margin="16"/>
-                                <Grid Margin="0 16" Width="220">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition />
-                                        <RowDefinition />
-                                    </Grid.RowDefinitions>
-                                    <TextBlock Grid.Row="0"
-                                               Style="{StaticResource Toggl.BaseText}"
-                                               Text="{TemplateBinding Message}"/>
-                                    <TextBlock Grid.Row="1"
-                                               Style="{StaticResource Toggl.CaptionText}"
+                                <StackPanel Orientation="Vertical" Margin="0 16" Width="220">
+                                    <TextBlock Style="{StaticResource Toggl.BaseText}"
+                                               Text="{TemplateBinding Message}"
+                                               TextWrapping="Wrap"/>
+                                    <TextBlock Style="{StaticResource Toggl.CaptionText}"
                                                Text="{TemplateBinding Title}"/>
-                                </Grid>
+                                </StackPanel>
                                 <Button Name="PART_CloseButton"
                                         Style="{StaticResource Toggl.CrossButton}"
                                         VerticalAlignment="Top"
