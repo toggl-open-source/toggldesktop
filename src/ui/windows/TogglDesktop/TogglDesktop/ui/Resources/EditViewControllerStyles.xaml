@@ -95,26 +95,6 @@
         <Setter Property="Background" Value="#999999" />
     </Style>
 
-    <Style TargetType="TextBox" x:Key="TimeBox" BasedOn="{StaticResource {x:Type TextBox}}">
-        <Setter Property="Margin" Value="8"/>
-        <Setter Property="VerticalContentAlignment" Value="Center"/>
-        <Setter Property="HorizontalContentAlignment" Value="Center"/>
-        <Setter Property="Padding" Value="0"/>
-        <Setter Property="Background">
-            <Setter.Value>
-                <SolidColorBrush Color="{toggl:Opacity White, 0.6}"/>
-            </Setter.Value>
-        </Setter>
-        <Style.Triggers>
-            <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="Background" Value="White"/>
-            </Trigger>
-        </Style.Triggers>
-    </Style>
-    <Style TargetType="TextBox" x:Key="DurationBox" BasedOn="{StaticResource TimeBox}">
-        <Setter Property="FontWeight" Value="Bold"/>
-        <Setter Property="Background" Value="White"/>
-    </Style>
     <Style x:Key="EditViewNewButton" TargetType="Button" BasedOn="{StaticResource EditViewControlBase}">
         <Setter Property="Template">
             <Setter.Value>
@@ -214,52 +194,40 @@
                 <Setter Property="Margin" Value="8"/>
             </Style>
             
-            <Style TargetType="CheckBox" BasedOn="{StaticResource EditViewControlBase}">
-                <Setter Property="Padding" Value="0"/>
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="{x:Type CheckBox}">
-                            <BulletDecorator Background="Transparent" SnapsToDevicePixels="true" >
-                                <BulletDecorator.Bullet>
-                                    <Border x:Name="border"
-                                    Width="16" Height="16" Background="White">
-                                        <Path x:Name="checkMark"
-                                          Width="12"
-                                          Height="9.5"
-                                          HorizontalAlignment="Center"
-                                          VerticalAlignment="Center"
-                                          Data="M -1 -1 L 0 0 L 2 -2"
-                                          Stretch="Fill"
-                                          Stroke="#252525"
-                                          StrokeThickness="2" />
-                                    </Border>
-                                </BulletDecorator.Bullet>
-                                <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="4, 1, 0, -1" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                            </BulletDecorator>
-                            <ControlTemplate.Triggers>
-                                <Trigger Property="IsChecked" Value="False">
-                                    <Setter TargetName="checkMark" Property="Visibility" Value="Hidden"/>
-                                </Trigger>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter TargetName="border" Property="Background" Value="#F4F4F4"/>
-                                </Trigger>
-                            </ControlTemplate.Triggers>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-
-            <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
-                <Setter Property="Margin" Value="8"/>
-                <Setter Property="VerticalContentAlignment" Value="Center"/>
-                <Setter Property="Padding" Value="8, 0, 0, 0"/>
-            </Style>
-
-            <Style TargetType="toggl:ExtendedTextBox" BasedOn="{StaticResource {x:Type toggl:ExtendedTextBox}}">
-                <Setter Property="Margin" Value="8"/>
-                <Setter Property="VerticalContentAlignment" Value="Center"/>
-                <Setter Property="Padding" Value="8, 0, 0, 0"/>
-            </Style>
+            <!-- <Style TargetType="CheckBox" BasedOn="{StaticResource EditViewControlBase}"> -->
+            <!--     <Setter Property="Padding" Value="0"/> -->
+            <!--     <Setter Property="Template"> -->
+            <!--         <Setter.Value> -->
+            <!--             <ControlTemplate TargetType="{x:Type CheckBox}"> -->
+            <!--                 <BulletDecorator Background="Transparent" SnapsToDevicePixels="true" > -->
+            <!--                     <BulletDecorator.Bullet> -->
+            <!--                         <Border x:Name="border" -->
+            <!--                         Width="16" Height="16" Background="White"> -->
+            <!--                             <Path x:Name="checkMark" -->
+            <!--                               Width="12" -->
+            <!--                               Height="9.5" -->
+            <!--                               HorizontalAlignment="Center" -->
+            <!--                               VerticalAlignment="Center" -->
+            <!--                               Data="M -1 -1 L 0 0 L 2 -2" -->
+            <!--                               Stretch="Fill" -->
+            <!--                               Stroke="#252525" -->
+            <!--                               StrokeThickness="2" /> -->
+            <!--                         </Border> -->
+            <!--                     </BulletDecorator.Bullet> -->
+            <!--                     <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="4, 1, 0, -1" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/> -->
+            <!--                 </BulletDecorator> -->
+            <!--                 <ControlTemplate.Triggers> -->
+            <!--                     <Trigger Property="IsChecked" Value="False"> -->
+            <!--                         <Setter TargetName="checkMark" Property="Visibility" Value="Hidden"/> -->
+            <!--                     </Trigger> -->
+            <!--                     <Trigger Property="IsMouseOver" Value="True"> -->
+            <!--                         <Setter TargetName="border" Property="Background" Value="#F4F4F4"/> -->
+            <!--                     </Trigger> -->
+            <!--                 </ControlTemplate.Triggers> -->
+            <!--             </ControlTemplate> -->
+            <!--         </Setter.Value> -->
+            <!--     </Setter> -->
+            <!-- </Style> -->
 
         </Style.Resources>
     </Style>
