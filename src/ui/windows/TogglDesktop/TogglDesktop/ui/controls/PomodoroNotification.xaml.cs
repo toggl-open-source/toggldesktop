@@ -7,13 +7,9 @@ namespace TogglDesktop
 {
     public partial class PomodoroNotification
     {
-        private readonly TaskbarIcon icon;
-        private readonly MainWindow mainWindow;
-
         public PomodoroNotification(TaskbarIcon icon, MainWindow mainWindow)
+            : base(icon, mainWindow)
         {
-            this.icon = icon;
-            this.mainWindow = mainWindow;
             this.InitializeComponent();
 
             Toggl.OnDisplayPomodoro += this.onDisplayPomodoro;
@@ -30,9 +26,9 @@ namespace TogglDesktop
 
             this.RemoveFromParent();
 
-            if (!icon.ShowNotification(this, PopupAnimation.Slide, null))
+            if (!_icon.ShowNotification(this, PopupAnimation.Slide, null))
             {
-                icon.ShowBalloonTip(title, informativetext, Properties.Resources.toggl, largeIcon: true);
+                _icon.ShowBalloonTip(title, informativetext, Properties.Resources.toggl, largeIcon: true);
             }
             else
             {
@@ -50,9 +46,9 @@ namespace TogglDesktop
 
             this.RemoveFromParent();
 
-            if (!icon.ShowNotification(this, PopupAnimation.Slide, null))
+            if (!_icon.ShowNotification(this, PopupAnimation.Slide, null))
             {
-                icon.ShowBalloonTip(title, informativetext, Properties.Resources.toggl, largeIcon: true);
+                _icon.ShowBalloonTip(title, informativetext, Properties.Resources.toggl, largeIcon: true);
             }
             else
             {
@@ -60,22 +56,18 @@ namespace TogglDesktop
             }
         }
 
-        private void onNotificationMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            this.icon.CloseBalloon();
-        }
 
         private void onContinueButtonClick(object sender, RoutedEventArgs e)
         {
-            this.icon.CloseBalloon();
+            Close();
             Toggl.ContinueLatest(true);
         }
 
         private void onStartNewButtonClick(object sender, RoutedEventArgs e)
         {
-            this.icon.CloseBalloon();
+            Close();
             var guid = Toggl.Start("", "", 0, 0, "", "", true);
-            this.mainWindow.ShowOnTop();
+            _parentWindow.ShowOnTop();
             if (guid != null)
                 Toggl.Edit(guid, true, Toggl.Description);
         }

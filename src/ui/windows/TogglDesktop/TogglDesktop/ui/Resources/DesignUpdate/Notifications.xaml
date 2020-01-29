@@ -36,7 +36,8 @@
                                                Style="{StaticResource Toggl.CaptionText}"
                                                Text="{TemplateBinding Title}"/>
                                 </Grid>
-                                <Button Style="{StaticResource Toggl.CrossButton}"
+                                <Button Name="PART_CloseButton"
+                                        Style="{StaticResource Toggl.CrossButton}"
                                         VerticalAlignment="Top"
                                         HorizontalAlignment="Right"
                                         Margin="4"/>
