@@ -8,8 +8,8 @@
     <Style TargetType="mah:HotKeyBox" BasedOn="{StaticResource {x:Type mah:HotKeyBox}}">
         <Setter Property="mah:ControlsHelper.FocusBorderBrush" Value="{DynamicResource Toggl.AccentBrush}" />
         <Setter Property="mah:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource Toggl.TextBox.MouseOverBorder}" />
-        <Setter Property="FontFamily" Value="{DynamicResource BaseFont}" />
-        <Setter Property="FontSize" Value="{DynamicResource NormalFontSize}" />
+        <Setter Property="FontFamily" Value="{StaticResource BaseFont}" />
+        <Setter Property="FontSize" Value="{StaticResource NormalFontSize}" />
         <Setter Property="Foreground" Value="{DynamicResource Toggl.PrimaryTextBrush}" />
         <Setter Property="Background" Value="{DynamicResource Toggl.SelectionElements.Background}" />
         <Setter Property="BorderBrush" Value="{DynamicResource Toggl.TextBox.Border}" />

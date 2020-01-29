@@ -80,7 +80,7 @@
         <Setter Property="Controls:ControlsHelper.FocusBorderBrush" Value="{StaticResource Toggl.AccentBrush}" />
         <Setter Property="Controls:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource Toggl.TextBox.MouseOverBorder}" />
         <Setter Property="ItemContainerStyle" Value="{x:Null}" />
-        <Setter Property="FontSize" Value="{DynamicResource NormalFontSize}" />
+        <Setter Property="FontSize" Value="{StaticResource NormalFontSize}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ComboBox}">
