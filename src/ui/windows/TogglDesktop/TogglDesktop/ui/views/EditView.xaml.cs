@@ -518,7 +518,7 @@ namespace TogglDesktop
             }
             else
             {
-                // TODO: reset project? add new? switch to 'add project mode'?   
+                // TODO: reset project? add new? switch to 'add project mode'?
             }
         }
 
@@ -526,7 +526,7 @@ namespace TogglDesktop
         {
             if(this.isInNewProjectMode)
                 return;
-            
+
             if (this.projectTextBox.Text == "")
             {
                 this.setProjectIfDifferent(0, 0, "", "");
@@ -772,7 +772,7 @@ namespace TogglDesktop
         private void newClientCancelButton_OnClick(object sender, RoutedEventArgs e)
         {
             this.disableNewClientMode();
-            
+
             this.clientTextBox.SetText(this.timeEntry.ClientLabel);
             if (!string.IsNullOrEmpty(this.timeEntry.ClientLabel))
             {
@@ -983,19 +983,6 @@ namespace TogglDesktop
             timer.RunningTimeEntrySecondPulse += this.durationUpdateTimerTick;
         }
 
-        protected override void OnKeyDown(KeyEventArgs e)
-        {
-            switch (e.Key)
-            {
-                case Key.Escape:
-                {
-                    this.close();
-                    e.Handled = true;
-                    return;
-                }
-            }
-        }
-
         public void FocusField(string focusedFieldName)
         {
             UIElement focus = null;
@@ -1020,16 +1007,6 @@ namespace TogglDesktop
             {
                 focus.Focus();
             }
-        }
-
-        private void backButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            this.close();
-        }
-
-        private void close()
-        {
-            Toggl.ViewTimeEntryList();
         }
 
         public void EnsureSaved()
@@ -1074,6 +1051,5 @@ namespace TogglDesktop
         }
 
         #endregion
-
     }
 }

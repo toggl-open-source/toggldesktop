@@ -5,6 +5,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:toggl="clr-namespace:TogglDesktop"
         xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:behaviors="clr-namespace:TogglDesktop.Behaviors"
         mc:Ignorable="d"
         d:DesignWidth="400" d:DesignHeight="520"
         ShowInTaskbar="False"
@@ -22,9 +24,19 @@
         ResizeBorderThickness="0 0 4 0"
         AllowsTransparency="True"
         UseLayoutRounding="True">
-
+    <i:Interaction.Behaviors>
+        <behaviors:CloseWindowOnEscBehavior />
+    </i:Interaction.Behaviors>
+    <Window.Resources>
+        <ResourceDictionary Source="../Resources/DesignUpdate/Buttons.xaml" />
+    </Window.Resources>
     <Grid ClipToBounds="True" Name="mainGrid" x:FieldModifier="private">
         <toggl:EditView
             x:Name="EditView" />
+        <Button Style="{StaticResource Toggl.CrossButton}"
+                HorizontalAlignment="right" VerticalAlignment="top" Margin="0"
+                Width="32" Height="32"
+                Focusable="False"
+                behaviors:ButtonHelper.IsCloseWindowButton="True"/>
     </Grid>
 </mah:MetroWindow>
