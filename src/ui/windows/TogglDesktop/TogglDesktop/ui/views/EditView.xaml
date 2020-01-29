@@ -273,11 +273,5 @@
 
         
         </Grid>
-        <Button Style="{StaticResource EditViewImageButton}"
-                HorizontalAlignment="right" VerticalAlignment="top" Margin="0"
-                Width="32" Height="32"
-                Focusable="False"
-                Content="/TogglDesktop;component/Resources/ic_close_grey600_36dp.png"
-                Click="backButton_OnClick"/>
     </Grid>
 </UserControl>
