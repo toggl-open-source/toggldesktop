@@ -27,9 +27,6 @@
     <i:Interaction.Behaviors>
         <behaviors:CloseWindowOnEscBehavior />
     </i:Interaction.Behaviors>
-    <Window.Resources>
-        <ResourceDictionary Source="../Resources/DesignUpdate/Buttons.xaml" />
-    </Window.Resources>
     <Grid ClipToBounds="True" Name="mainGrid" x:FieldModifier="private">
         <Rectangle Name="mainFormShadow" x:FieldModifier="private"
                    Margin="8 0" Fill="Black">

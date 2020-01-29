@@ -317,10 +317,7 @@
                             <TextBox Name="reminderStartTimeTextBox" x:FieldModifier="private"
                                      Margin="0 0 8 0" Width="64"
                                      HorizontalContentAlignment="Right" />
-                            <Canvas Width="12" Height="7">
-                                <Path Fill="{DynamicResource Toggl.DisabledTextBrush}" Data="M7.812.16C7.363-.166 7 .023 7 .567v6.006c0 .55.36.735.812.407l3.876-2.82c.449-.326.451-.852 0-1.18L7.812.16z"/>
-                                <Path StrokeThickness="2" Stroke="{DynamicResource Toggl.DisabledTextBrush}" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round" Data="M8 3.57H1"/>
-                            </Canvas>
+                            <ContentControl Focusable="False" Content="{StaticResource Toggl.ArrowIcon}" />
                             <TextBox Name="reminderEndTimeTextBox" x:FieldModifier="private"
                                      Margin="7 0 0 0" Width="64"
                                      HorizontalContentAlignment="Right" />
