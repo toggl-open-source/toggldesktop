@@ -11,20 +11,20 @@
 
 #include "time_entry.h"
 
+#include "toggl_api_private.h"
+#include "net/https_client.h"
+#include "util/formatter.h"
+
 #include <sstream>
 #include <algorithm>
-
-#include <json/json.h>  // NOLINT
-
-#include "https_client.h"
-#include "formatter.h"
 
 #include <Poco/DateTime.h>
 #include <Poco/LocalDateTime.h>
 #include <Poco/Logger.h>
 #include <Poco/NumberParser.h>
 #include <Poco/Timestamp.h>
-#include "toggl_api_private.h"
+
+#include <json/json.h>
 
 namespace toggl {
 

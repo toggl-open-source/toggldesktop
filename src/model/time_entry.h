@@ -3,12 +3,12 @@
 #ifndef SRC_TIME_ENTRY_H_
 #define SRC_TIME_ENTRY_H_
 
+#include "util/formatter.h"
+#include "util/types.h"
+#include "base_model.h"
+
 #include <string>
 #include <vector>
-
-#include "base_model.h"
-#include "formatter.h"
-#include "types.h"
 
 #include <Poco/Types.h>
 

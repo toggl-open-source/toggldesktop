@@ -6,8 +6,8 @@
 
 #include "batch_update_result.h"
 #include "database.h"
-#include "formatter.h"
 #include "model_change.h"
+#include "util/formatter.h"
 
 #include <Poco/Timestamp.h>
 #include <Poco/DateTime.h>

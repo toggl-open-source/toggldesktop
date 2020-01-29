@@ -2,21 +2,21 @@
 
 #include "user.h"
 
-#include <time.h>
-
-#include <sstream>
-
 #include "client.h"
 #include "const.h"
-#include "formatter.h"
-#include "https_client.h"
 #include "obm_action.h"
 #include "project.h"
 #include "tag.h"
 #include "task.h"
 #include "time_entry.h"
 #include "timeline_event.h"
-#include "urls.h"
+#include "net/urls.h"
+#include "net/https_client.h"
+#include "util/formatter.h"
+
+#include <time.h>
+
+#include <sstream>
 
 #include <Poco/Base64Decoder.h>
 #include <Poco/Base64Encoder.h>

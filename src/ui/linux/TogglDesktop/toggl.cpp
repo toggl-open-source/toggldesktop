@@ -13,8 +13,8 @@
 
 #include <iostream>   // NOLINT
 
-#include "./../../../toggl_api.h"
-#include "./../../../platforminfo.h"
+#include "toggl_api.h"
+#include "util/platforminfo.h"
 
 #include "./timeentryview.h"
 #include "./genericview.h"

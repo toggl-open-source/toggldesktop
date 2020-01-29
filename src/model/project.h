@@ -3,11 +3,11 @@
 #ifndef SRC_PROJECT_H_
 #define SRC_PROJECT_H_
 
+#include "util/types.h"
+#include "base_model.h"
+
 #include <string>
 #include <vector>
-
-#include "base_model.h"
-#include "types.h"
 
 #include <Poco/Types.h>
 

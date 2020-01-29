@@ -9,8 +9,8 @@
 #include <map>
 #include <functional>
 
-#include "timeline_event.h"
-#include "types.h"
+#include "model/timeline_event.h"
+#include "util/types.h"
 
 #include <Poco/Mutex.h>
 #include <functional>

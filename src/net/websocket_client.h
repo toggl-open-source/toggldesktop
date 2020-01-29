@@ -3,14 +3,14 @@
 #ifndef SRC_WEBSOCKET_CLIENT_H_
 #define SRC_WEBSOCKET_CLIENT_H_
 
+#include "util/types.h"
+#include "util/logger.h"
+
 #include <string>
 #include <vector>
 #include <ctime>
 
 #include <Poco/Activity.h>
-
-#include "types.h"
-#include "util/logger.h"
 
 namespace Poco {
     namespace Net {

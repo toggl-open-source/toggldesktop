@@ -3,7 +3,7 @@
 #ifndef SRC_MIGRATIONS_H_
 #define SRC_MIGRATIONS_H_
 
-#include "types.h"
+#include "util/types.h"
 
 namespace toggl {
 

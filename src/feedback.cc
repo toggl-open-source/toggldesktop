@@ -2,10 +2,10 @@
 
 #include "feedback.h"
 
-#include <sstream>
+#include "net/https_client.h"
+#include "util/formatter.h"
 
-#include "formatter.h"
-#include "https_client.h"
+#include <sstream>
 
 #include <Poco/Path.h>
 

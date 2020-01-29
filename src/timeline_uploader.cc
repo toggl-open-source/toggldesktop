@@ -2,12 +2,12 @@
 
 #include "timeline_uploader.h"
 
+#include "net/https_client.h"
+#include "net/urls.h"
+#include "util/formatter.h"
+
 #include <sstream>
 #include <string>
-
-#include "formatter.h"
-#include "https_client.h"
-#include "urls.h"
 
 #include <Poco/Foundation.h>
 #include <Poco/Thread.h>

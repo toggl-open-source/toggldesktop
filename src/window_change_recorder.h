@@ -3,12 +3,12 @@
 #ifndef SRC_WINDOW_CHANGE_RECORDER_H_
 #define SRC_WINDOW_CHANGE_RECORDER_H_
 
+#include "timeline_notifications.h"
+#include "util/types.h"
+#include "util/logger.h"
+
 #include <string>
 #include <map>
-
-#include "timeline_notifications.h"
-#include "types.h"
-#include "util/logger.h"
 
 #include <Poco/Activity.h>
 

@@ -3,25 +3,25 @@
 #ifndef SRC_CONTEXT_H_
 #define SRC_CONTEXT_H_
 
-#include <string>
-#include <vector>
-#include <map>
-#include <set>
-#include <memory>
-#include <iostream> // NOLINT
-
 #include "analytics.h"
 #include "custom_error_handler.h"
 #include "feedback.h"
 #include "gui.h"
 #include "help_article.h"
 #include "idle.h"
-#include "util/logger.h"
 #include "model_change.h"
-#include "timeline_event.h"
 #include "timeline_notifications.h"
-#include "types.h"
-#include "websocket_client.h"
+#include "model/timeline_event.h"
+#include "net/websocket_client.h"
+#include "util/logger.h"
+#include "util/types.h"
+
+#include <string>
+#include <vector>
+#include <map>
+#include <set>
+#include <memory>
+#include <iostream>
 
 #include <Poco/Activity.h>
 #include <Poco/LocalDateTime.h>

@@ -2,10 +2,10 @@
 
 #include "window_change_recorder.h"
 
-#include <sstream>
-
-#include "get_focused_window.h"
+#include "util/get_focused_window.h"
 #include "const.h"
+
+#include <sstream>
 
 #include <Poco/Thread.h>
 

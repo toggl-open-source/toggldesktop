@@ -3,15 +3,12 @@
 #ifndef SRC_CLIENT_H_
 #define SRC_CLIENT_H_
 
-#include <string>
-
-#include "types.h"
-
-#include <json/json.h>  // NOLINT
-
-#include <Poco/Types.h>
-
 #include "base_model.h"
+#include "util/types.h"
+
+#include <string>
+#include <json/json.h>
+#include <Poco/Types.h>
 
 namespace toggl {
 

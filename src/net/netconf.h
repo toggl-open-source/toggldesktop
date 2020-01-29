@@ -3,10 +3,10 @@
 #ifndef SRC_NETCONF_H_
 #define SRC_NETCONF_H_
 
+#include "util/types.h"
+
 #include <string>
 #include <vector>
-
-#include "types.h"
 
 namespace Poco {
 

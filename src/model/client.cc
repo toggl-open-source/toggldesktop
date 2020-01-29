@@ -2,10 +2,10 @@
 
 #include "client.h"
 
+#include "util/formatter.h"
+
 #include <sstream>
 #include <cstring>
-
-#include "formatter.h"
 
 namespace toggl {
 

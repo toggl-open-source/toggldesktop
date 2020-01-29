@@ -2,8 +2,9 @@
 
 #include "workspace.h"
 
+#include "util/formatter.h"
+
 #include <sstream>
-#include "formatter.h"
 
 namespace toggl {
 

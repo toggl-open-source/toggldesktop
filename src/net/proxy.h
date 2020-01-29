@@ -3,7 +3,7 @@
 #ifndef SRC_PROXY_H_
 #define SRC_PROXY_H_
 
-#include "types.h"
+#include "util/types.h"
 
 #include <string>
 

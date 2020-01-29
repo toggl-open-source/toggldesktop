@@ -3,15 +3,15 @@
 #ifndef SRC_HTTPS_CLIENT_H_
 #define SRC_HTTPS_CLIENT_H_
 
+#include "const.h"
+#include "proxy.h"
+#include "util/types.h"
+#include "util/logger.h"
+
 #include <map>
 #include <sstream>
 #include <string>
 #include <vector>
-
-#include "const.h"
-#include "proxy.h"
-#include "types.h"
-#include "util/logger.h"
 
 #include <Poco/Activity.h>
 #include <Poco/Timestamp.h>

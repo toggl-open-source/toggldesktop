@@ -3,18 +3,18 @@
 #ifndef SRC_GUI_H_
 #define SRC_GUI_H_
 
+#include "help_article.h"
+#include "toggl_api.h"
+#include "toggl_api_private.h"
+#include "model/settings.h"
+#include "net/https_client.h"
+#include "net/proxy.h"
+#include "util/types.h"
+#include "util/logger.h"
+
 #include <set>
 #include <string>
 #include <vector>
-
-#include "help_article.h"
-#include "https_client.h"
-#include "proxy.h"
-#include "settings.h"
-#include "toggl_api.h"
-#include "toggl_api_private.h"
-#include "types.h"
-#include "util/logger.h"
 
 #include <Poco/LocalDateTime.h>
 

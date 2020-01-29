@@ -7,17 +7,17 @@
 
 #include "analytics.h"
 
+#include "const.h"
+#include "model/user.h"
+#include "model/settings.h"
+#include "net/https_client.h"
+#include "net/urls.h"
+#include "util/logger.h"
+#include "util/platforminfo.h"
+
 #include <sstream>
 
-#include <json/json.h>  // NOLINT
-
-#include "const.h"
-#include "https_client.h"
-#include "platforminfo.h"
-#include "settings.h"
-#include "urls.h"
-#include "user.h"
-#include "util/logger.h"
+#include <json/json.h>
 
 namespace toggl {
 

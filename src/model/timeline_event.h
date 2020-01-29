@@ -3,13 +3,13 @@
 #ifndef SRC_TIMELINE_EVENT_H_
 #define SRC_TIMELINE_EVENT_H_
 
-#include <time.h>
+#include "base_model.h"
+#include "util/formatter.h"
 
 #include <sstream>
 #include <string>
 
-#include "base_model.h"
-#include "formatter.h"
+#include <time.h>
 
 namespace toggl {
 

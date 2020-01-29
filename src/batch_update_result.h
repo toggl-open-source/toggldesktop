@@ -3,12 +3,12 @@
 #ifndef SRC_BATCH_UPDATE_RESULT_H_
 #define SRC_BATCH_UPDATE_RESULT_H_
 
+#include "util/types.h"
+#include "util/logger.h"
+
 #include <string>
 #include <vector>
 #include <map>
-
-#include "types.h"
-#include "util/logger.h"
 
 #include <json/json.h>  // NOLINT
 

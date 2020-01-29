@@ -3,17 +3,16 @@
 #ifndef SRC_BASE_MODEL_H_
 #define SRC_BASE_MODEL_H_
 
+#include "util/types.h"
+#include "util/logger.h"
+#include "const.h"
+
 #include <string>
 #include <vector>
 #include <cstring>
 #include <ctime>
 
-#include <json/json.h>  // NOLINT
-
-#include "const.h"
-#include "types.h"
-#include "util/logger.h"
-
+#include <json/json.h>
 #include <Poco/Types.h>
 
 namespace toggl {

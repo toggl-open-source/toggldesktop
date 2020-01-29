@@ -2,14 +2,14 @@
 
 #include "project.h"
 
+#include "util/formatter.h"
+
 #include <sstream>
 #include <ctime>
 
 #include <Poco/UTF8String.h>
 #include <Poco/NumberParser.h>
 #include <Poco/UTF8String.h>
-
-#include "formatter.h"
 
 namespace toggl {
 

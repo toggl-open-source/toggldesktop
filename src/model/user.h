@@ -3,21 +3,21 @@
 #ifndef SRC_USER_H_
 #define SRC_USER_H_
 
+#include "base_model.h"
+#include "batch_update_result.h"
+#include "related_data.h"
+#include "workspace.h"
+#include "util/types.h"
+
 #include <map>
 #include <set>
 #include <string>
 #include <vector>
 
-#include <json/json.h>  // NOLINT
-
-#include "base_model.h"
-#include "batch_update_result.h"
-#include "related_data.h"
-#include "types.h"
-#include "workspace.h"
-
 #include <Poco/LocalDateTime.h>
 #include <Poco/Types.h>
+
+#include <json/json.h>
 
 namespace toggl {
 

@@ -3,14 +3,15 @@
 #ifndef SRC_ANALYTICS_H_
 #define SRC_ANALYTICS_H_
 
+#include "model/settings.h"
+#include "net/proxy.h"
+#include "util/rectangle.h"
+
 #include <string>
 
 #include <Poco/Task.h>
 #include <Poco/TaskManager.h>
 #include <Poco/LocalDateTime.h>
-#include "proxy.h"
-#include "settings.h"
-#include "rectangle.h"
 
 namespace toggl {
 
