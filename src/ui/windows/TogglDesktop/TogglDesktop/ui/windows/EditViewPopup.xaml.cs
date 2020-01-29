@@ -83,8 +83,8 @@ namespace TogglDesktop
 
         protected override void OnClosing(CancelEventArgs e)
         {
-            this.ClosePopup();
             e.Cancel = true;
+            Toggl.ViewTimeEntryList();
         }
 
         #region animate
