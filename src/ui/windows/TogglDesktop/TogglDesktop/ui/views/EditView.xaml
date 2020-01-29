@@ -4,10 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:toggl="clr-namespace:TogglDesktop"
+             xmlns:behaviors="clr-namespace:TogglDesktop.Behaviors"
              mc:Ignorable="d" MinWidth="370"
              Style="{StaticResource EditView}"
              >
-    <Grid Background="{StaticResource ViewBackgroundLight}">
+    <Grid Background="{DynamicResource Toggl.CardBackground}">
         <Grid Name="contentGrid" x:FieldModifier="private">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
@@ -271,7 +272,11 @@
                     Content="/TogglDesktop;component/Resources/ic_delete_grey600_36dp.png"
                     Click="deleteButton_OnClick"/>
 
-        
         </Grid>
+        <Button Style="{DynamicResource Toggl.CrossButton}"
+                HorizontalAlignment="Right" VerticalAlignment="Top"
+                Width="32" Height="32"
+                Focusable="False"
+                behaviors:ButtonHelper.IsCloseWindowButton="True"/>
     </Grid>
 </UserControl>
