@@ -1,54 +1,30 @@
-﻿<Window x:Class="TogglDesktop.EditViewPopup"
+﻿<mah:MetroWindow x:Class="TogglDesktop.EditViewPopup"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:toggl="clr-namespace:TogglDesktop"
+        xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
         mc:Ignorable="d"
         d:DesignWidth="400" d:DesignHeight="520"
-        WindowStyle="None" ResizeMode="NoResize"
-        MouseMove="onWindowMouseMove"
-        Background="Transparent"
         ShowInTaskbar="False"
+        ResizeMode="CanResize"
+        BorderThickness="0"
+        ShowTitleBar="False"
+        SaveWindowPosition="False"
+        ShowCloseButton="False"
+        ShowMaxRestoreButton="False"
+        ShowMinButton="False"
+        ShowSystemMenuOnRightClick="False"
+        WindowStyle="None"
+        WindowTransitionsEnabled="False"
+        Background="Transparent"
+        ResizeBorderThickness="0 0 4 0"
         AllowsTransparency="True"
         UseLayoutRounding="True">
-    
-    <WindowChrome.WindowChrome>
-        <WindowChrome
-            CaptionHeight="0"
-            CornerRadius="0"
-            ResizeBorderThickness="0"
-            GlassFrameThickness="0"
-            UseAeroCaptionButtons="False"
-            />
-    </WindowChrome.WindowChrome>
 
     <Grid ClipToBounds="True" Name="mainGrid" x:FieldModifier="private">
         <toggl:EditView
-            x:Name="EditView"
-            />
-        <Rectangle
-            x:Name="resizeHandle" x:FieldModifier="private"
-            Fill="Transparent"
-            Width="10" HorizontalAlignment="Right"
-            Margin="0 32"
-            Cursor="SizeWE"
-            IsHitTestVisible="True"
-            MouseLeftButtonDown="onResizeHandleLeftButtonDown"
-            MouseLeftButtonUp="onResizeHandleLeftButtonUp"
-            />
-
-        <Rectangle Name="mainFormShadow" x:FieldModifier="private"
-                   HorizontalAlignment="Left" VerticalAlignment="Top"
-                   Width="5" Margin="-5 0 -5 0" Height="300" Fill="Gray">
-            <Rectangle.Effect>
-                <DropShadowEffect 
-                    BlurRadius="20"
-                    Direction="180"
-                    ShadowDepth="0"
-                    Opacity="0.8"
-                    />
-            </Rectangle.Effect>
-        </Rectangle>
+            x:Name="EditView" />
     </Grid>
-</Window>
+</mah:MetroWindow>
