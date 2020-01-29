@@ -2,6 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
     <FontFamily x:Key="BaseFont">Segoe UI</FontFamily>
+    <system:Double x:Key="NormalFontSize">14</system:Double>
     <Style TargetType="TextBlock" x:Key="Toggl.Text">
         <Setter Property="FontFamily" Value="{StaticResource BaseFont}" />
         <Setter Property="Foreground" Value="{DynamicResource Toggl.PrimaryTextBrush}" />
@@ -54,5 +55,4 @@
         <Setter Property="Foreground" Value="{DynamicResource Toggl.DisabledTextBrush}" />
         <Setter Property="FontWeight" Value="SemiBold" />
     </Style>
-    <Style TargetType="TextBlock" BasedOn="{StaticResource Toggl.BodyText}" />
 </ResourceDictionary>
