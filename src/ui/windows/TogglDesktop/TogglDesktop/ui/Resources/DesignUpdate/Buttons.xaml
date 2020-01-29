@@ -49,7 +49,7 @@
         <Setter Property="BorderBrush" Value="{DynamicResource Toggl.Button.Primary.Background}" />
         <Setter Property="Height" Value="32" />
         <Setter Property="FocusVisualStyle" Value="{StaticResource Toggl.ButtonFocusVisualStyle}" />
-        <Setter Property="FontSize" Value="{DynamicResource NormalFontSize}" />
+        <Setter Property="FontSize" Value="{StaticResource NormalFontSize}" />
         <Setter Property="FontFamily" Value="{StaticResource BaseFont}" />
         <Setter Property="Foreground" Value="{DynamicResource Toggl.PrimaryTextBrush}" />
         <Setter Property="Padding" Value="10 6 10 6" />
