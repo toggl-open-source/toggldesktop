@@ -185,34 +185,28 @@ namespace TogglDesktop
 
         #endregion
 
-        public void SetPlacement(bool left,
-            double x, double y, double height, double maxWidth, bool fixHeight = false)
+        public void SetPlacement(bool left, double x, double y, double maxWidth)
         {
             this.ResizeBorderThickness = left ? _leftResizeBorderThickness : _rightResizeBorderThickness;
             this.EditView.Margin = left ? _leftEditViewMargin : _rightEditViewMargin;
-
-            this.skipAnimation = fixHeight;
-
-            if (!fixHeight)
-                height = Math.Min(700, Math.Max(520, height));
-
+            this.skipAnimation = false;
+            this.EditView.Height = double.NaN;
             this.isLeft = !left;
-            this.Height = height;
-
-
-            if (left)
-            {
-                x -= this.Width;
-            }
-
-            x += left ? 8 : -8;
-
+            x += left ? (8 - this.Width) : -8;
             this.Left = x;
             this.Top = y;
+            this.MaxWidth = maxWidth;
+        }
 
-            this.MinHeight = height;
-            this.MaxHeight = height;
-
+        public void SetPlacementMaximized(double x, double y, double height, double maxWidth)
+        {
+            this.ResizeBorderThickness = new Thickness(0);
+            this.EditView.Margin = new Thickness(0);
+            this.skipAnimation = true;
+            this.EditView.Height = height;
+            this.isLeft = false;
+            this.Left = x - this.Width;
+            this.Top = y;
             this.MaxWidth = maxWidth;
         }
     }
