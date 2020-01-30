@@ -23,7 +23,8 @@
         Background="Transparent"
         ResizeBorderThickness="0 0 4 0"
         AllowsTransparency="True"
-        UseLayoutRounding="True">
+        UseLayoutRounding="True"
+        SizeToContent="Height">
     <i:Interaction.Behaviors>
         <behaviors:CloseWindowOnEscBehavior />
     </i:Interaction.Behaviors>
