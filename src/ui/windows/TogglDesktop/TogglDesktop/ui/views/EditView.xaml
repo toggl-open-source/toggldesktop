@@ -54,7 +54,7 @@
                     </Grid.RowDefinitions>
                 
                     <!-- project -->
-                    <Grid Grid.Row="0" Height="50">
+                    <Grid Grid.Row="0" Height="32" Margin="0 8 0 0">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto" SharedSizeGroup="AddButtons"
@@ -63,6 +63,7 @@
 
                         <toggl:ProjectTextBox x:Name="projectTextBox" x:FieldModifier="private" Grid.Column="0"
                                                 LostKeyboardFocus="projectTextBox_OnLostKeyboardFocus"
+                                                Margin="0"
                                                 Padding="27, 0, 34, 0"
                                                 PreviewKeyDown="projectTextBox_OnPreviewKeyDown"/>
 
@@ -89,10 +90,11 @@
 
                         <toggl:ProjectColorPicker
                             x:Name="projectColorSelector" x:FieldModifier="private" Grid.Column="0"
-                            Margin="8" Width="28"/>
+                            Width="28"/>
 
                         <ToggleButton x:Name="projectDropDownButton" x:FieldModifier="private" Grid.Column="0"
-                                            Style="{StaticResource EditViewAutoCompleteTextFieldButton}"/>
+                                            Style="{StaticResource EditViewAutoCompleteTextFieldButton}"
+                                            Margin="0"/>
 
                         <Button x:Name ="newProjectCancelButton" x:FieldModifier="private" Grid.Column="1"
                                 Style="{StaticResource EditViewTextFieldImageButtonBase}"
@@ -188,8 +190,8 @@
                 </Grid>
 
                 <!-- tags -->
-                <Grid MinHeight="50">
-                    <toggl:TagList x:Name="tagList" x:FieldModifier="private" Margin="8"
+                <Grid MinHeight="32" Margin="0 8 0 0">
+                    <toggl:TagList x:Name="tagList" x:FieldModifier="private"
                                    LostKeyboardFocus="tagList_OnLostKeyboardFocus"
                                    GotKeyboardFocus="tagList_OnGotKeybardFocus"
                                    TagAdded="tagList_TagAdded"
@@ -201,6 +203,7 @@
 
                 <!-- billable? -->
                 <CheckBox Name="billableCheckBox" x:FieldModifier="private"
+                          Margin="0 8 0 0"
                           Click="billableCheckBox_OnClick" Content="Billable" />
             
                 <!-- times, duration -->
