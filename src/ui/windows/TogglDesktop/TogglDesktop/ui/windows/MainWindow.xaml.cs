@@ -30,7 +30,7 @@ namespace TogglDesktop
     {
         #region fields
 
-        private const int WindowHeaderHeight = 32;
+        private const int WindowHeaderHeight = 30;
         private readonly DispatcherTimer idleDetectionTimer =
             new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
 
@@ -899,8 +899,7 @@ namespace TogglDesktop
                 y += headerHeight;
                 x += this.ActualWidth;
 
-                this.editPopup.SetPlacement(true, x, y, this.ActualHeight - headerHeight,
-                    this.ActualWidth - 300, true);
+                this.editPopup.SetPlacementMaximized(x, y, this.ActualHeight - headerHeight, this.ActualWidth - 300);
             }
             else
             {
@@ -915,7 +914,7 @@ namespace TogglDesktop
                     x += this.ActualWidth;
                 }
 
-                this.editPopup.SetPlacement(left, x, y, this.Height, s.Width * 0.5);
+                this.editPopup.SetPlacement(left, x, y, s.Width * 0.5);
             }
 
         }
