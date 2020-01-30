@@ -19,9 +19,6 @@
 
     <sys:Double x:Key="TimerHeight">68</sys:Double>
 
-    <sys:Double x:Key="EditViewMarginH">28</sys:Double>
-    <sys:Double x:Key="EditViewMarginV">40</sys:Double>
-
     <Style TargetType="Control">
         <Setter Property="FontFamily" Value="{StaticResource DefaultFont}" />
         <Setter Property="FontSize" Value="13.3" />

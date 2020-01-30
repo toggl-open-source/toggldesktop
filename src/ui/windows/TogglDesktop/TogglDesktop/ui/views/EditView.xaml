@@ -13,30 +13,14 @@
         <ResourceDictionary Source="../Resources/DesignUpdate/Controls.xaml" />
     </UserControl.Resources>
     <Grid Background="{DynamicResource Toggl.CardBackground}">
-        <Grid Name="contentGrid" x:FieldModifier="private">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
+        <Grid Name="contentGrid" x:FieldModifier="private" Margin="28 20">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <FrameworkElement Grid.Row="0" Grid.Column="0"
-                Width="{StaticResource EditViewMarginH}"
-                Height="{StaticResource EditViewMarginV}"
-                />
-            <FrameworkElement Grid.Row="3" Grid.Column="2"
-                Width="{StaticResource EditViewMarginH}"
-                Height="{StaticResource EditViewMarginV}"
-                />
-
             <!-- content -->
-            <StackPanel Orientation="Vertical" Grid.Column="1" Grid.Row="1">
+            <StackPanel Orientation="Vertical" Margin="0 20 0 0">
 
                 <TextBlock Style="{DynamicResource Toggl.BodyText}" Text="Details" />
                 <!-- description -->
@@ -198,6 +182,18 @@
                     </StackPanel>
                 </Grid>
 
+                <!-- tags -->
+                <Grid MinHeight="50">
+                    <toggl:TagList x:Name="tagList" x:FieldModifier="private" Margin="8"
+                                   LostKeyboardFocus="tagList_OnLostKeyboardFocus"
+                                   GotKeyboardFocus="tagList_OnGotKeybardFocus"
+                                   TagAdded="tagList_TagAdded"
+                                   TagRemoved="tagList_TagRemoved"/>
+
+                    <TextBlock x:Name="emptyTagListText" x:FieldModifier="private"
+                               Style="{StaticResource TextboxEmptyText}">No tags</TextBlock>
+                </Grid>
+
                 <!-- billable? -->
                 <CheckBox Name="billableCheckBox" x:FieldModifier="private"
                           Click="billableCheckBox_OnClick" Content="Billable" />
@@ -239,31 +235,21 @@
                                 Margin="0 8 0 0"
                              Height="32" SelectedDate="05.01.2015" SelectedDateChanged="startDatePicker_SelectedDateChanged"/>
                 </Grid>
-            
-                <!-- tags -->
-                <Grid MinHeight="50">
-                    <toggl:TagList x:Name="tagList" x:FieldModifier="private" Margin="8"
-                                   LostKeyboardFocus="tagList_OnLostKeyboardFocus"
-                                   GotKeyboardFocus="tagList_OnGotKeybardFocus"
-                                   TagAdded="tagList_TagAdded"
-                                   TagRemoved="tagList_TagRemoved"/>
 
-                    <TextBlock x:Name="emptyTagListText" x:FieldModifier="private"
-                               Style="{StaticResource TextboxEmptyText}">No tags</TextBlock>
-                </Grid>
+                <TextBlock Margin="0 14 0 0" LineHeight="20">
+                    <Hyperlink Foreground="{DynamicResource Toggl.ValidationErrorBackground}"
+                               Click="deleteButton_OnClick"
+                               TextDecorations="{x:Null}">Delete</Hyperlink>
+                </TextBlock>
+
             </StackPanel>
-        
-            <TextBlock Name="lastUpdatedText" x:FieldModifier="private"
-                       Grid.Column="1" Grid.Row="3"
-                       Style="{StaticResource SmallText}"
-                       HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="10">Last update N/A</TextBlock>
 
-            <Button Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="3"
-                    Style="{StaticResource EditViewImageButton}"
-                    HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0"
-                    Width="32" Height="32"
-                    Content="/TogglDesktop;component/Resources/ic_delete_grey600_36dp.png"
-                    Click="deleteButton_OnClick"/>
+            <Button Grid.Row="1"
+                    Style="{StaticResource Toggl.PrimaryButton}"
+                    HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                    Width="88" Height="32"
+                    Content="Done"
+                    behaviors:ButtonHelper.IsCloseWindowButton="True" />
 
         </Grid>
         <Button Style="{StaticResource Toggl.CrossButton}"
