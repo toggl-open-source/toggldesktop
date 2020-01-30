@@ -399,7 +399,7 @@ namespace TogglDesktop
             }
         }
 
-        private void startDatePicker_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        private void startDatePicker_LostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
             if (this.dateSet)
             {

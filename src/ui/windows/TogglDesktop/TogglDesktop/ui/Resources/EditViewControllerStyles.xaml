@@ -140,94 +140,10 @@
 
     <Style TargetType="UserControl" x:Key="EditView">
         <Style.Resources>
-
-            <Style TargetType="DatePicker" BasedOn="{StaticResource EditViewControlBase}">
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="{x:Type DatePicker}">
-                            <Grid x:Name="PART_Root"
-                              Background="White">
-                                <DatePickerTextBox x:Name="PART_TextBox">
-                                    <DatePickerTextBox.Style>
-                                        <Style TargetType="DatePickerTextBox" BasedOn="{StaticResource EditViewControlBase}">
-                                            <Setter Property="Margin" Value="0, 0, 20, 0" />
-                                            <Setter Property="Padding" Value="20, 0, 0, 0" />
-                                            <Setter Property="FontSize" Value="10"/>
-                                            <Setter Property="HorizontalContentAlignment" Value="Center" />
-                                            <Setter Property="HorizontalAlignment" Value="Stretch" />
-                                            <Setter Property="VerticalAlignment" Value="Stretch" />
-                                            <Setter Property="Template">
-                                                <Setter.Value>
-                                                    <ControlTemplate x:Name="dptext" TargetType="{x:Type DatePickerTextBox}">
-                                                        <ScrollViewer x:Name="PART_ContentHost"/>
-                                                    </ControlTemplate>
-                                                </Setter.Value>
-                                            </Setter>
-                                            <Style.Triggers>
-                                                <Trigger Property="IsEnabled" Value="False">
-                                                    <Setter Property="Foreground" Value="#B2252525"></Setter>
-                                                </Trigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </DatePickerTextBox.Style>
-                                </DatePickerTextBox>
-                                <Button x:Name="PART_Button" Content="/TogglDesktop;component/Resources/ic_calendar_2x.png">
-                                    <Button.Style>
-                                        <Style TargetType="Button" BasedOn="{StaticResource EditViewTextFieldImageButtonBase}">
-                                            <Setter Property="Margin" Value="0"/>
-                                            <Style.Triggers>
-                                                <Trigger Property="IsEnabled" Value="False">
-                                                    <Setter Property="Visibility" Value="Hidden" />
-                                                </Trigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Button.Style>
-                                </Button>
-                                <Popup x:Name="PART_Popup" StaysOpen="False" AllowsTransparency="True" />
-                            </Grid>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
             
             <Style TargetType="Button" BasedOn="{StaticResource FlatButton}">
                 <Setter Property="Margin" Value="8"/>
             </Style>
-            
-            <!-- <Style TargetType="CheckBox" BasedOn="{StaticResource EditViewControlBase}"> -->
-            <!--     <Setter Property="Padding" Value="0"/> -->
-            <!--     <Setter Property="Template"> -->
-            <!--         <Setter.Value> -->
-            <!--             <ControlTemplate TargetType="{x:Type CheckBox}"> -->
-            <!--                 <BulletDecorator Background="Transparent" SnapsToDevicePixels="true" > -->
-            <!--                     <BulletDecorator.Bullet> -->
-            <!--                         <Border x:Name="border" -->
-            <!--                         Width="16" Height="16" Background="White"> -->
-            <!--                             <Path x:Name="checkMark" -->
-            <!--                               Width="12" -->
-            <!--                               Height="9.5" -->
-            <!--                               HorizontalAlignment="Center" -->
-            <!--                               VerticalAlignment="Center" -->
-            <!--                               Data="M -1 -1 L 0 0 L 2 -2" -->
-            <!--                               Stretch="Fill" -->
-            <!--                               Stroke="#252525" -->
-            <!--                               StrokeThickness="2" /> -->
-            <!--                         </Border> -->
-            <!--                     </BulletDecorator.Bullet> -->
-            <!--                     <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="4, 1, 0, -1" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/> -->
-            <!--                 </BulletDecorator> -->
-            <!--                 <ControlTemplate.Triggers> -->
-            <!--                     <Trigger Property="IsChecked" Value="False"> -->
-            <!--                         <Setter TargetName="checkMark" Property="Visibility" Value="Hidden"/> -->
-            <!--                     </Trigger> -->
-            <!--                     <Trigger Property="IsMouseOver" Value="True"> -->
-            <!--                         <Setter TargetName="border" Property="Background" Value="#F4F4F4"/> -->
-            <!--                     </Trigger> -->
-            <!--                 </ControlTemplate.Triggers> -->
-            <!--             </ControlTemplate> -->
-            <!--         </Setter.Value> -->
-            <!--     </Setter> -->
-            <!-- </Style> -->
 
         </Style.Resources>
     </Style>
