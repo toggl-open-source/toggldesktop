@@ -1,6 +1,16 @@
 {
     "versions": [
         {
+            "version": "7.5.26",
+            "rows": [
+                "Removed duplicate 'Record Timeline' settings, now only visible in timeline view",
+                "Added Undo logic for time entry delete",
+                "Added context menu items to start/delete/continue for time entries in timeline view"
+            ],
+            "date": "January 30th 2020",
+            "beta": "true"
+        },
+        {
             "version": "7.5.16",
             "rows": [
                 "Fixed A Large number of TimelineEvent upload requests hit to Toggl's server",
