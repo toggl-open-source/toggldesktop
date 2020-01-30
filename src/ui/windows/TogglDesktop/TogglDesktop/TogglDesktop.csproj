@@ -208,6 +208,7 @@
     </Compile>
     <Compile Include="ui\Behaviors\ButtonHelper.cs" />
     <Compile Include="ui\Behaviors\CloseWindowOnEscBehavior.cs" />
+    <Compile Include="ui\Behaviors\DatePickerKeyboardHandlingBehavior.cs" />
     <Compile Include="ui\Behaviors\FocusHelper.cs" />
     <Compile Include="ui\Behaviors\FocusParentWindowOnClosingBehavior.cs" />
     <Compile Include="ui\Behaviors\HideWindowOnClosingBehavior.cs" />
@@ -687,6 +688,7 @@
     <Page Include="ui\Resources\DesignUpdate\ComboBox.xaml" />
     <Page Include="ui\Resources\DesignUpdate\ContextMenu.xaml" />
     <Page Include="ui\Resources\DesignUpdate\Controls.xaml" />
+    <Page Include="ui\Resources\DesignUpdate\DatePicker.xaml" />
     <Page Include="ui\Resources\DesignUpdate\ErrorTemplate.xaml" />
     <Page Include="ui\Resources\DesignUpdate\HotKeyBox.xaml" />
     <Page Include="ui\Resources\DesignUpdate\Hyperlink.xaml" />

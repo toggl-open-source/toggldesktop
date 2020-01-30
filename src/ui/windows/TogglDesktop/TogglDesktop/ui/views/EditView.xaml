@@ -6,11 +6,16 @@
              xmlns:toggl="clr-namespace:TogglDesktop"
              xmlns:behaviors="clr-namespace:TogglDesktop.Behaviors"
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              mc:Ignorable="d" MinWidth="300"
-             Style="{StaticResource EditView}"
-             >
+             Style="{StaticResource EditView}">
     <UserControl.Resources>
-        <ResourceDictionary Source="../Resources/DesignUpdate/Controls.xaml" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources/DesignUpdate/Controls.xaml" />
+                <ResourceDictionary Source="../Resources/DesignUpdate/DatePicker.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </UserControl.Resources>
     <Grid Background="{DynamicResource Toggl.CardBackground}">
         <Grid Name="contentGrid" x:FieldModifier="private" Margin="28 20">
@@ -233,7 +238,13 @@
                                            KeyDown="endTimeTextBox_OnKeyDown">12:55</toggl:ExtendedTextBox>
                     <DatePicker Name="startDatePicker" x:FieldModifier="private" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4"
                                 Margin="0 8 0 0"
-                             Height="32" SelectedDate="05.01.2015" SelectedDateChanged="startDatePicker_SelectedDateChanged"/>
+                                Height="32"
+                                SelectedDate="05.01.2015"
+                                LostKeyboardFocus="startDatePicker_LostKeyboardFocus">
+                        <i:Interaction.Behaviors>
+                            <behaviors:DatePickerKeyboardHandlingBehavior />
+                        </i:Interaction.Behaviors>
+                    </DatePicker>
                 </Grid>
 
                 <TextBlock Margin="0 14 0 0" LineHeight="20">
