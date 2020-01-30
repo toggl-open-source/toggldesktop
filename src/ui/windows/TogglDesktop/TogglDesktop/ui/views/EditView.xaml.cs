@@ -132,18 +132,6 @@ namespace TogglDesktop
                 this.billableCheckBox.ShowOnlyIf(timeEntry.CanSeeBillable);
                 this.billableCheckBox.IsChecked = timeEntry.Billable;
 
-                if (timeEntry.UpdatedAt > 0)
-                {
-                    var updatedAt = Toggl.DateTimeFromUnix(timeEntry.UpdatedAt);
-                    this.lastUpdatedText.Text = "Last update " + updatedAt.ToShortDateString() + " at " +
-                                                updatedAt.ToLongTimeString();
-                    this.lastUpdatedText.Visibility = Visibility.Visible;
-                }
-                else
-                {
-                    this.lastUpdatedText.Visibility = Visibility.Collapsed;
-                }
-
                 if (open || !this.tagList.IsKeyboardFocusWithin)
                 {
                     this.tagList.Clear(open);
