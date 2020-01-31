@@ -401,9 +401,12 @@ namespace TogglDesktop
 
         private void startDatePicker_LostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
-            if (this.dateSet)
+            if (!startDatePicker.IsKeyboardFocusWithin)
             {
-                this.saveDate();
+                if (this.dateSet)
+                {
+                    this.saveDate();
+                }
             }
         }
 
