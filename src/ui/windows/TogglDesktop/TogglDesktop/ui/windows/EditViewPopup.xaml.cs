@@ -22,8 +22,6 @@ namespace TogglDesktop
 
         private readonly Thickness _leftResizeBorderThickness = new Thickness(4, 0, 0, 0);
         private readonly Thickness _rightResizeBorderThickness = new Thickness(0, 0, 4, 0);
-        private readonly Thickness _leftEditViewMargin = new Thickness(0, 0, 8, 0);
-        private readonly Thickness _rightEditViewMargin = new Thickness(8, 0, 0, 0);
 
         public EditViewPopup()
         {
@@ -186,7 +184,7 @@ namespace TogglDesktop
         public void SetPlacement(bool left, double x, double y, double maxWidth)
         {
             this.ResizeBorderThickness = left ? _leftResizeBorderThickness : _rightResizeBorderThickness;
-            this.EditView.Margin = left ? _leftEditViewMargin : _rightEditViewMargin;
+            this.EditView.Margin = new Thickness(8);
             this.skipAnimation = false;
             this.EditView.Height = double.NaN;
             this.isLeft = !left;

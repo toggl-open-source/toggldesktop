@@ -30,7 +30,7 @@
     </i:Interaction.Behaviors>
     <Grid ClipToBounds="True" Name="mainGrid" x:FieldModifier="private">
         <Rectangle Name="mainFormShadow" x:FieldModifier="private"
-                   Margin="8 0" Fill="Black">
+                   Margin="8" Fill="Black">
             <Rectangle.Effect>
                 <DropShadowEffect
                     Color="Black"
