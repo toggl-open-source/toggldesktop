@@ -62,6 +62,7 @@
                         </Grid.ColumnDefinitions>
 
                         <toggl:ProjectTextBox x:Name="projectTextBox" x:FieldModifier="private" Grid.Column="0"
+                                              Style="{StaticResource {x:Type TextBox}}"
                                                 LostKeyboardFocus="projectTextBox_OnLostKeyboardFocus"
                                                 Margin="0"
                                                 Padding="27, 0, 34, 0"
@@ -90,11 +91,12 @@
 
                         <toggl:ProjectColorPicker
                             x:Name="projectColorSelector" x:FieldModifier="private" Grid.Column="0"
-                            Width="28"/>
+                            Width="28"
+                            Margin="1 1 0 1"/>
 
                         <ToggleButton x:Name="projectDropDownButton" x:FieldModifier="private" Grid.Column="0"
                                             Style="{StaticResource EditViewAutoCompleteTextFieldButton}"
-                                            Margin="0"/>
+                                            Margin="0 1 1 1"/>
 
                         <Button x:Name ="newProjectCancelButton" x:FieldModifier="private" Grid.Column="1"
                                 Style="{StaticResource EditViewTextFieldImageButtonBase}"
