@@ -7,6 +7,37 @@
         <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Shared.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
+    <Style TargetType="Button" x:Key="Toggl.DateIconButton">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="FontSize" Value="{DynamicResource NormalFontSize}" />
+        <Setter Property="FontFamily" Value="{DynamicResource BaseFont}" />
+        <Setter Property="Foreground" Value="{DynamicResource Toggl.PrimaryTextBrush}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Canvas Width="{TemplateBinding mah:TextBoxHelper.ButtonWidth}"
+                            Height="{TemplateBinding mah:TextBoxHelper.ButtonWidth}"
+                            Background="{TemplateBinding Background}">
+                        <Path Fill="{TemplateBinding Foreground}" Data="M8 5v1h8V5h1v1h3v14H4V6h3V5h1zm11 5H5v9h14v-9zm-5 7v1h-1v-1h1zm-3 0v1h-1v-1h1zm-3 0v1H7v-1h1zm3-2v1h-1v-1h1zm-3 0v1H7v-1h1zm9 0v1h-1v-1h1zm-3 0v1h-1v-1h1zm-3-2v1h-1v-1h1zm-3 0v1H7v-1h1zm9 0v1h-1v-1h1zm-3 0v1h-1v-1h1zm-3-2v1h-1v-1h1zm6 0v1h-1v-1h1zm-3 0v1h-1v-1h1zM7 7H5v2h14V7h-2v1h-1V7H8v1H7V7z"/>
+                    </Canvas>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{DynamicResource Toggl.Button.Primary.Background}" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="{DynamicResource Toggl.PrimaryTextBrush}" />
+                <Setter Property="Foreground" Value="{DynamicResource Toggl.CardBackground}" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="Foreground" Value="{DynamicResource Toggl.DisabledTextBrush}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
     <Style TargetType="{x:Type DatePicker}">
         <Setter Property="FontFamily" Value="{DynamicResource BaseFont}" />
         <Setter Property="FontSize" Value="{DynamicResource NormalFontSize}" />
@@ -48,16 +79,9 @@
                             <Button x:Name="PART_Button"
                                     Grid.RowSpan="2"
                                     Grid.Column="1"
-                                    Foreground="{TemplateBinding Foreground}"
-                                    IsTabStop="False"
-                                    Style="{DynamicResource ChromelessButtonStyle}">
-                                <!--  PackIconModern - Calendar14  -->
-                                <ContentControl Width="{TemplateBinding mah:TextBoxHelper.ButtonWidth}"
-                                                Height="{TemplateBinding mah:TextBoxHelper.ButtonWidth}"
-                                                Padding="2"
-                                                Content="M34,52H31V38.5C29.66,39.9 28.16,40.78 26.34,41.45V37.76C27.3,37.45 28.34,36.86 29.46,36C30.59,35.15 31.36,34.15 31.78,33H34V52M45,52V48H37V45L45,33H48V45H50V48H48V52H45M45,45V38.26L40.26,45H45M18,57V23H23V20A2,2 0 0,1 25,18H29C30.11,18 31,18.9 31,20V23H45V20A2,2 0 0,1 47,18H51C52.11,18 53,18.9 53,20V23H58V57H18M21,54H55V31H21V54M48.5,20A1.5,1.5 0 0,0 47,21.5V24.5A1.5,1.5 0 0,0 48.5,26H49.5C50.34,26 51,25.33 51,24.5V21.5A1.5,1.5 0 0,0 49.5,20H48.5M26.5,20A1.5,1.5 0 0,0 25,21.5V24.5A1.5,1.5 0 0,0 26.5,26H27.5A1.5,1.5 0 0,0 29,24.5V21.5A1.5,1.5 0 0,0 27.5,20H26.5Z"
-                                                Style="{DynamicResource PathIconContentControlStyle}" />
-                            </Button>
+                                    Style="{StaticResource Toggl.DateIconButton}"
+                                    HorizontalContentAlignment="Center"
+                                    VerticalContentAlignment="Center" />
 
                             <DatePickerTextBox x:Name="PART_TextBox"
                                                Grid.Row="1"
@@ -151,14 +175,6 @@
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter TargetName="DisabledVisualElement" Property="Opacity" Value="0.6" />
-                        </Trigger>
-                        <Trigger SourceName="PART_Button" Property="IsMouseOver" Value="True">
-                            <Setter TargetName="PART_Button" Property="Background" Value="{DynamicResource GrayBrush8}" />
-                            <Setter TargetName="PART_Button" Property="Foreground" Value="{DynamicResource AccentColorBrush}" />
-                        </Trigger>
-                        <Trigger SourceName="PART_Button" Property="IsPressed" Value="True">
-                            <Setter TargetName="PART_Button" Property="Background" Value="{DynamicResource BlackBrush}" />
-                            <Setter TargetName="PART_Button" Property="Foreground" Value="{DynamicResource WhiteBrush}" />
                         </Trigger>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
