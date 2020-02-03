@@ -24,9 +24,10 @@ final class TimelineResizeHoverController: NSViewController {
 
     // MARK: Public
 
-    func updateLabels(with timeEntry: TimelineTimeEntry) {
-        let entry = timeEntry.timeEntry
-        timeLabel.stringValue = "\(entry.startTimeString ?? "") - \(entry.endTimeString ?? "")"
-        durationLabel.stringValue = entry.duration
+    func updateLabels(with startTime: TimeInterval, endTime: TimeInterval) {
+        let startTimeStr = TimelineDateFormatter.shared.convertToHours(Date(timeIntervalSince1970: startTime))
+        let endTimeStr = TimelineDateFormatter.shared.convertToHours(Date(timeIntervalSince1970: endTime))
+        timeLabel.stringValue = "\(startTimeStr) - \(endTimeStr)"
+        durationLabel.stringValue = "\(endTime - startTime)"
     }
 }

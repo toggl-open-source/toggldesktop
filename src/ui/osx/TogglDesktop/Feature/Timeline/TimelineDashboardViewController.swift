@@ -481,6 +481,20 @@ extension TimelineDashboardViewController: TimelineDatasourceDelegate {
             let newFrame = onTopCorner ? CGRect(x: 0, y: bounds.height - 1, width: bounds.width, height: 1) : CGRect(x: 0, y: 0, width: bounds.width, height: 1)
             resizeInfoPopover.show(relativeTo: newFrame, of: cell.foregroundBox, preferredEdge: .maxX)
         }
+
+        // Update time
+        if let flow = collectionView.collectionViewLayout as? TimelineFlowLayout,
+            let controller = resizeInfoPopover.contentViewController as? TimelineResizeHoverController {
+
+            // Since we are in dragging session and we haven't saved to Library yet
+            // We have to convert the top and bottom corner of the cell
+            // To Get the Start and End Timestampt
+            let startTime = flow.convertTimestamp(from: cell.view.frame.origin)
+            let endTime = flow.convertTimestamp(from: CGPoint(x: cell.view.frame.origin.x, y: cell.view.frame.maxY))
+
+            // Update the popover
+            controller.updateLabels(with: startTime, endTime: endTime)
+        }
     }
 }
 
