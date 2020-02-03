@@ -67,14 +67,11 @@ class TimelineBaseCell: NSCollectionViewItem {
     // MARK: Mouse activity
 
     override func mouseEntered(with event: NSEvent) {
-        print("mouseEntered")
         handleMouseEntered(event)
     }
 
     override func mouseExited(with event: NSEvent) {
-        print("mouseExited")
         handleMouseExit(event)
-
     }
 
     override func mouseDown(with event: NSEvent) {
@@ -180,6 +177,13 @@ extension TimelineBaseCell {
     }
 
     private func handleMouseEntered(_ event: NSEvent) {
+
+        // Skip exit if the user is resizing
+        if isUserResizing && userAction != .none {
+            return
+        }
+
+        print("mouseEntered")
         delegate?.timelineCellMouseDidEntered(self)
 
         // Determine which drag position is
@@ -210,6 +214,8 @@ extension TimelineBaseCell {
         if isUserResizing && userAction != .none {
             return
         }
+
+        print("mouseExited")
 
         // Only Reset if the mouse is out of the foreground box
         let position = event.locationInWindow
