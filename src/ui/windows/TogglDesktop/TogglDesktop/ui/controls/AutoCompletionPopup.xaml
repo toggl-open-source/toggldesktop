@@ -78,13 +78,15 @@
                 </StackPanel>
             </DataTemplate>
             <DataTemplate  x:Key="string-item-template">
-                <TextBlock Name="text" VerticalAlignment="Center"
-                           Style="{StaticResource Toggl.BodyText}"
-                           Foreground="{DynamicResource Toggl.SecondaryTextBrush}"
-                   Margin="10, 0, 10, 0"
-                   Height="32"
-                   Text="{Binding Text}"
-                   ToolTip="{Binding Text}" />
+                <Border Height="32">
+                    <TextBlock Name="text"
+                               Style="{StaticResource Toggl.BodyText}"
+                               VerticalAlignment="Center"
+                               Foreground="{DynamicResource Toggl.SecondaryTextBrush}"
+                               Margin="10 0"
+                               Text="{Binding Text}"
+                               ToolTip="{Binding Text}" />
+                </Border>
             </DataTemplate>
             <DataTemplate x:Key="client-item-template">
                 <StackPanel Height="24" Orientation="Horizontal">
