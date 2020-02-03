@@ -175,37 +175,18 @@
     </Compile>
     <Compile Include="AutoCompletion\AutoCompleteController.cs" />
     <Compile Include="AutoCompletion\AutoCompleteItem.cs" />
-    <Compile Include="AutoCompletion\AutoCompleteListCategory.cs" />
     <Compile Include="AutoCompletion\AutoCompleteListItem.cs" />
     <Compile Include="AutoCompletion\IAutoCompleteListItem.cs" />
-    <Compile Include="AutoCompletion\ICollapsable.cs" />
     <Compile Include="AutoCompletion\Implementation\AutoCompleteControllers.cs" />
-    <Compile Include="AutoCompletion\AutoCompleteItemCategory.cs" />
-    <Compile Include="AutoCompletion\Implementation\ClientCategory.cs" />
     <Compile Include="AutoCompletion\Implementation\ModelItem.cs" />
-    <Compile Include="AutoCompletion\Implementation\NestedCategory.cs" />
-    <Compile Include="AutoCompletion\Implementation\ProjectCategory.cs" />
-    <Compile Include="AutoCompletion\Implementation\TaskItem.cs" />
-    <Compile Include="AutoCompletion\Implementation\SimpleCategory.cs" />
-    <Compile Include="AutoCompletion\Implementation\SimpleItemCategory.cs" />
-    <Compile Include="AutoCompletion\Implementation\SimpleNoncompletingCategory.cs" />
     <Compile Include="AutoCompletion\Implementation\StringItem.cs" />
-    <Compile Include="AutoCompletion\Implementation\ISelectable.cs" />
-    <Compile Include="AutoCompletion\Implementation\ProjectItem.cs" />
     <Compile Include="AutoCompletion\Implementation\SimpleItem.cs" />
     <Compile Include="AutoCompletion\Implementation\TimerItem.cs" />
-    <Compile Include="AutoCompletion\Implementation\WorkspaceCategory.cs" />
     <Compile Include="AutoCompletion\ListBoxItem.cs" />
     <Compile Include="BugsnagService.cs" />
     <Compile Include="Diagnostics\IPerformanceToken.cs" />
     <Compile Include="Diagnostics\Performance.cs" />
     <Compile Include="SingleInstanceManager.cs" />
-    <Compile Include="ui\AutoCompleteControls\ProjectCategory.xaml.cs">
-      <DependentUpon>ProjectCategory.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ui\AutoCompleteControls\TaskEntry.xaml.cs">
-      <DependentUpon>TaskEntry.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ui\Behaviors\ButtonHelper.cs" />
     <Compile Include="ui\Behaviors\CloseWindowOnEscBehavior.cs" />
     <Compile Include="ui\Behaviors\DatePickerKeyboardHandlingBehavior.cs" />
@@ -282,6 +263,7 @@
       <DependentUpon>Experiment87Screen.xaml</DependentUpon>
     </Compile>
     <Compile Include="ui\Experiments\ExperimentParameters.cs" />
+    <Compile Include="ui\IRecyclable.cs" />
     <Compile Include="ui\KeyboardShortcuts.cs" />
     <Compile Include="ui\Experiments\implementations\ExperimentHacks.cs" />
     <Compile Include="ui\ModelExtensions.cs" />
@@ -369,28 +351,8 @@
     <Compile Include="ui\windows\AboutWindow.xaml.cs">
       <DependentUpon>AboutWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ui\AutoCompleteControls\GrayTextCategory.xaml.cs">
-      <DependentUpon>GrayTextCategory.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ui\AutoCompleteControls\EntryBase.cs" />
-    <Compile Include="ui\AutoCompleteControls\ClientCategory.xaml.cs">
-      <DependentUpon>ClientCategory.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ui\AutoCompleteControls\IRecyclable.cs" />
-    <Compile Include="ui\AutoCompleteControls\TimerEntry.xaml.cs">
-      <DependentUpon>TimerEntry.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ui\AutoCompleteControls\WorkspaceCategory.xaml.cs">
-      <DependentUpon>WorkspaceCategory.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ui\controls\AutoCompletionPopup.xaml.cs">
       <DependentUpon>AutoCompletionPopup.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ui\AutoCompleteControls\ModelEntry.xaml.cs">
-      <DependentUpon>ModelEntry.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ui\AutoCompleteControls\ProjectEntry.xaml.cs">
-      <DependentUpon>ProjectEntry.xaml</DependentUpon>
     </Compile>
     <Compile Include="ui\windows\EditViewPopup.xaml.cs">
       <DependentUpon>EditViewPopup.xaml</DependentUpon>
@@ -419,9 +381,6 @@
     </Compile>
     <Compile Include="ui\windows\PreferencesWindow.xaml.cs">
       <DependentUpon>PreferencesWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ui\AutoCompleteControls\StringEntry.xaml.cs">
-      <DependentUpon>StringEntry.xaml</DependentUpon>
     </Compile>
     <Compile Include="ui\controls\Tag.xaml.cs">
       <DependentUpon>Tag.xaml</DependentUpon>
@@ -599,14 +558,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="ui\AutoCompleteControls\ProjectCategory.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ui\AutoCompleteControls\TaskEntry.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="ui\controls\AutotrackerNotification.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -780,31 +731,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ui\AutoCompleteControls\GrayTextCategory.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ui\AutoCompleteControls\ClientCategory.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ui\AutoCompleteControls\TimerEntry.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ui\AutoCompleteControls\WorkspaceCategory.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="ui\controls\AutoCompletionPopup.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ui\AutoCompleteControls\ModelEntry.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ui\AutoCompleteControls\ProjectEntry.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -851,10 +778,6 @@
     <Page Include="ui\Resources\TimeEntryCellStyles.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ui\AutoCompleteControls\StringEntry.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ui\controls\Tag.xaml">
       <SubType>Designer</SubType>
