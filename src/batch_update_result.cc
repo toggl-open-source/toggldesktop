@@ -7,8 +7,6 @@
 
 #include "base_model.h"
 
-#include <Poco/Logger.h>
-
 namespace toggl {
 
 error BatchUpdateResult::Error() const {
@@ -16,12 +14,12 @@ error BatchUpdateResult::Error() const {
         return noError;
     }
     if ("null" != Body) {
-        return Body;
+        return error::REMOVE_LATER_BATCH_UPDATE_ERROR;
     }
     std::stringstream ss;
     ss  << "Request failed with status code "
         << StatusCode;
-    return ss.str();
+    return error::REMOVE_LATER_BATCH_UPDATE_ERROR;
 }
 
 std::string BatchUpdateResult::String() const {
@@ -56,25 +54,21 @@ void BatchUpdateResult::ProcessResponseArray(
     poco_check_ptr(models);
     poco_check_ptr(errors);
 
-    Poco::Logger &logger = Poco::Logger::get("BatchUpdateResult");
     for (std::vector<BatchUpdateResult>::const_iterator it = results->begin();
             it != results->end();
             ++it) {
         BatchUpdateResult result = *it;
 
-        logger.debug(result.String());
+        logger().debug(result.String());
 
         if (result.GUID.empty()) {
-            logger.error("Batch update result has no GUID");
+            logger().error("Batch update result has no GUID");
             continue;
         }
 
         BaseModel *model = (*models)[result.GUID];
         if (!model) {
-            std::stringstream ss;
-            ss << "Server response includes a model we don't have! GUID="
-               << result.GUID;
-            logger.warning(ss.str());
+            logger().warning("Server response includes a model we don't have! GUID=", result.GUID);
             continue;
         }
         error err = model->ApplyBatchUpdateResult(&result);
@@ -85,27 +79,29 @@ void BatchUpdateResult::ProcessResponseArray(
     }
 }
 
+Logger BatchUpdateResult::logger() {
+    return { "BatchUpdateResult" };
+}
+
 error BatchUpdateResult::ParseResponseArray(
     const std::string &response_body,
     std::vector<BatchUpdateResult> *responses) {
 
     poco_check_ptr(responses);
 
-    Poco::Logger &logger = Poco::Logger::get("BatchUpdateResult");
-
     // There seem to be cases where response body is 0.
     // Must investigate further.
     if (response_body.empty()) {
-        logger.warning("Response is empty!");
+        logger().warning("Response is empty!");
         return noError;
     }
 
-    logger.debug(response_body);
+    logger().debug(response_body);
 
     Json::Value root;
     Json::Reader reader;
     if (!reader.parse(response_body, root)) {
-        return error("error parsing batch update response");
+        return error::kFailedToParseData;
     }
 
     for (unsigned int i = 0; i < root.size(); i++) {

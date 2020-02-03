@@ -36,7 +36,7 @@ std::string url("");
 // on_reminder
 std::string reminder_title("");
 std::string reminder_informative_text("");
-std::string error("");
+toggl::Error error(noError);
 
 // on_online_state
 int64_t online_state(0);
@@ -127,10 +127,10 @@ void on_error(
     const char_t *errmsg,
     const bool_t user_error) {
     if (errmsg) {
-        testresult::error = to_string(errmsg);
+        testresult::error = Error::fromString(errmsg);
         return;
     }
-    testresult::error = std::string("");
+    testresult::error = noError;
 }
 
 void on_online_state(const int64_t state) {
@@ -596,13 +596,13 @@ TEST(toggl_api, toggl_set_window_settings) {
     testing::App app;
 
     int64_t x(1), y(2), h(3), w(4);
-    testing::testresult::error = "";
+    testing::testresult::error = noError;
     if (!toggl_set_window_settings(app.ctx(), x, y, h, w)) {
         ASSERT_EQ(noError, testing::testresult::error);
     }
 
     int64_t x1(1), y1(2), h1(3), w1(4);
-    testing::testresult::error = "";
+    testing::testresult::error = noError;
     if (!toggl_window_settings(app.ctx(), &x1, &y1, &h1, &w1)) {
         ASSERT_EQ(noError, testing::testresult::error);
     }
@@ -783,7 +783,7 @@ TEST(toggl_api, toggl_set_update_path) {
 TEST(toggl_api, testing_set_logged_in_user) {
     std::string json = loadTestData();
     testing::App app;
-    testing::testresult::error = "";
+    testing::testresult::error = noError;
     bool_t res = testing_set_logged_in_user(app.ctx(), json.c_str());
     ASSERT_EQ(noError, testing::testresult::error);
     ASSERT_TRUE(res);
@@ -927,7 +927,7 @@ TEST(toggl_api, toggl_add_project) {
     auto project_name = STR("");
     bool_t is_private = false;
 
-    testing::testresult::error = "";
+    testing::testresult::error = noError;
     char_t *res = toggl_add_project(app.ctx(),
                                     guid,
                                     wid,
@@ -937,7 +937,7 @@ TEST(toggl_api, toggl_add_project) {
                                     is_private,
                                     STR(""));
     ASSERT_EQ("Please select a workspace",
-              testing::testresult::error);
+              testing::testresult::error.String());
     ASSERT_FALSE(res);
 
     wid = 123456789;
@@ -950,12 +950,12 @@ TEST(toggl_api, toggl_add_project) {
                             is_private,
                             STR("#ffffff"));
     ASSERT_EQ("Project name must not be empty",
-              testing::testresult::error);
+              testing::testresult::error.String());
     ASSERT_FALSE(res);
     free(res);
 
     project_name = STR("A new project");
-    testing::testresult::error = "";
+    testing::testresult::error = noError;
     res = toggl_add_project(app.ctx(),
                             guid,
                             wid,
@@ -964,7 +964,7 @@ TEST(toggl_api, toggl_add_project) {
                             project_name,
                             is_private,
                             0);
-    ASSERT_EQ("", testing::testresult::error);
+    ASSERT_EQ(noError, testing::testresult::error);
     ASSERT_TRUE(res);
     free(res);
 
@@ -991,11 +991,11 @@ TEST(toggl_api, toggl_create_client) {
     uint64_t wid = 0;
     auto client_name = STR("        ");
 
-    testing::testresult::error = "";
+    testing::testresult::error = noError;
     char_t *res = toggl_create_client(app.ctx(),
                                       wid,
                                       client_name);
-    ASSERT_EQ("Please select a workspace", testing::testresult::error);
+    ASSERT_EQ("Please select a workspace", testing::testresult::error.String());
     ASSERT_FALSE(res);
     free(res);
 
@@ -1004,16 +1004,16 @@ TEST(toggl_api, toggl_create_client) {
                               wid,
                               client_name);
     ASSERT_EQ("Client name must not be empty",
-              testing::testresult::error);
+              testing::testresult::error.String());
     ASSERT_FALSE(res);
     free(res);
 
     client_name = STR("A new client");
-    testing::testresult::error = "";
+    testing::testresult::error = noError;
     res = toggl_create_client(app.ctx(),
                               wid,
                               client_name);
-    ASSERT_EQ("", testing::testresult::error);
+    ASSERT_EQ(noError, testing::testresult::error);
     ASSERT_TRUE(res);
     free(res);
 
@@ -1030,22 +1030,22 @@ TEST(toggl_api, toggl_create_client) {
     for (int i = 0; i < 10; i++) {
         std::stringstream ss;
         ss << "extra client " << i;
-        testing::testresult::error = "";
+        testing::testresult::error = noError;
         res = toggl_create_client(app.ctx(),
                                   wid,
                                   to_char_t(ss.str()));
-        ASSERT_EQ("", testing::testresult::error);
+        ASSERT_EQ(std::string(), testing::testresult::error.String());
         ASSERT_TRUE(res);
         free(res);
     }
 
     // But none with an existing client name
-    testing::testresult::error = "";
+    testing::testresult::error = noError;
     res = toggl_create_client(app.ctx(),
                               wid,
                               client_name);
     ASSERT_FALSE(res);
-    ASSERT_EQ("Client name already exists", testing::testresult::error);
+    ASSERT_EQ("Client name already exists", testing::testresult::error.String());
 }
 
 TEST(toggl_api, toggl_continue) {
@@ -1057,7 +1057,7 @@ TEST(toggl_api, toggl_continue) {
     auto te = testing::testresult::time_entry_by_id(89833438);
     std::string guid = te.GUID();
 
-    testing::testresult::error = "";
+    testing::testresult::error = noError;
     ASSERT_TRUE(toggl_continue(app.ctx(), to_char_t(guid)));
     ASSERT_NE(guid, testing::testresult::timer_state.GUID());
     ASSERT_EQ("More work", testing::testresult::timer_state.Description());
@@ -1075,7 +1075,7 @@ TEST(toggl_api, toggl_continue_in_manual_mode) {
     auto te = testing::testresult::time_entry_by_id(89833438);
     std::string guid = te.GUID();
 
-    testing::testresult::error = "";
+    testing::testresult::error = noError;
     testing::testresult::editor_state = TimeEntry();
     testing::testresult::timer_state = TimeEntry();
 
@@ -1895,7 +1895,7 @@ TEST(toggl_api, toggl_autotracker_add_rule) {
     testing::testresult::error = noError;
     rule_id = toggl_autotracker_add_rule(
         app.ctx(), STR("delfi"), existing_project_id, 0);
-    ASSERT_EQ("rule already exists", testing::testresult::error);
+    ASSERT_EQ("rule already exists", testing::testresult::error.String());
     ASSERT_FALSE(rule_id);
 
     const uint64_t existing_task_id = 1879027;

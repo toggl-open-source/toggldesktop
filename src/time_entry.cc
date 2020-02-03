@@ -75,44 +75,34 @@ bool TimeEntry::ResolveError(const error &err) {
 }
 
 bool TimeEntry::isNotFound(const error &err) const {
-    return std::string::npos != std::string(err).find(
-        "Time entry not found");
+    return err == error::kTimeEntryNotFound;
 }
 bool TimeEntry::isMissingCreatedWith(const error &err) const {
-    return std::string::npos != std::string(err).find(
-        "created_with needs to be provided an a valid string");
+    return err == error::kTimeEntryCreatedWithInvalid;
 }
 
-bool TimeEntry::userCannotAccessTheSelectedProject(
-    const error &err) const {
-    return (std::string::npos != std::string(err).find(
-        "User cannot access the selected project"));
+bool TimeEntry::userCannotAccessTheSelectedProject(const error &err) const {
+    return err == error::kCannotAccessProjectError;
 }
 
-bool TimeEntry::userCannotAccessSelectedTask(
-    const error &err) const {
-    return (std::string::npos != std::string(err).find(
-        "User cannot access selected task"));
+bool TimeEntry::userCannotAccessSelectedTask(const error &err) const {
+    return err == error::kCannotAccessTaskError;
 }
 
 bool TimeEntry::durationTooLarge(const error &err) const {
-    return (std::string::npos != std::string(err).find(
-        "Max allowed duration per 1 time entry is 999 hours"));
+    return err == error::kOverMaxDurationError;
 }
 
 bool TimeEntry::startTimeWrongYear(const error &err) const {
-    return (std::string::npos != std::string(err).find(
-        "Start time year must be between 2006 and 2030"));
+    return err == error::kInvalidStartTimeError;
 }
 
 bool TimeEntry::stopTimeMustBeAfterStartTime(const error &err) const {
-    return (std::string::npos != std::string(err).find(
-        "Stop time must be after start time"));
+    return err == error::kStartNotBeforeStopError;
 }
 
 bool TimeEntry::billableIsAPremiumFeature(const error &err) const {
-    return (std::string::npos != std::string(err).find(
-        "Billable is a premium feature"));
+    return err == error::kBillableIsAPremiumFeature;
 }
 
 void TimeEntry::DiscardAt(const Poco::Int64 at) {

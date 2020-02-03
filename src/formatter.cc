@@ -13,12 +13,12 @@
 #include "task.h"
 #include "time_entry.h"
 #include "workspace.h"
+#include "util/logger.h"
 
 #include <Poco/DateTimeFormat.h>
 #include <Poco/DateTimeFormatter.h>
 #include <Poco/DateTimeParser.h>
 #include <Poco/LocalDateTime.h>
-#include <Poco/Logger.h>
 #include <Poco/NumberFormatter.h>
 #include <Poco/NumberParser.h>
 #include <Poco/String.h>
@@ -513,20 +513,12 @@ std::time_t Formatter::Parse8601(const std::string &iso_8601_formatted_date) {
 
     // Sun  9 Sep 2001 03:46:40 EET
     if (epoch_time < 1000000000) {
-        Poco::Logger &logger = Poco::Logger::get("Formatter");
-        std::stringstream ss;
-        ss  << "Parsed timestamp is too small, will interpret as 0: "
-            << epoch_time;
-        logger.warning(ss.str());
+        Logger("Formatter").warning("Parsed timestamp is too small, will interpret as 0: ", epoch_time);
         return 0;
     }
 
     if (epoch_time > 2000000000) {
-        Poco::Logger &logger = Poco::Logger::get("Formatter");
-        std::stringstream ss;
-        ss  << "Parsed timestamp is too large, will interpret as 0: "
-            << epoch_time;
-        logger.warning(ss.str());
+        Logger("Formatter").warning("Parsed timestamp is too large, will interpret as 0: ", epoch_time);
         return 0;
     }
 
@@ -575,28 +567,22 @@ std::string Formatter::EscapeJSONString(const std::string &input) {
     return ss.str();
 }
 
-error Formatter::CollectErrors(std::vector<error> * const errors) {
+std::string Formatter::CollectErrors(const std::vector<error> &errors) {
     std::stringstream ss;
     ss << "Errors encountered while syncing data: ";
     std::set<error> unique;
-    for (std::vector<error>::const_iterator it = errors->begin();
-            it != errors->end();
-            ++it) {
-        error err = *it;
-        if (!err.empty() && err[err.size() - 1] == '\n') {
-            err[err.size() - 1] = '.';
-        }
+    for (auto err : errors) {
         // skip error if not unique
         if (unique.end() != unique.find(err)) {
             continue;
         }
-        if (it != errors->begin()) {
+        if (err != errors.front()) {
             ss << " ";
         }
         ss << err;
         unique.insert(err);
     }
-    return error(ss.str());
+    return ss.str();
 }
 
 bool CompareClientByName(Client *a, Client *b) {

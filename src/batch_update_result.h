@@ -8,6 +8,7 @@
 #include <map>
 
 #include "types.h"
+#include "util/logger.h"
 
 #include <json/json.h>  // NOLINT
 
@@ -43,6 +44,10 @@ class TOGGL_INTERNAL_EXPORT BatchUpdateResult {
         std::vector<BatchUpdateResult> * const results,
         std::map<std::string, BaseModel *> *models,
         std::vector<error> *errors);
+
+ private:
+    static Logger logger();
+
 };
 
 }  // namespace toggl

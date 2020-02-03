@@ -8,16 +8,13 @@
 
 #include "timeline_notifications.h"
 #include "types.h"
+#include "util/logger.h"
 
 #include <Poco/Activity.h>
 
 #if defined(__APPLE__)
 extern bool isCatalinaOSX(void);
 #endif
-
-namespace Poco {
-class Logger;
-}
 
 namespace toggl {
 
@@ -73,7 +70,7 @@ class TOGGL_INTERNAL_EXPORT WindowChangeRecorder {
 
     bool hasIdlenessChanged(const bool &idle) const;
 
-    Poco::Logger &logger();
+    Logger logger { "WindowChangeRecorder" };
 
     bool getIsLocked() {
         Poco::Mutex::ScopedLock lock(isLocked_m_);

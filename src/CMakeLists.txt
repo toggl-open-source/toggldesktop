@@ -33,6 +33,9 @@ include_directories(
 
 # TogglDesktopLibrary sources
 set(LIBRARY_SOURCE_FILES
+    util/logger.cc
+    util/error.cc
+
     base_model.cc
     batch_update_result.cc
     client.cc
@@ -48,7 +51,6 @@ set(LIBRARY_SOURCE_FILES
     feedback.cc
     formatter.cc
     get_focused_window_linux.cc
-    error.cc
     gui.cc
     netconf.cc
     https_client.cc

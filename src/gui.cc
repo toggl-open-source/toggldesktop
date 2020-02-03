@@ -17,7 +17,6 @@
 #include "user.h"
 #include "workspace.h"
 
-#include <Poco/Logger.h>
 #include <Poco/Stopwatch.h>
 
 namespace toggl {
@@ -141,9 +140,7 @@ void GUI::DisplayLogin(const bool open, const uint64_t user_id) {
     if (open == lastDisplayLoginOpen && user_id == lastDisplayLoginUserID) {
         return;
     }
-    std::stringstream ss;
-    ss << "DisplayLogin open=" << open << ", user_id=" << user_id;
-    logger().debug(ss.str());
+    logger.debug("DisplayLogin open=", open, ", user_id=", user_id);
 
     on_display_login_(open, user_id);
 
@@ -156,12 +153,11 @@ error GUI::DisplayError(const error &err) {
         return noError;
     }
 
-    logger().error(err);
+    logger.error(err);
 
-    if (IsNetworkingError(err)) {
-        std::stringstream ss;
-        ss << "You are offline (" << err << ")";
-        if (kBackendIsDownError == err) {
+    if (err.IsNetworkingError()) {
+        logger.debug("You are offline (", err, ")");
+        if (err == error::kBackendIsDownError) {
             DisplayOnlineState(kOnlineStateBackendDown);
         }
         else {
@@ -170,24 +166,20 @@ error GUI::DisplayError(const error &err) {
         return err;
     }
 
-    std::string actionable = MakeErrorActionable(err);
-    bool is_user_error = IsUserError(err);
+    std::string actionable = err.MakeErrorActionable();
+    bool is_user_error = err.IsUserError();
 
-    {
-        std::stringstream ss;
-        ss << "DisplayError err=" << err
-           << " actionable=" << actionable
-           << " is_user_error=" << is_user_error;
-        logger().debug(ss.str());
-    }
-
-    char_t *err_s = copy_string(actionable);
-    on_display_error_(err_s, is_user_error);
-    free(err_s);
-
-    lastErr = err;
+    DisplayError(actionable, is_user_error);
 
     return err;
+}
+
+error GUI::DisplayError(const std::string &err, bool is_user_error) {
+    logger.debug("DisplayError err=", err, " actionable=", err, " is_user_error=", is_user_error);
+
+    char_t *err_s = copy_string(err.c_str());
+    on_display_error_(err_s, is_user_error);
+    free(err_s);
 }
 
 error GUI::DisplayWSError() {
@@ -201,77 +193,79 @@ error GUI::DisplayTosAccept() {
 }
 
 error GUI::VerifyCallbacks() {
-    logger().debug("VerifyCallbacks");
-    error err = findMissingCallbacks();
-    if (err != noError) {
-        logger().error(err);
-    }
-    return err;
-}
-
-error GUI::findMissingCallbacks() {
-    if (!on_display_app_) {
-        return error("!on_display_app_");
-    }
-    if (!on_display_error_) {
-        return error("!on_display_error_");
-    }
-    if (!on_display_online_state_) {
-        return error("!on_display_online_state_");
-    }
-    if (!on_display_login_) {
-        return error("!on_display_login_");
-    }
-    if (!on_display_url_) {
-        return error("!on_display_url_");
-    }
-    if (!on_display_reminder_) {
-        return error("!on_display_reminder_");
-    }
-    if (!on_display_time_entry_list_) {
-        return error("!on_display_time_entry_list_");
-    }
-    if (!on_display_time_entry_autocomplete_) {
-        return error("!on_display_time_entry_autocomplete_");
-    }
-    if (!on_display_project_autocomplete_) {
-        return error("!on_display_project_autocomplete_");
-    }
-    if (!on_display_workspace_select_) {
-        return error("!on_display_workspace_select_");
-    }
-    if (!on_display_client_select_) {
-        return error("!on_display_client_select_");
-    }
-    if (!on_display_tags_) {
-        return error("!on_display_tags_");
-    }
-    if (!on_display_time_entry_editor_) {
-        return error("!on_display_time_entry_editor_");
-    }
-    if (!on_display_settings_) {
-        return error("!on_display_settings_");
-    }
-    if (!on_display_timer_state_) {
-        return error("!on_display_timer_state_");
-    }
-    if (!on_display_idle_notification_) {
-        return error("!on_display_idle_notification_");
-    }
-    if (!on_display_mini_timer_autocomplete_) {
-        return error("!on_display_mini_timer_autocomplete_");
-    }
-    if (!on_display_pomodoro_) {
-        return error("!on_display_pomodoro_");
-    }
-    if (!on_display_pomodoro_break_) {
-        return error("!on_display_pomodoro_break_");
+    logger.debug("VerifyCallbacks");
+    std::string missing = findMissingCallbacks();
+    if (!missing.empty()) {
+        logger.error(missing);
+        return error::kMissingUICallbacks;
     }
     return noError;
 }
 
+std::string GUI::findMissingCallbacks() {
+    std::stringstream ss;
+    if (!on_display_app_) {
+        ss << "!on_display_app_ ";
+    }
+    if (!on_display_error_) {
+        ss << "!on_display_error_ ";
+    }
+    if (!on_display_online_state_) {
+        ss << "!on_display_online_state_ ";
+    }
+    if (!on_display_login_) {
+        ss << "!on_display_login_ ";
+    }
+    if (!on_display_url_) {
+        ss << "!on_display_url_ ";
+    }
+    if (!on_display_reminder_) {
+        ss << "!on_display_reminder_ ";
+    }
+    if (!on_display_time_entry_list_) {
+        ss << "!on_display_time_entry_list_ ";
+    }
+    if (!on_display_time_entry_autocomplete_) {
+        ss << "!on_display_time_entry_autocomplete_ ";
+    }
+    if (!on_display_project_autocomplete_) {
+        ss << "!on_display_project_autocomplete_ ";
+    }
+    if (!on_display_workspace_select_) {
+        ss << "!on_display_workspace_select_ ";
+    }
+    if (!on_display_client_select_) {
+        ss << "!on_display_client_select_ ";
+    }
+    if (!on_display_tags_) {
+        ss << "!on_display_tags_ ";
+    }
+    if (!on_display_time_entry_editor_) {
+        ss << "!on_display_time_entry_editor_ ";
+    }
+    if (!on_display_settings_) {
+        ss << "!on_display_settings_ ";
+    }
+    if (!on_display_timer_state_) {
+        ss << "!on_display_timer_state_ ";
+    }
+    if (!on_display_idle_notification_) {
+        ss << "!on_display_idle_notification_ ";
+    }
+    if (!on_display_mini_timer_autocomplete_) {
+        ss << "!on_display_mini_timer_autocomplete_ ";
+    }
+    if (!on_display_pomodoro_) {
+        ss << "!on_display_pomodoro_ ";
+    }
+    if (!on_display_pomodoro_break_) {
+        ss << "!on_display_pomodoro_break_ ";
+    }
+    return ss.str();
+}
+
 void GUI::DisplayReminder() {
-    logger().debug("DisplayReminder");
+    logger.debug("DisplayReminder");
 
     char_t *s1 = copy_string("Reminder from Toggl Desktop");
     char_t *s2 = copy_string("Don't forget to track your time!");
@@ -281,7 +275,7 @@ void GUI::DisplayReminder() {
 }
 
 void GUI::DisplayPomodoro(const Poco::Int64 minutes) {
-    logger().debug("DisplayPomodoro");
+    logger.debug("DisplayPomodoro");
     char_t *s1 = copy_string("Pomodoro Timer");
 
     std::stringstream ss;
@@ -294,7 +288,7 @@ void GUI::DisplayPomodoro(const Poco::Int64 minutes) {
 }
 
 void GUI::DisplayPomodoroBreak(const Poco::Int64 minutes) {
-    logger().debug("DisplayPomodoroBreak");
+    logger.debug("DisplayPomodoroBreak");
     char_t *s1 = copy_string("Pomodoro Break Timer");
 
     std::stringstream ss;
@@ -309,18 +303,15 @@ void GUI::DisplayPomodoroBreak(const Poco::Int64 minutes) {
 void GUI::DisplayAutotrackerNotification(Project *const p, Task *const t) {
     poco_check_ptr(p);
 
-    std::stringstream ss;
-    ss << "DisplayAutotrackerNotification ";
     if (p) {
-        ss << "project " << p->Name() << ", " << p->ID() << ", " << p->GUID();
+        logger.debug("DisplayAutotrackerNotification project ", p->Name(), ", ", p->ID(), ", ", p->GUID());
     }
     if (t) {
-        ss << " task " << t->Name() << ", " << t->ID();
+        logger.debug("DisplayAutotrackerNotification task ", t->Name(), ", ", t->ID());
     }
-    logger().debug(ss.str());
 
     if (!p && !t) {
-        logger().error(
+        logger.error(
             "Need project ID or task ID for autotracker notification");
         return;
     }
@@ -352,27 +343,21 @@ void GUI::DisplayOnlineState(const Poco::Int64 state) {
     if (!(kOnlineStateOnline == state
             || kOnlineStateNoNetwork == state
             || kOnlineStateBackendDown == state)) {
-        std::stringstream ss;
-        ss << "Invalid online state " << state;
-        logger().error(ss.str());
+        logger.error("Invalid online state ", state);
         return;
     }
 
-    std::stringstream ss;
-    ss << "DisplayOnlineState ";
-
     switch (state) {
     case kOnlineStateOnline:
-        ss << "online";
+        logger.debug("DisplayOnlineState online");
         break;
     case kOnlineStateNoNetwork:
-        ss << "no network";
+        logger.debug("DisplayOnlineState no network");
         break;
     case kOnlineStateBackendDown:
-        ss << "backend is down";
+        logger.debug("DisplayOnlineState backend is down");
         break;
     }
-    logger().debug(ss.str());
 
     on_display_online_state_(state);
 
@@ -381,7 +366,7 @@ void GUI::DisplayOnlineState(const Poco::Int64 state) {
 
 void GUI::DisplayTimeEntryAutocomplete(
     std::vector<toggl::view::Autocomplete> *items) {
-    logger().debug("DisplayTimeEntryAutocomplete");
+    logger.debug("DisplayTimeEntryAutocomplete");
 
     TogglAutocompleteView *first = autocomplete_list_init(items);
     on_display_time_entry_autocomplete_(first);
@@ -390,7 +375,7 @@ void GUI::DisplayTimeEntryAutocomplete(
 
 void GUI::DisplayHelpArticles(
     const std::vector<HelpArticle> &articles) {
-    logger().debug("DisplayHelpArticles");
+    logger.debug("DisplayHelpArticles");
 
     if (!on_display_help_articles_) {
         return;
@@ -403,7 +388,7 @@ void GUI::DisplayHelpArticles(
 
 void GUI::DisplayMinitimerAutocomplete(
     std::vector<toggl::view::Autocomplete> *items) {
-    logger().debug("DisplayMinitimerAutocomplete");
+    logger.debug("DisplayMinitimerAutocomplete");
 
     TogglAutocompleteView *first = autocomplete_list_init(items);
     on_display_mini_timer_autocomplete_(first);
@@ -412,7 +397,7 @@ void GUI::DisplayMinitimerAutocomplete(
 
 void GUI::DisplayProjectAutocomplete(
     std::vector<toggl::view::Autocomplete> *items) {
-    logger().debug("DisplayProjectAutocomplete");
+    logger.debug("DisplayProjectAutocomplete");
 
     TogglAutocompleteView *first = autocomplete_list_init(items);
     on_display_project_autocomplete_(first);
@@ -441,10 +426,7 @@ void GUI::DisplayTimeEntryList(const bool open,
             // Otherwise, just get from the list
             renderList = list;
         }
-        std::stringstream ss;
-        ss << "DisplayTimeEntryList open=" << open
-           << ", has items=" << renderList.size();
-        logger().debug(ss.str());
+        logger.debug("DisplayTimeEntryList open=", open, ", has items=", renderList.size());
     }
 
     // Render
@@ -468,12 +450,7 @@ void GUI::DisplayTimeEntryList(const bool open,
     time_entry_view_list_clear(first);
 
     stopwatch.stop();
-    {
-        std::stringstream ss;
-        ss << "DisplayTimeEntryList done in "
-           << stopwatch.elapsed() / 1000 << " ms";
-        logger().debug(ss.str());
-    }
+    logger.debug("DisplayTimeEntryList done in ", stopwatch.elapsed() / 1000, " ms");
 }
 
 void GUI::DisplayTimeline(
@@ -674,7 +651,7 @@ TogglTimelineEventView* GUI::SortList(TogglTimelineEventView *head) {
 }
 
 void GUI::DisplayTags(const std::vector<view::Generic> list) {
-    logger().debug("DisplayTags");
+    logger.debug("DisplayTags");
 
     TogglGenericView *first = generic_to_view_item_list(list);
     on_display_tags_(first);
@@ -716,7 +693,7 @@ void GUI::DisplayAutotrackerRules(
 
 void GUI::DisplayClientSelect(
     const std::vector<view::Generic> &list) {
-    logger().debug("DisplayClientSelect");
+    logger.debug("DisplayClientSelect");
 
     TogglGenericView *first = generic_to_view_item_list(list);
     on_display_client_select_(first);
@@ -725,7 +702,7 @@ void GUI::DisplayClientSelect(
 
 void GUI::DisplayWorkspaceSelect(
     const std::vector<view::Generic> &list) {
-    logger().debug("DisplayWorkspaceSelect");
+    logger.debug("DisplayWorkspaceSelect");
 
     TogglGenericView *first = generic_to_view_item_list(list);
     on_display_workspace_select_(first);
@@ -736,7 +713,7 @@ void GUI::DisplayTimeEntryEditor(const bool open,
                                  const view::TimeEntry &te,
                                  const std::string &focused_field_name) {
 
-    logger().debug(
+    logger.debug(
         "DisplayTimeEntryEditor focused_field_name=" + focused_field_name);
 
     TogglTimeEntryView *view = time_entry_view_item_init(te);
@@ -749,7 +726,7 @@ void GUI::DisplayTimeEntryEditor(const bool open,
 }
 
 void GUI::DisplayURL(const std::string &URL) {
-    logger().debug("DisplayURL " + URL);
+    logger.debug("DisplayURL " + URL);
 
     char_t *url = copy_string(URL);
     on_display_url_(url);
@@ -757,7 +734,7 @@ void GUI::DisplayURL(const std::string &URL) {
 }
 
 void GUI::DisplayUpdate(const std::string &URL) {
-    logger().debug("DisplayUpdate " + URL);
+    logger.debug("DisplayUpdate " + URL);
 
     char_t *url = copy_string(URL);
     on_display_update_(url);
@@ -769,15 +746,10 @@ void GUI::DisplayUpdateDownloadState(
     const Poco::Int64 download_state) {
 
     if (!CanDisplayUpdateDownloadState()) {
-        logger().debug("Update download state display not supported by UI");
+        logger.debug("Update download state display not supported by UI");
         return;
     }
-    {
-        std::stringstream ss;
-        ss << "DisplayUpdateDownloadState version=" << version
-           << " state=" << download_state;
-        logger().debug(ss.str());
-    }
+    logger.debug("DisplayUpdateDownloadState version=", version, " state=", download_state);
     char_t *version_string = copy_string(version);
     on_display_update_download_state_(version_string, download_state);
     free(version_string);
@@ -787,7 +759,7 @@ void GUI::DisplayMessage(const std::string &title,
                          const std::string &text,
                          const std::string &button,
                          const std::string &url) {
-    logger().debug("DisplayMessage: " + title);
+    logger.debug("DisplayMessage: " + title);
 
     char_t *tmp_title = copy_string(title);
     char_t *tmp_text = copy_string(text);
@@ -811,7 +783,7 @@ void GUI::DisplaySettings(const bool open,
                           const Settings &settings,
                           const bool use_proxy,
                           const Proxy &proxy) {
-    logger().debug("DisplaySettings");
+    logger.debug("DisplaySettings");
 
     TogglSettingsView *view = settings_view_item_init(
         record_timeline,
@@ -831,12 +803,12 @@ void GUI::DisplayTimerState(
     on_display_timer_state_(view);
     time_entry_view_list_clear(view);
 
-    logger().debug("DisplayTimerState");
+    logger.debug("DisplayTimerState");
 }
 
 void GUI::DisplayEmptyTimerState() {
     on_display_timer_state_(nullptr);
-    logger().debug("DisplayEmptyTimerState");
+    logger.debug("DisplayEmptyTimerState");
 }
 
 void GUI::DisplayIdleNotification(const std::string &guid,
@@ -857,10 +829,6 @@ void GUI::DisplayIdleNotification(const std::string &guid,
     free(since_s);
     free(duration_s);
     free(description_s);
-}
-
-Poco::Logger &GUI::logger() const {
-    return Poco::Logger::get("ui");
 }
 
 }  // namespace toggl

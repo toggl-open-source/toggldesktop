@@ -11,6 +11,7 @@
 #include "netconf.h"
 #include "urls.h"
 #include "toggl_api.h"
+#include "util/error.h"
 
 #include <Poco/DeflatingStream.h>
 #include <Poco/Environment.h>
@@ -42,9 +43,7 @@
 namespace toggl {
 
 void ServerStatus::startStatusCheck() {
-    std::stringstream ss;
-    ss << "startStatusCheck fast_retry=" << fast_retry_;
-    logger().debug(ss.str());
+    logger().debug("startStatusCheck fast_retry=", fast_retry_);
 
     if (checker_.isRunning()) {
         return;
@@ -57,16 +56,14 @@ void ServerStatus::stopStatusCheck(const std::string &reason) {
         return;
     }
 
-    std::stringstream ss;
-    ss << "stopStatusCheck, because " << reason;
-    logger().debug(ss.str());
+    logger().debug("stopStatusCheck, because ", reason);
 
     checker_.stop();
     checker_.wait();
 }
 
-Poco::Logger &ServerStatus::logger() const {
-    return Poco::Logger::get("ServerStatus");
+Logger ServerStatus::logger() const {
+    return { "ServerStatus" };
 }
 
 void ServerStatus::runActivity() {
@@ -75,18 +72,10 @@ void ServerStatus::runActivity() {
         delay_seconds = 60*15;
     }
 
-    {
-        std::stringstream ss;
-        ss << "runActivity loop starting, delay_seconds=" << delay_seconds;
-        logger().debug(ss.str());
-    }
+    logger().debug( "runActivity loop starting, delay_seconds=", delay_seconds);
 
     while (!checker_.isStopped()) {
-        {
-            std::stringstream ss;
-            ss << "runActivity delay_seconds=" << delay_seconds;
-            logger().debug(ss.str());
-        }
+        logger().debug("runActivity delay_seconds=", delay_seconds);
 
         // Sleep a bit
         for (int i = 0; i < delay_seconds; i++) {
@@ -119,13 +108,7 @@ void ServerStatus::runActivity() {
                       (static_cast<float>(RAND_MAX / (high - low)));
             delay_seconds = static_cast<int>(delay_seconds * r);
 
-            {
-                std::stringstream ss;
-                ss << "err=" << resp.err
-                   << ", random=" << r
-                   << ", delay_seconds=" << delay_seconds;
-                logger().debug(ss.str());
-            }
+            logger().debug("err=", resp.err, ", random=", r, ", delay_seconds=", delay_seconds);
 
             continue;
         }
@@ -136,20 +119,16 @@ void ServerStatus::runActivity() {
 
 error ServerStatus::Status() {
     if (gone_) {
-        return kEndpointGoneError;
+        return error::kEndpointGoneError;
     }
     if (checker_.isRunning() && !checker_.isStopped()) {
-        return kBackendIsDownError;
+        return error::kBackendIsDownError;
     }
     return noError;
 }
 
 void ServerStatus::UpdateStatus(const Poco::Int64 code) {
-    {
-        std::stringstream ss;
-        ss << "UpdateStatus status_code=" << code;
-        logger().debug(ss.str());
-    }
+    logger().debug("UpdateStatus status_code=", code);
 
     gone_ = 410 == code;
 
@@ -159,69 +138,18 @@ void ServerStatus::UpdateStatus(const Poco::Int64 code) {
         return;
     }
 
-    std::stringstream ss;
-    ss << "Status code " << code;
-    stopStatusCheck(ss.str());
+    stopStatusCheck("Status code " + std::to_string(code));
 }
 
 HTTPSClientConfig HTTPSClient::Config;
 std::map<std::string, Poco::Timestamp> HTTPSClient::banned_until_;
 
-Poco::Logger &HTTPSClient::logger() const {
-    return Poco::Logger::get("HTTPSClient");
+Logger HTTPSClient::logger() const {
+    return { "HTTPSClient" };
 }
 
 bool HTTPSClient::isRedirect(const Poco::Int64 status_code) const {
     return (status_code >= 300 && status_code < 400);
-}
-
-error HTTPSClient::statusCodeToError(const Poco::Int64 status_code) const {
-    switch (status_code) {
-    case 200:
-    case 201:
-    case 202:
-        return noError;
-    case 400:
-        // data that you sending is not valid/acceptable
-        return kBadRequestError;
-    case 401:
-        // ask user to enter login again, do not obtain new token automatically
-        return kUnauthorizedError;
-    case 402:
-        // requested action allowed only for pro workspace show user upsell
-        // page / ask for workspace pro upgrade. do not retry same request
-        // unless known that client is pro
-        return kPaymentRequiredError;
-    case 403:
-        // client has no right to perform given request. Server
-        return kForbiddenError;
-    case 404:
-        // request is not possible
-        // (or not allowed and server does not tell why)
-        return kRequestIsNotPossible;
-    case 410:
-        return kEndpointGoneError;
-    case 418:
-        return kUnsupportedAppError;
-    case 429:
-        return kCannotConnectError;
-    case 500:
-        return kBackendIsDownError;
-    case 501:
-    case 502:
-    case 503:
-    case 504:
-    case 505:
-        return kBackendIsDownError;
-    }
-
-    {
-        std::stringstream ss;
-        ss << "Unexpected HTTP status code: " << status_code;
-        logger().error(ss.str());
-    }
-
-    return kCannotConnectError;
 }
 
 HTTPSResponse HTTPSClient::Post(
@@ -259,19 +187,14 @@ HTTPSResponse HTTPSClient::request(
     HTTPSRequest req) const {
     HTTPSResponse resp = makeHttpRequest(req);
 
-    if (kCannotConnectError == resp.err && isRedirect(resp.status_code)) {
+    if (resp.err == error::kCannotConnectError && isRedirect(resp.status_code)) {
         // Reattempt request to the given location.
         Poco::URI uri(resp.body);
 
         req.host = uri.getScheme() + "://" + uri.getHost();
         req.relative_url = uri.getPathEtc();
-        {
-            std::stringstream ss;
-            ss << "Redirect to URL=" << resp.body
-               << " host=" << req.host
-               << " relative_url=" << req.relative_url;
-            logger().debug(ss.str());
-        }
+
+        logger().debug("Redirect to URL=", resp.body, " host=", req.host, " relative_url=", req.relative_url);
         resp = makeHttpRequest(req);
     }
     return resp;
@@ -283,12 +206,12 @@ HTTPSResponse HTTPSClient::makeHttpRequest(
     HTTPSResponse resp;
 
     if (!urls::RequestsAllowed()) {
-        resp.err = error(kCannotSyncInTestEnv);
+        resp.err = error::kCannotSyncInTestEnv;
         return resp;
     }
 
     if (urls::ImATeapot()) {
-        resp.err = error(kUnsupportedAppError);
+        resp.err = error::kUnsupportedAppError;
         return resp;
     }
 
@@ -298,25 +221,25 @@ HTTPSResponse HTTPSClient::makeHttpRequest(
         if (cit->second >= Poco::Timestamp()) {
             logger().warning(
                 "Cannot connect, because we made too many requests");
-            resp.err = kCannotConnectError;
+            resp.err = error::kCannotConnectError;
             return resp;
         }
     }
 
     if (req.host.empty()) {
-        resp.err = error("Cannot make a HTTP request without a host");
+        resp.err = error::kMissingArgument;
         return resp;
     }
     if (req.method.empty()) {
-        resp.err = error("Cannot make a HTTP request without a method");
+        resp.err = error::kMissingArgument;
         return resp;
     }
     if (req.relative_url.empty()) {
-        resp.err = error("Cannot make a HTTP request without a relative URL");
+        resp.err = error::kMissingArgument;
         return resp;
     }
     if (HTTPSClient::Config.CACertPath.empty()) {
-        resp.err = error("Cannot make a HTTP request without certificates");
+        resp.err = error::kMissingArgument;
         return resp;
     }
 
@@ -347,19 +270,15 @@ HTTPSResponse HTTPSClient::makeHttpRequest(
         session.setTimeout(
             Poco::Timespan(req.timeout_seconds * Poco::Timespan::SECONDS));
 
-        {
-            std::stringstream ss;
-            ss << "Sending request to "
-               << req.host << req.relative_url << " ..";
-            logger().debug(ss.str());
-        }
+        logger().debug("Sending request to ", req.host, req.relative_url, " ..");
 
         std::string encoded_url("");
         Poco::URI::encode(req.relative_url, "", encoded_url);
 
         error err = Netconf::ConfigureProxy(req.host + encoded_url, &session);
         if (err != noError) {
-            resp.err = error("Error while configuring proxy: " + err);
+            logger().log("Error while configuring proxy: ", err.String());
+            resp.err = err;
             logger().error(resp.err);
             return resp;
         }
@@ -461,9 +380,7 @@ HTTPSResponse HTTPSClient::makeHttpRequest(
             // Inflate, if gzip was sent
         } else if (response.has("Content-Encoding") &&
                    "gzip" == response.get("Content-Encoding")) {
-            Poco::InflatingInputStream inflater(
-                is,
-                Poco::InflatingStreamBuf::STREAM_GZIP);
+            Poco::InflatingInputStream inflater(is, Poco::InflatingStreamBuf::STREAM_GZIP);
             {
                 std::stringstream ss;
                 ss << inflater.rdbuf();
@@ -472,11 +389,8 @@ HTTPSResponse HTTPSClient::makeHttpRequest(
 
             // Write the response to string
         } else {
-            std::streamsize n =
-                Poco::StreamCopier::copyToString(is, resp.body);
-            std::stringstream ss;
-            ss << n << " characters transferred with download";
-            logger().debug(ss.str());
+            std::streamsize n = Poco::StreamCopier::copyToString(is, resp.body);
+            logger().debug(n, " characters transferred with download");
         }
 
         logger().trace(resp.body);
@@ -485,14 +399,11 @@ HTTPSResponse HTTPSClient::makeHttpRequest(
             Poco::Timestamp ts = Poco::Timestamp() + (60 * kOneSecondInMicros);
             banned_until_[req.host] = ts;
 
-            std::stringstream ss;
-            ss << "Server indicated we're making too many requests to host "
-               << req.host << ". So we cannot make new requests until "
-               << Formatter::Format8601(ts);
-            logger().debug(ss.str());
+            logger().debug("Server indicated we're making too many requests to host ", req.host,
+                           ". So we cannot make new requests until ", Formatter::Format8601(ts));
         }
 
-        resp.err = statusCodeToError(resp.status_code);
+        resp.err = Error::fromHttpStatus(resp.status_code);
 
         // Parse human-readable error message from response if Content Type JSON
         if (resp.err != noError &&
@@ -504,13 +415,13 @@ HTTPSResponse HTTPSClient::makeHttpRequest(
             }
         }
     } catch(const Poco::Exception& exc) {
-        resp.err = exc.displayText();
+        resp.err = error::REMOVE_LATER_EXCEPTION_HANDLER;
         return resp;
     } catch(const std::exception& ex) {
-        resp.err = ex.what();
+        resp.err = error::REMOVE_LATER_EXCEPTION_HANDLER;
         return resp;
     } catch(const std::string & ex) {
-        resp.err = ex;
+        resp.err = error::REMOVE_LATER_EXCEPTION_HANDLER;
         return resp;
     }
     return resp;
@@ -518,8 +429,8 @@ HTTPSResponse HTTPSClient::makeHttpRequest(
 
 ServerStatus TogglClient::TogglStatus;
 
-Poco::Logger &TogglClient::logger() const {
-    return Poco::Logger::get("TogglClient");
+Logger TogglClient::logger() const {
+    return { "TogglClient" };
 }
 
 HTTPSResponse TogglClient::request(
@@ -527,9 +438,7 @@ HTTPSResponse TogglClient::request(
 
     error err = TogglStatus.Status();
     if (err != noError) {
-        std::stringstream ss;
-        ss << "Will not connect, because of known bad Toggl status: " << err;
-        logger().error(ss.str());
+        logger().error("Will not connect, because of known bad Toggl status: ", err);
         HTTPSResponse resp;
         resp.err = err;
         return resp;

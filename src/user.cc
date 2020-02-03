@@ -24,8 +24,8 @@
 #include <Poco/Crypto/CipherFactory.h>
 #include <Poco/Crypto/CipherKey.h>
 #include <Poco/Crypto/CryptoStream.h>
+#include <Poco/Crypto/CryptoException.h>
 #include <Poco/DigestStream.h>
-#include <Poco/Logger.h>
 #include <Poco/Random.h>
 #include <Poco/RandomStream.h>
 #include <Poco/SHA1Engine.h>
@@ -235,12 +235,12 @@ TimeEntry *User::Continue(
 
     TimeEntry *existing = related.TimeEntryByGUID(GUID);
     if (!existing) {
-        logger().warning("Time entry not found: " + GUID);
+        logger().warning("Time entry not found: ", GUID);
         return nullptr;
     }
 
     if (existing->DeletedAt()) {
-        logger().warning(kCannotContinueDeletedTimeEntry);
+        logger().warning(error::kCannotContinueDeletedTimeEntry);
         return nullptr;
     }
 
@@ -431,9 +431,7 @@ TimeEntry *User::DiscardTimeAt(
         return nullptr;
     }
 
-    std::stringstream ss;
-    ss << "User is discarding time entry " << guid << " at " << at;
-    logger().debug(ss.str());
+    logger().debug("User is discarding time entry ", guid, " at ", at);
 
     TimeEntry *te = related.TimeEntryByGUID(guid);
     if (te) {
@@ -534,7 +532,7 @@ void User::loadUserTagFromJSON(
 
     Poco::UInt64 id = data["id"].asUInt64();
     if (!id) {
-        logger().error("Backend is sending invalid data: ignoring update without an ID");  // NOLINT
+        logger().error("Backend is sending invalid data: ignoring update without an ID");
         return;
     }
 
@@ -570,7 +568,7 @@ void User::loadUserTaskFromJSON(
 
     Poco::UInt64 id = data["id"].asUInt64();
     if (!id) {
-        logger().error("Backend is sending invalid data: ignoring update without an ID");  // NOLINT
+        logger().error("Backend is sending invalid data: ignoring update without an ID");
         return;
     }
 
@@ -607,7 +605,7 @@ error User::LoadUserUpdateFromJSONString(
     Json::Value root;
     Json::Reader reader;
     if (!reader.parse(json, root)) {
-        return error("Failed to LoadUserUpdateFromJSONString");
+        return error::kFailedToParseData;
     }
 
     loadUserUpdateFromJSON(root);
@@ -624,11 +622,7 @@ void User::loadUserUpdateFromJSON(
 
     Poco::UTF8::toLowerInPlace(action);
 
-    std::stringstream ss;
-    ss << "Update parsed into action=" << action
-       << ", model=" + model;
-    Poco::Logger &logger = Poco::Logger::get("json");
-    logger.debug(ss.str());
+    Logger("json").debug("Update parsed into action=", action, ", model=", model);
 
     if (kModelWorkspace == model) {
         loadUserWorkspaceFromJSON(data);
@@ -655,7 +649,7 @@ void User::loadUserWorkspaceFromJSON(
 
     Poco::UInt64 id = data["id"].asUInt64();
     if (!id) {
-        logger().error("Backend is sending invalid data: ignoring update without an ID");  // NOLINT
+        logger().error("Backend is sending invalid data: ignoring update without an ID");
         return;
     }
     Workspace *model = related.WorkspaceByID(id);
@@ -685,26 +679,20 @@ error User::LoadUserAndRelatedDataFromJSONString(
     const bool &including_related_data) {
 
     if (json.empty()) {
-        Poco::Logger &logger = Poco::Logger::get("json");
-        logger.warning("cannot load empty JSON");
+        Logger("json").warning("cannot load empty JSON");
         return noError;
     }
 
     Json::Value root;
     Json::Reader reader;
     if (!reader.parse(json, root)) {
-        return error("Failed to LoadUserAndRelatedDataFromJSONString");
+        return error::kFailedToParseData;
     }
 
     SetSince(root["since"].asInt64());
-
-    Poco::Logger &logger = Poco::Logger::get("json");
-    std::stringstream s;
-    s << "User data as of: " << Since();
-    logger.debug(s.str());
+    Logger("json").debug("User data as of: ", Since());
 
     loadUserAndRelatedDataFromJSON(root["data"], including_related_data);
-
     return noError;
 }
 
@@ -716,13 +704,13 @@ error User::LoadWorkspacesFromJSONString(const std::string & json) {
     Json::Value root;
     Json::Reader reader;
     if (!reader.parse(json, root)) {
-        return error("Failed to LoadWorkspacessFromJSONString");
+        return error::kFailedToParseData;
     }
 
     if (root.size() == 0) {
         // Handle missing workspace issue.
         // If default wid is missing there are no workspaces
-        return error(kMissingWS); // NOLINT
+        return error::kMissingWS;
     }
 
     std::set<Poco::UInt64> alive;
@@ -742,7 +730,7 @@ error User::LoadTimeEntriesFromJSONString(const std::string & json) {
     Json::Value root;
     Json::Reader reader;
     if (!reader.parse(json, root)) {
-        return error("Failed to LoadTimeEntriesFromJSONString");
+        return error::kFailedToParseData;
     }
 
     std::set<Poco::UInt64> alive;
@@ -797,7 +785,7 @@ void User::loadUserAndRelatedDataFromJSON(
     const bool &including_related_data) {
 
     if (!data["id"].asUInt64()) {
-        logger().error("Backend is sending invalid data: ignoring update without an ID");  // NOLINT
+        logger().error("Backend is sending invalid data: ignoring update without an ID");
         return;
     }
 
@@ -914,7 +902,7 @@ void User::loadUserClientFromSyncJSON(
     bool addNew = false;
     Poco::UInt64 id = data["id"].asUInt64();
     if (!id) {
-        logger().error("Backend is sending invalid data: ignoring update without an ID");  // NOLINT
+        logger().error("Backend is sending invalid data: ignoring update without an ID");
         return;
     }
     Client *model = related.ClientByID(id);
@@ -954,7 +942,7 @@ void User::loadUserClientFromJSON(
 
     Poco::UInt64 id = data["id"].asUInt64();
     if (!id) {
-        logger().error("Backend is sending invalid data: ignoring update without an ID");  // NOLINT
+        logger().error("Backend is sending invalid data: ignoring update without an ID");
         return;
     }
     Client *model = related.ClientByID(id);
@@ -987,7 +975,7 @@ void User::loadUserProjectFromSyncJSON(
     bool addNew = false;
     Poco::UInt64 id = data["id"].asUInt64();
     if (!id) {
-        logger().error("Backend is sending invalid data: ignoring update without an ID");  // NOLINT
+        logger().error("Backend is sending invalid data: ignoring update without an ID");
         return;
     }
 
@@ -1033,7 +1021,7 @@ void User::loadUserProjectFromJSON(
 
     Poco::UInt64 id = data["id"].asUInt64();
     if (!id) {
-        logger().error("Backend is sending invalid data: ignoring update without an ID");  // NOLINT
+        logger().error("Backend is sending invalid data: ignoring update without an ID");
         return;
     }
 
@@ -1096,7 +1084,7 @@ void User::loadUserTimeEntryFromJSON(
 
     Poco::UInt64 id = data["id"].asUInt64();
     if (!id) {
-        logger().error("Backend is sending invalid data: ignoring update without an ID");  // NOLINT
+        logger().error("Backend is sending invalid data: ignoring update without an ID");
         return;
     }
 
@@ -1155,7 +1143,7 @@ error User::UserID(
     Json::Reader reader;
     bool ok = reader.parse(json_data_string, root);
     if (!ok) {
-        return error("error parsing UserID JSON");
+        return error::kFailedToParseData;
     }
     *result = root["data"]["id"].asUInt64();
     return noError;
@@ -1169,7 +1157,7 @@ error User::LoginToken(
     Json::Reader reader;
     bool ok = reader.parse(json_data_string, root);
     if (!ok) {
-        return error("error parsing UserID JSON");
+        return error::kFailedToParseData;
     }
     *result = root["login_token"].asString();
     return noError;
@@ -1213,13 +1201,13 @@ std::string User::generateKey(const std::string &password) {
 
 error User::SetAPITokenFromOfflineData(const std::string &password) {
     if (Email().empty()) {
-        return error("cannot decrypt offline data without an e-mail");
+        return error::kCannotDecryptOfflineDataWithoutEmail;
     }
     if (password.empty()) {
-        return error("cannot decrypt offline data without a password");
+        return error::kCannotDecryptOfflineDataWithoutPassword;
     }
     if (OfflineData().empty()) {
-        return error("cannot decrypt empty string");
+        return error::kCannotDecryptOfflineDataWhenEmpty;
     }
     try {
         Poco::Crypto::CipherFactory& factory =
@@ -1230,7 +1218,7 @@ error User::SetAPITokenFromOfflineData(const std::string &password) {
         Json::Value data;
         Json::Reader reader;
         if (!reader.parse(OfflineData(), data)) {
-            return error("failed to parse offline data");
+            return error::kFailedToParseData;
         }
 
         std::istringstream istr(data["salt"].asString());
@@ -1249,26 +1237,29 @@ error User::SetAPITokenFromOfflineData(const std::string &password) {
         pCipher = nullptr;
 
         SetAPIToken(decrypted);
+    } catch(const Poco::IOException &) {
+        return error::kInvalidPassword;
+    } catch(const Poco::Crypto::OpenSSLException &) {
+        return error::kInvalidPassword;
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     return noError;
 }
 
-error User::EnableOfflineLogin(
-    const std::string &password) {
+error User::EnableOfflineLogin(const std::string &password) {
     if (Email().empty()) {
-        return error("cannot enable offline login without an e-mail");
+        return error::kCannotEnableOfflineLoginWithoutEmail;
     }
     if (password.empty()) {
-        return error("cannot enable offline login without a password");
+        return error::kCannotEnableOfflineLoginWithoutPassword;
     }
     if (APIToken().empty()) {
-        return error("cannot enable offline login without an API token");
+        return error::kCannotEnableOfflineLoginWithoutApiToken;
     }
     try {
         Poco::Crypto::CipherFactory& factory =
@@ -1307,14 +1298,14 @@ error User::EnableOfflineLogin(
             return err;
         }
         if (token != APIToken()) {
-            return error("offline login encryption failed");
+            return error::kOfflineDecryptionFailed;
         }
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     return noError;
 }
@@ -1339,9 +1330,7 @@ void User::MarkTimelineBatchAsUploaded(
         TimelineEvent event = *i;
         TimelineEvent *uploaded = related.TimelineEventByGUID(event.GUID());
         if (!uploaded) {
-            logger().error(
-                "Could not find timeline event to mark it as uploaded: "
-                + event.String());
+            logger().error("Could not find timeline event to mark it as uploaded: ", event.String());
             continue;
         }
         uploaded->SetUploaded(true);
@@ -1364,15 +1353,10 @@ void User::CompressTimeline() {
 
     time_t start = time(nullptr);
 
-    {
-        std::stringstream ss;
-        ss << "CompressTimeline "
-           << " user_id=" << ID()
-           << " chunk_up_to=" << chunk_up_to
-           << " number of events=" << related.TimelineEvents.size();
-
-        logger().debug(ss.str());
-    }
+    logger().debug("CompressTimeline ",
+                   " user_id=", ID(),
+                   " chunk_up_to=", chunk_up_to,
+                   " number of events=", related.TimelineEvents.size());
 
     for (std::vector<TimelineEvent *>::iterator i =
         related.TimelineEvents.begin();
@@ -1445,16 +1429,8 @@ void User::CompressTimeline() {
         compressed[key] = chunk;
     }
 
-    {
-        std::stringstream ss;
-        ss << "CompressTimeline done in " << (time(nullptr) - start)
-           << " seconds, "
-           << related.TimelineEvents.size()
-           << " compressed into "
-           << compressed.size()
-           << " chunks";
-        logger().debug(ss.str());
-    }
+    logger().debug("CompressTimeline done in ", (time(nullptr) - start), " seconds, ",
+                   related.TimelineEvents.size(), " compressed into ", compressed.size(), " chunks");
 }
 
 std::vector<TimelineEvent> User::CompressedTimelineForUI(const Poco::LocalDateTime *date) const {

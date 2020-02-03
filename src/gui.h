@@ -14,12 +14,9 @@
 #include "toggl_api.h"
 #include "toggl_api_private.h"
 #include "types.h"
+#include "util/logger.h"
 
 #include <Poco/LocalDateTime.h>
-
-namespace Poco {
-class Logger;
-}
 
 namespace toggl {
 
@@ -98,7 +95,7 @@ class TOGGL_INTERNAL_EXPORT TimeEntry {
     bool Unsynced;
     // If syncing a time entry ended with an error,
     // the error is attached to the time entry
-    std::string Error;
+    error Error;
     bool Locked;
     bool Group;
     bool GroupOpen;
@@ -406,6 +403,7 @@ class TOGGL_INTERNAL_EXPORT GUI : public SyncStateMonitor {
     void DisplayApp();
 
     error DisplayError(const error &err);
+    error DisplayError(const std::string &err, bool is_user_error);
 
     // Overlay screen triggers
     error DisplayWSError();
@@ -692,7 +690,7 @@ class TOGGL_INTERNAL_EXPORT GUI : public SyncStateMonitor {
     }
 
  private:
-    error findMissingCallbacks();
+    std::string findMissingCallbacks();
 
     TogglDisplayApp on_display_app_;
     TogglDisplayError on_display_error_;
@@ -742,7 +740,7 @@ class TOGGL_INTERNAL_EXPORT GUI : public SyncStateMonitor {
 
     Poco::LocalDateTime timeline_date_at_;
 
-    Poco::Logger &logger() const;
+    Logger logger { "ui" };
 };
 
 }  // namespace toggl

@@ -7,7 +7,6 @@
 #include "get_focused_window.h"
 #include "const.h"
 
-#include <Poco/Logger.h>
 #include <Poco/Thread.h>
 
 #if defined(__APPLE__)
@@ -15,10 +14,6 @@ extern bool isCatalinaOSX(void);
 #endif
 
 namespace toggl {
-
-Poco::Logger &WindowChangeRecorder::logger() {
-    return Poco::Logger::get("WindowChangeRecorder");
-}
 
 bool WindowChangeRecorder::hasWindowChanged(
     const std::string &title,
@@ -41,9 +36,7 @@ void WindowChangeRecorder::inspectFocusedWindow() {
         int count = 1;
 
         if (it == timeline_errors_.end()) {
-            std::stringstream ss;
-            ss << "Failed to get focused window info, error code: " << err;
-            logger().error(ss.str());
+            logger.error("Failed to get focused window info, error code: ", err);
         } else {
             count += timeline_errors_[err];
         }
@@ -51,10 +44,7 @@ void WindowChangeRecorder::inspectFocusedWindow() {
         timeline_errors_[err] = count;
 
         if (count % 100 == 0) {
-            std::stringstream ss;
-            ss << "Failed to get focused window info, error code: "
-               << err << " [" << count << " times]";
-            logger().error(ss.str());
+            logger.error("Failed to get focused window info, error code: ", err, " [", count, " times]");
         }
 
         // Allow erroneous timeline event in Windows
@@ -126,7 +116,7 @@ void WindowChangeRecorder::inspectFocusedWindow() {
             event->SetIdle(false);
             error err = timeline_datasource_->StartTimelineEvent(event);
             if (err != noError) {
-                logger().error(err);
+                logger.error(err);
             }
         }
     }
@@ -175,11 +165,11 @@ error WindowChangeRecorder::Shutdown() {
             recording_.wait(5);
         }
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     return noError;
 }

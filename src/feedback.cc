@@ -20,12 +20,12 @@ const std::string Feedback::filename() const {
     return p.getFileName();
 }
 
-toggl::error Feedback::Validate() const {
+error Feedback::Validate() const {
     if (subject_.empty()) {
-        return toggl::error("Missing topic");
+        return error::kMissingFeedbackTopic;
     }
     if (details_.empty()) {
-        return toggl::error("Missing details");
+        return error::kMissingFeedbackDetails;
     }
     return toggl::noError;
 }

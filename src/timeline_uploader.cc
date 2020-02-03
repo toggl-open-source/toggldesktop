@@ -17,8 +17,8 @@
 
 namespace toggl {
 
-Poco::Logger &TimelineUploader::logger() const {
-    return Poco::Logger::get("timeline_uploader");
+Logger TimelineUploader::logger() const {
+    return { "timeline_uploader" };
 }
 
 void TimelineUploader::sleep() {
@@ -42,12 +42,7 @@ void TimelineUploader::upload_loop_activity() {
 }
 
 error TimelineUploader::process() {
-    {
-        std::stringstream out;
-        out << "upload_loop_activity (current interval "
-            << current_upload_interval_seconds_ << "s)";
-        logger().debug(out.str());
-    }
+    logger().debug("upload_loop_activity (current interval ", current_upload_interval_seconds_, "s)");
 
     if (uploading_.isStopped()) {
         return noError;
@@ -74,12 +69,7 @@ error TimelineUploader::process() {
         return err;
     }
 
-    {
-        std::stringstream out;
-        out << "Sync of " << batch.Events().size()
-            << " event(s) was successful.";
-        logger().debug(out.str());
-    }
+    logger().debug("Sync of ", batch.Events().size(), " event(s) was successful.");
 
     reset_backoff();
 
@@ -89,10 +79,7 @@ error TimelineUploader::process() {
 error TimelineUploader::upload(TimelineBatch *batch) {
     TogglClient client;
 
-    std::stringstream ss;
-    ss << "Uploading " << batch->Events().size()
-       << " event(s) of user " << batch->UserID();
-    logger().debug(ss.str());
+    logger().debug("Uploading ", batch->Events().size(), " event(s) of user ", batch->UserID());
 
     std::string json = convertTimelineToJSON(
         batch->Events(),
@@ -136,9 +123,7 @@ void TimelineUploader::backoff() {
         logger().warning("Max upload interval reached.");
         current_upload_interval_seconds_ = kTimelineUploadMaxBackoffSeconds;
     }
-    std::stringstream out;
-    out << "Upload interval set to " << current_upload_interval_seconds_ << "s";
-    logger().debug(out.str());
+    logger().debug("Upload interval set to ", current_upload_interval_seconds_, "s");
 }
 
 void TimelineUploader::reset_backoff() {
@@ -150,11 +135,11 @@ error TimelineUploader::start() {
     try {
         uploading_.start();
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     return noError;
 }
@@ -166,11 +151,11 @@ error TimelineUploader::Shutdown() {
             uploading_.wait();
         }
     } catch(const Poco::Exception& exc) {
-        return exc.displayText();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::exception& ex) {
-        return ex.what();
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     } catch(const std::string & ex) {
-        return ex;
+        return error::REMOVE_LATER_EXCEPTION_HANDLER;
     }
     return noError;
 }
