@@ -28,6 +28,6 @@ final class TimelineResizeHoverController: NSViewController {
         let startTimeStr = TimelineDateFormatter.shared.convertToHours(Date(timeIntervalSince1970: startTime))
         let endTimeStr = TimelineDateFormatter.shared.convertToHours(Date(timeIntervalSince1970: endTime))
         timeLabel.stringValue = "\(startTimeStr) - \(endTimeStr)"
-        durationLabel.stringValue = "\(endTime - startTime)"
+        durationLabel.stringValue = DesktopLibraryBridge.shared().formatDurationTimestampt(abs(endTime - startTime)) ?? ""
     }
 }
