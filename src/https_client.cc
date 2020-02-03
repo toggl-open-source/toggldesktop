@@ -411,7 +411,7 @@ HTTPSResponse HTTPSClient::makeHttpRequest(
         poco_req.set("Accept-Encoding", "gzip");
 
         // Remove Auth info
-        poco_req.set("Authorization", "");
+        poco_req.erase("Authorization");
 
         // Log out request contents
         std::stringstream request_string;
