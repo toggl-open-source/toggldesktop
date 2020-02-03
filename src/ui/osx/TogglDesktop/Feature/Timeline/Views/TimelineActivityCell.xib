@@ -13,7 +13,7 @@
             <rect key="frame" x="0.0" y="0.0" width="20" height="30"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <box horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" boxType="custom" borderType="none" borderWidth="0.0" cornerRadius="10" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="3am-zX-gdl">
+                <box horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" boxType="custom" borderType="none" borderWidth="0.0" cornerRadius="10" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="3am-zX-gdl" customClass="ResizeBox" customModule="TogglDesktop" customModuleProvider="target">
                     <rect key="frame" x="0.0" y="0.0" width="20" height="30"/>
                     <view key="contentView" id="Qu4-7v-dmk">
                         <rect key="frame" x="0.0" y="0.0" width="20" height="30"/>

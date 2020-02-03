@@ -232,6 +232,14 @@ extension TimelineDatasource: NSCollectionViewDataSource, NSCollectionViewDelega
         }
     }
 
+    func collectionView(_ collectionView: NSCollectionView, willDisplay item: NSCollectionViewItem, forRepresentedObjectAt indexPath: IndexPath) {
+        switch item {
+        case let cell as TimelineTimeEntryCell:
+            cell.foregroundBox.updateTrackingAreas()
+        default:
+            break
+        }
+    }
 }
 
 // MARK: TimelineFlowLayoutDelegate

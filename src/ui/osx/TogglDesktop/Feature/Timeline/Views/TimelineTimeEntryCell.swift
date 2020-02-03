@@ -107,8 +107,6 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
             updateLabels(item)
             hideOutOfBoundControls()
         }
-
-        initAllTracking()
      }
 
     private func hideOutOfBoundControls() {
