@@ -1472,7 +1472,7 @@ public static partial class Toggl
     public static bool AskToDeleteEntry(string guid)
     {
         var result = MessageBox.Show(mainWindow, "Deleted time entries cannot be restored.", "Delete time entry?",
-                                     MessageBoxButton.OKCancel, "DELETE ENTRY");
+                                     MessageBoxButton.OKCancel, "Delete entry");
 
         if (result == MessageBoxResult.OK)
         {

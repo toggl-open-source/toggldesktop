@@ -212,7 +212,6 @@
     <Compile Include="ui\Behaviors\HideWindowOnClosingBehavior.cs" />
     <Compile Include="ui\Behaviors\NumericInputTextBoxBehavior.cs" />
     <Compile Include="ui\Behaviors\TextBoxHelper.cs" />
-    <Compile Include="ui\chrome\ChromelessWindow.cs" />
     <Compile Include="ui\controls\InAppNotification.xaml.cs">
       <DependentUpon>InAppNotification.xaml</DependentUpon>
     </Compile>
@@ -435,11 +434,6 @@
     <Compile Include="ui\views\Timer.xaml.cs">
       <DependentUpon>Timer.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ui\chrome\TogglChrome.xaml.cs">
-      <DependentUpon>TogglChrome.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ui\chrome\TogglWindow.cs" />
-    <Compile Include="ui\chrome\TogglChromeDesignTimeConverter.cs" />
     <Compile Include="Win10\RunOnStartup.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -837,10 +831,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ui\Resources\TogglWindowStyles.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="ui\Resources\PreferencesWindowStyles.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -882,10 +872,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ui\views\Timer.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ui\chrome\TogglChrome.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
