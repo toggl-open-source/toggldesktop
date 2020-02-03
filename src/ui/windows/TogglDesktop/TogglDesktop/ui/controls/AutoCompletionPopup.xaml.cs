@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
-using TogglDesktop.AutoCompleteControls;
 using TogglDesktop.AutoCompletion;
 using TogglDesktop.Diagnostics;
 
@@ -30,8 +28,6 @@ namespace TogglDesktop
         private bool needsToRefreshList;
 
         private AutoCompleteController controller;
-
-        private readonly List<IRecyclable> recyclableEntries = new List<IRecyclable>();
 
         #endregion
 
@@ -331,11 +327,6 @@ namespace TogglDesktop
             return true;
         }
 
-        private void select(AutoCompleteItem item)
-        {
-            this.select(item, false);
-        }
-
         private void select(AutoCompleteItem item, bool withKeyboard)
         {
             if (withKeyboard || !this.KeepOpenWhenSelectingWithMouse)
@@ -415,7 +406,7 @@ namespace TogglDesktop
 
             using (Performance.Measure("building auto complete list {0}", this.controller.DebugIdentifier))
             {
-                this.controller.FillList(this.listBox, this.select, this.recyclableEntries);
+                this.controller.FillList(this.listBox);
             }         
             
             this.needsToRefreshList = false;
