@@ -35,6 +35,7 @@
         </Style.Triggers>
     </Style>
     <Style x:Key="EditViewAutoCompleteTextFieldButton" TargetType="ToggleButton" BasedOn="{StaticResource EditViewTextFieldImageButtonBase}">
+        <Setter Property="Margin" Value="0 1 1 1" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ToggleButton">

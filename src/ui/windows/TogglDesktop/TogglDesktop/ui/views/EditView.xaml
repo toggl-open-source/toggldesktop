@@ -95,13 +95,12 @@
                             Margin="1 1 0 1"/>
 
                         <ToggleButton x:Name="projectDropDownButton" x:FieldModifier="private" Grid.Column="0"
-                                            Style="{StaticResource EditViewAutoCompleteTextFieldButton}"
-                                            Margin="0 1 1 1"/>
+                                            Style="{StaticResource EditViewAutoCompleteTextFieldButton}"/>
 
                         <Button x:Name ="newProjectCancelButton" x:FieldModifier="private" Grid.Column="1"
                                 Style="{StaticResource EditViewTextFieldImageButtonBase}"
                                 Content="/TogglDesktop;component/Resources/ic_cancel_grey600_24dp.png"
-                                Padding="9" Visibility="Hidden"
+                                Visibility="Hidden"
                                 Click="newProjectCancelButton_OnClick"/>
 
                         <toggl:AutoCompletionPopup Grid.Column="0" Grid.Row="0" x:Name="projectAutoComplete" x:FieldModifier="private"
@@ -111,11 +110,9 @@
                                 ConfirmWithoutCompletion="projectAutoComplete_OnConfirmWithoutCompletion"/>
 
                     </Grid>
-
-                    <CheckBox Grid.Row="1" Name="isProjectPublicCheckBox">Public (visible to the whole team)</CheckBox>
             
                     <!-- client -->
-                    <Grid  Grid.Row="2"  Height="50" Visibility="Visible"
+                    <Grid  Grid.Row="1"  Height="32" Margin="0 8 0 0" Visibility="Visible"
                            Name="clientArea" x:FieldModifier="private">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
@@ -123,6 +120,7 @@
                         </Grid.ColumnDefinitions>
 
                         <toggl:ExtendedTextBox x:Name="clientTextBox" x:FieldModifier="private" Grid.Column="0"
+                                               Style="{StaticResource {x:Type TextBox}}"
                                                LostKeyboardFocus="clientTextBox_OnLostKeyboardFocus"
                                                Padding="8, 0, 34, 0"
                                                PreviewKeyDown="clientTextBox_OnPreviewKeyDown"/>
@@ -153,7 +151,7 @@
                         <Button x:Name ="newClientCancelButton" x:FieldModifier="private" Grid.Column="1"
                                 Style="{StaticResource EditViewTextFieldImageButtonBase}"
                                 Content="/TogglDesktop;component/Resources/ic_cancel_grey600_24dp.png"
-                                Padding="9" Visibility="Hidden"
+                                Visibility="Hidden"
                                 Click="newClientCancelButton_OnClick"/>
 
 
@@ -166,10 +164,11 @@
                     </Grid>
                 
                     <!-- workspace -->
-                    <Grid Grid.Row="3" Height="50" Visibility="Visible"
+                    <Grid Grid.Row="2" Height="32" Margin="0 8 0 0" Visibility="Visible"
                            Name="workspaceArea" x:FieldModifier="private">
 
                         <toggl:ExtendedTextBox x:Name="workspaceTextBox" x:FieldModifier="private"
+                                               Style="{StaticResource {x:Type TextBox}}"
                                                LostKeyboardFocus="workspaceTextBox_OnLostKeyboardFocus"
                                                Padding="8, 0, 34, 0"/>
                     
@@ -183,13 +182,17 @@
                                 ConfirmWithoutCompletion="workspaceAutoComplete_OnConfirmWithoutCompletion"/>
                     </Grid>
 
-                    <StackPanel Grid.Row="4" Height="50" Visibility="Visible"
+                    <CheckBox Grid.Row="3" Margin="0 14 0 0" Name="isProjectPrivateCheckBox">Private project</CheckBox>
+
+                    <StackPanel Grid.Row="4" Margin="0 50 0 0" Height="32" Visibility="Visible"
                                 Name="projectSaveArea" x:FieldModifier="private"
                                 Orientation="Horizontal" HorizontalAlignment="Right">
-                        <Button Click="projectSaveButton_Click">SAVE</Button>
-                        <Button Click="projectCancelButton_Click">CANCEL</Button>
+                        <Button Style="{StaticResource Toggl.PrimaryButton}" Width="125" Click="projectSaveButton_Click">Create project</Button>
+                        <Button Style="{StaticResource Toggl.OutlinedButton}" Margin="8 0 0 0" Width="79" Click="projectCancelButton_Click">Cancel</Button>
                     </StackPanel>
+
                 </Grid>
+
 
                 <!-- tags -->
                 <Grid MinHeight="32" Margin="0 8 0 0">
