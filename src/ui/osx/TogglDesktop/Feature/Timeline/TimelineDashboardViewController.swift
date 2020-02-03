@@ -93,6 +93,14 @@ final class TimelineDashboardViewController: NSViewController {
         return popover
     }()
 
+    private lazy var resizeInfoPopover: NoVibrantPopoverView = {
+        let popover = NoVibrantPopoverView()
+        popover.animates = false
+        popover.behavior = .semitransient
+        popover.contentViewController = TimelineResizeHoverController(nibName: "TimelineResizeHoverController", bundle: nil)
+        return popover
+    }()
+
     private var isAllPopoverClosed: Bool {
         return !editorPopover.isShown &&
             !activityHoverPopover.isShown &&
@@ -457,12 +465,22 @@ extension TimelineDashboardViewController: TimelineDatasourceDelegate {
 
     func shouldUpdateEndTime(_ endtime: TimeInterval, for entry: TimelineTimeEntry) {
         guard let guid = entry.timeEntry.guid else { return }
+        resizeInfoPopover.close()
         DesktopLibraryBridge.shared().updateTimeEntryWithEnd(atTimestamp: endtime, guid: guid)
     }
 
     func shouldUpdateStartTime(_ start: TimeInterval, for entry: TimelineTimeEntry) {
         guard let guid = entry.timeEntry.guid else { return }
+        resizeInfoPopover.close()
         DesktopLibraryBridge.shared().updateTimeEntryWithStart(atTimestamp: start, guid: guid)
+    }
+
+    func shouldPresentResizePopover(at cell: TimelineTimeEntryCell, onTopCorner: Bool) {
+        if !resizeInfoPopover.isShown {
+            let bounds = cell.foregroundBox.bounds
+            let newFrame = onTopCorner ? CGRect(x: 0, y: bounds.height - 1, width: bounds.width, height: 1) : CGRect(x: 0, y: 0, width: bounds.width, height: 1)
+            resizeInfoPopover.show(relativeTo: newFrame, of: cell.foregroundBox, preferredEdge: .maxX)
+        }
     }
 }
 

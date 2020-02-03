@@ -17,6 +17,7 @@ protocol TimelineDatasourceDelegate: class {
     func shouldUpdatePanelSize(with activityFrame: CGRect)
     func shouldUpdateEndTime(_ endtime: TimeInterval, for entry: TimelineTimeEntry)
     func shouldUpdateStartTime(_ start: TimeInterval, for entry: TimelineTimeEntry)
+    func shouldPresentResizePopover(at cell: TimelineTimeEntryCell, onTopCorner: Bool)
 }
 
 final class TimelineDatasource: NSObject {
@@ -325,6 +326,7 @@ extension TimelineDatasource: TimelineBaseCellDelegate {
             // Update the end time and re-draw
             timeEntry.end = endAt
             flow.invalidateLayout()
+            delegate?.shouldPresentResizePopover(at: timeEntryCell, onTopCorner: false)
         default:
             break
         }
@@ -340,6 +342,7 @@ extension TimelineDatasource: TimelineBaseCellDelegate {
             // Update and re-draw
             timeEntry.start = startTime
             flow.invalidateLayout()
+            delegate?.shouldPresentResizePopover(at: timeEntryCell, onTopCorner: true)
         default:
             break
         }
