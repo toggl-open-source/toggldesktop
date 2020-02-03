@@ -476,10 +476,16 @@ extension TimelineDashboardViewController: TimelineDatasourceDelegate {
     }
 
     func shouldPresentResizePopover(at cell: TimelineTimeEntryCell, onTopCorner: Bool) {
+
+        // Compute the position
+        let bounds = cell.foregroundBox.bounds
+        let newFrame = onTopCorner ? CGRect(x: 0, y: bounds.height - 1, width: bounds.width, height: 1) : CGRect(x: 0, y: 0, width: bounds.width, height: 1)
+
+        // Show or Update the position
         if !resizeInfoPopover.isShown {
-            let bounds = cell.foregroundBox.bounds
-            let newFrame = onTopCorner ? CGRect(x: 0, y: bounds.height - 1, width: bounds.width, height: 1) : CGRect(x: 0, y: 0, width: bounds.width, height: 1)
             resizeInfoPopover.show(relativeTo: newFrame, of: cell.foregroundBox, preferredEdge: .maxX)
+        } else {
+            resizeInfoPopover.positioningRect = newFrame
         }
 
         // Update time
