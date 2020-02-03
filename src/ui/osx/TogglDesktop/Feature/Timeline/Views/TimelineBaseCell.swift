@@ -8,23 +8,6 @@
 
 import Cocoa
 
-protocol ResizeBoxDelegate: class {
-
-    func shoulUpdateTrackingAreas()
-}
-
-final class ResizeBox: NSBox {
-
-    weak var delegate: ResizeBoxDelegate?
-
-    override func updateTrackingAreas() {
-        super.updateTrackingAreas()
-        // Recommend to re-compute the tracking are when the size is changed
-        // https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/EventOverview/TrackingAreaObjects/TrackingAreaObjects.html#//apple_ref/doc/uid/10000060i-CH8-SW3
-        delegate?.shoulUpdateTrackingAreas()
-    }
-}
-
 protocol TimelineBaseCellDelegate: class {
 
     func timelineCellMouseDidEntered(_ sender: TimelineBaseCell)
@@ -35,7 +18,7 @@ protocol TimelineBaseCellDelegate: class {
     func timelineCellOpenEditor(_ sender: TimelineBaseCell)
 }
 
-class TimelineBaseCell: NSCollectionViewItem, ResizeBoxDelegate {
+class TimelineBaseCell: NSCollectionViewItem {
 
     private struct Constants {
         static let SideHit: CGFloat = 20.0
@@ -58,7 +41,7 @@ class TimelineBaseCell: NSCollectionViewItem, ResizeBoxDelegate {
     // MARK: OUTLET
 
     @IBOutlet weak var backgroundBox: NSBox?
-    @IBOutlet weak var foregroundBox: ResizeBox!
+    @IBOutlet weak var foregroundBox: NSBox!
     
     // MARK: Variables
 
@@ -68,10 +51,8 @@ class TimelineBaseCell: NSCollectionViewItem, ResizeBoxDelegate {
     var isHoverable: Bool { return false }
 
     // Resizable tracker
-    private var mousePosition = MousePosition.none { didSet { print("dragPoisition = \(mousePosition)") }}
-    private var trackTop: NSTrackingArea?
-    private var trackBottom: NSTrackingArea?
-    private var trackMiddle: NSTrackingArea?
+    private var mousePosition = MousePosition.none { didSet { updateCursor(); print("dragPoisition = \(mousePosition)") }}
+    private var trackingArea: NSTrackingArea?
     private var userAction = UserAction.none
     private var isUserResizing: Bool { return mousePosition == .top || mousePosition == .bottom }
 
@@ -79,7 +60,6 @@ class TimelineBaseCell: NSCollectionViewItem, ResizeBoxDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        foregroundBox?.delegate = self
         initAllTracking()
     }
 
@@ -130,7 +110,6 @@ class TimelineBaseCell: NSCollectionViewItem, ResizeBoxDelegate {
         // Clear and init
         clearResizeTrackers()
         initHoverTrackers()
-        initResizeTrackers()
     }
 }
 
@@ -161,32 +140,13 @@ extension TimelineBaseCell {
 
     private func initHoverTrackers() {
         guard let view = foregroundBox, isHoverable else { return }
-        let bounds = suitableHoverRect()
-        trackMiddle = NSTrackingArea(rect: bounds, options: [.mouseEnteredAndExited, .activeAlways], owner: self, userInfo: nil)
-        view.addTrackingArea(trackMiddle!)
-    }
-
-    private func initResizeTrackers() {
-        guard let view = foregroundBox, isResizable else { return }
-
-        var bounds = suitableTopResizeRect()
-        trackTop = NSTrackingArea(rect: bounds, options: [.mouseEnteredAndExited, .activeAlways], owner: self, userInfo: nil)
-        view.addTrackingArea(trackTop!)
-
-        bounds = suitableBottomResizeRect()
-        trackBottom = NSTrackingArea(rect: bounds, options: [.mouseEnteredAndExited, .activeAlways], owner: self, userInfo: nil)
-        view.addTrackingArea(trackBottom!)
+        trackingArea = NSTrackingArea(rect: view.bounds, options: [.mouseEnteredAndExited, .activeAlways, .inVisibleRect, .mouseMoved], owner: self, userInfo: nil)
+        view.addTrackingArea(trackingArea!)
     }
 
     private func clearResizeTrackers() {
-        if let trackTop = trackTop {
-            view.removeTrackingArea(trackTop)
-        }
-        if let trackBottom = trackBottom {
-            view.removeTrackingArea(trackBottom)
-        }
-        if let trackMiddle = trackMiddle {
-            view.removeTrackingArea(trackMiddle)
+        if let trackingArea = trackingArea {
+            view.removeTrackingArea(trackingArea)
         }
     }
 
@@ -203,6 +163,7 @@ extension TimelineBaseCell {
     }
 
     private func handleMouseEntered(_ event: NSEvent) {
+        guard isResizable else { return }
 
         // Skip exit if the user is resizing
         if isUserResizing && userAction != .none {
@@ -211,27 +172,31 @@ extension TimelineBaseCell {
 
         print("mouseEntered")
         delegate?.timelineCellMouseDidEntered(self)
+    }
 
-        // Determine which drag position is
-        switch event.trackingArea {
-        case trackTop:
-            if isResizable {
-                mousePosition = .top
-            }
-        case trackBottom:
-            if isResizable {
-                mousePosition = .bottom
-            }
-        case trackMiddle:
-            if isHoverable {
-                mousePosition = .middle
-            }
-        default:
-            mousePosition = .none
+    override func mouseMoved(with event: NSEvent) {
+        guard isResizable else { return }
+
+        // Skip exit if the user is resizing
+        if isUserResizing && userAction != .none {
+            return
         }
 
-        // Set cursor
-        updateCursor()
+
+        print("mouseMoved")
+
+        // Convert mouse location to local
+        let position = event.locationInWindow
+        let localPosition = foregroundBox.convert(position, from: nil)
+
+        // Determine where the mouse is
+        if suitableHoverRect().contains(localPosition) {
+            mousePosition = .middle
+        } else if suitableTopResizeRect().contains(localPosition) {
+            mousePosition = .top
+        } else if suitableBottomResizeRect().contains(localPosition) {
+            mousePosition = .bottom
+        }
     }
 
     private func handleMouseExit(_ event: NSEvent) {
@@ -242,14 +207,7 @@ extension TimelineBaseCell {
         }
 
         print("mouseExited")
-
-        // Only Reset if the mouse is out of the foreground box
-        let position = event.locationInWindow
-        let localPosition = foregroundBox.convert(position, from: nil)
-        if !foregroundBox.frame.contains(localPosition) {
-            mousePosition = .none
-            updateCursor()
-        }
+        mousePosition = .none
     }
 
     private func handleMouseDownForResize(_ event: NSEvent) {
@@ -333,9 +291,5 @@ extension TimelineBaseCell {
             return NSRect(x: 0, y: 0, width: foregroundBox.frame.width, height: Constants.SideHideSmall)
         }
         return NSRect(x: 0, y: 0, width: foregroundBox.frame.width, height: Constants.SideHit)
-    }
-
-    func shoulUpdateTrackingAreas() {
-        initAllTracking()
     }
 }

@@ -142,7 +142,7 @@
                     </view>
                     <color key="fillColor" name="tertiaryLabelColor" catalog="System" colorSpace="catalog"/>
                 </box>
-                <box horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" boxType="custom" borderType="none" borderWidth="0.0" cornerRadius="10" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="ILd-N3-zAP" customClass="ResizeBox" customModule="TogglDesktop" customModuleProvider="target">
+                <box horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" boxType="custom" borderType="none" borderWidth="0.0" cornerRadius="10" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="ILd-N3-zAP">
                     <rect key="frame" x="0.0" y="0.0" width="20" height="107"/>
                     <view key="contentView" id="R5g-bh-G9v">
                         <rect key="frame" x="0.0" y="0.0" width="20" height="107"/>

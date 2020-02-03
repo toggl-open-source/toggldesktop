@@ -17,23 +17,6 @@ protocol TimelineTimeEntryCellDelegate: class {
     func timeEntryCellShouldChangeLastEntryStartTime(for entry: TimelineTimeEntry, sender: TimelineTimeEntryCell)
 }
 
-final class CursorView: NSBox {
-
-    var cursor: NSCursor? {
-        didSet {
-            resetCursorRects()
-        }
-    }
-
-    override func resetCursorRects() {
-        if let cursor = cursor {
-            addCursorRect(bounds, cursor: cursor)
-        } else {
-            super.resetCursorRects()
-        }
-    }
-}
-
 final class TimelineTimeEntryCell: TimelineBaseCell {
 
     // MARK: Variables
