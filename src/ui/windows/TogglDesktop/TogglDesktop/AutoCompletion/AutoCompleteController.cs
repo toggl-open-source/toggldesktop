@@ -15,9 +15,25 @@ namespace TogglDesktop.AutoCompletion
         private static readonly string[] categories = { "RECENT TIME ENTRIES", "TASKS", "PROJECTS", "WORKSPACES", "TAGS" };
 
         private readonly List<IAutoCompleteListItem> list;
-        private List<ListBoxItem> items;
-        public List<ListBoxItem> visibleItems;
-        private ListBox LB;
+        private List<ListBoxItemViewModel> items;
+        public List<ListBoxItemViewModel> visibleItems;
+        private ListBox _listBox;
+        private ListBox LB
+        {
+            get => _listBox;
+            set
+            {
+                if (_listBox != value)
+                {
+                    _listBox = value;
+                    if (autocompleteType == 2 || autocompleteType == 3)
+                    {
+                        _listBox.SetValue(VirtualizingPanel.ScrollUnitProperty, ScrollUnit.Pixel);
+                    }
+                }
+            }
+        }
+
         public string DebugIdentifier { get; }
 
         private int selectedIndex;
@@ -51,162 +67,94 @@ namespace TogglDesktop.AutoCompletion
             }
         }
 
-        public void FillList(ListBox listBox)
+        private static List<ListBoxItemViewModel> CreateItemViewModelsList(IList<IAutoCompleteListItem> modelsList, int autocompleteType)
         {
-            LB = listBox;
             int lastType = -1;
             string lastClient = null;
             int lastWID = -1;
             bool noProjectAdded = false;
+
+            var items = new List<ListBoxItemViewModel>();
+
+            var multipleWorkspaces = false;
+            for (var count = 0; count < modelsList.Count; ++count)
+            {
+                var item = modelsList[count];
+                var it = (TimerItem)item;
+
+                // Add workspace title
+                if (lastWID != (int)it.Item.WorkspaceID)
+                {
+                    if (lastWID != -1) // workspace separator
+                    {
+                        items.Add(new WorkspaceSeparatorItemViewModel());
+                        multipleWorkspaces = true;
+                    }
+
+                    items.Add(new WorkspaceItemViewModel(it.Item.WorkspaceName));
+                    lastWID = (int)it.Item.WorkspaceID;
+                    lastType = -1;
+                    lastClient = null;
+                }
+
+                // Add category title if needed
+                if (lastType != (int)it.Item.Type && (int)it.Item.Type != 1)
+                {
+                    // do not show 'Projects' item when auto completing projects
+                    if (autocompleteType != 3)
+                    {
+                        items.Add(new CategoryItemViewModel(categories[(int) it.Item.Type]));
+                    }
+
+                    // if projects autocomplete show 'no project' item
+                    if (autocompleteType == 3 && (int)it.Item.Type == 2
+                        && !noProjectAdded)
+                    {
+                        items.Add(new NoProjectItemViewModel());
+                        noProjectAdded = true;
+                    }
+                    lastType = (int)it.Item.Type;
+                }
+
+                // Add client item if needed
+                if (it.Item.Type == 2 && lastClient != it.Item.ClientLabel)
+                {
+                    items.Add(new ClientItemViewModel(it.Item.ClientLabel));
+                    lastClient = it.Item.ClientLabel;
+                }
+
+                items.Add(new TimeEntryItemViewModel(it.Item, count));
+            }
+
+            if (!multipleWorkspaces)
+            {
+                // remove workspace item if there is only one workspace
+                items.RemoveAt(items.FindIndex(x => x.Type == ItemType.WORKSPACE));
+            }
+
+            if (autocompleteType == 3)
+            {
+                items.Add(new CreateProjectButtonItemViewModel());
+            }
+
+            return items;
+        }
+
+        public void FillList(ListBox listBox)
+        {
+            LB = listBox;
             using (Performance.Measure("FILLIST, {0} items", this.list.Count))
             {
-                items = new List<ListBoxItem>();
-
-                // For tags and autotracker terms
-                if (autocompleteType == 1)
+                items = autocompleteType switch
                 {
-                    for (var count = 0; count < this.list.Count; ++count)
-                    {
-                        var item = this.list[count];
-                        var it = (StringItem)item;
+                    // For tags and autotracker terms
+                    1 => list.Select((item1, ind) => (ListBoxItemViewModel)new StringItemViewModel(((StringItem) item1).Item, ind)).ToList(),
+                    // workspace/client dropdown
+                    2 => list.Select((item1, ind) => (ListBoxItemViewModel)new StringItemViewModel(((ModelItem) item1).Item.Name, ind)).ToList(),
+                    // description and project dropdowns
+                    _ => CreateItemViewModelsList(list, autocompleteType)
+                };
 
-                        items.Add(new ListBoxItem()
-                        {
-                            Text = it.Item,
-                            Type = ItemType.STRINGITEM,
-                            Index = count
-                        });
-                    }
-                }
-
-                // workspace/client dropdown
-                else if (autocompleteType == 2)
-                {
-                    for (var count = 0; count < this.list.Count; ++count)
-                    {
-                        var item = this.list[count];
-                        var it = (ModelItem)item;
-
-                        items.Add(new ListBoxItem()
-                        {
-                            Text = it.Item.Name,
-                            Type = ItemType.STRINGITEM,
-                            Index = count
-                        });
-                    }
-                }
-                // description and project dropdowns
-                else
-                {
-                    var multipleWorkspaces = false;
-                    for (var count = 0; count < this.list.Count; ++count)
-                    {
-                        var item = this.list[count];
-                        var it = (TimerItem)item;
-
-                        // Add workspace title
-                        if (lastWID != (int)it.Item.WorkspaceID)
-                        {
-                            if (lastWID != -1) // workspace separator
-                            {
-                                items.Add(new ListBoxItem { Type = ItemType.WORKSPACE_SEPARATOR });
-                                multipleWorkspaces = true;
-                            }
-
-                            items.Add(new ListBoxItem()
-                            {
-                                Text = it.Item.WorkspaceName,
-                                Type = ItemType.WORKSPACE
-                            });
-                            lastWID = (int)it.Item.WorkspaceID;
-                            lastType = -1;
-                            lastClient = null;
-                        }
-
-                        // Add category title if needed
-                        if (lastType != (int)it.Item.Type && (int)it.Item.Type != 1)
-                        {
-                            // do not show 'Projects' item when auto completing projects
-                            if (autocompleteType != 3)
-                            {
-                                items.Add(new ListBoxItem()
-                                {
-                                    Category = categories[(int)it.Item.Type],
-                                    Type = ItemType.CATEGORY
-                                });
-                            }
-
-                            // if projects autocomplete show 'no project' item
-                            if (autocompleteType == 3 && (int)it.Item.Type == 2
-                                && !noProjectAdded)
-                            {
-                                items.Add(new ListBoxItem()
-                                {
-                                    Text = "No project",
-                                    Description = "",
-                                    ProjectLabel = "No project",
-                                    TaskLabel = "",
-                                    ClientLabel = "",
-                                    Type = ItemType.PROJECT,
-                                    Index = -1
-                                });
-                                noProjectAdded = true;
-                            }
-                            lastType = (int)it.Item.Type;
-                        }
-
-                        // Add client item if needed
-                        if (it.Item.Type == 2 && lastClient != it.Item.ClientLabel)
-                        {
-                            var text = it.Item.ClientLabel;
-                            if (text.Length == 0)
-                            {
-                                text = "No client";
-                            }
-                            items.Add(new ListBoxItem()
-                            {
-                                Text = text,
-                                Type = ItemType.CLIENT
-                            });
-                            lastClient = it.Item.ClientLabel;
-                        }
-
-                        var taskLabel = it.Item.TaskLabel;
-                        if (it.Item.Type == 0)
-                        {
-                            taskLabel = (it.Item.TaskLabel.Length > 0) ? " - " + it.Item.TaskLabel : "";
-                        }
-                        var clientLabel = (it.Item.ClientLabel.Length > 0) ? " " + it.Item.ClientLabel : "";
-
-                        items.Add(new ListBoxItem()
-                        {
-                            Text = it.Item.Text,
-                            Description = it.Item.Description,
-                            ProjectLabel = it.Item.ProjectLabel,
-                            ProjectColor = it.Item.ProjectColor,
-                            ProjectAndTaskLabel = it.Item.ProjectAndTaskLabel,
-                            TaskLabel = taskLabel,
-                            ClientLabel = clientLabel,
-                            Type = (ItemType)((int)it.Item.Type),
-                            WorkspaceName = it.Item.WorkspaceName,
-                            Index = count
-                        });
-                    }
-
-                    if (!multipleWorkspaces)
-                    {
-                        // remove workspace item if there is only one workspace
-                        items.RemoveAt(items.FindIndex(x => x.Type == ItemType.WORKSPACE));
-                    }
-
-                    if (autocompleteType == 3)
-                    {
-                        items.Add(new ListBoxItem()
-                        {
-                            Type = ItemType.CREATE_PROJECT_BUTTON
-                        });
-                    }
-                }
                 visibleItems = items;
                 LB.ItemsSource = visibleItems;
             }
@@ -231,17 +179,13 @@ namespace TogglDesktop.AutoCompletion
                 string lastProjectLabel = null;
                 string lastClient = null;
                 string lastWSName = null;
-                var filteredItems = new List<ListBoxItem>();
+                var filteredItems = new List<ListBoxItemViewModel>();
                 foreach (var item in visibleItems.Where(Filter))
                 {
                     // Add workspace title
                     if (lastWSName != item.WorkspaceName)
                     {
-                        filteredItems.Add(new ListBoxItem()
-                        {
-                            Text = item.WorkspaceName,
-                            Type = ItemType.WORKSPACE
-                        });
+                        filteredItems.Add(new WorkspaceItemViewModel(item.WorkspaceName));
                         lastWSName = item.WorkspaceName;
                         lastType = ItemType.CATEGORY; // WORKSPACE?
                         lastClient = null;
@@ -251,44 +195,21 @@ namespace TogglDesktop.AutoCompletion
                     if (autocompleteType == 0 && lastType != item.Type
                                               && item.Type != ItemType.TASK)
                     {
-                        filteredItems.Add(new ListBoxItem() {
-                            Category = categories[(int)item.Type],
-                            Type = ItemType.CATEGORY
-                        });
+                        filteredItems.Add(new CategoryItemViewModel(categories[(int)item.Type]));
                         lastType = item.Type;
                     }
 
                     // Add client item if needed
                     if ((item.Type == ItemType.PROJECT || item.Type == ItemType.TASK) && lastClient != item.ClientLabel)
                     {
-                        var text = item.ClientLabel;
-                        if (text.Length == 0)
-                        {
-                            text = "No client";
-                        }
-                        filteredItems.Add(new ListBoxItem()
-                        {
-                            Text = text,
-                            Type = ItemType.CLIENT
-                        });
+                        filteredItems.Add(new ClientItemViewModel(item.ClientLabel));
                         lastClient = item.ClientLabel;
                     }
 
                     // In case we have task and project is not completed
                     if (item.Type == ItemType.TASK && item.ProjectLabel != lastProjectLabel)
                     {
-                        filteredItems.Add(new ListBoxItem()
-                        {
-                            Text = item.ProjectLabel,
-                            Description = "",
-                            ProjectLabel = item.ProjectLabel,
-                            ProjectColor = item.ProjectColor,
-                            TaskLabel = "",
-                            ClientLabel = item.ClientLabel,
-                            Type = ItemType.PROJECT,
-                            WorkspaceName = item.WorkspaceName,
-                            Index = filteredItems.Count
-                        });
+                        filteredItems.Add(new ProjectItemViewModel(item, filteredItems.Count));
                     }
 
                     filteredItems.Add(item);
@@ -301,15 +222,17 @@ namespace TogglDesktop.AutoCompletion
                 this.selectFirstItem(0);
         }
 
-        private bool Filter(ListBoxItem listItem)
+        private bool Filter(ListBoxItemViewModel listItemViewModel)
         {
             if (string.IsNullOrEmpty(filterText))
                 return true;
 
-            if (listItem.Type < 0)
+            if (listItemViewModel.Type < 0)
                 return false;
 
-            var itemText = (listItem.Type == ItemType.TASK) ? listItem.ProjectAndTaskLabel : listItem.Text;
+            var itemText = (listItemViewModel.Type == ItemType.TASK)
+                ? ((TimeEntryItemViewModel)listItemViewModel).ProjectAndTaskLabel
+                : listItemViewModel.Text;
 
             return words.All(word => itemText.IndexOf(word, StringComparison.OrdinalIgnoreCase) != -1);
         }
@@ -383,7 +306,7 @@ namespace TogglDesktop.AutoCompletion
         }
     }
 
-    public enum ItemType : int
+    public enum ItemType
     {
         TIMEENTRY = 0,
         TASK = 1,
@@ -400,25 +323,24 @@ namespace TogglDesktop.AutoCompletion
 
     public class AutocompleteTemplateSelector : DataTemplateSelector
     {
+        private static readonly Dictionary<ItemType, string> DataTemplateMap = new Dictionary<ItemType, string>
+        {
+            {ItemType.PROJECT, "project-item-template"},
+            {ItemType.TASK, "task-item-template"},
+            {ItemType.TIMEENTRY, "timer-item-template"},
+            {ItemType.CATEGORY, "category-item-template"},
+            {ItemType.STRINGITEM, "string-item-template"},
+            {ItemType.CLIENT, "client-item-template"},
+            {ItemType.WORKSPACE, "workspace-item-template"},
+            {ItemType.WORKSPACE_SEPARATOR, "workspace-separator-item-template"},
+            {ItemType.CREATE_PROJECT_BUTTON, "create-project-button-item-template"}
+        };
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
-            if (!(item is ListBoxItem listItem))
-                return null;
-
-            var element = (FrameworkElement) container;
-            return listItem.Type switch
-            {
-                ItemType.PROJECT => (element.FindResource("project-item-template") as DataTemplate),
-                ItemType.TASK => (element.FindResource("task-item-template") as DataTemplate),
-                ItemType.TIMEENTRY => (element.FindResource("timer-item-template") as DataTemplate),
-                ItemType.CATEGORY => (element.FindResource("category-item-template") as DataTemplate),
-                ItemType.STRINGITEM => (element.FindResource("string-item-template") as DataTemplate),
-                ItemType.CLIENT => (element.FindResource("client-item-template") as DataTemplate),
-                ItemType.WORKSPACE => (element.FindResource("workspace-item-template") as DataTemplate),
-                ItemType.WORKSPACE_SEPARATOR => (element.FindResource("workspace-separator-item-template") as DataTemplate),
-                ItemType.CREATE_PROJECT_BUTTON => (element.FindResource("create-project-button-item-template") as DataTemplate),
-                _ => null
-            };
+            return
+                item is ListBoxItemViewModel listItem && DataTemplateMap.TryGetValue(listItem.Type, out var resourceKey)
+                    ? ((FrameworkElement) container).FindResource(resourceKey) as DataTemplate
+                    : null;
         }
     }
 }
