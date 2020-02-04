@@ -66,14 +66,17 @@ class Analytics : public Poco::TaskManager {
                        const std::string &os,
                        const toggl::Rectangle rect);
 
-    void TrackStartTimeEntry(const std::string &client_id);
-    void TrackEditTimeEntry(const std::string &client_id);
-    void TrackDeleteTimeEntry(const std::string &client_id);
+    void TrackStartTimeEntry(const std::string &client_id,
+                             const uint8_t tab_index);
+    void TrackEditTimeEntry(const std::string &client_id,
+                            const uint8_t tab_index);
+    void TrackDeleteTimeEntry(const std::string &client_id,
+                              const uint8_t tab_index);
+
     void TrackLoginWithUsernamePassword(const std::string &client_id);
     void TrackLoginWithGoogle(const std::string &client_id);
     void TrackSignupWithUsernamePassword(const std::string &client_id);
     void TrackSignupWithGoogle(const std::string &client_id);
-    void TrackActiveView(const std::string &client_id, const uint8_t tabIndex);
 
  private:
     Poco::LocalDateTime settings_sync_date;
@@ -84,15 +87,12 @@ class Analytics : public Poco::TaskManager {
                    const toggl::Rectangle rect);
 
     void TrackTimeEntryActivity(const std::string &client_id,
-                               const std::string &action);
-
+                                const std::string &action,
+                                const uint8_t tab_index);
 
     void TrackUserAuthentication(const std::string &client_id,
                                  const std::string &action,
                                  const std::string &from);
-
-    void TrackActiveTimeEntryListView(const std::string &client_id);
-    void TrackActiveTimelineView(const std::string &client_id);
 };
 
 class GoogleAnalyticsEvent : public Poco::Task {

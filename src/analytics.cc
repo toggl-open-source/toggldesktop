@@ -327,36 +327,16 @@ void GoogleAnalyticsSettingsEvent::makeReq() {
     }
 }
 
-void Analytics::TrackActiveView(const std::string &client_id, const uint8_t tabIndex) {
-    if (tabIndex == 0) {
-        TrackActiveTimeEntryListView(client_id);
-    } else {
-        TrackActiveTimelineView(client_id);
-    }
+void Analytics::TrackStartTimeEntry(const std::string &client_id, const uint8_t tab_index) {
+    TrackTimeEntryActivity(client_id, "start", tab_index);
 }
 
-void Analytics::TrackActiveTimeEntryListView(const std::string &client_id) {
-    std::stringstream ss;
-    ss << "list-view/start";
-    Track(client_id, "list-view", ss.str());
+void Analytics::TrackEditTimeEntry(const std::string &client_id, const uint8_t tab_index) {
+    TrackTimeEntryActivity(client_id, "edit", tab_index);
 }
 
-void Analytics::TrackActiveTimelineView(const std::string &client_id) {
-    std::stringstream ss;
-    ss << "timeline-view/start";
-    Track(client_id, "timeline-view", ss.str());
-}
-
-void Analytics::TrackStartTimeEntry(const std::string &client_id) {
-    TrackTimeEntryActivity(client_id, "start");
-}
-
-void Analytics::TrackEditTimeEntry(const std::string &client_id) {
-    TrackTimeEntryActivity(client_id, "edit");
-}
-
-void Analytics::TrackDeleteTimeEntry(const std::string &client_id) {
-    TrackTimeEntryActivity(client_id, "delete");
+void Analytics::TrackDeleteTimeEntry(const std::string &client_id, const uint8_t tab_index) {
+    TrackTimeEntryActivity(client_id, "delete", tab_index);
 }
 
 void Analytics::TrackLoginWithUsernamePassword(const std::string &client_id) {
@@ -375,10 +355,11 @@ void Analytics::TrackSignupWithGoogle(const std::string &client_id) {
     TrackUserAuthentication(client_id, "signup", "google");
 }
 
-void Analytics::TrackTimeEntryActivity(const std::string &client_id, const std::string &action) {
+void Analytics::TrackTimeEntryActivity(const std::string &client_id, const std::string &action, const uint8_t tab_index) {
+    std::string active_view = tab_index == 0 ? "list-view" : "timeline-view";
     std::stringstream ss;
-    ss << "time_entry" << "/" << action;
-    Track(client_id, "time_entry", ss.str());
+    ss << active_view << "/" << action;
+    Track(client_id, active_view, ss.str());
 }
 
 void Analytics::TrackUserAuthentication(const std::string &client_id, const std::string &action, const std::string &from) {
