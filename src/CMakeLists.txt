@@ -76,6 +76,7 @@ set(LIBRARY_SOURCE_FILES
     related_data.cc
     timeline_uploader.cc
     window_change_recorder.cc
+    synchronization.cpp
 )
 
 # Set up compilation targets

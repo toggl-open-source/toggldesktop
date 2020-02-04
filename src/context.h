@@ -108,6 +108,11 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     GUI *UI() {
         return &ui_;
     }
+    User *User() {
+        return user_;
+    }
+
+    void UpdateUI(const UIElements &elements);
 
     // Check for logged in user etc, start up the app
     error StartEvents();
@@ -460,6 +465,8 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
 
     void SetOnline();
 
+    void SetOnlineState(const std::string &reason);
+
     error AsyncOpenReportsInBrowser();
     error OpenReportsInBrowser();
 
@@ -583,14 +590,10 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
 
     void displayPomodoroBreak();
 
-    void updateUI(const UIElements &elements);
-
     error displayError(const error &err);
     error displayError(const std::string &err, bool is_user_error = false);
 
     void scheduleSync();
-
-    void setOnline(const std::string &reason);
 
     int nextSyncIntervalSeconds() const;
 
@@ -729,9 +732,6 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
 
     bool update_check_disabled_;
 
-    bool trigger_sync_;
-    bool trigger_push_;
-
     Poco::LocalDateTime last_time_entry_list_render_at_;
 
     bool quit_;
@@ -741,9 +741,6 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
 
     Poco::Mutex reminder_m_;
     Poco::Activity<Context> reminder_;
-
-    Poco::Mutex syncer_m_;
-    Poco::Activity<Context> syncer_;
 
     Analytics analytics_;
 
