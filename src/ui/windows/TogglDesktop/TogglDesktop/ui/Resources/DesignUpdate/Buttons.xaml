@@ -49,7 +49,7 @@
         <Setter Property="BorderBrush" Value="{DynamicResource Toggl.Button.Primary.Background}" />
         <Setter Property="Height" Value="32" />
         <Setter Property="FocusVisualStyle" Value="{StaticResource Toggl.ButtonFocusVisualStyle}" />
-        <Setter Property="FontSize" Value="{DynamicResource NormalFontSize}" />
+        <Setter Property="FontSize" Value="{StaticResource NormalFontSize}" />
         <Setter Property="FontFamily" Value="{StaticResource BaseFont}" />
         <Setter Property="Foreground" Value="{DynamicResource Toggl.PrimaryTextBrush}" />
         <Setter Property="Padding" Value="10 6 10 6" />
@@ -143,8 +143,9 @@
 
     <Style TargetType="Button" x:Key="Toggl.CrossButton" BasedOn="{StaticResource Toggl.PrimaryButton}">
         <Setter Property="Foreground" Value="{DynamicResource Toggl.DarkGrayBrush}" />
-        <Setter Property="Height" Value="32" />
-        <Setter Property="Width" Value="32" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="Width" Value="Auto" />
+        <Setter Property="Height" Value="Auto" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate>

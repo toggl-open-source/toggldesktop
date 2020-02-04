@@ -8,13 +8,9 @@ namespace TogglDesktop
 {
     public partial class ReminderNotification
     {
-        private readonly TaskbarIcon icon;
-        private readonly MainWindow mainWindow;
-
         public ReminderNotification(TaskbarIcon icon, MainWindow mainWindow)
+            : base(icon, mainWindow)
         {
-            this.icon = icon;
-            this.mainWindow = mainWindow;
             InitializeComponent();
             Toggl.OnReminder += onReminder;
         }
@@ -29,23 +25,17 @@ namespace TogglDesktop
 
             this.RemoveFromParent();
 
-            if (!icon.ShowNotification(this, PopupAnimation.Slide, TimeSpan.FromSeconds(10)))
+            if (!_icon.ShowNotification(this, PopupAnimation.Slide, TimeSpan.FromSeconds(10)))
             {
-                icon.ShowBalloonTip(title, informative_text, Properties.Resources.toggl, largeIcon: true);
+                _icon.ShowBalloonTip(title, informative_text, Properties.Resources.toggl, largeIcon: true);
             }
-        }
-
-        private void onNotificationMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            icon.CloseBalloon();
-            mainWindow.ShowOnTop();
         }
 
         private void onStartButtonClick(object sender, RoutedEventArgs e)
         {
-            this.icon.CloseBalloon();
+            Close();
             var guid = Toggl.Start("", "", 0, 0, "", "", true);
-            this.mainWindow.ShowOnTop();
+            _parentWindow.ShowOnTop();
             if (guid != null)
                 Toggl.Edit(guid, true, Toggl.Description);
         }
