@@ -19,9 +19,17 @@
             <converters:ColorsToBrushConverter x:Key="ColorsToBrushMultiConverter" />
             <converters:EmptyStringToHiddenConverter x:Key="EmptyStringToHiddenConverter" />
             <togglautocompletion:AutocompleteTemplateSelector x:Key="autocompleteTemplateSelector"/>
-            <converters:IsNotNegativeConverter x:Key="IsNotNegativeConverter" />
+            <converters:IsSelectableTypeConverter x:Key="IsNotNegativeConverter" />
             <Style x:Key="AutoCompleteItem" BasedOn="{StaticResource {x:Type ListBoxItem}}" TargetType="ListBoxItem">
                 <Setter Property="IsEnabled" Value="{Binding Type, Converter={StaticResource IsNotNegativeConverter}}" />
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding Type}" Value="{x:Static togglautocompletion:ItemType.CREATE_PROJECT_BUTTON}">
+                        <DataTrigger.Setters>
+                            <Setter Property="IsEnabled" Value="True" />
+                            <Setter Property="Focusable" Value="False" />
+                        </DataTrigger.Setters>
+                    </DataTrigger>
+                </Style.Triggers>
             </Style>
             <DataTemplate x:Key="project-item-template">
                 <StackPanel Height="32" Orientation="Horizontal">
@@ -116,6 +124,9 @@
                     <Border HorizontalAlignment="Stretch" Height="8" BorderThickness="0,0,0,1" Background="{DynamicResource Toggl.Background}"
                             BorderBrush="{DynamicResource Toggl.SelectionElements.Disabled.Background}"/>
                 </StackPanel>
+            </DataTemplate>
+            <DataTemplate x:Key="create-project-button-item-template">
+                <Button Style="{DynamicResource Toggl.OutlinedButton}" Click="ButtonBase_OnClick" Content="Create project"/>
             </DataTemplate>
         </ResourceDictionary>
     </UserControl.Resources>
