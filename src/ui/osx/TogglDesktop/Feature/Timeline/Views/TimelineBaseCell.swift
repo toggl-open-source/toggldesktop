@@ -51,7 +51,7 @@ class TimelineBaseCell: NSCollectionViewItem {
     var isHoverable: Bool { return false }
 
     // Resizable tracker
-    private var mousePosition = MousePosition.none { didSet { updateCursor(); print("dragPoisition = \(mousePosition)") }}
+    private var mousePosition = MousePosition.none { didSet { updateCursor() }}
     private var trackingArea: NSTrackingArea?
     private var userAction = UserAction.none
     private var isUserResizing: Bool { return mousePosition == .top || mousePosition == .bottom }
@@ -78,17 +78,14 @@ class TimelineBaseCell: NSCollectionViewItem {
     }
 
     override func mouseDown(with event: NSEvent) {
-        print("mouseDown")
         handleMouseDownForResize(event)
     }
 
     override func mouseDragged(with event: NSEvent) {
-        print("mouseDragged")
         handleMouseDraggedForResize(event)
     }
 
     override func mouseUp(with event: NSEvent) {
-        print("mouseUp")
         handleMouseUpForResize(event)
     }
 
@@ -170,7 +167,6 @@ extension TimelineBaseCell {
             return
         }
 
-        print("mouseEntered")
         delegate?.timelineCellMouseDidEntered(self)
     }
 
@@ -181,9 +177,6 @@ extension TimelineBaseCell {
         if isUserResizing && userAction != .none {
             return
         }
-
-
-        print("mouseMoved")
 
         // Convert mouse location to local
         let position = event.locationInWindow
@@ -206,7 +199,6 @@ extension TimelineBaseCell {
             return
         }
 
-        print("mouseExited")
         mousePosition = .none
     }
 
@@ -243,7 +235,6 @@ extension TimelineBaseCell {
 
         // Click action
         if userAction == .none {
-            print("Show Editor")
             delegate?.timelineCellOpenEditor(self)
         } else {
             // Dragging
