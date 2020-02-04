@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+using System.Windows.Threading;
 using TogglDesktop.AutoCompletion;
 using TogglDesktop.Diagnostics;
 using ListBoxItem = Windows.UI.Xaml.Controls.ListBoxItem;
@@ -154,22 +155,11 @@ namespace TogglDesktop
             {
                 if (this.textbox.Focusable && this.textbox.IsEnabled)
                 {
-                    var element = Keyboard.FocusedElement as FrameworkElement;
-                    while (true)
+                    var isKeyboardFocusWithin = popup.IsKeyboardFocusWithin;
+                    if (isKeyboardFocusWithin)
                     {
-                        if (element == null)
-                            break;
-
-                        if (element is Button)
-                            return;
-
-                        if (element == this)
-                        {
-                            this.textbox.Focus();
-                            return;
-                        }
-
-                        element = element.Parent as FrameworkElement;
+                        this.textbox.Focus();
+                        return;
                     }
                 }
 
@@ -449,12 +439,6 @@ namespace TogglDesktop
         internal bool popUpOpen()
         {
             return this.popup.IsOpen;
-        }
-
-        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
-        {
-            Debug.WriteLine("button onclick");
-            // throw new NotImplementedException();
         }
     }
 }

@@ -176,13 +176,14 @@
     <Compile Include="AutoCompletion\AutoCompleteController.cs" />
     <Compile Include="AutoCompletion\AutoCompleteItem.cs" />
     <Compile Include="AutoCompletion\AutoCompleteListItem.cs" />
+    <Compile Include="AutoCompletion\CreateProjectButtonItemViewModel.cs" />
     <Compile Include="AutoCompletion\IAutoCompleteListItem.cs" />
     <Compile Include="AutoCompletion\Implementation\AutoCompleteControllers.cs" />
     <Compile Include="AutoCompletion\Implementation\ModelItem.cs" />
     <Compile Include="AutoCompletion\Implementation\StringItem.cs" />
     <Compile Include="AutoCompletion\Implementation\SimpleItem.cs" />
     <Compile Include="AutoCompletion\Implementation\TimerItem.cs" />
-    <Compile Include="AutoCompletion\ListBoxItem.cs" />
+    <Compile Include="AutoCompletion\ListBoxItemViewModel.cs" />
     <Compile Include="BugsnagService.cs" />
     <Compile Include="Diagnostics\IPerformanceToken.cs" />
     <Compile Include="Diagnostics\Performance.cs" />
@@ -195,6 +196,9 @@
     <Compile Include="ui\Behaviors\HideWindowOnClosingBehavior.cs" />
     <Compile Include="ui\Behaviors\NumericInputTextBoxBehavior.cs" />
     <Compile Include="ui\Behaviors\TextBoxHelper.cs" />
+    <Compile Include="ui\controls\CreateProjectDialog.xaml.cs">
+      <DependentUpon>CreateProjectDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ui\controls\InAppNotification.xaml.cs">
       <DependentUpon>InAppNotification.xaml</DependentUpon>
     </Compile>
@@ -570,6 +574,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ui\controls\CreateProjectDialog.xaml" />
     <Page Include="ui\controls\ErrorBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

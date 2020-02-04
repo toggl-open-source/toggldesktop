@@ -126,7 +126,10 @@
                 </StackPanel>
             </DataTemplate>
             <DataTemplate x:Key="create-project-button-item-template">
-                <Button Style="{DynamicResource Toggl.OutlinedButton}" Click="ButtonBase_OnClick" Content="Create project"/>
+                <Button Style="{DynamicResource Toggl.OutlinedButton}"
+                        Command="{Binding CreateProject}"
+                        CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Popup}, Path=PlacementTarget}"
+                        Content="Create project"/>
             </DataTemplate>
         </ResourceDictionary>
     </UserControl.Resources>
@@ -144,7 +147,6 @@
                                 Margin="4"
                                 Text="Hello. Yes, this is list."/>
             <ListBox x:Name="listBox" HorizontalAlignment="Stretch" MinHeight="30" Height="Auto" Margin="10,0,10,10"
-                     Padding="0 0 0 8"
                      Background="{DynamicResource Toggl.CardBackground}"
                      ItemContainerStyle="{StaticResource AutoCompleteItem}"
                      BorderThickness="0"
