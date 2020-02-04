@@ -29,6 +29,7 @@ typedef enum : NSUInteger
 } TabIndex;
 
 @interface PreferencesWindowController () <NSTextFieldDelegate, NSTableViewDataSource, NSComboBoxDataSource, NSComboBoxDelegate, NSWindowDelegate>
+@property (strong, nonatomic) Settings *settings;
 @property (weak) IBOutlet NSButton *stopOnShutdownCheckbox;
 @property (weak) IBOutlet NSTextField *hostTextField;
 @property (weak) IBOutlet NSTextField *portTextField;
@@ -413,6 +414,7 @@ const int kUseProxyToConnectToToggl = 2;
 	NSAssert([NSThread isMainThread], @"Rendering stuff should happen on main thread");
 
 	Settings *settings = cmd.settings;
+    self.settings = settings;
 
 	[self.useIdleDetectionButton setState:[Utils boolToState:settings.idle_detection]];
 	[self.usePomodoroButton setState:[Utils boolToState:settings.pomodoro]];
@@ -552,7 +554,13 @@ const int kUseProxyToConnectToToggl = 2;
 
 - (IBAction)autotrackChanged:(id)sender
 {
-	toggl_set_settings_autotrack(ctx, [Utils stateToBool:self.autotrack.state]);
+    BOOL isEnabled = [Utils stateToBool:self.autotrack.state];
+	toggl_set_settings_autotrack(ctx, isEnabled);
+
+    // Enabled Timeline Record if need
+    if (isEnabled && !self.settings.timeline_recording_enabled) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:kEnabledTimelineRecorder object:nil];
+    }
 }
 
 - (IBAction)openEditorOnShortcut:(id)sender
