@@ -73,6 +73,7 @@ class Analytics : public Poco::TaskManager {
     void TrackLoginWithGoogle(const std::string &client_id);
     void TrackSignupWithUsernamePassword(const std::string &client_id);
     void TrackSignupWithGoogle(const std::string &client_id);
+    void TrackActiveView(const std::string &client_id, const uint8_t tabIndex);
 
  private:
     Poco::LocalDateTime settings_sync_date;
@@ -89,6 +90,9 @@ class Analytics : public Poco::TaskManager {
     void TrackUserAuthentication(const std::string &client_id,
                                  const std::string &action,
                                  const std::string &from);
+
+    void TrackActiveTimeEntryListView(const std::string &client_id);
+    void TrackActiveTimelineView(const std::string &client_id);
 };
 
 class GoogleAnalyticsEvent : public Poco::Task {

@@ -327,6 +327,26 @@ void GoogleAnalyticsSettingsEvent::makeReq() {
     }
 }
 
+void Analytics::TrackActiveView(const std::string &client_id, const uint8_t tabIndex) {
+    if (tabIndex == 0) {
+        TrackActiveTimeEntryListView(client_id);
+    } else {
+        TrackActiveTimelineView(client_id);
+    }
+}
+
+void Analytics::TrackActiveTimeEntryListView(const std::string &client_id) {
+    std::stringstream ss;
+    ss << "list-view/start";
+    Track(client_id, "list-view", ss.str());
+}
+
+void Analytics::TrackActiveTimelineView(const std::string &client_id) {
+    std::stringstream ss;
+    ss << "timeline-view/start";
+    Track(client_id, "timeline-view", ss.str());
+}
+
 void Analytics::TrackStartTimeEntry(const std::string &client_id) {
     TrackTimeEntryActivity(client_id, "start");
 }
