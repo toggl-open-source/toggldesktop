@@ -231,7 +231,7 @@
     </Compile>
     <Compile Include="ui\Converters\AndConverter.cs" />
     <Compile Include="ui\Converters\EmptyStringToCollapsedConverter.cs" />
-    <Compile Include="ui\Converters\IsNotNegativeConverter.cs" />
+    <Compile Include="ui\Converters\IsSelectableTypeConverter.cs" />
     <Compile Include="ui\Converters\StringPrependConverter.cs" />
     <Compile Include="ui\Converters\StringToUpperConverter.cs" />
     <Compile Include="ui\Converters\BytesToStringConverter.cs" />

@@ -1,11 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using TogglDesktop.AutoCompletion;
 using TogglDesktop.Diagnostics;
+using ListBoxItem = Windows.UI.Xaml.Controls.ListBoxItem;
 
 namespace TogglDesktop
 {
@@ -36,8 +39,8 @@ namespace TogglDesktop
             this.DataContext = this;
             this.InitializeComponent();
 
-            this.popup.Opened += (s, e) => this.tryInvoke(this.IsOpenChanged);
-            this.popup.Closed += (s, e) => this.tryInvoke(this.IsOpenChanged);
+            this.popup.Opened += (s, e) => this.IsOpenChanged?.Invoke(this, EventArgs.Empty);
+            this.popup.Closed += (s, e) => this.IsOpenChanged?.Invoke(this, EventArgs.Empty);
 
             this.IsEnabledChanged += this.onIsEnabledChanged;
 
@@ -156,6 +159,9 @@ namespace TogglDesktop
                     {
                         if (element == null)
                             break;
+
+                        if (element is Button)
+                            return;
 
                         if (element == this)
                         {
@@ -334,8 +340,7 @@ namespace TogglDesktop
 
             if (item == null)
             {
-                if (this.ConfirmWithoutCompletion != null)
-                    this.ConfirmWithoutCompletion(this, this.textbox.Text);
+                ConfirmWithoutCompletion?.Invoke(this, this.textbox.Text);
                 return;
             }
 
@@ -346,8 +351,7 @@ namespace TogglDesktop
                 this.textbox.Focus();
             }
 
-            if (this.ConfirmCompletion != null)
-                this.ConfirmCompletion(this, item);
+            ConfirmCompletion?.Invoke(this, item);
         }
 
         private void close()
@@ -384,7 +388,7 @@ namespace TogglDesktop
 
             if (closeIfEmpty)
             {
-                this.popup.IsOpen = this.controller.visibleItems.Count > 0;   
+                this.popup.IsOpen = this.controller.visibleItems.Count > 0;
             }
             else
             {
@@ -407,15 +411,9 @@ namespace TogglDesktop
             using (Performance.Measure("building auto complete list {0}", this.controller.DebugIdentifier))
             {
                 this.controller.FillList(this.listBox);
-            }         
-            
-            this.needsToRefreshList = false;
-        }
+            }
 
-        private void tryInvoke(EventHandler e)
-        {
-            if (e != null)
-                e(this, EventArgs.Empty);
+            this.needsToRefreshList = false;
         }
 
         private void listBox_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -423,13 +421,16 @@ namespace TogglDesktop
             DependencyObject dep = (DependencyObject)e.OriginalSource;
             while ((dep != null) && !(dep is System.Windows.Controls.ListBoxItem))
             {
+                if (dep is Button) return;
+
                 dep = System.Windows.Media.VisualTreeHelper.GetParent(dep);
             }
 
             if (dep == null)
                 return;
-            e.Handled = true;
             int index = listBox.ItemContainerGenerator.IndexFromContainer(dep);
+
+            e.Handled = true;
             listBox.SelectedIndex = index;
 
             this.confirmCompletion(false);
@@ -448,6 +449,12 @@ namespace TogglDesktop
         internal bool popUpOpen()
         {
             return this.popup.IsOpen;
+        }
+
+        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        {
+            Debug.WriteLine("button onclick");
+            // throw new NotImplementedException();
         }
     }
 }
