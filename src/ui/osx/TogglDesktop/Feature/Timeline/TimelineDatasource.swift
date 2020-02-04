@@ -12,7 +12,7 @@ protocol TimelineDatasourceDelegate: class {
 
     func shouldPresentTimeEntryEditor(in view: NSView, timeEntry: TimeEntryViewItem, cell: TimelineTimeEntryCell)
     func shouldPresentTimeEntryHover(in view: NSView, timeEntry: TimelineTimeEntry)
-    func shouldPresentActivityHover(in view: NSView, activity: TimelineActivity)
+    func shouldPresentActivityHover(in view: TimelineBaseCell, activity: TimelineActivity)
     func startNewTimeEntry(at started: TimeInterval, ended: TimeInterval)
     func shouldUpdatePanelSize(with activityFrame: CGRect)
 }
@@ -295,7 +295,7 @@ extension TimelineDatasource: TimelineBaseCellDelegate {
             delegate?.shouldPresentTimeEntryHover(in: timeEntryCell.popoverView, timeEntry: timeEntry)
         case let activityCell as TimelineActivityCell:
             guard let activity = activityCell.activity else { return }
-            delegate?.shouldPresentActivityHover(in: sender.view, activity: activity)
+            delegate?.shouldPresentActivityHover(in: sender, activity: activity)
         default:
             break
         }
