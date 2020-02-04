@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="15702" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="15705" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15702"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15705"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -788,23 +788,23 @@
                             </tabViewItem>
                             <tabViewItem label="Autotracker" identifier="" id="L4T-cB-5tT">
                                 <view key="view" id="Z2O-u3-FHM">
-                                    <rect key="frame" x="0.0" y="0.0" width="412" height="562"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="408" height="535"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <box autoresizesSubviews="NO" boxType="custom" borderType="none" borderWidth="0.0" cornerRadius="4" title="Box" translatesAutoresizingMaskIntoConstraints="NO" id="0Xg-0J-xLS">
-                                            <rect key="frame" x="15" y="203" width="382" height="347"/>
+                                            <rect key="frame" x="15" y="176" width="378" height="347"/>
                                             <view key="contentView" id="Flx-qJ-rba">
-                                                <rect key="frame" x="0.0" y="0.0" width="382" height="347"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="378" height="347"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <scrollView focusRingType="none" borderType="line" autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PL2-PA-tEh">
-                                                        <rect key="frame" x="10" y="13" width="362" height="257"/>
+                                                        <rect key="frame" x="10" y="13" width="358" height="257"/>
                                                         <clipView key="contentView" id="anG-U7-QUu">
-                                                            <rect key="frame" x="1" y="1" width="360" height="255"/>
-                                                            <autoresizingMask key="autoresizingMask"/>
+                                                            <rect key="frame" x="1" y="1" width="356" height="255"/>
+                                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnReordering="NO" multipleSelection="NO" autosaveColumns="NO" headerView="SWk-HQ-4y3" id="aw6-zQ-ZW8">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="360" height="232"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="356" height="232"/>
                                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                     <size key="intercellSpacing" width="3" height="2"/>
                                                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -823,7 +823,7 @@
                                                                             </textFieldCell>
                                                                             <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                                         </tableColumn>
-                                                                        <tableColumn identifier="project" editable="NO" width="229" minWidth="40" maxWidth="1000" id="0du-aT-9bq">
+                                                                        <tableColumn identifier="project" editable="NO" width="225" minWidth="40" maxWidth="1000" id="0du-aT-9bq">
                                                                             <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Project">
                                                                                 <font key="font" metaFont="message" size="11"/>
                                                                                 <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -848,7 +848,7 @@
                                                             <constraint firstAttribute="height" constant="257" id="s0c-aU-1Qg"/>
                                                         </constraints>
                                                         <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="IeY-iL-Hc8">
-                                                            <rect key="frame" x="1" y="240" width="360" height="16"/>
+                                                            <rect key="frame" x="1" y="240" width="356" height="16"/>
                                                             <autoresizingMask key="autoresizingMask"/>
                                                         </scroller>
                                                         <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="iu5-rr-uYb">
@@ -856,7 +856,7 @@
                                                             <autoresizingMask key="autoresizingMask"/>
                                                         </scroller>
                                                         <tableHeaderView key="headerView" wantsLayer="YES" id="SWk-HQ-4y3">
-                                                            <rect key="frame" x="0.0" y="0.0" width="360" height="23"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="356" height="23"/>
                                                             <autoresizingMask key="autoresizingMask"/>
                                                         </tableHeaderView>
                                                         <connections>
@@ -890,7 +890,7 @@
                                                         </connections>
                                                     </comboBox>
                                                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="hCm-WD-AX4">
-                                                        <rect key="frame" x="256" y="273" width="122" height="32"/>
+                                                        <rect key="frame" x="256" y="273" width="118" height="32"/>
                                                         <buttonCell key="cell" type="push" title="Add" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="pQ9-Tf-Kue">
                                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                             <font key="font" metaFont="menu" size="14"/>
