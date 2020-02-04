@@ -138,5 +138,19 @@ static class UIExtensions
         textBox.IsUndoEnabled = false;
         textBox.IsUndoEnabled = true;
     }
+
+    public static T FindParent<T>(this DependencyObject element)
+        where T : class
+    {
+        if (element == null) return null;
+
+        var parent = VisualTreeHelper.GetParent(element);
+        while (parent != null && !(parent is T))
+        {
+            parent = VisualTreeHelper.GetParent(parent);
+        }
+
+        return parent as T;
+    }
 }
 }

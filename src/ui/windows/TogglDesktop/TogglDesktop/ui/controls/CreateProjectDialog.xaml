@@ -1,0 +1,24 @@
+<UserControl x:Class="TogglDesktop.CreateProjectDialog"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:TogglDesktop"
+             mc:Ignorable="d"
+             Focusable="True">
+    <Grid Background="Transparent">
+        <Border x:Name="PopupBorder"
+                Height="Auto"
+                HorizontalAlignment="Stretch"
+                Background="{DynamicResource Toggl.CardBackground}"
+                Margin="8 0 8 8">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="8" ShadowDepth="2" Opacity="0.2" Direction="270" Color="Black" />
+            </Border.Effect>
+
+            <Grid Height="268">
+                <Button Style="{DynamicResource Toggl.PrimaryButton}" Content="Create project" />
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>
