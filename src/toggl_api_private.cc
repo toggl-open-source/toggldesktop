@@ -12,7 +12,6 @@
 #include "timeline_event.h"
 #include "workspace.h"
 
-#include <Poco/Logger.h>
 #include <Poco/UnicodeConverter.h>
 
 TogglAutocompleteView *autocomplete_item_init(const toggl::view::Autocomplete &item) {
@@ -633,12 +632,12 @@ void timeline_event_view_clear(
     delete event_view;
 }
 
-Poco::Logger &logger() {
-    return Poco::Logger::get("toggl_api");
-}
-
 toggl::Context *app(void *context) {
     poco_check_ptr(context);
 
     return reinterpret_cast<toggl::Context *>(context);
+}
+
+toggl::Logger logger() {
+    return { "toggl_api" };
 }

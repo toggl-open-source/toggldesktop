@@ -88,10 +88,7 @@ error WebSocketClient::createSession() {
 
     error err = TogglClient::TogglStatus.Status();
     if (err != noError) {
-        std::stringstream ss;
-        ss << "Will not start Websocket sessions, ";
-        ss << "because of known bad Toggl status: " << err;
-        logger().error(ss.str());
+        logger().error("Will not start Websocket sessions, ", "because of known bad Toggl status: ", err);
         return err;
     }
 
@@ -219,9 +216,7 @@ error WebSocketClient::poll() {
         if (json.empty()) {
             return error("WebSocket closed the connection");
         }
-        std::stringstream ss;
-        ss << "WebSocket message: " << json;
-        logger().trace(ss.str());
+        logger().trace("WebSocket message: ", json);
 
         last_connection_at_ = time(nullptr);
 
@@ -317,15 +312,13 @@ void WebSocketClient::deleteSession() {
     logger().debug("session deleted");
 }
 
-Poco::Logger &WebSocketClient::logger() const {
-    return Poco::Logger::get("websocket_client");
+Logger WebSocketClient::logger() const {
+    return { "websocket_client" };
 }
 
 int WebSocketClient::nextWebsocketRestartInterval() {
     int res = static_cast<int>(Random::next(kWebsocketRestartRangeSeconds)) + 1;
-    std::stringstream ss;
-    ss << "Next websocket restart in " << res << " seconds";
-    logger().trace(ss.str());
+    logger().trace("Next websocket restart in ", res, " seconds");
     return res;
 }
 

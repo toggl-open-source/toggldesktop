@@ -12,7 +12,6 @@
 #include <Poco/Timestamp.h>
 #include <Poco/DateTime.h>
 #include <Poco/LocalDateTime.h>
-#include <Poco/Logger.h>
 
 namespace toggl {
 
@@ -197,8 +196,8 @@ error BaseModel::BatchUpdateJSON(Json::Value *result) const {
     return noError;
 }
 
-Poco::Logger &BaseModel::logger() const {
-    return Poco::Logger::get(ModelName());
+Logger BaseModel::logger() const {
+    return { ModelName() };
 }
 
 void BaseModel::SetDirty() {

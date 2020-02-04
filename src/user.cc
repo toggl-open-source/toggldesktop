@@ -25,7 +25,6 @@
 #include <Poco/Crypto/CipherKey.h>
 #include <Poco/Crypto/CryptoStream.h>
 #include <Poco/DigestStream.h>
-#include <Poco/Logger.h>
 #include <Poco/Random.h>
 #include <Poco/RandomStream.h>
 #include <Poco/SHA1Engine.h>
@@ -235,7 +234,7 @@ TimeEntry *User::Continue(
 
     TimeEntry *existing = related.TimeEntryByGUID(GUID);
     if (!existing) {
-        logger().warning("Time entry not found: " + GUID);
+        logger().warning("Time entry not found: ", GUID);
         return nullptr;
     }
 
@@ -431,9 +430,7 @@ TimeEntry *User::DiscardTimeAt(
         return nullptr;
     }
 
-    std::stringstream ss;
-    ss << "User is discarding time entry " << guid << " at " << at;
-    logger().debug(ss.str());
+    logger().debug("User is discarding time entry ", guid, " at ", at);
 
     TimeEntry *te = related.TimeEntryByGUID(guid);
     if (te) {
@@ -534,7 +531,7 @@ void User::loadUserTagFromJSON(
 
     Poco::UInt64 id = data["id"].asUInt64();
     if (!id) {
-        logger().error("Backend is sending invalid data: ignoring update without an ID");  // NOLINT
+        logger().error("Backend is sending invalid data: ignoring update without an ID");
         return;
     }
 
@@ -570,7 +567,7 @@ void User::loadUserTaskFromJSON(
 
     Poco::UInt64 id = data["id"].asUInt64();
     if (!id) {
-        logger().error("Backend is sending invalid data: ignoring update without an ID");  // NOLINT
+        logger().error("Backend is sending invalid data: ignoring update without an ID");
         return;
     }
 
@@ -624,11 +621,7 @@ void User::loadUserUpdateFromJSON(
 
     Poco::UTF8::toLowerInPlace(action);
 
-    std::stringstream ss;
-    ss << "Update parsed into action=" << action
-       << ", model=" + model;
-    Poco::Logger &logger = Poco::Logger::get("json");
-    logger.debug(ss.str());
+    Logger("json").debug("Update parsed into action=", action, ", model=", model);
 
     if (kModelWorkspace == model) {
         loadUserWorkspaceFromJSON(data);
@@ -655,7 +648,7 @@ void User::loadUserWorkspaceFromJSON(
 
     Poco::UInt64 id = data["id"].asUInt64();
     if (!id) {
-        logger().error("Backend is sending invalid data: ignoring update without an ID");  // NOLINT
+        logger().error("Backend is sending invalid data: ignoring update without an ID");
         return;
     }
     Workspace *model = related.WorkspaceByID(id);
@@ -685,8 +678,7 @@ error User::LoadUserAndRelatedDataFromJSONString(
     const bool &including_related_data) {
 
     if (json.empty()) {
-        Poco::Logger &logger = Poco::Logger::get("json");
-        logger.warning("cannot load empty JSON");
+        Logger("json").warning("cannot load empty JSON");
         return noError;
     }
 
@@ -697,14 +689,9 @@ error User::LoadUserAndRelatedDataFromJSONString(
     }
 
     SetSince(root["since"].asInt64());
-
-    Poco::Logger &logger = Poco::Logger::get("json");
-    std::stringstream s;
-    s << "User data as of: " << Since();
-    logger.debug(s.str());
+    Logger("json").debug("User data as of: ", Since());
 
     loadUserAndRelatedDataFromJSON(root["data"], including_related_data);
-
     return noError;
 }
 
@@ -797,7 +784,7 @@ void User::loadUserAndRelatedDataFromJSON(
     const bool &including_related_data) {
 
     if (!data["id"].asUInt64()) {
-        logger().error("Backend is sending invalid data: ignoring update without an ID");  // NOLINT
+        logger().error("Backend is sending invalid data: ignoring update without an ID");
         return;
     }
 
@@ -914,7 +901,7 @@ void User::loadUserClientFromSyncJSON(
     bool addNew = false;
     Poco::UInt64 id = data["id"].asUInt64();
     if (!id) {
-        logger().error("Backend is sending invalid data: ignoring update without an ID");  // NOLINT
+        logger().error("Backend is sending invalid data: ignoring update without an ID");
         return;
     }
     Client *model = related.ClientByID(id);
@@ -954,7 +941,7 @@ void User::loadUserClientFromJSON(
 
     Poco::UInt64 id = data["id"].asUInt64();
     if (!id) {
-        logger().error("Backend is sending invalid data: ignoring update without an ID");  // NOLINT
+        logger().error("Backend is sending invalid data: ignoring update without an ID");
         return;
     }
     Client *model = related.ClientByID(id);
@@ -987,7 +974,7 @@ void User::loadUserProjectFromSyncJSON(
     bool addNew = false;
     Poco::UInt64 id = data["id"].asUInt64();
     if (!id) {
-        logger().error("Backend is sending invalid data: ignoring update without an ID");  // NOLINT
+        logger().error("Backend is sending invalid data: ignoring update without an ID");
         return;
     }
 
@@ -1033,7 +1020,7 @@ void User::loadUserProjectFromJSON(
 
     Poco::UInt64 id = data["id"].asUInt64();
     if (!id) {
-        logger().error("Backend is sending invalid data: ignoring update without an ID");  // NOLINT
+        logger().error("Backend is sending invalid data: ignoring update without an ID");
         return;
     }
 
@@ -1096,7 +1083,7 @@ void User::loadUserTimeEntryFromJSON(
 
     Poco::UInt64 id = data["id"].asUInt64();
     if (!id) {
-        logger().error("Backend is sending invalid data: ignoring update without an ID");  // NOLINT
+        logger().error("Backend is sending invalid data: ignoring update without an ID");
         return;
     }
 
@@ -1339,9 +1326,7 @@ void User::MarkTimelineBatchAsUploaded(
         TimelineEvent event = *i;
         TimelineEvent *uploaded = related.TimelineEventByGUID(event.GUID());
         if (!uploaded) {
-            logger().error(
-                "Could not find timeline event to mark it as uploaded: "
-                + event.String());
+            logger().error("Could not find timeline event to mark it as uploaded: ", event.String());
             continue;
         }
         uploaded->SetUploaded(true);
@@ -1364,15 +1349,10 @@ void User::CompressTimeline() {
 
     time_t start = time(nullptr);
 
-    {
-        std::stringstream ss;
-        ss << "CompressTimeline "
-           << " user_id=" << ID()
-           << " chunk_up_to=" << chunk_up_to
-           << " number of events=" << related.TimelineEvents.size();
-
-        logger().debug(ss.str());
-    }
+    logger().debug("CompressTimeline ",
+                   " user_id=", ID(),
+                   " chunk_up_to=", chunk_up_to,
+                   " number of events=", related.TimelineEvents.size());
 
     for (std::vector<TimelineEvent *>::iterator i =
         related.TimelineEvents.begin();
@@ -1445,16 +1425,8 @@ void User::CompressTimeline() {
         compressed[key] = chunk;
     }
 
-    {
-        std::stringstream ss;
-        ss << "CompressTimeline done in " << (time(nullptr) - start)
-           << " seconds, "
-           << related.TimelineEvents.size()
-           << " compressed into "
-           << compressed.size()
-           << " chunks";
-        logger().debug(ss.str());
-    }
+    logger().debug("CompressTimeline done in ", (time(nullptr) - start), " seconds, ",
+                   related.TimelineEvents.size(), " compressed into ", compressed.size(), " chunks");
 }
 
 std::vector<TimelineEvent> User::CompressedTimelineForUI(const Poco::LocalDateTime *date) const {
