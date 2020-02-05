@@ -554,13 +554,7 @@ const int kUseProxyToConnectToToggl = 2;
 
 - (IBAction)autotrackChanged:(id)sender
 {
-    BOOL isEnabled = [Utils stateToBool:self.autotrack.state];
-	toggl_set_settings_autotrack(ctx, isEnabled);
-
-    // Enabled Timeline Record if need
-    if (isEnabled && !self.settings.timeline_recording_enabled) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:kEnabledTimelineRecorder object:nil];
-    }
+    [[DesktopLibraryBridge shared] enableAutoTracker:[Utils stateToBool:self.autotrack.state]];
 }
 
 - (IBAction)openEditorOnShortcut:(id)sender

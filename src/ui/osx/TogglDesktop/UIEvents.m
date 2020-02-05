@@ -58,7 +58,6 @@ NSString *const kStartDisplayInAppMessage = @"kStartDisplayInAppMessage";
 NSString *const kDeselectAllTimeEntryList = @"kDeselectAllTimeEntryList";
 NSString *const kDidAdddManualTimeNotification = @"kDidAdddManualTimeNotification";
 NSString *const kStarTimeEntryWithStartTime = @"kStarTimeEntryWithStartTime";
-NSString *const kEnabledTimelineRecorder = @"kEnabledTimelineRecorder";
 
 const char *kFocusedFieldNameDuration = "duration";
 const char *kFocusedFieldNameDescription = "description";
