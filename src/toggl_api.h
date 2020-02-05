@@ -112,8 +112,6 @@ extern "C" {
         char_t *EndTimeString;
         void *Next;
         void *FirstEvent;
-        // Reference to Time entries in this Chunk
-        void *Entry;
     } TogglTimelineChunkView;
 
     typedef struct {

@@ -587,11 +587,6 @@ void timeline_chunk_view_clear(
         timeline_event_view_list_clear(firstEvent);
         chunk_view->FirstEvent = nullptr;
     }
-    if (chunk_view->Entry) {
-        TogglTimeEntryView *entry = reinterpret_cast<TogglTimeEntryView *>(chunk_view->Entry);
-        time_entry_view_list_clear(entry);
-        chunk_view->Entry = nullptr;
-    }
     delete chunk_view;
 }
 

@@ -556,28 +556,6 @@ void GUI::DisplayTimeline(
             }
         }
 
-        // Attach Time entries to chunk
-        // Sort time entries and add only the entries of selected date
-
-        TogglTimeEntryView *first = nullptr;
-        for (unsigned int i = 0; i < entries_list.size(); i++) {
-            view::TimeEntry te = entries_list.at(i);
-            TogglTimeEntryView *item = time_entry_view_item_init(te);
-            time_t start_time = Poco::Timestamp::fromEpochTime(item->Started).epochTime();
-            time_t end_time = Poco::Timestamp::fromEpochTime(item->Ended).epochTime();
-            if ((start_time >= epoch_time
-                    && start_time < epoch_time_end)
-                    || (end_time > epoch_time
-                        && end_time <= epoch_time_end)
-                    || (start_time <= epoch_time
-                        && end_time >= epoch_time_end)) {
-
-                item->Next = first;
-                first = item;
-            }
-        }
-
-        chunk_view->Entry = first;
         chunk_view->Ended = epoch_time_end;
         chunk_view->EndTimeString = copy_string(toggl::Formatter::FormatTimeForTimeEntryEditor(chunk_view->Ended));
 
