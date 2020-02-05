@@ -126,7 +126,8 @@ int get_idle_time(uint64_t *tHandle) {
   /* Release our resources */
   IOObjectRelease(curObj);
   IOObjectRelease(iter);
-  CFRelease((CFTypeRef)properties);
-  
+  if (properties != NULL) {
+    CFRelease((CFTypeRef)properties);
+  }
   return 0;
 }
