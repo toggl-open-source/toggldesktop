@@ -108,6 +108,9 @@ int get_idle_time(uint64_t *tHandle) {
                        kCFNumberSInt64Type,
                        tHandle);
     } else {
+        CFRelease((CFTypeRef)type);
+        CFRelease(obj);
+        CFRelease((CFTypeRef)properties);
       printf("%d: unsupported type\n", (int)type);
       return 1;
     }
