@@ -74,6 +74,7 @@ typedef enum : NSUInteger
 @property (weak) IBOutlet NSTabView *tabView;
 @property (weak) IBOutlet NSButton *showTouchBarButton;
 @property (weak) IBOutlet NSLayoutConstraint *bottomContainerHeight;
+@property (weak) IBOutlet NSButton *permissionBtn;
 
 @property (nonatomic, assign) NSInteger selectedProxyIndex;
 @property (nonatomic, strong) NSArray<AutotrackerRuleItem *> *rules;
@@ -502,6 +503,9 @@ const int kUseProxyToConnectToToggl = 2;
 		self.showTouchBarButton.hidden = YES;
 		self.bottomContainerHeight.constant = 38;
 	}
+
+    // Permission for Auto Tracker
+    self.permissionBtn.hidden = settings.autotrack ? [ObjcSystemPermissionManager isScreenRecordingPermissionGranted] : YES;
 }
 
 - (void)selectProxyRadioWithTag:(NSInteger)tag
@@ -740,4 +744,10 @@ const int kUseProxyToConnectToToggl = 2;
 {
 	[self.tabView selectTabViewItemAtIndex:self.tabSegment.selectedSegment];
 }
+
+- (IBAction)permissionBtnOnClick:(id)sender
+{
+    [ObjcSystemPermissionManager tryGrantScreenRecordingPermission];
+}
+
 @end

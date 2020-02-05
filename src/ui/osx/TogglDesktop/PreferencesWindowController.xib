@@ -26,6 +26,7 @@
                 <outlet property="ontopCheckbox" destination="n4h-zi-TcC" id="ZIf-sx-04h"/>
                 <outlet property="openEditorOnShortcut" destination="DRh-rC-B0a" id="U3h-ir-axL"/>
                 <outlet property="passwordTextField" destination="bcT-3P-lAf" id="hcg-zO-nf5"/>
+                <outlet property="permissionBtn" destination="jQt-9d-DmI" id="BwO-Hy-RXr"/>
                 <outlet property="pomodoroBreakMinutesTextField" destination="rmD-4u-Dda" id="a9h-nS-WAI"/>
                 <outlet property="pomodoroMinutesTextField" destination="bCE-Cp-Ipc" id="AdG-PZ-xvz"/>
                 <outlet property="portTextField" destination="0tH-DP-xDu" id="Opz-2O-YYS"/>
@@ -874,6 +875,22 @@
                                                             <outlet property="nextKeyView" destination="afg-Ty-RcE" id="WfY-ea-Dmr"/>
                                                         </connections>
                                                     </button>
+                                                    <button hidden="YES" verticalHuggingPriority="750" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jQt-9d-DmI">
+                                                        <rect key="frame" x="158" y="310" width="136" height="14"/>
+                                                        <string key="toolTip">Screen Recording permission not granted!
+
+To get the focused application window name properly for the Timeline, TogglDesktop needs to be granted the Screen Recording permission in Security &amp; Privacy in System Preferences .</string>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="14" id="Hyi-7L-dBb"/>
+                                                        </constraints>
+                                                        <buttonCell key="cell" type="bevel" title="Permission required!" bezelStyle="regularSquare" image="NSCaution" imagePosition="left" alignment="left" controlSize="small" imageScaling="proportionallyDown" inset="2" id="WOz-pn-Jhj">
+                                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                            <font key="font" metaFont="system" size="10"/>
+                                                        </buttonCell>
+                                                        <connections>
+                                                            <action selector="permissionBtnOnClick:" target="-2" id="0Xl-dQ-S9a"/>
+                                                        </connections>
+                                                    </button>
                                                     <comboBox verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="TN9-Mx-4gf" customClass="NSCustomComboBox">
                                                         <rect key="frame" x="136" y="276" width="124" height="26"/>
                                                         <constraints>
@@ -918,9 +935,11 @@
                                                     </comboBox>
                                                 </subviews>
                                                 <constraints>
+                                                    <constraint firstItem="jQt-9d-DmI" firstAttribute="leading" secondItem="jHx-ps-PhJ" secondAttribute="trailing" constant="8" id="35t-Rg-Pab"/>
                                                     <constraint firstItem="jHx-ps-PhJ" firstAttribute="top" secondItem="Flx-qJ-rba" secondAttribute="top" constant="23" id="6pW-SS-Swu"/>
                                                     <constraint firstItem="PL2-PA-tEh" firstAttribute="top" secondItem="TN9-Mx-4gf" secondAttribute="bottom" constant="10" id="7JI-gE-7aC"/>
                                                     <constraint firstAttribute="trailing" secondItem="hCm-WD-AX4" secondAttribute="trailing" constant="10" id="B9b-Fi-fkd"/>
+                                                    <constraint firstItem="jQt-9d-DmI" firstAttribute="centerY" secondItem="jHx-ps-PhJ" secondAttribute="centerY" id="Fbi-7e-xE1"/>
                                                     <constraint firstItem="jHx-ps-PhJ" firstAttribute="leading" secondItem="Flx-qJ-rba" secondAttribute="leading" constant="10" id="HIK-mI-Cui"/>
                                                     <constraint firstItem="afg-Ty-RcE" firstAttribute="top" secondItem="jHx-ps-PhJ" secondAttribute="bottom" constant="10" id="KdW-8f-hVr"/>
                                                     <constraint firstItem="TN9-Mx-4gf" firstAttribute="centerY" secondItem="afg-Ty-RcE" secondAttribute="centerY" id="N7g-hv-6ai"/>
@@ -1244,6 +1263,7 @@ CA
         </menu>
     </objects>
     <resources>
+        <image name="NSCaution" width="32" height="32"/>
         <namedColor name="preference-background-color">
             <color red="0.98000001907348633" green="0.98400002717971802" blue="0.98799997568130493" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
