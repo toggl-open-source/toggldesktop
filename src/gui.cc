@@ -594,8 +594,9 @@ void GUI::DisplayTimeline(
     std::string formatted_date = Formatter::FormatDateHeader(TimelineDateAt());
     char_t *date = copy_string(formatted_date.c_str());
     on_display_timeline_(open, date, first_chunk, first_entry, start_day, end_day);
-    delete first_entry;
     free(date);
+    time_entry_view_list_clear(first_entry);
+    timeline_chunk_view_clear(first_chunk);
 }
 
 TogglTimelineEventView* GUI::SortList(TogglTimelineEventView *head) {

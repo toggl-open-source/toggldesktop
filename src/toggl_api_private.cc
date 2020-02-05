@@ -586,6 +586,13 @@ void timeline_chunk_view_clear(
         timeline_chunk_view_clear(next);
         chunk_view->Next = nullptr;
     }
+    if (chunk_view->Entry) {
+        TogglTimeEntryView *entry =
+            reinterpret_cast<TogglTimeEntryView *>(chunk_view->Entry);
+        time_entry_view_item_clear(entry);
+        chunk_view->Entry = nullptr;
+
+    }
     delete chunk_view;
 }
 
@@ -628,6 +635,12 @@ void timeline_event_view_clear(
             reinterpret_cast<TogglTimelineEventView *>(event_view->Next);
         timeline_event_view_clear(next);
         event_view->Next = nullptr;
+    }
+    if (event_view->Event) {
+        TogglTimelineEventView *event =
+            reinterpret_cast<TogglTimelineEventView *>(event_view->Event);
+        timeline_event_view_clear(event);
+        event_view->Event = nullptr;
     }
     delete event_view;
 }
