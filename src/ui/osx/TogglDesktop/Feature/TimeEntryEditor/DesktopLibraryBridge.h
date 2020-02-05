@@ -103,6 +103,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)setActiveTabAtIndex:(NSInteger) index;
 - (NSInteger)getActiveTabIndex;
 
+#pragma mark - Auto Tracker
+
+- (void)enableAutoTracker:(BOOL)isEnabled;
+
 @end
 
 NS_ASSUME_NONNULL_END

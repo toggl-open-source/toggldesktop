@@ -228,6 +228,15 @@ void *ctx;
     }
 }
 
+- (void)enableAutoTracker:(BOOL)isEnabled
+{
+    toggl_set_settings_autotrack(ctx, isEnabled);
+    if (isEnabled)
+    {
+        [ObjcSystemPermissionManager tryGrantScreenRecordingPermission];
+    }
+}
+
 - (void)timelineSetPreviousDate
 {
 	toggl_view_timeline_prev_day(ctx);
