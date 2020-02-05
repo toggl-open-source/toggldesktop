@@ -2807,7 +2807,7 @@ TimeEntry *Context::Start(
     if ("production" == environment_) {
         analytics_.TrackAutocompleteUsage(db_->AnalyticsClientID(),
                                           task_id || project_id);
-        analytics_.TrackStartTimeEntry(db_->AnalyticsClientID(), GetActiveTab());
+        analytics_.TrackStartTimeEntry(db_->AnalyticsClientID(), shortOSName(), GetActiveTab());
     }
 
     OpenTimeEntryList();
@@ -2878,7 +2878,7 @@ void Context::OpenTimeEntryEditor(
     }
 
     if ("production" == environment_) {
-        analytics_.TrackEditTimeEntry(db_->AnalyticsClientID(), GetActiveTab());
+        analytics_.TrackEditTimeEntry(db_->AnalyticsClientID(), shortOSName(), GetActiveTab());
     }
 
     updateUI(render);
@@ -3051,7 +3051,7 @@ error Context::DeleteTimeEntryByGUID(const std::string &GUID) {
     te->Delete();
 
     if ("production" == environment_) {
-        analytics_.TrackDeleteTimeEntry(db_->AnalyticsClientID(), GetActiveTab());
+        analytics_.TrackDeleteTimeEntry(db_->AnalyticsClientID(), shortOSName(), GetActiveTab());
     }
 
     return displayError(save(true));

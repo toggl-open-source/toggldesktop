@@ -326,16 +326,16 @@ void GoogleAnalyticsSettingsEvent::makeReq() {
     }
 }
 
-void Analytics::TrackStartTimeEntry(const std::string &client_id, const uint8_t tab_index) {
-    TrackTimeEntryActivity(client_id, "start", tab_index);
+void Analytics::TrackStartTimeEntry(const std::string &client_id, const std::string& os, const uint8_t tab_index) {
+    TrackTimeEntryActivity(client_id, os, "start", tab_index);
 }
 
-void Analytics::TrackEditTimeEntry(const std::string &client_id, const uint8_t tab_index) {
-    TrackTimeEntryActivity(client_id, "edit", tab_index);
+void Analytics::TrackEditTimeEntry(const std::string &client_id, const std::string& os, const uint8_t tab_index) {
+    TrackTimeEntryActivity(client_id, os, "edit", tab_index);
 }
 
-void Analytics::TrackDeleteTimeEntry(const std::string &client_id, const uint8_t tab_index) {
-    TrackTimeEntryActivity(client_id, "delete", tab_index);
+void Analytics::TrackDeleteTimeEntry(const std::string &client_id, const std::string& os, const uint8_t tab_index) {
+    TrackTimeEntryActivity(client_id, os, "delete", tab_index);
 }
 
 void Analytics::TrackLoginWithUsernamePassword(const std::string &client_id) {
@@ -354,10 +354,13 @@ void Analytics::TrackSignupWithGoogle(const std::string &client_id) {
     TrackUserAuthentication(client_id, "signup", "google");
 }
 
-void Analytics::TrackTimeEntryActivity(const std::string &client_id, const std::string &action, const uint8_t tab_index) {
+void Analytics::TrackTimeEntryActivity(const std::string &client_id,
+                                       const std::string& os,
+                                       const std::string &action,
+                                       const uint8_t tab_index) {
     std::string active_view = tab_index == 0 ? "list-view" : "timeline-view";
     std::stringstream ss;
-    ss << active_view << "/" << action;
+    ss << os << "/" << active_view << "/" << action;
     Track(client_id, active_view, ss.str());
 }
 

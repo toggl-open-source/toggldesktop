@@ -67,10 +67,13 @@ class Analytics : public Poco::TaskManager {
                        const toggl::Rectangle rect);
 
     void TrackStartTimeEntry(const std::string &client_id,
+                             const std::string& os,
                              const uint8_t tab_index);
     void TrackEditTimeEntry(const std::string &client_id,
+                            const std::string& os,
                             const uint8_t tab_index);
     void TrackDeleteTimeEntry(const std::string &client_id,
+                              const std::string& os,
                               const uint8_t tab_index);
 
     void TrackLoginWithUsernamePassword(const std::string &client_id);
@@ -87,6 +90,7 @@ class Analytics : public Poco::TaskManager {
                    const toggl::Rectangle rect);
 
     void TrackTimeEntryActivity(const std::string &client_id,
+                                const std::string& os,
                                 const std::string &action,
                                 const uint8_t tab_index);
 
