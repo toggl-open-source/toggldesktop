@@ -596,7 +596,7 @@ void GUI::DisplayTimeline(
     on_display_timeline_(open, date, first_chunk, first_entry, start_day, end_day);
     free(date);
     time_entry_view_list_clear(first_entry);
-    timeline_chunk_view_clear(first_chunk);
+    timeline_chunk_view_list_clear(first_chunk);
 }
 
 TogglTimelineEventView* GUI::SortList(TogglTimelineEventView *head) {
