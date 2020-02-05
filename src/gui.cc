@@ -529,8 +529,7 @@ void GUI::DisplayTimeline(
                     }
 
                     if (!item_present) {
-                        TogglTimelineEventView *event_view =
-                            timeline_event_view_init(event);
+                        TogglTimelineEventView *event_view = timeline_event_view_init(event);
                         event_view->Next = event_app->Event;
                         event_app->Event = event_view;
                     }
@@ -539,17 +538,17 @@ void GUI::DisplayTimeline(
             }
 
             if (!app_present) {
-                TogglTimelineEventView *app_event_view =
-                    timeline_event_view_init(event);
+                TogglTimelineEventView *app_event_view = timeline_event_view_init(event);
                 if (event.Duration() > 0) {
                     app_event_view->Header = true;
+                    if (app_event_view->Title) {
+                        free(app_event_view->Title);
+                        app_event_view->Title = nullptr;
+                    }
                     app_event_view->Title = copy_string("");
 
-                    TogglTimelineEventView *event_view =
-                        timeline_event_view_init(event);
-                    //                app_event_view->event = first_event->event;
+                    TogglTimelineEventView *event_view = timeline_event_view_init(event);
                     app_event_view->Event = event_view;
-
                     app_event_view->Next = first_event;
                     first_event = app_event_view;
                 }
