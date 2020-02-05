@@ -604,6 +604,10 @@ TogglTimelineEventView *timeline_event_view_init(
 
 void timeline_event_view_update_duration(TogglTimelineEventView *event_view, const int64_t duration) {
     event_view->Duration = duration;
+    if (event_view->DurationString) {
+        free(event_view->DurationString);
+        event_view->DurationString = nullptr;
+    }
     event_view->DurationString = copy_string(toggl::Formatter::FormatDuration(duration, toggl::Format::ImprovedOnlyMinAndSec));
 }
 
