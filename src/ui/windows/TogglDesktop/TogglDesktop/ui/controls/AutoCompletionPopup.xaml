@@ -127,9 +127,20 @@
             </DataTemplate>
             <DataTemplate x:Key="create-project-button-item-template">
                 <Button Style="{DynamicResource Toggl.OutlinedButton}"
+                        BorderThickness="0 1 0 0"
+                        BorderBrush="{DynamicResource Toggl.Button.Primary.Background}"
+                        Height="40"
                         Command="{Binding CreateProject}"
-                        CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Popup}, Path=PlacementTarget}"
-                        Content="Create project"/>
+                        CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Popup}, Path=PlacementTarget}">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Path Height="25"
+                              Width="25"
+                              Margin="0 -2 0 0"
+                              Fill="{DynamicResource Toggl.DisabledTextBrush}"
+                              Data="M12.894 6.5V12h5.5v1h-5.5v5.5h-1V13h-5.5v-1h5.5V6.5h1z" />
+                        <TextBlock Style="{DynamicResource Toggl.BodyText}" Text="Create a new project" />
+                    </StackPanel>
+                </Button>
             </DataTemplate>
         </ResourceDictionary>
     </UserControl.Resources>
