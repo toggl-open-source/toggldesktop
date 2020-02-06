@@ -176,7 +176,6 @@
     <Compile Include="AutoCompletion\AutoCompleteController.cs" />
     <Compile Include="AutoCompletion\AutoCompleteItem.cs" />
     <Compile Include="AutoCompletion\AutoCompleteListItem.cs" />
-    <Compile Include="AutoCompletion\CreateProjectButtonItemViewModel.cs" />
     <Compile Include="AutoCompletion\IAutoCompleteListItem.cs" />
     <Compile Include="AutoCompletion\Implementation\AutoCompleteControllers.cs" />
     <Compile Include="AutoCompletion\Implementation\ModelItem.cs" />
@@ -196,9 +195,6 @@
     <Compile Include="ui\Behaviors\HideWindowOnClosingBehavior.cs" />
     <Compile Include="ui\Behaviors\NumericInputTextBoxBehavior.cs" />
     <Compile Include="ui\Behaviors\TextBoxHelper.cs" />
-    <Compile Include="ui\controls\CreateProjectDialog.xaml.cs">
-      <DependentUpon>CreateProjectDialog.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ui\controls\InAppNotification.xaml.cs">
       <DependentUpon>InAppNotification.xaml</DependentUpon>
     </Compile>
@@ -235,7 +231,7 @@
     </Compile>
     <Compile Include="ui\Converters\AndConverter.cs" />
     <Compile Include="ui\Converters\EmptyStringToCollapsedConverter.cs" />
-    <Compile Include="ui\Converters\IsSelectableTypeConverter.cs" />
+    <Compile Include="ui\Converters\IsSelectableItemConverter.cs" />
     <Compile Include="ui\Converters\StringPrependConverter.cs" />
     <Compile Include="ui\Converters\StringToUpperConverter.cs" />
     <Compile Include="ui\Converters\BytesToStringConverter.cs" />
@@ -574,7 +570,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ui\controls\CreateProjectDialog.xaml" />
     <Page Include="ui\controls\ErrorBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
