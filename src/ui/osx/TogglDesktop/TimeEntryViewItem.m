@@ -178,6 +178,30 @@
     return self;
 }
 
+- (void)dealloc
+{
+    self.Description = nil;
+    self.descriptionName = nil;
+    self.ProjectAndTaskLabel = nil;
+    self.TaskLabel = nil;
+    self.ProjectLabel = nil;
+    self.ClientLabel = nil;
+    self.duration = nil;
+    self.ProjectColor = nil;
+    self.ProjectGUID = nil;
+    self.GUID = nil;
+    self.started = nil;
+    self.ended = nil;
+    self.startTimeString = nil;
+    self.endTimeString = nil;
+    self.tags = nil;
+    self.updatedAt = nil;
+    self.formattedDate = nil;
+    self.dateDuration = nil;
+    self.WorkspaceName = nil;
+    self.Error = nil;
+}
+
 - (void)setLoadMore
 {
 	self.loadMore = YES;
