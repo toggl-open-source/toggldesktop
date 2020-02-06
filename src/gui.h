@@ -443,7 +443,7 @@ class TOGGL_INTERNAL_EXPORT GUI : public SyncStateMonitor {
     void DisplayTimeline(
         const bool open,
         const std::vector<TimelineEvent> list,
-        const std::vector<view::TimeEntry> entries_list);
+        const std::vector<view::TimeEntry> &entries_list);
 
     TogglTimelineEventView* SortList(TogglTimelineEventView *head);
 

@@ -452,7 +452,7 @@ void GUI::DisplayTimeEntryList(const bool open,
 void GUI::DisplayTimeline(
     const bool open,
     const std::vector<TimelineEvent> list,
-    const std::vector<view::TimeEntry> entries_list) {
+    const std::vector<view::TimeEntry> &entries_list) {
 
     if (!on_display_timeline_) {
         return;
@@ -556,6 +556,12 @@ void GUI::DisplayTimeline(
         }
 
         chunk_view->Ended = epoch_time_end;
+
+        // Update endtime
+        if (chunk_view->EndTimeString) {
+            free(chunk_view->EndTimeString);
+            chunk_view->EndTimeString = nullptr;
+        }
         chunk_view->EndTimeString = copy_string(toggl::Formatter::FormatTimeForTimeEntryEditor(chunk_view->Ended));
 
         // Sort the list by duration descending
