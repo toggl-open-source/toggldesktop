@@ -94,8 +94,7 @@ Context::Context(const std::string &app_name, const std::string &app_version)
     }
 
 #ifndef TOGGL_PRODUCTION_BUILD
-    urls::SetUseStagingAsBackend(
-        app_version.find("7.0.0") != std::string::npos);
+    urls::SetUseStagingAsBackend(true);
 #endif
 
     Poco::ErrorHandler::set(&error_handler_);
