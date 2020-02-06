@@ -52,7 +52,7 @@ namespace TogglDesktop.AutoCompletion
             get {
                 if (LB != null && LB.SelectedIndex != -1) {
                     var listitem = visibleItems[LB.SelectedIndex];
-                    if (listitem.Type < 0)
+                    if (!listitem.IsModelItem())
                     {
                         return null;
                     }
@@ -87,7 +87,7 @@ namespace TogglDesktop.AutoCompletion
                 {
                     if (lastWID != -1) // workspace separator
                     {
-                        items.Add(new WorkspaceSeparatorItemViewModel());
+                        items.Add(WorkspaceSeparatorItemViewModel.Instance);
                         multipleWorkspaces = true;
                     }
 
@@ -110,7 +110,7 @@ namespace TogglDesktop.AutoCompletion
                     if (autocompleteType == 3 && (int)it.Item.Type == 2
                         && !noProjectAdded)
                     {
-                        items.Add(new NoProjectItemViewModel());
+                        items.Add(NoProjectItemViewModel.Instance);
                         noProjectAdded = true;
                     }
                     lastType = (int)it.Item.Type;
@@ -130,11 +130,6 @@ namespace TogglDesktop.AutoCompletion
             {
                 // remove workspace item if there is only one workspace
                 items.RemoveAt(items.FindIndex(x => x.Type == ItemType.WORKSPACE));
-            }
-
-            if (autocompleteType == 3)
-            {
-                items.Add(new CreateProjectButtonItemViewModel());
             }
 
             return items;
@@ -215,6 +210,7 @@ namespace TogglDesktop.AutoCompletion
                     filteredItems.Add(item);
                     lastProjectLabel = item.ProjectLabel;
                 }
+
                 visibleItems = filteredItems;
             }
             LB.ItemsSource = visibleItems;
@@ -227,7 +223,7 @@ namespace TogglDesktop.AutoCompletion
             if (string.IsNullOrEmpty(filterText))
                 return true;
 
-            if (listItemViewModel.Type < 0)
+            if (listItemViewModel.IsModelItem() == false)
                 return false;
 
             var itemText = (listItemViewModel.Type == ItemType.TASK)
@@ -242,7 +238,7 @@ namespace TogglDesktop.AutoCompletion
             if (this.visibleItems.Count == 0 || index >= this.visibleItems.Count)
                 return;
 
-            if (this.visibleItems[index].Type < 0)
+            if (this.visibleItems[index].IsSelectable() == false)
             {
                 this.selectFirstItem(++index);
                 return;
@@ -276,7 +272,7 @@ namespace TogglDesktop.AutoCompletion
                 LB.ScrollIntoView(LB.Items[0]);
             }
 
-            if (i >= 0 && this.visibleItems[i].Type < 0)
+            if (i >= 0 && this.visibleItems[i].IsSelectable() == false)
             {
                 this.selectedIndex = i;
                 this.SelectNext();
@@ -296,7 +292,7 @@ namespace TogglDesktop.AutoCompletion
                 i = this.visibleItems.Count - 1;   
             }
             
-            if (this.visibleItems[i].Type < 0)
+            if (this.visibleItems[i].IsSelectable() == false)
             {
                 this.selectedIndex = i;
                 this.SelectPrevious();
@@ -312,9 +308,7 @@ namespace TogglDesktop.AutoCompletion
         TASK = 1,
         PROJECT = 2,
         STRINGITEM = 4,
-        CREATE_PROJECT_BUTTON = -5,
 
-        // negative values mean non-selectable items
         CATEGORY = -1,
         CLIENT = -2,
         WORKSPACE = -3,
@@ -333,7 +327,6 @@ namespace TogglDesktop.AutoCompletion
             {ItemType.CLIENT, "client-item-template"},
             {ItemType.WORKSPACE, "workspace-item-template"},
             {ItemType.WORKSPACE_SEPARATOR, "workspace-separator-item-template"},
-            {ItemType.CREATE_PROJECT_BUTTON, "create-project-button-item-template"}
         };
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
