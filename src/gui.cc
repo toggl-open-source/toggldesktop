@@ -477,6 +477,9 @@ void GUI::DisplayTimeline(
         if (start_time_entry >= start_day && start_time_entry <= end_day) {
             item->Next = first_entry;
             first_entry = item;
+        } else {
+            // Release
+            time_entry_view_item_clear(item);
         }
     }
 
