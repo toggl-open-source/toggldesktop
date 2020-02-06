@@ -10,15 +10,16 @@
     
     <Grid>
     
-        <Button Style="{StaticResource ProjectColorSelectionButton}"
+        <Button Style="{DynamicResource Toggl.OutlinedButton}"
                 Name="button" x:FieldModifier="private"
+                Padding="0"
                 Click="onButtonClick">
-
-            <Border
-                Name="colorCircle" x:FieldModifier="private"
-                Style="{StaticResource ProjectColorCircle}"
-                />
-
+            <Ellipse Name="colorCircle" x:FieldModifier="private"
+                     Height="20"
+                     Width="20"
+                     Fill="#999999"
+                     VerticalAlignment="Center"
+                     HorizontalAlignment="Center"/>
         </Button>
 
         <Popup Name="popup" x:FieldModifier="private"
