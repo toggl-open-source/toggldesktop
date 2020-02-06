@@ -5,12 +5,12 @@ using TogglDesktop.AutoCompletion;
 
 namespace TogglDesktop.Converters
 {
-    public class IsSelectableTypeConverter : IValueConverter
+    public class IsSelectableItemConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var isNonSelectable = value is ItemType itemType && itemType < 0;
-            return !isNonSelectable;
+            var isEnabled = value is ListBoxItemViewModel item && item.IsSelectable();
+            return isEnabled;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

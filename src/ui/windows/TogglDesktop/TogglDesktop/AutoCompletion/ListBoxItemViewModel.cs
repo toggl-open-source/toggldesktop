@@ -23,7 +23,8 @@
 
     class WorkspaceSeparatorItemViewModel : ListBoxItemViewModel
     {
-        public WorkspaceSeparatorItemViewModel()
+        public static WorkspaceSeparatorItemViewModel Instance => new WorkspaceSeparatorItemViewModel();
+        private WorkspaceSeparatorItemViewModel()
         {
             Type = ItemType.WORKSPACE_SEPARATOR;
         }
@@ -92,7 +93,8 @@
 
     class NoProjectItemViewModel : TimeEntryItemViewModel
     {
-        public NoProjectItemViewModel()
+        public static NoProjectItemViewModel Instance => new NoProjectItemViewModel();
+        private NoProjectItemViewModel()
         {
             Text = "No project";
             ProjectLabel = "No project";
@@ -108,5 +110,11 @@
             Text = string.IsNullOrEmpty(clientLabel) ? "No client" : clientLabel;
             Type = ItemType.CLIENT;
         }
+    }
+
+    static class ListBoxItemViewModelExtensions
+    {
+        public static bool IsSelectable(this ListBoxItemViewModel item) => item.IsModelItem();
+        public static bool IsModelItem(this ListBoxItemViewModel item) => (int) item.Type > 0;
     }
 }

@@ -19,17 +19,9 @@
             <converters:ColorsToBrushConverter x:Key="ColorsToBrushMultiConverter" />
             <converters:EmptyStringToHiddenConverter x:Key="EmptyStringToHiddenConverter" />
             <togglautocompletion:AutocompleteTemplateSelector x:Key="autocompleteTemplateSelector"/>
-            <converters:IsSelectableTypeConverter x:Key="IsNotNegativeConverter" />
+            <converters:IsSelectableItemConverter x:Key="IsSelectableItemConverter" />
             <Style x:Key="AutoCompleteItem" BasedOn="{StaticResource {x:Type ListBoxItem}}" TargetType="ListBoxItem">
-                <Setter Property="IsEnabled" Value="{Binding Type, Converter={StaticResource IsNotNegativeConverter}}" />
-                <Style.Triggers>
-                    <DataTrigger Binding="{Binding Type}" Value="{x:Static togglautocompletion:ItemType.CREATE_PROJECT_BUTTON}">
-                        <DataTrigger.Setters>
-                            <Setter Property="IsEnabled" Value="True" />
-                            <Setter Property="Focusable" Value="False" />
-                        </DataTrigger.Setters>
-                    </DataTrigger>
-                </Style.Triggers>
+                <Setter Property="IsEnabled" Value="{Binding Path=., Converter={StaticResource IsSelectableItemConverter}}" />
             </Style>
             <DataTemplate x:Key="project-item-template">
                 <StackPanel Height="32" Orientation="Horizontal">
