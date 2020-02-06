@@ -1529,8 +1529,7 @@ void on_time_entry_list(const bool_t open,
 
 	while (it)
 	{
-		TimeEntryViewItem *model = [[TimeEntryViewItem alloc] init];
-		[model load:it];
+        TimeEntryViewItem *model = [[TimeEntryViewItem alloc] initWithView:it];
 		[viewitems addObject:model];
 		if ([model.formattedDate isEqual:@"Today"])
 		{
@@ -1666,9 +1665,7 @@ void on_time_entry_editor(const bool_t open,
 						  TogglTimeEntryView *te,
 						  const char *focused_field_name)
 {
-	TimeEntryViewItem *item = [[TimeEntryViewItem alloc] init];
-
-	[item load:te];
+    TimeEntryViewItem *item = [[TimeEntryViewItem alloc] initWithView:te];
 	DisplayCommand *cmd = [[DisplayCommand alloc] init];
 	cmd.open = open;
 	cmd.timeEntry = item;
@@ -1735,8 +1732,7 @@ void on_timer_state(TogglTimeEntryView *te)
 
 	if (te)
 	{
-		view_item = [[TimeEntryViewItem alloc] init];
-		[view_item load:te];
+        view_item = [[TimeEntryViewItem alloc] initWithView:te];
 	}
 	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayTimerState
 																object:view_item];
