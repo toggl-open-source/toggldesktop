@@ -43,156 +43,182 @@
                                                ConfirmWithoutCompletion="descriptionAutoComplete_OnConfirmWithoutCompletion"/>
                 </Grid>
 
-                <!-- project, client, workspace -->
-                <Grid Grid.IsSharedSizeScope="True">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-                
-                    <!-- project -->
-                    <Grid Grid.Row="0" Height="32" Margin="0 8 0 0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto" SharedSizeGroup="AddButtons"
-                                              x:Name="projectAddButtonColumn" x:FieldModifier="private"/>
-                        </Grid.ColumnDefinitions>
+                <!-- project -->
+                <Grid Height="32" Margin="0 8 0 0">
+                    <toggl:ProjectTextBox x:Name="projectTextBox" x:FieldModifier="private"
+                                          Style="{StaticResource {x:Type TextBox}}"
+                                          LostKeyboardFocus="projectTextBox_OnLostKeyboardFocus"
+                                          Margin="0"
+                                          Padding="27, 0, 34, 0"
+                                          PreviewKeyDown="projectTextBox_OnPreviewKeyDown"/>
 
-                        <toggl:ProjectTextBox x:Name="projectTextBox" x:FieldModifier="private" Grid.Column="0"
-                                              Style="{StaticResource {x:Type TextBox}}"
-                                                LostKeyboardFocus="projectTextBox_OnLostKeyboardFocus"
-                                                Margin="0"
-                                                Padding="27, 0, 34, 0"
-                                                PreviewKeyDown="projectTextBox_OnPreviewKeyDown"/>
+                    <TextBlock x:Name="emptyProjectText" x:FieldModifier="private"
+                               Margin="38, 0, 16, 0">No project
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock" BasedOn="{StaticResource TextboxEmptyText}">
+                                <Style.Triggers>
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding ElementName=projectTextBox, Path=(Text)}" Value=""/>
+                                            <Condition Binding="{Binding ElementName=projectTextBox, Path=(IsKeyboardFocused)}" Value="False"/>
+                                        </MultiDataTrigger.Conditions>
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </MultiDataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
 
-                        <Button Name="newProjectButton" x:FieldModifier="private" Grid.Column="1"
-                            Style="{StaticResource EditViewNewButton}"
-                            Click="newProjectButton_OnClick">Add new project</Button>
+                    <Border
+                        Style="{StaticResource ProjectColorCircle}"
+                        Name="defaultProjectColorCircle" x:FieldModifier="private"
+                        VerticalAlignment="Top"
+                        HorizontalAlignment="Left"
+                        Margin="13 14 0 1"
+                        Width="7"
+                        Height="7"/>
 
-                        <TextBlock x:Name="emptyProjectText" x:FieldModifier="private" Grid.Column="0"
-                                   Margin="38, 0, 16, 0">No project
-                            <TextBlock.Style>
-                                <Style TargetType="TextBlock" BasedOn="{StaticResource TextboxEmptyText}">
-                                    <Style.Triggers>
-                                        <MultiDataTrigger>
-                                            <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding ElementName=projectTextBox, Path=(Text)}" Value=""/>
-                                                <Condition Binding="{Binding ElementName=projectTextBox, Path=(IsKeyboardFocused)}" Value="False"/>
-                                            </MultiDataTrigger.Conditions>
-                                            <Setter Property="Visibility" Value="Visible"/>
-                                        </MultiDataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
+                    <ToggleButton x:Name="projectDropDownButton" x:FieldModifier="private"
+                                        Style="{StaticResource EditViewAutoCompleteTextFieldButton}"/>
 
-                        <toggl:ProjectColorPicker
-                            x:Name="projectColorSelector" x:FieldModifier="private" Grid.Column="0"
-                            Width="28"
-                            Margin="1 1 0 1"/>
+                    <toggl:AutoCompletionPopup Grid.Row="0" x:Name="projectAutoComplete" x:FieldModifier="private"
+                                               Target="{Binding ElementName=projectTextBox}" TextBox="{Binding ElementName=projectTextBox}"
+                                               EmptyText="No matching projects found." DropDownButton="{Binding ElementName=projectDropDownButton}"
+                                               ConfirmCompletion="projectAutoComplete_OnConfirmCompletion"
+                                               ConfirmWithoutCompletion="projectAutoComplete_OnConfirmWithoutCompletion"
+                                               ActionButtonText="Create a new project"
+                                               ActionButtonClick="ProjectAutoComplete_OnActionButtonClick"/>
 
-                        <ToggleButton x:Name="projectDropDownButton" x:FieldModifier="private" Grid.Column="0"
-                                            Style="{StaticResource EditViewAutoCompleteTextFieldButton}"/>
+                    <Popup x:Name="createProjectPopup" x:FieldModifier="private"
+                           Grid.Row="0"
+                           AllowsTransparency="True"
+                           StaysOpen="True"
+                           IsOpen="False"
+                           HorizontalOffset="-8"
+                           Placement="Bottom"
+                           PlacementTarget="{Binding ElementName=projectTextBox}"
+                           Opened="CreateProjectPopup_OnOpened"
+                           Closed="CreateProjectPopup_OnClosed"
+                           GotKeyboardFocus="CreateProjectPopup_OnGotKeyboardFocus">
+                        <Grid Background="Transparent">
+                            <Border Height="Auto"
+                                    HorizontalAlignment="Stretch"
+                                    Background="{DynamicResource Toggl.CardBackground}"
+                                    Margin="8 0 8 8"
+                                    MinWidth="{Binding ElementName=projectTextBox, Path=ActualWidth}">
+                                <Border.Effect>
+                                    <DropShadowEffect BlurRadius="8" ShadowDepth="2" Opacity="0.2" Direction="270" Color="Black" />
+                                </Border.Effect>
 
-                        <Button x:Name ="newProjectCancelButton" x:FieldModifier="private" Grid.Column="1"
-                                Style="{StaticResource EditViewTextFieldImageButtonBase}"
-                                Content="/TogglDesktop;component/Resources/ic_cancel_grey600_24dp.png"
-                                Visibility="Hidden"
-                                Click="newProjectCancelButton_OnClick"/>
+                                <!-- project, client, workspace -->
+                                <Grid Margin="16 24 16 16">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
 
-                        <toggl:AutoCompletionPopup Grid.Column="0" Grid.Row="0" x:Name="projectAutoComplete" x:FieldModifier="private"
-                                Target="{Binding ElementName=projectTextBox}" TextBox="{Binding ElementName=projectTextBox}"
-                                EmptyText="No matching projects found." DropDownButton="{Binding ElementName=projectDropDownButton}"
-                                ConfirmCompletion="projectAutoComplete_OnConfirmCompletion"
-                                ConfirmWithoutCompletion="projectAutoComplete_OnConfirmWithoutCompletion"/>
+                                    <Grid Grid.Row="0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBox x:Name="newProjectTextBox" x:FieldModifier="private"
+                                                 mah:TextBoxHelper.Watermark="Project name"
+                                                 PreviewKeyDown="projectTextBox_OnPreviewKeyDown"/>
+                                        <toggl:ProjectColorPicker
+                                            x:Name="projectColorSelector" x:FieldModifier="private"
+                                            Grid.Column="1"
+                                            Width="32"
+                                            Height="32"
+                                            Margin="8 0 0 0"/>
+                                    </Grid>
 
-                    </Grid>
-            
-                    <!-- client -->
-                    <Grid  Grid.Row="1"  Height="32" Margin="0 8 0 0" Visibility="Visible"
-                           Name="clientArea" x:FieldModifier="private">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto" SharedSizeGroup="AddButtons"/>
-                        </Grid.ColumnDefinitions>
+                                    <!-- workspace -->
+                                    <Grid Grid.Row="1" Height="32" Margin="0 8 0 0">
 
-                        <toggl:ExtendedTextBox x:Name="clientTextBox" x:FieldModifier="private" Grid.Column="0"
-                                               Style="{StaticResource {x:Type TextBox}}"
-                                               LostKeyboardFocus="clientTextBox_OnLostKeyboardFocus"
-                                               Padding="8, 0, 34, 0"
-                                               PreviewKeyDown="clientTextBox_OnPreviewKeyDown"/>
+                                        <toggl:ExtendedTextBox x:Name="workspaceTextBox" x:FieldModifier="private"
+                                                               Style="{StaticResource {x:Type TextBox}}"
+                                                               LostKeyboardFocus="workspaceTextBox_OnLostKeyboardFocus"
+                                                               Padding="8, 0, 34, 0"/>
 
-                        <Button Name="newClientButton" x:FieldModifier="private" Grid.Column="1"
-                                Style="{StaticResource EditViewNewButton}"
-                                Click="newClientButton_OnClick">Add new client</Button>
+                                        <ToggleButton x:Name="workspaceDropDownButton" x:FieldModifier="private"
+                                                      Style="{StaticResource EditViewAutoCompleteTextFieldButton}"/>
 
-                        <TextBlock x:Name="emptyClientText" x:FieldModifier="private" Grid.Column="0">No client
-                            <TextBlock.Style>
-                                <Style TargetType="TextBlock" BasedOn="{StaticResource TextboxEmptyText}">
-                                    <Style.Triggers>
-                                        <MultiDataTrigger>
-                                            <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding ElementName=clientTextBox, Path=(Text)}" Value=""/>
-                                                <Condition Binding="{Binding ElementName=clientTextBox, Path=(IsKeyboardFocused)}" Value="False"/>
-                                            </MultiDataTrigger.Conditions>
-                                            <Setter Property="Visibility" Value="Visible"/>
-                                        </MultiDataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
+                                        <toggl:AutoCompletionPopup x:Name="workspaceAutoComplete" x:FieldModifier="private"
+                                                                   Target="{Binding ElementName=workspaceTextBox}" TextBox="{Binding ElementName=workspaceTextBox}"
+                                                                   EmptyText="No matching workspaces found." DropDownButton="{Binding ElementName=workspaceDropDownButton}"
+                                                                   ConfirmCompletion="workspaceAutoComplete_OnConfirmCompletion"
+                                                                   ConfirmWithoutCompletion="workspaceAutoComplete_OnConfirmWithoutCompletion"/>
+                                    </Grid>
 
-                        <ToggleButton x:Name="clientDropDownButton" x:FieldModifier="private" Grid.Column="0"
-                                      Style="{StaticResource EditViewAutoCompleteTextFieldButton}"/>
+                                    <!-- client -->
+                                    <Grid  Grid.Row="2"  Height="32" Margin="0 8 0 0" Visibility="Visible"
+                                           Name="clientArea" x:FieldModifier="private">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
 
-                        <Button x:Name ="newClientCancelButton" x:FieldModifier="private" Grid.Column="1"
-                                Style="{StaticResource EditViewTextFieldImageButtonBase}"
-                                Content="/TogglDesktop;component/Resources/ic_cancel_grey600_24dp.png"
-                                Visibility="Hidden"
-                                Click="newClientCancelButton_OnClick"/>
+                                        <toggl:ExtendedTextBox x:Name="clientTextBox" x:FieldModifier="private" Grid.Column="0"
+                                                               Style="{StaticResource {x:Type TextBox}}"
+                                                               LostKeyboardFocus="clientTextBox_OnLostKeyboardFocus"
+                                                               Padding="8, 0, 34, 0"
+                                                               PreviewKeyDown="clientTextBox_OnPreviewKeyDown"/>
+
+                                        <Button Name="newClientButton" x:FieldModifier="private" Grid.Column="1"
+                                                Style="{StaticResource EditViewNewButton}"
+                                                Click="newClientButton_OnClick">Add new client</Button>
+
+                                        <TextBlock x:Name="emptyClientText" x:FieldModifier="private" Grid.Column="0">No client
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock" BasedOn="{StaticResource TextboxEmptyText}">
+                                                    <Style.Triggers>
+                                                        <MultiDataTrigger>
+                                                            <MultiDataTrigger.Conditions>
+                                                                <Condition Binding="{Binding ElementName=clientTextBox, Path=(Text)}" Value=""/>
+                                                                <Condition Binding="{Binding ElementName=clientTextBox, Path=(IsKeyboardFocused)}" Value="False"/>
+                                                            </MultiDataTrigger.Conditions>
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                        </MultiDataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+
+                                        <ToggleButton x:Name="clientDropDownButton" x:FieldModifier="private" Grid.Column="0"
+                                                      Style="{StaticResource EditViewAutoCompleteTextFieldButton}"/>
+
+                                        <Button x:Name ="newClientCancelButton" x:FieldModifier="private" Grid.Column="1"
+                                                Style="{StaticResource EditViewTextFieldImageButtonBase}"
+                                                Content="/TogglDesktop;component/Resources/ic_cancel_grey600_24dp.png"
+                                                Visibility="Hidden"
+                                                Click="newClientCancelButton_OnClick"/>
 
 
-                        <toggl:AutoCompletionPopup Grid.Column="0" Grid.Row="0" x:Name="clientAutoComplete" x:FieldModifier="private"
-                                Target="{Binding ElementName=clientTextBox}" TextBox="{Binding ElementName=clientTextBox}"
-                                EmptyText="No matching clients found." DropDownButton="{Binding ElementName=clientDropDownButton}"
-                                ConfirmCompletion="clientAutoComplete_OnConfirmCompletion"
-                                ConfirmWithoutCompletion="clientAutoComplete_OnConfirmWithoutCompletion"/>
+                                        <toggl:AutoCompletionPopup Grid.Column="0" Grid.Row="0" x:Name="clientAutoComplete" x:FieldModifier="private"
+                                                Target="{Binding ElementName=clientTextBox}" TextBox="{Binding ElementName=clientTextBox}"
+                                                EmptyText="No matching clients found." DropDownButton="{Binding ElementName=clientDropDownButton}"
+                                                ConfirmCompletion="clientAutoComplete_OnConfirmCompletion"
+                                                ConfirmWithoutCompletion="clientAutoComplete_OnConfirmWithoutCompletion"/>
 
-                    </Grid>
-                
-                    <!-- workspace -->
-                    <Grid Grid.Row="2" Height="32" Margin="0 8 0 0" Visibility="Visible"
-                           Name="workspaceArea" x:FieldModifier="private">
+                                    </Grid>
 
-                        <toggl:ExtendedTextBox x:Name="workspaceTextBox" x:FieldModifier="private"
-                                               Style="{StaticResource {x:Type TextBox}}"
-                                               LostKeyboardFocus="workspaceTextBox_OnLostKeyboardFocus"
-                                               Padding="8, 0, 34, 0"/>
-                    
-                        <ToggleButton x:Name="workspaceDropDownButton" x:FieldModifier="private"
-                                      Style="{StaticResource EditViewAutoCompleteTextFieldButton}"/>
+                                    <CheckBox Grid.Row="3" Margin="0 14 0 0" Name="isProjectPrivateCheckBox">Private project</CheckBox>
 
-                        <toggl:AutoCompletionPopup x:Name="workspaceAutoComplete" x:FieldModifier="private"
-                                Target="{Binding ElementName=workspaceTextBox}" TextBox="{Binding ElementName=workspaceTextBox}"
-                                EmptyText="No matching workspaces found." DropDownButton="{Binding ElementName=workspaceDropDownButton}"
-                                ConfirmCompletion="workspaceAutoComplete_OnConfirmCompletion"
-                                ConfirmWithoutCompletion="workspaceAutoComplete_OnConfirmWithoutCompletion"/>
-                    </Grid>
+                                    <StackPanel Grid.Row="4" Margin="0 50 0 0" Height="32" Visibility="Visible"
+                                                Orientation="Horizontal" HorizontalAlignment="Right">
+                                        <Button Style="{StaticResource Toggl.PrimaryButton}" Width="125" Click="projectSaveButton_Click">Create project</Button>
+                                        <Button Style="{StaticResource Toggl.OutlinedButton}" Margin="8 0 0 0" Width="79" Click="projectCancelButton_Click">Cancel</Button>
+                                    </StackPanel>
 
-                    <CheckBox Grid.Row="3" Margin="0 14 0 0" Name="isProjectPrivateCheckBox">Private project</CheckBox>
-
-                    <StackPanel Grid.Row="4" Margin="0 50 0 0" Height="32" Visibility="Visible"
-                                Name="projectSaveArea" x:FieldModifier="private"
-                                Orientation="Horizontal" HorizontalAlignment="Right">
-                        <Button Style="{StaticResource Toggl.PrimaryButton}" Width="125" Click="projectSaveButton_Click">Create project</Button>
-                        <Button Style="{StaticResource Toggl.OutlinedButton}" Margin="8 0 0 0" Width="79" Click="projectCancelButton_Click">Cancel</Button>
-                    </StackPanel>
-
+                                </Grid>
+                            </Border>
+                        </Grid>
+                    </Popup>
                 </Grid>
-
 
                 <!-- tags -->
                 <Grid MinHeight="32" Margin="0 8 0 0">
@@ -255,7 +281,7 @@
                     </DatePicker>
                 </Grid>
 
-                <TextBlock Margin="0 14 0 0" LineHeight="20">
+                <TextBlock Margin="0 14 0 0" LineHeight="20" FontSize="{DynamicResource NormalFontSize}">
                     <Hyperlink Foreground="{DynamicResource Toggl.ValidationErrorBackground}"
                                Click="deleteButton_OnClick"
                                TextDecorations="{x:Null}">Delete</Hyperlink>

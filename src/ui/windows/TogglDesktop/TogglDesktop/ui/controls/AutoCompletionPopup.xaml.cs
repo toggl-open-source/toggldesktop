@@ -19,8 +19,8 @@ namespace TogglDesktop
 
         public event EventHandler<AutoCompleteItem> ConfirmCompletion;
         public event EventHandler<string> ConfirmWithoutCompletion;
-
         public event EventHandler IsOpenChanged;
+        public event RoutedEventHandler ActionButtonClick;
 
         #endregion
 
@@ -96,6 +96,15 @@ namespace TogglDesktop
             set { this.SetValue(TargetProperty, value); }
         }
 
+        public static readonly DependencyProperty ActionButtonTextProperty = DependencyProperty.Register(
+            "ActionButtonText", typeof(string), typeof(AutoCompletionPopup), new PropertyMetadata(default(string)));
+
+        public string ActionButtonText
+        {
+            get { return (string) GetValue(ActionButtonTextProperty); }
+            set { SetValue(ActionButtonTextProperty, value); }
+        }
+
         #endregion
 
         #region TextBox
@@ -158,12 +167,46 @@ namespace TogglDesktop
                     var isKeyboardFocusWithin = popup.IsKeyboardFocusWithin;
                     if (isKeyboardFocusWithin)
                     {
-                        this.textbox.Focus();
+                        if (listBox.IsKeyboardFocusWithin)
+                        {
+                            this.textbox.Focus();
+                        }
                         return;
                     }
                 }
 
                 this.close();
+            };
+            this.popup.LostKeyboardFocus += (sender, args) =>
+            {
+                if (!this.textbox.IsKeyboardFocusWithin && !this.popup.IsKeyboardFocusWithin)
+                {
+                    this.close();
+                }
+            };
+            this.popup.PreviewKeyDown += (sender, args) =>
+            {
+                if (args.Key == Key.Tab)
+                {
+                    if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
+                    {
+                        this.textbox.Focus();
+                        args.Handled = true;
+                    }
+                    else
+                    {
+                        if (this.textbox.PredictFocus(FocusNavigationDirection.Down) is UIElement nextElement)
+                        {
+                            Keyboard.Focus(nextElement);
+                            args.Handled = true;
+                        }
+                    }
+                }
+                else if (args.Key == Key.Down || args.Key == Key.Up || args.Key == Key.Escape)
+                {
+                    this.textbox.Focus();
+                    args.Handled = true;
+                }
             };
         }
 
@@ -260,19 +303,28 @@ namespace TogglDesktop
                         return;
                     }
                 case Key.Enter:
-                case Key.Tab:
                     {
                         if (this.IsOpen)
                         {
                             if (this.confirmCompletion(true))
                             {
                                 e.Handled = true;
+                                this.close();
                             }
-
-                            this.close();
                         }
                         return;
                     }
+                case Key.Tab:
+                {
+                    if (this.IsOpen)
+                    {
+                        if (createProjectButton.IsVisible && createProjectButton.Focus())
+                        {
+                            e.Handled = true;
+                        }
+                    }
+                    return;
+                }
             }
         }
 
@@ -390,7 +442,7 @@ namespace TogglDesktop
         {
             var target = this.Target;
             this.popup.PlacementTarget = target;
-            this.popup.MinWidth = target == null ? 0 : target.ActualWidth + 20;
+            // this.popup.MinWidth = target == null ? 0 : target.ActualWidth + 16;
         }
 
         private void ensureList()
@@ -439,6 +491,11 @@ namespace TogglDesktop
         internal bool popUpOpen()
         {
             return this.popup.IsOpen;
+        }
+
+        private void CreateProjectButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            ActionButtonClick?.Invoke(sender, e);
         }
     }
 }
