@@ -98,8 +98,11 @@
                            Placement="Bottom"
                            PlacementTarget="{Binding ElementName=projectTextBox}"
                            Opened="CreateProjectPopup_OnOpened"
-                           Closed="CreateProjectPopup_OnClosed"
-                           GotKeyboardFocus="CreateProjectPopup_OnGotKeyboardFocus">
+                           Closed="CreateProjectPopup_OnClosed">
+                        <i:Interaction.Behaviors>
+                            <behaviors:RepositionPopupWithParentWindowBehavior />
+                            <behaviors:ActivateParentWindowOnMouseClick />
+                        </i:Interaction.Behaviors>
                         <Grid Background="Transparent">
                             <Border Height="Auto"
                                     HorizontalAlignment="Stretch"

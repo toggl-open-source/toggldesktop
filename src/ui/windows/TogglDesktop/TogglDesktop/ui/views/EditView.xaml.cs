@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Windows;
@@ -1012,11 +1011,6 @@ namespace TogglDesktop
         {
             projectAutoComplete.IsOpen = false;
             enableNewProjectMode();
-        }
-
-        private void CreateProjectPopup_OnGotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
-        {
-            Debug.WriteLine("Popup GotFocus");
         }
     }
 }
