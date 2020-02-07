@@ -454,6 +454,12 @@ extension TimelineDatasource {
 
     func collectionView(_ collectionView: NSCollectionView, validateDrop draggingInfo: NSDraggingInfo, proposedIndexPath proposedDropIndexPath: AutoreleasingUnsafeMutablePointer<NSIndexPath>, dropOperation proposedDropOperation: UnsafeMutablePointer<NSCollectionView.DropOperation>) -> NSDragOperation {
         print("validate drop at \(proposedDropIndexPath.pointee), operation = \(proposedDropOperation.pointee)")
+        let dropIndexPath = proposedDropIndexPath.pointee
+
+        // Only allow drop in the Time Entry section
+        guard dropIndexPath.section == TimelineData.Section.timeEntry.rawValue else {
+            return []
+        }
 
         // Don't allow to drop on top of others
         if proposedDropOperation.pointee == .on {
