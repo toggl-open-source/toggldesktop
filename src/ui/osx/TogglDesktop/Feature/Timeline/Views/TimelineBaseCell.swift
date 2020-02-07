@@ -179,8 +179,7 @@ extension TimelineBaseCell {
         }
 
         // Convert mouse location to local
-        let position = event.locationInWindow
-        let localPosition = foregroundBox.convert(position, from: nil)
+        let localPosition = convertToLocalPoint(for: event)
 
         // Determine where the mouse is
         if suitableHoverRect().contains(localPosition) {
@@ -232,9 +231,10 @@ extension TimelineBaseCell {
     }
 
     private func handleMouseUpForResize(_ event: NSEvent) {
+        let localPosition = convertToLocalPoint(for: event)
 
         // Click action
-        if userAction == .none {
+        if userAction == .none && view.bounds.contains(localPosition) {
             delegate?.timelineCellOpenEditor(self)
         } else {
             // Dragging
@@ -251,7 +251,6 @@ extension TimelineBaseCell {
         // Reset
         userAction = .none
         mousePosition = .none
-        updateCursor()
     }
 
     private var isSmallEntry: Bool {
@@ -282,5 +281,12 @@ extension TimelineBaseCell {
             return NSRect(x: 0, y: 0, width: foregroundBox.frame.width, height: Constants.SideHideSmall)
         }
         return NSRect(x: 0, y: 0, width: foregroundBox.frame.width, height: Constants.SideHit)
+    }
+
+    private func convertToLocalPoint(for event: NSEvent) -> CGPoint {
+        // Convert mouse location to local
+        let position = event.locationInWindow
+        let localPosition = foregroundBox.convert(position, from: nil)
+        return localPosition
     }
 }
