@@ -126,10 +126,17 @@ namespace TogglDesktop.AutoCompletion
                 items.Add(new TimeEntryItemViewModel(it.Item, count));
             }
 
+            if (modelsList.Count == 0 && autocompleteType == 3)
+            {
+                items.Add(new CustomTextItemViewModel("There are no projects yet", "Go ahead and create your first project now"));
+            }
+
             if (!multipleWorkspaces)
             {
                 // remove workspace item if there is only one workspace
-                items.RemoveAt(items.FindIndex(x => x.Type == ItemType.WORKSPACE));
+                var workspaceItemIndex = items.FindIndex(x => x.Type == ItemType.WORKSPACE);
+                if (workspaceItemIndex >= 0)
+                    items.RemoveAt(workspaceItemIndex);
             }
 
             return items;
@@ -144,8 +151,12 @@ namespace TogglDesktop.AutoCompletion
                 {
                     // For tags and autotracker terms
                     1 => list.Select((item1, ind) => (ListBoxItemViewModel)new StringItemViewModel(((StringItem) item1).Item, ind)).ToList(),
-                    // workspace/client dropdown
-                    2 => list.Select((item1, ind) => (ListBoxItemViewModel)new StringItemViewModel(((ModelItem) item1).Item.Name, ind)).ToList(),
+                    // client dropdown
+                    2 => list.Select((item1, ind) => (ListBoxItemViewModel)new StringItemViewModel(((ModelItem) item1).Item.Name, ind))
+                        .AppendIfEmpty(() => new CustomTextItemViewModel("There are no clients yet", "Add client name and press enter to add it as a client"))
+                        .ToList(),
+                    // workspace dropdown
+                    4 => list.Select((item1, ind) => (ListBoxItemViewModel)new StringItemViewModel(((ModelItem) item1).Item.Name, ind)).ToList(),
                     // description and project dropdowns
                     _ => CreateItemViewModelsList(list, autocompleteType)
                 };
@@ -209,6 +220,18 @@ namespace TogglDesktop.AutoCompletion
 
                     filteredItems.Add(item);
                     lastProjectLabel = item.ProjectLabel;
+                }
+
+                if (filteredItems.Count == 0)
+                {
+                    if (autocompleteType == 2)
+                    {
+                        filteredItems.Add(new CustomTextItemViewModel("No matching clients found", "Press enter to add it as a client"));
+                    }
+                    else if (autocompleteType == 3)
+                    {
+                        filteredItems.Add(new CustomTextItemViewModel("No matching projects", "Try a different keyword or create a new project"));
+                    }
                 }
 
                 visibleItems = filteredItems;
@@ -313,6 +336,7 @@ namespace TogglDesktop.AutoCompletion
         CLIENT = -2,
         WORKSPACE = -3,
         WORKSPACE_SEPARATOR = -4,
+        CUSTOM_TEXT = -5
     }
 
     public class AutocompleteTemplateSelector : DataTemplateSelector
@@ -327,6 +351,7 @@ namespace TogglDesktop.AutoCompletion
             {ItemType.CLIENT, "client-item-template"},
             {ItemType.WORKSPACE, "workspace-item-template"},
             {ItemType.WORKSPACE_SEPARATOR, "workspace-separator-item-template"},
+            {ItemType.CUSTOM_TEXT, "custom-text-item-template"},
         };
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {

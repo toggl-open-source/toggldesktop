@@ -27,8 +27,21 @@
     <Style TargetType="TextBlock" x:Key="Toggl.BaseWhiteText" BasedOn="{StaticResource Toggl.BaseText}">
         <Setter Property="Foreground" Value="White" />
     </Style>
+    <Style TargetType="TextBlock" x:Key="Toggl.BaseGrayText">
+        <!-- doesn't change foreground when disabled -->
+        <Setter Property="FontFamily" Value="{StaticResource BaseFont}" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="FontSize" Value="{StaticResource NormalFontSize}" />
+        <Setter Property="Foreground" Value="{DynamicResource Toggl.SecondaryTextBrush}" />
+    </Style>
     <Style TargetType="TextBlock" x:Key="Toggl.BodyText" BasedOn="{StaticResource Toggl.Text}">
         <Setter Property="FontSize" Value="14" />
+    </Style>
+    <Style TargetType="TextBlock" x:Key="Toggl.BodyGrayText">
+        <!-- doesn't change foreground when disabled -->
+        <Setter Property="FontFamily" Value="{StaticResource BaseFont}" />
+        <Setter Property="FontSize" Value="{StaticResource NormalFontSize}" />
+        <Setter Property="Foreground" Value="{DynamicResource Toggl.SecondaryTextBrush}" />
     </Style>
     <Style TargetType="TextBlock" x:Key="Toggl.BodyText.Hoverable" BasedOn="{StaticResource Toggl.BodyText}">
         <Setter Property="Foreground" Value="{DynamicResource Toggl.SecondaryTextBrush}" />
