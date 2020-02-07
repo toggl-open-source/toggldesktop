@@ -27,6 +27,7 @@
             <converters:FalseToHiddenVisibilityConverter x:Key="FalseToHiddenVisibilityConverter" />
             <converters:EmptyStringToCollapsedConverter x:Key="EmptyStringToCollapsedConverter" />
             <converters:EmptyStringToCollapsedConverter x:Key="EmptyStringToVisibleConverter" Inverse="True" />
+            <converters:StringFormatIfNotEmptyConverter x:Key="StringFormatIfNotEmptyConverter" />
 
         </ResourceDictionary>
     </Application.Resources>

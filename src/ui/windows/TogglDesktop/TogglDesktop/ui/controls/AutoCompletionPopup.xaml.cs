@@ -367,10 +367,6 @@ namespace TogglDesktop
         private bool confirmCompletion(bool withKeyboard)
         {
             var item = this.controller.SelectedItem;
-            if (item == null)
-            {
-                return false;
-            }
             this.select(item, withKeyboard);
             return true;
         }
@@ -379,6 +375,13 @@ namespace TogglDesktop
         {
             if (withKeyboard || !this.KeepOpenWhenSelectingWithMouse)
                 this.popup.IsOpen = false;
+
+            // quick check if there is a full match with the first shown item
+            if (item == null && controller.visibleItems[0].Text == this.textbox.Text)
+            {
+                controller.SelectNext();
+                item = controller.SelectedItem;
+            }
 
             if (item == null)
             {
@@ -427,6 +430,7 @@ namespace TogglDesktop
             this.ensureList();
             this.controller.Complete(showAll ? "" : this.textbox.Text);
             this.emptyLabel.ShowOnlyIf(this.controller.visibleItems.Count == 0);
+            createProjectButton.IsEnabled = !controller.IsFullMatch;
 
             if (closeIfEmpty)
             {
@@ -497,6 +501,8 @@ namespace TogglDesktop
         {
             ActionButtonClick?.Invoke(sender, e);
         }
+
+        public bool HasKeyboardFocus() => popup.IsKeyboardFocusWithin;
     }
 }
 
