@@ -54,7 +54,7 @@ namespace TogglDesktop.AutoCompletion.Implementation
                 .Cast<IAutoCompleteListItem>().ToList();
 
             var ac = new AutoCompleteController(items, $"Workspaces({list.Count})");
-            ac.autocompleteType = 2;
+            ac.autocompleteType = 4;
             return ac;
         }
     }
