@@ -171,7 +171,6 @@
                         BorderBrush="{DynamicResource Toggl.Button.Primary.Background}"
                         Height="40"
                         Click="CreateProjectButton_OnClick"
-                        CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Popup}, Path=PlacementTarget}"
                         Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=togglDesktop:AutoCompletionPopup},
                                              Path=ActionButtonText,
                                              Converter={StaticResource EmptyStringToCollapsedConverter}}">

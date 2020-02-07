@@ -36,6 +36,8 @@ namespace TogglDesktop.AutoCompletion
 
         public string DebugIdentifier { get; }
 
+        public bool IsFullMatch { get; private set; }
+
         private int selectedIndex;
         private string filterText;
         private string[] words;
@@ -145,6 +147,8 @@ namespace TogglDesktop.AutoCompletion
         public void FillList(ListBox listBox)
         {
             LB = listBox;
+            IsFullMatch = false;
+
             using (Performance.Measure("FILLIST, {0} items", this.list.Count))
             {
                 items = autocompleteType switch
@@ -153,7 +157,7 @@ namespace TogglDesktop.AutoCompletion
                     1 => list.Select((item1, ind) => (ListBoxItemViewModel)new StringItemViewModel(((StringItem) item1).Item, ind)).ToList(),
                     // client dropdown
                     2 => list.Select((item1, ind) => (ListBoxItemViewModel)new StringItemViewModel(((ModelItem) item1).Item.Name, ind))
-                        .AppendIfEmpty(() => new CustomTextItemViewModel("There are no clients yet", "Add client name and press enter to add it as a client"))
+                        .AppendIfEmpty(() => new CustomTextItemViewModel("There are no clients yet", "Add client name and press Enter to add it as a client"))
                         .ToList(),
                     // workspace dropdown
                     4 => list.Select((item1, ind) => (ListBoxItemViewModel)new StringItemViewModel(((ModelItem) item1).Item.Name, ind)).ToList(),
@@ -185,6 +189,7 @@ namespace TogglDesktop.AutoCompletion
                 string lastProjectLabel = null;
                 string lastClient = null;
                 string lastWSName = null;
+                IsFullMatch = false;
                 var filteredItems = new List<ListBoxItemViewModel>();
                 foreach (var item in visibleItems.Where(Filter))
                 {
@@ -226,12 +231,16 @@ namespace TogglDesktop.AutoCompletion
                 {
                     if (autocompleteType == 2)
                     {
-                        filteredItems.Add(new CustomTextItemViewModel("No matching clients found", "Press enter to add it as a client"));
+                        filteredItems.Add(new CustomTextItemViewModel("No matching clients found", "Press Enter to add it as a client"));
                     }
                     else if (autocompleteType == 3)
                     {
                         filteredItems.Add(new CustomTextItemViewModel("No matching projects", "Try a different keyword or create a new project"));
                     }
+                }
+                else if (filteredItems.Count == 1)
+                {
+                    IsFullMatch = IsFullMatch || (filteredItems[0].Text == filterText);
                 }
 
                 visibleItems = filteredItems;
@@ -284,44 +293,46 @@ namespace TogglDesktop.AutoCompletion
 
         public void SelectNext()
         {
-            if (this.visibleItems == null || this.visibleItems.Count == 0)
-                return;
-
-            var i = this.selectedIndex + 1;
-            if (i >= this.visibleItems.Count)
+            if (this.visibleItems == null || this.visibleItems.Count == 0) return;
+            var maxIterations = visibleItems.Count;
+            var initialIndex = this.selectedIndex % visibleItems.Count;
+            var nextIndex = initialIndex;
+            for (var i = 0; i < maxIterations; i++)
             {
-                i = 0;
-                LB.UpdateLayout();
-                LB.ScrollIntoView(LB.Items[0]);
+                nextIndex = (nextIndex + 1) % this.visibleItems.Count;
+                if (visibleItems[nextIndex].IsSelectable())
+                {
+                    this.selectIndex(nextIndex);
+                    return;
+                }
             }
 
-            if (i >= 0 && this.visibleItems[i].IsSelectable() == false)
+            if (visibleItems[initialIndex].IsSelectable())
             {
-                this.selectedIndex = i;
-                this.SelectNext();
-                return;
+                this.selectIndex(initialIndex);
             }
-            this.selectIndex(i);
         }
 
         public void SelectPrevious()
         {
-            if (this.visibleItems == null || this.visibleItems.Count == 0)
-                return;
+            if (this.visibleItems == null || this.visibleItems.Count == 0) return;
+            var maxIterations = visibleItems.Count;
+            var initialIndex = this.selectedIndex % visibleItems.Count;
+            var nextIndex = initialIndex;
+            for (var i = 0; i < maxIterations; i++)
+            {
+                nextIndex = (nextIndex - 1) % this.visibleItems.Count;
+                if (visibleItems[nextIndex].IsSelectable())
+                {
+                    this.selectIndex(nextIndex);
+                    return;
+                }
+            }
 
-            var i = this.selectedIndex - 1;
-            if (i < 0 || i >= this.visibleItems.Count)
+            if (visibleItems[initialIndex].IsSelectable())
             {
-                i = this.visibleItems.Count - 1;   
+                this.selectIndex(initialIndex);
             }
-            
-            if (this.visibleItems[i].IsSelectable() == false)
-            {
-                this.selectedIndex = i;
-                this.SelectPrevious();
-                return;
-            }
-            this.selectIndex(i);
         }
     }
 

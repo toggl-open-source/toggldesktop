@@ -17,12 +17,10 @@ namespace TogglDesktop
     {
         private Toggl.TogglTimeEntryView timeEntry;
         private bool isInNewProjectMode = true;
-        private bool isInNewClientMode = true;
         private List<Toggl.TogglAutocompleteView> projects;
         private List<Toggl.TogglGenericView> clients;
         private List<Toggl.TogglGenericView> workspaces;
         private ulong selectedWorkspaceId;
-        private string selectedWorkspaceName;
         private string selectedClientGUID;
         private ulong selectedClientId;
         private string selectedClientName;
@@ -155,7 +153,6 @@ namespace TogglDesktop
                     setText(this.clientTextBox, timeEntry.ClientLabel, open);
 
                     this.selectedWorkspaceId = timeEntry.WID;
-                    this.selectedWorkspaceName = timeEntry.WorkspaceName;
                     this.reloadWorkspaceClients(timeEntry.WID);
 
                     this.projectAutoComplete.ActionButtonText =
@@ -284,7 +281,8 @@ namespace TogglDesktop
 
             using (Performance.Measure("building edit view workspace auto complete controller, {0} items", list.Count))
             {
-                this.workspaceAutoComplete.SetController(AutoCompleteControllers.ForWorkspaces(list));
+                this.workspaceComboBox.ItemsSource = list;
+                this.workspaceComboBox.SelectedIndex = workspaces.FindIndex(ws => ws.ID == selectedWorkspaceId);
             }
         }
 
@@ -552,10 +550,8 @@ namespace TogglDesktop
             this.projectTextBox.SetText("", "");
             this.newProjectTextBox.Clear();
             this.projectAutoComplete.IsEnabled = false;
-            // this.projectDropDownButton.Visibility = Visibility.Hidden;
             this.newProjectTextBox.Focus();
-            this.workspaceTextBox.Text = this.selectedWorkspaceName;
-            this.workspaceAutoComplete.IsOpen = false;
+            this.workspaceComboBox.SelectedIndex = workspaces.FindIndex(ws => ws.ID == selectedWorkspaceId);
 
             this.projectColorSelector.SelectRandom();
             this.emptyProjectText.Text = "Add project";
@@ -565,13 +561,12 @@ namespace TogglDesktop
 
         private void disableNewProjectMode()
         {
-            this.disableNewClientMode();
+            this.resetToSavedClient();
             this.isProjectPrivateCheckBox.Visibility = Visibility.Collapsed;
-            this.hideClientArea();
+            this.clientAutoComplete.IsOpen = false;
 
             this.projectTextBox.SetText(this.timeEntry.ProjectLabel, this.timeEntry.TaskLabel);
             this.projectAutoComplete.IsEnabled = true;
-            // this.projectDropDownButton.Visibility = Visibility.Visible;
             this.projectTextBox.Focus();
             this.projectTextBox.CaretIndex = this.projectTextBox.Text.Length;
             this.defaultProjectColorCircle.Background = Utils.ProjectColorBrushFromString(timeEntry.Color);
@@ -606,11 +601,6 @@ namespace TogglDesktop
         {
             if (this.isCreatingProject)
                 return;
-
-            if (this.isInNewClientMode)
-            {
-                this.tryCreatingNewClient(this.clientTextBox.Text);
-            }
 
             if (this.tryCreatingNewProject(this.newProjectTextBox.Text, this.projectColorSelector.SelectedColor))
             {
@@ -659,13 +649,6 @@ namespace TogglDesktop
             this.selectedClientGUID = "";
             this.selectedClientId = 0;
             this.clientAutoComplete.IsOpen = false;
-            this.clientArea.Visibility = Visibility.Visible;
-        }
-
-        private void hideClientArea()
-        {
-            this.clientArea.Visibility = Visibility.Collapsed;
-            this.clientAutoComplete.IsOpen = false;
         }
 
         private void clientAutoComplete_OnConfirmCompletion(object sender, AutoCompleteItem e)
@@ -688,11 +671,10 @@ namespace TogglDesktop
             this.selectedClientName = item.Name;
             this.clientTextBox.SetText(item.Name);
 
-            if (item.WID != 0)
+            if (item.WID != 0 && item.WID != this.selectedWorkspaceId)
             {
                 this.selectedWorkspaceId = item.WID;
-                this.selectedWorkspaceName = this.workspaces.First(ws => ws.ID == item.WID).Name;
-                this.workspaceTextBox.SetText(this.selectedWorkspaceName);
+                this.workspaceComboBox.SelectedIndex = workspaces.FindIndex(ws => ws.ID == selectedWorkspaceId);
             }
         }
 
@@ -713,14 +695,16 @@ namespace TogglDesktop
             }
             else
             {
-                // TODO: reset client? add new? switch to 'add new client mode'?
+                this.confirmNewClient();
             }
         }
 
         private void clientTextBox_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
-            if (this.isInNewClientMode)
+            if (clientAutoComplete.HasKeyboardFocus())
+            {
                 return;
+            }
 
             if (this.clientTextBox.Text == "")
             {
@@ -729,99 +713,26 @@ namespace TogglDesktop
             else
             {
                 // TODO: if only one entry is left in auto complete box, should it be selected?
-
                 this.clientTextBox.SetText(this.selectedClientName);
             }
 
+            this.clientAutoComplete.IsOpen = false;
         }
 
-        private void newClientButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            this.enableNewClientMode();
-        }
-
-        private void newClientCancelButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            this.disableNewClientMode();
-
-            this.clientTextBox.SetText(this.timeEntry.ClientLabel);
-            if (!string.IsNullOrEmpty(this.timeEntry.ClientLabel))
-            {
-                this.selectedWorkspaceId = this.timeEntry.WID;
-                this.selectedWorkspaceName = this.timeEntry.WorkspaceName;
-                this.workspaceTextBox.SetText(this.selectedWorkspaceName);
-            }
-
-            this.newProjectTextBox.Focus();
-        }
         #endregion
 
         #region new client mode
 
-        private void enableNewClientMode()
-        {
-            this.clientTextBox.SetText("");
-
-            this.clientTextBox.SetValue(Grid.ColumnSpanProperty, 2);
-            this.clientAutoComplete.IsEnabled = false;
-            this.clientDropDownButton.Visibility = Visibility.Hidden;
-            this.newClientButton.Visibility = Visibility.Hidden;
-            this.newClientCancelButton.Visibility = Visibility.Visible;
-
-            this.clientTextBox.Focus();
-
-            this.emptyClientText.Text = "Add client";
-
-            this.isInNewClientMode = true;
-        }
-
-        private void disableNewClientMode()
+        private void resetToSavedClient()
         {
             this.clientTextBox.SetText(this.selectedClientName);
-
-            this.clientTextBox.SetValue(Grid.ColumnSpanProperty, 1);
-            this.clientAutoComplete.IsEnabled = true;
-            this.clientDropDownButton.Visibility = Visibility.Visible;
-            this.newClientButton.Visibility = Visibility.Visible;
-            this.newClientCancelButton.Visibility = Visibility.Hidden;
-
             this.clientTextBox.Focus();
             this.clientTextBox.CaretIndex = this.clientTextBox.Text.Length;
-
-            this.emptyClientText.Text = "No client";
-
-            this.isInNewClientMode = false;
-        }
-
-        private void clientTextBox_OnPreviewKeyDown(object sender, KeyEventArgs e)
-        {
-            if (!this.isInNewClientMode)
-                return;
-
-            switch (e.Key)
-            {
-                case Key.Escape:
-                    {
-                        this.disableNewClientMode();
-                        e.Handled = true;
-                        break;
-                    }
-                case Key.Enter:
-                    {
-                        this.confirmNewClient();
-                        e.Handled = true;
-                        break;
-                    }
-            }
         }
 
         private void confirmNewClient()
         {
-            if (this.tryCreatingNewClient(this.clientTextBox.Text))
-            {
-                this.disableNewClientMode();
-                this.newProjectTextBox.Focus();
-            }
+            this.tryCreatingNewClient(this.clientTextBox.Text);
         }
 
         private bool tryCreatingNewClient(string text)
@@ -837,7 +748,7 @@ namespace TogglDesktop
             this.selectedClientGUID = clientGUID;
             this.selectedClientId = 0;
 
-            this.disableNewClientMode();
+            this.resetToSavedClient();
 
             this.newProjectTextBox.Focus();
 
@@ -848,40 +759,24 @@ namespace TogglDesktop
 
         #region workspace
 
-        private void workspaceAutoComplete_OnConfirmCompletion(object sender, AutoCompleteItem e)
-        {
-            var asWorkspaceItem = e as ModelItem;
-            if (asWorkspaceItem == null)
-                return;
-
-            var item = asWorkspaceItem.Item;
-
-            this.selectWorkspace(item);
-
-            this.clientTextBox.Focus();
-        }
-
         private void selectWorkspace(Toggl.TogglGenericView item)
         {
-            if (this.selectedWorkspaceId != item.ID && !this.isInNewClientMode)
+            if (this.selectedWorkspaceId != item.ID)
             {
                 this.reloadWorkspaceClients(item.ID);
                 this.selectClient(new Toggl.TogglGenericView());
             }
 
             this.selectedWorkspaceId = item.ID;
-            this.selectedWorkspaceName = item.Name;
-            this.workspaceTextBox.SetText(item.Name);
-        }
-
-        private void workspaceAutoComplete_OnConfirmWithoutCompletion(object sender, string e)
-        {
-            // TODO: reset client? add new? switch to 'add new client mode'?
+            this.workspaceComboBox.SelectedIndex = workspaces.FindIndex(ws => ws.ID == selectedWorkspaceId);
         }
 
         private void workspaceTextBox_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
-            this.workspaceTextBox.SetText(this.selectedWorkspaceName);
+            if (this.workspaceComboBox.SelectedIndex < 0)
+            {
+                this.workspaceComboBox.SelectedIndex = workspaces.FindIndex(ws => ws.ID == selectedWorkspaceId);
+            }
         }
         #endregion
 
@@ -961,10 +856,7 @@ namespace TogglDesktop
                     break;
             }
 
-            if (focus != null)
-            {
-                focus.Focus();
-            }
+            focus?.Focus();
         }
 
         public void EnsureSaved()
@@ -1011,6 +903,29 @@ namespace TogglDesktop
         {
             projectAutoComplete.IsOpen = false;
             enableNewProjectMode();
+        }
+
+        private void ClientAutoComplete_OnActionButtonClick(object sender, RoutedEventArgs e)
+        {
+            this.confirmNewClient();
+        }
+
+        private void ClientAutoComplete_OnIsOpenChanged(object sender, EventArgs e)
+        {
+            if (clientAutoComplete.IsOpen == false)
+            {
+                if (clientTextBox.Text != this.selectedClientName)
+                {
+                    this.clientTextBox.SetText(this.selectedClientName);
+                }
+            }
+        }
+
+        private void WorkspaceComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (workspaceComboBox.SelectedIndex < 0) return;
+            var selectedWorkspace = workspaces[workspaceComboBox.SelectedIndex];
+            selectWorkspace(selectedWorkspace);
         }
     }
 }
