@@ -217,6 +217,9 @@ extension TimelineDatasource: NSCollectionViewDataSource, NSCollectionViewDelega
     }
 
     func collectionView(_ collectionView: NSCollectionView, didSelectItemsAt indexPaths: Set<IndexPath>) {
+
+        // Skip selection if the dragging
+        guard draggingIndexSet != nil else { return }
         guard let indexPath = indexPaths.first,
             let cell = collectionView.item(at: indexPath),
             let item = timeline?.item(at: indexPath) else { return }
@@ -445,5 +448,9 @@ extension TimelineDatasource {
     func collectionView(_ collectionView: NSCollectionView, acceptDrop draggingInfo: NSDraggingInfo, indexPath: IndexPath, dropOperation: NSCollectionView.DropOperation) -> Bool {
         print("accept drop")
         return false
+    }
+
+    func collectionView(_ collectionView: NSCollectionView, draggingSession session: NSDraggingSession, endedAt screenPoint: NSPoint, dragOperation operation: NSDragOperation) {
+        draggingIndexSet = nil
     }
 }

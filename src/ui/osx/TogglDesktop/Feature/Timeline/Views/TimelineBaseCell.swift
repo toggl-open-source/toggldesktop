@@ -168,6 +168,7 @@ extension TimelineBaseCell {
         }
 
         delegate?.timelineCellMouseDidEntered(self)
+        super.mouseEntered(with: event)
     }
 
     override func mouseMoved(with event: NSEvent) {
@@ -199,10 +200,14 @@ extension TimelineBaseCell {
         }
 
         mousePosition = .none
+        super.mouseExited(with: event)
     }
 
     private func handleMouseDownForResize(_ event: NSEvent) {
-        guard isResizable, isUserResizing else { return }
+        guard isResizable, isUserResizing else {
+            super.mouseDown(with: event)
+            return
+        }
 
         // Calculate the user action
         switch mousePosition {
@@ -212,12 +217,15 @@ extension TimelineBaseCell {
             userAction = .resizeBottom
         default:
             userAction = .none
+            super.mouseDown(with: event)
         }
     }
 
     private func handleMouseDraggedForResize(_ event: NSEvent) {
-        guard isResizable, isUserResizing else { return }
-        guard userAction != .none else { return }
+        guard isResizable, isUserResizing, userAction != .none else {
+            super.mouseDragged(with: event)
+            return
+        }
 
         // Update start / end depend on the user action
         switch userAction {
@@ -226,7 +234,7 @@ extension TimelineBaseCell {
         case .resizeTop:
             delegate?.timelineCellRedrawStartTime(with: event, sender: self)
         case .none:
-            break
+            super.mouseDragged(with: event)
         }
     }
 
@@ -234,8 +242,10 @@ extension TimelineBaseCell {
         let localPosition = convertToLocalPoint(for: event)
 
         // Click action
-        if userAction == .none && view.bounds.contains(localPosition) {
-            delegate?.timelineCellOpenEditor(self)
+        if userAction == .none {
+            if view.bounds.contains(localPosition) {
+                delegate?.timelineCellOpenEditor(self)
+            }
         } else {
             // Dragging
             switch userAction {
