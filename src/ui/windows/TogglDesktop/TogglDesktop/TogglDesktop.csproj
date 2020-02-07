@@ -187,6 +187,7 @@
     <Compile Include="Diagnostics\IPerformanceToken.cs" />
     <Compile Include="Diagnostics\Performance.cs" />
     <Compile Include="SingleInstanceManager.cs" />
+    <Compile Include="ui\Behaviors\ActivateParentWindowOnMouseClick.cs" />
     <Compile Include="ui\Behaviors\ButtonHelper.cs" />
     <Compile Include="ui\Behaviors\CloseWindowOnEscBehavior.cs" />
     <Compile Include="ui\Behaviors\DatePickerKeyboardHandlingBehavior.cs" />
@@ -194,6 +195,7 @@
     <Compile Include="ui\Behaviors\FocusParentWindowOnClosingBehavior.cs" />
     <Compile Include="ui\Behaviors\HideWindowOnClosingBehavior.cs" />
     <Compile Include="ui\Behaviors\NumericInputTextBoxBehavior.cs" />
+    <Compile Include="ui\Behaviors\RepositionPopupWithParentWindowBehavior.cs" />
     <Compile Include="ui\Behaviors\TextBoxHelper.cs" />
     <Compile Include="ui\controls\InAppNotification.xaml.cs">
       <DependentUpon>InAppNotification.xaml</DependentUpon>
