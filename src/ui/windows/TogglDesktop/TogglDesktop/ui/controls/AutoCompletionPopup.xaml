@@ -118,6 +118,18 @@
                             BorderBrush="{DynamicResource Toggl.SelectionElements.Disabled.Background}"/>
                 </StackPanel>
             </DataTemplate>
+            <DataTemplate x:Key="custom-text-item-template">
+                <StackPanel Orientation="Vertical" Margin="12 12 12 16">
+                    <TextBlock Style="{DynamicResource Toggl.BaseGrayText}"
+                               LineHeight="20"
+                               Text="{Binding Title}" />
+                    <TextBlock Margin="0 8 0 0"
+                               Style="{DynamicResource Toggl.BodyGrayText}"
+                               TextWrapping="Wrap"
+                               LineHeight="20"
+                               Text="{Binding Text}" />
+                </StackPanel>
+            </DataTemplate>
         </ResourceDictionary>
     </UserControl.Resources>
     

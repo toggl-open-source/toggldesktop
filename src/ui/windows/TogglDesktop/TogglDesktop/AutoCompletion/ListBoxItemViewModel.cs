@@ -112,6 +112,17 @@
         }
     }
 
+    class CustomTextItemViewModel : ListBoxItemViewModel
+    {
+        public string Title { get; }
+        public CustomTextItemViewModel(string title, string text)
+        {
+            Title = title;
+            Text = text;
+            Type = ItemType.CUSTOM_TEXT;
+        }
+    }
+
     static class ListBoxItemViewModelExtensions
     {
         public static bool IsSelectable(this ListBoxItemViewModel item) => item.IsModelItem();
