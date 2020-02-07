@@ -115,6 +115,6 @@
     static class ListBoxItemViewModelExtensions
     {
         public static bool IsSelectable(this ListBoxItemViewModel item) => item.IsModelItem();
-        public static bool IsModelItem(this ListBoxItemViewModel item) => (int) item.Type > 0;
+        public static bool IsModelItem(this ListBoxItemViewModel item) => (int) item.Type >= 0;
     }
 }
