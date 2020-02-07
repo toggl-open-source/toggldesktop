@@ -76,7 +76,7 @@ final class TimelineDatasource: NSObject {
     private(set) var timeline: TimelineData?
     private var zoomLevel: ZoomLevel = .x1
     private var isUserResizing = false
-    private var draggingIndexSet: IndexSet?
+    private var draggingIndexSet: IndexPath?
     private var isUserOnAction: Bool { return isUserResizing || draggingIndexSet != nil }
 
     // MARK: Init
@@ -425,8 +425,19 @@ extension TimelineDatasource {
 
 extension TimelineDatasource {
 
-    func collectionView(_ collectionView: NSCollectionView, canDragItemsAt indexes: IndexSet, with event: NSEvent) -> Bool {
-        return true
+    func collectionView(_ collectionView: NSCollectionView, canDragItemsAt indexPaths: Set<IndexPath>, with event: NSEvent) -> Bool {
+        guard let firstIndex = indexPaths.first,
+            let draggedItem = timeline?.item(at: firstIndex) else { return false }
+
+        print("canDragItemsAt")
+
+        // Only accept drag on Timeline Entry
+        switch draggedItem {
+        case is TimelineTimeEntry:
+            return true
+        default:
+            return false
+        }
     }
 
     func collectionView(_ collectionView: NSCollectionView, pasteboardWriterForItemAt indexPath: IndexPath) -> NSPasteboardWriting? {
@@ -436,13 +447,19 @@ extension TimelineDatasource {
         return pbItem
     }
 
-    func collectionView(_ collectionView: NSCollectionView, draggingSession session: NSDraggingSession, willBeginAt screenPoint: NSPoint, forItemsAt indexes: IndexSet) {
-        print("Will begin dragging at indexes \(indexes)")
-        draggingIndexSet = indexes
+    func collectionView(_ collectionView: NSCollectionView, draggingSession session: NSDraggingSession, willBeginAt screenPoint: NSPoint, forItemsAt indexPaths: Set<IndexPath>) {
+        print("Will begin dragging at indexes \(indexPaths)")
+        draggingIndexSet = indexPaths.first
     }
 
     func collectionView(_ collectionView: NSCollectionView, validateDrop draggingInfo: NSDraggingInfo, proposedIndexPath proposedDropIndexPath: AutoreleasingUnsafeMutablePointer<NSIndexPath>, dropOperation proposedDropOperation: UnsafeMutablePointer<NSCollectionView.DropOperation>) -> NSDragOperation {
         print("validate drop at \(proposedDropIndexPath.pointee), operation = \(proposedDropOperation.pointee)")
+
+        // Don't allow to drop on top of others
+        if proposedDropOperation.pointee == .on {
+            proposedDropOperation.pointee = .before
+        }
+
         return .move
     }
 
