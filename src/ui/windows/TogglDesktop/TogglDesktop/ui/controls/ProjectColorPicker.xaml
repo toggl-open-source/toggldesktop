@@ -29,7 +29,7 @@
             IsKeyboardFocusWithinChanged="onPopupKeyboardFocusWithinChanged">
 
             <ListBox ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                     BorderThickness="0" Margin="10" Padding="0" Background="White"
+                     BorderThickness="0" Margin="10" Background="{DynamicResource Toggl.CardBackground}"
                      Name="list" x:FieldModifier="private">
 
                 <ListBox.Effect>
@@ -38,31 +38,60 @@
 
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <WrapPanel Margin="0"
-                           MaxWidth="150" MinWidth="50"
+                        <WrapPanel Margin="10"
+                           MaxWidth="180" MinWidth="50"
                            MinHeight="20" IsItemsHost="True" />
                     </ItemsPanelTemplate>
                 </ListBox.ItemsPanel>
 
                 <ListBox.ItemContainerStyle>
-                    <Style>
-                        <Setter Property="Control.Padding" Value="0" />
-                        <Setter Property="Control.Margin" Value="1" />
-                        <Setter Property="Control.BorderThickness" Value="1"/>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ListBoxItem">
+                                    <Grid Margin="2" MouseLeftButtonUp="onColorSelect">
+                                        <Border Name="BackgroundBorder"
+                                                Width="30" Height="30"
+                                                VerticalAlignment="Center"
+                                                HorizontalAlignment="Center"
+                                                CornerRadius="100"
+                                                Background="{DynamicResource Toggl.DarkGrayBrush}"
+                                                Visibility="Hidden">
+                                        </Border>
+                                        <Border Name="ForegroundBorder"
+                                                Width="30" Height="30"
+                                                VerticalAlignment="Center"
+                                                HorizontalAlignment="Center"
+                                                CornerRadius="100"
+                                                Background="{Binding}"
+                                                BorderBrush="{DynamicResource Toggl.CardBackground}"
+                                                BorderThickness="0">
+                                        </Border>
+                                        <ContentPresenter />
+                                    </Grid>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter TargetName="ForegroundBorder" Property="Height" Value="28" />
+                                            <Setter TargetName="ForegroundBorder" Property="Width" Value="28" />
+                                            <Setter TargetName="ForegroundBorder" Property="BorderThickness" Value="1" />
+                                            <Setter TargetName="BackgroundBorder" Property="Visibility" Value="Visible" />
+                                        </Trigger>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter TargetName="ForegroundBorder" Property="Height" Value="28" />
+                                            <Setter TargetName="ForegroundBorder" Property="Width" Value="28" />
+                                            <Setter TargetName="ForegroundBorder" Property="BorderThickness" Value="1" />
+                                            <Setter TargetName="BackgroundBorder" Property="Background" Value="{DynamicResource Toggl.CardBackground}" />
+                                            <Setter TargetName="BackgroundBorder" Property="Visibility" Value="Visible" />
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
                     </Style>
                 </ListBox.ItemContainerStyle>
                 
                 <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <Border Width="25" Height="25"
-                                MouseLeftButtonUp="onColorSelect"
-                                CornerRadius="2"
-                                >
-                            <Border.Background>
-                                <SolidColorBrush Color="{Binding}" />
-                            </Border.Background>
-                        </Border>
-                    </DataTemplate>
+                    <DataTemplate />
                 </ListBox.ItemTemplate>
                 
             </ListBox>
