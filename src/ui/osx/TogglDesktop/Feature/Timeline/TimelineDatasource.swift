@@ -77,6 +77,7 @@ final class TimelineDatasource: NSObject {
     private var zoomLevel: ZoomLevel = .x1
     private var isUserResizing = false
     private var draggingIndexSet: IndexSet?
+    private var isUserOnAction: Bool { return isUserResizing || draggingIndexSet != nil }
 
     // MARK: Init
 
@@ -98,8 +99,8 @@ final class TimelineDatasource: NSObject {
     }
 
     func render(_ timeline: TimelineData) {
-        // Skip reload if the user is resizing
-        guard !isUserResizing else { return }
+        // Skip reload if the user is on action (Resize or drag)
+        guard !isUserOnAction else { return }
         self.timeline = timeline
         flow.currentDate = Date(timeIntervalSince1970: timeline.start)
         collectionView.reloadData()
