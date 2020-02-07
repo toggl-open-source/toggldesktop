@@ -76,6 +76,7 @@ final class TimelineDatasource: NSObject {
     private(set) var timeline: TimelineData?
     private var zoomLevel: ZoomLevel = .x1
     private var isUserResizing = false
+    private var draggingIndexSet: IndexSet?
 
     // MARK: Init
 
@@ -93,6 +94,7 @@ final class TimelineDatasource: NSObject {
         collectionView.register(NSNib(nibNamed: Constants.EmptyTimeEntryCellXIB, bundle: nil), forItemWithIdentifier: Constants.EmptyTimeEntryCellID)
         collectionView.register(TimelineDividerView.self, forSupplementaryViewOfKind: NSCollectionView.elementKindSectionFooter, withIdentifier: Constants.DividerViewID)
         collectionView.register(TimelineBackgroundView.self, forSupplementaryViewOfKind: NSCollectionView.elementKindSectionHeader, withIdentifier: Constants.BackgroundViewID)
+        registerForDragAndDrop()
     }
 
     func render(_ timeline: TimelineData) {
@@ -402,5 +404,46 @@ extension TimelineDatasource: TimelineActivityCellDelegate {
     func timelineActivityPresentPopover(_ sender: TimelineActivityCell) {
         guard let activity = sender.activity else { return }
         delegate?.shouldPresentActivityHover(in: sender.view, activity: activity)
+    }
+}
+
+// MARK: Private
+
+extension TimelineDatasource {
+
+    private func registerForDragAndDrop() {
+        collectionView.registerForDraggedTypes([NSPasteboard.PasteboardType.string])
+        collectionView.setDraggingSourceOperationMask(NSDragOperation.move, forLocal: true)
+    }
+}
+
+// MARK: Drag and Drop
+
+extension TimelineDatasource {
+
+    func collectionView(_ collectionView: NSCollectionView, canDragItemsAt indexes: IndexSet, with event: NSEvent) -> Bool {
+        return true
+    }
+
+    func collectionView(_ collectionView: NSCollectionView, pasteboardWriterForItemAt indexPath: IndexPath) -> NSPasteboardWriting? {
+        let data = NSKeyedArchiver.archivedData(withRootObject: Array(indexPath))
+        let pbItem = NSPasteboardItem()
+        pbItem.setData(data, forType: NSPasteboard.PasteboardType.string)
+        return pbItem
+    }
+
+    func collectionView(_ collectionView: NSCollectionView, draggingSession session: NSDraggingSession, willBeginAt screenPoint: NSPoint, forItemsAt indexes: IndexSet) {
+        print("Will begin dragging at indexes \(indexes)")
+        draggingIndexSet = indexes
+    }
+
+    func collectionView(_ collectionView: NSCollectionView, validateDrop draggingInfo: NSDraggingInfo, proposedIndexPath proposedDropIndexPath: AutoreleasingUnsafeMutablePointer<NSIndexPath>, dropOperation proposedDropOperation: UnsafeMutablePointer<NSCollectionView.DropOperation>) -> NSDragOperation {
+        print("validate drop at \(proposedDropIndexPath.pointee), operation = \(proposedDropOperation.pointee)")
+        return .move
+    }
+
+    func collectionView(_ collectionView: NSCollectionView, acceptDrop draggingInfo: NSDraggingInfo, indexPath: IndexPath, dropOperation: NSCollectionView.DropOperation) -> Bool {
+        print("accept drop")
+        return false
     }
 }
