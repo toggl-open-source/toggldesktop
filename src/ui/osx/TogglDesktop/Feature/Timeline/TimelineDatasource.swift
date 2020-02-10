@@ -22,7 +22,7 @@ protocol TimelineDatasourceDelegate: class {
 
 final class TimelineDatasource: NSObject {
 
-    fileprivate struct Constants {
+    private struct Constants {
         static let TimeLabelCellID = NSUserInterfaceItemIdentifier("TimelineTimeLabelCell")
         static let TimeLabelCellXIB = NSNib.Name("TimelineTimeLabelCell")
         static let TimeEntryCellID = NSUserInterfaceItemIdentifier("TimelineTimeEntryCell")
@@ -32,7 +32,6 @@ final class TimelineDatasource: NSObject {
         static let ActivityCellID = NSUserInterfaceItemIdentifier("TimelineActivityCell")
         static let ActivityCellXIB = NSNib.Name("TimelineActivityCell")
         static let DividerViewID = NSUserInterfaceItemIdentifier("DividerViewID")
-        static let BackgroundViewID = NSUserInterfaceItemIdentifier("BackgroundViewID")
     }
 
     enum ZoomLevel: Int {
@@ -95,7 +94,6 @@ final class TimelineDatasource: NSObject {
         collectionView.register(NSNib(nibNamed: Constants.ActivityCellXIB, bundle: nil), forItemWithIdentifier: Constants.ActivityCellID)
         collectionView.register(NSNib(nibNamed: Constants.EmptyTimeEntryCellXIB, bundle: nil), forItemWithIdentifier: Constants.EmptyTimeEntryCellID)
         collectionView.register(TimelineDividerView.self, forSupplementaryViewOfKind: NSCollectionView.elementKindSectionFooter, withIdentifier: Constants.DividerViewID)
-        collectionView.register(TimelineBackgroundView.self, forSupplementaryViewOfKind: NSCollectionView.elementKindSectionHeader, withIdentifier: Constants.BackgroundViewID)
         registerForDragAndDrop()
     }
 
@@ -208,11 +206,6 @@ extension TimelineDatasource: NSCollectionViewDataSource, NSCollectionViewDelega
                                                             withIdentifier: Constants.DividerViewID,
                                                             for: indexPath) as! TimelineDividerView
             view.draw(for: section)
-            return view
-        } else if kind == NSCollectionView.elementKindSectionHeader {
-            let view = collectionView.makeSupplementaryView(ofKind: kind,
-                                                            withIdentifier: Constants.BackgroundViewID,
-                                                            for: indexPath)
             return view
         }
         return NSView()
@@ -472,7 +465,7 @@ extension TimelineDatasource {
             return []
         }
 
-        return .move
+        return .copy
     }
 
     func collectionView(_ collectionView: NSCollectionView, acceptDrop draggingInfo: NSDraggingInfo, indexPath: IndexPath, dropOperation: NSCollectionView.DropOperation) -> Bool {

@@ -21,6 +21,7 @@ final class TimelineFlowLayout: NSCollectionViewFlowLayout {
 
     struct Constants {
         static let MinimumHeight: CGFloat = 2.0
+        static let BackgroundViewID = NSUserInterfaceItemIdentifier("BackgroundViewID")
 
         struct TimeLabel {
             static let Size = CGSize(width: 54.0, height: 32)
@@ -91,6 +92,7 @@ final class TimelineFlowLayout: NSCollectionViewFlowLayout {
         minimumInteritemSpacing = 0
         sectionInset = NSEdgeInsetsZero
         scrollDirection = .vertical
+        register(TimelineBackgroundView.self, forDecorationViewOfKind: Constants.BackgroundViewID.rawValue)
     }
 
     override func prepare() {
@@ -148,7 +150,11 @@ final class TimelineFlowLayout: NSCollectionViewFlowLayout {
         if elementKind == NSCollectionView.elementKindSectionFooter {
             return dividerAttributes[safe: indexPath.section]
         }
-        if elementKind == NSCollectionView.elementKindSectionHeader {
+        return nil
+    }
+
+    override func layoutAttributesForDecorationView(ofKind elementKind: NSCollectionView.DecorationElementKind, at indexPath: IndexPath) -> NSCollectionViewLayoutAttributes? {
+        if elementKind == Constants.BackgroundViewID.rawValue {
             return backgroundAttributes[safe: indexPath.item]
         }
         return nil
@@ -268,7 +274,7 @@ extension TimelineFlowLayout {
                                y: y,
                                width: width,
                                height: height)
-            let view = NSCollectionViewLayoutAttributes(forSupplementaryViewOfKind: NSCollectionView.elementKindSectionHeader, with: indexPath)
+            let view = NSCollectionViewLayoutAttributes(forDecorationViewOfKind: Constants.BackgroundViewID.rawValue, with: indexPath)
             view.frame = frame
             view.zIndex = 0
             backgroundAttributes.append(view)
