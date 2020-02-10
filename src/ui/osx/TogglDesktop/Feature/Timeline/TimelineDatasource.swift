@@ -18,6 +18,7 @@ protocol TimelineDatasourceDelegate: class {
     func shouldUpdateEndTime(_ endtime: TimeInterval, for entry: TimelineTimeEntry)
     func shouldUpdateStartTime(_ start: TimeInterval, for entry: TimelineTimeEntry, keepEndTimeFixed: Bool)
     func shouldPresentResizePopover(at cell: TimelineTimeEntryCell, onTopCorner: Bool)
+    func shouldHideAllPopover()
 }
 
 final class TimelineDatasource: NSObject {
@@ -456,6 +457,7 @@ extension TimelineDatasource {
     func collectionView(_ collectionView: NSCollectionView, draggingSession session: NSDraggingSession, willBeginAt screenPoint: NSPoint, forItemsAt indexPaths: Set<IndexPath>) {
         print("Will begin dragging at indexes \(indexPaths), screenpoint = \(screenPoint)")
         draggingIndexSet = indexPaths.first
+        delegate?.shouldHideAllPopover()
     }
 
     func collectionView(_ collectionView: NSCollectionView, validateDrop draggingInfo: NSDraggingInfo, proposedIndexPath proposedDropIndexPath: AutoreleasingUnsafeMutablePointer<NSIndexPath>, dropOperation proposedDropOperation: UnsafeMutablePointer<NSCollectionView.DropOperation>) -> NSDragOperation {

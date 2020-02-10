@@ -395,6 +395,10 @@ extension TimelineDashboardViewController: DatePickerViewDelegate {
 
 extension TimelineDashboardViewController: TimelineDatasourceDelegate {
 
+    func shouldHideAllPopover() {
+        closeAllPopovers()
+    }
+
     func shouldPresentTimeEntryHover(in view: NSView, timeEntry: TimelineTimeEntry) {
         guard !editorPopover.isShown else { return }
         timeEntryHoverPopover.show(relativeTo: view.bounds, of: view, preferredEdge: .maxX)
