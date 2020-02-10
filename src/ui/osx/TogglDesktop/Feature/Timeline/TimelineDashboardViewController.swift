@@ -469,10 +469,10 @@ extension TimelineDashboardViewController: TimelineDatasourceDelegate {
         DesktopLibraryBridge.shared().updateTimeEntryWithEnd(atTimestamp: endtime, guid: guid)
     }
 
-    func shouldUpdateStartTime(_ start: TimeInterval, for entry: TimelineTimeEntry) {
+    func shouldUpdateStartTime(_ start: TimeInterval, for entry: TimelineTimeEntry, keepEndTimeFixed: Bool) {
         guard let guid = entry.timeEntry.guid else { return }
         resizeInfoPopover.close()
-        DesktopLibraryBridge.shared().updateTimeEntryWithStart(atTimestamp: start, guid: guid)
+        DesktopLibraryBridge.shared().updateTimeEntryWithStart(atTimestamp: start, guid: guid, keepEndTimeFixed: keepEndTimeFixed)
     }
 
     func shouldPresentResizePopover(at cell: TimelineTimeEntryCell, onTopCorner: Bool) {

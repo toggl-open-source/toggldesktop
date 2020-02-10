@@ -147,7 +147,8 @@ final class TimelineData {
 
         // Set the start time as a stop time of First entry
         DesktopLibraryBridge.shared().updateTimeEntryWithStart(atTimestamp: endAt.timeIntervalSince1970 + 1,
-                                                               guid: entry.timeEntry.guid)
+                                                               guid: entry.timeEntry.guid,
+                                                               keepEndTimeFixed: true)
     }
 
     func continueTimeEntry(_ timeEntry: TimelineTimeEntry) {
@@ -163,7 +164,7 @@ final class TimelineData {
             // Only set start time if it's not the future
             // Otherwise, the library code gets buggy
             if startTime < Date().timeIntervalSince1970 {
-                DesktopLibraryBridge.shared().updateTimeEntryWithStart(atTimestamp: startTime, guid: guid)
+                DesktopLibraryBridge.shared().updateTimeEntryWithStart(atTimestamp: startTime, guid: guid, keepEndTimeFixed: true)
             }
         } else {
             // Create entry and open Editor

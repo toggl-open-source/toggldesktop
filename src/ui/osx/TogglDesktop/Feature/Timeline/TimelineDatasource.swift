@@ -16,7 +16,7 @@ protocol TimelineDatasourceDelegate: class {
     func startNewTimeEntry(at started: TimeInterval, ended: TimeInterval)
     func shouldUpdatePanelSize(with activityFrame: CGRect)
     func shouldUpdateEndTime(_ endtime: TimeInterval, for entry: TimelineTimeEntry)
-    func shouldUpdateStartTime(_ start: TimeInterval, for entry: TimelineTimeEntry)
+    func shouldUpdateStartTime(_ start: TimeInterval, for entry: TimelineTimeEntry, keepEndTimeFixed: Bool)
     func shouldPresentResizePopover(at cell: TimelineTimeEntryCell, onTopCorner: Bool)
 }
 
@@ -369,7 +369,7 @@ extension TimelineDatasource: TimelineBaseCellDelegate {
             let startTime = convertPointForStartTime(with: event, endTime: timeEntry.end)
 
             // Update library
-            delegate?.shouldUpdateStartTime(startTime, for: timeEntry)
+            delegate?.shouldUpdateStartTime(startTime, for: timeEntry, keepEndTimeFixed: true)
         default:
             break
         }
@@ -500,7 +500,7 @@ extension TimelineDatasource {
         flow.invalidateLayout()
 
         // Update lib
-        DesktopLibraryBridge.shared().updateTimeEntryForDragAndDropWithStart(atTimestamp: droppedStartTime, guid: timeEntry.timeEntry.guid)
+        delegate?.shouldUpdateStartTime(droppedStartTime, for: timeEntry, keepEndTimeFixed: false)
         return true
     }
 
