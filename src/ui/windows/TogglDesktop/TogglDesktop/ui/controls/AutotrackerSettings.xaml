@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:toggl="clr-namespace:TogglDesktop"
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="450"
              Style="{StaticResource AutotrackerSettings}">
@@ -39,45 +40,28 @@
                 DropDownButton="{Binding ElementName=termDropDownButton}"/>
 
             <!-- project selection -->
-            <toggl:ProjectTextBox Grid.Column="1" Grid.Row="0"
-                x:Name="projectTextBox" x:FieldModifier="private"
-                Padding="28, 0, 34, 0"
-                LostKeyboardFocus="projectTextBox_OnLostKeyboardFocus"
-                KeyDown="onAnyTextBoxKeyDown"/>
-
-            <ToggleButton Grid.Column="1" Grid.Row="0"
-                          x:Name="projectDropDownButton" x:FieldModifier="private"
-                          Style="{StaticResource AutoCompleteTextFieldButton}"/>
-            
-            <toggl:AutoCompletionPopup Grid.Column="1" Grid.Row="0"
-                x:Name="projectAutoComplete" x:FieldModifier="private"
-                Target="{Binding ElementName=projectTextBox}" TextBox="{Binding ElementName=projectTextBox}"
-                DropDownButton="{Binding ElementName=projectDropDownButton}"
-                ConfirmCompletion="projectAutoComplete_OnConfirmCompletion"
-                ConfirmWithoutCompletion="projectAutoComplete_OnConfirmWithoutCompletion"/>
-
             <Border Grid.Column="1" Grid.Row="0"
-                Name="projectColorCircle" x:FieldModifier="private"
-                Margin="18, 0, 0, 0"
-                HorizontalAlignment="Left"
-                Style="{StaticResource ProjectColorCircle}"/>
-            
-            <TextBlock Grid.Column="1" Grid.Row="0"
-                Margin="36, 0, 16, 0" Text="No project">
-                <TextBlock.Style>
-                    <Style TargetType="TextBlock" BasedOn="{StaticResource TextboxEmptyText}">
-                        <Style.Triggers>
-                            <MultiDataTrigger>
-                                <MultiDataTrigger.Conditions>
-                                    <Condition Binding="{Binding ElementName=projectTextBox, Path=(Text)}" Value=""/>
-                                    <Condition Binding="{Binding ElementName=projectTextBox, Path=(IsKeyboardFocused)}" Value="False"/>
-                                </MultiDataTrigger.Conditions>
-                                <Setter Property="Visibility" Value="Visible"/>
-                            </MultiDataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </TextBlock.Style>
-            </TextBlock>
+                    Name="projectSelectionBorder">
+                <Grid>
+                    <toggl:ProjectTextBox x:Name="projectTextBox" x:FieldModifier="private"
+                                          mah:TextBoxHelper.Watermark="No project"
+                                          Padding="24 0 34 0"
+                                          LostKeyboardFocus="projectTextBox_OnLostKeyboardFocus"
+                                          KeyDown="onAnyTextBoxKeyDown"/>
+
+                    <ToggleButton x:Name="projectDropDownButton" x:FieldModifier="private"
+                                  Style="{DynamicResource Toggl.AutoCompleteDropDownToggleButton}"/>
+
+                    <toggl:AutoCompletionPopup x:Name="projectAutoComplete" x:FieldModifier="private"
+                                               Target="{Binding ElementName=projectSelectionBorder}" TextBox="{Binding ElementName=projectTextBox}"
+                                               DropDownButton="{Binding ElementName=projectDropDownButton}"
+                                               ConfirmCompletion="projectAutoComplete_OnConfirmCompletion"
+                                               ConfirmWithoutCompletion="projectAutoComplete_OnConfirmWithoutCompletion"/>
+
+                    <Border Name="projectColorCircle" x:FieldModifier="private"
+                            Style="{StaticResource ProjectColorCircle}"/>
+                </Grid>
+            </Border>
 
             <!-- add button -->
             <Button Grid.Column="2" Grid.Row="0"

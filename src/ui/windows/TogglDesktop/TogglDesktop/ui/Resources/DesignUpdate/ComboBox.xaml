@@ -149,7 +149,7 @@
                                           IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
                                           KeyboardNavigation.IsTabStop="False"
                                           SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                          Style="{DynamicResource Toggl.ComboBoxDropDownToggleButton}" />
+                                          Style="{StaticResource Toggl.ComboBoxDropDownToggleButton}" />
 
                             <TextBox x:Name="PART_EditableTextBox"
                                      Grid.Row="1"
