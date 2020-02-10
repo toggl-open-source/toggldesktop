@@ -71,12 +71,6 @@ namespace TogglDesktop
         public bool KeepOpenWhenSelectingWithMouse { get; set; }
         public bool FillTextBoxOnComplete { get; set; }
 
-        public string EmptyText
-        {
-            get { return this.emptyLabel.Text; }
-            set { this.emptyLabel.Text = value; }
-        }
-
         #endregion
 
         #region dependency properties
@@ -429,7 +423,6 @@ namespace TogglDesktop
 
             this.ensureList();
             this.controller.Complete(showAll ? "" : this.textbox.Text);
-            this.emptyLabel.ShowOnlyIf(this.controller.visibleItems.Count == 0);
             createProjectButton.IsEnabled = !controller.IsFullMatch;
 
             if (closeIfEmpty)
@@ -446,7 +439,6 @@ namespace TogglDesktop
         {
             var target = this.Target;
             this.popup.PlacementTarget = target;
-            // this.popup.MinWidth = target == null ? 0 : target.ActualWidth + 16;
         }
 
         private void ensureList()

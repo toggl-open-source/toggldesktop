@@ -147,10 +147,6 @@
                     <RowDefinition />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <TextBlock Name="emptyLabel" x:FieldModifier="private"
-                                    HorizontalAlignment="Center" VerticalAlignment="Center"
-                                    Margin="4"
-                                    Text="Hello. Yes, this is list."/>
                 <ListBox x:Name="listBox" Grid.Row="0"
                          MaxHeight="500"
                          HorizontalAlignment="Stretch" MinHeight="30" Height="Auto"
