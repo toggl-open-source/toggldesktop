@@ -184,47 +184,54 @@ namespace TogglDesktop.AutoCompletion
                 }
                 words = input.Split(splitChars, StringSplitOptions.RemoveEmptyEntries);
                 filterText = input;
-
-                var lastType = ItemType.CATEGORY; // ?
-                string lastProjectLabel = null;
-                string lastClient = null;
-                string lastWSName = null;
-                IsFullMatch = false;
                 var filteredItems = new List<ListBoxItemViewModel>();
-                foreach (var item in visibleItems.Where(Filter))
+                
+                if (autocompleteType != 0 && autocompleteType != 3)
                 {
-                    // Add workspace title
-                    if (lastWSName != item.WorkspaceName)
+                    filteredItems = visibleItems.Where(FilterSimpleItem).ToList();
+                }
+                else
+                {
+                    var lastType = ItemType.CATEGORY; // ?
+                    string lastProjectLabel = null;
+                    string lastClient = null;
+                    string lastWSName = null;
+                    IsFullMatch = false;
+                    foreach (var item in visibleItems.OfType<TimeEntryItemViewModel>().Where(Filter))
                     {
-                        filteredItems.Add(new WorkspaceItemViewModel(item.WorkspaceName));
-                        lastWSName = item.WorkspaceName;
-                        lastType = ItemType.CATEGORY; // WORKSPACE?
-                        lastClient = null;
-                    }
+                        // Add workspace title
+                        if (lastWSName != item.WorkspaceName)
+                        {
+                            filteredItems.Add(new WorkspaceItemViewModel(item.WorkspaceName));
+                            lastWSName = item.WorkspaceName;
+                            lastType = ItemType.CATEGORY; // WORKSPACE?
+                            lastClient = null;
+                        }
 
-                    // Add category title if needed
-                    if (autocompleteType == 0 && lastType != item.Type
-                                              && item.Type != ItemType.TASK)
-                    {
-                        filteredItems.Add(new CategoryItemViewModel(categories[(int)item.Type]));
-                        lastType = item.Type;
-                    }
+                        // Add category title if needed
+                        if (autocompleteType == 0 && lastType != item.Type
+                                                  && item.Type != ItemType.TASK)
+                        {
+                            filteredItems.Add(new CategoryItemViewModel(categories[(int)item.Type]));
+                            lastType = item.Type;
+                        }
 
-                    // Add client item if needed
-                    if ((item.Type == ItemType.PROJECT || item.Type == ItemType.TASK) && lastClient != item.ClientLabel)
-                    {
-                        filteredItems.Add(new ClientItemViewModel(item.ClientLabel));
-                        lastClient = item.ClientLabel;
-                    }
+                        // Add client item if needed
+                        if ((item.Type == ItemType.PROJECT || item.Type == ItemType.TASK) && lastClient != item.ClientLabel)
+                        {
+                            filteredItems.Add(new ClientItemViewModel(item.ClientLabel));
+                            lastClient = item.ClientLabel;
+                        }
 
-                    // In case we have task and project is not completed
-                    if (item.Type == ItemType.TASK && item.ProjectLabel != lastProjectLabel)
-                    {
-                        filteredItems.Add(new ProjectItemViewModel(item, filteredItems.Count));
-                    }
+                        // In case we have task and project is not completed
+                        if (item.Type == ItemType.TASK && item.ProjectLabel != lastProjectLabel)
+                        {
+                            filteredItems.Add(new ProjectItemViewModel(item, filteredItems.Count));
+                        }
 
-                    filteredItems.Add(item);
-                    lastProjectLabel = item.ProjectLabel;
+                        filteredItems.Add(item);
+                        lastProjectLabel = item.ProjectLabel;
+                    }
                 }
 
                 if (filteredItems.Count == 0)
@@ -250,19 +257,18 @@ namespace TogglDesktop.AutoCompletion
                 this.selectFirstItem(0);
         }
 
-        private bool Filter(ListBoxItemViewModel listItemViewModel)
+        private bool Filter(TimeEntryItemViewModel timeEntryItem)
         {
-            if (string.IsNullOrEmpty(filterText))
-                return true;
-
-            if (listItemViewModel.IsModelItem() == false)
-                return false;
-
-            var itemText = (listItemViewModel.Type == ItemType.TASK)
-                ? ((TimeEntryItemViewModel)listItemViewModel).ProjectAndTaskLabel
-                : listItemViewModel.Text;
+            var itemText = (timeEntryItem.Type == ItemType.TASK)
+                ? timeEntryItem.ProjectAndTaskLabel
+                : timeEntryItem.Text;
 
             return words.All(word => itemText.IndexOf(word, StringComparison.OrdinalIgnoreCase) != -1);
+        }
+
+        private bool FilterSimpleItem(ListBoxItemViewModel item)
+        {
+            return words.All(word => item.Text.IndexOf(word, StringComparison.OrdinalIgnoreCase) != -1);
         }
 
         private void selectFirstItem(int index)
