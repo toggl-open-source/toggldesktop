@@ -14,6 +14,7 @@ final class TimelineData {
         case timeLabel = 0
         case timeEntry
         case activity
+        case background
     }
 
     struct Constants {
@@ -74,6 +75,8 @@ final class TimelineData {
             return timeEntries.count
         case .activity:
             return activities.count
+        case .background:
+            return timeChunks.count / 2
         }
     }
 
@@ -86,6 +89,8 @@ final class TimelineData {
             return timeEntries[safe: indexPath.item]
         case .activity:
             return activities[safe: indexPath.item]
+        case .background:
+            return ""
         }
     }
 
@@ -114,6 +119,8 @@ final class TimelineData {
             return timeEntries[safe: indexPath.item]?.timechunk()
         case .activity:
             return activities[safe: indexPath.item]?.timechunk()
+        case .background:
+            return nil
         }
     }
 

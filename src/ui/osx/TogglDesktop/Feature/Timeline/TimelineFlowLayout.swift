@@ -21,7 +21,6 @@ final class TimelineFlowLayout: NSCollectionViewFlowLayout {
 
     struct Constants {
         static let MinimumHeight: CGFloat = 2.0
-        static let BackgroundViewID = NSUserInterfaceItemIdentifier("BackgroundViewID")
 
         struct TimeLabel {
             static let Size = CGSize(width: 54.0, height: 32)
@@ -69,6 +68,7 @@ final class TimelineFlowLayout: NSCollectionViewFlowLayout {
     private var numberOfTimeLabels = 0
     private var numberOfTimeEntry = 0
     private var numberOfActivity = 0
+    private var numberOfBackground = 0
 
     // MARK: Override
 
@@ -92,7 +92,6 @@ final class TimelineFlowLayout: NSCollectionViewFlowLayout {
         minimumInteritemSpacing = 0
         sectionInset = NSEdgeInsetsZero
         scrollDirection = .vertical
-        register(TimelineBackgroundView.self, forDecorationViewOfKind: Constants.BackgroundViewID.rawValue)
     }
 
     override func prepare() {
@@ -109,6 +108,7 @@ final class TimelineFlowLayout: NSCollectionViewFlowLayout {
         numberOfTimeLabels = dataSource.collectionView(collectionView, numberOfItemsInSection: TimelineData.Section.timeLabel.rawValue)
         numberOfTimeEntry = dataSource.collectionView(collectionView, numberOfItemsInSection: TimelineData.Section.timeEntry.rawValue)
         numberOfActivity = dataSource.collectionView(collectionView, numberOfItemsInSection: TimelineData.Section.activity.rawValue)
+        numberOfBackground = dataSource.collectionView(collectionView, numberOfItemsInSection: TimelineData.Section.background.rawValue)
 
         // MARK: Calculation
 
@@ -143,19 +143,14 @@ final class TimelineFlowLayout: NSCollectionViewFlowLayout {
             return timeEntryAttributes[safe: indexPath.item]
         case .activity:
             return activityAttributes[safe: indexPath.item]
+        case .background:
+            return backgroundAttributes[safe: indexPath.item]
         }
     }
 
     override func layoutAttributesForSupplementaryView(ofKind elementKind: NSCollectionView.SupplementaryElementKind, at indexPath: IndexPath) -> NSCollectionViewLayoutAttributes? {
         if elementKind == NSCollectionView.elementKindSectionFooter {
             return dividerAttributes[safe: indexPath.section]
-        }
-        return nil
-    }
-
-    override func layoutAttributesForDecorationView(ofKind elementKind: NSCollectionView.DecorationElementKind, at indexPath: IndexPath) -> NSCollectionViewLayoutAttributes? {
-        if elementKind == Constants.BackgroundViewID.rawValue {
-            return backgroundAttributes[safe: indexPath.item]
         }
         return nil
     }
@@ -252,18 +247,16 @@ extension TimelineFlowLayout {
 
     private func calculateBackgroundAttributes() {
         let width = collectionViewContentSize.width
-        var backgroundIndex = 0
-        for (i, currentTimeLabel) in timeLablesAttributes.enumerated() {
-            if i % 2 == 0 {
-                continue
-            }
+        for i in 0..<numberOfBackground {
+            let labelIndex = i * 2
+            let currentTimeLabel = timeLablesAttributes[labelIndex]
 
-            let indexPath = IndexPath(item: backgroundIndex, section: 0)
+            let indexPath = IndexPath(item: i, section: TimelineData.Section.background.rawValue)
             let y = currentTimeLabel.frame.origin.y
             var height: CGFloat = 0
 
             // calculate height from current y to next label
-            if let nextTimeLabel = timeLablesAttributes[safe: i + 1] {
+            if let nextTimeLabel = timeLablesAttributes[safe: labelIndex + 1] {
                 height = nextTimeLabel.frame.origin.y - y
             } else {
                 height = collectionViewContentSize.height - y
@@ -274,11 +267,10 @@ extension TimelineFlowLayout {
                                y: y,
                                width: width,
                                height: height)
-            let view = NSCollectionViewLayoutAttributes(forDecorationViewOfKind: Constants.BackgroundViewID.rawValue, with: indexPath)
+            let view = NSCollectionViewLayoutAttributes(forItemWith: indexPath)
             view.frame = frame
             view.zIndex = 0
             backgroundAttributes.append(view)
-            backgroundIndex += 1
         }
     }
 

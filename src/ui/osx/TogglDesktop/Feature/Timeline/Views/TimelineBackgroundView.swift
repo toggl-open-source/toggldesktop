@@ -8,6 +8,14 @@
 
 import Cocoa
 
+final class TimelineBackgroundCell: NSCollectionViewItem {
+
+    override func loadView() {
+        super.loadView()
+        self.view = TimelineBackgroundView()
+    }
+}
+
 final class TimelineBackgroundView: NSView {
 
     // It's crucial to pass the mouse action to the above view
