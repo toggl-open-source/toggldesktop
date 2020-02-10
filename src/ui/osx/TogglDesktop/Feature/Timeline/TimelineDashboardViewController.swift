@@ -212,6 +212,9 @@ extension TimelineDashboardViewController {
         datePickerView.setBackgroundForTimeline()
         emptyActivityLbl.frameCenterRotation = -90
         activityRecorderInfoImageView.delegate = self
+        
+        // Forect Render the view
+        _ = activityHoverController.view
     }
 
     fileprivate func initNotifications() {
@@ -393,10 +396,17 @@ extension TimelineDashboardViewController: TimelineDatasourceDelegate {
         timeEntryHoverController.render(with: timeEntry)
     }
 
-    func shouldPresentActivityHover(in view: NSView, activity: TimelineActivity) {
+    func shouldPresentActivityHover(in cell: TimelineBaseCell, activity: TimelineActivity) {
         guard !editorPopover.isShown else { return }
-        activityHoverPopover.show(relativeTo: view.bounds, of: view, preferredEdge: .maxX)
+
+        // Update new content and force render to get fit size
         activityHoverController.render(activity)
+        activityHoverController.view.setNeedsDisplay(activityHoverController.view.bounds)
+        activityHoverController.view.displayIfNeeded()
+
+        // Udate size and present
+        activityHoverPopover.contentSize = activityHoverController.view.frame.size
+        activityHoverPopover.show(relativeTo: cell.view.bounds, of: cell.view, preferredEdge: .maxX)
     }
 
     func shouldPresentTimeEntryEditor(in view: NSView, timeEntry: TimeEntryViewItem, cell: TimelineTimeEntryCell) {
