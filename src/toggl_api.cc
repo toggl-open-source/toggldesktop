@@ -779,6 +779,15 @@ bool_t toggl_set_time_entry_start_timestamp(
            SetTimeEntryStart(to_string(guid), start);
 }
 
+bool_t toggl_set_time_entry_start_timestamp_with_option(
+    void *context,
+    const char_t *guid,
+    const int64_t start,
+    const bool_t keep_end_time_fixed) {
+    return toggl::noError == app(context)->
+           SetTimeEntryStartWithOption(to_string(guid), start, keep_end_time_fixed);
+}
+
 bool_t toggl_set_time_entry_end(
     void *context,
     const char_t *guid,

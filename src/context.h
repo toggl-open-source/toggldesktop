@@ -380,6 +380,10 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     error SetTimeEntryStart(const std::string GUID,
                             const Poco::Int64 startAt);
 
+    error SetTimeEntryStartWithOption(const std::string GUID,
+                                      const Poco::Int64 startAt,
+                                      const bool keepEndTimeFixed);
+
     error SetTimeEntryStop(
         const std::string &GUID,
         const std::string &value);

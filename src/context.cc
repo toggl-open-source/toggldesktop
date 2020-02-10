@@ -3216,6 +3216,12 @@ error Context::SetTimeEntryDate(
 
 error Context::SetTimeEntryStart(const std::string GUID,
                                  const Poco::Int64 startAt) {
+    return SetTimeEntryStartWithOption(GUID, startAt, GetKeepEndTimeFixed());
+}
+
+error Context::SetTimeEntryStartWithOption(const std::string GUID,
+                                 const Poco::Int64 startAt,
+                                 const bool keepEndTimeFixed) {
     TimeEntry *te = nullptr;
 
     {
@@ -3237,7 +3243,7 @@ error Context::SetTimeEntryStart(const std::string GUID,
 
         Poco::LocalDateTime start(Poco::Timestamp::fromEpochTime(startAt));
         std::string s = Poco::DateTimeFormatter::format(start, Poco::DateTimeFormat::ISO8601_FORMAT);
-        te->SetStartUserInput(s, GetKeepEndTimeFixed());
+        te->SetStartUserInput(s, keepEndTimeFixed);
         return displayError(save(true));
     }
 }
