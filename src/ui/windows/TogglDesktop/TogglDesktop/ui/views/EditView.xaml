@@ -38,7 +38,6 @@
                                            KeyDown="descriptionTextBox_OnKeyDown"/>
                     <toggl:AutoCompletionPopup x:Name="descriptionAutoComplete" x:FieldModifier="private"
                                                Target="{Binding ElementName=descriptionTextBox}" TextBox="{Binding ElementName=descriptionTextBox}"
-                                               EmptyText="No matching entries found."
                                                ConfirmCompletion="descriptionAutoComplete_OnConfirmCompletion"
                                                ConfirmWithoutCompletion="descriptionAutoComplete_OnConfirmWithoutCompletion"/>
                 </Grid>
@@ -83,7 +82,7 @@
 
                     <toggl:AutoCompletionPopup Grid.Row="0" x:Name="projectAutoComplete" x:FieldModifier="private"
                                                Target="{Binding ElementName=projectTextBox}" TextBox="{Binding ElementName=projectTextBox}"
-                                               EmptyText="No matching projects found." DropDownButton="{Binding ElementName=projectDropDownButton}"
+                                               DropDownButton="{Binding ElementName=projectDropDownButton}"
                                                ConfirmCompletion="projectAutoComplete_OnConfirmCompletion"
                                                ConfirmWithoutCompletion="projectAutoComplete_OnConfirmWithoutCompletion"
                                                ActionButtonText="Create a new project"
@@ -162,7 +161,7 @@
 
                                         <toggl:AutoCompletionPopup x:Name="clientAutoComplete" x:FieldModifier="private"
                                                                    Target="{Binding ElementName=clientTextBox}" TextBox="{Binding ElementName=clientTextBox}"
-                                                                   EmptyText="No matching clients found." DropDownButton="{Binding ElementName=clientDropDownButton}"
+                                                                   DropDownButton="{Binding ElementName=clientDropDownButton}"
                                                                    ConfirmCompletion="clientAutoComplete_OnConfirmCompletion"
                                                                    ConfirmWithoutCompletion="clientAutoComplete_OnConfirmWithoutCompletion"
                                                                    ActionButtonText="{Binding ElementName=clientTextBox, Path=Text, Converter={StaticResource StringFormatIfNotEmptyConverter}, ConverterParameter='Add client &quot;{0}&quot;'}"

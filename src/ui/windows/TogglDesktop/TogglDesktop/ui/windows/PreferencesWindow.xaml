@@ -87,7 +87,7 @@
                             <toggl:AutoCompletionPopup
                                 x:Name="defaultProjectAutoComplete" x:FieldModifier="private"
                                 Target="{Binding ElementName=defaultProjectTextBox}" TextBox="{Binding ElementName=defaultProjectTextBox}"
-                                EmptyText="No matching projects found." DropDownButton="{Binding ElementName=defaultProjectDropDownButton}"
+                                DropDownButton="{Binding ElementName=defaultProjectDropDownButton}"
                                 ConfirmCompletion="defaultProjectAutoComplete_OnConfirmCompletion"
                                 ConfirmWithoutCompletion="defaultProjectAutoComplete_OnConfirmWithoutCompletion"/>
 
