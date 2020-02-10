@@ -77,6 +77,7 @@ final class TimelineDatasource: NSObject {
     private var zoomLevel: ZoomLevel = .x1
     private var isUserResizing = false
     private var draggingIndexSet: IndexPath?
+    private var draggingDelta: Double?
     private var isUserOnAction: Bool { return isUserResizing || draggingIndexSet != nil }
 
     // MARK: Init
@@ -427,13 +428,17 @@ extension TimelineDatasource {
 
     func collectionView(_ collectionView: NSCollectionView, canDragItemsAt indexPaths: Set<IndexPath>, with event: NSEvent) -> Bool {
         guard let firstIndex = indexPaths.first,
-            let draggedItem = timeline?.item(at: firstIndex) else { return false }
+            let draggedCell = collectionView.item(at: firstIndex) else { return false }
 
         print("canDragItemsAt")
 
         // Only accept drag on Timeline Entry
-        switch draggedItem {
-        case is TimelineTimeEntry:
+        switch draggedCell {
+        case let cell as TimelineTimeEntryCell:
+            guard let timeEntry = cell.timeEntry else { return false }
+            let point = collectionView.convert(event.locationInWindow, from: nil)
+            let mouseTimestamp = flow.convertTimestamp(from: point)
+            draggingDelta = abs(mouseTimestamp - timeEntry.start)
             return true
         default:
             return false
@@ -448,7 +453,7 @@ extension TimelineDatasource {
     }
 
     func collectionView(_ collectionView: NSCollectionView, draggingSession session: NSDraggingSession, willBeginAt screenPoint: NSPoint, forItemsAt indexPaths: Set<IndexPath>) {
-        print("Will begin dragging at indexes \(indexPaths)")
+        print("Will begin dragging at indexes \(indexPaths), screenpoint = \(screenPoint)")
         draggingIndexSet = indexPaths.first
     }
 
@@ -460,7 +465,11 @@ extension TimelineDatasource {
         let position = collectionView.convert(draggingInfo.draggingLocation, from: nil)
 
         // Only allow to drop on the TimeEntry section
-        guard flow.isInTimeEntrySection(at: position) else { return [] }
+        guard flow.isInTimeEntrySection(at: position) else {
+            print("isInTimeEntrySection false")
+            return []
+        }
+
         return .move
     }
 
@@ -472,7 +481,21 @@ extension TimelineDatasource {
         guard flow.isInTimeEntrySection(at: position) else { return false }
 
         // Update position
+        let delta = draggingDelta ?? 0.0
+        let mouseTimestamp = flow.convertTimestamp(from: position)
+        let droppedStartTime = abs(mouseTimestamp - delta)
+        print("droppedStartTime = \(droppedStartTime)")
 
+        if let draggingIndexSet = draggingIndexSet,
+            let cell = collectionView.item(at: draggingIndexSet) as? TimelineTimeEntryCell,
+            let timeEntry = cell.timeEntry {
+            let duration = timeEntry.end - timeEntry.start
+            timeEntry.start = droppedStartTime
+            timeEntry.end = timeEntry.start + duration
+
+            // Update lib
+            DesktopLibraryBridge.shared().updateTimeEntryWithStart(atTimestamp: droppedStartTime, guid: timeEntry.timeEntry.guid)
+        }
 
         return true
     }
