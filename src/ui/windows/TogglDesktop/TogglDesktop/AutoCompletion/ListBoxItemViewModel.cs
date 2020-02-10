@@ -3,10 +3,6 @@
     class ListBoxItemViewModel
     {
         public string Text { get; protected set; }
-        public string ProjectLabel { get; protected set; }
-        public string ProjectColor { get; protected set; }
-        public string ClientLabel { get; protected set; }
-        public string WorkspaceName { get; protected set; }
         public ItemType Type { get; protected set; }
         public int Index { get; protected set; }
     }
@@ -51,7 +47,7 @@
 
     class ProjectItemViewModel : TimeEntryItemViewModel
     {
-        public ProjectItemViewModel(ListBoxItemViewModel item, int index)
+        public ProjectItemViewModel(TimeEntryItemViewModel item, int index)
         {
             Text = item.ProjectLabel;
             ProjectLabel = item.ProjectLabel;
@@ -61,6 +57,9 @@
             WorkspaceName = item.WorkspaceName;
             Index = index;
         }
+
+        protected ProjectItemViewModel()
+        { }
     }
 
     class TimeEntryItemViewModel : ListBoxItemViewModel
@@ -68,6 +67,10 @@
         public string Description { get; }
         public string TaskLabel { get; }
         public string ProjectAndTaskLabel { get; }
+        public string ProjectLabel { get; protected set; }
+        public string ProjectColor { get; protected set; }
+        public string ClientLabel { get; protected set; }
+        public string WorkspaceName { get; protected set; }
         public TimeEntryItemViewModel(Toggl.TogglAutocompleteView item, int index)
         {
             var taskLabel = item.Type == 0
@@ -91,7 +94,7 @@
         }
     }
 
-    class NoProjectItemViewModel : TimeEntryItemViewModel
+    class NoProjectItemViewModel : ProjectItemViewModel
     {
         public static NoProjectItemViewModel Instance => new NoProjectItemViewModel();
         private NoProjectItemViewModel()
