@@ -78,9 +78,8 @@ final class TimelineDatasource: NSObject {
     private(set) var timeline: TimelineData?
     private var zoomLevel: ZoomLevel = .x1
     private var isUserResizing = false
-    private var draggingIndexSet: IndexPath?
-    private var draggingDelta: Double?
-    private var isUserOnAction: Bool { return isUserResizing || draggingIndexSet != nil }
+    private var draggingSession = TimelineDraggingSession()
+    private var isUserOnAction: Bool { return isUserResizing || draggingSession.isDragging }
 
     // MARK: Init
 
@@ -218,9 +217,8 @@ extension TimelineDatasource: NSCollectionViewDataSource, NSCollectionViewDelega
     }
 
     func collectionView(_ collectionView: NSCollectionView, didSelectItemsAt indexPaths: Set<IndexPath>) {
-
         // Skip selection if the dragging
-        guard draggingIndexSet != nil else { return }
+        guard !draggingSession.isDragging else { return }
         guard let indexPath = indexPaths.first,
             let cell = collectionView.item(at: indexPath),
             let item = timeline?.item(at: indexPath) else { return }
@@ -440,7 +438,7 @@ extension TimelineDatasource {
             // It's essential to update the time later
             let point = collectionView.convert(event.locationInWindow, from: nil)
             let mouseTimestamp = flow.convertTimestamp(from: point)
-            draggingDelta = abs(mouseTimestamp - timeEntry.start)
+            draggingSession.mouseDistanceFromTop = abs(mouseTimestamp - timeEntry.start)
             return true
         default:
             return false
@@ -456,7 +454,7 @@ extension TimelineDatasource {
 
     func collectionView(_ collectionView: NSCollectionView, draggingSession session: NSDraggingSession, willBeginAt screenPoint: NSPoint, forItemsAt indexPaths: Set<IndexPath>) {
         print("Will begin dragging at indexes \(indexPaths), screenpoint = \(screenPoint)")
-        draggingIndexSet = indexPaths.first
+        draggingSession.indexPath = indexPaths.first
         delegate?.shouldHideAllPopover()
     }
 
@@ -483,17 +481,16 @@ extension TimelineDatasource {
         guard flow.isInTimeEntrySection(at: position) else { return false }
 
         // Get all things
-        guard let draggingIndexSet = draggingIndexSet,
-            let cell = collectionView.item(at: draggingIndexSet) as? TimelineTimeEntryCell,
+        guard let indexPath = draggingSession.indexPath,
+            let cell = collectionView.item(at: indexPath) as? TimelineTimeEntryCell,
             let timeEntry = cell.timeEntry else {
                 return false
         }
 
         // Update position
-        let delta = draggingDelta ?? 0.0
+        let delta = draggingSession.mouseDistanceFromTop ?? 0.0
         let mouseTimestamp = flow.convertTimestamp(from: position)
         let droppedStartTime = abs(mouseTimestamp - delta)
-        print("droppedStartTime = \(droppedStartTime)")
 
         // Update UI
         let duration = timeEntry.end - timeEntry.start
@@ -501,13 +498,21 @@ extension TimelineDatasource {
         timeEntry.end = timeEntry.start + duration
         flow.invalidateLayout()
 
-        // Update lib
-        delegate?.shouldUpdateStartTime(droppedStartTime, for: timeEntry, keepEndTimeFixed: false)
+        // Save
+        draggingSession.acceptDrop(at: droppedStartTime, for: timeEntry)
         return true
     }
 
     func collectionView(_ collectionView: NSCollectionView, draggingSession session: NSDraggingSession, endedAt screenPoint: NSPoint, dragOperation operation: NSDragOperation) {
-        draggingIndexSet = nil
-        draggingDelta = nil
+        let startTime = draggingSession.finalStartTime
+        let timeEntry = draggingSession.item
+
+        // Reset all
+        draggingSession.reset()
+
+        // Update lib
+        if let startTime = startTime, let timeEntry = timeEntry {
+            delegate?.shouldUpdateStartTime(startTime, for: timeEntry, keepEndTimeFixed: false)
+        }
     }
 }
