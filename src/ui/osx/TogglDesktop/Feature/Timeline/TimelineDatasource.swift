@@ -453,25 +453,28 @@ extension TimelineDatasource {
     }
 
     func collectionView(_ collectionView: NSCollectionView, validateDrop draggingInfo: NSDraggingInfo, proposedIndexPath proposedDropIndexPath: AutoreleasingUnsafeMutablePointer<NSIndexPath>, dropOperation proposedDropOperation: UnsafeMutablePointer<NSCollectionView.DropOperation>) -> NSDragOperation {
-        print("validate drop at \(proposedDropIndexPath.pointee), operation = \(proposedDropOperation.pointee)")
         let dropIndexPath = proposedDropIndexPath.pointee
+        print("validate drop at section=\(dropIndexPath.section) row=\(dropIndexPath.item), operation = \(proposedDropOperation.pointee.rawValue)")
 
-        // Only allow drop in the Time Entry section
-        guard dropIndexPath.section == TimelineData.Section.timeEntry.rawValue else {
-            return []
-        }
+        // Local position of the dragging mouse
+        let position = collectionView.convert(draggingInfo.draggingLocation, from: nil)
 
-        // Don't allow to drop on top of others
-        if proposedDropOperation.pointee == .on {
-            proposedDropOperation.pointee = .before
-        }
-
+        // Only allow to drop on the TimeEntry section
+        guard flow.isInTimeEntrySection(at: position) else { return [] }
         return .move
     }
 
     func collectionView(_ collectionView: NSCollectionView, acceptDrop draggingInfo: NSDraggingInfo, indexPath: IndexPath, dropOperation: NSCollectionView.DropOperation) -> Bool {
         print("accept drop")
-        return false
+
+        // Verify that the drop position is in the Timeline Entry Section
+        let position = collectionView.convert(draggingInfo.draggingLocation, from: nil)
+        guard flow.isInTimeEntrySection(at: position) else { return false }
+
+        // Update position
+
+
+        return true
     }
 
     func collectionView(_ collectionView: NSCollectionView, draggingSession session: NSDraggingSession, endedAt screenPoint: NSPoint, dragOperation operation: NSDragOperation) {
