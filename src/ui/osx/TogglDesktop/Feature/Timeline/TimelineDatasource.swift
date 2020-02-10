@@ -92,6 +92,9 @@ final class TimelineDatasource: NSObject {
     }
 
     func render(_ timeline: TimelineData) {
+        self.timeline?.cleanUp()
+        self.timeline = nil
+
         self.timeline = timeline
         flow.currentDate = Date(timeIntervalSince1970: timeline.start)
         collectionView.reloadData()

@@ -241,10 +241,16 @@ BOOL wasLaunchedAsHiddenLoginItem()
 		if (CFEqual(item_url_ref, url_ref))
 		{
 			CFBooleanRef hidden = LSSharedFileListItemCopyProperty(item, kLSSharedFileListLoginItemHidden);
-			return (hidden && kCFBooleanTrue == hidden);
+			BOOL value = (hidden && kCFBooleanTrue == hidden);
+            if (hidden != NULL) {
+                CFRelease(hidden);
+            }
+            CFRelease(login_items_array);
+            return value;
 		}
 	}
 
+    CFRelease(login_items_array);
 	return NO;
 }
 

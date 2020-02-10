@@ -45,7 +45,9 @@ bool isCatalinaOSX(void) {
         return false;
     }
     if (version->major >= 10 && version->minor >= 15) {
+        delete version;
         return true;
     }
+    delete version;
     return false;
 }

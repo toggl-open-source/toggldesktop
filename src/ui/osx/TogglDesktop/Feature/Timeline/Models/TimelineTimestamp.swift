@@ -8,7 +8,7 @@
 
 import Foundation
 
-final class TimelineTimestamp {
+struct TimelineTimestamp {
 
     let label: String
 

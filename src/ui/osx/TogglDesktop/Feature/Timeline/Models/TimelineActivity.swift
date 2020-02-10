@@ -8,7 +8,7 @@
 
 import Foundation
 
-final class TimelineEvent {
+struct TimelineEvent {
 
     // MARK: Variables
 
@@ -31,7 +31,7 @@ final class TimelineEvent {
     }
 }
 
-final class TimelineActivity {
+struct TimelineActivity {
 
     private static let LightestBlueColor = NSColor(red:0.020, green:0.667, blue:0.961, alpha:1.0)
     private static let DarkestBlueColor = NSColor(red:0.702, green:0.898, blue:0.988, alpha:1.0)
@@ -45,10 +45,7 @@ final class TimelineActivity {
     let endTimeStr: String
     let events: [TimelineEvent]
     var isSmall = false
-    lazy var color: NSColor = {
-        let ratio = CGFloat(duration / 900.0)
-        return TimelineActivity.getColor(from: TimelineActivity.LightestBlueColor, darkest: TimelineActivity.DarkestBlueColor, ratio: ratio)
-    }()
+    let color: NSColor
 
     // MARK: Init
 
@@ -59,6 +56,8 @@ final class TimelineActivity {
         self.endTimeStr = endTimeStr
         self.events = events
         self.ended = started + duration
+        let ratio = CGFloat(duration / 900.0)
+        self.color = TimelineActivity.getColor(from: TimelineActivity.LightestBlueColor, darkest: TimelineActivity.DarkestBlueColor, ratio: ratio)
     }
 
     // MARK: Public

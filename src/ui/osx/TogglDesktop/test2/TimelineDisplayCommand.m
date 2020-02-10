@@ -17,7 +17,7 @@
 	{
 		if (view->Title)
 		{
-			self.title = [NSString stringWithUTF8String:view->Title];
+            self.title = [[NSString alloc] initWithUTF8String:view->Title];
 		}
 		else
 		{
@@ -25,7 +25,7 @@
 		}
 		if (view->Filename)
 		{
-			self.fileName = [NSString stringWithUTF8String:view->Filename];
+			self.fileName = [[NSString alloc] initWithUTF8String:view->Filename];
 		}
 		else
 		{
@@ -33,7 +33,7 @@
 		}
 		if (view->DurationString)
 		{
-			self.durationStr = [NSString stringWithUTF8String:view->DurationString];
+			self.durationStr = [[NSString alloc] initWithUTF8String:view->DurationString];
 		}
 		else
 		{
@@ -68,7 +68,7 @@
 		self.started = view->Started;
 		if (view->StartTimeString)
 		{
-			self.startedTimeString = [NSString stringWithUTF8String:view->StartTimeString];
+			self.startedTimeString = [[NSString alloc] initWithUTF8String:view->StartTimeString];
 		}
 		else
 		{
@@ -76,7 +76,7 @@
 		}
 		if (view->EndTimeString)
 		{
-			self.endedTimeString = [NSString stringWithUTF8String:view->EndTimeString];
+			self.endedTimeString = [[NSString alloc] initWithUTF8String:view->EndTimeString];
 		}
 		else
 		{
@@ -119,8 +119,7 @@
 		TogglTimeEntryView *it_entry = firstEntry;
 		while (it_entry)
 		{
-			TimeEntryViewItem *item = [[TimeEntryViewItem alloc] init];
-			[item load:it_entry];
+            TimeEntryViewItem *item = [[TimeEntryViewItem alloc] initWithView:it_entry];
 			[timeEntries addObject:item];
 			it_entry = it_entry->Next;
 		}
