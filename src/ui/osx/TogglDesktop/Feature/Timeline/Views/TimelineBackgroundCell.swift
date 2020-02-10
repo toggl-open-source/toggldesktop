@@ -1,5 +1,5 @@
 //
-//  TimelineBackgroundView.swift
+//  TimelineBackgroundCell.swift
 //  TogglDesktop
 //
 //  Created by Nghia Tran on 12/13/19.
@@ -11,7 +11,6 @@ import Cocoa
 final class TimelineBackgroundCell: NSCollectionViewItem {
 
     override func loadView() {
-        super.loadView()
         self.view = TimelineBackgroundView()
     }
 }

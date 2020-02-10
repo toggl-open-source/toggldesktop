@@ -154,7 +154,7 @@
 		BA37ACD823D8900C0013EE26 /* TimelineActivityCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA75FF2922BCC20D00D3F08C /* TimelineActivityCell.swift */; };
 		BA37ACD923D8900C0013EE26 /* TimelineActivityCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA75FF2A22BCC20D00D3F08C /* TimelineActivityCell.xib */; };
 		BA37ACDA23D8900C0013EE26 /* TimelineDividerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD0E0BC22C49BAC009F5A83 /* TimelineDividerView.swift */; };
-		BA37ACDB23D8900C0013EE26 /* TimelineBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAA0F5A223A38CB300F04654 /* TimelineBackgroundView.swift */; };
+		BA37ACDB23D8900C0013EE26 /* TimelineBackgroundCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAA0F5A223A38CB300F04654 /* TimelineBackgroundCell.swift */; };
 		BA37ACDC23D8900C0013EE26 /* TimelineDashedCornerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAA0105122CB72E4007C1541 /* TimelineDashedCornerView.swift */; };
 		BA37ACDD23D8900C0013EE26 /* TimelineTimeEntryHoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6F81E222C5FB1E009B6828 /* TimelineTimeEntryHoverViewController.swift */; };
 		BA37ACDE23D8900C0013EE26 /* TimelineTimeEntryHoverViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA6F81E322C5FB1E009B6828 /* TimelineTimeEntryHoverViewController.xib */; };
@@ -318,7 +318,7 @@
 		BAA0104F22CB66D0007C1541 /* TimelineEmptyTimeEntryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAA0104D22CB66D0007C1541 /* TimelineEmptyTimeEntryCell.swift */; };
 		BAA0105022CB66D0007C1541 /* TimelineEmptyTimeEntryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BAA0104E22CB66D0007C1541 /* TimelineEmptyTimeEntryCell.xib */; };
 		BAA0105222CB72E4007C1541 /* TimelineDashedCornerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAA0105122CB72E4007C1541 /* TimelineDashedCornerView.swift */; };
-		BAA0F5A323A38CB300F04654 /* TimelineBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAA0F5A223A38CB300F04654 /* TimelineBackgroundView.swift */; };
+		BAA0F5A323A38CB300F04654 /* TimelineBackgroundCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAA0F5A223A38CB300F04654 /* TimelineBackgroundCell.swift */; };
 		BAA11AC12251F49E007F31D2 /* WorkspaceStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAA11AC02251F49E007F31D2 /* WorkspaceStorage.swift */; };
 		BAA11AC32251F4D6007F31D2 /* WorkspaceAutoCompleteTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAA11AC22251F4D6007F31D2 /* WorkspaceAutoCompleteTextField.swift */; };
 		BAA11AC52251F502007F31D2 /* WorkspaceDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAA11AC42251F502007F31D2 /* WorkspaceDataSource.swift */; };
@@ -334,8 +334,8 @@
 		BAB508E4237EA54500D3D468 /* ObjcSystemPermissionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB508E3237EA54500D3D468 /* ObjcSystemPermissionManager.swift */; };
 		BAB5FFD423F13F75003781D3 /* TimelineDraggingSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB5FFD323F13F75003781D3 /* TimelineDraggingSession.swift */; };
 		BAB5FFD523F13F75003781D3 /* TimelineDraggingSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB5FFD323F13F75003781D3 /* TimelineDraggingSession.swift */; };
-		BAB5FFD723F15A65003781D3 /* TimelineBackgroundView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BAB5FFD623F15A65003781D3 /* TimelineBackgroundView.xib */; };
-		BAB5FFD823F15A65003781D3 /* TimelineBackgroundView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BAB5FFD623F15A65003781D3 /* TimelineBackgroundView.xib */; };
+		BAB5FFD723F15A65003781D3 /* TimelineBackgroundCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BAB5FFD623F15A65003781D3 /* TimelineBackgroundCell.xib */; };
+		BAB5FFD823F15A65003781D3 /* TimelineBackgroundCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BAB5FFD623F15A65003781D3 /* TimelineBackgroundCell.xib */; };
 		BAB818C3228D5847008C2367 /* DescriptionAutoCompleteTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB818C2228D5847008C2367 /* DescriptionAutoCompleteTextField.swift */; };
 		BAB818E3228D594D008C2367 /* DescriptionTimeEntryStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB818E2228D594D008C2367 /* DescriptionTimeEntryStorage.swift */; };
 		BAB818E5228D5A17008C2367 /* DescriptionDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB818E4228D5A16008C2367 /* DescriptionDataSource.swift */; };
@@ -1021,7 +1021,7 @@
 		BAA0104D22CB66D0007C1541 /* TimelineEmptyTimeEntryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineEmptyTimeEntryCell.swift; sourceTree = "<group>"; };
 		BAA0104E22CB66D0007C1541 /* TimelineEmptyTimeEntryCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimelineEmptyTimeEntryCell.xib; sourceTree = "<group>"; };
 		BAA0105122CB72E4007C1541 /* TimelineDashedCornerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineDashedCornerView.swift; sourceTree = "<group>"; };
-		BAA0F5A223A38CB300F04654 /* TimelineBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineBackgroundView.swift; sourceTree = "<group>"; };
+		BAA0F5A223A38CB300F04654 /* TimelineBackgroundCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineBackgroundCell.swift; sourceTree = "<group>"; };
 		BAA11AC02251F49E007F31D2 /* WorkspaceStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceStorage.swift; sourceTree = "<group>"; };
 		BAA11AC22251F4D6007F31D2 /* WorkspaceAutoCompleteTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceAutoCompleteTextField.swift; sourceTree = "<group>"; };
 		BAA11AC42251F502007F31D2 /* WorkspaceDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceDataSource.swift; sourceTree = "<group>"; };
@@ -1037,7 +1037,7 @@
 		BAB508E1237E8FBC00D3D468 /* SystemPermissionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemPermissionManager.swift; sourceTree = "<group>"; };
 		BAB508E3237EA54500D3D468 /* ObjcSystemPermissionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjcSystemPermissionManager.swift; sourceTree = "<group>"; };
 		BAB5FFD323F13F75003781D3 /* TimelineDraggingSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineDraggingSession.swift; sourceTree = "<group>"; };
-		BAB5FFD623F15A65003781D3 /* TimelineBackgroundView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimelineBackgroundView.xib; sourceTree = "<group>"; };
+		BAB5FFD623F15A65003781D3 /* TimelineBackgroundCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimelineBackgroundCell.xib; sourceTree = "<group>"; };
 		BAB818C2228D5847008C2367 /* DescriptionAutoCompleteTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptionAutoCompleteTextField.swift; sourceTree = "<group>"; };
 		BAB818E2228D594D008C2367 /* DescriptionTimeEntryStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptionTimeEntryStorage.swift; sourceTree = "<group>"; };
 		BAB818E4228D5A16008C2367 /* DescriptionDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptionDataSource.swift; sourceTree = "<group>"; };
@@ -1722,8 +1722,8 @@
 				BA75FF2922BCC20D00D3F08C /* TimelineActivityCell.swift */,
 				BA75FF2A22BCC20D00D3F08C /* TimelineActivityCell.xib */,
 				BAD0E0BC22C49BAC009F5A83 /* TimelineDividerView.swift */,
-				BAA0F5A223A38CB300F04654 /* TimelineBackgroundView.swift */,
-				BAB5FFD623F15A65003781D3 /* TimelineBackgroundView.xib */,
+				BAA0F5A223A38CB300F04654 /* TimelineBackgroundCell.swift */,
+				BAB5FFD623F15A65003781D3 /* TimelineBackgroundCell.xib */,
 				BAA0105122CB72E4007C1541 /* TimelineDashedCornerView.swift */,
 				BA6F81E222C5FB1E009B6828 /* TimelineTimeEntryHoverViewController.swift */,
 				BA6F81E322C5FB1E009B6828 /* TimelineTimeEntryHoverViewController.xib */,
@@ -2074,7 +2074,7 @@
 				BAE007DE21FAF00D00404379 /* Media.xcassets in Resources */,
 				C5DA1FC517F1B38B001C4565 /* LoginViewController.xib in Resources */,
 				69FC180517E6534400B96425 /* Credits.rtf in Resources */,
-				BAB5FFD723F15A65003781D3 /* TimelineBackgroundView.xib in Resources */,
+				BAB5FFD723F15A65003781D3 /* TimelineBackgroundCell.xib in Resources */,
 				BAAF56A42223E19C003D0D73 /* TimeDecoratorView.xib in Resources */,
 				BA5E988F23BF4A6E0089A2C7 /* TimelineActivityRecorderViewController.xib in Resources */,
 				74F1070218993FFE00E93BD5 /* FeedbackWindowController.xib in Resources */,
@@ -2148,7 +2148,7 @@
 				BAE64E1D2368334000244D2B /* MainWindowController.xib in Resources */,
 				BA37ACD923D8900C0013EE26 /* TimelineActivityCell.xib in Resources */,
 				BAE64E1E2368334000244D2B /* ClientCellView.xib in Resources */,
-				BAB5FFD823F15A65003781D3 /* TimelineBackgroundView.xib in Resources */,
+				BAB5FFD823F15A65003781D3 /* TimelineBackgroundCell.xib in Resources */,
 				BA37ACBD23D890050013EE26 /* TimelineActivityRecorderViewController.xib in Resources */,
 				BAE64E1F2368334000244D2B /* FloatingErrorView.xib in Resources */,
 				BAE64E202368334000244D2B /* TimeEntryListViewController.xib in Resources */,
@@ -2571,7 +2571,7 @@
 				74D1D27217EB72D900E709B0 /* TimerEditViewController.m in Sources */,
 				3C2F239D21A7B43400CBE6BC /* UnsupportedNotice.m in Sources */,
 				BAF3ACD32343325A00E41B33 /* TouchBarService.swift in Sources */,
-				BAA0F5A323A38CB300F04654 /* TimelineBackgroundView.swift in Sources */,
+				BAA0F5A323A38CB300F04654 /* TimelineBackgroundCell.swift in Sources */,
 				741104BF18C7682700BC7A49 /* NSTextFieldWithBackground.m in Sources */,
 				BA80BEB2221EAE6F00BDFD35 /* Array+ByGroup.swift in Sources */,
 				BA067642233A492F00485C3C /* TogglApplication.m in Sources */,
@@ -2682,7 +2682,7 @@
 				BA4A7D5623755A4200A42095 /* TimeEntryScrubberItem.swift in Sources */,
 				BAE64D822368334000244D2B /* DayLabel.swift in Sources */,
 				BAE64D832368334000244D2B /* NSSecureTextFieldVerticallyAligned.m in Sources */,
-				BA37ACDB23D8900C0013EE26 /* TimelineBackgroundView.swift in Sources */,
+				BA37ACDB23D8900C0013EE26 /* TimelineBackgroundCell.swift in Sources */,
 				BAE64D842368334000244D2B /* TimeEntryCell+Ext.swift in Sources */,
 				BA37AD0523D8902A0013EE26 /* VerticallyCenteredTextFieldCell.swift in Sources */,
 				BAE64D852368334000244D2B /* (null) in Sources */,

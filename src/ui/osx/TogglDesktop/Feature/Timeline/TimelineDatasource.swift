@@ -32,7 +32,8 @@ final class TimelineDatasource: NSObject {
         static let ActivityCellID = NSUserInterfaceItemIdentifier("TimelineActivityCell")
         static let ActivityCellXIB = NSNib.Name("TimelineActivityCell")
         static let DividerViewID = NSUserInterfaceItemIdentifier("DividerViewID")
-        static let BackgroundViewID = NSUserInterfaceItemIdentifier("BackgroundViewID")
+        static let BackgroundViewID = NSUserInterfaceItemIdentifier("TimelineBackgroundCell")
+        static let BackgroundViewXIB = NSNib.Name("TimelineBackgroundCell")
     }
 
     enum ZoomLevel: Int {
@@ -95,7 +96,7 @@ final class TimelineDatasource: NSObject {
         collectionView.register(NSNib(nibNamed: Constants.ActivityCellXIB, bundle: nil), forItemWithIdentifier: Constants.ActivityCellID)
         collectionView.register(NSNib(nibNamed: Constants.EmptyTimeEntryCellXIB, bundle: nil), forItemWithIdentifier: Constants.EmptyTimeEntryCellID)
         collectionView.register(TimelineDividerView.self, forSupplementaryViewOfKind: NSCollectionView.elementKindSectionFooter, withIdentifier: Constants.DividerViewID)
-        collectionView.register(NSNib(nibNamed: "TimelineBackgroundView", bundle: nil), forItemWithIdentifier: Constants.BackgroundViewID)
+        collectionView.register(NSNib(nibNamed: Constants.BackgroundViewXIB, bundle: nil), forItemWithIdentifier: Constants.BackgroundViewID)
         registerForDragAndDrop()
     }
 
