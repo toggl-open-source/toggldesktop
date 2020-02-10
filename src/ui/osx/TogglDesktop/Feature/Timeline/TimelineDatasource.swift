@@ -436,6 +436,9 @@ extension TimelineDatasource {
         switch draggedCell {
         case let cell as TimelineTimeEntryCell:
             guard let timeEntry = cell.timeEntry else { return false }
+
+            // Calculate the distance between the mouse position on the selected TE and the Start Time
+            // It's essential to update the time later
             let point = collectionView.convert(event.locationInWindow, from: nil)
             let mouseTimestamp = flow.convertTimestamp(from: point)
             draggingDelta = abs(mouseTimestamp - timeEntry.start)
@@ -466,7 +469,6 @@ extension TimelineDatasource {
 
         // Only allow to drop on the TimeEntry section
         guard flow.isInTimeEntrySection(at: position) else {
-            print("isInTimeEntrySection false")
             return []
         }
 
@@ -480,27 +482,32 @@ extension TimelineDatasource {
         let position = collectionView.convert(draggingInfo.draggingLocation, from: nil)
         guard flow.isInTimeEntrySection(at: position) else { return false }
 
+        // Get all things
+        guard let draggingIndexSet = draggingIndexSet,
+            let cell = collectionView.item(at: draggingIndexSet) as? TimelineTimeEntryCell,
+            let timeEntry = cell.timeEntry else {
+                return false
+        }
+
         // Update position
         let delta = draggingDelta ?? 0.0
         let mouseTimestamp = flow.convertTimestamp(from: position)
         let droppedStartTime = abs(mouseTimestamp - delta)
         print("droppedStartTime = \(droppedStartTime)")
 
-        if let draggingIndexSet = draggingIndexSet,
-            let cell = collectionView.item(at: draggingIndexSet) as? TimelineTimeEntryCell,
-            let timeEntry = cell.timeEntry {
-            let duration = timeEntry.end - timeEntry.start
-            timeEntry.start = droppedStartTime
-            timeEntry.end = timeEntry.start + duration
+        // Update UI
+        let duration = timeEntry.end - timeEntry.start
+        timeEntry.start = droppedStartTime
+        timeEntry.end = timeEntry.start + duration
+        flow.invalidateLayout()
 
-            // Update lib
-            DesktopLibraryBridge.shared().updateTimeEntryWithStart(atTimestamp: droppedStartTime, guid: timeEntry.timeEntry.guid)
-        }
-
+        // Update lib
+        DesktopLibraryBridge.shared().updateTimeEntryForDragAndDropWithStart(atTimestamp: droppedStartTime, guid: timeEntry.timeEntry.guid)
         return true
     }
 
     func collectionView(_ collectionView: NSCollectionView, draggingSession session: NSDraggingSession, endedAt screenPoint: NSPoint, dragOperation operation: NSDragOperation) {
         draggingIndexSet = nil
+        draggingDelta = nil
     }
 }

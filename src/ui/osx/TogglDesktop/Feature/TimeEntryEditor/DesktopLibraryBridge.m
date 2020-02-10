@@ -138,6 +138,15 @@ void *ctx;
 										 timestamp);
 }
 
+- (void)updateTimeEntryForDragAndDropWithStartAtTimestamp:(NSTimeInterval)timestamp
+                                                     guid:(NSString *)guid
+{
+    toggl_set_time_entry_start_timestamp_with_option(ctx,
+                                                     [guid UTF8String],
+                                                     timestamp,
+                                                     false);
+}
+
 - (void)updateTimeEntryWithEndTime:(NSString *)endTime
 							  guid:(NSString *)guid
 {

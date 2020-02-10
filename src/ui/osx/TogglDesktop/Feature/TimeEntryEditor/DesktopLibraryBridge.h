@@ -58,6 +58,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)updateTimeEntryWithStartAtTimestamp:(NSTimeInterval)timestamp
 									   guid:(NSString *)guid;
 
+- (void)updateTimeEntryForDragAndDropWithStartAtTimestamp:(NSTimeInterval)timestamp
+                                                     guid:(NSString *)guid;
+
 - (void)updateTimeEntryWithEndTime:(NSString *)endTime
 							  guid:(NSString *)guid;
 
