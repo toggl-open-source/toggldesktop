@@ -26,21 +26,21 @@ namespace TogglDesktop.Experiments
                 Description = "Meeting",
                 ProjectLabel = "Internal",
                 Color = "#6ac4fc",
-            }, null);
+            });
             this.cellDummy1.Display(new Toggl.TogglTimeEntryView
             {
                 Description = "Research for presentation",
                 ProjectLabel = "Consulting",
                 ClientLabel = "Toy Factory",
                 Color = "#d086ac",
-            }, null);
+            });
             this.cellDummy2.Display(new Toggl.TogglTimeEntryView
             {
                 Description = "Code review",
                 ProjectLabel = "Frontend",
                 ClientLabel = "Toy Factory",
                 Color = "#69c600",
-            }, null);
+            });
         }
 
         protected override void cleanup()

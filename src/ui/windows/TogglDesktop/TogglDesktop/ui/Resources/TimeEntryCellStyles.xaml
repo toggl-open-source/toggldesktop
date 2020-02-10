@@ -4,8 +4,8 @@
     xmlns:sys="clr-namespace:System;assembly=mscorlib"
     xmlns:toggl="clr-namespace:TogglDesktop">
 
-    <sys:Double x:Key="TimeEntryHeight">53</sys:Double>
-    <sys:Double x:Key="TimeEntryDayHeaderHeight">45</sys:Double>
+    <sys:Double x:Key="TimeEntryHeight">60</sys:Double>
+    <sys:Double x:Key="TimeEntryDayHeaderHeight">40</sys:Double>
 
     <ContextMenu x:Key="TimeEntryContextMenu">
         <MenuItem Header="Delete time entry"
@@ -24,55 +24,5 @@
         <MenuItem Header="Expand all days"
                   Command="{x:Static toggl:TimeEntryCellContextMenuCommands.ExpandAllDaysCommand}"/>
     </ContextMenu>
-    
-    <Style x:Key="TimeEntryCell">
-
-        <Style.Resources>
-
-            <!-- common text settings -->
-            <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
-                <Setter Property="VerticalAlignment" Value="Center"/>
-                <Setter Property="Margin" Value="0, 0, 4, 0"/>
-            </Style>
-
-            <!-- continue button -->
-            <Style TargetType="Button">
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="Button">
-                            <Border Background="{TemplateBinding Background}" />
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-                <Setter Property="BorderThickness" Value="0"/>
-                <Setter Property="Cursor" Value="Hand"/>
-                <Setter Property="UseLayoutRounding" Value="True" />
-                <Setter Property="Background">
-                    <Setter.Value>
-                        <ImageBrush ImageSource="/TogglDesktop;component/Resources/continue.png" Stretch="Fill"/>
-                    </Setter.Value>
-                </Setter>
-                <Style.Triggers>
-                    <DataTrigger Binding="{Binding SubItem}" Value="True">
-                        <Setter Property="Background">
-                            <Setter.Value>
-                                <ImageBrush ImageSource="/TogglDesktop;component/Resources/continue_light.png" Stretch="Fill"/>
-                            </Setter.Value>
-                        </Setter>
-                    </DataTrigger>
-                    <Trigger Property="IsMouseOver" Value="True">
-                        <Setter Property="Background">
-                            <Setter.Value>
-                                <ImageBrush ImageSource="/TogglDesktop;component/Resources/continue_hover.png" Stretch="Fill"/>
-                            </Setter.Value>
-                        </Setter>
-                    </Trigger>
-                </Style.Triggers>
-            </Style>
-
-        </Style.Resources>
-
-    </Style>
-    
     
 </ResourceDictionary>

@@ -61,68 +61,43 @@
         <ScrollViewer VerticalScrollBarVisibility="Visible"
                       HorizontalScrollBarVisibility="Disabled"
                       HorizontalAlignment="Stretch"
-                      SizeChanged="onSizeChanged"
-                      Background="#f7f7f7"
                       Style="{StaticResource CustomSrollViewer}"
-                      >
-            <Grid Background="{StaticResource ViewBackgroundLight}"> 
+                      Focusable="False"
+                      IsTabStop="False"
+                      PreviewKeyDown="UIElement_OnPreviewKeyDown">
+            <Grid Margin="4">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 
-                <VirtualizingStackPanel Name="panel" x:FieldModifier="private" HorizontalAlignment="Stretch" Grid.Row="0" Margin="0 0 0 10">
-
-                </VirtualizingStackPanel>
-                <Rectangle x:Name="highlightRectangleTop" x:FieldModifier="private" Grid.Row="0"
-                           Fill="#f7f7f7" Opacity="0.7" HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="0"
-                           IsHitTestVisible="False"/>
-                <Rectangle x:Name="highlightRectangleBottom" x:FieldModifier="private" Grid.Row="0"
-                           Fill="#f7f7f7" Opacity="0.7" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Height="0"
-                           IsHitTestVisible="False"/>
-
-                <Border x:Name="keyboardHighlight" x:FieldModifier="private" Grid.Row="0" Visibility="Visible"
-                        HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="59" Margin="-10 20"
-                        Background="White">
-                    <Border.Effect>
-                        <DropShadowEffect
-                            Direction="270"
-                            ShadowDepth="1"
-                            BlurRadius="10"
-                            Opacity="0.5"/>
-                    </Border.Effect>
-                    <toggl:TimeEntryCell x:Name="keyboardHighlightCellImposter" x:FieldModifier="private"
-                        Margin="10 0" IsFloating="True" VerticalAlignment="Center" Height="59"
-                        />
-                </Border>
-
+                <VirtualizingStackPanel Name="panel" x:FieldModifier="private" HorizontalAlignment="Stretch" Grid.Row="0"
+                                        KeyboardNavigation.TabNavigation="Contained" />
                 
-                <Button Grid.Row="1" Style="{StaticResource FlatButton}"
-                        Margin="10" HorizontalAlignment="Center" Focusable="False"
+                <Button Grid.Row="1" Style="{DynamicResource Toggl.OutlinedButton}"
+                        Margin="12" HorizontalAlignment="Center" Focusable="False"
                         Name="loadMoreButton" x:FieldModifier="private"
+                        Height="32" Width="96"
                         Click="onLoadMoreButtonClick">
-                    <Grid Height="24" Width="120">
+                    <Grid>
                         <Image Source="/TogglDesktop;component/Resources/login-spinner.png"
                             Name="loadMoreSpinner" x:FieldModifier="private"
-                            Stretch="Fill" Width="16" Height="16"
+                            Stretch="Fill" Width="24" Height="24"
                             VerticalAlignment="Center" HorizontalAlignment="Center"
-                            Visibility="Collapsed" Opacity="0.5"
+                            Visibility="Collapsed" Opacity="0.6"
                             UseLayoutRounding="False">
                             <Image.LayoutTransform>
                                 <RotateTransform Angle="00"/>
                             </Image.LayoutTransform>
                         </Image>
                         <TextBlock Name="loadMoreButtonText" x:FieldModifier="private"
-                            VerticalAlignment="Center" HorizontalAlignment="Center"
-                            Foreground="#333333"
-                            Text="LOAD MORE"/>
+                                   Style="{DynamicResource Toggl.BodyText}"
+                                   VerticalAlignment="Center" HorizontalAlignment="Center"
+                                   Text="Load more"/>
                     </Grid>
                 </Button>
             </Grid>
         </ScrollViewer>
-        <Rectangle Name="resizeBackground" x:FieldModifier="private"
-            VerticalAlignment="Bottom" HorizontalAlignment="Right"
-                Width="17" Height="17" Fill="#f0f0f0" IsHitTestVisible="True"/>
 
         <Button Name="emptyListText" x:FieldModifier="private" Visibility="Hidden"
                         FontSize="14" Foreground="Gray" Cursor="Hand"

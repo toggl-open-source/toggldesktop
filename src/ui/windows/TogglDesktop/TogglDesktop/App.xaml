@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:toggl="clr-namespace:TogglDesktop"
              xmlns:theming="clr-namespace:TogglDesktop.Theming"
+             xmlns:converters="clr-namespace:TogglDesktop.Converters"
              ShutdownMode="OnExplicitShutdown">
     <Application.Resources>
         <ResourceDictionary>
@@ -21,6 +22,12 @@
                 <ResourceDictionary Source="ui/Resources/PreferencesWindowStyles.xaml"/>
                 <ResourceDictionary Source="ui/Resources/TutorialStyles.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverterGlobal" />
+            <converters:FalseToHiddenVisibilityConverter x:Key="FalseToHiddenVisibilityConverter" />
+            <converters:EmptyStringToCollapsedConverter x:Key="EmptyStringToCollapsedConverter" />
+            <converters:EmptyStringToCollapsedConverter x:Key="EmptyStringToVisibleConverter" Inverse="True" />
+
         </ResourceDictionary>
     </Application.Resources>
 </Application>

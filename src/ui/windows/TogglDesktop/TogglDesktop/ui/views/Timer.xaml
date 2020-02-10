@@ -8,7 +8,8 @@
              d:DesignWidth="500"
              MinWidth="300"
              Height="{StaticResource TimerHeight}"
-             Focusable="True">
+             Focusable="True"
+             Background="{DynamicResource Toggl.CardBackground}">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -141,16 +142,19 @@
                 </Grid>
             </Grid>
 
-            <toggl:RunningEntryInfoPanel x:Name="runningEntryInfoPanel" x:FieldModifier="private"
+            <toggl:TimeEntryInfoPanel x:Name="runningEntryInfoPanel" x:FieldModifier="private"
                                          Grid.Column="1"
-                                         DurationLabelMouseDown="onTimeLabelMouseDown"/>
+                                         DurationLabelMouseDown="onTimeLabelMouseDown"
+                                         DurationTextBlockStyle="{DynamicResource Toggl.BaseText}"
+                                         Background="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Background}"/>
 
             <!-- start/stop button -->
             <ToggleButton Name="startStopButton" x:FieldModifier="private"
                           Grid.Column="2"
                           Style="{StaticResource Toggl.StartStopButton}"
                           Margin="8 0 12 0"
-                          Click="startStopButtonOnClick"/>
+                          Click="startStopButtonOnClick"
+                          Focusable="False"/>
         </Grid>
     </Grid>
 </UserControl>

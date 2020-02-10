@@ -20,6 +20,7 @@ using TogglDesktop.Diagnostics;
 using TogglDesktop.Experiments;
 using TogglDesktop.Theming;
 using TogglDesktop.Tutorial;
+using Control = System.Windows.Controls.Control;
 using MenuItem = System.Windows.Controls.MenuItem;
 using MouseEventArgs = System.Windows.Input.MouseEventArgs;
 
@@ -77,6 +78,7 @@ namespace TogglDesktop
 
             this.finalInitialisation();
             this.trackingWindowSize();
+            this.Loaded += onMainWindowLoaded;
 #if DEBUG
             this.darkModeBorder.Visibility = Visibility.Visible;
 #endif
@@ -226,6 +228,7 @@ namespace TogglDesktop
         {
             var activatedColorScheme = Theme.ActivateDetectedColorSchemeOrDefault();
             darkModeCheckBox.IsChecked = activatedColorScheme == ColorScheme.Dark;
+            Theme.CurrentColorScheme.Subscribe(x => this.updateTitleBarBackground(activeView));
         }
 
         private void initializeEvents()
@@ -431,7 +434,7 @@ namespace TogglDesktop
                 return;
 
             this.overlayView.setType((int)type);
-            this.setActiveView(this.overlayView);   
+            this.setActiveView(this.overlayView);
         }
 
         private void onError(string errmsg, bool userError)
@@ -851,10 +854,13 @@ namespace TogglDesktop
             {
                 // TODO: consider saving popup open state and restoring when window is shown
                 this.editPopup.ClosePopup(skipAnimation);
-                this.timerEntryListView.DisableHighlight();
                 if (focusTimeEntryList)
                 {
                     Toggl.ViewTimeEntryList();
+                }
+                else if (this.activeView == this.timerEntryListView && !this.timerEntryListView.Entries.IsKeyboardFocusWithin)
+                {
+                    this.timerEntryListView.Timer.Focus();
                 }
             }
         }
@@ -917,27 +923,56 @@ namespace TogglDesktop
         private void setActiveView(IMainView activeView)
         {
             if (activeView == null)
-                throw new ArgumentNullException("activeView");
+                throw new ArgumentNullException(nameof(activeView));
 
-            var hadActiveView = this.activeView != null;
-            if (hadActiveView)
+            if (this.activeView != activeView)
             {
-                this.activeView.Deactivate(true);
+                var hadActiveView = this.activeView != null;
+
+                if (hadActiveView)
+                {
+                    this.activeView.Deactivate(true);
+                }
+
+                this.activeView = activeView;
+                this.activeView.Activate(hadActiveView);
             }
-
-            this.activeView = activeView;
-
-            this.activeView.Activate(hadActiveView);
 
             this.closeEditPopup();
 
             this.updateMinimumSize(activeView);
+            this.updateTitleBarBackground(activeView);
         }
 
         private void updateMinimumSize(IMainView activeView)
         {
             this.MinHeight = WindowHeaderHeight + activeView.MinHeight;
             this.MinWidth = activeView.MinWidth;
+        }
+
+        private void updateTitleBarBackground(IMainView activeView)
+        {
+            if (activeView == null)
+            {
+                return;
+            }
+            this.WindowTitleBrush = activeView.TitleBarBrush;
+            this.NonActiveWindowTitleBrush = activeView.TitleBarBrush;
+        }
+
+        private void onMainWindowLoaded(object sender, EventArgs args)
+        {
+            this.Loaded -= onMainWindowLoaded;
+            this.enableBlurBehindIfSupported();
+        }
+
+        private void enableBlurBehindIfSupported()
+        {
+            var isBlurBehindSupported = Environment.OSVersion.Version >= new Version(10, 0, 17134);
+            if (isBlurBehindSupported)
+            {
+                Win32.EnableBlurBehind(this.interopHelper.Handle);
+            }
         }
 
         #endregion

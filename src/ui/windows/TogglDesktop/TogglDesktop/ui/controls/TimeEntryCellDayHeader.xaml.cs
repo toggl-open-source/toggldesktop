@@ -1,45 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Windows;
-using System.Windows.Media;
+﻿using System.Collections.Generic;
+using System.Linq;
+using DynamicData;
+using ReactiveUI;
+using TogglDesktop.ViewModels;
 
 namespace TogglDesktop
 {
-    public partial class TimeEntryCellDayHeader
+    public partial class TimeEntryCellDayHeader : IViewFor<DayHeaderViewModel>
     {
-        private bool isSelected;
-        private DateTime date;
-        public string dateHeader;
-
-        public bool IsDummy
+        public DayHeaderViewModel ViewModel
         {
-            set
-            {
-                if (value == false)
-                    return;
-
-                this.IsEnabled = false;
-            }
+            get => (DayHeaderViewModel)DataContext;
+            set => DataContext = value;
         }
 
-        public bool IsCollapsed
+        object IViewFor.ViewModel
         {
-            get { return this.panel.Visibility == Visibility.Collapsed; }
-            private set { this.panel.Visibility = value ? Visibility.Collapsed : Visibility.Visible; }
-        }
-       
-        public bool IsSelected
-        {
-            get { return this.isSelected; }
-            set
-            {
-                if (this.isSelected == value)
-                    return;
-                this.isSelected = value;
-
-                this.updateBackground();
-            }
+            get => ViewModel;
+            set => ViewModel = (DayHeaderViewModel) value;
         }
 
         public TimeEntryCellDayHeader()
@@ -47,40 +25,26 @@ namespace TogglDesktop
             this.InitializeComponent();
         }
 
+        public bool IsDummy
+        {
+            set => this.IsEnabled = !value;
+        }
+
         public void DisplayDummy(string dateText, string durationText = "")
         {
-            this.labelFormattedDate.Text = dateText;
-            this.labelDateDuration.Text = durationText;
+            ViewModel = new DayHeaderViewModel(dateText, durationText);
         }
 
-        public void Display(List<Toggl.TogglTimeEntryView> items, Action<string, TimeEntryCell> registerCellByGUID, bool collapsed)
+        public void Display(DayHeaderViewModel viewModel, List<Toggl.TogglTimeEntryView> items)
         {
-            var item = items[0];
-
-            if (!item.IsHeader)
-            {
-                throw new InvalidDataException("Can only create day header from header time entry view.");
-            }
-
-            this.date = Toggl.DateTimeFromUnix(item.Started);
-            this.dateHeader = item.DateHeader;
-            this.IsCollapsed = collapsed;
-
-            if (!collapsed)
-            {
-                this.panel.Visibility = Visibility.Visible;
-            }
-
-            this.labelFormattedDate.Text = item.DateHeader;
-            this.labelDateDuration.Text = item.DateDuration;
-
-            this.fillCells(items, registerCellByGUID);
+            ViewModel = viewModel;
+            this.fillCells(items);
+            ViewModel.CellsMutable.AddRange(this.panel.Children.Cast<TimeEntryCell>().Select(cell => cell.ViewModel)); // ???
         }
 
-        private void fillCells(List<Toggl.TogglTimeEntryView> list, Action<string, TimeEntryCell> registerCellByGUID)
+        private void fillCells(List<Toggl.TogglTimeEntryView> list)
         {
             var children = this.panel.Children;
-            string guidString;
 
             // remove superfluous cells
             if (children.Count > list.Count)
@@ -95,13 +59,8 @@ namespace TogglDesktop
                 var entry = list[i];
 
                 var cell = (TimeEntryCell)children[i];
-                cell.Display(entry, this);
-                guidString = entry.GUID;
-                if (entry.Group)
-                {
-                    guidString += entry.Group.ToString();
-                }
-                registerCellByGUID(guidString, cell);
+                cell.Display(entry);
+                // maybe also update ViewModel.DaysMutable here?
             }
 
             // add additional cells
@@ -110,60 +69,8 @@ namespace TogglDesktop
                 var entry = list[i];
 
                 var cell = new TimeEntryCell();
-                cell.Display(entry, this);
-
-                guidString = entry.GUID;
-                if (entry.Group)
-                {
-                    guidString += entry.Group.ToString();
-                }
-                registerCellByGUID(guidString, cell);
-
+                cell.Display(entry);
                 children.Add(cell);
-            }
-        }
-
-        private void onHeaderClick(object sender, RoutedEventArgs e)
-        {
-            this.IsCollapsed = !this.IsCollapsed;
-            Toggl.ViewTimeEntryList();
-        }
-
-        public void Expand(bool supressTimeEntryListEvent = false)
-        {
-            if (!this.IsCollapsed)
-                return;
-
-            this.IsCollapsed = false;
-
-            if(!supressTimeEntryListEvent)
-                Toggl.ViewTimeEntryList();
-        }
-        public void Collapse(bool supressTimeEntryListEvent = false)
-        {
-            if (this.IsCollapsed)
-                return;
-
-            this.IsCollapsed = true;
-
-            if (!supressTimeEntryListEvent)
-                Toggl.ViewTimeEntryList();
-        }
-
-        private void updateBackground()
-        {
-            this.Background = new SolidColorBrush(
-                this.isSelected ? Color.FromRgb(200, 200, 200) : Color.FromRgb(247, 247, 247)
-                );
-        }
-
-
-        protected override void OnDrop(DragEventArgs e)
-        {
-            if (e.Data.GetDataPresent("time-entry-cell"))
-            {
-                var cell = (TimeEntryCell)e.Data.GetData("time-entry-cell");
-                cell.MoveToDay(this.date);
             }
         }
     }

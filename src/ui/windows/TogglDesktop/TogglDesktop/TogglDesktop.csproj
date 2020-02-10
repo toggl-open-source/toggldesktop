@@ -227,14 +227,13 @@
       <DependentUpon>ProjectLabel.xaml</DependentUpon>
     </Compile>
     <Compile Include="ui\controls\ProjectTextBox.cs" />
-    <Compile Include="ui\controls\RunningEntryInfoPanel.xaml.cs">
-      <DependentUpon>RunningEntryInfoPanel.xaml</DependentUpon>
+    <Compile Include="ui\controls\TimeEntryInfoPanel.xaml.cs">
+      <DependentUpon>TimeEntryInfoPanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="ui\controls\TimeEntryCellContextMenuCommands.cs" />
     <Compile Include="ui\controls\TimeEntryCellDayHeader.xaml.cs">
       <DependentUpon>TimeEntryCellDayHeader.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ui\controls\TimeEntryCellDragImposter.cs" />
     <Compile Include="ui\controls\MiniTimer.xaml.cs">
       <DependentUpon>MiniTimer.xaml</DependentUpon>
     </Compile>
@@ -284,6 +283,7 @@
     <Compile Include="ui\Experiments\ExperimentParameters.cs" />
     <Compile Include="ui\KeyboardShortcuts.cs" />
     <Compile Include="ui\Experiments\implementations\ExperimentHacks.cs" />
+    <Compile Include="ui\ModelExtensions.cs" />
     <Compile Include="ui\NotificationExtensions.cs" />
     <Compile Include="ui\Theming\Theme.cs" />
     <Compile Include="ui\Theming\ThemeResourceDictionary.cs" />
@@ -314,9 +314,14 @@
     </Compile>
     <Compile Include="ui\Tutorial\TutorialManager.cs" />
     <Compile Include="ui\Tutorial\TutorialScreen.cs" />
+    <Compile Include="ui\ViewModels\DayHeaderViewModel.cs" />
     <Compile Include="ui\ViewModels\FeedbackWindowViewModel.cs" />
     <Compile Include="ui\ViewModels\LoginViewModel.cs" />
     <Compile Include="ui\ViewModels\PreferencesWindowViewModel.cs" />
+    <Compile Include="ui\ViewModels\ProjectLabelViewModel.cs" />
+    <Compile Include="ui\ViewModels\TimeEntryCellViewModel.cs" />
+    <Compile Include="ui\ViewModels\TimeEntryLabelViewModel.cs" />
+    <Compile Include="ui\ViewModels\ViewModelExtensions.cs" />
     <Compile Include="ui\views\IMainView.cs" />
     <Compile Include="ui\Experiments\ExperimentManager.cs" />
     <Compile Include="ui\views\OverlayView.xaml.cs">
@@ -627,7 +632,7 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ui\controls\ProjectLabel.xaml" />
-    <Page Include="ui\controls\RunningEntryInfoPanel.xaml" />
+    <Page Include="ui\controls\TimeEntryInfoPanel.xaml" />
     <Page Include="ui\controls\SyncingIndicator.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

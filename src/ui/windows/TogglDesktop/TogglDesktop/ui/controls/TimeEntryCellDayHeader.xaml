@@ -2,38 +2,49 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:viewModels="clr-namespace:TogglDesktop.ViewModels"
+             xmlns:behaviors="clr-namespace:TogglDesktop.Behaviors"
              mc:Ignorable="d" d:DesignWidth="300"
-             Background="#F7F7F7"
-             AllowDrop="True">
-
+             d:DataContext="{d:DesignInstance viewModels:DayHeaderViewModel}"
+             Margin="4"
+             AllowDrop="True"
+             FocusVisualStyle="{DynamicResource Toggl.ButtonFocusVisualStyle}"
+             Focusable="{Binding IsCollapsed}"
+             IsTabStop="{Binding IsCollapsed}"
+             behaviors:FocusHelper.IsFocused="{Binding IsFocused, Mode=OneWay}">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </UserControl.Resources>
+    <UserControl.Effect>
+        <DropShadowEffect Direction="270" Color="{DynamicResource Toggl.BlackColor}" Opacity="0.1"
+                          BlurRadius="3" ShadowDepth="1" />
+    </UserControl.Effect>
     <StackPanel>
-        <Button Height="{StaticResource TimeEntryDayHeaderHeight}"
-                Style="{StaticResource FlatButton}" Padding="0" Margin="0"
-                HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
-                Click="onHeaderClick" Focusable="False"
-                ContextMenu="{StaticResource TimeEntryHeaderContextMenu}"
-                >
-            <Grid Style="{StaticResource TimeEntryCell}">
-                <Rectangle Height="4" VerticalAlignment="Top">
-                    <Rectangle.Fill>
-                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                            <GradientStop Color="#33000000" Offset="0.0" />
-                            <GradientStop Color="#00000000" Offset="1" />
-                        </LinearGradientBrush>
-                    </Rectangle.Fill>
-                </Rectangle>
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="20, 0, 0, 0">
-                    <TextBlock Name="labelFormattedDate" x:FieldModifier="private"
-                                   >Thu 22. Jan</TextBlock>
-                    <TextBlock Name="labelDateDuration" x:FieldModifier="private"
-                                   Foreground="#6F6F6F">2 h 12 min</TextBlock>
-                </StackPanel>
-            </Grid>
-        </Button>
-        <StackPanel Name="panel" x:FieldModifier="private">
-            
-        </StackPanel>
+        <Border Background="{DynamicResource Toggl.CardBackground}">
+            <ToggleButton Height="{StaticResource TimeEntryDayHeaderHeight}"
+                          Style="{DynamicResource Toggl.TimeEntryDayHeaderToggleButton}"
+                          IsChecked="{Binding IsExpanded}"
+                          Focusable="False"
+                          ContextMenu="{StaticResource TimeEntryHeaderContextMenu}">
+                <DockPanel VerticalAlignment="Center">
+                    <TextBlock DockPanel.Dock="Left"
+                               Style="{DynamicResource Toggl.BaseText}"
+                               Margin="12 0 0 0"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Left"
+                               Text="{Binding DateHeader}"/>
+                    <TextBlock DockPanel.Dock="Right"
+                               Style="{DynamicResource Toggl.CaptionSemiBoldText}"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Right"
+                               Text="{Binding DateDuration}"/>
+                </DockPanel>
+            </ToggleButton>
+        </Border>
+        <StackPanel Name="panel" x:FieldModifier="private"
+                    Visibility="{Binding IsExpanded, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+        <!-- <ItemsControl Visibility="{Binding IsExpanded, Converter={StaticResource BooleanToVisibilityConverter}}" -->
+        <!--               Items="{Binding DaysBindable}" /> -->
     </StackPanel>
-
 </UserControl>

@@ -1,3 +1,5 @@
+using System.Windows.Media;
+
 namespace TogglDesktop
 {
     public interface IMainView
@@ -8,5 +10,6 @@ namespace TogglDesktop
 
         double MinWidth { get; }
         double MinHeight { get; }
+        Brush TitleBarBrush { get; }
     }
 }

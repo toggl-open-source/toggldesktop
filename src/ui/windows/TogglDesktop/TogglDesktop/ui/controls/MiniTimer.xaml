@@ -8,7 +8,8 @@
              d:DesignWidth="500"
              MinHeight="44"
              MaxHeight="52"
-             Focusable="True">
+             Focusable="True"
+             Background="{DynamicResource Toggl.CardBackground}">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -65,7 +66,7 @@
             </Style>
         </ResourceDictionary>
     </UserControl.Resources>
-    <Grid Background="{DynamicResource Toggl.CardBackground}">
+    <Grid>
         <Grid Name="manualPanel" x:FieldModifier="private" Visibility="Collapsed"
               Margin="13 0 12 0">
             <Button Name="manualAddButton" x:FieldModifier="private"
@@ -131,9 +132,11 @@
                                        Style="{StaticResource Toggl.Timer.DescriptionTextBox}"/>
             </DockPanel>
 
-            <toggl:RunningEntryInfoPanel x:Name="runningEntryInfoPanel" x:FieldModifier="private"
+            <toggl:TimeEntryInfoPanel x:Name="runningEntryInfoPanel" x:FieldModifier="private"
                                          Grid.Column="1"
-                                         DurationLabelMouseDown="onTimeLabelMouseDown"/>
+                                         DurationLabelMouseDown="onTimeLabelMouseDown"
+                                         DurationTextBlockStyle="{DynamicResource Toggl.BaseText}"
+                                         Background="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Background}"/>
 
             <!-- start/stop button -->
             <ToggleButton Name="startStopButton" x:FieldModifier="private"
