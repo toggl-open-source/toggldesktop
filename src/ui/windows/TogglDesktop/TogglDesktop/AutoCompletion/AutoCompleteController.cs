@@ -321,7 +321,7 @@ namespace TogglDesktop.AutoCompletion
             var nextIndex = initialIndex;
             for (var i = 0; i < maxIterations; i++)
             {
-                nextIndex = (nextIndex - 1) % this.visibleItems.Count;
+                nextIndex = (nextIndex - 1 + this.visibleItems.Count) % this.visibleItems.Count;
                 if (visibleItems[nextIndex].IsSelectable())
                 {
                     this.selectIndex(nextIndex);
