@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using MahApps.Metro.Controls;
 using TogglDesktop.AutoCompletion;
 using TogglDesktop.AutoCompletion.Implementation;
 using TogglDesktop.Diagnostics;
@@ -147,7 +148,7 @@ namespace TogglDesktop
                         this.disableNewProjectMode();
                     }
 
-                    this.defaultProjectColorCircle.Background = Utils.ProjectColorBrushFromString(timeEntry.Color);
+                    this.selectedProjectColorCircle.Background = Utils.ProjectColorBrushFromString(timeEntry.Color);
 
                     setText(this.projectTextBox, timeEntry.ProjectLabel, timeEntry.TaskLabel, open);
                     setText(this.clientTextBox, timeEntry.ClientLabel, open);
@@ -283,6 +284,7 @@ namespace TogglDesktop
             {
                 this.workspaceComboBox.ItemsSource = list;
                 this.workspaceComboBox.SelectedIndex = workspaces.FindIndex(ws => ws.ID == selectedWorkspaceId);
+                this.workspaceComboBox.ShowOnlyIf(list.Count > 1);
             }
         }
 
@@ -533,7 +535,7 @@ namespace TogglDesktop
             if (projectId == this.timeEntry.PID && taskId == this.timeEntry.TID)
                 return;
             this.projectTextBox.SetText(projectName, taskName);
-            this.defaultProjectColorCircle.Background = Utils.ProjectColorBrushFromString(projectColor);
+            this.selectedProjectColorCircle.Background = Utils.ProjectColorBrushFromString(projectColor);
             Toggl.SetTimeEntryProject(this.timeEntry.GUID, taskId, projectId, "");
         }
 
@@ -554,7 +556,7 @@ namespace TogglDesktop
             this.workspaceComboBox.SelectedIndex = workspaces.FindIndex(ws => ws.ID == selectedWorkspaceId);
 
             this.projectColorSelector.SelectRandom();
-            this.emptyProjectText.Text = "Add project";
+            this.projectTextBox.SetValue(TextBoxHelper.WatermarkProperty, "Add project");
 
             this.isInNewProjectMode = true;
         }
@@ -569,8 +571,8 @@ namespace TogglDesktop
             this.projectAutoComplete.IsEnabled = true;
             this.projectTextBox.Focus();
             this.projectTextBox.CaretIndex = this.projectTextBox.Text.Length;
-            this.defaultProjectColorCircle.Background = Utils.ProjectColorBrushFromString(timeEntry.Color);
-            this.emptyProjectText.Text = "No project";
+            this.selectedProjectColorCircle.Background = Utils.ProjectColorBrushFromString(timeEntry.Color);
+            this.projectTextBox.SetValue(TextBoxHelper.WatermarkProperty, "Select project");
 
             this.isInNewProjectMode = false;
         }
