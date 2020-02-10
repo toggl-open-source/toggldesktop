@@ -60,6 +60,19 @@
 
     </Style>
 
+    <Style TargetType="Border" x:Key="Toggl.Border.Hoverable">
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Toggl.TextBox.Border}" />
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="BorderBrush" Value="{DynamicResource Toggl.TextBox.MouseOverBorder}" />
+            </Trigger>
+            <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                <Setter Property="BorderBrush" Value="{DynamicResource Toggl.AccentBrush}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
     <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type Control}}">
         <Setter Property="BorderThickness" Value="1" />
     </Style>
