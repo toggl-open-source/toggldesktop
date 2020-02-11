@@ -557,6 +557,7 @@ namespace TogglDesktop
 
             this.projectColorSelector.SelectRandom();
             this.projectTextBox.SetValue(TextBoxHelper.WatermarkProperty, "Add project");
+            this.selectedProjectColorCircle.Background = Utils.ProjectColorBrushFromString("#999999");
 
             this.isInNewProjectMode = true;
         }
