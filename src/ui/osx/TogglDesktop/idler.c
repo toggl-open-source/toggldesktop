@@ -108,6 +108,9 @@ int get_idle_time(uint64_t *tHandle) {
                        kCFNumberSInt64Type,
                        tHandle);
     } else {
+        CFRelease((CFTypeRef)type);
+        CFRelease(obj);
+        CFRelease((CFTypeRef)properties);
       printf("%d: unsupported type\n", (int)type);
       return 1;
     }
@@ -123,7 +126,8 @@ int get_idle_time(uint64_t *tHandle) {
   /* Release our resources */
   IOObjectRelease(curObj);
   IOObjectRelease(iter);
-  CFRelease((CFTypeRef)properties);
-  
+  if (properties != NULL) {
+    CFRelease((CFTypeRef)properties);
+  }
   return 0;
 }
