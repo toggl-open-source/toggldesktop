@@ -41,11 +41,14 @@
 
             <!-- project selection -->
             <Border Grid.Column="1" Grid.Row="0"
-                    Name="projectSelectionBorder">
-                <Grid>
+                    Name="projectSelectionBorder"
+                    Style="{StaticResource Toggl.Border.Hoverable}"
+                    Height="34">
+                <Grid Height="32">
                     <toggl:ProjectTextBox x:Name="projectTextBox" x:FieldModifier="private"
                                           mah:TextBoxHelper.Watermark="No project"
                                           Padding="24 0 34 0"
+                                          Margin="0"
                                           LostKeyboardFocus="projectTextBox_OnLostKeyboardFocus"
                                           KeyDown="onAnyTextBoxKeyDown"/>
 
