@@ -18,7 +18,6 @@
             </ResourceDictionary.MergedDictionaries>
             <converters:BindingProxy x:Key="NoProjectColorProxy" Data="{DynamicResource Toggl.SecondaryTextBrush}" />
             <converters:ColorsToBrushConverter x:Key="ColorsToBrushMultiConverter" />
-            <converters:EmptyStringToHiddenConverter x:Key="EmptyStringToHiddenConverter" />
             <togglautocompletion:AutocompleteTemplateSelector x:Key="autocompleteTemplateSelector"/>
             <converters:IsSelectableItemConverter x:Key="IsSelectableItemConverter" />
             <Style x:Key="AutoCompleteItem" BasedOn="{StaticResource {x:Type ListBoxItem}}" TargetType="ListBoxItem">

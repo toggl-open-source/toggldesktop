@@ -657,10 +657,6 @@
     <Page Include="ui\Resources\DesignUpdate\ToggleSwitch.xaml" />
     <Page Include="ui\Resources\DesignUpdate\Window.xaml" />
     <Page Include="ui\Resources\DesignUpdate\Typography.xaml" />
-    <Page Include="ui\Resources\ComboBoxStyles.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="ui\Resources\Themes\ColorScheme\Dark.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -764,14 +760,6 @@
     <Page Include="ui\windows\PreferencesWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ui\Resources\PreferencesWindowStyles.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ui\Resources\EditViewControllerStyles.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="ui\Resources\EditViewStyles.xaml">
       <Generator>MSBuild:Compile</Generator>
