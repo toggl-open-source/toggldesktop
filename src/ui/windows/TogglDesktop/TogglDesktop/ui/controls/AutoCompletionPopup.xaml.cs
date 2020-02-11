@@ -315,6 +315,7 @@ namespace TogglDesktop
                         if (createProjectButton.IsVisible && createProjectButton.Focus())
                         {
                             e.Handled = true;
+                            this.listBox.SelectedIndex = -1;
                         }
                     }
                     return;
