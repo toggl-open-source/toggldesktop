@@ -101,12 +101,11 @@
     <SolidColorBrush x:Key="Toggl.LoginView.Border" Color="#E5E5E5" po:Freeze="True" />
     <SolidColorBrush x:Key="Toggl.Logo.Letters" Color="#424242" po:Freeze="True" />
     <SolidColorBrush x:Key="Toggl.TimeEntryListBackground" Color="{StaticResource Toggl.OffWhiteColor}" Opacity="0.8" />
+    <SolidColorBrush x:Key="Toggl.ComboBoxPopupBorderBrush" Color="{DynamicResource Toggl.LightGrayColor}" />
 
     <SolidColorBrush x:Key="Toggl.BarelyVisibleSeparator" Color="{StaticResource Toggl.LightGrayColor}" Opacity="0.15" />
     <SolidColorBrush x:Key="Toggl.WorkspaceSeparator" Color="{StaticResource Toggl.BlackColor}" Opacity="0.1" po:Freeze="True"/>
 
     <DropShadowEffect x:Key="Toggl.SeparatorShadow" ShadowDepth="2" BlurRadius="4" Opacity="1" Color="{StaticResource Toggl.Grayish2Color}" />
-    <DropShadowEffect x:Key="Toggl.DropDownShadow" ShadowDepth="1" BlurRadius="4" Direction="270" Opacity="0.1" Color="{DynamicResource Toggl.BlackColor}" />
-
-    <BitmapImage x:Key="Toggl.LogoImage" UriSource="/TogglDesktop;component/Resources/toggl-logo-light.png" />
+    <DropShadowEffect x:Key="Toggl.DropDownShadow" ShadowDepth="1" BlurRadius="4" Direction="270" Opacity="0.1" Color="{DynamicResource Toggl.BlackColor}"/>
 </ResourceDictionary>
