@@ -344,6 +344,9 @@ HTTPSResponse HTTPSClient::makeHttpRequest(
             cred.authenticate(poco_req);
         }
 
+        // Request gzip unless downloading files
+        poco_req.set("Accept-Encoding", "gzip");
+
         if (!req.form) {
             std::istringstream requestStream(req.payload);
 
@@ -368,9 +371,6 @@ HTTPSResponse HTTPSClient::makeHttpRequest(
             std::ostream& send = session.sendRequest(poco_req);
             req.form->write(send);
         }
-
-        // Request gzip unless downloading files
-        poco_req.set("Accept-Encoding", "gzip");
 
         // Remove Auth info
         poco_req.erase("Authorization");
