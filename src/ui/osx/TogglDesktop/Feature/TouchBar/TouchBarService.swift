@@ -50,7 +50,7 @@ final class TouchBarService: NSObject {
         let touchBar = NSTouchBar()
         touchBar.delegate = self
         touchBar.customizationIdentifier = .mainTouchBar
-        touchBar.defaultItemIdentifiers = [.timeEntryItem, .startStopItem]
+        touchBar.defaultItemIdentifiers = touchBarItems
         return touchBar
     }()
 
@@ -72,6 +72,13 @@ final class TouchBarService: NSObject {
         view.scrubberLayout = layout
         return view
     }()
+
+    private var touchBarItems: [NSTouchBarItem.Identifier] {
+        #if APP_STORE
+            return [.timeEntryItem, .startStopItem]
+        #endif
+        return [.escButtonItem, .timeEntryItem, .startStopItem]
+    }
 
     // MARK: Init
 
@@ -213,6 +220,10 @@ extension TouchBarService: NSTouchBarDelegate {
 
     func touchBar(_ touchBar: NSTouchBar, makeItemForIdentifier identifier: NSTouchBarItem.Identifier) -> NSTouchBarItem? {
         switch identifier {
+        case NSTouchBarItem.Identifier.escButtonItem:
+            let item = NSCustomTouchBarItem(identifier: identifier)
+            item.view = NSButton(title: "esc", target: self, action: #selector(self.escButtonTouchBarOnClick(_:)))
+            return item
         case NSTouchBarItem.Identifier.timeEntryItem:
             let item = NSCustomTouchBarItem(identifier: identifier)
             item.view = scrubberView
@@ -240,6 +251,10 @@ extension TouchBarService {
 
     @objc fileprivate func startBtnOnTap(_ sender: NSButton) {
         delegate?.touchBarServiceStartTimeEntryOnTap()
+    }
+
+    @objc private func escButtonTouchBarOnClick(_ sender: Any) {
+
     }
 }
 
