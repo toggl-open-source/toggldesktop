@@ -49,8 +49,14 @@ static NSString *const upArrow = @"\u25B2";
         {
             self.automaticTextCompletionEnabled = NO;
         }
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(escTouchBarButtonOnClickNoti:) name:kEscTouchBarButtonOnClickNotification object:nil];
 	}
 	return self;
+}
+
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)initBackgroundView
@@ -322,4 +328,8 @@ static NSString *const upArrow = @"\u25B2";
 	[self updateDropdownWithHeight:totalHeight];
 }
 
+- (void) escTouchBarButtonOnClickNoti:(NSNotification *) noti
+{
+    [self resetTable];
+}
 @end

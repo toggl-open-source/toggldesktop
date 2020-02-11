@@ -67,3 +67,4 @@ const char *kFocusedFieldNameProject;
 const char *kFocusedFieldNameTag;
 
 extern NSString *const kStartButtonStateChange;
+extern NSString *const kEscTouchBarButtonOnClickNotification;

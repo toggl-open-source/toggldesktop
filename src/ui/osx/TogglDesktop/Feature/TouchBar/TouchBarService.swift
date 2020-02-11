@@ -254,7 +254,7 @@ extension TouchBarService {
     }
 
     @objc private func escButtonTouchBarOnClick(_ sender: Any) {
-
+        NotificationCenter.default.postNotificationOnMainThread(NSNotification.Name.escTouchBarButtonOnClick, object: nil)
     }
 }
 
