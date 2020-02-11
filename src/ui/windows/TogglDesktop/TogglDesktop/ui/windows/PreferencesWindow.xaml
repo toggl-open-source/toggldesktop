@@ -76,9 +76,8 @@
                         <Border Margin="0 12 0 0" Style="{StaticResource Toggl.Border.Hoverable}"
                                 Name="defaultProjectBorder"
                                 HorizontalAlignment="Left"
-                                Width="360"
-                                Height="32">
-                            <Grid>
+                                Width="360">
+                            <Grid Height="32">
                                 <toggl:ProjectTextBox
                                     x:Name="defaultProjectTextBox" x:FieldModifier="private"
                                     Style="{StaticResource {x:Type TextBox}}"
