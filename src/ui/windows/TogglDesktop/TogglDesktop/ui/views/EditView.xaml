@@ -96,12 +96,13 @@
                                 <Border Height="Auto"
                                         HorizontalAlignment="Stretch"
                                         Background="{DynamicResource Toggl.CardBackground}"
+                                        BorderThickness="1"
+                                        BorderBrush="{DynamicResource Toggl.ComboBoxPopupBorderBrush}"
                                         Margin="8 0 8 8"
                                         MinWidth="{Binding ElementName=projectDropDownBorder, Path=ActualWidth}">
                                     <Border.Effect>
-                                        <DropShadowEffect BlurRadius="8" ShadowDepth="2" Opacity="0.2" Direction="270" Color="Black" />
+                                        <DropShadowEffect ShadowDepth="2" BlurRadius="8" Direction="270" Opacity="0.2" Color="Black" />
                                     </Border.Effect>
-
                                     <!-- project, client, workspace -->
                                     <Grid Margin="16 24 16 16">
                                         <Grid.RowDefinitions>

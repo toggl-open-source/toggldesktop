@@ -7,7 +7,6 @@
         <ResourceDictionary Source="Typography.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
-    <SolidColorBrush x:Key="ComboBoxPopupBorderBrush" Color="{DynamicResource Toggl.LightGrayColor}" />
     <Thickness x:Key="ComboBoxPopupBorderThemeThickness">1</Thickness>
     <Thickness x:Key="ComboBoxPopupBorderThemePadding">0,5</Thickness>
 
@@ -281,11 +280,13 @@
                                         MinWidth="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}" MaxHeight="{Binding MaxDropDownHeight, RelativeSource={RelativeSource TemplatedParent}}"
                                         HorizontalAlignment="Stretch"
                                         Background="{DynamicResource Toggl.CardBackground}"
-                                        BorderBrush="{DynamicResource ComboBoxPopupBorderBrush}"
+                                        BorderBrush="{DynamicResource Toggl.ComboBoxPopupBorderBrush}"
                                         BorderThickness="{DynamicResource ComboBoxPopupBorderThemeThickness}"
                                         SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                        Effect="{DynamicResource Toggl.DropDownShadow}"
                                         Margin="8 0 8 8">
+                                    <Border.Effect>
+                                        <DropShadowEffect ShadowDepth="1" BlurRadius="4" Direction="270" Opacity="0.2" Color="Black" />
+                                    </Border.Effect>
                                     <ScrollViewer Padding="{DynamicResource ComboBoxPopupBorderThemePadding}" BorderThickness="0"
                                                   SnapsToDevicePixels="True">
                                         <ItemsPresenter x:Name="ItemsPresenter" KeyboardNavigation.DirectionalNavigation="Contained" />

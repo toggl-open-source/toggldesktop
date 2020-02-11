@@ -113,7 +113,7 @@
                 <toggl:AutoCompletionPopup x:Name="descriptionAutoComplete" x:FieldModifier="private"
                                            Grid.Row="0"
                                            TextBox="{Binding ElementName=descriptionTextBox}"
-                                           Target="{Binding ElementName=editModeGrid}"
+                                           Target="{Binding ElementName=descriptionTextBox}"
                                            StaysOpen="False"
                                            ConfirmCompletion="descriptionAutoComplete_OnConfirmCompletion"/>
                 <Grid Grid.Row="1" x:Name="editProjectPanel" x:FieldModifier="private"
