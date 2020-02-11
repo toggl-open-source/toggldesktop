@@ -1,21 +1,16 @@
 ﻿<ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    
-    <Style x:Key="EditViewTextBlockBase" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
-        <Setter Property="VerticalAlignment" Value="Center"/>
-        <Setter Property="Margin" Value="0, 0, 6, 0"/>
-    </Style>
-    
-    <Style x:Key="AutoCompleteItemBase">
 
-        <Style.Resources>
-
-            <!-- common text settings -->
-            <Style TargetType="TextBlock" BasedOn="{StaticResource EditViewTextBlockBase}" />
-
-        </Style.Resources>
-
+    <Style x:Key="ProjectColorCircle" TargetType="Border">
+        <Setter Property="CornerRadius" Value="100" />
+        <Setter Property="Width" Value="7" />
+        <Setter Property="Height" Value="7" />
+        <Setter Property="Margin" Value="13 14 0 1" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Background" Value="#999999" />
     </Style>
 
     <Style x:Key="Tag" TargetType="{x:Type UserControl}">
