@@ -80,6 +80,8 @@ class AutoCompleteTextField: UndoTextField, NSTextFieldDelegate, AutoCompleteVie
         }
     }
 
+    var isAutoCompleteShowing: Bool { return state == .expand }
+    
     // MARK: Init
 
     override init(frame frameRect: NSRect) {

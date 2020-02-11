@@ -108,7 +108,12 @@ final class EditorViewController: NSViewController {
         super.viewDidLoad()
 
         initCommon()
+        initNotifications()
         initDatasource()
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 
     override func viewDidAppear() {
@@ -249,6 +254,10 @@ extension EditorViewController {
 
         // Tags
         tagAddButton.keyboardDelegate = self
+    }
+
+    private func initNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(self.escTouchBarBtnOnClickNoti), name: .escTouchBarButtonOnClick, object: nil)
     }
 
     fileprivate func initDatasource() {
@@ -467,6 +476,24 @@ extension EditorViewController {
             if shouldFocusByDefault {
                 view.window?.makeFirstResponder(descriptionTextField)
             }
+        }
+    }
+
+    @objc private func escTouchBarBtnOnClickNoti() {
+
+        // Close auto complete if need
+        let views: [AutoCompleteTextField] = [descriptionTextField, projectTextField, tagTextField]
+        var isClosed = false
+        views.forEach { view in
+            if view.isAutoCompleteShowing {
+                view.closeSuggestion()
+                isClosed = true
+            }
+        }
+
+        // Close Editor if there is no auto complection view is closed
+        if !isClosed {
+            closeBtnOnTap(self)
         }
     }
 }
