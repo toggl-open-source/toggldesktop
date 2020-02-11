@@ -862,15 +862,6 @@ namespace TogglDesktop
             focus?.Focus();
         }
 
-        public void EnsureSaved()
-        {
-            if (this.isInNewProjectMode)
-            {
-                this.confirmNewProject();
-                this.createProjectPopup.IsOpen = false;
-            }
-        }
-
         private void deleteButton_OnClick(object sender, RoutedEventArgs e)
         {
             if (this.timeEntry.ConfirmlessDelete())

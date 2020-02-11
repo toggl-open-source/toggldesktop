@@ -66,7 +66,6 @@ namespace TogglDesktop
         {
             if (skipAnimation || this.skipAnimation)
             {
-                this.EditView.EnsureSaved();
                 this.stopAnimationClose();
             }
             else
@@ -74,7 +73,6 @@ namespace TogglDesktop
                 if (this.animationState == AnimationStates.Closing)
                     return;
 
-                this.EditView.EnsureSaved();
                 this.startAnimationClose();
             }
         }
