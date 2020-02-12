@@ -122,11 +122,6 @@ final class EditorViewController: NSViewController {
         unregisterTimerNotification()
     }
 
-    @available(OSX 10.12.2, *)
-    override func makeTouchBar() -> NSTouchBar? {
-        return TouchBarService.shared.makeTouchBar()
-    }
-
     @IBAction func closeBtnOnTap(_ sender: Any) {
         delegate?.editorShouldClose()
     }

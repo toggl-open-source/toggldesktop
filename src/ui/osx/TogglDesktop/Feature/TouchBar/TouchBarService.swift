@@ -20,7 +20,7 @@ final class TouchBarService: NSObject {
     static let shared = TouchBarService()
 
     enum DisplayState {
-        case tracking
+        case hasRunningTimeEntry
         case normal
     }
 
@@ -47,9 +47,18 @@ final class TouchBarService: NSObject {
     var isEnabled = true
     private var isPresented = false
     weak var delegate: TouchBarServiceDelegate?
-    private weak var touchBar: NSTouchBar?
+    private var runningBtn: NSButton?
     private var timeEntries: [TimeEntryViewItem] = []
     private var displayState = DisplayState.normal { didSet { updateDisplayState() }}
+    private lazy var touchBar: NSTouchBar = {
+        let touchBar = NSTouchBar()
+        touchBar.delegate = self
+        touchBar.customizationIdentifier = .mainTouchBar
+        touchBar.defaultItemIdentifiers = defaultTouchBarItems()
+        touchBar.customizationAllowedItemIdentifiers = []
+        return touchBar
+    }()
+
     private lazy var scrubberView: NSScrubber = {
         let view = NSScrubber(frame: .zero)
         view.delegate = self
@@ -86,12 +95,6 @@ final class TouchBarService: NSObject {
 
     func makeTouchBar() -> NSTouchBar? {
         guard isEnabled else { return nil }
-        let touchBar = NSTouchBar()
-        touchBar.delegate = self
-        touchBar.customizationIdentifier = .mainTouchBar
-        touchBar.defaultItemIdentifiers = defaultTouchBarItems()
-        touchBar.customizationAllowedItemIdentifiers = []
-        self.touchBar = touchBar
         return touchBar
     }
 
@@ -161,11 +164,11 @@ extension TouchBarService {
             return
         }
         startButton.state = NSControl.StateValue(rawValue: value.intValue)
-        displayState = startButton.state == .on ? .tracking : .normal
+        displayState = startButton.state == .on ? .hasRunningTimeEntry : .normal
     }
 
     private func updateDisplayState() {
-        touchBar?.defaultItemIdentifiers = defaultTouchBarItems()
+        touchBar.defaultItemIdentifiers = defaultTouchBarItems()
     }
 }
 
