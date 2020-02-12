@@ -1149,12 +1149,6 @@ void *ctx;
 	toggl_context_clear(ctx);
 	ctx = 0;
 
-#ifndef APP_STORE
-    if (@available(macOS 10.12.2, *)) {
-        [[TouchBarService shared] dismiss];
-    }
-#endif
-
 	if (self.aboutWindowController.restart == YES)
 	{
 		float seconds = 1.0;
@@ -1819,6 +1813,7 @@ void on_countries(TogglCountryView *first)
 {
     if (@available(macOS 10.12.2, *)) {
         [TouchBarService shared].isEnabled = settings.showTouchBar;
+        self.mainWindowController.touchBar = nil;
     }
 	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kTouchBarSettingChanged object:@(settings.showTouchBar)];
 

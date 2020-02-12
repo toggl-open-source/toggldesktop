@@ -20,7 +20,7 @@ final class TouchBarService: NSObject {
     static let shared = TouchBarService()
 
     enum DisplayState {
-        case tracking
+        case hasRunningTimeEntry
         case normal
     }
 
@@ -46,17 +46,19 @@ final class TouchBarService: NSObject {
 
     var isEnabled = true
     private var isPresented = false
+    weak var delegate: TouchBarServiceDelegate?
+    private var runningBtn: NSButton?
+    private var timeEntries: [TimeEntryViewItem] = []
+    private var displayState = DisplayState.normal { didSet { updateDisplayState() }}
     private lazy var touchBar: NSTouchBar = {
         let touchBar = NSTouchBar()
         touchBar.delegate = self
         touchBar.customizationIdentifier = .mainTouchBar
-        touchBar.defaultItemIdentifiers = [.timeEntryItem, .startStopItem]
+        touchBar.defaultItemIdentifiers = defaultTouchBarItems()
+        touchBar.customizationAllowedItemIdentifiers = []
         return touchBar
     }()
 
-    weak var delegate: TouchBarServiceDelegate?
-    private var timeEntries: [TimeEntryViewItem] = []
-    private var displayState = DisplayState.normal { didSet { updateDisplayState() }}
     private lazy var scrubberView: NSScrubber = {
         let view = NSScrubber(frame: .zero)
         view.delegate = self
@@ -73,6 +75,14 @@ final class TouchBarService: NSObject {
         return view
     }()
 
+    private func defaultTouchBarItems() -> [NSTouchBarItem.Identifier] {
+        // otherItemsProxy is important to make sure the Main Touch Bar doesn't dismiss
+        if displayState == .normal {
+            return [.timeEntryItem, .startStopItem, .otherItemsProxy]
+        }
+        return [.timeEntryItem, .runningTimeEntry, .startStopItem, .otherItemsProxy]
+    }
+
     // MARK: Init
 
     override init() {
@@ -85,14 +95,7 @@ final class TouchBarService: NSObject {
 
     func makeTouchBar() -> NSTouchBar? {
         guard isEnabled else { return nil }
-
-        // Use public APIs for AppStore version
-        #if APP_STORE
-            return touchBar
-        #endif
-
-        // Return nil and use Private APIs
-        return nil
+        return touchBar
     }
 
     func updateRunningItem(_ timeEntry: TimeEntryViewItem) {
@@ -140,37 +143,6 @@ final class TouchBarService: NSObject {
     }
 }
 
-// MARK: Action
-
-@available(OSX 10.12.2, *)
-extension TouchBarService {
-
-    func present() {
-        #if !APP_STORE
-        guard isEnabled && !isPresented else { return }
-        if NSTouchBar.presentSystemModal(touchBar, systemTrayItemIdentifier: nil) {
-            isPresented = true
-        }
-        #endif
-    }
-
-    func minimize() {
-        #if !APP_STORE
-        guard isEnabled && isPresented else { return }
-        NSTouchBar.minimizeSystemModal(touchBar)
-        isPresented = false
-        #endif
-    }
-
-    func dismiss() {
-        #if !APP_STORE
-        guard isEnabled && isPresented else { return }
-        NSTouchBar.dismissSystemModal(touchBar)
-        isPresented = false
-        #endif
-    }
-}
-
 // MARK: Private
 
 @available(OSX 10.12.2, *)
@@ -192,17 +164,11 @@ extension TouchBarService {
             return
         }
         startButton.state = NSControl.StateValue(rawValue: value.intValue)
-        displayState = startButton.state == .on ? .tracking : .normal
+        displayState = startButton.state == .on ? .hasRunningTimeEntry : .normal
     }
 
     private func updateDisplayState() {
-        switch displayState {
-        case .normal:
-            touchBar.defaultItemIdentifiers.removeAll(where: { $0 == .runningTimeEntry })
-        case .tracking:
-            let count = touchBar.defaultItemIdentifiers.count
-            touchBar.defaultItemIdentifiers.insert(.runningTimeEntry, at: count - 1)
-        }
+        touchBar.defaultItemIdentifiers = defaultTouchBarItems()
     }
 }
 

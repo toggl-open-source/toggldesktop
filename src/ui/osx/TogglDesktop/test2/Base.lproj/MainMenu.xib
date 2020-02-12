@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="15702" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="15705" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15702"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15705"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -231,11 +231,13 @@
                             </menuItem>
                             <menuItem isSeparatorItem="YES" id="KUm-TA-aKU"/>
                             <menuItem title="Next Day" tag="3" keyEquivalent="" toolTip="Change a current Timeliine day to next day" id="HEB-2o-715">
+                                <modifierMask key="keyEquivalentModifierMask" shift="YES" command="YES"/>
                                 <connections>
                                     <action selector="nextDayMenuOnClick:" target="-1" id="uVN-Lv-UoP"/>
                                 </connections>
                             </menuItem>
                             <menuItem title="Previous Day" tag="3" keyEquivalent="" toolTip="Change a current Timeliine day to previous day" id="kdC-8f-3ea">
+                                <modifierMask key="keyEquivalentModifierMask" shift="YES" command="YES"/>
                                 <connections>
                                     <action selector="previouosDayMenuOnClick:" target="-1" id="kIq-Tb-6ik"/>
                                 </connections>
