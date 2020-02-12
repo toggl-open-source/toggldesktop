@@ -1,6 +1,19 @@
 {
     "versions": [
         {
+            "version": "7.5.46",
+            "rows": [
+                "Fixed sub-entries display",
+                "Fixed the issue with Reports link not logging the user in",
+                "Fixed Constraint Violation errors",
+                "Fixed a failure to sync after PC comes back from Sleep",
+                "Fixed some potential memory leaks"
+            ],
+            "date": "February 12nd 2020",
+            "beta": "true",
+            "has64bit": "true"
+        },
+        {
             "version": "7.4.1112",
             "rows": [
                 "Fixed crash when displaying in-app notification",
