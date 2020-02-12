@@ -66,6 +66,14 @@ final class TouchBarService: NSObject {
         return view
     }()
 
+    private func defaultTouchBarItems() -> [NSTouchBarItem.Identifier] {
+        // otherItemsProxy is important to make sure the Main Touch Bar doesn't dismiss
+        if displayState == .normal {
+            return [.timeEntryItem, .startStopItem, .otherItemsProxy]
+        }
+        return [.timeEntryItem, .runningTimeEntry, .startStopItem, .otherItemsProxy]
+    }
+
     // MARK: Init
 
     override init() {
@@ -81,7 +89,7 @@ final class TouchBarService: NSObject {
         let touchBar = NSTouchBar()
         touchBar.delegate = self
         touchBar.customizationIdentifier = .mainTouchBar
-        touchBar.defaultItemIdentifiers = [.timeEntryItem, .startStopItem]
+        touchBar.defaultItemIdentifiers = defaultTouchBarItems()
         touchBar.customizationAllowedItemIdentifiers = []
         self.touchBar = touchBar
         return touchBar
@@ -157,13 +165,7 @@ extension TouchBarService {
     }
 
     private func updateDisplayState() {
-//        switch displayState {
-//        case .normal:
-//            touchBar?.defaultItemIdentifiers.removeAll(where: { $0 == .runningTimeEntry })
-//        case .tracking:
-//            let count = touchBar?.defaultItemIdentifiers.count
-//            touchBar?.defaultItemIdentifiers.insert(.runningTimeEntry, at: count - 1)
-//        }
+        touchBar?.defaultItemIdentifiers = defaultTouchBarItems()
     }
 }
 
