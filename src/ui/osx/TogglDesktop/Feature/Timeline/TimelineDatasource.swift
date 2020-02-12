@@ -129,18 +129,26 @@ final class TimelineDatasource: NSObject {
         }
 
         // Get the section should be presented
-        var section: TimelineData.Section?
-        if !timeline.timeEntries.isEmpty {
-            section = .timeEntry
-        } else if !timeline.activities.isEmpty {
-            section = .activity
-        }
+        // Force render with correct frame then scrolling to desire item
+        collectionView.setNeedsDisplay(collectionView.frame)
+        collectionView.displayIfNeeded()
 
-        // Scroll to visible item
-        if let section = section {
-            // Force render with correct frame then scrolling to desire item
-            collectionView.setNeedsDisplay(collectionView.frame)
-            collectionView.displayIfNeeded()
+        // Scroll to current time if it's today
+        if let currentMomentAttribute = flow.currentMomentAttribute,
+            timeline.isToday {
+            // Middle position
+            var currentTimeFrame = currentMomentAttribute.frame
+            currentTimeFrame.origin.y += collectionView.bounds.size.height / 3 * 2
+            collectionView.scrollToVisible(currentTimeFrame)
+        } else {
+            // Scroll to top Entry or events
+            var visibleSection: TimelineData.Section?
+            if !timeline.timeEntries.isEmpty {
+                visibleSection = .timeEntry
+            } else if !timeline.activities.isEmpty {
+                visibleSection = .activity
+            }
+            guard let section = visibleSection else { return }
             collectionView.scrollToItems(at: Set<IndexPath>(arrayLiteral: IndexPath(item: 0, section: section.rawValue)),
                                          scrollPosition: [.centeredHorizontally, .centeredVertically])
         }

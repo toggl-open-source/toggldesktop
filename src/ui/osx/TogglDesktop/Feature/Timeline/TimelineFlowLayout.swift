@@ -55,7 +55,7 @@ final class TimelineFlowLayout: NSCollectionViewFlowLayout {
     private var activityAttributes: [NSCollectionViewLayoutAttributes] = []
     private var dividerAttributes: [NSCollectionViewLayoutAttributes] = []
     private var backgroundAttributes: [NSCollectionViewLayoutAttributes] = []
-    private var currentMomentAttribute: NSCollectionViewLayoutAttributes?
+    private(set) var currentMomentAttribute: NSCollectionViewLayoutAttributes?
     private var verticalPaddingTimeLabel: CGFloat {
         switch zoomLevel {
         case .x1:
