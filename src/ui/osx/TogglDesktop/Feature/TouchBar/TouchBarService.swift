@@ -46,15 +46,8 @@ final class TouchBarService: NSObject {
 
     var isEnabled = true
     private var isPresented = false
-    private lazy var touchBar: NSTouchBar = {
-        let touchBar = NSTouchBar()
-        touchBar.delegate = self
-        touchBar.customizationIdentifier = .mainTouchBar
-        touchBar.defaultItemIdentifiers = [.timeEntryItem, .startStopItem]
-        return touchBar
-    }()
-
     weak var delegate: TouchBarServiceDelegate?
+    private weak var touchBar: NSTouchBar?
     private var timeEntries: [TimeEntryViewItem] = []
     private var displayState = DisplayState.normal { didSet { updateDisplayState() }}
     private lazy var scrubberView: NSScrubber = {
@@ -85,14 +78,13 @@ final class TouchBarService: NSObject {
 
     func makeTouchBar() -> NSTouchBar? {
         guard isEnabled else { return nil }
-
-        // Use public APIs for AppStore version
-        #if APP_STORE
-            return touchBar
-        #endif
-
-        // Return nil and use Private APIs
-        return nil
+        let touchBar = NSTouchBar()
+        touchBar.delegate = self
+        touchBar.customizationIdentifier = .mainTouchBar
+        touchBar.defaultItemIdentifiers = [.timeEntryItem, .startStopItem]
+        touchBar.customizationAllowedItemIdentifiers = []
+        self.touchBar = touchBar
+        return touchBar
     }
 
     func updateRunningItem(_ timeEntry: TimeEntryViewItem) {
@@ -140,37 +132,6 @@ final class TouchBarService: NSObject {
     }
 }
 
-// MARK: Action
-
-@available(OSX 10.12.2, *)
-extension TouchBarService {
-
-    func present() {
-        #if !APP_STORE
-        guard isEnabled && !isPresented else { return }
-        if NSTouchBar.presentSystemModal(touchBar, systemTrayItemIdentifier: nil) {
-            isPresented = true
-        }
-        #endif
-    }
-
-    func minimize() {
-        #if !APP_STORE
-        guard isEnabled && isPresented else { return }
-        NSTouchBar.minimizeSystemModal(touchBar)
-        isPresented = false
-        #endif
-    }
-
-    func dismiss() {
-        #if !APP_STORE
-        guard isEnabled && isPresented else { return }
-        NSTouchBar.dismissSystemModal(touchBar)
-        isPresented = false
-        #endif
-    }
-}
-
 // MARK: Private
 
 @available(OSX 10.12.2, *)
@@ -196,13 +157,13 @@ extension TouchBarService {
     }
 
     private func updateDisplayState() {
-        switch displayState {
-        case .normal:
-            touchBar.defaultItemIdentifiers.removeAll(where: { $0 == .runningTimeEntry })
-        case .tracking:
-            let count = touchBar.defaultItemIdentifiers.count
-            touchBar.defaultItemIdentifiers.insert(.runningTimeEntry, at: count - 1)
-        }
+//        switch displayState {
+//        case .normal:
+//            touchBar?.defaultItemIdentifiers.removeAll(where: { $0 == .runningTimeEntry })
+//        case .tracking:
+//            let count = touchBar?.defaultItemIdentifiers.count
+//            touchBar?.defaultItemIdentifiers.insert(.runningTimeEntry, at: count - 1)
+//        }
     }
 }
 

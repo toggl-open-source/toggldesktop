@@ -1149,12 +1149,6 @@ void *ctx;
 	toggl_context_clear(ctx);
 	ctx = 0;
 
-#ifndef APP_STORE
-    if (@available(macOS 10.12.2, *)) {
-        [[TouchBarService shared] dismiss];
-    }
-#endif
-
 	if (self.aboutWindowController.restart == YES)
 	{
 		float seconds = 1.0;
