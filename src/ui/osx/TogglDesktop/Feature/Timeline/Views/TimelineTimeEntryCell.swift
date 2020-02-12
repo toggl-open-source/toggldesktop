@@ -17,28 +17,11 @@ protocol TimelineTimeEntryCellDelegate: class {
     func timeEntryCellShouldChangeLastEntryStartTime(for entry: TimelineTimeEntry, sender: TimelineTimeEntryCell)
 }
 
-final class CursorView: NSBox {
-
-    var cursor: NSCursor? {
-        didSet {
-            resetCursorRects()
-        }
-    }
-
-    override func resetCursorRects() {
-        if let cursor = cursor {
-            addCursorRect(bounds, cursor: cursor)
-        } else {
-            super.resetCursorRects()
-        }
-    }
-}
-
 final class TimelineTimeEntryCell: TimelineBaseCell {
 
     // MARK: Variables
 
-    weak var delegate: TimelineTimeEntryCellDelegate?
+    weak var menuDelegate: TimelineTimeEntryCellDelegate?
     private(set) var timeEntry: TimelineTimeEntry!
     private lazy var timeEntryMenu = TimelineTimeEntryMenu()
 
@@ -60,6 +43,9 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
         }
     }
 
+    override var isResizable: Bool { return true }
+    override var isHoverable: Bool { return true }
+
     // MARK: OUTLET
 
     @IBOutlet weak var titleLbl: NSTextField!
@@ -79,7 +65,6 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
         super.viewDidLoad()
 
         initCommon()
-        initTrackingArea()
     }
 
     override func prepareForReuse() {
@@ -93,16 +78,6 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
         self.timeEntry = timeEntry
         renderColor(with: timeEntry.color, isSmallEntry: timeEntry.isSmall)
         populateInfo()
-    }
-
-    override func mouseEntered(with event: NSEvent) {
-        super.mouseEntered(with: event)
-        foregroundBox.resetCursorRects()
-    }
-
-    override func mouseExited(with event: NSEvent) {
-        super.mouseExited(with: event)
-        foregroundBox.resetCursorRects()
     }
 
     private func populateInfo() {
@@ -197,9 +172,6 @@ extension TimelineTimeEntryCell {
         timeEntryMenu.menuDelegate = self
         view.menu = timeEntryMenu
         view.menu?.delegate = self
-        if let cursorView = foregroundBox as? CursorView {
-            cursorView.cursor = NSCursor.pointingHand
-        }
     }
 }
 
@@ -208,23 +180,23 @@ extension TimelineTimeEntryCell {
 extension TimelineTimeEntryCell: TimelineTimeEntryMenuDelegate {
     
     func timelineMenuContinue(_ timeEntry: TimelineTimeEntry) {
-        delegate?.timeEntryCellShouldContinue(for: timeEntry, sender: self)
+        menuDelegate?.timeEntryCellShouldContinue(for: timeEntry, sender: self)
     }
 
     func timelineMenuStartEntry(_ timeEntry: TimelineTimeEntry) {
-        delegate?.timeEntryCellShouldStartNew(for: timeEntry, sender: self)
+        menuDelegate?.timeEntryCellShouldStartNew(for: timeEntry, sender: self)
     }
 
     func timelineMenuDelete(_ timeEntry: TimelineTimeEntry) {
-        delegate?.timeEntryCellShouldDelete(for: timeEntry, sender: self)
+        menuDelegate?.timeEntryCellShouldDelete(for: timeEntry, sender: self)
     }
 
     func timelineMenuChangeFirstEntryStopTime(_ timeEntry: TimelineTimeEntry) {
-        delegate?.timeEntryCellShouldChangeFirstEntryStopTime(for: timeEntry, sender: self)
+        menuDelegate?.timeEntryCellShouldChangeFirstEntryStopTime(for: timeEntry, sender: self)
     }
 
     func timelineMenuChangeLastEntryStartTime(_ timeEntry: TimelineTimeEntry) {
-        delegate?.timeEntryCellShouldChangeLastEntryStartTime(for: timeEntry, sender: self)
+        menuDelegate?.timeEntryCellShouldChangeLastEntryStartTime(for: timeEntry, sender: self)
     }
 }
 

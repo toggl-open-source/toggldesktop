@@ -12,9 +12,12 @@ protocol TimelineDatasourceDelegate: class {
 
     func shouldPresentTimeEntryEditor(in view: NSView, timeEntry: TimeEntryViewItem, cell: TimelineTimeEntryCell)
     func shouldPresentTimeEntryHover(in view: NSView, timeEntry: TimelineTimeEntry)
-    func shouldPresentActivityHover(in view: TimelineBaseCell, activity: TimelineActivity)
+    func shouldPresentActivityHover(in view: NSView, activity: TimelineActivity)
     func startNewTimeEntry(at started: TimeInterval, ended: TimeInterval)
     func shouldUpdatePanelSize(with activityFrame: CGRect)
+    func shouldUpdateEndTime(_ endtime: TimeInterval, for entry: TimelineTimeEntry)
+    func shouldUpdateStartTime(_ start: TimeInterval, for entry: TimelineTimeEntry)
+    func shouldPresentResizePopover(at cell: TimelineTimeEntryCell, onTopCorner: Bool)
 }
 
 final class TimelineDatasource: NSObject {
@@ -72,7 +75,8 @@ final class TimelineDatasource: NSObject {
     private let flow: TimelineFlowLayout
     private(set) var timeline: TimelineData?
     private var zoomLevel: ZoomLevel = .x1
-    
+    private var isUserResizing = false
+
     // MARK: Init
 
     init(_ collectionView: NSCollectionView) {
@@ -92,9 +96,10 @@ final class TimelineDatasource: NSObject {
     }
 
     func render(_ timeline: TimelineData) {
+        // Skip reload if the user is resizing
+        guard !isUserResizing else { return }
         self.timeline?.cleanUp()
         self.timeline = nil
-
         self.timeline = timeline
         flow.currentDate = Date(timeIntervalSince1970: timeline.start)
         collectionView.reloadData()
@@ -173,8 +178,8 @@ extension TimelineDatasource: NSCollectionViewDataSource, NSCollectionViewDelega
             switch item {
             case let timeEntry as TimelineTimeEntry:
                 let cell = collectionView.makeItem(withIdentifier: Constants.TimeEntryCellID, for: indexPath) as! TimelineTimeEntryCell
+                cell.menuDelegate = self
                 cell.delegate = self
-                cell.mouseDelegate = self
                 cell.config(for: timeEntry)
                 return cell
             case let emptyTimeEntry as TimelineBaseTimeEntry:
@@ -187,7 +192,7 @@ extension TimelineDatasource: NSCollectionViewDataSource, NSCollectionViewDelega
 
         case .activity:
             let cell = collectionView.makeItem(withIdentifier: Constants.ActivityCellID, for: indexPath) as! TimelineActivityCell
-            cell.mouseDelegate = self
+            cell.delegate = self
             let activity = item as! TimelineActivity
             cell.config(for: activity)
             return cell
@@ -229,6 +234,14 @@ extension TimelineDatasource: NSCollectionViewDataSource, NSCollectionViewDelega
         }
     }
 
+    func collectionView(_ collectionView: NSCollectionView, willDisplay item: NSCollectionViewItem, forRepresentedObjectAt indexPath: IndexPath) {
+        switch item {
+        case let cell as TimelineTimeEntryCell:
+            cell.foregroundBox.updateTrackingAreas()
+        default:
+            break
+        }
+    }
 }
 
 // MARK: TimelineFlowLayoutDelegate
@@ -289,18 +302,107 @@ extension TimelineDatasource: TimelineTimeEntryCellDelegate {
 
 extension TimelineDatasource: TimelineBaseCellDelegate {
 
-    func timelineCellMouseDidExited(_ sender: TimelineBaseCell) {}
-
     func timelineCellMouseDidEntered(_ sender: TimelineBaseCell) {
         switch sender {
         case let timeEntryCell as TimelineTimeEntryCell:
             guard let timeEntry = timeEntryCell.timeEntry else { return }
             delegate?.shouldPresentTimeEntryHover(in: timeEntryCell.popoverView, timeEntry: timeEntry)
-        case let activityCell as TimelineActivityCell:
-            guard let activity = activityCell.activity else { return }
-            delegate?.shouldPresentActivityHover(in: sender, activity: activity)
         default:
             break
         }
+    }
+
+    func timelineCellUpdateEndTime(with event: NSEvent, sender: TimelineBaseCell) {
+        isUserResizing = false
+        switch sender {
+        case let timeEntryCell as TimelineTimeEntryCell:
+            guard let timeEntry = timeEntryCell.timeEntry else { return }
+            let endAt = convertPointForEndTime(with: event, startTime: timeEntry.start)
+
+            // Update in libray
+            delegate?.shouldUpdateEndTime(endAt, for: timeEntry)
+        default:
+            break
+        }
+    }
+
+    func timelineCellRedrawEndTime(with event: NSEvent, sender: TimelineBaseCell) {
+        isUserResizing = true
+        switch sender {
+        case let timeEntryCell as TimelineTimeEntryCell:
+            guard let timeEntry = timeEntryCell.timeEntry else { return }
+            let endAt = convertPointForEndTime(with: event, startTime: timeEntry.start)
+
+            // Update the end time and re-draw
+            timeEntry.end = endAt
+            flow.invalidateLayout()
+            delegate?.shouldPresentResizePopover(at: timeEntryCell, onTopCorner: false)
+        default:
+            break
+        }
+    }
+
+    func timelineCellRedrawStartTime(with event: NSEvent, sender: TimelineBaseCell) {
+        isUserResizing = true
+        switch sender {
+        case let timeEntryCell as TimelineTimeEntryCell:
+            guard let timeEntry = timeEntryCell.timeEntry else { return }
+            let startTime = convertPointForStartTime(with: event, endTime: timeEntry.end)
+
+            // Update and re-draw
+            timeEntry.start = startTime
+            flow.invalidateLayout()
+            delegate?.shouldPresentResizePopover(at: timeEntryCell, onTopCorner: true)
+        default:
+            break
+        }
+    }
+
+    func timelineCellUpdateStartTime(with event: NSEvent, sender: TimelineBaseCell) {
+        isUserResizing = false
+        switch sender {
+        case let timeEntryCell as TimelineTimeEntryCell:
+            guard let timeEntry = timeEntryCell.timeEntry else { return }
+            let startTime = convertPointForStartTime(with: event, endTime: timeEntry.end)
+
+            // Update library
+            delegate?.shouldUpdateStartTime(startTime, for: timeEntry)
+        default:
+            break
+        }
+    }
+
+    func timelineCellOpenEditor(_ sender: TimelineBaseCell) {
+        if let cell = sender as? TimelineTimeEntryCell {
+            delegate?.shouldPresentTimeEntryEditor(in: cell.popoverView, timeEntry: cell.timeEntry.timeEntry, cell: cell)
+        }
+    }
+
+    private func convertPointForStartTime(with event: NSEvent, endTime: TimeInterval) -> TimeInterval {
+        // Convert point to timestamp, depend on the zoom
+        let point = collectionView.convert(event.locationInWindow, from: nil)
+        let start = flow.convertTimestamp(from: point)
+
+        // Get safe value
+        return start < endTime ? start : endTime - 1
+    }
+
+    private func convertPointForEndTime(with event: NSEvent, startTime: TimeInterval) -> TimeInterval {
+        // Convert point to timestamp, depend on the zoom
+        let point = collectionView.convert(event.locationInWindow, from: nil)
+        let endedAt = flow.convertTimestamp(from: point)
+
+        // Get safe value
+        return endedAt > startTime ? endedAt : startTime + 1
+    }
+}
+
+// MARK: TimelineActivityCellDelegate
+
+extension TimelineDatasource: TimelineActivityCellDelegate {
+
+    func timelineActivityPresentPopover(_ sender: TimelineActivityCell) {
+        guard let activity = sender.activity else { return }
+        delegate?.shouldPresentActivityHover(in: sender.view, activity: activity)
     }
 }

@@ -357,4 +357,14 @@ void *ctx;
     return nil;
 }
 
+- (NSString *) formatDurationTimestampt:(NSTimeInterval) duration
+{
+    char *durationStr = toggl_format_duration_time(ctx, duration);
+    if (durationStr) {
+        NSString *duration = [NSString stringWithUTF8String:durationStr];
+        free(durationStr);
+        return duration;
+    }
+    return nil;
+}
 @end

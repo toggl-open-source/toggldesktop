@@ -1485,3 +1485,8 @@ void toggl_iam_click(void *context,
     }
     app(context)->TrackInAppMessage(type);
 }
+
+char_t *toggl_format_duration_time(void *context,
+                          const uint64_t timestamp) {
+    return copy_string(toggl::Formatter::FormatDurationForDateHeader(timestamp));
+}

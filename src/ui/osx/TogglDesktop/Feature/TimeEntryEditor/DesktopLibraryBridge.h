@@ -107,6 +107,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)enableAutoTracker:(BOOL)isEnabled;
 
+#pragma mark - Formatter
+
+- (NSString * _Nullable) formatDurationTimestampt:(NSTimeInterval) duration;
+
 @end
 
 NS_ASSUME_NONNULL_END

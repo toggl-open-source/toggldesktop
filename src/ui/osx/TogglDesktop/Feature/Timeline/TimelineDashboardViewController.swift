@@ -93,6 +93,14 @@ final class TimelineDashboardViewController: NSViewController {
         return popover
     }()
 
+    private lazy var resizeInfoPopover: NoVibrantPopoverView = {
+        let popover = NoVibrantPopoverView()
+        popover.animates = false
+        popover.behavior = .semitransient
+        popover.contentViewController = TimelineResizeHoverController(nibName: "TimelineResizeHoverController", bundle: nil)
+        return popover
+    }()
+
     private var isAllPopoverClosed: Bool {
         return !editorPopover.isShown &&
             !activityHoverPopover.isShown &&
@@ -396,7 +404,7 @@ extension TimelineDashboardViewController: TimelineDatasourceDelegate {
         timeEntryHoverController.render(with: timeEntry)
     }
 
-    func shouldPresentActivityHover(in cell: TimelineBaseCell, activity: TimelineActivity) {
+    func shouldPresentActivityHover(in view: NSView, activity: TimelineActivity) {
         guard !editorPopover.isShown else { return }
 
         // Update new content and force render to get fit size
@@ -406,7 +414,7 @@ extension TimelineDashboardViewController: TimelineDatasourceDelegate {
 
         // Udate size and present
         activityHoverPopover.contentSize = activityHoverController.view.frame.size
-        activityHoverPopover.show(relativeTo: cell.view.bounds, of: cell.view, preferredEdge: .maxX)
+        activityHoverPopover.show(relativeTo: view.bounds, of: view, preferredEdge: .maxX)
     }
 
     func shouldPresentTimeEntryEditor(in view: NSView, timeEntry: TimeEntryViewItem, cell: TimelineTimeEntryCell) {
@@ -463,6 +471,46 @@ extension TimelineDashboardViewController: TimelineDatasourceDelegate {
     func shouldUpdatePanelSize(with activityFrame: CGRect) {
         // Adjust the Activity label to make it center alignment
         activityLabelRight.constant = view.frame.width - activityFrame.origin.x - TimelineFlowLayout.Constants.Divider.SeconDividerRightPadding
+    }
+
+    func shouldUpdateEndTime(_ endtime: TimeInterval, for entry: TimelineTimeEntry) {
+        guard let guid = entry.timeEntry.guid else { return }
+        resizeInfoPopover.close()
+        DesktopLibraryBridge.shared().updateTimeEntryWithEnd(atTimestamp: endtime, guid: guid)
+    }
+
+    func shouldUpdateStartTime(_ start: TimeInterval, for entry: TimelineTimeEntry) {
+        guard let guid = entry.timeEntry.guid else { return }
+        resizeInfoPopover.close()
+        DesktopLibraryBridge.shared().updateTimeEntryWithStart(atTimestamp: start, guid: guid)
+    }
+
+    func shouldPresentResizePopover(at cell: TimelineTimeEntryCell, onTopCorner: Bool) {
+
+        // Compute the position
+        let bounds = cell.foregroundBox.bounds
+        let newFrame = onTopCorner ? CGRect(x: 0, y: bounds.height - 1, width: bounds.width, height: 1) : CGRect(x: 0, y: 0, width: bounds.width, height: 1)
+
+        // Show or Update the position
+        if !resizeInfoPopover.isShown {
+            resizeInfoPopover.show(relativeTo: newFrame, of: cell.foregroundBox, preferredEdge: .maxX)
+        } else {
+            resizeInfoPopover.positioningRect = newFrame
+        }
+
+        // Update time
+        if let flow = collectionView.collectionViewLayout as? TimelineFlowLayout,
+            let controller = resizeInfoPopover.contentViewController as? TimelineResizeHoverController {
+
+            // Since we are in dragging session and we haven't saved to Library yet
+            // We have to convert the top and bottom corner of the cell
+            // To Get the Start and End Timestampt
+            let startTime = flow.convertTimestamp(from: cell.view.frame.origin)
+            let endTime = flow.convertTimestamp(from: CGPoint(x: cell.view.frame.origin.x, y: cell.view.frame.maxY))
+
+            // Update the popover
+            controller.updateLabels(with: startTime, endTime: endTime)
+        }
     }
 }
 

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="15702" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="15705" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15702"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15705"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -32,7 +32,7 @@
         </customView>
         <collectionViewItem identifier="TimelineActivityCell" id="a5X-y3-2ZH" customClass="TimelineActivityCell" customModule="TogglDesktop" customModuleProvider="target">
             <connections>
-                <outlet property="foregroundBox" destination="3am-zX-gdl" id="AHt-GI-SwM"/>
+                <outlet property="foregroundBox" destination="3am-zX-gdl" id="brg-ZE-srF"/>
                 <outlet property="view" destination="jva-K5-Pmb" id="eHp-m4-Yhn"/>
             </connections>
         </collectionViewItem>

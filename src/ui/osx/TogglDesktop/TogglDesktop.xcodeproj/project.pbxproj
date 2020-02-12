@@ -587,6 +587,10 @@
 		BAF3ACD32343325A00E41B33 /* TouchBarService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAF3ACD22343325A00E41B33 /* TouchBarService.swift */; };
 		BAF50DE521A29FED0090BA95 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BAF50DE421A29FED0090BA95 /* Images.xcassets */; };
 		BAF50DF821A2A18D0090BA95 /* AppIconFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = BAF50DF721A2A18D0090BA95 /* AppIconFactory.m */; };
+		BAF9364C23E8114800EE1076 /* TimelineResizeHoverController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAF9364B23E8114800EE1076 /* TimelineResizeHoverController.swift */; };
+		BAF9364D23E8114800EE1076 /* TimelineResizeHoverController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAF9364B23E8114800EE1076 /* TimelineResizeHoverController.swift */; };
+		BAF9364F23E8116900EE1076 /* TimelineResizeHoverController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BAF9364E23E8116900EE1076 /* TimelineResizeHoverController.xib */; };
+		BAF9365023E8116900EE1076 /* TimelineResizeHoverController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BAF9364E23E8116900EE1076 /* TimelineResizeHoverController.xib */; };
 		BAFBFCC821CD1D3C004B443F /* SystemService.m in Sources */ = {isa = PBXBuildFile; fileRef = BAFBFCC721CD1D3C004B443F /* SystemService.m */; };
 		C5CB7F0417F43EE100A2AEB1 /* TimeEntryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C5CB7F0317F43EE100A2AEB1 /* TimeEntryCell.m */; };
 		C5DA1FBF17F1B08A001C4565 /* MainWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = C5DA1FBD17F1B08A001C4565 /* MainWindowController.m */; };
@@ -1061,6 +1065,8 @@
 		BAF50DF721A2A18D0090BA95 /* AppIconFactory.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppIconFactory.m; sourceTree = "<group>"; };
 		BAF87DEB21A3E1F600624EBE /* NSTextField+Ext.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSTextField+Ext.h"; sourceTree = "<group>"; };
 		BAF87DEC21A3E1F600624EBE /* NSTextField+Ext.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSTextField+Ext.m"; sourceTree = "<group>"; };
+		BAF9364B23E8114800EE1076 /* TimelineResizeHoverController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineResizeHoverController.swift; sourceTree = "<group>"; };
+		BAF9364E23E8116900EE1076 /* TimelineResizeHoverController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimelineResizeHoverController.xib; sourceTree = "<group>"; };
 		BAFBFCC621CD1D3C004B443F /* SystemService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SystemService.h; sourceTree = "<group>"; };
 		BAFBFCC721CD1D3C004B443F /* SystemService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SystemService.m; sourceTree = "<group>"; };
 		C5CB7F0217F43EE100A2AEB1 /* TimeEntryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeEntryCell.h; sourceTree = "<group>"; };
@@ -1717,6 +1723,8 @@
 				BA1FFE70231FB0F300EAD9DC /* PanelSwitcherButton.swift */,
 				BA5AC61523264651007E6C91 /* TimelineCollectionView.swift */,
 				BA5E988823BF496E0089A2C7 /* HoverImageView.swift */,
+				BAF9364B23E8114800EE1076 /* TimelineResizeHoverController.swift */,
+				BAF9364E23E8116900EE1076 /* TimelineResizeHoverController.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2073,6 +2081,7 @@
 				BA75FF2822BCC1FC00D3F08C /* TimelineTimeEntryCell.xib in Resources */,
 				BA412C29224E196D003CA17A /* NoClientCellView.xib in Resources */,
 				BA75FF2C22BCC20D00D3F08C /* TimelineActivityCell.xib in Resources */,
+				BAF9364F23E8116900EE1076 /* TimelineResizeHoverController.xib in Resources */,
 				BA412C29224E196D003CA17A /* NoClientCellView.xib in Resources */,
 				BA65A22122B7809300F895FD /* TimelineDashboardViewController.xib in Resources */,
 				7498D2481888B226001390B9 /* TimeEntryCell.xib in Resources */,
@@ -2134,6 +2143,7 @@
 				BAE64E222368334000244D2B /* TagCellView.xib in Resources */,
 				BAE64E232368334000244D2B /* ProjectCreationView.xib in Resources */,
 				BAE64E242368334000244D2B /* NoClientCellView.xib in Resources */,
+				BAF9365023E8116900EE1076 /* TimelineResizeHoverController.xib in Resources */,
 				BAE64E252368334000244D2B /* TimeEntryCell.xib in Resources */,
 				BAE64E262368334000244D2B /* LoadMoreCell.xib in Resources */,
 				BA37ACD323D8900C0013EE26 /* TimelineTimeLabelCell.xib in Resources */,
@@ -2426,6 +2436,7 @@
 				BA4791F722F0478A00E24F79 /* NotificationCenter+MainThread.swift in Sources */,
 				BA75FF3922BCC6F800D3F08C /* TimelineData.swift in Sources */,
 				BA01405222571199000E5B91 /* TagTokenView.swift in Sources */,
+				BAF9364C23E8114800EE1076 /* TimelineResizeHoverController.swift in Sources */,
 				BA05367F225E238D00C26E1F /* ProjectWorksapceCellView.swift in Sources */,
 				BA47DEB223966F9C005216AD /* InAppMessageViewController.swift in Sources */,
 				745126B619A28AA600390F47 /* Reachability.m in Sources */,
@@ -2740,6 +2751,7 @@
 				BAE64DC42368334000244D2B /* CalendarViewController.swift in Sources */,
 				BAE64DC52368334000244D2B /* (null) in Sources */,
 				BA37ACBE23D890050013EE26 /* LayerBackedViewController.swift in Sources */,
+				BAF9364D23E8114800EE1076 /* TimelineResizeHoverController.swift in Sources */,
 				BAE64DC62368334000244D2B /* SystemService.m in Sources */,
 				BAE64DC72368334000244D2B /* AppIconFactory.m in Sources */,
 				BA37ACDC23D8900C0013EE26 /* TimelineDashedCornerView.swift in Sources */,

@@ -1131,6 +1131,10 @@ extern "C" {
         void *context,
         const uint64_t type);
 
+    TOGGL_EXPORT char_t *toggl_format_duration_time(
+        void *context,
+        const uint64_t timestamp);
+
 #undef TOGGL_EXPORT
 
 #ifdef __cplusplus
