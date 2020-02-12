@@ -33,7 +33,8 @@ final class TimelineActivityCell: NSCollectionViewItem {
 
     func config(for activity: TimelineActivity) {
         self.activity = activity
-        renderColor(with: activity.color, isSmallEntry: activity.isSmall)
+        let fgColor = activity.color
+        renderColor(with: fgColor, isSmallEntry: activity.isSmall)
     }
 
     override func mouseEntered(with event: NSEvent) {

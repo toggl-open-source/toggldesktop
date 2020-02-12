@@ -101,8 +101,10 @@ final class TimelineDatasource: NSObject {
     }
 
     func render(_ timeline: TimelineData) {
-        // Skip reload if the user is on action (Resize or drag)
-        guard !isUserOnAction else { return }
+        // Skip reload if the user is resizing
+        guard !isUserResizing else { return }
+        self.timeline?.cleanUp()
+        self.timeline = nil
         self.timeline = timeline
         flow.currentDate = Date(timeIntervalSince1970: timeline.start)
         collectionView.reloadData()

@@ -452,7 +452,7 @@ void GUI::DisplayTimeEntryList(const bool open,
 void GUI::DisplayTimeline(
     const bool open,
     const std::vector<TimelineEvent> list,
-    const std::vector<view::TimeEntry> entries_list) {
+    const std::vector<view::TimeEntry> &entries_list) {
 
     if (!on_display_timeline_) {
         return;
@@ -477,6 +477,9 @@ void GUI::DisplayTimeline(
         if (start_time_entry >= start_day && start_time_entry <= end_day) {
             item->Next = first_entry;
             first_entry = item;
+        } else {
+            // Release
+            time_entry_view_item_clear(item);
         }
     }
 
@@ -529,8 +532,7 @@ void GUI::DisplayTimeline(
                     }
 
                     if (!item_present) {
-                        TogglTimelineEventView *event_view =
-                            timeline_event_view_init(event);
+                        TogglTimelineEventView *event_view = timeline_event_view_init(event);
                         event_view->Next = event_app->Event;
                         event_app->Event = event_view;
                     }
@@ -539,46 +541,30 @@ void GUI::DisplayTimeline(
             }
 
             if (!app_present) {
-                TogglTimelineEventView *app_event_view =
-                    timeline_event_view_init(event);
+                TogglTimelineEventView *app_event_view = timeline_event_view_init(event);
                 if (event.Duration() > 0) {
                     app_event_view->Header = true;
+                    if (app_event_view->Title) {
+                        free(app_event_view->Title);
+                        app_event_view->Title = nullptr;
+                    }
                     app_event_view->Title = copy_string("");
 
-                    TogglTimelineEventView *event_view =
-                        timeline_event_view_init(event);
-                    //                app_event_view->event = first_event->event;
+                    TogglTimelineEventView *event_view = timeline_event_view_init(event);
                     app_event_view->Event = event_view;
-
                     app_event_view->Next = first_event;
                     first_event = app_event_view;
                 }
             }
         }
 
-        // Attach Time entries to chunk
-        // Sort time entries and add only the entries of selected date
-
-        TogglTimeEntryView *first = nullptr;
-        for (unsigned int i = 0; i < entries_list.size(); i++) {
-            view::TimeEntry te = entries_list.at(i);
-            TogglTimeEntryView *item = time_entry_view_item_init(te);
-            time_t start_time = Poco::Timestamp::fromEpochTime(item->Started).epochTime();
-            time_t end_time = Poco::Timestamp::fromEpochTime(item->Ended).epochTime();
-            if ((start_time >= epoch_time
-                    && start_time < epoch_time_end)
-                    || (end_time > epoch_time
-                        && end_time <= epoch_time_end)
-                    || (start_time <= epoch_time
-                        && end_time >= epoch_time_end)) {
-
-                item->Next = first;
-                first = item;
-            }
-        }
-
-        chunk_view->Entry = first;
         chunk_view->Ended = epoch_time_end;
+
+        // Update endtime
+        if (chunk_view->EndTimeString) {
+            free(chunk_view->EndTimeString);
+            chunk_view->EndTimeString = nullptr;
+        }
         chunk_view->EndTimeString = copy_string(toggl::Formatter::FormatTimeForTimeEntryEditor(chunk_view->Ended));
 
         // Sort the list by duration descending
@@ -594,8 +580,9 @@ void GUI::DisplayTimeline(
     std::string formatted_date = Formatter::FormatDateHeader(TimelineDateAt());
     char_t *date = copy_string(formatted_date.c_str());
     on_display_timeline_(open, date, first_chunk, first_entry, start_day, end_day);
-    delete first_entry;
     free(date);
+    time_entry_view_list_clear(first_entry);
+    timeline_chunk_view_list_clear(first_chunk);
 }
 
 TogglTimelineEventView* GUI::SortList(TogglTimelineEventView *head) {

@@ -67,6 +67,8 @@
 - (BOOL)confirmlessDelete;
 - (BOOL)isRunning;
 + (NSColor *)defaultProjectColor;
-- (void)load:(TogglTimeEntryView *)data;
 - (BOOL) isSameContentWithTimeEntryViewItem:(TimeEntryViewItem *) item;
+
+- (instancetype) initWithView:(TogglTimeEntryView *) te;
+
 @end

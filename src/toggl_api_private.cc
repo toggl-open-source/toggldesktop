@@ -561,6 +561,14 @@ TogglTimelineChunkView *timeline_chunk_view_init(
     return chunk_view;
 }
 
+void timeline_chunk_view_list_clear(TogglTimelineChunkView *first) {
+    while (first) {
+        TogglTimelineChunkView *next = reinterpret_cast<TogglTimelineChunkView *>(first->Next);
+        timeline_chunk_view_clear(first);
+        first = next;
+    }
+}
+
 void timeline_chunk_view_clear(
     TogglTimelineChunkView *chunk_view) {
     if (!chunk_view) {
@@ -575,16 +583,9 @@ void timeline_chunk_view_clear(
         chunk_view->EndTimeString = nullptr;
     }
     if (chunk_view->FirstEvent) {
-        TogglTimelineEventView *firstEvent =
-            reinterpret_cast<TogglTimelineEventView *>(chunk_view->FirstEvent);
-        timeline_event_view_clear(firstEvent);
+        TogglTimelineEventView *firstEvent = reinterpret_cast<TogglTimelineEventView *>(chunk_view->FirstEvent);
+        timeline_event_view_list_clear(firstEvent);
         chunk_view->FirstEvent = nullptr;
-    }
-    if (chunk_view->Next) {
-        TogglTimelineChunkView *next =
-            reinterpret_cast<TogglTimelineChunkView *>(chunk_view->Next);
-        timeline_chunk_view_clear(next);
-        chunk_view->Next = nullptr;
     }
     delete chunk_view;
 }
@@ -603,7 +604,19 @@ TogglTimelineEventView *timeline_event_view_init(
 
 void timeline_event_view_update_duration(TogglTimelineEventView *event_view, const int64_t duration) {
     event_view->Duration = duration;
+    if (event_view->DurationString) {
+        free(event_view->DurationString);
+        event_view->DurationString = nullptr;
+    }
     event_view->DurationString = copy_string(toggl::Formatter::FormatDuration(duration, toggl::Format::ImprovedOnlyMinAndSec));
+}
+
+void timeline_event_view_list_clear(TogglTimelineEventView *first) {
+    while (first) {
+        TogglTimelineEventView *next = reinterpret_cast<TogglTimelineEventView *>(first->Next);
+        timeline_event_view_clear(first);
+        first = next;
+    }
 }
 
 void timeline_event_view_clear(
@@ -623,11 +636,10 @@ void timeline_event_view_clear(
         free(event_view->DurationString);
         event_view->DurationString = nullptr;
     }
-    if (event_view->Next) {
-        TogglTimelineEventView *next =
-            reinterpret_cast<TogglTimelineEventView *>(event_view->Next);
-        timeline_event_view_clear(next);
-        event_view->Next = nullptr;
+    if (event_view->Event) {
+        TogglTimelineEventView *event = reinterpret_cast<TogglTimelineEventView *>(event_view->Event);
+        timeline_event_view_list_clear(event);
+        event_view->Event = nullptr;
     }
     delete event_view;
 }

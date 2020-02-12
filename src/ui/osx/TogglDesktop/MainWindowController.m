@@ -152,7 +152,6 @@ extern void *ctx;
         if (@available(macOS 10.12.2, *)) 
 		{
             [[TouchBarService shared] resetContent];
-        	[[TouchBarService shared] minimize];
         }
 	}
 }
@@ -187,7 +186,6 @@ extern void *ctx;
 			// Prepare the Touch bar
             if (@available(macOS 10.12.2, *)) {
                 [[TouchBarService shared] prepareContent];
-            	[[TouchBarService shared] present];
             }
 		}
 	}
@@ -404,23 +402,9 @@ extern void *ctx;
     [self.inappMessageView.view removeFromSuperview];
 }
 
-#pragma mark - NSWindowDelegate
-
--(void)windowDidBecomeMain:(NSNotification *)notification
+- (NSTouchBar *)makeTouchBar
 {
-     if (@available(macOS 10.12.2, *))
-     {
-         [[TouchBarService shared] present];
-     }
-
-}
-
-- (void)windowDidResignMain:(NSNotification *)notification
-{
-    if (@available(macOS 10.12.2, *))
-    {
-        [[TouchBarService shared] minimize];
-    }
+    return [[TouchBarService shared] makeTouchBar];
 }
 
 @end

@@ -110,7 +110,7 @@ static NSString *const upArrow = @"\u25B2";
 	[self.window.contentView addSubview:self.autocompleteTableContainer positioned:NSWindowAbove relativeTo:nil];
 
 	// Get view for leading/trailing
-	NSView *view = self;
+    NSView *view;
 	switch (self.displayMode)
 	{
 		case AutoCompleteDisplayModeCompact :
@@ -119,7 +119,7 @@ static NSString *const upArrow = @"\u25B2";
 		case AutoCompleteDisplayModeFullscreen :
 			view = self.window.contentView;
 		default :
-			break;
+            view = self;
 	}
 
 	// Set constraints to input field so autocomplete size is always connected to input

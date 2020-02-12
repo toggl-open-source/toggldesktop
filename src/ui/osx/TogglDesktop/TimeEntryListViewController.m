@@ -536,7 +536,6 @@ extern void *ctx;
 
 		     // define content frame
 			 NSRect contentFrame = NSMakeRect(0, imageOffset, contentSize.width, contentSize.height);
-			 NSBezierPath *contentPath = [NSBezierPath bezierPathWithRect:contentFrame];
 			 [theContext restoreGraphicsState];
 
 			 NSColor *backgroundColor;
@@ -551,7 +550,7 @@ extern void *ctx;
 
 		     // fill content
 			 [backgroundColor set];
-			 contentPath = [NSBezierPath bezierPathWithRect:NSInsetRect(contentFrame, 1, 1)];
+			 NSBezierPath *contentPath = [NSBezierPath bezierPathWithRect:NSInsetRect(contentFrame, 1, 1)];
 			 [contentPath fill];
 
 			 [image unlockFocus];

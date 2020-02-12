@@ -73,7 +73,7 @@ To get the focused application window name properly for the Timeline, TogglDeskt
                             </constraints>
                             <buttonCell key="cell" type="bevel" title="Permission required!" bezelStyle="regularSquare" image="NSCaution" imagePosition="left" alignment="center" controlSize="small" imageScaling="proportionallyDown" inset="2" id="Uj3-3t-CiG">
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                <font key="font" metaFont="system" size="10"/>
+                                <font key="font" metaFont="menu" size="10"/>
                             </buttonCell>
                             <connections>
                                 <action selector="permissionBtnOnClicked:" target="-2" id="z5L-tH-fof"/>

@@ -97,7 +97,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)loadMoreTimeEntry;
 - (void)setClickCloseBtnInAppMessage;
 - (void)setClickActionBtnInAppMessage;
-- (NSString *)createNewTimeEntryWithOldTimeEntry:(TimeEntryViewItem *) item;
+- (NSString * _Nullable)createNewTimeEntryWithOldTimeEntry:(TimeEntryViewItem *) item;
 
 #pragma mark - Settings
 

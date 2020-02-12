@@ -265,7 +265,6 @@
 		BA65A24D22B79FEC00F895FD /* OGSwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA65A22D22B79FEC00F895FD /* OGSwitch.swift */; };
 		BA65A25022B7A65D00F895FD /* DatePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA65A24F22B7A65D00F895FD /* DatePickerView.swift */; };
 		BA65A25222B7A66A00F895FD /* DatePickerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA65A25122B7A66A00F895FD /* DatePickerView.xib */; };
-		BA6D554A2387912C004D068B /* TouchBar+PrivateAPIs.m in Sources */ = {isa = PBXBuildFile; fileRef = BA6D55492387912C004D068B /* TouchBar+PrivateAPIs.m */; };
 		BA6EB8402248CBE3003BB8EF /* ProjectStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6EB83F2248CBE3003BB8EF /* ProjectStorage.swift */; };
 		BA6F1B3821EEE998009265E4 /* Theme+Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6F1B3721EEE998009265E4 /* Theme+Notification.swift */; };
 		BA6F81E422C5FB1E009B6828 /* TimelineTimeEntryHoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA6F81E222C5FB1E009B6828 /* TimelineTimeEntryHoverViewController.swift */; };
@@ -964,7 +963,6 @@
 		BA65A22D22B79FEC00F895FD /* OGSwitch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OGSwitch.swift; sourceTree = "<group>"; };
 		BA65A24F22B7A65D00F895FD /* DatePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerView.swift; sourceTree = "<group>"; };
 		BA65A25122B7A66A00F895FD /* DatePickerView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DatePickerView.xib; sourceTree = "<group>"; };
-		BA6D55492387912C004D068B /* TouchBar+PrivateAPIs.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "TouchBar+PrivateAPIs.m"; sourceTree = "<group>"; };
 		BA6EB83F2248CBE3003BB8EF /* ProjectStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectStorage.swift; sourceTree = "<group>"; };
 		BA6F1B3721EEE998009265E4 /* Theme+Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Theme+Notification.swift"; sourceTree = "<group>"; };
 		BA6F81E222C5FB1E009B6828 /* TimelineTimeEntryHoverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineTimeEntryHoverViewController.swift; sourceTree = "<group>"; };
@@ -1847,7 +1845,6 @@
 			isa = PBXGroup;
 			children = (
 				BA4A7D502375527B00A42095 /* TouchBar+PrivateAPIs.h */,
-				BA6D55492387912C004D068B /* TouchBar+PrivateAPIs.m */,
 				BAF3ACCB2341F8AC00E41B33 /* GlobalTouchbarButton.swift */,
 				BAF3ACD22343325A00E41B33 /* TouchBarService.swift */,
 				BA00E9EC234C5A6C0011A703 /* TouchBarService+Name.swift */,
@@ -2541,7 +2538,6 @@
 				BA01404C22570967000E5B91 /* TagStorage.swift in Sources */,
 				74BAD31E18BD7D83002FD4CF /* ViewItem.m in Sources */,
 				BAA0104F22CB66D0007C1541 /* TimelineEmptyTimeEntryCell.swift in Sources */,
-				BA6D554A2387912C004D068B /* TouchBar+PrivateAPIs.m in Sources */,
 				BA35B21F22E6E95200FA560E /* CalendarCollectionView.swift in Sources */,
 				3CD7AD6F19ED579700372797 /* NSResize.m in Sources */,
 				BA7D335A22489C8000B953A8 /* ProjectDataSource.swift in Sources */,

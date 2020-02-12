@@ -25,7 +25,7 @@ final class TimelineData {
 
     private(set) var timeChunks: [TimelineTimestamp] = []
     private(set) var timeEntries: [TimelineBaseTimeEntry]
-    let activities: [TimelineActivity]
+    private(set) var activities: [TimelineActivity]
     let numberOfSections: Int
     let start: TimeInterval
     let end: TimeInterval
@@ -64,7 +64,17 @@ final class TimelineData {
         calculateColumnsPositionForTimeline()
     }
 
+    deinit {
+        cleanUp()
+    }
+
     // MARK: Public
+
+    func cleanUp() {
+        timeChunks.removeAll()
+        timeEntries.removeAll()
+        activities.removeAll()
+    }
 
     func numberOfItems(in section: Int) -> Int {
         guard let section = Section(rawValue: section) else { return 0 }
