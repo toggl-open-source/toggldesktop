@@ -13,12 +13,10 @@
         Background="{DynamicResource Toggl.Background}"
         WindowStartupLocation="CenterOwner"
         Title="Feedback"
-        d:DataContext="{d:DesignInstance viewModels:FeedbackWindowViewModel, IsDesignTimeCreatable=False}">
+        d:DataContext="{d:DesignInstance viewModels:FeedbackWindowViewModel, IsDesignTimeCreatable=False}"
+        Style="{StaticResource Toggl.ToolWindow}">
     <Window.Resources>
         <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../Resources/DesignUpdate/Controls.xaml" />
-            </ResourceDictionary.MergedDictionaries>
             <SolidColorBrush x:Key="AttachedFileBackground"
                              Color="{DynamicResource Toggl.LightGrayColor}"
                              Opacity="0.5" />
@@ -28,9 +26,6 @@
             <converters:TrimPathConverter x:Key="TrimPathConverter" />
         </ResourceDictionary>
     </Window.Resources>
-    <mah:MetroWindow.Style>
-        <StaticResource ResourceKey="Toggl.ToolWindow" />
-    </mah:MetroWindow.Style>
     <i:Interaction.Behaviors>
         <behaviors:HideWindowOnClosingBehavior />
         <behaviors:FocusParentWindowOnClosingBehavior />
