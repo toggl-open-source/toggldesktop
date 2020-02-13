@@ -19,7 +19,6 @@
                 <ResourceDictionary Source="../Resources/DesignUpdate/MahApps.Overrides.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <RoutedUICommand x:Key="EscapeCommand" />
-            <BooleanToVisibilityConverter x:Key="BooleanToVisibility" />
         </ResourceDictionary>
     </Window.Resources>
 
@@ -91,12 +90,12 @@
                         <MenuItem Header="Show"
                                   Command="{x:Static toggl:KeyboardShortcuts.Show}"
                                   Visibility=
-            "{Binding Path=IsEnabled, RelativeSource={RelativeSource Self}, Mode=OneWay, Converter={StaticResource BooleanToVisibility}}"
+            "{Binding Path=IsEnabled, RelativeSource={RelativeSource Self}, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}"
                                   />
                         <MenuItem Header="Hide" InputGestureText="Ctrl+W"
                                   Command="{x:Static toggl:KeyboardShortcuts.Hide}"
                                   Visibility=
-            "{Binding Path=IsEnabled, RelativeSource={RelativeSource Self}, Mode=OneWay, Converter={StaticResource BooleanToVisibility}}"
+            "{Binding Path=IsEnabled, RelativeSource={RelativeSource Self}, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}"
                                   />
                         <Separator Style="{StaticResource {x:Static MenuItem.SeparatorStyleKey}}"/>
                         <MenuItem Header="Sync" InputGestureText="F5"

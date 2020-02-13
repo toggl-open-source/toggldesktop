@@ -36,6 +36,6 @@
                    Style="{DynamicResource Toggl.CaptionGrayishText}"
                    Text="+ Add project"
                    MouseLeftButtonDown="onProjectLabelMouseDown"
-                   Visibility="{Binding IsAddProjectLabelVisible, Converter={StaticResource BooleanToVisibilityConverterGlobal}}"/>
+                   Visibility="{Binding IsAddProjectLabelVisible, Converter={StaticResource BooleanToVisibilityConverter}}"/>
     </Grid>
 </UserControl>

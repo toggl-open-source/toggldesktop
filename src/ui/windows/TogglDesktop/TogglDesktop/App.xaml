@@ -20,7 +20,7 @@
                 <ResourceDictionary Source="ui/Resources/TutorialStyles.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
-            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverterGlobal" />
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
             <converters:FalseToHiddenVisibilityConverter x:Key="FalseToHiddenVisibilityConverter" />
             <converters:EmptyStringToCollapsedConverter x:Key="EmptyStringToCollapsedConverter" />
             <converters:EmptyStringToCollapsedConverter x:Key="EmptyStringToVisibleConverter" Inverse="True" />
