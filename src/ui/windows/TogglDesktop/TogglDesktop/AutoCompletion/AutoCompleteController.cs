@@ -43,6 +43,8 @@ namespace TogglDesktop.AutoCompletion
         private string[] words;
         public int autocompleteType = 0;
 
+        private Dictionary<string, TagItemViewModel> _tagsDictionary;
+
         public AutoCompleteController(List<IAutoCompleteListItem> list, string debugIdentifier)
         {
             this.list = list;
@@ -144,6 +146,23 @@ namespace TogglDesktop.AutoCompletion
             return items;
         }
 
+        private List<ListBoxItemViewModel> CreateTagItemViewModelsList(List<IAutoCompleteListItem> modelsList)
+        {
+            _tagsDictionary = new Dictionary<string, TagItemViewModel>();
+            return modelsList
+                .Cast<StringItem>()
+                .Select((item1, ind) =>
+                {
+                    var tagItemViewModel = new TagItemViewModel(item1.Item, ind);
+                    _tagsDictionary.Add(item1.Item, tagItemViewModel);
+                    return (ListBoxItemViewModel) tagItemViewModel;
+                })
+                .AppendIfEmpty(() =>
+                    new CustomTextItemViewModel("There are no tags yet",
+                    "Start typing and press Enter to add a new tag"))
+                .ToList();
+        }
+
         public void FillList(ListBox listBox)
         {
             LB = listBox;
@@ -162,9 +181,7 @@ namespace TogglDesktop.AutoCompletion
                     // workspace dropdown
                     4 => list.Select((item1, ind) => (ListBoxItemViewModel)new StringItemViewModel(((ModelItem) item1).Item.Name, ind)).ToList(),
                     // tags dropdown
-                    5 => list.Select((item1, ind) => (ListBoxItemViewModel)new TagItemViewModel(((StringItem)item1).Item, ind))
-                        .AppendIfEmpty(() => new CustomTextItemViewModel("There are no tags yet", "Start typing and press Enter to add a new tag"))
-                        .ToList(),
+                    5 => CreateTagItemViewModelsList(list),
                     // description and project dropdowns
                     _ => CreateItemViewModelsList(list, autocompleteType)
                 };
@@ -346,6 +363,26 @@ namespace TogglDesktop.AutoCompletion
             if (visibleItems[initialIndex].IsSelectable())
             {
                 this.selectIndex(initialIndex);
+            }
+        }
+
+        public void AddTag(string tag)
+        {
+            if (autocompleteType != 5) throw new InvalidOperationException(nameof(AddTag) + "called on a non-tag controller");
+            if (_tagsDictionary == null) throw new InvalidOperationException(nameof(AddTag) + "called on a non-initialized controller");
+            if (_tagsDictionary.TryGetValue(tag, out var tagItemViewModel))
+            {
+                tagItemViewModel.IsChecked = true;
+            }
+        }
+
+        public void RemoveTag(string tag)
+        {
+            if (autocompleteType != 5) throw new InvalidOperationException(nameof(RemoveTag) + "called on a non-tag controller");
+            if (_tagsDictionary == null) throw new InvalidOperationException(nameof(RemoveTag) + "called on a non-initialized controller");
+            if (_tagsDictionary.TryGetValue(tag, out var tagItemViewModel))
+            {
+                tagItemViewModel.IsChecked = false;
             }
         }
     }
