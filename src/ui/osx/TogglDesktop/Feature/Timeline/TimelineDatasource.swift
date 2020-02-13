@@ -132,7 +132,7 @@ final class TimelineDatasource: NSObject {
         if let currentMomentAttribute = flow.currentMomentAttribute,
             timeline.isToday {
             var visiblePoint = currentMomentAttribute.frame.origin
-            visiblePoint.y -= 100 // Off to better visibility
+            visiblePoint.y -= (collectionView.enclosingScrollView?.bounds.height ?? 0) / 2 // Middle of the screen
             collectionView.scroll(visiblePoint)
         } else {
 
