@@ -15,6 +15,13 @@
         Title="Preferences"
         d:DataContext="{d:DesignInstance viewModels:PreferencesWindowViewModel, IsDesignTimeCreatable=False}"
         Style="{StaticResource Toggl.ToolWindow}">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources/DesignUpdate/MahApps.Overrides.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
     <i:Interaction.Behaviors>
         <behaviors:HideWindowOnClosingBehavior />
         <behaviors:CloseWindowOnEscBehavior />

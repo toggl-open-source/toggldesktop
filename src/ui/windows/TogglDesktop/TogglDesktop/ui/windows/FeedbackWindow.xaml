@@ -38,7 +38,7 @@
         </Grid.RowDefinitions>
         
         <StackPanel Grid.Row="0">
-            <TextBlock Style="{DynamicResource Toggl.BodyText}" Text="Send us your feedback or questions"/>
+            <TextBlock Style="{StaticResource Toggl.BodyText}" Text="Send us your feedback or questions"/>
             <ComboBox x:Name="topicComboBox" x:FieldModifier="private"
                       Margin="0,18,0,0"
                       mah:TextBoxHelper.Watermark="Please specify the topic"
@@ -67,12 +67,12 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left">
-                <Button Style="{DynamicResource Toggl.PrimaryButton}"
+                <Button Style="{StaticResource Toggl.PrimaryButton}"
                         VerticalAlignment="Top" HorizontalAlignment="Left"
                         Content="Browse for image ..."
                         Command="{Binding AttachFileCommand}"
                         Width="152" />
-                <TextBlock Style="{DynamicResource Toggl.CaptionText}"
+                <TextBlock Style="{StaticResource Toggl.CaptionText}"
                            Foreground="{DynamicResource Toggl.DisabledTextBrush}"
                            Margin="16 0"
                            Text="Maximum file size 5MB"
@@ -80,12 +80,12 @@
             </StackPanel>
             <StackPanel Grid.Row="1" Orientation="Vertical"
                         Margin="0 8">
-                <TextBlock Style="{DynamicResource Toggl.CaptionWhiteText}"
+                <TextBlock Style="{StaticResource Toggl.CaptionWhiteText}"
                            Background="{DynamicResource Toggl.ErrorMessageBackground}"
                            Padding="12 3 12 5"
                            Text="Please check that the file size is not larger than 5MB and try uploading it again."
                            Visibility="{Binding IsFileSizeError, Converter={StaticResource BooleanToVisibilityConverter}}" />
-                <TextBlock Style="{DynamicResource Toggl.CaptionWhiteText}"
+                <TextBlock Style="{StaticResource Toggl.CaptionWhiteText}"
                            Background="{DynamicResource Toggl.ErrorMessageBackground}"
                            Padding="12 3 12 5"
                            Text="Something went wrong. Please try again."
@@ -112,25 +112,25 @@
                         <TextBlock Grid.Row="0" Grid.Column="1"
                                    Margin="0 12 0 0"
                                    Text="{Binding AttachedFileName, Converter={StaticResource TrimPathConverter}}"
-                                   Style="{DynamicResource Toggl.BodyText}" />
+                                   Style="{StaticResource Toggl.BodyText}" />
                         <TextBlock Grid.Row="1" Grid.Column="1"
                                    Margin="0 0 0 12"
-                                   Style="{DynamicResource Toggl.CaptionText}"
+                                   Style="{StaticResource Toggl.CaptionText}"
                                    Text="{Binding AttachedFileSize, Converter={StaticResource BytesToStringConverter}}" />
                         <Button Grid.Row="0" Grid.RowSpan="2" Grid.Column="2"
                                 Margin="12 16 16 16"
                                 Command="{Binding RemoveFileCommand}"
-                                Style="{DynamicResource Toggl.CrossButton}">
+                                Style="{StaticResource Toggl.CrossButton}">
                         </Button>
                     </Grid>
                 </Border>
             </StackPanel>
             <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Style="{DynamicResource Toggl.AccentButton}"
+                <Button Style="{StaticResource Toggl.AccentButton}"
                         Width="92"
                         Content="Send"
                         Command="{Binding SendCommand}"/>
-                <Button Style="{DynamicResource Toggl.PrimaryButton}"
+                <Button Style="{StaticResource Toggl.PrimaryButton}"
                         Width="92"
                         Margin="8,0,0,0"
                         Content="Cancel"

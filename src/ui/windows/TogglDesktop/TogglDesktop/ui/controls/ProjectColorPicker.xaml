@@ -10,7 +10,7 @@
     
     <Grid>
     
-        <Button Style="{DynamicResource Toggl.OutlinedButton}"
+        <Button Style="{StaticResource Toggl.OutlinedButton}"
                 Name="button" x:FieldModifier="private"
                 Padding="0"
                 Click="onButtonClick">

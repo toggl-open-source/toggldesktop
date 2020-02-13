@@ -32,7 +32,7 @@
                    TextWrapping="Wrap"/>
         <Button Grid.Column="1"
                 Click="onCloseButtonClick"
-                Style="{DynamicResource Toggl.CrossButton}"
+                Style="{StaticResource Toggl.CrossButton}"
                 Margin="4"
                 Width="32"
                 Height="32"
