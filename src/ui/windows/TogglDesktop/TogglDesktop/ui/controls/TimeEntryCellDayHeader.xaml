@@ -13,9 +13,6 @@
              Focusable="{Binding IsCollapsed}"
              IsTabStop="{Binding IsCollapsed}"
              behaviors:FocusHelper.IsFocused="{Binding IsFocused, Mode=OneWay}">
-    <UserControl.Resources>
-        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-    </UserControl.Resources>
     <UserControl.Effect>
         <DropShadowEffect Direction="270" Color="{DynamicResource Toggl.BlackColor}" Opacity="0.1"
                           BlurRadius="3" ShadowDepth="1" />
