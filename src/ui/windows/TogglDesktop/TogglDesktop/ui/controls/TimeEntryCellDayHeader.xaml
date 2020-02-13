@@ -23,19 +23,19 @@
     <StackPanel>
         <Border Background="{DynamicResource Toggl.CardBackground}">
             <ToggleButton Height="{StaticResource TimeEntryDayHeaderHeight}"
-                          Style="{DynamicResource Toggl.TimeEntryDayHeaderToggleButton}"
+                          Style="{StaticResource Toggl.TimeEntryDayHeaderToggleButton}"
                           IsChecked="{Binding IsExpanded}"
                           Focusable="False"
                           ContextMenu="{StaticResource TimeEntryHeaderContextMenu}">
                 <DockPanel VerticalAlignment="Center">
                     <TextBlock DockPanel.Dock="Left"
-                               Style="{DynamicResource Toggl.BaseText}"
+                               Style="{StaticResource Toggl.BaseText}"
                                Margin="12 0 0 0"
                                VerticalAlignment="Center"
                                HorizontalAlignment="Left"
                                Text="{Binding DateHeader}"/>
                     <TextBlock DockPanel.Dock="Right"
-                               Style="{DynamicResource Toggl.CaptionSemiBoldText}"
+                               Style="{StaticResource Toggl.CaptionSemiBoldText}"
                                VerticalAlignment="Center"
                                HorizontalAlignment="Right"
                                Text="{Binding DateDuration}"/>

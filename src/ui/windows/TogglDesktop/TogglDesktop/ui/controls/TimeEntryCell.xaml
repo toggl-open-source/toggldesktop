@@ -36,7 +36,7 @@
         </Grid.ColumnDefinitions>
 
         <ToggleButton Grid.Column="0"
-                      Style="{DynamicResource Toggl.GroupIcon}"
+                      Style="{StaticResource Toggl.GroupIcon}"
                       Visibility="{Binding IsGroup, Converter={StaticResource BooleanToVisibilityConverterGlobal}}"
                       Margin="12 0 0 0"
                       VerticalAlignment="Center"
@@ -73,7 +73,7 @@
 
         <Button Grid.Column="3" Margin="0 0 4 0"
                 VerticalAlignment="Center"
-                Style="{DynamicResource Toggl.ContinueButton}"
+                Style="{StaticResource Toggl.ContinueButton}"
                 Focusable="False" Click="buttonContinue_Click"
                 Visibility="{Binding ElementName=rootGrid, Path=IsMouseOver, Converter={StaticResource FalseToHiddenVisibilityConverter}}"/>
 

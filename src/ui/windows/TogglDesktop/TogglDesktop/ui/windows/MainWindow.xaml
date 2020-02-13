@@ -15,10 +15,11 @@
 
     <Window.Resources>
         <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources/DesignUpdate/MahApps.Overrides.xaml" />
+            </ResourceDictionary.MergedDictionaries>
             <RoutedUICommand x:Key="EscapeCommand" />
             <BooleanToVisibilityConverter x:Key="BooleanToVisibility" />
-            <!-- ReSharper disable once Xaml.RedundantResource -->
-            <SolidColorBrush x:Key="IdealForegroundColorBrush" Color="{DynamicResource Toggl.BlackColor}" />
         </ResourceDictionary>
     </Window.Resources>
 
