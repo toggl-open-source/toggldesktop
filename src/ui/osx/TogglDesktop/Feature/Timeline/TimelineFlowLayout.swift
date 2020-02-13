@@ -21,7 +21,9 @@ final class TimelineFlowLayout: NSCollectionViewFlowLayout {
 
     struct Constants {
         static let MinimumHeight: CGFloat = 2.0
-        static let CurrentTimeMomentID = "CurrentTimeMomentID"
+        static let TimelineLineView = "TimelineLineView"
+        static let TimelineLineViewX: CGFloat = 44
+        static let TimelineLineViewHeight: CGFloat = 8
 
         struct TimeLabel {
             static let Size = CGSize(width: 54.0, height: 32)
@@ -94,7 +96,7 @@ final class TimelineFlowLayout: NSCollectionViewFlowLayout {
         minimumInteritemSpacing = 0
         sectionInset = NSEdgeInsetsZero
         scrollDirection = .vertical
-        register(TimelineLineView.self, forDecorationViewOfKind: Constants.CurrentTimeMomentID)
+        register(NSNib(nibNamed: Constants.TimelineLineView, bundle: nil), forDecorationViewOfKind: Constants.TimelineLineView)
     }
 
     override func prepare() {
@@ -163,7 +165,7 @@ final class TimelineFlowLayout: NSCollectionViewFlowLayout {
     }
 
     override func layoutAttributesForDecorationView(ofKind elementKind: NSCollectionView.DecorationElementKind, at indexPath: IndexPath) -> NSCollectionViewLayoutAttributes? {
-        if elementKind == Constants.CurrentTimeMomentID {
+        if elementKind == Constants.TimelineLineView {
             return currentMomentAttribute
         }
         return nil
@@ -295,9 +297,9 @@ extension TimelineFlowLayout {
     }
 
     private func calculateCurrentMomentAttribute() {
-        let att = NSCollectionViewLayoutAttributes(forDecorationViewOfKind: Constants.CurrentTimeMomentID, with: IndexPath(item: 0, section: 0))
-        let y = convertToYPosition(from: Date().timeIntervalSince1970)
-        att.frame = CGRect(x: 0, y: y, width: collectionView?.frame.width ?? 0, height: 1)
+        let att = NSCollectionViewLayoutAttributes(forDecorationViewOfKind: Constants.TimelineLineView, with: IndexPath(item: 0, section: 0))
+        let y = convertToYPosition(from: Date().timeIntervalSince1970) - Constants.TimelineLineViewHeight / 2.0
+        att.frame = CGRect(x: Constants.TimelineLineViewX, y: y, width: collectionView?.frame.width ?? 0, height: Constants.TimelineLineViewHeight)
         att.zIndex = 1
         self.currentMomentAttribute = att
     }
