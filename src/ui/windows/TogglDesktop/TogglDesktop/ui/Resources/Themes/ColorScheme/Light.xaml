@@ -51,6 +51,8 @@
     <SolidColorBrush x:Key="Toggl.TextBox.MouseOverBorder" Color="{StaticResource Toggl.GrayColor}" po:Freeze="True" />
     <SolidColorBrush x:Key="Toggl.TextBox.Timer.MouseOverBackground" Color="#F3F3F3" po:Freeze="True" />
     <SolidColorBrush x:Key="Toggl.ComboBox.HoverBackground" Color="#0D000000" po:Freeze="True" />
+    <SolidColorBrush x:Key="Toggl.ComboBox.HighlightedBackground" Color="#1A000000" po:Freeze="True" />
+    <SolidColorBrush x:Key="Toggl.ComboBox.HoverHighlightedBackground" Color="#27000000" po:Freeze="True" />
     <SolidColorBrush x:Key="Toggl.TitleTextBrush" Color="{StaticResource Toggl.DarkGrayColor}" po:Freeze="True" />
     <!-- A combination of #D9D9D9 and #4D000000: -->
     <SolidColorBrush x:Key="Toggl.Button.MouseOverBorder" Color="#6D6D6D" po:Freeze="True" />

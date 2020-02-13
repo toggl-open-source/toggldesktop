@@ -121,7 +121,6 @@
                 <toggl:AutoCompletionPopup x:Name="descriptionAutoComplete" x:FieldModifier="private"
                                            TextBox="{Binding ElementName=descriptionTextBox}"
                                            Target="{Binding ElementName=editModeGrid}"
-                                           StaysOpen="False"
                                            ConfirmCompletion="descriptionAutoComplete_OnConfirmCompletion"/>
                 <toggl:ExtendedTextBox x:Name="descriptionTextBox" x:FieldModifier="private"
                                        Padding="5 1"
