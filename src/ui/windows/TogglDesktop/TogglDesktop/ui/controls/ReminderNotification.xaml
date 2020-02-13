@@ -5,5 +5,5 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:togglDesktop="clr-namespace:TogglDesktop"
              mc:Ignorable="d">
-    <Button Style="{DynamicResource Toggl.PrimaryButton}" Content="Start tracking now" Click="onStartButtonClick" />
+    <Button Style="{StaticResource Toggl.PrimaryButton}" Content="Start tracking now" Click="onStartButtonClick" />
 </togglDesktop:TogglNotification>

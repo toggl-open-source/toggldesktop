@@ -12,4 +12,27 @@
     <SolidColorBrush x:Key="ControlsDisabledBrush" Color="{DynamicResource Toggl.BlackColor}" Opacity="0.05" po:Freeze="True" />
     <SolidColorBrush x:Key="SemiTransparentWhiteBrush" Color="{DynamicResource Toggl.Grayish2Color}" Opacity="0.5" po:Freeze="True" />
     <system:Double x:Key="WindowTitleFontSize">12</system:Double>
+
+    <!-- ToggleSwitch -->
+    <SolidColorBrush x:Key="MahApps.Metro.Brushes.ToggleSwitchButton.ThumbIndicatorMouseOverBrush.Win10"
+                     Color="{DynamicResource Toggl.GrayColor}" po:Freeze="True" />
+    <SolidColorBrush x:Key="MahApps.Metro.Brushes.ToggleSwitchButton.OffMouseOverBorderBrush.Win10"
+                     Color="{DynamicResource Toggl.GrayColor}" po:Freeze="True" />
+    <SolidColorBrush x:Key="MahApps.Metro.Brushes.ToggleSwitchButton.OnSwitchMouseOverBrush.Win10"
+                     Color="{DynamicResource Toggl.AccentColorPlusOne}" po:Freeze="True" />
+    <SolidColorBrush x:Key="MahApps.Metro.Brushes.ToggleSwitchButton.ThumbIndicatorCheckedBrush.Win10"
+                     Color="{DynamicResource Toggl.SelectionElements.BackgroundColor}" po:Freeze="True" />
+    <SolidColorBrush x:Key="MahApps.Metro.Brushes.ToggleSwitchButton.PressedBrush.Win10"
+                     Color="{DynamicResource Toggl.Grayish1Color}" po:Freeze="True" />
+    <SolidColorBrush x:Key="MahApps.Metro.Brushes.ToggleSwitchButton.ThumbIndicatorPressedBrush.Win10"
+                     Color="{DynamicResource Toggl.SelectionElements.BackgroundColor}" po:Freeze="True" />
+    <SolidColorBrush x:Key="MahApps.Metro.Brushes.ToggleSwitchButton.OffDisabledBorderBrush.Win10"
+                     Color="{DynamicResource Toggl.LightGrayColor}" po:Freeze="True" />
+    <SolidColorBrush x:Key="MahApps.Metro.Brushes.ToggleSwitchButton.OnSwitchDisabledBrush.Win10"
+                     Color="{DynamicResource Toggl.LightGrayColor}" po:Freeze="True" />
+
+    <!-- ContextMenu -->
+    <SolidColorBrush x:Key="MenuItemSelectionFill" Color="{DynamicResource Toggl.LightGrayColor}" po:Freeze="True"/>
+    <SolidColorBrush x:Key="MenuItemSelectionStroke" Color="{DynamicResource Toggl.LightGrayColor}" po:Freeze="True"/>
+    <SolidColorBrush x:Key="DisabledMenuItemForeground" Color="{DynamicResource Toggl.Grayish1Color}" po:Freeze="True"/>
 </ResourceDictionary>

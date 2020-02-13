@@ -47,11 +47,5 @@
                 <Setter Property="Padding" Value="2 2 2 2" />
             </Trigger>
         </Style.Triggers>
-
     </Style>
-
-    <SolidColorBrush x:Key="MenuItemSelectionFill" Color="{DynamicResource Toggl.LightGrayColor}" po:Freeze="True"/>
-    <SolidColorBrush x:Key="MenuItemSelectionStroke" Color="{DynamicResource Toggl.LightGrayColor}" po:Freeze="True"/>
-    <SolidColorBrush x:Key="DisabledMenuItemForeground" Color="{DynamicResource Toggl.Grayish1Color}" po:Freeze="True"/>
-
 </ResourceDictionary>
