@@ -58,9 +58,10 @@
 
         <toggl:AutoCompletionPopup x:Name="autoComplete" x:FieldModifier="private"
             Target="{Binding ElementName=grid}" TextBox="{Binding ElementName=textBox}"
-            EmptyText="No matching tags found." DropDownButton="{Binding ElementName=dropDownButton}"
+            DropDownButton="{Binding ElementName=dropDownButton}"
             ConfirmCompletion="autoComplete_OnConfirmCompletion"
             ConfirmWithoutCompletion="autoComplete_OnConfirmWithoutCompletion"
+            StaysOpen="True"
             KeepOpenWhenSelectingWithMouse="True"
             FillTextBoxOnComplete="False" />
         

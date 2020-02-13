@@ -1,7 +1,6 @@
 ﻿<ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:toggl="clr-namespace:TogglDesktop"
     xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
     <ImageBrush x:Key="ViewBackground"
@@ -27,43 +26,19 @@
         <Setter Property="UseLayoutRounding" Value="True" />
     </Style>
 
-    <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type Control}}">
-        <Setter Property="Background" Value="White"/>
-
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="TextBox">
-                    <Border x:Name="normalBorder" 
-                                Height="{TemplateBinding Height}" Width="{TemplateBinding Width}"
-                                    Background="{TemplateBinding Background}"
-                                    BorderBrush="{TemplateBinding BorderBrush}"
-                                    BorderThickness="{TemplateBinding BorderThickness}">
-
-                        <ScrollViewer 
-                                    Padding="{TemplateBinding Padding}"
-                                    BorderThickness="0" 
-                                    IsTabStop="False" 
-                                    Margin="2" 
-                                    Background="{x:Null}"
-                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
-
-                            <Decorator 
-                                TextElement.Foreground="{TemplateBinding Foreground}"
-                                x:Name="PART_ContentHost" />
-
-                        </ScrollViewer>
-
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-
-    </Style>
-
-    <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type Control}}">
+    <Style TargetType="Border" x:Key="Toggl.Border.Hoverable">
         <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Toggl.TextBox.Border}" />
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="BorderBrush" Value="{DynamicResource Toggl.TextBox.MouseOverBorder}" />
+            </Trigger>
+            <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                <Setter Property="BorderBrush" Value="{DynamicResource Toggl.AccentBrush}" />
+            </Trigger>
+        </Style.Triggers>
     </Style>
-    
+
     <Style TargetType="Label" BasedOn="{StaticResource {x:Type Control}}">
         <Setter Property="Margin" Value="0 0 0 4" />
         <Style.Triggers>
@@ -223,21 +198,4 @@
             </Trigger>
         </Style.Triggers>
     </Style>
-
-    <Style x:Key="AutoCompleteInlineButton" TargetType="Button" BasedOn="{StaticResource RoundedCornersButtonBase}">
-        <Setter Property="Background" Value="White"/>
-        <Setter Property="FontWeight" Value="Medium"/>
-        <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="#EBEBEB"/>
-            </Trigger>
-            <Trigger Property="IsPressed" Value="True">
-                <Setter Property="Background" Value="#D6D6D6"/>
-            </Trigger>
-            <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="Foreground" Value="#888888"/>
-            </Trigger>
-        </Style.Triggers>
-    </Style>
-
 </ResourceDictionary>

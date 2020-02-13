@@ -22,6 +22,21 @@ static class LinqExtensions
         }
     }
 
+    public static IEnumerable<T> AppendIfEmpty<T>(this IEnumerable<T> sequence, Func<T> subjectLazy)
+    {
+        var isEmpty = true;
+        foreach (var obj in sequence)
+        {
+            isEmpty = false;
+            yield return obj;
+        }
+
+        if (isEmpty)
+        {
+            yield return subjectLazy();
+        }
+    }
+
     public static List<T> GetCount<T>
     (this List<T> list, out int count)
     {

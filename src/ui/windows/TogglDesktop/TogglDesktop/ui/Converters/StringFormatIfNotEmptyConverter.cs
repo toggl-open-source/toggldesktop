@@ -4,7 +4,7 @@ using System.Windows.Data;
 
 namespace TogglDesktop.Converters
 {
-    public class StringPrependConverter : IValueConverter
+    public class StringFormatIfNotEmptyConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -14,8 +14,13 @@ namespace TogglDesktop.Converters
                 return originalValue;
             }
 
-            var prefix = (parameter as string) ?? string.Empty;
-            return prefix + originalValue;
+            var formatString = parameter as string;
+            if (string.IsNullOrEmpty(formatString))
+            {
+                return originalValue;
+            }
+
+            return string.Format(formatString, originalValue);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

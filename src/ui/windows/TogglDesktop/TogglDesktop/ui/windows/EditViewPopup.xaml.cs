@@ -20,8 +20,8 @@ namespace TogglDesktop
         private bool skipAnimation;
         private object animationToken;
 
-        private readonly Thickness _leftResizeBorderThickness = new Thickness(4, 0, 0, 0);
-        private readonly Thickness _rightResizeBorderThickness = new Thickness(0, 0, 4, 0);
+        private readonly Thickness _leftResizeBorderThickness = new Thickness(8, 0, 0, 0);
+        private readonly Thickness _rightResizeBorderThickness = new Thickness(0, 0, 8, 0);
 
         public EditViewPopup()
         {
@@ -66,7 +66,6 @@ namespace TogglDesktop
         {
             if (skipAnimation || this.skipAnimation)
             {
-                this.EditView.EnsureSaved();
                 this.stopAnimationClose();
             }
             else
@@ -74,7 +73,6 @@ namespace TogglDesktop
                 if (this.animationState == AnimationStates.Closing)
                     return;
 
-                this.EditView.EnsureSaved();
                 this.startAnimationClose();
             }
         }

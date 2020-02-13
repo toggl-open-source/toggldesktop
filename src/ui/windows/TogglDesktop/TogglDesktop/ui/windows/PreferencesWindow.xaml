@@ -73,48 +73,33 @@
                         <TextBlock Style="{DynamicResource Toggl.CaptionText}" Margin="0 4 0 0"
                                    Text="Default project will be selected when timer is started without a project" />
 
-                        <Grid Height="50" Width="300" Margin="-3 5" HorizontalAlignment="Left">
-
-                            <toggl:ProjectTextBox
-                                x:Name="defaultProjectTextBox" x:FieldModifier="private"
-                                Padding="28, 0, 34, 0"
-                                LostKeyboardFocus="defaultProjectTextBox_OnLostKeyboardFocus"/>
-
-                            <ToggleButton
-                                x:Name="defaultProjectDropDownButton" x:FieldModifier="private"
-                                Style="{StaticResource AutoCompleteTextFieldButton}"/>
-
-                            <toggl:AutoCompletionPopup
-                                x:Name="defaultProjectAutoComplete" x:FieldModifier="private"
-                                Target="{Binding ElementName=defaultProjectTextBox}" TextBox="{Binding ElementName=defaultProjectTextBox}"
-                                EmptyText="No matching projects found." DropDownButton="{Binding ElementName=defaultProjectDropDownButton}"
-                                ConfirmCompletion="defaultProjectAutoComplete_OnConfirmCompletion"
-                                ConfirmWithoutCompletion="defaultProjectAutoComplete_OnConfirmWithoutCompletion"/>
-
-                            <Border
-                                Style="{StaticResource ProjectColorCircle}"
-                                Name="defaultProjectColorCircle" x:FieldModifier="private"
-                                Margin="18, 0, 0, 0"
-                                HorizontalAlignment="Left" />
-
-                            <TextBlock
-                                Margin="36, 0, 16, 0" Text="No project">
-                                <TextBlock.Style>
-                                    <Style TargetType="TextBlock" BasedOn="{StaticResource TextboxEmptyText}">
-                                        <Style.Triggers>
-                                            <MultiDataTrigger>
-                                                <MultiDataTrigger.Conditions>
-                                                    <Condition Binding="{Binding ElementName=defaultProjectTextBox, Path=(Text)}" Value=""/>
-                                                    <Condition Binding="{Binding ElementName=defaultProjectTextBox, Path=(IsKeyboardFocused)}" Value="False"/>
-                                                </MultiDataTrigger.Conditions>
-                                                <Setter Property="Visibility" Value="Visible"/>
-                                            </MultiDataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBlock.Style>
-                            </TextBlock>
-
-                        </Grid>
+                        <Border Margin="0 12 0 0" Style="{StaticResource Toggl.Border.Hoverable}"
+                                Name="defaultProjectBorder"
+                                HorizontalAlignment="Left"
+                                Width="360">
+                            <Grid Height="32">
+                                <toggl:ProjectTextBox
+                                    x:Name="defaultProjectTextBox" x:FieldModifier="private"
+                                    Style="{StaticResource {x:Type TextBox}}"
+                                    BorderThickness="0"
+                                    Padding="24 0 34 0"
+                                    mah:TextBoxHelper.Watermark="No project selected"
+                                    LostKeyboardFocus="defaultProjectTextBox_OnLostKeyboardFocus"/>
+                                <ToggleButton
+                                    x:Name="defaultProjectDropDownButton" x:FieldModifier="private"
+                                    Style="{StaticResource Toggl.AutoCompleteDropDownToggleButton}"/>
+                                <toggl:AutoCompletionPopup
+                                    x:Name="defaultProjectAutoComplete" x:FieldModifier="private"
+                                    Target="{Binding ElementName=defaultProjectBorder}"
+                                    TextBox="{Binding ElementName=defaultProjectTextBox}"
+                                    DropDownButton="{Binding ElementName=defaultProjectDropDownButton}"
+                                    ConfirmCompletion="defaultProjectAutoComplete_OnConfirmCompletion"
+                                    ConfirmWithoutCompletion="defaultProjectAutoComplete_OnConfirmWithoutCompletion"/>
+                                <Border
+                                    Style="{StaticResource ProjectColorCircle}"
+                                    Name="defaultProjectColorCircle" x:FieldModifier="private"/>
+                            </Grid>
+                        </Border>
 
                         <TextBlock Style="{DynamicResource Toggl.TitleText}" Margin="0 32 0 16"
                                    Text="Use time tracking helpers" />

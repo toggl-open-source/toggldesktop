@@ -4,9 +4,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:toggl="clr-namespace:TogglDesktop.AutoCompleteControls"
              xmlns:togglautocompletion="clr-namespace:TogglDesktop.AutoCompletion"
              xmlns:converters="clr-namespace:TogglDesktop.Converters"
+             xmlns:togglDesktop="clr-namespace:TogglDesktop"
              mc:Ignorable="d"
              Height="0" Width="0">
     
@@ -18,11 +18,10 @@
             </ResourceDictionary.MergedDictionaries>
             <converters:BindingProxy x:Key="NoProjectColorProxy" Data="{DynamicResource Toggl.SecondaryTextBrush}" />
             <converters:ColorsToBrushConverter x:Key="ColorsToBrushMultiConverter" />
-            <converters:EmptyStringToHiddenConverter x:Key="EmptyStringToHiddenConverter" />
             <togglautocompletion:AutocompleteTemplateSelector x:Key="autocompleteTemplateSelector"/>
-            <converters:IsNotNegativeConverter x:Key="IsNotNegativeConverter" />
+            <converters:IsSelectableItemConverter x:Key="IsSelectableItemConverter" />
             <Style x:Key="AutoCompleteItem" BasedOn="{StaticResource {x:Type ListBoxItem}}" TargetType="ListBoxItem">
-                <Setter Property="IsEnabled" Value="{Binding Type, Converter={StaticResource IsNotNegativeConverter}}" />
+                <Setter Property="IsEnabled" Value="{Binding Path=., Converter={StaticResource IsSelectableItemConverter}}" />
             </Style>
             <DataTemplate x:Key="project-item-template">
                 <StackPanel Height="32" Orientation="Horizontal">
@@ -62,10 +61,11 @@
                     <TextBlock Name="description" Margin="16 0 0 0" Style="{StaticResource Toggl.BodyText}" VerticalAlignment="Center" Text="{Binding Description}" ToolTip="{Binding Text}"/>
                     <Border Name="projectColor"
                             CornerRadius="100" Width="6" Height="6" BorderThickness="0" Margin="8 14 8 12"
-                            Visibility="{Binding ProjectColor, Converter={StaticResource EmptyStringToHiddenConverter}}"
-                            Background="{Binding ProjectColor}"/>
-                    <TextBlock Name="project" VerticalAlignment="Center" Style="{StaticResource Toggl.CaptionText}" Text="{Binding ProjectLabel}" Foreground="{Binding ProjectColor}" ToolTip="{Binding Text}"/>
-                    <TextBlock Name="task" VerticalAlignment="Center" Style="{StaticResource Toggl.CaptionText}" Text="{Binding TaskLabel}" Foreground="{Binding ProjectColor}" ToolTip="{Binding Text}"/>
+                            Visibility="{Binding ProjectColor, Converter={StaticResource EmptyStringToCollapsedConverter}}"
+                            Background="{Binding ProjectColor}"
+                            ToolTip="{Binding Text}"/>
+                    <TextBlock Name="project" VerticalAlignment="Center" Style="{StaticResource Toggl.CaptionText}" Text="{Binding ProjectLabel}" Foreground="{Binding ProjectColor}"/>
+                    <TextBlock Name="task" VerticalAlignment="Center" Style="{StaticResource Toggl.CaptionText}" Text="{Binding TaskLabel}" Foreground="{Binding ProjectColor}"/>
                 </StackPanel>
             </DataTemplate>
             <DataTemplate x:Key="category-item-template">
@@ -78,13 +78,15 @@
                 </StackPanel>
             </DataTemplate>
             <DataTemplate  x:Key="string-item-template">
-                <TextBlock Name="text" VerticalAlignment="Center"
-                           Style="{StaticResource Toggl.BodyText}"
-                           Foreground="{DynamicResource Toggl.SecondaryTextBrush}"
-                   Margin="10, 0, 10, 0"
-                   Height="32"
-                   Text="{Binding Text}"
-                   ToolTip="{Binding Text}" />
+                <Border Height="32">
+                    <TextBlock Name="text"
+                               Style="{StaticResource Toggl.BodyText}"
+                               VerticalAlignment="Center"
+                               Foreground="{DynamicResource Toggl.SecondaryTextBrush}"
+                               Margin="10 0"
+                               Text="{Binding Text}"
+                               ToolTip="{Binding Text}" />
+                </Border>
             </DataTemplate>
             <DataTemplate x:Key="client-item-template">
                 <StackPanel Height="24" Orientation="Horizontal">
@@ -116,33 +118,77 @@
                             BorderBrush="{DynamicResource Toggl.SelectionElements.Disabled.Background}"/>
                 </StackPanel>
             </DataTemplate>
+            <DataTemplate x:Key="custom-text-item-template">
+                <StackPanel Orientation="Vertical" Margin="12 12 12 16">
+                    <TextBlock Style="{DynamicResource Toggl.BaseGrayText}"
+                               LineHeight="20"
+                               Text="{Binding Title}" />
+                    <TextBlock Margin="0 8 0 0"
+                               Style="{DynamicResource Toggl.BodyGrayText}"
+                               TextWrapping="Wrap"
+                               LineHeight="20"
+                               Text="{Binding Text}" />
+                </StackPanel>
+            </DataTemplate>
         </ResourceDictionary>
     </UserControl.Resources>
     
     <Popup Name="popup" x:FieldModifier="private"
-           MaxHeight="500" StaysOpen="True" AllowsTransparency="True"
-           MinWidth="200"
-           HorizontalOffset="-10">
-        <Grid>
-            <Grid.Effect>
-                <DropShadowEffect BlurRadius="8" ShadowDepth="2" Opacity="0.3" Direction="270" />
-            </Grid.Effect>
-            <TextBlock Name="emptyLabel" x:FieldModifier="private"
-                                HorizontalAlignment="Center" VerticalAlignment="Center"
-                                Margin="4"
-                                Text="Hello. Yes, this is list."/>
-            <ListBox x:Name="listBox" HorizontalAlignment="Stretch" MinHeight="30" Height="Auto" Margin="10,0,10,10"
-                     Padding="0 0 0 8"
-                     Background="{DynamicResource Toggl.CardBackground}"
-                     ItemContainerStyle="{StaticResource AutoCompleteItem}"
-                     BorderThickness="0"
-                     VerticalAlignment="Top"
-                     Width="Auto"
-                     HorizontalContentAlignment="Stretch"
-                     VirtualizingStackPanel.VirtualizationMode="Recycling"
-                     ItemTemplateSelector="{StaticResource autocompleteTemplateSelector}"
-                     PreviewMouseDown="listBox_PreviewMouseDown">
-            </ListBox>
+           AllowsTransparency="True"
+           HorizontalOffset="-8"
+           StaysOpen="False">
+        <Grid Background="Transparent">
+            <Border Margin="8 0 8 8"
+                    BorderBrush="{DynamicResource Toggl.ComboBoxPopupBorderBrush}"
+                    BorderThickness="1"
+                    Background="{DynamicResource Toggl.CardBackground}"
+                    MinWidth="{Binding ElementName=popup, Path=PlacementTarget.ActualWidth}"
+                    MaxWidth="{Binding ElementName=popup, Path=PlacementTarget.ActualWidth}">
+                <Border.Effect>
+                    <DropShadowEffect ShadowDepth="1" BlurRadius="4" Direction="270" Opacity="0.2" Color="Black" />
+                </Border.Effect>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <ListBox x:Name="listBox" Grid.Row="0"
+                             MaxHeight="500"
+                             HorizontalAlignment="Stretch" MinHeight="30" Height="Auto"
+                             Background="{DynamicResource Toggl.CardBackground}"
+                             ItemContainerStyle="{StaticResource AutoCompleteItem}"
+                             BorderThickness="0"
+                             BorderBrush="{DynamicResource Toggl.ComboBoxPopupBorderBrush}"
+                             VerticalAlignment="Top"
+                             Width="Auto"
+                             HorizontalContentAlignment="Stretch"
+                             VirtualizingStackPanel.VirtualizationMode="Recycling"
+                             ItemTemplateSelector="{StaticResource autocompleteTemplateSelector}"
+                             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                             PreviewMouseDown="listBox_PreviewMouseDown">
+                    </ListBox>
+                    <Button x:Name="createProjectButton" x:FieldModifier="private"
+                            Grid.Row="1"
+                            Style="{DynamicResource Toggl.OutlinedButton}"
+                            BorderThickness="0 1 0 0"
+                            BorderBrush="{DynamicResource Toggl.Button.Primary.Background}"
+                            Height="40"
+                            Click="CreateProjectButton_OnClick"
+                            Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=togglDesktop:AutoCompletionPopup},
+                                                 Path=ActionButtonText,
+                                                 Converter={StaticResource EmptyStringToCollapsedConverter}}">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Path Height="25"
+                                  Width="25"
+                                  Margin="0 -2 0 0"
+                                  Fill="{DynamicResource Toggl.DisabledTextBrush}"
+                                  Data="M12.894 6.5V12h5.5v1h-5.5v5.5h-1V13h-5.5v-1h5.5V6.5h1z" />
+                            <TextBlock Style="{DynamicResource Toggl.BodyText}"
+                                       Text="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=togglDesktop:AutoCompletionPopup}, Path=ActionButtonText}" />
+                        </StackPanel>
+                    </Button>
+                </Grid>
+            </Border>
         </Grid>
     </Popup>
 </UserControl>
