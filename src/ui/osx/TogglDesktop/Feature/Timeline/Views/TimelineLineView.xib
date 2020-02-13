@@ -24,7 +24,7 @@
                         <constraint firstAttribute="width" constant="8" id="5Td-Jt-CqG"/>
                         <constraint firstAttribute="height" constant="8" id="A0C-nh-G2c"/>
                     </constraints>
-                    <color key="fillColor" name="login-button-background"/>
+                    <color key="fillColor" name="timeline-label-color"/>
                 </box>
                 <box boxType="custom" borderType="none" borderWidth="0.0" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="hVc-fr-ulf">
                     <rect key="frame" x="0.0" y="4" width="195" height="1"/>
@@ -35,7 +35,7 @@
                     <constraints>
                         <constraint firstAttribute="height" constant="1" id="tJU-S3-7WP"/>
                     </constraints>
-                    <color key="fillColor" name="login-button-background"/>
+                    <color key="fillColor" name="timeline-label-color"/>
                 </box>
             </subviews>
             <constraints>
@@ -49,8 +49,8 @@
         </customView>
     </objects>
     <resources>
-        <namedColor name="login-button-background">
-            <color red="1" green="0.17599999904632568" blue="0.33300000429153442" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        <namedColor name="timeline-label-color">
+            <color red="0.67450980392156867" green="0.67450980392156867" blue="0.67450980392156867" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>

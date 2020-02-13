@@ -123,11 +123,6 @@ final class TimelineDatasource: NSObject {
     func scrollToVisibleItem() {
         guard let timeline = timeline, !isUserOnAction else { return }
 
-        // Skip if both are empty
-        if timeline.timeEntries.isEmpty && timeline.activities.isEmpty {
-            return
-        }
-
         // Get the section should be presented
         // Force render with correct frame then scrolling to desire item
         collectionView.setNeedsDisplay(collectionView.frame)
@@ -136,11 +131,16 @@ final class TimelineDatasource: NSObject {
         // Scroll to current time if it's today
         if let currentMomentAttribute = flow.currentMomentAttribute,
             timeline.isToday {
-            // Middle position
-            var currentTimeFrame = currentMomentAttribute.frame
-            currentTimeFrame.origin.y += collectionView.bounds.size.height / 3 * 2
-            collectionView.scrollToVisible(currentTimeFrame)
+            var visiblePoint = currentMomentAttribute.frame.origin
+            visiblePoint.y -= 100 // Off to better visibility
+            collectionView.scroll(visiblePoint)
         } else {
+
+            // Skip if both are empty
+            if timeline.timeEntries.isEmpty && timeline.activities.isEmpty {
+                return
+            }
+
             // Scroll to top Entry or events
             var visibleSection: TimelineData.Section?
             if !timeline.timeEntries.isEmpty {
