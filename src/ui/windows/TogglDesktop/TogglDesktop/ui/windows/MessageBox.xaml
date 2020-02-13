@@ -11,25 +11,19 @@
     MinWidth="320"
     SizeToContent="WidthAndHeight"
     Background="{DynamicResource Toggl.Background}"
-    WindowStartupLocation="CenterOwner">
+    WindowStartupLocation="CenterOwner"
+    Style="{StaticResource Toggl.MessageBox}">
     <i:Interaction.Behaviors>
         <behaviors:HideWindowOnClosingBehavior />
     </i:Interaction.Behaviors>
     <mah:MetroWindow.Resources>
         <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../Resources/DesignUpdate/Controls.xaml" />
-            </ResourceDictionary.MergedDictionaries>
             <Style TargetType="Button" BasedOn="{StaticResource Toggl.PrimaryButton}">
                 <Setter Property="Margin" Value="6 0" />
                 <Setter Property="Width" Value="130" />
             </Style>
         </ResourceDictionary>
     </mah:MetroWindow.Resources>
-    <mah:MetroWindow.Style>
-        <StaticResource ResourceKey="Toggl.MessageBox" />
-    </mah:MetroWindow.Style>
-
     <StackPanel Orientation="Vertical"
                 Margin="24 24">
         <TextBlock Style="{StaticResource Toggl.SubtitleText}"

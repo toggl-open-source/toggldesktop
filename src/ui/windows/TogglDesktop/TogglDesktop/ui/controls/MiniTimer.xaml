@@ -12,9 +12,6 @@
              Background="{DynamicResource Toggl.CardBackground}">
     <UserControl.Resources>
         <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../Resources/DesignUpdate/Controls.xaml" />
-            </ResourceDictionary.MergedDictionaries>
             <Style x:Key="Toggl.StartStopButton" TargetType="{x:Type ToggleButton}">
                 <Setter Property="Cursor" Value="Hand" />
                 <Setter Property="Template">

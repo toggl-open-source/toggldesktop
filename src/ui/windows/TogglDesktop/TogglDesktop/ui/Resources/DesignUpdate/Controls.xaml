@@ -22,6 +22,7 @@
         <ResourceDictionary Source="RadioButton.xaml" />
         <ResourceDictionary Source="ToggleSwitch.xaml" />
         <ResourceDictionary Source="HotKeyBox.xaml" />
+        <ResourceDictionary Source="DatePicker.xaml" />
         <ResourceDictionary Source="Icons.xaml" />
     </ResourceDictionary.MergedDictionaries>
     <Style BasedOn="{StaticResource MahApps.Metro.Styles.WindowButtonCommands.Win10}" TargetType="mah:WindowButtonCommands" />

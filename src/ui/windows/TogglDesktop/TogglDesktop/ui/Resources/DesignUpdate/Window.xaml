@@ -1,47 +1,23 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls">
-    <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="Typography.xaml" />
-    </ResourceDictionary.MergedDictionaries>
-    <Style TargetType="mah:MetroWindow" x:Key="Toggl.ToolWindow">
-        <Setter Property="ResizeMode" Value="NoResize" />
-        <Setter Property="TitleCharacterCasing" Value="Normal" />
-        <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="WindowTitleBrush" Value="Transparent" />
-        <Setter Property="NonActiveWindowTitleBrush" Value="Transparent" />
+    <Style TargetType="mah:MetroWindow" x:Key="Toggl.Window">
         <Setter Property="GlowBrush" Value="Black" />
         <Setter Property="NonActiveGlowBrush">
             <Setter.Value>
                 <SolidColorBrush Opacity="0.3" Color="Black" />
             </Setter.Value>
         </Setter>
-        <Setter Property="TitleTemplate">
-            <Setter.Value>
-                <DataTemplate>
-                    <TextBlock Margin="10 0 1 0"
-                               Style="{StaticResource Toggl.CaptionBlackText}"
-                               VerticalAlignment="Center"
-                               Text="{TemplateBinding Content}"
-                               TextTrimming="CharacterEllipsis" />
-                </DataTemplate>
-            </Setter.Value>
-        </Setter>
         <Setter Property="WindowTransitionsEnabled" Value="False" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="TitleCharacterCasing" Value="Normal" />
+        <Setter Property="WindowTitleBrush" Value="Transparent" />
+        <Setter Property="NonActiveWindowTitleBrush" Value="Transparent" />
     </Style>
 
-    <Style TargetType="mah:MetroWindow" x:Key="Toggl.MainWindow">
-        <Setter Property="ResizeMode" Value="CanResize" />
-        <Setter Property="TitleCharacterCasing" Value="Normal" />
-        <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="WindowTitleBrush" Value="Transparent" />
-        <Setter Property="NonActiveWindowTitleBrush" Value="Transparent" />
-        <Setter Property="GlowBrush" Value="Black" />
-        <Setter Property="NonActiveGlowBrush">
-            <Setter.Value>
-                <SolidColorBrush Opacity="0.3" Color="Black" />
-            </Setter.Value>
-        </Setter>
+    <Style TargetType="mah:MetroWindow" x:Key="Toggl.ToolWindow"
+           BasedOn="{StaticResource Toggl.Window}">
+        <Setter Property="ResizeMode" Value="NoResize" />
         <Setter Property="TitleTemplate">
             <Setter.Value>
                 <DataTemplate>
@@ -53,24 +29,32 @@
                 </DataTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="WindowTransitionsEnabled" Value="False" />
+    </Style>
+
+    <Style TargetType="mah:MetroWindow" x:Key="Toggl.MainWindow"
+           BasedOn="{StaticResource Toggl.Window}">
+        <Setter Property="ResizeMode" Value="CanResize" />
+        <Setter Property="TitleTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <TextBlock Margin="10 0 1 0"
+                               Style="{StaticResource Toggl.CaptionBlackText}"
+                               VerticalAlignment="Center"
+                               Text="{TemplateBinding Content}"
+                               TextTrimming="CharacterEllipsis" />
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
         <Setter Property="AllowsTransparency" Value="True" />
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="ShowMaxRestoreButton" Value="False" />
     </Style>
 
-    <Style TargetType="mah:MetroWindow" x:Key="Toggl.MessageBox">
+    <Style TargetType="mah:MetroWindow" x:Key="Toggl.MessageBox"
+           BasedOn="{StaticResource Toggl.Window}">
         <Setter Property="ResizeMode" Value="NoResize" />
-        <Setter Property="BorderThickness" Value="0" />
         <Setter Property="ShowTitleBar" Value="False" />
         <Setter Property="ShowCloseButton" Value="False" />
-        <Setter Property="GlowBrush" Value="Black" />
-        <Setter Property="NonActiveGlowBrush">
-            <Setter.Value>
-                <SolidColorBrush Opacity="0.3" Color="Black" />
-            </Setter.Value>
-        </Setter>
-        <Setter Property="WindowTransitionsEnabled" Value="False" />
     </Style>
 
 </ResourceDictionary>

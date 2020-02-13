@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:converters="clr-namespace:TogglDesktop.Converters"
         xmlns:toggl="clr-namespace:TogglDesktop"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:behaviors="clr-namespace:TogglDesktop.Behaviors"
@@ -14,18 +13,8 @@
         WindowStartupLocation="CenterOwner"
         Background="{DynamicResource Toggl.CardBackground}"
         Title="Preferences"
-        d:DataContext="{d:DesignInstance viewModels:PreferencesWindowViewModel, IsDesignTimeCreatable=False}">
-    <Window.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../Resources/DesignUpdate/Controls.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-            <converters:AndConverter x:Key="AndConverter" />
-        </ResourceDictionary>
-    </Window.Resources>
-    <mah:MetroWindow.Style>
-        <StaticResource ResourceKey="Toggl.ToolWindow" />
-    </mah:MetroWindow.Style>
+        d:DataContext="{d:DesignInstance viewModels:PreferencesWindowViewModel, IsDesignTimeCreatable=False}"
+        Style="{StaticResource Toggl.ToolWindow}">
     <i:Interaction.Behaviors>
         <behaviors:HideWindowOnClosingBehavior />
         <behaviors:CloseWindowOnEscBehavior />
@@ -53,8 +42,8 @@
                                 <ColumnDefinition Width="200" />
                                 <ColumnDefinition Width="160"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" Text="Show/Hide Toggl application" />
-                            <TextBlock Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" Text="Continue/Stop timer" />
+                            <TextBlock Grid.Column="0" Grid.Row="0" Style="{StaticResource Toggl.BodyText}" VerticalAlignment="Center" Text="Show/Hide Toggl application" />
+                            <TextBlock Grid.Column="0" Grid.Row="1" Style="{StaticResource Toggl.BodyText}" VerticalAlignment="Center" Text="Continue/Stop timer" />
                             <mah:HotKeyBox Grid.Column="1" Grid.Row="0"
                                            Margin="16 0 0 0"
                                            AreModifierKeysRequired="True"

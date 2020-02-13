@@ -10,20 +10,17 @@
              xmlns:behaviors="clr-namespace:TogglDesktop.Behaviors"
              mc:Ignorable="d" 
              d:DesignWidth="400"
-             Title="Toggl Desktop">
+             Title="Toggl Desktop"
+             Style="{StaticResource Toggl.MainWindow}">
 
     <Window.Resources>
         <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../Resources/DesignUpdate/Controls.xaml" />
-            </ResourceDictionary.MergedDictionaries>
             <RoutedUICommand x:Key="EscapeCommand" />
             <BooleanToVisibilityConverter x:Key="BooleanToVisibility" />
+            <!-- ReSharper disable once Xaml.RedundantResource -->
+            <SolidColorBrush x:Key="IdealForegroundColorBrush" Color="{DynamicResource Toggl.BlackColor}" />
         </ResourceDictionary>
     </Window.Resources>
-    <mah:MetroWindow.Style>
-        <StaticResource ResourceKey="Toggl.MainWindow" />
-    </mah:MetroWindow.Style>
 
     <i:Interaction.Behaviors>
         <behaviors:HideWindowOnClosingBehavior />

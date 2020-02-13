@@ -11,17 +11,8 @@
         Title="About"
         Background="{DynamicResource Toggl.CardBackground}"
         WindowStartupLocation="CenterOwner"
-        DataContext="{Binding RelativeSource={RelativeSource Self}}">
-    <Window.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../Resources/DesignUpdate/Controls.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </Window.Resources>
-    <mah:MetroWindow.Style>
-        <StaticResource ResourceKey="Toggl.ToolWindow" />
-    </mah:MetroWindow.Style>
+        DataContext="{Binding RelativeSource={RelativeSource Self}}"
+        Style="{StaticResource Toggl.ToolWindow}">
     <i:Interaction.Behaviors>
         <behaviors:HideWindowOnClosingBehavior />
         <behaviors:CloseWindowOnEscBehavior />
