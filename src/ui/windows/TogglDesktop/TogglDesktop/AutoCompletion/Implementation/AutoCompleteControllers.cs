@@ -17,7 +17,7 @@ namespace TogglDesktop.AutoCompletion.Implementation
             var list = items.Select(i => new StringItem(i)).ToList<IAutoCompleteListItem>();
 
             var ac = new AutoCompleteController(list, $"Tags({list.Count})");
-            ac.autocompleteType = 1;
+            ac.autocompleteType = 5;
             return ac;
         }
         public static AutoCompleteController ForStrings(IEnumerable<string> items)
