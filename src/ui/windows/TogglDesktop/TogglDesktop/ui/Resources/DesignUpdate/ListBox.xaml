@@ -80,21 +80,9 @@
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="Foreground" Value="{DynamicResource Toggl.PrimaryTextBrush}" />
         <Setter Property="SnapsToDevicePixels" Value="True" />
-        <Setter Property="mah:ItemHelper.ActiveSelectionBackgroundBrush">
-            <Setter.Value>
-                <SolidColorBrush Color="{StaticResource Toggl.AccentColor}" Opacity="0.4" />
-            </Setter.Value>
-        </Setter>
-        <Setter Property="mah:ItemHelper.HoverSelectedBackgroundBrush">
-            <Setter.Value>
-                <SolidColorBrush Color="{StaticResource Toggl.AccentColor}" Opacity="0.4" />
-            </Setter.Value>
-        </Setter>
-        <Setter Property="mah:ItemHelper.SelectedBackgroundBrush">
-            <Setter.Value>
-                <SolidColorBrush Color="{StaticResource Toggl.AccentColor}" Opacity="0.4" />
-            </Setter.Value>
-        </Setter>
+        <Setter Property="mah:ItemHelper.ActiveSelectionBackgroundBrush" Value="{DynamicResource Toggl.ComboBox.HoverHighlightedBackground}" />
+        <Setter Property="mah:ItemHelper.HoverSelectedBackgroundBrush" Value="{DynamicResource Toggl.ComboBox.HoverHighlightedBackground}" />
+        <Setter Property="mah:ItemHelper.SelectedBackgroundBrush" Value="{DynamicResource Toggl.ComboBox.HighlightedBackground}" />
         <Setter Property="mah:ItemHelper.HoverBackgroundBrush" Value="{DynamicResource Toggl.ComboBox.HoverBackground}" />
         <Setter Property="Template">
             <Setter.Value>

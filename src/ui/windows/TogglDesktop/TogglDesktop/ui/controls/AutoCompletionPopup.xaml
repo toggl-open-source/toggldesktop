@@ -134,8 +134,9 @@
     </UserControl.Resources>
     
     <Popup Name="popup" x:FieldModifier="private"
-           StaysOpen="True" AllowsTransparency="True"
-           HorizontalOffset="-8">
+           AllowsTransparency="True"
+           HorizontalOffset="-8"
+           StaysOpen="False">
         <Grid Background="Transparent">
             <Border Margin="8 0 8 8"
                     BorderBrush="{DynamicResource Toggl.ComboBoxPopupBorderBrush}"
