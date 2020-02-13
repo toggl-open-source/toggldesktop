@@ -17,6 +17,17 @@
         }
     }
 
+    class TagItemViewModel : ListBoxItemViewModel
+    {
+        public bool IsChecked { get; set; }
+        public TagItemViewModel(string text, int index)
+        {
+            Text = text;
+            Type = ItemType.TAGITEM;
+            Index = index;
+        }
+    }
+
     class WorkspaceSeparatorItemViewModel : ListBoxItemViewModel
     {
         public static WorkspaceSeparatorItemViewModel Instance => new WorkspaceSeparatorItemViewModel();
