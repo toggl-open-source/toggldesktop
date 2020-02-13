@@ -16,12 +16,12 @@
 
         <TextBlock Grid.Row="0" Name="descriptionLabel" x:FieldModifier="private"
                    MouseLeftButtonDown="onDescriptionLabelMouseDown"
-                   Style="{DynamicResource Toggl.BodyText}"
+                   Style="{StaticResource Toggl.BodyText}"
                    Text="{Binding Description}"
                    ToolTip="{Binding Description}">
         </TextBlock>
         <TextBlock Grid.Row="0" Name="addDescriptionLabel" x:FieldModifier="private"
-                   Style="{DynamicResource Toggl.CaptionGrayishText}"
+                   Style="{StaticResource Toggl.CaptionGrayishText}"
                    Text="{Binding AddDescriptionLabelText}"
                    VerticalAlignment="Center"
                    Visibility="{Binding Description, Converter={StaticResource EmptyStringToVisibleConverter}}"

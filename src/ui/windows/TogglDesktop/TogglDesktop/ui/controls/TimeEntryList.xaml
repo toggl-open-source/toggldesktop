@@ -84,7 +84,7 @@
                 <VirtualizingStackPanel Name="panel" x:FieldModifier="private" HorizontalAlignment="Stretch" Grid.Row="0"
                                         KeyboardNavigation.TabNavigation="Contained" />
                 
-                <Button Grid.Row="1" Style="{DynamicResource Toggl.OutlinedButton}"
+                <Button Grid.Row="1" Style="{StaticResource Toggl.OutlinedButton}"
                         Margin="12" HorizontalAlignment="Center" Focusable="False"
                         Height="32" Width="96"
                         Visibility="{Binding ShowLoadMore, Converter={StaticResource BooleanToVisibilityConverter}}"

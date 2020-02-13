@@ -12,11 +12,11 @@
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Button Grid.Column="0"
-                Style="{DynamicResource Toggl.PrimaryButton}"
+                Style="{StaticResource Toggl.PrimaryButton}"
                 Content="Continue"
                 Click="onContinueButtonClick"/>
         <Button Grid.Column="2"
-                Style="{DynamicResource Toggl.PrimaryButton}"
+                Style="{StaticResource Toggl.PrimaryButton}"
                 Content="Start new"
                 Click="onStartNewButtonClick"/>
     </Grid>
