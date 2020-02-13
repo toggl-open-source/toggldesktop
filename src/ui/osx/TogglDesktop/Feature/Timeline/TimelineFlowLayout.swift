@@ -24,7 +24,7 @@ final class TimelineFlowLayout: NSCollectionViewFlowLayout {
         static let TimelineLineView = "TimelineLineView"
         static let TimelineLineViewX: CGFloat = 44
         static let TimelineLineViewHeight: CGFloat = 8
-        static let TimelineLineInterval: TimeInterval = 10 // 1 min
+        static let TimelineLineInterval: TimeInterval = 60 // 1 min
 
         struct TimeLabel {
             static let Size = CGSize(width: 54.0, height: 32)

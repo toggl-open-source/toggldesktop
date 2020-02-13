@@ -92,7 +92,7 @@ class TimelineBaseCell: NSCollectionViewItem {
     // MARK: Public
 
     func renderColor(with foregroundColor: NSColor, isSmallEntry: Bool) {
-        backgroundColor = foregroundColor.lighten(by: 0.1)
+        backgroundColor = foregroundColor.lighten(by: 0.2)
 
         foregroundBox.fillColor = foregroundColor
         backgroundBox?.fillColor = backgroundColor ?? foregroundColor
