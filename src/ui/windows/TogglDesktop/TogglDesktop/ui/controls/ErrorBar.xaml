@@ -26,7 +26,7 @@
 
         <TextBlock Grid.Column="0"
                    x:Name="errorText" x:FieldModifier="private"
-                   Style="{DynamicResource Toggl.BaseWhiteText}"
+                   Style="{StaticResource Toggl.BaseWhiteText}"
                    Padding="12 9 12 12"
                    Text="Everything is fine."
                    TextWrapping="Wrap"/>

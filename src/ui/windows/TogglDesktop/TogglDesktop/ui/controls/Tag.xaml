@@ -10,8 +10,8 @@
 
     <Border>
         <StackPanel Orientation="Horizontal">
-            <TextBlock Name="textBlock" x:FieldModifier="private" Style="{DynamicResource Toggl.CaptionBlackText}" Text="This is tag"/>
-            <Button Click="remove_OnClick" Style="{DynamicResource Toggl.CrossButton}" Height="24" Width="24" Margin="0 -3 0 0"/>
+            <TextBlock Name="textBlock" x:FieldModifier="private" Style="{StaticResource Toggl.CaptionBlackText}" Text="This is tag"/>
+            <Button Click="remove_OnClick" Style="{StaticResource Toggl.CrossButton}" Height="24" Width="24" Margin="0 -3 0 0"/>
         </StackPanel>
     </Border>
 </UserControl>
