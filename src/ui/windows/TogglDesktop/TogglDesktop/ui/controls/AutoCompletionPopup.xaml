@@ -84,6 +84,14 @@
                                ToolTip="{Binding Text}" />
                 </Border>
             </DataTemplate>
+            <DataTemplate x:Key="tag-item-template">
+                <Border Height="32" Margin="12 0 0 0">
+                    <CheckBox VerticalAlignment="Center"
+                              Content="{Binding Text}"
+                              ToolTip="{Binding Text}"
+                              IsChecked="{Binding IsChecked}"/>
+                </Border>
+            </DataTemplate>
             <DataTemplate x:Key="client-item-template">
                 <StackPanel Height="24" Orientation="Horizontal">
                     <TextBlock Name="clientName"

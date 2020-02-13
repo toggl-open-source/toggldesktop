@@ -153,7 +153,7 @@ namespace TogglDesktop.AutoCompletion
             {
                 items = autocompleteType switch
                 {
-                    // For tags and autotracker terms
+                    // autotracker terms
                     1 => list.Select((item1, ind) => (ListBoxItemViewModel)new StringItemViewModel(((StringItem) item1).Item, ind)).ToList(),
                     // client dropdown
                     2 => list.Select((item1, ind) => (ListBoxItemViewModel)new StringItemViewModel(((ModelItem) item1).Item.Name, ind))
@@ -161,6 +161,10 @@ namespace TogglDesktop.AutoCompletion
                         .ToList(),
                     // workspace dropdown
                     4 => list.Select((item1, ind) => (ListBoxItemViewModel)new StringItemViewModel(((ModelItem) item1).Item.Name, ind)).ToList(),
+                    // tags dropdown
+                    5 => list.Select((item1, ind) => (ListBoxItemViewModel)new TagItemViewModel(((StringItem)item1).Item, ind))
+                        .AppendIfEmpty(() => new CustomTextItemViewModel("There are no tags yet", "Start typing and press Enter to add a new tag"))
+                        .ToList(),
                     // description and project dropdowns
                     _ => CreateItemViewModelsList(list, autocompleteType)
                 };
@@ -243,6 +247,10 @@ namespace TogglDesktop.AutoCompletion
                     else if (autocompleteType == 3)
                     {
                         filteredItems.Add(new CustomTextItemViewModel("No matching projects", "Try a different keyword or create a new project"));
+                    }
+                    else if (autocompleteType == 5)
+                    {
+                        filteredItems.Add(new CustomTextItemViewModel("No matching tags", "Press Enter to add it as a tag"));
                     }
                 }
                 else if (filteredItems.Count == 1)
@@ -348,6 +356,7 @@ namespace TogglDesktop.AutoCompletion
         TASK = 1,
         PROJECT = 2,
         STRINGITEM = 4,
+        TAGITEM = 5,
 
         CATEGORY = -1,
         CLIENT = -2,
@@ -365,6 +374,7 @@ namespace TogglDesktop.AutoCompletion
             {ItemType.TIMEENTRY, "timer-item-template"},
             {ItemType.CATEGORY, "category-item-template"},
             {ItemType.STRINGITEM, "string-item-template"},
+            {ItemType.TAGITEM, "tag-item-template"},
             {ItemType.CLIENT, "client-item-template"},
             {ItemType.WORKSPACE, "workspace-item-template"},
             {ItemType.WORKSPACE_SEPARATOR, "workspace-separator-item-template"},

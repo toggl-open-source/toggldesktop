@@ -470,15 +470,15 @@ namespace TogglDesktop
 
             this.confirmCompletion(false);
 
-            // Remove selected item from list if tags autocomplete
-            if (this.controller.autocompleteType == 1)
-            {
-                IEditableCollectionView items = listBox.Items; //Cast to interface
-                if (items.CanRemove)
-                {
-                    items.RemoveAt(index);
-                }
-            }
+            // Check selected item from list if tags autocomplete
+            // if (this.controller.autocompleteType == 5)
+            // {
+            //     IEditableCollectionView items = listBox.Items; //Cast to interface
+            //     if (items.CanRemove)
+            //     {
+            //         items.RemoveAt(index);
+            //     }
+            // }
         }
 
         internal bool popUpOpen()

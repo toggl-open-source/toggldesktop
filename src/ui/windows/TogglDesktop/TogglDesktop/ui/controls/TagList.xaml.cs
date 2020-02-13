@@ -205,5 +205,10 @@ namespace TogglDesktop
         {
             this.autoComplete.RecalculatePosition();
         }
+
+        private void AutoComplete_OnActionButtonClick(object sender, RoutedEventArgs e)
+        {
+            this.tryAddTagFromTextBox();
+        }
     }
 }
