@@ -14,13 +14,8 @@
         Title="Toggl idle notification"
         WindowStartupLocation="CenterScreen"
         Topmost="True"
-        Background="{DynamicResource Toggl.Background}">
-    <mah:MetroWindow.Resources>
-        <ResourceDictionary Source="../Resources/DesignUpdate/Controls.xaml" />
-    </mah:MetroWindow.Resources>
-    <mah:MetroWindow.Style>
-        <StaticResource ResourceKey="Toggl.ToolWindow" />
-    </mah:MetroWindow.Style>
+        Background="{DynamicResource Toggl.Background}"
+        Style="{StaticResource Toggl.ToolWindow}">
     <i:Interaction.Behaviors>
         <behaviors:HideWindowOnClosingBehavior />
     </i:Interaction.Behaviors>

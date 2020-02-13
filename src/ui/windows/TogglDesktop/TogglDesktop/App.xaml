@@ -8,6 +8,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <theming:ThemeResourceDictionary Source="ui/Resources/Themes/ColorScheme/Light.xaml" Type="ColorScheme"/>
+                <ResourceDictionary Source="ui/Resources/DesignUpdate/Typography.xaml" />
                 <ResourceDictionary Source="ui/Resources/DesignUpdate/Notifications.xaml" />
                 <ResourceDictionary Source="ui/Resources/DesignUpdate/Controls.xaml" />
 
@@ -25,6 +26,7 @@
             <converters:EmptyStringToCollapsedConverter x:Key="EmptyStringToVisibleConverter" Inverse="True" />
             <converters:StringFormatIfNotEmptyConverter x:Key="StringFormatIfNotEmptyConverter" />
             <converters:EnumEqualToVisibilityConverter x:Key="EnumEqualToVisibilityConverter" />
+            <converters:AndConverter x:Key="AndConverter" />
 
         </ResourceDictionary>
     </Application.Resources>

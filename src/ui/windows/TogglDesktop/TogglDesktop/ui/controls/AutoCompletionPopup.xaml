@@ -12,10 +12,6 @@
     
     <UserControl.Resources>
         <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../Resources/DesignUpdate/Controls.xaml" />
-                <ResourceDictionary Source="../Resources/DesignUpdate/Typography.xaml" />
-            </ResourceDictionary.MergedDictionaries>
             <converters:BindingProxy x:Key="NoProjectColorProxy" Data="{DynamicResource Toggl.SecondaryTextBrush}" />
             <converters:ColorsToBrushConverter x:Key="ColorsToBrushMultiConverter" />
             <togglautocompletion:AutocompleteTemplateSelector x:Key="autocompleteTemplateSelector"/>
