@@ -20,7 +20,6 @@
             <SolidColorBrush x:Key="AttachedFileBackground"
                              Color="{DynamicResource Toggl.LightGrayColor}"
                              Opacity="0.5" />
-            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
             <converters:BytesToStringConverter x:Key="BytesToStringConverter" />
             <converters:FileNameToIconConverter x:Key="FileNameToIconConverter" />
             <converters:TrimPathConverter x:Key="TrimPathConverter" />
