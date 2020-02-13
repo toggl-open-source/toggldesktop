@@ -13,7 +13,8 @@ namespace TogglDesktop
         public event EventHandler<string> TagAdded;
 
         private readonly Dictionary<string, Tag> tags = new Dictionary<string, Tag>();
-        private readonly Stack<string> orderedTags = new Stack<string>(); 
+        private readonly Stack<string> orderedTags = new Stack<string>();
+        private AutoCompleteController controller;
 
         public int TagCount { get { return this.tags.Count; } }
         public IEnumerable<string> Tags { get { return this.tags.Keys; } }
@@ -110,6 +111,7 @@ namespace TogglDesktop
 
             this.tags.Add(tag, element);
             this.orderedTags.Push(tag);
+            this.controller?.AddTag(tag);
 
             this.panel.Children.Insert(this.panel.Children.Count - 1, element);
 
@@ -132,6 +134,7 @@ namespace TogglDesktop
 
             this.panel.Children.Remove(element);
             this.tags.Remove(tag);
+            this.controller?.RemoveTag(tag);
 
             if (this.orderedTags.Count > 0 && this.orderedTags.Peek() == tag)
                 this.orderedTags.Pop();
@@ -174,7 +177,10 @@ namespace TogglDesktop
         public void SetKnownTags(IEnumerable<string> tags)
         {
             if (!this.autoComplete.popUpOpen())
-                this.autoComplete.SetController(AutoCompleteControllers.ForTags(tags));
+            {
+                controller = AutoCompleteControllers.ForTags(tags);
+                this.autoComplete.SetController(controller);
+            }
         }
 
         public void ClearUndoHistory()
