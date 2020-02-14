@@ -30,6 +30,11 @@ final class TimelineData {
     let start: TimeInterval
     let end: TimeInterval
     private(set) var zoomLevel: TimelineDatasource.ZoomLevel
+    var isToday: Bool {
+        // Get the middle of the day
+        let middle = start + (end - start) / 2
+        return Calendar.current.isDateInToday(Date(timeIntervalSince1970: middle))
+    }
 
     // MARK: Init
 

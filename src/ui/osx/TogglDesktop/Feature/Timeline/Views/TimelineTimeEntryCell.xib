@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15705"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -13,6 +14,14 @@
             <rect key="frame" x="0.0" y="0.0" width="197" height="107"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
+                <box boxType="custom" borderType="none" borderWidth="0.0" cornerRadius="10" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="PFT-Hu-lDX">
+                    <rect key="frame" x="0.0" y="0.0" width="197" height="107"/>
+                    <view key="contentView" id="x0z-XV-qtc">
+                        <rect key="frame" x="0.0" y="0.0" width="197" height="107"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    </view>
+                    <color key="fillColor" name="timeline-background-color"/>
+                </box>
                 <box horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" boxType="custom" borderType="line" cornerRadius="10" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="xE9-Ie-UP3">
                     <rect key="frame" x="0.0" y="0.0" width="197" height="107"/>
                     <view key="contentView" id="r80-dl-MpV">
@@ -158,8 +167,12 @@
                 <constraint firstAttribute="bottom" secondItem="ILd-N3-zAP" secondAttribute="bottom" priority="750" id="1Mm-Za-otm"/>
                 <constraint firstItem="xE9-Ie-UP3" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" priority="750" id="1VM-YB-XHD"/>
                 <constraint firstAttribute="trailing" secondItem="xE9-Ie-UP3" secondAttribute="trailing" priority="750" id="44W-4X-N3n"/>
+                <constraint firstItem="PFT-Hu-lDX" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" id="HyU-Wh-UDu"/>
                 <constraint firstItem="xE9-Ie-UP3" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" priority="750" id="Jj8-O9-hu6"/>
+                <constraint firstItem="PFT-Hu-lDX" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="VaI-2H-p9e"/>
+                <constraint firstAttribute="bottom" secondItem="PFT-Hu-lDX" secondAttribute="bottom" id="fW7-Nd-VKX"/>
                 <constraint firstItem="ILd-N3-zAP" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" priority="750" id="ibj-8F-oO2"/>
+                <constraint firstAttribute="trailing" secondItem="PFT-Hu-lDX" secondAttribute="trailing" id="kah-E4-eV6"/>
                 <constraint firstAttribute="bottom" secondItem="xE9-Ie-UP3" secondAttribute="bottom" priority="750" id="pyj-Y7-31G"/>
                 <constraint firstItem="ILd-N3-zAP" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" priority="750" id="zP1-Vu-Sgm"/>
             </constraints>
@@ -187,5 +200,8 @@
         <image name="time-entry-billable" width="17" height="17"/>
         <image name="time-entry-dot" width="8" height="8"/>
         <image name="time-entry-tag" width="17" height="17"/>
+        <namedColor name="timeline-background-color">
+            <color red="0.98039215686274506" green="0.98431372549019602" blue="0.9882352941176471" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
     </resources>
 </document>
