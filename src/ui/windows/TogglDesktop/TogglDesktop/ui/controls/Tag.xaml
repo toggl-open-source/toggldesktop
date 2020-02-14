@@ -20,7 +20,8 @@
             </Style>
         </Border.Style>
         <StackPanel Orientation="Horizontal">
-            <TextBlock Name="textBlock" x:FieldModifier="private" Style="{StaticResource Toggl.CaptionBlackText}" Text="This is tag"/>
+            <TextBlock Name="textBlock" x:FieldModifier="private" Style="{StaticResource Toggl.CaptionBlackText}" Text="This is tag" TextTrimming="CharacterEllipsis"
+                       MaxWidth="144"/>
             <Button Click="remove_OnClick" Style="{StaticResource Toggl.CrossButton}" Height="24" Width="24" Margin="0 -3 0 0"/>
         </StackPanel>
     </Border>
