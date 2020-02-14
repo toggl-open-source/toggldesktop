@@ -85,7 +85,21 @@
                 </Border>
             </DataTemplate>
             <DataTemplate x:Key="tag-item-template">
-                <Border Height="32" Margin="12 0 0 0">
+                <Border Height="32" Padding="12 0 0 0">
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Setter Property="Background" Value="Transparent" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsChecked}" Value="True">
+                                    <Setter Property="Background">
+                                        <Setter.Value>
+                                            <SolidColorBrush Color="{StaticResource Toggl.AccentColor}" Opacity="0.1" />
+                                        </Setter.Value>
+                                    </Setter>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
                     <CheckBox VerticalAlignment="Center"
                               Content="{Binding Text}"
                               ToolTip="{Binding Text}"
