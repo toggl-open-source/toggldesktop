@@ -1,4 +1,6 @@
-﻿using TogglDesktop.AutoCompletion.Implementation;
+﻿using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using TogglDesktop.AutoCompletion.Implementation;
 
 namespace TogglDesktop.AutoCompletion
 {
@@ -42,14 +44,38 @@ namespace TogglDesktop.AutoCompletion
         }
     }
 
-    class TagItemViewModel : ModelItemViewModel
+    class TagItemViewModel : ModelItemViewModel, INotifyPropertyChanged
     {
-        public bool IsChecked { get; set; }
-        public TagItemViewModel(StringItem stringItem)
+        private bool _isChecked;
+        public bool IsChecked
+        {
+            get => _isChecked;
+            set
+            {
+                if (_isChecked != value)
+                {
+                    _isChecked = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public TagItemViewModel(string tag)
+            : this(new StringItem(tag))
+        { }
+
+        private TagItemViewModel(StringItem stringItem)
         {
             Model = stringItem;
             Text = stringItem.Item;
             Type = ItemType.TAGITEM;
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 

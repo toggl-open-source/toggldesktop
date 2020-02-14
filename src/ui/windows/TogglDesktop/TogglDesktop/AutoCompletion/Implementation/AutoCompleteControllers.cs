@@ -11,11 +11,9 @@ namespace TogglDesktop.AutoCompletion.Implementation
             return new AutoCompleteController(list, $"Timer items ({list.Count})", 0);
         }
 
-        public static IAutoCompleteController ForTags(IEnumerable<string> items)
+        public static TagsAutoCompleteController ForTags(IEnumerable<string> items)
         {
-            var list = items.Select(i => new StringItem(i)).ToList<IAutoCompleteListItem>();
-            var ac = new AutoCompleteController(list, $"Tags({list.Count})", 5);
-            return ac;
+            return new TagsAutoCompleteController(items);
         }
         public static IAutoCompleteController ForStrings(IEnumerable<string> items)
         {
