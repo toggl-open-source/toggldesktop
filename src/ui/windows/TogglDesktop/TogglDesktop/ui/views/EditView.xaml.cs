@@ -137,7 +137,6 @@ namespace TogglDesktop
                     if (timeEntry.Tags != null)
                         this.tagList.AddTags(timeEntry.Tags.Split(new[] {Toggl.TagSeparator},
                             StringSplitOptions.RemoveEmptyEntries));
-                    this.updateTagListEmptyText();
                 }
 
                 if (!keepNewProjectModeOpen)
@@ -443,7 +442,6 @@ namespace TogglDesktop
                 if (item.Tags != null)
                     this.tagList.AddTags(item.Tags.Split(new[] { Toggl.TagSeparator },
                         StringSplitOptions.RemoveEmptyEntries));
-                this.updateTagListEmptyText();
                 this.saveTags();
             }
         }
@@ -793,14 +791,7 @@ namespace TogglDesktop
                 return;
             }
 
-            this.updateTagListEmptyText();
-
             this.saveTags();
-        }
-
-        private void tagList_OnGotKeybardFocus(object sender, KeyboardFocusChangedEventArgs e)
-        {
-            this.updateTagListEmptyText();
         }
 
         private void tagList_TagAdded(object sender, string e)
@@ -816,11 +807,6 @@ namespace TogglDesktop
         private void saveTags()
         {
             Toggl.SetTimeEntryTags(this.timeEntry.GUID, this.tagList.Tags.ToList());
-        }
-
-        private void updateTagListEmptyText()
-        {
-            this.emptyTagListText.ShowOnlyIf(this.tagList.TagCount == 0 && !this.tagList.IsKeyboardFocusWithin);
         }
 
         #endregion
