@@ -14,7 +14,7 @@ namespace TogglDesktop
 
         private readonly Dictionary<string, Tag> tags = new Dictionary<string, Tag>();
         private readonly Stack<string> orderedTags = new Stack<string>();
-        private AutoCompleteController controller;
+        private IAutoCompleteController controller;
 
         public int TagCount { get { return this.tags.Count; } }
         public IEnumerable<string> Tags { get { return this.tags.Keys; } }
@@ -111,7 +111,7 @@ namespace TogglDesktop
 
             this.tags.Add(tag, element);
             this.orderedTags.Push(tag);
-            this.controller?.AddTag(tag);
+            // this.controller?.AddTag(tag);
 
             this.panel.Children.Insert(this.panel.Children.Count - 1, element);
 
@@ -134,7 +134,7 @@ namespace TogglDesktop
 
             this.panel.Children.Remove(element);
             this.tags.Remove(tag);
-            this.controller?.RemoveTag(tag);
+            // this.controller?.RemoveTag(tag);
 
             if (this.orderedTags.Count > 0 && this.orderedTags.Peek() == tag)
                 this.orderedTags.Pop();

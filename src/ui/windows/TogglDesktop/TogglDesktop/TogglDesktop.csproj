@@ -176,6 +176,7 @@
     <Compile Include="AutoCompletion\AutoCompleteController.cs" />
     <Compile Include="AutoCompletion\AutoCompleteItem.cs" />
     <Compile Include="AutoCompletion\AutoCompleteListItem.cs" />
+    <Compile Include="AutoCompletion\IAutoCompleteController.cs" />
     <Compile Include="AutoCompletion\IAutoCompleteListItem.cs" />
     <Compile Include="AutoCompletion\Implementation\AutoCompleteControllers.cs" />
     <Compile Include="AutoCompletion\Implementation\ModelItem.cs" />
@@ -183,6 +184,8 @@
     <Compile Include="AutoCompletion\Implementation\SimpleItem.cs" />
     <Compile Include="AutoCompletion\Implementation\TimerItem.cs" />
     <Compile Include="AutoCompletion\ListBoxItemViewModel.cs" />
+    <Compile Include="AutoCompletion\ListBoxSelectionManager.cs" />
+    <Compile Include="AutoCompletion\TagsAutoCompleteController.cs" />
     <Compile Include="BugsnagService.cs" />
     <Compile Include="Diagnostics\IPerformanceToken.cs" />
     <Compile Include="Diagnostics\Performance.cs" />
