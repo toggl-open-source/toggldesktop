@@ -409,12 +409,15 @@ namespace TogglDesktop
             // fix to make sure list updates layout when first opened
             this.popup.IsOpen = true;
 
-            // Reset listbox scroll position
-            if (this.listBox.SelectedIndex != -1)
+            if (!KeepOpenWhenSelecting)
             {
-                this.listBox.SelectedIndex = -1;
-                this.listBox.UpdateLayout();
-                this.listBox.ScrollIntoView(this.listBox.Items[0]);
+                // Reset listbox scroll position
+                if (this.listBox.SelectedIndex != -1)
+                {
+                    this.listBox.SelectedIndex = -1;
+                    this.listBox.UpdateLayout();
+                    this.listBox.ScrollIntoView(this.listBox.Items[0]);
+                }
             }
 
             this.ensureList();
