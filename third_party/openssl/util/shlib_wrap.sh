@@ -1,19 +1,32 @@
 #!/bin/sh
 
+# To test this OpenSSL version's applications against another version's
+# shared libraries, simply set
+#
+#     OPENSSL_REGRESSION=/path/to/other/OpenSSL/build/tree
+if [ -n "$OPENSSL_REGRESSION" ]; then
+    shlibwrap="$OPENSSL_REGRESSION/util/shlib_wrap.sh"
+    if [ -x "$shlibwrap" ]; then
+        # We clear OPENSSL_REGRESSION to avoid a loop, should the shlib_wrap.sh
+        # we exec also support that mechanism...
+        OPENSSL_REGRESSION= exec "$shlibwrap" "$@"
+    else
+        if [ -f "$shlibwrap" ]; then
+            echo "Not permitted to run $shlibwrap" >&2
+        else
+            echo "No $shlibwrap, perhaps OPENSSL_REGRESSION isn't properly set?" >&2
+        fi
+        exit 1
+    fi
+fi
+
 [ $# -ne 0 ] || set -x		# debug mode without arguments:-)
 
 THERE="`echo $0 | sed -e 's|[^/]*$||' 2>/dev/null`.."
 [ -d "${THERE}" ] || exec "$@"	# should never happen...
 
-# Alternative to this is to parse ${THERE}/Makefile...
-LIBCRYPTOSO="${THERE}/libcrypto.so"
-if [ -f "$LIBCRYPTOSO" ]; then
-    while [ -h "$LIBCRYPTOSO" ]; do
-	LIBCRYPTOSO="${THERE}/`ls -l "$LIBCRYPTOSO" | sed -e 's|.*\-> ||'`"
-    done
-    SOSUFFIX=`echo ${LIBCRYPTOSO} | sed -e 's|.*\.so||' 2>/dev/null`
-    LIBSSLSO="${THERE}/libssl.so${SOSUFFIX}"
-fi
+LIBCRYPTOSO="${THERE}/libcrypto.1.1.dylib"
+LIBSSLSO="${THERE}/libssl.1.1.dylib"
 
 SYSNAME=`(uname -s) 2>/dev/null`;
 case "$SYSNAME" in
