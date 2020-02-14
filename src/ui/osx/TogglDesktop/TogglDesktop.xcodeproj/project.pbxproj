@@ -28,7 +28,6 @@
 		3CD7AD6F19ED579700372797 /* NSResize.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CD7AD6E19ED579700372797 /* NSResize.m */; };
 		3CE1CAC11C774F2B00D0ADD5 /* LoadMoreCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE1CAC01C774F2B00D0ADD5 /* LoadMoreCell.m */; };
 		3CE30E022052BD8B00AF2E2A /* AutoCompleteTableContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE30E012052BD8B00AF2E2A /* AutoCompleteTableContainer.m */; };
-		5B29B9409F01EC0E842DE86D /* (null) in Frameworks */ = {isa = PBXBuildFile; };
 		622BBF654A6A958692A4633B /* Pods_TogglDesktop.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 776525112125F6AD81DF4DEF /* Pods_TogglDesktop.framework */; };
 		69FC17F517E6534400B96425 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69FC17F417E6534400B96425 /* Cocoa.framework */; };
 		69FC17FF17E6534400B96425 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 69FC17FD17E6534400B96425 /* InfoPlist.strings */; };
@@ -115,6 +114,28 @@
 		BA13D2172269DE3400EB3833 /* NoVibrantPopoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA13D2162269DE3400EB3833 /* NoVibrantPopoverView.swift */; };
 		BA13D21B2269E0B500EB3833 /* CalendarViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA13D2192269E0B500EB3833 /* CalendarViewController.xib */; };
 		BA13E05C21C7BA6000835EC1 /* UserNotificationCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = BA13E05921C7B9D900835EC1 /* UserNotificationCenter.m */; };
+		BA1935E623F6996400D3E69F /* libPocoCrypto.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA43B30B23F67EE60007DD99 /* libPocoCrypto.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BA1935E723F6996400D3E69F /* libPocoData.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA43B30323F67EE60007DD99 /* libPocoData.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BA1935E823F6996400D3E69F /* libPocoDataSQLite.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA43B30A23F67EE60007DD99 /* libPocoDataSQLite.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BA1935E923F6996400D3E69F /* libPocoFoundation.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA43B30723F67EE60007DD99 /* libPocoFoundation.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BA1935EA23F6996400D3E69F /* libPocoJSON.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA43B30923F67EE60007DD99 /* libPocoJSON.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BA1935EB23F6996400D3E69F /* libPocoNet.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA43B30823F67EE60007DD99 /* libPocoNet.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BA1935EC23F6996400D3E69F /* libPocoNetSSL.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA43B30423F67EE60007DD99 /* libPocoNetSSL.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BA1935ED23F6996400D3E69F /* libPocoUtil.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA43B30523F67EE60007DD99 /* libPocoUtil.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BA1935EE23F6996400D3E69F /* libPocoXML.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA43B30623F67EE60007DD99 /* libPocoXML.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BA1935EF23F6996400D3E69F /* libcrypto.1.1.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA43B2DC23F672850007DD99 /* libcrypto.1.1.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BA1935F023F6996400D3E69F /* libssl.1.1.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA43B2DB23F672850007DD99 /* libssl.1.1.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BA1935F123F69AC200D3E69F /* libPocoCrypto.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA43B30B23F67EE60007DD99 /* libPocoCrypto.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BA1935F223F69AC200D3E69F /* libPocoData.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA43B30323F67EE60007DD99 /* libPocoData.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BA1935F323F69AC200D3E69F /* libPocoDataSQLite.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA43B30A23F67EE60007DD99 /* libPocoDataSQLite.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BA1935F423F69AC200D3E69F /* libPocoFoundation.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA43B30723F67EE60007DD99 /* libPocoFoundation.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BA1935F523F69AC200D3E69F /* libPocoJSON.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA43B30923F67EE60007DD99 /* libPocoJSON.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BA1935F623F69AC200D3E69F /* libPocoNet.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA43B30823F67EE60007DD99 /* libPocoNet.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BA1935F723F69AC200D3E69F /* libPocoNetSSL.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA43B30423F67EE60007DD99 /* libPocoNetSSL.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BA1935F823F69AC200D3E69F /* libPocoUtil.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA43B30523F67EE60007DD99 /* libPocoUtil.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BA1935F923F69AC200D3E69F /* libPocoXML.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA43B30623F67EE60007DD99 /* libPocoXML.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BA1935FA23F69AC200D3E69F /* libcrypto.1.1.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA43B2DC23F672850007DD99 /* libcrypto.1.1.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		BA1935FB23F69AC200D3E69F /* libssl.1.1.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA43B2DB23F672850007DD99 /* libssl.1.1.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		BA19FC21226DA079006D8741 /* DateCellViewItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA13D20D2269BAA600EB3833 /* DateCellViewItem.xib */; };
 		BA1FFE71231FB0F300EAD9DC /* PanelSwitcherButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA1FFE70231FB0F300EAD9DC /* PanelSwitcherButton.swift */; };
 		BA24E772230BDBB800B1D4B2 /* TimelineBaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA24E771230BDBB800B1D4B2 /* TimelineBaseCell.swift */; };
@@ -613,6 +634,17 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				BA1935E623F6996400D3E69F /* libPocoCrypto.60.dylib in CopyFiles */,
+				BA1935E723F6996400D3E69F /* libPocoData.60.dylib in CopyFiles */,
+				BA1935E823F6996400D3E69F /* libPocoDataSQLite.60.dylib in CopyFiles */,
+				BA1935E923F6996400D3E69F /* libPocoFoundation.60.dylib in CopyFiles */,
+				BA1935EA23F6996400D3E69F /* libPocoJSON.60.dylib in CopyFiles */,
+				BA1935EB23F6996400D3E69F /* libPocoNet.60.dylib in CopyFiles */,
+				BA1935EC23F6996400D3E69F /* libPocoNetSSL.60.dylib in CopyFiles */,
+				BA1935ED23F6996400D3E69F /* libPocoUtil.60.dylib in CopyFiles */,
+				BA1935EE23F6996400D3E69F /* libPocoXML.60.dylib in CopyFiles */,
+				BA1935EF23F6996400D3E69F /* libcrypto.1.1.dylib in CopyFiles */,
+				BA1935F023F6996400D3E69F /* libssl.1.1.dylib in CopyFiles */,
 				74456B9E1A774CB0002A6338 /* TogglDesktopLibrary.dylib in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -633,6 +665,17 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				BA1935F123F69AC200D3E69F /* libPocoCrypto.60.dylib in CopyFiles */,
+				BA1935F223F69AC200D3E69F /* libPocoData.60.dylib in CopyFiles */,
+				BA1935F323F69AC200D3E69F /* libPocoDataSQLite.60.dylib in CopyFiles */,
+				BA1935F423F69AC200D3E69F /* libPocoFoundation.60.dylib in CopyFiles */,
+				BA1935F523F69AC200D3E69F /* libPocoJSON.60.dylib in CopyFiles */,
+				BA1935F623F69AC200D3E69F /* libPocoNet.60.dylib in CopyFiles */,
+				BA1935F723F69AC200D3E69F /* libPocoNetSSL.60.dylib in CopyFiles */,
+				BA1935F823F69AC200D3E69F /* libPocoUtil.60.dylib in CopyFiles */,
+				BA1935F923F69AC200D3E69F /* libPocoXML.60.dylib in CopyFiles */,
+				BA1935FA23F69AC200D3E69F /* libcrypto.1.1.dylib in CopyFiles */,
+				BA1935FB23F69AC200D3E69F /* libssl.1.1.dylib in CopyFiles */,
 				BAE64E322368334000244D2B /* TogglDesktopLibrary.dylib in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1049,7 +1092,6 @@
 				BA43B30C23F67EE60007DD99 /* libPocoData.60.dylib in Frameworks */,
 				BA43B31423F67EE60007DD99 /* libPocoFoundation.60.dylib in Frameworks */,
 				BA43B30E23F67EE60007DD99 /* libPocoNetSSL.60.dylib in Frameworks */,
-				5B29B9409F01EC0E842DE86D /* (null) in Frameworks */,
 				BA43B31223F67EE60007DD99 /* libPocoXML.60.dylib in Frameworks */,
 				622BBF654A6A958692A4633B /* Pods_TogglDesktop.framework in Frameworks */,
 			);
@@ -2202,7 +2244,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /usr/bin/ruby;
-			shellScript = "if ENV[\"DEBUG_INFORMATION_FORMAT\"] != \"dwarf-with-dsym\"\nexit\nend\n\nfork do\nProcess.setsid\nSTDIN.reopen(\"/dev/null\")\nSTDOUT.reopen(\"/dev/null\", \"a\")\nSTDERR.reopen(\"/dev/null\", \"a\")\n\nrequire 'shellwords'\n\nDir[\"#{ENV[\"DWARF_DSYM_FOLDER_PATH\"]}/#{ENV[\"DWARF_DSYM_FILE_NAME\"]}/Contents/Resources/DWARF/*\"].each do |dsym|\nsystem(\"curl -F dsym=@#{Shellwords.escape(dsym)} -F projectRoot=#{Shellwords.escape(ENV[\"PROJECT_DIR\"])} https://upload.bugsnag.com/\")\nend\nend";
+			shellScript = "if ENV[\"DEBUG_INFORMATION_FORMAT\"] != \"dwarf-with-dsym\"\nexit\nend\n\nfork do\nProcess.setsid\nSTDIN.reopen(\"/dev/null\")\nSTDOUT.reopen(\"/dev/null\", \"a\")\nSTDERR.reopen(\"/dev/null\", \"a\")\n\nrequire 'shellwords'\n\nDir[\"#{ENV[\"DWARF_DSYM_FOLDER_PATH\"]}/#{ENV[\"DWARF_DSYM_FILE_NAME\"]}/Contents/Resources/DWARF/*\"].each do |dsym|\nsystem(\"curl -F dsym=@#{Shellwords.escape(dsym)} -F projectRoot=#{Shellwords.escape(ENV[\"PROJECT_DIR\"])} https://upload.bugsnag.com/\")\nend\nend\n";
 		};
 		B984F0D8FC24E4374FFADFBB /* Upload Bugsnag dSYM */ = {
 			isa = PBXShellScriptBuildPhase;
