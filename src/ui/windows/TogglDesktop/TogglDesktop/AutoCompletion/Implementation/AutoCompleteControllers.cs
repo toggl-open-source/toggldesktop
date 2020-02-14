@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -11,9 +12,9 @@ namespace TogglDesktop.AutoCompletion.Implementation
             return new AutoCompleteController(list, $"Timer items ({list.Count})", 0);
         }
 
-        public static TagsAutoCompleteController ForTags(IEnumerable<string> items)
+        public static TagsAutoCompleteController ForTags(IEnumerable<string> items, Func<string, bool> isSelected)
         {
-            return new TagsAutoCompleteController(items);
+            return new TagsAutoCompleteController(items, isSelected);
         }
         public static IAutoCompleteController ForStrings(IEnumerable<string> items)
         {
