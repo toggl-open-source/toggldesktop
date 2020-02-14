@@ -707,6 +707,7 @@
 					../../ui/osx/TogglDesktop/Library/poco/NetSSL_OpenSSL/include/,
 					../../ui/osx/TogglDesktop/Library/poco/Crypto/include/,
 					../../ui/osx/TogglDesktop/Library/jsoncpp,
+					../../ui/osx/TogglDesktop/Library/lua/include/,
 				);
 				INSTALL_PATH = "@executable_path/../../Contents/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
@@ -748,6 +749,7 @@
 					../../ui/osx/TogglDesktop/Library/poco/NetSSL_OpenSSL/include/,
 					../../ui/osx/TogglDesktop/Library/poco/Crypto/include/,
 					../../ui/osx/TogglDesktop/Library/jsoncpp,
+					../../ui/osx/TogglDesktop/Library/lua/include/,
 				);
 				INSTALL_PATH = "@executable_path/../../Contents/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
