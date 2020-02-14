@@ -136,21 +136,6 @@ namespace TogglDesktop.AutoCompletion
             return items;
         }
 
-        private static List<ListBoxItemViewModel> CreateTagItemViewModelsList(List<IAutoCompleteListItem> modelsList)
-        {
-            return modelsList
-                .Cast<StringItem>()
-                .Select(stringItem =>
-                {
-                    var tagItemViewModel = new TagItemViewModel(stringItem);
-                    return (ListBoxItemViewModel) tagItemViewModel;
-                })
-                .AppendIfEmpty(() =>
-                    new CustomTextItemViewModel("There are no tags yet",
-                    "Start typing and press Enter to add a new tag"))
-                .ToList();
-        }
-
         public void FillList(ListBox listBox)
         {
             LB = listBox;
@@ -172,7 +157,7 @@ namespace TogglDesktop.AutoCompletion
                     // workspace dropdown
                     4 => list.Select(item1 => (ListBoxItemViewModel)new StringItemViewModel((ModelItem) item1)).ToList(),
                     // tags dropdown
-                    5 => CreateTagItemViewModelsList(list),
+                    // 5 => list.ToTagItemViewModelsList(),
                     // description and project dropdowns
                     _ => CreateTimerItemViewModelsList(list, autoCompleteType)
                 };

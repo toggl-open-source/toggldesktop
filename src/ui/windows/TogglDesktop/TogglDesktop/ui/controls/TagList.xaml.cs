@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using TogglDesktop.AutoCompletion;
@@ -14,7 +15,7 @@ namespace TogglDesktop
 
         private readonly Dictionary<string, Tag> tags = new Dictionary<string, Tag>();
         private readonly Stack<string> orderedTags = new Stack<string>();
-        private IAutoCompleteController controller;
+        private TagsAutoCompleteController controller;
 
         public int TagCount { get { return this.tags.Count; } }
         public IEnumerable<string> Tags { get { return this.tags.Keys; } }
@@ -82,9 +83,13 @@ namespace TogglDesktop
         private bool tryAddTag(string tag)
         {
             var success = this.AddTag(tag);
-            if (success && this.TagAdded != null)
-                this.TagAdded(this, tag);
+            if (success) TagAdded?.Invoke(this, tag);
             return success;
+        }
+
+        private bool tryAddOrRemoveTag(string tag)
+        {
+            return tryAddTag(tag) || RemoveTag(tag);
         }
 
         public void AddTags(IEnumerable<string> tags)
@@ -111,7 +116,7 @@ namespace TogglDesktop
 
             this.tags.Add(tag, element);
             this.orderedTags.Push(tag);
-            // this.controller?.AddTag(tag);
+            this.controller?.AddTag(tag);
 
             this.panel.Children.Insert(this.panel.Children.Count - 1, element);
 
@@ -134,7 +139,7 @@ namespace TogglDesktop
 
             this.panel.Children.Remove(element);
             this.tags.Remove(tag);
-            // this.controller?.RemoveTag(tag);
+            this.controller?.RemoveTag(tag);
 
             if (this.orderedTags.Count > 0 && this.orderedTags.Peek() == tag)
                 this.orderedTags.Pop();
@@ -178,8 +183,15 @@ namespace TogglDesktop
         {
             if (!this.autoComplete.popUpOpen())
             {
-                controller = AutoCompleteControllers.ForTags(tags);
-                this.autoComplete.SetController(controller);
+                if (controller == null)
+                {
+                    controller = AutoCompleteControllers.ForTags(tags);
+                    this.autoComplete.SetController(controller);
+                }
+                else
+                {
+                    controller.UpdateWith(tags);
+                }
             }
         }
 
@@ -195,7 +207,7 @@ namespace TogglDesktop
                 return;
 
             var tag = asStringItem.Text;
-            this.tryAddTag(tag);
+            this.tryAddOrRemoveTag(tag);
             this.textBox.SetText("");
 
             if(this.autoComplete.IsOpen)
