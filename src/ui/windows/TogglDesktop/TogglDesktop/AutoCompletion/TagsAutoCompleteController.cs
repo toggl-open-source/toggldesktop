@@ -71,14 +71,18 @@ namespace TogglDesktop.AutoCompletion
 
         public IList<ListBoxItemViewModel> VisibleItems
         {
-            get =>_selectionManager.Items;
-            private set => _selectionManager.Items = value;
+            get => _selectionManager.Items;
+            private set
+            {
+                _selectionManager.Items = value;
+                if (ListBox != null) ListBox.ItemsSource = value;
+            }
         }
+
         public void FillList(ListBox listBox)
         {
-            VisibleItems = _fullItemsList;
             ListBox = listBox;
-            ListBox.ItemsSource = VisibleItems;
+            VisibleItems = _fullItemsList;
         }
 
         public void Complete(string input)
@@ -99,7 +103,8 @@ namespace TogglDesktop.AutoCompletion
                     filterWords.All(word => item.Text.IndexOf(word, StringComparison.OrdinalIgnoreCase) != -1))
                 .AppendIfEmpty(() => new CustomTextItemViewModel("No matching tags", "Press Enter to add it as a tag"))
                 .ToList();
-            ListBox.ItemsSource = VisibleItems;
+
+            this._selectionManager.SelectFirstItem();
         }
 
         public void SelectNext()
