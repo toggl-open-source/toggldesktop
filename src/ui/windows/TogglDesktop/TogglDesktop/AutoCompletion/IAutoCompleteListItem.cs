@@ -1,6 +1,6 @@
 namespace TogglDesktop.AutoCompletion
 {
-    interface IAutoCompleteListItem
+    public interface IAutoCompleteListItem
     {
         string Text { get; }
     }

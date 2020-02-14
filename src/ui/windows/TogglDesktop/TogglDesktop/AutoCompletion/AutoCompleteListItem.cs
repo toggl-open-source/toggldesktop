@@ -1,6 +1,6 @@
 namespace TogglDesktop.AutoCompletion
 {
-    abstract class AutoCompleteListItem : IAutoCompleteListItem
+    public abstract class AutoCompleteListItem : IAutoCompleteListItem
     {
         public string Text { get; }
 

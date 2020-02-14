@@ -27,7 +27,7 @@ namespace TogglDesktop
 
         private bool needsToRefreshList;
 
-        private AutoCompleteController controller;
+        private IAutoCompleteController controller;
 
         #endregion
 
@@ -219,7 +219,7 @@ namespace TogglDesktop
 
         #endregion
 
-        public void SetController(AutoCompleteController controller)
+        public void SetController(IAutoCompleteController controller)
         {
             this.controller = controller;
             this.needsToRefreshList = true;
@@ -368,7 +368,7 @@ namespace TogglDesktop
                 this.popup.IsOpen = false;
 
             // quick check if there is a full match with the first shown item
-            if (item == null && controller.visibleItems[0].Text == this.textbox.Text)
+            if (item == null && controller.VisibleItems[0].Text == this.textbox.Text)
             {
                 controller.SelectNext();
                 item = controller.SelectedItem;
@@ -420,11 +420,10 @@ namespace TogglDesktop
 
             this.ensureList();
             this.controller.Complete(showAll ? "" : this.textbox.Text);
-            createProjectButton.IsEnabled = !controller.IsFullMatch;
 
             if (closeIfEmpty)
             {
-                this.popup.IsOpen = this.controller.visibleItems.Count > 0;
+                this.popup.IsOpen = this.controller.VisibleItems.Count > 0;
             }
             else
             {
