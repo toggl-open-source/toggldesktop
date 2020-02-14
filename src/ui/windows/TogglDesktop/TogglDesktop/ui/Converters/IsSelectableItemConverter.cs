@@ -9,7 +9,7 @@ namespace TogglDesktop.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var isEnabled = value is ListBoxItemViewModel item && item.IsSelectable();
+            var isEnabled = value is ListBoxItemViewModel item && item.IsSelectable;
             return isEnabled;
         }
 

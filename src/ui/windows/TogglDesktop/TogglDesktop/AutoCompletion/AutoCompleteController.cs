@@ -8,27 +8,27 @@ using TogglDesktop.Diagnostics;
 
 namespace TogglDesktop.AutoCompletion
 {
-    class AutoCompleteController
+    class AutoCompleteController : IAutoCompleteController
     {
         private static readonly char[] splitChars = { ' ' };
-
         private static readonly string[] categories = { "RECENT TIME ENTRIES", "TASKS", "PROJECTS", "WORKSPACES", "TAGS" };
-
-        private readonly List<IAutoCompleteListItem> list;
-        private List<ListBoxItemViewModel> items;
-        public List<ListBoxItemViewModel> visibleItems;
-        private ListBox _listBox;
+        private readonly List<ListBoxItemViewModel> items;
+        public IList<ListBoxItemViewModel> VisibleItems
+        {
+            get => _selectionManager.Items;
+            private set => _selectionManager.Items = value;
+        }
         private ListBox LB
         {
-            get => _listBox;
+            get => _selectionManager.ListBox;
             set
             {
-                if (_listBox != value)
+                if (_selectionManager.ListBox != value)
                 {
-                    _listBox = value;
-                    if (autocompleteType == 2 || autocompleteType == 3)
+                    _selectionManager.ListBox = value;
+                    if (_autocompleteType == 2 || _autocompleteType == 3)
                     {
-                        _listBox.SetValue(VirtualizingPanel.ScrollUnitProperty, ScrollUnit.Pixel);
+                        _selectionManager.ListBox.SetValue(VirtualizingPanel.ScrollUnitProperty, ScrollUnit.Pixel);
                     }
                 }
             }
@@ -36,42 +36,32 @@ namespace TogglDesktop.AutoCompletion
 
         public string DebugIdentifier { get; }
 
-        public bool IsFullMatch { get; private set; }
-
-        private int selectedIndex;
         private string filterText;
         private string[] words;
-        public int autocompleteType = 0;
+        private readonly int _autocompleteType;
+        private readonly ListBoxSelectionManager<ListBoxItemViewModel> _selectionManager = new ListBoxSelectionManager<ListBoxItemViewModel>();
 
-        private Dictionary<string, TagItemViewModel> _tagsDictionary;
-
-        public AutoCompleteController(List<IAutoCompleteListItem> list, string debugIdentifier)
+        public AutoCompleteController(List<IAutoCompleteListItem> list, string debugIdentifier, int autocompleteType)
         {
-            this.list = list;
             this.DebugIdentifier = debugIdentifier;
+            this._autocompleteType = autocompleteType;
+            items = CreateItemViewModelsList(list, autocompleteType);
+            VisibleItems = items;
         }
 
         public AutoCompleteItem SelectedItem
         {
-            get {
-                if (LB != null && LB.SelectedIndex != -1) {
-                    var listitem = visibleItems[LB.SelectedIndex];
-                    if (!listitem.IsModelItem())
-                    {
-                        return null;
-                    }
-                    // no project item
-                    if (listitem.Index == -1)
-                    {
-                        return new TimerItem(new Toggl.TogglAutocompleteView(), true);
-                    }
-                    return (AutoCompleteItem)this.list[listitem.Index];
+            get
+            {
+                if (LB != null && LB.SelectedIndex != -1 && VisibleItems[LB.SelectedIndex] is IModelItemViewModel modelItem)
+                {
+                    return modelItem.Model;
                 }
                 return null;
             }
         }
 
-        private static List<ListBoxItemViewModel> CreateItemViewModelsList(IList<IAutoCompleteListItem> modelsList, int autocompleteType)
+        private static List<ListBoxItemViewModel> CreateTimerItemViewModelsList(IList<IAutoCompleteListItem> modelsList, int autocompleteType)
         {
             int lastType = -1;
             string lastClient = null;
@@ -127,7 +117,7 @@ namespace TogglDesktop.AutoCompletion
                     lastClient = it.Item.ClientLabel;
                 }
 
-                items.Add(new TimeEntryItemViewModel(it.Item, count));
+                items.Add(new TimeEntryItemViewModel(it));
             }
 
             if (modelsList.Count == 0 && autocompleteType == 3)
@@ -146,15 +136,13 @@ namespace TogglDesktop.AutoCompletion
             return items;
         }
 
-        private List<ListBoxItemViewModel> CreateTagItemViewModelsList(List<IAutoCompleteListItem> modelsList)
+        private static List<ListBoxItemViewModel> CreateTagItemViewModelsList(List<IAutoCompleteListItem> modelsList)
         {
-            _tagsDictionary = new Dictionary<string, TagItemViewModel>();
             return modelsList
                 .Cast<StringItem>()
-                .Select((item1, ind) =>
+                .Select(stringItem =>
                 {
-                    var tagItemViewModel = new TagItemViewModel(item1.Item, ind);
-                    _tagsDictionary.Add(item1.Item, tagItemViewModel);
+                    var tagItemViewModel = new TagItemViewModel(stringItem);
                     return (ListBoxItemViewModel) tagItemViewModel;
                 })
                 .AppendIfEmpty(() =>
@@ -166,28 +154,28 @@ namespace TogglDesktop.AutoCompletion
         public void FillList(ListBox listBox)
         {
             LB = listBox;
-            IsFullMatch = false;
+            LB.ItemsSource = VisibleItems;
+        }
 
-            using (Performance.Measure("FILLIST, {0} items", this.list.Count))
+        private static List<ListBoxItemViewModel> CreateItemViewModelsList(List<IAutoCompleteListItem> list, int autoCompleteType)
+        {
+            using (Performance.Measure("FILLIST, {0} items", list.Count))
             {
-                items = autocompleteType switch
+                return autoCompleteType switch
                 {
                     // autotracker terms
-                    1 => list.Select((item1, ind) => (ListBoxItemViewModel)new StringItemViewModel(((StringItem) item1).Item, ind)).ToList(),
+                    1 => list.Select(item1 => (ListBoxItemViewModel)new StringItemViewModel((StringItem) item1)).ToList(),
                     // client dropdown
-                    2 => list.Select((item1, ind) => (ListBoxItemViewModel)new StringItemViewModel(((ModelItem) item1).Item.Name, ind))
+                    2 => list.Select(item1 => (ListBoxItemViewModel)new StringItemViewModel((ModelItem) item1))
                         .AppendIfEmpty(() => new CustomTextItemViewModel("There are no clients yet", "Add client name and press Enter to add it as a client"))
                         .ToList(),
                     // workspace dropdown
-                    4 => list.Select((item1, ind) => (ListBoxItemViewModel)new StringItemViewModel(((ModelItem) item1).Item.Name, ind)).ToList(),
+                    4 => list.Select(item1 => (ListBoxItemViewModel)new StringItemViewModel((ModelItem) item1)).ToList(),
                     // tags dropdown
                     5 => CreateTagItemViewModelsList(list),
                     // description and project dropdowns
-                    _ => CreateItemViewModelsList(list, autocompleteType)
+                    _ => CreateTimerItemViewModelsList(list, autoCompleteType)
                 };
-
-                visibleItems = items;
-                LB.ItemsSource = visibleItems;
             }
         }
 
@@ -195,21 +183,21 @@ namespace TogglDesktop.AutoCompletion
         {
             if (string.IsNullOrEmpty(input))
             {
-                visibleItems = items;
+                VisibleItems = items;
             }
             else
             {
                 if (filterText != null && !input.StartsWith(filterText))
                 {
-                    visibleItems = items;
+                    VisibleItems = items;
                 }
                 words = input.Split(splitChars, StringSplitOptions.RemoveEmptyEntries);
                 filterText = input;
                 var filteredItems = new List<ListBoxItemViewModel>();
                 
-                if (autocompleteType != 0 && autocompleteType != 3)
+                if (_autocompleteType != 0 && _autocompleteType != 3)
                 {
-                    filteredItems = visibleItems.Where(FilterSimpleItem).ToList();
+                    filteredItems = VisibleItems.Where(FilterSimpleItem).ToList();
                 }
                 else
                 {
@@ -217,8 +205,7 @@ namespace TogglDesktop.AutoCompletion
                     string lastProjectLabel = null;
                     string lastClient = null;
                     string lastWSName = null;
-                    IsFullMatch = false;
-                    foreach (var item in visibleItems.OfType<TimeEntryItemViewModel>().Where(Filter))
+                    foreach (var item in VisibleItems.OfType<TimeEntryItemViewModel>().Where(Filter))
                     {
                         // Add workspace title
                         if (lastWSName != item.WorkspaceName)
@@ -230,7 +217,7 @@ namespace TogglDesktop.AutoCompletion
                         }
 
                         // Add category title if needed
-                        if (autocompleteType == 0 && lastType != item.Type
+                        if (_autocompleteType == 0 && lastType != item.Type
                                                   && item.Type != ItemType.TASK)
                         {
                             filteredItems.Add(new CategoryItemViewModel(categories[(int)item.Type]));
@@ -247,7 +234,7 @@ namespace TogglDesktop.AutoCompletion
                         // In case we have task and project is not completed
                         if (item.Type == ItemType.TASK && item.ProjectLabel != lastProjectLabel)
                         {
-                            filteredItems.Add(new ProjectItemViewModel(item, filteredItems.Count));
+                            filteredItems.Add(new ProjectItemViewModel(item));
                         }
 
                         filteredItems.Add(item);
@@ -257,29 +244,25 @@ namespace TogglDesktop.AutoCompletion
 
                 if (filteredItems.Count == 0)
                 {
-                    if (autocompleteType == 2)
+                    if (_autocompleteType == 2)
                     {
                         filteredItems.Add(new CustomTextItemViewModel("No matching clients found", "Press Enter to add it as a client"));
                     }
-                    else if (autocompleteType == 3)
+                    else if (_autocompleteType == 3)
                     {
                         filteredItems.Add(new CustomTextItemViewModel("No matching projects", "Try a different keyword or create a new project"));
                     }
-                    else if (autocompleteType == 5)
+                    else if (_autocompleteType == 5)
                     {
                         filteredItems.Add(new CustomTextItemViewModel("No matching tags", "Press Enter to add it as a tag"));
                     }
                 }
-                else if (filteredItems.Count == 1)
-                {
-                    IsFullMatch = IsFullMatch || (filteredItems[0].Text == filterText);
-                }
 
-                visibleItems = filteredItems;
+                VisibleItems = filteredItems;
             }
-            LB.ItemsSource = visibleItems;
-            if (autocompleteType == 3)
-                this.selectFirstItem(0);
+            LB.ItemsSource = VisibleItems;
+            if (_autocompleteType == 3)
+                this._selectionManager.SelectFirstItem();
         }
 
         private bool Filter(TimeEntryItemViewModel timeEntryItem)
@@ -296,94 +279,14 @@ namespace TogglDesktop.AutoCompletion
             return words.All(word => item.Text.IndexOf(word, StringComparison.OrdinalIgnoreCase) != -1);
         }
 
-        private void selectFirstItem(int index)
-        {
-            if (this.visibleItems.Count == 0 || index >= this.visibleItems.Count)
-                return;
-
-            if (this.visibleItems[index].IsSelectable() == false)
-            {
-                this.selectFirstItem(++index);
-                return;
-            }
-            this.selectIndex(index);
-        }
-
-        private void selectIndex(int index)
-        {
-            if (index < 0 || this.visibleItems.Count == 0 || index >= this.visibleItems.Count)
-                index = 0;
-
-            this.selectedIndex = index;
-            LB.SelectedIndex = index;
-
-            LB.UpdateLayout();
-            if (this.visibleItems.Count > 0 && LB.SelectedIndex != -1)
-                LB.ScrollIntoView(LB.Items[LB.SelectedIndex]);
-        }
-
         public void SelectNext()
         {
-            if (this.visibleItems == null || this.visibleItems.Count == 0) return;
-            var maxIterations = visibleItems.Count;
-            var initialIndex = this.selectedIndex % visibleItems.Count;
-            var nextIndex = initialIndex;
-            for (var i = 0; i < maxIterations; i++)
-            {
-                nextIndex = (nextIndex + 1) % this.visibleItems.Count;
-                if (visibleItems[nextIndex].IsSelectable())
-                {
-                    this.selectIndex(nextIndex);
-                    return;
-                }
-            }
-
-            if (visibleItems[initialIndex].IsSelectable())
-            {
-                this.selectIndex(initialIndex);
-            }
+            _selectionManager.SelectNext();
         }
 
         public void SelectPrevious()
         {
-            if (this.visibleItems == null || this.visibleItems.Count == 0) return;
-            var maxIterations = visibleItems.Count;
-            var initialIndex = this.selectedIndex % visibleItems.Count;
-            var nextIndex = initialIndex;
-            for (var i = 0; i < maxIterations; i++)
-            {
-                nextIndex = (nextIndex - 1 + this.visibleItems.Count) % this.visibleItems.Count;
-                if (visibleItems[nextIndex].IsSelectable())
-                {
-                    this.selectIndex(nextIndex);
-                    return;
-                }
-            }
-
-            if (visibleItems[initialIndex].IsSelectable())
-            {
-                this.selectIndex(initialIndex);
-            }
-        }
-
-        public void AddTag(string tag)
-        {
-            if (autocompleteType != 5) throw new InvalidOperationException(nameof(AddTag) + "called on a non-tag controller");
-            if (_tagsDictionary == null) throw new InvalidOperationException(nameof(AddTag) + "called on a non-initialized controller");
-            if (_tagsDictionary.TryGetValue(tag, out var tagItemViewModel))
-            {
-                tagItemViewModel.IsChecked = true;
-            }
-        }
-
-        public void RemoveTag(string tag)
-        {
-            if (autocompleteType != 5) throw new InvalidOperationException(nameof(RemoveTag) + "called on a non-tag controller");
-            if (_tagsDictionary == null) throw new InvalidOperationException(nameof(RemoveTag) + "called on a non-initialized controller");
-            if (_tagsDictionary.TryGetValue(tag, out var tagItemViewModel))
-            {
-                tagItemViewModel.IsChecked = false;
-            }
+            _selectionManager.SelectPrevious();
         }
     }
 

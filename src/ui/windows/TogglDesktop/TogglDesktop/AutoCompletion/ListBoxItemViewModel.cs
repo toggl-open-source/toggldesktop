@@ -1,30 +1,55 @@
-﻿namespace TogglDesktop.AutoCompletion
+﻿using TogglDesktop.AutoCompletion.Implementation;
+
+namespace TogglDesktop.AutoCompletion
 {
-    class ListBoxItemViewModel
+    public interface ISelectable
+    {
+        bool IsSelectable { get; }
+    }
+
+    public interface IModelItemViewModel
+    {
+        AutoCompleteItem Model { get; }
+    }
+    class ListBoxItemViewModel : ISelectable
     {
         public string Text { get; protected set; }
         public ItemType Type { get; protected set; }
-        public int Index { get; protected set; }
+        public bool IsSelectable => this.IsModelItem();
     }
 
-    class StringItemViewModel : ListBoxItemViewModel
+    class ModelItemViewModel : ListBoxItemViewModel, IModelItemViewModel
     {
-        public StringItemViewModel(string text, int index)
+        public AutoCompleteItem Model { get; protected set; }
+    }
+
+    class StringItemViewModel : ModelItemViewModel
+    {
+        public StringItemViewModel(ModelItem modelItem)
+            : this(modelItem, modelItem.Item.Name)
         {
+        }
+        public StringItemViewModel(StringItem stringItem)
+            : this(stringItem, stringItem.Text)
+        {
+        }
+
+        private StringItemViewModel(AutoCompleteItem model, string text)
+        {
+            Model = model;
             Text = text;
             Type = ItemType.STRINGITEM;
-            Index = index;
         }
     }
 
-    class TagItemViewModel : ListBoxItemViewModel
+    class TagItemViewModel : ModelItemViewModel
     {
         public bool IsChecked { get; set; }
-        public TagItemViewModel(string text, int index)
+        public TagItemViewModel(StringItem stringItem)
         {
-            Text = text;
+            Model = stringItem;
+            Text = stringItem.Item;
             Type = ItemType.TAGITEM;
-            Index = index;
         }
     }
 
@@ -58,22 +83,34 @@
 
     class ProjectItemViewModel : TimeEntryItemViewModel
     {
-        public ProjectItemViewModel(TimeEntryItemViewModel item, int index)
+        public ProjectItemViewModel(TimeEntryItemViewModel item)
         {
+            TimerItem = CreateProjectItem(item.TimerItem);
             Text = item.ProjectLabel;
             ProjectLabel = item.ProjectLabel;
             ProjectColor = item.ProjectColor;
             ClientLabel = item.ClientLabel;
             Type = ItemType.PROJECT;
             WorkspaceName = item.WorkspaceName;
-            Index = index;
+        }
+
+        private static TimerItem CreateProjectItem(TimerItem from)
+        {
+            var projectItemCopy = from.Item;
+            projectItemCopy.Description = string.Empty;
+            projectItemCopy.TaskID = 0ul;
+            projectItemCopy.TaskLabel = string.Empty;
+            projectItemCopy.ProjectAndTaskLabel = projectItemCopy.ProjectLabel;
+            projectItemCopy.Text = projectItemCopy.ProjectLabel;
+            projectItemCopy.Type = 2;
+            return new TimerItem(projectItemCopy, true);
         }
 
         protected ProjectItemViewModel()
         { }
     }
 
-    class TimeEntryItemViewModel : ListBoxItemViewModel
+    class TimeEntryItemViewModel : ListBoxItemViewModel, IModelItemViewModel
     {
         public string Description { get; }
         public string TaskLabel { get; }
@@ -82,8 +119,12 @@
         public string ProjectColor { get; protected set; }
         public string ClientLabel { get; protected set; }
         public string WorkspaceName { get; protected set; }
-        public TimeEntryItemViewModel(Toggl.TogglAutocompleteView item, int index)
+        public TimerItem TimerItem { get; protected set; }
+        public AutoCompleteItem Model => TimerItem;
+        public TimeEntryItemViewModel(TimerItem timerItem)
         {
+            TimerItem = timerItem;
+            var item = timerItem.Item;
             var taskLabel = item.Type == 0
                 ? ((item.TaskLabel.Length > 0) ? $" - {item.TaskLabel}" : string.Empty)
                 : item.TaskLabel;
@@ -97,7 +138,6 @@
             ClientLabel = clientLabel;
             Type = (ItemType)((int)item.Type);
             WorkspaceName = item.WorkspaceName;
-            Index = index;
         }
 
         protected TimeEntryItemViewModel()
@@ -110,10 +150,10 @@
         public static NoProjectItemViewModel Instance => new NoProjectItemViewModel();
         private NoProjectItemViewModel()
         {
+            TimerItem = new TimerItem(new Toggl.TogglAutocompleteView(), true);
             Text = "No project";
             ProjectLabel = "No project";
             Type = ItemType.PROJECT;
-            Index = -1;
         }
     }
 
@@ -139,7 +179,6 @@
 
     static class ListBoxItemViewModelExtensions
     {
-        public static bool IsSelectable(this ListBoxItemViewModel item) => item.IsModelItem();
         public static bool IsModelItem(this ListBoxItemViewModel item) => (int) item.Type >= 0;
     }
 }
