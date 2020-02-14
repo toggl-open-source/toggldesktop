@@ -698,7 +698,6 @@
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					../../ui/osx/TogglDesktop/Library/openssl/include,
 					../../ui/osx/TogglDesktop/Library/poco/Data/include/,
 					../../ui/osx/TogglDesktop/Library/poco/Util/include/,
@@ -707,7 +706,7 @@
 					../../ui/osx/TogglDesktop/Library/poco/Net/include/,
 					../../ui/osx/TogglDesktop/Library/poco/NetSSL_OpenSSL/include/,
 					../../ui/osx/TogglDesktop/Library/poco/Crypto/include/,
-					../../../third_party/jsoncpp/dist,
+					../../ui/osx/TogglDesktop/Library/jsoncpp,
 				);
 				INSTALL_PATH = "@executable_path/../../Contents/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
@@ -740,7 +739,6 @@
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					../../ui/osx/TogglDesktop/Library/openssl/include,
 					../../ui/osx/TogglDesktop/Library/poco/Data/include/,
 					../../ui/osx/TogglDesktop/Library/poco/Util/include/,
@@ -749,7 +747,7 @@
 					../../ui/osx/TogglDesktop/Library/poco/Net/include/,
 					../../ui/osx/TogglDesktop/Library/poco/NetSSL_OpenSSL/include/,
 					../../ui/osx/TogglDesktop/Library/poco/Crypto/include/,
-					../../../third_party/jsoncpp/dist,
+					../../ui/osx/TogglDesktop/Library/jsoncpp,
 				);
 				INSTALL_PATH = "@executable_path/../../Contents/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
