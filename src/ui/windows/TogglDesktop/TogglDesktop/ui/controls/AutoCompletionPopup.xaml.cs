@@ -64,7 +64,7 @@ namespace TogglDesktop
             set { this.popup.StaysOpen = value; }
         }
 
-        public bool KeepOpenWhenSelectingWithMouse { get; set; }
+        public bool KeepOpenWhenSelecting { get; set; }
         public bool FillTextBoxOnComplete { get; set; }
 
         #endregion
@@ -299,7 +299,6 @@ namespace TogglDesktop
                             if (this.confirmCompletion(true))
                             {
                                 e.Handled = true;
-                                this.close();
                             }
                         }
                         return;
@@ -364,8 +363,8 @@ namespace TogglDesktop
 
         private void select(AutoCompleteItem item, bool withKeyboard)
         {
-            if (withKeyboard || !this.KeepOpenWhenSelectingWithMouse)
-                this.popup.IsOpen = false;
+            if (!this.KeepOpenWhenSelecting)
+                this.close();
 
             // quick check if there is a full match with the first shown item
             if (item == null && controller.VisibleItems[0].Text == this.textbox.Text)
