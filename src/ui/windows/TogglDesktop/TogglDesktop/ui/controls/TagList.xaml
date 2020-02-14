@@ -24,7 +24,7 @@
                                        DropDownButton="{Binding ElementName=dropDownButton}"
                                        ConfirmCompletion="autoComplete_OnConfirmCompletion"
                                        ConfirmWithoutCompletion="autoComplete_OnConfirmWithoutCompletion"
-                                       KeepOpenWhenSelectingWithMouse="True"
+                                       KeepOpenWhenSelecting="True"
                                        StaysOpen="True"
                                        FillTextBoxOnComplete="False"
                                        ActionButtonText="{Binding ElementName=textBox, Path=Text, Converter={StaticResource StringFormatIfNotEmptyConverter}, ConverterParameter='Add tag &quot;{0}&quot;'}"
