@@ -2,12 +2,4 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <Style TargetType="TextBlock" x:Key="TextboxEmptyText" BasedOn="{StaticResource {x:Type TextBlock}}">
-        <Setter Property="Foreground" Value="#b6b6b6"/>
-        <Setter Property="VerticalAlignment" Value="Center"/>
-        <Setter Property="Margin" Value="16, 0"/>
-        <Setter Property="Visibility" Value="Hidden"/>
-        <Setter Property="IsHitTestVisible" Value="False"/>
-    </Style>
-
 </ResourceDictionary>

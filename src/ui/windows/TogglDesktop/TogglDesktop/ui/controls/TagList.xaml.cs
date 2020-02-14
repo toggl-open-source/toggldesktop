@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+using MahApps.Metro.Controls;
 using TogglDesktop.AutoCompletion;
 using TogglDesktop.AutoCompletion.Implementation;
 
@@ -125,6 +126,8 @@ namespace TogglDesktop
                 this.RemoveTag(tag);
                 this.focusTextBox();
             };
+
+            ClearEmptyText();
         }
 
         #endregion
@@ -146,8 +149,9 @@ namespace TogglDesktop
 
             element.Dispose();
 
-            if (this.TagRemoved != null)
-                this.TagRemoved(this, tag);
+            if (tags.Count == 0) this.SetEmptyText();
+
+            TagRemoved?.Invoke(this, tag);
 
             return true;
         }
@@ -163,6 +167,8 @@ namespace TogglDesktop
             this.orderedTags.Clear();
             if (clearTextBox)
                 this.textBox.SetText("");
+
+            this.SetEmptyText();
         }
 
         private bool tryRemoveLastTag()
@@ -199,6 +205,9 @@ namespace TogglDesktop
         {
             this.textBox.ClearUndoHistory();
         }
+
+        private void ClearEmptyText() => this.textBox.SetValue(TextBoxHelper.WatermarkProperty, string.Empty);
+        private void SetEmptyText() => this.textBox.SetValue(TextBoxHelper.WatermarkProperty, "Add tags");
 
         private void autoComplete_OnConfirmCompletion(object sender, AutoCompleteItem e)
         {
