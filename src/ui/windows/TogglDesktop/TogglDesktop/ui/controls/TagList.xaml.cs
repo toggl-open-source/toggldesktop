@@ -191,12 +191,12 @@ namespace TogglDesktop
             {
                 if (controller == null)
                 {
-                    controller = AutoCompleteControllers.ForTags(tags);
+                    controller = AutoCompleteControllers.ForTags(tags, this.tags.ContainsKey);
                     this.autoComplete.SetController(controller);
                 }
                 else
                 {
-                    controller.UpdateWith(tags);
+                    controller.UpdateWith(tags, this.tags.ContainsKey);
                 }
             }
         }

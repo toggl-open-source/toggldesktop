@@ -12,15 +12,16 @@ namespace TogglDesktop.AutoCompletion
         private Dictionary<string, TagItemViewModel> _tagItemsDictionary;
         private string _previousInput = string.Empty;
         private static readonly char[] _splitChars = { ' ' };
-        public TagsAutoCompleteController(IEnumerable<string> list)
+        public TagsAutoCompleteController(IEnumerable<string> list, Func<string, bool> isSelected)
         {
             _fullItemsList = list.ToTagItemViewModelsList();
             _tagItemsDictionary = _fullItemsList.OfType<TagItemViewModel>()
                 .ToDictionary(tagItemViewModel => tagItemViewModel.Text, tagItemViewModel => tagItemViewModel);
+            _tagItemsDictionary.ForEach(kvp => kvp.Value.IsChecked = isSelected(kvp.Key));
             VisibleItems = _fullItemsList;
         }
 
-        public void UpdateWith(IEnumerable<string> list)
+        public void UpdateWith(IEnumerable<string> list, Func<string, bool> isSelected)
         {
             var oldItemsDictionary = _tagItemsDictionary;
             _fullItemsList = list
@@ -30,6 +31,7 @@ namespace TogglDesktop.AutoCompletion
                 .ToList();
             _tagItemsDictionary = _fullItemsList.OfType<TagItemViewModel>()
                 .ToDictionary(tagItemViewModel => tagItemViewModel.Text, tagItemViewModel => tagItemViewModel);
+            _tagItemsDictionary.ForEach(kvp => kvp.Value.IsChecked = isSelected(kvp.Key));
             if (ListBox != null)
             {
                 FillList(ListBox);
