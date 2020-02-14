@@ -102,7 +102,7 @@ final class TimelineDatasource: NSObject {
 
     func render(_ timeline: TimelineData) {
         // Skip reload if the user is resizing
-        guard !isUserResizing else { return }
+        guard !isUserOnAction else { return }
         self.timeline?.cleanUp()
         self.timeline = nil
         self.timeline = timeline
@@ -111,6 +111,8 @@ final class TimelineDatasource: NSObject {
     }
 
     func update(_ zoomLevel: ZoomLevel) {
+        // Skip reload if the user is resizing
+        guard !isUserOnAction else { return }
         self.zoomLevel = zoomLevel
         timeline?.render(with: zoomLevel)
         flow.apply(zoomLevel)
@@ -119,7 +121,7 @@ final class TimelineDatasource: NSObject {
     }
 
     func scrollToVisibleItem() {
-        guard let timeline = timeline else { return }
+        guard let timeline = timeline, !isUserOnAction else { return }
 
         // Skip if both are empty
         if timeline.timeEntries.isEmpty && timeline.activities.isEmpty {
@@ -428,9 +430,7 @@ extension TimelineDatasource {
     func collectionView(_ collectionView: NSCollectionView, canDragItemsAt indexPaths: Set<IndexPath>, with event: NSEvent) -> Bool {
         guard let firstIndex = indexPaths.first,
             let draggedCell = collectionView.item(at: firstIndex) else { return false }
-
-        print("canDragItemsAt")
-
+        
         // Only accept drag on Timeline Entry
         switch draggedCell {
         case let cell as TimelineTimeEntryCell:
@@ -455,14 +455,12 @@ extension TimelineDatasource {
     }
 
     func collectionView(_ collectionView: NSCollectionView, draggingSession session: NSDraggingSession, willBeginAt screenPoint: NSPoint, forItemsAt indexPaths: Set<IndexPath>) {
-        print("Will begin dragging at indexes \(indexPaths), screenpoint = \(screenPoint)")
         draggingSession.indexPath = indexPaths.first
         delegate?.shouldHideAllPopover()
     }
 
     func collectionView(_ collectionView: NSCollectionView, validateDrop draggingInfo: NSDraggingInfo, proposedIndexPath proposedDropIndexPath: AutoreleasingUnsafeMutablePointer<NSIndexPath>, dropOperation proposedDropOperation: UnsafeMutablePointer<NSCollectionView.DropOperation>) -> NSDragOperation {
         let dropIndexPath = proposedDropIndexPath.pointee
-        print("validate drop at section=\(dropIndexPath.section) row=\(dropIndexPath.item), operation = \(proposedDropOperation.pointee.rawValue)")
 
         // Local position of the dragging mouse
         let position = collectionView.convert(draggingInfo.draggingLocation, from: nil)
@@ -476,7 +474,6 @@ extension TimelineDatasource {
     }
 
     func collectionView(_ collectionView: NSCollectionView, acceptDrop draggingInfo: NSDraggingInfo, indexPath: IndexPath, dropOperation: NSCollectionView.DropOperation) -> Bool {
-        print("accept drop")
 
         // Verify that the drop position is in the Timeline Entry Section
         let position = collectionView.convert(draggingInfo.draggingLocation, from: nil)
