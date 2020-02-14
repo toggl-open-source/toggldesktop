@@ -170,16 +170,12 @@
                 </Border>
 
                 <!-- tags -->
-                <Grid MinHeight="32" Margin="0 8 0 0">
-                    <toggl:TagList x:Name="tagList" x:FieldModifier="private"
-                                   LostKeyboardFocus="tagList_OnLostKeyboardFocus"
-                                   GotKeyboardFocus="tagList_OnGotKeybardFocus"
-                                   TagAdded="tagList_TagAdded"
-                                   TagRemoved="tagList_TagRemoved"/>
-
-                    <TextBlock x:Name="emptyTagListText" x:FieldModifier="private"
-                               Style="{StaticResource TextboxEmptyText}">No tags</TextBlock>
-                </Grid>
+                <toggl:TagList x:Name="tagList" x:FieldModifier="private"
+                               MinHeight="32"
+                               Margin="0 8 0 0"
+                               LostKeyboardFocus="tagList_OnLostKeyboardFocus"
+                               TagAdded="tagList_TagAdded"
+                               TagRemoved="tagList_TagRemoved"/>
 
                 <!-- billable? -->
                 <CheckBox Name="billableCheckBox" x:FieldModifier="private"

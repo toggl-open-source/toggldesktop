@@ -30,7 +30,10 @@ namespace TogglDesktop.AutoCompletion
                 .ToList();
             _tagItemsDictionary = _fullItemsList.OfType<TagItemViewModel>()
                 .ToDictionary(tagItemViewModel => tagItemViewModel.Text, tagItemViewModel => tagItemViewModel);
-            FillList(ListBox);
+            if (ListBox != null)
+            {
+                FillList(ListBox);
+            }
         }
 
         public void AddTag(string tag)
