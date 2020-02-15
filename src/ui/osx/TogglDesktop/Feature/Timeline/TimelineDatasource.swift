@@ -80,6 +80,7 @@ final class TimelineDatasource: NSObject {
     private var isUserResizing = false
     private var draggingSession = TimelineDraggingSession()
     private var isUserOnAction: Bool { return isUserResizing || draggingSession.isDragging }
+    private var runningTimeEntry: TimelineTimeEntry?
 
     // MARK: Init
 
@@ -106,8 +107,32 @@ final class TimelineDatasource: NSObject {
         self.timeline?.cleanUp()
         self.timeline = nil
         self.timeline = timeline
+        if let runningTimeEntry = runningTimeEntry {
+            timeline.append(runningTimeEntry)
+        }
         flow.currentDate = Date(timeIntervalSince1970: timeline.start)
         collectionView.reloadData()
+    }
+
+    func update(_ timeEntry: Any?) {
+        guard !isUserOnAction else { return }
+
+        // Add
+        if let timeEntry = timeEntry as? TimeEntryViewItem {
+            guard timeEntry.isRunning(),
+                timeEntry.guid != runningTimeEntry?.timeEntry.guid else {
+                    return
+            }
+            let entry = TimelineTimeEntry(timeEntry)
+            timeline?.append(entry)
+            runningTimeEntry = entry
+            collectionView.reloadData()
+            print("✅ ----- runningTimeEntry = \(runningTimeEntry?.timeEntry.guid)")
+        } else {
+            // Or remove
+            runningTimeEntry = nil
+            print("💥 ----- runningTimeEntry = nil")
+        }
     }
 
     func update(_ zoomLevel: ZoomLevel) {
