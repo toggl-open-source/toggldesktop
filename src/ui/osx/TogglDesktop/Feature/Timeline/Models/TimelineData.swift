@@ -81,6 +81,11 @@ final class TimelineData {
         activities.removeAll()
     }
 
+    func append(_ entry: TimelineTimeEntry) {
+        timeEntries.append(entry)
+        calculateColumnsPositionForTimeline()
+    }
+    
     func numberOfItems(in section: Int) -> Int {
         guard let section = Section(rawValue: section) else { return 0 }
         switch section {
