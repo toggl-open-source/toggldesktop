@@ -246,6 +246,10 @@ extension TimelineDashboardViewController {
                                        selector: #selector(startTimeEntryNoti(_:)),
                                        name: Notification.Name(kStarTimeEntryWithStartTime),
                                        object: nil)
+        NotificationCenter.default.addObserver(self,
+                                       selector: #selector(runningTimeEntryNoti(_:)),
+                                       name: Notification.Name(kDisplayTimerState),
+                                       object: nil)
     }
 
     private func initTrackingArea() {
@@ -354,6 +358,11 @@ extension TimelineDashboardViewController {
     @objc private func startTimeEntryNoti(_ noti: Notification) {
         guard let startTime = noti.object as? Date else { return }
         timelineShouldCreateEmptyEntry(with: startTime.timeIntervalSince1970)
+    }
+
+    @objc private func runningTimeEntryNoti(_ noti: Notification) {
+        guard let timeEntry = noti.object as? TimeEntryViewItem else { return }
+        datasource.update(timeEntry)
     }
 }
 
