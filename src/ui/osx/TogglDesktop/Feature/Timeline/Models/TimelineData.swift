@@ -82,7 +82,18 @@ final class TimelineData {
     }
 
     func append(_ entry: TimelineTimeEntry) {
-        timeEntries.append(entry)
+        // Add if need
+        let isContains = timeEntries.contains(where: { (item) -> Bool in
+            if let timeEntry = item as? TimelineTimeEntry, timeEntry.timeEntry.guid == entry.timeEntry.guid {
+                return true
+            }
+            return false
+        })
+        if !isContains {
+            timeEntries.append(entry)
+        }
+
+        // But always reload
         calculateColumnsPositionForTimeline()
     }
     
