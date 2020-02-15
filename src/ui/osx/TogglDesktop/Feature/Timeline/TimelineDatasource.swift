@@ -81,6 +81,7 @@ final class TimelineDatasource: NSObject {
     private var draggingSession = TimelineDraggingSession()
     private var isUserOnAction: Bool { return isUserResizing || draggingSession.isDragging }
     private var runningTimeEntry: TimelineTimeEntry?
+    private var timer: Timer?
 
     // MARK: Init
 
@@ -108,6 +109,7 @@ final class TimelineDatasource: NSObject {
         self.timeline = nil
         self.timeline = timeline
         if let runningTimeEntry = runningTimeEntry {
+            runningTimeEntry.updateEndTimeForRunning()
             timeline.append(runningTimeEntry)
         }
         flow.currentDate = Date(timeIntervalSince1970: timeline.start)
@@ -118,19 +120,23 @@ final class TimelineDatasource: NSObject {
         guard !isUserOnAction else { return }
 
         // Add
-        if let timeEntry = timeEntry as? TimeEntryViewItem {
-            guard timeEntry.isRunning(),
-                timeEntry.guid != runningTimeEntry?.timeEntry.guid else {
-                    return
+        if let timeEntry = timeEntry as? TimeEntryViewItem, timeEntry.guid != nil {
+            guard timeEntry.isRunning() else {
+                return
             }
+
             let entry = TimelineTimeEntry(timeEntry)
+            entry.updateEndTimeForRunning()
             timeline?.append(entry)
             runningTimeEntry = entry
             collectionView.reloadData()
+            startTimer()
             print("✅ ----- runningTimeEntry = \(runningTimeEntry?.timeEntry.guid)")
+
         } else {
             // Or remove
             runningTimeEntry = nil
+            stopTimer()
             print("💥 ----- runningTimeEntry = nil")
         }
     }
@@ -454,6 +460,26 @@ extension TimelineDatasource {
         collectionView.registerForDraggedTypes([NSPasteboard.PasteboardType.string])
         collectionView.setDraggingSourceOperationMask(NSDragOperation.move, forLocal: true)
     }
+
+    private func startTimer() {
+        stopTimer()
+        timer = Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(self.timerUpdateOnTick), userInfo: nil, repeats: true)
+    }
+
+    private func stopTimer() {
+        timer?.invalidate()
+        timer = nil
+    }
+
+    @objc private func timerUpdateOnTick() {
+        guard runningTimeEntry != nil else {
+            stopTimer()
+            return
+        }
+        runningTimeEntry?.updateEndTimeForRunning()
+        flow.invalidateLayout()
+        print("---------------------------- Timer Tick")
+    }
 }
 
 // MARK: Drag and Drop
@@ -493,7 +519,6 @@ extension TimelineDatasource {
     }
 
     func collectionView(_ collectionView: NSCollectionView, validateDrop draggingInfo: NSDraggingInfo, proposedIndexPath proposedDropIndexPath: AutoreleasingUnsafeMutablePointer<NSIndexPath>, dropOperation proposedDropOperation: UnsafeMutablePointer<NSCollectionView.DropOperation>) -> NSDragOperation {
-        let dropIndexPath = proposedDropIndexPath.pointee
 
         // Local position of the dragging mouse
         let position = collectionView.convert(draggingInfo.draggingLocation, from: nil)

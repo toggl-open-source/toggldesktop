@@ -100,4 +100,8 @@ final class TimelineTimeEntry: TimelineBaseTimeEntry {
         guard let date = timeEntry.ended else { return false }
         return Calendar.current.isDateInToday(date)
     }
+
+    func updateEndTimeForRunning() {
+        end = Date().timeIntervalSince1970
+    }
 }
