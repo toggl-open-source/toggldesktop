@@ -187,6 +187,7 @@
                 <outlet property="durationLbl" destination="fa0-T9-1iU" id="dzs-lY-QOM"/>
                 <outlet property="foregroundBox" destination="ILd-N3-zAP" id="FYH-LJ-fYB"/>
                 <outlet property="iconStackView" destination="PyM-uW-hFa" id="iwc-5a-pK9"/>
+                <outlet property="innerBackgroundBox" destination="PFT-Hu-lDX" id="xAF-ge-2oe"/>
                 <outlet property="mainStackView" destination="Dpe-7G-baj" id="GwM-nb-8fY"/>
                 <outlet property="projectLbl" destination="euI-fo-hqA" id="tZs-ru-phr"/>
                 <outlet property="projectStackView" destination="Azu-a1-gfT" id="MiD-AE-fBP"/>

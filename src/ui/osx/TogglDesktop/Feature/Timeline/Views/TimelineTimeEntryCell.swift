@@ -58,6 +58,7 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
     @IBOutlet weak var iconStackView: NSStackView!
     @IBOutlet weak var durationLbl: NSTextField!
     @IBOutlet weak var mainStackView: NSStackView!
+    @IBOutlet weak var innerBackgroundBox: NSBox! // Prevent transparent background color
 
     // MARK: View
 
@@ -97,7 +98,7 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
             timeEntry.hasDetailInfo else { return }
 
         // Hide if it too small
-        backgroundBox?.isHidden = isSmallSize
+        hideBackgroundViews(isHidden: isSmallSize)
 
         // Set initial state
         let topPadding: CGFloat = 5
@@ -172,6 +173,11 @@ extension TimelineTimeEntryCell {
         timeEntryMenu.menuDelegate = self
         view.menu = timeEntryMenu
         view.menu?.delegate = self
+    }
+
+    private func hideBackgroundViews(isHidden: Bool) {
+        backgroundBox?.isHidden = isHidden
+        innerBackgroundBox.isHidden = isHidden
     }
 }
 
