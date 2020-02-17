@@ -420,26 +420,6 @@ TEST(toggl_api, testing_sleep) {
     ASSERT_LT(elapsed_seconds, 2);
 }
 
-TEST(toggl_api, toggl_run_script) {
-    testing::App app;
-    int64_t err(0);
-    auto s = toggl_run_script(app.ctx(), STR("print 'test'"), &err);
-    std::string res(to_string(s));
-    free(s);
-    ASSERT_EQ(0, err);
-    ASSERT_EQ("0 value(s) returned\n\n\n", res);
-}
-
-TEST(toggl_api, toggl_run_script_with_invalid_script) {
-    testing::App app;
-    int64_t err(0);
-    auto s = toggl_run_script(app.ctx(), STR("foo bar"), &err);
-    std::string res(to_string(s));
-    free(s);
-    ASSERT_NE(0, err);
-    ASSERT_EQ("[string \"foo bar\"]:1: syntax error near 'bar'", res);
-}
-
 TEST(toggl_api, toggl_add_obm_experiment_nr) {
     testing::App app;
 
