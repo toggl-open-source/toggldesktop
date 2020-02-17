@@ -18,6 +18,14 @@ namespace TogglDesktop.AutoCompletion
             get => _selectionManager.Items;
             private set => _selectionManager.Items = value;
         }
+
+        public bool ShowActionButton
+        {
+            get { return _autocompleteType == 3
+                         || (_autocompleteType == 2
+                             && !VisibleItems.Any(it => it.Text == filterText && it.Type == ItemType.STRINGITEM)); }
+        }
+
         private ListBox LB
         {
             get => _selectionManager.ListBox;
@@ -281,7 +289,7 @@ namespace TogglDesktop.AutoCompletion
         TASK = 1,
         PROJECT = 2,
         STRINGITEM = 4,
-        TAGITEM = 5,
+        TAG = 5,
 
         CATEGORY = -1,
         CLIENT = -2,
@@ -299,7 +307,7 @@ namespace TogglDesktop.AutoCompletion
             {ItemType.TIMEENTRY, "timer-item-template"},
             {ItemType.CATEGORY, "category-item-template"},
             {ItemType.STRINGITEM, "string-item-template"},
-            {ItemType.TAGITEM, "tag-item-template"},
+            {ItemType.TAG, "tag-item-template"},
             {ItemType.CLIENT, "client-item-template"},
             {ItemType.WORKSPACE, "workspace-item-template"},
             {ItemType.WORKSPACE_SEPARATOR, "workspace-separator-item-template"},

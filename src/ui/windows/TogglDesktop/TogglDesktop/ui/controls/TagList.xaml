@@ -27,6 +27,7 @@
                                        KeepOpenWhenSelecting="True"
                                        StaysOpen="True"
                                        FillTextBoxOnComplete="False"
+                                       IsOpenChanged="AutoComplete_OnIsOpenChanged"
                                        ActionButtonText="{Binding ElementName=textBox, Path=Text, Converter={StaticResource StringFormatIfNotEmptyConverter}, ConverterParameter='Add tag &quot;{0}&quot;'}"
                                        ActionButtonClick="AutoComplete_OnActionButtonClick"/>
 

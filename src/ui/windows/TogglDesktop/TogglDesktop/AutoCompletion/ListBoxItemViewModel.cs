@@ -68,7 +68,7 @@ namespace TogglDesktop.AutoCompletion
         {
             Model = stringItem;
             Text = stringItem.Item;
-            Type = ItemType.TAGITEM;
+            Type = ItemType.TAG;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
