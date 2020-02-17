@@ -15,7 +15,7 @@ namespace TogglDesktop.ViewModels
             DateHeader = dateHeader;
             DateDuration = dateDuration;
             this.WhenAnyValue(x => x.IsExpanded, x => !x)
-                .ToProperty(this, nameof(IsCollapsed), out _isCollapsed);
+                .ToPropertyEx(this, x => x.IsCollapsed);
             _cells.Connect()
                 .ObserveOnDispatcher()
                 .Bind(out var daysReadOnlyObservableCollection)
@@ -37,8 +37,7 @@ namespace TogglDesktop.ViewModels
         [Reactive]
         public bool IsExpanded { get; set; }
 
-        private readonly ObservableAsPropertyHelper<bool> _isCollapsed;
-        public bool IsCollapsed => _isCollapsed.Value;
+        public bool IsCollapsed { [ObservableAsProperty] get; }
 
         [Reactive]
         public bool IsFocused { get; private set; }
