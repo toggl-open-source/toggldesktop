@@ -83,6 +83,7 @@ final class TimelineDatasource: NSObject {
     private var isUserOnAction: Bool { return isUserResizing || draggingSession.isDragging }
     private var runningTimeEntry: TimelineTimeEntry?
     private var timer: Timer?
+    private var cmd: TimelineDisplayCommand?
 
     // MARK: Init
 
@@ -104,9 +105,10 @@ final class TimelineDatasource: NSObject {
     }
 
     func render(cmd: TimelineDisplayCommand, zoomLevel: TimelineDatasource.ZoomLevel) {
+        self.cmd = cmd
         let data = TimelineData(cmd: cmd,
                                 zoomLevel: zoomLevel,
-                                runningTimeEntry: getRunningTimeEntry(start: cmd.start, end: cmd.end))
+                                runningTimeEntry: getRunningTimeEntryForRendering(start: cmd.start, end: cmd.end))
         render(data)
         delegate?.shouldHandleEmptyState(data)
     }
@@ -122,7 +124,7 @@ final class TimelineDatasource: NSObject {
     }
 
     func updateRunningTimeEntry(_ timeEntry: Any?) {
-        guard !isUserOnAction else { return }
+        guard let cmd = cmd, !isUserOnAction else { return }
 
         // Add
         if let timeEntry = timeEntry as? TimeEntryViewItem, timeEntry.guid != nil {
@@ -130,22 +132,21 @@ final class TimelineDatasource: NSObject {
                 return
             }
 
-            let entry = TimelineTimeEntry(timeEntry)
-            entry.updateEndTimeForRunning()
-            runningTimeEntry = entry
+            // Calculate the data again
+            // It's essential since it's a straighforward approach to update the running TE
+            // If the data is changes (desc, project, color, time, ...)
+            runningTimeEntry = TimelineTimeEntry(timeEntry)
+            let data = TimelineData(cmd: cmd,
+                                    zoomLevel: zoomLevel,
+                                    runningTimeEntry: getRunningTimeEntryForRendering(start: cmd.start, end: cmd.end))
 
-            if let timeline = timeline, timeline.isToday {
-                timeline.append(entry)
-            }
-
-            collectionView.reloadData()
+            // Render and start the timer
+            render(data)
             startTimer()
-            print("✅ ----- runningTimeEntry = \(runningTimeEntry?.timeEntry.guid)")
         } else {
             // Or remove
             runningTimeEntry = nil
             stopTimer()
-            print("💥 ----- runningTimeEntry = nil")
         }
     }
 
@@ -489,7 +490,7 @@ extension TimelineDatasource {
         print("---------------------------- Timer Tick")
     }
 
-    private func getRunningTimeEntry(start: TimeInterval, end: TimeInterval) -> TimeEntryViewItem? {
+    private func getRunningTimeEntryForRendering(start: TimeInterval, end: TimeInterval) -> TimeEntryViewItem? {
         let middle = start + (end - start) / 2
         if Calendar.current.isDateInToday(Date(timeIntervalSince1970: middle)) {
             return runningTimeEntry?.timeEntry
