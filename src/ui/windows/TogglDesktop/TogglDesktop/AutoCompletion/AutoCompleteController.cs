@@ -12,7 +12,7 @@ namespace TogglDesktop.AutoCompletion
     {
         private static readonly char[] splitChars = { ' ' };
         private static readonly string[] categories = { "RECENT TIME ENTRIES", "TASKS", "PROJECTS", "WORKSPACES", "TAGS" };
-        private readonly List<ListBoxItemViewModel> items;
+        private readonly List<ListBoxItemViewModel> _fullItemsList;
         public IList<ListBoxItemViewModel> VisibleItems
         {
             get => _selectionManager.Items;
@@ -53,8 +53,8 @@ namespace TogglDesktop.AutoCompletion
         {
             this.DebugIdentifier = debugIdentifier;
             this._autocompleteType = autocompleteType;
-            items = CreateItemViewModelsList(list, autocompleteType);
-            VisibleItems = items;
+            _fullItemsList = CreateItemViewModelsList(list, autocompleteType);
+            VisibleItems = _fullItemsList;
         }
 
         public AutoCompleteItem SelectedItem
@@ -164,8 +164,6 @@ namespace TogglDesktop.AutoCompletion
                         .ToList(),
                     // workspace dropdown
                     4 => list.Select(item1 => (ListBoxItemViewModel)new StringItemViewModel((ModelItem) item1)).ToList(),
-                    // tags dropdown
-                    // 5 => list.ToTagItemViewModelsList(),
                     // description and project dropdowns
                     _ => CreateTimerItemViewModelsList(list, autoCompleteType)
                 };
@@ -176,13 +174,13 @@ namespace TogglDesktop.AutoCompletion
         {
             if (string.IsNullOrEmpty(input))
             {
-                VisibleItems = items;
+                VisibleItems = _fullItemsList;
             }
             else
             {
                 if (filterText != null && !input.StartsWith(filterText))
                 {
-                    VisibleItems = items;
+                    VisibleItems = _fullItemsList;
                 }
                 words = input.Split(splitChars, StringSplitOptions.RemoveEmptyEntries);
                 filterText = input;

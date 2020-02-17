@@ -184,7 +184,6 @@
     <Compile Include="AutoCompletion\Implementation\SimpleItem.cs" />
     <Compile Include="AutoCompletion\Implementation\TimerItem.cs" />
     <Compile Include="AutoCompletion\ListBoxItemViewModel.cs" />
-    <Compile Include="AutoCompletion\ListBoxItemViewModelFactories.cs" />
     <Compile Include="AutoCompletion\ListBoxSelectionManager.cs" />
     <Compile Include="AutoCompletion\TagsAutoCompleteController.cs" />
     <Compile Include="BugsnagService.cs" />
