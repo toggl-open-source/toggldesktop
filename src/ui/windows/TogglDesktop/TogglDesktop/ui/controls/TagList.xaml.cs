@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using MahApps.Metro.Controls;
@@ -18,8 +17,8 @@ namespace TogglDesktop
         private readonly Stack<string> orderedTags = new Stack<string>();
         private TagsAutoCompleteController controller;
 
-        public int TagCount { get { return this.tags.Count; } }
-        public IEnumerable<string> Tags { get { return this.tags.Keys; } }
+        public int TagCount => this.tags.Count;
+        public IEnumerable<string> Tags => this.tags.Keys;
 
         public TagList()
         {
@@ -59,6 +58,11 @@ namespace TogglDesktop
 
         private void textBoxOnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
+            if (autoComplete.HasKeyboardFocus())
+            {
+                return;
+            }
+
             this.textBox.SetText("");
         }
 
@@ -187,18 +191,8 @@ namespace TogglDesktop
 
         public void SetKnownTags(IEnumerable<string> tags)
         {
-            if (!this.autoComplete.popUpOpen())
-            {
-                if (controller == null)
-                {
-                    controller = AutoCompleteControllers.ForTags(tags, this.tags.ContainsKey);
-                    this.autoComplete.SetController(controller);
-                }
-                else
-                {
-                    controller.UpdateWith(tags, this.tags.ContainsKey);
-                }
-            }
+            controller = AutoCompleteControllers.ForTags(tags, this.tags.ContainsKey);
+            this.autoComplete.SetController(controller);
         }
 
         public void ClearUndoHistory()
@@ -236,6 +230,17 @@ namespace TogglDesktop
         private void AutoComplete_OnActionButtonClick(object sender, RoutedEventArgs e)
         {
             this.tryAddTagFromTextBox();
+        }
+
+        private void AutoComplete_OnIsOpenChanged(object sender, EventArgs e)
+        {
+            if (!autoComplete.IsOpen)
+            {
+                if (!this.textBox.Text.IsNullOrEmpty())
+                {
+                    this.textBox.SetText("");
+                }
+            }
         }
     }
 }

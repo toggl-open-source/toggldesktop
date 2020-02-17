@@ -185,16 +185,13 @@
                              ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                              PreviewMouseDown="listBox_PreviewMouseDown">
                     </ListBox>
-                    <Button x:Name="createProjectButton" x:FieldModifier="private"
+                    <Button x:Name="actionButton" x:FieldModifier="private"
                             Grid.Row="1"
                             Style="{DynamicResource Toggl.OutlinedButton}"
                             BorderThickness="0 1 0 0"
                             BorderBrush="{DynamicResource Toggl.Button.Primary.Background}"
                             Height="40"
-                            Click="CreateProjectButton_OnClick"
-                            Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=togglDesktop:AutoCompletionPopup},
-                                                 Path=ActionButtonText,
-                                                 Converter={StaticResource EmptyStringToCollapsedConverter}}">
+                            Click="CreateProjectButton_OnClick">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                             <Path Height="25"
                                   Width="25"
