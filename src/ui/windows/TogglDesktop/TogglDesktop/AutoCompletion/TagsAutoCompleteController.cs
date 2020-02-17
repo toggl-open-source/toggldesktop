@@ -14,7 +14,11 @@ namespace TogglDesktop.AutoCompletion
         private static readonly char[] _splitChars = { ' ' };
         public TagsAutoCompleteController(IEnumerable<string> list, Func<string, bool> isSelected)
         {
-            _fullItemsList = list.ToTagItemViewModelsList();
+            _fullItemsList = list.Select(tag => (ListBoxItemViewModel)new TagItemViewModel(tag))
+                .AppendIfEmpty(() =>
+                    new CustomTextItemViewModel("There are no tags yet",
+                        "Start typing and press Enter to add a new tag"))
+                .ToList();
             _tagItemsDictionary = _fullItemsList.OfType<TagItemViewModel>()
                 .ToDictionary(tagItemViewModel => tagItemViewModel.Text, tagItemViewModel => tagItemViewModel);
             _tagItemsDictionary.ForEach(kvp => kvp.Value.IsChecked = isSelected(kvp.Key));
