@@ -1,7 +1,8 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
-                    xmlns:behaviors="clr-namespace:TogglDesktop.Behaviors">
+                    xmlns:behaviors="clr-namespace:TogglDesktop.Behaviors"
+                    xmlns:togglDesktop="clr-namespace:TogglDesktop">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.TextBox.xaml" />
         <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.TextBlock.xaml" />
@@ -34,6 +35,8 @@
             </Trigger>
         </Style.Triggers>
     </Style>
+
+    <Style TargetType="{x:Type togglDesktop:ProjectTextBox}" BasedOn="{StaticResource {x:Type TextBox}}" />
 
     <Style x:Key="Toggl.Timer.DescriptionTextBox" TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
         <Setter Property="Background" Value="{DynamicResource Toggl.Background}" />

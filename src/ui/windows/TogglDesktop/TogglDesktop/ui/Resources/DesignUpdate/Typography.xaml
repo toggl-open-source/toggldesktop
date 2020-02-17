@@ -53,6 +53,7 @@
     </Style>
     <Style TargetType="TextBlock" x:Key="Toggl.CaptionBlackText" BasedOn="{StaticResource Toggl.Text}">
         <Setter Property="FontSize" Value="12" />
+        <Setter Property="TextWrapping" Value="Wrap" />
     </Style>
     <Style TargetType="TextBlock" x:Key="Toggl.CaptionSemiBoldText" BasedOn="{StaticResource Toggl.CaptionBlackText}">
         <Setter Property="FontWeight" Value="SemiBold" />
@@ -64,8 +65,7 @@
     <Style TargetType="TextBlock" x:Key="Toggl.CaptionGrayishText" BasedOn="{StaticResource Toggl.CaptionBlackText}">
         <Setter Property="Foreground" Value="{DynamicResource Toggl.DisabledTextBrush}" />
     </Style>
-    <Style TargetType="TextBlock" x:Key="Toggl.CaptionText" BasedOn="{StaticResource Toggl.Text}">
-        <Setter Property="FontSize" Value="12" />
+    <Style TargetType="TextBlock" x:Key="Toggl.CaptionText" BasedOn="{StaticResource Toggl.CaptionBlackText}">
         <Setter Property="Foreground" Value="{DynamicResource Toggl.SecondaryTextBrush}" />
     </Style>
     <Style TargetType="TextBlock" x:Key="Toggl.GrayishSemiBoldText" BasedOn="{StaticResource Toggl.CaptionText}">
