@@ -4,6 +4,7 @@ using System.Reactive.Linq;
 using System.Windows.Input;
 using MahApps.Metro.Controls;
 using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 using ReactiveUI.Validation.Extensions;
 using ReactiveUI.Validation.Helpers;
 
@@ -27,8 +28,6 @@ namespace TogglDesktop.ViewModels
         private const string ShowHideTogglDescription = "Show/Hide Toggl";
         private const string ContinueStopTimerDescription = "Continue/Stop Timer";
 
-        private HotKey _showHideToggl;
-        private HotKey _continueStopTimer;
         private HotKey _continueStopTimerSaved;
         private HotKey _showHideTogglSaved;
 
@@ -54,21 +53,13 @@ namespace TogglDesktop.ViewModels
                 hotKey => $"This shortcut is already taken by {_knownShortcuts[hotKey]}");
         }
 
-        public HotKey ShowHideToggl
-        {
-            get => _showHideToggl;
-            set => this.RaiseAndSetIfChanged(ref _showHideToggl, value);
-        }
-
+        [Reactive]
+        public HotKey ShowHideToggl { get; set; }
         public HotKey GetShowHideTogglIfChanged() =>
             !object.Equals(ShowHideToggl, _showHideTogglSaved) ? (ShowHideToggl ?? new HotKey(Key.None)) : null;
 
-        public HotKey ContinueStopTimer
-        {
-            get => _continueStopTimer;
-            set => this.RaiseAndSetIfChanged(ref _continueStopTimer, value);
-        }
-
+        [Reactive]
+        public HotKey ContinueStopTimer { get; set; }
         public HotKey GetContinueStopTimerIfChanged() =>
             !object.Equals(ContinueStopTimer, _continueStopTimerSaved) ? (ContinueStopTimer ?? new HotKey(Key.None)) : null;
 

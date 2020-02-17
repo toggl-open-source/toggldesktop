@@ -3,6 +3,7 @@ using System.IO;
 using System.Reactive;
 using Microsoft.Win32;
 using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 using ReactiveUI.Validation.Extensions;
 using ReactiveUI.Validation.Helpers;
 
@@ -14,15 +15,6 @@ namespace TogglDesktop.ViewModels
         private readonly Action _onFeedbackSent;
         private readonly ValidationHelper _topicValidation;
         private readonly ValidationHelper _feedbackTextValidation;
-        private string _topic;
-        private string _feedbackText;
-        private string _attachedFileName;
-        private bool _isFileSizeError;
-        private bool _isFileAttached;
-        private bool _isSendingError;
-        private bool _isTopicFocused;
-        private bool _isFeedbackTextFocused;
-        private long _attachedFileSize;
 
         public FeedbackWindowViewModel(Action refreshValidationBindings, Action onFeedbackSent)
         {
@@ -44,59 +36,32 @@ namespace TogglDesktop.ViewModels
 
         public string[] PossibleTopics { get; } = {"Report bug", "Suggest a feature", "Other"};
 
-        public string Topic
-        {
-            get => _topic;
-            set => this.RaiseAndSetIfChanged(ref _topic, value);
-        }
+        [Reactive]
+        public string Topic { get; set; }
 
-        public string FeedbackText
-        {
-            get => _feedbackText;
-            set => this.RaiseAndSetIfChanged(ref _feedbackText, value);
-        }
+        [Reactive]
+        public string FeedbackText { get; set; }
 
-        public string AttachedFileName
-        {
-            get => _attachedFileName;
-            set => this.RaiseAndSetIfChanged(ref _attachedFileName, value);
-        }
+        [Reactive]
+        public string AttachedFileName { get; private set; }
 
-        public long AttachedFileSize
-        {
-            get => _attachedFileSize;
-            set => this.RaiseAndSetIfChanged(ref _attachedFileSize, value);
-        }
+        [Reactive]
+        public long AttachedFileSize { get; private set; }
 
-        public bool IsFileAttached
-        {
-            get => _isFileAttached;
-            set => this.RaiseAndSetIfChanged(ref _isFileAttached, value);
-        }
+        [Reactive]
+        public bool IsFileAttached { get; private set; }
 
-        public bool IsSendingError
-        {
-            get => _isSendingError;
-            set => this.RaiseAndSetIfChanged(ref _isSendingError, value);
-        }
+        [Reactive]
+        public bool IsSendingError { get; private set; }
 
-        public bool IsFileSizeError
-        {
-            get => _isFileSizeError;
-            set => this.RaiseAndSetIfChanged(ref _isFileSizeError, value);
-        }
+        [Reactive]
+        public bool IsFileSizeError { get; private set; }
 
-        public bool IsTopicFocused
-        {
-            get => _isTopicFocused;
-            set => this.RaiseAndSetIfChanged(ref _isTopicFocused, value);
-        }
+        [Reactive]
+        public bool IsTopicFocused { get; set; }
 
-        public bool IsFeedbackTextFocused
-        {
-            get => _isFeedbackTextFocused;
-            set => this.RaiseAndSetIfChanged(ref _isFeedbackTextFocused, value);
-        }
+        [Reactive]
+        public bool IsFeedbackTextFocused { get; set; }
 
         public ReactiveCommand<Unit, Unit> SendCommand { get; }
 

@@ -14,6 +14,7 @@ using Google.Apis.Http;
 using Google.Apis.Oauth2.v2;
 using Google.Apis.Util;
 using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 using ReactiveUI.Validation.Extensions;
 using ReactiveUI.Validation.Helpers;
 
@@ -23,17 +24,6 @@ namespace TogglDesktop.ViewModels
     {
         private readonly Action _refreshLoginBindings;
         private readonly Action _refreshSignupBindings;
-        private IList<CountryViewModel> _countries;
-        private CountryViewModel _selectedCountry;
-        private ConfirmAction _confirmAction;
-        private string _email;
-        private string _password;
-        private bool _isEmailFocused;
-        private bool _isPasswordFocused;
-        private bool _isCountrySelectionFocused;
-        private bool _isTosCheckboxFocused;
-        private bool _isTosChecked;
-        private bool _showLoginError;
         private ValidationHelper _emailValidation;
         private ValidationHelper _passwordValidation;
         private ValidationHelper _selectedCountryValidation;
@@ -104,71 +94,38 @@ namespace TogglDesktop.ViewModels
             }
         }
 
-        public IList<CountryViewModel> Countries
-        {
-            get => _countries;
-            set => this.RaiseAndSetIfChanged(ref _countries, value);
-        }
+        [Reactive]
+        public IList<CountryViewModel> Countries { get; private set; }
 
-        public CountryViewModel SelectedCountry
-        {
-            get => _selectedCountry;
-            set => this.RaiseAndSetIfChanged(ref _selectedCountry, value);
-        }
+        [Reactive]
+        public CountryViewModel SelectedCountry { get; set; }
 
-        public ConfirmAction SelectedConfirmAction
-        {
-            get => _confirmAction;
-            set => this.RaiseAndSetIfChanged(ref _confirmAction, value);
-        }
+        [Reactive]
+        public ConfirmAction SelectedConfirmAction { get; set; }
 
-        public string Email
-        {
-            get => _email;
-            set => this.RaiseAndSetIfChanged(ref _email, value);
-        }
+        [Reactive]
+        public string Email { get; set; }
 
-        public string Password
-        {
-            get => _password;
-            set => this.RaiseAndSetIfChanged(ref _password, value);
-        }
-        public bool IsEmailFocused
-        {
-            get => _isEmailFocused;
-            set => this.RaiseAndSetIfChanged(ref _isEmailFocused, value);
-        }
+        [Reactive]
+        public string Password { get; set; }
 
-        public bool IsPasswordFocused
-        {
-            get => _isPasswordFocused;
-            set => this.RaiseAndSetIfChanged(ref _isPasswordFocused, value);
-        }
+        [Reactive]
+        public bool IsEmailFocused { get; set; }
 
-        public bool IsCountrySelectionFocused
-        {
-            get => _isCountrySelectionFocused;
-            set => this.RaiseAndSetIfChanged(ref _isCountrySelectionFocused, value);
-        }
+        [Reactive]
+        public bool IsPasswordFocused { get; set; }
 
-        public bool IsTosCheckboxFocused
-        {
-            get => _isTosCheckboxFocused;
-            set => this.RaiseAndSetIfChanged(ref _isTosCheckboxFocused, value);
-        }
+        [Reactive]
+        public bool IsCountrySelectionFocused { get; set; }
 
-        public bool IsTosChecked
-        {
-            get => _isTosChecked;
-            set => this.RaiseAndSetIfChanged(ref _isTosChecked, value);
-        }
+        [Reactive]
+        public bool IsTosCheckboxFocused { get; set; }
 
-        public bool ShowLoginError
-        {
-            get => _showLoginError;
-            set => this.RaiseAndSetIfChanged(ref _showLoginError, value);
-        }
+        [Reactive]
+        public bool IsTosChecked { get; set; }
 
+        [Reactive]
+        public bool ShowLoginError { get; private set; }
         public string ConfirmButtonText => _confirmButtonText.Value;
         public string GoogleLoginButtonText => _googleLoginButtonText.Value;
         public string SignupLoginToggleText => _signupLoginToggleText.Value;

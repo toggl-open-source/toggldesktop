@@ -1,5 +1,6 @@
 using System.Reactive.Linq;
 using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 
 namespace TogglDesktop.ViewModels
 {
@@ -15,19 +16,11 @@ namespace TogglDesktop.ViewModels
                 .Select(((string description, string projectName) tuple) => GetIsAddProjectLabelVisible(tuple.description, tuple.projectName))
                 .ToProperty(this, nameof(IsAddProjectLabelVisible));
         }
-        private ProjectLabelViewModel _projectLabel;
-        public ProjectLabelViewModel ProjectLabel
-        {
-            get => _projectLabel;
-            private set => this.RaiseAndSetIfChanged(ref _projectLabel, value);
-        }
 
-        private string _description;
-        public string Description
-        {
-            get => _description;
-            set => this.RaiseAndSetIfChanged(ref _description, value);
-        }
+        public ProjectLabelViewModel ProjectLabel { get; }
+
+        [Reactive]
+        public string Description { get; private set; }
 
         private readonly ObservableAsPropertyHelper<string> _addDescriptionLabelText;
         public string AddDescriptionLabelText => _addDescriptionLabelText.Value;
