@@ -8,8 +8,8 @@ namespace TogglDesktop.AutoCompletion
     class TagsAutoCompleteController : IAutoCompleteController
     {
         private readonly ListBoxSelectionManager<ListBoxItemViewModel> _selectionManager = new ListBoxSelectionManager<ListBoxItemViewModel>();
-        private IList<ListBoxItemViewModel> _fullItemsList;
-        private Dictionary<string, TagItemViewModel> _tagItemsDictionary;
+        private readonly IList<ListBoxItemViewModel> _fullItemsList;
+        private readonly Dictionary<string, TagItemViewModel> _tagItemsDictionary;
         private string _previousInput = string.Empty;
         private static readonly char[] _splitChars = { ' ' };
         public TagsAutoCompleteController(IEnumerable<string> list, Func<string, bool> isSelected)
@@ -20,24 +20,6 @@ namespace TogglDesktop.AutoCompletion
             _tagItemsDictionary.ForEach(kvp => kvp.Value.IsChecked = isSelected(kvp.Key));
             VisibleItems = _fullItemsList;
         }
-
-        public void UpdateWith(IEnumerable<string> list, Func<string, bool> isSelected)
-        {
-            var oldItemsDictionary = _tagItemsDictionary;
-            _fullItemsList = list
-                .Select(tag =>
-                    oldItemsDictionary.TryGetValue(tag, out var tagItemViewModel) ? tagItemViewModel : new TagItemViewModel(tag))
-                .Cast<ListBoxItemViewModel>()
-                .ToList();
-            _tagItemsDictionary = _fullItemsList.OfType<TagItemViewModel>()
-                .ToDictionary(tagItemViewModel => tagItemViewModel.Text, tagItemViewModel => tagItemViewModel);
-            _tagItemsDictionary.ForEach(kvp => kvp.Value.IsChecked = isSelected(kvp.Key));
-            if (ListBox != null)
-            {
-                FillList(ListBox);
-            }
-        }
-
         public void AddTag(string tag)
         {
             if (_tagItemsDictionary.TryGetValue(tag, out var tagItemViewModel))
@@ -79,10 +61,13 @@ namespace TogglDesktop.AutoCompletion
             }
         }
 
+        public bool ShowActionButton { get; private set; }
+
         public void FillList(ListBox listBox)
         {
             ListBox = listBox;
             VisibleItems = _fullItemsList;
+            ShowActionButton = false;
         }
 
         public void Complete(string input)
@@ -90,6 +75,7 @@ namespace TogglDesktop.AutoCompletion
             if (string.IsNullOrWhiteSpace(input))
             {
                 VisibleItems = _fullItemsList;
+                ShowActionButton = false;
                 return;
             }
 
@@ -104,7 +90,7 @@ namespace TogglDesktop.AutoCompletion
                 .AppendIfEmpty(() => new CustomTextItemViewModel("No matching tags", "Press Enter to add it as a tag"))
                 .ToList();
 
-            this._selectionManager.SelectFirstItem();
+            ShowActionButton = !VisibleItems.Any(it => it.Text == input && it.Type == ItemType.TAG);
         }
 
         public void SelectNext()

@@ -307,7 +307,7 @@ namespace TogglDesktop
                 {
                     if (this.IsOpen)
                     {
-                        if (createProjectButton.IsVisible && createProjectButton.Focus())
+                        if (actionButton.IsVisible && actionButton.Focus())
                         {
                             e.Handled = true;
                             this.listBox.SelectedIndex = -1;
@@ -422,6 +422,7 @@ namespace TogglDesktop
 
             this.ensureList();
             this.controller.Complete(showAll ? "" : this.textbox.Text);
+            this.actionButton.ShowOnlyIf(this.controller.ShowActionButton && !ActionButtonText.IsNullOrEmpty());
 
             if (closeIfEmpty)
             {
@@ -447,6 +448,7 @@ namespace TogglDesktop
             using (Performance.Measure("building auto complete list {0}", this.controller.DebugIdentifier))
             {
                 this.controller.FillList(this.listBox);
+                this.actionButton.ShowOnlyIf(this.controller.ShowActionButton && !ActionButtonText.IsNullOrEmpty());
             }
 
             this.needsToRefreshList = false;
@@ -470,26 +472,15 @@ namespace TogglDesktop
             listBox.SelectedIndex = index;
 
             this.confirmCompletion(false);
-
-            // Check selected item from list if tags autocomplete
-            // if (this.controller.autocompleteType == 5)
-            // {
-            //     IEditableCollectionView items = listBox.Items; //Cast to interface
-            //     if (items.CanRemove)
-            //     {
-            //         items.RemoveAt(index);
-            //     }
-            // }
-        }
-
-        internal bool popUpOpen()
-        {
-            return this.popup.IsOpen;
         }
 
         private void CreateProjectButton_OnClick(object sender, RoutedEventArgs e)
         {
             ActionButtonClick?.Invoke(sender, e);
+            if (KeepOpenWhenSelecting)
+            {
+                this.textbox.Focus();
+            }
         }
 
         public bool HasKeyboardFocus() => popup.IsKeyboardFocusWithin;

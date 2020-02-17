@@ -8,6 +8,7 @@ namespace TogglDesktop.AutoCompletion
         string DebugIdentifier { get; }
         AutoCompleteItem SelectedItem { get; }
         IList<ListBoxItemViewModel> VisibleItems { get; }
+        bool ShowActionButton { get; }
         void FillList(ListBox listBox);
         void Complete(string input);
         void SelectNext();
