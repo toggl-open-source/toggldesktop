@@ -28,12 +28,7 @@ namespace TogglDesktop.ViewModels
         private ValidationHelper _passwordValidation;
         private ValidationHelper _selectedCountryValidation;
         private ValidationHelper _isTosCheckedValidation;
-        private readonly ObservableAsPropertyHelper<string> _confirmButtonText;
-        private readonly ObservableAsPropertyHelper<string> _googleLoginButtonText;
-        private readonly ObservableAsPropertyHelper<string> _signupLoginToggleText;
         private HttpClientFactory _httpClientFactory;
-        private readonly ObservableAsPropertyHelper<bool> _isLoading;
-        private readonly ObservableAsPropertyHelper<bool> _isViewDisabled;
 
         public LoginViewModel(Action refreshLoginBindings, Action refreshSignupBindings)
             : base(RxApp.TaskpoolScheduler)
@@ -44,13 +39,13 @@ namespace TogglDesktop.ViewModels
             Toggl.OnSettings += OnSettings;
             this.WhenAnyValue(x => x.SelectedConfirmAction,
                     x => x == ConfirmAction.LogIn ? "Log in" : "Sign up")
-                .ToProperty(this, x => x.ConfirmButtonText, out _confirmButtonText);
+                .ToPropertyEx(this, x => x.ConfirmButtonText);
             this.WhenAnyValue(x => x.SelectedConfirmAction,
                     x => x == ConfirmAction.LogIn ? "Log in with Google" : "Sign up with Google")
-                .ToProperty(this, x => x.GoogleLoginButtonText, out _googleLoginButtonText);
+                .ToPropertyEx(this, x => x.GoogleLoginButtonText);
             this.WhenAnyValue(x => x.SelectedConfirmAction,
                     x => x == ConfirmAction.LogIn ? "Sign up for free" : "Back to Log in")
-                .ToProperty(this, x => x.SignupLoginToggleText, out _signupLoginToggleText);
+                .ToPropertyEx(this, x => x.SignupLoginToggleText);
             this.ObservableForProperty(x => x.SelectedConfirmAction)
                 .Where(x => x.Value == ConfirmAction.SignUp)
                 .Take(1)
@@ -62,37 +57,14 @@ namespace TogglDesktop.ViewModels
                 .CombineLatest(ConfirmGoogleLoginSignupCommand.IsExecuting,
                     (isExecuting1, isExecuting2) => isExecuting1 || isExecuting2);
             IsLoginSignupExecuting
-                .ToProperty(this, x => x.IsLoading, out _isLoading);
+                .ToPropertyEx(this, x => x.IsLoading);
             IsLoginSignupExecuting
                 .Select(x => !x)
-                .ToProperty(this, x => x.IsViewEnabled, out _isViewDisabled);
+                .ToPropertyEx(this, x => x.IsViewEnabled);
         }
         public ReactiveCommand<Unit, bool> ConfirmLoginSignupCommand { get; }
         public ReactiveCommand<Unit, Unit> ConfirmGoogleLoginSignupCommand { get; }
         public IObservable<bool> IsLoginSignupExecuting { get; }
-
-        public void EnsureValidationApplied()
-        {
-            if (_emailValidation == null)
-            {
-                _emailValidation = this.ValidationRule(
-                    x => x.Email,
-                    email => email.IsValidEmailAddress(),
-                    "Please enter a valid email");
-                _passwordValidation = this.ValidationRule(
-                    x => x.Password,
-                    password => !string.IsNullOrEmpty(password),
-                    "A password is required");
-                _selectedCountryValidation = this.ValidationRule(
-                    x => x.SelectedCountry,
-                    selectedCountry => selectedCountry != null,
-                    "Please select country");
-                _isTosCheckedValidation = this.ValidationRule(
-                    x => x.IsTosChecked,
-                    isTosChecked => isTosChecked,
-                    "Please accept the terms");
-            }
-        }
 
         [Reactive]
         public IList<CountryViewModel> Countries { get; private set; }
@@ -126,11 +98,35 @@ namespace TogglDesktop.ViewModels
 
         [Reactive]
         public bool ShowLoginError { get; private set; }
-        public string ConfirmButtonText => _confirmButtonText.Value;
-        public string GoogleLoginButtonText => _googleLoginButtonText.Value;
-        public string SignupLoginToggleText => _signupLoginToggleText.Value;
-        public bool IsLoading => _isLoading.Value;
-        public bool IsViewEnabled => _isViewDisabled.Value;
+
+        public string ConfirmButtonText { [ObservableAsProperty] get; }
+        public string GoogleLoginButtonText { [ObservableAsProperty] get; }
+        public string SignupLoginToggleText { [ObservableAsProperty] get; }
+        public bool IsLoading { [ObservableAsProperty] get; }
+        public bool IsViewEnabled { [ObservableAsProperty] get; }
+
+        private void EnsureValidationApplied()
+        {
+            if (_emailValidation == null)
+            {
+                _emailValidation = this.ValidationRule(
+                    x => x.Email,
+                    email => email.IsValidEmailAddress(),
+                    "Please enter a valid email");
+                _passwordValidation = this.ValidationRule(
+                    x => x.Password,
+                    password => !string.IsNullOrEmpty(password),
+                    "A password is required");
+                _selectedCountryValidation = this.ValidationRule(
+                    x => x.SelectedCountry,
+                    selectedCountry => selectedCountry != null,
+                    "Please select country");
+                _isTosCheckedValidation = this.ValidationRule(
+                    x => x.IsTosChecked,
+                    isTosChecked => isTosChecked,
+                    "Please accept the terms");
+            }
+        }
 
         private bool PerformValidation(bool isGoogleLogin = false)
         {
