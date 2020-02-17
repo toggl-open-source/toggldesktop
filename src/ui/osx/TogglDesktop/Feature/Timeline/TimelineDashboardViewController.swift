@@ -155,17 +155,8 @@ final class TimelineDashboardViewController: NSViewController {
     }
 
     func render(with cmd: TimelineDisplayCommand) {
-        let timeline = TimelineData(cmd: cmd, zoomLevel: zoomLevel)
-        let date = Date(timeIntervalSince1970: cmd.start)
-        let shouldScroll = datePickerView.currentDate != date
-        datePickerView.currentDate = date
-        datasource.render(timeline)
-
-        handleEmptyState(timeline)
-
-        if shouldScroll {
-            scrollToVisibleItem()
-        }
+        datePickerView.currentDate = Date(timeIntervalSince1970: cmd.start)
+        datasource.render(cmd: cmd, zoomLevel: zoomLevel)
 
         // After the reload finishes, we hightlight a cell again
         updatePositionOfEditorIfNeed()
@@ -311,12 +302,6 @@ extension TimelineDashboardViewController {
         editorPopover.setTimeEntry(timeEntry)
     }
 
-    fileprivate func handleEmptyState(_ timeline: TimelineData) {
-        emptyLbl.isHidden = !timeline.timeEntries.isEmpty
-        emptyActivityLbl.isHidden = !timeline.activities.isEmpty
-        updateEmptyActivityText()
-    }
-
     private func updateEmptyActivityText() {
         emptyActivityLbl.stringValue = recordSwitcher.isOn ? "No activity was recorded yet..." : "Turn on activity\nrecording to see results."
         emptyActivityLblPadding.constant = recordSwitcher.isOn ? -40 : -50
@@ -405,6 +390,12 @@ extension TimelineDashboardViewController: DatePickerViewDelegate {
 // MARK: TimelineDatasourceDelegate
 
 extension TimelineDashboardViewController: TimelineDatasourceDelegate {
+
+    func shouldHandleEmptyState(_ timelineData: TimelineData) {
+        emptyLbl.isHidden = !timelineData.timeEntries.isEmpty
+        emptyActivityLbl.isHidden = !timelineData.activities.isEmpty
+        updateEmptyActivityText()
+    }
 
     func shouldHideAllPopover() {
         closeAllPopovers()

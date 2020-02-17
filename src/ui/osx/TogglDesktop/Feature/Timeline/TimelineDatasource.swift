@@ -19,6 +19,7 @@ protocol TimelineDatasourceDelegate: class {
     func shouldUpdateStartTime(_ start: TimeInterval, for entry: TimelineTimeEntry, keepEndTimeFixed: Bool)
     func shouldPresentResizePopover(at cell: TimelineTimeEntryCell, onTopCorner: Bool)
     func shouldHideAllPopover()
+    func shouldHandleEmptyState(_ timelineData: TimelineData)
 }
 
 final class TimelineDatasource: NSObject {
@@ -102,16 +103,18 @@ final class TimelineDatasource: NSObject {
         registerForDragAndDrop()
     }
 
-    func render(_ timeline: TimelineData) {
+    func render(cmd: TimelineDisplayCommand, zoomLevel: TimelineDatasource.ZoomLevel) {
+        let data = TimelineData(cmd: cmd, zoomLevel: zoomLevel, runningTimeEntry: runningTimeEntry?.timeEntry)
+        render(data)
+        delegate?.shouldHandleEmptyState(data)
+    }
+    
+    private func render(_ timeline: TimelineData) {
         // Skip reload if the user is resizing
         guard !isUserOnAction else { return }
         self.timeline?.cleanUp()
         self.timeline = nil
         self.timeline = timeline
-        if let runningTimeEntry = runningTimeEntry {
-            runningTimeEntry.updateEndTimeForRunning()
-            timeline.append(runningTimeEntry)
-        }
         flow.currentDate = Date(timeIntervalSince1970: timeline.start)
         collectionView.reloadData()
     }

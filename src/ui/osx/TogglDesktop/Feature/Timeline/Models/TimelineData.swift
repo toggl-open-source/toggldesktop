@@ -38,11 +38,20 @@ final class TimelineData {
 
     // MARK: Init
 
-    init(cmd: TimelineDisplayCommand, zoomLevel: TimelineDatasource.ZoomLevel) {
+    init(cmd: TimelineDisplayCommand, zoomLevel: TimelineDatasource.ZoomLevel, runningTimeEntry: TimeEntryViewItem?) {
         self.zoomLevel = zoomLevel
         self.start = cmd.start
         self.end = cmd.end
-        self.timeEntries = cmd.timeEntries.map { TimelineTimeEntry($0) }.sorted(by: { (lhs, rhs) -> Bool in
+
+        // Add running TimeEntry if need
+        var timeEntries = cmd.timeEntries
+        if let runningTimeEntry = runningTimeEntry {
+            runningTimeEntry.ended = Date()
+            timeEntries.append(runningTimeEntry)
+        }
+
+        // Sort
+        self.timeEntries = timeEntries.map { TimelineTimeEntry($0) }.sorted(by: { (lhs, rhs) -> Bool in
             return lhs.start < rhs.start
         })
         numberOfSections = Section.allCases.count
@@ -91,6 +100,9 @@ final class TimelineData {
         })
         if !isContains {
             timeEntries.append(entry)
+            timeEntries.sort { (lhs, rhs) -> Bool in
+                return lhs.start < rhs.start
+            }
         }
 
         // But always reload
