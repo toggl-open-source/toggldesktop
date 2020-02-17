@@ -59,7 +59,8 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
     @IBOutlet weak var durationLbl: NSTextField!
     @IBOutlet weak var mainStackView: NSStackView!
     @IBOutlet weak var innerBackgroundBox: NSBox! // Prevent transparent background color
-
+    @IBOutlet weak var dashView: TimelineDashedCornerView!
+    
     // MARK: View
 
     override func viewDidLoad() {
@@ -79,6 +80,7 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
         self.timeEntry = timeEntry
         renderColor(with: timeEntry.color, isSmallEntry: timeEntry.isSmall)
         populateInfo()
+        handleRunningTimeEntry()
     }
 
     private func populateInfo() {
@@ -162,6 +164,11 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
         } else {
             clientNameLbl.isHidden = true
         }
+    }
+
+    private func handleRunningTimeEntry() {
+        guard let timeEntry = timeEntry else { return }
+        dashView.isHidden = !timeEntry.timeEntry.isRunning()
     }
 }
 
