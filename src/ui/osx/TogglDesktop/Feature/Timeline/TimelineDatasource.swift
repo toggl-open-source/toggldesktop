@@ -104,7 +104,9 @@ final class TimelineDatasource: NSObject {
     }
 
     func render(cmd: TimelineDisplayCommand, zoomLevel: TimelineDatasource.ZoomLevel) {
-        let data = TimelineData(cmd: cmd, zoomLevel: zoomLevel, runningTimeEntry: runningTimeEntry?.timeEntry)
+        let data = TimelineData(cmd: cmd,
+                                zoomLevel: zoomLevel,
+                                runningTimeEntry: getRunningTimeEntry(start: cmd.start, end: cmd.end))
         render(data)
         delegate?.shouldHandleEmptyState(data)
     }
@@ -119,7 +121,7 @@ final class TimelineDatasource: NSObject {
         collectionView.reloadData()
     }
 
-    func update(_ timeEntry: Any?) {
+    func updateRunningTimeEntry(_ timeEntry: Any?) {
         guard !isUserOnAction else { return }
 
         // Add
@@ -130,12 +132,15 @@ final class TimelineDatasource: NSObject {
 
             let entry = TimelineTimeEntry(timeEntry)
             entry.updateEndTimeForRunning()
-            timeline?.append(entry)
             runningTimeEntry = entry
+
+            if let timeline = timeline, timeline.isToday {
+                timeline.append(entry)
+            }
+
             collectionView.reloadData()
             startTimer()
             print("✅ ----- runningTimeEntry = \(runningTimeEntry?.timeEntry.guid)")
-
         } else {
             // Or remove
             runningTimeEntry = nil
@@ -482,6 +487,14 @@ extension TimelineDatasource {
         runningTimeEntry?.updateEndTimeForRunning()
         flow.invalidateLayout()
         print("---------------------------- Timer Tick")
+    }
+
+    private func getRunningTimeEntry(start: TimeInterval, end: TimeInterval) -> TimeEntryViewItem? {
+        let middle = start + (end - start) / 2
+        if Calendar.current.isDateInToday(Date(timeIntervalSince1970: middle)) {
+            return runningTimeEntry?.timeEntry
+        }
+        return nil
     }
 }
 
