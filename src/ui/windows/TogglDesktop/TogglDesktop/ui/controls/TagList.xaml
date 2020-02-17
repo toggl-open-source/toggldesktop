@@ -6,8 +6,8 @@
              xmlns:toggl="clr-namespace:TogglDesktop"
              mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="34"
              MouseDown="onMouseDown">
-    <Border Style="{StaticResource Toggl.Border.Hoverable}" Background="{DynamicResource Toggl.SelectionElements.Background}">
-        <Grid Name="grid" x:FieldModifier="private">
+    <Border Name="border" Style="{StaticResource Toggl.Border.Hoverable}" Background="{DynamicResource Toggl.SelectionElements.Background}">
+        <Grid>
             <WrapPanel Name="panel" x:FieldModifier="private" Orientation="Horizontal" Margin="10, 1, 30, 1"
                        SizeChanged="panel_OnSizeChanged">
                 <toggl:ExtendedTextBox x:Name="textBox" x:FieldModifier="private" MinWidth="80" Margin="-3, -1, 3, -1" BorderThickness="0" Padding="0 0 34 0"
@@ -20,7 +20,7 @@
                           Width="30"/>
 
             <toggl:AutoCompletionPopup x:Name="autoComplete" x:FieldModifier="private"
-                                       Target="{Binding ElementName=grid}" TextBox="{Binding ElementName=textBox}"
+                                       Target="{Binding ElementName=border}" TextBox="{Binding ElementName=textBox}"
                                        DropDownButton="{Binding ElementName=dropDownButton}"
                                        ConfirmCompletion="autoComplete_OnConfirmCompletion"
                                        ConfirmWithoutCompletion="autoComplete_OnConfirmWithoutCompletion"
