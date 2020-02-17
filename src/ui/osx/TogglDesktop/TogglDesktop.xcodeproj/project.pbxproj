@@ -1589,7 +1589,6 @@
 		BA43B25C23F6706B0007DD99 /* Library */ = {
 			isa = PBXGroup;
 			children = (
-				BA43B34023F6810F0007DD99 /* lua */,
 				BA43B2E723F67ECB0007DD99 /* poco */,
 				BA43B25E23F670790007DD99 /* openssl */,
 			);
@@ -1621,14 +1620,6 @@
 				BA43B30623F67EE60007DD99 /* libPocoXML.60.dylib */,
 			);
 			path = poco;
-			sourceTree = "<group>";
-		};
-		BA43B34023F6810F0007DD99 /* lua */ = {
-			isa = PBXGroup;
-			children = (
-				BA43B34423F681380007DD99 /* liblua.a */,
-			);
-			path = lua;
 			sourceTree = "<group>";
 		};
 		BA47DEAF23966F80005216AD /* InAppMessage */ = {
@@ -3060,7 +3051,6 @@
 					"$(SRCROOT)/Library/openssl/",
 					"$(PROJECT_DIR)$(LOCAL_LIBRARY_DIR)/poco",
 					"$(PROJECT_DIR)$(LOCAL_LIBRARY_DIR)/openssl",
-					"$(PROJECT_DIR)$(LOCAL_LIBRARY_DIR)/lua",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				ONLY_ACTIVE_ARCH = YES;
@@ -3153,7 +3143,6 @@
 					"$(SRCROOT)/Library/openssl/",
 					"$(PROJECT_DIR)$(LOCAL_LIBRARY_DIR)/poco",
 					"$(PROJECT_DIR)$(LOCAL_LIBRARY_DIR)/openssl",
-					"$(PROJECT_DIR)$(LOCAL_LIBRARY_DIR)/lua",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				ONLY_ACTIVE_ARCH = NO;
@@ -3330,7 +3319,6 @@
 					"$(SRCROOT)/Library/openssl/",
 					"$(PROJECT_DIR)$(LOCAL_LIBRARY_DIR)/poco",
 					"$(PROJECT_DIR)$(LOCAL_LIBRARY_DIR)/openssl",
-					"$(PROJECT_DIR)$(LOCAL_LIBRARY_DIR)/lua",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				ONLY_ACTIVE_ARCH = YES;
@@ -3391,7 +3379,6 @@
 					"$(SRCROOT)/Library/openssl/",
 					"$(PROJECT_DIR)$(LOCAL_LIBRARY_DIR)/poco",
 					"$(PROJECT_DIR)$(LOCAL_LIBRARY_DIR)/openssl",
-					"$(PROJECT_DIR)$(LOCAL_LIBRARY_DIR)/lua",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				ONLY_ACTIVE_ARCH = NO;
