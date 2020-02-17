@@ -287,7 +287,7 @@ extern void *ctx;
 
 	NSLog(@"TimeEntryListViewController displayTimeEntryEditor, thread %@", [NSThread currentThread]);
 
-    self.runningEdit = cmd.timeEntry.isRunning;
+    self.runningEdit = [cmd.timeEntry isRunning];
 
 	// Skip render if need
 	if (!self.isOpening && !self.runningEdit)

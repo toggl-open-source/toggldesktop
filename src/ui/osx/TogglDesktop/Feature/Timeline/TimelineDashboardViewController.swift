@@ -436,7 +436,11 @@ extension TimelineDashboardViewController: TimelineDatasourceDelegate {
         // Or present the Popover
         selectedGUID = timeEntry.guid
         editorPopover.setTimeEntry(timeEntry)
-        DesktopLibraryBridge.shared().startEditor(atGUID: timeEntry.guid)
+
+        // We already present the Editor in Timeline, so don't need to present on the Timer anymore
+        if !timeEntry.isRunning() {
+            DesktopLibraryBridge.shared().startEditor(atGUID: timeEntry.guid)
+        }
 
         // Find the cell and present to get the correct position
         // since the toggl_edit causes the Timeline completely reloads -> The cell is reused.
