@@ -92,7 +92,7 @@ class TimelineBaseCell: NSCollectionViewItem {
     // MARK: Public
 
     func renderColor(with foregroundColor: NSColor, isSmallEntry: Bool) {
-        backgroundColor = foregroundColor.lighten(by: 0.1)
+        backgroundColor = foregroundColor.lighten(by: 0.2)
 
         foregroundBox.fillColor = foregroundColor
         backgroundBox?.fillColor = backgroundColor ?? foregroundColor
@@ -168,6 +168,7 @@ extension TimelineBaseCell {
         }
 
         delegate?.timelineCellMouseDidEntered(self)
+        super.mouseEntered(with: event)
     }
 
     override func mouseMoved(with event: NSEvent) {
@@ -179,8 +180,7 @@ extension TimelineBaseCell {
         }
 
         // Convert mouse location to local
-        let position = event.locationInWindow
-        let localPosition = foregroundBox.convert(position, from: nil)
+        let localPosition = convertToLocalPoint(for: event)
 
         // Determine where the mouse is
         if suitableHoverRect().contains(localPosition) {
@@ -200,10 +200,14 @@ extension TimelineBaseCell {
         }
 
         mousePosition = .none
+        super.mouseExited(with: event)
     }
 
     private func handleMouseDownForResize(_ event: NSEvent) {
-        guard isResizable, isUserResizing else { return }
+        guard isResizable, isUserResizing else {
+            super.mouseDown(with: event)
+            return
+        }
 
         // Calculate the user action
         switch mousePosition {
@@ -213,12 +217,15 @@ extension TimelineBaseCell {
             userAction = .resizeBottom
         default:
             userAction = .none
+            super.mouseDown(with: event)
         }
     }
 
     private func handleMouseDraggedForResize(_ event: NSEvent) {
-        guard isResizable, isUserResizing else { return }
-        guard userAction != .none else { return }
+        guard isResizable, isUserResizing, userAction != .none else {
+            super.mouseDragged(with: event)
+            return
+        }
 
         // Update start / end depend on the user action
         switch userAction {
@@ -227,15 +234,18 @@ extension TimelineBaseCell {
         case .resizeTop:
             delegate?.timelineCellRedrawStartTime(with: event, sender: self)
         case .none:
-            break
+            super.mouseDragged(with: event)
         }
     }
 
     private func handleMouseUpForResize(_ event: NSEvent) {
+        let localPosition = convertToLocalPoint(for: event)
 
         // Click action
         if userAction == .none {
-            delegate?.timelineCellOpenEditor(self)
+            if view.bounds.contains(localPosition) {
+                delegate?.timelineCellOpenEditor(self)
+            }
         } else {
             // Dragging
             switch userAction {
@@ -251,7 +261,6 @@ extension TimelineBaseCell {
         // Reset
         userAction = .none
         mousePosition = .none
-        updateCursor()
     }
 
     private var isSmallEntry: Bool {
@@ -282,5 +291,12 @@ extension TimelineBaseCell {
             return NSRect(x: 0, y: 0, width: foregroundBox.frame.width, height: Constants.SideHideSmall)
         }
         return NSRect(x: 0, y: 0, width: foregroundBox.frame.width, height: Constants.SideHit)
+    }
+
+    private func convertToLocalPoint(for event: NSEvent) -> CGPoint {
+        // Convert mouse location to local
+        let position = event.locationInWindow
+        let localPosition = foregroundBox.convert(position, from: nil)
+        return localPosition
     }
 }
