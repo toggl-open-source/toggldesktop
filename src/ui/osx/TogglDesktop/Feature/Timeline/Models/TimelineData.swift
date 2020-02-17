@@ -99,6 +99,7 @@ final class TimelineData {
             return false
         })
         if !isContains {
+            print("----------------------------- append to timeline data")
             timeEntries.append(entry)
             timeEntries.sort { (lhs, rhs) -> Bool in
                 return lhs.start < rhs.start

@@ -346,7 +346,7 @@ extension TimelineDashboardViewController {
     }
 
     @objc private func runningTimeEntryNoti(_ noti: Notification) {
-        datasource.update(noti.object)
+        datasource.updateRunningTimeEntry(noti.object)
     }
 }
 
