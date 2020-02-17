@@ -867,18 +867,24 @@
     <PackageReference Include="NHotkey.Wpf">
       <Version>1.2.1</Version>
     </PackageReference>
+    <PackageReference Include="ReactiveUI.Fody">
+      <Version>11.1.23</Version>
+    </PackageReference>
     <PackageReference Include="ReactiveUI.Validation">
-      <Version>1.4.1</Version>
+      <Version>1.4.10</Version>
     </PackageReference>
     <PackageReference Include="ReactiveUI.WPF">
-      <Version>10.5.7</Version>
+      <Version>11.1.23</Version>
     </PackageReference>
     <PackageReference Include="System.Reactive">
-      <Version>4.2.0</Version>
+      <Version>4.3.2</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\bg-pattern.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="FodyWeavers.xml" />
   </ItemGroup>
   <Import Project="Dependencies.targets" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

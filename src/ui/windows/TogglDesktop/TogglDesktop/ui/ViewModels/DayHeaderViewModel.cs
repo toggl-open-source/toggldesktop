@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reactive.Linq;
 using DynamicData;
 using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 
 namespace TogglDesktop.ViewModels
 {
@@ -33,22 +34,14 @@ namespace TogglDesktop.ViewModels
         public TimeEntryCellViewModel GetCell(int cellIndex) => _cells.Items.ElementAt(cellIndex);
         public int CellsCount => _cells.Count;
 
-        private bool _isExpanded;
-        public bool IsExpanded
-        {
-            get => _isExpanded;
-            set => this.RaiseAndSetIfChanged(ref _isExpanded, value);
-        }
+        [Reactive]
+        public bool IsExpanded { get; set; }
 
         private readonly ObservableAsPropertyHelper<bool> _isCollapsed;
         public bool IsCollapsed => _isCollapsed.Value;
 
-        private bool _isFocused;
-        public bool IsFocused
-        {
-            get => _isFocused;
-            private set => this.RaiseAndSetIfChanged(ref _isFocused, value);
-        }
+        [Reactive]
+        public bool IsFocused { get; private set; }
         public void Focus()
         {
             IsFocused = false;
