@@ -276,12 +276,6 @@
                                     <action selector="onHideMenuItem:" target="494" id="dJX-ZW-bid"/>
                                 </connections>
                             </menuItem>
-                            <menuItem isSeparatorItem="YES" id="8rj-un-SH2"/>
-                            <menuItem title="Console" keyEquivalent="C" id="ibF-Ws-y2e">
-                                <connections>
-                                    <action selector="onConsoleMenuItem:" target="-1" id="O08-8J-Rms"/>
-                                </connections>
-                            </menuItem>
                             <menuItem isSeparatorItem="YES" id="jBb-F2-09I"/>
                             <menuItem title="Bring All to Front" id="5">
                                 <connections>
@@ -312,11 +306,7 @@
             </items>
             <point key="canvasLocation" x="139" y="154"/>
         </menu>
-        <customObject id="494" customClass="AppDelegate">
-            <connections>
-                <outlet property="consoleMenuItem" destination="ibF-Ws-y2e" id="6SE-Id-sqd"/>
-            </connections>
-        </customObject>
+        <customObject id="494" customClass="AppDelegate"/>
         <customObject id="420" customClass="NSFontManager"/>
         <segmentedControl verticalHuggingPriority="750" id="1458">
             <rect key="frame" x="0.0" y="0.0" width="164" height="23"/>
