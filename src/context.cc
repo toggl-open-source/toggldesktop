@@ -649,9 +649,7 @@ void Context::updateUI(const UIElements &what) {
                         running_entry->DurationInSeconds(),
                         Format::Classic);
                 running_entry_view.DateDuration =
-                    Formatter::FormatDurationForDateHeader(
-                        user_->related.TotalDurationForDate(
-                            running_entry));
+                    Formatter::FormatDurationForDateHeader(Formatter::AbsDuration(running_entry->Duration()));
                 user_->related.ProjectLabelAndColorCode(
                     running_entry,
                     &running_entry_view);
