@@ -9,12 +9,12 @@ namespace TogglDesktop.ViewModels
         public TimeEntryLabelViewModel(ProjectLabelViewModel projectLabel)
         {
             ProjectLabel = projectLabel;
-            _addDescriptionLabelText = this.WhenAnyValue(x => x.ProjectLabel.ProjectName)
+            this.WhenAnyValue(x => x.ProjectLabel.ProjectName)
                 .Select(projectName => string.IsNullOrEmpty(projectName) ? "+ Add details" : "+ Add description")
-                .ToProperty(this, nameof(AddDescriptionLabelText));
-            _isAddProjectLabelVisible = this.WhenAnyValue(x => x.Description, x => x.ProjectLabel.ProjectName)
+                .ToPropertyEx(this, x => x.AddDescriptionLabelText);
+            this.WhenAnyValue(x => x.Description, x => x.ProjectLabel.ProjectName)
                 .Select(((string description, string projectName) tuple) => GetIsAddProjectLabelVisible(tuple.description, tuple.projectName))
-                .ToProperty(this, nameof(IsAddProjectLabelVisible));
+                .ToPropertyEx(this, x => x.IsAddProjectLabelVisible);
         }
 
         public ProjectLabelViewModel ProjectLabel { get; }
@@ -22,11 +22,9 @@ namespace TogglDesktop.ViewModels
         [Reactive]
         public string Description { get; private set; }
 
-        private readonly ObservableAsPropertyHelper<string> _addDescriptionLabelText;
-        public string AddDescriptionLabelText => _addDescriptionLabelText.Value;
+        public string AddDescriptionLabelText { [ObservableAsProperty] get; }
 
-        private readonly ObservableAsPropertyHelper<bool> _isAddProjectLabelVisible;
-        public bool IsAddProjectLabelVisible => _isAddProjectLabelVisible.Value;
+        public bool IsAddProjectLabelVisible { [ObservableAsProperty] get; }
 
         private static bool GetIsAddProjectLabelVisible(string description, string projectText)
         {
