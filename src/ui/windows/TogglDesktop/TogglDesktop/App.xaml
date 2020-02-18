@@ -23,6 +23,7 @@
             <converters:EmptyStringToCollapsedConverter x:Key="EmptyStringToCollapsedConverter" />
             <converters:EmptyStringToCollapsedConverter x:Key="EmptyStringToVisibleConverter" Inverse="True" />
             <converters:StringFormatIfNotEmptyConverter x:Key="StringFormatIfNotEmptyConverter" />
+            <converters:EnumEqualToVisibilityConverter x:Key="EnumEqualToVisibilityConverter" />
 
         </ResourceDictionary>
     </Application.Resources>

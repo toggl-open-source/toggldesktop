@@ -14,6 +14,11 @@ namespace TogglDesktop
 {
     public partial class TimeEntryList
     {
+        public TimeEntryListViewModel ViewModel
+        {
+            get => (TimeEntryListViewModel) DataContext;
+            private set => DataContext = value;
+        }
         public event EventHandler FocusTimer;
         public event EventHandler CloseEditPopup;
 
@@ -34,28 +39,27 @@ namespace TogglDesktop
         public TimeEntryList()
         {
             this.InitializeComponent();
-
             this.loadMoreSpinnerAnimation = (Storyboard)this.Resources["RotateLoadMoreSpinner"];
+            ViewModel = new TimeEntryListViewModel();
+            ViewModel.ObservableForProperty(x => x.IsLoading)
+                .Subscribe(isLoadingChange =>
+            {
+                if (isLoadingChange.Value)
+                {
+                    loadMoreSpinnerAnimation.Begin();
+                }
+                else
+                {
+                    loadMoreSpinnerAnimation.Stop();
+                }
+            });
         }
 
-        public UIElementCollection Children
-        {
-            get { return this.panel.Children; }
-        }
+        public UIElementCollection Children => this.panel.Children;
 
         public void SetEditPopup(EditViewPopup editPopup)
         {
             this.editPopup = editPopup;
-        }
-
-        public void FinishedFillingList()
-        {
-            this.emptyListText.ShowOnlyIf(this.panel.Children.Count == 0 && !loadMoreButton.IsVisible);
-        }
-
-        private void onEmptyListTextClick(object sender, RoutedEventArgs e)
-        {
-            Toggl.OpenInBrowser();
         }
 
         public int EntriesCount => _cellsDictionary.Count;
@@ -487,58 +491,10 @@ namespace TogglDesktop
             Toggl.ViewTimeEntryList();
         }
 
-        #region load more
-
         private void onLoadMoreButtonClick(object sender, RoutedEventArgs e)
         {
-            this.loadMore();
+            ViewModel.LoadMore();
         }
-
-        private void loadMore()
-        {
-            this.loadMoreButton.Visibility = Visibility.Visible;
-            this.loadMoreButton.IsEnabled = false;
-            this.loadMoreButtonText.Visibility = Visibility.Collapsed;
-            this.loadMoreSpinnerAnimation.Begin();
-            this.loadMoreSpinner.Visibility = Visibility.Visible;
-
-            Toggl.LoadMore();
-        }
-
-        private void showLoadMoreButton()
-        {
-            this.loadMoreButton.Visibility = Visibility.Visible;
-            this.loadMoreButtonText.Visibility = Visibility.Visible;
-            this.loadMoreSpinner.Visibility = Visibility.Collapsed;
-            if (!this.loadMoreButton.IsEnabled)
-            {
-                this.loadMoreSpinnerAnimation.Stop();
-            }
-            this.loadMoreButton.IsEnabled = true;
-        }
-
-        private void hideLoadMoreButton()
-        {
-            this.loadMoreButton.Visibility = Visibility.Collapsed;
-            if (!this.loadMoreButton.IsEnabled)
-            {
-                this.loadMoreSpinnerAnimation.Stop();
-            }
-        }
-
-        public void SetLoadMoreButtonVisibility(bool showLoadMoreButton)
-        {
-            if (showLoadMoreButton)
-            {
-                this.showLoadMoreButton();
-            }
-            else
-            {
-                this.hideLoadMoreButton();
-            }
-        }
-
-        #endregion
 
         private void UIElement_OnPreviewKeyDown(object sender, KeyEventArgs e)
         {

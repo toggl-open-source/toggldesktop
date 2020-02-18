@@ -3,13 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:toggl="clr-namespace:TogglDesktop"
              xmlns:viewModels="clr-namespace:TogglDesktop.ViewModels"
-             xmlns:converters="clr-namespace:TogglDesktop.Converters"
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:behaviours="http://metro.mahapps.com/winfx/xaml/shared"
              xmlns:behaviors="clr-namespace:TogglDesktop.Behaviors"
-             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              mc:Ignorable="d" 
              MinHeight="428" MinWidth="300"
              Background="{DynamicResource Toggl.CardBackground}"
@@ -27,16 +24,6 @@
                 From="0" To="360" BeginTime="00:00:00.000" Duration="00:00:01.000"/>
             </Storyboard>
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-            <converters:EqualToVisibilityConverter x:Key="ShowOnLogIn">
-                <converters:EqualToVisibilityConverter.ExpectedValue>
-                    <viewModels:ConfirmAction>LogIn</viewModels:ConfirmAction>
-                </converters:EqualToVisibilityConverter.ExpectedValue>
-            </converters:EqualToVisibilityConverter>
-            <converters:EqualToVisibilityConverter x:Key="ShowOnSignUp">
-                <converters:EqualToVisibilityConverter.ExpectedValue>
-                    <viewModels:ConfirmAction>SignUp</viewModels:ConfirmAction>
-                </converters:EqualToVisibilityConverter.ExpectedValue>
-            </converters:EqualToVisibilityConverter>
         </ResourceDictionary>
     </UserControl.Resources>
     <UserControl.InputBindings>
@@ -58,8 +45,7 @@
                     <TextBlock Text="Don't have an account?"
                                Style="{DynamicResource Toggl.CaptionBlackText}"
                                HorizontalAlignment="Center"
-                               Visibility="{Binding SelectedConfirmAction, Converter={StaticResource ShowOnLogIn}}"/>
-
+                               Visibility="{Binding SelectedConfirmAction, Converter={StaticResource EnumEqualToVisibilityConverter}, ConverterParameter={x:Static viewModels:ConfirmAction.LogIn}}"/>
                     <Label HorizontalAlignment="Center"
                            Margin="0 1 0 22">
                         <Hyperlink Style="{StaticResource Toggl.NormalHyperlink}"
@@ -87,7 +73,7 @@
 
                     <Label HorizontalAlignment="Left"
                            Margin="48 16 0 0"
-                           Visibility="{Binding SelectedConfirmAction, Converter={StaticResource ShowOnLogIn}}">
+                           Visibility="{Binding SelectedConfirmAction, Converter={StaticResource EnumEqualToVisibilityConverter}, ConverterParameter={x:Static viewModels:ConfirmAction.LogIn}}">
                         <Hyperlink Style="{StaticResource Toggl.NormalHyperlink}"
                                    Click="onForgotPasswordLinkClick">Forgot password?</Hyperlink>
                     </Label>
@@ -95,7 +81,7 @@
                     <Grid Margin="0 4 0 12"
                           Height="24"
                           Width="200"
-                          Visibility="{Binding SelectedConfirmAction, Converter={StaticResource ShowOnLogIn}}">
+                          Visibility="{Binding SelectedConfirmAction, Converter={StaticResource EnumEqualToVisibilityConverter}, ConverterParameter={x:Static viewModels:ConfirmAction.LogIn}}">
                         <Border Background="{StaticResource Toggl.ValidationErrorBackground}"
                                 Visibility="{Binding ShowLoginError, Converter={StaticResource FalseToHiddenVisibilityConverter}}">
                             <Border.Effect>
@@ -117,7 +103,7 @@
                               Height="32"
                               ItemsSource="{Binding Countries}"
                               SelectedItem="{Binding SelectedCountry, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"
-                              Visibility="{Binding SelectedConfirmAction, Converter={StaticResource ShowOnSignUp}}"
+                              Visibility="{Binding SelectedConfirmAction, Converter={StaticResource EnumEqualToVisibilityConverter}, ConverterParameter={x:Static viewModels:ConfirmAction.SignUp}}"
                               SelectedValuePath="Name"
                               DisplayMemberPath="Name"
                               VerticalAlignment="Center"
@@ -132,7 +118,7 @@
                               Margin="50 16 0 36"
                               HorizontalAlignment="Left"
                               Width="200"
-                              Visibility="{Binding SelectedConfirmAction, Converter={StaticResource ShowOnSignUp}}"
+                              Visibility="{Binding SelectedConfirmAction, Converter={StaticResource EnumEqualToVisibilityConverter}, ConverterParameter={x:Static viewModels:ConfirmAction.SignUp}}"
                               IsChecked="{Binding IsTosChecked, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"
                               behaviors:FocusHelper.IsFocused="{Binding IsTosCheckboxFocused}">
                         <WrapPanel Margin="0 0 0 -12" HorizontalAlignment="Left">
