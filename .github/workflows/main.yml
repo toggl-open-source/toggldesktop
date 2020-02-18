@@ -11,7 +11,7 @@ jobs:
   macos:
     runs-on: macOS-latest
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
       with:
         fetch-depth: 1
     - name: Import signing key
@@ -42,6 +42,18 @@ jobs:
     - name: Build the application
       run: |
         bash ./dist/osx/build.sh app
+    - name: Checkout branding private repo
+      if: github.event_name == 'release'
+      uses: actions/checkout@v2
+      with:
+        repository: toggl/toggldesktop-branding
+        token: ${{ secrets.GITHUB_TOKEN }}
+        path: src/branding
+    - name: Setup Golang env
+      if: github.event_name == 'release'
+      uses: actions/setup-go@v1
+      with:
+        version: 1.13
     - name: Insert version string
       if: github.event_name == 'release'
       run: |
