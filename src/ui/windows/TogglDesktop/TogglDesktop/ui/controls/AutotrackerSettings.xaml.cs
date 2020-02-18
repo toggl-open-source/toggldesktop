@@ -45,8 +45,7 @@ namespace TogglDesktop
 
         private void fill(List<Toggl.TogglAutotrackerRuleView> rules, string[] terms)
         {
-            this.termAutoComplete.SetController(AutoCompleteControllers.ForStrings(terms));
-
+            // this.termAutoComplete.SetController(AutoCompleteControllers.ForStrings(terms));
             this.fillRules(rules);
         }
 
@@ -174,7 +173,10 @@ namespace TogglDesktop
             switch (e.Key)
             {
                 case Key.Up:
+                case Key.Tab when Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift):
                 {
+                    if (this.selectedRuleId == 0)
+                        break;
                     if (this.selectedRuleId == -1)
                         this.selectRule(0);
                     else if(this.selectedRuleId > 0)
@@ -183,7 +185,10 @@ namespace TogglDesktop
                     break;
                 }
                 case Key.Down:
+                case Key.Tab when !(Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift)):
                 {
+                    if (this.selectedRuleId == this.ruleItems.Count - 1)
+                        break;
                     if (this.selectedRuleId == -1)
                         this.selectRule(0);
                     else if (this.selectedRuleId < this.ruleItems.Count - 1)
@@ -210,12 +215,12 @@ namespace TogglDesktop
         private void selectRule(int i)
         {
             if (this.selectedRuleId != -1)
-                this.selectedRule.Selected = false;
+                this.selectedRule.IsSelected = false;
 
             this.selectedRuleId = i;
             
             if (this.selectedRuleId != -1)
-                this.selectedRule.Selected = true;
+                this.selectedRule.IsSelected = true;
         }
 
         #endregion

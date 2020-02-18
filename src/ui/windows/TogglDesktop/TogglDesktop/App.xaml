@@ -14,7 +14,6 @@
                 <ResourceDictionary Source="ui/Resources/ScrollBarStyles.xaml" />
                 <ResourceDictionary Source="ui/Resources/TimeEntryCellStyles.xaml" />
                 <ResourceDictionary Source="ui/Resources/EditViewStyles.xaml" />
-                <ResourceDictionary Source="ui/Resources/AutotrackerNotificationStyles.xaml" />
                 <ResourceDictionary Source="ui/Resources/AutotrackerStyles.xaml"/>
                 <ResourceDictionary Source="ui/Resources/TutorialStyles.xaml" />
             </ResourceDictionary.MergedDictionaries>
