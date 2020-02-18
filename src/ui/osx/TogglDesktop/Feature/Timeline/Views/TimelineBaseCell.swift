@@ -40,7 +40,7 @@ class TimelineBaseCell: NSCollectionViewItem {
 
     // MARK: OUTLET
 
-    @IBOutlet weak var backgroundBox: NSBox?
+    @IBOutlet weak var backgroundBox: CornerBoxView?
     @IBOutlet weak var foregroundBox: CornerBoxView!
     
     // MARK: Variables
@@ -95,7 +95,7 @@ class TimelineBaseCell: NSCollectionViewItem {
         backgroundColor = foregroundColor.lighten(by: 0.2)
 
         foregroundBox.backgroundColor = foregroundColor
-        backgroundBox?.fillColor = backgroundColor ?? foregroundColor
+        backgroundBox?.backgroundColor = backgroundColor ?? foregroundColor
         backgroundBox?.borderColor = backgroundColor ?? foregroundColor
 
         let cornerRadius = TimelineBaseCell.suitableCornerRadius(isSmallEntry, height: view.frame.height)
