@@ -6,34 +6,14 @@
                 "Update the Timeline Link",
                 "Clear Authoriation Headers in a local log",
                 "Add tracking for user activities",
+                "Removed duplicate 'Record Timeline' settings, now only visible in timeline view",
+                "Added Undo logic for time entry delete",
+                "Added context menu items to start/delete/continue for time entries in timeline view",
                 "Fixed Timeline Permission in Auto Tracker",
                 "Fixed Incorrect position of gap items in Timeline",
                 "Fixed Memory Leaking"
             ],
             "date": "February 18th 2020"
-        },
-        {
-            "version": "7.5.42",
-            "rows": [
-                "Update the Timeline Link",
-                "Clear Authoriation Headers in a local log",
-                "Add tracking for user activities",
-                "Fixed Timeline Permission in Auto Tracker",
-                "Fixed Incorrect position of gap items in Timeline",
-                "Fixed Memory Leaking"
-            ],
-            "date": "February 11st 2020",
-            "beta": "true"
-        },
-        {
-            "version": "7.5.26",
-            "rows": [
-                "Removed duplicate 'Record Timeline' settings, now only visible in timeline view",
-                "Added Undo logic for time entry delete",
-                "Added context menu items to start/delete/continue for time entries in timeline view"
-            ],
-            "date": "January 30th 2020",
-            "beta": "true"
         },
         {
             "version": "7.5.16",
