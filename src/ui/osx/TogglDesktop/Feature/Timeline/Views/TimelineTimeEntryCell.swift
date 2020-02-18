@@ -166,8 +166,10 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
     }
 
     private func handleRunningTimeEntry() {
-        guard let timeEntry = timeEntry else { return }
-
+        let isRunning = timeEntry?.timeEntry.isRunning() ?? false
+        let corner: Corners = isRunning ? [.topLeft, .topRight] : [.bottomLeft, .bottomRight, .topLeft, .topRight]
+        backgroundBox?.corners = corner
+        foregroundBox.corners = corner
     }
 }
 
