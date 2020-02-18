@@ -293,7 +293,8 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
 
     error Login(
         const std::string &email,
-        const std::string &password);
+        const std::string &password,
+        const bool isSignup = false);
 
     error AsyncSignup(
         const std::string &email,
@@ -318,7 +319,9 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
 
     error Logout();
 
-    error SetLoggedInUserFromJSON(const std::string &json);
+    error SetLoggedInUserFromJSON(
+        const std::string &json,
+        const bool isSignup = false);
 
     error ClearCache();
 
