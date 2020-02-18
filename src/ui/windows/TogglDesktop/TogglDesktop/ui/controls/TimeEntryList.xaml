@@ -3,13 +3,24 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:toggl="clr-namespace:TogglDesktop"
+             xmlns:viewModels="clr-namespace:TogglDesktop.ViewModels"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
+             d:DataContext="{d:DesignInstance viewModels:TimeEntryListViewModel, IsDesignTimeCreatable=False}"
              Focusable="True">
 
-    <UserControl.Resources>
+    <UserControl.Style>
+        <Style TargetType="UserControl">
+            <Setter Property="Background" Value="{DynamicResource Toggl.Background}" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding CurrentScreen}" Value="{x:Static viewModels:Screen.TimeEntriesList}">
+                    <Setter Property="Background" Value="{DynamicResource Toggl.TimeEntryListBackground}" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Style>
 
+    <UserControl.Resources>
         <!-- ReSharper disable once Xaml.RedundantResource -->
         <Storyboard x:Key="RotateLoadMoreSpinner" BeginTime="00:00:00.000"
                         Duration="00:00:1.000" RepeatBehavior="Forever">
@@ -58,10 +69,9 @@
     </UserControl.InputBindings>
     
     <Grid>
-        <ScrollViewer VerticalScrollBarVisibility="Visible"
+        <ScrollViewer VerticalScrollBarVisibility="Auto"
                       HorizontalScrollBarVisibility="Disabled"
                       HorizontalAlignment="Stretch"
-                      Style="{StaticResource CustomSrollViewer}"
                       Focusable="False"
                       IsTabStop="False"
                       PreviewKeyDown="UIElement_OnPreviewKeyDown">
@@ -76,55 +86,62 @@
                 
                 <Button Grid.Row="1" Style="{DynamicResource Toggl.OutlinedButton}"
                         Margin="12" HorizontalAlignment="Center" Focusable="False"
-                        Name="loadMoreButton" x:FieldModifier="private"
                         Height="32" Width="96"
+                        Visibility="{Binding ShowLoadMore, Converter={StaticResource BooleanToVisibilityConverter}}"
+                        IsEnabled="{Binding IsViewEnabled}"
                         Click="onLoadMoreButtonClick">
                     <Grid>
                         <Image Source="/TogglDesktop;component/Resources/login-spinner.png"
                             Name="loadMoreSpinner" x:FieldModifier="private"
                             Stretch="Fill" Width="24" Height="24"
                             VerticalAlignment="Center" HorizontalAlignment="Center"
-                            Visibility="Collapsed" Opacity="0.6"
+                            Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}" Opacity="0.6"
                             UseLayoutRounding="False">
                             <Image.LayoutTransform>
                                 <RotateTransform Angle="00"/>
                             </Image.LayoutTransform>
                         </Image>
-                        <TextBlock Name="loadMoreButtonText" x:FieldModifier="private"
-                                   Style="{DynamicResource Toggl.BodyText}"
+                        <TextBlock Style="{DynamicResource Toggl.BodyText}"
+                                   Visibility="{Binding IsViewEnabled, Converter={StaticResource BooleanToVisibilityConverter}}"
                                    VerticalAlignment="Center" HorizontalAlignment="Center"
                                    Text="Load more"/>
                     </Grid>
                 </Button>
+
+                <StackPanel Grid.Row="0" Orientation="Vertical"
+                            Visibility="{Binding CurrentScreen, Converter={StaticResource EnumEqualToVisibilityConverter}, ConverterParameter={x:Static viewModels:Screen.Welcome}}">
+                    <Image Source="/TogglDesktop;component/Resources/stopwatch.png"
+                           HorizontalAlignment="Center"
+                           Stretch="None"
+                           Margin="0 30 0 0"/>
+                    <TextBlock Style="{StaticResource Toggl.TitleText}"
+                               Margin="0 16 0 0"
+                               HorizontalAlignment="Center"
+                               Text="Welcome to Toggl" />
+                    <TextBlock Style="{StaticResource Toggl.BodyGrayText}"
+                               Margin="32 16 32 0"
+                               HorizontalAlignment="Center"
+                               TextAlignment="Center"
+                               Text="Time each activity you do and see where your hours go" />
+                </StackPanel>
+
+                <StackPanel Grid.Row="0" Orientation="Vertical"
+                            Margin="0 0 0 4"
+                            Visibility="{Binding CurrentScreen, Converter={StaticResource EnumEqualToVisibilityConverter}, ConverterParameter={x:Static viewModels:Screen.NoRecentEntries}}">
+                    <Image Source="/TogglDesktop;component/Resources/spider.png"
+                           HorizontalAlignment="Center"
+                           Stretch="None"/>
+                    <TextBlock Style="{StaticResource Toggl.TitleText}"
+                               Margin="0 16 0 0"
+                               HorizontalAlignment="Center"
+                               Text="No recent entries" />
+                    <TextBlock Style="{StaticResource Toggl.BodyGrayText}"
+                               Margin="32 16 32 0"
+                               HorizontalAlignment="Center"
+                               TextAlignment="Center"
+                               Text="It’s been a long time since you’ve tracked your tasks!" />
+                </StackPanel>
             </Grid>
         </ScrollViewer>
-
-        <Button Name="emptyListText" x:FieldModifier="private" Visibility="Hidden"
-                        FontSize="14" Foreground="Gray" Cursor="Hand"
-                        Click="onEmptyListTextClick">
-            <Button.Style>
-                <Style TargetType="Button" BasedOn="{StaticResource {x:Type Control}}">
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="Button">
-                                <Border BorderThickness="0"
-                                        Background="{StaticResource ViewBackgroundLight}">
-                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Top"
-                                                      Margin="10 30"/>
-                                </Border>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </Button.Style>
-            <StackPanel>
-                <TextBlock Text="Welcome. Let's start tracking!"
-                           HorizontalAlignment="Center" Margin="0 0 0 10"/>
-                <TextBlock Text="If you have previous entries,"
-                           HorizontalAlignment="Center"/>
-                <TextBlock Text="click here to see them in reports."
-                           HorizontalAlignment="Center"/>
-            </StackPanel>
-        </Button>
     </Grid>
 </UserControl>

@@ -14,8 +14,7 @@
 
         <toggl:TimeEntryList Grid.Row="1"
                              x:Name="Entries"
-                             FocusTimer="onFocusTimer"
-                             Background="{DynamicResource Toggl.TimeEntryListBackground}"/>
+                             FocusTimer="onFocusTimer"/>
 
         <Border Grid.Row="0" Height="1" VerticalAlignment="Bottom"
                 Background="{Binding ElementName=Timer, Path=Background}">
