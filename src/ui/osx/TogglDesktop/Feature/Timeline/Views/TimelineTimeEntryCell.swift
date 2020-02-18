@@ -39,7 +39,7 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
 
     var isHighlight: Bool = false {
         didSet {
-            backgroundBox?.borderColor = (isHighlight ? foregroundBox.fillColor : backgroundColor) ?? foregroundBox.fillColor
+            backgroundBox?.borderColor = (isHighlight ? foregroundBox.backgroundColor : backgroundColor) ?? foregroundBox.backgroundColor
         }
     }
 
@@ -58,7 +58,7 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
     @IBOutlet weak var iconStackView: NSStackView!
     @IBOutlet weak var durationLbl: NSTextField!
     @IBOutlet weak var mainStackView: NSStackView!
-    @IBOutlet weak var innerBackgroundBox: NSBox! // Prevent transparent background color
+    @IBOutlet weak var innerBackgroundBox: CornerBoxView! // Prevent transparent background color
     
     // MARK: View
 

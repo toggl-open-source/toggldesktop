@@ -60,7 +60,7 @@ struct Corners: OptionSet {
         }
 
         if contains(.bottomRight) {
-            mask.insert(.layerMinXMaxYCorner)
+            mask.insert(.layerMaxXMinYCorner)
         }
 
         return mask
