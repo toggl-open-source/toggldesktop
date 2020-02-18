@@ -43,6 +43,28 @@ struct Corners: OptionSet {
 
         return flippedCorners
     }
+
+    var layerCornerMask: CACornerMask {
+        var mask: CACornerMask = []
+
+        if contains(.topLeft) {
+            mask.insert(.layerMinXMaxYCorner)
+        }
+
+        if contains(.topRight) {
+            mask.insert(.layerMaxXMaxYCorner)
+        }
+
+        if contains(.bottomLeft) {
+            mask.insert(.layerMinXMinYCorner)
+        }
+
+        if contains(.bottomRight) {
+            mask.insert(.layerMinXMaxYCorner)
+        }
+
+        return mask
+    }
 }
 
 extension NSBezierPath {

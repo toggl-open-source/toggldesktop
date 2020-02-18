@@ -59,7 +59,6 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
     @IBOutlet weak var durationLbl: NSTextField!
     @IBOutlet weak var mainStackView: NSStackView!
     @IBOutlet weak var innerBackgroundBox: NSBox! // Prevent transparent background color
-    @IBOutlet weak var dashView: TimelineDashedCornerView!
     
     // MARK: View
 
@@ -168,7 +167,7 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
 
     private func handleRunningTimeEntry() {
         guard let timeEntry = timeEntry else { return }
-        dashView.isHidden = !timeEntry.timeEntry.isRunning()
+
     }
 }
 
