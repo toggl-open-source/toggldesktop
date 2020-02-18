@@ -36,9 +36,6 @@ jobs:
         security unlock-keychain -p password ~/Library/Keychains/build.keychain
         security set-keychain-settings -lu
         security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k password ~/Library/Keychains/build.keychain
-    - name: Build the dependencies
-      run: |
-        bash ./dist/osx/build.sh dependencies
     - name: Get cocoapods
       run: |
         bash ./dist/osx/build.sh cocoapods

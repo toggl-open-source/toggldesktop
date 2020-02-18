@@ -123,7 +123,6 @@ function debuginfo() {
 
 
 if [[ "$#" -ne 1 ]]; then
-    dependencies
     cocoapods
     app
     plist
