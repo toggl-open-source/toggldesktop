@@ -2424,7 +2424,8 @@ error Context::AsyncLogin(const std::string &email,
 
 error Context::Login(
     const std::string &email,
-    const std::string &password) {
+    const std::string &password,
+    const bool isSignup) {
     try {
         TogglClient client(UI());
         std::string json("");
@@ -2441,7 +2442,7 @@ error Context::Login(
             return displayError(attemptOfflineLogin(email, password));
         }
 
-        err = SetLoggedInUserFromJSON(json);
+        err = SetLoggedInUserFromJSON(json, isSignup);
         if (err != noError) {
             return displayError(err);
         }
@@ -2510,7 +2511,7 @@ error Context::Signup(
         return displayError(err);
     }
 
-    return Login(email, password);
+    return Login(email, password, true);
 }
 
 error Context::GoogleSignup(
@@ -2523,7 +2524,7 @@ error Context::GoogleSignup(
     if (err != noError) {
         return displayError(err);
     }
-    return Login(access_token, "google_access_token");
+    return Login(access_token, "google_access_token", true);
 }
 
 error Context::AsyncGoogleSignup(const std::string &access_token,
@@ -2619,7 +2620,8 @@ void Context::setUser(User *value, const bool logged_in) {
 }
 
 error Context::SetLoggedInUserFromJSON(
-    const std::string &json) {
+    const std::string &json,
+    const bool isSignup) {
 
     if (json.empty()) {
         return displayError("empty JSON");
@@ -2656,6 +2658,9 @@ error Context::SetLoggedInUserFromJSON(
     }
 
     setUser(user, true);
+    if (isSignup && user_) {
+        user_->ConfirmLoadedMore();
+    }
 
     updateUI(UIElements::Reset());
 
