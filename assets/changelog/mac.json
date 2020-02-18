@@ -10,6 +10,18 @@
                 "Fixed Incorrect position of gap items in Timeline",
                 "Fixed Memory Leaking"
             ],
+            "date": "February 18th 2020"
+        },
+        {
+            "version": "7.5.42",
+            "rows": [
+                "Update the Timeline Link",
+                "Clear Authoriation Headers in a local log",
+                "Add tracking for user activities",
+                "Fixed Timeline Permission in Auto Tracker",
+                "Fixed Incorrect position of gap items in Timeline",
+                "Fixed Memory Leaking"
+            ],
             "date": "February 11st 2020",
             "beta": "true"
         },
