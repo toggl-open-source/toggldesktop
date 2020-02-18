@@ -8,6 +8,10 @@ export   CFLAGS="$LDFLAGS"
 export CXXFLAGS="$LDFLAGS"
 
 version=${TAG_NAME/v/}
+timestamp=$(date "+%Y-%m-%d-%H-%M-%S") 
+escaped_version=$(echo $version | sed 's/\./_/g') 
+installer=TogglDesktop-$escaped_version-$timestamp.dmg
+installer_name=TogglDesktop-$escaped_version.dmg
 
 function app_path() {
     echo $(xcodebuild -scheme TogglDesktop -workspace src/ui/osx/TogglDesktop.xcworkspace -configuration Release -showBuildSettings \
@@ -106,7 +110,7 @@ function dmg() {
     npm install --global create-dmg
     brew install graphicsmagick imagemagick
     create-dmg $APP_PATH
-    mv *.dmg TogglDesktop.dmg
+    mv *.dmg $installer
 }
 
 function debuginfo() {
@@ -121,6 +125,21 @@ function debuginfo() {
     tar cvfz $dsym $APP_PATH/../TogglDesktop.app.dSYM
 }
 
+function appcast() {
+    signature=$(./src/ui/osx/Pods/Sparkle/bin/old_dsa_scripts/sign_update $installer ./dsa_priv.pem)
+    filesize=$(cat $installer | wc -c)
+    functionilesize=(${filesize// / })
+    appUrl=https://github.com/toggl-open-source/toggldesktop/releases/download/v$version/$installer_name
+
+    mkdir branding
+    mkdir -p tmp
+    go run ./dist/osx/appcast.go -platform="darwin" -version=$version -date=$timestamp -appUrl=$appUrl -filesize=$filesize -signature=$signature -verbose=true
+
+    cat tmp/darwin_dev_appcast.xml
+    mv tmp/darwin_dev_appcast.xml branding
+    package_end=`date +%s`
+    package_time=$((package_end-package_start))
+}
 
 if [[ "$#" -ne 1 ]]; then
     cocoapods
@@ -130,6 +149,7 @@ if [[ "$#" -ne 1 ]]; then
     notarize
     debuginfo
     dmg
+    appcast
 else
     $1
 fi
