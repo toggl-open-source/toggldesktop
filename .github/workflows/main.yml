@@ -47,6 +47,8 @@ jobs:
       uses: actions/setup-go@v1
       with:
         version: 1.13
+      run: |
+        go version
     - name: Insert version string
       # if: github.event_name == 'release'
       run: |

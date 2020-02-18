@@ -13,6 +13,9 @@ escaped_version=$(echo $version | sed 's/\./_/g')
 installer=TogglDesktop-$escaped_version-$timestamp.dmg
 installer_name=TogglDesktop-$escaped_version.dmg
 
+echo installer
+echo installer_name
+
 function app_path() {
     echo $(xcodebuild -scheme TogglDesktop -workspace src/ui/osx/TogglDesktop.xcworkspace -configuration Release -showBuildSettings \
                 | grep -w 'BUILT_PRODUCTS_DIR' \
