@@ -14,14 +14,20 @@
             <rect key="frame" x="0.0" y="0.0" width="197" height="107"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <box boxType="custom" borderType="none" borderWidth="0.0" cornerRadius="10" title="Box" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="PFT-Hu-lDX">
+                <customView translatesAutoresizingMaskIntoConstraints="NO" id="ZlO-hY-zkZ" customClass="CornerBoxView" customModule="TogglDesktop" customModuleProvider="target">
                     <rect key="frame" x="0.0" y="0.0" width="197" height="107"/>
-                    <view key="contentView" id="x0z-XV-qtc">
-                        <rect key="frame" x="0.0" y="0.0" width="197" height="107"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                    </view>
-                    <color key="fillColor" name="timeline-background-color"/>
-                </box>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                            <real key="value" value="10"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                            <real key="value" value="0.0"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="color" keyPath="backgroundColor">
+                            <color key="value" name="timeline-background-color"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </customView>
                 <box horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" boxType="custom" borderType="line" cornerRadius="10" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="xE9-Ie-UP3">
                     <rect key="frame" x="0.0" y="0.0" width="197" height="107"/>
                     <view key="contentView" id="r80-dl-MpV">
@@ -151,30 +157,36 @@
                     </view>
                     <color key="fillColor" name="tertiaryLabelColor" catalog="System" colorSpace="catalog"/>
                 </box>
-                <box horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" boxType="custom" borderType="none" borderWidth="0.0" cornerRadius="10" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="ILd-N3-zAP">
+                <customView horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="CHS-wV-aVu" customClass="CornerBoxView" customModule="TogglDesktop" customModuleProvider="target">
                     <rect key="frame" x="0.0" y="0.0" width="20" height="107"/>
-                    <view key="contentView" id="R5g-bh-G9v">
-                        <rect key="frame" x="0.0" y="0.0" width="20" height="107"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                    </view>
                     <constraints>
-                        <constraint firstAttribute="width" constant="20" id="kI4-ty-z79"/>
+                        <constraint firstAttribute="width" constant="20" id="QaL-zX-gSd"/>
                     </constraints>
-                    <color key="fillColor" name="systemOrangeColor" catalog="System" colorSpace="catalog"/>
-                </box>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                            <real key="value" value="10"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                            <real key="value" value="0.0"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="color" keyPath="backgroundColor">
+                            <color key="value" name="systemOrangeColor" catalog="System" colorSpace="catalog"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </customView>
             </subviews>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="ILd-N3-zAP" secondAttribute="bottom" priority="750" id="1Mm-Za-otm"/>
                 <constraint firstItem="xE9-Ie-UP3" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" priority="750" id="1VM-YB-XHD"/>
+                <constraint firstItem="CHS-wV-aVu" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" priority="750" id="1uM-Sp-Zup"/>
                 <constraint firstAttribute="trailing" secondItem="xE9-Ie-UP3" secondAttribute="trailing" priority="750" id="44W-4X-N3n"/>
-                <constraint firstItem="PFT-Hu-lDX" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" id="HyU-Wh-UDu"/>
+                <constraint firstAttribute="trailing" secondItem="ZlO-hY-zkZ" secondAttribute="trailing" id="4qn-iB-eTU"/>
+                <constraint firstItem="ZlO-hY-zkZ" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" id="6c8-YK-ZKX"/>
                 <constraint firstItem="xE9-Ie-UP3" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" priority="750" id="Jj8-O9-hu6"/>
-                <constraint firstItem="PFT-Hu-lDX" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="VaI-2H-p9e"/>
-                <constraint firstAttribute="bottom" secondItem="PFT-Hu-lDX" secondAttribute="bottom" id="fW7-Nd-VKX"/>
-                <constraint firstItem="ILd-N3-zAP" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" priority="750" id="ibj-8F-oO2"/>
-                <constraint firstAttribute="trailing" secondItem="PFT-Hu-lDX" secondAttribute="trailing" id="kah-E4-eV6"/>
+                <constraint firstAttribute="bottom" secondItem="CHS-wV-aVu" secondAttribute="bottom" priority="750" id="Lko-TK-rov"/>
+                <constraint firstAttribute="bottom" secondItem="ZlO-hY-zkZ" secondAttribute="bottom" id="QMX-O3-uTc"/>
+                <constraint firstItem="CHS-wV-aVu" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" priority="750" id="UmF-V8-X38"/>
+                <constraint firstItem="ZlO-hY-zkZ" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="VAG-Yl-MTB"/>
                 <constraint firstAttribute="bottom" secondItem="xE9-Ie-UP3" secondAttribute="bottom" priority="750" id="pyj-Y7-31G"/>
-                <constraint firstItem="ILd-N3-zAP" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" priority="750" id="zP1-Vu-Sgm"/>
             </constraints>
             <point key="canvasLocation" x="32.5" y="162.5"/>
         </customView>
@@ -185,9 +197,9 @@
                 <outlet property="clientNameLbl" destination="Ypi-B4-1IQ" id="CWd-5X-D9a"/>
                 <outlet property="dotColorBox" destination="IRd-GO-o1l" id="e83-2k-O8A"/>
                 <outlet property="durationLbl" destination="fa0-T9-1iU" id="dzs-lY-QOM"/>
-                <outlet property="foregroundBox" destination="ILd-N3-zAP" id="FYH-LJ-fYB"/>
+                <outlet property="foregroundBox" destination="CHS-wV-aVu" id="nAo-eo-eYl"/>
                 <outlet property="iconStackView" destination="PyM-uW-hFa" id="iwc-5a-pK9"/>
-                <outlet property="innerBackgroundBox" destination="PFT-Hu-lDX" id="xAF-ge-2oe"/>
+                <outlet property="innerBackgroundBox" destination="ZlO-hY-zkZ" id="rfz-JL-MIh"/>
                 <outlet property="mainStackView" destination="Dpe-7G-baj" id="GwM-nb-8fY"/>
                 <outlet property="projectLbl" destination="euI-fo-hqA" id="tZs-ru-phr"/>
                 <outlet property="projectStackView" destination="Azu-a1-gfT" id="MiD-AE-fBP"/>

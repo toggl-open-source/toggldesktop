@@ -41,7 +41,7 @@ class TimelineBaseCell: NSCollectionViewItem {
     // MARK: OUTLET
 
     @IBOutlet weak var backgroundBox: NSBox?
-    @IBOutlet weak var foregroundBox: NSBox!
+    @IBOutlet weak var foregroundBox: CornerBoxView!
     
     // MARK: Variables
 
@@ -94,7 +94,7 @@ class TimelineBaseCell: NSCollectionViewItem {
     func renderColor(with foregroundColor: NSColor, isSmallEntry: Bool) {
         backgroundColor = foregroundColor.lighten(by: 0.2)
 
-        foregroundBox.fillColor = foregroundColor
+        foregroundBox.backgroundColor = foregroundColor
         backgroundBox?.fillColor = backgroundColor ?? foregroundColor
         backgroundBox?.borderColor = backgroundColor ?? foregroundColor
 
