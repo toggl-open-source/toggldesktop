@@ -886,6 +886,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="FodyWeavers.xml" />
+    <Resource Include="Resources\restricted-area.png" />
     <Resource Include="Resources\spider.png" />
     <Resource Include="Resources\stopwatch.png" />
   </ItemGroup>
