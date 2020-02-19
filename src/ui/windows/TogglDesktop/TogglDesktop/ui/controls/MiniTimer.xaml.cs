@@ -152,7 +152,7 @@ namespace TogglDesktop
             this.editProjectPanel.ShowOnlyIf(item.ProjectID != 0);
             this.editModeProjectLabel.ViewModel.SetProject(item);
 
-            this.runningEntryInfoPanel.OnConfirmCompletion(item);
+            this.runningEntryInfoPanel.UpdateBillableAndTags(item.Billable, item.Tags);
         }
 
         private void cancelProjectSelectionButtonClick(object sender, RoutedEventArgs e)
