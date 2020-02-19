@@ -22,11 +22,15 @@ namespace TogglDesktop
 
         public event MouseButtonEventHandler DurationLabelMouseDown;
 
-        public void OnConfirmCompletion(Toggl.TogglAutocompleteView item)
+        public void UpdateBillableAndTags(bool billable, string tags)
         {
-            this.billableIcon.ShowOnlyIf(item.Billable);
-            this.tagsIcon.ShowOnlyIf(!string.IsNullOrEmpty(item.Tags));
-            this.tagsIcon.Tag = item.Tags;
+            this.billableIcon.ShowOnlyIf(billable);
+            this.tagsIcon.ShowOnlyIf(!string.IsNullOrEmpty(tags));
+            this.tagsIcon.Tag = tags;
+            this.tagsIcon.ToolTip =
+                string.IsNullOrEmpty(tags)
+                    ? null
+                    : tags.Replace(Toggl.TagSeparator, " • ");
         }
 
         public bool IsBillable => billableIcon.IsVisible;
@@ -35,17 +39,14 @@ namespace TogglDesktop
         public void ResetUIState(bool running)
         {
             this.ShowOnlyIf(running);
-            this.billableIcon.Visibility = Visibility.Collapsed;
-            this.tagsIcon.Visibility = Visibility.Collapsed;
-            this.tagsIcon.Tag = "";
+            this.UpdateBillableAndTags(false, string.Empty);
             this.durationLabelPanel.ToolTip = null;
             this.durationLabel.Text = "00:00:00";
         }
 
         public void SetTimeEntry(Toggl.TogglTimeEntryView item)
         {
-            this.billableIcon.ShowOnlyIf(item.Billable);
-            this.tagsIcon.ShowOnlyIf(!string.IsNullOrEmpty(item.Tags));
+            this.UpdateBillableAndTags(item.Billable, item.Tags);
             this.durationLabel.Text =
                 item.Ended > item.Started
                 ? item.Duration
@@ -54,10 +55,6 @@ namespace TogglDesktop
                 item.Ended > item.Started
                 ? item.StartTimeString + " - " + item.EndTimeString
                 : "started at " + item.StartTimeString;
-            this.tagsIcon.ToolTip =
-                string.IsNullOrEmpty(item.Tags)
-                ? null
-                : item.Tags.Replace(Toggl.TagSeparator, " • ");
         }
 
         public void SetDurationLabel(string s)
