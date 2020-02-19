@@ -310,7 +310,7 @@ HTTPSResponse HTTPSClient::makeHttpRequest(
         Poco::Net::HTTPSClientSession session(uri.getHost(), uri.getPort(),
                                               context);
 
-        session.setKeepAlive(false);
+        session.setKeepAlive(true);
         session.setTimeout(
             Poco::Timespan(req.timeout_seconds * Poco::Timespan::SECONDS));
 
@@ -329,7 +329,7 @@ HTTPSResponse HTTPSClient::makeHttpRequest(
         Poco::Net::HTTPRequest poco_req(req.method,
                                         encoded_url,
                                         Poco::Net::HTTPMessage::HTTP_1_1);
-        poco_req.setKeepAlive(false);
+        poco_req.setKeepAlive(true);
 
         // FIXME: should get content type as parameter instead
         if (req.payload.size()) {
@@ -343,6 +343,9 @@ HTTPSResponse HTTPSClient::makeHttpRequest(
                 && !req.basic_auth_password.empty()) {
             cred.authenticate(poco_req);
         }
+
+        // Request gzip unless downloading files
+        poco_req.set("Accept-Encoding", "gzip");
 
         if (!req.form) {
             std::istringstream requestStream(req.payload);
@@ -368,9 +371,6 @@ HTTPSResponse HTTPSClient::makeHttpRequest(
             std::ostream& send = session.sendRequest(poco_req);
             req.form->write(send);
         }
-
-        // Request gzip unless downloading files
-        poco_req.set("Accept-Encoding", "gzip");
 
         // Remove Auth info
         poco_req.erase("Authorization");

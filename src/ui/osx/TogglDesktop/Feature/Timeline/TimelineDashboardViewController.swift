@@ -155,17 +155,8 @@ final class TimelineDashboardViewController: NSViewController {
     }
 
     func render(with cmd: TimelineDisplayCommand) {
-        let timeline = TimelineData(cmd: cmd, zoomLevel: zoomLevel)
-        let date = Date(timeIntervalSince1970: cmd.start)
-        let shouldScroll = datePickerView.currentDate != date
-        datePickerView.currentDate = date
-        datasource.render(timeline)
-
-        handleEmptyState(timeline)
-
-        if shouldScroll {
-            scrollToVisibleItem()
-        }
+        datePickerView.currentDate = Date(timeIntervalSince1970: cmd.start)
+        datasource.render(cmd: cmd, zoomLevel: zoomLevel)
 
         // After the reload finishes, we hightlight a cell again
         updatePositionOfEditorIfNeed()
@@ -246,6 +237,10 @@ extension TimelineDashboardViewController {
                                        selector: #selector(startTimeEntryNoti(_:)),
                                        name: Notification.Name(kStarTimeEntryWithStartTime),
                                        object: nil)
+        NotificationCenter.default.addObserver(self,
+                                       selector: #selector(runningTimeEntryNoti(_:)),
+                                       name: Notification.Name(kDisplayTimerState),
+                                       object: nil)
     }
 
     private func initTrackingArea() {
@@ -307,12 +302,6 @@ extension TimelineDashboardViewController {
         editorPopover.setTimeEntry(timeEntry)
     }
 
-    fileprivate func handleEmptyState(_ timeline: TimelineData) {
-        emptyLbl.isHidden = !timeline.timeEntries.isEmpty
-        emptyActivityLbl.isHidden = !timeline.activities.isEmpty
-        updateEmptyActivityText()
-    }
-
     private func updateEmptyActivityText() {
         emptyActivityLbl.stringValue = recordSwitcher.isOn ? "No activity was recorded yet..." : "Turn on activity\nrecording to see results."
         emptyActivityLblPadding.constant = recordSwitcher.isOn ? -40 : -50
@@ -354,6 +343,10 @@ extension TimelineDashboardViewController {
     @objc private func startTimeEntryNoti(_ noti: Notification) {
         guard let startTime = noti.object as? Date else { return }
         timelineShouldCreateEmptyEntry(with: startTime.timeIntervalSince1970)
+    }
+
+    @objc private func runningTimeEntryNoti(_ noti: Notification) {
+        datasource.updateRunningTimeEntry(noti.object)
     }
 }
 
@@ -398,6 +391,16 @@ extension TimelineDashboardViewController: DatePickerViewDelegate {
 
 extension TimelineDashboardViewController: TimelineDatasourceDelegate {
 
+    func shouldHandleEmptyState(_ timelineData: TimelineData) {
+        emptyLbl.isHidden = !timelineData.timeEntries.isEmpty
+        emptyActivityLbl.isHidden = !timelineData.activities.isEmpty
+        updateEmptyActivityText()
+    }
+
+    func shouldHideAllPopover() {
+        closeAllPopovers()
+    }
+
     func shouldPresentTimeEntryHover(in view: NSView, timeEntry: TimelineTimeEntry) {
         guard !editorPopover.isShown else { return }
         timeEntryHoverPopover.show(relativeTo: view.bounds, of: view, preferredEdge: .maxX)
@@ -433,7 +436,11 @@ extension TimelineDashboardViewController: TimelineDatasourceDelegate {
         // Or present the Popover
         selectedGUID = timeEntry.guid
         editorPopover.setTimeEntry(timeEntry)
-        DesktopLibraryBridge.shared().startEditor(atGUID: timeEntry.guid)
+
+        // We already present the Editor in Timeline, so don't need to present on the Timer anymore
+        if !timeEntry.isRunning() {
+            DesktopLibraryBridge.shared().startEditor(atGUID: timeEntry.guid)
+        }
 
         // Find the cell and present to get the correct position
         // since the toggl_edit causes the Timeline completely reloads -> The cell is reused.
@@ -479,10 +486,10 @@ extension TimelineDashboardViewController: TimelineDatasourceDelegate {
         DesktopLibraryBridge.shared().updateTimeEntryWithEnd(atTimestamp: endtime, guid: guid)
     }
 
-    func shouldUpdateStartTime(_ start: TimeInterval, for entry: TimelineTimeEntry) {
+    func shouldUpdateStartTime(_ start: TimeInterval, for entry: TimelineTimeEntry, keepEndTimeFixed: Bool) {
         guard let guid = entry.timeEntry.guid else { return }
         resizeInfoPopover.close()
-        DesktopLibraryBridge.shared().updateTimeEntryWithStart(atTimestamp: start, guid: guid)
+        DesktopLibraryBridge.shared().updateTimeEntryWithStart(atTimestamp: start, guid: guid, keepEndTimeFixed: keepEndTimeFixed)
     }
 
     func shouldPresentResizePopover(at cell: TimelineTimeEntryCell, onTopCorner: Bool) {

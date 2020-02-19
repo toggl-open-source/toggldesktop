@@ -176,7 +176,7 @@ extension MainDashboardViewController {
 extension MainDashboardViewController: TimeEntryListViewControllerDelegate {
 
     func isTimerFocusing() -> Bool {
-        return timerController.autoCompleteInput.currentEditor() != nil
+        return timerController.autoCompleteInput?.currentEditor() != nil
     }
 
     func containerViewForTimer() -> NSView! {

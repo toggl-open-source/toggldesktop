@@ -132,10 +132,12 @@ void *ctx;
 
 - (void)updateTimeEntryWithStartAtTimestamp:(NSTimeInterval)timestamp
 									   guid:(NSString *)guid
+                           keepEndTimeFixed:(BOOL)keepEndTimeFixed
 {
-	toggl_set_time_entry_start_timestamp(ctx,
-										 [guid UTF8String],
-										 timestamp);
+    toggl_set_time_entry_start_timestamp_with_option(ctx,
+                                                     [guid UTF8String],
+                                                     timestamp,
+                                                     keepEndTimeFixed);
 }
 
 - (void)updateTimeEntryWithEndTime:(NSString *)endTime

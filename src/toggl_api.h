@@ -676,6 +676,12 @@ extern "C" {
         const char_t *guid,
         const int64_t start);
 
+TOGGL_EXPORT bool_t toggl_set_time_entry_start_timestamp_with_option(
+        void *context,
+        const char_t *guid,
+        const int64_t start,
+        const bool_t keep_end_time_fixed);
+
     TOGGL_EXPORT bool_t toggl_set_time_entry_end(
         void *context,
         const char_t *guid,

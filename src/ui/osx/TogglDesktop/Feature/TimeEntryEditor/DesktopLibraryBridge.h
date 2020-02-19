@@ -56,7 +56,8 @@ NS_ASSUME_NONNULL_BEGIN
 								guid:(NSString *)guid;
 
 - (void)updateTimeEntryWithStartAtTimestamp:(NSTimeInterval)timestamp
-									   guid:(NSString *)guid;
+									   guid:(NSString *)guid
+                            keepEndTimeFixed:(BOOL) keepEndTimeFixed;
 
 - (void)updateTimeEntryWithEndTime:(NSString *)endTime
 							  guid:(NSString *)guid;

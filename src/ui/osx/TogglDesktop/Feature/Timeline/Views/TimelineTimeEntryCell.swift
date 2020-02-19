@@ -39,7 +39,7 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
 
     var isHighlight: Bool = false {
         didSet {
-            backgroundBox?.borderColor = (isHighlight ? foregroundBox.fillColor : backgroundColor) ?? foregroundBox.fillColor
+            backgroundBox?.borderColor = (isHighlight ? foregroundBox.backgroundColor : backgroundColor) ?? foregroundBox.backgroundColor
         }
     }
 
@@ -58,7 +58,8 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
     @IBOutlet weak var iconStackView: NSStackView!
     @IBOutlet weak var durationLbl: NSTextField!
     @IBOutlet weak var mainStackView: NSStackView!
-
+    @IBOutlet weak var innerBackgroundBox: CornerBoxView! // Prevent transparent background color
+    
     // MARK: View
 
     override func viewDidLoad() {
@@ -78,6 +79,7 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
         self.timeEntry = timeEntry
         renderColor(with: timeEntry.color, isSmallEntry: timeEntry.isSmall)
         populateInfo()
+        handleRunningTimeEntry()
     }
 
     private func populateInfo() {
@@ -97,7 +99,7 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
             timeEntry.hasDetailInfo else { return }
 
         // Hide if it too small
-        backgroundBox?.isHidden = isSmallSize
+        hideBackgroundViews(isHidden: isSmallSize)
 
         // Set initial state
         let topPadding: CGFloat = 5
@@ -162,6 +164,13 @@ final class TimelineTimeEntryCell: TimelineBaseCell {
             clientNameLbl.isHidden = true
         }
     }
+
+    private func handleRunningTimeEntry() {
+        let isRunning = timeEntry?.timeEntry.isRunning() ?? false
+        let corner: Corners = isRunning ? [.topLeft, .topRight] : [.bottomLeft, .bottomRight, .topLeft, .topRight]
+        backgroundBox?.corners = corner
+        foregroundBox.corners = corner
+    }
 }
 
 // MARK: Private
@@ -172,6 +181,11 @@ extension TimelineTimeEntryCell {
         timeEntryMenu.menuDelegate = self
         view.menu = timeEntryMenu
         view.menu?.delegate = self
+    }
+
+    private func hideBackgroundViews(isHidden: Bool) {
+        backgroundBox?.isHidden = isHidden
+        innerBackgroundBox.isHidden = isHidden
     }
 }
 
