@@ -5,9 +5,10 @@
              Background="{DynamicResource Toggl.CardBackground}"
              BorderThickness="1"
              BorderBrush="{DynamicResource Toggl.TextBox.Border}"
-             Width="300"
+             MaxWidth="384"
+             MinWidth="144"
              x:Name="me" x:FieldModifier="private">
-    <Grid Margin="16 8 8 8">
+    <Grid Margin="16 8 12 8">
         <Grid.RowDefinitions>
             <RowDefinition />
             <RowDefinition />
@@ -22,6 +23,7 @@
                               Grid.ColumnSpan="2"
                               Grid.Row="0"
                               Margin="0 0 8 0"
+                              Width="320"
                               VerticalPadding="1"
                               CompactDescription="True"
                               Visibility="{Binding ElementName=me, Path=IsTracking, Converter={StaticResource BooleanToVisibilityConverter}}"/>
@@ -33,17 +35,18 @@
                                          Visibility="{Binding ElementName=me, Path=IsTracking, Converter={StaticResource BooleanToVisibilityConverter}}"/>
 
         <Separator Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
-                   Margin="-4 8 0 8"
+                   Margin="-4 8 -4 8"
                    Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"
                    Visibility="{Binding ElementName=me, Path=IsTracking, Converter={StaticResource BooleanToVisibilityConverter}}" />
         <TextBlock Grid.Row="2" Grid.Column="0"
+                   Margin="0 0 8 0"
                    Style="{StaticResource Toggl.BaseText}"
                    Text="Today" />
         <TextBlock Grid.Row="2" Grid.Column="1"
                    Margin="4 0 0 0"
                    Style="{StaticResource Toggl.CaptionSemiBoldText}"
                    VerticalAlignment="Center"
-                   HorizontalAlignment="Center"
+                   HorizontalAlignment="Right"
                    Text="{Binding ElementName=me, Path=TotalToday}" />
     </Grid>
 </UserControl>
