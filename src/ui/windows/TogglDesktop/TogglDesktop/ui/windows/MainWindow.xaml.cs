@@ -424,12 +424,17 @@ namespace TogglDesktop
             if (open || userID == 0)
             {
                 this.emailAddressMenuText.Text = "Logged out";
-                // TODO: update tray tooltip with logged out text
+                this.taskbarIcon.TrayToolTip = null;
+                this.taskbarIcon.ToolTipText = "Toggl - Logged out";
+                this.SetMiniTimerVisible(false);
             }
             else
             {
                 this.emailAddressMenuText.Text = Toggl.UserEmail();
+                this.taskbarIcon.TrayToolTip = trayToolTip;
+                this.taskbarIcon.ToolTipText = $"Toggl - Logged in as {Toggl.UserEmail()}";
             }
+
             this.updateTracking(null);
         }
 
@@ -612,10 +617,6 @@ namespace TogglDesktop
         private void updateTaskbarTooltip(object sender, string s)
         {
             this.trayToolTip.RunningEntryInfoPanel.SetDurationLabel(s);
-
-            // ToolTipText is required to be non-empty in order for trayToolTip to show up
-            // this is actually supposed to be shown only on very old systems (pre-Vista)
-            this.taskbarIcon.ToolTipText = $"Total today: {this.trayToolTip.TotalToday}";
         }
 
         #endregion
@@ -829,7 +830,6 @@ namespace TogglDesktop
                 this.trayToolTip.RunningEntryInfoPanel.ResetUIState(false);
                 this.runningMenuText.Text = "Timer is not tracking";
                 this.Title = "Toggl Desktop";
-                this.taskbarIcon.ToolTipText = "Total today: " + this.trayToolTip.TotalToday;
             }
 
             this.updateStatusIcons(true);
