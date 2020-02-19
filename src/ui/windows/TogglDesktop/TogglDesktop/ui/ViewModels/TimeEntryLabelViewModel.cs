@@ -9,15 +9,25 @@ namespace TogglDesktop.ViewModels
         public TimeEntryLabelViewModel(ProjectLabelViewModel projectLabel)
         {
             ProjectLabel = projectLabel;
-            this.WhenAnyValue(x => x.ProjectLabel.ProjectName)
-                .Select(projectName => string.IsNullOrEmpty(projectName) ? "+ Add details" : "+ Add description")
+            this.WhenAnyValue(x => x.ProjectLabel.ProjectName,
+                    x => x.ShowAddDetailsLabels)
+                .Select(((string projectName, bool showAddDetailsLabels) x) => x.showAddDetailsLabels
+                    ? (string.IsNullOrEmpty(x.projectName)
+                        ? "+ Add details"
+                        : "+ Add description")
+                    : "(no description)")
                 .ToPropertyEx(this, x => x.AddDescriptionLabelText);
-            this.WhenAnyValue(x => x.Description, x => x.ProjectLabel.ProjectName)
-                .Select(((string description, string projectName) tuple) => GetIsAddProjectLabelVisible(tuple.description, tuple.projectName))
+            this.WhenAnyValue(x => x.Description,
+                    x => x.ProjectLabel.ProjectName,
+                    x => x.ShowAddDetailsLabels)
+                .Select(((string description, string projectName, bool showAddDetailsLabels) x) =>
+                    x.showAddDetailsLabels && GetIsAddProjectLabelVisible(x.description, x.projectName))
                 .ToPropertyEx(this, x => x.IsAddProjectLabelVisible);
         }
 
         public ProjectLabelViewModel ProjectLabel { get; }
+
+        [Reactive] public bool ShowAddDetailsLabels { get; set; } = true;
 
         [Reactive]
         public string Description { get; private set; }
