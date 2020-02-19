@@ -611,7 +611,6 @@
 					Kopsik/third_party/kopsik/third_party/poco/Net/include/,
 					Kopsik/third_party/kopsik/third_party/poco/NetSSL_OpenSSL/include/,
 					Kopsik/third_party/kopsik/third_party/poco/Crypto/include/,
-					"$(PROJECT_DIR)/../../../third_party/lua/install/include/",
 					../../../third_party/openssl/include,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
@@ -670,7 +669,6 @@
 					Kopsik/third_party/kopsik/third_party/poco/Net/include/,
 					Kopsik/third_party/kopsik/third_party/poco/NetSSL_OpenSSL/include/,
 					Kopsik/third_party/kopsik/third_party/poco/Crypto/include/,
-					"$(PROJECT_DIR)/../../../third_party/lua/install/include/",
 					../../../third_party/openssl/include,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
