@@ -366,16 +366,14 @@ namespace TogglDesktop
             if (!this.KeepOpenWhenSelecting)
                 this.close();
 
-            // quick check if there is a full match with the first shown item
-            if (item == null && controller.VisibleItems[0].Text == this.textbox.Text)
-            {
-                controller.SelectNext();
-                item = controller.SelectedItem;
-            }
-
             if (item == null)
             {
                 ConfirmWithoutCompletion?.Invoke(this, this.textbox.Text);
+                if (this.IsOpen)
+                {
+                    // refresh the popup content
+                    this.open();
+                }
                 return;
             }
 
@@ -470,21 +468,18 @@ namespace TogglDesktop
 
             e.Handled = true;
             listBox.SelectedIndex = index;
-            if (listBox.SelectedItem is TagItemViewModel asTag)
-            {
-                asTag.IsChecked = !asTag.IsChecked;
-            }
 
             this.confirmCompletion(false);
         }
 
-        private void CreateProjectButton_OnClick(object sender, RoutedEventArgs e)
+        private void ActionButton_OnClick(object sender, RoutedEventArgs e)
         {
             ActionButtonClick?.Invoke(sender, e);
             if (KeepOpenWhenSelecting)
             {
                 this.textbox.Focus();
             }
+            this.actionButton.ShowOnlyIf(this.controller.ShowActionButton && !ActionButtonText.IsNullOrEmpty());
         }
 
         public bool HasKeyboardFocus() => popup.IsKeyboardFocusWithin;

@@ -783,17 +783,6 @@ namespace TogglDesktop
 
         #region tag list
 
-        private void tagList_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
-        {
-            if (!this.hasTimeEntry())
-            {
-                Console.WriteLine("Cannot change tags: No time entry.");
-                return;
-            }
-
-            this.saveTags();
-        }
-
         private void tagList_TagAdded(object sender, string e)
         {
             this.saveTags();
