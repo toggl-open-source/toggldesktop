@@ -44,9 +44,30 @@ std::string Formatter::togglTimeOfDayToPocoFormat(
     return "%H:%M";
 }
 
-std::string Formatter::JoinTaskName(
-    Task * const t,
-    Project * const p) {
+
+std::string Formatter::JoinTaskName(locked<Task> &t, locked<Project> &p) {
+    std::stringstream ss;
+    bool empty = true;
+    if (t) {
+        ss << t->Name();
+        empty = false;
+    }
+    if (p) {
+        if (!empty) {
+            ss << ". ";
+        }
+        ss << p->Name();
+        if (p->CID()) {
+            ss << ". "
+               << p->ClientName();
+        }
+    }
+
+    return ss.str();
+}
+
+std::string Formatter::JoinTaskName(locked<const Task> &t,
+    locked<const Project> &p) {
     std::stringstream ss;
     bool empty = true;
     if (t) {
@@ -590,15 +611,19 @@ error Formatter::CollectErrors(std::vector<error> * const errors) {
     return error(ss.str());
 }
 
-bool CompareClientByName(Client *a, Client *b) {
+bool CompareClientByName(locked<Client> &a, locked<Client> &b) {
     return (Poco::UTF8::icompare(a->Name(), b->Name()) < 0);
+}
+
+bool CompareTimeEntriesByStart(locked<TimeEntry> &a, locked<TimeEntry> &b) {
+    return a->Start() < b->Start();
 }
 
 bool CompareByStart(TimedEvent *a, TimedEvent *b) {
     return a->Start() < b->Start();
 }
 
-bool CompareWorkspaceByName(Workspace *a, Workspace *b) {
+bool CompareWorkspaceByName(locked<Workspace> &a, locked<Workspace> &b) {
     return (Poco::UTF8::icompare(a->Name(), b->Name()) < 0);
 }
 

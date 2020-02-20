@@ -21,9 +21,8 @@ Idle::Idle(GUI *ui)
 , ui_(ui) {
 }
 
-void Idle::SetIdleSeconds(
-    const Poco::Int64 idle_seconds,
-    User *current_user) {
+void Idle::SetIdleSeconds(const Poco::Int64 idle_seconds,
+    locked<User> &current_user) {
     /*
     {
         std::stringstream ss;
@@ -48,11 +47,10 @@ void Idle::SetIdleSeconds(
     last_idle_seconds_reading_ = idle_seconds;
 }
 
-void Idle::computeIdleState(
-    const Poco::Int64 idle_seconds,
-    User *current_user) {
-    if (settings_.idle_minutes &&
-            (idle_seconds >= (settings_.idle_minutes*60)) &&
+void Idle::computeIdleState(const Poco::Int64 idle_seconds,
+    locked<User> &current_user) {
+    if (settings_ && (*settings_)->idle_minutes &&
+            (idle_seconds >= ((*settings_)->idle_minutes*60)) &&
             !last_idle_started_) {
         last_idle_started_ = time(nullptr) - idle_seconds;
 
@@ -65,13 +63,13 @@ void Idle::computeIdleState(
             idle_seconds < last_idle_seconds_reading_) {
         time_t now = time(nullptr);
 
-        TimeEntry *te = current_user->RunningTimeEntry();
+        auto te = current_user->RunningTimeEntry();
         if (!te) {
             logger.warning("Time entry is not tracking, ignoring idleness");
         } else if (Formatter::AbsDuration(te->DurationInSeconds())
                    < last_idle_seconds_reading_) {
             logger.warning("Time entry duration is less than idle, ignoring");
-        } else if (settings_.use_idle_detection) {
+        } else if (settings_ && (*settings_)->use_idle_detection) {
             std::stringstream since;
             since << "You have been idle since "
                   << Formatter::FormatTimeForTimeEntryEditor(

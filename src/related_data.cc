@@ -29,37 +29,24 @@ void clearList(std::vector<T *> *list) {
     list->clear();
 }
 
-void RelatedData::forEachTimeEntries(std::function<void(TimeEntry *)> f) {
-    Poco::Mutex::ScopedLock lock(timeEntries_m_);
-    std::for_each(TimeEntries.begin(), TimeEntries.end(), f);
-}
-
-void RelatedData::pushBackTimeEntry(TimeEntry *timeEntry) {
-    Poco::Mutex::ScopedLock lock(timeEntries_m_);
-    TimeEntries.push_back(timeEntry);
-}
-
 void RelatedData::Clear() {
-    clearList(&Workspaces);
-    clearList(&Clients);
-    clearList(&Projects);
-    clearList(&Tasks);
-    clearList(&Tags);
-    clearList(&TimeEntries);
-    clearList(&AutotrackerRules);
-    clearList(&TimelineEvents);
-    clearList(&ObmActions);
-    clearList(&ObmExperiments);
+    Workspaces.clear();
+    Clients.clear();
+    Projects.clear();
+    Tasks.clear();
+    Tags.clear();
+    TimeEntries.clear();
+    AutotrackerRules.clear();
+    TimelineEvents.clear();
+    ObmActions.clear();
+    ObmExperiments.clear();
 }
 
 error RelatedData::DeleteAutotrackerRule(const Poco::Int64 local_id) {
     if (!local_id) {
         return error("cannot delete rule without an ID");
     }
-    for (std::vector<AutotrackerRule *>::iterator it =
-        AutotrackerRules.begin();
-            it != AutotrackerRules.end(); ++it) {
-        AutotrackerRule *rule = *it;
+    for (auto rule : AutotrackerRules) {
         // Autotracker settings are not saved to DB,
         // so the ID will be 0 always. But will have local ID
         if (rule->LocalID() == local_id) {
@@ -71,25 +58,18 @@ error RelatedData::DeleteAutotrackerRule(const Poco::Int64 local_id) {
     return noError;
 }
 
-AutotrackerRule *RelatedData::FindAutotrackerRule(
-    const TimelineEvent &event) const {
-    for (std::vector<AutotrackerRule *>::const_iterator it =
-        AutotrackerRules.begin();
-            it != AutotrackerRules.end(); ++it) {
-        AutotrackerRule *rule = *it;
+locked<AutotrackerRule> RelatedData::FindAutotrackerRule(locked<TimelineEvent> &event) {
+    for (auto rule : AutotrackerRules) {
         if (rule->Matches(event)) {
             return rule;
         }
     }
-    return nullptr;
+    return {};
 }
 
 bool RelatedData::HasMatchingAutotrackerRule(
     const std::string &lowercase_term) const {
-    for (std::vector<AutotrackerRule *>::const_iterator it =
-        AutotrackerRules.begin();
-            it != AutotrackerRules.end(); ++it) {
-        AutotrackerRule *rule = *it;
+    for (auto rule : AutotrackerRules) {
         if (rule->Term() == lowercase_term) {
             return true;
         }
@@ -100,10 +80,7 @@ bool RelatedData::HasMatchingAutotrackerRule(
 Poco::Int64 RelatedData::NumberOfUnsyncedTimeEntries() const {
     Poco::Int64 count(0);
 
-    for (std::vector<TimeEntry *>::const_iterator it =
-        TimeEntries.begin();
-            it != TimeEntries.end(); ++it) {
-        TimeEntry *te = *it;
+    for (auto te : TimeEntries) {
         if (te->NeedsPush()) {
             count++;
         }
@@ -112,44 +89,34 @@ Poco::Int64 RelatedData::NumberOfUnsyncedTimeEntries() const {
     return count;
 }
 
-std::vector<TimelineEvent *> RelatedData::VisibleTimelineEvents() const {
-    std::vector<TimelineEvent *> result;
-    for (std::vector<TimelineEvent *>::const_iterator i =
-        TimelineEvents.begin();
-            i != TimelineEvents.end();
-            ++i) {
-        TimelineEvent *event = *i;
+std::vector<locked<TimelineEvent>> RelatedData::VisibleTimelineEvents() {
+    std::vector<locked<TimelineEvent>> result;
+    for (auto event : TimelineEvents) {
         if (event && event->VisibleToUser()) {
-            result.push_back(event);
+            result.push_back(std::move(event));
         }
     }
     return result;
 }
 
-std::vector<TimeEntry *> RelatedData::VisibleTimeEntries() const {
-    std::vector<TimeEntry *> result;
-    for (std::vector<TimeEntry *>::const_iterator it =
-        TimeEntries.begin();
-            it != TimeEntries.end(); ++it) {
-        TimeEntry *te = *it;
+std::vector<locked<TimeEntry>> RelatedData::VisibleTimeEntries() {
+    std::vector<locked<TimeEntry>> result;
+    for (auto te : TimeEntries) {
         if (te->GUID().empty()) {
             continue;
         }
         if (te->DeletedAt() > 0) {
             continue;
         }
-        result.push_back(te);
+        result.push_back(std::move(te));
     }
     return result;
 }
 
-Poco::Int64 RelatedData::TotalDurationForDate(const TimeEntry *match) const {
+Poco::Int64 RelatedData::TotalDurationForDate(locked<TimeEntry> &match) {
     std::string date_header = Formatter::FormatDateHeader(match->Start());
     Poco::Int64 duration(0);
-    for (std::vector<TimeEntry *>::const_iterator it =
-        TimeEntries.begin();
-            it != TimeEntries.end(); ++it) {
-        TimeEntry *te = *it;
+    for (auto te : TimeEntries) {
         if (te->GUID().empty()) {
             continue;
         }
@@ -163,17 +130,13 @@ Poco::Int64 RelatedData::TotalDurationForDate(const TimeEntry *match) const {
     return duration;
 }
 
-TimeEntry *RelatedData::LatestTimeEntry() const {
-    TimeEntry *latest = nullptr;
+locked<TimeEntry> RelatedData::LatestTimeEntry() {
+    locked<TimeEntry> latest;
     std::string pomodoro_decription("Pomodoro Break");
     std::string pomodoro_tag("pomodoro-break");
 
     // Find the time entry that was stopped most recently
-    for (std::vector<TimeEntry *>::const_iterator it =
-        TimeEntries.begin();
-            it != TimeEntries.end(); ++it) {
-        TimeEntry *te = *it;
-
+    for (auto te : TimeEntries) {
         if (te->GUID().empty()) {
             continue;
         }
@@ -191,7 +154,8 @@ TimeEntry *RelatedData::LatestTimeEntry() const {
         }
 
         if (!latest || (te->Stop() > latest->Stop())) {
-            latest = te;
+            // beware of the std::move, the te variable is invalid after using it
+            latest = std::move(te);
         }
     }
 
@@ -208,26 +172,22 @@ void RelatedData::timeEntryAutocompleteItems(
 
     poco_check_ptr(list);
 
-    for (std::vector<TimeEntry *>::const_iterator it =
-        TimeEntries.begin();
-            it != TimeEntries.end(); ++it) {
-        TimeEntry *te = *it;
-
+    for (auto te : TimeEntries) {
         if (te->DeletedAt() || te->IsMarkedAsDeletedOnServer()
                 || te->Description().empty()) {
             continue;
         }
 
-        Task *t = nullptr;
+        locked<const Task> t;
         if (te->TID()) {
-            t = TaskByID(te->TID());
+            t = Tasks.byID(te->TID());
         }
 
-        Project *p = nullptr;
+        locked<const Project> p;
         if (t && t->PID()) {
-            p = ProjectByID(t->PID());
+            p = Projects.byID(t->PID());
         } else if (te->PID()) {
-            p = ProjectByID(te->PID());
+            p = Projects.byID(te->PID());
         }
 
         if (p && !p->Active()) {
@@ -300,15 +260,7 @@ void RelatedData::taskAutocompleteItems(
 
     poco_check_ptr(list);
 
-    for (std::vector<Task *>::const_iterator it =
-        Tasks.begin();
-            it != Tasks.end(); ++it) {
-        Task *t = *it;
-
-        if (t == nullptr) {
-            continue;
-        }
-
+    for (auto t : Tasks) {
         if (t->IsMarkedAsDeletedOnServer()) {
             continue;
         }
@@ -317,9 +269,9 @@ void RelatedData::taskAutocompleteItems(
             continue;
         }
 
-        Project *p = nullptr;
+        locked<const Project> p;
         if (t->PID()) {
-            p = ProjectByID(t->PID());
+            p = Projects.byID(t->PID());
         }
 
         if (p && !p->Active()) {
@@ -378,18 +330,15 @@ void RelatedData::projectAutocompleteItems(
 
     poco_check_ptr(list);
 
-    for (std::vector<Project *>::const_iterator it =
-        Projects.begin();
-            it != Projects.end(); ++it) {
-        Project *p = *it;
-
+    for (auto p : Projects) {
         if (!p->Active()) {
             continue;
         }
 
-        Client *c = clientByProject(p);
+        locked<const Client> c = clientByProject(p);
 
-        std::string text = Formatter::JoinTaskName(nullptr, p);
+        locked<const Task> emptyTask;
+        std::string text = Formatter::JoinTaskName(emptyTask, p);
         if (text.empty()) {
             continue;
         }
@@ -508,21 +457,13 @@ void RelatedData::workspaceAutocompleteItems(
 
     // remember workspaces that have projects
     std::set<Poco::UInt64> ws_ids_with_projects;
-    for (std::vector<Project *>::const_iterator it =
-        Projects.begin();
-            it != Projects.end(); ++it) {
-        Project *p = *it;
-
+    for (auto p : Projects) {
         if (p->Active()) {
             ws_ids_with_projects.insert(p->WID());
         }
     }
 
-    for (std::vector<Workspace *>::const_iterator it =
-        Workspaces.begin();
-            it != Workspaces.end(); ++it) {
-        Workspace *ws = *it;
-
+    for (auto ws : Workspaces) {
         if (ws_ids_with_projects.find(ws->ID()) == ws_ids_with_projects.end()) {
             continue;
         }
@@ -540,11 +481,7 @@ void RelatedData::TagList(
 
     std::set<std::string> unique_names;
 
-    for (std::vector<Tag *>::const_iterator it =
-        Tags.begin();
-            it != Tags.end();
-            ++it) {
-        Tag *tag = *it;
+    for (auto tag : Tags) {
         if (wid && tag->WID() != wid) {
             continue;
         }
@@ -558,66 +495,63 @@ void RelatedData::TagList(
     std::sort(tags->rbegin(), tags->rend());
 }
 
-void RelatedData::WorkspaceList(std::vector<Workspace *> *result) const {
-
-    poco_check_ptr(result);
-
-    for (std::vector<Workspace *>::const_iterator it =
-        Workspaces.begin();
-            it != Workspaces.end();
-            ++it) {
-        Workspace *ws = *it;
+std::vector<locked<Workspace>> RelatedData::WorkspaceList() {
+    std::vector<locked<Workspace>> result;
+    for (auto ws : Workspaces) {
         if (!ws->Admin() && ws->OnlyAdminsMayCreateProjects()) {
             continue;
         }
-        result->push_back(ws);
+        result.push_back(std::move(ws));
     }
-    std::sort(result->rbegin(), result->rend(), CompareWorkspaceByName);
+    std::sort(result.rbegin(), result.rend(), CompareWorkspaceByName);
+    return result;
 }
 
-void RelatedData::ClientList(std::vector<Client *> *result) const {
-
-    poco_check_ptr(result);
-    *result = Clients;
-
-    std::sort(result->rbegin(), result->rend(), CompareClientByName);
+std::vector<locked<Client>> RelatedData::ClientList() {
+    std::vector<locked<Client>> result;
+    for (auto i : Clients) {
+        result.push_back(std::move(i));
+    }
+    // TODO maybe later, now it doesn't fullfill all requirements
+    //std::copy(Clients.begin(), Clients.end(), result.begin());
+    std::sort(result.rbegin(), result.rend(), CompareClientByName);
+    return result;
 }
 
-void RelatedData::ProjectLabelAndColorCode(
-    TimeEntry * const te,
+void RelatedData::ProjectLabelAndColorCode(locked<TimeEntry> &te,
     view::TimeEntry *view) const {
 
     poco_check_ptr(te);
     poco_check_ptr(view);
 
-    Workspace *ws = nullptr;
+    locked<const Workspace> ws;
     if (te->WID()) {
-        ws = WorkspaceByID(te->WID());
+        ws = Workspaces.byID(te->WID());
     }
     if (ws) {
         view->WorkspaceName = ws->Name();
     }
 
-    Task *t = nullptr;
+    locked<const Task> t;
     if (te->TID()) {
-        t = TaskByID(te->TID());
+        t = Tasks.byID(te->TID());
     }
     if (t) {
         view->TaskLabel = t->Name();
     }
 
-    Project *p = nullptr;
+    locked<const Project> p;
     if (t && t->PID()) {
-        p = ProjectByID(t->PID());
+        p = Projects.byID(t->PID());
     }
     if (!p && te->PID()) {
-        p = ProjectByID(te->PID());
+        p = Projects.byID(te->PID());
     }
     if (!p && !te->ProjectGUID().empty()) {
-        p = ProjectByGUID(te->ProjectGUID());
+        p = Projects.byGUID(te->ProjectGUID());
     }
 
-    Client *c = clientByProject(p);
+    locked<const Client> c;
 
     view->ProjectAndTaskLabel = Formatter::JoinTaskName(t, p);
 
@@ -631,89 +565,27 @@ void RelatedData::ProjectLabelAndColorCode(
     }
 }
 
-Client *RelatedData::clientByProject(Project *p) const {
-    Client *c = nullptr;
+locked<Client> RelatedData::clientByProject(locked<Project> &p) {
+    locked<Client> c;
     if (p && p->CID()) {
-        c = ClientByID(p->CID());
+        c = Clients.byID(p->CID());
     }
     if (!c && p && !p->ClientGUID().empty()) {
-        c = ClientByGUID(p->ClientGUID());
+        c = Clients.byGUID(p->ClientGUID());
     }
     return c;
 }
 
-Task *RelatedData::TaskByID(const Poco::UInt64 id) const {
-    return modelByID<Task>(id, &Tasks);
-}
-
-Client *RelatedData::ClientByID(const Poco::UInt64 id) const {
-    return modelByID(id, &Clients);
-}
-
-Project *RelatedData::ProjectByID(const Poco::UInt64 id) const {
-    return modelByID(id, &Projects);
-}
-
-Tag *RelatedData::TagByID(const Poco::UInt64 id) const {
-    return modelByID(id, &Tags);
-}
-
-Workspace *RelatedData::WorkspaceByID(const Poco::UInt64 id) const {
-    return modelByID(id, &Workspaces);
-}
-
-TimeEntry *RelatedData::TimeEntryByID(const Poco::UInt64 id) const {
-    return modelByID(id, &TimeEntries);
-}
-
-TimeEntry *RelatedData::TimeEntryByGUID(const guid GUID) const {
-    return modelByGUID(GUID, &TimeEntries);
-}
-
-TimelineEvent *RelatedData::TimelineEventByGUID(const guid GUID) const {
-    return modelByGUID(GUID, &TimelineEvents);
-}
-
-Tag *RelatedData::TagByGUID(const guid GUID) const {
-    return modelByGUID(GUID, &Tags);
-}
-
-Project *RelatedData::ProjectByGUID(const guid GUID) const {
-    return modelByGUID(GUID, &Projects);
-}
-
-Client *RelatedData::ClientByGUID(const guid GUID) const {
-    return modelByGUID(GUID, &Clients);
-}
-
-template <typename T>
-T *modelByGUID(const guid GUID, std::vector<T *> const *list) {
-    if (GUID.empty()) {
-        return nullptr;
+locked<const Client> RelatedData::clientByProject(locked<const Project> &p) const {
+    locked<const Client> c;
+    if (p && p->CID()) {
+        c = Clients.byID(p->CID());
     }
-    typedef typename std::vector<T *>::const_iterator iterator;
-    for (iterator it = list->begin(); it != list->end(); ++it) {
-        T *model = *it;
-        if (model->GUID() == GUID) {
-            return model;
-        }
+    if (!c && p && !p->ClientGUID().empty()) {
+        c = Clients.byGUID(p->ClientGUID());
     }
-    return nullptr;
-}
+    return c;
 
-template<typename T>
-T *modelByID(const Poco::UInt64 id, std::vector<T *> const *list) {
-    if (!id) {
-        return nullptr;
-    }
-    typedef typename std::vector<T *>::const_iterator iterator;
-    for (iterator it = list->begin(); it != list->end(); ++it) {
-        T *model = *it;
-        if (model->ID() == id) {
-            return model;
-        }
-    }
-    return nullptr;
 }
 
 }   // namespace toggl

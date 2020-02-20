@@ -15,16 +15,17 @@
 namespace toggl {
 
 class TOGGL_INTERNAL_EXPORT AutotrackerRule : public BaseModel {
- public:
-    AutotrackerRule()
-        : BaseModel()
+    AutotrackerRule(ProtectedContainerBase *container)
+        : BaseModel(container)
     , term_("")
     , pid_(0)
     , tid_(0) {}
+ public:
+    friend class ProtectedContainer<AutotrackerRule>;
 
     virtual ~AutotrackerRule() {}
 
-    bool Matches(const TimelineEvent &event) const;
+    bool Matches(locked<TimelineEvent> &event) const;
 
     const std::string &Term() const;
     void SetTerm(const std::string &value);

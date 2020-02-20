@@ -76,12 +76,14 @@ void WindowChangeRecorder::inspectFocusedWindow() {
             // we'll use this in auto tracking
             last_autotracker_title_ = title;
 
+            /* FIXME timeline
             TimelineEvent event;
             event.SetStart(last_event_started_at_);
             event.SetEndTime(now);
             event.SetTitle(title);
             event.SetIdle(false);
             timeline_datasource_->StartAutotrackerEvent(event);
+            */
         }
     }
     idle = idle || getIsLocked() || getIsSleeping();
@@ -108,6 +110,7 @@ void WindowChangeRecorder::inspectFocusedWindow() {
     if (last_event_started_at_ > 0) {
         // if window was focussed at least X seconds, save it to timeline
         if (time_delta >= kWindowFocusThresholdSeconds && !last_idle_) {
+            /* FIXME timeline
             TimelineEvent *event = new TimelineEvent();
             event->SetStart(last_event_started_at_);
             event->SetEndTime(now);
@@ -118,6 +121,7 @@ void WindowChangeRecorder::inspectFocusedWindow() {
             if (err != noError) {
                 logger.error(err);
             }
+            */
         }
     }
 

@@ -27,7 +27,7 @@ bool TimeEntry::operator == (const TimeEntry&) const {
     return false;
 }
 
-void TimeEntry::Fill(toggl::TimeEntry * const model) {
+void TimeEntry::Fill(toggl::locked<toggl::TimeEntry> &model) {
     model->EnsureGUID();
     ID = model->ID();
     DurationInSeconds = model->DurationInSeconds();
@@ -296,7 +296,7 @@ void GUI::DisplayPomodoroBreak(const Poco::Int64 minutes) {
     free(s2);
 }
 
-void GUI::DisplayAutotrackerNotification(Project *const p, Task *const t) {
+void GUI::DisplayAutotrackerNotification(locked<Project> &p, locked<Task> &t) {
     poco_check_ptr(p);
 
     if (p) {
@@ -763,7 +763,7 @@ void GUI::DisplayMessage(const std::string &title,
 
 void GUI::DisplaySettings(const bool open,
                           const bool record_timeline,
-                          const Settings &settings,
+                          locked<const Settings> &settings,
                           const bool use_proxy,
                           const Proxy &proxy) {
     logger.debug("DisplaySettings");

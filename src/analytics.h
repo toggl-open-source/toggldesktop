@@ -43,10 +43,9 @@ class Analytics : public Poco::TaskManager {
         const std::string &id,
         const Poco::Int64 type);
 
-    void TrackSettings(
-        const std::string &client_id,
+    void TrackSettings(const std::string &client_id,
         const bool record_timeline,
-        const Settings &settings,
+        locked<const Settings> &settings,
         const bool use_proxy,
         const Proxy &proxy);
 
@@ -131,7 +130,7 @@ class GoogleAnalyticsSettingsEvent : public Poco::Task {
         const std::string &client_id,
         const std::string &category,
         const bool record_timeline,
-        const Settings &settings,
+        Settings settings,
         const bool uses_proxy,
         const Proxy &proxy)
         : Poco::Task("GoogleAnalyticsSettingsEvent")

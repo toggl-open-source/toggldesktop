@@ -97,6 +97,14 @@ void BaseModel::SetUID(const Poco::UInt64 value) {
     }
 }
 
+ProtectedContainerBase *BaseModel::GetContainer() {
+    return container_;
+}
+
+const ProtectedContainerBase *BaseModel::GetContainer() const {
+    return container_;
+}
+
 void BaseModel::SetID(const Poco::UInt64 value) {
     if (id_ != value) {
         id_ = value;

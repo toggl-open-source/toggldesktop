@@ -50,21 +50,18 @@ class TOGGL_INTERNAL_EXPORT Database {
         const std::string &table_name,
         const Poco::Int64 &local_id);
 
-    error DeleteUser(
-        User *model,
+    error DeleteUser(locked<User> &model,
         const bool with_related_data);
 
-    error LoadUserByID(
-        const Poco::UInt64 &UID,
-        User *user);
+    error LoadUserByID(const Poco::UInt64 &UID,
+        locked<User> &user);
 
-    error LoadUserByEmail(
-        const std::string &email,
-        User *model);
+    error LoadUserByEmail(const std::string &email,
+        locked<User> &model);
 
-    error LoadCurrentUser(User *user);
+    error LoadCurrentUser(locked<User> &user);
 
-    error LoadSettings(Settings *settings);
+    error LoadSettings(locked<Settings> &settings);
 
     error LoadWindowSettings(
         Poco::Int64 *window_x,
@@ -226,7 +223,7 @@ class TOGGL_INTERNAL_EXPORT Database {
         const std::string &sql,
         std::string *result);
 
-    error SaveUser(User *user, bool with_related_data,
+    error SaveUser(locked<User> &user, bool with_related_data,
                    std::vector<ModelChange> *changes);
 
     error LoadTimeEntriesForUpload(User *user);
@@ -287,57 +284,57 @@ class TOGGL_INTERNAL_EXPORT Database {
     error journalMode(std::string *);
     error setJournalMode(const std::string &);
 
-    error loadUsersRelatedData(User *user);
+    error loadUsersRelatedData(locked<User> &user);
 
     error loadWorkspaces(
         const Poco::UInt64 &UID,
-        std::vector<Workspace *> *list);
+        ProtectedContainer<Workspace> &list);
 
     error loadClients(
         const Poco::UInt64 &UID,
-        std::vector<Client *> *list);
+        ProtectedContainer<Client> &list);
 
     error loadProjects(
         const Poco::UInt64 &UID,
-        std::vector<Project *> *list);
+        ProtectedContainer<Project> &list);
 
     error loadTasks(
         const Poco::UInt64 &UID,
-        std::vector<Task *> *list);
+        ProtectedContainer<Task> &list);
 
     error loadTags(
         const Poco::UInt64 &UID,
-        std::vector<Tag *> *list);
+        ProtectedContainer<Tag> &list);
 
     error loadAutotrackerRules(
         const Poco::UInt64 &UID,
-        std::vector<AutotrackerRule *> *list);
+        ProtectedContainer<AutotrackerRule> &list);
 
     error loadObmActions(
         const Poco::UInt64 &UID,
-        std::vector<ObmAction *> *list);
+        ProtectedContainer<ObmAction> &list);
 
     error loadObmExperiments(
         const Poco::UInt64 &UID,
-        std::vector<ObmExperiment *> *list);
+        ProtectedContainer<ObmExperiment> &list);
 
     error loadTimeEntries(
         const Poco::UInt64 &UID,
-        std::vector<TimeEntry *> *list);
+        ProtectedContainer<TimeEntry> &list);
 
     error loadTimelineEvents(
         const Poco::UInt64 &UID,
-        std::vector<TimelineEvent *> *list);
+        ProtectedContainer<TimelineEvent> &list);
 
     error loadTimeEntriesFromSQLStatement(
         Poco::Data::Statement *select,
-        std::vector<TimeEntry *> *list);
+        ProtectedContainer<TimeEntry> &list);
 
     template <typename T>
     error saveRelatedModels(
         const Poco::UInt64 UID,
         const std::string &table_name,
-        std::vector<T *> *list,
+        ProtectedContainer<T> &list,
         std::vector<ModelChange> *changes);
 
     error deleteAllFromTableByDate(
@@ -352,43 +349,43 @@ class TOGGL_INTERNAL_EXPORT Database {
         const Poco::UInt64 &UID);
 
     error saveModel(
-        ObmAction *model,
+        locked<ObmAction> &model,
         std::vector<ModelChange> *changes);
 
     error saveModel(
-        ObmExperiment *model,
+        locked<ObmExperiment> &model,
         std::vector<ModelChange> *changes);
 
     error saveModel(
-        AutotrackerRule *model,
+        locked<AutotrackerRule> &model,
         std::vector<ModelChange> *changes);
 
     error saveModel(
-        Workspace *model,
+        locked<Workspace> &model,
         std::vector<ModelChange> *changes);
 
     error saveModel(
-        Client *model,
+        locked<Client> &model,
         std::vector<ModelChange> *changes);
 
     error saveModel(
-        Project *model,
+        locked<Project> &model,
         std::vector<ModelChange> *changes);
 
     error saveModel(
-        Task *model,
+        locked<Task> &model,
         std::vector<ModelChange> *changes);
 
     error saveModel(
-        Tag *model,
+        locked<Tag> &model,
         std::vector<ModelChange> *changes);
 
     error saveModel(
-        TimeEntry *model,
+        locked<TimeEntry> &model,
         std::vector<ModelChange> *changes);
 
     error saveModel(
-        TimelineEvent *model,
+        locked<TimelineEvent> &model,
         std::vector<ModelChange> *changes);
 
     error saveDesktopID();

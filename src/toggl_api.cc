@@ -521,7 +521,7 @@ char_t *toggl_create_client(
     const uint64_t workspace_id,
     const char_t *client_name) {
 
-    toggl::Client *c = app(context)->CreateClient(
+    auto c = app(context)->CreateClient(
         workspace_id,
         to_string(client_name));
 
@@ -548,7 +548,7 @@ char_t *toggl_add_project(
     const bool_t is_private,
     const char_t *project_color) {
 
-    toggl::Project *p = app(context)->CreateProject(
+    auto p = app(context)->CreateProject(
         workspace_id,
         client_id,
         to_string(client_guid),
@@ -632,7 +632,7 @@ char_t *toggl_start(
         tag_list = to_string(tags);
     }
 
-    toggl::TimeEntry *te = app(context)->Start(
+    auto te = app(context)->Start(
         desc,
         dur,
         task_id,
@@ -653,16 +653,16 @@ char_t *toggl_create_empty_time_entry(
                                       void *context,
                                       const uint64_t started,
                                       const uint64_t ended) {
-    toggl::TimeEntry *te = app(context)->Start("",
-                                               "",
-                                               0,
-                                               0,
-                                               "",
-                                               "",
-                                               false,
-                                               started,
-                                               ended,
-                                               false);
+    auto te = app(context)->Start("",
+                                  "",
+                                  0,
+                                  0,
+                                  "",
+                                  "",
+                                  false,
+                                  started,
+                                  ended,
+                                  false);
     if (te) {
         return copy_string(te->GUID());
     }
@@ -675,7 +675,7 @@ bool_t toggl_continue(
 
     logger().debug("toggl_continue guid=", guid);
 
-    toggl::TimeEntry *result = app(context)->Continue(to_string(guid));
+    auto result = app(context)->Continue(to_string(guid));
     if (!result) {
         return false;
     }
@@ -734,7 +734,7 @@ bool_t toggl_continue_latest(
 
     logger().debug("toggl_continue_latest");
 
-    toggl::TimeEntry *result = app(context)->ContinueLatest(prevent_on_app);
+    auto result = app(context)->ContinueLatest(prevent_on_app);
     if (!result) {
         return false;
     }
@@ -889,7 +889,7 @@ bool_t toggl_discard_time_and_continue(
         return false;
     }
 
-    toggl::TimeEntry *result = app(context)->DiscardTimeAndContinue(
+    auto result = app(context)->DiscardTimeAndContinue(
         to_string(guid),
         at);
 

@@ -83,9 +83,8 @@ void time_entry_view_item_clear(TogglTimeEntryView *item);
 
 void time_entry_view_list_clear(TogglTimeEntryView *first);
 
-TogglSettingsView *settings_view_item_init(
-    const bool_t record_timeline,
-    const toggl::Settings &settings,
+TogglSettingsView *settings_view_item_init(const bool_t record_timeline,
+    toggl::locked<const toggl::Settings> &settings,
     const bool_t use_proxy,
     const toggl::Proxy &proxy);
 
