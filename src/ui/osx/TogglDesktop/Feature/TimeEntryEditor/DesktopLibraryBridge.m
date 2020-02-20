@@ -264,7 +264,7 @@ void *ctx;
 	toggl_view_timeline_current_day(ctx);
 }
 
-- (NSString *)starNewTimeEntryAtStarted:(NSTimeInterval)started ended:(NSTimeInterval)ended
+- (NSString *)startNewTimeEntryAtStarted:(NSTimeInterval)started ended:(NSTimeInterval)ended
 {
 	char *guid = toggl_start(ctx,
 							 "",
@@ -281,6 +281,15 @@ void *ctx;
 
 	free(guid);
 	return GUID;
+}
+
+- (NSString *)createEmptyTimeEntryAtStarted:(NSTimeInterval)started ended:(NSTimeInterval)ended
+{
+    char *guid = toggl_create_empty_time_entry(ctx, started, ended);
+    NSString *GUID = [NSString stringWithUTF8String:guid];
+
+    free(guid);
+    return GUID;
 }
 
 - (void)startEditorAtGUID:(NSString *)GUID

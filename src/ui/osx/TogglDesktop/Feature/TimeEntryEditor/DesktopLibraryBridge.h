@@ -84,7 +84,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)timelineGetCurrentDate;
 
-- (NSString *_Nullable)starNewTimeEntryAtStarted:(NSTimeInterval)started ended:(NSTimeInterval)ended;
+- (NSString *_Nullable)startNewTimeEntryAtStarted:(NSTimeInterval)started ended:(NSTimeInterval)ended;
+
+- (NSString *_Nullable)createEmptyTimeEntryAtStarted:(NSTimeInterval)started ended:(NSTimeInterval)ended;
 
 - (void)startEditorAtGUID:(NSString *)GUID;
 

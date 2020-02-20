@@ -453,7 +453,7 @@ extension TimelineDashboardViewController: TimelineDatasourceDelegate {
 
     func startNewTimeEntry(at started: TimeInterval, ended: TimeInterval) {
         guard !editorPopover.isShown else { return }
-        guard let guid = DesktopLibraryBridge.shared().starNewTimeEntry(atStarted: started, ended: ended) else { return }
+        guard let guid = DesktopLibraryBridge.shared().createEmptyTimeEntry(atStarted: started, ended: ended) else { return }
         self.showEditorForTimeEntry(with: guid)
     }
 
