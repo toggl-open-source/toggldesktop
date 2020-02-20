@@ -163,9 +163,12 @@ TimeEntry *User::Start(
     const std::string project_guid,
     const std::string tags,
     const time_t started,
-    const time_t ended) {
+    const time_t ended,
+    const bool stop_current_running) {
 
-    Stop();
+    if (stop_current_running) {
+        Stop();
+    }
 
     time_t now = time(nullptr);
 

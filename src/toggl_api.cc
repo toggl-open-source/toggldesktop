@@ -641,7 +641,8 @@ char_t *toggl_start(
         tag_list,
         prevent_on_app,
         started,
-        ended);
+        ended,
+        true);
     if (te) {
         return copy_string(te->GUID());
     }

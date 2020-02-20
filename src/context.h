@@ -331,7 +331,8 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
         const std::string tags,
         const bool prevent_on_app,
         const time_t started,
-        const time_t ended);
+        const time_t ended,
+        const bool stop_current_running);
 
     TimeEntry *ContinueLatest(const bool prevent_on_app);
 
