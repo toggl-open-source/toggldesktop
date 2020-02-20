@@ -18,11 +18,12 @@
 
 namespace toggl {
 
+class ProtectedContainerBase;
 class BatchUpdateResult;
 
 class TOGGL_INTERNAL_EXPORT BaseModel {
  public:
-    BaseModel()
+    BaseModel(ProtectedContainerBase *container)
         : local_id_(0)
     , id_(0)
     , guid_("")
@@ -36,6 +37,9 @@ class TOGGL_INTERNAL_EXPORT BaseModel {
     , unsynced_(false) {}
 
     virtual ~BaseModel() {}
+
+    ProtectedContainerBase *GetContainer();
+    const ProtectedContainerBase *GetContainer() const;
 
     const Poco::Int64 &LocalID() const {
         return local_id_;
@@ -160,6 +164,8 @@ class TOGGL_INTERNAL_EXPORT BaseModel {
  private:
     std::string batchUpdateRelativeURL() const;
     std::string batchUpdateMethod() const;
+
+    ProtectedContainerBase *container_;
 
     Poco::Int64 local_id_;
     Poco::UInt64 id_;

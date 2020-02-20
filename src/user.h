@@ -214,7 +214,7 @@ class TOGGL_INTERNAL_EXPORT User : public BaseModel {
         TimeEntry* timeEntry);
 
     template<typename T>
-    void EnsureWID(T *model) const {
+    void EnsureWID(locked<T> &model) const {
         // Do nothing if TE already has WID assigned
         if (model->WID()) {
             return;
@@ -227,10 +227,9 @@ class TOGGL_INTERNAL_EXPORT User : public BaseModel {
         }
 
         // Try to set first WID available
-        std::vector<Workspace *>::const_iterator it =
-            related.Workspaces.begin();
-        if (it != related.Workspaces.end()) {
-            Workspace *ws = *it;
+        auto it = related.Workspaces.cbegin();
+        if (it != related.Workspaces.cend()) {
+            locked<const Workspace> ws = *it;
             model->SetWID(ws->ID());
         }
     }

@@ -11,6 +11,7 @@
 
 #include "timeline_event.h"
 #include "types.h"
+#include "util/memory.h"
 
 #include <Poco/Mutex.h>
 #include <functional>
@@ -39,16 +40,20 @@ T *modelByGUID(const guid GUID, std::vector<T *> const *list);
 
 class TOGGL_INTERNAL_EXPORT RelatedData {
  public:
-    std::vector<Workspace *> Workspaces;
-    std::vector<Client *> Clients;
-    std::vector<Project *> Projects;
-    std::vector<Task *> Tasks;
-    std::vector<Tag *> Tags;
-    std::vector<TimeEntry *> TimeEntries;
-    std::vector<AutotrackerRule *> AutotrackerRules;
-    std::vector<TimelineEvent *> TimelineEvents;
-    std::vector<ObmAction *> ObmActions;
-    std::vector<ObmExperiment *> ObmExperiments;
+    RelatedData() {
+
+    }
+
+    ProtectedContainer<Workspace *> Workspaces { this };
+    ProtectedContainer<Client *> Clients { this };
+    ProtectedContainer<Project *> Projects { this };
+    ProtectedContainer<Task *> Tasks { this };
+    ProtectedContainer<Tag *> Tags { this };
+    ProtectedContainer<TimeEntry *> TimeEntries { this };
+    ProtectedContainer<AutotrackerRule *> AutotrackerRules { this };
+    ProtectedContainer<TimelineEvent *> TimelineEvents { this };
+    ProtectedContainer<ObmAction *> ObmActions { this };
+    ProtectedContainer<ObmExperiment *> ObmExperiments { this };
 
     void Clear();
 
