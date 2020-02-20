@@ -51,8 +51,8 @@ namespace TogglDesktop
             if (this.TryBeginInvoke(this.onTimeEntryList, open, list, showLoadMoreButton))
                 return;
 
-            this.Entries.SetLoadMoreButtonVisibility(showLoadMoreButton);
             this.fillTimeEntryList(list);
+            this.Entries.ViewModel.OnTimeEntryList(showLoadMoreButton, list.Count == 0);
 
             if (open)
             {
@@ -87,7 +87,6 @@ namespace TogglDesktop
                 var days = groupByDays(list);
                 var dayHeaderViewModels = this.fillDays(days);
 
-                this.Entries.FinishedFillingList();
                 this.Entries.SetDayHeaderViewModels(dayHeaderViewModels);
             }
         }

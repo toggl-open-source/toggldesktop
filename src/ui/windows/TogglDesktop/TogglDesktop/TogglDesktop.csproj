@@ -237,7 +237,7 @@
     <Compile Include="ui\Converters\StringFormatIfNotEmptyConverter.cs" />
     <Compile Include="ui\Converters\StringToUpperConverter.cs" />
     <Compile Include="ui\Converters\BytesToStringConverter.cs" />
-    <Compile Include="ui\Converters\EqualToVisibilityConverter.cs" />
+    <Compile Include="ui\Converters\EnumEqualToVisibilityConverter.cs" />
     <Compile Include="ui\Converters\FileNameToIconConverter.cs" />
     <Compile Include="ui\Converters\BindingProxy.cs" />
     <Compile Include="ui\Converters\EmptyStringToHiddenConverter.cs" />
@@ -306,6 +306,7 @@
     <Compile Include="ui\ViewModels\ProjectLabelViewModel.cs" />
     <Compile Include="ui\ViewModels\TimeEntryCellViewModel.cs" />
     <Compile Include="ui\ViewModels\TimeEntryLabelViewModel.cs" />
+    <Compile Include="ui\ViewModels\TimeEntryListViewModel.cs" />
     <Compile Include="ui\ViewModels\ViewModelExtensions.cs" />
     <Compile Include="ui\views\IMainView.cs" />
     <Compile Include="ui\Experiments\ExperimentManager.cs" />
@@ -885,6 +886,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="FodyWeavers.xml" />
+    <Resource Include="Resources\spider.png" />
+    <Resource Include="Resources\stopwatch.png" />
   </ItemGroup>
   <Import Project="Dependencies.targets" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
