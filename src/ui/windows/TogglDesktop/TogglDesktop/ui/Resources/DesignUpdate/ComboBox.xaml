@@ -280,7 +280,7 @@
                                         MinWidth="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}" MaxHeight="{Binding MaxDropDownHeight, RelativeSource={RelativeSource TemplatedParent}}"
                                         HorizontalAlignment="Stretch"
                                         Background="{DynamicResource Toggl.CardBackground}"
-                                        BorderBrush="{DynamicResource Toggl.ComboBoxPopupBorderBrush}"
+                                        BorderBrush="{DynamicResource Toggl.PopupBorderBrush}"
                                         BorderThickness="{DynamicResource ComboBoxPopupBorderThemeThickness}"
                                         SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                                         Margin="8 0 8 8">
