@@ -22,7 +22,8 @@
         <StackPanel Orientation="Horizontal">
             <TextBlock Name="textBlock" x:FieldModifier="private" Style="{StaticResource Toggl.CaptionBlackText}" Text="This is tag" TextTrimming="CharacterEllipsis"
                        MaxWidth="144"/>
-            <Button Click="remove_OnClick" Style="{StaticResource Toggl.CrossButton}" Height="24" Width="24" Margin="0 -3 0 0"/>
+            <Button Click="remove_OnClick" Style="{StaticResource Toggl.CrossButton}" Height="24" Width="24" Margin="0 -3 0 0"
+                    IsTabStop="False" Focusable="False" />
         </StackPanel>
     </Border>
 </UserControl>
