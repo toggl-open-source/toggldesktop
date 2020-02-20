@@ -470,6 +470,10 @@ namespace TogglDesktop
 
             e.Handled = true;
             listBox.SelectedIndex = index;
+            if (listBox.SelectedItem is TagItemViewModel asTag)
+            {
+                asTag.IsChecked = !asTag.IsChecked;
+            }
 
             this.confirmCompletion(false);
         }
