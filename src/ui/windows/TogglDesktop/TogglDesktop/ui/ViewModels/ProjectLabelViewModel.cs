@@ -1,37 +1,22 @@
 using System.Windows.Media;
 using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 
 namespace TogglDesktop.ViewModels
 {
     public class ProjectLabelViewModel : ReactiveObject
     {
-        private string _projectName;
-        public string ProjectName
-        {
-            get => _projectName;
-            set => this.RaiseAndSetIfChanged(ref _projectName, value);
-        }
+        [Reactive]
+        public string ProjectName { get; private set; }
 
-        private string _taskName;
-        public string TaskName
-        {
-            get => _taskName;
-            set => this.RaiseAndSetIfChanged(ref _taskName, value);
-        }
+        [Reactive]
+        public string TaskName { get; private set; }
 
-        private string _clientName;
-        public string ClientName
-        {
-            get => _clientName;
-            set => this.RaiseAndSetIfChanged(ref _clientName, value);
-        }
+        [Reactive]
+        public string ClientName { get; private set; }
 
-        private Brush _color;
-        public Brush Color
-        {
-            get => _color;
-            set => this.RaiseAndSetIfChanged(ref _color, value);
-        }
+        [Reactive]
+        public Brush Color { get; private set; }
 
         public ProjectInfo ProjectInfo { get; private set; }
 

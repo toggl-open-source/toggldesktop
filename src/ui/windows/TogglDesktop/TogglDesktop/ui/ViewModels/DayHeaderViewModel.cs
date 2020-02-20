@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reactive.Linq;
 using DynamicData;
 using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 
 namespace TogglDesktop.ViewModels
 {
@@ -14,7 +15,7 @@ namespace TogglDesktop.ViewModels
             DateHeader = dateHeader;
             DateDuration = dateDuration;
             this.WhenAnyValue(x => x.IsExpanded, x => !x)
-                .ToProperty(this, nameof(IsCollapsed), out _isCollapsed);
+                .ToPropertyEx(this, x => x.IsCollapsed);
             _cells.Connect()
                 .ObserveOnDispatcher()
                 .Bind(out var daysReadOnlyObservableCollection)
@@ -33,22 +34,13 @@ namespace TogglDesktop.ViewModels
         public TimeEntryCellViewModel GetCell(int cellIndex) => _cells.Items.ElementAt(cellIndex);
         public int CellsCount => _cells.Count;
 
-        private bool _isExpanded;
-        public bool IsExpanded
-        {
-            get => _isExpanded;
-            set => this.RaiseAndSetIfChanged(ref _isExpanded, value);
-        }
+        [Reactive]
+        public bool IsExpanded { get; set; }
 
-        private readonly ObservableAsPropertyHelper<bool> _isCollapsed;
-        public bool IsCollapsed => _isCollapsed.Value;
+        public bool IsCollapsed { [ObservableAsProperty] get; }
 
-        private bool _isFocused;
-        public bool IsFocused
-        {
-            get => _isFocused;
-            private set => this.RaiseAndSetIfChanged(ref _isFocused, value);
-        }
+        [Reactive]
+        public bool IsFocused { get; private set; }
         public void Focus()
         {
             IsFocused = false;

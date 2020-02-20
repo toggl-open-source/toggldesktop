@@ -1,4 +1,5 @@
 using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 
 namespace TogglDesktop.ViewModels
 {
@@ -8,19 +9,11 @@ namespace TogglDesktop.ViewModels
         {
             TimeEntryLabel = timeEntryLabel;
         }
-        private TimeEntryLabelViewModel _timeEntryLabel;
-        public TimeEntryLabelViewModel TimeEntryLabel
-        {
-            get => _timeEntryLabel;
-            set => this.RaiseAndSetIfChanged(ref _timeEntryLabel, value);
-        }
 
-        private bool _isFocused;
-        public bool IsFocused
-        {
-            get => _isFocused;
-            private set => this.RaiseAndSetIfChanged(ref _isFocused, value);
-        }
+        public TimeEntryLabelViewModel TimeEntryLabel { get; }
+
+        [Reactive]
+        public bool IsFocused { get; private set; }
 
         public void Focus()
         {
@@ -28,60 +21,32 @@ namespace TogglDesktop.ViewModels
             IsFocused = true;
         }
 
-        private bool _isSelected;
-        public bool IsSelected
-        {
-            get => _isSelected;
-            set => this.RaiseAndSetIfChanged(ref _isSelected, value);
-        }
+        [Reactive]
+        public bool IsSelected { get; set; }
 
-        private bool _isGroup;
         // immutable per Guid
-        public bool IsGroup
-        {
-            get => _isGroup;
-            set => this.RaiseAndSetIfChanged(ref _isGroup, value);
-        }
+        [Reactive]
+        public bool IsGroup { get; set; }
 
-        private bool _isGroupExpanded;
-        public bool IsGroupExpanded
-        {
-            get => _isGroupExpanded;
-            set => this.RaiseAndSetIfChanged(ref _isGroupExpanded, value);
-        }
+        [Reactive]
+        public bool IsGroupExpanded { get; set; }
 
-        private string _guid;
         // immutable per Guid
-        public string Guid
-        {
-            get => _guid;
-            set => this.RaiseAndSetIfChanged(ref _guid, value);
-        }
+        [Reactive]
+        public string Guid { get; set; }
 
         public string Id => IsGroup ? GroupName : Guid;
 
-        private string _groupName;
         // immutable per Guid
-        public string GroupName
-        {
-            get => _groupName;
-            set => this.RaiseAndSetIfChanged(ref _groupName, value);
-        }
+        [Reactive]
+        public string GroupName { get; set; }
 
-        private bool _isSubItem;
         // immutable per Guid
-        public bool IsSubItem
-        {
-            get => _isSubItem;
-            set => this.RaiseAndSetIfChanged(ref _isSubItem, value);
-        }
+        [Reactive]
+        public bool IsSubItem { get; set; }
 
-        private ulong _groupItemCount;
-        public ulong GroupItemCount
-        {
-            get => _groupItemCount;
-            set => this.RaiseAndSetIfChanged(ref _groupItemCount, value);
-        }
+        [Reactive]
+        public ulong GroupItemCount { get; set; }
 
         public long DurationInSeconds { get; set; }
 
