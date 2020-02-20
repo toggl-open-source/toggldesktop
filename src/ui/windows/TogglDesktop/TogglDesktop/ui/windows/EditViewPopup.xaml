@@ -28,6 +28,13 @@
     <i:Interaction.Behaviors>
         <behaviors:CloseWindowOnEscBehavior />
     </i:Interaction.Behaviors>
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources/DesignUpdate/MahApps.Overrides.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
     <Grid ClipToBounds="True" Name="mainGrid" x:FieldModifier="private">
         <Rectangle Name="mainFormShadow" x:FieldModifier="private"
                    Margin="8" Fill="Black">
