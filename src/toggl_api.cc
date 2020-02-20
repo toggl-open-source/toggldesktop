@@ -649,6 +649,26 @@ char_t *toggl_start(
     return nullptr;
 }
 
+char_t *toggl_create_empty_time_entry(
+                                      void *context,
+                                      const uint64_t started,
+                                      const uint64_t ended) {
+    toggl::TimeEntry *te = app(context)->Start("",
+                                               "",
+                                               0,
+                                               0,
+                                               "",
+                                               "",
+                                               false,
+                                               started,
+                                               ended,
+                                               false);
+    if (te) {
+        return copy_string(te->GUID());
+    }
+    return nullptr;
+}
+
 bool_t toggl_continue(
     void *context,
     const char_t *guid) {
