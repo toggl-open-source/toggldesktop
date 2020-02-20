@@ -24,11 +24,18 @@ namespace TogglDesktop.AutoCompletion
             _tagItemsDictionary.ForEach(kvp => kvp.Value.IsChecked = isSelected(kvp.Key));
             VisibleItems = _fullItemsList;
         }
+
         public void AddTag(string tag)
         {
             if (_tagItemsDictionary.TryGetValue(tag, out var tagItemViewModel))
             {
                 tagItemViewModel.IsChecked = true;
+            }
+            else
+            {
+                var newTag = new TagItemViewModel(tag) { IsChecked = true };
+                AppendTag(newTag);
+                VisibleItems = _fullItemsList;
             }
         }
 
@@ -38,6 +45,11 @@ namespace TogglDesktop.AutoCompletion
             {
                 tagItemViewModel.IsChecked = false;
             }
+        }
+
+        public void ClearSelection()
+        {
+            _tagItemsDictionary.Values.ForEach(x => x.IsChecked = false);
         }
 
         public string DebugIdentifier => "Tags";
@@ -105,6 +117,17 @@ namespace TogglDesktop.AutoCompletion
         public void SelectPrevious()
         {
             _selectionManager.SelectPrevious();
+        }
+
+        private void AppendTag(TagItemViewModel tagItem)
+        {
+            if (_fullItemsList[0].Type == ItemType.CUSTOM_TEXT)
+            {
+                _fullItemsList.Clear();
+            }
+
+            _fullItemsList.Add(tagItem);
+            _tagItemsDictionary[tagItem.Text] = tagItem;
         }
     }
 }

@@ -169,6 +169,7 @@ namespace TogglDesktop
             }
             this.tags.Clear();
             this.orderedTags.Clear();
+            this.controller.ClearSelection();
             if (clearTextBox)
                 this.textBox.SetText("");
 
@@ -191,8 +192,11 @@ namespace TogglDesktop
 
         public void SetKnownTags(IEnumerable<string> tags)
         {
-            controller = AutoCompleteControllers.ForTags(tags, this.tags.ContainsKey);
-            this.autoComplete.SetController(controller);
+            if (!autoComplete.IsOpen)
+            {
+                controller = AutoCompleteControllers.ForTags(tags, this.tags.ContainsKey);
+                this.autoComplete.SetController(controller);
+            }
         }
 
         public void ClearUndoHistory()
