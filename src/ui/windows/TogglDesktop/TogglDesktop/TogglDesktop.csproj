@@ -655,6 +655,7 @@
     <Page Include="ui\Resources\DesignUpdate\TabControl.xaml" />
     <Page Include="ui\Resources\DesignUpdate\TextBox.xaml" />
     <Page Include="ui\Resources\DesignUpdate\ToggleSwitch.xaml" />
+    <Page Include="ui\Resources\DesignUpdate\ToolTip.xaml" />
     <Page Include="ui\Resources\DesignUpdate\Window.xaml" />
     <Page Include="ui\Resources\DesignUpdate\Typography.xaml" />
     <Page Include="ui\Resources\Themes\ColorScheme\Dark.xaml">

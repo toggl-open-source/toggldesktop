@@ -157,7 +157,7 @@
            StaysOpen="False">
         <Grid Background="Transparent">
             <Border Margin="8 0 8 8"
-                    BorderBrush="{DynamicResource Toggl.ComboBoxPopupBorderBrush}"
+                    BorderBrush="{DynamicResource Toggl.PopupBorderBrush}"
                     BorderThickness="1"
                     Background="{DynamicResource Toggl.CardBackground}"
                     MinWidth="{Binding ElementName=popup, Path=PlacementTarget.ActualWidth}"
@@ -176,7 +176,7 @@
                              Background="{DynamicResource Toggl.CardBackground}"
                              ItemContainerStyle="{StaticResource AutoCompleteItem}"
                              BorderThickness="0"
-                             BorderBrush="{DynamicResource Toggl.ComboBoxPopupBorderBrush}"
+                             BorderBrush="{DynamicResource Toggl.PopupBorderBrush}"
                              VerticalAlignment="Top"
                              Width="Auto"
                              HorizontalContentAlignment="Stretch"

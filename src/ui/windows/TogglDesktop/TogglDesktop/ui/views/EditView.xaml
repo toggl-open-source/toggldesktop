@@ -89,7 +89,7 @@
                                         HorizontalAlignment="Stretch"
                                         Background="{DynamicResource Toggl.CardBackground}"
                                         BorderThickness="1"
-                                        BorderBrush="{DynamicResource Toggl.ComboBoxPopupBorderBrush}"
+                                        BorderBrush="{DynamicResource Toggl.PopupBorderBrush}"
                                         Margin="8 0 8 8"
                                         MinWidth="{Binding ElementName=projectDropDownBorder, Path=ActualWidth}">
                                     <Border.Effect>
