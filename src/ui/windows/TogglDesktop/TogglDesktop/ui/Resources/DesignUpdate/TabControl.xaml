@@ -12,7 +12,7 @@
         <Setter Property="mah:TabControlHelper.UnderlineMouseOverBrush" Value="{DynamicResource Toggl.SecondaryTextBrush}" />
         <Setter Property="mah:TabControlHelper.UnderlineMouseOverSelectedBrush" Value="{DynamicResource Toggl.AccentBrush}" />
         <Setter Property="mah:TabControlHelper.UnderlineSelectedBrush" Value="{DynamicResource Toggl.AccentBrush}" />
-        <Setter Property="Background" Value="{DynamicResource Toggl.CardBackground}" />
+        <Setter Property="Background" Value="{DynamicResource Toggl.Background}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type TabControl}">
@@ -107,6 +107,7 @@
         <Setter Property="FontFamily" Value="{StaticResource BaseFont}" />
         <Setter Property="Foreground" Value="{DynamicResource Toggl.SecondaryTextBrush}" />
         <Setter Property="Padding" Value="0 2" />
+        <Setter Property="Background" Value="{DynamicResource Toggl.CardBackground}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="TabItem">
