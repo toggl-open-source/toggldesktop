@@ -474,7 +474,8 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     error ToSAccept();
 
     void SetIdleSeconds(const Poco::UInt64 idle_seconds) {
-        idle_.SetIdleSeconds(idle_seconds, user_);
+        locked<User> user { *user_ };
+        idle_.SetIdleSeconds(idle_seconds, user);
     }
 
     void LoadMore();
@@ -572,7 +573,7 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
 
     void startPeriodicSync();
 
-    void setUser(User *value, const bool user_logged_in = false);
+    void setUser(locked<User> &value, const bool user_logged_in = false);
 
     void switchWebSocketOff();
     void switchWebSocketOn();
@@ -667,10 +668,10 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
                     std::string *user_data,
                     const Poco::Int64 since);
 
-    bool isTimeEntryLocked(TimeEntry* te);
-    bool isTimeLockedInWorkspace(time_t t, Workspace* ws);
-    bool canChangeStartTimeTo(TimeEntry* te, time_t t);
-    bool canChangeProjectTo(TimeEntry* te, Project* p);
+    bool isTimeEntryLocked(locked<TimeEntry> &te);
+    bool isTimeLockedInWorkspace(time_t t, locked<Workspace> &ws);
+    bool canChangeStartTimeTo(locked<TimeEntry> &te, time_t t);
+    bool canChangeProjectTo(locked<TimeEntry> &te, locked<Project> &p);
 
     error logAndDisplayUserTriedEditingLockedEntry();
 
@@ -678,7 +679,7 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
 
     error pullWorkspacePreferences(TogglClient* https_client);
     error pullWorkspacePreferences(TogglClient* https_client,
-                                   Workspace *workspace, std::string* json);
+                                   locked<Workspace> &workspace, std::string* json);
 
     error pushObmAction();
 
@@ -693,8 +694,7 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     Poco::Mutex db_m_;
     Database *db_;
 
-    Poco::Mutex user_m_;
-    User *user_;
+    ProtectedModel<User> user_;
 
     Poco::Mutex ws_client_m_;
     WebSocketClient ws_client_;
@@ -758,7 +758,7 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
 
     static std::string log_path_;
 
-    Settings settings_;
+    ProtectedModel<Settings> settings_ { nullptr };
 
     std::set<std::string> autotracker_titles_;
 

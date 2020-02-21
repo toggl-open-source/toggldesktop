@@ -136,7 +136,7 @@ Database::~Database() {
 }
 
 error Database::DeleteUser(
-    User *model,
+    locked<User> &model,
     const bool with_related_data) {
 
     poco_check_ptr(model);
@@ -393,7 +393,7 @@ std::string Database::GenerateGUID() {
     return uuid.toString();
 }
 
-error Database::LoadCurrentUser(User *user) {
+error Database::LoadCurrentUser(locked<User> &user) {
     poco_check_ptr(user);
 
     logger.debug("LoadCurrentUser");
@@ -1064,7 +1064,7 @@ error Database::SaveUpdateChannel(
 
 error Database::LoadUserByEmail(
     const std::string &email,
-    User *model) {
+    locked<User> &model) {
 
     if (email.empty()) {
         return error("Cannot load user by email token without an email");
@@ -1106,53 +1106,53 @@ error Database::LoadUserByEmail(
     return LoadUserByID(uid, model);
 }
 
-error Database::loadUsersRelatedData(User *user) {
-    error err = loadWorkspaces(user->ID(), &user->related.Workspaces);
+error Database::loadUsersRelatedData(locked<User> &user) {
+    error err = loadWorkspaces(user->ID(), user->related.Workspaces);
     if (err != noError) {
         return err;
     }
 
-    err = loadClients(user->ID(), &user->related.Clients);
+    err = loadClients(user->ID(), user->related.Clients);
     if (err != noError) {
         return err;
     }
 
-    err = loadProjects(user->ID(), &user->related.Projects);
+    err = loadProjects(user->ID(), user->related.Projects);
     if (err != noError) {
         return err;
     }
 
-    err = loadTasks(user->ID(), &user->related.Tasks);
+    err = loadTasks(user->ID(), user->related.Tasks);
     if (err != noError) {
         return err;
     }
 
-    err = loadTags(user->ID(), &user->related.Tags);
+    err = loadTags(user->ID(), user->related.Tags);
     if (err != noError) {
         return err;
     }
 
-    err = loadTimeEntries(user->ID(), &user->related.TimeEntries);
+    err = loadTimeEntries(user->ID(), user->related.TimeEntries);
     if (err != noError) {
         return err;
     }
 
-    err = loadAutotrackerRules(user->ID(), &user->related.AutotrackerRules);
+    err = loadAutotrackerRules(user->ID(), user->related.AutotrackerRules);
     if (err != noError) {
         return err;
     }
 
-    err = loadTimelineEvents(user->ID(), &user->related.TimelineEvents);
+    err = loadTimelineEvents(user->ID(), user->related.TimelineEvents);
     if (err != noError) {
         return err;
     }
 
-    err = loadObmActions(user->ID(), &user->related.ObmActions);
+    err = loadObmActions(user->ID(), user->related.ObmActions);
     if (err != noError) {
         return err;
     }
 
-    err = loadObmExperiments(user->ID(), &user->related.ObmExperiments);
+    err = loadObmExperiments(user->ID(), user->related.ObmExperiments);
     if (err != noError) {
         return err;
     }
@@ -1162,7 +1162,7 @@ error Database::loadUsersRelatedData(User *user) {
 
 error Database::LoadUserByID(
     const Poco::UInt64 &UID,
-    User *user) {
+    locked<User> &user) {
 
     if (!UID) {
         return error("Cannot load user by ID without an ID");
@@ -1259,18 +1259,15 @@ error Database::LoadUserByID(
     return noError;
 }
 
-error Database::loadWorkspaces(
-    const Poco::UInt64 &UID,
-    std::vector<Workspace *> *list) {
+error Database::loadWorkspaces(const Poco::UInt64 &UID,
+    ProtectedContainer<Workspace> &list) {
 
     if (!UID) {
         return error("Cannot load user workspaces without an user ID");
     }
 
     try {
-        poco_check_ptr(list);
-
-        list->clear();
+        list.clear();
 
         Poco::Mutex::ScopedLock lock(session_m_);
 
@@ -1293,7 +1290,7 @@ error Database::loadWorkspaces(
             select.execute();
             bool more = rs.moveFirst();
             while (more) {
-                Workspace *model = new Workspace();
+                auto model = list.create();
                 model->SetLocalID(rs[0].convert<Poco::Int64>());
                 model->SetID(rs[1].convert<Poco::UInt64>());
                 model->SetUID(rs[2].convert<Poco::UInt64>());
@@ -1305,7 +1302,6 @@ error Database::loadWorkspaces(
                 model->SetBusiness(rs[8].convert<bool>());
                 model->SetLockedTime(rs[9].convert<time_t>());
                 model->ClearDirty();
-                list->push_back(model);
                 more = rs.moveNext();
             }
         }
@@ -1319,18 +1315,15 @@ error Database::loadWorkspaces(
     return last_error("loadWorkspaces");
 }
 
-error Database::loadClients(
-    const Poco::UInt64 &UID,
-    std::vector<Client *> *list) {
+error Database::loadClients(const Poco::UInt64 &UID,
+    ProtectedContainer<Client> &list) {
 
     if (!UID) {
         return error("Cannot load user clients without an user ID");
     }
 
     try {
-        poco_check_ptr(list);
-
-        list->clear();
+        list.clear();
 
         Poco::Mutex::ScopedLock lock(session_m_);
 
@@ -1351,7 +1344,7 @@ error Database::loadClients(
             select.execute();
             bool more = rs.moveFirst();
             while (more) {
-                Client *model = new Client();
+                auto model = list.create();
                 model->SetLocalID(rs[0].convert<Poco::Int64>());
                 if (rs[1].isEmpty()) {
                     model->SetID(0);
@@ -1367,7 +1360,7 @@ error Database::loadClients(
                 }
                 model->SetWID(rs[5].convert<Poco::UInt64>());
                 model->ClearDirty();
-                list->push_back(model);
+
                 more = rs.moveNext();
             }
         }
@@ -1381,18 +1374,15 @@ error Database::loadClients(
     return last_error("loadClients");
 }
 
-error Database::loadProjects(
-    const Poco::UInt64 &UID,
-    std::vector<Project *> *list) {
+error Database::loadProjects(const Poco::UInt64 &UID,
+    ProtectedContainer<Project> &list) {
 
     if (!UID) {
         return error("Cannot load user projects without an user ID");
     }
 
     try {
-        poco_check_ptr(list);
-
-        list->clear();
+        list.clear();
 
         Poco::Mutex::ScopedLock lock(session_m_);
 
@@ -1419,7 +1409,7 @@ error Database::loadProjects(
             select.execute();
             bool more = rs.moveFirst();
             while (more) {
-                Project *model = new Project();
+                auto model = list.create();
                 model->SetLocalID(rs[0].convert<Poco::Int64>());
                 if (rs[1].isEmpty()) {
                     model->SetID(0);
@@ -1457,7 +1447,7 @@ error Database::loadProjects(
                     model->SetClientName(rs[11].convert<std::string>());
                 }
                 model->ClearDirty();
-                list->push_back(model);
+
                 more = rs.moveNext();
             }
         }
@@ -1473,16 +1463,14 @@ error Database::loadProjects(
 
 error Database::loadTasks(
     const Poco::UInt64 &UID,
-    std::vector<Task *> *list) {
+    ProtectedContainer<Task> &list) {
 
     if (!UID) {
         return error("Cannot load user tasks without an user ID");
     }
 
     try {
-        poco_check_ptr(list);
-
-        list->clear();
+        list.clear();
 
         Poco::Mutex::ScopedLock lock(session_m_);
 
@@ -1502,7 +1490,7 @@ error Database::loadTasks(
             select.execute();
             bool more = rs.moveFirst();
             while (more) {
-                Task *model = new Task();
+                auto model = list.create();
                 model->SetLocalID(rs[0].convert<Poco::Int64>());
                 if (rs[1].isEmpty()) {
                     model->SetID(0);
@@ -1519,7 +1507,7 @@ error Database::loadTasks(
                 }
                 model->SetActive(rs[6].convert<bool>());
                 model->ClearDirty();
-                list->push_back(model);
+
                 more = rs.moveNext();
             }
         }
@@ -1533,18 +1521,15 @@ error Database::loadTasks(
     return last_error("loadTasks");
 }
 
-error Database::loadTags(
-    const Poco::UInt64 &UID,
-    std::vector<Tag *> *list) {
+error Database::loadTags(const Poco::UInt64 &UID,
+    ProtectedContainer<Tag> &list) {
 
     if (!UID) {
         return error("Cannot load user tags without an user ID");
     }
 
     try {
-        poco_check_ptr(list);
-
-        list->clear();
+        list.clear();
 
         Poco::Mutex::ScopedLock lock(session_m_);
 
@@ -1564,7 +1549,7 @@ error Database::loadTags(
             select.execute();
             bool more = rs.moveFirst();
             while (more) {
-                Tag *model = new Tag();
+                auto model = list.create();
                 model->SetLocalID(rs[0].convert<Poco::Int64>());
                 if (rs[1].isEmpty()) {
                     model->SetID(0);
@@ -1580,7 +1565,7 @@ error Database::loadTags(
                     model->SetGUID(rs[5].convert<std::string>());
                 }
                 model->ClearDirty();
-                list->push_back(model);
+
                 more = rs.moveNext();
             }
         }
@@ -1594,18 +1579,15 @@ error Database::loadTags(
     return last_error("loadTags");
 }
 
-error Database::loadAutotrackerRules(
-    const Poco::UInt64 &UID,
-    std::vector<AutotrackerRule *> *list) {
+error Database::loadAutotrackerRules(const Poco::UInt64 &UID,
+    ProtectedContainer<AutotrackerRule> &list) {
 
     if (!UID) {
         return error("Cannot load autotracker rules without an user ID");
     }
 
     try {
-        poco_check_ptr(list);
-
-        list->clear();
+        list.clear();
 
         Poco::Mutex::ScopedLock lock(session_m_);
 
@@ -1625,7 +1607,7 @@ error Database::loadAutotrackerRules(
             select.execute();
             bool more = rs.moveFirst();
             while (more) {
-                AutotrackerRule *model = new AutotrackerRule();
+                auto model = list.create();
                 model->SetLocalID(rs[0].convert<Poco::Int64>());
                 model->SetUID(rs[1].convert<Poco::UInt64>());
                 model->SetTerm(rs[2].convert<std::string>());
@@ -1634,7 +1616,7 @@ error Database::loadAutotrackerRules(
                     model->SetTID(rs[4].convert<Poco::UInt64>());
                 }
                 model->ClearDirty();
-                list->push_back(model);
+
                 more = rs.moveNext();
             }
         }
@@ -1650,16 +1632,14 @@ error Database::loadAutotrackerRules(
 
 error Database::loadObmActions(
     const Poco::UInt64 &UID,
-    std::vector<ObmAction *> *list) {
+    ProtectedContainer<ObmAction> &list) {
 
     if (!UID) {
         return error("Cannot load OBM actions without an user ID");
     }
 
     try {
-        poco_check_ptr(list);
-
-        list->clear();
+        list.clear();
 
         Poco::Mutex::ScopedLock lock(session_m_);
 
@@ -1679,14 +1659,14 @@ error Database::loadObmActions(
             select.execute();
             bool more = rs.moveFirst();
             while (more) {
-                ObmAction *model = new ObmAction();
+                auto model = list.create();
                 model->SetLocalID(rs[0].convert<Poco::Int64>());
                 model->SetUID(rs[1].convert<Poco::UInt64>());
                 model->SetExperimentID(rs[2].convert<Poco::UInt64>());
                 model->SetKey(rs[3].convert<std::string>());
                 model->SetValue(rs[4].convert<std::string>());
                 model->ClearDirty();
-                list->push_back(model);
+
                 more = rs.moveNext();
             }
         }
@@ -1700,18 +1680,15 @@ error Database::loadObmActions(
     return last_error("loadObmActions");
 }
 
-error Database::loadObmExperiments(
-    const Poco::UInt64 &UID,
-    std::vector<ObmExperiment *> *list) {
+error Database::loadObmExperiments(const Poco::UInt64 &UID,
+    ProtectedContainer<ObmExperiment> &list) {
 
     if (!UID) {
         return error("Cannot load OBM experiments without an user ID");
     }
 
     try {
-        poco_check_ptr(list);
-
-        list->clear();
+        list.clear();
 
         Poco::Mutex::ScopedLock lock(session_m_);
 
@@ -1731,7 +1708,7 @@ error Database::loadObmExperiments(
             select.execute();
             bool more = rs.moveFirst();
             while (more) {
-                ObmExperiment *model = new ObmExperiment();
+                auto model = list.create();
                 model->SetLocalID(rs[0].convert<Poco::Int64>());
                 model->SetUID(rs[1].convert<Poco::UInt64>());
                 model->SetNr(rs[2].convert<Poco::UInt64>());
@@ -1739,7 +1716,7 @@ error Database::loadObmExperiments(
                 model->SetHasSeen(rs[4].convert<bool>());
                 model->SetActions(rs[5].convert<std::string>());
                 model->ClearDirty();
-                list->push_back(model);
+
                 more = rs.moveNext();
             }
         }
@@ -1753,18 +1730,15 @@ error Database::loadObmExperiments(
     return last_error("loadObmExperiments");
 }
 
-error Database::loadTimelineEvents(
-    const Poco::UInt64 &UID,
-    std::vector<TimelineEvent *> *list) {
+error Database::loadTimelineEvents(const Poco::UInt64 &UID,
+    ProtectedContainer<TimelineEvent> &list) {
 
     if (!UID) {
         return error("Cannot load user timeline without an user ID");
     }
 
     try {
-        poco_check_ptr(list);
-
-        list->clear();
+        list.clear();
 
         Poco::Mutex::ScopedLock lock(session_m_);
 
@@ -1785,7 +1759,7 @@ error Database::loadTimelineEvents(
             select.execute();
             bool more = rs.moveFirst();
             while (more) {
-                TimelineEvent *model = new TimelineEvent();
+                auto model = list.create();
                 model->SetLocalID(rs[0].convert<unsigned int>());
                 if (!rs[1].isEmpty()) {
                     model->SetTitle(rs[1].convert<std::string>());
@@ -1806,17 +1780,12 @@ error Database::loadTimelineEvents(
 
                 model->ClearDirty();
 
-                list->push_back(model);
-
                 more = rs.moveNext();
             }
         }
 
         // Ensure all timeline events have a GUID.
-        for (std::vector<TimelineEvent *>::iterator it = list->begin();
-                it != list->end();
-                ++it) {
-            TimelineEvent *model = *it;
+        for (auto model : list) {
             model->EnsureGUID();
         }
     } catch(const Poco::Exception& exc) {
@@ -1829,18 +1798,15 @@ error Database::loadTimelineEvents(
     return noError;
 }
 
-error Database::loadTimeEntries(
-    const Poco::UInt64 &UID,
-    std::vector<TimeEntry *> *list) {
+error Database::loadTimeEntries(const Poco::UInt64 &UID,
+    ProtectedContainer<TimeEntry> &list) {
 
     if (!UID) {
         return error("Cannot load user time entries without an user ID");
     }
 
     try {
-        poco_check_ptr(list);
-
-        list->clear();
+        list.clear();
 
         Poco::Mutex::ScopedLock lock(session_m_);
 
@@ -1864,10 +1830,7 @@ error Database::loadTimeEntries(
         }
 
         // Ensure all time entries have a GUID.
-        for (std::vector<TimeEntry *>::iterator it = list->begin();
-                it != list->end();
-                ++it) {
-            TimeEntry *te = *it;
+        for (auto te : list) {
             te->EnsureGUID();
             if (te->Dirty()) {
                 te->SetUIModified();
@@ -1883,12 +1846,10 @@ error Database::loadTimeEntries(
     return noError;
 }
 
-error Database::loadTimeEntriesFromSQLStatement(
-    Poco::Data::Statement *select,
-    std::vector<TimeEntry *> *list) {
+error Database::loadTimeEntriesFromSQLStatement(Poco::Data::Statement *select,
+    ProtectedContainer<TimeEntry> &list) {
 
     poco_check_ptr(select);
-    poco_check_ptr(list);
 
     try {
         Poco::Data::RecordSet rs(*select);
@@ -1896,7 +1857,7 @@ error Database::loadTimeEntriesFromSQLStatement(
             select->execute();
             bool more = rs.moveFirst();
             while (more) {
-                TimeEntry *model = new TimeEntry();
+                auto model = list.create();
                 model->SetLocalID(rs[0].convert<Poco::Int64>());
                 if (rs[1].isEmpty()) {
                     model->SetID(0);
@@ -1967,7 +1928,6 @@ error Database::loadTimeEntriesFromSQLStatement(
                 }
                 model->ClearDirty();
 
-                list->push_back(model);
                 more = rs.moveNext();
             }
         }
@@ -1982,23 +1942,18 @@ error Database::loadTimeEntriesFromSQLStatement(
 }
 
 template <typename T>
-error Database::saveRelatedModels(
-    const Poco::UInt64 UID,
+error Database::saveRelatedModels(const Poco::UInt64 UID,
     const std::string &table_name,
-    std::vector<T *> *list,
+    ProtectedContainer<T> &list,
     std::vector<ModelChange> *changes) {
 
     if (!UID) {
         return error("Cannot save user related data without an user ID");
     }
 
-    poco_check_ptr(list);
     poco_check_ptr(changes);
 
-    typedef typename std::vector<T *>::iterator iterator;
-
-    for (size_t i = 0; i < list->size(); i++) {
-        T *model = list->at(i);
+    for (auto model : list) {
         if (model->IsMarkedAsDeletedOnServer()) {
             error err = DeleteFromTable(table_name, model->LocalID());
             if (err != noError) {
@@ -2019,11 +1974,11 @@ error Database::saveRelatedModels(
     }
 
     // Purge deleted models from memory
-    iterator it = list->begin();
-    while (it != list->end()) {
-        T *model = *it;
+    auto it = list.begin();
+    while (it != list.end()) {
+        auto model = *it;
         if (model->IsMarkedAsDeletedOnServer()) {
-            it = list->erase(it);
+            it = list.erase(it);
         } else {
             ++it;
         }
@@ -2036,7 +1991,7 @@ typedef toggl::error (Database::*saveModel)(
     BaseModel *model, std::vector<ModelChange> *changes);
 
 error Database::saveModel(
-    TimeEntry *model,
+    locked<TimeEntry> &model,
     std::vector<ModelChange> *changes) {
 
     try {
@@ -2252,7 +2207,7 @@ error Database::saveModel(
 }
 
 error Database::saveModel(
-    TimelineEvent *model,
+    locked<TimelineEvent> &model,
     std::vector<ModelChange> *changes) {
 
     try {
@@ -2405,7 +2360,7 @@ error Database::saveModel(
 }
 
 error Database::saveModel(
-    AutotrackerRule *model,
+    locked<AutotrackerRule> &model,
     std::vector<ModelChange> *changes) {
 
     try {
@@ -2493,7 +2448,7 @@ error Database::saveModel(
 }
 
 error Database::saveModel(
-    ObmAction *model,
+    locked<ObmAction> &model,
     std::vector<ModelChange> *changes) {
 
     try {
@@ -2583,7 +2538,7 @@ error Database::saveModel(
 }
 
 error Database::saveModel(
-    Workspace *model,
+    locked<Workspace> &model,
     std::vector<ModelChange> *changes) {
 
 
@@ -2678,7 +2633,7 @@ error Database::saveModel(
 }
 
 error Database::saveModel(
-    Client *model,
+    locked<Client> &model,
     std::vector<ModelChange> *changes) {
 
     try {
@@ -2793,7 +2748,7 @@ error Database::saveModel(
 }
 
 error Database::saveModel(
-    Project *model,
+    locked<Project> &model,
     std::vector<ModelChange> *changes) {
 
     try {
@@ -3034,7 +2989,7 @@ error Database::saveModel(
 }
 
 error Database::saveModel(
-    Task *model,
+    locked<Task> &model,
     std::vector<ModelChange> *changes) {
 
     try {
@@ -3111,7 +3066,7 @@ error Database::saveModel(
 }
 
 error Database::saveModel(
-    Tag *model,
+    locked<Tag> &model,
     std::vector<ModelChange> *changes    ) {
 
     try {
@@ -3215,8 +3170,9 @@ error Database::saveModel(
     return noError;
 }
 
+
 error Database::SaveUser(
-    User *user,
+    locked<User> &user,
     const bool with_related_data,
     std::vector<ModelChange> *changes) {
 
@@ -3358,7 +3314,7 @@ error Database::SaveUser(
         std::vector<ModelChange> workspace_changes;
         error err = saveRelatedModels(user->ID(),
                                       "workspaces",
-                                      &user->related.Workspaces,
+                                      user->related.Workspaces,
                                       &workspace_changes);
         if (err != noError) {
             session_->rollback();
@@ -3379,7 +3335,7 @@ error Database::SaveUser(
         std::vector<ModelChange> client_changes;
         err = saveRelatedModels(user->ID(),
                                 "clients",
-                                &user->related.Clients,
+                                user->related.Clients,
                                 &client_changes);
         if (err != noError) {
             session_->rollback();
@@ -3400,7 +3356,7 @@ error Database::SaveUser(
         std::vector<ModelChange> project_changes;
         err = saveRelatedModels(user->ID(),
                                 "projects",
-                                &user->related.Projects,
+                                user->related.Projects,
                                 &project_changes);
         if (err != noError) {
             session_->rollback();
@@ -3421,7 +3377,7 @@ error Database::SaveUser(
         std::vector<ModelChange> task_changes;
         err = saveRelatedModels(user->ID(),
                                 "tasks",
-                                &user->related.Tasks,
+                                user->related.Tasks,
                                 &task_changes);
         if (err != noError) {
             session_->rollback();
@@ -3441,7 +3397,7 @@ error Database::SaveUser(
         // Tags
         err = saveRelatedModels(user->ID(),
                                 "tags",
-                                &user->related.Tags,
+                                user->related.Tags,
                                 changes);
         if (err != noError) {
             session_->rollback();
@@ -3451,7 +3407,7 @@ error Database::SaveUser(
         // Time entries
         err = saveRelatedModels(user->ID(),
                                 "time_entries",
-                                &user->related.TimeEntries,
+                                user->related.TimeEntries,
                                 changes);
         if (err != noError) {
             session_->rollback();
@@ -3461,7 +3417,7 @@ error Database::SaveUser(
         // Autotracker rules
         err = saveRelatedModels(user->ID(),
                                 "autotracker_settings",
-                                &user->related.AutotrackerRules,
+                                user->related.AutotrackerRules,
                                 changes);
         if (err != noError) {
             session_->rollback();
@@ -3471,7 +3427,7 @@ error Database::SaveUser(
         // OBM actions
         err = saveRelatedModels(user->ID(),
                                 "obm_actions",
-                                &user->related.ObmActions,
+                                user->related.ObmActions,
                                 changes);
         if (err != noError) {
             session_->rollback();
@@ -3481,7 +3437,7 @@ error Database::SaveUser(
         // OBM experiments
         err = saveRelatedModels(user->ID(),
                                 "obm_experiments",
-                                &user->related.ObmExperiments,
+                                user->related.ObmExperiments,
                                 changes);
         if (err != noError) {
             session_->rollback();
@@ -3491,7 +3447,7 @@ error Database::SaveUser(
         // Timeline events
         err = saveRelatedModels(user->ID(),
                                 "timeline_events",
-                                &user->related.TimelineEvents,
+                                user->related.TimelineEvents,
                                 changes);
         if (err != noError) {
             session_->rollback();
@@ -3755,7 +3711,7 @@ error Database::LoadMigrations(
     try {
         poco_check_ptr(list);
 
-        list->clear();
+        list.clear();
 
         Poco::Mutex::ScopedLock lock(session_m_);
 
@@ -3950,7 +3906,7 @@ error Database::saveDesktopID() {
 }
 
 error Database::saveModel(
-    ObmExperiment *model,
+    locked<ObmExperiment> &model,
     std::vector<ModelChange> *changes) {
 
     try {

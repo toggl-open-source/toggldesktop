@@ -27,6 +27,11 @@ public:
         : std::unique_lock<std::recursive_mutex>()
         , data_(nullptr)
     { }
+    locked(locked<T> &&o) {
+        std::unique_lock<std::recursive_mutex>::operator=(std::move(o));
+        data_ = o.data_;
+        o.data_ = nullptr;
+    }
     /**
      * @brief Constructs a valid locked object
      * @param mutex - Needs to be a valid mutex, the application will block if it's already locked in a different thread
@@ -54,6 +59,7 @@ private:
     T *data_;
 };
 
+
 class ProtectedContainerBase {
 public:
     ProtectedContainerBase(RelatedData *parent)
@@ -73,9 +79,6 @@ public:
             return std::unique_lock<std::recursive_mutex>(mutex_);
         return { mutex_, std::defer_lock };
     }
-
-    virtual locked<BaseModel> baseByGUID(const guid &uuid) = 0;
-    virtual void moveGUID(BaseModel *model, const guid &from, const guid &to) = 0;
 protected:
     RelatedData *relatedData_;
     mutable std::recursive_mutex mutex_;
@@ -122,10 +125,6 @@ public:
         std::unique_lock<std::recursive_mutex> lock(mutex_);
         return value_;
     }
-    locked<BaseModel> baseByGUID(const guid &uuid) override {
-        return {};
-    }
-    virtual void moveGUID(BaseModel *model, const guid &from, const guid &to) {}
 private:
     T *value_;
 };
@@ -350,7 +349,12 @@ public:
      * @return - number of items inside the container
      */
     size_t size() const {
+        std::unique_lock<std::recursive_mutex> lock(mutex_);
         return container_.size();
+    }
+
+    bool empty() const {
+        return size() == 0;
     }
 
     bool contains(const guid &uuid) const {
@@ -425,10 +429,7 @@ public:
             return {};
         }
     }
-    locked<const T> byGUIDconst(const guid &uuid) const {
-        return byGUID(uuid);
-    }
-    locked<T> byId(uint64_t id) {
+    locked<T> byID(uint64_t id) {
         std::unique_lock<std::recursive_mutex> lock(mutex_);
         for (auto i : container_) {
             if (i->ID() == id)
@@ -436,28 +437,13 @@ public:
         }
         return {};
     }
-    locked<const T> byId(uint64_t id) const {
+    locked<const T> byID(uint64_t id) const {
         std::unique_lock<std::recursive_mutex> lock(mutex_);
         for (auto i : container_) {
             if (i->ID() == id)
                 return { mutex_, i };
         }
         return {};
-    }
-    locked<BaseModel> baseByGUID(const guid &uuid) override {
-        std::unique_lock<std::recursive_mutex> lock(mutex_);
-        try {
-            return { mutex_, guidMap_.at(uuid) };
-        }
-        catch (std::out_of_range &) {
-            return {};
-        }
-    }
-    void moveGUID(BaseModel *model, const guid &from, const guid &to) override {
-        std::unique_lock<std::recursive_mutex> lock(mutex_);
-        if (contains(from) && from != guid())
-            guidMap_.erase(from);
-        guidMap_[to] = reinterpret_cast<T*>(model);
     }
 
     bool operator==(const ProtectedContainer &o) const { return this == &o; }

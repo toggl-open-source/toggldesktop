@@ -9,7 +9,16 @@
 #include <map>
 #include <functional>
 
+#include "workspace.h"
+#include "client.h"
+#include "project.h"
+#include "task.h"
+#include "tag.h"
+#include "time_entry.h"
+#include "autotracker.h"
+#include "obm_action.h"
 #include "timeline_event.h"
+
 #include "types.h"
 #include "util/memory.h"
 
@@ -44,42 +53,27 @@ class TOGGL_INTERNAL_EXPORT RelatedData {
 
     }
 
-    ProtectedContainer<Workspace *> Workspaces { this };
-    ProtectedContainer<Client *> Clients { this };
-    ProtectedContainer<Project *> Projects { this };
-    ProtectedContainer<Task *> Tasks { this };
-    ProtectedContainer<Tag *> Tags { this };
-    ProtectedContainer<TimeEntry *> TimeEntries { this };
-    ProtectedContainer<AutotrackerRule *> AutotrackerRules { this };
-    ProtectedContainer<TimelineEvent *> TimelineEvents { this };
-    ProtectedContainer<ObmAction *> ObmActions { this };
-    ProtectedContainer<ObmExperiment *> ObmExperiments { this };
+    ProtectedContainer<Workspace> Workspaces { this };
+    ProtectedContainer<Client> Clients { this };
+    ProtectedContainer<Project> Projects { this };
+    ProtectedContainer<Task> Tasks { this };
+    ProtectedContainer<Tag> Tags { this };
+    ProtectedContainer<TimeEntry> TimeEntries { this };
+    ProtectedContainer<AutotrackerRule> AutotrackerRules { this };
+    ProtectedContainer<TimelineEvent> TimelineEvents { this };
+    ProtectedContainer<ObmAction> ObmActions { this };
+    ProtectedContainer<ObmExperiment> ObmExperiments { this };
 
     void Clear();
 
-    Task *TaskByID(const Poco::UInt64 id) const;
-    Client *ClientByID(const Poco::UInt64 id) const;
-    Project *ProjectByID(const Poco::UInt64 id) const;
-    Tag *TagByID(const Poco::UInt64 id) const;
-    Workspace *WorkspaceByID(const Poco::UInt64 id) const;
-    TimeEntry *TimeEntryByID(const Poco::UInt64 id) const;
-
-    void TagList(
-        std::vector<std::string> *result,
-        const Poco::UInt64 wid) const;
+    void TagList(std::vector<std::string> *result, const Poco::UInt64 wid) const;
     void WorkspaceList(std::vector<Workspace *> *) const;
     void ClientList(std::vector<Client *> *) const;
-
-    TimeEntry *TimeEntryByGUID(const guid GUID) const;
-    Tag *TagByGUID(const guid GUID) const;
-    Project *ProjectByGUID(const guid GUID) const;
-    Client *ClientByGUID(const guid GUID) const;
-    TimelineEvent *TimelineEventByGUID(const guid GUID) const;
 
     Poco::Int64 NumberOfUnsyncedTimeEntries() const;
 
     // Find the time entry that was stopped most recently
-    TimeEntry *LatestTimeEntry() const;
+    locked<TimeEntry> LatestTimeEntry();
 
     // Collect visible timeline events
     std::vector<TimelineEvent *> VisibleTimelineEvents() const;
@@ -87,7 +81,7 @@ class TOGGL_INTERNAL_EXPORT RelatedData {
     // Collect visible time entries
     std::vector<TimeEntry *> VisibleTimeEntries() const;
 
-    Poco::Int64 TotalDurationForDate(const TimeEntry *match) const;
+    Poco::Int64 TotalDurationForDate(locked<TimeEntry> &match);
 
     // avoid duplicates
     bool HasMatchingAutotrackerRule(const std::string &lowercase_term) const;
@@ -98,15 +92,12 @@ class TOGGL_INTERNAL_EXPORT RelatedData {
     void MinitimerAutocompleteItems(std::vector<view::Autocomplete> *) const;
     void ProjectAutocompleteItems(std::vector<view::Autocomplete> *) const;
 
-    void ProjectLabelAndColorCode(
-        TimeEntry * const te,
-        view::TimeEntry *view) const;
+    void ProjectLabelAndColorCode(locked<TimeEntry> &te, view::TimeEntry *view) const;
 
-    AutotrackerRule *FindAutotrackerRule(const TimelineEvent &event) const;
+    locked<AutotrackerRule> FindAutotrackerRule(locked<TimelineEvent> &event);
 
-    Client *clientByProject(Project *p) const;
-
-    void pushBackTimeEntry(TimeEntry  *timeEntry);
+    locked<Client> clientByProject(locked<Project> &p);
+    locked<const Client> clientByProject(locked<const Project> &p) const;
 
     void forEachTimeEntries(std::function<void(TimeEntry *)> f);
 

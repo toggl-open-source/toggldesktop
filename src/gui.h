@@ -109,7 +109,7 @@ class TOGGL_INTERNAL_EXPORT TimeEntry {
 
     void GenerateRoundedTimes();
 
-    void Fill(toggl::TimeEntry * const model);
+    void Fill(toggl::locked<toggl::TimeEntry> &model);
 
     bool operator == (const TimeEntry& other) const;
 };
@@ -423,9 +423,8 @@ class TOGGL_INTERNAL_EXPORT GUI : public SyncStateMonitor {
 
     void DisplayPomodoroBreak(const Poco::Int64 minutes);
 
-    void DisplayAutotrackerNotification(
-        toggl::Project *const p,
-        toggl::Task *const t);
+    void DisplayAutotrackerNotification(locked<const Project> p,
+        locked<const Task> &t);
 
     void DisplayMinitimerAutocomplete(std::vector<toggl::view::Autocomplete> *);
 

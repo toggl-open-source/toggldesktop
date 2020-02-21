@@ -13,6 +13,7 @@
 #include "const.h"
 #include "types.h"
 #include "util/logger.h"
+#include "util/memory.h"
 
 #include <Poco/Types.h>
 
