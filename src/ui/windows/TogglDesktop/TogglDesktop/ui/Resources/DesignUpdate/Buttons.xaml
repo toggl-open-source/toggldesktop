@@ -236,7 +236,7 @@
                     <Canvas Width="24" Height="24" Margin="4 -3 4 0">
                         <Path Fill="White" Data="M12.5 6v5.5H18v1h-5.5V18h-1v-5.5H6v-1h5.5V6h1z" />
                     </Canvas>
-                    <TextBlock Text="Add Time Entry" Foreground="White" />
+                    <TextBlock Style="{StaticResource Toggl.BodyText}" Text="Add Time Entry" Foreground="White" />
                 </StackPanel>
             </Setter.Value>
         </Setter>

@@ -73,7 +73,7 @@
         <Grid Name="manualPanel" x:FieldModifier="private" Visibility="Collapsed"
               Margin="13 13 12 11">
             <Button Name="manualAddButton" x:FieldModifier="private"
-                    Style="{DynamicResource Toggl.AddTimeEntryButton}"
+                    Style="{StaticResource Toggl.AddTimeEntryButton}"
                     Click="onManualAddButtonClick">
             </Button>
         </Grid>
