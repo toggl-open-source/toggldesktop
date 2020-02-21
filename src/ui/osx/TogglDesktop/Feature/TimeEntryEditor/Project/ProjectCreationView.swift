@@ -54,6 +54,7 @@ final class ProjectCreationView: NSView {
             resetViews()
         }
     }
+    private var lastWorkspaceID: UInt64?
     private(set) var selectedWorkspace: Workspace? {
         didSet {
             clientDatasource.selectedWorkspace = selectedWorkspace
@@ -129,6 +130,7 @@ final class ProjectCreationView: NSView {
         projectTextField.stringValue = title
         window?.makeFirstResponder(projectTextField)
         updateLayoutState()
+        selectLastWorkspaceItem()
     }
 
     @IBAction func cancelBtnOnTap(_ sender: Any) {
@@ -160,6 +162,7 @@ final class ProjectCreationView: NSView {
         let clientGUID = clientData.1
         let projectName = projectTextField.stringValue
         let colorHex = selectedColor.colorHex
+        lastWorkspaceID = workspaceID
 
         let projectGUID = DesktopLibraryBridge.shared().createProject(withTimeEntryGUID: timeEntryGUID,
                                                                     workspaceID: workspaceID,
@@ -327,6 +330,16 @@ extension ProjectCreationView {
         colorPickerView.setColorWheelHidden(!isPremiumWorkspace)
         if displayMode != .normal {
             displayMode = isPremiumWorkspace ? .fullColorPicker : .compactColorPicker
+        }
+    }
+
+    private func selectLastWorkspaceItem() {
+        guard let lastWorkspaceID = lastWorkspaceID else { return }
+        guard let workspaces = workspaceDatasource.items as? [Workspace] else { return }
+        let index = workspaces.firstIndex(where: { $0.ID == lastWorkspaceID })
+
+        if let index = index {
+            workspaceDatasource.selectRow(at: index)
         }
     }
 }
