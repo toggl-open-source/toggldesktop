@@ -230,9 +230,9 @@
                             <Setter TargetName="UnCheckedBorder" Property="BorderBrush" Value="{DynamicResource Toggl.ErrorMessageBackground}" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
-                            <Setter TargetName="CheckedBorder" Property="Background" Value="{DynamicResource Toggl.DisabledElementBrush}" />
-                            <Setter TargetName="CheckedBorder" Property="BorderBrush" Value="{DynamicResource Toggl.DisabledElementBrush}" />
-                            <Setter TargetName="UnCheckedBorder" Property="BorderBrush" Value="{DynamicResource Toggl.DisabledElementBrush}" />
+                            <Setter TargetName="CheckedBorder" Property="Background" Value="{DynamicResource Toggl.LightGrayBrush}" />
+                            <Setter TargetName="CheckedBorder" Property="BorderBrush" Value="{DynamicResource Toggl.LightGrayBrush}" />
+                            <Setter TargetName="UnCheckedBorder" Property="BorderBrush" Value="{DynamicResource Toggl.LightGrayBrush}" />
                             <Setter Property="Foreground" Value="{DynamicResource Toggl.DisabledTextBrush}" />
                         </Trigger>
                         <Trigger Property="FlowDirection" Value="RightToLeft">

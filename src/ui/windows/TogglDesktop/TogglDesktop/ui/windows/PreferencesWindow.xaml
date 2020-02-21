@@ -394,7 +394,7 @@
         </TabControl>
 
         <!-- save/cancel -->
-        <Border Grid.Row="1" BorderThickness="0 1 0 0" BorderBrush="{DynamicResource Toggl.DisabledElementBrush}">
+        <Border Grid.Row="1" BorderThickness="0 1 0 0" BorderBrush="{DynamicResource Toggl.LightGrayBrush}">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="20,14">
                 <Button Click="saveButtonClicked"
                         Style="{DynamicResource Toggl.AccentButton}"

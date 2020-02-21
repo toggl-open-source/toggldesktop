@@ -1,3 +1,4 @@
+using System.Reactive.Linq;
 using System.Windows.Media;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
@@ -6,6 +7,13 @@ namespace TogglDesktop.ViewModels
 {
     public class ProjectLabelViewModel : ReactiveObject
     {
+        public ProjectLabelViewModel()
+        {
+            this.WhenAnyValue(x => x.ColorString)
+                .Select(Utils.ProjectColorBrushFromString)
+                .ToPropertyEx(this, x => x.Color);
+        }
+
         [Reactive]
         public string ProjectName { get; private set; }
 
@@ -16,7 +24,12 @@ namespace TogglDesktop.ViewModels
         public string ClientName { get; private set; }
 
         [Reactive]
-        public Brush Color { get; private set; }
+        public string ColorString { get; private set; }
+
+        [Reactive]
+        public string WorkspaceName { get; private set; }
+
+        public Brush Color { [ObservableAsProperty] get; }
 
         public ProjectInfo ProjectInfo { get; private set; }
 
@@ -27,7 +40,8 @@ namespace TogglDesktop.ViewModels
             ProjectName = string.Empty;
             TaskName = string.Empty;
             ClientName = string.Empty;
-            Color = default;
+            ColorString = string.Empty;
+            WorkspaceName = string.Empty;
             ProjectInfo = default;
         }
 
@@ -36,7 +50,8 @@ namespace TogglDesktop.ViewModels
             ProjectName = item.ProjectLabel;
             TaskName = item.TaskLabel;
             ClientName = item.ClientLabel;
-            Color = Utils.ProjectColorBrushFromString(item.Color);
+            ColorString = item.Color;
+            WorkspaceName = item.WorkspaceName;
             ProjectInfo = new ProjectInfo(item.PID, item.TID);
         }
 
@@ -45,7 +60,8 @@ namespace TogglDesktop.ViewModels
             ProjectName = item.ProjectLabel;
             TaskName = item.TaskLabel;
             ClientName = item.ClientLabel;
-            Color = Utils.ProjectColorBrushFromString(item.ProjectColor);
+            ColorString = item.ProjectColor;
+            WorkspaceName = item.WorkspaceName;
             ProjectInfo = new ProjectInfo(item.ProjectID, item.TaskID);
         }
     }
