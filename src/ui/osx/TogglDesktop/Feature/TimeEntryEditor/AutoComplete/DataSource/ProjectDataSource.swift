@@ -65,6 +65,15 @@ final class ProjectDataSource: AutoCompleteViewDataSource {
                            forIdentifier: Constants.WorkspaceCell)
     }
 
+    override func selectRow(at index: Int) {
+        if tableView.selectedRow == -1 && items.isEmpty {
+            // Open the New Project view
+            textField.didTapOnCreateButton()
+        } else {
+            super.selectRow(at: index)
+        }
+    }
+
     override func filter(with text: String) {
 
         // show all
