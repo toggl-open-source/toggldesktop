@@ -87,7 +87,7 @@
     <SolidColorBrush x:Key="Toggl.DarkGrayBrush" Color="{StaticResource Toggl.DarkGrayColor}" po:Freeze="True" />
     <SolidColorBrush x:Key="Toggl.SecondaryTextBrush" Color="{StaticResource Toggl.GrayColor}" po:Freeze="True" />
     <SolidColorBrush x:Key="Toggl.DisabledTextBrush" Color="{StaticResource Toggl.Grayish1Color}" po:Freeze="True" />
-    <SolidColorBrush x:Key="Toggl.DisabledElementBrush" Color="{StaticResource Toggl.LightGrayColor}" po:Freeze="True" />
+    <SolidColorBrush x:Key="Toggl.LightGrayBrush" Color="{StaticResource Toggl.LightGrayColor}" po:Freeze="True" />
     <SolidColorBrush x:Key="Toggl.HoverElementBrush" Color="{StaticResource Toggl.Grayish2Color}" po:Freeze="True" />
     <SolidColorBrush x:Key="Toggl.TextBox.Border" Color="{StaticResource Toggl.Grayish1Color}" po:Freeze="True" />
     <SolidColorBrush x:Key="Toggl.AccentBrush" Color="{StaticResource Toggl.AccentColor}" po:Freeze="True" />
