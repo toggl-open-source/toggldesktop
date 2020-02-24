@@ -10,7 +10,6 @@
                 "Fixed some potential memory leaks"
             ],
             "date": "February 12nd 2020",
-            "beta": "true",
             "has64bit": "true"
         },
         {
