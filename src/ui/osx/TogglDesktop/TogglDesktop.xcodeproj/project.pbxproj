@@ -114,17 +114,6 @@
 		BA13D2172269DE3400EB3833 /* NoVibrantPopoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA13D2162269DE3400EB3833 /* NoVibrantPopoverView.swift */; };
 		BA13D21B2269E0B500EB3833 /* CalendarViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA13D2192269E0B500EB3833 /* CalendarViewController.xib */; };
 		BA13E05C21C7BA6000835EC1 /* UserNotificationCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = BA13E05921C7B9D900835EC1 /* UserNotificationCenter.m */; };
-		BA1935E623F6996400D3E69F /* libPocoCrypto.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA43B30B23F67EE60007DD99 /* libPocoCrypto.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		BA1935E723F6996400D3E69F /* libPocoData.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA43B30323F67EE60007DD99 /* libPocoData.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		BA1935E823F6996400D3E69F /* libPocoDataSQLite.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA43B30A23F67EE60007DD99 /* libPocoDataSQLite.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		BA1935E923F6996400D3E69F /* libPocoFoundation.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA43B30723F67EE60007DD99 /* libPocoFoundation.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		BA1935EA23F6996400D3E69F /* libPocoJSON.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA43B30923F67EE60007DD99 /* libPocoJSON.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		BA1935EB23F6996400D3E69F /* libPocoNet.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA43B30823F67EE60007DD99 /* libPocoNet.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		BA1935EC23F6996400D3E69F /* libPocoNetSSL.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA43B30423F67EE60007DD99 /* libPocoNetSSL.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		BA1935ED23F6996400D3E69F /* libPocoUtil.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA43B30523F67EE60007DD99 /* libPocoUtil.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		BA1935EE23F6996400D3E69F /* libPocoXML.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA43B30623F67EE60007DD99 /* libPocoXML.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		BA1935EF23F6996400D3E69F /* libcrypto.1.1.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA43B2DC23F672850007DD99 /* libcrypto.1.1.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		BA1935F023F6996400D3E69F /* libssl.1.1.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA43B2DB23F672850007DD99 /* libssl.1.1.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		BA1935F123F69AC200D3E69F /* libPocoCrypto.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA43B30B23F67EE60007DD99 /* libPocoCrypto.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		BA1935F223F69AC200D3E69F /* libPocoData.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA43B30323F67EE60007DD99 /* libPocoData.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		BA1935F323F69AC200D3E69F /* libPocoDataSQLite.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA43B30A23F67EE60007DD99 /* libPocoDataSQLite.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
@@ -225,36 +214,23 @@
 		BA412C25224E147A003CA17A /* ClientAutoCompleteTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA412C24224E147A003CA17A /* ClientAutoCompleteTextField.swift */; };
 		BA412C27224E195C003CA17A /* NoClientCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA412C26224E195C003CA17A /* NoClientCellView.swift */; };
 		BA412C29224E196D003CA17A /* NoClientCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA412C28224E196D003CA17A /* NoClientCellView.xib */; };
-		BA43B2DD23F672850007DD99 /* libssl.1.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BA43B2DB23F672850007DD99 /* libssl.1.1.dylib */; };
-		BA43B2DE23F672850007DD99 /* libssl.1.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BA43B2DB23F672850007DD99 /* libssl.1.1.dylib */; };
-		BA43B2DF23F672850007DD99 /* libcrypto.1.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BA43B2DC23F672850007DD99 /* libcrypto.1.1.dylib */; };
-		BA43B2E023F672850007DD99 /* libcrypto.1.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BA43B2DC23F672850007DD99 /* libcrypto.1.1.dylib */; };
-		BA43B30C23F67EE60007DD99 /* libPocoData.60.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BA43B30323F67EE60007DD99 /* libPocoData.60.dylib */; };
-		BA43B30D23F67EE60007DD99 /* libPocoData.60.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BA43B30323F67EE60007DD99 /* libPocoData.60.dylib */; };
-		BA43B30E23F67EE60007DD99 /* libPocoNetSSL.60.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BA43B30423F67EE60007DD99 /* libPocoNetSSL.60.dylib */; };
-		BA43B30F23F67EE60007DD99 /* libPocoNetSSL.60.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BA43B30423F67EE60007DD99 /* libPocoNetSSL.60.dylib */; };
-		BA43B31023F67EE60007DD99 /* libPocoUtil.60.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BA43B30523F67EE60007DD99 /* libPocoUtil.60.dylib */; };
-		BA43B31123F67EE60007DD99 /* libPocoUtil.60.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BA43B30523F67EE60007DD99 /* libPocoUtil.60.dylib */; };
-		BA43B31223F67EE60007DD99 /* libPocoXML.60.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BA43B30623F67EE60007DD99 /* libPocoXML.60.dylib */; };
-		BA43B31323F67EE60007DD99 /* libPocoXML.60.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BA43B30623F67EE60007DD99 /* libPocoXML.60.dylib */; };
-		BA43B31423F67EE60007DD99 /* libPocoFoundation.60.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BA43B30723F67EE60007DD99 /* libPocoFoundation.60.dylib */; };
-		BA43B31523F67EE60007DD99 /* libPocoFoundation.60.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BA43B30723F67EE60007DD99 /* libPocoFoundation.60.dylib */; };
-		BA43B31623F67EE60007DD99 /* libPocoNet.60.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BA43B30823F67EE60007DD99 /* libPocoNet.60.dylib */; };
-		BA43B31723F67EE60007DD99 /* libPocoNet.60.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BA43B30823F67EE60007DD99 /* libPocoNet.60.dylib */; };
-		BA43B31823F67EE60007DD99 /* libPocoJSON.60.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BA43B30923F67EE60007DD99 /* libPocoJSON.60.dylib */; };
-		BA43B31923F67EE60007DD99 /* libPocoJSON.60.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BA43B30923F67EE60007DD99 /* libPocoJSON.60.dylib */; };
-		BA43B31A23F67EE60007DD99 /* libPocoDataSQLite.60.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BA43B30A23F67EE60007DD99 /* libPocoDataSQLite.60.dylib */; };
-		BA43B31B23F67EE60007DD99 /* libPocoDataSQLite.60.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BA43B30A23F67EE60007DD99 /* libPocoDataSQLite.60.dylib */; };
-		BA43B31C23F67EE60007DD99 /* libPocoCrypto.60.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BA43B30B23F67EE60007DD99 /* libPocoCrypto.60.dylib */; };
-		BA43B31D23F67EE60007DD99 /* libPocoCrypto.60.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BA43B30B23F67EE60007DD99 /* libPocoCrypto.60.dylib */; };
-		BA43B33C23F680E20007DD99 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BA43B33A23F680E20007DD99 /* libcrypto.a */; };
-		BA43B33D23F680E20007DD99 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BA43B33A23F680E20007DD99 /* libcrypto.a */; };
-		BA43B33E23F680E20007DD99 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BA43B33B23F680E20007DD99 /* libssl.a */; };
-		BA43B33F23F680E20007DD99 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BA43B33B23F680E20007DD99 /* libssl.a */; };
 		BA43B24E23F438AA0007DD99 /* TimelineLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA43B24D23F438AA0007DD99 /* TimelineLineView.swift */; };
 		BA43B24F23F438AA0007DD99 /* TimelineLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA43B24D23F438AA0007DD99 /* TimelineLineView.swift */; };
 		BA43B25423F525F30007DD99 /* TimelineLineView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA43B25323F525F30007DD99 /* TimelineLineView.xib */; };
 		BA43B25523F525F30007DD99 /* TimelineLineView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA43B25323F525F30007DD99 /* TimelineLineView.xib */; };
+		BA43B2DE23F672850007DD99 /* libssl.1.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BA43B2DB23F672850007DD99 /* libssl.1.1.dylib */; };
+		BA43B2E023F672850007DD99 /* libcrypto.1.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BA43B2DC23F672850007DD99 /* libcrypto.1.1.dylib */; };
+		BA43B30D23F67EE60007DD99 /* libPocoData.60.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BA43B30323F67EE60007DD99 /* libPocoData.60.dylib */; };
+		BA43B30F23F67EE60007DD99 /* libPocoNetSSL.60.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BA43B30423F67EE60007DD99 /* libPocoNetSSL.60.dylib */; };
+		BA43B31123F67EE60007DD99 /* libPocoUtil.60.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BA43B30523F67EE60007DD99 /* libPocoUtil.60.dylib */; };
+		BA43B31323F67EE60007DD99 /* libPocoXML.60.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BA43B30623F67EE60007DD99 /* libPocoXML.60.dylib */; };
+		BA43B31523F67EE60007DD99 /* libPocoFoundation.60.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BA43B30723F67EE60007DD99 /* libPocoFoundation.60.dylib */; };
+		BA43B31723F67EE60007DD99 /* libPocoNet.60.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BA43B30823F67EE60007DD99 /* libPocoNet.60.dylib */; };
+		BA43B31923F67EE60007DD99 /* libPocoJSON.60.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BA43B30923F67EE60007DD99 /* libPocoJSON.60.dylib */; };
+		BA43B31B23F67EE60007DD99 /* libPocoDataSQLite.60.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BA43B30A23F67EE60007DD99 /* libPocoDataSQLite.60.dylib */; };
+		BA43B31D23F67EE60007DD99 /* libPocoCrypto.60.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BA43B30B23F67EE60007DD99 /* libPocoCrypto.60.dylib */; };
+		BA43B33D23F680E20007DD99 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BA43B33A23F680E20007DD99 /* libcrypto.a */; };
+		BA43B33F23F680E20007DD99 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BA43B33B23F680E20007DD99 /* libssl.a */; };
 		BA45AAF623FBEED4000C94C0 /* CornerBoxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA45AAF523FBEED4000C94C0 /* CornerBoxView.swift */; };
 		BA45AAF723FBEED4000C94C0 /* CornerBoxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA45AAF523FBEED4000C94C0 /* CornerBoxView.swift */; };
 		BA4791F122F0478A00E24F79 /* NSView+Xib.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4791E822F0478900E24F79 /* NSView+Xib.swift */; };
@@ -644,17 +620,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				BA1935E623F6996400D3E69F /* libPocoCrypto.60.dylib in CopyFiles */,
-				BA1935E723F6996400D3E69F /* libPocoData.60.dylib in CopyFiles */,
-				BA1935E823F6996400D3E69F /* libPocoDataSQLite.60.dylib in CopyFiles */,
-				BA1935E923F6996400D3E69F /* libPocoFoundation.60.dylib in CopyFiles */,
-				BA1935EA23F6996400D3E69F /* libPocoJSON.60.dylib in CopyFiles */,
-				BA1935EB23F6996400D3E69F /* libPocoNet.60.dylib in CopyFiles */,
-				BA1935EC23F6996400D3E69F /* libPocoNetSSL.60.dylib in CopyFiles */,
-				BA1935ED23F6996400D3E69F /* libPocoUtil.60.dylib in CopyFiles */,
-				BA1935EE23F6996400D3E69F /* libPocoXML.60.dylib in CopyFiles */,
-				BA1935EF23F6996400D3E69F /* libcrypto.1.1.dylib in CopyFiles */,
-				BA1935F023F6996400D3E69F /* libssl.1.1.dylib in CopyFiles */,
 				74456B9E1A774CB0002A6338 /* TogglDesktopLibrary.dylib in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -910,6 +875,8 @@
 		BA412C24224E147A003CA17A /* ClientAutoCompleteTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientAutoCompleteTextField.swift; sourceTree = "<group>"; };
 		BA412C26224E195C003CA17A /* NoClientCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoClientCellView.swift; sourceTree = "<group>"; };
 		BA412C28224E196D003CA17A /* NoClientCellView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NoClientCellView.xib; sourceTree = "<group>"; };
+		BA43B24D23F438AA0007DD99 /* TimelineLineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineLineView.swift; sourceTree = "<group>"; };
+		BA43B25323F525F30007DD99 /* TimelineLineView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimelineLineView.xib; sourceTree = "<group>"; };
 		BA43B2DB23F672850007DD99 /* libssl.1.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libssl.1.1.dylib; sourceTree = "<group>"; };
 		BA43B2DC23F672850007DD99 /* libcrypto.1.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libcrypto.1.1.dylib; sourceTree = "<group>"; };
 		BA43B30323F67EE60007DD99 /* libPocoData.60.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libPocoData.60.dylib; sourceTree = "<group>"; };
@@ -924,8 +891,6 @@
 		BA43B33A23F680E20007DD99 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libcrypto.a; sourceTree = "<group>"; };
 		BA43B33B23F680E20007DD99 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libssl.a; sourceTree = "<group>"; };
 		BA43B34423F681380007DD99 /* liblua.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = liblua.a; sourceTree = "<group>"; };
-		BA43B24D23F438AA0007DD99 /* TimelineLineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineLineView.swift; sourceTree = "<group>"; };
-		BA43B25323F525F30007DD99 /* TimelineLineView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimelineLineView.xib; sourceTree = "<group>"; };
 		BA45AAF523FBEED4000C94C0 /* CornerBoxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CornerBoxView.swift; sourceTree = "<group>"; };
 		BA4791E822F0478900E24F79 /* NSView+Xib.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSView+Xib.swift"; sourceTree = "<group>"; };
 		BA4791E922F0478900E24F79 /* NSView+Animation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSView+Animation.swift"; sourceTree = "<group>"; };
@@ -1086,28 +1051,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				BAD858CC228EAE7C00226C71 /* libz.tbd in Frameworks */,
-				BA43B2DF23F672850007DD99 /* libcrypto.1.1.dylib in Frameworks */,
-				BA43B33C23F680E20007DD99 /* libcrypto.a in Frameworks */,
 				74456B9D1A774BAE002A6338 /* TogglDesktopLibrary.dylib in Frameworks */,
 				3CB7CFF82222033B00A9C806 /* DFRFoundation.framework in Frameworks */,
 				743D94281827929C000E6F70 /* Carbon.framework in Frameworks */,
 				743D942618279290000E6F70 /* IOKit.framework in Frameworks */,
 				74AA947818090A8E0000539F /* Security.framework in Frameworks */,
-				BA43B31823F67EE60007DD99 /* libPocoJSON.60.dylib in Frameworks */,
 				74E3CDD917FC369700C3ADD3 /* ExceptionHandling.framework in Frameworks */,
-				BA43B33E23F680E20007DD99 /* libssl.a in Frameworks */,
-				BA43B31C23F67EE60007DD99 /* libPocoCrypto.60.dylib in Frameworks */,
-				BA43B2DD23F672850007DD99 /* libssl.1.1.dylib in Frameworks */,
-				BA43B31A23F67EE60007DD99 /* libPocoDataSQLite.60.dylib in Frameworks */,
 				74E3CDD717FBAE0800C3ADD3 /* SystemConfiguration.framework in Frameworks */,
-				BA43B31023F67EE60007DD99 /* libPocoUtil.60.dylib in Frameworks */,
 				74033C9717EC1DE100CA53D3 /* libc++.dylib in Frameworks */,
-				BA43B31623F67EE60007DD99 /* libPocoNet.60.dylib in Frameworks */,
 				69FC17F517E6534400B96425 /* Cocoa.framework in Frameworks */,
-				BA43B30C23F67EE60007DD99 /* libPocoData.60.dylib in Frameworks */,
-				BA43B31423F67EE60007DD99 /* libPocoFoundation.60.dylib in Frameworks */,
-				BA43B30E23F67EE60007DD99 /* libPocoNetSSL.60.dylib in Frameworks */,
-				BA43B31223F67EE60007DD99 /* libPocoXML.60.dylib in Frameworks */,
 				622BBF654A6A958692A4633B /* Pods_TogglDesktop.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3034,7 +2986,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 3A54C9591227E723FEC0DB85 /* Pods-TogglDesktop.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_ENABLE_MODULES = YES;
@@ -3126,7 +3077,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = B671ACF75B3267B013176BD7 /* Pods-TogglDesktop.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_ENABLE_MODULES = YES;
