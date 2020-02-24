@@ -1,7 +1,7 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
-                    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+                    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
                     xmlns:behaviours="http://metro.mahapps.com/winfx/xaml/shared">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Shared.xaml" />
@@ -44,7 +44,7 @@
         <Setter Property="Background" Value="{DynamicResource Toggl.SelectionElements.Background}" />
         <Setter Property="BorderBrush" Value="{DynamicResource Toggl.TextBox.Border}" />
         <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="CalendarStyle" Value="{DynamicResource MahApps.Metro.Styles.BaseMetroCalendar}" />
+        <Setter Property="CalendarStyle" Value="{DynamicResource MahApps.Styles.Calendar.Base}" />
         <Setter Property="mah:ControlsHelper.FocusBorderBrush" Value="{DynamicResource Toggl.AccentBrush}" />
         <Setter Property="mah:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource Toggl.TextBox.MouseOverBorder}" />
         <Setter Property="Foreground" Value="{DynamicResource Toggl.PrimaryTextBrush}" />
@@ -119,7 +119,7 @@
                                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                            Foreground="{TemplateBinding Foreground}"
-                                           Style="{DynamicResource MetroAutoCollapsingTextBlock}"
+                                           Style="{DynamicResource MahApps.Styles.TextBlock.AutoCollapsing}"
                                            Text="{TemplateBinding mah:TextBoxHelper.Watermark}"
                                            TextAlignment="{TemplateBinding mah:TextBoxHelper.WatermarkAlignment}"
                                            TextTrimming="{TemplateBinding mah:TextBoxHelper.WatermarkTrimming}">
@@ -183,17 +183,17 @@
                                 <Condition Binding="{Binding Path=(mah:TextBoxHelper.HasText), RelativeSource={RelativeSource Self}}" Value="True" />
                             </MultiDataTrigger.Conditions>
                             <MultiDataTrigger.EnterActions>
-                                <BeginStoryboard Storyboard="{StaticResource ShowFloatingMessageStoryboard}" />
+                                <BeginStoryboard Storyboard="{StaticResource MahApps.Storyboard.ShowFloatingMessage}" />
                             </MultiDataTrigger.EnterActions>
                             <MultiDataTrigger.ExitActions>
-                                <BeginStoryboard Storyboard="{StaticResource HideFloatingMessageStoryboard}" />
+                                <BeginStoryboard Storyboard="{StaticResource MahApps.Storyboard.HideFloatingMessage}" />
                             </MultiDataTrigger.ExitActions>
                         </MultiDataTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="Validation.ErrorTemplate" Value="{DynamicResource ValidationErrorTemplate}" />
+        <Setter Property="Validation.ErrorTemplate" Value="{DynamicResource MahApps.Templates.ValidationError}" />
         <Style.Triggers>
             <Trigger Property="IsEnabled" Value="False">
                 <Setter Property="Foreground" Value="{DynamicResource Toggl.DisabledTextBrush}" />
@@ -202,9 +202,9 @@
         </Style.Triggers>
     </Style>
 
-    <Style x:Key="MetroDatePickerTextBox" TargetType="{x:Type DatePickerTextBox}">
+    <Style x:Key="MahApps.Styles.DatePickerTextBox" TargetType="{x:Type DatePickerTextBox}">
         <Setter Property="Background" Value="{DynamicResource Toggl.SelectionElements.Background}" />
-        <Setter Property="ContextMenu" Value="{DynamicResource TextBoxMetroContextMenu}" />
+        <Setter Property="ContextMenu" Value="{DynamicResource MahApps.TextBox.ContextMenu}" />
         <Setter Property="mah:TextBoxHelper.IsMonitoring" Value="True" />
         <Setter Property="FocusVisualStyle" Value="{x:Null}" />
         <Setter Property="FontFamily" Value="{DynamicResource BaseFont}" />
@@ -290,7 +290,7 @@
                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                    Foreground="{TemplateBinding Foreground}"
-                                   Style="{DynamicResource MahApps.Metro.Styles.MetroWatermarkTextBlock}"
+                                   Style="{DynamicResource MahApps.Styles.TextBlock.Watermark}"
                                    Text="{TemplateBinding mah:TextBoxHelper.Watermark}"
                                    TextAlignment="{TemplateBinding mah:TextBoxHelper.WatermarkAlignment}"
                                    TextTrimming="{TemplateBinding mah:TextBoxHelper.WatermarkTrimming}" />

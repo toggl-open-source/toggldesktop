@@ -6,7 +6,7 @@
         <ResourceDictionary Source="Typography.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
-    <Style BasedOn="{StaticResource MetroTabControl}" TargetType="{x:Type TabControl}">
+    <Style BasedOn="{StaticResource MahApps.Styles.TabControl}" TargetType="{x:Type TabControl}">
         <Setter Property="mah:TabControlHelper.Underlined" Value="TabPanel" />
         <Setter Property="mah:TabControlHelper.UnderlineBrush" Value="Transparent" />
         <Setter Property="mah:TabControlHelper.UnderlineMouseOverBrush" Value="{DynamicResource Toggl.SecondaryTextBrush}" />
@@ -102,8 +102,8 @@
             </Setter.Value>
         </Setter>
     </Style>
-    <Style BasedOn="{StaticResource MetroTabItem}" TargetType="{x:Type TabItem}">
-        <Setter Property="mah:ControlsHelper.HeaderFontSize" Value="14" />
+    <Style BasedOn="{StaticResource MahApps.Styles.TabItem}" TargetType="{x:Type TabItem}">
+        <Setter Property="mah:HeaderedControlHelper.HeaderFontSize" Value="14" />
         <Setter Property="FontFamily" Value="{StaticResource BaseFont}" />
         <Setter Property="Foreground" Value="{DynamicResource Toggl.SecondaryTextBrush}" />
         <Setter Property="Padding" Value="0 2" />
@@ -138,11 +138,11 @@
                                                        ContentStringFormat="{TemplateBinding HeaderStringFormat}"
                                                        ContentTemplate="{TemplateBinding HeaderTemplate}"
                                                        ContentTemplateSelector="{TemplateBinding HeaderTemplateSelector}"
-                                                       FontFamily="{TemplateBinding FontFamily}"
-                                                       FontSize="{TemplateBinding mah:ControlsHelper.HeaderFontSize}"
-                                                       FontStretch="{TemplateBinding mah:ControlsHelper.HeaderFontStretch}"
+                                                       FontFamily="{TemplateBinding mah:HeaderedControlHelper.HeaderFontFamily}"
+                                                       FontSize="{TemplateBinding mah:HeaderedControlHelper.HeaderFontSize}"
+                                                       FontStretch="{TemplateBinding mah:HeaderedControlHelper.HeaderFontStretch}"
                                                        FontStyle="{TemplateBinding FontStyle}"
-                                                       FontWeight="{TemplateBinding mah:ControlsHelper.HeaderFontWeight}"
+                                                       FontWeight="{TemplateBinding mah:HeaderedControlHelper.HeaderFontWeight}"
                                                        Foreground="{TemplateBinding Foreground}"
                                                        RecognizesAccessKey="True"
                                                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"

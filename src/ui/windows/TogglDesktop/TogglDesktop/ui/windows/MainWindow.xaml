@@ -6,7 +6,7 @@
              xmlns:tb="http://www.hardcodet.net/taskbar"
              xmlns:toggl="clr-namespace:TogglDesktop"
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
-             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:behaviors="clr-namespace:TogglDesktop.Behaviors"
              mc:Ignorable="d" 
              d:DesignWidth="400"

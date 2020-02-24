@@ -4,9 +4,7 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
         <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Themes/light.blue.xaml" />
         <ResourceDictionary Source="ToolTip.xaml" />
         <ResourceDictionary Source="ErrorTemplate.xaml" />
         <ResourceDictionary Source="TextBox.xaml" />
@@ -25,5 +23,5 @@
         <ResourceDictionary Source="DatePicker.xaml" />
         <ResourceDictionary Source="Icons.xaml" />
     </ResourceDictionary.MergedDictionaries>
-    <Style BasedOn="{StaticResource MahApps.Metro.Styles.WindowButtonCommands.Win10}" TargetType="mah:WindowButtonCommands" />
+    <Style BasedOn="{StaticResource MahApps.Styles.WindowButtonCommands.Win10}" TargetType="mah:WindowButtonCommands" />
 </ResourceDictionary>

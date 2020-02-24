@@ -7,6 +7,7 @@ using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using ReactiveUI.Validation.Extensions;
 using ReactiveUI.Validation.Helpers;
+using ValidationHelper = ReactiveUI.Validation.Helpers.ValidationHelper;
 
 namespace TogglDesktop.ViewModels
 {

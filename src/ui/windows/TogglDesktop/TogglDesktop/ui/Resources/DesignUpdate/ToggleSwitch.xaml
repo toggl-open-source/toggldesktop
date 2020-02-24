@@ -6,7 +6,7 @@
     </ResourceDictionary.MergedDictionaries>
 
     <Style x:Key="Toggl.ToggleSwitchButton"
-           BasedOn="{StaticResource MahApps.Metro.Styles.ToggleSwitchButton.Win10}"
+           BasedOn="{StaticResource MahApps.Styles.ToggleSwitchButton.Win10}"
            TargetType="{x:Type Controls:ToggleSwitchButton}">
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="BorderBrush" Value="{DynamicResource Toggl.SelectionElements.Border}" />
@@ -16,7 +16,7 @@
         <Setter Property="ThumbIndicatorDisabledBrush" Value="{DynamicResource Toggl.DisabledTextBrush}" />
     </Style>
 
-    <Style BasedOn="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}"
+    <Style BasedOn="{StaticResource MahApps.Styles.ToggleSwitch.Win10}"
            TargetType="{x:Type Controls:ToggleSwitch}">
         <Setter Property="OffSwitchBrush" Value="{DynamicResource Toggl.SelectionElements.Background}" />
         <Setter Property="OnSwitchBrush" Value="{DynamicResource Toggl.AccentBrush}" />
