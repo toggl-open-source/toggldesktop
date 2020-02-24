@@ -1499,3 +1499,8 @@ char_t *toggl_format_duration_time(void *context,
                           const uint64_t timestamp) {
     return copy_string(toggl::Formatter::FormatDurationForDateHeader(timestamp));
 }
+
+uint64_t toggl_get_default_workspace_id(
+    void *context) {
+    return app(context)->GetDefaultWorkspaceID();
+}

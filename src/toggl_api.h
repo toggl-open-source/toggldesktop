@@ -1141,6 +1141,9 @@ TOGGL_EXPORT bool_t toggl_set_time_entry_start_timestamp_with_option(
         void *context,
         const uint64_t timestamp);
 
+TOGGL_EXPORT uint64_t toggl_get_default_workspace_id(
+        void *context);
+
 #undef TOGGL_EXPORT
 
 #ifdef __cplusplus

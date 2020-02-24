@@ -6052,4 +6052,8 @@ void Context::TrackInAppMessage(const Poco::Int64 type) {
     }
 }
 
+Poco::UInt64 Context::GetDefaultWorkspaceID() {
+    return user_->DefaultWID();
+}
+
 }  // namespace toggl

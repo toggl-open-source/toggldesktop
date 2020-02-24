@@ -523,6 +523,8 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
 
     void TrackInAppMessage(const Poco::Int64 type);
 
+    Poco::UInt64 GetDefaultWorkspaceID();
+
  protected:
     void uiUpdaterActivity();
     void checkReminders();
