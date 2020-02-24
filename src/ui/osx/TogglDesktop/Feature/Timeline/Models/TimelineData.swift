@@ -14,6 +14,7 @@ final class TimelineData {
         case timeLabel = 0
         case timeEntry
         case activity
+        case background
     }
 
     struct Constants {
@@ -29,14 +30,28 @@ final class TimelineData {
     let start: TimeInterval
     let end: TimeInterval
     private(set) var zoomLevel: TimelineDatasource.ZoomLevel
+    var isToday: Bool {
+        // Get the middle of the day
+        let middle = start + (end - start) / 2
+        return Calendar.current.isDateInToday(Date(timeIntervalSince1970: middle))
+    }
 
     // MARK: Init
 
-    init(cmd: TimelineDisplayCommand, zoomLevel: TimelineDatasource.ZoomLevel) {
+    init(cmd: TimelineDisplayCommand, zoomLevel: TimelineDatasource.ZoomLevel, runningTimeEntry: TimeEntryViewItem?) {
         self.zoomLevel = zoomLevel
         self.start = cmd.start
         self.end = cmd.end
-        self.timeEntries = cmd.timeEntries.map { TimelineTimeEntry($0) }.sorted(by: { (lhs, rhs) -> Bool in
+
+        // Add running TimeEntry if need
+        var timeEntries = cmd.timeEntries
+        if let runningTimeEntry = runningTimeEntry {
+            runningTimeEntry.ended = Date()
+            timeEntries.append(runningTimeEntry)
+        }
+
+        // Sort
+        self.timeEntries = timeEntries.map { TimelineTimeEntry($0) }.sorted(by: { (lhs, rhs) -> Bool in
             return lhs.start < rhs.start
         })
         numberOfSections = Section.allCases.count
@@ -75,6 +90,26 @@ final class TimelineData {
         activities.removeAll()
     }
 
+    func append(_ entry: TimelineTimeEntry) {
+        // Add if need
+        let isContains = timeEntries.contains(where: { (item) -> Bool in
+            if let timeEntry = item as? TimelineTimeEntry, timeEntry.timeEntry.guid == entry.timeEntry.guid {
+                return true
+            }
+            return false
+        })
+        if !isContains {
+            print("----------------------------- append to timeline data")
+            timeEntries.append(entry)
+            timeEntries.sort { (lhs, rhs) -> Bool in
+                return lhs.start < rhs.start
+            }
+        }
+
+        // But always reload
+        calculateColumnsPositionForTimeline()
+    }
+    
     func numberOfItems(in section: Int) -> Int {
         guard let section = Section(rawValue: section) else { return 0 }
         switch section {
@@ -84,6 +119,8 @@ final class TimelineData {
             return timeEntries.count
         case .activity:
             return activities.count
+        case .background:
+            return timeChunks.count / 2
         }
     }
 
@@ -96,6 +133,8 @@ final class TimelineData {
             return timeEntries[safe: indexPath.item]
         case .activity:
             return activities[safe: indexPath.item]
+        case .background:
+            return ""
         }
     }
 
@@ -124,6 +163,8 @@ final class TimelineData {
             return timeEntries[safe: indexPath.item]?.timechunk()
         case .activity:
             return activities[safe: indexPath.item]?.timechunk()
+        case .background:
+            return nil
         }
     }
 
@@ -150,7 +191,8 @@ final class TimelineData {
 
         // Set the start time as a stop time of First entry
         DesktopLibraryBridge.shared().updateTimeEntryWithStart(atTimestamp: endAt.timeIntervalSince1970 + 1,
-                                                               guid: entry.timeEntry.guid)
+                                                               guid: entry.timeEntry.guid,
+                                                               keepEndTimeFixed: true)
     }
 
     func continueTimeEntry(_ timeEntry: TimelineTimeEntry) {
@@ -166,7 +208,7 @@ final class TimelineData {
             // Only set start time if it's not the future
             // Otherwise, the library code gets buggy
             if startTime < Date().timeIntervalSince1970 {
-                DesktopLibraryBridge.shared().updateTimeEntryWithStart(atTimestamp: startTime, guid: guid)
+                DesktopLibraryBridge.shared().updateTimeEntryWithStart(atTimestamp: startTime, guid: guid, keepEndTimeFixed: true)
             }
         } else {
             // Create entry and open Editor

@@ -77,7 +77,7 @@ final class TimelineTimeEntry: TimelineBaseTimeEntry {
 
     var isSmall: Bool {
         // It's small bar if duration less than 1 min
-        return timeEntry.duration_in_seconds <= 60
+        return abs(timeEntry.duration_in_seconds) <= 60
     }
 
     // MARK: Init
@@ -99,5 +99,9 @@ final class TimelineTimeEntry: TimelineBaseTimeEntry {
     func isToday() -> Bool {
         guard let date = timeEntry.ended else { return false }
         return Calendar.current.isDateInToday(date)
+    }
+
+    func updateEndTimeForRunning() {
+        end = Date().timeIntervalSince1970
     }
 }

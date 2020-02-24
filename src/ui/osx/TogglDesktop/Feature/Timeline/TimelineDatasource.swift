@@ -16,13 +16,15 @@ protocol TimelineDatasourceDelegate: class {
     func startNewTimeEntry(at started: TimeInterval, ended: TimeInterval)
     func shouldUpdatePanelSize(with activityFrame: CGRect)
     func shouldUpdateEndTime(_ endtime: TimeInterval, for entry: TimelineTimeEntry)
-    func shouldUpdateStartTime(_ start: TimeInterval, for entry: TimelineTimeEntry)
+    func shouldUpdateStartTime(_ start: TimeInterval, for entry: TimelineTimeEntry, keepEndTimeFixed: Bool)
     func shouldPresentResizePopover(at cell: TimelineTimeEntryCell, onTopCorner: Bool)
+    func shouldHideAllPopover()
+    func shouldHandleEmptyState(_ timelineData: TimelineData)
 }
 
 final class TimelineDatasource: NSObject {
 
-    fileprivate struct Constants {
+    private struct Constants {
         static let TimeLabelCellID = NSUserInterfaceItemIdentifier("TimelineTimeLabelCell")
         static let TimeLabelCellXIB = NSNib.Name("TimelineTimeLabelCell")
         static let TimeEntryCellID = NSUserInterfaceItemIdentifier("TimelineTimeEntryCell")
@@ -32,7 +34,8 @@ final class TimelineDatasource: NSObject {
         static let ActivityCellID = NSUserInterfaceItemIdentifier("TimelineActivityCell")
         static let ActivityCellXIB = NSNib.Name("TimelineActivityCell")
         static let DividerViewID = NSUserInterfaceItemIdentifier("DividerViewID")
-        static let BackgroundViewID = NSUserInterfaceItemIdentifier("BackgroundViewID")
+        static let BackgroundViewID = NSUserInterfaceItemIdentifier("TimelineBackgroundCell")
+        static let BackgroundViewXIB = NSNib.Name("TimelineBackgroundCell")
     }
 
     enum ZoomLevel: Int {
@@ -76,6 +79,11 @@ final class TimelineDatasource: NSObject {
     private(set) var timeline: TimelineData?
     private var zoomLevel: ZoomLevel = .x1
     private var isUserResizing = false
+    private var draggingSession = TimelineDraggingSession()
+    private var isUserOnAction: Bool { return isUserResizing || draggingSession.isDragging }
+    private var runningTimeEntry: TimelineTimeEntry?
+    private var timer: Timer?
+    private var cmd: TimelineDisplayCommand?
 
     // MARK: Init
 
@@ -92,12 +100,22 @@ final class TimelineDatasource: NSObject {
         collectionView.register(NSNib(nibNamed: Constants.ActivityCellXIB, bundle: nil), forItemWithIdentifier: Constants.ActivityCellID)
         collectionView.register(NSNib(nibNamed: Constants.EmptyTimeEntryCellXIB, bundle: nil), forItemWithIdentifier: Constants.EmptyTimeEntryCellID)
         collectionView.register(TimelineDividerView.self, forSupplementaryViewOfKind: NSCollectionView.elementKindSectionFooter, withIdentifier: Constants.DividerViewID)
-        collectionView.register(TimelineBackgroundView.self, forSupplementaryViewOfKind: NSCollectionView.elementKindSectionHeader, withIdentifier: Constants.BackgroundViewID)
+        collectionView.register(NSNib(nibNamed: Constants.BackgroundViewXIB, bundle: nil), forItemWithIdentifier: Constants.BackgroundViewID)
+        registerForDragAndDrop()
     }
 
-    func render(_ timeline: TimelineData) {
+    func render(cmd: TimelineDisplayCommand, zoomLevel: TimelineDatasource.ZoomLevel) {
+        self.cmd = cmd
+        let data = TimelineData(cmd: cmd,
+                                zoomLevel: zoomLevel,
+                                runningTimeEntry: getRunningTimeEntryForRendering(start: cmd.start, end: cmd.end))
+        render(data)
+        delegate?.shouldHandleEmptyState(data)
+    }
+    
+    private func render(_ timeline: TimelineData) {
         // Skip reload if the user is resizing
-        guard !isUserResizing else { return }
+        guard !isUserOnAction else { return }
         self.timeline?.cleanUp()
         self.timeline = nil
         self.timeline = timeline
@@ -105,7 +123,36 @@ final class TimelineDatasource: NSObject {
         collectionView.reloadData()
     }
 
+    func updateRunningTimeEntry(_ timeEntry: Any?) {
+        guard let cmd = cmd, !isUserOnAction else { return }
+
+        // Add
+        if let timeEntry = timeEntry as? TimeEntryViewItem, timeEntry.guid != nil {
+            guard timeEntry.isRunning() else {
+                return
+            }
+
+            // Calculate the data again
+            // It's essential since it's a straighforward approach to update the running TE
+            // If the data is changes (desc, project, color, time, ...)
+            runningTimeEntry = TimelineTimeEntry(timeEntry)
+            let data = TimelineData(cmd: cmd,
+                                    zoomLevel: zoomLevel,
+                                    runningTimeEntry: getRunningTimeEntryForRendering(start: cmd.start, end: cmd.end))
+
+            // Render and start the timer
+            render(data)
+            startTimer()
+        } else {
+            // Or remove
+            runningTimeEntry = nil
+            stopTimer()
+        }
+    }
+
     func update(_ zoomLevel: ZoomLevel) {
+        // Skip reload if the user is resizing
+        guard !isUserOnAction else { return }
         self.zoomLevel = zoomLevel
         timeline?.render(with: zoomLevel)
         flow.apply(zoomLevel)
@@ -114,26 +161,34 @@ final class TimelineDatasource: NSObject {
     }
 
     func scrollToVisibleItem() {
-        guard let timeline = timeline else { return }
-
-        // Skip if both are empty
-        if timeline.timeEntries.isEmpty && timeline.activities.isEmpty {
-            return
-        }
+        guard let timeline = timeline, !isUserOnAction else { return }
 
         // Get the section should be presented
-        var section: TimelineData.Section?
-        if !timeline.timeEntries.isEmpty {
-            section = .timeEntry
-        } else if !timeline.activities.isEmpty {
-            section = .activity
-        }
+        // Force render with correct frame then scrolling to desire item
+        collectionView.setNeedsDisplay(collectionView.frame)
+        collectionView.displayIfNeeded()
 
-        // Scroll to visible item
-        if let section = section {
-            // Force render with correct frame then scrolling to desire item
-            collectionView.setNeedsDisplay(collectionView.frame)
-            collectionView.displayIfNeeded()
+        // Scroll to current time if it's today
+        if let currentMomentAttribute = flow.currentMomentAttribute,
+            timeline.isToday {
+            var visiblePoint = currentMomentAttribute.frame.origin
+            visiblePoint.y -= (collectionView.enclosingScrollView?.bounds.height ?? 0) / 2 // Middle of the screen
+            collectionView.scroll(visiblePoint)
+        } else {
+
+            // Skip if both are empty
+            if timeline.timeEntries.isEmpty && timeline.activities.isEmpty {
+                return
+            }
+
+            // Scroll to top Entry or events
+            var visibleSection: TimelineData.Section?
+            if !timeline.timeEntries.isEmpty {
+                visibleSection = .timeEntry
+            } else if !timeline.activities.isEmpty {
+                visibleSection = .activity
+            }
+            guard let section = visibleSection else { return }
             collectionView.scrollToItems(at: Set<IndexPath>(arrayLiteral: IndexPath(item: 0, section: section.rawValue)),
                                          scrollPosition: [.centeredHorizontally, .centeredVertically])
         }
@@ -196,6 +251,8 @@ extension TimelineDatasource: NSCollectionViewDataSource, NSCollectionViewDelega
             let activity = item as! TimelineActivity
             cell.config(for: activity)
             return cell
+        case .background:
+            return collectionView.makeItem(withIdentifier: Constants.BackgroundViewID, for: indexPath)
         }
     }
 
@@ -207,16 +264,13 @@ extension TimelineDatasource: NSCollectionViewDataSource, NSCollectionViewDelega
                                                             for: indexPath) as! TimelineDividerView
             view.draw(for: section)
             return view
-        } else if kind == NSCollectionView.elementKindSectionHeader {
-            let view = collectionView.makeSupplementaryView(ofKind: kind,
-                                                            withIdentifier: Constants.BackgroundViewID,
-                                                            for: indexPath)
-            return view
         }
         return NSView()
     }
 
     func collectionView(_ collectionView: NSCollectionView, didSelectItemsAt indexPaths: Set<IndexPath>) {
+        // Skip selection if the dragging
+        guard !draggingSession.isDragging else { return }
         guard let indexPath = indexPaths.first,
             let cell = collectionView.item(at: indexPath),
             let item = timeline?.item(at: indexPath) else { return }
@@ -366,7 +420,7 @@ extension TimelineDatasource: TimelineBaseCellDelegate {
             let startTime = convertPointForStartTime(with: event, endTime: timeEntry.end)
 
             // Update library
-            delegate?.shouldUpdateStartTime(startTime, for: timeEntry)
+            delegate?.shouldUpdateStartTime(startTime, for: timeEntry, keepEndTimeFixed: true)
         default:
             break
         }
@@ -404,5 +458,135 @@ extension TimelineDatasource: TimelineActivityCellDelegate {
     func timelineActivityPresentPopover(_ sender: TimelineActivityCell) {
         guard let activity = sender.activity else { return }
         delegate?.shouldPresentActivityHover(in: sender.view, activity: activity)
+    }
+}
+
+// MARK: Private
+
+extension TimelineDatasource {
+
+    private func registerForDragAndDrop() {
+        collectionView.registerForDraggedTypes([NSPasteboard.PasteboardType.string])
+        collectionView.setDraggingSourceOperationMask(NSDragOperation.move, forLocal: true)
+    }
+
+    private func startTimer() {
+        stopTimer()
+        timer = Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(self.timerUpdateOnTick), userInfo: nil, repeats: true)
+    }
+
+    private func stopTimer() {
+        timer?.invalidate()
+        timer = nil
+    }
+
+    @objc private func timerUpdateOnTick() {
+        guard runningTimeEntry != nil else {
+            stopTimer()
+            return
+        }
+        runningTimeEntry?.updateEndTimeForRunning()
+        flow.invalidateLayout()
+        print("---------------------------- Timer Tick")
+    }
+
+    private func getRunningTimeEntryForRendering(start: TimeInterval, end: TimeInterval) -> TimeEntryViewItem? {
+        let middle = start + (end - start) / 2
+        if Calendar.current.isDateInToday(Date(timeIntervalSince1970: middle)) {
+            return runningTimeEntry?.timeEntry
+        }
+        return nil
+    }
+}
+
+// MARK: Drag and Drop
+
+extension TimelineDatasource {
+
+    func collectionView(_ collectionView: NSCollectionView, canDragItemsAt indexPaths: Set<IndexPath>, with event: NSEvent) -> Bool {
+        guard let firstIndex = indexPaths.first,
+            let draggedCell = collectionView.item(at: firstIndex) else { return false }
+        
+        // Only accept drag on Timeline Entry
+        switch draggedCell {
+        case let cell as TimelineTimeEntryCell:
+            guard let timeEntry = cell.timeEntry else { return false }
+
+            // Calculate the distance between the mouse position on the selected TE and the Start Time
+            // It's essential to update the time later
+            let point = collectionView.convert(event.locationInWindow, from: nil)
+            let mouseTimestamp = flow.convertTimestamp(from: point)
+            draggingSession.mouseDistanceFromTop = abs(mouseTimestamp - timeEntry.start)
+            return true
+        default:
+            return false
+        }
+    }
+
+    func collectionView(_ collectionView: NSCollectionView, pasteboardWriterForItemAt indexPath: IndexPath) -> NSPasteboardWriting? {
+        let data = NSKeyedArchiver.archivedData(withRootObject: Array(indexPath))
+        let pbItem = NSPasteboardItem()
+        pbItem.setData(data, forType: NSPasteboard.PasteboardType.string)
+        return pbItem
+    }
+
+    func collectionView(_ collectionView: NSCollectionView, draggingSession session: NSDraggingSession, willBeginAt screenPoint: NSPoint, forItemsAt indexPaths: Set<IndexPath>) {
+        draggingSession.indexPath = indexPaths.first
+        delegate?.shouldHideAllPopover()
+    }
+
+    func collectionView(_ collectionView: NSCollectionView, validateDrop draggingInfo: NSDraggingInfo, proposedIndexPath proposedDropIndexPath: AutoreleasingUnsafeMutablePointer<NSIndexPath>, dropOperation proposedDropOperation: UnsafeMutablePointer<NSCollectionView.DropOperation>) -> NSDragOperation {
+
+        // Local position of the dragging mouse
+        let position = collectionView.convert(draggingInfo.draggingLocation, from: nil)
+
+        // Only allow to drop on the TimeEntry section
+        guard flow.isInTimeEntrySection(at: position) else {
+            return []
+        }
+
+        return .copy
+    }
+
+    func collectionView(_ collectionView: NSCollectionView, acceptDrop draggingInfo: NSDraggingInfo, indexPath: IndexPath, dropOperation: NSCollectionView.DropOperation) -> Bool {
+
+        // Verify that the drop position is in the Timeline Entry Section
+        let position = collectionView.convert(draggingInfo.draggingLocation, from: nil)
+        guard flow.isInTimeEntrySection(at: position) else { return false }
+
+        // Get all things
+        guard let indexPath = draggingSession.indexPath,
+            let cell = collectionView.item(at: indexPath) as? TimelineTimeEntryCell,
+            let timeEntry = cell.timeEntry else {
+                return false
+        }
+
+        // Update position
+        let delta = draggingSession.mouseDistanceFromTop ?? 0.0
+        let mouseTimestamp = flow.convertTimestamp(from: position)
+        let droppedStartTime = abs(mouseTimestamp - delta)
+
+        // Update UI
+        let duration = timeEntry.end - timeEntry.start
+        timeEntry.start = droppedStartTime
+        timeEntry.end = timeEntry.start + duration
+        flow.invalidateLayout()
+
+        // Save
+        draggingSession.acceptDrop(at: droppedStartTime, for: timeEntry)
+        return true
+    }
+
+    func collectionView(_ collectionView: NSCollectionView, draggingSession session: NSDraggingSession, endedAt screenPoint: NSPoint, dragOperation operation: NSDragOperation) {
+        let startTime = draggingSession.finalStartTime
+        let timeEntry = draggingSession.item
+
+        // Reset all
+        draggingSession.reset()
+
+        // Update lib
+        if let startTime = startTime, let timeEntry = timeEntry {
+            delegate?.shouldUpdateStartTime(startTime, for: timeEntry, keepEndTimeFixed: false)
+        }
     }
 }

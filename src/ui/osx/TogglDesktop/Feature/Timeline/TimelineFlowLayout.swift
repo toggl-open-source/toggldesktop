@@ -21,6 +21,10 @@ final class TimelineFlowLayout: NSCollectionViewFlowLayout {
 
     struct Constants {
         static let MinimumHeight: CGFloat = 2.0
+        static let TimelineLineView = "TimelineLineView"
+        static let TimelineLineViewX: CGFloat = 44
+        static let TimelineLineViewHeight: CGFloat = 8
+        static let TimelineLineInterval: TimeInterval = 60 // 1 min
 
         struct TimeLabel {
             static let Size = CGSize(width: 54.0, height: 32)
@@ -54,6 +58,7 @@ final class TimelineFlowLayout: NSCollectionViewFlowLayout {
     private var activityAttributes: [NSCollectionViewLayoutAttributes] = []
     private var dividerAttributes: [NSCollectionViewLayoutAttributes] = []
     private var backgroundAttributes: [NSCollectionViewLayoutAttributes] = []
+    private(set) var currentMomentAttribute: NSCollectionViewLayoutAttributes?
     private var verticalPaddingTimeLabel: CGFloat {
         switch zoomLevel {
         case .x1:
@@ -68,12 +73,19 @@ final class TimelineFlowLayout: NSCollectionViewFlowLayout {
     private var numberOfTimeLabels = 0
     private var numberOfTimeEntry = 0
     private var numberOfActivity = 0
+    private var numberOfBackground = 0
+    private var timer: Timer?
 
     // MARK: Override
 
     override init() {
         super.init()
         initCommon()
+    }
+
+    deinit {
+        timer?.invalidate()
+        timer = nil
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -91,6 +103,8 @@ final class TimelineFlowLayout: NSCollectionViewFlowLayout {
         minimumInteritemSpacing = 0
         sectionInset = NSEdgeInsetsZero
         scrollDirection = .vertical
+        register(NSNib(nibNamed: Constants.TimelineLineView, bundle: nil), forDecorationViewOfKind: Constants.TimelineLineView)
+        timer = Timer.scheduledTimer(timeInterval: Constants.TimelineLineInterval, target: self, selector: #selector(self.updateCurrentMomemtLineOnTick), userInfo: nil, repeats: true)
     }
 
     override func prepare() {
@@ -107,6 +121,7 @@ final class TimelineFlowLayout: NSCollectionViewFlowLayout {
         numberOfTimeLabels = dataSource.collectionView(collectionView, numberOfItemsInSection: TimelineData.Section.timeLabel.rawValue)
         numberOfTimeEntry = dataSource.collectionView(collectionView, numberOfItemsInSection: TimelineData.Section.timeEntry.rawValue)
         numberOfActivity = dataSource.collectionView(collectionView, numberOfItemsInSection: TimelineData.Section.activity.rawValue)
+        numberOfBackground = dataSource.collectionView(collectionView, numberOfItemsInSection: TimelineData.Section.background.rawValue)
 
         // MARK: Calculation
 
@@ -115,6 +130,7 @@ final class TimelineFlowLayout: NSCollectionViewFlowLayout {
         calculateTimeEntryAttributes()
         calculateActivityAttributes()
         calculateBackgroundAttributes()
+        calculateCurrentMomentAttribute()
 
         // Update the position of labels
         if let activitySection = dividerAttributes.last {
@@ -123,7 +139,10 @@ final class TimelineFlowLayout: NSCollectionViewFlowLayout {
     }
 
     override func layoutAttributesForElements(in rect: NSRect) -> [NSCollectionViewLayoutAttributes] {
-        let allAttributes = timeLablesAttributes + timeEntryAttributes + activityAttributes + dividerAttributes + backgroundAttributes
+        var allAttributes = timeLablesAttributes + timeEntryAttributes + activityAttributes + dividerAttributes + backgroundAttributes
+        if let currentMomentAttribute = currentMomentAttribute {
+            allAttributes.append(currentMomentAttribute)
+        }
         return allAttributes.compactMap({ (att) -> NSCollectionViewLayoutAttributes? in
             if att.frame.intersects(rect) {
                 return att
@@ -141,6 +160,8 @@ final class TimelineFlowLayout: NSCollectionViewFlowLayout {
             return timeEntryAttributes[safe: indexPath.item]
         case .activity:
             return activityAttributes[safe: indexPath.item]
+        case .background:
+            return backgroundAttributes[safe: indexPath.item]
         }
     }
 
@@ -148,8 +169,12 @@ final class TimelineFlowLayout: NSCollectionViewFlowLayout {
         if elementKind == NSCollectionView.elementKindSectionFooter {
             return dividerAttributes[safe: indexPath.section]
         }
-        if elementKind == NSCollectionView.elementKindSectionHeader {
-            return backgroundAttributes[safe: indexPath.item]
+        return nil
+    }
+
+    override func layoutAttributesForDecorationView(ofKind elementKind: NSCollectionView.DecorationElementKind, at indexPath: IndexPath) -> NSCollectionViewLayoutAttributes? {
+        if elementKind == Constants.TimelineLineView {
+            return currentMomentAttribute
         }
         return nil
     }
@@ -164,6 +189,24 @@ final class TimelineFlowLayout: NSCollectionViewFlowLayout {
         guard let timeLabelDivider = dividerAttributes.first,
             let activityDivider = dividerAttributes.last else { return false }
         return timeLabelDivider.frame.origin.x < location.x && location.x < activityDivider.frame.origin.x
+    }
+
+    @objc private func updateCurrentMomemtLineOnTick() {
+        guard currentMomentAttribute != nil else { return }
+
+        // Invalid only decoration view (Current Line) in 1 min interval
+        let context = NSCollectionViewFlowLayoutInvalidationContext()
+        context.invalidateDecorationElements(ofKind: Constants.TimelineLineView, at: Set<IndexPath>(arrayLiteral: IndexPath(item: 0, section: 0)))
+        self.invalidateLayout(with: context)
+    }
+
+    override func invalidateLayout(with context: NSCollectionViewLayoutInvalidationContext) {
+        // Decoration for Current Line
+        if let invalidatedDecorationIndexPaths = context.invalidatedDecorationIndexPaths,
+            !invalidatedDecorationIndexPaths.isEmpty {
+            calculateCurrentMomentAttribute()
+        }
+        super.invalidateLayout(with: context)
     }
 }
 
@@ -182,6 +225,12 @@ extension TimelineFlowLayout {
         let beginDay = Date.startOfDay(from: currentDate.timeIntervalSince1970)
         let start = TimeInterval((location.y / ratio)) + beginDay
         return start
+    }
+
+    func convertToYPosition(from timestamp: TimeInterval) -> CGFloat {
+        let beginDay = Date.startOfDay(from: currentDate.timeIntervalSince1970)
+        let y = CGFloat(timestamp - beginDay) * ratio
+        return y
     }
 
     private func calculateBlockSize(at indexPath: IndexPath) -> (y: CGFloat, height: CGFloat)? {
@@ -246,18 +295,16 @@ extension TimelineFlowLayout {
 
     private func calculateBackgroundAttributes() {
         let width = collectionViewContentSize.width
-        var backgroundIndex = 0
-        for (i, currentTimeLabel) in timeLablesAttributes.enumerated() {
-            if i % 2 == 0 {
-                continue
-            }
+        for i in 0..<numberOfBackground {
+            let labelIndex = i * 2
+            let currentTimeLabel = timeLablesAttributes[labelIndex]
 
-            let indexPath = IndexPath(item: backgroundIndex, section: 0)
+            let indexPath = IndexPath(item: i, section: TimelineData.Section.background.rawValue)
             let y = currentTimeLabel.frame.origin.y
             var height: CGFloat = 0
 
             // calculate height from current y to next label
-            if let nextTimeLabel = timeLablesAttributes[safe: i + 1] {
+            if let nextTimeLabel = timeLablesAttributes[safe: labelIndex + 1] {
                 height = nextTimeLabel.frame.origin.y - y
             } else {
                 height = collectionViewContentSize.height - y
@@ -268,15 +315,32 @@ extension TimelineFlowLayout {
                                y: y,
                                width: width,
                                height: height)
-            let view = NSCollectionViewLayoutAttributes(forSupplementaryViewOfKind: NSCollectionView.elementKindSectionHeader, with: indexPath)
+            let view = NSCollectionViewLayoutAttributes(forItemWith: indexPath)
             view.frame = frame
             view.zIndex = 0
             backgroundAttributes.append(view)
-            backgroundIndex += 1
         }
     }
 
-    func calculateTimeEntryAttributes() {
+    private func calculateCurrentMomentAttribute() {
+        let y = convertToYPosition(from: Date().timeIntervalSince1970) - Constants.TimelineLineViewHeight / 2.0
+        let frame = CGRect(x: Constants.TimelineLineViewX, y: y, width: collectionView?.frame.width ?? 0, height: Constants.TimelineLineViewHeight)
+
+        // If the current line is out of bounds
+        // Just skip
+        if frame.origin.y > collectionViewContentSize.height {
+            self.currentMomentAttribute = nil
+            return
+        }
+
+        // Create a line
+        let att = NSCollectionViewLayoutAttributes(forDecorationViewOfKind: Constants.TimelineLineView, with: IndexPath(item: 0, section: 0))
+        att.frame = frame
+        att.zIndex = 1
+        self.currentMomentAttribute = att
+    }
+
+    private func calculateTimeEntryAttributes() {
         for i in 0..<numberOfTimeEntry {
             let indexPath = IndexPath(item: i, section: TimelineData.Section.timeEntry.rawValue)
 
@@ -325,7 +389,7 @@ extension TimelineFlowLayout {
         }
     }
 
-    fileprivate func calculateActivityAttributes() {
+    private func calculateActivityAttributes() {
         let contentSize = collectionViewContentSize
         for i in 0..<numberOfActivity {
             let indexPath = IndexPath(item: i, section: TimelineData.Section.activity.rawValue)
