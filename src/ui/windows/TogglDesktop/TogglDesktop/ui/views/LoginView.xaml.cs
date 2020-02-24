@@ -6,7 +6,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Navigation;
 using System.Windows.Threading;
-using MahApps.Metro.Behaviours;
+using MahApps.Metro.Behaviors;
 using ReactiveUI;
 using TogglDesktop.ViewModels;
 

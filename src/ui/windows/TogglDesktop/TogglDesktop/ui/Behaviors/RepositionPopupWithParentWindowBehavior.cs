@@ -1,7 +1,7 @@
 using System;
 using System.Windows;
 using System.Windows.Controls.Primitives;
-using System.Windows.Interactivity;
+using Microsoft.Xaml.Behaviors;
 using RoutedEventArgs = System.Windows.RoutedEventArgs;
 
 namespace TogglDesktop.Behaviors

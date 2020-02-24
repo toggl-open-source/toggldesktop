@@ -8,14 +8,14 @@
         <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.TextBlock.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
-    <Style x:Key="MahApps.Metro.Styles.MetroWatermarkTextBlock"
-           BasedOn="{StaticResource MetroTextBlock}"
+    <Style x:Key="MahApps.Styles.TextBlock.Watermark"
+           BasedOn="{StaticResource MahApps.Styles.TextBlock}"
            TargetType="{x:Type TextBlock}">
         <Setter Property="IsHitTestVisible" Value="False" />
         <Setter Property="Opacity" Value="0.33" />
     </Style>
 
-    <Style TargetType="TextBox" BasedOn="{StaticResource MetroTextBox}">
+    <Style TargetType="TextBox" BasedOn="{StaticResource MahApps.Styles.TextBox}">
         <Setter Property="FontFamily" Value="{DynamicResource BaseFont}" />
         <Setter Property="FontSize" Value="{DynamicResource NormalFontSize}" />
         <Setter Property="Foreground" Value="{DynamicResource Toggl.PrimaryTextBrush}" />

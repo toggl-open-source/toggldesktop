@@ -6,7 +6,7 @@
              xmlns:toggl="clr-namespace:TogglDesktop"
              xmlns:behaviors="clr-namespace:TogglDesktop.Behaviors"
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
-             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d" MinWidth="300">
     <Grid Background="{DynamicResource Toggl.CardBackground}">
         <Grid Name="contentGrid" x:FieldModifier="private" Margin="28 20">

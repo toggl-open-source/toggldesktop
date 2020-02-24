@@ -100,6 +100,7 @@
     <SolidColorBrush x:Key="Toggl.ErrorMessageBackground" Color="{StaticResource Toggl.ErrorMessageBackgroundColor}" po:Freeze="True" />
     <SolidColorBrush x:Key="Toggl.ErrorMessageBackground2" Color="{StaticResource Toggl.ErrorMessageBackgroundColor}" Opacity="0.8" po:Freeze="True" />
     <SolidColorBrush x:Key="Toggl.Button.Titlebar.MouseOver" Color="{StaticResource Toggl.Grayish2Color}" Opacity="0.5" po:Freeze="True" />
+    <SolidColorBrush x:Key="Toggl.Button.Titlebar.Pressed" Color="{StaticResource Toggl.Grayish2Color}" Opacity="0.8" po:Freeze="True" />
     <SolidColorBrush x:Key="Toggl.LoginView.Border" Color="#E5E5E5" po:Freeze="True" />
     <SolidColorBrush x:Key="Toggl.Logo.Letters" Color="#424242" po:Freeze="True" />
     <SolidColorBrush x:Key="Toggl.TimeEntryListBackground" Color="{StaticResource Toggl.OffWhiteColor}" Opacity="0.8" />
