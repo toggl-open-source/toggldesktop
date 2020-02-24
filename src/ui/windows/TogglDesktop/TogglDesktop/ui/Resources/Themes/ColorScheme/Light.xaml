@@ -87,7 +87,7 @@
     <SolidColorBrush x:Key="Toggl.DarkGrayBrush" Color="{StaticResource Toggl.DarkGrayColor}" po:Freeze="True" />
     <SolidColorBrush x:Key="Toggl.SecondaryTextBrush" Color="{StaticResource Toggl.GrayColor}" po:Freeze="True" />
     <SolidColorBrush x:Key="Toggl.DisabledTextBrush" Color="{StaticResource Toggl.Grayish1Color}" po:Freeze="True" />
-    <SolidColorBrush x:Key="Toggl.DisabledElementBrush" Color="{StaticResource Toggl.LightGrayColor}" po:Freeze="True" />
+    <SolidColorBrush x:Key="Toggl.LightGrayBrush" Color="{StaticResource Toggl.LightGrayColor}" po:Freeze="True" />
     <SolidColorBrush x:Key="Toggl.HoverElementBrush" Color="{StaticResource Toggl.Grayish2Color}" po:Freeze="True" />
     <SolidColorBrush x:Key="Toggl.TextBox.Border" Color="{StaticResource Toggl.Grayish1Color}" po:Freeze="True" />
     <SolidColorBrush x:Key="Toggl.AccentBrush" Color="{StaticResource Toggl.AccentColor}" po:Freeze="True" />
@@ -103,7 +103,7 @@
     <SolidColorBrush x:Key="Toggl.LoginView.Border" Color="#E5E5E5" po:Freeze="True" />
     <SolidColorBrush x:Key="Toggl.Logo.Letters" Color="#424242" po:Freeze="True" />
     <SolidColorBrush x:Key="Toggl.TimeEntryListBackground" Color="{StaticResource Toggl.OffWhiteColor}" Opacity="0.8" />
-    <SolidColorBrush x:Key="Toggl.ComboBoxPopupBorderBrush" Color="{DynamicResource Toggl.LightGrayColor}" />
+    <SolidColorBrush x:Key="Toggl.PopupBorderBrush" Color="{StaticResource Toggl.LightGrayColor}" />
 
     <SolidColorBrush x:Key="Toggl.BarelyVisibleSeparator" Color="{StaticResource Toggl.LightGrayColor}" Opacity="0.15" />
     <SolidColorBrush x:Key="Toggl.WorkspaceSeparator" Color="{StaticResource Toggl.BlackColor}" Opacity="0.1" po:Freeze="True"/>

@@ -21,9 +21,41 @@
             </Style>
             <DataTemplate x:Key="project-item-template">
                 <StackPanel Height="32" Orientation="Horizontal">
+                    <StackPanel.ToolTip>
+                        <StackPanel Orientation="Vertical" Margin="8 6" MaxWidth="256">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Style="{StaticResource Toggl.BodyText}"
+                                           Text="{Binding ProjectLabel}"
+                                           TextWrapping="Wrap" />
+                                <Ellipse Grid.Column="1" Width="20" Height="20"
+                                         Margin="20 0 0 0"
+                                         Fill="{Binding ProjectColor}"
+                                         Visibility="{Binding ProjectColor, Converter={StaticResource EmptyStringToCollapsedConverter}}"/>
+                            </Grid>
+                            <TextBlock Margin="0 10 0 0"
+                                       HorizontalAlignment="Left"
+                                       Style="{StaticResource Toggl.CaptionText}"
+                                       Text="{Binding ClientLabel}"
+                                       Visibility="{Binding ClientLabel, Converter={StaticResource EmptyStringToCollapsedConverter}}"/>
+                            <Rectangle Margin="0 12 0 0"
+                                       HorizontalAlignment="Left"
+                                       Width="32" Height="1"
+                                       Fill="{DynamicResource Toggl.LightGrayBrush}"
+                                       Visibility="{Binding WorkspaceName, Converter={StaticResource EmptyStringToCollapsedConverter}}"/>
+                            <TextBlock Margin="0 4 0 0"
+                                       FontSize="11"
+                                       Foreground="{DynamicResource Toggl.DisabledTextBrush}"
+                                       Text="{Binding WorkspaceName}"
+                                       Visibility="{Binding WorkspaceName, Converter={StaticResource EmptyStringToCollapsedConverter}}"/>
+                        </StackPanel>
+                    </StackPanel.ToolTip>
                     <Border Name="projectColor"
-                    CornerRadius="100" Width="6" Height="6" BorderThickness="0"
-                    Margin="16 14 8 12">
+                            CornerRadius="100" Width="6" Height="6" BorderThickness="0"
+                            Margin="16 14 8 12">
                         <Border.Background>
                             <MultiBinding Converter="{StaticResource ColorsToBrushMultiConverter}">
                                 <Binding Path="ProjectColor" />
@@ -33,7 +65,7 @@
                     </Border>
                     <TextBlock Name="project" VerticalAlignment="Center"
                                Style="{StaticResource Toggl.BodyText}"
-                               Text="{Binding ProjectLabel}" ToolTip="{Binding Text}" Margin="0 0 8 0">
+                               Text="{Binding ProjectLabel}" Margin="0 0 8 0">
                         <TextBlock.Foreground>
                             <MultiBinding Converter="{StaticResource ColorsToBrushMultiConverter}">
                                 <Binding Path="ProjectColor" />
@@ -50,6 +82,43 @@
                                VerticalAlignment="Center"
                                Margin="32 0 8 0"
                                Foreground="{Binding ProjectColor}" Text="{Binding TaskLabel}" ToolTip="{Binding Text}"/>
+                    <StackPanel.ToolTip>
+                        <StackPanel Orientation="Vertical" Margin="8 6" MaxWidth="256">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Style="{StaticResource Toggl.BodyText}"
+                                           Text="{Binding ProjectLabel}"
+                                           TextWrapping="Wrap" />
+                                <Ellipse Grid.Column="1" Width="20" Height="20"
+                                         Margin="20 0 0 0"
+                                         Fill="{Binding ProjectColor}"
+                                         Visibility="{Binding ProjectColor, Converter={StaticResource EmptyStringToCollapsedConverter}}"/>
+                            </Grid>
+                            <TextBlock Margin="0 5 0 0"
+                                       HorizontalAlignment="Left"
+                                       Style="{StaticResource Toggl.CaptionBlackText}"
+                                       Text="{Binding TaskLabel}"
+                                       Visibility="{Binding TaskLabel, Converter={StaticResource EmptyStringToCollapsedConverter}}"/>
+                            <TextBlock Margin="0 10 0 0"
+                                       HorizontalAlignment="Left"
+                                       Style="{StaticResource Toggl.CaptionText}"
+                                       Text="{Binding ClientLabel}"
+                                       Visibility="{Binding ClientLabel, Converter={StaticResource EmptyStringToCollapsedConverter}}"/>
+                            <Rectangle Margin="0 12 0 0"
+                                       HorizontalAlignment="Left"
+                                       Width="32" Height="1"
+                                       Fill="{DynamicResource Toggl.LightGrayBrush}"
+                                       Visibility="{Binding WorkspaceName, Converter={StaticResource EmptyStringToCollapsedConverter}}"/>
+                            <TextBlock Margin="0 4 0 0"
+                                       FontSize="11"
+                                       Foreground="{DynamicResource Toggl.DisabledTextBrush}"
+                                       Text="{Binding WorkspaceName}"
+                                       Visibility="{Binding WorkspaceName, Converter={StaticResource EmptyStringToCollapsedConverter}}"/>
+                        </StackPanel>
+                    </StackPanel.ToolTip>
                 </StackPanel>
             </DataTemplate>
             <DataTemplate x:Key="timer-item-template">
@@ -157,7 +226,7 @@
            StaysOpen="False">
         <Grid Background="Transparent">
             <Border Margin="8 0 8 8"
-                    BorderBrush="{DynamicResource Toggl.ComboBoxPopupBorderBrush}"
+                    BorderBrush="{DynamicResource Toggl.PopupBorderBrush}"
                     BorderThickness="1"
                     Background="{DynamicResource Toggl.CardBackground}"
                     MinWidth="{Binding ElementName=popup, Path=PlacementTarget.ActualWidth}"
@@ -176,7 +245,7 @@
                              Background="{DynamicResource Toggl.CardBackground}"
                              ItemContainerStyle="{StaticResource AutoCompleteItem}"
                              BorderThickness="0"
-                             BorderBrush="{DynamicResource Toggl.ComboBoxPopupBorderBrush}"
+                             BorderBrush="{DynamicResource Toggl.PopupBorderBrush}"
                              VerticalAlignment="Top"
                              Width="Auto"
                              HorizontalContentAlignment="Stretch"

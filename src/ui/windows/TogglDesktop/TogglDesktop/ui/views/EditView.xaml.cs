@@ -9,6 +9,7 @@ using MahApps.Metro.Controls;
 using TogglDesktop.AutoCompletion;
 using TogglDesktop.AutoCompletion.Implementation;
 using TogglDesktop.Diagnostics;
+using TogglDesktop.ViewModels;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using TextBox = System.Windows.Controls.TextBox;
 

@@ -31,7 +31,7 @@
         <Style.Triggers>
             <Trigger Property="IsEnabled" Value="False">
                 <Setter Property="Foreground" Value="{DynamicResource Toggl.DisabledTextBrush}" />
-                <Setter Property="BorderBrush" Value="{DynamicResource Toggl.DisabledElementBrush}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource Toggl.LightGrayBrush}" />
             </Trigger>
         </Style.Triggers>
     </Style>

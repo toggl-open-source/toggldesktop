@@ -37,7 +37,7 @@
                 <Setter Property="BorderBrush" Value="{DynamicResource Toggl.AccentBrush}" />
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="BorderBrush" Value="{DynamicResource Toggl.DisabledElementBrush}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource Toggl.LightGrayBrush}" />
             </Trigger>
         </Style.Triggers>
     </Style>
