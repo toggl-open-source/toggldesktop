@@ -17,6 +17,7 @@
         <TextBlock Grid.Row="0" Name="descriptionLabel" x:FieldModifier="private"
                    MouseLeftButtonDown="onDescriptionLabelMouseDown"
                    Style="{StaticResource Toggl.BodyText}"
+                   Visibility="{Binding Description, Converter={StaticResource EmptyStringToCollapsedConverter}}"
                    Text="{Binding Description}"
                    ToolTip="{Binding Description}">
         </TextBlock>
