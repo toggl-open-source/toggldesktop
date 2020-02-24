@@ -369,4 +369,9 @@ void *ctx;
     }
     return nil;
 }
+
+- (UInt64) defaultWorkspaceID
+{
+    return toggl_get_default_workspace_id(ctx);
+}
 @end

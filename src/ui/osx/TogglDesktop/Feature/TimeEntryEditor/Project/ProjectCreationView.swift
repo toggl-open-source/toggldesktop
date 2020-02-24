@@ -54,7 +54,7 @@ final class ProjectCreationView: NSView {
             resetViews()
         }
     }
-    private var lastWorkspaceID: UInt64?
+    private lazy var lastWorkspaceID: UInt64? = DesktopLibraryBridge.shared().defaultWorkspaceID()
     private(set) var selectedWorkspace: Workspace? {
         didSet {
             clientDatasource.selectedWorkspace = selectedWorkspace
@@ -336,7 +336,7 @@ extension ProjectCreationView {
     private func selectLastWorkspaceItem() {
         guard let lastWorkspaceID = lastWorkspaceID else { return }
         guard let workspaces = workspaceDatasource.items as? [Workspace] else { return }
-        let index = workspaces.firstIndex(where: { $0.ID == lastWorkspaceID })
+        let index = workspaces.firstIndex(where: { $0.WID == lastWorkspaceID })
 
         if let index = index {
             workspaceDatasource.selectRow(at: index)

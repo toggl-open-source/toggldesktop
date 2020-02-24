@@ -92,6 +92,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (CGSize)getEditorWindowSize;
 
+- (UInt64) defaultWorkspaceID;
+
 #pragma mark - Editor
 
 - (void)loadMoreTimeEntry;
