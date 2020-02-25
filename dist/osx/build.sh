@@ -7,11 +7,13 @@ export  LDFLAGS="-mmacosx-version-min=10.11"
 export   CFLAGS="$LDFLAGS"
 export CXXFLAGS="$LDFLAGS"
 
-export version=$(go run ./dist/osx/tag_version.go)
+export version=${TAG_NAME/v/}
 export timestamp=$(date "+%Y-%m-%d-%H-%M-%S") 
 export escaped_version=$(echo $version | sed 's/\./_/g') 
 export installer=TogglDesktop-$escaped_version-$timestamp.dmg
 export installer_name=TogglDesktop-$escaped_version.dmg
+
+echo $version
 
 function app_path() {
     echo $(xcodebuild -scheme TogglDesktop -workspace src/ui/osx/TogglDesktop.xcworkspace -configuration Release -showBuildSettings \
@@ -45,6 +47,7 @@ function plist() {
     # Overwrite built apps plist file
     mv tmp/Info.plist $APP_PATH/Contents/Info.plist
     
+    cat $APP_PATH/Contents/Info.plist
     rmdir tmp
 }
 
