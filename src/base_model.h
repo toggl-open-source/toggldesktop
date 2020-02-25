@@ -42,6 +42,8 @@ class TOGGL_INTERNAL_EXPORT BaseModel {
 
     ProtectedContainerBase *GetContainer();
     const ProtectedContainerBase *GetContainer() const;
+    RelatedData *GetRelatedData();
+    const RelatedData *GetRelatedData() const;
 
     const Poco::Int64 &LocalID() const {
         return local_id_;

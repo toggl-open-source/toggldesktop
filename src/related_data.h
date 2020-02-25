@@ -17,6 +17,7 @@
 #include "time_entry.h"
 #include "autotracker.h"
 #include "obm_action.h"
+#include "user.h"
 #include "timeline_event.h"
 
 #include "types.h"
@@ -36,6 +37,7 @@ class Tag;
 class Task;
 class TimeEntry;
 class Workspace;
+class User;
 
 namespace view {
 class TimeEntry;
@@ -53,6 +55,7 @@ class TOGGL_INTERNAL_EXPORT RelatedData {
 
     }
 
+    ProtectedModel<toggl::User> User { this };
     ProtectedContainer<Workspace> Workspaces { this };
     ProtectedContainer<Client> Clients { this };
     ProtectedContainer<Project> Projects { this };

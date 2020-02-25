@@ -420,9 +420,7 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     error ToggleTimelineRecording(
         const bool record_timeline);
 
-    bool IsTimelineRecordingEnabled() const {
-        return user_ && user_->RecordTimeline();
-    }
+    bool IsTimelineRecordingEnabled() const;
 
     error SetDefaultProject(
         const Poco::UInt64 pid,
@@ -474,10 +472,7 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
 
     error ToSAccept();
 
-    void SetIdleSeconds(const Poco::UInt64 idle_seconds) {
-        locked<User> user { *user_ };
-        idle_.SetIdleSeconds(idle_seconds, user);
-    }
+    void SetIdleSeconds(const Poco::UInt64 idle_seconds);
 
     void LoadMore();
 
@@ -692,8 +687,6 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     Poco::Mutex db_m_;
     Database *db_;
 
-    ProtectedModel<User> user_;
-
     Poco::Mutex ws_client_m_;
     WebSocketClient ws_client_;
 
@@ -757,6 +750,8 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     static std::string log_path_;
 
     ProtectedModel<Settings> settings_ { nullptr, true };
+
+    RelatedData related;
 
     std::set<std::string> autotracker_titles_;
 

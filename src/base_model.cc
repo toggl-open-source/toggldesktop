@@ -105,6 +105,14 @@ const ProtectedContainerBase *BaseModel::GetContainer() const {
     return container_;
 }
 
+RelatedData *BaseModel::GetRelatedData() {
+    return container_ ? container_->GetRelatedData() : nullptr;
+}
+
+const RelatedData *BaseModel::GetRelatedData() const {
+    return container_ ? container_->GetRelatedData() : nullptr;
+}
+
 void BaseModel::SetID(const Poco::UInt64 value) {
     if (id_ != value) {
         id_ = value;

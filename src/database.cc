@@ -1107,52 +1107,52 @@ error Database::LoadUserByEmail(
 }
 
 error Database::loadUsersRelatedData(locked<User> &user) {
-    error err = loadWorkspaces(user->ID(), user->related.Workspaces);
+    error err = loadWorkspaces(user->ID(), user->GetRelatedData()->Workspaces);
     if (err != noError) {
         return err;
     }
 
-    err = loadClients(user->ID(), user->related.Clients);
+    err = loadClients(user->ID(), user->GetRelatedData()->Clients);
     if (err != noError) {
         return err;
     }
 
-    err = loadProjects(user->ID(), user->related.Projects);
+    err = loadProjects(user->ID(), user->GetRelatedData()->Projects);
     if (err != noError) {
         return err;
     }
 
-    err = loadTasks(user->ID(), user->related.Tasks);
+    err = loadTasks(user->ID(), user->GetRelatedData()->Tasks);
     if (err != noError) {
         return err;
     }
 
-    err = loadTags(user->ID(), user->related.Tags);
+    err = loadTags(user->ID(), user->GetRelatedData()->Tags);
     if (err != noError) {
         return err;
     }
 
-    err = loadTimeEntries(user->ID(), user->related.TimeEntries);
+    err = loadTimeEntries(user->ID(), user->GetRelatedData()->TimeEntries);
     if (err != noError) {
         return err;
     }
 
-    err = loadAutotrackerRules(user->ID(), user->related.AutotrackerRules);
+    err = loadAutotrackerRules(user->ID(), user->GetRelatedData()->AutotrackerRules);
     if (err != noError) {
         return err;
     }
 
-    err = loadTimelineEvents(user->ID(), user->related.TimelineEvents);
+    err = loadTimelineEvents(user->ID(), user->GetRelatedData()->TimelineEvents);
     if (err != noError) {
         return err;
     }
 
-    err = loadObmActions(user->ID(), user->related.ObmActions);
+    err = loadObmActions(user->ID(), user->GetRelatedData()->ObmActions);
     if (err != noError) {
         return err;
     }
 
-    err = loadObmExperiments(user->ID(), user->related.ObmExperiments);
+    err = loadObmExperiments(user->ID(), user->GetRelatedData()->ObmExperiments);
     if (err != noError) {
         return err;
     }
@@ -3314,7 +3314,7 @@ error Database::SaveUser(
         std::vector<ModelChange> workspace_changes;
         error err = saveRelatedModels(user->ID(),
                                       "workspaces",
-                                      user->related.Workspaces,
+                                      user->GetRelatedData()->Workspaces,
                                       &workspace_changes);
         if (err != noError) {
             session_->rollback();
@@ -3335,7 +3335,7 @@ error Database::SaveUser(
         std::vector<ModelChange> client_changes;
         err = saveRelatedModels(user->ID(),
                                 "clients",
-                                user->related.Clients,
+                                user->GetRelatedData()->Clients,
                                 &client_changes);
         if (err != noError) {
             session_->rollback();
@@ -3356,7 +3356,7 @@ error Database::SaveUser(
         std::vector<ModelChange> project_changes;
         err = saveRelatedModels(user->ID(),
                                 "projects",
-                                user->related.Projects,
+                                user->GetRelatedData()->Projects,
                                 &project_changes);
         if (err != noError) {
             session_->rollback();
@@ -3377,7 +3377,7 @@ error Database::SaveUser(
         std::vector<ModelChange> task_changes;
         err = saveRelatedModels(user->ID(),
                                 "tasks",
-                                user->related.Tasks,
+                                user->GetRelatedData()->Tasks,
                                 &task_changes);
         if (err != noError) {
             session_->rollback();
@@ -3397,7 +3397,7 @@ error Database::SaveUser(
         // Tags
         err = saveRelatedModels(user->ID(),
                                 "tags",
-                                user->related.Tags,
+                                user->GetRelatedData()->Tags,
                                 changes);
         if (err != noError) {
             session_->rollback();
@@ -3407,7 +3407,7 @@ error Database::SaveUser(
         // Time entries
         err = saveRelatedModels(user->ID(),
                                 "time_entries",
-                                user->related.TimeEntries,
+                                user->GetRelatedData()->TimeEntries,
                                 changes);
         if (err != noError) {
             session_->rollback();
@@ -3417,7 +3417,7 @@ error Database::SaveUser(
         // Autotracker rules
         err = saveRelatedModels(user->ID(),
                                 "autotracker_settings",
-                                user->related.AutotrackerRules,
+                                user->GetRelatedData()->AutotrackerRules,
                                 changes);
         if (err != noError) {
             session_->rollback();
@@ -3427,7 +3427,7 @@ error Database::SaveUser(
         // OBM actions
         err = saveRelatedModels(user->ID(),
                                 "obm_actions",
-                                user->related.ObmActions,
+                                user->GetRelatedData()->ObmActions,
                                 changes);
         if (err != noError) {
             session_->rollback();
@@ -3437,7 +3437,7 @@ error Database::SaveUser(
         // OBM experiments
         err = saveRelatedModels(user->ID(),
                                 "obm_experiments",
-                                user->related.ObmExperiments,
+                                user->GetRelatedData()->ObmExperiments,
                                 changes);
         if (err != noError) {
             session_->rollback();
@@ -3447,7 +3447,7 @@ error Database::SaveUser(
         // Timeline events
         err = saveRelatedModels(user->ID(),
                                 "timeline_events",
-                                user->related.TimelineEvents,
+                                user->GetRelatedData()->TimelineEvents,
                                 changes);
         if (err != noError) {
             session_->rollback();
