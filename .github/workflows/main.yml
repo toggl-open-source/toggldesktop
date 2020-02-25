@@ -72,6 +72,9 @@ jobs:
         TAG_NAME=$(./dist/get-tag-name.sh)
         base64 -D <<< "${{ secrets.APPCAST_PRIVATE_PEM }}" > dsa_priv.pem
         bash ./dist/osx/build.sh appcast
+    - name: Upload
+      run: |
+        bash ./dist/osx/build.sh upload
     - name: Upload to GitHub Release
       # if: github.event_name == 'release'
       run: |

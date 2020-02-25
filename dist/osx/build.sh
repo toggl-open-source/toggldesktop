@@ -13,9 +13,6 @@ escaped_version=$(echo $version | sed 's/\./_/g')
 installer=TogglDesktop-$escaped_version-$timestamp.dmg
 installer_name=TogglDesktop-$escaped_version.dmg
 
-echo installer
-echo installer_name
-
 function app_path() {
     echo $(xcodebuild -scheme TogglDesktop -workspace src/ui/osx/TogglDesktop.xcworkspace -configuration Release -showBuildSettings \
                 | grep -w 'BUILT_PRODUCTS_DIR' \
@@ -114,6 +111,7 @@ function dmg() {
     brew install graphicsmagick imagemagick
     create-dmg $APP_PATH
     mv *.dmg $installer
+    pwd
 }
 
 function debuginfo() {
@@ -129,6 +127,9 @@ function debuginfo() {
 }
 
 function appcast() {
+    echo $installer
+    echo $installer_name
+    pwd
     signature=$(./src/ui/osx/Pods/Sparkle/bin/old_dsa_scripts/sign_update $installer ./dsa_priv.pem)
     filesize=$(cat $installer | wc -c)
     functionilesize=(${filesize// / })
@@ -139,9 +140,21 @@ function appcast() {
     go run ./dist/osx/appcast.go -platform="darwin" -version=$version -date=$timestamp -appUrl=$appUrl -filesize=$filesize -signature=$signature -verbose=true
 
     cat tmp/darwin_dev_appcast.xml
-    mv tmp/darwin_dev_appcast.xml branding
+    # mv tmp/darwin_dev_appcast.xml /
     package_end=`date +%s`
     package_time=$((package_end-package_start))
+}
+
+function upload() {
+    # // ========= UPLOAD ========= //
+    upload_start=`date +%s`
+    # Upload the new version to Github releases
+    PLATFORM="darwin" VERSION=$version APPCAST="tmp/darwin_dev_appcast.xml" INSTALLER_FILENAME=$installer_name INSTALLER=$installer go run src/branding/upload_to_github.go -platform="darwin"
+
+    # Update releases.json
+    stepprint "Update releases.json and download links"
+    cd src/branding && ./update_releases.sh osx dev $version
+    cd ../..
 }
 
 if [[ "$#" -ne 1 ]]; then
@@ -153,6 +166,7 @@ if [[ "$#" -ne 1 ]]; then
     debuginfo
     dmg
     appcast
+    upload
 else
     $1
 fi
