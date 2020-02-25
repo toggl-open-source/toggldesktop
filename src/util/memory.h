@@ -7,11 +7,15 @@
 #include <vector>
 #include <iostream>
 #include <map>
+#include <tuple>
 
 namespace toggl {
 class BaseModel;
 class RelatedData;
 class Settings;
+
+typedef std::recursive_mutex mutex_type;
+typedef std::unique_lock<mutex_type> lock_type;
 
 /**
  * @class locked
@@ -19,17 +23,17 @@ class Settings;
  *
  */
 template <typename T>
-class locked : public std::unique_lock<std::recursive_mutex> {
+class locked : public lock_type {
 public:
     /**
      * @brief Constructs an empty invalid locked object
      */
     locked()
-        : std::unique_lock<std::recursive_mutex>()
+        : lock_type()
         , data_(nullptr)
     { }
     locked(locked<T> &&o) {
-        std::unique_lock<std::recursive_mutex>::operator=(std::move(o));
+        lock_type::operator=(std::move(o));
         data_ = o.data_;
         o.data_ = nullptr;
     }
@@ -39,11 +43,11 @@ public:
      * @param data - Pointer to data to protect
      */
     locked(mutex_type &mutex, T *data)
-        : std::unique_lock<std::recursive_mutex>(mutex)
+        : lock_type(mutex)
         , data_(data)
     { }
     locked<T> &operator=(locked<T> &&o) {
-        std::unique_lock<std::recursive_mutex>::operator=(std::move(o));
+        lock_type::operator=(std::move(o));
         data_ = o.data_;
         o.data_ = nullptr;
         return *this;
@@ -100,14 +104,14 @@ public:
     RelatedData *GetRelatedData();
     const RelatedData *GetRelatedData() const;
 
-    std::unique_lock<std::recursive_mutex> lock(bool immediately = true) {
+    lock_type lock(bool immediately = true) {
         if (immediately)
-            return std::unique_lock<std::recursive_mutex>(mutex_);
+            return lock_type(mutex_);
         return { mutex_, std::defer_lock };
     }
 protected:
     RelatedData *relatedData_;
-    mutable std::recursive_mutex mutex_;
+    mutable mutex_type mutex_;
 };
 
 template <class T>
@@ -120,13 +124,13 @@ public:
 
     }
     void clear() {
-        std::unique_lock<std::recursive_mutex> lock(mutex_);
+        lock_type lock(mutex_);
         delete value_;
         value_ = nullptr;
     }
     template <typename ...Args>
     locked<T> create(Args&&... args) {
-        std::unique_lock<std::recursive_mutex> lock(mutex_);
+        lock_type lock(mutex_);
         value_ = new T(this, std::forward<Args>(args)...);
         return { mutex_, value_ };
     }
@@ -149,7 +153,7 @@ public:
         return { mutex_, value_ };
     }
     operator bool() const {
-        std::unique_lock<std::recursive_mutex> lock(mutex_);
+        lock_type lock(mutex_);
         return value_;
     }
 protected:
@@ -184,7 +188,7 @@ public:
         ~iterator() {}
 
         iterator& operator=(const iterator &o) {
-            lock = std::unique_lock<std::recursive_mutex>(o.model->mutex_);
+            lock = lock_type(o.model->mutex_);
             model = o.model;
             position = o.position;
             return *this;
@@ -217,7 +221,7 @@ public:
                 return SIZE_MAX;
             return position;
         }
-        std::unique_lock<std::recursive_mutex> lock;
+        lock_type lock;
         ProtectedContainer *model;
         size_t position;
     };
@@ -244,7 +248,7 @@ public:
         ~const_iterator() {}
 
         const_iterator& operator=(const const_iterator &o) {
-            lock = std::unique_lock<std::recursive_mutex>(o.model->mutex_);
+            lock = lock_type(o.model->mutex_);
             model = o.model;
             position = o.position;
             return *this;
@@ -277,7 +281,7 @@ public:
                 return SIZE_MAX;
             return position;
         }
-        std::unique_lock<std::recursive_mutex> lock;
+        lock_type lock;
         const ProtectedContainer *model;
         size_t position;
     };
@@ -290,6 +294,7 @@ public:
     {
 
     }
+    ProtectedContainer(const ProtectedContainer &o) = delete;
     ~ProtectedContainer() {
         clear();
     }
@@ -306,7 +311,7 @@ public:
             // TODO warn?
             return end();
         }
-        std::unique_lock<std::recursive_mutex> lock(mutex_);
+        lock_type lock(mutex_);
         T* ptr { nullptr };
         try {
             ptr = container_[position.position];
@@ -330,7 +335,7 @@ public:
      * @param deleteItems - Set to true if the pointers contained in the @ref container_ should be deleted, too
      */
     void clear() {
-        std::unique_lock<std::recursive_mutex> lock(mutex_);
+        lock_type lock(mutex_);
         for (auto i : container_)
             delete i;
         container_.clear();
@@ -343,7 +348,7 @@ public:
      */
     template <typename ...Args>
     locked<T> create(Args&&... args) {
-        std::unique_lock<std::recursive_mutex> lock(mutex_);
+        lock_type lock(mutex_);
         T *val = new T(this, std::forward<Args>(args)...);
         container_.push_back(val);
         guidMap_[val->GUID()] = val;
@@ -355,7 +360,7 @@ public:
      * @return - true if found and deleted
      */
     bool remove(const guid &guid) {
-        std::unique_lock<std::recursive_mutex> lock(mutex_);
+        lock_type lock(mutex_);
         T* ptr { nullptr };
         try {
             ptr = guidMap_.at(guid);
@@ -375,7 +380,7 @@ public:
      * @return - number of items inside the container
      */
     size_t size() const {
-        std::unique_lock<std::recursive_mutex> lock(mutex_);
+        lock_type lock(mutex_);
         return container_.size();
     }
 
@@ -384,7 +389,7 @@ public:
     }
 
     bool contains(const guid &uuid) const {
-        std::unique_lock<std::recursive_mutex> lock(mutex_);
+        lock_type lock(mutex_);
         return guidMap_.find(uuid) != guidMap_.end();
     }
     /**
@@ -407,20 +412,20 @@ public:
     }
 
     locked<T> operator[](size_t position) {
-        std::unique_lock<std::recursive_mutex> lock(mutex_);
+        lock_type lock(mutex_);
         if (container_.size() > position)
             return { mutex_, container_[position] };
         return {};
     }
     locked<const T> operator[](size_t position) const {
-        std::unique_lock<std::recursive_mutex> lock(mutex_);
+        lock_type lock(mutex_);
         if (container_.size() > position)
             return { mutex_, container_[position] };
         return {};
     }
 
     locked<T> operator[](const guid &uuid) {
-        std::unique_lock<std::recursive_mutex> lock(mutex_);
+        lock_type lock(mutex_);
         try {
             return { mutex_, guidMap_.at(uuid) };
         }
@@ -429,7 +434,7 @@ public:
         }
     }
     locked<const T> operator[](const guid &uuid) const {
-        std::unique_lock<std::recursive_mutex> lock(mutex_);
+        lock_type lock(mutex_);
         try {
             return { mutex_, guidMap_.at(uuid) };
         }
@@ -438,7 +443,7 @@ public:
         }
     }
     locked<T> byGUID(const guid &uuid) {
-        std::unique_lock<std::recursive_mutex> lock(mutex_);
+        lock_type lock(mutex_);
         try {
             return { mutex_, guidMap_.at(uuid) };
         }
@@ -447,7 +452,7 @@ public:
         }
     }
     locked<const T> byGUID(const guid &uuid) const {
-        std::unique_lock<std::recursive_mutex> lock(mutex_);
+        lock_type lock(mutex_);
         try {
             return { mutex_, guidMap_.at(uuid) };
         }
@@ -456,7 +461,7 @@ public:
         }
     }
     locked<T> byID(uint64_t id) {
-        std::unique_lock<std::recursive_mutex> lock(mutex_);
+        lock_type lock(mutex_);
         for (auto i : container_) {
             if (i->ID() == id)
                 return { mutex_, i };
@@ -464,7 +469,7 @@ public:
         return {};
     }
     locked<const T> byID(uint64_t id) const {
-        std::unique_lock<std::recursive_mutex> lock(mutex_);
+        lock_type lock(mutex_);
         for (auto i : container_) {
             if (i->ID() == id)
                 return { mutex_, i };
@@ -477,6 +482,41 @@ private:
     std::vector<T*> container_;
     std::map<guid, T*> guidMap_;
 };
+
+// one argument variant, recursion stop
+// returns a single unlocked lock
+template<typename Arg>
+std::tuple<lock_type> lockMoreImpl(Arg&& arg) {
+    return std::make_tuple(arg.lock(false));
+}
+
+// recursively go through the list of protected containers
+// return a tuple of unlocked locks
+template<typename Arg, typename... Args>
+auto lockMoreImpl(Arg&& arg, Args&&... args) {
+    return std::tuple_cat(std::make_tuple(arg.lock(false)), lockMoreImpl(std::forward<Args>(args)...));
+}
+
+// This function locks all protected containers at once without causing a deadlock if the order is different in two places
+// Only accepted arguments are Protected* classes
+template<typename... Args>
+std::vector<lock_type> lockMore(Args&&... args) {
+    // Retrieve unlocked locks from all passed Protected instances
+    // It is a tuple because only tuples can be used with std::apply
+    auto tuple = lockMoreImpl(std::forward<Args>(args)...);
+    // Lock them all at once
+    std::apply([](auto&&... elems) {
+        std::lock((elems)...);
+    }, std::forward<decltype(tuple)>(tuple));
+    // Transform the tuple to vector
+    return std::apply([](auto&&... elems) {
+        std::vector<lock_type> result;
+        result.reserve(sizeof...(elems));
+        (result.push_back(std::forward<decltype(elems)>(elems)), ...);
+        return result;
+    }, std::move(tuple));
+}
+
 
 } // namespace toggl
 
