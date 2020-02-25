@@ -13,7 +13,6 @@
                 <ResourceDictionary Source="ui/Resources/DesignUpdate/Controls.xaml" />
 
                 <ResourceDictionary Source="ui/Resources/SharedStyles.xaml" />
-                <ResourceDictionary Source="ui/Resources/ScrollBarStyles.xaml" />
                 <ResourceDictionary Source="ui/Resources/TimeEntryCellStyles.xaml" />
                 <ResourceDictionary Source="ui/Resources/EditViewStyles.xaml" />
                 <ResourceDictionary Source="ui/Resources/AutotrackerStyles.xaml"/>
