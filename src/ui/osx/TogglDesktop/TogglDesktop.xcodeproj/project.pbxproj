@@ -101,6 +101,8 @@
 		BA053659225DDDBB00C26E1F /* CustomFocusRingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA053658225DDDBB00C26E1F /* CustomFocusRingButton.swift */; };
 		BA05367F225E238D00C26E1F /* ProjectWorksapceCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA05367E225E238D00C26E1F /* ProjectWorksapceCellView.swift */; };
 		BA05369F225E239600C26E1F /* ProjectWorksapceCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BA05369E225E239600C26E1F /* ProjectWorksapceCellView.xib */; };
+		BA063BFA23B06CA5003A96FE /* EditableTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = BA063BF923B06CA5003A96FE /* EditableTextField.m */; };
+		BA063BFB23B06CA5003A96FE /* EditableTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = BA063BF923B06CA5003A96FE /* EditableTextField.m */; };
 		BA067642233A492F00485C3C /* TogglApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = BA067641233A492F00485C3C /* TogglApplication.m */; };
 		BA08E087222E709C0075F68E /* ProjectTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = BA08E086222E709C0075F68E /* ProjectTextField.m */; };
 		BA0C3A65223219470081C6DE /* AutoCompleteCellType.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA0C3A64223219470081C6DE /* AutoCompleteCellType.swift */; };
@@ -875,6 +877,8 @@
 		BA053658225DDDBB00C26E1F /* CustomFocusRingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFocusRingButton.swift; sourceTree = "<group>"; };
 		BA05367E225E238D00C26E1F /* ProjectWorksapceCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectWorksapceCellView.swift; sourceTree = "<group>"; };
 		BA05369E225E239600C26E1F /* ProjectWorksapceCellView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProjectWorksapceCellView.xib; sourceTree = "<group>"; };
+		BA063BF823B06CA5003A96FE /* EditableTextField.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EditableTextField.h; sourceTree = "<group>"; };
+		BA063BF923B06CA5003A96FE /* EditableTextField.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EditableTextField.m; sourceTree = "<group>"; };
 		BA067640233A492F00485C3C /* TogglApplication.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TogglApplication.h; sourceTree = "<group>"; };
 		BA067641233A492F00485C3C /* TogglApplication.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TogglApplication.m; sourceTree = "<group>"; };
 		BA08E085222E709C0075F68E /* ProjectTextField.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProjectTextField.h; sourceTree = "<group>"; };
@@ -1366,6 +1370,8 @@
 				BA01E8A0232F77B3006B93EC /* ClickableImageView.m */,
 				BA067640233A492F00485C3C /* TogglApplication.h */,
 				BA067641233A492F00485C3C /* TogglApplication.m */,
+				BA063BF823B06CA5003A96FE /* EditableTextField.h */,
+				BA063BF923B06CA5003A96FE /* EditableTextField.m */,
 			);
 			name = ui;
 			path = test2;
@@ -2616,6 +2622,7 @@
 				BA6572A6224DFA6F00BA4C60 /* RGB.swift in Sources */,
 				3CE30E022052BD8B00AF2E2A /* AutoCompleteTableContainer.m in Sources */,
 				BAB508E4237EA54500D3D468 /* ObjcSystemPermissionManager.swift in Sources */,
+				BA063BFA23B06CA5003A96FE /* EditableTextField.m in Sources */,
 				BA0C3A65223219470081C6DE /* AutoCompleteCellType.swift in Sources */,
 				BA75FF3522BCC5C400D3F08C /* TimelineDatasource.swift in Sources */,
 				BA7B4C3721C24B9D00B75B14 /* UndoTextField.m in Sources */,
@@ -2683,6 +2690,7 @@
 				BAE64D7B2368334000244D2B /* NSTextFieldClickablePointer.m in Sources */,
 				BA47DEB323966F9C005216AD /* InAppMessageViewController.swift in Sources */,
 				BA63ABEE238284D9004C70CF /* IdleNotificationTouchBar.swift in Sources */,
+				BA063BFB23B06CA5003A96FE /* EditableTextField.m in Sources */,
 				BAE64D7C2368334000244D2B /* DisplayCommand.m in Sources */,
 				BA37ACF423D890250013EE26 /* Collection+Safe.swift in Sources */,
 				BAE64D7D2368334000244D2B /* ColorViewItem.swift in Sources */,

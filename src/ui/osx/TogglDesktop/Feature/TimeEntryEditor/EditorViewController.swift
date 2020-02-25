@@ -154,7 +154,7 @@ final class EditorViewController: NSViewController {
     }
 
     @IBAction func durationTextFieldOnChange(_ sender: Any) {
-        guard durationTextField.stringValue != timeEntry.duration else { return }
+        guard durationTextField.stringValue != timeEntry.duration && durationTextField.isTextChanged else { return }
         DesktopLibraryBridge.shared().updateTimeEntry(withDuration: durationTextField.stringValue,
                                                       guid: timeEntry.guid)
     }
@@ -521,7 +521,7 @@ extension EditorViewController: NSTextFieldDelegate {
         guard let textField = obj.object as? NSTextField else { return }
 
         // Duration
-        if textField == durationTextField {
+        if textField == durationTextField && durationTextField.isTextChanged {
             durationTextFieldOnChange(self)
             return
         }
