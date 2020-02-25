@@ -7,11 +7,11 @@ export  LDFLAGS="-mmacosx-version-min=10.11"
 export   CFLAGS="$LDFLAGS"
 export CXXFLAGS="$LDFLAGS"
 
-version=${TAG_NAME/v/}
-timestamp=$(date "+%Y-%m-%d-%H-%M-%S") 
-escaped_version=$(echo $version | sed 's/\./_/g') 
-installer=TogglDesktop-$escaped_version-$timestamp.dmg
-installer_name=TogglDesktop-$escaped_version.dmg
+export version=$(go run ./dist/osx/tag_version.go)
+export timestamp=$(date "+%Y-%m-%d-%H-%M-%S") 
+export escaped_version=$(echo $version | sed 's/\./_/g') 
+export installer=TogglDesktop-$escaped_version-$timestamp.dmg
+export installer_name=TogglDesktop-$escaped_version.dmg
 
 function app_path() {
     echo $(xcodebuild -scheme TogglDesktop -workspace src/ui/osx/TogglDesktop.xcworkspace -configuration Release -showBuildSettings \
@@ -127,6 +127,7 @@ function debuginfo() {
 }
 
 function appcast() {
+    echo $version
     echo $installer
     echo $installer_name
     pwd
