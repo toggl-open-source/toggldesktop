@@ -3,7 +3,7 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/controls.tooltip.xaml" />
     </ResourceDictionary.MergedDictionaries>
-    <Style TargetType="ToolTip" BasedOn="{StaticResource MetroToolTip}">
+    <Style TargetType="ToolTip" BasedOn="{StaticResource MahApps.Styles.ToolTip}">
         <Setter Property="Background" Value="{DynamicResource Toggl.CardBackground}" />
         <Setter Property="BorderBrush" Value="{DynamicResource Toggl.PopupBorderBrush}" />
         <Setter Property="BorderThickness" Value="1" />
