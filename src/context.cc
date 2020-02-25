@@ -501,6 +501,7 @@ void Context::OpenTimeEntryList() {
 
 void Context::updateUI(const UIElements &what) {
     logger.debug("updateUI " + what.String());
+    auto userLock = user_.lock();
 
     view::TimeEntry editor_time_entry_view;
 
@@ -2739,6 +2740,8 @@ locked<TimeEntry> Context::Start(
         return {};
     }
 
+    auto userLock = user_.lock();
+
     locked<TimeEntry> te;
 
     {
@@ -4865,6 +4868,8 @@ error Context::pullAllUserData(
         Poco::Stopwatch stopwatch;
         stopwatch.start();
 
+        auto userLock = user_.lock();
+
         std::string user_data_json("");
         error err = me(
             toggl_client,
@@ -4925,6 +4930,8 @@ error Context::pushChanges(
         poco_check_ptr(had_something_to_push);
 
         *had_something_to_push = true;
+
+        auto userLock = user_.lock();
 
         std::map<std::string, locked<BaseModel>> models;
 
