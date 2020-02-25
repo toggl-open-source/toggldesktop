@@ -288,6 +288,11 @@ void *ctx;
 	toggl_edit(ctx, [GUID UTF8String], false, kFocusedFieldNameDescription);
 }
 
+- (void)closeEditor
+{
+    toggl_close_editor(ctx);
+}
+
 - (void)setEditorWindowSize:(CGSize)size
 {
 	toggl_set_window_edit_size_width(ctx, size.width);

@@ -75,7 +75,6 @@ final class TimelineDashboardViewController: NSViewController {
     private lazy var editorPopover: EditorPopover = {
         let popover = EditorPopover()
         popover.animates = false
-        popover.behavior = .transient
         popover.prepareViewController()
         popover.delegate = self
         return popover
@@ -545,6 +544,7 @@ extension TimelineDashboardViewController: NSPopoverDelegate {
             return
         }
         selectedGUID = nil
+        DesktopLibraryBridge.shared().closeEditor()
     }
 }
 

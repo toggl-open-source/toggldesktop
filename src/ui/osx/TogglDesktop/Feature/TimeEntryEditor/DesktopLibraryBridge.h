@@ -88,6 +88,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)startEditorAtGUID:(NSString *)GUID;
 
+- (void)closeEditor;
+
 - (void)setEditorWindowSize:(CGSize)size;
 
 - (CGSize)getEditorWindowSize;
