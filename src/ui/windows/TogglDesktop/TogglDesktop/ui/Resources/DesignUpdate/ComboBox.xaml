@@ -35,7 +35,7 @@
                                 FontSize="{TemplateBinding Controls:TextBoxHelper.ButtonFontSize}"
                                 Foreground="{TemplateBinding Foreground}"
                                 IsTabStop="False"
-                                Style="{DynamicResource ChromelessButtonStyle}"
+                                Style="{DynamicResource MahApps.Styles.Button.Chromeless}"
                                 Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type ComboBox}}, Path=(Controls:TextBoxHelper.ClearTextButton), Converter={StaticResource BooleanToVisibilityConverter}}" />
                         <Grid x:Name="BtnArrowBackground"
                               Grid.Column="2"
@@ -69,7 +69,7 @@
         </Setter>
     </Style>
 
-    <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource MetroComboBox}">
+    <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource MahApps.Styles.ComboBox}">
         <Setter Property="Padding" Value="5 3" />
         <Setter Property="Height" Value="32" />
         <Setter Property="Foreground" Value="{DynamicResource Toggl.PrimaryTextBrush}" />
@@ -179,7 +179,7 @@
                                      IsReadOnly="{TemplateBinding IsReadOnly}"
                                      MaxLength="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(Controls:ComboBoxHelper.MaxLength), Mode=OneWay}"
                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                     Style="{StaticResource EditableTextBoxStyle}"
+                                     Style="{StaticResource MahApps.Styles.TextBox.Editable}"
                                      Visibility="Collapsed" />
 
                             <TextBlock x:Name="PART_WatermarkMessage"
@@ -190,7 +190,7 @@
                                        HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                        VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                        Foreground="{TemplateBinding Foreground}"
-                                       Style="{DynamicResource MahApps.Metro.Styles.MetroWatermarkTextBlock}"
+                                       Style="{DynamicResource MahApps.Styles.TextBlock.Watermark}"
                                        Text="{TemplateBinding Controls:TextBoxHelper.Watermark}"
                                        TextAlignment="{TemplateBinding Controls:TextBoxHelper.WatermarkAlignment}"
                                        TextTrimming="{TemplateBinding Controls:TextBoxHelper.WatermarkTrimming}"
@@ -198,7 +198,7 @@
                             <ContentControl x:Name="PART_FloatingMessageContainer"
                                             Grid.Row="0"
                                             Grid.Column="0"
-                                            Style="{DynamicResource FloatingMessageContainerStyle}">
+                                            Style="{DynamicResource MahApps.Styles.ContentControl.FloatingMessageContainer}">
                                 <ContentControl.Height>
                                     <MultiBinding Converter="{Converters:MathMultiplyConverter}">
                                         <Binding ElementName="PART_FloatingMessage"
@@ -214,7 +214,7 @@
                                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                            Foreground="{TemplateBinding Foreground}"
-                                           Style="{DynamicResource MetroAutoCollapsingTextBlock}"
+                                           Style="{DynamicResource MahApps.Styles.TextBlock.AutoCollapsing}"
                                            Text="{TemplateBinding Controls:TextBoxHelper.Watermark}"
                                            TextAlignment="{TemplateBinding Controls:TextBoxHelper.WatermarkAlignment}"
                                            TextTrimming="{TemplateBinding Controls:TextBoxHelper.WatermarkTrimming}">
@@ -257,8 +257,8 @@
 
                         <Border x:Name="DisabledVisualElement"
                                 Grid.ColumnSpan="3"
-                                Background="{DynamicResource ControlsDisabledBrush}"
-                                BorderBrush="{DynamicResource ControlsDisabledBrush}"
+                                Background="{DynamicResource MahApps.Brushes.Controls.Disabled}"
+                                BorderBrush="{DynamicResource MahApps.Brushes.Controls.Disabled}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 CornerRadius="{TemplateBinding Controls:ControlsHelper.CornerRadius}"
                                 IsHitTestVisible="False"
@@ -363,10 +363,10 @@
                                 <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=SelectedItem, Mode=OneWay, Converter={x:Static Converters:IsNullConverter.Instance}}" Value="False" />
                             </MultiDataTrigger.Conditions>
                             <MultiDataTrigger.EnterActions>
-                                <BeginStoryboard Storyboard="{StaticResource ShowFloatingMessageStoryboard}" />
+                                <BeginStoryboard Storyboard="{StaticResource MahApps.Storyboard.ShowFloatingMessage}" />
                             </MultiDataTrigger.EnterActions>
                             <MultiDataTrigger.ExitActions>
-                                <BeginStoryboard Storyboard="{StaticResource HideFloatingMessageStoryboard}" />
+                                <BeginStoryboard Storyboard="{StaticResource MahApps.Storyboard.HideFloatingMessage}" />
                             </MultiDataTrigger.ExitActions>
                         </MultiDataTrigger>
 
@@ -397,7 +397,13 @@
                         <Trigger Property="IsKeyboardFocusWithin" Value="True">
                             <Setter TargetName="Border" Property="BorderBrush" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=(Controls:ControlsHelper.FocusBorderBrush)}" />
                         </Trigger>
-
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsGrouping" Value="true" />
+                                <Condition Property="VirtualizingPanel.IsVirtualizingWhenGrouping" Value="false" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="ScrollViewer.CanContentScroll" Value="false" />
+                        </MultiTrigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter TargetName="DisabledVisualElement" Property="Visibility" Value="Visible" />
                         </Trigger>
@@ -405,9 +411,23 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+        <Style.Triggers>
+            <Trigger Property="VirtualizingStackPanel.IsVirtualizing" Value="True">
+                <Setter Property="ItemsPanel">
+                    <Setter.Value>
+                        <ItemsPanelTemplate>
+                            <VirtualizingStackPanel IsItemsHost="True"
+                                                    IsVirtualizing="True"
+                                                    IsVirtualizingWhenGrouping="True"
+                                                    VirtualizationMode="Recycling" />
+                        </ItemsPanelTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+        </Style.Triggers>
     </Style>
 
-    <Style BasedOn="{StaticResource MetroComboBoxItem}" TargetType="ComboBoxItem">
+    <Style BasedOn="{StaticResource MahApps.Styles.ComboBoxItem}" TargetType="ComboBoxItem">
         <Setter Property="Padding" Value="12,2,6,2" />
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="Foreground" Value="{DynamicResource Toggl.PrimaryTextBrush}" />

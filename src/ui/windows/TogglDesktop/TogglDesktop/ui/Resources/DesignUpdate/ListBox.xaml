@@ -40,7 +40,7 @@
                                 FontSize="{TemplateBinding mah:TextBoxHelper.ButtonFontSize}"
                                 Foreground="{TemplateBinding Foreground}"
                                 IsTabStop="False"
-                                Style="{DynamicResource ChromelessButtonStyle}"
+                                Style="{DynamicResource MahApps.Styles.Button.Chromeless}"
                                 Visibility="{TemplateBinding mah:TextBoxHelper.ClearTextButton, Converter={StaticResource BooleanToVisibilityConverter}}" />
                         <Grid x:Name="BtnArrowBackground"
                               Grid.Column="2"
@@ -74,7 +74,7 @@
         </Setter>
     </Style>
 
-    <Style BasedOn="{StaticResource MetroListBoxItem}" TargetType="ListBoxItem">
+    <Style BasedOn="{StaticResource MahApps.Styles.ListBoxItem}" TargetType="ListBoxItem">
         <Setter Property="Padding" Value="0" />
         <Setter Property="MinHeight" Value="0" />
         <Setter Property="Background" Value="Transparent" />

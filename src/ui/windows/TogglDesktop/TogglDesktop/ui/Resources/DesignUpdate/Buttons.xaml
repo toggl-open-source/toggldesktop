@@ -220,7 +220,7 @@
                 <Setter Property="Background" Value="{DynamicResource Toggl.Button.Titlebar.MouseOver}" />
             </Trigger>
             <Trigger Property="IsPressed" Value="True">
-                <Setter Property="Background" Value="{DynamicResource Toggl.Button.Primary.PressedBackground}" />
+                <Setter Property="Background" Value="{DynamicResource Toggl.Button.Titlebar.Pressed}" />
                 <Setter Property="Foreground" Value="White" />
             </Trigger>
         </Style.Triggers>
@@ -341,5 +341,4 @@
             </Trigger>
         </Style.Triggers>
     </Style>
-
 </ResourceDictionary>

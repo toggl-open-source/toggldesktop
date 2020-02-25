@@ -34,7 +34,7 @@
                 VerticalAlignment="Center" HorizontalAlignment="Center">
             <DockPanel>
                 <Viewbox Width="63" Height="19" DockPanel.Dock="Top" Margin="0 40 0 0">
-                    <ContentControl Content="{StaticResource Toggl.LogoSvg}" />
+                    <ContentControl Content="{StaticResource Toggl.LogoSvg}" Focusable="False" />
                 </Viewbox>
                 <StackPanel DockPanel.Dock="Bottom"
                             Orientation="Vertical"
