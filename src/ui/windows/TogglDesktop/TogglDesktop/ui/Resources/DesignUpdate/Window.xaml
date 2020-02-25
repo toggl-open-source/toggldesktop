@@ -10,6 +10,7 @@
         </Setter>
         <Setter Property="WindowTransitionsEnabled" Value="False" />
         <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="ResizeBorderThickness" Value="4" />
         <Setter Property="TitleCharacterCasing" Value="Normal" />
         <Setter Property="WindowTitleBrush" Value="Transparent" />
         <Setter Property="NonActiveWindowTitleBrush" Value="Transparent" />
