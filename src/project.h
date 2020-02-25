@@ -15,7 +15,7 @@ namespace toggl {
 
 class TOGGL_INTERNAL_EXPORT Project : public BaseModel {
  public:
-    Project(ProtectedContainerBase *container)
+    Project(ProtectedBase *container)
         : BaseModel(container)
     , wid_(0)
     , cid_(0)
@@ -27,7 +27,7 @@ class TOGGL_INTERNAL_EXPORT Project : public BaseModel {
     , client_guid_("")
     , client_name_("") {}
  public:
-    friend class ProtectedContainer<Project>;
+    friend class ProtectedBase;
 
     const Poco::UInt64 &WID() const {
         return wid_;

@@ -90,14 +90,14 @@ inline const Settings *locked<const Settings>::operator*() {
 }
 
 
-class ProtectedContainerBase {
+class ProtectedBase {
 public:
-    ProtectedContainerBase(RelatedData *parent)
+    ProtectedBase(RelatedData *parent)
         : relatedData_(parent)
     {
 
     }
-    virtual ~ProtectedContainerBase() {
+    virtual ~ProtectedBase() {
 
     }
 
@@ -109,17 +109,40 @@ public:
             return lock_type(mutex_);
         return { mutex_, std::defer_lock };
     }
+    /**
+     * @brief make_locked - Makes pointer to any type locked by the internal mutex
+     * @param val - can be of any type (but a pointer)
+     *
+     * @warning beware of using pointers to non-static local variables with this method
+     */
+    template<typename U> locked<U> make_locked(U *val) const {
+        return { mutex_, val };
+    }
+    /**
+     * @brief make_locked - Makes pointer to any type locked by the internal mutex
+     * @param val - can be of any type (but a pointer)
+     *
+     * @warning beware of using pointers to non-static local variables with this method
+     */
+    template<typename U> locked<const U> make_locked(const U *val) const {
+        return { mutex_, val };
+    }
 protected:
+    template<typename T, typename... Args>
+    T *make(Args&&... args) {
+        return new T(args...);
+    }
+
     RelatedData *relatedData_ { nullptr };
     mutable mutex_type mutex_;
 };
 
 template <class T>
-class ProtectedModel : public ProtectedContainerBase {
+class ProtectedModel : public ProtectedBase {
 public:
     ProtectedModel(RelatedData *parent, bool allocate = false)
-        : ProtectedContainerBase(parent)
-        , value_(allocate ? new T(this) : nullptr)
+        : ProtectedBase(parent)
+        , value_(allocate ? make<T>(this) : nullptr)
     {
 
     }
@@ -133,14 +156,8 @@ public:
         lock_type lock(mutex_);
         if (value_)
             delete value_;
-        value_ = new T(this, std::forward<Args>(args)...);
+        value_ = make<T>(this, std::forward<Args>(args)...);
         return { mutex_, value_ };
-    }
-    template<typename U> locked<U> make_locked(U *val) {
-        return { mutex_, val };
-    }
-    template<typename U> locked<const U> make_locked(const U *val) const {
-        return { mutex_, val };
     }
     locked<T> operator*() {
         return { mutex_, value_ };
@@ -170,7 +187,7 @@ protected:
  * It also provides facilities to lock other objects using the internal mutex.
  */
 template <class T>
-class ProtectedContainer : public ProtectedContainerBase {
+class ProtectedContainer : public ProtectedBase {
 public:
     class iterator {
     public:
@@ -292,7 +309,7 @@ public:
     friend class const_iterator;
 
     ProtectedContainer(RelatedData *parent)
-        : ProtectedContainerBase(parent)
+        : ProtectedBase(parent)
     {
 
     }
@@ -351,7 +368,7 @@ public:
     template <typename ...Args>
     locked<T> create(Args&&... args) {
         lock_type lock(mutex_);
-        T *val = new T(this, std::forward<Args>(args)...);
+        T *val = make<T>(this, std::forward<Args>(args)...);
         container_.push_back(val);
         guidMap_[val->GUID()] = val;
         return { mutex_, val };
@@ -393,24 +410,6 @@ public:
     bool contains(const guid &uuid) const {
         lock_type lock(mutex_);
         return guidMap_.find(uuid) != guidMap_.end();
-    }
-    /**
-     * @brief make_locked - Makes pointer to any type locked by the internal mutex
-     * @param val - can be of any type (but a pointer)
-     *
-     * @warning beware of using pointers to non-static local variables with this method
-     */
-    template<typename U> locked<U> make_locked(U *val) const {
-        return { mutex_, val };
-    }
-    /**
-     * @brief make_locked - Makes pointer to any type locked by the internal mutex
-     * @param val - can be of any type (but a pointer)
-     *
-     * @warning beware of using pointers to non-static local variables with this method
-     */
-    template<typename U> locked<const U> make_locked(const U *val) const {
-        return { mutex_, val };
     }
 
     locked<T> operator[](size_t position) {

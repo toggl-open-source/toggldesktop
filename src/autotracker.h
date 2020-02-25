@@ -15,13 +15,13 @@
 namespace toggl {
 
 class TOGGL_INTERNAL_EXPORT AutotrackerRule : public BaseModel {
-    AutotrackerRule(ProtectedContainerBase *container)
+    AutotrackerRule(ProtectedBase *container)
         : BaseModel(container)
     , term_("")
     , pid_(0)
     , tid_(0) {}
  public:
-    friend class ProtectedContainer<AutotrackerRule>;
+    friend class ProtectedBase;
 
     virtual ~AutotrackerRule() {}
 

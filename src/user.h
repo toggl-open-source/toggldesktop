@@ -23,7 +23,7 @@
 namespace toggl {
 
 class TOGGL_INTERNAL_EXPORT User : public BaseModel {
-    User(ProtectedContainerBase *container)
+    User(ProtectedBase *container)
         : BaseModel(container)
     , api_token_("")
     , default_wid_(0)
@@ -42,7 +42,7 @@ class TOGGL_INTERNAL_EXPORT User : public BaseModel {
  public:
     ~User();
 
-    friend class ProtectedModel<User>;
+    friend class ProtectedBase;
 
     error EnableOfflineLogin(
         const std::string &password);

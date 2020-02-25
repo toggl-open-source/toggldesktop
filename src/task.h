@@ -14,14 +14,14 @@
 namespace toggl {
 
 class TOGGL_INTERNAL_EXPORT Task : public BaseModel {
-    Task(ProtectedContainerBase *container)
+    Task(ProtectedBase *container)
         : BaseModel(container)
     , name_("")
     , wid_(0)
     , pid_(0)
     , active_(false) {}
  public:
-    friend class ProtectedContainer<Task>;
+    friend class ProtectedBase;
 
     const std::string &Name() const {
         return name_;

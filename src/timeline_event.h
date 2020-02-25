@@ -14,7 +14,7 @@
 namespace toggl {
 
 class TOGGL_INTERNAL_EXPORT TimelineEvent : public BaseModel, public TimedEvent {
-    TimelineEvent(ProtectedContainerBase *container)
+    TimelineEvent(ProtectedBase *container)
         : BaseModel(container)
     , title_("")
     , filename_("")
@@ -25,7 +25,7 @@ class TOGGL_INTERNAL_EXPORT TimelineEvent : public BaseModel, public TimedEvent 
     , chunked_(false)
     , uploaded_(false) {}
 public:
-    friend class ProtectedContainer<TimelineEvent>;
+    friend class ProtectedBase;
 
     virtual ~TimelineEvent() {}
 

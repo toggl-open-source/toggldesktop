@@ -12,12 +12,12 @@
 namespace toggl {
 
 class TOGGL_INTERNAL_EXPORT Tag : public BaseModel {
-    Tag(ProtectedContainerBase *container)
+    Tag(ProtectedBase *container)
         : BaseModel(container)
     , wid_(0)
     , name_("") {}
  public:
-    friend class ProtectedContainer<Tag>;
+    friend class ProtectedBase;
 
     const Poco::UInt64 &WID() const {
         return wid_;

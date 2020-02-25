@@ -97,11 +97,11 @@ void BaseModel::SetUID(const Poco::UInt64 value) {
     }
 }
 
-ProtectedContainerBase *BaseModel::GetContainer() {
+ProtectedBase *BaseModel::GetContainer() {
     return container_;
 }
 
-const ProtectedContainerBase *BaseModel::GetContainer() const {
+const ProtectedBase *BaseModel::GetContainer() const {
     return container_;
 }
 

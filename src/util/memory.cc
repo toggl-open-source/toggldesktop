@@ -4,11 +4,11 @@
 
 namespace toggl {
 
-RelatedData *ProtectedContainerBase::GetRelatedData() {
+RelatedData *ProtectedBase::GetRelatedData() {
     return relatedData_;
 }
 
-const RelatedData *ProtectedContainerBase::GetRelatedData() const {
+const RelatedData *ProtectedBase::GetRelatedData() const {
     return relatedData_;
 }
 
