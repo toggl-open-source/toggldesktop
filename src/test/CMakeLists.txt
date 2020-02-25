@@ -21,16 +21,16 @@ target_link_libraries(TogglApiTest PRIVATE
     X11
 )
 
-#set(APP_TEST_SOURCE_FILES
-#    test_data.cc
-#    app_test.cc
-#)
-#add_executable(TogglAppTest ${APP_TEST_SOURCE_FILES})
-#target_link_libraries(TogglAppTest PRIVATE
-#    TogglDesktopLibrary
-#    ${JSONCPP_LIBRARIES}
-#    ${LUA_LIBRARIES}
-#    PocoCrypto PocoDataSQLite PocoNetSSL PocoFoundation
-#    gtest_main gtest
-#    X11
-#)
+set(APP_TEST_SOURCE_FILES
+    test_data.cc
+    app_test.cc
+)
+add_executable(TogglAppTest ${APP_TEST_SOURCE_FILES})
+target_link_libraries(TogglAppTest PRIVATE
+    TogglDesktopLibrary
+    ${JSONCPP_LIBRARIES}
+    ${LUA_LIBRARIES}
+    PocoCrypto PocoDataSQLite PocoNetSSL PocoFoundation
+    gtest_main gtest
+    X11
+)

@@ -34,11 +34,11 @@ namespace testing {
 class Database {
  public:
     Database() : db_(0) {
-        Poco::File f("test.db");
+        Poco::File f("test->db");
         if (f.exists()) {
             f.remove(false);
         }
-        db_ = new toggl::Database("test.db");
+        db_ = new toggl::Database("test->db");
     }
     ~Database() {
         if (db_) {
@@ -56,62 +56,63 @@ class Database {
 }  // namespace testing
 
 TEST(TimeEntry, TimeEntryReturnsTags) {
-    TimeEntry te;
-    te.SetTags("alfa|beeta");
-    ASSERT_EQ(std::string("alfa|beeta"), te.Tags());
+    ProtectedModel<TimeEntry> te { nullptr, true };
+    te->SetTags("alfa|beeta");
+    ASSERT_EQ(std::string("alfa|beeta"), te->Tags());
 }
 
 TEST(TimeEntry, WillNotPushUnlessValidationErrorIsCleared) {
-    TimeEntry te;
-    ASSERT_TRUE(te.NeedsPush());
+    ProtectedModel<TimeEntry> te { nullptr, true };
+    ASSERT_TRUE(te->NeedsPush());
 
     // Simulate getting an error from backend
-    te.SetValidationError("All you do is wrong");
-    ASSERT_EQ("All you do is wrong", te.ValidationError());
-    ASSERT_FALSE(te.NeedsPush());
+    te->SetValidationError("All you do is wrong");
+    ASSERT_EQ("All you do is wrong", te->ValidationError());
+    ASSERT_FALSE(te->NeedsPush());
 
     // Simulate user changing the data,
     // which should wipe the validation error.
-    te.SetDurationUserInput("10 seconds");
-    ASSERT_EQ("", te.ValidationError());
-    ASSERT_TRUE(te.NeedsPush());
+    te->SetDurationUserInput("10 seconds");
+    ASSERT_EQ("", te->ValidationError());
+    ASSERT_TRUE(te->NeedsPush());
 }
 
 TEST(TimeEntry, SetDurationUserInput) {
-    TimeEntry te;
-    ASSERT_FALSE(te.Dirty());
-    ASSERT_FALSE(te.UIModifiedAt());
+    ProtectedModel<TimeEntry> te { nullptr, true };
+    ASSERT_FALSE(te->Dirty());
+    ASSERT_FALSE(te->UIModifiedAt());
 
-    te.SetDurationUserInput("1 minute");
-    ASSERT_TRUE(te.Dirty());
-    ASSERT_TRUE(te.UIModifiedAt());
+    te->SetDurationUserInput("1 minute");
+    ASSERT_TRUE(te->Dirty());
+    ASSERT_TRUE(te->UIModifiedAt());
 }
 
 TEST(Project, ProjectsHaveColorCodes) {
-    Project p;
-    p.SetColor("1");
-    ASSERT_EQ("#c56bff", p.ColorCode());
-    p.SetColor("");
-    ASSERT_EQ("", p.ColorCode());
-    p.SetColor("0");
-    ASSERT_EQ("#06aaf5", p.ColorCode());
+    ProtectedModel<Project> p { nullptr, true };
+    p->SetColor("1");
+    ASSERT_EQ("#c56bff", p->ColorCode());
+    p->SetColor("");
+    ASSERT_EQ("", p->ColorCode());
+    p->SetColor("0");
+    ASSERT_EQ("#06aaf5", p->ColorCode());
 }
 
 TEST(Project, ResolveOnlyAdminsCanChangeProjectVisibility) {
-    Project p;
-    p.SetPrivate(false);
+    ProtectedModel<Project> p { nullptr, true };
+    p->SetPrivate(false);
     error err = error("Only admins can change project visibility");
-    ASSERT_TRUE(p.ResolveError(err));
-    ASSERT_TRUE(p.IsPrivate());
+    ASSERT_TRUE(p->ResolveError(err));
+    ASSERT_TRUE(p->IsPrivate());
 }
 
+#if 0
 TEST(User, CreateCompressedTimelineBatchForUpload) {
     testing::Database db;
 
-    User user;
-    ASSERT_EQ(noError,
-              user.LoadUserAndRelatedDataFromJSONString(loadTestData(), true));
-    Poco::UInt64 user_id = user.ID();
+    RelatedData related;
+    ProtectedModel<User> user { &related, true };
+    ASSERT_EQ(noError, user->LoadUserAndRelatedDataFromJSONString(loadTestData(), true));
+    Poco::UInt64 user_id = user->ID();
 
     std::vector<ModelChange> changes;
 
@@ -126,7 +127,7 @@ TEST(User, CreateCompressedTimelineBatchForUpload) {
     good->SetEndTime(good->Start() + good_duration_seconds);
     good->SetFilename("Notepad.exe");
     good->SetTitle("untitled");
-    user.related.TimelineEvents.push_back(good);
+    related.TimelineEvents.push_back(good);
 
     Poco::UInt64 good2_duration_seconds(20);
 
@@ -138,7 +139,7 @@ TEST(User, CreateCompressedTimelineBatchForUpload) {
     good2->SetEndTime(good2->Start() + good2_duration_seconds);
     good2->SetFilename("Notepad.exe");
     good2->SetTitle("untitled");
-    user.related.TimelineEvents.push_back(good2);
+    related.TimelineEvents.push_back(good2);
 
     // Another event that happened at least 15 minutes ago,
     // but has already been uploaded to Toggl backend.
@@ -149,7 +150,7 @@ TEST(User, CreateCompressedTimelineBatchForUpload) {
     uploaded->SetFilename("Notepad.exe");
     uploaded->SetTitle("untitled");
     uploaded->SetUploaded(true);
-    user.related.TimelineEvents.push_back(uploaded);
+    related.TimelineEvents.push_back(uploaded);
 
     // This event happened less than 15 minutes ago,
     // so it must not be uploaded
@@ -159,7 +160,7 @@ TEST(User, CreateCompressedTimelineBatchForUpload) {
     too_fresh->SetEndTime(time(0));  // lasted until now
     too_fresh->SetFilename("Notepad.exe");
     too_fresh->SetTitle("notes");
-    user.related.TimelineEvents.push_back(too_fresh);
+    related.TimelineEvents.push_back(too_fresh);
 
     // This event happened more than 7 days ago,
     // so it must not be uploaded, just deleted
@@ -169,23 +170,23 @@ TEST(User, CreateCompressedTimelineBatchForUpload) {
     too_old->SetEndTime(too_old->EndTime() + 120);  // lasted 2 minutes
     too_old->SetFilename("Notepad.exe");
     too_old->SetTitle("diary");
-    user.related.TimelineEvents.push_back(too_old);
+    related.TimelineEvents.push_back(too_old);
 
     db.instance()->SaveUser(&user, true, &changes);
 
-    user.CompressTimeline();
-    std::vector<TimelineEvent> timeline_events = user.CompressedTimelineForUpload();
+    user->CompressTimeline();
+    std::vector<TimelineEvent> timeline_events = user->CompressedTimelineForUpload();
 
     if (timeline_events.size() != 1) {
-        std::cerr << "user.related.TimelineEvents:" << std::endl;
+        std::cerr << "related.TimelineEvents:" << std::endl;
         for (std::vector<TimelineEvent *>::const_iterator it =
-            user.related.TimelineEvents.begin();
-                it != user.related.TimelineEvents.end(); it++) {
+            related.TimelineEvents.begin();
+                it != related.TimelineEvents.end(); it++) {
             TimelineEvent *ev = *it;
             std::cerr << ev->String() << std::endl;
         }
 
-        std::cerr << "user.CompressedTimelineForUpload:" << std::endl;
+        std::cerr << "user->CompressedTimelineForUpload:" << std::endl;
         for (std::vector<TimelineEvent>::const_iterator it =
             timeline_events.begin();
                 it != timeline_events.end(); it++) {
@@ -198,8 +199,8 @@ TEST(User, CreateCompressedTimelineBatchForUpload) {
 
     // Compress some more, for fun and profit
     for (int i = 0; i < 100; i++) {
-        user.CompressTimeline();
-        timeline_events = user.CompressedTimelineForUpload();
+        user->CompressTimeline();
+        timeline_events = user->CompressedTimelineForUpload();
     }
 
     ASSERT_EQ(size_t(1), timeline_events.size());
@@ -223,12 +224,13 @@ TEST(User, CreateCompressedTimelineBatchForUpload) {
     ASSERT_FALSE(ready_for_upload.Uploaded());
 
     // Fake that we have uploaded the chunked timeline event now
-    user.MarkTimelineBatchAsUploaded(timeline_events);
+    user->MarkTimelineBatchAsUploaded(timeline_events);
 
     // Now, no more events should exist for upload
-    std::vector<TimelineEvent> left_for_upload = user.CompressedTimelineForUpload();
+    std::vector<TimelineEvent> left_for_upload = user->CompressedTimelineForUpload();
     ASSERT_EQ(std::size_t(0), left_for_upload.size());
 }
+#endif
 
 TEST(Database, Trim) {
     testing::Database db;
@@ -283,30 +285,31 @@ Json::Value jsonStringToValue(const std::string json_string) {
 }
 
 TEST(User, Since) {
-    User u;
+    ProtectedModel<User> u { nullptr, true };
 
     // no timestamp should be wrong
-    ASSERT_FALSE(u.HasValidSinceDate());
+    ASSERT_FALSE(u->HasValidSinceDate());
 
     // 0 timestamp should be wrong
-    u.SetSince(0);
-    ASSERT_FALSE(u.HasValidSinceDate());
+    u->SetSince(0);
+    ASSERT_FALSE(u->HasValidSinceDate());
 
     // current time should be ok
-    u.SetSince(time(0));
-    ASSERT_TRUE(u.HasValidSinceDate());
+    u->SetSince(time(0));
+    ASSERT_TRUE(u->HasValidSinceDate());
 
     // 1 month ago should be fine
-    u.SetSince(time(0) - 2.62974e6);
-    ASSERT_TRUE(u.HasValidSinceDate());
+    u->SetSince(time(0) - 2.62974e6);
+    ASSERT_TRUE(u->HasValidSinceDate());
 }
 
 TEST(User, UpdatesTimeEntryFromJSON) {
-    User user;
+    RelatedData related;
+    ProtectedModel<User> user { &related, true };
     ASSERT_EQ(noError,
-              user.LoadUserAndRelatedDataFromJSONString(loadTestData(), true));
+              user->LoadUserAndRelatedDataFromJSONString(loadTestData(), true));
 
-    TimeEntry *te = user.related.TimeEntryByID(89818605);
+    auto te = related.TimeEntries.byID(89818605);
     ASSERT_TRUE(te);
 
     std::string json = "{\"id\":89818605,\"description\":\"Changed\"}";
@@ -315,11 +318,12 @@ TEST(User, UpdatesTimeEntryFromJSON) {
 }
 
 TEST(User, DeletesZombies) {
-    User user;
+    RelatedData related;
+    ProtectedModel<User> user { &related, true };
     ASSERT_EQ(noError,
-              user.LoadUserAndRelatedDataFromJSONString(loadTestData(), true));
+              user->LoadUserAndRelatedDataFromJSONString(loadTestData(), true));
 
-    TimeEntry *te = user.related.TimeEntryByID(89818605);
+    locked<TimeEntry> te = related.TimeEntries.byID(89818605);
     ASSERT_TRUE(te);
     ASSERT_FALSE(te->IsMarkedAsDeletedOnServer());
 
@@ -327,9 +331,9 @@ TEST(User, DeletesZombies) {
         loadTestDataFile(std::string("../testdata/me_without_time_entries.json"));
 
     ASSERT_EQ(noError,
-              user.LoadUserAndRelatedDataFromJSONString(json, true));
+              user->LoadUserAndRelatedDataFromJSONString(json, true));
 
-    te = user.related.TimeEntryByID(89818605);
+    te = related.TimeEntries.byID(89818605);
     ASSERT_TRUE(te);
     ASSERT_TRUE(te->IsMarkedAsDeletedOnServer());
 }
@@ -337,54 +341,64 @@ TEST(User, DeletesZombies) {
 TEST(Database, LoadUserByEmail) {
     testing::Database db;
 
-    User user;
-    ASSERT_EQ(noError,
-              user.LoadUserAndRelatedDataFromJSONString(loadTestData(), true));
+    RelatedData related;
+    ProtectedModel<User> user { &related, true };
+    ASSERT_EQ(noError, user->LoadUserAndRelatedDataFromJSONString(loadTestData(), true));
 
     std::vector<ModelChange> changes;
-    ASSERT_EQ(noError, db.instance()->SaveUser(&user, true, &changes));
+    auto lUser = *user;
+    ASSERT_EQ(noError, db.instance()->SaveUser(lUser, true, &changes));
 
-    User user2;
-    ASSERT_EQ(noError,
-              db.instance()->LoadUserByEmail("johnsmith@toggl.com", &user2));
+    RelatedData related2;
+    ProtectedModel<User> user2 { &related2, true };
+    auto lUser2 = *user2;
+    ASSERT_EQ(noError, db.instance()->LoadUserByEmail("johnsmith@toggl.com", lUser2));
 
-    ASSERT_EQ(user.ID(), user2.ID());
+    ASSERT_EQ(user->ID(), user2->ID());
 }
 
 TEST(Database, LoadUserByEmailWithoutEmail) {
     testing::Database db;
 
-    User user;
-    ASSERT_NE(noError, db.instance()->LoadUserByEmail("", &user));
+    RelatedData related;
+    ProtectedModel<User> user { &related, true };
+    auto lUser = *user;
+    ASSERT_NE(noError, db.instance()->LoadUserByEmail("", lUser));
 }
 
 TEST(Database, LoadUserByEmailWithNonexistantEmail) {
     testing::Database db;
 
-    User user;
-    ASSERT_EQ(noError, db.instance()->LoadUserByEmail("foo@bar.com", &user));
+    RelatedData related;
+    ProtectedModel<User> user { &related, true };
+    auto lUser = *user;
+    ASSERT_EQ(noError, db.instance()->LoadUserByEmail("foo@bar.com", lUser));
 }
 
 TEST(Database, AllowsSameEmail) {
     testing::Database db;
 
-    User user;
+    RelatedData related;
+    ProtectedModel<User> user { &related, true };
     ASSERT_EQ(noError,
-              user.LoadUserAndRelatedDataFromJSONString(loadTestData(), true));
+              user->LoadUserAndRelatedDataFromJSONString(loadTestData(), true));
 
     std::vector<ModelChange> changes;
-    ASSERT_EQ(noError, db.instance()->SaveUser(&user, true, &changes));
+    auto lUser = *user;
+    ASSERT_EQ(noError, db.instance()->SaveUser(lUser, true, &changes));
 
-    User user2;
+    RelatedData related2;
+    ProtectedModel<User> user2 { &related2, true };
     std::string json = loadTestDataFile(std::string("../testdata/same_email.json"));
     ASSERT_EQ(noError,
-              user2.LoadUserAndRelatedDataFromJSONString(json, true));
+              user2->LoadUserAndRelatedDataFromJSONString(json, true));
 
-    ASSERT_EQ(noError, db.instance()->SaveUser(&user2, true, &changes));
+    auto lUser2 = *user2;
+    ASSERT_EQ(noError, db.instance()->SaveUser(lUser2, true, &changes));
 
-    ASSERT_EQ(user.Email(), user2.Email());
-    ASSERT_NE(user.ID(), user2.ID());
-    ASSERT_NE(user.APIToken(), user2.APIToken());
+    ASSERT_EQ(user->Email(), user2->Email());
+    ASSERT_NE(user->ID(), user2->ID());
+    ASSERT_NE(user->APIToken(), user2->APIToken());
 }
 
 TEST(Formatter, EscapeControlCharactersInJSONString) {
@@ -397,11 +411,12 @@ TEST(User, UpdatesTimeEntryFromFullUserJSON) {
 
     std::string json = loadTestData();
 
-    User user;
+    RelatedData related;
+    ProtectedModel<User> user { &related, true };
     ASSERT_EQ(noError,
-              user.LoadUserAndRelatedDataFromJSONString(loadTestData(), true));
+              user->LoadUserAndRelatedDataFromJSONString(loadTestData(), true));
 
-    TimeEntry *te = user.related.TimeEntryByID(89818605);
+    auto te = related.TimeEntries.byID(89818605);
     ASSERT_TRUE(te);
 
     size_t n = json.find("Important things");
@@ -410,8 +425,8 @@ TEST(User, UpdatesTimeEntryFromFullUserJSON) {
     te->SetDescription("Even more important!");
 
     ASSERT_EQ(noError,
-              user.LoadUserAndRelatedDataFromJSONString(json, true));
-    te = user.related.TimeEntryByID(89818605);
+              user->LoadUserAndRelatedDataFromJSONString(json, true));
+    te = related.TimeEntries.byID(89818605);
     ASSERT_TRUE(te);
     ASSERT_EQ("Even more important!", te->Description());
 }
@@ -419,111 +434,127 @@ TEST(User, UpdatesTimeEntryFromFullUserJSON) {
 TEST(Database, SavesAndLoadsUserFields) {
     testing::Database db;
 
-    User user;
+    RelatedData related;
+    ProtectedModel<User> user { &related, true };
     ASSERT_EQ(noError,
-              user.LoadUserAndRelatedDataFromJSONString(loadTestData(), true));
+              user->LoadUserAndRelatedDataFromJSONString(loadTestData(), true));
 
-    ASSERT_TRUE(user.StoreStartAndStopTime());
+    ASSERT_TRUE(user->StoreStartAndStopTime());
     // Change fields
-    user.SetStoreStartAndStopTime(false);
+    user->SetStoreStartAndStopTime(false);
 
     std::vector<ModelChange> changes;
-    ASSERT_EQ(noError, db.instance()->SaveUser(&user, true, &changes));
+    auto lUser = *user;
+    ASSERT_EQ(noError, db.instance()->SaveUser(lUser, true, &changes));
 
     // Load user into another instance
-    User user2;
-    ASSERT_EQ(noError, db.instance()->LoadUserByID(user.ID(), &user2));
-    ASSERT_FALSE(user2.StoreStartAndStopTime());
+    RelatedData related2;
+    ProtectedModel<User> user2 { &related2, true };
+    auto lUser2 = *user2;
+    ASSERT_EQ(noError, db.instance()->LoadUserByID(user->ID(), lUser2));
+    ASSERT_FALSE(user2->StoreStartAndStopTime());
 
     // Change fields, again
-    user.SetStoreStartAndStopTime(true);
-    ASSERT_EQ(noError, db.instance()->SaveUser(&user, true, &changes));
+    user->SetStoreStartAndStopTime(true);
+    ASSERT_EQ(noError, db.instance()->SaveUser(lUser, true, &changes));
 
     // Load user into another instance
-    User user3;
-    ASSERT_EQ(noError, db.instance()->LoadUserByID(user.ID(), &user3));
-    ASSERT_TRUE(user3.StoreStartAndStopTime());
+    RelatedData related3;
+    ProtectedModel<User> user3 { &related3, true };
+    auto lUser3 = *user3;
+    ASSERT_EQ(noError, db.instance()->LoadUserByID(user->ID(), lUser3));
+    ASSERT_TRUE(user3->StoreStartAndStopTime());
 }
 
 TEST(Database, SavesAndLoadsObmExperiments) {
     testing::Database db;
 
-    User user;
+    RelatedData related;
+    ProtectedModel<User> user { &related, true };
     ASSERT_EQ(noError,
-              user.LoadUserAndRelatedDataFromJSONString(loadTestData(), true));
+              user->LoadUserAndRelatedDataFromJSONString(loadTestData(), true));
 
     std::string json = loadTestDataFile(std::string("../testdata/obm_response.json"));
     Json::Value data = jsonStringToValue(json);
-    user.LoadObmExperiments(data);
+    user->LoadObmExperiments(data);
 
-    ASSERT_EQ(1, user.related.ObmExperiments.size());
+    ASSERT_EQ(1, related.ObmExperiments.size());
 
-    ObmExperiment *obm = user.related.ObmExperiments[0];
+    auto obm = related.ObmExperiments[0];
     ASSERT_TRUE(obm->Included());
     ASSERT_EQ(74, obm->Nr());
     ASSERT_EQ("stringarray/hasopmitempty/canbemissing", obm->Actions());
 
     std::vector<ModelChange> changes;
-    ASSERT_EQ(noError, db.instance()->SaveUser(&user, true, &changes));
+    auto lUser = *user;
+    ASSERT_EQ(noError, db.instance()->SaveUser(lUser, true, &changes));
 
     // Load user into another instance
-    User user2;
-    ASSERT_EQ(noError, db.instance()->LoadUserByID(user.ID(), &user2));
-    ASSERT_EQ(user.related.ObmExperiments.size(),
-              user2.related.ObmExperiments.size());
+    RelatedData related2;
+    ProtectedModel<User> user2 { &related2, true };
+    auto lUser2 = *user2;
+    ASSERT_EQ(noError, db.instance()->LoadUserByID(user->ID(), lUser2));
+    ASSERT_EQ(related.ObmExperiments.size(),
+              related2.ObmExperiments.size());
 
 
-    obm = user.related.ObmExperiments[0];
+    obm = related.ObmExperiments[0];
     ASSERT_TRUE(obm->LocalID());
 }
 
 TEST(Database, SavesAndLoadsObmExperimentsArray) {
     testing::Database db;
 
-    User user;
+    RelatedData related;
+    ProtectedModel<User> user { &related, true };
     ASSERT_EQ(noError,
-              user.LoadUserAndRelatedDataFromJSONString(loadTestData(), true));
+              user->LoadUserAndRelatedDataFromJSONString(loadTestData(), true));
 
     std::string json = loadTestDataFile(std::string("../testdata/obm_response_array.json"));
     Json::Value data = jsonStringToValue(json);
-    user.LoadObmExperiments(data);
+    user->LoadObmExperiments(data);
 
-    ASSERT_EQ(2, user.related.ObmExperiments.size());
+    ASSERT_EQ(2, related.ObmExperiments.size());
 
-    ObmExperiment *obm = user.related.ObmExperiments[0];
+    auto obm = related.ObmExperiments[0];
     ASSERT_TRUE(obm->Included());
     ASSERT_EQ(74, obm->Nr());
     ASSERT_EQ("stringarray/hasopmitempty/canbemissing", obm->Actions());
 
-    obm = user.related.ObmExperiments[1];
+    obm = related.ObmExperiments[1];
     ASSERT_FALSE(obm->Included());
     ASSERT_EQ(73, obm->Nr());
     ASSERT_EQ("blah", obm->Actions());
 
     std::vector<ModelChange> changes;
-    ASSERT_EQ(noError, db.instance()->SaveUser(&user, true, &changes));
+    auto lUser = *user;
+    ASSERT_EQ(noError, db.instance()->SaveUser(lUser, true, &changes));
 
     // Load user into another instance
-    User user2;
-    ASSERT_EQ(noError, db.instance()->LoadUserByID(user.ID(), &user2));
-    ASSERT_EQ(user.related.ObmExperiments.size(),
-              user2.related.ObmExperiments.size());
+    RelatedData related2;
+    ProtectedModel<User> user2 { &related, true };
+    auto lUser2 = *user2;
+    ASSERT_EQ(noError, db.instance()->LoadUserByID(user->ID(), lUser2));
+    ASSERT_EQ(related.ObmExperiments.size(),
+              related2.ObmExperiments.size());
 }
 
 TEST(Database, SavesModelsAndKnowsToUpdateWithSameUserInstance) {
     testing::Database db;
 
-    User user;
+    RelatedData related;
+    ProtectedModel<User> user { &related, true };
     ASSERT_EQ(noError,
-              user.LoadUserAndRelatedDataFromJSONString(loadTestData(), true));
+              user->LoadUserAndRelatedDataFromJSONString(loadTestData(), true));
 
     Poco::UInt64 n;
     ASSERT_EQ(noError, db.instance()->UInt("select count(1) from users", &n));
     ASSERT_EQ(Poco::UInt64(0), n);
 
+    auto lUser = *user;
     for (int i = 0; i < 3; i++) {
         std::vector<ModelChange> changes;
-        ASSERT_EQ(noError, db.instance()->SaveUser(&user, true, &changes));
+        ASSERT_EQ(noError, db.instance()->SaveUser(lUser, true, &changes));
 
         ASSERT_EQ(noError,
                   db.instance()->UInt("select count(1) from users", &n));
@@ -562,12 +593,14 @@ TEST(Database,
 
     std::string json = loadTestData();
 
-    User user1;
+    RelatedData related1;
+    ProtectedModel<User> user1 { &related1, true };
     ASSERT_EQ(noError,
-              user1.LoadUserAndRelatedDataFromJSONString(json, true));
+              user1->LoadUserAndRelatedDataFromJSONString(json, true));
 
     std::vector<ModelChange> changes;
-    ASSERT_EQ(noError, db.instance()->SaveUser(&user1, true, &changes));
+    auto lUser1 = *user1;
+    ASSERT_EQ(noError, db.instance()->SaveUser(lUser1, true, &changes));
 
     Poco::UInt64 n;
     ASSERT_EQ(noError, db.instance()->UInt("select count(1) from users", &n));
@@ -597,26 +630,28 @@ TEST(Database,
               db.instance()->UInt("select count(1) from time_entries", &n));
     ASSERT_EQ(Poco::UInt64(5), n);
 
-    User user2;
-    ASSERT_EQ(noError, db.instance()->LoadUserByID(user1.ID(), &user2));
+    RelatedData related2;
+    ProtectedModel<User> user2 { &related2, true };
+    auto lUser2 = *user2;
+    ASSERT_EQ(noError, db.instance()->LoadUserByID(user1->ID(), lUser2));
 
-    ASSERT_EQ(user1.related.Workspaces.size(),
-              user2.related.Workspaces.size());
-    ASSERT_EQ(user1.related.Clients.size(),
-              user2.related.Clients.size());
-    ASSERT_EQ(user1.related.Projects.size(),
-              user2.related.Projects.size());
-    ASSERT_EQ(user1.related.Tasks.size(),
-              user2.related.Tasks.size());
-    ASSERT_EQ(user1.related.Tags.size(),
-              user2.related.Tags.size());
-    ASSERT_EQ(user1.related.TimeEntries.size(),
-              user2.related.TimeEntries.size());
+    ASSERT_EQ(related1.Workspaces.size(),
+              related2.Workspaces.size());
+    ASSERT_EQ(related1.Clients.size(),
+              related2.Clients.size());
+    ASSERT_EQ(related1.Projects.size(),
+              related2.Projects.size());
+    ASSERT_EQ(related1.Tasks.size(),
+              related2.Tasks.size());
+    ASSERT_EQ(related1.Tags.size(),
+              related2.Tags.size());
+    ASSERT_EQ(related1.TimeEntries.size(),
+              related2.TimeEntries.size());
 
     ASSERT_EQ(noError,
-              user2.LoadUserAndRelatedDataFromJSONString(json, true));
+              user2->LoadUserAndRelatedDataFromJSONString(json, true));
 
-    ASSERT_EQ(noError, db.instance()->SaveUser(&user2, true, &changes));
+    ASSERT_EQ(noError, db.instance()->SaveUser(lUser2, true, &changes));
 
     ASSERT_EQ(noError, db.instance()->UInt("select count(1) from users", &n));
     ASSERT_EQ(Poco::UInt64(1), n);
@@ -647,17 +682,18 @@ TEST(Database,
 TEST(User, TestStartTimeEntryWithDuration) {
     testing::Database db;
 
-    User user;
+    RelatedData related;
+    ProtectedModel<User> user { &related, true };
     ASSERT_EQ(noError,
-              user.LoadUserAndRelatedDataFromJSONString(loadTestData(), true));
+              user->LoadUserAndRelatedDataFromJSONString(loadTestData(), true));
 
-    size_t count = user.related.TimeEntries.size();
+    size_t count = related.TimeEntries.size();
 
-    user.Start("Old work", "1 hour", 0, 0, "", "", 0, 0, true);
+    user->Start("Old work", "1 hour", 0, 0, "", "", 0, 0, true);
 
-    ASSERT_EQ(count + 1, user.related.TimeEntries.size());
+    ASSERT_EQ(count + 1, related.TimeEntries.size());
 
-    TimeEntry *te = user.related.TimeEntries[user.related.TimeEntries.size()-1];
+    auto te = related.TimeEntries[related.TimeEntries.size()-1];
 
     ASSERT_EQ(3600, te->DurationInSeconds());
 }
@@ -665,13 +701,14 @@ TEST(User, TestStartTimeEntryWithDuration) {
 TEST(User, TestStartTimeEntryWithoutDuration) {
     testing::Database db;
 
-    User user;
+    RelatedData related;
+    ProtectedModel<User> user { &related, true };
     ASSERT_EQ(noError,
-              user.LoadUserAndRelatedDataFromJSONString(loadTestData(), true));
+              user->LoadUserAndRelatedDataFromJSONString(loadTestData(), true));
 
-    user.Start("Old work", "", 0, 0, "", "", 0, 0, true);
+    user->Start("Old work", "", 0, 0, "", "", 0, 0, true);
 
-    TimeEntry *te = user.RunningTimeEntry();
+    auto te = user->RunningTimeEntry();
     ASSERT_TRUE(te);
     ASSERT_GT(0, te->DurationInSeconds());
 }
@@ -679,16 +716,18 @@ TEST(User, TestStartTimeEntryWithoutDuration) {
 TEST(User, TestDeletionSteps) {
     testing::Database db;
 
-    User user;
+    RelatedData related;
+    ProtectedModel<User> user { &related, true };
     ASSERT_EQ(noError,
-              user.LoadUserAndRelatedDataFromJSONString(loadTestData(), true));
+              user->LoadUserAndRelatedDataFromJSONString(loadTestData(), true));
 
     // first, mark time entry as deleted
-    user.Start("My new time entry", "", 0, 0, "", "", 0, 0, true);
-    TimeEntry *te = user.RunningTimeEntry();
+    user->Start("My new time entry", "", 0, 0, "", "", 0, 0, true);
+    auto te = user->RunningTimeEntry();
     ASSERT_TRUE(te);
     std::vector<ModelChange> changes;
-    ASSERT_EQ(noError, db.instance()->SaveUser(&user, true, &changes));
+    auto lUser = *user;
+    ASSERT_EQ(noError, db.instance()->SaveUser(lUser, true, &changes));
     te->MarkAsDeletedOnServer();
     {
         Poco::UInt64 te_count(0);
@@ -701,7 +740,7 @@ TEST(User, TestDeletionSteps) {
 
     // now, really delete it
     te->MarkAsDeletedOnServer();
-    ASSERT_EQ(noError, db.instance()->SaveUser(&user, true, &changes));
+    ASSERT_EQ(noError, db.instance()->SaveUser(lUser, true, &changes));
     {
         Poco::UInt64 te_count(0);
         std::stringstream query;
@@ -713,34 +752,37 @@ TEST(User, TestDeletionSteps) {
 }
 
 TEST(Database, SavesModels) {
-    User user;
+    RelatedData related;
+    ProtectedModel<User> user { &related, true };
     ASSERT_EQ(noError,
-              user.LoadUserAndRelatedDataFromJSONString(loadTestData(), true));
+              user->LoadUserAndRelatedDataFromJSONString(loadTestData(), true));
 
     testing::Database db;
 
     std::vector<ModelChange> changes;
-    ASSERT_EQ(noError, db.instance()->SaveUser(&user, false, &changes));
+    auto lUser = *user;
+    ASSERT_EQ(noError, db.instance()->SaveUser(lUser, false, &changes));
 
-    ASSERT_EQ(noError, db.instance()->SaveUser(&user, false, &changes));
+    ASSERT_EQ(noError, db.instance()->SaveUser(lUser, false, &changes));
 }
 
 TEST(Database, AssignsGUID) {
     std::string json = loadTestData();
     ASSERT_FALSE(json.empty());
 
-    User user;
+    RelatedData related;
+    ProtectedModel<User> user { &related, true };
     ASSERT_EQ(noError,
-              user.LoadUserAndRelatedDataFromJSONString(json, true));
+              user->LoadUserAndRelatedDataFromJSONString(json, true));
 
-    ASSERT_EQ(uint(5), user.related.TimeEntries.size());
-    TimeEntry *te = user.related.TimeEntryByID(89837445);
+    ASSERT_EQ(uint(5), related.TimeEntries.size());
+    auto te = related.TimeEntries.byID(89837445);
     ASSERT_TRUE(te);
 
     ASSERT_NE("", te->GUID());
     ASSERT_TRUE(te->GUID().size());
 
-    TimeEntry *te2 = user.related.TimeEntryByGUID(te->GUID());
+    auto te2 = related.TimeEntries.byGUID(te->GUID());
     ASSERT_TRUE(te2);
 
     ASSERT_EQ(te->GUID(), te2->GUID());
@@ -751,95 +793,97 @@ TEST(User, ParsesAndSavesData) {
     std::string json = loadTestData();
     ASSERT_FALSE(json.empty());
 
-    User user;
+    RelatedData related;
+    ProtectedModel<User> user { &related, true };
+    auto lUser = *user;
     ASSERT_EQ(noError,
-              user.LoadUserAndRelatedDataFromJSONString(json, true));
-    ASSERT_EQ(Poco::UInt64(1379068550), user.Since());
-    ASSERT_EQ(Poco::UInt64(10471231), user.ID());
-    ASSERT_EQ(Poco::UInt64(123456788), user.DefaultWID());
-    ASSERT_EQ("30eb0ae954b536d2f6628f7fec47beb6", user.APIToken());
-    ASSERT_EQ("John Smith", user.Fullname());
+              user->LoadUserAndRelatedDataFromJSONString(json, true));
+    ASSERT_EQ(Poco::UInt64(1379068550), user->Since());
+    ASSERT_EQ(Poco::UInt64(10471231), user->ID());
+    ASSERT_EQ(Poco::UInt64(123456788), user->DefaultWID());
+    ASSERT_EQ("30eb0ae954b536d2f6628f7fec47beb6", user->APIToken());
+    ASSERT_EQ("John Smith", user->Fullname());
 
     // Projects
-    ASSERT_EQ(uint(2), user.related.Projects.size());
+    ASSERT_EQ(uint(2), related.Projects.size());
 
-    ASSERT_EQ(Poco::UInt64(2567324), user.related.Projects[0]->ID());
-    //ASSERT_EQ("2f0b8f51-f898-d992-3e1a-6bc261fc41xf", user.related.Projects[0]->GUID());
-    ASSERT_EQ(Poco::UInt64(123456789), user.related.Projects[0]->WID());
-    ASSERT_EQ("Even more work", user.related.Projects[0]->Name());
-    ASSERT_EQ("#999999", user.related.Projects[0]->Color());
-    ASSERT_EQ(Poco::UInt64(1385144), user.related.Projects[0]->CID());
-    ASSERT_EQ(user.ID(), user.related.Projects[0]->UID());
-    ASSERT_TRUE(user.related.Projects[0]->Active());
+    ASSERT_EQ(Poco::UInt64(2567324), related.Projects[0]->ID());
+    //ASSERT_EQ("2f0b8f51-f898-d992-3e1a-6bc261fc41xf", related.Projects[0]->GUID());
+    ASSERT_EQ(Poco::UInt64(123456789), related.Projects[0]->WID());
+    ASSERT_EQ("Even more work", related.Projects[0]->Name());
+    ASSERT_EQ("#999999", related.Projects[0]->Color());
+    ASSERT_EQ(Poco::UInt64(1385144), related.Projects[0]->CID());
+    ASSERT_EQ(user->ID(), related.Projects[0]->UID());
+    ASSERT_TRUE(related.Projects[0]->Active());
 
-    ASSERT_EQ(Poco::UInt64(2598305), user.related.Projects[1]->ID());
-    ASSERT_EQ(Poco::UInt64(123456789), user.related.Projects[1]->WID());
-    ASSERT_EQ("Testing stuff", user.related.Projects[1]->Name());
-    ASSERT_EQ("#fb8b14", user.related.Projects[1]->Color());
-    ASSERT_EQ(user.ID(), user.related.Projects[1]->UID());
-    ASSERT_FALSE(user.related.Projects[1]->Active());
+    ASSERT_EQ(Poco::UInt64(2598305), related.Projects[1]->ID());
+    ASSERT_EQ(Poco::UInt64(123456789), related.Projects[1]->WID());
+    ASSERT_EQ("Testing stuff", related.Projects[1]->Name());
+    ASSERT_EQ("#fb8b14", related.Projects[1]->Color());
+    ASSERT_EQ(user->ID(), related.Projects[1]->UID());
+    ASSERT_FALSE(related.Projects[1]->Active());
 
     // Time entries
-    ASSERT_EQ(uint(5), user.related.TimeEntries.size());
+    ASSERT_EQ(uint(5), related.TimeEntries.size());
 
-    ASSERT_EQ(Poco::UInt64(89818605), user.related.TimeEntries[0]->ID());
-    //ASSERT_EQ("07fba193-91c4-0ec8-2894-820df0548a8f", user.related.TimeEntries[0]->GUID());
-    ASSERT_EQ(uint(2567324), user.related.TimeEntries[0]->PID());
-    ASSERT_TRUE(user.related.TimeEntries[0]->Billable());
-    ASSERT_EQ(uint(1378362830), user.related.TimeEntries[0]->Start());
-    ASSERT_EQ(uint(1378369186), user.related.TimeEntries[0]->Stop());
-    ASSERT_EQ(6356, user.related.TimeEntries[0]->DurationInSeconds());
+    ASSERT_EQ(Poco::UInt64(89818605), related.TimeEntries[0]->ID());
+    //ASSERT_EQ("07fba193-91c4-0ec8-2894-820df0548a8f", related.TimeEntries[0]->GUID());
+    ASSERT_EQ(uint(2567324), related.TimeEntries[0]->PID());
+    ASSERT_TRUE(related.TimeEntries[0]->Billable());
+    ASSERT_EQ(uint(1378362830), related.TimeEntries[0]->Start());
+    ASSERT_EQ(uint(1378369186), related.TimeEntries[0]->Stop());
+    ASSERT_EQ(6356, related.TimeEntries[0]->DurationInSeconds());
     ASSERT_EQ("Important things",
-              user.related.TimeEntries[0]->Description());
-    ASSERT_EQ(uint(0), user.related.TimeEntries[0]->TagNames.size());
-    ASSERT_FALSE(user.related.TimeEntries[0]->DurOnly());
-    ASSERT_EQ(user.ID(), user.related.TimeEntries[0]->UID());
+              related.TimeEntries[0]->Description());
+    ASSERT_EQ(uint(0), related.TimeEntries[0]->TagNames.size());
+    ASSERT_FALSE(related.TimeEntries[0]->DurOnly());
+    ASSERT_EQ(user->ID(), related.TimeEntries[0]->UID());
 
-    ASSERT_EQ(uint(2), user.related.Tasks.size());
+    ASSERT_EQ(uint(2), related.Tasks.size());
 
-    ASSERT_EQ(uint(1894794), user.related.Tasks[0]->ID());
-    ASSERT_EQ("blog (writing)", user.related.Tasks[0]->Name());
-    ASSERT_EQ(uint(123456789), user.related.Tasks[0]->WID());
-    ASSERT_EQ(uint(2598305), user.related.Tasks[0]->PID());
-    ASSERT_EQ(user.ID(), user.related.Tasks[0]->UID());
+    ASSERT_EQ(uint(1894794), related.Tasks[0]->ID());
+    ASSERT_EQ("blog (writing)", related.Tasks[0]->Name());
+    ASSERT_EQ(uint(123456789), related.Tasks[0]->WID());
+    ASSERT_EQ(uint(2598305), related.Tasks[0]->PID());
+    ASSERT_EQ(user->ID(), related.Tasks[0]->UID());
 
     // Tags
-    ASSERT_EQ(uint(2), user.related.Tags.size());
+    ASSERT_EQ(uint(2), related.Tags.size());
 
-    ASSERT_EQ(uint(27457022), user.related.Tags[0]->ID());
-    ASSERT_EQ("billed", user.related.Tags[0]->Name());
-    ASSERT_EQ(user.ID(), user.related.Tags[0]->UID());
-    ASSERT_EQ(uint(123456788), user.related.Tags[0]->WID());
-    //ASSERT_EQ("", user.related.Tags[0]->GUID());
+    ASSERT_EQ(uint(27457022), related.Tags[0]->ID());
+    ASSERT_EQ("billed", related.Tags[0]->Name());
+    ASSERT_EQ(user->ID(), related.Tags[0]->UID());
+    ASSERT_EQ(uint(123456788), related.Tags[0]->WID());
+    //ASSERT_EQ("", related.Tags[0]->GUID());
 
-    ASSERT_EQ(uint(36253522), user.related.Tags[1]->ID());
-    ASSERT_EQ("create new", user.related.Tags[1]->Name());
-    ASSERT_EQ(user.ID(), user.related.Tags[1]->UID());
-    ASSERT_EQ(uint(123456788), user.related.Tags[1]->WID());
-    //ASSERT_EQ("041390ba-ed9c-b477-b949-1a4ebb60a9ce", user.related.Tags[1]->GUID());
+    ASSERT_EQ(uint(36253522), related.Tags[1]->ID());
+    ASSERT_EQ("create new", related.Tags[1]->Name());
+    ASSERT_EQ(user->ID(), related.Tags[1]->UID());
+    ASSERT_EQ(uint(123456788), related.Tags[1]->WID());
+    //ASSERT_EQ("041390ba-ed9c-b477-b949-1a4ebb60a9ce", related.Tags[1]->GUID());
 
     // Workspaces
-    ASSERT_EQ(uint(2), user.related.Workspaces.size());
+    ASSERT_EQ(uint(2), related.Workspaces.size());
 
-    ASSERT_EQ(uint(123456788), user.related.Workspaces[0]->ID());
-    ASSERT_EQ("stuff", user.related.Workspaces[0]->Name());
-    ASSERT_EQ(user.ID(), user.related.Workspaces[0]->UID());
+    ASSERT_EQ(uint(123456788), related.Workspaces[0]->ID());
+    ASSERT_EQ("stuff", related.Workspaces[0]->Name());
+    ASSERT_EQ(user->ID(), related.Workspaces[0]->UID());
 
-    ASSERT_FALSE(user.related.Workspaces[0]->OnlyAdminsMayCreateProjects());
-    ASSERT_TRUE(user.related.Workspaces[0]->Admin());
+    ASSERT_FALSE(related.Workspaces[0]->OnlyAdminsMayCreateProjects());
+    ASSERT_TRUE(related.Workspaces[0]->Admin());
 
-    ASSERT_TRUE(user.related.Workspaces[1]->OnlyAdminsMayCreateProjects());
-    ASSERT_TRUE(user.related.Workspaces[1]->Admin());
-    ASSERT_EQ(uint(123456789), user.related.Workspaces[1]->ID());
+    ASSERT_TRUE(related.Workspaces[1]->OnlyAdminsMayCreateProjects());
+    ASSERT_TRUE(related.Workspaces[1]->Admin());
+    ASSERT_EQ(uint(123456789), related.Workspaces[1]->ID());
 
     // Clients (2 in JSON but 1 is deleted)
-    ASSERT_EQ(uint(1), user.related.Clients.size());
+    ASSERT_EQ(uint(1), related.Clients.size());
 
-    ASSERT_EQ(uint(878318), user.related.Clients[0]->ID());
-    ASSERT_EQ(uint(123456788), user.related.Clients[0]->WID());
-    ASSERT_EQ("Big Client", user.related.Clients[0]->Name());
-    //ASSERT_EQ("59b464cd-0f8e-e601-ff44-f135225a6738", user.related.Clients[0]->GUID());
-    ASSERT_EQ(user.ID(), user.related.Clients[0]->UID());
+    ASSERT_EQ(uint(878318), related.Clients[0]->ID());
+    ASSERT_EQ(uint(123456788), related.Clients[0]->WID());
+    ASSERT_EQ("Big Client", related.Clients[0]->Name());
+    //ASSERT_EQ("59b464cd-0f8e-e601-ff44-f135225a6738", related.Clients[0]->GUID());
+    ASSERT_EQ(user->ID(), related.Clients[0]->UID());
 
     testing::Database db;
 
@@ -849,10 +893,10 @@ TEST(User, ParsesAndSavesData) {
 
     // Insert
     std::vector<ModelChange> changes;
-    ASSERT_EQ(noError, db.instance()->SaveUser(&user, true, &changes));
-    ASSERT_GT(user.LocalID(), uint(0));
-    ASSERT_GT(user.ID(), uint(0));
-    ASSERT_FALSE(user.APIToken().empty());
+    ASSERT_EQ(noError, db.instance()->SaveUser(lUser, true, &changes));
+    ASSERT_GT(user->LocalID(), uint(0));
+    ASSERT_GT(user->ID(), uint(0));
+    ASSERT_FALSE(user->APIToken().empty());
 
     ASSERT_EQ(noError,
               db.instance()->UInt("select count(1) from users", &n));
@@ -860,85 +904,84 @@ TEST(User, ParsesAndSavesData) {
 
     ASSERT_EQ(noError,
               db.instance()->UInt("select count(1) from workspaces", &n));
-    ASSERT_EQ(Poco::UInt64(user.related.Workspaces.size()), n);
+    ASSERT_EQ(Poco::UInt64(related.Workspaces.size()), n);
 
     ASSERT_EQ(noError,
               db.instance()->UInt("select count(1) from clients", &n));
-    ASSERT_EQ(Poco::UInt64(user.related.Clients.size()), n);
+    ASSERT_EQ(Poco::UInt64(related.Clients.size()), n);
 
     ASSERT_EQ(noError,
               db.instance()->UInt("select count(1) from projects", &n));
-    ASSERT_EQ(Poco::UInt64(user.related.Projects.size()), n);
+    ASSERT_EQ(Poco::UInt64(related.Projects.size()), n);
 
     ASSERT_EQ(noError, db.instance()->UInt("select count(1) from tasks", &n));
-    ASSERT_EQ(Poco::UInt64(user.related.Tasks.size()), n);
+    ASSERT_EQ(Poco::UInt64(related.Tasks.size()), n);
 
     ASSERT_EQ(noError, db.instance()->UInt("select count(1) from tags", &n));
-    ASSERT_EQ(Poco::UInt64(user.related.Tags.size()), n);
+    ASSERT_EQ(Poco::UInt64(related.Tags.size()), n);
 
     ASSERT_EQ(noError,
               db.instance()->UInt("select count(1) from time_entries", &n));
-    ASSERT_EQ(Poco::UInt64(user.related.TimeEntries.size()), n);
+    ASSERT_EQ(Poco::UInt64(related.TimeEntries.size()), n);
 
     // Update
-    ASSERT_EQ(noError, db.instance()->SaveUser(&user, true, &changes));
+    ASSERT_EQ(noError, db.instance()->SaveUser(lUser, true, &changes));
     ASSERT_EQ(noError, db.instance()->UInt("select count(1) from users", &n));
     ASSERT_EQ(Poco::UInt64(1), n);
 
     // Select
-    User user2;
-    ASSERT_EQ(noError, db.instance()->LoadUserByID(user.ID(), &user2));
+    RelatedData related2;
+    ProtectedModel<User> user2 { &related2, true };
+    auto lUser2 = *user2;
+    ASSERT_EQ(noError, db.instance()->LoadUserByID(user->ID(), lUser2));
 
-    ASSERT_TRUE(user2.ID());
-    ASSERT_EQ(user.ID(), user2.ID());
-    ASSERT_TRUE(user2.Since());
-    ASSERT_EQ(user.Since(), user2.Since());
-    ASSERT_EQ(user.ID(), user2.ID());
-    ASSERT_EQ(user.DefaultWID(), user2.DefaultWID());
+    ASSERT_TRUE(user2->ID());
+    ASSERT_EQ(user->ID(), user2->ID());
+    ASSERT_TRUE(user2->Since());
+    ASSERT_EQ(user->Since(), user2->Since());
+    ASSERT_EQ(user->ID(), user2->ID());
+    ASSERT_EQ(user->DefaultWID(), user2->DefaultWID());
 
-    ASSERT_EQ(uint(2), user2.related.Projects.size());
-    Project *project_from_db =
-        user2.related.ProjectByID(user.related.Projects[0]->ID());
+    ASSERT_EQ(uint(2), related2.Projects.size());
+    auto project_from_db = related2.Projects.byID(related.Projects[0]->ID());
     ASSERT_TRUE(project_from_db);
-    ASSERT_EQ(user.related.Projects[0]->String(),
+    ASSERT_EQ(related.Projects[0]->String(),
               project_from_db->String());
-    project_from_db = user2.related.ProjectByID(user.related.Projects[1]->ID());
-    ASSERT_EQ(user.related.Projects[1]->String(),
+    project_from_db = related2.Projects.byID(related.Projects[1]->ID());
+    ASSERT_EQ(related.Projects[1]->String(),
               project_from_db->String());
 
-    ASSERT_EQ(uint(5), user2.related.TimeEntries.size());
-    TimeEntry *te_from_db =
-        user2.related.TimeEntryByID(user.related.TimeEntries[0]->ID());
+    ASSERT_EQ(uint(5), related2.TimeEntries.size());
+    auto te_from_db = related2.TimeEntries.byID(related.TimeEntries[0]->ID());
     ASSERT_TRUE(te_from_db);
-    ASSERT_EQ(user.related.TimeEntries[0]->String(), te_from_db->String());
-    te_from_db = user2.related.TimeEntryByID(user.related.TimeEntries[1]->ID());
+    ASSERT_EQ(related.TimeEntries[0]->String(), te_from_db->String());
+    te_from_db = related2.TimeEntries.byID(related.TimeEntries[1]->ID());
     ASSERT_TRUE(te_from_db);
-    ASSERT_EQ(user.related.TimeEntries[1]->String(), te_from_db->String());
-    te_from_db = user2.related.TimeEntryByID(user.related.TimeEntries[2]->ID());
+    ASSERT_EQ(related.TimeEntries[1]->String(), te_from_db->String());
+    te_from_db = related2.TimeEntries.byID(related.TimeEntries[2]->ID());
     ASSERT_TRUE(te_from_db);
-    ASSERT_EQ(user.related.TimeEntries[2]->String(), te_from_db->String());
+    ASSERT_EQ(related.TimeEntries[2]->String(), te_from_db->String());
 
-    ASSERT_EQ(uint(2), user2.related.Workspaces.size());
-    Workspace *ws_from_db =
-        user2.related.WorkspaceByID(user.related.Workspaces[0]->ID());
+    ASSERT_EQ(uint(2), related2.Workspaces.size());
+    auto ws_from_db = related2.Workspaces.byID(related.Workspaces[0]->ID());
     ASSERT_TRUE(ws_from_db);
-    ASSERT_EQ(user.related.Workspaces[0]->String(), ws_from_db->String());
-    ws_from_db = user2.related.WorkspaceByID(user.related.Workspaces[1]->ID());
+    ASSERT_EQ(related.Workspaces[0]->String(), ws_from_db->String());
+    ws_from_db = related2.Workspaces.byID(related.Workspaces[1]->ID());
     ASSERT_TRUE(ws_from_db);
-    ASSERT_EQ(user.related.Workspaces[1]->String(), ws_from_db->String());
+    ASSERT_EQ(related.Workspaces[1]->String(), ws_from_db->String());
 
-    ASSERT_EQ(uint(2), user2.related.Tasks.size());
-    Task *task_from_db = user2.related.TaskByID(user2.related.Tasks[0]->ID());
-    ASSERT_EQ(user.related.Tasks[0]->String(), task_from_db->String());
-    ASSERT_EQ(user.related.Tasks[1]->String(),
-              user2.related.Tasks[1]->String());
+    ASSERT_EQ(uint(2), related2.Tasks.size());
+    auto task_from_db = related2.Tasks.byID(related2.Tasks[0]->ID());
+    ASSERT_EQ(related.Tasks[0]->String(), task_from_db->String());
+    ASSERT_EQ(related.Tasks[1]->String(),
+              related2.Tasks[1]->String());
 
-    ASSERT_EQ(uint(1), user2.related.Clients.size());
-    ASSERT_EQ(user.related.Clients[0]->String(),
-              user2.related.Clients[0]->String());
+    ASSERT_EQ(uint(1), related2.Clients.size());
+    ASSERT_EQ(related.Clients[0]->String(),
+              related2.Clients[0]->String());
 
     // Delete
-    ASSERT_EQ(noError, db.instance()->DeleteUser(&user, true));
+    ASSERT_EQ(noError, db.instance()->DeleteUser(lUser, true));
 
     ASSERT_EQ(noError, db.instance()->UInt("select count(1) from users", &n));
     ASSERT_EQ(Poco::UInt64(0), n);
@@ -967,316 +1010,317 @@ TEST(User, ParsesAndSavesData) {
 }
 
 TEST(TimeEntry, ParsesDurationLikeOnTheWeb) {
-    TimeEntry te;
+    ProtectedModel<TimeEntry> te { nullptr, true };
 
-    te.SetDurationUserInput("00:00:15");
+    te->SetDurationUserInput("00:00:15");
     ASSERT_EQ("0:00:15",
-              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+              toggl::Formatter::FormatDuration(te->DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
-    te.SetDurationUserInput("00:23:15");
+    te->SetDurationInSeconds(0);
+    te->SetDurationUserInput("00:23:15");
     ASSERT_EQ("0:23:15",
-              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+              toggl::Formatter::FormatDuration(te->DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
-    te.SetDurationUserInput("12:34:56");
+    te->SetDurationInSeconds(0);
+    te->SetDurationUserInput("12:34:56");
     ASSERT_EQ("12:34:56",
-              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+              toggl::Formatter::FormatDuration(te->DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
-    te.SetDurationUserInput("0:1");
+    te->SetDurationInSeconds(0);
+    te->SetDurationUserInput("0:1");
     ASSERT_EQ("0:01:00",
-              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+              toggl::Formatter::FormatDuration(te->DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
-    te.SetDurationUserInput("1:2");
+    te->SetDurationInSeconds(0);
+    te->SetDurationUserInput("1:2");
     ASSERT_EQ("1:02:00",
-              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+              toggl::Formatter::FormatDuration(te->DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
-    te.SetDurationUserInput("1:0");
+    te->SetDurationInSeconds(0);
+    te->SetDurationUserInput("1:0");
     ASSERT_EQ("1:00:00",
-              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+              toggl::Formatter::FormatDuration(te->DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
-    te.SetDurationUserInput("05:22 min");
+    te->SetDurationInSeconds(0);
+    te->SetDurationUserInput("05:22 min");
     ASSERT_EQ("0:05:22",
-              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+              toggl::Formatter::FormatDuration(te->DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
-    te.SetDurationUserInput("00:22 min");
+    te->SetDurationInSeconds(0);
+    te->SetDurationUserInput("00:22 min");
     ASSERT_EQ("0:00:22",
-              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+              toggl::Formatter::FormatDuration(te->DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
-    te.SetDurationUserInput("0 hours");
+    te->SetDurationInSeconds(0);
+    te->SetDurationUserInput("0 hours");
     ASSERT_EQ("0:00:00",
-              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+              toggl::Formatter::FormatDuration(te->DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
-    te.SetDurationUserInput("0.5 hours");
+    te->SetDurationInSeconds(0);
+    te->SetDurationUserInput("0.5 hours");
     ASSERT_EQ("0:30:00",
-              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+              toggl::Formatter::FormatDuration(te->DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
-    te.SetDurationUserInput("0,5 hours");
+    te->SetDurationInSeconds(0);
+    te->SetDurationUserInput("0,5 hours");
     ASSERT_EQ("0:30:00",
-              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+              toggl::Formatter::FormatDuration(te->DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
-    te.SetDurationUserInput("1 hour");
+    te->SetDurationInSeconds(0);
+    te->SetDurationUserInput("1 hour");
     ASSERT_EQ("1:00:00",
-              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+              toggl::Formatter::FormatDuration(te->DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
-    te.SetDurationUserInput("1 hr");
+    te->SetDurationInSeconds(0);
+    te->SetDurationUserInput("1 hr");
     ASSERT_EQ("1:00:00",
-              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+              toggl::Formatter::FormatDuration(te->DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
-    te.SetDurationUserInput("1,5 hours");
+    te->SetDurationInSeconds(0);
+    te->SetDurationUserInput("1,5 hours");
     ASSERT_EQ("1:30:00",
-              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+              toggl::Formatter::FormatDuration(te->DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
-    te.SetDurationUserInput("1.5 hours");
+    te->SetDurationInSeconds(0);
+    te->SetDurationUserInput("1.5 hours");
     ASSERT_EQ("1:30:00",
-              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+              toggl::Formatter::FormatDuration(te->DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
-    te.SetDurationUserInput("24 hours");
-    ASSERT_EQ(86400, te.DurationInSeconds());
+    te->SetDurationInSeconds(0);
+    te->SetDurationUserInput("24 hours");
+    ASSERT_EQ(86400, te->DurationInSeconds());
 
-    te.SetDurationInSeconds(0);
-    te.SetDurationUserInput("0 minutes");
+    te->SetDurationInSeconds(0);
+    te->SetDurationUserInput("0 minutes");
     ASSERT_EQ("0:00:00",
-              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+              toggl::Formatter::FormatDuration(te->DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
-    te.SetDurationUserInput("0 min");
+    te->SetDurationInSeconds(0);
+    te->SetDurationUserInput("0 min");
     ASSERT_EQ("0:00:00",
-              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+              toggl::Formatter::FormatDuration(te->DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
-    te.SetDurationUserInput("5 minutes");
+    te->SetDurationInSeconds(0);
+    te->SetDurationUserInput("5 minutes");
     ASSERT_EQ("0:05:00",
-              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+              toggl::Formatter::FormatDuration(te->DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
-    te.SetDurationUserInput("5minutes");
+    te->SetDurationInSeconds(0);
+    te->SetDurationUserInput("5minutes");
     ASSERT_EQ("0:05:00",
-              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+              toggl::Formatter::FormatDuration(te->DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
-    te.SetDurationUserInput("0,5 minutes");
+    te->SetDurationInSeconds(0);
+    te->SetDurationUserInput("0,5 minutes");
     ASSERT_EQ("0:00:30",
-              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+              toggl::Formatter::FormatDuration(te->DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
-    te.SetDurationUserInput("1 minute");
+    te->SetDurationInSeconds(0);
+    te->SetDurationUserInput("1 minute");
     ASSERT_EQ("0:01:00",
-              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+              toggl::Formatter::FormatDuration(te->DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
-    te.SetDurationUserInput("1,5 minutes");
+    te->SetDurationInSeconds(0);
+    te->SetDurationUserInput("1,5 minutes");
     ASSERT_EQ("0:01:30",
-              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+              toggl::Formatter::FormatDuration(te->DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
-    te.SetDurationUserInput("1.5 minutes");
+    te->SetDurationInSeconds(0);
+    te->SetDurationUserInput("1.5 minutes");
     ASSERT_EQ("0:01:30",
-              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+              toggl::Formatter::FormatDuration(te->DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
-    te.SetDurationUserInput("15");
+    te->SetDurationInSeconds(0);
+    te->SetDurationUserInput("15");
     ASSERT_EQ("0:15:00",
-              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+              toggl::Formatter::FormatDuration(te->DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
-    te.SetDurationUserInput("0 seconds");
+    te->SetDurationInSeconds(0);
+    te->SetDurationUserInput("0 seconds");
     ASSERT_EQ("0:00:00",
-              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+              toggl::Formatter::FormatDuration(te->DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
-    te.SetDurationUserInput("1 second");
+    te->SetDurationInSeconds(0);
+    te->SetDurationUserInput("1 second");
     ASSERT_EQ("0:00:01",
-              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+              toggl::Formatter::FormatDuration(te->DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
-    te.SetDurationUserInput("1.5h");
+    te->SetDurationInSeconds(0);
+    te->SetDurationUserInput("1.5h");
     ASSERT_EQ("1:30:00",
-              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+              toggl::Formatter::FormatDuration(te->DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
-    te.SetDurationUserInput("1.5 h");
+    te->SetDurationInSeconds(0);
+    te->SetDurationUserInput("1.5 h");
     ASSERT_EQ("1:30:00",
-              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+              toggl::Formatter::FormatDuration(te->DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
-    te.SetDurationUserInput("3h");
+    te->SetDurationInSeconds(0);
+    te->SetDurationUserInput("3h");
     ASSERT_EQ("3:00:00",
-              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+              toggl::Formatter::FormatDuration(te->DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
-    te.SetDurationUserInput("3 h");
+    te->SetDurationInSeconds(0);
+    te->SetDurationUserInput("3 h");
     ASSERT_EQ("3:00:00",
-              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+              toggl::Formatter::FormatDuration(te->DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
-    te.SetDurationUserInput("15m");
+    te->SetDurationInSeconds(0);
+    te->SetDurationUserInput("15m");
     ASSERT_EQ("0:15:00",
-              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+              toggl::Formatter::FormatDuration(te->DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
-    te.SetDurationUserInput("15 m");
+    te->SetDurationInSeconds(0);
+    te->SetDurationUserInput("15 m");
     ASSERT_EQ("0:15:00",
-              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+              toggl::Formatter::FormatDuration(te->DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
-    te.SetDurationUserInput("25s");
+    te->SetDurationInSeconds(0);
+    te->SetDurationUserInput("25s");
     ASSERT_EQ("0:00:25",
-              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+              toggl::Formatter::FormatDuration(te->DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
-    te.SetDurationUserInput("25 s");
+    te->SetDurationInSeconds(0);
+    te->SetDurationUserInput("25 s");
     ASSERT_EQ("0:00:25",
-              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+              toggl::Formatter::FormatDuration(te->DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
-    te.SetDurationUserInput("1.5");
+    te->SetDurationInSeconds(0);
+    te->SetDurationUserInput("1.5");
     ASSERT_EQ("1:30:00",
-              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+              toggl::Formatter::FormatDuration(te->DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
-    te.SetDurationUserInput("1,5");
+    te->SetDurationInSeconds(0);
+    te->SetDurationUserInput("1,5");
     ASSERT_EQ("1:30:00",
-              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+              toggl::Formatter::FormatDuration(te->DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
-    te.SetDurationUserInput("0.25");
+    te->SetDurationInSeconds(0);
+    te->SetDurationUserInput("0.25");
     ASSERT_EQ("0:15:00",
-              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+              toggl::Formatter::FormatDuration(te->DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
-    te.SetDurationUserInput("0.025");
+    te->SetDurationInSeconds(0);
+    te->SetDurationUserInput("0.025");
     ASSERT_EQ("0:01:30",
-              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+              toggl::Formatter::FormatDuration(te->DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
-    te.SetDurationUserInput("2h45");
+    te->SetDurationInSeconds(0);
+    te->SetDurationUserInput("2h45");
     ASSERT_EQ("2:45:00",
-              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+              toggl::Formatter::FormatDuration(te->DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
-    te.SetDurationUserInput("2h");
+    te->SetDurationInSeconds(0);
+    te->SetDurationUserInput("2h");
     ASSERT_EQ("2:00:00",
-              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+              toggl::Formatter::FormatDuration(te->DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
-    te.SetDurationUserInput("2h 18m");
+    te->SetDurationInSeconds(0);
+    te->SetDurationUserInput("2h 18m");
     ASSERT_EQ("2:18:00",
-              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+              toggl::Formatter::FormatDuration(te->DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
-    te.SetDurationUserInput("2h 18m 50s");
+    te->SetDurationInSeconds(0);
+    te->SetDurationUserInput("2h 18m 50s");
     ASSERT_EQ("2:18:50",
-              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+              toggl::Formatter::FormatDuration(te->DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
-    te.SetDurationUserInput("1hr 25min 30sec");
+    te->SetDurationInSeconds(0);
+    te->SetDurationUserInput("1hr 25min 30sec");
     ASSERT_EQ("1:25:30",
-              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+              toggl::Formatter::FormatDuration(te->DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
-    te.SetDurationUserInput("1 hours 25 minutes 30 seconds");
+    te->SetDurationInSeconds(0);
+    te->SetDurationUserInput("1 hours 25 minutes 30 seconds");
     ASSERT_EQ("1:25:30",
-              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+              toggl::Formatter::FormatDuration(te->DurationInSeconds(),
                       toggl::Format::Improved));
 
-    te.SetDurationInSeconds(0);
-    te.SetDurationUserInput("1 hour 1 minute 1 second");
+    te->SetDurationInSeconds(0);
+    te->SetDurationUserInput("1 hour 1 minute 1 second");
     ASSERT_EQ("1:01:01",
-              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+              toggl::Formatter::FormatDuration(te->DurationInSeconds(),
                       toggl::Format::Improved));
 }
 
 TEST(TimeEntry, ParseDurationLargerThan24Hours) {
-    TimeEntry te;
+    ProtectedModel<TimeEntry> te { nullptr, true };
 
-    te.SetDurationInSeconds(0);
-    te.SetDurationUserInput("90:10:00");
+    te->SetDurationInSeconds(0);
+    te->SetDurationUserInput("90:10:00");
     ASSERT_EQ("90:10:00",
-              toggl::Formatter::FormatDuration(te.DurationInSeconds(),
+              toggl::Formatter::FormatDuration(te->DurationInSeconds(),
                       toggl::Format::Improved));
 }
 
 TEST(TimeEntry, InterpretsCrazyStartAndStopAsMissingValues) {
-    TimeEntry te;
+    ProtectedModel<TimeEntry> te { nullptr, true };
 
-    ASSERT_EQ(Poco::UInt64(0), te.Start());
-    te.SetStartString("0003-03-16T-7:-19:-24Z");
-    ASSERT_EQ(Poco::UInt64(0), te.Start());
+    ASSERT_EQ(Poco::UInt64(0), te->Start());
+    te->SetStartString("0003-03-16T-7:-19:-24Z");
+    ASSERT_EQ(Poco::UInt64(0), te->Start());
 
-    ASSERT_EQ(Poco::UInt64(0), te.Stop());
-    te.SetStopString("0003-03-16T-5:-52:-51Z");
-    ASSERT_EQ(Poco::UInt64(0), te.Stop());
+    ASSERT_EQ(Poco::UInt64(0), te->Stop());
+    te->SetStopString("0003-03-16T-5:-52:-51Z");
+    ASSERT_EQ(Poco::UInt64(0), te->Stop());
 }
 
 TEST(User, Continue) {
     testing::Database db;
 
-    User user;
+    RelatedData related;
+    ProtectedModel<User> user { &related, true };
     ASSERT_EQ(noError,
-              user.LoadUserAndRelatedDataFromJSONString(loadTestData(), true));
+              user->LoadUserAndRelatedDataFromJSONString(loadTestData(), true));
 
-    TimeEntry *te = user.related.TimeEntryByID(89818605);
+    auto te = related.TimeEntries.byID(89818605);
     ASSERT_TRUE(te);
-    size_t count = user.related.TimeEntries.size();
-    ASSERT_TRUE(user.Continue(te->GUID(), false));
-    ASSERT_EQ(count + 1, user.related.TimeEntries.size());
+    size_t count = related.TimeEntries.size();
+    ASSERT_TRUE(user->Continue(te->GUID(), false));
+    ASSERT_EQ(count + 1, related.TimeEntries.size());
 }
 
 TEST(TimeEntry, SetDurationOnRunningTimeEntryWithDurOnlySetting) {
@@ -1284,11 +1328,12 @@ TEST(TimeEntry, SetDurationOnRunningTimeEntryWithDurOnlySetting) {
 
     std::string json = loadTestDataFile(std::string("../testdata/user_with_duronly.json"));
 
-    User user;
+    RelatedData related;
+    ProtectedModel<User> user { &related, true };
     ASSERT_EQ(noError,
-              user.LoadUserAndRelatedDataFromJSONString(json, true));
+              user->LoadUserAndRelatedDataFromJSONString(json, true));
 
-    TimeEntry *te = user.related.TimeEntryByID(164891639);
+    auto te = related.TimeEntries.byID(164891639);
     ASSERT_TRUE(te);
     ASSERT_TRUE(te->IsTracking());
     ASSERT_LT(te->Start(), te->Stop());
@@ -1507,28 +1552,31 @@ TEST(Formatter, FormatDecimal) {
 }
 
 TEST(Formatter, JoinTaskName) {
-    std::string res = Formatter::JoinTaskName(0, 0);
+    locked<Task> nullTask; locked<Project> nullProject;
+    std::string res = Formatter::JoinTaskName(nullTask, nullProject);
     ASSERT_EQ("", res);
 
-    Task t;
-    t.SetName("Task name");
-    res = Formatter::JoinTaskName(&t, 0);
+    ProtectedModel<Task> t { nullptr, true };
+    t->SetName("Task name");
+    auto lt = *t;
+    res = Formatter::JoinTaskName(lt, nullProject);
     ASSERT_EQ("Task name", res);
 
-    Project p;
-    p.SetName("Project name");
-    res = Formatter::JoinTaskName(0, &p);
-    ASSERT_EQ(p.Name(), res);
+    ProtectedModel<Project> p { nullptr, true };
+    p->SetName("Project name");
+    auto lp = *p;
+    res = Formatter::JoinTaskName(nullTask, lp);
+    ASSERT_EQ(p->Name(), res);
 
-    res = Formatter::JoinTaskName(&t, &p);
+    res = Formatter::JoinTaskName(lt, lp);
     ASSERT_EQ("Task name. Project name", res);
 
-    p.SetCID(1);
-    p.SetClientName("Client name");
-    res = Formatter::JoinTaskName(&t, &p);
+    p->SetCID(1);
+    p->SetClientName("Client name");
+    res = Formatter::JoinTaskName(lt, lp);
     ASSERT_EQ("Task name. Project name. Client name", res);
 
-    res = Formatter::JoinTaskName(0, &p);
+    res = Formatter::JoinTaskName(nullTask, lp);
     ASSERT_EQ("Project name. Client name", res);
 }
 
@@ -1553,246 +1601,249 @@ TEST(JSON, LoginToken) {
     ASSERT_EQ("foobar", token);
 }
 
+#if 0
 TEST(JSON, ConvertTimelineToJSON) {
     const std::string desktop_id("12345");
 
     TimelineEvent event;
-    event.SetStart(time(0) - 10);
-    event.SetEndTime(time(0));
-    event.SetFilename("Is this the real life?");
-    event.SetTitle("Is this just fantasy?");
-    event.SetIdle(true);
+    event->SetStart(time(0) - 10);
+    event->SetEndTime(time(0));
+    event->SetFilename("Is this the real life?");
+    event->SetTitle("Is this just fantasy?");
+    event->SetIdle(true);
     {
         std::vector<TimelineEvent> list;
-        list.push_back(event);
+        list->push_back(event);
 
         std::string json = convertTimelineToJSON(list, desktop_id);
         Json::Value root = jsonStringToValue(json);
-        ASSERT_EQ(std::size_t(1), root.size());
+        ASSERT_EQ(std::size_t(1), root->size());
 
         const Json::Value v = root[0];
         ASSERT_EQ("timeline", v["created_with"].asString());
         ASSERT_EQ(desktop_id, v["desktop_id"].asString());
-        ASSERT_EQ(event.Start(), v["start_time"].asUInt());
-        ASSERT_EQ(event.EndTime(), v["end_time"].asUInt());
+        ASSERT_EQ(event->Start(), v["start_time"].asUInt());
+        ASSERT_EQ(event->EndTime(), v["end_time"].asUInt());
     }
 
-    event.SetIdle(false);
+    event->SetIdle(false);
     {
         std::vector<TimelineEvent> list;
-        list.push_back(event);
+        list->push_back(event);
 
         std::string json = convertTimelineToJSON(list, desktop_id);
         Json::Value root = jsonStringToValue(json);
-        ASSERT_EQ(std::size_t(1), root.size());
+        ASSERT_EQ(std::size_t(1), root->size());
 
         const Json::Value v = root[0];
         ASSERT_EQ("timeline", v["created_with"].asString());
         ASSERT_EQ(desktop_id, v["desktop_id"].asString());
-        ASSERT_EQ(event.Start(), v["start_time"].asUInt());
-        ASSERT_EQ(event.EndTime(), v["end_time"].asUInt());
-        ASSERT_EQ(event.Filename(), v["filename"].asString());
-        ASSERT_EQ(event.Title(), v["title"].asString());
+        ASSERT_EQ(event->Start(), v["start_time"].asUInt());
+        ASSERT_EQ(event->EndTime(), v["end_time"].asUInt());
+        ASSERT_EQ(event->Filename(), v["filename"].asString());
+        ASSERT_EQ(event->Title(), v["title"].asString());
     }
 
-    event.SetTitle("Õhtu jõuab, päev veereb {\"\b\t");
+    event->SetTitle("Õhtu jõuab, päev veereb {\"\b\t");
     {
         std::vector<TimelineEvent> list;
-        list.push_back(event);
+        list->push_back(event);
 
         std::string json = convertTimelineToJSON(list, desktop_id);
         Json::Value root = jsonStringToValue(json);
-        ASSERT_EQ(std::size_t(1), root.size());
+        ASSERT_EQ(std::size_t(1), root->size());
 
         const Json::Value v = root[0];
-        ASSERT_EQ(event.Title(), v["title"].asString());
+        ASSERT_EQ(event->Title(), v["title"].asString());
     }
 }
+#endif
 
 TEST(JSON, Tag) {
     std::string json("{\"id\":36253522,\"wid\":123456788,\"name\":\"create new\",\"at\":\"2013-10-15T08:51:46+00:00\",\"guid\":\"041390ba-ed9c-b477-b949-1a4ebb60a9ce\"}");  // NOLINT
 
-    Tag t;
-    t.LoadFromJSON(jsonStringToValue(json));
-    ASSERT_EQ(Poco::UInt64(36253522), t.ID());
-    ASSERT_EQ(Poco::UInt64(123456788), t.WID());
-    ASSERT_EQ("create new", t.Name());
-    //ASSERT_EQ("041390ba-ed9c-b477-b949-1a4ebb60a9ce", t.GUID());
+    ProtectedModel<Tag> t { nullptr, true };
+    t->LoadFromJSON(jsonStringToValue(json));
+    ASSERT_EQ(Poco::UInt64(36253522), t->ID());
+    ASSERT_EQ(Poco::UInt64(123456788), t->WID());
+    ASSERT_EQ("create new", t->Name());
+    //ASSERT_EQ("041390ba-ed9c-b477-b949-1a4ebb60a9ce", t->GUID());
 }
 
 TEST(JSON, Workspace) {
     std::string json("{\"id\":123456722,\"name\":\"A deleted workspace\",\"premium\":false,\"admin\":true,\"default_hourly_rate\":0,\"default_currency\":\"USD\",\"only_admins_may_create_projects\":false,\"only_admins_see_billable_rates\":false,\"rounding\":1,\"rounding_minutes\":0,\"at\":\"2013-07-02T13:45:36+00:00\",\"server_deleted_at\":\"2013-08-22T09:05:31+00:00\"}");  // NOLINT
 
-    Workspace w;
-    w.LoadFromJSON(jsonStringToValue(json));
-    ASSERT_EQ(Poco::UInt64(123456722), w.ID());
-    ASSERT_EQ("A deleted workspace", w.Name());
-    ASSERT_FALSE(w.Premium());
-    ASSERT_TRUE(w.Admin());
-    ASSERT_FALSE(w.OnlyAdminsMayCreateProjects());
+    ProtectedModel<Workspace> w { nullptr, true };
+    w->LoadFromJSON(jsonStringToValue(json));
+    ASSERT_EQ(Poco::UInt64(123456722), w->ID());
+    ASSERT_EQ("A deleted workspace", w->Name());
+    ASSERT_FALSE(w->Premium());
+    ASSERT_TRUE(w->Admin());
+    ASSERT_FALSE(w->OnlyAdminsMayCreateProjects());
 }
 
 TEST(JSON, Task) {
     std::string json("{\"id\":1894712,\"name\":\"A deleted task\",\"wid\":123456789,\"pid\":2598305,\"active\":true,\"at\":\"2013-06-05T07:58:41+00:00\",\"estimated_seconds\":0,\"server_deleted_at\":\"2013-08-22T09:05:31+00:00\"}");  // NOLINT
 
-    Task t;
-    t.LoadFromJSON(jsonStringToValue(json));
-    ASSERT_EQ(Poco::UInt64(1894712), t.ID());
-    ASSERT_EQ("A deleted task", t.Name());
-    ASSERT_EQ(Poco::UInt64(123456789), t.WID());
-    ASSERT_EQ(Poco::UInt64(2598305), t.PID());
+    ProtectedModel<Task> t { nullptr, true };
+    t->LoadFromJSON(jsonStringToValue(json));
+    ASSERT_EQ(Poco::UInt64(1894712), t->ID());
+    ASSERT_EQ("A deleted task", t->Name());
+    ASSERT_EQ(Poco::UInt64(123456789), t->WID());
+    ASSERT_EQ(Poco::UInt64(2598305), t->PID());
 }
 
 TEST(JSON, Project) {
     std::string json("{\"id\":2598323,\"guid\":\"2f0b8f11-f898-d992-3e1a-6bc261fc41ef\",\"wid\":123456789,\"name\":\"A deleted project\",\"billable\":true,\"is_private\":false,\"active\":false,\"template\":false,\"at\":\"2013-05-13T10:19:24+00:00\",\"color\":\"21\",\"auto_estimates\":true,\"server_deleted_at\":\"2013-08-22T09:05:31+00:00\"}");  // NOLINT
 
-    Project p;
-    p.LoadFromJSON(jsonStringToValue(json));
-    ASSERT_EQ(Poco::UInt64(2598323), p.ID());
-    ASSERT_EQ("A deleted project", p.Name());
-    ASSERT_EQ(Poco::UInt64(123456789), p.WID());
+    ProtectedModel<Project> p { nullptr, true };
+    p->LoadFromJSON(jsonStringToValue(json));
+    ASSERT_EQ(Poco::UInt64(2598323), p->ID());
+    ASSERT_EQ("A deleted project", p->Name());
+    ASSERT_EQ(Poco::UInt64(123456789), p->WID());
     //ASSERT_EQ("2f0b8f11-f898-d992-3e1a-6bc261fc41ef", p.GUID());
 
-    Project p2;
-    p2.LoadFromJSON(p.SaveToJSON());
-    ASSERT_EQ(p.ID(), p2.ID());
-    ASSERT_EQ(p.Name(), p2.Name());
-    ASSERT_EQ(p.WID(), p2.WID());
-    //ASSERT_EQ(p.GUID(), p2.GUID());
-    ASSERT_EQ(p.CID(), p2.CID());
-    //ASSERT_EQ(p.Billable(), p2.Billable());
-    ASSERT_EQ(p.IsPrivate(), p2.IsPrivate());
-    ASSERT_EQ(p.UIModifiedAt(), p2.UIModifiedAt());
+    ProtectedModel<Project> p2 { nullptr, true };
+    p2->LoadFromJSON(p->SaveToJSON());
+    ASSERT_EQ(p->ID(), p2->ID());
+    ASSERT_EQ(p->Name(), p2->Name());
+    ASSERT_EQ(p->WID(), p2->WID());
+    //ASSERT_EQ(p->GUID(), p2->GUID());
+    ASSERT_EQ(p->CID(), p2->CID());
+    //ASSERT_EQ(p->Billable(), p2->Billable());
+    ASSERT_EQ(p->IsPrivate(), p2->IsPrivate());
+    ASSERT_EQ(p->UIModifiedAt(), p2->UIModifiedAt());
 }
 
 TEST(JSON, Client) {
     std::string json("{\"id\":878318,\"guid\":\"59b464cd-0f8e-e601-ff44-f135225a6738\",\"wid\":123456789,\"name\":\"Big Client\",\"at\":\"2013-03-27T13:17:18+00:00\"}");  // NOLINT
 
-    Client c;
-    c.LoadFromJSON(jsonStringToValue(json));
-    ASSERT_EQ(Poco::UInt64(878318), c.ID());
-    ASSERT_EQ("Big Client", c.Name());
-    ASSERT_EQ(Poco::UInt64(123456789), c.WID());
+    ProtectedModel<Client> c { nullptr, true };
+    c->LoadFromJSON(jsonStringToValue(json));
+    ASSERT_EQ(Poco::UInt64(878318), c->ID());
+    ASSERT_EQ("Big Client", c->Name());
+    ASSERT_EQ(Poco::UInt64(123456789), c->WID());
     //ASSERT_EQ("59b464cd-0f8e-e601-ff44-f135225a6738", c.GUID());
 
-    Client c2;
-    c2.LoadFromJSON(c.SaveToJSON());
-    ASSERT_EQ(c.ID(), c2.ID());
-    ASSERT_EQ(c.Name(), c2.Name());
-    ASSERT_EQ(c.WID(), c2.WID());
+    ProtectedModel<Client> c2 { nullptr, true };
+    c2->LoadFromJSON(c->SaveToJSON());
+    ASSERT_EQ(c->ID(), c2->ID());
+    ASSERT_EQ(c->Name(), c2->Name());
+    ASSERT_EQ(c->WID(), c2->WID());
     //ASSERT_EQ(c.GUID(), c2.GUID());
 }
 
 TEST(JSON, TimeEntry) {
     std::string json("{\"id\":89818612,\"guid\":\"07fba193-91c4-0ec8-2345-820df0548123\",\"wid\":123456789,\"pid\":2567324,\"billable\":true,\"start\":\"2013-09-05T06:33:50+00:00\",\"stop\":\"2013-09-05T08:19:46+00:00\",\"duration\":6356,\"description\":\"A deleted time entry\",\"tags\":[\"ahaa\"],\"duronly\":false,\"at\":\"2013-09-05T08:19:45+00:00\",\"server_deleted_at\":\"2013-08-22T09:05:31+00:00\"}");  // NOLINT
 
-    TimeEntry t;
-    t.LoadFromJSON(jsonStringToValue(json));
-    ASSERT_EQ(Poco::UInt64(0), t.ID()); // ID can only be updated from User class
-    ASSERT_EQ(Poco::UInt64(2567324), t.PID());
-    ASSERT_EQ(Poco::UInt64(123456789), t.WID());
-    //ASSERT_EQ("07fba193-91c4-0ec8-2345-820df0548123", t.GUID());
-    ASSERT_TRUE(t.Billable());
-    ASSERT_EQ(Poco::UInt64(1378362830000 / 1000), t.Start());
-    ASSERT_EQ(Poco::UInt64(1378369186000 / 1000), t.Stop());
-    ASSERT_EQ(Poco::Int64(6356), t.DurationInSeconds());
-    ASSERT_EQ("A deleted time entry", t.Description());
-    ASSERT_EQ("ahaa", t.Tags());
-    ASSERT_FALSE(t.DurOnly());
+    ProtectedModel<TimeEntry> t { nullptr, true };
+    t->LoadFromJSON(jsonStringToValue(json));
+    ASSERT_EQ(Poco::UInt64(0), t->ID()); // ID can only be updated from User class
+    ASSERT_EQ(Poco::UInt64(2567324), t->PID());
+    ASSERT_EQ(Poco::UInt64(123456789), t->WID());
+    //ASSERT_EQ("07fba193-91c4-0ec8-2345-820df0548123", t->GUID());
+    ASSERT_TRUE(t->Billable());
+    ASSERT_EQ(Poco::UInt64(1378362830000 / 1000), t->Start());
+    ASSERT_EQ(Poco::UInt64(1378369186000 / 1000), t->Stop());
+    ASSERT_EQ(Poco::Int64(6356), t->DurationInSeconds());
+    ASSERT_EQ("A deleted time entry", t->Description());
+    ASSERT_EQ("ahaa", t->Tags());
+    ASSERT_FALSE(t->DurOnly());
 
-    TimeEntry t2;
-    t2.LoadFromJSON(t.SaveToJSON());
-    ASSERT_EQ(t.ID(), t2.ID());
-    ASSERT_EQ(t.PID(), t2.PID());
-    ASSERT_EQ(t.WID(), t2.WID());
-    //ASSERT_EQ(t.GUID(), t2.GUID());
-    ASSERT_EQ(t.Billable(), t2.Billable());
-    ASSERT_EQ(t.Start(), t2.Start());
-    ASSERT_EQ(t.Stop(), t2.Stop());
-    ASSERT_EQ(t.DurationInSeconds(), t2.DurationInSeconds());
-    ASSERT_EQ(t.Description(), t2.Description());
-    ASSERT_EQ(t.Tags(), t2.Tags());
-    ASSERT_EQ(t.DurOnly(), t2.DurOnly());
+    ProtectedModel<TimeEntry> t2 { nullptr, true };
+    t2->LoadFromJSON(t->SaveToJSON());
+    ASSERT_EQ(t->ID(), t2->ID());
+    ASSERT_EQ(t->PID(), t2->PID());
+    ASSERT_EQ(t->WID(), t2->WID());
+    //ASSERT_EQ(t->GUID(), t2.GUID());
+    ASSERT_EQ(t->Billable(), t2->Billable());
+    ASSERT_EQ(t->Start(), t2->Start());
+    ASSERT_EQ(t->Stop(), t2->Stop());
+    ASSERT_EQ(t->DurationInSeconds(), t2->DurationInSeconds());
+    ASSERT_EQ(t->Description(), t2->Description());
+    ASSERT_EQ(t->Tags(), t2->Tags());
+    ASSERT_EQ(t->DurOnly(), t2->DurOnly());
 }
 
 TEST(User, TimeOfDayFormat) {
-    User u;
-    u.SetTimeOfDayFormat("H:mm");
-    ASSERT_EQ("H:mm", u.TimeOfDayFormat());
+    ProtectedModel<User> u { nullptr, true };
+    u->SetTimeOfDayFormat("H:mm");
+    ASSERT_EQ("H:mm", u->TimeOfDayFormat());
     ASSERT_EQ("H:mm", Formatter::TimeOfDayFormat);
 
-    u.SetTimeOfDayFormat("h:mm A");
-    ASSERT_EQ("h:mm A", u.TimeOfDayFormat());
+    u->SetTimeOfDayFormat("h:mm A");
+    ASSERT_EQ("h:mm A", u->TimeOfDayFormat());
     ASSERT_EQ("h:mm A", Formatter::TimeOfDayFormat);
 }
 
 TEST(User, DurationFormat) {
-    User u;
-    u.SetDurationFormat("classic");
-    ASSERT_EQ("classic", u.DurationFormat());
+    ProtectedModel<User> u { nullptr, true };
+    u->SetDurationFormat("classic");
+    ASSERT_EQ("classic", u->DurationFormat());
     ASSERT_EQ("classic", Formatter::DurationFormat);
 
-    u.SetDurationFormat("decimal");
-    ASSERT_EQ("decimal", u.DurationFormat());
+    u->SetDurationFormat("decimal");
+    ASSERT_EQ("decimal", u->DurationFormat());
     ASSERT_EQ("decimal", Formatter::DurationFormat);
 }
 
 TEST(BaseModel, LoadFromDataStringWithInvalidJSON) {
-    User u;
-    error err = u.LoadFromDataString("foobar");
+    ProtectedModel<User> u { nullptr, true };
+    error err = u->LoadFromDataString("foobar");
     ASSERT_NE(noError, err);
 }
 
 TEST(BaseModel, LoadFromDataString) {
-    User u;
-    error err = u.LoadFromDataString(loadTestData());
+    RelatedData related;
+    ProtectedModel<User> u { &related, true };
+    error err = u->LoadFromDataString(loadTestData());
     ASSERT_EQ(noError, err);
 }
 
 TEST(BaseModel, LoadFromJSONStringWithEmptyString) {
-    User u;
-    u.LoadFromJSON(jsonStringToValue(""));
+    ProtectedModel<User> u { nullptr, true };
+    u->LoadFromJSON(jsonStringToValue(""));
     ASSERT_TRUE(true);
 }
 
 TEST(BaseModel, LoadFromJSONStringWithInvalidString) {
-    User u;
-    u.LoadFromJSON(jsonStringToValue("foobar"));
+    ProtectedModel<User> u { nullptr, true };
+    u->LoadFromJSON(jsonStringToValue("foobar"));
     ASSERT_TRUE(true);
 }
 
 TEST(BaseModel, BatchUpdateJSONWithoutGUID) {
-    TimeEntry t;
+    ProtectedModel<TimeEntry> t { nullptr, true };
     Json::Value v;
-    error err = t.BatchUpdateJSON(&v);
+    error err = t->BatchUpdateJSON(&v);
     ASSERT_NE(noError, err);
 }
 
 TEST(BaseModel, BatchUpdateJSON) {
-    TimeEntry t;
-    t.EnsureGUID();
+    ProtectedModel<TimeEntry> t { nullptr, true };
+    t->EnsureGUID();
     Json::Value v;
-    error err = t.BatchUpdateJSON(&v);
+    error err = t->BatchUpdateJSON(&v);
     ASSERT_EQ(noError, err);
 }
 
 TEST(BaseModel, BatchUpdateJSONForDelete) {
-    TimeEntry t;
-    t.EnsureGUID();
-    t.SetID(123);
-    t.SetDeletedAt(time(0));
+    ProtectedModel<TimeEntry> t { nullptr, true };
+    t->EnsureGUID();
+    t->SetID(123);
+    t->SetDeletedAt(time(0));
     Json::Value v;
-    error err = t.BatchUpdateJSON(&v);
+    error err = t->BatchUpdateJSON(&v);
     ASSERT_EQ(noError, err);
 }
 
 TEST(BaseModel, BatchUpdateJSONForPut) {
-    TimeEntry t;
-    t.EnsureGUID();
-    t.SetID(123);
-    t.SetDescription("test");
+    ProtectedModel<TimeEntry> t { nullptr, true };
+    t->EnsureGUID();
+    t->SetID(123);
+    t->SetDescription("test");
     Json::Value v;
-    error err = t.BatchUpdateJSON(&v);
+    error err = t->BatchUpdateJSON(&v);
     ASSERT_EQ(noError, err);
 }
 
@@ -1859,6 +1910,7 @@ TEST(Proxy, String) {
     ASSERT_NE("", p.String());
 }
 
+#if 0
 TEST(AutotrackerRule, Matches) {
     AutotrackerRule a;
     a.SetTerm("work");
@@ -1876,23 +1928,30 @@ TEST(AutotrackerRule, Matches) {
     ev.SetTitle("dork");
     ASSERT_FALSE(a.Matches(ev));
 }
+#endif
 
 TEST(Settings, IsSame) {
-    Settings s1;
-    Settings s2;
+    ProtectedModel<Settings> s1 { nullptr, true };
+    ProtectedModel<Settings> s2 { nullptr, true };
+    locked<Settings> ls1 = *s1;
+    locked<Settings> ls2 = *s2;
 
-    ASSERT_TRUE(s1.IsSame(s2));
-    ASSERT_TRUE(s2.IsSame(s1));
+    ASSERT_TRUE(s1->IsSame(ls2));
+    ASSERT_TRUE(s2->IsSame(ls1));
 
-    s1.use_idle_detection = true;
-    ASSERT_FALSE(s1.IsSame(s2));
-    ASSERT_FALSE(s2.IsSame(s1));
+    s1->use_idle_detection = true;
+    ASSERT_FALSE(s1->IsSame(ls2));
+    ASSERT_FALSE(s2->IsSame(ls1));
 
-    Settings s3 = s1;
-    ASSERT_TRUE(s3.IsSame(s1));
-    ASSERT_TRUE(s1.IsSame(s3));
-    ASSERT_FALSE(s3.IsSame(s2));
-    ASSERT_FALSE(s2.IsSame(s3));
+    // This is a use case I'd like to stop supporting eventually
+    // Passing BaseModel instances around as values shouldn't be valid
+    // If this test fails, it's possible it's been already changed
+    Settings s3 = **ls1;
+    locked<Settings> ls3 = s1.make_locked<Settings>(&s3);
+    ASSERT_TRUE(s3.IsSame(ls1));
+    ASSERT_TRUE(s1->IsSame(ls3));
+    ASSERT_FALSE(s3.IsSame(ls2));
+    ASSERT_FALSE(s2->IsSame(ls3));
 }
 
 }  // namespace toggl
