@@ -256,50 +256,12 @@ namespace TogglDesktop
             this.statusBar.Hide();
             this.syncingIndicator.Hide();
 
-            this.runScriptAsync();
-
             this.SetMiniTimerVisible(Toggl.GetMiniTimerVisible(), true);
         }
 
         public void loadPositions()
         {
             Utils.LoadWindowLocation(this, this.editPopup, this.miniTimer);
-        }
-
-        private async void runScriptAsync()
-        {
-            await Task.Delay(TimeSpan.FromSeconds(1));
-
-            if (Toggl.ScriptPath == null)
-            {
-                return;
-            }
-
-            ThreadPool.QueueUserWorkItem(args => this.runScript(), null);
-        }
-
-        private void runScript()
-        {
-            if (!File.Exists(Toggl.ScriptPath))
-            {
-                Toggl.Debug("Script file does not exist: " + Toggl.ScriptPath);
-                this.shutdown(0);
-            }
-
-            var script = File.ReadAllText(Toggl.ScriptPath);
-
-            long errorCode = 0;
-            var result = Toggl.RunScript(script, ref errorCode);
-            if (errorCode != 0)
-            {
-                Toggl.Debug(string.Format("Failed to run script, err = {0}", errorCode));
-            }
-            Toggl.Debug(result);
-
-            if (errorCode == 0)
-            {
-                this.shutdown(0);
-            }
         }
 
         private void trackingWindowSize()
