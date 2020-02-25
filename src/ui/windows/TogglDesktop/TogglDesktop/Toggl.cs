@@ -31,6 +31,8 @@ public static partial class Toggl
     private static MainWindow mainWindow;
     private static string updatePath;
 
+    private static readonly string ApplicationDir = Path.Combine(Directory.GetCurrentDirectory());
+
     // User can override some parameters when running the app
     public static string ScriptPath;
     public static string DatabasePath;
@@ -1065,13 +1067,11 @@ public static partial class Toggl
 
     public static void InitialiseLog()
     {
-        string path = Path.Combine(Environment.GetFolderPath(
-            Environment.SpecialFolder.LocalApplicationData), "TogglDesktop");
-        Directory.CreateDirectory(path);
+        Directory.CreateDirectory(ApplicationDir);
 
         if (null == LogPath)
         {
-            LogPath = Path.Combine(path, "toggldesktop.log");
+            LogPath = Path.Combine(ApplicationDir, "toggldesktop.log");
         }
         toggl_set_log_path(LogPath);
         toggl_set_log_level("debug");
@@ -1090,12 +1090,10 @@ public static partial class Toggl
 
         toggl_set_environment(ctx, Env);
 
-        string cacert_path = Path.Combine(
-            AppDomain.CurrentDomain.BaseDirectory,
-            "cacert.pem");
+        var cacert_path = Path.Combine(ApplicationDir, "cacert.pem");
         toggl_set_cacert_path(ctx, cacert_path);
 
-        string err = toggl_check_view_struct_size(
+        var err = toggl_check_view_struct_size(
             Marshal.SizeOf(new TogglTimeEntryView()),
             Marshal.SizeOf(new TogglAutocompleteView()),
             Marshal.SizeOf(new TogglGenericView()),
@@ -1113,10 +1111,10 @@ public static partial class Toggl
         }
 
         // Move "old" format app data folder, if it exists
-        string oldpath = Path.Combine(Environment.GetFolderPath(
+        var oldpath = Path.Combine(Environment.GetFolderPath(
             Environment.SpecialFolder.ApplicationData), "Kopsik");
-        string path = Path.Combine(Environment.GetFolderPath(
-            Environment.SpecialFolder.LocalApplicationData), "TogglDesktop");
+        var path = ApplicationDir;
+
         if (Directory.Exists(oldpath) && !Directory.Exists(path))
         {
             Directory.Move(oldpath, path);
@@ -1137,7 +1135,7 @@ public static partial class Toggl
         }
 
         // Rename database file, if not done yet
-        string olddatabasepath = Path.Combine(path, "kopsik.db");
+        var olddatabasepath = Path.Combine(path, "kopsik.db");
         if (File.Exists(olddatabasepath) && !File.Exists(DatabasePath))
         {
             File.Move(olddatabasepath, DatabasePath);
