@@ -81,9 +81,6 @@
     </Style>
 
     <Style TargetType="ScrollViewer" x:Key="Toggl.CustomScrollViewer">
-        <Setter Property="HorizontalContentAlignment" Value="Left" />
-        <Setter Property="VerticalContentAlignment" Value="Top" />
-        <Setter Property="VerticalScrollBarVisibility" Value="Visible" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ScrollViewer">
@@ -94,19 +91,24 @@
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
 
-                            <ScrollContentPresenter x:Name="ScrollContentPresenter"
+                            <ScrollContentPresenter x:Name="PART_ScrollContentPresenter"
                                                     Cursor="{TemplateBinding Cursor}"
                                                     Margin="{TemplateBinding Padding}"
+                                                    CanContentScroll="{TemplateBinding CanContentScroll}"
+                                                    CanHorizontallyScroll="False"
+                                                    CanVerticallyScroll="False"
+                                                    Content="{TemplateBinding Content}"
                                                     ContentTemplate="{TemplateBinding ContentTemplate}"/>
 
                             <ScrollBar x:Name="PART_VerticalScrollBar"
                                        IsTabStop="False"
-                                       Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
                                        Grid.Column="1" Orientation="Vertical"
-                                       ViewportSize="{TemplateBinding ViewportHeight}"
+                                       Cursor="Arrow"
                                        Maximum="{TemplateBinding ScrollableHeight}"
                                        Minimum="0"
-                                       Value="{TemplateBinding VerticalOffset}"
+                                       ViewportSize="{TemplateBinding ViewportHeight}"
+                                       Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
+                                       Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
                                        Style="{StaticResource Toggl.CustomScrollBar}"/>
 
                         </Grid>
