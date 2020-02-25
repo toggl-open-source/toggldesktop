@@ -74,7 +74,7 @@ public:
         return locked<T>( *mutex(), data_ );
     }
 private:
-    T *data_;
+    T *data_ { nullptr };
 };
 
 /*
@@ -110,7 +110,7 @@ public:
         return { mutex_, std::defer_lock };
     }
 protected:
-    RelatedData *relatedData_;
+    RelatedData *relatedData_ { nullptr };
     mutable mutex_type mutex_;
 };
 
@@ -131,6 +131,8 @@ public:
     template <typename ...Args>
     locked<T> create(Args&&... args) {
         lock_type lock(mutex_);
+        if (value_)
+            delete value_;
         value_ = new T(this, std::forward<Args>(args)...);
         return { mutex_, value_ };
     }
@@ -157,7 +159,7 @@ public:
         return value_;
     }
 protected:
-    T *value_;
+    T *value_ { nullptr };
 };
 
 /**

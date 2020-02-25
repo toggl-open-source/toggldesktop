@@ -496,7 +496,7 @@ void Context::OpenTimeEntryList() {
 
 void Context::updateUI(const UIElements &what) {
     logger.debug("updateUI " + what.String());
-    auto userLock = related.User.lock();
+    auto locks = lockMore(related.User, related.TimeEntries, related.Projects, related.Tasks, related.Clients);
 
     view::TimeEntry editor_time_entry_view;
 
