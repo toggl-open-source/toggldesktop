@@ -6057,4 +6057,36 @@ void Context::TrackInAppMessage(const Poco::Int64 type) {
     }
 }
 
+void Context::TrackCollapseDay() {
+    if ("production" == environment_) {
+        analytics_.Track(db_->AnalyticsClientID(),
+                         "time_entry_list",
+                         "collapse_day");
+    }
+}
+
+void Context::TrackExpandDay() {
+    if ("production" == environment_) {
+        analytics_.Track(db_->AnalyticsClientID(),
+                         "time_entry_list",
+                         "expand_day");
+    }
+}
+
+void Context::TrackCollapseAllDays() {
+    if ("production" == environment_) {
+        analytics_.Track(db_->AnalyticsClientID(),
+                         "time_entry_list",
+                         "collapse_all_days");
+    }
+}
+
+void Context::TrackExpandAllDays() {
+    if ("production" == environment_) {
+        analytics_.Track(db_->AnalyticsClientID(),
+                         "time_entry_list",
+                         "expand_all_days");
+    }
+}
+
 }  // namespace toggl
