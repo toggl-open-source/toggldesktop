@@ -14,13 +14,16 @@ jobs:
     - name: Prepare ENV
       run: |
         export "TAG_NAME=v7.5.53"
-        export "APPLE_APPID_USER=${{ secrets.MACOS_APPID_USER }}"
-        export "APPLE_APPID_PASSWORD=${{ secrets.MACOS_APPID_PASSWORD }}"
         export "version=${TAG_NAME/v/}"
         export "timestamp=$(date '+%Y-%m-%d-%H-%M-%S')"
         export "escaped_version=$(echo $version | sed 's/\./_/g')"
         export "installer=TogglDesktop-$escaped_version-$timestamp.dmg"
         export "installer_name=TogglDesktop-$escaped_version.dmg"
+
+        echo $version
+        echo $installer
+        echo $installer_name
+
     - uses: actions/checkout@v2
       with:
         fetch-depth: 1
@@ -68,6 +71,8 @@ jobs:
     - name: Notarize
       # if: github.event_name == 'release'
       run: |
+        export "APPLE_APPID_USER=${{ secrets.MACOS_APPID_USER }}"
+        export "APPLE_APPID_PASSWORD=${{ secrets.MACOS_APPID_PASSWORD }}"
         bash ./dist/osx/build.sh notarize
     - name: Compose dmg
       # if: github.event_name == 'release'

@@ -7,6 +7,10 @@ export  LDFLAGS="-mmacosx-version-min=10.11"
 export   CFLAGS="$LDFLAGS"
 export CXXFLAGS="$LDFLAGS"
 
+echo $version
+echo $installer
+echo $installer_name
+        
 function app_path() {
     echo $(xcodebuild -scheme TogglDesktop -workspace src/ui/osx/TogglDesktop.xcworkspace -configuration Release -showBuildSettings \
                 | grep -w 'BUILT_PRODUCTS_DIR' \
@@ -128,7 +132,11 @@ function appcast() {
     functionilesize=(${filesize// / })
     appUrl=https://github.com/toggl-open-source/toggldesktop/releases/download/v$version/$installer_name
 
-    mkdir branding
+    echo $signature
+    echo $filesize
+    echo $appUrl
+
+    mkdir -p branding
     mkdir -p tmp
     go run ./dist/osx/appcast.go -platform="darwin" -version=$version -date=$timestamp -appUrl=$appUrl -filesize=$filesize -signature=$signature -verbose=true
 
@@ -136,6 +144,8 @@ function appcast() {
     # mv tmp/darwin_dev_appcast.xml /
     package_end=`date +%s`
     package_time=$((package_end-package_start))
+
+    echo "done"
 }
 
 function upload() {
