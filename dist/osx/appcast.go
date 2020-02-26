@@ -10,6 +10,7 @@ import (
 )
 
 const filename = "dist/osx/appcast_template.xml"
+const destination = "dist/osx/appcast"
 
 var version = flag.String("version", "", "the app version to set in the plist file")
 var date = flag.String("date", "", "publish date")
@@ -32,7 +33,7 @@ func main() {
 		fmt.Println(err)
 		os.Exit(0)
 	}
-	if err := ioutil.WriteFile(filepath.Join("tmp", *platform+"_dev_appcast.xml"), []byte(appcast.Content), 0644); err != nil {
+	if err := ioutil.WriteFile(filepath.Join(destination, *platform+"_dev_appcast.xml"), []byte(appcast.Content), 0644); err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}

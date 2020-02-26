@@ -93,12 +93,9 @@ jobs:
         bash ./dist/osx/build.sh appcast
     - name: Upload
       run: |
+        export "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         bash ./dist/osx/build.sh upload
-    - name: Upload to GitHub Release
-      # if: github.event_name == 'release'
-      run: |
-        ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} owner=MartinBriza repo=toggldesktop tag="$TAG_NAME" filename="TogglDesktop.dmg" renameto="TogglDesktop-${TAG_NAME/v/}.dmg"
-
+   
   linux-basic:
     runs-on: ubuntu-latest
     if: github.event_name != 'release'

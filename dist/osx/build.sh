@@ -134,23 +134,19 @@ function appcast() {
     mkdir -p branding
     mkdir -p tmp
     
+    # Generate AppCast
+    # Save to dist/osx/appcast
     go run dist/osx/appcast.go -platform="darwin" -version=$version -date=$timestamp -appUrl=$appUrl -filesize="${filesize}" -signature=$signature -verbose=true 
-    cat tmp/darwin_dev_appcast.xml
-
-    package_end=`date +%s`
-    package_time=$((package_end-package_start))
+    cat dist/osx/appcast/darwin_dev_appcast.xml
 }
 
 function upload() {
-    # // ========= UPLOAD ========= //
-    upload_start=`date +%s`
     # Upload the new version to Github releases
-    PLATFORM="darwin" VERSION=$version APPCAST="tmp/darwin_dev_appcast.xml" INSTALLER_FILENAME=$installer_name INSTALLER=$installer go run src/branding/upload_to_github.go -platform="darwin"
+    PLATFORM="darwin" VERSION=$version INSTALLER_FILENAME=$installer_name INSTALLER=$installer GITHUB_USER="token" GITHUB_TOKEN=${GITHUB_TOKEN} go run dist/osx/upload_to_github.go -platform="darwin" 
 
     # Update releases.json
-    stepprint "Update releases.json and download links"
-    cd src/branding && ./update_releases.sh osx dev $version
-    cd ../..
+    echo "Update releases.json and download links"
+    # ./dist/osx/update_releases.sh osx dev $version
 }
 
 if [[ "$#" -ne 1 ]]; then
