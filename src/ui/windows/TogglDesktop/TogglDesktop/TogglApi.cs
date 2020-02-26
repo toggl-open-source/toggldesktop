@@ -1693,6 +1693,28 @@ public static partial class Toggl
         IntPtr context,
         UInt64 type);
 
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern string toggl_format_duration_time(
+        IntPtr context,
+        UInt64 timestamp);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern void track_collapse_day(
+        IntPtr context);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern void track_expand_day(
+        IntPtr context);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern void track_collapse_all_days(
+        IntPtr context);
+
+    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
+    private static extern void track_expand_all_days(
+        IntPtr context);
+
+
 
 
 }
