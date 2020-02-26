@@ -200,7 +200,7 @@ func (env Env) getGithubReleaseID() (int64, error) {
 	client := http.Client{}
 	req, err := http.NewRequest("GET", fmt.Sprintf("https://api.github.com/repos/toggl-open-source/toggldesktop/releases/tags/%s", env.version), nil)
 	if err != nil {
-		return err
+		return 0, err
 	}
 	req.SetBasicAuth(env.githubUser, env.githubToken)
 
