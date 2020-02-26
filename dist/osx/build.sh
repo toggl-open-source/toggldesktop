@@ -7,14 +7,6 @@ export  LDFLAGS="-mmacosx-version-min=10.11"
 export   CFLAGS="$LDFLAGS"
 export CXXFLAGS="$LDFLAGS"
 
-export version=${TAG_NAME/v/}
-export timestamp=$(date "+%Y-%m-%d-%H-%M-%S") 
-export escaped_version=$(echo $version | sed 's/\./_/g') 
-export installer=TogglDesktop-$escaped_version-$timestamp.dmg
-export installer_name=TogglDesktop-$escaped_version.dmg
-
-echo $version
-
 function app_path() {
     echo $(xcodebuild -scheme TogglDesktop -workspace src/ui/osx/TogglDesktop.xcworkspace -configuration Release -showBuildSettings \
                 | grep -w 'BUILT_PRODUCTS_DIR' \
@@ -130,10 +122,7 @@ function debuginfo() {
 }
 
 function appcast() {
-    echo $version
     echo $installer
-    echo $installer_name
-    pwd
     signature=$(./src/ui/osx/Pods/Sparkle/bin/old_dsa_scripts/sign_update $installer ./dsa_priv.pem)
     filesize=$(cat $installer | wc -c)
     functionilesize=(${filesize// / })

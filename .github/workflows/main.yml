@@ -11,6 +11,16 @@ jobs:
   macos:
     runs-on: macOS-latest
     steps:
+    - name: Prepare ENV
+      run: |
+        export "TAG_NAME=v7.5.53"
+        export "APPLE_APPID_USER=${{ secrets.MACOS_APPID_USER }}"
+        export "APPLE_APPID_PASSWORD=${{ secrets.MACOS_APPID_PASSWORD }}"
+        export "version=${TAG_NAME/v/}"
+        export "timestamp=$(date '+%Y-%m-%d-%H-%M-%S')"
+        export "escaped_version=$(echo $version | sed 's/\./_/g')"
+        export "installer=TogglDesktop-$escaped_version-$timestamp.dmg"
+        export "installer_name=TogglDesktop-$escaped_version.dmg"
     - uses: actions/checkout@v2
       with:
         fetch-depth: 1
@@ -50,7 +60,6 @@ jobs:
     - name: Insert version string
       # if: github.event_name == 'release'
       run: |
-        export "TAG_NAME=$(./dist/get-tag-name.sh)"
         bash ./dist/osx/build.sh plist
     - name: Codesign
       # if: github.event_name == 'release'
@@ -59,8 +68,6 @@ jobs:
     - name: Notarize
       # if: github.event_name == 'release'
       run: |
-        export "APPLE_APPID_USER=${{ secrets.MACOS_APPID_USER }}"
-        export "APPLE_APPID_PASSWORD=${{ secrets.MACOS_APPID_PASSWORD }}"
         bash ./dist/osx/build.sh notarize
     - name: Compose dmg
       # if: github.event_name == 'release'
@@ -69,7 +76,6 @@ jobs:
     - name: Update Appcast
       # if: github.event_name == 'release'
       run: |
-        export "TAG_NAME=$(./dist/get-tag-name.sh)"
         base64 -D <<< "${{ secrets.APPCAST_PRIVATE_PEM }}" > dsa_priv.pem
         bash ./dist/osx/build.sh appcast
     - name: Upload
@@ -78,7 +84,6 @@ jobs:
     - name: Upload to GitHub Release
       # if: github.event_name == 'release'
       run: |
-        export "TAG_NAME=$(./dist/get-tag-name.sh)"
         ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} owner=MartinBriza repo=toggldesktop tag="$TAG_NAME" filename="TogglDesktop.dmg" renameto="TogglDesktop-${TAG_NAME/v/}.dmg"
 
   linux-basic:
