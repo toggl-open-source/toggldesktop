@@ -138,8 +138,9 @@ function appcast() {
 
     mkdir -p branding
     mkdir -p tmp
-    go run ./dist/osx/appcast.go -platform="darwin" -version=$version -date=$timestamp -appUrl=$appUrl -filesize=$filesize -signature=$signature -verbose=true -template="./dist/osx/appcast_template.xml"
-
+    pwd
+    
+    go run dist/osx/appcast.go -platform="darwin" -version=$version -date=$timestamp -appUrl=$appUrl -filesize=$filesize -signature=$signature -verbose=true 
     cat tmp/darwin_dev_appcast.xml
     # mv tmp/darwin_dev_appcast.xml /
     package_end=`date +%s`
