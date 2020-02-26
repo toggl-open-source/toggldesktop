@@ -24,7 +24,7 @@ jobs:
         echo $installer
         echo $installer_name
 
-        # Export env to all future steps
+        # Export env to all future stepsn
         echo "::set-env name=TAG_NAME::$TAG_NAME"
         echo "::set-env name=version::$version"
         echo "::set-env name=timestamp::$timestamp"
@@ -95,6 +95,9 @@ jobs:
       run: |
         export "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         bash ./dist/osx/build.sh upload
+    - name: Update Release
+      run: |
+        bash ./dist/osx/build.sh update_release
    
   linux-basic:
     runs-on: ubuntu-latest

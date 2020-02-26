@@ -143,9 +143,9 @@ function appcast() {
 function upload() {
     # Upload the new version to Github releases
     PLATFORM="darwin" VERSION=$version INSTALLER_FILENAME=$installer_name INSTALLER=$installer GITHUB_USER="token" GITHUB_TOKEN=${GITHUB_TOKEN} go run dist/osx/upload_to_github.go -platform="darwin" 
+}
 
-    # Update releases.json
-    echo "Update releases.json and download links"
+function update_release() {
     ./dist/osx/update_releases.sh osx dev $version
 }
 
