@@ -71,6 +71,37 @@
         </ControlTemplate.Triggers>
     </ControlTemplate>
 
+    <ControlTemplate x:Key="Toggl.HorizontalScrollBar" TargetType="{x:Type ScrollBar}">
+        <Grid Background="Transparent">
+            <Track
+                Name="PART_Track"
+                IsDirectionReversed="true"
+                VerticalAlignment="Bottom"
+                Height="{TemplateBinding Height}">
+                <Track.DecreaseRepeatButton>
+                    <RepeatButton
+                        Style="{StaticResource Toggl.ScrollBarPageButton}"
+                        Command="ScrollBar.PageUpCommand"
+                    />
+                </Track.DecreaseRepeatButton>
+                <Track.Thumb>
+                    <Thumb Style="{StaticResource Toggl.ScrollBarThumb}" />
+                </Track.Thumb>
+                <Track.IncreaseRepeatButton>
+                    <RepeatButton
+                        Style="{StaticResource Toggl.ScrollBarPageButton}"
+                        Command="ScrollBar.PageDownCommand"
+                    />
+                </Track.IncreaseRepeatButton>
+            </Track>
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="False">
+                <Setter TargetName="PART_Track" Property="Height" Value="2" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
     <Style x:Key="Toggl.CustomScrollBar" TargetType="{x:Type ScrollBar}">
         <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="OverridesDefaultStyle" Value="true"/>
@@ -78,6 +109,13 @@
         <Setter Property="Height" Value="Auto" />
         <Setter Property="Margin" Value="0 0 2 0" />
         <Setter Property="Template" Value="{StaticResource Toggl.VerticalScrollBar}" />
+        <Style.Triggers>
+            <Trigger Property="Orientation" Value="Horizontal">
+                <Setter Property="Height" Value="4" />
+                <Setter Property="Width" Value="Auto" />
+                <Setter Property="Template" Value="{StaticResource Toggl.HorizontalScrollBar}" />
+            </Trigger>
+        </Style.Triggers>
     </Style>
 
     <Style TargetType="ScrollViewer" x:Key="Toggl.CustomScrollViewer">
@@ -86,6 +124,10 @@
                 <ControlTemplate TargetType="ScrollViewer">
                     <Border BorderThickness="0">
                         <Grid Background="{TemplateBinding Background}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
@@ -101,8 +143,10 @@
                                                     ContentTemplate="{TemplateBinding ContentTemplate}"/>
 
                             <ScrollBar x:Name="PART_VerticalScrollBar"
+                                       Grid.Row="0"
+                                       Grid.Column="1"
+                                       Orientation="Vertical"
                                        IsTabStop="False"
-                                       Grid.Column="1" Orientation="Vertical"
                                        Cursor="Arrow"
                                        Maximum="{TemplateBinding ScrollableHeight}"
                                        Minimum="0"
@@ -111,6 +155,18 @@
                                        Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
                                        Style="{StaticResource Toggl.CustomScrollBar}"/>
 
+                            <ScrollBar x:Name="PART_HorizontalScrollBar"
+                                       Grid.Row="1"
+                                       Grid.Column="0"
+                                       Orientation="Horizontal"
+                                       IsTabStop="False"
+                                       Cursor="Arrow"
+                                       Maximum="{TemplateBinding ScrollableHeight}"
+                                       Minimum="0"
+                                       ViewportSize="{TemplateBinding ViewportHeight}"
+                                       Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"
+                                       Value="{Binding HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                       Style="{StaticResource Toggl.CustomScrollBar}"/>
                         </Grid>
                     </Border>
                 </ControlTemplate>
