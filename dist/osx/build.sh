@@ -135,9 +135,9 @@ function appcast() {
     mkdir -p tmp
     
     # Generate AppCast
-    # Save to dist/osx/appcast
+    # Save to tmp
     go run dist/osx/appcast.go -platform="darwin" -version=$version -date=$timestamp -appUrl=$appUrl -filesize="${filesize}" -signature=$signature -verbose=true 
-    cat dist/osx/appcast/darwin_dev_appcast.xml
+    cat tmp/darwin_dev_appcast.xml
 }
 
 function upload() {
@@ -146,7 +146,7 @@ function upload() {
 
     # Update releases.json
     echo "Update releases.json and download links"
-    # ./dist/osx/update_releases.sh osx dev $version
+    ./dist/osx/update_releases.sh osx dev $version
 }
 
 if [[ "$#" -ne 1 ]]; then

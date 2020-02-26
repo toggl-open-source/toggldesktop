@@ -10,7 +10,7 @@ import (
 )
 
 const filename = "dist/osx/appcast_template.xml"
-const destination = "dist/osx/appcast"
+const destination = "tmp"
 
 var version = flag.String("version", "", "the app version to set in the plist file")
 var date = flag.String("date", "", "publish date")

@@ -15,23 +15,24 @@ if [[ ! $channel =~ ^(dev|beta|stable)$ ]]; then
   exit
 fi
 
+prepare() {
+  cp dist/osx/update_updates.sh tmp/update_updates.sh
+  cp dist/osx/update_release_links.sh tmp/update_release_links.sh
+}
+
 fetch_releases () {
-  cd ../.. && \
   git checkout . && \
   git checkout gh-pages && \
-  git fetch && \
-  git reset --hard origin/gh-pages && \
-  cp assets/releases/releases.json src/branding/releases.json && \
-  cd src/branding
+  cp assets/releases/releases.json tmp/releases.json
 }
 
 copy_releases_to_gh_pages () {
   echo "Copy releases.json and Appcast to github pages"
-  cd ../..
-  [[ ( "$os" = "osx" ) ]] && mv src/branding/*_appcast.xml assets/releases/
-  ./src/branding/update_release_links.sh && \
-  mv src/branding/releases.json assets/releases/ && \
-  mv src/branding/updates.json assets/releases/ && \
+  [[ ( "$os" = "osx" ) ]] && mv tmp/*_appcast.xml assets/releases/
+
+  ./tmp/update_release_links.sh && \
+  mv tmp/releases.json assets/releases/ && \
+  mv tmp/updates.json assets/releases/ && \
   git add assets/releases && \
   git add download && \
   git commit -m "Added $os $version to releases.json and appcast" && \
@@ -39,10 +40,11 @@ copy_releases_to_gh_pages () {
   git checkout master
 }
 
+prepare
 fetch_releases
 timestamp=$(date +"%d-%m-%Y")
 release_cmd="OS=$os CHANNEL=$channel VERSION=$version TIMESTAMP=$timestamp ./parse_releases.sh"
 echo $release_cmd
 eval $release_cmd
-./update_updates.sh
+./tmp/update_updates.sh
 copy_releases_to_gh_pages
