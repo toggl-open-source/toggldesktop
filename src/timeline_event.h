@@ -14,6 +14,8 @@
 namespace toggl {
 
 class TOGGL_INTERNAL_EXPORT TimelineEvent : public BaseModel, public TimedEvent {
+public:
+    // public because instances get created all over the place
     TimelineEvent(ProtectedBase *container)
         : BaseModel(container)
     , title_("")
@@ -24,8 +26,6 @@ class TOGGL_INTERNAL_EXPORT TimelineEvent : public BaseModel, public TimedEvent 
     , idle_(false)
     , chunked_(false)
     , uploaded_(false) {}
-public:
-    friend class ProtectedBase;
 
     virtual ~TimelineEvent() {}
 

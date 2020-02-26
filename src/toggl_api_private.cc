@@ -591,11 +591,11 @@ void timeline_chunk_view_clear(
 }
 
 TogglTimelineEventView *timeline_event_view_init(
-    const toggl::TimelineEvent &event) {
+    toggl::locked<toggl::TimelineEvent> &event) {
     TogglTimelineEventView *event_view = new TogglTimelineEventView();
-    event_view->Title = copy_string(event.Title());
-    event_view->Filename = copy_string(event.Filename());
-    event_view->Duration = event.EndTime() - event.Start();
+    event_view->Title = copy_string(event->Title());
+    event_view->Filename = copy_string(event->Filename());
+    event_view->Duration = event->EndTime() - event->Start();
     event_view->DurationString = copy_string(toggl::Formatter::FormatDuration(event_view->Duration, toggl::Format::ImprovedOnlyMinAndSec));
     event_view->Header = false;
     event_view->Next = nullptr;

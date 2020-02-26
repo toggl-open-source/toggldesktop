@@ -106,8 +106,7 @@ TogglTimelineChunkView *timeline_chunk_view_init(
 void timeline_chunk_view_clear(
     TogglTimelineChunkView *first);
 
-TogglTimelineEventView *timeline_event_view_init(
-    const toggl::TimelineEvent &event);
+TogglTimelineEventView *timeline_event_view_init(toggl::locked<toggl::TimelineEvent> &event);
 
 void timeline_chunk_view_list_clear(TogglTimelineChunkView *first);
 

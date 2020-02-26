@@ -496,9 +496,9 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     std::string UserEmail();
 
     // Timeline datasource
-    error StartAutotrackerEvent(const TimelineEvent &event) override;
+    error StartAutotrackerEvent(Poco::Int64 start, Poco::Int64 end, const std::string &title) override;
     error CreateCompressedTimelineBatchForUpload(TimelineBatch *batch) override;
-    error StartTimelineEvent(TimelineEvent *event) override;
+    error StartTimelineEvent(Poco::Int64 start, Poco::Int64 end, const std::string &filename, const std::string &title) override;
     error MarkTimelineBatchAsUploaded(
         const std::vector<TimelineEvent> &events) override;
 

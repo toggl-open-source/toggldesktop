@@ -439,9 +439,8 @@ class TOGGL_INTERNAL_EXPORT GUI : public SyncStateMonitor {
 
     void DisplayProjectColors();
 
-    void DisplayTimeline(
-        const bool open,
-        const std::vector<TimelineEvent> list,
+    void DisplayTimeline(const bool open,
+        std::vector<locked<TimelineEvent> > &list,
         const std::vector<view::TimeEntry> &entries_list);
 
     TogglTimelineEventView* SortList(TogglTimelineEventView *head);

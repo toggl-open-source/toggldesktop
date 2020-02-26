@@ -195,8 +195,8 @@ class TOGGL_INTERNAL_EXPORT User : public BaseModel {
         const std::vector<TimelineEvent> &events);
     void CompressTimeline();
 
-    std::vector<TimelineEvent> CompressedTimelineForUI(const Poco::LocalDateTime *date) const;
-    std::vector<TimelineEvent> CompressedTimelineForUpload(const Poco::LocalDateTime *date = nullptr) const;
+    std::vector<locked<TimelineEvent>> CompressedTimelineForUI(const Poco::LocalDateTime *date);
+    std::vector<locked<TimelineEvent>> CompressedTimelineForUpload(const Poco::LocalDateTime *date = nullptr);
 
     error UpdateJSON(
         std::vector<TimeEntry *> * const,
@@ -315,8 +315,8 @@ class TOGGL_INTERNAL_EXPORT User : public BaseModel {
 
     void loadObmExperimentFromJson(Json::Value const &obm);
 
-    std::vector<TimelineEvent> CompressedTimeline(
-        const Poco::LocalDateTime *date = nullptr, bool is_for_upload = true) const;
+    std::vector<locked<TimelineEvent>> CompressedTimeline(
+        const Poco::LocalDateTime *date = nullptr, bool is_for_upload = true);
 
     std::string api_token_;
     Poco::UInt64 default_wid_;

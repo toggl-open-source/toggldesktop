@@ -1294,13 +1294,9 @@ bool User::CanSeeBillable(locked<Workspace> &ws) const {
     return true;
 }
 
-void User::MarkTimelineBatchAsUploaded(
-    const std::vector<TimelineEvent> &events) {
+void User::MarkTimelineBatchAsUploaded(const std::vector<TimelineEvent> &events) {
 
-    for (std::vector<TimelineEvent>::const_iterator i = events.begin();
-            i != events.end();
-            ++i) {
-        TimelineEvent event = *i;
+    for (auto &event : events) {
         auto uploaded = GetRelatedData()->TimelineEvents.byGUID(event.GUID());
         if (!uploaded) {
             logger().error("Could not find timeline event to mark it as uploaded: ", event.String());
@@ -1399,16 +1395,16 @@ void User::CompressTimeline() {
                    GetRelatedData()->TimelineEvents.size(), " compressed into ", compressed.size(), " chunks");
 }
 
-std::vector<TimelineEvent> User::CompressedTimelineForUI(const Poco::LocalDateTime *date) const {
+std::vector<locked<TimelineEvent>> User::CompressedTimelineForUI(const Poco::LocalDateTime *date) {
     return CompressedTimeline(date, false);
 }
 
-std::vector<TimelineEvent> User::CompressedTimelineForUpload(const Poco::LocalDateTime *date) const {
+std::vector<locked<TimelineEvent>> User::CompressedTimelineForUpload(const Poco::LocalDateTime *date) {
     return CompressedTimeline(date, true);
 }
 
-std::vector<TimelineEvent> User::CompressedTimeline(const Poco::LocalDateTime *date, bool is_for_upload) const {
-    std::vector<TimelineEvent> list;
+std::vector<locked<TimelineEvent>> User::CompressedTimeline(const Poco::LocalDateTime *date, bool is_for_upload) {
+    std::vector<locked<TimelineEvent>> list;
     for (auto event : GetRelatedData()->TimelineEvents) {
         // Skip if this event is deleted or uploaded
         if (event->DeletedAt() > 0) {
@@ -1431,8 +1427,7 @@ std::vector<TimelineEvent> User::CompressedTimeline(const Poco::LocalDateTime *d
             }
         }
         // Make a copy of the timeline event
-        // FIXME timeline
-        //list.push_back(*event);
+        list.push_back(std::move(event));
     }
     return list;
 }

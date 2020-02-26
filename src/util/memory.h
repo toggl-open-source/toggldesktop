@@ -13,6 +13,7 @@ namespace toggl {
 class BaseModel;
 class RelatedData;
 class Settings;
+class TimelineEvent;
 
 typedef std::recursive_mutex mutex_type;
 typedef std::unique_lock<mutex_type> lock_type;
@@ -86,6 +87,17 @@ inline Settings *locked<Settings>::operator*() {
 }
 template<>
 inline const Settings *locked<const Settings>::operator*() {
+    return data_;
+}
+/*
+ * TODO FIXME same for TimelineEvent
+ */
+template<>
+inline TimelineEvent *locked<TimelineEvent>::operator*() {
+    return data_;
+}
+template<>
+inline const TimelineEvent *locked<const TimelineEvent>::operator*() {
     return data_;
 }
 

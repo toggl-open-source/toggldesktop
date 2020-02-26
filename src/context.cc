@@ -505,7 +505,7 @@ void Context::updateUI(const UIElements &what) {
     std::vector<view::Autocomplete> project_autocompletes;
 
     // For timeline UI view data
-    std::vector<TimelineEvent> timeline;
+    std::vector<locked<TimelineEvent>> timeline;
 
     bool use_proxy(false);
     bool record_timeline(false);
@@ -4465,7 +4465,7 @@ void Context::displayPomodoroBreak() {
     UI()->DisplayPomodoroBreak(settings_->pomodoro_break_minutes);
 }
 
-error Context::StartAutotrackerEvent(const TimelineEvent &event) {
+error Context::StartAutotrackerEvent(Poco::Int64 start, Poco::Int64 end, const std::string &title) {
     auto lock = related.User.lock();
     if (!related.User) {
         return noError;
@@ -4479,9 +4479,15 @@ error Context::StartAutotrackerEvent(const TimelineEvent &event) {
     if (related.User && related.User->RunningTimeEntry()) {
         return noError;
     }
-    // FIXME timeline
-    // locked<AutotrackerRule> rule = related.FindAutotrackerRule(event);
-    locked<AutotrackerRule> rule;
+
+    TimelineEvent event { nullptr };
+    event.SetStart(start);
+    event.SetEndTime(end);
+    event.SetTitle(title);
+    event.SetIdle(false);
+    auto lockedEvent = related.AutotrackerRules.make_locked(&event);
+
+    locked<AutotrackerRule> rule = related.FindAutotrackerRule(lockedEvent);
     if (!rule) {
         return noError;
     }
@@ -4531,7 +4537,13 @@ error Context::CreateCompressedTimelineBatchForUpload(TimelineBatch *batch) {
             return displayError(err);
         }
 
-        batch->SetEvents(related.User->CompressedTimelineForUpload());
+        std::vector<TimelineEvent> prepared;
+        auto lockedData = related.User->CompressedTimelineForUpload();
+        for (auto &i : lockedData) {
+            prepared.push_back(**i);
+        }
+
+        batch->SetEvents(prepared);
         batch->SetUserID(related.User->ID());
         batch->SetAPIToken(related.User->APIToken());
         batch->SetDesktopID(db_->DesktopID());
@@ -4545,19 +4557,22 @@ error Context::CreateCompressedTimelineBatchForUpload(TimelineBatch *batch) {
     return noError;
 }
 
-error Context::StartTimelineEvent(TimelineEvent *event) {
+error Context::StartTimelineEvent(Poco::Int64 start, Poco::Int64 end, const std::string &filename, const std::string &title) {
     try {
-        poco_check_ptr(event);
-
         auto lock = related.User.lock();
         if (!related.User) {
             return noError;
         }
 
         if (related.User && related.User->RecordTimeline()) {
+            auto event = related.TimelineEvents.create();
+            event->SetStart(start);
+            event->SetEndTime(end);
+            event->SetFilename(filename);
+            event->SetTitle(title);
+            event->SetIdle(false);
             event->SetUID(static_cast<unsigned int>(related.User->ID()));
-            // FIXME timeline
-            //related.TimelineEvents.push_back(event);
+
             return displayError(save(false));
         }
     } catch(const Poco::Exception& exc) {
