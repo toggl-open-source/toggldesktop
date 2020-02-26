@@ -13,7 +13,7 @@ jobs:
     steps:
     - name: Prepare ENV
       run: |
-        TAG_NAME=v7.5.53
+        TAG_NAME=v7.5.54
         version=${TAG_NAME/v/}
         timestamp=$(date '+%Y-%m-%d-%H-%M-%S')
         escaped_version=$(echo $version | sed 's/\./_/g')
