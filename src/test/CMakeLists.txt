@@ -1,4 +1,5 @@
 include_directories(
+    ${TOGGLDESKTOPLIBRARY_INCLUDE_DIR}
     ${OAUTH_INCLUDE_DIR}
     ${BUGSNAG_INCLUDE_DIR}
     ${LUA_INCLUDE_DIRS}
@@ -27,6 +28,20 @@ set(APP_TEST_SOURCE_FILES
 )
 add_executable(TogglAppTest ${APP_TEST_SOURCE_FILES})
 target_link_libraries(TogglAppTest PRIVATE
+    TogglDesktopLibrary
+    ${JSONCPP_LIBRARIES}
+    ${LUA_LIBRARIES}
+    PocoCrypto PocoDataSQLite PocoNetSSL PocoFoundation
+    gtest_main gtest
+    X11
+)
+
+set(MEMORY_TEST_SOURCE_FILES
+    test_data.cc
+    memory_test.cc
+)
+add_executable(TogglMemoryTest ${MEMORY_TEST_SOURCE_FILES})
+target_link_libraries(TogglMemoryTest PRIVATE
     TogglDesktopLibrary
     ${JSONCPP_LIBRARIES}
     ${LUA_LIBRARIES}
