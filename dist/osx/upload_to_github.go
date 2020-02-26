@@ -198,7 +198,8 @@ func (env Env) createGithubRelease() error {
 
 func (env Env) getGithubReleaseID() (int64, error) {
 	client := http.Client{}
-	req, err := http.NewRequest("GET", fmt.Sprintf("https://api.github.com/repos/toggl-open-source/toggldesktop/releases/tags/%s", env.version), nil)
+	url := fmt.Sprintf("https://api.github.com/repos/toggl-open-source/toggldesktop/releases/tags/%s", env.version)
+	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return 0, err
 	}
@@ -230,7 +231,14 @@ func fetchGithubAssets(releaseID int64) ([]GithubReleaseAsset, error) {
 	url := fmt.Sprintf("https://api.github.com/repos/toggl-open-source/toggldesktop/releases/%d/assets", releaseID)
 	fmt.Println("\033[94m[Github Upload]\033[0m - Fetching assets from", url)
 
-	resp, err := http.Get(url)
+	client := http.Client{}
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return 0, err
+	}
+	req.SetBasicAuth(env.githubUser, env.githubToken)
+
+	resp, err := client.Do(req)
 	if err != nil {
 		return nil, err
 	}
