@@ -10,7 +10,7 @@ export CXXFLAGS="$LDFLAGS"
 echo $version
 echo $installer
 echo $installer_name
-        
+
 function app_path() {
     echo $(xcodebuild -scheme TogglDesktop -workspace src/ui/osx/TogglDesktop.xcworkspace -configuration Release -showBuildSettings \
                 | grep -w 'BUILT_PRODUCTS_DIR' \
@@ -138,7 +138,7 @@ function appcast() {
 
     mkdir -p branding
     mkdir -p tmp
-    go run ./dist/osx/appcast.go -platform="darwin" -version=$version -date=$timestamp -appUrl=$appUrl -filesize=$filesize -signature=$signature -verbose=true
+    go run ./dist/osx/appcast.go -platform="darwin" -version=$version -date=$timestamp -appUrl=$appUrl -filesize=$filesize -signature=$signature -verbose=true -template="./dist/osx/appcast_template.xml"
 
     cat tmp/darwin_dev_appcast.xml
     # mv tmp/darwin_dev_appcast.xml /

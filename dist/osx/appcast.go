@@ -9,8 +9,6 @@ import (
 	"strings"
 )
 
-const filename = "src/branding/appcast_template.xml"
-
 var version = flag.String("version", "", "the app version to set in the plist file")
 var date = flag.String("date", "", "publish date")
 var appURL = flag.String("appUrl", "", "url of the application package")
@@ -18,11 +16,12 @@ var filesize = flag.String("filesize", "0", "filesize")
 var signature = flag.String("signature", "00", "signature hash")
 var verbose = flag.Bool("verbose", false, "log out processing parameters")
 var platform = flag.String("platform", "", "windows, linux or darwin")
+var appcast_template = flag.String("template", "", "Appcast template file")
 
 func main() {
 	flag.Parse()
 
-	b, err := ioutil.ReadFile(filename)
+	b, err := ioutil.ReadFile(*appcast_template)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
