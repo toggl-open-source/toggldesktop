@@ -408,6 +408,21 @@ extension ProjectCreationView: NSTextFieldDelegate {
             return true
         }
 
+        // Enter
+        // Easy to create a new project by pressing Enter Twice
+        if commandSelector == #selector(NSResponder.insertNewline(_:)) {
+
+            if isValidDataForProjectCreation && (control == projectTextField || control == workspaceAutoComplete || control == clientAutoComplete) {
+
+                // Make sure that the user is selected all text
+                if let selectedRange = control.currentEditor()?.selectedRange,
+                    selectedRange.length == control.stringValue.count {
+                    addBtnOnTap(self)
+                    return true
+                }
+            }
+        }
+
         return false
     }
 }
