@@ -107,12 +107,13 @@
         <Setter Property="OverridesDefaultStyle" Value="true"/>
         <Setter Property="Width" Value="4"/>
         <Setter Property="Height" Value="Auto" />
-        <Setter Property="Margin" Value="0 0 2 0" />
+        <Setter Property="Margin" Value="-1 1 1 1" />
         <Setter Property="Template" Value="{StaticResource Toggl.VerticalScrollBar}" />
         <Style.Triggers>
             <Trigger Property="Orientation" Value="Horizontal">
                 <Setter Property="Height" Value="4" />
                 <Setter Property="Width" Value="Auto" />
+                <Setter Property="Margin" Value="1 -1 1 1" />
                 <Setter Property="Template" Value="{StaticResource Toggl.HorizontalScrollBar}" />
             </Trigger>
         </Style.Triggers>
