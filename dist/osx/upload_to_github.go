@@ -234,7 +234,7 @@ func fetchGithubAssets(releaseID int64) ([]GithubReleaseAsset, error) {
 	client := http.Client{}
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
-		return 0, err
+		return nil, err
 	}
 	req.SetBasicAuth(env.githubUser, env.githubToken)
 
