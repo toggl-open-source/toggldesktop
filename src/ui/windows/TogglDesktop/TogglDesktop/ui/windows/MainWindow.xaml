@@ -158,16 +158,5 @@
 
         <toggl:StatusBar x:Name="statusBar" x:FieldModifier="private"
                          VerticalAlignment="Bottom"/>
-
-        <Border Background="{DynamicResource Toggl.CardBackground}"
-                Name="darkModeBorder"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Bottom"
-                Visibility="Collapsed">
-            <CheckBox Click="ToggleDarkMode" Name="darkModeCheckBox" Focusable="False">
-                <TextBlock Foreground="{DynamicResource Toggl.PrimaryTextBrush}">Dark mode</TextBlock>
-            </CheckBox>
-        </Border>
-
     </Grid>
 </mah:MetroWindow>

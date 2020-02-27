@@ -3,12 +3,14 @@ using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using MahApps.Metro.Controls;
 using TogglDesktop.AutoCompletion;
 using TogglDesktop.AutoCompletion.Implementation;
 using TogglDesktop.Diagnostics;
+using TogglDesktop.Theming;
 using TogglDesktop.ViewModels;
 
 #if MS_STORE
@@ -382,12 +384,28 @@ namespace TogglDesktop
                     ProjectLabel = Toggl.GetDefaultProjectName(),
                     ProjectID = projectID,
                     TaskID = taskID,
-                }; 
+                };
             }
 
             this.selectDefaultProject(project);
         }
 
         #endregion
+
+        private void ThemeComboBoxOnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            switch (themeComboBox.SelectedIndex)
+            {
+                case 0:
+                    Theming.Theme.ActivateDetectedColorSchemeOrDefault();
+                    break;
+                case 1:
+                    Theming.Theme.ActivateColorScheme(ColorScheme.Light);
+                    break;
+                case 2:
+                    Theming.Theme.ActivateColorScheme(ColorScheme.Dark);
+                    break;
+            }
+        }
     }
 }
