@@ -160,6 +160,123 @@
         <Setter Property="VerticalContentAlignment" Value="Center" />
     </Style>
 
+    <Style x:Key="Toggl.CalendarButton" TargetType="{x:Type CalendarButton}">
+        <Setter Property="Background" Value="{DynamicResource Toggl.ComboBox.HighlightedBackground}" />
+        <Setter Property="FontFamily" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Calendar}}, Path=FontFamily, Mode=OneWay}" />
+        <Setter Property="FontSize" Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Calendar}}, Path=FontSize, Mode=OneWay}" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="MinHeight" Value="42" />
+        <Setter Property="MinWidth" Value="40" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type CalendarButton}">
+                    <Grid>
+                        <Rectangle x:Name="SelectedBackground"
+                                   Fill="{TemplateBinding Background}"
+                                   Opacity="0" />
+                        <Rectangle x:Name="Background"
+                                   Fill="{TemplateBinding Background}"
+                                   Opacity="0" />
+                        <ContentPresenter x:Name="NormalText"
+                                          Margin="1 0 1 1"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          TextElement.Foreground="{TemplateBinding Foreground}" />
+                        <Rectangle x:Name="CalendarButtonFocusVisual"
+                                   IsHitTestVisible="false"
+                                   Stroke="{DynamicResource Toggl.SecondaryTextBrush}"
+                                   Visibility="Collapsed" />
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualStateGroup.Transitions>
+                                    <VisualTransition GeneratedDuration="0:0:0.1" />
+                                </VisualStateGroup.Transitions>
+                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="MouseOver">
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="Background"
+                                                         Storyboard.TargetProperty="Opacity"
+                                                         To=".5"
+                                                         Duration="0" />
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Pressed">
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="Background"
+                                                         Storyboard.TargetProperty="Opacity"
+                                                         To=".5"
+                                                         Duration="0" />
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="SelectionStates">
+                                <VisualStateGroup.Transitions>
+                                    <VisualTransition GeneratedDuration="0" />
+                                </VisualStateGroup.Transitions>
+                                <VisualState x:Name="Unselected" />
+                                <VisualState x:Name="Selected">
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="SelectedBackground"
+                                                         Storyboard.TargetProperty="Opacity"
+                                                         To=".75"
+                                                         Duration="0" />
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="ActiveStates">
+                                <VisualStateGroup.Transitions>
+                                    <VisualTransition GeneratedDuration="0" />
+                                </VisualStateGroup.Transitions>
+                                <VisualState x:Name="Active" />
+                                <VisualState x:Name="Inactive" />
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="CalendarButtonFocusStates">
+                                <VisualStateGroup.Transitions>
+                                    <VisualTransition GeneratedDuration="0" />
+                                </VisualStateGroup.Transitions>
+                                <VisualState x:Name="CalendarButtonFocused">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="CalendarButtonFocusVisual"
+                                                                       Storyboard.TargetProperty="Visibility"
+                                                                       Duration="0">
+                                            <DiscreteObjectKeyFrame KeyTime="0">
+                                                <DiscreteObjectKeyFrame.Value>
+                                                    <Visibility>Visible</Visibility>
+                                                </DiscreteObjectKeyFrame.Value>
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="CalendarButtonUnfocused">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="CalendarButtonFocusVisual"
+                                                                       Storyboard.TargetProperty="Visibility"
+                                                                       Duration="0">
+                                            <DiscreteObjectKeyFrame KeyTime="0">
+                                                <DiscreteObjectKeyFrame.Value>
+                                                    <Visibility>Collapsed</Visibility>
+                                                </DiscreteObjectKeyFrame.Value>
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsInactive" Value="True">
+                            <Setter TargetName="NormalText" Property="TextElement.Foreground" Value="{DynamicResource Toggl.DisabledTextBrush}" />
+                        </Trigger>
+                        <Trigger Property="IsFocused" Value="True">
+                            <Setter TargetName="CalendarButtonFocusVisual" Property="Visibility" Value="Visible" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+    </Style>
+
     <Style x:Key="Toggl.CalendarItem" TargetType="{x:Type CalendarItem}">
         <Setter Property="Margin" Value="0 3" />
         <Setter Property="Padding" Value="16" />
@@ -207,7 +324,7 @@
                                         </ControlTemplate.Triggers>
                                     </ControlTemplate>
                                     <ControlTemplate x:Key="Toggl.Templates.Button.Header" TargetType="{x:Type Button}">
-                                        <Border x:Name="background" Margin="4 0" Background="Transparent">
+                                        <Border x:Name="background" Margin="4 0" Padding="4 0" Background="Transparent">
                                             <TextBlock Style="{DynamicResource Toggl.SubtitleText}"
                                                        Text="{TemplateBinding Content}"
                                                        HorizontalAlignment="Stretch" />
@@ -361,7 +478,7 @@
         <Setter Property="Background" Value="{DynamicResource Toggl.CardBackground}" />
         <Setter Property="BorderBrush" Value="{DynamicResource Toggl.LightGrayBrush}" />
         <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="CalendarButtonStyle" Value="{DynamicResource MahApps.Styles.CalendarButton}" />
+        <Setter Property="CalendarButtonStyle" Value="{DynamicResource Toggl.CalendarButton}" />
         <Setter Property="CalendarDayButtonStyle" Value="{DynamicResource Toggl.CalendarDayButton}" />
         <Setter Property="CalendarItemStyle" Value="{DynamicResource Toggl.CalendarItem}" />
         <Setter Property="Foreground" Value="{DynamicResource Toggl.PrimaryTextBrush}" />
