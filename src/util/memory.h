@@ -312,7 +312,7 @@ public:
     bool operator==(const ProtectedContainer &o) const;
 private:
     std::vector<T*> container_;
-    std::map<guid, T*> guidMap_;
+    mutable std::map<guid, T*> guidMap_; // mutable because byGUID creates a search cache
 };
 
 // one argument variant, recursion stop
@@ -636,21 +636,39 @@ locked<const T> ProtectedContainer<T>::operator[](size_t position) const {
 
 template<class T>
 locked<T> ProtectedContainer<T>::operator[](const guid &uuid) {
-    return byGUID();
+    return byGUID(uuid);
 }
 
 template<class T>
 locked<const T> ProtectedContainer<T>::operator[](const guid &uuid) const {
-    return byGUID();
+    return byGUID(uuid);
 }
 
 template<class T>
 locked<T> ProtectedContainer<T>::byGUID(const guid &uuid) {
     lock_type lock(mutex_);
+    // try checking the GUID cache
     try {
         return { mutex_, guidMap_.at(uuid) };
     }
     catch (std::out_of_range &) {
+        // if not found...
+        for (auto i : container_) {
+            // look into the main container if we have the GUID in question somewhere
+            if (i->GUID() == uuid) {
+                // and if we find it, look if this particular element was stored under a different GUID
+                for (auto it = guidMap_.begin(); it != guidMap_.end(); ++it) {
+                    // and if it was, delete it from the old location(s)
+                    if (it->second == i) {
+                        it = guidMap_.erase(it);
+                    }
+                }
+                // then insert it to a location with the new GUID
+                guidMap_.insert({uuid, i});
+                // and return
+                return { mutex_, i };
+            }
+        }
         return {};
     }
 }
@@ -658,10 +676,28 @@ locked<T> ProtectedContainer<T>::byGUID(const guid &uuid) {
 template<class T>
 locked<const T> ProtectedContainer<T>::byGUID(const guid &uuid) const {
     lock_type lock(mutex_);
+    // try checking the GUID cache
     try {
         return { mutex_, guidMap_.at(uuid) };
     }
     catch (std::out_of_range &) {
+        // if not found...
+        for (auto i : container_) {
+            // look into the main container if we have the GUID in question somewhere
+            if (i->GUID() == uuid) {
+                // and if we find it, look if this particular element was stored under a different GUID
+                for (auto it = guidMap_.begin(); it != guidMap_.end(); ++it) {
+                    // and if it was, delete it from the old location(s)
+                    if (it->second == i) {
+                        it = guidMap_.erase(it);
+                    }
+                }
+                // then insert it to a location with the new GUID
+                guidMap_.insert({uuid, i});
+                // and return
+                return { mutex_, i };
+            }
+        }
         return {};
     }
 }
