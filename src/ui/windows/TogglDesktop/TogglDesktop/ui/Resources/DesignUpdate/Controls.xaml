@@ -6,6 +6,7 @@
         <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
         <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Themes/light.blue.xaml" />
         <ResourceDictionary Source="ToolTip.xaml" />
+        <ResourceDictionary Source="ScrollBar.xaml" />
         <ResourceDictionary Source="ErrorTemplate.xaml" />
         <ResourceDictionary Source="TextBox.xaml" />
         <ResourceDictionary Source="ComboBox.xaml" />

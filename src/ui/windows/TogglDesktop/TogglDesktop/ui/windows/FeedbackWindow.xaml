@@ -55,6 +55,7 @@
                  TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"
                  VerticalContentAlignment="Top"
                  AcceptsReturn="True"
+                 behaviors:TextBoxHelper.IsPaddingClickable="False"
                  Text="{Binding FeedbackText, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True}"
                  LostFocus="OnFeedbackTextBoxLostFocus"
                  behaviors:FocusHelper.IsFocused="{Binding IsFeedbackTextFocused}"/>
