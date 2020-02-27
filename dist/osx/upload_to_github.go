@@ -225,7 +225,7 @@ func (env Env) getGithubReleaseID() (int64, error) {
 	return 0, fmt.Errorf("\033[94m[Github Upload]\033[0m - Failed to get release ID: %s HTTP status code: %d", string(b), resp.StatusCode)
 }
 
-func fetchGithubAssets(releaseID int64) ([]GithubReleaseAsset, error) {
+func (env Env) fetchGithubAssets(releaseID int64) ([]GithubReleaseAsset, error) {
 	// Fetch assets, to check if the asset already exists. If it does,
 	// We'll delete it first
 	url := fmt.Sprintf("https://api.github.com/repos/toggl-open-source/toggldesktop/releases/%d/assets", releaseID)
@@ -289,7 +289,7 @@ func (env Env) deleteGithubAsset(assetID int64) error {
 }
 
 func (env Env) uploadGithubAsset(releaseID int64) (*GithubReleaseAsset, error) {
-	assets, err := fetchGithubAssets(releaseID)
+	assets, err := env.fetchGithubAssets(releaseID)
 	if err != nil {
 		return nil, err
 	}
