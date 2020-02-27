@@ -45,13 +45,12 @@
         <Setter Property="Background" Value="{DynamicResource Toggl.SelectionElements.Background}" />
         <Setter Property="BorderBrush" Value="{DynamicResource Toggl.TextBox.Border}" />
         <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="CalendarStyle" Value="{StaticResource Toggl.Calendar}" />
+        <Setter Property="CalendarStyle" Value="{StaticResource Toggl.Calendar.WithShadow}" />
         <Setter Property="mah:ControlsHelper.FocusBorderBrush" Value="{DynamicResource Toggl.AccentBrush}" />
         <Setter Property="mah:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource Toggl.TextBox.MouseOverBorder}" />
         <Setter Property="Foreground" Value="{DynamicResource Toggl.PrimaryTextBrush}" />
         <Setter Property="Padding" Value="5 3" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
-
         <Setter Property="mah:TextBoxHelper.ButtonWidth" Value="24" />
         <Setter Property="mah:TextBoxHelper.IsMonitoring" Value="True" />
         <Setter Property="IsTodayHighlighted" Value="True" />
@@ -147,7 +146,8 @@
                                    AllowsTransparency="True"
                                    Placement="Bottom"
                                    PlacementTarget="{Binding ElementName=PART_Root}"
-                                   StaysOpen="False" />
+                                   StaysOpen="False"
+                                   HorizontalOffset="-8"/>
                         </Grid>
                         <Border x:Name="DisabledVisualElement"
                                 Background="{DynamicResource MahApps.Brushes.Controls.Disabled}"
