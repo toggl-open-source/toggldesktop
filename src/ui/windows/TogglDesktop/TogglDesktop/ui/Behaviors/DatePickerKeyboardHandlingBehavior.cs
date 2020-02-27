@@ -22,6 +22,14 @@ namespace TogglDesktop.Behaviors
                     AssociatedObject.IsDropDownOpen = true;
                 }
             }
+            else if (args.Key == Key.Escape)
+            {
+                if (AssociatedObject.IsDropDownOpen == true)
+                {
+                    args.Handled = true;
+                    AssociatedObject.IsDropDownOpen = false;
+                }
+            }
 
             if (!AssociatedObject.SelectedDate.HasValue)
             {
