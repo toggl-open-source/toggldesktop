@@ -7,7 +7,7 @@
     <Grid>
         <Grid.Style>
             <Style TargetType="Grid">
-                <Setter Property="Background" Value="{DynamicResource Toggl.SelectionElements.Background}" />
+                <Setter Property="Background" Value="{DynamicResource Toggl.CardBackground}" />
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding IsSelected}" Value="True">
                         <Setter Property="Background">
