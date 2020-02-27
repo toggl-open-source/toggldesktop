@@ -81,7 +81,7 @@
                                Style="{StaticResource Toggl.CaptionBlackText}"
                                VerticalAlignment="Center"
                                Margin="32 0 8 0"
-                               Foreground="{Binding ProjectColor}" Text="{Binding TaskLabel}" ToolTip="{Binding Text}"/>
+                               Foreground="{Binding ProjectColor}" Text="{Binding TaskLabel}"/>
                     <StackPanel.ToolTip>
                         <StackPanel Orientation="Vertical" Margin="8 6" MaxWidth="256">
                             <Grid>
