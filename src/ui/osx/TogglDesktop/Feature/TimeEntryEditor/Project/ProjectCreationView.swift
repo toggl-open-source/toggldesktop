@@ -121,7 +121,7 @@ final class ProjectCreationView: NSView {
 
         initCommon()
         getRandomColor()
-        selecteFirstWorkspace()
+        selectDefaultWorkspace()
         updateLayoutState()
     }
 
@@ -305,13 +305,15 @@ extension ProjectCreationView {
         addBtn.isEnabled = true
     }
 
-    fileprivate func selecteFirstWorkspace() {
-        guard !workspaceDatasource.items.isEmpty else { return }
-        workspaceDatasource.selectRow(at: 0)
+    fileprivate func selectDefaultWorkspace() {
+        guard let workspaceID = selectedTimeEntry?.workspaceID else { return }
+        guard let workspaces = workspaceDatasource.items as? [Workspace] else { return }
+        let index = workspaces.firstIndex(where: { $0.WID == workspaceID }) ?? 0
+        workspaceDatasource.selectRow(at: index)
     }
 
     fileprivate func resetViews() {
-        selecteFirstWorkspace()
+        selectDefaultWorkspace()
         clientAutoComplete.stringValue = ""
         selectedClient = nil
         selectedColor = originalColor
