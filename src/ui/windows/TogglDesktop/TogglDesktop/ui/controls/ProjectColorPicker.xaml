@@ -70,17 +70,17 @@
                                         <ContentPresenter />
                                     </Grid>
                                     <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter TargetName="ForegroundBorder" Property="Height" Value="29" />
+                                            <Setter TargetName="ForegroundBorder" Property="Width" Value="29" />
+                                            <Setter TargetName="ForegroundBorder" Property="BorderBrush" Value="{DynamicResource Toggl.SelectionElements.Border}" />
+                                            <Setter TargetName="ForegroundBorder" Property="BorderThickness" Value="1" />
+                                        </Trigger>
                                         <Trigger Property="IsSelected" Value="True">
                                             <Setter TargetName="ForegroundBorder" Property="Height" Value="28" />
                                             <Setter TargetName="ForegroundBorder" Property="Width" Value="28" />
+                                            <Setter TargetName="ForegroundBorder" Property="BorderBrush" Value="{DynamicResource Toggl.CardBackground}" />
                                             <Setter TargetName="ForegroundBorder" Property="BorderThickness" Value="1" />
-                                            <Setter TargetName="BackgroundBorder" Property="Visibility" Value="Visible" />
-                                        </Trigger>
-                                        <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter TargetName="ForegroundBorder" Property="Height" Value="28" />
-                                            <Setter TargetName="ForegroundBorder" Property="Width" Value="28" />
-                                            <Setter TargetName="ForegroundBorder" Property="BorderThickness" Value="1" />
-                                            <Setter TargetName="BackgroundBorder" Property="Background" Value="{DynamicResource Toggl.CardBackground}" />
                                             <Setter TargetName="BackgroundBorder" Property="Visibility" Value="Visible" />
                                         </Trigger>
                                     </ControlTemplate.Triggers>
