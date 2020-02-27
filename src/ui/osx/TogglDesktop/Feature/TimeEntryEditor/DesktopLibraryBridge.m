@@ -85,11 +85,6 @@ void *ctx;
 								 [projectGUID UTF8String]);
 }
 
-- (void)togglEditor
-{
-	toggl_view_time_entry_list(ctx);
-}
-
 - (void)updateTimeEntryWithDescription:(NSString *)descriptionName guid:(NSString *)guid
 {
 	toggl_set_time_entry_description(ctx,

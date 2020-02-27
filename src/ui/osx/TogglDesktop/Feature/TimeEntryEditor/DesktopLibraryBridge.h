@@ -40,8 +40,6 @@ NS_ASSUME_NONNULL_BEGIN
 							 projectID:(uint64_t)projectID
 						   projectGUID:(NSString *)projectGUID;
 
-- (void)togglEditor;
-
 - (void)updateTimeEntryWithDescription:(NSString *)descriptionName guid:(NSString *)guid;
 
 - (void)updateTimeEntryWithTags:(NSArray<NSString *> *)tags guid:(NSString *)guid;
