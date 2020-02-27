@@ -649,7 +649,22 @@ locked<T> ProtectedContainer<T>::byGUID(const guid &uuid) {
     lock_type lock(mutex_);
     // try checking the GUID cache
     try {
-        return { mutex_, guidMap_.at(uuid) };
+        auto ptr = guidMap_.at(uuid);
+        // if the object has a different GUID
+        if (ptr->GUID() != uuid) {
+            // move it where it belongs
+            guidMap_.erase(guidMap_.find(uuid));
+            guidMap_.insert({uuid, ptr});
+            // and check if there is any other object in the main container with the sought-after GUID
+            for (auto i : container_) {
+                if (i->GUID() == uuid) {
+                    guidMap_.insert({uuid, i});
+                    return { mutex_, ptr };
+                }
+            }
+            return {};
+        }
+        return { mutex_, ptr };
     }
     catch (std::out_of_range &) {
         // if not found...
@@ -657,11 +672,12 @@ locked<T> ProtectedContainer<T>::byGUID(const guid &uuid) {
             // look into the main container if we have the GUID in question somewhere
             if (i->GUID() == uuid) {
                 // and if we find it, look if this particular element was stored under a different GUID
-                for (auto it = guidMap_.begin(); it != guidMap_.end(); ++it) {
+                for (auto it = guidMap_.begin(); it != guidMap_.end(); ) {
                     // and if it was, delete it from the old location(s)
-                    if (it->second == i) {
+                    if (it->second == i)
                         it = guidMap_.erase(it);
-                    }
+                    else
+                        ++it;
                 }
                 // then insert it to a location with the new GUID
                 guidMap_.insert({uuid, i});
@@ -678,7 +694,22 @@ locked<const T> ProtectedContainer<T>::byGUID(const guid &uuid) const {
     lock_type lock(mutex_);
     // try checking the GUID cache
     try {
-        return { mutex_, guidMap_.at(uuid) };
+        auto ptr = guidMap_.at(uuid);
+        // if the object has a different GUID
+        if (ptr->GUID() != uuid) {
+            // move it where it belongs
+            guidMap_.erase(guidMap_.find(uuid));
+            guidMap_.insert({uuid, ptr});
+            // and check if there is any other object in the main container with the sought-after GUID
+            for (auto i : container_) {
+                if (i->GUID() == uuid) {
+                    guidMap_.insert({uuid, i});
+                    return { mutex_, ptr };
+                }
+            }
+            return {};
+        }
+        return { mutex_, ptr };
     }
     catch (std::out_of_range &) {
         // if not found...
@@ -686,11 +717,12 @@ locked<const T> ProtectedContainer<T>::byGUID(const guid &uuid) const {
             // look into the main container if we have the GUID in question somewhere
             if (i->GUID() == uuid) {
                 // and if we find it, look if this particular element was stored under a different GUID
-                for (auto it = guidMap_.begin(); it != guidMap_.end(); ++it) {
+                for (auto it = guidMap_.begin(); it != guidMap_.end(); ) {
                     // and if it was, delete it from the old location(s)
-                    if (it->second == i) {
+                    if (it->second == i)
                         it = guidMap_.erase(it);
-                    }
+                    else
+                        ++it;
                 }
                 // then insert it to a location with the new GUID
                 guidMap_.insert({uuid, i});
