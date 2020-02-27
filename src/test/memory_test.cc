@@ -25,8 +25,18 @@ public:
     guid GUID() {
         return uuid_;
     }
-    id_t ID() {
+    void SetGUID(const guid &guid) {
+        if (uuid_ != guid) {
+            uuid_ = guid;
+        }
+    }
+    uint64_t ID() {
         return id_;
+    }
+    void SetID(uint64_t id) {
+        if (id_ != id) {
+            id_ = id;
+        }
     }
     guid uuid_;
     uint64_t id_;
@@ -186,6 +196,20 @@ TEST(ProtectedContainer, InsertAndClearMultiple) {
     container.clear();
     ASSERT_EQ(container.size(), 0);
     ASSERT_EQ(modelCounter, 0);
+}
+
+TEST(ProtectedContainer, InsertAndChangeGUID) {
+    ASSERT_EQ(modelCounter, 0);
+    ProtectedContainer<TestModel> container { nullptr };
+    ASSERT_EQ(container.size(), 0);
+    auto item = container.create(guid("1"), 100);
+    ASSERT_EQ(container.size(), 1);
+    item->SetGUID("2");
+    ASSERT_EQ(container.size(), 1);
+    auto lost = container.byGUID("1");
+    ASSERT_FALSE(lost);
+    auto found = container.byGUID("2");
+    ASSERT_TRUE(found);
 }
 
 } // namespace toggl
