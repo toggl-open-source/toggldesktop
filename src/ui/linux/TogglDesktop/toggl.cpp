@@ -411,48 +411,6 @@ bool TogglApi::discardTimeAndContinue(const QString guid,
     return toggl_discard_time_and_continue(ctx, guid.toStdString().c_str(), at);
 }
 
-// Returns true if script file was successfully
-// executed. If returns false, check log.
-bool TogglApi::runScriptFile(const QString filename) {
-    if (filename.isEmpty()) {
-        // qDebug() << "no script to run";
-        return false;
-    }
-
-    QFile textFile(filename);
-    if (!textFile.open(QIODevice::ReadOnly)) {
-        qDebug() << "could not open script "
-                 << filename;
-        return false;
-    }
-
-    QTextStream textStream(&textFile);
-    QStringList contents;
-    while (!textStream.atEnd()) {
-        contents.append(textStream.readLine());
-    }
-
-    QString code = contents.join("\r\n");
-    qDebug() << "script contents: " << code;
-
-    int64_t err(0);
-    QString textOutput("");
-    char_t *result = toggl_run_script(
-        ctx,
-        code.toUtf8().constData(),
-        &err);
-    textOutput = QString(result);
-    free(result);
-
-    if (err) {
-        qDebug() << "script finished with error: " << err;
-    }
-
-    qDebug() << "script output: " << textOutput;
-
-    return !err;
-}
-
 void TogglApi::setIdleSeconds(u_int64_t idleSeconds) {
     toggl_set_idle_seconds(ctx, idleSeconds);
 }

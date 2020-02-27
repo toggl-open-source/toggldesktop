@@ -1583,14 +1583,6 @@ public static partial class Toggl
         int settings_size,
         int autotracker_view_item_size);
 
-    // You must free() the result
-    [DllImport(dll, CharSet = charset, CallingConvention = convention)]
-    private static extern string toggl_run_script(
-        IntPtr context,
-        [MarshalAs(UnmanagedType.LPWStr)]
-        string script,
-        ref Int64 err);
-
     [DllImport(dll, CharSet = charset, CallingConvention = convention)]
     private static extern Int64 toggl_autotracker_add_rule(
         IntPtr context,

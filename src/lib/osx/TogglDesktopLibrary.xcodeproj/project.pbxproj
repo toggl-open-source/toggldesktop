@@ -94,7 +94,6 @@
 		BA43B33323F680B00007DD99 /* libPocoNetSSL.60.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BA43B32423F680B00007DD99 /* libPocoNetSSL.60.dylib */; };
 		BA43B33523F680B00007DD99 /* libPocoUtil.60.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BA43B32523F680B00007DD99 /* libPocoUtil.60.dylib */; };
 		BA43B33723F680B00007DD99 /* libPocoXML.60.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BA43B32623F680B00007DD99 /* libPocoXML.60.dylib */; };
-		BA43B35023F681D60007DD99 /* liblua.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BA43B34F23F681D60007DD99 /* liblua.a */; };
 		BAA842252403D99800BCCB67 /* libPocoCrypto.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA43B31E23F680B00007DD99 /* libPocoCrypto.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		BAA842262403D99800BCCB67 /* libPocoData.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA43B31F23F680B00007DD99 /* libPocoData.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		BAA842272403D99800BCCB67 /* libPocoDataSQLite.60.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = BA43B32023F680B00007DD99 /* libPocoDataSQLite.60.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
@@ -266,7 +265,6 @@
 				BA43B32F23F680B00007DD99 /* libPocoJSON.60.dylib in Frameworks */,
 				BA43B33323F680B00007DD99 /* libPocoNetSSL.60.dylib in Frameworks */,
 				BA43B32723F680B00007DD99 /* libPocoCrypto.60.dylib in Frameworks */,
-				BA43B35023F681D60007DD99 /* liblua.a in Frameworks */,
 				BAA842322403DAE000BCCB67 /* libssl.1.1.dylib in Frameworks */,
 				BA43B33523F680B00007DD99 /* libPocoUtil.60.dylib in Frameworks */,
 				BA43B33123F680B00007DD99 /* libPocoNet.60.dylib in Frameworks */,
@@ -654,7 +652,6 @@
 					Kopsik/third_party/kopsik/third_party/poco/Net/include/,
 					Kopsik/third_party/kopsik/third_party/poco/NetSSL_OpenSSL/include/,
 					Kopsik/third_party/kopsik/third_party/poco/Crypto/include/,
-					"$(PROJECT_DIR)/../../../third_party/lua/install/include/",
 					../../../third_party/openssl/include,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
@@ -713,7 +710,6 @@
 					Kopsik/third_party/kopsik/third_party/poco/Net/include/,
 					Kopsik/third_party/kopsik/third_party/poco/NetSSL_OpenSSL/include/,
 					Kopsik/third_party/kopsik/third_party/poco/Crypto/include/,
-					"$(PROJECT_DIR)/../../../third_party/lua/install/include/",
 					../../../third_party/openssl/include,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
@@ -746,13 +742,11 @@
 					../../ui/osx/TogglDesktop/Library/poco/NetSSL_OpenSSL/include/,
 					../../ui/osx/TogglDesktop/Library/poco/Crypto/include/,
 					../../ui/osx/TogglDesktop/Library/jsoncpp,
-					../../ui/osx/TogglDesktop/Library/lua/include/,
 				);
 				INSTALL_PATH = "@executable_path/../../Contents/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					../../ui/osx/TogglDesktop/Library/poco/,
-					../../ui/osx/TogglDesktop/Library/lua/,
 					../../ui/osx/TogglDesktop/Library/openssl/,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
@@ -788,13 +782,11 @@
 					../../ui/osx/TogglDesktop/Library/poco/NetSSL_OpenSSL/include/,
 					../../ui/osx/TogglDesktop/Library/poco/Crypto/include/,
 					../../ui/osx/TogglDesktop/Library/jsoncpp,
-					../../ui/osx/TogglDesktop/Library/lua/include/,
 				);
 				INSTALL_PATH = "@executable_path/../../Contents/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					../../ui/osx/TogglDesktop/Library/poco/,
-					../../ui/osx/TogglDesktop/Library/lua/,
 					../../ui/osx/TogglDesktop/Library/openssl/,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;

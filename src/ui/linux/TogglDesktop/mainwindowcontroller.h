@@ -47,9 +47,6 @@ class MainWindowController : public QMainWindow {
 
  protected:
     void closeEvent(QCloseEvent *event);
-    void showEvent(QShowEvent *event);
-    void runScript();
-
  private slots:  // NOLINT
     void toggleWindow(QSystemTrayIcon::ActivationReason r);
 
