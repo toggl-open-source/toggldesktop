@@ -21,8 +21,12 @@ prepare() {
 }
 
 fetch_releases () {
-  git checkout . && \
-  git checkout gh-pages && \
+  git remote update
+  git remote set-url origin https://github.com/toggl-open-source/toggldesktop.git
+  git remote -v
+  git fetch 
+  git checkout --track origin/gh-pages
+  
   cp assets/releases/releases.json tmp/releases.json
 }
 
