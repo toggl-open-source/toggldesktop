@@ -77,7 +77,7 @@ protected:
      * @param parent - a @ref RelatedData instsance
      */
     ProtectedBase(RelatedData *parent);
-    virtual ~ProtectedBase();
+    ~ProtectedBase();
 public:
     /**
      * @brief Get a pointer to the parent @ref RelatedData instance
