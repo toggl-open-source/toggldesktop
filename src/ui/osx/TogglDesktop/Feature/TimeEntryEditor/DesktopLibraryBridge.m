@@ -290,7 +290,7 @@ void *ctx;
 
 - (void)closeEditor
 {
-    toggl_close_editor(ctx);
+    toggl_view_time_entry_list(ctx);
 }
 
 - (void)setEditorWindowSize:(CGSize)size
