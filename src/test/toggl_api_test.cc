@@ -1404,46 +1404,46 @@ TEST(toggl_api, toggl_start) {
     ASSERT_FALSE(testing::testresult::timer_state.GUID().empty());
 }
 
-TEST(toggl_api, concurrency) {
-    testing::App app;
-    std::string json = loadTestData();
-    ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
+// TEST(toggl_api, concurrency) {
+//     testing::App app;
+//     std::string json = loadTestData();
+//     ASSERT_TRUE(testing_set_logged_in_user(app.ctx(), json.c_str()));
 
-    const int kThreadCount = 2;
+//     const int kThreadCount = 2;
 
-    std::vector<Poco::Thread *> threads;
-    for (int i = 0; i < kThreadCount; i++) {
-        std::stringstream ss;
-        ss << "thread " << i;
-        Poco::Thread *thread = new Poco::Thread(ss.str());
-        threads.push_back(thread);
-    }
+//     std::vector<Poco::Thread *> threads;
+//     for (int i = 0; i < kThreadCount; i++) {
+//         std::stringstream ss;
+//         ss << "thread " << i;
+//         Poco::Thread *thread = new Poco::Thread(ss.str());
+//         threads.push_back(thread);
+//     }
 
-    std::vector<testing::ApiClient *> runnables;
-    for (int i = 0; i < kThreadCount; i++) {
-        std::stringstream ss;
-        ss << "runnable " << i;
-        testing::ApiClient *runnable = new testing::ApiClient(&app, ss.str());
-        runnables.push_back(runnable);
-    }
+//     std::vector<testing::ApiClient *> runnables;
+//     for (int i = 0; i < kThreadCount; i++) {
+//         std::stringstream ss;
+//         ss << "runnable " << i;
+//         testing::ApiClient *runnable = new testing::ApiClient(&app, ss.str());
+//         runnables.push_back(runnable);
+//     }
 
-    for (int i = 0; i < kThreadCount; i++) {
-        threads[i]->start(*runnables[i]);
-    }
+//     for (int i = 0; i < kThreadCount; i++) {
+//         threads[i]->start(*runnables[i]);
+//     }
 
-    Poco::Thread::sleep(2000);
+//     Poco::Thread::sleep(2000);
 
-    for (int i = 0; i < kThreadCount; i++) {
-        Poco::Thread *thread = threads[i];
-        testing::ApiClient *runnable = runnables[i];
-        while (!runnable->finished()) {
-            Poco::Thread::sleep(10);
-        }
-        thread->join();
-        delete runnable;
-        delete thread;
-    }
-}
+//     for (int i = 0; i < kThreadCount; i++) {
+//         Poco::Thread *thread = threads[i];
+//         testing::ApiClient *runnable = runnables[i];
+//         while (!runnable->finished()) {
+//             Poco::Thread::sleep(10);
+//         }
+//         thread->join();
+//         delete runnable;
+//         delete thread;
+//     }
+// }
 
 TEST(toggl_api, toggl_set_keep_end_times_fixed) {
     testing::App app;
