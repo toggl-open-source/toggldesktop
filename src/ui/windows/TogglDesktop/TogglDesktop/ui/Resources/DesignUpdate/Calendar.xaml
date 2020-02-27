@@ -10,12 +10,10 @@
                     <ControlTemplate.Resources>
                         <!--  Used for day names  -->
                         <DataTemplate x:Key="{x:Static CalendarItem.DayTitleTemplateResourceKey}">
-                            <TextBlock Margin="0 6 0 6"
+                            <TextBlock Margin="0 7 0 9"
+                                       Style="{DynamicResource Toggl.CaptionGrayishText}"
                                        HorizontalAlignment="Center"
                                        VerticalAlignment="Center"
-                                       FontWeight="Bold"
-                                       Foreground="{DynamicResource MahApps.Brushes.Black}"
-                                       Opacity="0.8"
                                        Text="{Binding}" />
                         </DataTemplate>
                     </ControlTemplate.Resources>
@@ -26,7 +24,7 @@
                                 SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
                             <Grid Margin="{TemplateBinding Padding}">
                                 <Grid.Resources>
-                                    <ControlTemplate x:Key="Toggl.Button.Next" TargetType="{x:Type Button}">
+                                    <ControlTemplate x:Key="Toggl.Templates.Button.Next" TargetType="{x:Type Button}">
                                         <Grid x:Name="background" Background="Transparent">
                                             <Path x:Name="BtnArrow"
                                                   Width="11"
@@ -48,41 +46,24 @@
                                             </Trigger>
                                         </ControlTemplate.Triggers>
                                     </ControlTemplate>
-                                    <ControlTemplate x:Key="MahApps.Templates.Button.Header" TargetType="{x:Type Button}">
-                                        <Grid Cursor="Hand">
-                                            <ContentPresenter x:Name="buttonContent"
-                                                              Margin="1 4 1 9"
-                                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                                              Content="{TemplateBinding Content}"
-                                                              ContentTemplate="{TemplateBinding ContentTemplate}"
-                                                              Opacity="0.7" />
-                                            <VisualStateManager.VisualStateGroups>
-                                                <VisualStateGroup x:Name="CommonStates">
-                                                    <VisualState x:Name="Normal" />
-                                                    <VisualState x:Name="MouseOver">
-                                                        <Storyboard>
-                                                            <DoubleAnimation Storyboard.TargetName="buttonContent"
-                                                                             Storyboard.TargetProperty="Opacity"
-                                                                             To="1"
-                                                                             Duration="0" />
-                                                        </Storyboard>
-                                                    </VisualState>
-                                                    <VisualState x:Name="Disabled">
-                                                        <Storyboard>
-                                                            <DoubleAnimation Storyboard.TargetName="buttonContent"
-                                                                             Storyboard.TargetProperty="Opacity"
-                                                                             To=".5"
-                                                                             Duration="0" />
-                                                        </Storyboard>
-                                                    </VisualState>
-                                                </VisualStateGroup>
-                                            </VisualStateManager.VisualStateGroups>
+                                    <ControlTemplate x:Key="Toggl.Templates.Button.Header" TargetType="{x:Type Button}">
+                                        <Grid x:Name="background" Background="Transparent">
+                                            <TextBlock Style="{DynamicResource Toggl.SubtitleText}"
+                                                       Text="{TemplateBinding Content}"
+                                                       HorizontalAlignment="Left" />
                                         </Grid>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="background" Property="Background" Value="{DynamicResource Toggl.Button.Outlined.HoverBackground}" />
+                                            </Trigger>
+                                            <Trigger Property="IsPressed" Value="True">
+                                                <Setter TargetName="background" Property="Background" Value="{DynamicResource Toggl.Button.Outlined.PressedBackground}" />
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
                                     </ControlTemplate>
 
                                     <Style x:Key="PreviousCalendarButtonStyle" TargetType="{x:Type Button}">
-                                        <Setter Property="Template" Value="{StaticResource Toggl.Button.Next}" />
+                                        <Setter Property="Template" Value="{StaticResource Toggl.Templates.Button.Next}" />
                                         <Setter Property="LayoutTransform">
                                             <Setter.Value>
                                                 <TransformGroup>
@@ -92,10 +73,10 @@
                                         </Setter>
                                     </Style>
                                     <Style x:Key="NextCalendarButtonStyle" TargetType="{x:Type Button}">
-                                        <Setter Property="Template" Value="{StaticResource Toggl.Button.Next}" />
+                                        <Setter Property="Template" Value="{StaticResource Toggl.Templates.Button.Next}" />
                                     </Style>
                                     <Style x:Key="HeaderCalendarButtonStyle" TargetType="{x:Type Button}">
-                                        <Setter Property="Template" Value="{StaticResource MahApps.Templates.Button.Header}" />
+                                        <Setter Property="Template" Value="{StaticResource Toggl.Templates.Button.Header}" />
                                     </Style>
                                 </Grid.Resources>
 
@@ -108,27 +89,26 @@
                                 </Grid.RowDefinitions>
 
                                 <Grid Grid.Row="0"
-                                      HorizontalAlignment="Stretch"
-                                      Background="{DynamicResource MahApps.Brushes.Accent}">
+                                      HorizontalAlignment="Stretch">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
                                     <Button x:Name="PART_HeaderButton"
-                                            Grid.Row="0"
-                                            HorizontalAlignment="Center"
-                                            VerticalAlignment="Center"
+                                            Grid.Column="0"
                                             Focusable="False"
-                                            FontWeight="Bold"
                                             Style="{StaticResource HeaderCalendarButtonStyle}" />
                                     <Button x:Name="PART_PreviousButton"
-                                            Grid.Row="0"
+                                            Grid.Column="1"
                                             Width="32"
                                             Height="32"
-                                            HorizontalAlignment="Left"
                                             Focusable="False"
                                             Style="{StaticResource PreviousCalendarButtonStyle}" />
                                     <Button x:Name="PART_NextButton"
-                                            Grid.Row="0"
+                                            Grid.Column="2"
                                             Width="32"
                                             Height="32"
-                                            HorizontalAlignment="Right"
                                             Focusable="False"
                                             Style="{StaticResource NextCalendarButtonStyle}" />
                                 </Grid>
