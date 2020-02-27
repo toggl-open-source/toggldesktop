@@ -653,7 +653,7 @@ TEST(User, TestStartTimeEntryWithDuration) {
 
     size_t count = user.related.TimeEntries.size();
 
-    user.Start("Old work", "1 hour", 0, 0, "", "", 0, 0);
+    user.Start("Old work", "1 hour", 0, 0, "", "", 0, 0, true);
 
     ASSERT_EQ(count + 1, user.related.TimeEntries.size());
 
@@ -669,7 +669,7 @@ TEST(User, TestStartTimeEntryWithoutDuration) {
     ASSERT_EQ(noError,
               user.LoadUserAndRelatedDataFromJSONString(loadTestData(), true));
 
-    user.Start("Old work", "", 0, 0, "", "", 0, 0);
+    user.Start("Old work", "", 0, 0, "", "", 0, 0, true);
 
     TimeEntry *te = user.RunningTimeEntry();
     ASSERT_TRUE(te);
@@ -684,7 +684,7 @@ TEST(User, TestDeletionSteps) {
               user.LoadUserAndRelatedDataFromJSONString(loadTestData(), true));
 
     // first, mark time entry as deleted
-    user.Start("My new time entry", "", 0, 0, "", "", 0, 0);
+    user.Start("My new time entry", "", 0, 0, "", "", 0, 0, true);
     TimeEntry *te = user.RunningTimeEntry();
     ASSERT_TRUE(te);
     std::vector<ModelChange> changes;

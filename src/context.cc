@@ -2751,7 +2751,8 @@ TimeEntry *Context::Start(
     const std::string tags,
     const bool prevent_on_app,
     const time_t started,
-    const time_t ended) {
+    const time_t ended,
+    const bool stop_current_running) {
 
     // Do not even allow to add new time entries,
     // else they will linger around in the app
@@ -2792,7 +2793,8 @@ TimeEntry *Context::Start(
                           project_guid,
                           tags,
                           started,
-                          ended);
+                          ended,
+                          stop_current_running);
     }
 
     error err = save(true);
@@ -4487,7 +4489,8 @@ void Context::displayPomodoro() {
                                              "",  // project_guid
                                              "pomodoro-break",
                                              0,
-                                             0);  // tags
+                                             0,
+                                             true);  // tags
 
         // Set workspace id to same as the previous entry
         pomodoro_break_entry_->SetWID(wid);

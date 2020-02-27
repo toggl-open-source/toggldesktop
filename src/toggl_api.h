@@ -919,6 +919,12 @@ TOGGL_EXPORT bool_t toggl_set_time_entry_start_timestamp_with_option(
         const uint64_t started,
         const uint64_t ended);
 
+    // Create an Empty Time Entry without stopping the running TE
+    TOGGL_EXPORT char_t *toggl_create_empty_time_entry(
+        void *context,
+        const uint64_t started,
+        const uint64_t ended);
+
     // returns GUID of the new project. you must free() the result
     TOGGL_EXPORT char_t *toggl_add_project(
         void *context,

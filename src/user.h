@@ -65,7 +65,8 @@ class TOGGL_INTERNAL_EXPORT User : public BaseModel {
         const std::string project_guid,
         const std::string tags,
         const time_t started,
-        const time_t ended);
+        const time_t ended,
+        const bool stop_current_running);
 
     TimeEntry *Continue(
         const std::string &GUID,
