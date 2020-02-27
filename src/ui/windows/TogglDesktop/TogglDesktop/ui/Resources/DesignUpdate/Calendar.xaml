@@ -476,7 +476,7 @@
         </Setter>
     </Style>
 
-    <Style x:Key="Toggl.Calendar" TargetType="{x:Type Calendar}">
+    <Style x:Key="Toggl.Calendar.Base" TargetType="{x:Type Calendar}">
         <Setter Property="Background" Value="{DynamicResource Toggl.CardBackground}" />
         <Setter Property="BorderBrush" Value="{DynamicResource Toggl.LightGrayBrush}" />
         <Setter Property="BorderThickness" Value="1" />
@@ -486,6 +486,9 @@
         <Setter Property="Foreground" Value="{DynamicResource Toggl.PrimaryTextBrush}" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
         <Setter Property="SnapsToDevicePixels" Value="True" />
+    </Style>
+
+    <Style x:Key="Toggl.Calendar" TargetType="{x:Type Calendar}" BasedOn="{StaticResource Toggl.Calendar.Base}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Calendar}">
@@ -503,4 +506,29 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <Style x:Key="Toggl.Calendar.WithShadow" TargetType="{x:Type Calendar}" BasedOn="{StaticResource Toggl.Calendar.Base}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Calendar}">
+                    <Grid x:Name="PART_Root"
+                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                          Background="Transparent">
+                        <Border Margin="8 0 8 8">
+                            <Border.Effect>
+                                <DropShadowEffect ShadowDepth="1" BlurRadius="4" Direction="270" Opacity="0.2" Color="Black" />
+                            </Border.Effect>
+                            <CalendarItem x:Name="PART_CalendarItem"
+                                          Background="{TemplateBinding Background}"
+                                          BorderBrush="{TemplateBinding BorderBrush}"
+                                          BorderThickness="{TemplateBinding BorderThickness}"
+                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                          Style="{TemplateBinding CalendarItemStyle}" />
+                        </Border>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
 </ResourceDictionary>
