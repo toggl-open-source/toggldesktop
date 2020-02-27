@@ -636,24 +636,12 @@ locked<const T> ProtectedContainer<T>::operator[](size_t position) const {
 
 template<class T>
 locked<T> ProtectedContainer<T>::operator[](const guid &uuid) {
-    lock_type lock(mutex_);
-    try {
-        return { mutex_, guidMap_.at(uuid) };
-    }
-    catch (std::out_of_range &) {
-        return {};
-    }
+    return byGUID();
 }
 
 template<class T>
 locked<const T> ProtectedContainer<T>::operator[](const guid &uuid) const {
-    lock_type lock(mutex_);
-    try {
-        return { mutex_, guidMap_.at(uuid) };
-    }
-    catch (std::out_of_range &) {
-        return {};
-    }
+    return byGUID();
 }
 
 template<class T>
