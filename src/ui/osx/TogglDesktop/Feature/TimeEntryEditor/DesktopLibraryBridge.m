@@ -85,11 +85,6 @@ void *ctx;
 								 [projectGUID UTF8String]);
 }
 
-- (void)togglEditor
-{
-	toggl_view_time_entry_list(ctx);
-}
-
 - (void)updateTimeEntryWithDescription:(NSString *)descriptionName guid:(NSString *)guid
 {
 	toggl_set_time_entry_description(ctx,
@@ -295,6 +290,11 @@ void *ctx;
 - (void)startEditorAtGUID:(NSString *)GUID
 {
 	toggl_edit(ctx, [GUID UTF8String], false, kFocusedFieldNameDescription);
+}
+
+- (void)closeEditor
+{
+    toggl_view_time_entry_list(ctx);
 }
 
 - (void)setEditorWindowSize:(CGSize)size
