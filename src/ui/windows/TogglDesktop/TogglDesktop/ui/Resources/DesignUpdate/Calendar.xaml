@@ -127,6 +127,7 @@
                         <Trigger Property="IsSelected" Value="True">
                             <Setter TargetName="SelectedBackground" Property="Opacity" Value="1" />
                             <Setter TargetName="NormalText" Property="TextElement.Foreground" Value="White" />
+                            <Setter TargetName="NormalText" Property="TextElement.FontWeight" Value="SemiBold" />
                         </Trigger>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
@@ -137,6 +138,7 @@
                             <Setter TargetName="DayButtonFocusVisual" Property="Stroke" Value="{DynamicResource Toggl.SecondaryTextBrush}" />
                             <Setter TargetName="DayButtonFocusVisual" Property="Visibility" Value="Visible" />
                             <Setter TargetName="NormalText" Property="TextElement.Foreground" Value="White" />
+                            <Setter TargetName="NormalText" Property="TextElement.FontWeight" Value="SemiBold" />
                         </MultiDataTrigger>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
