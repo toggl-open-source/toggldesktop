@@ -6,7 +6,7 @@
              xmlns:togglDesktop="clr-namespace:TogglDesktop"
              mc:Ignorable="d"
              Margin="2">
-    <Border Padding="8 3 0 5"
+    <Border Padding="8 0 0 0"
             Cursor="Arrow"
             Height="24">
         <Border.Style>
@@ -21,8 +21,9 @@
         </Border.Style>
         <StackPanel Orientation="Horizontal">
             <TextBlock Name="textBlock" x:FieldModifier="private" Style="{StaticResource Toggl.CaptionBlackText}" Text="This is tag" TextTrimming="CharacterEllipsis"
+                       Margin="0 3 0 0"
                        MaxWidth="144"/>
-            <Button Click="remove_OnClick" Style="{StaticResource Toggl.CrossButton}" Height="24" Width="24" Margin="0 -3 0 0"
+            <Button Click="remove_OnClick" Style="{StaticResource Toggl.CrossButton}" Height="24" Width="24"
                     IsTabStop="False" Focusable="False" />
         </StackPanel>
     </Border>

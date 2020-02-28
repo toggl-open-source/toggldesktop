@@ -145,17 +145,28 @@
 
     <Style TargetType="Button" x:Key="Toggl.CrossButton" BasedOn="{StaticResource Toggl.PrimaryButton}">
         <Setter Property="Foreground" Value="{DynamicResource Toggl.DarkGrayBrush}" />
+        <Setter Property="Background" Value="Transparent" />
         <Setter Property="Padding" Value="0" />
-        <Setter Property="Cursor" Value="Hand" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate>
-                    <Canvas Width="24" Height="24" Background="Transparent">
-                        <Path Fill="{TemplateBinding Foreground}" Data="M12 11.417L7.577 7 7 7.576l4.417 4.423L7 16.424l.576.576L12 12.583 16.422 17l.578-.576L12.58 12 17 7.576 16.422 7z"/>
-                    </Canvas>
+                    <Border Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" Background="{TemplateBinding Background}">
+                        <Path Width="24" Height="24"
+                              VerticalAlignment="Center"
+                              HorizontalAlignment="Center"
+                              Fill="{TemplateBinding Foreground}" Data="M12 11.417L7.577 7 7 7.576l4.417 4.423L7 16.424l.576.576L12 12.583 16.422 17l.578-.576L12.58 12 17 7.576 16.422 7z"/>
+                    </Border>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{DynamicResource Toggl.Button.Outlined.HoverBackground}" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="{DynamicResource Toggl.Button.Outlined.PressedBackground}" />
+            </Trigger>
+        </Style.Triggers>
     </Style>
 
     <Style TargetType="Button" x:Key="Toggl.ContinueButton">
