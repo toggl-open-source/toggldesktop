@@ -53,6 +53,11 @@
                                     </Style.Triggers>
                                 </Style>
                             </toggl:ProjectTextBox.Style>
+                            <toggl:ProjectTextBox.ToolTip>
+                                <ToolTip Visibility="{Binding ProjectName, Converter={StaticResource EmptyStringToCollapsedConverter}}">
+                                    <toggl:ProjectToolTip />
+                                </ToolTip>
+                            </toggl:ProjectTextBox.ToolTip>
                         </toggl:ProjectTextBox>
 
                         <Border
