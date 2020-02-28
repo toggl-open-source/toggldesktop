@@ -11,6 +11,9 @@ jobs:
   macos:
     runs-on: macOS-latest
     steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 1
     - name: Prepare ENV
       run: |
         
@@ -37,10 +40,6 @@ jobs:
         echo "::set-env name=escaped_version::$escaped_version"
         echo "::set-env name=installer::$installer"
         echo "::set-env name=installer_name::$installer_name"
-
-    - uses: actions/checkout@v2
-      with:
-        fetch-depth: 1
     - name: Setup Golang env
       if: github.event_name == 'release'
       uses: actions/setup-go@v1
