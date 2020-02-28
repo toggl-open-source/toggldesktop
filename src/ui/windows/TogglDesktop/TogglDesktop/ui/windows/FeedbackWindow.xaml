@@ -119,6 +119,8 @@
                                    Text="{Binding AttachedFileSize, Converter={StaticResource BytesToStringConverter}}" />
                         <Button Grid.Row="0" Grid.RowSpan="2" Grid.Column="2"
                                 Margin="12 16 16 16"
+                                Height="32"
+                                Width="32"
                                 Command="{Binding RemoveFileCommand}"
                                 Style="{StaticResource Toggl.CrossButton}">
                         </Button>
