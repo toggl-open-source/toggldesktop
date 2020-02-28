@@ -13,7 +13,13 @@ jobs:
     steps:
     - name: Prepare ENV
       run: |
-        TAG_NAME=v7.5.54
+        
+        if [[ ${{ github.event_name }} == "release" ]]; then
+            TAG_NAME=$(./dist/get-tag-name.sh)
+        else
+            TAG_NAME=$(git describe --abbrev=0)
+        fi
+
         version=${TAG_NAME/v/}
         timestamp=$(date '+%Y-%m-%d-%H-%M-%S')
         escaped_version=$(echo $version | sed 's/\./_/g')
