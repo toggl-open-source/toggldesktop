@@ -27,7 +27,7 @@ namespace TogglDesktop
         {
             this.InitializeComponent();
 
-            this.MinWidth = this.EditView.MinWidth + 8;
+            this.MinWidth = this.EditView.MinWidth + 16;
             this.mainGrid.Width = 0;
 
             Toggl.OnTimeEntryEditor += this.onTimeEntryEditor;
