@@ -17,12 +17,7 @@ jobs:
     - name: Prepare ENV
       run: |
         
-        if [[ ${{ github.event_name }} == "release" ]]; then
-            TAG_NAME=$(./dist/get-tag-name.sh)
-        else
-            TAG_NAME=$(git describe --abbrev=0)
-        fi
-
+        TAG_NAME=$(./dist/get-tag-name.sh)
         version=${TAG_NAME/v/}
         timestamp=$(date '+%Y-%m-%d-%H-%M-%S')
         escaped_version=$(echo $version | sed 's/\./_/g')
@@ -33,7 +28,7 @@ jobs:
         echo $installer
         echo $installer_name
 
-        # Export env to all future stepsn
+        # Export env to all future steps
         echo "::set-env name=TAG_NAME::$TAG_NAME"
         echo "::set-env name=version::$version"
         echo "::set-env name=timestamp::$timestamp"
