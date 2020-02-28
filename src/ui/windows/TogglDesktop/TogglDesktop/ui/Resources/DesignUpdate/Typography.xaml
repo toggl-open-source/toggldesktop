@@ -24,6 +24,13 @@
         <Setter Property="FontWeight" Value="SemiBold" />
         <Setter Property="FontSize" Value="14" />
     </Style>
+    <Style TargetType="TextBlock" x:Key="Toggl.BaseBlackText">
+        <!-- doesn't change foreground when disabled -->
+        <Setter Property="FontFamily" Value="{StaticResource BaseFont}" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="FontSize" Value="{StaticResource NormalFontSize}" />
+        <Setter Property="Foreground" Value="{DynamicResource Toggl.PrimaryTextBrush}" />
+    </Style>
     <Style TargetType="TextBlock" x:Key="Toggl.BaseWhiteText" BasedOn="{StaticResource Toggl.BaseText}">
         <Setter Property="Foreground" Value="White" />
     </Style>

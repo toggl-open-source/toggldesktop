@@ -189,7 +189,7 @@
                             VerticalAlignment="Bottom">
                     <TextBlock Name="workspaceName"
                                Margin="16 10"
-                               Style="{StaticResource Toggl.BaseText}"
+                               Style="{StaticResource Toggl.BaseBlackText}"
                                HorizontalAlignment="Left"
                                Text="{Binding Text}" />
                     <Border HorizontalAlignment="Stretch" Height="1" BorderThickness="0,0,0,1" Background="Transparent"
