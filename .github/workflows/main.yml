@@ -17,8 +17,8 @@ jobs:
     - name: Prepare ENV
       run: |
         TAG_NAME=$(./dist/get-tag-name.sh)
-        if [ -z "$TAG_NAME" ]; then
-            TAG_NAME = "7.0.0" # For testing
+        if [ -z ${TAG_NAME} ]; then
+          TAG_NAME="7.0.0" # For testing
         fi
         version=${TAG_NAME/v/}
         timestamp=$(date '+%Y-%m-%d-%H-%M-%S')
