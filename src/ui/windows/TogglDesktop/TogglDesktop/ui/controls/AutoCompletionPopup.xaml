@@ -223,7 +223,8 @@
     <Popup Name="popup" x:FieldModifier="private"
            AllowsTransparency="True"
            HorizontalOffset="-8"
-           StaysOpen="False">
+           StaysOpen="False"
+           PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}">
         <Grid Background="Transparent">
             <Border Margin="8 0 8 8"
                     BorderBrush="{DynamicResource Toggl.PopupBorderBrush}"
