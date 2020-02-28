@@ -16,7 +16,10 @@ jobs:
         fetch-depth: 1
     - name: Prepare ENV
       run: |
-        TAG_NAME=$(bash ./dist/osx/build.sh get_new_tag_version)
+        TAG_NAME="7.0.0"
+        if [[ "${{ github.event_name }}" == "release" ]]; then
+          TAG_NAME=$(bash ./dist/osx/build.sh get_new_tag_version)
+        fi
         version=${TAG_NAME/v/}
         timestamp=$(date '+%Y-%m-%d-%H-%M-%S')
         escaped_version=$(echo $version | sed 's/\./_/g')
@@ -35,7 +38,7 @@ jobs:
         echo "::set-env name=installer::$installer"
         echo "::set-env name=installer_name::$installer_name"
     - name: Setup Golang env
-      # if: github.event_name == 'release'
+      if: github.event_name == 'release'
       uses: actions/setup-go@v1
       with:
         version: 1.13
@@ -74,27 +77,27 @@ jobs:
       run: |
         bash ./dist/osx/build.sh sign
     - name: Notarize
-      # if: github.event_name == 'release'
+      if: github.event_name == 'release'
       run: |
         export "APPLE_APPID_USER=${{ secrets.MACOS_APPID_USER }}"
         export "APPLE_APPID_PASSWORD=${{ secrets.MACOS_APPID_PASSWORD }}"
         bash ./dist/osx/build.sh notarize
     - name: Compose dmg
-      # if: github.event_name == 'release'
+      if: github.event_name == 'release'
       run: |
         bash ./dist/osx/build.sh dmg
     - name: Update Appcast
-      # if: github.event_name == 'release'
+      if: github.event_name == 'release'
       run: |
         base64 -D <<< "${{ secrets.APPCAST_PRIVATE_PEM }}" > dsa_priv.pem
         bash ./dist/osx/build.sh appcast
     - name: Upload
-      # if: github.event_name == 'release'
+      if: github.event_name == 'release'
       run: |
         export "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         bash ./dist/osx/build.sh upload
     - name: Update Release
-      # if: github.event_name == 'release'
+      if: github.event_name == 'release'
       run: |
         bash ./dist/osx/build.sh update_release
    
