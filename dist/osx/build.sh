@@ -26,6 +26,10 @@ function app() {
     make app_release
 }
 
+function get_new_tag_version() {
+    go run ./dist/osx/tag_version.go
+}
+
 function plist() {
     # Get app path
     APP_PATH=$(app_path)
