@@ -188,7 +188,7 @@
                 <StackPanel Height="40" Orientation="Vertical" HorizontalAlignment="Stretch"
                             VerticalAlignment="Bottom">
                     <TextBlock Name="workspaceName"
-                               Margin="16 10"
+                               Margin="8 10"
                                Style="{StaticResource Toggl.BaseBlackText}"
                                HorizontalAlignment="Left"
                                Text="{Binding Text}" />
