@@ -91,7 +91,8 @@
                                         BorderThickness="1"
                                         BorderBrush="{DynamicResource Toggl.PopupBorderBrush}"
                                         Margin="8 0 8 8"
-                                        MinWidth="{Binding ElementName=projectDropDownBorder, Path=ActualWidth}">
+                                        MinWidth="{Binding ElementName=projectDropDownBorder, Path=ActualWidth}"
+                                        MaxWidth="{Binding ElementName=projectDropDownBorder, Path=ActualWidth}">
                                     <Border.Effect>
                                         <DropShadowEffect ShadowDepth="2" BlurRadius="8" Direction="270" Opacity="0.2" Color="Black" />
                                     </Border.Effect>
