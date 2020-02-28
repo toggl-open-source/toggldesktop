@@ -210,7 +210,7 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     bool GetShowTouchBar();
 
     uint8_t GetActiveTab();
-    
+
     void SetWindowMaximized(
         const bool value);
 
@@ -525,6 +525,14 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
                        const Poco::Int64 height);
 
     void TrackInAppMessage(const Poco::Int64 type);
+
+    void TrackCollapseDay();
+
+    void TrackExpandDay();
+
+    void TrackCollapseAllDays();
+
+    void TrackExpandAllDays();
 
  protected:
     void uiUpdaterActivity();

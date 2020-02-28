@@ -355,14 +355,6 @@ namespace TogglDesktop
             }
         }
 
-        private bool TryExpandFocusedDay()
-        {
-            if (FocusedCellIndex >= 0) return false; // cell is selected
-            if (FocusedDayIndex < 0) return false; // nothing is selected
-            _days[FocusedDayIndex].Expand();
-            return true;
-        }
-
         private void onHighlightEdit(object sender, ExecutedRoutedEventArgs e)
         {
             if (TryExpandFocusedDay())
@@ -471,24 +463,34 @@ namespace TogglDesktop
             return true;
         }
 
+        private bool TryExpandFocusedDay()
+        {
+            if (FocusedCellIndex >= 0) return false; // cell is selected
+            if (FocusedDayIndex < 0) return false; // nothing is selected
+            _days[FocusedDayIndex].Expand();
+            Toggl.TrackExpandDay();
+            return true;
+        }
+
         private bool TryCollapseFocusedDay()
         {
             if (FocusedDayIndex < 0)
                 return false;
             _days[FocusedDayIndex].Collapse();
+            Toggl.TrackCollapseDay();
             return true;
         }
 
         public void CollapseAllDays()
         {
             _days.ForEach(day => day.Collapse());
-            Toggl.ViewTimeEntryList();
+            Toggl.TrackCollapseAllDays();
         }
 
         public void ExpandAllDays()
         {
             _days.ForEach(day => day.Expand());
-            Toggl.ViewTimeEntryList();
+            Toggl.TrackExpandAllDays();
         }
 
         private void onLoadMoreButtonClick(object sender, RoutedEventArgs e)

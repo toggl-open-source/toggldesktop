@@ -734,6 +734,27 @@ public static partial class Toggl
     {
         toggl_iam_click(ctx, 3);
     }
+
+    public static void TrackCollapseDay()
+    {
+        track_collapse_day(ctx);
+    }
+
+    public static void TrackExpandDay()
+    {
+        track_expand_day(ctx);
+    }
+
+    public static void TrackCollapseAllDays()
+    {
+        track_collapse_all_days(ctx);
+    }
+
+    public static void TrackExpandAllDays()
+    {
+        track_expand_all_days(ctx);
+    }
+
     #endregion
 
     #region callback events
