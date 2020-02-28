@@ -151,6 +151,8 @@ namespace TogglDesktop
                     this.selectedProjectColorCircle.Background = Utils.ProjectColorBrushFromString(timeEntry.Color);
 
                     setText(this.projectTextBox, timeEntry.ProjectLabel, timeEntry.TaskLabel, open);
+                    ProjectViewModel.SetProject(timeEntry);
+
                     setText(this.clientTextBox, timeEntry.ClientLabel, open);
 
                     this.selectedWorkspaceId = timeEntry.WID;
@@ -162,6 +164,21 @@ namespace TogglDesktop
                             : string.Empty;
                 }
                 this.dateSet = true;
+            }
+        }
+
+        private ProjectLabelViewModel ProjectViewModel
+        {
+            get
+            {
+                if (projectTextBox.DataContext is ProjectLabelViewModel vm)
+                {
+                    return vm;
+                }
+
+                var projectViewModel = new ProjectLabelViewModel();
+                projectTextBox.DataContext = projectViewModel;
+                return projectViewModel;
             }
         }
 
@@ -491,7 +508,7 @@ namespace TogglDesktop
                 case TimerItem projectItem:
                 {
                     var item = projectItem.Item;
-                    this.setProjectIfDifferent(item.TaskID, item.ProjectID, item.ProjectLabel, item.TaskLabel, item.ProjectColor);
+                    this.setProjectIfDifferent(item);
                     break;
                 }
                 default:
@@ -503,7 +520,7 @@ namespace TogglDesktop
         {
             if (this.projectTextBox.Text == "")
             {
-                this.setProjectIfDifferent(0, 0, "", "");
+                this.setProjectIfDifferent(default);
             }
             else
             {
@@ -518,24 +535,33 @@ namespace TogglDesktop
 
             if (this.projectTextBox.Text == "")
             {
-                this.setProjectIfDifferent(0, 0, "", "");
+                this.setProjectIfDifferent(default);
             }
             else
             {
                 // TODO: if only one entry is left in auto complete box, should it be selected?
 
                 this.projectTextBox.SetText(this.timeEntry.ProjectLabel, this.timeEntry.TaskLabel);
+                ProjectViewModel.SetProject(this.timeEntry);
             }
 
         }
 
-        private void setProjectIfDifferent(ulong taskId, ulong projectId, string projectName, string taskName, string projectColor = null)
+        private void setProjectIfDifferent(Toggl.TogglAutocompleteView autoCompleteItem)
         {
-            if (projectId == this.timeEntry.PID && taskId == this.timeEntry.TID)
+            if (autoCompleteItem.ProjectID == this.timeEntry.PID && autoCompleteItem.TaskID == this.timeEntry.TID)
                 return;
-            this.projectTextBox.SetText(projectName, taskName);
-            this.selectedProjectColorCircle.Background = Utils.ProjectColorBrushFromString(projectColor);
-            Toggl.SetTimeEntryProject(this.timeEntry.GUID, taskId, projectId, "");
+            this.projectTextBox.SetText(autoCompleteItem.ProjectLabel ?? "", autoCompleteItem.TaskLabel ?? "");
+            if (autoCompleteItem.ProjectID == 0)
+            {
+                this.projectTextBox.DataContext = null;
+            }
+            else
+            {
+                ProjectViewModel.SetProject(autoCompleteItem);
+            }
+            this.selectedProjectColorCircle.Background = Utils.ProjectColorBrushFromString(autoCompleteItem.ProjectColor);
+            Toggl.SetTimeEntryProject(this.timeEntry.GUID, autoCompleteItem.TaskID, autoCompleteItem.ProjectID, "");
         }
 
         #endregion
@@ -549,6 +575,7 @@ namespace TogglDesktop
             this.showClientArea();
 
             this.projectTextBox.SetText("", "");
+            this.projectTextBox.DataContext = null;
             this.newProjectTextBox.Clear();
             this.projectAutoComplete.IsEnabled = false;
             this.newProjectTextBox.Focus();
@@ -568,6 +595,7 @@ namespace TogglDesktop
             this.clientAutoComplete.IsOpen = false;
 
             this.projectTextBox.SetText(this.timeEntry.ProjectLabel, this.timeEntry.TaskLabel);
+            ProjectViewModel.SetProject(this.timeEntry);
             this.projectAutoComplete.IsEnabled = true;
             this.projectTextBox.Focus();
             this.projectTextBox.CaretIndex = this.projectTextBox.Text.Length;
