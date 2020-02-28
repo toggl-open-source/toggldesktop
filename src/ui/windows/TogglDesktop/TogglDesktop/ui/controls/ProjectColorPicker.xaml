@@ -25,15 +25,21 @@
         <Popup Name="popup" x:FieldModifier="private"
             MaxHeight="300" StaysOpen="True" AllowsTransparency="True"
             PlacementTarget="{Binding ElementName=button}"
+            Placement="Left"
+            HorizontalOffset="{Binding ActualWidth, ElementName=button}"
+            VerticalOffset="{Binding ActualHeight, ElementName=button}"
             PreviewKeyDown="onPopupPreviewKeyDown"
             IsKeyboardFocusWithinChanged="onPopupKeyboardFocusWithinChanged">
 
             <ListBox ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                     BorderThickness="0" Margin="10" Background="{DynamicResource Toggl.CardBackground}"
+                     Margin="10"
+                     BorderThickness="1"
+                     BorderBrush="{DynamicResource Toggl.LightGrayBrush}"
+                     Background="{DynamicResource Toggl.CardBackground}"
                      Name="list" x:FieldModifier="private">
 
                 <ListBox.Effect>
-                    <DropShadowEffect BlurRadius="8" ShadowDepth="2" Opacity="0.3" Direction="270" />
+                    <DropShadowEffect BlurRadius="4" ShadowDepth="1" Opacity="0.1" Direction="270" />
                 </ListBox.Effect>
 
                 <ListBox.ItemsPanel>
