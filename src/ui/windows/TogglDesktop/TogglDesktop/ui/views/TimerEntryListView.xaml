@@ -19,7 +19,7 @@
         <Border Grid.Row="0" Height="1" VerticalAlignment="Bottom"
                 Background="{Binding ElementName=Timer, Path=Background}">
             <Border.Effect>
-                <DropShadowEffect Direction="270" Color="{DynamicResource Toggl.BlackColor}" Opacity="0.2"
+                <DropShadowEffect Direction="270" Color="Black" Opacity="0.2"
                                   BlurRadius="4" ShadowDepth="1" />
             </Border.Effect>
         </Border>
