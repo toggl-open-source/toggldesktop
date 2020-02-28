@@ -31,7 +31,6 @@
               Background="Transparent"
               MouseLeftButtonDown="onTimeLabelMouseDown">
             <TextBlock Name="durationLabel" x:FieldModifier="private"
-                       HorizontalAlignment="Center"
                        VerticalAlignment="Center"
                        Style="{Binding DurationTextBlockStyle, RelativeSource={RelativeSource AncestorType=UserControl}}"
                        Text="00:00:00" />
