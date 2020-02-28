@@ -131,8 +131,13 @@
             <toggl:TimeEntryInfoPanel x:Name="runningEntryInfoPanel" x:FieldModifier="private"
                                          Grid.Column="1"
                                          DurationLabelMouseDown="onTimeLabelMouseDown"
-                                         DurationTextBlockStyle="{DynamicResource Toggl.BaseText}"
-                                         Background="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Background}"/>
+                                         Background="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Background}">
+                <toggl:TimeEntryInfoPanel.DurationTextBlockStyle>
+                    <Style TargetType="TextBlock" BasedOn="{StaticResource Toggl.BaseText}">
+                        <Setter Property="HorizontalAlignment" Value="Center" />
+                    </Style>
+                </toggl:TimeEntryInfoPanel.DurationTextBlockStyle>
+            </toggl:TimeEntryInfoPanel>
 
             <!-- start/stop button -->
             <ToggleButton Name="startStopButton" x:FieldModifier="private"

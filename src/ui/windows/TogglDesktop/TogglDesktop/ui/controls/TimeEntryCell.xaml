@@ -54,9 +54,14 @@
 
         <toggl:TimeEntryInfoPanel x:Name="timeEntryInfoPanel" x:FieldModifier="private"
                                      Grid.Column="2"
-                                     DurationTextBlockStyle="{DynamicResource Toggl.CaptionBlackText}"
                                      DurationLabelMouseDown="labelDuration_MouseDown"
-                                     Background="{Binding ElementName=rootGrid, Path=Background}"/>
+                                     Background="{Binding ElementName=rootGrid, Path=Background}">
+            <toggl:TimeEntryInfoPanel.DurationTextBlockStyle>
+                <Style TargetType="TextBlock" BasedOn="{StaticResource Toggl.CaptionBlackText}">
+                    <Setter Property="HorizontalAlignment" Value="Right" />
+                </Style>
+            </toggl:TimeEntryInfoPanel.DurationTextBlockStyle>
+        </toggl:TimeEntryInfoPanel>
 
         <Rectangle Grid.Column="0" Grid.ColumnSpan="4"
                    IsHitTestVisible="False"
@@ -71,9 +76,11 @@
                    Opacity="0.05"
                    Visibility="{Binding ElementName=rootGrid, Path=IsMouseOver, Converter={StaticResource BooleanToVisibilityConverter}}"/>
 
-        <Button Grid.Column="3" Margin="0 0 4 0"
+        <Button Grid.Column="3"
                 VerticalAlignment="Center"
+                HorizontalAlignment="Center"
                 Style="{StaticResource Toggl.ContinueButton}"
+                Margin="2 0"
                 Focusable="False" Click="buttonContinue_Click"
                 Visibility="{Binding ElementName=rootGrid, Path=IsMouseOver, Converter={StaticResource FalseToHiddenVisibilityConverter}}"/>
 

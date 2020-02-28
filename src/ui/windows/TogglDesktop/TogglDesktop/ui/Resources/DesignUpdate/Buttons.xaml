@@ -172,18 +172,21 @@
     <Style TargetType="Button" x:Key="Toggl.ContinueButton">
         <Setter Property="Cursor" Value="Hand" />
         <Setter Property="Foreground" Value="{DynamicResource Toggl.DisabledTextBrush}" />
+        <Setter Property="Height" Value="32" />
+        <Setter Property="Width" Value="32" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
-                    <Grid Background="Transparent"
+                    <Canvas Background="Transparent"
                           Height="32"
-                          Width="32"
-                          Margin="-2 -2 2 0">
-                        <!-- Grid Margin is to adjust to StartButtonGeometry which is centered for 36x36 size -->
+                          Width="32">
                         <Path Name="ContinueIcon"
+                              Canvas.Top="-2"
+                              Canvas.Left="-2"
                               Fill="{TemplateBinding Foreground}"
                               Data="{StaticResource StartButtonGeometry}"/>
-                    </Grid>
+                        <!-- Canvas.Top and .Left is to adjust to StartButtonGeometry which is centered for 36x36 size -->
+                    </Canvas>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
