@@ -22,7 +22,7 @@
             <DataTemplate x:Key="project-item-template">
                 <StackPanel Height="32" Orientation="Horizontal">
                     <StackPanel.ToolTip>
-                        <StackPanel Orientation="Vertical" Margin="8 6" MaxWidth="256">
+                        <StackPanel Orientation="Vertical" Margin="8 6" MaxWidth="256" MinWidth="160">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" />
@@ -83,7 +83,7 @@
                                Margin="32 0 8 0"
                                Foreground="{Binding ProjectColor}" Text="{Binding TaskLabel}"/>
                     <StackPanel.ToolTip>
-                        <StackPanel Orientation="Vertical" Margin="8 6" MaxWidth="256">
+                        <StackPanel Orientation="Vertical" Margin="8 6" MaxWidth="256" MinWidth="160">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" />

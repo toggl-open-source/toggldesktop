@@ -7,7 +7,7 @@
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance viewModels:ProjectLabelViewModel, IsDesignTimeCreatable=False}">
-    <StackPanel Orientation="Vertical" Margin="8 6" MaxWidth="256">
+    <StackPanel Orientation="Vertical" Margin="8 6" MaxWidth="256" MinWidth="160">
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
