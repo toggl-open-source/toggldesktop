@@ -35,6 +35,11 @@ jobs:
     - uses: actions/checkout@v2
       with:
         fetch-depth: 1
+    - name: Setup Golang env
+      if: github.event_name == 'release'
+      uses: actions/setup-go@v1
+      with:
+        version: 1.13
     - name: Import signing key
       run: |
         # Create a new keychian and make it default
@@ -63,39 +68,34 @@ jobs:
     - name: Build the application
       run: |
         bash ./dist/osx/build.sh app
-    - name: Setup Golang env
-      # if: github.event_name == 'release'
-      uses: actions/setup-go@v1
-      with:
-        version: 1.13
     - name: Insert version string
-      # if: github.event_name == 'release'
       run: |
         bash ./dist/osx/build.sh plist
     - name: Codesign
-      # if: github.event_name == 'release'
       run: |
         bash ./dist/osx/build.sh sign
     - name: Notarize
-      # if: github.event_name == 'release'
+      if: github.event_name == 'release'
       run: |
         export "APPLE_APPID_USER=${{ secrets.MACOS_APPID_USER }}"
         export "APPLE_APPID_PASSWORD=${{ secrets.MACOS_APPID_PASSWORD }}"
         bash ./dist/osx/build.sh notarize
     - name: Compose dmg
-      # if: github.event_name == 'release'
+      if: github.event_name == 'release'
       run: |
         bash ./dist/osx/build.sh dmg
     - name: Update Appcast
-      # if: github.event_name == 'release'
+      if: github.event_name == 'release'
       run: |
         base64 -D <<< "${{ secrets.APPCAST_PRIVATE_PEM }}" > dsa_priv.pem
         bash ./dist/osx/build.sh appcast
     - name: Upload
+      if: github.event_name == 'release'
       run: |
         export "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
         bash ./dist/osx/build.sh upload
     - name: Update Release
+      if: github.event_name == 'release'
       run: |
         bash ./dist/osx/build.sh update_release
    

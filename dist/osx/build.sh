@@ -159,6 +159,7 @@ if [[ "$#" -ne 1 ]]; then
     dmg
     appcast
     upload
+    update_release
 else
     $1
 fi
