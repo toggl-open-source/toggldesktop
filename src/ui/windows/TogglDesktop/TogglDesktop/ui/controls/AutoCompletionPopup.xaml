@@ -178,7 +178,7 @@
             <DataTemplate x:Key="client-item-template">
                 <StackPanel Height="24" Orientation="Horizontal">
                     <TextBlock Name="clientName"
-                               Margin="11 0"
+                               Margin="15 0"
                                Style="{StaticResource Toggl.GrayishSemiBoldText}"
                                VerticalAlignment="Center"
                                Text="{Binding Text}"/>
