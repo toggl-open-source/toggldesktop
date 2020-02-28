@@ -48,7 +48,7 @@ namespace TogglDesktop
                 ViewModel.GroupItemCount = item.GroupItemCount;
             }
 
-            ViewModel.IsSubItem = !item.Group && item.GroupItemCount == 0;
+            ViewModel.IsSubItem = !item.Group && item.GroupOpen;
             ViewModel.DurationInSeconds = item.DurationInSeconds;
             ViewModel.TimeEntryLabel.SetTimeEntry(item);
             timeEntryInfoPanel.SetTimeEntry(item);
