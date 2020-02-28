@@ -13,6 +13,7 @@ namespace TogglDesktop.AutoCompletion
         private static readonly char[] splitChars = { ' ' };
         private static readonly string[] categories = { "RECENT TIME ENTRIES", "TASKS", "PROJECTS", "WORKSPACES", "TAGS" };
         private readonly List<ListBoxItemViewModel> _fullItemsList;
+        private bool _multipleWorkspaces = false;
         public IList<ListBoxItemViewModel> VisibleItems
         {
             get => _selectionManager.Items;
@@ -196,11 +197,16 @@ namespace TogglDesktop.AutoCompletion
                     string lastProjectLabel = null;
                     string lastClient = null;
                     string lastWSName = null;
+                    var multipleWorkspaces = VisibleItems.Count > 0 && VisibleItems[0] is WorkspaceItemViewModel;
                     foreach (var item in VisibleItems.OfType<TimeEntryItemViewModel>().Where(Filter))
                     {
                         // Add workspace title
-                        if (lastWSName != item.WorkspaceName)
+                        if (multipleWorkspaces && lastWSName != item.WorkspaceName)
                         {
+                            if (lastWSName != null) // workspace separator
+                            {
+                                filteredItems.Add(WorkspaceSeparatorItemViewModel.Instance);
+                            }
                             filteredItems.Add(new WorkspaceItemViewModel(item.WorkspaceName));
                             lastWSName = item.WorkspaceName;
                             lastType = ItemType.CATEGORY; // WORKSPACE?
