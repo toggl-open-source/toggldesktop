@@ -617,7 +617,7 @@ namespace TogglDesktop
 
         private void updateTaskbarTooltip(object sender, string s)
         {
-            this.trayToolTip.RunningEntryInfoPanel.SetDurationLabel(s);
+            this.trayToolTip.SetDuration(s);
         }
 
         #endregion
@@ -806,8 +806,7 @@ namespace TogglDesktop
             if (tracking)
             {
                 this.trayToolTip.TimeEntryLabel = timeEntry.Value.ToTrayToolTipTimeEntryLabelViewModel();
-                this.trayToolTip.RunningEntryInfoPanel.ResetUIState(true);
-                this.trayToolTip.RunningEntryInfoPanel.SetTimeEntry(timeEntry.Value);
+                this.trayToolTip.SetDuration(timeEntry.Value);
 
                 var description = timeEntry.Value.Description;
 
@@ -828,7 +827,6 @@ namespace TogglDesktop
             else
             {
                 this.trayToolTip.TimeEntryLabel = null;
-                this.trayToolTip.RunningEntryInfoPanel.ResetUIState(false);
                 this.runningMenuText.Text = "Timer is not tracking";
                 this.Title = "Toggl Desktop";
             }

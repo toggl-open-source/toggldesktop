@@ -46,22 +46,25 @@
         <FrameworkElement Grid.Column="0" Width="38"
                           Visibility="{Binding IsSubItem, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
-        <toggl:TimeEntryLabel Grid.Column="1" Grid.ColumnSpan="2" Margin="12 10 0 11"
+        <toggl:TimeEntryLabel Grid.Column="1" Margin="12 10 0 11"
                               VerticalPadding="2"
                               DescriptionLabelMouseDown="labelDescription_MouseDown"
                               ProjectLabelMouseDown="labelProject_MouseDown"
-                              DataContext="{Binding TimeEntryLabel}"/>
+                              DataContext="{Binding TimeEntryLabel}"
+                              IconsPanelBackground="{Binding ElementName=rootGrid, Path=Background}"/>
 
-        <toggl:TimeEntryInfoPanel x:Name="timeEntryInfoPanel" x:FieldModifier="private"
-                                     Grid.Column="2"
-                                     DurationLabelMouseDown="labelDuration_MouseDown"
-                                     Background="{Binding ElementName=rootGrid, Path=Background}">
-            <toggl:TimeEntryInfoPanel.DurationTextBlockStyle>
-                <Style TargetType="TextBlock" BasedOn="{StaticResource Toggl.CaptionBlackText}">
-                    <Setter Property="HorizontalAlignment" Value="Right" />
-                </Style>
-            </toggl:TimeEntryInfoPanel.DurationTextBlockStyle>
-        </toggl:TimeEntryInfoPanel>
+        <Border x:Name="durationPanel" x:FieldModifier="private"
+                Grid.Column="2"
+                Background="Transparent"
+                Width="64"
+                Margin="3 0 0 0"
+                MouseLeftButtonDown="labelDuration_MouseDown">
+            <TextBlock Name="durationLabel" x:FieldModifier="private"
+                       Style="{StaticResource Toggl.CaptionBlackText}"
+                       HorizontalAlignment="Right"
+                       VerticalAlignment="Center"
+                       Text="00:00:00" />
+        </Border>
 
         <Rectangle Grid.Column="0" Grid.ColumnSpan="4"
                    IsHitTestVisible="False"

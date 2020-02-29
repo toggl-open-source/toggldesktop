@@ -1,6 +1,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using TogglDesktop.ViewModels;
 
 namespace TogglDesktop
@@ -50,6 +51,26 @@ namespace TogglDesktop
                 }
             }
         }
+
+        public static readonly DependencyProperty IconsPanelBackgroundProperty = DependencyProperty.Register(
+            "IconsPanelBackground", typeof(Brush), typeof(TimeEntryLabel), new PropertyMetadata(default(Brush)));
+
+        public Brush IconsPanelBackground
+        {
+            get { return (Brush) GetValue(IconsPanelBackgroundProperty); }
+            set { SetValue(IconsPanelBackgroundProperty, value); }
+        }
+
+        // private Brush _iconsPanelBackground;
+        // public Brush IconsPanelBackground
+        // {
+        //     get => _iconsPanelBackground;
+        //     set
+        //     {
+        //         _iconsPanelBackground = value;
+        //         iconsPanel.Background = value;
+        //     }
+        // }
 
         private void onDescriptionLabelMouseDown(object sender, MouseButtonEventArgs e)
         {

@@ -16,6 +16,7 @@ namespace TogglDesktop
         private Toggl.TogglTimeEntryView runningTimeEntry;
         private bool isRunning;
         private bool acceptNextUpdate;
+        private Toggl.TogglAutocompleteView completedProject;
 
         public MiniTimer()
         {
@@ -41,7 +42,7 @@ namespace TogglDesktop
                     return;
 
                 var s = Toggl.FormatDurationInSecondsHHMMSS(this.runningTimeEntry.DurationInSeconds);
-                this.runningEntryInfoPanel.SetDurationLabel(s);
+                durationLabel.Text = s;
             };
         }
 
@@ -87,11 +88,6 @@ namespace TogglDesktop
         #endregion
 
         #region ui events
-
-        private void timerTick(object sender, string t)
-        {
-            this.runningEntryInfoPanel.SetDurationLabel(t);
-        }
 
         private void startStopButtonOnClick(object sender, RoutedEventArgs e)
         {
@@ -152,8 +148,8 @@ namespace TogglDesktop
 
             this.editProjectPanel.ShowOnlyIf(item.ProjectID != 0);
             this.editModeProjectLabel.ViewModel = item.ToProjectLabelViewModel();
-
-            this.runningEntryInfoPanel.UpdateBillableAndTags(item.Billable, item.Tags);
+            completedProject = item;
+            // this.runningEntryInfoPanel.UpdateBillableAndTags(item.Billable, item.Tags);
         }
 
         private void cancelProjectSelectionButtonClick(object sender, RoutedEventArgs e)
@@ -165,6 +161,7 @@ namespace TogglDesktop
         {
             this.editProjectPanel.Visibility = Visibility.Collapsed;
             this.editModeProjectLabel.ViewModel = null;
+            completedProject = default;
         }
 
         private void onManualAddButtonClick(object sender, RoutedEventArgs e)
@@ -229,18 +226,17 @@ namespace TogglDesktop
         {
             using (Performance.Measure("starting time entry from timer"))
             {
-                var completedProject = this.editModeProjectLabel.ViewModel?.ProjectInfo ?? default;
                 var guid = Toggl.Start(
                     this.descriptionTextBox.Text,
                     "",
-                    completedProject.TaskId,
-                    completedProject.ProjectId,
+                    completedProject.TaskID,
+                    completedProject.ProjectID,
                     "",
-                    this.runningEntryInfoPanel.TagsString,
+                    completedProject.Tags,
                     IsMiniTimer
-                    );
+                );
 
-                if (this.runningEntryInfoPanel.IsBillable)
+                if (completedProject.Billable)
                 {
                     Toggl.SetTimeEntryBillable(guid, true);
                 }
@@ -263,7 +259,14 @@ namespace TogglDesktop
         {
             this.resetUIState(true);
             this.timeEntryLabel.ViewModel = item.ToTimeEntryLabelViewModel();
-            this.runningEntryInfoPanel.SetTimeEntry(item);
+            this.durationLabel.Text =
+                item.Ended > item.Started
+                    ? item.Duration
+                    : Toggl.FormatDurationInSecondsHHMMSS(item.DurationInSeconds);
+            this.durationPanel.ToolTip =
+                item.Ended > item.Started
+                    ? item.StartTimeString + " - " + item.EndTimeString
+                    : "started at " + item.StartTimeString;
         }
 
         private void resetUIState(bool running, bool forceUpdate = false)
@@ -280,7 +283,8 @@ namespace TogglDesktop
             this.descriptionTextBox.SetText("");
             this.descriptionTextBox.ShowOnlyIf(!running);
             this.timeEntryLabel.ShowOnlyIf(running);
-            this.runningEntryInfoPanel.ResetUIState(running);
+            this.durationPanel.ShowOnlyIf(running);
+            // TODO: reset duration tooltip and time
             this.editProjectPanel.Visibility = Visibility.Collapsed;
             this.editModeProjectLabel.ViewModel = null;
         }

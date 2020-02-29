@@ -33,5 +33,18 @@ namespace TogglDesktop
             get { return (bool) GetValue(IsTrackingProperty); }
             set { SetValue(IsTrackingProperty, value); }
         }
+
+        public void SetDuration(string t)
+        {
+            durationLabel.Text = t;
+        }
+
+        public void SetDuration(Toggl.TogglTimeEntryView item)
+        {
+            durationLabel.Text =
+                item.Ended > item.Started
+                    ? item.Duration
+                    : Toggl.FormatDurationInSecondsHHMMSS(item.DurationInSeconds);
+        }
     }
 }

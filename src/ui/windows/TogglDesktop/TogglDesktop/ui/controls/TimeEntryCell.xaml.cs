@@ -51,7 +51,15 @@ namespace TogglDesktop
             ViewModel.IsSubItem = !item.Group && item.GroupOpen;
             ViewModel.DurationInSeconds = item.DurationInSeconds;
             ViewModel.TimeEntryLabel = item.ToTimeEntryLabelViewModel();
-            timeEntryInfoPanel.SetTimeEntry(item);
+
+            this.durationLabel.Text =
+                item.Ended > item.Started
+                    ? item.Duration
+                    : Toggl.FormatDurationInSecondsHHMMSS(item.DurationInSeconds);
+            this.durationPanel.ToolTip =
+                item.Ended > item.Started
+                    ? item.StartTimeString + " - " + item.EndTimeString
+                    : "started at " + item.StartTimeString;
 
             this.unsyncedIcon.ShowOnlyIf(item.Unsynced);
             this.lockedIcon.ShowOnlyIf(item.Locked);

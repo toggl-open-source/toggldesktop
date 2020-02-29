@@ -41,7 +41,9 @@ namespace TogglDesktop.ViewModels
         {
             return new TimeEntryLabelViewModel(
                 item.Description,
-                item.ToProjectLabelViewModel());
+                item.ToProjectLabelViewModel(),
+                item.Tags,
+                item.Billable);
         }
 
         public static TimeEntryLabelViewModel ToTrayToolTipTimeEntryLabelViewModel(this Toggl.TogglTimeEntryView item)
@@ -49,6 +51,8 @@ namespace TogglDesktop.ViewModels
             return new TimeEntryLabelViewModel(
                 item.Description,
                 item.ToProjectLabelViewModel(),
+                item.Tags,
+                item.Billable,
                 false);
         }
     }
