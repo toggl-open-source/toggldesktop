@@ -51,12 +51,11 @@ namespace TogglDesktop
             ViewModel.IsSubItem = !item.Group && item.GroupOpen;
             ViewModel.DurationInSeconds = item.DurationInSeconds;
             ViewModel.TimeEntryLabel = item.ToTimeEntryLabelViewModel();
+            ViewModel.Duration = item.Duration;
+            ViewModel.DurationToolTip = $"{item.StartTimeString} - {item.EndTimeString}";
 
-            this.durationLabel.Text = item.Duration;
-            this.durationPanel.ToolTip = $"{item.StartTimeString} - {item.EndTimeString}";
-
-            this.unsyncedIcon.ShowOnlyIf(item.Unsynced);
-            this.lockedIcon.ShowOnlyIf(item.Locked);
+            ViewModel.Unsynced = item.Unsynced;
+            ViewModel.Locked = item.Locked;
         }
 
         #region open edit window event handlers
