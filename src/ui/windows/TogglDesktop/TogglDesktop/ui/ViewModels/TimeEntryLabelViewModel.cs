@@ -6,9 +6,8 @@ namespace TogglDesktop.ViewModels
 {
     public class TimeEntryLabelViewModel : ReactiveObject
     {
-        public TimeEntryLabelViewModel(ProjectLabelViewModel projectLabel)
+        public TimeEntryLabelViewModel()
         {
-            ProjectLabel = projectLabel;
             this.WhenAnyValue(x => x.ProjectLabel.ProjectName,
                     x => x.ShowAddDetailsLabels)
                 .Select(((string projectName, bool showAddDetailsLabels) x) => x.showAddDetailsLabels
@@ -25,7 +24,8 @@ namespace TogglDesktop.ViewModels
                 .ToPropertyEx(this, x => x.IsAddProjectLabelVisible);
         }
 
-        public ProjectLabelViewModel ProjectLabel { get; }
+        [Reactive]
+        public ProjectLabelViewModel ProjectLabel { get; private set; }
 
         [Reactive] public bool ShowAddDetailsLabels { get; set; } = true;
 
@@ -44,7 +44,7 @@ namespace TogglDesktop.ViewModels
         public void SetTimeEntry(Toggl.TogglTimeEntryView item)
         {
             Description = item.Description;
-            ProjectLabel.SetProject(item);
+            ProjectLabel = item.ToProjectLabelViewModel();
         }
     }
 }

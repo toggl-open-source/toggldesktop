@@ -31,7 +31,8 @@
         <local:ProjectLabel Grid.Row="1" x:Name="projectLabel" x:FieldModifier="private"
                             MouseLeftButtonDown="onProjectLabelMouseDown"
                             Background="Transparent"
-                            Visibility="{Binding ProjectName, Converter={StaticResource EmptyStringToCollapsedConverter}}"/>
+                            DataContext="{Binding ProjectLabel}"
+                            Visibility="{Binding ProjectName, Converter={StaticResource EmptyStringToCollapsedConverter}}" />
 
         <TextBlock Grid.Row="1"
                    Style="{DynamicResource Toggl.CaptionGrayishText}"
