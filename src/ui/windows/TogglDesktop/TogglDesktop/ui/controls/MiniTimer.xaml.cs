@@ -262,7 +262,7 @@ namespace TogglDesktop
         private void setUIToRunningState(Toggl.TogglTimeEntryView item)
         {
             this.resetUIState(true);
-            this.timeEntryLabel.ViewModel.SetTimeEntry(item);
+            this.timeEntryLabel.ViewModel = item.ToTimeEntryLabelViewModel();
             this.runningEntryInfoPanel.SetTimeEntry(item);
         }
 

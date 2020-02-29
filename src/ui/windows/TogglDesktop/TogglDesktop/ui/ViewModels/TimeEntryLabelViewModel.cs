@@ -1,50 +1,35 @@
-using System.Reactive.Linq;
-using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
-
 namespace TogglDesktop.ViewModels
 {
-    public class TimeEntryLabelViewModel : ReactiveObject
+    public class TimeEntryLabelViewModel
     {
-        public TimeEntryLabelViewModel()
+        public TimeEntryLabelViewModel(
+            string description,
+            ProjectLabelViewModel projectLabel,
+            bool showAddDetailsLabels = true)
         {
-            this.WhenAnyValue(x => x.ProjectLabel.ProjectName,
-                    x => x.ShowAddDetailsLabels)
-                .Select(((string projectName, bool showAddDetailsLabels) x) => x.showAddDetailsLabels
-                    ? (string.IsNullOrEmpty(x.projectName)
+            Description = description;
+            ProjectLabel = projectLabel;
+            AddDescriptionLabelText =
+                showAddDetailsLabels
+                    ? (string.IsNullOrEmpty(ProjectLabel.ProjectName)
                         ? "+ Add details"
                         : "+ Add description")
-                    : "(no description)")
-                .ToPropertyEx(this, x => x.AddDescriptionLabelText);
-            this.WhenAnyValue(x => x.Description,
-                    x => x.ProjectLabel.ProjectName,
-                    x => x.ShowAddDetailsLabels)
-                .Select(((string description, string projectName, bool showAddDetailsLabels) x) =>
-                    x.showAddDetailsLabels && GetIsAddProjectLabelVisible(x.description, x.projectName))
-                .ToPropertyEx(this, x => x.IsAddProjectLabelVisible);
+                    : "(no description)";
+            IsAddProjectLabelVisible = showAddDetailsLabels &&
+                                       GetIsAddProjectLabelVisible(Description, ProjectLabel.ProjectName);
         }
 
-        [Reactive]
-        public ProjectLabelViewModel ProjectLabel { get; private set; }
+        public ProjectLabelViewModel ProjectLabel { get; }
 
-        [Reactive] public bool ShowAddDetailsLabels { get; set; } = true;
+        public string Description { get; }
 
-        [Reactive]
-        public string Description { get; private set; }
+        public string AddDescriptionLabelText { get; }
 
-        public string AddDescriptionLabelText { [ObservableAsProperty] get; }
-
-        public bool IsAddProjectLabelVisible { [ObservableAsProperty] get; }
+        public bool IsAddProjectLabelVisible { get; }
 
         private static bool GetIsAddProjectLabelVisible(string description, string projectText)
         {
             return string.IsNullOrEmpty(projectText) && !string.IsNullOrEmpty(description);
-        }
-
-        public void SetTimeEntry(Toggl.TogglTimeEntryView item)
-        {
-            Description = item.Description;
-            ProjectLabel = item.ToProjectLabelViewModel();
         }
     }
 }

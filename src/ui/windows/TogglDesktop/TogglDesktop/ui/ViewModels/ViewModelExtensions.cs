@@ -36,5 +36,20 @@ namespace TogglDesktop.ViewModels
                 item.ProjectID,
                 item.TaskID);
         }
+
+        public static TimeEntryLabelViewModel ToTimeEntryLabelViewModel(this Toggl.TogglTimeEntryView item)
+        {
+            return new TimeEntryLabelViewModel(
+                item.Description,
+                item.ToProjectLabelViewModel());
+        }
+
+        public static TimeEntryLabelViewModel ToTrayToolTipTimeEntryLabelViewModel(this Toggl.TogglTimeEntryView item)
+        {
+            return new TimeEntryLabelViewModel(
+                item.Description,
+                item.ToProjectLabelViewModel(),
+                false);
+        }
     }
 }

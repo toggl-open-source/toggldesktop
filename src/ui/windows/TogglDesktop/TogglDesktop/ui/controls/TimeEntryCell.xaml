@@ -47,10 +47,10 @@
                           Visibility="{Binding IsSubItem, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
         <toggl:TimeEntryLabel Grid.Column="1" Grid.ColumnSpan="2" Margin="12 10 0 11"
-                              x:Name="timeEntryLabel" x:FieldModifier="private"
                               VerticalPadding="2"
                               DescriptionLabelMouseDown="labelDescription_MouseDown"
-                              ProjectLabelMouseDown="labelProject_MouseDown"/>
+                              ProjectLabelMouseDown="labelProject_MouseDown"
+                              DataContext="{Binding TimeEntryLabel}"/>
 
         <toggl:TimeEntryInfoPanel x:Name="timeEntryInfoPanel" x:FieldModifier="private"
                                      Grid.Column="2"

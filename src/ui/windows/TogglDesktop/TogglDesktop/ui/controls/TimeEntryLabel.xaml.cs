@@ -16,7 +16,6 @@ namespace TogglDesktop
         public TimeEntryLabel()
         {
             InitializeComponent();
-            ViewModel = new TimeEntryLabelViewModel();
         }
 
         public event MouseButtonEventHandler DescriptionLabelMouseDown;
