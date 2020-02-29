@@ -1,69 +1,42 @@
-using System.Reactive.Linq;
 using System.Windows.Media;
-using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
 
 namespace TogglDesktop.ViewModels
 {
-    public class ProjectLabelViewModel : ReactiveObject
+    public class ProjectLabelViewModel
     {
-        public ProjectLabelViewModel()
+        public ProjectLabelViewModel(
+            string projectName,
+            string taskName,
+            string clientName,
+            string colorString,
+            string workspaceName,
+            ulong projectId,
+            ulong taskId)
         {
-            this.WhenAnyValue(x => x.ColorString)
-                .Select(Utils.ProjectColorBrushFromString)
-                .ToPropertyEx(this, x => x.Color);
+            ProjectName = projectName;
+            TaskName = taskName;
+            ClientName = clientName;
+            ColorString = colorString;
+            WorkspaceName = workspaceName;
+            ProjectInfo = new ProjectInfo(projectId, taskId);
+            Color = Utils.ProjectColorBrushFromString(ColorString);
         }
 
-        [Reactive]
-        public string ProjectName { get; private set; }
+        public string ProjectName { get; }
 
-        [Reactive]
-        public string TaskName { get; private set; }
+        public string TaskName { get; }
 
-        [Reactive]
-        public string ClientName { get; private set; }
+        public string ClientName { get; }
 
-        [Reactive]
-        public string ColorString { get; private set; }
+        public string ColorString { get; }
 
-        [Reactive]
-        public string WorkspaceName { get; private set; }
+        public string WorkspaceName { get; }
 
-        public Brush Color { [ObservableAsProperty] get; }
+        public Brush Color { get; }
 
-        public ProjectInfo ProjectInfo { get; private set; }
+        public ProjectInfo ProjectInfo { get; }
 
         public bool HasProject => ProjectInfo.ProjectId != default;
-
-        public void Clear()
-        {
-            ProjectName = string.Empty;
-            TaskName = string.Empty;
-            ClientName = string.Empty;
-            ColorString = string.Empty;
-            WorkspaceName = string.Empty;
-            ProjectInfo = default;
-        }
-
-        public void SetProject(Toggl.TogglTimeEntryView item)
-        {
-            ProjectName = item.ProjectLabel;
-            TaskName = item.TaskLabel;
-            ClientName = item.ClientLabel;
-            ColorString = item.Color;
-            WorkspaceName = item.WorkspaceName;
-            ProjectInfo = new ProjectInfo(item.PID, item.TID);
-        }
-
-        public void SetProject(Toggl.TogglAutocompleteView item)
-        {
-            ProjectName = item.ProjectLabel;
-            TaskName = item.TaskLabel;
-            ClientName = item.ClientLabel;
-            ColorString = item.ProjectColor;
-            WorkspaceName = item.WorkspaceName;
-            ProjectInfo = new ProjectInfo(item.ProjectID, item.TaskID);
-        }
     }
 
     public struct ProjectInfo

@@ -13,5 +13,28 @@ namespace TogglDesktop.ViewModels
 
             return new DayHeaderViewModel(item.DateHeader, item.DateDuration);
         }
+
+        public static ProjectLabelViewModel ToProjectLabelViewModel(this Toggl.TogglTimeEntryView item)
+        {
+            return new ProjectLabelViewModel(
+                item.ProjectLabel,
+                item.TaskLabel,
+                item.ClientLabel,
+                item.Color,
+                item.WorkspaceName,
+                item.PID,
+                item.TID);
+        }
+        public static ProjectLabelViewModel ToProjectLabelViewModel(this Toggl.TogglAutocompleteView item)
+        {
+            return new ProjectLabelViewModel(
+                item.ProjectLabel,
+                item.TaskLabel,
+                item.ClientLabel,
+                item.ProjectColor,
+                item.WorkspaceName,
+                item.ProjectID,
+                item.TaskID);
+        }
     }
 }

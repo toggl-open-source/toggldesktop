@@ -151,7 +151,7 @@ namespace TogglDesktop
                     this.selectedProjectColorCircle.Background = Utils.ProjectColorBrushFromString(timeEntry.Color);
 
                     setText(this.projectTextBox, timeEntry.ProjectLabel, timeEntry.TaskLabel, open);
-                    ProjectViewModel.SetProject(timeEntry);
+                    projectTextBox.DataContext = timeEntry.ToProjectLabelViewModel();
 
                     setText(this.clientTextBox, timeEntry.ClientLabel, open);
 
@@ -164,21 +164,6 @@ namespace TogglDesktop
                             : string.Empty;
                 }
                 this.dateSet = true;
-            }
-        }
-
-        private ProjectLabelViewModel ProjectViewModel
-        {
-            get
-            {
-                if (projectTextBox.DataContext is ProjectLabelViewModel vm)
-                {
-                    return vm;
-                }
-
-                var projectViewModel = new ProjectLabelViewModel();
-                projectTextBox.DataContext = projectViewModel;
-                return projectViewModel;
             }
         }
 
@@ -542,7 +527,7 @@ namespace TogglDesktop
                 // TODO: if only one entry is left in auto complete box, should it be selected?
 
                 this.projectTextBox.SetText(this.timeEntry.ProjectLabel, this.timeEntry.TaskLabel);
-                ProjectViewModel.SetProject(this.timeEntry);
+                projectTextBox.DataContext = timeEntry.ToProjectLabelViewModel();
             }
 
         }
@@ -552,14 +537,7 @@ namespace TogglDesktop
             if (autoCompleteItem.ProjectID == this.timeEntry.PID && autoCompleteItem.TaskID == this.timeEntry.TID)
                 return;
             this.projectTextBox.SetText(autoCompleteItem.ProjectLabel ?? "", autoCompleteItem.TaskLabel ?? "");
-            if (autoCompleteItem.ProjectID == 0)
-            {
-                this.projectTextBox.DataContext = null;
-            }
-            else
-            {
-                ProjectViewModel.SetProject(autoCompleteItem);
-            }
+            this.projectTextBox.DataContext = autoCompleteItem.ProjectID == 0 ? null : autoCompleteItem.ToProjectLabelViewModel();
             this.selectedProjectColorCircle.Background = Utils.ProjectColorBrushFromString(autoCompleteItem.ProjectColor);
             Toggl.SetTimeEntryProject(this.timeEntry.GUID, autoCompleteItem.TaskID, autoCompleteItem.ProjectID, "");
         }
@@ -595,7 +573,7 @@ namespace TogglDesktop
             this.clientAutoComplete.IsOpen = false;
 
             this.projectTextBox.SetText(this.timeEntry.ProjectLabel, this.timeEntry.TaskLabel);
-            ProjectViewModel.SetProject(this.timeEntry);
+            projectTextBox.DataContext = timeEntry.ToProjectLabelViewModel();
             this.projectAutoComplete.IsEnabled = true;
             this.projectTextBox.Focus();
             this.projectTextBox.CaretIndex = this.projectTextBox.Text.Length;
