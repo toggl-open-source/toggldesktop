@@ -34,7 +34,7 @@ namespace TogglDesktop
         public TimeEntryCell()
         {
             this.InitializeComponent();
-            ViewModel = new TimeEntryCellViewModel(timeEntryLabel.ViewModel);
+            ViewModel = new TimeEntryCellViewModel();
         }
 
         public void Display(Toggl.TogglTimeEntryView item)
@@ -50,7 +50,7 @@ namespace TogglDesktop
 
             ViewModel.IsSubItem = !item.Group && item.GroupOpen;
             ViewModel.DurationInSeconds = item.DurationInSeconds;
-            ViewModel.TimeEntryLabel.SetTimeEntry(item);
+            ViewModel.TimeEntryLabel = item.ToTimeEntryLabelViewModel();
             timeEntryInfoPanel.SetTimeEntry(item);
 
             this.unsyncedIcon.ShowOnlyIf(item.Unsynced);

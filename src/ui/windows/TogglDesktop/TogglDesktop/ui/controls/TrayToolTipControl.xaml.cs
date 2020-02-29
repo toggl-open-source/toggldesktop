@@ -8,10 +8,13 @@ namespace TogglDesktop
         public TrayToolTipControl()
         {
             InitializeComponent();
-            TimeEntryLabel.ShowAddDetailsLabels = false;
         }
 
-        public TimeEntryLabelViewModel TimeEntryLabel => timeEntryLabel.ViewModel;
+        public TimeEntryLabelViewModel TimeEntryLabel
+        {
+            get => timeEntryLabel.ViewModel;
+            set => timeEntryLabel.ViewModel = value;
+        }
 
         public static readonly DependencyProperty TotalTodayProperty = DependencyProperty.Register(
             "TotalToday", typeof(string), typeof(TrayToolTipControl), new PropertyMetadata(default(string)));

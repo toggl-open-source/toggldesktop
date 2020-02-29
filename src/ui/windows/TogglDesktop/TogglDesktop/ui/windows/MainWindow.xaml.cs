@@ -20,6 +20,7 @@ using TogglDesktop.Diagnostics;
 using TogglDesktop.Experiments;
 using TogglDesktop.Theming;
 using TogglDesktop.Tutorial;
+using TogglDesktop.ViewModels;
 using Control = System.Windows.Controls.Control;
 using MenuItem = System.Windows.Controls.MenuItem;
 using MouseEventArgs = System.Windows.Input.MouseEventArgs;
@@ -804,7 +805,7 @@ namespace TogglDesktop
 
             if (tracking)
             {
-                this.trayToolTip.TimeEntryLabel.SetTimeEntry(timeEntry.Value);
+                this.trayToolTip.TimeEntryLabel = timeEntry.Value.ToTrayToolTipTimeEntryLabelViewModel();
                 this.trayToolTip.RunningEntryInfoPanel.ResetUIState(true);
                 this.trayToolTip.RunningEntryInfoPanel.SetTimeEntry(timeEntry.Value);
 
@@ -826,7 +827,7 @@ namespace TogglDesktop
             }
             else
             {
-                this.trayToolTip.TimeEntryLabel.SetTimeEntry(default);
+                this.trayToolTip.TimeEntryLabel = null;
                 this.trayToolTip.RunningEntryInfoPanel.ResetUIState(false);
                 this.runningMenuText.Text = "Timer is not tracking";
                 this.Title = "Toggl Desktop";
