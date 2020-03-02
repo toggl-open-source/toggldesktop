@@ -187,9 +187,6 @@ jobs:
         base64 -d Certificate.b64 > Certificate.pfx
         cp Certificate.pfx dist/windows
       shell: bash
-    - name: Install dependencies
-      run: |
-        choco install nsis -y
     - name: Set version
       shell: bash
       run: |
@@ -223,6 +220,10 @@ jobs:
       run: |
         ./dist/windows/scripts/sign.sh
       shell: bash
+    - name: Install NSIS
+      if: github.event_name == 'release'
+      run: |
+        choco install nsis -y
     - name: Create x86 installer
       if: github.event_name == 'release'
       run: |
@@ -252,9 +253,6 @@ jobs:
         base64 -d Certificate.b64 > Certificate.pfx
         cp Certificate.pfx dist/windows
       shell: bash
-    - name: Install dependencies
-      run: |
-        choco install nsis -y
     - name: Set version
       shell: bash
       run: |
@@ -288,6 +286,10 @@ jobs:
       run: |
         ./dist/windows/scripts/sign.sh
       shell: bash
+    - name: Install NSIS
+      if: github.event_name == 'release'
+      run: |
+        choco install nsis -y
     - name: Make x64 installer
       if: github.event_name == 'release'
       run: |
