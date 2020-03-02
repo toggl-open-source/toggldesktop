@@ -181,6 +181,12 @@ bool_t toggl_set_settings_active_tab(
     return toggl::noError == app(context)->SetSettingsActiveTab(active_tab);
 }
 
+bool_t toggl_set_settings_color_theme(
+    void *context,
+    const uint8_t color_theme) {
+    return toggl::noError == app(context)->SetSettingsColorTheme(color_theme);
+}
+
 bool_t toggl_set_settings_idle_minutes(
     void *context,
     const uint64_t idle_minutes) {

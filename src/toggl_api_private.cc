@@ -472,6 +472,7 @@ TogglSettingsView *settings_view_item_init(
     view->StopEntryOnShutdownSleep = settings.stop_entry_on_shutdown_sleep;
     view->ShowTouchBar = settings.show_touch_bar;
     view->ActiveTab = settings.active_tab;
+    view->ColorTheme = settings.color_theme;
     return view;
 }
 

@@ -192,6 +192,7 @@ extern "C" {
         bool_t StopEntryOnShutdownSleep;
         bool_t ShowTouchBar;
         uint8_t ActiveTab;
+        uint8_t ColorTheme;
     } TogglSettingsView;
 
     typedef struct {
@@ -793,6 +794,10 @@ extern "C" {
     TOGGL_EXPORT bool_t toggl_set_settings_active_tab(
         void *context,
         const uint8_t active_tab);
+
+    TOGGL_EXPORT bool_t toggl_set_settings_color_theme(
+        void *context,
+        const uint8_t color_theme);
 
     TOGGL_EXPORT bool_t toggl_set_settings_idle_minutes(
         void *context,

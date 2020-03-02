@@ -169,6 +169,8 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
 
     error SetSettingsActiveTab(const uint8_t active_tab);
 
+    error SetSettingsColorTheme(const uint8_t color_theme);
+
     error SetSettingsIdleMinutes(const Poco::UInt64 idle_minutes);
 
     error SetSettingsFocusOnShortcut(const bool focus_on_shortcut);
