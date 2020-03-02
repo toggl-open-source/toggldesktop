@@ -79,8 +79,6 @@
 
     <SolidColorBrush x:Key="Toggl.Button.Outlined.HoverBackground" Color="{StaticResource Toggl.BlackColor}" Opacity="0.05" po:Freeze="True" />
     <SolidColorBrush x:Key="Toggl.Button.Outlined.HoverBorder" Color="{StaticResource Toggl.BlackColor}" Opacity="0.25" po:Freeze="True" />
-    <!-- <SolidColorBrush x:Key="Toggl.Button.Outlined.HoverBackground" Color="#232323" po:Freeze="True" /> -->
-    <!-- <SolidColorBrush x:Key="Toggl.Button.Outlined.HoverBorder" Color="#777879" po:Freeze="True" /> -->
     <SolidColorBrush x:Key="Toggl.Button.Outlined.PressedBackground" Color="{StaticResource Toggl.BlackColor}" Opacity="0.1" po:Freeze="True" />
     <SolidColorBrush x:Key="Toggl.Button.Outlined.PressedBorder" Color="{StaticResource Toggl.BlackColor}" Opacity="0.3" po:Freeze="True" />
     <SolidColorBrush x:Key="Toggl.GroupIcon.ExpandedBackground" Color="{StaticResource Toggl.AccentColor}" Opacity="0.1" po:Freeze="True" />
@@ -106,11 +104,7 @@
     <SolidColorBrush x:Key="Toggl.Logo.Letters" Color="#FFFFFF" po:Freeze="True" />
     <SolidColorBrush x:Key="Toggl.TimeEntryListBackground" Color="{StaticResource Toggl.OffWhiteColor}" Opacity="0.8" />
     <SolidColorBrush x:Key="Toggl.PopupBorderBrush" Color="{StaticResource Toggl.LightGrayColor}" />
-
-    <SolidColorBrush x:Key="Toggl.BarelyVisibleSeparator" Color="Black" Opacity="0.15" />
     <SolidColorBrush x:Key="Toggl.WorkspaceSeparator" Color="{StaticResource Toggl.BlackColor}" Opacity="0.05" po:Freeze="True"/>
-
-    <DropShadowEffect x:Key="Toggl.SeparatorShadow" ShadowDepth="2" BlurRadius="4" Opacity="1" Color="Black" />
     <DropShadowEffect x:Key="Toggl.DropDownShadow" ShadowDepth="1" BlurRadius="4" Direction="270" Opacity="0.3" Color="Black" />
 
 </ResourceDictionary>
