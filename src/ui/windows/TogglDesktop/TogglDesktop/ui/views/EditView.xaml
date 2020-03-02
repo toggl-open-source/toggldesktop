@@ -160,7 +160,14 @@
                                             </Grid>
                                         </Border>
 
-                                        <CheckBox Grid.Row="3" Margin="0 14 0 0" Name="isProjectPrivateCheckBox">Private project</CheckBox>
+                                        <StackPanel Grid.Row="3" Margin="0 14 0 0" Orientation="Horizontal">
+                                            <CheckBox Name="isProjectPrivateCheckBox">Private project</CheckBox>
+                                            <Canvas Height="16" Width="16" Margin="5 0 0 2"
+                                                    ToolTip="Private projects are visible only to their assigned team members"
+                                                    ToolTipService.InitialShowDelay="0">
+                                                <Path Fill="#B1B1B5" Data="{StaticResource Toggl.InfoIconGeometry}"/>
+                                            </Canvas>
+                                        </StackPanel>
 
                                         <StackPanel Grid.Row="4" Margin="0 50 0 0" Height="32" Visibility="Visible"
                                                     Orientation="Horizontal" HorizontalAlignment="Right">

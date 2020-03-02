@@ -17,4 +17,7 @@
         <Path Fill="{DynamicResource Toggl.DisabledTextBrush}" Data="{StaticResource ArrowGeometry}"/>
         <Path StrokeThickness="2" Stroke="{DynamicResource Toggl.DisabledTextBrush}" StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round" Data="M8 3.57H1"/>
     </Canvas>
+    <Geometry x:Key="Toggl.InfoIconGeometry">
+        M10 3a7 7 0 1 1 0 14 7 7 0 0 1 0-14zm0 6l-.117.007A.997.997 0 0 0 9 10v3c0 .556.448 1 1 1l.117-.007c.5-.057.883-.48.883-.993v-3c0-.556-.448-1-1-1zm0-3a1 1 0 1 0 0 2 1 1 0 0 0 0-2z
+    </Geometry>
 </ResourceDictionary>
