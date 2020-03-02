@@ -13,7 +13,6 @@ namespace TogglDesktop.AutoCompletion
         private static readonly char[] splitChars = { ' ' };
         private static readonly string[] categories = { "RECENT TIME ENTRIES", "TASKS", "PROJECTS", "WORKSPACES", "TAGS" };
         private readonly List<ListBoxItemViewModel> _fullItemsList;
-        private bool _multipleWorkspaces = false;
         public IList<ListBoxItemViewModel> VisibleItems
         {
             get => _selectionManager.Items;
