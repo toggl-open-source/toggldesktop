@@ -61,14 +61,6 @@ jobs:
         security unlock-keychain -p password ~/Library/Keychains/build.keychain
         security set-keychain-settings -lu
         security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k password ~/Library/Keychains/build.keychain
-    - name: Cache Cocoapod
-      id: cache-cocoapods
-      uses: actions/cache@v1
-      with:
-        path: src/ui/osx/Pods
-        key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-pods-
     - name: Get cocoapods
       run: |
         bash ./dist/osx/build.sh cocoapods
