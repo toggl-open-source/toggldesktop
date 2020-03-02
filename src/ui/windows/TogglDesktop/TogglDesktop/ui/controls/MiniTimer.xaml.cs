@@ -149,7 +149,6 @@ namespace TogglDesktop
             this.editProjectPanel.ShowOnlyIf(item.ProjectID != 0);
             this.editModeProjectLabel.ViewModel = item.ToProjectLabelViewModel();
             completedProject = item;
-            // this.runningEntryInfoPanel.UpdateBillableAndTags(item.Billable, item.Tags);
         }
 
         private void cancelProjectSelectionButtonClick(object sender, RoutedEventArgs e)
@@ -284,7 +283,6 @@ namespace TogglDesktop
             this.descriptionTextBox.ShowOnlyIf(!running);
             this.timeEntryLabel.ShowOnlyIf(running);
             this.durationPanel.ShowOnlyIf(running);
-            // TODO: reset duration tooltip and time
             this.editProjectPanel.Visibility = Visibility.Collapsed;
             this.editModeProjectLabel.ViewModel = null;
         }

@@ -61,17 +61,6 @@ namespace TogglDesktop
             set { SetValue(IconsPanelBackgroundProperty, value); }
         }
 
-        // private Brush _iconsPanelBackground;
-        // public Brush IconsPanelBackground
-        // {
-        //     get => _iconsPanelBackground;
-        //     set
-        //     {
-        //         _iconsPanelBackground = value;
-        //         iconsPanel.Background = value;
-        //     }
-        // }
-
         private void onDescriptionLabelMouseDown(object sender, MouseButtonEventArgs e)
         {
             DescriptionLabelMouseDown?.Invoke(sender, e);
