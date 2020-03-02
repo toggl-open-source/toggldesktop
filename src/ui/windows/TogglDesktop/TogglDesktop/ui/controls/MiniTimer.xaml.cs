@@ -258,14 +258,8 @@ namespace TogglDesktop
         {
             this.resetUIState(true);
             this.timeEntryLabel.ViewModel = item.ToTimeEntryLabelViewModel();
-            this.durationLabel.Text =
-                item.Ended > item.Started
-                    ? item.Duration
-                    : Toggl.FormatDurationInSecondsHHMMSS(item.DurationInSeconds);
-            this.durationPanel.ToolTip =
-                item.Ended > item.Started
-                    ? item.StartTimeString + " - " + item.EndTimeString
-                    : "started at " + item.StartTimeString;
+            this.durationLabel.Text = Toggl.FormatDurationInSecondsHHMMSS(item.DurationInSeconds);
+            this.durationPanel.ToolTip = "started at " + item.StartTimeString;
         }
 
         private void resetUIState(bool running, bool forceUpdate = false)
