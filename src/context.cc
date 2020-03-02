@@ -3390,6 +3390,7 @@ error Context::SetTimeEntryBillable(
     if (GUID.empty()) {
         return displayError(std::string(__FUNCTION__) + ": Missing GUID");
     }
+    auto locks = lockMore(related.User, related.TimeEntries);
 
     locked<TimeEntry> te;
 
@@ -3427,6 +3428,7 @@ error Context::SetTimeEntryDescription(
     if (GUID.empty()) {
         return displayError(std::string(__FUNCTION__) + ": Missing GUID");
     }
+    auto locks = lockMore(related.User, related.TimeEntries);
 
     locked<TimeEntry> te;
 
@@ -3464,17 +3466,15 @@ error Context::SetTimeEntryDescription(
 }
 
 error Context::Stop(const bool prevent_on_app) {
+    auto locks = lockMore(related.User, related.TimeEntries);
 
-    {
-        auto lock = related.User.lock();
-        if (!related.User) {
-            logger.warning("Cannot stop tracking, user logged out");
-            return noError;
-        }
-        related.User->Stop();
-
-        resetLastTrackingReminderTime();
+    if (!related.User) {
+        logger.warning("Cannot stop tracking, user logged out");
+        return noError;
     }
+    related.User->Stop();
+
+    resetLastTrackingReminderTime();
 
     if (!prevent_on_app && settings_->focus_on_shortcut) {
         UI()->DisplayApp();
@@ -4882,7 +4882,7 @@ error Context::pullAllUserData(
         Poco::Stopwatch stopwatch;
         stopwatch.start();
 
-        auto userLock = related.User.lock();
+        auto locks = lockMore(related.User, related.Workspaces, related.TimeEntries, related.Clients, related.Projects, related.Tasks, related.Tags);
 
         std::string user_data_json("");
         error err = me(
@@ -4945,7 +4945,7 @@ error Context::pushChanges(
 
         *had_something_to_push = true;
 
-        auto userLock = related.User.lock();
+        auto locks = lockMore(related.User, related.Workspaces, related.TimeEntries, related.Clients, related.Projects, related.Tasks, related.Tags);
 
         std::map<std::string, locked<BaseModel>> models;
 
