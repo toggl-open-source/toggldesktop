@@ -137,6 +137,9 @@
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" metaFont="system"/>
                                         </buttonCell>
+                                        <connections>
+                                            <action selector="appleBtnOnClick:" target="-2" id="lKq-Mm-FIy"/>
+                                        </connections>
                                     </button>
                                     <button verticalHuggingPriority="750" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tJn-oc-LUz">
                                         <rect key="frame" x="-2" y="-3" width="192" height="35"/>
@@ -147,6 +150,9 @@
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" metaFont="system"/>
                                         </buttonCell>
+                                        <connections>
+                                            <action selector="googleBtnOnClick:" target="-2" id="Cit-Ea-W3Z"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <constraints>

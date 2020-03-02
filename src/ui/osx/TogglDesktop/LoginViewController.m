@@ -29,6 +29,8 @@ typedef NS_ENUM (NSUInteger, UserAction)
 	UserActionAccountSignup,
 	UserActionGoogleLogin,
 	UserActionGoogleSignup,
+    UserActionAppleLogin,
+    UserActionAppleSignup,
 };
 
 @interface LoginViewController () <NSTextFieldDelegate, NSTableViewDataSource, NSComboBoxDataSource, NSComboBoxDelegate, LoginSignupTouchBarDelegate>
@@ -304,9 +306,11 @@ extern void *ctx;
 			return YES;
 
 		case UserActionGoogleLogin :
+        case UserActionAppleLogin :
 			return YES;
 
 		case UserActionGoogleSignup :
+        case UserActionAppleSignup :
 			if (![self isCountryValid])
 			{
 				return NO;
@@ -361,14 +365,6 @@ extern void *ctx;
 	return NO;
 }
 
-- (IBAction)loginGoogleOnTap:(id)sender
-{
-	// for empty State
-	self.userAction = UserActionGoogleLogin;
-	[self setUserSignUp:NO];
-	[self startGoogleAuthentication];
-}
-
 - (void)setUserSignUp:(BOOL)isSignUp
 {
 	[[NSUserDefaults standardUserDefaults] setBool:isSignUp forKey:kUserHasBeenSignup];
@@ -399,18 +395,6 @@ extern void *ctx;
 - (void)resetLoader
 {
 	[self showLoaderView:NO];
-}
-
-- (IBAction)signupGoogleBtnOnTap:(id)sender
-{
-	self.userAction = UserActionGoogleSignup;
-	if (![self validateFormForAction:self.userAction])
-	{
-		return;
-	}
-
-	[self setUserSignUp:NO];
-	[self startGoogleAuthentication];
 }
 
 - (BOOL)isEmalValid
@@ -573,8 +557,62 @@ extern void *ctx;
 {
     NSString *key = self.countrySelect.stringValue;
     AutocompleteItem *item = [self.countryAutocompleteDataSource get:key];
-
     self.selectedCountryID = item.ID;
+}
+
+- (IBAction)appleBtnOnClick:(id)sender
+{
+    switch (self.currentTab)
+    {
+        case TabViewTypeLogin :
+            [self loginAppleBtnOnTap:sender];
+            break;
+        case TabViewTypeSingup :
+            [self signupAppleBtnOnTap:sender];
+            break;
+    }
+}
+
+- (IBAction)googleBtnOnClick:(id)sender
+{
+    switch (self.currentTab)
+    {
+        case TabViewTypeLogin :
+            [self loginGoogleOnTap:sender];
+            break;
+        case TabViewTypeSingup :
+            [self signupGoogleBtnOnTap:sender];
+            break;
+    }
+}
+
+- (void)signupGoogleBtnOnTap:(id)sender
+{
+    self.userAction = UserActionGoogleSignup;
+    if (![self validateFormForAction:self.userAction])
+    {
+        return;
+    }
+
+    [self setUserSignUp:NO];
+    [self startGoogleAuthentication];
+}
+
+- (void)loginGoogleOnTap:(id)sender
+{
+    self.userAction = UserActionGoogleLogin;
+    [self setUserSignUp:NO];
+    [self startGoogleAuthentication];
+}
+
+- (void)signupAppleBtnOnTap:(id)sender
+{
+    self.userAction = UserActionAppleSignup;
+}
+
+- (void)loginAppleBtnOnTap:(id)sender
+{
+    self.userAction = UserActionAppleLogin;
 }
 
 @end
