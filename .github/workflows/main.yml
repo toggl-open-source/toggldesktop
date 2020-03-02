@@ -16,10 +16,7 @@ jobs:
         fetch-depth: 1
     - name: Prepare ENV
       run: |
-        TAG_NAME="7.0.0"
-        if [[ "${{ github.event_name }}" == "release" ]]; then
-          TAG_NAME=$(bash ./dist/osx/build.sh get_new_tag_version)
-        fi
+        TAG_NAME=$(./dist/get-tag-name.sh)
         version=${TAG_NAME/v/}
         timestamp=$(date '+%Y-%m-%d-%H-%M-%S')
         escaped_version=$(echo $version | sed 's/\./_/g')
