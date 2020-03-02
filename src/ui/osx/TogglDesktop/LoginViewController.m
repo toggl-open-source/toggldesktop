@@ -32,33 +32,33 @@ typedef NS_ENUM (NSUInteger, UserAction)
 };
 
 @interface LoginViewController () <NSTextFieldDelegate, NSTableViewDataSource, NSComboBoxDataSource, NSComboBoxDelegate, LoginSignupTouchBarDelegate>
-@property (weak) IBOutlet NSTabView *tabView;
 @property (weak) IBOutlet NSTextField *email;
 @property (weak) IBOutlet NSSecureTextField *password;
-@property (weak) IBOutlet NSButton *loginGooglBtn;
 @property (weak) IBOutlet NSTextFieldClickablePointer *forgotPasswordTextField;
 @property (weak) IBOutlet NSTextFieldClickablePointer *signUpLink;
-@property (weak) IBOutlet NSTextFieldClickablePointer *loginLink;
 @property (weak) IBOutlet NSCustomComboBox *countrySelect;
 @property (weak) IBOutlet FlatButton *tosCheckbox;
 @property (weak) IBOutlet NSTextFieldClickablePointer *tosLink;
 @property (weak) IBOutlet NSTextFieldClickablePointer *privacyLink;
-@property (weak) IBOutlet FlatButton *loginButton;
-@property (weak) IBOutlet FlatButton *signupButton;
 @property (weak) IBOutlet NSBox *boxView;
 @property (weak) IBOutlet NSProgressIndicator *loginLoaderView;
-@property (weak) IBOutlet NSProgressIndicator *signUpLoaderView;
-@property (weak) IBOutlet NSButton *signupGoogleBtn;
+
+@property (weak) IBOutlet NSStackView *signUpGroupView;
+@property (weak) IBOutlet NSLayoutConstraint *appleGoogleGroupViewTop;
+@property (weak) IBOutlet NSLayoutConstraint *containerViewHeight;
+
+@property (weak) IBOutlet NSButton *googleBtn;
+@property (weak) IBOutlet NSButton *appleBtn;
+@property (weak) IBOutlet FlatButton *userActionBtn;
+@property (weak) IBOutlet NSTextField *donotHaveAccountLbl;
 
 @property (nonatomic, strong) AutocompleteDataSource *countryAutocompleteDataSource;
-@property (nonatomic, assign) BOOL countriesLoaded;
 @property (nonatomic, assign) NSInteger selectedCountryID;
 @property (nonatomic, assign) TabViewType currentTab;
 @property (nonatomic, assign) UserAction userAction;
 @property (nonatomic, strong) LoginSignupTouchBar *loginTouchBar __OSX_AVAILABLE_STARTING(__MAC_10_12_2,__IPHONE_NA);
 
-- (IBAction)clickLoginButton:(id)sender;
-- (IBAction)clickSignupButton:(id)sender;
+- (IBAction)userActionButtonOnClick:(id)sender;
 - (IBAction)countrySelected:(id)sender;
 
 @end
@@ -85,12 +85,14 @@ extern void *ctx;
 
 	// Default
 	[self changeTabView:TabViewTypeLogin];
+
+    // Load countries in signup view
+    toggl_get_countries_async(ctx);
 }
 
 - (void)initCommon
 {
 	self.signUpLink.delegate = self;
-	self.loginLink.delegate = self;
 	self.countrySelect.delegate = self;
 	self.email.delegate = self;
 	self.password.delegate = self;
@@ -99,7 +101,6 @@ extern void *ctx;
 	self.signUpLink.titleUnderline = YES;
 	self.tosLink.titleUnderline = YES;
 	self.privacyLink.titleUnderline = YES;
-	self.loginLink.titleUnderline = YES;
 
 	self.boxView.wantsLayer = YES;
 	self.boxView.layer.masksToBounds = NO;
@@ -125,7 +126,6 @@ extern void *ctx;
 	self.countryAutocompleteDataSource.combobox = self.countrySelect;
 	self.countryAutocompleteDataSource.combobox.dataSource = self.countryAutocompleteDataSource;
 	[self.countryAutocompleteDataSource setFilter:@""];
-	self.countriesLoaded = NO;
 	self.selectedCountryID = -1;
 }
 
@@ -142,31 +142,6 @@ extern void *ctx;
 	[self changeTabView:TabViewTypeLogin];
 }
 
-- (IBAction)clickLoginButton:(id)sender
-{
-	self.userAction = UserActionAccountLogin;
-
-	// Validate all values inserted
-	if (![self validateFormForAction:self.userAction])
-	{
-		return;
-	}
-
-	NSString *email = [self.email stringValue];
-	NSString *pass = [self.password stringValue];
-
-	[self.password setStringValue:@""];
-
-	// for empty State
-	[self setUserSignUp:NO];
-	[self showLoaderView:YES];
-
-	if (!toggl_login_async(ctx, [email UTF8String], [pass UTF8String]))
-	{
-		return;
-	}
-}
-
 - (void)textFieldClicked:(id)sender
 {
 	if (sender == self.forgotPasswordTextField)
@@ -177,13 +152,8 @@ extern void *ctx;
 
 	if (sender == self.signUpLink)
 	{
-		[self changeTabView:TabViewTypeSingup];
-		return;
-	}
-
-	if (sender == self.loginLink)
-	{
-		[self changeTabView:TabViewTypeLogin];
+        TabViewType newType = self.currentTab == TabViewTypeSingup ? TabViewTypeLogin : TabViewTypeSingup;
+		[self changeTabView:newType];
 		return;
 	}
 
@@ -204,7 +174,6 @@ extern void *ctx;
 {
 	[[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kHideDisplayError
 																object:nil];
-	[self.tabView selectTabViewItemAtIndex:type];
 	self.currentTab = type;
 
 	// Focus on email when changing mode
@@ -213,24 +182,29 @@ extern void *ctx;
 	switch (type)
 	{
 		case TabViewTypeLogin :
-			// Update nextkeyView
-			[self.password setNextKeyView:self.loginButton];
-			[self.loginGooglBtn setNextKeyView:self.email];
+            self.appleGoogleGroupViewTop.constant = 86.0;
+            self.containerViewHeight.constant = 440.0;
+            self.signUpGroupView.hidden = YES;
+            self.appleBtn.title = @"Log in with Apple";
+            self.googleBtn.title = @"Log in with Google";
+            self.userActionBtn.title = @"Login with email";
+            self.forgotPasswordTextField.hidden = NO;
+            self.signUpLink.stringValue = @"Sign up for free";
+            self.donotHaveAccountLbl.hidden = NO;
+            self.signUpLink.titleUnderline = YES;
 			break;
 
 		case TabViewTypeSingup :
-			self.countrySelect.stringValue = @"";
-			[self.countryAutocompleteDataSource setFilter:@""];
-			if (!self.countriesLoaded)
-			{
-				// Load countries in signup view
-				toggl_get_countries_async(ctx);
-				self.countriesLoaded = YES;
-			}
-
-			// Update nextkeyView
-			[self.password setNextKeyView:self.countrySelect];
-			[self.signupButton setNextKeyView:self.email];
+            self.appleGoogleGroupViewTop.constant = 166.0;
+            self.containerViewHeight.constant = 460.0;
+            self.signUpGroupView.hidden = NO;
+            self.appleBtn.title = @"Sign up with Apple";
+            self.googleBtn.title = @"Sign up with Google";
+            self.userActionBtn.title = @"Sign up with email";
+            self.forgotPasswordTextField.hidden = YES;
+            self.signUpLink.stringValue = @"Back to Log in";
+            self.donotHaveAccountLbl.hidden = YES;
+            self.signUpLink.titleUnderline = YES;
 			break;
 	}
 
@@ -350,40 +324,6 @@ extern void *ctx;
 	return NO;
 }
 
-- (IBAction)clickSignupButton:(id)sender
-{
-	self.userAction = UserActionAccountSignup;
-
-	// Validate all values inserted
-	if (![self validateFormForAction:self.userAction])
-	{
-		return;
-	}
-
-	NSString *email = [self.email stringValue];
-	NSString *pass = [self.password stringValue];
-
-	[self.password setStringValue:@""];
-
-	// for empty State
-	[self setUserSignUp:YES];
-	// Show loader and disable text boxs
-	[self showLoaderView:YES];
-
-	if (!toggl_signup_async(ctx, [email UTF8String], [pass UTF8String], self.selectedCountryID))
-	{
-		return;
-	}
-}
-
-- (IBAction)countrySelected:(id)sender
-{
-	NSString *key = self.countrySelect.stringValue;
-	AutocompleteItem *item = [self.countryAutocompleteDataSource get:key];
-
-	self.selectedCountryID = item.ID;
-}
-
 - (void)controlTextDidChange:(NSNotification *)aNotification
 {
 	if ([[aNotification object] isKindOfClass:[NSCustomComboBox class]])
@@ -415,16 +355,7 @@ extern void *ctx;
 	{
 		if (commandSelector == @selector(insertNewline:))
 		{
-			switch (self.currentTab)
-			{
-				case TabViewTypeLogin :
-					[self clickLoginButton:self.loginButton];
-					break;
-				case TabViewTypeSingup :
-					[self clickSignupButton:self.signupButton];
-					break;
-			}
-			return YES;
+            [self userActionButtonOnClick:control];
 		}
 	}
 	return NO;
@@ -447,26 +378,22 @@ extern void *ctx;
 - (void)showLoaderView:(BOOL)show
 {
 	self.loginLoaderView.hidden = !show;
-	self.signUpLoaderView.hidden = !show;
-
 	if (show)
 	{
 		[self.loginLoaderView startAnimation:self];
-		[self.signUpLoaderView startAnimation:self];
 	}
 	else
 	{
 		[self.loginLoaderView stopAnimation:self];
-		[self.signUpLoaderView stopAnimation:self];
 	}
 
 	self.email.enabled = !show;
 	self.password.enabled = !show;
-	self.loginButton.enabled = !show;
-	self.signupButton.enabled = !show;
-	self.loginGooglBtn.enabled = !show;
-	self.loginLink.enabled = !show;
+	self.userActionBtn.enabled = !show;
+	self.appleBtn.enabled = !show;
+	self.googleBtn.enabled = !show;
 	self.signUpLink.enabled = !show;
+    self.forgotPasswordTextField.enabled = !show;
 }
 
 - (void)resetLoader
@@ -575,6 +502,79 @@ extern void *ctx;
 		default :
 			break;
 	}
+}
+
+#pragma mark - User action
+
+- (IBAction)userActionButtonOnClick:(id)sender
+{
+    switch (self.currentTab)
+    {
+        case TabViewTypeLogin :
+            [self clickLoginButton:sender];
+            break;
+        case TabViewTypeSingup :
+            [self clickSignupButton:sender];
+            break;
+    }
+}
+
+- (void)clickSignupButton:(id)sender
+{
+    self.userAction = UserActionAccountSignup;
+
+    // Validate all values inserted
+    if (![self validateFormForAction:self.userAction])
+    {
+        return;
+    }
+
+    NSString *email = [self.email stringValue];
+    NSString *pass = [self.password stringValue];
+
+    [self.password setStringValue:@""];
+
+    // for empty State
+    [self setUserSignUp:YES];
+    [self showLoaderView:YES];
+
+    if (!toggl_signup_async(ctx, [email UTF8String], [pass UTF8String], self.selectedCountryID))
+    {
+        return;
+    }
+}
+
+- (void)clickLoginButton:(id)sender
+{
+    self.userAction = UserActionAccountLogin;
+
+    // Validate all values inserted
+    if (![self validateFormForAction:self.userAction])
+    {
+        return;
+    }
+
+    NSString *email = [self.email stringValue];
+    NSString *pass = [self.password stringValue];
+
+    [self.password setStringValue:@""];
+
+    // for empty State
+    [self setUserSignUp:NO];
+    [self showLoaderView:YES];
+
+    if (!toggl_login_async(ctx, [email UTF8String], [pass UTF8String]))
+    {
+        return;
+    }
+}
+
+- (IBAction)countrySelected:(id)sender
+{
+    NSString *key = self.countrySelect.stringValue;
+    AutocompleteItem *item = [self.countryAutocompleteDataSource get:key];
+
+    self.selectedCountryID = item.ID;
 }
 
 @end

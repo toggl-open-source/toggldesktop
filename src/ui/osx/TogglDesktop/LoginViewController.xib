@@ -9,18 +9,23 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="LoginViewController">
             <connections>
+                <outlet property="appleBtn" destination="Igm-AP-s4k" id="yeb-GX-G5H"/>
+                <outlet property="appleGoogleGroupViewTop" destination="9CJ-AW-6GG" id="RKE-hG-CeT"/>
                 <outlet property="boxView" destination="5dJ-p6-cHG" id="VMF-WN-OOL"/>
+                <outlet property="containerViewHeight" destination="dsh-UU-U3O" id="GMA-ic-Z5E"/>
                 <outlet property="countrySelect" destination="4Zx-Jg-kcg" id="5KU-LL-Edx"/>
+                <outlet property="donotHaveAccountLbl" destination="Nf5-yf-qTk" id="XQ0-eS-6lG"/>
                 <outlet property="email" destination="KGi-ca-Yer" id="PBJ-L7-SlM"/>
                 <outlet property="forgotPasswordTextField" destination="dzR-Wz-TvW" id="RkM-IV-nDU"/>
-                <outlet property="loginButton" destination="IjV-dM-dEc" id="tZ5-yj-hKl"/>
-                <outlet property="loginGooglBtn" destination="tJn-oc-LUz" id="B9S-uj-Ygi"/>
+                <outlet property="googleBtn" destination="tJn-oc-LUz" id="IkN-sj-6Yv"/>
                 <outlet property="loginLoaderView" destination="BLv-g2-Q0z" id="WB5-8X-iJh"/>
                 <outlet property="password" destination="es4-S9-8Od" id="mI1-u7-fNs"/>
                 <outlet property="privacyLink" destination="IVx-73-aIM" id="bg4-YH-NLO"/>
+                <outlet property="signUpGroupView" destination="Dqc-J5-qIX" id="u0Z-R2-fUB"/>
                 <outlet property="signUpLink" destination="vHA-Cd-ciE" id="IIF-Rc-Dys"/>
                 <outlet property="tosCheckbox" destination="p8r-V5-a0Z" id="Vwo-iN-cni"/>
                 <outlet property="tosLink" destination="fZp-Ag-MGC" id="HmT-m5-edl"/>
+                <outlet property="userActionBtn" destination="IjV-dM-dEc" id="fTf-nU-2Wl"/>
                 <outlet property="view" destination="d50-27-v7r" id="fRE-03-vij"/>
             </connections>
         </customObject>
@@ -132,10 +137,6 @@
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" metaFont="system"/>
                                         </buttonCell>
-                                        <connections>
-                                            <action selector="loginGoogleOnTap:" target="-2" id="g4n-Pb-FU6"/>
-                                            <outlet property="nextKeyView" destination="KGi-ca-Yer" id="b9C-Qv-2QU"/>
-                                        </connections>
                                     </button>
                                     <button verticalHuggingPriority="750" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tJn-oc-LUz">
                                         <rect key="frame" x="-2" y="-3" width="192" height="35"/>
@@ -146,10 +147,6 @@
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                             <font key="font" metaFont="system"/>
                                         </buttonCell>
-                                        <connections>
-                                            <action selector="loginGoogleOnTap:" target="-2" id="wD1-I5-hBa"/>
-                                            <outlet property="nextKeyView" destination="KGi-ca-Yer" id="LIW-sY-gXN"/>
-                                        </connections>
                                     </button>
                                 </subviews>
                                 <constraints>
@@ -226,8 +223,7 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
-                                            <action selector="clickLoginButton:" target="-2" id="MSd-p3-jrP"/>
-                                            <outlet property="nextKeyView" destination="tJn-oc-LUz" id="1Yi-Rt-aIt"/>
+                                            <action selector="userActionButtonOnClick:" target="-2" id="z8F-6F-tPZ"/>
                                         </connections>
                                     </button>
                                 </subviews>
