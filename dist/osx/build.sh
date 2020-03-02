@@ -27,7 +27,7 @@ function app() {
 }
 
 function get_new_tag_version() {
-    go run ./dist/osx/tag_version.go
+    go run ./dist/tag_version.go
 }
 
 function plist() {
@@ -145,11 +145,11 @@ function appcast() {
 
 function upload() {
     # Upload the new version to Github releases
-    PLATFORM="darwin" VERSION=$version INSTALLER_FILENAME=$installer_name INSTALLER=$installer GITHUB_USER="token" GITHUB_TOKEN=${GITHUB_TOKEN} go run dist/osx/upload_to_github.go -platform="darwin" 
+    PLATFORM="darwin" VERSION=$version INSTALLER_FILENAME=$installer_name INSTALLER=$installer GITHUB_USER="token" GITHUB_TOKEN=${GITHUB_TOKEN} go run dist/upload_to_github.go -platform="darwin" 
 }
 
 function update_release() {
-    ./dist/osx/update_releases.sh osx dev $version
+    ./dist/update_releases.sh osx dev $version
 }
 
 if [[ "$#" -ne 1 ]]; then
