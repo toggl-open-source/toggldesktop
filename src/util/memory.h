@@ -629,7 +629,9 @@ bool ProtectedContainer<T>::contains(const guid &uuid) const {
 
 template<class T>
 void ProtectedContainer<T>::sort() {
-    std::sort(container_.begin(), container_.end(), comparison_);
+    lock_type lock(mutex_);
+    if (comparison_)
+        std::sort(container_.begin(), container_.end(), comparison_);
 }
 
 template<class T>
