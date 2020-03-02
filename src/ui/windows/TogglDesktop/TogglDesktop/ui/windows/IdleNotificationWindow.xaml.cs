@@ -29,7 +29,7 @@ namespace TogglDesktop
 
             this.timeText.Text = since;
             this.durationText.Text = duration;
-            this.descriptionText.Text = description;
+            this.descriptionText.Text = string.IsNullOrEmpty(description) ? "No description" : description;
 
             this.Show();
             this.Topmost = true;
