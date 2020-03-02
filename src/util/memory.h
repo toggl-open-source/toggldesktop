@@ -9,6 +9,7 @@
 #include <map>
 #include <tuple>
 #include <functional>
+#include <algorithm>
 
 namespace toggl {
 class BaseModel;
@@ -278,6 +279,10 @@ public:
      * @return
      */
     bool contains(const guid &uuid) const;
+    /**
+     * @brief sort
+     */
+    void sort();
     /**
      * @brief operator[] - access elements by their position
      * @param position - order in the underlying sequential container
@@ -620,6 +625,11 @@ template<class T>
 bool ProtectedContainer<T>::contains(const guid &uuid) const {
     lock_type lock(mutex_);
     return guidMap_.find(uuid) != guidMap_.end();
+}
+
+template<class T>
+void ProtectedContainer<T>::sort() {
+    std::sort(container_.begin(), container_.end(), comparison_);
 }
 
 template<class T>

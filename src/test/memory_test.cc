@@ -231,6 +231,35 @@ TEST(ProtectedContainer, Ordering) {
     }
 }
 
+TEST(ProtectedContainer, Resorting) {
+    ASSERT_EQ(modelCounter, 0);
+    ProtectedContainer<TestModel> container { nullptr, [](auto l, auto r) -> bool {
+        // should insert the items in reverse order by IDs
+        return r->ID() < l->ID();
+    }};
+    ASSERT_EQ(container.size(), 0);
+    auto item1 = container.create(guid("1"), 1);
+    auto item2 = container.create(guid("2"), 2);
+    auto item3 = container.create(guid("3"), 3);
+    auto item4 = container.create(guid("4"), 4);
+    auto item5 = container.create(guid("5"), 5);
+    ASSERT_EQ(container.size(), 5);
+    for (size_t i = 0; i < 5; i++) {
+        // expect the IDs reversed
+        ASSERT_EQ(container[i]->ID(), 5 - i);
+    }
+    item1->SetID(50);
+    item2->SetID(40);
+    item3->SetID(30);
+    item4->SetID(20);
+    item5->SetID(10);
+    container.sort();
+    for (size_t i = 0; i < 5; i++) {
+        // expect the IDs reversed and respecting the change
+        ASSERT_EQ(container[i]->ID(), (5 - i) * 10);
+    }
+}
+
 } // namespace toggl
 /*
 int main(int argc, char **argv) {
