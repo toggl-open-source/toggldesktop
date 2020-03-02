@@ -19,10 +19,10 @@ public:
     ~TestModel() {
         modelCounter--;
     }
-    std::string ModelName() {
+    std::string ModelName() const {
         return "Test";
     }
-    guid GUID() {
+    guid GUID() const {
         return uuid_;
     }
     void SetGUID(const guid &guid) {
@@ -30,7 +30,7 @@ public:
             uuid_ = guid;
         }
     }
-    uint64_t ID() {
+    uint64_t ID() const {
         return id_;
     }
     void SetID(uint64_t id) {
@@ -210,6 +210,25 @@ TEST(ProtectedContainer, InsertAndChangeGUID) {
     ASSERT_FALSE(lost);
     auto found = container.byGUID("2");
     ASSERT_TRUE(found);
+}
+
+TEST(ProtectedContainer, Ordering) {
+    ASSERT_EQ(modelCounter, 0);
+    ProtectedContainer<TestModel> container { nullptr, [](auto l, auto r) -> bool {
+        // should insert the items in reverse order by IDs
+        return r->ID() < l->ID();
+    }};
+    ASSERT_EQ(container.size(), 0);
+    container.create(guid("1"), 1);
+    container.create(guid("5"), 5);
+    container.create(guid("3"), 3);
+    container.create(guid("4"), 4);
+    container.create(guid("2"), 2);
+    ASSERT_EQ(container.size(), 5);
+    for (size_t i = 0; i < 5; i++) {
+        // expect the IDs reversed
+        ASSERT_EQ(container[i]->ID(), 5 - i);
+    }
 }
 
 } // namespace toggl

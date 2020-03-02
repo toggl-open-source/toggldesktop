@@ -8,6 +8,7 @@
 #include <iostream>
 #include <map>
 #include <tuple>
+#include <functional>
 
 namespace toggl {
 class BaseModel;
@@ -226,9 +227,11 @@ public:
 
     /**
      * @brief ProtectedContainer
-     * @param parent
+     * @param parent - the parent RelatedData instances (to be passed to the children)
+     * @param comparison - a binary predicate with the signature of bool(const T*, const T*), used to insert items at the right position when creating
+     * TODO Using the comparison predicate has O(N) complexity, we'd very likely be much better off storing everything in a std::set
      */
-    ProtectedContainer(RelatedData *parent);
+    ProtectedContainer(RelatedData *parent, std::function<bool(const T* left, const T* right)> comparison = {});
     ProtectedContainer(const ProtectedContainer &o) = delete;
     ~ProtectedContainer();
 
@@ -247,7 +250,7 @@ public:
      */
     void clear();
     /**
-     * @brief create - Allocate a new instance of <typename T>
+     * @brief create - Allocate a new instance of <typename T>. If a comparison predicate was supplied, the item is inserted at the right order
      * @return - a @ref locked new instance of T
      * OVERHAUL TODO: this could be more efficient
      */
@@ -313,6 +316,7 @@ public:
 private:
     std::vector<T*> container_;
     mutable std::map<guid, T*> guidMap_; // mutable because byGUID creates a search cache
+    std::function<bool(const T* left, const T* right)> comparison_;
 };
 
 // one argument variant, recursion stop
@@ -518,10 +522,10 @@ locked<T> ProtectedModel<T>::create(Args&&... args) {
 }
 
 //////// PROTECTEDCONTAINER ////////////////////////////////////////////////////
-//// base class
 template<class T>
-ProtectedContainer<T>::ProtectedContainer(RelatedData *parent)
+ProtectedContainer<T>::ProtectedContainer(RelatedData *parent, std::function<bool(const T*, const T*)> comparison)
     : ProtectedBase(parent)
+    , comparison_(comparison)
 {
 
 }
@@ -763,7 +767,13 @@ template <typename T> template <typename ...Args>
 locked<T> ProtectedContainer<T>::create(Args&&... args) {
     lock_type lock(mutex_);
     T *val = make<T>(this, std::forward<Args>(args)...);
-    container_.push_back(val);
+    if (comparison_) {
+        auto position = std::upper_bound(container_.begin(), container_.end(), val, comparison_);
+        container_.insert(position, val);
+    }
+    else {
+        container_.push_back(val);
+    }
     guidMap_[val->GUID()] = val;
     return { mutex_, val };
 }
