@@ -224,7 +224,6 @@ namespace TogglDesktop
 
         private void initializeColorScheme()
         {
-            Theme.ActivateDetectedColorSchemeOrDefault();
             Theme.CurrentColorScheme.Subscribe(x => this.updateTitleBarBackground(activeView));
             Theme.CurrentColorScheme.Subscribe(x =>
             {
@@ -472,6 +471,7 @@ namespace TogglDesktop
             if (this.TryBeginInvoke(this.onSettings, open, settings))
                 return;
 
+            Theme.SetThemeFromSettings(settings.ColorTheme);
             this.setGlobalShortcutsFromSettings();
             this.idleDetectionTimer.IsEnabled = settings.UseIdleDetection;
             this.Topmost = settings.OnTop;

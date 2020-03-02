@@ -13,15 +13,31 @@ namespace TogglDesktop.Theming
         private static readonly Subject<ColorScheme> currentColorSchemeSubject = new Subject<ColorScheme>();
         public static IObservable<ColorScheme> CurrentColorScheme => currentColorSchemeSubject.AsObservable();
 
+        public static void SetThemeFromSettings(byte selectedTheme)
+        {
+            switch (selectedTheme)
+            {
+                case 0:
+                    ActivateDetectedColorSchemeOrDefault();
+                    break;
+                case 1:
+                    ActivateColorScheme(ColorScheme.Light);
+                    break;
+                case 2:
+                    ActivateColorScheme(ColorScheme.Dark);
+                    break;
+            }
+        }
+
         /// <returns>Activated color scheme.</returns>
-        public static ColorScheme ActivateDetectedColorSchemeOrDefault(ColorScheme defaultColorScheme = ColorScheme.Light)
+        private static ColorScheme ActivateDetectedColorSchemeOrDefault(ColorScheme defaultColorScheme = ColorScheme.Light)
         {
             var colorScheme = DetectOsColorScheme().GetValueOrDefault(defaultColorScheme);
             ActivateColorScheme(colorScheme);
             return colorScheme;
         }
 
-        public static void ActivateColorScheme(ColorScheme colorScheme)
+        private static void ActivateColorScheme(ColorScheme colorScheme)
         {
             Activate(ThemeType.ColorScheme, colorScheme.ToString());
             currentColorSchemeSubject.OnNext(colorScheme);

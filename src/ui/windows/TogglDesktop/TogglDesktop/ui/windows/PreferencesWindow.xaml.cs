@@ -108,6 +108,8 @@ namespace TogglDesktop
             this.keepDurationFixedCheckbox.IsChecked = !this.keepEndTimeFixedCheckbox.IsChecked;
 
             this.onStopEntryCheckBox.IsChecked = settings.StopEntryOnShutdownSleep;
+            this.themeComboBox.SelectedIndex = settings.ColorTheme;
+
             Task.Run(UpdateLaunchOnStartupCheckboxAsync);
 
             #endregion
@@ -263,6 +265,7 @@ namespace TogglDesktop
                 PomodoroBreakMinutes = toLong(this.pomodoroBreakTimerDuration.Text),
 
                 StopEntryOnShutdownSleep = isChecked(this.onStopEntryCheckBox),
+                ColorTheme = (byte)this.themeComboBox.SelectedIndex,
 
                 #endregion
 
@@ -391,21 +394,5 @@ namespace TogglDesktop
         }
 
         #endregion
-
-        private void ThemeComboBoxOnSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            switch (themeComboBox.SelectedIndex)
-            {
-                case 0:
-                    Theming.Theme.ActivateDetectedColorSchemeOrDefault();
-                    break;
-                case 1:
-                    Theming.Theme.ActivateColorScheme(ColorScheme.Light);
-                    break;
-                case 2:
-                    Theming.Theme.ActivateColorScheme(ColorScheme.Dark);
-                    break;
-            }
-        }
     }
 }

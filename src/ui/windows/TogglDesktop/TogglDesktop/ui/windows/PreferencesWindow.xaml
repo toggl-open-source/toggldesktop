@@ -41,8 +41,7 @@
                     <StackPanel Margin="24 32 24 48">
                         <TextBlock Style="{DynamicResource Toggl.TitleText}" Text="Light/dark mode" />
                         <ComboBox x:Name="themeComboBox" Margin="0 6 0 0" Width="360"
-                                  HorizontalAlignment="Left"
-                                  SelectionChanged="ThemeComboBoxOnSelectionChanged">
+                                  HorizontalAlignment="Left">
                             <ComboBoxItem IsSelected="True">Use my Windows mode</ComboBoxItem>
                             <ComboBoxItem>Light</ComboBoxItem>
                             <ComboBoxItem>Dark</ComboBoxItem>
