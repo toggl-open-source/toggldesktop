@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" xmlns:dc="http://purl.org/dc/elements/1.1/">
+    <channel>
+        <title>TogglDesktop Changelog</title>
+        <link>{APPCAST_URL}</link>
+        <description>Most recent changes.</description>
+        <language>en</language>
+        <item>
+            <title>Version {VERSION}</title>
+            <pubDate>{DATE}</pubDate>
+            <enclosure url="{APP_URL}" sparkle:version="{VERSION}" length="{LENGTH}" type="application/octet-stream" sparkle:dsaSignature="{SIGNATURE}" />
+            <description>
+                <![CDATA[
+                    <ul>
+                    </ul>
+                ]]>
+            </description>
+        </item>
+    </channel>
+</rss>

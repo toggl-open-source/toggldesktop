@@ -11,9 +11,34 @@ jobs:
   macos:
     runs-on: macOS-latest
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
       with:
         fetch-depth: 1
+    - name: Prepare ENV
+      run: |
+        TAG_NAME=$(./dist/get-tag-name.sh)
+        version=${TAG_NAME/v/}
+        timestamp=$(date '+%Y-%m-%d-%H-%M-%S')
+        escaped_version=$(echo $version | sed 's/\./_/g')
+        installer=TogglDesktop-$escaped_version-$timestamp.dmg
+        installer_name=TogglDesktop-$escaped_version.dmg
+
+        echo $version
+        echo $installer
+        echo $installer_name
+
+        # Export env to all future steps
+        echo "::set-env name=TAG_NAME::$TAG_NAME"
+        echo "::set-env name=version::$version"
+        echo "::set-env name=timestamp::$timestamp"
+        echo "::set-env name=escaped_version::$escaped_version"
+        echo "::set-env name=installer::$installer"
+        echo "::set-env name=installer_name::$installer_name"
+    - name: Setup Golang env
+      if: github.event_name == 'release'
+      uses: actions/setup-go@v1
+      with:
+        version: 1.13
     - name: Import signing key
       run: |
         # Create a new keychian and make it default
@@ -43,12 +68,9 @@ jobs:
       run: |
         bash ./dist/osx/build.sh app
     - name: Insert version string
-      if: github.event_name == 'release'
       run: |
-        TAG_NAME=$(./dist/get-tag-name.sh)
         bash ./dist/osx/build.sh plist
     - name: Codesign
-      if: github.event_name == 'release'
       run: |
         bash ./dist/osx/build.sh sign
     - name: Notarize
@@ -61,12 +83,21 @@ jobs:
       if: github.event_name == 'release'
       run: |
         bash ./dist/osx/build.sh dmg
-    - name: Upload to GitHub Release
+    - name: Update Appcast
       if: github.event_name == 'release'
       run: |
-        TAG_NAME=$(./dist/get-tag-name.sh)
-        ./dist/upload-github-release-asset.sh github_api_token=${{ secrets.GITHUB_TOKEN }} owner=MartinBriza repo=toggldesktop tag="$TAG_NAME" filename="TogglDesktop.dmg" renameto="TogglDesktop-${TAG_NAME/v/}.dmg"
-
+        base64 -D <<< "${{ secrets.APPCAST_PRIVATE_PEM }}" > dsa_priv.pem
+        bash ./dist/osx/build.sh appcast
+    - name: Upload
+      if: github.event_name == 'release'
+      run: |
+        export "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}"
+        bash ./dist/osx/build.sh upload
+    - name: Update Release
+      if: github.event_name == 'release'
+      run: |
+        bash ./dist/osx/build.sh update_release
+   
   linux-basic:
     runs-on: ubuntu-latest
     if: github.event_name != 'release'
@@ -86,10 +117,10 @@ jobs:
       run: |
         pushd build-tarball
         ../dist/run-tests.sh test=./src/test/TogglAppTest name="App" slack_url=${{ secrets.SLACK_HOOK_URL }} slack_channel="#desktop-bots"
-    - name: Run API test
-      run: |
-        pushd build-tarball
-        ../dist/run-tests.sh test=./src/test/TogglApiTest name="API" slack_url=${{ secrets.SLACK_HOOK_URL }} slack_channel="#desktop-bots"
+    # - name: Run API test
+    #   run: |
+    #     pushd build-tarball
+    #     ../dist/run-tests.sh test=./src/test/TogglApiTest name="API" slack_url=${{ secrets.SLACK_HOOK_URL }} slack_channel="#desktop-bots"
 
   linux-tarball:
     runs-on: ubuntu-16.04
