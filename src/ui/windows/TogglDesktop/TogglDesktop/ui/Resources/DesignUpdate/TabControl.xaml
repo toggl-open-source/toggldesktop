@@ -29,17 +29,21 @@
                               Grid.Row="0"
                               Grid.Column="0"
                               Panel.ZIndex="1">
-                            <mah:Underline x:Name="Underline"
-                                                Background="Transparent"
-                                                BorderBrush="{TemplateBinding mah:TabControlHelper.UnderlineBrush}"
-                                                LineThickness="1"
-                                                Placement="Bottom"
-                                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                                Visibility="Collapsed" />
-                            <Border BorderThickness="0 0 0 1" Margin="0 0 0 -5"
-                                    Effect="{DynamicResource Toggl.SeparatorShadow}"
-                                    BorderBrush="{DynamicResource Toggl.BarelyVisibleSeparator}">
+                            <Border Height="1"
+                                    VerticalAlignment="Bottom"
+                                    Background="{DynamicResource Toggl.CardBackground}">
+                                <Border.Effect>
+                                    <DropShadowEffect Direction="270" Color="Black" Opacity="0.15"
+                                                      BlurRadius="4" ShadowDepth="1" />
+                                </Border.Effect>
                             </Border>
+                            <mah:Underline x:Name="Underline"
+                                           Background="Transparent"
+                                           BorderBrush="{TemplateBinding mah:TabControlHelper.UnderlineBrush}"
+                                           LineThickness="1"
+                                           Placement="Bottom"
+                                           SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                           Visibility="Collapsed" />
                             <TabPanel x:Name="HeaderPanel"
                                       Margin="10 0"
                                       IsItemsHost="true"
