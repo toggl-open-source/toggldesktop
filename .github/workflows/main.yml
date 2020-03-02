@@ -196,7 +196,25 @@ jobs:
         TAG_NAME=$(./dist/get-tag-name.sh)
         echo "Setting version to ${TAG_NAME/v/}"
         bash dist/windows/scripts/set_version.sh "${TAG_NAME/v/}"
+    - name: Cache POCO bin
+      id: cache-poco-bin
+      uses: actions/cache@v1
+      with:
+        path: third_party/poco/bin
+        key: ${{ runner.os }}-poco-bin-1.9.0
+    - name: Cache POCO lib
+      id: cache-poco-lib
+      uses: actions/cache@v1
+      with:
+        path: third_party/poco/lib
+        key: ${{ runner.os }}-poco-lib-1.9.0
+    - name: Build on Windows x86 without POCO
+      if: steps.cache-poco-bin.outputs.cache-hit == 'true'
+      shell: cmd
+      run: |
+        "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe" /p:Configuration=Release /p:Platform="x86" /t:Clean,Build /restore /m src\ui\windows\TogglDesktop\TogglDesktop.NoPoco.sln
     - name: Build on Windows x86
+      if: steps.cache-poco-bin.outputs.cache-hit != 'true'
       shell: cmd
       run: |
         "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\MSBuild.exe" /p:Configuration=Release /p:Platform="x86" /t:Clean,Build /restore /m src\ui\windows\TogglDesktop\TogglDesktop.sln
