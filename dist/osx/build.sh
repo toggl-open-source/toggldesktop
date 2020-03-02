@@ -135,7 +135,6 @@ function appcast() {
     echo $filesize
     echo $appUrl
 
-    mkdir -p branding
     mkdir -p tmp
     
     # Generate AppCast
