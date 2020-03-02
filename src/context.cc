@@ -2038,6 +2038,11 @@ error Context::SetSettingsActiveTab(const uint8_t active_tab) {
         db()->SetSettingsActiveTab(active_tab));
 }
 
+error Context::SetSettingsColorTheme(const uint8_t color_theme) {
+    return applySettingsSaveResultToUI(
+        db()->SetSettingsColorTheme(color_theme));
+}
+
 error Context::SetSettingsIdleMinutes(const Poco::UInt64 idle_minutes) {
     return applySettingsSaveResultToUI(
         db()->SetSettingsIdleMinutes(idle_minutes));

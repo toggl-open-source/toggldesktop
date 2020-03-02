@@ -80,6 +80,7 @@ class TOGGL_INTERNAL_EXPORT Settings : public BaseModel {
     bool stop_entry_on_shutdown_sleep;
     bool show_touch_bar;
     Poco::UInt8 active_tab;
+    Poco::UInt8 color_theme;
 
     bool IsSame(const Settings &other) const;
 
