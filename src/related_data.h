@@ -50,6 +50,9 @@ T *modelByID(const Poco::UInt64 id, std::vector<T *> const *list);
 template <typename T>
 T *modelByGUID(const guid GUID, std::vector<T *> const *list);
 
+extern bool CompareClients(const Client *l, const Client *r);
+extern bool CompareProjects(const Project *l, const Project *r);
+
 class TOGGL_INTERNAL_EXPORT RelatedData {
  public:
     RelatedData() {
@@ -58,46 +61,8 @@ class TOGGL_INTERNAL_EXPORT RelatedData {
 
     ProtectedModel<toggl::User> User { this };
     ProtectedContainer<Workspace> Workspaces { this };
-    ProtectedContainer<Client> Clients { this, [](auto l, auto r) -> bool {
-        if (l->WID() == r->WID()) {
-            if (Poco::UTF8::icompare(l->Name(), r->Name()) < 0) {
-                return true;
-            }
-        } else if (l->WID() > r->WID() ){
-            return true;
-        }
-        return false;
-    }};
-    ProtectedContainer<Project> Projects { this, [](auto l, auto r) -> bool {
-        if (l->WID() < r->WID()) {
-            return false;
-        }
-        else if (l->WID() == r->WID()) {
-            if ((l->CID() == 0 && l->ClientGUID().empty()) && r->CID() == 0) {
-                // Handle adding project without client
-                if (Poco::UTF8::icompare(l->Name(), r->Name()) < 0) {
-                    return true;
-                }
-            } else if (Poco::UTF8::icompare(l->ClientName(), r->ClientName()) == 0) {
-                // Handle adding project with client
-                if (Poco::UTF8::icompare(l->FullName(), r->FullName()) < 0) {
-                    return true;
-                }
-                /* TODO FIXME check this
-            } else if (CIDMatch) {
-                // in case new project is last in client list
-                return true;
-                */
-            } else if ((l->CID() != 0 || !l->ClientGUID().empty()) && r->CID() != 0) {
-                if (Poco::UTF8::icompare(l->FullName(), r->FullName()) < 0) {
-                    return true;
-                }
-            }
-        } else {
-            return true;
-        }
-        return false;
-    }};
+    ProtectedContainer<Client> Clients { this, &CompareClients };
+    ProtectedContainer<Project> Projects { this, &CompareProjects };
     ProtectedContainer<Task> Tasks { this };
     ProtectedContainer<Tag> Tags { this };
     ProtectedContainer<TimeEntry> TimeEntries { this };

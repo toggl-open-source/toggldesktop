@@ -588,4 +588,46 @@ locked<const Client> RelatedData::clientByProject(locked<const Project> &p) cons
 
 }
 
+bool CompareClients(const Client *l, const Client *r) {
+    if (l->WID() == r->WID()) {
+        if (Poco::UTF8::icompare(l->Name(), r->Name()) < 0) {
+            return true;
+        }
+    } else if (l->WID() > r->WID() ){
+        return true;
+    }
+    return false;
+}
+
+bool CompareProjects(const Project *l, const Project *r) {
+    if (l->WID() < r->WID()) {
+        return false;
+    }
+    else if (l->WID() == r->WID()) {
+        if ((l->CID() == 0 && l->ClientGUID().empty()) && r->CID() == 0) {
+            // Handle adding project without client
+            if (Poco::UTF8::icompare(l->Name(), r->Name()) < 0) {
+                return true;
+            }
+        } else if (Poco::UTF8::icompare(l->ClientName(), r->ClientName()) == 0) {
+            // Handle adding project with client
+            if (Poco::UTF8::icompare(l->FullName(), r->FullName()) < 0) {
+                return true;
+            }
+            /* TODO FIXME check this
+        } else if (CIDMatch) {
+            // in case new project is last in client list
+            return true;
+            */
+        } else if ((l->CID() != 0 || !l->ClientGUID().empty()) && r->CID() != 0) {
+            if (Poco::UTF8::icompare(l->FullName(), r->FullName()) < 0) {
+                return true;
+            }
+        }
+    } else {
+        return true;
+    }
+    return false;
+}
+
 }   // namespace toggl
