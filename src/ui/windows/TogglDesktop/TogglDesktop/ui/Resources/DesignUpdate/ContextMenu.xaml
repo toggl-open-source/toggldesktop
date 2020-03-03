@@ -37,12 +37,12 @@
         <Setter Property="BorderBrush" Value="{DynamicResource Toggl.LightGrayBrush}" />
         <Setter Property="Foreground" Value="{DynamicResource Toggl.PrimaryTextBrush}" />
         <Setter Property="FontSize" Value="{StaticResource NormalFontSize}" />
+        <Setter Property="Width" Value="280" />
         <Setter Property="Padding" Value="0 4" />
     </Style>
 
     <Style TargetType="MenuItem" BasedOn="{StaticResource MahApps.Styles.MenuItem}">
         <Setter Property="Background" Value="{DynamicResource Toggl.CardBackground}" />
-        <Setter Property="Width" Value="300" />
         <Setter Property="Height" Value="32" />
         <Style.Triggers>
             <Trigger Property="Role" Value="SubmenuItem">
