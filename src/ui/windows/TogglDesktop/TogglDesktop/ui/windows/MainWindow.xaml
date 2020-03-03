@@ -66,18 +66,24 @@
                         </Style>
                         </ContextMenu.Resources>
                         <MenuItem Header="New" InputGestureText="Ctrl + N"
-                                  Command="{x:Static toggl:KeyboardShortcuts.New}"/>
+                                  Command="{x:Static toggl:KeyboardShortcuts.New}"
+                                  Icon="{StaticResource Toggl.NewIcon}"/>
                         <MenuItem Header="Continue" InputGestureText="Ctrl + O"
-                                  Command="{x:Static toggl:KeyboardShortcuts.Continue}"/>
+                                  Command="{x:Static toggl:KeyboardShortcuts.Continue}"
+                                  Icon="{StaticResource Toggl.ContinueIcon}"/>
                         <MenuItem Header="Stop" InputGestureText="Ctrl + S"
-                                  Command="{x:Static toggl:KeyboardShortcuts.Stop}"/>
+                                  Command="{x:Static toggl:KeyboardShortcuts.Stop}"
+                                  Icon="{StaticResource Toggl.StopIcon}"/>
                         <Separator Style="{StaticResource {x:Static MenuItem.SeparatorStyleKey}}"/>
                         <MenuItem Header="Sync" InputGestureText="F5"
-                                  Command="{x:Static toggl:KeyboardShortcuts.Sync}"/>
+                                  Command="{x:Static toggl:KeyboardShortcuts.Sync}"
+                                  Icon="{StaticResource Toggl.SyncIcon}"/>
                         <MenuItem Header="Reports"
-                                  Command="{x:Static toggl:KeyboardShortcuts.Reports}"/>
+                                  Command="{x:Static toggl:KeyboardShortcuts.Reports}"
+                                  Icon="{StaticResource Toggl.ReportsIcon}"/>
                         <MenuItem Header="Preferences" InputGestureText="Ctrl + ,"
-                                  Command="{x:Static toggl:KeyboardShortcuts.Preferences}"/>
+                                  Command="{x:Static toggl:KeyboardShortcuts.Preferences}"
+                                  Icon="{StaticResource Toggl.PreferencesIcon}"/>
                         <MenuItem Header="Use manual mode" InputGestureText="Ctrl + D"
                                   Name="togglManualModeMenuItem" x:FieldModifier="private"
                                   Command="{x:Static toggl:KeyboardShortcuts.ToggleManualMode}"
@@ -88,15 +94,20 @@
                                   IsCheckable="True"/>
                         <Separator Style="{StaticResource {x:Static MenuItem.SeparatorStyleKey}}"/>
                         <MenuItem Header="Toggl Desktop Tutorial"
-                                  Command="{x:Static toggl:KeyboardShortcuts.BasicTutorial}"/>
+                                  Command="{x:Static toggl:KeyboardShortcuts.BasicTutorial}"
+                                  Icon="{StaticResource Toggl.TutorialIcon}"/>
                         <MenuItem Header="Send Feedback"
-                                  Command="{x:Static toggl:KeyboardShortcuts.SendFeedback}"/>
+                                  Command="{x:Static toggl:KeyboardShortcuts.SendFeedback}"
+                                  Icon="{StaticResource Toggl.FeedbackIcon}"/>
                         <MenuItem Header="About"
-                                  Command="{x:Static toggl:KeyboardShortcuts.About}"/>
+                                  Command="{x:Static toggl:KeyboardShortcuts.About}"
+                                  Icon="{StaticResource Toggl.AboutIcon}"/>
                         <MenuItem x:Name="logoutMenuItem" Header="Logout"
-                                  Command="{x:Static toggl:KeyboardShortcuts.Logout}"/>
+                                  Command="{x:Static toggl:KeyboardShortcuts.Logout}"
+                                  Icon="{StaticResource Toggl.LogoutIcon}"/>
                         <MenuItem Header="Quit" InputGestureText="Ctrl + Q"
-                                  Command="{x:Static toggl:KeyboardShortcuts.Quit}"/>
+                                  Command="{x:Static toggl:KeyboardShortcuts.Quit}"
+                                  Icon="{StaticResource Toggl.QuitIcon}"/>
                     </ContextMenu>
 
                 </Button.ContextMenu>
