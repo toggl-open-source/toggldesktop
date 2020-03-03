@@ -52,6 +52,7 @@
                     Style="{StaticResource Toggl.CogwheelButton}">
                 <Button.ContextMenu>
                     <ContextMenu Name="mainContextMenu" x:FieldModifier="private"
+                                 Width="300"
                                  Closed="onMainContextMenuClosed">
                         <ContextMenu.Resources>
                         <Style TargetType="TextBlock" BasedOn="{StaticResource Toggl.CaptionText}">

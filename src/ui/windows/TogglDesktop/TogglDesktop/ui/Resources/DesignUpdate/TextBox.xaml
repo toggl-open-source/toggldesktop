@@ -8,6 +8,12 @@
         <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.TextBlock.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
+    <ContextMenu x:Key="Toggl.TextBox.ContextMenu" Width="200">
+        <MenuItem Command="ApplicationCommands.Cut"  />
+        <MenuItem Command="ApplicationCommands.Copy" />
+        <MenuItem Command="ApplicationCommands.Paste" />
+    </ContextMenu>
+
     <Style x:Key="MahApps.Styles.TextBlock.Watermark"
            BasedOn="{StaticResource MahApps.Styles.TextBlock}"
            TargetType="{x:Type TextBlock}">
@@ -28,6 +34,7 @@
         <Setter Property="Height" Value="32" />
         <Setter Property="behaviors:TextBoxHelper.IsPaddingClickable" Value="True" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="ContextMenu" Value="{StaticResource Toggl.TextBox.ContextMenu}" />
         <Style.Triggers>
             <Trigger Property="IsEnabled" Value="False">
                 <Setter Property="Foreground" Value="{DynamicResource Toggl.DisabledTextBrush}" />
