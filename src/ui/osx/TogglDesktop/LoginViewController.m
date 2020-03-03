@@ -11,7 +11,7 @@
 #import "NSTextFieldClickablePointer.h"
 #import "AutocompleteDataSource.h"
 #import "NSCustomComboBox.h"
-//#import "TogglDesktop-Swift.h"
+#import "TogglDesktop-Swift.h"
 
 typedef NS_ENUM (NSUInteger, TabViewType)
 {
@@ -34,7 +34,7 @@ typedef NS_ENUM (NSUInteger, UserAction)
     UserActionAppleSignup,
 };
 
-@interface LoginViewController () <NSTextFieldDelegate, NSTableViewDataSource, NSComboBoxDataSource, NSComboBoxDelegate, LoginSignupTouchBarDelegate>
+@interface LoginViewController () <NSTextFieldDelegate, NSTableViewDataSource, NSComboBoxDataSource, NSComboBoxDelegate, LoginSignupTouchBarDelegate, AppleAuthenticationServiceDelegate>
 @property (weak) IBOutlet NSTextField *email;
 @property (weak) IBOutlet NSSecureTextField *password;
 @property (weak) IBOutlet NSTextFieldClickablePointer *forgotPasswordTextField;
@@ -122,6 +122,11 @@ extern void *ctx;
     {
         self.loginTouchBar = [[LoginSignupTouchBar alloc] init];
         self.loginTouchBar.delegate = self;
+    }
+
+    if (@available(macOS 10.15, *))
+    {
+        [AppleAuthenticationService shared].delegate = self;
     }
 }
 
@@ -608,13 +613,57 @@ extern void *ctx;
 
 - (void)signupAppleBtnOnTap:(id)sender
 {
-    self.userAction = UserActionAppleSignup;
-
+    if (@available(macOS 10.15, *))
+    {
+        self.userAction = UserActionAppleSignup;
+        [[AppleAuthenticationService shared] requestAuth];
+    }
 }
 
 - (void)loginAppleBtnOnTap:(id)sender
 {
-    self.userAction = UserActionAppleLogin;
+    if (@available(macOS 10.15, *))
+    {
+        self.userAction = UserActionAppleLogin;
+        [[AppleAuthenticationService shared] requestAuth];
+    }
 }
 
+
+#pragma mark - AppleAuthenticationServiceDelegate
+
+- (NSWindow *)appleAuthenticationPresentOnWindow
+{
+    return self.view.window;
+}
+
+- (void)appleAuthenticationDidCompleteWith:(ASAuthorizationAppleIDCredential *)credential API_AVAILABLE(macos(10.15))
+{
+    [self showLoaderView:YES];
+
+    // Extract data
+    NSString *fullName = nil;
+    if (credential.fullName) {
+        fullName = [[NSPersonNameComponentsFormatter alloc] stringFromPersonNameComponents:credential.fullName];
+    }
+    NSString *token = [[NSString alloc] initWithData:credential.identityToken encoding:NSUTF8StringEncoding];
+
+    // Login or Signup
+    switch (self.userAction)
+    {
+        case UserActionAppleSignup :
+            toggl_apple_signup_async(ctx, [token UTF8String], self.selectedCountryID, [fullName UTF8String]);
+            break;
+        case UserActionAppleLogin :
+            toggl_apple_login_async(ctx, [token UTF8String]);
+            break;
+        default :
+            break;
+    }
+}
+
+- (void)appleAuthenticationDidFailedWith:(NSError *)error
+{
+
+}
 @end

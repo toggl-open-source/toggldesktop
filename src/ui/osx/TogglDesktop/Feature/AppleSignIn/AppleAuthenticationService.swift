@@ -11,6 +11,9 @@ import AuthenticationServices
 
 @objc protocol AppleAuthenticationServiceDelegate: class {
 
+    @available(OSX 10.15, *)
+    func appleAuthenticationDidComplete(with credential: ASAuthorizationAppleIDCredential)
+    func appleAuthenticationDidFailed(with error: Error)
     func appleAuthenticationPresentOnWindow() -> NSWindow
 }
 
@@ -18,7 +21,7 @@ import AuthenticationServices
 @objc
 final class AppleAuthenticationService: NSObject {
 
-    static let shared = AppleAuthenticationService()
+     @objc static let shared = AppleAuthenticationService()
 
     // MARK: Variables
 
@@ -26,7 +29,7 @@ final class AppleAuthenticationService: NSObject {
 
     // MARK: Public
 
-    func requestApple() {
+    @objc func requestAuth() {
         let appleIDProvider = ASAuthorizationAppleIDProvider()
         let request = appleIDProvider.createRequest()
         request.requestedScopes = [.fullName, .email]
@@ -44,18 +47,14 @@ final class AppleAuthenticationService: NSObject {
 extension AppleAuthenticationService: ASAuthorizationControllerDelegate {
 
     func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
-
+        print("Error \(error)")
+        delegate?.appleAuthenticationDidFailed(with: error)
     }
 
     func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
         switch authorization.credential {
         case let appleIDCredential as ASAuthorizationAppleIDCredential:
-
-            // Create an account in your system.
-            let userIdentifier = appleIDCredential.user
-            let fullName = appleIDCredential.fullName
-            let email = appleIDCredential.email
-
+            delegate?.appleAuthenticationDidComplete(with: appleIDCredential)
         default:
             break
         }
