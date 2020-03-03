@@ -43,6 +43,7 @@
     <Style TargetType="MenuItem" BasedOn="{StaticResource MahApps.Styles.MenuItem}">
         <Setter Property="Background" Value="{DynamicResource Toggl.CardBackground}" />
         <Setter Property="Width" Value="300" />
+        <Setter Property="Height" Value="32" />
         <Style.Triggers>
             <Trigger Property="Role" Value="SubmenuItem">
                 <Setter Property="Padding" Value="2 2 2 2" />
@@ -68,7 +69,7 @@
                     <ColumnDefinition Width="17" />
                 </Grid.ColumnDefinitions>
                 <ContentPresenter x:Name="Icon"
-                                  Margin="1"
+                                  Margin="4"
                                   VerticalAlignment="Center"
                                   ContentSource="Icon"
                                   SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
@@ -86,17 +87,19 @@
                 </Viewbox>
                 <ContentPresenter Grid.Column="2"
                                   Margin="2 2 -120 2"
+                                  VerticalAlignment="Center"
                                   ContentSource="Header"
                                   RecognizesAccessKey="True"
                                   SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                 <TextBlock Grid.Column="4"
                            Margin="{TemplateBinding Padding}"
                            Style="{StaticResource Toggl.CaptionText}"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Right"
                            MaxWidth="200"
                            TextWrapping="NoWrap"
                            TextTrimming="CharacterEllipsis"
-                           Text="{TemplateBinding InputGestureText}"
-                           HorizontalAlignment="Right"/>
+                           Text="{TemplateBinding InputGestureText}"/>
             </Grid>
         </Grid>
         <ControlTemplate.Triggers>
