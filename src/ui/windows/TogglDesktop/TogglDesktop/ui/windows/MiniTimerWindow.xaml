@@ -23,6 +23,13 @@
         SizeToContent="Height"
         WindowStartupLocation="Manual"
         ResizeBorderThickness="4 0">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources/DesignUpdate/MahApps.Overrides.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
     <Grid>
         <toggl:MiniTimer x:Name="timer" x:FieldModifier="private" />
     </Grid>
