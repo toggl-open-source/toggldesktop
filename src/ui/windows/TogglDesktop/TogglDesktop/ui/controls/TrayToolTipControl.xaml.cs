@@ -8,10 +8,13 @@ namespace TogglDesktop
         public TrayToolTipControl()
         {
             InitializeComponent();
-            TimeEntryLabel.ShowAddDetailsLabels = false;
         }
 
-        public TimeEntryLabelViewModel TimeEntryLabel => timeEntryLabel.ViewModel;
+        public TimeEntryLabelViewModel TimeEntryLabel
+        {
+            get => timeEntryLabel.ViewModel;
+            set => timeEntryLabel.ViewModel = value;
+        }
 
         public static readonly DependencyProperty TotalTodayProperty = DependencyProperty.Register(
             "TotalToday", typeof(string), typeof(TrayToolTipControl), new PropertyMetadata(default(string)));
@@ -29,6 +32,19 @@ namespace TogglDesktop
         {
             get { return (bool) GetValue(IsTrackingProperty); }
             set { SetValue(IsTrackingProperty, value); }
+        }
+
+        public void SetDuration(string t)
+        {
+            durationLabel.Text = t;
+        }
+
+        public void SetDuration(Toggl.TogglTimeEntryView item)
+        {
+            durationLabel.Text =
+                item.Ended > item.Started
+                    ? item.Duration
+                    : Toggl.FormatDurationInSecondsHHMMSS(item.DurationInSeconds);
         }
     }
 }

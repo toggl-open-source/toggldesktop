@@ -89,11 +89,11 @@
             </Grid.ColumnDefinitions>
 
             <toggl:TimeEntryLabel x:Name="timeEntryLabel" x:FieldModifier="private"
-                                  Grid.ColumnSpan="2"
                                   Margin="16 0 0 0"
                                   VerticalPadding="2"
                                   DescriptionLabelMouseDown="onDescriptionLabelMouseDown"
-                                  ProjectLabelMouseDown="onProjectLabelMouseDown" />
+                                  ProjectLabelMouseDown="onProjectLabelMouseDown"
+                                  IconsPanelBackground="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Background}"/>
 
             <Grid Grid.Column="0" Grid.ColumnSpan="2" Name="editModeGrid" x:FieldModifier="private"
                   Margin="16 -16 0 -14">
@@ -141,16 +141,18 @@
                 </Grid>
             </Grid>
 
-            <toggl:TimeEntryInfoPanel x:Name="runningEntryInfoPanel" x:FieldModifier="private"
-                                         Grid.Column="1"
-                                         DurationLabelMouseDown="onTimeLabelMouseDown"
-                                         Background="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=Background}">
-                <toggl:TimeEntryInfoPanel.DurationTextBlockStyle>
-                    <Style TargetType="TextBlock" BasedOn="{StaticResource Toggl.BaseText}">
-                        <Setter Property="HorizontalAlignment" Value="Center" />
-                    </Style>
-                </toggl:TimeEntryInfoPanel.DurationTextBlockStyle>
-            </toggl:TimeEntryInfoPanel>
+            <Border x:Name="durationPanel" x:FieldModifier="private"
+                    Grid.Column="1"
+                    Background="Transparent"
+                    Width="64"
+                    Margin="3 0 0 0"
+                    MouseLeftButtonDown="onTimeLabelMouseDown">
+                <TextBlock Name="durationLabel" x:FieldModifier="private"
+                           Style="{StaticResource Toggl.BaseText}"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Text="00:00:00" />
+            </Border>
 
             <!-- start/stop button -->
             <ToggleButton Name="startStopButton" x:FieldModifier="private"

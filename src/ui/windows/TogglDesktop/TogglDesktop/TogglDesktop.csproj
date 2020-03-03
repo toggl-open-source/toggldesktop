@@ -217,9 +217,6 @@
     <Compile Include="ui\controls\ProjectToolTip.xaml.cs">
       <DependentUpon>ProjectToolTip.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ui\controls\TimeEntryInfoPanel.xaml.cs">
-      <DependentUpon>TimeEntryInfoPanel.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ui\controls\TimeEntryCellContextMenuCommands.cs" />
     <Compile Include="ui\controls\TimeEntryCellDayHeader.xaml.cs">
       <DependentUpon>TimeEntryCellDayHeader.xaml</DependentUpon>
@@ -594,7 +591,6 @@
     </Page>
     <Page Include="ui\controls\ProjectLabel.xaml" />
     <Page Include="ui\controls\ProjectToolTip.xaml" />
-    <Page Include="ui\controls\TimeEntryInfoPanel.xaml" />
     <Page Include="ui\controls\SyncingIndicator.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

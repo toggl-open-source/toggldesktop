@@ -5,12 +5,12 @@ namespace TogglDesktop.ViewModels
 {
     public class TimeEntryCellViewModel : ReactiveObject
     {
-        public TimeEntryCellViewModel(TimeEntryLabelViewModel timeEntryLabel)
+        public TimeEntryCellViewModel()
         {
-            TimeEntryLabel = timeEntryLabel;
         }
 
-        public TimeEntryLabelViewModel TimeEntryLabel { get; }
+        [Reactive]
+        public TimeEntryLabelViewModel TimeEntryLabel { get; set; }
 
         [Reactive]
         public bool IsFocused { get; private set; }

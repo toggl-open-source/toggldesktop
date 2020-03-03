@@ -1,6 +1,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using TogglDesktop.ViewModels;
 
 namespace TogglDesktop
@@ -16,7 +17,6 @@ namespace TogglDesktop
         public TimeEntryLabel()
         {
             InitializeComponent();
-            ViewModel = new TimeEntryLabelViewModel(projectLabel.ViewModel);
         }
 
         public event MouseButtonEventHandler DescriptionLabelMouseDown;
@@ -50,6 +50,15 @@ namespace TogglDesktop
                     addDescriptionLabel.LineStackingStrategy = LineStackingStrategy.BlockLineHeight;
                 }
             }
+        }
+
+        public static readonly DependencyProperty IconsPanelBackgroundProperty = DependencyProperty.Register(
+            "IconsPanelBackground", typeof(Brush), typeof(TimeEntryLabel), new PropertyMetadata(default(Brush)));
+
+        public Brush IconsPanelBackground
+        {
+            get { return (Brush) GetValue(IconsPanelBackgroundProperty); }
+            set { SetValue(IconsPanelBackgroundProperty, value); }
         }
 
         private void onDescriptionLabelMouseDown(object sender, MouseButtonEventArgs e)

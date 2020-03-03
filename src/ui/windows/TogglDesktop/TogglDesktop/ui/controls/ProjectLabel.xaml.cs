@@ -14,7 +14,6 @@ namespace TogglDesktop
         public ProjectLabel()
         {
             InitializeComponent();
-            ViewModel = new ProjectLabelViewModel();
         }
     }
 }

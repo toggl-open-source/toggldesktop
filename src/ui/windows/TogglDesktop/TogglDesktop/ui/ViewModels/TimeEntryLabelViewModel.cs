@@ -1,50 +1,48 @@
-using System.Reactive.Linq;
-using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
-
 namespace TogglDesktop.ViewModels
 {
-    public class TimeEntryLabelViewModel : ReactiveObject
+    public class TimeEntryLabelViewModel
     {
-        public TimeEntryLabelViewModel(ProjectLabelViewModel projectLabel)
+        public TimeEntryLabelViewModel(
+            string description,
+            ProjectLabelViewModel projectLabel,
+            string tags,
+            bool isBillable,
+            bool showAddDetailsLabels = true)
         {
+            Description = description;
             ProjectLabel = projectLabel;
-            this.WhenAnyValue(x => x.ProjectLabel.ProjectName,
-                    x => x.ShowAddDetailsLabels)
-                .Select(((string projectName, bool showAddDetailsLabels) x) => x.showAddDetailsLabels
-                    ? (string.IsNullOrEmpty(x.projectName)
+            AddDescriptionLabelText =
+                showAddDetailsLabels
+                    ? (string.IsNullOrEmpty(ProjectLabel.ProjectName)
                         ? "+ Add details"
                         : "+ Add description")
-                    : "(no description)")
-                .ToPropertyEx(this, x => x.AddDescriptionLabelText);
-            this.WhenAnyValue(x => x.Description,
-                    x => x.ProjectLabel.ProjectName,
-                    x => x.ShowAddDetailsLabels)
-                .Select(((string description, string projectName, bool showAddDetailsLabels) x) =>
-                    x.showAddDetailsLabels && GetIsAddProjectLabelVisible(x.description, x.projectName))
-                .ToPropertyEx(this, x => x.IsAddProjectLabelVisible);
+                    : "(no description)";
+            IsAddProjectLabelVisible = showAddDetailsLabels &&
+                                       GetIsAddProjectLabelVisible(Description, ProjectLabel.ProjectName);
+            Tags = tags;
+            IsBillable = isBillable;
+            TagsToolTip = string.IsNullOrEmpty(Tags)
+                ? null
+                : Tags.Replace(Toggl.TagSeparator, " • ");
         }
 
         public ProjectLabelViewModel ProjectLabel { get; }
 
-        [Reactive] public bool ShowAddDetailsLabels { get; set; } = true;
+        public string Description { get; }
 
-        [Reactive]
-        public string Description { get; private set; }
+        public string Tags { get; }
 
-        public string AddDescriptionLabelText { [ObservableAsProperty] get; }
+        public string TagsToolTip { get; }
 
-        public bool IsAddProjectLabelVisible { [ObservableAsProperty] get; }
+        public bool IsBillable { get; }
+
+        public string AddDescriptionLabelText { get; }
+
+        public bool IsAddProjectLabelVisible { get; }
 
         private static bool GetIsAddProjectLabelVisible(string description, string projectText)
         {
             return string.IsNullOrEmpty(projectText) && !string.IsNullOrEmpty(description);
-        }
-
-        public void SetTimeEntry(Toggl.TogglTimeEntryView item)
-        {
-            Description = item.Description;
-            ProjectLabel.SetProject(item);
         }
     }
 }
