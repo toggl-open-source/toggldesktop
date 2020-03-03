@@ -11,6 +11,7 @@
     <UserControl.Resources>
         <Style TargetType="TextBlock" BasedOn="{StaticResource Toggl.CaptionBlackText}">
             <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="TextWrapping" Value="NoWrap" />
         </Style>
     </UserControl.Resources>
     <StackPanel Orientation="Horizontal">
