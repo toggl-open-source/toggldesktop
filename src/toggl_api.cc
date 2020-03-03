@@ -463,17 +463,25 @@ bool_t toggl_google_signup_async(
 bool_t toggl_apple_signup(
     void *context,
     const char_t *access_token,
-    const uint64_t country_id) {
-    return toggl::noError == app(context)->GoogleSignup(to_string(access_token),
-            country_id);
+    const uint64_t country_id,
+    const char_t *full_name) {
+    std::string name("");
+    if (full_name) {
+        name = to_string(full_name);
+    }
+    return toggl::noError == app(context)->AppleSignup(to_string(access_token), country_id, name);
 }
 
 bool_t toggl_apple_signup_async(
     void *context,
     const char_t *access_token,
-    const uint64_t country_id) {
-    return toggl::noError == app(context)->AsyncGoogleSignup(to_string(access_token),
-            country_id);
+    const uint64_t country_id,
+    const char_t *full_name) {
+    std::string name("");
+    if (full_name) {
+        name = to_string(full_name);
+    }
+    return toggl::noError == app(context)->AsyncApleSignup(to_string(access_token), country_id, name);
 }
 
 bool_t toggl_google_login(
