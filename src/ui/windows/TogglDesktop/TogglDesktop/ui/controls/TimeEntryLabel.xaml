@@ -17,12 +17,14 @@
         <TextBlock Grid.Row="0" Name="descriptionLabel" x:FieldModifier="private"
                    MouseLeftButtonDown="onDescriptionLabelMouseDown"
                    Style="{StaticResource Toggl.BodyText}"
+                   TextWrapping="NoWrap"
                    Visibility="{Binding Description, Converter={StaticResource EmptyStringToCollapsedConverter}}"
                    Text="{Binding Description}"
                    ToolTip="{Binding Description}">
         </TextBlock>
         <TextBlock Grid.Row="0" Name="addDescriptionLabel" x:FieldModifier="private"
                    Style="{StaticResource Toggl.CaptionGrayishText}"
+                   TextWrapping="NoWrap"
                    Text="{Binding AddDescriptionLabelText}"
                    VerticalAlignment="Center"
                    Visibility="{Binding Description, Converter={StaticResource EmptyStringToVisibleConverter}}"
@@ -37,6 +39,7 @@
         <TextBlock Grid.Row="1"
                    Style="{DynamicResource Toggl.CaptionGrayishText}"
                    Text="+ Add project"
+                   TextWrapping="NoWrap"
                    MouseLeftButtonDown="onProjectLabelMouseDown"
                    Visibility="{Binding IsAddProjectLabelVisible, Converter={StaticResource BooleanToVisibilityConverter}}"/>
 
