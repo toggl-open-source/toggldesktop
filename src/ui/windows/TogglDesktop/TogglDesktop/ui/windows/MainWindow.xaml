@@ -87,17 +87,6 @@
                         <MenuItem Header="Stop" InputGestureText="Ctrl+S"
                                   Command="{x:Static toggl:KeyboardShortcuts.Stop}"/>
                         <Separator Style="{StaticResource {x:Static MenuItem.SeparatorStyleKey}}"/>
-                        <MenuItem Header="Show"
-                                  Command="{x:Static toggl:KeyboardShortcuts.Show}"
-                                  Visibility=
-            "{Binding Path=IsEnabled, RelativeSource={RelativeSource Self}, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                  />
-                        <MenuItem Header="Hide" InputGestureText="Ctrl+W"
-                                  Command="{x:Static toggl:KeyboardShortcuts.Hide}"
-                                  Visibility=
-            "{Binding Path=IsEnabled, RelativeSource={RelativeSource Self}, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                  />
-                        <Separator Style="{StaticResource {x:Static MenuItem.SeparatorStyleKey}}"/>
                         <MenuItem Header="Sync" InputGestureText="F5"
                                   Command="{x:Static toggl:KeyboardShortcuts.Sync}"/>
                         <MenuItem Header="Reports"
