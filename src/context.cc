@@ -2359,6 +2359,14 @@ error Context::AsyncGoogleLogin(const std::string &access_token) {
     return AsyncLogin(access_token, "google_access_token");
 }
 
+error Context::AppleLogin(const std::string &access_token) {
+    return Login(access_token, "apple_token");
+}
+
+error Context::AsyncAppleLogin(const std::string &access_token) {
+    return AsyncLogin(access_token, "apple_token");
+}
+
 error Context::attemptOfflineLogin(const std::string &email,
                                    const std::string &password) {
     if (email.empty()) {
@@ -5750,16 +5758,40 @@ error Context::signupGoogle(
     const std::string &access_token,
     std::string *user_data_json,
     const uint64_t country_id) {
+    return signUpWithProvider(toggl_client, access_token, user_data_json, country_id, "", "google");
+}
+
+error Context::signupApple(
+    TogglClient *toggl_client,
+    const std::string &access_token,
+    std::string *user_data_json,
+    const std::string &full_name,
+    const uint64_t country_id) {
+    return signUpWithProvider(toggl_client, access_token, user_data_json, country_id, full_name, "apple");
+}
+
+error Context::signUpWithProvider(
+    TogglClient *toggl_client,
+    const std::string &access_token,
+    std::string *user_data_json,
+    const uint64_t country_id,
+    const std::string &full_name,
+    const std::string provider) {
     try {
         poco_check_ptr(user_data_json);
         poco_check_ptr(toggl_client);
 
         Json::Value user;
         user["google_access_token"] = access_token;
+        user["token"] = access_token;
         user["created_with"] = Formatter::EscapeJSONString(
             HTTPSClient::Config.UserAgent());
         user["tos_accepted"] = true;
         user["country_id"] = Json::UInt64(country_id);
+        user["provider"] = provider;
+        if (!full_name.empty()) {
+            user["full_name"] = full_name;
+        }
 
         Json::Value ws;
         ws["initial_pricing_plan"] = 0;
