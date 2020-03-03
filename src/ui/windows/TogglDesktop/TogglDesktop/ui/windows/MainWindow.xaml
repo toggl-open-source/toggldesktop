@@ -72,13 +72,6 @@
                                            Text="your email address"/>
                             </MenuItem.Header>
                         </MenuItem>
-                        <MenuItem IsEnabled="False">
-                            <MenuItem.Header>
-                                <TextBlock Name="runningMenuText"
-                                           x:FieldModifier="private"
-                                           Text="Running"/>
-                            </MenuItem.Header>
-                        </MenuItem>
                         <Separator Style="{StaticResource {x:Static MenuItem.SeparatorStyleKey}}"/>
                         <MenuItem Header="New" InputGestureText="Ctrl+N"
                                   Command="{x:Static toggl:KeyboardShortcuts.New}"/>
