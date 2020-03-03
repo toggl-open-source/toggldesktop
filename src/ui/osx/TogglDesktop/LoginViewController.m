@@ -11,6 +11,7 @@
 #import "NSTextFieldClickablePointer.h"
 #import "AutocompleteDataSource.h"
 #import "NSCustomComboBox.h"
+//#import "TogglDesktop-Swift.h"
 
 typedef NS_ENUM (NSUInteger, TabViewType)
 {
@@ -608,6 +609,7 @@ extern void *ctx;
 - (void)signupAppleBtnOnTap:(id)sender
 {
     self.userAction = UserActionAppleSignup;
+
 }
 
 - (void)loginAppleBtnOnTap:(id)sender

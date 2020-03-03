@@ -9,32 +9,66 @@
 import Foundation
 import AuthenticationServices
 
-protocol AppleAuthenticationServiceDelegate: class {
+@objc protocol AppleAuthenticationServiceDelegate: class {
 
+    func appleAuthenticationPresentOnWindow() -> NSWindow
 }
 
-final class AppleAuthenticationService {
+@available(OSX 10.15, *)
+@objc
+final class AppleAuthenticationService: NSObject {
 
     static let shared = AppleAuthenticationService()
 
     // MARK: Variables
 
-    weak var delegate: AppleAuthenticationServiceDelegate?
+    @objc weak var delegate: AppleAuthenticationServiceDelegate?
 
     // MARK: Public
 
-    func requestAppleAuthorization() {
-                if #available(OSX 10.15, *) {
-                    let appleIDProvider = ASAuthorizationAppleIDProvider()
-                    let request = appleIDProvider.createRequest()
-                    request.requestedScopes = [.fullName, .email]
+    func requestApple() {
+        let appleIDProvider = ASAuthorizationAppleIDProvider()
+        let request = appleIDProvider.createRequest()
+        request.requestedScopes = [.fullName, .email]
 
-                    let authorizationController = ASAuthorizationController(authorizationRequests: [request])
-        //            authorizationController.delegate = self
-        //            authorizationController.presentationContextProvider = self
-                    authorizationController.performRequests()
-                } else {
-                    // Fallback on earlier versions
-                }
+        let authorizationController = ASAuthorizationController(authorizationRequests: [request])
+        authorizationController.delegate = self
+        authorizationController.presentationContextProvider = self
+        authorizationController.performRequests()
     }
 }
+
+// MARK: ASAuthorizationControllerDelegate
+
+@available(OSX 10.15, *)
+extension AppleAuthenticationService: ASAuthorizationControllerDelegate {
+
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
+
+    }
+
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
+        switch authorization.credential {
+        case let appleIDCredential as ASAuthorizationAppleIDCredential:
+
+            // Create an account in your system.
+            let userIdentifier = appleIDCredential.user
+            let fullName = appleIDCredential.fullName
+            let email = appleIDCredential.email
+
+        default:
+            break
+        }
+    }
+}
+
+// MARK: ASAuthorizationControllerPresentationContextProviding
+
+@available(OSX 10.15, *)
+extension AppleAuthenticationService: ASAuthorizationControllerPresentationContextProviding {
+
+    func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
+        return delegate?.appleAuthenticationPresentOnWindow() ?? NSApplication.shared.mainWindow!
+    }
+}
+
