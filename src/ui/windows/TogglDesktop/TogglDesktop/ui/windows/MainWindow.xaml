@@ -65,14 +65,6 @@
                             </Style.Triggers>
                         </Style>
                         </ContextMenu.Resources>
-                        <MenuItem IsEnabled="False">
-                            <MenuItem.Header>
-                                <TextBlock Name="emailAddressMenuText"
-                                           x:FieldModifier="private"
-                                           Text="your email address"/>
-                            </MenuItem.Header>
-                        </MenuItem>
-                        <Separator Style="{StaticResource {x:Static MenuItem.SeparatorStyleKey}}"/>
                         <MenuItem Header="New" InputGestureText="Ctrl+N"
                                   Command="{x:Static toggl:KeyboardShortcuts.New}"/>
                         <MenuItem Header="Continue" InputGestureText="Ctrl+O"
@@ -101,7 +93,7 @@
                                   Command="{x:Static toggl:KeyboardShortcuts.SendFeedback}"/>
                         <MenuItem Header="About"
                                   Command="{x:Static toggl:KeyboardShortcuts.About}"/>
-                        <MenuItem Header="Logout"
+                        <MenuItem x:Name="logoutMenuItem" Header="Logout"
                                   Command="{x:Static toggl:KeyboardShortcuts.Logout}"/>
                         <MenuItem Header="Quit" InputGestureText="Ctrl+Q"
                                   Command="{x:Static toggl:KeyboardShortcuts.Quit}"/>

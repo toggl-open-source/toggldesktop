@@ -419,14 +419,14 @@ namespace TogglDesktop
 
             if (open || userID == 0)
             {
-                this.emailAddressMenuText.Text = "Logged out";
+                this.logoutMenuItem.InputGestureText = "Logged out";
                 this.taskbarIcon.TrayToolTip = null;
                 this.taskbarIcon.ToolTipText = "Toggl - Logged out";
                 this.SetMiniTimerVisible(false);
             }
             else
             {
-                this.emailAddressMenuText.Text = Toggl.UserEmail();
+                this.logoutMenuItem.InputGestureText = Toggl.UserEmail();
                 this.taskbarIcon.TrayToolTip = trayToolTip;
                 this.taskbarIcon.ToolTipText = $"Toggl - Logged in as {Toggl.UserEmail()}";
             }
