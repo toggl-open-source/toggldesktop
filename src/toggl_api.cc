@@ -460,6 +460,22 @@ bool_t toggl_google_signup_async(
             country_id);
 }
 
+bool_t toggl_apple_signup(
+    void *context,
+    const char_t *access_token,
+    const uint64_t country_id) {
+    return toggl::noError == app(context)->GoogleSignup(to_string(access_token),
+            country_id);
+}
+
+bool_t toggl_apple_signup_async(
+    void *context,
+    const char_t *access_token,
+    const uint64_t country_id) {
+    return toggl::noError == app(context)->AsyncGoogleSignup(to_string(access_token),
+            country_id);
+}
+
 bool_t toggl_google_login(
     void *context,
     const char_t *access_token) {
@@ -470,6 +486,18 @@ bool_t toggl_google_login_async(
     void *context,
     const char_t *access_token) {
     return toggl::noError == app(context)->AsyncGoogleLogin(to_string(access_token));
+}
+
+bool_t toggl_apple_login(
+    void *context,
+    const char_t *access_token) {
+    return toggl::noError == app(context)->AppleLogin(to_string(access_token));
+}
+
+bool_t toggl_apple_login_async(
+    void *context,
+    const char_t *access_token) {
+    return toggl::noError == app(context)->AsyncAppleLogin(to_string(access_token));
 }
 
 bool_t toggl_logout(

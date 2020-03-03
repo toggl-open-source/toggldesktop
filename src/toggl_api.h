@@ -580,6 +580,14 @@ extern "C" {
         void *context,
         const char_t *access_token);
 
+    TOGGL_EXPORT bool_t toggl_apple_login(
+        void *context,
+        const char_t *access_token);
+
+    TOGGL_EXPORT bool_t toggl_apple_login_async(
+        void *context,
+        const char_t *access_token);
+
     TOGGL_EXPORT void toggl_password_forgot(
         void *context);
 

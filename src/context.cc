@@ -2543,6 +2543,30 @@ error Context::AsyncGoogleSignup(const std::string &access_token,
     return noError;
 }
 
+error Context::AppleSignup(
+                           const std::string &access_token,
+                           const uint64_t country_id,
+                           const std::string full_name) {
+    TogglClient client(UI());
+    std::string json("");
+    error err = signupApple(&client, access_token, &json, full_name, country_id);
+    if (err != noError) {
+        return displayError(err);
+    }
+    return Login(access_token, "apple_token");
+}
+
+error Context::AsyncApleSignup(
+                               const std::string &access_token,
+                               const uint64_t country_id,
+                               const std::string full_name) {
+    std::thread backgroundThread([&](std::string access_token, uint64_t country_id, std::string full_name) {
+        return this->AppleSignup(access_token, country_id, full_name);
+    }, access_token, country_id, full_name);
+    backgroundThread.detach();
+    return noError;
+}
+
 void Context::setUser(User *value, const bool logged_in) {
     logger.debug("setUser user_logged_in=", logged_in);
 

@@ -313,6 +313,16 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
         const std::string &access_token,
         const uint64_t country_id);
 
+    error AppleSignup(
+        const std::string &access_token,
+        const uint64_t country_id,
+        const std::string full_name);
+
+    error AsyncApleSignup(
+        const std::string &access_token,
+        const uint64_t country_id,
+        const std::string full_name);
+
     error GoogleLogin(const std::string &access_token);
     error AsyncGoogleLogin(const std::string &access_token);
 
