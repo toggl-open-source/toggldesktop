@@ -34,7 +34,7 @@
         <Setter Property="Background" Value="{DynamicResource Toggl.CardBackground}" />
         <Setter Property="BorderBrush" Value="{DynamicResource Toggl.TextBox.MouseOverBorder}" />
         <Setter Property="Foreground" Value="{DynamicResource Toggl.PrimaryTextBrush}" />
-        <Setter Property="FontSize" Value="12" />
+        <Setter Property="FontSize" Value="{StaticResource NormalFontSize}" />
         <Setter Property="Padding" Value="2 4 2 4" />
     </Style>
 
