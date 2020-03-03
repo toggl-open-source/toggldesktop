@@ -33,6 +33,7 @@
     <SolidColorBrush x:Key="MahApps.Brushes.MenuItem.SelectionFill" Color="{DynamicResource Toggl.LightGrayColor}" po:Freeze="True"/>
     <SolidColorBrush x:Key="MahApps.Brushes.MenuItem.SelectionStroke" Color="{DynamicResource Toggl.LightGrayColor}" po:Freeze="True"/>
     <SolidColorBrush x:Key="MahApps.Brushes.MenuItem.DisabledForeground" Color="{DynamicResource Toggl.Grayish1Color}" po:Freeze="True"/>
+    <SolidColorBrush x:Key="MahApps.Brushes.CheckmarkFill" Color="{DynamicResource Toggl.DarkGrayColor}" po:Freeze="True"/>
 
     <Style x:Key="MahApps.Styles.Button.MetroWindow.Light"
            BasedOn="{StaticResource MahApps.Styles.Button.MetroWindow.Light}"
