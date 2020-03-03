@@ -113,8 +113,6 @@
                                   Command="{x:Static toggl:KeyboardShortcuts.ToggleMiniTimerVisibility}"
                                   IsCheckable="True"/>
                         <Separator Style="{StaticResource {x:Static MenuItem.SeparatorStyleKey}}"/>
-                        <MenuItem Header="Clear Cache"
-                                  Command="{x:Static toggl:KeyboardShortcuts.ClearCache}"/>
                         <MenuItem Header="Toggl Desktop Tutorial"
                                   Command="{x:Static toggl:KeyboardShortcuts.BasicTutorial}"/>
                         <MenuItem Header="Send Feedback"

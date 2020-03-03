@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Input;
 using ControlzEx;
 
@@ -11,6 +12,18 @@ namespace TogglDesktop
         private MessageBox()
         {
             this.InitializeComponent();
+        }
+
+        public delegate MessageBoxResult ShowMessageBoxDelegate(
+            string messageText,
+            string title = "Toggl Desktop",
+            MessageBoxButton buttons = MessageBoxButton.OK,
+            string okButtonText = "OK");
+
+        public static ShowMessageBoxDelegate Show(Window owner)
+        {
+            return (text, title, buttons, buttonText) =>
+                Show(owner, text, title, buttons, buttonText);
         }
 
         public static MessageBoxResult Show(Window owner, string messageText,
