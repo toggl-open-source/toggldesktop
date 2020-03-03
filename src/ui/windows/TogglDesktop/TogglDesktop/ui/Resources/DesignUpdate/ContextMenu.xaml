@@ -10,7 +10,7 @@
     <Style x:Key="{x:Static MenuItem.SeparatorStyleKey}" TargetType="{x:Type Separator}">
         <Setter Property="Background" Value="{DynamicResource Toggl.CardBackground}" />
         <Setter Property="IsTabStop" Value="False" />
-        <Setter Property="Margin" Value="8 2 8 2" />
+        <Setter Property="Margin" Value="0 2" />
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="Template">
             <Setter.Value>
@@ -18,7 +18,7 @@
                     <Grid Margin="0 2 0 0" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
                         <Rectangle Height="1"
                                    Margin="0 0 0 1"
-                                   Fill="{DynamicResource Toggl.HoverElementBrush}"
+                                   Fill="{DynamicResource Toggl.LightGrayBrush}"
                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                                    UseLayoutRounding="True" />
                         <Rectangle Height="1"
@@ -34,7 +34,7 @@
 
     <Style TargetType="ContextMenu" BasedOn="{StaticResource MahApps.Styles.ContextMenu}">
         <Setter Property="Background" Value="{DynamicResource Toggl.CardBackground}" />
-        <Setter Property="BorderBrush" Value="{DynamicResource Toggl.TextBox.MouseOverBorder}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource Toggl.LightGrayBrush}" />
         <Setter Property="Foreground" Value="{DynamicResource Toggl.PrimaryTextBrush}" />
         <Setter Property="FontSize" Value="{StaticResource NormalFontSize}" />
         <Setter Property="Padding" Value="2 4 2 4" />
