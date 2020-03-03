@@ -20,47 +20,46 @@
     <Geometry x:Key="Toggl.InfoIconGeometry">
         M10 3a7 7 0 1 1 0 14 7 7 0 0 1 0-14zm0 6l-.117.007A.997.997 0 0 0 9 10v3c0 .556.448 1 1 1l.117-.007c.5-.057.883-.48.883-.993v-3c0-.556-.448-1-1-1zm0-3a1 1 0 1 0 0 2 1 1 0 0 0 0-2z
     </Geometry>
-    <Canvas x:Key="Toggl.NewIcon" x:Shared="False" Width="24" Height="24">
+    <Canvas x:Key="Toggl.NewIcon" x:Shared="False" Width="25" Height="25" UseLayoutRounding="True">
         <Path Fill="{DynamicResource Toggl.DisabledTextBrush}" Data="M13.5 6v5.5H19v1h-5.5V18h-1v-5.5H7v-1h5.5V6h1z" />
     </Canvas>
-    <Canvas x:Key="Toggl.ContinueIcon" x:Shared="False" Width="24" Height="24">
+    <Canvas x:Key="Toggl.ContinueIcon" x:Shared="False" Width="25" Height="25" UseLayoutRounding="True">
         <Path Fill="{DynamicResource Toggl.DisabledTextBrush}" Data="M8.742 5.261l10.052 5.744c.962.55.966 1.439 0 1.99L8.742 18.742C7.78 19.29 7 18.838 7 17.746V6.257c0-1.1.776-1.547 1.742-.996zm.138 1.396C8.4 6.391 8 6.615 8 7.165v9.68c0 .552.394.777.88.507l8.776-4.864c.48-.266.486-.706 0-.975z" />
     </Canvas>
-    <Canvas x:Key="Toggl.StopIcon" x:Shared="False" Width="24" Height="24">
+    <Canvas x:Key="Toggl.StopIcon" x:Shared="False" Width="25" Height="25" UseLayoutRounding="True">
         <Path Fill="{DynamicResource Toggl.DisabledTextBrush}" Data="M17.504 6C18.33 6 19 6.68 19 7.496v9.008C19 17.33 18.32 18 17.504 18H8.496C7.67 18 7 17.32 7 16.504V7.496C7 6.67 7.68 6 8.496 6h9.008zm-.014 1H8.51a.51.51 0 0 0-.51.51v8.98c0 .282.228.51.51.51h8.98a.51.51 0 0 0 .51-.51V7.51a.51.51 0 0 0-.51-.51z" />
     </Canvas>
-    <Canvas x:Key="Toggl.SyncIcon" x:Shared="False" Width="24" Height="24">
+    <Canvas x:Key="Toggl.SyncIcon" x:Shared="False" Width="25" Height="25" UseLayoutRounding="True">
         <Path Fill="{DynamicResource Toggl.DisabledTextBrush}" Data="M19.461 11.252l.09.001c.241.024.388.158.44.403A7 7 0 0 1 7.256 16L8 16l-.272-1.132a6 6 0 0 0 11.267-3.1c.086-.37.27-.542.555-.515zM13 5a6.992 6.992 0 0 1 5.745 3H18l.272 1.132a6 6 0 0 0-11.267 3.1c-.086.37-.27.542-.555.515-.243-.024-.39-.158-.441-.404A7 7 0 0 1 13 5z" />
         <Path Fill="{DynamicResource Toggl.DisabledTextBrush}" Data="M18 8V4.5a.5.5 0 1 1 1 0v4a.5.5 0 0 1-.5.5h-4a.5.5 0 1 1 0-1H18zM8 16v3.5a.5.5 0 1 1-1 0v-4a.5.5 0 0 1 .5-.5h4a.5.5 0 1 1 0 1H8z" />
     </Canvas>
-    <Canvas x:Key="Toggl.PreferencesIcon" x:Shared="False" Width="24" Height="24">
+    <Canvas x:Key="Toggl.PreferencesIcon" x:Shared="False" Width="25" Height="25" UseLayoutRounding="True">
         <Path Fill="{DynamicResource Toggl.DisabledTextBrush}" Data="M13 14.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5zm.3-10h-.6c-.171 0-.393.16-.448.324l-.613 1.84-.247.075a5.463 5.463 0 0 0-.975.404l-.228.121-.23-.115-1.505-.752a.543.543 0 0 0-.545.087l-.425.425a.544.544 0 0 0-.087.545l.867 1.735-.121.228c-.166.31-.301.637-.404.974l-.075.247-.245.081-1.595.533a.543.543 0 0 0-.324.448v.6c0 .171.16.393.324.448l1.84.613.075.247c.103.338.238.664.404.975l.121.228-.115.23-.752 1.505a.543.543 0 0 0 .087.545l.425.425c.12.12.391.164.545.087l1.735-.867.228.121c.311.166.637.301.975.404l.247.076.081.244.532 1.595a.543.543 0 0 0 .448.324h.6c.171 0 .393-.16.448-.324l.614-1.84.247-.075c.337-.103.663-.238.974-.404l.228-.121.23.115 1.505.752a.543.543 0 0 0 .545-.087l.425-.425a.544.544 0 0 0 .087-.545l-.867-1.735.121-.228c.166-.31.301-.637.404-.974l.075-.247.245-.081 1.595-.533a.543.543 0 0 0 .324-.448v-.6c0-.171-.16-.393-.324-.448l-1.84-.613-.075-.247a5.463 5.463 0 0 0-.404-.975l-.121-.228.115-.23.752-1.505a.543.543 0 0 0-.087-.545l-.425-.425a.544.544 0 0 0-.545-.087l-1.735.867-.228-.121c-.31-.166-.637-.301-.974-.404l-.247-.075-.081-.245-.533-1.595A.543.543 0 0 0 13.3 4.5z" />
     </Canvas>
-    <Canvas x:Key="Toggl.ReportsIcon" x:Shared="False" Width="24" Height="24">
+    <Canvas x:Key="Toggl.ReportsIcon" x:Shared="False" Width="25" Height="25" UseLayoutRounding="True">
         <Path Fill="{DynamicResource Toggl.DisabledTextBrush}" Data="M17.5 7h.01c.022 0 .043.002.064.005L17.5 7a.502.502 0 0 1 .354.146l.011.013a.503.503 0 0 1 .033.039l-.044-.052A.502.502 0 0 1 18 7.5v6a.5.5 0 1 1-1 0l-.001-4.793-8.145 8.147a.5.5 0 0 1-.708-.708L16.292 8H11.5a.5.5 0 1 1 0-1h6z" />
     </Canvas>
-    <Canvas x:Key="Toggl.TutorialIcon" x:Shared="False" Width="24" Height="24">
+    <Canvas x:Key="Toggl.TutorialIcon" x:Shared="False" Width="25" Height="25" UseLayoutRounding="True">
         <Ellipse Canvas.Left="11" Canvas.Top="15" Width="2" Height="2" Fill="{DynamicResource Toggl.DisabledTextBrush}"/>
         <Path Fill="{DynamicResource Toggl.DisabledTextBrush}" StrokeThickness=".7" Stroke="{DynamicResource Toggl.CardBackground}"
               Data="M12 9c.683 0 1.068.57.955 1.1-.077.362-.2.53-.623.908l-.052.046c-.83.741-1.202 1.316-1.278 2.416a1 1 0 1 0 1.996.138c.032-.476.135-.634.613-1.061l.053-.048c.711-.634 1.062-1.113 1.247-1.982A2.914 2.914 0 0 0 12 7c-1.572 0-2.501.84-3.057 2.145a1 1 0 0 0 1.84.784C11.057 9.285 11.373 9 12 9z" />
         <Path Fill="{DynamicResource Toggl.DisabledTextBrush}" Data="M12 4a8 8 0 1 1 0 16 8 8 0 0 1 0-16zm0 1a7 7 0 1 0 0 14 7 7 0 0 0 0-14z" />
     </Canvas>
-    <Canvas x:Key="Toggl.FeedbackIcon" x:Shared="False" Width="24" Height="24">
+    <Canvas x:Key="Toggl.FeedbackIcon" x:Shared="False" Width="25" Height="25" UseLayoutRounding="True">
         <Path Fill="{DynamicResource Toggl.DisabledTextBrush}" Data="M20.81 11.639l-5.325 5.325L14 17.01l.05-1.49 5.32-5.32z" />
         <Path Fill="{DynamicResource Toggl.DisabledTextBrush}" Data="M16.494 19H8.506A1.505 1.505 0 0 1 7 17.502V6.498A1.5 1.5 0 0 1 8.506 5h7.988C17.326 5 18 5.675 18 6.498l-.001 2.786-1 1.083L17 6.5a.507.507 0 0 0-.418-.492L16.49 6H8.51a.501.501 0 0 0-.51.5v11c0 .271.228.5.51.5h9.405c-.206.583-.763 1-1.421 1z" />
         <Path Fill="{DynamicResource Toggl.DisabledTextBrush}" Data="M10 8h5v1h-5zM10 10h3v1h-3z" />
     </Canvas>
-    <Canvas x:Key="Toggl.AboutIcon" x:Shared="False" Width="24" Height="24">
+    <Canvas x:Key="Toggl.AboutIcon" x:Shared="False" Width="25" Height="25" UseLayoutRounding="True">
         <Path Fill="{DynamicResource Toggl.DisabledTextBrush}" Data="M12 4a8 8 0 1 1 0 16 8 8 0 0 1 0-16zm0 1a7 7 0 1 0 0 14 7 7 0 0 0 0-14z" />
         <Rectangle Canvas.Left="11" Canvas.Top="11" Width="2" Height="5" RadiusX="1" RadiusY="1" Fill="{DynamicResource Toggl.DisabledTextBrush}"/>
         <Ellipse Canvas.Left="11" Canvas.Top="8" Width="2" Height="2" Fill="{DynamicResource Toggl.DisabledTextBrush}"/>
     </Canvas>
-    <Canvas x:Key="Toggl.LogoutIcon" x:Shared="False" Width="24" Height="24">
+    <Canvas x:Key="Toggl.LogoutIcon" x:Shared="False" Width="25" Height="25" UseLayoutRounding="True">
         <Path Fill="{DynamicResource Toggl.DisabledTextBrush}" Data="M13.495 6C14.326 6 15 6.68 15 7.496V10h-1V7.51a.505.505 0 0 0-.403-.502L13.51 7H8.491A.506.506 0 0 0 8 7.51v8.98a.5.5 0 0 0 .491.51h5.018a.506.506 0 0 0 .491-.51V14h1v2.504C15 17.33 14.332 18 13.495 18h-4.99C7.674 18 7 17.32 7 16.504V7.496C7 6.67 7.668 6 8.505 6h4.99z" />
         <Path Fill="{DynamicResource Toggl.DisabledTextBrush}" Data="M22.303 11.646l.008.009a.503.503 0 0 1 .04.048l-.048-.057a.502.502 0 0 1 .147.354v.017a.503.503 0 0 1-.005.051L22.45 12a.502.502 0 0 1-.147.354l-3.535 3.535a.5.5 0 1 1-.707-.707l2.682-2.683-9.693.001a.5.5 0 0 1 0-1h9.693l-2.682-2.682a.5.5 0 1 1 .707-.707l3.535 3.535z" />
     </Canvas>
-    <Canvas x:Key="Toggl.QuitIcon" x:Shared="False" Width="24" Height="24">
+    <Canvas x:Key="Toggl.QuitIcon" x:Shared="False" Width="25" Height="25" UseLayoutRounding="True">
         <Path Fill="{DynamicResource Toggl.DisabledTextBrush}" Data="M13 11.3L8.69 7 8 7.69 12.3 12 8 16.31l.69.69L13 12.7l4.306 4.3.694-.69L13.697 12 18 7.69 17.306 7z" />
     </Canvas>
-
 </ResourceDictionary>
