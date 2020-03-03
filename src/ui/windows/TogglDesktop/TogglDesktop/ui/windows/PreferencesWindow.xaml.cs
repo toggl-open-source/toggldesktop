@@ -34,7 +34,7 @@ namespace TogglDesktop
         public PreferencesWindow()
         {
             this.InitializeComponent();
-            ViewModel = new PreferencesWindowViewModel();
+            ViewModel = new PreferencesWindowViewModel(MessageBox.Show(this), this.Close);
 
             Toggl.OnSettings += this.onSettings;
             Toggl.OnLogin += this.onLogin;
