@@ -16,6 +16,7 @@
 #include "tag.h"
 #include "task.h"
 #include "time_entry.h"
+#include "user.h"
 #include "workspace.h"
 
 namespace toggl {
@@ -27,6 +28,22 @@ void clearList(std::vector<T *> *list) {
         delete value;
     }
     list->clear();
+}
+
+RelatedData::RelatedData()
+    : User(this)
+    , Workspaces(this)
+    , Clients(this, &CompareClients)
+    , Projects(this, &CompareProjects)
+    , Tasks(this)
+    , Tags(this)
+    , TimeEntries(this)
+    , AutotrackerRules(this)
+    , TimelineEvents(this)
+    , ObmActions(this)
+    , ObmExperiments(this)
+{
+
 }
 
 void RelatedData::Clear() {

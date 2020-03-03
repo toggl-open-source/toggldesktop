@@ -9,17 +9,6 @@
 #include <map>
 #include <functional>
 
-#include "workspace.h"
-#include "client.h"
-#include "project.h"
-#include "task.h"
-#include "tag.h"
-#include "time_entry.h"
-#include "autotracker.h"
-#include "obm_action.h"
-#include "user.h"
-#include "timeline_event.h"
-
 #include "types.h"
 #include "util/memory.h"
 
@@ -42,6 +31,7 @@ class User;
 
 namespace view {
 class TimeEntry;
+class Autocomplete;
 };
 
 template<typename T>
@@ -55,21 +45,19 @@ extern bool CompareProjects(const Project *l, const Project *r);
 
 class TOGGL_INTERNAL_EXPORT RelatedData {
  public:
-    RelatedData() {
+    RelatedData();
 
-    }
-
-    ProtectedModel<toggl::User> User { this };
-    ProtectedContainer<Workspace> Workspaces { this };
-    ProtectedContainer<Client> Clients { this, &CompareClients };
-    ProtectedContainer<Project> Projects { this, &CompareProjects };
-    ProtectedContainer<Task> Tasks { this };
-    ProtectedContainer<Tag> Tags { this };
-    ProtectedContainer<TimeEntry> TimeEntries { this };
-    ProtectedContainer<AutotrackerRule> AutotrackerRules { this };
-    ProtectedContainer<TimelineEvent> TimelineEvents { this };
-    ProtectedContainer<ObmAction> ObmActions { this };
-    ProtectedContainer<ObmExperiment> ObmExperiments { this };
+    ProtectedModel<toggl::User> User;
+    ProtectedContainer<Workspace> Workspaces;
+    ProtectedContainer<Client> Clients;
+    ProtectedContainer<Project> Projects;
+    ProtectedContainer<Task> Tasks;
+    ProtectedContainer<Tag> Tags;
+    ProtectedContainer<TimeEntry> TimeEntries;
+    ProtectedContainer<AutotrackerRule> AutotrackerRules;
+    ProtectedContainer<TimelineEvent> TimelineEvents;
+    ProtectedContainer<ObmAction> ObmActions;
+    ProtectedContainer<ObmExperiment> ObmExperiments;
 
     void Clear();
 
