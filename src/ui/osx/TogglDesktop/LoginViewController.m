@@ -489,6 +489,11 @@ extern void *ctx;
 		case LoginSignupActionSignUpGoogle :
 			[self signupGoogleBtnOnTap:self];
 			break;
+        case LoginSignupActionLoginApple:
+            [self loginAppleBtnOnTap:self];
+            break;
+        case LoginSignupActionSignUpApple:
+            [self signupAppleBtnOnTap:self];
 		default :
 			break;
 	}

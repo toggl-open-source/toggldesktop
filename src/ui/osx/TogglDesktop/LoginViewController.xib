@@ -405,7 +405,7 @@
         </customView>
     </objects>
     <resources>
-        <image name="apple-sign-in-logo" width="18" height="18"/>
+        <image name="apple-sign-in-logo" width="12" height="12"/>
         <image name="google-logo" width="14" height="14"/>
         <image name="toggl-logo" width="50" height="16"/>
         <namedColor name="login-apple-google-background-color">
