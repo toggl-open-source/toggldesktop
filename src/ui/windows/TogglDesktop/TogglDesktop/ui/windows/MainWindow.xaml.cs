@@ -80,9 +80,6 @@ namespace TogglDesktop
             this.finalInitialisation();
             this.trackingWindowSize();
             this.Loaded += onMainWindowLoaded;
-#if DEBUG
-            this.darkModeBorder.Visibility = Visibility.Visible;
-#endif
         }
 
         #region properties
@@ -227,8 +224,6 @@ namespace TogglDesktop
 
         private void initializeColorScheme()
         {
-            var activatedColorScheme = Theme.ActivateDetectedColorSchemeOrDefault();
-            darkModeCheckBox.IsChecked = activatedColorScheme == ColorScheme.Dark;
             Theme.CurrentColorScheme.Subscribe(x => this.updateTitleBarBackground(activeView));
             Theme.CurrentColorScheme.Subscribe(x =>
             {
@@ -476,6 +471,7 @@ namespace TogglDesktop
             if (this.TryBeginInvoke(this.onSettings, open, settings))
                 return;
 
+            Theme.SetThemeFromSettings(settings.ColorTheme);
             this.setGlobalShortcutsFromSettings();
             this.idleDetectionTimer.IsEnabled = settings.UseIdleDetection;
             this.Topmost = settings.OnTop;
@@ -971,11 +967,6 @@ namespace TogglDesktop
         public T GetView<T>()
         {
             return (T)this.views.FirstOrDefault(v => v is T);
-        }
-
-        void ToggleDarkMode(object sender, RoutedEventArgs e)
-        {
-            Theme.ActivateColorScheme(darkModeCheckBox.IsChecked.GetValueOrDefault() ? ColorScheme.Dark : ColorScheme.Light);
         }
     }
 }

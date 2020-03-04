@@ -3,12 +3,14 @@ using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using MahApps.Metro.Controls;
 using TogglDesktop.AutoCompletion;
 using TogglDesktop.AutoCompletion.Implementation;
 using TogglDesktop.Diagnostics;
+using TogglDesktop.Theming;
 using TogglDesktop.ViewModels;
 
 #if MS_STORE
@@ -106,6 +108,8 @@ namespace TogglDesktop
             this.keepDurationFixedCheckbox.IsChecked = !this.keepEndTimeFixedCheckbox.IsChecked;
 
             this.onStopEntryCheckBox.IsChecked = settings.StopEntryOnShutdownSleep;
+            this.themeComboBox.SelectedIndex = settings.ColorTheme;
+
             Task.Run(UpdateLaunchOnStartupCheckboxAsync);
 
             #endregion
@@ -261,6 +265,7 @@ namespace TogglDesktop
                 PomodoroBreakMinutes = toLong(this.pomodoroBreakTimerDuration.Text),
 
                 StopEntryOnShutdownSleep = isChecked(this.onStopEntryCheckBox),
+                ColorTheme = (byte)this.themeComboBox.SelectedIndex,
 
                 #endregion
 
@@ -382,7 +387,7 @@ namespace TogglDesktop
                     ProjectLabel = Toggl.GetDefaultProjectName(),
                     ProjectID = projectID,
                     TaskID = taskID,
-                }; 
+                };
             }
 
             this.selectDefaultProject(project);

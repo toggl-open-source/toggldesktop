@@ -39,7 +39,14 @@
             <TabItem Header="General">
                 <ScrollViewer>
                     <StackPanel Margin="24 32 24 48">
-                        <TextBlock Style="{DynamicResource Toggl.TitleText}" Text="Set up shortcuts" />
+                        <TextBlock Style="{DynamicResource Toggl.TitleText}" Text="Light/dark mode" />
+                        <ComboBox x:Name="themeComboBox" Margin="0 6 0 0" Width="360"
+                                  HorizontalAlignment="Left">
+                            <ComboBoxItem IsSelected="True">Use my Windows mode</ComboBoxItem>
+                            <ComboBoxItem>Light</ComboBoxItem>
+                            <ComboBoxItem>Dark</ComboBoxItem>
+                        </ComboBox>
+                        <TextBlock Margin="0 32 0 0" Style="{DynamicResource Toggl.TitleText}" Text="Set up shortcuts" />
                         <Grid Margin="0 16 0 0" HorizontalAlignment="Left">
                             <Grid.RowDefinitions>
                                 <RowDefinition />

@@ -485,6 +485,11 @@ public static partial class Toggl
             return false;
         }
 
+        if (!toggl_set_settings_color_theme(ctx, settings.ColorTheme))
+        {
+            return false;
+        }
+
         return toggl_timeline_toggle_recording(ctx, settings.RecordTimeline);
     }
 

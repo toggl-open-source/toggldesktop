@@ -1313,6 +1313,14 @@ error Migrations::migrateSettings() {
         return err;
     }
 
+    err = db_->Migrate(
+        "settings.color_theme",
+        "ALTER TABLE settings "
+        "ADD COLUMN color_theme INTEGER NOT NULL DEFAULT 0;");
+    if (err != noError) {
+        return err;
+    }
+
     return noError;
 }
 

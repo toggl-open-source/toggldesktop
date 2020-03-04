@@ -430,7 +430,7 @@ error Database::LoadSettings(Settings *settings) {
                   "remind_fri, remind_sat, remind_sun, autotrack, "
                   "open_editor_on_shortcut, has_seen_beta_offering, "
                   "pomodoro, pomodoro_minutes, "
-                  "pomodoro_break, pomodoro_break_minutes, stop_entry_on_shutdown_sleep, show_touch_bar, active_tab "
+                  "pomodoro_break, pomodoro_break_minutes, stop_entry_on_shutdown_sleep, show_touch_bar, active_tab, color_theme "
                   "from settings "
                   "limit 1",
                   into(settings->use_idle_detection),
@@ -463,6 +463,7 @@ error Database::LoadSettings(Settings *settings) {
                   into(settings->stop_entry_on_shutdown_sleep),
                   into(settings->show_touch_bar),
                   into(settings->active_tab),
+                  into(settings->color_theme),
                   limit(1),
                   now;
     } catch(const Poco::Exception& exc) {
@@ -860,6 +861,10 @@ error Database::SetSettingsShowTouchBar(const bool &show_touch_bar) {
 
 error Database::SetSettingsActiveTab(const uint8_t &active_tab) {
     return setSettingsValue("active_tab", active_tab);
+}
+
+error Database::SetSettingsColorTheme(const uint8_t &color_theme) {
+    return setSettingsValue("color_theme", color_theme);
 }
 
 template<typename T>
