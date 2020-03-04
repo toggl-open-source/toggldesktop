@@ -1073,6 +1073,8 @@ Poco::UInt64 User::SupplementaryWID() const {
         locked<const Workspace> ws = *it;
         return ws->ID();
     }
+
+    return 0;
 }
 
 void User::loadUserTimeEntryFromJSON(
