@@ -118,4 +118,6 @@
 #define kAutocompleteItemProject 2
 #define kAutocompleteItemWorkspace 3
 
+#define kTogglDesktopClientID "toggldesktop.TogglDesktop"
+
 #endif  // SRC_CONST_H_
