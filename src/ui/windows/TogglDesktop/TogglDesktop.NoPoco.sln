@@ -10,17 +10,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TogglDesktop", "TogglDeskto
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TogglDesktopDLL", "..\..\..\lib\windows\TogglDesktopDLL\TogglDesktopDLL.vcxproj", "{3ACE25DD-04CE-47D8-9658-3D0546521DA2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TogglDesktopDLLInteropTest", "TogglDesktopDLLInteropTest\TogglDesktopDLLInteropTest.csproj", "{85CA11FB-7793-4026-9998-C8EE9BDB36BF}"
-	ProjectSection(ProjectDependencies) = postProject
-		{3ACE25DD-04CE-47D8-9658-3D0546521DA2} = {3ACE25DD-04CE-47D8-9658-3D0546521DA2}
-	EndProjectSection
-EndProject
 Project("{C7167F0D-BC9F-4E6E-AFE1-012C56B48DB5}") = "TogglDesktop.Package", "TogglDesktop.Package\TogglDesktop.Package.wapproj", "{BF2C1343-F7A6-448E-8B02-90E21340EC3C}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TogglDesktopDLL.Tests", "..\..\..\lib\windows\TogglDesktopDLL.Tests\TogglDesktopDLL.Tests.vcxproj", "{1082CCF1-3D77-4E95-9B51-9262A6FFF766}"
 	ProjectSection(ProjectDependencies) = postProject
 		{3ACE25DD-04CE-47D8-9658-3D0546521DA2} = {3ACE25DD-04CE-47D8-9658-3D0546521DA2}
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TogglDesktop.Tests", "TogglDesktop.Tests\TogglDesktop.Tests.csproj", "{39E383CB-D417-4568-A37E-58AEEF4B7C73}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -76,16 +73,6 @@ Global
 		{3ACE25DD-04CE-47D8-9658-3D0546521DA2}.StoreRelease|x64.Build.0 = StoreRelease|x64
 		{3ACE25DD-04CE-47D8-9658-3D0546521DA2}.StoreRelease|x86.ActiveCfg = StoreRelease|Win32
 		{3ACE25DD-04CE-47D8-9658-3D0546521DA2}.StoreRelease|x86.Build.0 = StoreRelease|Win32
-		{85CA11FB-7793-4026-9998-C8EE9BDB36BF}.Debug.Broken|x64.ActiveCfg = Debug|Any CPU
-		{85CA11FB-7793-4026-9998-C8EE9BDB36BF}.Debug.Broken|x86.ActiveCfg = Debug|Any CPU
-		{85CA11FB-7793-4026-9998-C8EE9BDB36BF}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{85CA11FB-7793-4026-9998-C8EE9BDB36BF}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{85CA11FB-7793-4026-9998-C8EE9BDB36BF}.Release|x64.ActiveCfg = Release|Any CPU
-		{85CA11FB-7793-4026-9998-C8EE9BDB36BF}.Release|x86.ActiveCfg = Release|Any CPU
-		{85CA11FB-7793-4026-9998-C8EE9BDB36BF}.StoreDebug|x64.ActiveCfg = Debug|Any CPU
-		{85CA11FB-7793-4026-9998-C8EE9BDB36BF}.StoreDebug|x86.ActiveCfg = Debug|Any CPU
-		{85CA11FB-7793-4026-9998-C8EE9BDB36BF}.StoreRelease|x64.ActiveCfg = Release|Any CPU
-		{85CA11FB-7793-4026-9998-C8EE9BDB36BF}.StoreRelease|x86.ActiveCfg = Release|Any CPU
 		{BF2C1343-F7A6-448E-8B02-90E21340EC3C}.Debug.Broken|x64.ActiveCfg = StoreRelease|x64
 		{BF2C1343-F7A6-448E-8B02-90E21340EC3C}.Debug.Broken|x86.ActiveCfg = StoreRelease|x86
 		{BF2C1343-F7A6-448E-8B02-90E21340EC3C}.Debug|x64.ActiveCfg = StoreRelease|x64
@@ -116,6 +103,26 @@ Global
 		{1082CCF1-3D77-4E95-9B51-9262A6FFF766}.StoreDebug|x86.ActiveCfg = Debug|Win32
 		{1082CCF1-3D77-4E95-9B51-9262A6FFF766}.StoreRelease|x64.ActiveCfg = Release|x64
 		{1082CCF1-3D77-4E95-9B51-9262A6FFF766}.StoreRelease|x86.ActiveCfg = Release|Win32
+		{39E383CB-D417-4568-A37E-58AEEF4B7C73}.Debug|x86.ActiveCfg = Debug|x86
+		{39E383CB-D417-4568-A37E-58AEEF4B7C73}.Debug|x86.Build.0 = Debug|x86
+		{39E383CB-D417-4568-A37E-58AEEF4B7C73}.Debug|x64.ActiveCfg = Debug|x64
+		{39E383CB-D417-4568-A37E-58AEEF4B7C73}.Debug|x64.Build.0 = Debug|x64
+		{39E383CB-D417-4568-A37E-58AEEF4B7C73}.Debug.Broken|x64.ActiveCfg = Debug|x64
+		{39E383CB-D417-4568-A37E-58AEEF4B7C73}.Debug.Broken|x64.Build.0 = Debug|x64
+		{39E383CB-D417-4568-A37E-58AEEF4B7C73}.Debug.Broken|x86.ActiveCfg = Debug|x86
+		{39E383CB-D417-4568-A37E-58AEEF4B7C73}.Debug.Broken|x86.Build.0 = Debug|x86
+		{39E383CB-D417-4568-A37E-58AEEF4B7C73}.Release|x64.ActiveCfg = Release|x64
+		{39E383CB-D417-4568-A37E-58AEEF4B7C73}.Release|x64.Build.0 = Release|x64
+		{39E383CB-D417-4568-A37E-58AEEF4B7C73}.Release|x86.ActiveCfg = Release|x86
+		{39E383CB-D417-4568-A37E-58AEEF4B7C73}.Release|x86.Build.0 = Release|x86
+		{39E383CB-D417-4568-A37E-58AEEF4B7C73}.StoreDebug|x64.ActiveCfg = Debug|x64
+		{39E383CB-D417-4568-A37E-58AEEF4B7C73}.StoreDebug|x64.Build.0 = Debug|x64
+		{39E383CB-D417-4568-A37E-58AEEF4B7C73}.StoreDebug|x86.ActiveCfg = Debug|x86
+		{39E383CB-D417-4568-A37E-58AEEF4B7C73}.StoreDebug|x86.Build.0 = Debug|x86
+		{39E383CB-D417-4568-A37E-58AEEF4B7C73}.StoreRelease|x64.ActiveCfg = Release|x64
+		{39E383CB-D417-4568-A37E-58AEEF4B7C73}.StoreRelease|x64.Build.0 = Release|x64
+		{39E383CB-D417-4568-A37E-58AEEF4B7C73}.StoreRelease|x86.ActiveCfg = Release|x86
+		{39E383CB-D417-4568-A37E-58AEEF4B7C73}.StoreRelease|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
