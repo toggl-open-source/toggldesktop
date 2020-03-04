@@ -95,25 +95,22 @@ class TOGGL_INTERNAL_EXPORT HTTPSClientConfig {
 
 class TOGGL_INTERNAL_EXPORT HTTPSRequest {
  public:
-    HTTPSRequest()
-        : method("")
-    , host("")
-    , relative_url("")
-    , payload("")
-    , basic_auth_username("")
-    , basic_auth_password("")
-    , form(nullptr)
-    , timeout_seconds(kHTTPClientTimeoutSeconds) {}
-    virtual ~HTTPSRequest() {}
+    HTTPSRequest() {}
+    ~HTTPSRequest() {}
 
-    std::string method;
-    std::string host;
-    std::string relative_url;
-    std::string payload;
-    std::string basic_auth_username;
-    std::string basic_auth_password;
-    Poco::Net::HTMLForm *form;
-    Poco::Int64 timeout_seconds;
+    bool IsNull() const {
+        return method.empty() && host.empty() && relative_url.empty() && payload.empty() && basic_auth_password.empty() && basic_auth_password.empty()
+            && !form && timeout_seconds == kHTTPClientTimeoutSeconds;
+    }
+
+    std::string method {};
+    std::string host {};
+    std::string relative_url {};
+    std::string payload {};
+    std::string basic_auth_username {};
+    std::string basic_auth_password {};
+    Poco::Net::HTMLForm *form {};
+    Poco::Int64 timeout_seconds { kHTTPClientTimeoutSeconds };
 };
 
 class TOGGL_INTERNAL_EXPORT HTTPSResponse {
