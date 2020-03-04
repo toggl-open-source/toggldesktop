@@ -5075,15 +5075,8 @@ error Context::pushClients(
     std::string client_json("");
     error err = noError;
     for (auto &client : clients) {
-        Json::Value clientJson = client->SaveToJSON();
-
-        Json::StyledWriter writer;
-        client_json = writer.write(clientJson);
-
-        HTTPSRequest req;
+        HTTPSRequest req = client->PrepareRequest();
         req.host = urls::API();
-        req.relative_url = client->ModelURL();
-        req.payload = client_json;
         req.basic_auth_username = api_token;
         req.basic_auth_password = "api_token";
 
@@ -5128,15 +5121,8 @@ error Context::pushProjects(
             }
         }
 
-        Json::Value projectJson = project->SaveToJSON();
-
-        Json::StyledWriter writer;
-        project_json = writer.write(projectJson);
-
-        HTTPSRequest req;
+        HTTPSRequest req = project->PrepareRequest();
         req.host = urls::API();
-        req.relative_url = project->ModelURL();
-        req.payload = project_json;
         req.basic_auth_username = api_token;
         req.basic_auth_password = "api_token";
 
@@ -5199,17 +5185,8 @@ error Context::pushEntries(
             continue;
         }
 
-        Json::Value entryJson = te->SaveToJSON();
-
-        Json::StyledWriter writer;
-        entry_json = writer.write(entryJson);
-
-        // std::cout << entry_json;
-
-        HTTPSRequest req;
+        HTTPSRequest req = te->PrepareRequest();
         req.host = urls::API();
-        req.relative_url = te->ModelURL();
-        req.payload = entry_json;
         req.basic_auth_username = api_token;
         req.basic_auth_password = "api_token";
 

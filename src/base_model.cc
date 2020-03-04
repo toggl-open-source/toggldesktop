@@ -62,6 +62,17 @@ void BaseModel::SetValidationError(const std::string &value) {
     }
 }
 
+HTTPSRequest BaseModel::PrepareRequest() {
+    HTTPSRequest req;
+    Json::StyledWriter writer;
+
+    auto json = SaveToJSON();
+    req.relative_url = ModelURL();
+    req.payload = writer.write(json);
+
+    return req;
+}
+
 void BaseModel::SetDeletedAt(const Poco::Int64 value) {
     if (deleted_at_ != value) {
         deleted_at_ = value;

@@ -14,6 +14,7 @@
 #include "types.h"
 #include "util/logger.h"
 #include "util/memory.h"
+#include "https_client.h"
 
 #include <Poco/Types.h>
 
@@ -140,6 +141,8 @@ class TOGGL_INTERNAL_EXPORT BaseModel {
     virtual Json::Value SaveToJSON() const {
         return 0;
     }
+
+    virtual HTTPSRequest PrepareRequest();
 
     virtual bool DuplicateResource(const toggl::error &err) const {
         return false;
