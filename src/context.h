@@ -637,8 +637,7 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
         std::vector<locked<Client> > &clients,
         const std::string &api_token,
         const TogglClient &toggl_client);
-    error pushEntries(const std::map<std::string, locked<BaseModel> > &models,
-        std::vector<locked<TimeEntry> > &time_entries,
+    error pushEntries(std::vector<locked<TimeEntry> > &time_entries,
         const std::string &api_token,
         const TogglClient &toggl_client);
     error updateEntryProjects(
@@ -677,12 +676,6 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     error pushObmAction();
 
     error pullObmExperiments();
-
-    template<typename T>
-    void collectPushableModels(
-        ProtectedContainer<T> &list,
-        std::vector<locked<T>> *result,
-        std::map<std::string, locked<BaseModel>> *models = nullptr);
 
     Poco::Mutex db_m_;
     Database *db_;

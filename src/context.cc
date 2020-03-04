@@ -4947,8 +4947,6 @@ error Context::pushChanges(
 
         auto locks = lockMore(related.User, related.Workspaces, related.TimeEntries, related.Clients, related.Projects, related.Tasks, related.Tags);
 
-        std::map<std::string, locked<BaseModel>> models;
-
         // FIXME we shouldn't store the locked instances, rather the prepared messages
         std::vector<locked<TimeEntry>> time_entries;
         std::vector<locked<Project>> projects;
@@ -4966,18 +4964,28 @@ error Context::pushChanges(
             return error("cannot push changes without API token");
         }
 
+
+        auto collectPushableModels = [this] (auto &list, auto *result) {
+            for (auto model : list) {
+                if (!model->NeedsPush()) {
+                    continue;
+                }
+                related.User->EnsureWID(model);
+                model->EnsureGUID();
+                // std::move clears model and moves its contents to result, this call needs to be here
+                result->push_back(std::move(model));
+            }
+        };
+
         collectPushableModels(
             related.TimeEntries,
-            &time_entries,
-            &models);
+            &time_entries);
         collectPushableModels(
             related.Projects,
-            &projects,
-            &models);
+            &projects);
         collectPushableModels(
             related.Clients,
-            &clients,
-            &models);
+            &clients);
         if (time_entries.empty()
                 && projects.empty()
                 && clients.empty()) {
@@ -5036,7 +5044,6 @@ error Context::pushChanges(
             Poco::Stopwatch entry_stopwatch;
             entry_stopwatch.start();
             error err = pushEntries(
-                models,
                 time_entries,
                 api_token,
                 *toggl_client);
@@ -5167,7 +5174,6 @@ error Context::updateEntryProjects(std::vector<locked<Project>> &projects,
 }
 
 error Context::pushEntries(
-    const std::map<std::string, locked<BaseModel>>&,
     std::vector<locked<TimeEntry>> &time_entries,
     const std::string &api_token,
     const TogglClient &toggl_client) {
@@ -5889,30 +5895,6 @@ error Context::PullCountries() {
         return ex;
     }
     return noError;
-}
-
-template<typename T>
-void Context::collectPushableModels(ProtectedContainer<T> &list,
-    std::vector<locked<T>> *result,
-    std::map<std::string, locked<BaseModel>> *models) {
-
-    poco_check_ptr(result);
-
-    for (auto model : list) {
-        if (!model->NeedsPush()) {
-            continue;
-        }
-        related.User->EnsureWID(model);
-        model->EnsureGUID();
-        if (models && !model->GUID().empty()) {
-            // split the model into two locked variables
-            auto base = model.base();
-            // this clears base and moves its contents to models
-            (*models)[model->GUID()] = std::move(base);
-        }
-        // std::move clears model and moves its contents to result, this call needs to be here
-        result->push_back(std::move(model));
-    }
 }
 
 void on_websocket_message(
