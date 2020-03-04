@@ -77,6 +77,9 @@
                                                         <color key="value" name="login-text-color"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <outlet property="nextKeyView" destination="Igm-AP-s4k" id="l8i-ag-xWj"/>
+                                                </connections>
                                             </button>
                                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fZp-Ag-MGC" customClass="NSTextFieldClickablePointer">
                                                 <rect key="frame" x="72" y="22" width="102" height="15"/>
@@ -153,6 +156,7 @@
                                         </userDefinedRuntimeAttributes>
                                         <connections>
                                             <action selector="appleBtnOnClick:" target="-2" id="lKq-Mm-FIy"/>
+                                            <outlet property="nextKeyView" destination="tJn-oc-LUz" id="0S8-RP-B6U"/>
                                         </connections>
                                     </button>
                                     <button verticalHuggingPriority="750" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tJn-oc-LUz" customClass="FlatButton" customModule="TogglDesktop" customModuleProvider="target">
@@ -180,6 +184,7 @@
                                         </userDefinedRuntimeAttributes>
                                         <connections>
                                             <action selector="googleBtnOnClick:" target="-2" id="Cit-Ea-W3Z"/>
+                                            <outlet property="nextKeyView" destination="KGi-ca-Yer" id="aZ6-Uh-HtI"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -227,6 +232,9 @@
                                                 <string>NSAllRomanInputSourcesLocaleIdentifier</string>
                                             </allowedInputSourceLocales>
                                         </secureTextFieldCell>
+                                        <connections>
+                                            <outlet property="nextKeyView" destination="dzR-Wz-TvW" id="p5A-Br-jxr"/>
+                                        </connections>
                                     </secureTextField>
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="dzR-Wz-TvW" customClass="NSTextFieldClickablePointer">
                                         <rect key="frame" x="-2" y="40" width="108" height="15"/>
@@ -235,6 +243,9 @@
                                             <color key="textColor" name="login-text-color"/>
                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
+                                        <connections>
+                                            <outlet property="nextKeyView" destination="IjV-dM-dEc" id="xFT-H1-7zI"/>
+                                        </connections>
                                     </textField>
                                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="IjV-dM-dEc" customClass="FlatButton" customModule="TogglDesktop" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="188" height="30"/>
@@ -264,6 +275,7 @@
                                         </userDefinedRuntimeAttributes>
                                         <connections>
                                             <action selector="userActionButtonOnClick:" target="-2" id="z8F-6F-tPZ"/>
+                                            <outlet property="nextKeyView" destination="vHA-Cd-ciE" id="QQC-8i-Wdd"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -302,6 +314,9 @@
                                             <color key="textColor" name="login-text-color"/>
                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
+                                        <connections>
+                                            <outlet property="nextKeyView" destination="4Zx-Jg-kcg" id="bfB-pE-85l"/>
+                                        </connections>
                                     </textField>
                                 </subviews>
                                 <visibilityPriorities>
@@ -382,7 +397,7 @@
         <image name="google-logo" width="14" height="14"/>
         <image name="toggl-logo" width="50" height="16"/>
         <namedColor name="login-apple-google-background-color">
-            <color red="0.99991601705551147" green="1" blue="0.99988490343093872" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="login-background-color">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

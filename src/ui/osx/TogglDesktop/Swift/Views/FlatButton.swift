@@ -48,6 +48,11 @@ class FlatButton: NSButton {
         super.draw(dirtyRect)
     }
 
+    override func drawFocusRingMask() {
+        let rect = self.bounds
+        rect.fill()
+    }
+    
     private func drawTextColor() {
         if let titleColor = titleColor, let font = font {
             let style = NSMutableParagraphStyle()
