@@ -103,7 +103,8 @@ class TOGGL_INTERNAL_EXPORT HTTPSRequest {
     , basic_auth_username("")
     , basic_auth_password("")
     , form(nullptr)
-    , timeout_seconds(kHTTPClientTimeoutSeconds) {}
+    , timeout_seconds(kHTTPClientTimeoutSeconds)
+    , additionalHeaders() {}
     virtual ~HTTPSRequest() {}
 
     std::string method;
@@ -114,6 +115,7 @@ class TOGGL_INTERNAL_EXPORT HTTPSRequest {
     std::string basic_auth_password;
     Poco::Net::HTMLForm *form;
     Poco::Int64 timeout_seconds;
+    std::map<std::string, std::string> additionalHeaders;
 };
 
 class TOGGL_INTERNAL_EXPORT HTTPSResponse {

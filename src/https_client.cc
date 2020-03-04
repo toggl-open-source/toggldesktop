@@ -331,6 +331,12 @@ HTTPSResponse HTTPSClient::makeHttpRequest(
                                         Poco::Net::HTTPMessage::HTTP_1_1);
         poco_req.setKeepAlive(true);
 
+        // Add additionalHeaders
+        for(auto& pair : req.additionalHeaders)
+        {
+            poco_req.set(pair.first, pair.second);
+        }
+
         // FIXME: should get content type as parameter instead
         if (req.payload.size()) {
             poco_req.setContentType(kContentTypeApplicationJSON);
