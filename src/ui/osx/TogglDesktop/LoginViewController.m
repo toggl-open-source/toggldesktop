@@ -616,6 +616,8 @@ extern void *ctx;
     if (@available(macOS 10.15, *))
     {
         self.userAction = UserActionAppleSignup;
+        [self setUserSignUp:YES];
+        [self showLoaderView:YES];
         [[AppleAuthenticationService shared] requestAuth];
     }
 }
@@ -625,10 +627,11 @@ extern void *ctx;
     if (@available(macOS 10.15, *))
     {
         self.userAction = UserActionAppleLogin;
+        [self setUserSignUp:NO];
+        [self showLoaderView:YES];
         [[AppleAuthenticationService shared] requestAuth];
     }
 }
-
 
 #pragma mark - AppleAuthenticationServiceDelegate
 
@@ -639,8 +642,6 @@ extern void *ctx;
 
 - (void)appleAuthenticationDidCompleteWith:(ASAuthorizationAppleIDCredential *)credential API_AVAILABLE(macos(10.15))
 {
-    [self showLoaderView:YES];
-
     // Extract data
     NSString *fullName = nil;
     if (credential.fullName) {
@@ -664,6 +665,14 @@ extern void *ctx;
 
 - (void)appleAuthenticationDidFailedWith:(NSError *)error
 {
+    [self showLoaderView:NO];
 
+    // User cancel
+    if (error.code == 1001) {
+        return;
+    }
+
+    [[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayError
+                                                                object:error.description];
 }
 @end
