@@ -22,6 +22,18 @@ class FlatButton: NSButton {
             layer?.cornerRadius = cornerRadius
         }
     }
+    @IBInspectable var borderColor: NSColor? {
+        didSet {
+            wantsLayer = true
+            layer?.borderColor = borderColor?.cgColor
+        }
+    }
+    @IBInspectable var borderWidth: CGFloat = 0 {
+        didSet {
+            wantsLayer = true
+            layer?.borderWidth = borderWidth
+        }
+    }
 
     // MARK: Variables
     var isSelected = false {
@@ -52,7 +64,7 @@ class FlatButton: NSButton {
         let rect = self.bounds
         rect.fill()
     }
-    
+
     private func drawTextColor() {
         if let titleColor = titleColor, let font = font {
             let style = NSMutableParagraphStyle()
