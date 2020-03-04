@@ -17,8 +17,18 @@
         <DropShadowEffect Direction="270" Color="{DynamicResource Toggl.BlackColor}" Opacity="0.1"
                           BlurRadius="3" ShadowDepth="1" />
     </UserControl.Effect>
-    <StackPanel>
-        <Border Background="{DynamicResource Toggl.CardBackground}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="1" Name="panel" x:FieldModifier="private"
+                    Visibility="{Binding IsExpanded, Converter={StaticResource BooleanToVisibilityConverter}}"
+                    Margin="0 -1 0 0"
+                    Background="{DynamicResource Toggl.LightGrayBrush}"/>
+        <!-- <ItemsControl Visibility="{Binding IsExpanded, Converter={StaticResource BooleanToVisibilityConverter}}" -->
+        <!--               Items="{Binding DaysBindable}" /> -->
+        <Border Grid.Row="0" Background="{DynamicResource Toggl.CardBackground}">
             <ToggleButton Height="{StaticResource TimeEntryDayHeaderHeight}"
                           Style="{StaticResource Toggl.TimeEntryDayHeaderToggleButton}"
                           IsChecked="{Binding IsExpanded}"
@@ -39,9 +49,5 @@
                 </DockPanel>
             </ToggleButton>
         </Border>
-        <StackPanel Name="panel" x:FieldModifier="private"
-                    Visibility="{Binding IsExpanded, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-        <!-- <ItemsControl Visibility="{Binding IsExpanded, Converter={StaticResource BooleanToVisibilityConverter}}" -->
-        <!--               Items="{Binding DaysBindable}" /> -->
-    </StackPanel>
+    </Grid>
 </UserControl>
