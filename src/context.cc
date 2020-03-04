@@ -5828,6 +5828,7 @@ error Context::signUpWithProvider(
         req.host = urls::API();
         req.relative_url = ss.str();
         req.payload = Json::StyledWriter().write(user);
+        req.additionalHeaders["Referer"] = "daneel.debug";
 
         HTTPSResponse resp = toggl_client->Post(req);
         if (resp.err != noError) {
