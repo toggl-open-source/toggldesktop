@@ -34,6 +34,8 @@ namespace TogglDesktop
             this.mainGrid.Width = 0;
 
             Toggl.OnTimeEntryEditor += this.onTimeEntryEditor;
+
+            KeyboardShortcuts.RegisterShortcuts(this);
         }
 
         private void onTimeEntryEditor(bool open, Toggl.TogglTimeEntryView te, string focusedFieldName)
