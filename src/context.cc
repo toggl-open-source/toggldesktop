@@ -5520,6 +5520,25 @@ error Context::me(
     const std::string &password,
     std::string *user_data_json,
     const Poco::Int64 since) {
+    return _me(toggl_client, email, password, user_data_json, since, kTogglDesktopAPIV8);
+}
+
+error Context::meV9(
+    TogglClient *toggl_client,
+    const std::string &email,
+    const std::string &password,
+    std::string *user_data_json,
+    const Poco::Int64 since) {
+    return _me(toggl_client, email, password, user_data_json, since, kTogglDesktopAPIV9);
+}
+
+error Context::_me(
+    TogglClient *toggl_client,
+    const std::string &email,
+    const std::string &password,
+    std::string *user_data_json,
+    const Poco::Int64 since,
+    std::string api_version) {
 
     if (email.empty()) {
         return "Empty email or API token";
@@ -5534,7 +5553,9 @@ error Context::me(
         poco_check_ptr(toggl_client);
 
         std::stringstream ss;
-        ss << "/api/v8/me"
+        ss << "/api/"
+           << api_version
+           << "/me"
            << "?app_name=" << TogglClient::Config.AppName
            << "&with_related_data=true";
         if (since) {
@@ -5546,6 +5567,7 @@ error Context::me(
         req.relative_url = ss.str();
         req.basic_auth_username = email;
         req.basic_auth_password = password;
+        req.additionalHeaders["Referer"] = kTogglDesktopClientID;
 
         HTTPSResponse resp = toggl_client->Get(req);
         if (resp.err != noError) {
