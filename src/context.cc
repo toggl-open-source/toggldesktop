@@ -4950,7 +4950,7 @@ error Context::pushChanges(
 
                 if (resp.err != noError) {
                     // if we're able to solve the error
-                    if (client->ResolveError(resp.body)) {
+                    if (client->ResolveError(resp.body) == noError) {
                         displayError(save(false));
                     }
                     continue;
@@ -4984,7 +4984,7 @@ error Context::pushChanges(
 
                 if (resp.err != noError) {
                     // if we're able to solve the error
-                    if (project->ResolveError(resp.body)) {
+                    if (project->ResolveError(resp.body) == noError) {
                         displayError(save(false));
                     }
                     continue;
@@ -5018,7 +5018,7 @@ error Context::pushChanges(
 
                 if (resp.err != noError) {
                     // if we're able to solve the error
-                    if (te->ResolveError(resp.body)) {
+                    if (te->ResolveError(resp.body) == noError) {
                         displayError(save(false));
                     }
 

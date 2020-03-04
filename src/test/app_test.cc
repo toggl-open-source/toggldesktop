@@ -101,7 +101,7 @@ TEST(Project, ResolveOnlyAdminsCanChangeProjectVisibility) {
     ProtectedModel<Project> p { nullptr, true };
     p->SetPrivate(false);
     error err = error("Only admins can change project visibility");
-    ASSERT_TRUE(p->ResolveError(err));
+    ASSERT_EQ(p->ResolveError(err), noError);
     ASSERT_TRUE(p->IsPrivate());
 }
 

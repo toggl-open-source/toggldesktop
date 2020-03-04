@@ -159,8 +159,8 @@ class TOGGL_INTERNAL_EXPORT BaseModel {
     virtual bool ResourceCannotBeCreated(const toggl::error &err) const {
         return false;
     }
-    virtual bool ResolveError(const toggl::error &err) {
-        return false;
+    virtual error ResolveError(const toggl::error &err) {
+        return err;
     }
 
     error LoadFromDataString(const std::string &);

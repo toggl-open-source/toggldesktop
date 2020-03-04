@@ -87,7 +87,7 @@ class TOGGL_INTERNAL_EXPORT Project : public BaseModel {
     Json::Value SaveToJSON() const override;
     bool DuplicateResource(const toggl::error &err) const override;
     bool ResourceCannotBeCreated(const toggl::error &err) const override;
-    bool ResolveError(const toggl::error &err) override;
+    error ResolveError(const toggl::error &err) override;
 
     static std::vector<std::string> ColorCodes;
 

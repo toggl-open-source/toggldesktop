@@ -63,17 +63,17 @@ Json::Value Client::SaveToJSON() const {
     return n;
 }
 
-bool Client::ResolveError(const toggl::error &err) {
+error Client::ResolveError(const toggl::error &err) {
     if (nameHasAlreadyBeenTaken(err)) {
         SetName(Name() + " 1");
-        return true;
+        return noError;
     }
     if (err.find(kClientNameAlreadyExists) != std::string::npos) {
         // remove duplicate from db
         MarkAsDeletedOnServer();
-        return true;
+        return noError;
     }
-    return false;
+    return err;
 }
 
 bool Client::nameHasAlreadyBeenTaken(const error &err) {

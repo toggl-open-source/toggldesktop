@@ -181,7 +181,7 @@ error BaseModel::ApplyBatchUpdateResult(
             return noError;
         }
 
-        if (ResolveError(err)) {
+        if (ResolveError(err) == noError) {
             return noError;
         }
 

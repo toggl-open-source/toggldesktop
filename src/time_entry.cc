@@ -28,13 +28,13 @@
 
 namespace toggl {
 
-bool TimeEntry::ResolveError(const error &err) {
+error TimeEntry::ResolveError(const error &err) {
     if (durationTooLarge(err) && Stop() && Start()) {
         Poco::Int64 seconds =
             (std::min)(Stop() - Start(),
                        Poco::Int64(kMaxTimeEntryDurationSeconds));
         SetDurationInSeconds(seconds);
-        return true;
+        return noError;
     }
     if (startTimeWrongYear(err) && Stop() && Start()) {
         Poco::Int64 seconds =
@@ -42,36 +42,36 @@ bool TimeEntry::ResolveError(const error &err) {
                        Poco::Int64(kMaxTimeEntryDurationSeconds));
         SetDurationInSeconds(seconds);
         SetStart(Stop() - Duration());
-        return true;
+        return noError;
     }
     if (stopTimeMustBeAfterStartTime(err) && Stop() && Start()) {
         SetStop(Start() + DurationInSeconds());
-        return true;
+        return noError;
     }
     if (userCannotAccessWorkspace(err)) {
         SetWID(0);
         SetPID(0);
         SetTID(0);
-        return true;
+        return noError;
     }
     if (userCannotAccessTheSelectedProject(err)) {
         SetPID(0);
         SetTID(0);
-        return true;
+        return noError;
     }
     if (userCannotAccessSelectedTask(err)) {
         SetTID(0);
-        return true;
+        return noError;
     }
     if (billableIsAPremiumFeature(err)) {
         SetBillable(false);
-        return true;
+        return noError;
     }
     if (isMissingCreatedWith(err)) {
         SetCreatedWith(HTTPSClient::Config.UserAgent());
-        return true;
+        return noError;
     }
-    return false;
+    return err;
 }
 
 bool TimeEntry::isNotFound(const error &err) const {
