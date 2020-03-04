@@ -35,8 +35,10 @@ namespace TogglDesktop.ViewModels
         {
             _refreshLoginBindings = refreshLoginBindings;
             _refreshSignupBindings = refreshSignupBindings;
-            Toggl.OnDisplayCountries += OnDisplayCountries;
-            Toggl.OnSettings += OnSettings;
+            Toggl.OnDisplayCountries
+                .ObserveOnDispatcher()
+                .ToPropertyEx(this, x => x.Countries);
+            Toggl.OnSettings.Subscribe(x => _httpClientFactory = HttpClientFactoryFromProxySettings(x.settings));
             this.WhenAnyValue(x => x.SelectedConfirmAction,
                     x => x == ConfirmAction.LogIn ? "Log in" : "Sign up")
                 .ToPropertyEx(this, x => x.ConfirmButtonText);
@@ -66,11 +68,10 @@ namespace TogglDesktop.ViewModels
         public ReactiveCommand<Unit, Unit> ConfirmGoogleLoginSignupCommand { get; }
         public IObservable<bool> IsLoginSignupExecuting { get; }
 
-        [Reactive]
-        public IList<CountryViewModel> Countries { get; private set; }
+        public IList<Toggl.TogglCountryView> Countries { [ObservableAsProperty] get; }
 
         [Reactive]
-        public CountryViewModel SelectedCountry { get; set; }
+        public Toggl.TogglCountryView SelectedCountry { get; set; }
 
         [Reactive]
         public ConfirmAction SelectedConfirmAction { get; set; }
@@ -119,7 +120,7 @@ namespace TogglDesktop.ViewModels
                     "A password is required");
                 _selectedCountryValidation = this.ValidationRule(
                     x => x.SelectedCountry,
-                    selectedCountry => selectedCountry != null,
+                    selectedCountry => selectedCountry.ID > 0,
                     "Please select country");
                 _isTosCheckedValidation = this.ValidationRule(
                     x => x.IsTosChecked,
@@ -215,20 +216,9 @@ namespace TogglDesktop.ViewModels
             }
         }
 
-        private void OnDisplayCountries(List<Toggl.TogglCountryView> list)
-        {
-            var countriesVm = list.Select(c => new CountryViewModel(c)).ToArray();
-            Dispatcher.CurrentDispatcher.Invoke(() => { Countries = countriesVm; });
-        }
-
-        private void OnSettings(bool open, Toggl.TogglSettingsView settings)
-        {
-            _httpClientFactory = HttpClientFactoryFromProxySettings(settings);
-        }
-
         public async Task GoogleSignupAsync()
         {
-            await GoogleAuth(accessToken => Toggl.GoogleSignup(accessToken, SelectedCountry?.ID ?? default), "Signup");
+            await GoogleAuth(accessToken => Toggl.GoogleSignup(accessToken, SelectedCountry.ID), "Signup");
         }
 
         public async Task GoogleLoginAsync()
@@ -292,7 +282,7 @@ namespace TogglDesktop.ViewModels
         {
             var email = Email;
             var password = Password;
-            var selectedCountryId = SelectedCountry?.ID ?? -1;
+            var selectedCountryId = SelectedCountry.ID;
             return await Task.Run(() => confirmAction(email, password, selectedCountryId));
         }
 
@@ -317,18 +307,6 @@ namespace TogglDesktop.ViewModels
             }
 
             return proxyHttpClientFactory;
-        }
-
-        public class CountryViewModel
-        {
-            private readonly Toggl.TogglCountryView _countryView;
-            public CountryViewModel(Toggl.TogglCountryView countryView)
-            {
-                _countryView = countryView;
-            }
-
-            public string Name => _countryView.Name;
-            public long ID => _countryView.ID;
         }
 
         private class ProxySupportedHttpClientFactory : HttpClientFactory

@@ -1,49 +1,29 @@
 ﻿using System;
+using System.Reactive.Linq;
 using System.Windows;
 
 namespace TogglDesktop
 {
     public partial class StatusBar
     {
-        private Toggl.OnlineState onlineState;
-
         public StatusBar()
         {
             this.InitializeComponent();
 
-            Toggl.OnOnlineState += this.onOnlineState;
-            Toggl.OnLogin += this.onLogin;
+            Toggl.OnOnlineState
+                .CombineLatest(Toggl.OnLogin, GetState)
+                .ObserveOnDispatcher()
+                .Subscribe(onOnlineState);
         }
 
-        private void onLogin(bool open, ulong userID)
+        private static Toggl.OnlineState GetState(Toggl.OnlineState onlineState, (bool open, ulong userId) x)
         {
-            if (this.TryBeginInvoke(this.onLogin, open, userID))
-                return;
-
-            if (open)
-            {
-                this.Hide();
-            }
+            return x.userId == 0 ? Toggl.OnlineState.Online : onlineState;
         }
 
         private void onOnlineState(Toggl.OnlineState state)
         {
-            if (this.TryBeginInvoke(this.onOnlineState, state))
-                return;
-
-            this.onlineState = state;
-            this.update();
-        }
-
-        private void update()
-        {
-            if (!Program.IsLoggedIn)
-            {
-                this.Hide();
-                return;
-            }
-
-            switch (this.onlineState)
+            switch (state)
             {
                 case Toggl.OnlineState.Online:
                 {

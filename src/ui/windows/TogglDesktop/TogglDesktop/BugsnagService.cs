@@ -51,22 +51,24 @@ public static class BugsnagService
             });
         });
 
-        Toggl.OnError += delegate(string errmsg, bool user_error)
-        {
-            Toggl.Debug(errmsg);
-            try
-            {
-                if (!user_error && bugsnag.Configuration.ReleaseStage != "development")
-                    NotifyBugsnag(new Exception(errmsg));
-            }
-            catch (Exception ex)
-            {
-                Toggl.Debug("Could not check if can notify bugsnag: " + ex);
-            }
-        };
+        Toggl.OnError.Subscribe(x => OnError(x.errorMessage, x.isUserError));
 
         Application.ThreadException += Application_ThreadException;
         AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+    }
+
+    private static void OnError(string errorMessage, bool isUserError)
+    {
+        Toggl.Debug(errorMessage);
+        try
+        {
+            if (!isUserError && bugsnag.Configuration.ReleaseStage != "development")
+                NotifyBugsnag(new Exception(errorMessage));
+        }
+        catch (Exception ex)
+        {
+            Toggl.Debug("Could not check if can notify bugsnag: " + ex);
+        }
     }
 
     private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)

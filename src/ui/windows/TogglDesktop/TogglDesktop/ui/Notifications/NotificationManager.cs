@@ -1,4 +1,5 @@
 using System;
+using System.Reactive.Linq;
 using System.Windows;
 using System.Windows.Controls.Primitives;
 using Hardcodet.Wpf.TaskbarNotification;
@@ -15,16 +16,15 @@ namespace TogglDesktop
             _taskbarIcon = taskbarIcon;
             _parentWindow = parentWindow;
 
-            Toggl.OnReminder += OnReminder;
-            Toggl.OnAutotrackerNotification += OnAutotrackerNotification;
-            Toggl.OnDisplayPomodoro += OnDisplayPomodoro;
-            Toggl.OnDisplayPomodoroBreak += OnDisplayPomodoro;
+            Toggl.OnReminder.ObserveOnDispatcher().Subscribe(OnReminder);
+            Toggl.OnAutotrackerNotification.ObserveOnDispatcher().Subscribe(OnAutotrackerNotification);
+            Toggl.OnDisplayPomodoro.ObserveOnDispatcher().Subscribe(OnDisplayPomodoro);
+            Toggl.OnDisplayPomodoroBreak.ObserveOnDispatcher().Subscribe(OnDisplayPomodoro);
         }
 
-        private void OnReminder(string title, string informativeText)
+        private void OnReminder((string title, string informativeText) x)
         {
-            if (_parentWindow.TryBeginInvoke(OnReminder, title, informativeText))
-                return;
+            var (title, informativeText) = x;
 
             void StartButtonClick()
             {
@@ -47,10 +47,9 @@ namespace TogglDesktop
             }
         }
 
-        private void OnDisplayPomodoro(string title, string informativeText)
+        private void OnDisplayPomodoro((string title, string informativeText) x)
         {
-            if (_parentWindow.TryBeginInvoke(OnDisplayPomodoro, title, informativeText))
-                return;
+            var (title, informativeText) = x;
 
             void StartNewButtonClick()
             {
@@ -84,10 +83,9 @@ namespace TogglDesktop
             }
         }
 
-        private void OnAutotrackerNotification(string projectName, ulong projectId, ulong taskId)
+        private void OnAutotrackerNotification((string projectName, ulong projectId, ulong taskId) x)
         {
-            if (_parentWindow.TryBeginInvoke(OnAutotrackerNotification, projectName, projectId, taskId))
-                return;
+            var (projectName, projectId, taskId) = x;
 
             void StartButtonClick()
             {

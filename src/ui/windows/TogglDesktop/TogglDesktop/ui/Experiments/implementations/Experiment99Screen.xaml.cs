@@ -1,4 +1,4 @@
-﻿
+﻿using System;
 using System.Windows;
 
 namespace TogglDesktop.Experiments
@@ -10,24 +10,19 @@ namespace TogglDesktop.Experiments
             this.InitializeComponent();
         }
 
+        private IDisposable _subscription;
         protected override void initialise()
         {
             Toggl.SetManualMode(false);
             Toggl.ViewTimeEntryList();
 
-            Toggl.OnStoppedTimerState += this.onStoppedTimerState;
+            _subscription = Toggl.OnStoppedTimerState.Subscribe(_ => this.quitTutorial());
         }
 
         protected override void cleanup()
         {
-            Toggl.OnStoppedTimerState -= this.onStoppedTimerState;
+            _subscription.Dispose();
         }
-
-        private void onStoppedTimerState()
-        {
-            this.quitTutorial();
-        }
-
 
         private void closeButtonClick(object sender, RoutedEventArgs e)
         {

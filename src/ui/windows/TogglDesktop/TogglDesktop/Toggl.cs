@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Reactive;
+using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Runtime.InteropServices;
 using System.Windows;
@@ -69,99 +72,6 @@ public static partial class Toggl
         Started = kDownloadStatusStarted,
         Done = kDownloadStatusDone
     }
-
-    #endregion
-
-    #region callback delegates
-
-    public delegate void DisplayApp(
-        bool open);
-
-    public delegate void DisplayOverlay(
-        Int64 type);
-
-    public delegate void DisplayError(
-        string errmsg,
-        bool user_error);
-
-    public delegate void DisplaySyncState(
-        SyncState state);
-
-    public delegate void DisplayUnsyncedItems(
-        Int64 count);
-
-    public delegate void DisplayOnlineState(
-        OnlineState state);
-
-    public delegate void DisplayURL(
-        string url);
-
-    public delegate void DisplayLogin(
-        bool open,
-        UInt64 user_id);
-
-    public delegate void DisplayReminder(
-        string title,
-        string informative_text);
-
-    public delegate void DisplayTimeEntryList(
-        bool open,
-        List<TogglTimeEntryView> list,
-        bool show_load_more_button);
-
-    public delegate void DisplayAutocomplete(
-        List<TogglAutocompleteView> list);
-
-    public delegate void DisplayViewItems(
-        List<TogglGenericView> list);
-
-    public delegate void DisplayTimeEntryEditor(
-        bool open,
-        TogglTimeEntryView te,
-        string focused_field_name);
-
-    public delegate void DisplaySettings(
-        bool open,
-        TogglSettingsView settings);
-
-    public delegate void DisplayRunningTimerState(
-        TogglTimeEntryView te);
-
-    public delegate void DisplayStoppedTimerState();
-
-    public delegate void DisplayIdleNotification(
-        string guid,
-        string since,
-        string duration,
-        Int64 started,
-        string description);
-
-    public delegate void DisplayAutotrackerRules(
-        List<TogglAutotrackerRuleView> rules, string[] terms);
-
-    public delegate void DisplayAutotrackerNotification(
-        string projectName, ulong projectId, ulong taskId);
-
-    public delegate void DisplayProjectColors(
-        string[] colors, ulong count);
-
-    public delegate void DisplayCountries(
-        List<TogglCountryView> list);
-
-    public delegate void DisplayPromotion(
-        long id);
-
-    public delegate void DisplayObmExperiment(
-        ulong id, bool included, bool seenBefore);
-
-    public delegate void DisplayPomodoro(
-        string title, string informativeText);
-
-    public delegate void DisplayPomodoroBreak(
-        string title, string informativeText);
-
-    public delegate void DisplayInAppNotification(
-        string title, string text, string button, string url);
 
     #endregion
 
@@ -586,11 +496,6 @@ public static partial class Toggl
         return toggl_get_user_email(ctx);
     }
 
-    public static void FullSync()
-    {
-        toggl_fullsync(ctx);
-    }
-
     public static void Sync()
     {
         OnManualSync();
@@ -759,47 +664,114 @@ public static partial class Toggl
 
     #endregion
 
-    #region callback events
+    #region library events as observables
 
-    public static event DisplayApp OnApp = delegate { };
-    public static event DisplayOverlay OnOverlay = delegate { };
-    public static event DisplayError OnError = delegate { };
-    public static event DisplayOnlineState OnOnlineState = delegate { };
-    public static event DisplayLogin OnLogin = delegate { };
-    public static event DisplayReminder OnReminder = delegate { };
-    public static event DisplayTimeEntryList OnTimeEntryList = delegate { };
-    public static event DisplayAutocomplete OnTimeEntryAutocomplete = delegate { };
-    public static event DisplayAutocomplete OnMinitimerAutocomplete = delegate { };
-    public static event DisplayAutocomplete OnProjectAutocomplete = delegate { };
-    public static event DisplayTimeEntryEditor OnTimeEntryEditor = delegate { };
-    public static event DisplayViewItems OnWorkspaceSelect = delegate { };
-    public static event DisplayViewItems OnClientSelect = delegate { };
-    public static event DisplayViewItems OnTags = delegate { };
-    public static event DisplaySettings OnSettings = delegate { };
-    public static event DisplayRunningTimerState OnRunningTimerState = delegate { };
-    public static event DisplayStoppedTimerState OnStoppedTimerState = delegate { };
-    public static event DisplayURL OnURL = delegate { };
-    public static event DisplayIdleNotification OnIdleNotification = delegate { };
-    public static event DisplayAutotrackerRules OnAutotrackerRules = delegate { };
-    public static event DisplayAutotrackerNotification OnAutotrackerNotification = delegate { };
-    public static event DisplaySyncState OnDisplaySyncState = delegate { };
-    public static event DisplayUnsyncedItems OnDisplayUnsyncedItems = delegate { };
-    public static event DisplayProjectColors OnDisplayProjectColors = delegate { };
-    public static event DisplayCountries OnDisplayCountries = delegate { };
-    public static event DisplayPromotion OnDisplayPromotion = delegate { };
-    public static event DisplayObmExperiment OnDisplayObmExperiment = delegate { };
-    public static event DisplayPomodoro OnDisplayPomodoro = delegate { };
-    public static event DisplayPomodoroBreak OnDisplayPomodoroBreak = delegate { };
-    public static event DisplayInAppNotification OnDisplayInAppNotification = delegate { };
-    public static readonly BehaviorSubject<UpdateStatus> OnUpdateDownloadStatus
-        = new BehaviorSubject<UpdateStatus>(new UpdateStatus());
+    private static readonly Subject<bool> _onApp = new Subject<bool>();
+    public static readonly IObservable<bool> OnApp = _onApp.AsObservable();
+
+    private static readonly Subject<long> _onOverlay = new Subject<long>();
+    public static readonly IObservable<long> OnOverlay = _onOverlay.AsObservable();
+
+    private static readonly Subject<(string, bool)> _onError = new Subject<(string,bool)>();
+    public static readonly IObservable<(string errorMessage, bool isUserError)> OnError = _onError.AsObservable();
+
+    private static readonly Subject<OnlineState> _onOnlineState = new Subject<OnlineState>();
+    public static readonly IObservable<OnlineState> OnOnlineState = _onOnlineState.AsObservable();
+
+    private static readonly Subject<(bool, ulong)> _onLogin = new Subject<(bool, ulong)>();
+    public static readonly IObservable<(bool open, ulong userId)> OnLogin = _onLogin.AsObservable();
+
+    private static readonly Subject<(string, string)> _onReminder = new Subject<(string, string)>();
+    public static readonly IObservable<(string title, string informativeText)> OnReminder = _onReminder.AsObservable();
+
+    private static readonly Subject<(bool, List<TogglTimeEntryView>, bool)> _onTimeEntryList = new Subject<(bool, List<TogglTimeEntryView>, bool)>();
+    public static readonly IObservable<(bool open, List<TogglTimeEntryView> list, bool showLoadMore)> OnTimeEntryList =_onTimeEntryList.AsObservable();
+
+    private static readonly Subject<List<TogglAutocompleteView>> _onTimeEntryAutocomplete = new Subject<List<TogglAutocompleteView>>();
+    public static readonly IObservable<List<TogglAutocompleteView>> OnTimeEntryAutocomplete = _onTimeEntryAutocomplete.AsObservable();
+
+    private static readonly Subject<List<TogglAutocompleteView>> _onMinitimerAutocomplete = new Subject<List<TogglAutocompleteView>>();
+    public static readonly IObservable<List<TogglAutocompleteView>> OnMinitimerAutocomplete = _onMinitimerAutocomplete.AsObservable();
+
+    private static readonly Subject<List<TogglAutocompleteView>> _onProjectAutocomplete = new Subject<List<TogglAutocompleteView>>();
+    public static readonly IObservable<List<TogglAutocompleteView>> OnProjectAutocomplete = _onProjectAutocomplete.AsObservable();
+
+    private static readonly Subject<(bool, TogglTimeEntryView, string)> _onTimeEntryEditor = new Subject<(bool, TogglTimeEntryView, string)>();
+    public static readonly IObservable<(bool open, TogglTimeEntryView timeEntry, string focusedFieldName)>
+        OnTimeEntryEditor = _onTimeEntryEditor.AsObservable();
+
+    private static readonly Subject<List<TogglGenericView>> _onWorkspaceSelect = new Subject<List<TogglGenericView>>();
+    public static readonly IObservable<List<TogglGenericView>> OnWorkspaceSelect = _onWorkspaceSelect.AsObservable();
+
+    private static readonly Subject<List<TogglGenericView>> _onClientSelect = new Subject<List<TogglGenericView>>();
+    public static readonly IObservable<List<TogglGenericView>> OnClientSelect = _onClientSelect.AsObservable();
+
+    private static readonly Subject<List<TogglGenericView>> _onTags = new Subject<List<TogglGenericView>>();
+    public static readonly IObservable<List<TogglGenericView>> OnTags = _onTags.AsObservable();
+
+    private static readonly Subject<(bool, TogglSettingsView)> _onSettings = new Subject<(bool, TogglSettingsView)>();
+    public static readonly IObservable<(bool open, TogglSettingsView settings)> OnSettings = _onSettings.AsObservable();
+
+    private static readonly Subject<TogglTimeEntryView> _onRunningTimerState = new Subject<TogglTimeEntryView>();
+    public static readonly IObservable<TogglTimeEntryView> OnRunningTimerState = _onRunningTimerState.AsObservable();
+
+    private static readonly Subject<Unit> _onStoppedTimerState = new Subject<Unit>();
+    public static readonly IObservable<Unit> OnStoppedTimerState = _onStoppedTimerState.AsObservable();
+
+    private static readonly Subject<string> _onURL = new Subject<string>();
+    public static readonly IObservable<string> OnURL = _onURL.AsObservable();
+
+    private static readonly Subject<(string, string, string, long, string)> _onIdleNotification = new Subject<(string, string, string, long, string)>();
+    public static readonly IObservable<(string, string, string, long, string)> OnIdleNotification = _onIdleNotification.AsObservable();
+
+    private static readonly Subject<List<TogglAutotrackerRuleView>> _onAutotrackerRules = new Subject<List<TogglAutotrackerRuleView>>();
+    public static readonly IObservable<List<TogglAutotrackerRuleView>> OnAutotrackerRules = _onAutotrackerRules.AsObservable();
+
+    private static readonly Subject<(string, ulong, ulong)> _onAutotrackerNotification = new Subject<(string, ulong, ulong)>();
+    public static readonly IObservable<(string projectName, ulong projectId, ulong taskId)> OnAutotrackerNotification =
+        _onAutotrackerNotification.AsObservable();
+
+    private static readonly Subject<SyncState> _onDisplaySyncState = new Subject<SyncState>();
+    public static readonly IObservable<SyncState> OnDisplaySyncState = _onDisplaySyncState.AsObservable();
+
+    private static readonly Subject<long> _onDisplayUnsyncedItems = new Subject<long>();
+    public static readonly IObservable<long> OnDisplayUnsyncedItems = _onDisplayUnsyncedItems.AsObservable();
+
+    public static readonly Subject<UpdateStatus> OnUpdateDownloadStatus = new Subject<UpdateStatus>();
+
+    private static readonly Subject<string[]> _onDisplayProjectColors = new Subject<string[]>();
+    public static readonly IObservable<string[]> OnDisplayProjectColors = _onDisplayProjectColors.AsObservable();
+
+    private static readonly Subject<List<TogglCountryView>> _onDisplayCountries = new Subject<List<TogglCountryView>>();
+    public static readonly IObservable<List<TogglCountryView>> OnDisplayCountries = _onDisplayCountries.AsObservable();
+
+    private static readonly Subject<long> _onDisplayPromotion = new Subject<long>();
+    public static readonly IObservable<long> OnDisplayPromotion = _onDisplayPromotion.AsObservable();
+
+    private static readonly Subject<(ulong, bool, bool)> _onDisplayObmExperiment = new Subject<(ulong, bool, bool)>();
+    public static readonly IObservable<(ulong id, bool included, bool seenBefore)> OnDisplayObmExperiment =
+        _onDisplayObmExperiment.AsObservable();
+
+    private static readonly Subject<(string title, string informativeText)> _onDisplayPomodoro = new Subject<(string title, string informativeText)>();
+    public static readonly IObservable<(string title, string informativeText)> OnDisplayPomodoro =
+        _onDisplayPomodoro.AsObservable();
+
+    private static readonly Subject<(string title, string informativeText)> _onDisplayPomodoroBreak = new Subject<(string title, string informativeText)>();
+    public static readonly IObservable<(string title, string informativeText)> OnDisplayPomodoroBreak =
+        _onDisplayPomodoroBreak.AsObservable();
+
+    private static readonly Subject<(string title, string button, string text, string url)> _onDisplayInAppNotification =
+        new Subject<(string title, string button, string text, string url)>();
+    public static readonly IObservable<(string title, string button, string text, string url)> OnDisplayInAppNotification =
+        _onDisplayInAppNotification.AsObservable();
+
     private static void listenToLibEvents()
     {
         toggl_on_show_app(ctx, open =>
         {
             using (Performance.Measure("Calling OnApp"))
             {
-                OnApp(open);
+                _onApp.OnNext(open);
             }
         });
 
@@ -807,7 +779,7 @@ public static partial class Toggl
         {
             using (Performance.Measure("Calling OnOverlay"))
             {
-                OnOverlay(type);
+                _onOverlay.OnNext(type);
             }
         });
 
@@ -815,7 +787,7 @@ public static partial class Toggl
         {
             using (Performance.Measure("Calling OnError, user_error: {1}, message: {0}", errmsg, user_error))
             {
-                OnError(errmsg, user_error);
+                _onError.OnNext((errmsg, user_error));
             }
         });
 
@@ -823,14 +795,14 @@ public static partial class Toggl
         {
             using (Performance.Measure("Calling OnDisplaySyncState, state: {0}", state))
             {
-                OnDisplaySyncState((SyncState)state);
+                _onDisplaySyncState.OnNext((SyncState)state);
             }
         });
         toggl_on_unsynced_items(ctx, count =>
         {
             using (Performance.Measure("Calling OnDisplayUnsyncedItems, count: {0}", count))
             {
-                OnDisplayUnsyncedItems(count);
+                _onDisplayUnsyncedItems.OnNext(count);
             }
         });
 
@@ -838,7 +810,7 @@ public static partial class Toggl
         {
             using (Performance.Measure("Calling OnOnlineState, state: {0}", state))
             {
-                OnOnlineState((OnlineState)state);
+                _onOnlineState.OnNext((OnlineState)state);
             }
         });
 
@@ -846,7 +818,7 @@ public static partial class Toggl
         {
             using (Performance.Measure("Calling OnLogin"))
             {
-                OnLogin(open, user_id);
+                _onLogin.OnNext((open, user_id));
             }
         });
 
@@ -854,7 +826,7 @@ public static partial class Toggl
         {
             using (Performance.Measure("Calling OnReminder, title: {0}", title))
             {
-                OnReminder(title, informative_text);
+                _onReminder.OnNext((title, informative_text));
             }
         });
 
@@ -862,7 +834,7 @@ public static partial class Toggl
         {
             using (Performance.Measure("Calling OnTimeEntryList, open: {0}", open))
             {
-                OnTimeEntryList(open, convertToTimeEntryList(first), show_load_more_button);
+                _onTimeEntryList.OnNext((open, convertToTimeEntryList(first), show_load_more_button));
             }
         });
 
@@ -870,7 +842,7 @@ public static partial class Toggl
         {
             using (Performance.Measure("Calling OnTimeEntryAutocomplete"))
             {
-                OnTimeEntryAutocomplete(convertToAutocompleteList(first));
+                _onTimeEntryAutocomplete.OnNext(convertToAutocompleteList(first));
             }
         });
 
@@ -878,7 +850,7 @@ public static partial class Toggl
         {
             using (Performance.Measure("Calling OnMinitimerAutocomplete"))
             {
-                OnMinitimerAutocomplete(convertToAutocompleteList(first));
+                _onMinitimerAutocomplete.OnNext(convertToAutocompleteList(first));
             }
         });
 
@@ -886,7 +858,7 @@ public static partial class Toggl
         {
             using (Performance.Measure("Calling OnProjectAutocomplete"))
             {
-                OnProjectAutocomplete(convertToAutocompleteList(first));
+                _onProjectAutocomplete.OnNext(convertToAutocompleteList(first));
             }
         });
 
@@ -894,7 +866,7 @@ public static partial class Toggl
         {
             using (Performance.Measure("Calling OnTimeEntryEditor, focused field: {0}", focused_field_name))
             {
-                OnTimeEntryEditor(open, marshalStruct<TogglTimeEntryView>(te), focused_field_name);
+                _onTimeEntryEditor.OnNext((open, marshalStruct<TogglTimeEntryView>(te), focused_field_name));
             }
         });
 
@@ -902,7 +874,7 @@ public static partial class Toggl
         {
             using (Performance.Measure("Calling OnWorkspaceSelect"))
             {
-                OnWorkspaceSelect(convertToViewItemList(first));
+                _onWorkspaceSelect.OnNext(convertToViewItemList(first));
             }
         });
 
@@ -910,7 +882,7 @@ public static partial class Toggl
         {
             using (Performance.Measure("Calling OnClientSelect"))
             {
-                OnClientSelect(convertToViewItemList(first));
+                _onClientSelect.OnNext(convertToViewItemList(first));
             }
         });
 
@@ -918,7 +890,7 @@ public static partial class Toggl
         {
             using (Performance.Measure("Calling OnTags"))
             {
-                OnTags(convertToViewItemList(first));
+                _onTags.OnNext(convertToViewItemList(first));
             }
         });
 
@@ -926,7 +898,7 @@ public static partial class Toggl
         {
             using (Performance.Measure("Calling OnSettings"))
             {
-                OnSettings(open, marshalStruct<TogglSettingsView>(settings));
+                _onSettings.OnNext((open, marshalStruct<TogglSettingsView>(settings)));
             }
         });
 
@@ -936,13 +908,13 @@ public static partial class Toggl
             {
                 using (Performance.Measure("Calling OnStoppedTimerState"))
                 {
-                    OnStoppedTimerState();
+                    _onStoppedTimerState.OnNext(Unit.Default);
                     return;
                 }
             }
             using (Performance.Measure("Calling OnRunningTimerState"))
             {
-                OnRunningTimerState(marshalStruct<TogglTimeEntryView>(te));
+                _onRunningTimerState.OnNext(marshalStruct<TogglTimeEntryView>(te));
             }
         });
 
@@ -950,7 +922,7 @@ public static partial class Toggl
         {
             using (Performance.Measure("Calling OnURL"))
             {
-                OnURL(url);
+                _onURL.OnNext(url);
             }
         });
 
@@ -958,7 +930,7 @@ public static partial class Toggl
         {
             using (Performance.Measure("Calling OnIdleNotification"))
             {
-                OnIdleNotification(guid, since, duration, started, description);
+                _onIdleNotification.OnNext((guid, since, duration, started, description));
             }
         });
 
@@ -966,7 +938,7 @@ public static partial class Toggl
         {
             using (Performance.Measure("Calling OnAutotrackerRules"))
             {
-                OnAutotrackerRules(convertToAutotrackerEntryList(first), list);
+                _onAutotrackerRules.OnNext(convertToAutotrackerEntryList(first));
             }
         });
 
@@ -974,7 +946,7 @@ public static partial class Toggl
         {
             using (Performance.Measure("Calling OnAutotrackerNotification"))
             {
-                OnAutotrackerNotification(name, project_id, task_id);
+                _onAutotrackerNotification.OnNext((name, project_id, task_id));
             }
         });
 
@@ -990,7 +962,7 @@ public static partial class Toggl
         {
             using (Performance.Measure("Calling OnProjectColors, count: {0}", count))
             {
-                OnDisplayProjectColors(colors, count);
+                _onDisplayProjectColors.OnNext(colors);
             }
         });
 
@@ -998,7 +970,7 @@ public static partial class Toggl
         {
             using (Performance.Measure("Calling OnCountries"))
             {
-                OnDisplayCountries(convertToCountryList(first));
+                _onDisplayCountries.OnNext(convertToCountryList(first));
             }
         });
 
@@ -1006,7 +978,7 @@ public static partial class Toggl
         {
             using (Performance.Measure("Calling OnDisplayPromotino, id: {0}", id))
             {
-                OnDisplayPromotion(id);
+                _onDisplayPromotion.OnNext(id);
             }
         });
 
@@ -1016,28 +988,28 @@ public static partial class Toggl
                 "Calling OnDisplatObmExperiment, id: {0}, included: {1}, seen: {2}",
                 id, included, seenBefore))
             {
-                OnDisplayObmExperiment(id, included, seenBefore);
+                _onDisplayObmExperiment.OnNext((id, included, seenBefore));
             }
         });
         toggl_on_pomodoro(ctx, (title, text) =>
         {
             using (Performance.Measure("Calling OnDisplayPomodoro"))
             {
-                OnDisplayPomodoro(title, text);
+                _onDisplayPomodoro.OnNext((title, text));
             }
         });
         toggl_on_pomodoro_break(ctx, (title, text) =>
         {
             using (Performance.Measure("Calling OnDisplayPomodoroBreak"))
             {
-                OnDisplayPomodoroBreak(title, text);
+                _onDisplayPomodoroBreak.OnNext((title, text));
             }
         });
         toggl_on_message(ctx, (title, text, button, url) =>
         {
             using (Performance.Measure("Calling OnDisplayInAppNotification"))
             {
-                OnDisplayInAppNotification(title, text, button, url);
+                _onDisplayInAppNotification.OnNext((title, text, button, url));
             }
         });
     }
@@ -1176,7 +1148,7 @@ public static partial class Toggl
             catch (Exception e)
             {
                 BugsnagService.NotifyBugsnag(e);
-                Toggl.OnError?.Invoke($"Unable to delete the file: {file.FullName}. Delete this file manually.", false);
+                _onError.OnNext(($"Unable to delete the file: {file.FullName}. Delete this file manually.", false));
             }
         }
 
@@ -1379,12 +1351,12 @@ public static partial class Toggl
 
     public static void NewError(string errmsg, bool user_error)
     {
-        OnError(errmsg, user_error);
+        _onError.OnNext((errmsg, user_error));
     }
 
     public static void OpenInBrowser(string url)
     {
-        OnURL(url);
+        _onURL.OnNext(url);
     }
 
     public static void ShowErrorAndNotify(string errmsg, Exception ex)

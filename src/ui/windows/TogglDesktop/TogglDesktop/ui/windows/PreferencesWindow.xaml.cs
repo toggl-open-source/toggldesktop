@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -36,9 +38,21 @@ namespace TogglDesktop
             this.InitializeComponent();
             ViewModel = new PreferencesWindowViewModel(MessageBox.Show(this), this.Close);
 
-            Toggl.OnSettings += this.onSettings;
-            Toggl.OnLogin += this.onLogin;
-            Toggl.OnProjectAutocomplete += this.onProjectAutocomplete;
+            Toggl.OnSettings.ObserveOnDispatcher().Subscribe(this.onSettings);
+            Toggl.OnLogin
+                .Select(x => !x.open && x.userId != 0)
+                .Select(x => x ? Toggl.IsTimelineRecordingEnabled() : (bool?) null)
+                .ObserveOnDispatcher()
+                .Subscribe(isRecordTimelineEnabled =>
+                {
+                    this.recordTimelineCheckBox.IsEnabled = isRecordTimelineEnabled.HasValue;
+                    this.recordTimelineCheckBox.IsChecked = isRecordTimelineEnabled == true;
+                });
+            Toggl.OnProjectAutocomplete
+                .Do(list => this.knownProjects = list)
+                .Select(AutoCompleteControllersFactory.ForProjects)
+                .ObserveOnDispatcher()
+                .Subscribe(this.defaultProjectAutoComplete.SetController);
 
             this.Closing += OnClosing;
         }
@@ -48,23 +62,12 @@ namespace TogglDesktop
             ViewModel.ResetRecordedShortcuts();
         }
 
-        private void onLogin(bool open, ulong userID)
+        private void onSettings((bool open, Toggl.TogglSettingsView settings) x)
         {
-            if (this.TryBeginInvoke(this.onLogin, open, userID))
-                return;
-
-            this.recordTimelineCheckBox.IsEnabled = !open && userID != 0;
-            this.recordTimelineCheckBox.IsChecked = Toggl.IsTimelineRecordingEnabled();
-        }
-
-        private void onSettings(bool open, Toggl.TogglSettingsView settings)
-        {
-            if (this.TryBeginInvoke(this.onSettings, open, settings))
-                return;
-
             if (this.isSaving)
                 return;
 
+            var (open, settings) = x;
             using (Performance.Measure("filling settings from OnSettings"))
             {
                 this.updateUI(settings);
@@ -77,16 +80,6 @@ namespace TogglDesktop
                 this.Activate();
             }
         }
-        private void onProjectAutocomplete(List<Toggl.TogglAutocompleteView> list)
-        {
-            if (this.TryBeginInvoke(this.onProjectAutocomplete, list))
-                return;
-
-            this.knownProjects = list;
-
-            this.defaultProjectAutoComplete.SetController(AutoCompleteControllersFactory.ForProjects(list));
-        }
-
 
         private void updateUI(Toggl.TogglSettingsView settings)
         {

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using System.Reflection;
 using System.Windows.Interop;
 using System.Windows.Media;
@@ -10,10 +12,8 @@ namespace TogglDesktop
 static class Program
 {
     private static SingleInstanceManager<App> singleInstanceManager;
-    public static ulong UserId {
-        get;
-        private set;
-    }
+    private static readonly BehaviorSubject<ulong> UserIdSubject = new BehaviorSubject<ulong>(0);
+    public static ulong UserId => UserIdSubject.Value;
     public static bool IsLoggedIn => UserId > 0;
 
     [STAThread]
@@ -29,9 +29,7 @@ static class Program
 
     private static void OnBeforeStartup()
     {
-        Toggl.OnLogin += delegate (bool open, ulong user_id) {
-            UserId = user_id;
-        };
+        Toggl.OnLogin.Select(x => x.userId).Subscribe(UserIdSubject);
         BugsnagService.Init();
         singleInstanceManager.BeforeStartup -= OnBeforeStartup;
     }

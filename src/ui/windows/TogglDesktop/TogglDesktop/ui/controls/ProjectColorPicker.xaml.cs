@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Reactive.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -34,14 +35,11 @@ namespace TogglDesktop
             this.DataContext = this;
             this.InitializeComponent();
 
-            Toggl.OnDisplayProjectColors += this.onDisplayProjectColors;
+            Toggl.OnDisplayProjectColors.ObserveOnDispatcher().Subscribe(this.onDisplayProjectColors);
         }
 
-        private void onDisplayProjectColors(string[] strings, ulong count)
+        private void onDisplayProjectColors(string[] strings)
         {
-            if (this.TryBeginInvoke(this.onDisplayProjectColors, strings, count))
-                return;
-
             this.colors = strings;
             this.list.ItemsSource = strings;
         }

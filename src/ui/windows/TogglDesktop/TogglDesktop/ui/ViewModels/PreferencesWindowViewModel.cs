@@ -44,10 +44,7 @@ namespace TogglDesktop.ViewModels
         {
             _showMessageBox = showMessageBox;
             _closePreferencesWindow = closePreferencesWindow;
-            var isLoggedIn = Observable.FromEvent<Toggl.DisplayLogin, bool>(
-                onNext => (open, userId) => { onNext(userId != 0); },
-                x => Toggl.OnLogin += x,
-                x => Toggl.OnLogin -= x);
+            var isLoggedIn = Toggl.OnLogin.Select(x => x.userId != 0);
             ClearCacheCommand = ReactiveCommand.Create(ClearCache, isLoggedIn.ObserveOnDispatcher());
 
             this.WhenAnyValue(x => x.ShowHideToggl)

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reactive.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Animation;
@@ -19,9 +20,9 @@ namespace TogglDesktop
 
             this.spinnerAnimation = (Storyboard)this.Resources["RotateSpinner"];
 
-            Toggl.OnDisplaySyncState += this.onDisplaySyncState;
-            Toggl.OnDisplayUnsyncedItems += this.onDisplayUnsyncedItems;
-            Toggl.OnLogin += this.onLogin;
+            Toggl.OnDisplaySyncState.ObserveOnDispatcher().Subscribe(this.onDisplaySyncState);
+            Toggl.OnDisplayUnsyncedItems.ObserveOnDispatcher().Subscribe(this.onDisplayUnsyncedItems);
+            Toggl.OnLogin.Where(x => x.open).ObserveOnDispatcher().Subscribe(_ => this.Hide());
             Toggl.OnManualSync += this.onManualSync;
         }
 
@@ -32,31 +33,14 @@ namespace TogglDesktop
 
         #region toggl events
 
-        private void onLogin(bool open, ulong userID)
-        {
-            if (this.TryBeginInvoke(this.onLogin, open, userID))
-                return;
-
-            if (open)
-            {
-                this.Hide();
-            }
-        }
-
         private void onDisplayUnsyncedItems(long count)
         {
-            if (this.TryBeginInvoke(this.onDisplayUnsyncedItems, count))
-                return;
-
             this.unsyncedItems = count;
             this.update();
         }
 
         private void onDisplaySyncState(Toggl.SyncState state)
         {
-            if (this.TryBeginInvoke(this.onDisplaySyncState, state))
-                return;
-
             this.syncState = state;
             this.update();
         }

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reactive;
+using System.Reactive.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
@@ -24,9 +26,12 @@ namespace TogglDesktop
 
             this.setupSecondsTimer();
 
-            Toggl.OnMinitimerAutocomplete += this.onMiniTimerAutocomplete;
-            Toggl.OnRunningTimerState += this.onRunningTimerState;
-            Toggl.OnStoppedTimerState += this.onStoppedTimerState;
+            Toggl.OnMinitimerAutocomplete
+                .Select(AutoCompleteControllersFactory.ForTimer)
+                .ObserveOnDispatcher()
+                .Subscribe(this.descriptionAutoComplete.SetController);
+            Toggl.OnRunningTimerState.ObserveOnDispatcher().Subscribe(this.onRunningTimerState);
+            Toggl.OnStoppedTimerState.ObserveOnDispatcher().Subscribe(this.onStoppedTimerState);
 
             this.resetUIState(false, true);
         }
@@ -50,40 +55,23 @@ namespace TogglDesktop
 
         #region toggl events
 
-        private void onStoppedTimerState()
+        private void onStoppedTimerState(Unit _)
         {
-            if (this.TryBeginInvoke(this.onStoppedTimerState))
-                return;
-
             using (Performance.Measure("timer responding to OnStoppedTimerState"))
             {
                 this.secondsTimer.IsEnabled = false;
                 this.resetUIState(false);
-                this.runningTimeEntry = default(Toggl.TogglTimeEntryView);
+                this.runningTimeEntry = default;
             }
         }
 
         private void onRunningTimerState(Toggl.TogglTimeEntryView te)
         {
-            if (this.TryBeginInvoke(this.onRunningTimerState, te))
-                return;
-
             using (Performance.Measure("timer responding to OnRunningTimerState"))
             {
                 this.runningTimeEntry = te;
                 this.setUIToRunningState(te);
                 this.secondsTimer.IsEnabled = true;
-            }
-        }
-
-        private void onMiniTimerAutocomplete(List<Toggl.TogglAutocompleteView> list)
-        {
-            if (this.TryBeginInvoke(this.onMiniTimerAutocomplete, list))
-                return;
-
-            using (Performance.Measure("timer building auto complete controller, {0} items", list.Count))
-            {
-                this.descriptionAutoComplete.SetController(AutoCompleteControllersFactory.ForTimer(list));
             }
         }
 

@@ -4,6 +4,9 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Reactive.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Forms;
@@ -235,19 +238,20 @@ namespace TogglDesktop
 
         private void initializeEvents()
         {
-            Toggl.OnApp += this.onApp;
-            Toggl.OnOverlay += this.onOverlay;
-            Toggl.OnError += this.onError;
-            Toggl.OnLogin += this.onLogin;
-            Toggl.OnTimeEntryEditor += this.onTimeEntryEditor;
-            Toggl.OnTimeEntryList += this.onTimeEntryList;
-            Toggl.OnOnlineState += this.onOnlineState;
-            Toggl.OnURL += this.onURL;
+            Toggl.OnApp.Where(show => show).ObserveOnDispatcher().Subscribe(_ => this.Show());
+            Toggl.OnOverlay.ObserveOnDispatcher().Subscribe(this.onOverlay);
+            Toggl.OnError.ObserveOnDispatcher().Subscribe(this.onError);
+            Toggl.OnLogin.ObserveOnDispatcher().Subscribe(x => this.onLogin(x.open, x.userId));
+            Toggl.OnTimeEntryEditor.Select(x => x.open).ObserveOnDispatcher().Subscribe(this.onTimeEntryEditor);
+            Toggl.OnTimeEntryList.ObserveOnDispatcher().Subscribe(this.onTimeEntryList);
+            Toggl.OnOnlineState.ObserveOnDispatcher()
+                .Subscribe(state => this.updateStatusIcons(state == Toggl.OnlineState.Online));
+            Toggl.OnURL.Subscribe(this.onURL);
             Toggl.OnUserTimeEntryStart += this.onUserTimeEntryStart;
-            Toggl.OnRunningTimerState += this.onRunningTimerState;
-            Toggl.OnStoppedTimerState += this.onStoppedTimerState;
-            Toggl.OnSettings += this.onSettings;
-            Toggl.OnDisplayInAppNotification += this.onDisplayInAppNotification;
+            Toggl.OnRunningTimerState.ObserveOnDispatcher().Subscribe(this.setIsTracking);
+            Toggl.OnStoppedTimerState.ObserveOnDispatcher().Subscribe(_ => this.setIsNotTracking());
+            Toggl.OnSettings.ObserveOnDispatcher().Subscribe(this.onSettings);
+            Toggl.OnDisplayInAppNotification.ObserveOnDispatcher().Subscribe(this.onDisplayInAppNotification);
         }
 
         private void finalInitialisation()
@@ -291,33 +295,13 @@ namespace TogglDesktop
 
         #region toggl events
 
-        private void onTimeEntryEditor(bool open, Toggl.TogglTimeEntryView te, string focusedFieldName)
+        private void onTimeEntryEditor(bool open)
         {
-            if (this.TryBeginInvoke(this.onTimeEntryEditor, open, te, focusedFieldName))
-                return;
-
             this.updateEditPopupLocation(true);
-
             if (open)
             {
                 this.Show();
             }
-        }
-
-        private void onStoppedTimerState()
-        {
-            if (this.TryBeginInvoke(this.onStoppedTimerState))
-                return;
-
-            this.updateTracking(null);
-        }
-
-        private void onRunningTimerState(Toggl.TogglTimeEntryView te)
-        {
-            if (this.TryBeginInvoke(this.onRunningTimerState, te))
-                return;
-
-            this.updateTracking(te);
         }
 
         private void onUserTimeEntryStart()
@@ -340,41 +324,23 @@ namespace TogglDesktop
             }
         }
 
-        private void onOnlineState(Toggl.OnlineState state)
+        private void onTimeEntryList((bool, List<Toggl.TogglTimeEntryView>, bool) x)
         {
-            if (this.TryBeginInvoke(this.onOnlineState, state))
-                return;
-
-            this.updateStatusIcons(state == Toggl.OnlineState.Online);
-        }
-
-        private void onTimeEntryList(bool open, List<Toggl.TogglTimeEntryView> list, bool showLoadMoreButton)
-        {
-            if (this.TryBeginInvoke(this.onTimeEntryList, open, list, showLoadMoreButton))
-                return;
-
+            var (open, list, _) = x;
             if (open)
             {
                 this.errorBar.Hide();
                 this.setActiveView(this.timerEntryListView);
             }
 
-            // Get Today's total duration
-            var i = 0;
-            for (; i < list.Count; i++)
-            {
-                if (list[i].DateHeader == "Today") {
-                    this.trayToolTip.TotalToday = list[i].DateDuration;
-                    return;
-                }
-            }
+            this.trayToolTip.TotalToday =
+                list.Where(x => x.DateHeader == "Today")
+                    .Select(x => x.DateDuration)
+                    .FirstOrDefault() ?? "0 h 0 min";
         }
 
         private void onLogin(bool open, ulong userID)
         {
-            if (this.TryBeginInvoke(this.onLogin, open, userID))
-                return;
-
             if (open)
             {
                 this.setActiveView(this.loginView);
@@ -394,58 +360,36 @@ namespace TogglDesktop
                 this.taskbarIcon.ToolTipText = $"Toggl - Logged in as {Toggl.UserEmail()}";
             }
 
-            this.updateTracking(null);
+            this.setIsNotTracking();
         }
 
         private void onOverlay(long type)
         {
-
-            if (this.TryBeginInvoke(this.onOverlay, type))
-                return;
-
             this.overlayView.setType((int)type);
             this.setActiveView(this.overlayView);
         }
 
-        private void onError(string errmsg, bool userError)
+        private void onError((string, bool) tuple)
         {
-            if (this.TryBeginInvoke(this.onError, errmsg, userError))
-                return;
-
-            if (this.activeView?.HandlesError(errmsg) != true)
+            var (errorMessage, _) = tuple;
+            if (this.activeView?.HandlesError(errorMessage) != true)
             {
-                this.errorBar.ShowError(errmsg);
+                this.errorBar.ShowError(errorMessage);
             }
         }
 
-        private void onApp(bool open)
+        private void onSettings((bool, Toggl.TogglSettingsView settings) x)
         {
-            if (this.TryBeginInvoke(this.onApp, open))
-                return;
-
-            if (open)
-            {
-                this.Show();
-            }
-        }
-
-        private void onSettings(bool open, Toggl.TogglSettingsView settings)
-        {
-            if (this.TryBeginInvoke(this.onSettings, open, settings))
-                return;
-
-            Theme.SetThemeFromSettings(settings.ColorTheme);
+            Theme.SetThemeFromSettings(x.settings.ColorTheme);
             this.setGlobalShortcutsFromSettings();
-            this.idleDetectionTimer.IsEnabled = settings.UseIdleDetection;
-            this.Topmost = settings.OnTop;
-            this.SetManualMode(settings.ManualMode, true);
+            this.idleDetectionTimer.IsEnabled = x.settings.UseIdleDetection;
+            this.Topmost = x.settings.OnTop;
+            this.SetManualMode(x.settings.ManualMode, true);
         }
 
-        private void onDisplayInAppNotification(string title, string text, string button, string url)
+        private void onDisplayInAppNotification((string title, string text, string button, string url) x)
         {
-            if (this.TryBeginInvoke(this.onDisplayInAppNotification, title, text, button, url))
-                return;
-
+            var (title, text, button, url) = x;
             if (inAppNotification == null)
             {
                 inAppNotification = new InAppNotification
@@ -755,32 +699,30 @@ namespace TogglDesktop
             this.taskbarIcon.Icon = new Icon(icon, SystemInformation.SmallIconSize);
         }
 
-        private void updateTracking(Toggl.TogglTimeEntryView? timeEntry)
+        private void setIsTracking(Toggl.TogglTimeEntryView timeEntry)
         {
-            var tracking = timeEntry != null;
+            this.IsTracking = true;
+            this.trayToolTip.IsTracking = true;
+            this.trayToolTip.TimeEntryLabel = timeEntry.ToTrayToolTipTimeEntryLabelViewModel();
+            this.trayToolTip.SetDuration(timeEntry);
 
-            this.IsTracking = tracking;
-            this.trayToolTip.IsTracking = tracking;
+            var description = timeEntry.Description;
+            this.Title = string.IsNullOrEmpty(description)
+                ? "Toggl Desktop"
+                : description + " - Toggl Desktop";
 
-            if (tracking)
-            {
-                this.trayToolTip.TimeEntryLabel = timeEntry.Value.ToTrayToolTipTimeEntryLabelViewModel();
-                this.trayToolTip.SetDuration(timeEntry.Value);
+            if (this.IsInManualMode)
+                this.SetManualMode(false);
 
-                var description = timeEntry.Value.Description;
+            this.updateStatusIcons(true);
+        }
 
-                this.Title = string.IsNullOrEmpty(description)
-                    ? "Toggl Desktop"
-                    : description + " - Toggl Desktop";
-
-                if (this.IsInManualMode)
-                    this.SetManualMode(false);
-            }
-            else
-            {
-                this.trayToolTip.TimeEntryLabel = null;
-                this.Title = "Toggl Desktop";
-            }
+        private void setIsNotTracking()
+        {
+            this.IsTracking = false;
+            this.trayToolTip.IsTracking = false;
+            this.trayToolTip.TimeEntryLabel = null;
+            this.Title = "Toggl Desktop";
 
             var iconName = this.IsTracking ? "toggl" : "toggl_inactive";
             this.Icon = BitmapFrame.Create(new Uri("pack://application:,,,/TogglDesktop;component/Resources/" + iconName + ".ico"));

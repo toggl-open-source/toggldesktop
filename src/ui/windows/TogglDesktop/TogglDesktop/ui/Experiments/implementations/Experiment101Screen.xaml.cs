@@ -1,10 +1,12 @@
-﻿
+﻿using System;
+using System.Reactive.Disposables;
 using System.Windows;
 
 namespace TogglDesktop.Experiments
 {
     public partial class Experiment101Screen
     {
+        private IDisposable _subscription;
         public Experiment101Screen()
         {
             this.InitializeComponent();
@@ -15,24 +17,14 @@ namespace TogglDesktop.Experiments
             Toggl.SetManualMode(false);
             Toggl.ViewTimeEntryList();
 
-            Toggl.OnStoppedTimerState += this.onStoppedTimerState;
-            Toggl.OnTimeEntryEditor += this.onTimeEntryEditor;
+            _subscription = new CompositeDisposable(
+                Toggl.OnStoppedTimerState.Subscribe(_ => this.quitTutorial()),
+                Toggl.OnTimeEntryEditor.Subscribe(_ => this.quitTutorial()));
         }
 
         protected override void cleanup()
         {
-            Toggl.OnStoppedTimerState -= this.onStoppedTimerState;
-            Toggl.OnTimeEntryEditor -= this.onTimeEntryEditor;
-        }
-
-        private void onTimeEntryEditor(bool open, Toggl.TogglTimeEntryView te, string f)
-        {
-            this.quitTutorial();
-        }
-
-        private void onStoppedTimerState()
-        {
-            this.quitTutorial();
+            _subscription.Dispose();
         }
 
         private void closeButtonClick(object sender, RoutedEventArgs e)

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Reactive;
+using System.Reactive.Linq;
 using System.Windows;
 using System.Windows.Input;
 using ControlzEx;
@@ -15,14 +17,13 @@ namespace TogglDesktop
         public IdleNotificationWindow()
         {
             this.InitializeComponent();
-            Toggl.OnIdleNotification += this.onIdleNotification;
-            Toggl.OnStoppedTimerState += this.onStoppedTimerState;
+            Toggl.OnIdleNotification.ObserveOnDispatcher().Subscribe(this.onIdleNotification);
+            Toggl.OnStoppedTimerState.ObserveOnDispatcher().Subscribe(this.onStoppedTimerState);
         }
 
-        private void onIdleNotification(string guid, string since, string duration, long started, string description)
+        private void onIdleNotification((string guid, string since, string duration, long started, string description) x)
         {
-            if (this.TryBeginInvoke(this.onIdleNotification, guid, since, duration, started, description))
-                return;
+            var (guid, since, duration, started, description) = x;
 
             this.guid = guid;
             this.started = started;
@@ -43,11 +44,8 @@ namespace TogglDesktop
             this.Activate();
         }
 
-        private void onStoppedTimerState()
+        private void onStoppedTimerState(Unit _)
         {
-            if (this.TryBeginInvoke(this.onStoppedTimerState))
-                return;
-
             if (this.IsVisible)
             {
                 this.Hide();
