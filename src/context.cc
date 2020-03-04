@@ -4938,6 +4938,187 @@ error Context::pushChanges(
     TogglClient *toggl_client,
     bool *had_something_to_push) {
     try {
+        auto pushClients = [this](auto &clients, auto api_token, auto toggl_client) {
+            error err = noError;
+            for (auto &client : clients) {
+                HTTPSRequest req = client->PrepareRequest();
+                req.host = urls::API();
+                req.basic_auth_username = api_token;
+                req.basic_auth_password = "api_token";
+
+                HTTPSResponse resp = toggl_client.Post(req);
+
+                if (resp.err != noError) {
+                    // if we're able to solve the error
+                    if (client->ResolveError(resp.body)) {
+                        displayError(save(false));
+                    }
+                    continue;
+                }
+
+                Json::Value root;
+                Json::Reader reader;
+                if (!reader.parse(resp.body, root)) {
+                    err = error("error parsing client POST response");
+                    continue;
+                }
+
+                client->LoadFromJSON(root);
+            }
+
+            return err;
+        };
+
+        auto pushProjects = [this](auto &projects, auto &clients, auto api_token, auto toggl_client) {
+            error err = noError;
+            for (auto &project : projects) {
+                if (!project->CID() && !project->ClientGUID().empty()) {
+                    // Find client id
+                    for (auto &client : clients) {
+                        if (client->GUID().compare(project->ClientGUID()) == 0) {
+                            project->SetCID(client->ID());
+                            break;
+                        }
+                    }
+                }
+
+                HTTPSRequest req = project->PrepareRequest();
+                req.host = urls::API();
+                req.basic_auth_username = api_token;
+                req.basic_auth_password = "api_token";
+
+                HTTPSResponse resp = toggl_client.Post(req);
+
+                if (resp.err != noError) {
+                    // if we're able to solve the error
+                    if (project->ResolveError(resp.body)) {
+                        displayError(save(false));
+                    }
+                    continue;
+                }
+
+                Json::Value root;
+                Json::Reader reader;
+                if (!reader.parse(resp.body, root)) {
+                    err = error("error parsing project POST response");
+                    continue;
+                }
+
+                project->LoadFromJSON(root);
+            }
+
+            return err;
+        };
+
+        auto pushEntries = [this](auto &time_entries, auto api_token, auto toggl_client) {
+            std::string error_message("");
+            bool error_found = false;
+            bool offline = false;
+
+            for (auto &te : time_entries) {
+                // Avoid trying to POST when we're offline
+                if (offline) {
+                    // Mark the time entry as unsynced now
+                    te->SetUnsynced();
+                    continue;
+                }
+
+                HTTPSRequest req = te->PrepareRequest();
+                req.host = urls::API();
+                req.basic_auth_username = api_token;
+                req.basic_auth_password = "api_token";
+
+                HTTPSResponse resp;
+
+                if (te->NeedsDELETE()) {
+                    req.payload = "";
+                    resp = toggl_client.Delete(req);
+                } else if (te->ID()) {
+                    resp = toggl_client.Put(req);
+                } else {
+                    resp = toggl_client.Post(req);
+                }
+
+                if (resp.err != noError) {
+                    // if we're able to solve the error
+                    if (te->ResolveError(resp.body)) {
+                        displayError(save(false));
+                    }
+
+                    // Not found on server. Probably deleted already.
+                    if (te->isNotFound(resp.body)) {
+                        te->MarkAsDeletedOnServer();
+                        continue;
+                    }
+                    error_found = true;
+                    error_message = resp.err;
+                    if (resp.status_code == 429) {
+                        error_message = error(kRateLimit);
+                    }
+
+                    // Mark the time entry as unsynced now
+                    te->SetUnsynced();
+
+                    offline = IsNetworkingError(resp.err);
+
+                    if (offline) {
+                        trigger_sync_ = false;
+                    }
+
+                    continue;
+                }
+
+                if (te->NeedsDELETE()) {
+                    // Successfully deleted entry
+                    te->MarkAsDeletedOnServer();
+                    continue;
+                }
+
+                Json::Value root;
+                Json::Reader reader;
+                if (!reader.parse(resp.body, root)) {
+                    return error("error parsing time entry POST response");
+                }
+
+                auto id = root["id"].asUInt64();
+                if (!id) {
+                    logger.error("Backend is sending invalid data: ignoring update without an ID");
+                    continue;
+                }
+
+                if (!te->ID()) {
+                    if (!(related.User->SetTimeEntryID(id, te))) {
+                        continue;
+                    }
+                }
+
+                if (te->ID() != id) {
+                    return error("Backend has changed the ID of the entry");
+                }
+
+                te->LoadFromJSON(root);
+            }
+
+            if (error_found) {
+                return error_message;
+            }
+            return noError;
+        };
+
+        auto collectPushableModels = [this] (auto &list) {
+            std::vector<locked<typename std::remove_reference<decltype(list)>::type::value_type>> result;
+            for (auto model : list) {
+                if (!model->NeedsPush()) {
+                    continue;
+                }
+                related.User->EnsureWID(model);
+                model->EnsureGUID();
+                // std::move clears model and moves its contents to result, this call needs to be here
+                result.push_back(std::move(model));
+            }
+            return result;
+        };
+
         Poco::Stopwatch stopwatch;
         stopwatch.start();
 
@@ -4946,11 +5127,6 @@ error Context::pushChanges(
         *had_something_to_push = true;
 
         auto locks = lockMore(related.User, related.Workspaces, related.TimeEntries, related.Clients, related.Projects, related.Tasks, related.Tags);
-
-        // FIXME we shouldn't store the locked instances, rather the prepared messages
-        std::vector<locked<TimeEntry>> time_entries;
-        std::vector<locked<Project>> projects;
-        std::vector<locked<Client>> clients;
 
         std::string api_token("");
 
@@ -4964,31 +5140,11 @@ error Context::pushChanges(
             return error("cannot push changes without API token");
         }
 
+        auto time_entries = collectPushableModels(related.TimeEntries);
+        auto projects = collectPushableModels(related.Projects);
+        auto clients = collectPushableModels(related.Clients);
 
-        auto collectPushableModels = [this] (auto &list, auto *result) {
-            for (auto model : list) {
-                if (!model->NeedsPush()) {
-                    continue;
-                }
-                related.User->EnsureWID(model);
-                model->EnsureGUID();
-                // std::move clears model and moves its contents to result, this call needs to be here
-                result->push_back(std::move(model));
-            }
-        };
-
-        collectPushableModels(
-            related.TimeEntries,
-            &time_entries);
-        collectPushableModels(
-            related.Projects,
-            &projects);
-        collectPushableModels(
-            related.Clients,
-            &clients);
-        if (time_entries.empty()
-                && projects.empty()
-                && clients.empty()) {
+        if (time_entries.empty() && projects.empty() && clients.empty()) {
             *had_something_to_push = false;
             return noError;
         }
@@ -5075,87 +5231,6 @@ error Context::pushChanges(
     return noError;
 }
 
-error Context::pushClients(
-    std::vector<locked<Client>> &clients,
-    const std::string &api_token,
-    const TogglClient &toggl_client) {
-    std::string client_json("");
-    error err = noError;
-    for (auto &client : clients) {
-        HTTPSRequest req = client->PrepareRequest();
-        req.host = urls::API();
-        req.basic_auth_username = api_token;
-        req.basic_auth_password = "api_token";
-
-        HTTPSResponse resp = toggl_client.Post(req);
-
-        if (resp.err != noError) {
-            // if we're able to solve the error
-            if (client->ResolveError(resp.body)) {
-                displayError(save(false));
-            }
-            continue;
-        }
-
-        Json::Value root;
-        Json::Reader reader;
-        if (!reader.parse(resp.body, root)) {
-            err = error("error parsing client POST response");
-            continue;
-        }
-
-        client->LoadFromJSON(root);
-    }
-
-    return err;
-}
-
-error Context::pushProjects(
-    std::vector<locked<Project>> &projects,
-    std::vector<locked<Client>> &clients,
-    const std::string &api_token,
-    const TogglClient &toggl_client) {
-    error err = noError;
-    std::string project_json("");
-    for (auto &project : projects) {
-        if (!project->CID() && !project->ClientGUID().empty()) {
-            // Find client id
-            for (auto &client : clients) {
-                if (client->GUID().compare(project->ClientGUID()) == 0) {
-                    project->SetCID(client->ID());
-                    break;
-                }
-            }
-        }
-
-        HTTPSRequest req = project->PrepareRequest();
-        req.host = urls::API();
-        req.basic_auth_username = api_token;
-        req.basic_auth_password = "api_token";
-
-        HTTPSResponse resp = toggl_client.Post(req);
-
-        if (resp.err != noError) {
-            // if we're able to solve the error
-            if (project->ResolveError(resp.body)) {
-                displayError(save(false));
-            }
-            continue;
-        }
-
-        Json::Value root;
-        Json::Reader reader;
-        if (!reader.parse(resp.body, root)) {
-            err = error("error parsing project POST response");
-            continue;
-        }
-
-        project->LoadFromJSON(root);
-    }
-
-    return err;
-}
-
 error Context::updateEntryProjects(std::vector<locked<Project>> &projects,
                                    std::vector<locked<TimeEntry>> &time_entries) {
     for (auto &te : time_entries) {
@@ -5170,106 +5245,6 @@ error Context::updateEntryProjects(std::vector<locked<Project>> &projects,
         }
     }
 
-    return noError;
-}
-
-error Context::pushEntries(
-    std::vector<locked<TimeEntry>> &time_entries,
-    const std::string &api_token,
-    const TogglClient &toggl_client) {
-
-    std::string entry_json("");
-    std::string error_message("");
-    bool error_found = false;
-    bool offline = false;
-
-    for (auto &te : time_entries) {
-        // Avoid trying to POST when we're offline
-        if (offline) {
-            // Mark the time entry as unsynced now
-            te->SetUnsynced();
-            continue;
-        }
-
-        HTTPSRequest req = te->PrepareRequest();
-        req.host = urls::API();
-        req.basic_auth_username = api_token;
-        req.basic_auth_password = "api_token";
-
-        HTTPSResponse resp;
-
-        if (te->NeedsDELETE()) {
-            req.payload = "";
-            resp = toggl_client.Delete(req);
-        } else if (te->ID()) {
-            resp = toggl_client.Put(req);
-        } else {
-            resp = toggl_client.Post(req);
-        }
-
-        if (resp.err != noError) {
-            // if we're able to solve the error
-            if (te->ResolveError(resp.body)) {
-                displayError(save(false));
-            }
-
-            // Not found on server. Probably deleted already.
-            if (te->isNotFound(resp.body)) {
-                te->MarkAsDeletedOnServer();
-                continue;
-            }
-            error_found = true;
-            error_message = resp.err;
-            if (resp.status_code == 429) {
-                error_message = error(kRateLimit);
-            }
-
-            // Mark the time entry as unsynced now
-            te->SetUnsynced();
-
-            offline = IsNetworkingError(resp.err);
-
-            if (offline) {
-                trigger_sync_ = false;
-            }
-
-            continue;
-        }
-
-        if (te->NeedsDELETE()) {
-            // Successfully deleted entry
-            te->MarkAsDeletedOnServer();
-            continue;
-        }
-
-        Json::Value root;
-        Json::Reader reader;
-        if (!reader.parse(resp.body, root)) {
-            return error("error parsing time entry POST response");
-        }
-
-        auto id = root["id"].asUInt64();
-        if (!id) {
-            logger.error("Backend is sending invalid data: ignoring update without an ID");
-            continue;
-        }
-
-        if (!te->ID()) {
-            if (!(related.User->SetTimeEntryID(id, te))) {
-                continue;
-            }
-        }
-
-        if (te->ID() != id) {
-            return error("Backend has changed the ID of the entry");
-        }
-
-        te->LoadFromJSON(root);
-    }
-
-    if (error_found) {
-        return error_message;
-    }
     return noError;
 }
 

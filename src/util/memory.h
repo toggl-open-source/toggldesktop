@@ -176,6 +176,8 @@ protected:
 template <class T>
 class ProtectedContainer : public ProtectedBase {
 public:
+    typedef ProtectedContainer<T> type;
+    typedef T value_type;
     class iterator {
     public:
         friend class ProtectedContainer;
