@@ -199,35 +199,35 @@ error HTTPSClient::statusCodeToError(const Poco::Int64 status_code) const {
 HTTPSResponse HTTPSClient::Post(
     HTTPSRequest req) const {
     req.method = Poco::Net::HTTPRequest::HTTP_POST;
-    return request(req);
+    return Request(req);
 }
 
 HTTPSResponse HTTPSClient::Get(
     HTTPSRequest req) const {
     req.method = Poco::Net::HTTPRequest::HTTP_GET;
-    return request(req);
+    return Request(req);
 }
 
 HTTPSResponse HTTPSClient::GetFile(
     HTTPSRequest req) const {
     req.method = Poco::Net::HTTPRequest::HTTP_GET;
     req.timeout_seconds = kHTTPClientTimeoutSeconds * 10;
-    return request(req);
+    return Request(req);
 }
 
 HTTPSResponse HTTPSClient::Delete(
     HTTPSRequest req) const {
     req.method = Poco::Net::HTTPRequest::HTTP_DELETE;
-    return request(req);
+    return Request(req);
 }
 
 HTTPSResponse HTTPSClient::Put(
     HTTPSRequest req) const {
     req.method = Poco::Net::HTTPRequest::HTTP_PUT;
-    return request(req);
+    return Request(req);
 }
 
-HTTPSResponse HTTPSClient::request(
+HTTPSResponse HTTPSClient::Request(
     HTTPSRequest req) const {
     HTTPSResponse resp = makeHttpRequest(req);
 
@@ -476,7 +476,7 @@ Logger TogglClient::logger() const {
     return { "TogglClient" };
 }
 
-HTTPSResponse TogglClient::request(
+HTTPSResponse TogglClient::Request(
     HTTPSRequest req) const {
 
     error err = TogglStatus.Status();
@@ -491,7 +491,7 @@ HTTPSResponse TogglClient::request(
         monitor_->DisplaySyncState(kSyncStateWork);
     }
 
-    HTTPSResponse resp = HTTPSClient::request(req);
+    HTTPSResponse resp = HTTPSClient::Request(req);
 
     if (monitor_) {
         monitor_->DisplaySyncState(kSyncStateIdle);

@@ -146,11 +146,12 @@ class TOGGL_INTERNAL_EXPORT HTTPSClient {
     HTTPSResponse Put(
         HTTPSRequest req) const;
 
+    virtual HTTPSResponse Request(
+        HTTPSRequest req) const;
+
     static HTTPSClientConfig Config;
 
  protected:
-    virtual HTTPSResponse request(
-        HTTPSRequest req) const;
 
     virtual Logger logger() const;
 
@@ -178,11 +179,12 @@ class TOGGL_INTERNAL_EXPORT TogglClient : public HTTPSClient {
     explicit TogglClient(SyncStateMonitor *monitor = nullptr)
         : monitor_(monitor) {}
 
+    virtual HTTPSResponse Request(
+        HTTPSRequest req) const override;
+
     static ServerStatus TogglStatus;
 
  protected:
-    virtual HTTPSResponse request(
-        HTTPSRequest req) const override;
 
     virtual Logger logger() const override;
 

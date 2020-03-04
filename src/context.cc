@@ -4946,7 +4946,7 @@ error Context::pushChanges(
                 req.basic_auth_username = api_token;
                 req.basic_auth_password = "api_token";
 
-                HTTPSResponse resp = toggl_client.Post(req);
+                HTTPSResponse resp = toggl_client.Request(req);
 
                 if (resp.err != noError) {
                     // if we're able to solve the error
@@ -4980,7 +4980,7 @@ error Context::pushChanges(
                 req.basic_auth_username = api_token;
                 req.basic_auth_password = "api_token";
 
-                HTTPSResponse resp = toggl_client.Post(req);
+                HTTPSResponse resp = toggl_client.Request(req);
 
                 if (resp.err != noError) {
                     // if we're able to solve the error
@@ -5014,16 +5014,7 @@ error Context::pushChanges(
                 req.basic_auth_username = api_token;
                 req.basic_auth_password = "api_token";
 
-                HTTPSResponse resp;
-
-                if (te->NeedsDELETE()) {
-                    req.payload = "";
-                    resp = toggl_client.Delete(req);
-                } else if (te->ID()) {
-                    resp = toggl_client.Put(req);
-                } else {
-                    resp = toggl_client.Post(req);
-                }
+                HTTPSResponse resp = toggl_client.Request(req);
 
                 if (resp.err != noError) {
                     // if we're able to solve the error

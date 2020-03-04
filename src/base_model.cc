@@ -12,6 +12,7 @@
 #include <Poco/Timestamp.h>
 #include <Poco/DateTime.h>
 #include <Poco/LocalDateTime.h>
+#include <Poco/Net/HTTPRequest.h>
 
 namespace toggl {
 
@@ -72,7 +73,17 @@ HTTPSRequest BaseModel::PrepareRequest() {
 
     auto json = SaveToJSON();
     req.relative_url = ModelURL();
-    req.payload = writer.write(json);
+
+    if (NeedsDELETE()) {
+        req.payload = "";
+        req.method = Poco::Net::HTTPRequest::HTTP_DELETE;
+    } else if (ID()) {
+        req.payload = writer.write(json);
+        req.method = Poco::Net::HTTPRequest::HTTP_PUT;
+    } else {
+        req.payload = writer.write(json);
+        req.method = Poco::Net::HTTPRequest::HTTP_POST;
+    }
 
     return req;
 }
