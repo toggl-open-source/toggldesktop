@@ -228,7 +228,8 @@ locked<TimeEntry> User::Start(
         }
     }
 
-    EnsureWID(te);
+    if (!te->WID())
+        te->SetWID(SupplementaryWID());
 
     te->SetUIModified();
 
@@ -1058,6 +1059,20 @@ bool User::SetTimeEntryID(Poco::UInt64 id,
     }
     timeEntry->SetID(id);
     return true;
+}
+
+Poco::UInt64 User::SupplementaryWID() const {
+    // Try to set default user WID
+    if (DefaultWID()) {
+        return DefaultWID();
+    }
+
+    // Try to set first WID available
+    auto it = GetRelatedData()->Workspaces.cbegin();
+    if (it != GetRelatedData()->Workspaces.cend()) {
+        locked<const Workspace> ws = *it;
+        return ws->ID();
+    }
 }
 
 void User::loadUserTimeEntryFromJSON(

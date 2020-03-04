@@ -211,26 +211,8 @@ class TOGGL_INTERNAL_EXPORT User : public BaseModel {
         Poco::UInt64 id,
         locked<TimeEntry> &timeEntry);
 
-    template<typename T>
-    void EnsureWID(locked<T> &model) const {
-        // Do nothing if TE already has WID assigned
-        if (model->WID()) {
-            return;
-        }
-
-        // Try to set default user WID
-        if (DefaultWID()) {
-            model->SetWID(DefaultWID());
-            return;
-        }
-
-        // Try to set first WID available
-        auto it = GetRelatedData()->Workspaces.cbegin();
-        if (it != GetRelatedData()->Workspaces.cend()) {
-            locked<const Workspace> ws = *it;
-            model->SetWID(ws->ID());
-        }
-    }
+    // Get either default or first available WID for items without it
+    Poco::UInt64 SupplementaryWID() const;
 
     static error UserID(
         const std::string &json_data_string,

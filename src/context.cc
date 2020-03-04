@@ -5091,13 +5091,15 @@ error Context::pushChanges(
             return noError;
         };
 
-        auto collectPushableModels = [this] (auto &list) {
+        // TODO get rid of "ensuring" about WIDs
+        auto collectPushableModels = [] (auto &list, auto tempWID) {
             std::vector<locked<typename std::remove_reference<decltype(list)>::type::value_type>> result;
             for (auto model : list) {
-                if (!model->NeedsPush()) {
+                if (!model->NeedsPush())
                     continue;
-                }
-                related.User->EnsureWID(model);
+                // was: EnsureWID
+                if (!model->WID())
+                    model->SetWID(tempWID);
                 model->EnsureGUID();
                 // std::move clears model and moves its contents to result, this call needs to be here
                 result.push_back(std::move(model));
@@ -5114,21 +5116,20 @@ error Context::pushChanges(
 
         auto locks = lockMore(related.User, related.Workspaces, related.TimeEntries, related.Clients, related.Projects, related.Tasks, related.Tags);
 
-        std::string api_token("");
-
         if (!related.User) {
             logger.warning("cannot push changes when logged out");
             return noError;
         }
 
-        api_token = related.User->APIToken();
+        std::string api_token = related.User->APIToken();
         if (api_token.empty()) {
             return error("cannot push changes without API token");
         }
 
-        auto time_entries = collectPushableModels(related.TimeEntries);
-        auto projects = collectPushableModels(related.Projects);
-        auto clients = collectPushableModels(related.Clients);
+        auto tempWID = related.User->SupplementaryWID();
+        auto time_entries = collectPushableModels(related.TimeEntries, tempWID);
+        auto projects = collectPushableModels(related.Projects, tempWID);
+        auto clients = collectPushableModels(related.Clients, tempWID);
 
         if (time_entries.empty() && projects.empty() && clients.empty()) {
             *had_something_to_push = false;

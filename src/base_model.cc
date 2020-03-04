@@ -64,6 +64,10 @@ void BaseModel::SetValidationError(const std::string &value) {
 
 HTTPSRequest BaseModel::PrepareRequest() {
     HTTPSRequest req;
+    // if pushing is not needed, return an empty request
+    if (!NeedsPush())
+        return req;
+
     Json::StyledWriter writer;
 
     auto json = SaveToJSON();
