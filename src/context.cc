@@ -4956,7 +4956,7 @@ error Context::pushChanges(
                     continue;
                 }
 
-                err = client->LoadFromJSONString(resp.body);
+                err = client->LoadFromJSONString(resp.body, false);
             }
 
             return err;
@@ -4990,7 +4990,7 @@ error Context::pushChanges(
                     continue;
                 }
 
-                err = project->LoadFromJSONString(resp.body);
+                err = project->LoadFromJSONString(resp.body, false);
             }
 
             return err;
@@ -5051,29 +5051,7 @@ error Context::pushChanges(
                     continue;
                 }
 
-                Json::Value root;
-                Json::Reader reader;
-                if (!reader.parse(resp.body, root)) {
-                    return error("error parsing time entry POST response");
-                }
-
-                auto id = root["id"].asUInt64();
-                if (!id) {
-                    logger.error("Backend is sending invalid data: ignoring update without an ID");
-                    continue;
-                }
-
-                if (!te->ID()) {
-                    if (!(related.User->SetTimeEntryID(id, te))) {
-                        continue;
-                    }
-                }
-
-                if (te->ID() != id) {
-                    return error("Backend has changed the ID of the entry");
-                }
-
-                te->LoadFromJSON(root);
+                te->LoadFromJSONString(resp.body, true);
             }
 
             if (error_found) {

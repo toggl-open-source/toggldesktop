@@ -138,15 +138,7 @@ class TOGGL_INTERNAL_EXPORT BaseModel {
     virtual std::string ModelURL() const = 0;
 
     virtual void LoadFromJSON(Json::Value value) {}
-    error LoadFromJSONString(const std::string &json) {
-        Json::Value root;
-        Json::Reader reader;
-        if (!reader.parse(json, root)) {
-            return error("error parsing project POST response");
-        }
-        LoadFromJSON(root);
-        return noError;
-    }
+    error LoadFromJSONString(const std::string &json, bool with_id);
     virtual Json::Value SaveToJSON() const {
         return 0;
     }

@@ -8,6 +8,8 @@
 #include "database.h"
 #include "formatter.h"
 #include "model_change.h"
+#include "related_data.h"
+#include "user.h"
 
 #include <Poco/Timestamp.h>
 #include <Poco/DateTime.h>
@@ -61,6 +63,36 @@ void BaseModel::SetValidationError(const std::string &value) {
         validation_error_ = value;
         SetDirty();
     }
+}
+
+error BaseModel::LoadFromJSONString(const std::string &json, bool with_id) {
+    Json::Value root;
+    Json::Reader reader;
+    if (!reader.parse(json, root)) {
+        return error("error parsing project POST response");
+    }
+    if (with_id) {
+        auto id = root["id"].asUInt64();
+        if (!id)
+            return "Backend is sending invalid data: ignoring update without an ID";
+
+        if (!ID()) {
+            // TODO prooobably should handle more things than just TEs
+            if (ModelName() == kModelTimeEntry) {
+                auto te = reinterpret_cast<TimeEntry*>(this);
+                auto lte = GetRelatedData()->TimeEntries.make_locked(te);
+                if (!(GetRelatedData()->User->SetTimeEntryID(id, lte))) {
+                    return noError; // TODO noError? seems like a resolved thing
+                }
+            }
+        }
+
+        if (ID() != id) {
+            return error("Backend has changed the ID of the entry");
+        }
+    }
+    LoadFromJSON(root);
+    return noError;
 }
 
 HTTPSRequest BaseModel::PrepareRequest() {
