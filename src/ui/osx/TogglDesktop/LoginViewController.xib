@@ -97,7 +97,7 @@
                                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="8ub-2k-VFz">
                                                 <rect key="frame" x="16" y="3" width="25" height="15"/>
                                                 <textFieldCell key="cell" lineBreakMode="clipping" title="and" id="6le-qK-Qps">
-                                                    <font key="font" metaFont="controlContent"/>
+                                                    <font key="font" metaFont="system" size="12"/>
                                                     <color key="textColor" name="login-text-color"/>
                                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                 </textFieldCell>
@@ -128,28 +128,56 @@
                             <stackView distribution="fill" orientation="vertical" alignment="leading" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NsR-Mq-gmm">
                                 <rect key="frame" x="20" y="224" width="188" height="68"/>
                                 <subviews>
-                                    <button verticalHuggingPriority="750" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Igm-AP-s4k">
-                                        <rect key="frame" x="-2" y="35" width="192" height="35"/>
+                                    <button verticalHuggingPriority="750" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Igm-AP-s4k" customClass="FlatButton" customModule="TogglDesktop" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="38" width="188" height="30"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="q1K-w4-eBp"/>
                                         </constraints>
-                                        <buttonCell key="cell" type="bevel" title="Log in with Apple" bezelStyle="regularSquare" image="google-logo" imagePosition="left" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="pSe-Ib-Bqe">
+                                        <buttonCell key="cell" type="bevel" title="Log in with Apple" bezelStyle="regularSquare" image="apple-sign-in-logo" imagePosition="left" alignment="center" imageScaling="proportionallyDown" inset="2" id="pSe-Ib-Bqe">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                            <font key="font" metaFont="system"/>
+                                            <font key="font" metaFont="systemMedium" size="12"/>
                                         </buttonCell>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="bgColor">
+                                                <color key="value" name="login-apple-google-background-color"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="titleColor">
+                                                <color key="value" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="selectedTextColor">
+                                                <color key="value" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <real key="value" value="4"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                         <connections>
                                             <action selector="appleBtnOnClick:" target="-2" id="lKq-Mm-FIy"/>
                                         </connections>
                                     </button>
-                                    <button verticalHuggingPriority="750" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tJn-oc-LUz">
-                                        <rect key="frame" x="-2" y="-3" width="192" height="35"/>
+                                    <button verticalHuggingPriority="750" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tJn-oc-LUz" customClass="FlatButton" customModule="TogglDesktop" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="188" height="30"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="plF-to-P6C"/>
                                         </constraints>
-                                        <buttonCell key="cell" type="bevel" title="Log in with Google" bezelStyle="regularSquare" image="google-logo" imagePosition="left" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="hE5-JZ-Nlh">
+                                        <buttonCell key="cell" type="bevel" title="Log in with Google" bezelStyle="regularSquare" image="google-logo" imagePosition="left" alignment="center" imageScaling="proportionallyDown" inset="2" id="hE5-JZ-Nlh">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                            <font key="font" metaFont="system"/>
+                                            <font key="font" metaFont="systemMedium" size="12"/>
                                         </buttonCell>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="bgColor">
+                                                <color key="value" name="login-apple-google-background-color"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="titleColor">
+                                                <color key="value" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="selectedTextColor">
+                                                <color key="value" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <real key="value" value="4"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                         <connections>
                                             <action selector="googleBtnOnClick:" target="-2" id="Cit-Ea-W3Z"/>
                                         </connections>
@@ -178,7 +206,7 @@
                                             <constraint firstAttribute="height" constant="30" id="Ejy-Ap-HMe"/>
                                         </constraints>
                                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" focusRingType="none" placeholderString="Email address" bezelStyle="round" id="pdv-fD-dZm">
-                                            <font key="font" metaFont="controlContent"/>
+                                            <font key="font" metaFont="system" size="12"/>
                                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
@@ -192,7 +220,7 @@
                                             <constraint firstAttribute="height" constant="30" id="2h3-wv-XZC"/>
                                         </constraints>
                                         <secureTextFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" focusRingType="none" placeholderString="Password" usesSingleLineMode="YES" bezelStyle="round" id="Lvj-We-IDb">
-                                            <font key="font" metaFont="controlContent"/>
+                                            <font key="font" metaFont="system" size="12"/>
                                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             <allowedInputSourceLocales>
@@ -215,7 +243,7 @@
                                         </constraints>
                                         <buttonCell key="cell" type="bevel" title="Log in" bezelStyle="regularSquare" alignment="center" imageScaling="proportionallyDown" inset="2" id="0Xn-FC-rCJ">
                                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                            <font key="font" metaFont="system"/>
+                                            <font key="font" metaFont="systemMedium" size="12"/>
                                         </buttonCell>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="color" keyPath="bgColor">
@@ -226,6 +254,12 @@
                                             </userDefinedRuntimeAttribute>
                                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                                                 <real key="value" value="4"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="titleColor">
+                                                <color key="value" name="white"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="selectedTextColor">
+                                                <color key="value" name="white"/>
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
@@ -256,7 +290,7 @@
                                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Nf5-yf-qTk">
                                         <rect key="frame" x="-2" y="19" width="137" height="15"/>
                                         <textFieldCell key="cell" lineBreakMode="clipping" title="Don't have an account?" id="pfV-yA-7TC">
-                                            <font key="font" metaFont="controlContent"/>
+                                            <font key="font" metaFont="system" size="12"/>
                                             <color key="textColor" name="login-text-color"/>
                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                         </textFieldCell>
@@ -329,7 +363,7 @@
                         <constraint firstAttribute="width" constant="230" id="feB-u0-xLT"/>
                     </constraints>
                     <color key="borderColor" red="0.0" green="0.0" blue="0.0" alpha="0.10000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
-                    <color key="fillColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    <color key="fillColor" name="login-background-color"/>
                 </box>
             </subviews>
             <constraints>
@@ -344,16 +378,26 @@
         </customView>
     </objects>
     <resources>
+        <image name="apple-sign-in-logo" width="18" height="18"/>
         <image name="google-logo" width="14" height="14"/>
         <image name="toggl-logo" width="50" height="16"/>
+        <namedColor name="login-apple-google-background-color">
+            <color red="0.99991601705551147" green="1" blue="0.99988490343093872" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="login-background-color">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="login-button-background">
-            <color red="1" green="0.17599999904632568" blue="0.33300000429153442" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="1" green="0.17647058823529413" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="login-button-foreground">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="login-text-color">
             <color red="0.33300000429153442" green="0.33300000429153442" blue="0.33300000429153442" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="white">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>
