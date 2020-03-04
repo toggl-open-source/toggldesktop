@@ -4956,14 +4956,7 @@ error Context::pushChanges(
                     continue;
                 }
 
-                Json::Value root;
-                Json::Reader reader;
-                if (!reader.parse(resp.body, root)) {
-                    err = error("error parsing client POST response");
-                    continue;
-                }
-
-                client->LoadFromJSON(root);
+                err = client->LoadFromJSONString(resp.body);
             }
 
             return err;
@@ -4997,14 +4990,7 @@ error Context::pushChanges(
                     continue;
                 }
 
-                Json::Value root;
-                Json::Reader reader;
-                if (!reader.parse(resp.body, root)) {
-                    err = error("error parsing project POST response");
-                    continue;
-                }
-
-                project->LoadFromJSON(root);
+                err = project->LoadFromJSONString(resp.body);
             }
 
             return err;
