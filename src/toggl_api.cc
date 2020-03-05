@@ -181,6 +181,12 @@ bool_t toggl_set_settings_active_tab(
     return toggl::noError == app(context)->SetSettingsActiveTab(active_tab);
 }
 
+bool_t toggl_set_settings_color_theme(
+    void *context,
+    const uint8_t color_theme) {
+    return toggl::noError == app(context)->SetSettingsColorTheme(color_theme);
+}
+
 bool_t toggl_set_settings_idle_minutes(
     void *context,
     const uint64_t idle_minutes) {
@@ -1517,6 +1523,34 @@ void toggl_iam_click(void *context,
 }
 
 char_t *toggl_format_duration_time(void *context,
-                          const uint64_t timestamp) {
+                                   const uint64_t timestamp) {
     return copy_string(toggl::Formatter::FormatDurationForDateHeader(timestamp));
+}
+
+void track_collapse_day(void *context) {
+    if (!context) {
+        return;
+    }
+    app(context)->TrackCollapseDay();
+}
+
+void track_expand_day(void *context) {
+    if (!context) {
+        return;
+    }
+    app(context)->TrackExpandDay();
+}
+
+void track_collapse_all_days(void *context) {
+    if (!context) {
+        return;
+    }
+    app(context)->TrackCollapseAllDays();
+}
+
+void track_expand_all_days(void *context) {
+    if (!context) {
+        return;
+    }
+    app(context)->TrackExpandAllDays();
 }

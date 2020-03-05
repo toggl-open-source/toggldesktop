@@ -22,6 +22,21 @@ static class LinqExtensions
         }
     }
 
+    public static IEnumerable<T> AppendIfEmpty<T>(this IEnumerable<T> sequence, Func<T> subjectLazy)
+    {
+        var isEmpty = true;
+        foreach (var obj in sequence)
+        {
+            isEmpty = false;
+            yield return obj;
+        }
+
+        if (isEmpty)
+        {
+            yield return subjectLazy();
+        }
+    }
+
     public static List<T> GetCount<T>
     (this List<T> list, out int count)
     {
@@ -61,13 +76,26 @@ static class LinqExtensions
         return current;
     }
 
-    public static string[] SplitByWhiteSpaceUnlessEnclosedInQuotes(this string str)
+    public static void ForEach<T>(this IEnumerable<T> enumerable, Action<T> action)
     {
-        return str.Split('"')
-            .Select((element, index) => index % 2 == 0  // If even index
-                ? element.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)  // Split the item
-                : new[] { element })  // Keep the entire item
-            .SelectMany(element => element).ToArray();
+        foreach (var item in enumerable) action(item);
+    }
+
+    public static TValue GetValueOrDefault<TKey, TValue>(
+        this IDictionary<TKey, TValue> dictionary,
+        TKey key,
+        TValue defaultValue = default)
+    {
+        return dictionary.TryGetValue(key, out var value) ? value : defaultValue;
+    }
+
+    public static IEnumerable<(T item, int index)> WithIndex<T>(this IEnumerable<T> enumerable)
+    {
+        var i = 0;
+        foreach (var item in enumerable)
+        {
+            yield return (item, i++);
+        }
     }
 }
 }

@@ -1,17 +1,29 @@
-﻿using System.ComponentModel;
+﻿using System;
 using System.Windows;
 using System.Windows.Input;
+using ControlzEx;
 
 namespace TogglDesktop
 {
     public partial class MessageBox
     {
-        private bool first = true;
         private MessageBoxResult result;
 
         private MessageBox()
         {
             this.InitializeComponent();
+        }
+
+        public delegate MessageBoxResult ShowMessageBoxDelegate(
+            string messageText,
+            string title = "Toggl Desktop",
+            MessageBoxButton buttons = MessageBoxButton.OK,
+            string okButtonText = "OK");
+
+        public static ShowMessageBoxDelegate Show(Window owner)
+        {
+            return (text, title, buttons, buttonText) =>
+                Show(owner, text, title, buttons, buttonText);
         }
 
         public static MessageBoxResult Show(Window owner, string messageText,
@@ -45,14 +57,12 @@ namespace TogglDesktop
             string title, MessageBoxButton buttons, string okButtonText)
         {
             this.Owner = owner;
-            this.messageText.Text = messageText;
-            this.Title = title;
+            this.messageTextBlock.Text = messageText;
+            this.titleTextBlock.Text = title;
 
             var ok = buttons == MessageBoxButton.OK || buttons == MessageBoxButton.OKCancel;
             var yesno = buttons == MessageBoxButton.YesNo || buttons == MessageBoxButton.YesNoCancel;
             var cancel = buttons == MessageBoxButton.OKCancel || buttons == MessageBoxButton.YesNoCancel;
-
-            this.Chrome.CloseButton.ShowOnlyIf(cancel);
 
             this.okButton.ShowOnlyIf(ok);
             this.yesButton.ShowOnlyIf(yesno);
@@ -61,32 +71,12 @@ namespace TogglDesktop
 
             this.okButton.Content = okButtonText;
 
+            KeyboardNavigationEx.Focus(ok ? okButton : yesButton);
+
             if (owner != null)
             {
                 this.Topmost = owner.Topmost;
             }
-
-            this.refreshSize();
-        }
-
-        private void refreshSize()
-        {
-            this.SizeToContent = SizeToContent.WidthAndHeight;
-
-            // this hack is needed to make sure the message box
-            // has the correct size the first time it is shown
-            // not sure exactly why this works, there may be a better solution
-            if (this.first)
-            {
-                this.Show();
-                this.Hide();
-
-                this.SizeToContent = SizeToContent.Manual;
-
-                this.first = false;
-            }
-
-            this.UpdateLayout();
         }
 
         protected override void OnKeyDown(KeyEventArgs e)
@@ -103,12 +93,6 @@ namespace TogglDesktop
                 e.Handled = true;
                 this.close(MessageBoxResult.OK);
             }
-        }
-
-        protected override void OnClosing(CancelEventArgs e)
-        {
-            e.Cancel = true;
-            this.Hide();
         }
 
         private void close(MessageBoxResult result)

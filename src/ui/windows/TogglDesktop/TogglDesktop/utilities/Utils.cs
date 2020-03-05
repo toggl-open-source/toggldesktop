@@ -5,7 +5,9 @@ using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Forms;
+using System.Windows.Input;
 using System.Windows.Media;
+using MahApps.Metro.Controls;
 using Microsoft.Win32;
 using Rectangle = System.Drawing.Rectangle;
 
@@ -211,95 +213,50 @@ public static class Utils
 
     #region keyboard shortcuts
 
-    public struct KeyCombination : IEquatable<KeyCombination>
+    public static void SetShortcutForShow(HotKey hotKey)
     {
-        private readonly ModifierKeys modifiers;
-        private readonly string keyCode;
-
-        public KeyCombination(ModifierKeys modifiers, string keyCode)
-        {
-            this.modifiers = modifiers;
-            this.keyCode = keyCode;
-        }
-
-        public ModifierKeys Modifiers {
-            get {
-                return this.modifiers;
-            }
-        }
-        public string KeyCode {
-            get {
-                return this.keyCode;
-            }
-        }
-
-        public bool Equals(KeyCombination other)
-        {
-            return this.modifiers == other.modifiers && string.Equals(this.keyCode, other.keyCode);
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj)) return false;
-            return obj is KeyCombination && Equals((KeyCombination)obj);
-        }
-
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                return ((int)this.modifiers * 397) ^ (this.keyCode != null ? this.keyCode.GetHashCode() : 0);
-            }
-        }
-
-        public static bool operator ==(KeyCombination c0, KeyCombination c1)
-        {
-            return c0.Equals(c1);
-        }
-
-        public static bool operator !=(KeyCombination c0, KeyCombination c1)
-        {
-            return !(c0 == c1);
-        }
+        setShortcut(hotKey, "show",
+            Toggl.SetKeyModifierShow,
+            Toggl.SetKeyShow
+        );
     }
 
-    public static void SetShortcutForShow(KeyCombination? e)
+    public static void SetShortcutForStart(HotKey hotKey)
     {
-        setShortcut(e, "show",
-                    Toggl.SetKeyModifierShow,
-                    Toggl.SetKeyShow
-                   );
-    }
-
-    public static void SetShortcutForStart(KeyCombination? e)
-    {
-        setShortcut(e, "start",
+        setShortcut(hotKey, "start",
                     Toggl.SetKeyModifierStart,
                     Toggl.SetKeyStart
                    );
     }
 
-    private static void setShortcut(KeyCombination? e, string shortcutName,
-                                    Action<ModifierKeys> setModifier, Action<string> setKey)
+    private static void setShortcut(HotKey hotKey, string shortcutName,
+        Action<ModifierKeys> setModifier, Action<string> setKey)
     {
+        if (hotKey == null)
+        {
+            return;
+        }
+
         try
         {
-            if (e.HasValue)
+            if (hotKey.Key != Key.None)
             {
-                setModifier(e.Value.Modifiers);
-                setKey(e.Value.KeyCode);
+                setModifier(hotKey.ModifierKeys);
+                setKey(hotKey.Key.ToString());
             }
             else
             {
-                setModifier(0);
+                setModifier(ModifierKeys.None);
                 setKey(null);
             }
         }
         catch (Exception ex)
         {
-            Toggl.Debug(string.Format("Could not set shortcut for {0}: {1}", shortcutName, ex));
+            Toggl.Debug($"Could not set shortcut for {shortcutName}: {ex}");
         }
     }
+
+    public static bool IsNullOrNone(this HotKey hotKey) => hotKey == null || hotKey.Key == Key.None;
 
     #endregion
 

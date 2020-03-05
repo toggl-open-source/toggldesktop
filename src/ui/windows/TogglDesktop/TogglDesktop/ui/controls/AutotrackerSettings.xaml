@@ -4,96 +4,97 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:toggl="clr-namespace:TogglDesktop"
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="450"
-             Style="{StaticResource AutotrackerSettings}">
-    
-    <Grid Margin="-8">
+             d:DesignHeight="300" d:DesignWidth="450">
+
+    <Grid Margin="0 8 0 0">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition />
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0">
+
+        <StackPanel Grid.Row="0" Orientation="Vertical">
+            <TextBlock Style="{StaticResource Toggl.BodyText}"
+                       Text="Set up new autotracker" />
+            <TextBlock Style="{StaticResource Toggl.CaptionText}"
+                       Margin="0 8 0 0"
+                       Text="Use the full window title or any word from the window title as a keyword to trigger the tracking suggestion." />
+        </StackPanel>
+        <Grid Grid.Row="1" Margin="0 8 0 0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="148"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="80"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="50"/>
-                <RowDefinition Height="20"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
             <!-- term selection -->
-            <toggl:ExtendedTextBox Grid.Column="0" Grid.Row="0"
-                x:Name="termTextBox" x:FieldModifier="private"
-                Padding="8, 0, 34, 0" KeyDown="onAnyTextBoxKeyDown"/>
-
-            <ToggleButton Grid.Column="0" Grid.Row="0"
-                x:Name="termDropDownButton" x:FieldModifier="private"
-                Style="{StaticResource AutoCompleteTextFieldButton}"/>
-
-            <toggl:AutoCompletionPopup Grid.Column="0" Grid.Row="0"
-                x:Name="termAutoComplete" x:FieldModifier="private"
-                Target="{Binding ElementName=termTextBox}" TextBox="{Binding ElementName=termTextBox}"
-                EmptyText="No matching terms found." DropDownButton="{Binding ElementName=termDropDownButton}"/>
+            <TextBox Grid.Column="0" Grid.Row="0"
+                     x:Name="termTextBox" x:FieldModifier="private"
+                     Margin="0 0 8 0"
+                     mah:TextBoxHelper.Watermark="Keyword" />
 
             <!-- project selection -->
-            <toggl:ProjectTextBox Grid.Column="1" Grid.Row="0"
-                x:Name="projectTextBox" x:FieldModifier="private"
-                Padding="28, 0, 34, 0"
-                LostKeyboardFocus="projectTextBox_OnLostKeyboardFocus"
-                KeyDown="onAnyTextBoxKeyDown"/>
-            
-            <ToggleButton Grid.Column="1" Grid.Row="0"
-                x:Name="projectDropDownButton" x:FieldModifier="private"
-                Style="{StaticResource AutoCompleteTextFieldButton}"/>
-            
-            <toggl:AutoCompletionPopup Grid.Column="1" Grid.Row="0"
-                x:Name="projectAutoComplete" x:FieldModifier="private"
-                Target="{Binding ElementName=projectTextBox}" TextBox="{Binding ElementName=projectTextBox}"
-                EmptyText="No matching projects found." DropDownButton="{Binding ElementName=projectDropDownButton}"
-                ConfirmCompletion="projectAutoComplete_OnConfirmCompletion"
-                ConfirmWithoutCompletion="projectAutoComplete_OnConfirmWithoutCompletion"/>
-
             <Border Grid.Column="1" Grid.Row="0"
-                Name="projectColorCircle" x:FieldModifier="private"
-                Margin="18, 0, 0, 0"
-                HorizontalAlignment="Left"
-                Style="{StaticResource ProjectColorCircle}"/>
-            
-            <TextBlock Grid.Column="1" Grid.Row="0"
-                Margin="36, 0, 16, 0" Text="No project">
-                <TextBlock.Style>
-                    <Style TargetType="TextBlock" BasedOn="{StaticResource TextboxEmptyText}">
-                        <Style.Triggers>
-                            <MultiDataTrigger>
-                                <MultiDataTrigger.Conditions>
-                                    <Condition Binding="{Binding ElementName=projectTextBox, Path=(Text)}" Value=""/>
-                                    <Condition Binding="{Binding ElementName=projectTextBox, Path=(IsKeyboardFocused)}" Value="False"/>
-                                </MultiDataTrigger.Conditions>
-                                <Setter Property="Visibility" Value="Visible"/>
-                            </MultiDataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </TextBlock.Style>
-            </TextBlock>
+                    Name="projectSelectionBorder"
+                    Style="{StaticResource Toggl.Border.Hoverable}"
+                    HorizontalAlignment="Stretch"
+                    Height="32">
+                <Grid>
+                    <toggl:ProjectTextBox x:Name="projectTextBox" x:FieldModifier="private"
+                                          BorderThickness="0"
+                                          mah:TextBoxHelper.Watermark="Select project"
+                                          Height="Auto"
+                                          Padding="20 0 30 0"
+                                          Margin="0"
+                                          LostKeyboardFocus="projectTextBox_OnLostKeyboardFocus"
+                                          KeyDown="onAnyTextBoxKeyDown"/>
+
+                    <ToggleButton x:Name="projectDropDownButton" x:FieldModifier="private"
+                                  Style="{DynamicResource Toggl.AutoCompleteDropDownToggleButton}"/>
+
+                    <toggl:AutoCompletionPopup x:Name="projectAutoComplete" x:FieldModifier="private"
+                                               Target="{Binding ElementName=projectSelectionBorder}" TextBox="{Binding ElementName=projectTextBox}"
+                                               DropDownButton="{Binding ElementName=projectDropDownButton}"
+                                               ConfirmCompletion="projectAutoComplete_OnConfirmCompletion"
+                                               ConfirmWithoutCompletion="projectAutoComplete_OnConfirmWithoutCompletion"/>
+
+                    <Border Name="projectColorCircle" x:FieldModifier="private"
+                            Style="{StaticResource ProjectColorCircle}"
+                            Margin="11 14 0 1"/>
+                </Grid>
+            </Border>
 
             <!-- add button -->
             <Button Grid.Column="2" Grid.Row="0"
-                    Margin="8" Content="ADD"
+                    Style="{StaticResource Toggl.PrimaryButton}"
+                    Margin="8 0 0 0" Content="Add"
                     Click="onAddButtonClick"/>
 
+            <TextBlock Grid.Row="1"
+                       Grid.Column="0"
+                       Grid.ColumnSpan="3"
+                       Style="{StaticResource Toggl.BodyText}"
+                       Margin="0 32 0 0"
+                       Text="Existing autotrackers" />
+
             <!-- list headers -->
-            <TextBlock Text="Term" Grid.Column="0" Grid.Row="1" Style="{StaticResource ListHeaderText}"/>
-            <TextBlock Text="Project" Grid.Column="1" Grid.Row="1" Style="{StaticResource ListHeaderText}"/>
+            <TextBlock Text="Keyword" Grid.Column="0" Grid.Row="2" Style="{StaticResource Toggl.CaptionText}" Margin="12 19 0 0"/>
+            <TextBlock Text="Project name" Grid.Column="1" Grid.Row="2" Style="{StaticResource Toggl.CaptionText}" Margin="12 19 0 0"/>
         </Grid>
-        <ScrollViewer Grid.Row="1" Style="{StaticResource CustomSrollViewer}"
-            Margin="8" Focusable="True" IsTabStop="True"
+        <ScrollViewer Grid.Row="2"
+            Margin="0 10 0 0" Focusable="True" IsTabStop="True"
             GotKeyboardFocus="onListGotKeyboardFocus"
             LostKeyboardFocus="onListLostKeyboardFocus"
-            PreviewKeyDown="onListPreviewKeyDown">
-            <StackPanel Background="White" Name="rulesPanel" x:FieldModifier="private">
+            PreviewKeyDown="onListPreviewKeyDown"
+            VerticalScrollBarVisibility="Auto">
+            <StackPanel Name="rulesPanel" x:FieldModifier="private">
                 <!-- filled programmatically -->
             </StackPanel>
         </ScrollViewer>

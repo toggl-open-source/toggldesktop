@@ -1,10 +1,12 @@
 ﻿using System;
-using System.ComponentModel;
+using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
+using System.Windows.Forms;
 using System.Windows.Media;
-using System.Windows.Threading;
+using Control = System.Windows.Controls.Control;
+using Panel = System.Windows.Controls.Panel;
+using TextBoxBase = System.Windows.Controls.Primitives.TextBoxBase;
 
 namespace TogglDesktop
 {
@@ -88,13 +90,6 @@ static class UIExtensions
         }
     }
 
-    public static void HideWindowOnClosing(this Window window, object sender, CancelEventArgs e)
-    {
-        e.Cancel = true;
-        Action hideAction = window.Hide;
-        window.Dispatcher.BeginInvoke(DispatcherPriority.Background, hideAction);
-    }
-
     public static void ShowOnTop(this Window window)
     {
         window.Show();
@@ -105,49 +100,57 @@ static class UIExtensions
         window.Activate();
     }
 
+    public static Rect GetCurrentScreenRectangle(this Window window)
+    {
+        if (window == null)
+        {
+            throw new ArgumentNullException(nameof(window), "Window cannot be null");
+        }
+
+        var screen = Screen.FromRectangle(new Rectangle(
+            (int)window.Left, (int)window.Top,
+            (int)window.Width, (int)window.Height
+        ));
+
+        var area = screen.WorkingArea;
+
+        var topLeft = new System.Windows.Point(area.Left, area.Top);
+        var bottomRight = new System.Windows.Point(area.Right, area.Bottom);
+
+        var presentationSource = PresentationSource.FromVisual(window);
+        if (presentationSource != null)
+        {
+            var compositionTarget = presentationSource.CompositionTarget;
+            if (compositionTarget != null)
+            {
+                var t = compositionTarget.TransformFromDevice;
+
+                topLeft = t.Transform(topLeft);
+                bottomRight = t.Transform(bottomRight);
+            }
+        }
+
+        return new Rect(topLeft, bottomRight);
+    }
+
     public static void ClearUndoHistory(this TextBoxBase textBox)
     {
         textBox.IsUndoEnabled = false;
         textBox.IsUndoEnabled = true;
     }
 
-    public static int CountSubstrings(this string s, string searchString)
+    public static T FindParent<T>(this DependencyObject element)
+        where T : class
     {
-        if (s == null)
-            throw new ArgumentNullException("s");
+        if (element == null) return null;
 
-        if (searchString == null)
-            throw new ArgumentNullException("searchString");
-
-        if (searchString == "")
-            throw new ArgumentException("Search string must be non-empty.", "searchString");
-
-        var stringLength = s.Length;
-        var subStringLength = searchString.Length;
-
-        var maxFirstIndex = stringLength - subStringLength;
-
-        var count = 1;
-
-        for (int i = 0; i <= maxFirstIndex; i++)
+        var parent = VisualTreeHelper.GetParent(element);
+        while (parent != null && !(parent is T))
         {
-            count++;
-            for (int j = 0; j < subStringLength; j++)
-            {
-                if (searchString[j] != s[j + i])
-                {
-                    count--;
-                    break;
-                }
-            }
+            parent = VisualTreeHelper.GetParent(parent);
         }
 
-        return count;
-    }
-
-    public static bool IsNullOrEmpty(this string s)
-    {
-        return string.IsNullOrEmpty(s);
+        return parent as T;
     }
 }
 }

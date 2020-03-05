@@ -192,6 +192,7 @@ extern "C" {
         bool_t StopEntryOnShutdownSleep;
         bool_t ShowTouchBar;
         uint8_t ActiveTab;
+        uint8_t ColorTheme;
     } TogglSettingsView;
 
     typedef struct {
@@ -676,7 +677,7 @@ extern "C" {
         const char_t *guid,
         const int64_t start);
 
-TOGGL_EXPORT bool_t toggl_set_time_entry_start_timestamp_with_option(
+    TOGGL_EXPORT bool_t toggl_set_time_entry_start_timestamp_with_option(
         void *context,
         const char_t *guid,
         const int64_t start,
@@ -793,6 +794,10 @@ TOGGL_EXPORT bool_t toggl_set_time_entry_start_timestamp_with_option(
     TOGGL_EXPORT bool_t toggl_set_settings_active_tab(
         void *context,
         const uint8_t active_tab);
+
+    TOGGL_EXPORT bool_t toggl_set_settings_color_theme(
+        void *context,
+        const uint8_t color_theme);
 
     TOGGL_EXPORT bool_t toggl_set_settings_idle_minutes(
         void *context,
@@ -1146,6 +1151,18 @@ TOGGL_EXPORT bool_t toggl_set_time_entry_start_timestamp_with_option(
     TOGGL_EXPORT char_t *toggl_format_duration_time(
         void *context,
         const uint64_t timestamp);
+
+    TOGGL_EXPORT void track_collapse_day(
+        void *context);
+
+    TOGGL_EXPORT void track_expand_day(
+        void *context);
+
+    TOGGL_EXPORT void track_collapse_all_days(
+        void *context);
+
+    TOGGL_EXPORT void track_expand_all_days(
+        void *context);
 
 #undef TOGGL_EXPORT
 

@@ -10,7 +10,8 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TogglDesktop</RootNamespace>
     <AssemblyName>TogglDesktop</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <FileAlignment>512</FileAlignment>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
@@ -32,6 +33,7 @@
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
     <TargetFrameworkProfile />
+    <LangVersion>8</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>TogglDesktop.Program</StartupObject>
@@ -85,7 +87,6 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'StoreRelease|x64'">
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <OutputPath>bin\x64\StoreRelease\</OutputPath>
     <DefineConstants>TRACE;TOGGL_PRODUCTION_BUILD;MS_STORE</DefineConstants>
     <Optimize>true</Optimize>
@@ -96,7 +97,6 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'StoreRelease|x86'">
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <OutputPath>bin\x86\StoreRelease\</OutputPath>
     <DefineConstants>TRACE;TOGGL_PRODUCTION_BUILD;MS_STORE</DefineConstants>
     <Optimize>true</Optimize>
@@ -107,7 +107,6 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'StoreDebug|x64'">
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\x64\StoreDebug\</OutputPath>
     <DefineConstants>DEBUG;TRACE;MS_STORE</DefineConstants>
@@ -118,7 +117,6 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'StoreDebug|x86'">
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\x86\StoreDebug\</OutputPath>
     <DefineConstants>DEBUG;TRACE;MS_STORE</DefineConstants>
@@ -177,53 +175,58 @@
     </Compile>
     <Compile Include="AutoCompletion\AutoCompleteController.cs" />
     <Compile Include="AutoCompletion\AutoCompleteItem.cs" />
-    <Compile Include="AutoCompletion\AutoCompleteListCategory.cs" />
     <Compile Include="AutoCompletion\AutoCompleteListItem.cs" />
+    <Compile Include="AutoCompletion\IAutoCompleteController.cs" />
     <Compile Include="AutoCompletion\IAutoCompleteListItem.cs" />
-    <Compile Include="AutoCompletion\ICollapsable.cs" />
     <Compile Include="AutoCompletion\Implementation\AutoCompleteControllers.cs" />
-    <Compile Include="AutoCompletion\AutoCompleteItemCategory.cs" />
-    <Compile Include="AutoCompletion\Implementation\ClientCategory.cs" />
     <Compile Include="AutoCompletion\Implementation\ModelItem.cs" />
-    <Compile Include="AutoCompletion\Implementation\NestedCategory.cs" />
-    <Compile Include="AutoCompletion\Implementation\ProjectCategory.cs" />
-    <Compile Include="AutoCompletion\Implementation\TaskItem.cs" />
-    <Compile Include="AutoCompletion\Implementation\SimpleCategory.cs" />
-    <Compile Include="AutoCompletion\Implementation\SimpleItemCategory.cs" />
-    <Compile Include="AutoCompletion\Implementation\SimpleNoncompletingCategory.cs" />
     <Compile Include="AutoCompletion\Implementation\StringItem.cs" />
-    <Compile Include="AutoCompletion\Implementation\ISelectable.cs" />
-    <Compile Include="AutoCompletion\Implementation\ProjectItem.cs" />
     <Compile Include="AutoCompletion\Implementation\SimpleItem.cs" />
     <Compile Include="AutoCompletion\Implementation\TimerItem.cs" />
-    <Compile Include="AutoCompletion\Implementation\WorkspaceCategory.cs" />
-    <Compile Include="AutoCompletion\ListBoxItem.cs" />
+    <Compile Include="AutoCompletion\ListBoxItemViewModel.cs" />
+    <Compile Include="AutoCompletion\ListBoxSelectionManager.cs" />
+    <Compile Include="AutoCompletion\TagsAutoCompleteController.cs" />
     <Compile Include="BugsnagService.cs" />
     <Compile Include="Diagnostics\IPerformanceToken.cs" />
     <Compile Include="Diagnostics\Performance.cs" />
     <Compile Include="SingleInstanceManager.cs" />
-    <Compile Include="ui\AutoCompleteControls\ProjectCategory.xaml.cs">
-      <DependentUpon>ProjectCategory.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ui\AutoCompleteControls\TaskEntry.xaml.cs">
-      <DependentUpon>TaskEntry.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ui\chrome\ChromelessWindow.cs" />
+    <Compile Include="ui\Behaviors\ActivateParentWindowOnMouseClick.cs" />
+    <Compile Include="ui\Behaviors\ButtonHelper.cs" />
+    <Compile Include="ui\Behaviors\CloseWindowOnEscBehavior.cs" />
+    <Compile Include="ui\Behaviors\DatePickerKeyboardHandlingBehavior.cs" />
+    <Compile Include="ui\Behaviors\FocusHelper.cs" />
+    <Compile Include="ui\Behaviors\FocusParentWindowOnClosingBehavior.cs" />
+    <Compile Include="ui\Behaviors\HideWindowOnClosingBehavior.cs" />
+    <Compile Include="ui\Behaviors\NumericInputTextBoxBehavior.cs" />
+    <Compile Include="ui\Behaviors\RepositionPopupWithParentWindowBehavior.cs" />
+    <Compile Include="ui\Behaviors\TextBoxHelper.cs" />
     <Compile Include="ui\controls\InAppNotification.xaml.cs">
       <DependentUpon>InAppNotification.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ui\controls\CheckBoxHelper.cs" />
     <Compile Include="ui\controls\ProgressBar.xaml.cs">
       <DependentUpon>ProgressBar.xaml</DependentUpon>
     </Compile>
     <Compile Include="ui\controls\ProjectColorPicker.xaml.cs">
       <DependentUpon>ProjectColorPicker.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ui\controls\ProjectLabel.xaml.cs">
+      <DependentUpon>ProjectLabel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ui\controls\ProjectTextBox.cs" />
+    <Compile Include="ui\controls\ProjectToolTip.xaml.cs">
+      <DependentUpon>ProjectToolTip.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ui\controls\TimeEntryCellContextMenuCommands.cs" />
     <Compile Include="ui\controls\TimeEntryCellDayHeader.xaml.cs">
       <DependentUpon>TimeEntryCellDayHeader.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ui\controls\TimeEntryCellDragImposter.cs" />
+    <Compile Include="ui\controls\MiniTimer.xaml.cs">
+      <DependentUpon>MiniTimer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\controls\TimeEntryLabel.xaml.cs">
+      <DependentUpon>TimeEntryLabel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ui\controls\TogglNotification.cs" />
     <Compile Include="ui\controls\ReminderNotification.xaml.cs">
       <DependentUpon>ReminderNotification.xaml</DependentUpon>
@@ -233,8 +236,16 @@
     </Compile>
     <Compile Include="ui\Converters\AndConverter.cs" />
     <Compile Include="ui\Converters\EmptyStringToCollapsedConverter.cs" />
-    <Compile Include="ui\Converters\StringToBrushConverter.cs" />
+    <Compile Include="ui\Converters\IsSelectableItemConverter.cs" />
+    <Compile Include="ui\Converters\StringFormatIfNotEmptyConverter.cs" />
     <Compile Include="ui\Converters\StringToUpperConverter.cs" />
+    <Compile Include="ui\Converters\BytesToStringConverter.cs" />
+    <Compile Include="ui\Converters\EnumEqualToVisibilityConverter.cs" />
+    <Compile Include="ui\Converters\FileNameToIconConverter.cs" />
+    <Compile Include="ui\Converters\BindingProxy.cs" />
+    <Compile Include="ui\Converters\EmptyStringToHiddenConverter.cs" />
+    <Compile Include="ui\Converters\ColorsToBrushConverter.cs" />
+    <Compile Include="ui\Converters\TrimPathConverter.cs" />
     <Compile Include="ui\Experiments\implementations\Experiment98.cs" />
     <Compile Include="ui\Experiments\implementations\Experiment98Screen2.xaml.cs">
       <DependentUpon>Experiment98Screen2.xaml</DependentUpon>
@@ -257,12 +268,14 @@
       <DependentUpon>Experiment87Screen.xaml</DependentUpon>
     </Compile>
     <Compile Include="ui\Experiments\ExperimentParameters.cs" />
+    <Compile Include="ui\IRecyclable.cs" />
     <Compile Include="ui\KeyboardShortcuts.cs" />
     <Compile Include="ui\Experiments\implementations\ExperimentHacks.cs" />
+    <Compile Include="ui\ModelExtensions.cs" />
     <Compile Include="ui\NotificationExtensions.cs" />
-    <Compile Include="ui\Theme.cs" />
-    <Compile Include="ui\ThemeResourceDictionary.cs" />
-    <Compile Include="ui\ThemeTypes.cs" />
+    <Compile Include="ui\Theming\Theme.cs" />
+    <Compile Include="ui\Theming\ThemeResourceDictionary.cs" />
+    <Compile Include="ui\Theming\ThemeType.cs" />
     <Compile Include="ui\Tutorial\BasicTutorialScreen7.xaml.cs">
       <DependentUpon>BasicTutorialScreen7.xaml</DependentUpon>
     </Compile>
@@ -289,6 +302,15 @@
     </Compile>
     <Compile Include="ui\Tutorial\TutorialManager.cs" />
     <Compile Include="ui\Tutorial\TutorialScreen.cs" />
+    <Compile Include="ui\ViewModels\DayHeaderViewModel.cs" />
+    <Compile Include="ui\ViewModels\FeedbackWindowViewModel.cs" />
+    <Compile Include="ui\ViewModels\LoginViewModel.cs" />
+    <Compile Include="ui\ViewModels\PreferencesWindowViewModel.cs" />
+    <Compile Include="ui\ViewModels\ProjectLabelViewModel.cs" />
+    <Compile Include="ui\ViewModels\TimeEntryCellViewModel.cs" />
+    <Compile Include="ui\ViewModels\TimeEntryLabelViewModel.cs" />
+    <Compile Include="ui\ViewModels\TimeEntryListViewModel.cs" />
+    <Compile Include="ui\ViewModels\ViewModelExtensions.cs" />
     <Compile Include="ui\views\IMainView.cs" />
     <Compile Include="ui\Experiments\ExperimentManager.cs" />
     <Compile Include="ui\views\OverlayView.xaml.cs">
@@ -300,12 +322,11 @@
     <Compile Include="ui\controls\PomodoroNotification.xaml.cs">
       <DependentUpon>PomodoroNotification.xaml</DependentUpon>
     </Compile>
-    <Compile Include="utilities\GlobalShortcuts.cs" />
     <Compile Include="utilities\LinqExtensions.cs" />
     <Compile Include="utilities\StaticObjectPool.cs" />
     <Compile Include="TogglApi.cs" />
     <Compile Include="ui\UIExtensions.cs" />
-    <Compile Include="ui\Converters\BooleanToVisibilityConverter.cs" />
+    <Compile Include="ui\Converters\FalseToHiddenVisibilityConverter.cs" />
     <Compile Include="ui\controls\AutotrackerNotification.xaml.cs">
       <DependentUpon>AutotrackerNotification.xaml</DependentUpon>
     </Compile>
@@ -336,42 +357,13 @@
     <Compile Include="ui\windows\AboutWindow.xaml.cs">
       <DependentUpon>AboutWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ui\AutoCompleteControls\GrayTextCategory.xaml.cs">
-      <DependentUpon>GrayTextCategory.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ui\AutoCompleteControls\EntryBase.cs" />
-    <Compile Include="ui\AutoCompleteControls\ClientCategory.xaml.cs">
-      <DependentUpon>ClientCategory.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ui\AutoCompleteControls\IRecyclable.cs" />
-    <Compile Include="ui\AutoCompleteControls\TimerEntry.xaml.cs">
-      <DependentUpon>TimerEntry.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ui\AutoCompleteControls\WorkspaceCategory.xaml.cs">
-      <DependentUpon>WorkspaceCategory.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ui\controls\AutoCompletionPopup.xaml.cs">
       <DependentUpon>AutoCompletionPopup.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ui\AutoCompleteControls\ModelEntry.xaml.cs">
-      <DependentUpon>ModelEntry.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ui\AutoCompleteControls\ProjectEntry.xaml.cs">
-      <DependentUpon>ProjectEntry.xaml</DependentUpon>
     </Compile>
     <Compile Include="ui\windows\EditViewPopup.xaml.cs">
       <DependentUpon>EditViewPopup.xaml</DependentUpon>
     </Compile>
     <Compile Include="ui\controls\ExtendedTextBox.cs" />
-    <Compile Include="ui\controls\LoginConfirmButton.xaml.cs">
-      <DependentUpon>LoginConfirmButton.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ui\controls\LoginPasswordBox.xaml.cs">
-      <DependentUpon>LoginPasswordBox.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ui\controls\LoginTextBox.xaml.cs">
-      <DependentUpon>LoginTextBox.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -380,6 +372,7 @@
     <Compile Include="Toggl.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="utilities\StringExtensions.cs" />
     <Compile Include="utilities\Utils.cs" />
     <Compile Include="utilities\Win32.cs" />
     <Compile Include="ui\windows\FeedbackWindow.xaml.cs">
@@ -394,9 +387,6 @@
     </Compile>
     <Compile Include="ui\windows\PreferencesWindow.xaml.cs">
       <DependentUpon>PreferencesWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ui\AutoCompleteControls\StringEntry.xaml.cs">
-      <DependentUpon>StringEntry.xaml</DependentUpon>
     </Compile>
     <Compile Include="ui\controls\Tag.xaml.cs">
       <DependentUpon>Tag.xaml</DependentUpon>
@@ -416,11 +406,6 @@
     <Compile Include="ui\views\Timer.xaml.cs">
       <DependentUpon>Timer.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ui\chrome\TogglChrome.xaml.cs">
-      <DependentUpon>TogglChrome.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ui\chrome\TogglWindow.cs" />
-    <Compile Include="ui\chrome\TogglChromeDesignTimeConverter.cs" />
     <Compile Include="Win10\RunOnStartup.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -579,14 +564,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="ui\AutoCompleteControls\ProjectCategory.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ui\AutoCompleteControls\TaskEntry.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="ui\controls\AutotrackerNotification.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -612,6 +589,8 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ui\controls\ProjectLabel.xaml" />
+    <Page Include="ui\controls\ProjectToolTip.xaml" />
     <Page Include="ui\controls\SyncingIndicator.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -624,6 +603,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ui\controls\MiniTimer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ui\controls\TimeEntryLabel.xaml" />
     <Page Include="ui\controls\TrayToolTipControl.xaml" />
     <Page Include="ui\Experiments\implementations\Experiment87Screen.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -645,10 +629,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ui\Resources\AutotrackerNotificationStyles.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="ui\Resources\AutotrackerStyles.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -657,31 +637,38 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ui\Resources\DialogStyles.xaml">
-      <Generator>MSBuild:Compile</Generator>
+    <Page Include="ui\Resources\DesignUpdate\Buttons.xaml" />
+    <Page Include="ui\Resources\DesignUpdate\Calendar.xaml" />
+    <Page Include="ui\Resources\DesignUpdate\ComboBox.xaml" />
+    <Page Include="ui\Resources\DesignUpdate\ContextMenu.xaml" />
+    <Page Include="ui\Resources\DesignUpdate\Controls.xaml" />
+    <Page Include="ui\Resources\DesignUpdate\DatePicker.xaml" />
+    <Page Include="ui\Resources\DesignUpdate\ErrorTemplate.xaml" />
+    <Page Include="ui\Resources\DesignUpdate\HotKeyBox.xaml" />
+    <Page Include="ui\Resources\DesignUpdate\Hyperlink.xaml" />
+    <Page Include="ui\Resources\DesignUpdate\CheckBox.xaml" />
+    <Page Include="ui\Resources\DesignUpdate\Icons.xaml" />
+    <Page Include="ui\Resources\DesignUpdate\ListBox.xaml" />
+    <Page Include="ui\Resources\DesignUpdate\MahApps.Overrides.xaml" />
+    <Page Include="ui\Resources\DesignUpdate\Notifications.xaml" />
+    <Page Include="ui\Resources\DesignUpdate\PasswordBox.xaml" />
+    <Page Include="ui\Resources\DesignUpdate\RadioButton.xaml" />
+    <Page Include="ui\Resources\DesignUpdate\ScrollBar.xaml" />
+    <Page Include="ui\Resources\DesignUpdate\TabControl.xaml" />
+    <Page Include="ui\Resources\DesignUpdate\TextBox.xaml" />
+    <Page Include="ui\Resources\DesignUpdate\ToggleSwitch.xaml" />
+    <Page Include="ui\Resources\DesignUpdate\ToolTip.xaml" />
+    <Page Include="ui\Resources\DesignUpdate\Window.xaml" />
+    <Page Include="ui\Resources\DesignUpdate\Typography.xaml" />
+    <Page Include="ui\Resources\Themes\ColorScheme\Dark.xaml">
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ui\Resources\ComboBoxStyles.xaml">
-      <Generator>MSBuild:Compile</Generator>
+    <Page Include="ui\Resources\Themes\ColorScheme\Light.xaml">
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ui\Resources\Themes\Layout\Compact.xaml">
       <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ui\Resources\Themes\Layout\Comfortable.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ui\Resources\TimerStyles.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="ui\Resources\SharedStyles.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ui\Resources\ScrollBarStyles.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -741,47 +728,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ui\AutoCompleteControls\GrayTextCategory.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ui\AutoCompleteControls\ClientCategory.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ui\AutoCompleteControls\TimerEntry.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ui\AutoCompleteControls\WorkspaceCategory.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="ui\controls\AutoCompletionPopup.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ui\AutoCompleteControls\ModelEntry.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ui\AutoCompleteControls\ProjectEntry.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="ui\windows\EditViewPopup.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ui\controls\LoginConfirmButton.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ui\controls\LoginPasswordBox.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ui\controls\LoginTextBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -809,18 +760,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ui\Resources\TogglWindowStyles.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ui\Resources\PreferencesWindowStyles.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ui\Resources\EditViewControllerStyles.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="ui\Resources\EditViewStyles.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -828,14 +767,6 @@
     <Page Include="ui\Resources\TimeEntryCellStyles.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ui\Resources\LoginViewStyles.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="ui\AutoCompleteControls\StringEntry.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ui\controls\Tag.xaml">
       <SubType>Designer</SubType>
@@ -858,10 +789,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ui\views\Timer.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ui\chrome\TogglChrome.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -937,6 +864,33 @@
     <PackageReference Include="Hardcodet.NotifyIcon.Wpf">
       <Version>1.0.8</Version>
     </PackageReference>
+    <PackageReference Include="MahApps.Metro">
+      <Version>2.0.0-alpha0660</Version>
+    </PackageReference>
+    <PackageReference Include="NHotkey.Wpf">
+      <Version>1.2.1</Version>
+    </PackageReference>
+    <PackageReference Include="ReactiveUI.Fody">
+      <Version>11.1.23</Version>
+    </PackageReference>
+    <PackageReference Include="ReactiveUI.Validation">
+      <Version>1.4.10</Version>
+    </PackageReference>
+    <PackageReference Include="ReactiveUI.WPF">
+      <Version>11.1.23</Version>
+    </PackageReference>
+    <PackageReference Include="System.Reactive">
+      <Version>4.3.2</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\bg-pattern.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="FodyWeavers.xml" />
+    <Resource Include="Resources\restricted-area.png" />
+    <Resource Include="Resources\spider.png" />
+    <Resource Include="Resources\stopwatch.png" />
   </ItemGroup>
   <Import Project="Dependencies.targets" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

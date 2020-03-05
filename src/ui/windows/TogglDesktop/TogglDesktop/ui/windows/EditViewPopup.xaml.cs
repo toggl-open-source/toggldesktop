@@ -1,8 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Windows;
-using System.Windows.Input;
-using System.Windows.Interop;
 using System.Windows.Media.Animation;
 using TogglDesktop.Diagnostics;
 
@@ -18,19 +16,18 @@ namespace TogglDesktop
 
         private AnimationStates animationState = AnimationStates.Closing;
 
-        private readonly WindowInteropHelper interopHelper;
-
         private bool isLeft;
-        private bool isResizing;
         private bool skipAnimation;
         private object animationToken;
+
+        private readonly Thickness _leftResizeBorderThickness = new Thickness(8, 0, 0, 0);
+        private readonly Thickness _rightResizeBorderThickness = new Thickness(0, 0, 8, 0);
 
         public EditViewPopup()
         {
             this.InitializeComponent();
-            this.interopHelper = new WindowInteropHelper(this);
 
-            this.MinWidth = this.EditView.MinWidth;
+            this.MinWidth = this.EditView.MinWidth + 16;
             this.mainGrid.Width = 0;
 
             Toggl.OnTimeEntryEditor += this.onTimeEntryEditor;
@@ -71,7 +68,6 @@ namespace TogglDesktop
         {
             if (skipAnimation || this.skipAnimation)
             {
-                this.EditView.EnsureSaved();
                 this.stopAnimationClose();
             }
             else
@@ -79,38 +75,15 @@ namespace TogglDesktop
                 if (this.animationState == AnimationStates.Closing)
                     return;
 
-                this.EditView.EnsureSaved();
                 this.startAnimationClose();
-            }
-        }
-
-        #region ui events
-
-        private void onResizeHandleLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            this.startResizing();
-        }
-
-        private void onResizeHandleLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            this.endResizing();
-        }
-
-        private void onWindowMouseMove(object sender, MouseEventArgs e)
-        {
-            if (e.LeftButton == MouseButtonState.Released)
-            {
-                this.endResizing();
             }
         }
 
         protected override void OnClosing(CancelEventArgs e)
         {
-            this.ClosePopup();
             e.Cancel = true;
+            Toggl.ViewTimeEntryList();
         }
-
-        #endregion
 
         #region animate
 
@@ -208,78 +181,29 @@ namespace TogglDesktop
 
         #endregion
 
-        #region controlling
-
-        public void SetPlacement(bool left,
-            double x, double y, double height, double maxWidth, bool fixHeight = false)
+        public void SetPlacement(bool left, double x, double y, double maxWidth)
         {
-            this.setShadow(left ^ fixHeight, height);
-
-            this.resizeHandle.HorizontalAlignment = left ? HorizontalAlignment.Left : HorizontalAlignment.Right;
-
-            this.skipAnimation = fixHeight;
-
-            if (!fixHeight)
-                height = Math.Min(700, Math.Max(520, height));
-
+            this.ResizeBorderThickness = left ? _leftResizeBorderThickness : _rightResizeBorderThickness;
+            this.EditView.Margin = new Thickness(8);
+            this.skipAnimation = false;
+            this.EditView.Height = double.NaN;
             this.isLeft = !left;
-            this.Height = height;
-
-
-            if (left)
-            {
-                x -= this.Width;
-            }
-
+            x += left ? (8 - this.Width) : -8;
             this.Left = x;
             this.Top = y;
-
-            this.MinHeight = height;
-            this.MaxHeight = height;
-
             this.MaxWidth = maxWidth;
         }
 
-        private void setShadow(bool left, double height)
+        public void SetPlacementMaximized(double x, double y, double height, double maxWidth)
         {
-            this.mainFormShadow.Height = height;
-            this.mainFormShadow.HorizontalAlignment = left ? HorizontalAlignment.Right : HorizontalAlignment.Left;
+            this.ResizeBorderThickness = new Thickness(0);
+            this.EditView.Margin = new Thickness(0);
+            this.skipAnimation = true;
+            this.EditView.Height = height;
+            this.isLeft = false;
+            this.Left = x - this.Width;
+            this.Top = y;
+            this.MaxWidth = maxWidth;
         }
-
-        private void startResizing()
-        {
-            if (this.isResizing)
-                return;
-
-            const int htleft = 10;
-            const int htright = 11;
-
-            Mouse.Capture(null);
-
-            this.ResizeMode = ResizeMode.CanResize;
-
-            Win32.SendMessage(this.interopHelper.Handle,
-                Win32.wmNcLButtonDown,
-                this.isLeft ? htright : htleft,
-                0);
-
-            this.resizeHandle.CaptureMouse();
-
-            this.isResizing = true;
-        }
-
-        private void endResizing()
-        {
-            if (!this.isResizing)
-                return;
-
-            Mouse.Capture(null);
-            this.ResizeMode = ResizeMode.NoResize;
-            this.isResizing = false;
-        }
-
-
-        #endregion
-
     }
 }

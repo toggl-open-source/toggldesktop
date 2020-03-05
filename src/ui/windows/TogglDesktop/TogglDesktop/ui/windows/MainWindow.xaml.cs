@@ -14,9 +14,14 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Threading;
 using Microsoft.Win32;
+using NHotkey;
+using NHotkey.Wpf;
 using TogglDesktop.Diagnostics;
 using TogglDesktop.Experiments;
+using TogglDesktop.Theming;
 using TogglDesktop.Tutorial;
+using TogglDesktop.ViewModels;
+using Control = System.Windows.Controls.Control;
 using MenuItem = System.Windows.Controls.MenuItem;
 using MouseEventArgs = System.Windows.Input.MouseEventArgs;
 
@@ -26,10 +31,9 @@ namespace TogglDesktop
     {
         #region fields
 
+        private const int WindowHeaderHeight = 30;
         private readonly DispatcherTimer idleDetectionTimer =
             new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
-        private readonly KeyboardHook startHook = new KeyboardHook();
-        private readonly KeyboardHook showHook = new KeyboardHook();
 
         private readonly WindowInteropHelper interopHelper;
         private readonly IMainView[] views;
@@ -43,7 +47,6 @@ namespace TogglDesktop
         private InAppNotification inAppNotification;
 
         private IMainView activeView;
-        private bool isResizingWithHandle;
         private bool closing;
 
         #endregion
@@ -61,6 +64,7 @@ namespace TogglDesktop
 
             this.hideAllViews();
 
+            this.initializeColorScheme();
             this.initializeEvents();
             this.initializeContextMenu();
             this.initializeTaskbarIcon();
@@ -71,12 +75,11 @@ namespace TogglDesktop
             this.initializeExperimentManager();
             this.initializeSessionNotification();
 
-            this.startHook.KeyPressed += this.onGlobalStartKeyPressed;
-            this.showHook.KeyPressed += this.onGlobalShowKeyPressed;
             this.idleDetectionTimer.Tick += this.onIdleDetectionTimerTick;
 
             this.finalInitialisation();
             this.trackingWindowSize();
+            this.Loaded += onMainWindowLoaded;
         }
 
         #region properties
@@ -107,7 +110,6 @@ namespace TogglDesktop
         private void initializeSyncingIndicator()
         {
             this.syncingIndicator = new SyncingIndicator();
-            this.Chrome.AddToHeaderButtons(this.syncingIndicator);
         }
 
         private void initializeCustomNotifications()
@@ -119,7 +121,7 @@ namespace TogglDesktop
 
         private void initializeContextMenu()
         {
-            foreach (var item in this.ContextMenu.Items)
+            foreach (var item in mainContextMenu.Items)
             {
                 var asMenuItem = item as MenuItem;
                 if (asMenuItem != null)
@@ -218,6 +220,16 @@ namespace TogglDesktop
             }
 
             this.IsVisibleChanged -= this.ownChildWindows;
+        }
+
+        private void initializeColorScheme()
+        {
+            Theme.CurrentColorScheme.Subscribe(x => this.updateTitleBarBackground(activeView));
+            Theme.CurrentColorScheme.Subscribe(x =>
+            {
+                this.taskbarIcon.TrayToolTip = null;
+                this.taskbarIcon.TrayToolTip = trayToolTip;
+            });
         }
 
         private void initializeEvents()
@@ -407,12 +419,18 @@ namespace TogglDesktop
 
             if (open || userID == 0)
             {
-                this.emailAddressMenuText.Text = "Logged out";
+                this.logoutMenuItem.InputGestureText = "Logged out";
+                this.taskbarIcon.TrayToolTip = null;
+                this.taskbarIcon.ToolTipText = "Toggl - Logged out";
+                this.SetMiniTimerVisible(false);
             }
             else
             {
-                this.emailAddressMenuText.Text = Toggl.UserEmail();
+                this.logoutMenuItem.InputGestureText = Toggl.UserEmail();
+                this.taskbarIcon.TrayToolTip = trayToolTip;
+                this.taskbarIcon.ToolTipText = $"Toggl - Logged in as {Toggl.UserEmail()}";
             }
+
             this.updateTracking(null);
         }
 
@@ -423,7 +441,7 @@ namespace TogglDesktop
                 return;
 
             this.overlayView.setType((int)type);
-            this.setActiveView(this.overlayView);   
+            this.setActiveView(this.overlayView);
         }
 
         private void onError(string errmsg, bool userError)
@@ -431,7 +449,10 @@ namespace TogglDesktop
             if (this.TryBeginInvoke(this.onError, errmsg, userError))
                 return;
 
-            this.errorBar.ShowError(errmsg);
+            if (this.activeView?.HandlesError(errmsg) != true)
+            {
+                this.errorBar.ShowError(errmsg);
+            }
         }
 
         private void onApp(bool open)
@@ -450,6 +471,7 @@ namespace TogglDesktop
             if (this.TryBeginInvoke(this.onSettings, open, settings))
                 return;
 
+            Theme.SetThemeFromSettings(settings.ColorTheme);
             this.setGlobalShortcutsFromSettings();
             this.idleDetectionTimer.IsEnabled = settings.UseIdleDetection;
             this.Topmost = settings.OnTop;
@@ -482,25 +504,16 @@ namespace TogglDesktop
 
         #region ui events
 
-        protected override void onCloseButtonClick(object sender, RoutedEventArgs e)
+        protected void onCogButtonClick(object sender, RoutedEventArgs e)
         {
-            this.MinimizeToTray();
-        }
-
-        protected override void onCogButtonClick(object sender, RoutedEventArgs e)
-        {
-            this.mainContextMenu.PlacementTarget = (FrameworkElement)sender;
+            var button = (FrameworkElement) sender;
+            this.mainContextMenu.PlacementTarget = button;
             this.mainContextMenu.Placement = PlacementMode.Bottom;
             this.mainContextMenu.HorizontalOffset = 0;
             this.mainContextMenu.VerticalOffset = 0;
-
-            this.Chrome.CogButton.IsEnabled = false;
+            // disable button so that second button click in a row does not bring up context menu as soon as it's closed
+            this.cogButton.IsEnabled = false;
             this.mainContextMenu.IsOpen = true;
-        }
-
-        protected override void onIconButtonClick(object sender, RoutedEventArgs e)
-        {
-            Toggl.OpenInBrowser();
         }
 
         protected override void OnLocationChanged(EventArgs e)
@@ -517,12 +530,6 @@ namespace TogglDesktop
             base.OnRenderSizeChanged(sizeInfo);
         }
 
-        protected override void OnStateChanged(EventArgs e)
-        {
-            this.resizeHandle.ShowOnlyIf(this.WindowState != WindowState.Maximized);
-            base.OnStateChanged(e);
-        }
-
         protected override void OnClosing(CancelEventArgs e)
         {
             e.Cancel = true;
@@ -531,10 +538,10 @@ namespace TogglDesktop
 
         private void onMainContextMenuClosed(object sender, RoutedEventArgs e)
         {
-            this.Chrome.CogButton.IsEnabled = true;
+            this.cogButton.IsEnabled = true;
         }
 
-        private void onGlobalShowKeyPressed(object sender, KeyPressedEventArgs e)
+        private void onGlobalShowKeyPressed(object sender, HotkeyEventArgs args)
         {
             if (this.CanBeShown)
             {
@@ -546,7 +553,7 @@ namespace TogglDesktop
             }
         }
 
-        private void onGlobalStartKeyPressed(object sender, KeyPressedEventArgs e)
+        private void onGlobalStartKeyPressed(object sender, HotkeyEventArgs args)
         {
             if (this.IsTracking)
             {
@@ -587,37 +594,6 @@ namespace TogglDesktop
             this.ShowOnTop();
         }
 
-        private void onResizeHandleLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            if (this.isResizingWithHandle)
-                return;
-
-            const int htBottomRight = 17;
-
-            Mouse.Capture(null);
-
-            Win32.SendMessage(this.interopHelper.Handle,
-                Win32.wmNcLButtonDown,
-                htBottomRight,
-                0);
-
-            this.resizeHandle.CaptureMouse();
-            this.isResizingWithHandle = true;
-        }
-
-        private void onResizeHandleLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            this.endHandleResizing();
-        }
-
-        private void onWindowMouseMove(object sender, MouseEventArgs e)
-        {
-            if (e.LeftButton == MouseButtonState.Released)
-            {
-                this.endHandleResizing();
-            }
-        }
-
         private void onIdleDetectionTimerTick(object sender, EventArgs e)
         {
             Win32.LASTINPUTINFO lastInputInfo;
@@ -637,11 +613,7 @@ namespace TogglDesktop
 
         private void updateTaskbarTooltip(object sender, string s)
         {
-            this.trayToolTip.RunningEntryDuration = s;
-
-            // ToolTipText is required to be non-empty in order for trayToolTip to show up
-            // this is actually supposed to be shown only on very old systems (pre-Vista)
-            this.taskbarIcon.ToolTipText = $"Total today: {this.trayToolTip.TotalToday}";
+            this.trayToolTip.SetDuration(s);
         }
 
         #endregion
@@ -706,9 +678,19 @@ namespace TogglDesktop
         {
             try
             {
-                this.startHook.ChangeTo(
-                    Toggl.GetKeyModifierStart(), Toggl.GetKeyStart()
-                    );
+                var keyStart = Toggl.GetKeyStart();
+                if (keyStart != Key.None)
+                {
+                    HotkeyManager.Current.AddOrReplace(
+                        "Toggl.ContinueOrStop",
+                        keyStart,
+                        Toggl.GetKeyModifierStart(),
+                        onGlobalStartKeyPressed);
+                }
+                else
+                {
+                    HotkeyManager.Current.Remove("Toggl.ContinueOrStop");
+                }
             }
             catch (Exception e)
             {
@@ -717,9 +699,19 @@ namespace TogglDesktop
 
             try
             {
-                this.showHook.ChangeTo(
-                    Toggl.GetKeyModifierShow(), Toggl.GetKeyShow()
-                    );
+                var keyShow = Toggl.GetKeyShow();
+                if (keyShow != Key.None)
+                {
+                    HotkeyManager.Current.AddOrReplace(
+                        "Toggl.ShowHideToggl",
+                        keyShow,
+                        Toggl.GetKeyModifierShow(),
+                        onGlobalShowKeyPressed);
+                }
+                else
+                {
+                    HotkeyManager.Current.Remove("Toggl.ShowHideToggl");
+                }
             }
             catch (Exception e)
             {
@@ -809,55 +801,25 @@ namespace TogglDesktop
 
             if (tracking)
             {
+                this.trayToolTip.TimeEntryLabel = timeEntry.Value.ToTrayToolTipTimeEntryLabelViewModel();
+                this.trayToolTip.SetDuration(timeEntry.Value);
+
                 var description = timeEntry.Value.Description;
 
-                if (string.IsNullOrEmpty(description))
-                {
-                    this.Title = "Toggl Desktop";
-                    this.runningMenuText.Text = "Timer is tracking";
-                    this.trayToolTip.Description = string.Empty;
-                }
-                else
-                {
-                    this.Title = description + " - Toggl Desktop";
-                    this.runningMenuText.Text = description;
-                    this.trayToolTip.Description = description;
-                }
-
-                if (timeEntry.Value.PID > 0)
-                {
-                    this.trayToolTip.ProjectAndTask = $"● {timeEntry.Value.ProjectLabel}";
-                    if (!timeEntry.Value.TaskLabel.IsNullOrEmpty())
-                    {
-                        this.trayToolTip.ProjectAndTask += $" - {timeEntry.Value.TaskLabel}";
-                    }
-                    this.trayToolTip.ProjectColor = timeEntry.Value.Color;
-                    this.trayToolTip.Client =
-                        timeEntry.Value.ClientLabel.IsNullOrEmpty()
-                            ? string.Empty
-                            : $" · {timeEntry.Value.ClientLabel}";
-                }
-                else
-                {
-                    this.trayToolTip.ProjectAndTask = string.Empty;
-                    this.trayToolTip.Client = string.Empty;
-                }
+                this.Title = string.IsNullOrEmpty(description)
+                    ? "Toggl Desktop"
+                    : description + " - Toggl Desktop";
 
                 if (this.IsInManualMode)
                     this.SetManualMode(false);
             }
             else
             {
-                this.runningMenuText.Text = "Timer is not tracking";
+                this.trayToolTip.TimeEntryLabel = null;
                 this.Title = "Toggl Desktop";
-                this.trayToolTip.Description = string.Empty;
-                this.trayToolTip.ProjectAndTask = string.Empty;
-                this.trayToolTip.Client = string.Empty;
-                this.taskbarIcon.ToolTipText = "Total today: " + this.trayToolTip.TotalToday;
             }
 
             this.updateStatusIcons(true);
-            this.SetIconState(tracking);
         }
 
         private void closeEditPopup(bool focusTimeEntryList = false, bool skipAnimation = false)
@@ -866,10 +828,13 @@ namespace TogglDesktop
             {
                 // TODO: consider saving popup open state and restoring when window is shown
                 this.editPopup.ClosePopup(skipAnimation);
-                this.timerEntryListView.DisableHighlight();
                 if (focusTimeEntryList)
                 {
                     Toggl.ViewTimeEntryList();
+                }
+                else if (this.activeView == this.timerEntryListView && !this.timerEntryListView.Entries.IsKeyboardFocusWithin)
+                {
+                    this.timerEntryListView.Timer.Focus();
                 }
             }
         }
@@ -877,15 +842,6 @@ namespace TogglDesktop
         #endregion
 
         #region window size, position and state handling
-
-        private void endHandleResizing()
-        {
-            if (!this.isResizingWithHandle)
-                return;
-
-            Mouse.Capture(null);
-            this.isResizingWithHandle = false;
-        }
 
         private void updateEntriesListWidth()
         {
@@ -912,17 +868,16 @@ namespace TogglDesktop
                 var x = (double)bounds.Left;
                 var y = (double)bounds.Top;
 
-                var headerHeight = this.WindowHeaderHeight + this.timerEntryListView.TimerHeight;
+                var headerHeight = WindowHeaderHeight + this.timerEntryListView.TimerHeight;
 
                 y += headerHeight;
                 x += this.ActualWidth;
 
-                this.editPopup.SetPlacement(true, x, y, this.ActualHeight - headerHeight,
-                    this.ActualWidth - 300, true);
+                this.editPopup.SetPlacementMaximized(x, y, this.ActualHeight - headerHeight, this.ActualWidth - 300);
             }
             else
             {
-                var s = this.getCurrentScreenRectangle();
+                var s = this.GetCurrentScreenRectangle();
                 bool left = s.Right - (this.Left + this.ActualWidth) < this.editPopup.Width;
 
                 var x = this.Left;
@@ -933,7 +888,7 @@ namespace TogglDesktop
                     x += this.ActualWidth;
                 }
 
-                this.editPopup.SetPlacement(left, x, y, this.Height, s.Width * 0.5);
+                this.editPopup.SetPlacement(left, x, y, s.Width * 0.5);
             }
 
         }
@@ -941,27 +896,56 @@ namespace TogglDesktop
         private void setActiveView(IMainView activeView)
         {
             if (activeView == null)
-                throw new ArgumentNullException("activeView");
+                throw new ArgumentNullException(nameof(activeView));
 
-            var hadActiveView = this.activeView != null;
-            if (hadActiveView)
+            if (this.activeView != activeView)
             {
-                this.activeView.Deactivate(true);
+                var hadActiveView = this.activeView != null;
+
+                if (hadActiveView)
+                {
+                    this.activeView.Deactivate(true);
+                }
+
+                this.activeView = activeView;
+                this.activeView.Activate(hadActiveView);
             }
-
-            this.activeView = activeView;
-
-            this.activeView.Activate(hadActiveView);
 
             this.closeEditPopup();
 
             this.updateMinimumSize(activeView);
+            this.updateTitleBarBackground(activeView);
         }
 
         private void updateMinimumSize(IMainView activeView)
         {
-            this.MinHeight = this.WindowHeaderHeight + activeView.MinHeight;
+            this.MinHeight = WindowHeaderHeight + activeView.MinHeight;
             this.MinWidth = activeView.MinWidth;
+        }
+
+        private void updateTitleBarBackground(IMainView activeView)
+        {
+            if (activeView == null)
+            {
+                return;
+            }
+            this.WindowTitleBrush = activeView.TitleBarBrush;
+            this.NonActiveWindowTitleBrush = activeView.TitleBarBrush;
+        }
+
+        private void onMainWindowLoaded(object sender, EventArgs args)
+        {
+            this.Loaded -= onMainWindowLoaded;
+            this.enableBlurBehindIfSupported();
+        }
+
+        private void enableBlurBehindIfSupported()
+        {
+            var isBlurBehindSupported = Environment.OSVersion.Version >= new Version(10, 0, 17134);
+            if (isBlurBehindSupported)
+            {
+                Win32.EnableBlurBehind(this.interopHelper.Handle);
+            }
         }
 
         #endregion
@@ -976,11 +960,5 @@ namespace TogglDesktop
         {
             return (T)this.views.FirstOrDefault(v => v is T);
         }
-
-        private void changeThemeTest(object sender, RoutedEventArgs e)
-        {
-            Theme.Activate(ThemeTypes.Layout, this.themeCheckBox.IsChecked ?? false ? "Compact" : "Comfortable");
-        }
-
     }
 }
