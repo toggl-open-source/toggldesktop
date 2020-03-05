@@ -643,15 +643,8 @@ extern void *ctx;
     return self.view.window;
 }
 
-- (void)appleAuthenticationDidCompleteWith:(ASAuthorizationAppleIDCredential *)credential API_AVAILABLE(macos(10.15))
+- (void)appleAuthenticationDidCompleteWith:(NSString *)token fullName:(NSString *)fullName
 {
-    // Extract data
-    NSString *fullName = nil;
-    if (credential.fullName) {
-        fullName = [[NSPersonNameComponentsFormatter alloc] stringFromPersonNameComponents:credential.fullName];
-    }
-    NSString *token = [[NSString alloc] initWithData:credential.identityToken encoding:NSUTF8StringEncoding];
-
     // Login or Signup
     switch (self.userAction)
     {

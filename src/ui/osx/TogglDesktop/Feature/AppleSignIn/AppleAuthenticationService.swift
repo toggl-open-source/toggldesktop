@@ -11,8 +11,7 @@ import AuthenticationServices
 
 @objc protocol AppleAuthenticationServiceDelegate: class {
 
-    @available(OSX 10.15, *)
-    func appleAuthenticationDidComplete(with credential: ASAuthorizationAppleIDCredential)
+    func appleAuthenticationDidComplete(with token: String, fullName: String?)
     func appleAuthenticationDidFailed(with error: Error)
     func appleAuthenticationPresentOnWindow() -> NSWindow
 }
@@ -80,8 +79,23 @@ extension AppleAuthenticationService: ASAuthorizationControllerDelegate {
     func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
         switch authorization.credential {
         case let appleIDCredential as ASAuthorizationAppleIDCredential:
+
+            // Convert token data to string
+            guard let tokenData = appleIDCredential.identityToken,
+                let token = String(data: tokenData, encoding: .utf8) else {
+                return
+            }
+
+            // Save for later validation
             UserDefaults.standard.set(appleIDCredential.user, forKey: Constants.UserAppleID)
-            delegate?.appleAuthenticationDidComplete(with: appleIDCredential)
+
+            // Get full name
+            var fullName: String?
+            if let fullNameComponent = appleIDCredential.fullName {
+                fullName = PersonNameComponentsFormatter().string(from: fullNameComponent)
+            }
+
+            delegate?.appleAuthenticationDidComplete(with: token, fullName: fullName)
         default:
             break
         }
