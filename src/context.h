@@ -295,6 +295,15 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
         const std::string &email,
         const std::string &password);
 
+    error LoginV9(
+        const std::string &email,
+        const std::string &password);
+
+    error _Login(
+        const std::string &email,
+        const std::string &password,
+        const std::string api_version);
+
     error AsyncSignup(
         const std::string &email,
         const std::string &password,

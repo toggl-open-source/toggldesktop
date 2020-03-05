@@ -2360,7 +2360,7 @@ error Context::AsyncGoogleLogin(const std::string &access_token) {
 }
 
 error Context::AppleLogin(const std::string &access_token) {
-    return Login(access_token, "apple_token");
+    return LoginV9(access_token, "apple_token");
 }
 
 error Context::AsyncAppleLogin(const std::string &access_token) {
@@ -2430,13 +2430,24 @@ error Context::AsyncLogin(const std::string &email,
     return noError;
 }
 
-error Context::Login(
+error Context::Login(const std::string &email,
+                     const std::string &password) {
+    return _Login(email, password, kTogglDesktopAPIV8);
+}
+
+error Context::LoginV9(const std::string &email,
+                     const std::string &password) {
+    return _Login(email, password, kTogglDesktopAPIV9);
+}
+
+error Context::_Login(
     const std::string &email,
-    const std::string &password) {
+    const std::string &password,
+    const std::string api_version) {
     try {
         TogglClient client(UI());
         std::string json("");
-        error err = me(&client, email, password, &json, 0);
+        error err = _me(&client, email, password, &json, 0, api_version);
         if (err != noError) {
             if (!IsNetworkingError(err)) {
                 return displayError(err);
@@ -2553,7 +2564,7 @@ error Context::AppleSignup(
     if (err != noError) {
         return displayError(err);
     }
-    return Login(access_token, "apple_token");
+    return LoginV9(access_token, "apple_token");
 }
 
 error Context::AsyncApleSignup(
