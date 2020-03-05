@@ -4938,10 +4938,10 @@ error Context::pushChanges(
     TogglClient *toggl_client,
     bool *had_something_to_push) {
     try {
-        auto pushClients = [this](auto &clients, auto api_token, auto toggl_client) {
+        auto pushModels = [this](auto &models, auto api_token, auto toggl_client) {
             error err = noError;
-            for (auto &client : clients) {
-                HTTPSRequest req = client->PrepareRequest();
+            for (auto &model : models) {
+                HTTPSRequest req = model->PrepareRequest();
                 req.host = urls::API();
                 req.basic_auth_username = api_token;
                 req.basic_auth_password = "api_token";
@@ -4950,37 +4950,13 @@ error Context::pushChanges(
 
                 if (resp.err != noError) {
                     // if we're able to solve the error
-                    if (client->ResolveError(resp.body) == noError) {
+                    if (model->ResolveError(resp.body) == noError) {
                         displayError(save(false));
                     }
                     continue;
                 }
 
-                err = client->LoadFromJSONString(resp.body, false);
-            }
-
-            return err;
-        };
-
-        auto pushProjects = [this](auto &projects, auto &clients, auto api_token, auto toggl_client) {
-            error err = noError;
-            for (auto &project : projects) {
-                HTTPSRequest req = project->PrepareRequest();
-                req.host = urls::API();
-                req.basic_auth_username = api_token;
-                req.basic_auth_password = "api_token";
-
-                HTTPSResponse resp = toggl_client.Request(req);
-
-                if (resp.err != noError) {
-                    // if we're able to solve the error
-                    if (project->ResolveError(resp.body) == noError) {
-                        displayError(save(false));
-                    }
-                    continue;
-                }
-
-                err = project->LoadFromJSONString(resp.body, false);
+                err = model->LoadFromJSONString(resp.body, false);
             }
 
             return err;
@@ -5122,7 +5098,7 @@ error Context::pushChanges(
         if (clients.size() > 0) {
             Poco::Stopwatch client_stopwatch;
             client_stopwatch.start();
-            error err = pushClients(clients, api_token, *toggl_client);
+            error err = pushModels(clients, api_token, *toggl_client);
             if (err != noError && err.find(kClientNameAlreadyExists) == std::string::npos) {
                 return err;
             }
@@ -5139,7 +5115,7 @@ error Context::pushChanges(
         if (projects.size() > 0) {
             Poco::Stopwatch project_stopwatch;
             project_stopwatch.start();
-            error err = pushProjects(projects, clients, api_token, *toggl_client);
+            error err = pushModels(projects, api_token, *toggl_client);
             if (err != noError && err.find(kProjectNameAlready) == std::string::npos) {
                 return err;
             }
