@@ -53,15 +53,6 @@ namespace TogglDesktop
 
             this.fillTimeEntryList(list);
             this.Entries.ViewModel.OnTimeEntryList(showLoadMoreButton, list.Count == 0);
-
-            if (open)
-            {
-                if (this.Entries.IsAnyCellSelected)
-                {
-                    this.Entries.Focus(false);
-                    this.Entries.DeselectCells();
-                }
-            }
         }
 
         private void onTimeEntryEditor(bool open, Toggl.TogglTimeEntryView te, string focusedFieldName)

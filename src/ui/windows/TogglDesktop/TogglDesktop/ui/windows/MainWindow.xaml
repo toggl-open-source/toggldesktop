@@ -39,7 +39,6 @@
         <KeyBinding Key="V" Modifiers="Control" Command="{x:Static toggl:KeyboardShortcuts.NewFromPaste}" />
         <KeyBinding Key="Q" Modifiers="Control" Command="{x:Static toggl:KeyboardShortcuts.Quit}" />
         <KeyBinding Key="OemComma" Modifiers="Control" Command="{x:Static toggl:KeyboardShortcuts.Preferences}" />
-        <KeyBinding Key="Escape" Command="{StaticResource EscapeCommand}" />
     </Window.InputBindings>
 
     <mah:MetroWindow.RightWindowCommands>

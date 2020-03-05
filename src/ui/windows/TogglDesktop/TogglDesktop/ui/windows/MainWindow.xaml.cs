@@ -576,6 +576,10 @@ namespace TogglDesktop
         {
             this.updateEditPopupLocation();
             this.updateEntriesListWidth();
+            if (editPopup.IsVisible == false && ReferenceEquals(this.activeView, this.timerEntryListView))
+            {
+                this.timerEntryListView.Entries.DeselectCells();
+            }
         }
 
         private void onTaskbarLeftMouseUp(object sender, RoutedEventArgs e)
