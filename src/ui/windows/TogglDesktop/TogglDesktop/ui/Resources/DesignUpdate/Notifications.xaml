@@ -33,6 +33,8 @@
                                 </StackPanel>
                                 <Button Name="PART_CloseButton"
                                         Style="{StaticResource Toggl.CrossButton}"
+                                        Height="32"
+                                        Width="32"
                                         VerticalAlignment="Top"
                                         HorizontalAlignment="Right"
                                         Margin="4"/>
