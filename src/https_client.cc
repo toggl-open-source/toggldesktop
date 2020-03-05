@@ -331,11 +331,8 @@ HTTPSResponse HTTPSClient::makeHttpRequest(
                                         Poco::Net::HTTPMessage::HTTP_1_1);
         poco_req.setKeepAlive(true);
 
-        // Add additionalHeaders
-        for(auto& pair : req.additionalHeaders)
-        {
-            poco_req.set(pair.first, pair.second);
-        }
+        // Require new header for all Apple token
+        poco_req.set("Referer", kTogglDesktopClientID);
 
         // FIXME: should get content type as parameter instead
         if (req.payload.size()) {

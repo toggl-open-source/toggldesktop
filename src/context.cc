@@ -5587,7 +5587,6 @@ error Context::_me(
         req.relative_url = ss.str();
         req.basic_auth_username = email;
         req.basic_auth_password = password;
-        req.additionalHeaders["Referer"] = kTogglDesktopClientID;
 
         HTTPSResponse resp = toggl_client->Get(req);
         if (resp.err != noError) {
@@ -5870,7 +5869,6 @@ error Context::signUpWithProvider(
         req.host = urls::API();
         req.relative_url = ss.str();
         req.payload = Json::StyledWriter().write(user);
-        req.additionalHeaders["Referer"] = kTogglDesktopClientID;
 
         HTTPSResponse resp = toggl_client->Post(req);
         if (resp.err != noError) {
