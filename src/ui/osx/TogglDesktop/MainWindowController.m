@@ -153,6 +153,11 @@ extern void *ctx;
 		{
             [[TouchBarService shared] resetContent];
         }
+
+        // Reset the apple state
+        if (@available(macOS 10.15, *)) {
+            [[AppleAuthenticationService shared] reset];
+        }
 	}
 }
 

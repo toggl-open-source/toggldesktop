@@ -21,7 +21,11 @@ import AuthenticationServices
 @objc
 final class AppleAuthenticationService: NSObject {
 
-     @objc static let shared = AppleAuthenticationService()
+    @objc static let shared = AppleAuthenticationService()
+
+    private struct Constants {
+        static let UserAppleID = "UserAppleID"
+    }
 
     // MARK: Variables
 
@@ -39,6 +43,29 @@ final class AppleAuthenticationService: NSObject {
         authorizationController.presentationContextProvider = self
         authorizationController.performRequests()
     }
+
+    @objc func validateCredentialState() {
+        guard let userID = UserDefaults.standard.string(forKey: Constants.UserAppleID) else { return }
+
+        // Validate again since the user can revork the permission later
+        // Logout if the credential is invalid
+        let appleIDProvider = ASAuthorizationAppleIDProvider()
+        appleIDProvider.getCredentialState(forUserID: userID) { (credentialState, error) in
+            switch credentialState {
+            case .authorized:
+                break // The Apple ID credential is valid.
+            case .revoked, .notFound:
+                // The Apple ID credential is either revoked or was not found, so show the sign-in UI.
+                NotificationCenter.default.postNotificationOnMainThread(NSNotification.Name(kInvalidAppleUserCrendential), object: nil)
+            default:
+                break
+            }
+        }
+    }
+
+    @objc func reset() {
+        UserDefaults.standard.removeObject(forKey: Constants.UserAppleID)
+    }
 }
 
 // MARK: ASAuthorizationControllerDelegate
@@ -47,13 +74,13 @@ final class AppleAuthenticationService: NSObject {
 extension AppleAuthenticationService: ASAuthorizationControllerDelegate {
 
     func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
-        print("Error \(error)")
         delegate?.appleAuthenticationDidFailed(with: error)
     }
 
     func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
         switch authorization.credential {
         case let appleIDCredential as ASAuthorizationAppleIDCredential:
+            UserDefaults.standard.set(appleIDCredential.user, forKey: Constants.UserAppleID)
             delegate?.appleAuthenticationDidComplete(with: appleIDCredential)
         default:
             break

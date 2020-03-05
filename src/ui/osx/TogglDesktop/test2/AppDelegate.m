@@ -221,6 +221,10 @@ void *ctx;
 											 selector:@selector(startUpdateIconTooltip:)
 												 name:kUpdateIconTooltip
 											   object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(invalidAppleUserCrendentialNotification:)
+                                                 name:kInvalidAppleUserCrendential
+                                               object:nil];
 
 	if (@available(macOS 10.14, *))
 	{
@@ -316,6 +320,11 @@ void *ctx;
 
 	// Setup Google Service Callback
 	[self registerGoogleEventHandler];
+
+    // Validate the apple user
+    if (@available(macOS 10.15, *)) {
+        [[AppleAuthenticationService shared] validateCredentialState];
+    }
 }
 
 - (void)systemWillPowerOff:(NSNotification *)aNotification
@@ -1074,6 +1083,11 @@ void *ctx;
 
 - (IBAction)onLogoutMenuItem:(id)sender
 {
+    // Reset the apple state
+    if (@available(macOS 10.15, *)) {
+        [[AppleAuthenticationService shared] reset];
+    }
+
 	// Reset the sign up state for the Empty View
 	// Because the Time Entry list present last 9 weeks, so it's no way to know that it's new user or old user
 	[[NSUserDefaults standardUserDefaults] setBool:NO forKey:kUserHasBeenSignup];
@@ -1867,5 +1881,12 @@ void on_display_message(const char *title,
                                                       urlAction:[NSString stringWithUTF8String:url]];
     [[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kStartDisplayInAppMessage object:message];
 
+}
+
+- (void) invalidAppleUserCrendentialNotification:(NSNotification *) noti
+{
+    [self onLogoutMenuItem:self];
+    [[NSNotificationCenter defaultCenter] postNotificationOnMainThread:kDisplayError
+                                                                object:@"Invalid Apple session. Please try login again."];
 }
 @end
