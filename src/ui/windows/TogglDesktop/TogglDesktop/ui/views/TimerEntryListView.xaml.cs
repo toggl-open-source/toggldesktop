@@ -91,15 +91,14 @@ namespace TogglDesktop
             }
         }
 
-        private DayHeaderViewModel[] fillDays(List<List<Toggl.TogglTimeEntryView>> days)
+        private IList<DayHeaderViewModel> fillDays(List<List<Toggl.TogglTimeEntryView>> days)
         {
             var children = this.Entries.Children;
 
-            // remember which days were expanded
-            var isExpandedDictionary = children
+            var oldViewModels = children
                 .Cast<TimeEntryCellDayHeader>()
                 .Select(h => h.ViewModel)
-                .ToDictionary(vm => vm.DateHeader, vm => vm.IsExpanded);
+                .ToDictionary(vm => vm.DateHeader, vm => vm);
 
             // remove superfluous days
             if (children.Count > days.Count)
@@ -115,16 +114,17 @@ namespace TogglDesktop
             }
 
             var viewModels = days.Select(day =>
-            {
-                var vm = day[0].ToDayHeaderViewModel();
-                var isExpanded = isExpandedDictionary.GetValueOrDefault(day[0].DateHeader, true);
-                vm.IsExpanded = isExpanded;
-                return vm;
-            }).ToArray();
+                    oldViewModels.GetValueOrDefault(day[0].DateHeader) ?? day[0].ToDayHeaderViewModel())
+                .ToArray();
 
-            for (var i = 0; i < children.Count; i++)
+            for (var i = 0; i < days.Count; i++)
             {
-                ((TimeEntryCellDayHeader)children[i]).Display(viewModels[i], days[i]);
+                var view = (TimeEntryCellDayHeader) children[i];
+                if (!ReferenceEquals(view.DataContext, viewModels[i]))
+                {
+                    view.ViewModel = viewModels[i];
+                }
+                view.FillCells(days[i]);
             }
 
             return viewModels;

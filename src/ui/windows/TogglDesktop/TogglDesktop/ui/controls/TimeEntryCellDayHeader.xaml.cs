@@ -35,16 +35,9 @@ namespace TogglDesktop
             ViewModel = new DayHeaderViewModel(dateText, durationText);
         }
 
-        public void Display(DayHeaderViewModel viewModel, List<Toggl.TogglTimeEntryView> items)
+        public void FillCells(List<Toggl.TogglTimeEntryView> list)
         {
-            ViewModel = viewModel;
-            this.fillCells(items);
-            ViewModel.CellsMutable.AddRange(this.panel.Children.Cast<TimeEntryCell>().Select(cell => cell.ViewModel)); // ???
-        }
-
-        private void fillCells(List<Toggl.TogglTimeEntryView> list)
-        {
-            var children = this.panel.Children;
+            var children = ViewModel.CellsMutable;
 
             // remove superfluous cells
             if (children.Count > list.Count)
@@ -54,24 +47,17 @@ namespace TogglDesktop
 
             // update existing cells
             var i = 0;
-            for (; i < children.Count; i++)
+            foreach (var cellViewModel in children.Items)
             {
-                var entry = list[i];
-
-                var cell = (TimeEntryCell)children[i];
-                cell.ViewModel.UpdateWith(entry);
-                // maybe also update ViewModel.DaysMutable here?
+                var entry = list[i++];
+                cellViewModel.UpdateWith(entry);
             }
 
             // add additional cells
-            for (; i < list.Count; i++)
+            if (list.Count > children.Count)
             {
-                var entry = list[i];
-                var cell = new TimeEntryCell
-                {
-                    ViewModel = entry.ToTimeEntryCellViewModel()
-                };
-                children.Add(cell);
+                var newCells = list.Skip(i).Select(entry => entry.ToTimeEntryCellViewModel());
+                children.AddRange(newCells);
             }
         }
     }

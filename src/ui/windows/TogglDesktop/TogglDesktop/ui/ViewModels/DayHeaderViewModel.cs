@@ -1,5 +1,6 @@
 using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Reactive.Linq;
 using DynamicData;
@@ -32,10 +33,10 @@ namespace TogglDesktop.ViewModels
         public ISourceList<TimeEntryCellViewModel> CellsMutable => _cells;
 
         public TimeEntryCellViewModel GetCell(int cellIndex) => _cells.Items.ElementAt(cellIndex);
+        public TimeEntryCellViewModel GetCellOrDefault(int cellIndex) => _cells.Items.ElementAtOrDefault(cellIndex);
         public int CellsCount => _cells.Count;
 
-        [Reactive]
-        public bool IsExpanded { get; set; }
+        [Reactive] public bool IsExpanded { get; set; } = true;
 
         public bool IsCollapsed { [ObservableAsProperty] get; }
 

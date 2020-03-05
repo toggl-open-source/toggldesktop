@@ -173,7 +173,7 @@ namespace TogglDesktop
             }
         }
         public int FocusedCellIndex { get; private set; }
-        private DayHeaderViewModel[] _days = new DayHeaderViewModel[0];
+        private IList<DayHeaderViewModel> _days = new DayHeaderViewModel[0];
 
         private Dictionary<string, (int dayIndex, int cellIndex)> _cellsDictionary = new Dictionary<string, (int dayIndex, int cellIndex)>();
 
@@ -188,7 +188,11 @@ namespace TogglDesktop
                 var focusedDay = _days[FocusedDayIndex];
                 if (FocusedCellIndex >= 0)
                 {
-                    var focusedEntry = focusedDay.GetCell(FocusedCellIndex);
+                    var focusedEntry = focusedDay.GetCellOrDefault(FocusedCellIndex);
+                    if (focusedEntry == null)
+                    {
+                        return (null, null);
+                    }
                     focusedEntryId = focusedEntry.Id;
                 }
                 else
@@ -206,7 +210,7 @@ namespace TogglDesktop
             FocusedDayIndex = -1;
         }
 
-        public void SetDayHeaderViewModels(DayHeaderViewModel[] dayHeaderViewModels)
+        public void SetDayHeaderViewModels(IList<DayHeaderViewModel> dayHeaderViewModels)
         {
             var (focusedEntryId, focusedDayHeader) = GetCurrentFocusedItemId();
 
@@ -242,7 +246,7 @@ namespace TogglDesktop
         private void FocusDayOrItsFirstCell(int dayIndex)
         {
             Debug.Assert(dayIndex >= 0);
-            Debug.Assert(dayIndex < _days.Length);
+            Debug.Assert(dayIndex < _days.Count);
             var dayViewModel = _days[dayIndex];
             if (dayViewModel.IsExpanded)
             {
@@ -257,7 +261,7 @@ namespace TogglDesktop
         private void FocusDayOrItsLastCell(int dayIndex)
         {
             Debug.Assert(dayIndex >= 0);
-            Debug.Assert(dayIndex < _days.Length);
+            Debug.Assert(dayIndex < _days.Count);
             var dayViewModel = _days[dayIndex];
             if (dayViewModel.IsExpanded)
             {
@@ -276,7 +280,7 @@ namespace TogglDesktop
                 return;
             }
             Debug.Assert(dayIndex >= 0);
-            Debug.Assert(dayIndex < _days.Length);
+            Debug.Assert(dayIndex < _days.Count);
             var dayViewModel = _days[dayIndex];
             Debug.Assert(dayViewModel.IsCollapsed);
 
@@ -295,7 +299,7 @@ namespace TogglDesktop
             }
 
             Debug.Assert(dayIndex >= 0);
-            Debug.Assert(dayIndex < _days.Length);
+            Debug.Assert(dayIndex < _days.Count);
             Debug.Assert(cellIndex >= 0);
             var dayViewModel = _days[dayIndex];
             Debug.Assert(dayViewModel.IsExpanded);
@@ -320,7 +324,7 @@ namespace TogglDesktop
                 {
                     FocusCell(FocusedDayIndex, FocusedCellIndex + 1);
                 }
-                else if (FocusedDayIndex + 1 < _days.Length)
+                else if (FocusedDayIndex + 1 < _days.Count)
                 {
                     FocusDayOrItsFirstCell(FocusedDayIndex + 1);
                 }
