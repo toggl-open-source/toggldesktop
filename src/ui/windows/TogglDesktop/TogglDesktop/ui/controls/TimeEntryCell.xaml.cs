@@ -34,28 +34,11 @@ namespace TogglDesktop
         public TimeEntryCell()
         {
             this.InitializeComponent();
-            ViewModel = new TimeEntryCellViewModel();
         }
 
         public void Display(Toggl.TogglTimeEntryView item)
         {
-            ViewModel.Guid = item.GUID;
-            ViewModel.IsGroup = item.Group;
-            if (ViewModel.IsGroup)
-            {
-                ViewModel.IsGroupExpanded = item.GroupOpen;
-                ViewModel.GroupName = item.GroupName;
-                ViewModel.GroupItemCount = item.GroupItemCount;
-            }
-
-            ViewModel.IsSubItem = !item.Group && item.GroupOpen;
-            ViewModel.DurationInSeconds = item.DurationInSeconds;
-            ViewModel.TimeEntryLabel = item.ToTimeEntryLabelViewModel();
-            ViewModel.Duration = item.Duration;
-            ViewModel.DurationToolTip = $"{item.StartTimeString} - {item.EndTimeString}";
-
-            ViewModel.Unsynced = item.Unsynced;
-            ViewModel.Locked = item.Locked;
+            ViewModel = item.ToTimeEntryCellViewModel();
         }
 
         #region open edit window event handlers
