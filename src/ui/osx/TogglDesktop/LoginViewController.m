@@ -392,8 +392,6 @@ extern void *ctx;
 	self.email.enabled = !show;
 	self.password.enabled = !show;
 	self.userActionBtn.enabled = !show;
-	self.appleBtn.enabled = !show;
-	self.googleBtn.enabled = !show;
 	self.signUpLink.enabled = !show;
     self.forgotPasswordTextField.enabled = !show;
 }

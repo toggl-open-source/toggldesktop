@@ -266,6 +266,12 @@ extern void *ctx;
 			[self closeError];
 			break;
 	}
+
+    // Have to check if login is present
+    if (self.loginViewController.view.superview != nil)
+    {
+        [self.loginViewController resetLoader];
+    }
 }
 
 - (void)stopDisplayError:(NSNotification *)notification
