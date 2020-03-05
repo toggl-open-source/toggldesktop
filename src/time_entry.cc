@@ -71,6 +71,13 @@ error TimeEntry::ResolveError(const error &err) {
         SetCreatedWith(HTTPSClient::Config.UserAgent());
         return noError;
     }
+    // Not found on server. Probably deleted already.
+    if (isNotFound(err)) {
+        MarkAsDeletedOnServer();
+        return noError;
+    }
+    // Mark the time entry as unsynced now
+    SetUnsynced();
     return err;
 }
 

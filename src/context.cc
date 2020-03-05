@@ -5021,27 +5021,16 @@ error Context::pushChanges(
                     if (te->ResolveError(resp.body) == noError) {
                         displayError(save(false));
                     }
-
-                    // Not found on server. Probably deleted already.
-                    if (te->isNotFound(resp.body)) {
-                        te->MarkAsDeletedOnServer();
-                        continue;
-                    }
                     error_found = true;
                     error_message = resp.err;
                     if (resp.status_code == 429) {
                         error_message = error(kRateLimit);
                     }
-
-                    // Mark the time entry as unsynced now
-                    te->SetUnsynced();
-
                     offline = IsNetworkingError(resp.err);
 
                     if (offline) {
                         trigger_sync_ = false;
                     }
-
                     continue;
                 }
 
