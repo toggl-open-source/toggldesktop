@@ -419,14 +419,14 @@ namespace TogglDesktop
 
             if (open || userID == 0)
             {
-                this.emailAddressMenuText.Text = "Logged out";
+                this.logoutMenuItem.InputGestureText = "Logged out";
                 this.taskbarIcon.TrayToolTip = null;
                 this.taskbarIcon.ToolTipText = "Toggl - Logged out";
                 this.SetMiniTimerVisible(false);
             }
             else
             {
-                this.emailAddressMenuText.Text = Toggl.UserEmail();
+                this.logoutMenuItem.InputGestureText = Toggl.UserEmail();
                 this.taskbarIcon.TrayToolTip = trayToolTip;
                 this.taskbarIcon.ToolTipText = $"Toggl - Logged in as {Toggl.UserEmail()}";
             }
@@ -806,16 +806,9 @@ namespace TogglDesktop
 
                 var description = timeEntry.Value.Description;
 
-                if (string.IsNullOrEmpty(description))
-                {
-                    this.Title = "Toggl Desktop";
-                    this.runningMenuText.Text = "Timer is tracking";
-                }
-                else
-                {
-                    this.Title = description + " - Toggl Desktop";
-                    this.runningMenuText.Text = description;
-                }
+                this.Title = string.IsNullOrEmpty(description)
+                    ? "Toggl Desktop"
+                    : description + " - Toggl Desktop";
 
                 if (this.IsInManualMode)
                     this.SetManualMode(false);
@@ -823,7 +816,6 @@ namespace TogglDesktop
             else
             {
                 this.trayToolTip.TimeEntryLabel = null;
-                this.runningMenuText.Text = "Timer is not tracking";
                 this.Title = "Toggl Desktop";
             }
 
