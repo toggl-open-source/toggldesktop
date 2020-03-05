@@ -291,21 +291,9 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
     error AsyncLogin(const std::string &email,
                      const std::string &password);
 
-    error AsyncLoginV9(const std::string &email,
-                       const std::string &password);
-
     error Login(
         const std::string &email,
         const std::string &password);
-
-    error LoginV9(
-        const std::string &email,
-        const std::string &password);
-
-    error _Login(
-        const std::string &email,
-        const std::string &password,
-        const std::string api_version);
 
     error AsyncSignup(
         const std::string &email,
@@ -706,21 +694,6 @@ class TOGGL_INTERNAL_EXPORT Context : public TimelineDatasource {
                     const std::string &password,
                     std::string *user_data,
                     const Poco::Int64 since);
-
-    static error _me(
-              TogglClient *toggl_client,
-              const std::string &email,
-              const std::string &password,
-              std::string *user_data_json,
-              const Poco::Int64 since,
-              std::string api_version);
-
-    static error meV9(
-               TogglClient *toggl_client,
-               const std::string &email,
-               const std::string &password,
-               std::string *user_data_json,
-               const Poco::Int64 since);
 
     bool isTimeEntryLocked(TimeEntry* te);
     bool isTimeLockedInWorkspace(time_t t, Workspace* ws);

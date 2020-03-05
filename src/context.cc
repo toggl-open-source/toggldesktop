@@ -2360,11 +2360,11 @@ error Context::AsyncGoogleLogin(const std::string &access_token) {
 }
 
 error Context::AppleLogin(const std::string &access_token) {
-    return LoginV9(access_token, "apple_token");
+    return Login(access_token, "apple_token");
 }
 
 error Context::AsyncAppleLogin(const std::string &access_token) {
-    return AsyncLoginV9(access_token, "apple_token");
+    return AsyncLogin(access_token, "apple_token");
 }
 
 error Context::attemptOfflineLogin(const std::string &email,
@@ -2430,33 +2430,13 @@ error Context::AsyncLogin(const std::string &email,
     return noError;
 }
 
-error Context::AsyncLoginV9(const std::string &email,
-                          const std::string &password) {
-    std::thread backgroundThread([&](std::string email, std::string password) {
-        return this->LoginV9(email, password);
-    }, email, password);
-    backgroundThread.detach();
-    return noError;
-}
-
-error Context::Login(const std::string &email,
-                     const std::string &password) {
-    return _Login(email, password, kTogglDesktopAPIV8);
-}
-
-error Context::LoginV9(const std::string &email,
-                     const std::string &password) {
-    return _Login(email, password, kTogglDesktopAPIV9);
-}
-
-error Context::_Login(
+error Context::Login(
     const std::string &email,
-    const std::string &password,
-    const std::string api_version) {
+    const std::string &password) {
     try {
         TogglClient client(UI());
         std::string json("");
-        error err = _me(&client, email, password, &json, 0, api_version);
+        error err = me(&client, email, password, &json, 0);
         if (err != noError) {
             if (!IsNetworkingError(err)) {
                 return displayError(err);
@@ -2573,7 +2553,7 @@ error Context::AppleSignup(
     if (err != noError) {
         return displayError(err);
     }
-    return LoginV9(access_token, "apple_token");
+    return Login(access_token, "apple_token");
 }
 
 error Context::AsyncApleSignup(
@@ -5534,31 +5514,13 @@ error Context::pushObmAction() {
     return noError;
 }
 
+
 error Context::me(
     TogglClient *toggl_client,
     const std::string &email,
     const std::string &password,
     std::string *user_data_json,
     const Poco::Int64 since) {
-    return _me(toggl_client, email, password, user_data_json, since, kTogglDesktopAPIV8);
-}
-
-error Context::meV9(
-    TogglClient *toggl_client,
-    const std::string &email,
-    const std::string &password,
-    std::string *user_data_json,
-    const Poco::Int64 since) {
-    return _me(toggl_client, email, password, user_data_json, since, kTogglDesktopAPIV9);
-}
-
-error Context::_me(
-    TogglClient *toggl_client,
-    const std::string &email,
-    const std::string &password,
-    std::string *user_data_json,
-    const Poco::Int64 since,
-    std::string api_version) {
 
     if (email.empty()) {
         return "Empty email or API token";
@@ -5574,7 +5536,7 @@ error Context::_me(
 
         std::stringstream ss;
         ss << "/api/"
-           << api_version
+           << kTogglDesktopAPIV8
            << "/me"
            << "?app_name=" << TogglClient::Config.AppName
            << "&with_related_data=true";
