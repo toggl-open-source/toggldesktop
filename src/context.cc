@@ -5094,39 +5094,37 @@ error Context::pushChanges(
         std::stringstream ss;
         ss << "Sync success (";
 
+        // dirty, but this will go away anyway
+        auto pushWrapper = [&ss, &pushModels, &api_token, &toggl_client](auto &name, auto &models) {
+            if (models.size() > 0) {
+                Poco::Stopwatch stopwatch;
+                stopwatch.start();
+                error err = pushModels(models, api_token, *toggl_client);
+                if (err != noError && err.find(kClientNameAlreadyExists) == std::string::npos) {
+                    return err;
+                }
+                stopwatch.stop();
+                ss << models.size() << " " << name << " in " << stopwatch.elapsed() / 1000 << " ms";
+            }
+            return noError;
+        };
+
         // Clients first as projects may depend on clients
-        if (clients.size() > 0) {
-            Poco::Stopwatch client_stopwatch;
-            client_stopwatch.start();
-            error err = pushModels(clients, api_token, *toggl_client);
-            if (err != noError && err.find(kClientNameAlreadyExists) == std::string::npos) {
-                return err;
-            }
-            // Update client id on projects if needed
-            err = updateProjectClients(clients, projects);
-            if (err != noError) {
-                return err;
-            }
-            client_stopwatch.stop();
-            ss << clients.size() << " clients in " << client_stopwatch.elapsed() / 1000 << " ms";
+        pushWrapper("clients", clients);
+
+        // Update client id on projects if needed
+        error err = updateProjectClients(clients, projects);
+        if (err != noError) {
+            return err;
         }
 
         // Projects second as time entries may depend on projects
-        if (projects.size() > 0) {
-            Poco::Stopwatch project_stopwatch;
-            project_stopwatch.start();
-            error err = pushModels(projects, api_token, *toggl_client);
-            if (err != noError && err.find(kProjectNameAlready) == std::string::npos) {
-                return err;
-            }
+        pushWrapper("projects", projects);
 
-            // Update project id on time entries if needed
-            err = updateEntryProjects(projects, time_entries);
-            if (err != noError) {
-                return err;
-            }
-            project_stopwatch.stop();
-            ss << " | " << projects.size() << " projects in " << project_stopwatch.elapsed() / 1000 << " ms";
+        // Update project id on time entries if needed
+        err = updateEntryProjects(projects, time_entries);
+        if (err != noError) {
+            return err;
         }
 
         // Time entries last to be sure clients and projects are synced
