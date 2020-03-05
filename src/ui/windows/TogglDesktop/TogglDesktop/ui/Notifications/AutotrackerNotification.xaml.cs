@@ -27,8 +27,6 @@ namespace TogglDesktop
             this.projectId = projectId;
             this.taskId = taskId;
 
-            this.RemoveFromParent();
-
             _icon.ShowNotification(this, PopupAnimation.Slide, TimeSpan.FromSeconds(6));
         }
 

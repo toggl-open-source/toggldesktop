@@ -24,8 +24,6 @@ namespace TogglDesktop
             this.Message = informativetext;
             this.Title = title;
 
-            this.RemoveFromParent();
-
             if (!_icon.ShowNotification(this, PopupAnimation.Slide, null))
             {
                 _icon.ShowBalloonTip(title, informativetext, Properties.Resources.toggl, largeIcon: true);
