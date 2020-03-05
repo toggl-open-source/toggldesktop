@@ -11,6 +11,19 @@
                 "Fixed mis-position arrow of Timeline Event Popover",
                 "Fixed conflict shortcut (Ctr+Arrow)to between switching Timeline Date and TextField"
             ],
+            "date": "March 5th 2020"
+        },
+        {
+            "version": "7.5.49",
+            "rows": [
+                "Support Resize and Drag and Drop on Timeline Time Entry",
+                "Introduce Horizontal Line to present the current time in Timeline",
+                "Add Running TimeEntry into Timeline",
+                "Improve networking performance by supporting Content-Encoding",
+                "Improve Touch Bar logic by removing some unnecessary private APIs",
+                "Fixed mis-position arrow of Timeline Event Popover",
+                "Fixed conflict shortcut (Ctr+Arrow)to between switching Timeline Date and TextField"
+            ],
             "date": "February 20th 2020",
             "beta": "true"
         },
