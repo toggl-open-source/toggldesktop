@@ -46,7 +46,8 @@ class TOGGL_INTERNAL_EXPORT Settings : public BaseModel {
     , pomodoro_break_minutes(0)
     , stop_entry_on_shutdown_sleep(false)
     , show_touch_bar(true)
-    , active_tab(0) {}
+    , active_tab(0)
+    , color_theme(0) {}
 
     virtual ~Settings() {}
 
