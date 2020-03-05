@@ -227,10 +227,6 @@
     <Compile Include="ui\controls\TimeEntryLabel.xaml.cs">
       <DependentUpon>TimeEntryLabel.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ui\controls\TogglNotification.cs" />
-    <Compile Include="ui\controls\ReminderNotification.xaml.cs">
-      <DependentUpon>ReminderNotification.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ui\controls\TrayToolTipControl.xaml.cs">
       <DependentUpon>TrayToolTipControl.xaml</DependentUpon>
     </Compile>
@@ -273,6 +269,16 @@
     <Compile Include="ui\Experiments\implementations\ExperimentHacks.cs" />
     <Compile Include="ui\ModelExtensions.cs" />
     <Compile Include="ui\NotificationExtensions.cs" />
+    <Compile Include="ui\Notifications\AutotrackerNotification.xaml.cs">
+      <DependentUpon>AutotrackerNotification.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\Notifications\PomodoroNotification.xaml.cs">
+      <DependentUpon>PomodoroNotification.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\Notifications\ReminderNotification.xaml.cs">
+      <DependentUpon>ReminderNotification.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ui\Notifications\TogglNotification.cs" />
     <Compile Include="ui\Theming\Theme.cs" />
     <Compile Include="ui\Theming\ThemeResourceDictionary.cs" />
     <Compile Include="ui\Theming\ThemeType.cs" />
@@ -319,17 +325,11 @@
     <Compile Include="ui\windows\MiniTimerWindow.xaml.cs">
       <DependentUpon>MiniTimerWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ui\controls\PomodoroNotification.xaml.cs">
-      <DependentUpon>PomodoroNotification.xaml</DependentUpon>
-    </Compile>
     <Compile Include="utilities\LinqExtensions.cs" />
     <Compile Include="utilities\StaticObjectPool.cs" />
     <Compile Include="TogglApi.cs" />
     <Compile Include="ui\UIExtensions.cs" />
     <Compile Include="ui\Converters\FalseToHiddenVisibilityConverter.cs" />
-    <Compile Include="ui\controls\AutotrackerNotification.xaml.cs">
-      <DependentUpon>AutotrackerNotification.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ui\controls\AutotrackerRuleItem.xaml.cs">
       <DependentUpon>AutotrackerRuleItem.xaml</DependentUpon>
     </Compile>
@@ -564,10 +564,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="ui\controls\AutotrackerNotification.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="ui\controls\AutotrackerRuleItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -599,10 +595,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ui\controls\ReminderNotification.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="ui\controls\MiniTimer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -626,6 +618,18 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="ui\Experiments\implementations\Experiment99Screen.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ui\Notifications\AutotrackerNotification.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ui\Notifications\PomodoroNotification.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ui\Notifications\ReminderNotification.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -749,10 +753,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ui\windows\MiniTimerWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ui\controls\PomodoroNotification.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
