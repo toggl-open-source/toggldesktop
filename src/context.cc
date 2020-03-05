@@ -2364,7 +2364,7 @@ error Context::AppleLogin(const std::string &access_token) {
 }
 
 error Context::AsyncAppleLogin(const std::string &access_token) {
-    return AsyncLogin(access_token, "apple_token");
+    return AsyncLoginV9(access_token, "apple_token");
 }
 
 error Context::attemptOfflineLogin(const std::string &email,
@@ -2425,6 +2425,15 @@ error Context::AsyncLogin(const std::string &email,
                           const std::string &password) {
     std::thread backgroundThread([&](std::string email, std::string password) {
         return this->Login(email, password);
+    }, email, password);
+    backgroundThread.detach();
+    return noError;
+}
+
+error Context::AsyncLoginV9(const std::string &email,
+                          const std::string &password) {
+    std::thread backgroundThread([&](std::string email, std::string password) {
+        return this->LoginV9(email, password);
     }, email, password);
     backgroundThread.detach();
     return noError;
