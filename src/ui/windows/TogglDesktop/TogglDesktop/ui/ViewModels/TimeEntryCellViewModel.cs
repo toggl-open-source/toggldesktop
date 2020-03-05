@@ -48,6 +48,18 @@ namespace TogglDesktop.ViewModels
         [Reactive]
         public ulong GroupItemCount { get; set; }
 
+        [Reactive]
+        public string Duration { get; set; }
+
+        [Reactive]
+        public string DurationToolTip { get; set; }
+
+        [Reactive]
+        public bool Unsynced { get; set; }
+
+        [Reactive]
+        public bool Locked { get; set; }
+
         public long DurationInSeconds { get; set; }
 
         public bool TryExpand()

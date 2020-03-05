@@ -58,12 +58,13 @@
                 Background="Transparent"
                 Width="64"
                 Margin="3 0 0 0"
-                MouseLeftButtonDown="labelDuration_MouseDown">
+                MouseLeftButtonDown="labelDuration_MouseDown"
+                ToolTip="{Binding DurationToolTip}">
             <TextBlock Name="durationLabel" x:FieldModifier="private"
                        Style="{StaticResource Toggl.CaptionBlackText}"
                        HorizontalAlignment="Right"
                        VerticalAlignment="Center"
-                       Text="00:00:00" />
+                       Text="{Binding Duration}" />
         </Border>
 
         <Rectangle Grid.Column="0" Grid.ColumnSpan="4"
@@ -89,12 +90,12 @@
 
         <StackPanel HorizontalAlignment="Right" VerticalAlignment="Bottom" Grid.Column="3">
             <Canvas Width="25" Height="26"
-                    Name="unsyncedIcon" x:FieldModifier="private"
-                    ToolTip="Unsynced entry">
+                    ToolTip="Unsynced entry"
+                    Visibility="{Binding Unsynced, Converter={StaticResource BooleanToVisibilityConverter}}">
                 <Path Fill="{DynamicResource Toggl.UnsyncedEntryIndicatorBrush}" Opacity=".3" Data="M25 .214V25.93H.657z"/>
                 <Path Fill="{DynamicResource Toggl.UnsyncedEntryIndicatorBrush}" Data="M17.9 20.571c.56 0 1.014.48 1.014 1.072 0 .592-.454 1.071-1.014 1.071s-1.014-.48-1.014-1.071c0-.592.454-1.072 1.014-1.072zm.024-6.428c.54 0 .99.451.99 1.007v3.342c0 .551-.443 1.008-.99 1.008h-.048c-.54 0-.99-.451-.99-1.008V15.15c0-.55.443-1.007.99-1.007z"/>
             </Canvas>
-            <Image Name="lockedIcon" x:FieldModifier="private"
+            <Image Visibility="{Binding Locked, Converter={StaticResource BooleanToVisibilityConverter}}"
                    ToolTip="Time entry locked."
                    Width="16" Height="16"
                    Source="/TogglDesktop;component/Resources/locked-icon.png"
