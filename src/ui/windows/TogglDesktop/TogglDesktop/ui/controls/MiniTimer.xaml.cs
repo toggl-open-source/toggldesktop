@@ -107,7 +107,7 @@ namespace TogglDesktop
                 }
                 case Key.Escape:
                 {
-                    if (this.isRunning || this.editModeProjectLabel.ViewModel.HasProject == false)
+                    if (this.isRunning || this.editModeProjectLabel.ViewModel?.HasProject != true)
                         return;
                     this.clearSelectedProject();
                     e.Handled = true;
